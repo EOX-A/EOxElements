@@ -67,7 +67,7 @@ export default {
   }),
   computed: {
     layer() {
-      return this.eoxLayers.find(l => l.layer === this.layerName)
+      return this.eoxLayers.find((l) => l.layer === this.layerName);
     },
   },
 };

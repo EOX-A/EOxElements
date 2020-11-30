@@ -32,8 +32,8 @@
 <script>
 import { Map, TileLayer, OsmSource } from 'vuelayers';
 import 'vuelayers/lib/style.css';
-import SourceEox from './SourceEox.vue';
 import * as Vue from 'vue';
+import SourceEox from './SourceEox.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
