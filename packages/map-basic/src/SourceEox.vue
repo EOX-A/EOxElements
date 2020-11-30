@@ -1,13 +1,13 @@
 <template>
   <vl-source-wmts
-    :attributions="layer.attribution"
-    :url="layer.url"
-    :layer-name="layer.layer"
-    :matrix-set="layer.matrixSet"
-    :format="layer.format"
-    :style-name="layer.style"
-    :projection="layer.projection"
-    :resolutions="layer.resolutions"
+    :attributions="eoxLayer.attribution"
+    :url="eoxLayer.url"
+    :layer-name="eoxLayer.layer"
+    :matrix-set="eoxLayer.matrixSet"
+    :format="eoxLayer.format"
+    :style-name="eoxLayer.style"
+    :projection="eoxLayer.projection"
+    :resolutions="eoxLayer.resolutions"
   ></vl-source-wmts>
 </template>
 
@@ -30,13 +30,16 @@ const eoxMaps = {
   projection: 'EPSG:4326',
 };
 export default {
-  props: ['layerName'],
+  props: {
+    layerName: {
+      type: String,
+      default: 's2cloudless-2019',
+    },
+  },
   data: () => ({
     zoom: 5,
     center: [13, 43],
     rotation: 0,
-
-    selectedFeatures: [],
 
     eoxLayers: [
       {
@@ -56,11 +59,6 @@ export default {
         visible: false,
       },
       {
-        xyz: true,
-        attribution: '<a href="https://scihub.copernicus.eu/twiki/pub/SciHubWebPortal/TermsConditions/TC_Sentinel_Data_31072014.pdf">Sentinel data</a>, <a href="http://maps.s5p-pal.com/">S5P-PAL</a>',
-        visible: false,
-      },
-      {
         ...eoxMaps,
         layer: 'overlay_base_bright',
         format: 'image/png',
@@ -70,7 +68,7 @@ export default {
     ],
   }),
   computed: {
-    layer() {
+    eoxLayer() {
       return this.eoxLayers.find((l) => l.layer === this.layerName);
     },
   },

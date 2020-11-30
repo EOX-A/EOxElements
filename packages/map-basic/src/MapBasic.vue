@@ -20,7 +20,7 @@
       v-if="eox"
       id="eox"
     >
-      <source-eox :layerName="layerName"></source-eox>
+      <source-eox :layer-name="layerName"></source-eox>
     </vl-layer-tile>
     <!-- <div slot="layerSwipe" slot-scope="{ onPrecompose, onPostcompose }">
       <vl-layer-tile
