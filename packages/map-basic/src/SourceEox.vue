@@ -12,6 +12,10 @@
 </template>
 
 <script>
+import { WmtsSource } from 'vuelayers';
+import * as Vue from 'vue';
+
+Vue.use(WmtsSource);
 
 const eoxMaps = {
   resolutions: [
