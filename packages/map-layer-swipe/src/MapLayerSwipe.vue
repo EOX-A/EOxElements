@@ -42,7 +42,8 @@ export default {
 #swipe {
   position: absolute;
   left: 0;
-  top: 50%;
+  top: 80%;
+  height: 100%;
   width: 100%;
 }
 </style>
