@@ -14,12 +14,18 @@
     >
       <vl-source-osm></vl-source-osm>
     </vl-layer-tile>
+    <vl-layer-tile
+      id="eox"
+    >
+      <source-eox :layerName="s2cloudless-2019"></source-eox>
+    </vl-layer-tile>
   </vl-map>
 </template>
 
 <script>
 import { Map, TileLayer, OsmSource } from 'vuelayers';
 import 'vuelayers/lib/style.css';
+import SourceEox from './SourceEox.vue';
 import * as Vue from 'vue';
 
 Vue.use(Map);
@@ -28,6 +34,9 @@ Vue.use(OsmSource);
 
 export default {
   name: 'map-basic',
+  components: {
+    SourceEox,
+  },
   data: () => ({
     zoom: 2,
     center: [0, 0],
