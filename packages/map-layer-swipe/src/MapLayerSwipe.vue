@@ -10,14 +10,6 @@
 </template>
 
 <script>
-import { Map, TileLayer, OsmSource } from 'vuelayers';
-import 'vuelayers/lib/style.css';
-import * as Vue from 'vue';
-
-Vue.use(Map);
-Vue.use(TileLayer);
-Vue.use(OsmSource);
-
 export default {
   name: 'map-layer-swipe',
   data: () => ({
@@ -26,7 +18,7 @@ export default {
   watch: {
     swipe() {
       this.$refs.map.render();
-    }
+    },
   },
   methods: {
     onPrecompose(evt) {
@@ -41,7 +33,7 @@ export default {
     onPostcompose(evt) {
       const ctx = evt.context;
       ctx.restore();
-    }
+    },
   },
 };
 </script>
