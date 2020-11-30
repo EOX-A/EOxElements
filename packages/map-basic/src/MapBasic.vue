@@ -14,11 +14,18 @@
     >
       <vl-source-osm></vl-source-osm>
     </vl-layer-tile>
-    <vl-layer-tile
-      id="eox"
-    >
-      <source-eox :layerName="s2cloudless-2019"></source-eox>
-    </vl-layer-tile>
+    <div slot="layerSwipe" slot-scope="{ onPrecompose, onPostcompose }">
+      <vl-layer-tile
+        id="eox"
+        @precompose="onPrecompose"
+        @postcompose="onPostcompose"
+      >
+        <source-eox :layerName="'s2cloudless-2019'"></source-eox>
+      </vl-layer-tile>
+    </div>
+    <template v-slot:default="slotProps">
+      {{ slotProps.user.firstName }}
+    </template>
   </vl-map>
 </template>
 
