@@ -23,9 +23,6 @@
         <source-eox :layerName="'s2cloudless-2019'"></source-eox>
       </vl-layer-tile>
     </div>
-    <template v-slot:default="slotProps">
-      {{ slotProps.user.firstName }}
-    </template>
   </vl-map>
 </template>
 
