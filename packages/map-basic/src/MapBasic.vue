@@ -10,11 +10,19 @@
       :rotation.sync="rotation"
     ></vl-view>
     <vl-layer-tile
+      v-if="osm"
       id="osm"
     >
       <vl-source-osm></vl-source-osm>
     </vl-layer-tile>
-    <div slot="layerSwipe" slot-scope="{ onPrecompose, onPostcompose }">
+    <slot></slot>
+    <vl-layer-tile
+      v-if="eox"
+      id="eox"
+    >
+      <source-eox :layerName="layerName"></source-eox>
+    </vl-layer-tile>
+    <!-- <div slot="layerSwipe" slot-scope="{ onPrecompose, onPostcompose }">
       <vl-layer-tile
         id="eox"
         @precompose="onPrecompose"
@@ -22,7 +30,7 @@
       >
         <source-eox :layerName="'s2cloudless-2019'"></source-eox>
       </vl-layer-tile>
-    </div>
+    </div> -->
   </vl-map>
 </template>
 
@@ -40,6 +48,11 @@ export default {
   name: 'map-basic',
   components: {
     SourceEox,
+  },
+  props: {
+    osm: Boolean,
+    eox: Boolean,
+    layerName: String,
   },
   data: () => ({
     zoom: 2,
