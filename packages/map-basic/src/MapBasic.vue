@@ -19,6 +19,7 @@
 
 <script>
 import { Map, TileLayer, OsmSource } from 'vuelayers';
+import 'vuelayers/lib/style.css';
 import * as Vue from 'vue';
 
 Vue.use(Map);
@@ -36,7 +37,4 @@ export default {
 </script>
 
 <style>
-* {
-  border:red;
-}
 </style>
