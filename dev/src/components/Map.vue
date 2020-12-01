@@ -1,23 +1,33 @@
 <template>
   <div>
-    <h1>OSM</h1>
-    <map-basic :osm="true" />
-    <h1>EOX</h1>
-    <map-basic :eox="true" :layerName="'s2cloudless-2019'" />
+    <map-basic
+      :tileLayers="tileLayers"
+    >
+      <map-layer-swipe :swipeLayer="'osm'" />
+      <!-- <map-layer-swipe :swipeLayer="'s2cloudless-2019'" /> -->
+    </map-basic>
   </div>
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
+import MapBasic from '../../../packages/map-basic/dist/map-basic.umd'
+import MapLayerSwipe from '../../../packages/map-layer-swipe/dist/map-layer-swipe.umd'
 
-// import Vue from 'vue'
-// import Vuelayers from 'vuelayers'
+import Vue from 'vue'
+import Vuelayers from 'vuelayers'
 
-// Vue.use(Vuelayers)
+Vue.use(Vuelayers)
 
 export default {
   components: {
     MapBasic,
+    MapLayerSwipe,
   },
+  data: () => ({
+    tileLayers: [
+      // 'osm',
+      'terrain-light',
+    ]
+  }),
 }
 </script>

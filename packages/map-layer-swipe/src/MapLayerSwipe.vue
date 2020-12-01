@@ -1,23 +1,29 @@
 <template>
-  <div>
+  <div class="container">
     <input id="swipe" type="range" v-model="swipe">
-    <slot
-      name="layerItem"
-      :onPrecompose="onPrecompose"
-      :onPostcompose="onPostcompose"
-    ></slot>
+    <vl-layer-tile
+      @precompose="onPrecompose"
+      @postcompose="onPostcompose"
+      :z-index="1"
+    >
+      <vl-source-osm v-if="swipeLayer === 'osm'"></vl-source-osm>
+      <!-- <source-eox v-else :layer-name="swipeLayer"></source-eox> -->
+    </vl-layer-tile>
   </div>
 </template>
 
 <script>
 export default {
   name: 'map-layer-swipe',
+  props: {
+    swipeLayer: String,
+  },
   data: () => ({
     swipe: 50,
   }),
   watch: {
     swipe() {
-      this.$refs.map.render();
+      this.$root.$emit('renderMap');
     },
   },
   methods: {
@@ -39,11 +45,17 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
 #swipe {
   position: absolute;
   left: 0;
-  top: 80%;
-  height: 100%;
+  top: 50%;
   width: 100%;
+  z-index: 999;
 }
 </style>

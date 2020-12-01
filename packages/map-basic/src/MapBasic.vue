@@ -2,6 +2,7 @@
   <vl-map
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
+    ref="map"
     style="height: 400px"
   >
     <vl-view
@@ -9,30 +10,29 @@
       :center.sync="center"
       :rotation.sync="rotation"
     ></vl-view>
-    <vl-layer-tile
-      v-if="osm"
-      id="osm"
-    >
-      <vl-source-osm></vl-source-osm>
-    </vl-layer-tile>
-    <vl-layer-tile
-      v-if="eox"
-      id="eox"
-    >
-      <source-eox :layer-name="layerName"></source-eox>
-    </vl-layer-tile>
+    <vl-layer-group :z-index="0">
+      <vl-layer-tile
+        v-for="layer in tileLayers"
+        :key="layer"
+      >
+        <vl-source-osm v-if="layer === 'osm'"></vl-source-osm>
+        <source-eox v-else :layer-name="layer"></source-eox>
+      </vl-layer-tile>
+    </vl-layer-group>
+    <slot></slot>
   </vl-map>
 </template>
 
 <script>
 import Vue from 'vue';
-import { Map, TileLayer, OsmSource } from 'vuelayers';
+import { Map, TileLayer, OsmSource, GroupLayer } from 'vuelayers';
 import 'vuelayers/lib/style.css';
 import SourceEox from './SourceEox.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
 Vue.use(OsmSource);
+Vue.use(GroupLayer);
 
 export default {
   name: 'map-basic',
@@ -40,15 +40,16 @@ export default {
     SourceEox,
   },
   props: {
-    osm: Boolean,
-    eox: Boolean,
-    layerName: String,
+    tileLayers: Array,
   },
   data: () => ({
     zoom: 2,
     center: [0, 0],
     rotation: 0,
   }),
+  created() {
+    this.$root.$on('renderMap', () => this.$refs.map.render());
+  },
   mounted() {
     console.log('map-basic loaded');
   },
@@ -56,4 +57,7 @@ export default {
 </script>
 
 <style>
+.vl-map {
+  position: relative;
+}
 </style>
