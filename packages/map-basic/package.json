@@ -25,6 +25,7 @@
   "scripts": {
     "start": "npm run serve",
     "serve": "vue-cli-service serve",
+    "watch": "vue-cli-service build --target lib --name map-basic src/main.js --watch --mode development",
     "build": "vue-cli-service build --target lib --name map-basic src/main.js",
     "lint": "vue-cli-service lint",
     "prepublishOnly": "npm run build"
