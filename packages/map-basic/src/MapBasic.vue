@@ -16,12 +16,12 @@
       <vl-source-osm></vl-source-osm>
     </vl-layer-tile>
     <slot></slot>
-    <vl-layer-tile
+    <!-- <vl-layer-tile
       v-if="eox"
       id="eox"
     >
       <source-eox :layer-name="layerName"></source-eox>
-    </vl-layer-tile>
+    </vl-layer-tile> -->
     <!-- <div slot="layerSwipe" slot-scope="{ onPrecompose, onPostcompose }">
       <vl-layer-tile
         id="eox"
@@ -38,7 +38,7 @@
 import { Map, TileLayer, OsmSource } from 'vuelayers';
 import 'vuelayers/lib/style.css';
 import * as Vue from 'vue';
-import SourceEox from './SourceEox.vue';
+// import SourceEox from './SourceEox.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
@@ -47,7 +47,7 @@ Vue.use(OsmSource);
 export default {
   name: 'map-basic',
   components: {
-    SourceEox,
+    // SourceEox,
   },
   props: {
     osm: Boolean,
