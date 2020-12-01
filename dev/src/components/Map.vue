@@ -4,7 +4,6 @@
     <map-basic :osm="true" />
     <h1>EOX</h1>
     <map-basic :eox="true" :layerName="'s2cloudless-2019'" />
-
   </div>
 </template>
 
