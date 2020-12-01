@@ -11,10 +11,10 @@
 <script>
 import MapBasic from '@eox/map-basic'
 
-import Vuelayers from 'vuelayers'
-import Vue from 'vue'
+// import Vue from 'vue'
+// import Vuelayers from 'vuelayers'
 
-Vue.use(Vuelayers)
+// Vue.use(Vuelayers)
 
 export default {
   components: {
