@@ -15,30 +15,20 @@
     >
       <vl-source-osm></vl-source-osm>
     </vl-layer-tile>
-    <slot></slot>
-    <!-- <vl-layer-tile
+    <vl-layer-tile
       v-if="eox"
       id="eox"
     >
       <source-eox :layer-name="layerName"></source-eox>
-    </vl-layer-tile> -->
-    <!-- <div slot="layerSwipe" slot-scope="{ onPrecompose, onPostcompose }">
-      <vl-layer-tile
-        id="eox"
-        @precompose="onPrecompose"
-        @postcompose="onPostcompose"
-      >
-        <source-eox :layerName="'s2cloudless-2019'"></source-eox>
-      </vl-layer-tile>
-    </div> -->
+    </vl-layer-tile>
   </vl-map>
 </template>
 
 <script>
+import Vue from 'vue';
 import { Map, TileLayer, OsmSource } from 'vuelayers';
 import 'vuelayers/lib/style.css';
-import * as Vue from 'vue';
-// import SourceEox from './SourceEox.vue';
+import SourceEox from './SourceEox.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
@@ -47,7 +37,7 @@ Vue.use(OsmSource);
 export default {
   name: 'map-basic',
   components: {
-    // SourceEox,
+    SourceEox,
   },
   props: {
     osm: Boolean,
@@ -59,6 +49,9 @@ export default {
     center: [0, 0],
     rotation: 0,
   }),
+  mounted() {
+    console.log('map-basic loaded');
+  },
 };
 </script>
 

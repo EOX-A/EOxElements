@@ -12,8 +12,8 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { WmtsSource } from 'vuelayers';
-import * as Vue from 'vue';
 
 Vue.use(WmtsSource);
 
@@ -71,6 +71,9 @@ export default {
     eoxLayer() {
       return this.eoxLayers.find((l) => l.layer === this.layerName);
     },
+  },
+  mounted() {
+    console.log('source-eox loaded');
   },
 };
 </script>
