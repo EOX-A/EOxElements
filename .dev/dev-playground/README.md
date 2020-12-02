@@ -1,8 +1,18 @@
 # Development Playground
 
-Create a `Playground.vue` file in `src/` (you can use the template).
+## Playground file
+Create a `Playground.vue` file in `src/` (you can use the provided template.
 
-Then, in the porject root folder, run:
+## Using other packages
+Simply install the packages or manually add them to `./package.json`, for example:
+```
+"@eox/map-basic": "*",
+```
+After this, run `yarn install` at the project root to symlink the installed packages.
+
+## Dev server
+In the project root folder, run:
 ```
 yarn dev
 ```
+This will launch a dev server on `localhost:8080`.
