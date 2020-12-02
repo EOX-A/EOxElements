@@ -37,7 +37,7 @@ npm login
 
 Finally, run
 ```
-lerna publish
+(npx) lerna publish
 ```
 You can select which packages should update in which way (patch, minor or major release), Lerna will push an update to the version number in `package.json`. Lerna looks for changes to the current release, except for markdown files (prevents unnecessary releases).
 
