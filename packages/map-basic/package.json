@@ -1,6 +1,6 @@
 {
   "name": "@eox/map-basic",
-  "version": "0.0.16",
+  "version": "0.0.0",
   "private": false,
   "main": "dist/map-basic.umd.min.js",
   "module": "dist/map-basic.umd.min.js",
@@ -17,10 +17,10 @@
   "homepage": "https://eox.at",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EOX-A/ui-elements.git"
+    "url": "git+https://github.com/EOX-A/elements.git"
   },
   "bugs": {
-    "url": "https://github.com/EOX-A/ui-elements/issues"
+    "url": "https://github.com/EOX-A/elements/issues"
   },
   "scripts": {
     "watch": "vue-cli-service build --target lib --name map-basic src/main.js --watch --mode development",

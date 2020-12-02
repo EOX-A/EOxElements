@@ -1,5 +1,5 @@
-# ui-elements
-Geospatial UI Elements as Reusable Components
+# EOxElements
+Geospatial UI Elements
 
 ## Development Setup
 This monorepo uses yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) and [Lerna](https://github.com/lerna/lerna).
