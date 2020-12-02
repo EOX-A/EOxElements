@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Playground from './components/Playground.vue'
+import Playground from './Playground.vue'
 
 export default {
   name: 'App',
