@@ -1,12 +1,12 @@
 {
   "name": "dev-playground",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
-    "@eox/map-basic": "*",
+    "@eox/map-basic": "^0.0.1",
     "@eox/map-layer-swipe": "0.0.2",
     "vue": "^2.5.17"
   },
