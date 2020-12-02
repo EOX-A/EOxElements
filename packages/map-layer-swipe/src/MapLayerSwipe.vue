@@ -26,6 +26,9 @@ export default {
       this.$root.$emit('renderMap');
     },
   },
+  mounted() {
+    console.log('map-layer-swipe loaded');
+  },
   methods: {
     onPrecompose(evt) {
       const ctx = evt.context;

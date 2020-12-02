@@ -1,52 +1,50 @@
 {
-  "name": "@eox/map-layer-swipe",
-  "version": "0.0.2",
-  "private": false,
-  "main": "dist/map-layer-swipe.umd.min.js",
-  "module": "dist/map-layer-swipe.umd.min.js",
-  "unpkg": "dist/map-layer-swipe.umd.min.js",
-  "jsdelivr": "dist/map-layer-swipe.umd.min.js",
-  "style": "dist/map-layer-swipe.css",
-  "author": "EOX-A",
-  "license": "MIT",
-  "description": "A layer swipe component",
-  "files": [
-    "dist/*",
-    "src/*"
-  ],
-  "homepage": "https://eox.at",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EOX-A/ui-elements.git"
-  },
-  "bugs": {
-    "url": "https://github.com/EOX-A/ui-elements/issues"
-  },
-  "scripts": {
-    "start": "npm run serve",
-    "serve": "vue-cli-service serve",
-    "watch": "vue-cli-service build --target lib --name map-layer-swipe src/main.js --watch --mode development",
-    "build": "vue-cli-service build --target lib --name map-layer-swipe src/main.js",
-    "lint": "vue-cli-service lint",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "core-js": "^3.6.5",
-    "vue": "^2.6.11"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/eslint-config-airbnb": "^5.0.2",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "publishConfig": {
-    "registry": "http://registry.npmjs.org/",
-    "access": "public"
-  }
+	"name": "@eox/map-layer-swipe",
+	"version": "0.0.2",
+	"private": false,
+	"main": "dist/map-layer-swipe.umd.min.js",
+	"module": "dist/map-layer-swipe.umd.min.js",
+	"unpkg": "dist/map-layer-swipe.umd.min.js",
+	"jsdelivr": "dist/map-layer-swipe.umd.min.js",
+	"style": "dist/map-layer-swipe.css",
+	"author": "EOX-A",
+	"license": "MIT",
+	"description": "A layer swipe component",
+	"files": [
+		"dist/*",
+		"src/*"
+	],
+	"homepage": "https://eox.at",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/EOX-A/ui-elements.git"
+	},
+	"bugs": {
+		"url": "https://github.com/EOX-A/ui-elements/issues"
+	},
+	"scripts": {
+		"watch": "vue-cli-service build --target lib --name map-basic src/main.js --watch --mode development",
+		"build": "vue-cli-service build --target lib --name map-basic src/main.js",
+		"lint": "vue-cli-service lint",
+		"prepublishOnly": "npm run build"
+	},
+	"dependencies": {
+		"core-js": "^3.6.5",
+		"vue": "^2.6.11"
+	},
+	"devDependencies": {
+		"@vue/cli-plugin-babel": "~4.5.0",
+		"@vue/cli-plugin-eslint": "~4.5.0",
+		"@vue/cli-service": "~4.5.0",
+		"@vue/eslint-config-airbnb": "^5.0.2",
+		"babel-eslint": "^10.1.0",
+		"eslint": "^6.7.2",
+		"eslint-plugin-import": "^2.20.2",
+		"eslint-plugin-vue": "^6.2.2",
+		"vue-template-compiler": "^2.6.11"
+	},
+	"publishConfig": {
+		"registry": "http://registry.npmjs.org/",
+		"access": "public"
+	}
 }

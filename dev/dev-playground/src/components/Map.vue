@@ -10,13 +10,8 @@
 </template>
 
 <script>
-import MapBasic from '../../../packages/map-basic/dist/map-basic.umd'
-import MapLayerSwipe from '../../../packages/map-layer-swipe/dist/map-layer-swipe.umd'
-
-import Vue from 'vue'
-import Vuelayers from 'vuelayers'
-
-Vue.use(Vuelayers)
+import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-basic.umd'
 
 export default {
   components: {

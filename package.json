@@ -1,6 +1,18 @@
 {
   "name": "root",
   "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "dev/*"
+    ]
+  },
+  "scripts": {
+    "dev": "lerna run dev --scope dev-playground --stream --parallel",
+    "watch": "lerna run watch --stream --parallel",
+    "build": "lerna run build --stream",
+    "lint": "lerna run lint --stream --parallel"
+  },
   "devDependencies": {
     "lerna": "^3.22.1"
   }

@@ -25,7 +25,9 @@
 
 <script>
 import Vue from 'vue';
-import { Map, TileLayer, OsmSource, GroupLayer } from 'vuelayers';
+import {
+  Map, TileLayer, OsmSource, GroupLayer,
+} from 'vuelayers';
 import 'vuelayers/lib/style.css';
 import SourceEox from './SourceEox.vue';
 
