@@ -1,19 +1,8 @@
-# dev
+# Development Playground
 
-## Project setup
-```
-npm install
-```
+Create a `Playground.vue` file in `src/` (you can use the template).
 
-### Compiles and hot-reloads for development
+Then, in the porject root folder, run:
 ```
-npm run serve
+yarn dev
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
