@@ -13,6 +13,7 @@
     ref="container"
   >
     <v-btn
+      v-if="!embeddedMode"
       fab
       small
       color="primary"
