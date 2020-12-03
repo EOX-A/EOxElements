@@ -30,7 +30,9 @@
 	},
 	"dependencies": {
 		"core-js": "^3.6.5",
-		"vue": "^2.6.11"
+		"gsap": "^3.5.1",
+		"vue": "^2.6.11",
+		"vuetify": "^2.3.19"
 	},
 	"devDependencies": {
 		"@vue/cli-plugin-babel": "~4.5.0",
