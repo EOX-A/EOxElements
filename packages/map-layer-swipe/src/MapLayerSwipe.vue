@@ -25,13 +25,17 @@
     <div
       class="swipeinfo swipeinfoLeft"
       ref="swipeinfoLeft"
-      :style="`clip-path: inset(0px ${clipLeft}px 0px 0px`"
-    >{{ originalLayerName }}</div>
+      :style="`clip-path: inset(0px ${clipLeft - 10}px 0px 0px`"
+    >{{ reverseDirection
+      ? swipeLayerName
+      : originalLayerName }}</div>
     <div
       class="swipeinfo swipeinfoRight"
       ref="swipeinfoRight"
-      :style="`clip-path: inset(0px 0px 0px ${clipRight}px`"
-    >{{ swipeLayerName }}</div>
+      :style="`clip-path: inset(0px 0px 0px ${clipRight + 10}px`"
+    >{{ reverseDirection
+      ? originalLayerName
+      : swipeLayerName }}</div>
     <div id="swipe_handle_separator" :style="`left: calc(${swipe}% - 1px)`">
       <div id="swipe_handle">
         <v-icon color="white">mdi-arrow-left-right-bold</v-icon>
@@ -56,6 +60,7 @@ export default {
   name: 'map-layer-swipe',
   props: {
     embeddedMode: Boolean,
+    reverseDirection: Boolean,
     swipeLayer: String,
     swipeLayerName: {
       type: String,
@@ -81,6 +86,11 @@ export default {
       this.$root.$emit('renderMap');
     },
   },
+  created() {
+    if (this.reverseDirection) {
+      this.swipe = 0;
+    }
+  },
   mounted() {
     console.log('map-layer-swipe loaded');
     if (this.embeddedMode) {
@@ -94,7 +104,8 @@ export default {
         gsap.to(this.$data, { duration: 0.8, swipe: 50 });
       } else {
         const deactivate = () => { this.swipeActive = false; };
-        gsap.to(this.$data, { duration: 0.8, swipe: 100, onComplete: deactivate });
+        const reset = this.reverseDirection ? 0 : 100;
+        gsap.to(this.$data, { duration: 0.8, swipe: reset, onComplete: deactivate });
       }
     },
     onPrecompose(evt) {
@@ -103,7 +114,11 @@ export default {
 
       ctx.save();
       ctx.beginPath();
-      ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height);
+      if (this.reverseDirection) {
+        ctx.rect(0, 0, width, ctx.canvas.height);
+      } else {
+        ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height);
+      }
       ctx.clip();
 
       const w = this.$refs.container.clientWidth * (this.swipe / 100);

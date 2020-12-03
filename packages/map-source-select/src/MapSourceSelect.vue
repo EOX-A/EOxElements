@@ -9,10 +9,12 @@
       class="row justify-center align-center"
       style="position: absolute; bottom: 30px;
         z-index: 1000; width: auto;
-        max-width: 100%; border-radius: 4px;"
+        max-width: 100%; border-radius: 4px;
+        display: flex;"
     >
       <v-col
         :cols="enableCompare ? 6 : 12"
+        :class="reverseDirection ? 'order-2' : 'order-1'"
       >
         <v-select
           outlined
@@ -38,7 +40,7 @@
           @click:prepend-inner="dataLayerReduce"
           @click:append="dataLayerIncrease"
         >
-          <template v-slot:append-outer
+          <template v-slot:[buttonSlot]
           v-if="!disableCompareButton">
             <v-tooltip
               bottom
@@ -54,7 +56,7 @@
       <v-col
         v-if="enableCompare"
         cols="6"
-        class="pl-0"
+        :class="reverseDirection ? 'pr-0 order-1' : 'pl-0 order-2'"
       >
         <v-select
           v-if="enableCompare"
@@ -99,6 +101,7 @@ import {
 export default {
   props: {
     selectionItems: Array,
+    reverseDirection: Boolean,
   },
   components: {
     // VBtn,
@@ -115,6 +118,13 @@ export default {
     dataLayerIndex: 0,
     compareLayer: null,
   }),
+  computed: {
+    buttonSlot() {
+      return this.reverseDirection
+        ? 'prepend'
+        : 'append-outer';
+    },
+  },
   mounted() {
     this.dataLayer = this.selectionItems[this.selectionItems.length - 1];
     [this.compareLayer] = this.selectionItems;

@@ -3,6 +3,7 @@
 ## Documentation
 ### Props
 - embeddedMode (Boolean): hide enable and disable swipe buttons
+- reverseDirection (Boolean): reverse the comparison direction (original right, comparison left)
 - swipeLayer
 - swipeLayerName
 - originalLayerName
