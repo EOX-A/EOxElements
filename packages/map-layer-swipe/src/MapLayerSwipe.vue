@@ -137,12 +137,11 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    box-shadow: 0 0 3.1px #000031, 0 0 0 #00004b;
-    border: 1.8px solid #fff;
+    border: 3px solid #fff;
     background: var(--v-primary-base);
     top: 50%;
     left: 100%;
-    transform: translate3d(-25px, -25px, 0);
+    transform: translate3d(-26px, -25px, 0);
 }
 #swipe:hover ~ #swipe_handle {
     background-color: var(--v-primary-base);
@@ -150,10 +149,10 @@ export default {
 #swipe_handle_separator {
     position: absolute;
     top: 0;
-    width: 2px;
+    width: 3px;
     height: 100%;
     background-color: #fff;
-    box-shadow: 0 0 3.1px #000031, 0 0 0 #00004b;
+    filter: drop-shadow(0 0 3px rgba(50, 50, 0, 0.5));
     z-index: 2;
 }
 #swipe {
