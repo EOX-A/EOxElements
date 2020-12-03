@@ -1,6 +1,13 @@
 # `map-source-select`
 
-> TODO: description
+## Documentation
+### Props
+- selectionItems (Array): items to display in the dropdown selection
+
+### Events
+- selectLayer
+- selectCompareLayer
+- toggleCompare
 
 ## Install
 

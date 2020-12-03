@@ -1,6 +1,11 @@
 # `map-layer-swipe`
 
-> TODO: description
+## Documentation
+### Props
+- embeddedMode (Boolean): hide enable and disable swipe buttons
+- swipeLayer
+- swipeLayerName
+- originalLayerName
 
 ## Install
 

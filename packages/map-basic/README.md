@@ -1,6 +1,8 @@
 # `map-basic`
 
-> TODO: description
+## Documentation
+### Props
+- tileLayers (Array): array of ids (currently osm and any eox id)
 
 ## Install
 
