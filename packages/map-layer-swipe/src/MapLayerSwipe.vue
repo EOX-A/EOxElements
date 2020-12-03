@@ -54,6 +54,7 @@ import gsap from 'gsap';
 export default {
   name: 'map-layer-swipe',
   props: {
+    embeddedMode: Boolean,
     swipeLayer: String,
     swipeLayerName: {
       type: String,
@@ -81,6 +82,9 @@ export default {
   },
   mounted() {
     console.log('map-layer-swipe loaded');
+    if (this.embeddedMode) {
+      this.enableSwipe(true);
+    }
   },
   methods: {
     enableSwipe(enable) {
