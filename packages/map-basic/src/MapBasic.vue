@@ -50,7 +50,8 @@ export default {
     rotation: 0,
   }),
   created() {
-    this.$root.$on('renderMap', () => this.$refs.map.render());
+    this.$root.$on('renderMap', () => this.$refs.map
+      && this.$refs.map.render());
   },
   mounted() {
     console.log('map-basic loaded');
@@ -61,5 +62,8 @@ export default {
 <style>
 .vl-map {
   position: relative;
+}
+.ol-control button {
+  background: var(--v-primary-base);
 }
 </style>
