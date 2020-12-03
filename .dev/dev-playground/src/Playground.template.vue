@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <v-container>
     <!-- <map-basic
       :tileLayers="tileLayers"
     >
       <map-layer-swipe :swipeLayer="'osm'" />
     </map-basic> -->
-  </div>
+  </v-container>
 </template>
 
 <script>
