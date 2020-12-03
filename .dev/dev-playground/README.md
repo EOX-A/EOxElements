@@ -3,12 +3,12 @@
 ## Playground file
 Create a `Playground.vue` file in `src/` (you can use the provided template.
 
-## Using other packages
-Simply install the packages or manually add them to `./package.json`, for example:
+## Using other internal packages
+The best way to use internal packages is to add them to dev-playground directly from project root:
 ```
-"@eox/map-basic": "*",
+lerna add @eox/map-basic --scope dev-playground
 ```
-After this, run `yarn install` at the project root to symlink the installed packages.
+ If you have added a package directly to dev playground, it's best to remove node_modules folder, then run `yarn install` at the project root to symlink the installed packages.
 
 ## Dev server
 In the project root folder, run:
