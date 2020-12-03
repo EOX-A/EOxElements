@@ -11,9 +11,12 @@
     "dev": "lerna run dev --scope dev-playground --stream --parallel",
     "watch": "lerna run watch --stream --parallel",
     "build": "lerna run build --stream",
-    "lint": "lerna run lint --stream --parallel"
+    "lint": "lerna run lint --stream --parallel",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "devDependencies": {
-    "lerna": "^3.22.1"
+    "lerna": "^3.22.1",
+    "vuepress": "^1.7.1"
   }
 }
