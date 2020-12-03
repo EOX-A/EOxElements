@@ -23,8 +23,8 @@
 		"url": "https://github.com/EOX-A/elements/issues"
 	},
 	"scripts": {
-		"watch": "vue-cli-service build --target lib --name map-basic src/main.js --watch --mode development",
-		"build": "vue-cli-service build --target lib --name map-basic src/main.js",
+		"watch": "vue-cli-service build --target lib --name map-layer-swipe src/main.js --watch --mode development",
+		"build": "vue-cli-service build --target lib --name map-layer-swipe src/main.js",
 		"lint": "vue-cli-service lint",
 		"prepublishOnly": "npm run build"
 	},
