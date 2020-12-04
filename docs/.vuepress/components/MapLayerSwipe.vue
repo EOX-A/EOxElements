@@ -33,8 +33,8 @@ export default {
     },
     tileLayers: [
       // 'osm',
-      // 'terrain-light',
-      's2cloudless-2019',
+      'terrain-light',
+      // 's2cloudless-2019',
     ],
     selectionItems: [
       {

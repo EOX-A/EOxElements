@@ -5,9 +5,11 @@
         :tileLayers="tileLayers"
         style="height: 100%; width: 100%;"
       >
-        <map-source-select
-          :selectionItems="selectionItems"
-          @selectLayer="changeLayer"
+        <map-layer-swipe
+          :reverseDirection="true"
+          :swipeLayer="compareLayer.value"
+          :swipeLayerName="compareLayer.name"
+          :originalLayerName="tileLayers[0]"
         />
       </map-basic>
     </v-content>
@@ -16,20 +18,23 @@
 
 <script>
 import MapBasic from '@eox/map-basic/dist/map-basic.umd'
-import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
+import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
 
 export default {
   components: {
     MapBasic,
-    MapSourceSelect,
+    MapLayerSwipe,
   },
   data: () => ({
+    layerComparison: false,
+    compareLayer: {
+      name: 'Open Street Map',
+      value: 'osm',
+    },
     tileLayers: [
       // 'osm',
-      // 'terrain-light',
-      's2cloudless',
-      's2cloudless-2018',
-      's2cloudless-2019',
+      'terrain-light',
+      // 's2cloudless-2019',
     ],
     selectionItems: [
       {
@@ -41,23 +46,10 @@ export default {
         value: 'terrain-light',
       },
       {
-        name: 'Sentinel-2 cloudless 2016',
-        value: 's2cloudless',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2018',
-        value: 's2cloudless-2018',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2019',
+        name: 'EOxCloudless 2019',
         value: 's2cloudless-2019',
       },
     ]
   }),
-  methods: {
-    changeLayer(layerId) {
-      this.tileLayers = [layerId];
-    },
-  },
 }
 </script>

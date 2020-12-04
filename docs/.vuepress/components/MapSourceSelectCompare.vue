@@ -5,9 +5,21 @@
         :tileLayers="tileLayers"
         style="height: 100%; width: 100%;"
       >
+        <map-layer-swipe
+          v-if="layerComparison"
+          embeddedMode
+          reverseDirection
+          :swipeLayer="'osm'"
+          :swipeLayerName="'OSM'"
+          :originalLayerName="tileLayers[0]"
+        />
         <map-source-select
+          reverseDirection
+          enableCompare
           :selectionItems="selectionItems"
           @selectLayer="changeLayer"
+          @selectCompareLayer="changeCompareLayer"
+          @toggleCompare="toggleCompare"
         />
       </map-basic>
     </v-content>
@@ -16,14 +28,21 @@
 
 <script>
 import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
 import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
 
 export default {
   components: {
     MapBasic,
+    MapLayerSwipe,
     MapSourceSelect,
   },
   data: () => ({
+    layerComparison: false,
+    compareLayer: {
+      name: 'Open Street Map',
+      value: 'osm',
+    },
     tileLayers: [
       // 'osm',
       // 'terrain-light',
@@ -57,6 +76,12 @@ export default {
   methods: {
     changeLayer(layerId) {
       this.tileLayers = [layerId];
+    },
+    changeCompareLayer(layerId) {
+      this.compareLayer = [layerId];
+    },
+    toggleCompare(active) {
+      this.layerComparison = active;
     },
   },
 }

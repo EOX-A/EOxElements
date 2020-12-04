@@ -4,7 +4,7 @@ module.exports = {
     '/': {
       lang: 'en-US',
       title: 'EOxElements',
-      description: 'EOxElements'
+      description: 'Geospatial UI Elements, written in Vue.js'
     }
   },
   serviceWorker: true,
@@ -22,14 +22,14 @@ module.exports = {
         editLinkText: 'Edit this page on GitHub',
         nav: [
           {
-            text: 'Elements',
-            link: '/elements/'
+            text: 'Collection',
+            link: '/collection/'
           },
         ],
         sidebar: {
-          '/elements/': [
+          '/collection/': [
             {
-              title: 'Elements',
+              title: 'Collection',
               collapsable: false,
               children: [
                 'map-basic',
