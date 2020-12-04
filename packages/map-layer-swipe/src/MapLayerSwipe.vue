@@ -25,14 +25,14 @@
     <div
       class="swipeinfo swipeinfoLeft"
       ref="swipeinfoLeft"
-      :style="`clip-path: inset(0px ${clipLeft - 10}px 0px 0px`"
+      :style="`clip-path: inset(0px ${clipLeft}px 0px 0px`"
     >{{ reverseDirection
       ? swipeLayerName
       : originalLayerName }}</div>
     <div
       class="swipeinfo swipeinfoRight"
       ref="swipeinfoRight"
-      :style="`clip-path: inset(0px 0px 0px ${clipRight + 10}px`"
+      :style="`clip-path: inset(0px 0px 0px ${clipRight}px`"
     >{{ reverseDirection
       ? originalLayerName
       : swipeLayerName }}</div>
@@ -123,7 +123,7 @@ export default {
 
       const w = this.$refs.container.clientWidth * (this.swipe / 100);
       this.clipLeft = this.$refs.swipeinfoLeft.clientWidth - w;
-      this.clipRight = w - this.$refs.container.clientWidth + this.$refs.swipeinfoLeft.clientWidth;
+      this.clipRight = w - this.$refs.container.clientWidth + this.$refs.swipeinfoRight.clientWidth;
     },
     onPostcompose(evt) {
       const ctx = evt.context;
