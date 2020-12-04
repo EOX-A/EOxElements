@@ -13,7 +13,7 @@
         display: flex;"
     >
       <v-col
-        :cols="enableCompare ? 6 : 12"
+        :cols="compareActive ? 6 : 12"
         :class="reverseDirection ? 'order-2' : 'order-1'"
       >
         <v-select
@@ -41,12 +41,12 @@
           @click:append="dataLayerIncrease"
         >
           <template v-slot:[buttonSlot]
-          v-if="!disableCompareButton">
+          v-if="enableCompare">
             <v-tooltip
               bottom
             >
               <template v-slot:activator="{ on }">
-                <v-icon v-on="on" @click="enableCompare = !enableCompare">mdi-compare</v-icon>
+                <v-icon v-on="on" @click="compareActive = !compareActive">mdi-compare</v-icon>
               </template>
               Compare two images
             </v-tooltip>
@@ -54,12 +54,12 @@
         </v-select>
       </v-col>
       <v-col
-        v-if="enableCompare"
+        v-if="compareActive"
         cols="6"
         :class="reverseDirection ? 'pr-0 order-1' : 'pl-0 order-2'"
       >
         <v-select
-          v-if="enableCompare"
+          v-if="compareActive"
           outlined
           dense
           autofocus
@@ -100,6 +100,7 @@ import {
 
 export default {
   props: {
+    enableCompare: Boolean,
     selectionItems: Array,
     reverseDirection: Boolean,
   },
@@ -112,8 +113,7 @@ export default {
     VTooltip,
   },
   data: () => ({
-    enableCompare: false,
-    disableCompareButton: false,
+    compareActive: false,
     dataLayer: null,
     dataLayerIndex: 0,
     compareLayer: null,
@@ -198,7 +198,7 @@ export default {
     compareLayer(compareLayer) {
       this.selectLayer('compareLayer', compareLayer.value);
     },
-    enableCompare(active) {
+    compareActive(active) {
       this.$emit('toggleCompare', active);
     },
   },
