@@ -9,10 +9,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@master
-    - run: npm install -g yarn
-    - name: Build and Deploy
-      uses: testthedocs/github-pages-deploy-action@master
+
+    - name: vuepress-deploy
+      uses: jenkey2011/vuepress-deploy@master
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BUILD_DIR: docs/.vuepress/dist/ # The folder, the action should deploy.
-        BUILD_SCRIPT: yarn install && yarn docs:build # The build script the action should run prior to deploying
+        BUILD_SCRIPT: yarn && yarn docs:build
+        BUILD_DIR: docs/.vuepress/dist/
