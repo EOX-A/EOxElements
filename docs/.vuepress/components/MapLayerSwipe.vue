@@ -6,7 +6,6 @@
         style="height: 100%; width: 100%;"
       >
         <map-layer-swipe
-          :reverseDirection="false"
           :swipeLayer="compareLayer.value"
           :swipeLayerName="compareLayer.name"
           :originalLayerName="tileLayers[0]"
