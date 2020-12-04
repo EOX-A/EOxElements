@@ -1,5 +1,5 @@
 module.exports = {
-  base: '/',
+  base: '/elements/',
   locales: {
     '/': {
       lang: 'en-US',
@@ -11,6 +11,7 @@ module.exports = {
   themeConfig: {
     repo: 'EOX-A/elements',
     docsDir: 'docs',
+    docsBranch: 'docs',
     editLinks: true,
     sidebarDepth: 1,
     locales: {

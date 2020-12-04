@@ -1,24 +1,28 @@
 <template>
-  <map-basic
-    :tileLayers="tileLayers"
-    style="height: 400px; width: 100%;"
-  >
-    <map-layer-swipe
-      v-if="layerComparison"
-      embeddedMode
-      reverseDirection
-      :swipeLayer="'osm'"
-      :swipeLayerName="'OSM'"
-      :originalLayerName="tileLayers[0]"
-    />
-    <map-source-select
-      reverseDirection
-      :selectionItems="selectionItems"
-      @selectLayer="changeLayer"
-      @selectCompareLayer="changeCompareLayer"
-      @toggleCompare="toggleCompare"
-    />
-  </map-basic>
+  <v-app class="fill-height"> 
+    <v-content class="fill-height">
+      <map-basic
+        :tileLayers="tileLayers"
+        style="height: 100%; width: 100%;"
+      >
+        <map-layer-swipe
+          v-if="layerComparison"
+          embeddedMode
+          reverseDirection
+          :swipeLayer="'osm'"
+          :swipeLayerName="'OSM'"
+          :originalLayerName="tileLayers[0]"
+        />
+        <map-source-select
+          reverseDirection
+          :selectionItems="selectionItems"
+          @selectLayer="changeLayer"
+          @selectCompareLayer="changeCompareLayer"
+          @toggleCompare="toggleCompare"
+        />
+      </map-basic>
+    </v-content>
+  </v-app>
 </template>
 
 <script>

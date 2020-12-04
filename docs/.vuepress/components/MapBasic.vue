@@ -1,8 +1,12 @@
 <template>
-  <map-basic
-    :tileLayers="tileLayers"
-    style="height: 400px; width: 100%;"
-  />
+  <v-app class="fill-height"> 
+    <v-content class="fill-height">
+      <map-basic
+        :tileLayers="tileLayers"
+        style="height: 100%; width: 100%;"
+      />
+    </v-content>
+  </v-app>
 </template>
 
 <script>

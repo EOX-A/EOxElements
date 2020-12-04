@@ -1,15 +1,19 @@
 <template>
-  <map-basic
-    :tileLayers="tileLayers"
-    style="height: 400px; width: 100%;"
-  >
-    <map-layer-swipe
-      :reverseDirection="false"
-      :swipeLayer="compareLayer.value"
-      :swipeLayerName="compareLayer.name"
-      :originalLayerName="tileLayers[0]"
-    />
-  </map-basic>
+  <v-app class="fill-height"> 
+    <v-content class="fill-height">
+      <map-basic
+        :tileLayers="tileLayers"
+        style="height: 100%; width: 100%;"
+      >
+        <map-layer-swipe
+          :reverseDirection="false"
+          :swipeLayer="compareLayer.value"
+          :swipeLayerName="compareLayer.name"
+          :originalLayerName="tileLayers[0]"
+        />
+      </map-basic>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
