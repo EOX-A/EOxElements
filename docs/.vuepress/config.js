@@ -11,7 +11,7 @@ module.exports = {
   themeConfig: {
     repo: 'EOX-A/elements',
     docsDir: 'docs',
-    docsBranch: 'docs',
+    docsBranch: 'main',
     editLinks: true,
     sidebarDepth: 1,
     locales: {
