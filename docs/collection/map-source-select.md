@@ -31,7 +31,6 @@ Source select with `enableCompare` prop (WIP):
 ``` md
 <map-basic
   :tileLayers="tileLayers"
-  style="height: 100%; width: 100%;"
 >
   <map-layer-swipe
     v-if="layerComparison"

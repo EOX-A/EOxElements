@@ -9,7 +9,6 @@
 ``` md
 <map-basic
   :tileLayers="tileLayers"
-  style="height: 100%; width: 100%;"
 >
   <map-layer-swipe
     :swipeLayer="compareLayer.value"
@@ -32,7 +31,6 @@ With the `reverseDirection` prop, you can reverse the order of original/compare:
 ``` md
 <map-basic
   :tileLayers="tileLayers"
-  style="height: 100%; width: 100%;"
 >
   <map-layer-swipe
     reverseDirection

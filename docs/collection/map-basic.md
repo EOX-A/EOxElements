@@ -9,6 +9,5 @@
 ``` md
 <map-basic
   :tileLayers="tileLayers"
-  style="height: 100%; width: 100%;"
 />
 ```
