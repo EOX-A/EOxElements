@@ -18,7 +18,7 @@ Then, build all packages (or a specific one, targeted with `--scope`):
 ```
 yarn build (--scope @eox/map-basic)
 ```
-Finally, launch the development server of the [dev-playground](./.dev/dev-playground), where you can create and edit `.dev/dev-playground/src/components/Playground.vue` (from `Playground.template.vue`) to test packages:
+Finally, launch the development server of the [dev-playground](./.dev/dev-playground), where you can create and edit `.dev/dev-playground/src/Playground.vue` (start from `Playground.template.vue`) to test packages:
 ```
 yarn dev
 ```
