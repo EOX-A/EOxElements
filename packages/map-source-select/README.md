@@ -2,6 +2,7 @@
 
 ## Documentation
 ### Props
+- enableCompare (Boolean): enable comparison feature
 - selectionItems (Array): items to display in the dropdown selection
 - reverseDirection (Boolean): reverse the comparison direction (original right, comparison left)
 
