@@ -1,13 +1,13 @@
 {
   "name": "dev-playground",
-  "version": "0.0.1",
+  "version": "0.0.2-0.0.1-alpha.1.0",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve"
   },
   "dependencies": {
-    "@eox/map-basic": "^0.0.1",
-    "@eox/map-layer-swipe": "^0.0.1",
+    "@eox/map-basic": "^0.0.2",
+    "@eox/map-layer-swipe": "^0.0.2",
     "@mdi/font": "^5.8.55",
     "core-js": "^3.6.5",
     "roboto-fontface": "*",
