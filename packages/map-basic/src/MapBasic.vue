@@ -17,8 +17,10 @@
         :id="layer"
         :z-index="tileLayers.indexOf(layer)"
       >
-        <vl-source-osm v-if="layer === 'osm'"></vl-source-osm>
-        <source-eox v-else :layer-name="layer"></source-eox>
+        <template v-if="layer">
+          <vl-source-osm v-if="layer === 'osm'"></vl-source-osm>
+          <source-eox v-else :layer-name="layer"></source-eox>
+        </template>
       </vl-layer-tile>
     <!-- </vl-layer-group> -->
     <slot :mapObject="mapObject"></slot>

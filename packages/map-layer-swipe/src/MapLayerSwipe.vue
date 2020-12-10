@@ -55,14 +55,6 @@ export default {
     embeddedMode: Boolean,
     reverseDirection: Boolean,
     swipeLayer: String,
-    swipeLayerName: {
-      type: String,
-      default: 'Comparison',
-    },
-    originalLayerName: {
-      type: String,
-      default: 'Original',
-    },
   },
   components: {
     VBtn,
@@ -75,6 +67,26 @@ export default {
     clipLeft: 0,
     clipRight: 0,
   }),
+  computed: {
+    swipeLayerName() {
+      let name;
+      if (this.swipeLayerObject) {
+        name = this.swipeLayerObject.getSource().layer_;
+      }
+      return name;
+    },
+    originalLayerName() {
+      let original;
+      // get second layer from top
+      // to-do better knowledge of what is shown
+      if (this.mapObject
+        && this.mapObject.getLayers().length > 0) {
+        original = this.mapObject.getLayers()[1]
+          && this.mapObject.getLayers()[1].values_.id;
+      }
+      return original;
+    },
+  },
   watch: {
     swipe() {
       this.$root.$emit('renderMap');
@@ -122,11 +134,13 @@ export default {
       }
       ctx.clip();
 
-      if (Object.keys(this.$refs).length > 0) {
-        const w = this.$refs.container.clientWidth * (this.swipe / 100);
-        this.clipLeft = this.$refs.swipeinfoLeft.clientWidth - w;
-        this.clipRight = w - this.$refs.container.clientWidth
-          + this.$refs.swipeinfoRight.clientWidth;
+      if (this.swipeActive) {
+        if (Object.keys(this.$refs).length > 0) {
+          const w = this.$refs.container.clientWidth * (this.swipe / 100);
+          this.clipLeft = this.$refs.swipeinfoLeft.clientWidth - w;
+          this.clipRight = w - this.$refs.container.clientWidth
+            + this.$refs.swipeinfoRight.clientWidth;
+        }
       }
     },
     onPostcompose(evt) {
