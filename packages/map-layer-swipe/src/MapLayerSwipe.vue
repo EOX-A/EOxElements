@@ -1,12 +1,16 @@
 <template>
-  <v-btn
+  <div
     v-if="!swipeActive"
-    color="primary"
-    @click="enableSwipe(true)"
   >
-    <v-icon left>mdi-compare</v-icon>
-    Compare layers
-  </v-btn>
+    <v-btn
+      v-if="!embeddedMode"
+      color="primary"
+      @click="enableSwipe(true)"
+    >
+      <v-icon left>mdi-compare</v-icon>
+      Compare layers
+    </v-btn>
+  </div>
   <div
     v-else
     class="container"
@@ -53,8 +57,10 @@ export default {
   props: {
     mapObject: Object,
     embeddedMode: Boolean,
+    embeddedActive: Boolean,
     reverseDirection: Boolean,
-    swipeLayer: String,
+    swipeLayer: Object,
+    originalLayer: Object,
   },
   components: {
     VBtn,
@@ -69,27 +75,18 @@ export default {
   }),
   computed: {
     swipeLayerName() {
-      let name;
-      if (this.swipeLayerObject) {
-        name = this.swipeLayerObject.getSource().layer_;
-      }
-      return name;
+      return this.swipeLayer.title;
     },
     originalLayerName() {
-      let original;
-      // get second layer from top
-      // to-do better knowledge of what is shown
-      if (this.mapObject
-        && this.mapObject.getLayers().length > 0) {
-        original = this.mapObject.getLayers()[1]
-          && this.mapObject.getLayers()[1].values_.id;
-      }
-      return original;
+      return this.originalLayer.title;
     },
   },
   watch: {
     swipe() {
       this.$root.$emit('renderMap');
+    },
+    embeddedActive(active) {
+      this.enableSwipe(active);
     },
   },
   created() {
@@ -99,11 +96,8 @@ export default {
   },
   mounted() {
     console.log('map-layer-swipe loaded');
-    if (this.embeddedMode) {
-      this.enableSwipe(true);
-    }
     this.mapObject.$map.on('postcompose', () => {
-      this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer);
+      this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer.name);
       if (this.swipeLayerObject) {
         this.swipeLayerObject.on('precompose', this.onPrecompose);
         this.swipeLayerObject.on('postcompose', this.onPostcompose);
@@ -113,10 +107,11 @@ export default {
   methods: {
     enableSwipe(enable) {
       if (enable) {
+        this.$emit('toggleCompare', true);
         this.swipeActive = true;
         gsap.to(this.$data, { duration: 0.8, swipe: 50 });
       } else {
-        const deactivate = () => { this.swipeActive = false; };
+        const deactivate = () => { this.swipeActive = false; this.$emit('swipeActive', false); };
         const reset = this.reverseDirection ? 0 : 100;
         gsap.to(this.$data, { duration: 0.8, swipe: reset, onComplete: deactivate });
       }
