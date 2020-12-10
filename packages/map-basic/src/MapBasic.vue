@@ -10,16 +10,18 @@
       :center.sync="center"
       :rotation.sync="rotation"
     ></vl-view>
-    <vl-layer-group :z-index="0">
+    <!-- <vl-layer-group :z-index="0"> -->
       <vl-layer-tile
         v-for="layer in tileLayers"
         :key="layer"
+        :id="layer"
+        :z-index="tileLayers.indexOf(layer)"
       >
         <vl-source-osm v-if="layer === 'osm'"></vl-source-osm>
         <source-eox v-else :layer-name="layer"></source-eox>
       </vl-layer-tile>
-    </vl-layer-group>
-    <slot></slot>
+    <!-- </vl-layer-group> -->
+    <slot :mapObject="mapObject"></slot>
   </vl-map>
 </template>
 
@@ -48,13 +50,15 @@ export default {
     zoom: 2,
     center: [0, 0],
     rotation: 0,
+    mapObject: null,
   }),
-  created() {
-    this.$root.$on('renderMap', () => this.$refs.map
-      && this.$refs.map.render());
-  },
   mounted() {
     console.log('map-basic loaded');
+    this.$refs.map.$createPromise.then(() => {
+      this.mapObject = this.$refs.map;
+      this.$root.$on('renderMap', () => this.$refs.map
+        && this.$refs.map.render());
+    });
   },
 };
 </script>

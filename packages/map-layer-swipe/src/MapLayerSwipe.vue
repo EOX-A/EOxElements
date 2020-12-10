@@ -41,14 +41,6 @@
         <v-icon color="white">mdi-arrow-left-right-bold</v-icon>
       </div>
     </div>
-    <vl-layer-tile
-      @precompose="onPrecompose"
-      @postcompose="onPostcompose"
-      :z-index="1"
-    >
-      <vl-source-osm v-if="swipeLayer === 'osm'"></vl-source-osm>
-      <!-- <source-eox v-else :layer-name="swipeLayer"></source-eox> -->
-    </vl-layer-tile>
   </div>
 </template>
 
@@ -59,6 +51,7 @@ import gsap from 'gsap';
 export default {
   name: 'map-layer-swipe',
   props: {
+    mapObject: Object,
     embeddedMode: Boolean,
     reverseDirection: Boolean,
     swipeLayer: String,
@@ -76,6 +69,7 @@ export default {
     VIcon,
   },
   data: () => ({
+    swipeLayerObject: null,
     swipeActive: false,
     swipe: 100,
     clipLeft: 0,
@@ -96,6 +90,13 @@ export default {
     if (this.embeddedMode) {
       this.enableSwipe(true);
     }
+    this.mapObject.$map.on('postcompose', () => {
+      this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer);
+      if (this.swipeLayerObject) {
+        this.swipeLayerObject.on('precompose', this.onPrecompose);
+        this.swipeLayerObject.on('postcompose', this.onPostcompose);
+      }
+    });
   },
   methods: {
     enableSwipe(enable) {
@@ -121,9 +122,12 @@ export default {
       }
       ctx.clip();
 
-      const w = this.$refs.container.clientWidth * (this.swipe / 100);
-      this.clipLeft = this.$refs.swipeinfoLeft.clientWidth - w;
-      this.clipRight = w - this.$refs.container.clientWidth + this.$refs.swipeinfoRight.clientWidth;
+      if (Object.keys(this.$refs).length > 0) {
+        const w = this.$refs.container.clientWidth * (this.swipe / 100);
+        this.clipLeft = this.$refs.swipeinfoLeft.clientWidth - w;
+        this.clipRight = w - this.$refs.container.clientWidth
+          + this.$refs.swipeinfoRight.clientWidth;
+      }
     },
     onPostcompose(evt) {
       const ctx = evt.context;
