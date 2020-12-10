@@ -2,25 +2,30 @@
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
-        :tileLayers="tileLayers"
+        :backgroundLayers="backgroundLayers"
+        :foregroundLayers="layerComparison ? foregroundLayers : []"
         style="height: 100%; width: 100%;"
       >
-        <map-layer-swipe
-          v-if="layerComparison"
-          embeddedMode
-          reverseDirection
-          :swipeLayer="'osm'"
-          :swipeLayerName="'OSM'"
-          :originalLayerName="tileLayers[0]"
-        />
-        <map-source-select
-          reverseDirection
-          enableCompare
-          :selectionItems="selectionItems"
-          @selectLayer="changeLayer"
-          @selectCompareLayer="changeCompareLayer"
-          @toggleCompare="toggleCompare"
-        />
+        <template slot-scope="{mapObject}">
+          <map-layer-swipe
+            v-if="mapObject"
+            :mapObject="mapObject"
+            embeddedMode
+            :embeddedActive="layerComparison"
+            reverseDirection
+            :swipeLayer="foregroundLayers[0]"
+            :originalLayer="backgroundLayers[0]"
+            @swipeActive="toggleCompare"
+          />
+          <map-source-select
+            enableCompare
+            reverseDirection
+            :selectionItems="availableLayers"
+            @selectLayer="changeBackgroundLayer"
+            @selectCompareLayer="changeForegroundLayer"
+            @toggleCompare="toggleCompare"
+          />
+        </template>
       </map-basic>
     </v-content>
   </v-app>
@@ -37,48 +42,47 @@ export default {
     MapLayerSwipe,
     MapSourceSelect,
   },
-  data: () => ({
+    data: () => ({
     layerComparison: false,
-    compareLayer: {
-      name: 'Open Street Map',
-      value: 'osm',
-    },
-    tileLayers: [
-      // 'osm',
-      // 'terrain-light',
-      's2cloudless',
-      's2cloudless-2018',
-      's2cloudless-2019',
+    backgroundLayers: null,
+    foregroundLayers: null,
+    availableLayers: [
+      {
+        name: 'osm',
+        title: 'Open Street Map',
+      },
+      {
+        name: 'terrain-light',
+        title: 'Terrain Light',
+      },
+      {
+        name: 's2cloudless',
+        title: 'Sentinel-2 cloudless 2016',
+      },
+      {
+        name: 's2cloudless-2018',
+        title: 'Sentinel-2 cloudless 2018',
+      },
+      {
+        name: 's2cloudless-2019',
+        title: 'Sentinel-2 cloudless 2019',
+      },
     ],
-    selectionItems: [
-      {
-        name: 'Open Street Map',
-        value: 'osm',
-      },
-      {
-        name: 'EOxMaps Terrain Light',
-        value: 'terrain-light',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2016',
-        value: 's2cloudless',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2018',
-        value: 's2cloudless-2018',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2019',
-        value: 's2cloudless-2019',
-      },
-    ]
   }),
+  mounted() {
+    this.backgroundLayers = [
+      this.availableLayers[1]
+    ];
+    this.foregroundLayers = [
+      this.availableLayers[this.availableLayers.length - 1],
+    ];
+  },
   methods: {
-    changeLayer(layerId) {
-      this.tileLayers = [layerId];
+    changeBackgroundLayer(layerId) {
+      this.backgroundLayers = [this.availableLayers.find(l => l.name === layerId)];
     },
-    changeCompareLayer(layerId) {
-      this.compareLayer = [layerId];
+    changeForegroundLayer(layerId) {
+      this.foregroundLayers = [this.availableLayers.find(l => l.name === layerId)];
     },
     toggleCompare(active) {
       this.layerComparison = active;
