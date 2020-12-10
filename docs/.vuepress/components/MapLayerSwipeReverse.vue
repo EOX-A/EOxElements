@@ -2,15 +2,20 @@
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
-        :tileLayers="tileLayers"
+        :backgroundLayers="backgroundLayers"
+        :foregroundLayers="foregroundLayers"
         style="height: 100%; width: 100%;"
       >
-        <map-layer-swipe
-          reverseDirection
-          :swipeLayer="compareLayer.value"
-          :swipeLayerName="compareLayer.name"
-          :originalLayerName="tileLayers[0]"
-        />
+        <template slot-scope="{mapObject}">
+          <map-layer-swipe
+            v-if="mapObject"
+            :mapObject="mapObject"
+            reverseDirection
+            :swipeLayer="foregroundLayers[0]"
+            :originalLayer="backgroundLayers[0]"
+            @swipeActive="toggleCompare"
+          />
+        </template>
       </map-basic>
     </v-content>
   </v-app>
@@ -26,30 +31,31 @@ export default {
     MapLayerSwipe,
   },
   data: () => ({
-    layerComparison: false,
-    compareLayer: {
-      name: 'Open Street Map',
-      value: 'osm',
-    },
-    tileLayers: [
-      // 'osm',
-      'terrain-light',
-      // 's2cloudless-2019',
+    backgroundLayers: [
+      {
+        name: 's2cloudless-2019',
+        title: 'Sentinel-2 cloudless 2019',
+      },
     ],
-    selectionItems: [
+    foregroundLayers: [
       {
-        name: 'Open Street Map',
-        value: 'osm',
+        name: 's2cloudless-2018',
+        title: 'Sentinel-2 cloudless 2018',
       },
-      {
-        name: 'EOxMaps Terrain Light',
-        value: 'terrain-light',
-      },
-      {
-        name: 'EOxCloudless 2019',
-        value: 's2cloudless-2019',
-      },
-    ]
+    ],
   }),
+  mounted() {
+    this.backgroundLayers = [
+      this.availableLayers[1]
+    ];
+    this.foregroundLayers = [
+      this.availableLayers[this.availableLayers.length - 1],
+    ];
+  },
+  methods: {
+    toggleCompare(active) {
+      this.layerComparison = active;
+    },
+  },
 }
 </script>

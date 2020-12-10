@@ -1,12 +1,16 @@
 <template>
-  <v-btn
+  <div
     v-if="!swipeActive"
-    color="primary"
-    @click="enableSwipe(true)"
   >
-    <v-icon left>mdi-compare</v-icon>
-    Compare layers
-  </v-btn>
+    <v-btn
+      v-if="!embeddedMode"
+      color="primary"
+      @click="enableSwipe(true)"
+    >
+      <v-icon left>mdi-compare</v-icon>
+      Compare layers
+    </v-btn>
+  </div>
   <div
     v-else
     class="container"
@@ -41,14 +45,6 @@
         <v-icon color="white">mdi-arrow-left-right-bold</v-icon>
       </div>
     </div>
-    <vl-layer-tile
-      @precompose="onPrecompose"
-      @postcompose="onPostcompose"
-      :z-index="1"
-    >
-      <vl-source-osm v-if="swipeLayer === 'osm'"></vl-source-osm>
-      <!-- <source-eox v-else :layer-name="swipeLayer"></source-eox> -->
-    </vl-layer-tile>
   </div>
 </template>
 
@@ -59,31 +55,38 @@ import gsap from 'gsap';
 export default {
   name: 'map-layer-swipe',
   props: {
+    mapObject: Object,
     embeddedMode: Boolean,
+    embeddedActive: Boolean,
     reverseDirection: Boolean,
-    swipeLayer: String,
-    swipeLayerName: {
-      type: String,
-      default: 'Comparison',
-    },
-    originalLayerName: {
-      type: String,
-      default: 'Original',
-    },
+    swipeLayer: Object,
+    originalLayer: Object,
   },
   components: {
     VBtn,
     VIcon,
   },
   data: () => ({
+    swipeLayerObject: null,
     swipeActive: false,
     swipe: 100,
     clipLeft: 0,
     clipRight: 0,
   }),
+  computed: {
+    swipeLayerName() {
+      return this.swipeLayer.title;
+    },
+    originalLayerName() {
+      return this.originalLayer.title;
+    },
+  },
   watch: {
     swipe() {
       this.$root.$emit('renderMap');
+    },
+    embeddedActive(active) {
+      this.enableSwipe(active);
     },
   },
   created() {
@@ -92,18 +95,22 @@ export default {
     }
   },
   mounted() {
-    console.log('map-layer-swipe loaded');
-    if (this.embeddedMode) {
-      this.enableSwipe(true);
-    }
+    this.mapObject.$map.on('postcompose', () => {
+      this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer.name);
+      if (this.swipeLayerObject) {
+        this.swipeLayerObject.on('precompose', this.onPrecompose);
+        this.swipeLayerObject.on('postcompose', this.onPostcompose);
+      }
+    });
   },
   methods: {
     enableSwipe(enable) {
       if (enable) {
+        this.$emit('toggleCompare', true);
         this.swipeActive = true;
         gsap.to(this.$data, { duration: 0.8, swipe: 50 });
       } else {
-        const deactivate = () => { this.swipeActive = false; };
+        const deactivate = () => { this.swipeActive = false; this.$emit('swipeActive', false); };
         const reset = this.reverseDirection ? 0 : 100;
         gsap.to(this.$data, { duration: 0.8, swipe: reset, onComplete: deactivate });
       }
@@ -121,9 +128,14 @@ export default {
       }
       ctx.clip();
 
-      const w = this.$refs.container.clientWidth * (this.swipe / 100);
-      this.clipLeft = this.$refs.swipeinfoLeft.clientWidth - w;
-      this.clipRight = w - this.$refs.container.clientWidth + this.$refs.swipeinfoRight.clientWidth;
+      if (this.swipeActive) {
+        if (Object.keys(this.$refs).length > 0) {
+          const w = this.$refs.container.clientWidth * (this.swipe / 100);
+          this.clipLeft = this.$refs.swipeinfoLeft.clientWidth - w;
+          this.clipRight = w - this.$refs.container.clientWidth
+            + this.$refs.swipeinfoRight.clientWidth;
+        }
+      }
     },
     onPostcompose(evt) {
       const ctx = evt.context;

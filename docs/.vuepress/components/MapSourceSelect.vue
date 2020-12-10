@@ -2,13 +2,15 @@
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
-        :tileLayers="tileLayers"
+        :backgroundLayers="backgroundLayers"
         style="height: 100%; width: 100%;"
       >
-        <map-source-select
-          :selectionItems="selectionItems"
-          @selectLayer="changeLayer"
-        />
+        <template slot-scope="{mapObject}">
+          <map-source-select
+            :selectionItems="availableLayers"
+            @selectLayer="changeBackgroundLayer"
+          />
+        </template>
       </map-basic>
     </v-content>
   </v-app>
@@ -24,39 +26,38 @@ export default {
     MapSourceSelect,
   },
   data: () => ({
-    tileLayers: [
-      // 'osm',
-      // 'terrain-light',
-      's2cloudless',
-      's2cloudless-2018',
-      's2cloudless-2019',
+    backgroundLayers: null,
+    availableLayers: [
+      {
+        name: 'osm',
+        title: 'Open Street Map',
+      },
+      {
+        name: 'terrain-light',
+        title: 'Terrain Light',
+      },
+      {
+        name: 's2cloudless',
+        title: 'Sentinel-2 cloudless 2016',
+      },
+      {
+        name: 's2cloudless-2018',
+        title: 'Sentinel-2 cloudless 2018',
+      },
+      {
+        name: 's2cloudless-2019',
+        title: 'Sentinel-2 cloudless 2019',
+      },
     ],
-    selectionItems: [
-      {
-        name: 'Open Street Map',
-        value: 'osm',
-      },
-      {
-        name: 'EOxMaps Terrain Light',
-        value: 'terrain-light',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2016',
-        value: 's2cloudless',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2018',
-        value: 's2cloudless-2018',
-      },
-      {
-        name: 'Sentinel-2 cloudless 2019',
-        value: 's2cloudless-2019',
-      },
-    ]
   }),
+  mounted() {
+    this.backgroundLayers = [
+      this.availableLayers[this.availableLayers.length - 1]
+    ];
+  },
   methods: {
-    changeLayer(layerId) {
-      this.tileLayers = [layerId];
+    changeBackgroundLayer(layerId) {
+      this.backgroundLayers = [this.availableLayers.find(l => l.name === layerId)];
     },
   },
 }

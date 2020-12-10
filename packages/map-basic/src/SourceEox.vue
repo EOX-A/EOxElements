@@ -44,7 +44,7 @@ export default {
     eoxLayers: [
       {
         ...eoxMaps,
-        title: '2016',
+        title: 'Sentinel-2 cloudless 2016',
         layer: 's2cloudless',
         dark: false,
         attribution: '<a class="a-light" xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a class="a-light" xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 & 2017)',
@@ -52,7 +52,7 @@ export default {
       },
       {
         ...eoxMaps,
-        title: '2018',
+        title: 'Sentinel-2 cloudless 2018',
         layer: 's2cloudless-2018',
         dark: false,
         attribution: '<a class="a-light" xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a class="a-light" xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2017 & 2018)',
@@ -60,7 +60,7 @@ export default {
       },
       {
         ...eoxMaps,
-        title: '2019',
+        title: 'Sentinel-2 cloudless 2019',
         layer: 's2cloudless-2019',
         dark: false,
         attribution: '<a class="a-light" xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a class="a-light" xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019)',
@@ -87,9 +87,6 @@ export default {
     eoxLayer() {
       return this.eoxLayers.find((l) => l.layer === this.layerName);
     },
-  },
-  mounted() {
-    console.log('source-eox loaded');
   },
 };
 </script>

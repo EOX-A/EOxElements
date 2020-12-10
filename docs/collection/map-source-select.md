@@ -7,19 +7,74 @@
 </div>
 
 ``` md
-<map-basic
-  :tileLayers="tileLayers"
-  style="height: 100%; width: 100%;"
->
-  <map-source-select
-    :selectionItems="selectionItems"
-    @selectLayer="changeLayer"
-  />
-</map-basic>
+<template>
+  <v-app class="fill-height"> 
+    <v-content class="fill-height">
+      <map-basic
+        :backgroundLayers="backgroundLayers"
+        style="height: 100%; width: 100%;"
+      >
+        <template slot-scope="{mapObject}">
+          <map-source-select
+            :selectionItems="availableLayers"
+            @selectLayer="changeBackgroundLayer"
+          />
+        </template>
+      </map-basic>
+    </v-content>
+  </v-app>
+</template>
+
+<script>
+import MapBasic from '@eox/map-basic'
+import MapSourceSelect from '@eox/map-source-select'
+
+export default {
+  components: {
+    MapBasic,
+    MapSourceSelect,
+  },
+  data: () => ({
+    backgroundLayers: null,
+    availableLayers: [
+      {
+        name: 'osm',
+        title: 'Open Street Map',
+      },
+      {
+        name: 'terrain-light',
+        title: 'Terrain Light',
+      },
+      {
+        name: 's2cloudless',
+        title: 'Sentinel-2 cloudless 2016',
+      },
+      {
+        name: 's2cloudless-2018',
+        title: 'Sentinel-2 cloudless 2018',
+      },
+      {
+        name: 's2cloudless-2019',
+        title: 'Sentinel-2 cloudless 2019',
+      },
+    ],
+  }),
+  mounted() {
+    this.backgroundLayers = [
+      this.availableLayers[this.availableLayers.length - 1]
+    ];
+  },
+  methods: {
+    changeBackgroundLayer(layerId) {
+      this.backgroundLayers = [this.availableLayers.find(l => l.name === layerId)];
+    },
+  },
+}
+</script>
 ```
 <br />
 
-Source select with `enableCompare` prop (WIP):
+Source select with `enableCompare` prop:
 
 <br />
 <div style="height:400px">
@@ -29,24 +84,96 @@ Source select with `enableCompare` prop (WIP):
 </div>
 
 ``` md
-<map-basic
-  :tileLayers="tileLayers"
->
-  <map-layer-swipe
-    v-if="layerComparison"
-    embeddedMode
-    reverseDirection
-    :swipeLayer="'osm'"
-    :swipeLayerName="'OSM'"
-    :originalLayerName="tileLayers[0]"
-  />
-  <map-source-select
-    reverseDirection
-    enableCompare
-    :selectionItems="selectionItems"
-    @selectLayer="changeLayer"
-    @selectCompareLayer="changeCompareLayer"
-    @toggleCompare="toggleCompare"
-  />
-</map-basic>
+<template>
+  <v-app class="fill-height"> 
+    <v-content class="fill-height">
+      <map-basic
+        :backgroundLayers="backgroundLayers"
+        :foregroundLayers="layerComparison ? foregroundLayers : []"
+        style="height: 100%; width: 100%;"
+      >
+        <template slot-scope="{mapObject}">
+          <map-layer-swipe
+            v-if="mapObject"
+            :mapObject="mapObject"
+            embeddedMode
+            :embeddedActive="layerComparison"
+            reverseDirection
+            :swipeLayer="foregroundLayers[0]"
+            :originalLayer="backgroundLayers[0]"
+            @swipeActive="toggleCompare"
+          />
+          <map-source-select
+            enableCompare
+            reverseDirection
+            :selectionItems="availableLayers"
+            @selectLayer="changeBackgroundLayer"
+            @selectCompareLayer="changeForegroundLayer"
+            @toggleCompare="toggleCompare"
+          />
+        </template>
+      </map-basic>
+    </v-content>
+  </v-app>
+</template>
+
+<script>
+import MapBasic from '@eox/map-basic'
+import MapLayerSwipe from '@eox/map-layer-swipe'
+import MapSourceSelect from '@eox/map-source-select'
+
+export default {
+  components: {
+    MapBasic,
+    MapLayerSwipe,
+    MapSourceSelect,
+  },
+    data: () => ({
+    layerComparison: false,
+    backgroundLayers: null,
+    foregroundLayers: null,
+    availableLayers: [
+      {
+        name: 'osm',
+        title: 'Open Street Map',
+      },
+      {
+        name: 'terrain-light',
+        title: 'Terrain Light',
+      },
+      {
+        name: 's2cloudless',
+        title: 'Sentinel-2 cloudless 2016',
+      },
+      {
+        name: 's2cloudless-2018',
+        title: 'Sentinel-2 cloudless 2018',
+      },
+      {
+        name: 's2cloudless-2019',
+        title: 'Sentinel-2 cloudless 2019',
+      },
+    ],
+  }),
+  mounted() {
+    this.backgroundLayers = [
+      this.availableLayers[1]
+    ];
+    this.foregroundLayers = [
+      this.availableLayers[this.availableLayers.length - 1],
+    ];
+  },
+  methods: {
+    changeBackgroundLayer(layerId) {
+      this.backgroundLayers = [this.availableLayers.find(l => l.name === layerId)];
+    },
+    changeForegroundLayer(layerId) {
+      this.foregroundLayers = [this.availableLayers.find(l => l.name === layerId)];
+    },
+    toggleCompare(active) {
+      this.layerComparison = active;
+    },
+  },
+}
+</script>
 ```

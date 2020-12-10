@@ -2,7 +2,7 @@
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
-        :tileLayers="tileLayers"
+        :backgroundLayers="tileLayers"
         style="height: 100%; width: 100%;"
       />
     </v-content>
@@ -18,9 +18,10 @@ export default {
   },
   data: () => ({
     tileLayers: [
-      // 'osm',
-      // 'terrain-light',
-      's2cloudless-2019',
+      {
+        name: 's2cloudless-2019',
+        title: 'Sentinel-2 cloudless 2019',
+      },
     ],
   })
 }

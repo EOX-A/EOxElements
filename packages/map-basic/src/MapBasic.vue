@@ -12,14 +12,29 @@
     ></vl-view>
     <vl-layer-group :z-index="0">
       <vl-layer-tile
-        v-for="layer in tileLayers"
-        :key="layer"
+        v-for="layer in backgroundLayers"
+        :key="layer.name"
+        :id="layer.name"
+        :z-index="backgroundLayers.indexOf(layer)"
       >
-        <vl-source-osm v-if="layer === 'osm'"></vl-source-osm>
-        <source-eox v-else :layer-name="layer"></source-eox>
+        <template v-if="layer">
+          <vl-source-osm v-if="layer.name === 'osm'"></vl-source-osm>
+          <source-eox v-else :layer-name="layer.name"></source-eox>
+        </template>
       </vl-layer-tile>
     </vl-layer-group>
-    <slot></slot>
+    <vl-layer-tile
+      v-for="layer in foregroundLayers"
+      :key="layer.name"
+      :id="layer.name"
+      :z-index="foregroundLayers.indexOf(layer) + 1"
+    >
+      <template v-if="layer">
+        <vl-source-osm v-if="layer.name === 'osm'"></vl-source-osm>
+        <source-eox v-else :layer-name="layer.name"></source-eox>
+      </template>
+    </vl-layer-tile>
+    <slot :mapObject="mapObject"></slot>
   </vl-map>
 </template>
 
@@ -42,19 +57,21 @@ export default {
     SourceEox,
   },
   props: {
-    tileLayers: Array,
+    backgroundLayers: Array,
+    foregroundLayers: Array,
   },
   data: () => ({
     zoom: 2,
     center: [0, 0],
     rotation: 0,
+    mapObject: null,
   }),
-  created() {
-    this.$root.$on('renderMap', () => this.$refs.map
-      && this.$refs.map.render());
-  },
   mounted() {
-    console.log('map-basic loaded');
+    this.$refs.map.$createPromise.then(() => {
+      this.mapObject = this.$refs.map;
+      this.$root.$on('renderMap', () => this.$refs.map
+        && this.$refs.map.render());
+    });
   },
 };
 </script>
