@@ -95,7 +95,6 @@ export default {
     }
   },
   mounted() {
-    console.log('map-layer-swipe loaded');
     this.mapObject.$map.on('postcompose', () => {
       this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer.name);
       if (this.swipeLayerObject) {

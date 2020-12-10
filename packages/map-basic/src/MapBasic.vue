@@ -67,7 +67,6 @@ export default {
     mapObject: null,
   }),
   mounted() {
-    console.log('map-basic loaded');
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map

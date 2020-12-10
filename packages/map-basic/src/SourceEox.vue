@@ -88,8 +88,5 @@ export default {
       return this.eoxLayers.find((l) => l.layer === this.layerName);
     },
   },
-  mounted() {
-    console.log('source-eox loaded');
-  },
 };
 </script>

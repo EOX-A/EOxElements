@@ -90,7 +90,6 @@
 
 <script>
 import {
-  // VBtn,
   VCol,
   VIcon,
   VSelect,
@@ -105,7 +104,6 @@ export default {
     reverseDirection: Boolean,
   },
   components: {
-    // VBtn,
     VCol,
     VIcon,
     VSelect,
