@@ -1,10 +1,14 @@
 <template>
   <vl-map
+    :data-projection="dataProjection"
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
+    @pointermove="onPointerMove"
+    @click="onPointerClick"
     ref="map"
     style="height: 400px"
-  >
+    :class="hoverFeature ? 'cursorPointer' : ''"
+  >{{center}}
     <vl-view
       :zoom.sync="zoom"
       :center.sync="center"
@@ -34,17 +38,22 @@
         <source-eox v-else :layer-name="layer.name"></source-eox>
       </template>
     </vl-layer-tile>
+    <vector-tile :currentFeature="currentFeature" />
+    <tool-tip ref="tooltip" :mapObject="mapObject" />
     <slot :mapObject="mapObject"></slot>
   </vl-map>
 </template>
 
 <script>
 import Vue from 'vue';
+import Overlay from 'ol/Overlay';
 import {
   Map, TileLayer, OsmSource, GroupLayer,
 } from 'vuelayers';
 import 'vuelayers/lib/style.css';
 import SourceEox from './SourceEox.vue';
+import VectorTile from './VectorTile.vue';
+import ToolTip from './ToolTip.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
@@ -55,23 +64,82 @@ export default {
   name: 'map-basic',
   components: {
     SourceEox,
+    VectorTile,
+    ToolTip,
   },
   props: {
     backgroundLayers: Array,
     foregroundLayers: Array,
+    dataProjection: String,
+    mapZoom: {
+      type: Number,
+      default: 0,
+    },
+    mapCenter: {
+      type: Array,
+      default: () => [0, 0],
+    },
   },
   data: () => ({
-    zoom: 2,
-    center: [0, 0],
+    zoom: null,
+    center: null,
     rotation: 0,
     mapObject: null,
+    overlay: null,
+    hoverFeature: false,
+    currentFeature: null,
   }),
+  created() {
+    this.zoom = this.mapZoom;
+    this.center = this.mapCenter;
+  },
   mounted() {
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
         && this.$refs.map.render());
+      this.setupTooltip();
     });
+  },
+  methods: {
+    setupTooltip() {
+      this.overlay = new Overlay({
+        element: this.$refs.tooltip.$el,
+        offset: [0, -80],
+        positioning: 'top-center',
+        className: 'tooltipOverlay',
+      });
+      this.mapObject.$map.addOverlay(this.overlay);
+    },
+    onPointerMove({ coordinate, pixel }) {
+      let hasFeature = false;
+      this.mapObject.forEachFeatureAtPixel(pixel, (f) => {
+        this.currentFeature = f;
+        this.overlay.setPosition(coordinate);
+        hasFeature = true;
+        this.hoverFeature = true;
+        this.$refs.tooltip.onPointerMove(f);
+      });
+      if (!hasFeature) {
+        this.currentFeature = null;
+        this.hoverFeature = false;
+        this.overlay.setPosition(undefined);
+      }
+    },
+    onPointerClick({ pixel }) {
+      console.log(pixel);
+      this.mapObject.forEachFeatureAtPixel(pixel, (f) => {
+        alert(f.properties_.ID);
+      });
+    },
+  },
+  watch: {
+    mapZoom(zoom) {
+      this.zoom = zoom;
+    },
+    mapCenter(center) {
+      this.center = center;
+    },
   },
 };
 </script>
@@ -82,5 +150,8 @@ export default {
 }
 .ol-control button {
   background: var(--v-primary-base);
+}
+.cursorPointer {
+  cursor: pointer !important;
 }
 </style>
