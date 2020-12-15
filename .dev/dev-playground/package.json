@@ -9,6 +9,7 @@
     "@eox/map-basic": "^0.0.2",
     "@eox/map-layer-swipe": "^0.0.2",
     "@mdi/font": "^5.8.55",
+    "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "roboto-fontface": "*",
     "vue": "^2.5.17",
