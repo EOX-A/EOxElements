@@ -1,24 +1,35 @@
 <template>
-  <div style="width: 100%; height: 100%;">
-    <line-chart v-if='type=="line"'
+  <div style="width: 100%; height: 100%;position: relative;">
+    <line-chart ref='lineChart' v-if='type=="line"'
       id="chart"
       class="fill-height"
       :width="null"
       :height="null"
       :chart-data='dataCollection'
       :options='chartOptions()'></line-chart>
+    <div ref='tooltip' class='tooltip' style='position:absolute;width: 100%'>
+      <v-tooltip v-model='showTooltip' attach='.tooltip' v-if='tooltipContent' right >
+        {{ tooltipContent.title }}
+        <ul>
+          <li v-for="(row) in tooltipContent.rows" :key="row" >
+            {{ row }}
+          </li>
+      </ul>
+      </v-tooltip>
+    </div>
   </div>
 </template>
 
 <script>
 
-import 'chartjs-adapter-luxon'; // eslint-disable-line no-unused-vars
+import Chart from 'chart.js';
 import { DateTime } from 'luxon';
+import 'chartjs-adapter-luxon'; // eslint-disable-line no-unused-vars
+import { VTooltip } from 'vuetify/lib';
+import * as ChartZoomPlugin from 'chartjs-plugin-zoom';
 import LineChart from './LineChart.vue';
-// test parcel request: https://parcel-eo-timeseries.v1.loose.eox.at/parcel-eo-timeseries?parcel_id=125196525
-// --> get NDVI:
-import example from './example.json';
 
+Chart.plugins.register([ChartZoomPlugin]);
 
 export default {
   props: {
@@ -27,14 +38,30 @@ export default {
   },
   components: {
     LineChart,
+    VTooltip,
   },
   data: () => ({
+    showTooltip: false,
+    tooltipContent: null,
   }),
   computed: {
     dataCollection() {
+      return this.createDataCollection(this.dataObject);
+    },
+    darkModeEnabled() {
+      return this.$vuetify.theme.isDark;
+    },
+  },
+  created() {
+  },
+  methods: {
+    renderChart() {
+      this.$refs.lineChart.triggerRender();
+    },
+    createDataCollection(dataObject) {
       const datasets = [];
       // Get highest level key(s) of dataset
-      const topKeys = Object.keys(example);
+      const topKeys = Object.keys(dataObject);
 
       for (let i = 0; i < topKeys.length; i += 1) {
         const currKey = topKeys[i];
@@ -43,20 +70,20 @@ export default {
         const mean = [];
         const stDev = [];
 
-        for (let j = 0; j < example[currKey].length; j += 1) {
-          const t = DateTime.fromISO(example[currKey][j].date);
-          if ('basicStats' in example[currKey][j]) {
-            if ('max' in example[currKey][j].basicStats) {
-              max.push({ t, y: example[currKey][j].basicStats.max });
+        for (let j = 0; j < dataObject[currKey].length; j += 1) {
+          const t = DateTime.fromISO(dataObject[currKey][j].date);
+          if ('basicStats' in dataObject[currKey][j]) {
+            if ('max' in dataObject[currKey][j].basicStats) {
+              max.push({ t, y: dataObject[currKey][j].basicStats.max });
             }
-            if ('min' in example[currKey][j].basicStats) {
-              min.push({ t, y: example[currKey][j].basicStats.min });
+            if ('min' in dataObject[currKey][j].basicStats) {
+              min.push({ t, y: dataObject[currKey][j].basicStats.min });
             }
-            if ('mean' in example[currKey][j].basicStats) {
-              mean.push({ t, y: example[currKey][j].basicStats.mean });
+            if ('mean' in dataObject[currKey][j].basicStats) {
+              mean.push({ t, y: dataObject[currKey][j].basicStats.mean });
             }
-            if ('stDev' in example[currKey][j].basicStats) {
-              stDev.push({ t, y: example[currKey][j].basicStats.stDev });
+            if ('stDev' in dataObject[currKey][j].basicStats) {
+              stDev.push({ t, y: dataObject[currKey][j].basicStats.stDev });
             }
           }
         }
@@ -64,16 +91,11 @@ export default {
         datasets.push({
           data: max,
           label: 'max',
-          fill: +1,
+          fill: +2,
           backgroundColor: 'rgba(30,70,255,0.3)',
           borderColor: 'rgba(30,70,255,0.6)',
-        });
-        datasets.push({
-          data: min,
-          label: 'min',
-          fill: -1,
-          backgroundColor: 'rgba(30,70,255,0.3)',
-          borderColor: 'rgba(30,70,255,0.6)',
+          pointHoverRadius: 5,
+          pointHoverBorderWidth: 2,
         });
         datasets.push({
           data: mean,
@@ -81,6 +103,17 @@ export default {
           fill: false,
           borderColor: 'rgb(255,70,50)',
           pointRadius: 4,
+          pointHoverRadius: 7,
+          pointHoverBorderWidth: 2,
+        });
+        datasets.push({
+          data: min,
+          label: 'min',
+          fill: -2,
+          backgroundColor: 'rgba(30,70,255,0.3)',
+          borderColor: 'rgba(30,70,255,0.6)',
+          pointHoverRadius: 5,
+          pointHoverBorderWidth: 2,
         });
         /*
         datasets.push({
@@ -93,11 +126,6 @@ export default {
         datasets,
       };
     },
-  },
-  created() {
-    console.log(example);
-  },
-  methods: {
     chartOptions() {
       const xAxes = [{
         type: 'time',
@@ -109,15 +137,16 @@ export default {
           tooltipFormat: 'dd. MMM yyyy',
         },
         gridLines: {
-          color: this.$vuetify.theme.isDark ? '#ddd6' : '#2226',
+          color: this.darkModeEnabled ? '#ddd6' : '#2226',
           strokeOpacity: 0.3,
           drawBorder: true,
         },
       }];
 
       const yAxes = [{
+        type: 'linear',
         gridLines: {
-          color: this.$vuetify.theme.isDark ? '#ddd6' : '#2226',
+          color: this.darkModeEnabled ? '#ddd6' : '#2226',
           strokeOpacity: 0.3,
           drawBorder: true,
         },
@@ -131,14 +160,35 @@ export default {
           yAxes,
         },
         tooltips: {
+          // Disable the on-canvas tooltip
+          enabled: false,
           mode: 'label',
           callbacks: {
             label: (tooltipItem, data) => {
-              console.log(tooltipItem);
               const { datasetIndex, index } = tooltipItem;
               const currDat = data.datasets[datasetIndex];
               return `${currDat.label}: ${currDat.data[index].y.toFixed(4)}`;
             },
+          },
+          custom: (tooltipModel) => {
+            if (tooltipModel.opacity !== 0) {
+              this.showTooltip = true;
+            } else {
+              this.showTooltip = false;
+              return;
+            }
+            if (tooltipModel.body) {
+              const title = tooltipModel.title[0];
+              const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines[0]);
+              this.tooltipContent = {
+                title,
+                rows: bodyLines,
+              };
+            }
+            // const position = this.$refs.lineChart.$refs.canvas.getBoundingClientRect();
+            // TODO: Check if we are outside chart with tooltip and adapt position
+            this.$refs.tooltip.style.left = `${Math.round(tooltipModel.caretX)}px`;
+            this.$refs.tooltip.style.top = `${Math.round(tooltipModel.caretY)}px`;
           },
         },
         /*
@@ -156,5 +206,13 @@ export default {
       return settings;
     },
   },
+  watcher: {
+    /*
+    '$vuetify.theme.isDark'() {
+      this.renderChart();
+    },
+    */
+  },
 };
+
 </script>

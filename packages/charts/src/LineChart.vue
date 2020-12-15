@@ -14,9 +14,14 @@ export default {
   watch: {
     options: {
       handler() {
-        this.renderChart(this.chartData, this.options);
+        // this.renderChart(this.chartData, this.options);
       },
-      deep: true,
+      // deep: true,
+    },
+  },
+  methods: {
+    triggerRender() {
+      this.renderChart(this.chartData, this.options);
     },
   },
 };
