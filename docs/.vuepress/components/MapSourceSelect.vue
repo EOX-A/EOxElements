@@ -2,6 +2,7 @@
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
+        :mapZoom="2"
         :backgroundLayers="backgroundLayers"
         style="height: 100%; width: 100%;"
       >
@@ -29,22 +30,27 @@ export default {
     backgroundLayers: null,
     availableLayers: [
       {
+        type: 'tile',
         name: 'osm',
         title: 'Open Street Map',
       },
       {
+        type: 'tile',
         name: 'terrain-light',
         title: 'Terrain Light',
       },
       {
+        type: 'tile',
         name: 's2cloudless',
         title: 'Sentinel-2 cloudless 2016',
       },
       {
+        type: 'tile',
         name: 's2cloudless-2018',
         title: 'Sentinel-2 cloudless 2018',
       },
       {
+        type: 'tile',
         name: 's2cloudless-2019',
         title: 'Sentinel-2 cloudless 2019',
       },

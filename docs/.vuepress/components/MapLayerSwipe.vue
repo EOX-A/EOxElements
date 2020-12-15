@@ -2,6 +2,7 @@
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
+        :mapZoom="2"
         :backgroundLayers="backgroundLayers"
         :foregroundLayers="foregroundLayers"
         style="height: 100%; width: 100%;"
@@ -32,6 +33,7 @@ export default {
   data: () => ({
     backgroundLayers: [
       {
+        type: 'tile',
         name: 's2cloudless-2019',
         title: 'Sentinel-2 cloudless 2019',
       },
