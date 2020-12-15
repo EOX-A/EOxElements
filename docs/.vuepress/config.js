@@ -34,7 +34,8 @@ module.exports = {
               children: [
                 'map-basic',
                 'map-layer-swipe',
-                'map-source-select'
+                'map-source-select',
+                'charts'
               ]
             }
           ]
