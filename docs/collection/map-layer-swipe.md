@@ -1,5 +1,6 @@
 # map-layer-swipe
 
+## Basic example
 <div style="height:400px">
   <ClientOnly>
     <map-layer-swipe />
@@ -11,6 +12,7 @@
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
+        :mapZoom="2"
         :backgroundLayers="backgroundLayers"
         :foregroundLayers="foregroundLayers"
         style="height: 100%; width: 100%;"
@@ -70,7 +72,7 @@ export default {
 ```
 <br />
 
-With the `reverseDirection` prop, you can reverse the order of original/compare:
+## With `reverseDirection` prop
 
 <br />
 <div style="height:400px">
@@ -84,6 +86,7 @@ With the `reverseDirection` prop, you can reverse the order of original/compare:
   <v-app class="fill-height"> 
     <v-content class="fill-height">
       <map-basic
+        :mapZoom="2"
         :backgroundLayers="backgroundLayers"
         :foregroundLayers="foregroundLayers"
         style="height: 100%; width: 100%;"
