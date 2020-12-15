@@ -1,43 +1,57 @@
 <template>
-  <span class="tooltip" v-html="tooltipContent"></span>
+  <div ref="tooltip" class="tooltip">
+    <v-tooltip v-model="overlay" attach=".tooltip">
+      <ul>
+        <li
+          v-for="(property, index) in tooltipContent"
+          :key="index"
+        >
+          {{ index }}: {{ property }}
+        </li>
+      </ul>
+    </v-tooltip>
+  </div>
 </template>
 
 <script>
+import { VTooltip } from 'vuetify/lib';
+import Overlay from 'ol/Overlay'; //eslint-disable-line
+
 export default {
   props: {
     mapObject: Object,
+  },
+  components: {
+    VTooltip,
   },
   data: () => ({
     overlay: true,
     tooltipContent: null,
   }),
+  mounted() {
+    this.setupTooltip();
+  },
   methods: {
+    setupTooltip() {
+      this.overlay = new Overlay({
+        element: this.$refs.tooltip,
+        offset: [12, 12],
+        positioning: 'top-left',
+      });
+      this.$emit('addOverlay', this.overlay);
+    },
     onPointerMove(feature) {
-      console.log(feature);
-      this.tooltipContent = `ID: ${feature.properties_.ID}<br />Match: ${feature.properties_.match}<br />Accuracy: ${feature.properties_.accuracy}`;
+      this.tooltipContent = feature.properties_;
     },
   },
 };
 </script>
 
 <style scoped>
-.tooltip {
-  background: rgba(97, 97, 97, 0.9);
-  color: #FFFFFF;
-  border-radius: 4px;
-  font-size: 14px;
-  line-height: 22px;
-  display: inline-block;
-  padding: 5px 16px;
-  text-transform: initial;
-  width: auto;
-  opacity: 0.9;
-  pointer-events: none;
-}
-</style>
-
-<style>
-.tooltipOverlay {
-  pointer-events: none;
+.v-tooltip__content {
+  position: relative;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 1001 !important;
 }
 </style>

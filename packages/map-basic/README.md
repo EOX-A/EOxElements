@@ -3,6 +3,7 @@
 ## Documentation
 ### Props
 - tileLayers (Array): array of ids (currently osm and any eox id)
+. showCenter (Boolean): show center coordinates
 
 ## Install
 

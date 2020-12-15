@@ -31,7 +31,8 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
-    "vuelayers": "^0.11.28"
+    "vuelayers": "^0.11.28",
+    "vuetify": "^2.3.19"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
