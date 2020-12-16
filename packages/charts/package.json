@@ -1,6 +1,6 @@
 {
 	"name": "@eox/charts",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": false,
 	"main": "dist/charts.umd.min.js",
 	"module": "dist/charts.umd.min.js",
@@ -34,8 +34,8 @@
 		"chartjs-plugin-annotation": "^0.5.7",
 		"chartjs-plugin-datalabels": "^0.7.0",
 		"chartjs-plugin-zoom": "^0.7.7",
-		"luxon": "^1.24.1",
 		"core-js": "^3.6.5",
+		"luxon": "^1.24.1",
 		"vue": "^2.6.11",
 		"vue-chartjs": "^3.5.0",
 		"vuetify": "^2.3.19"
