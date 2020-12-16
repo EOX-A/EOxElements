@@ -1,6 +1,6 @@
 <template>
-  <div ref="tooltip" class="tooltip">
-    <v-tooltip v-model="overlay" attach=".tooltip">
+  <div ref="tooltip" class="map-tooltip">
+    <v-tooltip v-model="overlay" attach=".map-tooltip">
       <ul>
         <li
           v-for="(property, index) in tooltipContent"

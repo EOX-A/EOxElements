@@ -7,8 +7,8 @@
       :height="null"
       :chart-data='dataCollection'
       :options='chartOptions()'></line-chart>
-    <div ref='tooltip' class='tooltip' style='position:absolute;width: 100%'>
-      <v-tooltip v-model='showTooltip' attach='.tooltip' v-if='tooltipContent' right >
+    <div ref='tooltip' class='charts-tooltip' style='position:absolute;width: 100%'>
+      <v-tooltip v-model='showTooltip' attach='.charts-tooltip' v-if='tooltipContent' right >
         {{ tooltipContent.title }}
         <ul>
           <li v-for="(row) in tooltipContent.rows" :key="row" >
