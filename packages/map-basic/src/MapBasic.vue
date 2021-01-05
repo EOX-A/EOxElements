@@ -159,6 +159,10 @@ export default {
 .vl-map {
   position: relative;
 }
+.vl-map .ol-attribution ul {
+  margin: 0px !important;
+  padding: 0 .5em !important;
+}
 .ol-control button {
   background: var(--v-primary-base);
 }
