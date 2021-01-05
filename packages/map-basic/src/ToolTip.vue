@@ -47,11 +47,13 @@ export default {
 };
 </script>
 
-<style scoped>
-.v-tooltip__content {
-  position: relative;
-  top: 0 !important;
-  left: 0 !important;
-  z-index: 1001 !important;
+<style lang="scss" scoped>
+.eox-map-basic {
+  .v-tooltip__content {
+    position: relative;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1001 !important;
+  }
 }
 </style>
