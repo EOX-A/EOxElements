@@ -312,9 +312,3 @@ input[type="range"]:focus::-ms-fill-upper {
     border-bottom-left-radius: 4px;
 }
 </style>
-
-<style lang="scss">
-.ol-attribution, .ol-control {
-  z-index: 2;
-}
-</style>

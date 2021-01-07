@@ -159,6 +159,9 @@ export default {
 .vl-map {
   position: relative;
 }
+.ol-attribution, .ol-control {
+  z-index: 1001;
+}
 .ol-attribution ul {
   margin: 0px !important;
   padding: 0 .5em !important;
