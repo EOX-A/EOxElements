@@ -1,6 +1,6 @@
 module.exports = {
   css: {
-    extract: true,
+    extract: false,
   },
   configureWebpack: {
     externals: {
