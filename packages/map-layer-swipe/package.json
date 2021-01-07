@@ -30,9 +30,7 @@
 	},
 	"dependencies": {
 		"core-js": "^3.6.5",
-		"gsap": "^3.5.1",
-		"vue": "^2.6.11",
-		"vuetify": "^2.3.19"
+		"gsap": "^3.5.1"
 	},
 	"devDependencies": {
 		"@vue/cli-plugin-babel": "~4.5.0",
@@ -45,7 +43,9 @@
 		"eslint-plugin-vue": "^6.2.2",
 		"node-sass": "^5.0.0",
 		"sass-loader": "^10.1.0",
-		"vue-template-compiler": "^2.6.11"
+		"vue": "^2.6.11",
+		"vue-template-compiler": "^2.6.11",
+		"vuetify": "^2.3.19"
 	},
 	"publishConfig": {
 		"registry": "http://registry.npmjs.org/",
