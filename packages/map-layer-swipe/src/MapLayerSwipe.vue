@@ -13,7 +13,7 @@
   </div>
   <div
     v-else
-    class="container"
+    class="swipe-container"
     ref="container"
   >
     <v-btn
@@ -146,7 +146,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.swipe-container {
   position: absolute;
   height: 100%;
   width: 100%;
