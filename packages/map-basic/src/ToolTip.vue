@@ -48,12 +48,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.eox-map-basic {
-  .v-tooltip__content {
-    position: relative;
-    top: 0 !important;
-    left: 0 !important;
-    z-index: 1001 !important;
-  }
+.v-tooltip__content {
+  position: relative;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 1001 !important;
 }
 </style>

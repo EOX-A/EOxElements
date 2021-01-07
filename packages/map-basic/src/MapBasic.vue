@@ -8,7 +8,6 @@
     ref="map"
     style="height: 400px"
     :class="hoverFeature ? 'cursorPointer' : ''"
-    class="eox-map-basic"
   >
     <vl-view
       :zoom.sync="zoom"
@@ -157,34 +156,30 @@ export default {
 </script>
 
 <style lang="scss">
-.eox-map-basic {
-  .vl-map {
-    position: relative;
-  }
-  .ol-attribution ul {
-    margin: 0px !important;
-    padding: 0 .5em !important;
-  }
-  .ol-control button {
-    background: var(--v-primary-base);
-  }
-  .cursorPointer {
-    cursor: pointer !important;
-  }
+.vl-map {
+  position: relative;
+}
+.ol-attribution ul {
+  margin: 0px !important;
+  padding: 0 .5em !important;
+}
+.ol-control button {
+  background: var(--v-primary-base);
+}
+.cursorPointer {
+  cursor: pointer !important;
 }
 </style>
 
 <style lang="scss" scoped>
-.eox-map-basic {
-  .showCenter {
-    position: absolute;
-    bottom: .5em;
-    left: .5em;
-    z-index: 99;
-    background: #fffc;
-    padding: 2px;
-    display: table;
-    font-size: 0.8rem;
-  }
+.showCenter {
+  position: absolute;
+  bottom: .5em;
+  left: .5em;
+  z-index: 99;
+  background: #fffc;
+  padding: 2px;
+  display: table;
+  font-size: 0.8rem;
 }
 </style>
