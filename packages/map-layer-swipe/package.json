@@ -1,6 +1,6 @@
 {
 	"name": "@eox/map-layer-swipe",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"private": false,
 	"main": "dist/map-layer-swipe.umd.min.js",
 	"module": "dist/map-layer-swipe.umd.min.js",
