@@ -1,6 +1,6 @@
 {
   "name": "@eox/map-basic",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": false,
   "main": "dist/map-basic.umd.min.js",
   "module": "dist/map-basic.umd.min.js",
