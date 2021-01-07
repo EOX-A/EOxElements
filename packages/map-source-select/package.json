@@ -1,6 +1,6 @@
 {
 	"name": "@eox/map-source-select",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"private": false,
 	"main": "dist/map-source-select.umd.min.js",
 	"module": "dist/map-source-select.umd.min.js",
