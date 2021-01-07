@@ -7,7 +7,7 @@
   >
     <v-sheet
       class="row justify-center align-center"
-      style="position: absolute; bottom: 30px;
+      style="position: absolute; bottom: 60px;
         z-index: 1000; width: auto;
         max-width: 100%; border-radius: 4px;
         display: flex;"
