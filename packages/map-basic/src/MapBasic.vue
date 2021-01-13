@@ -54,11 +54,12 @@
       <wmts-capabilites-provider
         v-if="layer.dataProvider === 'WMTScapabilites'"
         :key="layer.name"
+        :id="layer.name"
         :layerName="layer.name"
         :capabilitiesUrl="layer.capabilitiesUrl"
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
-        :zIndex="backgroundLayers.indexOf(layer)"
+        :zIndex="backgroundLayers.indexOf(layer) + 1"
       />
       <vl-layer-tile
         v-else-if="layer.name === 'osm'"

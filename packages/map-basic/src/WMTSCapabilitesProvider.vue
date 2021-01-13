@@ -2,6 +2,7 @@
   <vl-layer-tile
     v-if="ready"
     @mounted="onWmtsLayerMounted"
+    :id="id"
     :visible="visible"
     :z-index="zIndex"
   >
@@ -16,6 +17,7 @@ export default {
   props: {
     layerName: String,
     capabilitiesUrl: String,
+    id: String,
     matrixSet: String,
     visible: Boolean,
     zIndex: Number,
