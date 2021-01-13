@@ -3,12 +3,11 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*",
-      ".dev/*"
+      "packages/*"
     ]
   },
   "scripts": {
-    "dev": "lerna run dev --scope dev-playground --stream --parallel",
+    "dev": "yarn docs:dev",
     "watch": "lerna run watch --stream --parallel",
     "build": "lerna run build --stream",
     "lint": "lerna run lint --stream --parallel",
