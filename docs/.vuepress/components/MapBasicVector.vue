@@ -27,6 +27,9 @@ export default {
           type: 'tile',
           name: 'terrain-light',
           title: 'Terrain Light',
+          dataProvider: 'WMTScapabilites',
+          capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          matrixSet: 'WGS84',
         },
         {
           type: 'vector',

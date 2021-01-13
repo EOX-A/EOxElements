@@ -18,17 +18,22 @@
       <template
         v-for="layer in backgroundLayers"
       >
-        <vl-layer-tile
-          v-if="layer.type === 'tile'"
+        <wmts-capabilites-provider
+          v-if="layer.dataProvider === 'WMTScapabilites'"
           :key="layer.name"
-          :id="layer.name"
+          :layerName="layer.name"
+          :capabilitiesUrl="layer.capabilitiesUrl"
+          :matrixSet="layer.matrixSet"
+          :visible="layer.visible"
+          :zIndex="backgroundLayers.indexOf(layer)"
+          />
+        <vl-layer-tile
+          v-else-if="layer.type === 'tile' && layer.name === 'osm'"
+          :key="layer.name"
           :visible="layer.visible"
           :z-index="backgroundLayers.indexOf(layer)"
         >
-          <template v-if="layer">
-            <vl-source-osm v-if="layer.name === 'osm'"></vl-source-osm>
-            <source-eox v-else :layer-name="layer.name"></source-eox>
-          </template>
+          <vl-source-osm v-if="layer.name === 'osm'"></vl-source-osm>
         </vl-layer-tile>
         <vl-layer-vector-tile
           v-else-if="layer.type === 'vector'"
@@ -45,17 +50,25 @@
         </vl-layer-vector-tile>
       </template>
     </vl-layer-group>
-    <vl-layer-tile
-      v-for="layer in foregroundLayers"
-      :key="layer.name"
-      :id="layer.name"
-      :z-index="foregroundLayers.indexOf(layer) + 1"
-    >
-      <template v-if="layer">
-        <vl-source-osm v-if="layer.name === 'osm'"></vl-source-osm>
-        <source-eox v-else :layer-name="layer.name"></source-eox>
-      </template>
-    </vl-layer-tile>
+    <template v-for="layer in foregroundLayers">
+      <wmts-capabilites-provider
+        v-if="layer.dataProvider === 'WMTScapabilites'"
+        :key="layer.name"
+        :layerName="layer.name"
+        :capabilitiesUrl="layer.capabilitiesUrl"
+        :matrixSet="layer.matrixSet"
+        :visible="layer.visible"
+        :zIndex="backgroundLayers.indexOf(layer)"
+      />
+      <vl-layer-tile
+        v-else-if="layer.name === 'osm'"
+        :key="layer.name"
+        :id="layer.name"
+        :z-index="foregroundLayers.indexOf(layer) + 1"
+      >
+        <vl-source-osm></vl-source-osm>
+      </vl-layer-tile>
+    </template>
     <tool-tip v-if="mapObject" ref="tooltip" :mapObject="mapObject" @addOverlay="addOverlay" />
     <slot :mapObject="mapObject"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
@@ -69,9 +82,9 @@ import {
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/lib/style.css';
-import SourceEox from './SourceEox.vue';
 import VectorStyle from './VectorStyle.vue';
 import ToolTip from './ToolTip.vue';
+import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
@@ -83,9 +96,9 @@ Vue.use(VectorTileSource);
 export default {
   name: 'map-basic',
   components: {
-    SourceEox,
     VectorStyle,
     ToolTip,
+    WmtsCapabilitesProvider,
   },
   props: {
     backgroundLayers: Array,

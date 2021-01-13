@@ -31,8 +31,11 @@ export default {
     tileLayers: [
       {
         type: 'tile',
-        name: 's2cloudless-2019',
+        name: 's2cloudless-2019_3857',
         title: 'Sentinel-2 cloudless 2019',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'GoogleMapsCompatible',
       },
     ],
   })
@@ -64,7 +67,7 @@ export default {
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
+import MapBasic from '@eox/map-basic/dist/map-basic.umd'
 
 export default {
   components: {
@@ -77,6 +80,9 @@ export default {
           type: 'tile',
           name: 'terrain-light',
           title: 'Terrain Light',
+          dataProvider: 'WMTScapabilites',
+          capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          matrixSet: 'WGS84',
         },
         {
           type: 'vector',
@@ -120,5 +126,4 @@ export default {
   },
 }
 </script>
-
 ```

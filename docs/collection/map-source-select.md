@@ -28,8 +28,14 @@
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
-import MapSourceSelect from '@eox/map-source-select'
+import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
+
+const layerConfig = {
+  dataProvider: 'WMTScapabilites',
+  capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+  matrixSet: 'WGS84',
+};
 
 export default {
   components: {
@@ -40,22 +46,31 @@ export default {
     backgroundLayers: null,
     availableLayers: [
       {
+        type: 'tile',
         name: 'osm',
         title: 'Open Street Map',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 'terrain-light',
         title: 'Terrain Light',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 's2cloudless',
         title: 'Sentinel-2 cloudless 2016',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 's2cloudless-2018',
         title: 'Sentinel-2 cloudless 2018',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 's2cloudless-2019',
         title: 'Sentinel-2 cloudless 2019',
       },
@@ -121,9 +136,15 @@ export default {
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
-import MapLayerSwipe from '@eox/map-layer-swipe'
-import MapSourceSelect from '@eox/map-source-select'
+import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
+import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
+
+const layerConfig = {
+  dataProvider: 'WMTScapabilites',
+  capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+  matrixSet: 'WGS84',
+};
 
 export default {
   components: {
@@ -137,22 +158,31 @@ export default {
     foregroundLayers: null,
     availableLayers: [
       {
+        type: 'tile',
         name: 'osm',
         title: 'Open Street Map',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 'terrain-light',
         title: 'Terrain Light',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 's2cloudless',
         title: 'Sentinel-2 cloudless 2016',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 's2cloudless-2018',
         title: 'Sentinel-2 cloudless 2018',
       },
       {
+        ...layerConfig,
+        type: 'tile',
         name: 's2cloudless-2019',
         title: 'Sentinel-2 cloudless 2019',
       },
@@ -215,8 +245,8 @@ export default {
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
-import MapSourceSelect from '@eox/map-source-select'
+import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
 
 export default {
   components: {
@@ -229,6 +259,9 @@ export default {
       selectedSource: {
         name: 'https://demo-tileserv.hub.eox.at/public.lpis_at/{z}/{x}/{y}.pbf',
         title: 'LPIS',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'WGS84',
       },
       allLayers: [
         {

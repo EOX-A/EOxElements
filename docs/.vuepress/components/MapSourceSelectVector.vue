@@ -36,6 +36,9 @@ export default {
       selectedSource: {
         name: 'https://demo-tileserv.hub.eox.at/public.lpis_at/{z}/{x}/{y}.pbf',
         title: 'LPIS',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'WGS84',
       },
       allLayers: [
         {

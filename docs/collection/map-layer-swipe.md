@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
-import MapLayerSwipe from '@eox/map-layer-swipe'
+import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
 
 export default {
   components: {
@@ -43,25 +43,24 @@ export default {
   data: () => ({
     backgroundLayers: [
       {
-        name: 's2cloudless-2019',
+        type: 'tile',
+        name: 's2cloudless-2019_3857',
         title: 'Sentinel-2 cloudless 2019',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'GoogleMapsCompatible',
       },
     ],
     foregroundLayers: [
       {
-        name: 's2cloudless-2018',
+        name: 's2cloudless-2018_3857',
         title: 'Sentinel-2 cloudless 2018',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'GoogleMapsCompatible',
       },
     ],
   }),
-  mounted() {
-    this.backgroundLayers = [
-      this.availableLayers[1]
-    ];
-    this.foregroundLayers = [
-      this.availableLayers[this.availableLayers.length - 1],
-    ];
-  },
   methods: {
     toggleCompare(active) {
       this.layerComparison = active;
@@ -107,8 +106,8 @@ export default {
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
-import MapLayerSwipe from '@eox/map-layer-swipe'
+import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
 
 export default {
   components: {
@@ -118,25 +117,25 @@ export default {
   data: () => ({
     backgroundLayers: [
       {
-        name: 's2cloudless-2019',
+        type: 'tile',
+        name: 's2cloudless-2019_3857',
         title: 'Sentinel-2 cloudless 2019',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'GoogleMapsCompatible',
       },
     ],
     foregroundLayers: [
       {
-        name: 's2cloudless-2018',
+        type: 'tile',
+        name: 's2cloudless-2018_3857',
         title: 'Sentinel-2 cloudless 2018',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'GoogleMapsCompatible',
       },
     ],
   }),
-  mounted() {
-    this.backgroundLayers = [
-      this.availableLayers[1]
-    ];
-    this.foregroundLayers = [
-      this.availableLayers[this.availableLayers.length - 1],
-    ];
-  },
   methods: {
     toggleCompare(active) {
       this.layerComparison = active;

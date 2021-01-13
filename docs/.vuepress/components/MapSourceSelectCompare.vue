@@ -37,6 +37,12 @@ import MapBasic from '@eox/map-basic/dist/map-basic.umd'
 import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
 import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
 
+const layerConfig = {
+  dataProvider: 'WMTScapabilites',
+  capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+  matrixSet: 'WGS84',
+};
+
 export default {
   components: {
     MapBasic,
@@ -54,21 +60,25 @@ export default {
         title: 'Open Street Map',
       },
       {
+        ...layerConfig,
         type: 'tile',
         name: 'terrain-light',
         title: 'Terrain Light',
       },
       {
+        ...layerConfig,
         type: 'tile',
         name: 's2cloudless',
         title: 'Sentinel-2 cloudless 2016',
       },
       {
+        ...layerConfig,
         type: 'tile',
         name: 's2cloudless-2018',
         title: 'Sentinel-2 cloudless 2018',
       },
       {
+        ...layerConfig,
         type: 'tile',
         name: 's2cloudless-2019',
         title: 'Sentinel-2 cloudless 2019',

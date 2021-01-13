@@ -21,8 +21,11 @@ export default {
     tileLayers: [
       {
         type: 'tile',
-        name: 's2cloudless-2019',
+        name: 's2cloudless-2019_3857',
         title: 'Sentinel-2 cloudless 2019',
+        dataProvider: 'WMTScapabilites',
+        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+        matrixSet: 'GoogleMapsCompatible',
       },
     ],
   })
