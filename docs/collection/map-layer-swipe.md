@@ -32,8 +32,8 @@
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic/dist/map-basic.umd'
-import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
+import MapBasic from '@eox/map-basic'
+import MapLayerSwipe from '@eox/map-layer-swipe'
 
 export default {
   components: {
@@ -106,8 +106,8 @@ export default {
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic/dist/map-basic.umd'
-import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
+import MapBasic from '@eox/map-basic'
+import MapLayerSwipe from '@eox/map-layer-swipe'
 
 export default {
   components: {
