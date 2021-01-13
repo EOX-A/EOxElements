@@ -16,6 +16,7 @@
     "docs:build": "vuepress build docs"
   },
   "devDependencies": {
+    "fibers": "^5.0.0",
     "lerna": "^3.22.1",
     "vuepress": "^1.7.1"
   }
