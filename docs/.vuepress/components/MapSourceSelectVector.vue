@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic/dist/map-basic.umd'
-import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
+import MapBasic from '@eox/map-basic'
+import MapSourceSelect from '@eox/map-source-select'
 
 export default {
   components: {

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic/dist/map-basic.umd'
+import MapBasic from '@eox/map-basic'
 
 export default {
   components: {

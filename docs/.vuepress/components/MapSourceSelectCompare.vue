@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic/dist/map-basic.umd'
-import MapLayerSwipe from '@eox/map-layer-swipe/dist/map-layer-swipe.umd'
-import MapSourceSelect from '@eox/map-source-select/dist/map-source-select.umd'
+import MapBasic from '@eox/map-basic'
+import MapLayerSwipe from '@eox/map-layer-swipe'
+import MapSourceSelect from '@eox/map-source-select'
 
 const layerConfig = {
   dataProvider: 'WMTScapabilites',
