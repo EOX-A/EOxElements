@@ -3,20 +3,18 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "docs"
     ]
   },
   "scripts": {
-    "dev": "yarn docs:dev",
+    "dev": "lerna run docs:dev --stream",
     "watch": "lerna run watch --stream --parallel",
     "build": "lerna run build --stream",
-    "lint": "lerna run lint --stream --parallel",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "lerna run docs:build --stream",
+    "lint": "lerna run lint --stream --parallel"
   },
   "devDependencies": {
-    "fibers": "^5.0.0",
-    "lerna": "^3.22.1",
-    "vuepress": "^1.7.1"
+    "lerna": "^3.22.1"
   }
 }

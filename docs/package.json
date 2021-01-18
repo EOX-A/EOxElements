@@ -1,0 +1,21 @@
+{
+  "name": "docs",
+  "description": "Docs for EOX-A/elements",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vuepress dev",
+    "docs:build": "vuepress build"
+  },
+  "author": "silvester-pari",
+  "license": "MIT",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0",
+    "@mdi/font": "^5.1.45",
+    "fibers": "^5.0.0",
+    "roboto-fontface": "0.10.0",
+    "sass": "^1.19.0",
+    "vuepress": "^1.7.1"
+  }
+}
