@@ -6,7 +6,7 @@
   />
 </template>
 <script>
-import Charts from '@eox/charts/dist/charts.umd';
+import Charts from '@eox/charts';
 import example from './example.json';
 
 export default {
