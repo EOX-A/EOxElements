@@ -1,35 +1,31 @@
 <template>
-  <v-app class="fill-height"> 
-    <v-content class="fill-height">
-      <map-basic
-        :mapZoom="2"
-        :backgroundLayers="backgroundLayers"
-        :foregroundLayers="layerComparison ? foregroundLayers : []"
-        style="height: 100%; width: 100%;"
-      >
-        <template slot-scope="{mapObject}">
-          <map-layer-swipe
-            v-if="mapObject"
-            :mapObject="mapObject"
-            embeddedMode
-            :embeddedActive="layerComparison"
-            reverseDirection
-            :swipeLayer="foregroundLayers[0]"
-            :originalLayer="backgroundLayers[0]"
-            @swipeActive="toggleCompare"
-          />
-          <map-source-select
-            enableCompare
-            reverseDirection
-            :selectionItems="availableLayers"
-            @selectLayer="changeBackgroundLayer"
-            @selectCompareLayer="changeForegroundLayer"
-            @toggleCompare="toggleCompare"
-          />
-        </template>
-      </map-basic>
-    </v-content>
-  </v-app>
+  <map-basic
+    :mapZoom="2"
+    :backgroundLayers="backgroundLayers"
+    :foregroundLayers="layerComparison ? foregroundLayers : []"
+    style="height: 100%; width: 100%;"
+  >
+    <template slot-scope="{mapObject}">
+      <map-layer-swipe
+        v-if="mapObject"
+        :mapObject="mapObject"
+        embeddedMode
+        :embeddedActive="layerComparison"
+        reverseDirection
+        :swipeLayer="foregroundLayers[0]"
+        :originalLayer="backgroundLayers[0]"
+        @swipeActive="toggleCompare"
+      />
+      <map-source-select
+        enableCompare
+        reverseDirection
+        :selectionItems="availableLayers"
+        @selectLayer="changeBackgroundLayer"
+        @selectCompareLayer="changeForegroundLayer"
+        @toggleCompare="toggleCompare"
+      />
+    </template>
+  </map-basic>
 </template>
 
 <script>

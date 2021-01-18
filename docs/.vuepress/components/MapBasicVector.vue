@@ -1,16 +1,11 @@
 <template>
-  <v-app class="fill-height"> 
-    <v-content class="fill-height">
-      <map-basic
-        ref="map"
-        :mapZoom="14"
-        :mapCenter="[ 1731756.231909257, 6228616.060472786 ]"
-        :backgroundLayers="allLayers"
-        style="height: 100%; width: 100%;"
-      >
-      </map-basic>
-    </v-content>
-  </v-app>
+  <map-basic
+    ref="map"
+    :mapZoom="14"
+    :mapCenter="[ 1731756.231909257, 6228616.060472786 ]"
+    :backgroundLayers="allLayers"
+    style="height: 100%; width: 100%;"
+  />
 </template>
 
 <script>

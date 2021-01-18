@@ -1,13 +1,9 @@
 <template>
-  <v-app class="fill-height"> 
-    <v-content class="fill-height">
-      <map-basic
-        :mapZoom="2"
-        :backgroundLayers="tileLayers"
-        style="height: 100%; width: 100%;"
-      />
-    </v-content>
-  </v-app>
+  <map-basic
+    :mapZoom="2"
+    :backgroundLayers="tileLayers"
+    style="height: 100%; width: 100%;"
+  />
 </template>
 
 <script>

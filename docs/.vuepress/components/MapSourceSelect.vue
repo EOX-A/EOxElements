@@ -1,20 +1,16 @@
 <template>
-  <v-app class="fill-height"> 
-    <v-content class="fill-height">
-      <map-basic
-        :mapZoom="2"
-        :backgroundLayers="backgroundLayers"
-        style="height: 100%; width: 100%;"
-      >
-        <template slot-scope="{mapObject}">
-          <map-source-select
-            :selectionItems="availableLayers"
-            @selectLayer="changeBackgroundLayer"
-          />
-        </template>
-      </map-basic>
-    </v-content>
-  </v-app>
+  <map-basic
+    :mapZoom="2"
+    :backgroundLayers="backgroundLayers"
+    style="height: 100%; width: 100%;"
+  >
+    <template slot-scope="{mapObject}">
+      <map-source-select
+        :selectionItems="availableLayers"
+        @selectLayer="changeBackgroundLayer"
+      />
+    </template>
+  </map-basic>
 </template>
 
 <script>
