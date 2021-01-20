@@ -202,3 +202,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+::v-deep .v-input__icon .mdi-asterisk {
+  opacity: 0;
+}
+</style>
