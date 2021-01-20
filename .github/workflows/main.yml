@@ -14,5 +14,5 @@ jobs:
       uses: jenkey2011/vuepress-deploy@master
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BUILD_SCRIPT: yarn install && yarn build && yarn docs:build
+        BUILD_SCRIPT: npm install node-gyp && yarn install && yarn build && yarn docs:build
         BUILD_DIR: docs/.vuepress/dist/
