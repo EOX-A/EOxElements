@@ -1,6 +1,6 @@
 {
 	"name": "@eox/map-layer-swipe",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"private": false,
 	"main": "dist/map-layer-swipe.umd.min.js",
 	"module": "dist/map-layer-swipe.umd.min.js",
@@ -41,7 +41,7 @@
 		"eslint": "^6.7.2",
 		"eslint-plugin-import": "^2.20.2",
 		"eslint-plugin-vue": "^6.2.2",
-    "node-sass": "^4.9.0",
+		"node-sass": "^4.9.0",
 		"sass-loader": "^10.1.0",
 		"vue": "^2.6.11",
 		"vue-template-compiler": "^2.6.11",
