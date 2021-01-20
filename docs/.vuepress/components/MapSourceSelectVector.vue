@@ -38,9 +38,28 @@ export default {
       },
       allLayers: [
         {
+          dataProvider: 'WMTScapabilites',
+          capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          matrixSet: 'WGS84',
           type: 'tile',
           name: 'terrain-light',
           title: 'Terrain Light',
+        },
+        {
+          type: 'vector',
+          visibile: true,
+          url: 'https://demo-tileserv.hub.eox.at/public.lpis_at/{z}/{x}/{y}.pbf',
+          title: 'LPIS',
+          tooltip: true,
+          style: {
+            stroke: {
+              color: 'black',
+              width: 1,
+            },
+            fill: {
+              color: (feature) => this.featureStyle(feature),
+            },
+          }
         },
         {
           type: 'vector',
@@ -63,22 +82,6 @@ export default {
           visibile: false,
           url: 'http://lpvis-demo.s3-website.eu-central-1.amazonaws.com/geodata/agricultural_parcels/{z}/{x}/{y}.pbf',
           title: 'Agricultural Parcels',
-          tooltip: true,
-          style: {
-            stroke: {
-              color: 'black',
-              width: 1,
-            },
-            fill: {
-              color: (feature) => this.featureStyle(feature),
-            },
-          }
-        },
-        {
-          type: 'vector',
-          visibile: true,
-          url: 'https://demo-tileserv.hub.eox.at/public.lpis_at/{z}/{x}/{y}.pbf',
-          title: 'LPIS',
           tooltip: true,
           style: {
             stroke: {
