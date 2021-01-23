@@ -5,15 +5,22 @@
     :mapCenter="[ 1731756.231909257, 6228616.060472786 ]"
     :backgroundLayers="allLayers"
     style="height: 100%; width: 100%;"
-  />
+  >
+    <template slot-scope="{mapObject}">
+      <map-tool-tip v-if="mapObject"
+        ref="tooltip" :mapObject="mapObject" />
+    </template>
+  </map-basic>
 </template>
 
 <script>
 import MapBasic from '@eox/map-basic'
+import MapToolTip from '@eox/map-tooltip'
 
 export default {
   components: {
     MapBasic,
+    MapToolTip
   },
   data: function() {
     return {

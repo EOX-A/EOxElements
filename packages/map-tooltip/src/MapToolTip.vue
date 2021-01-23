@@ -38,7 +38,8 @@ export default {
         offset: [12, 12],
         positioning: 'top-left',
       });
-      this.$emit('addOverlay', this.overlay);
+      this.$parent.$emit('addOverlay', this.overlay);
+      // this.$emit('addOverlay', this.overlay);
     },
     onPointerMove(feature) {
       this.tooltipContent = feature.properties_;

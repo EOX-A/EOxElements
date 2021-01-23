@@ -70,7 +70,8 @@
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile>
     </template>
-    <tool-tip v-if="mapObject" ref="tooltip" :mapObject="mapObject" @addOverlay="addOverlay" />
+    <!-- <tool-tip v-if="mapObject"
+    ref="tooltip" :mapObject="mapObject" @addOverlay="addOverlay" /> -->
     <slot :mapObject="mapObject"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
   </vl-map>
@@ -84,7 +85,6 @@ import {
 } from 'vuelayers';
 import 'vuelayers/lib/style.css';
 import VectorStyle from './VectorStyle.vue';
-import ToolTip from './ToolTip.vue';
 import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
 
 Vue.use(Map);
@@ -98,7 +98,6 @@ export default {
   name: 'map-basic',
   components: {
     VectorStyle,
-    ToolTip,
     WmtsCapabilitesProvider,
   },
   props: {
@@ -133,9 +132,11 @@ export default {
       this.$root.$on('renderMap', () => this.$refs.map
         && this.$refs.map.render());
     });
+    this.$on('addOverlay', this.addOverlay);
   },
   methods: {
     addOverlay(element) {
+      console.log('hi');
       this.overlay = element;
       this.mapObject.$map.addOverlay(element);
     },
