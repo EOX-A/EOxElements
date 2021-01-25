@@ -20,6 +20,7 @@ import Overlay from 'ol/Overlay'; //eslint-disable-line
 export default {
   props: {
     mapObject: Object,
+    hoverFeature: Object,
   },
   components: {
     VTooltip,
@@ -38,11 +39,15 @@ export default {
         offset: [12, 12],
         positioning: 'top-left',
       });
-      this.$parent.$emit('addOverlay', this.overlay);
-      // this.$emit('addOverlay', this.overlay);
+      this.mapObject.$map.addOverlay(this.overlay);
     },
-    onPointerMove(feature) {
-      this.tooltipContent = feature.properties_;
+  },
+  watch: {
+    hoverFeature(element) {
+      if (element) {
+        this.tooltipContent = element.feature.properties_;
+        this.overlay.setPosition(element.coordinate);
+      }
     },
   },
 };

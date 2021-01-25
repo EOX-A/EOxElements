@@ -70,9 +70,7 @@
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile>
     </template>
-    <!-- <tool-tip v-if="mapObject"
-    ref="tooltip" :mapObject="mapObject" @addOverlay="addOverlay" /> -->
-    <slot :mapObject="mapObject"></slot>
+    <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
   </vl-map>
 </template>
@@ -120,7 +118,7 @@ export default {
     rotation: 0,
     mapObject: null,
     overlay: null,
-    hoverFeature: false,
+    hoverFeature: null,
   }),
   created() {
     this.zoom = this.mapZoom;
@@ -135,22 +133,17 @@ export default {
     this.$on('addOverlay', this.addOverlay);
   },
   methods: {
-    addOverlay(element) {
-      console.log('hi');
-      this.overlay = element;
-      this.mapObject.$map.addOverlay(element);
-    },
     onPointerMove({ coordinate, pixel }) {
       let hasFeature = false;
       this.mapObject.forEachFeatureAtPixel(pixel, (f) => {
-        this.overlay.setPosition(coordinate);
         hasFeature = true;
-        this.hoverFeature = true;
-        this.$refs.tooltip.onPointerMove(f);
+        this.hoverFeature = {
+          coordinate,
+          feature: f,
+        };
       });
       if (!hasFeature) {
-        this.hoverFeature = false;
-        this.overlay.setPosition(undefined);
+        this.hoverFeature = null;
       }
     },
     onPointerClick({ pixel }) {
