@@ -6,15 +6,21 @@
     :backgroundLayers="allLayers"
     style="height: 100%; width: 100%;"
   >
+    <template slot-scope="{mapObject, hoverFeature}">
+      <map-tooltip v-if="mapObject"
+        ref="tooltip" :mapObject="mapObject" :hoverFeature="hoverFeature" />
+    </template>
   </map-basic>
 </template>
 
 <script>
 import MapBasic from '@eox/map-basic'
+import MapTooltip from '@eox/map-tooltip'
 
 export default {
   components: {
     MapBasic,
+    MapTooltip
   },
   data: function() {
     return {

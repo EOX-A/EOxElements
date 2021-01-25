@@ -1,12 +1,12 @@
 {
-  "name": "@eox/map-basic",
-  "version": "0.0.22",
+  "name": "@eox/map-tooltip",
+  "version": "0.0.0",
   "private": false,
-  "main": "dist/map-basic.umd.min.js",
-  "module": "dist/map-basic.umd.min.js",
-  "unpkg": "dist/map-basic.umd.min.js",
-  "jsdelivr": "dist/map-basic.umd.min.js",
-  "style": "dist/map-basic.css",
+  "main": "dist/map-tooltip.umd.min.js",
+  "module": "dist/map-tooltip.umd.min.js",
+  "unpkg": "dist/map-tooltip.umd.min.js",
+  "jsdelivr": "dist/map-tooltip.umd.min.js",
+  "style": "dist/map-tooltip.css",
   "author": "EOX-A",
   "license": "MIT",
   "description": "A basic map component",
@@ -23,14 +23,13 @@
     "url": "https://github.com/EOX-A/elements/issues"
   },
   "scripts": {
-    "watch": "vue-cli-service build --target lib --name map-basic src/main.js --watch --mode development",
-    "build": "vue-cli-service build --target lib --name map-basic src/main.js",
+    "watch": "vue-cli-service build --target lib --name map-tooltip src/main.js --watch --mode development",
+    "build": "vue-cli-service build --target lib --name map-tooltip src/main.js",
     "lint": "vue-cli-service lint",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "vuelayers": "^0.11.28"
+    "core-js": "^3.6.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -44,7 +43,8 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^10.1.0",
     "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vuetify": "^2.3.19"
   },
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",

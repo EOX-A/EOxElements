@@ -54,6 +54,7 @@ module.exports = {
                 'map-basic',
                 'map-layer-swipe',
                 'map-source-select',
+                'map-tooltip',
                 'charts'
               ]
             }
