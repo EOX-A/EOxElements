@@ -1,4 +1,4 @@
-# map-basic
+# map-tooltip
 
 ## Tooltip displaying feature properties
 <example file="MapTooltip.vue" />
