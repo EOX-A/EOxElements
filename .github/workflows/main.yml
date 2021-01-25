@@ -10,9 +10,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@master
 
-    - name: vuepress-deploy
-      uses: jenkey2011/vuepress-deploy@master
+    - name: Build and Deploy
+      uses: testthedocs/github-pages-deploy-action@master
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        BUILD_SCRIPT: npm install node-gyp && yarn install && yarn build && yarn docs:build
-        BUILD_DIR: docs/.vuepress/dist/
+        BUILD_DIR: docs/.vuepress/dist/ # The folder, the action should deploy.
+        BUILD_SCRIPT: yarn install && yarn build && yarn docs:build # The build script the action should run prior to deploying
