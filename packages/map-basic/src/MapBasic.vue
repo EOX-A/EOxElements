@@ -13,7 +13,15 @@
       :zoom.sync="zoom"
       :center.sync="center"
       :rotation.sync="rotation"
-    ></vl-view>
+    >
+      <feature-layer
+        v-for="(layer, index) in featureLayers"
+        :key="index"
+        :properties="layer.properties"
+        :coordinates="layer.coordinates"
+        :icon="layer.icon"
+      />
+    </vl-view>
     <vl-layer-group :z-index="0">
       <template
         v-for="layer in backgroundLayers"
@@ -82,6 +90,7 @@ import {
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/lib/style.css';
+import FeatureLayer from './FeatureLayer.vue';
 import VectorStyle from './VectorStyle.vue';
 import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
 
@@ -95,12 +104,14 @@ Vue.use(VectorTileSource);
 export default {
   name: 'map-basic',
   components: {
+    FeatureLayer,
     VectorStyle,
     WmtsCapabilitesProvider,
   },
   props: {
     backgroundLayers: Array,
     foregroundLayers: Array,
+    featureLayers: Array,
     dataProjection: String,
     mapZoom: {
       type: Number,
