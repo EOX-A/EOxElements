@@ -1,7 +1,7 @@
 <template>
   <map-basic
     :mapZoom="16"
-    :mapCenter="featureLayers[0].coordinates"
+    :mapCenter="[1821222.7489322994, 6143400]"
     showCenter
     :backgroundLayers="tileLayers"
     :featureLayers="featureLayers"
@@ -27,10 +27,10 @@ export default {
           6143332.194302502
         ],
         icon: {
-          src: 'https://eox.at/EOX_Logo.svg',
-          scale: 0.4,
-          anchor: [0.08, 0.45],
-          size: [2000, 90]
+          src: 'https://eox.at/EOX-POI.svg',
+          scale: 0.5,
+          anchor: [0.285, 0.55],
+          size: [500, 249]
         }
       },
     ],
