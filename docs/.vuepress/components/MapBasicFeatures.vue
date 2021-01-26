@@ -28,9 +28,9 @@ export default {
         ],
         icon: {
           src: 'https://eox.at/EOX-POI.png',
-          scale: 0.5,
-          anchor: [0.285, 0.55],
-          size: [500, 249]
+          scale: 0.3,
+          anchor: [0.5, 1],
+          size: [500, 258]
         }
       },
     ],
