@@ -2,7 +2,7 @@
   <map-basic
     ref="map"
     :mapZoom="14"
-    :mapCenter="[ 1731756.231909257, 6228616.060472786 ]"
+    :mapCenter="[ 1731756.231909257, 6223616.060472786 ]"
     :backgroundLayers="allLayers"
     style="height: 100%; width: 100%;"
   >
@@ -36,8 +36,8 @@ export default {
         {
           type: 'vector',
           visibile: false,
-          url: 'http://lpvis-demo.s3-website.eu-central-1.amazonaws.com/geodata/agricultural_parcels/{z}/{x}/{y}.pbf',
-          title: 'Agricultural Parcels',
+          url: 'https://parcels-api-public.demo.hub.eox.at/demo.declaration/{z}/{x}/{y}.pbf',
+          title: 'Demo Declarations',
           tooltip: true,
           style: {
             stroke: {
@@ -54,20 +54,7 @@ export default {
   },
   methods: {
     featureStyle(feature) {
-      if (feature.properties_.ctnuml4a === 1020) {
-        return 'crimson';
-      }
-      let isHighlighted;
-      if (feature.properties_.accuracy < 0.95) {
-        return isHighlighted ? '#ffff00ff' : '#ffff0099';
-      }
-      if (feature.properties_.match === 'True') {
-        return isHighlighted ? '#008000ff' : '#00800099';
-      }
-      if (feature.properties_.match === 'False') {
-        return isHighlighted ? '#ff0000ff' : '#ff000099';
-      }
-      return '#99999999';
+      return `#00${feature.properties_.ori_crop_id*8}f`;
     },
   },
 }
