@@ -97,6 +97,8 @@ import {
 
 export default {
   props: {
+    comparisonLayer: Object,
+    originalLayer: Object,
     enableCompare: Boolean,
     selectionItems: Array,
     reverseDirection: Boolean,
@@ -122,8 +124,8 @@ export default {
     },
   },
   mounted() {
-    this.dataLayer = this.selectionItems[this.selectionItems.length - 1];
-    [this.compareLayer] = this.selectionItems;
+    this.dataLayer = this.originalLayer || this.selectionItems[this.selectionItems.length - 1];
+    this.compareLayer = this.comparisonLayer || this.selectionItems[0];
   },
   methods: {
     dataLayerSelection(payload) {

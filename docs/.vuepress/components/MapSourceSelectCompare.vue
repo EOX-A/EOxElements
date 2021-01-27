@@ -17,9 +17,12 @@
         @swipeActive="toggleCompare"
       />
       <map-source-select
+        v-if="mapObject"
         enableCompare
         reverseDirection
         :selectionItems="availableLayers"
+        :comparisonLayer="foregroundLayers[0]"
+        :originalLayer="backgroundLayers[0]"
         @selectLayer="changeBackgroundLayer"
         @selectCompareLayer="changeForegroundLayer"
         @toggleCompare="toggleCompare"
@@ -83,10 +86,10 @@ export default {
   }),
   mounted() {
     this.backgroundLayers = [
-      this.availableLayers[1]
+      this.availableLayers[this.availableLayers.length - 1]
     ];
     this.foregroundLayers = [
-      this.availableLayers[this.availableLayers.length - 1],
+      this.availableLayers[0],
     ];
   },
   methods: {
