@@ -1,7 +1,8 @@
 <template>
+  <loading-indicator v-if="!component" />
   <component
+    v-else
     :is="component"
-    v-if="component"
     v-bind="{
       ...$attrs,
       ...$props,
