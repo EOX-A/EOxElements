@@ -19,7 +19,6 @@
         <v-select
           outlined
           dense
-          autofocus
           hide-details
           :prepend-inner-icon="(selectionItems && dataLayer) && (selectionItems
             .map((i) => i.name)
@@ -62,7 +61,6 @@
           v-if="compareActive"
           outlined
           dense
-          autofocus
           hide-details
           :prepend-inner-icon="(selectionItems && compareLayer) && (selectionItems
             .map((i) => i.name)
