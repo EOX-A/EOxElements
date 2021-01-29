@@ -26,8 +26,10 @@
       ? originalLayerName
       : swipeLayerName }}</div>
     <div id="swipe_handle_separator" :style="`left: calc(${swipe}% - 1px)`">
-      <div id="swipe_handle">
-        <v-icon color="white">mdi-arrow-left-right-bold</v-icon>
+      <div id="swipe_handle" style="display: flex; align-items: center">
+        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+          <path fill="white" d="M8,14V18L2,12L8,6V10H16V6L22,12L16,18V14H8Z" />
+        </svg>
       </div>
     </div>
   </div>
