@@ -9,10 +9,31 @@
       <map-layer-swipe
         v-if="mapObject"
         :mapObject="mapObject"
+        ref="swipe"
         :swipeLayer="foregroundLayers[0]"
         :originalLayer="backgroundLayers[0]"
         @swipeActive="toggleCompare"
-      />
+      >
+        <template v-slot:activate>
+          <v-btn
+            color="primary"
+            @click="$refs.swipe.enableSwipe(true)"
+          >
+            <v-icon left>mdi-compare</v-icon>
+            Compare layers
+          </v-btn>
+        </template>
+        <template v-slot:close>
+          <v-btn
+            fab
+            small
+            color="primary"
+            @click="$refs.swipe.enableSwipe(false)"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </template>
+      </map-layer-swipe>
     </template>
   </map-basic>
 </template>

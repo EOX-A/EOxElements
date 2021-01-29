@@ -2,29 +2,14 @@
   <div
     v-if="!swipeActive"
   >
-    <v-btn
-      v-if="!embeddedMode"
-      color="primary"
-      @click="enableSwipe(true)"
-    >
-      <v-icon left>mdi-compare</v-icon>
-      Compare layers
-    </v-btn>
+    <slot name="activate"></slot>
   </div>
   <div
     v-else
     class="swipe-container"
     ref="container"
   >
-    <v-btn
-      v-if="!embeddedMode"
-      fab
-      small
-      color="primary"
-      @click="enableSwipe(false)"
-    >
-      <v-icon>mdi-close</v-icon>
-    </v-btn>
+    <slot name="close"></slot>
     <input id="swipe" type="range" v-model="swipe">
     <div
       class="swipeinfo swipeinfoLeft"
@@ -49,7 +34,6 @@
 </template>
 
 <script>
-import { VBtn, VIcon } from 'vuetify/lib';
 import gsap from 'gsap';
 
 export default {
@@ -61,10 +45,6 @@ export default {
     reverseDirection: Boolean,
     swipeLayer: Object,
     originalLayer: Object,
-  },
-  components: {
-    VBtn,
-    VIcon,
   },
   data: () => ({
     swipeLayerObject: null,
