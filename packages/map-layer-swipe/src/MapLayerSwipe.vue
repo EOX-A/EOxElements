@@ -175,6 +175,7 @@ export default {
     width: 100%;
     top: 50%;
     pointer-events: none;
+    opacity: 0;
 }
 input[type="range"] {
     -webkit-appearance: none;
