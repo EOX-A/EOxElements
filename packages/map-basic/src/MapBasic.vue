@@ -67,13 +67,13 @@
         :capabilitiesUrl="layer.capabilitiesUrl"
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
-        :zIndex="foregroundLayers.indexOf(layer) + 1"
+        :zIndex="foregroundLayers.indexOf(layer) + 10"
       />
       <vl-layer-tile
         v-else-if="layer.name === 'osm'"
         :key="layer.name"
         :id="layer.name"
-        :z-index="foregroundLayers.indexOf(layer) + 1"
+        :z-index="foregroundLayers.indexOf(layer) + 10"
       >
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile>
@@ -87,13 +87,13 @@
         :capabilitiesUrl="layer.capabilitiesUrl"
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
-        :zIndex="overlayLayers.indexOf(layer) + 1"
+        :zIndex="overlayLayers.indexOf(layer) + 20"
       />
       <vl-layer-tile
         v-else-if="layer.name === 'osm'"
         :key="layer.name"
         :id="layer.name"
-        :z-index="overlayLayers.indexOf(layer) + 1"
+        :z-index="overlayLayers.indexOf(layer) + 20"
       >
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile>
