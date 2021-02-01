@@ -78,6 +78,26 @@
         <vl-source-osm></vl-source-osm>
       </vl-layer-tile>
     </template>
+    <template v-for="layer in overlayLayers">
+      <wmts-capabilites-provider
+        v-if="layer.dataProvider === 'WMTScapabilites'"
+        :key="layer.name"
+        :id="layer.name"
+        :layerName="layer.name"
+        :capabilitiesUrl="layer.capabilitiesUrl"
+        :matrixSet="layer.matrixSet"
+        :visible="layer.visible"
+        :zIndex="backgroundLayers.indexOf(layer) + 1"
+      />
+      <vl-layer-tile
+        v-else-if="layer.name === 'osm'"
+        :key="layer.name"
+        :id="layer.name"
+        :z-index="overlayLayers.indexOf(layer) + 1"
+      >
+        <vl-source-osm></vl-source-osm>
+      </vl-layer-tile>
+    </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
   </vl-map>
@@ -111,6 +131,7 @@ export default {
   props: {
     backgroundLayers: Array,
     foregroundLayers: Array,
+    overlayLayers: Array,
     featureLayers: Array,
     dataProjection: String,
     mapZoom: {
