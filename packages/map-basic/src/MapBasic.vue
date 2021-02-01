@@ -67,7 +67,7 @@
         :capabilitiesUrl="layer.capabilitiesUrl"
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
-        :zIndex="backgroundLayers.indexOf(layer) + 1"
+        :zIndex="foregroundLayers.indexOf(layer) + 1"
       />
       <vl-layer-tile
         v-else-if="layer.name === 'osm'"
@@ -87,7 +87,7 @@
         :capabilitiesUrl="layer.capabilitiesUrl"
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
-        :zIndex="backgroundLayers.indexOf(layer) + 1"
+        :zIndex="overlayLayers.indexOf(layer) + 1"
       />
       <vl-layer-tile
         v-else-if="layer.name === 'osm'"
