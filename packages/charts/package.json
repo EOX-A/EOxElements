@@ -29,7 +29,7 @@
 		"prepublishOnly": "npm run build"
 	},
 	"dependencies": {
-		"chart.js": "^2.9.3",
+		"chart.js": "2.9.3",
 		"chartjs-adapter-luxon": "^0.2.1",
 		"chartjs-plugin-annotation": "^0.5.7",
 		"chartjs-plugin-datalabels": "^0.7.0",

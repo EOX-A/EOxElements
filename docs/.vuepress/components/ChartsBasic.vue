@@ -32,17 +32,6 @@ export default {
           drawOnChartArea: true,
         },
       ],
-      annotations: [
-        {
-          drawTime: 'beforeDatasetsDraw',
-          type: 'box',
-          xScaleID: 'xAxis1',
-          xMin: '2017-07-01',
-          xMax: '2020-08-10',
-          borderWidth: 0,
-          backgroundColor: 'rgba(207, 109, 109, 0.54)',
-        }
-      ]
     },
   }),
   computed: {

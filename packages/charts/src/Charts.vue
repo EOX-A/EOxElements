@@ -145,7 +145,7 @@ export default {
     createChartOptions() {
       const xAxes = [{
         type: 'time',
-        // id: 'xAxes1',
+        id: 'xAxis1',
         time: {
           unit: 'month',
           displayFormats: {
@@ -231,26 +231,12 @@ export default {
             },
           },
         },
-        annotation: {
-          drawTime: 'afterDatasetsDraw',
-          annotations: [
-            {
-              id: 'hline',
-              type: 'line',
-              mode: 'horizontal',
-              scaleID: 'yAxis1',
-              value: 0.5,
-              borderColor: 'black',
-              borderWidth: 5,
-              label: {
-                backgroundColor: 'red',
-                content: 'Test Label',
-                enabled: true,
-              },
-            },
-          ],
-        },
       };
+      if ('annotations' in this.plotConfig) {
+        options.annotation = {
+          annotations: this.plotConfig.annotations,
+        };
+      }
       return options;
     },
   },
