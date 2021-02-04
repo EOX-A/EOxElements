@@ -55,9 +55,6 @@ export default {
           color: '#c22',
         },
       ],
-      annotations: {
-        
-      }
     },
   }),
   computed: {

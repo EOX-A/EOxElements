@@ -1,12 +1,13 @@
 <template>
   <div style="width: 100%; height: 100%;position: relative;">
-    <line-chart ref='lineChart' v-if='type=="line"'
+    <line-chart ref='lineChart' v-if='type=="line" && chartOptions'
       id="chart"
       class="fill-height"
       :width="null"
       :height="null"
       :chart-data='dataCollection'
-      :options='chartOptions()'></line-chart>
+      :options='chartOptions'>
+    </line-chart>
     <div ref='tooltip' class='charts-tooltip' style='position:absolute;width: 100%'>
       <v-tooltip v-model='showTooltip' attach='.charts-tooltip' v-if='tooltipContent' right >
         {{ tooltipContent.title }}
@@ -27,9 +28,10 @@ import { DateTime } from 'luxon';
 import 'chartjs-adapter-luxon'; // eslint-disable-line no-unused-vars
 import { VTooltip } from 'vuetify/lib';
 import * as ChartZoomPlugin from 'chartjs-plugin-zoom';
+import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import LineChart from './LineChart.vue';
 
-Chart.plugins.register([ChartZoomPlugin]);
+Chart.plugins.register([ChartAnnotation, ChartZoomPlugin]);
 
 export default {
   props: {
@@ -44,6 +46,7 @@ export default {
   data: () => ({
     showTooltip: false,
     tooltipContent: null,
+    chartOptions: null,
   }),
   computed: {
     dataCollection() {
@@ -53,12 +56,15 @@ export default {
       return this.$vuetify.theme.isDark;
     },
   },
-  created() {
+  mounted() {
+    this.chartOptions = this.createChartOptions();
   },
   methods: {
+    /*
     renderChart() {
       this.$refs.lineChart.triggerRender();
     },
+    */
     createDataCollection(dataObject) {
       const datasets = [];
       this.plotConfig.yAxes.forEach((axisDesc) => {
@@ -136,9 +142,10 @@ export default {
         datasets,
       };
     },
-    chartOptions() {
+    createChartOptions() {
       const xAxes = [{
         type: 'time',
+        // id: 'xAxes1',
         time: {
           unit: 'month',
           displayFormats: {
@@ -173,15 +180,13 @@ export default {
         yAxes.push({ ...defaultAttrs, ...axisDesc });
       });
 
-      const settings = {
+      const options = {
         responsive: true,
         maintainAspectRatio: true,
         scales: {
           xAxes,
           yAxes,
         },
-        borderColor: '#000',
-        borderWidth: 2,
         tooltips: {
           // Disable the on-canvas tooltip
           enabled: false,
@@ -214,19 +219,39 @@ export default {
             this.$refs.tooltip.style.top = `${Math.round(tooltipModel.caretY)}px`;
           },
         },
-        /*
-        pan: {
-          enabled: true,
-          mode: 'xy',
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy',
+            },
+            zoom: {
+              enabled: true,
+              mode: 'xy',
+            },
+          },
         },
-        zoom: {
-          enabled: true,
-          mode: 'xy',
+        annotation: {
+          drawTime: 'afterDatasetsDraw',
+          annotations: [
+            {
+              id: 'hline',
+              type: 'line',
+              mode: 'horizontal',
+              scaleID: 'yAxis1',
+              value: 0.5,
+              borderColor: 'black',
+              borderWidth: 5,
+              label: {
+                backgroundColor: 'red',
+                content: 'Test Label',
+                enabled: true,
+              },
+            },
+          ],
         },
-        */
       };
-
-      return settings;
+      return options;
     },
   },
   watcher: {
@@ -237,5 +262,4 @@ export default {
     */
   },
 };
-
 </script>
