@@ -5,6 +5,7 @@
     :load-tiles-while-interacting="true"
     @pointermove="onPointerMove"
     @click="onPointerClick"
+    @created="onMapCreated"
     ref="map"
     style="height: 400px"
     :class="hoverFeature ? 'cursorPointer' : ''"
@@ -110,6 +111,7 @@ import {
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/lib/style.css';
+import olms from 'ol-mapbox-style';
 import FeatureLayer from './FeatureLayer.vue';
 import VectorStyle from './VectorStyle.vue';
 import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
@@ -143,6 +145,7 @@ export default {
       default: () => [0, 0],
     },
     showCenter: Boolean,
+    glStyleUrls: Array,
   },
   data: () => ({
     zoom: null,
@@ -182,6 +185,15 @@ export default {
       this.mapObject.forEachFeatureAtPixel(pixel, (feature) => {
         this.$emit('featureClicked', feature);
       });
+    },
+    onMapCreated(map) {
+      if (this.glStyleUrls) {
+        const gls = Array.isArray(this.glStyleUrls) ? this.glStyleUrls : [this.glStyleUrls];
+        // apply mapbox GL style(s) to existing map
+        gls.forEach((style) => {
+          olms(map.$map, style);
+        });
+      }
     },
   },
   watch: {

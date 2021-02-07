@@ -14,3 +14,8 @@
 <example file="MapBasicFeatures.vue" />
 
 <<< ./.vuepress/components/MapBasicFeatures.vue
+
+## Map created from Mapbox style document
+<example file="MapBasicMapboxStyle.vue" />
+
+<<< ./.vuepress/components/MapBasicMapboxStyle.vue
