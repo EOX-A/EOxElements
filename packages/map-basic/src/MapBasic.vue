@@ -182,9 +182,12 @@ export default {
       }
     },
     onPointerClick({ pixel }) {
-      this.mapObject.forEachFeatureAtPixel(pixel, (feature) => {
-        this.$emit('featureClicked', feature);
+      const ftrs = [];
+      this.mapObject.forEachFeatureAtPixel(pixel, (feature, layer) => {
+        // more features can be clicked, get all as a list
+        ftrs.push({ feature, layer });
       });
+      this.$emit('featuresClicked', ftrs);
     },
     onMapCreated(map) {
       if (this.glStyleUrls) {
