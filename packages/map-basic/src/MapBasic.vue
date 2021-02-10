@@ -34,6 +34,8 @@
           :matrixSet="layer.matrixSet"
           :visible="layer.visible"
           :zIndex="backgroundLayers.indexOf(layer)"
+          :capabilitiesRequest="WMTScapabilitiesRequest"
+          @fetchedCapabilities="updateCapabilitiesRequest"
           />
         <vl-layer-tile
           v-else-if="layer.type === 'tile' && layer.name === 'osm'"
@@ -68,6 +70,8 @@
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
         :zIndex="foregroundLayers.indexOf(layer) + 10"
+        :capabilitiesRequest="WMTScapabilitiesRequest"
+        @fetchedCapabilities="updateCapabilitiesRequest"
       />
       <vl-layer-tile
         v-else-if="layer.name === 'osm'"
@@ -88,6 +92,8 @@
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
         :zIndex="overlayLayers.indexOf(layer) + 20"
+        :capabilitiesRequest="WMTScapabilitiesRequest"
+        @fetchedCapabilities="updateCapabilitiesRequest"
       />
       <vl-layer-tile
         v-else-if="layer.name === 'osm'"
@@ -151,6 +157,7 @@ export default {
     mapObject: null,
     overlay: null,
     hoverFeature: null,
+    WMTScapabilitiesRequest: null,
   }),
   created() {
     this.zoom = this.mapZoom;
@@ -182,6 +189,9 @@ export default {
       this.mapObject.forEachFeatureAtPixel(pixel, (feature) => {
         this.$emit('featureClicked', feature);
       });
+    },
+    updateCapabilitiesRequest(request) {
+      this.WMTScapabilitiesRequest = request;
     },
   },
   watch: {

@@ -21,6 +21,7 @@ export default {
     matrixSet: String,
     visible: Boolean,
     zIndex: Number,
+    capabilitiesRequest: Promise,
   },
   data() {
     return {
@@ -33,31 +34,39 @@ export default {
       return this.capabilitiesUrl;
     },
   },
-  mounted() {
-    const parser = new WMTSCapabilities();
-    fetch(this.wmtsCapabilitiesUrl)
-      .then((response) => response.text())
-      .then((text) => {
-        const xml = parser.read(text);
-        const attribution = xml.Contents.Layer
-          .find((l) => l.Identifier === this.layerName).Abstract;
-        let options = optionsFromCapabilities(
-          xml,
-          {
-            layer: this.layerName,
-            matrixSet: this.matrixSet,
-          },
-        );
-        options = {
-          ...options,
-          attributions: attribution,
-        };
-        this.wmtsOptions = options;
-        this.ready = true;
-        return options;
-      });
+  created() {
+    this.getCapabilities();
   },
   methods: {
+    getCapabilities() {
+      const parser = new WMTSCapabilities();
+
+      if (!this.capabilitiesRequest) {
+        const request = fetch(this.wmtsCapabilitiesUrl);
+        this.$emit('fetchedCapabilities', request);
+      }
+      this.$nextTick(() => this.capabilitiesRequest
+        .then((response) => response.clone().text())
+        .then((text) => {
+          const xml = parser.read(text);
+          const attribution = xml.Contents.Layer
+            .find((l) => l.Identifier === this.layerName).Abstract;
+          let options = optionsFromCapabilities(
+            xml,
+            {
+              layer: this.layerName,
+              matrixSet: this.matrixSet,
+            },
+          );
+          options = {
+            ...options,
+            attributions: attribution,
+          };
+          this.wmtsOptions = options;
+          this.ready = true;
+          return options;
+        }));
+    },
     onWmtsLayerMounted(layer) {
       layer.$layer.setSource(new WMTS(this.wmtsOptions));
     },
