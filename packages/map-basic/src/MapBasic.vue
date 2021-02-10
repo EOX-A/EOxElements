@@ -157,7 +157,7 @@ export default {
     mapObject: null,
     overlay: null,
     hoverFeature: null,
-    WMTScapabilitiesRequest: null,
+    WMTScapabilitiesRequest: {},
   }),
   created() {
     this.zoom = this.mapZoom;
@@ -190,8 +190,8 @@ export default {
         this.$emit('featureClicked', feature);
       });
     },
-    updateCapabilitiesRequest(request) {
-      this.WMTScapabilitiesRequest = request;
+    updateCapabilitiesRequest({ request, url }) {
+      this.WMTScapabilitiesRequest[url] = request;
     },
   },
   watch: {

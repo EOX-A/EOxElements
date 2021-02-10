@@ -21,7 +21,7 @@ export default {
     matrixSet: String,
     visible: Boolean,
     zIndex: Number,
-    capabilitiesRequest: Promise,
+    capabilitiesRequest: Object,
   },
   data() {
     return {
@@ -40,12 +40,13 @@ export default {
   methods: {
     getCapabilities() {
       const parser = new WMTSCapabilities();
+      const url = this.wmtsCapabilitiesUrl;
 
-      if (!this.capabilitiesRequest) {
-        const request = fetch(this.wmtsCapabilitiesUrl);
-        this.$emit('fetchedCapabilities', request);
+      if (!this.capabilitiesRequest[url]) {
+        const request = fetch(url);
+        this.$emit('fetchedCapabilities', { request, url });
       }
-      this.$nextTick(() => this.capabilitiesRequest
+      this.$nextTick(() => this.capabilitiesRequest[url]
         .then((response) => response.clone().text())
         .then((text) => {
           const xml = parser.read(text);
