@@ -46,7 +46,7 @@ export default {
         const request = fetch(url);
         this.$emit('fetchedCapabilities', { request, url });
       }
-      this.$nextTick(() => this.capabilitiesRequest[url]
+      this.capabilitiesRequest[url]
         .then((response) => response.clone().text())
         .then((text) => {
           const xml = parser.read(text);
@@ -66,7 +66,7 @@ export default {
           this.wmtsOptions = options;
           this.ready = true;
           return options;
-        }));
+        });
     },
     onWmtsLayerMounted(layer) {
       layer.$layer.setSource(new WMTS(this.wmtsOptions));
