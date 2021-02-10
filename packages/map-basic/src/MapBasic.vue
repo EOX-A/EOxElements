@@ -34,7 +34,7 @@
           :matrixSet="layer.matrixSet"
           :visible="layer.visible"
           :zIndex="backgroundLayers.indexOf(layer)"
-          :capabilitiesRequest="WMTScapabilitiesRequest"
+          :capabilitiesRequest="wmtsCapabilitiesRequest"
           @fetchedCapabilities="updateCapabilitiesRequest"
           />
         <vl-layer-tile
@@ -70,7 +70,7 @@
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
         :zIndex="foregroundLayers.indexOf(layer) + 10"
-        :capabilitiesRequest="WMTScapabilitiesRequest"
+        :capabilitiesRequest="wmtsCapabilitiesRequest"
         @fetchedCapabilities="updateCapabilitiesRequest"
       />
       <vl-layer-tile
@@ -92,7 +92,7 @@
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
         :zIndex="overlayLayers.indexOf(layer) + 20"
-        :capabilitiesRequest="WMTScapabilitiesRequest"
+        :capabilitiesRequest="wmtsCapabilitiesRequest"
         @fetchedCapabilities="updateCapabilitiesRequest"
       />
       <vl-layer-tile
@@ -157,7 +157,7 @@ export default {
     mapObject: null,
     overlay: null,
     hoverFeature: null,
-    WMTScapabilitiesRequest: {},
+    wmtsCapabilitiesRequest: {},
   }),
   created() {
     this.zoom = this.mapZoom;
@@ -191,7 +191,7 @@ export default {
       });
     },
     updateCapabilitiesRequest({ request, url }) {
-      this.WMTScapabilitiesRequest[url] = request;
+      this.wmtsCapabilitiesRequest[url] = request;
     },
   },
   watch: {
