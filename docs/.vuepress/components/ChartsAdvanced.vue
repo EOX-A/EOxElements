@@ -5,6 +5,7 @@
     :plotConfig='plotConfig'
     :indexTooltips='true'
     style="width: 100%; height: 100%;"
+    @dateSelected='dateSelected'
   />
 </template>
 <script>
@@ -86,6 +87,11 @@ export default {
     dataObject(){
       return example;
     }
+  },
+  methods: {
+    dateSelected(date) {
+      console.log('Date selected: ' + date);
+    },
   },
 }
 </script>

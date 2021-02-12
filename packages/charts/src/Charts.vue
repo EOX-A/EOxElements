@@ -251,6 +251,16 @@ export default {
           drawTime: 'beforeDatasetsDraw',
           annotations: this.plotConfig.annotations || [],
         },
+        onClick: (_, element) => { // eslint-disable-line
+          const activeElement = element[0];
+          const data = activeElement._chart.data; // eslint-disable-line
+          const barIndex = activeElement._index; // eslint-disable-line
+          const datasetIndex = activeElement._datasetIndex; // eslint-disable-line
+
+          const yLabel = data.datasets[datasetIndex].data[barIndex];
+
+          this.$emit('dateSelected', new Date(yLabel.t));
+        },
       };
       return options;
     },
