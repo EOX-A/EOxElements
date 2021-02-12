@@ -3,6 +3,7 @@
     type="line"
     :dataObject='dataObject'
     :plotConfig='plotConfig'
+    :indexTooltips='true'
     style="width: 100%; height: 100%;"
   />
 </template>

@@ -1,6 +1,14 @@
 <template>
   <div style="width: 100%; height: 100%;position: relative;">
-    <line-chart ref='lineChart' v-if='type=="line" && chartOptions'
+    <line-with-line-chart ref='lineChart' v-if='type=="line" && chartOptions && indexTooltips'
+      id="chart"
+      class="fill-height"
+      :width="null"
+      :height="null"
+      :chart-data='dataCollection'
+      :options='chartOptions'>
+    </line-with-line-chart>
+    <line-chart ref='lineChart' v-else-if='type=="line" && chartOptions'
       id="chart"
       class="fill-height"
       :width="null"
@@ -30,6 +38,7 @@ import { VTooltip } from 'vuetify/lib';
 import * as ChartZoomPlugin from 'chartjs-plugin-zoom';
 import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import LineChart from './LineChart.vue';
+import LineWithLineChart from './LineWithLineChart.vue';
 
 Chart.plugins.register([ChartAnnotation, ChartZoomPlugin]);
 
@@ -38,9 +47,11 @@ export default {
     type: String,
     dataObject: Object,
     plotConfig: Object,
+    indexTooltips: Boolean,
   },
   components: {
     LineChart,
+    LineWithLineChart,
     VTooltip,
   },
   data: () => ({
@@ -187,10 +198,15 @@ export default {
           xAxes,
           yAxes,
         },
+        hover: {
+          mode: this.indexTooltips ? 'index' : 'label',
+          intersect: !this.indexTooltips,
+        },
         tooltips: {
           // Disable the on-canvas tooltip
           enabled: false,
-          mode: 'label',
+          mode: this.indexTooltips ? 'index' : 'label',
+          intersect: !this.indexTooltips,
           callbacks: {
             label: (tooltipItem, data) => {
               const { datasetIndex, index } = tooltipItem;
