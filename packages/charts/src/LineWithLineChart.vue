@@ -12,8 +12,8 @@ Chart.controllers.LineWithLine = Chart.controllers.line.extend({
       const activePoint = this.chart.tooltip._active[0]; // eslint-disable-line
       const { ctx } = this.chart;
       const { x } = activePoint.tooltipPosition();
-      const topY = this.chart.scales.yAxis1.top;
-      const bottomY = this.chart.scales.yAxis1.bottom;
+      const topY = this.chart.chartArea.top;
+      const bottomY = this.chart.chartArea.bottom;
       // draw line
       ctx.save();
       ctx.beginPath();
