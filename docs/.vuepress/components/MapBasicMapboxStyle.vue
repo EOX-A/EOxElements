@@ -18,7 +18,7 @@ export default {
     MapBasic
   },
   data: () => ({
-    glStyleUrls: ['https://gist.githubusercontent.com/lubojr/b17af5c54f2b872ecef6d6757db7db1d/raw/ac1638aa2f6af693f388352e712622aa3e5ceffb/declarations.json'],
+    glStyleUrls: ['/style_declarations.json'],
     tileLayers: [
       {
         type: 'tile',
