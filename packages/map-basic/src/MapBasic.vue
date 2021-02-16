@@ -17,6 +17,7 @@
       <feature-layer
         v-for="(layer, index) in featureLayers"
         :key="index"
+        :id="layer.name"
         :properties="layer.properties"
         :coordinates="layer.coordinates"
         :icon="layer.icon"
@@ -29,6 +30,7 @@
         <wmts-capabilites-provider
           v-if="layer.dataProvider === 'WMTScapabilites'"
           :key="layer.name"
+          :id="layer.name"
           :layerName="layer.name"
           :capabilitiesUrl="layer.capabilitiesUrl"
           :matrixSet="layer.matrixSet"
@@ -40,6 +42,7 @@
         <vl-layer-tile
           v-else-if="layer.type === 'tile' && layer.name === 'osm'"
           :key="layer.name"
+          :id="layer.name"
           :visible="layer.visible"
           :z-index="backgroundLayers.indexOf(layer)"
         >
@@ -48,7 +51,7 @@
         <vl-layer-vector-tile
           v-else-if="layer.type === 'vector'"
           :key="layer.name"
-          ref="vectorLayer"
+          :id="layer.name"
           :visible="layer.visible"
           :z-index="backgroundLayers.indexOf(layer)"
         >
