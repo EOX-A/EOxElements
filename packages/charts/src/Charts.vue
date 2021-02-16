@@ -262,6 +262,11 @@ export default {
           this.$emit('dateSelected', new Date(yLabel.t));
         },
       };
+      if ('annotations' in this.plotConfig) {
+        options.annotation = {
+          annotations: this.plotConfig.annotations,
+        };
+      }
       return options;
     },
   },
