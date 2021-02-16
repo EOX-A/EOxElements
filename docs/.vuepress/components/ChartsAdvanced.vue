@@ -59,6 +59,7 @@ export default {
       ],
       annotations: [
         {
+          drawTime: 'beforeDatasetsDraw',
           id: 'harvest',
           type: 'box',
           xScaleID: 'x',
@@ -70,6 +71,7 @@ export default {
           backgroundColor: 'lightblue',
         },
         {
+          drawTime: 'beforeDatasetsDraw',
           id: 'practce',
           type: 'box',
           xScaleID: 'x',
