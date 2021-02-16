@@ -1,11 +1,14 @@
 <template>
   <map-basic
-    :mapZoom="15"
-    :mapCenter="[1801868, 6137793]"
+    :mapZoom="13"
+    :mapCenter="[1783019, 6148052]"
     showCenter
     :backgroundLayers="tileLayers"
     :glStyleUrls="glStyleUrls"
     style="height: 100%; width: 100%;"
+    @featuresClicked="featuresClicked"
+    @mapboxStylesApplied="mapboxStylesApplied"
+    ref='mapbasic'
   >
   </map-basic>
 </template>
@@ -29,6 +32,21 @@ export default {
         matrixSet: 'WGS84',
       },
     ],
-  })
+  }),
+  methods: {
+    featuresClicked(ftrs) {
+      ftrs.forEach((item) => {
+        console.log(item.feature.properties_.SNAR_BEZEICHNUNG);
+      });
+    },
+    mapboxStylesApplied() {
+      // due to preset z-index rules on mapbasic, it can be needed to also manually set 
+      // z-index of layers coming from mapbox style, as those come without z-index set by design
+      const layers = this.$refs.mapbasic.getOlLayersByMapboxSource('declarations');
+      layers.forEach((l, i) => {
+        l.setZIndex(30 + i)
+      });
+    }
+  },
 }
 </script>

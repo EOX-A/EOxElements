@@ -117,7 +117,8 @@ import {
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/lib/style.css';
-import { apply as applyStyle, getLayer } from 'ol-mapbox-style';
+import { getLayer, getLayers } from 'ol-mapbox-style';
+import olms from 'ol-mapbox-style';
 import FeatureLayer from './FeatureLayer.vue';
 import VectorStyle from './VectorStyle.vue';
 import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
@@ -199,11 +200,22 @@ export default {
     onMapCreated(map) {
       if (this.glStyleUrls) {
         const gls = Array.isArray(this.glStyleUrls) ? this.glStyleUrls : [this.glStyleUrls];
-        // apply mapbox GL style(s) to existing map
+        const promises = [];
         gls.forEach((style) => {
-          applyStyle(map.$map, style);
+          // apply mapbox GL style(s) to existing map
+          promises.push(olms(map.$map, style));
         });
+        // emit event of finished loading of styles
+        Promise.allSettled(promises).then(() => this.$emit('mapboxStylesApplied'));
       }
+    },
+    getOlLayersByMapboxSource(source) {
+      // returns OL layer instances provided by Mapbox style 'source'
+      return getLayers(this.mapObject.$map, source);
+    },
+    getOlLayerByMapboxLayer(layer) {
+      // returns OL layer instance provided by Mapbox style 'layer'
+      return getLayer(this.mapObject.$map, layer);
     },
     hilite({ highlightObj }) {
       // accepts a key:value pair of feature properties
