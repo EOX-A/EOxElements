@@ -34,6 +34,7 @@ export default {
         type: 'vector',
         url: 'https://agri.demo.hub.eox.at/parcels-api/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
         title: 'Declarations',
+        name: 'declarations',
         style: {
           stroke: {
             color: 'black',
@@ -62,7 +63,7 @@ export default {
   methods: {
     btnclicked() {
       this.highlighted = {SNAR_BEZEICHNUNG: 'KÖRNERMAIS'};
-      const layer = this.$refs.mapbasic.$refs.vectorLayer[0].$layer;
+      const layer = this.$refs.mapbasic.$refs['declarations'][0].$layer;
       // update style
       layer.setStyle(this.featureStyle);
     },
