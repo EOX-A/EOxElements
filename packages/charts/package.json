@@ -1,6 +1,6 @@
 {
 	"name": "@eox/charts",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"private": false,
 	"main": "dist/charts.umd.min.js",
 	"module": "dist/charts.umd.min.js",
@@ -29,7 +29,7 @@
 		"prepublishOnly": "npm run build"
 	},
 	"dependencies": {
-		"chart.js": "^2.9.3",
+		"chart.js": "2.9.3",
 		"chartjs-adapter-luxon": "^0.2.1",
 		"chartjs-plugin-annotation": "^0.5.7",
 		"chartjs-plugin-datalabels": "^0.7.0",

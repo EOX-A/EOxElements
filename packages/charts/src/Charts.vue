@@ -1,12 +1,21 @@
 <template>
   <div style="width: 100%; height: 100%;position: relative;">
-    <line-chart ref='lineChart' v-if='type=="line"'
+    <line-with-line-chart ref='lineChart' v-if='type=="line" && chartOptions && indexTooltips'
       id="chart"
       class="fill-height"
       :width="null"
       :height="null"
       :chart-data='dataCollection'
-      :options='chartOptions()'></line-chart>
+      :options='chartOptions'>
+    </line-with-line-chart>
+    <line-chart ref='lineChart' v-else-if='type=="line" && chartOptions'
+      id="chart"
+      class="fill-height"
+      :width="null"
+      :height="null"
+      :chart-data='dataCollection'
+      :options='chartOptions'>
+    </line-chart>
     <div ref='tooltip' class='charts-tooltip' style='position:absolute;width: 100%'>
       <v-tooltip v-model='showTooltip' attach='.charts-tooltip' v-if='tooltipContent' right >
         {{ tooltipContent.title }}
@@ -27,22 +36,28 @@ import { DateTime } from 'luxon';
 import 'chartjs-adapter-luxon'; // eslint-disable-line no-unused-vars
 import { VTooltip } from 'vuetify/lib';
 import * as ChartZoomPlugin from 'chartjs-plugin-zoom';
+import * as ChartAnnotation from 'chartjs-plugin-annotation';
 import LineChart from './LineChart.vue';
+import LineWithLineChart from './LineWithLineChart.vue';
 
-Chart.plugins.register([ChartZoomPlugin]);
+Chart.plugins.register([ChartAnnotation, ChartZoomPlugin]);
 
 export default {
   props: {
     type: String,
     dataObject: Object,
+    plotConfig: Object,
+    indexTooltips: Boolean,
   },
   components: {
     LineChart,
+    LineWithLineChart,
     VTooltip,
   },
   data: () => ({
     showTooltip: false,
     tooltipContent: null,
+    chartOptions: null,
   }),
   computed: {
     dataCollection() {
@@ -52,83 +67,96 @@ export default {
       return this.$vuetify.theme.isDark;
     },
   },
-  created() {
+  mounted() {
+    this.chartOptions = this.createChartOptions();
   },
   methods: {
+    /*
     renderChart() {
       this.$refs.lineChart.triggerRender();
     },
+    */
     createDataCollection(dataObject) {
       const datasets = [];
-      // Get highest level key(s) of dataset
-      const topKeys = Object.keys(dataObject);
+      this.plotConfig.yAxes.forEach((axisDesc) => {
+        Object.keys(axisDesc.parameters).forEach((parKey) => {
+          const parDesc = axisDesc.parameters[parKey];
+          if (!(parKey in dataObject)) {
+            return;
+          }
+          const min = [];
+          const max = [];
+          const mean = [];
+          const stDev = [];
 
-      for (let i = 0; i < topKeys.length; i += 1) {
-        const currKey = topKeys[i];
-        const min = [];
-        const max = [];
-        const mean = [];
-        const stDev = [];
-
-        for (let j = 0; j < dataObject[currKey].length; j += 1) {
-          const t = DateTime.fromISO(dataObject[currKey][j].date);
-          if ('basicStats' in dataObject[currKey][j]) {
-            if ('max' in dataObject[currKey][j].basicStats) {
-              max.push({ t, y: dataObject[currKey][j].basicStats.max });
-            }
-            if ('min' in dataObject[currKey][j].basicStats) {
-              min.push({ t, y: dataObject[currKey][j].basicStats.min });
-            }
-            if ('mean' in dataObject[currKey][j].basicStats) {
-              mean.push({ t, y: dataObject[currKey][j].basicStats.mean });
-            }
-            if ('stDev' in dataObject[currKey][j].basicStats) {
-              stDev.push({ t, y: dataObject[currKey][j].basicStats.stDev });
+          for (let j = 0; j < dataObject[parKey].length; j += 1) {
+            const t = DateTime.fromISO(dataObject[parKey][j].date);
+            if ('basicStats' in dataObject[parKey][j]) {
+              if ('max' in dataObject[parKey][j].basicStats) {
+                max.push({ t, y: dataObject[parKey][j].basicStats.max });
+              }
+              if ('min' in dataObject[parKey][j].basicStats) {
+                min.push({ t, y: dataObject[parKey][j].basicStats.min });
+              }
+              if ('mean' in dataObject[parKey][j].basicStats) {
+                mean.push({ t, y: dataObject[parKey][j].basicStats.mean });
+              }
+              if ('stDev' in dataObject[parKey][j].basicStats) {
+                stDev.push({ t, y: dataObject[parKey][j].basicStats.stDev });
+              }
             }
           }
-        }
-        // date
-        datasets.push({
-          data: max,
-          label: 'max',
-          fill: +2,
-          backgroundColor: 'rgba(30,70,255,0.3)',
-          borderColor: 'rgba(30,70,255,0.6)',
-          pointHoverRadius: 5,
-          pointHoverBorderWidth: 2,
+          const currDataset = {
+            data: mean,
+            yAxisID: axisDesc.id,
+            label: `${parKey} (mean)`,
+            fill: false,
+            borderColor: parDesc.color,
+            backgroundColor: parDesc.color,
+            showLine: parDesc.showLine,
+            pointRadius: parDesc.pointRadius,
+            pointHoverRadius: 5,
+            pointHoverBorderWidth: 2,
+            lineTension: parDesc.lineTension,
+            borderWidth: parDesc.borderWidth,
+          };
+          datasets.push(currDataset);
+
+          if (parDesc.showMinMax) {
+            datasets.push({
+              data: max,
+              label: `${parKey} (max)`,
+              fill: '+1',
+              borderWidth: 1,
+              backgroundColor: 'rgba(70,70,70,0.2)',
+              borderColor: 'rgba(70,70,70,0.5)',
+              pointRadius: 2,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 2,
+            });
+            datasets.push({
+              data: min,
+              label: `${parKey} (min)`,
+              fill: '-1',
+              borderWidth: 1,
+              backgroundColor: 'rgba(70,70,70,0.2)',
+              borderColor: 'rgba(70,70,70,0.5)',
+              pointRadius: 2,
+              pointHoverRadius: 4,
+              pointHoverBorderWidth: 2,
+            });
+          }
         });
-        datasets.push({
-          data: mean,
-          label: 'mean',
-          fill: false,
-          borderColor: 'rgb(255,70,50)',
-          pointRadius: 4,
-          pointHoverRadius: 7,
-          pointHoverBorderWidth: 2,
-        });
-        datasets.push({
-          data: min,
-          label: 'min',
-          fill: -2,
-          backgroundColor: 'rgba(30,70,255,0.3)',
-          borderColor: 'rgba(30,70,255,0.6)',
-          pointHoverRadius: 5,
-          pointHoverBorderWidth: 2,
-        });
-        /*
-        datasets.push({
-          data: stDev, label: 'stDev', fill: false,
-        });
-        */
-      }
+      });
 
       return {
         datasets,
       };
     },
-    chartOptions() {
+    createChartOptions() {
       const xAxes = [{
         type: 'time',
+        id: 'x',
         time: {
           unit: 'month',
           displayFormats: {
@@ -143,26 +171,42 @@ export default {
         },
       }];
 
-      const yAxes = [{
-        type: 'linear',
-        gridLines: {
-          color: this.darkModeEnabled ? '#ddd6' : '#2226',
-          strokeOpacity: 0.3,
-          drawBorder: true,
-        },
-      }];
+      const yAxes = [];
 
-      const settings = {
+      this.plotConfig.yAxes.forEach((axisDesc) => {
+        const defaultAttrs = {
+          type: 'linear',
+          gridLines: {
+            // color: this.darkModeEnabled ? '#ddd6' : '#2226',
+            strokeOpacity: 0.3,
+            drawBorder: true,
+            color: axisDesc.color,
+            drawOnChartArea: axisDesc.drawOnChartArea,
+          },
+          ticks: {
+            fontColor: axisDesc.color,
+          },
+          display: 'auto',
+        };
+        yAxes.push({ ...defaultAttrs, ...axisDesc });
+      });
+
+      const options = {
         responsive: true,
         maintainAspectRatio: true,
         scales: {
           xAxes,
           yAxes,
         },
+        hover: {
+          mode: this.indexTooltips ? 'index' : 'label',
+          intersect: !this.indexTooltips,
+        },
         tooltips: {
           // Disable the on-canvas tooltip
           enabled: false,
-          mode: 'label',
+          mode: this.indexTooltips ? 'index' : 'label',
+          intersect: !this.indexTooltips,
           callbacks: {
             label: (tooltipItem, data) => {
               const { datasetIndex, index } = tooltipItem;
@@ -191,19 +235,39 @@ export default {
             this.$refs.tooltip.style.top = `${Math.round(tooltipModel.caretY)}px`;
           },
         },
-        /*
-        pan: {
-          enabled: true,
-          mode: 'xy',
+        plugins: {
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'xy',
+            },
+            zoom: {
+              enabled: true,
+              mode: 'xy',
+            },
+          },
         },
-        zoom: {
-          enabled: true,
-          mode: 'xy',
+        annotation: {
+          drawTime: 'beforeDatasetsDraw',
+          annotations: this.plotConfig.annotations || [],
         },
-        */
-      };
+        onClick: (_, element) => { // eslint-disable-line
+          const activeElement = element[0];
+          const data = activeElement._chart.data; // eslint-disable-line
+          const barIndex = activeElement._index; // eslint-disable-line
+          const datasetIndex = activeElement._datasetIndex; // eslint-disable-line
 
-      return settings;
+          const yLabel = data.datasets[datasetIndex].data[barIndex];
+
+          this.$emit('dateSelected', new Date(yLabel.t));
+        },
+      };
+      if ('annotations' in this.plotConfig) {
+        options.annotation = {
+          annotations: this.plotConfig.annotations,
+        };
+      }
+      return options;
     },
   },
   watcher: {
@@ -214,5 +278,4 @@ export default {
     */
   },
 };
-
 </script>
