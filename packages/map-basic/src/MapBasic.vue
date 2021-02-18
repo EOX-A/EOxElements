@@ -91,7 +91,6 @@
         :capabilitiesRequest="wmtsCapabilitiesRequest"
         @fetchedCapabilities="updateCapabilitiesRequest"
       />
-      </vl-layer-tile>
     </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
@@ -106,6 +105,7 @@ import {
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
+import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 import { getLayer, getLayers } from 'ol-mapbox-style';
 import olms from 'ol-mapbox-style';
 import FeatureLayer from './FeatureLayer.vue';
@@ -164,6 +164,18 @@ export default {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
         && this.$refs.map.render());
+      this.mapObject.$map.getInteractions().forEach((interaction) => {
+        if (interaction instanceof MouseWheelZoom) {
+          this.mapObject.$map.removeInteraction(interaction);
+          const modifiedMouseWheelZoom = new MouseWheelZoom({
+            constrainResolution: true,
+          });
+          this.mapObject.$map.addInteraction(modifiedMouseWheelZoom);
+          this.mapObject.$map.changed();
+          console.log('tada');
+          // does not work yet
+        }
+      });
     });
     this.$on('addOverlay', this.addOverlay);
   },
