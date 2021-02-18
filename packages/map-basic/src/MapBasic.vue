@@ -106,7 +106,7 @@
       </vl-layer-tile>
     </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
-    <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
+    <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
   </vl-map>
 </template>
 

@@ -35,7 +35,7 @@ export default {
         },
         {
           type: 'vector',
-          visible: false,
+          visible: true,
           url: 'https://parcels-api-public.demo.hub.eox.at/demo.declaration/{z}/{x}/{y}.pbf',
           title: 'Demo Declarations',
           tooltip: true,

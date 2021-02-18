@@ -2,7 +2,7 @@
   <map-basic
     ref="map"
     :mapZoom="14"
-    :mapCenter="[ 1731756.231909257, 6228616.060472786 ]"
+    :mapCenter="[ 1731756, 6228616 ]"
     :backgroundLayers="allLayers"
     style="height: 100%; width: 100%;"
   >
@@ -29,10 +29,9 @@ export default {
         },
         {
           type: 'vector',
-          visible: false,
+          visible: true,
           url: 'https://parcels-api-public.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
           title: 'Agricultural Parcels',
-          tooltip: true,
           style: {
             stroke: {
               color: 'black',
@@ -48,13 +47,13 @@ export default {
   },
   methods: {
     fillColor(feature) {
-      if (feature.properties_.cropId < 90) {
+      if (feature.properties_.crop_id < 90) {
         return '#ffff0099';
       }
-      else if (feature.properties_.cropId < 120) {
+      else if (feature.properties_.crop_id < 120) {
         return '#fcba03';
       }
-      else if (feature.properties_.cropId < 150) {
+      else if (feature.properties_.crop_id < 150) {
         return '#0ffc03';
       }
       return '#99999999';
