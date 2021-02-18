@@ -4,6 +4,7 @@
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
     @pointermove="onPointerMove"
+    @mounted="onMapMounted"
     @click="onPointerClick"
     ref="map"
     style="height: 400px"
@@ -123,7 +124,7 @@
     </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
-    <overview-map v-if="overviewMap && mapObject" :mapObject="mapObject" />
+    <overview-map v-if="overviewMap && mapMounted" :mapObject="mapObject" />
   </vl-map>
 </template>
 
@@ -176,6 +177,7 @@ export default {
     center: null,
     rotation: 0,
     mapObject: null,
+    mapMounted: false,
     overlay: null,
     hoverFeature: null,
     wmtsCapabilitiesRequest: {},
@@ -193,6 +195,9 @@ export default {
     this.$on('addOverlay', this.addOverlay);
   },
   methods: {
+    onMapMounted() {
+      this.mapMounted = true;
+    },
     onPointerMove({ coordinate, pixel }) {
       let hasFeature = false;
       this.mapObject.forEachFeatureAtPixel(pixel, (f) => {

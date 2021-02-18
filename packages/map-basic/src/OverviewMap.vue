@@ -1,4 +1,6 @@
-<template></template>
+<template>
+  <div><!-- TODO: remove template --></div>
+</template>
 
 <script>
 import { OverviewMap } from 'ol/control';
