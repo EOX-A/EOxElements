@@ -123,6 +123,7 @@
     </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
+    <overview-map v-if="overviewMap && mapObject" :mapObject="mapObject" />
   </vl-map>
 </template>
 
@@ -134,6 +135,7 @@ import {
 } from 'vuelayers';
 import 'vuelayers/lib/style.css';
 import FeatureLayer from './FeatureLayer.vue';
+import OverviewMap from './OverviewMap.vue';
 import VectorStyle from './VectorStyle.vue';
 import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
 
@@ -148,6 +150,7 @@ export default {
   name: 'map-basic',
   components: {
     FeatureLayer,
+    OverviewMap,
     VectorStyle,
     WmtsCapabilitesProvider,
   },
@@ -166,6 +169,7 @@ export default {
       default: () => [0, 0],
     },
     showCenter: Boolean,
+    overviewMap: Boolean,
   },
   data: () => ({
     zoom: null,
