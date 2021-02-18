@@ -43,19 +43,6 @@
           :capabilitiesRequest="wmtsCapabilitiesRequest"
           @fetchedCapabilities="updateCapabilitiesRequest"
           />
-        <vl-layer-tile
-          v-else-if="layer.type === 'tile' && layer.name === 'osm'"
-          :key="layer.name"
-          :id="layer.name"
-          :ref="layer.name"
-          :visible="layer.visible"
-          :z-index="backgroundLayers.indexOf(layer)"
-        >
-          <vl-source-osm
-            v-if="layer.name === 'osm'"
-            :ref="`${layer.name}-source`"
-          ></vl-source-osm>
-        </vl-layer-tile>
         <vl-layer-vector-tile
           v-else-if="layer.type === 'vector'"
           :key="layer.name"
@@ -89,15 +76,6 @@
         :capabilitiesRequest="wmtsCapabilitiesRequest"
         @fetchedCapabilities="updateCapabilitiesRequest"
       />
-      <vl-layer-tile
-        v-else-if="layer.name === 'osm'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :z-index="foregroundLayers.indexOf(layer) + 10"
-      >
-        <vl-source-osm :ref="`${layer.name}-source`"></vl-source-osm>
-      </vl-layer-tile>
     </template>
     <template v-for="layer in overlayLayers">
       <wmts-capabilites-provider
@@ -113,14 +91,6 @@
         :capabilitiesRequest="wmtsCapabilitiesRequest"
         @fetchedCapabilities="updateCapabilitiesRequest"
       />
-      <vl-layer-tile
-        v-else-if="layer.name === 'osm'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :z-index="overlayLayers.indexOf(layer) + 20"
-      >
-        <vl-source-osm :ref="`${layer.name}-source`"></vl-source-osm>
       </vl-layer-tile>
     </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
@@ -132,7 +102,7 @@
 <script>
 import Vue from 'vue';
 import {
-  Map, TileLayer, OsmSource, GroupLayer,
+  Map, TileLayer, GroupLayer,
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
@@ -145,7 +115,6 @@ import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
-Vue.use(OsmSource);
 Vue.use(GroupLayer);
 Vue.use(VectorTileLayer);
 Vue.use(VectorTileSource);
