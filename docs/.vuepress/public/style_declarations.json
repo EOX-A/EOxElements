@@ -24,7 +24,7 @@
     "declarations": {
       "type": "vector",
       "tiles": [
-        "https://parcels-api-public.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf"
+        "https://agri.demo.hub.eox.at/parcels-api/demo.agri_data_declaration/{z}/{x}/{y}.pbf"
       ],
       "minZoom": 0,
       "maxzoom": 19

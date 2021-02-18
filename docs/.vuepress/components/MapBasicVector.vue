@@ -5,6 +5,7 @@
     :mapCenter="[ 1731756, 6228616 ]"
     :backgroundLayers="allLayers"
     style="height: 100%; width: 100%;"
+    showCenter
   >
   </map-basic>
 </template>
@@ -30,7 +31,7 @@ export default {
         {
           type: 'vector',
           visible: true,
-          url: 'https://parcels-api-public.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
+          url: 'https://agri.demo.hub.eox.at/parcels-api/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
           title: 'Agricultural Parcels',
           style: {
             stroke: {

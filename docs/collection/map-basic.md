@@ -19,3 +19,8 @@
 <example file="MapBasicMapboxStyle.vue" />
 
 <<< ./.vuepress/components/MapBasicMapboxStyle.vue
+
+## Highlighting features by attribute
+<example file="MapBasicHighlightFeatures.vue" />
+
+<<< ./.vuepress/components/MapBasicHighlightFeatures.vue

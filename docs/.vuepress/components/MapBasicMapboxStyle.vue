@@ -36,7 +36,7 @@ export default {
   methods: {
     featuresClicked(ftrs) {
       ftrs.forEach((item) => {
-        console.log(item.feature.properties_.SNAR_BEZEICHNUNG);
+        console.log(item.feature.properties_);
       });
     },
     mapboxStylesApplied() {

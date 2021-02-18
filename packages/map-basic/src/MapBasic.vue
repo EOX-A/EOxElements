@@ -191,7 +191,7 @@ export default {
     },
     onPointerClick({ pixel }) {
       const ftrs = [];
-      this.mapObject.forEachFeatureAtPixel(pixel, (feature, layer) => {
+      this.mapObject.$map.forEachFeatureAtPixel(pixel, (feature, layer) => {
         // more features can be clicked, get all as a list
         ftrs.push({ feature, layer });
       });
