@@ -30,8 +30,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "ol-mapbox-style": "^6.3.1",
-    "vuelayers": "^0.11.28"
+    "vuelayers": "^0.12.0-rc.21"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

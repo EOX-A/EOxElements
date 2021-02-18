@@ -116,7 +116,7 @@ import {
   Map, TileLayer, OsmSource, GroupLayer,
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
-import 'vuelayers/lib/style.css';
+import 'vuelayers/dist/vuelayers.css';
 import { getLayer, getLayers } from 'ol-mapbox-style';
 import olms from 'ol-mapbox-style';
 import FeatureLayer from './FeatureLayer.vue';

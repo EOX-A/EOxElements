@@ -47,7 +47,7 @@ export default {
         },
         {
           type: 'vector',
-          visibile: true,
+          visible: true,
           url: 'https://demo-tileserv.hub.eox.at/public.lpis_at/{z}/{x}/{y}.pbf',
           title: 'LPIS',
           tooltip: true,
@@ -63,7 +63,7 @@ export default {
         },
         {
           type: 'vector',
-          visibile: false,
+          visible: false,
           url: 'http://lpvis-demo.s3-website.eu-central-1.amazonaws.com/geodata/physical_blocks/{z}/{x}/{y}.pbf',
           title: 'Physical Blocks',
           tooltip: true,
@@ -79,7 +79,7 @@ export default {
         },
         {
           type: 'vector',
-          visibile: false,
+          visible: false,
           url: 'http://lpvis-demo.s3-website.eu-central-1.amazonaws.com/geodata/agricultural_parcels/{z}/{x}/{y}.pbf',
           title: 'Agricultural Parcels',
           tooltip: true,

@@ -29,8 +29,8 @@ export default {
         },
         {
           type: 'vector',
-          visibile: false,
-          url: 'http://lpvis-demo.s3-website.eu-central-1.amazonaws.com/geodata/agricultural_parcels/{z}/{x}/{y}.pbf',
+          visible: false,
+          url: 'https://parcels-api-public.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
           title: 'Agricultural Parcels',
           tooltip: true,
           style: {
@@ -39,7 +39,7 @@ export default {
               width: 1,
             },
             fill: {
-              color: (feature) => this.featureStyle(feature),
+              color: (feature) => this.fillColor(feature),
             },
           }
         },
@@ -47,19 +47,15 @@ export default {
     }
   },
   methods: {
-    featureStyle(feature) {
-      if (feature.properties_.ctnuml4a === 1020) {
-        return 'crimson';
+    fillColor(feature) {
+      if (feature.properties_.cropId < 90) {
+        return '#ffff0099';
       }
-      let isHighlighted;
-      if (feature.properties_.accuracy < 0.95) {
-        return isHighlighted ? '#ffff00ff' : '#ffff0099';
+      else if (feature.properties_.cropId < 120) {
+        return '#fcba03';
       }
-      if (feature.properties_.match === 'True') {
-        return isHighlighted ? '#008000ff' : '#00800099';
-      }
-      if (feature.properties_.match === 'False') {
-        return isHighlighted ? '#ff0000ff' : '#ff000099';
+      else if (feature.properties_.cropId < 150) {
+        return '#0ffc03';
       }
       return '#99999999';
     },

@@ -1,18 +1,16 @@
 <template>
-  <vl-style-func :factory="styleFuncProp" />
+  <vl-style-func :function="styleFuncProp" />
 </template>
 
 <script>
 import Vue from 'vue';
 import { Style, Stroke, Fill } from 'ol/style'; // eslint-disable-line
 import {
-  FillStyle, StyleBox, StrokeStyle,
+  Style as VlStyle,
   StyleFunc,
 } from 'vuelayers';
 
-Vue.use(FillStyle);
-Vue.use(StyleBox);
-Vue.use(StrokeStyle);
+Vue.use(VlStyle);
 Vue.use(StyleFunc);
 
 export default {
@@ -27,8 +25,12 @@ export default {
       return () => (feature) => [
         new Style({
           stroke: new Stroke({
-            color: this.styleObject.stroke.color,
-            width: this.styleObject.stroke.width,
+            color: this.isFunction(this.styleObject.stroke.color)
+              ? this.styleObject.stroke.color(feature)
+              : this.styleObject.stroke.color,
+            width: this.isFunction(this.styleObject.stroke.width)
+              ? this.styleObject.stroke.width(feature)
+              : this.styleObject.stroke.width,
           }),
           fill: new Fill({
             color: this.isFunction(this.styleObject.fill.color)
