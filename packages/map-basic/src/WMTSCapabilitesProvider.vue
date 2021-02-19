@@ -70,6 +70,7 @@ export default {
     },
     onWmtsLayerMounted(layer) {
       layer.$layer.setSource(new WMTS(this.wmtsOptions));
+      this.$emit('mounted');
     },
   },
 };
