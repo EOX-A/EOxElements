@@ -4,7 +4,6 @@
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
     @pointermove="onPointerMove"
-    @mounted="onMapMounted"
     @click="onPointerClick"
     @created="onMapCreated"
     ref="map"
@@ -42,6 +41,7 @@
           :zIndex="backgroundLayers.indexOf(layer)"
           :capabilitiesRequest="wmtsCapabilitiesRequest"
           @fetchedCapabilities="updateCapabilitiesRequest"
+          @mounted="onBackgroundLayerMounted"
           />
         <vl-layer-vector-tile
           v-else-if="layer.type === 'vector'"
@@ -94,7 +94,11 @@
     </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
-    <overview-map v-if="overviewMap && mapMounted" :mapObject="mapObject" />
+    <overview-map
+      v-if="overviewMap && overviewLayer"
+      :mapObject="mapObject"
+      :overviewLayer="overviewLayer"
+    />
   </vl-map>
 </template>
 
@@ -150,9 +154,9 @@ export default {
     center: null,
     rotation: 0,
     mapObject: null,
-    mapMounted: false,
     overlay: null,
     hoverFeature: null,
+    overviewLayer: null,
     wmtsCapabilitiesRequest: {},
   }),
   created() {
@@ -180,9 +184,6 @@ export default {
     this.$on('addOverlay', this.addOverlay);
   },
   methods: {
-    onMapMounted() {
-      this.mapMounted = true;
-    },
     onPointerMove({ coordinate, pixel }) {
       let hasFeature = false;
       this.mapObject.forEachFeatureAtPixel(pixel, (f) => {
@@ -233,6 +234,13 @@ export default {
     },
     updateCapabilitiesRequest({ request, url }) {
       this.wmtsCapabilitiesRequest[url] = request;
+    },
+    onBackgroundLayerMounted() {
+      if (this.overviewMap && !this.overviewLayer) {
+        const firstLayer = this.mapObject
+          .getLayers()[0].getLayers().getArray()[0];
+        this.overviewLayer = firstLayer;
+      }
     },
   },
   watch: {
