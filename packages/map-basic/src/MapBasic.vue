@@ -42,7 +42,6 @@
           :zIndex="backgroundLayers.indexOf(layer)"
           :capabilitiesRequest="wmtsCapabilitiesRequest"
           @fetchedCapabilities="updateCapabilitiesRequest"
-          @mounted="onBackgroundLayerMounted"
           />
         <vl-layer-vector-tile
           v-else-if="layer.type === 'vector'"
@@ -96,9 +95,9 @@
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
     <overview-map
-      v-if="overviewMap && overviewLayer"
+      v-if="overviewMapLayers && overviewLayers"
       :mapObject="mapObject"
-      :overviewLayer="overviewLayer"
+      :overviewLayers="overviewLayers"
     />
   </vl-map>
 </template>
@@ -148,7 +147,7 @@ export default {
     },
     showCenter: Boolean,
     glStyleUrls: Array,
-    overviewMap: Boolean,
+    overviewMapLayers: Array,
   },
   data: () => ({
     zoom: null,
@@ -159,7 +158,7 @@ export default {
     mapRendering: false,
     overlay: null,
     hoverFeature: null,
-    overviewLayer: null,
+    overviewLayers: null,
     wmtsCapabilitiesRequest: {},
   }),
   created() {
@@ -188,6 +187,7 @@ export default {
       });
     });
     this.$on('addOverlay', this.addOverlay);
+    this.$on('renderComplete', this.mountOverviewMap);
   },
   methods: {
     onPointerMove({ coordinate, pixel }) {
@@ -241,11 +241,12 @@ export default {
     updateCapabilitiesRequest({ request, url }) {
       this.wmtsCapabilitiesRequest[url] = request;
     },
-    onBackgroundLayerMounted() {
-      if (this.overviewMap && !this.overviewLayer) {
-        const firstLayer = this.mapObject
-          .getLayers()[0].getLayers().getArray()[0];
-        this.overviewLayer = firstLayer;
+    mountOverviewMap() {
+      if (this.overviewMapLayers && !this.overviewLayers) {
+        const layers = this.mapObject
+          .getLayers()[0].getLayersArray();
+        this.overviewLayers = layers
+          .filter((l) => this.overviewMapLayers.includes(l.getProperties().id));
       }
     },
     onMapRender() {
