@@ -14,6 +14,7 @@
       :zoom.sync="zoom"
       :center.sync="center"
       :rotation.sync="rotation"
+      ref="mapView"
     >
       <feature-layer
         v-for="(layer, index) in featureLayers"
@@ -154,7 +155,8 @@ export default {
     center: null,
     rotation: 0,
     mapObject: null,
-    mapRendered: false,
+    mapFirstRender: false,
+    mapRendering: false,
     overlay: null,
     hoverFeature: null,
     overviewLayer: null,
@@ -166,6 +168,8 @@ export default {
   },
   mounted() {
     this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
+    this.$refs.mapView.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.mapView.$on('update:center', this.debounceEvent(this.onMapRender, 100));
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
@@ -244,9 +248,13 @@ export default {
         this.overviewLayer = firstLayer;
       }
     },
-    onMapRenderComplete({ target }) {
-      console.log('rendering complete!', target);
-      this.mapRendered = true;
+    onMapRender() {
+      this.mapRendering = true;
+      this.$emit('rendering');
+    },
+    onMapRenderComplete() {
+      if (!this.mapFirstRender) { this.mapFirstRender = true; }
+      this.mapRendering = false;
       this.$emit('renderComplete');
     },
     debounceEvent(callback, time = 250, interval) {
@@ -259,6 +267,18 @@ export default {
     },
     mapCenter(center) {
       this.center = center;
+    },
+    mapRendering(isRendering) {
+      if (isRendering) {
+        console.log('rendering...');
+      } else {
+        console.log('render complete!');
+      }
+    },
+    mapFirstRender(hasRendered) {
+      if (hasRendered) {
+        console.log('first render complete!');
+      }
     },
   },
 };
