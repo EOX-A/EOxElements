@@ -154,6 +154,7 @@ export default {
     center: null,
     rotation: 0,
     mapObject: null,
+    mapRendered: false,
     overlay: null,
     hoverFeature: null,
     overviewLayer: null,
@@ -164,6 +165,7 @@ export default {
     this.center = this.mapCenter;
   },
   mounted() {
+    this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
@@ -241,6 +243,14 @@ export default {
           .getLayers()[0].getLayers().getArray()[0];
         this.overviewLayer = firstLayer;
       }
+    },
+    onMapRenderComplete({ target }) {
+      console.log('rendering complete!', target);
+      this.mapRendered = true;
+      this.$emit('renderComplete');
+    },
+    debounceEvent(callback, time = 250, interval) {
+      return (...args) => clearTimeout(interval, interval = setTimeout(callback, time, ...args)); // eslint-disable-line
     },
   },
   watch: {
