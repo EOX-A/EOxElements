@@ -14,6 +14,8 @@
       :zoom.sync="zoom"
       :center.sync="center"
       :rotation.sync="rotation"
+      multiWorld
+      constrainResolution
       ref="mapView"
     >
       <feature-layer
@@ -177,12 +179,9 @@ export default {
         if (interaction instanceof MouseWheelZoom) {
           this.mapObject.$map.removeInteraction(interaction);
           const modifiedMouseWheelZoom = new MouseWheelZoom({
-            constrainResolution: true,
+            useAnchor: false,
           });
           this.mapObject.$map.addInteraction(modifiedMouseWheelZoom);
-          this.mapObject.$map.changed();
-          console.log('tada');
-          // does not work yet
         }
       });
     });
