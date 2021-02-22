@@ -14,6 +14,7 @@
       :zoom.sync="zoom"
       :center.sync="center"
       :rotation.sync="rotation"
+      ref="mapView"
     >
       <feature-layer
         v-for="(layer, index) in featureLayers"
@@ -41,7 +42,6 @@
           :zIndex="backgroundLayers.indexOf(layer)"
           :capabilitiesRequest="wmtsCapabilitiesRequest"
           @fetchedCapabilities="updateCapabilitiesRequest"
-          @mounted="onBackgroundLayerMounted"
           />
         <vl-layer-vector-tile
           v-else-if="layer.type === 'vector'"
@@ -95,9 +95,9 @@
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
     <overview-map
-      v-if="overviewMap && overviewLayer"
+      v-if="overviewMapLayers && overviewLayers"
       :mapObject="mapObject"
-      :overviewLayer="overviewLayer"
+      :overviewLayers="overviewLayers"
     />
   </vl-map>
 </template>
@@ -147,17 +147,18 @@ export default {
     },
     showCenter: Boolean,
     glStyleUrls: Array,
-    overviewMap: Boolean,
+    overviewMapLayers: Array,
   },
   data: () => ({
     zoom: null,
     center: null,
     rotation: 0,
     mapObject: null,
-    mapRendered: false,
+    mapFirstRender: false,
+    mapRendering: false,
     overlay: null,
     hoverFeature: null,
-    overviewLayer: null,
+    overviewLayers: null,
     wmtsCapabilitiesRequest: {},
   }),
   created() {
@@ -166,6 +167,8 @@ export default {
   },
   mounted() {
     this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
+    this.$refs.mapView.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.mapView.$on('update:center', this.debounceEvent(this.onMapRender, 100));
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
@@ -184,6 +187,7 @@ export default {
       });
     });
     this.$on('addOverlay', this.addOverlay);
+    this.$on('renderComplete', this.mountOverviewMap);
   },
   methods: {
     onPointerMove({ coordinate, pixel }) {
@@ -237,16 +241,21 @@ export default {
     updateCapabilitiesRequest({ request, url }) {
       this.wmtsCapabilitiesRequest[url] = request;
     },
-    onBackgroundLayerMounted() {
-      if (this.overviewMap && !this.overviewLayer) {
-        const firstLayer = this.mapObject
-          .getLayers()[0].getLayers().getArray()[0];
-        this.overviewLayer = firstLayer;
+    mountOverviewMap() {
+      if (this.overviewMapLayers && !this.overviewLayers) {
+        const layers = this.mapObject
+          .getLayers()[0].getLayersArray();
+        this.overviewLayers = layers
+          .filter((l) => this.overviewMapLayers.includes(l.getProperties().id));
       }
     },
-    onMapRenderComplete({ target }) {
-      console.log('rendering complete!', target);
-      this.mapRendered = true;
+    onMapRender() {
+      this.mapRendering = true;
+      this.$emit('rendering');
+    },
+    onMapRenderComplete() {
+      if (!this.mapFirstRender) { this.mapFirstRender = true; }
+      this.mapRendering = false;
       this.$emit('renderComplete');
     },
     debounceEvent(callback, time = 250, interval) {
@@ -259,6 +268,18 @@ export default {
     },
     mapCenter(center) {
       this.center = center;
+    },
+    mapRendering(isRendering) {
+      if (isRendering) {
+        console.log('rendering...');
+      } else {
+        console.log('render complete!');
+      }
+    },
+    mapFirstRender(hasRendered) {
+      if (hasRendered) {
+        console.log('first render complete!');
+      }
     },
   },
 };
