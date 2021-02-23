@@ -16,12 +16,17 @@ import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 export default {
   props: {
     layerName: String,
+    layerStyle: String,
     capabilitiesUrl: String,
     id: String,
     matrixSet: String,
     visible: Boolean,
     zIndex: Number,
     capabilitiesRequest: Object,
+    requestEncoding: {
+      type: String,
+      default: 'KVP',
+    }
   },
   data() {
     return {
@@ -50,18 +55,30 @@ export default {
         .then((response) => response.clone().text())
         .then((text) => {
           const xml = parser.read(text);
-          const attribution = xml.Contents.Layer
-            .find((l) => l.Identifier === this.layerName).Abstract;
+          const layerDef = xml.Contents.Layer
+            .find((l) => l.Identifier === this.layerName);
+          const attribution = layerDef.Abstract;
           let options = optionsFromCapabilities(
             xml,
             {
               layer: this.layerName,
               matrixSet: this.matrixSet,
+              style: this.layerStyle,
             },
           );
+          let tileUrl = options.urls;
+          if (this.requestEncoding === 'REST' && layerDef.ResourceURL) {
+            if (Array.isArray(layerDef.ResourceURL)) {
+              tileUrl = layerDef.ResourceURL.map((item) => item.template);
+            } else if (typeof layerDef.ResourceURL === 'string') {
+              tileUrl = layerDef.ResourceURL.template;
+            }
+          }
           options = {
             ...options,
             attributions: attribution,
+            requestEncoding: this.requestEncoding,
+            urls: tileUrl, 
           };
           this.wmtsOptions = options;
           this.ready = true;
