@@ -6,7 +6,7 @@
           v-for="(property, index) in tooltipContent"
           :key="index"
         >
-          {{ index }}: {{ property }}
+          {{ property.display_name }}: {{ property.value }}
         </li>
       </ul>
     </v-tooltip>
@@ -21,6 +21,7 @@ export default {
   props: {
     mapObject: Object,
     hoverFeature: Object,
+    propertiesFilter: Array,
   },
   components: {
     VTooltip,
@@ -45,7 +46,20 @@ export default {
   watch: {
     hoverFeature(element) {
       if (element) {
-        this.tooltipContent = element.feature.properties_;
+        this.tooltipContent = Object.keys(element.feature.properties_)
+          .map((p) => ({
+            field_name: p,
+            display_name: p,
+            value: element.feature.properties_[p],
+          }));
+        if (this.propertiesFilter) {
+          this.tooltipContent = this.propertiesFilter
+            .map((p) => ({
+              field_name: p.field_name,
+              display_name: p.display_name,
+              value: element.feature.properties_[p.field_name],
+            }));
+        }
         this.overlay.setPosition(element.coordinate);
       }
     },
