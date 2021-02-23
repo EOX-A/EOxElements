@@ -26,7 +26,7 @@ export default {
     requestEncoding: {
       type: String,
       default: 'KVP',
-    }
+    },
   },
   data() {
     return {
@@ -78,7 +78,7 @@ export default {
             ...options,
             attributions: attribution,
             requestEncoding: this.requestEncoding,
-            urls: tileUrl, 
+            urls: tileUrl,
           };
           this.wmtsOptions = options;
           this.ready = true;
