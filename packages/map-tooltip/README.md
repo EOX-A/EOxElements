@@ -2,8 +2,26 @@
 
 ## Documentation
 ### Props
-- tileLayers (Array): array of ids (currently osm and any eox id)
-. showCenter (Boolean): show center coordinates
+- propertiesFilter (Array): filter displayed properties, expects an array like this: 
+```
+[
+  {
+    field_name: "ori_parcel_id",
+    display_name: "SL_ID",
+    type: "string"
+  },
+  {
+    field_name: "colour",
+    display_name: "Conformance",
+    type: "legend/color"
+  },
+  {
+    field_name: "ori_crop_id",
+    display_name: "SNAR_CODE",
+    type: "reference/crop"
+  }
+],
+```
 
 ## Install
 
