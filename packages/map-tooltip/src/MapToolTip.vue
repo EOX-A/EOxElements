@@ -40,7 +40,10 @@ export default {
         positioning: 'top-left',
       });
       this.mapObject.$map.addOverlay(this.overlay);
-      this.mapObject.$el.addEventListener('mouseleave', () => (this.tooltipContent = null))
+      this.mapObject.$el.addEventListener('mouseleave', () => {
+        this.tooltipContent = null;
+        return this.tooltipContent;
+      });
     },
   },
   watch: {
