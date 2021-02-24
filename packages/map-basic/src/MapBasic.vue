@@ -4,8 +4,8 @@
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
     @pointermove="onPointerMove"
-    @mounted="onMapMounted"
     @click="onPointerClick"
+    @created="onMapCreated"
     ref="map"
     style="height: 400px"
     :class="hoverFeature ? 'cursorPointer' : ''"
@@ -14,6 +14,9 @@
       :zoom.sync="zoom"
       :center.sync="center"
       :rotation.sync="rotation"
+      multiWorld
+      constrainResolution
+      ref="mapView"
     >
       <feature-layer
         v-for="(layer, index) in featureLayers"
@@ -35,6 +38,8 @@
           :id="layer.name"
           :ref="layer.name"
           :layerName="layer.name"
+          :layerStyle="layer.layerStyle"
+          :requestEncoding="layer.requestEncoding"
           :capabilitiesUrl="layer.capabilitiesUrl"
           :matrixSet="layer.matrixSet"
           :visible="layer.visible"
@@ -42,19 +47,6 @@
           :capabilitiesRequest="wmtsCapabilitiesRequest"
           @fetchedCapabilities="updateCapabilitiesRequest"
           />
-        <vl-layer-tile
-          v-else-if="layer.type === 'tile' && layer.name === 'osm'"
-          :key="layer.name"
-          :id="layer.name"
-          :ref="layer.name"
-          :visible="layer.visible"
-          :z-index="backgroundLayers.indexOf(layer)"
-        >
-          <vl-source-osm
-            v-if="layer.name === 'osm'"
-            :ref="`${layer.name}-source`"
-          ></vl-source-osm>
-        </vl-layer-tile>
         <vl-layer-vector-tile
           v-else-if="layer.type === 'vector'"
           :key="layer.name"
@@ -81,6 +73,8 @@
         :id="layer.name"
         :ref="layer.name"
         :layerName="layer.name"
+        :layerStyle="layer.layerStyle"
+        :requestEncoding="layer.requestEncoding"
         :capabilitiesUrl="layer.capabilitiesUrl"
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
@@ -88,15 +82,6 @@
         :capabilitiesRequest="wmtsCapabilitiesRequest"
         @fetchedCapabilities="updateCapabilitiesRequest"
       />
-      <vl-layer-tile
-        v-else-if="layer.name === 'osm'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :z-index="foregroundLayers.indexOf(layer) + 10"
-      >
-        <vl-source-osm :ref="`${layer.name}-source`"></vl-source-osm>
-      </vl-layer-tile>
     </template>
     <template v-for="layer in overlayLayers">
       <wmts-capabilites-provider
@@ -105,6 +90,8 @@
         :id="layer.name"
         :ref="layer.name"
         :layerName="layer.name"
+        :layerStyle="layer.layerStyle"
+        :requestEncoding="layer.requestEncoding"
         :capabilitiesUrl="layer.capabilitiesUrl"
         :matrixSet="layer.matrixSet"
         :visible="layer.visible"
@@ -112,29 +99,27 @@
         :capabilitiesRequest="wmtsCapabilitiesRequest"
         @fetchedCapabilities="updateCapabilitiesRequest"
       />
-      <vl-layer-tile
-        v-else-if="layer.name === 'osm'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :z-index="overlayLayers.indexOf(layer) + 20"
-      >
-        <vl-source-osm :ref="`${layer.name}-source`"></vl-source-osm>
-      </vl-layer-tile>
     </template>
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
-    <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}</span>
-    <overview-map v-if="overviewMap && mapMounted" :mapObject="mapObject" />
+    <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
+    <overview-map
+      v-if="overviewMapLayers && overviewLayers"
+      :mapObject="mapObject"
+      :overviewLayers="overviewLayers"
+    />
   </vl-map>
 </template>
 
 <script>
 import Vue from 'vue';
 import {
-  Map, TileLayer, OsmSource, GroupLayer,
+  Map, TileLayer, GroupLayer,
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
-import 'vuelayers/lib/style.css';
+import 'vuelayers/dist/vuelayers.css';
+import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
+import { getLayer, getLayers } from 'ol-mapbox-style';
+import olms from 'ol-mapbox-style';
 import FeatureLayer from './FeatureLayer.vue';
 import OverviewMap from './OverviewMap.vue';
 import VectorStyle from './VectorStyle.vue';
@@ -142,7 +127,6 @@ import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
 
 Vue.use(Map);
 Vue.use(TileLayer);
-Vue.use(OsmSource);
 Vue.use(GroupLayer);
 Vue.use(VectorTileLayer);
 Vue.use(VectorTileSource);
@@ -170,16 +154,19 @@ export default {
       default: () => [0, 0],
     },
     showCenter: Boolean,
-    overviewMap: Boolean,
+    glStyleUrls: Array,
+    overviewMapLayers: Array,
   },
   data: () => ({
     zoom: null,
     center: null,
     rotation: 0,
     mapObject: null,
-    mapMounted: false,
+    mapFirstRender: false,
+    mapRendering: false,
     overlay: null,
     hoverFeature: null,
+    overviewLayers: null,
     wmtsCapabilitiesRequest: {},
   }),
   created() {
@@ -187,17 +174,27 @@ export default {
     this.center = this.mapCenter;
   },
   mounted() {
+    this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
+    this.$refs.mapView.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.mapView.$on('update:center', this.debounceEvent(this.onMapRender, 100));
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
         && this.$refs.map.render());
+      this.mapObject.$map.getInteractions().forEach((interaction) => {
+        if (interaction instanceof MouseWheelZoom) {
+          this.mapObject.$map.removeInteraction(interaction);
+          const modifiedMouseWheelZoom = new MouseWheelZoom({
+            useAnchor: false,
+          });
+          this.mapObject.$map.addInteraction(modifiedMouseWheelZoom);
+        }
+      });
     });
     this.$on('addOverlay', this.addOverlay);
+    this.$on('renderComplete', this.mountOverviewMap);
   },
   methods: {
-    onMapMounted() {
-      this.mapMounted = true;
-    },
     onPointerMove({ coordinate, pixel }) {
       let hasFeature = false;
       this.mapObject.forEachFeatureAtPixel(pixel, (f) => {
@@ -212,12 +209,62 @@ export default {
       }
     },
     onPointerClick({ pixel }) {
-      this.mapObject.forEachFeatureAtPixel(pixel, (feature) => {
-        this.$emit('featureClicked', feature);
+      const ftrs = [];
+      this.mapObject.$map.forEachFeatureAtPixel(pixel, (feature, layer) => {
+        // more features can be clicked, get all as a list
+        ftrs.push({ feature, layer });
       });
+      this.$emit('featuresClicked', ftrs);
+    },
+    onMapCreated(map) {
+      if (this.glStyleUrls) {
+        const gls = Array.isArray(this.glStyleUrls) ? this.glStyleUrls : [this.glStyleUrls];
+        const promises = [];
+        gls.forEach((style) => {
+          // apply mapbox GL style(s) to existing map
+          promises.push(olms(map.$map, style));
+        });
+        // emit event of finished loading of styles
+        Promise.allSettled(promises).then(() => this.$emit('mapboxStylesApplied'));
+      }
+    },
+    getOlLayersByMapboxSource(source) {
+      // returns OL layer instances provided by Mapbox style 'source'
+      return getLayers(this.mapObject.$map, source);
+    },
+    getOlLayerByMapboxLayer(layer) {
+      // returns OL layer instance provided by Mapbox style 'layer'
+      return getLayer(this.mapObject.$map, layer);
+    },
+    hilite({ highlightObj }) {
+      // accepts a key:value pair of feature properties
+      const a = getLayer(this.mapObject.$map, 'declaration-fill');
+      console.log(a);
+      console.log(highlightObj);
+      a.setStyle(this.testStyleFunc);
     },
     updateCapabilitiesRequest({ request, url }) {
       this.wmtsCapabilitiesRequest[url] = request;
+    },
+    mountOverviewMap() {
+      if (this.overviewMapLayers && !this.overviewLayers) {
+        const layers = this.mapObject
+          .getLayers()[0].getLayersArray();
+        this.overviewLayers = layers
+          .filter((l) => this.overviewMapLayers.includes(l.getProperties().id));
+      }
+    },
+    onMapRender() {
+      this.mapRendering = true;
+      this.$emit('rendering');
+    },
+    onMapRenderComplete() {
+      if (!this.mapFirstRender) { this.mapFirstRender = true; }
+      this.mapRendering = false;
+      // this.$emit('renderComplete');
+    },
+    debounceEvent(callback, time = 250, interval) {
+      return (...args) => clearTimeout(interval, interval = setTimeout(callback, time, ...args)); // eslint-disable-line
     },
   },
   watch: {
@@ -226,6 +273,20 @@ export default {
     },
     mapCenter(center) {
       this.center = center;
+    },
+    mapRendering(isRendering) {
+      if (isRendering) {
+        // console.log('rendering...');
+      } else {
+        // console.log('render complete!');
+        this.$emit('renderComplete');
+      }
+    },
+    mapFirstRender(hasRendered) {
+      if (hasRendered) {
+        // console.log('first render complete!');
+        this.$emit('renderComplete');
+      }
     },
   },
 };

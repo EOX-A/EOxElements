@@ -35,8 +35,8 @@ export default {
         },
         {
           type: 'vector',
-          visibile: false,
-          url: 'https://parcels-api-public.demo.hub.eox.at/demo.declaration/{z}/{x}/{y}.pbf',
+          visible: true,
+          url: 'https://agri.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18',
           title: 'Demo Declarations',
           tooltip: true,
           style: {

@@ -3,13 +3,13 @@
     :properties="properties">
     <template>
       <vl-geom-point :coordinates="coordinates"/>
-      <vl-style-box v-if="icon">
+      <vl-style v-if="icon">
         <vl-style-icon
           :src="icon.src"
           :scale="icon.scale"
           :anchor="icon.anchor"
           :size="icon.size"/>
-      </vl-style-box>
+      </vl-style>
     </template>
   </vl-feature>
 </template>
@@ -17,13 +17,11 @@
 <script>
 import Vue from 'vue';
 import {
-  Feature, PointGeom, IconStyle, StyleBox,
+  Feature, Style,
 } from 'vuelayers';
 
 Vue.use(Feature);
-Vue.use(PointGeom);
-Vue.use(IconStyle);
-Vue.use(StyleBox);
+Vue.use(Style);
 
 export default {
   props: {
