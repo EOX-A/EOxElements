@@ -261,7 +261,7 @@ export default {
     onMapRenderComplete() {
       if (!this.mapFirstRender) { this.mapFirstRender = true; }
       this.mapRendering = false;
-      this.$emit('renderComplete');
+      // this.$emit('renderComplete');
     },
     debounceEvent(callback, time = 250, interval) {
       return (...args) => clearTimeout(interval, interval = setTimeout(callback, time, ...args)); // eslint-disable-line
@@ -279,11 +279,13 @@ export default {
         console.log('rendering...');
       } else {
         console.log('render complete!');
+        this.$emit('renderComplete');
       }
     },
     mapFirstRender(hasRendered) {
       if (hasRendered) {
         console.log('first render complete!');
+        this.$emit('renderComplete');
       }
     },
   },
