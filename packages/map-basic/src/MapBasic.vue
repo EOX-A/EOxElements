@@ -276,15 +276,15 @@ export default {
     },
     mapRendering(isRendering) {
       if (isRendering) {
-        console.log('rendering...');
+        // console.log('rendering...');
       } else {
-        console.log('render complete!');
+        // console.log('render complete!');
         this.$emit('renderComplete');
       }
     },
     mapFirstRender(hasRendered) {
       if (hasRendered) {
-        console.log('first render complete!');
+        // console.log('first render complete!');
         this.$emit('renderComplete');
       }
     },
