@@ -6,7 +6,9 @@
       :width="null"
       :height="null"
       :chart-data='dataCollection'
-      :options='chartOptions'>
+      :options='chartOptions'
+      @chart:render="updateChartWidth"
+    >
     </line-with-line-chart>
     <line-chart ref='lineChart' v-else-if='type=="line" && chartOptions'
       id="chart"
@@ -14,10 +16,16 @@
       :width="null"
       :height="null"
       :chart-data='dataCollection'
-      :options='chartOptions'>
+      :options='chartOptions'
+      @chart:render="updateChartWidth"
+    >
     </line-chart>
-    <div ref='tooltip' class='charts-tooltip' style='position:absolute;width: 100%'>
-      <v-tooltip v-model='showTooltip' attach='.charts-tooltip' v-if='tooltipContent' right >
+    <div ref='tooltip' style='position:absolute;width: 100%'>
+      <v-tooltip
+        v-model="showTooltip"
+        :attach='$refs.tooltip'
+        v-if='tooltipContent'
+      >
         {{ tooltipContent.title }}
         <ul>
           <li v-for="(row) in tooltipContent.rows" :key="row" >
@@ -58,6 +66,9 @@ export default {
     showTooltip: false,
     tooltipContent: null,
     chartOptions: null,
+    tooltipPosition: 'left',
+    chartWidth: 0,
+    tooltipWidth: 0,
   }),
   computed: {
     dataCollection() {
@@ -153,6 +164,13 @@ export default {
         datasets,
       };
     },
+    updateChartWidth() {
+      this.chartWidth = this.$refs.lineChart.$refs.canvas.getBoundingClientRect().width;
+    },
+    updateTooltipWidth() {
+      const el = this.$refs.tooltip.querySelector('.v-tooltip__content');
+      if (el) this.tooltipWidth = el.getBoundingClientRect().width;
+    },
     createChartOptions() {
       const xAxes = [{
         type: 'time',
@@ -221,6 +239,7 @@ export default {
               this.showTooltip = false;
               return;
             }
+
             if (tooltipModel.body) {
               const title = tooltipModel.title[0];
               const bodyLines = tooltipModel.body.map((bodyItem) => bodyItem.lines[0]);
@@ -229,9 +248,22 @@ export default {
                 rows: bodyLines,
               };
             }
-            // const position = this.$refs.lineChart.$refs.canvas.getBoundingClientRect();
-            // TODO: Check if we are outside chart with tooltip and adapt position
-            this.$refs.tooltip.style.left = `${Math.round(tooltipModel.caretX)}px`;
+
+            if (!this.chartWidth) {
+              this.updateChartWidth();
+            }
+
+            const previousTooltipWidth = this.tooltipWidth;
+            this.updateTooltipWidth();
+            if (!this.tooltipWidth) this.tooltipWidth = previousTooltipWidth;
+
+            if (tooltipModel.caretX <= this.chartWidth / 2) {
+              this.tooltipPosition = 'right';
+            } else {
+              this.tooltipPosition = 'left';
+            }
+
+            this.$refs.tooltip.style.left = `${Math.round(tooltipModel.caretX) - (this.tooltipPosition === 'left' ? this.tooltipWidth + 25 : 0)}px`;
             this.$refs.tooltip.style.top = `${Math.round(tooltipModel.caretY)}px`;
           },
         },
@@ -279,3 +311,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+::v-deep .v-tooltip__content {
+  top: 0 !important
+}
+</style>

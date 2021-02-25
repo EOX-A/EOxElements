@@ -1,6 +1,6 @@
 <template>
   <div ref="tooltip" class="map-tooltip">
-    <v-tooltip v-model="overlay" attach=".map-tooltip">
+    <v-tooltip v-model="overlay" attach=".map-tooltip" v-if="tooltipContent">
       <ul>
         <li
           v-for="(property, index) in tooltipContent"
@@ -41,6 +41,10 @@ export default {
         positioning: 'top-left',
       });
       this.mapObject.$map.addOverlay(this.overlay);
+      this.mapObject.$el.addEventListener('mouseleave', () => {
+        this.tooltipContent = null;
+        return this.tooltipContent;
+      });
     },
   },
   watch: {
@@ -61,6 +65,8 @@ export default {
             }));
         }
         this.overlay.setPosition(element.coordinate);
+      } else {
+        this.tooltipContent = null;
       }
     },
   },
