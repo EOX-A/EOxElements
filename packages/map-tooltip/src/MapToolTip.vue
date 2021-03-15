@@ -1,12 +1,12 @@
 <template>
   <div ref="tooltip" class="map-tooltip">
-    <v-tooltip v-model="overlay" attach=".map-tooltip">
+    <v-tooltip v-model="overlay" attach=".map-tooltip" v-if="tooltipContent">
       <ul>
         <li
           v-for="(property, index) in tooltipContent"
           :key="index"
         >
-          {{ index }}: {{ property }}
+          {{ property.display_name }}: {{ property.value }}
         </li>
       </ul>
     </v-tooltip>
@@ -21,6 +21,7 @@ export default {
   props: {
     mapObject: Object,
     hoverFeature: Object,
+    propertiesFilter: Array,
   },
   components: {
     VTooltip,
@@ -40,13 +41,32 @@ export default {
         positioning: 'top-left',
       });
       this.mapObject.$map.addOverlay(this.overlay);
+      this.mapObject.$el.addEventListener('mouseleave', () => {
+        this.tooltipContent = null;
+        return this.tooltipContent;
+      });
     },
   },
   watch: {
     hoverFeature(element) {
       if (element) {
-        this.tooltipContent = element.feature.properties_;
+        this.tooltipContent = Object.keys(element.feature.properties_)
+          .map((p) => ({
+            field_name: p,
+            display_name: p,
+            value: element.feature.properties_[p],
+          }));
+        if (this.propertiesFilter) {
+          this.tooltipContent = this.propertiesFilter
+            .map((p) => ({
+              field_name: p.field_name,
+              display_name: p.display_name,
+              value: element.feature.properties_[p.field_name],
+            }));
+        }
         this.overlay.setPosition(element.coordinate);
+      } else {
+        this.tooltipContent = null;
       }
     },
   },

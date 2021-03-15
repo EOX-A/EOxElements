@@ -22,6 +22,8 @@ export default {
         dataProvider: 'WMTScapabilites',
         capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
         matrixSet: 'GoogleMapsCompatible',
+        layerStyle: 'default', // just as a test
+        requestEncoding: 'REST', // just as a test
       },
     ],
   })

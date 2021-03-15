@@ -77,11 +77,11 @@ export default {
     }
   },
   mounted() {
-    this.mapObject.$map.on('postcompose', () => {
+    this.mapObject.$map.on('postrender', () => {
       this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer.name);
       if (this.swipeLayerObject) {
-        this.swipeLayerObject.on('precompose', this.onPrecompose);
-        this.swipeLayerObject.on('postcompose', this.onPostcompose);
+        this.swipeLayerObject.on('prerender', this.onPrerender);
+        this.swipeLayerObject.on('postrender', this.onPostrender);
       }
     });
   },
@@ -97,7 +97,7 @@ export default {
         gsap.to(this.$data, { duration: 0.8, swipe: reset, onComplete: deactivate });
       }
     },
-    onPrecompose(evt) {
+    onPrerender(evt) {
       const ctx = evt.context;
       const width = ctx.canvas.width * (this.swipe / 100);
 
@@ -119,7 +119,7 @@ export default {
         }
       }
     },
-    onPostcompose(evt) {
+    onPostrender(evt) {
       const ctx = evt.context;
       ctx.restore();
     },

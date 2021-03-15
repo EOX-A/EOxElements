@@ -5,7 +5,7 @@
     :mapCenter="[ 1731756.231909257, 6228616.060472786 ]"
     showCenter
     :backgroundLayers="allLayers"
-    @featureClicked="featureClicked"
+    @featuresClicked="featuresClicked"
     style="height: 100%; width: 100%;"
   >
     <template slot-scope="{mapObject}">
@@ -28,7 +28,7 @@ export default {
   },
   data: function() {
     return {
-      selectedFeature: null,
+      selectedFeatures: [],
       selectedSource: {
         name: 'https://demo-tileserv.hub.eox.at/public.lpis_at/{z}/{x}/{y}.pbf',
         title: 'LPIS',
@@ -47,7 +47,7 @@ export default {
         },
         {
           type: 'vector',
-          visibile: true,
+          visible: true,
           url: 'https://demo-tileserv.hub.eox.at/public.lpis_at/{z}/{x}/{y}.pbf',
           title: 'LPIS',
           tooltip: true,
@@ -63,7 +63,7 @@ export default {
         },
         {
           type: 'vector',
-          visibile: false,
+          visible: false,
           url: 'http://lpvis-demo.s3-website.eu-central-1.amazonaws.com/geodata/physical_blocks/{z}/{x}/{y}.pbf',
           title: 'Physical Blocks',
           tooltip: true,
@@ -79,7 +79,7 @@ export default {
         },
         {
           type: 'vector',
-          visibile: false,
+          visible: false,
           url: 'http://lpvis-demo.s3-website.eu-central-1.amazonaws.com/geodata/agricultural_parcels/{z}/{x}/{y}.pbf',
           title: 'Agricultural Parcels',
           tooltip: true,
@@ -101,16 +101,32 @@ export default {
       this.allLayers = this.allLayers
         .map(l => ({ ...l, visible: (l.type === 'tile' || l.url == url) ? true : false }))
     },
-    featureClicked(feature) {
-      this.selectedFeature = feature;
+    featuresClicked(features) {
+      const uniqueLayers = [];
+      const ftrs = [];
+      features.forEach((item) => {
+        // destructure [{feature:feature, layer:layer}...]
+        ftrs.push(item.feature);
+        if (!uniqueLayers.includes(item.layer)) {
+          uniqueLayers.push(item.layer);
+        }
+      });
+      this.selectedFeatures = ftrs;
+      // trigger refresh of draw
+      uniqueLayers.forEach((layer) => {
+        layer.setStyle(layer.getStyle());
+      });
     },
     featureStyle(feature) {
       if (feature.properties_.ctnuml4a === 1020) {
         return 'crimson';
       }
       let isHighlighted;
-      if (this.selectedFeature) {
-        isHighlighted = feature.properties_.ID === this.selectedFeature.properties_.ID;
+      for (let i = 0; i < this.selectedFeatures.length; i++) {
+        if (this.selectedFeatures[i].properties_.ID === feature.properties_.ID) {
+          isHighlighted = true;
+          break
+        }
       }
       if (feature.properties_.accuracy < 0.95) {
         return isHighlighted ? '#ffff00ff' : '#ffff0099';

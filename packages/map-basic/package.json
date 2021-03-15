@@ -1,6 +1,6 @@
 {
   "name": "@eox/map-basic",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "private": false,
   "main": "dist/map-basic.umd.min.js",
   "module": "dist/map-basic.umd.min.js",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vuelayers": "^0.11.28"
+    "vuelayers": "^0.12.0-rc.21"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
