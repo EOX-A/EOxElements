@@ -50,11 +50,28 @@ import LineWithLineChart from './LineWithLineChart.vue';
 
 Chart.plugins.register([ChartAnnotation, ChartZoomPlugin]);
 
+/**
+ * Interactive charts based on chart.js
+ */
 export default {
+  name: 'Charts',
   props: {
+    /**
+     * The type of the chart
+     * @values line
+     */
     type: String,
+    /**
+     * Data displayed on chart
+     */
     dataObject: Object,
+    /**
+     * Chart configuration
+     */
     plotConfig: Object,
+    /**
+     * Show tooltips only at same index
+     */
     indexTooltips: Boolean,
   },
   components: {
@@ -291,6 +308,11 @@ export default {
 
           const yLabel = data.datasets[datasetIndex].data[barIndex];
 
+          /**
+           * New date has been selected
+           *
+           * @property {Date} date
+           */
           this.$emit('dateSelected', new Date(yLabel.t));
         },
       };

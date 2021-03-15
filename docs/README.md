@@ -1,7 +1,7 @@
 ---
 home: true
 actionText: View collection →
-actionLink: /collection/index.html
+actionLink: /examples/index.html
 footer: MIT Licensed | Copyright © 2020-present EOX IT Services GmbH
 ---
 
