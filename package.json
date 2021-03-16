@@ -11,10 +11,21 @@
     "dev": "lerna run docs:dev --stream",
     "watch": "lerna run watch --stream --parallel",
     "build": "lerna run build --stream",
-    "docs:build": "lerna run docs:build --stream",
-    "lint": "lerna run lint --stream --parallel"
+    "docs:build": "yarn run apidocs:build && lerna run docs:build --scope docs --stream",
+    "lint": "lerna run lint --stream --parallel",
+    "apidocs:build": "vue-docgen && copyfiles -f './apidocs/**/*.md' docs/api && rimraf apidocs"
   },
   "devDependencies": {
-    "lerna": "^3.22.1"
-  }
+    "copyfiles": "^2.4.1",
+    "css-loader": "^5.1.1",
+    "lerna": "^3.22.1",
+    "rimraf": "^3.0.2",
+    "sass-loader": "10",
+    "style-loader": "^2.0.0",
+    "vue-docgen-cli": "^4.35.0",
+    "vue-loader": "^15.9.6",
+    "vuetify": "^2.4.5",
+    "webpack": "4"
+  },
+  "dependencies": {}
 }

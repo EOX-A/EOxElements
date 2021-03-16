@@ -1,20 +1,20 @@
+const fs = require('fs');
+const path = require('path')
+
 module.exports = {
   chainWebpack(config, isServer) {
-    for (const lang of ["sass", "scss"]) {
-      for (const name of ["modules", "normal"]) {
+    for (const lang of["sass", "scss"]) {
+      for (const name of["modules", "normal"]) {
         const rule = config.module.rule(lang).oneOf(name);
         rule.uses.delete("sass-loader");
 
-        rule
-          .use("sass-loader")
-          .loader("sass-loader")
-          .options({
-            implementation: require("sass"),
-            sassOptions: {
-              fiber: require("fibers"),
-              indentedSyntax: lang === "sass"
-            }
-          });
+        rule.use("sass-loader").loader("sass-loader").options({
+          implementation: require("sass"),
+          sassOptions: {
+            fiber: require("fibers"),
+            indentedSyntax: lang === "sass"
+          }
+        });
       }
     }
   },
@@ -41,14 +41,17 @@ module.exports = {
         editLinkText: 'Edit this page on GitHub',
         nav: [
           {
-            text: 'Collection',
-            link: '/collection/'
+            text: 'Examples',
+            link: '/examples/'
+          }, {
+            text: 'Api',
+            link: '/api/'
           },
         ],
         sidebar: {
-          '/collection/': [
+          '/examples/': [
             {
-              title: 'Collection',
+              title: 'Examples',
               collapsable: false,
               children: [
                 'map-basic',
@@ -57,10 +60,17 @@ module.exports = {
                 'map-tooltip',
                 'charts'
               ]
+            },
+          ],
+          '/api/': [
+            {
+              title: 'Api',
+              collapsable: false,
+              children: fs.readdirSync(path.join(__dirname, '..', 'api')).filter(file => file.match(/.md$/) && file !== 'README.md').map(file => file.substring(0, file.length - 3))
             }
           ]
         }
       }
     }
-  },
+  }
 }

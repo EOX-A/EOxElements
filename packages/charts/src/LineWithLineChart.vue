@@ -30,10 +30,20 @@ const CustomLine = generateChart('custom-line', 'LineWithLine');
 
 const { reactiveProp } = mixins;
 
+/**
+ * A line chart with an additional line at the current index
+ */
 export default {
+  name: 'LineWithLineChart',
   extends: CustomLine,
   props: {
+    /**
+     * Chart data
+     */
     chartData: Object,
+    /**
+     * Chart options
+     */
     options: Object,
   },
   mixins: [reactiveProp],

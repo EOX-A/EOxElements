@@ -131,8 +131,11 @@ Vue.use(GroupLayer);
 Vue.use(VectorTileLayer);
 Vue.use(VectorTileSource);
 
+/**
+ * A basic map based on OpenLayers
+ */
 export default {
-  name: 'map-basic',
+  name: 'MapBasic',
   components: {
     FeatureLayer,
     OverviewMap,
