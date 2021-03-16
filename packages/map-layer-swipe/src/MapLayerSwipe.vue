@@ -39,7 +39,7 @@
 import gsap from 'gsap';
 
 export default {
-  name: 'map-layer-swipe',
+  name: 'MapLayerSwipe',
   props: {
     mapObject: Object,
     embeddedMode: Boolean,
