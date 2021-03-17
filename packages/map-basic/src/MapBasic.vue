@@ -107,6 +107,7 @@
       :mapObject="mapObject"
       :overviewLayers="overviewLayers"
     />
+    <draw-interaction v-if="drawInteractions" @drawEnd="onDrawInteractionEnd" />
   </vl-map>
 </template>
 
@@ -120,6 +121,7 @@ import 'vuelayers/dist/vuelayers.css';
 import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 import { getLayer, getLayers } from 'ol-mapbox-style';
 import olms from 'ol-mapbox-style';
+import DrawInteraction from './DrawInteraction.vue';
 import FeatureLayer from './FeatureLayer.vue';
 import OverviewMap from './OverviewMap.vue';
 import VectorStyle from './VectorStyle.vue';
@@ -137,6 +139,7 @@ Vue.use(VectorTileSource);
 export default {
   name: 'MapBasic',
   components: {
+    DrawInteraction,
     FeatureLayer,
     OverviewMap,
     VectorStyle,
@@ -159,6 +162,7 @@ export default {
     showCenter: Boolean,
     glStyleUrls: Array,
     overviewMapLayers: Array,
+    drawInteractions: Boolean,
   },
   data: () => ({
     zoom: null,
@@ -265,6 +269,9 @@ export default {
       if (!this.mapFirstRender) { this.mapFirstRender = true; }
       this.mapRendering = false;
       // this.$emit('renderComplete');
+    },
+    onDrawInteractionEnd(feature) {
+      this.$emit('drawInteraction', feature);
     },
     debounceEvent(callback, time = 250, interval) {
       return (...args) => clearTimeout(interval, interval = setTimeout(callback, time, ...args)); // eslint-disable-line
