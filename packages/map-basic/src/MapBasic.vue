@@ -15,7 +15,6 @@
       :center.sync="center"
       :rotation.sync="rotation"
       multiWorld
-      constrainResolution
       ref="mapView"
     >
       <feature-layer
@@ -118,7 +117,6 @@ import {
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
-import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 import { getLayer, getLayers } from 'ol-mapbox-style';
 import olms from 'ol-mapbox-style';
 import DrawInteraction from './DrawInteraction.vue';
@@ -188,15 +186,6 @@ export default {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
         && this.$refs.map.render());
-      this.mapObject.$map.getInteractions().forEach((interaction) => {
-        if (interaction instanceof MouseWheelZoom) {
-          this.mapObject.$map.removeInteraction(interaction);
-          const modifiedMouseWheelZoom = new MouseWheelZoom({
-            useAnchor: false,
-          });
-          this.mapObject.$map.addInteraction(modifiedMouseWheelZoom);
-        }
-      });
     });
     this.$on('addOverlay', this.addOverlay);
     this.$on('renderComplete', this.mountOverviewMap);
