@@ -79,6 +79,7 @@ export default {
             attributions: attribution,
             requestEncoding: this.requestEncoding,
             urls: tileUrl,
+            wrapX: true,
           };
           this.wmtsOptions = options;
           this.ready = true;
