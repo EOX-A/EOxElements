@@ -152,8 +152,8 @@ export default {
     dataProjection: String,
     projection: {
       type: String,
-      default: "EPSG:3857",
-    }
+      default: 'EPSG:3857',
+    },
     mapZoom: {
       type: Number,
       default: 0,
