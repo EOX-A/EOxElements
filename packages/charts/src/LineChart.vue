@@ -3,10 +3,20 @@ import { Line, mixins } from 'vue-chartjs';
 
 const { reactiveProp } = mixins;
 
+/**
+ * A basic line chart
+ */
 export default {
+  name: 'LineChart',
   extends: Line,
   props: {
+    /**
+     * Chart data
+     */
     chartData: Object,
+    /**
+     * Chart options
+     */
     options: Object,
   },
   mixins: [reactiveProp],

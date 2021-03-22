@@ -1,8 +1,13 @@
 # EOxElements
-Geospatial UI Elements
+Geospatial UI Elements, written in Vue.js
 
 ## Live Demo
-See the elements in action [here](https://eox-a.github.io/elements/collection/).
+See the elements in action [here](https://eox-a.github.io/elements/examples/).
+
+## Based on
+- [Vuetify](https://github.com/vuetifyjs/vuetify) (UI)
+- [OpenLayers](https://github.com/openlayers/openlayers), [VueLayers](https://github.com/ghettovoice/vuelayers) (maps)
+- [Chart.js](https://github.com/chartjs/Chart.js), [vue-chartjs](https://github.com/apertureless/vue-chartjs) (charts)
 
 ## Development Setup
 This monorepo uses Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) and [Lerna](https://github.com/lerna/lerna).

@@ -16,7 +16,6 @@
       :rotation.sync="rotation"
       :projection="projection"
       multiWorld
-      constrainResolution
       ref="mapView"
     >
       <feature-layer
@@ -108,6 +107,7 @@
       :mapObject="mapObject"
       :overviewLayers="overviewLayers"
     />
+    <draw-interaction v-if="drawInteractions" @drawEnd="onDrawInteractionEnd" />
   </vl-map>
 </template>
 
@@ -118,9 +118,9 @@ import {
   VectorTileLayer, VectorTileSource,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
-import MouseWheelZoom from 'ol/interaction/MouseWheelZoom';
 import { getLayer, getLayers } from 'ol-mapbox-style';
 import olms from 'ol-mapbox-style';
+import DrawInteraction from './DrawInteraction.vue';
 import FeatureLayer from './FeatureLayer.vue';
 import OverviewMap from './OverviewMap.vue';
 import VectorStyle from './VectorStyle.vue';
@@ -132,9 +132,13 @@ Vue.use(GroupLayer);
 Vue.use(VectorTileLayer);
 Vue.use(VectorTileSource);
 
+/**
+ * A basic map based on OpenLayers
+ */
 export default {
-  name: 'map-basic',
+  name: 'MapBasic',
   components: {
+    DrawInteraction,
     FeatureLayer,
     OverviewMap,
     VectorStyle,
@@ -148,8 +152,8 @@ export default {
     dataProjection: String,
     projection: {
       type: String,
-      default: "EPSG:3857",
-    }
+      default: 'EPSG:3857',
+    },
     mapZoom: {
       type: Number,
       default: 0,
@@ -161,6 +165,7 @@ export default {
     showCenter: Boolean,
     glStyleUrls: Array,
     overviewMapLayers: Array,
+    drawInteractions: Boolean,
   },
   data: () => ({
     zoom: null,
@@ -186,15 +191,6 @@ export default {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
         && this.$refs.map.render());
-      this.mapObject.$map.getInteractions().forEach((interaction) => {
-        if (interaction instanceof MouseWheelZoom) {
-          this.mapObject.$map.removeInteraction(interaction);
-          const modifiedMouseWheelZoom = new MouseWheelZoom({
-            useAnchor: false,
-          });
-          this.mapObject.$map.addInteraction(modifiedMouseWheelZoom);
-        }
-      });
     });
     this.$on('addOverlay', this.addOverlay);
     this.$on('renderComplete', this.mountOverviewMap);
@@ -267,6 +263,9 @@ export default {
       if (!this.mapFirstRender) { this.mapFirstRender = true; }
       this.mapRendering = false;
       // this.$emit('renderComplete');
+    },
+    onDrawInteractionEnd(feature) {
+      this.$emit('drawInteraction', feature);
     },
     debounceEvent(callback, time = 250, interval) {
       return (...args) => clearTimeout(interval, interval = setTimeout(callback, time, ...args)); // eslint-disable-line
