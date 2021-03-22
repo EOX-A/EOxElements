@@ -14,6 +14,7 @@
       :zoom.sync="zoom"
       :center.sync="center"
       :rotation.sync="rotation"
+      :projection="projection"
       multiWorld
       constrainResolution
       ref="mapView"
@@ -145,6 +146,10 @@ export default {
     overlayLayers: Array,
     featureLayers: Array,
     dataProjection: String,
+    projection: {
+      type: String,
+      default: "EPSG:3857",
+    }
     mapZoom: {
       type: Number,
       default: 0,
