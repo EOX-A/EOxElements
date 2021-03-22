@@ -8,15 +8,15 @@ footer: MIT Licensed | Copyright © 2020-present EOX IT Services GmbH
 <div class="features">
   <div class="feature">
     <h2>Modular</h2>
-    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</p>
+    <p>Use individual elements as modules, or embed them via script tags</p>
   </div>
   <div class="feature">
-    <h2>Vue-Powered</h2>
-    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</p>
+    <h2>Vue.js-Powered</h2>
+    <p>Reactivity and performance out of the box</p>
   </div>
   <div class="feature">
-    <h2>Performant</h2>
-    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr.</p>
+    <h2>Versatile</h2>
+    <p>Easy to use, yet powerful and extendable</p>
   </div>
 </div>
 
