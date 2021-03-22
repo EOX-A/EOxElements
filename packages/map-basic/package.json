@@ -1,6 +1,6 @@
 {
   "name": "@eox/map-basic",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "private": false,
   "main": "dist/map-basic.umd.min.js",
   "module": "dist/map-basic.umd.min.js",
@@ -49,5 +49,6 @@
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
     "access": "public"
-  }
+  },
+  "gitHead": "f024e8ad2b36f1869aee002e494718abefac94bd"
 }
