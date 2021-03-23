@@ -15,6 +15,7 @@
       :center.sync="center"
       :rotation.sync="rotation"
       :projection="projection"
+      :max-zoom="maxZoom"
       multiWorld
       ref="mapView"
     >
@@ -162,6 +163,7 @@ export default {
       type: Array,
       default: () => [0, 0],
     },
+    maxZoom: Number,
     showCenter: Boolean,
     glStyleUrls: Array,
     overviewMapLayers: Array,
