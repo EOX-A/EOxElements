@@ -1,5 +1,9 @@
+
+![CI](https://github.com/EOX-A/elements/actions/workflows/main.yml/badge.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/EOX-A/elements/blob/main/LICENSE)
+
 # EOxElements
-Geospatial UI Elements, written in Vue.js
+Geospatial UI Elements
 
 ## Live Demo
 See the elements in action [here](https://eox-a.github.io/elements/examples/).
@@ -8,6 +12,84 @@ See the elements in action [here](https://eox-a.github.io/elements/examples/).
 - [Vuetify](https://github.com/vuetifyjs/vuetify) (UI)
 - [OpenLayers](https://github.com/openlayers/openlayers), [VueLayers](https://github.com/ghettovoice/vuelayers) (maps)
 - [Chart.js](https://github.com/chartjs/Chart.js), [vue-chartjs](https://github.com/apertureless/vue-chartjs) (charts)
+
+## Packages
+<table>
+  <thead>
+    <tr>
+      <th>Package</th>
+      <th>Version</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <a href="https://github.com/EOX-A/elements/tree/main/packages/map-basic">@eox/map-basic</a>
+      </td>
+      <td>
+        <a href="https://www.npmjs.com/package/@eox/map-basic">
+          <img src="https://img.shields.io/npm/v/@eox/map-basic" alt="Version">
+        </a>
+      </td>
+      <td>
+        Basic map component to visualize raster and vector data
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://github.com/EOX-A/elements/tree/main/packages/map-layer-swipe">@eox/map-layer-swipe</a>
+      </td>
+      <td>
+        <a href="https://www.npmjs.com/package/@eox/map-layer-swipe">
+          <img src="https://img.shields.io/npm/v/@eox/map-layer-swipe" alt="Version">
+        </a>
+      </td>
+      <td>
+        Extension to A/B compare two map layers
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://github.com/EOX-A/elements/tree/main/packages/map-source-select">@eox/map-source-select</a>
+      </td>
+      <td>
+        <a href="https://www.npmjs.com/package/@eox/map-source-select">
+          <img src="https://img.shields.io/npm/v/@eox/map-source-select" alt="Version">
+        </a>
+      </td>
+      <td>
+        Ḿap extension to dynamically change layers
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://github.com/EOX-A/elements/tree/main/packages/map-tooltip">@eox/map-tooltip</a>
+      </td>
+      <td>
+        <a href="https://www.npmjs.com/package/@eox/map-tooltip">
+          <img src="https://img.shields.io/npm/v/@eox/map-tooltip" alt="Version">
+        </a>
+      </td>
+      <td>
+        Map extension to add dynamic tooltips
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <a href="https://github.com/EOX-A/elements/tree/main/packages/charts">@eox/charts</a>
+      </td>
+      <td>
+        <a href="https://www.npmjs.com/package/@eox/charts">
+          <img src="https://img.shields.io/npm/v/@eox/charts" alt="Version">
+        </a>
+      </td>
+      <td>
+        Dynamic and interactive charts
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Development Setup
 This monorepo uses Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) and [Lerna](https://github.com/lerna/lerna).
