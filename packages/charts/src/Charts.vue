@@ -55,6 +55,10 @@ Chart.plugins.register([ChartAnnotation, ChartZoomPlugin]);
  */
 export default {
   name: 'Charts',
+  model: {
+    prop: 'date',
+    event: 'dateSelected',
+  },
   props: {
     /**
      * The type of the chart
@@ -73,6 +77,7 @@ export default {
      * Show tooltips only at same index
      */
     indexTooltips: Boolean,
+    date: DateTime,
   },
   components: {
     LineChart,
@@ -86,10 +91,51 @@ export default {
     tooltipPosition: 'left',
     chartWidth: 0,
     tooltipWidth: 0,
+    highlightedDate: null
   }),
   computed: {
     dataCollection() {
-      return this.createDataCollection(this.dataObject);
+      const dataCollection = this.createDataCollection(this.dataObject);
+
+      const highlightedDate = this.highlightedDate; // eslint-disable-line
+
+      const color = 'purple';
+      const width = 5;
+
+      dataCollection.datasets.forEach((dataset) => {
+        /* eslint-disable */
+        dataset.pointBackgroundColor = function(ctx) {
+          const index = ctx.dataIndex;
+          const value = ctx.dataset.data[index];
+          const dateTime = value.t
+
+          if(dateTime instanceof DateTime && highlightedDate instanceof DateTime && dateTime.equals(highlightedDate)) return color;
+
+          return undefined;
+        }
+
+        dataset.pointBorderColor = function(ctx) {
+          const index = ctx.dataIndex;
+          const value = ctx.dataset.data[index];
+          const dateTime = value.t
+
+          if(dateTime instanceof DateTime && highlightedDate instanceof DateTime && dateTime.equals(highlightedDate)) return color;
+
+          return undefined;
+        }
+
+        dataset.pointBorderWidth = function(ctx) {
+          const index = ctx.dataIndex;
+          const value = ctx.dataset.data[index];
+          const dateTime = value.t
+
+          if(dateTime instanceof DateTime && highlightedDate instanceof DateTime && dateTime.equals(highlightedDate)) return width;
+
+          return undefined;
+        }
+      })
+
+      return dataCollection;
     },
     darkModeEnabled() {
       return this.$vuetify.theme.isDark;
@@ -189,6 +235,8 @@ export default {
       if (el) this.tooltipWidth = el.getBoundingClientRect().width;
     },
     createChartOptions() {
+      const vueThis = this;
+
       const xAxes = [{
         type: 'time',
         id: 'x',
@@ -300,20 +348,28 @@ export default {
           drawTime: 'beforeDatasetsDraw',
           annotations: this.plotConfig.annotations || [],
         },
-        onClick: (_, element) => { // eslint-disable-line
+        onClick(_, element) { // eslint-disable-line
+          /* eslint-disable */
           const activeElement = element[0];
-          const data = activeElement._chart.data; // eslint-disable-line
-          const barIndex = activeElement._index; // eslint-disable-line
-          const datasetIndex = activeElement._datasetIndex; // eslint-disable-line
+
+          if(!activeElement) return;
+
+          const data = activeElement._chart.data;
+          const barIndex = activeElement._index;
+          const datasetIndex = activeElement._datasetIndex;
 
           const yLabel = data.datasets[datasetIndex].data[barIndex];
+
+          vueThis.highlightedDate = yLabel.t
+
+          this.update();
 
           /**
            * New date has been selected
            *
            * @property {Date} date
            */
-          this.$emit('dateSelected', new Date(yLabel.t));
+          vueThis.$emit('dateSelected', new Date(yLabel.t));
         },
       };
       if ('annotations' in this.plotConfig) {
@@ -324,13 +380,16 @@ export default {
       return options;
     },
   },
-  watcher: {
-    /*
-    '$vuetify.theme.isDark'() {
-      this.renderChart();
-    },
-    */
-  },
+  watch: {
+    date: {
+      immediate: true,
+      handler(v) {
+        if(typeof v === 'null' || v instanceof DateTime) {
+          this.highlightedDate = date;
+        }
+      }
+    }
+  }
 };
 </script>
 
