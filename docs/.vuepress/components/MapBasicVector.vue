@@ -1,11 +1,9 @@
 <template>
   <map-basic
-    ref="map"
-    :mapZoom="14"
-    :mapCenter="[ 1731756, 6228616 ]"
-    :backgroundLayers="allLayers"
+    :mapZoom="mapZoom"
+    :mapCenter="mapCenter"
+    :mapLayers="mapLayers"
     style="height: 100%; width: 100%;"
-    showCenter
   >
   </map-basic>
 </template>
@@ -19,45 +17,90 @@ export default {
   },
   data: function() {
     return {
-      allLayers: [
+      mapZoom: 14,
+      mapCenter: [1731756, 6228616],
+      mapLayers: [
         {
-          type: 'tile',
-          name: 'terrain-light',
-          title: 'Terrain Light',
-          dataProvider: 'WMTScapabilites',
-          capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          matrixSet: 'WGS84',
-        },
-        {
-          type: 'vector',
-          visible: true,
-          url: 'https://agri.demo.hub.eox.at/parcels-api/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
-          title: 'Agricultural Parcels',
-          style: {
-            stroke: {
-              color: 'black',
-              width: 1,
+          type: 'group',
+          layers: [
+            // background layer
+            {
+              id: 'terrain',
+              title: 'Terrain Light',
+              type: 'tile',
+              visible: true,
+              source: {
+                type: 'wmts-capabilities',
+                url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+                layerName: 'terrain-light',
+                matrixSet: 'WGS84',
+              },
             },
-            fill: {
-              color: (feature) => this.fillColor(feature),
+            // vector layer with dynamic styling
+            {
+              id: 'parcels-dynamic',
+              title: 'Agricultural Parcels',
+              type: 'vector-tile',
+              visible: true,
+              source: {
+                type: 'vector-tile',
+                url: 'https://agri-8h5ffg409jlmduiuijhc.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18&model_name=dummy',
+              },
+              style: this.parcelStyleFunc,
             },
-          }
+            // vector layer with static styling
+            {
+              id: 'parcels-static',
+              title: 'Agricultural Parcels',
+              type: 'vector-tile',
+              visible: true,
+              source: {
+                type: 'vector-tile',
+                url: 'https://agri-8h5ffg409jlmduiuijhc.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18&model_name=dummy',
+              },
+              style: [
+                {
+                  stroke: {
+                    color: 'blue',
+                    width: 3,
+                    lineDash: [5, 5]
+                  },
+                  text: {
+                    text: 'Feature',
+                    font: '24px sans-serif',
+                    fill: {
+                      color: '#2355af',
+                    },
+                    stroke: {
+                      color: 'white',
+                    },
+                  },
+                },
+              ],
+            },
+          ]
         },
       ],
     }
   },
   methods: {
-    fillColor(feature) {
-      if (feature.properties_.crop_id < 90) {
-        return '#ffff0099';
+    parcelStyleFunc(feature) {
+      let fillColor = '#9999';
+      if (feature.get('crop_id') < 90) {
+        fillColor = '#ffff0099';
       }
-      else if (feature.properties_.crop_id < 120) {
-        return '#fcba03';
+      else if (feature.get('crop_id') < 120) {
+        fillColor = '#fcba03';
       }
-      else if (feature.properties_.crop_id < 150) {
-        return '#0ffc03';
+      else if (feature.get('crop_id') < 150) {
+        fillColor = '#0ffc03';
       }
-      return '#99999999';
+      const parcelStyle = {
+        strokeColor: '#000',
+        strokeWidth: 1,
+        fillColor,
+      };
+      return parcelStyle;
     },
   },
 }

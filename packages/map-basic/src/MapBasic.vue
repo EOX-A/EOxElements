@@ -19,6 +19,7 @@
       multiWorld
       ref="mapView"
     >
+      <!-- TODO: replace with more dynamic solution -->
       <feature-layer
         v-for="(layer, index) in featureLayers"
         :key="index"
@@ -29,78 +30,27 @@
         :icon="layer.icon"
       />
     </vl-view>
-    <vl-layer-group :z-index="0">
-      <template
-        v-for="layer in backgroundLayers"
-      >
-        <wmts-capabilites-provider
-          v-if="layer.dataProvider === 'WMTScapabilites'"
-          :key="layer.name"
-          :id="layer.name"
-          :ref="layer.name"
-          :layerName="layer.name"
-          :layerStyle="layer.layerStyle"
-          :requestEncoding="layer.requestEncoding"
-          :capabilitiesUrl="layer.capabilitiesUrl"
-          :matrixSet="layer.matrixSet"
-          :visible="layer.visible"
-          :zIndex="backgroundLayers.indexOf(layer)"
-          :capabilitiesRequest="wmtsCapabilitiesRequest"
-          @fetchedCapabilities="updateCapabilitiesRequest"
-          />
-        <vl-layer-vector-tile
-          v-else-if="layer.type === 'vector'"
-          :key="layer.name"
-          :id="layer.name"
-          :ref="layer.name"
-          :visible="layer.visible"
-          :z-index="backgroundLayers.indexOf(layer)"
-        >
-          <vl-source-vector-tile
-            :url="layer.url"
-            :ref="`${layer.name}-source`"
-          ></vl-source-vector-tile>
-          <vector-style
-            ref="vectorStyle"
-            :url="layer.url"
-            :styleObject="layer.style" />
-        </vl-layer-vector-tile>
-      </template>
-    </vl-layer-group>
-    <template v-for="layer in foregroundLayers">
-      <wmts-capabilites-provider
-        v-if="layer.dataProvider === 'WMTScapabilites'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :layerName="layer.name"
-        :layerStyle="layer.layerStyle"
-        :requestEncoding="layer.requestEncoding"
-        :capabilitiesUrl="layer.capabilitiesUrl"
-        :matrixSet="layer.matrixSet"
-        :visible="layer.visible"
-        :zIndex="foregroundLayers.indexOf(layer) + 10"
-        :capabilitiesRequest="wmtsCapabilitiesRequest"
-        @fetchedCapabilities="updateCapabilitiesRequest"
+
+    <template v-for="(layer, key) in mapLayers">
+      <vl-layer-group
+        v-if="layer.type === 'group'"
+        :key="key"
+        :z-index="mapLayers.indexOf(layer)">
+        <map-layer
+          v-for="childLayer in layer.layers"
+          :key="childLayer.id"
+          :layer="childLayer"
+          :z-index="layer.layers.indexOf(childLayer)"
+        />
+      </vl-layer-group>
+      <map-layer
+        v-else
+        :key="layer.id"
+        :layer="layer"
+        :z-index="mapLayers.indexOf(layer)"
       />
     </template>
-    <template v-for="layer in overlayLayers">
-      <wmts-capabilites-provider
-        v-if="layer.dataProvider === 'WMTScapabilites'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :layerName="layer.name"
-        :layerStyle="layer.layerStyle"
-        :requestEncoding="layer.requestEncoding"
-        :capabilitiesUrl="layer.capabilitiesUrl"
-        :matrixSet="layer.matrixSet"
-        :visible="layer.visible"
-        :zIndex="overlayLayers.indexOf(layer) + 20"
-        :capabilitiesRequest="wmtsCapabilitiesRequest"
-        @fetchedCapabilities="updateCapabilitiesRequest"
-      />
-    </template>
+
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
     <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
     <overview-map
@@ -115,23 +65,18 @@
 <script>
 import Vue from 'vue';
 import {
-  Map, TileLayer, GroupLayer,
-  VectorTileLayer, VectorTileSource,
+  Map, GroupLayer,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
 import { getLayer, getLayers } from 'ol-mapbox-style';
 import olms from 'ol-mapbox-style';
 import DrawInteraction from './DrawInteraction.vue';
 import FeatureLayer from './FeatureLayer.vue';
+import MapLayer from './MapLayer.vue';
 import OverviewMap from './OverviewMap.vue';
-import VectorStyle from './VectorStyle.vue';
-import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
 
 Vue.use(Map);
-Vue.use(TileLayer);
 Vue.use(GroupLayer);
-Vue.use(VectorTileLayer);
-Vue.use(VectorTileSource);
 
 /**
  * A basic map based on OpenLayers
@@ -141,12 +86,11 @@ export default {
   components: {
     DrawInteraction,
     FeatureLayer,
+    MapLayer,
     OverviewMap,
-    VectorStyle,
-    WmtsCapabilitesProvider,
   },
   props: {
-    backgroundLayers: Array,
+    mapLayers: Array,
     foregroundLayers: Array,
     overlayLayers: Array,
     featureLayers: Array,
@@ -179,7 +123,7 @@ export default {
     overlay: null,
     hoverFeature: null,
     overviewLayers: null,
-    wmtsCapabilitiesRequest: {},
+    // wmtsCapabilitiesRequest: {},
   }),
   created() {
     this.zoom = this.mapZoom;
@@ -246,9 +190,9 @@ export default {
       console.log(highlightObj);
       a.setStyle(this.testStyleFunc);
     },
-    updateCapabilitiesRequest({ request, url }) {
-      this.wmtsCapabilitiesRequest[url] = request;
-    },
+    // updateCapabilitiesRequest({ request, url }) {
+    //   this.wmtsCapabilitiesRequest[url] = request;
+    // },
     mountOverviewMap() {
       if (this.overviewMapLayers && !this.overviewLayers) {
         const layers = this.mapObject
