@@ -46,7 +46,7 @@ export default {
           visible: true,
           source: {
             type: 'vector-tile',
-            url: 'https://agri-8h5ffg409jlmduiuijhc.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18&model_name=dummy',
+            url: 'https://pg-tileserv.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
           },
           style: this.parcelStyleFunc,
         },
@@ -59,7 +59,7 @@ export default {
       const parcelStyle = {
         strokeColor: '#000',
         strokeWidth: 1,
-        fillColor: `#00${feature.get('ori_crop_id')*8}f`,
+        fillColor: `#00${feature.get('id')*18}f`,
       };
       return parcelStyle;
     },

@@ -3,7 +3,7 @@
     ref="map"
     @pointermove="onPointerMove"
     @click="onPointerClick"
-    @created="onMapCreated"
+    @created="mapCreated = true"
     v-bind="mapConfig"
     style="height: 400px"
     :class="hoverFeature ? 'cursorPointer' : ''"
@@ -32,14 +32,23 @@
         <vl-layer-group
           v-if="layer.type === 'group'"
           :key="key"
+          :ref="layer.id"
           :z-index="layers.indexOf(layer)">
-          <map-layer
-            v-for="childLayer in layer.layers"
-            :key="childLayer.id"
-            :ref="layer.id"
-            :layer="childLayer"
-            :z-index="layer.layers.indexOf(childLayer)"
+          <mapbox-style-group
+            v-if="layer['mapbox-style-layers'] && mapObject"
+            :key="key"
+            :mapObject="mapObject"
+            :urls="layer['mapbox-style-layers']"
           />
+          <template v-else-if="layer.layers">
+            <map-layer
+              v-for="childLayer in layer.layers"
+              :key="childLayer.id"
+              :ref="childLayer.id"
+              :layer="childLayer"
+              :z-index="layer.layers.indexOf(childLayer)"
+            />
+          </template>
         </vl-layer-group>
         <map-layer
           v-else
@@ -68,12 +77,11 @@ import {
   Map, GroupLayer,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
-import { getLayer, getLayers } from 'ol-mapbox-style';
-import olms from 'ol-mapbox-style';
 import DrawInteraction from './DrawInteraction.vue';
 import FeatureLayer from './FeatureLayer.vue';
 import MapLayer from './MapLayer.vue';
 import OverviewMap from './OverviewMap.vue';
+import MapboxStyleGroup from './MapboxStyleGroup.vue';
 
 Vue.use(Map);
 Vue.use(GroupLayer);
@@ -88,6 +96,7 @@ export default {
     FeatureLayer,
     MapLayer,
     OverviewMap,
+    MapboxStyleGroup,
   },
   props: {
     layers: Array,
@@ -116,7 +125,6 @@ export default {
       default: () => [0, 0],
     },
     showCenter: Boolean,
-    glStyleUrls: Array,
     overviewMapLayers: Array,
     drawInteractions: Boolean,
   },
@@ -125,6 +133,7 @@ export default {
     mapCenter: [0, 0],
     mapRotation: 0,
     mapObject: null,
+    mapCreated: false,
     mapFirstRender: false,
     mapRendering: false,
     overlay: null,
@@ -172,26 +181,26 @@ export default {
       });
       this.$emit('featuresClicked', ftrs);
     },
-    onMapCreated(map) {
-      if (this.glStyleUrls) {
-        const gls = Array.isArray(this.glStyleUrls) ? this.glStyleUrls : [this.glStyleUrls];
-        const promises = [];
-        gls.forEach((style) => {
-          // apply mapbox GL style(s) to existing map
-          promises.push(olms(map.$map, style));
-        });
-        // emit event of finished loading of styles
-        Promise.allSettled(promises).then(() => this.$emit('mapboxStylesApplied'));
-      }
-    },
-    getOlLayersByMapboxSource(source) {
-      // returns OL layer instances provided by Mapbox style 'source'
-      return getLayers(this.mapObject.$map, source);
-    },
-    getOlLayerByMapboxLayer(layer) {
-      // returns OL layer instance provided by Mapbox style 'layer'
-      return getLayer(this.mapObject.$map, layer);
-    },
+    // onMapCreated(map) {
+    //   if (this.glStyleUrls) {
+    //     const gls = Array.isArray(this.glStyleUrls) ? this.glStyleUrls : [this.glStyleUrls];
+    //     const promises = [];
+    //     gls.forEach((style) => {
+    //       // apply mapbox GL style(s) to existing map
+    //       promises.push(olms(map.$map, style));
+    //     });
+    //     // emit event of finished loading of styles
+    //     Promise.allSettled(promises).then(() => this.$emit('mapboxStylesApplied'));
+    //   }
+    // },
+    // getOlLayersByMapboxSource(source) {
+    //   // returns OL layer instances provided by Mapbox style 'source'
+    //   return getLayers(this.mapObject.$map, source);
+    // },
+    // getOlLayerByMapboxLayer(layer) {
+    //   // returns OL layer instance provided by Mapbox style 'layer'
+    //   return getLayer(this.mapObject.$map, layer);
+    // },
     // hilite({ highlightObj }) {
     //   // accepts a key:value pair of feature properties
     //   const a = getLayer(this.mapObject.$map, 'declaration-fill');
