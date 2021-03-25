@@ -1,8 +1,7 @@
 <template>
   <map-basic
-    :mapZoom="2"
-    :backgroundLayers="backgroundLayers"
-    :foregroundLayers="layerComparison ? foregroundLayers : []"
+    :mapZoom="mapZoom"
+    :mapLayers="mapLayers"
     style="height: 100%; width: 100%;"
   >
     <template slot-scope="{mapObject}">
@@ -12,8 +11,8 @@
         embeddedMode
         :embeddedActive="layerComparison"
         reverseDirection
-        :swipeLayer="foregroundLayers[0]"
-        :originalLayer="backgroundLayers[0]"
+        :swipeLayer="mapLayers[1]"
+        :originalLayer="mapLayers[0]"
         @swipeActive="toggleCompare"
       />
       <map-source-select
@@ -21,8 +20,8 @@
         enableCompare
         reverseDirection
         :selectionItems="availableLayers"
-        :comparisonLayer="foregroundLayers[0]"
-        :originalLayer="backgroundLayers[0]"
+        :comparisonLayer="mapLayers[1]"
+        :originalLayer="mapLayers[0]"
         @selectLayer="changeBackgroundLayer"
         @selectCompareLayer="changeForegroundLayer"
         @toggleCompare="toggleCompare"
@@ -36,9 +35,9 @@ import MapBasic from '@eox/map-basic'
 import MapLayerSwipe from '@eox/map-layer-swipe'
 import MapSourceSelect from '@eox/map-source-select'
 
-const layerConfig = {
-  dataProvider: 'WMTScapabilites',
-  capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+const srcDefaults = {
+  type: 'wmts-capabilities',
+  url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
   matrixSet: 'WGS84',
 };
 
@@ -49,55 +48,69 @@ export default {
     MapSourceSelect,
   },
     data: () => ({
+    mapZoom: 2,
     layerComparison: false,
-    backgroundLayers: null,
-    foregroundLayers: null,
+    mapLayers: null,
     availableLayers: [
       {
         type: 'tile',
-        name: 'osm',
-        title: 'Open Street Map',
-      },
-      {
-        ...layerConfig,
-        type: 'tile',
-        name: 'terrain-light',
+        id: 'terrain-light',
         title: 'Terrain Light',
+        source: {
+          ...srcDefaults,
+          layerName: 'terrain-light',
+        },
       },
       {
-        ...layerConfig,
         type: 'tile',
-        name: 's2cloudless',
+        id: '2016',
         title: 'Sentinel-2 cloudless 2016',
+        source: {
+          ...srcDefaults,
+          layerName: 's2cloudless',
+        },
       },
       {
-        ...layerConfig,
         type: 'tile',
-        name: 's2cloudless-2018',
+        id: '2018',
         title: 'Sentinel-2 cloudless 2018',
+        source: {
+          ...srcDefaults,
+          layerName: 's2cloudless-2018',
+        },
       },
       {
-        ...layerConfig,
         type: 'tile',
-        name: 's2cloudless-2019',
+        id: '2019',
         title: 'Sentinel-2 cloudless 2019',
+        source: {
+          ...srcDefaults,
+          layerName: 's2cloudless-2019',
+        },
+      },
+      {
+        type: 'tile',
+        id: '2020',
+        title: 'Sentinel-2 cloudless 2020',
+        source: {
+          ...srcDefaults,
+          layerName: 's2cloudless-2020',
+        },
       },
     ],
   }),
   mounted() {
-    this.backgroundLayers = [
-      this.availableLayers[this.availableLayers.length - 1]
-    ];
-    this.foregroundLayers = [
+    this.mapLayers = [
+      this.availableLayers[this.availableLayers.length - 1],
       this.availableLayers[0],
     ];
   },
   methods: {
     changeBackgroundLayer(layerId) {
-      this.backgroundLayers = [this.availableLayers.find(l => l.name === layerId)];
+      this.$set(this.mapLayers, 0, this.availableLayers.find(l => l.id === layerId))
     },
     changeForegroundLayer(layerId) {
-      this.foregroundLayers = [this.availableLayers.find(l => l.name === layerId)];
+      this.$set(this.mapLayers, 1, this.availableLayers.find(l => l.id === layerId))
     },
     toggleCompare(active) {
       this.layerComparison = active;

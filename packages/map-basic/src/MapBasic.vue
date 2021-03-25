@@ -31,26 +31,28 @@
       />
     </vl-view>
 
-    <template v-for="(layer, key) in mapLayers">
-      <vl-layer-group
-        v-if="layer.type === 'group'"
-        :key="key"
-        :z-index="mapLayers.indexOf(layer)">
+    <template v-if="mapLayers && mapLayers.length > 0">
+      <template v-for="(layer, key) in mapLayers">
+        <vl-layer-group
+          v-if="layer.type === 'group'"
+          :key="key"
+          :z-index="mapLayers.indexOf(layer)">
+          <map-layer
+            v-for="childLayer in layer.layers"
+            :key="childLayer.id"
+            :ref="layer.id"
+            :layer="childLayer"
+            :z-index="layer.layers.indexOf(childLayer)"
+          />
+        </vl-layer-group>
         <map-layer
-          v-for="childLayer in layer.layers"
-          :key="childLayer.id"
+          v-else
+          :key="layer.id"
           :ref="layer.id"
-          :layer="childLayer"
-          :z-index="layer.layers.indexOf(childLayer)"
+          :layer="layer"
+          :z-index="mapLayers.indexOf(layer)"
         />
-      </vl-layer-group>
-      <map-layer
-        v-else
-        :key="layer.id"
-        :ref="layer.id"
-        :layer="layer"
-        :z-index="mapLayers.indexOf(layer)"
-      />
+      </template>
     </template>
 
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
@@ -93,8 +95,8 @@ export default {
   },
   props: {
     mapLayers: Array,
-    foregroundLayers: Array,
-    overlayLayers: Array,
+    // foregroundLayers: Array,
+    // overlayLayers: Array,
     featureLayers: Array,
     dataProjection: String,
     projection: {
@@ -133,8 +135,8 @@ export default {
   },
   mounted() {
     this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
-    this.$refs.mapView.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
-    this.$refs.mapView.$on('update:center', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.view.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.view.$on('update:center', this.debounceEvent(this.onMapRender, 100));
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map

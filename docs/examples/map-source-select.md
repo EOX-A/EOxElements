@@ -10,7 +10,7 @@
 
 <<< ./.vuepress/components/MapSourceSelectCompare.vue
 
-## Source select with vector layer
+<!-- ## Source select with vector layer
 <example file="MapSourceSelectVector.vue" />
 
-<<< ./.vuepress/components/MapSourceSelectVector.vue
+<<< ./.vuepress/components/MapSourceSelectVector.vue -->
