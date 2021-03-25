@@ -291,6 +291,9 @@ export default {
 .cursorPointer {
   cursor: pointer !important;
 }
+.ol-overlaycontainer-stopevent {
+  z-index: 15 !important;
+}
 </style>
 
 <style lang="scss" scoped>
