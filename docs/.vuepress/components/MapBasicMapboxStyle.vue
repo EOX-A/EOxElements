@@ -2,7 +2,7 @@
   <map-basic
     :zoom="zoom"
     :center="center"
-    :mapLayers="mapLayers"
+    :layers="layers"
     showCenter
     :glStyleUrls="glStyleUrls"
     style="height: 100%; width: 100%;"
@@ -24,7 +24,7 @@ export default {
     zoom: 13,
     center: [1783019, 6148052],
     glStyleUrls: ['/style_declarations.json'],
-    mapLayers: [
+    layers: [
       {
         type: 'mapbox-style',
         urls: ['/style_declarations.json'],

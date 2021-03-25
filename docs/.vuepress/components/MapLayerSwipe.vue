@@ -1,7 +1,7 @@
 <template>
   <map-basic
     :zoom="zoom"
-    :mapLayers="mapLayers"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   >
     <template slot-scope="{mapObject}">
@@ -9,8 +9,8 @@
         v-if="mapObject"
         :mapObject="mapObject"
         ref="swipe"
-        :swipeLayer="mapLayers[1]"
-        :originalLayer="mapLayers[0]"
+        :swipeLayer="layers[1]"
+        :originalLayer="layers[0]"
         @swipeActive="toggleCompare"
       >
         <template v-slot:activate>
@@ -48,7 +48,7 @@ export default {
   },
   data: () => ({
     zoom: 2,
-    mapLayers: [
+    layers: [
       {
         id: '2020',
         title: '2020',

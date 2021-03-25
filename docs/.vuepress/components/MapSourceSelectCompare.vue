@@ -1,7 +1,7 @@
 <template>
   <map-basic
     :zoom="zoom"
-    :mapLayers="mapLayers"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   >
     <template slot-scope="{mapObject}">
@@ -11,8 +11,8 @@
         embeddedMode
         :embeddedActive="layerComparison"
         reverseDirection
-        :swipeLayer="mapLayers[1]"
-        :originalLayer="mapLayers[0]"
+        :swipeLayer="layers[1]"
+        :originalLayer="layers[0]"
         @swipeActive="toggleCompare"
       />
       <map-source-select
@@ -20,8 +20,8 @@
         enableCompare
         reverseDirection
         :selectionItems="availableLayers"
-        :comparisonLayer="mapLayers[1]"
-        :originalLayer="mapLayers[0]"
+        :comparisonLayer="layers[1]"
+        :originalLayer="layers[0]"
         @selectLayer="changeBackgroundLayer"
         @selectCompareLayer="changeForegroundLayer"
         @toggleCompare="toggleCompare"
@@ -50,7 +50,7 @@ export default {
     data: () => ({
     zoom: 2,
     layerComparison: false,
-    mapLayers: null,
+    layers: null,
     availableLayers: [
       {
         type: 'tile',
@@ -100,17 +100,17 @@ export default {
     ],
   }),
   mounted() {
-    this.mapLayers = [
+    this.layers = [
       this.availableLayers[this.availableLayers.length - 1],
       this.availableLayers[0],
     ];
   },
   methods: {
     changeBackgroundLayer(layerId) {
-      this.$set(this.mapLayers, 0, this.availableLayers.find(l => l.id === layerId))
+      this.$set(this.layers, 0, this.availableLayers.find(l => l.id === layerId))
     },
     changeForegroundLayer(layerId) {
-      this.$set(this.mapLayers, 1, this.availableLayers.find(l => l.id === layerId))
+      this.$set(this.layers, 1, this.availableLayers.find(l => l.id === layerId))
     },
     toggleCompare(active) {
       this.layerComparison = active;

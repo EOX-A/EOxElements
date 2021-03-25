@@ -2,7 +2,7 @@
   <map-basic
     :zoom="zoom"
     :center="center"
-    :mapLayers="mapLayers"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   >
   </map-basic>
@@ -19,7 +19,7 @@ export default {
     return {
       zoom: 14,
       center: [1731756, 6228616],
-      mapLayers: [
+      layers: [
         {
           type: 'group',
           layers: [

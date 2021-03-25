@@ -1,7 +1,7 @@
 <template>
   <map-basic
     :zoom.sync="zoom"
-    :mapLayers.sync="mapLayers"
+    :layers.sync="layers"
     showCenter
     :mapConfig="{
       // https://vuelayers.github.io/#/docs/component/map?id=properties
@@ -25,7 +25,7 @@ export default {
   },
   data: () => ({
     zoom: 2,
-    mapLayers: [
+    layers: [
       {
         id: 'cloudless',
         title: 'Sentinel-2 cloudless 2019',

@@ -27,12 +27,12 @@
       />
     </vl-view>
 
-    <template v-if="mapLayers && mapLayers.length > 0">
-      <template v-for="(layer, key) in mapLayers">
+    <template v-if="layers && layers.length > 0">
+      <template v-for="(layer, key) in layers">
         <vl-layer-group
           v-if="layer.type === 'group'"
           :key="key"
-          :z-index="mapLayers.indexOf(layer)">
+          :z-index="layers.indexOf(layer)">
           <map-layer
             v-for="childLayer in layer.layers"
             :key="childLayer.id"
@@ -46,7 +46,7 @@
           :key="layer.id"
           :ref="layer.id"
           :layer="layer"
-          :z-index="mapLayers.indexOf(layer)"
+          :z-index="layers.indexOf(layer)"
         />
       </template>
     </template>
@@ -90,7 +90,7 @@ export default {
     OverviewMap,
   },
   props: {
-    mapLayers: Array,
+    layers: Array,
     mapConfig: {
       type: Object,
       default: () => ({

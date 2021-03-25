@@ -1,7 +1,7 @@
 <template>
   <map-basic
     :zoom="zoom"
-    :mapLayers="mapLayers"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   >
     <template>
@@ -30,7 +30,7 @@ export default {
   },
   data: () => ({
     zoom: 2,
-    mapLayers: null,
+    layers: null,
     availableLayers: [
       {
         type: 'tile',
@@ -80,13 +80,13 @@ export default {
     ],
   }),
   mounted() {
-    this.mapLayers = [
+    this.layers = [
       this.availableLayers[this.availableLayers.length - 1]
     ];
   },
   methods: {
     changeLayer(layerId) {
-      this.mapLayers = [this.availableLayers.find(l => l.id === layerId)];
+      this.layers = [this.availableLayers.find(l => l.id === layerId)];
     },
   },
 }

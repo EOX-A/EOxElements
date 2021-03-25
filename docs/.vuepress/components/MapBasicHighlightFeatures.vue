@@ -2,7 +2,7 @@
   <map-basic
     :zoom="zoom"
     :center="center"
-    :mapLayers="allLayers"
+    :layers="allLayers"
     style="height: 100%; width: 100%;"
     ref='mapbasic'
   >

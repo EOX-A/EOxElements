@@ -4,7 +4,7 @@
     :center="center"
     showCenter
     dataProjection="EPSG:4326"
-    :mapLayers="mapLayers"
+    :layers="layers"
     :featureLayers="featureLayers"
     style="height: 100%; width: 100%;"
   />
@@ -20,7 +20,7 @@ export default {
   data: () => ({
     zoom: 16,
     center: [16.3602, 48.2190],
-    mapLayers: [
+    layers: [
       {
         id: 'osm',
         title: 'Open Street Map',

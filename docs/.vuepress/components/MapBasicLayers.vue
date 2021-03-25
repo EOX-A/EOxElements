@@ -1,7 +1,7 @@
 <template>
   <map-basic
     :zoom="zoom"
-    :mapLayers="mapLayers"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   >
     <v-card
@@ -9,7 +9,7 @@
       style="position: absolute; z-index: 1; top: 20px; right: 20px"
     >
       <v-switch
-        v-for="layer in mapLayers"
+        v-for="layer in layers"
         :key="layer.id"
         v-model="layer.visible"
         :label="layer.title"
@@ -29,7 +29,7 @@ export default {
   },
   data: () => ({
     zoom: 2,
-    mapLayers: [
+    layers: [
       {
         id: 'cloudless',
         title: 'WMTS from Capabilities',
