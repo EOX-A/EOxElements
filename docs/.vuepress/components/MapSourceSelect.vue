@@ -1,6 +1,6 @@
 <template>
   <map-basic
-    :mapZoom="mapZoom"
+    :zoom="zoom"
     :mapLayers="mapLayers"
     style="height: 100%; width: 100%;"
   >
@@ -29,7 +29,7 @@ export default {
     MapSourceSelect,
   },
   data: () => ({
-    mapZoom: 2,
+    zoom: 2,
     mapLayers: null,
     availableLayers: [
       {

@@ -1,8 +1,8 @@
 <template>
   <map-basic
     ref="map"
-    :mapZoom="mapZoom"
-    :mapCenter="mapCenter"
+    :zoom="zoom"
+    :center="center"
     :mapLayers="allLayers"
     style="height: 100%; width: 100%;"
   >
@@ -24,8 +24,8 @@ export default {
   },
   data: function() {
     return {
-      mapZoom: 14,
-      mapCenter: [1731756.231909257, 6223616.060472786],
+      zoom: 14,
+      center: [1731756.231909257, 6223616.060472786],
       allLayers: [
         {
           id: 'terrain',

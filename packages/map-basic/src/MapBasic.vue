@@ -1,23 +1,19 @@
 <template>
   <vl-map
-    :data-projection="dataProjection"
-    :load-tiles-while-animating="true"
-    :load-tiles-while-interacting="true"
+    ref="map"
     @pointermove="onPointerMove"
     @click="onPointerClick"
     @created="onMapCreated"
-    ref="map"
+    v-bind="mapConfig"
     style="height: 400px"
     :class="hoverFeature ? 'cursorPointer' : ''"
   >
     <vl-view
-      :zoom.sync="zoom"
-      :center.sync="center"
-      :rotation.sync="rotation"
-      :projection="projection"
-      :max-zoom="maxZoom"
-      multiWorld
       ref="view"
+      :zoom.sync="mapZoom"
+      :center.sync="mapCenter"
+      :rotation.sync="mapRotation"
+      v-bind="viewConfig"
     >
       <!-- TODO: replace with more dynamic solution -->
       <feature-layer
@@ -95,32 +91,39 @@ export default {
   },
   props: {
     mapLayers: Array,
-    // foregroundLayers: Array,
-    // overlayLayers: Array,
-    featureLayers: Array,
-    dataProjection: String,
-    projection: {
-      type: String,
-      default: 'EPSG:3857',
+    mapConfig: {
+      type: Object,
+      default: () => ({
+        // https://vuelayers.github.io/#/docs/component/map?id=properties
+        'load-tiles-while-animating': true,
+        'load-tiles-while-interacting': true,
+      }),
     },
-    mapZoom: {
+    viewConfig: {
+      type: Object,
+      default: () => ({
+        // https://vuelayers.github.io/#/docs/component/view?id=properties
+        'multi-world': true,
+      }),
+    },
+    featureLayers: Array,
+    zoom: {
       type: Number,
       default: 0,
     },
-    mapCenter: {
+    center: {
       type: Array,
       default: () => [0, 0],
     },
-    maxZoom: Number,
     showCenter: Boolean,
     glStyleUrls: Array,
     overviewMapLayers: Array,
     drawInteractions: Boolean,
   },
   data: () => ({
-    zoom: null,
-    center: null,
-    rotation: 0,
+    mapZoom: 0,
+    mapCenter: [0, 0],
+    mapRotation: 0,
     mapObject: null,
     mapFirstRender: false,
     mapRendering: false,
@@ -130,13 +133,15 @@ export default {
     // wmtsCapabilitiesRequest: {},
   }),
   created() {
-    this.zoom = this.mapZoom;
-    this.center = this.mapCenter;
+    this.mapZoom = this.zoom;
+    this.mapCenter = this.center;
+    this.mapRotation = this.rotation;
   },
   mounted() {
     this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
     this.$refs.view.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
     this.$refs.view.$on('update:center', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.view.$on('update:rotation', this.debounceEvent(this.onMapRender, 100));
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
@@ -187,13 +192,13 @@ export default {
       // returns OL layer instance provided by Mapbox style 'layer'
       return getLayer(this.mapObject.$map, layer);
     },
-    hilite({ highlightObj }) {
-      // accepts a key:value pair of feature properties
-      const a = getLayer(this.mapObject.$map, 'declaration-fill');
-      console.log(a);
-      console.log(highlightObj);
-      a.setStyle(this.testStyleFunc);
-    },
+    // hilite({ highlightObj }) {
+    //   // accepts a key:value pair of feature properties
+    //   const a = getLayer(this.mapObject.$map, 'declaration-fill');
+    //   console.log(a);
+    //   console.log(highlightObj);
+    //   a.setStyle(this.testStyleFunc);
+    // },
     // updateCapabilitiesRequest({ request, url }) {
     //   this.wmtsCapabilitiesRequest[url] = request;
     // },
@@ -222,11 +227,14 @@ export default {
     },
   },
   watch: {
-    mapZoom(zoom) {
-      this.zoom = zoom;
+    mapZoom(newZoom) {
+      this.$emit('update:zoom', newZoom);
     },
-    mapCenter(center) {
-      this.center = center;
+    mapCenter(newCenter) {
+      this.$emit('update:center', newCenter);
+    },
+    mapRotation(newRotation) {
+      this.$emit('update:rotation', newRotation);
     },
     mapRendering(isRendering) {
       if (isRendering) {

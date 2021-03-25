@@ -1,7 +1,7 @@
 <template>
   <map-basic
-    :mapZoom="mapZoom"
-    :mapCenter="mapCenter"
+    :zoom="zoom"
+    :center="center"
     :mapLayers="allLayers"
     style="height: 100%; width: 100%;"
     ref='mapbasic'
@@ -21,8 +21,8 @@ export default {
     MapBasic
   },
   data: () => ({
-    mapZoom: 13,
-    mapCenter: [1783019, 6148052],
+    zoom: 13,
+    center: [1783019, 6148052],
     allLayers: [
       {
         id: 'terrain-light',

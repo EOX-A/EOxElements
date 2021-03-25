@@ -34,6 +34,7 @@
         </VlFeature>
       </template>
 
+      <!-- TODO keep this? -->
       <!-- add inner source if provided (like vl-source-vector inside vl-source-cluster) -->
       <component
         v-if="layer.source.source"
@@ -94,7 +95,6 @@
     </template>
     <!--// style -->
   </component>
-  <!--// other layers -->
 </template>
 
 <script>

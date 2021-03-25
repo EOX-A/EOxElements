@@ -1,7 +1,7 @@
 <template>
   <map-basic
-    :mapZoom="mapZoom"
-    :mapCenter="mapCenter"
+    :zoom="zoom"
+    :center="center"
     :mapLayers="mapLayers"
     style="height: 100%; width: 100%;"
   >
@@ -17,8 +17,8 @@ export default {
   },
   data: function() {
     return {
-      mapZoom: 14,
-      mapCenter: [1731756, 6228616],
+      zoom: 14,
+      center: [1731756, 6228616],
       mapLayers: [
         {
           type: 'group',

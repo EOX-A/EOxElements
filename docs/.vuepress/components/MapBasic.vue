@@ -1,7 +1,17 @@
 <template>
   <map-basic
-    :mapZoom="mapZoom"
-    :mapLayers="mapLayers"
+    :zoom.sync="zoom"
+    :mapLayers.sync="mapLayers"
+    showCenter
+    :mapConfig="{
+      // https://vuelayers.github.io/#/docs/component/map?id=properties
+      'data-projection': 'EPSG:4326',
+    }"
+    :viewConfig="{
+      // https://vuelayers.github.io/#/docs/component/view?id=properties
+      'max-zoom': 14,
+      'projection': 'EPSG:3857',
+    }"
     style="height: 100%; width: 100%;"
   />
 </template>
@@ -14,7 +24,7 @@ export default {
     MapBasic,
   },
   data: () => ({
-    mapZoom: 2,
+    zoom: 2,
     mapLayers: [
       {
         id: 'cloudless',

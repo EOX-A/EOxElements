@@ -1,7 +1,7 @@
 <template>
   <map-basic
-    :mapZoom="mapZoom"
-    :mapCenter="mapCenter"
+    :zoom="zoom"
+    :center="center"
     showCenter
     dataProjection="EPSG:4326"
     :mapLayers="mapLayers"
@@ -18,8 +18,8 @@ export default {
     MapBasic
   },
   data: () => ({
-    mapZoom: 16,
-    mapCenter: [16.3602, 48.2190],
+    zoom: 16,
+    center: [16.3602, 48.2190],
     mapLayers: [
       {
         id: 'osm',

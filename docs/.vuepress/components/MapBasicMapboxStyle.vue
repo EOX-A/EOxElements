@@ -1,7 +1,7 @@
 <template>
   <map-basic
-    :mapZoom="mapZoom"
-    :mapCenter="mapCenter"
+    :zoom="zoom"
+    :center="center"
     :mapLayers="mapLayers"
     showCenter
     :glStyleUrls="glStyleUrls"
@@ -21,10 +21,14 @@ export default {
     MapBasic
   },
   data: () => ({
-    mapZoom: 13,
-    mapCenter: [1783019, 6148052],
+    zoom: 13,
+    center: [1783019, 6148052],
     glStyleUrls: ['/style_declarations.json'],
     mapLayers: [
+      {
+        type: 'mapbox-style',
+        urls: ['/style_declarations.json'],
+      },
       {
         id: 'terrain-light',
         title: 'Terrain Light',
