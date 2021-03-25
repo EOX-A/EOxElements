@@ -3,7 +3,7 @@
 ## Basic example
 <example file="MapBasic.vue" />
 
-<<< ./.vuepress/components/MapBasic.vue
+<!-- <<< ./.vuepress/components/MapBasic.vue
 
 ## Simple layer selector
 <example file="MapBasicLayers.vue" />
@@ -28,4 +28,4 @@
 ## Highlighting features by attribute
 <example file="MapBasicHighlightFeatures.vue" />
 
-<<< ./.vuepress/components/MapBasicHighlightFeatures.vue
+<<< ./.vuepress/components/MapBasicHighlightFeatures.vue -->

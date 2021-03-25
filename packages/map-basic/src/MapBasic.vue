@@ -61,7 +61,15 @@
     </template>
 
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
-    <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
+    <span v-if="showCenter || showMousePosition" class="showInfo">
+      <template v-if="showCenter">
+        {{ mapCenter[0] }}, {{ mapCenter[1] }}, {{ mapZoom }}
+      </template>
+      <vl-control-mouse-position
+        v-if="showMousePosition && mapObject"
+        :mapObject="mapObject" target=".showInfo"
+      />
+    </span>
     <overview-map
       v-if="overviewMapLayers && overviewLayers"
       :mapObject="mapObject"
@@ -82,9 +90,11 @@ import FeatureLayer from './FeatureLayer.vue';
 import MapLayer from './MapLayer.vue';
 import OverviewMap from './OverviewMap.vue';
 import MapboxStyleGroup from './MapboxStyleGroup.vue';
+import OlControls from './ol-controls';
 
 Vue.use(Map);
 Vue.use(GroupLayer);
+Vue.use(OlControls);
 
 /**
  * A basic map based on OpenLayers
@@ -125,6 +135,7 @@ export default {
       default: () => [0, 0],
     },
     showCenter: Boolean,
+    showMousePosition: Boolean,
     overviewMapLayers: Array,
     drawInteractions: Boolean,
   },
@@ -283,7 +294,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.showCenter {
+.showInfo {
   position: absolute;
   bottom: .5em;
   left: .5em;

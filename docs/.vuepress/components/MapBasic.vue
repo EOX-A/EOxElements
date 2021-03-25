@@ -2,7 +2,7 @@
   <map-basic
     :zoom.sync="zoom"
     :center.sync="center"
-    :layers.sync="layers"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   />
 </template>
