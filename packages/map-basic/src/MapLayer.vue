@@ -2,7 +2,6 @@
   <wmts-capabilites-provider
     v-if="layer.type === 'tile'
       && layer.source.type === 'wmts-capabilities'"
-    :ref="layer.id"
     :id="layer.id"
     :layerName="layer.source.layerName"
     :capabilitiesUrl="layer.source.url"
@@ -17,7 +16,6 @@
   <component
     v-else
     :is="`vl-layer-${layer.type}`"
-    :ref="layer.id"
     :z-index="zIndex"
     v-bind="layer">
     <!-- add vl-source-* -->
@@ -107,6 +105,7 @@ import {
   VectorTileLayer, VectorTileSource,
   TileWmsSource, WmtsSource,
   Style, StyleFunc,
+  XyzSource,
 } from 'vuelayers';
 import { createStyle } from 'vuelayers/dist/ol-ext';
 import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
@@ -121,6 +120,7 @@ Vue.use(TileWmsSource);
 Vue.use(WmtsSource);
 Vue.use(Style);
 Vue.use(StyleFunc);
+Vue.use(XyzSource);
 
 export default {
   props: {

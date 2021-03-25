@@ -17,7 +17,7 @@
       :projection="projection"
       :max-zoom="maxZoom"
       multiWorld
-      ref="mapView"
+      ref="view"
     >
       <!-- TODO: replace with more dynamic solution -->
       <feature-layer
@@ -39,6 +39,7 @@
         <map-layer
           v-for="childLayer in layer.layers"
           :key="childLayer.id"
+          :ref="layer.id"
           :layer="childLayer"
           :z-index="layer.layers.indexOf(childLayer)"
         />
@@ -46,6 +47,7 @@
       <map-layer
         v-else
         :key="layer.id"
+        :ref="layer.id"
         :layer="layer"
         :z-index="mapLayers.indexOf(layer)"
       />

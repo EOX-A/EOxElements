@@ -5,6 +5,11 @@
 
 <<< ./.vuepress/components/MapBasic.vue
 
+## Simple layer selector
+<example file="MapBasicLayers.vue" />
+
+<<< ./.vuepress/components/MapBasicLayers.vue
+
 ## Vector layer and fill color function
 <example file="MapBasicVector.vue" />
 
@@ -15,7 +20,8 @@
 
 <<< ./.vuepress/components/MapBasicFeatures.vue
 
-<!-- ## Map created from Mapbox style document
+
+## Map created from Mapbox style document
 <example file="MapBasicMapboxStyle.vue" />
 
 <<< ./.vuepress/components/MapBasicMapboxStyle.vue
@@ -23,4 +29,4 @@
 ## Highlighting features by attribute
 <example file="MapBasicHighlightFeatures.vue" />
 
-<<< ./.vuepress/components/MapBasicHighlightFeatures.vue -->
+<<< ./.vuepress/components/MapBasicHighlightFeatures.vue

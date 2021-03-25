@@ -1,9 +1,9 @@
 <template>
   <map-basic
-    :mapZoom="13"
-    :mapCenter="[1783019, 6148052]"
+    :mapZoom="mapZoom"
+    :mapCenter="mapCenter"
+    :mapLayers="mapLayers"
     showCenter
-    :backgroundLayers="tileLayers"
     :glStyleUrls="glStyleUrls"
     style="height: 100%; width: 100%;"
     @featuresClicked="featuresClicked"
@@ -21,15 +21,20 @@ export default {
     MapBasic
   },
   data: () => ({
+    mapZoom: 13,
+    mapCenter: [1783019, 6148052],
     glStyleUrls: ['/style_declarations.json'],
-    tileLayers: [
+    mapLayers: [
       {
-        type: 'tile',
-        name: 'terrain-light',
+        id: 'terrain-light',
         title: 'Terrain Light',
-        dataProvider: 'WMTScapabilites',
-        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-        matrixSet: 'WGS84',
+        type: 'tile',
+        source: {
+          type: 'wmts-capabilities',
+          url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          layerName: 'terrain-light',
+          matrixSet: 'WGS84',
+        },
       },
     ],
   }),

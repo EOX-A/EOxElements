@@ -24,7 +24,7 @@
     "declarations": {
       "type": "vector",
       "tiles": [
-        "https://agri.demo.hub.eox.at/parcels-api/demo.agri_data_declaration/{z}/{x}/{y}.pbf"
+        "https://agri-8h5ffg409jlmduiuijhc.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18&model_name=dummy"
       ],
       "minZoom": 0,
       "maxzoom": 19

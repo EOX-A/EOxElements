@@ -49,6 +49,7 @@ export default {
   },
   watch: {
     hoverFeature(element) {
+      debugger;
       if (element) {
         this.tooltipContent = Object.keys(element.feature.properties_)
           .map((p) => ({
