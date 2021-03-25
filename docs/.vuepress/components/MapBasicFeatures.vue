@@ -3,7 +3,12 @@
     :zoom="zoom"
     :center="center"
     showCenter
-    dataProjection="EPSG:4326"
+    :mapConfig="{
+      'data-projection': 'EPSG:4326',
+    }"
+    :viewConfig="{
+      'projection': 'EPSG:3857',
+    }"
     :layers="layers"
     :featureLayers="featureLayers"
     style="height: 100%; width: 100%;"
