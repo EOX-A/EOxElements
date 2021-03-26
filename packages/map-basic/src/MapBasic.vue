@@ -150,7 +150,6 @@ export default {
     overlay: null,
     hoverFeature: null,
     overviewLayers: null,
-    // wmtsCapabilitiesRequest: {},
   }),
   created() {
     this.mapZoom = this.zoom;
@@ -192,36 +191,6 @@ export default {
       });
       this.$emit('featuresClicked', ftrs);
     },
-    // onMapCreated(map) {
-    //   if (this.glStyleUrls) {
-    //     const gls = Array.isArray(this.glStyleUrls) ? this.glStyleUrls : [this.glStyleUrls];
-    //     const promises = [];
-    //     gls.forEach((style) => {
-    //       // apply mapbox GL style(s) to existing map
-    //       promises.push(olms(map.$map, style));
-    //     });
-    //     // emit event of finished loading of styles
-    //     Promise.allSettled(promises).then(() => this.$emit('mapboxStylesApplied'));
-    //   }
-    // },
-    // getOlLayersByMapboxSource(source) {
-    //   // returns OL layer instances provided by Mapbox style 'source'
-    //   return getLayers(this.mapObject.$map, source);
-    // },
-    // getOlLayerByMapboxLayer(layer) {
-    //   // returns OL layer instance provided by Mapbox style 'layer'
-    //   return getLayer(this.mapObject.$map, layer);
-    // },
-    // hilite({ highlightObj }) {
-    //   // accepts a key:value pair of feature properties
-    //   const a = getLayer(this.mapObject.$map, 'declaration-fill');
-    //   console.log(a);
-    //   console.log(highlightObj);
-    //   a.setStyle(this.testStyleFunc);
-    // },
-    // updateCapabilitiesRequest({ request, url }) {
-    //   this.wmtsCapabilitiesRequest[url] = request;
-    // },
     mountOverviewMap() {
       if (this.overviewMapLayers && !this.overviewLayers) {
         const layers = this.mapObject
