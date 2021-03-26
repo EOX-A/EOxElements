@@ -1,31 +1,36 @@
 <template>
   <map-basic
-    :mapZoom="2"
-    :backgroundLayers="tileLayers"
+    :zoom.sync="zoom"
+    :center.sync="center"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   />
 </template>
 
 <script>
-import MapBasic from '@eox/map-basic'
+import MapBasic from '@eox/map-basic';
 
 export default {
   components: {
-    MapBasic
+    MapBasic,
   },
   data: () => ({
-    tileLayers: [
+    zoom: 2,
+    center: [0, 0],
+    layers: [
       {
-        type: 'tile',
-        name: 's2cloudless-2019_3857',
+        id: 'cloudless',
         title: 'Sentinel-2 cloudless 2019',
-        dataProvider: 'WMTScapabilites',
-        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-        matrixSet: 'GoogleMapsCompatible',
-        layerStyle: 'default', // just as a test
-        requestEncoding: 'REST', // just as a test
+        type: 'tile',
+        visible: true,
+        source: {
+          type: 'wmts-capabilities',
+          url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          layerName: 's2cloudless-2019_3857',
+          matrixSet: 'GoogleMapsCompatible',
+        },
       },
     ],
-  })
-}
+  }),
+};
 </script>

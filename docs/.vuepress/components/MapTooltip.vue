@@ -1,9 +1,9 @@
 <template>
   <map-basic
     ref="map"
-    :mapZoom="14"
-    :mapCenter="[ 1731756.231909257, 6223616.060472786 ]"
-    :backgroundLayers="allLayers"
+    :zoom="zoom"
+    :center="center"
+    :layers="allLayers"
     style="height: 100%; width: 100%;"
   >
     <template slot-scope="{mapObject, hoverFeature}">
@@ -24,37 +24,44 @@ export default {
   },
   data: function() {
     return {
+      zoom: 14,
+      center: [1731756.231909257, 6223616.060472786],
       allLayers: [
         {
-          type: 'tile',
-          name: 'terrain-light',
+          id: 'terrain',
           title: 'Terrain Light',
-          dataProvider: 'WMTScapabilites',
-          capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          matrixSet: 'WGS84',
+          type: 'tile',
+          visible: true,
+          source: {
+            type: 'wmts-capabilities',
+            url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+            layerName: 'terrain-light',
+            matrixSet: 'WGS84',
+          },
         },
         {
-          type: 'vector',
+          id: 'parcels',
+          title: 'Agricultural Parcels',
+          type: 'vector-tile',
           visible: true,
-          url: 'https://agri.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18',
-          title: 'Demo Declarations',
-          tooltip: true,
-          style: {
-            stroke: {
-              color: 'black',
-              width: 1,
-            },
-            fill: {
-              color: (feature) => this.featureStyle(feature),
-            },
-          }
+          source: {
+            type: 'vector-tile',
+            url: 'https://pg-tileserv.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
+          },
+          style: this.parcelStyleFunc,
         },
       ],
     }
   },
   methods: {
-    featureStyle(feature) {
-      return `#00${feature.properties_.ori_crop_id*8}f`;
+    parcelStyleFunc(feature) {
+
+      const parcelStyle = {
+        strokeColor: '#000',
+        strokeWidth: 1,
+        fillColor: `#00${feature.get('id')*18}f`,
+      };
+      return parcelStyle;
     },
   },
 }

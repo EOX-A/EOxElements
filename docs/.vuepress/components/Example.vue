@@ -1,6 +1,6 @@
 <template>
   <v-app class="fill-height"> 
-    <v-content class="fill-height">
+    <v-main class="fill-height">
       <div style="height:400px">
         <ClientOnly>
           <vue-file
@@ -9,7 +9,7 @@
           />
         </ClientOnly>
       </div>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

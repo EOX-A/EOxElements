@@ -1,8 +1,8 @@
 <template>
   <map-basic
-    :mapZoom="13"
-    :mapCenter="[1783019, 6148052]"
-    :backgroundLayers="allLayers"
+    :zoom="zoom"
+    :center="center"
+    :layers="allLayers"
     style="height: 100%; width: 100%;"
     ref='mapbasic'
   >
@@ -21,29 +21,40 @@ export default {
     MapBasic
   },
   data: () => ({
+    zoom: 13,
+    center: [1783019, 6148052],
     allLayers: [
       {
-        type: 'tile',
-        name: 'terrain-light',
+        id: 'terrain-light',
         title: 'Terrain Light',
-        dataProvider: 'WMTScapabilites',
-        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-        matrixSet: 'WGS84',
+        type: 'tile',
+        source: {
+          type: 'wmts-capabilities',
+          url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          layerName: 'terrain-light',
+          matrixSet: 'WGS84',
+
+        },
       },
       {
-        type: 'vector',
-        url: 'https://agri.demo.hub.eox.at/parcels-api/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
+        id: 'declarations',
         title: 'Declarations',
-        name: 'declarations',
-        style: {
-          stroke: {
-            color: 'black',
-            width: 1,
-          },
-          fill: {
-            color: 'blue',
-          },
+        type: 'vector-tile',
+        source: {
+          type: 'vector-tile',
+          url: 'https://pg-tileserv.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
         },
+        style: [
+          {
+            stroke: {
+              color: 'black',
+              width: 1,
+            },
+            fill: {
+              color: 'blue',
+            },
+          }
+        ],
       },
     ],
   }),
@@ -63,7 +74,7 @@ export default {
   methods: {
     btnclicked() {
       this.highlighted = {SNAR_BEZEICHNUNG: 'KÖRNERMAIS'};
-      const layer = this.$refs.mapbasic.$refs['declarations'][0].$layer;
+      const layer = this.$refs.mapbasic.$refs.declarations[0].$children[0].$layer;
       // update style
       layer.setStyle(this.featureStyle);
     },
