@@ -36,7 +36,7 @@ export default {
         {
           type: 'vector',
           visible: true,
-          url: 'https://agri.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18',
+          url: 'https://agri-8h5ffg409jlmduiuijhc.demo.hub.eox.at/agri-api/vectortiles/2020/06/30/{z}/{x}/{y}.pbf?config_date=2021-02-18&model_name=dummy',
           title: 'Demo Declarations',
           tooltip: true,
           style: {
