@@ -367,9 +367,9 @@ export default {
           /**
            * New date has been selected
            *
-           * @property {Date} date
+           * @property {DateTime} date
            */
-          vueThis.$emit('dateSelected', new Date(yLabel.t));
+          vueThis.$emit('dateSelected', yLabel.t);
         },
       };
       if ('annotations' in this.plotConfig) {
