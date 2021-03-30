@@ -44,6 +44,7 @@ export default {
           title: 'Agricultural Parcels',
           type: 'vector-tile',
           visible: true,
+          tooltip: true,
           source: {
             type: 'vector-tile',
             url: 'https://pg-tileserv.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
