@@ -78,8 +78,9 @@ export default {
   },
   mounted() {
     this.mapObject.$map.on('postrender', () => {
-      this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer.name);
+      this.swipeLayerObject = this.mapObject.getLayerById(this.swipeLayer.id);
       if (this.swipeLayerObject) {
+        this.swipeLayerObject.setZIndex(99);
         this.swipeLayerObject.on('prerender', this.onPrerender);
         this.swipeLayerObject.on('postrender', this.onPostrender);
       }

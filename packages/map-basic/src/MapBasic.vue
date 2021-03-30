@@ -1,24 +1,21 @@
 <template>
   <vl-map
-    :data-projection="dataProjection"
-    :load-tiles-while-animating="true"
-    :load-tiles-while-interacting="true"
+    ref="map"
     @pointermove="onPointerMove"
     @click="onPointerClick"
-    @created="onMapCreated"
-    ref="map"
+    @created="mapCreated = true"
+    v-bind="mapConfig"
     style="height: 400px"
     :class="{cursorPointer: !hideFeature, 'hide-feature': hideFeature, 'tooltip-left': tooltipLeft}"
   >
     <vl-view
-      :zoom.sync="zoom"
-      :center.sync="center"
-      :rotation.sync="rotation"
-      :projection="projection"
-      :max-zoom="maxZoom"
-      multiWorld
-      ref="mapView"
+      ref="view"
+      :zoom.sync="mapZoom"
+      :center.sync="mapCenter"
+      :rotation.sync="mapRotation"
+      v-bind="viewConfig"
     >
+      <!-- TODO: replace with more dynamic solution -->
       <feature-layer
         v-for="(layer, index) in featureLayers"
         :key="index"
@@ -29,80 +26,50 @@
         :icon="layer.icon"
       />
     </vl-view>
-    <vl-layer-group :z-index="0">
-      <template
-        v-for="layer in backgroundLayers"
-      >
-        <wmts-capabilites-provider
-          v-if="layer.dataProvider === 'WMTScapabilites'"
-          :key="layer.name"
-          :id="layer.name"
-          :ref="layer.name"
-          :layerName="layer.name"
-          :layerStyle="layer.layerStyle"
-          :requestEncoding="layer.requestEncoding"
-          :capabilitiesUrl="layer.capabilitiesUrl"
-          :matrixSet="layer.matrixSet"
-          :visible="layer.visible"
-          :zIndex="backgroundLayers.indexOf(layer)"
-          :capabilitiesRequest="wmtsCapabilitiesRequest"
-          @fetchedCapabilities="updateCapabilitiesRequest"
+
+    <template v-if="layers && layers.length > 0">
+      <template v-for="(layer, key) in layers">
+        <vl-layer-group
+          v-if="layer.type === 'group'"
+          :key="key"
+          :ref="layer.id"
+          :z-index="layers.indexOf(layer)">
+          <mapbox-style-group
+            v-if="layer['mapbox-style-layers'] && mapObject"
+            :key="key"
+            :mapObject="mapObject"
+            :urls="layer['mapbox-style-layers']"
           />
-        <vl-layer-vector-tile
-          v-else-if="layer.type === 'vector'"
-          :key="layer.name"
-          :id="layer.name"
-          :ref="layer.name"
-          :visible="layer.visible"
-          :z-index="backgroundLayers.indexOf(layer)"
-        >
-          <vl-source-vector-tile
-            :url="layer.url"
-            :ref="`${layer.name}-source`"
-          ></vl-source-vector-tile>
-          <vector-style
-            ref="vectorStyle"
-            :url="layer.url"
-            :styleObject="layer.style" />
-        </vl-layer-vector-tile>
+          <template v-else-if="layer.layers">
+            <map-layer
+              v-for="childLayer in layer.layers"
+              :key="childLayer.id"
+              :ref="childLayer.id"
+              :layer="childLayer"
+              :z-index="layer.layers.indexOf(childLayer)"
+            />
+          </template>
+        </vl-layer-group>
+        <map-layer
+          v-else
+          :key="layer.id"
+          :ref="layer.id"
+          :layer="layer"
+          :z-index="layers.indexOf(layer)"
+        />
       </template>
-    </vl-layer-group>
-    <template v-for="layer in foregroundLayers">
-      <wmts-capabilites-provider
-        v-if="layer.dataProvider === 'WMTScapabilites'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :layerName="layer.name"
-        :layerStyle="layer.layerStyle"
-        :requestEncoding="layer.requestEncoding"
-        :capabilitiesUrl="layer.capabilitiesUrl"
-        :matrixSet="layer.matrixSet"
-        :visible="layer.visible"
-        :zIndex="foregroundLayers.indexOf(layer) + 10"
-        :capabilitiesRequest="wmtsCapabilitiesRequest"
-        @fetchedCapabilities="updateCapabilitiesRequest"
-      />
     </template>
-    <template v-for="layer in overlayLayers">
-      <wmts-capabilites-provider
-        v-if="layer.dataProvider === 'WMTScapabilites'"
-        :key="layer.name"
-        :id="layer.name"
-        :ref="layer.name"
-        :layerName="layer.name"
-        :layerStyle="layer.layerStyle"
-        :requestEncoding="layer.requestEncoding"
-        :capabilitiesUrl="layer.capabilitiesUrl"
-        :matrixSet="layer.matrixSet"
-        :visible="layer.visible"
-        :zIndex="overlayLayers.indexOf(layer) + 20"
-        :capabilitiesRequest="wmtsCapabilitiesRequest"
-        @fetchedCapabilities="updateCapabilitiesRequest"
-      />
-    </template>
+
     <slot :mapObject="mapObject" :hoverFeature="hoverFeature"></slot>
-    <span v-if="showCenter" class="showCenter">{{ center[0] }}, {{ center[1] }}, {{ zoom }}</span>
+    <span v-if="showCenter || showMousePosition" class="showInfo">
+      <template v-if="showCenter">
+        {{ mapCenter[0] }}, {{ mapCenter[1] }}, {{ mapZoom }}
+      </template>
+      <vl-control-mouse-position
+        v-if="showMousePosition && mapObject"
+        :mapObject="mapObject" target=".showInfo"
+      />
+    </span>
     <overview-map
       v-if="overviewMapLayers && overviewLayers"
       :mapObject="mapObject"
@@ -115,23 +82,19 @@
 <script>
 import Vue from 'vue';
 import {
-  Map, TileLayer, GroupLayer,
-  VectorTileLayer, VectorTileSource,
+  Map, GroupLayer,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
-import { getLayer, getLayers } from 'ol-mapbox-style';
-import olms from 'ol-mapbox-style';
 import DrawInteraction from './DrawInteraction.vue';
 import FeatureLayer from './FeatureLayer.vue';
+import MapLayer from './MapLayer.vue';
 import OverviewMap from './OverviewMap.vue';
-import VectorStyle from './VectorStyle.vue';
-import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
+import MapboxStyleGroup from './MapboxStyleGroup.vue';
+import OlControls from './ol-controls';
 
 Vue.use(Map);
-Vue.use(TileLayer);
 Vue.use(GroupLayer);
-Vue.use(VectorTileLayer);
-Vue.use(VectorTileSource);
+Vue.use(OlControls);
 
 /**
  * A basic map based on OpenLayers
@@ -141,56 +104,65 @@ export default {
   components: {
     DrawInteraction,
     FeatureLayer,
+    MapLayer,
     OverviewMap,
-    VectorStyle,
-    WmtsCapabilitesProvider,
+    MapboxStyleGroup,
   },
   props: {
-    backgroundLayers: Array,
-    foregroundLayers: Array,
-    overlayLayers: Array,
-    featureLayers: Array,
-    dataProjection: String,
-    projection: {
-      type: String,
-      default: 'EPSG:3857',
+    layers: Array,
+    mapConfig: {
+      type: Object,
+      default: () => ({
+        // https://vuelayers.github.io/#/docs/component/map?id=properties
+        'load-tiles-while-animating': true,
+        'load-tiles-while-interacting': true,
+      }),
     },
-    mapZoom: {
+    viewConfig: {
+      type: Object,
+      default: () => ({
+        // https://vuelayers.github.io/#/docs/component/view?id=properties
+        'multi-world': true,
+      }),
+    },
+    featureLayers: Array,
+    zoom: {
       type: Number,
       default: 0,
     },
-    mapCenter: {
+    center: {
       type: Array,
       default: () => [0, 0],
     },
-    maxZoom: Number,
     showCenter: Boolean,
-    glStyleUrls: Array,
+    showMousePosition: Boolean,
     overviewMapLayers: Array,
     drawInteractions: Boolean,
   },
   data: () => ({
-    zoom: null,
-    center: null,
-    rotation: 0,
+    mapZoom: 0,
+    mapCenter: [0, 0],
+    mapRotation: 0,
     mapObject: null,
+    mapCreated: false,
     mapFirstRender: false,
     mapRendering: false,
     overlay: null,
     hoverFeature: null,
     overviewLayers: null,
-    wmtsCapabilitiesRequest: {},
     hideFeature: false,
     tooltipLeft: false,
   }),
   created() {
-    this.zoom = this.mapZoom;
-    this.center = this.mapCenter;
+    this.mapZoom = this.zoom;
+    this.mapCenter = this.center;
+    this.mapRotation = this.rotation;
   },
   mounted() {
     this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
-    this.$refs.mapView.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
-    this.$refs.mapView.$on('update:center', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.view.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.view.$on('update:center', this.debounceEvent(this.onMapRender, 100));
+    this.$refs.view.$on('update:rotation', this.debounceEvent(this.onMapRender, 100));
     this.$refs.map.$createPromise.then(() => {
       this.mapObject = this.$refs.map;
       this.$root.$on('renderMap', () => this.$refs.map
@@ -227,36 +199,6 @@ export default {
       });
       this.$emit('featuresClicked', ftrs);
     },
-    onMapCreated(map) {
-      if (this.glStyleUrls) {
-        const gls = Array.isArray(this.glStyleUrls) ? this.glStyleUrls : [this.glStyleUrls];
-        const promises = [];
-        gls.forEach((style) => {
-          // apply mapbox GL style(s) to existing map
-          promises.push(olms(map.$map, style));
-        });
-        // emit event of finished loading of styles
-        Promise.allSettled(promises).then(() => this.$emit('mapboxStylesApplied'));
-      }
-    },
-    getOlLayersByMapboxSource(source) {
-      // returns OL layer instances provided by Mapbox style 'source'
-      return getLayers(this.mapObject.$map, source);
-    },
-    getOlLayerByMapboxLayer(layer) {
-      // returns OL layer instance provided by Mapbox style 'layer'
-      return getLayer(this.mapObject.$map, layer);
-    },
-    hilite({ highlightObj }) {
-      // accepts a key:value pair of feature properties
-      const a = getLayer(this.mapObject.$map, 'declaration-fill');
-      console.log(a);
-      console.log(highlightObj);
-      a.setStyle(this.testStyleFunc);
-    },
-    updateCapabilitiesRequest({ request, url }) {
-      this.wmtsCapabilitiesRequest[url] = request;
-    },
     mountOverviewMap() {
       if (this.overviewMapLayers && !this.overviewLayers) {
         const layers = this.mapObject
@@ -282,11 +224,14 @@ export default {
     },
   },
   watch: {
-    mapZoom(zoom) {
-      this.zoom = zoom;
+    mapZoom(newZoom) {
+      this.$emit('update:zoom', newZoom);
     },
-    mapCenter(center) {
-      this.center = center;
+    mapCenter(newCenter) {
+      this.$emit('update:center', newCenter);
+    },
+    mapRotation(newRotation) {
+      this.$emit('update:rotation', newRotation);
     },
     mapRendering(isRendering) {
       if (isRendering) {
@@ -323,18 +268,19 @@ export default {
 .cursorPointer {
   cursor: pointer !important;
 }
-
+.ol-overlaycontainer-stopevent {
+  z-index: 15 !important;
+}
 .hide-feature .map-tooltip {
   display: none
 }
-
 .tooltip-left .map-tooltip {
   transform: translateX(calc(-100% - 24px))
 }
 </style>
 
 <style lang="scss" scoped>
-.showCenter {
+.showInfo {
   position: absolute;
   bottom: .5em;
   left: .5em;

@@ -1,6 +1,6 @@
 {
   "name": "@eox/map-tooltip",
-  "version": "0.0.2",
+  "version": "1.0.0-alpha.0",
   "private": false,
   "main": "dist/map-tooltip.umd.min.js",
   "module": "dist/map-tooltip.umd.min.js",

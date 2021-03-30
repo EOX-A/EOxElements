@@ -1,8 +1,7 @@
 <template>
   <map-basic
-    :mapZoom="2"
-    :backgroundLayers="backgroundLayers"
-    :foregroundLayers="foregroundLayers"
+    :zoom="zoom"
+    :layers="layers"
     style="height: 100%; width: 100%;"
   >
     <template slot-scope="{mapObject}">
@@ -11,8 +10,8 @@
         :mapObject="mapObject"
         ref="swipe"
         reverseDirection
-        :swipeLayer="foregroundLayers[0]"
-        :originalLayer="backgroundLayers[0]"
+        :swipeLayer="layers[1]"
+        :originalLayer="layers[0]"
         @swipeActive="toggleCompare"
       >
         <template v-slot:activate>
@@ -49,23 +48,31 @@ export default {
     MapLayerSwipe,
   },
   data: () => ({
-    backgroundLayers: [
+    zoom: 2,
+    layers: [
       {
+        id: '2020',
+        title: '2020',
         type: 'tile',
-        name: 's2cloudless-2019_3857',
-        title: 'Sentinel-2 cloudless 2019',
-        dataProvider: 'WMTScapabilites',
-        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-        matrixSet: 'GoogleMapsCompatible',
+        visible: true,
+        source: {
+          type: 'wmts-capabilities',
+          url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          layerName: 's2cloudless-2020_3857',
+          matrixSet: 'GoogleMapsCompatible',
+        },
       },
-    ],
-    foregroundLayers: [
       {
-        name: 's2cloudless-2018_3857',
-        title: 'Sentinel-2 cloudless 2018',
-        dataProvider: 'WMTScapabilites',
-        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-        matrixSet: 'GoogleMapsCompatible',
+        id: '2018',
+        title: '2018',
+        type: 'tile',
+        visible: true,
+        source: {
+          type: 'wmts-capabilities',
+          url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          layerName: 's2cloudless-2018_3857',
+          matrixSet: 'GoogleMapsCompatible',
+        },
       },
     ],
   }),

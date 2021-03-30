@@ -1,13 +1,11 @@
 <template>
   <map-basic
-    :mapZoom="13"
-    :mapCenter="[1783019, 6148052]"
+    :zoom="zoom"
+    :center="center"
+    :layers="layers"
     showCenter
-    :backgroundLayers="tileLayers"
-    :glStyleUrls="glStyleUrls"
     style="height: 100%; width: 100%;"
     @featuresClicked="featuresClicked"
-    @mapboxStylesApplied="mapboxStylesApplied"
     ref='mapbasic'
   >
   </map-basic>
@@ -21,15 +19,15 @@ export default {
     MapBasic
   },
   data: () => ({
-    glStyleUrls: ['/style_declarations.json'],
-    tileLayers: [
+    zoom: 13,
+    center: [1783019, 6148052],
+    layers: [
       {
-        type: 'tile',
-        name: 'terrain-light',
-        title: 'Terrain Light',
-        dataProvider: 'WMTScapabilites',
-        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-        matrixSet: 'WGS84',
+        id: 'mapbox',
+        type: 'group',
+        'mapbox-style-layers': [
+          '/style_declarations.json',
+        ],
       },
     ],
   }),
@@ -39,14 +37,6 @@ export default {
         console.log(item.feature.properties_);
       });
     },
-    mapboxStylesApplied() {
-      // due to preset z-index rules on mapbasic, it can be needed to also manually set 
-      // z-index of layers coming from mapbox style, as those come without z-index set by design
-      const layers = this.$refs.mapbasic.getOlLayersByMapboxSource('declarations');
-      layers.forEach((l, i) => {
-        l.setZIndex(30 + i)
-      });
-    }
   },
 }
 </script>

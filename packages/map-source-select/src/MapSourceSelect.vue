@@ -8,7 +8,7 @@
     <v-sheet
       class="row justify-center align-center"
       style="position: absolute; bottom: 60px;
-        z-index: 1000; width: auto;
+        z-index: 1; width: auto;
         max-width: 100%; border-radius: 4px;
         display: flex;"
     >
@@ -21,18 +21,18 @@
           dense
           hide-details
           :prepend-inner-icon="(selectionItems && dataLayer) && (selectionItems
-            .map((i) => i.name)
-            .indexOf(dataLayer.name) > 0
+            .map((i) => i.id)
+            .indexOf(dataLayer.id) > 0
               ? 'mdi-arrow-left-drop-circle'
               : 'mdi-asterisk')"
           :append-icon="(selectionItems && dataLayer) && (selectionItems
-            .map((i) => i.name)
-            .indexOf(dataLayer.name) < selectionItems.length - 1
+            .map((i) => i.id)
+            .indexOf(dataLayer.id) < selectionItems.length - 1
               ? 'mdi-arrow-right-drop-circle'
               : 'mdi-asterisk')"
           menu-props="auto"
           :items="selectionItems"
-          item-value="name"
+          item-value="id"
           item-text="title"
           v-model="dataLayer"
           @change="dataLayerSelection"
@@ -63,18 +63,18 @@
           dense
           hide-details
           :prepend-inner-icon="(selectionItems && compareLayer) && (selectionItems
-            .map((i) => i.name)
-            .indexOf(compareLayer.name) > 0
+            .map((i) => i.id)
+            .indexOf(compareLayer.id) > 0
               ? 'mdi-arrow-left-drop-circle'
               : 'mdi-asterisk')"
           :append-icon="(selectionItems && compareLayer) && (selectionItems
-            .map((i) => i.name)
-            .indexOf(compareLayer.name) < selectionItems.length - 1
+            .map((i) => i.id)
+            .indexOf(compareLayer.id) < selectionItems.length - 1
               ? 'mdi-arrow-right-drop-circle'
               : 'mdi-asterisk')"
           menu-props="auto"
           :items="selectionItems"
-          item-value="name"
+          item-value="id"
           item-text="title"
           v-model="compareLayer"
           @change="compareLayerSelection"
@@ -130,27 +130,27 @@ export default {
   methods: {
     dataLayerSelection(payload) {
       // Different object returned either by arrow use or by dropdown use
-      if (Array.isArray(payload) || !(payload.name)) {
-        this.dataLayer = { name: payload, title: `${payload}` };
+      if (Array.isArray(payload) || !(payload.id)) {
+        this.dataLayer = { id: payload, title: `${payload}` };
       } else {
         this.dataLayer = payload;
       }
       const newIndex = this.selectionItems
-        .map((i) => i.name)
-        .indexOf(this.dataLayer.name ? this.dataLayer.name : this.dataLayer);
+        .map((i) => i.id)
+        .indexOf(this.dataLayer.id ? this.dataLayer.id : this.dataLayer);
       this.dataLayerIndex = newIndex;
     },
     compareLayerSelection(payload) {
       // Different object returned either by arrow use or by dropdown use
-      if (Array.isArray(payload) || !(payload.name)) {
-        this.compareLayer = { name: payload, title: `${payload}` };
+      if (Array.isArray(payload) || !(payload.id)) {
+        this.compareLayer = { id: payload, title: `${payload}` };
       } else {
         this.compareLayer = payload;
       }
       const newIndex = this.selectionItems
-        .map((i) => i.name)
-        .indexOf(this.compareLayer.name
-          ? this.compareLayer.name : this.compareLayer);
+        .map((i) => i.id)
+        .indexOf(this.compareLayer.id
+          ? this.compareLayer.id : this.compareLayer);
       this.compareLayerIndex = newIndex;
     },
     selectLayer(type, layerId) {
@@ -162,39 +162,39 @@ export default {
     },
     dataLayerReduce() {
       const currentIndex = this.selectionItems
-        .map((i) => i.name)
-        .indexOf(this.dataLayer.name ? this.dataLayer.name : this.dataLayer);
+        .map((i) => i.id)
+        .indexOf(this.dataLayer.id ? this.dataLayer.id : this.dataLayer);
       this.dataLayerIndex = currentIndex - 1;
       this.dataLayerSelection(this.selectionItems[currentIndex - 1]);
     },
     dataLayerIncrease() {
       const currentIndex = this.selectionItems
-        .map((i) => i.name)
-        .indexOf(this.dataLayer.name ? this.dataLayer.name : this.dataLayer);
+        .map((i) => i.id)
+        .indexOf(this.dataLayer.id ? this.dataLayer.id : this.dataLayer);
       this.dataLayerIndex = currentIndex + 1;
       this.dataLayerSelection(this.selectionItems[currentIndex + 1]);
     },
     compareLayerReduce() {
       const currentIndex = this.selectionItems
-        .map((i) => i.name)
-        .indexOf(this.compareLayer.name ? this.compareLayer.name : this.compareLayer);
+        .map((i) => i.id)
+        .indexOf(this.compareLayer.id ? this.compareLayer.id : this.compareLayer);
       this.compareLayerIndex = currentIndex - 1;
       this.compareLayerSelection(this.selectionItems[currentIndex - 1]);
     },
     compareLayerIncrease() {
       const currentIndex = this.selectionItems
-        .map((i) => i.name)
-        .indexOf(this.compareLayer.name ? this.compareLayer.name : this.compareLayer);
+        .map((i) => i.id)
+        .indexOf(this.compareLayer.id ? this.compareLayer.id : this.compareLayer);
       this.compareLayerIndex = currentIndex + 1;
       this.compareLayerSelection(this.selectionItems[currentIndex + 1]);
     },
   },
   watch: {
     dataLayer(dataLayer) {
-      this.selectLayer('originalLayer', dataLayer.name);
+      this.selectLayer('originalLayer', dataLayer.id);
     },
     compareLayer(compareLayer) {
-      this.selectLayer('compareLayer', compareLayer.name);
+      this.selectLayer('compareLayer', compareLayer.id);
     },
     compareActive(active) {
       this.$emit('toggleCompare', active);

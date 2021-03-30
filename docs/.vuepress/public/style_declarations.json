@@ -24,10 +24,10 @@
     "declarations": {
       "type": "vector",
       "tiles": [
-        "https://agri.demo.hub.eox.at/parcels-api/demo.agri_data_declaration/{z}/{x}/{y}.pbf"
+        "https://pg-tileserv.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf"
       ],
-      "minZoom": 0,
-      "maxzoom": 19
+      "minZoom": 13,
+      "maxzoom": 15
     }
   },
   "glyphs": "https://demo.tileserver.org/fonts/{fontstack}/{range}.pbf",
@@ -36,14 +36,14 @@
       "id": "terrain-light",
       "type": "raster",
       "source": "terrain-light",
-      "layout": {"visibility": "none"}
+      "layout": {"visibility": "visible"}
     },
     {
       "id": "overlay",
       "type": "raster",
       "source": "overlay",
       "maxzoom": 15,
-      "layout": {"visibility": "none"}
+      "layout": {"visibility": "visible"}
     },
     {
       "id": "declaration-fill",

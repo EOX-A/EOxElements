@@ -5,6 +5,11 @@
 
 <<< ./.vuepress/components/MapBasic.vue
 
+## Simple layer selector
+<example file="MapBasicLayers.vue" />
+
+<<< ./.vuepress/components/MapBasicLayers.vue
+
 ## Vector layer and fill color function
 <example file="MapBasicVector.vue" />
 

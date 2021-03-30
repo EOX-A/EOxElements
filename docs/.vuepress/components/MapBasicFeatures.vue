@@ -1,9 +1,15 @@
 <template>
   <map-basic
-    :mapZoom="16"
-    :mapCenter="[1821222.7489322994, 6143400]"
+    :zoom="zoom"
+    :center="center"
     showCenter
-    :backgroundLayers="tileLayers"
+    :mapConfig="{
+      'data-projection': 'EPSG:4326',
+    }"
+    :viewConfig="{
+      'projection': 'EPSG:3857',
+    }"
+    :layers="layers"
     :featureLayers="featureLayers"
     style="height: 100%; width: 100%;"
   />
@@ -17,14 +23,30 @@ export default {
     MapBasic
   },
   data: () => ({
+    zoom: 16,
+    center: [16.3602, 48.2190],
+    layers: [
+      {
+        id: 'osm',
+        title: 'Open Street Map',
+        type: 'tile',
+        visible: true,
+        source: {
+          type: 'wmts-capabilities',
+          url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
+          layerName: 'osm_3857',
+          matrixSet: 'GoogleMapsCompatible',
+        },
+      },
+    ],
     featureLayers: [
       {
         properties: {
           foo: 'bar'
         },
         coordinates: [
-          1821222.7489322994,
-          6143332.194302502
+          16.3602,
+          48.2188,
         ],
         icon: {
           src: 'https://eox.at/EOX-POI.png',
@@ -32,16 +54,6 @@ export default {
           anchor: [0.5, 1],
           size: [500, 258]
         }
-      },
-    ],
-    tileLayers: [
-      {
-        type: 'tile',
-        name: 'osm_3857',
-        title: 'Open Street Map',
-        dataProvider: 'WMTScapabilites',
-        capabilitiesUrl: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-        matrixSet: 'GoogleMapsCompatible',
       },
     ],
   })
