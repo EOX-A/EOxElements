@@ -77,7 +77,7 @@ export default {
      * Show tooltips only at same index
      */
     indexTooltips: Boolean,
-    date: DateTime,
+    date: Object,
   },
   components: {
     LineChart,
@@ -91,7 +91,7 @@ export default {
     tooltipPosition: 'left',
     chartWidth: 0,
     tooltipWidth: 0,
-    highlightedDate: null
+    highlightedDate: null,
   }),
   computed: {
     dataCollection() {
@@ -109,7 +109,7 @@ export default {
           const value = ctx.dataset.data[index];
           const dateTime = value.t
 
-          if(dateTime instanceof DateTime && highlightedDate instanceof DateTime && dateTime.equals(highlightedDate)) return color;
+          if(dateTime && typeof dateTime.toISODate == 'function' && highlightedDate && typeof highlightedDate.toISODate == 'function' && dateTime.toISODate() == highlightedDate.toISODate()) return color;
 
           return undefined;
         }
@@ -119,7 +119,7 @@ export default {
           const value = ctx.dataset.data[index];
           const dateTime = value.t
 
-          if(dateTime instanceof DateTime && highlightedDate instanceof DateTime && dateTime.equals(highlightedDate)) return color;
+          if(dateTime && typeof dateTime.toISODate == 'function' && highlightedDate && typeof highlightedDate.toISODate == 'function' && dateTime.toISODate() == highlightedDate.toISODate()) return color;
 
           return undefined;
         }
@@ -129,7 +129,7 @@ export default {
           const value = ctx.dataset.data[index];
           const dateTime = value.t
 
-          if(dateTime instanceof DateTime && highlightedDate instanceof DateTime && dateTime.equals(highlightedDate)) return width;
+          if(dateTime && typeof dateTime.toISODate == 'function' && highlightedDate && typeof highlightedDate.toISODate == 'function' && dateTime.toISODate() == highlightedDate.toISODate()) return width;
 
           return undefined;
         }
@@ -360,10 +360,6 @@ export default {
 
           const yLabel = data.datasets[datasetIndex].data[barIndex];
 
-          vueThis.highlightedDate = yLabel.t
-
-          this.update();
-
           /**
            * New date has been selected
            *
@@ -383,9 +379,10 @@ export default {
   watch: {
     date: {
       immediate: true,
-      handler(v) {
-        if(typeof v === 'null' || v instanceof DateTime) {
-          this.highlightedDate = date;
+      deep: true,
+      handler(v, vold) {
+        if(v === null || v && typeof v.toISODate == 'function') {
+          this.highlightedDate = v;
         }
       }
     }
