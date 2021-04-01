@@ -7,6 +7,7 @@
       :height="null"
       :chart-data='dataCollection'
       :options='chartOptions'
+      :highlightedDate='highlightedDate'
       @chart:render="updateChartWidth"
     >
     </line-with-line-chart>
@@ -17,6 +18,7 @@
       :height="null"
       :chart-data='dataCollection'
       :options='chartOptions'
+      :highlightedDate='highlightedDate'
       @chart:render="updateChartWidth"
     >
     </line-chart>
