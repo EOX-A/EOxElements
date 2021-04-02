@@ -6,7 +6,7 @@
     @created="mapCreated = true"
     v-bind="mapConfig"
     style="height: 400px"
-    :class="{cursorPointer: !hideFeature, 'hide-feature': hideFeature, 'tooltip-left': tooltipLeft}"
+    :class="{'cursor-pointer': hoverFeature}"
   >
     <vl-view
       ref="view"
@@ -17,7 +17,7 @@
     >
       <!-- TODO: replace with more dynamic solution -->
       <feature-layer
-        v-for="(layer, index) in featureLayers"
+        v-for="(layer, index) in features"
         :key="index"
         :id="layer.name"
         :ref="layer.name"
@@ -75,7 +75,6 @@
       :mapObject="mapObject"
       :overviewLayers="overviewLayers"
     />
-    <draw-interaction v-if="drawInteractions" @drawEnd="onDrawInteractionEnd" />
   </vl-map>
 </template>
 
@@ -85,7 +84,6 @@ import {
   Map, GroupLayer,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
-import DrawInteraction from './DrawInteraction.vue';
 import FeatureLayer from './FeatureLayer.vue';
 import MapLayer from './MapLayer.vue';
 import OverviewMap from './OverviewMap.vue';
@@ -102,7 +100,6 @@ Vue.use(OlControls);
 export default {
   name: 'MapBasic',
   components: {
-    DrawInteraction,
     FeatureLayer,
     MapLayer,
     OverviewMap,
@@ -125,7 +122,7 @@ export default {
         'multi-world': true,
       }),
     },
-    featureLayers: Array,
+    features: Array,
     zoom: {
       type: Number,
       default: 0,
@@ -137,7 +134,6 @@ export default {
     showCenter: Boolean,
     showMousePosition: Boolean,
     overviewMapLayers: Array,
-    drawInteractions: Boolean,
   },
   data: () => ({
     mapZoom: 0,
@@ -149,9 +145,6 @@ export default {
     mapRendering: false,
     overlay: null,
     hoverFeature: null,
-    overviewLayers: null,
-    hideFeature: false,
-    tooltipLeft: false,
   }),
   created() {
     this.mapZoom = this.zoom;
@@ -173,23 +166,20 @@ export default {
   },
   methods: {
     onPointerMove({ coordinate, pixel, originalEvent }) {
-      let hasFeature = false;
-
       const x = originalEvent.clientX - originalEvent.target.getBoundingClientRect().left;
       const threshold = originalEvent.target.getBoundingClientRect().width / 2;
-      this.tooltipLeft = x > threshold;
+      const tooltipLeft = x > threshold;
 
       this.mapObject.forEachFeatureAtPixel(pixel, (f) => {
-        hasFeature = true;
-        this.hideFeature = false;
-        this.hoverFeature = {
+        this.hoverFeature = f ? {
           coordinate,
           feature: f,
-        };
+          tooltip: {
+            left: tooltipLeft,
+          },
+          originalEvent,
+        } : null;
       });
-      if (!hasFeature) {
-        this.hideFeature = true;
-      }
     },
     onPointerClick({ pixel }) {
       const ftrs = [];
@@ -202,7 +192,7 @@ export default {
     mountOverviewMap() {
       if (this.overviewMapLayers && !this.overviewLayers) {
         const layers = this.mapObject
-          .getLayers()[0].getLayersArray();
+          .getLayers();
         this.overviewLayers = layers
           .filter((l) => this.overviewMapLayers.includes(l.getProperties().id));
       }
@@ -215,9 +205,6 @@ export default {
       if (!this.mapFirstRender) { this.mapFirstRender = true; }
       this.mapRendering = false;
       // this.$emit('renderComplete');
-    },
-    onDrawInteractionEnd(feature) {
-      this.$emit('drawInteraction', feature);
     },
     debounceEvent(callback, time = 250, interval) {
       return (...args) => clearTimeout(interval, interval = setTimeout(callback, time, ...args)); // eslint-disable-line
@@ -265,17 +252,11 @@ export default {
 .ol-control button {
   background: var(--v-primary-base);
 }
-.cursorPointer {
-  cursor: pointer !important;
-}
 .ol-overlaycontainer-stopevent {
   z-index: 15 !important;
 }
-.hide-feature .map-tooltip {
-  display: none
-}
-.tooltip-left .map-tooltip {
-  transform: translateX(calc(-100% - 24px))
+.cursor-pointer {
+  cursor: pointer !important;
 }
 </style>
 

@@ -15,14 +15,6 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import {
-  Feature, Style,
-} from 'vuelayers';
-
-Vue.use(Feature);
-Vue.use(Style);
-
 export default {
   props: {
     properties: Object,

@@ -29,3 +29,8 @@
 <example file="MapBasicHighlightFeatures.vue" />
 
 <<< ./.vuepress/components/MapBasicHighlightFeatures.vue
+
+## Vector layer with tooltips
+<example file="MapBasicVectorTooltip.vue" />
+
+<<< ./.vuepress/components/MapBasicVectorTooltip.vue

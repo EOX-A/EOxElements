@@ -64,19 +64,6 @@ See the elements in action [here](https://eox-a.github.io/elements/examples/).
     </tr>
     <tr>
       <td>
-        <a href="https://github.com/EOX-A/elements/tree/main/packages/map-tooltip">@eox/map-tooltip</a>
-      </td>
-      <td>
-        <a href="https://www.npmjs.com/package/@eox/map-tooltip">
-          <img src="https://img.shields.io/npm/v/@eox/map-tooltip" alt="Version">
-        </a>
-      </td>
-      <td>
-        Map extension to add dynamic tooltips
-      </td>
-    </tr>
-    <tr>
-      <td>
         <a href="https://github.com/EOX-A/elements/tree/main/packages/charts">@eox/charts</a>
       </td>
       <td>

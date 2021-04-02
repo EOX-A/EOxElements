@@ -1,12 +1,11 @@
 import MousePosition from './MousePosition.vue';
 
-function plugin(Vue, options = {}) {
+function plugin(Vue, options = {}) { // eslint-disable-line
   if (plugin.installed) {
     return;
   }
   plugin.installed = true;
 
-  console.log(options);
   // options = pick(options, 'dataProjection');
   // Object.assign(MousePosition, options);
 
