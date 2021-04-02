@@ -1,11 +1,13 @@
 // Import vue component
 import component from './MapBasic.vue';
+import vlComponent from './VlComponent.vue';
 
 // install function executed by Vue.use()
 function install(Vue) {
   if (install.installed) return;
   install.installed = true;
   Vue.component('MapBasic', component);
+  Vue.component('VlComponent', vlComponent);
 }
 
 // Create module definition for Vue.use()
