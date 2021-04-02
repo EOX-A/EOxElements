@@ -75,7 +75,6 @@
       :mapObject="mapObject"
       :overviewLayers="overviewLayers"
     />
-    <draw-interaction v-if="drawInteractions" @drawEnd="onDrawInteractionEnd" />
   </vl-map>
 </template>
 
@@ -137,7 +136,6 @@ export default {
     showCenter: Boolean,
     showMousePosition: Boolean,
     overviewMapLayers: Array,
-    drawInteractions: Boolean,
   },
   data: () => ({
     mapZoom: 0,
@@ -209,9 +207,6 @@ export default {
       if (!this.mapFirstRender) { this.mapFirstRender = true; }
       this.mapRendering = false;
       // this.$emit('renderComplete');
-    },
-    onDrawInteractionEnd(feature) {
-      this.$emit('drawInteraction', feature);
     },
     debounceEvent(callback, time = 250, interval) {
       return (...args) => clearTimeout(interval, interval = setTimeout(callback, time, ...args)); // eslint-disable-line
