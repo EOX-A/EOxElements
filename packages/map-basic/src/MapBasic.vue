@@ -192,7 +192,7 @@ export default {
     mountOverviewMap() {
       if (this.overviewMapLayers && !this.overviewLayers) {
         const layers = this.mapObject
-          .getLayers()[0].getLayersArray();
+          .getLayers();
         this.overviewLayers = layers
           .filter((l) => this.overviewMapLayers.includes(l.getProperties().id));
       }

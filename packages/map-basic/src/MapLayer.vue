@@ -22,6 +22,7 @@
     <component
       :is="`vl-source-${layer.source.type}`"
       :ref="`${layer.id}-source`"
+      :ident="layer.source.ident && layer.source.ident"
       v-bind="layer.source">
       <!-- add static features to vl-source-vector if provided -->
       <template v-if="layer.source.staticFeatures && layer.source.staticFeatures.length">
