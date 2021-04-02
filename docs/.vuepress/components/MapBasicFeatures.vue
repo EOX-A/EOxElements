@@ -10,7 +10,7 @@
       'projection': 'EPSG:3857',
     }"
     :layers="layers"
-    :featureLayers="featureLayers"
+    :features="features"
     style="height: 100%; width: 100%;"
   />
 </template>
@@ -39,7 +39,7 @@ export default {
         },
       },
     ],
-    featureLayers: [
+    features: [
       {
         properties: {
           foo: 'bar'
