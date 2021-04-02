@@ -17,7 +17,7 @@
     >
       <!-- TODO: replace with more dynamic solution -->
       <feature-layer
-        v-for="(layer, index) in featureLayers"
+        v-for="(layer, index) in features"
         :key="index"
         :id="layer.name"
         :ref="layer.name"
@@ -125,7 +125,7 @@ export default {
         'multi-world': true,
       }),
     },
-    featureLayers: Array,
+    features: Array,
     zoom: {
       type: Number,
       default: 0,
