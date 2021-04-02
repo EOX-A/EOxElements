@@ -6,7 +6,7 @@
     @created="mapCreated = true"
     v-bind="mapConfig"
     style="height: 400px"
-    :class="{cursorPointer: !hideFeature, 'hide-feature': hideFeature, 'tooltip-left': tooltipLeft}"
+    :class="{'cursor-pointer': hoverFeature}"
   >
     <vl-view
       ref="view"
@@ -149,9 +149,6 @@ export default {
     mapRendering: false,
     overlay: null,
     hoverFeature: null,
-    overviewLayers: null,
-    hideFeature: false,
-    tooltipLeft: false,
   }),
   created() {
     this.mapZoom = this.zoom;
@@ -173,23 +170,20 @@ export default {
   },
   methods: {
     onPointerMove({ coordinate, pixel, originalEvent }) {
-      let hasFeature = false;
-
       const x = originalEvent.clientX - originalEvent.target.getBoundingClientRect().left;
       const threshold = originalEvent.target.getBoundingClientRect().width / 2;
-      this.tooltipLeft = x > threshold;
+      const tooltipLeft = x > threshold;
 
       this.mapObject.forEachFeatureAtPixel(pixel, (f) => {
-        hasFeature = true;
-        this.hideFeature = false;
-        this.hoverFeature = {
+        this.hoverFeature = f ? {
           coordinate,
           feature: f,
-        };
+          tooltip: {
+            left: tooltipLeft,
+          },
+          originalEvent,
+        } : null;
       });
-      if (!hasFeature) {
-        this.hideFeature = true;
-      }
     },
     onPointerClick({ pixel }) {
       const ftrs = [];
@@ -265,17 +259,11 @@ export default {
 .ol-control button {
   background: var(--v-primary-base);
 }
-.cursorPointer {
-  cursor: pointer !important;
-}
 .ol-overlaycontainer-stopevent {
   z-index: 15 !important;
 }
-.hide-feature .map-tooltip {
-  display: none
-}
-.tooltip-left .map-tooltip {
-  transform: translateX(calc(-100% - 24px))
+.cursor-pointer {
+  cursor: pointer !important;
 }
 </style>
 
