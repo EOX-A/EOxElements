@@ -84,7 +84,6 @@ import {
   Map, GroupLayer,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
-import DrawInteraction from './DrawInteraction.vue';
 import FeatureLayer from './FeatureLayer.vue';
 import MapLayer from './MapLayer.vue';
 import OverviewMap from './OverviewMap.vue';
@@ -101,7 +100,6 @@ Vue.use(OlControls);
 export default {
   name: 'MapBasic',
   components: {
-    DrawInteraction,
     FeatureLayer,
     MapLayer,
     OverviewMap,
