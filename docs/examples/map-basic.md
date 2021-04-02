@@ -1,6 +1,6 @@
 # map-basic
 
-<!-- ## Basic example
+## Basic example
 <example file="MapBasic.vue" />
 
 <<< ./.vuepress/components/MapBasic.vue
@@ -28,7 +28,7 @@
 ## Highlighting features by attribute
 <example file="MapBasicHighlightFeatures.vue" />
 
-<<< ./.vuepress/components/MapBasicHighlightFeatures.vue -->
+<<< ./.vuepress/components/MapBasicHighlightFeatures.vue
 
 ## Vector layer with tooltips
 <example file="MapBasicVectorTooltip.vue" />
