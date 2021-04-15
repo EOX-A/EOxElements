@@ -6,6 +6,7 @@
     :layerName="layer.source.layerName"
     :capabilitiesUrl="layer.source.url"
     :matrixSet="layer.source.matrixSet"
+    :requestEncoding="layer.source.requestEncoding"
     :visible="layer.visible"
     :format="layer.format"
     :styleName="layer.styleName"
