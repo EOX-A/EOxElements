@@ -131,6 +131,10 @@ export default {
       type: Array,
       default: () => [0, 0],
     },
+    rotation: {
+      type: Number,
+      default: 0,
+    },
     showCenter: Boolean,
     showMousePosition: Boolean,
     overviewMapLayers: Array,
@@ -211,6 +215,21 @@ export default {
     },
   },
   watch: {
+    zoom(newZoom) {
+      if (this.mapZoom !== newZoom) {
+        this.mapZoom = newZoom;
+      }
+    },
+    center(newCenter) {
+      if (this.mapCenter !== newCenter) {
+        this.mapCenter = newCenter;
+      }
+    },
+    rotation(newRotation) {
+      if (this.mapRotation !== newRotation) {
+        this.mapRotation = newRotation;
+      }
+    },
     mapZoom(newZoom) {
       this.$emit('update:zoom', newZoom);
     },
