@@ -18,6 +18,7 @@
     v-else
     :is="`vl-layer-${layer.type}`"
     :z-index="zIndex"
+    :declutter="layer.declutter"
     v-bind="layer">
     <!-- add vl-source-* -->
     <component
