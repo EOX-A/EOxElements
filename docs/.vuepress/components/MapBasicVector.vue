@@ -47,6 +47,7 @@ export default {
                 url: 'https://pg-tileserv.demo.hub.eox.at/demo.agri_data_declaration/{z}/{x}/{y}.pbf',
               },
               style: this.parcelStyleFunc,
+              declutter: true,
             },
             // vector layer with static styling
             {
@@ -64,16 +65,6 @@ export default {
                     color: 'blue',
                     width: 3,
                     lineDash: [5, 5]
-                  },
-                  text: {
-                    text: 'Feature',
-                    font: '24px sans-serif',
-                    fill: {
-                      color: '#2355af',
-                    },
-                    stroke: {
-                      color: 'white',
-                    },
                   },
                 },
               ],
@@ -99,6 +90,11 @@ export default {
         strokeColor: '#000',
         strokeWidth: 1,
         fillColor,
+        textFillColor: "black",
+        textStrokeColor: "white",
+        textStrokeWidth: 3,
+        textOverflow: true,
+        text: `${feature.get('parcel_id')}`,
       };
       return parcelStyle;
     },
