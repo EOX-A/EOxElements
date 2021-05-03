@@ -228,7 +228,7 @@ export default {
 
       const options = {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         scales: {
           xAxes,
           yAxes,
