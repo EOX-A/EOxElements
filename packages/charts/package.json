@@ -1,6 +1,6 @@
 {
 	"name": "@eox/charts",
-	"version": "1.0.0-alpha.0",
+	"version": "1.0.0-alpha.1",
 	"private": false,
 	"main": "dist/charts.umd.min.js",
 	"module": "dist/charts.umd.min.js",
