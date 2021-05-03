@@ -1,12 +1,10 @@
 <template>
-  <div style="resize: both; overflow: auto; height: 100%; width: 100%">
-    <charts
-      type="line"
-      :dataObject='dataObject'
-      :plotConfig='plotConfig'
-      style="width: 100%; height: 100%;"
-    />
-  </div>
+  <charts
+    type="line"
+    :dataObject='dataObject'
+    :plotConfig='plotConfig'
+    style="width: 100%; height: 100%;"
+  />
 </template>
 <script>
 import Charts from '@eox/charts';
