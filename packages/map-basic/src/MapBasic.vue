@@ -156,7 +156,8 @@ export default {
     this.mapRotation = this.rotation;
   },
   mounted() {
-    this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 500));
+    // TODO find better debouncing mechanism
+    this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 100));
     this.$refs.view.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
     this.$refs.view.$on('update:center', this.debounceEvent(this.onMapRender, 100));
     this.$refs.view.$on('update:rotation', this.debounceEvent(this.onMapRender, 100));
@@ -242,6 +243,7 @@ export default {
     mapRendering(isRendering) {
       if (isRendering) {
         // console.log('rendering...');
+        this.$emit('rendering');
       } else {
         // console.log('render complete!');
         this.$emit('renderComplete');
