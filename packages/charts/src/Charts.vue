@@ -40,7 +40,7 @@
 <script>
 
 import Chart from 'chart.js';
-import { DateTime } from 'luxon';
+import { DateTime, Settings } from 'luxon';
 import 'chartjs-adapter-luxon'; // eslint-disable-line no-unused-vars
 import { VTooltip } from 'vuetify/lib';
 import * as ChartZoomPlugin from 'chartjs-plugin-zoom';
@@ -73,6 +73,13 @@ export default {
      * Show tooltips only at same index
      */
     indexTooltips: Boolean,
+    /**
+     * Chart locale
+     */
+    locale: {
+      type: String,
+      default: 'en',
+    },
   },
   components: {
     LineChart,
@@ -96,6 +103,7 @@ export default {
     },
   },
   mounted() {
+    Settings.defaultLocale = this.locale;
     this.chartOptions = this.createChartOptions();
   },
   methods: {
@@ -324,7 +332,11 @@ export default {
       return options;
     },
   },
-  watcher: {
+  watch: {
+    locale(newLocale) {
+      Settings.defaultLocale = newLocale;
+      this.$refs.lineChart.triggerRender();
+    },
     /*
     '$vuetify.theme.isDark'() {
       this.renderChart();
