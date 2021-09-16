@@ -40,6 +40,7 @@ export default {
           url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
           layerName: 's2cloudless-2019_3857',
           matrixSet: 'GoogleMapsCompatible',
+          attributionProperty: 'Title',
         },
       },
       // Tile layer with WMTS source

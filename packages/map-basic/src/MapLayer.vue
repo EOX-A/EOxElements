@@ -12,6 +12,7 @@
     :styleName="layer.styleName"
     :capabilitiesRequest="wmtsCapabilitiesRequest"
     :z-index="zIndex"
+    :attributionProperty="layer.source.attributionProperty"
     @fetchedCapabilities="updateCapabilitiesRequest"
   />
   <component

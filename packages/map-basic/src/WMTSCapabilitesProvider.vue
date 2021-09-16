@@ -27,6 +27,10 @@ export default {
       type: String,
       default: 'KVP',
     },
+    attributionProperty: {
+      type: String,
+      default: 'Abstract',
+    },
   },
   data() {
     return {
@@ -57,7 +61,7 @@ export default {
           const xml = parser.read(text);
           const layerDef = xml.Contents.Layer
             .find((l) => l.Identifier === this.layerName);
-          const attribution = layerDef.Abstract;
+          const attribution = layerDef[this.attributionProperty];
           let options = optionsFromCapabilities(
             xml,
             {
