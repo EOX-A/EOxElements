@@ -82,6 +82,8 @@ export default {
           url: 'https://ahocevar.com/geoserver/wms',
           layers: 'topp:states',
           serverType: 'geoserver',
+          format: 'image/png', // default
+          version: '1.3.0', // default
         },
       },
       {
