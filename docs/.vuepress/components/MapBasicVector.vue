@@ -32,7 +32,7 @@ export default {
               source: {
                 type: 'wmts-capabilities',
                 url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-                layerName: 'terrain-light',
+                layer: 'terrain-light',
                 matrixSet: 'WGS84',
               },
             },

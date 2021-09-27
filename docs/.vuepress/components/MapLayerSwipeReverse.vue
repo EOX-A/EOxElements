@@ -58,7 +58,7 @@ export default {
         source: {
           type: 'wmts-capabilities',
           url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          layerName: 's2cloudless-2020_3857',
+          layer: 's2cloudless-2020_3857',
           matrixSet: 'GoogleMapsCompatible',
         },
       },
@@ -70,7 +70,7 @@ export default {
         source: {
           type: 'wmts-capabilities',
           url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          layerName: 's2cloudless-2018_3857',
+          layer: 's2cloudless-2018_3857',
           matrixSet: 'GoogleMapsCompatible',
         },
       },

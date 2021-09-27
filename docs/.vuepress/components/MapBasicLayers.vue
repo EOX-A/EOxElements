@@ -9,8 +9,8 @@
       style="position: absolute; z-index: 1; top: 20px; right: 20px"
     >
       <v-switch
-        v-for="layer in layers"
-        :key="layer.id"
+        v-for="(layer, key) in layers"
+        :key="key"
         v-model="layer.visible"
         :label="layer.title"
         hide-details
@@ -31,36 +31,33 @@ export default {
     zoom: 2,
     layers: [
       {
-        id: 'cloudless',
         title: 'WMTS from Capabilities',
         type: 'tile',
         visible: true,
         source: {
           type: 'wmts-capabilities',
           url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          layerName: 's2cloudless-2019_3857',
-          matrixSet: 'GoogleMapsCompatible',
-          attributionProperty: 'Title',
+          layer: 's2cloudless-2019_3857',
+          attributions: (layer) => layer.Title, // default xml field is "Abstract";
+          // attributions: 'foobar', // can also be overridden with string
         },
       },
       // Tile layer with WMTS source
       {
-        id: 'wmts',
         title: 'WMTS',
         type: 'tile',
         visible: false,
         source: {
           type: 'wmts',
-          url: 'https://services.arcgisonline.com/arcgis/rest/services/Demographics/USA_Population_Density/MapServer/WMTS/',
-          layerName: '0',
-          matrixSet: 'EPSG:3857',
-          format: 'image/png',
-          styleName: 'default',
+          url: 'https://tiles.maps.eox.at/wmts',
+          layer: 's2cloudless-2019_3857',
+          matrixSet: 'GoogleMapsCompatible',
+          format: 'image/jpeg',
+          style: 'default',
         },
       },
       // Tile layer with WMS source
       {
-        id: 'wms',
         title: 'Tile WMS',
         type: 'tile',
         visible: false,
@@ -73,7 +70,6 @@ export default {
         },
       },
       {
-        id: 'wms-image',
         title: 'Image WMS',
         type: 'image',
         visible: false,
@@ -87,7 +83,6 @@ export default {
         },
       },
       {
-        id: 'wfs',
         title: 'WFS',
         type: 'vector',
         visible: false,
@@ -109,7 +104,6 @@ export default {
       // Countries vector layer
       // loads GeoJSON data from remote server
       {
-        id: 'countries',
         title: 'Vector',
         type: 'vector',
         visible: false,
@@ -140,7 +134,6 @@ export default {
         ],
       },
       {
-        id: 'vector-tiles',
         title: 'Vector tiles',
         type: 'vector-tile',
         visible: false,
@@ -165,7 +158,6 @@ export default {
         ],
       },
       {
-        id: 'xyz',
         title: 'XYZ',
         type: 'tile',
         visible: false,

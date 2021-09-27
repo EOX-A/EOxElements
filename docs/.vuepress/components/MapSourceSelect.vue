@@ -38,7 +38,7 @@ export default {
         title: 'Terrain Light',
         source: {
           ...srcDefaults,
-          layerName: 'terrain-light',
+          layer: 'terrain-light',
         },
       },
       {
@@ -47,7 +47,7 @@ export default {
         title: 'Sentinel-2 cloudless 2016',
         source: {
           ...srcDefaults,
-          layerName: 's2cloudless',
+          layer: 's2cloudless',
         },
       },
       {
@@ -56,7 +56,7 @@ export default {
         title: 'Sentinel-2 cloudless 2018',
         source: {
           ...srcDefaults,
-          layerName: 's2cloudless-2018',
+          layer: 's2cloudless-2018',
         },
       },
       {
@@ -65,7 +65,7 @@ export default {
         title: 'Sentinel-2 cloudless 2019',
         source: {
           ...srcDefaults,
-          layerName: 's2cloudless-2019',
+          layer: 's2cloudless-2019',
         },
       },
       {
@@ -74,7 +74,7 @@ export default {
         title: 'Sentinel-2 cloudless 2020',
         source: {
           ...srcDefaults,
-          layerName: 's2cloudless-2020',
+          layer: 's2cloudless-2020',
         },
       },
     ],
