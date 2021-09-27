@@ -6,6 +6,7 @@
     :visible="layer.visible"
     :styleName="layer.source.style"
     :capabilitiesRequest="wmtsCapabilitiesRequest"
+    :map-view="mapView"
     :z-index="zIndex"
     @fetchedCapabilities="updateCapabilitiesRequest"
     v-bind="layer.source"
@@ -129,6 +130,7 @@ export default {
       type: Object,
       required: true,
     },
+    mapView: Object,
     zIndex: {
       type: Number,
     },

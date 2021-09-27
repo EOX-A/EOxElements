@@ -10,6 +10,7 @@
   >
     <vl-view
       ref="view"
+      @created="(view) => mapView = view"
       :zoom.sync="mapZoom"
       :center.sync="mapCenter"
       :rotation.sync="mapRotation"
@@ -46,6 +47,7 @@
               :key="childLayer.id"
               :ref="childLayer.id"
               :layer="childLayer"
+              :map-view="mapView"
               :z-index="layer.layers.indexOf(childLayer)"
             />
           </template>
@@ -55,6 +57,7 @@
           :key="layer.id"
           :ref="layer.id"
           :layer="layer"
+          :map-view="mapView"
           :z-index="layers.indexOf(layer)"
         />
       </template>
@@ -149,6 +152,7 @@ export default {
     mapRendering: false,
     overlay: null,
     hoverFeature: null,
+    mapView: null,
   }),
   created() {
     this.mapZoom = this.zoom;

@@ -19,6 +19,7 @@ export default {
     visible: Boolean,
     zIndex: Number,
     capabilitiesRequest: Object,
+    mapView: Object,
   },
   data() {
     return {
@@ -53,6 +54,7 @@ export default {
             xml,
             {
               layer: this.$attrs.layer,
+              projection: this.mapView.currentProjection,
               style: layerDef.Style.find((s) => s.isDefault).Identifier,
             },
           );
