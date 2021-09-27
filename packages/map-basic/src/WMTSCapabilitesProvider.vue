@@ -19,10 +19,6 @@ export default {
     visible: Boolean,
     zIndex: Number,
     capabilitiesRequest: Object,
-    attributionProperty: {
-      type: String,
-      default: 'Abstract',
-    },
   },
   data() {
     return {
@@ -57,7 +53,6 @@ export default {
             xml,
             {
               layer: this.$attrs.layer,
-              matrixSet: layerDef.TileMatrixSetLink[0].TileMatrixSet,
               style: layerDef.Style.find((s) => s.isDefault).Identifier,
             },
           );
@@ -69,11 +64,20 @@ export default {
               tileUrl = layerDef.ResourceURL.template;
             }
           }
+
+          // overrides passed in the "source" object
+          // uses "styleName" internally since "style" is a protected prop
+          const sourceOverrides = {
+            ...this.$attrs,
+            style: this.$attrs.styleName,
+          };
+          delete sourceOverrides.styleName;
+
           options = {
             ...options,
             urls: tileUrl,
             wrapX: true,
-            ...this.$attrs, // inject source overrides
+            ...sourceOverrides,
             attributions: typeof this.$attrs.attributions === 'function'
               ? this.$attrs.attributions(layerDef)
               : (this.$attrs.attributions || layerDef.Abstract),
