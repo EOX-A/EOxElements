@@ -58,7 +58,7 @@ export default {
             {
               layer: this.$attrs.layer,
               matrixSet: layerDef.TileMatrixSetLink[0].TileMatrixSet,
-              style: layerDef.Style[0].Identifier,
+              style: layerDef.Style.find((s) => s.isDefault).Identifier,
             },
           );
           let tileUrl = options.urls;
