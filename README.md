@@ -82,10 +82,13 @@ See the elements in action [here](https://eox-a.github.io/elements/examples/).
 This monorepo uses Yarn [workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) and [Lerna](https://github.com/lerna/lerna).
 
 All the following commands should be executed from the project root.
-
+Or, if you want to work inside a container, run:
+```
+docker run -it --rm -v ${PWD}:/build -w /build -p 127.0.0.1:8080:8080 node:15-buster bash
+```
 To get started, bootstrap the whole project (installs dependencies of all packages and symlinks them):
 ```
-yarn install
+yarn
 ```
 
 Then, build all packages (or a specific one, targeted with `--scope`):
