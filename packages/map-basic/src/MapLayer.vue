@@ -3,17 +3,13 @@
     v-if="layer.type === 'tile'
       && layer.source.type === 'wmts-capabilities'"
     :id="layer.id"
-    :layerName="layer.source.layerName"
-    :capabilitiesUrl="layer.source.url"
-    :matrixSet="layer.source.matrixSet"
-    :requestEncoding="layer.source.requestEncoding"
     :visible="layer.visible"
     :format="layer.format"
     :styleName="layer.styleName"
     :capabilitiesRequest="wmtsCapabilitiesRequest"
     :z-index="zIndex"
-    :attributionProperty="layer.source.attributionProperty"
     @fetchedCapabilities="updateCapabilitiesRequest"
+    v-bind="layer.source"
   />
   <component
     v-else
@@ -26,6 +22,8 @@
       :is="`vl-source-${layer.source.type}`"
       :ref="`${layer.id}-source`"
       :ident="layer.source.ident && layer.source.ident"
+      :layerName="`${layer.source.layer}`"
+      :styleName="`${layer.source.style}`"
       v-bind="layer.source">
       <!-- add static features to vl-source-vector if provided -->
       <template v-if="layer.source.staticFeatures && layer.source.staticFeatures.length">

@@ -15,18 +15,10 @@ import WMTS, { optionsFromCapabilities } from 'ol/source/WMTS';
 
 export default {
   props: {
-    layerName: String,
-    layerStyle: String,
-    capabilitiesUrl: String,
     id: String,
-    matrixSet: String,
     visible: Boolean,
     zIndex: Number,
     capabilitiesRequest: Object,
-    requestEncoding: {
-      type: String,
-      default: 'KVP',
-    },
     attributionProperty: {
       type: String,
       default: 'Abstract',
@@ -40,7 +32,7 @@ export default {
   },
   computed: {
     wmtsCapabilitiesUrl() {
-      return this.capabilitiesUrl;
+      return this.$attrs.url;
     },
   },
   created() {
@@ -60,14 +52,13 @@ export default {
         .then((text) => {
           const xml = parser.read(text);
           const layerDef = xml.Contents.Layer
-            .find((l) => l.Identifier === this.layerName);
-          const attribution = layerDef[this.attributionProperty];
+            .find((l) => l.Identifier === this.$attrs.layer);
           let options = optionsFromCapabilities(
             xml,
             {
-              layer: this.layerName,
-              matrixSet: this.matrixSet,
-              style: this.layerStyle,
+              layer: this.$attrs.layer,
+              matrixSet: layerDef.TileMatrixSetLink[0].TileMatrixSet,
+              style: layerDef.Style[0].Identifier,
             },
           );
           let tileUrl = options.urls;
@@ -80,10 +71,12 @@ export default {
           }
           options = {
             ...options,
-            attributions: attribution,
-            requestEncoding: this.requestEncoding,
             urls: tileUrl,
             wrapX: true,
+            ...this.$attrs, // inject source overrides
+            attributions: typeof this.$attrs.attributions === 'function'
+              ? this.$attrs.attributions(layerDef)
+              : (this.$attrs.attributions || layerDef.Abstract),
           };
           this.wmtsOptions = options;
           this.ready = true;
