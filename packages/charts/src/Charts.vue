@@ -80,6 +80,12 @@ export default {
       type: String,
       default: 'en',
     },
+    /**
+     * Label overrides
+     */
+    translations: {
+      type: Object,
+    },
   },
   components: {
     LineChart,
@@ -145,7 +151,7 @@ export default {
           const currDataset = {
             data: mean,
             yAxisID: axisDesc.id,
-            label: `${parKey} (mean)`,
+            label: `${parKey} (${this.translations && this.translations.mean ? this.translations.mean : 'mean'})`,
             fill: false,
             borderColor: parDesc.color,
             backgroundColor: parDesc.color,
@@ -161,7 +167,7 @@ export default {
           if (parDesc.showMinMax) {
             datasets.push({
               data: max,
-              label: `${parKey} (max)`,
+              label: `${parKey} (${this.translations && this.translations.max ? this.translations.max : 'max'})`,
               fill: '+1',
               borderWidth: 1,
               backgroundColor: 'rgba(70,70,70,0.2)',
@@ -172,7 +178,7 @@ export default {
             });
             datasets.push({
               data: min,
-              label: `${parKey} (min)`,
+              label: `${parKey} (${this.translations && this.translations.min ? this.translations.min : 'min'})`,
               fill: '-1',
               borderWidth: 1,
               backgroundColor: 'rgba(70,70,70,0.2)',
