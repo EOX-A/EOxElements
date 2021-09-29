@@ -83,13 +83,8 @@ export default {
     /**
      * Label overrides
      */
-    labels: {
+    translations: {
       type: Object,
-      default: () => ({
-        mean: '(mean)',
-        max: '(max)',
-        min: '(min)',
-      }),
     },
   },
   components: {
@@ -156,7 +151,7 @@ export default {
           const currDataset = {
             data: mean,
             yAxisID: axisDesc.id,
-            label: `${parKey} ${this.labels.mean}`,
+            label: `${parKey} (${this.translations && this.translations.mean ? this.translations.mean : 'mean'})`,
             fill: false,
             borderColor: parDesc.color,
             backgroundColor: parDesc.color,
@@ -172,7 +167,7 @@ export default {
           if (parDesc.showMinMax) {
             datasets.push({
               data: max,
-              label: `${parKey} ${this.labels.max}`,
+              label: `${parKey} (${this.translations && this.translations.max ? this.translations.max : 'max'})`,
               fill: '+1',
               borderWidth: 1,
               backgroundColor: 'rgba(70,70,70,0.2)',
@@ -183,7 +178,7 @@ export default {
             });
             datasets.push({
               data: min,
-              label: `${parKey} ${this.labels.min}`,
+              label: `${parKey} (${this.translations && this.translations.min ? this.translations.min : 'min'})`,
               fill: '-1',
               borderWidth: 1,
               backgroundColor: 'rgba(70,70,70,0.2)',
