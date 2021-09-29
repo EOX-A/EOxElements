@@ -41,7 +41,7 @@
             :mapObject="mapObject"
             :urls="layer['mapbox-style-layers']"
           />
-          <template v-else-if="layer.layers">
+          <template v-else-if="layer.layers && mapView">
             <map-layer
               v-for="childLayer in layer.layers"
               :key="childLayer.id"
@@ -53,7 +53,7 @@
           </template>
         </vl-layer-group>
         <map-layer
-          v-else
+          v-else-if="mapView"
           :key="layer.id"
           :ref="layer.id"
           :layer="layer"
