@@ -71,7 +71,7 @@ export default {
           // uses "styleName" internally since "style" is a protected prop
           const sourceOverrides = {
             ...this.$attrs,
-            style: this.$attrs.styleName,
+            ...(this.$attrs.styleName && { style: this.$attrs.styleName }),
           };
           delete sourceOverrides.styleName;
 
