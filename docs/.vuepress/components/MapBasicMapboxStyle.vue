@@ -26,7 +26,7 @@ export default {
         id: 'mapbox',
         type: 'group',
         'mapbox-style-layers': [
-          '/style_declarations.json',
+          'https://eox-a.github.io/elements/style_declarations.json',
         ],
       },
     ],
