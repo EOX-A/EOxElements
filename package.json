@@ -27,5 +27,8 @@
     "vuetify": "^2.4.5",
     "webpack": "4"
   },
+  "resolutions": {
+    "ol": "^6.9.0"
+  },
   "dependencies": {}
 }

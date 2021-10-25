@@ -11,6 +11,20 @@
     @fetchedCapabilities="updateCapabilitiesRequest"
     v-bind="layer.source"
   />
+  <WebGLTileLayer
+    v-else-if="layer.type === 'webgl'"
+    :ref="layer.id"
+    :id="layer.id"
+    :visible="layer.visible"
+    :l-style="layer.style"
+    :z-index="zIndex"
+    v-bind="layer"
+  >
+    <GeoTIFFSource
+      :ref="`${layer.id}-source`"
+      v-bind="layer.source"
+    />
+  </WebGLTileLayer>
   <component
     v-else
     :is="`vl-layer-${layer.type}`"
@@ -111,6 +125,8 @@ import {
 } from 'vuelayers';
 import { createStyle } from 'vuelayers/dist/ol-ext';
 import WmtsCapabilitesProvider from './WMTSCapabilitesProvider.vue';
+import WebGLTileLayer from './WebGLTileLayer.vue';
+import GeoTIFFSource from './GeoTIFFSource.vue';
 
 Vue.use(TileLayer);
 // Vue.use(GroupLayer);
@@ -137,6 +153,8 @@ export default {
   },
   components: {
     WmtsCapabilitesProvider,
+    WebGLTileLayer,
+    GeoTIFFSource,
   },
   data: () => ({
     wmtsCapabilitiesRequest: {},
