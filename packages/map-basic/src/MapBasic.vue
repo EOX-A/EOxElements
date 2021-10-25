@@ -1,16 +1,20 @@
 <template>
   <vl-map
+    v-if="checkedMapConfig"
     ref="map"
     @pointermove="onPointerMove"
     @click="onPointerClick"
     @created="mapCreated = true"
+    @mounted="onMapMounted"
     v-bind="checkedMapConfig"
     style="height: 400px"
     :class="{'cursor-pointer': hoverFeature}"
   >
     <vl-view
+      v-if="checkedViewConfig"
       ref="view"
       @created="(view) => mapView = view"
+      @mounted="onViewMounted"
       :zoom.sync="mapZoom"
       :center.sync="mapCenter"
       :rotation.sync="mapRotation"
@@ -116,6 +120,7 @@ export default {
       type: Object,
       default: () => ({
         // https://vuelayers.github.io/#/docs/component/map?id=properties
+        'data-projection': 'EPSG:3857',
         'load-tiles-while-animating': true,
         'load-tiles-while-interacting': true,
       }),
@@ -124,6 +129,7 @@ export default {
       type: Object,
       default: () => ({
         // https://vuelayers.github.io/#/docs/component/view?id=properties
+        projection: 'EPSG:3857',
         'multi-world': true,
       }),
     },
@@ -162,59 +168,80 @@ export default {
     this.mapZoom = this.zoom;
     this.mapCenter = this.center;
     this.mapRotation = this.rotation;
-
+  },
+  beforeMount() {
     // check map and view projection
-    const mapProjection = this.mapConfig.projection;
+    const mapProjection = this.mapConfig['data-projection'];
     const viewProjection = this.viewConfig.projection;
-    if (mapProjection || viewProjection) {
-      const definedProjections = [...new Set([
-        ...(mapProjection ? [mapProjection] : []),
-        ...(viewProjection ? [viewProjection] : []),
-      ])];
-      definedProjections.forEach((projection) => {
-        if (!proj4.defs(projection)) {
-          try {
+    const usedProjections = [...new Set([
+      ...(mapProjection ? [mapProjection] : []),
+      ...(viewProjection ? [viewProjection] : []),
+    ])];
+    const undefinedProjections = usedProjections.filter((p) => !proj4.defs(p));
+    if (undefinedProjections.length > 0) {
+      // not all used projections are defined yet
+      // wait for fetch
+      const promises = [];
+      undefinedProjections.forEach((projection) => {
+        try {
+          promises.push(
             fetch(`//epsg.io/${projection.split('EPSG:')[1]}.proj4`)
               .then((response) => response.clone().text())
               .then((text) => {
                 proj4.defs(projection, text);
                 register(proj4);
-                if (projection === mapProjection) {
-                  this.checkedMapConfig = this.mapConfig;
-                }
-                if (projection === viewProjection) {
-                  this.checkedViewConfig = this.viewConfig;
-                }
-              });
-          } catch (error) {
-            throw new Error(`Error fetching projection ${projection}: ${error}`);
-          }
-        } else {
-          if (projection === mapProjection) {
+              }),
+          );
+          Promise.all(promises).then(() => {
             this.checkedMapConfig = this.mapConfig;
-          }
-          if (projection === viewProjection) {
             this.checkedViewConfig = this.viewConfig;
-          }
+          });
+        } catch (error) {
+          throw new Error(`Error fetching projection ${projection}: ${error}`);
         }
       });
+    } else {
+      // continue immediately
+      this.checkedMapConfig = this.mapConfig;
+      this.checkedViewConfig = this.viewConfig;
     }
   },
   mounted() {
-    // TODO find better debouncing mechanism
-    this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 100));
-    this.$refs.view.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
-    this.$refs.view.$on('update:center', this.debounceEvent(this.onMapRender, 100));
-    this.$refs.view.$on('update:rotation', this.debounceEvent(this.onMapRender, 100));
-    this.$refs.map.$createPromise.then(() => {
-      this.mapObject = this.$refs.map;
-      this.$root.$on('renderMap', () => this.$refs.map
-        && this.$refs.map.render());
-    });
     this.$on('addOverlay', this.addOverlay);
     this.$on('renderComplete', this.mountOverviewMap);
   },
   methods: {
+    checkProjection(projection) {
+      if (!proj4.defs(projection)) {
+        try {
+          fetch(`//epsg.io/${projection.split('EPSG:')[1]}.proj4`)
+            .then((response) => response.clone().text())
+            .then((text) => {
+              proj4.defs(projection, text);
+              register(proj4);
+              return projection;
+            });
+        } catch (error) {
+          throw new Error(`Error fetching projection ${projection}: ${error}`);
+        }
+      }
+      return projection;
+    },
+    onMapMounted() {
+      // TODO find better debouncing mechanism
+      this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 100));
+      this.$refs.map.$createPromise.then(() => {
+        this.mapObject = this.$refs.map;
+        this.$root.$on('renderMap', () => this.$refs.map
+          && this.$refs.map.render());
+      });
+    },
+    onViewMounted() {
+      // TODO find better debouncing mechanism
+      this.$refs.view.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
+      this.$refs.view.$on('update:center', this.debounceEvent(this.onMapRender, 100));
+      this.$refs.view.$on('update:rotation', this.debounceEvent(this.onMapRender, 100));
+    },
     onPointerMove({ coordinate, pixel, originalEvent }) {
       const x = originalEvent.clientX - originalEvent.target.getBoundingClientRect().left;
       const threshold = originalEvent.target.getBoundingClientRect().width / 2;
