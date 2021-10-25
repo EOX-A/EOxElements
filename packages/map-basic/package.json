@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "proj4": "^2.7.5",
     "vuelayers": "0.12.0-rc.26"
   },
   "devDependencies": {

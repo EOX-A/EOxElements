@@ -4,7 +4,7 @@
     @pointermove="onPointerMove"
     @click="onPointerClick"
     @created="mapCreated = true"
-    v-bind="mapConfig"
+    v-bind="checkedMapConfig"
     style="height: 400px"
     :class="{'cursor-pointer': hoverFeature}"
   >
@@ -14,7 +14,7 @@
       :zoom.sync="mapZoom"
       :center.sync="mapCenter"
       :rotation.sync="mapRotation"
-      v-bind="viewConfig"
+      v-bind="checkedViewConfig"
     >
       <!-- TODO: replace with more dynamic solution -->
       <feature-layer
@@ -87,6 +87,8 @@ import {
   Map, GroupLayer,
 } from 'vuelayers';
 import 'vuelayers/dist/vuelayers.css';
+import proj4 from 'proj4';
+import { register } from 'ol/proj/proj4';
 import FeatureLayer from './FeatureLayer.vue';
 import MapLayer from './MapLayer.vue';
 import OverviewMap from './OverviewMap.vue';
@@ -153,11 +155,50 @@ export default {
     overlay: null,
     hoverFeature: null,
     mapView: null,
+    checkedMapConfig: null,
+    checkedViewConfig: null,
   }),
   created() {
     this.mapZoom = this.zoom;
     this.mapCenter = this.center;
     this.mapRotation = this.rotation;
+
+    // check map and view projection
+    const mapProjection = this.mapConfig.projection;
+    const viewProjection = this.viewConfig.projection;
+    if (mapProjection || viewProjection) {
+      const definedProjections = [...new Set([
+        ...(mapProjection ? [mapProjection] : []),
+        ...(viewProjection ? [viewProjection] : []),
+      ])];
+      definedProjections.forEach((projection) => {
+        if (!proj4.defs(projection)) {
+          try {
+            fetch(`//epsg.io/${projection.split('EPSG:')[1]}.proj4`)
+              .then((response) => response.clone().text())
+              .then((text) => {
+                proj4.defs(projection, text);
+                register(proj4);
+                if (projection === mapProjection) {
+                  this.checkedMapConfig = this.mapConfig;
+                }
+                if (projection === viewProjection) {
+                  this.checkedViewConfig = this.viewConfig;
+                }
+              });
+          } catch (error) {
+            throw new Error(`Error fetching projection ${projection}: ${error}`);
+          }
+        } else {
+          if (projection === mapProjection) {
+            this.checkedMapConfig = this.mapConfig;
+          }
+          if (projection === viewProjection) {
+            this.checkedViewConfig = this.viewConfig;
+          }
+        }
+      });
+    }
   },
   mounted() {
     // TODO find better debouncing mechanism
