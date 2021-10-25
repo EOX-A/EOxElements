@@ -34,3 +34,13 @@
 <example file="MapBasicVectorTooltip.vue" />
 
 <<< ./.vuepress/components/MapBasicVectorTooltip.vue
+
+## GeoTiff Example
+<example file="MapBasicGeoTiff.vue" />
+
+<<< ./.vuepress/components/MapBasicGeoTiff.vue
+
+## GeoTiff Example With Styling
+<example file="MapBasicGeoTiffStyle.vue" />
+
+<<< ./.vuepress/components/MapBasicGeoTiffStyle.vue
