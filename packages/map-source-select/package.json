@@ -47,7 +47,7 @@
 		"vuetify": "^2.3.19"
 	},
 	"publishConfig": {
-		"registry": "http://registry.npmjs.org/",
+		"registry": "https://registry.npmjs.org/",
 		"access": "public"
 	}
 }

@@ -48,7 +48,7 @@
     "vue-template-compiler": "^2.6.11"
   },
   "publishConfig": {
-    "registry": "http://registry.npmjs.org/",
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   }
 }
