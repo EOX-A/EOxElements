@@ -9,7 +9,6 @@ export default {
   ],
   props: {
     id: String,
-    visible: Boolean,
     zIndex: Number,
     lStyle: Object,
   },
@@ -21,11 +20,11 @@ export default {
   methods: {
     createLayer() {
       this.webGlLayer = new TileLayer({
+        ...this.$options.propsData,
         style: this.lStyle,
         source: this.$source,
         zIndex: this.zIndex,
         id: this.id,
-        visible: this.visible,
       });
       return this.webGlLayer;
     },

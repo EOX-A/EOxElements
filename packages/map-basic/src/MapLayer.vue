@@ -15,7 +15,6 @@
     v-else-if="layer.type === 'webgl'"
     :ref="layer.id"
     :id="layer.id"
-    :visible="layer.visible"
     :l-style="layer.style"
     :z-index="zIndex"
     v-bind="layer"

@@ -7,6 +7,7 @@
     @created="mapCreated = true"
     @mounted="onMapMounted"
     v-bind="checkedMapConfig"
+    v-on="$listeners"
     style="height: 400px"
     :class="{'cursor-pointer': hoverFeature}"
   >
@@ -19,6 +20,7 @@
       :center.sync="mapCenter"
       :rotation.sync="mapRotation"
       v-bind="checkedViewConfig"
+      v-on="$listeners"
     >
       <!-- TODO: replace with more dynamic solution -->
       <feature-layer
@@ -38,7 +40,8 @@
           v-if="layer.type === 'group'"
           :key="key"
           :ref="layer.id"
-          :z-index="layers.indexOf(layer)">
+          :z-index="layers.indexOf(layer)"
+          v-bind="layer">
           <mapbox-style-group
             v-if="layer['mapbox-style-layers'] && mapObject"
             :key="key"
@@ -227,7 +230,7 @@ export default {
       }
       return projection;
     },
-    onMapMounted() {
+    onMapMounted(e) {
       // TODO find better debouncing mechanism
       this.$refs.map.$on('rendercomplete', this.debounceEvent(this.onMapRenderComplete, 100));
       this.$refs.map.$createPromise.then(() => {
@@ -235,12 +238,14 @@ export default {
         this.$root.$on('renderMap', () => this.$refs.map
           && this.$refs.map.render());
       });
+      this.$emit('mapMounted', e);
     },
-    onViewMounted() {
+    onViewMounted(e) {
       // TODO find better debouncing mechanism
       this.$refs.view.$on('update:zoom', this.debounceEvent(this.onMapRender, 100));
       this.$refs.view.$on('update:center', this.debounceEvent(this.onMapRender, 100));
       this.$refs.view.$on('update:rotation', this.debounceEvent(this.onMapRender, 100));
+      this.$emit('viewMounted', e);
     },
     onPointerMove({ coordinate, pixel, originalEvent }) {
       const x = originalEvent.clientX - originalEvent.target.getBoundingClientRect().left;
@@ -324,6 +329,7 @@ export default {
     mapFirstRender(hasRendered) {
       if (hasRendered) {
         // console.log('first render complete!');
+        this.$emit('firstRenderComplete');
         this.$emit('renderComplete');
       }
     },
