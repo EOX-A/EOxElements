@@ -10,6 +10,7 @@
     :z-index="zIndex"
     @fetchedCapabilities="updateCapabilitiesRequest"
     v-bind="layer.source"
+    v-on="$listeners"
   />
   <WebGLTileLayer
     v-else-if="layer.type === 'webgl'"
@@ -18,10 +19,12 @@
     :l-style="layer.style"
     :z-index="zIndex"
     v-bind="layer"
+    v-on="$listeners"
   >
     <GeoTIFFSource
       :ref="`${layer.id}-source`"
       v-bind="layer.source"
+      v-on="$listeners"
     />
   </WebGLTileLayer>
   <component
@@ -29,7 +32,8 @@
     :is="`vl-layer-${layer.type}`"
     :z-index="zIndex"
     :declutter="layer.declutter"
-    v-bind="layer">
+    v-bind="layer"
+    v-on="$listeners">
     <!-- add vl-source-* -->
     <component
       :is="`vl-source-${layer.source.type}`"
@@ -37,7 +41,8 @@
       :ident="layer.source.ident && layer.source.ident"
       :layerName="`${layer.source.layer}`"
       :styleName="`${layer.source.style}`"
-      v-bind="layer.source">
+      v-bind="layer.source"
+      v-on="$listeners">
       <!-- add static features to vl-source-vector if provided -->
       <template v-if="layer.source.staticFeatures && layer.source.staticFeatures.length">
         <VlFeature
@@ -54,7 +59,8 @@
       <component
         v-if="layer.source.source"
         :is="layer.source.source.cmp"
-        v-bind="layer.source.source">
+        v-bind="layer.source.source"
+        v-on="$listeners">
         <!-- add static features to vl-source-vector if provided -->
         <template
           v-if="layer.source.source.staticFeatures && layer.source.source.staticFeatures.length">
@@ -63,7 +69,8 @@
             :id="feature.id" :properties="feature.properties">
             <component
               :is="geometryTypeToCmpName(feature.geometry.type)"
-              v-bind="feature.geometry"/>
+              v-bind="feature.geometry"
+              v-on="$listeners"/>
           </VlFeature>
         </template>
       </component>

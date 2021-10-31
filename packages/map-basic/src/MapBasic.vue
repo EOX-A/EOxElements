@@ -41,7 +41,8 @@
           :key="key"
           :ref="layer.id"
           :z-index="layers.indexOf(layer)"
-          v-bind="layer">
+          v-bind="layer"
+          v-on="$listeners">
           <mapbox-style-group
             v-if="layer['mapbox-style-layers'] && mapObject"
             :key="key"
@@ -56,6 +57,7 @@
               :layer="childLayer"
               :map-view="mapView"
               :z-index="layer.layers.indexOf(childLayer)"
+              v-on="$listeners"
             />
           </template>
         </vl-layer-group>
@@ -66,6 +68,7 @@
           :layer="layer"
           :map-view="mapView"
           :z-index="layers.indexOf(layer)"
+          v-on="$listeners"
         />
       </template>
     </template>
