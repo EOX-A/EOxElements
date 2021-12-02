@@ -22,12 +22,20 @@ export default {
         {
           id: 'yAxis1',
           parameters: {
-            'NDVI': {
-              color: '#2c2',
-              lineTension: 0.0,
-              pointRadius: 2,
-              borderWidth: 1,
-            },
+            'NDVI': [
+              {
+                id: 'mean',
+                path: 'basicStats.mean',
+                fill: false,
+                borderColor: '#2c2',
+                backgroundColor: '#2c2',
+                lineTension: 0.0,
+                pointRadius: 2,
+                borderWidth: 1,
+                pointHoverRadius: 5,
+                pointHoverBorderWidth: 2,
+              },
+            ],
           },
           position: 'right',
           color: '#2c2',
@@ -35,11 +43,15 @@ export default {
         {
           id: 'yAxis2',
           parameters: {
-            'avg_vv': {
-              color: '#000',
-              showLine: false,
-              pointRadius: 1.5,
-            }
+            'avg_vv': [
+              {
+                id: 'mean',
+                path: 'basicStats.mean',
+                backgroundColor: '#000',
+                showLine: false,
+                pointRadius: 1.5,
+              },
+            ]
           },
           position: 'left',
           color: '#000',
@@ -47,11 +59,15 @@ export default {
         {
           id: 'yAxis3',
           parameters: {
-            'avg_vh': {
-              color: '#c22',
-              showLine: false,
-              pointRadius: 1.5,
-            },
+            'avg_vh': [
+              {
+                id: 'mean',
+                path: 'basicStats.mean',
+                backgroundColor: '#c22',
+                showLine: false,
+                pointRadius: 1.5,
+              },
+            ],
           },
           position: 'left',
           color: '#c22',

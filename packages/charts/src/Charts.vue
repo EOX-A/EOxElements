@@ -126,71 +126,39 @@ export default {
           if (!(parKey in dataObject)) {
             return;
           }
-          const min = [];
-          const max = [];
-          const mean = [];
-          const stDev = [];
-
+          const currentDataSets = {};
           for (let j = 0; j < dataObject[parKey].length; j += 1) {
             const t = DateTime.fromISO(dataObject[parKey][j].date);
-            if ('basicStats' in dataObject[parKey][j]) {
-              if ('max' in dataObject[parKey][j].basicStats) {
-                max.push({ t, y: dataObject[parKey][j].basicStats.max });
+            parDesc.forEach((dS) => {
+              if (!currentDataSets[dS.id]) {
+                currentDataSets[dS.id] = {};
               }
-              if ('min' in dataObject[parKey][j].basicStats) {
-                min.push({ t, y: dataObject[parKey][j].basicStats.min });
+              currentDataSets[dS.id] = dS;
+              if (!currentDataSets[dS.id].data) {
+                currentDataSets[dS.id].data = [];
               }
-              if ('mean' in dataObject[parKey][j].basicStats) {
-                mean.push({ t, y: dataObject[parKey][j].basicStats.mean });
-              }
-              if ('stDev' in dataObject[parKey][j].basicStats) {
-                stDev.push({ t, y: dataObject[parKey][j].basicStats.stDev });
-              }
-            }
-          }
-          const currDataset = {
-            data: mean,
-            yAxisID: axisDesc.id,
-            label: `${parKey} (${this.translations && this.translations.mean ? this.translations.mean : 'mean'})`,
-            fill: false,
-            borderColor: parDesc.color,
-            backgroundColor: parDesc.color,
-            showLine: parDesc.showLine,
-            pointRadius: parDesc.pointRadius,
-            pointHoverRadius: 5,
-            pointHoverBorderWidth: 2,
-            lineTension: parDesc.lineTension,
-            borderWidth: parDesc.borderWidth,
-          };
-          datasets.push(currDataset);
-
-          if (parDesc.showMinMax) {
-            datasets.push({
-              data: max,
-              label: `${parKey} (${this.translations && this.translations.max ? this.translations.max : 'max'})`,
-              fill: '+1',
-              borderWidth: 1,
-              backgroundColor: 'rgba(70,70,70,0.2)',
-              borderColor: 'rgba(70,70,70,0.5)',
-              pointRadius: 2,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 2,
-            });
-            datasets.push({
-              data: min,
-              label: `${parKey} (${this.translations && this.translations.min ? this.translations.min : 'min'})`,
-              fill: '-1',
-              borderWidth: 1,
-              backgroundColor: 'rgba(70,70,70,0.2)',
-              borderColor: 'rgba(70,70,70,0.5)',
-              pointRadius: 2,
-              pointHoverRadius: 4,
-              pointHoverBorderWidth: 2,
+              currentDataSets[dS.id].data.push({
+                t,
+                y: dS.path.split('.')
+                  .reduce((previous, current) => previous[current], dataObject[parKey][j]),
+              });
             });
           }
+          Object.values(currentDataSets).forEach((dataSet) => {
+            datasets.push({
+              yAxisID: axisDesc.id,
+              // default values that can be overridden:
+              label: `${parKey} (${this.translations && this.translations[dataSet.id]
+                ? this.translations[dataSet.id] : [dataSet.id]})`,
+              fill: false,
+              pointHoverRadius: 5,
+              pointHoverBorderWidth: 2,
+              // rest of params (including data) plus overrides:
+              ...dataSet,
+            });
+          });
         });
       });
-
       return {
         datasets,
       };
