@@ -216,19 +216,19 @@ export default {
           yAxes,
         },
         hover: {
-          mode: this.indexTooltips ? 'index' : 'label',
+          mode: this.indexTooltips ? 'x' : 'label',
           intersect: !this.indexTooltips,
         },
         tooltips: {
           // Disable the on-canvas tooltip
           enabled: false,
-          mode: this.indexTooltips ? 'index' : 'label',
+          mode: this.indexTooltips ? 'x' : 'label',
           intersect: !this.indexTooltips,
           callbacks: {
             label: (tooltipItem, data) => {
               const { datasetIndex, index } = tooltipItem;
               const currDat = data.datasets[datasetIndex];
-              return `${currDat.label}: ${currDat.data[index].y.toFixed(4)}`;
+              return `${currDat.label}: ${Math.round(currDat.data[index].y * 10000) / 10000}`; // 4
             },
           },
           custom: (tooltipModel) => {
