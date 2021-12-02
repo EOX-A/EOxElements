@@ -9,3 +9,8 @@
 <example file="ChartsAdvanced.vue" />
 
 <<< ./.vuepress/components/ChartsAdvanced.vue
+
+## Crop Cover example
+<example file="ChartsCropCover.vue" />
+
+<<< ./.vuepress/components/ChartsCropCover.vue
