@@ -129,9 +129,11 @@ export default {
           const currentDataSets = {};
           for (let j = 0; j < dataObject[parKey].length; j += 1) {
             const t = DateTime.fromISO(dataObject[parKey][j].date);
-            parDesc.forEach((dS) => {
+            parDesc.forEach((currDataSet) => {
+              const dS = currDataSet;
               if (!currentDataSets[dS.id]) {
                 currentDataSets[dS.id] = {};
+                delete dS.data;
               }
               currentDataSets[dS.id] = dS;
               if (!currentDataSets[dS.id].data) {
