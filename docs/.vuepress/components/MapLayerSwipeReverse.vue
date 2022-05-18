@@ -51,14 +51,14 @@ export default {
     zoom: 2,
     layers: [
       {
-        id: '2020',
-        title: '2020',
+        id: '2021',
+        title: '2021',
         type: 'tile',
         visible: true,
         source: {
           type: 'wmts-capabilities',
           url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          layer: 's2cloudless-2020_3857',
+          layer: 's2cloudless-2021_3857',
           matrixSet: 'GoogleMapsCompatible',
         },
       },
