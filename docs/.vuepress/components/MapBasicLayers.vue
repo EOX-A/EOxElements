@@ -37,7 +37,7 @@ export default {
         source: {
           type: 'wmts-capabilities',
           url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          layer: 's2cloudless-2019_3857',
+          layer: 's2cloudless-2021_3857',
           attributions: (layer) => layer.Title, // default xml field is "Abstract";
           // attributions: 'foobar', // can also be overridden with string
         },
@@ -50,7 +50,7 @@ export default {
         source: {
           type: 'wmts',
           url: 'https://tiles.maps.eox.at/wmts',
-          layer: 's2cloudless-2019_3857',
+          layer: 's2cloudless-2021_3857',
           matrixSet: 'GoogleMapsCompatible',
           format: 'image/jpeg',
           style: 'default',

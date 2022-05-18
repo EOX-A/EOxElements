@@ -23,7 +23,7 @@ export default {
         source: {
           type: 'wmts-capabilities',
           url: 'https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml',
-          layer: 's2cloudless-2019_3857',
+          layer: 's2cloudless-2021_3857',
         },
       },
     ],

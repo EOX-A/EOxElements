@@ -77,6 +77,15 @@ export default {
           layer: 's2cloudless-2020',
         },
       },
+      {
+        type: 'tile',
+        id: '2021',
+        title: 'Sentinel-2 cloudless 2021',
+        source: {
+          ...srcDefaults,
+          layer: 's2cloudless-2021',
+        },
+      },
     ],
   }),
   mounted() {
