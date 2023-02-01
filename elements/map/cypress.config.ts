@@ -7,5 +7,6 @@ export default defineConfig({
     setupNodeEvents(on) {
       on("file:preprocessor", vitePreprocessor());
     },
+    supportFile: false,
   },
 });

@@ -1,45 +1,24 @@
+import testLayers from "./layers.json";
 describe("layers", () => {
   beforeEach(() => {
     cy.visit("/");
   });
-  it("loads an OSM layer", () => {
-    cy.setMap("layer", {
-      layer: {
-        source: "osm",
-      },
-    });
-    cy.wait(0).then(() => {
-      cy.getMap().then((map) => {
-        const osmLayer = map
-          .getLayers()
-          .getArray()
-          .find((layer) => layer.get("id") === "osm");
-        expect(osmLayer).to.exist;
-      });
-    });
-  });
-  it("allows to toggle layer visibility", () => {
-    cy.setMap("layer", {
-      layer: {
-        source: "osm",
-        visible: false,
-      },
-    });
-    cy.wait(0).then(() => {
-      cy.getMap().then((map) => {
-        const osmLayer = map
-          .getLayers()
-          .getArray()
-          .find((layer) => layer.get("id") === "osm");
-        expect(osmLayer.getVisible()).to.be.false;
-        cy.setMap("layer-visibility", {
-          layer: {
-            source: "osm",
-            visible: true,
-          },
-        });
-        cy.wait(0).then(() => {
-          expect(osmLayer.getVisible()).to.be.true;
+  it("loads a set of layers from a JSON", () => {
+    cy.window().then((window) => {
+      window.postMessage(
+        {
+          "update-layers": testLayers,
+        },
+        "*"
+      );
+      cy.wait(0).then(() => {
+        const layers = window.map.getLayers().getArray();
+        expect(layers).to.have.length(testLayers.length);
+        testLayers.forEach((testLayer) => {
+          const existingLayer = layers.find(
+            (layer) => layer.get("title") === testLayer.title
+          );
+          expect(existingLayer).to.exist;
         });
       });
     });

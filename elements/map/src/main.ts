@@ -1,14 +1,5 @@
 import Map from "ol/Map.js";
 import View from "ol/View.js";
-import { Draw } from "ol/interaction.js";
-import { OSM, Vector as VectorSource } from "ol/source.js";
-import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer.js";
-
-declare global {
-  interface Window {
-    map: Map;
-  }
-}
 
 const map = new Map({
   controls: [],
@@ -22,60 +13,12 @@ const map = new Map({
 
 window.map = map;
 
-map.on("click", (event) => {
-  window.postMessage(
-    {
-      type: "event",
-      click: {
-        coordinate: event.coordinate,
-        pixel: event.pixel,
-      },
-    },
-    "*"
-  );
-});
-
 window.addEventListener("message", (event) => {
-  // add a layer to the map
-  if (event.data.type === "layer") {
-    if (event.data.layer.source === "osm") {
-      map.addLayer(
-        new TileLayer({
-          ...event.data.layer,
-          id: event.data.layer.source,
-          source: new OSM(),
-        })
-      );
-    }
-    if (event.data.layer.source === "vector") {
-      const source = new VectorSource();
-      const vector = new VectorLayer({
-        source: source,
-        style: {
-          "circle-radius": 7,
-          "circle-fill-color": "#004170",
-        },
-      });
-      map.addLayer(vector);
-      const draw = new Draw({
-        source: source,
-        type: "Point",
-      });
-      map.addInteraction(draw);
-    }
-  }
-  // change layer visibilty
-  if (event.data.type === "layer-visibility") {
-    const layer = map
-      .getLayers()
-      .getArray()
-      .find((layer) => layer.get("id") === event.data.layer.source);
-    if (layer) {
-      layer.setVisible(event.data.layer.visible);
-    }
-  }
-  // animate the view
-  if (event.data.type === "view") {
-    map.getView().animate({ ...event.data });
+  // add/update layers of the map
+  if (event.data.hasOwnProperty("update-layers")) {
+    const layers = event.data["update-layers"];
+    layers.forEach((layer: any) => {
+      console.log(layer);
+    });
   }
 });

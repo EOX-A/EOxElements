@@ -1,0 +1,116 @@
+[
+  {
+    "type": "tile",
+    "title": "WMTS from Capabilities",
+    "visible": true,
+    "source": {
+      "type": "wmts-capabilities",
+      "url": "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+      "layer": "s2cloudless-2021_3857",
+      "attributions": "Hello World"
+    }
+  },
+  {
+    "type": "tile",
+    "title": "WMTS",
+    "visible": false,
+    "source": {
+      "type": "wmts",
+      "url": "https://tiles.maps.eox.at/wmts",
+      "layer": "s2cloudless-2021_3857",
+      "matrixSet": "GoogleMapsCompatible",
+      "format": "image/jpeg",
+      "style": "default"
+    }
+  },
+  {
+    "type": "tile",
+    "title": "Tile WMS",
+    "visible": false,
+    "source": {
+      "type": "tile-wms",
+      "url": "https://ahocevar.com/geoserver/wms",
+      "layers": "topp:states",
+      "extParams": {
+        "TILED": true
+      },
+      "serverType": "geoserver"
+    }
+  },
+  {
+    "type": "image",
+    "title": "Image WMS",
+    "visible": false,
+    "source": {
+      "type": "image-wms",
+      "url": "https://ahocevar.com/geoserver/wms",
+      "layers": "topp:states",
+      "serverType": "geoserver",
+      "format": "image/png",
+      "version": "1.3.0"
+    }
+  },
+  {
+    "type": "vector",
+    "title": "Vector",
+    "visible": false,
+    "source": {
+      "type": "vector",
+      "url": "https://openlayers.org/en/latest/examples/data/geojson/countries.geojson"
+    },
+    "style": [
+      {
+        "fill": {
+          "color": [255, 255, 255, 0.5]
+        },
+        "stroke": {
+          "color": "#219e46",
+          "width": 2
+        },
+        "text": {
+          "text": "",
+          "font": "24px FontAwesome",
+          "fill": {
+            "color": "#2355af"
+          },
+          "stroke": {
+            "color": "white"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "vector-tile",
+    "title": "Vector tiles",
+    "visible": false,
+    "source": {
+      "type": "vector-tile",
+      "url": "https://basemaps.arcgis.com/v1/arcgis/rest/services/World_Basemap/VectorTileServer/tile/{z}/{y}/{x}.pbf"
+    },
+    "style": [
+      {
+        "stroke": {
+          "width": 2,
+          "color": "#2979ff"
+        },
+        "circle": {
+          "radius": 5,
+          "stroke": {
+            "width": 1.5,
+            "color": "#2979ff"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "tile",
+    "title": "XYZ",
+    "visible": false,
+    "source": {
+      "type": "xyz",
+      "url": "https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+  }
+]
