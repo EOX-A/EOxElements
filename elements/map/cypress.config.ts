@@ -1,5 +1,5 @@
-const { defineConfig } = require("cypress");
-const vitePreprocessor = require("cypress-vite");
+import { defineConfig } from "cypress";
+import vitePreprocessor from "cypress-vite";
 
 module.exports = defineConfig({
   e2e: {

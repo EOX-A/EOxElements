@@ -4,6 +4,12 @@ import { Draw } from "ol/interaction.js";
 import { OSM, Vector as VectorSource } from "ol/source.js";
 import { Tile as TileLayer, Vector as VectorLayer } from "ol/layer.js";
 
+declare global {
+  interface Window {
+    map: Map;
+  }
+}
+
 const map = new Map({
   controls: [],
   layers: [],
@@ -64,7 +70,9 @@ window.addEventListener("message", (event) => {
       .getLayers()
       .getArray()
       .find((layer) => layer.get("id") === event.data.layer.source);
-    layer.setVisible(event.data.layer.visible);
+    if (layer) {
+      layer.setVisible(event.data.layer.visible);
+    }
   }
   // animate the view
   if (event.data.type === "view") {
