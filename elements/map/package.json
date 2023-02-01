@@ -1,0 +1,33 @@
+{
+  "name": "@eox/map",
+  "version": "2.0.0-alpha.1",
+  "dependencies": {
+    "ol": "7.2.2"
+  },
+  "devDependencies": {
+    "@eox/eslint-config": "^1.0.0",
+    "cypress": "^12.3.0",
+    "cypress-vite": "^1.3.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "pre-commit": "^1.2.2",
+    "start-server-and-test": "^1.15.2",
+    "vite": "^3.2.3"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js . --fix",
+    "cypress": "start-server-and-test start 5173 'cypress open'",
+    "test": "start-server-and-test start 5173 'cypress run'"
+  },
+  "pre-commit": [
+    "format",
+    "lint:fix"
+  ]
+}
