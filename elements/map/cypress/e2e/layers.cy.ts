@@ -7,7 +7,7 @@ describe("layers", () => {
     cy.window().then((window) => {
       window.postMessage(
         {
-          "update-layers": testLayers,
+          "set-layers": testLayers,
         },
         "*"
       );
