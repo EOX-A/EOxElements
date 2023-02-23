@@ -2,6 +2,7 @@ import Map from "ol/Map.js";
 import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
+import { apply } from 'ol-mapbox-style';
 
 const map: Map = new Map({
   controls: [],
@@ -22,10 +23,8 @@ window.map = map;
 window.addEventListener("message", (event) => {
   // add/update layers of the map
   if (event.data.hasOwnProperty("set-layers")) {
-    const layers = event.data["set-layers"];
-    layers.forEach((layer: any) => {
-      console.log(layer.type);
-    });
+    const styleJson = event.data["set-layers"];
+    apply(map, styleJson)
   }
 });
 
