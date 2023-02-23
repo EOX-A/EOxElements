@@ -8,5 +8,6 @@ export default defineConfig({
       on("file:preprocessor", vitePreprocessor());
     },
     supportFile: false,
+    experimentalRunAllSpecs: true
   },
 });
