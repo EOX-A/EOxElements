@@ -1,4 +1,4 @@
-import testLayers from "./layers.json";
+import mapboxStyleJson from "./layers.json";
 describe("layers", () => {
   beforeEach(() => {
     cy.visit("/");
@@ -7,16 +7,16 @@ describe("layers", () => {
     cy.window().then((window) => {
       window.postMessage(
         {
-          "set-layers": testLayers,
+          "set-layers": mapboxStyleJson,
         },
         "*"
       );
-      cy.wait(0).then(() => {
+      window.map.once('rendercomplete', () => {
         const layers = window.map.getLayers().getArray();
-        expect(layers).to.have.length(testLayers.length);
-        testLayers.forEach((testLayer) => {
+        expect(layers).to.have.length(mapboxStyleJson.length);
+        mapboxStyleJson.forEach((mapboxStyleJson) => {
           const existingLayer = layers.find(
-            (layer) => layer.get("title") === testLayer.title
+            (layer) => layer.get("title") === mapboxStyleJson.title
           );
           expect(existingLayer).to.exist;
         });

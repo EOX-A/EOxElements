@@ -1,5 +1,4 @@
-import testLayers from "./imageWmsLayer.json";
-
+import imageWmsLayerStyleJson from "./imageWmsLayer.json";
 
 // fixme: imageWMS is identical to tileWMS
 describe("layers", () => {
@@ -9,13 +8,11 @@ describe("layers", () => {
   it("loads a WMTS Layer", () => {
     cy.window().then((window) => {
       window.postMessage({
-        "set-layers": testLayers,
-      },
-      "*"
-      );
+        "set-layers": imageWmsLayerStyleJson,
+      }, "*" );
       window.map.once('rendercomplete', () => {
         const layers = window.map.getLayers().getArray();
-        expect(layers).to.have.length(2);
+        expect(layers, 'image WMS layer').to.have.length(2);
       })
     });
   });
