@@ -38,7 +38,12 @@ const create = (div: HTMLElement | null) => {
     const iframe = document.createElement("iframe");
     iframe.style.cssText =
       "width: 100%; height: 100%; display: block; margin: 0; border: none;";
-    iframe.setAttribute("src", "http://localhost:5173/index.html");
+    iframe.setAttribute(
+      "src",
+      import.meta?.url?.includes("localhost")
+        ? "http://localhost:5173/index.html"
+        : "https://www.unpkg.com/@eox/map/dist/index.html"
+    );
     iframe.setAttribute("id", "EOxMap");
     div?.appendChild(iframe);
     iframe.onload = () => {

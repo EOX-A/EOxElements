@@ -1,9 +1,9 @@
-var s = Object.defineProperty;
-var n = (r, t, e) => t in r ? s(r, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : r[t] = e;
-var o = (r, t, e) => (n(r, typeof t != "symbol" ? t + "" : t, e), e);
-class a {
+var a = Object.defineProperty;
+var i = (o, t, e) => t in o ? a(o, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : o[t] = e;
+var n = (o, t, e) => (i(o, typeof t != "symbol" ? t + "" : t, e), e);
+class l {
   constructor(t) {
-    o(this, "iframe");
+    n(this, "iframe");
     this.iframe = t;
   }
   /**
@@ -20,22 +20,26 @@ class a {
     return this.iframe;
   }
 }
-const i = (r) => {
-  if (!r) {
+const c = (o) => {
+  if (!o) {
     console.error("no div selected");
     return;
   }
   return new Promise((t) => {
+    var r, s;
     const e = document.createElement("iframe");
-    e.style.cssText = "width: 100%; height: 100%; display: block; margin: 0; border: none;", e.setAttribute("src", "http://localhost:5173/index.html"), e.setAttribute("id", "EOxMap"), r == null || r.appendChild(e), e.onload = () => {
-      t(new a(e));
+    e.style.cssText = "width: 100%; height: 100%; display: block; margin: 0; border: none;", e.setAttribute(
+      "src",
+      (s = (r = import.meta) == null ? void 0 : r.url) != null && s.includes("localhost") ? "http://localhost:5173/index.html" : "https://www.unpkg.com/@eox/map/dist/index.html"
+    ), e.setAttribute("id", "EOxMap"), o == null || o.appendChild(e), e.onload = () => {
+      t(new l(e));
     };
   });
-}, l = {
+}, h = {
   map: {
-    create: i
+    create: c
   }
 };
 export {
-  l as elements
+  h as elements
 };
