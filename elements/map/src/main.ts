@@ -17,11 +17,9 @@ const map: Map = new Map({
   }),
 });
 
-window.map = map;
-
 window.addEventListener("message", (event) => {
   // add/update layers of the map
-  if (event.data.hasOwnProperty("set-layers")) {
+  if (event.data["set-layers"]) {
     const layers = event.data["set-layers"];
     layers.forEach((layer: any) => {
       console.log(layer.type);
@@ -30,7 +28,7 @@ window.addEventListener("message", (event) => {
 });
 
 map.on("loadend", (evt) => {
-  window.postMessage(
+  window.parent.postMessage(
     {
       "map-event": {
         type: evt.type,
