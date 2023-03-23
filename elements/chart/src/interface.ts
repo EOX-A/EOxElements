@@ -1,0 +1,49 @@
+const channel = new MessageChannel();
+const port1 = channel.port1;
+
+class EOxChart {
+  iframe: HTMLIFrameElement;
+  constructor(frame: HTMLIFrameElement) {
+    this.iframe = frame;
+  }
+  setFoo(text: String) {
+    port1.postMessage({ type: "setFoo", body: { text } });
+  }
+  getFoo() {
+    return new Promise((resolve) => {
+      const ts = Date.now();
+      port1.onmessage = (event) => {
+        if (event.data.ts === ts) {
+          resolve(event.data.body);
+        }
+      };
+      port1.postMessage({ ts, type: "getFoo", body: "hello world" });
+    });
+  }
+}
+
+const createChart = (div: HTMLElement | null) => {
+  if (!div) {
+    console.error("no div selected");
+    return;
+  }
+  return new Promise<EOxChart>((resolve) => {
+    const iframe = document.createElement("iframe");
+    iframe.style.cssText =
+      "width: 100%; height: 100%; display: block; margin: 0; border: none;";
+    iframe.setAttribute(
+      "src",
+      import.meta?.url?.includes("localhost")
+        ? "http://localhost:5173/index.html"
+        : "https://www.unpkg.com/@eox/chart/dist/index.html"
+    );
+    iframe.setAttribute("id", "EOxChart");
+    div?.appendChild(iframe);
+    iframe.onload = () => {
+      iframe.contentWindow?.postMessage("init", "*", [channel.port2]);
+      resolve(new EOxChart(iframe));
+    };
+  });
+};
+
+export { createChart };
