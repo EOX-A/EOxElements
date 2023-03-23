@@ -3,7 +3,7 @@ import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
 
-const map: Map = new Map({
+new Map({
   controls: [],
   layers: [
     new TileLayer({
@@ -17,23 +17,28 @@ const map: Map = new Map({
   }),
 });
 
+let application:MessagePort;
+
 window.addEventListener("message", (event) => {
-  // add/update layers of the map
-  if (event.data["set-layers"]) {
-    const layers = event.data["set-layers"];
-    layers.forEach((layer: any) => {
-      console.log(layer.type);
-    });
+  if (event.data === 'init') {
+    application = event.ports[0];
+    application.onmessage = onMessage;
   }
 });
 
-map.on("loadend", (evt) => {
-  window.parent.postMessage(
-    {
-      "map-event": {
-        type: evt.type,
-      },
-    },
-    "*"
-  );
-});
+const onMessage = (event:MessageEvent) => {
+  if (event.data.ts) {
+    switch (event.data.type) {
+      case "getLayers": 
+        console.log(event.data.body)
+        application.postMessage({ts: event.data.ts, body: 'foo bar'})
+        break;
+    }
+  } else {
+    switch (event.data.type) {
+      case "setLayers": 
+        console.log(event.data.body)
+        break;
+    }
+  }
+}

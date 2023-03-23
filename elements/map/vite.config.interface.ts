@@ -6,9 +6,9 @@ export default defineConfig({
   build: {
     emptyOutDir: false,
     lib: {
-      entry: resolve(__dirname, "src/protocol.ts"),
-      name: "Protocol",
-      fileName: "protocol",
+      entry: resolve(__dirname, "src/interface.ts"),
+      name: "Interface",
+      fileName: "interface",
     },
     rollupOptions: {
       output: {

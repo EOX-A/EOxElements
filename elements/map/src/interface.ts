@@ -1,35 +1,30 @@
-type Key = string;
-type Value = string;
+import Layer from "ol/layer/Layer";
 
-/**
- * Some info about the tellBody!
- */
-interface TellBody {
-  key: Key;
-  value: Value;
-}
+const channel = new MessageChannel();
+const port1 = channel.port1;
 
 class EOxMap {
   iframe: HTMLIFrameElement;
   constructor(frame: HTMLIFrameElement) {
     this.iframe = frame;
   }
-  /**
-   * Some info about the tell function!
-   */
-  tell(body: TellBody) {
-    this.iframe.contentWindow?.postMessage(body, "*");
+  setLayers(layers:Array<Layer>) {
+    port1.postMessage({ type: 'setLayers', body: { layers }})
   }
-  setFoo(key: Key, value: Value): string {
-    return `key: ${key} | value: ${value}`;
-  }
-
-  getFoo(): HTMLIFrameElement | null {
-    return this.iframe;
+  getLayers() {
+    return new Promise((resolve) => {
+      const ts = Date.now()
+      port1.onmessage = (event) => {
+        if (event.data.ts === ts) {
+          resolve(event.data.body)
+        }
+      }
+      port1.postMessage({ts, type: 'getLayers', body: 'hello world'})
+    })
   }
 }
 
-const create = (div: HTMLElement | null) => {
+const createMap = (div: HTMLElement | null) => {
   if (!div) {
     console.error("no div selected");
     return;
@@ -47,15 +42,10 @@ const create = (div: HTMLElement | null) => {
     iframe.setAttribute("id", "EOxMap");
     div?.appendChild(iframe);
     iframe.onload = () => {
+      iframe.contentWindow?.postMessage('init','*',[channel.port2])
       resolve(new EOxMap(iframe));
     };
   });
 };
 
-const elements = {
-  map: {
-    create,
-  },
-};
-
-export { elements };
+export { createMap };
