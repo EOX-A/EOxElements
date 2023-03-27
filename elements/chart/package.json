@@ -1,5 +1,5 @@
 {
-  "name": "@eox/map",
+  "name": "@eox/chart",
   "version": "2.0.0-alpha3",
   "dependencies": {
     "chart.js": "^4.2.1"

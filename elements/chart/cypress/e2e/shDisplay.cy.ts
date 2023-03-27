@@ -1,10 +1,10 @@
 import { createChart } from "../../src/interface";
 
-describe("general", () => {
+describe("shDisplay", () => {
   beforeEach(() => {
     cy.visit("../../public/test.html");
   });
-  it("loads the chart", () => {
+  it("loads data from sh endpoint", () => {
     cy.document().then((doc) => {
       const init = async () => {
         const chart = await createChart(doc.querySelector("#chart"));

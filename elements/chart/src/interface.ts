@@ -6,8 +6,8 @@ class EOxChart {
   constructor(frame: HTMLIFrameElement) {
     this.iframe = frame;
   }
-  setFoo(text: String) {
-    port1.postMessage({ type: "setFoo", body: { text } });
+  setData(data: object) {
+    port1.postMessage({ type: "setData", body: { data } });
   }
   getFoo() {
     return new Promise((resolve) => {
@@ -25,7 +25,7 @@ class EOxChart {
 const createChart = (div: HTMLElement | null) => {
   if (!div) {
     console.error("no div selected");
-    return;
+    return null;
   }
   return new Promise<EOxChart>((resolve) => {
     const iframe = document.createElement("iframe");
