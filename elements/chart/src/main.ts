@@ -1,13 +1,29 @@
 import Chart from "chart.js/auto";
 
 const eoxchart = new Chart(
-  <HTMLCanvasElement>document.getElementById('chart'), {
+  <HTMLCanvasElement>document.getElementById("chart"),
+  {
     data: {
       labels: [],
       datasets: [],
     },
-  },
+  }
 );
+
+const fetchSignals = (options) => {
+  const features = options.active.map((f) => `feature=${f}`).join("&");
+  const request = `${options.endpoint}?source=${options.source}&${features}`;
+  return fetch(request, {
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    method: "POST",
+    mode: "cors",
+    body: JSON.stringify({
+      geometry: options.geometry,
+    }),
+  }).then(function (res) {
+    return res.json();
+  });
+};
 
 let application: MessagePort;
 
@@ -30,6 +46,69 @@ const onMessage = (event: MessageEvent) => {
     switch (event.data.type) {
       case "setData":
         eoxchart.data = event.data.body.data;
+        eoxchart.update("none");
+        break;
+      case "setSignalsEndpoint":
+        const { options } = event.data.body;
+        eoxchart.options = {
+          parsing: {
+            xAxisKey: "date",
+            yAxisKey: "basicStats.mean",
+          },
+          plugins: {
+            legend: {
+              position: "right",
+              onClick: (evt, legendItem, legend) => {
+                if (legendItem.hidden) {
+                  if (
+                    eoxchart.data.datasets[legendItem.datasetIndex].data
+                      .length === 0
+                  ) {
+                    options.active = [legendItem.text];
+                    fetchSignals(options).then(function (data) {
+                      eoxchart.data.datasets[legendItem.datasetIndex].data =
+                        data[legendItem.text];
+                      eoxchart.data.datasets[legendItem.datasetIndex].hidden =
+                        false;
+                      eoxchart.update("none");
+                    });
+                  }
+                }
+              },
+            },
+          },
+        };
+        // eoxchart.signals = options;
+        fetchSignals(options).then(function (data) {
+          eoxchart.data = {
+            datasets: options.features.map((key) => {
+              return {
+                type: "line",
+                label: key,
+                data: data[key] ? data[key] : [],
+                hidden: data[key] ? false : true,
+              };
+            }),
+          };
+          eoxchart.update("none");
+        });
+        break;
+      case "setSignalsData":
+        eoxchart.data = {
+          datasets: <any>Object.entries(event.data.body.data).map(
+            ([key, item]) => {
+              return {
+                type: "line",
+                label: key,
+                data: item,
+              };
+            }
+          ),
+        };
+        eoxchart.update("none");
+        break;
+      case "setOptions":
+        eoxchart.options = event.data.body.options;
         eoxchart.update("none");
         break;
     }

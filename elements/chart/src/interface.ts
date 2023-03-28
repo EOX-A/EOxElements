@@ -9,6 +9,15 @@ class EOxChart {
   setData(data: object) {
     port1.postMessage({ type: "setData", body: { data } });
   }
+  setSignalsData(data: object) {
+    port1.postMessage({ type: "setSignalsData", body: { data } });
+  }
+  setSignalsEndpoint(options: object) {
+    port1.postMessage({ type: "setSignalsEndpoint", body: { options } });
+  }
+  setOptions(options: object) {
+    port1.postMessage({ type: "setOptions", body: { options } });
+  }
   getFoo() {
     return new Promise((resolve) => {
       const ts = Date.now();

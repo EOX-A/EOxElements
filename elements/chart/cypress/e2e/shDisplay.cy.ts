@@ -1,28 +1,23 @@
 import { createChart } from "../../src/interface";
+import signalsData from "./sh.json";
 
 describe("shDisplay", () => {
   beforeEach(() => {
     cy.visit("../../public/test.html");
   });
-  it("loads data from sh endpoint", () => {
+  it("loads data retrieved from signals-api endpoint", () => {
     cy.document().then((doc) => {
       const init = async () => {
         const chart = await createChart(doc.querySelector("#chart"));
-        const data = {
-          datasets: [{
-              type: 'bar',
-              label: 'Bar Dataset',
-              data: [1, 2, 3, 4]
-          }, {
-              type: 'line',
-              label: 'Line Dataset',
-              data: [6, 6, 6, 6],
-          }],
-          labels: ['January', 'February', 'March', 'April']
+
+        const options = {
+          parsing: {
+            xAxisKey: "date",
+            yAxisKey: "basicStats.mean",
+          },
         };
-        chart?.setData(data);
-        const test = await chart?.getFoo();
-        console.log(test);
+        chart?.setOptions(options);
+        chart?.setSignalsData(signalsData);
       };
       init();
     });
