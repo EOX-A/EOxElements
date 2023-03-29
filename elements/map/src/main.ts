@@ -17,28 +17,28 @@ new Map({
   }),
 });
 
-let application:MessagePort;
+let application: MessagePort;
 
 window.addEventListener("message", (event) => {
-  if (event.data === 'init') {
+  if (event.data === "init") {
     application = event.ports[0];
     application.onmessage = onMessage;
   }
 });
 
-const onMessage = (event:MessageEvent) => {
+const onMessage = (event: MessageEvent) => {
   if (event.data.ts) {
     switch (event.data.type) {
-      case "getLayers": 
-        console.log(event.data.body)
-        application.postMessage({ts: event.data.ts, body: 'foo bar'})
+      case "getLayers":
+        console.log(event.data.body);
+        application.postMessage({ ts: event.data.ts, body: "foo bar" });
         break;
     }
   } else {
     switch (event.data.type) {
-      case "setLayers": 
-        console.log(event.data.body)
+      case "setLayers":
+        console.log(event.data.body);
         break;
     }
   }
-}
+};
