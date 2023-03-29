@@ -11,8 +11,8 @@ describe("shDisplay", () => {
 
         const options = {
           endpoint:
-            "http://localhost:8010/proxy/eo-signals-api/eo-signals-for-geometry",
-          //"https://prototype-gftb1dhets8kbrfhr3zdka.ddc.hub.eox.at/eo-signals-api/eo-signals-for-geometry?",
+            // "http://localhost:8010/proxy/eo-signals-api/eo-signals-for-geometry",
+            "https://prototype-gftb1dhets8kbrfhr3zdka.ddc.hub.eox.at/eo-signals-api/eo-signals-for-geometry",
           source: "sentinelhub",
           features: ["evi", "nddi", "ndvi", "ndwi", "savi", "lai", "otci"],
           active: ["nddi", "ndvi", "ndwi"],

@@ -1,4 +1,4 @@
-import Chart from "chart.js/auto";
+import Chart, { ChartDataset } from "chart.js/auto";
 
 const eoxchart = new Chart(
   <HTMLCanvasElement>document.getElementById("chart"),
@@ -10,7 +10,13 @@ const eoxchart = new Chart(
   }
 );
 
-const fetchSignals = (options) => {
+const fetchSignals = (options: {
+  source: string;
+  endpoint: string;
+  active: string[];
+  features: string[];
+  geometry: object;
+}) => {
   const features = options.active.map((f) => `feature=${f}`).join("&");
   const request = `${options.endpoint}?source=${options.source}&${features}`;
   return fetch(request, {
@@ -49,58 +55,16 @@ const onMessage = (event: MessageEvent) => {
         eoxchart.update("none");
         break;
       case "setSignalsEndpoint":
-        const { options } = event.data.body;
-        eoxchart.options = {
-          parsing: {
-            xAxisKey: "date",
-            yAxisKey: "basicStats.mean",
-          },
-          plugins: {
-            legend: {
-              position: "right",
-              onClick: (evt, legendItem, legend) => {
-                if (legendItem.hidden) {
-                  if (
-                    eoxchart.data.datasets[legendItem.datasetIndex].data
-                      .length === 0
-                  ) {
-                    options.active = [legendItem.text];
-                    fetchSignals(options).then(function (data) {
-                      eoxchart.data.datasets[legendItem.datasetIndex].data =
-                        data[legendItem.text];
-                      eoxchart.data.datasets[legendItem.datasetIndex].hidden =
-                        false;
-                      eoxchart.update("none");
-                    });
-                  }
-                }
-              },
-            },
-          },
-        };
-        // eoxchart.signals = options;
-        fetchSignals(options).then(function (data) {
-          eoxchart.data = {
-            datasets: options.features.map((key) => {
-              return {
-                type: "line",
-                label: key,
-                data: data[key] ? data[key] : [],
-                hidden: data[key] ? false : true,
-              };
-            }),
-          };
-          eoxchart.update("none");
-        });
+        setSignalsEndpoint(event.data.body.options);
         break;
       case "setSignalsData":
         eoxchart.data = {
-          datasets: <any>Object.entries(event.data.body.data).map(
-            ([key, item]) => {
+          datasets: Object.entries(event.data.body.data).map(
+            ([key, item]): ChartDataset => {
               return {
                 type: "line",
                 label: key,
-                data: item,
+                data: <number[]>item,
               };
             }
           ),
@@ -113,4 +77,53 @@ const onMessage = (event: MessageEvent) => {
         break;
     }
   }
+};
+
+const setSignalsEndpoint = (options: {
+  source: string;
+  endpoint: string;
+  active: string[];
+  features: string[];
+  geometry: object;
+}) => {
+  eoxchart.options = {
+    parsing: {
+      xAxisKey: "date",
+      yAxisKey: "basicStats.mean",
+    },
+    plugins: {
+      legend: {
+        position: "right",
+        onClick: (_, legendItem) => {
+          if (legendItem.hidden) {
+            if (
+              eoxchart.data.datasets[legendItem.datasetIndex].data.length === 0
+            ) {
+              options.active = [legendItem.text];
+              fetchSignals(options).then(function (data) {
+                eoxchart.data.datasets[legendItem.datasetIndex].data =
+                  data[legendItem.text];
+                eoxchart.data.datasets[legendItem.datasetIndex].hidden = false;
+                eoxchart.update("none");
+              });
+            }
+          }
+        },
+      },
+    },
+  };
+  // eoxchart.signals = options;
+  fetchSignals(options).then(function (data) {
+    eoxchart.data = {
+      datasets: options.features.map((key) => {
+        return {
+          type: "line",
+          label: key,
+          data: data[key] ? data[key] : [],
+          hidden: data[key] ? false : true,
+        };
+      }),
+    };
+    eoxchart.update("none");
+  });
 };

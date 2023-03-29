@@ -12,7 +12,13 @@ class EOxChart {
   setSignalsData(data: object) {
     port1.postMessage({ type: "setSignalsData", body: { data } });
   }
-  setSignalsEndpoint(options: object) {
+  setSignalsEndpoint(options: {
+    source: string;
+    endpoint: string;
+    active: string[];
+    features: string[];
+    geometry: object;
+  }) {
     port1.postMessage({ type: "setSignalsEndpoint", body: { options } });
   }
   setOptions(options: object) {

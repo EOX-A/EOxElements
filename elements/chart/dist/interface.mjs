@@ -1,46 +1,49 @@
-var c = Object.defineProperty;
-var p = (s, t, e) =>
+var p = Object.defineProperty;
+var c = (s, t, e) =>
   t in s
-    ? c(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e })
+    ? p(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e })
     : (s[t] = e);
-var l = (s, t, e) => (p(s, typeof t != "symbol" ? t + "" : t, e), e);
-const i = new MessageChannel(),
-  a = i.port1;
+var i = (s, t, e) => (c(s, typeof t != "symbol" ? t + "" : t, e), e);
+const l = new MessageChannel(),
+  o = l.port1;
 class d {
   constructor(t) {
-    l(this, "iframe");
+    i(this, "iframe");
     this.iframe = t;
   }
   setData(t) {
-    a.postMessage({ type: "setData", body: { data: t } });
+    o.postMessage({ type: "setData", body: { data: t } });
   }
   setSignalsData(t) {
-    a.postMessage({ type: "setSignalsData", body: { data: t } });
+    o.postMessage({ type: "setSignalsData", body: { data: t } });
+  }
+  setSignalsEndpoint(t) {
+    o.postMessage({ type: "setSignalsEndpoint", body: { options: t } });
   }
   setOptions(t) {
-    a.postMessage({ type: "setOptions", body: { options: t } });
+    o.postMessage({ type: "setOptions", body: { options: t } });
   }
   getFoo() {
     return new Promise((t) => {
       const e = Date.now();
-      (a.onmessage = (o) => {
-        o.data.ts === e && t(o.data.body);
+      (o.onmessage = (n) => {
+        n.data.ts === e && t(n.data.body);
       }),
-        a.postMessage({ ts: e, type: "getFoo", body: "hello world" });
+        o.postMessage({ ts: e, type: "getFoo", body: "hello world" });
     });
   }
 }
-const m = (s) =>
+const g = (s) =>
   s
     ? new Promise((t) => {
-        var o, n;
+        var n, a;
         const e = document.createElement("iframe");
         (e.style.cssText =
           "width: 100%; height: 100%; display: block; margin: 0; border: none;"),
           e.setAttribute(
             "src",
-            (n = (o = import.meta) == null ? void 0 : o.url) != null &&
-              n.includes("localhost")
+            (a = (n = import.meta) == null ? void 0 : n.url) != null &&
+              a.includes("localhost")
               ? "http://localhost:5173/index.html"
               : "https://www.unpkg.com/@eox/chart/dist/index.html"
           ),
@@ -49,9 +52,9 @@ const m = (s) =>
           (e.onload = () => {
             var r;
             (r = e.contentWindow) == null ||
-              r.postMessage("init", "*", [i.port2]),
+              r.postMessage("init", "*", [l.port2]),
               t(new d(e));
           });
       })
     : (console.error("no div selected"), null);
-export { m as createChart };
+export { g as createChart };
