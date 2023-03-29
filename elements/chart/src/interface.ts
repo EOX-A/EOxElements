@@ -54,8 +54,15 @@ const createChart = (div: HTMLElement | null) => {
     );
     iframe.setAttribute("id", "EOxChart");
     div?.appendChild(iframe);
+    let iframeLoaded = false;
     iframe.onload = () => {
+      // store if the iFrame has already loaded, since in Cypress hovering over the test triggers
+      // the onload event multiple times, causing an error with the previously neutered port2
+      if (iframeLoaded) {
+        return;
+      }
       iframe.contentWindow?.postMessage("init", "*", [channel.port2]);
+      iframeLoaded = true;
       resolve(new EOxChart(iframe));
     };
   });

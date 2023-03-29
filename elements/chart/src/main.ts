@@ -1,4 +1,5 @@
 import Chart, { ChartDataset } from "chart.js/auto";
+import SignalsDataManager from "./signalsDataManager";
 
 const eoxchart = new Chart(
   <HTMLCanvasElement>document.getElementById("chart"),
@@ -9,27 +10,6 @@ const eoxchart = new Chart(
     },
   }
 );
-
-const fetchSignals = (options: {
-  source: string;
-  endpoint: string;
-  active: string[];
-  features: string[];
-  geometry: object;
-}) => {
-  const features = options.active.map((f) => `feature=${f}`).join("&");
-  const request = `${options.endpoint}?source=${options.source}&${features}`;
-  return fetch(request, {
-    headers: { "Content-Type": "application/json; charset=utf-8" },
-    method: "POST",
-    mode: "cors",
-    body: JSON.stringify({
-      geometry: options.geometry,
-    }),
-  }).then(function (res) {
-    return res.json();
-  });
-};
 
 let application: MessagePort;
 
@@ -86,6 +66,7 @@ const setSignalsEndpoint = (options: {
   features: string[];
   geometry: object;
 }) => {
+  const sdm = new SignalsDataManager(eoxchart, options);
   eoxchart.options = {
     parsing: {
       xAxisKey: "date",
@@ -96,6 +77,7 @@ const setSignalsEndpoint = (options: {
         position: "right",
         onClick: (_, legendItem) => {
           if (legendItem.hidden) {
+            /*
             if (
               eoxchart.data.datasets[legendItem.datasetIndex].data.length === 0
             ) {
@@ -107,23 +89,11 @@ const setSignalsEndpoint = (options: {
                 eoxchart.update("none");
               });
             }
+            */
           }
         },
       },
     },
   };
-  // eoxchart.signals = options;
-  fetchSignals(options).then(function (data) {
-    eoxchart.data = {
-      datasets: options.features.map((key) => {
-        return {
-          type: "line",
-          label: key,
-          data: data[key] ? data[key] : [],
-          hidden: data[key] ? false : true,
-        };
-      }),
-    };
-    eoxchart.update("none");
-  });
+  sdm.setActiveFields(options.active);
 };
