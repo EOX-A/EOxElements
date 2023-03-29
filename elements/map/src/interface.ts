@@ -41,8 +41,16 @@ const createMap = (div: HTMLElement | null) => {
     );
     iframe.setAttribute("id", "EOxMap");
     div?.appendChild(iframe);
+
+    // store if the iFrame has already loaded, since in Cypress hovering over the test triggers
+    // the onload event multiple times, causing an error with the previously neutered port2
+    let iframeLoaded = false;
     iframe.onload = () => {
+      if (iframeLoaded) {
+        return;
+      }
       iframe.contentWindow?.postMessage('init','*',[channel.port2])
+      iframeLoaded = true;
       resolve(new EOxMap(iframe));
     };
   });
