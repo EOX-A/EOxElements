@@ -8,19 +8,19 @@ class EOxMap {
   constructor(frame: HTMLIFrameElement) {
     this.iframe = frame;
   }
-  setLayers(layers:Array<Layer>) {
-    port1.postMessage({ type: 'setLayers', body: { layers }})
+  setLayers(layers: Array<Layer>) {
+    port1.postMessage({ type: "setLayers", body: { layers } });
   }
   getLayers() {
     return new Promise((resolve) => {
-      const ts = Date.now()
+      const ts = Date.now();
       port1.onmessage = (event) => {
         if (event.data.ts === ts) {
-          resolve(event.data.body)
+          resolve(event.data.body);
         }
-      }
-      port1.postMessage({ts, type: 'getLayers', body: 'hello world'})
-    })
+      };
+      port1.postMessage({ ts, type: "getLayers", body: "hello world" });
+    });
   }
 }
 
@@ -49,7 +49,7 @@ const createMap = (div: HTMLElement | null) => {
       if (iframeLoaded) {
         return;
       }
-      iframe.contentWindow?.postMessage('init','*',[channel.port2])
+      iframe.contentWindow?.postMessage("init", "*", [channel.port2]);
       iframeLoaded = true;
       resolve(new EOxMap(iframe));
     };

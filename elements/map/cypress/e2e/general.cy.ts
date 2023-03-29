@@ -8,9 +8,9 @@ describe("general", () => {
     cy.document().then((doc) => {
       const init = async () => {
         const map = await createMap(doc.querySelector("#map"));
-        map?.setLayers([])
-        const test = await map?.getLayers()
-        console.log(test)
+        map?.setLayers([]);
+        const test = await map?.getLayers();
+        console.log(test);
       };
       init();
     });
