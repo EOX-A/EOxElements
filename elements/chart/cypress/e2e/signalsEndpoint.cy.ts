@@ -14,11 +14,14 @@ describe("shDisplay", () => {
             // "http://localhost:8010/proxy/eo-signals-api/eo-signals-for-geometry",
             "https://prototype-gftb1dhets8kbrfhr3zdka.ddc.hub.eox.at/eo-signals-api/eo-signals-for-geometry",
           source: "sentinelhub",
-          features: ["evi", "nddi", "ndvi", "ndwi", "savi", "lai", "otci"],
+          features: [
+            ["ndvi", "ndwi", "savi", "evi", "nddi"],
+            ["lai", "otci", "fapar"],
+          ],
           active: ["nddi", "ndvi", "ndwi"],
           timeAggregation: "week",
-          startTime: "2022-03-15",
-          endTime: "2022-06-03",
+          startTime: "2021-01-01",
+          endTime: "2021-10-30",
           geometry: {
             type: "Polygon",
             coordinates: [

@@ -1,4 +1,5 @@
 import Chart, { ChartDataset } from "chart.js/auto";
+import "chartjs-adapter-luxon";
 import SignalsDataManager from "./signalsDataManager";
 
 const eoxchart = new Chart(
@@ -65,12 +66,25 @@ const setSignalsEndpoint = (options: {
   active: string[];
   features: string[];
   geometry: object;
+  startTime: string;
+  endTime: string;
 }) => {
   const sdm = new SignalsDataManager(eoxchart, options);
   eoxchart.options = {
     parsing: {
       xAxisKey: "date",
       yAxisKey: "basicStats.mean",
+    },
+    scales: {
+      x: {
+        type: "time",
+        min: options.startTime,
+        max: options.endTime,
+      },
+      y: {
+        min: 0,
+        max: 0.5,
+      },
     },
     plugins: {
       legend: {
