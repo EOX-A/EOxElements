@@ -21,7 +21,7 @@ describe("shDisplay", () => {
           active: ["nddi", "ndvi", "ndwi"],
           timeAggregation: "week",
           startTime: "2021-01-01",
-          endTime: "2021-10-30",
+          endTime: "2021-03-30",
           geometry: {
             type: "Polygon",
             coordinates: [

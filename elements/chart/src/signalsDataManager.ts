@@ -1,4 +1,5 @@
 import Chart, { ChartDataset } from "chart.js/auto";
+import pRetry, { AbortError } from "p-retry";
 import { DateTime } from "luxon";
 
 type status = "ready" | "loading" | "error";
@@ -15,7 +16,6 @@ interface DSDict {
 export interface SDMOptions {
   source: string;
   endpoint: string;
-  active: string[];
   features: string[][];
   geometry: object;
   startTime: string;
@@ -50,19 +50,40 @@ class SignalsDataManager {
       end ? "&end_date=" + end.toISODate() : ""
     }`;
     const request = `${this.options.endpoint}?source=${this.options.source}&${features}${times}`;
-    return fetch(request, {
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({
-        geometry: this.options.geometry,
-      }),
+    const geom = this.options.geometry;
+
+    async function fetchSignals() {
+      const response = await fetch(request, {
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({
+          geometry: geom,
+        }),
+      });
+      // Abort retrying if the resource doesn't exist
+      if (response.status === 404) {
+        throw new AbortError(response.statusText);
+      }
+      if (response.status !== 200) {
+        throw Error(response.statusText);
+      }
+      return response;
+    }
+    return pRetry(fetchSignals, {
+      onFailedAttempt: (error) => {
+        console.log(
+          `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
+        );
+      },
+      retries: 5,
     }).then(function (res) {
       return res.json();
     });
   }
 
   private updateChart() {
+    console.log(this.dataStorage);
     const datasets: ChartDataset[] = [];
     this.options.features.flat().forEach((key) => {
       // Find group
@@ -84,7 +105,7 @@ class SignalsDataManager {
           label: key,
           // casting to any because an array of object should also be possible
           data: <any>data.flat(),
-          hidden: this.activeFields.includes(key),
+          hidden: !this.activeFields.includes(key),
         });
       }
     });
@@ -112,14 +133,18 @@ class SignalsDataManager {
     // We use monthly steps for data retrieval
     let currDate = DateTime.fromObject({
       year: this.endTime.year,
-      month: this.endTime.month + 1,
-    }).minus({ second: 1 });
+      month: this.endTime.month,
+    })
+      .plus({ month: 1 })
+      .minus({ second: 1 });
     const start = DateTime.fromObject({
       year: this.startTime.year,
       month: this.startTime.month,
-    });
-    while (currDate >= start) {
-      const timeslot = `${currDate.year}${currDate.month}`;
+    })
+      .plus({ month: 1 })
+      .minus({ second: 1 });
+    while (currDate > start) {
+      const timeslot = currDate.toFormat("yyyyMM");
       signalGroupIndices.forEach((index) => {
         if (!(timeslot in this.dataStorage[index])) {
           // request data
@@ -128,8 +153,10 @@ class SignalsDataManager {
             DateTime.fromObject({ year: currDate.year, month: currDate.month }),
             DateTime.fromObject({
               year: currDate.year,
-              month: currDate.month + 1,
-            }).minus({ second: 1 })
+              month: currDate.month,
+            })
+              .plus({ month: 1 })
+              .minus({ second: 1 })
           ).then((data) => {
             this.dataStorage[index][timeslot].data = data;
             this.dataStorage[index][timeslot].status = "finished";
@@ -147,23 +174,8 @@ class SignalsDataManager {
 
   setActiveFields(activeFields: string[]) {
     this.activeFields = activeFields;
+    this.updateChart();
     this.retrieveMissingData();
-
-    /*
-    this.fetchSignals().then((data) => {
-      this.chart.data = {
-        datasets: this.options.features.flat().map((key) => {
-          return {
-            type: "line",
-            label: key,
-            data: data[key] ? data[key] : [],
-            hidden: data[key] ? false : true,
-          };
-        }),
-      };
-      this.chart.update("none");
-    });
-    */
   }
   /*
   setTimeInterval(start: string, end: string) {

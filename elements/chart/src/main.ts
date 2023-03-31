@@ -81,29 +81,22 @@ const setSignalsEndpoint = (options: {
         min: options.startTime,
         max: options.endTime,
       },
-      y: {
+      /*y: {
         min: 0,
         max: 0.5,
-      },
+      },*/
     },
     plugins: {
       legend: {
         position: "right",
         onClick: (_, legendItem) => {
-          if (legendItem.hidden) {
-            /*
-            if (
-              eoxchart.data.datasets[legendItem.datasetIndex].data.length === 0
-            ) {
-              options.active = [legendItem.text];
-              fetchSignals(options).then(function (data) {
-                eoxchart.data.datasets[legendItem.datasetIndex].data =
-                  data[legendItem.text];
-                eoxchart.data.datasets[legendItem.datasetIndex].hidden = false;
-                eoxchart.update("none");
-              });
-            }
-            */
+          if (!legendItem.hidden) {
+            const idx = sdm.activeFields.indexOf(legendItem.text);
+            const keys = sdm.activeFields;
+            keys.splice(idx, 1);
+            sdm.setActiveFields(keys);
+          } else {
+            sdm.setActiveFields([...sdm.activeFields, legendItem.text]);
           }
         },
       },
