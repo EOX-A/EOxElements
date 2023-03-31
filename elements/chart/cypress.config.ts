@@ -7,6 +7,5 @@ export default defineConfig({
       on("file:preprocessor", vitePreprocessor());
     },
     supportFile: false,
-    chromeWebSecurity: false,
   },
 });

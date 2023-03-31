@@ -18,8 +18,9 @@ class EOxChart {
     active: string[];
     features: string[][];
     geometry: object;
-    startTime: string;
-    endTime: string;
+    timeInterval: object;
+    startTime?: string;
+    endTime?: string;
   }) {
     port1.postMessage({ type: "setSignalsEndpoint", body: { options } });
   }

@@ -15,9 +15,47 @@
         width: 100%;
         height: 100%;
       }
+      .hidden {
+        visibility: hidden;
+      }
+      .loader {
+        position: absolute;  
+        top: 5px;
+        right: 30px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: inline-block;
+        border-top: 4px solid #000;
+        border-right: 4px solid transparent;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+      }
+      .loader::after {
+        content: '';  
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border-left: 4px solid #004170;
+        border-bottom: 4px solid transparent;
+        animation: rotation 0.5s linear infinite reverse;
+      }
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      } 
     </style>
   </head>
   <body>
+    <div id="controls" class="controls" data-cy="controls"></div>
     <canvas id="chart" class="chart" data-cy="chart"></canvas>
     <script type="module" src="./src/main.ts"></script>
   </body>

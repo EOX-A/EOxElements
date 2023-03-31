@@ -1,5 +1,6 @@
 import Chart, {
   ChartDataset /*, LinearScale, CategoryScale */,
+  ChartOptions,
 } from "chart.js/auto";
 import pRetry, { AbortError } from "p-retry";
 import { DateTime } from "luxon";
@@ -43,8 +44,9 @@ export interface SDMOptions {
   endpoint: string;
   features: string[][];
   geometry: object;
-  startTime: string;
-  endTime: string;
+  timeInterval: object;
+  startTime?: string;
+  endTime?: string;
 }
 
 class SignalsDataManager {
@@ -52,6 +54,7 @@ class SignalsDataManager {
   startTime: DateTime;
   endTime: DateTime;
   options: SDMOptions;
+  chartOptions: ChartOptions;
   dataStorage: DSDict;
   status: status;
   activeFields: string[];
@@ -59,12 +62,49 @@ class SignalsDataManager {
   constructor(chart: Chart, options: SDMOptions) {
     this.chart = chart;
     this.options = options;
-    this.startTime = DateTime.fromISO(options.startTime).setZone("UTC");
-    this.endTime = DateTime.fromISO(options.endTime).setZone("UTC");
+    this.startTime = DateTime.now().minus(options.timeInterval);
+    this.endTime = DateTime.now();
+    if (options.startTime && options.endTime) {
+      // Overwrite values if provided
+      this.startTime = DateTime.fromISO(options.startTime).setZone("UTC");
+      this.endTime = DateTime.fromISO(options.endTime).setZone("UTC");
+    }
     this.dataStorage = {};
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
     this.status = "ready";
+    this.chartOptions = {
+      scales: {
+        x: {
+          type: "time",
+          min: this.startTime.toISODate(),
+          max: this.endTime.toISODate(),
+          ticks: {
+            minRotation: 0,
+            maxRotation: 0,
+          },
+        },
+        /*y: {
+          min: 0,
+          max: 0.5,
+        },*/
+      },
+      plugins: {
+        legend: {
+          position: "right",
+          onClick: (_, legendItem) => {
+            if (!legendItem.hidden) {
+              const idx = this.activeFields.indexOf(legendItem.text);
+              const keys = this.activeFields;
+              keys.splice(idx, 1);
+              this.setActiveFields(keys);
+            } else {
+              this.setActiveFields([...this.activeFields, legendItem.text]);
+            }
+          },
+        },
+      },
+    };
   }
 
   private fetchSignals(groupIndex: number, start?: DateTime, end?: DateTime) {
@@ -108,6 +148,7 @@ class SignalsDataManager {
   }
 
   private updateChart() {
+    this.chart.options = this.chartOptions;
     const datasets: ChartDataset[] = [];
     this.options.features.flat().forEach((key) => {
       // Find group
@@ -120,11 +161,19 @@ class SignalsDataManager {
       if (groupIndex !== -1) {
         let data: {
           date: string;
-          basicStats: { mean: number; min: number; max: number };
+          basicStats?: { mean: number; min: number; max: number };
         }[] = [];
         Object.keys(this.dataStorage[groupIndex]).forEach((timekey) => {
-          if (this.dataStorage[groupIndex][timekey].status === "finished") {
-            data.push(...this.dataStorage[groupIndex][timekey].data[key]);
+          const dsEntry = this.dataStorage[groupIndex][timekey];
+          if (dsEntry.status === "finished") {
+            if (
+              Object.keys(dsEntry.data).length !== 0 &&
+              Object.keys(dsEntry.data).includes(key)
+            ) {
+              data.push(...dsEntry.data[key]);
+            }
+          } else {
+            data.push({ date: "missing" });
           }
         });
         datasets.push({
@@ -134,7 +183,7 @@ class SignalsDataManager {
           // casting to any because an array of object should also be possible
           data: <any>data.map((datapoint) => {
             let ds = {};
-            if (datapoint) {
+            if (datapoint && datapoint.date !== "missing") {
               ds = {
                 x: DateTime.fromISO(datapoint.date).setZone("UTC"),
                 y: datapoint.basicStats.mean,
@@ -213,15 +262,19 @@ class SignalsDataManager {
 
   setActiveFields(activeFields: string[]) {
     this.activeFields = activeFields;
-    this.updateChart();
     this.retrieveMissingData();
-  }
-  /*
-  setTimeInterval(start: string, end: string) {
-    // go through all active datasets and review if data covering interval
-    // available. Update chart whenever data is loaded
+    this.updateChart();
   }
 
+  setTimeInterval(start: DateTime, end: DateTime) {
+    this.startTime = start;
+    this.endTime = end;
+    this.chartOptions.scales.x.min = start.toISODate();
+    this.chartOptions.scales.x.max = end.toISODate();
+    this.retrieveMissingData();
+    this.updateChart();
+  }
+  /*
   setAggregation(aggregation: string) {}
   */
 }

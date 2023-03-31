@@ -1,6 +1,7 @@
 import Chart, { ChartDataset } from "chart.js/auto";
 import "chartjs-adapter-luxon";
 import SignalsDataManager from "./signalsDataManager";
+import ChartControls from "./chartControls";
 
 const eoxchart = new Chart(
   <HTMLCanvasElement>document.getElementById("chart"),
@@ -66,37 +67,11 @@ const setSignalsEndpoint = (options: {
   active: string[];
   features: string[][];
   geometry: object;
-  startTime: string;
-  endTime: string;
+  timeInterval: object;
+  startTime?: string;
+  endTime?: string;
 }) => {
   const sdm = new SignalsDataManager(eoxchart, options);
-  eoxchart.options = {
-    scales: {
-      x: {
-        type: "time",
-        min: options.startTime,
-        max: options.endTime,
-      },
-      /*y: {
-        min: 0,
-        max: 0.5,
-      },*/
-    },
-    plugins: {
-      legend: {
-        position: "right",
-        onClick: (_, legendItem) => {
-          if (!legendItem.hidden) {
-            const idx = sdm.activeFields.indexOf(legendItem.text);
-            const keys = sdm.activeFields;
-            keys.splice(idx, 1);
-            sdm.setActiveFields(keys);
-          } else {
-            sdm.setActiveFields([...sdm.activeFields, legendItem.text]);
-          }
-        },
-      },
-    },
-  };
+  new ChartControls(document.getElementById("controls"), sdm);
   sdm.setActiveFields(options.active);
 };
