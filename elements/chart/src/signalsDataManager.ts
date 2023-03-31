@@ -1,7 +1,16 @@
-import Chart from "chart.js/auto";
+import Chart, { ChartDataset } from "chart.js/auto";
 import { DateTime } from "luxon";
 
 type status = "ready" | "loading" | "error";
+interface DSDict {
+  [key: number]: {
+    [key: string]: {
+      status: string;
+      data?: { [key: string]: object };
+      request: Promise<void>;
+    };
+  };
+}
 
 export interface SDMOptions {
   source: string;
@@ -15,10 +24,10 @@ export interface SDMOptions {
 
 class SignalsDataManager {
   chart: Chart;
-  startTime: string;
-  endTime: string;
+  startTime: DateTime;
+  endTime: DateTime;
   options: SDMOptions;
-  dataStorage: object;
+  dataStorage: DSDict;
   status: status;
   activeFields: string[];
 
@@ -54,18 +63,17 @@ class SignalsDataManager {
   }
 
   private updateChart() {
-    console.log(this.dataStorage);
-    const datasets = [];
+    const datasets: ChartDataset[] = [];
     this.options.features.flat().forEach((key) => {
       // Find group
-      let groupIndex = null;
+      let groupIndex: number = -1;
       this.options.features.forEach((group, idx) => {
         if (group.includes(key)) {
           groupIndex = idx;
         }
       });
-      if (groupIndex !== null) {
-        let data = [];
+      if (groupIndex !== -1) {
+        let data: object[] = [];
         Object.keys(this.dataStorage[groupIndex]).forEach((timekey) => {
           if (this.dataStorage[groupIndex][timekey].status === "finished") {
             data.push(this.dataStorage[groupIndex][timekey].data[key]);
@@ -74,7 +82,8 @@ class SignalsDataManager {
         datasets.push({
           type: "line",
           label: key,
-          data: data.flat(),
+          // casting to any because an array of object should also be possible
+          data: <any>data.flat(),
           hidden: this.activeFields.includes(key),
         });
       }
@@ -83,22 +92,6 @@ class SignalsDataManager {
     this.chart.data = {
       datasets,
     };
-    /*this.options.features.forEach((group, idx) => {
-      group.forEach(feature) {
-
-      }
-    });
-    this.chart.data = {
-      datasets: this.options.features.flat().map((key) => {
-        return {
-          type: "line",
-          label: key,
-          data: data[key] ? data[key] : [],
-          hidden: data[key] ? false : true,
-        };
-      }),
-    };
-    */
     this.chart.update("none");
   }
 
@@ -117,8 +110,14 @@ class SignalsDataManager {
 
     // Check if dataStorage has relevant data
     // We use monthly steps for data retrieval
-    let currDate = new DateTime(this.endTime);
-    const start = new DateTime(this.startTime).set({ day: 1 });
+    let currDate = DateTime.fromObject({
+      year: this.endTime.year,
+      month: this.endTime.month + 1,
+    }).minus({ second: 1 });
+    const start = DateTime.fromObject({
+      year: this.startTime.year,
+      month: this.startTime.month,
+    });
     while (currDate >= start) {
       const timeslot = `${currDate.year}${currDate.month}`;
       signalGroupIndices.forEach((index) => {

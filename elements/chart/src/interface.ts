@@ -16,7 +16,7 @@ class EOxChart {
     source: string;
     endpoint: string;
     active: string[];
-    features: string[];
+    features: string[][];
     geometry: object;
     startTime: string;
     endTime: string;
