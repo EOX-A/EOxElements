@@ -1,13 +1,38 @@
-import Chart, { ChartDataset } from "chart.js/auto";
+import Chart, {
+  ChartDataset /*, LinearScale, CategoryScale */,
+} from "chart.js/auto";
 import pRetry, { AbortError } from "p-retry";
 import { DateTime } from "luxon";
+/*
+import {
+  LineWithErrorBarsController,
+  LineWithErrorBarsChart,
+  ScatterWithErrorBarsChart,
+  ScatterWithErrorBarsController,
+  PointWithErrorBar,
+} from "chartjs-chart-error-bars";
+
+Chart.register(
+  LineWithErrorBarsController,
+  LineWithErrorBarsChart,
+  PointWithErrorBar,
+  ScatterWithErrorBarsChart,
+  ScatterWithErrorBarsController,
+  LinearScale,
+  CategoryScale
+);*/
 
 type status = "ready" | "loading" | "error";
 interface DSDict {
   [key: number]: {
     [key: string]: {
       status: string;
-      data?: { [key: string]: object };
+      data?: {
+        [key: string]: {
+          date: string;
+          basicStats: { mean: number; min: number; max: number };
+        }[];
+      };
       request: Promise<void>;
     };
   };
@@ -83,7 +108,6 @@ class SignalsDataManager {
   }
 
   private updateChart() {
-    console.log(this.dataStorage);
     const datasets: ChartDataset[] = [];
     this.options.features.flat().forEach((key) => {
       // Find group
@@ -94,17 +118,32 @@ class SignalsDataManager {
         }
       });
       if (groupIndex !== -1) {
-        let data: object[] = [];
+        let data: {
+          date: string;
+          basicStats: { mean: number; min: number; max: number };
+        }[] = [];
         Object.keys(this.dataStorage[groupIndex]).forEach((timekey) => {
           if (this.dataStorage[groupIndex][timekey].status === "finished") {
-            data.push(this.dataStorage[groupIndex][timekey].data[key]);
+            data.push(...this.dataStorage[groupIndex][timekey].data[key]);
           }
         });
         datasets.push({
+          // type: "lineWithErrorBars",
           type: "line",
           label: key,
           // casting to any because an array of object should also be possible
-          data: <any>data.flat(),
+          data: <any>data.map((datapoint) => {
+            let ds = {};
+            if (datapoint) {
+              ds = {
+                x: DateTime.fromISO(datapoint.date).setZone("UTC"),
+                y: datapoint.basicStats.mean,
+                yMin: [datapoint.basicStats.min],
+                yMax: [datapoint.basicStats.max],
+              };
+            }
+            return ds;
+          }),
           hidden: !this.activeFields.includes(key),
         });
       }

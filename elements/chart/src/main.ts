@@ -71,10 +71,6 @@ const setSignalsEndpoint = (options: {
 }) => {
   const sdm = new SignalsDataManager(eoxchart, options);
   eoxchart.options = {
-    parsing: {
-      xAxisKey: "date",
-      yAxisKey: "basicStats.mean",
-    },
     scales: {
       x: {
         type: "time",
