@@ -24,6 +24,9 @@ class EOxChart {
   }) {
     port1.postMessage({ type: "setSignalsEndpoint", body: { options } });
   }
+  setSignalsGeometry(geometry: object) {
+    port1.postMessage({ type: "setSignalsGeometry", body: { geometry } });
+  }
   setOptions(options: object) {
     port1.postMessage({ type: "setOptions", body: { options } });
   }

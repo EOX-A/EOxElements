@@ -13,6 +13,8 @@ const eoxchart = new Chart(
   }
 );
 
+let sdmInstance: SignalsDataManager | null = null;
+
 let application: MessagePort;
 
 window.addEventListener("message", (event) => {
@@ -38,6 +40,9 @@ const onMessage = (event: MessageEvent) => {
         break;
       case "setSignalsEndpoint":
         setSignalsEndpoint(event.data.body.options);
+        break;
+      case "setSignalsGeometry":
+        setSignalsGeometry(event.data.body.options);
         break;
       case "setSignalsData":
         eoxchart.data = {
@@ -71,7 +76,13 @@ const setSignalsEndpoint = (options: {
   startTime?: string;
   endTime?: string;
 }) => {
-  const sdm = new SignalsDataManager(eoxchart, options);
-  new ChartControls(document.getElementById("controls"), sdm);
-  sdm.setActiveFields(options.active);
+  sdmInstance = new SignalsDataManager(eoxchart, options);
+  new ChartControls(document.getElementById("controls"), sdmInstance);
+  sdmInstance.setActiveFields(options.active);
+};
+
+const setSignalsGeometry = (geometry: object) => {
+  if (sdmInstance) {
+    sdmInstance.setGeometry(geometry);
+  }
 };

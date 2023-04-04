@@ -1,8 +1,8 @@
-var c = Object.defineProperty;
-var d = (s, t, e) => t in s ? c(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
-var l = (s, t, e) => (d(s, typeof t != "symbol" ? t + "" : t, e), e);
+var d = Object.defineProperty;
+var c = (s, t, e) => t in s ? d(s, t, { enumerable: !0, configurable: !0, writable: !0, value: e }) : s[t] = e;
+var l = (s, t, e) => (c(s, typeof t != "symbol" ? t + "" : t, e), e);
 const p = new MessageChannel(), o = p.port1;
-class h {
+class g {
   constructor(t) {
     l(this, "iframe");
     this.iframe = t;
@@ -15,6 +15,9 @@ class h {
   }
   setSignalsEndpoint(t) {
     o.postMessage({ type: "setSignalsEndpoint", body: { options: t } });
+  }
+  setSignalsGeometry(t) {
+    o.postMessage({ type: "setSignalsGeometry", body: { geometry: t } });
   }
   setOptions(t) {
     o.postMessage({ type: "setOptions", body: { options: t } });
@@ -38,7 +41,7 @@ const m = (s) => s ? new Promise((t) => {
   let a = !1;
   e.onload = () => {
     var i;
-    a || ((i = e.contentWindow) == null || i.postMessage("init", "*", [p.port2]), a = !0, t(new h(e)));
+    a || ((i = e.contentWindow) == null || i.postMessage("init", "*", [p.port2]), a = !0, t(new g(e)));
   };
 }) : (console.error("no div selected"), null);
 export {

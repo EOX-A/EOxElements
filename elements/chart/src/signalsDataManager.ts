@@ -47,12 +47,14 @@ export interface SDMOptions {
   timeInterval: object;
   startTime?: string;
   endTime?: string;
+  timeAggregation?: object;
 }
 
 class SignalsDataManager {
   chart: Chart;
   startTime: DateTime;
   endTime: DateTime;
+  timeAggregation: object;
   options: SDMOptions;
   chartOptions: ChartOptions;
   dataStorage: DSDict;
@@ -68,6 +70,9 @@ class SignalsDataManager {
       // Overwrite values if provided
       this.startTime = DateTime.fromISO(options.startTime).setZone("UTC");
       this.endTime = DateTime.fromISO(options.endTime).setZone("UTC");
+    }
+    if (this.options.timeAggregation) {
+      this.timeAggregation = this.options.timeAggregation;
     }
     this.dataStorage = {};
     // Initialize data storage
@@ -91,6 +96,13 @@ class SignalsDataManager {
       },
       plugins: {
         legend: {
+          labels: {
+            /*
+            usePointStyle: true,
+            pointStyle: "line",
+            */
+            sort: (a, b) => a.text.localeCompare(b.text),
+          },
           position: "right",
           onClick: (_, legendItem) => {
             if (!legendItem.hidden) {
@@ -105,6 +117,19 @@ class SignalsDataManager {
         },
       },
     };
+  }
+  private checkLoadingStatus() {
+    const spinner = document.getElementById("loadingIndicator");
+    let loading = false;
+    // TODO: Showing when error state happened
+    Object.keys(this.dataStorage).forEach((_, groupIdx) => {
+      Object.keys(this.dataStorage[groupIdx]).forEach((timeKey) => {
+        if (this.dataStorage[groupIdx][timeKey].status === "fetching") {
+          loading = true;
+        }
+      });
+    });
+    spinner.className = loading ? "loader" : "loader hidden";
   }
 
   private fetchSignals(groupIndex: number, start?: DateTime, end?: DateTime) {
@@ -141,13 +166,15 @@ class SignalsDataManager {
           `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
         );
       },
-      retries: 5,
+      retries: 1,
     }).then(function (res) {
       return res.json();
     });
+    this.checkLoadingStatus();
   }
 
   private updateChart() {
+    this.checkLoadingStatus();
     this.chart.options = this.chartOptions;
     const datasets: ChartDataset[] = [];
     this.options.features.flat().forEach((key) => {
@@ -176,23 +203,68 @@ class SignalsDataManager {
             data.push({ date: "missing" });
           }
         });
+
+        let actualDataAdded = false;
+        let signalData = <any>data.map((datapoint) => {
+          let ds = {};
+          if (datapoint && datapoint.date !== "missing") {
+            ds = {
+              x: DateTime.fromISO(datapoint.date).setZone("UTC"),
+              y: datapoint.basicStats.mean,
+              yMin: [datapoint.basicStats.min],
+              yMax: [datapoint.basicStats.max],
+            };
+            actualDataAdded = true;
+          }
+          return ds;
+        });
+        if (actualDataAdded && this.timeAggregation) {
+          console.log("applying aggregation");
+          console.log(signalData);
+          const aggrData = [];
+          let currDataIdx = 0;
+          let currDate = DateTime.fromObject({
+            year: this.startTime.year,
+            month: this.startTime.month,
+            day: this.startTime.day,
+          });
+          while (currDate < this.endTime) {
+            let dataSum = 0;
+            while (
+              currDataIdx < signalData.length &&
+              signalData[currDataIdx].x < currDate
+            ) {
+              currDataIdx++;
+            }
+            const x1 = currDataIdx;
+            while (
+              currDataIdx < signalData.length &&
+              signalData[currDataIdx].x < currDate.plus(this.timeAggregation)
+            ) {
+              dataSum += signalData[currDataIdx].y;
+              currDataIdx++;
+            }
+            const x2 = currDataIdx;
+            const count = x2 - x1;
+            // If datapoints are within the interval we push the aggregation to the aggregated data
+            if (count > 0) {
+              // TODO: can we save a time interval here?
+              aggrData.push({
+                x: currDate,
+                y: dataSum / count,
+              });
+            }
+            currDate = currDate.plus(this.timeAggregation);
+          }
+          signalData = aggrData;
+        }
+
         datasets.push({
           // type: "lineWithErrorBars",
           type: "line",
           label: key,
           // casting to any because an array of object should also be possible
-          data: <any>data.map((datapoint) => {
-            let ds = {};
-            if (datapoint && datapoint.date !== "missing") {
-              ds = {
-                x: DateTime.fromISO(datapoint.date).setZone("UTC"),
-                y: datapoint.basicStats.mean,
-                yMin: [datapoint.basicStats.min],
-                yMax: [datapoint.basicStats.max],
-              };
-            }
-            return ds;
-          }),
+          data: signalData,
           hidden: !this.activeFields.includes(key),
         });
       }
@@ -245,11 +317,16 @@ class SignalsDataManager {
             })
               .plus({ month: 1 })
               .minus({ second: 1 })
-          ).then((data) => {
-            this.dataStorage[index][timeslot].data = data;
-            this.dataStorage[index][timeslot].status = "finished";
-            this.updateChart();
-          });
+          )
+            .then((data) => {
+              this.dataStorage[index][timeslot].data = data;
+              this.dataStorage[index][timeslot].status = "finished";
+              this.updateChart();
+            })
+            .catch(() => {
+              this.dataStorage[index][timeslot].status = "failed";
+              this.updateChart();
+            });
           this.dataStorage[index][timeslot] = {
             request,
             status: "fetching",
@@ -258,6 +335,14 @@ class SignalsDataManager {
       });
       currDate = currDate.minus({ months: 1 });
     }
+  }
+
+  setGeometry(geometry: object) {
+    // Clear all currently saved data
+    this.dataStorage = {};
+    this.options.geometry = geometry;
+    this.retrieveMissingData();
+    this.updateChart();
   }
 
   setActiveFields(activeFields: string[]) {
@@ -272,6 +357,18 @@ class SignalsDataManager {
     this.chartOptions.scales.x.min = start.toISODate();
     this.chartOptions.scales.x.max = end.toISODate();
     this.retrieveMissingData();
+    this.updateChart();
+  }
+
+  setTimeAggregation(
+    aggregation: {
+      day?: number;
+      week?: number;
+      month?: number;
+      year?: number;
+    } | null
+  ) {
+    this.timeAggregation = aggregation;
     this.updateChart();
   }
   /*
