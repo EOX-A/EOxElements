@@ -48,6 +48,7 @@ export interface SDMOptions {
   startTime?: string;
   endTime?: string;
   timeAggregation?: object;
+  retries?: number;
 }
 
 class SignalsDataManager {
@@ -74,6 +75,7 @@ class SignalsDataManager {
     if (this.options.timeAggregation) {
       this.timeAggregation = this.options.timeAggregation;
     }
+    this.options.retries = this.options.retries ? this.options.retries : 5;
     this.dataStorage = {};
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
@@ -166,7 +168,7 @@ class SignalsDataManager {
           `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
         );
       },
-      retries: 1,
+      retries: this.options.retries,
     }).then(function (res) {
       return res.json();
     });
