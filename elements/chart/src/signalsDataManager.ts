@@ -49,6 +49,7 @@ export interface SDMOptions {
   endTime?: string;
   timeAggregation?: object;
   retries?: number;
+  normalize?: boolean;
 }
 
 class SignalsDataManager {
@@ -76,6 +77,9 @@ class SignalsDataManager {
       this.timeAggregation = this.options.timeAggregation;
     }
     this.options.retries = this.options.retries ? this.options.retries : 5;
+    this.options.normalize = this.options.normalize
+      ? this.options.normalize
+      : false;
     this.dataStorage = {};
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
@@ -207,9 +211,17 @@ class SignalsDataManager {
         });
 
         let actualDataAdded = false;
+        let max = Number.MIN_VALUE;
+        let min = Number.MAX_VALUE;
         let signalData = <any>data.map((datapoint) => {
           let ds = {};
           if (datapoint && datapoint.date !== "missing") {
+            if (datapoint.basicStats.mean < min) {
+              min = datapoint.basicStats.mean;
+            }
+            if (datapoint.basicStats.mean > max) {
+              max = datapoint.basicStats.mean;
+            }
             ds = {
               x: DateTime.fromISO(datapoint.date).setZone("UTC"),
               y: datapoint.basicStats.mean,
@@ -221,8 +233,6 @@ class SignalsDataManager {
           return ds;
         });
         if (actualDataAdded && this.timeAggregation) {
-          console.log("applying aggregation");
-          console.log(signalData);
           const aggrData = [];
           let currDataIdx = 0;
           let currDate = DateTime.fromObject({
@@ -259,6 +269,20 @@ class SignalsDataManager {
             currDate = currDate.plus(this.timeAggregation);
           }
           signalData = aggrData;
+        }
+
+        if (actualDataAdded && this.options.normalize) {
+          signalData = signalData.map(
+            (dp: {
+              x: DateTime;
+              y: number;
+              yMin: number[];
+              yMax: number[];
+            }) => {
+              dp.y = (dp.y - min) / (max - min);
+              return dp;
+            }
+          );
         }
 
         datasets.push({
@@ -359,6 +383,11 @@ class SignalsDataManager {
     this.chartOptions.scales.x.min = start.toISODate();
     this.chartOptions.scales.x.max = end.toISODate();
     this.retrieveMissingData();
+    this.updateChart();
+  }
+
+  setNormalize(normalize: boolean) {
+    this.options.normalize = normalize;
     this.updateChart();
   }
 

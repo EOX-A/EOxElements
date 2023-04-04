@@ -39,6 +39,7 @@ describe("shDisplay", () => {
             ["s3_ndvi", "s3_otci", "s2_lai", "s2_fapar"],
           ],
           retries: 5,
+          normalize: true,
           active: ["modis_ndvi", "modis_ndwi", "modis_savi"],
           // timeAggregation: { week: 1 },
           timeInterval: {

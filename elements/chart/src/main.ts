@@ -77,7 +77,7 @@ const setSignalsEndpoint = (options: {
   endTime?: string;
 }) => {
   sdmInstance = new SignalsDataManager(eoxchart, options);
-  new ChartControls(document.getElementById("controls"), sdmInstance);
+  new ChartControls(document.getElementById("controls"), sdmInstance, options);
   sdmInstance.setActiveFields(options.active);
 };
 
