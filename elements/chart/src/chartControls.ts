@@ -22,6 +22,7 @@ class ChartControls {
     this.generateTimeSelectionOptions();
     this.generateTimeAggregationOptions();
     this.addNormalizeCheckbox();
+    this.addShowMinMax();
     const spinner = document.createElement("span");
     spinner.id = "loadingIndicator";
     spinner.className = "loader hidden";
@@ -37,12 +38,30 @@ class ChartControls {
 
     var label = document.createElement("label");
     label.htmlFor = "normalize";
-    label.appendChild(document.createTextNode("Normalize"));
+    label.appendChild(document.createTextNode("normalize"));
 
     this.element.appendChild(label);
     this.element.appendChild(checkbox);
     checkbox.addEventListener("change", () => {
       this.sdm.setNormalize(checkbox.checked);
+    });
+  }
+
+  private addShowMinMax() {
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = "showMinMax";
+    checkbox.value = "showMinMax";
+    checkbox.checked = this.sdmOptions.showMinMax;
+
+    var label = document.createElement("label");
+    label.htmlFor = "showMinMax";
+    label.appendChild(document.createTextNode("show min/max"));
+
+    this.element.appendChild(label);
+    this.element.appendChild(checkbox);
+    checkbox.addEventListener("change", () => {
+      this.sdm.setShowMinMax(checkbox.checked);
     });
   }
 

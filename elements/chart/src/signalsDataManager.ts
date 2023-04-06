@@ -1,10 +1,12 @@
 import Chart, {
-  ChartDataset /*, LinearScale, CategoryScale */,
+  ChartDataset,
+  LinearScale,
+  CategoryScale,
   ChartOptions,
 } from "chart.js/auto";
 import pRetry, { AbortError } from "p-retry";
 import { DateTime } from "luxon";
-/*
+
 import {
   LineWithErrorBarsController,
   LineWithErrorBarsChart,
@@ -21,7 +23,7 @@ Chart.register(
   ScatterWithErrorBarsController,
   LinearScale,
   CategoryScale
-);*/
+);
 
 type status = "ready" | "loading" | "error";
 interface DSDict {
@@ -50,6 +52,8 @@ export interface SDMOptions {
   timeAggregation?: object;
   retries?: number;
   normalize?: boolean;
+  showMinMax?: boolean;
+  colors?: string[];
 }
 
 class SignalsDataManager {
@@ -80,6 +84,9 @@ class SignalsDataManager {
     this.options.normalize = this.options.normalize
       ? this.options.normalize
       : false;
+    this.options.showMinMax = this.options.showMinMax
+      ? this.options.showMinMax
+      : false;
     this.dataStorage = {};
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
@@ -95,18 +102,13 @@ class SignalsDataManager {
             maxRotation: 0,
           },
         },
-        /*y: {
-          min: 0,
-          max: 0.5,
-        },*/
       },
       plugins: {
         legend: {
           labels: {
-            /*
             usePointStyle: true,
-            pointStyle: "line",
-            */
+            pointStyle: "rect",
+            padding: 5,
             sort: (a, b) => a.text.localeCompare(b.text),
           },
           position: "right",
@@ -183,7 +185,7 @@ class SignalsDataManager {
     this.checkLoadingStatus();
     this.chart.options = this.chartOptions;
     const datasets: ChartDataset[] = [];
-    this.options.features.flat().forEach((key) => {
+    this.options.features.flat().forEach((key, dsIndex) => {
       // Find group
       let groupIndex: number = -1;
       this.options.features.forEach((group, idx) => {
@@ -216,23 +218,28 @@ class SignalsDataManager {
         let signalData = <any>data.map((datapoint) => {
           let ds = {};
           if (datapoint && datapoint.date !== "missing") {
-            if (datapoint.basicStats.mean < min) {
-              min = datapoint.basicStats.mean;
-            }
-            if (datapoint.basicStats.mean > max) {
-              max = datapoint.basicStats.mean;
+            const stats = datapoint.basicStats;
+            if (this.options.showMinMax) {
+              min = stats.min < min ? stats.min : min;
+              max = stats.max > max ? stats.max : max;
+            } else {
+              min = stats.mean < min ? stats.mean : min;
+              max = stats.mean > max ? stats.mean : max;
             }
             ds = {
               x: DateTime.fromISO(datapoint.date).setZone("UTC"),
               y: datapoint.basicStats.mean,
-              yMin: [datapoint.basicStats.min],
-              yMax: [datapoint.basicStats.max],
+              yMin: datapoint.basicStats.min,
+              yMax: datapoint.basicStats.max,
             };
             actualDataAdded = true;
           }
           return ds;
         });
         if (actualDataAdded && this.timeAggregation) {
+          // If we aggregate data we recalculate min max so we reset it
+          max = Number.MIN_VALUE;
+          min = Number.MAX_VALUE;
           const aggrData = [];
           let currDataIdx = 0;
           let currDate = DateTime.fromObject({
@@ -242,6 +249,8 @@ class SignalsDataManager {
           });
           while (currDate < this.endTime) {
             let dataSum = 0;
+            let minSum = 0;
+            let maxSum = 0;
             while (
               currDataIdx < signalData.length &&
               signalData[currDataIdx].x < currDate
@@ -253,17 +262,32 @@ class SignalsDataManager {
               currDataIdx < signalData.length &&
               signalData[currDataIdx].x < currDate.plus(this.timeAggregation)
             ) {
-              dataSum += signalData[currDataIdx].y;
+              const sd = signalData[currDataIdx];
+              dataSum += sd.y;
+              minSum += sd.yMin;
+              maxSum += sd.yMax;
               currDataIdx++;
             }
             const x2 = currDataIdx;
             const count = x2 - x1;
             // If datapoints are within the interval we push the aggregation to the aggregated data
             if (count > 0) {
+              const yMean = dataSum / count;
+              const yMinMean = minSum / count;
+              const yMaxMean = maxSum / count;
+              if (this.options.showMinMax) {
+                min = yMinMean < min ? yMinMean : min;
+                max = yMaxMean > max ? yMaxMean : max;
+              } else {
+                min = yMean < min ? yMean : min;
+                max = yMean > max ? yMean : max;
+              }
               // TODO: can we save a time interval here?
               aggrData.push({
                 x: currDate,
-                y: dataSum / count,
+                y: yMean,
+                yMin: yMinMean,
+                yMax: yMaxMean,
               });
             }
             currDate = currDate.plus(this.timeAggregation);
@@ -273,26 +297,52 @@ class SignalsDataManager {
 
         if (actualDataAdded && this.options.normalize) {
           signalData = signalData.map(
-            (dp: {
-              x: DateTime;
-              y: number;
-              yMin: number[];
-              yMax: number[];
-            }) => {
+            (dp: { x: DateTime; y: number; yMin: number; yMax: number }) => {
               dp.y = (dp.y - min) / (max - min);
+              dp.yMin = (dp.yMin - min) / (max - min);
+              dp.yMax = (dp.yMax - min) / (max - min);
               return dp;
             }
           );
         }
 
-        datasets.push({
-          // type: "lineWithErrorBars",
+        let ds: ChartDataset = {
           type: "line",
           label: key,
-          // casting to any because an array of object should also be possible
           data: signalData,
           hidden: !this.activeFields.includes(key),
-        });
+        };
+        if (this.options.showMinMax) {
+          ds = {
+            type: "lineWithErrorBars",
+            label: key,
+            data: signalData,
+            hidden: !this.activeFields.includes(key),
+            errorBarWhiskerLineWidth: 2,
+            errorBarColor: "#00000000",
+          };
+        }
+        if (this.options.colors && this.options.colors.length >= dsIndex) {
+          const color = this.options.colors[dsIndex];
+          ds.backgroundColor = color;
+          ds.borderColor = color;
+
+          if (this.options.showMinMax) {
+            ds = {
+              type: "lineWithErrorBars",
+              label: key,
+              data: signalData,
+              hidden: !this.activeFields.includes(key),
+              errorBarWhiskerLineWidth: 2,
+              errorBarColor: "#00000000",
+              errorBarWhiskerColor: color,
+              errorBarWhiskerSize: 10,
+              backgroundColor: color,
+              borderColor: color,
+            };
+          }
+        }
+        datasets.push(ds);
       }
     });
 
@@ -388,6 +438,11 @@ class SignalsDataManager {
 
   setNormalize(normalize: boolean) {
     this.options.normalize = normalize;
+    this.updateChart();
+  }
+
+  setShowMinMax(showMinMax: boolean) {
+    this.options.showMinMax = showMinMax;
     this.updateChart();
   }
 

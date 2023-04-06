@@ -21,6 +21,7 @@ class EOxChart {
     timeInterval: object;
     startTime?: string;
     endTime?: string;
+    colors?: string[];
   }) {
     port1.postMessage({ type: "setSignalsEndpoint", body: { options } });
   }
