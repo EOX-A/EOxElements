@@ -7,11 +7,7 @@
       *{font-family: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif"}
       label{
         font-size: 0.87em;
-        display: inline-block;
-        vertical-align: middle;
-      }
-      input {
-        vertical-align: middle;
+        margin-top: 2.5px;
       }
       html,
       body {
@@ -64,7 +60,9 @@
       #controls {
         position: absolute;
         width: 100%;
-        height: 30px;
+        display: flex;
+        gap: 5px;
+        flex-direction: row;
       }
       #chart {
         padding-top: 30px;

@@ -413,6 +413,91 @@ class SignalsDataManager {
     }
   }
 
+  triggerCSVDownload() {
+    const completeData: {
+      date: string;
+      basicStats?: { mean: number; min: number; max: number };
+    }[][] = [];
+    const headers: string[] = [];
+    const allSignals = this.activeFields;
+    allSignals.forEach((key, signalIdx) => {
+      // Find group
+      let groupIndex: number = -1;
+      this.options.features.forEach((group, idx) => {
+        if (group.includes(key)) {
+          groupIndex = idx;
+        }
+      });
+      if (groupIndex !== -1) {
+        let data: {
+          date: string;
+          basicStats?: { mean: number; min: number; max: number };
+        }[] = [];
+        Object.keys(this.dataStorage[groupIndex]).forEach((timekey) => {
+          const dsEntry = this.dataStorage[groupIndex][timekey];
+          if (dsEntry.status === "finished") {
+            if (
+              Object.keys(dsEntry.data).length !== 0 &&
+              Object.keys(dsEntry.data).includes(key)
+            ) {
+              data.push(...dsEntry.data[key]);
+            }
+          }
+        });
+        if (data.length > 0) {
+          headers.push(allSignals[signalIdx]);
+          completeData.push(data);
+        }
+      }
+    });
+    // We need to try and bring the different timed datasets into "same timegrid" lets do some binning
+    const binnedData: {
+      [key: string]: {
+        [key: string]: {
+          mean: number;
+          max: number;
+          min: number;
+        };
+      };
+    } = {};
+    headers.forEach((datakey, idx) => {
+      completeData[idx].forEach((dp) => {
+        if (binnedData[dp.date]) {
+          binnedData[dp.date][datakey] = dp.basicStats;
+        } else {
+          binnedData[dp.date] = {};
+          binnedData[dp.date][datakey] = dp.basicStats;
+        }
+      });
+    });
+
+    // Now we try to construct the csv adding empty values when timestamp not available for a dataset
+    let csv = "time,";
+    const allHeaders = headers.map((val) => [val, `${val}_max`, `${val}_min`]);
+    csv += allHeaders.flat().join(",");
+    csv += "\n";
+    Object.keys(binnedData).forEach((dateKey) => {
+      const row: (string | number)[] = [dateKey];
+      headers.forEach((signalKey) => {
+        const stats = binnedData[dateKey][signalKey]
+          ? binnedData[dateKey][signalKey]
+          : null;
+        if (stats != null) {
+          row.push(...[stats.mean, stats.max, stats.min]);
+        } else {
+          row.push(...["", "", ""]);
+        }
+      });
+      csv += row.join(",");
+      csv += "\n";
+    });
+    var hiddenElement = document.createElement("a");
+    hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
+    hiddenElement.target = "_blank";
+    hiddenElement.download = "chart_data.csv";
+    hiddenElement.click();
+  }
+
   setGeometry(geometry: object) {
     // Clear all currently saved data
     this.dataStorage = {};

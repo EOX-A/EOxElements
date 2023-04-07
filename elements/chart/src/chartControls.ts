@@ -23,6 +23,7 @@ class ChartControls {
     this.generateTimeAggregationOptions();
     this.addNormalizeCheckbox();
     this.addShowMinMax();
+    this.addCSVDownload();
     const spinner = document.createElement("span");
     spinner.id = "loadingIndicator";
     spinner.className = "loader hidden";
@@ -62,6 +63,17 @@ class ChartControls {
     this.element.appendChild(checkbox);
     checkbox.addEventListener("change", () => {
       this.sdm.setShowMinMax(checkbox.checked);
+    });
+  }
+
+  private addCSVDownload() {
+    var button = document.createElement("button");
+    button.id = "csvDownload";
+    button.textContent = "download csv";
+
+    this.element.appendChild(button);
+    button.addEventListener("click", () => {
+      this.sdm.triggerCSVDownload();
     });
   }
 
