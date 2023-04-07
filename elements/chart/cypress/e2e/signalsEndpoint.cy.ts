@@ -64,7 +64,7 @@ describe("shDisplay", () => {
           ],
           // retries: 5,
           // normalize: true,
-          active: ["modis_ndvi", "modis_ndwi", "modis_savi"],
+          active: ["modis_ndvi"],
           // timeAggregation: { week: 1 },
           timeInterval: {
             months: 3,

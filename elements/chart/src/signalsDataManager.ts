@@ -103,6 +103,11 @@ class SignalsDataManager {
           },
         },
       },
+      interaction: {
+        axis: "x",
+        mode: "nearest",
+        intersect: false,
+      },
       plugins: {
         legend: {
           labels: {
@@ -121,6 +126,20 @@ class SignalsDataManager {
             } else {
               this.setActiveFields([...this.activeFields, legendItem.text]);
             }
+          },
+        },
+        tooltip: {
+          callbacks: {
+            title: (tooltipItem) => {
+              const raw: any = tooltipItem[0]?.raw;
+              return raw.x.toISODate();
+            },
+            label: (tooltipItem) => {
+              const raw: any = tooltipItem.raw;
+              return `${tooltipItem.dataset.label}: ↔ ${raw.y.toPrecision(
+                3
+              )}; ↓ ${raw.yMin.toPrecision(3)}, ↑ ${raw.yMax.toPrecision(3)}`;
+            },
           },
         },
       },
@@ -253,14 +272,16 @@ class SignalsDataManager {
             let maxSum = 0;
             while (
               currDataIdx < signalData.length &&
-              signalData[currDataIdx].x < currDate
+              (Object.keys(signalData[currDataIdx]).length === 0 ||
+                signalData[currDataIdx].x < currDate)
             ) {
               currDataIdx++;
             }
             const x1 = currDataIdx;
             while (
               currDataIdx < signalData.length &&
-              signalData[currDataIdx].x < currDate.plus(this.timeAggregation)
+              (Object.keys(signalData[currDataIdx]).length === 0 ||
+                signalData[currDataIdx].x < currDate.plus(this.timeAggregation))
             ) {
               const sd = signalData[currDataIdx];
               dataSum += sd.y;
