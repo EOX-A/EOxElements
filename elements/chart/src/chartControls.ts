@@ -19,15 +19,54 @@ class ChartControls {
     this.sdm = sdm;
     this.options = options;
     this.sdmOptions = sdmOptions;
-    this.generateTimeSelectionOptions();
     this.generateTimeAggregationOptions();
     this.addNormalizeCheckbox();
     this.addShowMinMax();
     this.addCSVDownload();
+    this.generateTimeSelectionOptions();
     const spinner = document.createElement("span");
     spinner.id = "loadingIndicator";
     spinner.className = "loader hidden";
     this.element.appendChild(spinner);
+  }
+
+  private removeStartEndInputs() {
+    const start = document.getElementById("startInput");
+    const end = document.getElementById("endInput");
+    const button = document.getElementById("setTime");
+    if (start && end && button) {
+      start.remove();
+      end.remove();
+      button.remove();
+    }
+  }
+  private addStartEndInputs() {
+    const startEl = document.createElement("input");
+    startEl.id = "startInput";
+    startEl.size = 8;
+    startEl.value = this.sdm.startTime.toISODate();
+    const endEl = document.createElement("input");
+    endEl.id = "endInput";
+    endEl.size = 8;
+    endEl.value = this.sdm.endTime.toISODate();
+    this.element.appendChild(startEl);
+    this.element.appendChild(endEl);
+    var button = document.createElement("button");
+    button.id = "setTime";
+    button.textContent = "ok";
+
+    this.element.appendChild(button);
+    button.addEventListener("click", () => {
+      const startDate = DateTime.fromISO(startEl.value);
+      const endDate = DateTime.fromISO(endEl.value);
+      if (startDate.isValid && endDate.isValid) {
+        this.sdm.setTimeInterval(startDate, endDate);
+        this.removeStartEndInputs();
+      } else {
+        startEl.className = startDate.isValid ? "" : "parsingError";
+        endEl.className = endDate.isValid ? "" : "parsingError";
+      }
+    });
   }
 
   private addNormalizeCheckbox() {
@@ -79,11 +118,12 @@ class ChartControls {
 
   private generateTimeSelectionOptions() {
     const options = [
-      { text: "3 months back", value: "months-3" },
-      { text: "6 months back", value: "months-6" },
+      { text: "3 months back", value: "month-3" },
+      { text: "6 months back", value: "month-6" },
       { text: "1 year back", value: "year-1" },
       { text: "2 years back", value: "year-2" },
       { text: "3 years back", value: "year-3" },
+      { text: "custom", value: "custom" },
     ];
     const selectEl = document.createElement("select");
     options.forEach((entry) => {
@@ -96,6 +136,7 @@ class ChartControls {
     selectEl.addEventListener("change", (evt) => {
       const currDate = DateTime.now();
       const [type, val] = (evt.target as HTMLSelectElement).value.split("-");
+      this.removeStartEndInputs();
       switch (type) {
         case "month":
           this.sdm.setTimeInterval(
@@ -108,6 +149,9 @@ class ChartControls {
             currDate.minus({ year: Number(val) }),
             currDate
           );
+          break;
+        case "custom":
+          this.addStartEndInputs();
           break;
       }
     });
