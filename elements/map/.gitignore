@@ -3,4 +3,3 @@ cypress/screenshots
 cypress/videos
 public/interface.mjs
 public/interface.umd.js
-public/test.html
