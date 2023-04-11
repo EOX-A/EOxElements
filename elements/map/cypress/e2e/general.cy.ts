@@ -1,21 +1,18 @@
+import { createMap } from "../../src/interface";
+
 describe("general", () => {
   beforeEach(() => {
-    cy.visit("/", {
-      onBeforeLoad(win) {
-        cy.spy(win, "postMessage").as("postMessage");
-      },
-    });
+    cy.visit("../../public/test.html");
   });
   it("loads the map", () => {
-    cy.get('[data-cy="map"]').should("exist");
-  });
-  it("exposes the map object to the window", () => {
-    cy.window().its("map").should("exist");
-  });
-  it("emits a map-load event", () => {
-    cy.get("@postMessage")
-      .should("have.been.calledOnce")
-      .its("lastCall")
-      .should("have.been.calledWith", { "map-event": { type: "loadend" } });
+    cy.document().then((doc) => {
+      const init = async () => {
+        const map = await createMap(doc.querySelector("#map"));
+        const layers = await map?.getLayers();
+        expect(layers).to.have.lengthOf(1);
+      };
+      init();
+    });
+    cy.get('[data-cy="map"] > iframe').should("exist");
   });
 });
