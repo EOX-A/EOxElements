@@ -6,7 +6,7 @@ class EOxMap {
   constructor(frame: HTMLIFrameElement) {
     this.iframe = frame;
   }
-  setLayers(layers: Object) {
+  setLayers(layers: object) {
     port1.postMessage({ type: "setLayers", body: { layers } });
   }
   getLayers() {
