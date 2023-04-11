@@ -3,7 +3,7 @@ import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
 
-new Map({
+const map = new Map({
   controls: [],
   layers: [
     new TileLayer({
@@ -30,8 +30,9 @@ const onMessage = (event: MessageEvent) => {
   if (event.data.ts) {
     switch (event.data.type) {
       case "getLayers":
-        console.log(event.data.body);
-        application.postMessage({ ts: event.data.ts, body: "foo bar" });
+        const layers = map.getLayers().getArray();
+        const simplifiedLayers = layers.map(l => l.get('visible'))
+        application.postMessage({ ts: event.data.ts, body: { layers: simplifiedLayers } });
         break;
     }
   } else {

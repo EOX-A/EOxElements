@@ -1,5 +1,3 @@
-import Layer from "ol/layer/Layer";
-
 const channel = new MessageChannel();
 const port1 = channel.port1;
 
@@ -8,7 +6,7 @@ class EOxMap {
   constructor(frame: HTMLIFrameElement) {
     this.iframe = frame;
   }
-  setLayers(layers: Array<Layer>) {
+  setLayers(layers: Object) {
     port1.postMessage({ type: "setLayers", body: { layers } });
   }
   getLayers() {
@@ -16,10 +14,10 @@ class EOxMap {
       const ts = Date.now();
       port1.onmessage = (event) => {
         if (event.data.ts === ts) {
-          resolve(event.data.body);
+          resolve(event.data.body.layers);
         }
       };
-      port1.postMessage({ ts, type: "getLayers", body: "hello world" });
+      port1.postMessage({ ts, type: "getLayers" });
     });
   }
 }
