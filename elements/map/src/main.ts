@@ -26,10 +26,6 @@ window.addEventListener("message", (event) => {
     application = event.ports[0];
     application.onmessage = onMessage;
   }
-  if (event.data.hasOwnProperty("set-layers")) {
-    const styleJson = event.data["set-layers"];
-    apply(map, styleJson)
-  }
 });
 
 const onMessage = (event: MessageEvent) => {
@@ -47,7 +43,7 @@ const onMessage = (event: MessageEvent) => {
   } else {
     switch (event.data.type) {
       case "setLayers":
-        console.log(event.data.body);
+        apply(map, event.data.body.layers)
         break;
     }
   }
