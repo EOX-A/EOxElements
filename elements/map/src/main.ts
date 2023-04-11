@@ -31,8 +31,11 @@ const onMessage = (event: MessageEvent) => {
     switch (event.data.type) {
       case "getLayers":
         const layers = map.getLayers().getArray();
-        const simplifiedLayers = layers.map(l => l.get('visible'))
-        application.postMessage({ ts: event.data.ts, body: { layers: simplifiedLayers } });
+        const simplifiedLayers = layers.map((l) => l.get("visible"));
+        application.postMessage({
+          ts: event.data.ts,
+          body: { layers: simplifiedLayers },
+        });
         break;
     }
   } else {
