@@ -3,9 +3,9 @@ import { createServer, build } from "vite";
 /**
  * @type {(server: import('vite').ViteDevServer) => Promise<import('rollup').RollupWatcher>}
  */
-function watchProtocol(server) {
+function watchInterface(server) {
   return build({
-    configFile: "vite.config.protocol.ts",
+    configFile: "vite.config.interface.ts",
     mode: "development",
     build: {
       watch: {},
@@ -30,5 +30,5 @@ function watchMain(server) {
 const server = await createServer({ configFile: "vite.config.map.ts" });
 
 await server.listen();
-await watchProtocol(server); // outputs to public/protocol.js, so run first
+await watchInterface(server); // outputs to public/interface.js, so run first
 await watchMain(server);

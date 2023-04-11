@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build --config vite.config.protocol.ts && vite build --config vite.config.map.ts",
+    "build": "tsc && vite build --config vite.config.interface.ts && vite build --config vite.config.map.ts",
     "watch": "node scripts/watch.mjs",
     "preview": "vite preview",
     "format": "prettier --write .",
