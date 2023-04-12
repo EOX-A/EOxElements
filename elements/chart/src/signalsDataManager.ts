@@ -522,6 +522,8 @@ class SignalsDataManager {
   setGeometry(geometry: object) {
     // Clear all currently saved data
     this.dataStorage = {};
+    // Initialize data storage
+    this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
     this.options.geometry = geometry;
     this.retrieveMissingData();
     this.updateChart();
