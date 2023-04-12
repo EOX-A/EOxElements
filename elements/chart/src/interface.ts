@@ -57,10 +57,22 @@ const createChart = (div: HTMLElement | null) => {
       "src",
       import.meta?.url?.includes("localhost")
         ? "http://localhost:5173/index.html"
-        : "https://www.unpkg.com/@eox/chart/dist/index.html"
+        : "about:blank"
     );
     iframe.setAttribute("id", "EOxChart");
     div?.appendChild(iframe);
+    if (!import.meta?.url?.includes("localhost")) {
+      fetch("https://raw.githack.com/EOX-A/elements/chartelement/elements/chart/dist/index.html")
+      .then((response) => {
+        return response.text();
+      })
+      .then((text) => {
+        const html = text.replace('./assets/', 'https://raw.githack.com/EOX-A/elements/chartelement/elements/chart/dist/assets/');
+        iframe.contentDocument?.open();
+        iframe.contentDocument?.write(html);
+        iframe.contentDocument?.close();
+      })
+    }
     let iframeLoaded = false;
     iframe.onload = () => {
       // store if the iFrame has already loaded, since in Cypress hovering over the test triggers
