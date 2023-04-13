@@ -63,15 +63,18 @@ const createChart = (div: HTMLElement | null) => {
     div?.appendChild(iframe);
     if (!import.meta?.url?.includes("localhost")) {
       fetch("https://www.unpkg.com/@eox/chart/dist/index.html")
-      .then((response) => {
-        return response.text();
-      })
-      .then((text) => {
-        const html = text.replace('./assets/', 'https://www.unpkg.com/@eox/chart/dist/assets/');
-        iframe.contentDocument?.open();
-        iframe.contentDocument?.write(html);
-        iframe.contentDocument?.close();
-      })
+        .then((response) => {
+          return response.text();
+        })
+        .then((text) => {
+          const html = text.replace(
+            "./assets/",
+            "https://www.unpkg.com/@eox/chart/dist/assets/"
+          );
+          iframe.contentDocument?.open();
+          iframe.contentDocument?.write(html);
+          iframe.contentDocument?.close();
+        });
     }
     let iframeLoaded = false;
     iframe.onload = () => {
