@@ -28,6 +28,13 @@
     "npm": ">=8.0.0",
     "node": ">=18.0.0"
   },
+  "files": [
+    "dist",
+    "scripts",
+    "src",
+    "typings"
+  ],
+  "main": "./dist/interface.mjs",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build --config vite.config.interface.ts && vite build --config vite.config.map.ts",
