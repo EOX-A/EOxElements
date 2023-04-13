@@ -2,3 +2,6 @@ node_modules
 cypress/screenshots
 cypress/videos
 cypress/downloads
+dist
+public/interface.mjs
+public/interface.umd.js
