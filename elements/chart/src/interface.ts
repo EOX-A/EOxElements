@@ -1,3 +1,5 @@
+import pkg from "../package.json";
+
 const channel = new MessageChannel();
 const port1 = channel.port1;
 
@@ -62,15 +64,13 @@ const createChart = (div: HTMLElement | null) => {
     iframe.setAttribute("id", "EOxChart");
     div?.appendChild(iframe);
     if (!import.meta?.url?.includes("localhost")) {
-      fetch("https://www.unpkg.com/@eox/chart/dist/index.html")
+      const hostUrl = `https://www.unpkg.com/@eox/chart@${pkg.version}/dist`;
+      fetch(`${hostUrl}/index.html`)
         .then((response) => {
           return response.text();
         })
         .then((text) => {
-          const html = text.replace(
-            "./assets/",
-            "https://www.unpkg.com/@eox/chart/dist/assets/"
-          );
+          const html = text.replace("./assets/", `${hostUrl}/assets/`);
           iframe.contentDocument?.open();
           iframe.contentDocument?.write(html);
           iframe.contentDocument?.close();
