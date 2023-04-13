@@ -1,0 +1,46 @@
+{
+  "name": "@eox/chart",
+  "version": "2.0.0-alpha7",
+  "dependencies": {
+    "chart.js": "^4.2.1",
+    "chartjs-adapter-luxon": "^1.3.1",
+    "chartjs-chart-error-bars": "^4.1.2"
+  },
+  "devDependencies": {
+    "@eox/eslint-config": "^1.0.0",
+    "@types/luxon": "^3.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "cypress": "^12.6.0",
+    "cypress-vite": "^1.3.0",
+    "eslint-plugin-cypress": "^2.12.1",
+    "eslint-plugin-typescript": "^0.14.0",
+    "install": "^0.13.0",
+    "luxon": "^3.3.0",
+    "npm": "^9.6.3",
+    "p-retry": "^5.1.2",
+    "pre-commit": "^1.2.2",
+    "start-server-and-test": "^1.15.2",
+    "typescript": "^4.9.3",
+    "vite": "^4.0.0"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "tsc && vite build --config vite.config.interface.ts && vite build --config vite.config.map.ts",
+    "watch": "node scripts/watch.mjs",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js,.ts .",
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "cypress": "start-server-and-test start 5173 'cypress open'",
+    "test": "start-server-and-test start 5173 'cypress run'"
+  },
+  "pre-commit": [
+    "format",
+    "lint:fix"
+  ]
+}
