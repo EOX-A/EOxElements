@@ -75,6 +75,7 @@ class SignalsDataManager {
   requestHandler: RequestHandler;
 
   constructor(type: endpointType, chart: Chart, options: SDMOptions) {
+    this.type = type;
     this.chart = chart;
     this.options = options;
     this.startTime = DateTime.now().minus(options.timeInterval);
@@ -197,11 +198,25 @@ class SignalsDataManager {
         Object.keys(this.dataStorage[groupIndex]).forEach((timekey) => {
           const dsEntry = this.dataStorage[groupIndex][timekey];
           if (dsEntry.status === "finished") {
-            if (
-              Object.keys(dsEntry.data).length !== 0 &&
-              Object.keys(dsEntry.data).includes(key)
-            ) {
-              data.push(...dsEntry.data[key]);
+            // TODO: We should handle data extraction through an interface
+            if (this.type === "signals") {
+              if (
+                Object.keys(dsEntry.data).length !== 0 &&
+                Object.keys(dsEntry.data).includes(key)
+              ) {
+                data.push(...dsEntry.data[key]);
+              }
+            }
+            if (this.type === "geodb") {
+              if (Object.keys(dsEntry.data).length !== 0) {
+                const dataForKey = dsEntry.data.map((dp) => ({
+                  date: dp[this.options.timeParameter],
+                  basicStats: {
+                    mean: dp[key],
+                  },
+                }));
+                data.push(...dataForKey);
+              }
             }
           } else {
             data.push({ date: "missing" });
@@ -211,27 +226,14 @@ class SignalsDataManager {
         let actualDataAdded = false;
         let max = Number.MIN_VALUE;
         let min = Number.MAX_VALUE;
-        let signalData = <any>data.map((datapoint) => {
-          let ds = {};
-          if (datapoint && datapoint.date !== "missing") {
-            const stats = datapoint.basicStats;
-            if (this.options.showMinMax) {
-              min = stats.min < min ? stats.min : min;
-              max = stats.max > max ? stats.max : max;
-            } else {
-              min = stats.mean < min ? stats.mean : min;
-              max = stats.mean > max ? stats.mean : max;
-            }
-            ds = {
-              x: DateTime.fromISO(datapoint.date).setZone("UTC"),
-              y: datapoint.basicStats.mean,
-              yMin: datapoint.basicStats.min,
-              yMax: datapoint.basicStats.max,
-            };
-            actualDataAdded = true;
-          }
-          return ds;
-        });
+        let signalData = <any>(
+          data.map((datapoint) => this.requestHandler.convertData(datapoint))
+        );
+        // Probably best to always sort by time
+        signalData.sort((a, b) => a.x - b.x);
+        if (signalData.length > 0) {
+          actualDataAdded = true;
+        }
         if (actualDataAdded && this.timeAggregation) {
           // If we aggregate data we recalculate min max so we reset it
           max = Number.MIN_VALUE;
@@ -247,6 +249,7 @@ class SignalsDataManager {
             let dataSum = 0;
             let minSum = 0;
             let maxSum = 0;
+            let dataAdded = false;
             while (
               currDataIdx < signalData.length &&
               (Object.keys(signalData[currDataIdx]).length === 0 ||
@@ -265,11 +268,12 @@ class SignalsDataManager {
               minSum += sd.yMin;
               maxSum += sd.yMax;
               currDataIdx++;
+              dataAdded = true;
             }
             const x2 = currDataIdx;
             const count = x2 - x1;
             // If datapoints are within the interval we push the aggregation to the aggregated data
-            if (count > 0) {
+            if (count > 0 && dataAdded) {
               const yMean = dataSum / count;
               const yMinMean = minSum / count;
               const yMaxMean = maxSum / count;

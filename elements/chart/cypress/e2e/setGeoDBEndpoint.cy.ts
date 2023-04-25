@@ -15,7 +15,7 @@ describe("shDisplay", () => {
           source: "GTIF",
           table: "no2_data",
           timeParameter: "date",
-          features: [["date", "no2_ec_station_ppbv"]],
+          features: [["no2_ec_station_ppbv"]],
           colors: [
             "#ff0029",
             "#377eb8",
@@ -29,8 +29,8 @@ describe("shDisplay", () => {
           timeInterval: {
             months: 3,
           },
-          startTime: "2023-01-01",
-          endTime: "2023-03-30",
+          startTime: "2022-01-01",
+          endTime: "2022-03-30",
         };
         chart?.setGeoDBEndpoint(options);
       };

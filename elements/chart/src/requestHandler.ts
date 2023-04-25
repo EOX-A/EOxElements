@@ -51,7 +51,7 @@ class RequestHandler {
     const timeSelection = `and=(${
       this.timeParameter
     }.gte.${start.toISODate()},${this.timeParameter}.lte.${end.toISODate()})`;
-    const request = `${this.endpoint}/${this.source}_${this.table}?${timeSelection}&select=${parameters}`;
+    const request = `${this.endpoint}/${this.source}_${this.table}?${timeSelection}&select=${parameters},${this.timeParameter}`;
 
     async function fetchSignalsFunction() {
       const response = await fetch(request, {
@@ -118,6 +118,73 @@ class RequestHandler {
     }).then(function (res) {
       return res.json();
     });
+  }
+
+  convertData(datapoint: object) {
+    switch (this.type) {
+      case "signals":
+        return this.convertSignals(datapoint);
+        break;
+      case "geodb":
+        return this.convertGeoDBData(datapoint);
+        break;
+      default:
+        return null;
+    }
+  }
+
+  private convertSignals(datapoint: object) {
+    let ds = {};
+
+    const stats = datapoint.basicStats;
+    /*
+      if (this.options.showMinMax) {
+        min = stats.min < min ? stats.min : min;
+        max = stats.max > max ? stats.max : max;
+      } else {
+        min = stats.mean < min ? stats.mean : min;
+        max = stats.mean > max ? stats.mean : max;
+      }
+    */
+    if (datapoint && datapoint.date !== "missing") {
+      ds = {
+        x: DateTime.fromISO(datapoint.date).setZone("UTC"),
+        y: datapoint.basicStats.mean,
+        yMin: 0,
+        yMax: 0,
+        // yMin: datapoint.basicStats.min,
+        // yMax: datapoint.basicStats.max,
+      };
+    }
+    //actualDataAdded = true;
+    return ds;
+  }
+
+  private convertGeoDBData(datapoint: object) {
+    let ds = {};
+
+    const stats = datapoint.basicStats;
+    /*
+      if (this.options.showMinMax) {
+        min = stats.min < min ? stats.min : min;
+        max = stats.max > max ? stats.max : max;
+      } else {
+        min = stats.mean < min ? stats.mean : min;
+        max = stats.mean > max ? stats.mean : max;
+      }
+    */
+    if (datapoint && datapoint.date !== "missing") {
+      ds = {
+        x: DateTime.fromISO(datapoint.date).setZone("UTC"),
+        y: datapoint.basicStats.mean,
+        yMin: 0,
+        yMax: 0,
+        // yMin: datapoint.basicStats.min,
+        // yMax: datapoint.basicStats.max,
+      };
+    }
+    //actualDataAdded = true;
+    return ds;
   }
 
   setGeometry(geometry: object) {
