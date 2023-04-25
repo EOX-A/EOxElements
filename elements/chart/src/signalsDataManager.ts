@@ -4,7 +4,6 @@ import Chart, {
   CategoryScale,
   ChartOptions,
 } from "chart.js/auto";
-import pRetry, { AbortError } from "p-retry";
 import { DateTime } from "luxon";
 
 import {
@@ -14,6 +13,9 @@ import {
   ScatterWithErrorBarsController,
   PointWithErrorBar,
 } from "chartjs-chart-error-bars";
+
+import RequestHandler from "./requestHandler";
+import { endpointType } from "./requestHandler";
 
 Chart.register(
   LineWithErrorBarsController,
@@ -26,6 +28,7 @@ Chart.register(
 );
 
 type status = "ready" | "loading" | "error";
+
 interface DSDict {
   [key: number]: {
     [key: string]: {
@@ -54,9 +57,12 @@ export interface SDMOptions {
   normalize?: boolean;
   showMinMax?: boolean;
   colors?: string[];
+  timeParameter?: string;
+  table?: string;
 }
 
 class SignalsDataManager {
+  type: endpointType;
   chart: Chart;
   startTime: DateTime;
   endTime: DateTime;
@@ -66,8 +72,9 @@ class SignalsDataManager {
   dataStorage: DSDict;
   status: status;
   activeFields: string[];
+  requestHandler: RequestHandler;
 
-  constructor(chart: Chart, options: SDMOptions) {
+  constructor(type: endpointType, chart: Chart, options: SDMOptions) {
     this.chart = chart;
     this.options = options;
     this.startTime = DateTime.now().minus(options.timeInterval);
@@ -90,6 +97,17 @@ class SignalsDataManager {
     this.dataStorage = {};
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
+    // Initialize request builder
+    this.requestHandler = new RequestHandler(
+      type,
+      this.options.endpoint,
+      this.options.features,
+      this.options.retries,
+      this.options.source,
+      this.options.table,
+      this.options.geometry,
+      this.options.timeParameter
+    );
     this.status = "ready";
     this.chartOptions = {
       scales: {
@@ -157,47 +175,6 @@ class SignalsDataManager {
       });
     });
     spinner.className = loading ? "loader" : "loader hidden";
-  }
-
-  private fetchSignals(groupIndex: number, start?: DateTime, end?: DateTime) {
-    const features = this.options.features[groupIndex]
-      .map((f) => `feature=${f}`)
-      .join("&");
-    const times = `${start ? "&start_date=" + start.toISODate() : ""}${
-      end ? "&end_date=" + end.toISODate() : ""
-    }`;
-    const request = `${this.options.endpoint}?source=${this.options.source}&${features}${times}`;
-    const geom = this.options.geometry;
-
-    async function fetchSignals() {
-      const response = await fetch(request, {
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify({
-          geometry: geom,
-        }),
-      });
-      // Abort retrying if the resource doesn't exist
-      if (response.status === 404) {
-        throw new AbortError(response.statusText);
-      }
-      if (response.status !== 200) {
-        throw Error(response.statusText);
-      }
-      return response;
-    }
-    return pRetry(fetchSignals, {
-      onFailedAttempt: (error) => {
-        console.log(
-          `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
-        );
-      },
-      retries: this.options.retries,
-    }).then(function (res) {
-      return res.json();
-    });
-    this.checkLoadingStatus();
   }
 
   private updateChart() {
@@ -405,16 +382,20 @@ class SignalsDataManager {
       signalGroupIndices.forEach((index) => {
         if (!(timeslot in this.dataStorage[index])) {
           // request data
-          const request = this.fetchSignals(
-            index,
-            DateTime.fromObject({ year: currDate.year, month: currDate.month }),
-            DateTime.fromObject({
-              year: currDate.year,
-              month: currDate.month,
-            })
-              .plus({ month: 1 })
-              .minus({ second: 1 })
-          )
+          const request = this.requestHandler
+            .fetchData(
+              index,
+              DateTime.fromObject({
+                year: currDate.year,
+                month: currDate.month,
+              }),
+              DateTime.fromObject({
+                year: currDate.year,
+                month: currDate.month,
+              })
+                .plus({ month: 1 })
+                .minus({ second: 1 })
+            )
             .then((data) => {
               this.dataStorage[index][timeslot].data = data;
               this.dataStorage[index][timeslot].status = "finished";
@@ -525,6 +506,8 @@ class SignalsDataManager {
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
     this.options.geometry = geometry;
+    // Set new geometry to requestHandler
+    this.requestHandler.setGeometry(geometry);
     this.retrieveMissingData();
     this.updateChart();
   }
