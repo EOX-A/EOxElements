@@ -15,6 +15,8 @@ import {
   PointWithErrorBar,
 } from "chartjs-chart-error-bars";
 
+import { EventEmitter } from "events";
+
 Chart.register(
   LineWithErrorBarsController,
   LineWithErrorBarsChart,
@@ -62,7 +64,7 @@ export interface SDMOptions {
   additionalYAxis?: yAxisObject[];
 }
 
-class SignalsDataManager {
+class SignalsDataManager extends EventEmitter {
   chart: Chart;
   startTime: DateTime;
   endTime: DateTime;
@@ -75,6 +77,7 @@ class SignalsDataManager {
   additionalYAxis: yAxisObject[] | null;
 
   constructor(chart: Chart, options: SDMOptions) {
+    super();
     this.chart = chart;
     this.options = options;
     this.startTime = DateTime.now().minus(options.timeInterval);
@@ -185,7 +188,8 @@ class SignalsDataManager {
     const times = `${start ? "&start_date=" + start.toISODate() : ""}${
       end ? "&end_date=" + end.toISODate() : ""
     }`;
-    const request = `${this.options.endpoint}?source=${this.options.source}&${features}${times}`;
+    const source = this.options.source;
+    const request = `${this.options.endpoint}?source=${source}&${features}${times}`;
     const geom = this.options.geometry;
 
     async function fetchSignals() {
@@ -211,11 +215,16 @@ class SignalsDataManager {
         console.log(
           `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
         );
+        this.emit("failedAttempt", error, source);
       },
       retries: this.options.retries,
-    }).then(function (res) {
-      return res.json();
-    });
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .catch((error) => {
+        this.emit("errorRequest", error, source);
+      });
     this.checkLoadingStatus();
   }
 
@@ -399,6 +408,7 @@ class SignalsDataManager {
       datasets,
     };
     this.chart.update("none");
+    this.emit("chartupdated");
   }
 
   private retrieveMissingData() {

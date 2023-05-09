@@ -17,6 +17,17 @@ class ChartControls {
   ) {
     this.element = element;
     this.sdm = sdm;
+    this.sdm.on("chartupdated", () => {
+      console.log("Chart has been updated");
+    });
+    this.sdm.on("failedAttempt", (error, source) => {
+      console.log(source);
+      console.log(error);
+    });
+    this.sdm.on("errorRequest", (error, source) => {
+      console.log(source);
+      console.log(error);
+    });
     this.options = options;
     this.sdmOptions = sdmOptions;
     this.generateTimeAggregationOptions();
@@ -28,6 +39,12 @@ class ChartControls {
     spinner.id = "loadingIndicator";
     spinner.className = "loader hidden";
     this.element.appendChild(spinner);
+  }
+
+  private createMessagesElements() {
+    const messages = document.createElement("div");
+    messages.id = "messages";
+    this.element.appendChild(messages);
   }
 
   private removeStartEndInputs() {
