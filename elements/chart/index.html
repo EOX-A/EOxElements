@@ -17,8 +17,7 @@
         padding: 0;
       }
       html,
-      body,
-      .chart {
+      body {
         width: 100%;
         height: 100%;
       }
@@ -69,14 +68,21 @@
       .parsingError {
         background-color: #ff6d6d;
       }
-      #chart {
+      #chart-container {
         padding-top: 30px;
+        flex-basis: 80%;
+      }
+      #legend-container {
+        flex-basis: 20%;
       }
     </style>
   </head>
-  <body>
+  <body style="display: flex">
     <div id="controls" class="controls" data-cy="controls"></div>
-    <canvas id="chart" class="chart" data-cy="chart"></canvas>
+    <div id="chart-container">
+      <canvas id="chart" class="chart" data-cy="chart"></canvas>
+    </div>
+    <div id="legend-container"></div>
     <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
