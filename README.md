@@ -7,6 +7,7 @@ The main branch of this project contains the v2 version of EOxElements.
 For the (legacy v1) EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
 
 ## Setup
+
 ```
 npm install
 npm run cypress // open interactive cypress test utility
@@ -16,7 +17,9 @@ npm run lint:fix // lint:fix all elements
 ```
 
 ## Branch naming convention
+
 Inspired by [this article](https://betterprogramming.pub/enabling-monorepo-with-a-simple-single-github-repository-39bc6347abba#391d)
+
 ```
 main
 map/main
