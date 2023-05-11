@@ -1,5 +1,0 @@
-node_modules
-cypress/screenshots
-cypress/videos
-public/interface.mjs
-public/interface.umd.js
