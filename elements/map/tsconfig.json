@@ -6,6 +6,7 @@
     "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
     "strict": true,
+    "strictNullChecks": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noEmit": true,
@@ -13,7 +14,6 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
-    "typeRoots": ["./typings"],
     "types": ["cypress"]
   },
   "include": ["**/*.ts"]

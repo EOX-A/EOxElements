@@ -1,12 +1,18 @@
-# Chart widget
+# Map element
 
 ## Usage
 
 ```
-npm install
-npm run cypress (interactive mode)
-npm run test (cli mode)
+npm install @eox/map
 ```
+
+```
+import "@eox/map"
+
+<eox-map></eox-map>
+```
+
+// TODO: add documentation
 
 ## Contribute
 
