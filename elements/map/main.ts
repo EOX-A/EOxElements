@@ -2,6 +2,7 @@ import Map from "ol/Map.js";
 import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
+import { apply } from 'ol-mapbox-style';
 
 export class EOxMap extends HTMLElement {
   shadow: ShadowRoot;
@@ -13,9 +14,10 @@ export class EOxMap extends HTMLElement {
   map: Map;
 
   /**
-   * Dummy function, TODO
+   * Apply layers from Mapbox Style JSON
    */
   setLayers: Function;
+
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
@@ -49,7 +51,7 @@ export class EOxMap extends HTMLElement {
     });
 
     this.setLayers = (json: JSON) => {
-      console.log(json);
+      apply(this.map, json);
     };
 
     this.map.on("loadend", () => {

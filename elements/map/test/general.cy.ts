@@ -16,7 +16,6 @@ describe("Map", () => {
   it("should have one map layer", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      // const olMap = eoxMap.map;
       expect(eoxMap.map.getLayers().getArray()).to.have.lengthOf(1);
     });
   });
