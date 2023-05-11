@@ -29,10 +29,11 @@ export class EOxChart extends HTMLElement {
 
   constructor() {
     super();
-
     this.shadowRoot = this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
+  }
 
+  connectedCallback() {
     this.chart = new Chart(this.shadowRoot.querySelector("canvas"), {
       options: {
         maintainAspectRatio: false,
@@ -110,11 +111,6 @@ export class EOxChart extends HTMLElement {
       );
       sdmInstance.setActiveFields(options.active);
     };
-
-    // this.map.on("loadend", () => {
-    //   const loadEvt = new CustomEvent("loadend", { detail: { foo: "bar" } });
-    //   this.dispatchEvent(loadEvt);
-    // });
   }
 }
 
