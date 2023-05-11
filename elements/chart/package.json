@@ -1,6 +1,6 @@
 {
   "name": "@eox/chart",
-  "version": "2.0.0-alpha12",
+  "version": "2.0.0-alpha13",
   "type": "module",
   "dependencies": {
     "chart.js": "^4.2.1",
