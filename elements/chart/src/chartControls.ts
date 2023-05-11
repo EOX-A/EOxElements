@@ -24,38 +24,60 @@ class ChartControls {
     this.addShowMinMax();
     this.addCSVDownload();
     this.generateTimeSelectionOptions();
-    const spinner = document.createElement("span");
-    spinner.id = "loadingIndicator";
-    spinner.className = "loader hidden";
-    this.element.appendChild(spinner);
+    document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#controls").style.display = "flex";
+    document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#legend-container").style.display = "block";
+    document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#chart-container")
+      .classList.add("controls");
   }
 
   private removeStartEndInputs() {
-    const start = document.getElementById("startInput");
-    const end = document.getElementById("endInput");
-    const button = document.getElementById("setTime");
+    const start = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#startInput");
+    const end = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#endInput");
+    const button = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#setTime");
     if (start && end && button) {
-      start.remove();
-      end.remove();
-      button.remove();
+      start.style.display = "none";
+      end.style.display = "none";
+      button.style.display = "none";
     }
   }
   private addStartEndInputs() {
-    const startEl = document.createElement("input");
-    startEl.id = "startInput";
-    startEl.size = 8;
+    const startEl = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#startInput");
+    // startEl.id = "startInput";
+    // startEl.size = 8;
     startEl.value = this.sdm.startTime.toISODate();
-    const endEl = document.createElement("input");
-    endEl.id = "endInput";
-    endEl.size = 8;
+    startEl.style.display = "inline";
+    const endEl = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#endInput");
+    // endEl.id = "endInput";
+    // endEl.size = 8;
     endEl.value = this.sdm.endTime.toISODate();
-    this.element.appendChild(startEl);
-    this.element.appendChild(endEl);
-    var button = document.createElement("button");
-    button.id = "setTime";
-    button.textContent = "ok";
+    endEl.style.display = "inline";
+    // this.element.appendChild(startEl);
+    // this.element.appendChild(endEl);
+    // var button = document.createElement("button");
+    // button.id = "setTime";
+    // button.textContent = "ok";
 
-    this.element.appendChild(button);
+    // this.element.appendChild(button);
+    const button = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#setTime");
+    button.style.display = "inline";
     button.addEventListener("click", () => {
       const startDate = DateTime.fromISO(startEl.value);
       const endDate = DateTime.fromISO(endEl.value);
@@ -69,69 +91,78 @@ class ChartControls {
   }
 
   private addNormalizeCheckbox() {
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = "normalize";
-    checkbox.value = "normalize";
+    const checkbox = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#normalize");
+    // checkbox.type = "checkbox";
+    // checkbox.id = "normalize";
+    // checkbox.value = "normalize";
     checkbox.checked = this.sdmOptions.normalize;
 
-    var label = document.createElement("label");
-    label.htmlFor = "normalize";
-    label.appendChild(document.createTextNode("normalize"));
+    // var label = document.createElement("label");
+    // label.htmlFor = "normalize";
+    // label.appendChild(document.createTextNode("normalize"));
 
-    this.element.appendChild(label);
-    this.element.appendChild(checkbox);
+    // this.element.appendChild(label);
+    // this.element.appendChild(checkbox);
     checkbox.addEventListener("change", () => {
       this.sdm.setNormalize(checkbox.checked);
     });
   }
 
   private addShowMinMax() {
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = "showMinMax";
-    checkbox.value = "showMinMax";
+    const checkbox = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#showMinMax");
+    // var checkbox = document.createElement("input");
+    // checkbox.type = "checkbox";
+    // checkbox.id = "showMinMax";
+    // checkbox.value = "showMinMax";
     checkbox.checked = this.sdmOptions.showMinMax;
 
-    var label = document.createElement("label");
-    label.htmlFor = "showMinMax";
-    label.appendChild(document.createTextNode("show min/max"));
+    // var label = document.createElement("label");
+    // label.htmlFor = "showMinMax";
+    // label.appendChild(document.createTextNode("show min/max"));
 
-    this.element.appendChild(label);
-    this.element.appendChild(checkbox);
+    // this.element.appendChild(label);
+    // this.element.appendChild(checkbox);
     checkbox.addEventListener("change", () => {
       this.sdm.setShowMinMax(checkbox.checked);
     });
   }
 
   private addCSVDownload() {
-    var button = document.createElement("button");
-    button.id = "csvDownload";
-    button.textContent = "download csv";
+    const button = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#csvDownload");
+    // button.id = "csvDownload";
+    // button.textContent = "download csv";
 
-    this.element.appendChild(button);
+    // this.element.appendChild(button);
     button.addEventListener("click", () => {
       this.sdm.triggerCSVDownload();
     });
   }
 
   private generateTimeSelectionOptions() {
-    const options = [
-      { text: "3 months back", value: "month-3" },
-      { text: "6 months back", value: "month-6" },
-      { text: "1 year back", value: "year-1" },
-      { text: "2 years back", value: "year-2" },
-      { text: "3 years back", value: "year-3" },
-      { text: "custom", value: "custom" },
-    ];
-    const selectEl = document.createElement("select");
-    options.forEach((entry) => {
-      const option = document.createElement("option");
-      option.text = entry.text;
-      option.value = entry.value;
-      selectEl.appendChild(option);
-    });
-    this.element.appendChild(selectEl);
+    // const options = [
+    //   { text: "3 months back", value: "month-3" },
+    //   { text: "6 months back", value: "month-6" },
+    //   { text: "1 year back", value: "year-1" },
+    //   { text: "2 years back", value: "year-2" },
+    //   { text: "3 years back", value: "year-3" },
+    //   { text: "custom", value: "custom" },
+    // ];
+    const selectEl = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#dateSelect");
+    // options.forEach((entry) => {
+    //   const option = document.createElement("option");
+    //   option.text = entry.text;
+    //   option.value = entry.value;
+    //   selectEl.appendChild(option);
+    // });
+    // this.element.appendChild(selectEl);
     selectEl.addEventListener("change", (evt) => {
       const currDate = DateTime.now();
       const [type, val] = (evt.target as HTMLSelectElement).value.split("-");
@@ -157,22 +188,24 @@ class ChartControls {
   }
 
   private generateTimeAggregationOptions() {
-    const options = [
-      { text: "no aggregation", value: "none" },
-      { text: "1 week", value: "week-1" },
-      { text: "2 weeks", value: "week-2" },
-      { text: "1 month", value: "month-1" },
-      { text: "3 months", value: "month-3" },
-      { text: "6 months", value: "month-6" },
-    ];
-    const selectEl = document.createElement("select");
-    options.forEach((entry) => {
-      const option = document.createElement("option");
-      option.text = entry.text;
-      option.value = entry.value;
-      selectEl.appendChild(option);
-    });
-    this.element.appendChild(selectEl);
+    // const options = [
+    //   { text: "no aggregation", value: "none" },
+    //   { text: "1 week", value: "week-1" },
+    //   { text: "2 weeks", value: "week-2" },
+    //   { text: "1 month", value: "month-1" },
+    //   { text: "3 months", value: "month-3" },
+    //   { text: "6 months", value: "month-6" },
+    // ];
+    const selectEl = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#aggregationSelect");
+    // options.forEach((entry) => {
+    //   const option = document.createElement("option");
+    //   option.text = entry.text;
+    //   option.value = entry.value;
+    //   selectEl.appendChild(option);
+    // });
+    // this.element.appendChild(selectEl);
     selectEl.addEventListener("change", (evt) => {
       const [type, val] = (evt.target as HTMLSelectElement).value.split("-");
       switch (type) {
@@ -190,10 +223,6 @@ class ChartControls {
           break;
       }
     });
-    const spinner = document.createElement("span");
-    spinner.id = "loadingIndicator";
-    spinner.className = "loader hidden";
-    this.element.appendChild(spinner);
   }
 }
 
