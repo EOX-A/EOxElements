@@ -16,5 +16,12 @@
     "skipLibCheck": true,
     "types": ["cypress"]
   },
-  "include": ["**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.ce.vue"
+  ],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }
