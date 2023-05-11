@@ -177,12 +177,14 @@ class SignalsDataManager {
       },
     };
     // Adding possible additional y axis scales
-    for (let index = 0; index < this.additionalYAxis.length; index++) {
-      const scale = this.additionalYAxis[index];
-      this.chartOptions.scales[scale.id] = {
-        type: "linear",
-        position: "right",
-      };
+    if (this.additionalYAxis !== null) {
+      for (let index = 0; index < this.additionalYAxis.length; index++) {
+        const scale = this.additionalYAxis[index];
+        this.chartOptions.scales[scale.id] = {
+          type: "linear",
+          position: "right",
+        };
+      }
     }
   }
 
@@ -228,7 +230,6 @@ class SignalsDataManager {
                 Object.keys(dsEntry.data).length !== 0 &&
                 Object.keys(dsEntry.data).includes(key)
               ) {
-                console.log(dsEntry.data[key]);
                 dsEntry.data[key].forEach((dp) => {
                   const bstats = dp.basicStats;
                   if (this.options.showMinMax) {
