@@ -1,15 +1,15 @@
-# Map element
+# Chart element
 
 ## Usage
 
 ```
-npm install @eox/map
+npm install @eox/chart
 ```
 
 ```
-import "@eox/map"
+import "@eox/chart"
 
-<eox-map></eox-map>
+<eox-chart></eox-chart>
 ```
 
 // TODO: add documentation
@@ -17,6 +17,10 @@ import "@eox/map"
 ## Contribute
 
 ```
+npm watch
+(on root) npm run cypress
+(on root) npm run format
+
 npm version <new version>
 npm run build
 npm publish (requires OTP)

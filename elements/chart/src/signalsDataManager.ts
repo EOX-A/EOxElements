@@ -1,10 +1,10 @@
+// @ts-nocheck
 import Chart, {
   ChartDataset,
   LinearScale,
   CategoryScale,
   ChartOptions,
 } from "chart.js/auto";
-import pRetry, { AbortError } from "p-retry";
 import { DateTime } from "luxon";
 
 import {
@@ -14,6 +14,9 @@ import {
   ScatterWithErrorBarsController,
   PointWithErrorBar,
 } from "chartjs-chart-error-bars";
+
+import RequestHandler from "./requestHandler";
+import { endpointType } from "./requestHandler";
 
 Chart.register(
   LineWithErrorBarsController,
@@ -60,9 +63,12 @@ export interface SDMOptions {
   showMinMax?: boolean;
   colors?: string[];
   additionalYAxis?: yAxisObject[];
+  timeParameter?: string;
+  table?: string;
 }
 
 class SignalsDataManager {
+  type: endpointType;
   chart: Chart;
   startTime: DateTime;
   endTime: DateTime;
@@ -72,9 +78,11 @@ class SignalsDataManager {
   dataStorage: DSDict;
   status: status;
   activeFields: string[];
+  requestHandler: RequestHandler;
   additionalYAxis: yAxisObject[] | null;
 
-  constructor(chart: Chart, options: SDMOptions) {
+  constructor(type: endpointType, chart: Chart, options: SDMOptions) {
+    this.type = type;
     this.chart = chart;
     this.options = options;
     this.startTime = DateTime.now().minus(options.timeInterval);
@@ -100,8 +108,26 @@ class SignalsDataManager {
     this.dataStorage = {};
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
+    // Initialize request builder
+    this.requestHandler = new RequestHandler(
+      type,
+      this.options.endpoint,
+      this.options.features,
+      this.options.retries,
+      this.options.source,
+      this.options.table,
+      this.options.geometry,
+      this.options.timeParameter
+    );
     this.status = "ready";
     this.chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 30,
+        },
+      },
       scales: {
         x: {
           type: "time",
@@ -119,14 +145,10 @@ class SignalsDataManager {
         intersect: false,
       },
       plugins: {
-        legend: {
-          labels: {
-            usePointStyle: true,
-            pointStyle: "rect",
-            padding: 5,
-            sort: (a, b) => a.text.localeCompare(b.text),
-          },
-          position: "right",
+        // @ts-ignore
+        htmlLegend: {
+          containerID: "legend-container",
+          // @ts-ignore
           onClick: (_, legendItem) => {
             if (!legendItem.hidden) {
               const idx = this.activeFields.indexOf(legendItem.text);
@@ -138,6 +160,26 @@ class SignalsDataManager {
             }
           },
         },
+        legend: {
+          display: false,
+          // labels: {
+          //   usePointStyle: true,
+          //   pointStyle: "rect",
+          //   padding: 0,
+          //   sort: (a, b) => a.text.localeCompare(b.text),
+          // },
+          // position: "right",
+          // onClick: (_, legendItem) => {
+          //   if (!legendItem.hidden) {
+          //     const idx = this.activeFields.indexOf(legendItem.text);
+          //     const keys = this.activeFields;
+          //     keys.splice(idx, 1);
+          //     this.setActiveFields(keys);
+          //   } else {
+          //     this.setActiveFields([...this.activeFields, legendItem.text]);
+          //   }
+          // },
+        },
         tooltip: {
           callbacks: {
             title: (tooltipItem) => {
@@ -146,26 +188,34 @@ class SignalsDataManager {
             },
             label: (tooltipItem) => {
               const raw: any = tooltipItem.raw;
+              const minString =
+                raw.yMin !== null ? `; ↓ ${raw.yMin.toPrecision(3)}` : "";
+              const maxString =
+                raw.yMax !== null ? `, ↑ ${raw.yMax.toPrecision(3)}` : "";
               return `${tooltipItem.dataset.label}: ↔ ${raw.y.toPrecision(
                 3
-              )}; ↓ ${raw.yMin.toPrecision(3)}, ↑ ${raw.yMax.toPrecision(3)}`;
+              )}${minString}${maxString}`;
             },
           },
         },
       },
     };
     // Adding possible additional y axis scales
-    for (let index = 0; index < this.additionalYAxis.length; index++) {
-      const scale = this.additionalYAxis[index];
-      this.chartOptions.scales[scale.id] = {
-        type: "linear",
-        position: "right",
-      };
+    if (this.additionalYAxis !== null) {
+      for (let index = 0; index < this.additionalYAxis.length; index++) {
+        const scale = this.additionalYAxis[index];
+        this.chartOptions.scales[scale.id] = {
+          type: "linear",
+          position: "right",
+        };
+      }
     }
   }
 
   private checkLoadingStatus() {
-    const spinner = document.getElementById("loadingIndicator");
+    const spinner = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#loadingIndicator");
     let loading = false;
     // TODO: Showing when error state happened
     Object.keys(this.dataStorage).forEach((_, groupIdx) => {
@@ -176,47 +226,6 @@ class SignalsDataManager {
       });
     });
     spinner.className = loading ? "loader" : "loader hidden";
-  }
-
-  private fetchSignals(groupIndex: number, start?: DateTime, end?: DateTime) {
-    const features = this.options.features[groupIndex]
-      .map((f) => `feature=${f}`)
-      .join("&");
-    const times = `${start ? "&start_date=" + start.toISODate() : ""}${
-      end ? "&end_date=" + end.toISODate() : ""
-    }`;
-    const request = `${this.options.endpoint}?source=${this.options.source}&${features}${times}`;
-    const geom = this.options.geometry;
-
-    async function fetchSignals() {
-      const response = await fetch(request, {
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        method: "POST",
-        mode: "cors",
-        body: JSON.stringify({
-          geometry: geom,
-        }),
-      });
-      // Abort retrying if the resource doesn't exist
-      if (response.status === 404) {
-        throw new AbortError(response.statusText);
-      }
-      if (response.status !== 200) {
-        throw Error(response.statusText);
-      }
-      return response;
-    }
-    return pRetry(fetchSignals, {
-      onFailedAttempt: (error) => {
-        console.log(
-          `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
-        );
-      },
-      retries: this.options.retries,
-    }).then(function (res) {
-      return res.json();
-    });
-    this.checkLoadingStatus();
   }
 
   private updateChart() {
@@ -236,14 +245,46 @@ class SignalsDataManager {
           date: string;
           basicStats?: { mean: number; min: number; max: number };
         }[] = [];
+        let totalMin = Number.MAX_VALUE;
+        let totalMax = Number.MIN_VALUE;
         Object.keys(this.dataStorage[groupIndex]).forEach((timekey) => {
           const dsEntry = this.dataStorage[groupIndex][timekey];
           if (dsEntry.status === "finished") {
-            if (
-              Object.keys(dsEntry.data).length !== 0 &&
-              Object.keys(dsEntry.data).includes(key)
-            ) {
-              data.push(...dsEntry.data[key]);
+            // TODO: We should handle data extraction through an interface
+            if (this.type === "signals") {
+              if (
+                Object.keys(dsEntry.data).length !== 0 &&
+                Object.keys(dsEntry.data).includes(key)
+              ) {
+                dsEntry.data[key].forEach((dp) => {
+                  const bstats = dp.basicStats;
+                  if (this.options.showMinMax) {
+                    totalMin = bstats.min < totalMin ? bstats.min : totalMin;
+                    totalMax = bstats.max > totalMax ? bstats.max : totalMax;
+                  } else {
+                    totalMin = bstats.mean < totalMin ? bstats.mean : totalMin;
+                    totalMax = bstats.mean > totalMax ? bstats.mean : totalMax;
+                  }
+                });
+                data.push(...dsEntry.data[key]);
+              }
+            }
+            if (this.type === "geodb") {
+              if (Object.keys(dsEntry.data).length !== 0) {
+                const dataForKey = dsEntry.data.map((dp) => {
+                  if (dp[key] !== null) {
+                    totalMin = dp[key] < totalMin ? dp[key] : totalMin;
+                    totalMax = dp[key] > totalMax ? dp[key] : totalMax;
+                  }
+                  return {
+                    date: dp[this.options.timeParameter],
+                    basicStats: {
+                      mean: dp[key],
+                    },
+                  };
+                });
+                data.push(...dataForKey);
+              }
             }
           } else {
             data.push({ date: "missing" });
@@ -251,33 +292,21 @@ class SignalsDataManager {
         });
 
         let actualDataAdded = false;
-        let max = Number.MIN_VALUE;
-        let min = Number.MAX_VALUE;
-        let signalData = <any>data.map((datapoint) => {
-          let ds = {};
-          if (datapoint && datapoint.date !== "missing") {
-            const stats = datapoint.basicStats;
-            if (this.options.showMinMax) {
-              min = stats.min < min ? stats.min : min;
-              max = stats.max > max ? stats.max : max;
-            } else {
-              min = stats.mean < min ? stats.mean : min;
-              max = stats.mean > max ? stats.mean : max;
-            }
-            ds = {
-              x: DateTime.fromISO(datapoint.date).setZone("UTC"),
-              y: datapoint.basicStats.mean,
-              yMin: datapoint.basicStats.min,
-              yMax: datapoint.basicStats.max,
-            };
-            actualDataAdded = true;
-          }
-          return ds;
-        });
+        let signalData = <any>(
+          data.map((datapoint) => this.requestHandler.convertData(datapoint))
+        );
+        // Probably best to always sort by time
+        signalData.sort((a, b) => a.x - b.x);
+        if (signalData.length > 0) {
+          actualDataAdded = true;
+        }
         if (actualDataAdded && this.timeAggregation) {
           // If we aggregate data we recalculate min max so we reset it
-          max = Number.MIN_VALUE;
-          min = Number.MAX_VALUE;
+          let max = Number.MIN_VALUE;
+          let min = Number.MAX_VALUE;
+          // Reset total as we want to re-evaluate it
+          totalMin = Number.MAX_VALUE;
+          totalMax = Number.MIN_VALUE;
           const aggrData = [];
           let currDataIdx = 0;
           let currDate = DateTime.fromObject({
@@ -287,8 +316,7 @@ class SignalsDataManager {
           });
           while (currDate < this.endTime) {
             let dataSum = 0;
-            let minSum = 0;
-            let maxSum = 0;
+            let dataAdded = false;
             while (
               currDataIdx < signalData.length &&
               (Object.keys(signalData[currDataIdx]).length === 0 ||
@@ -304,31 +332,37 @@ class SignalsDataManager {
             ) {
               const sd = signalData[currDataIdx];
               dataSum += sd.y;
-              minSum += sd.yMin;
-              maxSum += sd.yMax;
+              // We take the maximum of either the data value or the max value
+              max = sd.y !== null && sd.y > max ? sd.y : max;
+              max = sd.yMax !== null && sd.yMax > max ? sd.yMax : max;
+              // Same for min
+              min = sd.y !== null && sd.y < min ? sd.y : min;
+              min = sd.yMin !== null && sd.yMin < min ? sd.yMin : min;
               currDataIdx++;
+              dataAdded = true;
             }
             const x2 = currDataIdx;
             const count = x2 - x1;
             // If datapoints are within the interval we push the aggregation to the aggregated data
-            if (count > 0) {
+            if (count > 0 && dataAdded) {
               const yMean = dataSum / count;
-              const yMinMean = minSum / count;
-              const yMaxMean = maxSum / count;
+              // Save total min/max considering if min max is being shown or not
               if (this.options.showMinMax) {
-                min = yMinMean < min ? yMinMean : min;
-                max = yMaxMean > max ? yMaxMean : max;
+                totalMin = min < totalMin ? min : totalMin;
+                totalMax = max > totalMax ? max : totalMax;
               } else {
-                min = yMean < min ? yMean : min;
-                max = yMean > max ? yMean : max;
+                totalMin = yMean < totalMin ? yMean : totalMin;
+                totalMax = yMean > totalMax ? yMean : totalMax;
               }
               // TODO: can we save a time interval here?
               aggrData.push({
                 x: currDate,
                 y: yMean,
-                yMin: yMinMean,
-                yMax: yMaxMean,
+                yMin: min,
+                yMax: max,
               });
+              max = Number.MIN_VALUE;
+              min = Number.MAX_VALUE;
             }
             currDate = currDate.plus(this.timeAggregation);
           }
@@ -336,11 +370,16 @@ class SignalsDataManager {
         }
 
         if (actualDataAdded && this.options.normalize) {
+          const extent = totalMax - totalMin;
           signalData = signalData.map(
             (dp: { x: DateTime; y: number; yMin: number; yMax: number }) => {
-              dp.y = (dp.y - min) / (max - min);
-              dp.yMin = (dp.yMin - min) / (max - min);
-              dp.yMax = (dp.yMax - min) / (max - min);
+              if (dp.y !== null) {
+                dp.y = (dp.y - totalMin) / extent;
+              } else {
+                dp.y = null;
+              }
+              dp.yMin = (dp.yMin - totalMin) / extent;
+              dp.yMax = (dp.yMax - totalMin) / extent;
               return dp;
             }
           );
@@ -433,16 +472,20 @@ class SignalsDataManager {
       signalGroupIndices.forEach((index) => {
         if (!(timeslot in this.dataStorage[index])) {
           // request data
-          const request = this.fetchSignals(
-            index,
-            DateTime.fromObject({ year: currDate.year, month: currDate.month }),
-            DateTime.fromObject({
-              year: currDate.year,
-              month: currDate.month,
-            })
-              .plus({ month: 1 })
-              .minus({ second: 1 })
-          )
+          const request = this.requestHandler
+            .fetchData(
+              index,
+              DateTime.fromObject({
+                year: currDate.year,
+                month: currDate.month,
+              }),
+              DateTime.fromObject({
+                year: currDate.year,
+                month: currDate.month,
+              })
+                .plus({ month: 1 })
+                .minus({ second: 1 })
+            )
             .then((data) => {
               this.dataStorage[index][timeslot].data = data;
               this.dataStorage[index][timeslot].status = "finished";
@@ -540,7 +583,7 @@ class SignalsDataManager {
       csv += row.join(",");
       csv += "\n";
     });
-    var hiddenElement = document.createElement("a");
+    const hiddenElement = document.createElement("a");
     hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
     hiddenElement.target = "_blank";
     hiddenElement.download = "chart_data.csv";
@@ -553,6 +596,8 @@ class SignalsDataManager {
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
     this.options.geometry = geometry;
+    // Set new geometry to requestHandler
+    this.requestHandler.setGeometry(geometry);
     this.retrieveMissingData();
     this.updateChart();
   }
