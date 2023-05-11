@@ -1,12 +1,18 @@
-# Chart widget
+# Chart element
 
 ## Usage
 
 ```
-npm install
-npm run cypress (interactive mode)
-npm run test (cli mode)
+npm install @eox/chart
 ```
+
+```
+import "@eox/chart"
+
+<eox-chart></eox-chart>
+```
+
+// TODO: add documentation
 
 ## Contribute
 
