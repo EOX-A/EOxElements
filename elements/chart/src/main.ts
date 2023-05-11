@@ -27,6 +27,8 @@ export class EOxChart extends HTMLElement {
 
   setSignalsEndpoint: Function;
 
+  setSignalsGeometry: Function;
+
   constructor() {
     super();
     this.shadowRoot = this.attachShadow({ mode: "open" });
@@ -90,6 +92,12 @@ export class EOxChart extends HTMLElement {
         }),
       };
       this.chart.update("none");
+    };
+
+    this.setSignalsGeometry = (geometry: object) => {
+      if (sdmInstance) {
+        sdmInstance.setGeometry(geometry);
+      }
     };
 
     let sdmInstance: SignalsDataManager | null = null;
