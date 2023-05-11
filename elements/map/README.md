@@ -1,16 +1,26 @@
-# Map widget
+# Map element
 
 ## Usage
 
 ```
-npm install
-npm run cypress (interactive mode)
-npm run test (cli mode)
+npm install @eox/map
 ```
+
+```
+import "@eox/map"
+
+<eox-map></eox-map>
+```
+
+// TODO: add documentation
 
 ## Contribute
 
 ```
+npm watch
+(on root) npm run cypress
+(on root) npm run format
+
 npm version <new version>
 npm run build
 npm publish (requires OTP)

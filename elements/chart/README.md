@@ -17,6 +17,10 @@ import "@eox/chart"
 ## Contribute
 
 ```
+npm watch
+(on root) npm run cypress
+(on root) npm run format
+
 npm version <new version>
 npm run build
 npm publish (requires OTP)
