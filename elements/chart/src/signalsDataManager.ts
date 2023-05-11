@@ -123,6 +123,11 @@ class SignalsDataManager {
     this.chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
+      layout: {
+        padding: {
+          top: 30,
+        },
+      },
       scales: {
         x: {
           type: "time",

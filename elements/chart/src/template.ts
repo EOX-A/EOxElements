@@ -1,5 +1,8 @@
 export const chartTemplate = `
 <style>
+:host {
+  font-size: small;
+}
 .hidden {
   visibility: hidden;
 }
@@ -51,12 +54,11 @@ export const chartTemplate = `
     width: 100%; height: 100%;
 }
 #chart-container.controls {
-  padding-top: 30px;
-  flex-basis: 80%;
+  flex-basis: 85%;
   width: unset;
 }
 #legend-container {
-  flex-basis: 20%;
+  flex-basis: 15%;
 }
 </style>
 <div style="display: flex; width: 100%; height: 100%;">

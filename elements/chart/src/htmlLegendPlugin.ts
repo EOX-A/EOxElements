@@ -5,6 +5,8 @@ const getOrCreateLegendList = (chart, id) => {
     .shadowRoot.getElementById(id);
   if (!legendContainer) return;
 
+  legendContainer.style.overflowY = "auto";
+
   let listContainer = legendContainer.querySelector("ul");
 
   if (!listContainer) {
@@ -12,7 +14,7 @@ const getOrCreateLegendList = (chart, id) => {
     listContainer.style.display = "flex";
     listContainer.style.flexDirection = "column";
     listContainer.style.margin = 0;
-    listContainer.style.padding = "20px";
+    listContainer.style.padding = "10px";
 
     legendContainer.appendChild(listContainer);
   }
