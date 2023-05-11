@@ -68,7 +68,7 @@ const onMessage = (event: MessageEvent) => {
         setGeoDBEndpoint(event.data.body.options);
         break;
       case "setSignalsGeometry":
-        setSignalsGeometry(event.data.body.options);
+        setSignalsGeometry(event.data.body.geometry);
         break;
       case "setSignalsData":
         eoxchart.data = {

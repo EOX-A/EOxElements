@@ -28,7 +28,6 @@ Chart.register(
 );
 
 type status = "ready" | "loading" | "error";
-
 interface DSDict {
   [key: number]: {
     [key: string]: {
@@ -44,6 +43,11 @@ interface DSDict {
   };
 }
 
+interface yAxisObject {
+  id: "string";
+  containedSignals: string[];
+}
+
 export interface SDMOptions {
   source: string;
   endpoint: string;
@@ -57,6 +61,7 @@ export interface SDMOptions {
   normalize?: boolean;
   showMinMax?: boolean;
   colors?: string[];
+  additionalYAxis?: yAxisObject[];
   timeParameter?: string;
   table?: string;
 }
@@ -73,6 +78,7 @@ class SignalsDataManager {
   status: status;
   activeFields: string[];
   requestHandler: RequestHandler;
+  additionalYAxis: yAxisObject[] | null;
 
   constructor(type: endpointType, chart: Chart, options: SDMOptions) {
     this.type = type;
@@ -95,6 +101,9 @@ class SignalsDataManager {
     this.options.showMinMax = this.options.showMinMax
       ? this.options.showMinMax
       : false;
+    this.additionalYAxis = this.options.additionalYAxis
+      ? this.options.additionalYAxis
+      : null;
     this.dataStorage = {};
     // Initialize data storage
     this.options.features.forEach((_, idx) => (this.dataStorage[idx] = {}));
@@ -163,7 +172,16 @@ class SignalsDataManager {
         },
       },
     };
+    // Adding possible additional y axis scales
+    for (let index = 0; index < this.additionalYAxis.length; index++) {
+      const scale = this.additionalYAxis[index];
+      this.chartOptions.scales[scale.id] = {
+        type: "linear",
+        position: "right",
+      };
+    }
   }
+
   private checkLoadingStatus() {
     const spinner = document.getElementById("loadingIndicator");
     let loading = false;
@@ -342,6 +360,15 @@ class SignalsDataManager {
               backgroundColor: color,
               borderColor: color,
             };
+          }
+        }
+        // Check if additional y axis should be used
+        if (this.additionalYAxis !== null) {
+          for (let index = 0; index < this.additionalYAxis.length; index++) {
+            const axis = this.additionalYAxis[index];
+            if (axis.containedSignals.includes(key)) {
+              ds.yAxisID = axis.id;
+            }
           }
         }
         datasets.push(ds);

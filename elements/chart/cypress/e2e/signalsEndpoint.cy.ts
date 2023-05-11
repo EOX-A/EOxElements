@@ -38,6 +38,16 @@ describe("shDisplay", () => {
             ],
             ["s3_ndvi", "s3_otci", "s2_lai", "s2_fapar"],
           ],
+          additionalYAxis: [
+            {
+              id: "add1",
+              containedSignals: ["modis_ndwi"],
+            },
+            {
+              id: "add2",
+              containedSignals: ["modis_savi"],
+            },
+          ],
           colors: [
             "#ff0029",
             "#377eb8",
@@ -64,7 +74,7 @@ describe("shDisplay", () => {
           ],
           // retries: 5,
           // normalize: true,
-          active: ["modis_ndvi"],
+          active: ["modis_ndvi", "modis_ndwi", "modis_savi"],
           // timeAggregation: { week: 1 },
           timeInterval: {
             months: 3,
