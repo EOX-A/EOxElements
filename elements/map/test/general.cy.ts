@@ -1,3 +1,5 @@
+import { EOxMap } from "../main";
+
 describe("Map", () => {
   beforeEach(() => {
     cy.visit("/elements/map/test/general.html");
@@ -13,8 +15,9 @@ describe("Map", () => {
 
   it("should have one map layer", () => {
     cy.get("eox-map").should(($el) => {
-      const olMap = $el[0].map;
-      expect(olMap.getLayers().getArray()).to.have.lengthOf(1);
+      const eoxMap = <EOxMap>$el[0];
+      // const olMap = eoxMap.map;
+      expect(eoxMap.map.getLayers().getArray()).to.have.lengthOf(1);
     });
   });
 

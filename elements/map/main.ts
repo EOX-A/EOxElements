@@ -3,7 +3,19 @@ import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
 
-class OLComponent extends HTMLElement {
+export class EOxMap extends HTMLElement {
+  shadow: ShadowRoot;
+
+  /**
+   * The native OpenLayers map object.
+   * See [https://openlayers.org/en/latest/apidoc/](https://openlayers.org/en/latest/apidoc/)
+   */
+  map: Map;
+
+  /**
+   * Dummy function, TODO
+   */
+  setLayers: Function;
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
@@ -36,8 +48,8 @@ class OLComponent extends HTMLElement {
       }),
     });
 
-    this.setLayers = (json) => {
-      //
+    this.setLayers = (json: JSON) => {
+      console.log(json);
     };
 
     this.map.on("loadend", () => {
@@ -47,4 +59,4 @@ class OLComponent extends HTMLElement {
   }
 }
 
-customElements.define("eox-map", OLComponent);
+customElements.define("eox-map", EOxMap);
