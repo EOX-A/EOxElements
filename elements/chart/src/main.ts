@@ -66,6 +66,9 @@ const onMessage = (event: MessageEvent) => {
       case "setSignalsEndpoint":
         setSignalsEndpoint(event.data.body.options);
         break;
+      case "setGeoDBEndpoint":
+        setGeoDBEndpoint(event.data.body.options);
+        break;
       case "setSignalsGeometry":
         setSignalsGeometry(event.data.body.geometry);
         break;
@@ -91,6 +94,23 @@ const onMessage = (event: MessageEvent) => {
   }
 };
 
+const setGeoDBEndpoint = (options: {
+  source: string;
+  endpoint: string;
+  table: string;
+  active: string[];
+  features: string[][];
+  geometry: object;
+  timeInterval: object;
+  startTime?: string;
+  endTime?: string;
+  timeParameter?: string;
+}) => {
+  sdmInstance = new SignalsDataManager("geodb", eoxchart, options);
+  new ChartControls(document.getElementById("controls"), sdmInstance, options);
+  sdmInstance.setActiveFields(options.active);
+};
+
 const setSignalsEndpoint = (options: {
   source: string;
   endpoint: string;
@@ -101,7 +121,7 @@ const setSignalsEndpoint = (options: {
   startTime?: string;
   endTime?: string;
 }) => {
-  sdmInstance = new SignalsDataManager(eoxchart, options);
+  sdmInstance = new SignalsDataManager("signals", eoxchart, options);
   new ChartControls(document.getElementById("controls"), sdmInstance, options);
   sdmInstance.setActiveFields(options.active);
 };

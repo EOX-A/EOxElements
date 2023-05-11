@@ -59,6 +59,16 @@ describe("shDisplay", () => {
               containedSignals: ["modis_savi"],
             },
           ],
+          additionalYAxis: [
+            {
+              id: "add1",
+              containedSignals: ["modis_ndwi"],
+            },
+            {
+              id: "add2",
+              containedSignals: ["modis_savi"],
+            },
+          ],
           colors: [
             "#ff0029",
             "#377eb8",

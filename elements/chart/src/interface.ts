@@ -27,6 +27,20 @@ class EOxChart {
   }) {
     port1.postMessage({ type: "setSignalsEndpoint", body: { options } });
   }
+  setGeoDBEndpoint(options: {
+    endpoint: string;
+    source: string;
+    active: string[];
+    features: string[][];
+    timeInterval: object;
+    geometry?: object;
+    startTime?: string;
+    endTime?: string;
+    colors?: string[];
+    timeParameter?: string;
+  }) {
+    port1.postMessage({ type: "setGeoDBEndpoint", body: { options } });
+  }
   setSignalsGeometry(geometry: object) {
     port1.postMessage({ type: "setSignalsGeometry", body: { geometry } });
   }
