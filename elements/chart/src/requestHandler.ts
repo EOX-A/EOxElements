@@ -135,55 +135,28 @@ class RequestHandler {
 
   private convertSignals(datapoint: object) {
     let ds = {};
-
     const stats = datapoint.basicStats;
-    /*
-      if (this.options.showMinMax) {
-        min = stats.min < min ? stats.min : min;
-        max = stats.max > max ? stats.max : max;
-      } else {
-        min = stats.mean < min ? stats.mean : min;
-        max = stats.mean > max ? stats.mean : max;
-      }
-    */
     if (datapoint && datapoint.date !== "missing") {
       ds = {
         x: DateTime.fromISO(datapoint.date).setZone("UTC"),
-        y: datapoint.basicStats.mean,
-        yMin: 0,
-        yMax: 0,
-        // yMin: datapoint.basicStats.min,
-        // yMax: datapoint.basicStats.max,
+        y: stats.mean,
+        yMin: stats.min,
+        yMax: stats.max,
       };
     }
-    //actualDataAdded = true;
     return ds;
   }
 
   private convertGeoDBData(datapoint: object) {
     let ds = {};
-
-    const stats = datapoint.basicStats;
-    /*
-      if (this.options.showMinMax) {
-        min = stats.min < min ? stats.min : min;
-        max = stats.max > max ? stats.max : max;
-      } else {
-        min = stats.mean < min ? stats.mean : min;
-        max = stats.mean > max ? stats.mean : max;
-      }
-    */
     if (datapoint && datapoint.date !== "missing") {
       ds = {
         x: DateTime.fromISO(datapoint.date).setZone("UTC"),
         y: datapoint.basicStats.mean,
-        yMin: 0,
-        yMax: 0,
-        // yMin: datapoint.basicStats.min,
-        // yMax: datapoint.basicStats.max,
+        yMin: null,
+        yMax: null,
       };
     }
-    //actualDataAdded = true;
     return ds;
   }
 

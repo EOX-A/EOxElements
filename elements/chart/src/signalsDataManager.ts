@@ -155,9 +155,13 @@ class SignalsDataManager {
             },
             label: (tooltipItem) => {
               const raw: any = tooltipItem.raw;
+              const minString =
+                raw.yMin !== null ? `; ↓ ${raw.yMin.toPrecision(3)}` : "";
+              const maxString =
+                raw.yMax !== null ? `, ↑ ${raw.yMax.toPrecision(3)}` : "";
               return `${tooltipItem.dataset.label}: ↔ ${raw.y.toPrecision(
                 3
-              )}; ↓ ${raw.yMin.toPrecision(3)}, ↑ ${raw.yMax.toPrecision(3)}`;
+              )}${minString}${maxString}`;
             },
           },
         },
@@ -195,6 +199,8 @@ class SignalsDataManager {
           date: string;
           basicStats?: { mean: number; min: number; max: number };
         }[] = [];
+        let totalMin = Number.MAX_VALUE;
+        let totalMax = Number.MIN_VALUE;
         Object.keys(this.dataStorage[groupIndex]).forEach((timekey) => {
           const dsEntry = this.dataStorage[groupIndex][timekey];
           if (dsEntry.status === "finished") {
@@ -204,17 +210,34 @@ class SignalsDataManager {
                 Object.keys(dsEntry.data).length !== 0 &&
                 Object.keys(dsEntry.data).includes(key)
               ) {
+                console.log(dsEntry.data[key]);
+                dsEntry.data[key].forEach((dp) => {
+                  const bstats = dp.basicStats;
+                  if (this.options.showMinMax) {
+                    totalMin = bstats.min < totalMin ? bstats.min : totalMin;
+                    totalMax = bstats.max > totalMax ? bstats.max : totalMax;
+                  } else {
+                    totalMin = bstats.mean < totalMin ? bstats.mean : totalMin;
+                    totalMax = bstats.mean > totalMax ? bstats.mean : totalMax;
+                  }
+                });
                 data.push(...dsEntry.data[key]);
               }
             }
             if (this.type === "geodb") {
               if (Object.keys(dsEntry.data).length !== 0) {
-                const dataForKey = dsEntry.data.map((dp) => ({
-                  date: dp[this.options.timeParameter],
-                  basicStats: {
-                    mean: dp[key],
-                  },
-                }));
+                const dataForKey = dsEntry.data.map((dp) => {
+                  if (dp[key] !== null) {
+                    totalMin = dp[key] < totalMin ? dp[key] : totalMin;
+                    totalMax = dp[key] > totalMax ? dp[key] : totalMax;
+                  }
+                  return {
+                    date: dp[this.options.timeParameter],
+                    basicStats: {
+                      mean: dp[key],
+                    },
+                  };
+                });
                 data.push(...dataForKey);
               }
             }
@@ -224,8 +247,6 @@ class SignalsDataManager {
         });
 
         let actualDataAdded = false;
-        let max = Number.MIN_VALUE;
-        let min = Number.MAX_VALUE;
         let signalData = <any>(
           data.map((datapoint) => this.requestHandler.convertData(datapoint))
         );
@@ -236,8 +257,11 @@ class SignalsDataManager {
         }
         if (actualDataAdded && this.timeAggregation) {
           // If we aggregate data we recalculate min max so we reset it
-          max = Number.MIN_VALUE;
-          min = Number.MAX_VALUE;
+          let max = Number.MIN_VALUE;
+          let min = Number.MAX_VALUE;
+          // Reset total as we want to re-evaluate it
+          totalMin = Number.MAX_VALUE;
+          totalMax = Number.MIN_VALUE;
           const aggrData = [];
           let currDataIdx = 0;
           let currDate = DateTime.fromObject({
@@ -247,8 +271,6 @@ class SignalsDataManager {
           });
           while (currDate < this.endTime) {
             let dataSum = 0;
-            let minSum = 0;
-            let maxSum = 0;
             let dataAdded = false;
             while (
               currDataIdx < signalData.length &&
@@ -265,8 +287,12 @@ class SignalsDataManager {
             ) {
               const sd = signalData[currDataIdx];
               dataSum += sd.y;
-              minSum += sd.yMin;
-              maxSum += sd.yMax;
+              // We take the maximum of either the data value or the max value
+              max = sd.y !== null && sd.y > max ? sd.y : max;
+              max = sd.yMax !== null && sd.yMax > max ? sd.yMax : max;
+              // Same for min
+              min = sd.y !== null && sd.y < min ? sd.y : min;
+              min = sd.yMin !== null && sd.yMin < min ? sd.yMin : min;
               currDataIdx++;
               dataAdded = true;
             }
@@ -275,22 +301,23 @@ class SignalsDataManager {
             // If datapoints are within the interval we push the aggregation to the aggregated data
             if (count > 0 && dataAdded) {
               const yMean = dataSum / count;
-              const yMinMean = minSum / count;
-              const yMaxMean = maxSum / count;
+              // Save total min/max considering if min max is being shown or not
               if (this.options.showMinMax) {
-                min = yMinMean < min ? yMinMean : min;
-                max = yMaxMean > max ? yMaxMean : max;
+                totalMin = min < totalMin ? min : totalMin;
+                totalMax = max > totalMax ? max : totalMax;
               } else {
-                min = yMean < min ? yMean : min;
-                max = yMean > max ? yMean : max;
+                totalMin = yMean < totalMin ? yMean : totalMin;
+                totalMax = yMean > totalMax ? yMean : totalMax;
               }
               // TODO: can we save a time interval here?
               aggrData.push({
                 x: currDate,
                 y: yMean,
-                yMin: yMinMean,
-                yMax: yMaxMean,
+                yMin: min,
+                yMax: max,
               });
+              max = Number.MIN_VALUE;
+              min = Number.MAX_VALUE;
             }
             currDate = currDate.plus(this.timeAggregation);
           }
@@ -298,11 +325,16 @@ class SignalsDataManager {
         }
 
         if (actualDataAdded && this.options.normalize) {
+          const extent = totalMax - totalMin;
           signalData = signalData.map(
             (dp: { x: DateTime; y: number; yMin: number; yMax: number }) => {
-              dp.y = (dp.y - min) / (max - min);
-              dp.yMin = (dp.yMin - min) / (max - min);
-              dp.yMax = (dp.yMax - min) / (max - min);
+              if (dp.y !== null) {
+                dp.y = (dp.y - totalMin) / extent;
+              } else {
+                dp.y = null;
+              }
+              dp.yMin = (dp.yMin - totalMin) / extent;
+              dp.yMax = (dp.yMax - totalMin) / extent;
               return dp;
             }
           );
