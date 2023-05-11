@@ -9,7 +9,7 @@ npm install @eox/chart
 ```
 import "@eox/chart"
 
-<eox-chart></eoxchart>
+<eox-chart></eox-chart>
 ```
 
 // TODO: add documentation
