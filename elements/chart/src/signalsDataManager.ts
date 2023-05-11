@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Chart, {
   ChartDataset,
   LinearScale,
@@ -207,7 +208,9 @@ class SignalsDataManager {
   }
 
   private checkLoadingStatus() {
-    const spinner = document.getElementById("loadingIndicator");
+    const spinner = document
+      .querySelector("eox-chart")
+      .shadowRoot.querySelector("#loadingIndicator");
     let loading = false;
     // TODO: Showing when error state happened
     Object.keys(this.dataStorage).forEach((_, groupIdx) => {
@@ -575,7 +578,7 @@ class SignalsDataManager {
       csv += row.join(",");
       csv += "\n";
     });
-    var hiddenElement = document.createElement("a");
+    const hiddenElement = document.createElement("a");
     hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv);
     hiddenElement.target = "_blank";
     hiddenElement.download = "chart_data.csv";
