@@ -1,0 +1,16 @@
+{
+  "name": "@eox/elements",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "cypress": "cypress open",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js,.ts .",
+    "lint:fix": "eslint --ext .js,.ts . --fix"
+  },
+  "devDependencies": {
+    "@eox/eslint-config": "^1.0.0",
+    "cypress": "^12.12.0"
+  }
+}

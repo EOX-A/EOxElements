@@ -2,6 +2,7 @@ import Chart, { ChartDataset } from "chart.js/auto";
 import "chartjs-adapter-luxon";
 import SignalsDataManager from "./signalsDataManager";
 import ChartControls from "./chartControls";
+import { htmlLegendPlugin } from "./htmlLegendPlugin";
 
 const eoxchart = new Chart(
   <HTMLCanvasElement>document.getElementById("chart"),
@@ -11,6 +12,7 @@ const eoxchart = new Chart(
       datasets: [],
     },
     plugins: [
+      htmlLegendPlugin,
       {
         id: "selectionLineHighlight",
         afterDraw: (chart) => {

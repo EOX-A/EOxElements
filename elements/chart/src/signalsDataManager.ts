@@ -120,6 +120,8 @@ class SignalsDataManager {
     );
     this.status = "ready";
     this.chartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           type: "time",
@@ -137,14 +139,10 @@ class SignalsDataManager {
         intersect: false,
       },
       plugins: {
-        legend: {
-          labels: {
-            usePointStyle: true,
-            pointStyle: "rect",
-            padding: 5,
-            sort: (a, b) => a.text.localeCompare(b.text),
-          },
-          position: "right",
+        // @ts-ignore
+        htmlLegend: {
+          containerID: "legend-container",
+          // @ts-ignore
           onClick: (_, legendItem) => {
             if (!legendItem.hidden) {
               const idx = this.activeFields.indexOf(legendItem.text);
@@ -155,6 +153,26 @@ class SignalsDataManager {
               this.setActiveFields([...this.activeFields, legendItem.text]);
             }
           },
+        },
+        legend: {
+          display: false,
+          // labels: {
+          //   usePointStyle: true,
+          //   pointStyle: "rect",
+          //   padding: 0,
+          //   sort: (a, b) => a.text.localeCompare(b.text),
+          // },
+          // position: "right",
+          // onClick: (_, legendItem) => {
+          //   if (!legendItem.hidden) {
+          //     const idx = this.activeFields.indexOf(legendItem.text);
+          //     const keys = this.activeFields;
+          //     keys.splice(idx, 1);
+          //     this.setActiveFields(keys);
+          //   } else {
+          //     this.setActiveFields([...this.activeFields, legendItem.text]);
+          //   }
+          // },
         },
         tooltip: {
           callbacks: {

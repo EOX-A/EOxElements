@@ -24,9 +24,9 @@ describe("shDisplay", () => {
               "s2_nbsi",
               "s2_evi",
               "s2_savi",
-              "spei",
-              "pni",
-              "spi",
+              "meteo_spei",
+              "meteo_pni",
+              "meteo_spi",
             ],
             ["s2_vci"],
             [
@@ -37,6 +37,27 @@ describe("shDisplay", () => {
               "modis_nddi",
             ],
             ["s3_ndvi", "s3_otci", "s2_lai", "s2_fapar"],
+            ["eto", "temp_min", "temp_avg", "temp_max", "prec"],
+          ],
+          additionalYAxis: [
+            {
+              id: "temperature",
+              containedSignals: ["temp_min", "temp_avg", "temp_max"],
+            },
+            {
+              id: "precipitation",
+              containedSignals: ["prec"],
+            },
+          ],
+          additionalYAxis: [
+            {
+              id: "add1",
+              containedSignals: ["modis_ndwi"],
+            },
+            {
+              id: "add2",
+              containedSignals: ["modis_savi"],
+            },
           ],
           additionalYAxis: [
             {
@@ -71,6 +92,11 @@ describe("shDisplay", () => {
             "#ffed6f",
             "#c4eaff",
             "#cf8c00",
+            "#1976D2",
+            "#0288D1",
+            "#757575",
+            "#ff5722",
+            "#303f9f",
           ],
           // retries: 5,
           // normalize: true,

@@ -61,7 +61,6 @@ class ChartControls {
       const endDate = DateTime.fromISO(endEl.value);
       if (startDate.isValid && endDate.isValid) {
         this.sdm.setTimeInterval(startDate, endDate);
-        this.removeStartEndInputs();
       } else {
         startEl.className = startDate.isValid ? "" : "parsingError";
         endEl.className = endDate.isValid ? "" : "parsingError";
