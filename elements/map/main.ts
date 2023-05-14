@@ -6,7 +6,7 @@ import View from "ol/View.js";
 import olCss from "ol/ol.css";
 
 export class EOxMap extends HTMLElement {
-  shadow: ShadowRoot;
+  private shadow: ShadowRoot;
 
   /**
    * The native OpenLayers map object.
@@ -16,6 +16,8 @@ export class EOxMap extends HTMLElement {
 
   /**
    * Apply layers from Mapbox Style JSON
+   * @param json a Mapbox Style JSON
+   * @returns the array of layers
    */
   setLayers: Function;
 
