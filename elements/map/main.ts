@@ -2,7 +2,8 @@ import Map from "ol/Map.js";
 import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
-import { apply } from 'ol-mapbox-style';
+
+import olCss from "ol/ol.css";
 
 export class EOxMap extends HTMLElement {
   shadow: ShadowRoot;
@@ -21,16 +22,13 @@ export class EOxMap extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
-    const link = document.createElement("link");
-    link.setAttribute("rel", "stylesheet");
-    link.setAttribute("href", "https://openlayers.org/theme/ol.css");
-    this.shadow.appendChild(link);
     const style = document.createElement("style");
-    style.innerText = `
-      :host {
-        display: block;
-      }
-    `;
+    const shadowStyleFix = `
+    :host {
+      display: block;
+    }
+  `;
+    style.innerHTML = shadowStyleFix + olCss;
     this.shadow.appendChild(style);
     const div = document.createElement("div");
     div.style.width = "100%";
