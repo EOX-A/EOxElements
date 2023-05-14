@@ -38,6 +38,7 @@ export class EOxMap extends HTMLElement {
     this.shadow.appendChild(div);
 
     this.map = new Map({
+      controls: [],
       target: div,
       layers: [
         new TileLayer({
