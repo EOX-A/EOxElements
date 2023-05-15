@@ -31,17 +31,28 @@ export class EOxLayerSwitcher extends HTMLElement {
         const item: Element = li.content.cloneNode(true);
 
         if (layer.getVisible()) {
-          item.querySelector("input").setAttribute("checked", "true");
+          item
+            .querySelector("input[type='checkbox']")
+            .setAttribute("checked", "true");
         }
-        item.querySelector("input").addEventListener("click", () => {
-          layer.setVisible(!layer.getVisible());
-        });
-        item.querySelector("span").innerHTML = layer.get("title");
+        item
+          .querySelector("input[type='checkbox']")
+          .addEventListener("click", () => {
+            layer.setVisible(!layer.getVisible());
+          });
+        item
+          .querySelector("input[type='range']")
+          .addEventListener("input", (evt) => {
+            // @ts-ignore
+            layer.setOpacity(evt.target.value / 100);
+          });
+        item.querySelector("span.title").innerHTML = layer.get("title");
 
         ul.appendChild(item);
       });
       Sortable.create(ul, {
-        onEnd: (evt: any) => {
+        handle: ".dragHandle",
+        onChange: (evt: any) => {
           // current state of layers
           const layers = eoxMap.map.getLayers().getArray();
           const draggedItem = layers[evt.oldIndex];

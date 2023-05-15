@@ -3,6 +3,9 @@ export const layerSwitcherTemplate = `
 :host {
   display: block;
 }
+.dragHandle {
+  cursor: ns-resize;
+}
 </style>
 <div>
   <slot></slot>
@@ -14,7 +17,9 @@ export const layerSwitcherItem = `
 <li>
   <label>
     <input type="checkbox" />
-    <span>LAYERTITLE</span>
+    <span class="title">LAYERTITLE</span>
   </label>
+  <input type="range" value="100" />
+  <span class="dragHandle">=</span>
 </li>
 `;
