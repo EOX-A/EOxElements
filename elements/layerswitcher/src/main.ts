@@ -1,4 +1,6 @@
-import { layerSwitcherTemplate } from "./template";
+import Sortable from "sortablejs/modular/sortable.core.esm.js";
+import { layerSwitcherTemplate, layerSwitcherItem } from "./template";
+import { EOxMap } from "../../map/main";
 
 const template = document.createElement("template");
 template.innerHTML = layerSwitcherTemplate;
@@ -10,17 +12,56 @@ export class EOxLayerSwitcher extends HTMLElement {
     super();
     this.shadowRoot = this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
-    const style = document.createElement("style");
-    style.innerText = `
-      :host {
-        display: block;
-      }
-    `;
-    this.shadowRoot.appendChild(style);
+
     const div = document.createElement("div");
     div.style.width = "100%";
     div.style.height = "100%";
     this.shadowRoot.appendChild(div);
+
+    const eoxMap = <EOxMap>document.querySelector("eox-map");
+    eoxMap.map.once("loadend", () => {
+      const collection = eoxMap.map.getLayers();
+      const initialLayers = [...collection.getArray()];
+      const ul = this.shadowRoot.querySelector("ul");
+      ul.innerHTML = "";
+      initialLayers.forEach((layer) => {
+        const li = document.createElement("template");
+        li.innerHTML = layerSwitcherItem;
+        // @ts-ignore
+        const item: Element = li.content.cloneNode(true);
+
+        if (layer.getVisible()) {
+          item.querySelector("input").setAttribute("checked", "true");
+        }
+        item.querySelector("input").addEventListener("click", () => {
+          layer.setVisible(!layer.getVisible());
+        });
+        item.querySelector("span").innerHTML = layer.get("title");
+
+        ul.appendChild(item);
+      });
+      Sortable.create(ul, {
+        onEnd: (evt: any) => {
+          // current state of layers
+          const layers = eoxMap.map.getLayers().getArray();
+          const draggedItem = layers[evt.oldIndex];
+          console.log(
+            eoxMap.map
+              .getLayers()
+              .getArray()
+              .map((l) => l.get("title"))
+          );
+          collection.removeAt(evt.oldIndex);
+          collection.insertAt(evt.newIndex, draggedItem);
+          console.log(
+            eoxMap.map
+              .getLayers()
+              .getArray()
+              .map((l) => l.get("title"))
+          );
+        },
+      });
+    });
   }
 }
 

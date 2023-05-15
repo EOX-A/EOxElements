@@ -1,6 +1,20 @@
 export const layerSwitcherTemplate = `
-<style></style>
-<div style="display: flex; width: 100%; height: 100%;">
-  <h1>Hello World!</h1>
+<style>
+:host {
+  display: block;
+}
+</style>
+<div>
+  <slot></slot>
+  <ul></ul>
 </div>
+`;
+
+export const layerSwitcherItem = `
+<li>
+  <label>
+    <input type="checkbox" />
+    <span>LAYERTITLE</span>
+  </label>
+</li>
 `;
