@@ -2,6 +2,7 @@ import Map from "ol/Map.js";
 import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
+import { Coordinate } from "ol/coordinate";
 import { apply } from "ol-mapbox-style";
 
 import olCss from "ol/ol.css";
@@ -47,8 +48,14 @@ export class EOxMap extends HTMLElement {
         }),
       ],
       view: new View({
-        center: [0, 0],
-        zoom: 2,
+        center: this.hasAttribute("center")
+          ? (JSON.parse(
+              this.getAttribute("center")
+            ) as Array<Number> as Coordinate)
+          : [0, 0],
+        zoom: this.hasAttribute("zoom")
+          ? JSON.parse(this.getAttribute("zoom"))
+          : 0,
       }),
     });
 
