@@ -1,13 +1,17 @@
 // @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
 import { layerSwitcherTemplate, layerSwitcherItem } from "./template";
-import { EOxMap } from "../../map/main";
 
 const template = document.createElement("template");
 template.innerHTML = layerSwitcherTemplate;
 
 export class EOxLayerSwitcher extends HTMLElement {
   shadowRoot: ShadowRoot;
+
+  /**
+   * @param A native OpenLayers map object
+   */
+  attachTo: Function;
 
   constructor() {
     super();
@@ -19,10 +23,9 @@ export class EOxLayerSwitcher extends HTMLElement {
     div.style.height = "100%";
     this.shadowRoot.appendChild(div);
 
-    const eoxMap = <EOxMap>document.querySelector("eox-map");
-    eoxMap.map.once("loadend", () => {
-      const collection = eoxMap.map.getLayers();
-      const initialLayers = [...collection.getArray()].reverse();
+    // @ts-ignore// TODO import OL collection type
+    const renderSwitcher = (layerCollection) => {
+      const initialLayers = [...layerCollection.getArray()].reverse();
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerHTML = "";
       initialLayers.forEach((layer) => {
@@ -56,15 +59,25 @@ export class EOxLayerSwitcher extends HTMLElement {
         handle: ".dragHandle",
         onChange: (evt: any) => {
           // current state of layers
-          const layers = eoxMap.map.getLayers().getArray();
+          const layers = layerCollection.getArray();
           const draggedItem = layers.find(
+            // @ts-ignore // TODO import OL Layer type
             (l) => l.get("title") === evt.item.getAttribute("layerid")
           ); // TODO replace by id?
-          collection.removeAt(layers.findIndex((l) => l === draggedItem));
-          collection.insertAt(layers.length - evt.newIndex, draggedItem);
+          // @ts-ignore // TODO import OL Layer type
+          layerCollection.removeAt(layers.findIndex((l) => l === draggedItem));
+          layerCollection.insertAt(layers.length - evt.newIndex, draggedItem);
         },
       });
-    });
+    };
+    // @ts-ignore // TODO import OL map
+    // TODO maybe this should be a native OL control registration, e.g. https://github.com/Viglino/ol-ext/blob/master/src/control/LayerSwitcher.js#L50
+    this.attachTo = (olMap) => {
+      olMap.once("loadend", () => {
+        const collection = olMap.getLayers();
+        renderSwitcher(collection);
+      });
+    };
   }
 }
 
