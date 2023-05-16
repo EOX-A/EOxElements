@@ -3,11 +3,14 @@ export const itemFilterTemplate = `
 :host {
   display: block;
 }
+input[type=text] {
+  display: none;
+}
 </style>
 <div>
   <slot></slot>
-  <ul id="filters"></ul>
   <input type="text" />
+  <ul id="filters"></ul>
   <ul id="results"></ul>
 </div>
 `;

@@ -9,8 +9,12 @@ describe("Item Filter", () => {
   it("loads the itemfilter", () => {
     cy.get("eox-itemfilter").should(($el) => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
-      EOxItemFilter.filterProperties = ["themes", "code"];
-      EOxItemFilter.aggregateResults = "themes";
+      EOxItemFilter.config = {
+        filterProperties: ["themes"],
+        aggregateResults: "themes",
+        enableSearch: true,
+        enableHighlighting: false,
+      };
       EOxItemFilter.apply(testItems);
     });
   });

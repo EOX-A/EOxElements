@@ -6,9 +6,6 @@ import {
 } from "./template";
 import { highlight } from "./itemHighlighting";
 
-const template = document.createElement("template");
-template.innerHTML = itemFilterTemplate;
-
 export class EOxItemFilter extends HTMLElement {
   shadowRoot: ShadowRoot;
 
@@ -18,27 +15,35 @@ export class EOxItemFilter extends HTMLElement {
    */
   apply: Function;
 
-  /**
-   * The filter properties.
-   * @param filterProperties
-   */
-  filterProperties: Array<String>;
-
   private items: Array<Object>;
   private fuse: any; // TODO proper typing
 
   private filters: Object;
-  private aggregateBy: Array<String>;
+  private aggregateBy: Array<string>;
 
-  /**
-   * Aggregate results by a property key
-   */
-  aggregateResults: string;
-
-  /**
-   * Native fuse.js config override
-   */
-  fuseConfig: Object;
+  config: {
+    /**
+     * The filter properties.
+     * @param filterProperties
+     */
+    filterProperties: Required<Array<string>>;
+    /**
+     * Aggregate results by a property key
+     */
+    aggregateResults?: string;
+    /**
+     * Native fuse.js config override
+     */
+    fuseConfig?: Object;
+    /**
+     * Search functionality
+     */
+    enableSearch?: Boolean;
+    /**
+     * Highlighting of search result character matches
+     */
+    enableHighlighting?: Boolean;
+  };
 
   constructor() {
     super();
@@ -46,9 +51,16 @@ export class EOxItemFilter extends HTMLElement {
     this.filters = {};
 
     this.shadowRoot = this.attachShadow({ mode: "open" });
+    const template = document.createElement("template");
+    template.innerHTML = itemFilterTemplate;
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
     this.apply = (json: Array<Object>) => {
+      if (this.config.enableSearch) {
+        // @ts-ignore
+        this.shadowRoot.querySelector("input[type=text").style.display =
+          "block";
+      }
       this.items = json;
       // @ts-ignore
       this.fuse = new Fuse(this.items, {
@@ -56,12 +68,12 @@ export class EOxItemFilter extends HTMLElement {
         includeMatches: true,
         // Search in same fields as specified by filter properties, plus name
         // @ts-ignore
-        keys: ["name", ...this.filterProperties],
+        keys: ["name", ...this.config.filterProperties],
         useExtendedSearch: true,
-        ...this.fuseConfig,
+        ...this.config.fuseConfig,
       });
       // @ts-ignore
-      this.filterProperties.forEach((filterProperty) => {
+      this.config.filterProperties.forEach((filterProperty) => {
         // @ts-ignore
         const filter: Array<string> = [
           ...new Set(
@@ -91,7 +103,7 @@ export class EOxItemFilter extends HTMLElement {
         });
 
         // @ts-ignore
-        if (this.aggregateResults === filterProperty) {
+        if (this.config.aggregateResults === filterProperty) {
           this.aggregateBy = filter;
         }
       });
@@ -158,39 +170,41 @@ export class EOxItemFilter extends HTMLElement {
         },
         []
       );
-      const results = highlight(
-        this.fuse.search({
-          ...(input.length && Object.keys(parsedFilters).length
-            ? {
-                $and: [
-                  { name: input },
-                  {
-                    $or: parsedFilters,
-                  },
-                ],
-              }
-            : {
-                $or: [
-                  { name: input },
-                  {
-                    $or: parsedFilters,
-                  },
-                ],
-              }),
-        })
-      );
+      const search = this.fuse.search({
+        ...(input.length && Object.keys(parsedFilters).length
+          ? {
+              $and: [
+                { name: input },
+                {
+                  $or: parsedFilters,
+                },
+              ],
+            }
+          : {
+              $or: [
+                { name: input },
+                {
+                  $or: parsedFilters,
+                },
+              ],
+            }),
+      });
+      const results = this.config.enableHighlighting
+        ? highlight(search)
+        : // @ts-ignore
+          search.map((i) => i.item);
       const ul = this.shadowRoot.querySelector("ul#results");
       ul.innerHTML = "";
-      if (this.aggregateResults) {
+      if (this.config.aggregateResults) {
         const aggregation = document.createElement("template");
         aggregation.innerHTML = itemAggregationTemplate;
         this.aggregateBy.forEach((aR) => {
           if (
             // @ts-ignore
             !results.find((result) =>
-              Array.isArray(result[this.aggregateResults])
-                ? result[this.aggregateResults].includes(aR)
-                : result[this.aggregateResults] === aR
+              Array.isArray(result[this.config.aggregateResults])
+                ? result[this.config.aggregateResults].includes(aR)
+                : result[this.config.aggregateResults] === aR
             )
           ) {
             return;
@@ -212,7 +226,7 @@ export class EOxItemFilter extends HTMLElement {
       results.forEach((result) => {
         if (this.aggregateBy) {
           // @ts-ignore
-          const matchingAggregation = result[this.aggregateResults];
+          const matchingAggregation = result[this.config.aggregateResults];
           if (Array.isArray(matchingAggregation)) {
             matchingAggregation.forEach((mA) => {
               const li = document.createElement("li");
