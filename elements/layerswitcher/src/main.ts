@@ -28,9 +28,22 @@ export class EOxLayerSwitcher extends HTMLElement {
       const layerIdentifier = this.getAttribute("identifier");
       const layerTitle = this.getAttribute("title");
 
-      const initialLayers = [...layerCollection.getArray()]
-        .reverse()
-        .filter((l) => l.get("displayInLayerSwitcher") !== false);
+      const initialLayers = [...layerCollection.getArray()].filter(
+        (l) => l.get("displayInLayerSwitcher") !== false
+      );
+      const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
+      if (zIndexSorting) {
+        initialLayers.sort((lA, lB) => {
+          return lA.get("zIndex")
+            ? lA.get("zIndex") < lB.get("zIndex")
+              ? 1
+              : -1
+            : 1;
+        });
+      } else {
+        initialLayers.reverse();
+      }
+
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerHTML = "";
       initialLayers.forEach((layer) => {
@@ -62,20 +75,30 @@ export class EOxLayerSwitcher extends HTMLElement {
 
         ul.appendChild(item);
       });
-      Sortable.create(ul, {
-        handle: ".dragHandle",
-        onChange: (evt: any) => {
-          // current state of layers
-          const layers = layerCollection.getArray();
-          const draggedItem = layers.find(
-            // @ts-ignore // TODO import OL Layer type
-            (l) => l.get(layerIdentifier) === evt.item.getAttribute("layerid")
-          ); // TODO replace by id?
-          // @ts-ignore // TODO import OL Layer type
-          layerCollection.removeAt(layers.findIndex((l) => l === draggedItem));
-          layerCollection.insertAt(layers.length - evt.newIndex, draggedItem);
-        },
-      });
+      if (!zIndexSorting) {
+        // TODO implement zIndex sorting logic
+        Sortable.create(ul, {
+          handle: ".dragHandle",
+          onChange: (evt: any) => {
+            // current state of layers
+            const layers = layerCollection.getArray();
+            const draggedItem = layers.find(
+              // @ts-ignore // TODO import OL Layer type
+              (l) => l.get(layerIdentifier) === evt.item.getAttribute("layerid")
+            ); // TODO replace by id?
+            layerCollection.removeAt(
+              // @ts-ignore // TODO import OL Layer type
+              layers.findIndex((l) => l === draggedItem)
+            );
+            layerCollection.insertAt(layers.length - evt.newIndex, draggedItem);
+          },
+        });
+      } else {
+        ul.querySelectorAll(".dragHandle").forEach(
+          // @ts-ignore
+          (e) => (e.style.display = "none")
+        );
+      }
     };
     // @ts-ignore // TODO import OL map
     // TODO maybe this should be a native OL control registration, e.g. https://github.com/Viglino/ol-ext/blob/master/src/control/LayerSwitcher.js#L50
