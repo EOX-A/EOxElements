@@ -83,6 +83,9 @@ export class EOxLayerSwitcher extends HTMLElement {
       olMap.once("loadend", () => {
         const collection = olMap.getLayers();
         renderSwitcher(collection);
+        collection.on("change:length", () => {
+          renderSwitcher(collection);
+        });
       });
     };
   }
