@@ -267,7 +267,11 @@ export class EOxItemFilter extends HTMLElement {
           // @ts-ignore
           ul.appendChild(li);
         }
-        li.addEventListener("click", () => this.config.onSelect(result));
+        li.addEventListener("click", () => {
+          if (this.config.onSelect) {
+            this.config.onSelect(result);
+          }
+        });
       });
     };
     const updateResults = (input: String, filters: Object = this.filters) => {
