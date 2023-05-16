@@ -35,6 +35,34 @@ label {
 details {
   margin-bottom: 0.5rem;
 }
+details summary > * {
+  display: inline;
+}
+details summary {
+  display: flex;
+  align-items: center;
+}
+#details-filter summary {
+  justify-content: space-between;
+}
+#details-results summary {
+  list-style: none;
+}
+#details-filter summary svg,
+#details-results summary svg {
+  width: 24px;
+  height: 24px;
+  transition: all ease-in-out 0.3s;
+}
+#details-results summary svg {
+  transform: rotate(-90deg);
+}
+#details-filter[open] summary svg {
+  transform: rotate(180deg);
+}
+#details-results[open] summary svg {
+  transform: rotate(0deg);
+}
 li span,
 details summary {
   text-transform: capitalize;
@@ -75,6 +103,9 @@ section:first-of-type {
 ul#results {
   padding-right: 1rem;
 }
+ul#results li {
+  padding-left: 0.5rem;
+}
 .scroll {
   height: 100%;
   overflow-x: hidden;
@@ -100,13 +131,29 @@ ul#results {
 </form>
 `;
 
-export const itemTemplate = `
+export const filterTemplate = `
 <li>
   <label>
     <input type="checkbox" />
     <span class="title">FILTERITEMTITLE</span>
   </label>
 </li>
+`;
+
+export const filterAggregationTemplate = `
+<details id="details-filter">
+  <summary>
+    <small>
+      <strong class="title">
+        FILTERTITLE
+      </strong>
+    </small>
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>chevron-down</title><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
+    </div>
+  </summary>
+  <ul></ul>
+</details>
 `;
 
 export const itemResultTemplate = `
@@ -119,12 +166,13 @@ export const itemResultTemplate = `
 `;
 
 export const itemAggregationTemplate = `
-<details open>
+<details id="details-results" open>
   <summary>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>chevron-down</title><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
     <strong class="title">
       SUMMARYTITLE
     </strong>
-    <span>(<span class="count"></span>)</span>
+    <span style="margin-left: 0.25rem">(<span class="count"></span>)</span>
   </summary>
   <ul></ul>
 </details>

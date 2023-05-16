@@ -1,7 +1,8 @@
 import Fuse from "fuse.js";
 import {
   itemFilterTemplate,
-  itemTemplate,
+  filterTemplate,
+  filterAggregationTemplate,
   itemAggregationTemplate,
   itemResultTemplate,
 } from "./template";
@@ -100,9 +101,21 @@ export class EOxItemFilter extends HTMLElement {
         ].sort();
 
         const ul = this.shadowRoot.querySelector("ul#filters");
+        const aggregation = document.createElement("template");
+        aggregation.innerHTML = filterAggregationTemplate;
+        // @ts-ignore
+        const filterHeaderElement: Element =
+          aggregation.content.cloneNode(true);
+        filterHeaderElement.querySelector(".title").innerHTML = filterProperty;
+        filterHeaderElement
+          .querySelector("details")
+          .setAttribute("data-filter", filterProperty);
+        // @ts-ignore
+        ul.appendChild(filterHeaderElement);
+
         filter.forEach((filterItem) => {
           const li = document.createElement("template");
-          li.innerHTML = itemTemplate;
+          li.innerHTML = filterTemplate;
           // @ts-ignore
           const item: Element = li.content.cloneNode(true);
           const filterItemSelect = item.querySelector("input[type='checkbox']");
@@ -114,7 +127,9 @@ export class EOxItemFilter extends HTMLElement {
           }
           filterItemSelect.setAttribute("data-filter-value", filterItem);
           item.querySelector("span.title").innerHTML = filterItem;
-          ul.appendChild(item);
+          this.shadowRoot
+            .querySelector(`details[data-filter='${filterProperty}']`)
+            .appendChild(item);
         });
 
         // @ts-ignore
@@ -275,8 +290,7 @@ export class EOxItemFilter extends HTMLElement {
         parent.appendChild(resultElement);
       });
       if (this.config.aggregateResults) {
-        // console.log(this.shadowRoot.querySelectorAll("details"))
-        const allDetails = this.shadowRoot.querySelectorAll("details");
+        const allDetails = this.shadowRoot.querySelectorAll("#results details");
         allDetails.forEach((detail) => {
           // @ts-ignore
           detail.querySelector("summary .count").innerHTML =
