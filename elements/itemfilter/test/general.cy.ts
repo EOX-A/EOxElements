@@ -1,4 +1,5 @@
 import { EOxItemFilter } from "../src/main";
+import testItems from "./testItems.json";
 
 describe("Item Filter", () => {
   beforeEach(() => {
@@ -8,7 +9,8 @@ describe("Item Filter", () => {
   it("loads the itemfilter", () => {
     cy.get("eox-itemfilter").should(($el) => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
-      console.log(EOxItemFilter);
+      EOxItemFilter.filterProperties = ["themes", "code"];
+      EOxItemFilter.apply(testItems);
     });
   });
 });

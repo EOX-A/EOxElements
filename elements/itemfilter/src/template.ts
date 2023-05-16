@@ -6,6 +6,17 @@ export const itemFilterTemplate = `
 </style>
 <div>
   <slot></slot>
-  <ul></ul>
+  <ul id="filters"></ul>
+  <input type="text" />
+  <ul id="results"></ul>
 </div>
+`;
+
+export const itemTemplate = `
+<li>
+  <label>
+    <input type="checkbox" />
+    <span class="title">FILTERITEMTITLE</span>
+  </label>
+</li>
 `;
