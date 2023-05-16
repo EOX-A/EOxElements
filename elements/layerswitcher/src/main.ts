@@ -1,3 +1,4 @@
+// @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
 import { layerSwitcherTemplate, layerSwitcherItem } from "./template";
 import { EOxMap } from "../../map/main";
@@ -21,7 +22,7 @@ export class EOxLayerSwitcher extends HTMLElement {
     const eoxMap = <EOxMap>document.querySelector("eox-map");
     eoxMap.map.once("loadend", () => {
       const collection = eoxMap.map.getLayers();
-      const initialLayers = [...collection.getArray()];
+      const initialLayers = [...collection.getArray()].reverse();
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerHTML = "";
       initialLayers.forEach((layer) => {
@@ -47,6 +48,7 @@ export class EOxLayerSwitcher extends HTMLElement {
             layer.setOpacity(evt.target.value / 100);
           });
         item.querySelector("span.title").innerHTML = layer.get("title");
+        item.querySelector("li").setAttribute("layerid", layer.get("title")); // TODO replace by id?
 
         ul.appendChild(item);
       });
@@ -55,21 +57,11 @@ export class EOxLayerSwitcher extends HTMLElement {
         onChange: (evt: any) => {
           // current state of layers
           const layers = eoxMap.map.getLayers().getArray();
-          const draggedItem = layers[evt.oldIndex];
-          console.log(
-            eoxMap.map
-              .getLayers()
-              .getArray()
-              .map((l) => l.get("title"))
-          );
-          collection.removeAt(evt.oldIndex);
-          collection.insertAt(evt.newIndex, draggedItem);
-          console.log(
-            eoxMap.map
-              .getLayers()
-              .getArray()
-              .map((l) => l.get("title"))
-          );
+          const draggedItem = layers.find(
+            (l) => l.get("title") === evt.item.getAttribute("layerid")
+          ); // TODO replace by id?
+          collection.removeAt(layers.findIndex((l) => l === draggedItem));
+          collection.insertAt(layers.length - evt.newIndex, draggedItem);
         },
       });
     });
