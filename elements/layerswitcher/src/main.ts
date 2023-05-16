@@ -23,11 +23,11 @@ export class EOxLayerSwitcher extends HTMLElement {
     div.style.height = "100%";
     this.shadowRoot.appendChild(div);
 
-    const layerIdentifier = this.getAttribute("identifier");
-    const layerTitle = this.getAttribute("title");
-
     // @ts-ignore// TODO import OL collection type
     const renderSwitcher = (layerCollection) => {
+      const layerIdentifier = this.getAttribute("identifier");
+      const layerTitle = this.getAttribute("title");
+
       const initialLayers = [...layerCollection.getArray()].reverse();
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerHTML = "";
