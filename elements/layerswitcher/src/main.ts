@@ -23,6 +23,9 @@ export class EOxLayerSwitcher extends HTMLElement {
     div.style.height = "100%";
     this.shadowRoot.appendChild(div);
 
+    const layerIdentifier = this.getAttribute("identifier");
+    const layerTitle = this.getAttribute("title");
+
     // @ts-ignore// TODO import OL collection type
     const renderSwitcher = (layerCollection) => {
       const initialLayers = [...layerCollection.getArray()].reverse();
@@ -50,8 +53,10 @@ export class EOxLayerSwitcher extends HTMLElement {
             // @ts-ignore
             layer.setOpacity(evt.target.value / 100);
           });
-        item.querySelector("span.title").innerHTML = layer.get("title");
-        item.querySelector("li").setAttribute("layerid", layer.get("title")); // TODO replace by id?
+        item.querySelector("span.title").innerHTML = layer.get(layerTitle);
+        item
+          .querySelector("li")
+          .setAttribute("layerid", layer.get(layerIdentifier));
 
         ul.appendChild(item);
       });
@@ -62,7 +67,7 @@ export class EOxLayerSwitcher extends HTMLElement {
           const layers = layerCollection.getArray();
           const draggedItem = layers.find(
             // @ts-ignore // TODO import OL Layer type
-            (l) => l.get("title") === evt.item.getAttribute("layerid")
+            (l) => l.get(layerIdentifier) === evt.item.getAttribute("layerid")
           ); // TODO replace by id?
           // @ts-ignore // TODO import OL Layer type
           layerCollection.removeAt(layers.findIndex((l) => l === draggedItem));

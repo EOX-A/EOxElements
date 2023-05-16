@@ -16,7 +16,8 @@ describe("Layer Switcher", () => {
         .getLayers()
         .getArray()
         .forEach((layer, index) => {
-          layer.set("title", "layer " + index);
+          layer.set("name", "Layer " + index);
+          layer.set("id", "layer" + index);
           if (index === 0) {
             layer.set("baseLayer", true);
           }
