@@ -3,6 +3,7 @@ import {
   itemFilterTemplate,
   itemTemplate,
   itemAggregationTemplate,
+  itemResultTemplate,
 } from "./template";
 import { highlight } from "./itemHighlighting";
 
@@ -242,36 +243,36 @@ export class EOxItemFilter extends HTMLElement {
       }
       // @ts-ignore
       results.forEach((result) => {
-        let li;
+        const li = document.createElement("template");
+        li.innerHTML = itemResultTemplate;
+        // @ts-ignore
+        const resultElement: Element = li.content.cloneNode(true);
+        resultElement.querySelector(".title").innerHTML = result.name;
+        let parent;
         if (this.aggregateBy) {
           // @ts-ignore
           const matchingAggregation = result[this.config.aggregateResults];
           if (Array.isArray(matchingAggregation)) {
             matchingAggregation.forEach((mA) => {
-              li = document.createElement("li");
-              li.innerHTML = result.name;
-              this.shadowRoot
-                .querySelector(`details[data-aggregate=${mA}]`)
-                .appendChild(li);
+              parent = this.shadowRoot.querySelector(
+                `details[data-aggregate=${mA}]`
+              );
             });
           } else {
-            li = document.createElement("li");
-            li.innerHTML = result.name;
-            this.shadowRoot
-              .querySelector(`details[data-aggregate=${matchingAggregation}]`)
-              .appendChild(li);
+            parent = this.shadowRoot.querySelector(
+              `details[data-aggregate=${matchingAggregation}]`
+            );
           }
         } else {
-          li = document.createElement("li");
-          li.innerHTML = result.name;
           // @ts-ignore
-          ul.appendChild(li);
+          parent = ul;
         }
-        li.addEventListener("click", () => {
+        resultElement.querySelector("input").addEventListener("click", () => {
           if (this.config.onSelect) {
             this.config.onSelect(result);
           }
         });
+        parent.appendChild(resultElement);
       });
     };
     const updateResults = (input: String, filters: Object = this.filters) => {

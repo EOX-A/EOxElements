@@ -98,6 +98,15 @@ export const itemTemplate = `
 </li>
 `;
 
+export const itemResultTemplate = `
+<li>
+  <label>
+    <input type="radio" name="result" />
+    <span class="title">RESULTTITLE</span>
+  </label>
+</li>
+`;
+
 export const itemAggregationTemplate = `
 <details open>
   <summary>TITLE</summar>
