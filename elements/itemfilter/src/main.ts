@@ -31,6 +31,11 @@ export class EOxItemFilter extends HTMLElement {
   private aggregateBy: Array<String>;
 
   /**
+   * Aggregate results by a property key
+   */
+  aggregateResults: string;
+
+  /**
    * Native fuse.js config override
    */
   fuseConfig: Object;
@@ -39,7 +44,6 @@ export class EOxItemFilter extends HTMLElement {
     super();
 
     this.filters = {};
-    const aggregateResults = this.getAttribute("aggregateResults") || false;
 
     this.shadowRoot = this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -87,7 +91,7 @@ export class EOxItemFilter extends HTMLElement {
         });
 
         // @ts-ignore
-        if (aggregateResults === filterProperty) {
+        if (this.aggregateResults === filterProperty) {
           this.aggregateBy = filter;
         }
       });
@@ -177,16 +181,16 @@ export class EOxItemFilter extends HTMLElement {
       );
       const ul = this.shadowRoot.querySelector("ul#results");
       ul.innerHTML = "";
-      if (aggregateResults) {
+      if (this.aggregateResults) {
         const aggregation = document.createElement("template");
         aggregation.innerHTML = itemAggregationTemplate;
         this.aggregateBy.forEach((aR) => {
           if (
             // @ts-ignore
             !results.find((result) =>
-              Array.isArray(result[aggregateResults])
-                ? result[aggregateResults].includes(aR)
-                : result[aggregateResults] === aR
+              Array.isArray(result[this.aggregateResults])
+                ? result[this.aggregateResults].includes(aR)
+                : result[this.aggregateResults] === aR
             )
           ) {
             return;
@@ -208,7 +212,7 @@ export class EOxItemFilter extends HTMLElement {
       results.forEach((result) => {
         if (this.aggregateBy) {
           // @ts-ignore
-          const matchingAggregation = result[aggregateResults];
+          const matchingAggregation = result[this.aggregateResults];
           if (Array.isArray(matchingAggregation)) {
             matchingAggregation.forEach((mA) => {
               const li = document.createElement("li");
