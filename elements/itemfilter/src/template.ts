@@ -2,7 +2,20 @@ export const itemFilterTemplate = `
 <style>
 :host {
   display: block;
+  box-sizing: border-box;
   height: 100%;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+form > * {
+  // flex: 0;
+  border: solid 1px red;
 }
 ul {
   padding-left: 0;
@@ -32,6 +45,7 @@ input[type=radio] {
 }
 input[type=text] {
   display: none;
+  width: 100%;
   margin-bottom: 0.5rem;
 }
 section {
@@ -41,14 +55,17 @@ section {
 section:first-of-type {
   padding-top: 1rem;
 }
-section:last-of-type {
-  padding-bottom: 1rem;
+#section-results {
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 #container-results {
-  height: 300px;
   margin-right: -1rem;
 }
 .scroll {
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 }
@@ -61,8 +78,10 @@ section:last-of-type {
     <slot name="filterstitle"></slot>
     <ul id="filters"></ul>
   </section>
-  <section>
-    <slot name="resultstitle"></slot>
+  <section id="section-results">
+    <div>
+      <slot name="resultstitle"></slot>
+    </div>
     <div id="container-results" class="scroll">
       <ul id="results"></ul>
     </div>
