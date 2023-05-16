@@ -14,6 +14,9 @@ describe("Item Filter", () => {
         aggregateResults: "themes",
         enableSearch: true,
         enableHighlighting: false,
+        onSelect: (item: any) => {
+          console.log(item);
+        },
       };
       EOxItemFilter.apply(testItems);
     });

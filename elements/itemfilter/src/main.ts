@@ -43,6 +43,11 @@ export class EOxItemFilter extends HTMLElement {
      * Highlighting of search result character matches
      */
     enableHighlighting?: Boolean;
+    /**
+     * Callback that is triggered on item selection
+     * @returns selected item
+     */
+    onSelect: Function;
   };
 
   constructor() {
@@ -224,30 +229,32 @@ export class EOxItemFilter extends HTMLElement {
       }
       // @ts-ignore
       results.forEach((result) => {
+        let li;
         if (this.aggregateBy) {
           // @ts-ignore
           const matchingAggregation = result[this.config.aggregateResults];
           if (Array.isArray(matchingAggregation)) {
             matchingAggregation.forEach((mA) => {
-              const li = document.createElement("li");
+              li = document.createElement("li");
               li.innerHTML = result.name;
               this.shadowRoot
                 .querySelector(`details[data-aggregate=${mA}]`)
                 .appendChild(li);
             });
           } else {
-            const li = document.createElement("li");
+            li = document.createElement("li");
             li.innerHTML = result.name;
             this.shadowRoot
               .querySelector(`details[data-aggregate=${matchingAggregation}]`)
               .appendChild(li);
           }
         } else {
-          const li = document.createElement("li");
+          li = document.createElement("li");
           li.innerHTML = result.name;
           // @ts-ignore
           ul.appendChild(li);
         }
+        li.addEventListener("click", () => this.config.onSelect(result));
       });
     };
 
