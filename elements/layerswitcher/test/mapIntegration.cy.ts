@@ -24,6 +24,9 @@ describe("Layer Switcher", () => {
           if (index === 1) {
             layer.set("extent", [-14000000, 2000000, -8000000, 7000000]);
           }
+          if (index === 2) {
+            layer.set("displayInLayerSwitcher", false);
+          }
         });
     });
     cy.get("eox-layerswitcher").should(($ls) => {

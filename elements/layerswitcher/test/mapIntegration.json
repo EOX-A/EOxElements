@@ -12,6 +12,12 @@
     "countries": {
       "type": "geojson",
       "data": "https://openlayersbook.github.io/openlayers_book_samples/assets/data/countries.geojson"
+    },
+    "countriesTiles": {
+      "type": "vector",
+      "tiles": [
+        "https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf"
+      ]
     }
   },
   "layers": [
@@ -49,6 +55,24 @@
         "text-field": {
           "property": "name"
         }
+      }
+    },
+    {
+      "id": "countries_fill_tiles",
+      "type": "fill",
+      "source": "countriesTiles",
+      "source-layer": "ne_10m_admin_0_countries",
+      "paint": {
+        "fill-color": "rgba(255, 0, 100, 0.5)"
+      }
+    },
+    {
+      "id": "countries_outline_tiles",
+      "type": "line",
+      "source": "countriesTiles",
+      "source-layer": "ne_10m_admin_0_countries",
+      "paint": {
+        "line-color": "rgba(255, 0, 100, 1)"
       }
     }
   ]

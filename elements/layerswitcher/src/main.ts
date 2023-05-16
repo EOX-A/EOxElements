@@ -28,7 +28,9 @@ export class EOxLayerSwitcher extends HTMLElement {
       const layerIdentifier = this.getAttribute("identifier");
       const layerTitle = this.getAttribute("title");
 
-      const initialLayers = [...layerCollection.getArray()].reverse();
+      const initialLayers = [...layerCollection.getArray()]
+        .reverse()
+        .filter((l) => l.get("displayInLayerSwitcher") !== false);
       const ul = this.shadowRoot.querySelector("ul");
       ul.innerHTML = "";
       initialLayers.forEach((layer) => {
