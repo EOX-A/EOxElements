@@ -13,11 +13,12 @@ describe("Item Filter", () => {
         filterProperties: ["themes"],
         aggregateResults: "themes",
         enableSearch: true,
-        enableHighlighting: false,
-        onSelect: (item: any) => {
-          console.log(item);
-        },
-        matchAllWhenEmpty: true,
+        // enableHighlighting: false,
+        // onSelect: (item: any) => {
+        //   console.log(item);
+        // },
+        // matchAllWhenEmpty: true,
+        // exclusiveFilters: true,
       };
       EOxItemFilter.apply(testItems);
     });

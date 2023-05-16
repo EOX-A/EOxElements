@@ -9,9 +9,11 @@ input[type=text] {
 </style>
 <div>
   <slot></slot>
-  <input type="text" />
-  <ul id="filters"></ul>
-  <ul id="results"></ul>
+  <form>
+    <input type="text" />
+    <ul id="filters"></ul>
+    <ul id="results"></ul>
+  </form>
 </div>
 `;
 

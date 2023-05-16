@@ -48,12 +48,15 @@ export class EOxItemFilter extends HTMLElement {
      * @returns selected item
      */
     onSelect?: Function;
-
     /**
      * Show all result items if nothing is input by the user
      * @default true
      */
     matchAllWhenEmpty?: Boolean;
+    /**
+     * Make the filters mutually exclusive
+     */
+    exclusiveFilters?: Boolean;
   };
 
   constructor() {
@@ -101,14 +104,14 @@ export class EOxItemFilter extends HTMLElement {
           li.innerHTML = itemTemplate;
           // @ts-ignore
           const item: Element = li.content.cloneNode(true);
-          // @ts-ignore
-          item
-            .querySelector("input[type='checkbox']")
+          const filterItemSelect = item.querySelector("input[type='checkbox']");
+          filterItemSelect.setAttribute("data-filter-key", filterProperty);
+          filterItemSelect.setAttribute("name", "filter");
+          if (this.config.exclusiveFilters === true) {
             // @ts-ignore
-            .setAttribute("data-filter-key", filterProperty);
-          item
-            .querySelector("input[type='checkbox']")
-            .setAttribute("data-filter-value", filterItem);
+            filterItemSelect.type = "radio";
+          }
+          filterItemSelect.setAttribute("data-filter-value", filterItem);
           item.querySelector("span.title").innerHTML = filterItem;
           ul.appendChild(item);
         });
@@ -127,44 +130,75 @@ export class EOxItemFilter extends HTMLElement {
     };
 
     const watchFilters = () => {
-      this.shadowRoot
-        .querySelectorAll("input[type='checkbox']")
-        .forEach((checkbox) => {
-          checkbox.addEventListener("click", (evt) => {
-            const target = evt.target;
+      const watchedItems = this.shadowRoot.querySelectorAll(
+        `input[type="${
+          this.config.exclusiveFilters === true ? "radio" : "checkbox"
+        }"]`
+      );
+      // @ts-ignore
+      const syncFilters = (target) => {
+        watchedItems.forEach((item) => {
+          // @ts-ignore
+          const filterKey = item.getAttribute("data-filter-key");
+          // @ts-ignore
+          const filterValue = item.getAttribute("data-filter-value");
+          // @ts-ignore
+          if (item.checked) {
             // @ts-ignore
-            const filterKey = target.getAttribute("data-filter-key");
-            // @ts-ignore
-            const filterValue = target.getAttribute("data-filter-value");
-            // @ts-ignore
-            if (target.checked) {
+            if (!this.filters[filterKey]) {
               // @ts-ignore
-              if (!this.filters[filterKey]) {
-                // @ts-ignore
-                this.filters[filterKey] = [];
-              }
+              this.filters[filterKey] = [];
+            }
+            // @ts-ignore
+            if (!this.filters[filterKey].includes(filterValue)) {
               // @ts-ignore
               this.filters[filterKey].push(filterValue);
-            } else {
+            }
+          } else {
+            if (target === item) {
+              // @ts-ignore
+              if (!this.filters[filterKey]) return;
               // @ts-ignore
               this.filters[filterKey].splice(
                 // @ts-ignore
                 this.filters[filterKey].indexOf(filterValue),
                 1
               );
-              // @ts-ignore
-              if (this.filters[filterKey].length === 0) {
-                // @ts-ignore
-                delete this.filters[filterKey];
+            } else {
+              if (this.config.exclusiveFilters === true) {
+                if (
+                  // @ts-ignore
+                  this.filters[filterKey] &&
+                  // @ts-ignore
+                  this.filters[filterKey].includes(filterValue)
+                ) {
+                  // @ts-ignore
+                  this.filters[filterKey]?.splice(
+                    // @ts-ignore
+                    this.filters[filterKey].indexOf(filterValue),
+                    1
+                  );
+                }
               }
             }
             // @ts-ignore
-            updateResults(
+            if (this.filters[filterKey]?.length === 0) {
               // @ts-ignore
-              this.shadowRoot.querySelector("input[type='text']").value
-            );
-          });
+              delete this.filters[filterKey];
+            }
+          }
         });
+      };
+      watchedItems.forEach((item) => {
+        item.addEventListener("click", (evt) => {
+          syncFilters(evt.target);
+          // @ts-ignore
+          updateResults(
+            // @ts-ignore
+            this.shadowRoot.querySelector("input[type='text']").value
+          );
+        });
+      });
     };
 
     // @ts-ignore
