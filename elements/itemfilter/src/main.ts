@@ -1,5 +1,9 @@
 import Fuse from "fuse.js";
-import { itemFilterTemplate, itemTemplate } from "./template";
+import {
+  itemFilterTemplate,
+  itemTemplate,
+  itemAggregationTemplate,
+} from "./template";
 import { highlight } from "./itemHighlighting";
 
 const template = document.createElement("template");
@@ -24,26 +28,34 @@ export class EOxItemFilter extends HTMLElement {
   private fuse: any; // TODO proper typing
 
   private filters: Object;
+  private aggregateBy: Array<String>;
+
+  /**
+   * Native fuse.js config override
+   */
+  fuseConfig: Object;
 
   constructor() {
     super();
 
     this.filters = {};
+    const aggregateResults = this.getAttribute("aggregateResults") || false;
 
     this.shadowRoot = this.attachShadow({ mode: "open" });
     this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-    const options = {
-      minMatchCharLength: 1,
-      includeMatches: true,
-      // Search in `name` and in `themes` array
-      keys: ["name", "themes"],
-      useExtendedSearch: true,
-    };
-
     this.apply = (json: Array<Object>) => {
       this.items = json;
-      this.fuse = new Fuse(this.items, options);
+      // @ts-ignore
+      this.fuse = new Fuse(this.items, {
+        minMatchCharLength: 1,
+        includeMatches: true,
+        // Search in same fields as specified by filter properties, plus name
+        // @ts-ignore
+        keys: ["name", ...this.filterProperties],
+        useExtendedSearch: true,
+        ...this.fuseConfig,
+      });
       // @ts-ignore
       this.filterProperties.forEach((filterProperty) => {
         // @ts-ignore
@@ -73,6 +85,11 @@ export class EOxItemFilter extends HTMLElement {
           item.querySelector("span.title").innerHTML = filterItem;
           ul.appendChild(item);
         });
+
+        // @ts-ignore
+        if (aggregateResults === filterProperty) {
+          this.aggregateBy = filter;
+        }
       });
       watchFilters();
     };
@@ -144,7 +161,7 @@ export class EOxItemFilter extends HTMLElement {
                 $and: [
                   { name: input },
                   {
-                    $and: parsedFilters,
+                    $or: parsedFilters,
                   },
                 ],
               }
@@ -152,7 +169,7 @@ export class EOxItemFilter extends HTMLElement {
                 $or: [
                   { name: input },
                   {
-                    $and: parsedFilters,
+                    $or: parsedFilters,
                   },
                 ],
               }),
@@ -160,11 +177,59 @@ export class EOxItemFilter extends HTMLElement {
       );
       const ul = this.shadowRoot.querySelector("ul#results");
       ul.innerHTML = "";
+      if (aggregateResults) {
+        const aggregation = document.createElement("template");
+        aggregation.innerHTML = itemAggregationTemplate;
+        this.aggregateBy.forEach((aR) => {
+          if (
+            // @ts-ignore
+            !results.find((result) =>
+              Array.isArray(result[aggregateResults])
+                ? result[aggregateResults].includes(aR)
+                : result[aggregateResults] === aR
+            )
+          ) {
+            return;
+          }
+          // @ts-ignore
+          const aggregationElement: Element =
+            aggregation.content.cloneNode(true);
+          // @ts-ignore
+          aggregationElement.querySelector("summary").innerHTML = aR;
+          // @ts-ignore
+          aggregationElement
+            .querySelector("details")
+            // @ts-ignore
+            .setAttribute("data-aggregate", aR);
+          ul.appendChild(aggregationElement);
+        });
+      }
       // @ts-ignore
       results.forEach((result) => {
-        const li = document.createElement("li");
-        li.innerHTML = result.name;
-        ul.appendChild(li);
+        if (this.aggregateBy) {
+          // @ts-ignore
+          const matchingAggregation = result[aggregateResults];
+          if (Array.isArray(matchingAggregation)) {
+            matchingAggregation.forEach((mA) => {
+              const li = document.createElement("li");
+              li.innerHTML = result.name;
+              this.shadowRoot
+                .querySelector(`details[data-aggregate=${mA}]`)
+                .appendChild(li);
+            });
+          } else {
+            const li = document.createElement("li");
+            li.innerHTML = result.name;
+            this.shadowRoot
+              .querySelector(`details[data-aggregate=${matchingAggregation}]`)
+              .appendChild(li);
+          }
+        } else {
+          const li = document.createElement("li");
+          li.innerHTML = result.name;
+          // @ts-ignore
+          ul.appendChild(li);
+        }
       });
     };
 

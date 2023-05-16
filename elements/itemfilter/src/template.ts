@@ -20,3 +20,10 @@ export const itemTemplate = `
   </label>
 </li>
 `;
+
+export const itemAggregationTemplate = `
+<details open>
+  <summary>TITLE</summar>
+  <ul></ul>
+</details>
+`;

@@ -47,6 +47,7 @@ export const highlight = (
       const highlightedItem = { ...item };
 
       matches.forEach((match: any) => {
+        if (match.key !== "name") return; // TODO
         set(
           highlightedItem,
           match.key,
