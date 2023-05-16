@@ -1,21 +1,19 @@
 export const itemFilterTemplate = `
 <style>
 :host {
-  display: block;
+  display: flex;
   box-sizing: border-box;
   height: 100%;
+  overflow: hidden;
 }
 *, *:before, *:after {
   box-sizing: inherit;
 }
 form {
   height: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-}
-form > * {
-  // flex: 0;
-  border: solid 1px red;
 }
 ul {
   padding-left: 0;
@@ -24,12 +22,22 @@ ul {
 li {
   list-style: none;
 }
+li span {
+  font-size: small;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 label {
   display: flex;
   align-items: center;
 }
 details {
   margin-bottom: 0.5rem;
+}
+li span,
+details summary {
+  text-transform: capitalize;
 }
 li,
 label,
@@ -63,6 +71,9 @@ section:first-of-type {
 }
 #container-results {
   margin-right: -1rem;
+}
+ul#results {
+  padding-right: 1rem;
 }
 .scroll {
   height: 100%;
