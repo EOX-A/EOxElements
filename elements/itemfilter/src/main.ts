@@ -232,7 +232,7 @@ export class EOxItemFilter extends HTMLElement {
           const aggregationElement: Element =
             aggregation.content.cloneNode(true);
           // @ts-ignore
-          aggregationElement.querySelector("summary").innerHTML = aR;
+          aggregationElement.querySelector("summary .title").innerHTML = aR;
           // @ts-ignore
           aggregationElement
             .querySelector("details")
@@ -274,6 +274,15 @@ export class EOxItemFilter extends HTMLElement {
         });
         parent.appendChild(resultElement);
       });
+      if (this.config.aggregateResults) {
+        // console.log(this.shadowRoot.querySelectorAll("details"))
+        const allDetails = this.shadowRoot.querySelectorAll("details");
+        allDetails.forEach((detail) => {
+          // @ts-ignore
+          detail.querySelector("summary .count").innerHTML =
+            detail.querySelectorAll("li").length;
+        });
+      }
     };
     const updateResults = (input: String, filters: Object = this.filters) => {
       const parsedFilters = Object.entries(filters).reduce(

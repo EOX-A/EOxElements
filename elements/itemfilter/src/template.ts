@@ -120,7 +120,12 @@ export const itemResultTemplate = `
 
 export const itemAggregationTemplate = `
 <details open>
-  <summary>TITLE</summar>
+  <summary>
+    <strong class="title">
+      SUMMARYTITLE
+    </strong>
+    <span>(<span class="count"></span>)</span>
+  </summary>
   <ul></ul>
 </details>
 `;
