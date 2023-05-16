@@ -47,7 +47,13 @@ export class EOxItemFilter extends HTMLElement {
      * Callback that is triggered on item selection
      * @returns selected item
      */
-    onSelect: Function;
+    onSelect?: Function;
+
+    /**
+     * Show all result items if nothing is input by the user
+     * @default true
+     */
+    matchAllWhenEmpty?: Boolean;
   };
 
   constructor() {
@@ -113,6 +119,11 @@ export class EOxItemFilter extends HTMLElement {
         }
       });
       watchFilters();
+
+      if (this.config.matchAllWhenEmpty !== false) {
+        // initially render all items
+        renderResults(this.items);
+      }
     };
 
     const watchFilters = () => {
@@ -156,48 +167,8 @@ export class EOxItemFilter extends HTMLElement {
         });
     };
 
-    const updateResults = (input: String, filters: Object = this.filters) => {
-      const parsedFilters = Object.entries(filters).reduce(
-        (store, [key, value]) => {
-          // @ts-ignore
-          const createProperty = (val) => {
-            const property = {};
-            // @ts-ignore
-            property[key] = `=${val}`; // exact match
-            store.push(property);
-          };
-          if (Array.isArray(value)) {
-            value.forEach((v) => createProperty(v));
-          } else {
-            createProperty(value);
-          }
-          return store;
-        },
-        []
-      );
-      const search = this.fuse.search({
-        ...(input.length && Object.keys(parsedFilters).length
-          ? {
-              $and: [
-                { name: input },
-                {
-                  $or: parsedFilters,
-                },
-              ],
-            }
-          : {
-              $or: [
-                { name: input },
-                {
-                  $or: parsedFilters,
-                },
-              ],
-            }),
-      });
-      const results = this.config.enableHighlighting
-        ? highlight(search)
-        : // @ts-ignore
-          search.map((i) => i.item);
+    // @ts-ignore
+    const renderResults = (results) => {
       const ul = this.shadowRoot.querySelector("ul#results");
       ul.innerHTML = "";
       if (this.config.aggregateResults) {
@@ -257,12 +228,65 @@ export class EOxItemFilter extends HTMLElement {
         li.addEventListener("click", () => this.config.onSelect(result));
       });
     };
+    const updateResults = (input: String, filters: Object = this.filters) => {
+      const parsedFilters = Object.entries(filters).reduce(
+        (store, [key, value]) => {
+          // @ts-ignore
+          const createProperty = (val) => {
+            const property = {};
+            // @ts-ignore
+            property[key] = `=${val}`; // exact match
+            store.push(property);
+          };
+          if (Array.isArray(value)) {
+            value.forEach((v) => createProperty(v));
+          } else {
+            createProperty(value);
+          }
+          return store;
+        },
+        []
+      );
+      const search = this.fuse.search({
+        ...(input.length && Object.keys(parsedFilters).length
+          ? {
+              $and: [
+                { name: input },
+                {
+                  $or: parsedFilters,
+                },
+              ],
+            }
+          : {
+              $or: [
+                { name: input },
+                {
+                  $or: parsedFilters,
+                },
+              ],
+            }),
+      });
+      const results = this.config.enableHighlighting
+        ? highlight(search)
+        : // @ts-ignore
+          search.map((i) => i.item);
+      renderResults(results);
+    };
 
     this.shadowRoot
       .querySelector("input[type='text']")
       .addEventListener("input", (evt) => {
         // @ts-ignore
-        updateResults(evt.target.value);
+        const input = evt.target.value;
+        if (!input) {
+          if (this.config.matchAllWhenEmpty !== false) {
+            // initially render all items
+            renderResults(this.items);
+          }
+        } else {
+          // @ts-ignore
+          updateResults(input);
+        }
       });
   }
 }

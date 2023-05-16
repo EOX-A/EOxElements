@@ -17,6 +17,7 @@ describe("Item Filter", () => {
         onSelect: (item: any) => {
           console.log(item);
         },
+        matchAllWhenEmpty: true,
       };
       EOxItemFilter.apply(testItems);
     });
