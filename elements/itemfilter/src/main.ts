@@ -192,11 +192,19 @@ export class EOxItemFilter extends HTMLElement {
       watchedItems.forEach((item) => {
         item.addEventListener("click", (evt) => {
           syncFilters(evt.target);
-          // @ts-ignore
-          updateResults(
-            // @ts-ignore
-            this.shadowRoot.querySelector("input[type='text']").value
-          );
+          // if all filters are removed, reset
+          if (
+            this.config.matchAllWhenEmpty !== false &&
+            Object.keys(this.filters).length === 0
+          ) {
+            // render all items
+            renderResults(this.items);
+          } else {
+            updateResults(
+              // @ts-ignore
+              this.shadowRoot.querySelector("input[type='text']").value
+            );
+          }
         });
       });
     };
@@ -312,11 +320,9 @@ export class EOxItemFilter extends HTMLElement {
       .addEventListener("input", (evt) => {
         // @ts-ignore
         const input = evt.target.value;
-        if (!input) {
-          if (this.config.matchAllWhenEmpty !== false) {
-            // initially render all items
-            renderResults(this.items);
-          }
+        if (!input && this.config.matchAllWhenEmpty !== false) {
+          // initially render all items
+          renderResults(this.items);
         } else {
           // @ts-ignore
           updateResults(input);
