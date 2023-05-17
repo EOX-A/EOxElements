@@ -115,9 +115,21 @@ class RequestHandler {
         );
       },
       retries: this.retries,
-    }).then(function (res) {
-      return res.json();
-    });
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .catch((error) => {
+        console.error(error);
+        document
+          .querySelector("eox-chart")
+          .shadowRoot.querySelector("#error").style.display = "flex";
+        setTimeout(() => {
+          document
+            .querySelector("eox-chart")
+            .shadowRoot.querySelector("#error").style.display = "none";
+        });
+      });
   }
 
   convertData(datapoint: object) {

@@ -87,6 +87,7 @@ export const chartTemplate = `
     <input id="startInput" size="8" style="display: none">
     <input id="endInput" size="8" style="display: none">
     <button id="setTime" style="display: none">ok</button>
+    <span id="error" style="color: red; display: none;">Retrieving of signals timed out. Please try again.</span>
     <span id="loadingIndicator" class="loader hidden"></span>
   </div>
   <div id="chart-container">
