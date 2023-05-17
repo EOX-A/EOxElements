@@ -125,7 +125,9 @@ class SignalsDataManager {
       maintainAspectRatio: false,
       layout: {
         padding: {
-          top: 30,
+          top: 60,
+          left: 10,
+          bottom: 10,
         },
       },
       scales: {
