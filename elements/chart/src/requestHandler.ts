@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import pRetry, { AbortError } from "p-retry";
+import { basicDataPoint } from "./signalsDataManager";
 
 type endpointType = "signals" | "geodb" | "sentinelhub";
 
@@ -123,16 +124,18 @@ class RequestHandler {
         console.error(error);
         document
           .querySelector("eox-chart")
-          .shadowRoot.querySelector("#error").style.display = "flex";
+          .shadowRoot.querySelector<HTMLElement>("#error").style.display =
+          "flex";
         setTimeout(() => {
           document
             .querySelector("eox-chart")
-            .shadowRoot.querySelector("#error").style.display = "none";
+            .shadowRoot.querySelector<HTMLElement>("#error").style.display =
+            "none";
         });
       });
   }
 
-  convertData(datapoint: object) {
+  convertData(datapoint: basicDataPoint) {
     switch (this.type) {
       case "signals":
         return this.convertSignals(datapoint);
@@ -145,7 +148,7 @@ class RequestHandler {
     }
   }
 
-  private convertSignals(datapoint: object) {
+  private convertSignals(datapoint: basicDataPoint) {
     let ds = {};
     const stats = datapoint.basicStats;
     if (datapoint && datapoint.date !== "missing") {
@@ -159,7 +162,7 @@ class RequestHandler {
     return ds;
   }
 
-  private convertGeoDBData(datapoint: object) {
+  private convertGeoDBData(datapoint: basicDataPoint) {
     let ds = {};
     if (datapoint && datapoint.date !== "missing") {
       ds = {

@@ -29,15 +29,18 @@ Chart.register(
 );
 
 type status = "ready" | "loading" | "error";
+
+export interface basicDataPoint {
+  date: string;
+  basicStats: { mean: number; min: number; max: number };
+}
+
 interface DSDict {
   [key: number]: {
     [key: string]: {
       status: string;
       data?: {
-        [key: string]: {
-          date: string;
-          basicStats: { mean: number; min: number; max: number };
-        }[];
+        [key: string]: basicDataPoint[];
       };
       request: Promise<void>;
     };

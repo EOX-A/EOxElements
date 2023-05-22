@@ -29,6 +29,8 @@ export class EOxChart extends HTMLElement {
 
   setSignalsGeometry: Function;
 
+  setGeoDBEndpoint: Function;
+
   constructor() {
     super();
     this.shadowRoot = this.attachShadow({ mode: "open" });
@@ -112,6 +114,25 @@ export class EOxChart extends HTMLElement {
       endTime?: string;
     }) => {
       sdmInstance = new SignalsDataManager("signals", this.chart, options);
+      new ChartControls(
+        document.getElementById("controls"),
+        sdmInstance,
+        options
+      );
+      sdmInstance.setActiveFields(options.active);
+    };
+
+    this.setGeoDBEndpoint = (options: {
+      source: string;
+      endpoint: string;
+      active: string[];
+      features: string[][];
+      geometry: object;
+      timeInterval: object;
+      startTime?: string;
+      endTime?: string;
+    }) => {
+      sdmInstance = new SignalsDataManager("geodb", this.chart, options);
       new ChartControls(
         document.getElementById("controls"),
         sdmInstance,
