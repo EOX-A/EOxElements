@@ -1,117 +1,136 @@
+import { LitElement, html, nothing } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import { map } from "lit/directives/map.js";
+import { Map, Collection } from "ol";
+import { Layer } from "ol/layer";
 // @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
-import { layerSwitcherTemplate, layerSwitcherItem } from "./template";
 
-const template = document.createElement("template");
-template.innerHTML = layerSwitcherTemplate;
+type HTMLElementEvent<T extends HTMLElement> = Event & {
+  target: T;
+};
+@customElement("eox-layerswitcher")
+export class EOxLayerSwitcher extends LitElement {
+  private _currentlySorting: Boolean;
 
-export class EOxLayerSwitcher extends HTMLElement {
-  shadowRoot: ShadowRoot;
+  @state()
+  olMap: Map;
 
-  /**
-   * @param A native OpenLayers map object
-   */
-  attachTo: Function;
+  @state()
+  layerCollection: Collection<Layer>;
 
-  constructor() {
-    super();
-    this.shadowRoot = this.attachShadow({ mode: "open" });
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
+  @state()
+  layerArray: Array<Layer>;
 
-    const div = document.createElement("div");
-    div.style.width = "100%";
-    div.style.height = "100%";
-    this.shadowRoot.appendChild(div);
+  @property()
+  layerIdentifier = "id";
 
-    // @ts-ignore// TODO import OL collection type
-    const renderSwitcher = (layerCollection) => {
-      const layerIdentifier = this.getAttribute("identifier");
-      const layerTitle = this.getAttribute("title");
+  @property()
+  layerTitle = "title";
 
-      const initialLayers = [...layerCollection.getArray()].filter(
-        (l) => l.get("displayInLayerSwitcher") !== false
-      );
-      const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
-      if (zIndexSorting) {
-        initialLayers.sort((lA, lB) => {
-          return lA.get("zIndex")
-            ? lA.get("zIndex") < lB.get("zIndex")
-              ? 1
-              : -1
-            : 1;
-        });
-      } else {
-        initialLayers.reverse();
+  @property()
+  sortBy = "layerOrder";
+
+  @property()
+  attachTo = (olMap: Map) => {
+    this.olMap = olMap;
+    const collection = olMap.getLayers();
+    this._updateSwitcher(collection);
+    collection.on("change:length", () => {
+      if (!this._currentlySorting) {
+        this._updateSwitcher(collection);
       }
+    });
+    this.render();
+  };
 
-      const ul = this.shadowRoot.querySelector("ul");
-      ul.innerHTML = "";
-      initialLayers.forEach((layer) => {
-        const li = document.createElement("template");
-        li.innerHTML = layerSwitcherItem;
-        // @ts-ignore
-        const item: Element = li.content.cloneNode(true);
+  private _updateSwitcher(layerCollection: Collection<any>) {
+    this.layerCollection = layerCollection;
+    const initialLayers = [...layerCollection.getArray()].filter(
+      (l) => l.get("displayInLayerSwitcher") !== false
+    );
+    const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
+    if (zIndexSorting) {
+      initialLayers.sort((lA, lB) => {
+        return lA.get("zIndex")
+          ? lA.get("zIndex") < lB.get("zIndex")
+            ? 1
+            : -1
+          : 1;
+      });
+    } else {
+      initialLayers.reverse();
+    }
+    this.layerArray = initialLayers;
+    this.requestUpdate();
+  }
 
-        if (layer.getVisible()) {
-          item
-            .querySelector("input[type='checkbox']")
-            .setAttribute("checked", "true");
+  render() {
+    return html`
+      <style>
+        :host {
+          display: block;
         }
-        item
-          .querySelector("input[type='checkbox']")
-          .addEventListener("click", () => {
-            layer.setVisible(!layer.getVisible());
-          });
-        item
-          .querySelector("input[type='range']")
-          .addEventListener("input", (evt) => {
-            // @ts-ignore
-            layer.setOpacity(evt.target.value / 100);
-          });
-        item.querySelector("span.title").innerHTML = layer.get(layerTitle);
-        item
-          .querySelector("li")
-          .setAttribute("layerid", layer.get(layerIdentifier));
+        .dragHandle {
+          cursor: ns-resize;
+        }
+      </style>
+      <div>
+        <slot></slot>
+        <ul>
+          ${map(
+            this.layerArray,
+            (layer) => html`
+              <li layerid="${layer.get(this.layerIdentifier)}">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked="${layer.getVisible() || nothing}"
+                    @click=${() => layer.setVisible(!layer.getVisible())}
+                  />
+                  <span class="title">${layer.get(this.layerTitle)}</span>
+                </label>
+                <input
+                  type="range"
+                  value="100"
+                  @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
+                    layer.setOpacity(parseInt(evt.target.value) / 100)}
+                />
+                ${this.sortBy === "layerOrder"
+                  ? html` <span class="dragHandle">=</span> `
+                  : nothing}
+              </li>
+            `
+          )}
+        </ul>
+      </div>
+    `;
+  }
 
-        ul.appendChild(item);
-      });
-      if (!zIndexSorting) {
-        // TODO implement zIndex sorting logic
-        Sortable.create(ul, {
-          handle: ".dragHandle",
-          onChange: (evt: any) => {
-            // current state of layers
-            const layers = layerCollection.getArray();
-            const draggedItem = layers.find(
-              // @ts-ignore // TODO import OL Layer type
-              (l) => l.get(layerIdentifier) === evt.item.getAttribute("layerid")
-            ); // TODO replace by id?
-            layerCollection.removeAt(
-              // @ts-ignore // TODO import OL Layer type
-              layers.findIndex((l) => l === draggedItem)
+  updated() {
+    // TODO implement zIndex sorting logic
+    if (this.sortBy == "layerOrder") {
+      Sortable.create(this.renderRoot.querySelector("ul"), {
+        handle: ".dragHandle",
+        onChange: () => {
+          const switcherOrder = Array.from(
+            this.renderRoot.querySelectorAll("li")
+          )
+            .map((item) => item.getAttribute("layerId"))
+            .reverse();
+          // current state of layers
+          this._currentlySorting = true;
+          const layers = this.layerCollection.getArray();
+          for (const [index, layerId] of switcherOrder.entries()) {
+            const layer = layers.find(
+              (layer) => layer.get(this.layerIdentifier) === layerId
             );
-            layerCollection.insertAt(layers.length - evt.newIndex, draggedItem);
-          },
-        });
-      } else {
-        ul.querySelectorAll(".dragHandle").forEach(
-          // @ts-ignore
-          (e) => (e.style.display = "none")
-        );
-      }
-    };
-    // @ts-ignore // TODO import OL map
-    // TODO maybe this should be a native OL control registration, e.g. https://github.com/Viglino/ol-ext/blob/master/src/control/LayerSwitcher.js#L50
-    this.attachTo = (olMap) => {
-      olMap.once("loadend", () => {
-        const collection = olMap.getLayers();
-        renderSwitcher(collection);
-        collection.on("change:length", () => {
-          renderSwitcher(collection);
-        });
+            this.layerCollection.remove(layer);
+            this.layerCollection.insertAt(index, layer);
+          }
+          this._currentlySorting = false;
+        },
       });
-    };
+    }
   }
 }
-
-customElements.define("eox-layerswitcher", EOxLayerSwitcher);

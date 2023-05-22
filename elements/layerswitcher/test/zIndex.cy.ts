@@ -31,6 +31,7 @@ describe("Layer Switcher", () => {
     });
     cy.get("eox-layerswitcher").should(($ls) => {
       const eoxLayerSwitcher = <EOxLayerSwitcher>$ls[0];
+      eoxLayerSwitcher.setAttribute("sortBy", "zIndex");
       eoxLayerSwitcher.attachTo(eoxMap.map);
     });
   });
