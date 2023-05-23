@@ -1,0 +1,143 @@
+[
+  {
+    "archived": false,
+    "code": "E10a2",
+    "indicator": "Actively managed total area from Sentinel-2 data",
+    "themes": ["agriculture"],
+    "name": "Actively managed total area from Sentinel-2 data"
+  },
+  {
+    "archived": false,
+    "code": "E10a9",
+    "indicator": "Agricultural Workers",
+    "themes": ["agriculture"],
+    "name": "Agricultural Workers"
+  },
+  {
+    "archived": false,
+    "code": "N1",
+    "indicator": "Air Quality",
+    "themes": ["air"],
+    "name": "Air Quality"
+  },
+  {
+    "archived": false,
+    "code": "E13o",
+    "indicator": "Average number of vessels in a km2 cell in a given period",
+    "themes": ["economy"],
+    "name": "Average number of vessels in a km2 cell in a given period"
+  },
+  {
+    "archived": false,
+    "code": "E13p",
+    "indicator": "Average number of vessels in a km2 cell in a given period",
+    "themes": ["economy"],
+    "name": "Average number of vessels in a km2 cell in a given period"
+  },
+  {
+    "archived": false,
+    "code": "E13q",
+    "indicator": "Average number of vessels in a km2 cell in a given period",
+    "themes": ["economy"],
+    "name": "Average number of vessels in a km2 cell in a given period"
+  },
+  {
+    "archived": false,
+    "code": "E13r",
+    "indicator": "Average number of vessels in a km2 cell in a given period",
+    "themes": ["economy"],
+    "name": "Average number of vessels in a km2 cell in a given period"
+  },
+  {
+    "archived": false,
+    "code": "C1",
+    "indicator": "Boat traffic - NO2 level",
+    "themes": ["economy", "air"],
+    "indicatorOverwrite": "Ports and Shipping - impact on air quality",
+    "name": "Boat traffic - NO2 level"
+  },
+  {
+    "archived": false,
+    "code": "CDS1",
+    "indicator": "C3S Data",
+    "themes": ["air"],
+    "name": "C3S Data"
+  },
+  {
+    "archived": false,
+    "code": "N1a",
+    "indicator": "CAMS Air Quality",
+    "themes": ["air"],
+    "name": "CAMS Air Quality"
+  },
+  {
+    "archived": false,
+    "code": "N1b",
+    "indicator": "CAMS Air Quality",
+    "themes": ["air"],
+    "name": "CAMS Air Quality"
+  },
+  {
+    "archived": false,
+    "code": "N1c",
+    "indicator": "CAMS Air Quality",
+    "themes": ["air"],
+    "name": "CAMS Air Quality"
+  },
+  {
+    "archived": false,
+    "code": "N1d",
+    "indicator": "CAMS Air Quality",
+    "themes": ["air"],
+    "name": "CAMS Air Quality"
+  },
+  {
+    "archived": false,
+    "code": "E13e",
+    "indicator": "Cargo ships in port based on AIS data",
+    "themes": ["economy"],
+    "name": "Cargo ships in port based on AIS data"
+  },
+  {
+    "archived": false,
+    "code": "E13n",
+    "indicator": "Changes in traffic based on mobile data",
+    "themes": ["economy"],
+    "name": "Changes in traffic based on mobile data"
+  },
+  {
+    "archived": false,
+    "code": "N3c",
+    "indicator": "CMEMS product",
+    "themes": ["water"],
+    "name": "CMEMS product"
+  },
+  {
+    "archived": false,
+    "code": "CV",
+    "indicator": "Covid-19 cases",
+    "themes": ["health"],
+    "name": "Covid-19 cases"
+  },
+  {
+    "archived": false,
+    "code": "OW",
+    "indicator": "Covid-19 vaccinations",
+    "themes": ["health"],
+    "name": "Covid-19 vaccinations"
+  },
+  {
+    "archived": false,
+    "code": "E3",
+    "indicator": "Crude Oil and other input materials",
+    "themes": ["economy"],
+    "name": "Crude Oil and other input materials"
+  },
+  {
+    "archived": false,
+    "code": "E13l",
+    "indicator": "Cruise ships in port based on AIS data",
+    "themes": ["economy"],
+    "name": "Cruise ships in port based on AIS data"
+  }
+]
