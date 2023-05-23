@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { EOxChart } from "../src/main";
 
 describe("SH Display", () => {
@@ -40,6 +41,26 @@ describe("SH Display", () => {
           {
             id: "precipitation",
             containedSignals: ["prec"],
+          },
+        ],
+        additionalYAxis: [
+          {
+            id: "add1",
+            containedSignals: ["modis_ndwi"],
+          },
+          {
+            id: "add2",
+            containedSignals: ["modis_savi"],
+          },
+        ],
+        additionalYAxis: [
+          {
+            id: "add1",
+            containedSignals: ["modis_ndwi"],
+          },
+          {
+            id: "add2",
+            containedSignals: ["modis_savi"],
           },
         ],
         colors: [
@@ -147,5 +168,17 @@ describe("SH Display", () => {
       };
       eoxChart.setSignalsEndpoint(options);
     });
+    cy.viewport(800, 700);
+    cy.wait(2000);
+    cy.viewport(600, 700);
+    cy.wait(2000);
+    cy.viewport(400, 700);
+    cy.wait(2000);
+    cy.viewport(800, 400);
+    cy.wait(2000);
+    cy.viewport(600, 400);
+    cy.wait(2000);
+    cy.viewport(400, 400);
+    cy.wait(2000);
   });
 });

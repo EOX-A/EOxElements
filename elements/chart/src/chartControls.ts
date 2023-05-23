@@ -26,10 +26,13 @@ class ChartControls {
     this.generateTimeSelectionOptions();
     document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#controls").style.display = "flex";
+      .shadowRoot.querySelector<HTMLElement>("#controls").style.display =
+      "flex";
     document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#legend-container").style.display = "block";
+      .shadowRoot.querySelector<HTMLElement>(
+        "#legend-container"
+      ).style.display = "block";
     document
       .querySelector("eox-chart")
       .shadowRoot.querySelector("#chart-container")
@@ -39,13 +42,13 @@ class ChartControls {
   private removeStartEndInputs() {
     const start = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#startInput");
+      .shadowRoot.querySelector<HTMLInputElement>("#startInput");
     const end = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#endInput");
+      .shadowRoot.querySelector<HTMLInputElement>("#endInput");
     const button = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#setTime");
+      .shadowRoot.querySelector<HTMLElement>("#setTime");
     if (start && end && button) {
       start.style.display = "none";
       end.style.display = "none";
@@ -55,14 +58,14 @@ class ChartControls {
   private addStartEndInputs() {
     const startEl = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#startInput");
+      .shadowRoot.querySelector<HTMLInputElement>("#startInput");
     // startEl.id = "startInput";
     // startEl.size = 8;
     startEl.value = this.sdm.startTime.toISODate();
     startEl.style.display = "inline";
     const endEl = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#endInput");
+      .shadowRoot.querySelector<HTMLInputElement>("#endInput");
     // endEl.id = "endInput";
     // endEl.size = 8;
     endEl.value = this.sdm.endTime.toISODate();
@@ -76,7 +79,7 @@ class ChartControls {
     // this.element.appendChild(button);
     const button = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#setTime");
+      .shadowRoot.querySelector<HTMLElement>("#setTime");
     button.style.display = "inline";
     button.addEventListener("click", () => {
       const startDate = DateTime.fromISO(startEl.value);
@@ -93,7 +96,7 @@ class ChartControls {
   private addNormalizeCheckbox() {
     const checkbox = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#normalize");
+      .shadowRoot.querySelector<HTMLInputElement>("#normalize");
     // checkbox.type = "checkbox";
     // checkbox.id = "normalize";
     // checkbox.value = "normalize";
@@ -113,7 +116,7 @@ class ChartControls {
   private addShowMinMax() {
     const checkbox = document
       .querySelector("eox-chart")
-      .shadowRoot.querySelector("#showMinMax");
+      .shadowRoot.querySelector<HTMLInputElement>("#showMinMax");
     // var checkbox = document.createElement("input");
     // checkbox.type = "checkbox";
     // checkbox.id = "showMinMax";
