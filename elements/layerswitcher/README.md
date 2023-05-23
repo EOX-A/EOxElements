@@ -1,15 +1,15 @@
-# Map element
+# Layer switcher
 
 ## Usage
 
 ```
-npm install @eox/map
+npm install @eox/layerswitcher
 ```
 
 ```
-import "@eox/map"
+import "@eox/layerswitcher"
 
-<eox-map></eox-map>
+<eox-layerswitcher></eox-layerswitcher>
 ```
 
 // TODO: add documentation

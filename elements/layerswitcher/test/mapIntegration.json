@@ -1,0 +1,65 @@
+{
+  "version": 8,
+  "name": "",
+  "sources": {
+    "states": {
+      "type": "raster",
+      "tileSize": 512,
+      "tiles": [
+        "https://ahocevar.com/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=topp:states&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
+      ]
+    },
+    "countries": {
+      "type": "geojson",
+      "data": "https://openlayersbook.github.io/openlayers_book_samples/assets/data/countries.geojson"
+    },
+    "countriesTiles": {
+      "type": "vector",
+      "tiles": [
+        "https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf"
+      ]
+    }
+  },
+  "layers": [
+    {
+      "id": "states",
+      "type": "raster",
+      "source": "states"
+    },
+    {
+      "id": "countries_fill",
+      "type": "fill",
+      "source": "countries",
+      "paint": {
+        "fill-color": "rgba(255, 255, 255, 0.5)"
+      }
+    },
+    {
+      "id": "countries_outline",
+      "type": "line",
+      "source": "countries",
+      "paint": {
+        "line-color": "#219e46",
+        "line-width": 2
+      }
+    },
+    {
+      "id": "countries_fill_tiles",
+      "type": "fill",
+      "source": "countriesTiles",
+      "source-layer": "ne_10m_admin_0_countries",
+      "paint": {
+        "fill-color": "rgba(255, 0, 100, 0.5)"
+      }
+    },
+    {
+      "id": "countries_outline_tiles",
+      "type": "line",
+      "source": "countriesTiles",
+      "source-layer": "ne_10m_admin_0_countries",
+      "paint": {
+        "line-color": "rgba(255, 0, 100, 1)"
+      }
+    }
+  ]
+}

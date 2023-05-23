@@ -1,15 +1,15 @@
-# Map element
+# Item Filter
 
 ## Usage
 
 ```
-npm install @eox/map
+npm install @eox/itemfilter
 ```
 
 ```
-import "@eox/map"
+import "@eox/itemfilter"
 
-<eox-map></eox-map>
+<eox-itemfilter></eox-itemfilter>
 ```
 
 // TODO: add documentation

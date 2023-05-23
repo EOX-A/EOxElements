@@ -1,11 +1,7 @@
 {
-  "name": "@eox/map",
-  "version": "2.0.0-alpha5",
+  "name": "@eox/itemfilter",
+  "version": "0.2.0",
   "type": "module",
-  "dependencies": {
-    "ol": "7.3.0",
-    "ol-mapbox-style": "9.6.0"
-  },
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
@@ -22,10 +18,14 @@
     "dist",
     "test"
   ],
-  "main": "./dist/eox-map.js",
+  "main": "./dist/eox-itemfilter.js",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
     "watch": "tsc && vite build --watch"
+  },
+  "dependencies": {
+    "fuse.js": "^6.6.2",
+    "lit": "^2.7.4"
   }
 }

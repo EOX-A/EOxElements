@@ -14,8 +14,8 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
+    "experimentalDecorators": true,
     "types": ["cypress"]
   },
-  "include": ["**/*.ts", "**/*.d.ts", "**/*.tsx", "**/*.vue", "**/*.ce.vue"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["**/*.ts"]
 }
