@@ -1,324 +1,156 @@
+import { LitElement, html, nothing } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
+import { map } from "lit/directives/map.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import Fuse from "fuse.js";
-import {
-  itemFilterTemplate,
-  filterTemplate,
-  filterAggregationTemplate,
-  itemAggregationTemplate,
-  itemResultTemplate,
-} from "./template";
 import { highlight } from "./itemHighlighting";
+import { style } from "./style";
 
-export class EOxItemFilter extends HTMLElement {
-  shadowRoot: ShadowRoot;
+type HTMLElementEvent<T extends HTMLElement> = Event & {
+  target: T;
+};
 
+interface ElementConfig {
   /**
-   * Apply JSON items to itemfilter.
-   * @param json
+   * The filter properties.
+   * @param filterProperties
    */
-  apply: Function;
+  filterProperties: Required<Array<string>>;
+  /**
+   * Aggregate results by a property key
+   */
+  aggregateResults?: string;
+  /**
+   * Native fuse.js config override
+   */
+  fuseConfig?: Object;
+  /**
+   * Search functionality
+   */
+  enableSearch?: Boolean;
+  /**
+   * Highlighting of search result character matches
+   */
+  enableHighlighting?: Boolean;
+  /**
+   * Callback that is triggered on item selection
+   * @returns selected item
+   */
+  onSelect?: Function;
+  /**
+   * Show all result items if nothing is input by the user
+   * @default true
+   */
+  matchAllWhenEmpty?: Boolean;
+  /**
+   * Make the filters mutually exclusive
+   */
+  exclusiveFilters?: Boolean;
+}
 
-  private items: Array<Object>;
-  private fuse: any; // TODO proper typing
+@customElement("eox-itemfilter")
+export class EOxItemFilter extends LitElement {
+  _fuse: Fuse<any>;
+  _resultAggregation: Array<string> = [];
 
-  private filters: Object;
-  private aggregateBy: Array<string>;
+  @state()
+  _items: Array<Object> = [];
 
-  config: {
-    /**
-     * The filter properties.
-     * @param filterProperties
-     */
-    filterProperties: Required<Array<string>>;
-    /**
-     * Aggregate results by a property key
-     */
-    aggregateResults?: string;
-    /**
-     * Native fuse.js config override
-     */
-    fuseConfig?: Object;
-    /**
-     * Search functionality
-     */
-    enableSearch?: Boolean;
-    /**
-     * Highlighting of search result character matches
-     */
-    enableHighlighting?: Boolean;
-    /**
-     * Callback that is triggered on item selection
-     * @returns selected item
-     */
-    onSelect?: Function;
-    /**
-     * Show all result items if nothing is input by the user
-     * @default true
-     */
-    matchAllWhenEmpty?: Boolean;
-    /**
-     * Make the filters mutually exclusive
-     */
-    exclusiveFilters?: Boolean;
+  @state()
+  _results: Array<Object> = [];
+
+  @state()
+  _filters: Object = {};
+
+  @property({ attribute: false })
+  config: ElementConfig = {
+    filterProperties: ["themes"],
+    aggregateResults: "themes",
+    fuseConfig: {},
+    enableSearch: true,
+    enableHighlighting: false,
+    onSelect: () => {},
+    matchAllWhenEmpty: true,
+    exclusiveFilters: false,
   };
 
-  constructor() {
-    super();
+  @property()
+  apply = (items: Array<Object>) => {
+    this._items = items;
+    this._fuse = new Fuse(this._items, {
+      minMatchCharLength: 1,
+      includeMatches: true,
+      // Search in same fields as specified by filter properties, plus name
+      keys: ["name", ...this.config.filterProperties],
+      useExtendedSearch: true,
+      ...this.config.fuseConfig,
+    });
 
-    this.filters = {};
-
-    this.shadowRoot = this.attachShadow({ mode: "open" });
-    const template = document.createElement("template");
-    template.innerHTML = itemFilterTemplate;
-    this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-    this.apply = (json: Array<Object>) => {
-      if (this.config.enableSearch) {
+    // build filters
+    this.config.filterProperties.forEach((filterProperty) => {
+      const filterKeys = {};
+      this._items.forEach((item) => {
         // @ts-ignore
-        this.shadowRoot.querySelector("input[type=text").style.display =
-          "block";
-      }
-      this.items = json;
-      // @ts-ignore
-      this.fuse = new Fuse(this.items, {
-        minMatchCharLength: 1,
-        includeMatches: true,
-        // Search in same fields as specified by filter properties, plus name
-        // @ts-ignore
-        keys: ["name", ...this.config.filterProperties],
-        useExtendedSearch: true,
-        ...this.config.fuseConfig,
-      });
-      // @ts-ignore
-      this.config.filterProperties.forEach((filterProperty) => {
-        // @ts-ignore
-        const filter: Array<string> = [
-          ...new Set(
-            this.items.reduce((store: Array<Object>, item: Object) => {
-              // @ts-ignore
-              return store.concat(item[filterProperty]);
-            }, [])
-          ),
-        ].sort();
-
-        const ul = this.shadowRoot.querySelector("ul#filters");
-        const aggregation = document.createElement("template");
-        aggregation.innerHTML = filterAggregationTemplate;
-        // @ts-ignore
-        const filterHeaderElement: Element =
-          aggregation.content.cloneNode(true);
-        filterHeaderElement.querySelector(".title").innerHTML = filterProperty;
-        filterHeaderElement
-          .querySelector("details")
-          .setAttribute("data-filter", filterProperty);
-        // @ts-ignore
-        ul.appendChild(filterHeaderElement);
-
-        filter.forEach((filterItem) => {
-          const li = document.createElement("template");
-          li.innerHTML = filterTemplate;
+        if (Array.isArray(item[filterProperty])) {
           // @ts-ignore
-          const item: Element = li.content.cloneNode(true);
-          const filterItemSelect = item.querySelector("input[type='checkbox']");
-          filterItemSelect.setAttribute("data-filter-key", filterProperty);
-          filterItemSelect.setAttribute("name", "filter");
-          if (this.config.exclusiveFilters === true) {
+          item[filterProperty].forEach((prop) => {
             // @ts-ignore
-            filterItemSelect.type = "radio";
-          }
-          filterItemSelect.setAttribute("data-filter-value", filterItem);
-          item.querySelector("span.title").innerHTML = filterItem;
-          this.shadowRoot
-            .querySelector(`details[data-filter='${filterProperty}']`)
-            .appendChild(item);
-        });
-
-        // @ts-ignore
-        if (this.config.aggregateResults === filterProperty) {
-          this.aggregateBy = filter;
-        }
-      });
-      watchFilters();
-
-      if (this.config.matchAllWhenEmpty !== false) {
-        // initially render all items
-        renderResults(this.items);
-      }
-    };
-
-    const watchFilters = () => {
-      const watchedItems = this.shadowRoot.querySelectorAll(
-        `input[type="${
-          this.config.exclusiveFilters === true ? "radio" : "checkbox"
-        }"]`
-      );
-      // @ts-ignore
-      const syncFilters = (target) => {
-        watchedItems.forEach((item) => {
-          // @ts-ignore
-          const filterKey = item.getAttribute("data-filter-key");
-          // @ts-ignore
-          const filterValue = item.getAttribute("data-filter-value");
-          // @ts-ignore
-          if (item.checked) {
-            // @ts-ignore
-            if (!this.filters[filterKey]) {
-              // @ts-ignore
-              this.filters[filterKey] = [];
-            }
-            // @ts-ignore
-            if (!this.filters[filterKey].includes(filterValue)) {
-              // @ts-ignore
-              this.filters[filterKey].push(filterValue);
-            }
-          } else {
-            if (target === item) {
-              // @ts-ignore
-              if (!this.filters[filterKey]) return;
-              // @ts-ignore
-              this.filters[filterKey].splice(
-                // @ts-ignore
-                this.filters[filterKey].indexOf(filterValue),
-                1
-              );
-            } else {
-              if (this.config.exclusiveFilters === true) {
-                if (
-                  // @ts-ignore
-                  this.filters[filterKey] &&
-                  // @ts-ignore
-                  this.filters[filterKey].includes(filterValue)
-                ) {
-                  // @ts-ignore
-                  this.filters[filterKey]?.splice(
-                    // @ts-ignore
-                    this.filters[filterKey].indexOf(filterValue),
-                    1
-                  );
-                }
-              }
-            }
-            // @ts-ignore
-            if (this.filters[filterKey]?.length === 0) {
-              // @ts-ignore
-              delete this.filters[filterKey];
-            }
-          }
-        });
-      };
-      watchedItems.forEach((item) => {
-        item.addEventListener("click", (evt) => {
-          syncFilters(evt.target);
-          // if all filters are removed, reset
-          if (
-            this.config.matchAllWhenEmpty !== false &&
-            Object.keys(this.filters).length === 0
-          ) {
-            // render all items
-            renderResults(this.items);
-          } else {
-            updateResults(
-              // @ts-ignore
-              this.shadowRoot.querySelector("input[type='text']").value
-            );
-          }
-        });
-      });
-    };
-
-    // @ts-ignore
-    const renderResults = (results) => {
-      const ul = this.shadowRoot.querySelector("ul#results");
-      ul.innerHTML = "";
-      if (this.config.aggregateResults) {
-        const aggregation = document.createElement("template");
-        aggregation.innerHTML = itemAggregationTemplate;
-        this.aggregateBy.forEach((aR) => {
-          if (
-            // @ts-ignore
-            !results.find((result) =>
-              Array.isArray(result[this.config.aggregateResults])
-                ? result[this.config.aggregateResults].includes(aR)
-                : result[this.config.aggregateResults] === aR
-            )
-          ) {
-            return;
-          }
-          // @ts-ignore
-          const aggregationElement: Element =
-            aggregation.content.cloneNode(true);
-          // @ts-ignore
-          aggregationElement.querySelector("summary .title").innerHTML = aR;
-          // @ts-ignore
-          aggregationElement
-            .querySelector("details")
-            // @ts-ignore
-            .setAttribute("data-aggregate", aR);
-          ul.appendChild(aggregationElement);
-        });
-      }
-      // @ts-ignore
-      results.forEach((result) => {
-        const li = document.createElement("template");
-        li.innerHTML = itemResultTemplate;
-        // @ts-ignore
-        const resultElement: Element = li.content.cloneNode(true);
-        resultElement.querySelector(".title").innerHTML = result.name;
-        let parent;
-        if (this.aggregateBy) {
-          // @ts-ignore
-          const matchingAggregation = result[this.config.aggregateResults];
-          if (Array.isArray(matchingAggregation)) {
-            matchingAggregation.forEach((mA) => {
-              parent = this.shadowRoot.querySelector(
-                `details[data-aggregate=${mA}]`
-              );
-            });
-          } else {
-            parent = this.shadowRoot.querySelector(
-              `details[data-aggregate=${matchingAggregation}]`
-            );
-          }
+            filterKeys[prop] = undefined;
+          });
         } else {
           // @ts-ignore
-          parent = ul;
+          filterKeys[item[filterProperty]] = undefined;
         }
-        resultElement.querySelector("input").addEventListener("click", () => {
-          if (this.config.onSelect) {
-            this.config.onSelect(result);
-          }
-        });
-        parent.appendChild(resultElement);
       });
-      if (this.config.aggregateResults) {
-        const allDetails = this.shadowRoot.querySelectorAll("#results details");
-        allDetails.forEach((detail) => {
-          // @ts-ignore
-          detail.querySelector("summary .count").innerHTML =
-            detail.querySelectorAll("li").length;
-        });
-      }
-    };
-    const updateResults = (input: String, filters: Object = this.filters) => {
-      const parsedFilters = Object.entries(filters).reduce(
-        (store, [key, value]) => {
-          // @ts-ignore
-          const createProperty = (val) => {
-            const property = {};
+      // @ts-ignore
+      this._filters[filterProperty] = filterKeys;
+    });
+
+    if (this.config.matchAllWhenEmpty !== false) {
+      // initially render all items
+      this._results = this._items;
+      this.requestUpdate();
+    }
+
+    if (this.config.aggregateResults) {
+      this._resultAggregation = [
+        ...new Set(
+          this._items.reduce((store: Array<string>, item: Object) => {
             // @ts-ignore
-            property[key] = `=${val}`; // exact match
-            store.push(property);
-          };
-          if (Array.isArray(value)) {
-            value.forEach((v) => createProperty(v));
-          } else {
-            createProperty(value);
-          }
-          return store;
-        },
-        []
-      );
-      const search = this.fuse.search({
-        ...(input.length && Object.keys(parsedFilters).length
+            return store.concat(item[this.config.aggregateResults]);
+          }, [])
+        ),
+      ].sort();
+    }
+  };
+
+  search(input: string = "", filters: Object = this._filters) {
+    const parsedFilters = Object.entries(filters).reduce(
+      (store, [key, value]) => {
+        // @ts-ignore
+        const createProperty = (val) => {
+          const property = {};
+          // @ts-ignore
+          property[key] = `=${val}`; // exact match
+          store.push(property);
+        };
+        Object.entries(value)
+          .filter(([_, v]) => v)
+          .forEach(([k, _]) => createProperty(k));
+        return store;
+      },
+      []
+    );
+    let results;
+    if (
+      !input.length &&
+      !parsedFilters.length &&
+      this.config.matchAllWhenEmpty !== false
+    ) {
+      results = this._items;
+    } else {
+      const parameters: Object = {
+        ...(input.length && parsedFilters.length
           ? {
               $and: [
                 { name: input },
@@ -335,28 +167,190 @@ export class EOxItemFilter extends HTMLElement {
                 },
               ],
             }),
-      });
-      const results = this.config.enableHighlighting
-        ? highlight(search)
-        : // @ts-ignore
-          search.map((i) => i.item);
-      renderResults(results);
-    };
+      };
+      const response = this._fuse.search(parameters);
+      results = this.config.enableHighlighting
+        ? highlight(response)
+        : response.map((i) => i.item);
+    }
+    this._results = results;
+    this.requestUpdate();
+  }
 
-    this.shadowRoot
-      .querySelector("input[type='text']")
-      .addEventListener("input", (evt) => {
+  aggregateResults(items: Array<Object>, property: string | Array<string>) {
+    return items.filter((item) => {
+      // @ts-ignore
+      const aggregation = item[this.config.aggregateResults];
+      return Array.isArray(aggregation)
+        ? aggregation.includes(property)
+        : aggregation === property;
+    });
+  }
+
+  toggleFilter(filter: string, key: string) {
+    if (this.config.exclusiveFilters === true) {
+      Object.keys(this._filters).forEach((f) => {
         // @ts-ignore
-        const input = evt.target.value;
-        if (!input && this.config.matchAllWhenEmpty !== false) {
-          // initially render all items
-          renderResults(this.items);
-        } else {
+        Object.keys(this._filters[f]).forEach((k) => {
           // @ts-ignore
-          updateResults(input);
-        }
+          this._filters[f][k] = false;
+        });
       });
+    }
+    // @ts-ignore
+    this._filters[filter][key] = !this._filters[filter][key];
+    console.log(this._filters);
+    this.search();
+  }
+
+  render() {
+    return html`
+      <style>
+        ${style}
+      </style>
+      <form>
+        <section>
+          <input
+            type="text"
+            placeholder="Search"
+            style="display:${this.config.enableSearch ? "block" : "none"}"
+            @input="${(evt: HTMLElementEvent<HTMLInputElement>) =>
+              this.search(evt.target.value)}"
+          />
+        </section>
+        <section>
+          <slot name="filterstitle"></slot>
+          <ul id="filters">
+            ${map(
+              this.config.filterProperties,
+              (filter) => html`
+                <details id="details-filter">
+                  <summary>
+                    <small>
+                      <strong class="title"> ${filter} </strong>
+                    </small>
+                    <div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <title>chevron-down</title>
+                        <path
+                          d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                        />
+                      </svg>
+                    </div>
+                  </summary>
+                  <ul>
+                    ${
+                      // @ts-ignore
+                      this._filters[filter]
+                        ? map(
+                            // @ts-ignore
+                            Object.keys(this._filters[filter]).sort(),
+                            (key) => html`
+                              <li>
+                                <label>
+                                  <input
+                                    name="selection"
+                                    type="${this.config.exclusiveFilters ===
+                                    true
+                                      ? "radio"
+                                      : "checkbox"}"
+                                    checked="${
+                                      // @ts-ignore
+                                      this._filters[filter][key] || nothing
+                                    }"
+                                    @click=${() =>
+                                      this.toggleFilter(filter, key)}
+                                  />
+                                  <span class="title">${key}</span>
+                                </label>
+                              </li>
+                            `
+                          )
+                        : null
+                    }
+                  </ul>
+                </details>
+              `
+            )}
+          </ul>
+        </section>
+        <section id="section-results">
+          <div>
+            <slot name="resultstitle"></slot>
+          </div>
+          <div id="container-results" class="scroll">
+            <ul id="results">
+              ${this.config.aggregateResults
+                ? map(
+                    this._resultAggregation.filter(
+                      (aggregationProperty) =>
+                        this.aggregateResults(
+                          this._results,
+                          aggregationProperty
+                        ).length
+                    ),
+                    (aggregationProperty) => html`<details
+                      id="details-results"
+                      open
+                    >
+                      <summary>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <title>chevron-down</title>
+                          <path
+                            d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                          />
+                        </svg>
+                        <strong class="title"> ${aggregationProperty} </strong>
+                        <span style="margin-left: 0.25rem"
+                          >(${this.aggregateResults(
+                            this._results,
+                            aggregationProperty
+                          ).length})</span
+                        >
+                      </summary>
+                      <ul>
+                        ${map(
+                          this.aggregateResults(
+                            this._results,
+                            aggregationProperty
+                          ),
+                          // @ts-ignore
+                          (item) => html`
+                            <li>
+                              <label>
+                                <input
+                                  type="radio"
+                                  name="result"
+                                  @click=${() => this.config.onSelect(item)}
+                                />
+                                <span class="title"
+                                  >${
+                                    // @ts-ignore
+                                    unsafeHTML(item.name)
+                                  }</span
+                                >
+                              </label>
+                            </li>
+                          `
+                        )}
+                      </ul>
+                    </details>`
+                  )
+                : map(
+                    this._results,
+                    // @ts-ignore
+                    (item) => html`<li>${unsafeHTML(item.name)}</li>`
+                  )}
+            </ul>
+          </div>
+        </section>
+      </form>
+    `;
   }
 }
-
-customElements.define("eox-itemfilter", EOxItemFilter);
