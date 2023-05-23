@@ -2,10 +2,13 @@ import Map from "ol/Map.js";
 import OSM from "ol/source/OSM.js";
 import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
-import { apply } from 'ol-mapbox-style';
+import { Coordinate } from "ol/coordinate";
+import { apply } from "ol-mapbox-style";
+
+import olCss from "ol/ol.css";
 
 export class EOxMap extends HTMLElement {
-  shadow: ShadowRoot;
+  private shadow: ShadowRoot;
 
   /**
    * The native OpenLayers map object.
@@ -15,22 +18,21 @@ export class EOxMap extends HTMLElement {
 
   /**
    * Apply layers from Mapbox Style JSON
+   * @param json a Mapbox Style JSON
+   * @returns the array of layers
    */
   setLayers: Function;
 
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: "open" });
-    const link = document.createElement("link");
-    link.setAttribute("rel", "stylesheet");
-    link.setAttribute("href", "https://openlayers.org/theme/ol.css");
-    this.shadow.appendChild(link);
     const style = document.createElement("style");
-    style.innerText = `
-      :host {
-        display: block;
-      }
-    `;
+    const shadowStyleFix = `
+    :host {
+      display: block;
+    }
+  `;
+    style.innerHTML = shadowStyleFix + olCss;
     this.shadow.appendChild(style);
     const div = document.createElement("div");
     div.style.width = "100%";
@@ -38,6 +40,7 @@ export class EOxMap extends HTMLElement {
     this.shadow.appendChild(div);
 
     this.map = new Map({
+      controls: [],
       target: div,
       layers: [
         new TileLayer({
@@ -45,8 +48,14 @@ export class EOxMap extends HTMLElement {
         }),
       ],
       view: new View({
-        center: [0, 0],
-        zoom: 2,
+        center: this.hasAttribute("center")
+          ? (JSON.parse(
+              this.getAttribute("center")
+            ) as Array<Number> as Coordinate)
+          : [0, 0],
+        zoom: this.hasAttribute("zoom")
+          ? JSON.parse(this.getAttribute("zoom"))
+          : 0,
       }),
     });
 
