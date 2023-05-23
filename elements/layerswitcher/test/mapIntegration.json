@@ -44,20 +44,6 @@
       }
     },
     {
-      "id": "countries_text",
-      "type": "symbol",
-      "source": "countries",
-      "paint": {
-        "text-color": "rgb(0, 50, 200)"
-      },
-      "layout": {
-        "text-font": ["Open Sans Regular"],
-        "text-field": {
-          "property": "name"
-        }
-      }
-    },
-    {
       "id": "countries_fill_tiles",
       "type": "fill",
       "source": "countriesTiles",
