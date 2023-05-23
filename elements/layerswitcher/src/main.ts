@@ -5,6 +5,7 @@ import { Map, Collection } from "ol";
 import { Layer } from "ol/layer";
 // @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
+import { style } from "./style";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
@@ -68,12 +69,7 @@ export class EOxLayerSwitcher extends LitElement {
   render() {
     return html`
       <style>
-        :host {
-          display: block;
-        }
-        .dragHandle {
-          cursor: ns-resize;
-        }
+        ${style}
       </style>
       <div>
         <slot></slot>
