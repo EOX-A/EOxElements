@@ -25,6 +25,7 @@
     "watch": "tsc && vite build --watch"
   },
   "dependencies": {
-    "fuse.js": "^6.6.2"
+    "fuse.js": "^6.6.2",
+    "lit": "^2.7.4"
   }
 }
