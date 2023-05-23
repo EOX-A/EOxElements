@@ -17,12 +17,27 @@
   </head>
   <body>
     <eox-map></eox-map>
-    <eox-layerswitcher
-      layerIdentifier="id"
-      layerTitle="name"
-      style="width: 300px; display: block"
-    >
-      Layer Switcher Title
-    </eox-layerswitcher>
+    <div style="display: flex">
+      <eox-layerswitcher
+        .layerConfig="['opacity']"
+        layerIdentifier="id"
+        layerTitle="name"
+        style="width: 300px"
+      >
+        Layer Switcher with internal layer config
+      </eox-layerswitcher>
+
+      <eox-layerswitcher
+        externalLayerConfig
+        .layerConfig="['opacity']"
+        layerIdentifier="id"
+        layerTitle="name"
+        id="test-switcher"
+        style="width: 300px"
+      >
+        Layer Switcher with external layer config
+      </eox-layerswitcher>
+      <eox-layerconfig for="test-switcher">External layer config</eox-layerconfig>
+    </div>
   </body>
 </html>

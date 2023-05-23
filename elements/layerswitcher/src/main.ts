@@ -32,6 +32,12 @@ export class EOxLayerSwitcher extends LitElement {
   @property()
   sortBy = "layerOrder";
 
+  @property({ type: Array })
+  layerConfig: Array<string> = ["opacity"];
+
+  @property({ type: Boolean })
+  externalLayerConfig: Boolean = undefined;
+
   @property()
   attachTo = (olMap: Map) => {
     this.olMap = olMap;
@@ -66,6 +72,21 @@ export class EOxLayerSwitcher extends LitElement {
     this.requestUpdate();
   }
 
+  private _emitLayerconfig(layer: Layer) {
+    const options = {
+      detail: {
+        layer,
+      },
+      bubbles: true,
+      composed: true,
+    };
+    this.dispatchEvent(new CustomEvent("layerconfig", options));
+  }
+
+  changeOpacity(targetLayer: Layer, value: number) {
+    targetLayer.setOpacity(value / 100);
+  }
+
   render() {
     return html`
       <style>
@@ -86,14 +107,26 @@ export class EOxLayerSwitcher extends LitElement {
                   />
                   <span class="title">${layer.get(this.layerTitle)}</span>
                 </label>
-                <input
-                  type="range"
-                  value="100"
-                  @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
-                    layer.setOpacity(parseInt(evt.target.value) / 100)}
-                />
                 ${this.sortBy === "layerOrder"
                   ? html` <span class="dragHandle">=</span> `
+                  : nothing}
+                ${this.layerConfig && !this.externalLayerConfig
+                  ? html`
+                      <details>
+                        <summary>Layer config</summary>
+                        <eox-layerconfig
+                          .layerConfig="${this.layerConfig}"
+                          .layerSwitcher="${this}"
+                          .layer=${layer}
+                        ></eox-layerconfig>
+                      </details>
+                    `
+                  : this.externalLayerConfig
+                  ? html`
+                      <button @click=${() => this._emitLayerconfig(layer)}>
+                        configure
+                      </button>
+                    `
                   : nothing}
               </li>
             `
@@ -128,5 +161,78 @@ export class EOxLayerSwitcher extends LitElement {
         },
       });
     }
+  }
+}
+
+@customElement("eox-layerconfig")
+export class EOxLayerConfig extends LitElement {
+  @property()
+  for: string;
+
+  @property({ type: Array })
+  layerConfig: Array<string>;
+
+  @property({ type: Object, attribute: false })
+  layerSwitcher: HTMLElement;
+
+  @property({ type: Object, attribute: false })
+  layer: Layer;
+
+  private _layerSwitcherElement: HTMLElement;
+
+  @state()
+  private _currentLayer: Layer;
+
+  private _handleInput(evt: HTMLElementEvent<HTMLInputElement>) {
+    // @ts-ignore
+    this._layerSwitcherElement.changeOpacity(
+      this._currentLayer,
+      evt.target.value
+    );
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    if (!this.layerConfig && !this.layerSwitcher) {
+      // "external" mode, i.e. rendered in separate div
+      this._layerSwitcherElement = document.querySelector(`#${this.for}`);
+      console.log(this._layerSwitcherElement);
+      // @ts-ignore
+      this.layerConfig = this._layerSwitcherElement.layerConfig;
+      if (this._layerSwitcherElement) {
+        this._layerSwitcherElement.addEventListener("layerconfig", (evt) => {
+          // @ts-ignore
+          this._currentLayer = evt.detail.layer;
+          this.requestUpdate();
+        });
+      }
+    } else {
+      // "internal" mode, i.e. embedded in layerswitcher
+      this._layerSwitcherElement = this.layerSwitcher;
+      this._currentLayer = this.layer;
+    }
+  }
+  render() {
+    return html`
+      <style>
+        ${style}
+      </style>
+      <div>
+        <slot></slot>
+        layer: ${this._currentLayer.get("name")}
+        ${map(
+          this.layerConfig,
+          (property) => html`
+            <div>${property}</div>
+            <input
+              type="range"
+              value="100"
+              @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
+                this._handleInput(evt)}
+            />
+          `
+        )}
+      </div>
+    `;
   }
 }
