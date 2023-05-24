@@ -137,7 +137,7 @@ export class EOxItemFilter extends LitElement {
         const createProperty = (val) => {
           const property = {};
           // @ts-ignore
-          property[key] = `=${val}`; // exact match
+          property[key] = `="${val}"`; // exact match
           store.push(property);
         };
         Object.entries(value)
