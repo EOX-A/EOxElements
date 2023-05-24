@@ -165,10 +165,14 @@ export class EOxItemFilter extends LitElement {
         ...(input.length > 2 && parsedFilters.length
           ? {
               $and: [
-                // @ts-ignore
-                ...this.config.fuseConfig["keys"].map((key: string) => ({
-                  [key]: input,
-                })),
+                {
+                  $or: [
+                    // @ts-ignore
+                    ...this.config.fuseConfig["keys"].map((key: string) => ({
+                      [key]: input,
+                    })),
+                  ],
+                },
                 {
                   $or: parsedFilters,
                 },
