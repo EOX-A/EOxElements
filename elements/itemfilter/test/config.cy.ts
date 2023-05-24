@@ -14,7 +14,7 @@ describe("Item Filter Config", () => {
         enableSearch: true,
         enableHighlighting: true,
         fuseConfig: {
-            keys: ["title", "description", "themes"],
+          keys: ["title", "description", "themes"],
         },
         // onSelect: (item: any) => {
         //   console.log(item);
@@ -30,7 +30,7 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .find("input")
-      .should('not.have.css', 'display', 'none')
+      .should("not.have.css", "display", "none");
   });
 
   it("should filter results based on search string", () => {
@@ -38,8 +38,8 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("[data-cy='search']").type("white");
-        cy.get("ul#results").children()
-      })
+        cy.get("ul#results").children();
+      });
   });
 
   it("should highlight results", () => {
@@ -47,8 +47,8 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("[data-cy='search']").type("white");
-        cy.get("mark.highlight").contains("White")
-      })
+        cy.get("mark.highlight").contains("White");
+      });
   });
 
   it("should disable highlight", () => {
@@ -60,8 +60,8 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("[data-cy='search']").type("white");
-        cy.get("mark.highlight").should("not.exist")
-      })
+        cy.get("mark.highlight").should("not.exist");
+      });
   });
 
   it("should not have a search bar", () => {
@@ -75,7 +75,7 @@ describe("Item Filter Config", () => {
         enableSearch: false,
         enableHighlighting: true,
         fuseConfig: {
-            keys: ["title", "description", "themes"],
+          keys: ["title", "description", "themes"],
         },
         // onSelect: (item: any) => {
         //   console.log(item);
@@ -88,20 +88,20 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .find("input")
-      .should('have.css', 'display', 'none')
+      .should("have.css", "display", "none");
   });
 
   it("should allow multiple filters", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("[data-cy='expand-button']").click()
-        cy.get('[type="checkbox"]').first().check()
-        cy.get('[type="checkbox"]').eq(1).check()
-        cy.get('[type="checkbox"]').first().check().should('be.checked');
-        cy.get('[type="checkbox"]').eq(1).check().should('be.checked');
-      })
-  })
+        cy.get("[data-cy='expand-button']").click();
+        cy.get('[type="checkbox"]').first().check();
+        cy.get('[type="checkbox"]').eq(1).check();
+        cy.get('[type="checkbox"]').first().check().should("be.checked");
+        cy.get('[type="checkbox"]').eq(1).check().should("be.checked");
+      });
+  });
 
   it("should allow only one filter", () => {
     cy.get("eox-itemfilter").should(($el) => {
@@ -114,7 +114,7 @@ describe("Item Filter Config", () => {
         enableSearch: false,
         enableHighlighting: true,
         fuseConfig: {
-            keys: ["title", "description", "themes"],
+          keys: ["title", "description", "themes"],
         },
         // onSelect: (item: any) => {
         //   console.log(item);
@@ -127,10 +127,10 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("[data-cy='expand-button']").click()
-        cy.get('[type="radio"]').first().check()
-        cy.get('[type="radio"]').eq(1).check()
-        cy.get('[type="radio"]').first().should('not.be.checked');
-      })
-  })
+        cy.get("[data-cy='expand-button']").click();
+        cy.get('[type="radio"]').first().check();
+        cy.get('[type="radio"]').eq(1).check();
+        cy.get('[type="radio"]').first().should("not.be.checked");
+      });
+  });
 });
