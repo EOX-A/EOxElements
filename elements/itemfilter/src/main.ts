@@ -242,7 +242,19 @@ export class EOxItemFilter extends LitElement {
             ${map(
               this.config.filterProperties,
               (filter) => html`
-                <details id="details-filter">
+                <details
+                  id="details-filter"
+                  data-filter="${filter}"
+                  @click=${() =>
+                    this.renderRoot
+                      .querySelectorAll("details#details-filter")
+                      .forEach((d) => {
+                        if (d.getAttribute("data-filter") !== filter) {
+                          d.removeAttribute("open");
+                          this.requestUpdate();
+                        }
+                      })}
+                >
                   <summary>
                     <small>
                       <strong class="title"> ${filter} </strong>
