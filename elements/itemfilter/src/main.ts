@@ -260,37 +260,39 @@ export class EOxItemFilter extends LitElement {
                       </svg>
                     </div>
                   </summary>
-                  <ul>
-                    ${
-                      // @ts-ignore
-                      this._filters[filter]
-                        ? map(
-                            // @ts-ignore
-                            Object.keys(this._filters[filter]).sort(),
-                            (key) => html`
-                              <li>
-                                <label>
-                                  <input
-                                    name="selection"
-                                    type="${this.config.exclusiveFilters ===
-                                    true
-                                      ? "radio"
-                                      : "checkbox"}"
-                                    checked="${
-                                      // @ts-ignore
-                                      this._filters[filter][key] || nothing
-                                    }"
-                                    @click=${() =>
-                                      this.toggleFilter(filter, key)}
-                                  />
-                                  <span class="title">${key}</span>
-                                </label>
-                              </li>
-                            `
-                          )
-                        : null
-                    }
-                  </ul>
+                  <div class="scroll" style="max-height: 150px">
+                    <ul>
+                      ${
+                        // @ts-ignore
+                        this._filters[filter]
+                          ? map(
+                              // @ts-ignore
+                              Object.keys(this._filters[filter]).sort(),
+                              (key) => html`
+                                <li>
+                                  <label>
+                                    <input
+                                      name="selection"
+                                      type="${this.config.exclusiveFilters ===
+                                      true
+                                        ? "radio"
+                                        : "checkbox"}"
+                                      checked="${
+                                        // @ts-ignore
+                                        this._filters[filter][key] || nothing
+                                      }"
+                                      @click=${() =>
+                                        this.toggleFilter(filter, key)}
+                                    />
+                                    <span class="title">${key}</span>
+                                  </label>
+                                </li>
+                              `
+                            )
+                          : null
+                      }
+                    </ul>
+                  </div>
                 </details>
               `
             )}
