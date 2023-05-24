@@ -224,24 +224,53 @@ export class EOxItemFilter extends LitElement {
     }
     // @ts-ignore
     this._filters[filter][key] = !this._filters[filter][key];
-    this.search();
+    const searchField = this.renderRoot.querySelector('input[type="text"]');
+    if (searchField) {
+      // @ts-ignore
+      this.search(searchField.value);
+    } else {
+      this.search();
+    }
     const resultItems = this.renderRoot.querySelectorAll(
       "ul#results input[type='radio']"
     );
     // first reset all result radio inputs, then re-select the one currently stored in state
     // @ts-ignore
     for (let i = 0; i < resultItems.length; i++) resultItems[i].checked = false;
-    setTimeout(() => {
-      const selectedItem = this.renderRoot.querySelector(
-        // @ts-ignore
-        `#${this._selectedResult.id}`
-      );
-      if (selectedItem) {
-        // @ts-ignore
-        selectedItem.checked = true;
-        this.requestUpdate();
-      }
+    if (this._selectedResult) {
+      setTimeout(() => {
+        const selectedItem = this.renderRoot.querySelector(
+          // @ts-ignore
+          `#${this._selectedResult.id}`
+        );
+        if (selectedItem) {
+          // @ts-ignore
+          selectedItem.checked = true;
+          this.requestUpdate();
+        }
+      });
+    }
+  }
+
+  resetFilters() {
+    this.renderRoot.querySelectorAll("#details-filter input").forEach((f) => {
+      // @ts-ignore
+      f.checked = false;
     });
+    const searchField = this.renderRoot.querySelector('input[type="text"]');
+    if (searchField) {
+      // @ts-ignore
+      searchField.value = "";
+    }
+    Object.keys(this._filters).forEach((f) => {
+      // @ts-ignore
+      Object.keys(this._filters[f]).forEach((k) => {
+        // @ts-ignore
+        this._filters[f][k] = false;
+      });
+    });
+    this.search();
+    this.requestUpdate();
   }
 
   render() {
@@ -331,6 +360,9 @@ export class EOxItemFilter extends LitElement {
               `
             )}
           </ul>
+          <a id="filter-reset" @click=${() => this.resetFilters()}
+            ><small>Reset filters</small></a
+          >
         </section>
         <section id="section-results">
           <div>

@@ -108,6 +108,9 @@ ul#results {
 ul#results li {
   padding-left: 0.5rem;
 }
+#filter-reset {
+  cursor: pointer;
+}
 .scroll {
   height: 100%;
   overflow-x: hidden;
