@@ -10,6 +10,7 @@ describe("Item Filter", () => {
     cy.get("eox-itemfilter").should(($el) => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
       EOxItemFilter.config = {
+        titleProperty: "title",
         filterProperties: ["themes"],
         aggregateResults: "themes",
         enableSearch: true,

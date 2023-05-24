@@ -65,7 +65,7 @@ details summary {
 #details-results[open] summary svg {
   transform: rotate(0deg);
 }
-li span,
+#details-filter li span,
 details summary {
   text-transform: capitalize;
 }

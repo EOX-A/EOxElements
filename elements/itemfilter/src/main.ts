@@ -15,7 +15,11 @@ interface ElementConfig {
    * The filter properties.
    * @param filterProperties
    */
-  filterProperties: Required<Array<string>>;
+  filterProperties: Array<string>;
+  /**
+   * The property of the result items used for display
+   */
+  titleProperty: string;
   /**
    * Aggregate results by a property key
    */
@@ -64,6 +68,7 @@ export class EOxItemFilter extends LitElement {
 
   @property({ attribute: false })
   config: ElementConfig = {
+    titleProperty: "title",
     filterProperties: ["themes"],
     aggregateResults: "themes",
     fuseConfig: {},
@@ -78,10 +83,11 @@ export class EOxItemFilter extends LitElement {
   apply = (items: Array<Object>) => {
     this._items = items;
     this._fuse = new Fuse(this._items, {
-      minMatchCharLength: 1,
+      minMatchCharLength: 3,
+      // location: 0,
+      threshold: 0.4,
+      distance: 50,
       includeMatches: true,
-      // Search in same fields as specified by filter properties, plus name
-      keys: ["name", ...this.config.filterProperties],
       useExtendedSearch: true,
       ...this.config.fuseConfig,
     });
@@ -108,7 +114,7 @@ export class EOxItemFilter extends LitElement {
 
     if (this.config.matchAllWhenEmpty !== false) {
       // initially render all items
-      this._results = this._items;
+      this._results = this.sortResults(this._items);
       this.requestUpdate();
     }
 
@@ -143,17 +149,20 @@ export class EOxItemFilter extends LitElement {
     );
     let results;
     if (
-      !input.length &&
+      !(input.length > 2) &&
       !parsedFilters.length &&
       this.config.matchAllWhenEmpty !== false
     ) {
       results = this._items;
     } else {
       const parameters: Object = {
-        ...(input.length && parsedFilters.length
+        ...(input.length > 2 && parsedFilters.length
           ? {
               $and: [
-                { name: input },
+                // @ts-ignore
+                ...this.config.fuseConfig["keys"].map((key: string) => ({
+                  [key]: input,
+                })),
                 {
                   $or: parsedFilters,
                 },
@@ -161,7 +170,11 @@ export class EOxItemFilter extends LitElement {
             }
           : {
               $or: [
-                { name: input },
+                // @ts-ignore
+                ...this.config.fuseConfig["keys"].map((key: string) => ({
+                  [key]: input,
+                })),
+                { themes: input },
                 {
                   $or: parsedFilters,
                 },
@@ -170,10 +183,10 @@ export class EOxItemFilter extends LitElement {
       };
       const response = this._fuse.search(parameters);
       results = this.config.enableHighlighting
-        ? highlight(response)
+        ? highlight(response, "highlight", this.config.titleProperty)
         : response.map((i) => i.item);
     }
-    this._results = results;
+    this._results = this.sortResults(results);
     this.requestUpdate();
   }
 
@@ -185,6 +198,13 @@ export class EOxItemFilter extends LitElement {
         ? aggregation.includes(property)
         : aggregation === property;
     });
+  }
+
+  sortResults(items: Array<Object>) {
+    return [...items].sort((a, b) =>
+      // @ts-ignore
+      a[this.config.titleProperty] < b[this.config.titleProperty] ? -1 : 1
+    );
   }
 
   toggleFilter(filter: string, key: string) {
@@ -199,7 +219,6 @@ export class EOxItemFilter extends LitElement {
     }
     // @ts-ignore
     this._filters[filter][key] = !this._filters[filter][key];
-    console.log(this._filters);
     this.search();
   }
 
@@ -332,7 +351,7 @@ export class EOxItemFilter extends LitElement {
                                 <span class="title"
                                   >${
                                     // @ts-ignore
-                                    unsafeHTML(item.name)
+                                    unsafeHTML(item[this.config.titleProperty])
                                   }</span
                                 >
                               </label>
@@ -345,7 +364,13 @@ export class EOxItemFilter extends LitElement {
                 : map(
                     this._results,
                     // @ts-ignore
-                    (item) => html`<li>${unsafeHTML(item.name)}</li>`
+                    (item) =>
+                      html`<li>
+                        ${
+                          // @ts-ignore
+                          unsafeHTML(item[this.config.titleProperty])
+                        }
+                      </li>`
                   )}
             </ul>
           </div>
