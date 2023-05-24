@@ -303,6 +303,9 @@ export class EOxItemFilter extends LitElement {
             <slot name="resultstitle"></slot>
           </div>
           <div id="container-results" class="scroll">
+            ${this._results.length < 1
+              ? html` <small class="no-results">No matching items</small> `
+              : nothing}
             <ul id="results">
               ${this.config.aggregateResults
                 ? map(
