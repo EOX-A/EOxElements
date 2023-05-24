@@ -84,6 +84,7 @@ input[type="radio"] {
 input[type="text"] {
   width: 100%;
   margin-bottom: 0.5rem;
+  padding: 5px 7px;
 }
 section {
   padding-left: 1rem;
