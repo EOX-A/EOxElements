@@ -232,6 +232,7 @@ export class EOxItemFilter extends LitElement {
           <input
             type="text"
             placeholder="Search"
+            data-cy="search"
             style="display:${this.config.enableSearch ? "block" : "none"}"
             @input="${(evt: HTMLElementEvent<HTMLInputElement>) =>
               this.search(evt.target.value)}"
@@ -250,6 +251,7 @@ export class EOxItemFilter extends LitElement {
                     </small>
                     <div>
                       <svg
+                        data-cy="expand-button"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
                       >
