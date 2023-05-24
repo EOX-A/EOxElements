@@ -66,6 +66,9 @@ export class EOxItemFilter extends LitElement {
   @state()
   _filters: Object = {};
 
+  @state()
+  _selectedResult: Object;
+
   @property({ attribute: false })
   config: ElementConfig = {
     titleProperty: "title",
@@ -81,7 +84,10 @@ export class EOxItemFilter extends LitElement {
 
   @property()
   apply = (items: Array<Object>) => {
-    this._items = items;
+    this._items = items.map((i, index) => ({
+      ...i,
+      id: `item-${index}`,
+    }));
     this._fuse = new Fuse(this._items, {
       minMatchCharLength: 3,
       // location: 0,
@@ -219,6 +225,23 @@ export class EOxItemFilter extends LitElement {
     // @ts-ignore
     this._filters[filter][key] = !this._filters[filter][key];
     this.search();
+    const resultItems = this.renderRoot.querySelectorAll(
+      "ul#results input[type='radio']"
+    );
+    // first reset all result radio inputs, then re-select the one currently stored in state
+    // @ts-ignore
+    for (let i = 0; i < resultItems.length; i++) resultItems[i].checked = false;
+    setTimeout(() => {
+      const selectedItem = this.renderRoot.querySelector(
+        // @ts-ignore
+        `#${this._selectedResult.id}`
+      );
+      if (selectedItem) {
+        // @ts-ignore
+        selectedItem.checked = true;
+        this.requestUpdate();
+      }
+    });
   }
 
   render() {
@@ -362,7 +385,14 @@ export class EOxItemFilter extends LitElement {
                                 <input
                                   type="radio"
                                   name="result"
-                                  @click=${() => this.config.onSelect(item)}
+                                  id="${
+                                    // @ts-ignore
+                                    item.id
+                                  }"
+                                  @click=${() => {
+                                    this._selectedResult = item;
+                                    this.config.onSelect(item);
+                                  }}
                                 />
                                 <span class="title"
                                   >${
