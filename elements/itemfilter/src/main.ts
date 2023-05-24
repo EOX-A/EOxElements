@@ -203,7 +203,20 @@ export class EOxItemFilter extends LitElement {
     return items.filter((item) => {
       // @ts-ignore
       const aggregation = item[this.config.aggregateResults];
-      return Array.isArray(aggregation)
+      // special check if a currently selected fiter property is part of a filter key
+      // also used for aggregation. if aggregation of results uses the same property
+      // as the filter, it doesn't make sense to show all aggregations, but only
+      // the one matching the current filter
+      const currentFilter = Object.keys(
+        // @ts-ignore
+        this._filters[this.config.aggregateResults]
+        // @ts-ignore
+      ).filter((f) => this._filters[this.config.aggregateResults][f]);
+      const includedInCurrentFilter = currentFilter.length
+        ? // @ts-ignore
+          currentFilter.includes(property)
+        : true;
+      return includedInCurrentFilter && Array.isArray(aggregation)
         ? aggregation.includes(property)
         : aggregation === property;
     });
