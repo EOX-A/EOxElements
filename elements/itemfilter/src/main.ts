@@ -174,7 +174,6 @@ export class EOxItemFilter extends LitElement {
                 ...this.config.fuseConfig["keys"].map((key: string) => ({
                   [key]: input,
                 })),
-                { themes: input },
                 {
                   $or: parsedFilters,
                 },
