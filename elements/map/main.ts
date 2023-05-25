@@ -6,6 +6,7 @@ import { Coordinate } from "ol/coordinate";
 import { apply } from "ol-mapbox-style";
 
 import olCss from "ol/ol.css";
+import { addDraw } from "./src/draw";
 
 export class EOxMap extends HTMLElement {
   private shadow: ShadowRoot;
@@ -61,6 +62,7 @@ export class EOxMap extends HTMLElement {
 
     this.setLayers = (json: JSON) => {
       apply(this.map, json);
+      addDraw(this.map, json);
     };
 
     this.map.on("loadend", () => {

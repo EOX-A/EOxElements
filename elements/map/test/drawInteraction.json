@@ -1,0 +1,32 @@
+{
+  "version": 8,
+  "name": "",
+  "sources": {
+    "draw_layer": {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": []
+      }
+    }
+  },
+  "layers": [
+    {
+      "id": "draw_layer",
+      "type": "line",
+      "source": "draw_layer",
+      "metadata": {
+        "group": "draw_layer",
+        "draw": {
+          "active": true,
+          "type": "LineString"
+        }
+      },
+      "paint": {
+        "line-color": "blue",
+        "fill-color": "rgba(255,255,255,0.4)",
+        "line-width": 2
+      }
+    }
+  ]
+}
