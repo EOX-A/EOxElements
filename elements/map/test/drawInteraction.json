@@ -15,13 +15,6 @@
       "id": "draw_layer",
       "type": "line",
       "source": "draw_layer",
-      "metadata": {
-        "group": "draw_layer",
-        "draw": {
-          "active": true,
-          "type": "LineString"
-        }
-      },
       "paint": {
         "line-color": "blue",
         "fill-color": "rgba(255,255,255,0.4)",

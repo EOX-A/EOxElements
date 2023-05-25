@@ -1,33 +1,53 @@
-import Map from 'ol/Map.js';
 import Draw from 'ol/interaction/Draw.js';
-import {MapboxLayer} from './types';
-import { getSource } from 'ol-mapbox-style';
-import VectorSource from 'ol/source/Vector';
+import { EOxMap } from '../main';
+import { getArea, getLength } from 'ol/sphere';
+import { LineString, Polygon } from 'ol/geom';
+import GeoJSON from 'ol/format/GeoJSON';
 
 export function addDraw(
-  map: Map,
-  styleJson: any
+  EOxMap: EOxMap,
+  layerId: string,
+  options: any
 ): void {
+  if (EOxMap.interactions[options.id]) {
+    throw Error(`Interaction with id: ${layerId} already exists.`);
+  }
   
-  const sourceKeys = Object.keys(styleJson.sources)
-  sourceKeys.forEach(sourceKey => {
-    const mapboxLayers: [MapboxLayer] = styleJson.layers;
-    const drawLayer = mapboxLayers.find(l => l.source === sourceKey)
+  const map = EOxMap.map;
 
-    if (drawLayer) {
-      const drawDefinition = drawLayer.metadata.draw
-      const source = getSource(map, sourceKey) as VectorSource;
+  const drawLayer = map.getLayers().getArray()
+    .filter(l => l.get('mapbox-layers'))
+    .find(l => l.get('mapbox-layers').includes(layerId));
 
-      if (drawDefinition) {
-        const drawInteraction = new Draw({
-          type: drawDefinition.type,
-          source
-        });
-        // identifier to retrieve the interaction
-        drawInteraction.set('id', `draw_${sourceKey}`)
-        map.addInteraction(drawInteraction);
-      }
+    if (!drawLayer) {
+      throw Error(`Layer with id: ${layerId} does not exist.`);
     }
-  })
-  
+
+    // @ts-ignore
+    const source = drawLayer.getSource();
+
+    const drawInteraction = new Draw({
+      type: options.type,
+      source
+    });
+
+    const format = new GeoJSON();
+    drawInteraction.on("drawend", (e) => {
+      const geom = e.feature.getGeometry();
+      if (geom instanceof LineString) {
+        length = getLength(geom, { radius: 6378137, projection: 'EPSG:3857' });
+
+        e.feature.set('measure', length);
+      } else if (geom instanceof Polygon) {
+        const area = getArea(geom, { radius: 6378137, projection: 'EPSG:3857' });
+        e.feature.set('measure', area)
+      }
+      const geoJsonObject = format.writeFeatureObject(e.feature);
+      const drawendEvt = new CustomEvent("drawend", { detail: { geojson: geoJsonObject } });
+      EOxMap.dispatchEvent(drawendEvt);
+    });
+
+    // identifier to retrieve the interaction
+    map.addInteraction(drawInteraction);
+    EOxMap.interactions[options.id] = drawInteraction
 }

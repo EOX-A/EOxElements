@@ -9,10 +9,14 @@ describe("draw interaction", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.setLayers(vectorLayerStyleJson);
-      const interactions = eoxMap.map.getInteractions();
+      eoxMap.addDraw('draw_layer', {
+        id: 'drawInteraction',
+        type: 'LineString',
+      });
+
       // get the interaction via the source key
-      const drawInteraction = interactions.getArray().find(i => i.get('id') === 'draw_draw_layer');
-      expect(drawInteraction).to.exist;
+      const drawInteraction = eoxMap.interactions['drawInteraction']
+      expect(drawInteraction).to.exist; 
       expect(drawInteraction.getActive()).to.equal(true)
     });
   });
