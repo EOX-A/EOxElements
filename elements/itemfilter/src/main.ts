@@ -69,8 +69,13 @@ export class EOxItemFilter extends LitElement {
   @state()
   _selectedResult: Object;
 
-  @property({ attribute: false })
-  config: ElementConfig = {
+  @property({ attribute: false }) set config(config: ElementConfig) {
+    const oldValue = this._config;
+    this._config = config;
+    this.requestUpdate("config", oldValue);
+  }
+
+  private _config: ElementConfig = {
     titleProperty: "title",
     filterProperties: ["themes"],
     aggregateResults: "themes",
@@ -81,6 +86,10 @@ export class EOxItemFilter extends LitElement {
     matchAllWhenEmpty: true,
     exclusiveFilters: false,
   };
+
+  get config() {
+    return this._config;
+  }
 
   @property()
   apply = (items: Array<Object>) => {
@@ -95,11 +104,11 @@ export class EOxItemFilter extends LitElement {
       distance: 50,
       includeMatches: true,
       useExtendedSearch: true,
-      ...this.config.fuseConfig,
+      ...this._config.fuseConfig,
     });
 
     // build filters
-    this.config.filterProperties.forEach((filterProperty) => {
+    this._config.filterProperties.forEach((filterProperty) => {
       const filterKeys = {};
       this._items.forEach((item) => {
         // @ts-ignore
@@ -118,18 +127,18 @@ export class EOxItemFilter extends LitElement {
       this._filters[filterProperty] = filterKeys;
     });
 
-    if (this.config.matchAllWhenEmpty !== false) {
+    if (this._config.matchAllWhenEmpty !== false) {
       // initially render all items
       this._results = this.sortResults(this._items);
       this.requestUpdate();
     }
 
-    if (this.config.aggregateResults) {
+    if (this._config.aggregateResults) {
       this._resultAggregation = [
         ...new Set(
           this._items.reduce((store: Array<string>, item: Object) => {
             // @ts-ignore
-            return store.concat(item[this.config.aggregateResults]);
+            return store.concat(item[this._config.aggregateResults]);
           }, [])
         ),
       ].sort();
@@ -157,7 +166,7 @@ export class EOxItemFilter extends LitElement {
     if (
       !(input.length > 2) &&
       !parsedFilters.length &&
-      this.config.matchAllWhenEmpty !== false
+      this._config.matchAllWhenEmpty !== false
     ) {
       results = this._items;
     } else {
@@ -168,7 +177,7 @@ export class EOxItemFilter extends LitElement {
                 {
                   $or: [
                     // @ts-ignore
-                    ...this.config.fuseConfig["keys"].map((key: string) => ({
+                    ...this._config.fuseConfig["keys"].map((key: string) => ({
                       [key]: input,
                     })),
                   ],
@@ -181,7 +190,7 @@ export class EOxItemFilter extends LitElement {
           : {
               $or: [
                 // @ts-ignore
-                ...this.config.fuseConfig["keys"].map((key: string) => ({
+                ...this._config.fuseConfig["keys"].map((key: string) => ({
                   [key]: input,
                 })),
                 {
@@ -191,8 +200,8 @@ export class EOxItemFilter extends LitElement {
             }),
       };
       const response = this._fuse.search(parameters);
-      results = this.config.enableHighlighting
-        ? highlight(response, "highlight", this.config.titleProperty)
+      results = this._config.enableHighlighting
+        ? highlight(response, "highlight", this._config.titleProperty)
         : response.map((i) => i.item);
     }
     this._results = this.sortResults(results);
@@ -202,16 +211,16 @@ export class EOxItemFilter extends LitElement {
   aggregateResults(items: Array<Object>, property: string | Array<string>) {
     return items.filter((item) => {
       // @ts-ignore
-      const aggregation = item[this.config.aggregateResults];
+      const aggregation = item[this._config.aggregateResults];
       // special check if a currently selected fiter property is part of a filter key
       // also used for aggregation. if aggregation of results uses the same property
       // as the filter, it doesn't make sense to show all aggregations, but only
       // the one matching the current filter
       const currentFilter = Object.keys(
         // @ts-ignore
-        this._filters[this.config.aggregateResults]
+        this._filters[this._config.aggregateResults]
         // @ts-ignore
-      ).filter((f) => this._filters[this.config.aggregateResults][f]);
+      ).filter((f) => this._filters[this._config.aggregateResults][f]);
       const includedInCurrentFilter = currentFilter.length
         ? // @ts-ignore
           currentFilter.includes(property)
@@ -225,12 +234,12 @@ export class EOxItemFilter extends LitElement {
   sortResults(items: Array<Object>) {
     return [...items].sort((a, b) =>
       // @ts-ignore
-      a[this.config.titleProperty] < b[this.config.titleProperty] ? -1 : 1
+      a[this._config.titleProperty] < b[this._config.titleProperty] ? -1 : 1
     );
   }
 
   toggleFilter(filter: string, key: string) {
-    if (this.config.exclusiveFilters === true) {
+    if (this._config.exclusiveFilters === true) {
       Object.keys(this._filters).forEach((f) => {
         // @ts-ignore
         Object.keys(this._filters[f]).forEach((k) => {
@@ -300,7 +309,7 @@ export class EOxItemFilter extends LitElement {
           <input
             type="text"
             placeholder="Search"
-            style="display:${this.config.enableSearch ? "block" : "none"}"
+            style="display:${this._config.enableSearch ? "block" : "none"}"
             @input="${(evt: HTMLElementEvent<HTMLInputElement>) =>
               this.search(evt.target.value)}"
           />
@@ -309,7 +318,7 @@ export class EOxItemFilter extends LitElement {
           <slot name="filterstitle"></slot>
           <ul id="filters">
             ${map(
-              this.config.filterProperties,
+              this._config.filterProperties,
               (filter) => html`
                 <details
                   id="details-filter"
@@ -353,7 +362,7 @@ export class EOxItemFilter extends LitElement {
                                   <label>
                                     <input
                                       name="selection"
-                                      type="${this.config.exclusiveFilters ===
+                                      type="${this._config.exclusiveFilters ===
                                       true
                                         ? "radio"
                                         : "checkbox"}"
@@ -390,7 +399,7 @@ export class EOxItemFilter extends LitElement {
               ? html` <small class="no-results">No matching items</small> `
               : nothing}
             <ul id="results">
-              ${this.config.aggregateResults
+              ${this._config.aggregateResults
                 ? map(
                     this._resultAggregation.filter(
                       (aggregationProperty) =>
@@ -440,13 +449,13 @@ export class EOxItemFilter extends LitElement {
                                   }"
                                   @click=${() => {
                                     this._selectedResult = item;
-                                    this.config.onSelect(item);
+                                    this._config.onSelect(item);
                                   }}
                                 />
                                 <span class="title"
                                   >${
                                     // @ts-ignore
-                                    unsafeHTML(item[this.config.titleProperty])
+                                    unsafeHTML(item[this._config.titleProperty])
                                   }</span
                                 >
                               </label>
@@ -463,7 +472,7 @@ export class EOxItemFilter extends LitElement {
                       html`<li>
                         ${
                           // @ts-ignore
-                          unsafeHTML(item[this.config.titleProperty])
+                          unsafeHTML(item[this._config.titleProperty])
                         }
                       </li>`
                   )}
