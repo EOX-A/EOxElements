@@ -133,4 +133,29 @@ describe("Item Filter Config", () => {
         cy.get('[type="radio"]').first().should("not.be.checked");
       });
   });
+
+  it("should clear all filters", () => {
+    cy.get("eox-itemfilter")
+      .shadow()
+      .within(() => {
+        cy.get("[data-cy='search']").type("city");
+        cy.get("[data-cy='expand-button']").click();
+        cy.get("#details-filter")
+          .find('[type="checkbox"]')
+          .then(($value) => {
+            [...Array($value.length)].map((_, i) => {
+              cy.get('[type="checkbox"]').eq(i).check();
+            });
+          });
+        cy.get("[data-cy='filter-reset']").click();
+        cy.get("[data-cy='search']").should("have.value", "");
+        cy.get("#details-filter")
+          .find('[type="checkbox"]')
+          .then(($value) => {
+            [...Array($value.length)].map((_, i) => {
+              cy.get('[type="checkbox"]').eq(i).should("not.be.checked");
+            });
+          });
+      });
+  });
 });

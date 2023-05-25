@@ -379,7 +379,10 @@ export class EOxItemFilter extends LitElement {
               `
             )}
           </ul>
-          <a id="filter-reset" @click=${() => this.resetFilters()}
+          <a
+            id="filter-reset"
+            data-cy="filter-reset"
+            @click=${() => this.resetFilters()}
             ><small>Reset filters</small></a
           >
         </section>
