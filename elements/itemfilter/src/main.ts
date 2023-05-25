@@ -52,6 +52,12 @@ class ElementConfig {
   public matchAllWhenEmpty?: Boolean = true;
 
   /**
+   * Callback that is triggered on item search
+   * @returns result items
+   */
+  public onSearch?: Function = () => {};
+
+  /**
    * Callback that is triggered on item selection
    * @returns selected item
    */
@@ -209,6 +215,7 @@ export class EOxItemFilter extends LitElement {
         : response.map((i) => i.item);
     }
     this._results = this.sortResults(results);
+    this._config.onSearch(results);
     this.requestUpdate();
   }
 
