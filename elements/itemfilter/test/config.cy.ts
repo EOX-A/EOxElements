@@ -87,8 +87,8 @@ describe("Item Filter Config", () => {
     });
     cy.get("eox-itemfilter")
       .shadow()
-      .find("input")
-      .should("have.css", "display", "none");
+      .find("input[type='text']")
+      .should("not.exist");
   });
 
   it("should allow multiple filters", () => {

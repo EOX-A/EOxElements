@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
+import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import Fuse from "fuse.js";
@@ -10,46 +11,62 @@ type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
 };
 
-interface ElementConfig {
+class ElementConfig {
+  /**
+   * Aggregate results by a property key
+   */
+  public aggregateResults?: string = undefined;
+
+  /**
+   * Highlighting of search result character matches
+   */
+  public enableHighlighting?: Boolean = false;
+
+  /**
+   * Search functionality
+   */
+  public enableSearch?: Boolean = false;
+
+  /**
+   * Make the filters mutually exclusive
+   */
+  public exclusiveFilters?: Boolean = false;
+
   /**
    * The filter properties.
    * @param filterProperties
    */
-  filterProperties: Array<string>;
-  /**
-   * The property of the result items used for display
-   */
-  titleProperty: string;
-  /**
-   * Aggregate results by a property key
-   */
-  aggregateResults?: string;
+  public filterProperties?: Array<string> = [];
+
   /**
    * Native fuse.js config override
    */
-  fuseConfig?: Object;
-  /**
-   * Search functionality
-   */
-  enableSearch?: Boolean;
-  /**
-   * Highlighting of search result character matches
-   */
-  enableHighlighting?: Boolean;
-  /**
-   * Callback that is triggered on item selection
-   * @returns selected item
-   */
-  onSelect?: Function;
+  public fuseConfig?: Object = {
+    keys: ["title"],
+  };
+
   /**
    * Show all result items if nothing is input by the user
    * @default true
    */
-  matchAllWhenEmpty?: Boolean;
+  public matchAllWhenEmpty?: Boolean = true;
+
   /**
-   * Make the filters mutually exclusive
+   * Callback that is triggered on item search
+   * @returns result items
    */
-  exclusiveFilters?: Boolean;
+  public onSearch?: Function = () => {};
+
+  /**
+   * Callback that is triggered on item selection
+   * @returns selected item
+   */
+  public onSelect?: Function = () => {};
+
+  /**
+   * The property of the result items used for display
+   */
+  public titleProperty: string = "title";
 }
 
 @customElement("eox-itemfilter")
@@ -69,18 +86,18 @@ export class EOxItemFilter extends LitElement {
   @state()
   _selectedResult: Object;
 
-  @property({ attribute: false })
-  config: ElementConfig = {
-    titleProperty: "title",
-    filterProperties: ["themes"],
-    aggregateResults: "themes",
-    fuseConfig: {},
-    enableSearch: true,
-    enableHighlighting: false,
-    onSelect: () => {},
-    matchAllWhenEmpty: true,
-    exclusiveFilters: false,
-  };
+  @property({ attribute: false }) set config(config) {
+    const oldValue = this._config;
+    this._config = {
+      ...new ElementConfig(),
+      ...config,
+    };
+    this.requestUpdate("config", oldValue);
+  }
+  private _config = new ElementConfig();
+  get config() {
+    return this._config;
+  }
 
   @property()
   apply = (items: Array<Object>) => {
@@ -95,41 +112,43 @@ export class EOxItemFilter extends LitElement {
       distance: 50,
       includeMatches: true,
       useExtendedSearch: true,
-      ...this.config.fuseConfig,
+      ...this._config.fuseConfig,
     });
 
     // build filters
-    this.config.filterProperties.forEach((filterProperty) => {
-      const filterKeys = {};
-      this._items.forEach((item) => {
-        // @ts-ignore
-        if (Array.isArray(item[filterProperty])) {
+    if (this._config.filterProperties.length) {
+      this._config.filterProperties.forEach((filterProperty) => {
+        const filterKeys = {};
+        this._items.forEach((item) => {
           // @ts-ignore
-          item[filterProperty].forEach((prop) => {
+          if (Array.isArray(item[filterProperty])) {
             // @ts-ignore
-            filterKeys[prop] = undefined;
-          });
-        } else {
-          // @ts-ignore
-          filterKeys[item[filterProperty]] = undefined;
-        }
+            item[filterProperty].forEach((prop) => {
+              // @ts-ignore
+              filterKeys[prop] = undefined;
+            });
+          } else {
+            // @ts-ignore
+            filterKeys[item[filterProperty]] = undefined;
+          }
+        });
+        // @ts-ignore
+        this._filters[filterProperty] = filterKeys;
       });
-      // @ts-ignore
-      this._filters[filterProperty] = filterKeys;
-    });
+    }
 
-    if (this.config.matchAllWhenEmpty !== false) {
+    if (this._config.matchAllWhenEmpty !== false) {
       // initially render all items
       this._results = this.sortResults(this._items);
       this.requestUpdate();
     }
 
-    if (this.config.aggregateResults) {
+    if (this._config.aggregateResults) {
       this._resultAggregation = [
         ...new Set(
           this._items.reduce((store: Array<string>, item: Object) => {
             // @ts-ignore
-            return store.concat(item[this.config.aggregateResults]);
+            return store.concat(item[this._config.aggregateResults]);
           }, [])
         ),
       ].sort();
@@ -157,7 +176,7 @@ export class EOxItemFilter extends LitElement {
     if (
       !(input.length > 2) &&
       !parsedFilters.length &&
-      this.config.matchAllWhenEmpty !== false
+      this._config.matchAllWhenEmpty !== false
     ) {
       results = this._items;
     } else {
@@ -168,7 +187,7 @@ export class EOxItemFilter extends LitElement {
                 {
                   $or: [
                     // @ts-ignore
-                    ...this.config.fuseConfig["keys"].map((key: string) => ({
+                    ...this._config.fuseConfig["keys"].map((key: string) => ({
                       [key]: input,
                     })),
                   ],
@@ -181,7 +200,7 @@ export class EOxItemFilter extends LitElement {
           : {
               $or: [
                 // @ts-ignore
-                ...this.config.fuseConfig["keys"].map((key: string) => ({
+                ...this._config.fuseConfig["keys"].map((key: string) => ({
                   [key]: input,
                 })),
                 {
@@ -191,27 +210,28 @@ export class EOxItemFilter extends LitElement {
             }),
       };
       const response = this._fuse.search(parameters);
-      results = this.config.enableHighlighting
-        ? highlight(response, "highlight", this.config.titleProperty)
+      results = this._config.enableHighlighting
+        ? highlight(response, "highlight", this._config.titleProperty)
         : response.map((i) => i.item);
     }
     this._results = this.sortResults(results);
+    this._config.onSearch(results);
     this.requestUpdate();
   }
 
   aggregateResults(items: Array<Object>, property: string | Array<string>) {
     return items.filter((item) => {
       // @ts-ignore
-      const aggregation = item[this.config.aggregateResults];
+      const aggregation = item[this._config.aggregateResults];
       // special check if a currently selected fiter property is part of a filter key
       // also used for aggregation. if aggregation of results uses the same property
       // as the filter, it doesn't make sense to show all aggregations, but only
       // the one matching the current filter
       const currentFilter = Object.keys(
         // @ts-ignore
-        this._filters[this.config.aggregateResults]
+        this._filters[this._config.aggregateResults]
         // @ts-ignore
-      ).filter((f) => this._filters[this.config.aggregateResults][f]);
+      ).filter((f) => this._filters[this._config.aggregateResults][f]);
       const includedInCurrentFilter = currentFilter.length
         ? // @ts-ignore
           currentFilter.includes(property)
@@ -225,12 +245,12 @@ export class EOxItemFilter extends LitElement {
   sortResults(items: Array<Object>) {
     return [...items].sort((a, b) =>
       // @ts-ignore
-      a[this.config.titleProperty] < b[this.config.titleProperty] ? -1 : 1
+      a[this._config.titleProperty] < b[this._config.titleProperty] ? -1 : 1
     );
   }
 
   toggleFilter(filter: string, key: string) {
-    if (this.config.exclusiveFilters === true) {
+    if (this._config.exclusiveFilters === true) {
       Object.keys(this._filters).forEach((f) => {
         // @ts-ignore
         Object.keys(this._filters[f]).forEach((k) => {
@@ -296,96 +316,111 @@ export class EOxItemFilter extends LitElement {
         ${style}
       </style>
       <form>
-        <section>
-          <input
-            type="text"
-            placeholder="Search"
-            data-cy="search"
-            style="display:${this.config.enableSearch ? "block" : "none"}"
-            @input="${(evt: HTMLElementEvent<HTMLInputElement>) =>
-              this.search(evt.target.value)}"
-          />
-        </section>
-        <section>
-          <slot name="filterstitle"></slot>
-          <ul id="filters">
-            ${map(
-              this.config.filterProperties,
-              (filter) => html`
-                <details
-                  id="details-filter"
-                  data-filter="${filter}"
-                  @click=${() =>
-                    this.renderRoot
-                      .querySelectorAll("details#details-filter")
-                      .forEach((d) => {
-                        if (d.getAttribute("data-filter") !== filter) {
-                          d.removeAttribute("open");
-                          this.requestUpdate();
-                        }
-                      })}
-                >
-                  <summary>
-                    <small>
-                      <strong class="title"> ${filter} </strong>
-                    </small>
-                    <div>
-                      <svg
-                        data-cy="expand-button"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                      >
-                        <title>chevron-down</title>
-                        <path
-                          d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                        />
-                      </svg>
-                    </div>
-                  </summary>
-                  <div class="scroll" style="max-height: 150px">
-                    <ul>
-                      ${
-                        // @ts-ignore
-                        this._filters[filter]
-                          ? map(
-                              // @ts-ignore
-                              Object.keys(this._filters[filter]).sort(),
-                              (key) => html`
-                                <li>
-                                  <label>
-                                    <input
-                                      name="selection"
-                                      type="${this.config.exclusiveFilters ===
-                                      true
-                                        ? "radio"
-                                        : "checkbox"}"
-                                      checked="${
-                                        // @ts-ignore
-                                        this._filters[filter][key] || nothing
-                                      }"
-                                      @click=${() =>
-                                        this.toggleFilter(filter, key)}
-                                    />
-                                    <span class="title">${key}</span>
-                                  </label>
-                                </li>
-                              `
-                            )
-                          : null
-                      }
-                    </ul>
-                  </div>
-                </details>
-              `
-            )}
-          </ul>
-          <a
-            id="filter-reset"
-            data-cy="filter-reset"
-            @click=${() => this.resetFilters()}
-            ><small>Reset filters</small></a
-          >
-        </section>
+        ${when(
+          this._config.enableSearch,
+          () => html`
+            <section>
+              <input
+                type="text"
+                placeholder="Search"
+                data-cy="search"
+                @input="${(evt: HTMLElementEvent<HTMLInputElement>) =>
+                  this.search(evt.target.value)}"
+              />
+            </section>
+          `
+        )}
+        ${when(
+          this._config.filterProperties.length,
+          () => html`
+            <section>
+              <slot name="filterstitle"></slot>
+              <ul id="filters">
+                ${map(
+                  this._config.filterProperties,
+                  (filter) => html`
+                    <details
+                      id="details-filter"
+                      data-filter="${filter}"
+                      @click=${() =>
+                        this.renderRoot
+                          .querySelectorAll("details#details-filter")
+                          .forEach((d) => {
+                            if (d.getAttribute("data-filter") !== filter) {
+                              d.removeAttribute("open");
+                              this.requestUpdate();
+                            }
+                          })}
+                    >
+                      <summary>
+                        <small>
+                          <strong class="title"> ${filter} </strong>
+                        </small>
+                        <div>
+                          <svg
+                            data-cy="expand-button"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <title>chevron-down</title>
+                            <path
+                              d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                            />
+                          </svg>
+                        </div>
+                      </summary>
+                      <div class="scroll" style="max-height: 150px">
+                        <ul>
+                          ${
+                            // @ts-ignore
+                            this._filters[filter]
+                              ? map(
+                                  // @ts-ignore
+                                  Object.keys(this._filters[filter]).sort(),
+                                  (key) => html`
+                                    <li>
+                                      <label>
+                                        <input
+                                          name="selection"
+                                          type="${this._config
+                                            .exclusiveFilters === true
+                                            ? "radio"
+                                            : "checkbox"}"
+                                          checked="${
+                                            // @ts-ignore
+                                            this._filters[filter][key] ||
+                                            nothing
+                                          }"
+                                          @click=${() =>
+                                            this.toggleFilter(filter, key)}
+                                        />
+                                        <span class="title">${key}</span>
+                                      </label>
+                                    </li>
+                                  `
+                                )
+                              : null
+                          }
+                        </ul>
+                      </div>
+                    </details>
+                  `
+                )}
+              </ul>
+              ${when(
+                this._config.filterProperties,
+                () => html`
+                  <a
+                    id="filter-reset"
+                    data-cy="filter-reset"
+                    @click=${() => this.resetFilters()}
+                    ><small>Reset filters</small></a
+                  >
+                `
+              )}
+            </section>
+          `
+        )}
         <section id="section-results">
           <div>
             <slot name="resultstitle"></slot>
@@ -395,7 +430,7 @@ export class EOxItemFilter extends LitElement {
               ? html` <small class="no-results">No matching items</small> `
               : nothing}
             <ul id="results">
-              ${this.config.aggregateResults
+              ${this._config.aggregateResults
                 ? map(
                     this._resultAggregation.filter(
                       (aggregationProperty) =>
@@ -445,13 +480,13 @@ export class EOxItemFilter extends LitElement {
                                   }"
                                   @click=${() => {
                                     this._selectedResult = item;
-                                    this.config.onSelect(item);
+                                    this._config.onSelect(item);
                                   }}
                                 />
                                 <span class="title"
                                   >${
                                     // @ts-ignore
-                                    unsafeHTML(item[this.config.titleProperty])
+                                    unsafeHTML(item[this._config.titleProperty])
                                   }</span
                                 >
                               </label>
@@ -468,7 +503,7 @@ export class EOxItemFilter extends LitElement {
                       html`<li>
                         ${
                           // @ts-ignore
-                          unsafeHTML(item[this.config.titleProperty])
+                          unsafeHTML(item[this._config.titleProperty])
                         }
                       </li>`
                   )}
