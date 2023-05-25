@@ -32,6 +32,11 @@ export class EOxDrawTools extends LitElement {
     this.requestUpdate();
   };
 
+  _startDrawing() {
+    // either use an existing drawing interaction here
+    // or trigger the map to create a new draw interaction
+  }
+
   render() {
     return html`
       <style>
@@ -45,6 +50,7 @@ export class EOxDrawTools extends LitElement {
             () => html`layer id: ${this._drawLayer.get("mapbox-source")}`
           )}
         </h1>
+        <button @click="${this._startDrawing()}">draw</button>
       </div>
     `;
   }
