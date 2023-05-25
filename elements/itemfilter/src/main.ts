@@ -323,6 +323,7 @@ export class EOxItemFilter extends LitElement {
               <input
                 type="text"
                 placeholder="Search"
+                data-cy="search"
                 @input="${(evt: HTMLElementEvent<HTMLInputElement>) =>
                   this.search(evt.target.value)}"
               />
@@ -357,6 +358,7 @@ export class EOxItemFilter extends LitElement {
                         </small>
                         <div>
                           <svg
+                            data-cy="expand-button"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                           >
@@ -408,7 +410,10 @@ export class EOxItemFilter extends LitElement {
               ${when(
                 this._config.filterProperties,
                 () => html`
-                  <a id="filter-reset" @click=${() => this.resetFilters()}
+                  <a
+                    id="filter-reset"
+                    data-cy="filter-reset"
+                    @click=${() => this.resetFilters()}
                     ><small>Reset filters</small></a
                   >
                 `
