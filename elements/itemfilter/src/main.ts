@@ -66,6 +66,9 @@ export class EOxItemFilter extends LitElement {
   @state()
   _filters: Object = {};
 
+  @state()
+  _selectedResult: Object;
+
   @property({ attribute: false })
   config: ElementConfig = {
     titleProperty: "title",
@@ -81,7 +84,10 @@ export class EOxItemFilter extends LitElement {
 
   @property()
   apply = (items: Array<Object>) => {
-    this._items = items;
+    this._items = items.map((i, index) => ({
+      ...i,
+      id: `item-${index}`,
+    }));
     this._fuse = new Fuse(this._items, {
       minMatchCharLength: 3,
       // location: 0,
@@ -137,7 +143,7 @@ export class EOxItemFilter extends LitElement {
         const createProperty = (val) => {
           const property = {};
           // @ts-ignore
-          property[key] = `=${val}`; // exact match
+          property[key] = `="${val}"`; // exact match
           store.push(property);
         };
         Object.entries(value)
@@ -159,10 +165,14 @@ export class EOxItemFilter extends LitElement {
         ...(input.length > 2 && parsedFilters.length
           ? {
               $and: [
-                // @ts-ignore
-                ...this.config.fuseConfig["keys"].map((key: string) => ({
-                  [key]: input,
-                })),
+                {
+                  $or: [
+                    // @ts-ignore
+                    ...this.config.fuseConfig["keys"].map((key: string) => ({
+                      [key]: input,
+                    })),
+                  ],
+                },
                 {
                   $or: parsedFilters,
                 },
@@ -174,7 +184,6 @@ export class EOxItemFilter extends LitElement {
                 ...this.config.fuseConfig["keys"].map((key: string) => ({
                   [key]: input,
                 })),
-                { themes: input },
                 {
                   $or: parsedFilters,
                 },
@@ -194,7 +203,20 @@ export class EOxItemFilter extends LitElement {
     return items.filter((item) => {
       // @ts-ignore
       const aggregation = item[this.config.aggregateResults];
-      return Array.isArray(aggregation)
+      // special check if a currently selected fiter property is part of a filter key
+      // also used for aggregation. if aggregation of results uses the same property
+      // as the filter, it doesn't make sense to show all aggregations, but only
+      // the one matching the current filter
+      const currentFilter = Object.keys(
+        // @ts-ignore
+        this._filters[this.config.aggregateResults]
+        // @ts-ignore
+      ).filter((f) => this._filters[this.config.aggregateResults][f]);
+      const includedInCurrentFilter = currentFilter.length
+        ? // @ts-ignore
+          currentFilter.includes(property)
+        : true;
+      return includedInCurrentFilter && Array.isArray(aggregation)
         ? aggregation.includes(property)
         : aggregation === property;
     });
@@ -219,7 +241,53 @@ export class EOxItemFilter extends LitElement {
     }
     // @ts-ignore
     this._filters[filter][key] = !this._filters[filter][key];
+    const searchField = this.renderRoot.querySelector('input[type="text"]');
+    if (searchField) {
+      // @ts-ignore
+      this.search(searchField.value);
+    } else {
+      this.search();
+    }
+    const resultItems = this.renderRoot.querySelectorAll(
+      "ul#results input[type='radio']"
+    );
+    // first reset all result radio inputs, then re-select the one currently stored in state
+    // @ts-ignore
+    for (let i = 0; i < resultItems.length; i++) resultItems[i].checked = false;
+    if (this._selectedResult) {
+      setTimeout(() => {
+        const selectedItem = this.renderRoot.querySelector(
+          // @ts-ignore
+          `#${this._selectedResult.id}`
+        );
+        if (selectedItem) {
+          // @ts-ignore
+          selectedItem.checked = true;
+          this.requestUpdate();
+        }
+      });
+    }
+  }
+
+  resetFilters() {
+    this.renderRoot.querySelectorAll("#details-filter input").forEach((f) => {
+      // @ts-ignore
+      f.checked = false;
+    });
+    const searchField = this.renderRoot.querySelector('input[type="text"]');
+    if (searchField) {
+      // @ts-ignore
+      searchField.value = "";
+    }
+    Object.keys(this._filters).forEach((f) => {
+      // @ts-ignore
+      Object.keys(this._filters[f]).forEach((k) => {
+        // @ts-ignore
+        this._filters[f][k] = false;
+      });
+    });
     this.search();
+    this.requestUpdate();
   }
 
   render() {
@@ -244,7 +312,19 @@ export class EOxItemFilter extends LitElement {
             ${map(
               this.config.filterProperties,
               (filter) => html`
-                <details id="details-filter">
+                <details
+                  id="details-filter"
+                  data-filter="${filter}"
+                  @click=${() =>
+                    this.renderRoot
+                      .querySelectorAll("details#details-filter")
+                      .forEach((d) => {
+                        if (d.getAttribute("data-filter") !== filter) {
+                          d.removeAttribute("open");
+                          this.requestUpdate();
+                        }
+                      })}
+                >
                   <summary>
                     <small>
                       <strong class="title"> ${filter} </strong>
@@ -262,47 +342,55 @@ export class EOxItemFilter extends LitElement {
                       </svg>
                     </div>
                   </summary>
-                  <ul>
-                    ${
-                      // @ts-ignore
-                      this._filters[filter]
-                        ? map(
-                            // @ts-ignore
-                            Object.keys(this._filters[filter]).sort(),
-                            (key) => html`
-                              <li>
-                                <label>
-                                  <input
-                                    name="selection"
-                                    type="${this.config.exclusiveFilters ===
-                                    true
-                                      ? "radio"
-                                      : "checkbox"}"
-                                    checked="${
-                                      // @ts-ignore
-                                      this._filters[filter][key] || nothing
-                                    }"
-                                    @click=${() =>
-                                      this.toggleFilter(filter, key)}
-                                  />
-                                  <span class="title">${key}</span>
-                                </label>
-                              </li>
-                            `
-                          )
-                        : null
-                    }
-                  </ul>
+                  <div class="scroll" style="max-height: 150px">
+                    <ul>
+                      ${
+                        // @ts-ignore
+                        this._filters[filter]
+                          ? map(
+                              // @ts-ignore
+                              Object.keys(this._filters[filter]).sort(),
+                              (key) => html`
+                                <li>
+                                  <label>
+                                    <input
+                                      name="selection"
+                                      type="${this.config.exclusiveFilters ===
+                                      true
+                                        ? "radio"
+                                        : "checkbox"}"
+                                      checked="${
+                                        // @ts-ignore
+                                        this._filters[filter][key] || nothing
+                                      }"
+                                      @click=${() =>
+                                        this.toggleFilter(filter, key)}
+                                    />
+                                    <span class="title">${key}</span>
+                                  </label>
+                                </li>
+                              `
+                            )
+                          : null
+                      }
+                    </ul>
+                  </div>
                 </details>
               `
             )}
           </ul>
+          <a id="filter-reset" @click=${() => this.resetFilters()}
+            ><small>Reset filters</small></a
+          >
         </section>
         <section id="section-results">
           <div>
             <slot name="resultstitle"></slot>
           </div>
           <div id="container-results" class="scroll">
+            ${this._results.length < 1
+              ? html` <small class="no-results">No matching items</small> `
+              : nothing}
             <ul id="results">
               ${this.config.aggregateResults
                 ? map(
@@ -348,7 +436,14 @@ export class EOxItemFilter extends LitElement {
                                 <input
                                   type="radio"
                                   name="result"
-                                  @click=${() => this.config.onSelect(item)}
+                                  id="${
+                                    // @ts-ignore
+                                    item.id
+                                  }"
+                                  @click=${() => {
+                                    this._selectedResult = item;
+                                    this.config.onSelect(item);
+                                  }}
                                 />
                                 <span class="title"
                                   >${

@@ -84,6 +84,7 @@ input[type="radio"] {
 input[type="text"] {
   width: 100%;
   margin-bottom: 0.5rem;
+  padding: 5px 7px;
 }
 section {
   padding-left: 1rem;
@@ -106,6 +107,9 @@ ul#results {
 }
 ul#results li {
   padding-left: 0.5rem;
+}
+#filter-reset {
+  cursor: pointer;
 }
 .scroll {
   height: 100%;
