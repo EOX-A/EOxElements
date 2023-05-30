@@ -10,10 +10,12 @@ For the (legacy v1) EOxElements, please see the [v1 branch](https://github.com/E
 
 ```
 npm install
+npm run build --ws // initially build all elements
 npm run cypress // open interactive cypress test utility
 npm run format // format all elements
 npm run lint // lint all elements
 npm run lint:fix // lint:fix all elements
+npm run clean // delete all node_module folders
 ```
 
 ## Branch naming convention

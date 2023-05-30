@@ -22,7 +22,10 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "watch": "tsc && vite build --watch"
+    "watch": "tsc && vite build --watch",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js,.ts .",
+    "lint:fix": "eslint --ext .js,.ts . --fix"
   },
   "dependencies": {
     "fuse.js": "^6.6.2",
