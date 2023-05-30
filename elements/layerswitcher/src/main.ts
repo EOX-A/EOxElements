@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
+import { when } from "lit/directives/when.js";
 import { Map, Collection } from "ol";
 import { Layer } from "ol/layer";
 // @ts-ignore
@@ -211,28 +212,36 @@ export class EOxLayerConfig extends LitElement {
       this._layerSwitcherElement = this.layerSwitcher;
       this._currentLayer = this.layer;
     }
+    if (this._currentLayer) {
+      console.log(this._currentLayer.style_);
+    }
   }
   render() {
     return html`
       <style>
         ${style}
       </style>
-      <div>
-        <slot></slot>
-        layer: ${this._currentLayer.get("name")}
-        ${map(
-          this.layerConfig,
-          (property) => html`
-            <div>${property}</div>
-            <input
-              type="range"
-              value="100"
-              @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
-                this._handleInput(evt)}
-            />
-          `
-        )}
-      </div>
+      ${when(
+        this._currentLayer,
+        () => html`
+          <div>
+            <slot></slot>
+            layer: ${this._currentLayer.get("name")}
+            ${map(
+              this.layerConfig,
+              (property) => html`
+                <div>${property}</div>
+                <input
+                  type="range"
+                  value="100"
+                  @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
+                    this._handleInput(evt)}
+                />
+              `
+            )}
+          </div>
+        `
+      )}
     `;
   }
 }
