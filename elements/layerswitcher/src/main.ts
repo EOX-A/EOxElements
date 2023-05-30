@@ -88,6 +88,15 @@ export class EOxLayerSwitcher extends LitElement {
     targetLayer.setOpacity(value / 100);
   }
 
+  changeStyleProperty(targetLayer: Layer, property: string, value: number) {
+    // @ts-ignore
+    targetLayer.updateStyleVariables({
+      // @ts-ignore
+      ...targetLayer.style_,
+      [property]: value,
+    });
+  }
+
   render() {
     return html`
       <style>
@@ -111,24 +120,26 @@ export class EOxLayerSwitcher extends LitElement {
                 ${this.sortBy === "layerOrder"
                   ? html` <span class="dragHandle">=</span> `
                   : nothing}
-                ${this.layerConfig && !this.externalLayerConfig
+                ${this.layerConfig
                   ? html`
-                      <details>
-                        <summary>Layer config</summary>
-                        <eox-layerconfig
-                          .layerConfig="${this.layerConfig}"
-                          .layerSwitcher="${this}"
-                          .layer=${layer}
-                        ></eox-layerconfig>
-                      </details>
-                    `
-                  : this.externalLayerConfig
-                  ? html`
-                      <button @click=${() => this._emitLayerconfig(layer)}>
-                        configure
-                      </button>
+                      <eox-layerconfig
+                        .layerConfig="${this.layerConfig}"
+                        .layerSwitcher="${this}"
+                        .layer=${layer}
+                        .external=${this.externalLayerConfig}
+                      ></eox-layerconfig>
                     `
                   : nothing}
+                ${
+                  // @ts-ignore
+                  this.externalLayerConfig && layer.style_
+                    ? html`
+                        <button @click=${() => this._emitLayerconfig(layer)}>
+                          configure
+                        </button>
+                      `
+                    : nothing
+                }
               </li>
             `
           )}
@@ -179,17 +190,49 @@ export class EOxLayerConfig extends LitElement {
   @property({ type: Object, attribute: false })
   layer: Layer;
 
+  @property({ type: Boolean })
+  external: Boolean;
+
   private _layerSwitcherElement: HTMLElement;
 
   @state()
   private _currentLayer: Layer;
 
-  private _handleInput(evt: HTMLElementEvent<HTMLInputElement>) {
+  @state()
+  private _configList: Object = {};
+
+  private _handleInput(
+    evt: HTMLElementEvent<HTMLInputElement>,
+    property: string
+  ) {
+    console.log(property, evt.target.value);
+    if (property === "opacity") {
+      // @ts-ignore
+      this._layerSwitcherElement.changeOpacity(
+        this._currentLayer,
+        parseInt(evt.target.value)
+      );
+    } else {
+      // @ts-ignore
+      this._layerSwitcherElement.changeStyleProperty(
+        this._currentLayer,
+        property,
+        parseInt(evt.target.value)
+      );
+    }
+  }
+
+  private _parseConfigs(currentLayer: Layer) {
+    if (!currentLayer) {
+      return;
+    }
     // @ts-ignore
-    this._layerSwitcherElement.changeOpacity(
-      this._currentLayer,
-      evt.target.value
-    );
+    const styleConfig = currentLayer.style_;
+    if (styleConfig) {
+      if (styleConfig.color && styleConfig.color[0] === "array") {
+        this._configList = styleConfig.variables;
+      }
+    }
   }
 
   connectedCallback(): void {
@@ -197,13 +240,13 @@ export class EOxLayerConfig extends LitElement {
     if (!this.layerConfig && !this.layerSwitcher) {
       // "external" mode, i.e. rendered in separate div
       this._layerSwitcherElement = document.querySelector(`#${this.for}`);
-      console.log(this._layerSwitcherElement);
       // @ts-ignore
       this.layerConfig = this._layerSwitcherElement.layerConfig;
       if (this._layerSwitcherElement) {
         this._layerSwitcherElement.addEventListener("layerconfig", (evt) => {
           // @ts-ignore
           this._currentLayer = evt.detail.layer;
+          this._parseConfigs(this._currentLayer);
           this.requestUpdate();
         });
       }
@@ -211,9 +254,7 @@ export class EOxLayerConfig extends LitElement {
       // "internal" mode, i.e. embedded in layerswitcher
       this._layerSwitcherElement = this.layerSwitcher;
       this._currentLayer = this.layer;
-    }
-    if (this._currentLayer) {
-      console.log(this._currentLayer.style_);
+      this._parseConfigs(this._currentLayer);
     }
   }
   render() {
@@ -226,19 +267,54 @@ export class EOxLayerConfig extends LitElement {
         () => html`
           <div>
             <slot></slot>
-            layer: ${this._currentLayer.get("name")}
+            ${this.for
+              ? html`layer: ${this._currentLayer.get("name")}`
+              : nothing}
             ${map(
-              this.layerConfig,
+              this.layerConfig.filter((lC) =>
+                this.for ? lC !== "opacity" : true
+              ),
               (property) => html`
                 <div>${property}</div>
                 <input
                   type="range"
                   value="100"
                   @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
-                    this._handleInput(evt)}
+                    this._handleInput(evt, property)}
                 />
               `
             )}
+            ${Object.keys(this._configList).length > 0 && !this.external
+              ? html`
+                  <details open="${this.for ? true : nothing}">
+                    <summary>Layer config</summary>
+                    <ul>
+                      ${map(
+                        Object.keys(this._configList),
+                        (property) => html` <li>
+                          <div>${property}</div>
+                          <input
+                            type="range"
+                            min="${["red", "green", "blue"].includes(property)
+                              ? 1
+                              : 2000}"
+                            max="${["red", "green", "blue"].includes(property)
+                              ? 4
+                              : 5000}"
+                            value="${
+                              // @ts-ignore
+                              this._configList[property]
+                            }"
+                            @input=${(
+                              evt: HTMLElementEvent<HTMLInputElement>
+                            ) => this._handleInput(evt, property)}
+                          />
+                        </li>`
+                      )}
+                    </ul>
+                  </details>
+                `
+              : nothing}
           </div>
         `
       )}
