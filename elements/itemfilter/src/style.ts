@@ -3,7 +3,6 @@ export const style = `
   display: flex;
   box-sizing: border-box;
   height: 100%;
-  overflow: hidden;
 }
 *,
 *:before,
@@ -52,8 +51,8 @@ details summary {
 }
 #details-filter summary svg,
 #details-results summary svg {
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
   transition: all ease-in-out 0.3s;
 }
 #details-results summary svg {
@@ -110,6 +109,23 @@ ul#results li {
 }
 #filter-reset {
   cursor: pointer;
+}
+section.inline,
+section.inline > ul {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+section.inline details#details-filter {
+  background: lightgrey;
+  border-radius: 20px;
+  margin: 0;
+  margin-right: 4px;
+  padding: 4px 7px;
+}
+section.inline details#details-filter summary {
+  display: flex;
+  aligh-items: center;
 }
 .scroll {
   height: 100%;

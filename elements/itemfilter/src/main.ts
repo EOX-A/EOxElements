@@ -26,11 +26,6 @@ class ElementConfig {
   public enableSearch?: Boolean = false;
 
   /**
-   * Display results list
-   */
-  public showResults?: Boolean = true;
-
-  /**
    * Make the filters mutually exclusive
    */
   public exclusiveFilters?: Boolean = false;
@@ -49,6 +44,12 @@ class ElementConfig {
   };
 
   /**
+   * Inline mode, for rendering the itemfilter in avery condensed space.
+   * Expexts showResults to be false and enableSearch to be true
+   */
+  public inlineMode?: Boolean = false;
+
+  /**
    * Show all result items if nothing is input by the user
    * @default true
    */
@@ -65,6 +66,11 @@ class ElementConfig {
    * @returns selected item
    */
   public onSelect?: Function = () => {};
+
+  /**
+   * Display results list
+   */
+  public showResults?: Boolean = true;
 
   /**
    * The property of the result items used for display
@@ -345,8 +351,11 @@ export class EOxItemFilter extends LitElement {
         ${when(
           this._config.filterProperties.length,
           () => html`
-            <section>
-              <slot name="filterstitle"></slot>
+            <section class="${this.config.inlineMode ? "inline" : nothing}">
+              ${when(
+                !this.config.inlineMode,
+                () => html` <slot name="filterstitle"></slot> `
+              )}
               <ul id="filters">
                 ${map(
                   this._config.filterProperties,
@@ -368,11 +377,13 @@ export class EOxItemFilter extends LitElement {
                         <small>
                           <strong class="title"> ${filter} </strong>
                         </small>
-                        <div>
+                        <div
+                          style="display: flex; align-items: center; justify-content: center; margin-left: 4px;"
+                        >
                           <svg
                             data-cy="expand-button"
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
+                            viewBox="6 6 12 12"
                           >
                             <title>chevron-down</title>
                             <path
