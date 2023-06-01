@@ -15,6 +15,7 @@ describe("Item Filter", () => {
         aggregateResults: "themes",
         enableSearch: true,
         enableHighlighting: true,
+        // showResults: false,
         fuseConfig: {
           keys: ["title", "description", "themes"],
         },

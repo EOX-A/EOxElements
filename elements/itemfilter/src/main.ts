@@ -26,6 +26,11 @@ class ElementConfig {
   public enableSearch?: Boolean = false;
 
   /**
+   * Display results list
+   */
+  public showResults?: Boolean = true;
+
+  /**
    * Make the filters mutually exclusive
    */
   public exclusiveFilters?: Boolean = false;
@@ -331,6 +336,7 @@ export class EOxItemFilter extends LitElement {
               <input
                 type="text"
                 placeholder="Search"
+                data-cy="search"
                 @input="${this.debouncedInputHandler}"
               />
             </section>
@@ -364,6 +370,7 @@ export class EOxItemFilter extends LitElement {
                         </small>
                         <div>
                           <svg
+                            data-cy="expand-button"
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                           >
@@ -415,7 +422,10 @@ export class EOxItemFilter extends LitElement {
               ${when(
                 this._config.filterProperties,
                 () => html`
-                  <a id="filter-reset" @click=${() => this.resetFilters()}
+                  <a
+                    id="filter-reset"
+                    data-cy="filter-reset"
+                    @click=${() => this.resetFilters()}
                     ><small>Reset filters</small></a
                   >
                 `
@@ -423,95 +433,102 @@ export class EOxItemFilter extends LitElement {
             </section>
           `
         )}
-        <section id="section-results">
-          <div>
-            <slot name="resultstitle"></slot>
-          </div>
-          <div id="container-results" class="scroll">
-            ${this._results.length < 1
-              ? html` <small class="no-results">No matching items</small> `
-              : nothing}
-            <ul id="results">
-              ${this._config.aggregateResults
-                ? map(
-                    this._resultAggregation.filter(
-                      (aggregationProperty) =>
-                        this.aggregateResults(
-                          this._results,
-                          aggregationProperty
-                        ).length
-                    ),
-                    (aggregationProperty) => html`<details
-                      id="details-results"
-                      open
-                    >
-                      <summary>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
+        ${when(
+          this.config.showResults,
+          () => html`
+            <section id="section-results">
+              <div>
+                <slot name="resultstitle"></slot>
+              </div>
+              <div id="container-results" class="scroll">
+                ${this._results.length < 1
+                  ? html` <small class="no-results">No matching items</small> `
+                  : nothing}
+                <ul id="results">
+                  ${this._config.aggregateResults
+                    ? map(
+                        this._resultAggregation.filter(
+                          (aggregationProperty) =>
+                            this.aggregateResults(
+                              this._results,
+                              aggregationProperty
+                            ).length
+                        ),
+                        (aggregationProperty) => html`<details
+                          id="details-results"
+                          open
                         >
-                          <title>chevron-down</title>
-                          <path
-                            d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                          />
-                        </svg>
-                        <strong class="title"> ${aggregationProperty} </strong>
-                        <span style="margin-left: 0.25rem"
-                          >(${this.aggregateResults(
-                            this._results,
-                            aggregationProperty
-                          ).length})</span
-                        >
-                      </summary>
-                      <ul>
-                        ${map(
-                          this.aggregateResults(
-                            this._results,
-                            aggregationProperty
-                          ),
-                          // @ts-ignore
-                          (item) => html`
-                            <li>
-                              <label>
-                                <input
-                                  type="radio"
-                                  name="result"
-                                  id="${
-                                    // @ts-ignore
-                                    item.id
-                                  }"
-                                  @click=${() => {
-                                    this._selectedResult = item;
-                                    this._config.onSelect(item);
-                                  }}
-                                />
-                                <span class="title"
-                                  >${
-                                    // @ts-ignore
-                                    unsafeHTML(item[this._config.titleProperty])
-                                  }</span
-                                >
-                              </label>
-                            </li>
-                          `
-                        )}
-                      </ul>
-                    </details>`
-                  )
-                : map(
-                    this._results,
-                    // @ts-ignore
-                    (item) =>
-                      html`<li>
-                        ${
-                          // @ts-ignore
-                          unsafeHTML(item[this._config.titleProperty])
-                        }
-                      </li>`
-                  )}
-            </ul>
-          </div>
-        </section>
+                          <summary>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                            >
+                              <title>chevron-down</title>
+                              <path
+                                d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
+                              />
+                            </svg>
+                            <strong class="title">
+                              ${aggregationProperty}
+                            </strong>
+                            <span style="margin-left: 0.25rem"
+                              >(${this.aggregateResults(
+                                this._results,
+                                aggregationProperty
+                              ).length})</span
+                            >
+                          </summary>
+                          <ul>
+                            ${map(
+                              this.aggregateResults(
+                                this._results,
+                                aggregationProperty
+                              ),
+                              // @ts-ignore
+                              (item) => html`
+                                <li>
+                                  <label>
+                                    <input
+                                      type="radio"
+                                      name="result"
+                                      id="${
+                                        // @ts-ignore
+                                        item.id
+                                      }"
+                                      @click=${() => {
+                                        this._selectedResult = item;
+                                        this._config.onSelect(item);
+                                      }}
+                                    />
+                                    <span class="title"
+                                      >${unsafeHTML(
+                                        // @ts-ignore
+                                        item[this._config.titleProperty]
+                                      )}</span
+                                    >
+                                  </label>
+                                </li>
+                              `
+                            )}
+                          </ul>
+                        </details>`
+                      )
+                    : map(
+                        this._results,
+                        // @ts-ignore
+                        (item) =>
+                          html`<li>
+                            ${
+                              // @ts-ignore
+                              unsafeHTML(item[this._config.titleProperty])
+                            }
+                          </li>`
+                      )}
+                </ul>
+              </div>
+            </section>
+          `
+        )}
       </form>
     `;
   }

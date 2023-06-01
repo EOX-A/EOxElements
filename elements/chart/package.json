@@ -8,9 +8,14 @@
     "chartjs-chart-error-bars": "^4.1.2"
   },
   "devDependencies": {
+    "@eox/eslint-config": "^1.0.0",
     "@types/luxon": "^3.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint-plugin-typescript": "^0.14.0",
     "luxon": "^3.3.0",
     "p-retry": "^5.1.2",
+    "typescript": "^4.9.3",
     "vite": "^4.0.0"
   },
   "engines": {
@@ -25,6 +30,9 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "watch": "tsc && vite build --watch"
+    "watch": "tsc && vite build --watch",
+    "format": "prettier --write .",
+    "lint": "eslint --ext .js,.ts .",
+    "lint:fix": "eslint --ext .js,.ts . --fix"
   }
 }
