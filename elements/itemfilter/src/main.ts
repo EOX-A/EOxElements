@@ -4,12 +4,10 @@ import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import Fuse from "fuse.js";
+// @ts-ignore
+import _debounce from "lodash.debounce";
 import { highlight } from "./itemHighlighting";
 import { style } from "./style";
-
-type HTMLElementEvent<T extends HTMLElement> = Event & {
-  target: T;
-};
 
 class ElementConfig {
   /**
@@ -154,6 +152,16 @@ export class EOxItemFilter extends LitElement {
       ].sort();
     }
   };
+
+  inputHandler = () => {
+    // using the querySelector/value combo since the event target value is undefined when debounced
+    // @ts-ignore
+    this.search(this.renderRoot.querySelector("input[type='text']").value);
+  };
+
+  debouncedInputHandler = _debounce(this.inputHandler, 500, {
+    leading: true,
+  });
 
   search(input: string = "", filters: Object = this._filters) {
     const parsedFilters = Object.entries(filters).reduce(
@@ -323,8 +331,7 @@ export class EOxItemFilter extends LitElement {
               <input
                 type="text"
                 placeholder="Search"
-                @input="${(evt: HTMLElementEvent<HTMLInputElement>) =>
-                  this.search(evt.target.value)}"
+                @input="${this.debouncedInputHandler}"
               />
             </section>
           `
