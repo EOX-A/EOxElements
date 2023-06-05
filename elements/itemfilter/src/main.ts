@@ -455,7 +455,7 @@ export class EOxItemFilter extends LitElement {
                 ${this._results.length < 1
                   ? html` <small class="no-results">No matching items</small> `
                   : nothing}
-                <ul id="results">
+                <ul id="results" part="results">
                   ${this._config.aggregateResults
                     ? map(
                         this._resultAggregation.filter(
@@ -528,7 +528,7 @@ export class EOxItemFilter extends LitElement {
                         this._results,
                         // @ts-ignore
                         (item) =>
-                          html`<li>
+                          html`<li part="result">
                             ${
                               // @ts-ignore
                               unsafeHTML(item[this._config.titleProperty])
