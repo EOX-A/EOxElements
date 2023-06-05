@@ -31,6 +31,12 @@ class ElementConfig {
   public exclusiveFilters?: Boolean = false;
 
   /**
+   * Use an external search endpoint instead of fuse search.
+   * Passed properties: input string, filters object
+   */
+  public externalSearch?: Function;
+
+  /**
    * The filter properties.
    * @param filterProperties
    */
@@ -174,7 +180,7 @@ export class EOxItemFilter extends LitElement {
     leading: true,
   });
 
-  search(input: string = "", filters: Object = this._filters) {
+  async search(input: string = "", filters: Object = this._filters) {
     const parsedFilters = Object.entries(filters).reduce(
       (store, [key, value]) => {
         // @ts-ignore
@@ -199,39 +205,47 @@ export class EOxItemFilter extends LitElement {
     ) {
       results = this._items;
     } else {
-      const parameters: Object = {
-        ...(input.length > 2 && parsedFilters.length
-          ? {
-              $and: [
-                {
-                  $or: [
-                    // @ts-ignore
-                    ...this._config.fuseConfig["keys"].map((key: string) => ({
-                      [key]: input,
-                    })),
-                  ],
-                },
-                {
-                  $or: parsedFilters,
-                },
-              ],
-            }
-          : {
-              $or: [
-                // @ts-ignore
-                ...this._config.fuseConfig["keys"].map((key: string) => ({
-                  [key]: input,
-                })),
-                {
-                  $or: parsedFilters,
-                },
-              ],
-            }),
-      };
-      const response = this._fuse.search(parameters);
-      results = this._config.enableHighlighting
-        ? highlight(response, "highlight", this._config.titleProperty)
-        : response.map((i) => i.item);
+      if (this.config.externalSearch) {
+        const response = await fetch(
+          `${this.config.externalSearch(input, filters)}`
+        );
+        const jsonData = await response.json();
+        results = jsonData.features;
+      } else {
+        const parameters: Object = {
+          ...(input.length > 2 && parsedFilters.length
+            ? {
+                $and: [
+                  {
+                    $or: [
+                      // @ts-ignore
+                      ...this._config.fuseConfig["keys"].map((key: string) => ({
+                        [key]: input,
+                      })),
+                    ],
+                  },
+                  {
+                    $or: parsedFilters,
+                  },
+                ],
+              }
+            : {
+                $or: [
+                  // @ts-ignore
+                  ...this._config.fuseConfig["keys"].map((key: string) => ({
+                    [key]: input,
+                  })),
+                  {
+                    $or: parsedFilters,
+                  },
+                ],
+              }),
+        };
+        const response = this._fuse.search(parameters);
+        results = this._config.enableHighlighting
+          ? highlight(response, "highlight", this._config.titleProperty)
+          : response.map((i) => i.item);
+      }
     }
     this._results = this.sortResults(results);
     this._config.onSearch(results);
