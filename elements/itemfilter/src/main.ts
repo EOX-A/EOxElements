@@ -87,7 +87,7 @@ export class EOxItemFilter extends LitElement {
   _items: Array<Object> = [];
 
   @state()
-  _results: Array<Object> = [];
+  _results: Array<Object>;
 
   @state()
   _filters: Object = {};
@@ -460,7 +460,7 @@ export class EOxItemFilter extends LitElement {
           `
         )}
         ${when(
-          this.config.showResults,
+          this.config.showResults && this._results,
           () => html`
             <section id="section-results">
               <div>
@@ -558,4 +558,21 @@ export class EOxItemFilter extends LitElement {
       </form>
     `;
   }
+
+  // protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  //   function parseStringTemplate(str, obj, key) {
+  //     const strP = str.replaceAll(`${key}.`, '')
+  //     let parts = strP.split(/\$\{(?!\d)[\wæøåÆØÅ]*\}/);
+  //     let args = strP.match(/[^{\}]+(?=})/g) || [];
+  //     let parameters = args.map(argument => obj[argument] || (obj[argument] === undefined ? "" : obj[argument]));
+  //     return String.raw({ raw: parts }, ...parameters);
+  // }
+  //   const slot = this.shadowRoot.querySelector('slot[name=results]');
+  //   const template = slot.assignedElements({flatten: true})[0]
+  //   const dataType = template.getAttribute('data-type')
+  //   const pT = parseStringTemplate(template.innerHTML, this[dataType], dataType);
+  //   template.innerHTML = pT
+  //   let clon = template.content.cloneNode(true);
+  //   slot.replaceWith(clon);
+  // }
 }
