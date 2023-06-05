@@ -375,7 +375,22 @@ export class EOxItemFilter extends LitElement {
                     >
                       <summary>
                         <small>
-                          <strong class="title"> ${filter} </strong>
+                          <strong class="title">
+                            ${filter}
+                            ${
+                              // @ts-ignore
+                              Object.values(this._filters[filter]).filter(
+                                (v) => v
+                              ).length
+                                ? `(${
+                                    // @ts-ignore
+                                    Object.values(this._filters[filter]).filter(
+                                      (v) => v
+                                    ).length
+                                  })`
+                                : nothing
+                            }
+                          </strong>
                         </small>
                         <div
                           style="display: flex; align-items: center; justify-content: center; margin-left: 4px;"

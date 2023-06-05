@@ -118,7 +118,7 @@ section.inline > ul {
 }
 section.inline details#details-filter {
   background: lightgrey;
-  border-radius: 20px;
+  border-radius: 13px;
   margin: 0;
   margin-right: 4px;
   padding: 4px 7px;
