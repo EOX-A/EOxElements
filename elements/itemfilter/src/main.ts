@@ -323,7 +323,7 @@ export class EOxItemFilter extends LitElement {
   }
 
   resetFilters() {
-    this.renderRoot.querySelectorAll("#details-filter input").forEach((f) => {
+    this.renderRoot.querySelectorAll(".details-filter input").forEach((f) => {
       // @ts-ignore
       f.checked = false;
     });
@@ -355,8 +355,9 @@ export class EOxItemFilter extends LitElement {
             <section>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Type something..."
                 data-cy="search"
+                part="input-search"
                 @input="${this.debouncedInputHandler}"
               />
             </section>
@@ -375,11 +376,12 @@ export class EOxItemFilter extends LitElement {
                   this._config.filterProperties,
                   (filter) => html`
                     <details
-                      id="details-filter"
+                      class="details-filter"
+                      part="details-filter"
                       data-filter="${filter}"
                       @click=${() =>
                         this.renderRoot
-                          .querySelectorAll("details#details-filter")
+                          .querySelectorAll("details.details-filter")
                           .forEach((d) => {
                             if (d.getAttribute("data-filter") !== filter) {
                               d.removeAttribute("open");
