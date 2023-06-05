@@ -26,14 +26,15 @@ class ElementConfig {
   public enableSearch?: Boolean = false;
 
   /**
-   * Display results list
-   */
-  public showResults?: Boolean = true;
-
-  /**
    * Make the filters mutually exclusive
    */
   public exclusiveFilters?: Boolean = false;
+
+  /**
+   * Use an external search endpoint instead of fuse search.
+   * Passed properties: input string, filters object
+   */
+  public externalSearch?: Function;
 
   /**
    * The filter properties.
@@ -47,6 +48,12 @@ class ElementConfig {
   public fuseConfig?: Object = {
     keys: ["title"],
   };
+
+  /**
+   * Inline mode, for rendering the itemfilter in avery condensed space.
+   * Expexts showResults to be false and enableSearch to be true
+   */
+  public inlineMode?: Boolean = false;
 
   /**
    * Show all result items if nothing is input by the user
@@ -67,6 +74,11 @@ class ElementConfig {
   public onSelect?: Function = () => {};
 
   /**
+   * Display results list
+   */
+  public showResults?: Boolean = true;
+
+  /**
    * The property of the result items used for display
    */
   public titleProperty: string = "title";
@@ -81,7 +93,7 @@ export class EOxItemFilter extends LitElement {
   _items: Array<Object> = [];
 
   @state()
-  _results: Array<Object> = [];
+  _results: Array<Object>;
 
   @state()
   _filters: Object = {};
@@ -168,7 +180,7 @@ export class EOxItemFilter extends LitElement {
     leading: true,
   });
 
-  search(input: string = "", filters: Object = this._filters) {
+  async search(input: string = "", filters: Object = this._filters) {
     const parsedFilters = Object.entries(filters).reduce(
       (store, [key, value]) => {
         // @ts-ignore
@@ -193,39 +205,47 @@ export class EOxItemFilter extends LitElement {
     ) {
       results = this._items;
     } else {
-      const parameters: Object = {
-        ...(input.length > 2 && parsedFilters.length
-          ? {
-              $and: [
-                {
-                  $or: [
-                    // @ts-ignore
-                    ...this._config.fuseConfig["keys"].map((key: string) => ({
-                      [key]: input,
-                    })),
-                  ],
-                },
-                {
-                  $or: parsedFilters,
-                },
-              ],
-            }
-          : {
-              $or: [
-                // @ts-ignore
-                ...this._config.fuseConfig["keys"].map((key: string) => ({
-                  [key]: input,
-                })),
-                {
-                  $or: parsedFilters,
-                },
-              ],
-            }),
-      };
-      const response = this._fuse.search(parameters);
-      results = this._config.enableHighlighting
-        ? highlight(response, "highlight", this._config.titleProperty)
-        : response.map((i) => i.item);
+      if (this.config.externalSearch) {
+        const response = await fetch(
+          `${this.config.externalSearch(input, filters)}`
+        );
+        const jsonData = await response.json();
+        results = jsonData.features;
+      } else {
+        const parameters: Object = {
+          ...(input.length > 2 && parsedFilters.length
+            ? {
+                $and: [
+                  {
+                    $or: [
+                      // @ts-ignore
+                      ...this._config.fuseConfig["keys"].map((key: string) => ({
+                        [key]: input,
+                      })),
+                    ],
+                  },
+                  {
+                    $or: parsedFilters,
+                  },
+                ],
+              }
+            : {
+                $or: [
+                  // @ts-ignore
+                  ...this._config.fuseConfig["keys"].map((key: string) => ({
+                    [key]: input,
+                  })),
+                  {
+                    $or: parsedFilters,
+                  },
+                ],
+              }),
+        };
+        const response = this._fuse.search(parameters);
+        results = this._config.enableHighlighting
+          ? highlight(response, "highlight", this._config.titleProperty)
+          : response.map((i) => i.item);
+      }
     }
     this._results = this.sortResults(results);
     this._config.onSearch(results);
@@ -303,7 +323,7 @@ export class EOxItemFilter extends LitElement {
   }
 
   resetFilters() {
-    this.renderRoot.querySelectorAll("#details-filter input").forEach((f) => {
+    this.renderRoot.querySelectorAll(".details-filter input").forEach((f) => {
       // @ts-ignore
       f.checked = false;
     });
@@ -335,8 +355,9 @@ export class EOxItemFilter extends LitElement {
             <section>
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Type something..."
                 data-cy="search"
+                part="input-search"
                 @input="${this.debouncedInputHandler}"
               />
             </section>
@@ -345,18 +366,22 @@ export class EOxItemFilter extends LitElement {
         ${when(
           this._config.filterProperties.length,
           () => html`
-            <section>
-              <slot name="filterstitle"></slot>
+            <section class="${this.config.inlineMode ? "inline" : nothing}">
+              ${when(
+                !this.config.inlineMode,
+                () => html` <slot name="filterstitle"></slot> `
+              )}
               <ul id="filters">
                 ${map(
                   this._config.filterProperties,
                   (filter) => html`
                     <details
-                      id="details-filter"
+                      class="details-filter"
+                      part="details-filter"
                       data-filter="${filter}"
                       @click=${() =>
                         this.renderRoot
-                          .querySelectorAll("details#details-filter")
+                          .querySelectorAll("details.details-filter")
                           .forEach((d) => {
                             if (d.getAttribute("data-filter") !== filter) {
                               d.removeAttribute("open");
@@ -366,13 +391,30 @@ export class EOxItemFilter extends LitElement {
                     >
                       <summary>
                         <small>
-                          <strong class="title"> ${filter} </strong>
+                          <strong class="title">
+                            ${filter}
+                            ${
+                              // @ts-ignore
+                              Object.values(this._filters[filter]).filter(
+                                (v) => v
+                              ).length
+                                ? `(${
+                                    // @ts-ignore
+                                    Object.values(this._filters[filter]).filter(
+                                      (v) => v
+                                    ).length
+                                  })`
+                                : nothing
+                            }
+                          </strong>
                         </small>
-                        <div>
+                        <div
+                          style="display: flex; align-items: center; justify-content: center; margin-left: 4px;"
+                        >
                           <svg
                             data-cy="expand-button"
                             xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
+                            viewBox="6 6 12 12"
                           >
                             <title>chevron-down</title>
                             <path
@@ -434,7 +476,7 @@ export class EOxItemFilter extends LitElement {
           `
         )}
         ${when(
-          this.config.showResults,
+          this.config.showResults && this._results,
           () => html`
             <section id="section-results">
               <div>
@@ -444,7 +486,7 @@ export class EOxItemFilter extends LitElement {
                 ${this._results.length < 1
                   ? html` <small class="no-results">No matching items</small> `
                   : nothing}
-                <ul id="results">
+                <ul id="results" part="results">
                   ${this._config.aggregateResults
                     ? map(
                         this._resultAggregation.filter(
@@ -517,7 +559,7 @@ export class EOxItemFilter extends LitElement {
                         this._results,
                         // @ts-ignore
                         (item) =>
-                          html`<li>
+                          html`<li part="result">
                             ${
                               // @ts-ignore
                               unsafeHTML(item[this._config.titleProperty])
@@ -532,4 +574,21 @@ export class EOxItemFilter extends LitElement {
       </form>
     `;
   }
+
+  // protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
+  //   function parseStringTemplate(str, obj, key) {
+  //     const strP = str.replaceAll(`${key}.`, '')
+  //     let parts = strP.split(/\$\{(?!\d)[\wæøåÆØÅ]*\}/);
+  //     let args = strP.match(/[^{\}]+(?=})/g) || [];
+  //     let parameters = args.map(argument => obj[argument] || (obj[argument] === undefined ? "" : obj[argument]));
+  //     return String.raw({ raw: parts }, ...parameters);
+  // }
+  //   const slot = this.shadowRoot.querySelector('slot[name=results]');
+  //   const template = slot.assignedElements({flatten: true})[0]
+  //   const dataType = template.getAttribute('data-type')
+  //   const pT = parseStringTemplate(template.innerHTML, this[dataType], dataType);
+  //   template.innerHTML = pT
+  //   let clon = template.content.cloneNode(true);
+  //   slot.replaceWith(clon);
+  // }
 }
