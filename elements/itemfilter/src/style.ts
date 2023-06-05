@@ -113,7 +113,7 @@ ul#results li {
 section.inline,
 section.inline > ul {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin: 0;
 }
 section.inline details#details-filter {
