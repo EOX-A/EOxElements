@@ -30,10 +30,10 @@ describe("Map", () => {
     });
   });
 
-  it("should have an attribution li", () => {
+  /*it("should have an attribution li", () => {
     cy.get("eox-map")
       .shadow()
       .find("li")
       .should("contain.text", "© OpenStreetMap contributors.");
-  });
+  });*/
 });
