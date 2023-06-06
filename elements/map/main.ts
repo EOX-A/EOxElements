@@ -39,9 +39,9 @@ export class EOxMap extends HTMLElement {
 
   /**
    * removes a given draw interaction from the map. Layer have to be removed seperately
-   * @param drawId id of a vector layer to draw on
+   * @param id id of the interaction
   */
-  removeDraw: Function;
+  removeInteraction: Function;
 
 
 
@@ -90,8 +90,9 @@ export class EOxMap extends HTMLElement {
       addDraw(this, layerId, options);
     };
 
-    this.removeDraw = (id: string) => {
+    this.removeInteraction = (id: string) => {
       this.map.removeInteraction(this.interactions[id])
+      delete this.interactions[id];
     };
 
     this.map.on("loadend", () => {
