@@ -15,9 +15,13 @@ export function addDraw(
   
   const map = EOxMap.map;
 
-  const drawLayer = map.getLayers().getArray()
-    .filter(l => l.get('mapbox-layers'))
-    .find(l => l.get('mapbox-layers').includes(layerId));
+  // get mapbox-style layer or manually generated ol layer
+  let drawLayer = map.getLayers()
+      .getArray()
+      .find(l => l.get('id') === layerId) ||
+    map.getLayers().getArray()
+      .filter(l => l.get('mapbox-layers'))
+      .find(l => l.get('mapbox-layers').includes(layerId));
 
     if (!drawLayer) {
       throw Error(`Layer with id: ${layerId} does not exist.`);
