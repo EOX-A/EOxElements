@@ -85,4 +85,44 @@ describe("draw interaction", () => {
       expect(features).to.have.length(1);
     });
   });
+
+  it("creates polygon and measure event", () => {
+    cy.get("eox-map").should(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      eoxMap.removeInteraction('drawInteraction');
+      eoxMap.addDraw('draw_polygon', {
+        id: 'drawInteraction',
+        type: 'Polygon',
+      });
+
+      eoxMap.addEventListener("drawend", (evt) => {
+        //@ts-ignore
+        expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
+      });
+
+      // first point
+      simulateEvent(eoxMap.map, 'pointermove', 10, 20);
+      simulateEvent(eoxMap.map, 'pointerdown', 10, 20);
+      simulateEvent(eoxMap.map, 'pointerup', 10, 20);
+
+      // second point
+      simulateEvent(eoxMap.map, 'pointermove', 30, 20);
+      simulateEvent(eoxMap.map, 'pointerdown', 30, 20);
+      simulateEvent(eoxMap.map, 'pointerup', 30, 20);
+
+      // third point
+      simulateEvent(eoxMap.map, 'pointermove', 40, 10);
+      simulateEvent(eoxMap.map, 'pointerdown', 40, 10);
+      simulateEvent(eoxMap.map, 'pointerup', 40, 10);
+
+      // finish on first point
+      simulateEvent(eoxMap.map, 'pointermove', 10, 20);
+      simulateEvent(eoxMap.map, 'pointerdown', 10, 20);
+      simulateEvent(eoxMap.map, 'pointerup', 10, 20);
+      
+      const drawLayer = eoxMap.map.getLayers().getArray()[1] as VectorLayer<VectorSource>;
+      const features = drawLayer.getSource().getFeatures();
+      expect(features).to.have.length(1);
+    });
+  });
 });
