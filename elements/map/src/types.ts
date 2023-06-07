@@ -1,6 +1,3 @@
-import {
-  AnyLayer,
-  CustomLayerInterface
-} from 'mapbox-gl';
+import { AnyLayer, CustomLayerInterface } from "mapbox-gl";
 
 export type MapboxLayer = Exclude<AnyLayer, CustomLayerInterface>;
