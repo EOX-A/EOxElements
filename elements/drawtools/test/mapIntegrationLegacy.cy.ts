@@ -1,6 +1,6 @@
 describe("Drawtools", () => {
   beforeEach(() => {
-    cy.visit("/elements/drawtools/test/mapIntegration.html");
+    cy.visit("/elements/drawtools/test/mapIntegrationLegacy.html");
   });
 
   it("loads the drawtools", () => {

@@ -7,7 +7,7 @@
         padding: 0;
         margin: 0;
       }
-      eox-map {
+      #map {
         width: 100%;
         height: 400px;
       }
@@ -22,16 +22,37 @@
     <script type="module" defer src="../dist/eox-drawtools.js"></script>
   </head>
   <body>
-    <eox-map></eox-map>
+    <div id="map"></div>
     <eox-drawtools> Default slot content </eox-drawtools>
     <p>Drawn features: <span style="line-break: anywhere"></span></p>
     <script type="module">
-      import layers from "./mapIntegration.json" assert { type: "json" };
-      const eoxMap = document.querySelector("eox-map");
+      import Map from "https://cdn.skypack.dev/ol/Map.js";
+      import OSM from "https://cdn.skypack.dev/ol/source/OSM.js";
+      import TileLayer from "https://cdn.skypack.dev/ol/layer/Tile.js";
+      import View from "https://cdn.skypack.dev/ol/View.js";
+      import VectorLayer from "https://cdn.skypack.dev/ol/layer/Vector.js";
+      import VectorSource from "https://cdn.skypack.dev/ol/source/Vector.js";
+
+      const map = new Map({
+        target: "map",
+        layers: [
+          new TileLayer({
+            source: new OSM(),
+          }),
+          new VectorLayer({
+            source: new VectorSource(),
+            id: "draw_layer",
+          }),
+        ],
+        view: new View({
+          center: [0, 0],
+          zoom: 2,
+        }),
+        controls: [],
+      });
       const eoxDrawTools = document.querySelector("eox-drawtools");
       setTimeout(() => {
-        eoxMap.setLayers(layers);
-        eoxDrawTools.attachTo(eoxMap, "draw_layer");
+        eoxDrawTools.attachTo(map, "draw_layer");
       }, 500);
       eoxDrawTools.addEventListener("drawupdate", (evt) => {
         document.querySelector("span").innerHTML = JSON.stringify(
