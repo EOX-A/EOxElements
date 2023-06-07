@@ -52,7 +52,10 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
     }
     const geoJsonObject = format.writeFeatureObject(e.feature);
     const drawendEvt = new CustomEvent("drawend", {
-      detail: { geojson: geoJsonObject },
+      detail: { 
+      originalEvent: e,
+      geojson: geoJsonObject 
+    },
     });
     EOxMap.dispatchEvent(drawendEvt);
   });
