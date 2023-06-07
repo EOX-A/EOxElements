@@ -36,20 +36,20 @@ label {
 details {
   margin-bottom: 0.5rem;
 }
-details[open] {
-  position: absolute;
-  left: 16px;
-  right: 12px;
-}
-details[open] summary {
-  height: 30px;
-}
 details summary > * {
   display: inline;
 }
 details summary {
   display: flex;
   align-items: center;
+}
+.inline details[open] {
+  position: absolute;
+  left: 16px;
+  right: 12px;
+}
+.inline details[open] summary {
+  height: 30px;
 }
 .details-filter summary {
   justify-content: space-between;
