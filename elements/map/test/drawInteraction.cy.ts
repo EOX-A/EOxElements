@@ -30,12 +30,9 @@ describe("draw interaction", () => {
   it("creates correct geometry", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      console.log(eoxMap);
-      simulateEvent(eoxMap.map, "pointerdown", 10, 20);
-      simulateEvent(eoxMap.map, "pointerup", 10, 20);
-      const drawLayer = eoxMap.map
-        .getLayers()
-        .getArray()[1] as VectorLayer<VectorSource>;
+      simulateEvent(eoxMap.map, 'pointerdown', 10, 20);
+      simulateEvent(eoxMap.map, 'pointerup', 10, 20);
+      const drawLayer = eoxMap.map.getLayers().getArray()[1] as VectorLayer<VectorSource>;
       const features = drawLayer.getSource().getFeatures();
       const geometry = features[0].getGeometry() as Point;
       expect(features).to.have.length(1);

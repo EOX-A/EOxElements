@@ -8,6 +8,7 @@ import { apply } from "ol-mapbox-style";
 import olCss from "ol/ol.css";
 import { addDraw } from "./src/draw";
 import Interaction from "ol/interaction/Interaction";
+import { getLayerById } from "./src/layer";
 
 export class EOxMap extends HTMLElement {
   private shadow: ShadowRoot;
@@ -42,6 +43,13 @@ export class EOxMap extends HTMLElement {
    * @param id id of the interaction
    */
   removeInteraction: Function;
+
+  /**
+   * gets an OpenLayers-Layer, either by its "id" or one of its Mapbox-Style IDs
+   */
+  getLayerById: Function
+
+
 
   constructor() {
     super();
@@ -93,6 +101,10 @@ export class EOxMap extends HTMLElement {
       this.map.removeInteraction(this.interactions[id]);
       delete this.interactions[id];
     };
+
+    this.getLayerById = (layerId: string) => {
+      return getLayerById(this, layerId);
+    }
 
     this.map.on("loadend", () => {
       const loadEvt = new CustomEvent("loadend", { detail: { foo: "bar" } });
