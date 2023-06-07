@@ -47,9 +47,7 @@ export class EOxMap extends HTMLElement {
   /**
    * gets an OpenLayers-Layer, either by its "id" or one of its Mapbox-Style IDs
    */
-  getLayerById: Function
-
-
+  getLayerById: Function;
 
   constructor() {
     super();
@@ -104,7 +102,7 @@ export class EOxMap extends HTMLElement {
 
     this.getLayerById = (layerId: string) => {
       return getLayerById(this, layerId);
-    }
+    };
 
     this.map.on("loadend", () => {
       const loadEvt = new CustomEvent("loadend", { detail: { foo: "bar" } });

@@ -23,25 +23,25 @@ export function addDraw(
 
   const drawInteraction = new Draw({
     type: options.type,
-    source
+    source,
   });
 
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {
     const geom = e.feature.getGeometry();
     if (geom instanceof LineString) {
-      length = getLength(geom, { radius: 6378137, projection: 'EPSG:3857' });
-      e.feature.set('measure', length);
+      length = getLength(geom, { radius: 6378137, projection: "EPSG:3857" });
+      e.feature.set("measure", length);
     } else if (geom instanceof Polygon) {
-      const area = getArea(geom, { radius: 6378137, projection: 'EPSG:3857' });
-      e.feature.set('measure', area);
+      const area = getArea(geom, { radius: 6378137, projection: "EPSG:3857" });
+      e.feature.set("measure", area);
     }
     const geoJsonObject = format.writeFeatureObject(e.feature);
-    const drawendEvt = new CustomEvent("drawend", { 
-      detail: { 
+    const drawendEvt = new CustomEvent("drawend", {
+      detail: {
         originalEvent: e,
-        geojson: geoJsonObject 
-      }
+        geojson: geoJsonObject,
+      },
     });
     EOxMap.dispatchEvent(drawendEvt);
   });

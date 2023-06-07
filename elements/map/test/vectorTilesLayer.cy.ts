@@ -17,11 +17,11 @@ describe("layers", () => {
       expect(layers).to.have.length(2);
       const layer = layers.find(
         (l) => l.get("mapbox-source") === "countries"
-        ) as VectorTile;
-        const features = layer
+      ) as VectorTile;
+      const features = layer
         .getSource()
         .getFeaturesInExtent(eoxMap.map.getView().calculateExtent());
-        expect(features.length).to.be.greaterThan(10);
-      });
+      expect(features.length).to.be.greaterThan(10);
     });
+  });
 });
