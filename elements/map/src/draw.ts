@@ -1,4 +1,4 @@
-import Draw from "ol/interaction/Draw.js";
+import { Draw, Modify } from "ol/interaction";
 import { EOxMap } from "../main";
 import { getArea, getLength } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
@@ -35,6 +35,10 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
     source,
   });
 
+  const modifyInteraction = new Modify({
+    source,
+  });
+
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {
     const geom = e.feature.getGeometry();
@@ -55,5 +59,7 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
 
   // identifier to retrieve the interaction
   map.addInteraction(drawInteraction);
+  map.addInteraction(modifyInteraction);
   EOxMap.interactions[options.id] = drawInteraction;
+  EOxMap.interactions[`${options.id}_modify`] = modifyInteraction;
 }
