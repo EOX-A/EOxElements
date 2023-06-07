@@ -4,7 +4,12 @@ import { getArea, getLength } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
 
-export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
+export function addDraw(
+  EOxMap: EOxMap,
+  layerId: string,
+  options: any
+): void {
+
   if (EOxMap.interactions[options.id]) {
     throw Error(`Interaction with id: ${layerId} already exists.`);
   }
@@ -13,35 +18,35 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
 
   const drawLayer = EOxMap.getLayerById(layerId);
 
-    // @ts-ignore
-    const source = drawLayer.getSource();
+  // @ts-ignore
+  const source = drawLayer.getSource();
 
-    const drawInteraction = new Draw({
-      type: options.type,
-      source
-    });
+  const drawInteraction = new Draw({
+    type: options.type,
+    source
+  });
 
-    const format = new GeoJSON();
-    drawInteraction.on("drawend", (e) => {
-      const geom = e.feature.getGeometry();
-      if (geom instanceof LineString) {
-        length = getLength(geom, { radius: 6378137, projection: 'EPSG:3857' });
-        e.feature.set('measure', length);
-      } else if (geom instanceof Polygon) {
-        const area = getArea(geom, { radius: 6378137, projection: 'EPSG:3857' });
-        e.feature.set('measure', area)
+  const format = new GeoJSON();
+  drawInteraction.on("drawend", (e) => {
+    const geom = e.feature.getGeometry();
+    if (geom instanceof LineString) {
+      length = getLength(geom, { radius: 6378137, projection: 'EPSG:3857' });
+      e.feature.set('measure', length);
+    } else if (geom instanceof Polygon) {
+      const area = getArea(geom, { radius: 6378137, projection: 'EPSG:3857' });
+      e.feature.set('measure', area);
+    }
+    const geoJsonObject = format.writeFeatureObject(e.feature);
+    const drawendEvt = new CustomEvent("drawend", { 
+      detail: { 
+        originalEvent: e,
+        geojson: geoJsonObject 
       }
-      const geoJsonObject = format.writeFeatureObject(e.feature);
-      const drawendEvt = new CustomEvent("drawend", { 
-        detail: { 
-          originalEvent: e,
-          geojson: geoJsonObject 
-        }
-      });
-      EOxMap.dispatchEvent(drawendEvt);
     });
+    EOxMap.dispatchEvent(drawendEvt);
+  });
 
-    // identifier to retrieve the interaction
-    map.addInteraction(drawInteraction);
-    EOxMap.interactions[options.id] = drawInteraction
+  // identifier to retrieve the interaction
+  map.addInteraction(drawInteraction);
+  EOxMap.interactions[options.id] = drawInteraction;
 }
