@@ -11,6 +11,12 @@
         width: 100%;
         height: 400px;
       }
+      eox-drawtools {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: white;
+      }
     </style>
     <script type="module" defer src="../../map/dist/eox-map.js"></script>
     <script type="module" defer src="../dist/eox-drawtools.js"></script>
@@ -18,5 +24,14 @@
   <body>
     <eox-map></eox-map>
     <eox-drawtools> Default slot content </eox-drawtools>
+    <p>Drawn features: <span style="line-break: anywhere"></span></p>
+    <script>
+      const eoxDrawTools = document.querySelector("eox-drawtools");
+      eoxDrawTools.addEventListener("drawend", (evt) => {
+        document.querySelector("span").innerHTML = JSON.stringify(
+          evt.detail.map((f) => f.getGeometry().flatCoordinates)
+        );
+      });
+    </script>
   </body>
 </html>
