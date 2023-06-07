@@ -6,6 +6,8 @@ import { Coordinate } from "ol/coordinate";
 import { apply } from "ol-mapbox-style";
 
 import olCss from "ol/ol.css";
+import { addDraw } from "./src/draw";
+import Interaction from "ol/interaction/Interaction";
 
 export class EOxMap extends HTMLElement {
   private shadow: ShadowRoot;
@@ -17,11 +19,31 @@ export class EOxMap extends HTMLElement {
   map: Map;
 
   /**
+   * dictionary of ol interactions associated with the map.
+   */
+  interactions: {[index: string]: Interaction}
+
+  /**
    * Apply layers from Mapbox Style JSON
    * @param json a Mapbox Style JSON
    * @returns the array of layers
-   */
+  */
   setLayers: Function;
+
+  /**
+   * Adds draw functionality to a given vector layer.
+   * @param layerId id of a vector layer to draw on
+   * @returns id of draw interaction
+  */
+  addDraw: Function;
+
+  /**
+   * removes a given draw interaction from the map. Layer have to be removed seperately
+   * @param id id of the interaction
+  */
+  removeInteraction: Function;
+
+
 
   constructor() {
     super();
@@ -58,9 +80,19 @@ export class EOxMap extends HTMLElement {
           : 0,
       }),
     });
+    this.interactions = {};
 
     this.setLayers = (json: JSON) => {
       apply(this.map, json);
+    };
+
+    this.addDraw = (layerId: string, options: Object) => {
+      addDraw(this, layerId, options);
+    };
+
+    this.removeInteraction = (id: string) => {
+      this.map.removeInteraction(this.interactions[id])
+      delete this.interactions[id];
     };
 
     this.map.on("loadend", () => {

@@ -1,0 +1,22 @@
+import { Map, MapBrowserEvent } from "ol";
+
+const width = 400;
+const height = 400;
+/**
+   * Simulates a browser event on the map viewport.
+   */
+export function simulateEvent(map: Map, type: 'pointermove'|'pointerup'|'pointerdown', x: number, y: number) {
+  const viewport = map.getViewport();
+  // calculated in case body has top < 0 (test runner with small window)
+  const position = viewport.getBoundingClientRect();
+  const event = {} as any;
+  event.type = type;
+  event.target = viewport.firstChild;
+  event.clientX = position.left + x + width / 2;
+  event.clientY = position.top + y + height / 2;
+  event.preventDefault = function () {};
+  event.pointerType = 'mouse';
+  const simulatedEvent = new MapBrowserEvent(type, map, event);
+  map.handleMapBrowserEvent(simulatedEvent);
+  return simulatedEvent;
+}
