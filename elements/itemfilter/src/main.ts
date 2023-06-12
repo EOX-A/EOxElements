@@ -166,7 +166,7 @@ export class EOxItemFilter extends LitElement {
             return store.concat(item[this._config.aggregateResults]);
           }, [])
         ),
-      ].sort();
+      ].sort((a, b) => a.localeCompare(b));
     }
   };
 
@@ -278,7 +278,7 @@ export class EOxItemFilter extends LitElement {
   sortResults(items: Array<Object>) {
     return [...items].sort((a, b) =>
       // @ts-ignore
-      a[this._config.titleProperty] < b[this._config.titleProperty] ? -1 : 1
+      a[this._config.titleProperty].localeCompare(b[this._config.titleProperty])
     );
   }
 
@@ -430,7 +430,9 @@ export class EOxItemFilter extends LitElement {
                             this._filters[filter]
                               ? map(
                                   // @ts-ignore
-                                  Object.keys(this._filters[filter]).sort(),
+                                  Object.keys(this._filters[filter]).sort(
+                                    (a, b) => a.localeCompare(b)
+                                  ),
                                   (key) => html`
                                     <li>
                                       <label>
