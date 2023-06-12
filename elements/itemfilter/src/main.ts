@@ -348,7 +348,7 @@ export class EOxItemFilter extends LitElement {
       <style>
         ${style}
       </style>
-      <form>
+      <form @submit="${(evt: FormDataEvent) => evt.preventDefault()}">
         ${when(
           this._config.enableSearch,
           () => html`
