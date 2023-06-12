@@ -382,15 +382,6 @@ export class EOxItemFilter extends LitElement {
                       class="details-filter"
                       part="details-filter"
                       data-filter="${filter.key}"
-                      @click=${() =>
-                        this.renderRoot
-                          .querySelectorAll("details.details-filter")
-                          .forEach((d) => {
-                            if (d.getAttribute("data-filter") !== filter.key) {
-                              d.removeAttribute("open");
-                              this.requestUpdate();
-                            }
-                          })}
                     >
                       <summary>
                         <small>
