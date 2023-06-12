@@ -13,7 +13,7 @@ describe("Item Filter", () => {
       EOxItemFilter.style.border = "1px solid grey";
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: ["themes", "code"],
+        filterProperties: [{ key: "themes" }, { key: "code" }],
         enableSearch: true,
         showResults: false,
         inlineMode: true,

@@ -40,7 +40,11 @@ class ElementConfig {
    * The filter properties.
    * @param filterProperties
    */
-  public filterProperties?: Array<string> = [];
+  public filterProperties?: Array<{
+    key: string;
+    title?: string;
+    exclusive?: Boolean;
+  }> = [];
 
   /**
    * Native fuse.js config override
@@ -121,7 +125,7 @@ export class EOxItemFilter extends LitElement {
       id: `item-${index}`,
     }));
     this._fuse = new Fuse(this._items, {
-      minMatchCharLength: 3,
+      // minMatchCharLength: 3,
       // location: 0,
       threshold: 0.4,
       distance: 50,
@@ -136,19 +140,19 @@ export class EOxItemFilter extends LitElement {
         const filterKeys = {};
         this._items.forEach((item) => {
           // @ts-ignore
-          if (Array.isArray(item[filterProperty])) {
+          if (Array.isArray(item[filterProperty.key])) {
             // @ts-ignore
-            item[filterProperty].forEach((prop) => {
+            item[filterProperty.key].forEach((prop) => {
               // @ts-ignore
               filterKeys[prop] = undefined;
             });
           } else {
             // @ts-ignore
-            filterKeys[item[filterProperty]] = undefined;
+            filterKeys[item[filterProperty.key]] = undefined;
           }
         });
         // @ts-ignore
-        this._filters[filterProperty] = filterKeys;
+        this._filters[filterProperty.key] = filterKeys;
       });
     }
 
@@ -183,23 +187,30 @@ export class EOxItemFilter extends LitElement {
   async search(input: string = "", filters: Object = this._filters) {
     const parsedFilters = Object.entries(filters).reduce(
       (store, [key, value]) => {
+        const operator = "$or";
+        const holding: Array<any> = [];
         // @ts-ignore
         const createProperty = (val) => {
           const property = {};
           // @ts-ignore
           property[key] = `="${val}"`; // exact match
-          store.push(property);
+          holding.push(property);
         };
         Object.entries(value)
           .filter(([_, v]) => v)
           .forEach(([k, _]) => createProperty(k));
+        if (holding.length > 0) {
+          store.push({
+            [operator]: holding,
+          });
+        }
         return store;
       },
       []
     );
     let results;
     if (
-      !(input.length > 2) &&
+      !(input.length > 0) &&
       !parsedFilters.length &&
       this._config.matchAllWhenEmpty !== false
     ) {
@@ -213,9 +224,9 @@ export class EOxItemFilter extends LitElement {
         results = jsonData.features;
       } else {
         const parameters: Object = {
-          ...(input.length > 2 && parsedFilters.length
-            ? {
-                $and: [
+          $and: [
+            ...(input.length > 0
+              ? [
                   {
                     $or: [
                       // @ts-ignore
@@ -224,22 +235,10 @@ export class EOxItemFilter extends LitElement {
                       })),
                     ],
                   },
-                  {
-                    $or: parsedFilters,
-                  },
-                ],
-              }
-            : {
-                $or: [
-                  // @ts-ignore
-                  ...this._config.fuseConfig["keys"].map((key: string) => ({
-                    [key]: input,
-                  })),
-                  {
-                    $or: parsedFilters,
-                  },
-                ],
-              }),
+                ]
+              : []),
+            ...parsedFilters,
+          ],
         };
         const response = this._fuse.search(parameters);
         results = this._config.enableHighlighting
@@ -282,14 +281,18 @@ export class EOxItemFilter extends LitElement {
     );
   }
 
-  toggleFilter(filter: string, key: string) {
-    if (this._config.exclusiveFilters === true) {
+  toggleFilter(filter: string, key: string, exclusive: Boolean) {
+    if (exclusive) {
       Object.keys(this._filters).forEach((f) => {
-        // @ts-ignore
-        Object.keys(this._filters[f]).forEach((k) => {
+        if (
+          this._config.filterProperties.find((fP) => fP.key === f).exclusive
+        ) {
           // @ts-ignore
-          this._filters[f][k] = false;
-        });
+          Object.keys(this._filters[f]).forEach((k) => {
+            // @ts-ignore
+            this._filters[f][k] = false;
+          });
+        }
       });
     }
     // @ts-ignore
@@ -378,12 +381,12 @@ export class EOxItemFilter extends LitElement {
                     <details
                       class="details-filter"
                       part="details-filter"
-                      data-filter="${filter}"
+                      data-filter="${filter.key}"
                       @click=${() =>
                         this.renderRoot
                           .querySelectorAll("details.details-filter")
                           .forEach((d) => {
-                            if (d.getAttribute("data-filter") !== filter) {
+                            if (d.getAttribute("data-filter") !== filter.key) {
                               d.removeAttribute("open");
                               this.requestUpdate();
                             }
@@ -391,18 +394,22 @@ export class EOxItemFilter extends LitElement {
                     >
                       <summary>
                         <small>
-                          <strong class="title">
-                            ${filter}
+                          <strong
+                            class="title"
+                            style="${!filter.title &&
+                            "text-transform: capitalize"}"
+                          >
+                            ${filter.title || filter.key}
                             ${
                               // @ts-ignore
-                              Object.values(this._filters[filter]).filter(
+                              Object.values(this._filters[filter.key]).filter(
                                 (v) => v
                               ).length
                                 ? `(${
-                                    // @ts-ignore
-                                    Object.values(this._filters[filter]).filter(
-                                      (v) => v
-                                    ).length
+                                    Object.values(
+                                      // @ts-ignore
+                                      this._filters[filter.key]
+                                    ).filter((v) => v).length
                                   })`
                                 : nothing
                             }
@@ -427,10 +434,10 @@ export class EOxItemFilter extends LitElement {
                         <ul>
                           ${
                             // @ts-ignore
-                            this._filters[filter]
+                            this._filters[filter.key]
                               ? map(
                                   // @ts-ignore
-                                  Object.keys(this._filters[filter]).sort(
+                                  Object.keys(this._filters[filter.key]).sort(
                                     (a, b) => a.localeCompare(b)
                                   ),
                                   (key) => html`
@@ -438,17 +445,20 @@ export class EOxItemFilter extends LitElement {
                                       <label>
                                         <input
                                           name="selection"
-                                          type="${this._config
-                                            .exclusiveFilters === true
+                                          type="${filter.exclusive
                                             ? "radio"
                                             : "checkbox"}"
                                           checked="${
                                             // @ts-ignore
-                                            this._filters[filter][key] ||
+                                            this._filters[filter.key][key] ||
                                             nothing
                                           }"
                                           @click=${() =>
-                                            this.toggleFilter(filter, key)}
+                                            this.toggleFilter(
+                                              filter.key,
+                                              key,
+                                              filter.exclusive
+                                            )}
                                         />
                                         <span class="title">${key}</span>
                                       </label>

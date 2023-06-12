@@ -73,7 +73,7 @@ details summary {
   transform: rotate(0deg);
 }
 .details-filter li span,
-details summary {
+#details-results summary {
   text-transform: capitalize;
 }
 li,

@@ -9,7 +9,7 @@ describe("Item Filter Config", () => {
       // default config
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: ["themes"],
+        filterProperties: [{ key: "themes" }],
         aggregateResults: "themes",
         enableSearch: true,
         enableHighlighting: true,
@@ -70,7 +70,7 @@ describe("Item Filter Config", () => {
       // have to replace the entire config, otherwise enableSearch = false doesn't work
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: ["themes"],
+        filterProperties: [{ key: "themes" }],
         aggregateResults: "themes",
         enableSearch: false,
         enableHighlighting: true,
@@ -109,7 +109,7 @@ describe("Item Filter Config", () => {
       // have to replace the entire config, otherwise exclusiveFilters = true doesn't work
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: ["themes"],
+        filterProperties: [{ key: "themes" }],
         aggregateResults: "themes",
         enableSearch: false,
         enableHighlighting: true,

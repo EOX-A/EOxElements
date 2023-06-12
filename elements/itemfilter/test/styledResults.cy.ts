@@ -11,7 +11,7 @@ describe("Item Filter", () => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: ["themes", "code"],
+        filterProperties: [{ key: "themes" }, { key: "code" }],
         enableSearch: true,
         inlineMode: true,
       };

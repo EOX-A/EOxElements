@@ -11,13 +11,16 @@ describe("Item Filter", () => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: ["themes"],
+        filterProperties: [
+          { key: "themes", title: "Theme", exclusive: true },
+          { key: "code" },
+        ],
         aggregateResults: "themes",
         enableSearch: true,
         enableHighlighting: true,
         // showResults: false,
         fuseConfig: {
-          keys: ["title", "description", "themes"],
+          keys: ["title", "description", "themes", "code"],
         },
         // onSelect: (item: any) => {
         //   console.log(item);
