@@ -6,6 +6,8 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import Fuse from "fuse.js";
 // @ts-ignore
 import _debounce from "lodash.debounce";
+import "toolcool-range-slider/dist/plugins/tcrs-generated-labels.min.js";
+import "toolcool-range-slider";
 import { highlight } from "./itemHighlighting";
 import { style } from "./style";
 
@@ -140,6 +142,49 @@ export class EOxItemFilter extends LitElement {
       this._config.filterProperties.forEach((filterProperty) => {
         const filterKeys = {};
         this._items.forEach((item) => {
+          if (filterProperty.type === "range") {
+            // @ts-ignore
+            if (Array.isArray(item[filterProperty.key])) {
+              const currentValues = [
+                // @ts-ignore
+                parseInt(item[filterProperty.key][0]),
+                // @ts-ignore
+                parseInt(item[filterProperty.key][1]),
+              ];
+              // @ts-ignore
+              filterKeys.min =
+                // @ts-ignore
+                filterKeys.min !== undefined
+                  ? // @ts-ignore
+                    Math.min(filterKeys.min, currentValues[0])
+                  : currentValues[0];
+              // @ts-ignore
+              filterKeys.max =
+                // @ts-ignore
+                filterKeys.max !== undefined
+                  ? // @ts-ignore
+                    Math.max(filterKeys.max, currentValues[1])
+                  : currentValues[1];
+            } else {
+              // @ts-ignore
+              const currentValue = parseInt(item[filterProperty.key]);
+              // @ts-ignore
+              filterKeys.min =
+                // @ts-ignore
+                filterKeys.min !== undefined
+                  ? // @ts-ignore
+                    Math.min(filterKeys.min, currentValue)
+                  : currentValue;
+              // @ts-ignore
+              filterKeys.max =
+                // @ts-ignore
+                filterKeys.max !== undefined
+                  ? // @ts-ignore
+                    Math.max(filterKeys.max, currentValue)
+                  : currentValue;
+            }
+            return;
+          }
           // @ts-ignore
           if (Array.isArray(item[filterProperty.key])) {
             // @ts-ignore
@@ -156,6 +201,12 @@ export class EOxItemFilter extends LitElement {
         this._filters[filterProperty.key] = {
           type: filterProperty.type || "string",
           keys: filterKeys,
+          ...(filterProperty.type === "range" && {
+            // @ts-ignore
+            min: filterKeys.min,
+            // @ts-ignore
+            max: filterKeys.max,
+          }),
         };
       });
     }
@@ -189,8 +240,9 @@ export class EOxItemFilter extends LitElement {
   });
 
   async search(input: string = "", filters: Object = this._filters) {
-    const parsedFilters = Object.entries(filters).reduce(
-      (store, [key, filter]) => {
+    const parsedFilters = Object.entries(filters)
+      .filter(([_, filter]) => filter.type === "string")
+      .reduce((store, [key, filter]) => {
         const operator = "$or";
         const holding: Array<any> = [];
         // @ts-ignore
@@ -209,9 +261,7 @@ export class EOxItemFilter extends LitElement {
           });
         }
         return store;
-      },
-      []
-    );
+      }, []);
     let results;
     if (
       !(input.length > 0) &&
@@ -250,6 +300,65 @@ export class EOxItemFilter extends LitElement {
           : response.map((i) => i.item);
       }
     }
+    const rangeFilters = Object.entries(this._filters)
+      .filter(([_, value]) => value.type === "range")
+      .reduce((acc, [key, value]) => {
+        // @ts-ignore
+        acc[key] = {
+          min: value.keys.min,
+          max: value.keys.max,
+        };
+        return acc;
+      }, {});
+    if (Object.keys(rangeFilters).length > 0) {
+      const filteredResults = [];
+      for (let i = 0; i < results.length; i++) {
+        const pass = {};
+        for (let key of Object.keys(rangeFilters)) {
+          if (results[i].hasOwnProperty(key)) {
+            if (Array.isArray(results[i][key])) {
+              const mode = "overlap";
+              // @ts-ignore
+              if (mode === "contain") {
+                // must contain complete range to pass
+                // @ts-ignore
+                pass[key] =
+                  // @ts-ignore
+                  results[i][key][0] >= rangeFilters[key].min &&
+                  // @ts-ignore
+                  results[i][key][1] <= rangeFilters[key].max;
+              } else if (mode === "overlap") {
+                // must have an overlap with the range to pass
+                // @ts-ignore
+                pass[key] =
+                  // @ts-ignore
+                  rangeFilters[key].min <= results[i][key][1] &&
+                  // @ts-ignore
+                  results[i][key][0] <= rangeFilters[key].max;
+              }
+            } else if (
+              // @ts-ignore
+              results[i][key] >= rangeFilters[key].min &&
+              // @ts-ignore
+              results[i][key] <= rangeFilters[key].max
+            ) {
+              // @ts-ignore
+              pass[key] = true;
+            } else {
+              // @ts-ignore
+              pass[key] = false;
+            }
+          } else {
+            // @ts-ignore
+            pass[key] = true;
+          }
+        }
+        if (Object.values(pass).every((v) => !!v)) {
+          filteredResults.push(results[i]);
+        }
+      }
+      results = [...filteredResults];
+    }
     this._results = this.sortResults(results);
     this._config.onSearch(results);
     this.requestUpdate();
@@ -287,17 +396,20 @@ export class EOxItemFilter extends LitElement {
 
   toggleFilter(filter: string, key: string, exclusive: Boolean) {
     if (exclusive) {
-      Object.keys(this._filters).forEach((f) => {
-        if (
-          this._config.filterProperties.find((fP) => fP.key === f).exclusive
-        ) {
-          // @ts-ignore
-          Object.keys(this._filters[f].keys).forEach((k) => {
+      Object.keys(this._filters)
+        // @ts-ignore
+        .filter((f) => this._filters[f].type === "string")
+        .forEach((f) => {
+          if (
+            this._config.filterProperties.find((fP) => fP.key === f).exclusive
+          ) {
             // @ts-ignore
-            this._filters[f].keys[k] = false;
-          });
-        }
-      });
+            Object.keys(this._filters[f].keys).forEach((k) => {
+              // @ts-ignore
+              this._filters[f].keys[k] = false;
+            });
+          }
+        });
     }
     // @ts-ignore
     this._filters[filter].keys[key] = !this._filters[filter].keys[key];
@@ -340,6 +452,14 @@ export class EOxItemFilter extends LitElement {
       searchField.value = "";
     }
     Object.keys(this._filters).forEach((f) => {
+      // @ts-ignore
+      if (this._filters[f].type === "range") {
+        // @ts-ignore
+        this._filters[f].keys.min = this._filters[f].min;
+        // @ts-ignore
+        this._filters[f].keys.max = this._filters[f].max;
+        return;
+      }
       // @ts-ignore
       Object.keys(this._filters[f].keys).forEach((k) => {
         // @ts-ignore
@@ -395,7 +515,8 @@ export class EOxItemFilter extends LitElement {
                             "text-transform: capitalize"}"
                           >
                             ${filter.title || filter.key}
-                            ${Object.values(
+                            ${filter.type === "string" &&
+                            Object.values(
                               // @ts-ignore
                               this._filters[filter.key].keys
                             ).filter((v) => v).length
@@ -424,44 +545,84 @@ export class EOxItemFilter extends LitElement {
                         </div>
                       </summary>
                       <div class="scroll" style="max-height: 150px">
-                        <ul>
-                          ${
-                            // @ts-ignore
-                            this._filters[filter.key]
-                              ? map(
-                                  Object.keys(
+                        ${filter.type === "range"
+                          ? html`
+                              <tc-range-slider
+                                generate-labels="true"
+                                min="${
+                                  // @ts-ignore
+                                  this._filters[filter.key].min
+                                }"
+                                max="${
+                                  // @ts-ignore
+                                  this._filters[filter.key].max
+                                }"
+                                value1="${
+                                  // @ts-ignore
+                                  this._filters[filter.key].keys.min
+                                }"
+                                value2="${
+                                  // @ts-ignore
+                                  this._filters[filter.key].keys.max
+                                }"
+                                step="1"
+                                style="margin: 5px"
+                                @change="${(evt: InputEvent) => {
+                                  [
                                     // @ts-ignore
-                                    this._filters[filter.key].keys
-                                  ).sort((a, b) => a.localeCompare(b)),
-                                  (key) => html`
-                                    <li>
-                                      <label>
-                                        <input
-                                          name="selection"
-                                          type="${filter.exclusive
-                                            ? "radio"
-                                            : "checkbox"}"
-                                          checked="${
-                                            // @ts-ignore
-                                            this._filters[filter.key].keys[
-                                              key
-                                            ] || nothing
-                                          }"
-                                          @click=${() =>
-                                            this.toggleFilter(
-                                              filter.key,
-                                              key,
-                                              filter.exclusive
-                                            )}
-                                        />
-                                        <span class="title">${key}</span>
-                                      </label>
-                                    </li>
-                                  `
-                                )
-                              : null
-                          }
-                        </ul>
+                                    this._filters[filter.key].keys.min,
+                                    // @ts-ignore
+                                    this._filters[filter.key].keys.max,
+                                    // @ts-ignore
+                                  ] = evt.detail.values;
+                                  this.search(
+                                    this.renderRoot.querySelector(
+                                      "input[type='text']"
+                                      // @ts-ignore
+                                    ).value
+                                  );
+                                }}"
+                              ></tc-range-slider>
+                            `
+                          : html`
+                              <ul>
+                                ${
+                                  // @ts-ignore
+                                  this._filters[filter.key]
+                                    ? map(
+                                        Object.keys(
+                                          // @ts-ignore
+                                          this._filters[filter.key].keys
+                                        ).sort((a, b) => a.localeCompare(b)),
+                                        (key) => html`
+                                          <li>
+                                            <label>
+                                              <input
+                                                name="selection"
+                                                type="${filter.exclusive
+                                                  ? "radio"
+                                                  : "checkbox"}"
+                                                checked="${
+                                                  // @ts-ignore
+                                                  this._filters[filter.key]
+                                                    .keys[key] || nothing
+                                                }"
+                                                @click=${() =>
+                                                  this.toggleFilter(
+                                                    filter.key,
+                                                    key,
+                                                    filter.exclusive
+                                                  )}
+                                              />
+                                              <span class="title">${key}</span>
+                                            </label>
+                                          </li>
+                                        `
+                                      )
+                                    : null
+                                }
+                              </ul>
+                            `}
                       </div>
                     </details>
                   `

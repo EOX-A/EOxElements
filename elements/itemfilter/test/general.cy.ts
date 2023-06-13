@@ -14,6 +14,9 @@ describe("Item Filter", () => {
         filterProperties: [
           { key: "themes", title: "Theme", exclusive: true },
           { key: "code" },
+          { key: "likes", type: "range" },
+          { key: "year", type: "range" },
+          { key: "years", type: "range" },
         ],
         aggregateResults: "themes",
         enableSearch: true,
