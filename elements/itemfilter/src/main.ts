@@ -44,6 +44,7 @@ class ElementConfig {
     key: string;
     title?: string;
     exclusive?: Boolean;
+    type?: string;
   }> = [];
 
   /**
@@ -152,7 +153,10 @@ export class EOxItemFilter extends LitElement {
           }
         });
         // @ts-ignore
-        this._filters[filterProperty.key] = filterKeys;
+        this._filters[filterProperty.key] = {
+          type: filterProperty.type || "string",
+          keys: filterKeys,
+        };
       });
     }
 
@@ -186,7 +190,7 @@ export class EOxItemFilter extends LitElement {
 
   async search(input: string = "", filters: Object = this._filters) {
     const parsedFilters = Object.entries(filters).reduce(
-      (store, [key, value]) => {
+      (store, [key, filter]) => {
         const operator = "$or";
         const holding: Array<any> = [];
         // @ts-ignore
@@ -196,7 +200,7 @@ export class EOxItemFilter extends LitElement {
           property[key] = `="${val}"`; // exact match
           holding.push(property);
         };
-        Object.entries(value)
+        Object.entries(filter.keys)
           .filter(([_, v]) => v)
           .forEach(([k, _]) => createProperty(k));
         if (holding.length > 0) {
@@ -263,7 +267,7 @@ export class EOxItemFilter extends LitElement {
         // @ts-ignore
         this._filters[this._config.aggregateResults]
         // @ts-ignore
-      ).filter((f) => this._filters[this._config.aggregateResults][f]);
+      ).filter((f) => this._filters[this._config.aggregateResults].keys[f]);
       const includedInCurrentFilter = currentFilter.length
         ? // @ts-ignore
           currentFilter.includes(property)
@@ -288,15 +292,15 @@ export class EOxItemFilter extends LitElement {
           this._config.filterProperties.find((fP) => fP.key === f).exclusive
         ) {
           // @ts-ignore
-          Object.keys(this._filters[f]).forEach((k) => {
+          Object.keys(this._filters[f].keys).forEach((k) => {
             // @ts-ignore
-            this._filters[f][k] = false;
+            this._filters[f].keys[k] = false;
           });
         }
       });
     }
     // @ts-ignore
-    this._filters[filter][key] = !this._filters[filter][key];
+    this._filters[filter].keys[key] = !this._filters[filter].keys[key];
     const searchField = this.renderRoot.querySelector('input[type="text"]');
     if (searchField) {
       // @ts-ignore
@@ -337,9 +341,9 @@ export class EOxItemFilter extends LitElement {
     }
     Object.keys(this._filters).forEach((f) => {
       // @ts-ignore
-      Object.keys(this._filters[f]).forEach((k) => {
+      Object.keys(this._filters[f].keys).forEach((k) => {
         // @ts-ignore
-        this._filters[f][k] = false;
+        this._filters[f].keys[k] = false;
       });
     });
     this.search();
@@ -391,19 +395,17 @@ export class EOxItemFilter extends LitElement {
                             "text-transform: capitalize"}"
                           >
                             ${filter.title || filter.key}
-                            ${
+                            ${Object.values(
                               // @ts-ignore
-                              Object.values(this._filters[filter.key]).filter(
-                                (v) => v
-                              ).length
-                                ? `(${
-                                    Object.values(
-                                      // @ts-ignore
-                                      this._filters[filter.key]
-                                    ).filter((v) => v).length
-                                  })`
-                                : nothing
-                            }
+                              this._filters[filter.key].keys
+                            ).filter((v) => v).length
+                              ? `(${
+                                  Object.values(
+                                    // @ts-ignore
+                                    this._filters[filter.key].keys
+                                  ).filter((v) => v).length
+                                })`
+                              : nothing}
                           </strong>
                         </small>
                         <div
@@ -427,10 +429,10 @@ export class EOxItemFilter extends LitElement {
                             // @ts-ignore
                             this._filters[filter.key]
                               ? map(
-                                  // @ts-ignore
-                                  Object.keys(this._filters[filter.key]).sort(
-                                    (a, b) => a.localeCompare(b)
-                                  ),
+                                  Object.keys(
+                                    // @ts-ignore
+                                    this._filters[filter.key].keys
+                                  ).sort((a, b) => a.localeCompare(b)),
                                   (key) => html`
                                     <li>
                                       <label>
@@ -441,8 +443,9 @@ export class EOxItemFilter extends LitElement {
                                             : "checkbox"}"
                                           checked="${
                                             // @ts-ignore
-                                            this._filters[filter.key][key] ||
-                                            nothing
+                                            this._filters[filter.key].keys[
+                                              key
+                                            ] || nothing
                                           }"
                                           @click=${() =>
                                             this.toggleFilter(
