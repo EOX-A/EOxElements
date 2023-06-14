@@ -13,17 +13,19 @@ describe("Item Filter", () => {
         titleProperty: "title",
         filterProperties: [
           { key: "themes", title: "Theme", exclusive: true },
-          { key: "code" },
-          { key: "likes", type: "range" },
-          { key: "year", type: "range" },
+          // { key: "code" },
+          // { key: "likes", type: "range" },
+          // { key: "year", type: "range" },
           { key: "years", type: "range" },
+          { key: "datetime", type: "range", format: "date" },
         ],
         aggregateResults: "themes",
         enableSearch: true,
         enableHighlighting: true,
         // showResults: false,
         fuseConfig: {
-          keys: ["title", "description", "themes", "code"],
+          // keys: ["title", "description", "themes", "code", "datetime"],
+          keys: ["title", "datetime"],
         },
         // onSelect: (item: any) => {
         //   console.log(item);

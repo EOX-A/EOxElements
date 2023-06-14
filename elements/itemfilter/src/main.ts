@@ -6,8 +6,8 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import Fuse from "fuse.js";
 // @ts-ignore
 import _debounce from "lodash.debounce";
-import "toolcool-range-slider/dist/plugins/tcrs-generated-labels.min.js";
 import "toolcool-range-slider";
+import dayjs from "dayjs";
 import { highlight } from "./itemHighlighting";
 import { style } from "./style";
 
@@ -47,6 +47,7 @@ class ElementConfig {
     title?: string;
     exclusive?: Boolean;
     type?: string;
+    format?: string;
   }> = [];
 
   /**
@@ -141,15 +142,20 @@ export class EOxItemFilter extends LitElement {
     if (this._config.filterProperties.length) {
       this._config.filterProperties.forEach((filterProperty) => {
         const filterKeys = {};
+        const parseValue = (value: string) => {
+          return filterProperty.format === "date"
+            ? dayjs(value).unix()
+            : parseInt(value);
+        };
         this._items.forEach((item) => {
           if (filterProperty.type === "range") {
             // @ts-ignore
             if (Array.isArray(item[filterProperty.key])) {
               const currentValues = [
                 // @ts-ignore
-                parseInt(item[filterProperty.key][0]),
+                parseValue(item[filterProperty.key][0]),
                 // @ts-ignore
-                parseInt(item[filterProperty.key][1]),
+                parseValue(item[filterProperty.key][1]),
               ];
               // @ts-ignore
               filterKeys.min =
@@ -167,7 +173,7 @@ export class EOxItemFilter extends LitElement {
                   : currentValues[1];
             } else {
               // @ts-ignore
-              const currentValue = parseInt(item[filterProperty.key]);
+              const currentValue = parseValue(item[filterProperty.key]);
               // @ts-ignore
               filterKeys.min =
                 // @ts-ignore
@@ -206,6 +212,7 @@ export class EOxItemFilter extends LitElement {
             min: filterKeys.min,
             // @ts-ignore
             max: filterKeys.max,
+            format: filterProperty.format,
           }),
         };
       });
@@ -307,6 +314,7 @@ export class EOxItemFilter extends LitElement {
         acc[key] = {
           min: value.keys.min,
           max: value.keys.max,
+          format: value.format,
         };
         return acc;
       }, {});
@@ -314,7 +322,11 @@ export class EOxItemFilter extends LitElement {
       const filteredResults = [];
       for (let i = 0; i < results.length; i++) {
         const pass = {};
-        for (let key of Object.keys(rangeFilters)) {
+        for (let [key, value] of Object.entries(rangeFilters)) {
+          const parseValue = (input: string) => {
+            // @ts-ignore
+            return value.format === "date" ? dayjs(input).unix() : input;
+          };
           if (results[i].hasOwnProperty(key)) {
             if (Array.isArray(results[i][key])) {
               const mode = "overlap";
@@ -324,23 +336,23 @@ export class EOxItemFilter extends LitElement {
                 // @ts-ignore
                 pass[key] =
                   // @ts-ignore
-                  results[i][key][0] >= rangeFilters[key].min &&
+                  parseValue(results[i][key][0]) >= rangeFilters[key].min &&
                   // @ts-ignore
-                  results[i][key][1] <= rangeFilters[key].max;
+                  parseValue(results[i][key][1]) <= rangeFilters[key].max;
               } else if (mode === "overlap") {
                 // must have an overlap with the range to pass
                 // @ts-ignore
                 pass[key] =
                   // @ts-ignore
-                  rangeFilters[key].min <= results[i][key][1] &&
+                  rangeFilters[key].min <= parseValue(results[i][key][1]) &&
                   // @ts-ignore
-                  results[i][key][0] <= rangeFilters[key].max;
+                  parseValue(results[i][key][0]) <= rangeFilters[key].max;
               }
             } else if (
               // @ts-ignore
-              results[i][key] >= rangeFilters[key].min &&
+              parseValue(results[i][key]) >= rangeFilters[key].min &&
               // @ts-ignore
-              results[i][key] <= rangeFilters[key].max
+              parseValue(results[i][key]) <= rangeFilters[key].max
             ) {
               // @ts-ignore
               pass[key] = true;
@@ -547,8 +559,16 @@ export class EOxItemFilter extends LitElement {
                       <div class="scroll" style="max-height: 150px">
                         ${filter.type === "range"
                           ? html`
+                              <div>
+                                ${filter.format === "date"
+                                  ? dayjs.unix(
+                                      // @ts-ignore
+                                      this._filters[filter.key].keys.min
+                                    )
+                                  : // @ts-ignore
+                                    this._filters[filter.key].keys.min}
+                              </div>
                               <tc-range-slider
-                                generate-labels="true"
                                 min="${
                                   // @ts-ignore
                                   this._filters[filter.key].min
@@ -583,6 +603,15 @@ export class EOxItemFilter extends LitElement {
                                   );
                                 }}"
                               ></tc-range-slider>
+                              <div>
+                                ${filter.format === "date"
+                                  ? dayjs.unix(
+                                      // @ts-ignore
+                                      this._filters[filter.key].keys.max
+                                    )
+                                  : // @ts-ignore
+                                    this._filters[filter.key].keys.max}
+                              </div>
                             `
                           : html`
                               <ul>

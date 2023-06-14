@@ -9,7 +9,9 @@
     "name": "Actively managed total area from Sentinel-2 data",
     "year": 2000,
     "likes": 4,
-    "years": [2000, 2000]
+    "years": [2000, 2000],
+    "timestamp": "2023-06-14T13:56:38+00:00",
+    "datetime": ["2023-06-14T10:56:38+00:00", "2023-06-14T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -21,7 +23,9 @@
     "name": "Agricultural Workers",
     "year": 2020,
     "likes": 46,
-    "years": [2007, 2020]
+    "years": [2007, 2020],
+    "timestamp": "2023-06-13T13:56:38+00:00",
+    "datetime": ["2023-06-13T10:56:38+00:00", "2023-06-13T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -33,7 +37,9 @@
     "name": "Air Quality",
     "year": 2023,
     "likes": 34,
-    "years": [2008, 2023]
+    "years": [2008, 2023],
+    "timestamp": "2023-06-12T13:56:38+00:00",
+    "datetime": ["2023-06-12T10:56:38+00:00", "2023-06-12T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -45,7 +51,9 @@
     "name": "Average number of vessels in a km2 cell in a given period",
     "year": 2022,
     "likes": 177,
-    "years": [2021, 2022]
+    "years": [2021, 2022],
+    "timestamp": "2023-06-11T13:56:38+00:00",
+    "datetime": ["2023-06-11T10:56:38+00:00", "2023-06-11T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -57,7 +65,9 @@
     "name": "Average number of vessels in a km2 cell in a given period",
     "year": 2016,
     "likes": 0,
-    "years": [2005, 2016]
+    "years": [2005, 2016],
+    "timestamp": "2023-06-10T13:56:38+00:00",
+    "datetime": ["2023-06-10T10:56:38+00:00", "2023-06-10T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -69,7 +79,9 @@
     "name": "Average number of vessels in a km2 cell in a given period",
     "year": 2017,
     "likes": 0,
-    "years": [2006, 2017]
+    "years": [2006, 2017],
+    "timestamp": "2023-06-09T13:56:38+00:00",
+    "datetime": ["2023-06-09T10:56:38+00:00", "2023-06-09T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -81,7 +93,9 @@
     "name": "Average number of vessels in a km2 cell in a given period",
     "year": 2003,
     "likes": 2,
-    "years": [2001, 2003]
+    "years": [2001, 2003],
+    "timestamp": "2023-06-08T13:56:38+00:00",
+    "datetime": ["2023-06-08T10:56:38+00:00", "2023-06-08T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -94,7 +108,9 @@
     "name": "Boat traffic - NO2 level",
     "year": 2020,
     "likes": 65,
-    "years": [2015, 2020]
+    "years": [2015, 2020],
+    "timestamp": "2023-06-07T13:56:38+00:00",
+    "datetime": ["2023-06-07T10:56:38+00:00", "2023-06-07T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -106,7 +122,9 @@
     "name": "C3S Data",
     "year": 2021,
     "likes": 34,
-    "years": [2021, 2021]
+    "years": [2021, 2021],
+    "timestamp": "2023-06-06T13:56:38+00:00",
+    "datetime": ["2023-06-06T10:56:38+00:00", "2023-06-06T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -118,7 +136,9 @@
     "name": "CAMS Air Quality",
     "year": 2023,
     "likes": 88,
-    "years": [2000, 2023]
+    "years": [2000, 2023],
+    "timestamp": "2023-06-05T13:56:38+00:00",
+    "datetime": ["2023-06-05T10:56:38+00:00", "2023-06-05T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -130,7 +150,9 @@
     "name": "CAMS Air Quality",
     "year": 2022,
     "likes": 77,
-    "years": [2019, 2022]
+    "years": [2019, 2022],
+    "timestamp": "2023-06-04T13:56:38+00:00",
+    "datetime": ["2023-06-04T10:56:38+00:00", "2023-06-04T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -142,7 +164,9 @@
     "name": "CAMS Air Quality",
     "year": 2018,
     "likes": 23,
-    "years": [2014, 2018]
+    "years": [2014, 2018],
+    "timestamp": "2023-06-03T13:56:38+00:00",
+    "datetime": ["2023-06-03T10:56:38+00:00", "2023-06-03T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -154,7 +178,9 @@
     "name": "CAMS Air Quality",
     "year": 2018,
     "likes": 56,
-    "years": [2017, 2018]
+    "years": [2017, 2018],
+    "timestamp": "2023-06-02T13:56:38+00:00",
+    "datetime": ["2023-06-02T10:56:38+00:00", "2023-06-02T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -166,7 +192,9 @@
     "name": "Cargo ships in port based on AIS data",
     "year": 2019,
     "likes": 11,
-    "years": [2018, 2019]
+    "years": [2018, 2019],
+    "timestamp": "2023-06-01T13:56:38+00:00",
+    "datetime": ["2023-06-01T10:56:38+00:00", "2023-06-01T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -178,7 +206,9 @@
     "name": "Changes in traffic based on mobile data",
     "year": 2017,
     "likes": 8,
-    "years": [2015, 2017]
+    "years": [2015, 2017],
+    "timestamp": "2023-05-29T13:56:38+00:00",
+    "datetime": ["2023-05-29T10:56:38+00:00", "2023-05-29T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -190,7 +220,9 @@
     "name": "CMEMS product",
     "year": 2015,
     "likes": 37,
-    "years": [2014, 2015]
+    "years": [2014, 2015],
+    "timestamp": "2023-05-28T13:56:38+00:00",
+    "datetime": ["2023-05-28T10:56:38+00:00", "2023-05-28T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -202,7 +234,9 @@
     "name": "Covid-19 cases",
     "year": 2013,
     "likes": 4,
-    "years": [2001, 2013]
+    "years": [2001, 2013],
+    "timestamp": "2023-05-27T13:56:38+00:00",
+    "datetime": ["2023-05-27T10:56:38+00:00", "2023-05-27T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -214,7 +248,9 @@
     "name": "Covid-19 vaccinations",
     "year": 2016,
     "likes": 39,
-    "years": [2015, 2016]
+    "years": [2015, 2016],
+    "timestamp": "2023-05-26T13:56:38+00:00",
+    "datetime": ["2023-05-26T10:56:38+00:00", "2023-05-26T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -226,7 +262,9 @@
     "name": "Crude Oil and other input materials",
     "year": 2020,
     "likes": 28,
-    "years": [2014, 2020]
+    "years": [2014, 2020],
+    "timestamp": "2023-05-25T13:56:38+00:00",
+    "datetime": ["2023-05-25T10:56:38+00:00", "2023-05-25T22:56:38+00:00"]
   },
   {
     "archived": false,
@@ -238,6 +276,8 @@
     "name": "Cruise ships in port based on AIS data",
     "year": 1999,
     "likes": 17,
-    "years": [1998, 1999]
+    "years": [1998, 1999],
+    "timestamp": "2023-05-24T13:56:38+00:00",
+    "datetime": ["2023-05-24T10:56:38+00:00", "2023-05-24T22:56:38+00:00"]
   }
 ]
