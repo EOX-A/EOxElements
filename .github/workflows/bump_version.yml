@@ -21,11 +21,6 @@ jobs:
         run: folder=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}; echo "folder=${folder%/main}" >> $GITHUB_OUTPUT
         id: extract_folder
 
-      - name: Print
-        env:
-          NEW_FOLDER: ${{ steps.extract_folder.outputs.folder }}
-        run: echo "folder $NEW_FOLDER"
-
       - name: Checkout 🛎
         uses: actions/checkout@v3
         with:
@@ -51,8 +46,6 @@ jobs:
       - name: Automated Version Bump ⏫
         id: version-bump
         uses: phips28/gh-action-bump-version@master
-        with:
-          tag-prefix: "v"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGEJSON_DIR: elements/${{ steps.extract_folder.outputs.folder }}
