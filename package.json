@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build:all": "npm run build --ws",
-    "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
+    "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules && rm ./package-lock.json",
     "cypress": "cypress open",
     "format:all": "npm run format --ws",
     "lint:all": "npm run lint --ws",
