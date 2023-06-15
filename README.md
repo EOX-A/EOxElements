@@ -8,6 +8,7 @@ For the (legacy v1) EOxElements, please see the [v1 branch](https://github.com/E
 
 ## Setup
 
+In order to use npm workspaces and all the packages properly, please use **Node.js >= 18.16.0 LTS**.
 ```
 npm install
 npm run build --ws // initially build all elements
