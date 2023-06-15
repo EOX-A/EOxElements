@@ -55,7 +55,7 @@ jobs:
           tag-prefix: "v"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PACKAGEJSON_DIR: ${{ steps.extract_folder.outputs.folder }}
+          PACKAGEJSON_DIR: elements/${{ steps.extract_folder.outputs.folder }}
 
       - name: Output Step 🎉
         env:
