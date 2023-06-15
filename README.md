@@ -136,6 +136,8 @@ npm run lint:all
 npm run lint:fix:all
 ```
 
+Test
+
 If something does not work properly, sometimes it helps to clean the entire setup and delete all node modules to start fresh:
 
 ```
