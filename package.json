@@ -9,7 +9,9 @@
     "build:all": "npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules && rm ./package-lock.json",
     "cypress": "cypress open",
+    "format": "prettier --write .",
     "format:all": "npm run format --ws",
+    "format:check:all": "prettier --check .",
     "lint:all": "npm run lint --ws",
     "lint:fix:all": "npm run lint:fix --ws",
     "watch:all": "npm run watch --ws"
