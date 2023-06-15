@@ -5,6 +5,7 @@ A Web Component collection of geospatial UI elements, crafted by EOX.
 Note: The main branch of this project contains the v2 (alpha) version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
 
 ## Elements
+
 <table>
   <tr>
     <td><a href="./elements/chart/">eox-chart</a></td>
@@ -34,16 +35,22 @@ Note: The main branch of this project contains the v2 (alpha) version of EOxElem
 </table>
 
 ## Usage
+
 For detailed descriptions and documentation on the individual elements, please check out the READMEs in the element subfolders.
+
 ### Bundlers (Vite, Webpack, etc.)
+
 ```
 npm install @eox/<element>
 ```
+
 ```
 import "@eox/<element>"
 <eox-element></eox-element>
 ```
+
 ### Script tag
+
 ```
 <eox-element></eox-element>
 
@@ -51,7 +58,9 @@ import "@eox/<element>"
 import "@eox/<element>" from "https://cdn.skypack.dev/@eox/<element>"
 </script>
 ```
+
 ## Development
+
 ### Branch naming convention
 
 Inspired by [this article](https://betterprogramming.pub/enabling-monorepo-with-a-simple-single-github-repository-39bc6347abba#391d)
@@ -66,49 +75,69 @@ chart/feature/new-feature
 chart/fix/some-fix
 [...]
 ```
+
 ### Initial Setup
+
 In order to use npm workspaces and all the elements properly, please use **Node.js >= 18.16.0 LTS**.
 
 Install all root and all element dependencies:
+
 ```
 npm install
 ```
+
 ### Dev server
+
 The recommended way to start a dev server is by using the Cypress testing GUI. It offers access to a suite of configurations for each element, and e2e tests combining multiple elements.
 
 In order to be able to run tests for a specific element you need to build that element first, using the `build` or the `watch` (re-building on every change) command:
+
 ```
 npm run watch --workspace=<element>
 ```
+
 You can build/watch multiple elements at the same time, e.g.:
+
 ```
 npm run watch --workspace=@eox/map --workspace=@eox/layerswitcher
 ```
+
 To build/watch all elements, you can use:
+
 ```
 npm run watch:all
 ```
+
 Once the selected element(s) are built, you can run the corresponding tests in the Cypress GUI:
+
 ```
 npm run cypress
 --> select E2E Testing
 --> select a browser
 --> select a spec
 ```
+
 ### Run automated tests
+
 TODO
 
 ### Useful commands
+
 Format all elements:
+
 ```
 npm run format:all
 ```
+
 Lint/fix all elements:
+
 ```
 npm run lint:all
 npm run lint:fix:all
 ```
+
 If something does not work properly, sometimes it helps to clean the entire setup and delete all node modules to start fresh:
+
 ```
 npm run clean
 --> deletes all node_module folders
