@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Extract element folder
         shell: bash
-        run: echo "folder=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        run: echo "folder=${${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}//\/main/}" >> $GITHUB_OUTPUT
         id: extract_folder
 
       - name: Print
