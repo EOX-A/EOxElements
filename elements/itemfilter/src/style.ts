@@ -3,7 +3,6 @@ export const style = `
   display: flex;
   box-sizing: border-box;
   height: 100%;
-  overflow: hidden;
 }
 *,
 *:before,
@@ -44,29 +43,37 @@ details summary {
   display: flex;
   align-items: center;
 }
-#details-filter summary {
+.inline details[open] {
+  position: absolute;
+  left: 16px;
+  right: 12px;
+}
+.inline details[open] summary {
+  height: 30px;
+}
+.details-filter summary {
   justify-content: space-between;
 }
 #details-results summary {
   list-style: none;
 }
-#details-filter summary svg,
+.details-filter summary svg,
 #details-results summary svg {
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
   transition: all ease-in-out 0.3s;
 }
 #details-results summary svg {
   transform: rotate(-90deg);
 }
-#details-filter[open] summary svg {
+.details-filter[open] summary svg {
   transform: rotate(180deg);
 }
 #details-results[open] summary svg {
   transform: rotate(0deg);
 }
-li span,
-details summary {
+.details-filter li span,
+#details-results summary {
   text-transform: capitalize;
 }
 li,
@@ -84,6 +91,7 @@ input[type="radio"] {
 input[type="text"] {
   width: 100%;
   margin-bottom: 0.5rem;
+  padding: 5px 7px;
 }
 section {
   padding-left: 1rem;
@@ -106,6 +114,28 @@ ul#results {
 }
 ul#results li {
   padding-left: 0.5rem;
+}
+#filter-reset {
+  cursor: pointer;
+}
+section.inline,
+section.inline > ul {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 0;
+}
+section.inline details.details-filter {
+  background: lightgrey;
+  border-radius: 13px;
+  margin: 0;
+  margin-right: 4px;
+  padding: 4px 7px;
+}
+section.inline details.details-filter summary {
+  display: flex;
+  align-items: center;
 }
 .scroll {
   height: 100%;
