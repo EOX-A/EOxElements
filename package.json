@@ -6,11 +6,13 @@
     "elements/*"
   ],
   "scripts": {
+    "build:all": "npm run build --ws",
+    "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
     "cypress": "cypress open",
-    "format": "npm run format --ws",
-    "lint": "npm run lint --ws",
-    "lint:fix": "npm run lint:fix --ws",
-    "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules"
+    "format:all": "npm run format --ws",
+    "lint:all": "npm run lint --ws",
+    "lint:fix:all": "npm run lint:fix --ws",
+    "watch:all": "npm run watch --ws"
   },
   "devDependencies": {
     "cypress": "^12.12.0",
