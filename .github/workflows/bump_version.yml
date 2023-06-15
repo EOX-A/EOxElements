@@ -24,8 +24,7 @@ jobs:
       - name: Print
         env:
           NEW_FOLDER: ${{ steps.extract_folder.outputs.folder }}
-        run:
-          echo "folder: $NEW_FOLDER"
+        run: echo "folder $NEW_FOLDER"
 
       # - name: Checkout 🛎
       #   uses: actions/checkout@v3
