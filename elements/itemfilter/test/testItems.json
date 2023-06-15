@@ -2,142 +2,282 @@
   {
     "archived": false,
     "code": "E10a2",
+    "description": "Actively managed total area from Sentinel-2 data",
     "indicator": "Actively managed total area from Sentinel-2 data",
     "themes": ["agriculture"],
-    "name": "Actively managed total area from Sentinel-2 data"
+    "title": "White Asparagus area [%]",
+    "name": "Actively managed total area from Sentinel-2 data",
+    "year": 2000,
+    "likes": 4,
+    "years": [2000, 2000],
+    "timestamp": "2023-06-14T13:56:38+00:00",
+    "datetime": ["2023-06-14T10:56:38+00:00", "2023-06-14T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E10a9",
+    "description": "Agricultural Workers",
     "indicator": "Agricultural Workers",
     "themes": ["agriculture"],
-    "name": "Agricultural Workers"
+    "title": "Workers availability [nr]",
+    "name": "Agricultural Workers",
+    "year": 2020,
+    "likes": 46,
+    "years": [2007, 2020],
+    "timestamp": "2023-06-13T13:56:38+00:00",
+    "datetime": ["2023-06-13T10:56:38+00:00", "2023-06-13T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "N1",
+    "description": "Air Quality",
     "indicator": "Air Quality",
     "themes": ["air"],
-    "name": "Air Quality"
+    "title": "City level NO2 (S5p)",
+    "name": "Air Quality",
+    "year": 2023,
+    "likes": 34,
+    "years": [2008, 2023],
+    "timestamp": "2023-06-12T13:56:38+00:00",
+    "datetime": ["2023-06-12T10:56:38+00:00", "2023-06-12T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E13o",
+    "description": "Average number of vessels in a km2 cell in a given period",
     "indicator": "Average number of vessels in a km2 cell in a given period",
     "themes": ["economy"],
-    "name": "Average number of vessels in a km2 cell in a given period"
+    "title": "Vessel density (all) [h/sqkm]",
+    "name": "Average number of vessels in a km2 cell in a given period",
+    "year": 2022,
+    "likes": 177,
+    "years": [2021, 2022],
+    "timestamp": "2023-06-11T13:56:38+00:00",
+    "datetime": ["2023-06-11T10:56:38+00:00", "2023-06-11T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E13p",
+    "description": "Average number of vessels in a km2 cell in a given period",
     "indicator": "Average number of vessels in a km2 cell in a given period",
     "themes": ["economy"],
-    "name": "Average number of vessels in a km2 cell in a given period"
+    "title": "Vessel density (cargo) [h/sqkm]",
+    "name": "Average number of vessels in a km2 cell in a given period",
+    "year": 2016,
+    "likes": 0,
+    "years": [2005, 2016],
+    "timestamp": "2023-06-10T13:56:38+00:00",
+    "datetime": ["2023-06-10T10:56:38+00:00", "2023-06-10T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E13q",
+    "description": "Average number of vessels in a km2 cell in a given period",
     "indicator": "Average number of vessels in a km2 cell in a given period",
     "themes": ["economy"],
-    "name": "Average number of vessels in a km2 cell in a given period"
+    "title": "Vessel density (tanker) [h/sqkm]",
+    "name": "Average number of vessels in a km2 cell in a given period",
+    "year": 2017,
+    "likes": 0,
+    "years": [2006, 2017],
+    "timestamp": "2023-06-09T13:56:38+00:00",
+    "datetime": ["2023-06-09T10:56:38+00:00", "2023-06-09T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E13r",
+    "description": "Average number of vessels in a km2 cell in a given period",
     "indicator": "Average number of vessels in a km2 cell in a given period",
     "themes": ["economy"],
-    "name": "Average number of vessels in a km2 cell in a given period"
+    "title": "Vessel density (others) [h/sqkm]",
+    "name": "Average number of vessels in a km2 cell in a given period",
+    "year": 2003,
+    "likes": 2,
+    "years": [2001, 2003],
+    "timestamp": "2023-06-08T13:56:38+00:00",
+    "datetime": ["2023-06-08T10:56:38+00:00", "2023-06-08T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "C1",
+    "description": "Boat traffic - NO2 level",
     "indicator": "Boat traffic - NO2 level",
     "themes": ["economy", "air"],
+    "title": "Ships - NO2 Correlation",
     "indicatorOverwrite": "Ports and Shipping - impact on air quality",
-    "name": "Boat traffic - NO2 level"
+    "name": "Boat traffic - NO2 level",
+    "year": 2020,
+    "likes": 65,
+    "years": [2015, 2020],
+    "timestamp": "2023-06-07T13:56:38+00:00",
+    "datetime": ["2023-06-07T10:56:38+00:00", "2023-06-07T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "CDS1",
+    "description": "C3S Data",
     "indicator": "C3S Data",
     "themes": ["air"],
-    "name": "C3S Data"
+    "title": "Temperature",
+    "name": "C3S Data",
+    "year": 2021,
+    "likes": 34,
+    "years": [2021, 2021],
+    "timestamp": "2023-06-06T13:56:38+00:00",
+    "datetime": ["2023-06-06T10:56:38+00:00", "2023-06-06T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "N1a",
+    "description": "CAMS Air Quality",
     "indicator": "CAMS Air Quality",
     "themes": ["air"],
-    "name": "CAMS Air Quality"
+    "title": "City level PM2.5 (model)",
+    "name": "CAMS Air Quality",
+    "year": 2023,
+    "likes": 88,
+    "years": [2000, 2023],
+    "timestamp": "2023-06-05T13:56:38+00:00",
+    "datetime": ["2023-06-05T10:56:38+00:00", "2023-06-05T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "N1b",
+    "description": "CAMS Air Quality",
     "indicator": "CAMS Air Quality",
     "themes": ["air"],
-    "name": "CAMS Air Quality"
+    "title": "City level NO2 (model)",
+    "name": "CAMS Air Quality",
+    "year": 2022,
+    "likes": 77,
+    "years": [2019, 2022],
+    "timestamp": "2023-06-04T13:56:38+00:00",
+    "datetime": ["2023-06-04T10:56:38+00:00", "2023-06-04T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "N1c",
+    "description": "CAMS Air Quality",
     "indicator": "CAMS Air Quality",
     "themes": ["air"],
-    "name": "CAMS Air Quality"
+    "title": "City level PM10 (model)",
+    "name": "CAMS Air Quality",
+    "year": 2018,
+    "likes": 23,
+    "years": [2014, 2018],
+    "timestamp": "2023-06-03T13:56:38+00:00",
+    "datetime": ["2023-06-03T10:56:38+00:00", "2023-06-03T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "N1d",
+    "description": "CAMS Air Quality",
     "indicator": "CAMS Air Quality",
     "themes": ["air"],
-    "name": "CAMS Air Quality"
+    "title": "City level O3 (model)",
+    "name": "CAMS Air Quality",
+    "year": 2018,
+    "likes": 56,
+    "years": [2017, 2018],
+    "timestamp": "2023-06-02T13:56:38+00:00",
+    "datetime": ["2023-06-02T10:56:38+00:00", "2023-06-02T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E13e",
+    "description": "Cargo ships in port based on AIS data",
     "indicator": "Cargo ships in port based on AIS data",
     "themes": ["economy"],
-    "name": "Cargo ships in port based on AIS data"
+    "title": "Cargo Ships [nr]",
+    "name": "Cargo ships in port based on AIS data",
+    "year": 2019,
+    "likes": 11,
+    "years": [2018, 2019],
+    "timestamp": "2023-06-01T13:56:38+00:00",
+    "datetime": ["2023-06-01T10:56:38+00:00", "2023-06-01T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E13n",
+    "description": "Changes in traffic based on mobile data",
     "indicator": "Changes in traffic based on mobile data",
     "themes": ["economy"],
-    "name": "Changes in traffic based on mobile data"
+    "title": "Trucks transiting ports [%]",
+    "name": "Changes in traffic based on mobile data",
+    "year": 2017,
+    "likes": 8,
+    "years": [2015, 2017],
+    "timestamp": "2023-05-29T13:56:38+00:00",
+    "datetime": ["2023-05-29T10:56:38+00:00", "2023-05-29T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "N3c",
+    "description": "CMEMS product",
     "indicator": "CMEMS product",
     "themes": ["water"],
-    "name": "CMEMS product"
+    "title": "CHL-a concentration (map, 1km)",
+    "name": "CMEMS product",
+    "year": 2015,
+    "likes": 37,
+    "years": [2014, 2015],
+    "timestamp": "2023-05-28T13:56:38+00:00",
+    "datetime": ["2023-05-28T10:56:38+00:00", "2023-05-28T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "CV",
+    "description": "Covid-19 cases",
     "indicator": "Covid-19 cases",
     "themes": ["health"],
-    "name": "Covid-19 cases"
+    "title": "Covid-19 cases",
+    "name": "Covid-19 cases",
+    "year": 2013,
+    "likes": 4,
+    "years": [2001, 2013],
+    "timestamp": "2023-05-27T13:56:38+00:00",
+    "datetime": ["2023-05-27T10:56:38+00:00", "2023-05-27T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "OW",
+    "description": "Covid-19 vaccinations",
     "indicator": "Covid-19 vaccinations",
     "themes": ["health"],
-    "name": "Covid-19 vaccinations"
+    "title": "Covid-19 vaccinations",
+    "name": "Covid-19 vaccinations",
+    "year": 2016,
+    "likes": 39,
+    "years": [2015, 2016],
+    "timestamp": "2023-05-26T13:56:38+00:00",
+    "datetime": ["2023-05-26T10:56:38+00:00", "2023-05-26T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E3",
+    "description": "Crude Oil and other input materials",
     "indicator": "Crude Oil and other input materials",
     "themes": ["economy"],
-    "name": "Crude Oil and other input materials"
+    "title": "Raw Material Inventory",
+    "name": "Crude Oil and other input materials",
+    "year": 2020,
+    "likes": 28,
+    "years": [2014, 2020],
+    "timestamp": "2023-05-25T13:56:38+00:00",
+    "datetime": ["2023-05-25T10:56:38+00:00", "2023-05-25T22:56:38+00:00"]
   },
   {
     "archived": false,
     "code": "E13l",
+    "description": "Cruise ships in port based on AIS data",
     "indicator": "Cruise ships in port based on AIS data",
     "themes": ["economy"],
-    "name": "Cruise ships in port based on AIS data"
+    "title": "Cruise Ships [nr]",
+    "name": "Cruise ships in port based on AIS data",
+    "year": 1999,
+    "likes": 17,
+    "years": [1998, 1999],
+    "timestamp": "2023-05-24T13:56:38+00:00",
+    "datetime": ["2023-05-24T10:56:38+00:00", "2023-05-24T22:56:38+00:00"]
   }
 ]

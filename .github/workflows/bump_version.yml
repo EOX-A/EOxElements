@@ -1,0 +1,64 @@
+name: Bump version
+
+on:
+  push:
+    branches:
+      - "**/main"
+      - "!main"
+
+jobs:
+  bump-version:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [18]
+
+    steps:
+      - name: Extract element folder
+        shell: bash
+        run: echo "folder=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_folder
+
+      - name: Print
+        env:
+          NEW_FOLDER: ${{ steps.extract_folder.outputs.folder }}
+        run:
+          echo "folder: $NEW_FOLDER"
+
+      # - name: Checkout 🛎
+      #   uses: actions/checkout@v3
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Setup node env 🏗
+      #   uses: actions/setup-node@v3.1.0
+      #   with:
+      #     node-version: ${{ matrix.node }}
+      #     check-latest: true
+
+      # - name: Cache node_modules 📦
+      #   uses: actions/cache@v3.0.1
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-node-
+
+      # - name: Install dependencies 👨🏻‍💻
+      #   run: npm ci --prefer-offline --no-audit
+
+      # - name: Automated Version Bump ⏫
+      #   id: version-bump
+      #   uses: phips28/gh-action-bump-version@master
+      #   with:
+      #     tag-prefix: "v"
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     PACKAGEJSON_DIR:  ${{ steps.extract_folder.outputs.folder }}
+
+      # - name: Output Step 🎉
+      #   env:
+      #     NEW_TAG: ${{ steps.version-bump.outputs.newTag }}
+      #   run: echo "new tag $NEW_TAG"
