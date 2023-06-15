@@ -1,19 +1,37 @@
 # EOxElements
 
-Geospatial UI Elements.
+A Web Component collection of geospatial UI elements, crafted by EOX.
 
-The main branch of this project contains the v2 version of EOxElements.
-
-For the (legacy v1) EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
+Note: The main branch of this project contains the v2 (alpha) version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
 
 ## Elements
-| Element  | Description |
-| ------------- | ------------- |
-| [`<eox-chart>`](elements/chart/)  | Dynamic chart with built-in data fetching  |
-| [`<eox-drawtools>`](elements/drawtools/)  | Draw and manage features on a map  |
-| [`<eox-itemfilter>`](elements/itemfilter/)  | Filter large sets of items client-side or server-side |
-| [`<eox-layerswitcher>`](elements/layerswitcher/)  | Manage and modify map layers  |
-| [`<eox-map>`](elements/map/)  | Thin [OpenLayers](https://github.com/openlayers/openlayers) wrapper with useful tools & helpers  |
+<table>
+  <tr>
+    <td><a href="./elements/chart/">eox-chart</a></td>
+    <td>Dynamic chart with built-in data fetching</td>
+        <td><!--<a href="https://eox-a.github.io/elements/elements/chart/examples/index.html">Examples</a>--></td>
+  </tr>
+  <tr>
+    <td><a href="./elements/drawtools/">eox-drawtools</a></td>
+    <td>Draw and manage features on a map</td>
+        <td><!--<a href="https://eox-a.github.io/elements/elements/drawtools/examples/index.html">Examples</a>--></td>
+  </tr>
+  <tr>
+    <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
+    <td>Filter/search large sets of items client-side or server-side</td>
+        <td><!--<a href="https://eox-a.github.io/elements/elements/itemfilter/examples/index.html">Examples</a>--></td>
+  </tr>
+  <tr>
+    <td><a href="./elements/layerswitcher/">eox-layerswitcher</a></td>
+    <td>Manage and modify map layers</td>
+        <td><!--<a href="https://eox-a.github.io/elements/elements/layerswitcher/examples/index.html">Examples</a>--></td>
+  </tr>
+  <tr>
+    <td><a href="./elements/map/">eox-map</a></td>
+    <td>Map with powerful tools & helpers</td>
+    <td><a href="https://eox-a.github.io/elements/elements/map/examples/index.html">Examples</a></td>
+  </tr>
+</table>
 
 ## Usage
 For detailed descriptions and documentation on the individual elements, please check out the READMEs in the element subfolders.
