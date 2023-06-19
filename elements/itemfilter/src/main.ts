@@ -125,8 +125,8 @@ export class EOxItemFilter extends LitElement {
   @property()
   apply = (items: Array<Object>) => {
     this._items = items.map((i, index) => ({
-      ...i,
       id: `item-${index}`,
+      ...i,
     }));
     this._fuse = new Fuse(this._items, {
       // minMatchCharLength: 3,
