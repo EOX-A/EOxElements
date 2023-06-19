@@ -40,7 +40,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies 👨🏻‍💻
-        run: npm install
+        run: npm ci --prefer-offline --no-audit
+
+      - name: cat package.json 🔎
+        run: cat ./package.json
 
       - name: Automated Version Bump ⏫
         id: version-bump
@@ -51,6 +54,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGEJSON_DIR: elements/${{ steps.extract_folder.outputs.folder }}
+
+      - name: cat package.json 🔎
+        run: cat ./package.json
 
       - name: Output Step 🎉
         env:
