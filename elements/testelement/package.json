@@ -1,0 +1,13 @@
+{
+    "name": "@eox/testelement",
+    "version": "0.0.0",
+    "type": "module",
+    "dependencies": {},
+    "devDependencies": {},
+    "engines": {
+      "npm": ">=8.0.0",
+      "node": ">=18.0.0"
+    },
+    "scripts": {}
+  }
+  
