@@ -32,6 +32,11 @@ Note: The main branch of this project contains the v2 (alpha) version of EOxElem
     <td>Map with powerful tools & helpers</td>
     <td><a href="https://eox-a.github.io/EOxElements/elements/map/examples/index.html">Examples</a></td>
   </tr>
+  <tr>
+    <td><a href="./elements/timecontrol/">eox-timecontrol</a></td>
+    <td>Time control and playback for map layers</td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/timecontrol/examples/index.html">Examples</a></td>
+  </tr>
 </table>
 
 ## Usage
