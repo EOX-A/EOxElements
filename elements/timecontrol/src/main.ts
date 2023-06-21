@@ -1,33 +1,78 @@
 import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { Map, Tile } from "ol";
-import { isStringColor } from "ol/color";
+import { Map } from "ol";
 import Layer from "ol/layer/Layer";
 import TileSource from "ol/source/Tile";
 import { style } from "./style";
 
 @customElement("eox-timecontrol")
 export class EOxDrawTools extends LitElement {
+  /**
+   * The WMS parameter to update
+   */
   @property({ attribute: "animation-property" })
-  animationProperty: string;
+  animationProperty?: string;
 
+  /**
+   * The list of available values for the animation property
+   */
   @property({ attribute: "animation-values", type: Array })
-  animationValues: Array<string>;
+  animationValues: Array<string> = [];
 
-  @property()
   /**
    * The query selector for the map
    */
+  @property()
   for: string;
 
-  @property()
   /**
    * The layerid of the animated layer
    */
+  @property()
   layer: string;
 
+  /**
+   * Custom url function to manually override the url creation. Receives the current url as property.
+   * @param url the current url function output
+   * @returns url the new url string
+   * @example ```
+   * document.querySelector("eox-timecontrol").urlFunction = (url) => {
+   *   // do something with the url
+   *   const newUrl = url.replace('foo', 'bar');
+   *   return newUrl;
+   *};
+   * ```
+   */
   @property()
-  transformFunction: Function = (url: string) => url;
+  urlFunction: Function;
+
+  /**
+   * Go to next step
+   */
+  next() {
+    this._updateStep(+1);
+  }
+
+  /**
+   * Go to previous step
+   */
+  previous() {
+    this._updateStep(-1);
+  }
+
+  /**
+   * Toggle play animation
+   * @param on animation on/off
+   */
+  playAnimation(on: boolean) {
+    if (on) {
+      this._animationInterval = setInterval(() => this._updateStep(1), 500);
+    } else {
+      clearInterval(this._animationInterval);
+    }
+    this._isAnimationPlaying = on;
+    this.requestUpdate();
+  }
 
   @state()
   private _animationInterval: ReturnType<typeof setInterval>;
@@ -41,26 +86,8 @@ export class EOxDrawTools extends LitElement {
   @state()
   private _newTimeIndex: number = 0;
 
-  next() {
-    this._updateTime(+1);
-  }
-
-  previous() {
-    this._updateTime(-1);
-  }
-
-  playAnimation(on: boolean) {
-    if (on) {
-      this._animationInterval = setInterval(() => this._updateTime(1), 500);
-    } else {
-      clearInterval(this._animationInterval);
-    }
-    this._isAnimationPlaying = on;
-    this.requestUpdate();
-  }
-
-  private _updateTime(go = 1) {
-    this._newTimeIndex = this._newTimeIndex + go;
+  private _updateStep(step = 1) {
+    this._newTimeIndex = this._newTimeIndex + step;
     if (this._newTimeIndex > this.animationValues.length - 1) {
       this._newTimeIndex = 0;
     }
@@ -75,6 +102,9 @@ export class EOxDrawTools extends LitElement {
       //@ts-ignore
       (tileCoord, pixelRatio, projection) => {
         let src = originalTileUrlFunction(tileCoord, pixelRatio, projection);
+        if (this.urlFunction) {
+          return this.urlFunction(src);
+        }
         const searchParams = new URLSearchParams(
           src.substring(src.indexOf("?"))
         );
@@ -115,9 +145,8 @@ export class EOxDrawTools extends LitElement {
       </style>
       <main>
         <div part="controls">
-          <span part="current">${this.animationValues[this._newTimeIndex]}</span>
-          <button part="next" @click="${() => this.next()}"><</button>
-          <button part="previous" @click="${() => this.previous()}">></button>
+          <button part="previous" @click="${() => this.previous()}"><</button>
+          <button part="next" @click="${() => this.next()}">></button>
           <button
             part="play"
             @click="${() =>
@@ -125,6 +154,10 @@ export class EOxDrawTools extends LitElement {
           >
             ${this._isAnimationPlaying ? "Pause" : "Play"}
           </button>
+
+          <span part="current"
+            >${this.animationValues[this._newTimeIndex]}</span
+          >
         </div>
       </main>
     `;
