@@ -81,6 +81,7 @@ export class EOxMap extends HTMLElement {
     this.interactions = {};
 
     this.setLayers = (json: JSON) => {
+      // @ts-ignore
       apply(this.map, json);
     };
 
