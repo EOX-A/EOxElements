@@ -49,7 +49,8 @@ jobs:
         id: version-bump
         uses: phips28/gh-action-bump-version@master
         with:
-          commit-message: "ci: {{version}} [skip ci]"
+          commit-message: "ci: version bump [skip ci]"
+          tag-prefix: "@eox/${{ steps.extract_folder.outputs.folder }}@"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGEJSON_DIR: elements/${{ steps.extract_folder.outputs.folder }}
