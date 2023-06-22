@@ -9,25 +9,16 @@ describe("Item Filter", () => {
   it("loads the itemfilter", () => {
     cy.get("eox-itemfilter").should(($el) => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
+      EOxItemFilter.style.height = "100px";
+      EOxItemFilter.style.border = "1px solid grey";
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: [{ key: "themes" }],
-        aggregateResults: "themes",
+        filterProperties: [{ key: "themes" }, { key: "code" }],
         enableSearch: true,
+        showResults: false,
+        inlineMode: true,
       };
       EOxItemFilter.apply(testItems);
     });
-    cy.viewport(800, 700);
-    cy.wait(2000);
-    cy.viewport(600, 700);
-    cy.wait(2000);
-    cy.viewport(400, 700);
-    cy.wait(2000);
-    cy.viewport(800, 400);
-    cy.wait(2000);
-    cy.viewport(600, 400);
-    cy.wait(2000);
-    cy.viewport(400, 400);
-    cy.wait(2000);
   });
 });

@@ -1,12 +1,13 @@
 {
-  "name": "@eox/itemfilter",
-  "version": "0.5.0",
+  "name": "@eox/timecontrol",
+  "version": "0.0.1",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint-plugin-typescript": "^0.14.0",
+    "ol": "^7.3.0",
     "typescript": "^4.9.3",
     "vite": "^4.0.0"
   },
@@ -18,7 +19,7 @@
     "dist",
     "test"
   ],
-  "main": "./dist/eox-itemfilter.js",
+  "main": "./dist/eox-timecontrol.js",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
@@ -28,9 +29,6 @@
     "lint:fix": "eslint --ext .js,.ts . --fix"
   },
   "dependencies": {
-    "fuse.js": "^6.6.2",
-    "lit": "^2.7.4",
-    "lodash.debounce": "^4.0.8",
-    "toolcool-range-slider": "^4.0.27"
+    "lit": "^2.7.4"
   }
 }

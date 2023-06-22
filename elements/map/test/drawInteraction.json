@@ -1,0 +1,35 @@
+{
+  "version": 8,
+  "name": "",
+  "sources": {
+    "draw_layer": {
+      "type": "geojson",
+      "data": {
+        "type": "FeatureCollection",
+        "features": []
+      }
+    }
+  },
+  "layers": [
+    {
+      "id": "draw_line",
+      "type": "line",
+      "source": "draw_layer",
+      "paint": {
+        "line-color": "blue",
+        "line-width": 2
+      }
+    },
+    {
+      "id": "draw_point",
+      "source": "draw_layer",
+      "type": "circle",
+      "paint": {
+        "circle-radius": 10,
+        "circle-color": "red",
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 3
+      }
+    }
+  ]
+}

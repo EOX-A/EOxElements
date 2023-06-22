@@ -3,7 +3,8 @@
 
 export const highlight = (
   fuseSearchResult: any,
-  highlightClassName: string = "highlight"
+  highlightClassName: string = "highlight",
+  matchKey: string = "title"
 ) => {
   const set = (obj: object, path: string, value: any) => {
     const pathValue = path.split(".");
@@ -47,7 +48,7 @@ export const highlight = (
       const highlightedItem = { ...item };
 
       matches.forEach((match: any) => {
-        if (match.key !== "name") return; // TODO
+        if (match.key !== matchKey) return;
         set(
           highlightedItem,
           match.key,

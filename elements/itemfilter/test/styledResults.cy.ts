@@ -3,7 +3,7 @@ import testItems from "./testItems.json";
 
 describe("Item Filter", () => {
   beforeEach(() => {
-    cy.visit("/elements/itemfilter/test/general.html");
+    cy.visit("/elements/itemfilter/test/styledResults.html");
   });
 
   it("loads the itemfilter", () => {
@@ -11,23 +11,11 @@ describe("Item Filter", () => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: [{ key: "themes" }],
-        aggregateResults: "themes",
+        filterProperties: [{ key: "themes" }, { key: "code" }],
         enableSearch: true,
+        inlineMode: true,
       };
       EOxItemFilter.apply(testItems);
     });
-    cy.viewport(800, 700);
-    cy.wait(2000);
-    cy.viewport(600, 700);
-    cy.wait(2000);
-    cy.viewport(400, 700);
-    cy.wait(2000);
-    cy.viewport(800, 400);
-    cy.wait(2000);
-    cy.viewport(600, 400);
-    cy.wait(2000);
-    cy.viewport(400, 400);
-    cy.wait(2000);
   });
 });
