@@ -1,10 +1,9 @@
 name: Bump version
 
 on:
-  push:
+  pull_request_target:
     branches:
-      - "**/main"
-      - "!main"
+      - "main"
 
 jobs:
   bump-version:
