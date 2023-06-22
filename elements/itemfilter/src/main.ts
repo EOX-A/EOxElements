@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
@@ -8,6 +8,7 @@ import Fuse from "fuse.js";
 import _debounce from "lodash.debounce";
 import "toolcool-range-slider";
 import dayjs from "dayjs";
+import { TemplateElement } from "../../../utils/templateElement";
 import { highlight } from "./itemHighlighting";
 import { style } from "./style";
 
@@ -93,7 +94,7 @@ class ElementConfig {
 }
 
 @customElement("eox-itemfilter")
-export class EOxItemFilter extends LitElement {
+export class EOxItemFilter extends TemplateElement {
   _fuse: Fuse<any>;
   _resultAggregation: Array<string> = [];
 
@@ -738,12 +739,24 @@ export class EOxItemFilter extends LitElement {
                                         this._config.onSelect(item);
                                       }}
                                     />
-                                    <span class="title"
-                                      >${unsafeHTML(
-                                        // @ts-ignore
-                                        item[this._config.titleProperty]
-                                      )}</span
-                                    >
+                                    ${when(
+                                      this.hasTemplate("result"),
+                                      () =>
+                                        this.renderTemplate(
+                                          "result",
+                                          item,
+                                          // @ts-ignore
+                                          `result-${item.id}`
+                                        ),
+                                      () => html`
+                                        <span class="title"
+                                          >${unsafeHTML(
+                                            // @ts-ignore
+                                            item[this._config.titleProperty]
+                                          )}</span
+                                        >
+                                      `
+                                    )}
                                   </label>
                                 </li>
                               `
