@@ -20,8 +20,8 @@
     </style>
   </head>
   <body>
-    <p>Basic time control for WMS layer</p>
     <eox-map zoom="3" center="[1000000, 6000000]"></eox-map>
+    <p>Basic time control for WMS layer:</p>
     <eox-timecontrol
       for="eox-map"
       layer="AWS_NO2-VISUALISATION"
@@ -47,19 +47,17 @@
       Time control for WMS layer with custom url function (example:
       <small
         ><code>url.replace("TIME=2023-01-16", "time=2023-04-24");</code></small
-      >)
+      >):
     </p>
-    <eox-map class="custom" zoom="3" center="[1000000, 6000000]"></eox-map>
     <eox-timecontrol
       class="custom"
-      for="eox-map.custom"
+      for="eox-map"
       layer="AWS_NO2-VISUALISATION"
     ></eox-timecontrol>
-    <p>External time control</p>
-    <eox-map class="external" zoom="3" center="[1000000, 6000000]"></eox-map>
+    <p>External time control:</p>
     <eox-timecontrol
       class="external"
-      for="eox-map.external"
+      for="eox-map"
       layer="AWS_NO2-VISUALISATION"
       animation-property="TIME"
       animation-values='[
