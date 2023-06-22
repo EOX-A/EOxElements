@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eox-map examples</title>
+    <style>
+      eox-map {
+        width: 400px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Basic map</p>
+    <eox-map></eox-map>
+    <p>Basic map with defined zoom and center</p>
+    <eox-map zoom="7" center="[1800000, 6150000]"></eox-map>
+    <script
+      type="module"
+      src="https://unpkg.com/@eox/map@latest/dist/eox-map.js"
+    ></script>
+  </body>
+</html>
