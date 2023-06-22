@@ -3,6 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
 import TileSource from "ol/source/Tile";
+import "toolcool-range-slider";
 import { style } from "./style";
 
 @customElement("eox-timecontrol")
@@ -30,6 +31,12 @@ export class EOxDrawTools extends LitElement {
    */
   @property()
   layer: string;
+
+  /**
+   * Display a slider for the values
+   */
+  @property({ type: Boolean })
+  slider: boolean;
 
   /**
    * Custom url function to manually override the url creation. Receives the current url as property.
@@ -144,7 +151,7 @@ export class EOxDrawTools extends LitElement {
         ${style}
       </style>
       <main>
-        <div part="controls">
+        <div id="controls" part="controls">
           <button part="previous" @click="${() => this.previous()}"><</button>
           <button part="next" @click="${() => this.next()}">></button>
           <button
@@ -154,6 +161,22 @@ export class EOxDrawTools extends LitElement {
           >
             ${this._isAnimationPlaying ? "Pause" : "Play"}
           </button>
+
+          ${this.slider
+            ? html`
+                <tc-range-slider
+                  data="${this.animationValues}"
+                  part="slider"
+                  value="${this.animationValues[this._newTimeIndex]}"
+                  @change="${(evt: { detail: { value: string } }) =>
+                    this._updateStep(
+                      this.animationValues.findIndex(
+                        (v) => v === evt.detail.value
+                      ) - this._newTimeIndex
+                    )}"
+                ></tc-range-slider>
+              `
+            : ""}
 
           <span part="current"
             >${this.animationValues[this._newTimeIndex]}</span
