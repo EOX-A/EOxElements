@@ -81,6 +81,30 @@
     <button id="externalPrevious">External previous()</button>
     <button id="externalPlay">External playAnimation(true)</button>
     <button id="externalPlayStop">External playAnimation(false)</button>
+    <p>Slider time control:</p>
+    <eox-timecontrol
+      class="slider"
+      for="eox-map"
+      layer="AWS_NO2-VISUALISATION"
+      animation-property="TIME"
+      animation-values='[
+        "2023-01-16",
+        "2023-01-23",
+        "2023-01-30",
+        "2023-02-06",
+        "2023-02-13",
+        "2023-02-27",
+        "2023-03-06",
+        "2023-03-13",
+        "2023-03-20",
+        "2023-03-27",
+        "2023-04-03",
+        "2023-04-10",
+        "2023-04-17",
+        "2023-04-24"
+      ]'
+      slider
+    ></eox-timecontrol>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "https://unpkg.com/@eox/timecontrol@latest";
