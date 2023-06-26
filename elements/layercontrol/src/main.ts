@@ -31,7 +31,7 @@ export class EOxLayerControl extends LitElement {
   for: string;
 
   @property()
-  layerIdentifier = "id";
+  layerIdentifier = "ol_uid";
 
   @property()
   layerTitle = "title";
@@ -113,7 +113,12 @@ export class EOxLayerControl extends LitElement {
           ${map(
             this.layerArray,
             (layer) => html`
-              <li layerid="${layer.get(this.layerIdentifier)}">
+              <li
+                layerid="${
+                  //@ts-ignore
+                  layer[this.layerIdentifier]
+                }"
+              >
                 <label>
                   <input
                     type="checkbox"
@@ -169,7 +174,8 @@ export class EOxLayerControl extends LitElement {
           const layers = this.layerCollection.getArray();
           for (const [index, layerId] of controlOrder.entries()) {
             const layer = layers.find(
-              (layer) => layer.get(this.layerIdentifier) === layerId
+              // @ts-ignore
+              (layer) => layer[this.layerIdentifier] === layerId
             );
             this.layerCollection.remove(layer);
             this.layerCollection.insertAt(index, layer);

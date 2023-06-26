@@ -14,7 +14,10 @@
   <body>
     <p>Basic layer control</p>
     <eox-map zoom="3" center="[1000000, 6000000]"></eox-map>
-    <eox-layercontrol for="eox-map"></eox-layercontrol>
+    <eox-layercontrol
+      for="eox-map"
+      layerTitle="mapbox-source"
+    ></eox-layercontrol>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "https://unpkg.com/@eox/layercontrol@latest";
