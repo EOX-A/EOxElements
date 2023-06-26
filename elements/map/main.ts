@@ -104,8 +104,8 @@ export class EOxMap extends HTMLElement {
       addDraw(this, layerId, options);
     };
 
-    this.addSelect = (layerId: string, showTooltip: boolean, options: Object) => {
-      addSelect(this, layerId, showTooltip, options);
+    this.addSelect = (layerId: string, options: Object) => {
+      addSelect(this, layerId, options);
     };
 
     this.removeInteraction = (id: string) => {
