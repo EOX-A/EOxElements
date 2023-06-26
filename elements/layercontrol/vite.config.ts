@@ -5,9 +5,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: "./src/main.ts",
-      name: "eox-layerswitcher",
+      name: "eox-layercontrol",
       // the proper extensions will be added
-      fileName: "eox-layerswitcher",
+      fileName: "eox-layercontrol",
     },
   },
 });
