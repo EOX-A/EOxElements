@@ -1,8 +1,7 @@
-
 export class EOxMapTooltip extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' }).innerHTML = '<slot></slot>'
+    this.attachShadow({ mode: "open" }).innerHTML = "<slot></slot>";
     /*const shadow: ShadowRoot = this.attachShadow({ mode: "open" });
     const style = document.createElement("style");
     const shadowStyleFix = `
@@ -19,4 +18,3 @@ export class EOxMapTooltip extends HTMLElement {
 }
 
 customElements.define("eox-map-tooltip", EOxMapTooltip);
-

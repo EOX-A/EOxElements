@@ -1,8 +1,7 @@
 import { EOxMap } from "../main";
 
-
 /**
- * 
+ *
  * @param EOxMap instance of eox map class
  * @param layerId id of ol-layer or mapbox style layer
  * @returns Layer

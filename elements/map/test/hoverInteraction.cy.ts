@@ -11,22 +11,23 @@ describe("select interaction with hover", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.setLayers(vectorLayerStyleJson);
-        eoxMap.addSelect(
-          "countries_fill", {
-          id: "selectInteraction",
-          showTooltip: true,
-          condition: 'pointermove'
-        });
+      eoxMap.addSelect("countries_fill", {
+        id: "selectInteraction",
+        showTooltip: true,
+        condition: "pointermove",
+      });
 
-        // get the interaction via the source key
-        const selectInteraction = eoxMap.interactions["selectInteraction"] as Select;
-        expect(selectInteraction).to.exist;
-        expect(selectInteraction.getActive()).to.equal(true);
-        selectInteraction.on('select', e => {
-          if (e.selected.length) {
-            console.log(e.selected[0].getProperties());
-          }
-        })
+      // get the interaction via the source key
+      const selectInteraction = eoxMap.interactions[
+        "selectInteraction"
+      ] as Select;
+      expect(selectInteraction).to.exist;
+      expect(selectInteraction.getActive()).to.equal(true);
+      selectInteraction.on("select", (e) => {
+        if (e.selected.length) {
+          console.log(e.selected[0].getProperties());
+        }
+      });
     });
   });
 
@@ -47,5 +48,4 @@ describe("select interaction with hover", () => {
       eoxMap.removeInteraction("drawInteraction");
     });
   });*/
-
 });

@@ -38,7 +38,6 @@ export class EOxMap extends HTMLElement {
    */
   addDraw: Function;
 
-
   /**
    * Adds a select functionality a given vector layer.
    * @param layerId id of a vector layer to select features from
