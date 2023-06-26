@@ -36,7 +36,6 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
     // instead of only when selection changes
     if (options.condition === "pointermove") {
       const pointermoveListener = (e: MapBrowserEvent<any>) => {
-        console.log(e.dragging);
         if (e.dragging) {
           return;
         }
