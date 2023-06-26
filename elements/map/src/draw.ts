@@ -26,6 +26,10 @@ export function addDraw(
     source,
   });
 
+  const modifyInteraction = new Modify({
+    source,
+  })
+
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {
     const geom = e.feature.getGeometry();
@@ -48,5 +52,7 @@ export function addDraw(
 
   // identifier to retrieve the interaction
   map.addInteraction(drawInteraction);
+  map.addInteraction(modifyInteraction);
   EOxMap.interactions[options.id] = drawInteraction;
+  EOxMap.interactions[`${options.id}_modify`] = modifyInteraction;
 }
