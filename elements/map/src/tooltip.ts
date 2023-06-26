@@ -4,9 +4,9 @@ import { TemplateElement } from "../../../utils/templateElement";
 export class EOxMapTooltip extends TemplateElement {
   renderContent(content: Object) {
     render(
-      this.hasTemplate("tooltip")
+      this.hasTemplate("properties")
         ? html`${this.renderTemplate(
-            "tooltip",
+            "properties",
             content,
             // `tooltip-${this.content.id}`
             "tooltip-1"
