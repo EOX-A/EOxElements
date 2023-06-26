@@ -34,7 +34,6 @@ export class EOxMap extends HTMLElement {
   /**
    * Adds draw functionality to a given vector layer.
    * @param layerId id of a vector layer to draw on
-   * @returns id of draw interaction
    */
   addDraw: Function;
 
