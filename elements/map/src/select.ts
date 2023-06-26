@@ -33,8 +33,12 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
     
     hoverInteraction.on('select', (e) => {
       map.addOverlay(overlay);
+      if (e.selected.length) {
         tooltip.innerHTML = JSON.stringify(e.selected[0].get('name'));
         overlay.setPosition(EOxMap.map.getEventCoordinate(e.mapBrowserEvent.originalEvent));
+      } else {
+        overlay.setPosition(null);
+      }
     })
   }
 

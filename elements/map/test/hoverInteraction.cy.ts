@@ -11,8 +11,6 @@ describe("select interaction with hover", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.setLayers(vectorLayerStyleJson);
-      try {
-
         eoxMap.addSelect(
           "countries_fill", {
           id: "selectInteraction",
@@ -25,11 +23,10 @@ describe("select interaction with hover", () => {
         expect(selectInteraction).to.exist;
         expect(selectInteraction.getActive()).to.equal(true);
         selectInteraction.on('select', e => {
-          console.log(e.selected[0].getProperties());
+          if (e.selected.length) {
+            console.log(e.selected[0].getProperties());
+          }
         })
-      } catch (e) {
-        console.log(e)
-      }
     });
   });
 
