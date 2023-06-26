@@ -23,11 +23,6 @@ describe("select interaction with hover", () => {
       ] as Select;
       expect(selectInteraction).to.exist;
       expect(selectInteraction.getActive()).to.equal(true);
-      selectInteraction.on("select", (e) => {
-        if (e.selected.length) {
-          console.log(e.selected[0].getProperties());
-        }
-      });
     });
   });
 

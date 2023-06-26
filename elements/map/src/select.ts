@@ -1,7 +1,7 @@
 import Select from "ol/interaction/Select";
 import { EOxMap } from "../main";
 import { pointerMove } from "ol/events/condition";
-import { Overlay } from "ol";
+import { MapBrowserEvent, Overlay } from "ol";
 import "./tooltip";
 
 export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
@@ -13,14 +13,14 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
 
   const selectLayer = EOxMap.getLayerById(layerId);
 
-  const hoverInteraction = new Select({
+  const selectInteraction = new Select({
     condition: pointerMove,
     style: null,
     layers: [selectLayer],
   });
 
   // identifier to retrieve the interaction
-  map.addInteraction(hoverInteraction);
+  map.addInteraction(selectInteraction);
 
   if (options.showTooltip) {
     const tooltip = document.createElement("eox-map-tooltip");
@@ -28,10 +28,33 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
     const overlay = new Overlay({
       element: tooltip,
       position: undefined,
-      positioning: "top-left",
+      offset: [0, -30],
+      positioning: "top-center",
     });
 
-    hoverInteraction.on("select", (e) => {
+    // if pointermove condition, update the position of the tooltip on pointermove
+    // instead of only when selection changes
+    if (options.condition === "pointermove") {
+      const pointermoveListener = (e: MapBrowserEvent<any>) => {
+        console.log(e.dragging);
+        if (e.dragging) {
+          return;
+        }
+        if (selectInteraction.getFeatures().getLength()) {
+          overlay.setPosition(e.coordinate);
+        }
+      };
+      map.on("pointermove", pointermoveListener);
+
+      map.getInteractions().on("remove", (e) => {
+        if (e.element === selectInteraction) {
+          // remove the pointermove-listener when select-interaction is removed
+          map.un("pointermove", pointermoveListener);
+        }
+      });
+    }
+
+    selectInteraction.on("select", (e) => {
       map.addOverlay(overlay);
       if (e.selected.length) {
         tooltip.innerHTML = JSON.stringify(e.selected[0].get("name"));
@@ -42,7 +65,14 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
         overlay.setPosition(null);
       }
     });
+
+    map.getInteractions().on("remove", (e) => {
+      if (e.element === selectInteraction) {
+        // remove the pointermove-listener when select-interaction is removed
+        map.removeOverlay(overlay)
+      }
+    });
   }
 
-  EOxMap.interactions[options.id] = hoverInteraction;
+  EOxMap.interactions[options.id] = selectInteraction;
 }
