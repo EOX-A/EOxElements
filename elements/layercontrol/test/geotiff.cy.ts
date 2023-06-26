@@ -1,7 +1,8 @@
 import GeoTIFF from "ol/source/GeoTIFF.js";
 import TileLayer from "ol/layer/WebGLTile.js";
-import { EOxLayerControl } from "../src/main";
 import { EOxMap } from "../../map/main";
+import { Map } from "ol";
+import BaseLayer from "ol/layer/Base";
 
 // const channels = ['red', 'green', 'blue'];
 
@@ -53,23 +54,19 @@ describe("Layer Control", () => {
   });
 
   it("loads the layercontrol", () => {
-    let eoxMap: EOxMap;
+    let olMap: Map;
     cy.get("eox-map").should(($el) => {
-      eoxMap = <EOxMap>$el[0];
-      eoxMap.map.addLayer(cogLayer);
-      eoxMap.map
+      const eoxMap = <EOxMap>$el[0];
+      // @ts-ignore
+      olMap = eoxMap.map;
+      olMap.addLayer(cogLayer);
+      olMap
         .getLayers()
         .getArray()
-        .forEach((layer, index) => {
+        .forEach((layer: BaseLayer, index: number) => {
           layer.set("name", "Layer " + index);
           layer.set("id", "layer" + index);
         });
-    });
-    cy.get("eox-layercontrol").should(($ls) => {
-      const eoxLayerControl = <EOxLayerControl>$ls[0];
-      eoxLayerControl.attachTo(eoxMap.map);
-      const eoxLayerControl2 = <EOxLayerControl>$ls[1];
-      eoxLayerControl2.attachTo(eoxMap.map);
     });
   });
 });

@@ -24,6 +24,12 @@ export class EOxLayerControl extends LitElement {
   @state()
   layerArray: Array<Layer>;
 
+  /**
+   * The query selector for the map
+   */
+  @property()
+  for: string;
+
   @property()
   layerIdentifier = "id";
 
@@ -38,19 +44,6 @@ export class EOxLayerControl extends LitElement {
 
   @property({ type: Boolean })
   externalLayerConfig: Boolean = undefined;
-
-  @property()
-  attachTo = (olMap: Map) => {
-    this.olMap = olMap;
-    const collection = olMap.getLayers();
-    this._updateControl(collection);
-    collection.on("change:length", () => {
-      if (!this._currentlySorting) {
-        this._updateControl(collection);
-      }
-    });
-    this.render();
-  };
 
   private _updateControl(layerCollection: Collection<any>) {
     this.layerCollection = layerCollection;
@@ -98,6 +91,18 @@ export class EOxLayerControl extends LitElement {
   }
 
   render() {
+    const mapQuery = document.querySelector(this.for as string);
+    // @ts-ignore
+    const olMap: Map = mapQuery.map || mapQuery;
+
+    const collection = olMap.getLayers();
+    this._updateControl(collection);
+    collection.on("change:length", () => {
+      if (!this._currentlySorting) {
+        this._updateControl(collection);
+      }
+    });
+
     return html`
       <style>
         ${style}
@@ -239,7 +244,7 @@ export class EOxLayerConfig extends LitElement {
     super.connectedCallback();
     if (!this.layerConfig && !this.layerControl) {
       // "external" mode, i.e. rendered in separate div
-      this._layerControlElement = document.querySelector(`#${this.for}`);
+      this._layerControlElement = document.querySelector(this.for);
       // @ts-ignore
       this.layerConfig = this._layerControlElement.layerConfig;
       if (this._layerControlElement) {

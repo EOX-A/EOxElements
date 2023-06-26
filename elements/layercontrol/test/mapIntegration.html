@@ -19,6 +19,7 @@
     <eox-map></eox-map>
     <div style="display: flex">
       <eox-layercontrol
+        for="eox-map"
         .layerConfig="['opacity', 'color']"
         layerIdentifier="id"
         layerTitle="name"
@@ -28,6 +29,7 @@
       </eox-layercontrol>
 
       <eox-layercontrol
+        for="eox-map"
         externalLayerConfig
         .layerConfig="['opacity', 'color']"
         layerIdentifier="id"
@@ -37,7 +39,7 @@
       >
         Layer Control with external layer config
       </eox-layercontrol>
-      <eox-layerconfig for="test-control"
+      <eox-layerconfig for="#test-control"
         >External layer config</eox-layerconfig
       >
     </div>

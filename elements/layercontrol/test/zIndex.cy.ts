@@ -1,4 +1,3 @@
-import { EOxLayerControl } from "../src/main";
 import { EOxMap } from "../../map/main";
 import mapIntegrationJson from "./mapIntegration.json";
 
@@ -11,8 +10,10 @@ describe("Layer Control", () => {
     let eoxMap: EOxMap;
     cy.get("eox-map").should(($el) => {
       eoxMap = <EOxMap>$el[0];
+      // @ts-ignore
+      const olMap = eoxMap.map;
       eoxMap.setLayers(mapIntegrationJson);
-      eoxMap.map
+      olMap
         .getLayers()
         .getArray()
         .forEach((layer, index) => {
@@ -28,11 +29,6 @@ describe("Layer Control", () => {
             layer.set("zIndex", 10);
           }
         });
-    });
-    cy.get("eox-layercontrol").should(($ls) => {
-      const eoxLayerControl = <EOxLayerControl>$ls[0];
-      eoxLayerControl.setAttribute("sortBy", "zIndex");
-      eoxLayerControl.attachTo(eoxMap.map);
     });
   });
 });

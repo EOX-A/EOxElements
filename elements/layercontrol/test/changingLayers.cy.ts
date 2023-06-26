@@ -1,6 +1,6 @@
-import { EOxLayerControl } from "../src/main";
 import { EOxMap } from "../../map/main";
 import mapIntegrationJson from "./mapIntegration.json";
+import { Map } from "ol";
 
 describe("Layer Control", () => {
   beforeEach(() => {
@@ -9,11 +9,14 @@ describe("Layer Control", () => {
 
   it("loads the layercontrol", () => {
     let eoxMap: EOxMap;
+    let olMap: Map;
     cy.get("eox-map").should(($el) => {
       eoxMap = <EOxMap>$el[0];
+      // @ts-ignore
+      olMap = eoxMap.map;
       const applyLayers = () => {
         eoxMap.setLayers(mapIntegrationJson);
-        eoxMap.map
+        olMap
           .getLayers()
           .getArray()
           .forEach((layer, index) => {
@@ -22,7 +25,7 @@ describe("Layer Control", () => {
           });
       };
       applyLayers();
-      const layers = eoxMap.map.getLayers();
+      const layers = olMap.getLayers();
 
       setTimeout(() => {
         eoxMap.setLayers(layers.removeAt(layers.getArray().length - 1));
@@ -36,10 +39,6 @@ describe("Layer Control", () => {
       setTimeout(() => {
         applyLayers();
       }, 8000);
-    });
-    cy.get("eox-layercontrol").should(($ls) => {
-      const eoxLayerControl = <EOxLayerControl>$ls[0];
-      eoxLayerControl.attachTo(eoxMap.map);
     });
   });
 });
