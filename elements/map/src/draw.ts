@@ -4,12 +4,7 @@ import { getArea, getLength } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
 
-export function addDraw(
-  EOxMap: EOxMap,
-  layerId: string,
-  options: any
-): void {
-
+export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
   if (EOxMap.interactions[options.id]) {
     throw Error(`Interaction with id: ${layerId} already exists.`);
   }
@@ -28,7 +23,7 @@ export function addDraw(
 
   const modifyInteraction = new Modify({
     source,
-  })
+  });
 
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {
