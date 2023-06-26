@@ -1,15 +1,15 @@
-# Layer switcher
+# Layer control
 
 ## Usage
 
 ```
-npm install @eox/layerswitcher
+npm install @eox/layercontrol
 ```
 
 ```
-import "@eox/layerswitcher"
+import "@eox/layercontrol"
 
-<eox-layerswitcher></eox-layerswitcher>
+<eox-layercontrol></eox-layercontrol>
 ```
 
 // TODO: add documentation

@@ -1,38 +1,34 @@
-import { EOxLayerSwitcher } from "../src/main";
 import { EOxMap } from "../../map/main";
 import mapIntegrationJson from "./mapIntegration.json";
 
-describe("Layer Switcher", () => {
+describe("Layer Control", () => {
   beforeEach(() => {
-    cy.visit("/elements/layerswitcher/test/mapIntegration.html");
+    cy.visit("/elements/layercontrol/test/mapIntegration.html");
   });
 
-  it("loads the layerswitcher", () => {
+  it("loads the layercontrol", () => {
     let eoxMap: EOxMap;
     cy.get("eox-map").should(($el) => {
       eoxMap = <EOxMap>$el[0];
+      // @ts-ignore
+      const olMap = eoxMap.map;
       eoxMap.setLayers(mapIntegrationJson);
-      eoxMap.map
+      olMap
         .getLayers()
         .getArray()
         .forEach((layer, index) => {
           layer.set("name", "Layer " + index);
           layer.set("id", "layer" + index);
           if (index === 0) {
-            layer.set("baseLayer", true);
+            layer.set("zIndex", 44);
           }
           if (index === 1) {
-            layer.set("extent", [-14000000, 2000000, -8000000, 7000000]);
-            // layer.set("displayInLayerSwitcher", false);
+            layer.set("zIndex", 0);
           }
           if (index === 2) {
-            layer.setVisible(false);
+            layer.set("zIndex", 10);
           }
         });
-    });
-    cy.get("eox-layerswitcher").should(($ls) => {
-      const eoxLayerSwitcher = <EOxLayerSwitcher>$ls[0];
-      eoxLayerSwitcher.attachTo(eoxMap.map);
     });
   });
 });
