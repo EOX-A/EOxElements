@@ -33,6 +33,8 @@ describe("Layer Switcher", () => {
     cy.get("eox-layerswitcher").should(($ls) => {
       const eoxLayerSwitcher = <EOxLayerSwitcher>$ls[0];
       eoxLayerSwitcher.attachTo(eoxMap.map);
+      const eoxLayerSwitcher2 = <EOxLayerSwitcher>$ls[1];
+      eoxLayerSwitcher2.attachTo(eoxMap.map);
     });
   });
 });
