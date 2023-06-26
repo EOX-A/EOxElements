@@ -3,6 +3,7 @@ import { EOxMap } from "../main";
 import { pointerMove } from "ol/events/condition";
 import { MapBrowserEvent, Overlay } from "ol";
 import "./tooltip";
+import { EOxMapTooltip } from "./tooltip";
 
 export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
   if (EOxMap.interactions[options.id]) {
@@ -23,14 +24,30 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
   map.addInteraction(selectInteraction);
 
   if (options.showTooltip) {
-    const tooltip = document.createElement("eox-map-tooltip");
-    EOxMap.shadow.appendChild(tooltip);
-    const overlay = new Overlay({
-      element: tooltip,
-      position: undefined,
-      offset: [0, -30],
-      positioning: "top-center",
+    const tooltip: EOxMapTooltip = EOxMap.querySelector("eox-map-tooltip");
+    if (!tooltip) {
+      throw Error("No tooltip added");
+    }
+    tooltip.renderContent({
+      id: "abc",
+      foo: "bar",
     });
+
+    setTimeout(() => {
+      tooltip.renderContent({
+        id: "abc",
+        foo: "baz",
+        bla: "blub",
+      });
+    }, 3000);
+
+    // TODO
+    // const overlay = new Overlay({
+    //   element: tooltip,
+    //   position: undefined,
+    //   offset: [0, -30],
+    //   positioning: "top-center",
+    // });
 
     // if pointermove condition, update the position of the tooltip on pointermove
     // instead of only when selection changes

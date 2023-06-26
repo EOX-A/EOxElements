@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "dependencies": {
+    "lit-html": "^2.7.4",
     "ol": "7.3.0",
     "ol-mapbox-style": "9.6.0"
   },

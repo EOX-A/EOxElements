@@ -72,6 +72,9 @@ export class EOxMap extends HTMLElement {
     div.style.height = "100%";
     this.shadow.appendChild(div);
 
+    const slot = document.createElement("slot");
+    this.shadow.appendChild(slot);
+
     this.map = new Map({
       controls: [],
       target: div,
