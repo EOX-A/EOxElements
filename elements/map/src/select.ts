@@ -22,12 +22,8 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
 
   // identifier to retrieve the interaction
   map.addInteraction(selectInteraction);
-
-  if (options.showTooltip) {
-    const tooltip: EOxMapTooltip = EOxMap.querySelector("eox-map-tooltip");
-    if (!tooltip) {
-      throw Error("No tooltip added");
-    }
+  const tooltip: EOxMapTooltip = EOxMap.querySelector(options.tooltip);
+  if (tooltip) {
     tooltip.renderContent({
       id: "abc",
       foo: "bar",
