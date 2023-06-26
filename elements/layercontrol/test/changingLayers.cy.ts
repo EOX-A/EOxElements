@@ -1,13 +1,13 @@
-import { EOxLayerSwitcher } from "../src/main";
+import { EOxLayerControl } from "../src/main";
 import { EOxMap } from "../../map/main";
 import mapIntegrationJson from "./mapIntegration.json";
 
-describe("Layer Switcher", () => {
+describe("Layer Control", () => {
   beforeEach(() => {
-    cy.visit("/elements/layerswitcher/test/mapIntegration.html");
+    cy.visit("/elements/layercontrol/test/mapIntegration.html");
   });
 
-  it("loads the layerswitcher", () => {
+  it("loads the layercontrol", () => {
     let eoxMap: EOxMap;
     cy.get("eox-map").should(($el) => {
       eoxMap = <EOxMap>$el[0];
@@ -37,9 +37,9 @@ describe("Layer Switcher", () => {
         applyLayers();
       }, 8000);
     });
-    cy.get("eox-layerswitcher").should(($ls) => {
-      const eoxLayerSwitcher = <EOxLayerSwitcher>$ls[0];
-      eoxLayerSwitcher.attachTo(eoxMap.map);
+    cy.get("eox-layercontrol").should(($ls) => {
+      const eoxLayerControl = <EOxLayerControl>$ls[0];
+      eoxLayerControl.attachTo(eoxMap.map);
     });
   });
 });

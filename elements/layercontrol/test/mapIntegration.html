@@ -13,31 +13,31 @@
       }
     </style>
     <script type="module" defer src="../../map/dist/eox-map.js"></script>
-    <script type="module" defer src="../dist/eox-layerswitcher.js"></script>
+    <script type="module" defer src="../dist/eox-layercontrol.js"></script>
   </head>
   <body>
     <eox-map></eox-map>
     <div style="display: flex">
-      <eox-layerswitcher
+      <eox-layercontrol
         .layerConfig="['opacity', 'color']"
         layerIdentifier="id"
         layerTitle="name"
         style="width: 300px"
       >
-        Layer Switcher with internal layer config
-      </eox-layerswitcher>
+        Layer Control with internal layer config
+      </eox-layercontrol>
 
-      <eox-layerswitcher
+      <eox-layercontrol
         externalLayerConfig
         .layerConfig="['opacity', 'color']"
         layerIdentifier="id"
         layerTitle="name"
-        id="test-switcher"
+        id="test-control"
         style="width: 300px"
       >
-        Layer Switcher with external layer config
-      </eox-layerswitcher>
-      <eox-layerconfig for="test-switcher"
+        Layer Control with external layer config
+      </eox-layercontrol>
+      <eox-layerconfig for="test-control"
         >External layer config</eox-layerconfig
       >
     </div>

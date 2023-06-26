@@ -1,6 +1,6 @@
 import GeoTIFF from "ol/source/GeoTIFF.js";
 import TileLayer from "ol/layer/WebGLTile.js";
-import { EOxLayerSwitcher } from "../src/main";
+import { EOxLayerControl } from "../src/main";
 import { EOxMap } from "../../map/main";
 
 // const channels = ['red', 'green', 'blue'];
@@ -47,12 +47,12 @@ const cogLayer = new TileLayer({
   }),
 });
 
-describe("Layer Switcher", () => {
+describe("Layer Control", () => {
   beforeEach(() => {
-    cy.visit("/elements/layerswitcher/test/mapIntegration.html");
+    cy.visit("/elements/layercontrol/test/mapIntegration.html");
   });
 
-  it("loads the layerswitcher", () => {
+  it("loads the layercontrol", () => {
     let eoxMap: EOxMap;
     cy.get("eox-map").should(($el) => {
       eoxMap = <EOxMap>$el[0];
@@ -65,11 +65,11 @@ describe("Layer Switcher", () => {
           layer.set("id", "layer" + index);
         });
     });
-    cy.get("eox-layerswitcher").should(($ls) => {
-      const eoxLayerSwitcher = <EOxLayerSwitcher>$ls[0];
-      eoxLayerSwitcher.attachTo(eoxMap.map);
-      const eoxLayerSwitcher2 = <EOxLayerSwitcher>$ls[1];
-      eoxLayerSwitcher2.attachTo(eoxMap.map);
+    cy.get("eox-layercontrol").should(($ls) => {
+      const eoxLayerControl = <EOxLayerControl>$ls[0];
+      eoxLayerControl.attachTo(eoxMap.map);
+      const eoxLayerControl2 = <EOxLayerControl>$ls[1];
+      eoxLayerControl2.attachTo(eoxMap.map);
     });
   });
 });

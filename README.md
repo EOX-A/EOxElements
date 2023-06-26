@@ -23,9 +23,9 @@ Note: The main branch of this project contains the v2 (alpha) version of EOxElem
         <td><!--<a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a>--></td>
   </tr>
   <tr>
-    <td><a href="./elements/layerswitcher/">eox-layerswitcher</a></td>
+    <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>
     <td>Manage and modify map layers</td>
-        <td><!--<a href="https://eox-a.github.io/EOxElements/elements/layerswitcher/examples/index.html">Examples</a>--></td>
+        <td><!--<a href="https://eox-a.github.io/EOxElements/elements/layercontrol/examples/index.html">Examples</a>--></td>
   </tr>
   <tr>
     <td><a href="./elements/map/">eox-map</a></td>
@@ -104,7 +104,7 @@ npm run watch --workspace=<element>
 You can build/watch multiple elements at the same time, e.g.:
 
 ```
-npm run watch --workspace=@eox/map --workspace=@eox/layerswitcher
+npm run watch --workspace=@eox/map --workspace=@eox/layercontrol
 ```
 
 To build/watch all elements, you can use:

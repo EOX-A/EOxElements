@@ -11,8 +11,8 @@ import { style } from "./style";
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
 };
-@customElement("eox-layerswitcher")
-export class EOxLayerSwitcher extends LitElement {
+@customElement("eox-layercontrol")
+export class EOxLayerControl extends LitElement {
   private _currentlySorting: Boolean;
 
   @state()
@@ -43,19 +43,19 @@ export class EOxLayerSwitcher extends LitElement {
   attachTo = (olMap: Map) => {
     this.olMap = olMap;
     const collection = olMap.getLayers();
-    this._updateSwitcher(collection);
+    this._updateControl(collection);
     collection.on("change:length", () => {
       if (!this._currentlySorting) {
-        this._updateSwitcher(collection);
+        this._updateControl(collection);
       }
     });
     this.render();
   };
 
-  private _updateSwitcher(layerCollection: Collection<any>) {
+  private _updateControl(layerCollection: Collection<any>) {
     this.layerCollection = layerCollection;
     const initialLayers = [...layerCollection.getArray()].filter(
-      (l) => l.get("displayInLayerSwitcher") !== false
+      (l) => l.get("displayInLayerControl") !== false
     );
     const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
     if (zIndexSorting) {
@@ -124,7 +124,7 @@ export class EOxLayerSwitcher extends LitElement {
                   ? html`
                       <eox-layerconfig
                         .layerConfig="${this.layerConfig}"
-                        .layerSwitcher="${this}"
+                        .layerControl="${this}"
                         .layer=${layer}
                         .external=${this.externalLayerConfig}
                       ></eox-layerconfig>
@@ -154,7 +154,7 @@ export class EOxLayerSwitcher extends LitElement {
       Sortable.create(this.renderRoot.querySelector("ul"), {
         handle: ".dragHandle",
         onChange: () => {
-          const switcherOrder = Array.from(
+          const controlOrder = Array.from(
             this.renderRoot.querySelectorAll("li")
           )
             .map((item) => item.getAttribute("layerId"))
@@ -162,7 +162,7 @@ export class EOxLayerSwitcher extends LitElement {
           // current state of layers
           this._currentlySorting = true;
           const layers = this.layerCollection.getArray();
-          for (const [index, layerId] of switcherOrder.entries()) {
+          for (const [index, layerId] of controlOrder.entries()) {
             const layer = layers.find(
               (layer) => layer.get(this.layerIdentifier) === layerId
             );
@@ -185,7 +185,7 @@ export class EOxLayerConfig extends LitElement {
   layerConfig: Array<string>;
 
   @property({ type: Object, attribute: false })
-  layerSwitcher: HTMLElement;
+  layerControl: HTMLElement;
 
   @property({ type: Object, attribute: false })
   layer: Layer;
@@ -193,7 +193,7 @@ export class EOxLayerConfig extends LitElement {
   @property({ type: Boolean })
   external: Boolean;
 
-  private _layerSwitcherElement: HTMLElement;
+  private _layerControlElement: HTMLElement;
 
   @state()
   private _currentLayer: Layer;
@@ -208,13 +208,13 @@ export class EOxLayerConfig extends LitElement {
     console.log(property, evt.target.value);
     if (property === "opacity") {
       // @ts-ignore
-      this._layerSwitcherElement.changeOpacity(
+      this._layerControlElement.changeOpacity(
         this._currentLayer,
         parseInt(evt.target.value)
       );
     } else {
       // @ts-ignore
-      this._layerSwitcherElement.changeStyleProperty(
+      this._layerControlElement.changeStyleProperty(
         this._currentLayer,
         property,
         parseInt(evt.target.value)
@@ -237,13 +237,13 @@ export class EOxLayerConfig extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
-    if (!this.layerConfig && !this.layerSwitcher) {
+    if (!this.layerConfig && !this.layerControl) {
       // "external" mode, i.e. rendered in separate div
-      this._layerSwitcherElement = document.querySelector(`#${this.for}`);
+      this._layerControlElement = document.querySelector(`#${this.for}`);
       // @ts-ignore
-      this.layerConfig = this._layerSwitcherElement.layerConfig;
-      if (this._layerSwitcherElement) {
-        this._layerSwitcherElement.addEventListener("layerconfig", (evt) => {
+      this.layerConfig = this._layerControlElement.layerConfig;
+      if (this._layerControlElement) {
+        this._layerControlElement.addEventListener("layerconfig", (evt) => {
           // @ts-ignore
           this._currentLayer = evt.detail.layer;
           this._parseConfigs(this._currentLayer);
@@ -251,8 +251,8 @@ export class EOxLayerConfig extends LitElement {
         });
       }
     } else {
-      // "internal" mode, i.e. embedded in layerswitcher
-      this._layerSwitcherElement = this.layerSwitcher;
+      // "internal" mode, i.e. embedded in layercontrol
+      this._layerControlElement = this.layerControl;
       this._currentLayer = this.layer;
       this._parseConfigs(this._currentLayer);
     }
