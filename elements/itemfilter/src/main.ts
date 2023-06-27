@@ -10,6 +10,7 @@ import "toolcool-range-slider";
 import dayjs from "dayjs";
 import { TemplateElement } from "../../../utils/templateElement";
 import { highlight } from "./itemHighlighting";
+import { intersects, within } from "./spatial";
 import { style } from "./style";
 
 class ElementConfig {
@@ -217,6 +218,7 @@ export class EOxItemFilter extends TemplateElement {
           }),
         };
       });
+      console.log(this._filters);
     }
 
     if (this._config.matchAllWhenEmpty !== false) {
@@ -355,6 +357,52 @@ export class EOxItemFilter extends TemplateElement {
               // @ts-ignore
               parseValue(results[i][key]) <= rangeFilters[key].max
             ) {
+              // @ts-ignore
+              pass[key] = true;
+            } else {
+              // @ts-ignore
+              pass[key] = false;
+            }
+          } else {
+            // @ts-ignore
+            pass[key] = true;
+          }
+        }
+        if (Object.values(pass).every((v) => !!v)) {
+          filteredResults.push(results[i]);
+        }
+      }
+      results = [...filteredResults];
+    }
+    const spatialFilters = Object.entries(this._filters)
+      .filter(([_, value]) => value.type === "spatial")
+      .reduce((acc, [key, value]) => {
+        // @ts-ignore
+        acc[key] = {
+          bbox: value.bbox,
+        };
+        return acc;
+      }, {});
+    if (Object.keys(spatialFilters).length > 0) {
+      const filteredResults = [];
+      for (let i = 0; i < results.length; i++) {
+        const pass = {};
+        for (let key of Object.keys(spatialFilters)) {
+          const mode = "within";
+          if (results[i].hasOwnProperty(key)) {
+            const test =
+              mode === "within"
+                ? within(
+                    results[i][key],
+                    // @ts-ignore
+                    spatialFilters[key].bbox || [-180, -90, 180, 90]
+                  )
+                : intersects(
+                    results[i][key],
+                    // @ts-ignore
+                    spatialFilters[key].bbox || [-180, -90, 180, 90]
+                  );
+            if (test) {
               // @ts-ignore
               pass[key] = true;
             } else {
@@ -614,6 +662,25 @@ export class EOxItemFilter extends TemplateElement {
                                     this._filters[filter.key].keys.max}
                               </div>
                             `
+                          : filter.type === "spatial"
+                          ? html`
+                              <p
+                                @click="${() => {
+                                  // @ts-ignore
+                                  this._filters[filter.key].bbox = [
+                                    -90, 0, 10, 10,
+                                  ];
+                                  this.search(
+                                    this.renderRoot.querySelector(
+                                      "input[type='text']"
+                                      // @ts-ignore
+                                    ).value
+                                  );
+                                }}"
+                              >
+                                eox-map goes here
+                              </p>
+                            `
                           : html`
                               <ul>
                                 ${
@@ -683,6 +750,7 @@ export class EOxItemFilter extends TemplateElement {
                 ${this._results.length < 1
                   ? html` <small class="no-results">No matching items</small> `
                   : nothing}
+                ${this._results.length}
                 <ul id="results" part="results">
                   ${this._config.aggregateResults
                     ? map(

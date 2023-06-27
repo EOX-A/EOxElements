@@ -12,24 +12,25 @@ describe("Item Filter", () => {
       EOxItemFilter.config = {
         titleProperty: "title",
         filterProperties: [
-          { key: "themes", title: "Theme", exclusive: true },
+          { key: "osc:variables", title: "Variable" },
           // { key: "code" },
           // { key: "likes", type: "range" },
           // { key: "year", type: "range" },
-          { key: "years", type: "range" },
-          { key: "datetime", type: "range", format: "date" },
+          // { key: "years", type: "range" },
+          { key: "created", type: "range", format: "date" },
+          { key: "bbox", type: "spatial" },
         ],
-        aggregateResults: "themes",
+        aggregateResults: "osc:variables",
         enableSearch: true,
-        enableHighlighting: true,
+        // enableHighlighting: true,
         // showResults: false,
         fuseConfig: {
           // keys: ["title", "description", "themes", "code", "datetime"],
-          keys: ["title", "datetime"],
+          keys: ["title", "osc:variables"],
         },
-        // onSelect: (item: any) => {
-        //   console.log(item);
-        // },
+        onSelect: (item: any) => {
+          console.log(item);
+        },
         // matchAllWhenEmpty: true,
         // exclusiveFilters: true,
         // externalSearch: (input, filters) => {
