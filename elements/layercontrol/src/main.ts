@@ -7,6 +7,12 @@ import { Layer } from "ol/layer";
 // @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
 import { style } from "./style";
+// @ts-ignore
+import iconChecked from "../assets/icon-checked.svg";
+// @ts-ignore
+import iconUnchecked from "../assets/icon-unchecked.svg";
+// @ts-ignore
+import iconDrag from "../assets/icon-drag.svg";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
@@ -119,17 +125,49 @@ export class EOxLayerControl extends LitElement {
                   layer[this.layerIdentifier]
                 }"
               >
-                <label>
-                  <input
-                    type="checkbox"
-                    checked="${layer.getVisible() || nothing}"
-                    @click=${() => layer.setVisible(!layer.getVisible())}
-                  />
-                  <span class="title">${layer.get(this.layerTitle)}</span>
-                </label>
-                ${this.sortBy === "layerOrder"
-                  ? html` <span class="dragHandle">=</span> `
-                  : nothing}
+                <div class="layer">
+                  <label>
+                    ${when(
+                      layer.getVisible(),
+                      () =>
+                        html`<img
+                          src="${iconChecked}"
+                          width="24"
+                          height="24"
+                        />`,
+                      () =>
+                        html`<img
+                          src="${iconUnchecked}"
+                          width="24"
+                          height="24"
+                        />`
+                    )}
+                    <input
+                      type="checkbox"
+                      checked="${layer.getVisible() || nothing}"
+                      style="display: none"
+                      @click=${() => {
+                        layer.setVisible(!layer.getVisible());
+                        this.requestUpdate();
+                      }}
+                    />
+                    <span class="title"
+                      >${layer.get(this.layerTitle) ||
+                      `layer ${
+                        // @ts-ignore
+                        layer.ol_uid
+                      }`}</span
+                    >
+                  </label>
+                  ${this.sortBy === "layerOrder"
+                    ? html`<img
+                        class="dragHandle"
+                        src="${iconDrag}"
+                        width="24"
+                        height="24"
+                      />`
+                    : nothing}
+                </div>
                 ${this.layerConfig
                   ? html`
                       <eox-layerconfig
