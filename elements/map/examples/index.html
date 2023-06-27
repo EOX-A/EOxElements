@@ -16,6 +16,12 @@
     <eox-map></eox-map>
     <p>Basic map with defined zoom and center</p>
     <eox-map zoom="7" center="[1800000, 6150000]"></eox-map>
+    <p>Basic map with defined layers</p>
+    <eox-map layers="'[ { "type": "Vector", "background": "#1a2b39",
+    "myCustomProperty": "foo", "source": { "type": "Vector", "url":
+    "https://openlayers.org/data/vector/ecoregions.json", "format": "GeoJSON" },
+    "style": { "function": { "fill": { "type": "Fill", "color": "(feature) =>
+    feature.get('COLOR')" } } } } ]'"
     <script
       type="module"
       src="https://unpkg.com/@eox/map@latest/dist/eox-map.js"
