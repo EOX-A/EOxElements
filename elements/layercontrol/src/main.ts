@@ -30,6 +30,9 @@ export class EOxLayerControl extends LitElement {
   @state()
   layerArray: Array<Layer>;
 
+  @state()
+  optionalLayerArray: Array<Layer>;
+
   /**
    * The query selector for the map
    */
@@ -54,7 +57,12 @@ export class EOxLayerControl extends LitElement {
   private _updateControl(layerCollection: Collection<any>) {
     this.layerCollection = layerCollection;
     const initialLayers = [...layerCollection.getArray()].filter(
-      (l) => l.get("displayInLayerControl") !== false
+      (l) =>
+        l.get("layerControlHide") !== true &&
+        l.get("layerControlOptional") !== true
+    );
+    const optionalLayers = [...layerCollection.getArray()].filter(
+      (l) => l.get("layerControlOptional") === true
     );
     const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
     if (zIndexSorting) {
@@ -69,6 +77,7 @@ export class EOxLayerControl extends LitElement {
       initialLayers.reverse();
     }
     this.layerArray = initialLayers;
+    this.optionalLayerArray = optionalLayers;
     this.requestUpdate();
   }
 
@@ -122,7 +131,7 @@ export class EOxLayerControl extends LitElement {
               <li
                 layerid="${
                   //@ts-ignore
-                  layer[this.layerIdentifier]
+                  layer.get(this.layerIdentifier)
                 }"
               >
                 <div class="layer">
@@ -155,7 +164,7 @@ export class EOxLayerControl extends LitElement {
                       >${layer.get(this.layerTitle) ||
                       `layer ${
                         // @ts-ignore
-                        layer.ol_uid
+                        layer.get(this.layerIdentifier)
                       }`}</span
                     >
                   </label>
@@ -192,6 +201,50 @@ export class EOxLayerControl extends LitElement {
             `
           )}
         </ul>
+        ${when(
+          this.optionalLayerArray?.length > 0,
+          () => html`
+            <label for="optional">Optional layers</label>
+
+            <select name="optional">
+              <option disabled selected value>
+                -- select an optional layer to add --
+              </option>
+              ${this.optionalLayerArray.map(
+                (layer) => html`
+                  <option
+                    value="${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }"
+                  >
+                    ${layer.get(this.layerTitle) ||
+                    `layer ${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }`}
+                  </option>
+                `
+              )}
+            </select>
+            <button
+              @click="${() => {
+                const selectedLayer = this.optionalLayerArray.find(
+                  // @ts-ignore
+                  (l) =>
+                    l.get(this.layerIdentifier) ===
+                    // @ts-ignore
+                    this.shadowRoot.querySelector("select[name=optional]").value
+                );
+                selectedLayer.set("layerControlOptional", false);
+                selectedLayer.setVisible(true);
+                this.requestUpdate();
+              }}"
+            >
+              add
+            </button>
+          `
+        )}
       </div>
     `;
   }
@@ -213,7 +266,7 @@ export class EOxLayerControl extends LitElement {
           for (const [index, layerId] of controlOrder.entries()) {
             const layer = layers.find(
               // @ts-ignore
-              (layer) => layer[this.layerIdentifier] === layerId
+              (layer) => layer.get(this.layerIdentifier) === layerId
             );
             this.layerCollection.remove(layer);
             this.layerCollection.insertAt(index, layer);
@@ -254,7 +307,7 @@ export class EOxLayerConfig extends LitElement {
     evt: HTMLElementEvent<HTMLInputElement>,
     property: string
   ) {
-    console.log(property, evt.target.value);
+    console.log(this._currentLayer.get("id"), property, evt.target.value);
     if (property === "opacity") {
       // @ts-ignore
       this._layerControlElement.changeOpacity(
