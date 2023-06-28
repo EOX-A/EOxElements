@@ -6,7 +6,7 @@ import GeoJSON from "ol/format/GeoJSON";
 
 export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
   if (EOxMap.interactions[options.id]) {
-    throw Error(`Interaction with id: ${layerId} already exists.`);
+    throw Error(`Interaction with id: ${options.id} already exists.`);
   }
 
   const map = EOxMap.map;

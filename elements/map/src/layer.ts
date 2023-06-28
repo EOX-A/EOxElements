@@ -1,5 +1,11 @@
 import { EOxMap } from "../main";
 
+/**
+ *
+ * @param EOxMap instance of eox map class
+ * @param layerId id of ol-layer or mapbox style layer
+ * @returns Layer
+ */
 export function getLayerById(EOxMap: EOxMap, layerId: string) {
   // get mapbox-style layer or manually generated ol layer
   const layers = EOxMap.map.getLayers().getArray();
