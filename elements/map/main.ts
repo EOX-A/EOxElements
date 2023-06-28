@@ -66,7 +66,7 @@ export class EOxMap extends HTMLElement {
     this.map = new Map({
       controls: [],
       target: div,
-      layers: [],
+      layers: generateLayers(JSON.parse(this.getAttribute('layers'))),
       view: new View({
         center: this.hasAttribute("center")
           ? (JSON.parse(
