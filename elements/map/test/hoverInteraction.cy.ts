@@ -13,7 +13,7 @@ describe("select interaction with hover", () => {
       eoxMap.setLayers(vectorLayerStyleJson);
       eoxMap.addSelect("countries_fill", {
         id: "selectInteraction",
-        showTooltip: true,
+        tooltip: "eox-map-tooltip",
         condition: "pointermove",
       });
 

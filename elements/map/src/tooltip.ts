@@ -1,19 +1,27 @@
-export class EOxMapTooltip extends HTMLElement {
+import { html, render } from "lit-html";
+import { TemplateElement } from "../../../utils/templateElement";
+
+export class EOxMapTooltip extends TemplateElement {
+  renderContent(content: Object) {
+    render(
+      this.hasTemplate("properties")
+        ? html`${this.renderTemplate(
+            "properties",
+            content,
+            // `tooltip-${this.content.id}`
+            "tooltip-1"
+          )}`
+        : html`<ul>
+            ${Object.entries(content).map(
+              ([key, value]) => html`<li>${key}: ${value}</li>`
+            )}
+          </ul>`,
+      this.shadowRoot
+    );
+  }
+
   constructor() {
     super();
-    this.attachShadow({ mode: "open" }).innerHTML = "<slot></slot>";
-    /*const shadow: ShadowRoot = this.attachShadow({ mode: "open" });
-    const style = document.createElement("style");
-    const shadowStyleFix = `
-      :host {
-        display: block;
-      }
-    `;
-    style.innerHTML = shadowStyleFix;
-    shadow.appendChild(style);
-
-    const div = document.createElement("div");
-    shadow.appendChild(div);*/
   }
 }
 
