@@ -3,8 +3,7 @@
   "version": "0.0.1",
   "type": "module",
   "dependencies": {
-    "ol": "7.3.0",
-    "ol-mapbox-style": "9.6.0"
+    "ol": "7.3.0"
   },
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
