@@ -1,12 +1,10 @@
 import Map from "ol/Map.js";
-import OSM from "ol/source/OSM.js";
-import TileLayer from "ol/layer/Tile.js";
 import View from "ol/View.js";
 import { Coordinate } from "ol/coordinate";
-import { apply } from "ol-mapbox-style";
 import olCss from "ol/ol.css";
 import { addDraw } from "./src/draw";
 import { addSelect } from "./src/select";
+import { generateLayers } from "./src/generate";
 import Interaction from "ol/interaction/Interaction";
 import { getLayerById } from "./src/layer";
 
@@ -78,11 +76,7 @@ export class EOxMap extends HTMLElement {
     this.map = new Map({
       controls: [],
       target: div,
-      layers: [
-        new TileLayer({
-          source: new OSM(),
-        }),
-      ],
+      layers: generateLayers(JSON.parse(this.getAttribute("layers"))),
       view: new View({
         center: this.hasAttribute("center")
           ? (JSON.parse(
@@ -98,8 +92,9 @@ export class EOxMap extends HTMLElement {
     this.interactions = {};
 
     this.setLayers = (json: JSON) => {
+      // TODO typing
       // @ts-ignore
-      apply(this.map, json);
+      this.map.setLayers(generateLayers(json));
     };
 
     this.addDraw = (layerId: string, options: Object) => {
