@@ -23,7 +23,7 @@
     <p>Map with applied layers</p>
     <eox-map id="applied"></eox-map>
     <script type="module">
-      import "https://unpkg.com/@eox/map@latest/dist/eox-map.js";
+      import "https://unpkg.com/@eox/map@latest";
       import layers from "./layers.json" assert { type: "json" };
       document.querySelector("eox-map#applied").setLayers(layers);
     </script>
