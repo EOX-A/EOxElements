@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eox-drawtools examples</title>
+    <style>
+      eox-map {
+        width: 400px;
+        height: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Basic draw tools</p>
+    <eox-map
+      zoom="3"
+      center="[1000000, 6000000]"
+      layers='[
+        {"type": "Vector","id": "draw","source": {"type": "Vector"}},
+        {"type":"Tile","source":{"type":"OSM"}}
+      ]'
+    ></eox-map>
+    <eox-drawtools for="eox-map" layer="draw"></eox-drawtools>
+    <p>Multi-polygon mode</p>
+    <eox-map
+      id="multi"
+      zoom="3"
+      center="[1000000, 6000000]"
+      layers='[
+        {"type": "Vector","id": "draw","source": {"type": "Vector"}},
+        {"type":"Tile","source":{"type":"OSM"}}
+      ]'
+    ></eox-map>
+    <eox-drawtools
+      for="eox-map#multi"
+      layer="draw"
+      multipleFeatures
+    ></eox-drawtools>
+    <script type="module">
+      import "https://unpkg.com/@eox/map@latest";
+      import "https://unpkg.com/@eox/drawtools@latest";
+    </script>
+  </body>
+</html>

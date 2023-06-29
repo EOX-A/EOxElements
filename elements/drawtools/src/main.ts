@@ -33,36 +33,16 @@ export class EOxDrawTools extends LitElement {
   _currentlyDrawing: Boolean;
 
   @property({ type: Boolean })
-  multipleFeatures: Boolean = true;
+  multipleFeatures: Boolean;
+
+  /**
+   * The query selector for the map
+   */
+  @property()
+  for: string;
 
   @property()
-  attachTo = (map: any, layerId: string) => {
-    this._layerId = layerId;
-
-    if (!map.addDraw) {
-      this._legacyMode = true;
-      this._olMap = map;
-    } else {
-      this._eoxMap = map;
-      this._olMap = map.map;
-    }
-
-    let layers;
-    layers = this._olMap.getLayers().getArray();
-    this._drawLayer =
-      (layers.find(
-        (l) => l.get("id") === this._layerId
-      ) as VectorLayer<VectorSource>) ||
-      (layers
-        .filter((l) => l.get("mapbox-layers"))
-        .find((l) =>
-          l.get("mapbox-layers").includes(this._layerId)
-        ) as VectorLayer<VectorSource>);
-    if (this._legacyMode) {
-      this._dynamicImport();
-    }
-    this.requestUpdate();
-  };
+  layer: string;
 
   _draw: Draw;
   _modify: Modify;
@@ -89,7 +69,9 @@ export class EOxDrawTools extends LitElement {
         id: "drawInteraction",
         type: "Polygon",
       });
+      // @ts-ignore
       this._draw = this._eoxMap.interactions["drawInteraction"] as Draw;
+      // @ts-ignore
       this._modify = this._eoxMap.interactions[
         "drawInteraction_modify"
       ] as Modify;
@@ -147,6 +129,40 @@ export class EOxDrawTools extends LitElement {
   }
 
   render() {
+    const map = document.querySelector(this.for as string);
+    // // @ts-ignore
+    // const olMap: Map = mapQuery.map || mapQuery;
+
+    this._layerId = this.layer;
+
+    // @ts-ignore
+    if (!map.addDraw) {
+      this._legacyMode = true;
+      // @ts-ignore
+      this._olMap = map;
+    } else {
+      // @ts-ignore
+      this._eoxMap = map;
+      // @ts-ignore
+      this._olMap = map.map;
+    }
+
+    let layers;
+    layers = this._olMap.getLayers().getArray();
+    this._drawLayer =
+      (layers.find(
+        (l) => l.get("id") === this._layerId
+      ) as VectorLayer<VectorSource>) ||
+      (layers
+        .filter((l) => l.get("mapbox-layers"))
+        .find((l) =>
+          l.get("mapbox-layers").includes(this._layerId)
+        ) as VectorLayer<VectorSource>);
+    if (this._legacyMode) {
+      this._dynamicImport();
+    }
+    this.requestUpdate();
+
     return html`
       <style>
         ${style}
