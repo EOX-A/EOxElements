@@ -93,7 +93,7 @@ export class EOxLayerControl extends LitElement {
   }
 
   changeOpacity(targetLayer: Layer, value: number) {
-    targetLayer.setOpacity(value / 100);
+    targetLayer.setOpacity(value);
   }
 
   changeStyleProperty(targetLayer: Layer, property: string, value: number) {
@@ -336,14 +336,14 @@ export class EOxLayerConfig extends LitElement {
       // @ts-ignore
       this._layerControlElement.changeOpacity(
         this._currentLayer,
-        parseInt(evt.target.value)
+        parseFloat(evt.target.value)
       );
     } else {
       // @ts-ignore
       this._layerControlElement.changeStyleProperty(
         this._currentLayer,
         property,
-        parseInt(evt.target.value)
+        parseFloat(evt.target.value)
       );
     }
   }
@@ -404,7 +404,10 @@ export class EOxLayerConfig extends LitElement {
                 <div>${property}</div>
                 <input
                   type="range"
-                  value="100"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="${this._currentLayer.getOpacity()}"
                   @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
                     this._handleInput(evt, property)}
                 />
