@@ -24,12 +24,6 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
   map.addInteraction(selectInteraction);
   const tooltip: EOxMapTooltip = EOxMap.querySelector(options.tooltip);
   if (tooltip) {
-    tooltip.renderContent({
-      id: "abc",
-      foo: "bar",
-    });
-
-    // TODO
     const overlay = new Overlay({
       element: tooltip,
       position: undefined,
