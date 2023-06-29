@@ -263,24 +263,29 @@ export class EOxLayerControl extends LitElement {
     if (this.sortBy == "layerOrder") {
       Sortable.create(this.renderRoot.querySelector("ul"), {
         handle: ".dragHandle",
-        onChange: () => {
-          const controlOrder = Array.from(
-            this.renderRoot.querySelectorAll("li")
-          )
-            .map((item) => item.getAttribute("layerId"))
-            .reverse();
-          // current state of layers
-          this._currentlySorting = true;
-          const layers = this.layerCollection.getArray();
-          for (const [index, layerId] of controlOrder.entries()) {
-            const layer = layers.find(
-              // @ts-ignore
-              (layer) => layer.get(this.layerIdentifier) === layerId
-            );
-            this.layerCollection.remove(layer);
-            this.layerCollection.insertAt(index, layer);
-          }
-          this._currentlySorting = false;
+        dataIdAttr: "layerId",
+        store: {
+          get: () => {
+            return this.layerCollection
+              .getArray()
+              .map((l) => l.get(this.layerIdentifier))
+              .reverse();
+          },
+
+          set: (sortable: Sortable) => {
+            var order = sortable.toArray().reverse();
+            order.forEach((layerId: string, index: number) => {
+              const layer = this.layerCollection.getArray().find(
+                // @ts-ignore
+                (layer) => layer.get(this.layerIdentifier) === layerId
+              );
+              this.layerCollection.remove(layer);
+              this.layerCollection.insertAt(index, layer);
+            });
+          },
+        },
+        onSort: () => {
+          this.resetLayerConfig();
         },
       });
     }
