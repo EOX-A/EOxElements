@@ -1,6 +1,6 @@
 import { Select } from "ol/interaction";
 import { EOxMap } from "../main";
-import vectorLayerStyleJson from "./vectorLayer.json";
+import vectorLayerStyleJson from "./hoverInteraction.json";
 
 describe("select interaction with hover", () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe("select interaction with hover", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.setLayers(vectorLayerStyleJson);
-      eoxMap.addSelect("countries_fill", {
+      eoxMap.addSelect("regions", {
         id: "selectInteraction",
         tooltip: "eox-map-tooltip",
         condition: "pointermove",

@@ -1,20 +1,15 @@
-{
-  "version": 8,
-  "name": "",
-  "sources": {
-    "states": {
-      "type": "raster",
-      "tileSize": 512,
-      "tiles": [
-        "https://ahocevar.com/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=topp:states&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
-      ]
+[
+  {
+    "type": "Image",
+    "properties": {
+      "id": "customId"
+    },
+    "source": {
+      "type": "ImageWMS",
+      "url": "https://ahocevar.com/geoserver/wms",
+      "params": { "LAYERS": "topp:states" },
+      "ratio": 1,
+      "serverType": "geoserver"
     }
-  },
-  "layers": [
-    {
-      "id": "states",
-      "type": "raster",
-      "source": "states"
-    }
-  ]
-}
+  }
+]

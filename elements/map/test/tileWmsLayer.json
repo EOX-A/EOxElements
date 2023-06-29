@@ -1,20 +1,15 @@
-{
-  "version": 8,
-  "name": "",
-  "sources": {
-    "states": {
-      "type": "raster",
-      "tileSize": 512,
-      "tiles": [
-        "https://ahocevar.com/geoserver/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image/png&TRANSPARENT=true&LAYERS=topp:states&STYLES=&WIDTH=512&HEIGHT=512&SRS=EPSG:3857&BBOX={bbox-epsg-3857}"
-      ]
+[
+  {
+    "type": "Tile",
+    "properties": {
+      "id": "customId"
+    },
+    "source": {
+      "type": "TileWMS",
+      "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+      "params": {
+        "LAYERS": "AWS_NO2-VISUALISATION"
+      }
     }
-  },
-  "layers": [
-    {
-      "id": "states",
-      "type": "raster",
-      "source": "states"
-    }
-  ]
-}
+  }
+]

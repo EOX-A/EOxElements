@@ -11,7 +11,7 @@ describe("draw interaction", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.setLayers(vectorLayerStyleJson);
-      eoxMap.addDraw("draw_point", {
+      eoxMap.addDraw("drawLayer", {
         id: "drawInteraction",
         type: "Point",
       });
@@ -32,9 +32,7 @@ describe("draw interaction", () => {
       const eoxMap = <EOxMap>$el[0];
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
-      const drawLayer = eoxMap.map
-        .getLayers()
-        .getArray()[1] as VectorLayer<VectorSource>;
+      const drawLayer = eoxMap.getLayerById("drawLayer");
       const features = drawLayer.getSource().getFeatures();
       const geometry = features[0].getGeometry() as Point;
       expect(features).to.have.length(1);
@@ -53,7 +51,7 @@ describe("draw interaction", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.removeInteraction("drawInteraction");
-      eoxMap.addDraw("draw_point", {
+      eoxMap.addDraw("drawLayer", {
         id: "drawInteraction",
         type: "LineString",
       });
@@ -77,9 +75,9 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerdown", 30, 20);
       simulateEvent(eoxMap.map, "pointerup", 30, 20);
 
-      const drawLayer = eoxMap.map
-        .getLayers()
-        .getArray()[1] as VectorLayer<VectorSource>;
+      const drawLayer = eoxMap.getLayerById(
+        "drawLayer"
+      ) as VectorLayer<VectorSource>;
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);
     });
@@ -89,7 +87,7 @@ describe("draw interaction", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.removeInteraction("drawInteraction");
-      eoxMap.addDraw("draw_polygon", {
+      eoxMap.addDraw("drawLayer", {
         id: "drawInteraction",
         type: "Polygon",
       });
@@ -119,9 +117,9 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
 
-      const drawLayer = eoxMap.map
-        .getLayers()
-        .getArray()[1] as VectorLayer<VectorSource>;
+      const drawLayer = eoxMap.getLayerById(
+        "drawLayer"
+      ) as VectorLayer<VectorSource>;
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);
     });
