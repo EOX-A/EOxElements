@@ -13,12 +13,19 @@
   </head>
   <body>
     <p>Basic map</p>
-    <eox-map></eox-map>
+    <eox-map layers='[{"type":"Tile","source":{"type":"OSM"}}]'></eox-map>
     <p>Basic map with defined zoom and center</p>
-    <eox-map zoom="7" center="[1800000, 6150000]"></eox-map>
-    <script
-      type="module"
-      src="https://unpkg.com/@eox/map@latest/dist/eox-map.js"
-    ></script>
+    <eox-map
+      zoom="7"
+      center="[1800000, 6150000]"
+      layers='[{"type":"Tile","source":{"type":"OSM"}}]'
+    ></eox-map>
+    <p>Map with applied layers</p>
+    <eox-map id="applied"></eox-map>
+    <script type="module">
+      import "https://unpkg.com/@eox/map@latest/dist/eox-map.js"
+      import layers from "./layers.json" assert { type: "json" };
+      document.querySelector("eox-map#applied").setLayers(layers);
+    </script>
   </body>
 </html>
