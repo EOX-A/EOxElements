@@ -6,26 +6,12 @@ import GeoJSON from "ol/format/GeoJSON";
 
 export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
   if (EOxMap.interactions[options.id]) {
-    throw Error(`Interaction with id: ${layerId} already exists.`);
+    throw Error(`Interaction with id: ${options.id} already exists.`);
   }
 
   const map = EOxMap.map;
 
-  // get mapbox-style layer or manually generated ol layer
-  let drawLayer =
-    map
-      .getLayers()
-      .getArray()
-      .find((l) => l.get("id") === layerId) ||
-    map
-      .getLayers()
-      .getArray()
-      .filter((l) => l.get("mapbox-layers"))
-      .find((l) => l.get("mapbox-layers").includes(layerId));
-
-  if (!drawLayer) {
-    throw Error(`Layer with id: ${layerId} does not exist.`);
-  }
+  const drawLayer = EOxMap.getLayerById(layerId);
 
   // @ts-ignore
   const source = drawLayer.getSource();
@@ -44,7 +30,6 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
     const geom = e.feature.getGeometry();
     if (geom instanceof LineString) {
       length = getLength(geom, { radius: 6378137, projection: "EPSG:3857" });
-
       e.feature.set("measure", length);
     } else if (geom instanceof Polygon) {
       const area = getArea(geom, { radius: 6378137, projection: "EPSG:3857" });
@@ -52,7 +37,10 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
     }
     const geoJsonObject = format.writeFeatureObject(e.feature);
     const drawendEvt = new CustomEvent("drawend", {
-      detail: { geojson: geoJsonObject },
+      detail: {
+        originalEvent: e,
+        geojson: geoJsonObject,
+      },
     });
     EOxMap.dispatchEvent(drawendEvt);
   });
