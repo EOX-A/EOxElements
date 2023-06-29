@@ -8,6 +8,7 @@ import { apply } from "ol-mapbox-style";
 import olCss from "ol/ol.css";
 import { addDraw } from "./src/draw";
 import Interaction from "ol/interaction/Interaction";
+import { getLayerById } from "./src/layer";
 
 export class EOxMap extends HTMLElement {
   private shadow: ShadowRoot;
@@ -33,7 +34,6 @@ export class EOxMap extends HTMLElement {
   /**
    * Adds draw functionality to a given vector layer.
    * @param layerId id of a vector layer to draw on
-   * @returns id of draw interaction
    */
   addDraw: Function;
 
@@ -42,6 +42,11 @@ export class EOxMap extends HTMLElement {
    * @param id id of the interaction
    */
   removeInteraction: Function;
+
+  /**
+   * gets an OpenLayers-Layer, either by its "id" or one of its Mapbox-Style IDs
+   */
+  getLayerById: Function;
 
   constructor() {
     super();
@@ -81,6 +86,7 @@ export class EOxMap extends HTMLElement {
     this.interactions = {};
 
     this.setLayers = (json: JSON) => {
+      // @ts-ignore
       apply(this.map, json);
     };
 
@@ -91,6 +97,10 @@ export class EOxMap extends HTMLElement {
     this.removeInteraction = (id: string) => {
       this.map.removeInteraction(this.interactions[id]);
       delete this.interactions[id];
+    };
+
+    this.getLayerById = (layerId: string) => {
+      return getLayerById(this, layerId);
     };
 
     this.map.on("loadend", () => {

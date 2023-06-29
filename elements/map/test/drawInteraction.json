@@ -30,6 +30,14 @@
         "circle-stroke-color": "#ffffff",
         "circle-stroke-width": 3
       }
+    },
+    {
+      "id": "draw_polygon",
+      "source": "draw_layer",
+      "type": "fill",
+      "paint": {
+        "fill-color": "rgba(50, 50, 238, 0.2)"
+      }
     }
   ]
 }
