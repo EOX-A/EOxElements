@@ -1,32 +1,15 @@
-{
-  "version": 8,
-  "name": "",
-  "sources": {
-    "countries": {
-      "type": "vector",
-      "tiles": [
-        "https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf"
-      ]
-    }
-  },
-  "layers": [
-    {
-      "id": "countries_fill",
-      "type": "fill",
-      "source": "countries",
-      "source-layer": "ne_10m_admin_0_countries",
-      "paint": {
-        "fill-color": "rgba(255, 0, 100, 0.5)"
-      }
+[
+  {
+    "type": "VectorTile",
+    "background": "#1a2b39",
+    "declutter": true,
+    "properties": {
+      "id": "countries"
     },
-    {
-      "id": "countries_outline",
-      "type": "line",
-      "source": "countries",
-      "source-layer": "ne_10m_admin_0_countries",
-      "paint": {
-        "line-color": "rgba(255, 0, 100, 1)"
-      }
+    "source": {
+      "type": "VectorTile",
+      "url": "https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
+      "format": "MVT"
     }
-  ]
-}
+  }
+]

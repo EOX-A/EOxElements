@@ -13,11 +13,7 @@ describe("layers", () => {
   it("loads a Vector Layer", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      const layers = eoxMap.map.getLayers().getArray();
-      expect(layers).to.have.length(2);
-      const layer = layers.find(
-        (l) => l.get("mapbox-source") === "countries"
-      ) as VectorTile;
+      const layer = eoxMap.getLayerById("countries") as VectorTile;
       const features = layer
         .getSource()
         .getFeaturesInExtent(eoxMap.map.getView().calculateExtent());
