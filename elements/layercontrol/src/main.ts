@@ -245,6 +245,16 @@ export class EOxLayerControl extends LitElement {
                     // @ts-ignore
                     this.shadowRoot.querySelector("select[name=optional]").value
                 );
+                // always set the new layer at the first position
+                // TODO make configurable?
+                const firstPosition = true;
+                if (firstPosition) {
+                  this.layerCollection.remove(selectedLayer);
+                  this.layerCollection.insertAt(
+                    this.layerCollection.getLength(),
+                    selectedLayer
+                    );
+                  }
                 selectedLayer.set("layerControlOptional", false);
                 selectedLayer.setVisible(true);
                 this.resetLayerConfig();
