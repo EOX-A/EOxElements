@@ -30,6 +30,9 @@ export class EOxLayerControl extends LitElement {
   @state()
   layerArray: Array<Layer>;
 
+  @state()
+  optionalLayerArray: Array<Layer>;
+
   /**
    * The query selector for the map
    */
@@ -54,7 +57,12 @@ export class EOxLayerControl extends LitElement {
   private _updateControl(layerCollection: Collection<any>) {
     this.layerCollection = layerCollection;
     const initialLayers = [...layerCollection.getArray()].filter(
-      (l) => l.get("displayInLayerControl") !== false
+      (l) =>
+        l.get("layerControlHide") !== true &&
+        l.get("layerControlOptional") !== true
+    );
+    const optionalLayers = [...layerCollection.getArray()].filter(
+      (l) => l.get("layerControlOptional") === true
     );
     const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
     if (zIndexSorting) {
@@ -69,6 +77,7 @@ export class EOxLayerControl extends LitElement {
       initialLayers.reverse();
     }
     this.layerArray = initialLayers;
+    this.optionalLayerArray = optionalLayers;
     this.requestUpdate();
   }
 
@@ -84,7 +93,7 @@ export class EOxLayerControl extends LitElement {
   }
 
   changeOpacity(targetLayer: Layer, value: number) {
-    targetLayer.setOpacity(value / 100);
+    targetLayer.setOpacity(value);
   }
 
   changeStyleProperty(targetLayer: Layer, property: string, value: number) {
@@ -94,6 +103,15 @@ export class EOxLayerControl extends LitElement {
       ...targetLayer.style_,
       [property]: value,
     });
+  }
+
+  private hideConfigs = false;
+  private resetLayerConfig() {
+    this.hideConfigs = true;
+    setTimeout(() => {
+      this.hideConfigs = false;
+      this.requestUpdate();
+    }, 0);
   }
 
   render() {
@@ -122,7 +140,7 @@ export class EOxLayerControl extends LitElement {
               <li
                 layerid="${
                   //@ts-ignore
-                  layer[this.layerIdentifier]
+                  layer.get(this.layerIdentifier)
                 }"
               >
                 <div class="layer">
@@ -155,7 +173,7 @@ export class EOxLayerControl extends LitElement {
                       >${layer.get(this.layerTitle) ||
                       `layer ${
                         // @ts-ignore
-                        layer.ol_uid
+                        layer.get(this.layerIdentifier)
                       }`}</span
                     >
                   </label>
@@ -168,7 +186,7 @@ export class EOxLayerControl extends LitElement {
                       />`
                     : nothing}
                 </div>
-                ${this.layerConfig
+                ${this.layerConfig && !this.hideConfigs
                   ? html`
                       <eox-layerconfig
                         .layerConfig="${this.layerConfig}"
@@ -192,6 +210,60 @@ export class EOxLayerControl extends LitElement {
             `
           )}
         </ul>
+        ${when(
+          this.optionalLayerArray?.length > 0,
+          () => html`
+            <label for="optional">Optional layers</label>
+
+            <select name="optional">
+              <option disabled selected value>
+                -- select an optional layer to add --
+              </option>
+              ${this.optionalLayerArray.map(
+                (layer) => html`
+                  <option
+                    value="${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }"
+                  >
+                    ${layer.get(this.layerTitle) ||
+                    `layer ${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }`}
+                  </option>
+                `
+              )}
+            </select>
+            <button
+              @click="${() => {
+                const selectedLayer = this.optionalLayerArray.find(
+                  // @ts-ignore
+                  (l) =>
+                    l.get(this.layerIdentifier) ===
+                    // @ts-ignore
+                    this.shadowRoot.querySelector("select[name=optional]").value
+                );
+                // always set the new layer at the first position
+                // TODO make configurable?
+                const firstPosition = true;
+                if (firstPosition) {
+                  this.layerCollection.remove(selectedLayer);
+                  this.layerCollection.insertAt(
+                    this.layerCollection.getLength(),
+                    selectedLayer
+                  );
+                }
+                selectedLayer.set("layerControlOptional", false);
+                selectedLayer.setVisible(true);
+                this.resetLayerConfig();
+              }}"
+            >
+              add
+            </button>
+          `
+        )}
       </div>
     `;
   }
@@ -201,24 +273,29 @@ export class EOxLayerControl extends LitElement {
     if (this.sortBy == "layerOrder") {
       Sortable.create(this.renderRoot.querySelector("ul"), {
         handle: ".dragHandle",
-        onChange: () => {
-          const controlOrder = Array.from(
-            this.renderRoot.querySelectorAll("li")
-          )
-            .map((item) => item.getAttribute("layerId"))
-            .reverse();
-          // current state of layers
-          this._currentlySorting = true;
-          const layers = this.layerCollection.getArray();
-          for (const [index, layerId] of controlOrder.entries()) {
-            const layer = layers.find(
-              // @ts-ignore
-              (layer) => layer[this.layerIdentifier] === layerId
-            );
-            this.layerCollection.remove(layer);
-            this.layerCollection.insertAt(index, layer);
-          }
-          this._currentlySorting = false;
+        dataIdAttr: "layerId",
+        store: {
+          get: () => {
+            return this.layerCollection
+              .getArray()
+              .map((l) => l.get(this.layerIdentifier))
+              .reverse();
+          },
+
+          set: (sortable: Sortable) => {
+            var order = sortable.toArray().reverse();
+            order.forEach((layerId: string, index: number) => {
+              const layer = this.layerCollection.getArray().find(
+                // @ts-ignore
+                (layer) => layer.get(this.layerIdentifier) === layerId
+              );
+              this.layerCollection.remove(layer);
+              this.layerCollection.insertAt(index, layer);
+            });
+          },
+        },
+        onSort: () => {
+          this.resetLayerConfig();
         },
       });
     }
@@ -254,19 +331,18 @@ export class EOxLayerConfig extends LitElement {
     evt: HTMLElementEvent<HTMLInputElement>,
     property: string
   ) {
-    console.log(property, evt.target.value);
     if (property === "opacity") {
       // @ts-ignore
       this._layerControlElement.changeOpacity(
         this._currentLayer,
-        parseInt(evt.target.value)
+        parseFloat(evt.target.value)
       );
     } else {
       // @ts-ignore
       this._layerControlElement.changeStyleProperty(
         this._currentLayer,
         property,
-        parseInt(evt.target.value)
+        parseFloat(evt.target.value)
       );
     }
   }
@@ -327,7 +403,10 @@ export class EOxLayerConfig extends LitElement {
                 <div>${property}</div>
                 <input
                   type="range"
-                  value="100"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="${this._currentLayer.getOpacity()}"
                   @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
                     this._handleInput(evt, property)}
                 />
