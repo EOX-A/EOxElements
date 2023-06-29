@@ -12,9 +12,6 @@ import { Geometry } from "ol/geom";
 @customElement("eox-drawtools")
 export class EOxDrawTools extends LitElement {
   @state()
-  _legacyMode: Boolean;
-
-  @state()
   _layerId: string;
 
   @state()
@@ -47,39 +44,17 @@ export class EOxDrawTools extends LitElement {
   _draw: Draw;
   _modify: Modify;
 
-  async _dynamicImport() {
-    const source = this._drawLayer.getSource();
-    const { Draw: importedDraw, Modify: importedModify } = await import(
-      // @ts-ignore
-      "https://cdn.skypack.dev/ol/interaction.js"
-    );
-    this._draw = new importedDraw({
-      source,
+  _startDrawing() {
+    this._eoxMap.addDraw(this._layerId, {
+      id: "drawInteraction",
       type: "Polygon",
     });
-
-    this._modify = new importedModify({ source });
-
-    this.requestUpdate();
-  }
-
-  _startDrawing() {
-    if (!this._legacyMode) {
-      this._eoxMap.addDraw(this._layerId, {
-        id: "drawInteraction",
-        type: "Polygon",
-      });
-      // @ts-ignore
-      this._draw = this._eoxMap.interactions["drawInteraction"] as Draw;
-      // @ts-ignore
-      this._modify = this._eoxMap.interactions[
-        "drawInteraction_modify"
-      ] as Modify;
-      // this._olMap.addEventListener('drawend', (evt) => this._onDrawEnd(evt))
-    } else {
-      this._olMap.addInteraction(this._draw);
-      this._olMap.addInteraction(this._modify);
-    }
+    // @ts-ignore
+    this._draw = this._eoxMap.interactions["drawInteraction"] as Draw;
+    // @ts-ignore
+    this._modify = this._eoxMap.interactions[
+      "drawInteraction_modify"
+    ] as Modify;
     this._draw.on("drawend", (evt) => this._onDrawEnd(evt));
     this._modify.on("modifyend", (evt) => this._onModifyEnd(evt));
     this._currentlyDrawing = true;
@@ -88,12 +63,7 @@ export class EOxDrawTools extends LitElement {
 
   _discardDrawing() {
     this._drawnFeatures = [];
-    if (!this._legacyMode) {
-      this._eoxMap.removeInteraction("drawInteraction");
-    } else {
-      this._olMap.removeInteraction(this._draw);
-      // this._olMap.removeInteraction(this._modify);
-    }
+    this._eoxMap.removeInteraction("drawInteraction");
     this._drawLayer.getSource().clear();
     this._currentlyDrawing = false;
     this.requestUpdate();
@@ -102,12 +72,7 @@ export class EOxDrawTools extends LitElement {
   _onDrawEnd(evt: any) {
     console.log(evt);
     this._emitDrawnFeatures();
-
-    if (!this._legacyMode) {
-      this._eoxMap.removeInteraction("drawInteraction");
-    } else {
-      this._olMap.removeInteraction(this._draw);
-    }
+    this._eoxMap.removeInteraction("drawInteraction");
     this._currentlyDrawing = false;
     this.requestUpdate();
   }
@@ -129,38 +94,19 @@ export class EOxDrawTools extends LitElement {
   }
 
   render() {
-    const map = document.querySelector(this.for as string);
-    // // @ts-ignore
-    // const olMap: Map = mapQuery.map || mapQuery;
+    const mapQuery = document.querySelector(this.for as string);
+
+    // @ts-ignore
+    this._eoxMap = mapQuery;
+    // @ts-ignore
+    this._olMap = mapQuery.map;
 
     this._layerId = this.layer;
 
-    // @ts-ignore
-    if (!map.addDraw) {
-      this._legacyMode = true;
-      // @ts-ignore
-      this._olMap = map;
-    } else {
-      // @ts-ignore
-      this._eoxMap = map;
-      // @ts-ignore
-      this._olMap = map.map;
-    }
-
-    let layers;
-    layers = this._olMap.getLayers().getArray();
-    this._drawLayer =
-      (layers.find(
-        (l) => l.get("id") === this._layerId
-      ) as VectorLayer<VectorSource>) ||
-      (layers
-        .filter((l) => l.get("mapbox-layers"))
-        .find((l) =>
-          l.get("mapbox-layers").includes(this._layerId)
-        ) as VectorLayer<VectorSource>);
-    if (this._legacyMode) {
-      this._dynamicImport();
-    }
+    this._drawLayer = this._olMap
+      .getLayers()
+      .getArray()
+      .find((l) => l.get("id") === this._layerId) as VectorLayer<VectorSource>;
     this.requestUpdate();
 
     return html`
@@ -170,8 +116,7 @@ export class EOxDrawTools extends LitElement {
       <div>
         <slot></slot>
         <button
-          disabled="${(this._legacyMode && !this._draw) ||
-          (!this.multipleFeatures && this._drawnFeatures.length) ||
+          disabled="${(!this.multipleFeatures && this._drawnFeatures.length) ||
           this._currentlyDrawing ||
           nothing}"
           @click="${() => this._startDrawing()}"
