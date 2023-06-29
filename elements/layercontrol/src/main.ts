@@ -253,8 +253,8 @@ export class EOxLayerControl extends LitElement {
                   this.layerCollection.insertAt(
                     this.layerCollection.getLength(),
                     selectedLayer
-                    );
-                  }
+                  );
+                }
                 selectedLayer.set("layerControlOptional", false);
                 selectedLayer.setVisible(true);
                 this.resetLayerConfig();
