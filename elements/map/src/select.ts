@@ -29,21 +29,12 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
       foo: "bar",
     });
 
-    setTimeout(() => {
-      tooltip.renderContent({
-        id: "abc",
-        foo: "baz",
-        bla: "blub",
-      });
-    }, 3000);
-
-    // TODO
-    // const overlay = new Overlay({
-    //   element: tooltip,
-    //   position: undefined,
-    //   offset: [0, -30],
-    //   positioning: "top-center",
-    // });
+    const overlay = new Overlay({
+      element: tooltip,
+      position: undefined,
+      offset: [0, -30],
+      positioning: "top-center",
+    });
 
     // if pointermove condition, update the position of the tooltip on pointermove
     // instead of only when selection changes
@@ -54,6 +45,9 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
         }
         if (selectInteraction.getFeatures().getLength()) {
           overlay.setPosition(e.coordinate);
+          tooltip.renderContent(
+            e.target.getFeaturesAtPixel(e.pixel)[0].getProperties()
+          );
         }
       };
       map.on("pointermove", pointermoveListener);
@@ -81,7 +75,7 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
     map.getInteractions().on("remove", (e) => {
       if (e.element === selectInteraction) {
         // remove the pointermove-listener when select-interaction is removed
-        map.removeOverlay(overlay)
+        map.removeOverlay(overlay);
       }
     });
   }
