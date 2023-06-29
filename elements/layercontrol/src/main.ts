@@ -331,7 +331,6 @@ export class EOxLayerConfig extends LitElement {
     evt: HTMLElementEvent<HTMLInputElement>,
     property: string
   ) {
-    console.log(this._currentLayer.get("id"), property, evt.target.value);
     if (property === "opacity") {
       // @ts-ignore
       this._layerControlElement.changeOpacity(
