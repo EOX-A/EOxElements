@@ -1,10 +1,7 @@
 [
   {
     "type": "Vector",
-    "background": "#1a2b39",
-    "properties": {
-      "id": "regions"
-    },
+    "id": "regions",
     "source": {
       "type": "Vector",
       "url": "https://openlayers.org/data/vector/ecoregions.json",

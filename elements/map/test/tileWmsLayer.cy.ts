@@ -9,8 +9,10 @@ describe("layers", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.setLayers(tileWmsLayerStyleJson);
+
       const layers = eoxMap.map.getLayers().getArray();
-      expect(layers).to.have.length(2);
+      expect(layers).to.have.length(1);
+      expect(layers[0].get("id")).to.be.equal("customId");
     });
   });
 });
