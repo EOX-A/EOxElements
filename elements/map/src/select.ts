@@ -29,11 +29,12 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
       foo: "bar",
     });
 
+    // TODO
     const overlay = new Overlay({
-      element: tooltip,
-      position: undefined,
-      offset: [0, -30],
-      positioning: "top-center",
+       element: tooltip,
+       position: undefined,
+       offset: [0, -30],
+       positioning: "top-center",
     });
 
     // if pointermove condition, update the position of the tooltip on pointermove
