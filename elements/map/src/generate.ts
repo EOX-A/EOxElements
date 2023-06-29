@@ -1,5 +1,6 @@
 import * as olLayers from "ol/layer";
 import * as olSources from "ol/source";
+import * as olFormats from "ol/format";
 
 export const generateLayers = (
   layerArray: Array<{
@@ -30,6 +31,11 @@ export const generateLayers = (
         ...layer,
         source: new newSource({
           ...layer.source,
+          // @ts-ignore
+          ...(layer.source.format && {
+            // @ts-ignore
+            format: new olFormats[layer.source.format](),
+          }),
         }),
       })
     );
