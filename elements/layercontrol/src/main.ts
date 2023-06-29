@@ -105,6 +105,15 @@ export class EOxLayerControl extends LitElement {
     });
   }
 
+  private hideConfigs = false;
+  private resetLayerConfig() {
+    this.hideConfigs = true;
+    setTimeout(() => {
+      this.hideConfigs = false;
+      this.requestUpdate();
+    }, 0);
+  }
+
   render() {
     const mapQuery = document.querySelector(this.for as string);
     // @ts-ignore
@@ -177,7 +186,7 @@ export class EOxLayerControl extends LitElement {
                       />`
                     : nothing}
                 </div>
-                ${this.layerConfig
+                ${this.layerConfig && !this.hideConfigs
                   ? html`
                       <eox-layerconfig
                         .layerConfig="${this.layerConfig}"
@@ -238,7 +247,7 @@ export class EOxLayerControl extends LitElement {
                 );
                 selectedLayer.set("layerControlOptional", false);
                 selectedLayer.setVisible(true);
-                this.requestUpdate();
+                this.resetLayerConfig();
               }}"
             >
               add
