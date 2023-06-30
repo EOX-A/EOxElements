@@ -9,6 +9,9 @@
         width: 400px;
         height: 300px;
       }
+      eox-layercontrol {
+        width: 400px;
+      }
     </style>
   </head>
   <body>
@@ -17,6 +20,38 @@
       zoom="3"
       center="[1000000, 6000000]"
       layers='[
+      {
+        "type": "WebGLTile",
+        "id":"s2",
+        "layerControlOptional": true,
+        "style": {
+          "variables": {
+            "red": 1,
+            "green": 2,
+            "blue": 3,
+            "redMax": 3000,
+            "greenMax": 3000,
+            "blueMax": 3000
+          },
+          "color": [
+            "array",
+            ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+            ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+            ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+            1
+          ],
+          "gamma": 1.1
+        },
+        "source": {
+          "type": "GeoTIFF",
+          "normalize": false,
+          "sources": [
+            {
+              "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
+            }
+          ]
+        }
+      },
         {
           "type": "Tile",
           "id": "WIND",
@@ -58,6 +93,16 @@
       layerTitle="mapbox-source"
       layerIdentifier="id"
     ></eox-layercontrol>
+    <eox-layercontrol
+      for="eox-map"
+      externalLayerConfig
+      layerConfig='["opacity"]'
+      layerIdentifier="id"
+      id="test-control"
+    >
+      Layer Control with external layer config
+    </eox-layercontrol>
+    <eox-layerconfig for="eox-layercontrol#test-control"></eox-layerconfig>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "https://unpkg.com/@eox/layercontrol@latest";
