@@ -7,12 +7,7 @@ import { Layer } from "ol/layer";
 // @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
 import { style } from "./style";
-// @ts-ignore
-import iconChecked from "../assets/icon-checked.svg";
-// @ts-ignore
-import iconUnchecked from "../assets/icon-unchecked.svg";
-// @ts-ignore
-import iconDrag from "../assets/icon-drag.svg";
+import { styleEOX } from "./style.eox";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
@@ -53,6 +48,9 @@ export class EOxLayerControl extends LitElement {
 
   @property({ type: Boolean })
   externalLayerConfig: Boolean = undefined;
+
+  @property({ type: Boolean })
+  unstyled: Boolean;
 
   private _updateControl(layerCollection: Collection<any>) {
     this.layerCollection = layerCollection;
@@ -130,6 +128,7 @@ export class EOxLayerControl extends LitElement {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       <div>
         <slot></slot>
@@ -145,25 +144,9 @@ export class EOxLayerControl extends LitElement {
               >
                 <div class="layer">
                   <label>
-                    ${when(
-                      layer.getVisible(),
-                      () =>
-                        html`<img
-                          src="${iconChecked}"
-                          width="24"
-                          height="24"
-                        />`,
-                      () =>
-                        html`<img
-                          src="${iconUnchecked}"
-                          width="24"
-                          height="24"
-                        />`
-                    )}
                     <input
                       type="checkbox"
                       checked="${layer.getVisible() || nothing}"
-                      style="display: none"
                       @click=${() => {
                         layer.setVisible(!layer.getVisible());
                         this.requestUpdate();
@@ -178,12 +161,9 @@ export class EOxLayerControl extends LitElement {
                     >
                   </label>
                   ${this.sortBy === "layerOrder"
-                    ? html`<img
-                        class="dragHandle"
-                        src="${iconDrag}"
-                        width="24"
-                        height="24"
-                      />`
+                    ? html`<div class="dragHandle">
+                        <span>=</span>
+                      </div>`
                     : nothing}
                 </div>
                 ${this.layerConfig && !this.hideConfigs
