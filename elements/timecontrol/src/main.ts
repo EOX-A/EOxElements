@@ -5,6 +5,7 @@ import Layer from "ol/layer/Layer";
 import TileSource from "ol/source/Tile";
 import "toolcool-range-slider";
 import { style } from "./style";
+import { styleEOX } from "./style.eox";
 
 @customElement("eox-timecontrol")
 export class EOxDrawTools extends LitElement {
@@ -109,6 +110,9 @@ export class EOxDrawTools extends LitElement {
   @state()
   private _newTimeIndex: number = 0;
 
+  @property({ type: Boolean })
+  unstyled: Boolean;
+
   private _updateStep(step = 1) {
     this._newTimeIndex = this._newTimeIndex + step;
     if (this._newTimeIndex > this.animationValues.length - 1) {
@@ -165,6 +169,7 @@ export class EOxDrawTools extends LitElement {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       <main>
         <div id="controls" part="controls">
@@ -184,6 +189,7 @@ export class EOxDrawTools extends LitElement {
                   data="${this.animationValues}"
                   part="slider"
                   value="${this.animationValues[this._newTimeIndex]}"
+                  style="display: inline-block;"
                   @change="${(evt: { detail: { value: string } }) =>
                     this._updateStep(
                       this.animationValues.findIndex(
