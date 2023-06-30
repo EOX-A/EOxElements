@@ -6,6 +6,7 @@ import { Draw, Modify } from "ol/interaction";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import { style } from "./style";
+import { styleEOX } from "./style.eox";
 import Feature from "ol/Feature.js";
 import { Geometry } from "ol/geom";
 
@@ -40,6 +41,9 @@ export class EOxDrawTools extends LitElement {
 
   @property()
   layer: string;
+
+  @property({ type: Boolean })
+  unstyled: Boolean;
 
   _draw: Draw;
   _modify: Modify;
@@ -112,6 +116,7 @@ export class EOxDrawTools extends LitElement {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       <div>
         <slot></slot>
