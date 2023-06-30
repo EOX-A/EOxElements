@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eox-itemfiter examples</title>
+    <style>
+      eox-itemfilter {
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Itemfilter with aggregation</p>
+    <eox-itemfilter></eox-itemfilter>
+    <p>Itemfilter with range slider</p>
+    <eox-itemfilter id="range"></eox-itemfilter>
+    <script type="module">
+      import "https://unpkg.com/@eox/itemfilter@latest";
+      import items from "./items.json" assert { type: "json" };
+
+      const EOxItemFilter = document.querySelector("eox-itemfilter");
+      const EOxItemFilterRange = document.querySelector("eox-itemfilter#range");
+      EOxItemFilter.config = {
+        titleProperty: "title",
+        filterProperties: [{ key: "themes", title: "Theme", exclusive: true }],
+        aggregateResults: "themes",
+        enableSearch: true,
+        enableHighlighting: true,
+        fuseConfig: {
+          keys: ["title"],
+        },
+        onSelect: (item) => {
+          console.log(item);
+        },
+      };
+      EOxItemFilterRange.config = {
+        titleProperty: "title",
+        enableSearch: true,
+        filterProperties: [{ key: "datetime", type: "range", format: "date" }],
+        fuseConfig: {
+          keys: ["title", "datetime"],
+        },
+      };
+      EOxItemFilter.apply(items);
+      EOxItemFilterRange.apply(items);
+    </script>
+  </body>
+</html>
