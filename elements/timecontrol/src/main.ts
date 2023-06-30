@@ -81,6 +81,22 @@ export class EOxDrawTools extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * Set the config at a later point
+   * @param config
+   */
+  setConfig(config: {
+    layer: string;
+    animationProperty: string;
+    animationValues: Array<string>;
+  }) {
+    this.layer = config.layer ?? this.layer;
+    this.animationProperty = config.animationProperty ?? this.animationProperty;
+    this.animationValues = config.animationValues ?? this.animationValues;
+    this.requestUpdate();
+    this._updateStep(0);
+  }
+
   @state()
   private _animationInterval: ReturnType<typeof setInterval>;
 
