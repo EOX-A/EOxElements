@@ -1,12 +1,12 @@
 import Map from "ol/Map.js";
 import View from "ol/View.js";
-import { Coordinate } from "ol/coordinate";
 import olCss from "ol/ol.css";
 import { addDraw } from "./src/draw";
 import { addSelect } from "./src/select";
 import { generateLayers } from "./src/generate";
 import Interaction from "ol/interaction/Interaction";
 import { getLayerById } from "./src/layer";
+import { getCenterFromAttribute } from "./src/center";
 
 export class EOxMap extends HTMLElement {
   shadow: ShadowRoot;
@@ -78,11 +78,7 @@ export class EOxMap extends HTMLElement {
       target: div,
       layers: generateLayers(JSON.parse(this.getAttribute("layers"))),
       view: new View({
-        center: this.hasAttribute("center")
-          ? (JSON.parse(
-              this.getAttribute("center")
-            ) as Array<Number> as Coordinate)
-          : [0, 0],
+        center: getCenterFromAttribute(this.getAttribute("center")),
         zoom: this.hasAttribute("zoom")
           ? JSON.parse(this.getAttribute("zoom"))
           : 0,
