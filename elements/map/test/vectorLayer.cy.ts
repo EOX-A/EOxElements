@@ -1,7 +1,7 @@
 import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 
-describe("layers", () => {
+describe("Vector Layer", () => {
   beforeEach(() => {
     cy.visit("/elements/map/test/general.html");
   });
