@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
@@ -8,8 +8,10 @@ import Fuse from "fuse.js";
 import _debounce from "lodash.debounce";
 import "toolcool-range-slider";
 import dayjs from "dayjs";
+import { TemplateElement } from "../../../utils/templateElement";
 import { highlight } from "./itemHighlighting";
 import { style } from "./style";
+import { styleEOX } from "./style.eox";
 
 class ElementConfig {
   /**
@@ -93,7 +95,7 @@ class ElementConfig {
 }
 
 @customElement("eox-itemfilter")
-export class EOxItemFilter extends LitElement {
+export class EOxItemFilter extends TemplateElement {
   _fuse: Fuse<any>;
   _resultAggregation: Array<string> = [];
 
@@ -125,8 +127,8 @@ export class EOxItemFilter extends LitElement {
   @property()
   apply = (items: Array<Object>) => {
     this._items = items.map((i, index) => ({
-      ...i,
       id: `item-${index}`,
+      ...i,
     }));
     this._fuse = new Fuse(this._items, {
       // minMatchCharLength: 3,
@@ -235,6 +237,9 @@ export class EOxItemFilter extends LitElement {
       ].sort((a, b) => a.localeCompare(b));
     }
   };
+
+  @property({ type: Boolean })
+  unstyled: Boolean;
 
   inputHandler = () => {
     // using the querySelector/value combo since the event target value is undefined when debounced
@@ -486,6 +491,7 @@ export class EOxItemFilter extends LitElement {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       <form @submit="${(evt: FormDataEvent) => evt.preventDefault()}">
         ${when(
@@ -520,41 +526,25 @@ export class EOxItemFilter extends LitElement {
                       data-filter="${filter.key}"
                     >
                       <summary>
-                        <small>
-                          <strong
-                            class="title"
-                            style="${!filter.title &&
-                            "text-transform: capitalize"}"
-                          >
-                            ${filter.title || filter.key}
-                            ${filter.type === "string" &&
-                            Object.values(
-                              // @ts-ignore
-                              this._filters[filter.key].keys
-                            ).filter((v) => v).length
-                              ? `(${
-                                  Object.values(
-                                    // @ts-ignore
-                                    this._filters[filter.key].keys
-                                  ).filter((v) => v).length
-                                })`
-                              : nothing}
-                          </strong>
-                        </small>
-                        <div
-                          style="display: flex; align-items: center; justify-content: center; margin-left: 4px;"
+                        <span
+                          class="title"
+                          style="${!filter.title &&
+                          "text-transform: capitalize"}"
                         >
-                          <svg
-                            data-cy="expand-button"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="6 6 12 12"
-                          >
-                            <title>chevron-down</title>
-                            <path
-                              d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                            />
-                          </svg>
-                        </div>
+                          ${filter.title || filter.key}
+                          ${filter.type === "string" &&
+                          Object.values(
+                            // @ts-ignore
+                            this._filters[filter.key].keys
+                          ).filter((v) => v).length
+                            ? `(${
+                                Object.values(
+                                  // @ts-ignore
+                                  this._filters[filter.key].keys
+                                ).filter((v) => v).length
+                              })`
+                            : nothing}
+                        </span>
                       </summary>
                       <div class="scroll" style="max-height: 150px">
                         ${filter.type === "range"
@@ -586,7 +576,6 @@ export class EOxItemFilter extends LitElement {
                                   this._filters[filter.key].keys.max
                                 }"
                                 step="1"
-                                style="margin: 5px"
                                 @change="${(evt: InputEvent) => {
                                   [
                                     // @ts-ignore
@@ -664,7 +653,7 @@ export class EOxItemFilter extends LitElement {
                     id="filter-reset"
                     data-cy="filter-reset"
                     @click=${() => this.resetFilters()}
-                    ><small>Reset filters</small></a
+                    >Reset filters</a
                   >
                 `
               )}
@@ -697,24 +686,15 @@ export class EOxItemFilter extends LitElement {
                           open
                         >
                           <summary>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                            >
-                              <title>chevron-down</title>
-                              <path
-                                d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                              />
-                            </svg>
-                            <strong class="title">
+                            <span class="title">
                               ${aggregationProperty}
-                            </strong>
-                            <span style="margin-left: 0.25rem"
-                              >(${this.aggregateResults(
-                                this._results,
-                                aggregationProperty
-                              ).length})</span
-                            >
+                              <span class="count"
+                                >(${this.aggregateResults(
+                                  this._results,
+                                  aggregationProperty
+                                ).length})</span
+                              >
+                            </span>
                           </summary>
                           <ul>
                             ${map(
@@ -738,12 +718,24 @@ export class EOxItemFilter extends LitElement {
                                         this._config.onSelect(item);
                                       }}
                                     />
-                                    <span class="title"
-                                      >${unsafeHTML(
-                                        // @ts-ignore
-                                        item[this._config.titleProperty]
-                                      )}</span
-                                    >
+                                    ${when(
+                                      this.hasTemplate("result"),
+                                      () =>
+                                        this.renderTemplate(
+                                          "result",
+                                          item,
+                                          // @ts-ignore
+                                          `result-${item.id}`
+                                        ),
+                                      () => html`
+                                        <span class="title"
+                                          >${unsafeHTML(
+                                            // @ts-ignore
+                                            item[this._config.titleProperty]
+                                          )}</span
+                                        >
+                                      `
+                                    )}
                                   </label>
                                 </li>
                               `

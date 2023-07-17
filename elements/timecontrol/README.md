@@ -1,19 +1,15 @@
-# Map element
-
-## Examples
-
-[Examples](https://eox-a.github.io/EOxElements/elements/map/examples/index.html)
+# Time control
 
 ## Usage
 
 ```
-npm install @eox/map
+npm install @eox/timecontrol
 ```
 
 ```
-import "@eox/map"
+import "@eox/timecontrol"
 
-<eox-map></eox-map>
+<eox-timecontrol></eox-timecontrol>
 ```
 
 // TODO: add documentation

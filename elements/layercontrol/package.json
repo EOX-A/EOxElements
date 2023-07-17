@@ -1,6 +1,6 @@
 {
-  "name": "@eox/layerswitcher",
-  "version": "0.1.0",
+  "name": "@eox/layercontrol",
+  "version": "0.3.1",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -21,7 +21,7 @@
     "dist",
     "test"
   ],
-  "main": "./dist/eox-layerswitcher.js",
+  "main": "./dist/eox-layercontrol.js",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",

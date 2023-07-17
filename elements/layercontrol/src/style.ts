@@ -2,11 +2,9 @@ export const style = `
 :host {
   display: block;
 }
-ul {
-  padding: 0;
-}
-li {
-  list-style: none;
+.layer {
+  display: flex;
+  justify-content: space-between;
 }
 .dragHandle {
   cursor: ns-resize;
