@@ -75,6 +75,9 @@ export class EOxMap extends HTMLElement {
     :host {
       display: block;
     }
+    .eox-map-tooltip {
+      pointer-events: none !important;
+    }
   `;
     style.innerHTML = shadowStyleFix + olCss;
     this.shadow.appendChild(style);
