@@ -14,8 +14,7 @@ export class EOxTestelement extends HTMLElement {
     this.shadow.appendChild(style);
     const div = document.createElement("div");
     div.innerHTML = "Hello world!";
-    console.log(this.getAttribute("message"));
-    // div.innerHTML = this.getAttribute("message")
+    div.innerHTML = this.getAttribute("message")
     this.shadow.appendChild(div); 
   }
 }

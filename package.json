@@ -9,6 +9,7 @@
     "build:all": "npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
     "cypress": "cypress open",
+    "test": "cypress run",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
     "format:check:all": "prettier --check .",
@@ -17,11 +18,15 @@
     "watch:all": "npm run watch --ws"
   },
   "devDependencies": {
+    "@cypress/mount-utils": "^4.0.0",
     "cypress": "^12.12.0",
     "cypress-lit": "^0.0.7",
     "rimraf": "^5.0.1"
   },
   "engines": {
     "node": ">=18.16.0"
+  },
+  "dependencies": {
+    "@eox/chart": "^2.0.0-beta2"
   }
 }

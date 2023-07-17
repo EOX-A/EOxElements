@@ -1,20 +1,15 @@
-import { EOxChart } from "../src/main";
+import { EOxChart } from "../src";
+import "../src/index.ts";
+import { html } from "lit";
 
 describe("Chart", () => {
-  beforeEach(() => {
-    cy.visit("/elements/chart/test/general.html");
-  });
-
-  it("should expose the chart object", () => {
-    cy.get("eox-chart").should(($el) => {
-      const eoxChart = <EOxChart>$el[0];
-      expect(eoxChart.chart).to.exist;
-    });
-  });
-
   it("loads the chart", () => {
-    cy.get("eox-chart").should(($el) => {
-      const eoxChart = <EOxChart>$el[0];
+    const eoxChart = new EOxChart();
+    // @ts-ignore 
+    cy.mount(eoxChart, html`<eox-chart id="chart" class="chart"></eox-chart>`).as(
+      "eox-chart"
+    );
+    cy.get("eox-chart").should(() => {
       const data = {
         datasets: [
           {

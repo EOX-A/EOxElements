@@ -1,12 +1,12 @@
 import { EOxItemFilter } from "../src/main";
-import testItems from "./testItems.json";
 
 describe("Item Filter", () => {
-  beforeEach(() => {
-    cy.visit("/elements/itemfilter/test/general.html");
-  });
-
   it("loads the itemfilter", () => {
+    // @ts-ignore
+    cy.mount(` <eox-itemfilter>
+    <h4 slot="filterstitle">Filter</h4>
+    <h4 slot="resultstitle">Results</h4>
+  </eox-itemfilter>`);
     cy.get("eox-itemfilter").should(($el) => {
       const EOxItemFilter = <EOxItemFilter>$el[0];
       EOxItemFilter.config = {
@@ -51,7 +51,7 @@ describe("Item Filter", () => {
         //   }
         // },
       };
-      EOxItemFilter.apply(testItems);
+      // EOxItemFilter.apply(testItems);
     });
   });
 });

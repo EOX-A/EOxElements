@@ -1,13 +1,14 @@
-import { EOxChart } from "../src/main";
+import { EOxChart } from "../src";
+import { html } from "lit";
 
 describe("SH Display", () => {
-  beforeEach(() => {
-    cy.visit("/elements/chart/test/general.html");
-  });
   it("configures signals endpoint for chart to retrieve data", () => {
-    cy.get("eox-chart").should(($el) => {
-      const eoxChart = <EOxChart>$el[0];
-
+    const eoxChart = new EOxChart();
+    // @ts-ignore 
+    cy.mount(eoxChart, html`<eox-chart id="chart" class="chart"></eox-chart>`).as(
+      "eox-chart"
+    );
+    cy.get("eox-chart").should(() => {
       const options = {
         endpoint:
           "https://xcube-geodb.brockmann-consult.de/gtif/f0ad1e25-98fa-4b82-9228-815ab24f5dd1",

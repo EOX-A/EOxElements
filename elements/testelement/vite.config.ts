@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     lib: {
-      entry: "./main.ts",
+      entry: "./index.ts",
       name: "eox-testelement",
       // the proper extensions will be added
       fileName: "eox-testelement",

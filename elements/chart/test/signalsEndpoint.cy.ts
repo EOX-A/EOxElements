@@ -1,10 +1,8 @@
-import { EOxChart } from "../src/main";
+import "../src/index.ts";
 
 describe("SH Display", () => {
-  beforeEach(() => {
-    cy.visit("/elements/chart/test/general.html");
-  });
   it("configures signals endpoint for chart to retrieve data", () => {
+    cy.mount(`<eox-chart id="chart" class="chart"></eox-chart>`);
     cy.get("eox-chart").should(($el) => {
       const eoxChart = <EOxChart>$el[0];
 

@@ -3,11 +3,15 @@ import testItems from "./testItems.json";
 
 describe("Item Filter Config", () => {
   beforeEach(() => {
-    cy.visit("/elements/itemfilter/test/general.html");
+    // @ts-ignore
+    cy.mount(`<eox-itemfilter>
+      <h4 slot="filterstitle">Filter</h4>
+      <h4 slot="resultstitle">Results</h4>
+    </eox-itemfilter>`);
     cy.get("eox-itemfilter").should(($el) => {
-      const EOxItemFilter = <EOxItemFilter>$el[0];
+      const eoxItemFilter = <EOxItemFilter>$el[0];
       // default config
-      EOxItemFilter.config = {
+      eoxItemFilter.config = {
         titleProperty: "title",
         filterProperties: [{ key: "themes" }],
         aggregateResults: "themes",
@@ -22,13 +26,12 @@ describe("Item Filter Config", () => {
         // matchAllWhenEmpty: true,
         // exclusiveFilters: true,
       };
-      EOxItemFilter.apply(testItems);
+      eoxItemFilter.apply(testItems);
     });
   });
 
   it("should have a search bar", () => {
     cy.get("eox-itemfilter")
-      .shadow()
       .find("input")
       .should("not.have.css", "display", "none");
   });
