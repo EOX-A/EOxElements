@@ -1,7 +1,7 @@
 import { EOxMap } from "../main";
 import tileWmsLayerStyleJson from "./tileWmsLayer.json";
 
-describe("layers", () => {
+describe("WMS layer", () => {
   beforeEach(() => {
     cy.visit("/elements/map/test/general.html");
   });

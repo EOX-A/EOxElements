@@ -8,7 +8,8 @@
     "source": {
       "type": "Vector",
       "url": "https://openlayers.org/data/vector/ecoregions.json",
-      "format": "GeoJSON"
+      "format": "GeoJSON",
+      "attributions": "Regions: @ openlayers.org"
     }
   }
 ]
