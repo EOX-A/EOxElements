@@ -76,7 +76,9 @@ export abstract class TemplateElement extends LitElement {
       const { slot } =
         // @ts-ignore
         this._renderedTemplates[slotName];
-      this.removeChild(slot);
+      if (this.contains(slot)) {
+        this.removeChild(slot);
+      }
     }
 
     const div = document.createElement("div");
