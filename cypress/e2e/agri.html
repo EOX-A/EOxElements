@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+      }
+      body {
+        display: flex;
+      }
+      main {
+        flex-basis: 80%;
+      }
+      eox-map {
+        height: 100%;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <eox-map zoom="3" center="[1000000, 6000000]"></eox-map>
+    </main>
+    <aside>
+      <eox-drawtools for="eox-map" layer="draw"></eox-drawtools>
+      <eox-layercontrol
+        for="eox-map"
+        layerTitle="title"
+        layerIdentifier="id"
+      ></eox-layercontrol>
+    </aside>
+    <script type="module">
+      import "../../elements/map/dist/eox-map.js";
+      import "../../elements/layercontrol/dist/eox-layercontrol.js";
+      import "../../elements/drawtools/dist/eox-drawtools.js";
+      import layers from "./agri.json" assert { type: "json" };
+      document.querySelector("eox-map").setLayers(layers);
+    </script>
+  </body>
+</html>
