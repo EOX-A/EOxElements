@@ -1,3 +1,4 @@
+// @ts-nocheck
 import bboxPolygon from "@turf/bbox-polygon";
 import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";

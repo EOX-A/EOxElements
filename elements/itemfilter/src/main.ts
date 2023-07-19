@@ -680,6 +680,7 @@ export class EOxItemFilter extends TemplateElement {
                               >
                                 eox-map goes here
                               </p>
+                              <slot name="map"></slot>
                             `
                           : html`
                               <ul>
