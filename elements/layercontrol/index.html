@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eox-layercontrol examples</title>
+    <style>
+      eox-map {
+        width: 400px;
+        height: 300px;
+      }
+      eox-layercontrol {
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Basic layer control</p>
+    <eox-map
+      zoom="3"
+      center="[1000000, 6000000]"
+      layers='[
+      {
+        "type": "WebGLTile",
+        "id":"s2",
+        "style": {
+          "variables": {
+            "red": 1,
+            "green": 2,
+            "blue": 3,
+            "redMax": 3000,
+            "greenMax": 3000,
+            "blueMax": 3000
+          },
+          "color": [
+            "array",
+            ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+            ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+            ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+            1
+          ],
+          "gamma": 1.1
+        },
+        "source": {
+          "type": "GeoTIFF",
+          "normalize": false,
+          "sources": [
+            {
+              "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
+            }
+          ]
+        }
+      },
+        {
+          "type": "Tile",
+          "id": "WIND",
+          "source": {
+            "type": "TileWMS",
+            "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+            "params": {
+              "LAYERS": "AWS_VIS_WIND_V_10M"
+            }
+          }
+        },
+        {
+          "type": "Tile",
+          "id": "NO2",
+          "source": {
+            "type": "TileWMS",
+            "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+            "params": {
+              "LAYERS": "AWS_NO2-VISUALISATION"
+            }
+          }
+        },
+        {
+          "type": "Tile",
+          "id": "osm",
+          "opacity": 0.5,
+          "source": {
+            "type": "OSM"
+          }
+        }
+      ]'
+    ></eox-map>
+    <eox-layercontrol
+      for="eox-map"
+      layerTitle="mapbox-source"
+      layerIdentifier="id"
+    ></eox-layercontrol>
+    <script type="module">
+      import "https://unpkg.com/@eox/map@latest";
+      import "./src/main.ts";
+    </script>
+  </body>
+</html>
