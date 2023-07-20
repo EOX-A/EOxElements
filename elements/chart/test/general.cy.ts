@@ -1,12 +1,10 @@
 import { EOxChart } from "../src";
-import "../src/index.ts";
-import { html } from "lit";
 
 describe("Chart", () => {
   it("loads the chart", () => {
     const eoxChart = new EOxChart();
     // @ts-ignore 
-    cy.mount(eoxChart, html`<eox-chart id="chart" class="chart"></eox-chart>`).as(
+    cy.mount(eoxChart, `<eox-chart id="chart" class="chart"></eox-chart>`).as(
       "eox-chart"
     );
     cy.get("eox-chart").should(() => {

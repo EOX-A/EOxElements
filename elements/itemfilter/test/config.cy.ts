@@ -1,13 +1,17 @@
 import { EOxItemFilter } from "../src/main";
 import testItems from "./testItems.json";
 
+const eoxItemFilter = new EOxItemFilter();
+
 describe("Item Filter Config", () => {
   beforeEach(() => {
     // @ts-ignore
-    cy.mount(`<eox-itemfilter>
+    cy.mount(eoxItemFilter, `<eox-itemfilter>
       <h4 slot="filterstitle">Filter</h4>
       <h4 slot="resultstitle">Results</h4>
-    </eox-itemfilter>`);
+    </eox-itemfilter>`).as(
+      "eox-itemfilter"
+    );
     cy.get("eox-itemfilter").should(($el) => {
       const eoxItemFilter = <EOxItemFilter>$el[0];
       // default config

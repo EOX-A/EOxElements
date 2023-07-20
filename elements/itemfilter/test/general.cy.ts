@@ -1,15 +1,20 @@
 import { EOxItemFilter } from "../src/main";
+import testItems from "./testItems.json";
+import { html } from "lit";
 
 describe("Item Filter", () => {
   it("loads the itemfilter", () => {
+    const eoxItemFilter = new EOxItemFilter();
     // @ts-ignore
-    cy.mount(` <eox-itemfilter>
+    cy.mount(eoxItemFilter, `<eox-itemfilter>
     <h4 slot="filterstitle">Filter</h4>
     <h4 slot="resultstitle">Results</h4>
-  </eox-itemfilter>`);
+  </eox-itemfilter>`).as(
+    "eox-itemfilter"
+  );
     cy.get("eox-itemfilter").should(($el) => {
-      const EOxItemFilter = <EOxItemFilter>$el[0];
-      EOxItemFilter.config = {
+      // const eoxItemFilter = <EOxItemFilter>$el[0];
+      eoxItemFilter.config = {
         titleProperty: "title",
         filterProperties: [
           { key: "themes", title: "Theme", exclusive: true },
@@ -51,7 +56,7 @@ describe("Item Filter", () => {
         //   }
         // },
       };
-      // EOxItemFilter.apply(testItems);
+      eoxItemFilter.apply(testItems);
     });
   });
 });
