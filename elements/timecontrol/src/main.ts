@@ -55,7 +55,6 @@ export class EOxDrawTools extends LitElement {
   @property()
   urlFunction: Function;
 
-
   /**
    * Original tile url function of the source.
    * Used to get the correct TileGrid-Values, while manipulating certain parts of the URL.
@@ -130,12 +129,16 @@ export class EOxDrawTools extends LitElement {
     if (this._newTimeIndex < 0) {
       this._newTimeIndex = this.animationValues.length - 1;
     }
-    
+
     //@ts-ignore
     this._animationSource.setTileUrlFunction(
       //@ts-ignore
       (tileCoord, pixelRatio, projection) => {
-        let src = this._originalTileUrlFunction(tileCoord, pixelRatio, projection);
+        let src = this._originalTileUrlFunction(
+          tileCoord,
+          pixelRatio,
+          projection
+        );
         if (this.urlFunction) {
           return this.urlFunction(src);
         }
@@ -163,17 +166,18 @@ export class EOxDrawTools extends LitElement {
 
     olMap.once("loadend", () => {
       if (!this._originalTileUrlFunction) {
-      const animationLayer = olMap
-        .getLayers()
-        .getArray()
-        .find(
-          (l) =>
-            l.get("id") === this.layer ||
-            l.get("mapbox-layers")?.includes(this.layer)
-        ) as Layer;
-      this._animationSource = animationLayer.getSource() as TileSource;
-        //@ts-ignore
-        this._originalTileUrlFunction = this._animationSource.getTileUrlFunction();
+        const animationLayer = olMap
+          .getLayers()
+          .getArray()
+          .find(
+            (l) =>
+              l.get("id") === this.layer ||
+              l.get("mapbox-layers")?.includes(this.layer)
+          ) as Layer;
+        this._animationSource = animationLayer.getSource() as TileSource;
+        this._originalTileUrlFunction =
+          //@ts-ignore
+          this._animationSource.getTileUrlFunction();
       }
     });
 
