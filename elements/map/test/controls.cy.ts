@@ -12,7 +12,24 @@ describe("webcomponent attribute parsing", () => {
       const controlsMapElement = document.createElement("eox-map") as EOxMap;
       controlsMapElement.setAttribute(
         "controls",
-        '["Zoom", "Attribution", "FullScreen"]'
+        `{
+          "Zoom": {},
+          "Attribution": {},
+          "FullScreen": {},
+          "OverviewMap": {
+            "layers":   [
+              {
+                "type": "Tile",
+                "properties": {
+                  "id": "customId"
+                },
+                "source": {
+                  "type": "OSM"
+                }
+              }
+            ]
+          }
+        }`
       );
       controlsMapElement.classList.add("map");
       controlsMapElement.style.position = "absolute";
@@ -22,12 +39,12 @@ describe("webcomponent attribute parsing", () => {
       expect(
         controlsMapElement.map.getControls().getLength(),
         "set controls via webcomponent attributes"
-      ).to.be.equal(3);
+      ).to.be.equal(4);
       controlsMapElement.removeControl("FullScreen");
       expect(
         controlsMapElement.map.getControls().getLength(),
         "can remove control by name"
-      ).to.be.equal(2);
+      ).to.be.equal(3);
     });
   });
 });
