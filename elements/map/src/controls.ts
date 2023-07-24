@@ -21,22 +21,30 @@ type controlDictionary = {
  * adds initial controls from webcomponent attributes, if any are given.
  */
 export function addInitialControls(EOxMap: EOxMap) {
-  const controls = JSON.parse(
-    EOxMap.getAttribute("controls")
-  ) as controlDictionary;
+  const controls = JSON.parse(EOxMap.getAttribute("controls")) as
+    | controlDictionary
+    | Array<controlType>;
   if (controls) {
-    const keys = Object.keys(controls);
-    for (let i = 0, ii = keys.length; i < ii; i++) {
-      const controlName = keys[i] as controlType;
-      const controlOptions = controls[controlName];
-      // @ts-ignore
-      if (controlOptions && controlOptions.layers) {
+    if (Array.isArray(controls)) {
+      controls.forEach((controlName) => {
+        const control = new olControls[controlName]();
+        EOxMap.map.addControl(control);
+        EOxMap.controls[controlName] = control;
+      });
+    } else {
+      const keys = Object.keys(controls);
+      for (let i = 0, ii = keys.length; i < ii; i++) {
+        const controlName = keys[i] as controlType;
+        const controlOptions = controls[controlName];
         // @ts-ignore
-        controlOptions.layers = generateLayers(controlOptions.layers); // parse layers (OverviewMap)
+        if (controlOptions && controlOptions.layers) {
+          // @ts-ignore
+          controlOptions.layers = generateLayers(controlOptions.layers); // parse layers (OverviewMap)
+        }
+        const control = new olControls[controlName](controlOptions);
+        EOxMap.map.addControl(control);
+        EOxMap.controls[controlName] = control;
       }
-      const control = new olControls[controlName](controlOptions);
-      EOxMap.map.addControl(control);
-      EOxMap.controls[controlName] = control;
     }
   }
 }

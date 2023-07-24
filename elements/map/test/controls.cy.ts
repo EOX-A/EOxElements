@@ -6,6 +6,25 @@ describe("webcomponent attribute parsing", () => {
     cy.visit("/elements/map/test/general.html");
   });
 
+  it("set simple initial controls via webcomponent attributes as Array", () => {
+    cy.get("eox-map").should(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      const controlsMapElement = document.createElement("eox-map") as EOxMap;
+      controlsMapElement.setAttribute(
+        "controls",
+        `["Zoom", "Attribution", "FullScreen"]`
+      );
+      controlsMapElement.classList.add("map");
+      controlsMapElement.style.position = "absolute";
+      controlsMapElement.style.top = "0";
+      eoxMap.parentElement.appendChild(controlsMapElement);
+      controlsMapElement.setLayers(vectorLayerStyleJson);
+      expect(
+        controlsMapElement.map.getControls().getLength(),
+        "set controls via webcomponent attributes (Array)"
+      ).to.be.equal(3);
+    });
+  });
   it("set initial controls via webcomponent attributes", () => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = <EOxMap>$el[0];
