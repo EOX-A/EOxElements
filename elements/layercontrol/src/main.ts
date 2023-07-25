@@ -138,6 +138,7 @@ export class EOxLayerControl extends LitElement {
                 //@ts-ignore
                 layer.get(this.layerIdentifier)
               }"
+              data-disabled="${layer.get("layerControlDisable") || nothing}"
             >
               <div class="layer">
                 <label>
@@ -157,7 +158,8 @@ export class EOxLayerControl extends LitElement {
                     }`}</span
                   >
                 </label>
-                ${this.sortBy === "layerOrder"
+                ${this.sortBy === "layerOrder" &&
+                !layer.get("layerControlDisable")
                   ? html`<div class="dragHandle">
                       <span>=</span>
                     </div>`
@@ -294,6 +296,7 @@ export class EOxLayerControl extends LitElement {
         Sortable.create(list, {
           handle: ".dragHandle",
           dataIdAttr: "data-layer",
+          filter: "data-disabled",
           store: {
             get: () => {
               if (inGroup) {
@@ -344,6 +347,10 @@ export class EOxLayerControl extends LitElement {
                 }
               });
             },
+          },
+          onMove: (e: any) => {
+            // disallow disabled items to be dragged over
+            return !e.related.dataset.disabled;
           },
           onSort: () => {
             this.resetLayerConfig();
