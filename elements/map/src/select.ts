@@ -29,6 +29,7 @@ export function addSelect(EOxMap: EOxMap, layerId: string, options: any): void {
       position: undefined,
       offset: [0, -30],
       positioning: "top-center",
+      className: "eox-map-tooltip",
     });
 
     // if pointermove condition, update the position of the tooltip on pointermove
