@@ -210,13 +210,18 @@ export class EOxLayerControl extends LitElement {
               ${
                 // @ts-ignore
                 layer.getLayers
-                  ? listItems(
-                      this.preFilterLayers(
-                        // @ts-ignore
-                        [...layer.getLayers().getArray()].reverse()
-                      ),
-                      layer.get("id")
-                    )
+                  ? html`
+                      <details open class="group-details">
+                        <summary>Layers</summary>
+                        ${listItems(
+                          this.preFilterLayers(
+                            // @ts-ignore
+                            [...layer.getLayers().getArray()].reverse()
+                          ),
+                          layer.get("id")
+                        )}
+                      </details>
+                    `
                   : nothing
               }
             </li>
