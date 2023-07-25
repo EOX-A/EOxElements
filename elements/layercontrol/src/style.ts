@@ -9,4 +9,7 @@ export const style = `
 .dragHandle {
   cursor: ns-resize;
 }
+ul[data-group] {
+  padding-inline-start: 40px;
+}
 `;
