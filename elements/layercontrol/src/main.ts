@@ -255,11 +255,22 @@ export class EOxLayerControl extends LitElement {
                 // TODO make configurable?
                 const firstPosition = true;
                 if (firstPosition) {
-                  this.layerCollection.remove(selectedLayer);
-                  this.layerCollection.insertAt(
-                    this.layerCollection.getLength(),
-                    selectedLayer
-                  );
+                  if (selectedLayer.get("group")) {
+                    const group = this.findLayerById(
+                      this.layerCollection.getArray(),
+                      selectedLayer.get("group")
+                    ) as LayerGroup;
+                    group.getLayers().remove(selectedLayer);
+                    group
+                      .getLayers()
+                      .insertAt(group.getLayers().getLength(), selectedLayer);
+                  } else {
+                    this.layerCollection.remove(selectedLayer);
+                    this.layerCollection.insertAt(
+                      this.layerCollection.getLength(),
+                      selectedLayer
+                    );
+                  }
                 }
                 selectedLayer.set("layerControlOptional", false);
                 selectedLayer.setVisible(true);
