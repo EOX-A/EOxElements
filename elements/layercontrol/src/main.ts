@@ -172,7 +172,7 @@ export class EOxLayerControl extends LitElement {
                   />
                   <span class="title"
                     >${layer.get(this.layerTitle) ||
-                    `layer ${
+                    `${
                       // @ts-ignore
                       layer.get(this.layerIdentifier)
                     }`}</span
@@ -180,7 +180,7 @@ export class EOxLayerControl extends LitElement {
                 </label>
                 ${this.sortBy === "layerOrder" &&
                 !layer.get("layerControlDisable")
-                  ? html`<div class="dragHandle">
+                  ? html`<div class="drag-handle">
                       <span>=</span>
                     </div>`
                   : nothing}
@@ -317,11 +317,10 @@ export class EOxLayerControl extends LitElement {
       lists.forEach((list) => {
         const inGroup = list.dataset.group;
         Sortable.create(list, {
-          handle: ".dragHandle",
+          handle: ".drag-handle",
           dataIdAttr: "data-layer",
           filter: "data-disabled",
-          swapThreshold: 0.7,
-          forceFallback: true,
+          swapThreshold: 0.5,
           animation: 150,
           easing: "cubic-bezier(1, 0, 0, 1)",
           store: {
