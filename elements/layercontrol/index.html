@@ -60,6 +60,7 @@
             {
               "type": "WebGLTile",
               "id":"s2",
+              "layerControlExclusive": true,
               "title":"s2",
               "style": {
                 "variables": {
@@ -92,6 +93,8 @@
             {
               "type": "Tile",
               "id": "osm",
+              "layerControlExclusive": true,
+              "visible": false,
               "title": "osm",
               "opacity": 0.5,
               "source": {
@@ -103,6 +106,7 @@
         {
           "type": "Tile",
           "id": "osm2",
+          "visible": false,
           "title": "osm2",
           "source": {
             "type": "OSM"
@@ -112,7 +116,7 @@
     ></eox-map>
     <eox-layercontrol
       for="eox-map"
-      layerTitle="mapbox-source"
+      layerTitle="title"
       layerIdentifier="id"
     ></eox-layercontrol>
     <script type="module">
