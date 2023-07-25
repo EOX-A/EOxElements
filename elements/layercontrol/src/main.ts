@@ -1,6 +1,7 @@
 import { LitElement, html, nothing, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { map } from "lit/directives/map.js";
+import { repeat } from "lit/directives/repeat.js";
+import { live } from "lit/directives/live.js";
 import { when } from "lit/directives/when.js";
 import { Map, Collection } from "ol";
 import { Layer } from "ol/layer";
@@ -96,22 +97,6 @@ export class EOxLayerControl extends LitElement {
     );
   }
 
-  /**
-   * Hack to force re-rendering of entire list.
-   * TODO better way to force refresh?
-   */
-  hideList: Boolean;
-  private resetLayerConfig() {
-    const originalConfig = this.layerConfig;
-    this.layerConfig = [];
-    this.hideList = true;
-    setTimeout(() => {
-      this.layerConfig = originalConfig;
-      this.hideList = false;
-      this.requestUpdate();
-    }, 0);
-  }
-
   toggleLayerVisibility(layer: Layer, groupId?: string) {
     layer.setVisible(!layer.getVisible());
     if (layer.get("layerControlExclusive")) {
@@ -144,7 +129,6 @@ export class EOxLayerControl extends LitElement {
         layer.setVisible(false);
       });
     }
-    this.resetLayerConfig();
     this.requestUpdate();
   }
 
@@ -166,8 +150,9 @@ export class EOxLayerControl extends LitElement {
       group?: string
     ): TemplateResult => html`
       <ul data-group="${group ?? nothing}">
-        ${map(
+        ${repeat(
           layers,
+          (layer) => layer.get(this.layerIdentifier),
           (layer) => html`
             <li
               data-layer="${
@@ -180,7 +165,7 @@ export class EOxLayerControl extends LitElement {
                 <label>
                   <input
                     type="checkbox"
-                    checked="${layer.getVisible() || nothing}"
+                    .checked="${live(layer.getVisible())}"
                     @click=${() => {
                       this.toggleLayerVisibility(layer as Layer, group);
                     }}
@@ -248,11 +233,9 @@ export class EOxLayerControl extends LitElement {
       <div>
         <slot></slot>
         <div>
-          ${!this.hideList
-            ? listItems(
-                this.preFilterLayers(collection.getArray() as Array<Layer>)
-              )
-            : nothing}
+          ${listItems(
+            this.preFilterLayers(collection.getArray() as Array<Layer>)
+          )}
         </div>
         ${when(
           this.optionalLayerArray?.length > 0,
@@ -312,7 +295,6 @@ export class EOxLayerControl extends LitElement {
                 }
                 selectedLayer.set("layerControlOptional", false);
                 selectedLayer.setVisible(true);
-                this.resetLayerConfig();
               }}"
             >
               add
@@ -391,9 +373,6 @@ export class EOxLayerControl extends LitElement {
           onMove: (e: any) => {
             // disallow disabled items to be dragged over
             return !e.related.dataset.disabled;
-          },
-          onSort: () => {
-            this.resetLayerConfig();
           },
         });
       });
@@ -494,9 +473,9 @@ export class EOxLayerConfig extends LitElement {
     if (!this.layerConfig && !this.layerControl) {
       // "external" mode, i.e. rendered in separate div
       this._layerControlElement = document.querySelector(this.for);
-      // @ts-ignore
-      this.layerConfig = this._layerControlElement.layerConfig;
       if (this._layerControlElement) {
+        // @ts-ignore
+        this.layerConfig = this._layerControlElement.layerConfig;
         this._layerControlElement.addEventListener("layerconfig", (evt) => {
           // @ts-ignore
           this._currentLayer = evt.detail.layer;
@@ -524,10 +503,11 @@ export class EOxLayerConfig extends LitElement {
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
               : nothing}
-            ${map(
+            ${repeat(
               this.layerConfig.filter((lC) =>
                 this.for ? lC !== "opacity" : true
               ),
+              (property) => property,
               (property) => html`
                 <div>${property}</div>
                 <input
@@ -535,7 +515,7 @@ export class EOxLayerConfig extends LitElement {
                   min="0"
                   max="1"
                   step="0.01"
-                  value="${this._currentLayer.getOpacity()}"
+                  value="${live(this._currentLayer.getOpacity())}"
                   @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
                     this._handleInput(evt, property)}
                 />
@@ -546,8 +526,9 @@ export class EOxLayerConfig extends LitElement {
                   <details open="${this.for ? true : nothing}">
                     <summary>Layer config</summary>
                     <ul>
-                      ${map(
+                      ${repeat(
                         Object.keys(this._configList),
+                        (property) => property,
                         (property) => html` <li>
                           <div>${property}</div>
                           <input
@@ -558,10 +539,10 @@ export class EOxLayerConfig extends LitElement {
                             max="${["red", "green", "blue"].includes(property)
                               ? 4
                               : 5000}"
-                            value="${
+                            value="${live(
                               // @ts-ignore
                               this._configList[property]
-                            }"
+                            )}"
                             @input=${(
                               evt: HTMLElementEvent<HTMLInputElement>
                             ) => this._handleInput(evt, property)}
