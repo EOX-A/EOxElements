@@ -2,33 +2,34 @@ import * as olLayers from "ol/layer";
 import * as olSources from "ol/source";
 import * as olFormats from "ol/format";
 
-export const generateLayers = (
-  layerArray: Array<{
-    type: olLayers.Layer;
-    properties?: Object;
-    source: { type: olSources.Source };
-  }>
-) => {
+type EoxLayer = {
+  type: olLayers.Layer;
+  id: string;
+  properties?: Object;
+  source?: { type: olSources.Source };
+  layers?: Array<EoxLayer>;
+};
+
+export const generateLayers = (layerArray: Array<EoxLayer>) => {
   if (!layerArray) {
     return [];
   }
 
-  const layers: Array<olLayers.Layer> = [];
-
-  layerArray.reverse().forEach((layer) => {
+  function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     // @ts-ignore
     const newLayer = olLayers[layer.type];
     // @ts-ignore
-    const newSource = olSources[layer.source.type];
+    const newSource = olSources[layer.source?.type];
     if (!newLayer) {
       throw new Error(`Layer type ${layer.type} not supported!`);
     }
-    if (!newSource) {
+    if (layer.source && !newSource) {
       throw new Error(`Source type ${layer.source.type} not supported!`);
     }
-    layers.push(
-      new newLayer({
-        ...layer,
+    return new newLayer({
+      ...layer,
+      group,
+      ...(layer.source && {
         source: new newSource({
           ...layer.source,
           // @ts-ignore
@@ -37,8 +38,13 @@ export const generateLayers = (
             format: new olFormats[layer.source.format](),
           }),
         }),
-      })
-    );
-  });
-  return layers;
+      }),
+      // @ts-ignore
+      ...(layer.type === "Group" && {
+        layers: layer.layers.reverse().map((l) => createLayer(l, layer.id)),
+      }),
+    });
+  }
+
+  return layerArray.reverse().map((l) => createLayer(l));
 };
