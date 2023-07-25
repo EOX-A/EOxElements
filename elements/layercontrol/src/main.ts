@@ -112,6 +112,42 @@ export class EOxLayerControl extends LitElement {
     }, 0);
   }
 
+  toggleLayerVisibility(layer: Layer, groupId?: string) {
+    layer.setVisible(!layer.getVisible());
+    if (layer.get("layerControlExclusive")) {
+      let otherExclusiveLayers = [];
+      // check if layer is in group
+      if (groupId) {
+        const group = this.findLayerById(
+          this.layerCollection.getArray(),
+          groupId
+        ) as LayerGroup;
+        otherExclusiveLayers = group
+          .getLayers()
+          .getArray()
+          .filter(
+            (l) =>
+              l.get(this.layerIdentifier) !== layer.get(this.layerIdentifier) &&
+              l.get("layerControlExclusive")
+          );
+      } else {
+        otherExclusiveLayers = this.layerCollection
+          .getArray()
+          .filter(
+            (l) =>
+              l.get(this.layerIdentifier) !== layer.get(this.layerIdentifier) &&
+              l.get("layerControlExclusive")
+          );
+      }
+      // @ts-ignore
+      otherExclusiveLayers.forEach((layer: Layer) => {
+        layer.setVisible(false);
+      });
+    }
+    this.resetLayerConfig();
+    this.requestUpdate();
+  }
+
   render() {
     const mapQuery = document.querySelector(this.for as string);
     // @ts-ignore
@@ -146,8 +182,7 @@ export class EOxLayerControl extends LitElement {
                     type="checkbox"
                     checked="${layer.getVisible() || nothing}"
                     @click=${() => {
-                      layer.setVisible(!layer.getVisible());
-                      this.requestUpdate();
+                      this.toggleLayerVisibility(layer as Layer, group);
                     }}
                   />
                   <span class="title"
