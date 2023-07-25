@@ -1,8 +1,7 @@
 import { EOxMap } from "../main";
 import imageWmsLayerStyleJson from "./imageWmsLayer.json";
 
-// fixme: imageWMS is identical to tileWMS
-describe("layers", () => {
+describe("image WMS layer", () => {
   beforeEach(() => {
     cy.visit("/elements/map/test/general.html");
   });
