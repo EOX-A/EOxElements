@@ -333,6 +333,10 @@ export class EOxLayerControl extends LitElement {
           handle: ".dragHandle",
           dataIdAttr: "data-layer",
           filter: "data-disabled",
+          swapThreshold: 0.7,
+          forceFallback: true,
+          animation: 150,
+          easing: "cubic-bezier(1, 0, 0, 1)",
           store: {
             get: () => {
               if (inGroup) {

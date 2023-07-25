@@ -32,4 +32,12 @@ li label > input[type=checkbox]:checked:after {
   width: 24px;
   height: 24px;
 }
+li.sortable-chosen {
+  background: #eeea;
+}
+li.sortable-drag {
+  visibility: hidden;
+}
+li.sortable-ghost {
+}
 `;
