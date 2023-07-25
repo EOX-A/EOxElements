@@ -248,10 +248,11 @@ export class EOxLayerControl extends LitElement {
       <div>
         <slot></slot>
         <div>
-          ${!this.hideList &&
-          listItems(
-            this.preFilterLayers(collection.getArray() as Array<Layer>)
-          )}
+          ${!this.hideList
+            ? listItems(
+                this.preFilterLayers(collection.getArray() as Array<Layer>)
+              )
+            : nothing}
         </div>
         ${when(
           this.optionalLayerArray?.length > 0,
