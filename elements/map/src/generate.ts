@@ -4,6 +4,7 @@ import * as olFormats from "ol/format";
 
 type EoxLayer = {
   type: olLayers.Layer;
+  id: string;
   properties?: Object;
   source?: { type: olSources.Source };
   layers?: Array<EoxLayer>;
@@ -14,7 +15,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
     return [];
   }
 
-  function createLayer(layer: EoxLayer): olLayers.Layer {
+  function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     // @ts-ignore
     const newLayer = olLayers[layer.type];
     // @ts-ignore
@@ -27,6 +28,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
     }
     return new newLayer({
       ...layer,
+      group,
       ...(layer.source && {
         source: new newSource({
           ...layer.source,
@@ -39,7 +41,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
       }),
       // @ts-ignore
       ...(layer.type === "Group" && {
-        layers: layer.layers.reverse().map((l) => createLayer(l)),
+        layers: layer.layers.reverse().map((l) => createLayer(l, layer.id)),
       }),
     });
   }
