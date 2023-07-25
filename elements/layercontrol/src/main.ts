@@ -1,9 +1,10 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html, nothing, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { Map, Collection } from "ol";
 import { Layer } from "ol/layer";
+import LayerGroup from "ol/layer/Group";
 // @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
 import { style } from "./style";
@@ -54,28 +55,12 @@ export class EOxLayerControl extends LitElement {
 
   private _updateControl(layerCollection: Collection<any>) {
     this.layerCollection = layerCollection;
-    const initialLayers = [...layerCollection.getArray()].filter(
-      (l) =>
-        l.get("layerControlHide") !== true &&
-        l.get("layerControlOptional") !== true
+    // @ts-ignore
+    this.optionalLayerArray = this.filterLayers(
+      layerCollection.getArray(),
+      "layerControlOptional",
+      true
     );
-    const optionalLayers = [...layerCollection.getArray()].filter(
-      (l) => l.get("layerControlOptional") === true
-    );
-    const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
-    if (zIndexSorting) {
-      initialLayers.sort((lA, lB) => {
-        return lA.get("zIndex")
-          ? lA.get("zIndex") < lB.get("zIndex")
-            ? 1
-            : -1
-          : 1;
-      });
-    } else {
-      initialLayers.reverse();
-    }
-    this.layerArray = initialLayers;
-    this.optionalLayerArray = optionalLayers;
     this.requestUpdate();
   }
 
@@ -103,11 +88,26 @@ export class EOxLayerControl extends LitElement {
     });
   }
 
-  private hideConfigs = false;
+  private preFilterLayers(layerArray: Array<Layer>) {
+    return [...layerArray].filter(
+      (l) =>
+        l.get("layerControlHide") !== true &&
+        l.get("layerControlOptional") !== true
+    );
+  }
+
+  /**
+   * Hack to force re-rendering of entire list.
+   * TODO better way to force refresh?
+   */
+  hideList: Boolean;
   private resetLayerConfig() {
-    this.hideConfigs = true;
+    const originalConfig = this.layerConfig;
+    this.layerConfig = [];
+    this.hideList = true;
     setTimeout(() => {
-      this.hideConfigs = false;
+      this.layerConfig = originalConfig;
+      this.hideList = false;
       this.requestUpdate();
     }, 0);
   }
@@ -125,6 +125,84 @@ export class EOxLayerControl extends LitElement {
       }
     });
 
+    const listItems = (
+      layers: Array<Layer | LayerGroup>,
+      group?: string
+    ): TemplateResult => html`
+      <ul data-group="${group ?? nothing}">
+        ${map(
+          layers,
+          (layer) => html`
+            <li
+              data-layer="${
+                //@ts-ignore
+                layer.get(this.layerIdentifier)
+              }"
+            >
+              <div class="layer">
+                <label>
+                  <input
+                    type="checkbox"
+                    checked="${layer.getVisible() || nothing}"
+                    @click=${() => {
+                      layer.setVisible(!layer.getVisible());
+                      this.requestUpdate();
+                    }}
+                  />
+                  <span class="title"
+                    >${layer.get(this.layerTitle) ||
+                    `layer ${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }`}</span
+                  >
+                </label>
+                ${this.sortBy === "layerOrder"
+                  ? html`<div class="dragHandle">
+                      <span>=</span>
+                    </div>`
+                  : nothing}
+              </div>
+              ${this.layerConfig
+                ? html`
+                    <eox-layerconfig
+                      .layerConfig="${this.layerConfig}"
+                      .layerControl="${this}"
+                      .layer=${layer}
+                      .external=${this.externalLayerConfig}
+                    ></eox-layerconfig>
+                  `
+                : nothing}
+              ${
+                // @ts-ignore
+                this.externalLayerConfig && layer.style_
+                  ? html`
+                      <button
+                        @click=${() => this._emitLayerconfig(layer as Layer)}
+                      >
+                        configure
+                      </button>
+                    `
+                  : nothing
+              }
+              ${
+                // @ts-ignore
+                layer.getLayers
+                  ? listItems(
+                      this.preFilterLayers(
+                        // @ts-ignore
+                        [...layer.getLayers().getArray()].reverse()
+                      ),
+                      layer.get("id")
+                    )
+                  : nothing
+              }
+            </li>
+          `
+        )}
+      </ul>
+    `;
+
     return html`
       <style>
         ${style}
@@ -132,64 +210,12 @@ export class EOxLayerControl extends LitElement {
       </style>
       <div>
         <slot></slot>
-        <ul>
-          ${map(
-            this.layerArray,
-            (layer) => html`
-              <li
-                layerid="${
-                  //@ts-ignore
-                  layer.get(this.layerIdentifier)
-                }"
-              >
-                <div class="layer">
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked="${layer.getVisible() || nothing}"
-                      @click=${() => {
-                        layer.setVisible(!layer.getVisible());
-                        this.requestUpdate();
-                      }}
-                    />
-                    <span class="title"
-                      >${layer.get(this.layerTitle) ||
-                      `layer ${
-                        // @ts-ignore
-                        layer.get(this.layerIdentifier)
-                      }`}</span
-                    >
-                  </label>
-                  ${this.sortBy === "layerOrder"
-                    ? html`<div class="dragHandle">
-                        <span>=</span>
-                      </div>`
-                    : nothing}
-                </div>
-                ${this.layerConfig && !this.hideConfigs
-                  ? html`
-                      <eox-layerconfig
-                        .layerConfig="${this.layerConfig}"
-                        .layerControl="${this}"
-                        .layer=${layer}
-                        .external=${this.externalLayerConfig}
-                      ></eox-layerconfig>
-                    `
-                  : nothing}
-                ${
-                  // @ts-ignore
-                  this.externalLayerConfig && layer.style_
-                    ? html`
-                        <button @click=${() => this._emitLayerconfig(layer)}>
-                          configure
-                        </button>
-                      `
-                    : nothing
-                }
-              </li>
-            `
+        <div>
+          ${!this.hideList &&
+          listItems(
+            this.preFilterLayers(collection.getArray() as Array<Layer>)
           )}
-        </ul>
+        </div>
         ${when(
           this.optionalLayerArray?.length > 0,
           () => html`
@@ -229,11 +255,22 @@ export class EOxLayerControl extends LitElement {
                 // TODO make configurable?
                 const firstPosition = true;
                 if (firstPosition) {
-                  this.layerCollection.remove(selectedLayer);
-                  this.layerCollection.insertAt(
-                    this.layerCollection.getLength(),
-                    selectedLayer
-                  );
+                  if (selectedLayer.get("group")) {
+                    const group = this.findLayerById(
+                      this.layerCollection.getArray(),
+                      selectedLayer.get("group")
+                    ) as LayerGroup;
+                    group.getLayers().remove(selectedLayer);
+                    group
+                      .getLayers()
+                      .insertAt(group.getLayers().getLength(), selectedLayer);
+                  } else {
+                    this.layerCollection.remove(selectedLayer);
+                    this.layerCollection.insertAt(
+                      this.layerCollection.getLength(),
+                      selectedLayer
+                    );
+                  }
                 }
                 selectedLayer.set("layerControlOptional", false);
                 selectedLayer.setVisible(true);
@@ -251,35 +288,100 @@ export class EOxLayerControl extends LitElement {
   updated() {
     // TODO implement zIndex sorting logic
     if (this.sortBy == "layerOrder") {
-      Sortable.create(this.renderRoot.querySelector("ul"), {
-        handle: ".dragHandle",
-        dataIdAttr: "layerId",
-        store: {
-          get: () => {
-            return this.layerCollection
-              .getArray()
-              .map((l) => l.get(this.layerIdentifier))
-              .reverse();
-          },
-
-          set: (sortable: Sortable) => {
-            var order = sortable.toArray().reverse();
-            order.forEach((layerId: string, index: number) => {
-              const layer = this.layerCollection.getArray().find(
+      const lists = this.renderRoot.querySelectorAll("ul");
+      lists.forEach((list) => {
+        const inGroup = list.dataset.group;
+        Sortable.create(list, {
+          handle: ".dragHandle",
+          dataIdAttr: "data-layer",
+          store: {
+            get: () => {
+              if (inGroup) {
+                const group = this.findLayerById(
+                  this.layerCollection.getArray(),
+                  inGroup
+                );
                 // @ts-ignore
-                (layer) => layer.get(this.layerIdentifier) === layerId
-              );
-              this.layerCollection.remove(layer);
-              this.layerCollection.insertAt(index, layer);
-            });
+                const groupCollection = group.getLayers();
+                return [
+                  ...groupCollection
+                    .getArray()
+                    .map((l: Layer) => l.get(this.layerIdentifier)),
+                ].reverse();
+              } else {
+                return [
+                  ...this.layerCollection
+                    .getArray()
+                    .map((l) => l.get(this.layerIdentifier)),
+                ].reverse();
+              }
+            },
+
+            set: (sortable: Sortable) => {
+              var order = sortable.toArray().reverse();
+
+              order.forEach((layerId: string, index: number) => {
+                if (inGroup) {
+                  const group = this.findLayerById(
+                    this.layerCollection.getArray(),
+                    inGroup
+                  );
+                  // @ts-ignore
+                  const groupCollection = group.getLayers();
+                  const layer = this.findLayerById(
+                    groupCollection.getArray(),
+                    layerId
+                  );
+                  groupCollection.remove(layer);
+                  groupCollection.insertAt(index, layer);
+                } else {
+                  const layer = this.findLayerById(
+                    this.layerCollection.getArray(),
+                    layerId
+                  ) as Layer;
+                  this.layerCollection.remove(layer);
+                  this.layerCollection.insertAt(index, layer);
+                }
+              });
+            },
           },
-        },
-        onSort: () => {
-          this.resetLayerConfig();
-        },
+          onSort: () => {
+            this.resetLayerConfig();
+          },
+        });
       });
     }
   }
+
+  filterLayers = (
+    layers: Array<Layer | LayerGroup>,
+    key: string,
+    value: any
+  ) => {
+    let found: Array<Layer | LayerGroup> = [];
+    const search = (
+      searchLayers: Array<Layer | LayerGroup>,
+      key: string,
+      value: any
+    ) => {
+      found = [...found, ...searchLayers.filter((l) => l.get(key) === value)];
+      // @ts-ignore
+      const groups = searchLayers.filter((l) => l.getLayers);
+      if (groups.length > 0) {
+        groups.forEach((group) =>
+          // @ts-ignore
+          search(group.getLayers().getArray(), key, value)
+        );
+      }
+      return found;
+    };
+    search(layers, key, value);
+    return found;
+  };
+
+  findLayerById = (layers: Array<Layer | LayerGroup>, id: string) => {
+    return this.filterLayers(layers, "id", id)[0];
+  };
 }
 
 @customElement("eox-layerconfig")
