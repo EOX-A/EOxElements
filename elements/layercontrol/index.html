@@ -20,90 +20,69 @@
       zoom="3"
       center="[1000000, 6000000]"
       layers='[
-        {
-          "type": "Group",
-          "id": "group2",
-          "layerControlDisable": true,
-          "title": "data",
-          "layers": [
-            {
-              "type": "Tile",
-              "id": "WIND",
-              "title": "WIND",
-              "source": {
-                "type": "TileWMS",
-                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-                "params": {
-                  "LAYERS": "AWS_VIS_WIND_V_10M"
-                }
-              }
-            },
-            {
-              "type": "Tile",
-              "id": "NO2",
-              "title": "NO2",
-              "source": {
-                "type": "TileWMS",
-                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-                "params": {
-                  "LAYERS": "AWS_NO2-VISUALISATION"
-                }
-              }
-            }
-          ]
+      {
+        "type": "WebGLTile",
+        "id":"s2",
+        "layerControlOptional": true,
+        "visible": false,
+        "style": {
+          "variables": {
+            "red": 1,
+            "green": 2,
+            "blue": 3,
+            "redMax": 3000,
+            "greenMax": 3000,
+            "blueMax": 3000
+          },
+          "color": [
+            "array",
+            ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+            ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+            ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+            1
+          ],
+          "gamma": 1.1
         },
-        {
-          "type": "Group",
-          "id": "group1",
-          "title": "background",
-          "layers": [
+        "source": {
+          "type": "GeoTIFF",
+          "normalize": false,
+          "sources": [
             {
-              "type": "WebGLTile",
-              "id":"s2",
-              "title":"s2",
-              "style": {
-                "variables": {
-                  "red": 1,
-                  "green": 2,
-                  "blue": 3,
-                  "redMax": 3000,
-                  "greenMax": 3000,
-                  "blueMax": 3000
-                },
-                "color": [
-                  "array",
-                  ["/", ["band", ["var", "red"]], ["var", "redMax"]],
-                  ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
-                  ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
-                  1
-                ],
-                "gamma": 1.1
-              },
-              "source": {
-                "type": "GeoTIFF",
-                "normalize": false,
-                "sources": [
-                  {
-                    "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "Tile",
-              "id": "osm",
-              "title": "osm",
-              "opacity": 0.5,
-              "source": {
-                "type": "OSM"
-              }
+              "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
             }
           ]
+        }
+      },
+        {
+          "type": "Tile",
+          "id": "WIND",
+          "layerControlOptional": true,
+          "visible": false,
+          "source": {
+            "type": "TileWMS",
+            "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+            "params": {
+              "LAYERS": "AWS_VIS_WIND_V_10M"
+            }
+          }
         },
         {
           "type": "Tile",
-          "id": "osm2",
-          "title": "osm2",
+          "id": "NO2",
+          "layerControlOptional": true,
+          "visible": false,
+          "source": {
+            "type": "TileWMS",
+            "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+            "params": {
+              "LAYERS": "AWS_NO2-VISUALISATION"
+            }
+          }
+        },
+        {
+          "type": "Tile",
+          "id": "osm",
+          "opacity": 0.5,
           "source": {
             "type": "OSM"
           }
@@ -115,6 +94,16 @@
       layerTitle="mapbox-source"
       layerIdentifier="id"
     ></eox-layercontrol>
+    <eox-layercontrol
+      for="eox-map"
+      externalLayerConfig
+      layerConfig='["opacity"]'
+      layerIdentifier="id"
+      id="test-control"
+    >
+      Layer Control with external layer config
+    </eox-layercontrol>
+    <eox-layerconfig for="eox-layercontrol#test-control"></eox-layerconfig>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "./src/main.ts";
