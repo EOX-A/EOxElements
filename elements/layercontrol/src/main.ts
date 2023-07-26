@@ -164,7 +164,9 @@ export class EOxLayerControl extends LitElement {
               <div class="layer">
                 <label>
                   <input
-                    type="checkbox"
+                    type="${layer.get("layerControlExclusive")
+                      ? "radio"
+                      : "checkbox"}"
                     .checked="${live(layer.getVisible())}"
                     @click=${() => {
                       this.toggleLayerVisibility(layer as Layer, group);
