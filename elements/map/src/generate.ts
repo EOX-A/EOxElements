@@ -1,6 +1,7 @@
 import * as olLayers from "ol/layer";
 import * as olSources from "ol/source";
 import * as olFormats from "ol/format";
+import { applyStyle } from "ol-mapbox-style";
 
 type EoxLayer = {
   type: olLayers.Layer;
@@ -25,7 +26,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
     if (layer.source && !newSource) {
       throw new Error(`Source type ${layer.source.type} not supported!`);
     }
-    return new newLayer({
+    const olLayer = new newLayer({
       ...layer,
       ...(layer.source && {
         source: new newSource({
@@ -42,6 +43,27 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
         layers: layer.layers.reverse().map((l) => createLayer(l)),
       }),
     });
+    if (olLayer.get("style")) {
+      // existing layer source will not get overridden by "style" property
+      // to allow vector layers without defined sources, create a dummy-geojson-source
+      // if source does exist
+      const style = olLayer.get("style");
+      if (!style.sources) {
+        style.sources = {};
+      }
+      const sourceName = style.layers[0].source;
+      if (!style.sources[sourceName]) {
+        style.sources[sourceName] = {
+          type: "geojson",
+          data: {
+            type: "FeatureCollection",
+            features: [],
+          },
+        };
+      }
+      applyStyle(olLayer, style, sourceName);
+    }
+    return olLayer;
   }
 
   return layerArray.reverse().map((l) => createLayer(l));
