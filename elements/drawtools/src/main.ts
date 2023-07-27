@@ -129,6 +129,7 @@ export class EOxDrawTools extends LitElement {
           ${this._currentlyDrawing ? "drawing" : "draw"}
         </button>
         <button
+          class="discard"
           disabled="${(!this._drawnFeatures.length &&
             !this._currentlyDrawing) ||
           nothing}"
