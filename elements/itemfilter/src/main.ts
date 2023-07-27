@@ -217,6 +217,10 @@ export class EOxItemFilter extends TemplateElement {
             max: filterKeys.max,
             format: filterProperty.format,
           }),
+          ...(filterProperty.type === "spatial" && {
+            // @ts-ignore
+            mode: filterProperty.mode,
+          }),
         };
       });
     }
@@ -383,6 +387,7 @@ export class EOxItemFilter extends TemplateElement {
         // @ts-ignore
         acc[key] = {
           bbox: value.bbox,
+          mode: value.mode,
         };
         return acc;
       }, {});
@@ -391,7 +396,8 @@ export class EOxItemFilter extends TemplateElement {
       for (let i = 0; i < results.length; i++) {
         const pass = {};
         for (let key of Object.keys(spatialFilters)) {
-          const mode = "within";
+          // @ts-ignore
+          const mode = spatialFilters[key].mode || "within";
           if (results[i].hasOwnProperty(key)) {
             const test =
               mode === "within"
