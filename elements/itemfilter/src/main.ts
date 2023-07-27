@@ -219,7 +219,6 @@ export class EOxItemFilter extends TemplateElement {
           }),
         };
       });
-      console.log(this._filters);
     }
 
     if (this._config.matchAllWhenEmpty !== false) {
