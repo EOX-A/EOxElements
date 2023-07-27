@@ -1,4 +1,14 @@
+import { button } from "../../../utils/styles/button";
+import { radio } from "../../../utils/styles/radio";
+
 export const styleEOX = `
+* {
+  font-family: Roboto, sans-serif;
+}
+
+${button}
+${radio}
+
 ul {
   padding-left: 0;
   margin-top: 0;

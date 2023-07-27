@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>eox-layercontrol examples</title>
+    <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
+    <title>eox-layercontrol dev playground</title>
     <style>
       eox-map {
         width: 400px;
@@ -62,42 +63,42 @@
               "id":"s2",
               "layerControlExclusive": true,
               "title":"s2",
-              "style": {
-                "variables": {
-                  "red": 1,
-                  "green": 2,
-                  "blue": 3,
-                  "redMax": 3000,
-                  "greenMax": 3000,
-                  "blueMax": 3000
-                },
-                "color": [
-                  "array",
-                  ["/", ["band", ["var", "red"]], ["var", "redMax"]],
-                  ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
-                  ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
-                  1
-                ],
-                "gamma": 1.1
-              },
-              "source": {
-                "type": "GeoTIFF",
-                "normalize": false,
-                "sources": [
-                  {
-                    "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
-                  }
-                ]
-              }
-            },
+        "style": {
+          "variables": {
+            "red": 1,
+            "green": 2,
+            "blue": 3,
+            "redMax": 3000,
+            "greenMax": 3000,
+            "blueMax": 3000
+          },
+          "color": [
+            "array",
+            ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+            ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+            ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+            1
+          ],
+          "gamma": 1.1
+        },
+        "source": {
+          "type": "GeoTIFF",
+          "normalize": false,
+          "sources": [
             {
-              "type": "Tile",
+              "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
+            }
+          ]
+        }
+      },
+        {
+          "type": "Tile",
               "id": "osm",
               "layerControlExclusive": true,
               "visible": false,
               "title": "osm",
               "opacity": 0.5,
-              "source": {
+          "source": {
                 "type": "OSM"
               }
             }
