@@ -23,7 +23,17 @@ export class SpatialFilter extends LitElement {
     return html`
       <eox-map
         style="height: 400px"
-        layers='[{"type": "Vector", "id": "draw", "source": {"type": "Vector"}},{"type": "Tile", "source": {"type": "OSM"}}]'
+        layers='[
+          {"type": "Vector", "id": "draw", "source": {"type": "Vector"}},
+          {
+            "type": "Tile",
+            "source": {
+              "type": "XYZ",
+              "url": "https://s2maps-tiles.eu/wmts/1.0.0/osm_3857/default/g/{z}/{y}/{x}.jpg",
+              "attribution": "{ OSM: Data &copy; OpenStreetMap contributors and others, Rendering &copy; EOX }"
+            }
+          }
+        ]'
       ></eox-map>
     `;
   }
