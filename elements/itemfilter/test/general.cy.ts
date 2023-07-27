@@ -12,21 +12,22 @@ describe("Item Filter", () => {
       EOxItemFilter.config = {
         titleProperty: "title",
         filterProperties: [
-          { key: "osc:variables", title: "Variable" },
+          { key: "themes", title: "Theme", exclusive: true },
           // { key: "code" },
           // { key: "likes", type: "range" },
           // { key: "year", type: "range" },
           // { key: "years", type: "range" },
-          { key: "created", type: "range", format: "date" },
+          { key: "years", type: "range" },
+          { key: "datetime", type: "range", format: "date" },
           { key: "bbox", type: "spatial" },
         ],
-        aggregateResults: "osc:variables",
+        aggregateResults: "themes",
         enableSearch: true,
-        // enableHighlighting: true,
+        enableHighlighting: true,
         // showResults: false,
         fuseConfig: {
           // keys: ["title", "description", "themes", "code", "datetime"],
-          keys: ["title", "osc:variables"],
+          keys: ["title", "datetime"],
         },
         onSelect: (item: any) => {
           console.log(item);
