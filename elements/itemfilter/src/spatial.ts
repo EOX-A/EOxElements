@@ -78,8 +78,11 @@ export class SpatialFilter extends LitElement {
   }
 
   reset() {
-    this.eoxMap.getLayerById("draw").getSource().clear();
-    this.eoxMap.removeInteraction("drawInteraction_modify");
-    this.setup();
+    const source = this.eoxMap.getLayerById("draw").getSource();
+    if (source.getFeatures()?.length > 0) {
+      source.clear();
+      this.eoxMap.removeInteraction("drawInteraction_modify");
+      this.setup();
+    }
   }
 }
