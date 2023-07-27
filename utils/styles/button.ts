@@ -1,5 +1,6 @@
 export const button = `
 button {
+  /* TODO: why does this only work here and not from :root? */
   --primary-color: #004170;
   --primary-color-hover: #004170CC;
   font-family: Roboto, sans-serif;
@@ -65,16 +66,5 @@ button.icon:before, button.icon-text:before {
 button.icon:before {
   margin-right: 0;
     content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eeye%3C/title%3E%3Cpath fill='%23004170' d='M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z' /%3E%3C/svg%3E");
-}
-
-button.icon, button.replace-text {
-  text-indent: -9999px;
-  line-height: 0;
-}
-
-button.replace-text:after {
-  content: "Hello world";
-  text-indent: 0;
-  line-height: initial;
 }
 `;
