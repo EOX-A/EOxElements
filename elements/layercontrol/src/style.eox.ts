@@ -1,6 +1,10 @@
-import { button } from '../../../utils/styles/button';
+import { button } from "../../../utils/styles/button";
 
 export const styleEOX = `
+* {
+  font-family: Roboto, sans-serif;
+}
+
 ${button}
 
 ul {
