@@ -5,7 +5,7 @@ button {
   --primary-color-hover: #004170CC;
   --error-color: #FF5252;
 
-  display: flex;
+  display: inline-flex;
   align-items: center;
   color: #fff;
   border-width: 0;
