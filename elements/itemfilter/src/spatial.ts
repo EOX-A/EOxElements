@@ -39,6 +39,10 @@ export class SpatialFilter extends LitElement {
   }
 
   firstUpdated() {
+    this.setup();
+  }
+
+  setup() {
     this.eoxMap = this.renderRoot.querySelector("eox-map");
     this.eoxMap.addDraw("draw", {
       id: "drawInteraction",
@@ -75,9 +79,7 @@ export class SpatialFilter extends LitElement {
 
   reset() {
     this.eoxMap.getLayerById("draw").getSource().clear();
-    this.eoxMap.addDraw("draw", {
-      id: "drawInteraction",
-      type: "Polygon",
-    });
+    this.eoxMap.removeInteraction("drawInteraction_modify");
+    this.setup();
   }
 }
