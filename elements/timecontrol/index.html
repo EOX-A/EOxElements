@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
-    <title>eox-timecontrol examples</title>
+    <title>eox-timecontrol dev playground</title>
     <style>
+      * {
+        font-family: Roboto, sans-serif;
+      }
       eox-map {
         width: 400px;
         height: 300px;
@@ -130,7 +133,7 @@
     ></eox-timecontrol>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
-      import "https://unpkg.com/@eox/timecontrol@latest";
+      import "./src/main.ts";
 
       setTimeout(() => {
         document.querySelector("eox-timecontrol.custom").urlFunction = (

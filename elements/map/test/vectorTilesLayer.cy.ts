@@ -2,7 +2,7 @@ import { EOxMap } from "../main";
 import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
 import { VectorTile } from "ol/layer";
 
-describe("layers", () => {
+describe("VectorTile Layer", () => {
   before(() => {
     cy.visit("/elements/map/test/general.html");
     cy.get("eox-map").should(($el) => {
