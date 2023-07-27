@@ -6,7 +6,7 @@ export const style = `
   display: flex;
   justify-content: space-between;
 }
-.dragHandle {
+.drag-handle {
   cursor: ns-resize;
 }
 ul[data-group] {
