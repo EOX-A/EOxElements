@@ -51,15 +51,19 @@ button.icon {
   box-shadow: none;
   padding: 0;
   border-radius: 50%;
+  width: 18px;
+}
+
+button.icon-text {
+  text-indent: 26px;
 }
 
 button.icon:before, button.icon-text:before {
-  display: inline-block;
+  position: absolute;
   text-indent: 0;
   line-height: initial;
   width: 18px;
   height: 18px;
-  margin-right: 8px; 
 }
 
 button.icon:before {
