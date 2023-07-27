@@ -177,6 +177,7 @@ export class EOxDrawTools extends LitElement {
           <button part="next" @click="${() => this.next()}">></button>
           <button
             part="play"
+            class="icon-text ${this._isAnimationPlaying ? "pause" : "play"}"
             @click="${() =>
               this.playAnimation(this._isAnimationPlaying ? false : true)}"
           >
