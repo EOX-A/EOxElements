@@ -173,8 +173,16 @@ export class EOxDrawTools extends LitElement {
       </style>
       <main>
         <div id="controls" part="controls">
-        <button part="previous" class="icon previous" @click="${() => this.previous()}"><</button>
-        <button part="next" class="icon next" @click="${() => this.next()}">></button>
+          <button
+            part="previous"
+            class="icon previous"
+            @click="${() => this.previous()}"
+          >
+            <
+          </button>
+          <button part="next" class="icon next" @click="${() => this.next()}">
+            >
+          </button>
           <button
             part="play"
             class="icon-text ${this._isAnimationPlaying ? "pause" : "play"}"
