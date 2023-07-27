@@ -1,4 +1,5 @@
 import { button } from "../../../utils/styles/button";
+import { radio } from "../../../utils/styles/radio";
 
 export const styleEOX = `
 * {
@@ -6,6 +7,7 @@ export const styleEOX = `
 }
 
 ${button}
+${radio}
 
 ul {
   padding-left: 0;
