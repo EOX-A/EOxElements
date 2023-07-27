@@ -15,12 +15,12 @@ Note: The main branch of this project contains the v2 (alpha) version of EOxElem
   <tr>
     <td><a href="./elements/drawtools/">eox-drawtools</a></td>
     <td>Draw and manage features on a map</td>
-        <td><!--<a href="https://eox-a.github.io/EOxElements/elements/drawtools/examples/index.html">Examples</a>--></td>
+        <td><a href="https://eox-a.github.io/EOxElements/elements/drawtools/examples/index.html">Examples</a></td>
   </tr>
   <tr>
     <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
     <td>Filter/search large sets of items client-side or server-side</td>
-        <td><!--<a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a>--></td>
+        <td><a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a></td>
   </tr>
   <tr>
     <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>

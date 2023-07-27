@@ -1,12 +1,15 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html, nothing, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { map } from "lit/directives/map.js";
+import { repeat } from "lit/directives/repeat.js";
+import { live } from "lit/directives/live.js";
 import { when } from "lit/directives/when.js";
 import { Map, Collection } from "ol";
 import { Layer } from "ol/layer";
+import LayerGroup from "ol/layer/Group";
 // @ts-ignore
 import Sortable from "sortablejs/modular/sortable.core.esm.js";
 import { style } from "./style";
+import { styleEOX } from "./style.eox";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
@@ -23,6 +26,9 @@ export class EOxLayerControl extends LitElement {
 
   @state()
   layerArray: Array<Layer>;
+
+  @state()
+  optionalLayerArray: Array<Layer>;
 
   /**
    * The query selector for the map
@@ -45,24 +51,17 @@ export class EOxLayerControl extends LitElement {
   @property({ type: Boolean })
   externalLayerConfig: Boolean = undefined;
 
+  @property({ type: Boolean })
+  unstyled: Boolean;
+
   private _updateControl(layerCollection: Collection<any>) {
     this.layerCollection = layerCollection;
-    const initialLayers = [...layerCollection.getArray()].filter(
-      (l) => l.get("displayInLayerControl") !== false
+    // @ts-ignore
+    this.optionalLayerArray = this.filterLayers(
+      layerCollection.getArray(),
+      "layerControlOptional",
+      true
     );
-    const zIndexSorting = this.getAttribute("sortBy") === "zIndex";
-    if (zIndexSorting) {
-      initialLayers.sort((lA, lB) => {
-        return lA.get("zIndex")
-          ? lA.get("zIndex") < lB.get("zIndex")
-            ? 1
-            : -1
-          : 1;
-      });
-    } else {
-      initialLayers.reverse();
-    }
-    this.layerArray = initialLayers;
     this.requestUpdate();
   }
 
@@ -78,7 +77,7 @@ export class EOxLayerControl extends LitElement {
   }
 
   changeOpacity(targetLayer: Layer, value: number) {
-    targetLayer.setOpacity(value / 100);
+    targetLayer.setOpacity(value);
   }
 
   changeStyleProperty(targetLayer: Layer, property: string, value: number) {
@@ -88,6 +87,49 @@ export class EOxLayerControl extends LitElement {
       ...targetLayer.style_,
       [property]: value,
     });
+  }
+
+  private preFilterLayers(layerArray: Array<Layer>) {
+    return [...layerArray].filter(
+      (l) =>
+        l.get("layerControlHide") !== true &&
+        l.get("layerControlOptional") !== true
+    );
+  }
+
+  toggleLayerVisibility(layer: Layer, groupId?: string) {
+    layer.setVisible(!layer.getVisible());
+    if (layer.get("layerControlExclusive")) {
+      let otherExclusiveLayers = [];
+      // check if layer is in group
+      if (groupId) {
+        const group = this.findLayerById(
+          this.layerCollection.getArray(),
+          groupId
+        ) as LayerGroup;
+        otherExclusiveLayers = group
+          .getLayers()
+          .getArray()
+          .filter(
+            (l) =>
+              l.get(this.layerIdentifier) !== layer.get(this.layerIdentifier) &&
+              l.get("layerControlExclusive")
+          );
+      } else {
+        otherExclusiveLayers = this.layerCollection
+          .getArray()
+          .filter(
+            (l) =>
+              l.get(this.layerIdentifier) !== layer.get(this.layerIdentifier) &&
+              l.get("layerControlExclusive")
+          );
+      }
+      // @ts-ignore
+      otherExclusiveLayers.forEach((layer: Layer) => {
+        layer.setVisible(false);
+      });
+    }
+    this.requestUpdate();
   }
 
   render() {
@@ -103,57 +145,169 @@ export class EOxLayerControl extends LitElement {
       }
     });
 
+    const listItems = (
+      layers: Array<Layer | LayerGroup>,
+      group?: string
+    ): TemplateResult => html`
+      <ul data-group="${group ?? nothing}">
+        ${repeat(
+          layers,
+          (layer) => layer.get(this.layerIdentifier),
+          (layer) => html`
+            <li
+              data-layer="${
+                //@ts-ignore
+                layer.get(this.layerIdentifier)
+              }"
+              data-disabled="${layer.get("layerControlDisable") || nothing}"
+            >
+              <div class="layer">
+                <label>
+                  <input
+                    type="${layer.get("layerControlExclusive")
+                      ? "radio"
+                      : "checkbox"}"
+                    .checked="${live(layer.getVisible())}"
+                    @click=${() => {
+                      this.toggleLayerVisibility(layer as Layer, group);
+                    }}
+                  />
+                  <span class="title"
+                    >${layer.get(this.layerTitle) ||
+                    `${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }`}</span
+                  >
+                </label>
+                ${this.sortBy === "layerOrder" &&
+                !layer.get("layerControlDisable")
+                  ? html`<div class="drag-handle">
+                      <span>=</span>
+                    </div>`
+                  : nothing}
+              </div>
+              ${this.layerConfig
+                ? html`
+                    <eox-layerconfig
+                      .layerConfig="${this.layerConfig}"
+                      .layerControl="${this}"
+                      .layer=${layer}
+                      .external=${this.externalLayerConfig}
+                    ></eox-layerconfig>
+                  `
+                : nothing}
+              ${
+                // @ts-ignore
+                this.externalLayerConfig && layer.style_
+                  ? html`
+                      <button
+                        @click=${() => this._emitLayerconfig(layer as Layer)}
+                      >
+                        configure
+                      </button>
+                    `
+                  : nothing
+              }
+              ${
+                // @ts-ignore
+                layer.getLayers
+                  ? html`
+                      <details open class="group-details">
+                        <summary>Layers</summary>
+                        ${listItems(
+                          this.preFilterLayers(
+                            // @ts-ignore
+                            [...layer.getLayers().getArray()].reverse()
+                          ),
+                          layer.get("id")
+                        )}
+                      </details>
+                    `
+                  : nothing
+              }
+            </li>
+          `
+        )}
+      </ul>
+    `;
+
     return html`
       <style>
         ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       <div>
         <slot></slot>
-        <ul>
-          ${map(
-            this.layerArray,
-            (layer) => html`
-              <li
-                layerid="${
-                  //@ts-ignore
-                  layer[this.layerIdentifier]
-                }"
-              >
-                <label>
-                  <input
-                    type="checkbox"
-                    checked="${layer.getVisible() || nothing}"
-                    @click=${() => layer.setVisible(!layer.getVisible())}
-                  />
-                  <span class="title">${layer.get(this.layerTitle)}</span>
-                </label>
-                ${this.sortBy === "layerOrder"
-                  ? html` <span class="dragHandle">=</span> `
-                  : nothing}
-                ${this.layerConfig
-                  ? html`
-                      <eox-layerconfig
-                        .layerConfig="${this.layerConfig}"
-                        .layerControl="${this}"
-                        .layer=${layer}
-                        .external=${this.externalLayerConfig}
-                      ></eox-layerconfig>
-                    `
-                  : nothing}
-                ${
-                  // @ts-ignore
-                  this.externalLayerConfig && layer.style_
-                    ? html`
-                        <button @click=${() => this._emitLayerconfig(layer)}>
-                          configure
-                        </button>
-                      `
-                    : nothing
-                }
-              </li>
-            `
+        <div>
+          ${listItems(
+            this.preFilterLayers(collection.getArray() as Array<Layer>)
           )}
-        </ul>
+        </div>
+        ${when(
+          this.optionalLayerArray?.length > 0,
+          () => html`
+            <label for="optional">Optional layers</label>
+
+            <select name="optional">
+              <option disabled selected value>
+                -- select an optional layer to add --
+              </option>
+              ${this.optionalLayerArray.map(
+                (layer) => html`
+                  <option
+                    value="${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }"
+                  >
+                    ${layer.get(this.layerTitle) ||
+                    `layer ${
+                      // @ts-ignore
+                      layer.get(this.layerIdentifier)
+                    }`}
+                  </option>
+                `
+              )}
+            </select>
+            <button
+              @click="${() => {
+                const selectedLayer = this.optionalLayerArray.find(
+                  // @ts-ignore
+                  (l) =>
+                    l.get(this.layerIdentifier) ===
+                    // @ts-ignore
+                    this.shadowRoot.querySelector("select[name=optional]").value
+                );
+                // always set the new layer at the first position
+                // TODO make configurable?
+                const firstPosition = true;
+                if (firstPosition) {
+                  if (selectedLayer.get("group")) {
+                    const group = this.findLayerById(
+                      this.layerCollection.getArray(),
+                      selectedLayer.get("group")
+                    ) as LayerGroup;
+                    group.getLayers().remove(selectedLayer);
+                    group
+                      .getLayers()
+                      .insertAt(group.getLayers().getLength(), selectedLayer);
+                  } else {
+                    this.layerCollection.remove(selectedLayer);
+                    this.layerCollection.insertAt(
+                      this.layerCollection.getLength(),
+                      selectedLayer
+                    );
+                  }
+                }
+                selectedLayer.set("layerControlOptional", false);
+                selectedLayer.setVisible(true);
+              }}"
+            >
+              add
+            </button>
+          `
+        )}
       </div>
     `;
   }
@@ -161,30 +315,105 @@ export class EOxLayerControl extends LitElement {
   updated() {
     // TODO implement zIndex sorting logic
     if (this.sortBy == "layerOrder") {
-      Sortable.create(this.renderRoot.querySelector("ul"), {
-        handle: ".dragHandle",
-        onChange: () => {
-          const controlOrder = Array.from(
-            this.renderRoot.querySelectorAll("li")
-          )
-            .map((item) => item.getAttribute("layerId"))
-            .reverse();
-          // current state of layers
-          this._currentlySorting = true;
-          const layers = this.layerCollection.getArray();
-          for (const [index, layerId] of controlOrder.entries()) {
-            const layer = layers.find(
-              // @ts-ignore
-              (layer) => layer[this.layerIdentifier] === layerId
-            );
-            this.layerCollection.remove(layer);
-            this.layerCollection.insertAt(index, layer);
-          }
-          this._currentlySorting = false;
-        },
+      const lists = this.renderRoot.querySelectorAll("ul");
+      lists.forEach((list) => {
+        const inGroup = list.dataset.group;
+        Sortable.create(list, {
+          handle: ".drag-handle",
+          dataIdAttr: "data-layer",
+          filter: "data-disabled",
+          swapThreshold: 0.5,
+          animation: 150,
+          easing: "cubic-bezier(1, 0, 0, 1)",
+          store: {
+            get: () => {
+              if (inGroup) {
+                const group = this.findLayerById(
+                  this.layerCollection.getArray(),
+                  inGroup
+                );
+                // @ts-ignore
+                const groupCollection = group.getLayers();
+                return [
+                  ...groupCollection
+                    .getArray()
+                    .map((l: Layer) => l.get(this.layerIdentifier)),
+                ].reverse();
+              } else {
+                return [
+                  ...this.layerCollection
+                    .getArray()
+                    .map((l) => l.get(this.layerIdentifier)),
+                ].reverse();
+              }
+            },
+
+            set: (sortable: Sortable) => {
+              var order = sortable.toArray().reverse();
+
+              order.forEach((layerId: string, index: number) => {
+                if (inGroup) {
+                  const group = this.findLayerById(
+                    this.layerCollection.getArray(),
+                    inGroup
+                  );
+                  // @ts-ignore
+                  const groupCollection = group.getLayers();
+                  const layer = this.findLayerById(
+                    groupCollection.getArray(),
+                    layerId
+                  );
+                  groupCollection.remove(layer);
+                  groupCollection.insertAt(index, layer);
+                } else {
+                  const layer = this.findLayerById(
+                    this.layerCollection.getArray(),
+                    layerId
+                  ) as Layer;
+                  this.layerCollection.remove(layer);
+                  this.layerCollection.insertAt(index, layer);
+                }
+              });
+            },
+          },
+          onMove: (e: any) => {
+            // disallow disabled items to be dragged over
+            return !e.related.dataset.disabled;
+          },
+        });
       });
     }
   }
+
+  filterLayers = (
+    layers: Array<Layer | LayerGroup>,
+    key: string,
+    value: any
+  ) => {
+    let found: Array<Layer | LayerGroup> = [];
+    const search = (
+      searchLayers: Array<Layer | LayerGroup>,
+      key: string,
+      value: any
+    ) => {
+      found = [...found, ...searchLayers.filter((l) => l.get(key) === value)];
+      // @ts-ignore
+      const groups = searchLayers.filter((l) => l.getLayers);
+      if (groups.length > 0) {
+        groups.forEach((group) =>
+          // @ts-ignore
+          search(group.getLayers().getArray(), key, value)
+        );
+      }
+      return found;
+    };
+    search(layers, key, value);
+    return found;
+  };
+
+  findLayerById = (layers: Array<Layer | LayerGroup>, id: string) => {
+    return this.filterLayers(layers, "id", id)[0];
+  };
 }
 
 @customElement("eox-layerconfig")
@@ -216,19 +445,18 @@ export class EOxLayerConfig extends LitElement {
     evt: HTMLElementEvent<HTMLInputElement>,
     property: string
   ) {
-    console.log(property, evt.target.value);
     if (property === "opacity") {
       // @ts-ignore
       this._layerControlElement.changeOpacity(
         this._currentLayer,
-        parseInt(evt.target.value)
+        parseFloat(evt.target.value)
       );
     } else {
       // @ts-ignore
       this._layerControlElement.changeStyleProperty(
         this._currentLayer,
         property,
-        parseInt(evt.target.value)
+        parseFloat(evt.target.value)
       );
     }
   }
@@ -251,9 +479,9 @@ export class EOxLayerConfig extends LitElement {
     if (!this.layerConfig && !this.layerControl) {
       // "external" mode, i.e. rendered in separate div
       this._layerControlElement = document.querySelector(this.for);
-      // @ts-ignore
-      this.layerConfig = this._layerControlElement.layerConfig;
       if (this._layerControlElement) {
+        // @ts-ignore
+        this.layerConfig = this._layerControlElement.layerConfig;
         this._layerControlElement.addEventListener("layerconfig", (evt) => {
           // @ts-ignore
           this._currentLayer = evt.detail.layer;
@@ -281,15 +509,19 @@ export class EOxLayerConfig extends LitElement {
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
               : nothing}
-            ${map(
+            ${repeat(
               this.layerConfig.filter((lC) =>
                 this.for ? lC !== "opacity" : true
               ),
+              (property) => property,
               (property) => html`
                 <div>${property}</div>
                 <input
                   type="range"
-                  value="100"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value="${live(this._currentLayer.getOpacity())}"
                   @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
                     this._handleInput(evt, property)}
                 />
@@ -300,8 +532,9 @@ export class EOxLayerConfig extends LitElement {
                   <details open="${this.for ? true : nothing}">
                     <summary>Layer config</summary>
                     <ul>
-                      ${map(
+                      ${repeat(
                         Object.keys(this._configList),
+                        (property) => property,
                         (property) => html` <li>
                           <div>${property}</div>
                           <input
@@ -312,10 +545,10 @@ export class EOxLayerConfig extends LitElement {
                             max="${["red", "green", "blue"].includes(property)
                               ? 4
                               : 5000}"
-                            value="${
+                            value="${live(
                               // @ts-ignore
                               this._configList[property]
-                            }"
+                            )}"
                             @input=${(
                               evt: HTMLElementEvent<HTMLInputElement>
                             ) => this._handleInput(evt, property)}

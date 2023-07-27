@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>eox-map dev playground</title>
+    <style>
+      eox-map {
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <eox-map zoom="5" center="[1800000, 6150000]">
+      <eox-map-tooltip></eox-map-tooltip>
+    </eox-map>
+    <script type="module">
+      import "./main.ts";
+      document.querySelector("eox-map").setLayers([
+        {
+          type: "Vector",
+          id: "regions",
+          source: {
+            type: "Vector",
+            url: "https://openlayers.org/data/vector/ecoregions.json",
+            format: "GeoJSON",
+          },
+        },
+      ]);
+      document.querySelector("eox-map").addSelect("regions", {
+        id: "selectInteraction",
+        tooltip: "eox-map-tooltip",
+        condition: "pointermove",
+      });
+    </script>
+  </body>
+</html>

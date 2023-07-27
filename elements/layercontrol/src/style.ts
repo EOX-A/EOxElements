@@ -2,13 +2,14 @@ export const style = `
 :host {
   display: block;
 }
-ul {
-  padding: 0;
+.layer {
+  display: flex;
+  justify-content: space-between;
 }
-li {
-  list-style: none;
-}
-.dragHandle {
+.drag-handle {
   cursor: ns-resize;
+}
+ul[data-group] {
+  padding-inline-start: 40px;
 }
 `;

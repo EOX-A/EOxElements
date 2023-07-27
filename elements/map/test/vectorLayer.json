@@ -1,43 +1,15 @@
-{
-  "version": 8,
-  "name": "",
-  "sources": {
-    "countries": {
-      "type": "geojson",
-      "data": "https://openlayersbook.github.io/openlayers_book_samples/assets/data/countries.geojson"
-    }
-  },
-  "layers": [
-    {
-      "id": "countries_fill",
-      "type": "fill",
-      "source": "countries",
-      "paint": {
-        "fill-color": "rgba(255, 255, 255, 0.5)"
-      }
+[
+  {
+    "type": "Vector",
+    "background": "#1a2b39",
+    "properties": {
+      "id": "regions"
     },
-    {
-      "id": "countries_outline",
-      "type": "line",
-      "source": "countries",
-      "paint": {
-        "line-color": "#219e46",
-        "line-width": 2
-      }
-    },
-    {
-      "id": "countries_text",
-      "type": "symbol",
-      "source": "countries",
-      "paint": {
-        "text-color": "rgb(0, 50, 200)"
-      },
-      "layout": {
-        "text-font": ["Open Sans Regular"],
-        "text-field": {
-          "property": "name"
-        }
-      }
+    "source": {
+      "type": "Vector",
+      "url": "https://openlayers.org/data/vector/ecoregions.json",
+      "format": "GeoJSON",
+      "attributions": "Regions: @ openlayers.org"
     }
-  ]
-}
+  }
+]

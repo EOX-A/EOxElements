@@ -50,9 +50,9 @@ jobs:
         with:
           commit-message: "ci: version bump [skip ci]"
           tag-prefix: "@eox/${{ steps.extract_folder.outputs.folder }}@"
-          skip-tag:  'true'
-          skip-commit:  'true'
-          skip-push:  'true'
+          skip-tag: "true"
+          skip-commit: "true"
+          skip-push: "true"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PACKAGEJSON_DIR: elements/${{ steps.extract_folder.outputs.folder }}

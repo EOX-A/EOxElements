@@ -12,6 +12,7 @@ import { TemplateElement } from "../../../utils/templateElement";
 import { highlight } from "./itemHighlighting";
 import { intersects, within } from "./spatial";
 import { style } from "./style";
+import { styleEOX } from "./style.eox";
 
 class ElementConfig {
   /**
@@ -239,6 +240,9 @@ export class EOxItemFilter extends TemplateElement {
     }
   };
 
+  @property({ type: Boolean })
+  unstyled: Boolean;
+
   inputHandler = () => {
     // using the querySelector/value combo since the event target value is undefined when debounced
     // @ts-ignore
@@ -433,15 +437,21 @@ export class EOxItemFilter extends TemplateElement {
       // also used for aggregation. if aggregation of results uses the same property
       // as the filter, it doesn't make sense to show all aggregations, but only
       // the one matching the current filter
-      const currentFilter = Object.keys(
-        // @ts-ignore
-        this._filters[this._config.aggregateResults]
-        // @ts-ignore
-      ).filter((f) => this._filters[this._config.aggregateResults].keys[f]);
-      const includedInCurrentFilter = currentFilter.length
+      let currentFilter;
+      // @ts-ignore
+      if (this._filters[this._config.aggregateResults]) {
+        currentFilter = Object.keys(
+          // @ts-ignore
+          this._filters[this._config.aggregateResults]
+          // @ts-ignore
+        ).filter((f) => this._filters[this._config.aggregateResults].keys[f]);
+      }
+
+      const includedInCurrentFilter = currentFilter?.length
         ? // @ts-ignore
           currentFilter.includes(property)
         : true;
+
       return includedInCurrentFilter && Array.isArray(aggregation)
         ? aggregation.includes(property)
         : aggregation === property;
@@ -535,6 +545,7 @@ export class EOxItemFilter extends TemplateElement {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       <form @submit="${(evt: FormDataEvent) => evt.preventDefault()}">
         ${when(
@@ -569,41 +580,25 @@ export class EOxItemFilter extends TemplateElement {
                       data-filter="${filter.key}"
                     >
                       <summary>
-                        <small>
-                          <strong
-                            class="title"
-                            style="${!filter.title &&
-                            "text-transform: capitalize"}"
-                          >
-                            ${filter.title || filter.key}
-                            ${filter.type === "string" &&
-                            Object.values(
-                              // @ts-ignore
-                              this._filters[filter.key].keys
-                            ).filter((v) => v).length
-                              ? `(${
-                                  Object.values(
-                                    // @ts-ignore
-                                    this._filters[filter.key].keys
-                                  ).filter((v) => v).length
-                                })`
-                              : nothing}
-                          </strong>
-                        </small>
-                        <div
-                          style="display: flex; align-items: center; justify-content: center; margin-left: 4px;"
+                        <span
+                          class="title"
+                          style="${!filter.title &&
+                          "text-transform: capitalize"}"
                         >
-                          <svg
-                            data-cy="expand-button"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="6 6 12 12"
-                          >
-                            <title>chevron-down</title>
-                            <path
-                              d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                            />
-                          </svg>
-                        </div>
+                          ${filter.title || filter.key}
+                          ${filter.type === "string" &&
+                          Object.values(
+                            // @ts-ignore
+                            this._filters[filter.key].keys
+                          ).filter((v) => v).length
+                            ? `(${
+                                Object.values(
+                                  // @ts-ignore
+                                  this._filters[filter.key].keys
+                                ).filter((v) => v).length
+                              })`
+                            : nothing}
+                        </span>
                       </summary>
                       <div class="scroll" style="max-height: 150px">
                         ${filter.type === "range"
@@ -635,7 +630,6 @@ export class EOxItemFilter extends TemplateElement {
                                   this._filters[filter.key].keys.max
                                 }"
                                 step="1"
-                                style="margin: 5px"
                                 @change="${(evt: InputEvent) => {
                                   [
                                     // @ts-ignore
@@ -733,7 +727,7 @@ export class EOxItemFilter extends TemplateElement {
                     id="filter-reset"
                     data-cy="filter-reset"
                     @click=${() => this.resetFilters()}
-                    ><small>Reset filters</small></a
+                    >Reset filters</a
                   >
                 `
               )}
@@ -767,24 +761,15 @@ export class EOxItemFilter extends TemplateElement {
                           open
                         >
                           <summary>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                            >
-                              <title>chevron-down</title>
-                              <path
-                                d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                              />
-                            </svg>
-                            <strong class="title">
+                            <span class="title">
                               ${aggregationProperty}
-                            </strong>
-                            <span style="margin-left: 0.25rem"
-                              >(${this.aggregateResults(
-                                this._results,
-                                aggregationProperty
-                              ).length})</span
-                            >
+                              <span class="count"
+                                >(${this.aggregateResults(
+                                  this._results,
+                                  aggregationProperty
+                                ).length})</span
+                              >
+                            </span>
                           </summary>
                           <ul>
                             ${map(

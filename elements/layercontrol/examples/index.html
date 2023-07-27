@@ -9,44 +9,129 @@
         width: 400px;
         height: 300px;
       }
+      eox-layercontrol {
+        width: 400px;
+      }
     </style>
   </head>
   <body>
     <p>Basic layer control</p>
-    <eox-map zoom="3" center="[1000000, 6000000]"></eox-map>
+    <eox-map
+      zoom="3"
+      center="[1000000, 6000000]"
+      layers='[
+      {
+        "type": "Group",
+        "id": "group2",
+        "layerControlDisable": true,
+        "title": "data",
+        "layers": [
+          {
+            "type": "Tile",
+            "id": "WIND",
+            "title": "WIND",
+            "source": {
+              "type": "TileWMS",
+              "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              "params": {
+                "LAYERS": "AWS_VIS_WIND_V_10M"
+              }
+            }
+          },
+          {
+            "type": "Tile",
+            "id": "NO2",
+            "title": "NO2",
+            "source": {
+              "type": "TileWMS",
+              "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              "params": {
+                "LAYERS": "AWS_NO2-VISUALISATION"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "type": "Group",
+        "id": "group1",
+        "title": "background",
+        "layers": [
+          {
+            "type": "WebGLTile",
+            "id":"s2",
+            "layerControlExclusive": true,
+            "title":"s2",
+            "style": {
+              "variables": {
+                "red": 1,
+                "green": 2,
+                "blue": 3,
+                "redMax": 3000,
+                "greenMax": 3000,
+                "blueMax": 3000
+              },
+              "color": [
+                "array",
+                ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+                ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+                ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+                1
+              ],
+              "gamma": 1.1
+            },
+            "source": {
+              "type": "GeoTIFF",
+              "normalize": false,
+              "sources": [
+                {
+                  "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Tile",
+            "id": "osm",
+            "layerControlExclusive": true,
+            "visible": false,
+            "title": "osm",
+            "opacity": 0.5,
+            "source": {
+              "type": "OSM"
+            }
+          }
+        ]
+      },
+      {
+        "type": "Tile",
+        "id": "osm2",
+        "visible": false,
+        "title": "osm2",
+        "source": {
+          "type": "OSM"
+        }
+      }
+    ]'
+    ></eox-map>
     <eox-layercontrol
       for="eox-map"
-      layerTitle="mapbox-source"
+      layerTitle="background"
+      layerIdentifier="id"
     ></eox-layercontrol>
+    <eox-layercontrol
+      for="eox-map"
+      externalLayerConfig
+      layerConfig='["opacity"]'
+      layerIdentifier="id"
+      id="test-control"
+    >
+      Layer Control with external layer config
+    </eox-layercontrol>
+    <eox-layerconfig for="eox-layercontrol#test-control"></eox-layerconfig>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "https://unpkg.com/@eox/layercontrol@latest";
-
-      setTimeout(() => {
-        const eoxMaps = document.querySelectorAll("eox-map");
-
-        const layers = {
-          version: 8,
-          name: "",
-          sources: {
-            "AWS_NO2-VISUALISATION": {
-              type: "raster",
-              tileSize: 512,
-              tiles: [
-                "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&layers=AWS_NO2-VISUALISATION&format=image%2Fpng&WIDTH=512&HEIGHT=512&CRS=EPSG%3A3857&STYLES=&BBOX={bbox-epsg-3857}&TIME=2023-01-16",
-              ],
-            },
-          },
-          layers: [
-            {
-              id: "AWS_NO2-VISUALISATION",
-              type: "raster",
-              source: "AWS_NO2-VISUALISATION",
-            },
-          ],
-        };
-        eoxMaps.forEach((map) => map.setLayers(layers));
-      });
     </script>
   </body>
 </html>
