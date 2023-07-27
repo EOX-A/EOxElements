@@ -6,13 +6,7 @@
     <title>eox-itemfilter dev playground</title>
   </head>
   <body>
-    <eox-itemfilter>
-      <eox-map
-        slot="map"
-        style="height: 400px"
-        layers='[{"type": "Vector", "id": "draw", "source": {"type": "Vector"}},{"type": "Tile", "source": {"type": "OSM"}}]'
-      ></eox-map>
-    </eox-itemfilter>
+    <eox-itemfilter></eox-itemfilter>
     <script type="module">
       // import "./dist/eox-itemfilter.js";
       import "./src/main.ts";
@@ -65,16 +59,6 @@
         // },
       };
       EOxItemFilter.apply(items);
-
-      const EOxMap = document.querySelector("eox-map");
-      EOxMap.addDraw("draw", {
-        id: "drawInteraction",
-        type: "Polygon",
-      });
-      EOxMap.interactions["drawInteraction"].on("drawend", (e) => {
-        console.log(e.feature.getGeometry().getExtent());
-        console.log(e);
-      });
     </script>
   </body>
 </html>

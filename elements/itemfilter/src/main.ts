@@ -10,7 +10,7 @@ import "toolcool-range-slider";
 import dayjs from "dayjs";
 import { TemplateElement } from "../../../utils/templateElement";
 import { highlight } from "./itemHighlighting";
-import { intersects, within } from "./spatial";
+import { intersects, within, SpatialFilter } from "./spatial";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
@@ -532,6 +532,16 @@ export class EOxItemFilter extends TemplateElement {
         return;
       }
       // @ts-ignore
+      if (this._filters[f].type === "spatial") {
+        // @ts-ignore
+        this._filters[f].bbox = undefined;
+        const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
+          "eox-itemfilter-spatial-filter"
+        );
+        spatialFilter.reset();
+        return;
+      }
+      // @ts-ignore
       Object.keys(this._filters[f].keys).forEach((k) => {
         // @ts-ignore
         this._filters[f].keys[k] = false;
@@ -600,7 +610,7 @@ export class EOxItemFilter extends TemplateElement {
                             : nothing}
                         </span>
                       </summary>
-                      <div class="scroll" style="max-height: 150px">
+                      <div class="scroll">
                         ${filter.type === "range"
                           ? html`
                               <div>
@@ -658,12 +668,10 @@ export class EOxItemFilter extends TemplateElement {
                             `
                           : filter.type === "spatial"
                           ? html`
-                              <p
-                                @click="${() => {
+                              <eox-itemfilter-spatial-filter
+                                @filter="${(e: Event) => {
                                   // @ts-ignore
-                                  this._filters[filter.key].bbox = [
-                                    -90, 0, 10, 10,
-                                  ];
+                                  this._filters["bbox"].bbox = e.detail.extent;
                                   this.search(
                                     this.renderRoot.querySelector(
                                       "input[type='text']"
@@ -671,10 +679,7 @@ export class EOxItemFilter extends TemplateElement {
                                     ).value
                                   );
                                 }}"
-                              >
-                                eox-map goes here
-                              </p>
-                              <slot name="map"></slot>
+                              ></eox-itemfilter-spatial>
                             `
                           : html`
                               <ul>
