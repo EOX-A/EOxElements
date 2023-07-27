@@ -51,7 +51,7 @@ button.icon {
   box-shadow: none;
   padding: 0;
   border-radius: 50%;
-  width: 18px;
+  width: 24px;
 }
 
 button.icon-text {
@@ -62,11 +62,16 @@ button.icon:before, button.icon-text:before {
   position: absolute;
   text-indent: 0;
   line-height: initial;
-  width: 18px;
-  height: 18px;
 }
 
 button.icon:before {
+  width: 24px;
+  height: 24px;
   margin-right: 0;
+}
+
+button.icon-text:before {
+  width: 18px;
+  height: 18px;
 }
 `;
