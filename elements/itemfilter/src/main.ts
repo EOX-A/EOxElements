@@ -414,7 +414,7 @@ export class EOxItemFilter extends TemplateElement {
             }
           } else {
             // @ts-ignore
-            pass[key] = true;
+            pass[key] = false;
           }
         }
         if (Object.values(pass).every((v) => !!v)) {
