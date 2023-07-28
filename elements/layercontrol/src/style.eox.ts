@@ -1,4 +1,5 @@
 import { button } from "../../../utils/styles/button";
+import { slider } from "../../../utils/styles/slider";
 
 export const styleEOX = `
 * {
@@ -6,6 +7,7 @@ export const styleEOX = `
 }
 
 ${button}
+${slider}
 
 ul {
   padding: 0;
