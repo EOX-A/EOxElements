@@ -499,7 +499,9 @@ export class EOxLayerConfig extends LitElement {
   render() {
     return html`
       <style>
-        ${style}
+        ${style} 
+        ${!false && styleEOX}
+        <!-- ^----- TODO: pass down unstyled property here? -->
       </style>
       ${when(
         this._currentLayer,
