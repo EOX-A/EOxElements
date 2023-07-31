@@ -219,7 +219,7 @@ export class EOxItemFilter extends TemplateElement {
           }),
           ...(filterProperty.type === "spatial" && {
             // @ts-ignore
-            mode: filterProperty.mode,
+            mode: filterProperty.mode || "intersects",
           }),
         };
       });
@@ -677,6 +677,36 @@ export class EOxItemFilter extends TemplateElement {
                             `
                           : filter.type === "spatial"
                           ? html`
+                              <form style="display: inline">
+                              ${map(
+                                ["intersects", "within"],
+                                (mode: string) => html`
+                                  <label>
+                                    <input
+                                      type="radio"
+                                      name="mode"
+                                      .checked="${
+                                        // @ts-ignore
+                                        this._filters[filter.key].mode === mode
+                                      }"
+                                      value="${mode}"
+                                      @click="${() => {
+                                        // @ts-ignore
+                                        this._filters[filter.key].mode = mode;
+                                        this.requestUpdate();
+                                        this.search(
+                                          this.renderRoot.querySelector(
+                                            "input[type='text']"
+                                            // @ts-ignore
+                                          ).value
+                                        );
+                                      }}"
+                                    />
+                                    <small>${mode} filter geometry</small>
+                                  </label>
+                                `
+                              )}
+                              </form>
                               <eox-itemfilter-spatial-filter
                                 @filter="${(e: Event) => {
                                   Object.entries(this._filters)
