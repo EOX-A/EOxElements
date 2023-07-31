@@ -28,6 +28,8 @@
     "lint:fix": "eslint --ext .js,.ts . --fix"
   },
   "dependencies": {
+    "@turf/boolean-intersects": "^6.5.0",
+    "@turf/boolean-within": "^6.5.0",
     "fuse.js": "^6.6.2",
     "lit": "^2.7.4",
     "lodash.debounce": "^4.0.8",

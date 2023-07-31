@@ -10,6 +10,7 @@ import "toolcool-range-slider";
 import dayjs from "dayjs";
 import { TemplateElement } from "../../../utils/templateElement";
 import { highlight } from "./itemHighlighting";
+import { intersects, within, SpatialFilter } from "./spatial";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
@@ -216,6 +217,10 @@ export class EOxItemFilter extends TemplateElement {
             max: filterKeys.max,
             format: filterProperty.format,
           }),
+          ...(filterProperty.type === "spatial" && {
+            // @ts-ignore
+            mode: filterProperty.mode,
+          }),
         };
       });
     }
@@ -376,6 +381,54 @@ export class EOxItemFilter extends TemplateElement {
       }
       results = [...filteredResults];
     }
+    const spatialFilters = Object.entries(this._filters)
+      .filter(([_, value]) => value.type === "spatial")
+      .reduce((acc, [key, value]) => {
+        // @ts-ignore
+        acc[key] = {
+          geometry: value.geometry,
+          mode: value.mode,
+        };
+        return acc;
+      }, {});
+    if (Object.keys(spatialFilters).length > 0) {
+      const filteredResults = [];
+      for (let i = 0; i < results.length; i++) {
+        const pass = {};
+        for (let key of Object.keys(spatialFilters)) {
+          // @ts-ignore
+          const mode = spatialFilters[key].mode || "within";
+          if (results[i].hasOwnProperty(key)) {
+            const test =
+              mode === "within"
+                ? within(
+                    results[i][key],
+                    // @ts-ignore
+                    spatialFilters[key].geometry
+                  )
+                : intersects(
+                    results[i][key],
+                    // @ts-ignore
+                    spatialFilters[key].geometry
+                  );
+            if (test) {
+              // @ts-ignore
+              pass[key] = true;
+            } else {
+              // @ts-ignore
+              pass[key] = false;
+            }
+          } else {
+            // @ts-ignore
+            pass[key] = false;
+          }
+        }
+        if (Object.values(pass).every((v) => !!v)) {
+          filteredResults.push(results[i]);
+        }
+      }
+      results = [...filteredResults];
+    }
     this._results = this.sortResults(results);
     this._config.onSearch(results);
     this.requestUpdate();
@@ -484,6 +537,16 @@ export class EOxItemFilter extends TemplateElement {
         return;
       }
       // @ts-ignore
+      if (this._filters[f].type === "spatial") {
+        // @ts-ignore
+        this._filters[f].geometry = undefined;
+        const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
+          "eox-itemfilter-spatial-filter"
+        );
+        spatialFilter.reset();
+        return;
+      }
+      // @ts-ignore
       Object.keys(this._filters[f].keys).forEach((k) => {
         // @ts-ignore
         this._filters[f].keys[k] = false;
@@ -552,7 +615,7 @@ export class EOxItemFilter extends TemplateElement {
                             : nothing}
                         </span>
                       </summary>
-                      <div class="scroll" style="max-height: 150px">
+                      <div class="scroll">
                         ${filter.type === "range"
                           ? html`
                               <div>
@@ -607,6 +670,30 @@ export class EOxItemFilter extends TemplateElement {
                                   : // @ts-ignore
                                     this._filters[filter.key].keys.max}
                               </div>
+                            `
+                          : filter.type === "spatial"
+                          ? html`
+                              <eox-itemfilter-spatial-filter
+                                @filter="${(e: Event) => {
+                                  Object.entries(this._filters)
+                                    .filter(
+                                      ([, property]) =>
+                                        property.type === "spatial"
+                                    )
+                                    .forEach(([key]) => {
+                                      // @ts-ignore
+                                      this._filters[key].geometry =
+                                        // @ts-ignore
+                                        e.detail.geometry;
+                                    });
+                                  this.search(
+                                    this.renderRoot.querySelector(
+                                      "input[type='text']"
+                                      // @ts-ignore
+                                    ).value
+                                  );
+                                }}"
+                              ></eox-itemfilter-spatial>
                             `
                           : html`
                               <ul>

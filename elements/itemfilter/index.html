@@ -4,47 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
-    <title>eox-itemfiter dev playground</title>
-    <style>
-      eox-itemfilter {
-        width: 400px;
-      }
-    </style>
+    <title>eox-itemfilter dev playground</title>
   </head>
   <body>
-    <p>Itemfilter with aggregation</p>
     <eox-itemfilter></eox-itemfilter>
-    <p>Itemfilter with range slider</p>
-    <eox-itemfilter id="range"></eox-itemfilter>
     <script type="module">
       import "./src/main.ts";
-      import items from "./examples/items.json" assert { type: "json" };
+      import "https://unpkg.com/@eox/map@latest/dist/eox-map.js";
+      import items from "./test/testItems.json" assert { type: "json" };
 
       const EOxItemFilter = document.querySelector("eox-itemfilter");
-      const EOxItemFilterRange = document.querySelector("eox-itemfilter#range");
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: [{ key: "themes", title: "Theme", exclusive: true }],
+        filterProperties: [
+          { key: "themes", title: "Theme" },
+          // { key: "code" },
+          // { key: "likes", type: "range" },
+          // { key: "year", type: "range" },
+          // { key: "years", type: "range" },
+          { key: "created", type: "range", format: "date" },
+          { key: "geometry", type: "spatial", mode: "intersects" },
+        ],
         aggregateResults: "themes",
         enableSearch: true,
-        enableHighlighting: true,
+        // enableHighlighting: true,
+        // showResults: false,
         fuseConfig: {
+          // keys: ["title", "description", "themes", "code", "datetime"],
           keys: ["title", "themes"],
         },
         onSelect: (item) => {
           console.log(item);
         },
-      };
-      EOxItemFilterRange.config = {
-        titleProperty: "title",
-        enableSearch: true,
-        filterProperties: [{ key: "datetime", type: "range", format: "date" }],
-        fuseConfig: {
-          keys: ["title", "datetime"],
-        },
+        // matchAllWhenEmpty: true,
+        // exclusiveFilters: true,
+        // externalSearch: (input, filters) => {
+        //   const base =
+        //     "https://resource-catalogue.testing.opensciencedata.esa.int/collections/metadata:main/items?type=collection&f=json";
+        //   if (filters) {
+        //     let filterString = "";
+        //     Object.keys(filters).forEach((filter) =>
+        //       Object.entries(filters[filter]).forEach(([key, value]) => {
+        //         if (value) {
+        //           filterString += `${filter.replace("s", "")}:${key}`;
+        //         }
+        //       })
+        //     );
+        //     console.log(filterString);
+        //     return `${base}&q=${input}&filter=keywords%20ILIKE%20%27%${filterString}%%27`;
+        //   } else {
+        //     return `${base}&q=${input}`;
+        //   }
+        // },
       };
       EOxItemFilter.apply(items);
-      EOxItemFilterRange.apply(items);
     </script>
   </body>
 </html>
