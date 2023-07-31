@@ -381,7 +381,7 @@ export class EOxItemFilter extends TemplateElement {
       }
       results = [...filteredResults];
     }
-    const spatialFilters = Object.entries(this._filters)
+    const spatialFilters: { geometry?: any } = Object.entries(this._filters)
       .filter(([_, value]) => value.type === "spatial")
       .reduce((acc, [key, value]) => {
         // @ts-ignore
@@ -391,7 +391,11 @@ export class EOxItemFilter extends TemplateElement {
         };
         return acc;
       }, {});
-    if (Object.keys(spatialFilters).length > 0) {
+    if (
+      Object.values(spatialFilters)
+        .map((f) => f.geometry)
+        .filter((f) => !!f).length > 0
+    ) {
       const filteredResults = [];
       for (let i = 0; i < results.length; i++) {
         const pass = {};
