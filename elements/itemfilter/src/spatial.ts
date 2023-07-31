@@ -1,17 +1,25 @@
-import bboxPolygon from "@turf/bbox-polygon";
 import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";
-import { BBox } from "@turf/helpers";
+import { Geometry } from "@turf/helpers";
 import { LitElement, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { EOxMap } from "../../map/main";
 
-export const intersects = (itemBbox: BBox, filterBbox: BBox) => {
-  return booleanIntersects(bboxPolygon(itemBbox), bboxPolygon(filterBbox));
+export const intersects = (
+  itemGeometry: Geometry,
+  filterGeometry: Geometry
+) => {
+  if (!filterGeometry) {
+    return true;
+  }
+  return booleanIntersects(itemGeometry, filterGeometry);
 };
 
-export const within = (itemBbox: BBox, filterBbox: BBox) => {
-  return booleanWithin(bboxPolygon(itemBbox), bboxPolygon(filterBbox));
+export const within = (itemGeometry: Geometry, filterGeometry: Geometry) => {
+  if (!filterGeometry) {
+    return true;
+  }
+  return booleanWithin(itemGeometry, filterGeometry);
 };
 
 @customElement("eox-itemfilter-spatial-filter")
@@ -48,14 +56,17 @@ export class SpatialFilter extends LitElement {
       id: "drawInteraction",
       type: "Polygon",
     });
-    const updateBboxFilter = (feature: any) => {
+    const updateGeometryFilter = (feature: any) => {
       let event = new CustomEvent("filter", {
         detail: {
-          extent: feature
-            .getGeometry()
-            .clone()
-            .transform("EPSG:3857", "EPSG:4326")
-            .getExtent(),
+          geometry: {
+            type: "Polygon",
+            coordinates: feature
+              .getGeometry()
+              .clone()
+              .transform("EPSG:3857", "EPSG:4326")
+              .getCoordinates(),
+          },
         },
       });
       this.dispatchEvent(event);
@@ -64,7 +75,7 @@ export class SpatialFilter extends LitElement {
       // @ts-ignore
       "drawend",
       (e: { feature: any }) => {
-        updateBboxFilter(e.feature);
+        updateGeometryFilter(e.feature);
         this.eoxMap.removeInteraction("drawInteraction");
       }
     );
@@ -72,7 +83,7 @@ export class SpatialFilter extends LitElement {
       // @ts-ignore
       "modifyend",
       (e: { features: any }) => {
-        updateBboxFilter(e.features.getArray()[0]);
+        updateGeometryFilter(e.features.getArray()[0]);
       }
     );
   }

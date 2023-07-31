@@ -386,7 +386,7 @@ export class EOxItemFilter extends TemplateElement {
       .reduce((acc, [key, value]) => {
         // @ts-ignore
         acc[key] = {
-          bbox: value.bbox,
+          geometry: value.geometry,
           mode: value.mode,
         };
         return acc;
@@ -404,12 +404,12 @@ export class EOxItemFilter extends TemplateElement {
                 ? within(
                     results[i][key],
                     // @ts-ignore
-                    spatialFilters[key].bbox || [-180, -90, 180, 90]
+                    spatialFilters[key].geometry
                   )
                 : intersects(
                     results[i][key],
                     // @ts-ignore
-                    spatialFilters[key].bbox || [-180, -90, 180, 90]
+                    spatialFilters[key].geometry
                   );
             if (test) {
               // @ts-ignore
@@ -539,7 +539,7 @@ export class EOxItemFilter extends TemplateElement {
       // @ts-ignore
       if (this._filters[f].type === "spatial") {
         // @ts-ignore
-        this._filters[f].bbox = undefined;
+        this._filters[f].geometry = undefined;
         const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
           "eox-itemfilter-spatial-filter"
         );
@@ -675,8 +675,17 @@ export class EOxItemFilter extends TemplateElement {
                           ? html`
                               <eox-itemfilter-spatial-filter
                                 @filter="${(e: Event) => {
-                                  // @ts-ignore
-                                  this._filters["bbox"].bbox = e.detail.extent;
+                                  Object.entries(this._filters)
+                                    .filter(
+                                      ([, property]) =>
+                                        property.type === "spatial"
+                                    )
+                                    .forEach(([key]) => {
+                                      // @ts-ignore
+                                      this._filters[key].geometry =
+                                        // @ts-ignore
+                                        e.detail.geometry;
+                                    });
                                   this.search(
                                     this.renderRoot.querySelector(
                                       "input[type='text']"
