@@ -708,6 +708,7 @@ export class EOxItemFilter extends TemplateElement {
                               )}
                               </form>
                               <eox-itemfilter-spatial-filter
+                                exportparts="map: spatial-filter-map"
                                 @filter="${(e: Event) => {
                                   Object.entries(this._filters)
                                     .filter(

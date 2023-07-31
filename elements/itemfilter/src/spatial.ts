@@ -30,6 +30,7 @@ export class SpatialFilter extends LitElement {
   render() {
     return html`
       <eox-map
+        part="map"
         style="height: 400px"
         layers='[
           {"type": "Vector", "id": "draw", "source": {"type": "Vector"}},
