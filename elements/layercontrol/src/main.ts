@@ -194,6 +194,7 @@ export class EOxLayerControl extends LitElement {
                       .layerControl="${this}"
                       .layer=${layer}
                       .external=${this.externalLayerConfig}
+                      .unstyled="${this.unstyled}"
                     ></eox-layerconfig>
                   `
                 : nothing}
