@@ -433,6 +433,9 @@ export class EOxLayerConfig extends LitElement {
   @property({ type: Boolean })
   external: Boolean;
 
+  @property({ type: Boolean })
+  unstyled: Boolean;
+
   private _layerControlElement: HTMLElement;
 
   @state()
@@ -500,8 +503,7 @@ export class EOxLayerConfig extends LitElement {
     return html`
       <style>
         ${style} 
-        ${!false && styleEOX}
-        <!-- ^----- TODO: pass down unstyled property here? -->
+        ${!this.unstyled && styleEOX}
       </style>
       ${when(
         this._currentLayer,
