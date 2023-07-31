@@ -1,13 +1,13 @@
 export const slider = `
 input[type="range"] {
   -webkit-appearance: none;
-  width: 100%;
+  width: 90%;
+  margin-left: 5%;
   height: 6px;
   border-radius: 5px;
   background: #d7dcdf;
   outline: none;
   padding: 0;
-  margin: 0;
 }
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
