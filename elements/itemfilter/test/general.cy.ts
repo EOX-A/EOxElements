@@ -29,9 +29,9 @@ describe("Item Filter", () => {
           // keys: ["title", "description", "themes", "code", "datetime"],
           keys: ["title", "datetime"],
         },
-        onSelect: (item: any) => {
-          console.log(item);
-        },
+        // onSelect: (item: any) => {
+        //   console.log(item);
+        // },
         // matchAllWhenEmpty: true,
         // exclusiveFilters: true,
         // externalSearch: (input, filters) => {

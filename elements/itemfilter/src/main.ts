@@ -764,7 +764,6 @@ export class EOxItemFilter extends TemplateElement {
                 ${this._results.length < 1
                   ? html` <small class="no-results">No matching items</small> `
                   : nothing}
-                ${this._results.length}
                 <ul id="results" part="results">
                   ${this._config.aggregateResults
                     ? map(
