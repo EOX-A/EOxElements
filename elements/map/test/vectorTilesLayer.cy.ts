@@ -4,11 +4,10 @@ import { VectorTile } from "ol/layer";
 
 describe("layers", () => {
   before(() => {
-    cy.visit("/elements/map/test/general.html");
-    cy.get("eox-map").should(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      eoxMap.setLayers(vectorTileLayerStyleJson);
-    });
+    const eoxMap = new EOxMap();
+    // @ts-ignore
+    cy.mount(eoxMap).as("eox-map");
+    eoxMap.setLayers(vectorTileLayerStyleJson);
   });
   it("loads a Vector Layer", () => {
     cy.get("eox-map").should(($el) => {

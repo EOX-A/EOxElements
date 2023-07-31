@@ -1,21 +1,18 @@
-import { EOxItemFilter } from "../src/main";
+// import entire itemfilter source to acces <eox-itemfilter> component
+import "../src/main";
 import testItems from "./testItems.json";
 
-const eoxItemFilter = new EOxItemFilter();
 
 describe("Item Filter Config", () => {
   beforeEach(() => {
     // @ts-ignore
-    cy.mount(eoxItemFilter, `<eox-itemfilter>
+    cy.mount(`<eox-itemfilter>
       <h4 slot="filterstitle">Filter</h4>
       <h4 slot="resultstitle">Results</h4>
     </eox-itemfilter>`).as(
       "eox-itemfilter"
-    );
-    cy.get("eox-itemfilter").should(($el) => {
-      const eoxItemFilter = <EOxItemFilter>$el[0];
-      // default config
-      eoxItemFilter.config = {
+    ).then((eoxItemFilter: any) => {
+      eoxItemFilter[0].config = {
         titleProperty: "title",
         filterProperties: [{ key: "themes" }],
         aggregateResults: "themes",
@@ -30,14 +27,16 @@ describe("Item Filter Config", () => {
         // matchAllWhenEmpty: true,
         // exclusiveFilters: true,
       };
-      eoxItemFilter.apply(testItems);
+      eoxItemFilter[0].apply(testItems); 
     });
   });
 
   it("should have a search bar", () => {
     cy.get("eox-itemfilter")
-      .find("input")
-      .should("not.have.css", "display", "none");
+      .shadow()
+      .within(() => {
+        cy.get("[data-cy='search']").should('exist');
+      });
   });
 
   it("should filter results based on search string", () => {
@@ -102,7 +101,7 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("[data-cy='expand-button']").click();
+        cy.get(".details-filter").click();
         cy.get('[type="checkbox"]').first().check();
         cy.get('[type="checkbox"]').eq(1).check();
         cy.get('[type="checkbox"]').first().check().should("be.checked");
@@ -134,7 +133,7 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("[data-cy='expand-button']").click();
+        cy.get(".details-filter").click();
         cy.get('[type="radio"]').first().check();
         cy.get('[type="radio"]').eq(1).check();
         cy.get('[type="radio"]').first().should("not.be.checked");
@@ -146,8 +145,7 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("[data-cy='search']").type("city");
-        cy.get("[data-cy='expand-button']").click();
-        cy.get("#details-filter")
+        cy.get(".details-filter").click()
           .find('[type="checkbox"]')
           .then(($value) => {
             [...Array($value.length)].map((_, i) => {
@@ -156,7 +154,7 @@ describe("Item Filter Config", () => {
           });
         cy.get("[data-cy='filter-reset']").click();
         cy.get("[data-cy='search']").should("have.value", "");
-        cy.get("#details-filter")
+        cy.get(".details-filter")
           .find('[type="checkbox"]')
           .then(($value) => {
             [...Array($value.length)].map((_, i) => {

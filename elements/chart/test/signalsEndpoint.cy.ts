@@ -1,9 +1,13 @@
 import "../src/index.ts";
+import { EOxChart } from "../src";
 
 describe("SH Display", () => {
   it("configures signals endpoint for chart to retrieve data", () => {
-    // @ts-ignore 
-    cy.mount(`<eox-chart id="chart" class="chart"></eox-chart>`);
+    const eoxChart = new EOxChart();
+    // @ts-ignore
+    cy.mount(eoxChart).as(
+      "eox-chart"
+    ); 
     cy.get("eox-chart").should(($el) => {
       // @ts-ignore 
       const eoxChart = <EOxChart>$el[0];

@@ -1,13 +1,13 @@
-// import { EOxMap } from "../main";
-import { html } from "lit";
-import "https://unpkg.com/@eox/map@latest";
+import { EOxMap } from "../main";
+// import "https://unpkg.com/@eox/map@latest";
 import layers from "../examples/layers.json" assert { type: "json" };
 
 describe("Map", () => {
   beforeEach(() => {
-    // const eoxMap = new EOxMap();
+    const eoxMap = new EOxMap();
     // @ts-ignore
-    cy.mount(html`<eox-map layers='[{"type":"Tile","source":{"type":"OSM"}}]'></eox-map>`).as("eox-map");
+    cy.mount(eoxMap).as("eox-map");
+    eoxMap.setLayers(layers);
   });
 
   /*it("sends loadend event", () => {

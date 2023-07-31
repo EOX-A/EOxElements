@@ -7,14 +7,13 @@ import { Point } from "ol/geom";
 
 describe("draw interaction", () => {
   beforeEach(() => {
-    cy.visit("/elements/map/test/general.html");
-    cy.get("eox-map").should(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      eoxMap.setLayers(vectorLayerStyleJson);
-      eoxMap.addDraw("drawLayer", {
-        id: "drawInteraction",
-        type: "Point",
-      });
+    const eoxMap = new EOxMap();
+    // @ts-ignore
+    cy.mount(eoxMap).as("eox-map");
+    eoxMap.setLayers(vectorLayerStyleJson);
+    eoxMap.addDraw("drawLayer", {
+      id: "drawInteraction",
+      type: "Point",
     });
   });
   it("adds a draw interaction", () => {

@@ -4,7 +4,7 @@ describe("Chart", () => {
   it("loads the chart", () => {
     const eoxChart = new EOxChart();
     // @ts-ignore 
-    cy.mount(eoxChart, `<eox-chart id="chart" class="chart"></eox-chart>`).as(
+    cy.mount(eoxChart).as(
       "eox-chart"
     );
     cy.get("eox-chart").should(() => {
