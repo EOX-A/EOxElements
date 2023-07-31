@@ -1,14 +1,8 @@
 export const slider = `
-.range-slider {
-  margin: 60px 0 0 0;
-}
-.range-slider {
-  width: 100%;
-}
 input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
-  height: 10px;
+  height: 6px;
   border-radius: 5px;
   background: #d7dcdf;
   outline: none;
@@ -17,22 +11,28 @@ input[type="range"] {
 }
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #2c3e50;
   cursor: pointer;
   transition: background 0.15s ease-in-out;
 }
+.range-slider {
+  margin: 60px 0 0 0;
+}
+.range-slider {
+  width: 100%;
+}
 input[type="range"]::-webkit-slider-thumb:hover {
-  background: #1abc9c;
+  background: #00416F;
 }
 input[type="range"]:active::-webkit-slider-thumb {
-  background: #1abc9c;
+  background: #00416F;
 }
 input[type="range"]::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border: 0;
   border-radius: 50%;
   background: #2c3e50;
@@ -40,13 +40,13 @@ input[type="range"]::-moz-range-thumb {
   transition: background 0.15s ease-in-out;
 }
 input[type="range"]::-moz-range-thumb:hover {
-  background: #1abc9c;
+  background: #00416F;
 }
 input[type="range"]:active::-moz-range-thumb {
-  background: #1abc9c;
+  background: #00416F;
 }
 input[type="range"]:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px #fff, 0 0 0 6px #1abc9c;
+  box-shadow: 0 0 0 3px #fff0, 0 0 0 6px #00416F00;
 }
 .range-slider__value {
   display: inline-block;
