@@ -15,6 +15,7 @@ ul {
 }
 li {
   list-style: none;
+  margin-bottom: 10px;
 }
 li span {
   font-size: small;
@@ -22,7 +23,7 @@ li span {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-label {
+li span, label {
   display: flex;
   align-items: center;
 }
