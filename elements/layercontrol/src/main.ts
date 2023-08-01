@@ -503,7 +503,7 @@ export class EOxLayerConfig extends LitElement {
   render() {
     return html`
       <style>
-        ${style} 
+        ${style}
         ${!this.unstyled && styleEOX}
       </style>
       ${when(
