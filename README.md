@@ -1,4 +1,4 @@
-# EOxElements
+# EOxElements.
 
 A Web Component collection of geospatial UI elements, crafted by EOX.
 
