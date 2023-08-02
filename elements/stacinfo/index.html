@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
+    <title>eox-stacinfo dev playground</title>
+  </head>
+  <body>
+    <eox-stacinfo
+      for="https://eurodatacube.github.io/eodash-catalog/RACE/E10a6/collection.json"
+      properties='["title", "description", "assets"]'
+    ></eox-stacinfo>
+    <script type="module">
+      import "./src/main.ts";
+      setTimeout(() => {
+        // document.querySelector('eox-stacinfo').setAttribute("for", "https://eurodatacube.github.io/eodash-catalog/RACE/catalog.json")
+        // document.querySelector('eox-stacinfo').setAttribute("properties", '["title"]')
+      }, 3000);
+    </script>
+  </body>
+</html>
