@@ -195,6 +195,7 @@ export class EOxLayerControl extends LitElement {
                       .layerControl="${this}"
                       .layer=${layer}
                       .external=${this.externalLayerConfig}
+                      .unstyled="${this.unstyled}"
                     ></eox-layerconfig>
                   `
                 : nothing}
@@ -452,6 +453,9 @@ export class EOxLayerConfig extends LitElement {
   @property({ type: Boolean })
   external: Boolean;
 
+  @property({ type: Boolean })
+  unstyled: Boolean;
+
   private _layerControlElement: HTMLElement;
 
   @state()
@@ -519,6 +523,7 @@ export class EOxLayerConfig extends LitElement {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       ${when(
         this._currentLayer,

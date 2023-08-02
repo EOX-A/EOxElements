@@ -1,4 +1,6 @@
 import { button } from "../../../utils/styles/button";
+import { slider } from "../../../utils/styles/slider";
+import { radio } from "../../../utils/styles/radio";
 
 export const styleEOX = `
 * {
@@ -6,6 +8,8 @@ export const styleEOX = `
 }
 
 ${button}
+${slider}
+${radio}
 
 ul {
   padding: 0;
