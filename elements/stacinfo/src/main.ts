@@ -26,7 +26,7 @@ export class EOxStacInfo extends TemplateElement {
   stacInfo: Array<typeof STAC> = [];
 
   fetchStac = async (url: string) => {
-    const response = await fetch(url);
+    const response = await fetch(`${url}?ts=${Date.now()}`);
     const stac = await response.json();
     this.stacInfo = this.parseStac(stac);
   };
