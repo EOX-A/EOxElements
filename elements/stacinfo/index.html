@@ -5,18 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
     <title>eox-stacinfo dev playground</title>
+    <style>
+      eox-stacinfo::part(properties) {
+        padding: 0;
+      }
+      .tags {
+        background: lightgrey;
+        padding: 10px;
+        flex-basis: 100%;
+      }
+      div[slot="extent"] {
+        flex-basis: 50%;
+        padding: 20px 0;
+      }
+      div[slot="license"] > span {
+        background: lightgoldenrodyellow;
+        padding: 10px;
+      }
+    </style>
   </head>
   <body>
     <eox-stacinfo
       for="https://eurodatacube.github.io/eodash-catalog/RACE/E10a6/collection.json"
-      properties='["title", "description", "assets"]'
-    ></eox-stacinfo>
+      properties='["title", "description", "tags", "agency", "satellite", "sensor", "extent"]'
+      featured='["summaries", "license"]'
+    >
+      <!-- <template data-type="tags">
+        <div class="tags">LABELS {{ tags.formatted }}</div>
+      </template> -->
+      <template data-type="extent">
+        Temporal reference:
+        <strong
+          >{{ extent.value.temporal.interval[0][0] }} until {{
+          extent.value.temporal.interval[0][1] }}</strong
+        >
+      </template>
+      <template data-type="license">
+        The license is: <span>{{ license.value.toUpperCase() }}</span>
+      </template>
+    </eox-stacinfo>
     <script type="module">
       import "./src/main.ts";
-      setTimeout(() => {
-        // document.querySelector('eox-stacinfo').setAttribute("for", "https://eurodatacube.github.io/eodash-catalog/RACE/catalog.json")
-        // document.querySelector('eox-stacinfo').setAttribute("properties", '["title"]')
-      }, 3000);
+      // setTimeout(() => {
+      //   document
+      //     .querySelector("eox-stacinfo")
+      //     .setAttribute(
+      //       "for",
+      //       "https://eurodatacube.github.io/eodash-catalog/RACE/E10a6/E10a6/2020/Comunidad%20Foral%20de%20Navarra.json"
+      //     );
+      //   document
+      //     .querySelector("eox-stacinfo")
+      //     .setAttribute("properties", '["start_datetime"]');
+      // }, 3000);
     </script>
   </body>
 </html>

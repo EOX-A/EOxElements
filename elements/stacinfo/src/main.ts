@@ -1,4 +1,4 @@
-import { LitElement, html, PropertyValueMap } from "lit";
+import { html, nothing, PropertyValueMap } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
@@ -6,9 +6,10 @@ import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import StacFields from "@radiantearth/stac-fields";
 import { STAC } from "stac-js";
+import { TemplateElement } from "../../../utils/templateElement";
 
 @customElement("eox-stacinfo")
-export class EOxStacInfo extends LitElement {
+export class EOxStacInfo extends TemplateElement {
   @property({ type: Boolean })
   unstyled: Boolean;
 
@@ -17,6 +18,9 @@ export class EOxStacInfo extends LitElement {
 
   @property({ type: Array })
   properties: Array<string> = [];
+
+  @property({ type: Array })
+  featured: Array<string> = [];
 
   @state()
   stacInfo: Array<typeof STAC> = [];
@@ -35,37 +39,91 @@ export class EOxStacInfo extends LitElement {
       return StacFields.formatCollection(stac);
     }
     if (stac.type === "Feature") {
-      for (let field in stac.properties) {
-        let value = stac.properties[field];
-        let formatted = StacFields.format(value, field, stac);
-        let label = StacFields.label(field);
-        console.log(label, formatted);
-        const properties = StacFields.formatItemProperties(stac);
-        console.log(properties);
-      }
+      return StacFields.formatItemProperties(stac);
     }
   };
 
-  buildProperties(stacArray: Array<{ properties?: object }>) {
+  buildProperties(stacArray: Array<typeof STAC>) {
+    const propertyFilter = this.properties.length > 0;
     const stac = stacArray[0];
     if (!stac) {
       return false;
     }
     console.log(stac.properties);
     return html`
+      <h1>
+        ${(propertyFilter ? this.properties.includes("title") : true)
+          ? stac.properties.title?.formatted
+          : nothing}
+      </h1>
+      <p>
+        ${(propertyFilter ? this.properties.includes("description") : true)
+          ? unsafeHTML(stac.properties.description?.formatted)
+          : nothing}
+      </p>
+      <ul part="properties">
+        ${map(
+          Object.entries(stac.properties)
+            .filter(([key]) => {
+              // title and description are always shonw on top, if available
+              return !["title", "description"].includes(key);
+            })
+            .filter(([key]) =>
+              !propertyFilter ? true : this.properties.includes(key)
+            )
+            .sort(([keyA], [keyB]) =>
+              this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
+                ? 1
+                : -1
+            ),
+          ([key, value]) =>
+            this.hasTemplate(key)
+              ? html`${this.renderTemplate(key, stac.properties[key], key)}`
+              : html`
+                  <li>
+                    <span class="label"
+                      >${
+                        // TODO
+                        // @ts-ignore
+                        value.label
+                      }</span
+                    >:
+                    <span class="value"
+                      >${
+                        // TODO
+                        // @ts-ignore
+                        unsafeHTML(value.formatted)
+                      }</span
+                    >
+                  </li>
+                `
+        )}
+      </ul>
       ${map(
         Object.entries(stac.properties)
-          .filter(([key]) =>
-            this.properties.length < 1 ? true : this.properties.includes(key)
-          )
+          .filter(([key]) => this.featured.includes(key))
           .sort(([keyA], [keyB]) =>
             this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
               ? 1
               : -1
           ),
-        ([, value]) => html`
-          <h3>${value.label}</h3>
-          <p>${unsafeHTML(value.formatted)}</p>
+        ([key, value]) => html`
+          <details>
+            <summary>
+              ${
+                // TODO
+                // @ts-ignore
+                value.label
+              }
+            </summary>
+            ${this.hasTemplate(key)
+              ? html`${this.renderTemplate(key, stac.properties[key], key)}`
+              : unsafeHTML(
+                  // TODO
+                  // @ts-ignore
+                  value.formatted
+                )}
+          </details>
         `
       )}
     `;
