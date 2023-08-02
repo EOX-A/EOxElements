@@ -160,6 +160,7 @@ export class EOxLayerControl extends LitElement {
                 layer.get(this.layerIdentifier)
               }"
               data-disabled="${layer.get("layerControlDisable") || nothing}"
+              data-type="${this.getLayerType(layer, olMap)}"
             >
               <div class="layer">
                 <label>
@@ -413,6 +414,24 @@ export class EOxLayerControl extends LitElement {
 
   findLayerById = (layers: Array<Layer | LayerGroup>, id: string) => {
     return this.filterLayers(layers, "id", id)[0];
+  };
+
+  getLayerType = (layer, map) => {
+    // trying to guess the layer type from certain properties.
+    // the proper way would be to use instanceOf, but for this
+    // we'd need OL as a dependency, which we're trying to avoid
+    return layer.getLayers
+      ? "group"
+      : map
+          .getInteractions()
+          .getArray()
+          .filter((i) => i.freehand_ !== undefined)
+          .map((i) => i.source_.ol_uid)
+          .includes(layer.getSource ? layer.getSource().ol_uid : false)
+      ? "draw"
+      : layer.declutter_
+      ? "vector"
+      : "raster";
   };
 }
 
