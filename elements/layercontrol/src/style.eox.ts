@@ -48,7 +48,7 @@ details summary::-webkit-details-marker { display: none; } /* Chrome */
 details summary::marker { display: none; }
 
 .layers > ul > li {
-  background: #F1F5F9;
+  background: #F1F5F900;
 }
 
 summary {
@@ -72,13 +72,13 @@ input.lc-search::before {
 ul {
   padding: 0;
   background: #D7E2EE;
-  background: #CFDDEB;
+  background: #CFDDEB00;
 }
 li {
   list-style: none;
   cursor: pointer;
-  background: #CFDDEB;
-  border-bottom: 1px solid #00417022;
+  background: #CFDDEB00;
+  border-top: 1px solid #00417033;
 }
 li summary {
   display: flex;
