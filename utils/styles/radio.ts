@@ -1,7 +1,11 @@
 export const radio = `
 input[type="radio"] {
   --primary-color: #004170;
-  display: none;
+
+  width: 24px;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
 }
 input[type="radio"] + *::before {
   content: "";
