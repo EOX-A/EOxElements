@@ -45,32 +45,41 @@ export class EOxStacInfo extends TemplateElement {
 
   buildProperties(stacArray: Array<typeof STAC>) {
     const propertyFilter = this.properties.length > 0;
-    const stac = stacArray[0];
-    if (!stac) {
-      return false;
+    if (stacArray.length < 1) {
+      return null;
     }
-    console.log(stac.properties);
+    // Throwing all properties from all extensions into one object
+    // TODO render extensions in separate sections?
+    const stacProperties = stacArray.reduce(
+      (acc, curr) => ({
+        ...acc,
+        ...curr.properties,
+      }),
+      {}
+    );
     return html`
       <h1>
         ${(propertyFilter ? this.properties.includes("title") : true)
-          ? stac.properties.title?.formatted
+          ? stacProperties.title?.formatted
           : nothing}
       </h1>
       <p>
         ${(propertyFilter ? this.properties.includes("description") : true)
-          ? unsafeHTML(stac.properties.description?.formatted)
+          ? unsafeHTML(stacProperties.description?.formatted)
           : nothing}
       </p>
       <ul part="properties">
         ${map(
-          Object.entries(stac.properties)
+          Object.entries(stacProperties)
             .filter(([key]) => {
               // title and description are always shonw on top, if available
-              return !["title", "description"].includes(key);
+              // don't show links by default // TODO
+              return !["title", "description", "links"].includes(key);
             })
             .filter(([key]) =>
               !propertyFilter ? true : this.properties.includes(key)
             )
+            .reverse()
             .sort(([keyA], [keyB]) =>
               this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
                 ? 1
@@ -78,7 +87,7 @@ export class EOxStacInfo extends TemplateElement {
             ),
           ([key, value]) =>
             this.hasTemplate(key)
-              ? html`${this.renderTemplate(key, stac.properties[key], key)}`
+              ? html`${this.renderTemplate(key, stacProperties[key], key)}`
               : html`
                   <li>
                     <span class="label"
@@ -100,8 +109,9 @@ export class EOxStacInfo extends TemplateElement {
         )}
       </ul>
       ${map(
-        Object.entries(stac.properties)
+        Object.entries(stacProperties)
           .filter(([key]) => this.featured.includes(key))
+          .reverse()
           .sort(([keyA], [keyB]) =>
             this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
               ? 1
@@ -117,7 +127,7 @@ export class EOxStacInfo extends TemplateElement {
               }
             </summary>
             ${this.hasTemplate(key)
-              ? html`${this.renderTemplate(key, stac.properties[key], key)}`
+              ? html`${this.renderTemplate(key, stacProperties[key], key)}`
               : unsafeHTML(
                   // TODO
                   // @ts-ignore
