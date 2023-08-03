@@ -145,6 +145,79 @@ export class EOxLayerControl extends LitElement {
       }
     });
 
+    const singleLayer = (layer: Layer, groupId: string) => html`
+      <details>
+        <summary>
+          <div class="layer">
+            <div class="left">
+              <input
+                type="${layer.get("layerControlExclusive")
+                  ? "radio"
+                  : "checkbox"}"
+                .checked="${live(layer.getVisible())}"
+                @click=${() => {
+                  this.toggleLayerVisibility(layer as Layer, groupId);
+                }}
+              />
+              <span class="title"
+                >${layer.get(this.layerTitle) ||
+                `${
+                  // @ts-ignore
+                  layer.get(this.layerIdentifier)
+                }`}
+              </span>
+            </div>
+            <div class="right">
+              ${this.sortBy === "layerOrder" && !this.unstyled
+                ? html` <div
+                    class="drag-handle ${layer.get("layerControlDisable")
+                      ? "disabled"
+                      : ""}"
+                  >
+                    <span>=</span>
+                  </div>`
+                : nothing}
+            </div>
+          </div>
+        </summary>
+        ${this.layerConfig
+          ? html`
+              <eox-layerconfig
+                .layerConfig="${this.layerConfig}"
+                .layerControl="${this}"
+                .layer=${layer}
+                .external=${this.externalLayerConfig}
+                .unstyled="${this.unstyled}"
+              ></eox-layerconfig>
+            `
+          : nothing}
+        ${
+          // @ts-ignore
+          this.externalLayerConfig && layer.style_?.color
+            ? html`
+                <button @click=${() => this._emitLayerconfig(layer as Layer)}>
+                  configure
+                </button>
+              `
+            : nothing
+        }
+        ${
+          // @ts-ignore
+          layer.getLayers
+            ? html`
+                ${listItems(
+                  this.preFilterLayers(
+                    // @ts-ignore
+                    [...layer.getLayers().getArray()].reverse()
+                  ),
+                  layer.get("id")
+                )}
+              `
+            : nothing
+        }
+      </details>
+    `;
+
     const listItems = (
       layers: Array<Layer | LayerGroup>,
       group?: string
@@ -160,73 +233,10 @@ export class EOxLayerControl extends LitElement {
                 layer.get(this.layerIdentifier)
               }"
               data-disabled="${layer.get("layerControlDisable") || nothing}"
+              data-type="${this.getLayerType(layer as Layer, olMap)}"
+              data-layerconfig="${this.layerConfig?.length > 0}"
             >
-              <div class="layer">
-                <label>
-                  <input
-                    type="${layer.get("layerControlExclusive")
-                      ? "radio"
-                      : "checkbox"}"
-                    .checked="${live(layer.getVisible())}"
-                    @click=${() => {
-                      this.toggleLayerVisibility(layer as Layer, group);
-                    }}
-                  />
-                  <span class="title"
-                    >${layer.get(this.layerTitle) ||
-                    `${
-                      // @ts-ignore
-                      layer.get(this.layerIdentifier)
-                    }`}</span
-                  >
-                </label>
-                ${this.sortBy === "layerOrder" &&
-                !layer.get("layerControlDisable")
-                  ? html`<div class="drag-handle">
-                      <span>=</span>
-                    </div>`
-                  : nothing}
-              </div>
-              ${this.layerConfig
-                ? html`
-                    <eox-layerconfig
-                      .layerConfig="${this.layerConfig}"
-                      .layerControl="${this}"
-                      .layer=${layer}
-                      .external=${this.externalLayerConfig}
-                      .unstyled="${this.unstyled}"
-                    ></eox-layerconfig>
-                  `
-                : nothing}
-              ${
-                // @ts-ignore
-                this.externalLayerConfig && layer.style_
-                  ? html`
-                      <button
-                        @click=${() => this._emitLayerconfig(layer as Layer)}
-                      >
-                        configure
-                      </button>
-                    `
-                  : nothing
-              }
-              ${
-                // @ts-ignore
-                layer.getLayers
-                  ? html`
-                      <details open class="group-details">
-                        <summary>Layers</summary>
-                        ${listItems(
-                          this.preFilterLayers(
-                            // @ts-ignore
-                            [...layer.getLayers().getArray()].reverse()
-                          ),
-                          layer.get("id")
-                        )}
-                      </details>
-                    `
-                  : nothing
-              }
+              ${singleLayer(layer as Layer, group)}
             </li>
           `
         )}
@@ -240,7 +250,8 @@ export class EOxLayerControl extends LitElement {
       </style>
       <div>
         <slot></slot>
-        <div>
+        <input type="text" placeholder="Find layer" />
+        <div class="layers">
           ${listItems(
             this.preFilterLayers(collection.getArray() as Array<Layer>)
           )}
@@ -320,9 +331,9 @@ export class EOxLayerControl extends LitElement {
       lists.forEach((list) => {
         const inGroup = list.dataset.group;
         Sortable.create(list, {
-          handle: ".drag-handle",
+          handle: this.unstyled ? "summary" : ".drag-handle",
           dataIdAttr: "data-layer",
-          filter: "data-disabled",
+          filter: ".drag-handle.disabled",
           swapThreshold: 0.5,
           animation: 150,
           easing: "cubic-bezier(1, 0, 0, 1)",
@@ -414,6 +425,29 @@ export class EOxLayerControl extends LitElement {
 
   findLayerById = (layers: Array<Layer | LayerGroup>, id: string) => {
     return this.filterLayers(layers, "id", id)[0];
+  };
+
+  getLayerType = (layer: Layer, map: Map) => {
+    // trying to guess the layer type from certain properties.
+    // the proper way would be to use instanceOf, but for this
+    // we'd need OL as a dependency, which we're trying to avoid
+    // @ts-ignore
+    return layer.getLayers
+      ? "group"
+      : map
+          .getInteractions()
+          .getArray()
+          // @ts-ignore
+          .filter((i) => i.freehand_ !== undefined)
+          // @ts-ignore
+          .map((i) => i.source_.ol_uid)
+          // @ts-ignore
+          .includes(layer.getSource ? layer.getSource().ol_uid : false)
+      ? "draw"
+      : // @ts-ignore
+      layer.declutter_ !== undefined
+      ? "vector"
+      : "raster";
   };
 }
 
@@ -520,16 +554,18 @@ export class EOxLayerConfig extends LitElement {
               ),
               (property) => property,
               (property) => html`
-                <div>${property}</div>
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value="${live(this._currentLayer.getOpacity())}"
-                  @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
-                    this._handleInput(evt, property)}
-                />
+                <div class="slider-control">
+                  <div class="slider-property">${property}</div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="${live(this._currentLayer.getOpacity())}"
+                    @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
+                      this._handleInput(evt, property)}
+                  />
+                </div>
               `
             )}
             ${Object.keys(this._configList).length > 0 && !this.external

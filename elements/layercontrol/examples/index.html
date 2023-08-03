@@ -16,16 +16,33 @@
     </style>
   </head>
   <body>
-    <p>Basic layer control</p>
     <eox-map
       zoom="3"
       center="[1000000, 6000000]"
       layers='[
       {
+        "type": "Vector",
+        "title": "Drawn Points",
+        "properties": {
+          "id": "drawLayer"
+        },
+        "source": {
+          "type": "Vector"
+        },
+        "style": {
+          "circle-radius": "10",
+          "circle-fill-color": "red",
+          "circle-stroke-color": "black",
+          "circle-stroke-width": "2",
+          "stroke-color": "black",
+          "stroke-width": "5",
+          "fill-color": "red"
+        }
+      },
+      {
         "type": "Group",
         "id": "group2",
-        "layerControlDisable": true,
-        "title": "data",
+        "title": "Data Layers",
         "layers": [
           {
             "type": "Tile",
@@ -50,19 +67,33 @@
                 "LAYERS": "AWS_NO2-VISUALISATION"
               }
             }
+          },
+          {
+            "type": "Vector",
+            "background": "#1a2b39",
+            "title": "Regions",
+            "properties": {
+              "id": "regions"
+            },
+            "source": {
+              "type": "Vector",
+              "url": "https://openlayers.org/data/vector/ecoregions.json",
+              "format": "GeoJSON",
+              "attributions": "Regions: @ openlayers.org"
+            }
           }
         ]
       },
       {
         "type": "Group",
         "id": "group1",
-        "title": "background",
+        "title": "Background Layers",
         "layers": [
           {
             "type": "WebGLTile",
-            "id":"s2",
+            "id": "s2",
             "layerControlExclusive": true,
-            "title":"s2",
+            "title": "s2",
             "style": {
               "variables": {
                 "red": 1,
@@ -94,6 +125,7 @@
           {
             "type": "Tile",
             "id": "osm",
+            "title": "Open Street Map",
             "layerControlExclusive": true,
             "visible": false,
             "title": "osm",
@@ -103,36 +135,30 @@
             }
           }
         ]
-      },
-      {
-        "type": "Tile",
-        "id": "osm2",
-        "visible": false,
-        "title": "osm2",
-        "source": {
-          "type": "OSM"
-        }
       }
     ]'
     ></eox-map>
-    <eox-layercontrol
-      for="eox-map"
-      layerTitle="background"
-      layerIdentifier="id"
-    ></eox-layercontrol>
+    <eox-layercontrol for="eox-map" layerIdentifier="id">
+      Basic layer control
+    </eox-layercontrol>
     <eox-layercontrol
       for="eox-map"
       externalLayerConfig
-      layerConfig='["opacity"]'
+      layerConfig='["opacity", "color"]'
       layerIdentifier="id"
       id="test-control"
     >
-      Layer Control with external layer config
+      Layer Control with external layer config (open background layers / s2 to
+      see)
     </eox-layercontrol>
     <eox-layerconfig for="eox-layercontrol#test-control"></eox-layerconfig>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "https://unpkg.com/@eox/layercontrol@latest";
+      document.querySelector("eox-map").addDraw("drawLayer", {
+        id: "drawInteraction",
+        type: "Point",
+      });
     </script>
   </body>
 </html>
