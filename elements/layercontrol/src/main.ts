@@ -444,7 +444,7 @@ export class EOxLayerControl extends LitElement {
           .includes(layer.getSource ? layer.getSource().ol_uid : false)
       ? "draw"
       : // @ts-ignore
-      layer.declutter_
+      layer.declutter_ !== undefined
       ? "vector"
       : "raster";
   };
