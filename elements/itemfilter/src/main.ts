@@ -51,6 +51,7 @@ class ElementConfig {
     exclusive?: Boolean;
     type?: string;
     format?: string;
+    expanded?: Boolean;
   }> = [];
 
   /**
@@ -598,6 +599,7 @@ export class EOxItemFilter extends TemplateElement {
                       class="details-filter"
                       part="details-filter"
                       data-filter="${filter.key}"
+                      open=${filter.expanded || nothing}
                     >
                       <summary>
                         <span
