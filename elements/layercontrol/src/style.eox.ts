@@ -126,9 +126,6 @@ li summary:before {
   margin-left: -1px;
 
   margin-top: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 li details[open] > summary:before {
   transform: rotate(90deg);
