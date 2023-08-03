@@ -70,9 +70,9 @@ input.lc-search::before {
 }
 
 ul {
-  padding: 0 0 0 20px;
+  padding: 0;
   background: #D7E2EE;
-  background: #F1F5F9;
+  background: #CFDDEB;
 }
 li {
   list-style: none;
