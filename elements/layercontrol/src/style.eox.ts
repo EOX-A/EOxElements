@@ -84,10 +84,6 @@ li summary {
   display: flex;
 }
 
-li[data-type=group] .title::before {
-
-}
-
 .slider-control {
   display: flex;
   flex-direction: row;
