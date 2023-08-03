@@ -133,6 +133,9 @@ li summary:before {
 li details[open] > summary:before {
   transform: rotate(90deg);
 }
+li[data-layerconfig=false]:not([data-type=group]) summary:before {
+  display: none;
+}
 li .layer {
   width: 100%;
 }

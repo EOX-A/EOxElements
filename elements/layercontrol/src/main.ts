@@ -235,6 +235,7 @@ export class EOxLayerControl extends LitElement {
               }"
               data-disabled="${layer.get("layerControlDisable") || nothing}"
               data-type="${this.getLayerType(layer as Layer, olMap)}"
+              data-layerconfig="${this.layerConfig?.length > 0}"
             >
               ${singleLayer(layer as Layer, group)}
             </li>
