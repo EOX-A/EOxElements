@@ -159,7 +159,6 @@ export class EOxLayerControl extends LitElement {
                   this.toggleLayerVisibility(layer as Layer, groupId);
                 }}
               />
-              <span class="type-icon"></span>
               <span class="title"
                 >${layer.get(this.layerTitle) ||
                 `${
@@ -251,7 +250,7 @@ export class EOxLayerControl extends LitElement {
       </style>
       <div>
         <slot></slot>
-        <input class="lc-search" type="text" placeholder="Find layer" />
+        <input type="text" placeholder="Find layer" />
         <div class="layers">
           ${listItems(
             this.preFilterLayers(collection.getArray() as Array<Layer>)
