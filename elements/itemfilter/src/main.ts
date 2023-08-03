@@ -247,16 +247,20 @@ export class EOxItemFilter extends TemplateElement {
   unstyled: Boolean;
 
   inputHandler = () => {
-    // using the querySelector/value combo since the event target value is undefined when debounced
-    // @ts-ignore
-    this.search(this.renderRoot.querySelector("input[type='text']").value);
+    this.search();
   };
 
   debouncedInputHandler = _debounce(this.inputHandler, 500, {
     leading: true,
   });
 
-  async search(input: string = "", filters: Object = this._filters) {
+  public async filter(
+    input: string = (<HTMLInputElement>(
+      this.renderRoot.querySelector("input[type='text']")
+    )).value
+  ) {
+    const filters: Object = this._filters;
+    const items: Array<object> = this._items;
     const parsedFilters = Object.entries(filters)
       .filter(([_, filter]) => filter.type === "string")
       .reduce((store, [key, filter]) => {
@@ -285,7 +289,7 @@ export class EOxItemFilter extends TemplateElement {
       !parsedFilters.length &&
       this._config.matchAllWhenEmpty !== false
     ) {
-      results = this._items;
+      results = items;
     } else {
       if (this.config.externalSearch) {
         const response = await fetch(
@@ -433,9 +437,12 @@ export class EOxItemFilter extends TemplateElement {
       }
       results = [...filteredResults];
     }
-    this._results = this.sortResults(results);
-    this._config.onSearch(results);
-    this.requestUpdate();
+    return this.sortResults(results);
+  }
+
+  private async search() {
+    this._results = await this.filter();
+    this._config.onSearch(this._results);
   }
 
   aggregateResults(items: Array<Object>, property: string | Array<string>) {
@@ -493,13 +500,7 @@ export class EOxItemFilter extends TemplateElement {
     }
     // @ts-ignore
     this._filters[filter].keys[key] = !this._filters[filter].keys[key];
-    const searchField = this.renderRoot.querySelector('input[type="text"]');
-    if (searchField) {
-      // @ts-ignore
-      this.search(searchField.value);
-    } else {
-      this.search();
-    }
+    this.search();
     const resultItems = this.renderRoot.querySelectorAll(
       "ul#results input[type='radio']"
     );
@@ -657,12 +658,7 @@ export class EOxItemFilter extends TemplateElement {
                                     this._filters[filter.key].keys.max,
                                     // @ts-ignore
                                   ] = evt.detail.values;
-                                  this.search(
-                                    this.renderRoot.querySelector(
-                                      "input[type='text']"
-                                      // @ts-ignore
-                                    ).value
-                                  );
+                                  this.search();
                                 }}"
                               ></tc-range-slider>
                               <div>
@@ -694,12 +690,7 @@ export class EOxItemFilter extends TemplateElement {
                                         // @ts-ignore
                                         this._filters[filter.key].mode = mode;
                                         this.requestUpdate();
-                                        this.search(
-                                          this.renderRoot.querySelector(
-                                            "input[type='text']"
-                                            // @ts-ignore
-                                          ).value
-                                        );
+                                        this.search();
                                       }}"
                                     />
                                     <small>${mode} filter geometry</small>
@@ -721,12 +712,7 @@ export class EOxItemFilter extends TemplateElement {
                                         // @ts-ignore
                                         e.detail.geometry;
                                     });
-                                  this.search(
-                                    this.renderRoot.querySelector(
-                                      "input[type='text']"
-                                      // @ts-ignore
-                                    ).value
-                                  );
+                                  this.search();
                                 }}"
                               ></eox-itemfilter-spatial>
                             `
