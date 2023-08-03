@@ -50,57 +50,57 @@
                 "LAYERS": "AWS_NO2-VISUALISATION"
               }
             }
-          }
-        ]
-      },
-      {
-        "type": "Group",
-        "id": "group1",
-        "title": "background",
-        "layers": [
-          {
-            "type": "WebGLTile",
-            "id":"s2",
-            "layerControlExclusive": true,
-            "title":"s2",
-            "style": {
-              "variables": {
-                "red": 1,
-                "green": 2,
-                "blue": 3,
-                "redMax": 3000,
-                "greenMax": 3000,
-                "blueMax": 3000
-              },
-              "color": [
-                "array",
-                ["/", ["band", ["var", "red"]], ["var", "redMax"]],
-                ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
-                ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
-                1
-              ],
-              "gamma": 1.1
-            },
-            "source": {
-              "type": "GeoTIFF",
-              "normalize": false,
-              "sources": [
-                {
-                  "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
-                }
-              ]
-            }
           },
           {
+            "type": "Group",
+            "id": "group1",
+            "title": "background",
+            "layers": [
+              {
+                "type": "WebGLTile",
+                "id":"s2",
+                "layerControlExclusive": true,
+                "title":"s2",
+          "style": {
+            "variables": {
+              "red": 1,
+              "green": 2,
+              "blue": 3,
+              "redMax": 3000,
+              "greenMax": 3000,
+              "blueMax": 3000
+            },
+            "color": [
+              "array",
+              ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+              ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+              ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+              1
+            ],
+            "gamma": 1.1
+          },
+          "source": {
+            "type": "GeoTIFF",
+            "normalize": false,
+            "sources": [
+              {
+                "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
+              }
+            ]
+          }
+        },
+          {
             "type": "Tile",
-            "id": "osm",
-            "layerControlExclusive": true,
-            "visible": false,
-            "title": "osm",
-            "opacity": 0.5,
+                "id": "osm",
+                "layerControlExclusive": true,
+                "visible": false,
+                "title": "osm",
+                "opacity": 0.5,
             "source": {
-              "type": "OSM"
-            }
+                  "type": "OSM"
+                }
+              }
+            ]
           }
         ]
       },

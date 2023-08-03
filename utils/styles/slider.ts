@@ -11,8 +11,8 @@ input[type="range"] {
 }
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   background: #2c3e50;
   cursor: pointer;
@@ -31,8 +31,8 @@ input[type="range"]:active::-webkit-slider-thumb {
   background: #00416F;
 }
 input[type="range"]::-moz-range-thumb {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   border: 0;
   border-radius: 50%;
   background: #2c3e50;

@@ -1,14 +1,18 @@
 export const radio = `
 input[type="radio"] {
   --primary-color: #004170;
-  display: none;
+
+  width: 24px;
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
 }
 input[type="radio"] + *::before {
   content: "";
   display: inline-block;
   vertical-align: bottom;
-  width: 1rem;
-  height: 1rem;
+  width: 16px;
+  height: 16px;
   margin-right: 0.3rem;
   border-radius: 50%;
   border-style: solid;
