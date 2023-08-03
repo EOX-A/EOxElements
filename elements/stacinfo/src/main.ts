@@ -28,10 +28,24 @@ export class EOxStacInfo extends TemplateElement {
   fetchStac = async (url: string) => {
     const response = await fetch(`${url}?ts=${Date.now()}`);
     const stac = await response.json();
-    this.stacInfo = this.parseStac(stac);
+    this.stacInfo = await this.parseStac(stac);
   };
 
-  parseStac = (stac: typeof STAC) => {
+  parseStac = async (stac: typeof STAC) => {
+    // Custom fetching logic for story assets
+    // TODO keep this? Or have markdown in description
+    if (stac.assets?.story) {
+      // TEMP for demo
+      stac.assets.story.href =
+        "https://raw.githubusercontent.com/eurodatacube/eodash/staging/app/public/eodash-data/stories/E10a6.md";
+      const response = await fetch(stac.assets.story.href);
+      const text = await response.text();
+      if (response.status < 400) {
+        stac.description = text;
+      } else {
+        console.error(`Story loading failed! ${text}`);
+      }
+    }
     if (stac.type === "Catalog") {
       return StacFields.formatCatalog(stac);
     }
