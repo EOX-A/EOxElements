@@ -24,4 +24,18 @@ details {
 details > summary {
   font-weight: bold;
 }
+dl {
+  margin: 0;
+}
+dd {
+  margin-left: 0;
+}
+li ul, dd ul {
+  padding-left: 0;
+  display: initial;
+  list-style: initial;
+}
+dd li, li ul li {
+  padding: 0;
+}
 `;
