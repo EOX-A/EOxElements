@@ -7,8 +7,8 @@ input[type="radio"] + *::before {
   content: "";
   display: inline-block;
   vertical-align: bottom;
-  width: 1rem;
-  height: 1rem;
+  width: 12px;
+  height: 12px;
   margin-right: 0.3rem;
   border-radius: 50%;
   border-style: solid;
