@@ -249,8 +249,8 @@ export class EOxLayerControl extends LitElement {
       </style>
       <div>
         <slot></slot>
-        <input type="text" placeholder="Find layer" />
-        <div>
+        <input class="lc-search" type="text" placeholder="Find layer" />
+        <div class="layers">
           ${listItems(
             this.preFilterLayers(collection.getArray() as Array<Layer>)
           )}
@@ -553,16 +553,18 @@ export class EOxLayerConfig extends LitElement {
               ),
               (property) => property,
               (property) => html`
-                <div>${property}</div>
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value="${live(this._currentLayer.getOpacity())}"
-                  @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
-                    this._handleInput(evt, property)}
-                />
+                <div class="slider-control">
+                  <div class="slider-property">${property}</div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="${live(this._currentLayer.getOpacity())}"
+                    @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
+                      this._handleInput(evt, property)}
+                  />
+                </div>
               `
             )}
             ${Object.keys(this._configList).length > 0 && !this.external
