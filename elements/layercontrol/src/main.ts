@@ -193,7 +193,7 @@ export class EOxLayerControl extends LitElement {
           : nothing}
         ${
           // @ts-ignore
-          this.externalLayerConfig && layer.style_
+          this.externalLayerConfig && layer.style_?.color
             ? html`
                 <button @click=${() => this._emitLayerconfig(layer as Layer)}>
                   configure
