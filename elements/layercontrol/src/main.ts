@@ -159,6 +159,7 @@ export class EOxLayerControl extends LitElement {
                   this.toggleLayerVisibility(layer as Layer, groupId);
                 }}
               />
+              <span class="type-icon"></span>
               <span class="title"
                 >${layer.get(this.layerTitle) ||
                 `${
