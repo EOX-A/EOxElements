@@ -59,9 +59,10 @@ summary details, summary li, summary ul {
 }
 
 input.lc-search {
-  width: 100%;
+  --search-padding-left: 32px;
+  width: calc(100% - var(--search-padding-left) - 4px);
   height: 32px;
-  padding-left: 32px;
+  padding-left: var(--search-padding-left);
   font-size: 15px;
 }
 
@@ -89,7 +90,7 @@ li summary {
   flex-direction: row;
   align-items: center;
   margin-top: 9px;
-  margin-left: 30px;
+  margin-left: 64px;
   margin-bottom: 12px;
 }
 
@@ -141,6 +142,9 @@ li .layer input[type=checkbox] {
   appearance: none;
   margin: 0;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 li .layer input[type=checkbox]:after {
   display: block;
