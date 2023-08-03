@@ -28,23 +28,7 @@ export class SpatialFilter extends LitElement {
   eoxMap: EOxMap;
 
   render() {
-    return html`
-      <eox-map
-        part="map"
-        style="height: 400px"
-        layers='[
-          {"type": "Vector", "id": "draw", "source": {"type": "Vector"}},
-          {
-            "type": "Tile",
-            "source": {
-              "type": "XYZ",
-              "url": "https://s2maps-tiles.eu/wmts/1.0.0/osm_3857/default/g/{z}/{y}/{x}.jpg",
-              "attribution": "{ OSM: Data &copy; OpenStreetMap contributors and others, Rendering &copy; EOX }"
-            }
-          }
-        ]'
-      ></eox-map>
-    `;
+    return html`<eox-map part="map" style="height: 400px"></eox-map>`;
   }
 
   firstUpdated() {
@@ -52,7 +36,30 @@ export class SpatialFilter extends LitElement {
   }
 
   setup() {
+    const mapLayers = [
+      {
+        type: "Vector",
+        id: "draw",
+        source: {
+          type: "Vector",
+          ...(this.geometry && { format: "GeoJSON" }),
+          ...(this.geometry && { url: this.createFeatureUrl(this.geometry) }),
+        },
+        zIndex: 1,
+      },
+      {
+        type: "Tile",
+        source: {
+          type: "XYZ",
+          url: "https://s2maps-tiles.eu/wmts/1.0.0/osm_3857/default/g/{z}/{y}/{x}.jpg",
+          attribution:
+            "{ OSM: Data &copy; OpenStreetMap contributors and others, Rendering &copy; EOX }",
+        },
+      },
+    ];
+
     this.eoxMap = this.renderRoot.querySelector("eox-map");
+    this.eoxMap.setLayers(mapLayers);
     this.eoxMap.addDraw("draw", {
       id: "drawInteraction",
       type: "Polygon",
@@ -87,6 +94,23 @@ export class SpatialFilter extends LitElement {
         updateGeometryFilter(e.features.getArray()[0]);
       }
     );
+  }
+
+  // TODO move to epx-map helper function?
+  createFeatureUrl(geometry: Geometry) {
+    const featureString = encodeURIComponent(
+      JSON.stringify({
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            properties: null,
+            geometry,
+          },
+        ],
+      })
+    );
+    return `data:text/json,${featureString}`;
   }
 
   reset() {

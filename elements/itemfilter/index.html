@@ -17,13 +17,41 @@
       EOxItemFilter.config = {
         titleProperty: "title",
         filterProperties: [
-          { key: "themes", title: "Theme" },
-          // { key: "code" },
-          // { key: "likes", type: "range" },
-          // { key: "year", type: "range" },
-          // { key: "years", type: "range" },
-          { key: "timestamp", type: "range", format: "date" },
-          { key: "geometry", type: "spatial" },
+          {
+            key: "themes",
+            title: "Theme",
+            expanded: true,
+            state: {
+              air: true,
+              agriculture: true,
+            },
+          },
+          {
+            key: "timestamp",
+            type: "range",
+            format: "date",
+            expanded: true,
+            state: { min: 1685843798, max: 1686750998 },
+          },
+          {
+            key: "geometry",
+            type: "spatial",
+            expanded: true,
+            state: {
+              geometry: {
+                type: "Polygon",
+                coordinates: [
+                  [
+                    [-97.71428571428572, 38.00407795331557],
+                    [-102.00000000000001, -40.329636215359066],
+                    [81.85714285714282, -47.42214099287611],
+                    [50.57142857142855, 51.0574434128921],
+                    [-97.71428571428572, 38.00407795331557],
+                  ],
+                ],
+              },
+            },
+          },
         ],
         aggregateResults: "themes",
         enableSearch: true,
@@ -36,6 +64,32 @@
         onSelect: (item) => {
           console.log(item);
         },
+        // filterState: {
+        //   themes: {
+        //     keys: {
+        //       agriculture: true,
+        //     },
+        //   },
+        //   timestamp: {
+        //     keys: { min: 1685843798, max: 1686750998 },
+        //     min: 1684936598,
+        //     max: 1686750998,
+        //   },
+        //   geometry: {
+        //     geometry: {
+        //       type: "Polygon",
+        //       coordinates: [
+        //         [
+        //           [-97.71428571428572, 38.00407795331557],
+        //           [-102.00000000000001, -40.329636215359066],
+        //           [81.85714285714282, -47.42214099287611],
+        //           [50.57142857142855, 51.0574434128921],
+        //           [-97.71428571428572, 38.00407795331557],
+        //         ],
+        //       ],
+        //     },
+        //   },
+        // },
         // matchAllWhenEmpty: true,
         // exclusiveFilters: true,
         // externalSearch: (input, filters) => {
@@ -58,6 +112,28 @@
         // },
       };
       EOxItemFilter.apply(items);
+      setTimeout(async () => {
+        // EOxItemFilter.config = {
+        //   ...EOxItemFilter.config,
+        //   filterState: {
+        //       "search": {},
+        //       "themes": {
+        //           "keys": {
+        //               "agriculture": true
+        //           }
+        //       },
+        //       "timestamp": {
+        //           "min": 1684936598,
+        //           "max": 1686750998,
+        //       },
+        //       "geometry": {
+        //           "type": "spatial",
+        //           "keys": {},
+        //           "mode": "intersects"
+        //       }
+        //   }
+        // }
+      }, 3000);
     </script>
   </body>
 </html>

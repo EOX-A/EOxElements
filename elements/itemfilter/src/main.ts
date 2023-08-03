@@ -2,6 +2,7 @@ import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
+import { live } from "lit/directives/live.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import Fuse from "fuse.js";
 // @ts-ignore
@@ -203,14 +204,19 @@ export class EOxItemFilter extends TemplateElement {
               filterKeys[prop] = undefined;
             });
           } else {
-            // @ts-ignore
-            filterKeys[item[filterProperty.key]] = undefined;
+            if (filterProperty.type === "spatial") {
+              filterKeys.geometry = undefined;
+              filterKeys.mode = filterProperty.mode || "intersects";
+            } else {
+              // @ts-ignore
+              filterKeys[item[filterProperty.key]] = undefined;
+            }
           }
         });
         // @ts-ignore
         this._filters[filterProperty.key] = {
           type: filterProperty.type || "string",
-          keys: filterKeys,
+          state: filterKeys,
           ...(filterProperty.type === "range" && {
             // @ts-ignore
             min: filterKeys.min,
@@ -218,11 +224,13 @@ export class EOxItemFilter extends TemplateElement {
             max: filterKeys.max,
             format: filterProperty.format,
           }),
-          ...(filterProperty.type === "spatial" && {
-            // @ts-ignore
-            mode: filterProperty.mode || "intersects",
-          }),
         };
+        if (filterProperty.state) {
+          this._filters[filterProperty.key].state = {
+            ...this._filters[filterProperty.key].state,
+            ...filterProperty.state,
+          };
+        }
       });
     }
 
@@ -248,6 +256,15 @@ export class EOxItemFilter extends TemplateElement {
   unstyled: Boolean;
 
   inputHandler = () => {
+    // TEMP store the search input into filters
+    const searchInput = <HTMLInputElement>(
+      this.renderRoot.querySelector("input[type='text']")
+    );
+    if (searchInput) {
+      this._filters[".search"] = {
+        state: searchInput.value,
+      };
+    }
     this.search();
   };
 
@@ -258,7 +275,7 @@ export class EOxItemFilter extends TemplateElement {
   public async filter(
     input: string = (<HTMLInputElement>(
       this.renderRoot.querySelector("input[type='text']")
-    )).value
+    ))?.value || ""
   ) {
     const filters: Object = this._filters;
     const items: Array<object> = this._items;
@@ -274,7 +291,7 @@ export class EOxItemFilter extends TemplateElement {
           property[key] = `="${val}"`; // exact match
           holding.push(property);
         };
-        Object.entries(filter.keys)
+        Object.entries(filter.state)
           .filter(([_, v]) => v)
           .forEach(([k, _]) => createProperty(k));
         if (holding.length > 0) {
@@ -327,8 +344,8 @@ export class EOxItemFilter extends TemplateElement {
       .reduce((acc, [key, value]) => {
         // @ts-ignore
         acc[key] = {
-          min: value.keys.min,
-          max: value.keys.max,
+          min: value.state.min,
+          max: value.state.max,
           format: value.format,
         };
         return acc;
@@ -391,8 +408,8 @@ export class EOxItemFilter extends TemplateElement {
       .reduce((acc, [key, value]) => {
         // @ts-ignore
         acc[key] = {
-          geometry: value.geometry,
-          mode: value.mode,
+          geometry: value.state.geometry,
+          mode: value.state.mode,
         };
         return acc;
       }, {});
@@ -461,7 +478,7 @@ export class EOxItemFilter extends TemplateElement {
           // @ts-ignore
           this._filters[this._config.aggregateResults]
           // @ts-ignore
-        ).filter((f) => this._filters[this._config.aggregateResults].keys[f]);
+        ).filter((f) => this._filters[this._config.aggregateResults].state[f]);
       }
 
       const includedInCurrentFilter = currentFilter?.length
@@ -492,15 +509,15 @@ export class EOxItemFilter extends TemplateElement {
             this._config.filterProperties.find((fP) => fP.key === f).exclusive
           ) {
             // @ts-ignore
-            Object.keys(this._filters[f].keys).forEach((k) => {
+            Object.keys(this._filters[f].state).forEach((k) => {
               // @ts-ignore
-              this._filters[f].keys[k] = false;
+              this._filters[f].state[k] = false;
             });
           }
         });
     }
     // @ts-ignore
-    this._filters[filter].keys[key] = !this._filters[filter].keys[key];
+    this._filters[filter].state[key] = !this._filters[filter].state[key];
     this.search();
     const resultItems = this.renderRoot.querySelectorAll(
       "ul#results input[type='radio']"
@@ -537,15 +554,15 @@ export class EOxItemFilter extends TemplateElement {
       // @ts-ignore
       if (this._filters[f].type === "range") {
         // @ts-ignore
-        this._filters[f].keys.min = this._filters[f].min;
+        this._filters[f].state.min = this._filters[f].min;
         // @ts-ignore
-        this._filters[f].keys.max = this._filters[f].max;
+        this._filters[f].state.max = this._filters[f].max;
         return;
       }
       // @ts-ignore
       if (this._filters[f].type === "spatial") {
         // @ts-ignore
-        this._filters[f].geometry = undefined;
+        this._filters[f].state.geometry = undefined;
         const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
           "eox-itemfilter-spatial-filter"
         );
@@ -553,9 +570,9 @@ export class EOxItemFilter extends TemplateElement {
         return;
       }
       // @ts-ignore
-      Object.keys(this._filters[f].keys).forEach((k) => {
+      Object.keys(this._filters[f].state).forEach((k) => {
         // @ts-ignore
-        this._filters[f].keys[k] = false;
+        this._filters[f].state[k] = false;
       });
     });
     this.search();
@@ -611,12 +628,12 @@ export class EOxItemFilter extends TemplateElement {
                           ${filter.type === "string" &&
                           Object.values(
                             // @ts-ignore
-                            this._filters[filter.key].keys
+                            this._filters[filter.key].state
                           ).filter((v) => v).length
                             ? `(${
                                 Object.values(
                                   // @ts-ignore
-                                  this._filters[filter.key].keys
+                                  this._filters[filter.key].state
                                 ).filter((v) => v).length
                               })`
                             : nothing}
@@ -629,10 +646,10 @@ export class EOxItemFilter extends TemplateElement {
                                 ${filter.format === "date"
                                   ? dayjs.unix(
                                       // @ts-ignore
-                                      this._filters[filter.key].keys.min
+                                      this._filters[filter.key].state.min
                                     )
                                   : // @ts-ignore
-                                    this._filters[filter.key].keys.min}
+                                    this._filters[filter.key].state.min}
                               </div>
                               <tc-range-slider
                                 min="${
@@ -645,19 +662,19 @@ export class EOxItemFilter extends TemplateElement {
                                 }"
                                 value1="${
                                   // @ts-ignore
-                                  this._filters[filter.key].keys.min
+                                  this._filters[filter.key].state.min
                                 }"
                                 value2="${
                                   // @ts-ignore
-                                  this._filters[filter.key].keys.max
+                                  this._filters[filter.key].state.max
                                 }"
                                 step="1"
                                 @change="${(evt: InputEvent) => {
                                   [
                                     // @ts-ignore
-                                    this._filters[filter.key].keys.min,
+                                    this._filters[filter.key].state.min,
                                     // @ts-ignore
-                                    this._filters[filter.key].keys.max,
+                                    this._filters[filter.key].state.max,
                                     // @ts-ignore
                                   ] = evt.detail.values;
                                   this.search();
@@ -667,10 +684,10 @@ export class EOxItemFilter extends TemplateElement {
                                 ${filter.format === "date"
                                   ? dayjs.unix(
                                       // @ts-ignore
-                                      this._filters[filter.key].keys.max
+                                      this._filters[filter.key].state.max
                                     )
                                   : // @ts-ignore
-                                    this._filters[filter.key].keys.max}
+                                    this._filters[filter.key].state.max}
                               </div>
                             `
                           : filter.type === "spatial"
@@ -685,12 +702,16 @@ export class EOxItemFilter extends TemplateElement {
                                       name="mode"
                                       .checked="${
                                         // @ts-ignore
-                                        this._filters[filter.key].mode === mode
+                                        live(
+                                          this._filters[filter.key].state
+                                            .mode === mode
+                                        )
                                       }"
                                       value="${mode}"
                                       @click="${() => {
                                         // @ts-ignore
-                                        this._filters[filter.key].mode = mode;
+                                        this._filters[filter.key].state.mode =
+                                          mode;
                                         this.requestUpdate();
                                         this.search();
                                       }}"
@@ -702,18 +723,14 @@ export class EOxItemFilter extends TemplateElement {
                               </form>
                               <eox-itemfilter-spatial-filter
                                 exportparts="map: spatial-filter-map"
+                                .geometry=${
+                                  this._filters[filter.key].state?.geometry
+                                }
                                 @filter="${(e: Event) => {
-                                  Object.entries(this._filters)
-                                    .filter(
-                                      ([, property]) =>
-                                        property.type === "spatial"
-                                    )
-                                    .forEach(([key]) => {
-                                      // @ts-ignore
-                                      this._filters[key].geometry =
-                                        // @ts-ignore
-                                        e.detail.geometry;
-                                    });
+                                  // @ts-ignore
+                                  this._filters[filter.key].state.geometry =
+                                    // @ts-ignore
+                                    e.detail.geometry;
                                   this.search();
                                 }}"
                               ></eox-itemfilter-spatial>
@@ -726,7 +743,7 @@ export class EOxItemFilter extends TemplateElement {
                                     ? map(
                                         Object.keys(
                                           // @ts-ignore
-                                          this._filters[filter.key].keys
+                                          this._filters[filter.key].state
                                         ).sort((a, b) => a.localeCompare(b)),
                                         (key) => html`
                                           <li>
@@ -739,7 +756,7 @@ export class EOxItemFilter extends TemplateElement {
                                                 checked="${
                                                   // @ts-ignore
                                                   this._filters[filter.key]
-                                                    .keys[key] || nothing
+                                                    .state[key] || nothing
                                                 }"
                                                 @click=${() =>
                                                   this.toggleFilter(
@@ -878,21 +895,4 @@ export class EOxItemFilter extends TemplateElement {
       </form>
     `;
   }
-
-  // protected firstUpdated(_changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>): void {
-  //   function parseStringTemplate(str, obj, key) {
-  //     const strP = str.replaceAll(`${key}.`, '')
-  //     let parts = strP.split(/\$\{(?!\d)[\wæøåÆØÅ]*\}/);
-  //     let args = strP.match(/[^{\}]+(?=})/g) || [];
-  //     let parameters = args.map(argument => obj[argument] || (obj[argument] === undefined ? "" : obj[argument]));
-  //     return String.raw({ raw: parts }, ...parameters);
-  // }
-  //   const slot = this.shadowRoot.querySelector('slot[name=results]');
-  //   const template = slot.assignedElements({flatten: true})[0]
-  //   const dataType = template.getAttribute('data-type')
-  //   const pT = parseStringTemplate(template.innerHTML, this[dataType], dataType);
-  //   template.innerHTML = pT
-  //   let clon = template.content.cloneNode(true);
-  //   slot.replaceWith(clon);
-  // }
 }
