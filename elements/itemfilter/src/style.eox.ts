@@ -1,10 +1,21 @@
+import { button } from "../../../utils/styles/button";
+import { radio } from "../../../utils/styles/radio";
+
 export const styleEOX = `
+* {
+  font-family: Roboto, sans-serif;
+}
+
+${button}
+${radio}
+
 ul {
   padding-left: 0;
   margin-top: 0;
 }
 li {
   list-style: none;
+  margin-bottom: 10px;
 }
 li span {
   font-size: small;
@@ -12,7 +23,7 @@ li span {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-label {
+li span, label {
   display: flex;
   align-items: center;
 }

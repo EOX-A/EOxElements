@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
-    <title>eox-itemfiter examples</title>
+    <title>eox-itemfiter dev playground</title>
     <style>
       eox-itemfilter {
         width: 400px;
@@ -17,8 +17,8 @@
     <p>Itemfilter with range slider</p>
     <eox-itemfilter id="range"></eox-itemfilter>
     <script type="module">
-      import "https://unpkg.com/@eox/itemfilter@latest";
-      import items from "./items.json" assert { type: "json" };
+      import "./src/main.ts";
+      import items from "./examples/items.json" assert { type: "json" };
 
       const EOxItemFilter = document.querySelector("eox-itemfilter");
       const EOxItemFilterRange = document.querySelector("eox-itemfilter#range");

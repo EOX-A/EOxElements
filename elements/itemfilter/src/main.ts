@@ -389,15 +389,21 @@ export class EOxItemFilter extends TemplateElement {
       // also used for aggregation. if aggregation of results uses the same property
       // as the filter, it doesn't make sense to show all aggregations, but only
       // the one matching the current filter
-      const currentFilter = Object.keys(
-        // @ts-ignore
-        this._filters[this._config.aggregateResults]
-        // @ts-ignore
-      ).filter((f) => this._filters[this._config.aggregateResults].keys[f]);
-      const includedInCurrentFilter = currentFilter.length
+      let currentFilter;
+      // @ts-ignore
+      if (this._filters[this._config.aggregateResults]) {
+        currentFilter = Object.keys(
+          // @ts-ignore
+          this._filters[this._config.aggregateResults]
+          // @ts-ignore
+        ).filter((f) => this._filters[this._config.aggregateResults].keys[f]);
+      }
+
+      const includedInCurrentFilter = currentFilter?.length
         ? // @ts-ignore
           currentFilter.includes(property)
         : true;
+
       return includedInCurrentFilter && Array.isArray(aggregation)
         ? aggregation.includes(property)
         : aggregation === property;
