@@ -14,7 +14,7 @@ export const generateLayers = (
   }
 
   const layers: Array<olLayers.Layer> = [];
-
+  console.log(layerArray)
   layerArray.reverse().forEach((layer) => {
     // @ts-ignore
     const newLayer = olLayers[layer.type];
