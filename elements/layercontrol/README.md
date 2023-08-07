@@ -45,6 +45,7 @@ Display the unstyled version of the layer control.
 Attach the layer control to an OpenLayer map instance. When used with an `eox-map`, see the [`for` attribute](#for-when-used-with-eox-map) instead.
 
 ## Layer properties
+
 In order to be displayed correctly, the OpenLayers map layers need some custom properties (using e.g. `layer.set(property, value)`).
 
 ### `id?: string`
@@ -58,6 +59,7 @@ The title of the layer displayed in the layer control. Not required (see [automa
 ### `layerControlHide?: Boolean`
 
 Completely hide a layer from the layer control.
+
 ### `layerControlOptional?: Boolean`
 
 Initially hide a layer from the layer control, but make it available as an optional layer. If the layer is selected and added, it will be set to visible and pushed to the top of the layer list or (if originally configured within a layer group) to the top of the layer group.
@@ -65,7 +67,6 @@ Initially hide a layer from the layer control, but make it available as an optio
 ### `layerControlExclusive?: Boolean`
 
 Make layers mutually exclusive. If two or more layers (on the same level, i.e. at root or inside a layer group) have this property, then only one of them can be visualized at a time.
-
 
 ## Contribute
 
