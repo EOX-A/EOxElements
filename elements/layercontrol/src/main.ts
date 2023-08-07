@@ -54,6 +54,11 @@ export class EOxLayerControl extends LitElement {
   @property({ type: Boolean })
   unstyled: Boolean;
 
+  /**
+   * Alternative way to attach a map isntance. Preferred way is the "for" attribute
+   * @param mapObject OpenLayers map instance
+   * @deprecated
+   */
   public attachTo(mapObject: Map) {
     this.olMap = mapObject;
     this.requestUpdate();
