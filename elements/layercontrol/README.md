@@ -32,7 +32,7 @@ const olMap = new Map({
 })
 document.querySelector("map-div").map = olMap
 
-<eox-layercontrol for="map-div"></eox-layercontrol>
+<eox-layercontrol for="#map-div"></eox-layercontrol>
 ```
 
 ### `layerIdentifier: string = "id"`
