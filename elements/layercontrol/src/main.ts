@@ -34,10 +34,10 @@ export class EOxLayerControl extends LitElement {
    * The query selector for the map
    */
   @property()
-  for: string;
+  for: string = "eox-map";
 
   @property()
-  layerIdentifier = "ol_uid";
+  layerIdentifier = "id";
 
   @property()
   layerTitle = "title";
@@ -54,7 +54,32 @@ export class EOxLayerControl extends LitElement {
   @property({ type: Boolean })
   unstyled: Boolean;
 
+  public attachTo(mapObject: Map) {
+    this.olMap = mapObject;
+    this.requestUpdate();
+  }
+
   private _updateControl(layerCollection: Collection<any>) {
+    // initially check if all layers have an id and title,
+    // fill in some backup in case they haven't
+    const checkProperties = (layerArray: Array<Layer | LayerGroup>) => {
+      layerArray.forEach((layer) => {
+        if (!layer.get(this.layerIdentifier)) {
+          // @ts-ignore
+          layer.set(this.layerIdentifier, layer.ol_uid);
+        }
+        if (!layer.get(this.layerTitle)) {
+          // @ts-ignore
+          layer.set(this.layerTitle, `layer ${layer.ol_uid}`);
+        }
+        // @ts-ignore
+        if (layer.getLayers) {
+          // @ts-ignore
+          checkProperties(layer.getLayers().getArray());
+        }
+      });
+    };
+    checkProperties(layerCollection.getArray());
     this.layerCollection = layerCollection;
     // @ts-ignore
     this.optionalLayerArray = this.filterLayers(
@@ -134,10 +159,16 @@ export class EOxLayerControl extends LitElement {
 
   render() {
     const mapQuery = document.querySelector(this.for as string);
-    // @ts-ignore
-    const olMap: Map = mapQuery.map || mapQuery;
+    if (mapQuery) {
+      // @ts-ignore
+      this.olMap = mapQuery?.map || mapQuery;
+    }
 
-    const collection = olMap.getLayers();
+    if (!this.olMap) {
+      return nothing;
+    }
+
+    const collection = this.olMap.getLayers();
     this._updateControl(collection);
     collection.on("change:length", () => {
       if (!this._currentlySorting) {
@@ -161,10 +192,7 @@ export class EOxLayerControl extends LitElement {
               />
               <span class="title"
                 >${layer.get(this.layerTitle) ||
-                `${
-                  // @ts-ignore
-                  layer.get(this.layerIdentifier)
-                }`}
+                `${layer.get(this.layerIdentifier)}`}
               </span>
             </div>
             <div class="right">
@@ -210,7 +238,7 @@ export class EOxLayerControl extends LitElement {
                     // @ts-ignore
                     [...layer.getLayers().getArray()].reverse()
                   ),
-                  layer.get("id")
+                  layer.get(this.layerIdentifier)
                 )}
               `
             : nothing
@@ -233,7 +261,7 @@ export class EOxLayerControl extends LitElement {
                 layer.get(this.layerIdentifier)
               }"
               data-disabled="${layer.get("layerControlDisable") || nothing}"
-              data-type="${this.getLayerType(layer as Layer, olMap)}"
+              data-type="${this.getLayerType(layer as Layer, this.olMap)}"
               data-layerconfig="${this.layerConfig?.length > 0}"
             >
               ${singleLayer(layer as Layer, group)}
@@ -250,7 +278,9 @@ export class EOxLayerControl extends LitElement {
       </style>
       <div>
         <slot></slot>
-        <input type="text" placeholder="Find layer" />
+        ${this.layerCollection.getArray().length > 10
+          ? html`<input type="text" placeholder="Find layer" />`
+          : nothing}
         <div class="layers">
           ${listItems(
             this.preFilterLayers(collection.getArray() as Array<Layer>)
