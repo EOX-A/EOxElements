@@ -40,11 +40,14 @@ summary > .layer {
 }
 
 label[for=optional] {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 21px;
+  font-weight: 400;
+  margin-bottom: 9px;
+  display: block;
 }
 select[name=optional] {
   margin-right: 6px;
+  margin-bottom: 18px;
   height: 36px;
 }
 
