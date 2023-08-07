@@ -267,7 +267,9 @@ export class EOxLayerControl extends LitElement {
       </style>
       <div>
         <slot></slot>
-        <input type="text" placeholder="Find layer" />
+        ${this.layerCollection.getArray().length > 10
+          ? html`<input type="text" placeholder="Find layer" />`
+          : nothing}
         <div class="layers">
           ${listItems(
             this.preFilterLayers(collection.getArray() as Array<Layer>)
