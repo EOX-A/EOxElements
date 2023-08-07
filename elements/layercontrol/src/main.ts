@@ -54,6 +54,11 @@ export class EOxLayerControl extends LitElement {
   @property({ type: Boolean })
   unstyled: Boolean;
 
+  public attachTo(mapObject: Map) {
+    this.olMap = mapObject;
+    this.requestUpdate();
+  }
+
   private _updateControl(layerCollection: Collection<any>) {
     // initially check if all layers have an id and title,
     // fill in some backup in case they haven't
@@ -154,10 +159,16 @@ export class EOxLayerControl extends LitElement {
 
   render() {
     const mapQuery = document.querySelector(this.for as string);
-    // @ts-ignore
-    const olMap: Map = mapQuery.map || mapQuery;
+    if (mapQuery) {
+      // @ts-ignore
+      this.olMap = mapQuery?.map || mapQuery;
+    }
 
-    const collection = olMap.getLayers();
+    if (!this.olMap) {
+      return nothing;
+    }
+
+    const collection = this.olMap.getLayers();
     this._updateControl(collection);
     collection.on("change:length", () => {
       if (!this._currentlySorting) {
@@ -250,7 +261,7 @@ export class EOxLayerControl extends LitElement {
                 layer.get(this.layerIdentifier)
               }"
               data-disabled="${layer.get("layerControlDisable") || nothing}"
-              data-type="${this.getLayerType(layer as Layer, olMap)}"
+              data-type="${this.getLayerType(layer as Layer, this.olMap)}"
               data-layerconfig="${this.layerConfig?.length > 0}"
             >
               ${singleLayer(layer as Layer, group)}
