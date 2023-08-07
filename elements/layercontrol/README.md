@@ -14,9 +14,26 @@ import "@eox/layercontrol"
 
 ## Attributes
 
-### `for: string = "eox-map"` (when used with `eox-map`)
+### `for: string = "eox-map"`
 
-The query selector of the `eox-map` you wish to attch the layer control to. When used with a vanilla OpenLayer map, see the [`attachTo` method](#attachtomapobject-map-when-used-with-a-vanilla-openlayer-map) instead.
+The query selector of the `eox-map` you wish to attach the layer control to.
+
+```
+<eox-map layers="[...]"></eox-map>
+<eox-layercontrol for="eox-map"></eox-layercontrol>
+```
+
+When used with a vanilla OpenLayer map, you need to reference the JS map object in the DOM, such as:
+
+```
+const olMap = new Map({
+    ...
+    target: "map-div"
+})
+document.querySelector("map-div").map = olMap
+
+<eox-layercontrol for="#map-div"></eox-layercontrol>
+```
 
 ### `layerIdentifier: string = "id"`
 
@@ -37,12 +54,6 @@ The layer title property of the layers. "title" by default, fallback is set auto
 ### `unstyled: Boolean`
 
 Display the unstyled version of the layer control.
-
-## Methods
-
-### `attachTo(mapObject: Map)` (when used with a vanilla OpenLayer map)
-
-Attach the layer control to an OpenLayer map instance. When used with an `eox-map`, see the [`for` attribute](#for-when-used-with-eox-map) instead.
 
 ## Layer properties
 
