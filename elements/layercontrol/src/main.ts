@@ -34,7 +34,7 @@ export class EOxLayerControl extends LitElement {
    * The query selector for the map
    */
   @property()
-  for: string;
+  for: string = "eox-map";
 
   @property()
   layerIdentifier = "id";
