@@ -55,12 +55,6 @@ The layer title property of the layers. "title" by default, fallback is set auto
 
 Display the unstyled version of the layer control.
 
-## Methods
-
-### `attachTo(mapObject: Map)`
-
-Attach the layer control to an OpenLayer map instance. Alternative to the (preferred) [`for` attribute](#for-string--eox-map).
-
 ## Layer properties
 
 In order to be displayed correctly, the OpenLayers map layers need some custom properties (using e.g. `layer.set(property, value)`).
