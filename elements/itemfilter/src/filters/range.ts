@@ -2,17 +2,14 @@ import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import dayjs from "dayjs";
 import _debounce from "lodash.debounce";
-// import "./base";
 
 @customElement("eox-itemfilter-range")
 export class EOxItemFilterRange extends LitElement {
   @property()
   filterObject: RangeFilterObject;
 
-  inputHandler = (evt: InputEvent) => {
-    console.log(evt.detail);
+  inputHandler = (evt: CustomEvent) => {
     [this.filterObject.state.min, this.filterObject.state.max] =
-      // @ts-ignore
       evt.detail.values;
     this.dispatchEvent(new CustomEvent("filter"));
     this.requestUpdate();
@@ -23,18 +20,13 @@ export class EOxItemFilterRange extends LitElement {
   });
 
   public reset() {
-    // console.log(this.filterObject.state)
     this.filterObject.state.min = this.filterObject.min;
     this.filterObject.state.max = this.filterObject.max;
-    // console.log(this.filterObject.state)
     this.requestUpdate();
   }
 
   render() {
-    console.log(this.filterObject.state.min);
-    console.log(this.filterObject.state.max);
     return html`
-      ${this.filterObject.state.min}
       <div>
         ${this.filterObject.format === "date"
           ? dayjs.unix(this.filterObject.state.min)
@@ -53,7 +45,6 @@ export class EOxItemFilterRange extends LitElement {
           ? dayjs.unix(this.filterObject.state.max)
           : this.filterObject.state.max}
       </div>
-      ${this.filterObject.state.max}
     `;
   }
 }

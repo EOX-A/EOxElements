@@ -1,3 +1,7 @@
+declare type Item = {
+  [key: string]: any;
+};
+
 declare type Filter = HTMLElement & {
   reset: Function;
 };

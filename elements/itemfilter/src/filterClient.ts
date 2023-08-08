@@ -33,17 +33,14 @@ export const filter = async (
     .reduce((store, [key, filter]) => {
       const operator = "$or";
       const holding: Array<any> = [];
-      // @ts-ignore
-      const createProperty = (pKey, pVal) => {
-        const property = {};
+      const createProperty = (pKey: string, pVal: any) => {
+        const property: { [key: string]: any } = {};
         if (filter.type === "text") {
           // convert strings to (fuzzy) inputs
-          // @ts-ignore
           property[pKey] = `${pVal}`;
         } else {
           // convert boolean values to exact inputs
           // using "="
-          // @ts-ignore
           property[key] = `="${pKey}"`;
         }
         holding.push(property);
@@ -72,8 +69,7 @@ export const filter = async (
   }
   const rangeFilters = Object.entries(filters)
     .filter(([_, value]) => value.type === "range")
-    .reduce((acc, [key, value]) => {
-      // @ts-ignore
+    .reduce((acc: { [key: string]: any }, [key, value]) => {
       acc[key] = {
         min: value.state.min,
         max: value.state.max,
@@ -84,47 +80,35 @@ export const filter = async (
   if (Object.keys(rangeFilters).length > 0) {
     const filteredResults = [];
     for (let i = 0; i < results.length; i++) {
-      const pass = {};
+      const pass: { [key: string]: Boolean } = {};
       for (let [key, value] of Object.entries(rangeFilters)) {
         const parseValue = (input: string) => {
-          // @ts-ignore
           return value.format === "date" ? dayjs(input).unix() : input;
         };
         if (results[i].hasOwnProperty(key)) {
           if (Array.isArray(results[i][key])) {
+            // TODO - make configurable?
             const mode = "overlap";
-            // @ts-ignore
-            if (mode === "contain") {
-              // must contain complete range to pass
-              // @ts-ignore
-              pass[key] =
-                // @ts-ignore
-                parseValue(results[i][key][0]) >= rangeFilters[key].min &&
-                // @ts-ignore
-                parseValue(results[i][key][1]) <= rangeFilters[key].max;
-            } else if (mode === "overlap") {
+            if (mode === "overlap") {
               // must have an overlap with the range to pass
-              // @ts-ignore
               pass[key] =
-                // @ts-ignore
                 rangeFilters[key].min <= parseValue(results[i][key][1]) &&
-                // @ts-ignore
                 parseValue(results[i][key][0]) <= rangeFilters[key].max;
+            } else if (mode === "contain") {
+              // must contain complete range to pass
+              pass[key] =
+                parseValue(results[i][key][0]) >= rangeFilters[key].min &&
+                parseValue(results[i][key][1]) <= rangeFilters[key].max;
             }
           } else if (
-            // @ts-ignore
             parseValue(results[i][key]) >= rangeFilters[key].min &&
-            // @ts-ignore
             parseValue(results[i][key]) <= rangeFilters[key].max
           ) {
-            // @ts-ignore
             pass[key] = true;
           } else {
-            // @ts-ignore
             pass[key] = false;
           }
         } else {
-          // @ts-ignore
           pass[key] = true;
         }
       }
@@ -134,16 +118,16 @@ export const filter = async (
     }
     results = [...filteredResults];
   }
-  const spatialFilters: { geometry?: any } = Object.entries(filters)
-    .filter(([_, value]) => value.type === "spatial")
-    .reduce((acc, [key, value]) => {
-      // @ts-ignore
-      acc[key] = {
-        geometry: value.state.geometry,
-        mode: value.state.mode,
-      };
-      return acc;
-    }, {});
+  const spatialFilters: { [key: string]: { geometry?: any; mode?: string } } =
+    Object.entries(filters)
+      .filter(([_, value]) => value.type === "spatial")
+      .reduce((acc: { [key: string]: any }, [key, value]) => {
+        acc[key] = {
+          geometry: value.state.geometry,
+          mode: value.state.mode,
+        };
+        return acc;
+      }, {});
   if (
     Object.values(spatialFilters)
       .map((f) => f.geometry)
@@ -151,32 +135,20 @@ export const filter = async (
   ) {
     const filteredResults = [];
     for (let i = 0; i < results.length; i++) {
-      const pass = {};
+      const pass: { [key: string]: Boolean } = {};
       for (let key of Object.keys(spatialFilters)) {
-        // @ts-ignore
         const mode = spatialFilters[key].mode || "within";
         if (results[i].hasOwnProperty(key)) {
           const test =
             mode === "within"
-              ? within(
-                  results[i][key],
-                  // @ts-ignore
-                  spatialFilters[key].geometry
-                )
-              : intersects(
-                  results[i][key],
-                  // @ts-ignore
-                  spatialFilters[key].geometry
-                );
+              ? within(results[i][key], spatialFilters[key].geometry)
+              : intersects(results[i][key], spatialFilters[key].geometry);
           if (test) {
-            // @ts-ignore
             pass[key] = true;
           } else {
-            // @ts-ignore
             pass[key] = false;
           }
         } else {
-          // @ts-ignore
           pass[key] = false;
         }
       }
