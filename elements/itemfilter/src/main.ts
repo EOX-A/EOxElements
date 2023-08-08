@@ -67,7 +67,7 @@ export class ElementConfig {
    * Callback that is triggered on item search
    * @returns result items
    */
-  public onSearch?: Function = () => {};
+  public onFilter?: Function = () => {};
 
   /**
    * Callback that is triggered on item selection
@@ -237,7 +237,7 @@ export class EOxItemFilter extends TemplateElement {
       results = await filterClient(this._items, this._filters, this._config);
     }
     this._results = this.sortResults(results);
-    this._config.onSearch(this._results);
+    this._config.onFilter(this._results, this._filters);
   }
 
   aggregateResults(items: Array<Object>, property: string) {
