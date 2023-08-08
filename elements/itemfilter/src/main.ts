@@ -271,6 +271,7 @@ export class EOxItemFilter extends TemplateElement {
     this.renderRoot.querySelectorAll("[data-type='filter']").forEach((f) => {
       (<Filter>f).reset();
     });
+    this.search();
   }
 
   render() {

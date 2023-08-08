@@ -1,6 +1,6 @@
 import Fuse from "fuse.js";
 import dayjs from "dayjs";
-import { intersects, within } from "./spatial";
+import { intersects, within } from "./filters/spatial";
 import { highlight } from "./itemHighlighting";
 import { ElementConfig } from "./main";
 
