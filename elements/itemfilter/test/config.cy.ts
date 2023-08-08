@@ -120,7 +120,6 @@ describe("Item Filter Config", () => {
         //   console.log(item);
         // },
         // matchAllWhenEmpty: true,
-        exclusiveFilters: true,
       };
       EOxItemFilter.apply(testItems);
     });
