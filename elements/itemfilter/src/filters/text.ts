@@ -31,6 +31,11 @@ export class EOxItemFilterText extends LitElement {
     searchInput.value = "";
   }
 
+  // skip shadow root creation
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <input

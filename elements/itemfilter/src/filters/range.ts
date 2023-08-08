@@ -25,6 +25,11 @@ export class EOxItemFilterRange extends LitElement {
     this.requestUpdate();
   }
 
+  // skip shadow root creation
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <div>

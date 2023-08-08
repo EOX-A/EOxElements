@@ -20,6 +20,11 @@ export class EOxItemFilterSelect extends LitElement {
     }
   }
 
+  // skip shadow root creation
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <ul>

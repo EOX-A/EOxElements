@@ -17,6 +17,11 @@ export class EOxItemFilterSpatial extends LitElement {
     spatialFilter.reset();
   }
 
+  // skip shadow root creation
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <form style="display: inline">
