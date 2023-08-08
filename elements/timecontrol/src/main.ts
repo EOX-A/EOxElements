@@ -210,18 +210,25 @@ export class EOxDrawTools extends LitElement {
 
           ${this.slider
             ? html`
-                <tc-range-slider
-                  data="${this.animationValues}"
-                  part="slider"
-                  value="${this.animationValues[this._newTimeIndex]}"
-                  style="display: inline-block;"
-                  @change="${(evt: { detail: { value: string } }) =>
-                    this._updateStep(
-                      this.animationValues.findIndex(
-                        (v) => v === evt.detail.value
-                      ) - this._newTimeIndex
-                    )}"
-                ></tc-range-slider>
+                <div class="slider-col">
+                  <tc-range-slider
+                    data="${this.animationValues}"
+                    part="slider"
+                    value="${this.animationValues[this._newTimeIndex]}"
+                    style="display: inline-block;"
+                    @change="${(evt: { detail: { value: string } }) =>
+                      this._updateStep(
+                        this.animationValues.findIndex(
+                          (v) => v === evt.detail.value
+                        ) - this._newTimeIndex
+                      )}"
+                  ></tc-range-slider>
+
+                  <eox-sliderticks
+                    width="300"
+                    .times="${this.animationValues}"
+                  ></eox-sliderticks>
+                </div>
               `
             : ""}
 
@@ -237,8 +244,8 @@ export class EOxDrawTools extends LitElement {
 @customElement("eox-sliderticks")
 export class SliderTicks extends LitElement {
 
-  @property({ type: Number }) width: number;
-  @property({ type: Array }) times: string[];
+  @property({ type: Number }) width: number = 0;
+  @property({ type: Array }) times: string[] = [];
 
   @state() height = 6;
   @state() svgWidth = 0;
@@ -272,7 +279,7 @@ export class SliderTicks extends LitElement {
   }
 
   get numLines() {
-    return this.times.length;
+    return this.times ? this.times.length : 0;
   }
 
   get yearMarks(): { label: number, position: number }[] {
