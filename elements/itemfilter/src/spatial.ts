@@ -2,7 +2,7 @@ import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";
 import { Geometry } from "@turf/helpers";
 import { LitElement, html } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { EOxMap } from "../../map/main";
 
 export const intersects = (
@@ -24,6 +24,9 @@ export const within = (itemGeometry: Geometry, filterGeometry: Geometry) => {
 
 @customElement("eox-itemfilter-spatial-filter")
 export class SpatialFilter extends LitElement {
+  @property()
+  geometry: Geometry;
+
   @state()
   eoxMap: EOxMap;
 
