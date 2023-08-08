@@ -49,9 +49,7 @@ export class ElementConfig {
   /**
    * Native fuse.js config override
    */
-  public fuseConfig?: Object = {
-    keys: ["title"],
-  };
+  public fuseConfig?: Object;
 
   /**
    * Inline mode, for rendering the itemfilter in avery condensed space.
@@ -123,7 +121,6 @@ export class EOxItemFilter extends TemplateElement {
       id: `item-${index}`,
       ...i,
     }));
-    indexItems(this._items, this._config.fuseConfig);
 
     // build filters
     if (this._config.filterProperties.length) {
@@ -205,6 +202,25 @@ export class EOxItemFilter extends TemplateElement {
         ),
       ].sort((a, b) => a.localeCompare(b));
     }
+
+    const fuseKeys: Array<string> = [];
+    this._config.filterProperties.forEach((f) => {
+      if (f.type === "text") {
+        (<TextFilterObject>f).keys.forEach((k) => {
+          if (!fuseKeys.includes(k)) {
+            fuseKeys.push(k);
+          }
+        });
+      } else if (f.type === "select" || f.type === "multiselect") {
+        if (!fuseKeys.includes(f.key)) {
+          fuseKeys.push(f.key);
+        }
+      }
+    });
+    indexItems(this._items, {
+      keys: fuseKeys,
+      ...this._config.fuseConfig,
+    });
   };
 
   @property({ type: Boolean })
