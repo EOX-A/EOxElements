@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, svg } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
@@ -361,7 +361,7 @@ export class SliderTicks extends LitElement {
           style="width: ${this.width}px; height: 30px;"
           viewBox="-1 0 ${this.width + 2} ${this.height}"
         >
-          ${this.lines.map((line, index) => html`
+          ${this.lines.map((line, index) => svg`
             <line
               key=${index}
               x1=${line}
@@ -373,7 +373,7 @@ export class SliderTicks extends LitElement {
             ></line>
           `)}
 
-          ${this.yearMarks.map((year, index) => html`
+          ${this.yearMarks.map((year, index) => svg`
             <text
               key=${`y${index}`}
               x=${year.position - 1}
