@@ -171,7 +171,10 @@ export class EOxItemFilter extends TemplateElement {
             }
           }
         });
-        this._filters[filterProperty.key] = {
+        this._filters[
+          filterProperty.key ||
+            (<TextFilterObject>filterProperty).keys.join("|")
+        ] = {
           ...filterProperty,
           type: filterProperty.type || "multiselect",
           state: {
