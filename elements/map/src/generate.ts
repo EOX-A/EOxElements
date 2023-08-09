@@ -64,7 +64,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
         const sourceName = layer.properties.id;
         if (!mapboxStyle.sources[sourceName]) {
           const dummy =
-          //@ts-ignore
+            //@ts-ignore
             layer.source.type === "VectorTile"
               ? {
                   type: "vector",
