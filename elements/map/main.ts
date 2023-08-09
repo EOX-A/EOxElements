@@ -141,4 +141,8 @@ export class EOxMap extends HTMLElement {
   }
 }
 
-customElements.define("eox-map", EOxMap);
+export const registerComponent = () => {
+  customElements.define("eox-map", EOxMap);
+}
+
+registerComponent()

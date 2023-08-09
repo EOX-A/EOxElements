@@ -1,3 +1,4 @@
+import { html } from "lit-html";
 import VectorLayer from "ol/layer/Vector";
 import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./drawInteraction.json";
@@ -8,8 +9,7 @@ import { Point } from "ol/geom";
 describe("draw interaction", () => {
   beforeEach(() => {
     const eoxMap = new EOxMap();
-    // @ts-ignore
-    cy.mount(eoxMap).as("eox-map");
+    cy.mount(html`${eoxMap}`).as("eox-map");
     eoxMap.setLayers(vectorLayerStyleJson);
     eoxMap.addDraw("drawLayer", {
       id: "drawInteraction",
@@ -17,17 +17,16 @@ describe("draw interaction", () => {
     });
   });
   it("adds a draw interaction", () => {
-    cy.get("eox-map").should(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+    cy.get("eox-map").and(($el) => {
       // get the interaction via the source key
-      const drawInteraction = eoxMap.interactions["drawInteraction"];
+      const drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
       expect(drawInteraction).to.exist;
       expect(drawInteraction.getActive()).to.equal(true);
     });
   });
 
   it("creates correct geometry", () => {
-    cy.get("eox-map").should(($el) => {
+    cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
@@ -40,14 +39,13 @@ describe("draw interaction", () => {
   });
 
   it("remove interaction", () => {
-    cy.get("eox-map").should(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      eoxMap.removeInteraction("drawInteraction");
+    cy.get("eox-map").and(($el) => {
+      (<EOxMap>$el[0]).removeInteraction("drawInteraction");
     });
   });
 
   it("creates line and measure event", () => {
-    cy.get("eox-map").should(($el) => {
+    cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.removeInteraction("drawInteraction");
       eoxMap.addDraw("drawLayer", {
@@ -83,7 +81,7 @@ describe("draw interaction", () => {
   });
 
   it("creates polygon and measure event", () => {
-    cy.get("eox-map").should(($el) => {
+    cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.removeInteraction("drawInteraction");
       eoxMap.addDraw("drawLayer", {

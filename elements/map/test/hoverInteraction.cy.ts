@@ -1,3 +1,4 @@
+import { html } from "lit-html";
 import { Select } from "ol/interaction";
 import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./hoverInteraction.json";
@@ -5,8 +6,7 @@ import vectorLayerStyleJson from "./hoverInteraction.json";
 describe("select interaction with hover", () => {
   it("adds a select interaction", () => {
     const eoxMap = new EOxMap();
-    // @ts-ignore
-    cy.mount(eoxMap).as("eox-map");
+    cy.mount(html`${eoxMap}`).as("eox-map");
     eoxMap.setLayers(vectorLayerStyleJson);
     eoxMap.addSelect("regions", {
       id: "selectInteraction",

@@ -16,6 +16,7 @@ const mockLayer = (layerId: number) =>
     layerControlHide: undefined,
     layerControlOptional: undefined,
     opacity: 1,
+    set: () => {},
     setVisible(visible: boolean) {
       this.visible = visible;
     },
