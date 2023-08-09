@@ -30,6 +30,7 @@ describe("VectorTile Layer", () => {
     });
   });
   it("loads a Vector Layer, applies mapbox style", () => {
+    // @ts-ignore
     vectorTileLayerStyleJson[0].style = {
       version: 8,
       name: "countries",

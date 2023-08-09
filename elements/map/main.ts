@@ -1,5 +1,6 @@
 import Map from "ol/Map.js";
 import View from "ol/View.js";
+// @ts-ignore
 import olCss from "ol/ol.css";
 import { addDraw } from "./src/draw";
 import { addSelect } from "./src/select";
@@ -144,5 +145,3 @@ export class EOxMap extends HTMLElement {
 if (!customElements.get("eox-map")) {
   customElements.define("eox-map", EOxMap);
 }
-
-window["EOxMap"] = EOxMap;
