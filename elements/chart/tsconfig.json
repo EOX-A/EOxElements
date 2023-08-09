@@ -18,5 +18,5 @@
     "types": ["cypress"],
     "allowJs": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../../cypress/cypress.d.ts"]
 }

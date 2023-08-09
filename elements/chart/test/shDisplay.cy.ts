@@ -1,23 +1,18 @@
-import { EOxChart } from "../src";
-import "../src/index.ts";
+import "../src/main";
 import signalsData from "./sh.json";
 
 describe("SH Display", () => {
   it("loads data retrieved from signals-api endpoint", () => {
-    const eoxChart = new EOxChart();
-    // @ts-ignore 
-    cy.mount(eoxChart).as(
-      "eox-chart"
-    );
-    cy.get("eox-chart").should(() => {
+    cy.mount("<eox-chart></eox-chart>").as("eox-chart");
+    cy.get("eox-chart").and(($el) => {
       const options = {
         parsing: {
           xAxisKey: "date",
           yAxisKey: "basicStats.mean",
         },
       };
-      eoxChart.setOptions(options);
-      eoxChart.setSignalsData(signalsData);
+      (<EOxChart>$el[0]).setOptions(options);
+      (<EOxChart>$el[0]).setSignalsData(signalsData);
     });
   });
 });

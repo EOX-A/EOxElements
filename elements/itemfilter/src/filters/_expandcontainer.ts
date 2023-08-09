@@ -10,7 +10,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
   createRenderRoot() {
     return this;
   }
-  
+
   render() {
     return html`
       <details

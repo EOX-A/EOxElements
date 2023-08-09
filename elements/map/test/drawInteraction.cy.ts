@@ -1,5 +1,5 @@
 import VectorLayer from "ol/layer/Vector";
-import "../main"
+import "../main";
 import vectorLayerStyleJson from "./drawInteraction.json";
 import { simulateEvent } from "./utils/events";
 import VectorSource from "ol/source/Vector";
@@ -7,13 +7,15 @@ import { Point } from "ol/geom";
 
 describe("draw interaction", () => {
   beforeEach(() => {
-    cy.mount(`<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`).as("eox-map");
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       (<EOxMap>$el[0]).addDraw("drawLayer", {
         id: "drawInteraction",
         type: "Point",
       });
-    })
+    });
   });
   it("adds a draw interaction", () => {
     cy.get("eox-map").and(($el) => {

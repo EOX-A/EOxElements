@@ -1,8 +1,10 @@
-import "../main"
+import "../main";
 
 describe("webcomponent attribute parsing", () => {
   it("set simple initial controls via webcomponent attributes as Array", () => {
-    cy.mount(`<eox-map controls='["Zoom", "Attribution", "FullScreen"]'></eox-map>`).as("eox-map")
+    cy.mount(
+      `<eox-map controls='["Zoom", "Attribution", "FullScreen"]'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       expect(
         (<EOxMap>$el[0]).map.getControls().getLength(),
@@ -11,7 +13,8 @@ describe("webcomponent attribute parsing", () => {
     });
   });
   it("set initial controls via webcomponent attributes", () => {
-    cy.mount(`<eox-map controls='{
+    cy.mount(
+      `<eox-map controls='{
       "Zoom": {},
       "Attribution": {},
       "FullScreen": {},
@@ -28,7 +31,8 @@ describe("webcomponent attribute parsing", () => {
           }
         ]
       }
-    }'></eox-map>`).as("eox-map")
+    }'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       expect(

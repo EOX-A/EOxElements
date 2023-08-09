@@ -1,10 +1,9 @@
-import { html } from "lit";
 import "../src/main";
-import { MockMap } from "./_mockMap";
+import "./_mockMap";
 
 describe("LayerControl", () => {
   beforeEach(() => {
-    cy.mount(html`${new MockMap()}`).as("mock-map");
+    cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(
       `
       <eox-layercontrol for="mock-map"></eox-layercontrol>`

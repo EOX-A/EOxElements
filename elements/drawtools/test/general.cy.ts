@@ -1,11 +1,9 @@
-import { html } from "lit";
 import "../src/main";
-import { EOxDrawTools } from "../src/main";
-import { MockMap } from "./_mockMap";
+import "./_mockMap";
 
 describe("Drawtools", () => {
   beforeEach(() => {
-    cy.mount(html`${new MockMap()}`).as("mock-map");
+    cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(
       `
       <eox-drawtools for="mock-map" layer="draw"></eox-drawtools>`

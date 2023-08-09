@@ -1,38 +1,39 @@
-// import entire itemfilter source to acces <eox-itemfilter> component
 import "../src/main";
-import { EOxItemFilter } from "../src/main";
 import testItems from "./testItems.json";
-
 
 describe("Item Filter Config", () => {
   beforeEach(() => {
-    cy.mount(`<eox-itemfilter>
+    cy.mount(
+      `<eox-itemfilter>
       <h4 slot="filterstitle">Filter</h4>
       <h4 slot="resultstitle">Results</h4>
-    </eox-itemfilter>`).as(
-      "eox-itemfilter"
-    ).then((eoxItemFilter: any) => {
-      eoxItemFilter[0].config = {
-        titleProperty: "title",
-        filterProperties: [
-          {             keys: ["title", "themes"],
-          title: "Search",
-          type: "text",
-          expanded: true, },
-          { key: "themes", expanded: true }
-        ],
-        aggregateResults: "themes",
-        enableHighlighting: true,
-      };
-      eoxItemFilter[0].apply(testItems); 
-    });
+    </eox-itemfilter>`
+    )
+      .as("eox-itemfilter")
+      .then((eoxItemFilter: any) => {
+        eoxItemFilter[0].config = {
+          titleProperty: "title",
+          filterProperties: [
+            {
+              keys: ["title", "themes"],
+              title: "Search",
+              type: "text",
+              expanded: true,
+            },
+            { key: "themes", expanded: true },
+          ],
+          aggregateResults: "themes",
+          enableHighlighting: true,
+        };
+        eoxItemFilter[0].apply(testItems);
+      });
   });
 
   it("should have a search bar", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("[data-cy='search']").should('exist');
+        cy.get("[data-cy='search']").should("exist");
       });
   });
 

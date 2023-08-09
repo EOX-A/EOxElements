@@ -142,7 +142,7 @@ export class EOxMap extends HTMLElement {
 }
 
 if (!customElements.get("eox-map")) {
-customElements.define("eox-map", EOxMap);
+  customElements.define("eox-map", EOxMap);
 }
 
-window["EOxMap"] = EOxMap
+window["EOxMap"] = EOxMap;

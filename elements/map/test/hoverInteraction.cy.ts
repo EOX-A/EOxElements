@@ -4,22 +4,24 @@ import vectorLayerStyleJson from "./hoverInteraction.json";
 
 describe("select interaction with hover", () => {
   it("adds a select interaction", () => {
-    cy.mount(`<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`).as("eox-map");
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0]
+      const eoxMap = <EOxMap>$el[0];
       eoxMap.addSelect("regions", {
         id: "selectInteraction",
         tooltip: "eox-map-tooltip",
         condition: "pointermove",
       });
-  
+
       // get the interaction via the source key
       const selectInteraction = eoxMap.interactions[
         "selectInteraction"
       ] as Select;
       expect(selectInteraction).to.exist;
       expect(selectInteraction.getActive()).to.equal(true);
-    })
+    });
   });
 
   /*it("fires a select event", () => {
