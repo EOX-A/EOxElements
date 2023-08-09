@@ -10,5 +10,6 @@ declare type SpatialFilterObject = FilterObject & {
 };
 
 declare type TextFilterObject = FilterObject & {
+  key?: string;
   keys: Array<string>;
 };

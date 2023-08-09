@@ -12,8 +12,8 @@ declare type FilterObject = {
   exclusive?: Boolean;
   expanded?: Boolean;
   format?: string;
-  key?: string;
+  key: string;
   state?: FilterState;
   title?: string;
-  type?: string;
+  type?: "multiselect" | "range" | "select" | "spatial" | "text";
 };
