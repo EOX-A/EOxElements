@@ -1,12 +1,13 @@
-import { EOxMap } from "../main";
+import "../main";
 import imageWmsLayerStyleJson from "./imageWmsLayer.json";
 
-describe("image WMS layer", () => {
-  beforeEach(() => {
-    cy.visit("/elements/map/test/general.html");
-  });
+// fixme: imageWMS is identical to tileWMS
+describe("layers", () => {
   it("loads a WMS Layer", () => {
-    cy.get("eox-map").should(($el) => {
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(imageWmsLayerStyleJson)}'></eox-map>`
+    ).as("eox-map");
+    cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.setLayers(imageWmsLayerStyleJson);
       eoxMap.map.getView().setZoom(0);

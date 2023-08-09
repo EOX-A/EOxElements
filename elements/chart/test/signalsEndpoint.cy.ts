@@ -1,13 +1,9 @@
-import { EOxChart } from "../src/main";
+import "../src/main";
 
 describe("SH Display", () => {
-  beforeEach(() => {
-    cy.visit("/elements/chart/test/general.html");
-  });
   it("configures signals endpoint for chart to retrieve data", () => {
+    cy.mount("<eox-chart></eox-chart>").as("eox-chart");
     cy.get("eox-chart").should(($el) => {
-      const eoxChart = <EOxChart>$el[0];
-
       const options = {
         endpoint:
           "https://prototype-gftb1dhets8kbrfhr3zdka.ddc.hub.eox.at/eo-signals-api/eo-signals-for-geometry",
@@ -145,7 +141,7 @@ describe("SH Display", () => {
           ],
         },
       };
-      eoxChart.setSignalsEndpoint(options);
+      (<EOxChart>$el[0]).setSignalsEndpoint(options);
     });
   });
 });

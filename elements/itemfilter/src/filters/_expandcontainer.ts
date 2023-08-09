@@ -6,6 +6,11 @@ export class EOxItemFilterExpandContainer extends LitElement {
   @property({ attribute: false })
   filterObject: FilterObject;
 
+  // skip shadow root creation
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <details

@@ -1,14 +1,13 @@
-import { EOxMap } from "../main";
+import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 
-describe("Vector Layer", () => {
-  beforeEach(() => {
-    cy.visit("/elements/map/test/general.html");
-  });
+describe("layers", () => {
   it("loads a Vector Layer", () => {
-    cy.get("eox-map").should(($el) => {
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
+    ).as("eox-map");
+    cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      eoxMap.setLayers(vectorLayerStyleJson);
       const layers = eoxMap.map.getLayers().getArray();
       expect(layers).to.have.length(1);
       expect(eoxMap.getLayerById("regions")).to.exist;
