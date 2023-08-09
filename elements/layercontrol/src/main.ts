@@ -261,7 +261,7 @@ export class EOxLayerControl extends LitElement {
           () => html`
             <label for="optional">Optional layers</label>
 
-            <select name="optional">
+            <select name="optional" data-cy="optionalLayers">
               <option disabled selected value>
                 -- select an optional layer to add --
               </option>
