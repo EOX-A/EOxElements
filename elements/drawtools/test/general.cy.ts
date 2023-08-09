@@ -1,10 +1,11 @@
+import { html } from "lit";
 import "../src/main";
 import { EOxDrawTools } from "../src/main";
-import "./_mockMap";
+import { MockMap } from "./_mockMap";
 
 describe("Drawtools", () => {
   beforeEach(() => {
-    cy.mount("<mock-map></mock-map>");
+    cy.mount(html`${new MockMap()}`).as("mock-map");
     cy.mount(
       `
       <eox-drawtools for="mock-map" layer="draw"></eox-drawtools>`
@@ -24,9 +25,8 @@ describe("Drawtools", () => {
         cy.get("[data-cy='drawBtn']").click();
         cy.get("[data-cy='drawBtn']").contains("drawing");
       });
-    cy.get("eox-drawtools").should(($el) => {
-      const drawTools = <EOxDrawTools>$el[0];
-      expect(drawTools._drawnFeatures).to.have.length(1);
+    cy.get("eox-drawtools").and(($el) => {
+      expect((<EOxDrawTools>$el[0])._drawnFeatures).to.have.length(1);
     });
   });
 
@@ -40,8 +40,7 @@ describe("Drawtools", () => {
         cy.get("[data-cy='drawBtn']").should("not.contain", "drawing");
       });
     cy.get("eox-drawtools").should(($el) => {
-      const drawTools = <EOxDrawTools>$el[0];
-      expect(drawTools._drawnFeatures).to.have.length(0);
+      expect((<EOxDrawTools>$el[0])._drawnFeatures).to.have.length(0);
     });
   });
 });
