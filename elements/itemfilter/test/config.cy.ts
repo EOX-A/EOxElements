@@ -5,7 +5,6 @@ import testItems from "./testItems.json";
 
 describe("Item Filter Config", () => {
   beforeEach(() => {
-    // @ts-ignore
     cy.mount(`<eox-itemfilter>
       <h4 slot="filterstitle">Filter</h4>
       <h4 slot="resultstitle">Results</h4>
