@@ -3,7 +3,7 @@ import * as olSources from "ol/source";
 import * as olFormats from "ol/format";
 import { applyStyle } from "ol-mapbox-style";
 import { FlatStyleLike } from "ol/style/flat";
-import mapboxgl from "mapbox-gl";
+import mapboxgl, { AnySourceData } from "mapbox-gl";
 
 type EoxLayer = {
   type: olLayers.Layer;
@@ -61,15 +61,25 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
         // @ts-ignore
         const sourceName = layer.properties.id;
         if (!mapboxStyle.sources[sourceName]) {
-          mapboxStyle.sources[sourceName] = {
-            type: "geojson",
-            data: {
-              type: "FeatureCollection",
-              features: [],
-            },
-          };
+          const dummy =
+          //@ts-ignore
+            layer.source.type === "VectorTile"
+              ? {
+                  type: "vector",
+                }
+              : {
+                  type: "geojson",
+                  data: {
+                    type: "FeatureCollection",
+                    //@ts-ignore
+                    features: [],
+                  },
+                };
+          mapboxStyle.sources[sourceName] = dummy as AnySourceData;
         }
-        applyStyle(olLayer, mapboxStyle, sourceName);
+        applyStyle(olLayer, mapboxStyle, sourceName, {
+          updateSource: false,
+        });
       } else {
         olLayer.setStyle(layer.style);
       }
