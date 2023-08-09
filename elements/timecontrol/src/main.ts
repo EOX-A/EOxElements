@@ -7,7 +7,13 @@ import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { UrlFunction } from "ol/Tile";
-import { DateTime } from 'luxon';
+
+import dayjs from 'dayjs';
+import dayOfYear from 'dayjs/plugin/dayOfYear';
+import isoWeek from 'dayjs/plugin/isoWeek';
+
+dayjs.extend(dayOfYear);
+dayjs.extend(isoWeek);
 
 @customElement("eox-timecontrol")
 export class EOxDrawTools extends LitElement {
@@ -288,10 +294,10 @@ export class SliderTicks extends LitElement {
     let lastYear: number = null;
 
     // Calculate first and last dates as fractions of a year
-    const firstTime = DateTime.fromISO(this.times[0]);
-    const firstYear = firstTime.year + (firstTime.ordinal / 365);
-    const lastTime = DateTime.fromISO(this.times[this.times.length - 1]);
-    const lastTimeYear = lastTime.year + (lastTime.ordinal / 365);
+    const firstTime = dayjs(this.times[0]);
+    const firstYear = firstTime.year() + (firstTime.dayOfYear() / 365);
+    const lastTime = dayjs(this.times[this.times.length - 1]);
+    const lastTimeYear = lastTime.year() + (lastTime.dayOfYear() / 365);
 
     // Calculate the total range in fractions of a year
     const totalYears = lastTimeYear - firstYear;
@@ -301,8 +307,8 @@ export class SliderTicks extends LitElement {
     const showDecades = totalYears > 10;
 
     this.times.forEach((time: string) => {
-      const currentTime = DateTime.fromISO(time);
-      const currentTimeYear = currentTime.year + (currentTime.ordinal / 365);
+      const currentTime = dayjs(time);
+      const currentTimeYear = currentTime.year() + (currentTime.dayOfYear() / 365);
 
       if (showDecades) {
         // If we are in a new decade, place a mark
@@ -356,7 +362,7 @@ export class SliderTicks extends LitElement {
 
   render() {
     return html`
-      <div class="fill-width">
+      <div class="fill-width" style="margin-top: 3px;">
         <svg
           style="width: ${this.width}px; height: 30px;"
           viewBox="-1 0 ${this.width + 2} ${this.height}"
