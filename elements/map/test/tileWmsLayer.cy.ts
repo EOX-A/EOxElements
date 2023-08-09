@@ -1,5 +1,4 @@
 import "../main";
-import { EOxMap } from "../main";
 import tileWmsLayerStyleJson from "./tileWmsLayer.json";
 
 describe("layers", () => {

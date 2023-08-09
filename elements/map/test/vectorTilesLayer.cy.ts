@@ -1,5 +1,4 @@
 import "../main";
-import { EOxMap } from "../main";
 import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
 import { VectorTile } from "ol/layer";
 

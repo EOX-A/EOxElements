@@ -1,5 +1,4 @@
 import "../main";
-import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 
 describe("layers", () => {

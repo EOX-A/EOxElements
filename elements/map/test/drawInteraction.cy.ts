@@ -1,6 +1,5 @@
-import { html } from "lit-html";
 import VectorLayer from "ol/layer/Vector";
-import { EOxMap } from "../main";
+import "../main"
 import vectorLayerStyleJson from "./drawInteraction.json";
 import { simulateEvent } from "./utils/events";
 import VectorSource from "ol/source/Vector";
@@ -8,13 +7,13 @@ import { Point } from "ol/geom";
 
 describe("draw interaction", () => {
   beforeEach(() => {
-    const eoxMap = new EOxMap();
-    cy.mount(html`${eoxMap}`).as("eox-map");
-    eoxMap.setLayers(vectorLayerStyleJson);
-    eoxMap.addDraw("drawLayer", {
-      id: "drawInteraction",
-      type: "Point",
-    });
+    cy.mount(`<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`).as("eox-map");
+    cy.get("eox-map").and(($el) => {
+      (<EOxMap>$el[0]).addDraw("drawLayer", {
+        id: "drawInteraction",
+        type: "Point",
+      });
+    })
   });
   it("adds a draw interaction", () => {
     cy.get("eox-map").and(($el) => {

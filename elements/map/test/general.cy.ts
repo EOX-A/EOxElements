@@ -1,12 +1,10 @@
 import { equals } from "ol/coordinate";
 import "../main"
-import { EOxMap } from "../main";
 
 describe("Map", () => {
   it("map should exist", () => {
     cy.mount(`<eox-map layers='[{"type":"Tile","source":{"type":"OSM"}}]'></eox-map>`).as("eox-map")
     cy.get("eox-map").and(($el) => {
-      console.log($el[0])
       expect((<EOxMap>$el[0]).map).to.exist;
     });
   });

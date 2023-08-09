@@ -1,5 +1,4 @@
 import "../main";
-import { EOxMap } from "../main";
 import imageWmsLayerStyleJson from "./imageWmsLayer.json";
 
 // fixme: imageWMS is identical to tileWMS

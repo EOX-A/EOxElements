@@ -1,6 +1,4 @@
 import "../main"
-import { EOxMap } from "../main";
-import vectorLayerStyleJson from "./vectorLayer.json";
 
 describe("webcomponent attribute parsing", () => {
   it("set simple initial controls via webcomponent attributes as Array", () => {
