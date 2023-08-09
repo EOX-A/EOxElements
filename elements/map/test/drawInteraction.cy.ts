@@ -88,6 +88,11 @@ describe("draw interaction", () => {
       eoxMap.addDraw("drawLayer", {
         id: "drawInteraction",
         type: "Polygon",
+        style: {
+          "fill-color": "yellow",
+          "stroke-color": "black",
+          "stroke-width": 4,
+        },
       });
 
       eoxMap.addEventListener("drawend", (evt) => {
