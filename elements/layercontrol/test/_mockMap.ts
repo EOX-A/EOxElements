@@ -1,25 +1,26 @@
-const mockLayer: { [key: string]: any } = {
-  get(prop: string): any {
-    return this[prop];
-  },
-  getOpacity() {
-    return this.opacity;
-  },
-  getVisible() {
-    return this.visible;
-  },
-  title: undefined,
-  id: undefined,
-  layerControlDisable: undefined,
-  layerControlExclusive: undefined,
-  layerControlHide: undefined,
-  layerControlOptional: undefined,
-  opacity: 1,
-  setVisible(visible: boolean) {
-    this.visible = visible;
-  },
-  visible: true,
-};
+const mockLayer = (layerId: number) =>
+  <{ [key: string]: any }>{
+    get(prop: string): any {
+      return this[prop];
+    },
+    getOpacity() {
+      return this.opacity;
+    },
+    getVisible() {
+      return this.visible;
+    },
+    title: `layer ${layerId}`,
+    id: layerId,
+    layerControlDisable: undefined,
+    layerControlExclusive: undefined,
+    layerControlHide: undefined,
+    layerControlOptional: undefined,
+    opacity: 1,
+    setVisible(visible: boolean) {
+      this.visible = visible;
+    },
+    visible: true,
+  };
 
 export class MockMap extends HTMLElement {
   constructor() {
@@ -37,8 +38,8 @@ export class MockMap extends HTMLElement {
     }),
   };
   setLayers = (layers: Array<any>) => {
-    this.layers = layers.map((l) => ({
-      ...mockLayer,
+    this.layers = layers.map((l, index) => ({
+      ...mockLayer(index),
       ...l,
     }));
     this.events["change:length"]();

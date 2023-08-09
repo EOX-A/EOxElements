@@ -17,39 +17,23 @@ describe("LayerControl", () => {
 
   it("displays the correct amount of layers", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        {
-          id: 1,
-          title: "foo",
-          visible: true,
-        },
-        {
-          id: 2,
-          title: "bar",
-          visible: false,
-        },
-      ]);
+      (<MockMap>$el[0]).setLayers([{ visible: true }, { visible: false }]);
     });
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        cy.get("ul").find("li").should("have.length", 2);
+        cy.get(".layers").find("li").should("have.length", 2);
+        cy.get(".layers")
+          .find("input[type=checkbox]:checked")
+          .should("have.length", 1);
       });
   });
 
   it("hides layers correctly", () => {
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
-        {
-          id: 1,
-          title: "foo",
-          visible: true,
-        },
-        {
-          id: 2,
-          title: "bar",
-          layerControlHide: true,
-        },
+        { visible: true },
+        { layerControlHide: true },
       ]);
     });
     cy.get("eox-layercontrol")
@@ -62,16 +46,8 @@ describe("LayerControl", () => {
   it("renders the optional layer selection", () => {
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
-        {
-          id: 1,
-          title: "foo",
-          visible: true,
-        },
-        {
-          id: 2,
-          title: "bar",
-          layerControlOptional: true,
-        },
+        { visible: true },
+        { layerControlOptional: true },
       ]);
     });
     cy.get("eox-layercontrol")
@@ -87,22 +63,26 @@ describe("LayerControl", () => {
   it("disables the drag handle of the disabled layer", () => {
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
-        {
-          id: 1,
-          title: "foo",
-          visible: true,
-        },
-        {
-          id: 2,
-          title: "bar",
-          layerControlDisable: true,
-        },
+        { visible: true },
+        { layerControlDisable: true },
       ]);
     });
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
         cy.get(".drag-handle.disabled").should("have.length", 1);
+      });
+  });
+
+  it("shows the correct layer titles", () => {
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([{ title: "foo" }, { title: "bar" }]);
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get(".layer").find(".title").contains("foo");
+        cy.get(".layer").find(".title").contains("bar");
       });
   });
 });
