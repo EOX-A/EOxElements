@@ -4,7 +4,8 @@
   "type": "module",
   "dependencies": {
     "lit-html": "^2.7.4",
-    "ol": "7.3.0"
+    "ol": "^7.4.0",
+    "ol-mapbox-style": "^10.6.0"
   },
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",

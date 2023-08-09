@@ -1,7 +1,7 @@
 [
   {
     "type": "Vector",
-    "background": "#1a2b39",
+    "background": "#1366dd",
     "properties": {
       "id": "regions"
     },
@@ -10,6 +10,31 @@
       "url": "https://openlayers.org/data/vector/ecoregions.json",
       "format": "GeoJSON",
       "attributions": "Regions: @ openlayers.org"
+    },
+    "style": {
+      "version": 8,
+      "name": "regions",
+      "sources": {},
+      "layers": [
+        {
+          "id": "regions_fill",
+          "type": "fill",
+          "source": "regions",
+          "paint": {
+            "fill-color": ["get", "COLOR"],
+            "fill-opacity": 1
+          }
+        },
+        {
+          "id": "regions_outline",
+          "type": "line",
+          "source": "regions",
+          "paint": {
+            "line-color": "#141414",
+            "line-width": 1.5
+          }
+        }
+      ]
     }
   }
 ]
