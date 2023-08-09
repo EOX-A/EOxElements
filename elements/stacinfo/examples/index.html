@@ -8,7 +8,11 @@
   </head>
   <body>
     <p>Basic STAC info</p>
-    <eox-stacinfo></eox-stacinfo>
+    <eox-stacinfo
+      for="https://metadata.opensciencedata.esa.int/open-science-catalog-metadata/products/aerosol-pure-dust-op-livas/collection.json"
+      properties='["title", "osc:missions", "osc:project", "osc:region", "osc:status", "osc:themes", "osc:type"]'
+      featured='["description"]'
+    ></eox-stacinfo>
     <script type="module">
       import "https://unpkg.com/@eox/stacinfo@latest";
     </script>
