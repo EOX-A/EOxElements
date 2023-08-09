@@ -24,6 +24,7 @@
         {
           "type": "Vector",
           "title": "Points",
+          "layerControlOptional": true,
           "properties": {
             "id": "drawLayer"
           },
@@ -145,6 +146,17 @@
       layerTitle="title"
       layerIdentifier="id"
     ></eox-layercontrol>
+    <eox-layercontrol
+      for="eox-map"
+      externalLayerConfig
+      layerConfig='["opacity", "color"]'
+      layerIdentifier="id"
+      id="test-control"
+    >
+      Layer Control with external layer config (open background layers / s2 to
+      see)
+    </eox-layercontrol>
+    <eox-layerconfig for="eox-layercontrol#test-control"></eox-layerconfig>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "./src/main.ts";
