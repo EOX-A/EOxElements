@@ -18,7 +18,7 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
 
   const drawInteraction = new Draw({
     ...options,
-    source
+    source,
   });
 
   const modifyInteraction = new Modify({

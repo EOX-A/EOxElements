@@ -94,7 +94,7 @@ describe("draw interaction", () => {
           "fill-color": "yellow",
           "stroke-color": "black",
           "stroke-width": 4,
-        }
+        },
       });
 
       eoxMap.addEventListener("drawend", (evt) => {
