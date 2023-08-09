@@ -141,4 +141,8 @@ export class EOxMap extends HTMLElement {
   }
 }
 
-customElements.define("eox-map", EOxMap);
+if (!customElements.get("eox-map")) {
+  customElements.define("eox-map", EOxMap);
+}
+
+window["EOxMap"] = EOxMap;

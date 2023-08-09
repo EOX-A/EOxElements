@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
+    <title>eox-layercontrol dev playground</title>
+    <style>
+      eox-map {
+        width: 400px;
+        height: 300px;
+      }
+      eox-layercontrol {
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Basic layer control</p>
+    <eox-map
+      zoom="3"
+      center="[1000000, 6000000]"
+      layers='[
+        {
+          "type": "Vector",
+          "title": "Points",
+          "layerControlOptional": true,
+          "properties": {
+            "id": "drawLayer"
+          },
+          "source": {
+            "type": "Vector"
+          },
+          "style": {
+            "circle-radius": "10",
+            "circle-fill-color": "red",
+            "circle-stroke-color": "black",
+            "circle-stroke-width": "2",
+            "stroke-color": "black",
+            "stroke-width": "5",
+            "fill-color": "red"
+          }
+        },
+        {
+          "type": "Group",
+          "id": "group2",
+          "title": "Data Layers",
+          "layers": [
+            {
+              "type": "Tile",
+              "id": "WIND",
+              "title": "WIND",
+              "source": {
+                "type": "TileWMS",
+                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+                "params": {
+                  "LAYERS": "AWS_VIS_WIND_V_10M"
+                }
+              }
+            },
+            {
+              "type": "Tile",
+              "id": "NO2",
+              "title": "NO2",
+              "source": {
+                "type": "TileWMS",
+                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+                "params": {
+                  "LAYERS": "AWS_NO2-VISUALISATION"
+                }
+              }
+            },
+            {
+              "type": "Vector",
+              "background": "#1a2b39",
+              "title": "Regions",
+              "properties": {
+                "id": "regions"
+              },
+              "source": {
+                "type": "Vector",
+                "url": "https://openlayers.org/data/vector/ecoregions.json",
+                "format": "GeoJSON",
+                "attributions": "Regions: @ openlayers.org"
+              }
+            }
+          ]
+        },
+        {
+          "type": "Group",
+          "id": "group1",
+          "title": "Background Layers",
+          "layers": [
+            {
+              "type": "WebGLTile",
+              "id": "s2",
+              "layerControlExclusive": true,
+              "title": "s2",
+              "style": {
+                "variables": {
+                  "red": 1,
+                  "green": 2,
+                  "blue": 3,
+                  "redMax": 3000,
+                  "greenMax": 3000,
+                  "blueMax": 3000
+                },
+                "color": [
+                  "array",
+                  ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+                  ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+                  ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+                  1
+                ],
+                "gamma": 1.1
+              },
+              "source": {
+                "type": "GeoTIFF",
+                "normalize": false,
+                "sources": [
+                  {
+                    "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Tile",
+              "id": "osm",
+              "title": "Open Street Map",
+              "layerControlExclusive": true,
+              "visible": false,
+              "title": "osm",
+              "opacity": 0.5,
+              "source": {
+                "type": "OSM"
+              }
+            }
+          ]
+        }
+      ]
+    '
+    ></eox-map>
+    <eox-layercontrol
+      for="eox-map"
+      layerTitle="title"
+      layerIdentifier="id"
+    ></eox-layercontrol>
+    <eox-layercontrol
+      for="eox-map"
+      externalLayerConfig
+      layerConfig='["opacity", "color"]'
+      layerIdentifier="id"
+      id="test-control"
+    >
+      Layer Control with external layer config (open background layers / s2 to
+      see)
+    </eox-layercontrol>
+    <eox-layerconfig for="eox-layercontrol#test-control"></eox-layerconfig>
+    <script type="module">
+      import "https://unpkg.com/@eox/map@latest";
+      import "./src/main.ts";
+      document.querySelector("eox-map").addDraw("drawLayer", {
+        id: "drawInteraction",
+        type: "Point",
+      });
+    </script>
+  </body>
+</html>

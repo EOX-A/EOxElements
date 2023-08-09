@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
     <title>eox-itemfiter examples</title>
     <style>
       eox-itemfilter {
@@ -28,7 +29,7 @@
         enableSearch: true,
         enableHighlighting: true,
         fuseConfig: {
-          keys: ["title"],
+          keys: ["title", "themes"],
         },
         onSelect: (item) => {
           console.log(item);

@@ -121,6 +121,8 @@ export class EOxDrawTools extends LitElement {
       <div>
         <slot></slot>
         <button
+          data-cy="drawBtn"
+          class="icon-text polygon"
           disabled="${(!this.multipleFeatures && this._drawnFeatures.length) ||
           this._currentlyDrawing ||
           nothing}"
@@ -129,6 +131,8 @@ export class EOxDrawTools extends LitElement {
           ${this._currentlyDrawing ? "drawing" : "draw"}
         </button>
         <button
+          data-cy="discardBtn"
+          class="discard"
           disabled="${(!this._drawnFeatures.length &&
             !this._currentlyDrawing) ||
           nothing}"

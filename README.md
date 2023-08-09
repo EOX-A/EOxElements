@@ -33,6 +33,11 @@ Note: The main branch of this project contains the v2 (alpha) version of EOxElem
     <td><a href="https://eox-a.github.io/EOxElements/elements/map/examples/index.html">Examples</a></td>
   </tr>
   <tr>
+    <td><a href="./elements/stacinfo/">eox-stacinfo</a></td>
+    <td>Display properties of STAC files</td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/stacinfo/examples/index.html">Examples</a></td>
+  </tr>
+  <tr>
     <td><a href="./elements/timecontrol/">eox-timecontrol</a></td>
     <td>Time control and playback for map layers</td>
     <td><a href="https://eox-a.github.io/EOxElements/elements/timecontrol/examples/index.html">Examples</a></td>
@@ -93,18 +98,26 @@ npm install
 
 ### Dev server
 
-The recommended way to start a dev server is by using the Cypress testing GUI. It offers access to a suite of configurations for each element, and e2e tests combining multiple elements.
+You can start a dev server for an individual element by running this command:
+
+```
+npm start -w <element>
+```
+
+Example:
+
+```
+npm start -w @eox/map
+```
+
+### Test server
+
+You can run individual tests by using the Cypress testing GUI. It offers access to a suite of configurations for each element, and e2e tests combining multiple elements.
 
 In order to be able to run tests for a specific element you need to build that element first, using the `build` or the `watch` (re-building on every change) command:
 
 ```
-npm run watch --workspace=<element>
-```
-
-You can build/watch multiple elements at the same time, e.g.:
-
-```
-npm run watch --workspace=@eox/map --workspace=@eox/layercontrol
+npm run watch -w <element>
 ```
 
 To build/watch all elements, you can use:

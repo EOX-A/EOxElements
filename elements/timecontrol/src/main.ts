@@ -6,6 +6,7 @@ import TileSource from "ol/source/Tile";
 import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
+import { UrlFunction } from "ol/Tile";
 
 @customElement("eox-timecontrol")
 export class EOxDrawTools extends LitElement {
@@ -53,6 +54,13 @@ export class EOxDrawTools extends LitElement {
    */
   @property()
   urlFunction: Function;
+
+  /**
+   * Original tile url function of the source.
+   * Used to get the correct TileGrid-Values, while manipulating certain parts of the URL.
+   */
+  @property()
+  private _originalTileUrlFunction: UrlFunction;
 
   /**
    * Go to next step
@@ -123,12 +131,14 @@ export class EOxDrawTools extends LitElement {
     }
 
     //@ts-ignore
-    const originalTileUrlFunction = this._animationSource.getTileUrlFunction();
-    //@ts-ignore
     this._animationSource.setTileUrlFunction(
       //@ts-ignore
       (tileCoord, pixelRatio, projection) => {
-        let src = originalTileUrlFunction(tileCoord, pixelRatio, projection);
+        let src = this._originalTileUrlFunction(
+          tileCoord,
+          pixelRatio,
+          projection
+        );
         if (this.urlFunction) {
           return this.urlFunction(src);
         }
@@ -155,15 +165,20 @@ export class EOxDrawTools extends LitElement {
     const olMap: Map = mapQuery.map || mapQuery;
 
     olMap.once("loadend", () => {
-      const animationLayer = olMap
-        .getLayers()
-        .getArray()
-        .find(
-          (l) =>
-            l.get("id") === this.layer ||
-            l.get("mapbox-layers")?.includes(this.layer)
-        ) as Layer;
-      this._animationSource = animationLayer.getSource() as TileSource;
+      if (!this._originalTileUrlFunction) {
+        const animationLayer = olMap
+          .getLayers()
+          .getArray()
+          .find(
+            (l) =>
+              l.get("id") === this.layer ||
+              l.get("mapbox-layers")?.includes(this.layer)
+          ) as Layer;
+        this._animationSource = animationLayer.getSource() as TileSource;
+        this._originalTileUrlFunction =
+          //@ts-ignore
+          this._animationSource.getTileUrlFunction();
+      }
     });
 
     return html`
@@ -173,10 +188,19 @@ export class EOxDrawTools extends LitElement {
       </style>
       <main>
         <div id="controls" part="controls">
-          <button part="previous" @click="${() => this.previous()}"><</button>
-          <button part="next" @click="${() => this.next()}">></button>
+          <button
+            part="previous"
+            class="icon previous"
+            @click="${() => this.previous()}"
+          >
+            <
+          </button>
+          <button part="next" class="icon next" @click="${() => this.next()}">
+            >
+          </button>
           <button
             part="play"
+            class="icon-text ${this._isAnimationPlaying ? "pause" : "play"}"
             @click="${() =>
               this.playAnimation(this._isAnimationPlaying ? false : true)}"
           >
