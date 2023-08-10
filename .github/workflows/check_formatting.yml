@@ -1,4 +1,4 @@
-name: Check Formatting
+name: Check formatting
 
 on:
   pull_request_target:
