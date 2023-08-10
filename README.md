@@ -2,7 +2,7 @@
 
 A Web Component collection of geospatial UI elements, crafted by EOX.
 
-Note: The main branch of this project contains the v2 (alpha) version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
+Note: The main branch of this project contains the v2 version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
 
 ## Elements
 
@@ -22,26 +22,26 @@ Note: The main branch of this project contains the v2 (alpha) version of EOxElem
   <tr>
     <td><a href="./elements/chart/">eox-chart</a></td>
     <td>Dynamic chart with built-in data fetching</td>
-        <td><!--<a href="https://eox-a.github.io/EOxElements/elements/chart/examples/index.html">Examples</a>--></td>
-        <td>⭕️</td>
+    <td><!--<a href="https://eox-a.github.io/EOxElements/elements/chart/examples/index.html">Examples</a>--></td>
+    <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/drawtools/">eox-drawtools</a></td>
     <td>Draw and manage features on a map</td>
-        <td><a href="https://eox-a.github.io/EOxElements/elements/drawtools/examples/index.html">Examples</a></td>
-        <td>⭕️</td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/drawtools/examples/index.html">Examples</a></td>
+    <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
     <td>Filter/search large sets of items client-side or server-side</td>
-        <td><a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a></td>
-        <td>🟡</td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a></td>
+    <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>
     <td>Manage and modify map layers</td>
-        <td><a href="https://eox-a.github.io/EOxElements/elements/layercontrol/examples/index.html">Examples</a></td>
-        <td>🟡</td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/layercontrol/examples/index.html">Examples</a></td>
+    <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/map/">eox-map</a></td>
