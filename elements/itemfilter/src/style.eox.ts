@@ -1,5 +1,7 @@
 import { button } from "../../../utils/styles/button";
+import { checkbox } from "../../../utils/styles/checkbox";
 import { radio } from "../../../utils/styles/radio";
+import { slider } from "../../../utils/styles/slider";
 
 export const styleEOX = `
 * {
@@ -7,7 +9,9 @@ export const styleEOX = `
 }
 
 ${button}
+${checkbox}
 ${radio}
+${slider}
 
 ul {
   padding-left: 0;
