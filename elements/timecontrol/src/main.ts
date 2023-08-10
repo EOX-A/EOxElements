@@ -116,10 +116,10 @@ export class EOxDrawTools extends LitElement {
   private _isAnimationPlaying: boolean;
 
   @state()
-  private _newTimeIndex: number = 0;
+  private _newTimeIndex = 0;
 
   @property({ type: Boolean })
-  unstyled: Boolean;
+  unstyled: boolean;
 
   private _updateStep(step = 1) {
     this._newTimeIndex = this._newTimeIndex + step;
@@ -134,7 +134,7 @@ export class EOxDrawTools extends LitElement {
     this._animationSource.setTileUrlFunction(
       //@ts-ignore
       (tileCoord, pixelRatio, projection) => {
-        let src = this._originalTileUrlFunction(
+        const src = this._originalTileUrlFunction(
           tileCoord,
           pixelRatio,
           projection

@@ -80,8 +80,8 @@ export const filter = async (
   if (Object.keys(rangeFilters).length > 0) {
     const filteredResults = [];
     for (let i = 0; i < results.length; i++) {
-      const pass: { [key: string]: Boolean } = {};
-      for (let [key, value] of Object.entries(rangeFilters)) {
+      const pass: { [key: string]: boolean } = {};
+      for (const [key, value] of Object.entries(rangeFilters)) {
         const parseValue = (input: string) => {
           return value.format === "date" ? dayjs(input).unix() : input;
         };
@@ -135,8 +135,8 @@ export const filter = async (
   ) {
     const filteredResults = [];
     for (let i = 0; i < results.length; i++) {
-      const pass: { [key: string]: Boolean } = {};
-      for (let key of Object.keys(spatialFilters)) {
+      const pass: { [key: string]: boolean } = {};
+      for (const key of Object.keys(spatialFilters)) {
         const mode = spatialFilters[key].mode || "within";
         if (results[i].hasOwnProperty(key)) {
           const test =
