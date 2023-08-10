@@ -239,14 +239,14 @@ class SignalsDataManager {
     const datasets: ChartDataset[] = [];
     this.options.features.flat().forEach((key, dsIndex) => {
       // Find group
-      let groupIndex: number = -1;
+      let groupIndex = -1;
       this.options.features.forEach((group, idx) => {
         if (group.includes(key)) {
           groupIndex = idx;
         }
       });
       if (groupIndex !== -1) {
-        let data: {
+        const data: {
           date: string;
           basicStats?: { mean: number; min: number; max: number };
         }[] = [];
@@ -519,14 +519,14 @@ class SignalsDataManager {
     const allSignals = this.activeFields;
     allSignals.forEach((key, signalIdx) => {
       // Find group
-      let groupIndex: number = -1;
+      let groupIndex = -1;
       this.options.features.forEach((group, idx) => {
         if (group.includes(key)) {
           groupIndex = idx;
         }
       });
       if (groupIndex !== -1) {
-        let data: {
+        const data: {
           date: string;
           basicStats?: { mean: number; min: number; max: number };
         }[] = [];

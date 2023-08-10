@@ -55,7 +55,7 @@ export class EOxItemFilterSpatial extends LitElement {
               value="${mode}"
               @click="${() => {
                 this.filterObject.state.mode = mode;
-                let event = new CustomEvent("filter", {
+                const event = new CustomEvent("filter", {
                   detail: {
                     [this.filterObject.key]: {},
                   },
@@ -126,7 +126,7 @@ export class SpatialFilter extends LitElement {
       type: "Polygon",
     });
     const updateGeometryFilter = (feature: any) => {
-      let event = new CustomEvent("filter", {
+      const event = new CustomEvent("filter", {
         detail: {
           geometry: {
             type: "Polygon",

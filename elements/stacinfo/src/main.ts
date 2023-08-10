@@ -11,7 +11,7 @@ import { TemplateElement } from "../../../utils/templateElement";
 @customElement("eox-stacinfo")
 export class EOxStacInfo extends TemplateElement {
   @property({ type: Boolean })
-  unstyled: Boolean;
+  unstyled: boolean;
 
   @property()
   for: string;

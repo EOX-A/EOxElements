@@ -16,7 +16,7 @@ type HTMLElementEvent<T extends HTMLElement> = Event & {
 };
 @customElement("eox-layercontrol")
 export class EOxLayerControl extends LitElement {
-  private _currentlySorting: Boolean;
+  private _currentlySorting: boolean;
 
   @state()
   olMap: Map;
@@ -34,7 +34,7 @@ export class EOxLayerControl extends LitElement {
    * The query selector for the map
    */
   @property()
-  for: string = "eox-map";
+  for = "eox-map";
 
   @property()
   layerIdentifier = "id";
@@ -49,10 +49,10 @@ export class EOxLayerControl extends LitElement {
   layerConfig: Array<string> = ["opacity"];
 
   @property({ type: Boolean })
-  externalLayerConfig: Boolean = undefined;
+  externalLayerConfig: boolean = undefined;
 
   @property({ type: Boolean })
-  unstyled: Boolean;
+  unstyled: boolean;
 
   private _updateControl(layerCollection: Collection<any>) {
     // initially check if all layers have an id and title,
@@ -386,7 +386,7 @@ export class EOxLayerControl extends LitElement {
             },
 
             set: (sortable: Sortable) => {
-              var order = sortable.toArray().reverse();
+              const order = sortable.toArray().reverse();
 
               order.forEach((layerId: string, index: number) => {
                 if (inGroup) {
@@ -491,10 +491,10 @@ export class EOxLayerConfig extends LitElement {
   layer: Layer;
 
   @property({ type: Boolean })
-  external: Boolean;
+  external: boolean;
 
   @property({ type: Boolean })
-  unstyled: Boolean;
+  unstyled: boolean;
 
   private _layerControlElement: HTMLElement;
 

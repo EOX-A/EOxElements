@@ -15,7 +15,7 @@ export class EOxItemFilterMultiselect extends LitElement {
           f.checked = false;
         }
       });
-    for (let filter in this.filterObject.state) {
+    for (const filter in this.filterObject.state) {
       this.filterObject.state[filter] = false;
     }
   }
