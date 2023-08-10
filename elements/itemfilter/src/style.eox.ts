@@ -40,6 +40,11 @@ details summary > * {
 details summary {
   display: flex;
   align-items: center;
+  margin-top: 24px;
+}
+details summary .title {
+  font-size: 18px;
+  margin-bottom: 12px;
 }
 details li span,
 details summary {
