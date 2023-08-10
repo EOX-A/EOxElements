@@ -1,4 +1,4 @@
-name: Check Linting
+name: Check linting
 
 on:
   pull_request_target:
