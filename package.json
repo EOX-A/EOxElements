@@ -27,6 +27,6 @@
     "node": ">=18.16.0"
   },
   "dependencies": {
-    "@eox/chart": "^2.0.0-beta2"
+    "eslint-plugin-cypress": "^2.14.0"
   }
 }
