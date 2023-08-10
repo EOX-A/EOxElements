@@ -28,10 +28,10 @@ export class EOxDrawTools extends LitElement {
   _drawnFeatures: Array<Feature<Geometry>> = [];
 
   @state()
-  _currentlyDrawing: Boolean;
+  _currentlyDrawing: boolean;
 
   @property({ type: Boolean })
-  multipleFeatures: Boolean;
+  multipleFeatures: boolean;
 
   /**
    * The query selector for the map
@@ -43,7 +43,7 @@ export class EOxDrawTools extends LitElement {
   layer: string;
 
   @property({ type: Boolean })
-  unstyled: Boolean;
+  unstyled: boolean;
 
   _draw: Draw;
   _modify: Modify;

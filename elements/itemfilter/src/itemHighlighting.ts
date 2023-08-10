@@ -3,8 +3,8 @@
 
 export const highlight = (
   fuseSearchResult: any,
-  highlightClassName: string = "highlight",
-  matchKey: string = "title"
+  highlightClassName = "highlight",
+  matchKey = "title"
 ) => {
   const set = (obj: object, path: string, value: any) => {
     const pathValue = path.split(".");

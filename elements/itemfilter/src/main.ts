@@ -27,12 +27,12 @@ export class ElementConfig {
   /**
    * Highlighting of search result character matches
    */
-  public enableHighlighting?: Boolean = false;
+  public enableHighlighting?: boolean = false;
 
   /**
    * Search functionality // TODO
    */
-  public enableSearch?: Boolean = false;
+  public enableSearch?: boolean = false;
 
   /**
    * Use an external search endpoint instead of fuse search.
@@ -55,13 +55,13 @@ export class ElementConfig {
    * Inline mode, for rendering the itemfilter in avery condensed space.
    * Expexts showResults to be false and enableSearch to be true
    */
-  public inlineMode?: Boolean = false;
+  public inlineMode?: boolean = false;
 
   /**
    * Show all result items if nothing is input by the user
    * @default true
    */
-  public matchAllWhenEmpty?: Boolean = true;
+  public matchAllWhenEmpty?: boolean = true;
 
   /**
    * Callback that is triggered on item search
@@ -78,12 +78,12 @@ export class ElementConfig {
   /**
    * Display results list
    */
-  public showResults?: Boolean = true;
+  public showResults?: boolean = true;
 
   /**
    * The property of the result items used for display
    */
-  public titleProperty: string = "title";
+  public titleProperty = "title";
 }
 
 @customElement("eox-itemfilter")
@@ -227,7 +227,7 @@ export class EOxItemFilter extends TemplateElement {
   };
 
   @property({ type: Boolean })
-  unstyled: Boolean;
+  unstyled: boolean;
 
   private async search() {
     let results;
