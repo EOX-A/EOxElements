@@ -1,6 +1,9 @@
 import * as olLayers from "ol/layer";
 import * as olSources from "ol/source";
 import * as olFormats from "ol/format";
+import { applyStyle } from "ol-mapbox-style";
+import { FlatStyleLike } from "ol/style/flat";
+import mapboxgl, { AnySourceData } from "mapbox-gl";
 
 type EoxLayer = {
   type: olLayers.Layer;
@@ -8,6 +11,7 @@ type EoxLayer = {
   properties?: Object;
   source?: { type: olSources.Source };
   layers?: Array<EoxLayer>;
+  style?: mapboxgl.Style | FlatStyleLike;
 };
 
 export const generateLayers = (layerArray: Array<EoxLayer>) => {
@@ -26,7 +30,8 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
     if (layer.source && !newSource) {
       throw new Error(`Source type ${layer.source.type} not supported!`);
     }
-    return new newLayer({
+
+    const olLayer = new newLayer({
       ...layer,
       group,
       ...(layer.source && {
@@ -39,11 +44,49 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
           }),
         }),
       }),
+      style: undefined, // override layer style, apply style after
       // @ts-ignore
       ...(layer.type === "Group" && {
         layers: layer.layers.reverse().map((l) => createLayer(l, layer.id)),
       }),
     });
+
+    if (layer.style) {
+      if ("version" in layer.style) {
+        const mapboxStyle: mapboxgl.Style = layer.style;
+        // existing layer source will not get overridden by "style" property
+        // to allow vector layers without defined sources, create a dummy-geojson-source
+        // if source does exist
+        if (!mapboxStyle.sources) {
+          mapboxStyle.sources = {};
+        }
+        // @ts-ignore
+        const sourceName = layer.properties.id;
+        if (!mapboxStyle.sources[sourceName]) {
+          const dummy =
+            //@ts-ignore
+            layer.source.type === "VectorTile"
+              ? {
+                  type: "vector",
+                }
+              : {
+                  type: "geojson",
+                  data: {
+                    type: "FeatureCollection",
+                    //@ts-ignore
+                    features: [],
+                  },
+                };
+          mapboxStyle.sources[sourceName] = dummy as AnySourceData;
+        }
+        applyStyle(olLayer, mapboxStyle, sourceName, {
+          updateSource: false,
+        });
+      } else {
+        olLayer.setStyle(layer.style);
+      }
+    }
+    return olLayer;
   }
 
   return layerArray.reverse().map((l) => createLayer(l));

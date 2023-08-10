@@ -1,0 +1,7 @@
+{
+  "extends": ["@eox", "plugin:@typescript-eslint/recommended"],
+  "ignorePatterns": ["**/dist/*", "**/public/*"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["cypress", "@typescript-eslint"],
+  "root": true
+}

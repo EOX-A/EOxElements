@@ -215,7 +215,7 @@ export abstract class TemplateElement extends LitElement {
     return node;
   }
 
-  updated() {
+  firstUpdated() {
     this.templates = this.getTemplates();
   }
 }

@@ -17,7 +17,7 @@ export function addDraw(EOxMap: EOxMap, layerId: string, options: any): void {
   const source = drawLayer.getSource();
 
   const drawInteraction = new Draw({
-    type: options.type,
+    ...options,
     source,
   });
 

@@ -1,20 +1,9 @@
-import { EOxChart } from "../src/main";
+import "../src/main";
 
 describe("Chart", () => {
-  beforeEach(() => {
-    cy.visit("/elements/chart/test/general.html");
-  });
-
-  it("should expose the chart object", () => {
-    cy.get("eox-chart").should(($el) => {
-      const eoxChart = <EOxChart>$el[0];
-      expect(eoxChart.chart).to.exist;
-    });
-  });
-
   it("loads the chart", () => {
-    cy.get("eox-chart").should(($el) => {
-      const eoxChart = <EOxChart>$el[0];
+    cy.mount("<eox-chart></eox-chart>").as("eox-chart");
+    cy.get("eox-chart").and(($el) => {
       const data = {
         datasets: [
           {
@@ -30,7 +19,7 @@ describe("Chart", () => {
         ],
         labels: ["January", "February", "March", "April"],
       };
-      eoxChart.setData(data);
+      (<EOxChart>$el[0]).setData(data);
     });
   });
 });

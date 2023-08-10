@@ -2,40 +2,64 @@
 
 A Web Component collection of geospatial UI elements, crafted by EOX.
 
-Note: The main branch of this project contains the v2 (alpha) version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
+Note: The main branch of this project contains the v2 version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
 
 ## Elements
 
+- ⭕️ **Alpha** elements are in-development and may have many frequent breaking
+  changes.
+- 🟡 **Beta** elements are mostly polished and ready for use, but may still have
+  breaking changes.
+- ✅ **Stable** elements are reviewed, documented, and API complete.
+
 <table>
+  <tr>
+    <th>Element</th>
+    <th>Description</th>
+    <th>Examples</th>
+    <th>State</th>
+  </tr>
   <tr>
     <td><a href="./elements/chart/">eox-chart</a></td>
     <td>Dynamic chart with built-in data fetching</td>
-        <td><!--<a href="https://eox-a.github.io/EOxElements/elements/chart/examples/index.html">Examples</a>--></td>
+    <td><!--<a href="https://eox-a.github.io/EOxElements/elements/chart/examples/index.html">Examples</a>--></td>
+    <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/drawtools/">eox-drawtools</a></td>
     <td>Draw and manage features on a map</td>
-        <td><a href="https://eox-a.github.io/EOxElements/elements/drawtools/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/drawtools/examples/index.html">Examples</a></td>
+    <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
     <td>Filter/search large sets of items client-side or server-side</td>
-        <td><a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a></td>
+    <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>
     <td>Manage and modify map layers</td>
-        <td><a href="https://eox-a.github.io/EOxElements/elements/layercontrol/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/layercontrol/examples/index.html">Examples</a></td>
+    <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/map/">eox-map</a></td>
     <td>Map with powerful tools & helpers</td>
     <td><a href="https://eox-a.github.io/EOxElements/elements/map/examples/index.html">Examples</a></td>
+    <td>🟡</td>
+  </tr>
+  <tr>
+    <td><a href="./elements/stacinfo/">eox-stacinfo</a></td>
+    <td>Display properties of STAC files</td>
+    <td><a href="https://eox-a.github.io/EOxElements/elements/stacinfo/examples/index.html">Examples</a></td>
+    <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/timecontrol/">eox-timecontrol</a></td>
     <td>Time control and playback for map layers</td>
     <td><a href="https://eox-a.github.io/EOxElements/elements/timecontrol/examples/index.html">Examples</a></td>
+    <td>⭕️</td>
   </tr>
 </table>
 
@@ -93,18 +117,26 @@ npm install
 
 ### Dev server
 
-The recommended way to start a dev server is by using the Cypress testing GUI. It offers access to a suite of configurations for each element, and e2e tests combining multiple elements.
+You can start a dev server for an individual element by running this command:
+
+```
+npm start -w <element>
+```
+
+Example:
+
+```
+npm start -w @eox/map
+```
+
+### Test server
+
+You can run individual tests by using the Cypress testing GUI. It offers access to a suite of configurations for each element, and e2e tests combining multiple elements.
 
 In order to be able to run tests for a specific element you need to build that element first, using the `build` or the `watch` (re-building on every change) command:
 
 ```
-npm run watch --workspace=<element>
-```
-
-You can build/watch multiple elements at the same time, e.g.:
-
-```
-npm run watch --workspace=@eox/map --workspace=@eox/layercontrol
+npm run watch -w <element>
 ```
 
 To build/watch all elements, you can use:
