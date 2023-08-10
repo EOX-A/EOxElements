@@ -312,12 +312,13 @@ export class EOxItemFilter extends TemplateElement {
               ${when(
                 this._config.filterProperties,
                 () => html`
-                  <a
+                  <button
                     id="filter-reset"
                     data-cy="filter-reset"
                     @click=${() => this.resetFilters()}
-                    >Reset filters</a
                   >
+                    Reset filters
+                  </a>
                 `
               )}
             </section>
