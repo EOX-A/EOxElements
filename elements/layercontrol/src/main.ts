@@ -465,9 +465,9 @@ export class EOxLayerControl extends LitElement {
           // @ts-ignore
           .filter((i) => i.freehand_ !== undefined)
           // @ts-ignore
-          .map((i) => i.source_.ol_uid)
+          .map((i) => i.source_?.ol_uid)
           // @ts-ignore
-          .includes(layer.getSource ? layer.getSource().ol_uid : false)
+          .includes(layer.getSource ? layer.getSource()?.ol_uid : false)
       ? "draw"
       : // @ts-ignore
       layer.declutter_ !== undefined
