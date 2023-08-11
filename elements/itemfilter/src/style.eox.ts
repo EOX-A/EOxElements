@@ -107,4 +107,17 @@ ul#results li {
   overflow-x: hidden;
   overflow-y: auto;
 }
+.count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #00417044;
+  padding: 0 12px;
+  height: 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #004170;
+  font-weight: 500;
+  margin-left: 9px;
+}
 `;

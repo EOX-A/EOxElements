@@ -353,10 +353,10 @@ export class EOxItemFilter extends TemplateElement {
                             <span class="title">
                               ${aggregationProperty}
                               <span class="count"
-                                >(${this.aggregateResults(
+                                >${this.aggregateResults(
                                   this._results,
                                   aggregationProperty
-                                ).length})</span
+                                ).length}</span
                               >
                             </span>
                           </summary>
