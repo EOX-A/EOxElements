@@ -109,10 +109,13 @@ eox-itemfilter-expandcontainer ul,
 details ul {
   padding: 0.5rem;
 }
+section {
+  position: relative;
+}
 button#filter-reset {
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 0;
   text-indent: -9999px;
   line-height: 0;
 }
