@@ -30,11 +30,6 @@ export class ElementConfig {
   public enableHighlighting?: boolean = false;
 
   /**
-   * Search functionality // TODO
-   */
-  public enableSearch?: boolean = false;
-
-  /**
    * Use an external search endpoint instead of fuse search.
    * Passed properties: input string, filters object
    */
@@ -53,7 +48,7 @@ export class ElementConfig {
 
   /**
    * Inline mode, for rendering the itemfilter in avery condensed space.
-   * Expexts showResults to be false and enableSearch to be true
+   * Expexts showResults to be false
    */
   public inlineMode?: boolean = false;
 
