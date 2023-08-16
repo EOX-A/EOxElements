@@ -16,6 +16,7 @@ export class EOxItemFilterText extends LitElement {
     this.filterObject.keys.forEach((key) => {
       this.filterObject.state[key] = searchInput.value;
     });
+    this.filterObject.dirty = true;
     // this.filterObject.state = searchInput.value;
     this.dispatchEvent(new CustomEvent("filter"));
   };
@@ -29,6 +30,10 @@ export class EOxItemFilterText extends LitElement {
       this.renderRoot.querySelector("input[type='text']")
     );
     searchInput.value = "";
+    this.filterObject.keys.forEach((key) => {
+      this.filterObject.state[key] = undefined;
+    });
+    delete this.filterObject.dirty;
   }
 
   // skip shadow root creation

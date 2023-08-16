@@ -9,8 +9,15 @@ export class EOxItemFilterRange extends LitElement {
   filterObject: RangeFilterObject;
 
   inputHandler = (evt: CustomEvent) => {
-    [this.filterObject.state.min, this.filterObject.state.max] =
-      evt.detail.values;
+    let min, max;
+    [min, max] = evt.detail.values;
+    if (
+      min !== this.filterObject.state.min ||
+      max != this.filterObject.state.max
+    ) {
+      [this.filterObject.state.min, this.filterObject.state.max] = [min, max];
+      this.filterObject.dirty = true;
+    }
     this.dispatchEvent(new CustomEvent("filter"));
     this.requestUpdate();
   };
@@ -22,6 +29,7 @@ export class EOxItemFilterRange extends LitElement {
   public reset() {
     this.filterObject.state.min = this.filterObject.min;
     this.filterObject.state.max = this.filterObject.max;
+    delete this.filterObject.dirty;
     this.requestUpdate();
   }
 
@@ -32,7 +40,7 @@ export class EOxItemFilterRange extends LitElement {
 
   render() {
     return html`
-      <div>
+      <div class="range-before">
         ${this.filterObject.format === "date"
           ? dayjs.unix(this.filterObject.state.min)
           : this.filterObject.state.min}
@@ -45,7 +53,7 @@ export class EOxItemFilterRange extends LitElement {
         step="1"
         @change="${this.debouncedInputHandler}"
       ></tc-range-slider>
-      <div>
+      <div class="range-after">
         ${this.filterObject.format === "date"
           ? dayjs.unix(this.filterObject.state.max)
           : this.filterObject.state.max}

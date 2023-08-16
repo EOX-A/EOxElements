@@ -74,4 +74,10 @@ button.icon-text:before {
   width: 18px;
   height: 18px;
 }
+
+button.small {
+  height: 28px;
+  padding: 12.4px;
+  font-size: .75rem;
+}
 `;
