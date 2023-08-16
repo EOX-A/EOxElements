@@ -32,7 +32,7 @@ export class EOxItemFilterRange extends LitElement {
 
   render() {
     return html`
-      <div>
+      <div class="range-before">
         ${this.filterObject.format === "date"
           ? dayjs.unix(this.filterObject.state.min)
           : this.filterObject.state.min}
@@ -45,7 +45,7 @@ export class EOxItemFilterRange extends LitElement {
         step="1"
         @change="${this.debouncedInputHandler}"
       ></tc-range-slider>
-      <div>
+      <div class="range-after">
         ${this.filterObject.format === "date"
           ? dayjs.unix(this.filterObject.state.max)
           : this.filterObject.state.max}
