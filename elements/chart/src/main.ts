@@ -55,9 +55,9 @@ export class EOxChart extends HTMLElement {
             if (chart && chart.tooltip) {
               const active = chart.tooltip.getActiveElements();
               if (active?.length) {
-                let x = active[0].element.x;
-                let yAxis = chart.scales.y;
-                let ctx = chart.ctx;
+                const x = active[0].element.x;
+                const yAxis = chart.scales.y;
+                const ctx = chart.ctx;
                 ctx.save();
                 ctx.beginPath();
                 ctx.moveTo(x, yAxis.top);

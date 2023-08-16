@@ -15,7 +15,7 @@ export class EOxItemFilterSelect extends LitElement {
           f.checked = false;
         }
       });
-    for (let filter in this.filterObject.state) {
+    for (const filter in this.filterObject.state) {
       this.filterObject.state[filter] = false;
     }
   }
@@ -40,7 +40,7 @@ export class EOxItemFilterSelect extends LitElement {
                   type="radio"
                   checked="${this.filterObject.state[key] || nothing}"
                   @click=${() => {
-                    for (let el in this.filterObject.state) {
+                    for (const el in this.filterObject.state) {
                       this.filterObject.state[el] = el === key;
                     }
                     this.dispatchEvent(new CustomEvent("filter"));
