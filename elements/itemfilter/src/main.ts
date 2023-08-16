@@ -292,7 +292,9 @@ export class EOxItemFilter extends TemplateElement {
                   Object.values(this._filters),
                   (filterObject) => staticHTML`
                   <li>
-                    <eox-itemfilter-expandcontainer .filterObject=${filterObject}>
+                    <eox-itemfilter-expandcontainer .filterObject=${filterObject} .unstyled=${
+                    this.unstyled
+                  }>
                       <eox-itemfilter-${unsafeStatic(filterObject.type)}
                         slot="filter"
                         data-type="filter"
