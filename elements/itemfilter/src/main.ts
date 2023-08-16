@@ -176,6 +176,9 @@ export class EOxItemFilter extends TemplateElement {
             ...filterKeys,
             ...filterProperty.state,
           },
+          ...(filterProperty.state && {
+            dirty: true,
+          }),
           ...(filterProperty.type === "range" && {
             min: (<RangeFilterObject>filterKeys).min,
             max: (<RangeFilterObject>filterKeys).max,
