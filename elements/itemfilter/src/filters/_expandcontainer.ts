@@ -1,18 +1,22 @@
 import { LitElement, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { style } from "../style";
+import { styleEOX } from "../style.eox";
 
 @customElement("eox-itemfilter-expandcontainer")
 export class EOxItemFilterExpandContainer extends LitElement {
   @property({ attribute: false })
   filterObject: FilterObject;
 
-  // skip shadow root creation
-  createRenderRoot() {
-    return this;
-  }
+  @property()
+  unstyled: boolean;
 
   render() {
     return html`
+      <style>
+        ${style}
+        ${!this.unstyled && styleEOX}
+      </style>
       <details
         class="details-filter"
         part="details-filter"

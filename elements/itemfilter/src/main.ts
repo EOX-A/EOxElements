@@ -30,11 +30,6 @@ export class ElementConfig {
   public enableHighlighting?: boolean = false;
 
   /**
-   * Search functionality // TODO
-   */
-  public enableSearch?: boolean = false;
-
-  /**
    * Use an external search endpoint instead of fuse search.
    * Passed properties: input string, filters object
    */
@@ -53,7 +48,7 @@ export class ElementConfig {
 
   /**
    * Inline mode, for rendering the itemfilter in avery condensed space.
-   * Expexts showResults to be false and enableSearch to be true
+   * Expexts showResults to be false
    */
   public inlineMode?: boolean = false;
 
@@ -181,6 +176,9 @@ export class EOxItemFilter extends TemplateElement {
             ...filterKeys,
             ...filterProperty.state,
           },
+          ...(filterProperty.state && {
+            dirty: true,
+          }),
           ...(filterProperty.type === "range" && {
             min: (<RangeFilterObject>filterKeys).min,
             max: (<RangeFilterObject>filterKeys).max,
@@ -283,21 +281,26 @@ export class EOxItemFilter extends TemplateElement {
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
-      <form @submit="${(evt: FormDataEvent) => evt.preventDefault()}">
+      <form
+        id="itemfilter"
+        @submit="${(evt: FormDataEvent) => evt.preventDefault()}"
+      >
         ${when(
           this._config.filterProperties.length,
           () => html`
             <section class="${this.config.inlineMode ? "inline" : nothing}">
               ${when(
                 !this.config.inlineMode,
-                () => html` <slot name="filterstitle"></slot> `
+                () => html` <slot name="filterstitle"><h4>Filters</h4></slot> `
               )}
               <ul id="filters">
                 ${map(
                   Object.values(this._filters),
                   (filterObject) => staticHTML`
                   <li>
-                    <eox-itemfilter-expandcontainer .filterObject=${filterObject}>
+                    <eox-itemfilter-expandcontainer .filterObject=${filterObject} .unstyled=${
+                    this.unstyled
+                  }>
                       <eox-itemfilter-${unsafeStatic(filterObject.type)}
                         slot="filter"
                         data-type="filter"
@@ -310,14 +313,19 @@ export class EOxItemFilter extends TemplateElement {
                 )}
               </ul>
               ${when(
-                this._config.filterProperties,
+                this._config.filterProperties &&
+                  Object.values(this._filters)
+                    .map((f) => f.dirty)
+                    .filter((f) => f).length > 0,
                 () => html`
-                  <a
+                  <button
                     id="filter-reset"
+                    class="outline small"
                     data-cy="filter-reset"
                     @click=${() => this.resetFilters()}
-                    >Reset filters</a
                   >
+                    Reset filters
+                  </a>
                 `
               )}
             </section>
@@ -328,7 +336,7 @@ export class EOxItemFilter extends TemplateElement {
           () => html`
             <section id="section-results">
               <div>
-                <slot name="resultstitle"></slot>
+                <slot name="resultstitle"><h4>Results</h4></slot>
               </div>
               <div id="container-results" class="scroll">
                 ${this._results.length < 1
@@ -345,17 +353,17 @@ export class EOxItemFilter extends TemplateElement {
                             ).length
                         ),
                         (aggregationProperty) => html`<details
-                          id="details-results"
+                          class="details-results"
                           open
                         >
                           <summary>
                             <span class="title">
                               ${aggregationProperty}
                               <span class="count"
-                                >(${this.aggregateResults(
+                                >${this.aggregateResults(
                                   this._results,
                                   aggregationProperty
-                                ).length})</span
+                                ).length}</span
                               >
                             </span>
                           </summary>

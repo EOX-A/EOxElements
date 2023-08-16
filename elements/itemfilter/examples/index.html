@@ -12,39 +12,72 @@
     </style>
   </head>
   <body>
-    <p>Itemfilter with aggregation</p>
+    <p>Basic itemfilter</p>
     <eox-itemfilter></eox-itemfilter>
-    <p>Itemfilter with range slider</p>
-    <eox-itemfilter id="range"></eox-itemfilter>
     <script type="module">
       import "https://unpkg.com/@eox/itemfilter@latest";
+      import "https://unpkg.com/@eox/map@latest/dist/eox-map.js";
       import items from "./items.json" assert { type: "json" };
 
       const EOxItemFilter = document.querySelector("eox-itemfilter");
-      const EOxItemFilterRange = document.querySelector("eox-itemfilter#range");
       EOxItemFilter.config = {
         titleProperty: "title",
-        filterProperties: [{ key: "themes", title: "Theme", exclusive: true }],
+        filterProperties: [
+          {
+            keys: ["title", "themes"],
+            title: "Search",
+            type: "text",
+            expanded: true,
+            state: {
+              title: "no2",
+              themes: "no2",
+            },
+          },
+          {
+            key: "themes",
+            title: "Theme",
+            type: "multiselect",
+            // state: {
+            //   air: true,
+            //   agriculture: true,
+            // },
+          },
+          {
+            key: "timestamp",
+            type: "range",
+            format: "date",
+            // state: {
+            //   min: 1685232950,
+            //   max: 1686454646,
+            // },
+          },
+          {
+            key: "geometry",
+            type: "spatial",
+            // state: {
+            //   mode: "within",
+            //   geometry: {
+            //     type: "Polygon",
+            //     coordinates: [
+            //       [
+            //         [-97.71428571428572, 38.00407795331557],
+            //         [-102.00000000000001, -40.329636215359066],
+            //         [81.85714285714282, -47.42214099287611],
+            //         [50.57142857142855, 51.0574434128921],
+            //         [-97.71428571428572, 38.00407795331557],
+            //       ],
+            //     ],
+            //   },
+            // },
+          },
+        ],
         aggregateResults: "themes",
-        enableSearch: true,
         enableHighlighting: true,
-        fuseConfig: {
-          keys: ["title", "themes"],
-        },
         onSelect: (item) => {
           console.log(item);
         },
       };
-      EOxItemFilterRange.config = {
-        titleProperty: "title",
-        enableSearch: true,
-        filterProperties: [{ key: "datetime", type: "range", format: "date" }],
-        fuseConfig: {
-          keys: ["title", "datetime"],
-        },
-      };
       EOxItemFilter.apply(items);
-      EOxItemFilterRange.apply(items);
     </script>
   </body>
 </html>

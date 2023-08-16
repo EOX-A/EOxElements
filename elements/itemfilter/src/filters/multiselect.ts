@@ -18,6 +18,7 @@ export class EOxItemFilterMultiselect extends LitElement {
     for (const filter in this.filterObject.state) {
       this.filterObject.state[filter] = false;
     }
+    delete this.filterObject.dirty;
   }
 
   // skip shadow root creation
@@ -42,6 +43,7 @@ export class EOxItemFilterMultiselect extends LitElement {
                   @click=${() => {
                     this.filterObject.state[key] =
                       !this.filterObject.state[key];
+                    this.filterObject.dirty = true;
                     this.dispatchEvent(new CustomEvent("filter"));
                   }}
                 />

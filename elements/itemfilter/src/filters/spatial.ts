@@ -33,6 +33,7 @@ export class EOxItemFilterSpatial extends LitElement {
     const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
       "eox-itemfilter-spatial-filter"
     );
+    delete this.filterObject.dirty;
     spatialFilter.reset();
   }
 
@@ -73,6 +74,7 @@ export class EOxItemFilterSpatial extends LitElement {
         .geometry=${this.filterObject.state?.geometry}
         @filter="${(e: Event) => {
           this.filterObject.state.geometry = (<CustomEvent>e).detail.geometry;
+          this.filterObject.dirty = true;
           this.dispatchEvent(new CustomEvent("filter"));
         }}"
       ></eox-itemfilter-spatial>
