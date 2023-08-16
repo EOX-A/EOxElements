@@ -72,6 +72,7 @@ input[type="radio"] {
   margin-right: 0.5rem;
 }
 input[type="text"] {
+  box-sizing: border-box;
   width: 100%;
   margin-bottom: 0.5rem;
   padding: 5px 7px;
