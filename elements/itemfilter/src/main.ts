@@ -310,7 +310,10 @@ export class EOxItemFilter extends TemplateElement {
                 )}
               </ul>
               ${when(
-                this._config.filterProperties,
+                this._config.filterProperties &&
+                  Object.values(this._filters)
+                    .map((f) => f.dirty)
+                    .filter((f) => f).length > 0,
                 () => html`
                   <button
                     id="filter-reset"

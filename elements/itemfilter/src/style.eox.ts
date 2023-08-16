@@ -110,9 +110,17 @@ eox-itemfilter-expandcontainer ul,
 details ul {
   padding: 0.5rem;
 }
-button #filter-reset {
-  cursor: pointer;
-  font-size: small;
+button#filter-reset {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  text-indent: -9999px;
+  line-height: 0;
+}
+button#filter-reset:after {
+  content: "Reset";
+  text-indent: 0px;
+  line-height: initial;
 }
 .scroll {
   height: 100%;

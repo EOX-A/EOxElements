@@ -9,8 +9,15 @@ export class EOxItemFilterRange extends LitElement {
   filterObject: RangeFilterObject;
 
   inputHandler = (evt: CustomEvent) => {
-    [this.filterObject.state.min, this.filterObject.state.max] =
-      evt.detail.values;
+    let min, max;
+    [min, max] = evt.detail.values;
+    if (
+      min !== this.filterObject.state.min ||
+      max != this.filterObject.state.max
+    ) {
+      [this.filterObject.state.min, this.filterObject.state.max] = [min, max];
+      this.filterObject.dirty = true;
+    }
     this.dispatchEvent(new CustomEvent("filter"));
     this.requestUpdate();
   };
@@ -22,6 +29,7 @@ export class EOxItemFilterRange extends LitElement {
   public reset() {
     this.filterObject.state.min = this.filterObject.min;
     this.filterObject.state.max = this.filterObject.max;
+    delete this.filterObject.dirty;
     this.requestUpdate();
   }
 
