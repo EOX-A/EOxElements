@@ -16,6 +16,7 @@ form {
   display: flex;
   flex-direction: column;
 }
-
-
+details {
+  width: 100%;
+}
 `;
