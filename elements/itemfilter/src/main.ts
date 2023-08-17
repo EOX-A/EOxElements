@@ -318,7 +318,9 @@ export class EOxItemFilter extends TemplateElement {
                               data-type="filter"
                               .filterObject=${filterObject}
                               @filter="${() => this.search()}"
-                            ></eox-itemfilter-${unsafeStatic(filterObject.type)}>
+                            ></eox-itemfilter-${unsafeStatic(
+                              filterObject.type
+                            )}>
                           </eox-itemfilter-expandcontainer>
                       `
                     }
