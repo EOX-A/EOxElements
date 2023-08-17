@@ -7,7 +7,6 @@ import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";
 import VectorTileLayer from "ol/layer/VectorTile.js";
 import VectorLayer from "ol/layer/Vector.js";
-import VectorTileSource from "ol/source/VectorTile.js";
 import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
 

@@ -13,10 +13,10 @@ describe("select interaction with hover", () => {
       let selectCounter = 0;
       let featureSelectCounter = 0;
       eoxMap.addEventListener("select", (evt) => {
-        selectCounter++
+        selectCounter++;
         //@ts-ignore
         if (evt.detail.feature) {
-          featureSelectCounter++
+          featureSelectCounter++;
         }
         if (selectCounter === 3) {
           // moving the cursor to a feature, moving it off the feature, and onto the feature again
@@ -24,31 +24,32 @@ describe("select interaction with hover", () => {
         }
       });
 
-      eoxMap.addSelect("regions", {
-        id: "selectInteraction",
-        tooltip: "eox-map-tooltip",
-        condition: "pointermove",
-        layer: {
-          type: "Vector",
-          properties: {
-            id: "selectLayer",
-          },
-          source: {
+      eoxMap
+        .addSelect("regions", {
+          id: "selectInteraction",
+          tooltip: "eox-map-tooltip",
+          condition: "pointermove",
+          layer: {
             type: "Vector",
+            properties: {
+              id: "selectLayer",
+            },
+            source: {
+              type: "Vector",
+            },
+            style: {
+              "stroke-color": "red",
+              "stroke-width": 3,
+            },
           },
-          style: {
-            "stroke-color": "red",
-            "stroke-width": 3,
-          },
-        },
-      })
-      .then(() => {
-        setTimeout(() => {
-          simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
-          simulateEvent(eoxMap.map, "pointermove", 0, -140);   // no feature here
-          simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
-        }, 1000);
-      });
+        })
+        .then(() => {
+          setTimeout(() => {
+            simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
+            simulateEvent(eoxMap.map, "pointermove", 0, -140); // no feature here
+            simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
+          }, 1000);
+        });
     });
   });
 
