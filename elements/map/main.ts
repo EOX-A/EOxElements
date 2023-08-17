@@ -141,7 +141,7 @@ export class EOxMap extends LitElement {
     };
 
     this.addSelect = (layerId: string, options: Object) => {
-      addSelect(this, layerId, options);
+      return addSelect(this, layerId, options);
     };
 
     this.removeInteraction = (id: string) => {
