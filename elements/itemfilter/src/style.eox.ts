@@ -46,21 +46,21 @@ details summary .title {
   display: flex;
   font-weight: 500;
 }
-details.details-filter summary input::after,
-details.details-results summary input::before {
+details.details-filter summary::after,
+details.details-results summary::before {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230009' viewBox='0 0 24 24'%3E%3Ctitle%3Echevron-right%3C/title%3E%3Cpath d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z' /%3E%3C/svg%3E");
   height: 24px;
   width: 24px;
 }
-details.details-filter summary input::after {
+details.details-filter summary::after {
   position: absolute;
   right: 8px;
   transform: rotate(90deg);
 }
-details[open] summary input::before {
+details[open] summary::before {
   transform: rotate(90deg);
 }
-details[open] summary input::after {
+details[open] summary::after {
   transform: rotate(270deg);
 }
 eox-itemfilter-expandcontainer .title,
