@@ -298,16 +298,30 @@ export class EOxItemFilter extends TemplateElement {
                   Object.values(this.filters),
                   (filterObject) => staticHTML`
                   <li>
-                    <eox-itemfilter-expandcontainer .filterObject=${filterObject} .unstyled=${
-                    this.unstyled
-                  }>
-                      <eox-itemfilter-${unsafeStatic(filterObject.type)}
-                        slot="filter"
-                        data-type="filter"
-                        .filterObject=${filterObject}
-                        @filter="${() => this.search()}"
-                      ></eox-itemfilter-${unsafeStatic(filterObject.type)}>
-                    </eox-itemfilter-expandcontainer>
+                    ${
+                      filterObject.featured
+                        ? staticHTML`
+                          <eox-itemfilter-${unsafeStatic(filterObject.type)}
+                            slot="filter"
+                            data-type="filter"
+                            .filterObject=${filterObject}
+                            @filter="${() => this.search()}"
+                          ></eox-itemfilter-${unsafeStatic(filterObject.type)}>
+                        `
+                        : staticHTML`
+                          <eox-itemfilter-expandcontainer
+                            .filterObject=${filterObject}
+                            .unstyled=${this.unstyled}
+                          >
+                            <eox-itemfilter-${unsafeStatic(filterObject.type)}
+                              slot="filter"
+                              data-type="filter"
+                              .filterObject=${filterObject}
+                              @filter="${() => this.search()}"
+                            ></eox-itemfilter-${unsafeStatic(filterObject.type)}>
+                          </eox-itemfilter-expandcontainer>
+                      `
+                    }
                   </li>
                 `
                 )}

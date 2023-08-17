@@ -12,6 +12,7 @@ declare type FilterObject = {
   dirty?: boolean;
   exclusive?: boolean;
   expanded?: boolean;
+  featured?: boolean;
   format?: string;
   key: string;
   state?: FilterState;
