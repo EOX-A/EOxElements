@@ -10,9 +10,9 @@ import { fromLonLat } from "ol/proj";
  * @param {string} centerAttribute
  * @returns {import("ol/coordinate")}
  */
-export function getCenterFromAttribute(centerAttribute: string) {
+export function getCenterFromAttribute(centerAttribute: Array<number>) {
   if (centerAttribute) {
-    const coordinate = JSON.parse(centerAttribute);
+    const coordinate = centerAttribute;
     // compare:
     // https://github.com/openlayers/openlayers/blob/v7.4.0/src/ol/proj.js
     if (
