@@ -37,7 +37,7 @@ export function addInitialControls(EOxMap: EOxMap) {
         // @ts-ignore
         if (controlOptions && controlOptions.layers) {
           // @ts-ignore
-          controlOptions.layers = await generateLayers(controlOptions.layers); // parse layers (OverviewMap)
+          controlOptions.layers = generateLayers(controlOptions.layers); // parse layers (OverviewMap)
         }
         const control = new olControls[controlName](controlOptions);
         EOxMap.map.addControl(control);
