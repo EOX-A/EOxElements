@@ -52,22 +52,4 @@ describe("select interaction with hover", () => {
         });
     });
   });
-
-  /*it("fires a select event", () => {
-    cy.get("eox-map").should(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      // get the interaction via the source key
-      const drawInteraction = eoxMap.interactions["drawInteraction"];
-      expect(drawInteraction).to.exist;
-      expect(drawInteraction.getActive()).to.equal(true);
-    });
-  });
-
-
-  it("remove interaction", () => {
-    cy.get("eox-map").should(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      eoxMap.removeInteraction("drawInteraction");
-    });
-  });*/
 });

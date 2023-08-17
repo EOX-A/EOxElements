@@ -100,16 +100,27 @@ export async function addSelect(
   map.on(options.condition || "click", listener);
 
   // if the parent layer changes, also change the selection layer.
-  selectLayer.on("change:opacity", (value: number) => {
-    selectStyleLayer.setOpacity(value);
+
+  selectLayer.on("change:opacity", () => {
+    selectStyleLayer.setOpacity(selectLayer.getOpacity());
   });
-  selectLayer.on("change:visible", (visible: boolean) => {
+
+  selectLayer.on("change:visible", () => {
+    const visible = selectLayer.getVisible();
     selectStyleLayer.setVisible(visible);
+    if (overlay) {
+      if (visible) {
+        map.addOverlay(overlay);
+      } else {
+        map.removeOverlay(overlay);
+      }
+    }
   });
-  //@ts-ignore
-  selectLayer.on("change:source", (value) => {
-    selectStyleLayer.setSource(value);
+
+  selectLayer.on("change:source", () => {
+    selectStyleLayer.setSource(selectLayer.getSource());
   });
+
   map.getLayers().on("remove", () => {
     if (!EOxMap.getLayerById(layerId)) {
       selectStyleLayer.setMap(null);
