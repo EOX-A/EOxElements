@@ -66,7 +66,7 @@ export async function addSelect(
 
   const initialStyle = selectStyleLayer.getStyleFunction();
 
-  selectStyleLayer.setStyle((feature: Feature, resolution: number) => {
+  selectStyleLayer.setStyle((feature, resolution) => {
     if (selectedFid && getId(feature) === selectedFid) {
       return initialStyle(feature, resolution);
     }
@@ -107,8 +107,8 @@ export async function addSelect(
   selectLayer.on("change:visible", (visible: boolean) => {
     selectStyleLayer.setVisible(visible);
   });
-  selectLayer.on("change:source", (value: VectorSource | VectorTileSource) => {
-    //@ts-ignore
+  //@ts-ignore
+  selectLayer.on("change:source", (value) => {
     selectStyleLayer.setSource(value);
   });
   map.getLayers().on("remove", () => {
