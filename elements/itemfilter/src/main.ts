@@ -412,7 +412,33 @@ export class EOxItemFilter extends TemplateElement {
                         this.results,
                         (item: Item) =>
                           html`<li part="result">
-                            ${unsafeHTML(item[this._config.titleProperty])}
+                            <label>
+                              <input
+                                type="radio"
+                                name="result"
+                                id="${item.id}"
+                                @click=${() => {
+                                  this.selectedResult = item;
+                                  this._config.onSelect(item);
+                                }}
+                              />
+                              ${when(
+                                this.hasTemplate("result"),
+                                () =>
+                                  this.renderTemplate(
+                                    "result",
+                                    item,
+                                    `result-${item.id}`
+                                  ),
+                                () => html`
+                                  <span class="title"
+                                    >${unsafeHTML(
+                                      item[this._config.titleProperty]
+                                    )}</span
+                                  >
+                                `
+                              )}
+                            </label>
                           </li>`
                       )}
                 </ul>
