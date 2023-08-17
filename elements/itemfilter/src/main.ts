@@ -86,16 +86,16 @@ export class EOxItemFilter extends TemplateElement {
   _resultAggregation: Array<string> = [];
 
   @state()
-  _items: Array<object> = [];
+  public filters: { [key: string]: FilterObject } = {};
 
   @state()
-  _results: Array<object>;
+  public items: Array<object> = [];
 
   @state()
-  _filters: { [key: string]: FilterObject } = {};
+  public results: Array<object>;
 
   @state()
-  _selectedResult: object;
+  public selectedResult: object;
 
   @property({ attribute: false }) set config(config) {
     const oldValue = this._config;
@@ -112,7 +112,7 @@ export class EOxItemFilter extends TemplateElement {
 
   @property()
   apply = (items: Array<Object>) => {
-    this._items = items.map((i, index) => ({
+    this.items = items.map((i, index) => ({
       id: `item-${index}`,
       ...i,
     }));
@@ -126,7 +126,7 @@ export class EOxItemFilter extends TemplateElement {
             ? dayjs(value).unix()
             : parseInt(value);
         };
-        this._items.forEach((item: Item) => {
+        this.items.forEach((item: Item) => {
           if (filterProperty.type === "range") {
             if (Array.isArray(item[filterProperty.key] as Array<number>)) {
               const currentValues = [
@@ -166,7 +166,7 @@ export class EOxItemFilter extends TemplateElement {
             }
           }
         });
-        this._filters[
+        this.filters[
           filterProperty.key ||
             (<TextFilterObject>filterProperty).keys.join("|")
         ] = {
@@ -190,14 +190,14 @@ export class EOxItemFilter extends TemplateElement {
 
     if (this._config.matchAllWhenEmpty !== false) {
       // initially render all items
-      this._results = this.sortResults(this._items);
+      this.results = this.sortResults(this.items);
       this.requestUpdate();
     }
 
     if (this._config.aggregateResults) {
       this._resultAggregation = [
         ...new Set(
-          this._items.reduce((store: Array<string>, item: Item) => {
+          this.items.reduce((store: Array<string>, item: Item) => {
             return store.concat(item[this._config.aggregateResults]);
           }, [])
         ),
@@ -218,7 +218,7 @@ export class EOxItemFilter extends TemplateElement {
         }
       }
     });
-    indexItems(this._items, {
+    indexItems(this.items, {
       keys: fuseKeys,
       ...this._config.fuseConfig,
     });
@@ -230,12 +230,12 @@ export class EOxItemFilter extends TemplateElement {
   private async search() {
     let results;
     if (this.config.externalFilter) {
-      results = await filterExternal(this._items, this._filters, this._config);
+      results = await filterExternal(this.items, this.filters, this._config);
     } else {
-      results = await filterClient(this._items, this._filters, this._config);
+      results = await filterClient(this.items, this.filters, this._config);
     }
-    this._results = this.sortResults(results);
-    this._config.onFilter(this._results, this._filters);
+    this.results = this.sortResults(results);
+    this._config.onFilter(this.results, this.filters);
   }
 
   aggregateResults(items: Array<Object>, property: string) {
@@ -246,10 +246,10 @@ export class EOxItemFilter extends TemplateElement {
       // as the filter, it doesn't make sense to show all aggregations, but only
       // the one matching the current filter
       let currentFilter;
-      if (this._filters[this._config.aggregateResults]) {
+      if (this.filters[this._config.aggregateResults]) {
         currentFilter = Object.keys(
-          this._filters[this._config.aggregateResults]
-        ).filter((f) => this._filters[this._config.aggregateResults].state[f]);
+          this.filters[this._config.aggregateResults]
+        ).filter((f) => this.filters[this._config.aggregateResults].state[f]);
       }
 
       const includedInCurrentFilter = currentFilter?.length
@@ -295,7 +295,7 @@ export class EOxItemFilter extends TemplateElement {
               )}
               <ul id="filters">
                 ${map(
-                  Object.values(this._filters),
+                  Object.values(this.filters),
                   (filterObject) => staticHTML`
                   <li>
                     <eox-itemfilter-expandcontainer .filterObject=${filterObject} .unstyled=${
@@ -314,7 +314,7 @@ export class EOxItemFilter extends TemplateElement {
               </ul>
               ${when(
                 this._config.filterProperties &&
-                  Object.values(this._filters)
+                  Object.values(this.filters)
                     .map((f) => f.dirty)
                     .filter((f) => f).length > 0,
                 () => html`
@@ -332,14 +332,14 @@ export class EOxItemFilter extends TemplateElement {
           `
         )}
         ${when(
-          this.config.showResults && this._results,
+          this.config.showResults && this.results,
           () => html`
             <section id="section-results">
               <div>
                 <slot name="resultstitle"><h4>Results</h4></slot>
               </div>
               <div id="container-results" class="scroll">
-                ${this._results.length < 1
+                ${this.results.length < 1
                   ? html` <small class="no-results">No matching items</small> `
                   : nothing}
                 <ul id="results" part="results">
@@ -348,7 +348,7 @@ export class EOxItemFilter extends TemplateElement {
                         this._resultAggregation.filter(
                           (aggregationProperty) =>
                             this.aggregateResults(
-                              this._results,
+                              this.results,
                               aggregationProperty
                             ).length
                         ),
@@ -361,7 +361,7 @@ export class EOxItemFilter extends TemplateElement {
                               ${aggregationProperty}
                               <span class="count"
                                 >${this.aggregateResults(
-                                  this._results,
+                                  this.results,
                                   aggregationProperty
                                 ).length}</span
                               >
@@ -370,7 +370,7 @@ export class EOxItemFilter extends TemplateElement {
                           <ul>
                             ${map(
                               this.aggregateResults(
-                                this._results,
+                                this.results,
                                 aggregationProperty
                               ),
                               (item: Item) => html`
@@ -381,7 +381,7 @@ export class EOxItemFilter extends TemplateElement {
                                       name="result"
                                       id="${item.id}"
                                       @click=${() => {
-                                        this._selectedResult = item;
+                                        this.selectedResult = item;
                                         this._config.onSelect(item);
                                       }}
                                     />
@@ -409,7 +409,7 @@ export class EOxItemFilter extends TemplateElement {
                         </details>`
                       )
                     : map(
-                        this._results,
+                        this.results,
                         (item: Item) =>
                           html`<li part="result">
                             ${unsafeHTML(item[this._config.titleProperty])}
