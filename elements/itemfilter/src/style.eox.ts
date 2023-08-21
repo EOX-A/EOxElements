@@ -105,9 +105,12 @@ ul#results {
 ul li {
   padding-left: 0;
 }
-eox-itemfilter-expandcontainer ul,
-details ul {
-  padding: 0.5rem;
+eox-itemfilter-expandcontainer ul li,
+details ul li {
+  padding: 0.2rem;
+}
+li.highlighted {
+  background: #00417011;
 }
 section {
   position: relative;
