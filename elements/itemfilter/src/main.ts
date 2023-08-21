@@ -95,7 +95,7 @@ export class EOxItemFilter extends TemplateElement {
   public results: Array<object>;
 
   @state()
-  public selectedResult: object;
+  public selectedResult: Item;
 
   @property({ attribute: false }) set config(config) {
     const oldValue = this._config;
@@ -222,6 +222,7 @@ export class EOxItemFilter extends TemplateElement {
       keys: fuseKeys,
       ...this._config.fuseConfig,
     });
+    this.search();
   };
 
   @property({ type: Boolean })
@@ -393,9 +394,14 @@ export class EOxItemFilter extends TemplateElement {
                                 <li>
                                   <label>
                                     <input
+                                      data-cy="result-radio"
                                       type="radio"
                                       name="result"
                                       id="${item.id}"
+                                      checked=${this.selectedResult[
+                                        this._config.titleProperty
+                                      ] === item[this._config.titleProperty] ||
+                                      nothing}
                                       @click=${() => {
                                         this.selectedResult = item;
                                         this._config.onSelect(item);

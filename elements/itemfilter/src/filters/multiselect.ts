@@ -37,6 +37,7 @@ export class EOxItemFilterMultiselect extends LitElement {
             <li>
               <label>
                 <input
+                  data-cy="multiselect-checkbox"
                   name="selection"
                   type="checkbox"
                   checked="${this.filterObject.state[key] || nothing}"
