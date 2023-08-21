@@ -1,34 +1,62 @@
+import { LitElement, html } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 // @ts-ignore
 import olCss from "ol/ol.css";
 import { addDraw } from "./src/draw";
 import { addSelect } from "./src/select";
-import { generateLayers } from "./src/generate";
+import { generateLayers, EoxLayer } from "./src/generate";
 import Interaction from "ol/interaction/Interaction";
 import Control from "ol/control/Control";
 import { getLayerById } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
 
-export class EOxMap extends HTMLElement {
-  shadow: ShadowRoot;
+@customElement("eox-map")
+export class EOxMap extends LitElement {
+  /**
+   * Map center, can be lon/lat or UTM
+   */
+  @property({ type: Array })
+  center: Array<number>;
+
+  /**
+   * Map controls
+   */
+  @property({ type: Object })
+  controls: object;
+
+  /**
+   * Layers array
+   */
+  @property({ type: Array })
+  layers: Array<EoxLayer>;
+
+  /**
+   * Map zoom
+   */
+  @property({ type: Number })
+  zoom: number;
 
   /**
    * The native OpenLayers map object.
    * See [https://openlayers.org/en/latest/apidoc/](https://openlayers.org/en/latest/apidoc/)
    */
+  @state()
   map: Map;
 
   /**
    * dictionary of ol interactions associated with the map.
    */
+  @state()
   interactions: { [index: string]: Interaction };
 
   /**
    * dictionary of ol controls associated with the map.
    */
-  controls: { [index: string]: Control };
+  @state()
+  mapControls: { [index: string]: Control };
 
   /**
    * Apply layers from Mapbox Style JSON
@@ -68,42 +96,39 @@ export class EOxMap extends HTMLElement {
    */
   getLayerById: Function;
 
-  constructor() {
-    super();
-    this.shadow = this.attachShadow({ mode: "open" });
-    const style = document.createElement("style");
+  render() {
     const shadowStyleFix = `
-    :host {
-      display: block;
-    }
-    .eox-map-tooltip {
-      pointer-events: none !important;
-    }
-  `;
-    style.innerHTML = shadowStyleFix + olCss;
-    this.shadow.appendChild(style);
-    const div = document.createElement("div");
-    div.style.width = "100%";
-    div.style.height = "100%";
-    this.shadow.appendChild(div);
+      :host {
+        display: block;
+      }
+      .eox-map-tooltip {
+        pointer-events: none !important;
+      }
+    `;
 
-    const slot = document.createElement("slot");
-    this.shadow.appendChild(slot);
+    return html`
+      <style>
+        ${shadowStyleFix}
+        ${olCss}
+      </style>
+      <div style="width: 100%; height: 100%"></div>
+      <slot></slot>
+    `;
+  }
 
+  firstUpdated(): void {
     this.map = new Map({
       controls: [],
-      target: div,
-      layers: generateLayers(JSON.parse(this.getAttribute("layers"))),
+      target: this.renderRoot.querySelector("div"),
+      layers: generateLayers(this.layers),
       view: new View({
-        center: getCenterFromAttribute(this.getAttribute("center")),
-        zoom: this.hasAttribute("zoom")
-          ? JSON.parse(this.getAttribute("zoom"))
-          : 0,
+        center: getCenterFromAttribute(this.center),
+        zoom: this.zoom || 0,
       }),
     });
 
     this.interactions = {};
-    this.controls = {};
+    this.mapControls = {};
 
     this.setLayers = (json: JSON) => {
       // TODO typing
@@ -125,8 +150,8 @@ export class EOxMap extends HTMLElement {
     };
 
     this.removeControl = (id: string) => {
-      this.map.removeControl(this.controls[id]);
-      delete this.controls[id];
+      this.map.removeControl(this.mapControls[id]);
+      delete this.mapControls[id];
     };
 
     this.getLayerById = (layerId: string) => {
@@ -140,8 +165,4 @@ export class EOxMap extends HTMLElement {
       this.dispatchEvent(loadEvt);
     });
   }
-}
-
-if (!customElements.get("eox-map")) {
-  customElements.define("eox-map", EOxMap);
 }

@@ -5,7 +5,7 @@ import { applyStyle } from "ol-mapbox-style";
 import { FlatStyleLike } from "ol/style/flat";
 import mapboxgl, { AnySourceData } from "mapbox-gl";
 
-type EoxLayer = {
+export type EoxLayer = {
   type: olLayers.Layer;
   id: string;
   properties?: Object;

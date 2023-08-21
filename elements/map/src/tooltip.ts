@@ -1,4 +1,4 @@
-import { html, render } from "lit-html";
+import { html, render } from "lit";
 import { TemplateElement } from "../../../utils/templateElement";
 
 export class EOxMapTooltip extends TemplateElement {

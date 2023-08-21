@@ -21,15 +21,13 @@ type controlDictionary = {
  * adds initial controls from webcomponent attributes, if any are given.
  */
 export function addInitialControls(EOxMap: EOxMap) {
-  const controls = JSON.parse(EOxMap.getAttribute("controls")) as
-    | controlDictionary
-    | Array<controlType>;
+  const controls = EOxMap.controls as controlDictionary | Array<controlType>;
   if (controls) {
     if (Array.isArray(controls)) {
       controls.forEach((controlName) => {
         const control = new olControls[controlName]();
         EOxMap.map.addControl(control);
-        EOxMap.controls[controlName] = control;
+        EOxMap.mapControls[controlName] = control;
       });
     } else {
       const keys = Object.keys(controls);
@@ -43,7 +41,7 @@ export function addInitialControls(EOxMap: EOxMap) {
         }
         const control = new olControls[controlName](controlOptions);
         EOxMap.map.addControl(control);
-        EOxMap.controls[controlName] = control;
+        EOxMap.mapControls[controlName] = control;
       }
     }
   }
