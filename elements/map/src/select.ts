@@ -52,11 +52,25 @@ export async function addSelect(
   const selectLayer = EOxMap.getLayerById(layerId);
   await selectLayer.get("sourcePromise");
 
-  options.layer.renderMode = "vector";
-
   // a layer that only contains the selected features, for displaying purposes only
   // unmanaged by the map
-  const selectStyleLayer = createLayer(options.layer) as
+  let layerDefinition;
+  if (options.layer.style) {
+    layerDefinition = options.layer;
+  } else {
+    const type = selectLayer instanceof VectorLayer ? "Vector" : "VectorTile";
+    // a layer can be defined by only its style property as a shorthand.
+    layerDefinition = {
+      style: options.layer,
+      type,
+      source: {
+        type,
+      },
+    };
+  }
+  layerDefinition.renderMode = "vector";
+
+  const selectStyleLayer = createLayer(layerDefinition) as
     | VectorTileLayer
     | VectorLayer<VectorSource>;
   await selectStyleLayer.get("sourcePromise");
