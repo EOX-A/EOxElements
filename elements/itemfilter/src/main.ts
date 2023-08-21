@@ -398,7 +398,7 @@ export class EOxItemFilter extends TemplateElement {
                                       type="radio"
                                       name="result"
                                       id="${item.id}"
-                                      checked=${this.selectedResult[
+                                      checked=${this.selectedResult?.[
                                         this._config.titleProperty
                                       ] === item[this._config.titleProperty] ||
                                       nothing}
