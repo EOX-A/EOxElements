@@ -55,13 +55,13 @@ export async function addSelect(
   // a layer that only contains the selected features, for displaying purposes only
   // unmanaged by the map
   let layerDefinition;
-  if (options.layer.style) {
+  if (options.layer) {
     layerDefinition = options.layer;
   } else {
     const type = selectLayer instanceof VectorLayer ? "Vector" : "VectorTile";
     // a layer can be defined by only its style property as a shorthand.
     layerDefinition = {
-      style: options.layer,
+      style: options.style,
       type,
       source: {
         type,
