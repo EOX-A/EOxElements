@@ -84,4 +84,18 @@ describe("LayerControl", () => {
         cy.get(".layer").find(".title").contains("bar");
       });
   });
+
+  it("pre-opens a section if layerControlExpanded is present", () => {
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([
+        { visible: true },
+        { layerControlExpanded: true },
+      ]);
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get("details[open]").should("exist");
+      });
+  });
 });
