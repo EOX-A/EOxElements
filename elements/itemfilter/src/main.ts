@@ -225,6 +225,9 @@ export class EOxItemFilter extends TemplateElement {
     this.search();
   };
 
+  @property({ attribute: false })
+  styleOverride: string;
+
   @property({ type: Boolean })
   unstyled: boolean;
 
@@ -281,6 +284,7 @@ export class EOxItemFilter extends TemplateElement {
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
+        ${this.styleOverride}
       </style>
       <form
         id="itemfilter"
@@ -391,11 +395,18 @@ export class EOxItemFilter extends TemplateElement {
                                 aggregationProperty
                               ),
                               (item: Item) => html`
-                                <li>
+                                <li
+                                  class=${this.selectedResult?.[
+                                    this._config.titleProperty
+                                  ] === item[this._config.titleProperty]
+                                    ? "highlighted"
+                                    : nothing}
+                                >
                                   <label>
                                     <input
                                       data-cy="result-radio"
                                       type="radio"
+                                      class="result-radio"
                                       name="result"
                                       id="${item.id}"
                                       checked=${this.selectedResult?.[
