@@ -59,17 +59,8 @@ describe("select interaction on click", () => {
           tooltip: "eox-map-tooltip",
           condition: "click",
           layer: {
-            type: "Vector",
-            properties: {
-              id: "selectLayer",
-            },
-            source: {
-              type: "Vector",
-            },
-            style: {
-              "stroke-color": "white",
-              "stroke-width": 3,
-            },
+            "stroke-color": "white",
+            "stroke-width": 3,
           },
         })
         .then(() => {
