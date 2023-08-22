@@ -186,8 +186,8 @@ export class EOxLayerControl extends LitElement {
                 }}
               />
               <span class="title"
-                >${layer.get(this.layerTitle) ||
-                `${layer.get(this.layerIdentifier)}`}
+                ><span>${layer.get(this.layerTitle) ||
+                `${layer.get(this.layerIdentifier)}`}</span>
               </span>
             </div>
             <div class="right">
