@@ -40,6 +40,12 @@ export class EOxMap extends LitElement {
   zoom: number;
 
   /**
+   * Sync map with another map view by providing its query selector
+   */
+  @property()
+  sync: string;
+
+  /**
    * The native OpenLayers map object.
    * See [https://openlayers.org/en/latest/apidoc/](https://openlayers.org/en/latest/apidoc/)
    */
@@ -143,12 +149,20 @@ export class EOxMap extends LitElement {
     if (this.layers) {
       this.map.setLayers(generateLayers(this.layers));
     }
-    if (this.center) {
-      this.map.getView().setCenter(getCenterFromAttribute(this.center));
+    if (this.sync) {
+      const originMap: EOxMap = document.querySelector(this.sync);
+      if (originMap) {
+        this.map.setView(originMap.map.getView());
+      }
+    } else {
+      if (this.center) {
+        this.map.getView().setCenter(getCenterFromAttribute(this.center));
+      }
+      if (this.zoom) {
+        this.map.getView().setZoom(this.zoom);
+      }
     }
-    if (this.zoom) {
-      this.map.getView().setZoom(this.zoom);
-    }
+
     this.map.setTarget(this.renderRoot.querySelector("div"));
 
     this.map.on("loadend", () => {
