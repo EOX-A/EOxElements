@@ -12,6 +12,7 @@ import Control from "ol/control/Control";
 import { getLayerById } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
+import "./src/compare";
 
 @customElement("eox-map")
 export class EOxMap extends LitElement {
