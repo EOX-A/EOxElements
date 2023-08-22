@@ -172,7 +172,7 @@ export class EOxLayerControl extends LitElement {
     });
 
     const singleLayer = (layer: Layer, groupId: string) => html`
-      <details>
+      <details open="${layer.get("layerControlExpanded") ? true : nothing}">
         <summary>
           <div class="layer">
             <div class="left">
@@ -186,8 +186,8 @@ export class EOxLayerControl extends LitElement {
                 }}
               />
               <span class="title"
-                >${layer.get(this.layerTitle) ||
-                `${layer.get(this.layerIdentifier)}`}
+                ><span>${layer.get(this.layerTitle) ||
+                `${layer.get(this.layerIdentifier)}`}</span>
               </span>
             </div>
             <div class="right">
