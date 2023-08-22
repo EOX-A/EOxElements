@@ -23,6 +23,7 @@ summary > .layer {
 
 [data-type=group] .title {
   font-style: italic;
+  line-height: 1rem;
 }
 
 
