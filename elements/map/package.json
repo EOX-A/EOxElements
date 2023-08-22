@@ -6,7 +6,7 @@
     "lit": "^2.7.4",
     "ol": "^7.4.0",
     "ol-mapbox-style": "^10.6.0",
-    "ol-stac": "^1.0.0-beta.1"
+    "ol-stac": "^1.0.0-beta.3"
   },
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
