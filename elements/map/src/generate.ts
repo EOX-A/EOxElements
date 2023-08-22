@@ -1,7 +1,7 @@
 import * as olLayers from "ol/layer";
 import * as olSources from "ol/source";
 import * as olFormats from "ol/format";
-import STAC from "ol-stac/layer/STAC";
+import STAC from "ol-stac";
 import { applyStyle } from "ol-mapbox-style";
 import { FlatStyleLike } from "ol/style/flat";
 import mapboxgl, { AnySourceData } from "mapbox-gl";
