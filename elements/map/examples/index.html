@@ -12,8 +12,6 @@
     </style>
   </head>
   <body>
-    <p>Basic map</p>
-    <eox-map layers='[{"type":"Tile","source":{"type":"OSM"}}]'></eox-map>
     <p>Basic map with defined zoom and center</p>
     <eox-map
       zoom="7"
@@ -22,10 +20,58 @@
     ></eox-map>
     <p>Map with applied layers</p>
     <eox-map id="applied"></eox-map>
+    <p>Two synchronized maps</p>
+    <div style="display: flex">
+      <eox-map
+        id="a"
+        zoom="3"
+        layers='[{"type":"Tile","source":{"type":"OSM"}}]'
+      ></eox-map>
+      <eox-map
+        sync="eox-map#a"
+        layers='[
+        {
+          "type": "Tile",
+          "source": {
+            "type": "TileWMS",
+            "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+            "params": {
+              "LAYERS": "AWS_VIS_WIND_V_10M"
+            }
+          }
+        }
+      ]'
+      ></eox-map>
+    </div>
+    <p>A/B compare</p>
+    <eox-map-compare style="width: 400px; height: 300px">
+      <eox-map
+        slot="first"
+        id="compare-a"
+        zoom="2"
+        layers='[{"type":"Tile","source":{"type":"OSM"}}]'
+      ></eox-map>
+      <eox-map
+        slot="second"
+        sync="eox-map#compare-a"
+        layers='[
+      {
+        "type": "Tile",
+        "source": {
+          "type": "TileWMS",
+          "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          "params": {
+            "LAYERS": "AWS_VIS_WIND_V_10M"
+          }
+        }
+      }
+    ]'
+      ></eox-map>
+    </eox-map-compare>
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import layers from "./layers.json" assert { type: "json" };
-      document.querySelector("eox-map#applied").setLayers(layers);
+      document.querySelector("eox-map#applied").setLayers([...layers]);
     </script>
   </body>
 </html>
