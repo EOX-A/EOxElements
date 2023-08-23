@@ -11,6 +11,14 @@ export class EOxItemFilterExpandContainer extends LitElement {
   @property()
   unstyled: boolean;
 
+  handleDetailsToggle(event: Event) {
+    this.dispatchEvent(new CustomEvent('details-toggled', {
+      detail: event,
+      bubbles: true,
+      composed: true,
+    }));
+  }
+
   render() {
     return html`
       <style>
@@ -18,6 +26,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         ${!this.unstyled && styleEOX}
       </style>
       <details
+        @toggle="${this.handleDetailsToggle}"
         class="details-filter"
         part="details-filter"
         data-filter="${this.filterObject.key}"
