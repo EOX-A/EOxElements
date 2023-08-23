@@ -71,7 +71,7 @@ eox-itemfilter-expandcontainer > [data-type=filter] {
   height: calc(100% - 32px);
   overflow-y: auto;
 }
-eox-itemfilter-expandcontainer .title,
+[data-type=filter] .title,
 details summary {
   text-transform: capitalize;
 }
