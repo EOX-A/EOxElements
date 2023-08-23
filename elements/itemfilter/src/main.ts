@@ -326,6 +326,7 @@ export class EOxItemFilter extends TemplateElement {
                             <eox-itemfilter-${unsafeStatic(filterObject.type)}
                               slot="filter"
                               data-type="filter"
+                              data-filter="${filterObject.key}"
                               .filterObject=${filterObject}
                               @filter="${() => this.search()}"
                             ></eox-itemfilter-${unsafeStatic(

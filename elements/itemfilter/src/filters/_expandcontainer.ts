@@ -20,7 +20,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
       <details
         class="details-filter"
         part="details-filter"
-        data-filter="${this.filterObject.key}"
         open=${this.filterObject.expanded || nothing}
       >
         <summary>
