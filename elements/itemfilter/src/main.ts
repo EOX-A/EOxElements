@@ -164,6 +164,8 @@ export class EOxItemFilter extends TemplateElement {
               (<SpatialFilterObject>filterKeys).geometry = undefined;
               (<SpatialFilterObject>filterKeys).mode =
                 (<SpatialFilterObject>filterProperty).mode || "intersects";
+            } else {
+              filterKeys[item[filterProperty.key]] = undefined;
             }
           }
         });
