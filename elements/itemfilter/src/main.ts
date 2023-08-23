@@ -81,10 +81,16 @@ export class ElementConfig {
   public titleProperty = "title";
 
   /**
-   * Allow opening multiple `details` accordeons in parallel
+   * Allow opening multiple filter accordeons in parallel
    * @default false
    */
-  public expandMultiple?: boolean = false;
+  public expandMultipleFilters?: boolean = false;
+
+  /**
+   * Allow opening multiple result accordeons in parallel
+   * @default false
+   */
+  public expandMultipleResults?: boolean = false;
 }
 
 @customElement("eox-itemfilter")
@@ -285,21 +291,35 @@ export class EOxItemFilter extends TemplateElement {
     this.search();
   }
 
-  toggleAccordion(event: Event) {
-    const detailsElement = event.target as HTMLDetailsElement;
+  toggleAccordion(event: CustomEvent) {
+    let detailsElement: HTMLDetailsElement;
 
-    // Return early if multiple expansions are allowed or if accordion is being closed.
-    if (!detailsElement.open || this.config.expandMultiple) return;
+    if (event.detail) {
+      detailsElement = event.detail.target as HTMLDetailsElement;
+    } else {
+      detailsElement = event.target as HTMLDetailsElement;
+    }
 
-    // If we reach this point, it means detailsElement is being opened. Grab all `details`
-    // elements and close all other than the current one.
-    this.shadowRoot!
-      .querySelectorAll('details')
-      .forEach(details => {
+    if (detailsElement.classList.contains('details-filter')) {
+      if (!detailsElement.open || this.config.expandMultipleFilters) return;
+
+      this.shadowRoot!.querySelectorAll('eox-itemfilter-expandcontainer').forEach(container => {
+        const details = container.shadowRoot!.querySelector('.details-filter');
+        if (details && details !== detailsElement) {
+            details.removeAttribute('open');
+        }
+      });
+    } else {
+      if (!detailsElement.open || this.config.expandMultipleResults) return;
+
+      this.shadowRoot!
+        .querySelectorAll('details')
+        .forEach(details => {
           if (details !== detailsElement) {
               details.removeAttribute('open');
           }
-      });
+        });
+    }
   }
 
   render() {
@@ -345,6 +365,7 @@ export class EOxItemFilter extends TemplateElement {
                           <eox-itemfilter-expandcontainer
                             .filterObject=${filterObject}
                             .unstyled=${this.unstyled}
+                            @details-toggled=${this.toggleAccordion}
                           >
                             <eox-itemfilter-${unsafeStatic(filterObject.type)}
                               slot="filter"
