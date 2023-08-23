@@ -79,6 +79,12 @@ export class ElementConfig {
    * The property of the result items used for display
    */
   public titleProperty = "title";
+
+  /**
+   * Allow opening multiple `details` accordeons in parallel
+   * @default false
+   */
+  public expandMultiple?: boolean = false;
 }
 
 @customElement("eox-itemfilter")
@@ -279,6 +285,23 @@ export class EOxItemFilter extends TemplateElement {
     this.search();
   }
 
+  toggleAccordion(event: Event) {
+    const detailsElement = event.target as HTMLDetailsElement;
+
+    // Return early if multiple expansions are allowed or if accordion is being closed.
+    if (!detailsElement.open || this.config.expandMultiple) return;
+
+    // If we reach this point, it means detailsElement is being opened. Grab all `details`
+    // elements and close all other than the current one.
+    this.shadowRoot!
+      .querySelectorAll('details')
+      .forEach(details => {
+          if (details !== detailsElement) {
+              details.removeAttribute('open');
+          }
+      });
+  }
+
   render() {
     return html`
       <style>
@@ -382,6 +405,7 @@ export class EOxItemFilter extends TemplateElement {
                         ),
                         (aggregationProperty) => html`<details
                           class="details-results"
+                          @toggle=${this.toggleAccordion}
                           open
                         >
                           <summary>
