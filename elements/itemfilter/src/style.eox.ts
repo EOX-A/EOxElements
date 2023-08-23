@@ -63,6 +63,10 @@ details[open] summary::before {
 details[open] summary::after {
   transform: rotate(270deg);
 }
+eox-itemfilter-expandcontainer {
+  max-height: 200px;
+  overflow: hidden;
+}
 eox-itemfilter-expandcontainer .title,
 details summary {
   text-transform: capitalize;
@@ -111,7 +115,7 @@ section {
 }
 button#filter-reset {
   position: absolute;
-  top: 20px;
+  top: 4px;
   right: 0;
   text-indent: -9999px;
   line-height: 0;
