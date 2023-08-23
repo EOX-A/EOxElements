@@ -65,7 +65,11 @@ details[open] summary::after {
 }
 eox-itemfilter-expandcontainer {
   max-height: 200px;
-  overflow: hidden;
+}
+eox-itemfilter-expandcontainer > [data-type=filter] {
+  display: block;
+  height: calc(100% - 32px);
+  overflow-y: auto;
 }
 eox-itemfilter-expandcontainer .title,
 details summary {
