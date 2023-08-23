@@ -2,6 +2,7 @@ import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
+import { repeat } from "lit/directives/repeat.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 import "toolcool-range-slider";
@@ -397,11 +398,12 @@ export class EOxItemFilter extends TemplateElement {
                             </span>
                           </summary>
                           <ul>
-                            ${map(
+                            ${repeat(
                               this.aggregateResults(
                                 this.results,
                                 aggregationProperty
                               ),
+                              (item: Item) => item.id,
                               (item: Item) => html`
                                 <li
                                   class=${this.selectedResult?.[
