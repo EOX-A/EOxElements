@@ -205,7 +205,7 @@ export class EOxItemFilter extends TemplateElement {
     }
 
     const fuseKeys: Array<string> = [];
-    this._config.filterProperties.forEach((f) => {
+    Object.values(this.filters).forEach((f) => {
       if (f.type === "text") {
         (<TextFilterObject>f).keys.forEach((k) => {
           if (!fuseKeys.includes(k)) {
