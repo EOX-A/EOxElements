@@ -96,12 +96,6 @@ section:not(section:last-of-type) {
   display: flex;
   flex-direction: column;
 }
-#container-results {
-  margin-right: -1rem;
-}
-ul#results {
-  padding-right: 1rem;
-}
 ul li {
   padding-left: 0;
 }

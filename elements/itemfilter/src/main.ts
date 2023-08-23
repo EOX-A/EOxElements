@@ -296,7 +296,12 @@ export class EOxItemFilter extends TemplateElement {
             <section class="${this.config.inlineMode ? "inline" : nothing}">
               ${when(
                 !this.config.inlineMode,
-                () => html` <slot name="filterstitle"><h4>Filters</h4></slot> `
+                () =>
+                  html`
+                    <slot name="filterstitle"
+                      ><h4 style="margin-top: 8px">Filters</h4></slot
+                    >
+                  `
               )}
               <ul id="filters">
                 ${map(
@@ -357,7 +362,9 @@ export class EOxItemFilter extends TemplateElement {
           () => html`
             <section id="section-results">
               <div>
-                <slot name="resultstitle"><h4>Results</h4></slot>
+                <slot name="resultstitle"
+                  ><h4 style="margin-top: 8px">Results</h4></slot
+                >
               </div>
               <div id="container-results" class="scroll">
                 ${this.results.length < 1
