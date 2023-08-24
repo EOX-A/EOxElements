@@ -520,7 +520,6 @@ export class EOxLayerConfig extends LitElement {
     }
     const styleConfig = currentLayer.style_;
     if (styleConfig) {
-      console.log(styleConfig);
       if (styleConfig.color && styleConfig.color[0] === "array") {
         this._configList = styleConfig.variables;
       }
