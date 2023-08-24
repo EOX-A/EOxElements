@@ -80,6 +80,18 @@ export class ElementConfig {
    * The property of the result items used for display
    */
   public titleProperty = "title";
+
+  /**
+   * Allow opening multiple filter accordeons in parallel
+   * @default true
+   */
+  public expandMultipleFilters?: boolean = true;
+
+  /**
+   * Allow opening multiple result accordeons in parallel
+   * @default true
+   */
+  public expandMultipleResults?: boolean = true;
 }
 
 @customElement("eox-itemfilter")
@@ -282,6 +294,37 @@ export class EOxItemFilter extends TemplateElement {
     this.search();
   }
 
+  toggleAccordion(event: CustomEvent) {
+    let detailsElement: HTMLDetailsElement;
+
+    if (event.detail) {
+      detailsElement = event.detail.target as HTMLDetailsElement;
+    } else {
+      detailsElement = event.target as HTMLDetailsElement;
+    }
+
+    if (detailsElement.classList.contains('details-filter')) {
+      if (!detailsElement.open || this.config.expandMultipleFilters) return;
+
+      this.shadowRoot!.querySelectorAll('eox-itemfilter-expandcontainer').forEach(container => {
+        const details = container.shadowRoot!.querySelector('.details-filter');
+        if (details && details !== detailsElement) {
+            details.removeAttribute('open');
+        }
+      });
+    } else {
+      if (!detailsElement.open || this.config.expandMultipleResults) return;
+
+      this.shadowRoot!
+        .querySelectorAll('details')
+        .forEach(details => {
+          if (details !== detailsElement) {
+              details.removeAttribute('open');
+          }
+        });
+    }
+  }
+
   render() {
     return html`
       <style>
@@ -325,6 +368,7 @@ export class EOxItemFilter extends TemplateElement {
                           <eox-itemfilter-expandcontainer
                             .filterObject=${filterObject}
                             .unstyled=${this.unstyled}
+                            @details-toggled=${this.toggleAccordion}
                           >
                             <eox-itemfilter-${unsafeStatic(filterObject.type)}
                               slot="filter"
@@ -386,6 +430,7 @@ export class EOxItemFilter extends TemplateElement {
                         ),
                         (aggregationProperty) => html`<details
                           class="details-results"
+                          @toggle=${this.toggleAccordion}
                           open
                         >
                           <summary>
