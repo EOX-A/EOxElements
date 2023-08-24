@@ -17,7 +17,9 @@ const mockLayer = (layerId: number) =>
     layerControlHide: undefined,
     layerControlOptional: undefined,
     opacity: 1,
-    set: () => {},
+    set(): void {
+      return undefined;
+    },
     setVisible(visible: boolean) {
       this.visible = visible;
     },
@@ -36,7 +38,7 @@ export class MockMap extends HTMLElement {
     }),
     getLayers: () => ({
       getArray: () => this.layers,
-      on: (event: string, fun: Function) => (this.events[event] = fun),
+      on: (event: string, fun: () => void) => (this.events[event] = fun),
     }),
   };
   setLayers = (layers: Array<any>) => {
