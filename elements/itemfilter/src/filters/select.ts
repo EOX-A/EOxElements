@@ -34,11 +34,13 @@ export class EOxItemFilterSelect extends LitElement {
             a.localeCompare(b)
           ),
           (key) => html`
-            <li>
+            <li class=${this.filterObject.state[key] ? "highlighted" : nothing}>
               <label>
                 <input
                   name="selection"
                   type="radio"
+                  class="select-radio"
+                  id=${key}
                   checked="${this.filterObject.state[key] || nothing}"
                   @click=${() => {
                     for (const el in this.filterObject.state) {
@@ -46,6 +48,7 @@ export class EOxItemFilterSelect extends LitElement {
                     }
                     this.filterObject.dirty = true;
                     this.dispatchEvent(new CustomEvent("filter"));
+                    this.requestUpdate();
                   }}
                 />
                 <span class="title">${key}</span>

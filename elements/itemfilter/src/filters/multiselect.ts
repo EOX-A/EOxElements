@@ -34,17 +34,21 @@ export class EOxItemFilterMultiselect extends LitElement {
             a.localeCompare(b)
           ),
           (key) => html`
-            <li>
+            <li class=${this.filterObject.state[key] ? "highlighted" : nothing}>
               <label>
                 <input
+                  data-cy="multiselect-checkbox"
                   name="selection"
                   type="checkbox"
+                  class="multiselect-checkbox"
+                  id=${key}
                   checked="${this.filterObject.state[key] || nothing}"
                   @click=${() => {
                     this.filterObject.state[key] =
                       !this.filterObject.state[key];
                     this.filterObject.dirty = true;
                     this.dispatchEvent(new CustomEvent("filter"));
+                    this.requestUpdate();
                   }}
                 />
                 <span class="title">${key}</span>
