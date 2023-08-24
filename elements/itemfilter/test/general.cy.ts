@@ -140,8 +140,8 @@ describe("Item Filter Config", () => {
 
   it('should allow only one accordion of each type to be open at a time if configured', () => {
     cy.get("eox-itemfilter").then(($el) => {
-      $el[0].config.expandMultipleFilters = false;
-      $el[0].config.expandMultipleResults = false;
+      (<EOxItemFilter>$el[0]).config.expandMultipleFilters = false;
+      (<EOxItemFilter>$el[0]).config.expandMultipleResults = false;
     });
 
     const checkExclusiveOpen = (selector: string, isSubcomponent = false) => {
