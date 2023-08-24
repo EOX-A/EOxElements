@@ -82,15 +82,15 @@ export class ElementConfig {
 
   /**
    * Allow opening multiple filter accordeons in parallel
-   * @default false
+   * @default true
    */
-  public expandMultipleFilters?: boolean = false;
+  public expandMultipleFilters?: boolean = true;
 
   /**
    * Allow opening multiple result accordeons in parallel
-   * @default false
+   * @default true
    */
-  public expandMultipleResults?: boolean = false;
+  public expandMultipleResults?: boolean = true;
 }
 
 @customElement("eox-itemfilter")
