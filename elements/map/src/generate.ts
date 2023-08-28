@@ -50,8 +50,9 @@ const availableSources = {
 
 export type EoxLayer = {
   type: layerType;
-  id?: string;
-  properties?: object;
+  properties: object & {
+    id: string
+  };
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: mapboxgl.Style | FlatStyleLike;
@@ -84,7 +85,7 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     }),
     style: undefined, // override layer style, apply style after
     ...(layer.type === "Group" && {
-      layers: layer.layers.reverse().map((l) => createLayer(l, layer.id)),
+      layers: layer.layers.reverse().map((l) => createLayer(l, layer.properties.id)),
     }),
   });
 
