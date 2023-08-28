@@ -21,6 +21,11 @@ summary > .layer {
   padding-top: 0px;
 }
 
+ul[data-group] {
+  max-height: 220px;
+  overflow-y: scroll;
+}
+
 [data-type=group] .title {
   display: flex;
   align-items: flex-start;
