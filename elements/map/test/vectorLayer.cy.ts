@@ -20,7 +20,9 @@ describe("layers", () => {
     cy.get("eox-map").and(($el) => {
       return new Cypress.Promise((resolve) => {
         const eoxMap = <EOxMap>$el[0];
-        const layer = eoxMap.getLayerById("regions") as import('ol/layer').Vector<import('ol/source').Vector>;
+        const layer = eoxMap.getLayerById(
+          "regions"
+        ) as import("ol/layer").Vector<import("ol/source").Vector>;
 
         // wait for features to load
         layer.getSource().on("featuresloadend", () => {
@@ -47,7 +49,9 @@ describe("layers", () => {
       return new Cypress.Promise((resolve) => {
         // wait for features to load
         const eoxMap = <EOxMap>$el[0];
-        const layer = eoxMap.getLayerById("regions") as import('ol/layer').Vector<import('ol/source').Vector>;
+        const layer = eoxMap.getLayerById(
+          "regions"
+        ) as import("ol/layer").Vector<import("ol/source").Vector>;
         layer.getSource().on("featuresloadend", () => {
           const feature = layer.getSource().getFeatures()[0];
           const styles = layer.getStyleFunction()(feature, 100);

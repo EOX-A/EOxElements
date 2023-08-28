@@ -11,14 +11,17 @@ import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
 import { MapboxLayer } from "./types";
 
-export type SelectOptions = Omit<import('ol/interaction/Select').Options, 'condition'> & { 
+export type SelectOptions = Omit<
+  import("ol/interaction/Select").Options,
+  "condition"
+> & {
   id: string | number;
   idProperty?: string;
-  condition: 'click' | 'pointermove',
-  layer?: EoxLayer | MapboxLayer,
+  condition: "click" | "pointermove";
+  layer?: EoxLayer | MapboxLayer;
   style?: import("ol/style/flat.js").FlatStyleLike;
   tooltip?: string;
-}
+};
 
 export async function addSelect(
   EOxMap: EOxMap,
@@ -73,11 +76,11 @@ export async function addSelect(
     layerDefinition = {
       style: options.style,
       type,
-      id: 'asd',
+      id: "asd",
       source: {
         type,
       },
-    }  as EoxLayer;
+    } as EoxLayer;
   }
   //@ts-ignore
   layerDefinition.renderMode = "vector";
@@ -85,8 +88,8 @@ export async function addSelect(
   const selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
     | VectorTileLayer
     | VectorLayer<VectorSource>;
-    await selectStyleLayer.get("sourcePromise");
-    //@ts-ignore
+  await selectStyleLayer.get("sourcePromise");
+  //@ts-ignore
   selectStyleLayer.setSource(selectLayer.getSource());
   selectStyleLayer.setMap(map);
 

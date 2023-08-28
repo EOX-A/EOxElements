@@ -11,19 +11,48 @@ const availableLayers = {
   STAC,
 };
 
-export type layerType = 'Group' | 'Heatmap' | 'Image' | 'Layer' | 'Tile' | 'Vector' | 'VectorImage' | 'VectorTile';
-export type sourceType = 'BingMaps' | 'Cluster' | 'GeoTIFF' | 'IIIF' | 'Image' | 'ImageCanvas' | 'ImageStatic' | 'ImageWMS' | 'OSM'  | 'Raster'  | 'StadiaMaps'  | 'Tile'  | 'TileArcGISRest' | 'TileDebug' | 'TileImage' | 'TileJSON' | 'TileWMS' | 'UrlTile' | 'Vector' | 'VectorTile' | 'WMTS' | 'XYZ';
+export type layerType =
+  | "Group"
+  | "Heatmap"
+  | "Image"
+  | "Layer"
+  | "Tile"
+  | "Vector"
+  | "VectorImage"
+  | "VectorTile";
+export type sourceType =
+  | "BingMaps"
+  | "Cluster"
+  | "GeoTIFF"
+  | "IIIF"
+  | "Image"
+  | "ImageCanvas"
+  | "ImageStatic"
+  | "ImageWMS"
+  | "OSM"
+  | "Raster"
+  | "StadiaMaps"
+  | "Tile"
+  | "TileArcGISRest"
+  | "TileDebug"
+  | "TileImage"
+  | "TileJSON"
+  | "TileWMS"
+  | "UrlTile"
+  | "Vector"
+  | "VectorTile"
+  | "WMTS"
+  | "XYZ";
 
 const availableSources = {
   ...olSources,
 };
 
-
 export type EoxLayer = {
   type: layerType;
   id?: string;
   properties?: object;
-  source?: { type: sourceType};
+  source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: mapboxgl.Style | FlatStyleLike;
 };

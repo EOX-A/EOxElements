@@ -9,7 +9,9 @@ import Layer from "ol/layer/Layer";
  * @returns Layer
  */
 export function getLayerById(EOxMap: EOxMap, layerId: string) {
-  const flatLayers = getFlatLayersArray(EOxMap.map.getLayers().getArray() as Array<Layer>);
+  const flatLayers = getFlatLayersArray(
+    EOxMap.map.getLayers().getArray() as Array<Layer>
+  );
   // get mapbox-style layer or manually generated ol layer, both group or regular layers
 
   const layer =
