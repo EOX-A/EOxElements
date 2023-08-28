@@ -74,6 +74,7 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     ...layer,
     group,
     ...(layer.source && {
+      //@ts-ignore
       source: new newSource({
         ...layer.source,
         // @ts-ignore

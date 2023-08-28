@@ -6,11 +6,15 @@ describe("layers", () => {
       `<eox-map layers='[
         {
           "type": "Group",
-          "id": "group",
+          "properties": {
+            "id": "group"
+          },
           "layers": [
             {
               "type": "Vector",
-              "id": "regions",
+              "properties": {
+                "id": "regions"
+              },
               "source": {
                 "type": "Vector",
                 "url": "https://openlayers.org/data/vector/ecoregions.json",
@@ -19,11 +23,15 @@ describe("layers", () => {
             },
             {
               "type": "Group",
-              "id": "groupLayerInsideGroup",
+              "properties": {
+                "id": "groupLayerInsideGroup"
+              },
               "layers": [
                 {
                   "type": "Tile",
-                  "id": "layerInsideGroupInsideGroup",
+                  "properties": {
+                    "id": "layerInsideGroupInsideGroup"
+                  },
                   "source": {
                     "type": "OSM"
                   }
