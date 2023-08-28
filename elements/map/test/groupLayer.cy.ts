@@ -9,6 +9,15 @@ describe("layers", () => {
           "id": "group",
           "layers": [
             {
+              "type": "Vector",
+              "id": "regions",
+              "source": {
+                "type": "Vector",
+                "url": "https://openlayers.org/data/vector/ecoregions.json",
+                "format": "GeoJSON"
+              }
+            },
+            {
               "type": "Group",
               "id": "groupLayerInsideGroup",
               "layers": [
@@ -20,15 +29,6 @@ describe("layers", () => {
                   }
                 }
               ]
-            },
-            {
-              "type": "Vector",
-              "id": "regions",
-              "source": {
-                "type": "Vector",
-                "url": "https://openlayers.org/data/vector/ecoregions.json",
-                "format": "GeoJSON"
-              }
             }
           ]
         }

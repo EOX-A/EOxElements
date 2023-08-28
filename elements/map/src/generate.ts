@@ -84,7 +84,7 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     }),
     style: undefined, // override layer style, apply style after
     ...(layer.type === "Group" && {
-      layers: layer.layers.map((l) => createLayer(l, layer.id)),
+      layers: layer.layers.reverse().map((l) => createLayer(l, layer.id)),
     }),
   });
 
