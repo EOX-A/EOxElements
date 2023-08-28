@@ -51,7 +51,7 @@ const availableSources = {
 export type EoxLayer = {
   type: layerType;
   properties: object & {
-    id: string
+    id: string;
   };
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
@@ -85,7 +85,9 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     }),
     style: undefined, // override layer style, apply style after
     ...(layer.type === "Group" && {
-      layers: layer.layers.reverse().map((l) => createLayer(l, layer.properties.id)),
+      layers: layer.layers
+        .reverse()
+        .map((l) => createLayer(l, layer.properties.id)),
     }),
   });
 

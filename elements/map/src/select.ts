@@ -77,7 +77,7 @@ export async function addSelect(
       style: options.style,
       type,
       properties: {
-        id: layerId + '_select'
+        id: layerId + "_select",
       },
       source: {
         type,
