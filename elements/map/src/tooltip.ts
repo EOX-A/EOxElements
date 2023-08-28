@@ -2,7 +2,7 @@ import { html, render } from "lit";
 import { TemplateElement } from "../../../utils/templateElement";
 
 export class EOxMapTooltip extends TemplateElement {
-  renderContent(content: Object) {
+  renderContent(content: object) {
     render(
       this.hasTemplate("properties")
         ? html`${this.renderTemplate(

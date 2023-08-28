@@ -11,23 +11,26 @@ const availableLayers = {
   STAC,
 };
 
+export type layerType = 'Group' | 'Heatmap' | 'Image' | 'Layer' | 'Tile' | 'Vector' | 'VectorImage' | 'VectorTile';
+export type sourceType = 'BingMaps' | 'Cluster' | 'GeoTIFF' | 'IIIF' | 'Image' | 'ImageCanvas' | 'ImageStatic' | 'ImageWMS' | 'OSM'  | 'Raster'  | 'StadiaMaps'  | 'Tile'  | 'TileArcGISRest' | 'TileDebug' | 'TileImage' | 'TileJSON' | 'TileWMS' | 'UrlTile' | 'Vector' | 'VectorTile' | 'WMTS' | 'XYZ';
+
 const availableSources = {
   ...olSources,
 };
 
+
 export type EoxLayer = {
-  type: olLayers.Layer;
-  id: string;
-  properties?: Object;
-  source?: { type: olSources.Source };
+  type: layerType;
+  id?: string;
+  properties?: object;
+  source?: { type: sourceType};
   layers?: Array<EoxLayer>;
   style?: mapboxgl.Style | FlatStyleLike;
 };
 
 export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
-  // @ts-ignore
   const newLayer = availableLayers[layer.type];
-  // @ts-ignore
+  //@ts-ignore
   const newSource = availableSources[layer.source?.type];
   if (!newLayer) {
     throw new Error(`Layer type ${layer.type} not supported!`);
@@ -36,6 +39,7 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     throw new Error(`Source type ${layer.source.type} not supported!`);
   }
 
+  //@ts-ignore
   const olLayer = new newLayer({
     ...layer,
     group,
@@ -50,9 +54,8 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
       }),
     }),
     style: undefined, // override layer style, apply style after
-    // @ts-ignore
     ...(layer.type === "Group" && {
-      layers: layer.layers.reverse().map((l) => createLayer(l, layer.id)),
+      layers: layer.layers.map((l) => createLayer(l, layer.id)),
     }),
   });
 
@@ -69,7 +72,6 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
       const sourceName = layer.properties.id;
       if (!mapboxStyle.sources[sourceName]) {
         const dummy =
-          //@ts-ignore
           layer.source.type === "VectorTile"
             ? {
                 type: "vector",

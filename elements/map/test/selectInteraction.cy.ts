@@ -58,6 +58,7 @@ describe("select interaction on click", () => {
           id: "selectInteraction",
           tooltip: "eox-map-tooltip",
           condition: "click",
+          //@ts-ignore
           style: {
             "stroke-color": "white",
             "stroke-width": 3,

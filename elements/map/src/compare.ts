@@ -7,7 +7,7 @@ type HTMLElementEvent<T extends HTMLElement> = Event & {
 };
 export class EOxMapCompare extends TemplateElement {
   @property()
-  value: number = 50;
+  value = 50;
 
   render() {
     return html`

@@ -2,18 +2,28 @@ import { EOxMap } from "../main";
 import { Overlay } from "ol";
 import "./tooltip";
 import { EOxMapTooltip } from "./tooltip";
-import { createLayer } from "./generate";
+import { EoxLayer, createLayer } from "./generate";
 import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";
 import VectorTileLayer from "ol/layer/VectorTile.js";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
+import { MapboxLayer } from "./types";
+
+export type SelectOptions = Omit<import('ol/interaction/Select').Options, 'condition'> & { 
+  id: string | number;
+  idProperty?: string;
+  condition: 'click' | 'pointermove',
+  layer?: EoxLayer | MapboxLayer,
+  style?: import("ol/style/flat.js").FlatStyleLike;
+  tooltip?: string;
+}
 
 export async function addSelect(
   EOxMap: EOxMap,
   layerId: string,
-  options: any
+  options: SelectOptions
 ): Promise<void> {
   if (EOxMap.interactions[options.id]) {
     throw Error(`Interaction with id: ${options.id} already exists.`);
@@ -63,17 +73,20 @@ export async function addSelect(
     layerDefinition = {
       style: options.style,
       type,
+      id: 'asd',
       source: {
         type,
       },
-    };
+    }  as EoxLayer;
   }
+  //@ts-ignore
   layerDefinition.renderMode = "vector";
 
-  const selectStyleLayer = createLayer(layerDefinition) as
+  const selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
     | VectorTileLayer
     | VectorLayer<VectorSource>;
-  await selectStyleLayer.get("sourcePromise");
+    await selectStyleLayer.get("sourcePromise");
+    //@ts-ignore
   selectStyleLayer.setSource(selectLayer.getSource());
   selectStyleLayer.setMap(map);
 
@@ -132,6 +145,7 @@ export async function addSelect(
   });
 
   selectLayer.on("change:source", () => {
+    //@ts-ignore
     selectStyleLayer.setSource(selectLayer.getSource());
   });
 
