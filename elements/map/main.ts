@@ -9,7 +9,7 @@ import { addSelect } from "./src/select";
 import { generateLayers, EoxLayer } from "./src/generate";
 import Interaction from "ol/interaction/Interaction";
 import Control from "ol/control/Control";
-import { getLayerById } from "./src/layer";
+import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
 import "./src/compare";
@@ -123,6 +123,8 @@ export class EOxMap extends LitElement {
   getLayerById: Function = (layerId: string) => {
     return getLayerById(this, layerId);
   };
+
+  getFlatLayersArray = getFlatLayersArray;
 
   render() {
     const shadowStyleFix = `
