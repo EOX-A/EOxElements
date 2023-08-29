@@ -22,7 +22,7 @@ summary > .layer {
 }
 
 ul[data-group] {
-  max-height: 220px;
+  max-height: 30vh;
   overflow-y: scroll;
 }
 
