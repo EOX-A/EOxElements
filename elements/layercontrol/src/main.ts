@@ -252,7 +252,7 @@ export class EOxLayerControl extends LitElement {
       layers: Array<BaseLayer>,
       group?: string
     ): TemplateResult => html`
-      <ul data-group="${group ?? nothing}">
+      <ul data-group="${group ?? nothing}" style="max-height: ${(document.querySelector('eox-layercontrol') as HTMLElement).offsetHeight * 0.3}">
         ${repeat(
           layers,
           (layer) => layer.get(this.layerIdentifier),
