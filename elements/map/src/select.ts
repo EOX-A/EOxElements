@@ -112,6 +112,7 @@ export async function addSelect(
 
         const selectdEvt = new CustomEvent("select", {
           detail: {
+            id: options.id,
             originalEvent: event,
             feature: feature,
           },
