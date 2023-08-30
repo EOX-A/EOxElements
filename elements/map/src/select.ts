@@ -99,7 +99,9 @@ export async function addSelect(
 
         if (overlay) {
           overlay.setPosition(feature ? event.coordinate : null);
-          tooltip.renderContent(feature.getProperties());
+          if (feature) {
+            tooltip.renderContent(feature.getProperties());
+          }
         }
 
         const selectdEvt = new CustomEvent("select", {
