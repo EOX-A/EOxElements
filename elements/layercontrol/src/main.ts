@@ -69,6 +69,12 @@ export class EOxLayerControl extends LitElement {
   @property({ type: Boolean })
   unstyled: boolean;
 
+  @property({ type: ResizeObserver })
+  resizeObserver: ResizeObserver;
+
+  @property({ type: Number })
+  containerHeight: number;
+
   private _updateControl(layerCollection: Collection<BaseLayer>) {
     // initially check if all layers have an id and title,
     // fill in some backup in case they haven't
@@ -157,6 +163,28 @@ export class EOxLayerControl extends LitElement {
       });
     }
     this.requestUpdate();
+  }
+
+  // Set up Resize Observer
+  firstUpdated() {
+    this.resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        if (entry.target === this) { // Ensure we're observing the correct element
+          this.containerHeight = entry.contentRect.height;
+          console.log(this.containerHeight);
+        }
+      }
+    });
+    this.resizeObserver.observe(this);
+  }
+
+  // Deinitialize Resize Observer
+  disconnectedCallback() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+    super.disconnectedCallback();
   }
 
   render() {
@@ -252,7 +280,10 @@ export class EOxLayerControl extends LitElement {
       layers: Array<BaseLayer>,
       group?: string
     ): TemplateResult => html`
-      <ul data-group="${group ?? nothing}" style="max-height: ${(document.querySelector('eox-layercontrol') as HTMLElement).offsetHeight * 0.3}">
+      <ul
+        data-group="${group ?? nothing}"
+        style="${group == 'group2' ? `max-height: ${this.containerHeight * 0.3}px` : '' }"
+      >
         ${repeat(
           layers,
           (layer) => layer.get(this.layerIdentifier),
