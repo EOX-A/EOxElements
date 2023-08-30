@@ -22,8 +22,7 @@ summary > .layer {
 }
 
 ul[data-group] {
-  max-height: 30%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 [data-type=group] .title {
