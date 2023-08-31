@@ -64,7 +64,7 @@ describe("layers", () => {
   it("correctly applies style expression", () => {
     vectorLayerStyleJson[0].style = {
       // @ts-ignore
-      "fill-color": ['string', ['get', 'COLOR'], '#eee'],
+      "fill-color": ["string", ["get", "COLOR"], "#eee"],
       "stroke-color": "black",
       "stroke-width": 2,
     };
