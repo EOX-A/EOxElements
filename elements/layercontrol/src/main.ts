@@ -48,9 +48,6 @@ export class EOxLayerControl extends LitElement {
   @state()
   resizeObserver: ResizeObserver;
 
-  @state()
-  containerHeight: number;
-
   /**
    * The query selector for the map
    */
@@ -167,10 +164,15 @@ export class EOxLayerControl extends LitElement {
 
   // Set up Resize Observer
   firstUpdated() {
-    this.resizeObserver = new ResizeObserver(entries => {
+    this.resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
-        if (entry.target === this) { // Ensure we're observing the correct element
-          this.containerHeight = entry.contentRect.height;
+        // Ensure we're observing the correct element
+        if (entry.target === this) {
+          this.style.setProperty(
+            "--container-height",
+            `${entry.contentRect.height}px`
+          );
+          this.requestUpdate();
         }
       }
     });
@@ -279,13 +281,7 @@ export class EOxLayerControl extends LitElement {
       layers: Array<BaseLayer>,
       group?: string
     ): TemplateResult => html`
-      <ul
-        data-group="${group ?? nothing}"
-        style="${!!group && !this.unstyled
-          ? `max-height: ${this.containerHeight * 0.3}px`
-          : ''
-        }"
-      >
+      <ul data-group="${group ?? nothing}">
         ${repeat(
           layers,
           (layer) => layer.get(this.layerIdentifier),
