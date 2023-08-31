@@ -21,6 +21,11 @@ summary > .layer {
   padding-top: 0px;
 }
 
+ul[data-group] {
+  overflow-y: auto;
+  max-height: calc(var(--container-height) * 0.3);
+}
+
 [data-type=group] .title {
   display: flex;
   align-items: flex-start;
