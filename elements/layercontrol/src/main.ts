@@ -171,7 +171,6 @@ export class EOxLayerControl extends LitElement {
       for (let entry of entries) {
         if (entry.target === this) { // Ensure we're observing the correct element
           this.containerHeight = entry.contentRect.height;
-          console.log(this.containerHeight);
         }
       }
     });
