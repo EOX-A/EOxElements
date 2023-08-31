@@ -29,8 +29,8 @@ export async function addSelect(
   if (tooltip) {
     overlay = new Overlay({
       position: undefined,
-      offset: [0, -30],
-      positioning: "top-center",
+      offset: [0, 0],
+      positioning: "top-left",
       className: "eox-map-tooltip",
       ...options.overlay,
       element: EOxMap.querySelector(options.overlay.element),

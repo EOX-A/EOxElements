@@ -11,11 +11,25 @@ export class EOxMapTooltip extends TemplateElement {
             // `tooltip-${this.content.id}`
             "tooltip-1"
           )}`
-        : html`<ul>
-            ${Object.entries(content).map(
-              ([key, value]) => html`<li>${key}: ${value}</li>`
-            )}
-          </ul>`,
+        : html` <style>
+              ul {
+                margin: 0;
+                padding: 15px 5px 15px 30px;
+                background: #0008;
+                border-radius: 15px;
+                color: white;
+                max-width: 50%;
+                font-size: small;
+              }
+              span {
+                font-weight: bold;
+              }
+            </style>
+            <ul>
+              ${Object.entries(content).map(
+                ([key, value]) => html`<li><span>${key}</span>: ${value}</li>`
+              )}
+            </ul>`,
       this.shadowRoot
     );
   }
