@@ -45,6 +45,9 @@ export class EOxLayerControl extends LitElement {
   @state()
   optionalLayerArray: Array<BaseLayer>;
 
+  @state()
+  resizeObserver: ResizeObserver;
+
   /**
    * The query selector for the map
    */
@@ -157,6 +160,32 @@ export class EOxLayerControl extends LitElement {
       });
     }
     this.requestUpdate();
+  }
+
+  // Set up Resize Observer
+  firstUpdated() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        // Ensure we're observing the correct element
+        if (entry.target === this) {
+          this.style.setProperty(
+            "--container-height",
+            `${entry.contentRect.height}px`
+          );
+          this.requestUpdate();
+        }
+      }
+    });
+    this.resizeObserver.observe(this);
+  }
+
+  // Deinitialize Resize Observer
+  disconnectedCallback() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+    super.disconnectedCallback();
   }
 
   render() {
