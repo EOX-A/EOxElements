@@ -282,7 +282,10 @@ export class EOxLayerControl extends LitElement {
     ): TemplateResult => html`
       <ul
         data-group="${group ?? nothing}"
-        style="${group == 'group2' ? `max-height: ${this.containerHeight * 0.3}px` : '' }"
+        style="${group == 'group2' && !this.unstyled
+          ? `max-height: ${this.containerHeight * 0.3}px`
+          : ''
+        }"
       >
         ${repeat(
           layers,
