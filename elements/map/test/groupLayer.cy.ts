@@ -6,29 +6,37 @@ describe("layers", () => {
       `<eox-map layers='[
         {
           "type": "Group",
-          "id": "group",
+          "properties": {
+            "id": "group"
+          },
           "layers": [
             {
-              "type": "Group",
-              "id": "groupLayerInsideGroup",
-              "layers": [
-                {
-                  "type": "Tile",
-                  "id": "layerInsideGroupInsideGroup",
-                  "source": {
-                    "type": "OSM"
-                  }
-                }
-              ]
-            },
-            {
               "type": "Vector",
-              "id": "regions",
+              "properties": {
+                "id": "regions"
+              },
               "source": {
                 "type": "Vector",
                 "url": "https://openlayers.org/data/vector/ecoregions.json",
                 "format": "GeoJSON"
               }
+            },
+            {
+              "type": "Group",
+              "properties": {
+                "id": "groupLayerInsideGroup"
+              },
+              "layers": [
+                {
+                  "type": "Tile",
+                  "properties": {
+                    "id": "layerInsideGroupInsideGroup"
+                  },
+                  "source": {
+                    "type": "OSM"
+                  }
+                }
+              ]
             }
           ]
         }
@@ -55,6 +63,14 @@ describe("layers", () => {
         layerInsideGroupInsideGroup,
         "find layer inside group inside group"
       ).to.exist;
+
+      const parentParentGroup = layerInsideGroupInsideGroup
+        .get("_group")
+        .get("_group");
+      expect(
+        parentParentGroup.get("id"),
+        "correctly sets reference to parent layers"
+      ).to.be.equal("group");
     });
   });
 });

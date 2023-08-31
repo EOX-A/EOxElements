@@ -1,6 +1,6 @@
 import { EOxMap } from "../main";
 import Group from "ol/layer/Group";
-import Layer from "ol/layer/Base";
+import Layer from "ol/layer/Layer";
 
 /**
  *
@@ -9,7 +9,9 @@ import Layer from "ol/layer/Base";
  * @returns Layer
  */
 export function getLayerById(EOxMap: EOxMap, layerId: string) {
-  const flatLayers = getFlatLayersArray(EOxMap.map.getLayers().getArray());
+  const flatLayers = getFlatLayersArray(
+    EOxMap.map.getLayers().getArray() as Array<Layer>
+  );
   // get mapbox-style layer or manually generated ol layer, both group or regular layers
 
   const layer =
@@ -29,7 +31,7 @@ export function getFlatLayersArray(layers: Array<Layer>) {
 
   let groupLayers = flatLayers.filter(
     (l) => l instanceof Group
-  ) as Array<Group>;
+  ) as unknown as Array<Group>;
 
   while (groupLayers.length) {
     const newGroupLayers = [];
@@ -42,5 +44,5 @@ export function getFlatLayersArray(layers: Array<Layer>) {
     }
     groupLayers = newGroupLayers;
   }
-  return flatLayers;
+  return flatLayers as Array<Layer>;
 }
