@@ -4,10 +4,11 @@ import { TemplateElement } from "../../../utils/templateElement";
 
 export class EOxMapTooltip extends TemplateElement {
   /**
-   * Override the default rendering of feature property key/value
+   * Transform the default rendering of each feature property key/value.
+   * Useful for e.g. translating keys or introducing a whitelist.
    */
   @property()
-  renderProperty: Function = (property: [key: string, value: any]) => property;
+  propertyTransform: Function = (property: [key: string, value: any]) => property;
 
   renderContent(content: Object) {
     render(
@@ -34,7 +35,7 @@ export class EOxMapTooltip extends TemplateElement {
             </style>
             <ul>
               ${Object.entries(content)
-                .map(([key, value]) => this.renderProperty([key, value]))
+                .map(([key, value]) => this.propertyTransform([key, value]))
                 .filter((v) => v)
                 .map(
                   ([key, value]) => html`<li><span>${key}</span>: ${value}</li>`
