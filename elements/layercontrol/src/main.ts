@@ -210,7 +210,11 @@ export class EOxLayerControl extends LitElement {
       }
     });
 
-    const singleLayer = (layer: Layer, groupId: string) => html`
+    const singleLayer = (
+      layer: Layer,
+      groupId: string,
+      collection: Collection<BaseLayer>
+    ) => html`
       <details open="${layer.get("layerControlExpanded") ? true : nothing}">
         <summary>
           <div class="layer">
@@ -252,6 +256,13 @@ export class EOxLayerControl extends LitElement {
                 .layer=${layer}
                 .external=${this.externalLayerConfig}
                 .unstyled="${this.unstyled}"
+                @removeLayer=${() => {
+                  collection.remove(layer);
+                  const listitem = this.renderRoot.querySelector(
+                    `[data-layer='${layer.get(this.layerIdentifier)}'`
+                  );
+                  listitem.parentNode.removeChild(listitem);
+                }}
               ></eox-layerconfig>
             `
           : nothing}
@@ -270,7 +281,8 @@ export class EOxLayerControl extends LitElement {
                     ...(<LayerGroup>(<unknown>layer)).getLayers().getArray(),
                   ].reverse()
                 ),
-                layer.get(this.layerIdentifier)
+                layer.get(this.layerIdentifier),
+                (<LayerGroup>(<unknown>layer)).getLayers()
               )}
             `
           : nothing}
@@ -279,7 +291,8 @@ export class EOxLayerControl extends LitElement {
 
     const listItems = (
       layers: Array<BaseLayer>,
-      group?: string
+      group?: string,
+      collection?: Collection<BaseLayer>
     ): TemplateResult => html`
       <ul data-group="${group ?? nothing}">
         ${repeat(
@@ -292,7 +305,7 @@ export class EOxLayerControl extends LitElement {
               data-type="${this.getLayerType(layer as Layer, this.olMap)}"
               data-layerconfig="${this.layerConfig?.length > 0}"
             >
-              ${singleLayer(layer as Layer, group)}
+              ${singleLayer(layer as Layer, group, collection)}
             </li>
           `
         )}
@@ -311,7 +324,9 @@ export class EOxLayerControl extends LitElement {
           : nothing}
         <div class="layers">
           ${listItems(
-            this.preFilterLayers(collection.getArray() as Array<BaseLayer>)
+            this.preFilterLayers(collection.getArray() as Array<BaseLayer>),
+            null,
+            this.layerCollection
           )}
         </div>
         ${when(
@@ -394,6 +409,9 @@ export class EOxLayerControl extends LitElement {
                   this.layerCollection.getArray(),
                   inGroup
                 );
+                if (!group) {
+                  return undefined;
+                }
                 const groupCollection = (<LayerGroup>group).getLayers();
                 return [
                   ...groupCollection
@@ -586,6 +604,12 @@ export class EOxLayerConfig extends LitElement {
         () => html`
           <div>
             <slot></slot>
+            <button
+              @click="${() =>
+                this.dispatchEvent(new CustomEvent("removeLayer"))}"
+            >
+              delete
+            </button>
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
               : nothing}
