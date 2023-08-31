@@ -1,7 +1,14 @@
 import { html, render } from "lit";
+import { property } from "lit/decorators.js";
 import { TemplateElement } from "../../../utils/templateElement";
 
 export class EOxMapTooltip extends TemplateElement {
+  /**
+   * Override the default rendering of feature property key/value
+   */
+  @property()
+  renderProperty: Function = (property: [key: string, value: any]) => property;
+
   renderContent(content: Object) {
     render(
       this.hasTemplate("properties")
@@ -26,9 +33,12 @@ export class EOxMapTooltip extends TemplateElement {
               }
             </style>
             <ul>
-              ${Object.entries(content).map(
-                ([key, value]) => html`<li><span>${key}</span>: ${value}</li>`
-              )}
+              ${Object.entries(content)
+                .map(([key, value]) => this.renderProperty([key, value]))
+                .filter((v) => v)
+                .map(
+                  ([key, value]) => html`<li><span>${key}</span>: ${value}</li>`
+                )}
             </ul>`,
       this.shadowRoot
     );
