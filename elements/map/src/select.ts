@@ -32,7 +32,7 @@ export async function addSelect(
     throw Error(`Interaction with id: ${options.id} already exists.`);
   }
 
-  const tooltip: EOxMapTooltip = EOxMap.querySelector(options.tooltip);
+  const tooltip: HTMLElement = EOxMap.querySelector(options.overlay?.element);
 
   let overlay: Overlay;
   let selectedFid: string | number = null;
@@ -41,11 +41,12 @@ export async function addSelect(
 
   if (tooltip) {
     overlay = new Overlay({
-      element: tooltip,
       position: undefined,
-      offset: [0, -30],
-      positioning: "top-center",
+      offset: [0, 0],
+      positioning: "top-left",
       className: "eox-map-tooltip",
+      ...options.overlay,
+      element: EOxMap.querySelector(options.overlay.element),
     });
     map.addOverlay(overlay);
   }
@@ -59,7 +60,13 @@ export async function addSelect(
     if (options.idProperty) {
       return feature.get(options.idProperty);
     }
-    return feature.getId();
+    const defaultId = feature.getId() || feature.get("id");
+    if (!defaultId) {
+      throw Error(
+        "No feature id found. Please provide which feature property should be taken instead using idProperty."
+      );
+    }
+    return defaultId;
   }
 
   const selectLayer = EOxMap.getLayerById(layerId);
@@ -116,12 +123,20 @@ export async function addSelect(
         selectStyleLayer.changed();
 
         if (overlay) {
+          const xPosition =
+            event.pixel[0] > EOxMap.offsetWidth / 2 ? "right" : "left";
+          const yPosition =
+            event.pixel[1] > EOxMap.offsetHeight / 2 ? "bottom" : "top";
+          overlay.setPositioning(`${yPosition}-${xPosition}`);
           overlay.setPosition(feature ? event.coordinate : null);
-          tooltip.renderContent(feature.getProperties());
+          if (feature && (<EOxMapTooltip>tooltip).renderContent) {
+            (<EOxMapTooltip>tooltip).renderContent(feature.getProperties());
+          }
         }
 
         const selectdEvt = new CustomEvent("select", {
           detail: {
+            id: options.id,
             originalEvent: event,
             feature: feature,
           },
