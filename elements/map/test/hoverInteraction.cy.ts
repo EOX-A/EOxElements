@@ -27,9 +27,6 @@ describe("select interaction with hover", () => {
       eoxMap
         .addSelect("regions", {
           id: "selectInteraction",
-          overlay: {
-            element: "eox-map-tooltip",
-          },
           condition: "pointermove",
           layer: {
             type: "Vector",

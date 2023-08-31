@@ -17,7 +17,6 @@ describe("select interaction on click", () => {
       eoxMap
         .addSelect("countries", {
           id: "selectInteraction",
-          tooltip: "eox-map-tooltip",
           condition: "click",
           idProperty: "formal_en",
           layer: {
@@ -56,7 +55,6 @@ describe("select interaction on click", () => {
       eoxMap
         .addSelect("regions", {
           id: "selectInteraction",
-          tooltip: "eox-map-tooltip",
           condition: "click",
           //@ts-ignore
           style: {

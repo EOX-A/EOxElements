@@ -20,7 +20,7 @@ export type SelectOptions = Omit<
   condition: "click" | "pointermove";
   layer?: EoxLayer | MapboxLayer;
   style?: import("ol/style/flat.js").FlatStyleLike;
-  tooltip?: string;
+  overlay?: import("ol/Overlay").Options;
 };
 
 export async function addSelect(
@@ -32,8 +32,8 @@ export async function addSelect(
     throw Error(`Interaction with id: ${options.id} already exists.`);
   }
 
-  const tooltip: HTMLElement = EOxMap.querySelector(options.overlay?.element);
-
+  const tooltip: HTMLElement =
+    EOxMap.querySelector("eox-map-tooltip") || options.overlay?.element;
   let overlay: Overlay;
   let selectedFid: string | number = null;
 
@@ -41,12 +41,12 @@ export async function addSelect(
 
   if (tooltip) {
     overlay = new Overlay({
+      element: tooltip,
       position: undefined,
       offset: [0, 0],
       positioning: "top-left",
       className: "eox-map-tooltip",
       ...options.overlay,
-      element: EOxMap.querySelector(options.overlay.element),
     });
     map.addOverlay(overlay);
   }
