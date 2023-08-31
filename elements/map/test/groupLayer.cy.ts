@@ -63,6 +63,12 @@ describe("layers", () => {
         layerInsideGroupInsideGroup,
         "find layer inside group inside group"
       ).to.exist;
+
+      const parentParentGroup = layerInsideGroupInsideGroup.get('_group').get('_group')
+      expect(
+        parentParentGroup.get('id'),
+        "correctly sets reference to parent layers"
+      ).to.be.equal('group');
     });
   });
 });
