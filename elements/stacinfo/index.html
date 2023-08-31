@@ -30,16 +30,16 @@
       properties='["title", "tags", "themes", "sensor", "agency", "satellite", "extent"]'
       featured='["description"]'
     >
-      <!-- <template data-type="tags">
+      <!-- <render-template data-type="tags">
         <div class="tags">LABELS {{ tags.formatted }}</div>
-      </template> -->
-      <template data-type="extent">
+      </render-template> -->
+      <render-template data-type="extent">
         Temporal reference:
         <strong
           >{{ extent.value.temporal.interval[0][0] }} until {{
           extent.value.temporal.interval[0][1] }}</strong
         >
-      </template>
+      </render-template>
     </eox-stacinfo>
     <script type="module">
       import "./src/main.ts";

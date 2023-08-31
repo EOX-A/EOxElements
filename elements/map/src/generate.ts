@@ -5,29 +5,62 @@ import STAC from "ol-stac";
 import { applyStyle } from "ol-mapbox-style";
 import { FlatStyleLike } from "ol/style/flat";
 import mapboxgl, { AnySourceData } from "mapbox-gl";
+import { Collection } from "ol";
 
 const availableLayers = {
   ...olLayers,
   STAC,
 };
 
+export type layerType =
+  | "Group"
+  | "Heatmap"
+  | "Image"
+  | "Layer"
+  | "Tile"
+  | "Vector"
+  | "VectorImage"
+  | "VectorTile";
+export type sourceType =
+  | "BingMaps"
+  | "Cluster"
+  | "GeoTIFF"
+  | "IIIF"
+  | "Image"
+  | "ImageCanvas"
+  | "ImageStatic"
+  | "ImageWMS"
+  | "OSM"
+  | "Raster"
+  | "StadiaMaps"
+  | "Tile"
+  | "TileArcGISRest"
+  | "TileDebug"
+  | "TileImage"
+  | "TileJSON"
+  | "TileWMS"
+  | "UrlTile"
+  | "Vector"
+  | "VectorTile"
+  | "WMTS"
+  | "XYZ";
+
 const availableSources = {
   ...olSources,
 };
 
 export type EoxLayer = {
-  type: olLayers.Layer;
-  id: string;
-  properties?: Object;
-  source?: { type: olSources.Source };
+  type: layerType;
+  properties: object & {
+    id: string;
+  };
+  source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: mapboxgl.Style | FlatStyleLike;
 };
 
-export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
-  // @ts-ignore
+export function createLayer(layer: EoxLayer): olLayers.Layer {
   const newLayer = availableLayers[layer.type];
-  // @ts-ignore
   const newSource = availableSources[layer.source?.type];
   if (!newLayer) {
     throw new Error(`Layer type ${layer.type} not supported!`);
@@ -36,10 +69,11 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
     throw new Error(`Source type ${layer.source.type} not supported!`);
   }
 
+  //@ts-ignore
   const olLayer = new newLayer({
     ...layer,
-    group,
     ...(layer.source && {
+      //@ts-ignore
       source: new newSource({
         ...layer.source,
         // @ts-ignore
@@ -49,12 +83,18 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
         }),
       }),
     }),
-    style: undefined, // override layer style, apply style after
-    // @ts-ignore
     ...(layer.type === "Group" && {
-      layers: layer.layers.reverse().map((l) => createLayer(l, layer.id)),
+      layers: [],
     }),
+    style: undefined, // override layer style, apply style after
   });
+
+  if (layer.type === "Group") {
+    const groupLayers = layer.layers.reverse().map((l) => createLayer(l));
+    // set a reference to the parent group to each layer of the group
+    groupLayers.forEach((l) => l.set("_group", olLayer, true));
+    olLayer.setLayers(new Collection(groupLayers));
+  }
 
   if (layer.style) {
     if ("version" in layer.style) {
@@ -65,11 +105,9 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
       if (!mapboxStyle.sources) {
         mapboxStyle.sources = {};
       }
-      // @ts-ignore
       const sourceName = layer.properties.id;
       if (!mapboxStyle.sources[sourceName]) {
         const dummy =
-          //@ts-ignore
           layer.source.type === "VectorTile"
             ? {
                 type: "vector",
@@ -92,7 +130,7 @@ export function createLayer(layer: EoxLayer, group?: string): olLayers.Layer {
       );
     } else {
       olLayer.setStyle(layer.style);
-      olLayer.set("sourcePromise", Promise.resolve());
+      olLayer.set("sourcePromise", Promise.resolve(), true);
     }
   }
   return olLayer;
