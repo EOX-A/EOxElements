@@ -45,6 +45,12 @@ export class EOxLayerControl extends LitElement {
   @state()
   optionalLayerArray: Array<BaseLayer>;
 
+  @state()
+  resizeObserver: ResizeObserver;
+
+  @state()
+  containerHeight: number;
+
   /**
    * The query selector for the map
    */
@@ -68,12 +74,6 @@ export class EOxLayerControl extends LitElement {
 
   @property({ type: Boolean })
   unstyled: boolean;
-
-  @property({ type: ResizeObserver })
-  resizeObserver: ResizeObserver;
-
-  @property({ type: Number })
-  containerHeight: number;
 
   private _updateControl(layerCollection: Collection<BaseLayer>) {
     // initially check if all layers have an id and title,
