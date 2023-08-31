@@ -29,7 +29,10 @@
       ]);
       document.querySelector("eox-map").addSelect("regions", {
         id: "selectInteraction",
-        tooltip: "eox-map-tooltip",
+        overlay: {
+          element: "eox-map-tooltip",
+          offset: [0, 30],
+        },
         condition: "pointermove",
         layer: {
           type: "Vector",
