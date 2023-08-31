@@ -281,7 +281,7 @@ export class EOxLayerControl extends LitElement {
     ): TemplateResult => html`
       <ul
         data-group="${group ?? nothing}"
-        style="${group == 'group2' && !this.unstyled
+        style="${!!group && !this.unstyled
           ? `max-height: ${this.containerHeight * 0.3}px`
           : ''
         }"
