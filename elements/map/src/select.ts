@@ -105,6 +105,11 @@ export async function addSelect(
         selectStyleLayer.changed();
 
         if (overlay) {
+          const xPosition =
+            event.pixel[0] > EOxMap.offsetWidth / 2 ? "right" : "left";
+          const yPosition =
+            event.pixel[1] > EOxMap.offsetHeight / 2 ? "bottom" : "top";
+          overlay.setPositioning(`${yPosition}-${xPosition}`);
           overlay.setPosition(feature ? event.coordinate : null);
           if (feature && (<EOxMapTooltip>tooltip).renderContent) {
             (<EOxMapTooltip>tooltip).renderContent(feature.getProperties());

@@ -14,11 +14,11 @@ export class EOxMapTooltip extends TemplateElement {
         : html` <style>
               ul {
                 margin: 0;
-                padding: 15px 5px 15px 30px;
+                padding: 15px 15px 15px 30px;
                 background: #0008;
                 border-radius: 15px;
                 color: white;
-                max-width: 50%;
+                max-width: 250px;
                 font-size: small;
               }
               span {
