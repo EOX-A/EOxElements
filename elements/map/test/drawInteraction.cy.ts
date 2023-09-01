@@ -74,10 +74,9 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerdown", 30, 20);
       simulateEvent(eoxMap.map, "pointerup", 30, 20);
 
-      const drawLayer = eoxMap.getLayerById(
-        "drawLayer"
-      ) as VectorLayer<VectorSource>;
-      const features = drawLayer.getSource().getFeatures();
+      const drawLayer = eoxMap.getLayerById("drawLayer") as import("ol/layer").Vector<import("ol/source").Vector>;
+      const source = drawLayer.getSource();
+      const features = source.getFeatures();
       expect(features).to.have.length(1);
     });
   });
