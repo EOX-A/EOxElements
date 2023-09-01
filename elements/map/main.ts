@@ -12,6 +12,7 @@ import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
+import {buffer} from 'ol/extent';
 import "./src/compare";
 
 @customElement("eox-map")
@@ -144,6 +145,16 @@ export class EOxMap extends LitElement {
       <div style="width: 100%; height: 100%"></div>
       <slot></slot>
     `;
+  }
+
+  /**
+   * Return extent increased by the provided value.
+   * @param {import("ol/extent").Extent} extent
+   * @param {number} value 
+   * @returns {import("ol/extent").Extent}
+   */
+  buffer(extent: import("ol/extent").Extent, value: number) {
+    return buffer(extent, value)
   }
 
   firstUpdated() {
