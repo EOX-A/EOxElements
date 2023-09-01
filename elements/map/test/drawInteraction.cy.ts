@@ -35,6 +35,8 @@ describe("draw interaction", () => {
       const geometry = features[0].getGeometry() as Point;
       expect(features).to.have.length(1);
       expect(geometry.getCoordinates().length).to.be.equal(2);
+      const buffer = eoxMap.buffer(geometry.getExtent(), 100);
+      expect(Array.isArray(buffer), 'create buffer from point extent').to.be.true;
     });
   });
 
