@@ -1,8 +1,6 @@
-import VectorLayer from "ol/layer/Vector";
 import "../main";
 import vectorLayerStyleJson from "./drawInteraction.json";
 import { simulateEvent } from "./utils/events";
-import VectorSource from "ol/source/Vector";
 import { Point } from "ol/geom";
 
 describe("draw interaction", () => {
@@ -74,7 +72,9 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerdown", 30, 20);
       simulateEvent(eoxMap.map, "pointerup", 30, 20);
 
-      const drawLayer = eoxMap.getLayerById("drawLayer") as import("ol/layer").Vector<import("ol/source").Vector>;
+      const drawLayer = eoxMap.getLayerById(
+        "drawLayer"
+      ) as import("ol/layer").Vector<import("ol/source").Vector>;
       const source = drawLayer.getSource();
       const features = source.getFeatures();
       expect(features).to.have.length(1);
@@ -122,9 +122,48 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-      ) as VectorLayer<VectorSource>;
+      ) as import("ol/layer").Vector<import("ol/source").Vector>;
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);
+    });
+  });
+
+  it("creates box", () => {
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      eoxMap.removeInteraction("drawInteraction");
+      eoxMap.removeInteraction("drawInteraction_modify");
+      eoxMap.addDraw("drawLayer", {
+        id: "drawInteraction",
+        type: "Box",
+        modify: false,
+        style: {
+          "fill-color": "yellow",
+          "stroke-color": "black",
+          "stroke-width": 4,
+        },
+      });
+
+      eoxMap.addEventListener("drawend", (evt) => {
+        // @ts-ignore
+        expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
+        // @ts-ignore
+        const coordinates = evt.detail.geojson.geometry.coordinates[0];
+        const isRectangle =
+          coordinates[0][1] === coordinates[1][1] &&
+          coordinates[1][0] === coordinates[2][0];
+        expect(isRectangle, "create Box").to.be.true;
+      });
+      simulateEvent(eoxMap.map, "pointerdown", 50, 80);
+      simulateEvent(eoxMap.map, "pointerup", 50, 80);
+
+      simulateEvent(eoxMap.map, "pointerdown", -50, -50);
+      simulateEvent(eoxMap.map, "pointerup", -50, -50);
+
+      expect(
+        eoxMap.interactions.modify,
+        "do not add modify if flag is set to false"
+      ).to.not.exist;
     });
   });
 });
