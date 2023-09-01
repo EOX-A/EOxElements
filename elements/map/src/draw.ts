@@ -7,26 +7,26 @@ import GeoJSON from "ol/format/GeoJSON";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 
-
-export type Drawoptions = Omit<
+export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
   "type"
 > & {
   id: string | number;
-  type: "Point" | "LineString" | "Polygon" | "Circle" | "Box"
-  modify?: boolean
+  type: "Point" | "LineString" | "Polygon" | "Circle" | "Box";
+  modify?: boolean;
 };
 
 export function addDraw(
   EOxMap: EOxMap,
   layerId: string,
-  options: Drawoptions
+  options: DrawOptions
 ): void {
   const options_ = Object.assign({}, options);
   if (EOxMap.interactions[options_.id]) {
     throw Error(`Interaction with id: ${options_.id} already exists.`);
   }
-  options_.modify = typeof options_.modify === 'boolean' ? options_.modify : true;
+  options_.modify =
+    typeof options_.modify === "boolean" ? options_.modify : true;
 
   const map = EOxMap.map;
 
@@ -36,7 +36,7 @@ export function addDraw(
 
   if (options_.type === "Box") {
     options_.geometryFunction = createBox();
-    options_.type = 'Circle';
+    options_.type = "Circle";
   }
 
   const drawInteraction = new Draw({
@@ -71,7 +71,7 @@ export function addDraw(
   //@ts-ignore
   map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
-  
+
   if (options_.modify) {
     const modifyInteraction = new Modify({
       source,

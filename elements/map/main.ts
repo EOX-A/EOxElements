@@ -7,7 +7,7 @@ import olCss from "ol/ol.css";
 import { DrawOptions, addDraw } from "./src/draw";
 import { SelectOptions, addSelect } from "./src/select";
 import { generateLayers, EoxLayer } from "./src/generate";
-import Interaction from "ol/interaction/Interaction";
+import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
@@ -64,7 +64,7 @@ export class EOxMap extends LitElement {
    * dictionary of ol interactions associated with the map.
    */
   @state()
-  interactions: { [index: string]: Interaction } = {};
+  interactions: { [index: string]: Draw | Modify } = {};
 
   /**
    * dictionary of ol controls associated with the map.
