@@ -1,3 +1,5 @@
+import layers from "./agri.json";
+
 describe("Layer Switcher", () => {
   beforeEach(() => {
     cy.visit("/cypress/e2e/agri.html");
@@ -26,6 +28,24 @@ describe("Layer Switcher", () => {
       console.log(geometry.getCoordinates());
       expect(features).to.have.length(1);
       expect(geometry.getCoordinates()[0].length).to.be.equal(5);
+    });
+  });
+
+  it("adapts to setLayers with changed layer id", () => {
+    layers[0].id = "changedId";
+
+    cy.get("eox-map").then(($el) => {
+      const eoxMap = $el[0];
+      eoxMap.setLayers(layers);
+
+      cy.get("eox-layercontrol")
+        .shadow()
+        .within(() => {
+          cy.get("[data-layer=changedId]")
+            .parent()
+            .children()
+            .should("have.length", 2);
+        });
     });
   });
 });
