@@ -100,10 +100,10 @@ describe("LayerControl", () => {
       });
   });
 
-  it("removes the layer both in the map and the control", () => {
+  it("removes layers correctly in control and map", () => {
     // Ignore this exception so that it does not break the test
     cy.on('uncaught:exception', (err) => {
-      if (err.message.includes('ResizeObserver loop limit exceeded')) {
+      if (err.message.includes('ResizeObserver loop')) {
         return false;
       } else {
         return undefined
@@ -182,15 +182,18 @@ describe("LayerControl", () => {
     ).as("eox-layercontrol");
 
     cy.get("eox-map").and(($el) => {
-      /*(<MockMap>$el[0]).setLayers([
-        { visible: true },
-        { layerControlHide: true },
-      ]) */;
+      console.log(<MockMap>$el[0]);
     });
+
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        cy.get('.delete').should('be.visible').click();
+        cy.get("eox-layerconfig")
+          .shadow()
+          .first()
+          .within(() => {
+            cy.get('div button.delete').should('be.visible').click();
+          });
       });
   });
 });
