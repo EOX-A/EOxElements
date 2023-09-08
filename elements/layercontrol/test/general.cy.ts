@@ -1,5 +1,6 @@
 import "../src/main";
 import "./_mockMap";
+import "../../map/main";
 
 describe("LayerControl", () => {
   beforeEach(() => {
@@ -96,6 +97,100 @@ describe("LayerControl", () => {
       .shadow()
       .within(() => {
         cy.get("details[open]").should("exist");
+      });
+  });
+
+  it("removes the layer both in the map and the control", () => {
+    // Ignore this exception so that it does not break the test
+    cy.on('uncaught:exception', (err) => {
+      if (err.message.includes('ResizeObserver loop limit exceeded')) {
+        return false;
+      } else {
+        return undefined
+      }
+    });
+
+    cy.mount(`<eox-map
+    zoom="3"
+    center="[1000000, 6000000]"
+    layers='[
+      {
+        "type": "Group",
+        "id": "group1",
+        "title": "Background Layers",
+        "layerControlExpanded": true,
+        "layers": [
+          {
+            "type": "WebGLTile",
+            "id": "s2",
+            "layerControlExpanded": true,
+            "title": "s2",
+            "style": {
+              "variables": {
+                "red": 1,
+                "green": 2,
+                "blue": 3,
+                "redMax": 3000,
+                "greenMax": 3000,
+                "blueMax": 3000
+              },
+              "color": [
+                "array",
+                ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+                ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+                ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+                1
+              ],
+              "gamma": 1.1
+            },
+            "source": {
+              "type": "GeoTIFF",
+              "normalize": false,
+              "sources": [
+                {
+                  "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
+                }
+              ]
+            }
+          },
+          {
+            "type": "Tile",
+            "id": "osm",
+            "title": "Open Street Map",
+            "layerControlExpanded": false,
+            "visible": false,
+            "title": "osm",
+            "opacity": 0.5,
+            "source": {
+              "type": "OSM"
+            }
+          }
+        ]
+      }
+    ]
+  '
+  ></eox-map>`).as(
+      "eox-map"
+    );
+
+    // Remove the LayerControl which bound to `mock-map`
+    cy.get('eox-layercontrol').invoke('remove');
+
+    cy.mount(
+      `
+      <eox-layercontrol for="eox-map"></eox-layercontrol>`
+    ).as("eox-layercontrol");
+
+    cy.get("eox-map").and(($el) => {
+      /*(<MockMap>$el[0]).setLayers([
+        { visible: true },
+        { layerControlHide: true },
+      ]) */;
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get('.delete').should('be.visible').click();
       });
   });
 });
