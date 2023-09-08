@@ -53,6 +53,8 @@ export type EoxLayer = {
   type: layerType;
   properties: object & {
     id: string;
+    opacity?: number;
+    visible?: boolean;
   };
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
@@ -86,6 +88,7 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
     ...(layer.type === "Group" && {
       layers: [],
     }),
+    ...layer.properties,
     style: undefined, // override layer style, apply style after
   });
 
@@ -97,6 +100,7 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   }
 
   if (layer.style) {
+    console.log(layer.style);
     if ("version" in layer.style) {
       const mapboxStyle: mapboxgl.Style = layer.style;
       // existing layer source will not get overridden by "style" property
@@ -126,13 +130,15 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
         "sourcePromise",
         applyStyle(olLayer, mapboxStyle, sourceName, {
           updateSource: false,
-        })
+        }),
+        true
       );
     } else {
       olLayer.setStyle(layer.style);
       olLayer.set("sourcePromise", Promise.resolve(), true);
     }
   }
+  setSyncListeners(olLayer, layer);
   return olLayer;
 }
 
@@ -143,3 +149,26 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
 
   return layerArray.reverse().map((l) => createLayer(l));
 };
+
+/**
+ * set listeners to keep state of layer in sync with input json
+ * @param {olLayers.Layer} olLayer
+ * @param {EoxLayer} eoxLayer
+ */
+function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
+  olLayer.set("_jsonDefinition", eoxLayer, true);
+  olLayer.on("change:opacity", () => {
+    eoxLayer.properties.opacity = olLayer.getOpacity();
+  });
+  olLayer.on("change:visible", () => {
+    eoxLayer.properties.visible = olLayer.getVisible();
+  });
+  olLayer.on("change:zIndex", (e) => {
+    // TO DO
+    console.log(e);
+  });
+  olLayer.on("propertychange", (e) => {
+    //@ts-ignore
+    eoxLayer.properties[e.key] = e.target.get(e.key);
+  });
+}
