@@ -3,7 +3,8 @@
     "type": "Vector",
     "background": "#1366dd",
     "properties": {
-      "id": "regions"
+      "id": "regions",
+      "visible": true
     },
     "source": {
       "type": "Vector",
