@@ -100,7 +100,6 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   }
 
   if (layer.style) {
-    console.log(layer.style);
     if ("version" in layer.style) {
       const mapboxStyle: mapboxgl.Style = layer.style;
       // existing layer source will not get overridden by "style" property
@@ -165,7 +164,6 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
   });
   olLayer.on("change:zIndex", (e) => {
     // TO DO
-    console.log(e);
   });
   olLayer.on("propertychange", (e) => {
     //@ts-ignore
