@@ -170,22 +170,17 @@ describe("LayerControl", () => {
               }
             ]
           }
-        ]
-      '
-      ></eox-map>`)
-      .as(
-        "eox-map"
-      );
+        ]'></eox-map>`)
+      .as("eox-map");
+
+    const layerToDelete = 's2';
 
     // Remove the LayerControl bound to `mock-map`.
-    cy.get('eox-layercontrol').invoke('remove');
+    cy.get("eox-layercontrol").invoke("remove");
 
     // Replace it with our LayerControl which uses the actual Map component.
     cy
-      .mount(
-        `
-        <eox-layercontrol for="eox-map"></eox-layercontrol>`
-      )
+      .mount(`<eox-layercontrol for="eox-map"></eox-layercontrol>`)
       .as("eox-layercontrol");
     
     // Verify the deletion of the menu node.
@@ -194,7 +189,7 @@ describe("LayerControl", () => {
       .within(() => {
         // 1. Press the Delete button to delete the S2 layer.
         cy
-          .get("[data-layer=\"s2\"] eox-layerconfig")
+          .get(`[data-layer=${layerToDelete}] eox-layerconfig`)
           .shadow()
           .within(() => {
             cy.get('div button.delete').should('be.visible').click();
@@ -202,9 +197,9 @@ describe("LayerControl", () => {
         
         // 2. Confirm the removal of the layer from the menu tree.
         cy
-          .get("[data-layer=\"group1\"]")
+          .get(`[data-layer=group1]`)
           .within(() => {
-            cy.get("[data-layer=\"s2\"]").should('not.exist');
+            cy.get(`[data-layer=${layerToDelete}]`).should('not.exist');
           });
       });
     
@@ -223,7 +218,8 @@ describe("LayerControl", () => {
           // This needs to be corrected in `EOxMap` before we can correctly implement this test.
           layer = eoxMap.getLayerById('s2');
         } catch (error) {
-          console.error(error);
+          // Catch the error here so we can ignore it. For debugging:
+          // console.error(error)
         }
         assert.equal(layer, undefined, 'OSM Layer should not be found');
       });
