@@ -32,12 +32,12 @@
             "type": "Vector"
           },
           "style": {
-            "circle-radius": "10",
+            "circle-radius": 10,
             "circle-fill-color": "red",
             "circle-stroke-color": "black",
-            "circle-stroke-width": "2",
+            "circle-stroke-width": 2,
             "stroke-color": "black",
-            "stroke-width": "5",
+            "stroke-width": 5,
             "fill-color": "red"
           }
         },
@@ -161,10 +161,12 @@
     <script type="module">
       import "https://unpkg.com/@eox/map@latest";
       import "./src/main.ts";
-      document.querySelector("eox-map").addDraw("drawLayer", {
+
+      setTimeout(() => document.querySelector("eox-map").addDraw("drawLayer", {
         id: "drawInteraction",
         type: "Point",
-      });
+      }), 2000);
+    </script>
     </script>
   </body>
 </html>
