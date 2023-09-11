@@ -31,4 +31,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- New delete button for layers and groups along with a Cypress unit test.
+- Delete button for layers and groups along with a Cypress unit test.
