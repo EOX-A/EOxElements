@@ -7,11 +7,12 @@ import olCss from "ol/ol.css";
 import { DrawOptions, addDraw } from "./src/draw";
 import { SelectOptions, addSelect } from "./src/select";
 import { generateLayers, EoxLayer } from "./src/generate";
-import Interaction from "ol/interaction/Interaction";
+import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
+import { buffer } from "ol/extent";
 import "./src/compare";
 
 @customElement("eox-map")
@@ -64,7 +65,7 @@ export class EOxMap extends LitElement {
    * dictionary of ol interactions associated with the map.
    */
   @state()
-  interactions: { [index: string]: Interaction } = {};
+  interactions: { [index: string]: Draw | Modify } = {};
 
   /**
    * dictionary of ol controls associated with the map.
@@ -144,6 +145,16 @@ export class EOxMap extends LitElement {
       <div style="width: 100%; height: 100%"></div>
       <slot></slot>
     `;
+  }
+
+  /**
+   * Return extent increased by the provided value.
+   * @param {import("ol/extent").Extent} extent
+   * @param {number} value
+   * @returns {import("ol/extent").Extent}
+   */
+  buffer(extent: import("ol/extent").Extent, value: number) {
+    return buffer(extent, value);
   }
 
   firstUpdated() {
