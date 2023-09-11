@@ -110,94 +110,57 @@ describe("LayerControl", () => {
       }
     });
 
-    // We need a real map for this to work. 
-    // Let's use a subset of our standard demo map config:
-    cy
-      .mount(`<eox-map
-        zoom="3"
-        center="[1000000, 6000000]"
-        layers='[
-          {
-            "type": "Group",
-            "id": "group1",
-            "title": "Background Layers",
-            "layerControlExpanded": true,
-            "layers": [
-              {
-                "type": "WebGLTile",
-                "id": "s2",
-                "layerControlExpanded": true,
-                "title": "s2",
-                "style": {
-                  "variables": {
-                    "red": 1,
-                    "green": 2,
-                    "blue": 3,
-                    "redMax": 3000,
-                    "greenMax": 3000,
-                    "blueMax": 3000
-                  },
-                  "color": [
-                    "array",
-                    ["/", ["band", ["var", "red"]], ["var", "redMax"]],
-                    ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
-                    ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
-                    1
-                  ],
-                  "gamma": 1.1
-                },
-                "source": {
-                  "type": "GeoTIFF",
-                  "normalize": false,
-                  "sources": [
-                    {
-                      "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "Tile",
-                "id": "osm",
-                "title": "Open Street Map",
-                "layerControlExpanded": false,
-                "visible": false,
-                "title": "osm",
-                "opacity": 0.5,
-                "source": {
-                  "type": "OSM"
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([
+        {
+          "type": "Group",
+          "id": "group2",
+          "layerControlExpanded": true,
+          "title": "Data Layers",
+          "layers": [
+            {
+              "type": "Tile",
+              "id": "WIND",
+              "title": "WIND",
+              "source": {
+                "type": "TileWMS",
+                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+                "params": {
+                  "LAYERS": "AWS_VIS_WIND_V_10M"
                 }
               }
-            ]
-          }
-        ]'></eox-map>`)
-      .as("eox-map");
+            },
+            {
+              "type": "Tile",
+              "id": "NO2",
+              "title": "Super Duper Uber Long Title for Nitrous Dioxide",
+              "source": {
+                "type": "TileWMS",
+                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+                "params": {
+                  "LAYERS": "AWS_NO2-VISUALISATION"
+                }
+              }
+            }
+          ]
+        },
+      ]);
+    });
 
-    const layerToDelete = 's2';
+    const layerToDelete = 'group2';
 
-    // Remove the LayerControl bound to `mock-map`.
-    cy.get("eox-layercontrol").invoke("remove");
-
-    // Replace it with our LayerControl which uses the actual Map component.
-    cy
-      .mount(`<eox-layercontrol for="eox-map"></eox-layercontrol>`)
-      .as("eox-layercontrol");
-    
-    // Verify the deletion of the menu node.
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
         // 1. Press the Delete button to delete the S2 layer.
-        cy
-          .get(`[data-layer=${layerToDelete}] eox-layerconfig`)
+        cy.get(`[data-layer=${layerToDelete}] eox-layerconfig`)
           .shadow()
           .within(() => {
             cy.get('div button.delete').should('be.visible').click();
           });
         
         // 2. Confirm the removal of the layer from the menu tree.
-        cy
-          .get(`[data-layer=group1]`)
+        cy.get(`[data-layer=group1]`)
           .within(() => {
             cy.get(`[data-layer=${layerToDelete}]`).should('not.exist');
           });
@@ -210,16 +173,9 @@ describe("LayerControl", () => {
         const eoxMap = <EOxMap>$el[0];
         let layer;
         try {
-          // TODO / WARNING: This part of the test is broken!
-          //
-          // The following function call does not handle map layers recursively. The test fails 
-          // as expected when presented with `group1`, but succeeds with `osm`!
-          //
-          // This needs to be corrected in `EOxMap` before we can correctly implement this test.
           layer = eoxMap.getLayerById('s2');
         } catch (error) {
-          // Catch the error here so we can ignore it. For debugging:
-          // console.error(error)
+          // Ignore error explicitly.
         }
         assert.equal(layer, undefined, 'OSM Layer should not be found');
       });
