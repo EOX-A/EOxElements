@@ -609,7 +609,6 @@ export class EOxLayerConfig extends LitElement {
               @click="${() =>
                 this.dispatchEvent(new CustomEvent("removeLayer"))}"
             >
-              delete
             </button>
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
