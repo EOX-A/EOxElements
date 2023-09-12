@@ -1,5 +1,5 @@
 import { html, nothing, PropertyValueMap } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { style } from "./style";
@@ -8,7 +8,6 @@ import StacFields from "@radiantearth/stac-fields";
 import { STAC } from "stac-js";
 import { TemplateElement } from "../../../utils/templateElement";
 
-@customElement("eox-stacinfo")
 export class EOxStacInfo extends TemplateElement {
   @property({ type: Boolean })
   unstyled: boolean;
@@ -174,3 +173,5 @@ export class EOxStacInfo extends TemplateElement {
     }
   }
 }
+
+customElements.define("eox-stacinfo", EOxStacInfo)

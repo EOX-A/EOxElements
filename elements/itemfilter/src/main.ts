@@ -1,5 +1,5 @@
 import { html, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
@@ -81,7 +81,6 @@ export class ElementConfig {
   public titleProperty = "title";
 }
 
-@customElement("eox-itemfilter")
 export class EOxItemFilter extends TemplateElement {
   _resultAggregation: Array<string> = [];
 
@@ -483,3 +482,5 @@ export class EOxItemFilter extends TemplateElement {
     `;
   }
 }
+
+customElements.define("eox-itemfilter", EOxItemFilter)

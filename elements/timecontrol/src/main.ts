@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
 import TileSource from "ol/source/Tile";
@@ -8,8 +8,7 @@ import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { UrlFunction } from "ol/Tile";
 
-@customElement("eox-timecontrol")
-export class EOxDrawTools extends LitElement {
+export class EOxTimeControl extends LitElement {
   /**
    * The WMS parameter to update
    */
@@ -232,3 +231,5 @@ export class EOxDrawTools extends LitElement {
     `;
   }
 }
+
+customElements.define("eox-timecontrol", EOxTimeControl)

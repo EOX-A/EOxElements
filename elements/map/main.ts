@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 // @ts-ignore
@@ -14,7 +14,7 @@ import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
 import "./src/compare";
 
-@customElement("eox-map")
+/** Primary Map */
 export class EOxMap extends LitElement {
   /**
    * Map center, can be lon/lat or UTM
@@ -172,3 +172,5 @@ export class EOxMap extends LitElement {
     });
   }
 }
+
+customElements.define("eox-map", EOxMap)

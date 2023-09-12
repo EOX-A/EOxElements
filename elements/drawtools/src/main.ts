@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { property, state } from "lit/decorators.js";
 import { EOxMap } from "../../map/main";
 import { Map } from "ol";
 import { Draw, Modify } from "ol/interaction";
@@ -10,7 +10,6 @@ import { styleEOX } from "./style.eox";
 import Feature from "ol/Feature.js";
 import { Geometry } from "ol/geom";
 
-@customElement("eox-drawtools")
 export class EOxDrawTools extends LitElement {
   @state()
   _layerId: string;
@@ -144,3 +143,5 @@ export class EOxDrawTools extends LitElement {
     `;
   }
 }
+
+customElements.define("eox-drawtools", EOxDrawTools)
