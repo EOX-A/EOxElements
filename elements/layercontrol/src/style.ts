@@ -1,6 +1,8 @@
 export const style = `
 :host {
   display: block;
+  overflow-y: auto;
+  height: 100%;
 }
 .layer {
   display: inline-flex;

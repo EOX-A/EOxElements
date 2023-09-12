@@ -34,6 +34,7 @@ export class EOxItemFilterText extends LitElement {
       this.filterObject.state[key] = undefined;
     });
     delete this.filterObject.dirty;
+    this.requestUpdate();
   }
 
   // skip shadow root creation

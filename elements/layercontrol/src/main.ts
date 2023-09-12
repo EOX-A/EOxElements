@@ -5,14 +5,29 @@ import { live } from "lit/directives/live.js";
 import { when } from "lit/directives/when.js";
 import { Map, Collection } from "ol";
 import { Layer } from "ol/layer";
+import BaseLayer from "ol/layer/Base";
+import { Source } from "ol/source";
 import LayerGroup from "ol/layer/Group";
-// @ts-ignore
-import Sortable from "sortablejs/modular/sortable.core.esm.js";
+import WebGLTileLayer from "ol/layer/WebGLTile";
+import Sortable from "sortablejs";
+import { EOxMap } from "../../map/main";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
 type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
+};
+
+type OlLayer = Layer & {
+  declutter_: boolean;
+  ol_uid: string;
+  style_: {
+    [x: string]: any;
+  };
+};
+
+type OlSource = Source & {
+  ol_uid: string;
 };
 export class EOxLayerControl extends LitElement {
   private _currentlySorting: boolean;
@@ -21,13 +36,16 @@ export class EOxLayerControl extends LitElement {
   olMap: Map;
 
   @state()
-  layerCollection: Collection<Layer>;
+  layerCollection: Collection<BaseLayer>;
 
   @state()
-  layerArray: Array<Layer>;
+  layerArray: Array<BaseLayer>;
 
   @state()
-  optionalLayerArray: Array<Layer>;
+  optionalLayerArray: Array<BaseLayer>;
+
+  @state()
+  resizeObserver: ResizeObserver;
 
   /**
    * The query selector for the map
@@ -53,29 +71,24 @@ export class EOxLayerControl extends LitElement {
   @property({ type: Boolean })
   unstyled: boolean;
 
-  private _updateControl(layerCollection: Collection<any>) {
+  private _updateControl(layerCollection: Collection<BaseLayer>) {
     // initially check if all layers have an id and title,
     // fill in some backup in case they haven't
-    const checkProperties = (layerArray: Array<Layer | LayerGroup>) => {
+    const checkProperties = (layerArray: Array<BaseLayer>) => {
       layerArray.forEach((layer) => {
         if (!layer.get(this.layerIdentifier)) {
-          // @ts-ignore
-          layer.set(this.layerIdentifier, layer.ol_uid);
+          layer.set(this.layerIdentifier, (<OlLayer>layer).ol_uid);
         }
         if (!layer.get(this.layerTitle)) {
-          // @ts-ignore
-          layer.set(this.layerTitle, `layer ${layer.ol_uid}`);
+          layer.set(this.layerTitle, `layer ${(<OlLayer>layer).ol_uid}`);
         }
-        // @ts-ignore
-        if (layer.getLayers) {
-          // @ts-ignore
-          checkProperties(layer.getLayers().getArray());
+        if ((<LayerGroup>layer).getLayers) {
+          checkProperties((<LayerGroup>layer).getLayers().getArray());
         }
       });
     };
     checkProperties(layerCollection.getArray());
     this.layerCollection = layerCollection;
-    // @ts-ignore
     this.optionalLayerArray = this.filterLayers(
       layerCollection.getArray(),
       "layerControlOptional",
@@ -99,16 +112,14 @@ export class EOxLayerControl extends LitElement {
     targetLayer.setOpacity(value);
   }
 
-  changeStyleProperty(targetLayer: Layer, property: string, value: number) {
-    // @ts-ignore
-    targetLayer.updateStyleVariables({
-      // @ts-ignore
+  changeStyleProperty(targetLayer: OlLayer, property: string, value: number) {
+    (<WebGLTileLayer>(<unknown>targetLayer)).updateStyleVariables({
       ...targetLayer.style_,
       [property]: value,
     });
   }
 
-  private preFilterLayers(layerArray: Array<Layer>) {
+  private preFilterLayers(layerArray: Array<BaseLayer>) {
     return [...layerArray].filter(
       (l) =>
         l.get("layerControlHide") !== true &&
@@ -143,19 +154,47 @@ export class EOxLayerControl extends LitElement {
               l.get("layerControlExclusive")
           );
       }
-      // @ts-ignore
-      otherExclusiveLayers.forEach((layer: Layer) => {
+      otherExclusiveLayers.forEach((layer: BaseLayer) => {
         layer.setVisible(false);
       });
     }
     this.requestUpdate();
   }
 
+  // Set up Resize Observer
+  firstUpdated() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        // Ensure we're observing the correct element
+        if (entry.target === this) {
+          this.style.setProperty(
+            "--container-height",
+            `${entry.contentRect.height}px`
+          );
+          this.requestUpdate();
+        }
+      }
+    });
+    this.resizeObserver.observe(this);
+  }
+
+  // Deinitialize Resize Observer
+  disconnectedCallback() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+    super.disconnectedCallback();
+  }
+
   render() {
     const mapQuery = document.querySelector(this.for as string);
     if (mapQuery) {
-      // @ts-ignore
-      this.olMap = mapQuery?.map || mapQuery;
+      if ((<EOxMap>mapQuery).map) {
+        this.olMap = <Map>(<EOxMap>mapQuery).map;
+      } else {
+        this.olMap = <Map>(<unknown>mapQuery);
+      }
     }
 
     if (!this.olMap) {
@@ -185,8 +224,10 @@ export class EOxLayerControl extends LitElement {
                 }}
               />
               <span class="title"
-                ><span>${layer.get(this.layerTitle) ||
-                `${layer.get(this.layerIdentifier)}`}</span>
+                ><span
+                  >${layer.get(this.layerTitle) ||
+                  `${layer.get(this.layerIdentifier)}`}</span
+                >
               </span>
             </div>
             <div class="right">
@@ -213,35 +254,30 @@ export class EOxLayerControl extends LitElement {
               ></eox-layerconfig>
             `
           : nothing}
-        ${
-          // @ts-ignore
-          this.externalLayerConfig && layer.style_?.color
-            ? html`
-                <button @click=${() => this._emitLayerconfig(layer as Layer)}>
-                  configure
-                </button>
-              `
-            : nothing
-        }
-        ${
-          // @ts-ignore
-          layer.getLayers
-            ? html`
-                ${listItems(
-                  this.preFilterLayers(
-                    // @ts-ignore
-                    [...layer.getLayers().getArray()].reverse()
-                  ),
-                  layer.get(this.layerIdentifier)
-                )}
-              `
-            : nothing
-        }
+        ${this.externalLayerConfig && (<OlLayer>layer).style_?.color
+          ? html`
+              <button @click=${() => this._emitLayerconfig(layer as Layer)}>
+                configure
+              </button>
+            `
+          : nothing}
+        ${(<LayerGroup>(<unknown>layer)).getLayers
+          ? html`
+              ${listItems(
+                this.preFilterLayers(
+                  [
+                    ...(<LayerGroup>(<unknown>layer)).getLayers().getArray(),
+                  ].reverse()
+                ),
+                layer.get(this.layerIdentifier)
+              )}
+            `
+          : nothing}
       </details>
     `;
 
     const listItems = (
-      layers: Array<Layer | LayerGroup>,
+      layers: Array<BaseLayer>,
       group?: string
     ): TemplateResult => html`
       <ul data-group="${group ?? nothing}">
@@ -250,10 +286,7 @@ export class EOxLayerControl extends LitElement {
           (layer) => layer.get(this.layerIdentifier),
           (layer) => html`
             <li
-              data-layer="${
-                //@ts-ignore
-                layer.get(this.layerIdentifier)
-              }"
+              data-layer="${layer.get(this.layerIdentifier)}"
               data-disabled="${layer.get("layerControlDisable") || nothing}"
               data-type="${this.getLayerType(layer as Layer, this.olMap)}"
               data-layerconfig="${this.layerConfig?.length > 0}"
@@ -277,7 +310,7 @@ export class EOxLayerControl extends LitElement {
           : nothing}
         <div class="layers">
           ${listItems(
-            this.preFilterLayers(collection.getArray() as Array<Layer>)
+            this.preFilterLayers(collection.getArray() as Array<BaseLayer>)
           )}
         </div>
         ${when(
@@ -291,17 +324,9 @@ export class EOxLayerControl extends LitElement {
               </option>
               ${this.optionalLayerArray.map(
                 (layer) => html`
-                  <option
-                    value="${
-                      // @ts-ignore
-                      layer.get(this.layerIdentifier)
-                    }"
-                  >
+                  <option value="${layer.get(this.layerIdentifier)}">
                     ${layer.get(this.layerTitle) ||
-                    `layer ${
-                      // @ts-ignore
-                      layer.get(this.layerIdentifier)
-                    }`}
+                    `layer ${layer.get(this.layerIdentifier)}`}
                   </option>
                 `
               )}
@@ -309,11 +334,11 @@ export class EOxLayerControl extends LitElement {
             <button
               @click="${() => {
                 const selectedLayer = this.optionalLayerArray.find(
-                  // @ts-ignore
                   (l) =>
                     l.get(this.layerIdentifier) ===
-                    // @ts-ignore
-                    this.shadowRoot.querySelector("select[name=optional]").value
+                    (<HTMLInputElement>(
+                      this.shadowRoot.querySelector("select[name=optional]")
+                    )).value
                 );
                 // always set the new layer at the first position
                 // TODO make configurable?
@@ -368,12 +393,11 @@ export class EOxLayerControl extends LitElement {
                   this.layerCollection.getArray(),
                   inGroup
                 );
-                // @ts-ignore
-                const groupCollection = group.getLayers();
+                const groupCollection = (<LayerGroup>group).getLayers();
                 return [
                   ...groupCollection
                     .getArray()
-                    .map((l: Layer) => l.get(this.layerIdentifier)),
+                    .map((l: BaseLayer) => l.get(this.layerIdentifier)),
                 ].reverse();
               } else {
                 return [
@@ -393,8 +417,7 @@ export class EOxLayerControl extends LitElement {
                     this.layerCollection.getArray(),
                     inGroup
                   );
-                  // @ts-ignore
-                  const groupCollection = group.getLayers();
+                  const groupCollection = (<LayerGroup>group).getLayers();
                   const layer = this.findLayerById(
                     groupCollection.getArray(),
                     layerId
@@ -421,24 +444,18 @@ export class EOxLayerControl extends LitElement {
     }
   }
 
-  filterLayers = (
-    layers: Array<Layer | LayerGroup>,
-    key: string,
-    value: any
-  ) => {
-    let found: Array<Layer | LayerGroup> = [];
+  filterLayers = (layers: Array<BaseLayer>, key: string, value: any) => {
+    let found: Array<BaseLayer> = [];
     const search = (
-      searchLayers: Array<Layer | LayerGroup>,
+      searchLayers: Array<BaseLayer>,
       key: string,
       value: any
     ) => {
       found = [...found, ...searchLayers.filter((l) => l.get(key) === value)];
-      // @ts-ignore
-      const groups = searchLayers.filter((l) => l.getLayers);
+      const groups = searchLayers.filter((l) => (<LayerGroup>l).getLayers);
       if (groups.length > 0) {
         groups.forEach((group) =>
-          // @ts-ignore
-          search(group.getLayers().getArray(), key, value)
+          search((<LayerGroup>group).getLayers().getArray(), key, value)
         );
       }
       return found;
@@ -447,7 +464,7 @@ export class EOxLayerControl extends LitElement {
     return found;
   };
 
-  findLayerById = (layers: Array<Layer | LayerGroup>, id: string) => {
+  findLayerById = (layers: Array<BaseLayer>, id: string) => {
     return this.filterLayers(layers, "id", id)[0];
   };
 
@@ -455,21 +472,25 @@ export class EOxLayerControl extends LitElement {
     // trying to guess the layer type from certain properties.
     // the proper way would be to use instanceOf, but for this
     // we'd need OL as a dependency, which we're trying to avoid
-    // @ts-ignore
-    return layer.getLayers
+    return (<LayerGroup>(<unknown>layer)).getLayers
       ? "group"
       : map
           .getInteractions()
           .getArray()
-          // @ts-ignore
-          .filter((i) => i.freehand_ !== undefined)
-          // @ts-ignore
-          .map((i) => i.source_?.ol_uid)
-          // @ts-ignore
-          .includes(layer.getSource ? layer.getSource()?.ol_uid : false)
+          .filter(
+            (i) =>
+              (<{ [x: string]: object }>(<unknown>i)).freehand_ !== undefined
+          )
+          .map(
+            (i) =>
+              (<OlSource>(<{ [x: string]: object }>(<unknown>i)).source_)
+                ?.ol_uid
+          )
+          .includes(
+            layer.getSource ? (<OlSource>layer.getSource())?.ol_uid : undefined
+          )
       ? "draw"
-      : // @ts-ignore
-      layer.declutter_ !== undefined
+      : (<OlLayer>layer).declutter_ !== undefined
       ? "vector"
       : "raster";
   };
@@ -485,10 +506,10 @@ export class EOxLayerConfig extends LitElement {
   layerConfig: Array<string>;
 
   @property({ type: Object, attribute: false })
-  layerControl: HTMLElement;
+  layerControl: EOxLayerControl;
 
   @property({ type: Object, attribute: false })
-  layer: Layer;
+  layer: OlLayer;
 
   @property({ type: Boolean })
   external: boolean;
@@ -496,26 +517,24 @@ export class EOxLayerConfig extends LitElement {
   @property({ type: Boolean })
   unstyled: boolean;
 
-  private _layerControlElement: HTMLElement;
+  private _layerControlElement: EOxLayerControl;
 
   @state()
-  private _currentLayer: Layer;
+  private _currentLayer: OlLayer;
 
   @state()
-  private _configList: Object = {};
+  private _configList: { [x: string]: number | Array<string> } = {};
 
   private _handleInput(
     evt: HTMLElementEvent<HTMLInputElement>,
     property: string
   ) {
     if (property === "opacity") {
-      // @ts-ignore
       this._layerControlElement.changeOpacity(
         this._currentLayer,
         parseFloat(evt.target.value)
       );
     } else {
-      // @ts-ignore
       this._layerControlElement.changeStyleProperty(
         this._currentLayer,
         property,
@@ -524,11 +543,10 @@ export class EOxLayerConfig extends LitElement {
     }
   }
 
-  private _parseConfigs(currentLayer: Layer) {
+  private _parseConfigs(currentLayer: OlLayer) {
     if (!currentLayer) {
       return;
     }
-    // @ts-ignore
     const styleConfig = currentLayer.style_;
     if (styleConfig) {
       if (styleConfig.color && styleConfig.color[0] === "array") {
@@ -543,11 +561,9 @@ export class EOxLayerConfig extends LitElement {
       // "external" mode, i.e. rendered in separate div
       this._layerControlElement = document.querySelector(this.for);
       if (this._layerControlElement) {
-        // @ts-ignore
         this.layerConfig = this._layerControlElement.layerConfig;
         this._layerControlElement.addEventListener("layerconfig", (evt) => {
-          // @ts-ignore
-          this._currentLayer = evt.detail.layer;
+          this._currentLayer = (<CustomEvent>evt).detail.layer;
           this._parseConfigs(this._currentLayer);
           this.requestUpdate();
         });
@@ -611,10 +627,7 @@ export class EOxLayerConfig extends LitElement {
                             max="${["red", "green", "blue"].includes(property)
                               ? 4
                               : 5000}"
-                            value="${live(
-                              // @ts-ignore
-                              this._configList[property]
-                            )}"
+                            value="${live(this._configList[property])}"
                             @input=${(
                               evt: HTMLElementEvent<HTMLInputElement>
                             ) => this._handleInput(evt, property)}
