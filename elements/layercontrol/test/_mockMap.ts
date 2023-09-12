@@ -23,9 +23,6 @@ const mockLayer = (layerId: number) =>
     setVisible(visible: boolean) {
       this.visible = visible;
     },
-    remove () {
-      console.log('REMOVE!');
-    },
     visible: true,
   };
 
