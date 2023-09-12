@@ -1,6 +1,5 @@
 import "../src/main";
 import "./_mockMap";
-import "../../map/main";
 
 describe("LayerControl", () => {
   beforeEach(() => {
@@ -102,52 +101,22 @@ describe("LayerControl", () => {
 
   it("removes layers correctly in control and map", () => {
     // Ignore ResizeObserver exceptions so they do not break the test.
-    cy.on('uncaught:exception', (err) => {
-      if (err.message.includes('ResizeObserver loop')) {
+    cy.on("uncaught:exception", (err) => {
+      if (err.message.includes("ResizeObserver loop")) {
         return false;
       } else {
-        return undefined
+        return undefined;
       }
     });
 
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
-        {
-          "type": "Group",
-          "id": "group2",
-          "layerControlExpanded": true,
-          "title": "Data Layers",
-          "layers": [
-            {
-              "type": "Tile",
-              "id": "WIND",
-              "title": "WIND",
-              "source": {
-                "type": "TileWMS",
-                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-                "params": {
-                  "LAYERS": "AWS_VIS_WIND_V_10M"
-                }
-              }
-            },
-            {
-              "type": "Tile",
-              "id": "NO2",
-              "title": "Super Duper Uber Long Title for Nitrous Dioxide",
-              "source": {
-                "type": "TileWMS",
-                "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-                "params": {
-                  "LAYERS": "AWS_NO2-VISUALISATION"
-                }
-              }
-            }
-          ]
-        },
+        { id: "foo", layerControlExpanded: true },
+        { id: "bar" },
       ]);
     });
 
-    const layerToDelete = 'group2';
+    const layerToDelete = "foo";
 
     cy.get("eox-layercontrol")
       .shadow()
@@ -156,28 +125,17 @@ describe("LayerControl", () => {
         cy.get(`[data-layer=${layerToDelete}] eox-layerconfig`)
           .shadow()
           .within(() => {
-            cy.get('div button.delete').should('be.visible').click();
+            cy.get("div button.delete").should("be.visible").click();
           });
-        
+
         // 2. Confirm the removal of the layer from the menu tree.
-        cy.get(`[data-layer=group1]`)
-          .within(() => {
-            cy.get(`[data-layer=${layerToDelete}]`).should('not.exist');
-          });
+        cy.get(`[data-layer=${layerToDelete}]`).should("not.exist");
       });
-    
+
     // Verify the deletion of the map layer itself.
-    cy
-      .get("eox-map")
-      .then($el => {
-        const eoxMap = <EOxMap>$el[0];
-        let layer;
-        try {
-          layer = eoxMap.getLayerById('s2');
-        } catch (error) {
-          // Ignore error explicitly.
-        }
-        assert.equal(layer, undefined, 'OSM Layer should not be found');
-      });
+    cy.get("mock-map").then(($el) => {
+      let layer = (<MockMap>$el[0]).layers.find((l) => l.id === layerToDelete);
+      assert.equal(layer, undefined, "deleted layer should not be found");
+    });
   });
 });
