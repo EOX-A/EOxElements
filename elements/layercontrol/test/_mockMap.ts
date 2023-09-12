@@ -37,7 +37,7 @@ export class MockMap extends HTMLElement {
       getArray: () => [{}],
     }),
     getLayers: () => ({
-      getArray: () => this.layers,
+      getArray: () => new MockCollection(this.layers),
       on: (event: string, fun: () => void) => (this.events[event] = fun),
     }),
   };
@@ -76,4 +76,28 @@ export class MockMap extends HTMLElement {
     }
   };
 }
+
+class MockCollection<T> {
+  private items: T[] = [];
+
+  constructor(initialItems?: T[]) {
+    if (initialItems) {
+      this.items = initialItems;
+    }
+  }
+
+  getArray(): T[] {
+    return this.items;
+  }
+
+  remove(item: T): T | undefined {
+    const index = this.items.indexOf(item);
+    if (index !== -1) {
+        return this.items.splice(index, 1)[0];
+    }
+    return undefined;
+  }
+}
+
+
 customElements.define("mock-map", MockMap);
