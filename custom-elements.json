@@ -131,6 +131,26 @@
               "privacy": "public",
               "default": "\"title\"",
               "description": "The property of the result items used for display"
+            },
+            {
+              "kind": "field",
+              "name": "expandMultipleFilters",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "true",
+              "description": "Allow opening multiple filter accordeons in parallel"
+            },
+            {
+              "kind": "field",
+              "name": "expandMultipleResults",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "true",
+              "description": "Allow opening multiple result accordeons in parallel"
             }
           ]
         },
@@ -249,6 +269,18 @@
             {
               "kind": "method",
               "name": "resetFilters"
+            },
+            {
+              "kind": "method",
+              "name": "toggleAccordion",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
             }
           ],
           "attributes": [
@@ -383,9 +415,6 @@
             {
               "kind": "field",
               "name": "setLayers",
-              "type": {
-                "text": "Function"
-              },
               "description": "Apply layers from Mapbox Style JSON",
               "parameters": [
                 {
@@ -402,9 +431,6 @@
             {
               "kind": "field",
               "name": "addDraw",
-              "type": {
-                "text": "Function"
-              },
               "description": "Adds draw functionality to a given vector layer.",
               "parameters": [
                 {
@@ -412,7 +438,7 @@
                   "name": "layerId"
                 },
                 {
-                  "description": "options (to do: define draw options)",
+                  "description": "options",
                   "name": "options"
                 }
               ]
@@ -420,9 +446,6 @@
             {
               "kind": "field",
               "name": "addSelect",
-              "type": {
-                "text": "Function"
-              },
               "description": "Adds a select functionality a given vector layer.",
               "parameters": [
                 {
@@ -438,9 +461,6 @@
             {
               "kind": "field",
               "name": "removeInteraction",
-              "type": {
-                "text": "Function"
-              },
               "description": "removes a given interaction from the map. Layer have to be removed seperately",
               "parameters": [
                 {
@@ -452,9 +472,6 @@
             {
               "kind": "field",
               "name": "removeControl",
-              "type": {
-                "text": "Function"
-              },
               "description": "removes a given control from the map.",
               "parameters": [
                 {
@@ -466,10 +483,12 @@
             {
               "kind": "field",
               "name": "getLayerById",
-              "type": {
-                "text": "Function"
-              },
               "description": "gets an OpenLayers-Layer, either by its \"id\" or one of its Mapbox-Style IDs"
+            },
+            {
+              "kind": "field",
+              "name": "getFlatLayersArray",
+              "default": "getFlatLayersArray"
             }
           ],
           "attributes": [
@@ -857,21 +876,28 @@
               "kind": "field",
               "name": "layerCollection",
               "type": {
-                "text": "Collection<Layer>"
+                "text": "Collection<BaseLayer>"
               }
             },
             {
               "kind": "field",
               "name": "layerArray",
               "type": {
-                "text": "Array<Layer>"
+                "text": "Array<BaseLayer>"
               }
             },
             {
               "kind": "field",
               "name": "optionalLayerArray",
               "type": {
-                "text": "Array<Layer>"
+                "text": "Array<BaseLayer>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "resizeObserver",
+              "type": {
+                "text": "ResizeObserver"
               }
             },
             {
@@ -945,7 +971,7 @@
                 {
                   "name": "layerCollection",
                   "type": {
-                    "text": "Collection<any>"
+                    "text": "Collection<BaseLayer>"
                   }
                 }
               ]
@@ -988,7 +1014,7 @@
                 {
                   "name": "targetLayer",
                   "type": {
-                    "text": "Layer"
+                    "text": "OlLayer"
                   }
                 },
                 {
@@ -1013,7 +1039,7 @@
                 {
                   "name": "layerArray",
                   "type": {
-                    "text": "Array<Layer>"
+                    "text": "Array<BaseLayer>"
                   }
                 }
               ]
@@ -1151,14 +1177,14 @@
               "kind": "field",
               "name": "layerControl",
               "type": {
-                "text": "HTMLElement"
+                "text": "EOxLayerControl"
               }
             },
             {
               "kind": "field",
               "name": "layer",
               "type": {
-                "text": "Layer"
+                "text": "OlLayer"
               }
             },
             {
@@ -1181,7 +1207,7 @@
               "kind": "field",
               "name": "_layerControlElement",
               "type": {
-                "text": "HTMLElement"
+                "text": "EOxLayerControl"
               },
               "privacy": "private"
             },
@@ -1189,7 +1215,7 @@
               "kind": "field",
               "name": "_currentLayer",
               "type": {
-                "text": "Layer"
+                "text": "OlLayer"
               },
               "privacy": "private"
             },
@@ -1197,7 +1223,7 @@
               "kind": "field",
               "name": "_configList",
               "type": {
-                "text": "Object"
+                "text": "{ [x: string]: number | Array<string> }"
               },
               "privacy": "private",
               "default": "{}"
@@ -1229,7 +1255,7 @@
                 {
                   "name": "currentLayer",
                   "type": {
-                    "text": "Layer"
+                    "text": "OlLayer"
                   }
                 }
               ]
@@ -1314,7 +1340,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "A simple element for automatically fetching and displaying a STAC file (catalog, collection or item)",
           "name": "EOxStacInfo",
           "members": [
             {
@@ -1323,6 +1349,7 @@
               "type": {
                 "text": "boolean"
               },
+              "description": "Render the element without styling",
               "attribute": "unstyled"
             },
             {
@@ -1331,6 +1358,7 @@
               "type": {
                 "text": "string"
               },
+              "description": "The link to a STAC JSON file",
               "attribute": "for"
             },
             {
@@ -1340,6 +1368,7 @@
                 "text": "Array<string>"
               },
               "default": "[]",
+              "description": "A list of featured properties which are rendered full-width and expandable",
               "attribute": "featured"
             },
             {
@@ -1348,19 +1377,23 @@
               "type": {
                 "text": "Array<typeof STAC>"
               },
+              "privacy": "private",
               "default": "[]"
             },
             {
               "kind": "field",
-              "name": "fetchStac"
+              "name": "fetchStac",
+              "privacy": "private"
             },
             {
               "kind": "field",
-              "name": "parseStac"
+              "name": "parseStac",
+              "privacy": "private"
             },
             {
               "kind": "method",
               "name": "buildProperties",
+              "privacy": "private",
               "parameters": [
                 {
                   "name": "stacArray",
@@ -1377,6 +1410,7 @@
               "type": {
                 "text": "boolean"
               },
+              "description": "Render the element without styling",
               "fieldName": "unstyled"
             },
             {
@@ -1384,6 +1418,7 @@
               "type": {
                 "text": "string"
               },
+              "description": "The link to a STAC JSON file",
               "fieldName": "for"
             },
             {
@@ -1391,7 +1426,8 @@
               "type": {
                 "text": "Array<string>"
               },
-              "default": "[]",
+              "default": "[\"title\", \"description\"]",
+              "description": "A whitelist of properties from the STAC JSON to display",
               "fieldName": "properties"
             },
             {
@@ -1400,6 +1436,7 @@
                 "text": "Array<string>"
               },
               "default": "[]",
+              "description": "A list of featured properties which are rendered full-width and expandable",
               "fieldName": "featured"
             }
           ],

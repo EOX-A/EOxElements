@@ -1,21 +1,18 @@
-import { EOxChart } from "../src/main";
-import "../src/main";
-// import { html } from 'lit';
-import { configureDocsPage } from '../../../.storybook/docsPageConfig';
+import { EOxChart } from "./src/main";
+import "./src/main";
 
 export default {
-  title: 'Elements/eox-chart',
-  tags: ['autodocs'],
-  component: 'eox-chart',
+  title: "Elements/eox-chart",
+  tags: ["autodocs"],
+  component: "eox-chart",
   parameters: {
     docs: {
-      page: configureDocsPage('EOxChart'),
+      toc: true,
     },
-    options: { selectedPanel: 'addon-controls' },
+    options: { selectedPanel: "addon-controls" },
   },
   render: (args) => {
-    const eoxChart = new EOxChart()
-    console.dir(eoxChart)
+    const eoxChart = new EOxChart();
     const options = {
       endpoint:
         "https://xcube-geodb.brockmann-consult.de/gtif/f0ad1e25-98fa-4b82-9228-815ab24f5dd1",
@@ -40,10 +37,10 @@ export default {
       endTime: "2022-03-30",
     };
     eoxChart.setGeoDBEndpoint(options);
-    return eoxChart
-  }
-}
+    return eoxChart;
+  },
+};
 
 export const Primary = {
-  args: {}
-}
+  args: {},
+};

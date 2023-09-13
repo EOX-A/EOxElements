@@ -495,7 +495,7 @@ export class EOxLayerControl extends LitElement {
       : "raster";
   };
 }
-customElements.define("eox-layercontrol", EOxLayerControl)
+customElements.define("eox-layercontrol", EOxLayerControl);
 
 @customElement("eox-layerconfig")
 export class EOxLayerConfig extends LitElement {

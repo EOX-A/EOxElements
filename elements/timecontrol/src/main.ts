@@ -232,4 +232,4 @@ export class EOxTimeControl extends LitElement {
   }
 }
 
-customElements.define("eox-timecontrol", EOxTimeControl)
+customElements.define("eox-timecontrol", EOxTimeControl);

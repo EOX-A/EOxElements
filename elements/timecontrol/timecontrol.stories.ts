@@ -1,16 +1,15 @@
-import "../../map/main";
-import "../src/main"
-import { configureDocsPage } from '../../../.storybook/docsPageConfig';
+import "../map/main";
+import "./src/main";
 
 export default {
-  title: 'Elements/eox-timecontrol',
-  tags: ['autodocs'],
-  component: 'eox-timecontrol',
+  title: "Elements/eox-timecontrol",
+  tags: ["autodocs"],
+  component: "eox-timecontrol",
   parameters: {
     docs: {
-      page: configureDocsPage('EOxTimecontrol'),
+      toc: true,
     },
-    options: { selectedPanel: 'addon-controls' },
+    options: { selectedPanel: "addon-controls" },
   },
   render: (args) => `<eox-map style="width: 400px; height: 300px;"
   zoom="3"
@@ -56,9 +55,9 @@ export default {
     "2023-04-17",
     "2023-04-24"
   ]'
-></eox-timecontrol>`
-}
+></eox-timecontrol>`,
+};
 
 export const Primary = {
-  args: {}
-}
+  args: {},
+};

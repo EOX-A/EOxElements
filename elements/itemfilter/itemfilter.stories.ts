@@ -1,26 +1,24 @@
-import { EOxItemFilter } from "../src/main";
-import "../src/main";
-// import { html } from 'lit';
-import items from "../examples/items.json"
-import { configureDocsPage } from '../../../.storybook/docsPageConfig';
+import { EOxItemFilter } from "./src/main";
+import "./src/main";
+import items from "./examples/items.json";
 
 export default {
-  title: 'Elements/eox-itemfilter',
-  tags: ['autodocs'],
-  component: 'eox-itemfilter',
+  title: "Elements/eox-itemfilter",
+  tags: ["autodocs"],
+  component: "eox-itemfilter",
   parameters: {
     docs: {
-      page: configureDocsPage('EOxItemFilter'),
+      toc: true,
     },
-    options: { selectedPanel: 'addon-controls' },
+    options: { selectedPanel: "addon-controls" },
   },
   render: (args) => {
-    const eoxItemFilter = new EOxItemFilter()
-    eoxItemFilter.config = args
+    const eoxItemFilter = new EOxItemFilter();
+    eoxItemFilter.config = args;
     eoxItemFilter.apply(items);
-    return eoxItemFilter
-  }
-}
+    return eoxItemFilter;
+  },
+};
 
 export const Primary = {
   args: {
@@ -80,4 +78,4 @@ export const Primary = {
       console.log(item);
     },
   },
-}
+};

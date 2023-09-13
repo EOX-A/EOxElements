@@ -8,43 +8,44 @@ import StacFields from "@radiantearth/stac-fields";
 import { STAC } from "stac-js";
 import { TemplateElement } from "../../../utils/templateElement";
 
+/**
+ * A simple element for automatically fetching and displaying a STAC file (catalog, collection or item)
+ */
 export class EOxStacInfo extends TemplateElement {
+  /**
+   * Render the element without styling
+   */
   @property({ type: Boolean })
   unstyled: boolean;
 
+  /**
+   * The link to a STAC JSON file
+   */
   @property()
   for: string;
 
+  /**
+   * A whitelist of properties from the STAC JSON to display
+   */
   @property({ type: Array })
-  properties: Array<string> = [];
+  properties: Array<string> = ["title", "description"];
 
+  /**
+   * A list of featured properties which are rendered full-width and expandable
+   */
   @property({ type: Array })
   featured: Array<string> = [];
 
   @state()
-  stacInfo: Array<typeof STAC> = [];
+  private stacInfo: Array<typeof STAC> = [];
 
-  fetchStac = async (url: string) => {
+  private fetchStac = async (url: string) => {
     const response = await fetch(`${url}?ts=${Date.now()}`);
     const stac = await response.json();
     this.stacInfo = await this.parseStac(stac);
   };
 
-  parseStac = async (stac: typeof STAC) => {
-    // Custom fetching logic for story assets
-    // TODO keep this? Or have markdown in description
-    if (stac.assets?.story) {
-      // TEMP for demo
-      stac.assets.story.href =
-        "https://raw.githubusercontent.com/eurodatacube/eodash/staging/app/public/eodash-data/stories/E10a6.md";
-      const response = await fetch(stac.assets.story.href);
-      const text = await response.text();
-      if (response.status < 400) {
-        stac.description = text;
-      } else {
-        console.error(`Story loading failed! ${text}`);
-      }
-    }
+  private parseStac = async (stac: typeof STAC) => {
     if (stac.type === "Catalog") {
       return StacFields.formatCatalog(stac);
     }
@@ -56,8 +57,8 @@ export class EOxStacInfo extends TemplateElement {
     }
   };
 
-  buildProperties(stacArray: Array<typeof STAC>) {
-    const propertyFilter = this.properties.length > 0;
+  private buildProperties(stacArray: Array<typeof STAC>) {
+    const propertyFilter = this.properties?.length > 0;
     if (stacArray.length < 1) {
       return null;
     }
@@ -174,4 +175,4 @@ export class EOxStacInfo extends TemplateElement {
   }
 }
 
-customElements.define("eox-stacinfo", EOxStacInfo)
+customElements.define("eox-stacinfo", EOxStacInfo);

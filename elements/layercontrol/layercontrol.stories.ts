@@ -1,17 +1,15 @@
-import "../../map/main";
-import "../src/main"
-// import { html } from 'lit';
-import { configureDocsPage } from '../../../.storybook/docsPageConfig';
+import "../map/main";
+import "./src/main";
 
 export default {
-  title: 'Elements/eox-layercontrol',
-  tags: ['autodocs'],
-  component: 'eox-layercontrol',
+  title: "Elements/eox-layercontrol",
+  tags: ["autodocs"],
+  component: "eox-layercontrol",
   parameters: {
     docs: {
-      page: configureDocsPage('EOxLayercontrol'),
+      toc: true,
     },
-    options: { selectedPanel: 'addon-controls' },
+    options: { selectedPanel: "addon-controls" },
   },
   render: (args) => `<eox-map style="width: 400px; height: 300px; zoom="3"
   center="[1000000, 6000000]"
@@ -134,9 +132,9 @@ export default {
   }
 ]'></eox-map><eox-layercontrol for="eox-map" layerIdentifier="id">
 Basic layer control
-</eox-layercontrol>`
-}
+</eox-layercontrol>`,
+};
 
 export const Primary = {
-  args: {}
-}
+  args: {},
+};

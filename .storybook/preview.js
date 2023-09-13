@@ -1,22 +1,20 @@
-import { setCustomElementsManifest } from '@storybook/web-components';
-import customElements from '../custom-elements.json';
+import { setCustomElementsManifest } from "@storybook/web-components";
+import customElements from "../custom-elements.json";
 
 export const setCustomElementsManifestWithOptions = (
   customElements,
-  options,
+  options
 ) => {
   let { privateFields = true } = options;
   if (!privateFields) {
     customElements?.modules?.forEach((module) => {
-      module?.declarations?.forEach(declaration => {
-        Object.keys(declaration).forEach(key => {
+      module?.declarations?.forEach((declaration) => {
+        Object.keys(declaration).forEach((key) => {
           if (Array.isArray(declaration[key])) {
-            console.log(declaration[key])
-            declaration[key] = declaration[key].filter(
-              (member) => {
-                return !member.privacy?.includes('private')
-              }
-            );
+            console.log(declaration[key]);
+            declaration[key] = declaration[key].filter((member) => {
+              return !member.privacy?.includes("private");
+            });
           }
         });
       });
@@ -39,9 +37,9 @@ const preview = {
     },
     docs: {
       story: {
-        inline: true 
+        inline: true,
       },
-    }
+    },
   },
 };
 

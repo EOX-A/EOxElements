@@ -175,4 +175,4 @@ export class EOxMap extends LitElement {
   }
 }
 
-customElements.define("eox-map", EOxMap)
+customElements.define("eox-map", EOxMap);

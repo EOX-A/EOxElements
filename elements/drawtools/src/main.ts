@@ -144,4 +144,4 @@ export class EOxDrawTools extends LitElement {
   }
 }
 
-customElements.define("eox-drawtools", EOxDrawTools)
+customElements.define("eox-drawtools", EOxDrawTools);
