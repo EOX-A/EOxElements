@@ -73,12 +73,12 @@ export class EOxStacInfo extends TemplateElement {
     );
     return html`
       <h1>
-        ${(propertyFilter ? this.properties.includes("title") : true)
+        ${(propertyFilter ? this.properties?.includes("title") : true)
           ? stacProperties.title?.formatted
           : nothing}
       </h1>
       <p>
-        ${(propertyFilter ? this.properties.includes("description") : true)
+        ${(propertyFilter ? this.properties?.includes("description") : true)
           ? unsafeHTML(stacProperties.description?.formatted)
           : nothing}
       </p>
@@ -91,11 +91,11 @@ export class EOxStacInfo extends TemplateElement {
               return !["title", "description", "links"].includes(key);
             })
             .filter(([key]) =>
-              !propertyFilter ? true : this.properties.includes(key)
+              !propertyFilter ? true : this.properties?.includes(key)
             )
             .reverse()
             .sort(([keyA], [keyB]) =>
-              this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
+              this.properties?.indexOf(keyA) > this.properties?.indexOf(keyB)
                 ? 1
                 : -1
             ),
@@ -124,10 +124,10 @@ export class EOxStacInfo extends TemplateElement {
       </ul>
       ${map(
         Object.entries(stacProperties)
-          .filter(([key]) => this.featured.includes(key))
+          .filter(([key]) => this.featured?.includes(key))
           .reverse()
           .sort(([keyA], [keyB]) =>
-            this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
+            this.properties?.indexOf(keyA) > this.properties?.indexOf(keyB)
               ? 1
               : -1
           ),
