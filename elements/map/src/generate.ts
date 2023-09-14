@@ -166,6 +166,10 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
     // TO DO
   });
   olLayer.on("propertychange", (e) => {
+    if (e.key === "map") {
+      // do not sync property when setting the "map" of the layer
+      return;
+    }
     //@ts-ignore
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
