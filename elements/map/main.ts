@@ -6,7 +6,12 @@ import View from "ol/View.js";
 import olCss from "ol/ol.css";
 import { DrawOptions, addDraw } from "./src/draw";
 import { SelectOptions, addSelect } from "./src/select";
-import { generateLayers, EoxLayer, createLayer } from "./src/generate";
+import {
+  generateLayers,
+  EoxLayer,
+  createLayer,
+  updateLayer,
+} from "./src/generate";
 import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
@@ -90,14 +95,16 @@ export class EOxMap extends LitElement {
    * @param json EoxLayer JSON definition
    * @returns the created or updated ol layer
    */
-  addOrUpdateLayer = (json: EoxLayer) => {
+  addOrUpdateLayer = async (json: EoxLayer) => {
     const id = json.properties?.id;
     const existingLayer = getLayerById(this, id);
     let layer;
     if (existingLayer) {
-      // to do: update layer
+      await updateLayer(json, existingLayer);
+      layer = existingLayer;
     } else {
       layer = createLayer(json);
+      await layer.get("sourcePromise");
       this.map.addLayer(layer);
     }
     return layer;

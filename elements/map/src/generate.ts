@@ -137,8 +137,52 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
       olLayer.set("sourcePromise", Promise.resolve(), true);
     }
   }
+  olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
   return olLayer;
+}
+
+export async function updateLayer(
+  newLayerDefinition: EoxLayer,
+  existingLayer: olLayers.Layer
+) {
+  const existingJsonDefintion = existingLayer.get("_jsonDefinition");
+
+  // there are probably more cases that make the layers incompatible
+  if (
+    newLayerDefinition.type !== existingJsonDefintion.type ||
+    newLayerDefinition.source?.type !== existingJsonDefintion.source?.type
+  ) {
+    throw new Error(`Layers are not compatible to be updated`);
+  }
+  const newLayer = createLayer(newLayerDefinition);
+  await newLayer.get("sourcePromise");
+
+  if (
+    JSON.stringify(newLayerDefinition.source) !==
+    JSON.stringify(existingJsonDefintion.source)
+  ) {
+    existingLayer.setSource(newLayer.getSource());
+  }
+
+  if (
+    ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
+    JSON.stringify(newLayerDefinition.style) !==
+      JSON.stringify(existingJsonDefintion.style)
+  ) {
+    //@ts-ignore
+    existingLayer.setStyle(newLayer.getStyle());
+  }
+
+  if (
+    JSON.stringify(newLayerDefinition.properties) !==
+    JSON.stringify(existingJsonDefintion.properties)
+  ) {
+    existingLayer.setProperties(newLayerDefinition.properties);
+  }
+
+  setSyncListeners(existingLayer, newLayerDefinition);
+  return existingLayer;
 }
 
 export const generateLayers = (layerArray: Array<EoxLayer>) => {
@@ -155,7 +199,6 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
  * @param {EoxLayer} eoxLayer
  */
 function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
-  olLayer.set("_jsonDefinition", eoxLayer, true);
   olLayer.on("change:opacity", () => {
     eoxLayer.properties.opacity = olLayer.getOpacity();
   });
