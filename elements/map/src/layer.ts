@@ -6,7 +6,7 @@ import Layer from "ol/layer/Layer";
  *
  * @param EOxMap instance of eox map class
  * @param layerId id of ol-layer or mapbox style layer
- * @returns Layer
+ * @returns Layer or `undefined` if layer does not exist
  */
 export function getLayerById(EOxMap: EOxMap, layerId: string) {
   const flatLayers = getFlatLayersArray(
@@ -19,9 +19,6 @@ export function getLayerById(EOxMap: EOxMap, layerId: string) {
     flatLayers
       .filter((l) => l.get("mapbox-layers"))
       .find((l) => l.get("mapbox-layers").includes(layerId));
-  if (!layer) {
-    throw Error(`Layer with id: ${layerId} does not exist.`);
-  }
   return layer;
 }
 
