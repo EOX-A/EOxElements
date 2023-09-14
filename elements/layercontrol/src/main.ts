@@ -4,7 +4,7 @@ import { repeat } from "lit/directives/repeat.js";
 import { live } from "lit/directives/live.js";
 import { when } from "lit/directives/when.js";
 import { Map, Collection } from "ol";
-import { Layer } from "ol/layer";
+import { Group, Layer } from "ol/layer";
 import BaseLayer from "ol/layer/Base";
 import { Source } from "ol/source";
 import LayerGroup from "ol/layer/Group";
@@ -204,11 +204,31 @@ export class EOxLayerControl extends LitElement {
 
     const collection = this.olMap.getLayers();
     this._updateControl(collection);
-    collection.on("change:length", () => {
-      if (!this._currentlySorting) {
-        this._updateControl(collection);
-      }
-    });
+
+    const listenForCollectionChange = (
+      layerCollection: Collection<BaseLayer>
+    ) => {
+      layerCollection.on("change:length", () => {
+        if (!this._currentlySorting) {
+          this._updateControl(layerCollection);
+        }
+      });
+    };
+
+    // root collection
+    listenForCollectionChange(collection);
+
+    // recursively add listener to all group and sub-group collections
+    const checkCollection = (layerCollection: Collection<BaseLayer>) => {
+      layerCollection.getArray().forEach((layer) => {
+        if ((<Group>layer).getLayers) {
+          const coll = (<Group>layer).getLayers();
+          listenForCollectionChange(coll);
+          checkCollection(coll);
+        }
+      });
+    };
+    checkCollection(collection);
 
     const singleLayer = (layer: Layer, groupId: string) => html`
       <details open="${layer.get("layerControlExpanded") ? true : nothing}">
@@ -394,12 +414,14 @@ export class EOxLayerControl extends LitElement {
                   this.layerCollection.getArray(),
                   inGroup
                 );
-                const groupCollection = (<LayerGroup>group).getLayers();
-                return [
-                  ...groupCollection
-                    .getArray()
-                    .map((l: BaseLayer) => l.get(this.layerIdentifier)),
-                ].reverse();
+                const groupCollection = (<LayerGroup>group)?.getLayers();
+                return groupCollection
+                  ? [
+                      ...groupCollection
+                        .getArray()
+                        .map((l: BaseLayer) => l.get(this.layerIdentifier)),
+                    ].reverse()
+                  : undefined;
               } else {
                 return [
                   ...this.layerCollection
