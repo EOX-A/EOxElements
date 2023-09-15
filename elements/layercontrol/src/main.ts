@@ -48,6 +48,10 @@ export class EOxLayerControl extends LitElement {
   @state()
   resizeObserver: ResizeObserver;
 
+  @state()
+  // Keep track of individually expanded LayerConfigs
+  isLayerConfigExpanded: { [key: string]: boolean } = {};
+
   /**
    * The query selector for the map
    */
@@ -107,6 +111,21 @@ export class EOxLayerControl extends LitElement {
       composed: true,
     };
     this.dispatchEvent(new CustomEvent("layerconfig", options));
+  }
+
+  private _onLayerConfigToggle(event: Event, layerId: string) {
+    const currentState = this.isLayerConfigExpanded[layerId] || false;
+
+    // Open our details section if it's closed to reveal our layer config
+    this.shadowRoot
+      .querySelector(`[data-layer=${layerId}] details`)
+      .setAttribute('open', '');
+
+    // Prevent closing the surrounding dropdown if both the layer and its config are closed.
+    event.preventDefault();
+
+    this.isLayerConfigExpanded[layerId] = !currentState;
+    this.requestUpdate();
   }
 
   changeOpacity(targetLayer: Layer, value: number) {
@@ -252,6 +271,7 @@ export class EOxLayerControl extends LitElement {
               </span>
             </div>
             <div class="right">
+              <span class="menu-icon" @click="${(event: Event) => this._onLayerConfigToggle(event, layer.get("id"))}"></span>
               ${this.sortBy === "layerOrder" && !this.unstyled
                 ? html` <div
                     class="drag-handle ${layer.get("layerControlDisable")
@@ -272,6 +292,7 @@ export class EOxLayerControl extends LitElement {
                 .layer=${layer}
                 .external=${this.externalLayerConfig}
                 .unstyled="${this.unstyled}"
+                .expanded="${this.isLayerConfigExpanded[layer.get("id")] || false}"
               ></eox-layerconfig>
             `
           : nothing}
@@ -539,6 +560,9 @@ export class EOxLayerConfig extends LitElement {
   @property({ type: Boolean })
   unstyled: boolean;
 
+  @property({ type: Boolean })
+  expanded: boolean;
+
   private _layerControlElement: EOxLayerControl;
 
   @state()
@@ -606,7 +630,7 @@ export class EOxLayerConfig extends LitElement {
       ${when(
         this._currentLayer,
         () => html`
-          <div>
+          <div class="layerconfig" style="max-height: ${this.expanded ? 999 : 0}px">
             <slot></slot>
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
