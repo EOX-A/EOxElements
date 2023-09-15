@@ -12,7 +12,7 @@ input[type=radio] {
 }
 
 label span {
-  font-size: 17px !important;
+  font-size: small;
 }
 
 input[type=radio]:after {
