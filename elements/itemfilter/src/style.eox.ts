@@ -163,6 +163,7 @@ eox-itemfilter-range {
 }
 eox-itemfilter-autocomplete {
   width: 100%;
+  height: auto;
 }
 eox-itemfilter-inline {
   position: relative;
