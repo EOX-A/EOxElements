@@ -2,6 +2,9 @@ export const styleEOX = `
 :host {
   --color-primary: #004170;
   --color-primary-lighter: color-mix(in srgb, var(--color-primary), #fff 90%);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 * {
   font-family: Roboto, sans-serif;
@@ -21,6 +24,7 @@ header {
 }
 main {
   padding-bottom: 50px;
+  flex: 1;
 }
 footer {
   background: var(--color-primary);

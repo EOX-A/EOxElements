@@ -120,11 +120,13 @@ export class EOxStacInfo extends LitElement {
             ([, value]) => html`
               <details>
                 <summary>
-                  ${
-                    // TODO
-                    // @ts-ignore
-                    value.label
-                  }
+                  <slot name="featured-${value.label.toLowerCase()}-summary">
+                    ${
+                      // TODO
+                      // @ts-ignore
+                      value.label
+                    }
+                  </slot>
                 </summary>
                 <slot name="featured-${value.label.toLowerCase()}">
                   ${unsafeHTML(
