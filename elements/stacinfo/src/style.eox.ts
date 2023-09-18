@@ -1,11 +1,37 @@
 export const styleEOX = `
+:host {
+  --color-primary: #004170;
+  --color-primary-lighter: color-mix(in srgb, var(--color-primary), #fff 90%);
+}
 * {
   font-family: Roboto, sans-serif;
+}
+img,
+video,
+iframe {
+  max-width: 100%;
+}
+header,
+main,
+footer {
+  padding: 5px 30px;
+}
+header {
+  background: var(--color-primary-lighter);
+}
+main {
+  padding-bottom: 50px;
+}
+footer {
+  background: var(--color-primary);
+  color: white;
+  padding: 5px 30px 20px;
 }
 ul {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
+  padding: 0;
 }
 li {
   flex-basis: 50%;

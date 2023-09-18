@@ -1,7 +1,8 @@
-import { LitElement, html, nothing, PropertyValueMap } from "lit";
+import { LitElement, html, PropertyValueMap } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import StacFields from "@radiantearth/stac-fields";
@@ -16,16 +17,22 @@ export class EOxStacInfo extends LitElement {
   for: string;
 
   @property({ type: Array })
+  header: Array<string> = [];
+
+  @property({ type: Array })
   properties: Array<string> = [];
 
   @property({ type: Array })
   featured: Array<string> = [];
 
+  @property({ type: Array })
+  footer: Array<string> = [];
+
   @state()
   stacInfo: Array<typeof STAC> = [];
 
   @state()
-  public stacProperties: Array<object>;
+  public stacProperties: Array<typeof STAC>;
 
   fetchStac = async (url: string) => {
     const response = await fetch(`${url}?ts=${Date.now()}`);
@@ -35,20 +42,6 @@ export class EOxStacInfo extends LitElement {
   };
 
   parseStac = async (stac: typeof STAC) => {
-    // Custom fetching logic for story assets
-    // TODO keep this? Or have markdown in description
-    if (stac.assets?.story) {
-      // TEMP for demo
-      stac.assets.story.href =
-        "https://raw.githubusercontent.com/eurodatacube/eodash/staging/app/public/eodash-data/stories/E10a6.md";
-      const response = await fetch(stac.assets.story.href);
-      const text = await response.text();
-      if (response.status < 400) {
-        stac.description = text;
-      } else {
-        console.error(`Story loading failed! ${text}`);
-      }
-    }
     if (stac.type === "Catalog") {
       return StacFields.formatCatalog(stac);
     }
@@ -61,7 +54,13 @@ export class EOxStacInfo extends LitElement {
   };
 
   buildProperties(stacArray: Array<typeof STAC>) {
-    const propertyFilter = this.properties.length > 0;
+    const parseEntries = (list: Array<string>) =>
+      Object.entries(this.stacProperties)
+        .filter(([key]) => (list.length < 1 ? true : list.includes(key)))
+        .reverse()
+        .sort(([keyA], [keyB]) =>
+          list.indexOf(keyA) > list.indexOf(keyB) ? 1 : -1
+        );
     if (stacArray.length < 1) {
       return null;
     }
@@ -75,82 +74,81 @@ export class EOxStacInfo extends LitElement {
       {}
     );
     return html`
-      <h1>
-        ${(propertyFilter ? this.properties.includes("title") : true)
-          ? this.stacProperties.title?.formatted
-          : nothing}
-      </h1>
-      <ul part="properties">
-        ${map(
-          Object.entries(this.stacProperties)
-            .filter(([key]) => {
-              // title and description are always shonw on top, if available
-              return !["title", "description"].includes(key);
-            })
-            .filter(([key]) =>
-              !propertyFilter ? true : this.properties.includes(key)
-            )
-            .reverse()
-            .sort(([keyA], [keyB]) =>
-              this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
-                ? 1
-                : -1
-            ),
-          ([key, value]) => html`
-            <slot name=${value.label.toLowerCase()}>
-              <li>
-                <span class="label">
+      <header part="header">
+        <slot name="header">
+          ${map(
+            parseEntries(this.header),
+            ([, value], index) => staticHTML`
+            <h${unsafeStatic((index + 1).toString())}>${unsafeHTML(
+              value.formatted
+            )}</h${unsafeStatic((index + 1).toString())}>
+            `
+          )}
+        </slot>
+      </header>
+      <main>
+        <section>
+          <ul part="properties">
+            ${map(
+              parseEntries(this.properties),
+              ([, value]) => html`
+                <slot name=${value.label.toLowerCase()}>
+                  <li>
+                    <span class="label">
+                      ${
+                        // TODO
+                        // @ts-ignore
+                        value.label
+                      } </span
+                    >:
+                    <span class="value">
+                      ${
+                        // TODO
+                        // @ts-ignore
+                        unsafeHTML(value.formatted)
+                      }
+                    </span>
+                  </li>
+                </slot>
+              `
+            )}
+          </ul>
+        </section>
+        <section>
+          ${map(
+            parseEntries(this.featured),
+            ([, value]) => html`
+              <details>
+                <summary>
                   ${
                     // TODO
                     // @ts-ignore
                     value.label
-                  } </span
-                >:
-                <span class="value">
-                  ${
+                  }
+                </summary>
+                <slot name="featured-${value.label.toLowerCase()}">
+                  ${unsafeHTML(
                     // TODO
                     // @ts-ignore
-                    unsafeHTML(value.formatted)
-                  }
-                </span>
-              </li>
-            </slot>
-          `
-        )}
-      </ul>
-      ${map(
-        Object.entries(this.stacProperties)
-          .filter(([key]) => this.featured.includes(key))
-          .reverse()
-          .sort(([keyA], [keyB]) =>
-            this.properties.indexOf(keyA) > this.properties.indexOf(keyB)
-              ? 1
-              : -1
-          ),
-        ([key, value]) => html`
-          <details>
-            <summary>
-              ${
-                // TODO
-                // @ts-ignore
-                value.label
-              }
-            </summary>
-            <slot name="featured-${value.label.toLowerCase()}">
-              ${unsafeHTML(
-                // TODO
-                // @ts-ignore
-                value.formatted
-              )}
-            </slot>
-          </details>
-        `
-      )}
-      <p>
-        ${(propertyFilter ? this.properties.includes("description") : true)
-          ? unsafeHTML(this.stacProperties.description?.formatted)
-          : nothing}
-      </p>
+                    value.formatted
+                  )}
+                </slot>
+              </details>
+            `
+          )}
+        </section>
+      </main>
+      <footer part="footer">
+        <slot name="footer">
+          ${map(
+            parseEntries(this.footer),
+            ([, value]) => html`
+              <p>${value.label}</p>
+              <small>${unsafeHTML(value.formatted)}</small>
+            `
+          )}
+        </slot>
+      </footer>
     `;
   }
 
@@ -160,10 +158,8 @@ export class EOxStacInfo extends LitElement {
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
-      <div>
-        <slot></slot>
-        ${this.buildProperties(this.stacInfo)}
-      </div>
+      <slot></slot>
+      ${this.buildProperties(this.stacInfo)}
     `;
   }
 

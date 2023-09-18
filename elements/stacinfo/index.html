@@ -6,8 +6,18 @@
     <link href="https://eox.at/fonts/roboto/roboto.css" rel="stylesheet" />
     <title>eox-stacinfo dev playground</title>
     <style>
-      eox-stacinfo::part(properties) {
+      html,
+      body {
+        margin: 0;
         padding: 0;
+      }
+      eox-stacinfo::part(header) {
+        position: sticky;
+        top: 0;
+      }
+      eox-stacinfo::part(footer) {
+        position: sticky;
+        bottom: 0;
       }
       [slot="themes"] {
         width: 100%;
@@ -34,8 +44,10 @@
   <body>
     <eox-stacinfo
       for="https://eurodatacube.github.io/eodash-catalog/RACE/NO2_daily/collection.json"
-      properties='["title", "themes", "tags", "sensor", "agency", "satellite", "extent", "license"]'
-      featured='["links"]'
+      header='["title", "agency"]'
+      properties='["themes", "tags", "sensor", "satellite", "license"]'
+      featured='["description", "links"]'
+      footer='["agency"]'
     >
       <div slot="themes"></div>
       <div slot="featured-links">
