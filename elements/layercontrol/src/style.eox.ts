@@ -47,6 +47,12 @@ ul[data-group] {
   transform: translateY(-2px);
 }
 
+[data-type=raster] summary::before, [data-type=vector] summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+}
+
 [data-layerconfig] button {
   margin-left: 64px;
   margin-bottom: 21px;
