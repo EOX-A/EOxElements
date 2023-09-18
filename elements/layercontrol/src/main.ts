@@ -604,11 +604,14 @@ export class EOxLayerConfig extends LitElement {
         () => html`
           <div>
             <slot></slot>
-            <button
-              class="delete"
-              @click="${() =>
-                this.dispatchEvent(new CustomEvent("removeLayer"))}"
-            ></button>
+            <div class="slider-control">
+              <div class="slider-property">Remove</div>
+              <button
+                class="delete"
+                @click="${() =>
+                  this.dispatchEvent(new CustomEvent("removeLayer"))}"
+              ></button>
+            </div>
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
               : nothing}
