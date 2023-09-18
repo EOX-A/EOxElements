@@ -53,9 +53,9 @@ export type EoxLayer = {
   type: layerType;
   properties: object & {
     id: string;
-    opacity?: number;
-    visible?: boolean;
   };
+  opacity?: number;
+  visible?: boolean;
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: mapboxgl.Style | FlatStyleLike;
@@ -200,10 +200,10 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
  */
 function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
   olLayer.on("change:opacity", () => {
-    eoxLayer.properties.opacity = olLayer.getOpacity();
+    eoxLayer.opacity = olLayer.getOpacity();
   });
   olLayer.on("change:visible", () => {
-    eoxLayer.properties.visible = olLayer.getVisible();
+    eoxLayer.visible = olLayer.getVisible();
   });
   olLayer.on("change:zIndex", (e) => {
     // TO DO

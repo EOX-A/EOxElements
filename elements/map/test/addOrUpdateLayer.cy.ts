@@ -12,9 +12,9 @@ describe("Map", () => {
         background: "#1366dd",
         properties: {
           id: "regions",
-          visible: true,
-          opacity: 0.3,
         },
+        visible: true,
+        opacity: 0.3,
         source: {
           type: "Vector",
           url: "https://openlayers.org/data/vector/ecoregions.json",
@@ -26,15 +26,16 @@ describe("Map", () => {
       await eoxMap.addOrUpdateLayer(layerDefinition);
       const layer = eoxMap.getLayerById("regions");
       expect(layer).to.exist;
+      expect(layer.getOpacity()).to.be.equal(0.3);
 
       const updatedLayerDefinition = {
         type: "Vector",
         background: "#1366dd",
         properties: {
           id: "regions",
-          visible: true,
-          opacity: 1,
         },
+        visible: true,
+        opacity: 1,
         source: {
           type: "Vector",
           url: "https://openlayers.org/data/vector/ecoregions.json",
