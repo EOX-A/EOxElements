@@ -7,7 +7,7 @@
     <title>eox-itemfilter dev playground</title>
   </head>
   <body>
-    <eox-itemfilter></eox-itemfilter>
+    <eox-itemfilter inline></eox-itemfilter>
     <script type="module">
       import "./src/main.ts";
       import "https://unpkg.com/@eox/map@latest/dist/eox-map.js";
@@ -19,9 +19,9 @@
         filterProperties: [
           {
             keys: ["title", "themes"],
-            title: "Search",
+            title: "Free text",
             type: "text",
-            expanded: true,
+            // expanded: true,
             // state: {
             //   title: "hi",
             //   themes: "hi",

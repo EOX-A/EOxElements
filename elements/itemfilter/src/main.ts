@@ -14,6 +14,7 @@ import "./filters/range";
 import "./filters/select";
 import "./filters/spatial";
 import "./filters/text";
+import "./inline";
 import { indexItems, filter as filterClient } from "./filterClient";
 import { filter as filterExternal } from "./filterExternal";
 import { style } from "./style";
@@ -110,6 +111,9 @@ export class EOxItemFilter extends TemplateElement {
   @state()
   public selectedResult: Item;
 
+  @property({ type: Boolean })
+  public inline: Boolean;
+
   @property({ attribute: false }) set config(config) {
     const oldValue = this._config;
     this._config = {
@@ -169,6 +173,7 @@ export class EOxItemFilter extends TemplateElement {
           }
           if (Array.isArray(item[filterProperty.key])) {
             item[filterProperty.key].forEach((prop: string) => {
+              // if (!filterKeys[prop]) { return }
               filterKeys[prop] = undefined;
             });
           } else {
@@ -177,6 +182,7 @@ export class EOxItemFilter extends TemplateElement {
               (<SpatialFilterObject>filterKeys).mode =
                 (<SpatialFilterObject>filterProperty).mode || "intersects";
             } else {
+              // if(!item[filterProperty.key]) { return }
               filterKeys[item[filterProperty.key]] = undefined;
             }
           }
@@ -337,22 +343,35 @@ export class EOxItemFilter extends TemplateElement {
         @submit="${(evt: FormDataEvent) => evt.preventDefault()}"
       >
         ${when(
-          this._config.filterProperties.length,
+          this.inline,
           () => html`
-            <section class="${this.config.inlineMode ? "inline" : nothing}">
-              ${when(
-                !this.config.inlineMode,
-                () =>
-                  html`
-                    <slot name="filterstitle"
-                      ><h4 style="margin-top: 8px">Filters</h4></slot
-                    >
-                  `
-              )}
-              <ul id="filters">
-                ${map(
-                  Object.values(this.filters),
-                  (filterObject) => staticHTML`
+            <eox-itemfilter-inline
+              .filters=${this.filters}
+              .unstyled=${this.unstyled}
+              @filter=${() => {
+                this.search();
+              }}
+              @reset=${() => this.resetFilters()}
+            ></eox-itemfilter-inline>
+          `,
+          () => html`
+            ${when(
+              this._config.filterProperties.length,
+              () => html`
+                <section class="${this.config.inlineMode ? "inline" : nothing}">
+                  ${when(
+                    !this.config.inlineMode,
+                    () =>
+                      html`
+                        <slot name="filterstitle"
+                          ><h4 style="margin-top: 8px">Filters</h4></slot
+                        >
+                      `
+                  )}
+                  <ul id="filters">
+                    ${map(
+                      Object.values(this.filters),
+                      (filterObject) => staticHTML`
                   <li>
                     ${
                       filterObject.featured
@@ -384,14 +403,14 @@ export class EOxItemFilter extends TemplateElement {
                     }
                   </li>
                 `
-                )}
-              </ul>
-              ${when(
-                this._config.filterProperties &&
-                  Object.values(this.filters)
-                    .map((f) => f.dirty)
-                    .filter((f) => f).length > 0,
-                () => html`
+                    )}
+                  </ul>
+                  ${when(
+                    this._config.filterProperties &&
+                      Object.values(this.filters)
+                        .map((f) => f.dirty)
+                        .filter((f) => f).length > 0,
+                    () => html`
                   <button
                     id="filter-reset"
                     class="outline small"
@@ -401,8 +420,10 @@ export class EOxItemFilter extends TemplateElement {
                     Reset filters
                   </a>
                 `
-              )}
-            </section>
+                  )}
+                </section>
+              `
+            )}
           `
         )}
         ${when(

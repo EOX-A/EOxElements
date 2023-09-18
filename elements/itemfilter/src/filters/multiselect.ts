@@ -1,11 +1,15 @@
 import { LitElement, html, nothing } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { map } from "lit/directives/map.js";
+import { customElement, property, state } from "lit/decorators.js";
+import { repeat } from "lit/directives/repeat.js";
+import { when } from "lit/directives/when.js";
+import "../autocomplete";
 
 @customElement("eox-itemfilter-multiselect")
 export class EOxItemFilterMultiselect extends LitElement {
   @property()
   filterObject: FilterObject;
+
+  private _inputFilter = "";
 
   public reset() {
     this.renderRoot
@@ -29,11 +33,30 @@ export class EOxItemFilterMultiselect extends LitElement {
 
   render() {
     return html`
+      ${when(
+        Object.keys(this.filterObject.state).length > 10,
+        () => html`
+          <eox-itemfilter-autocomplete
+            .items=${this.filterObject.state}
+            @deleteChip=${(evt) => {
+              this.filterObject.state[evt.detail.key] = undefined;
+              this.requestUpdate();
+              this.dispatchEvent(new CustomEvent("filter"));
+            }}
+            @input=${(evt) => {
+              this._inputFilter = evt.target.value;
+              this.requestUpdate();
+            }}
+          >
+          </eox-itemfilter-autocomplete>
+        `
+      )}
       <ul>
-        ${map(
-          Object.keys(this.filterObject.state).sort((a, b) =>
-            a.localeCompare(b)
-          ),
+        ${repeat(
+          Object.keys(this.filterObject.state)
+            .sort((a, b) => a.localeCompare(b))
+            .filter((item) => item.includes(this._inputFilter)),
+          (key) => key + this.filterObject.state[key],
           (key) => html`
             <li class=${this.filterObject.state[key] ? "highlighted" : nothing}>
               <label>
@@ -50,6 +73,9 @@ export class EOxItemFilterMultiselect extends LitElement {
                     this.filterObject.dirty = true;
                     this.dispatchEvent(new CustomEvent("filter"));
                     this.requestUpdate();
+                    this.renderRoot
+                      .querySelector("eox-itemfilter-autocomplete")
+                      ?.requestUpdate();
                   }}
                 />
                 <span class="title">${key}</span>

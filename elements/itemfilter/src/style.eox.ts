@@ -161,4 +161,55 @@ eox-itemfilter-range {
 .range-after {
   margin-left: .5rem;
 }
+eox-itemfilter-autocomplete {
+  width: 100%;
+}
+eox-itemfilter-inline {
+  position: relative;
+}
+input[type="text"].autocomplete-input {
+  height: 30px;
+  margin: 0;
+}
+.chip-container {
+  position: absolute;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+}
+.chip {
+  font-size: small;
+  background: lightgrey;
+  padding: 4px 8px;
+  border-radius: 10px;
+  margin-right: 4px;
+  text-transform: capitalize;
+}
+.inline-clear {
+  position: absolute;
+  right: 0px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inline-dropdown {
+  padding: 8px;
+  box-shadow: 0 3px 7px #0007;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.inline-dropdown ul {
+  margin: 0;
+}
+.inline-dropdown li {
+  text-transform: capitalize;
+  font-size: small;
+}
+.inline-clear,
+.autocomplete-clear {
+  cursor: pointer;
+}
 `;
