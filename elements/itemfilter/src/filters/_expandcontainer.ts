@@ -12,11 +12,13 @@ export class EOxItemFilterExpandContainer extends LitElement {
   unstyled: boolean;
 
   handleDetailsToggle(event: Event) {
-    this.dispatchEvent(new CustomEvent('details-toggled', {
-      detail: event,
-      bubbles: true,
-      composed: true,
-    }));
+    this.dispatchEvent(
+      new CustomEvent("details-toggled", {
+        detail: event,
+        bubbles: true,
+        composed: true,
+      })
+    );
   }
 
   render() {
