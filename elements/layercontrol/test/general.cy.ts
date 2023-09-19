@@ -56,6 +56,9 @@ describe("LayerControl", () => {
         cy.get("[data-cy='optionalLayers']")
           .find("option:not([disabled])")
           .should("have.length", 1);
+        cy.get("[data-cy='optionalLayers']")
+          .siblings('button')
+          .should("exist")
       });
   });
 
@@ -168,6 +171,48 @@ describe("LayerControl", () => {
       .shadow()
       .within(() => {
         cy.get(".layer").find(".title").contains("baz").should('not.exist');
+      });
+  });
+
+  it("adds a layer to a correct group when originally optional", () => {
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([
+        {
+          title: "group1",
+          layers: [
+            { title: "title1" },
+          ],
+          layerControlExpanded: true,
+        },
+        {
+          title: "group2",
+          layers: [
+            {title: "foo"},
+            {title: "title2",
+             layerControlOptional: true,
+             visible: false},
+          ],
+          layerControlExpanded: true,
+        },
+      ]);
+    });
+    cy.wait(100);
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get("[data-cy='optionalLayers']")
+          .select('title2')
+        cy.get("[data-cy='optionalLayers']")
+          .siblings('button')
+          .click()
+      });
+    cy.wait(50);
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get(".layer").find(".title").contains("title2").should("have.length", 1);;
       });
   });
 });
