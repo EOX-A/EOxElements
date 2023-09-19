@@ -4,7 +4,7 @@
   "type": "module",
   "dependencies": {
     "lit": "^2.7.4",
-    "ol": "^8.0.0-dev.1693483855644",
+    "ol": "^8.1.0",
     "ol-mapbox-style": "^11.0.3",
     "ol-stac": "^1.0.0-beta.4"
   },
