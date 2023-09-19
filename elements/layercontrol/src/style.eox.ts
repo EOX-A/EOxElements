@@ -23,7 +23,6 @@ summary > .layer {
 
 ul[data-group] {
   overflow-y: auto;
-  max-height: calc(var(--container-height) * 0.3);
 }
 
 [data-type=group] .title {

@@ -164,32 +164,6 @@ export class EOxLayerControl extends LitElement {
     }
   }
 
-  // Set up Resize Observer
-  firstUpdated() {
-    this.resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        // Ensure we're observing the correct element
-        if (entry.target === this) {
-          this.style.setProperty(
-            "--container-height",
-            `${entry.contentRect.height}px`
-          );
-          this.requestUpdate();
-        }
-      }
-    });
-    this.resizeObserver.observe(this);
-  }
-
-  // Deinitialize Resize Observer
-  disconnectedCallback() {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
-    }
-    super.disconnectedCallback();
-  }
-
   render() {
     const mapQuery = document.querySelector(this.for as string);
     if (mapQuery) {
