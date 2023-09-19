@@ -38,6 +38,11 @@ details summary {
   border-bottom: 1px solid #0002;
   padding: .5rem 0;
 }
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
 .title {
   font-size: small;
   align-items: center;
@@ -63,7 +68,15 @@ details[open] summary::before {
 details[open] summary::after {
   transform: rotate(270deg);
 }
-eox-itemfilter-expandcontainer .title,
+eox-itemfilter-expandcontainer {
+  max-height: 200px;
+}
+eox-itemfilter-expandcontainer > [data-type=filter] {
+  display: block;
+  height: calc(100% - 32px);
+  overflow-y: auto;
+}
+[data-type=filter] .title,
 details summary {
   text-transform: capitalize;
 }
@@ -96,25 +109,22 @@ section:not(section:last-of-type) {
   display: flex;
   flex-direction: column;
 }
-#container-results {
-  margin-right: -1rem;
-}
-ul#results {
-  padding-right: 1rem;
-}
 ul li {
   padding-left: 0;
 }
-eox-itemfilter-expandcontainer ul,
-details ul {
-  padding: 0.5rem;
+eox-itemfilter-expandcontainer ul li,
+details ul li {
+  padding: 0.2rem;
+}
+li.highlighted {
+  background: #00417011;
 }
 section {
   position: relative;
 }
 button#filter-reset {
   position: absolute;
-  top: 20px;
+  top: 4px;
   right: 0;
   text-indent: -9999px;
   line-height: 0;

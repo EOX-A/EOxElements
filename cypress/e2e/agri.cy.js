@@ -28,4 +28,47 @@ describe("Layer Switcher", () => {
       expect(geometry.getCoordinates()[0].length).to.be.equal(5);
     });
   });
+
+  it("adapts to setLayers with changed layer id", () => {
+    cy.fixture("agri.json").then((layers) => {
+      layers[0].id = "changedId";
+
+      cy.get("eox-map").then(($el) => {
+        const eoxMap = $el[0];
+        eoxMap.setLayers(layers);
+
+        cy.get("eox-layercontrol")
+          .shadow()
+          .within(() => {
+            cy.get("[data-layer=changedId]")
+              .parent()
+              .children()
+              .should("have.length", 3);
+          });
+      });
+    });
+  });
+
+  it("adapts to setLayers with changed layer id inside group", () => {
+    cy.fixture("agri.json").then((layers) => {
+      const groupLayerIndex = layers.findIndex(
+        (layer) => layer.type === "Group"
+      );
+      layers[groupLayerIndex].layers[0].id = "changed-nested-Id";
+
+      cy.get("eox-map").then(($el) => {
+        const eoxMap = $el[0];
+        eoxMap.setLayers(layers);
+
+        cy.get("eox-layercontrol")
+          .shadow()
+          .within(() => {
+            cy.get("[data-layer=changed-nested-Id]")
+              .parent()
+              .children()
+              .should("have.length", 2);
+          });
+      });
+    });
+  });
 });
