@@ -1,5 +1,5 @@
 import { html, nothing, PropertyValueMap } from "lit";
-import { property, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { style } from "./style";
@@ -11,6 +11,7 @@ import { TemplateElement } from "../../../utils/templateElement";
 /**
  * A simple element for automatically fetching and displaying a STAC file (catalog, collection or item)
  */
+@customElement("eox-stacinfo")
 export class EOxStacInfo extends TemplateElement {
   /**
    * Render the element without styling
@@ -174,5 +175,3 @@ export class EOxStacInfo extends TemplateElement {
     }
   }
 }
-
-customElements.define("eox-stacinfo", EOxStacInfo);

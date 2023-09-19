@@ -29,6 +29,7 @@ type OlLayer = Layer & {
 type OlSource = Source & {
   ol_uid: string;
 };
+@customElement("eox-layercontrol")
 export class EOxLayerControl extends LitElement {
   private _currentlySorting: boolean;
 
@@ -495,7 +496,6 @@ export class EOxLayerControl extends LitElement {
       : "raster";
   };
 }
-customElements.define("eox-layercontrol", EOxLayerControl);
 
 @customElement("eox-layerconfig")
 export class EOxLayerConfig extends LitElement {

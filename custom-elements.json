@@ -299,9 +299,7 @@
           "superclass": {
             "name": "TemplateElement",
             "module": "/utils/templateElement"
-          },
-          "tagName": "eox-itemfilter",
-          "customElement": true
+          }
         }
       ],
       "exports": [
@@ -320,14 +318,6 @@
             "name": "EOxItemFilter",
             "module": "elements/itemfilter/src/main.ts"
           }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-itemfilter",
-          "declaration": {
-            "name": "EOxItemFilter",
-            "module": "elements/itemfilter/src/main.ts"
-          }
         }
       ]
     },
@@ -337,7 +327,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Primary Map",
+          "description": "",
           "name": "EOxMap",
           "members": [
             {

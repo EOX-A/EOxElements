@@ -1,5 +1,5 @@
 import { html, nothing } from "lit";
-import { property, state } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import { repeat } from "lit/directives/repeat.js";
@@ -19,6 +19,7 @@ import { filter as filterExternal } from "./filterExternal";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
+customElement("eox-itemfilter");
 export class ElementConfig {
   /**
    * Aggregate results by a property key
@@ -539,5 +540,3 @@ export class EOxItemFilter extends TemplateElement {
     `;
   }
 }
-
-customElements.define("eox-itemfilter", EOxItemFilter);
