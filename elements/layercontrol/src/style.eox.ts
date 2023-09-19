@@ -14,23 +14,37 @@ ${radio}
 ${checkbox}
 
 summary > .layer {
-  height: 36px;
-  border-bottom: 1px solid #00417000;
+  min-height: 36px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding-right: 12px;
+  padding-top: 0px;
+}
+
+ul[data-group] {
+  overflow-y: auto;
+  max-height: calc(var(--container-height) * 0.3);
 }
 
 [data-type=group] .title {
+  display: flex;
+  align-items: flex-start;
   font-style: italic;
+  line-height: 1.3rem;
+}
+
+[data-type] .title span {
+  margin-bottom: 8px;
 }
 
 
 [data-type] .title::before {
   width: 24px;
+  min-width: 24px;
   height: 24px;
   margin-right: 6px;
   margin-left: -1px;
+  transform: translateY(-2px);
 }
 
 [data-layerconfig] button {
@@ -202,12 +216,18 @@ li .layer {
 li .layer .left,
 li .layer .right {
   display: flex;
+  align-items: flex-start;
 }
-li .layer .left span {
+li .layer .left .title {
   cursor: pointer;
   display: flex;
-  align-items: center;
   margin-left: 6px;
+}
+li .layer .left {
+  margin-top: 7px;
+}
+li .layer .right {
+  margin-top: 5px;
 }
 .drag-handle span {
   display: none;

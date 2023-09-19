@@ -1,11 +1,12 @@
 {
   "name": "@eox/map",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "dependencies": {
     "lit": "^2.7.4",
     "ol": "^7.4.0",
-    "ol-mapbox-style": "^10.6.0"
+    "ol-mapbox-style": "^10.6.0",
+    "ol-stac": "^1.0.0-beta.4"
   },
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",

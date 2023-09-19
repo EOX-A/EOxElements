@@ -31,6 +31,19 @@
         id: "selectInteraction",
         tooltip: "eox-map-tooltip",
         condition: "pointermove",
+        layer: {
+          type: "Vector",
+          properties: {
+            id: "selectLayer",
+          },
+          source: {
+            type: "Vector",
+          },
+          style: {
+            "stroke-color": "red",
+            "stroke-width": 3,
+          },
+        },
       });
     </script>
   </body>
