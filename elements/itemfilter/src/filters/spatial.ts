@@ -35,6 +35,7 @@ export class EOxItemFilterSpatial extends LitElement {
     );
     delete this.filterObject.dirty;
     spatialFilter.reset();
+    this.requestUpdate();
   }
 
   // skip shadow root creation

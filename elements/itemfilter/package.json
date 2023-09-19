@@ -1,6 +1,6 @@
 {
   "name": "@eox/itemfilter",
-  "version": "0.8.2",
+  "version": "0.8.5",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",

@@ -2,25 +2,38 @@ import { EOxMap } from "../main";
 import { Overlay } from "ol";
 import "./tooltip";
 import { EOxMapTooltip } from "./tooltip";
-import { createLayer } from "./generate";
+import { EoxLayer, createLayer } from "./generate";
 import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";
 import VectorTileLayer from "ol/layer/VectorTile.js";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
+import { MapboxLayer } from "./types";
+
+export type SelectOptions = Omit<
+  import("ol/interaction/Select").Options,
+  "condition"
+> & {
+  id: string | number;
+  idProperty?: string;
+  condition: "click" | "pointermove";
+  layer?: EoxLayer | MapboxLayer;
+  style?: import("ol/style/flat.js").FlatStyleLike;
+  overlay?: import("ol/Overlay").Options;
+};
 
 export async function addSelect(
   EOxMap: EOxMap,
   layerId: string,
-  options: any
+  options: SelectOptions
 ): Promise<void> {
   if (EOxMap.interactions[options.id]) {
     throw Error(`Interaction with id: ${options.id} already exists.`);
   }
 
-  const tooltip: EOxMapTooltip = EOxMap.querySelector(options.tooltip);
-
+  const tooltip: HTMLElement =
+    EOxMap.querySelector("eox-map-tooltip") || options.overlay?.element;
   let overlay: Overlay;
   let selectedFid: string | number = null;
 
@@ -30,9 +43,10 @@ export async function addSelect(
     overlay = new Overlay({
       element: tooltip,
       position: undefined,
-      offset: [0, -30],
-      positioning: "top-center",
+      offset: [0, 0],
+      positioning: "top-left",
       className: "eox-map-tooltip",
+      ...options.overlay,
     });
     map.addOverlay(overlay);
   }
@@ -46,7 +60,13 @@ export async function addSelect(
     if (options.idProperty) {
       return feature.get(options.idProperty);
     }
-    return feature.getId();
+    const defaultId = feature.getId() || feature.get("id");
+    if (!defaultId) {
+      throw Error(
+        "No feature id found. Please provide which feature property should be taken instead using idProperty."
+      );
+    }
+    return defaultId;
   }
 
   const selectLayer = EOxMap.getLayerById(layerId);
@@ -63,17 +83,22 @@ export async function addSelect(
     layerDefinition = {
       style: options.style,
       type,
+      properties: {
+        id: layerId + "_select",
+      },
       source: {
         type,
       },
-    };
+    } as EoxLayer;
   }
+  //@ts-ignore
   layerDefinition.renderMode = "vector";
 
-  const selectStyleLayer = createLayer(layerDefinition) as
+  const selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
     | VectorTileLayer
     | VectorLayer<VectorSource>;
   await selectStyleLayer.get("sourcePromise");
+  //@ts-ignore
   selectStyleLayer.setSource(selectLayer.getSource());
   selectStyleLayer.setMap(map);
 
@@ -98,12 +123,20 @@ export async function addSelect(
         selectStyleLayer.changed();
 
         if (overlay) {
+          const xPosition =
+            event.pixel[0] > EOxMap.offsetWidth / 2 ? "right" : "left";
+          const yPosition =
+            event.pixel[1] > EOxMap.offsetHeight / 2 ? "bottom" : "top";
+          overlay.setPositioning(`${yPosition}-${xPosition}`);
           overlay.setPosition(feature ? event.coordinate : null);
-          tooltip.renderContent(feature.getProperties());
+          if (feature && (<EOxMapTooltip>tooltip).renderContent) {
+            (<EOxMapTooltip>tooltip).renderContent(feature.getProperties());
+          }
         }
 
         const selectdEvt = new CustomEvent("select", {
           detail: {
+            id: options.id,
             originalEvent: event,
             feature: feature,
           },
@@ -132,6 +165,7 @@ export async function addSelect(
   });
 
   selectLayer.on("change:source", () => {
+    //@ts-ignore
     selectStyleLayer.setSource(selectLayer.getSource());
   });
 
