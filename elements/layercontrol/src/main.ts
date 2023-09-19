@@ -45,8 +45,10 @@ export class EOxLayerControl extends LitElement {
   @state()
   optionalLayerArray: Array<BaseLayer>;
 
-  @state()
-  resizeObserver: ResizeObserver;
+  /**
+   * Hack to "force-reset" layer list
+   */
+  private resetLayers = false;
 
   /**
    * The query selector for the map
@@ -95,7 +97,9 @@ export class EOxLayerControl extends LitElement {
       "layerControlOptional",
       true
     );
-    this.requestUpdate();
+    setTimeout(() => {
+      this.requestUpdate();
+    });
   }
 
   private _emitLayerconfig(layer: Layer) {
@@ -210,7 +214,11 @@ export class EOxLayerControl extends LitElement {
     ) => {
       layerCollection.on("change:length", () => {
         if (!this._currentlySorting) {
+          this.resetLayers = true;
           this._updateControl(layerCollection);
+          setTimeout(() => {
+            this.resetLayers = false;
+          });
         }
       });
     };
@@ -313,7 +321,7 @@ export class EOxLayerControl extends LitElement {
       layers: Array<BaseLayer>,
       group?: string,
       collection?: Collection<BaseLayer>
-    ): TemplateResult => html`
+    ): TemplateResult => this.resetLayers ? html`` : html`
       <ul data-group="${group ?? nothing}">
         ${repeat(
           layers,
