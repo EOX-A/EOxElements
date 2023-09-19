@@ -16,10 +16,7 @@ const config = {
     getAbsolutePath("@storybook/addon-essentials"),
     getAbsolutePath("@storybook/addon-docs"),
   ],
-  framework: {
-    name: getAbsolutePath("@storybook/web-components-vite"),
-    options: {},
-  },
+  framework: "@storybook/web-components-vite",
   docs: {
     autodocs: "tag",
   },
