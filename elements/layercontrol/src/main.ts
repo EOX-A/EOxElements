@@ -40,9 +40,6 @@ export class EOxLayerControl extends LitElement {
   layerCollection: Collection<BaseLayer>;
 
   @state()
-  layerArray: Array<BaseLayer>;
-
-  @state()
   optionalLayerArray: Array<BaseLayer>;
 
   /**
