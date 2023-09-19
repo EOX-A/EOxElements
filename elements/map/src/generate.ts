@@ -207,7 +207,7 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
   });
   olLayer.on("change:zIndex", (e) => {
     // TO DO
-    console.log(e)
+    console.log(e);
   });
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") {
