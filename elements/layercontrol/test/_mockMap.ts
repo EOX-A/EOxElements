@@ -44,6 +44,13 @@ const mockCollection = (collection: { events?: any; layers?: Array<any> }) =>
         ...l,
       }));
     },
+    getLength: () => {
+      return collection.layers.length;
+    },
+    insertAt(index: number, layer: typeof mockLayer) {
+      collection.layers.splice(index, 0, layer);
+      collection.events["change:length"]();
+    },
     on: (event: string, fun: () => void) =>
       (collection.events = { [event]: fun }),
     pop: () => {
