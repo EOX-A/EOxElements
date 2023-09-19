@@ -6,7 +6,12 @@ import View from "ol/View.js";
 import olCss from "ol/ol.css";
 import { DrawOptions, addDraw } from "./src/draw";
 import { SelectOptions, addSelect } from "./src/select";
-import { generateLayers, EoxLayer } from "./src/generate";
+import {
+  generateLayers,
+  EoxLayer,
+  createLayer,
+  updateLayer,
+} from "./src/generate";
 import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
@@ -75,11 +80,34 @@ export class EOxMap extends LitElement {
 
   /**
    * Apply layers from Mapbox Style JSON
-   * @param json a Mapbox Style JSON
+   * @param json array of EoxLayer JSONs
    * @returns the array of layers
    */
   setLayers = (json: Array<EoxLayer>) => {
-    this.map.setLayers(generateLayers(json));
+    const layers = generateLayers(json);
+    this.map.setLayers(layers);
+    return layers;
+  };
+
+  /**
+   * creates or updates an existing layer
+   * will update an layer if the ID already exists
+   * @param json EoxLayer JSON definition
+   * @returns the created or updated ol layer
+   */
+  addOrUpdateLayer = async (json: EoxLayer) => {
+    const id = json.properties?.id;
+    const existingLayer = getLayerById(this, id);
+    let layer;
+    if (existingLayer) {
+      await updateLayer(json, existingLayer);
+      layer = existingLayer;
+    } else {
+      layer = createLayer(json);
+      await layer.get("sourcePromise");
+      this.map.addLayer(layer);
+    }
+    return layer;
   };
 
   /**
