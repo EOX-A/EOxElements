@@ -27,3 +27,4 @@ cypress/screenshots
 cypress/videos
 
 storybook-static
+custom-elements.json
