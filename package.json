@@ -1,5 +1,6 @@
 {
   "name": "@eox/elements",
+  "homepage": "https://eox-a.github.io/EOxElements",
   "private": true,
   "version": "2.0.0",
   "workspaces": [
@@ -18,7 +19,7 @@
     "lint:fix:all": "npm run lint:fix --ws",
     "watch:all": "npm run watch --ws",
     "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build",
+    "build:storybook": "storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch"
   },
