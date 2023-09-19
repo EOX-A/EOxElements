@@ -429,14 +429,15 @@ export class EOxLayerControl extends LitElement {
                   this.layerCollection.getArray(),
                   inGroup
                 );
-                const groupCollection = (<LayerGroup>group)?.getLayers();
-                return groupCollection
-                  ? [
-                      ...groupCollection
-                        .getArray()
-                        .map((l: BaseLayer) => l.get(this.layerIdentifier)),
-                    ].reverse()
-                  : undefined;
+                if (!group) {
+                  return undefined;
+                }
+                const groupCollection = (<LayerGroup>group).getLayers();
+                return [
+                  ...groupCollection
+                    .getArray()
+                    .map((l: BaseLayer) => l.get(this.layerIdentifier)),
+                ].reverse();
               } else {
                 return [
                   ...this.layerCollection
@@ -455,6 +456,9 @@ export class EOxLayerControl extends LitElement {
                     this.layerCollection.getArray(),
                     inGroup
                   );
+                  if (!group) {
+                    return undefined;
+                  }
                   const groupCollection = (<LayerGroup>group).getLayers();
                   const layer = this.findLayerById(
                     groupCollection.getArray(),
