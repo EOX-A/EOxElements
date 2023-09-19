@@ -292,7 +292,7 @@ export class EOxLayerControl extends LitElement {
                 .layer=${layer}
                 .external=${this.externalLayerConfig}
                 .unstyled="${this.unstyled}"
-                .expanded="${this.isLayerConfigExpanded[layer.get("id")] || false}"
+                style="max-height: ${this.isLayerConfigExpanded[layer.get("id")] ? 999 : 0}px"
               ></eox-layerconfig>
             `
           : nothing}
@@ -560,9 +560,6 @@ export class EOxLayerConfig extends LitElement {
   @property({ type: Boolean })
   unstyled: boolean;
 
-  @property({ type: Boolean })
-  expanded: boolean;
-
   private _layerControlElement: EOxLayerControl;
 
   @state()
@@ -630,7 +627,7 @@ export class EOxLayerConfig extends LitElement {
       ${when(
         this._currentLayer,
         () => html`
-          <div class="layerconfig" style="max-height: ${this.expanded ? 999 : 0}px">
+          <div>
             <slot></slot>
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
