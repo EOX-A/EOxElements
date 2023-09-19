@@ -39,13 +39,17 @@ const mockLayer = (
 const mockCollection = (collection: { events?: any; layers?: Array<any> }) =>
   <{ [key: string]: any }>{
     getArray() {
-      return collection.layers.map((l: any, i: number) => ({
-        ...mockLayer(l, `${i}`),
+      return collection.layers.map((l: any) => ({
+        ...mockLayer(l, l.id || `${Date.now()}`),
         ...l,
       }));
     },
     on: (event: string, fun: () => void) =>
       (collection.events = { [event]: fun }),
+    pop: () => {
+      collection.layers.pop();
+      collection.events["change:length"]();
+    },
     push(newLayer: object) {
       collection.layers.push(newLayer);
       collection.events["change:length"]();
@@ -70,8 +74,8 @@ export class MockMap extends HTMLElement {
     }),
   };
   setLayers = (layers: Array<any>) => {
-    this.layers = layers.map((layer, index) => ({
-      ...mockLayer(layer, `${index}`),
+    this.layers = layers.map((layer) => ({
+      ...mockLayer(layer, layer.id || `${Date.now()}`),
       ...layer,
     }));
     this.events["change:length"]();

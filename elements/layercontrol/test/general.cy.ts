@@ -163,7 +163,6 @@ describe("LayerControl", () => {
         .getLayers()
         .getArray()[0]
         .getLayers()
-        .getArray()
         .pop();
     });
 
