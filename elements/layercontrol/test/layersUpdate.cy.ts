@@ -102,9 +102,7 @@ describe("LayerControl", () => {
       });
 
     cy.get("mock-map").then(($el) => {
-      let layer = (<MockMap>$el[0]).layers.find(
-        (l) => l.id === layerToDelete
-      );
+      let layer = (<MockMap>$el[0]).layers.find((l) => l.id === layerToDelete);
       assert.equal(layer, undefined, "deleted layer should not be found");
     });
   });

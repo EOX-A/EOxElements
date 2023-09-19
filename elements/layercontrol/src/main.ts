@@ -188,7 +188,7 @@ export class EOxLayerControl extends LitElement {
         if (!this._currentlySorting) {
           setTimeout(() => {
             this._updateControl(layerCollection);
-          })
+          });
         }
       });
     };

@@ -62,7 +62,9 @@ const mockCollection = (collection: { events?: any; layers?: Array<any> }) =>
       collection.events["change:length"]();
     },
     remove: (layer: typeof mockLayer) => {
-      collection.layers.splice(collection.layers.findIndex(l => l.id === layer.id));
+      collection.layers.splice(
+        collection.layers.findIndex((l) => l.id === layer.id)
+      );
     },
   };
 
