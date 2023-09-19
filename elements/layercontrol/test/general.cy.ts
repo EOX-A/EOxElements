@@ -56,6 +56,7 @@ describe("LayerControl", () => {
         cy.get("[data-cy='optionalLayers']")
           .find("option:not([disabled])")
           .should("have.length", 1);
+        cy.get("[data-cy='optionalLayers']").siblings("button").should("exist");
       });
   });
 

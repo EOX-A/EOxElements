@@ -6,12 +6,18 @@ import View from "ol/View.js";
 import olCss from "ol/ol.css";
 import { DrawOptions, addDraw } from "./src/draw";
 import { SelectOptions, addSelect } from "./src/select";
-import { generateLayers, EoxLayer } from "./src/generate";
-import Interaction from "ol/interaction/Interaction";
+import {
+  generateLayers,
+  EoxLayer,
+  createLayer,
+  updateLayer,
+} from "./src/generate";
+import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
+import { buffer } from "ol/extent";
 import "./src/compare";
 
 @customElement("eox-map")
@@ -64,7 +70,7 @@ export class EOxMap extends LitElement {
    * dictionary of ol interactions associated with the map.
    */
   @state()
-  interactions: { [index: string]: Interaction } = {};
+  interactions: { [index: string]: Draw | Modify } = {};
 
   /**
    * dictionary of ol controls associated with the map.
@@ -74,11 +80,34 @@ export class EOxMap extends LitElement {
 
   /**
    * Apply layers from Mapbox Style JSON
-   * @param json a Mapbox Style JSON
+   * @param json array of EoxLayer JSONs
    * @returns the array of layers
    */
   setLayers = (json: Array<EoxLayer>) => {
-    this.map.setLayers(generateLayers(json));
+    const layers = generateLayers(json);
+    this.map.setLayers(layers);
+    return layers;
+  };
+
+  /**
+   * creates or updates an existing layer
+   * will update an layer if the ID already exists
+   * @param json EoxLayer JSON definition
+   * @returns the created or updated ol layer
+   */
+  addOrUpdateLayer = async (json: EoxLayer) => {
+    const id = json.properties?.id;
+    const existingLayer = getLayerById(this, id);
+    let layer;
+    if (existingLayer) {
+      await updateLayer(json, existingLayer);
+      layer = existingLayer;
+    } else {
+      layer = createLayer(json);
+      await layer.get("sourcePromise");
+      this.map.addLayer(layer);
+    }
+    return layer;
   };
 
   /**
@@ -144,6 +173,16 @@ export class EOxMap extends LitElement {
       <div style="width: 100%; height: 100%"></div>
       <slot></slot>
     `;
+  }
+
+  /**
+   * Return extent increased by the provided value.
+   * @param {import("ol/extent").Extent} extent
+   * @param {number} value
+   * @returns {import("ol/extent").Extent}
+   */
+  buffer(extent: import("ol/extent").Extent, value: number) {
+    return buffer(extent, value);
   }
 
   firstUpdated() {
