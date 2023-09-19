@@ -40,13 +40,7 @@ export class EOxLayerControl extends LitElement {
   layerCollection: Collection<BaseLayer>;
 
   @state()
-  layerArray: Array<BaseLayer>;
-
-  @state()
   optionalLayerArray: Array<BaseLayer>;
-
-  @state()
-  resizeObserver: ResizeObserver;
 
   /**
    * The query selector for the map
@@ -75,8 +69,14 @@ export class EOxLayerControl extends LitElement {
   private _updateControl(layerCollection: Collection<BaseLayer>) {
     // initially check if all layers have an id and title,
     // fill in some backup in case they haven't
-    const checkProperties = (layerArray: Array<BaseLayer>) => {
+    const checkProperties = (
+      layerArray: Array<BaseLayer>,
+      groupId?: string
+    ) => {
       layerArray.forEach((layer) => {
+        if (groupId) {
+          layer.set("_group_id", groupId);
+        }
         if (!layer.get(this.layerIdentifier)) {
           layer.set(this.layerIdentifier, (<OlLayer>layer).ol_uid);
         }
@@ -84,7 +84,10 @@ export class EOxLayerControl extends LitElement {
           layer.set(this.layerTitle, `layer ${(<OlLayer>layer).ol_uid}`);
         }
         if ((<LayerGroup>layer).getLayers) {
-          checkProperties((<LayerGroup>layer).getLayers().getArray());
+          checkProperties(
+            (<LayerGroup>layer).getLayers().getArray(),
+            (<LayerGroup>layer).get("id") || (<OlLayer>layer).ol_uid
+          );
         }
       });
     };
@@ -95,7 +98,6 @@ export class EOxLayerControl extends LitElement {
       "layerControlOptional",
       true
     );
-    this.requestUpdate();
   }
 
   private _emitLayerconfig(layer: Layer) {
@@ -158,34 +160,8 @@ export class EOxLayerControl extends LitElement {
       otherExclusiveLayers.forEach((layer: BaseLayer) => {
         layer.setVisible(false);
       });
+      this.requestUpdate();
     }
-    this.requestUpdate();
-  }
-
-  // Set up Resize Observer
-  firstUpdated() {
-    this.resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        // Ensure we're observing the correct element
-        if (entry.target === this) {
-          this.style.setProperty(
-            "--container-height",
-            `${entry.contentRect.height}px`
-          );
-          this.requestUpdate();
-        }
-      }
-    });
-    this.resizeObserver.observe(this);
-  }
-
-  // Deinitialize Resize Observer
-  disconnectedCallback() {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
-    }
-    super.disconnectedCallback();
   }
 
   render() {
@@ -210,7 +186,9 @@ export class EOxLayerControl extends LitElement {
     ) => {
       layerCollection.on("change:length", () => {
         if (!this._currentlySorting) {
-          this._updateControl(layerCollection);
+          setTimeout(() => {
+            this._updateControl(layerCollection);
+          });
         }
       });
     };
@@ -380,10 +358,10 @@ export class EOxLayerControl extends LitElement {
                 // TODO make configurable?
                 const firstPosition = true;
                 if (firstPosition) {
-                  if (selectedLayer.get("group")) {
+                  if (selectedLayer.get("_group_id")) {
                     const group = this.findLayerById(
                       this.layerCollection.getArray(),
-                      selectedLayer.get("group")
+                      selectedLayer.get("_group_id")
                     ) as LayerGroup;
                     group.getLayers().remove(selectedLayer);
                     group
