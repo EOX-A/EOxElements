@@ -1,6 +1,11 @@
 import { setCustomElementsManifest } from "@storybook/web-components";
 import customElements from "../custom-elements.json";
 
+/**
+ * A custom wrapper for the default setCustomElementsManifest function.
+ * Allows to set `privateFileds` to `false` in order to filter out
+ * private properties from the auto-generated docs output.
+ */
 export const setCustomElementsManifestWithOptions = (
   customElements,
   options
@@ -23,23 +28,3 @@ export const setCustomElementsManifestWithOptions = (
 };
 
 setCustomElementsManifestWithOptions(customElements, { privateFields: false });
-
-/** @type { import('@storybook/web-components').Preview } */
-const preview = {
-  parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/,
-      },
-    },
-    docs: {
-      story: {
-        inline: true,
-      },
-    },
-  },
-};
-
-export default preview;
