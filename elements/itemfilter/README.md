@@ -14,6 +14,16 @@ import "@eox/itemfilter"
 
 // TODO: add documentation
 
+## Attributes
+
+### `expandMultipleFilters?: boolean = true`
+
+Allow opening multiple filter accordeons in parallel.
+
+### `expandMultipleResults?: boolean = true`
+
+Allow opening multiple result accordeons in parallel.
+
 ## Contribute
 
 ```

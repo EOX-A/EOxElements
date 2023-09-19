@@ -1,11 +1,14 @@
 export const checkbox = `
 input[type=checkbox] {
   appearance: none;
+  -webkit-appearance: none;
   margin: 0;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
+  width: 24px;
+  height: 24px;
 }
 input[type=checkbox]:after {
   display: block;

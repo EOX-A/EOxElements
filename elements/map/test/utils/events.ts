@@ -7,7 +7,7 @@ const height = 400;
  */
 export function simulateEvent(
   map: Map,
-  type: "pointermove" | "pointerup" | "pointerdown",
+  type: "pointermove" | "pointerup" | "pointerdown" | "click",
   x: number,
   y: number
 ) {
@@ -19,6 +19,7 @@ export function simulateEvent(
   event.target = viewport.firstChild;
   event.clientX = position.left + x + width / 2;
   event.clientY = position.top + y + height / 2;
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   event.preventDefault = function () {};
   event.pointerType = "mouse";
   const simulatedEvent = new MapBrowserEvent(type, map, event);

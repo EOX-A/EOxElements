@@ -35,6 +35,7 @@ export class EOxItemFilterSpatial extends LitElement {
     );
     delete this.filterObject.dirty;
     spatialFilter.reset();
+    this.requestUpdate();
   }
 
   // skip shadow root creation
@@ -122,41 +123,43 @@ export class SpatialFilter extends LitElement {
     ];
 
     this.eoxMap = this.renderRoot.querySelector("eox-map");
-    this.eoxMap.setLayers(mapLayers);
-    this.eoxMap.addDraw("draw", {
-      id: "drawInteraction",
-      type: "Polygon",
-    });
-    const updateGeometryFilter = (feature: any) => {
-      const event = new CustomEvent("filter", {
-        detail: {
-          geometry: {
-            type: "Polygon",
-            coordinates: feature
-              .getGeometry()
-              .clone()
-              .transform("EPSG:3857", "EPSG:4326")
-              .getCoordinates(),
-          },
-        },
+    setTimeout(() => {
+      this.eoxMap.setLayers(mapLayers);
+      this.eoxMap.addDraw("draw", {
+        id: "drawInteraction",
+        type: "Polygon",
       });
-      this.dispatchEvent(event);
-    };
-    this.eoxMap.interactions["drawInteraction"].on(
-      // @ts-ignore
-      "drawend",
-      (e: { feature: any }) => {
-        updateGeometryFilter(e.feature);
-        this.eoxMap.removeInteraction("drawInteraction");
-      }
-    );
-    this.eoxMap.interactions["drawInteraction_modify"].on(
-      // @ts-ignore
-      "modifyend",
-      (e: { features: any }) => {
-        updateGeometryFilter(e.features.getArray()[0]);
-      }
-    );
+      const updateGeometryFilter = (feature: any) => {
+        const event = new CustomEvent("filter", {
+          detail: {
+            geometry: {
+              type: "Polygon",
+              coordinates: feature
+                .getGeometry()
+                .clone()
+                .transform("EPSG:3857", "EPSG:4326")
+                .getCoordinates(),
+            },
+          },
+        });
+        this.dispatchEvent(event);
+      };
+      this.eoxMap.interactions["drawInteraction"].on(
+        // @ts-ignore
+        "drawend",
+        (e: { feature: any }) => {
+          updateGeometryFilter(e.feature);
+          this.eoxMap.removeInteraction("drawInteraction");
+        }
+      );
+      this.eoxMap.interactions["drawInteraction_modify"].on(
+        // @ts-ignore
+        "modifyend",
+        (e: { features: any }) => {
+          updateGeometryFilter(e.features.getArray()[0]);
+        }
+      );
+    });
   }
 
   // TODO move to epx-map helper function?

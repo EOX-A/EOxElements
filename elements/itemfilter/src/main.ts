@@ -2,6 +2,7 @@ import { html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
+import { repeat } from "lit/directives/repeat.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 import "toolcool-range-slider";
@@ -79,6 +80,18 @@ export class ElementConfig {
    * The property of the result items used for display
    */
   public titleProperty = "title";
+
+  /**
+   * Allow opening multiple filter accordeons in parallel
+   * @default true
+   */
+  public expandMultipleFilters?: boolean = true;
+
+  /**
+   * Allow opening multiple result accordeons in parallel
+   * @default true
+   */
+  public expandMultipleResults?: boolean = true;
 }
 
 @customElement("eox-itemfilter")
@@ -95,7 +108,7 @@ export class EOxItemFilter extends TemplateElement {
   public results: Array<object>;
 
   @state()
-  public selectedResult: object;
+  public selectedResult: Item;
 
   @property({ attribute: false }) set config(config) {
     const oldValue = this._config;
@@ -163,6 +176,8 @@ export class EOxItemFilter extends TemplateElement {
               (<SpatialFilterObject>filterKeys).geometry = undefined;
               (<SpatialFilterObject>filterKeys).mode =
                 (<SpatialFilterObject>filterProperty).mode || "intersects";
+            } else {
+              filterKeys[item[filterProperty.key]] = undefined;
             }
           }
         });
@@ -205,7 +220,7 @@ export class EOxItemFilter extends TemplateElement {
     }
 
     const fuseKeys: Array<string> = [];
-    this._config.filterProperties.forEach((f) => {
+    Object.values(this.filters).forEach((f) => {
       if (f.type === "text") {
         (<TextFilterObject>f).keys.forEach((k) => {
           if (!fuseKeys.includes(k)) {
@@ -222,7 +237,11 @@ export class EOxItemFilter extends TemplateElement {
       keys: fuseKeys,
       ...this._config.fuseConfig,
     });
+    this.search();
   };
+
+  @property({ attribute: false })
+  styleOverride: string;
 
   @property({ type: Boolean })
   unstyled: boolean;
@@ -275,11 +294,43 @@ export class EOxItemFilter extends TemplateElement {
     this.search();
   }
 
+  toggleAccordion(event: CustomEvent) {
+    let detailsElement: HTMLDetailsElement;
+
+    if (event.detail) {
+      detailsElement = event.detail.target as HTMLDetailsElement;
+    } else {
+      detailsElement = event.target as HTMLDetailsElement;
+    }
+
+    if (detailsElement.classList.contains("details-filter")) {
+      if (!detailsElement.open || this.config.expandMultipleFilters) return;
+
+      this.shadowRoot!.querySelectorAll(
+        "eox-itemfilter-expandcontainer"
+      ).forEach((container) => {
+        const details = container.shadowRoot!.querySelector(".details-filter");
+        if (details && details !== detailsElement) {
+          details.removeAttribute("open");
+        }
+      });
+    } else {
+      if (!detailsElement.open || this.config.expandMultipleResults) return;
+
+      this.shadowRoot!.querySelectorAll("details").forEach((details) => {
+        if (details !== detailsElement) {
+          details.removeAttribute("open");
+        }
+      });
+    }
+  }
+
   render() {
     return html`
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
+        ${this.styleOverride}
       </style>
       <form
         id="itemfilter"
@@ -291,7 +342,12 @@ export class EOxItemFilter extends TemplateElement {
             <section class="${this.config.inlineMode ? "inline" : nothing}">
               ${when(
                 !this.config.inlineMode,
-                () => html` <slot name="filterstitle"><h4>Filters</h4></slot> `
+                () =>
+                  html`
+                    <slot name="filterstitle"
+                      ><h4 style="margin-top: 8px">Filters</h4></slot
+                    >
+                  `
               )}
               <ul id="filters">
                 ${map(
@@ -312,10 +368,12 @@ export class EOxItemFilter extends TemplateElement {
                           <eox-itemfilter-expandcontainer
                             .filterObject=${filterObject}
                             .unstyled=${this.unstyled}
+                            @details-toggled=${this.toggleAccordion}
                           >
                             <eox-itemfilter-${unsafeStatic(filterObject.type)}
                               slot="filter"
                               data-type="filter"
+                              data-filter="${filterObject.key}"
                               .filterObject=${filterObject}
                               @filter="${() => this.search()}"
                             ></eox-itemfilter-${unsafeStatic(
@@ -352,7 +410,9 @@ export class EOxItemFilter extends TemplateElement {
           () => html`
             <section id="section-results">
               <div>
-                <slot name="resultstitle"><h4>Results</h4></slot>
+                <slot name="resultstitle"
+                  ><h4 style="margin-top: 8px">Results</h4></slot
+                >
               </div>
               <div id="container-results" class="scroll">
                 ${this.results.length < 1
@@ -370,6 +430,7 @@ export class EOxItemFilter extends TemplateElement {
                         ),
                         (aggregationProperty) => html`<details
                           class="details-results"
+                          @toggle=${this.toggleAccordion}
                           open
                         >
                           <summary>
@@ -384,18 +445,31 @@ export class EOxItemFilter extends TemplateElement {
                             </span>
                           </summary>
                           <ul>
-                            ${map(
+                            ${repeat(
                               this.aggregateResults(
                                 this.results,
                                 aggregationProperty
                               ),
+                              (item: Item) => item.id,
                               (item: Item) => html`
-                                <li>
+                                <li
+                                  class=${this.selectedResult?.[
+                                    this._config.titleProperty
+                                  ] === item[this._config.titleProperty]
+                                    ? "highlighted"
+                                    : nothing}
+                                >
                                   <label>
                                     <input
+                                      data-cy="result-radio"
                                       type="radio"
+                                      class="result-radio"
                                       name="result"
                                       id="${item.id}"
+                                      checked=${this.selectedResult?.[
+                                        this._config.titleProperty
+                                      ] === item[this._config.titleProperty] ||
+                                      nothing}
                                       @click=${() => {
                                         this.selectedResult = item;
                                         this._config.onSelect(item);

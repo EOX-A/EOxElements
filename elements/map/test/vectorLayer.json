@@ -5,6 +5,7 @@
     "properties": {
       "id": "regions"
     },
+    "visible": true,
     "source": {
       "type": "Vector",
       "url": "https://openlayers.org/data/vector/ecoregions.json",
