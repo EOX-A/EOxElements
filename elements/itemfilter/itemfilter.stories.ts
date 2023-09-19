@@ -12,7 +12,7 @@ export default {
     },
     options: { selectedPanel: "addon-controls" },
   },
-  render: (args) => {
+  render: (args: any) => {
     const eoxItemFilter = new EOxItemFilter();
     eoxItemFilter.config = args;
     eoxItemFilter.apply(items);
@@ -74,7 +74,7 @@ export const Primary = {
     ],
     aggregateResults: "themes",
     enableHighlighting: true,
-    onSelect: (item) => {
+    onSelect: (item: any) => {
       console.log(item);
     },
   },

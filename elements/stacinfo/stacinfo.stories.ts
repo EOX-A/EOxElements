@@ -11,7 +11,7 @@ export default {
     },
     options: { selectedPanel: "addon-controls" },
   },
-  render: (args) => html`<eox-stacinfo
+  render: (args: any) => html`<eox-stacinfo
     .featured=${args.featured}
     for=${args.for}
     .properties="${args.properties}"
@@ -54,6 +54,7 @@ export const PropertiesWhitelist = {
 export const AllProperties = {
   args: {
     ...Basic.args,
+    // @ts-ignore
     properties: undefined,
   },
 };

@@ -10,7 +10,7 @@ export default {
     },
     options: { selectedPanel: "addon-controls" },
   },
-  render: (args) =>
+  render: () =>
     `<eox-map style="width: 400px; height: 300px;"zoom="7" center="[1800000, 6150000]" layers='[{"type":"Tile","source":{"type":"OSM"}}]'></eox-map>`,
 };
 

@@ -11,7 +11,7 @@ export default {
     },
     options: { selectedPanel: "addon-controls" },
   },
-  render: (args) => `<eox-map style="width: 400px; height: 300px; zoom="3"
+  render: () => `<eox-map style="width: 400px; height: 300px; zoom="3"
   center="[1000000, 6000000]"
   layers='[
   {

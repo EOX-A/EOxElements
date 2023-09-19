@@ -1,3 +1,3 @@
 export default {
-  globs: ['**/main.ts'], 
-}
+  globs: ["**/main.ts"],
+};

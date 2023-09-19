@@ -11,7 +11,7 @@ export default {
     },
     options: { selectedPanel: "addon-controls" },
   },
-  render: (args) => {
+  render: () => {
     const eoxChart = new EOxChart();
     const options = {
       endpoint:
