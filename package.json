@@ -18,7 +18,8 @@
     "watch:all": "npm run watch --ws",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate-manifest": "npx custom-elements-manifest analyze --globs './elements/itemfilter/src/main.ts' './elements/map/main.ts' './elements/chart/src/main.ts' './elements/drawtools/src/main.ts' './elements/layercontrol/src/main.ts' './elements/stacinfo/src/main.ts' './elements/timecontrol/src/main.ts' --litelement --watch"
+    "generate-manifest": "npx custom-elements-manifest analyze --litelement",
+    "generate-manifest:watch": "npx custom-elements-manifest analyze --litelement --watch"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.4",

@@ -4,335 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "elements/itemfilter/src/main.ts",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "",
-          "name": "ElementConfig",
-          "members": [
-            {
-              "kind": "field",
-              "name": "aggregateResults",
-              "type": {
-                "text": "string | undefined"
-              },
-              "privacy": "public",
-              "default": "undefined",
-              "description": "Aggregate results by a property key"
-            },
-            {
-              "kind": "field",
-              "name": "enableHighlighting",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "privacy": "public",
-              "default": "false",
-              "description": "Highlighting of search result character matches"
-            },
-            {
-              "kind": "field",
-              "name": "externalFilter",
-              "type": {
-                "text": "Function | undefined"
-              },
-              "privacy": "public",
-              "description": "Use an external search endpoint instead of fuse search.\nPassed properties: input string, filters object"
-            },
-            {
-              "kind": "field",
-              "name": "filterProperties",
-              "type": {
-                "text": "Array<FilterObject> | undefined"
-              },
-              "privacy": "public",
-              "default": "[]",
-              "description": "The filter properties.",
-              "parameters": [
-                {
-                  "name": "filterProperties"
-                }
-              ]
-            },
-            {
-              "kind": "field",
-              "name": "fuseConfig",
-              "type": {
-                "text": "Object | undefined"
-              },
-              "privacy": "public",
-              "description": "Native fuse.js config override"
-            },
-            {
-              "kind": "field",
-              "name": "inlineMode",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "privacy": "public",
-              "default": "false",
-              "description": "Inline mode, for rendering the itemfilter in avery condensed space.\nExpexts showResults to be false"
-            },
-            {
-              "kind": "field",
-              "name": "matchAllWhenEmpty",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "privacy": "public",
-              "default": "true",
-              "description": "Show all result items if nothing is input by the user"
-            },
-            {
-              "kind": "field",
-              "name": "onFilter",
-              "type": {
-                "text": "Function | undefined"
-              },
-              "privacy": "public",
-              "description": "Callback that is triggered on item search",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            },
-            {
-              "kind": "field",
-              "name": "onSelect",
-              "type": {
-                "text": "Function | undefined"
-              },
-              "privacy": "public",
-              "description": "Callback that is triggered on item selection",
-              "return": {
-                "type": {
-                  "text": ""
-                }
-              }
-            },
-            {
-              "kind": "field",
-              "name": "showResults",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "privacy": "public",
-              "default": "true",
-              "description": "Display results list"
-            },
-            {
-              "kind": "field",
-              "name": "titleProperty",
-              "type": {
-                "text": "string"
-              },
-              "privacy": "public",
-              "default": "\"title\"",
-              "description": "The property of the result items used for display"
-            },
-            {
-              "kind": "field",
-              "name": "expandMultipleFilters",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "privacy": "public",
-              "default": "true",
-              "description": "Allow opening multiple filter accordeons in parallel"
-            },
-            {
-              "kind": "field",
-              "name": "expandMultipleResults",
-              "type": {
-                "text": "boolean | undefined"
-              },
-              "privacy": "public",
-              "default": "true",
-              "description": "Allow opening multiple result accordeons in parallel"
-            }
-          ]
-        },
-        {
-          "kind": "class",
-          "description": "",
-          "name": "EOxItemFilter",
-          "members": [
-            {
-              "kind": "field",
-              "name": "_resultAggregation",
-              "type": {
-                "text": "Array<string>"
-              },
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "filters",
-              "type": {
-                "text": "{ [key: string]: FilterObject }"
-              },
-              "privacy": "public",
-              "default": "{}"
-            },
-            {
-              "kind": "field",
-              "name": "items",
-              "type": {
-                "text": "Array<object>"
-              },
-              "privacy": "public",
-              "default": "[]"
-            },
-            {
-              "kind": "field",
-              "name": "results",
-              "type": {
-                "text": "Array<object>"
-              },
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "selectedResult",
-              "type": {
-                "text": "Item"
-              },
-              "privacy": "public"
-            },
-            {
-              "kind": "field",
-              "name": "config"
-            },
-            {
-              "kind": "field",
-              "name": "_config",
-              "privacy": "private",
-              "default": "new ElementConfig()"
-            },
-            {
-              "kind": "field",
-              "name": "apply",
-              "attribute": "apply"
-            },
-            {
-              "kind": "field",
-              "name": "styleOverride",
-              "type": {
-                "text": "string"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "unstyled",
-              "type": {
-                "text": "boolean"
-              },
-              "attribute": "unstyled"
-            },
-            {
-              "kind": "method",
-              "name": "search",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "aggregateResults",
-              "parameters": [
-                {
-                  "name": "items",
-                  "type": {
-                    "text": "Array<Object>"
-                  }
-                },
-                {
-                  "name": "property",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "sortResults",
-              "parameters": [
-                {
-                  "name": "items",
-                  "type": {
-                    "text": "Array<Object>"
-                  }
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "resetFilters"
-            },
-            {
-              "kind": "method",
-              "name": "toggleAccordion",
-              "parameters": [
-                {
-                  "name": "event",
-                  "type": {
-                    "text": "CustomEvent"
-                  }
-                }
-              ]
-            }
-          ],
-          "attributes": [
-            {
-              "name": "apply",
-              "fieldName": "apply"
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "boolean"
-              },
-              "fieldName": "unstyled"
-            }
-          ],
-          "superclass": {
-            "name": "TemplateElement",
-            "module": "/utils/templateElement"
-          },
-          "tagName": "eox-itemfilter",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "ElementConfig",
-          "declaration": {
-            "name": "ElementConfig",
-            "module": "elements/itemfilter/src/main.ts"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "EOxItemFilter",
-          "declaration": {
-            "name": "EOxItemFilter",
-            "module": "elements/itemfilter/src/main.ts"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-itemfilter",
-          "declaration": {
-            "name": "EOxItemFilter",
-            "module": "elements/itemfilter/src/main.ts"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "elements/map/main.ts",
       "declarations": [
         {
@@ -884,6 +555,335 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/itemfilter/src/main.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "ElementConfig",
+          "members": [
+            {
+              "kind": "field",
+              "name": "aggregateResults",
+              "type": {
+                "text": "string | undefined"
+              },
+              "privacy": "public",
+              "default": "undefined",
+              "description": "Aggregate results by a property key"
+            },
+            {
+              "kind": "field",
+              "name": "enableHighlighting",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "false",
+              "description": "Highlighting of search result character matches"
+            },
+            {
+              "kind": "field",
+              "name": "externalFilter",
+              "type": {
+                "text": "Function | undefined"
+              },
+              "privacy": "public",
+              "description": "Use an external search endpoint instead of fuse search.\nPassed properties: input string, filters object"
+            },
+            {
+              "kind": "field",
+              "name": "filterProperties",
+              "type": {
+                "text": "Array<FilterObject> | undefined"
+              },
+              "privacy": "public",
+              "default": "[]",
+              "description": "The filter properties.",
+              "parameters": [
+                {
+                  "name": "filterProperties"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "fuseConfig",
+              "type": {
+                "text": "Object | undefined"
+              },
+              "privacy": "public",
+              "description": "Native fuse.js config override"
+            },
+            {
+              "kind": "field",
+              "name": "inlineMode",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "false",
+              "description": "Inline mode, for rendering the itemfilter in avery condensed space.\nExpexts showResults to be false"
+            },
+            {
+              "kind": "field",
+              "name": "matchAllWhenEmpty",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "true",
+              "description": "Show all result items if nothing is input by the user"
+            },
+            {
+              "kind": "field",
+              "name": "onFilter",
+              "type": {
+                "text": "Function | undefined"
+              },
+              "privacy": "public",
+              "description": "Callback that is triggered on item search",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "onSelect",
+              "type": {
+                "text": "Function | undefined"
+              },
+              "privacy": "public",
+              "description": "Callback that is triggered on item selection",
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "showResults",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "true",
+              "description": "Display results list"
+            },
+            {
+              "kind": "field",
+              "name": "titleProperty",
+              "type": {
+                "text": "string"
+              },
+              "privacy": "public",
+              "default": "\"title\"",
+              "description": "The property of the result items used for display"
+            },
+            {
+              "kind": "field",
+              "name": "expandMultipleFilters",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "true",
+              "description": "Allow opening multiple filter accordeons in parallel"
+            },
+            {
+              "kind": "field",
+              "name": "expandMultipleResults",
+              "type": {
+                "text": "boolean | undefined"
+              },
+              "privacy": "public",
+              "default": "true",
+              "description": "Allow opening multiple result accordeons in parallel"
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "description": "",
+          "name": "EOxItemFilter",
+          "members": [
+            {
+              "kind": "field",
+              "name": "_resultAggregation",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "filters",
+              "type": {
+                "text": "{ [key: string]: FilterObject }"
+              },
+              "privacy": "public",
+              "default": "{}"
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "type": {
+                "text": "Array<object>"
+              },
+              "privacy": "public",
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "results",
+              "type": {
+                "text": "Array<object>"
+              },
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "selectedResult",
+              "type": {
+                "text": "Item"
+              },
+              "privacy": "public"
+            },
+            {
+              "kind": "field",
+              "name": "config"
+            },
+            {
+              "kind": "field",
+              "name": "_config",
+              "privacy": "private",
+              "default": "new ElementConfig()"
+            },
+            {
+              "kind": "field",
+              "name": "apply",
+              "attribute": "apply"
+            },
+            {
+              "kind": "field",
+              "name": "styleOverride",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "unstyled",
+              "type": {
+                "text": "boolean"
+              },
+              "attribute": "unstyled"
+            },
+            {
+              "kind": "method",
+              "name": "search",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "aggregateResults",
+              "parameters": [
+                {
+                  "name": "items",
+                  "type": {
+                    "text": "Array<Object>"
+                  }
+                },
+                {
+                  "name": "property",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "sortResults",
+              "parameters": [
+                {
+                  "name": "items",
+                  "type": {
+                    "text": "Array<Object>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "resetFilters"
+            },
+            {
+              "kind": "method",
+              "name": "toggleAccordion",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "apply",
+              "fieldName": "apply"
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "boolean"
+              },
+              "fieldName": "unstyled"
+            }
+          ],
+          "superclass": {
+            "name": "TemplateElement",
+            "module": "/utils/templateElement"
+          },
+          "tagName": "eox-itemfilter",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "ElementConfig",
+          "declaration": {
+            "name": "ElementConfig",
+            "module": "elements/itemfilter/src/main.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "EOxItemFilter",
+          "declaration": {
+            "name": "EOxItemFilter",
+            "module": "elements/itemfilter/src/main.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-itemfilter",
+          "declaration": {
+            "name": "EOxItemFilter",
+            "module": "elements/itemfilter/src/main.ts"
           }
         }
       ]
