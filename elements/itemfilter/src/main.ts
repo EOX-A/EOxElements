@@ -19,7 +19,6 @@ import { filter as filterExternal } from "./filterExternal";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
-customElement("eox-itemfilter");
 export class ElementConfig {
   /**
    * Aggregate results by a property key
@@ -95,6 +94,7 @@ export class ElementConfig {
   public expandMultipleResults?: boolean = true;
 }
 
+@customElement("eox-itemfilter")
 export class EOxItemFilter extends TemplateElement {
   _resultAggregation: Array<string> = [];
 
