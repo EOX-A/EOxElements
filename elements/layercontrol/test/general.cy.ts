@@ -141,4 +141,33 @@ describe("LayerControl", () => {
         cy.get(".layer").find(".title").contains("baz");
       });
   });
+
+  it("updates if a layer is removed from a group", () => {
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([
+        {
+          title: "group",
+          layers: [{title: "baz" }],
+          layerControlExpanded: true,
+        },
+        { title: "bar" },
+      ]);
+    });
+    cy.wait(100);
+
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).map
+        .getLayers()
+        .getArray()[0]
+        .getLayers()
+        .getArray()
+        .pop();
+    });
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get(".layer").find(".title").contains("baz").should('not.exist');
+      });
+  });
 });
