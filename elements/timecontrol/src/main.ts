@@ -9,7 +9,7 @@ import { styleEOX } from "./style.eox";
 import { UrlFunction } from "ol/Tile";
 
 @customElement("eox-timecontrol")
-export class EOxDrawTools extends LitElement {
+export class EOxTimeControl extends LitElement {
   /**
    * The WMS parameter to update
    */
