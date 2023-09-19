@@ -299,7 +299,9 @@
           "superclass": {
             "name": "TemplateElement",
             "module": "/utils/templateElement"
-          }
+          },
+          "tagName": "eox-itemfilter",
+          "customElement": true
         }
       ],
       "exports": [
@@ -314,6 +316,14 @@
         {
           "kind": "js",
           "name": "EOxItemFilter",
+          "declaration": {
+            "name": "EOxItemFilter",
+            "module": "elements/itemfilter/src/main.ts"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-itemfilter",
           "declaration": {
             "name": "EOxItemFilter",
             "module": "elements/itemfilter/src/main.ts"
@@ -388,7 +398,7 @@
               "kind": "field",
               "name": "interactions",
               "type": {
-                "text": "{ [index: string]: Interaction }"
+                "text": "{ [index: string]: Draw | Modify }"
               },
               "default": "{}",
               "description": "dictionary of ol interactions associated with the map."
@@ -408,7 +418,23 @@
               "description": "Apply layers from Mapbox Style JSON",
               "parameters": [
                 {
-                  "description": "a Mapbox Style JSON",
+                  "description": "array of EoxLayer JSONs",
+                  "name": "json"
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": ""
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "addOrUpdateLayer",
+              "description": "creates or updates an existing layer\nwill update an layer if the ID already exists",
+              "parameters": [
+                {
+                  "description": "EoxLayer JSON definition",
                   "name": "json"
                 }
               ],
@@ -479,6 +505,30 @@
               "kind": "field",
               "name": "getFlatLayersArray",
               "default": "getFlatLayersArray"
+            },
+            {
+              "kind": "method",
+              "name": "buffer",
+              "parameters": [
+                {
+                  "name": "extent",
+                  "type": {
+                    "text": "Extent"
+                  }
+                },
+                {
+                  "name": "value",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "description": "Return extent increased by the provided value.",
+              "return": {
+                "type": {
+                  "text": "Extent"
+                }
+              }
             }
           ],
           "attributes": [
@@ -871,23 +921,9 @@
             },
             {
               "kind": "field",
-              "name": "layerArray",
-              "type": {
-                "text": "Array<BaseLayer>"
-              }
-            },
-            {
-              "kind": "field",
               "name": "optionalLayerArray",
               "type": {
                 "text": "Array<BaseLayer>"
-              }
-            },
-            {
-              "kind": "field",
-              "name": "resizeObserver",
-              "type": {
-                "text": "ResizeObserver"
               }
             },
             {
@@ -1251,6 +1287,14 @@
               ]
             }
           ],
+          "events": [
+            {
+              "name": "removeLayer",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
           "attributes": [
             {
               "name": "for",
@@ -1330,7 +1374,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "A simple element for automatically fetching and displaying a STAC file (catalog, collection or item)",
+          "description": "",
           "name": "EOxStacInfo",
           "members": [
             {
@@ -1339,7 +1383,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Render the element without styling",
               "attribute": "unstyled"
             },
             {
@@ -1348,8 +1391,16 @@
               "type": {
                 "text": "string"
               },
-              "description": "The link to a STAC JSON file",
               "attribute": "for"
+            },
+            {
+              "kind": "field",
+              "name": "header",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "attribute": "header"
             },
             {
               "kind": "field",
@@ -1358,8 +1409,16 @@
                 "text": "Array<string>"
               },
               "default": "[]",
-              "description": "A list of featured properties which are rendered full-width and expandable",
               "attribute": "featured"
+            },
+            {
+              "kind": "field",
+              "name": "footer",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "attribute": "footer"
             },
             {
               "kind": "field",
@@ -1367,23 +1426,27 @@
               "type": {
                 "text": "Array<typeof STAC>"
               },
-              "privacy": "private",
               "default": "[]"
             },
             {
               "kind": "field",
-              "name": "fetchStac",
-              "privacy": "private"
+              "name": "stacProperties",
+              "type": {
+                "text": "Array<typeof STAC>"
+              },
+              "privacy": "public"
             },
             {
               "kind": "field",
-              "name": "parseStac",
-              "privacy": "private"
+              "name": "fetchStac"
+            },
+            {
+              "kind": "field",
+              "name": "parseStac"
             },
             {
               "kind": "method",
               "name": "buildProperties",
-              "privacy": "private",
               "parameters": [
                 {
                   "name": "stacArray",
@@ -1400,7 +1463,6 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Render the element without styling",
               "fieldName": "unstyled"
             },
             {
@@ -1408,16 +1470,22 @@
               "type": {
                 "text": "string"
               },
-              "description": "The link to a STAC JSON file",
               "fieldName": "for"
+            },
+            {
+              "name": "header",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "fieldName": "header"
             },
             {
               "name": "properties",
               "type": {
                 "text": "Array<string>"
               },
-              "default": "[\"title\", \"description\"]",
-              "description": "A whitelist of properties from the STAC JSON to display",
+              "default": "[]",
               "fieldName": "properties"
             },
             {
@@ -1426,13 +1494,20 @@
                 "text": "Array<string>"
               },
               "default": "[]",
-              "description": "A list of featured properties which are rendered full-width and expandable",
               "fieldName": "featured"
+            },
+            {
+              "name": "footer",
+              "type": {
+                "text": "Array<string>"
+              },
+              "default": "[]",
+              "fieldName": "footer"
             }
           ],
           "superclass": {
-            "name": "TemplateElement",
-            "module": "/utils/templateElement"
+            "name": "LitElement",
+            "package": "lit"
           },
           "tagName": "eox-stacinfo",
           "customElement": true
