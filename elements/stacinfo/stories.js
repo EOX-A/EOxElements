@@ -1,22 +1,20 @@
-import "./src/main";
 import { html } from "lit";
+import "./src/main";
 
 export default {
   title: "Elements/eox-stacinfo",
   tags: ["autodocs"],
   component: "eox-stacinfo",
-  parameters: {
-    docs: {
-      toc: true,
-    },
-    options: { selectedPanel: "addon-controls" },
-  },
-  render: (args: any) => html`<eox-stacinfo
-    .featured=${args.featured}
-    for=${args.for}
-    .properties="${args.properties}"
-    ?unstyled=${args.unstyled}
-  ></eox-stacinfo>`,
+  render: (args) => html`
+    <eox-stacinfo
+      for=${args.for}
+      .header=${args.header}
+      .properties="${args.properties}"
+      .featured=${args.featured}
+      .footer=${args.footer}
+      ?unstyled=${args.unstyled}
+    ></eox-stacinfo>
+  `,
 };
 
 /**
@@ -25,7 +23,10 @@ export default {
 export const Basic = {
   args: {
     for: "https://metadata.opensciencedata.esa.int/open-science-catalog-metadata/products/aerosol-pure-dust-op-livas/collection.json",
-    properties: ["title", "description"],
+    header: ["title"],
+    properties: ["osc:status", "osc:missions"],
+    featured: ["description"],
+    footer: ["osc:project"],
   },
 };
 

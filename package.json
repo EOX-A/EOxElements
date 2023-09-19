@@ -6,6 +6,7 @@
     "elements/*"
   ],
   "scripts": {
+    "start": "concurrently \"npm:watch:generate-manifest\" \"npm:storybook\"",
     "build:all": "npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
     "cypress": "cypress open",
@@ -17,9 +18,9 @@
     "lint:fix:all": "npm run lint:fix --ws",
     "watch:all": "npm run watch --ws",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
+    "build:storybook": "storybook build",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
-    "generate-manifest:watch": "npx custom-elements-manifest analyze --litelement --watch"
+    "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.8.4",
@@ -28,6 +29,7 @@
     "@storybook/blocks": "^7.4.0",
     "@storybook/web-components": "^7.4.0",
     "@storybook/web-components-vite": "^7.4.0",
+    "concurrently": "^8.2.1",
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^12.12.0",
     "cypress-lit": "^0.0.8",

@@ -1,18 +1,12 @@
 import { EOxItemFilter } from "./src/main";
 import "./src/main";
-import items from "./examples/items.json";
+import items from "./test/testItems.json";
 
 export default {
   title: "Elements/eox-itemfilter",
   tags: ["autodocs"],
   component: "eox-itemfilter",
-  parameters: {
-    docs: {
-      toc: true,
-    },
-    options: { selectedPanel: "addon-controls" },
-  },
-  render: (args: any) => {
+  render: (args) => {
     const eoxItemFilter = new EOxItemFilter();
     eoxItemFilter.config = args;
     eoxItemFilter.apply(items);
@@ -74,7 +68,7 @@ export const Primary = {
     ],
     aggregateResults: "themes",
     enableHighlighting: true,
-    onSelect: (item: any) => {
+    onSelect: (item) => {
       console.log(item);
     },
   },

@@ -16,49 +16,49 @@ Note: The main branch of this project contains the v2 version of EOxElements. Fo
   <tr>
     <th>Element</th>
     <th>Description</th>
-    <th>Examples</th>
+    <th>Docs & Examples</th>
     <th>State</th>
   </tr>
   <tr>
     <td><a href="./elements/chart/">eox-chart</a></td>
     <td>Dynamic chart with built-in data fetching</td>
-    <td><!--<a href="https://eox-a.github.io/EOxElements/elements/chart/examples/index.html">Examples</a>--></td>
+    <td><a href="https://eox-a.github.io/EOxElements/storybook-static/index.html?path=/docs/elements-eox-chart--docs">Docs & Examples</a></td>
     <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/drawtools/">eox-drawtools</a></td>
     <td>Draw and manage features on a map</td>
-    <td><a href="https://eox-a.github.io/EOxElements/elements/drawtools/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/storybook-static/index.html?path=/docs/elements-eox-drawtools--docs">Docs & Examples</a></td>
     <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
     <td>Filter/search large sets of items client-side or server-side</td>
-    <td><a href="https://eox-a.github.io/EOxElements/elements/itemfilter/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/storybook-static/index.html?path=/docs/elements-eox-itemfilter--docs">Docs & Examples</a></td>
     <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>
     <td>Manage and modify map layers</td>
-    <td><a href="https://eox-a.github.io/EOxElements/elements/layercontrol/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/storybook-static/index.html?path=/docs/elements-eox-layercontrol--docs">Docs & Examples</a></td>
     <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/map/">eox-map</a></td>
     <td>Map with powerful tools & helpers</td>
-    <td><a href="https://eox-a.github.io/EOxElements/elements/map/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/storybook-static/index.html?path=/docs/elements-eox-map--docs">Docs & Examples</a></td>
     <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/stacinfo/">eox-stacinfo</a></td>
     <td>Display properties of STAC files</td>
-    <td><a href="https://eox-a.github.io/EOxElements/elements/stacinfo/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/storybook-static/index.html?path=/docs/elements-eox-stacinfo--docs">Docs & Examples</a></td>
     <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/timecontrol/">eox-timecontrol</a></td>
     <td>Time control and playback for map layers</td>
-    <td><a href="https://eox-a.github.io/EOxElements/elements/timecontrol/examples/index.html">Examples</a></td>
+    <td><a href="https://eox-a.github.io/EOxElements/storybook-static/index.html?path=/docs/elements-eox-timecontrol--docs">Docs & Examples</a></td>
     <td>⭕️</td>
   </tr>
 </table>
@@ -117,17 +117,13 @@ npm install
 
 ### Dev server
 
-You can start a dev server for an individual element by running this command:
+To start the storybook dev server, use:
 
 ```
-npm start -w <element>
+npm start
 ```
 
-Example:
-
-```
-npm start -w @eox/map
-```
+This opens the storybook server on localhost (port 6006), where multiple element states can be used for development. Edit the corresponding element `stories.js` files to create and work on multiple states of an element.
 
 ### Test server
 
