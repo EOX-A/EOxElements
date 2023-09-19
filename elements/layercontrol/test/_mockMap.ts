@@ -27,8 +27,8 @@ const mockLayer = (
     layerControlHide: undefined,
     layerControlOptional: undefined,
     opacity: 1,
-    set(): void {
-      return undefined;
+    set(prop, value): void {
+      this[prop] = value;
     },
     setVisible(visible: boolean) {
       this.visible = visible;
@@ -62,7 +62,7 @@ const mockCollection = (collection: { events?: any; layers?: Array<any> }) =>
       collection.events["change:length"]();
     },
     remove: (layer: typeof mockLayer) => {
-      collection.layers.splice(collection.layers.indexOf(layer));
+      collection.layers.splice(collection.layers.findIndex(l => l.id === layer.id));
     },
   };
 
