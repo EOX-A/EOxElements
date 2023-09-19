@@ -16,6 +16,14 @@
     </eox-map>
     <script type="module">
       import "./main.ts";
+      document.querySelector("eox-map-tooltip").propertyTransform = ([
+        key,
+        value,
+      ]) => {
+        return key === "geometry"
+          ? [`${key} extent`, value.getExtent()]
+          : [key, value];
+      };
       document.querySelector("eox-map").setLayers([
         {
           type: "Vector",
@@ -29,8 +37,20 @@
       ]);
       document.querySelector("eox-map").addSelect("regions", {
         id: "selectInteraction",
-        tooltip: "eox-map-tooltip",
         condition: "pointermove",
+        layer: {
+          type: "Vector",
+          properties: {
+            id: "selectLayer",
+          },
+          source: {
+            type: "Vector",
+          },
+          style: {
+            "stroke-color": "red",
+            "stroke-width": 3,
+          },
+        },
       });
     </script>
   </body>

@@ -4,7 +4,7 @@ import "../main";
 describe("Map", () => {
   it("map should exist", () => {
     cy.mount(
-      `<eox-map layers='[{"type":"Tile","source":{"type":"OSM"}}]'></eox-map>`
+      `<eox-map layers='[{"type":"Tile","properties": {"id": "osm"}, "source":{"type":"OSM"}}]'></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       expect((<EOxMap>$el[0]).map).to.exist;

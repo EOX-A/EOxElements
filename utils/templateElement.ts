@@ -109,7 +109,7 @@ export abstract class TemplateElement extends LitElement {
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < this.children.length; i++) {
       const child = this.children[i];
-      if (child.nodeName === "TEMPLATE") {
+      if (child.nodeName === "RENDER-TEMPLATE") {
         const template = child as HTMLElement;
         if (template.dataset.type) {
           templates[template.dataset.type] = template;
@@ -129,8 +129,8 @@ export abstract class TemplateElement extends LitElement {
     context: object
   ) {
     let rendered: Node;
-    if (template.content && template.content.childNodes.length) {
-      const templateContent = template.content.cloneNode(true);
+    if (template && template.childNodes.length) {
+      const templateContent = template.cloneNode(true);
       rendered = this.renderNode(templateContent, root, context);
     }
 
