@@ -11,7 +11,6 @@ export const setCustomElementsManifestWithOptions = (
       module?.declarations?.forEach((declaration) => {
         Object.keys(declaration).forEach((key) => {
           if (Array.isArray(declaration[key])) {
-            console.log(declaration[key]);
             declaration[key] = declaration[key].filter((member) => {
               return !member.privacy?.includes("private");
             });
