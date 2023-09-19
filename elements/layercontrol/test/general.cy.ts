@@ -99,16 +99,50 @@ describe("LayerControl", () => {
       });
   });
 
-  it("removes layers correctly in control and map", () => {
-    // Ignore ResizeObserver exceptions so they do not break the test.
-    cy.on("uncaught:exception", (err) => {
-      if (err.message.includes("ResizeObserver loop")) {
-        return false;
-      } else {
-        return undefined;
-      }
+  it("updates if a layer is pushed to the root collection", () => {
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([{ title: "foo" }]);
     });
+    cy.wait(100);
 
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).map.getLayers().push({ title: "bar" });
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get(".layer").find(".title").contains("bar");
+      });
+  });
+
+  it("updates if a layer is pushed to a group", () => {
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([
+        {
+          title: "group",
+          layers: [{ title: "foo" }],
+          layerControlExpanded: true,
+        },
+        { title: "bar" },
+      ]);
+    });
+    cy.wait(100);
+
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).map
+        .getLayers()
+        .getArray()[0]
+        .getLayers()
+        .push({ title: "baz" });
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get(".layer").find(".title").contains("baz");
+      });
+  });
+
+  it("removes layers correctly in control and map", () => {
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
         { id: "foo", layerControlExpanded: true },
@@ -121,18 +155,14 @@ describe("LayerControl", () => {
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        // 1. Press the Delete button to delete the S2 layer.
         cy.get(`[data-layer=${layerToDelete}] eox-layerconfig`)
           .shadow()
           .within(() => {
             cy.get("div button.delete").should("be.visible").click();
           });
-
-        // 2. Confirm the removal of the layer from the menu tree.
         cy.get(`[data-layer=${layerToDelete}]`).should("not.exist");
       });
 
-    // Verify the deletion of the map layer itself.
     cy.get("mock-map").then(($el) => {
       let layer = (<MockMap>$el[0]).layers.find((l) => l.id === layerToDelete);
       assert.equal(layer, undefined, "deleted layer should not be found");

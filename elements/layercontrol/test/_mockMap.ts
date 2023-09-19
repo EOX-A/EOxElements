@@ -1,8 +1,18 @@
-const mockLayer = (layerId: number) =>
+const mockLayer = (
+  layer: { events?: any; layers?: Array<any> },
+  layerId: string
+) =>
   <{ [key: string]: any }>{
     get(prop: string): any {
       return this[prop];
     },
+    ...(layer.layers
+      ? {
+          getLayers: () => ({
+            ...mockCollection(layer),
+          }),
+        }
+      : {}),
     getOpacity() {
       return this.opacity;
     },
@@ -26,6 +36,25 @@ const mockLayer = (layerId: number) =>
     visible: true,
   };
 
+const mockCollection = (collection: { events?: any; layers?: Array<any> }) =>
+  <{ [key: string]: any }>{
+    getArray() {
+      return collection.layers.map((l: any, i: number) => ({
+        ...mockLayer(l, `${i}`),
+        ...l,
+      }));
+    },
+    on: (event: string, fun: () => void) =>
+      (collection.events = { [event]: fun }),
+    push(newLayer: object) {
+      collection.layers.push(newLayer);
+      collection.events["change:length"]();
+    },
+    remove: (layer: typeof mockLayer) => {
+      collection.layers.splice(collection.layers.indexOf(layer));
+    },
+  };
+
 export class MockMap extends HTMLElement {
   constructor() {
     super();
@@ -37,17 +66,13 @@ export class MockMap extends HTMLElement {
       getArray: () => [{}],
     }),
     getLayers: () => ({
-      getArray: () => this.layers,
-      on: (event: string, fun: () => void) => (this.events[event] = fun),
-      remove: (layer: typeof mockLayer) => {
-        this.layers.splice(this.layers.indexOf(layer));
-      },
+      ...mockCollection(this),
     }),
   };
   setLayers = (layers: Array<any>) => {
-    this.layers = layers.map((l, index) => ({
-      ...mockLayer(index),
-      ...l,
+    this.layers = layers.map((layer, index) => ({
+      ...mockLayer(layer, `${index}`),
+      ...layer,
     }));
     this.events["change:length"]();
   };
