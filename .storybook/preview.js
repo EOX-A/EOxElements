@@ -1,5 +1,6 @@
 import { setCustomElementsManifest } from "@storybook/web-components";
 import customElements from "../custom-elements.json";
+import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
 /**
  * A custom wrapper for the default setCustomElementsManifest function.
@@ -28,3 +29,14 @@ export const setCustomElementsManifestWithOptions = (
 };
 
 setCustomElementsManifestWithOptions(customElements, { privateFields: false });
+
+const preview = {
+  parameters: {
+    docs: {
+      toc: true,
+      page: DocumentationTemplate,
+    },
+  },
+};
+
+export default preview;

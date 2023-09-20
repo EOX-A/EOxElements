@@ -9,6 +9,24 @@ import { styleEOX } from "./style.eox";
 import StacFields from "@radiantearth/stac-fields";
 import { STAC } from "stac-js";
 
+/**
+ * ### Introduction
+ * Working with STAC catalogs, collections and items often times requires
+ * to fetch a JSON file, parse its contents and display some of its fields
+ * in some formatted way. To make these steps reusable, the `eox-stacinfo`
+ * element offers a set of functionalities:
+ * - **automatically fetch a STAC file** as soon as the element loads
+ * - offer a **property whitelist** functionality to choose which properties to display
+ * - display the properties in **configurable sections** (header, featured, footer)
+ * - allow to **override** any property display for application-specific custom needs
+ *
+ * The use case for this element is alongside a map which displays STAC files
+ * or in a catalog browsing scenario where a quick look at the most important properties
+ * is needed.
+ *
+ * #### Technology
+ * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
+ */
 @customElement("eox-stacinfo")
 export class EOxStacInfo extends LitElement {
   @property({ type: Boolean })

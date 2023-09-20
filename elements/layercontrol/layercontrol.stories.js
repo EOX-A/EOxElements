@@ -6,6 +6,10 @@ export default {
   title: "Elements/eox-layercontrol",
   tags: ["autodocs"],
   component: "eox-layercontrol",
+  parameters: {
+    componentSubtitle: "Manage and configure OpenLayers map layers",
+    layout: "centered",
+  },
   render: () => html`
 <eox-map
   style="width: 400px; height: 300px; zoom="3"

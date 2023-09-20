@@ -29,6 +29,18 @@ type OlLayer = Layer & {
 type OlSource = Source & {
   ol_uid: string;
 };
+
+/**
+ * ### Introduction
+ * This highly configurable layer control aims to provide fine-grained management of
+ * map layers, while at the same time allowing to reduce complexity for the user.
+ * 
+ * The `eox-layercontrol` can attach to any **OpenLayers map** and provides the following functionalities:
+ * - layer visibility: toggle on/off
+ * - layer ordering
+ * - layer opacity
+ * - advanced layer configuration
+ */
 @customElement("eox-layercontrol")
 export class EOxLayerControl extends LitElement {
   private _currentlySorting: boolean;
