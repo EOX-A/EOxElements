@@ -86,11 +86,11 @@ describe("LayerControl", () => {
       });
   });
 
-  it("pre-opens a section if layerControlExpanded is present", () => {
+  it("pre-opens a section if layerControlExpand is present", () => {
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
         { visible: true },
-        { layerControlExpanded: true },
+        { layerControlExpand: true },
       ]);
     });
     cy.get("eox-layercontrol")

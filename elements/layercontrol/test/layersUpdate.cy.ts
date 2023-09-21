@@ -59,7 +59,7 @@ describe("LayerControl", () => {
         {
           title: "group",
           layers: [{ title: "foo" }],
-          layerControlExpanded: true,
+          layerControlExpand: true,
         },
         { title: "bar" },
       ]);
@@ -83,7 +83,7 @@ describe("LayerControl", () => {
   it("updates if a layer is removed from the root collection", () => {
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
-        { id: "foo", layerControlExpanded: true },
+        { id: "foo", layerControlExpand: true },
         { id: "bar" },
       ]);
     });
@@ -113,7 +113,7 @@ describe("LayerControl", () => {
         {
           title: "group",
           layers: [{ title: "baz" }],
-          layerControlExpanded: true,
+          layerControlExpand: true,
         },
         { title: "bar" },
       ]);
@@ -137,7 +137,7 @@ describe("LayerControl", () => {
         {
           title: "group1",
           layers: [{ title: "title1" }],
-          layerControlExpanded: true,
+          layerControlExpand: true,
         },
         {
           title: "group2",
@@ -145,7 +145,7 @@ describe("LayerControl", () => {
             { title: "foo" },
             { title: "title2", layerControlOptional: true, visible: false },
           ],
-          layerControlExpanded: true,
+          layerControlExpand: true,
         },
       ]);
     });

@@ -23,7 +23,7 @@ const mockLayer = (
     id: layerId,
     layerControlDisable: undefined,
     layerControlExclusive: undefined,
-    layerControlExpanded: undefined,
+    layerControlExpand: undefined,
     layerControlHide: undefined,
     layerControlOptional: undefined,
     opacity: 1,
