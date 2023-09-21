@@ -5,6 +5,7 @@ A Web Component collection of geospatial UI elements, crafted by EOX.
 Note: The main branch of this project contains the v2 version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
 
 ## Documentation, Examples
+
 Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements) (currently WIP).
 
 ## Elements
