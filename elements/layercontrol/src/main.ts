@@ -34,7 +34,7 @@ type OlSource = Source & {
  * ### Introduction
  * This highly configurable layer control aims to provide fine-grained management of
  * map layers, while at the same time allowing to reduce complexity for the user.
- * 
+ *
  * The `eox-layercontrol` can attach to any **OpenLayers map** and provides the following functionalities:
  * - layer visibility: toggle on/off
  * - layer ordering
