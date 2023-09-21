@@ -267,7 +267,13 @@ export class EOxLayerControl extends LitElement {
                 .external=${this.externalLayerConfig}
                 .unstyled="${this.unstyled}"
                 @removeLayer=${() => {
-                  collection.remove(layer);
+                  if (this.optionalLayerArray?.length > 0) {
+                    layer.set("layerControlOptional", true);
+                    layer.setVisible(false);
+                    this.requestUpdate();
+                  } else {
+                    collection.remove(layer);
+                  }
                   const listitem = this.renderRoot.querySelector(
                     `[data-layer='${layer.get(this.layerIdentifier)}'`
                   );
