@@ -225,7 +225,7 @@ export class EOxLayerControl extends LitElement {
       groupId: string,
       collection: Collection<BaseLayer>
     ) => html`
-      <details open="${layer.get("layerControlExpanded") ? true : nothing}">
+      <details open="${layer.get("layerControlExpand") ? true : nothing}">
         <summary>
           <div class="layer">
             <div class="left">
