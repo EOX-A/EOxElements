@@ -1,6 +1,6 @@
 {
   "name": "@eox/itemfilter",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -21,7 +21,6 @@
   ],
   "main": "./dist/eox-itemfilter.js",
   "scripts": {
-    "start": "vite",
     "build": "tsc && vite build",
     "watch": "tsc && vite build --watch",
     "format": "prettier --write .",

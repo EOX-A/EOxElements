@@ -38,6 +38,11 @@ details summary {
   border-bottom: 1px solid #0002;
   padding: .5rem 0;
 }
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
 .title {
   font-size: small;
   align-items: center;

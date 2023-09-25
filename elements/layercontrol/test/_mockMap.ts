@@ -1,8 +1,18 @@
-const mockLayer = (layerId: number) =>
+const mockLayer = (
+  layer: { events?: any; layers?: Array<any> },
+  layerId: string
+) =>
   <{ [key: string]: any }>{
     get(prop: string): any {
       return this[prop];
     },
+    ...(layer.layers
+      ? {
+          getLayers: () => ({
+            ...mockCollection(layer),
+          }),
+        }
+      : {}),
     getOpacity() {
       return this.opacity;
     },
@@ -13,14 +23,49 @@ const mockLayer = (layerId: number) =>
     id: layerId,
     layerControlDisable: undefined,
     layerControlExclusive: undefined,
+    layerControlExpand: undefined,
     layerControlHide: undefined,
     layerControlOptional: undefined,
     opacity: 1,
-    set: () => {},
+    set(prop: string, value: any): void {
+      this[prop] = value;
+    },
     setVisible(visible: boolean) {
       this.visible = visible;
     },
     visible: true,
+  };
+
+const mockCollection = (collection: { events?: any; layers?: Array<any> }) =>
+  <{ [key: string]: any }>{
+    getArray() {
+      return collection.layers.map((l: any) => ({
+        ...mockLayer(l, l.id || `${Date.now()}`),
+        ...l,
+      }));
+    },
+    getLength: () => {
+      return collection.layers.length;
+    },
+    insertAt(index: number, layer: typeof mockLayer) {
+      collection.layers.splice(index, 0, layer);
+      collection.events["change:length"]();
+    },
+    on: (event: string, fun: () => void) =>
+      (collection.events = { [event]: fun }),
+    pop: () => {
+      collection.layers.pop();
+      collection.events["change:length"]();
+    },
+    push(newLayer: object) {
+      collection.layers.push(newLayer);
+      collection.events["change:length"]();
+    },
+    remove: (layer: typeof mockLayer) => {
+      collection.layers.splice(
+        collection.layers.findIndex((l) => l.id === (<any>layer).id)
+      );
+    },
   };
 
 export class MockMap extends HTMLElement {
@@ -34,14 +79,13 @@ export class MockMap extends HTMLElement {
       getArray: () => [{}],
     }),
     getLayers: () => ({
-      getArray: () => this.layers,
-      on: (event: string, fun: Function) => (this.events[event] = fun),
+      ...mockCollection(this),
     }),
   };
   setLayers = (layers: Array<any>) => {
-    this.layers = layers.map((l, index) => ({
-      ...mockLayer(index),
-      ...l,
+    this.layers = layers.map((layer) => ({
+      ...mockLayer(layer, layer.id || `${Date.now()}`),
+      ...layer,
     }));
     this.events["change:length"]();
   };

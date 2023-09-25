@@ -56,6 +56,7 @@ describe("LayerControl", () => {
         cy.get("[data-cy='optionalLayers']")
           .find("option:not([disabled])")
           .should("have.length", 1);
+        cy.get("[data-cy='optionalLayers']").siblings("button").should("exist");
       });
   });
 
@@ -82,6 +83,20 @@ describe("LayerControl", () => {
       .within(() => {
         cy.get(".layer").find(".title").contains("foo");
         cy.get(".layer").find(".title").contains("bar");
+      });
+  });
+
+  it("pre-opens a section if layerControlExpand is present", () => {
+    cy.get("mock-map").and(($el) => {
+      (<MockMap>$el[0]).setLayers([
+        { visible: true },
+        { layerControlExpand: true },
+      ]);
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get("details[open]").should("exist");
       });
   });
 });
