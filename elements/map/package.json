@@ -27,7 +27,6 @@
   ],
   "main": "./dist/eox-map.js",
   "scripts": {
-    "start": "vite",
     "build": "tsc && vite build",
     "watch": "tsc && vite build --watch",
     "format": "prettier --write .",

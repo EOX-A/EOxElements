@@ -6,6 +6,7 @@ button {
   --error-color: #FF5252;
 
   display: inline-flex;
+  position: relative;
   align-items: center;
   color: #fff;
   border-width: 0;
