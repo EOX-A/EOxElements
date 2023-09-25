@@ -60,14 +60,16 @@ export async function addSelect(
     if (options.idProperty) {
       return feature.get(options.idProperty);
     }
-    const defaultId = feature.getId() || feature.get("id");
-    if (!defaultId) {
+    if (feature.getId() !== undefined) {
+      return feature.getId();
+    }
+    if (feature.get("id") !== undefined) {
+      return feature.get("id");
+    }
       throw Error(
         "No feature id found. Please provide which feature property should be taken instead using idProperty."
       );
     }
-    return defaultId;
-  }
 
   const selectLayer = EOxMap.getLayerById(layerId);
   await selectLayer.get("sourcePromise");
