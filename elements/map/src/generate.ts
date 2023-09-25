@@ -181,6 +181,12 @@ export async function updateLayer(
     existingLayer.setProperties(newLayerDefinition.properties);
   }
 
+  if (newLayerDefinition.visible !== existingJsonDefintion.visible) {
+    existingLayer.setVisible(newLayerDefinition.visible);
+  }
+  if (newLayerDefinition.opacity !== existingJsonDefintion.opacity) {
+    existingLayer.setOpacity(newLayerDefinition.opacity);
+  }
   setSyncListeners(existingLayer, newLayerDefinition);
   return existingLayer;
 }
