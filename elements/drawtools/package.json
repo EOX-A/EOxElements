@@ -21,12 +21,12 @@
   ],
   "main": "./dist/eox-drawtools.js",
   "scripts": {
-    "start": "vite",
-    "build": "tsc && vite build",
-    "watch": "tsc && vite build --watch",
+    "build": "vite build",
+    "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "lit": "^2.7.4"

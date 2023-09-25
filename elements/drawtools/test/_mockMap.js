@@ -18,7 +18,7 @@ export class MockMap extends HTMLElement {
   addDraw() {}
   interactions = {
     drawInteraction: {
-      on: (event: string, fun: Function) => fun(event),
+      on: (event, fun) => fun(event),
     },
     drawInteraction_modify: {
       on() {},
