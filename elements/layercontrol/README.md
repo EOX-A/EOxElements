@@ -79,7 +79,7 @@ Initially hide a layer from the layer control, but make it available as an optio
 
 Make layers mutually exclusive. If two or more layers (on the same level, i.e. at root or inside a layer group) have this property, then only one of them can be visualized at a time.
 
-### `layerControlExpanded?: Boolean`
+### `layerControlExpand?: Boolean`
 
 Pre-expand a layer dropdown so that it is always open when the component initializes.
 
