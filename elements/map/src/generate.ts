@@ -6,6 +6,7 @@ import { applyStyle } from "ol-mapbox-style";
 import { FlatStyleLike } from "ol/style/flat";
 import mapboxgl, { AnySourceData } from "mapbox-gl";
 import { Collection } from "ol";
+import { createXYZ } from "ol/tilegrid";
 
 const availableLayers = {
   ...olLayers,
@@ -82,6 +83,13 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
         ...(layer.source.format && {
           // @ts-ignore
           format: new olFormats[layer.source.format](),
+        }),
+        // @ts-ignore
+        ...(layer.source.tileGrid && {
+          tileGrid: createXYZ({
+            // @ts-ignore
+            ...layer.source.tileGrid,
+          }),
         }),
       }),
     }),

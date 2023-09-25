@@ -66,10 +66,10 @@ export async function addSelect(
     if (feature.get("id") !== undefined) {
       return feature.get("id");
     }
-      throw Error(
-        "No feature id found. Please provide which feature property should be taken instead using idProperty."
-      );
-    }
+    throw Error(
+      "No feature id found. Please provide which feature property should be taken instead using idProperty."
+    );
+  }
 
   const selectLayer = EOxMap.getLayerById(layerId);
   await selectLayer.get("sourcePromise");
