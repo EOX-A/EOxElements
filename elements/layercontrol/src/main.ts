@@ -220,11 +220,7 @@ export class EOxLayerControl extends LitElement {
     };
     checkCollection(collection);
 
-    const singleLayer = (
-      layer: Layer,
-      groupId: string,
-      collection: Collection<BaseLayer>
-    ) => html`
+    const singleLayer = (layer: Layer, groupId: string) => html`
       <details open="${layer.get("layerControlExpand") ? true : nothing}">
         <summary>
           <div class="layer">
@@ -267,17 +263,13 @@ export class EOxLayerControl extends LitElement {
                 .external=${this.externalLayerConfig}
                 .unstyled="${this.unstyled}"
                 @removeLayer=${() => {
-                  if (this.optionalLayerArray?.length > 0) {
-                    layer.set("layerControlOptional", true);
-                    layer.setVisible(false);
-                    this.requestUpdate();
-                  } else {
-                    collection.remove(layer);
-                  }
+                  layer.set("layerControlOptional", true);
+                  layer.setVisible(false);
                   const listitem = this.renderRoot.querySelector(
                     `[data-layer='${layer.get(this.layerIdentifier)}'`
                   );
                   listitem.parentNode.removeChild(listitem);
+                  this.requestUpdate();
                 }}
               ></eox-layerconfig>
             `
@@ -297,8 +289,7 @@ export class EOxLayerControl extends LitElement {
                     ...(<LayerGroup>(<unknown>layer)).getLayers().getArray(),
                   ].reverse()
                 ),
-                layer.get(this.layerIdentifier),
-                (<LayerGroup>(<unknown>layer)).getLayers()
+                layer.get(this.layerIdentifier)
               )}
             `
           : nothing}
@@ -307,8 +298,7 @@ export class EOxLayerControl extends LitElement {
 
     const listItems = (
       layers: Array<BaseLayer>,
-      group?: string,
-      collection?: Collection<BaseLayer>
+      group?: string
     ): TemplateResult => html`
       <ul data-group="${group ?? nothing}">
         ${repeat(
@@ -321,7 +311,7 @@ export class EOxLayerControl extends LitElement {
               data-type="${this.getLayerType(layer as Layer, this.olMap)}"
               data-layerconfig="${this.layerConfig?.length > 0}"
             >
-              ${singleLayer(layer as Layer, group, collection)}
+              ${singleLayer(layer as Layer, group)}
             </li>
           `
         )}
@@ -341,8 +331,7 @@ export class EOxLayerControl extends LitElement {
         <div class="layers">
           ${listItems(
             this.preFilterLayers(collection.getArray() as Array<BaseLayer>),
-            null,
-            this.layerCollection
+            null
           )}
         </div>
         ${when(
