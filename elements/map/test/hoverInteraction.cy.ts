@@ -4,6 +4,9 @@ import { simulateEvent } from "./utils/events";
 
 describe("select interaction with hover", () => {
   it("adds a select interaction", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
     cy.mount(
       `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
     ).as("eox-map");

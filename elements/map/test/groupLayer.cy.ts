@@ -2,6 +2,10 @@ import "../main";
 
 describe("layers", () => {
   it("loads a Vector Layer", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
+    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
       `<eox-map layers='[
         {

@@ -3,18 +3,21 @@ import { EoxLayer } from "../src/generate";
 
 describe("Map", () => {
   it("add and update layer", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
+    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
       `<eox-map layers='[{"type":"Tile","properties": {"id": "osm"}, "source":{"type":"OSM"}}]'></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
       const layerDefinition = {
         type: "Vector",
-        background: "#1366dd",
         properties: {
           id: "regions",
         },
         visible: true,
-        opacity: 0.3,
+        opacity: 0.9,
         source: {
           type: "Vector",
           url: "https://openlayers.org/data/vector/ecoregions.json",
@@ -26,11 +29,10 @@ describe("Map", () => {
       await eoxMap.addOrUpdateLayer(layerDefinition);
       const layer = eoxMap.getLayerById("regions");
       expect(layer).to.exist;
-      expect(layer.getOpacity()).to.be.equal(0.3);
+      expect(layer.getOpacity()).to.be.equal(0.9);
 
       const updatedLayerDefinition = {
         type: "Vector",
-        background: "#1366dd",
         properties: {
           id: "regions",
         },

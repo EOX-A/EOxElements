@@ -3,6 +3,9 @@ import vectorLayerStyleJson from "./vectorLayer.json";
 
 describe("layers", () => {
   it("loads a Vector Layer", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
     cy.mount(
       `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
     ).as("eox-map");
@@ -14,6 +17,9 @@ describe("layers", () => {
     });
   });
   it("correctly applies mapbox style", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
     cy.mount(
       `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
     ).as("eox-map");
@@ -36,6 +42,9 @@ describe("layers", () => {
     });
   });
   it("correctly applies flat style", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
     vectorLayerStyleJson[0].style = {
       // @ts-ignore
       "fill-color": "yellow",
@@ -62,6 +71,9 @@ describe("layers", () => {
     });
   });
   it("correctly applies style expression", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
     vectorLayerStyleJson[0].style = {
       // @ts-ignore
       "fill-color": ["string", ["get", "COLOR"], "#eee"],
