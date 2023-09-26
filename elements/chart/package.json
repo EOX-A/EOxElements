@@ -28,7 +28,6 @@
   ],
   "main": "./dist/eox-chart.js",
   "scripts": {
-    "start": "vite",
     "build": "tsc && vite build",
     "watch": "tsc && vite build --watch",
     "format": "prettier --write .",

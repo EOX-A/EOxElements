@@ -1,6 +1,7 @@
 import { LitElement, html, nothing, PropertyValueMap } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
+import { when } from "lit/directives/when.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 import { style } from "./style";
@@ -8,6 +9,24 @@ import { styleEOX } from "./style.eox";
 import StacFields from "@radiantearth/stac-fields";
 import { STAC } from "stac-js";
 
+/**
+ * ### Introduction
+ * Working with STAC catalogs, collections and items often times requires
+ * to fetch a JSON file, parse its contents and display some of its fields
+ * in some formatted way. To make these steps reusable, the `eox-stacinfo`
+ * element offers a set of functionalities:
+ * - **automatically fetch a STAC file** as soon as the element loads
+ * - offer a **property whitelist** functionality to choose which properties to display
+ * - display the properties in **configurable sections** (header, featured, footer)
+ * - allow to **override** any property display for application-specific custom needs
+ *
+ * The use case for this element is alongside a map which displays STAC files
+ * or in a catalog browsing scenario where a quick look at the most important properties
+ * is needed.
+ *
+ * #### Technology
+ * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
+ */
 @customElement("eox-stacinfo")
 export class EOxStacInfo extends LitElement {
   @property({ type: Boolean })
@@ -56,14 +75,14 @@ export class EOxStacInfo extends LitElement {
   buildProperties(stacArray: Array<typeof STAC>) {
     const parseEntries = (list: Array<string>) =>
       Object.entries(this.stacProperties)
-        .filter(([key]) =>
-          list === this.properties && list.length < 1
+        .filter(([key]) => {
+          return list === this.properties && (!list || list.length < 1)
             ? true
-            : list.includes(key)
-        )
+            : list?.includes(key);
+        })
         .reverse()
         .sort(([keyA], [keyB]) =>
-          list.indexOf(keyA) > list.indexOf(keyB) ? 1 : -1
+          list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1
         );
     if (stacArray.length < 1) {
       return null;
@@ -97,8 +116,8 @@ export class EOxStacInfo extends LitElement {
       <main>
         ${parseEntries(this.properties).length > 0
           ? html`
-              <section>
-                <ul part="properties">
+              <section id="properties" part="properties">
+                <ul>
                   ${map(
                     parseEntries(this.properties),
                     ([, value]) => html`
@@ -128,7 +147,7 @@ export class EOxStacInfo extends LitElement {
           : nothing}
         ${parseEntries(this.featured).length > 0
           ? html`
-              <section>
+              <section id="featured" part="featured">
                 ${map(
                   parseEntries(this.featured),
                   ([, value]) => html`
@@ -164,10 +183,28 @@ export class EOxStacInfo extends LitElement {
               <slot name="footer">
                 ${map(
                   parseEntries(this.footer),
-                  ([, value]) => html`
-                    <p>${value.label}</p>
-                    <small>${unsafeHTML(value.formatted)}</small>
+                  ([key, value], index) => staticHTML`
+                <div class="footer-container">
+                  <h${unsafeStatic((index + 1).toString())}>
+                    ${unsafeHTML(value.label)}
+                  </h${unsafeStatic((index + 1).toString())}>
+                  <small>${unsafeHTML(value.formatted)}</small>
+                </div>
+                ${when(
+                  key === "sci:citation",
+                  () => html`
+                    <div>
+                      <button
+                        class="copy icon-text"
+                        @click=${() =>
+                          navigator.clipboard.writeText(value.formatted)}
+                      >
+                        copy
+                      </button>
+                    </div>
                   `
+                )}
+              `
                 )}
               </slot>
             </footer>

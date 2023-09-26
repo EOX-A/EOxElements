@@ -29,6 +29,18 @@ type OlLayer = Layer & {
 type OlSource = Source & {
   ol_uid: string;
 };
+
+/**
+ * ### Introduction
+ * This highly configurable layer control aims to provide fine-grained management of
+ * map layers, while at the same time allowing to reduce complexity for the user.
+ *
+ * The `eox-layercontrol` can attach to any **OpenLayers map** and provides the following functionalities:
+ * - layer visibility: toggle on/off
+ * - layer ordering
+ * - layer opacity
+ * - advanced layer configuration
+ */
 @customElement("eox-layercontrol")
 export class EOxLayerControl extends LitElement {
   private _currentlySorting: boolean;
@@ -213,7 +225,7 @@ export class EOxLayerControl extends LitElement {
       groupId: string,
       collection: Collection<BaseLayer>
     ) => html`
-      <details open="${layer.get("layerControlExpanded") ? true : nothing}">
+      <details open="${layer.get("layerControlExpand") ? true : nothing}">
         <summary>
           <div class="layer">
             <div class="left">
@@ -255,7 +267,13 @@ export class EOxLayerControl extends LitElement {
                 .external=${this.externalLayerConfig}
                 .unstyled="${this.unstyled}"
                 @removeLayer=${() => {
-                  collection.remove(layer);
+                  if (this.optionalLayerArray?.length > 0) {
+                    layer.set("layerControlOptional", true);
+                    layer.setVisible(false);
+                    this.requestUpdate();
+                  } else {
+                    collection.remove(layer);
+                  }
                   const listitem = this.renderRoot.querySelector(
                     `[data-layer='${layer.get(this.layerIdentifier)}'`
                   );
