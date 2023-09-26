@@ -73,3 +73,33 @@ export const Primary = {
     },
   },
 };
+export const Autocomplete = {
+  render: () => html`
+    <eox-autocomplete
+      .items=${[
+        { id: "a", label: "Autobus" },
+        { id: "b", label: "Bicycle" },
+        { id: "c", label: "Catalog" },
+      ]}
+      @item-selected=${(evt) => {
+        console.log(evt);
+      }}
+    ></eox-autocomplete>
+  `,
+};
+
+export const AutocompleteMultiple = {
+  render: () => html`
+    <eox-autocomplete
+      multiple
+      .items=${[
+        { id: "a", label: "Autobus" },
+        { id: "b", label: "Bicycle" },
+        { id: "c", label: "Catalog" },
+      ]}
+      @item-selected=${(evt) => {
+        console.log(evt);
+      }}
+    ></eox-autocomplete>
+  `,
+};
