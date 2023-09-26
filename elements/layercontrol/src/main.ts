@@ -1,4 +1,4 @@
-import { LitElement, html, nothing, TemplateResult } from "lit";
+import { LitElement, html, css, nothing, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { live } from "lit/directives/live.js";
@@ -629,6 +629,7 @@ export class EOxLayerConfig extends LitElement {
         () => html`
           <div>
             <slot></slot>
+            <eox-tabs></eox-tabs>
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
               : nothing}
@@ -684,6 +685,105 @@ export class EOxLayerConfig extends LitElement {
           </div>
         `
       )}
+    `;
+  }
+}
+
+@customElement("eox-tabs")
+class EOxTabs extends LitElement {
+
+  @property({ type: Number }) selectedTabIndex = 0; // By default, the first tab is selected
+  @property({ type: Array }) tabs = [
+    {
+      label: 'info',
+      content: html`<p>This data is made available by the Climate Data Store of the Copernicus Climate Change Service</p>`,
+    },
+
+    {
+      label: 'opacity',
+      content: 'Content for Tab 2',
+    },
+
+    {
+      label: 'settings',
+      content: 'Content for Tab 3',
+    }
+  ];
+
+  static styles = css`
+    .tabs {
+      display: flex;
+      cursor: pointer;
+      background-color: #fff;
+      border-top: 1px solid #00417033;
+      margin-left: 40px;
+      height: 30px;
+    }
+    p {
+      margin: 0;
+      padding: 12px;
+      font-size: 14px;
+    }
+    .tabs > * {
+      display: flex;
+    }
+    .tabs .left {
+      justify-content: flex-start;
+    }
+    .tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+      width: 20px;
+      height: 30px;
+      max-width: 30px;
+    }
+    .tab::before {
+      margin-left: 5px;
+    }
+    .tab.info::before {
+      width: 20px;
+      display: flex;
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Einformation-outline%3C/title%3E%3Cpath d='M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z' /%3E%3C/svg%3E");
+    }
+    .tab.opacity::before {
+      width: 20px;
+      display: flex;
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eopacity%3C/title%3E%3Cpath d='M17.66,8L12,2.35L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8M6,14C6,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 18,12 18,14H6Z' /%3E%3C/svg%3E");
+    }
+    .tab.settings::before {
+      width: 20px;
+      display: flex;
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Etune%3C/title%3E%3Cpath d='M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z' /%3E%3C/svg%3E");    }
+    .tab.selected {
+      background-color: #e0e0e0;
+    }
+    .tab-content {
+      display: none;
+      margin-left: 40px;
+      background-color: #e3e3ea;
+    }
+    .tab-content[selected] {
+      display: block;
+    }
+  `;
+
+  render() {
+    return html`
+      <div class="tabs">
+        ${this.tabs.map((tab, index) => html`
+          <div
+            class="tab ${tab.label} ${this.selectedTabIndex === index ? 'selected' : ''}"
+            @click=${() => this.selectedTabIndex = index}
+            innerHTML="${tab.label}"
+          ></div>
+        `)}
+      </div>
+      ${this.tabs.map((tab, index) => html`
+        <div class="tab-content" ?selected=${this.selectedTabIndex === index}>${tab.content}</div>
+      `)}
     `;
   }
 }
