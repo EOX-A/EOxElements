@@ -40,7 +40,7 @@ describe("select interaction on click", () => {
           },
         });
         eoxMap.map.on("loadend", () => {
-          simulateEvent(eoxMap.map, "click", 80, -66);
+          simulateEvent(eoxMap.map, "click", 65, 13);
         });
       });
     });
