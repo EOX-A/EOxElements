@@ -1,31 +1,41 @@
 [
   {
     "type": "Vector",
-    "id": "draw",
-    "title": "Reference",
+    "properties": {
+      "id": "draw",
+      "title": "Reference"
+    },
     "source": { "type": "Vector" }
   },
   {
     "type": "Tile",
-    "id": "osm",
-    "title": "Background",
+    "properties": {
+      "id": "osm",
+      "title": "Background"
+    },
     "source": { "type": "OSM" }
   },
   {
     "type": "Group",
-    "id": "myGroup",
-    "title": "My Group",
+    "properties": {
+      "id": "myGroup",
+      "title": "My Group"
+    },
     "layers": [
       {
         "type": "Vector",
-        "id": "nested-layer-1",
-        "title": "Nested 1",
+        "properties": {
+          "id": "nested-layer-1",
+          "title": "Nested 1"
+        },
         "source": { "type": "Vector" }
       },
       {
         "type": "Vector",
-        "id": "nested-layer-2",
-        "title": "Nested 2",
+        "properties": {
+          "id": "nested-layer-2",
+          "title": "Nested 2"
+        },
         "source": { "type": "Vector" }
       }
     ]

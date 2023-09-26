@@ -78,6 +78,11 @@ export class EOxLayerControl extends LitElement {
   @property({ type: Boolean })
   unstyled: boolean;
 
+  /**
+   * Hack to "force-reset" layer list
+   */
+  private resetLayers = false;
+
   private _updateControl(layerCollection: Collection<BaseLayer>) {
     // initially check if all layers have an id and title,
     // fill in some backup in case they haven't
@@ -198,7 +203,10 @@ export class EOxLayerControl extends LitElement {
     ) => {
       layerCollection.on("change:length", () => {
         if (!this._currentlySorting) {
+          this.resetLayers = true;
+          this._updateControl(layerCollection);
           setTimeout(() => {
+            this.resetLayers = false;
             this._updateControl(layerCollection);
           });
         }
@@ -309,24 +317,28 @@ export class EOxLayerControl extends LitElement {
       layers: Array<BaseLayer>,
       group?: string,
       collection?: Collection<BaseLayer>
-    ): TemplateResult => html`
-      <ul data-group="${group ?? nothing}">
-        ${repeat(
-          layers,
-          (layer) => layer.get(this.layerIdentifier),
-          (layer) => html`
-            <li
-              data-layer="${layer.get(this.layerIdentifier)}"
-              data-disabled="${layer.get("layerControlDisable") || nothing}"
-              data-type="${this.getLayerType(layer as Layer, this.olMap)}"
-              data-layerconfig="${this.layerConfig?.length > 0}"
-            >
-              ${singleLayer(layer as Layer, group, collection)}
-            </li>
-          `
-        )}
-      </ul>
-    `;
+    ): TemplateResult =>
+      this.resetLayers
+        ? html``
+        : html`
+            <ul data-group="${group ?? nothing}">
+              ${repeat(
+                layers,
+                (layer) => layer.get(this.layerIdentifier),
+                (layer) => html`
+                  <li
+                    data-layer="${layer.get(this.layerIdentifier)}"
+                    data-disabled="${layer.get("layerControlDisable") ||
+                    nothing}"
+                    data-type="${this.getLayerType(layer as Layer, this.olMap)}"
+                    data-layerconfig="${this.layerConfig?.length > 0}"
+                  >
+                    ${singleLayer(layer as Layer, group, collection)}
+                  </li>
+                `
+              )}
+            </ul>
+          `;
 
     return html`
       <style>
