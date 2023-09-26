@@ -20,8 +20,8 @@ describe("layers", () => {
     cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
       fixture: "/ecoregions.json",
     });
+    // @ts-ignore
     vectorLayerStyleJson[0].style = {
-      // @ts-ignore
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 2,
