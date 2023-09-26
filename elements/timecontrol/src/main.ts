@@ -169,11 +169,7 @@ export class EOxTimeControl extends LitElement {
         const animationLayer = olMap
           .getLayers()
           .getArray()
-          .find(
-            (l) =>
-              l.get("id") === this.layer ||
-              l.get("mapbox-layers")?.includes(this.layer)
-          ) as Layer;
+          .find((l) => l.get("id") === this.layer) as Layer;
         this._animationSource = animationLayer.getSource() as TileSource;
         this._originalTileUrlFunction =
           //@ts-ignore

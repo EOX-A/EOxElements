@@ -5,21 +5,14 @@ import Layer from "ol/layer/Layer";
 /**
  *
  * @param EOxMap instance of eox map class
- * @param layerId id of ol-layer or mapbox style layer
+ * @param layerId id of ol-layer
  * @returns Layer or `undefined` if layer does not exist
  */
 export function getLayerById(EOxMap: EOxMap, layerId: string) {
   const flatLayers = getFlatLayersArray(
     EOxMap.map.getLayers().getArray() as Array<Layer>
   );
-  // get mapbox-style layer or manually generated ol layer, both group or regular layers
-
-  const layer =
-    flatLayers.find((l) => l.get("id") === layerId) ||
-    flatLayers
-      .filter((l) => l.get("mapbox-layers"))
-      .find((l) => l.get("mapbox-layers").includes(layerId));
-  return layer;
+  return flatLayers.find((l) => l.get("id") === layerId);
 }
 
 export function getFlatLayersArray(layers: Array<Layer>) {

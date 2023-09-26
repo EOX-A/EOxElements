@@ -68,7 +68,6 @@ export function addDraw(
   });
 
   // identifier to retrieve the interaction
-  //@ts-ignore
   map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
 
@@ -76,7 +75,6 @@ export function addDraw(
     const modifyInteraction = new Modify({
       source,
     });
-    //@ts-ignore
     map.addInteraction(modifyInteraction);
     EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
   }
