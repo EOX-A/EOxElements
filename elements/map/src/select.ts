@@ -9,7 +9,6 @@ import VectorTileLayer from "ol/layer/VectorTile.js";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
-import { MapboxLayer } from "./types";
 
 export type SelectOptions = Omit<
   import("ol/interaction/Select").Options,
@@ -18,16 +17,16 @@ export type SelectOptions = Omit<
   id: string | number;
   idProperty?: string;
   condition: "click" | "pointermove";
-  layer?: EoxLayer | MapboxLayer;
+  layer?: EoxLayer;
   style?: import("ol/style/flat.js").FlatStyleLike;
   overlay?: import("ol/Overlay").Options;
 };
 
-export async function addSelect(
+export function addSelect(
   EOxMap: EOxMap,
   layerId: string,
   options: SelectOptions
-): Promise<void> {
+) {
   if (EOxMap.interactions[options.id]) {
     throw Error(`Interaction with id: ${options.id} already exists.`);
   }
@@ -72,7 +71,6 @@ export async function addSelect(
   }
 
   const selectLayer = EOxMap.getLayerById(layerId);
-  await selectLayer.get("sourcePromise");
 
   // a layer that only contains the selected features, for displaying purposes only
   // unmanaged by the map
@@ -99,7 +97,6 @@ export async function addSelect(
   const selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
     | VectorTileLayer
     | VectorLayer<VectorSource>;
-  await selectStyleLayer.get("sourcePromise");
   //@ts-ignore
   selectStyleLayer.setSource(selectLayer.getSource());
   selectStyleLayer.setMap(map);

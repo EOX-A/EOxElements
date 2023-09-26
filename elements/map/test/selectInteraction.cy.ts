@@ -22,29 +22,26 @@ describe("select interaction on click", () => {
           expect(evt.detail.feature).to.exist;
           resolve();
         });
-        eoxMap
-          .addSelect("countries", {
-            id: "selectInteraction",
-            condition: "click",
-            layer: {
-              type: "VectorTile",
-              properties: {
-                id: "selectLayer",
-              },
-              source: {
-                type: "VectorTile",
-              },
-              style: {
-                "stroke-color": "chartreuse",
-                "stroke-width": 5,
-              },
+        eoxMap.addSelect("countries", {
+          id: "selectInteraction",
+          condition: "click",
+          layer: {
+            type: "VectorTile",
+            properties: {
+              id: "selectLayer",
             },
-          })
-          .then(() => {
-            eoxMap.map.on("loadend", () => {
-              simulateEvent(eoxMap.map, "click", 80, -66);
-            });
-          });
+            source: {
+              type: "VectorTile",
+            },
+            style: {
+              "stroke-color": "chartreuse",
+              "stroke-width": 5,
+            },
+          },
+        });
+        eoxMap.map.on("loadend", () => {
+          simulateEvent(eoxMap.map, "click", 80, -66);
+        });
       });
     });
   });
@@ -63,21 +60,18 @@ describe("select interaction on click", () => {
         expect(evt.detail.feature).to.exist;
       });
 
-      eoxMap
-        .addSelect("regions", {
-          id: "selectInteraction",
-          condition: "click",
-          //@ts-ignore
-          style: {
-            "stroke-color": "white",
-            "stroke-width": 3,
-          },
-        })
-        .then(() => {
-          eoxMap.map.on("loadend", () => {
-            simulateEvent(eoxMap.map, "click", 120, -140);
-          });
-        });
+      eoxMap.addSelect("regions", {
+        id: "selectInteraction",
+        condition: "click",
+        //@ts-ignore
+        style: {
+          "stroke-color": "white",
+          "stroke-width": 3,
+        },
+      });
+      eoxMap.map.on("loadend", () => {
+        simulateEvent(eoxMap.map, "click", 120, -140);
+      });
     });
   });
 });

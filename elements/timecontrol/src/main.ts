@@ -171,8 +171,7 @@ export class EOxDrawTools extends LitElement {
           .getArray()
           .find(
             (l) =>
-              l.get("id") === this.layer ||
-              l.get("mapbox-layers")?.includes(this.layer)
+              l.get("id") === this.layer
           ) as Layer;
         this._animationSource = animationLayer.getSource() as TileSource;
         this._originalTileUrlFunction =

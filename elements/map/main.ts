@@ -79,7 +79,7 @@ export class EOxMap extends LitElement {
   mapControls: { [index: string]: Control } = {};
 
   /**
-   * Apply layers from Mapbox Style JSON
+   * Apply layers Eox Layer JSONs
    * @param json array of EoxLayer JSONs
    * @returns the array of layers
    */
@@ -104,7 +104,6 @@ export class EOxMap extends LitElement {
       layer = existingLayer;
     } else {
       layer = createLayer(json);
-      await layer.get("sourcePromise");
       this.map.addLayer(layer);
     }
     return layer;
@@ -147,7 +146,7 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * gets an OpenLayers-Layer, either by its "id" or one of its Mapbox-Style IDs
+   * gets an OpenLayers-Layer by its "id"
    */
   getLayerById = (layerId: string) => {
     return getLayerById(this, layerId);
