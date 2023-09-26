@@ -3,6 +3,10 @@ import stacLayerJson from "./stacLayer.json";
 
 describe("layers", () => {
   it("loads a Vector Layer", () => {
+    cy.intercept(
+      "https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json",
+      { fixture: "/stac.json" }
+    );
     cy.mount(
       `<eox-map layers='${JSON.stringify(stacLayerJson)}'></eox-map>`
     ).as("eox-map");
