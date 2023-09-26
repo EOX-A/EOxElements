@@ -42,6 +42,11 @@ export class EOxAutocomplete extends LitElement {
         );
         this._handleSelect(currentItem);
       }
+      if (this.multiple) {
+        // In multiple mode, delete the current text input right away so the user
+        // can continue searching for other items
+        this._itemFilter = "";
+      }
       return;
     }
     if (key === "Escape") {
