@@ -1,8 +1,5 @@
 name: Run tests
 
-env:
-  BRANCH_REF: ${{ format('refs/heads/{0}', github.event.pull_request.head.ref) }}
-
 on:
   pull_request_target:
     branches:
@@ -22,15 +19,11 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
-      - name: Debug
-        run: echo "$BRANCH_REF"
-
       - name: Setup node env 🏗
         uses: actions/setup-node@v3.1.0
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
-          ref: ${{ env.BRANCH_REF}}
 
       - name: Cache node_modules 📦
         uses: actions/cache@v3.0.1
