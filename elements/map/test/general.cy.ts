@@ -3,6 +3,7 @@ import "../main";
 
 describe("Map", () => {
   it("map should exist", () => {
+    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
       `<eox-map layers='[{"type":"Tile","properties": {"id": "osm"}, "source":{"type":"OSM"}}]'></eox-map>`
     ).as("eox-map");
@@ -19,7 +20,6 @@ describe("Map", () => {
       const eoxMap = <EOxMap>$el[0];
       const zoom = eoxMap.map.getView().getZoom();
       const center = eoxMap.map.getView().getCenter();
-      console.log(center);
       expect(JSON.parse(eoxMap.getAttribute("zoom"))).to.equal(zoom);
       expect(JSON.parse(eoxMap.getAttribute("center"))).to.deep.equal(center);
     });
