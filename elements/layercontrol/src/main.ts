@@ -648,7 +648,9 @@ export class EOxLayerConfig extends LitElement {
         () => html`
           <div>
             <slot></slot>
-            <eox-tabs></eox-tabs>
+            <eox-tabs
+              .layer="${this._currentLayer}"
+            />
             ${this.for
               ? html`layer: ${this._currentLayer.get("name")}`
               : nothing}
@@ -711,6 +713,9 @@ export class EOxLayerConfig extends LitElement {
 @customElement("eox-tabs")
 class EOxTabs extends LitElement {
 
+  @property({ type: BaseLayer })
+  layer: BaseLayer;
+
   @property({ type: Number }) selectedTabIndex = 0; // By default, the first tab is selected
   @property({ type: Array }) tabs = [
     {
@@ -732,6 +737,8 @@ class EOxTabs extends LitElement {
   static styles = css`
     .tabs {
       display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       cursor: pointer;
       background-color: #fff;
       border-top: 1px solid #00417033;
@@ -748,6 +755,11 @@ class EOxTabs extends LitElement {
     }
     .tabs .left {
       justify-content: flex-start;
+      align-items: center;
+    }
+    .tabs .right {
+      justify-content: flex-end;
+      align-items: center;
     }
     .tab {
       flex: 1;
@@ -787,18 +799,39 @@ class EOxTabs extends LitElement {
     .tab-content[selected] {
       display: block;
     }
+
+    .drag-handle {
+      cursor: ns-resize;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Eunfold-more-horizontal%3C/title%3E%3Cpath d='M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z' /%3E%3C/svg%3E");
+      width: 24px;
+      height: 24px;
+    }
+    .drag-handle.disabled {
+      cursor: not-allowed;
+      opacity: 0.3;
+    }
   `;
 
   render() {
     return html`
       <div class="tabs">
-        ${this.tabs.map((tab, index) => html`
+        <div class="left">
+          ${this.tabs.map((tab, index) => html`
           <div
             class="tab ${tab.label} ${this.selectedTabIndex === index ? 'selected' : ''}"
             @click=${() => this.selectedTabIndex = index}
-            innerHTML="${tab.label}"
           ></div>
         `)}
+        </div>
+
+        <div class="right">
+          <div
+            class="drag-handle ${this.layer.get("layerControlDisable")
+              ? "disabled"
+              : ""}"
+          >
+          </div>
+        </div>
       </div>
       ${this.tabs.map((tab, index) => html`
         <div class="tab-content" ?selected=${this.selectedTabIndex === index}>${tab.content}</div>
