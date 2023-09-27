@@ -179,7 +179,7 @@ export class EOxAutocomplete extends LitElement {
       if (this.multiple) {
         // In multiple mode, selecting the same item again removes it from the selectedItem list
         if (this.selectedItems.includes(item)) {
-          this.selectedItems.splice(item, 1);
+          this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
           this.requestUpdate();
         } else {
           this.selectedItems.push(item);
