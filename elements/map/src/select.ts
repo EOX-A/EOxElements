@@ -29,10 +29,11 @@ export class EoxSelectInteraction {
   options: SelectOptions;
   active: boolean;
   tooltip: HTMLElement;
-  selectedFid: string | number;
+  selectedFids: Array<string | number>;
   selectLayer: VectorTileLayer | VectorLayer<VectorSource>;
   selectStyleLayer: VectorTileLayer | VectorLayer<VectorSource>;
-  layerDefinition: any;
+  changeSourceListener: () => void;
+  removeListener: () => void;
 
   constructor(eoxMap: EOxMap, layerId: string, options: SelectOptions) {
     this.eoxMap = eoxMap;
@@ -43,7 +44,8 @@ export class EoxSelectInteraction {
     this.tooltip =
       this.eoxMap.querySelector("eox-map-tooltip") || options.overlay?.element;
     let overlay: Overlay;
-    this.selectedFid = null;
+    this.selectedFids = [];
+    this.active = options?.active === false ? false : true;
     this.selectLayer = this.eoxMap.getLayerById(layerId) as
       | VectorTileLayer
       | VectorLayer<VectorSource>;
@@ -93,21 +95,24 @@ export class EoxSelectInteraction {
     const initialStyle = this.selectStyleLayer.getStyleFunction();
 
     this.selectStyleLayer.setStyle((feature, resolution) => {
-      if (this.selectedFid && this.getId(feature) === this.selectedFid) {
+      if (
+        this.selectedFids.length &&
+        this.selectedFids.includes(this.getId(feature))
+      ) {
         return initialStyle(feature, resolution);
       }
       return null;
     });
 
     const listener = (event: MapBrowserEvent<any>) => {
-      if (event.dragging) {
+      if (event.dragging || !this.active) {
         return;
       }
       this.selectLayer
         .getFeatures(event.pixel)
         .then((features: Array<Feature | RenderFeature>) => {
           const feature = features.length ? features[0] : null;
-          this.selectedFid = feature ? this.getId(feature) : null;
+          this.selectedFids = feature ? [this.getId(feature)] : [];
           this.selectStyleLayer.changed();
 
           if (overlay) {
@@ -153,28 +158,41 @@ export class EoxSelectInteraction {
       }
     });
 
-    this.selectLayer.on("change:source", () => {
+    this.changeSourceListener = () => {
       //@ts-ignore
-      selectStyleLayer.setSource(selectLayer.getSource());
-    });
+      this.selectStyleLayer.setSource(this.selectLayer.getSource());
+    };
 
-    this.eoxMap.map.getLayers().on("remove", () => {
+    this.selectLayer.on("change:source", this.changeSourceListener);
+
+    this.removeListener = () => {
       if (!this.eoxMap.getLayerById(layerId)) {
         this.selectStyleLayer.setMap(null);
         if (overlay) {
           this.eoxMap.map.removeOverlay(overlay);
         }
       }
-    });
+    };
+    this.eoxMap.map.getLayers().on("remove", this.removeListener);
   }
 
   setActive(active: boolean) {
     this.active = active;
   }
 
-  selectById(id: string | number) {
-    console.log("selecting by id");
-    this.selectedFid = id;
+  /**
+   * highlights one or more features by their IDs. Does not fire select events.
+   * @param {Array<string | number>} ids
+   */
+  highlightById(ids: Array<string | number>) {
+    this.selectedFids = ids;
+    this.selectStyleLayer.changed(); // force rerender to highlight selected fids
+  }
+
+  remove() {
+    this.selectStyleLayer.setMap(null);
+    this.selectLayer.un("change:source", this.changeSourceListener);
+    this.eoxMap.map.getLayers().un("remove", this.removeListener);
   }
 
   /**
@@ -182,7 +200,7 @@ export class EoxSelectInteraction {
    * @param feature
    * @returns {number | string} ID value of feature
    */
-  getId(feature: Feature | RenderFeature) {
+  private getId(feature: Feature | RenderFeature) {
     if (this.options.idProperty) {
       return feature.get(this.options.idProperty);
     }
@@ -196,7 +214,7 @@ export class EoxSelectInteraction {
       "No feature id found. Please provide which feature property should be taken instead using idProperty."
     );
   }
-};
+}
 
 export function addSelect(
   EOxMap: EOxMap,
@@ -206,5 +224,9 @@ export function addSelect(
   if (EOxMap.interactions[options.id]) {
     throw Error(`Interaction with id: ${options.id} already exists.`);
   }
-  const selectInteraction = new EoxSelectInteraction(EOxMap, layerId, options);
+  EOxMap.selectInteractions[options.id] = new EoxSelectInteraction(
+    EOxMap,
+    layerId,
+    options
+  );
 }
