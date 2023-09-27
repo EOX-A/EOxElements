@@ -20,10 +20,10 @@ export type SelectOptions = Omit<
   layer?: EoxLayer;
   style?: import("ol/style/flat.js").FlatStyleLike;
   overlay?: import("ol/Overlay").Options;
-  active: boolean;
+  active?: boolean;
 };
 
-export const EoxSelectInteraction = class {
+export class EoxSelectInteraction {
   eoxMap: EOxMap;
   layerId: string;
   options: SelectOptions;
