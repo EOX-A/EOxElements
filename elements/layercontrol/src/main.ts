@@ -760,6 +760,7 @@ class EOxTabs extends LitElement {
     .tabs .right {
       justify-content: flex-end;
       align-items: center;
+      margin-right: 8px;
     }
     .tab {
       flex: 1;
@@ -767,12 +768,12 @@ class EOxTabs extends LitElement {
       align-items: center;
       justify-items: center;
       text-align: center;
-      width: 20px;
+      width: 30px;
       height: 30px;
       max-width: 30px;
     }
     .tab::before {
-      margin-left: 5px;
+      margin: 0 5px;
     }
     .tab.info::before {
       width: 20px;
