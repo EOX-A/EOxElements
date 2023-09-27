@@ -50,6 +50,9 @@ const mockCollection = (collection: { events?: any; layers?: Array<any> }) =>
       collection.layers.push(newLayer);
       collection.events["change:length"]();
     },
+    remove: (layer: typeof mockLayer) => {
+      collection.layers.splice(collection.layers.indexOf(layer));
+    },
   };
 
 export class MockMap extends HTMLElement {
