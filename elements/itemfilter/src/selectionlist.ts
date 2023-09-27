@@ -87,8 +87,11 @@ export class EOxSelectionlist extends LitElement {
     if (item) {
       if (this.multiple) {
         // In multiple mode, selecting the same item again removes it from the selectedItem list
-        if (this.selectedItems.includes(item)) {
-          this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
+        const selected = this.selectedItems.find(
+          (i) => i[this.idProperty] === item[this.idProperty]
+        );
+        if (selected) {
+          this.selectedItems.splice(this.selectedItems.indexOf(selected), 1);
         } else {
           this.selectedItems.push(item);
         }
@@ -172,7 +175,9 @@ export class EOxSelectionlist extends LitElement {
               <label>
                 <input
                   type="${this.multiple ? "checkbox" : "radio"}"
-                  .checked=${this.selectedItems.includes(item)}
+                  .checked=${this.selectedItems.find(
+                    (i) => i[this.idProperty] === item[this.idProperty]
+                  ) || nothing}
                   @change=${() => this._handleSelect(item)}
                 />
                 <span class="title">${item[this.labelProperty]}</span>

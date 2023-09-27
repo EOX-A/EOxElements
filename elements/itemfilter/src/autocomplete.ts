@@ -22,7 +22,7 @@ export class EOxAutocomplete extends LitElement {
   unstyled = false;
 
   @state()
-  _itemFilter = "";
+  public inputText = "";
 
   @state()
   selectedItems = [];
@@ -35,7 +35,8 @@ export class EOxAutocomplete extends LitElement {
         if (this.renderRoot.querySelector("input").value !== "") {
           this.renderRoot.querySelector("input").value = "";
         } else {
-          this.renderRoot.querySelector("input").blur();
+          this.renderRoot.querySelector("eox-selectionlist").style.display =
+            "none";
         }
         return;
       }
@@ -50,7 +51,8 @@ export class EOxAutocomplete extends LitElement {
           this.renderRoot.querySelector("input").value =
             this.selectedItems[0][this.labelProperty];
         } else {
-          this.renderRoot.querySelector("input").blur();
+          this.renderRoot.querySelector("eox-selectionlist").style.display =
+            "none";
         }
       }
       return;
@@ -74,11 +76,20 @@ export class EOxAutocomplete extends LitElement {
           this.renderRoot.querySelectorAll(".chip")[
             this.renderRoot.querySelectorAll(".chip").length - 1
           ];
-        if (!Array.from(lastChip.classList).includes("highlighted")) {
+        if (!lastChip.classList.contains("highlighted")) {
           lastChip.classList.add("highlighted");
         }
         this.requestUpdate();
+      } else {
+        if (this.inputText.length === 0) {
+          this.selectedItems = [];
+          this._dispatchEvent();
+        }
       }
+    }
+    if (key === "ArrowDown" || key === "ArrowUp") {
+      this.renderRoot.querySelector("eox-selectionlist").style.display =
+        "block";
     }
     if (key === "ArrowLeft" || key === "ArrowRight") {
       if (this.renderRoot.querySelectorAll(".chip").length < 1) {
@@ -127,7 +138,8 @@ export class EOxAutocomplete extends LitElement {
       } else {
         this.renderRoot.querySelector("input").value =
           items[0][this.labelProperty];
-        this.renderRoot.querySelector("input").blur();
+        this.renderRoot.querySelector("eox-selectionlist").style.display =
+          "none";
       }
     } else {
       this.renderRoot.querySelector("input").select();
@@ -157,7 +169,14 @@ export class EOxAutocomplete extends LitElement {
   firstUpdated() {
     this.getRootNode().addEventListener("keydown", (event) => {
       if (
-        ["ArrowLeft", "ArrowRight", "Escape", "Backspace"].includes(event.code)
+        [
+          "ArrowUp",
+          "ArrowDown",
+          "ArrowLeft",
+          "ArrowRight",
+          "Escape",
+          "Backspace",
+        ].includes(event.code)
       ) {
         this._handleKeyboard(event.code);
       }
@@ -178,10 +197,6 @@ export class EOxAutocomplete extends LitElement {
         }
         eox-selectionlist {
           display: none;
-        }
-        input:focus ~ eox-selectionlist,
-        eox-selectionlist:active {
-          display: block;
         }
         .chip.highlighted {
           background: lightgrey;
@@ -230,8 +245,12 @@ export class EOxAutocomplete extends LitElement {
                     <span class="chip-label">${item[this.labelProperty]}</span>
                     <span
                       class="chip-close"
-                      @click=${() => {
-                        this.selectedItems.splice(item, 1);
+                      @click=${(evt) => {
+                        evt.stopPropagation();
+                        this.selectedItems.splice(
+                          this.selectedItems.indexOf(item),
+                          1
+                        );
                         this._dispatchEvent();
                         this.requestUpdate();
                       }}
@@ -247,24 +266,26 @@ export class EOxAutocomplete extends LitElement {
           <input
             type="text"
             @focus=${() => {
+              this.renderRoot.querySelector("eox-selectionlist").style.display =
+                "block";
               this._currentHighlight = null;
-              this._itemFilter = "";
+              this.inputText = "";
               this.requestUpdate();
             }}
             @input=${(evt) => {
-              this._itemFilter = evt.target.value.toLowerCase();
+              this.inputText = evt.target.value.toLowerCase();
             }}
           />
           ${when(
             this.items.length > 0,
             () => html`
               <eox-selectionlist
-                .filter=${this._itemFilter}
+                .filter=${this.inputText}
                 .items=${this.items.filter((f) =>
-                  this._itemFilter
+                  this.inputText
                     ? f[this.labelProperty]
                         .toLowerCase()
-                        .includes(this._itemFilter.toLowerCase())
+                        .includes(this.inputText.toLowerCase())
                     : true
                 )}
                 .multiple=${this.multiple}
