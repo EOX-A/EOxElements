@@ -1,5 +1,8 @@
+import { html } from "lit";
 import { EOxItemFilter } from "./src/main";
 import "./src/main";
+import "./src/autocomplete";
+import "./src/selectionlist";
 import items from "./test/testItems.json";
 
 export default {
@@ -73,6 +76,25 @@ export const Primary = {
     },
   },
 };
+
+export const MultiSelect = {
+  args: {
+    titleProperty: "title",
+    filterProperties: [
+      {
+        key: "themes",
+        title: "Theme",
+        type: "multiselect",
+        expanded: true,
+        state: {
+          air: true,
+          agriculture: true,
+        },
+      },
+    ],
+  },
+};
+
 export const Autocomplete = {
   render: () => html`
     <eox-autocomplete
@@ -81,10 +103,32 @@ export const Autocomplete = {
         { id: "b", label: "Bicycle" },
         { id: "c", label: "Catalog" },
       ]}
-      @item-selected=${(evt) => {
-        console.log(evt);
+      @items-selected=${(evt) => {
+        document.querySelector("#output").innerHTML = JSON.stringify(
+          evt.detail
+        );
       }}
     ></eox-autocomplete>
+    <span id="output"></span>
+  `,
+};
+
+export const AutocompleteUnstyled = {
+  render: () => html`
+    <eox-autocomplete
+      unstyled
+      .items=${[
+        { id: "a", label: "Autobus" },
+        { id: "b", label: "Bicycle" },
+        { id: "c", label: "Catalog" },
+      ]}
+      @items-selected=${(evt) => {
+        document.querySelector("#output").innerHTML = JSON.stringify(
+          evt.detail
+        );
+      }}
+    ></eox-autocomplete>
+    <span id="output"></span>
   `,
 };
 
@@ -101,5 +145,59 @@ export const AutocompleteMultiple = {
         console.log(evt);
       }}
     ></eox-autocomplete>
+  `,
+};
+
+export const AutocompleteMultipleUnstyled = {
+  render: () => html`
+    <eox-autocomplete
+      multiple
+      unstyled
+      .items=${[
+        { id: "a", label: "Autobus" },
+        { id: "b", label: "Bicycle" },
+        { id: "c", label: "Catalog" },
+      ]}
+      @item-selected=${(evt) => {
+        console.log(evt);
+      }}
+    ></eox-autocomplete>
+  `,
+};
+
+export const SelectionList = {
+  render: () => html`
+    <eox-selectionlist
+      .items=${[
+        { id: "a", label: "Autobus" },
+        { id: "b", label: "Bicycle" },
+        { id: "c", label: "Catalog" },
+      ]}
+      @items-selected=${(evt) => {
+        document.querySelector("#output").innerHTML = JSON.stringify(
+          evt.detail
+        );
+      }}
+    ></eox-selectionlist>
+    <span id="output"></span>
+  `,
+};
+
+export const SelectionListMultiple = {
+  render: () => html`
+    <eox-selectionlist
+      multiple
+      .items=${[
+        { id: "a", label: "Autobus" },
+        { id: "b", label: "Bicycle" },
+        { id: "c", label: "Catalog" },
+      ]}
+      @items-selected=${(evt) => {
+        document.querySelector("#output").innerHTML = JSON.stringify(
+          evt.detail
+        );
+      }}
+    ></eox-selectionlist>
+    <span id="output"></span>
   `,
 };
