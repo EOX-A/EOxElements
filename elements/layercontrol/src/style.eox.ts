@@ -256,16 +256,6 @@ li .layer .right {
 .drag-handle span {
   display: none;
 }
-.drag-handle {
-  cursor: ns-resize;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Eunfold-more-horizontal%3C/title%3E%3Cpath d='M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z' /%3E%3C/svg%3E");
-  width: 24px;
-  height: 24px;
-}
-.drag-handle.disabled {
-  cursor: not-allowed;
-  opacity: 0.3;
-}
 .menu-icon {
   cursor: click;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edots-horizontal%3C/title%3E%3Cpath d='M16,12A2,2 0 0,1 18,10A2,2 0 0,1 20,12A2,2 0 0,1 18,14A2,2 0 0,1 16,12M10,12A2,2 0 0,1 12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12M4,12A2,2 0 0,1 6,10A2,2 0 0,1 8,12A2,2 0 0,1 6,14A2,2 0 0,1 4,12Z' /%3E%3C/svg%3E");
