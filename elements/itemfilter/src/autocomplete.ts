@@ -256,27 +256,31 @@ export class EOxAutocomplete extends LitElement {
         }
         ${!this.unstyled
           ? html`
-              ${checkbox} ${button} :host { position: relative; } .container {
-              width: 100%; position: relative; border: 1px solid #00417066;
-              border-radius: 4px; height: 24px; padding: 5px; flex: 1;
-              justify-content: space-between; cursor: text; transition: all 0.2s
-              ease-in-out; } .container:hover { border: 1px solid #004170; }
-              .chip-container { display: flex; flex: 0; } .chip { display: flex;
-              align-items: center; background: #00417022; border-radius: 4px;
-              margin-right: 4px; padding: 5px 10px; font-size: small; cursor:
-              default; } .chip[data-highlighted] { background: #004170; color:
-              white; } .chip-close { cursor: pointer; margin-left: 4px; }
-              .input-container { display: flex; flex: 1; align-items: center; }
-              input, input:focus { border: none; outline: none; } ul { position:
-              fixed; top: 0px; left: 0; width: 100%; margin: 0; padding: 0;
-              background: white; border-bottom-left-radius: 4px;
-              border-bottom-right-radius: 4px; box-shadow: 0 4px 4px #0007;
-              cursor: default; max-height: 200px; overflow-y: auto; z-index: 1;}
-              li { display: flex; align-items: center; list-style: none;
-              padding: 5px 10px; font-size: small; } .button-container {
-              display: flex; align-items: center; position: absolute; right: 0;
-              height: 100%; width: 30px; } button { color: #004170; height:
-              24px; font-size: large; }
+              ${checkbox} ${button} :host { position: relative; overflow:
+              hidden;} .container { width: 100%; position: relative; border: 1px
+              solid #00417066; border-radius: 4px; height: 24px; padding: 5px;
+              flex: 1; justify-content: space-between; cursor: text; transition:
+              all 0.2s ease-in-out; overflow-x: auto; } .container:hover {
+              border: 1px solid #004170; } .chip-container { display: flex;
+              flex: 0; } .chip { display: flex; align-items: center; background:
+              #00417022; border-radius: 4px; margin-right: 4px; padding: 5px
+              10px; font-size: small; cursor: default; } .chip[data-highlighted]
+              { background: #004170; color: white; } .chip-close { cursor:
+              pointer; margin-left: 4px; } .input-container { display: flex;
+              flex: 1; align-items: center; } input, input:focus { border: none;
+              outline: none; } ul { position: fixed; top: 0px; left: 0; width:
+              100%; margin: 0; padding: 0; background: white;
+              border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;
+              box-shadow: 0 4px 4px #0007; cursor: default; max-height: 200px;
+              overflow-y: auto; z-index: 99;} li { display: flex; align-items:
+              center; list-style: none; padding: 5px 10px; font-size: small; }
+              .button-container { display: flex; align-items: center;
+              justify-content: center; position: absolute; right: 1px; top: 5px;
+              height: calc(100% - 10px); width: 34px; background: white; }
+              button.icon { color: #004170; height: 24px; font-size: large;
+              width: unset; } .container::-webkit-scrollbar { height: 2px; }
+              .container::-webkit-scrollbar-thumb { background: lightgrey;
+              border-radius: 2px; }
             `
           : nothing}
       </style>
