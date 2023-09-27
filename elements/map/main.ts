@@ -5,7 +5,7 @@ import View from "ol/View.js";
 // @ts-ignore
 import olCss from "ol/ol.css?inline";
 import { DrawOptions, addDraw } from "./src/draw";
-import { SelectOptions, addSelect } from "./src/select";
+import { EoxSelectInteraction, SelectOptions, addSelect } from "./src/select";
 import {
   generateLayers,
   EoxLayer,
@@ -73,6 +73,12 @@ export class EOxMap extends LitElement {
   interactions: { [index: string]: Draw | Modify } = {};
 
   /**
+   * dictionary of select interactions.
+   */
+  @state()
+  selectInteractions: { [index: string]: EoxSelectInteraction } = {};
+
+  /**
    * dictionary of ol controls associated with the map.
    */
   @state()
@@ -128,12 +134,21 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * removes a given interaction from the map. Layer have to be removed seperately
+   * removes a given ol-interaction from the map. Layer have to be removed seperately
    * @param id id of the interaction
    */
   removeInteraction = (id: string) => {
     this.map.removeInteraction(this.interactions[id]);
     delete this.interactions[id];
+  };
+
+  /**
+   * removes a given EOxSelectInteraction from the map.
+   * @param id id of the interaction
+   */
+  removeSelect = (id: string) => {
+    this.selectInteractions[id].remove();
+    delete this.selectInteractions[id];
   };
 
   /**
