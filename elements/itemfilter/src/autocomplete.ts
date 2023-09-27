@@ -2,7 +2,6 @@ import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
-import { checkbox } from "../../../utils/styles/checkbox";
 import { button } from "../../../utils/styles/button";
 
 @customElement("eox-autocomplete")
@@ -23,37 +22,13 @@ export class EOxAutocomplete extends LitElement {
   unstyled = false;
 
   @state()
-  _currentHighlight = null;
-
-  @state()
   _itemFilter = "";
 
   @state()
   selectedItems = [];
 
   _handleKeyboard(key) {
-    const currentlyHighlighted = this.renderRoot.querySelector(
-      "li[data-highlighted]"
-    );
-    if (key === "Enter") {
-      if (currentlyHighlighted) {
-        const currentItem = this.items.find(
-          (f) => f[this.idProperty] === currentlyHighlighted.dataset.identifier
-        );
-        this._handleSelect(currentItem);
-      }
-      if (this.multiple) {
-        // In multiple mode, delete the current text input right away so the user
-        // can continue searching for other items
-        this._itemFilter = "";
-      }
-      return;
-    }
     if (key === "Escape") {
-      if (this._currentHighlight) {
-        this._currentHighlight = null;
-        this.requestUpdate();
-      }
       // If nothing is selected yet, first clear the input,
       // then on second escape blur the input
       if (this.selectedItems.length < 1 || this.multiple) {
@@ -80,9 +55,7 @@ export class EOxAutocomplete extends LitElement {
       }
       return;
     }
-    const highlightedChip = this.renderRoot.querySelector(
-      ".chip[data-highlighted"
-    );
+    const highlightedChip = this.renderRoot.querySelector(".chip.highlighted");
     if (key === "Backspace") {
       if (
         this.multiple &&
@@ -101,33 +74,10 @@ export class EOxAutocomplete extends LitElement {
           this.renderRoot.querySelectorAll(".chip")[
             this.renderRoot.querySelectorAll(".chip").length - 1
           ];
-        if (!lastChip.dataset.highlighted) {
-          lastChip.dataset.highlighted = "";
-        } else {
+        if (!Array.from(lastChip.classList).includes("highlighted")) {
+          lastChip.classList.add("highlighted");
         }
         this.requestUpdate();
-      }
-    }
-    const listItems = this.renderRoot
-      .querySelector("ul")
-      .querySelectorAll("li");
-    let currentIndex = -1;
-    if (currentlyHighlighted) {
-      delete currentlyHighlighted.dataset.highlighted;
-      currentIndex = Array.from(listItems).indexOf(currentlyHighlighted);
-    }
-    if (key === "ArrowDown") {
-      delete highlightedChip?.dataset.highlighted;
-      currentIndex++;
-      if (currentIndex > listItems.length - 1) {
-        currentIndex = 0;
-      }
-    }
-    if (key === "ArrowUp") {
-      delete highlightedChip?.dataset.highlighted;
-      currentIndex--;
-      if (currentIndex < 0) {
-        currentIndex = listItems.length - 1;
       }
     }
     if (key === "ArrowLeft" || key === "ArrowRight") {
@@ -135,14 +85,13 @@ export class EOxAutocomplete extends LitElement {
         return;
       }
       let highlightedChipIndex = 0;
-      const highlightedChip = this.renderRoot.querySelector(
-        ".chip[data-highlighted]"
-      );
+      const highlightedChip =
+        this.renderRoot.querySelector(".chip.highlighted");
       if (highlightedChip) {
         highlightedChipIndex = Array.from(
           this.renderRoot.querySelectorAll(".chip")
         ).indexOf(highlightedChip);
-        delete highlightedChip.dataset.highlighted;
+        highlightedChip.classList.remove("highlighted");
       }
       highlightedChipIndex =
         highlightedChipIndex + (key === "ArrowLeft" ? -1 : +1);
@@ -159,54 +108,37 @@ export class EOxAutocomplete extends LitElement {
       }
       Array.from(this.renderRoot.querySelectorAll(".chip"))[
         highlightedChipIndex
-      ].dataset.highlighted = "";
+      ].classList.add("highlighted");
     }
-    const currentListItem = Array.from(listItems)[currentIndex];
-    if (currentListItem) {
-      this._currentHighlight = this.items.find(
-        (f) => f[this.idProperty] === currentListItem.dataset.identifier
-      );
-      this.renderRoot.querySelector("input").value =
-        currentListItem.dataset.label;
-    }
-    setTimeout(() => {
-      this.renderRoot.querySelector("input").select();
-    });
+    this.renderRoot.querySelector("input").select();
   }
 
-  _handleSelect(item) {
-    if (item) {
+  _handleHighlight(items) {
+    this.renderRoot.querySelector("input").value = items[0][this.labelProperty];
+    this.renderRoot.querySelector("input").select();
+  }
+
+  _handleSelect(items) {
+    this.selectedItems = items;
+    if (items.length > 0) {
       if (this.multiple) {
-        // In multiple mode, selecting the same item again removes it from the selectedItem list
-        if (this.selectedItems.includes(item)) {
-          this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
-          this.requestUpdate();
-        } else {
-          this.selectedItems.push(item);
-          this.renderRoot.querySelector("input").value = "";
-        }
+        this.renderRoot.querySelector("input").value = "";
         this.renderRoot.querySelector("input").focus();
       } else {
-        this.selectedItems = [item];
-        this.renderRoot.querySelector("input").value = item[this.labelProperty];
+        this.renderRoot.querySelector("input").value =
+          items[0][this.labelProperty];
         this.renderRoot.querySelector("input").blur();
       }
     } else {
-      this.selectedItems = [];
-      this._currentHighlight = null;
-      this.renderRoot.querySelector("input").value = "";
+      this.renderRoot.querySelector("input").select();
       this.renderRoot.querySelector("input").focus();
     }
-    this._currentHighlight = null;
-    this.dispatchEvent(
-      new CustomEvent("items-selected", {
-        detail: this.selectedItems,
-      })
-    );
+    this._dispatchEvent();
+    this.requestUpdate();
   }
 
   _handleScroll() {
-    const dropdown = this.renderRoot.querySelector("ul");
+    const dropdown = this.renderRoot.querySelector("eox-selectionlist");
     const autocomplete = this.renderRoot.querySelector(".container");
     const { bottom, left, width } = autocomplete?.getBoundingClientRect();
     dropdown.style.top = `${bottom}px`;
@@ -214,18 +146,18 @@ export class EOxAutocomplete extends LitElement {
     dropdown.style.width = `${width}px`;
   }
 
+  _dispatchEvent() {
+    this.dispatchEvent(
+      new CustomEvent("items-selected", {
+        detail: this.selectedItems,
+      })
+    );
+  }
+
   firstUpdated() {
     this.getRootNode().addEventListener("keydown", (event) => {
       if (
-        [
-          "ArrowDown",
-          "ArrowUp",
-          "ArrowLeft",
-          "ArrowRight",
-          "Enter",
-          "Escape",
-          "Backspace",
-        ].includes(event.code)
+        ["ArrowLeft", "ArrowRight", "Escape", "Backspace"].includes(event.code)
       ) {
         this._handleKeyboard(event.code);
       }
@@ -244,43 +176,41 @@ export class EOxAutocomplete extends LitElement {
         .container {
           display: flex;
         }
-        li[data-highlighted] {
-          background: #00417022;
-        }
-        ul {
+        eox-selectionlist {
           display: none;
         }
-        input:focus ~ ul,
-        ul:active {
+        input:focus ~ eox-selectionlist,
+        eox-selectionlist:active {
           display: block;
+        }
+        .chip.highlighted {
+          background: lightgrey;
         }
         ${!this.unstyled
           ? html`
-              ${checkbox} ${button} :host { position: relative; overflow:
-              hidden;} .container { width: 100%; position: relative; border: 1px
-              solid #00417066; border-radius: 4px; height: 24px; padding: 5px;
-              flex: 1; justify-content: space-between; cursor: text; transition:
-              all 0.2s ease-in-out; overflow-x: auto; } .container:hover {
-              border: 1px solid #004170; } .chip-container { display: flex;
-              flex: 0; } .chip { display: flex; align-items: center; background:
-              #00417022; border-radius: 4px; margin-right: 4px; padding: 5px
-              10px; font-size: small; cursor: default; } .chip[data-highlighted]
-              { background: #004170; color: white; } .chip-close { cursor:
+              ${button} :host { position: relative; overflow: hidden;}
+              .container { width: 100%; position: relative; border: 1px solid
+              #00417066; border-radius: 4px; height: 24px; padding: 5px; flex:
+              1; justify-content: space-between; cursor: text; transition: all
+              0.2s ease-in-out; overflow-x: auto; } .container:hover { border:
+              1px solid #004170; } .chip-container { display: flex; flex: 0; }
+              .chip { display: flex; align-items: center; background: #00417022;
+              border-radius: 4px; margin-right: 4px; padding: 5px 10px;
+              font-size: small; cursor: default; } .chip.highlighted {
+              background: #004170; color: white; } .chip-close { cursor:
               pointer; margin-left: 4px; } .input-container { display: flex;
               flex: 1; align-items: center; } input, input:focus { border: none;
-              outline: none; } ul { position: fixed; top: 0px; left: 0; width:
-              100%; margin: 0; padding: 0; background: white;
+              outline: none; } eox-selectionlist { position: fixed; top: 0px;
+              left: 0; width: 100%; margin: 0; padding: 0; background: white;
               border-bottom-left-radius: 4px; border-bottom-right-radius: 4px;
               box-shadow: 0 4px 4px #0007; cursor: default; max-height: 200px;
-              overflow-y: auto; z-index: 99;} li { display: flex; align-items:
-              center; list-style: none; padding: 5px 10px; font-size: small; }
-              .button-container { display: flex; align-items: center;
-              justify-content: center; position: absolute; right: 1px; top: 5px;
-              height: calc(100% - 10px); width: 34px; background: white; }
-              button.icon { color: #004170; height: 24px; font-size: large;
-              width: unset; } .container::-webkit-scrollbar { height: 2px; }
-              .container::-webkit-scrollbar-thumb { background: lightgrey;
-              border-radius: 2px; }
+              overflow-y: auto; z-index: 99;} .button-container { display: flex;
+              align-items: center; justify-content: center; position: absolute;
+              right: 1px; top: 5px; height: calc(100% - 10px); width: 34px;
+              background: white; } button.icon { color: #004170; height: 24px;
+              font-size: large; width: unset; } .container::-webkit-scrollbar {
+              height: 2px; } .container::-webkit-scrollbar-thumb { background:
+              lightgrey; border-radius: 2px; }
             `
           : nothing}
       </style>
@@ -302,6 +232,7 @@ export class EOxAutocomplete extends LitElement {
                       class="chip-close"
                       @click=${() => {
                         this.selectedItems.splice(item, 1);
+                        this._dispatchEvent();
                         this.requestUpdate();
                       }}
                       >✕</span
@@ -322,59 +253,31 @@ export class EOxAutocomplete extends LitElement {
             }}
             @input=${(evt) => {
               this._itemFilter = evt.target.value.toLowerCase();
-              if (this._itemFilter.length > 0) {
-                setTimeout(() => {
-                  const firstItem = this.renderRoot
-                    .querySelector("ul")
-                    .querySelectorAll("li")[0];
-                  if (firstItem) {
-                    this._currentHighlight = this.items.find(
-                      (f) => f[this.idProperty] === firstItem.dataset.identifier
-                    );
-                  }
-                });
-              } else {
-                this._currentHighlight = null;
-              }
             }}
           />
           ${when(
             this.items.length > 0,
             () => html`
-              <ul>
-                ${map(
-                  this.items.filter((f) =>
-                    this._itemFilter
-                      ? f[this.labelProperty]
-                          .toLowerCase()
-                          .includes(this._itemFilter.toLowerCase())
-                      : true
-                  ),
-                  (filterItem) => html`
-                    <li
-                      data-highlighted=${this._currentHighlight ===
-                        filterItem || nothing}
-                      data-identifier=${filterItem[this.idProperty]}
-                      data-label=${filterItem[this.labelProperty]}
-                      @click=${() => {
-                        this._handleSelect(filterItem);
-                      }}
-                      @mouseenter=${() => {
-                        this._currentHighlight = filterItem;
-                      }}
-                      @mouseleave=${() => {
-                        this._currentHighlight = null;
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        .checked=${this.selectedItems.includes(filterItem)}
-                      />
-                      ${filterItem[this.labelProperty]}
-                    </li>
-                  `
+              <eox-selectionlist
+                .filter=${this._itemFilter}
+                .items=${this.items.filter((f) =>
+                  this._itemFilter
+                    ? f[this.labelProperty]
+                        .toLowerCase()
+                        .includes(this._itemFilter.toLowerCase())
+                    : true
                 )}
-              </ul>
+                .multiple=${this.multiple}
+                .selectedItems=${this.selectedItems}
+                .unstyled=${this.unstyled}
+                @items-highlighted=${(event) => {
+                  this._handleHighlight(event.detail);
+                }}
+                @items-selected=${(event) => {
+                  this._handleSelect(event.detail);
+                }}
+              >
+              </eox-selectionlist>
             `
           )}
         </div>
@@ -386,7 +289,7 @@ export class EOxAutocomplete extends LitElement {
             <button
               class="icon"
               @click=${() => {
-                this._handleSelect(null);
+                this._handleSelect([]);
               }}
             >
               ✕
