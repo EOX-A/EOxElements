@@ -5,7 +5,7 @@ import View from "ol/View.js";
 // @ts-ignore
 import olCss from "ol/ol.css?inline";
 import { DrawOptions, addDraw } from "./src/draw";
-import { EoxSelectInteraction, SelectOptions, addSelect } from "./src/select";
+import { EOxSelectInteraction, SelectOptions, addSelect } from "./src/select";
 import {
   generateLayers,
   EoxLayer,
@@ -76,7 +76,7 @@ export class EOxMap extends LitElement {
    * dictionary of select interactions.
    */
   @state()
-  selectInteractions: { [index: string]: EoxSelectInteraction } = {};
+  selectInteractions: { [index: string]: EOxSelectInteraction } = {};
 
   /**
    * dictionary of ol controls associated with the map.

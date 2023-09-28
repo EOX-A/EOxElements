@@ -23,7 +23,7 @@ export type SelectOptions = Omit<
   active?: boolean;
 };
 
-export class EoxSelectInteraction {
+export class EOxSelectInteraction {
   eoxMap: EOxMap;
   layerId: string;
   options: SelectOptions;
@@ -224,7 +224,7 @@ export function addSelect(
   if (EOxMap.interactions[options.id]) {
     throw Error(`Interaction with id: ${options.id} already exists.`);
   }
-  EOxMap.selectInteractions[options.id] = new EoxSelectInteraction(
+  EOxMap.selectInteractions[options.id] = new EOxSelectInteraction(
     EOxMap,
     layerId,
     options
