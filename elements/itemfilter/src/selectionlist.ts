@@ -1,9 +1,6 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html, nothing, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
-import { when } from "lit/directives/when.js";
-import { checkbox } from "../../../utils/styles/checkbox";
-import { button } from "../../../utils/styles/button";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
@@ -16,7 +13,7 @@ export class EOxSelectionlist extends LitElement {
   idProperty = "id";
 
   @property()
-  items = [];
+  items: Array<any> = [];
 
   @property()
   labelProperty = "label";
@@ -25,17 +22,18 @@ export class EOxSelectionlist extends LitElement {
   multiple = false;
 
   @property()
-  selectedItems = [];
+  selectedItems: Array<any> = [];
 
   @property({ type: Boolean })
   unstyled = false;
 
   @state()
-  _currentHighlight = null;
+  _currentHighlight: any = null;
 
-  _handleKeyboard(key) {
-    const currentlyHighlighted =
-      this.renderRoot.querySelector("li.highlighted");
+  _handleKeyboard(key: string) {
+    const currentlyHighlighted = this.renderRoot.querySelector(
+      "li.highlighted"
+    ) as HTMLLIElement;
     if (key === "Escape") {
       if (this._currentHighlight) {
         this._currentHighlight = null;
@@ -55,7 +53,7 @@ export class EOxSelectionlist extends LitElement {
     const listItems = this.renderRoot.querySelectorAll("li");
     let currentIndex = -1;
     if (currentlyHighlighted) {
-      delete currentlyHighlighted.dataset.highlighted;
+      delete (<HTMLElement>currentlyHighlighted).dataset.highlighted;
       currentIndex = Array.from(listItems).indexOf(currentlyHighlighted);
     }
     if (key === "ArrowDown") {
@@ -83,7 +81,7 @@ export class EOxSelectionlist extends LitElement {
     );
   }
 
-  _handleSelect(item) {
+  _handleSelect(item: any) {
     if (item) {
       if (this.multiple) {
         // In multiple mode, selecting the same item again removes it from the selectedItem list
@@ -119,7 +117,7 @@ export class EOxSelectionlist extends LitElement {
     });
   }
 
-  updated(changedProperties) {
+  updated(changedProperties: PropertyValues<this>) {
     if (changedProperties.has("filter")) {
       if (this.filter.length > 0) {
         setTimeout(() => {
@@ -160,7 +158,7 @@ export class EOxSelectionlist extends LitElement {
                   .includes(this.filter.toLowerCase())
               : true
           ),
-          (item, index) => html`
+          (item) => html`
             <li
               class=${this._currentHighlight === item ? "highlighted" : nothing}
               data-identifier=${item[this.idProperty]}

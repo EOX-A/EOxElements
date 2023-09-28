@@ -11,7 +11,7 @@ export class EOxAutocomplete extends LitElement {
   idProperty = "id";
 
   @property()
-  items = [];
+  items: Array<any> = [];
 
   @property()
   labelProperty = "label";
@@ -26,9 +26,9 @@ export class EOxAutocomplete extends LitElement {
   public inputText = "";
 
   @state()
-  selectedItems = [];
+  selectedItems: Array<any> = [];
 
-  _handleKeyboard(key) {
+  _handleKeyboard(key: string) {
     if (key === "Escape") {
       // If nothing is selected yet, first clear the input,
       // then on second escape blur the input
@@ -125,12 +125,12 @@ export class EOxAutocomplete extends LitElement {
     this.renderRoot.querySelector("input").select();
   }
 
-  _handleHighlight(items) {
+  _handleHighlight(items: Array<any>) {
     this.renderRoot.querySelector("input").value = items[0][this.labelProperty];
     this.renderRoot.querySelector("input").select();
   }
 
-  _handleSelect(items) {
+  _handleSelect(items: Array<any>) {
     this.selectedItems = items;
     if (items.length > 0) {
       if (this.multiple) {
@@ -203,6 +203,7 @@ export class EOxAutocomplete extends LitElement {
 
   firstUpdated() {
     this.getRootNode().addEventListener("keydown", (event) => {
+      const { code } = <KeyboardEvent>event;
       if (
         [
           "ArrowUp",
@@ -211,9 +212,9 @@ export class EOxAutocomplete extends LitElement {
           "ArrowRight",
           "Escape",
           "Backspace",
-        ].includes(event.code)
+        ].includes(code)
       ) {
-        this._handleKeyboard(event.code);
+        this._handleKeyboard(code);
       }
     });
   }
@@ -262,7 +263,9 @@ export class EOxAutocomplete extends LitElement {
       <div
         class="container"
         @click=${() =>
-          this.renderRoot.querySelector("input[type=text]").focus()}
+          (<HTMLInputElement>(
+            this.renderRoot.querySelector("input[type=text]")
+          )).focus()}
       >
         ${when(
           this.multiple,
@@ -275,7 +278,7 @@ export class EOxAutocomplete extends LitElement {
                     <span class="chip-label">${item[this.labelProperty]}</span>
                     <span
                       class="chip-close"
-                      @click=${(evt) => {
+                      @click=${(evt: Event) => {
                         evt.stopPropagation();
                         this.selectedItems.splice(
                           this.selectedItems.indexOf(item),
@@ -296,14 +299,15 @@ export class EOxAutocomplete extends LitElement {
           <input
             type="text"
             @focus=${() => {
-              this.renderRoot.querySelector("eox-selectionlist").style.display =
-                "block";
-              this._currentHighlight = null;
+              (<HTMLElement>(
+                this.renderRoot.querySelector("eox-selectionlist")
+              )).style.display = "block";
               this.inputText = "";
               this.requestUpdate();
             }}
-            @input=${(evt) => {
-              this.inputText = evt.target.value.toLowerCase();
+            @input=${(event: Event) => {
+              this.inputText = (event!
+                .target as HTMLInputElement)!.value.toLowerCase();
             }}
           />
           ${when(
@@ -321,10 +325,10 @@ export class EOxAutocomplete extends LitElement {
                 .multiple=${this.multiple}
                 .selectedItems=${this.selectedItems}
                 .unstyled=${this.unstyled}
-                @items-highlighted=${(event) => {
+                @items-highlighted=${(event: CustomEvent) => {
                   this._handleHighlight(event.detail);
                 }}
-                @items-selected=${(event) => {
+                @items-selected=${(event: CustomEvent) => {
                   this._handleSelect(event.detail);
                 }}
               >
