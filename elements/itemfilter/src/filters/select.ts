@@ -32,61 +32,53 @@ export class EOxItemFilterSelect extends LitElement {
     return this;
   }
 
+  _getItems() {
+    return Object.keys(this.filterObject.state)
+      .sort((a, b) => a.localeCompare(b))
+      .map((i) => ({
+        id: i,
+        title: i.replace(/^./, i[0].toUpperCase()),
+      }))
+  }
+
+  _getSelectedItems() {
+    return Object.keys(this.filterObject.state)
+    .filter((i) => this.filterObject.state[i])
+    .map((i) => ({
+      id: i,
+      title: i.replace(/^./, i[0].toUpperCase()),
+    }))
+  }
+
+  _handleSelected(evt: CustomEvent) {
+    Object.keys(this.filterObject.state).forEach((k) => {
+      this.filterObject.state[k] = evt.detail
+        .map((i) => i.id)
+        .includes(k);
+    });
+    this.filterObject.dirty = true;
+    this.dispatchEvent(new CustomEvent("filter"));
+  }
+
   render() {
     return html`
       ${when(
         Object.keys(this.filterObject.state).length > 10,
         () => html`
           <eox-autocomplete
-            .items=${Object.keys(this.filterObject.state)
-              .sort((a, b) => a.localeCompare(b))
-              .map((i) => ({
-                id: i,
-                title: i.replace(/^./, i[0].toUpperCase()),
-              }))}
-            .selectedItems=${Object.keys(this.filterObject.state)
-              .filter((i) => this.filterObject.state[i])
-              .map((i) => ({
-                id: i,
-                title: i.replace(/^./, i[0].toUpperCase()),
-              }))}
+            .items=${this._getItems()}
+            .selectedItems=${this._getSelectedItems()}
             .unstyled=${this.unstyled}
-            @items-selected=${(evt: CustomEvent) => {
-              Object.keys(this.filterObject.state).forEach((k) => {
-                this.filterObject.state[k] = evt.detail
-                  .map((i) => i.id)
-                  .includes(k);
-              });
-              this.filterObject.dirty = true;
-              this.dispatchEvent(new CustomEvent("filter"));
-            }}
+            @items-selected=${(evt: CustomEvent) => this._handleSelected(evt)}
           >
           </eox-autocomplete>
         `,
         () => html`
           <eox-selectionlist
-            .items=${Object.keys(this.filterObject.state)
-              .sort((a, b) => a.localeCompare(b))
-              .map((i) => ({
-                id: i,
-                title: i.replace(/^./, i[0].toUpperCase()),
-              }))}
-            .selectedItems=${Object.keys(this.filterObject.state)
-              .filter((i) => this.filterObject.state[i])
-              .map((i) => ({
-                id: i,
-                title: i.replace(/^./, i[0].toUpperCase()),
-              }))}
+            .items=${this._getItems()}
+            .selectedItems=${this._getSelectedItems()}
             .unstyled=${this.unstyled}
-            @items-selected=${(evt: CustomEvent) => {
-              Object.keys(this.filterObject.state).forEach((k) => {
-                this.filterObject.state[k] = evt.detail
-                  .map((i) => i.id)
-                  .includes(k);
-              });
-              this.filterObject.dirty = true;
-              this.dispatchEvent(new CustomEvent("filter"));
-            }}
+            @items-selected=${(evt: CustomEvent) => this._handleSelected(evt)}
           ></eox-selectionlist>
         `
       )}
