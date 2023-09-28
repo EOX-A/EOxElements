@@ -14,7 +14,7 @@ export class EOxAutocomplete extends LitElement {
   items: Array<any> = [];
 
   @property()
-  labelProperty = "label";
+  titleProperty = "title";
 
   @property({ type: Boolean })
   multiple = false;
@@ -47,10 +47,10 @@ export class EOxAutocomplete extends LitElement {
         // wants to abort; resets input to the currently selected item
         if (
           this.renderRoot.querySelector("input").value !==
-          this.selectedItems[0][this.labelProperty]
+          this.selectedItems[0][this.titleProperty]
         ) {
           this.renderRoot.querySelector("input").value =
-            this.selectedItems[0][this.labelProperty];
+            this.selectedItems[0][this.titleProperty];
         } else {
           this.renderRoot.querySelector("eox-selectionlist").style.display =
             "none";
@@ -126,7 +126,7 @@ export class EOxAutocomplete extends LitElement {
   }
 
   _handleHighlight(items: Array<any>) {
-    this.renderRoot.querySelector("input").value = items[0][this.labelProperty];
+    this.renderRoot.querySelector("input").value = items[0][this.titleProperty];
     this.renderRoot.querySelector("input").select();
   }
 
@@ -138,7 +138,7 @@ export class EOxAutocomplete extends LitElement {
         this.renderRoot.querySelector("input").focus();
       } else {
         this.renderRoot.querySelector("input").value =
-          items[0][this.labelProperty];
+          items[0][this.titleProperty];
         this.renderRoot.querySelector("eox-selectionlist").style.display =
           "none";
       }
@@ -275,7 +275,7 @@ export class EOxAutocomplete extends LitElement {
                 this.selectedItems,
                 (item) => html`
                   <span class="chip">
-                    <span class="chip-label">${item[this.labelProperty]}</span>
+                    <span class="chip-title">${item[this.titleProperty]}</span>
                     <span
                       class="chip-close"
                       @click=${(evt: Event) => {
@@ -317,7 +317,7 @@ export class EOxAutocomplete extends LitElement {
                 .filter=${this.inputText}
                 .items=${this.items.filter((f) =>
                   this.inputText
-                    ? f[this.labelProperty]
+                    ? f[this.titleProperty]
                         .toLowerCase()
                         .includes(this.inputText.toLowerCase())
                     : true

@@ -99,9 +99,9 @@ export const Autocomplete = {
   render: () => html`
     <eox-autocomplete
       .items=${[
-        { id: "a", label: "Autobus" },
-        { id: "b", label: "Bicycle" },
-        { id: "c", label: "Catalog" },
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
       ]}
       @items-selected=${(evt) => {
         document.querySelector("#output").innerHTML = JSON.stringify(
@@ -118,9 +118,9 @@ export const AutocompleteUnstyled = {
     <eox-autocomplete
       unstyled
       .items=${[
-        { id: "a", label: "Autobus" },
-        { id: "b", label: "Bicycle" },
-        { id: "c", label: "Catalog" },
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
       ]}
       @items-selected=${(evt) => {
         document.querySelector("#output").innerHTML = JSON.stringify(
@@ -137,9 +137,9 @@ export const AutocompleteMultiple = {
     <eox-autocomplete
       multiple
       .items=${[
-        { id: "a", label: "Autobus" },
-        { id: "b", label: "Bicycle" },
-        { id: "c", label: "Catalog" },
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
       ]}
       @item-selected=${(evt) => {
         console.log(evt);
@@ -154,9 +154,9 @@ export const AutocompleteMultipleUnstyled = {
       multiple
       unstyled
       .items=${[
-        { id: "a", label: "Autobus" },
-        { id: "b", label: "Bicycle" },
-        { id: "c", label: "Catalog" },
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
       ]}
       @item-selected=${(evt) => {
         console.log(evt);
@@ -169,9 +169,9 @@ export const SelectionList = {
   render: () => html`
     <eox-selectionlist
       .items=${[
-        { id: "a", label: "Autobus" },
-        { id: "b", label: "Bicycle" },
-        { id: "c", label: "Catalog" },
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
       ]}
       @items-selected=${(evt) => {
         document.querySelector("#output").innerHTML = JSON.stringify(
@@ -188,10 +188,11 @@ export const SelectionListMultiple = {
     <eox-selectionlist
       multiple
       .items=${[
-        { id: "a", label: "Autobus" },
-        { id: "b", label: "Bicycle" },
-        { id: "c", label: "Catalog" },
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
       ]}
+      .selectedItems=${[{ id: "b", title: "Bicycle" }]}
       @items-selected=${(evt) => {
         document.querySelector("#output").innerHTML = JSON.stringify(
           evt.detail

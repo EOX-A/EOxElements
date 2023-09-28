@@ -16,7 +16,7 @@ export class EOxSelectionlist extends LitElement {
   items: Array<any> = [];
 
   @property()
-  labelProperty = "label";
+  titleProperty = "title";
 
   @property({ type: Boolean })
   multiple = false;
@@ -74,7 +74,7 @@ export class EOxSelectionlist extends LitElement {
         (f) => f[this.idProperty] === currentListItem.dataset.identifier
       );
       this.renderRoot.querySelector("input").value =
-        currentListItem.dataset.label;
+        currentListItem.dataset.title;
     }
     this.dispatchEvent(
       new CustomEvent("items-highlighted", { detail: [this._currentHighlight] })
@@ -153,7 +153,7 @@ export class EOxSelectionlist extends LitElement {
         ${map(
           this.items.filter((item) =>
             this.filter
-              ? item[this.labelProperty]
+              ? item[this.titleProperty]
                   .toLowerCase()
                   .includes(this.filter.toLowerCase())
               : true
@@ -162,7 +162,7 @@ export class EOxSelectionlist extends LitElement {
             <li
               class=${this._currentHighlight === item ? "highlighted" : nothing}
               data-identifier=${item[this.idProperty]}
-              data-label=${item[this.labelProperty]}
+              data-title=${item[this.titleProperty]}
               @mouseenter=${() => {
                 this._currentHighlight = item;
               }}
@@ -178,7 +178,7 @@ export class EOxSelectionlist extends LitElement {
                   ) || nothing}
                   @change=${() => this._handleSelect(item)}
                 />
-                <span class="title">${item[this.labelProperty]}</span>
+                <span class="title">${item[this.titleProperty]}</span>
               </label>
             </li>
           `
