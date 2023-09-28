@@ -110,11 +110,7 @@ section:not(section:last-of-type) {
   flex-direction: column;
 }
 ul li {
-  padding-left: 0;
-}
-eox-itemfilter-expandcontainer ul li,
-details ul li {
-  padding: 0.2rem;
+  padding: 5px 10px;
 }
 li.highlighted {
   background: #00417011;
