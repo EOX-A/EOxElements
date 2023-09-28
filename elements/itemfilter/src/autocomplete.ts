@@ -234,16 +234,16 @@ export class EOxAutocomplete extends LitElement {
         }
         ${!this.unstyled
           ? html`
-              ${button} .container { width: 100%; position: relative; border:
-              1px solid #00417066; border-radius: 4px; height: 24px; padding:
-              5px; flex: 1; justify-content: space-between; cursor: text;
-              transition: all 0.2s ease-in-out; overflow-x: auto; }
-              .container:hover { border: 1px solid #004170; } .chip-container {
-              display: flex; flex: 0; } .chip { display: flex; align-items:
-              center; background: #00417022; border-radius: 4px; margin-right:
-              4px; padding: 5px 10px; font-size: small; cursor: default; }
-              .chip.highlighted { background: #004170; color: white; }
-              .chip-close { cursor: pointer; margin-left: 4px; }
+              ${button} :host { position: relative; } .container { width: 100%;
+              position: relative; border: 1px solid #00417066; border-radius:
+              4px; height: 24px; padding: 5px; flex: 1; justify-content:
+              space-between; cursor: text; transition: all 0.2s ease-in-out;
+              overflow-x: auto; } .container:hover { border: 1px solid #004170;
+              } .chip-container { display: flex; flex: 0; } .chip { display:
+              flex; align-items: center; background: #00417022; border-radius:
+              4px; margin-right: 4px; padding: 5px 10px; font-size: small;
+              cursor: default; } .chip.highlighted { background: #004170; color:
+              white; } .chip-close { cursor: pointer; margin-left: 4px; }
               .input-container { display: flex; flex: 1; align-items: center; }
               input, input:focus { border: none; outline: none; }
               eox-selectionlist { position: fixed; top: 0px; left: 0; width:
