@@ -181,7 +181,7 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
   olLayer.on("change:visible", () => {
     eoxLayer.visible = olLayer.getVisible();
   });
-  olLayer.on("change:zIndex", (e) => {
+  olLayer.on("change:zIndex", () => {
     // TO DO
   });
   olLayer.on("propertychange", (e) => {
