@@ -2,6 +2,7 @@ import { LitElement, html, nothing, TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { live } from "lit/directives/live.js";
+import { keyed } from "lit/directives/keyed.js";
 import { when } from "lit/directives/when.js";
 import { Map, Collection } from "ol";
 import { Group, Layer } from "ol/layer";
@@ -77,11 +78,6 @@ export class EOxLayerControl extends LitElement {
 
   @property({ type: Boolean })
   unstyled: boolean;
-
-  /**
-   * Hack to "force-reset" layer list
-   */
-  private resetLayers = false;
 
   private _updateControl(layerCollection: Collection<BaseLayer>) {
     // initially check if all layers have an id and title,
@@ -181,7 +177,7 @@ export class EOxLayerControl extends LitElement {
     }
   }
 
-  render() {
+  connectedCallback() {
     const mapQuery = document.querySelector(this.for as string);
     if (mapQuery) {
       if ((<EOxMap>mapQuery).map) {
@@ -191,83 +187,97 @@ export class EOxLayerControl extends LitElement {
       }
     }
 
-    if (!this.olMap) {
-      return nothing;
+    if (this.olMap) {
+      const collection = this.olMap.getLayers();
+      this._updateControl(collection);
+
+      const listenForCollectionChange = (
+        layerCollection: Collection<BaseLayer>
+      ) => {
+        layerCollection.on("change:length", () => {
+          if (!this._currentlySorting) {
+            setTimeout(() => {
+              checkCollection(layerCollection);
+              this._updateControl(layerCollection);
+            });
+          }
+        });
+      };
+
+      // root collection
+      listenForCollectionChange(collection);
+
+      // recursively add listener to all group and sub-group collections
+      const checkCollection = (layerCollection: Collection<BaseLayer>) => {
+        layerCollection.getArray().forEach((layer) => {
+          if ((<Group>layer).getLayers) {
+            const coll = (<Group>layer).getLayers();
+            listenForCollectionChange(coll);
+            checkCollection(coll);
+          }
+        });
+      };
+      checkCollection(collection);
+
+      this.layerCollection = collection;
     }
+    super.connectedCallback();
+  }
 
-    const collection = this.olMap.getLayers();
-    this._updateControl(collection);
-
-    const listenForCollectionChange = (
-      layerCollection: Collection<BaseLayer>
-    ) => {
-      layerCollection.on("change:length", () => {
-        if (!this._currentlySorting) {
-          this.resetLayers = true;
-          this._updateControl(layerCollection);
+  singleLayer = (
+    layer: Layer,
+    groupId: string,
+    collection: Collection<BaseLayer>
+  ) => html`
+    <details open="${layer.get("layerControlExpand") ? true : nothing}">
+      <summary
+        @click=${() => {
+          layer.set(
+            "layerControlExpand",
+            layer.get("layerControlExpand")
+              ? !layer.get("layerControlExpand")
+              : true
+          );
           setTimeout(() => {
-            this.resetLayers = false;
-            this._updateControl(layerCollection);
+            this.requestUpdate();
           });
-        }
-      });
-    };
-
-    // root collection
-    listenForCollectionChange(collection);
-
-    // recursively add listener to all group and sub-group collections
-    const checkCollection = (layerCollection: Collection<BaseLayer>) => {
-      layerCollection.getArray().forEach((layer) => {
-        if ((<Group>layer).getLayers) {
-          const coll = (<Group>layer).getLayers();
-          listenForCollectionChange(coll);
-          checkCollection(coll);
-        }
-      });
-    };
-    checkCollection(collection);
-
-    const singleLayer = (
-      layer: Layer,
-      groupId: string,
-      collection: Collection<BaseLayer>
-    ) => html`
-      <details open="${layer.get("layerControlExpand") ? true : nothing}">
-        <summary>
-          <div class="layer">
-            <div class="left">
-              <input
-                type="${layer.get("layerControlExclusive")
-                  ? "radio"
-                  : "checkbox"}"
-                .checked="${live(layer.getVisible())}"
-                @click=${() => {
-                  this.toggleLayerVisibility(layer as Layer, groupId);
-                }}
-              />
-              <span class="title"
-                ><span
-                  >${layer.get(this.layerTitle) ||
-                  `${layer.get(this.layerIdentifier)}`}</span
-                >
-              </span>
-            </div>
-            <div class="right">
-              ${this.sortBy === "layerOrder" && !this.unstyled
-                ? html` <div
-                    class="drag-handle ${layer.get("layerControlDisable")
-                      ? "disabled"
-                      : ""}"
-                  >
-                    <span>=</span>
-                  </div>`
-                : nothing}
-            </div>
+        }}
+      >
+        <div class="layer">
+          <div class="left">
+            <input
+              type="${layer.get("layerControlExclusive")
+                ? "radio"
+                : "checkbox"}"
+              .checked="${live(layer.getVisible())}"
+              @click=${() => {
+                this.toggleLayerVisibility(layer as Layer, groupId);
+              }}
+            />
+            <span class="title"
+              ><span
+                >${layer.get(this.layerTitle) ||
+                `${layer.get(this.layerIdentifier)}`}</span
+              >
+            </span>
           </div>
-        </summary>
-        ${this.layerConfig
-          ? html`
+          <div class="right">
+            ${this.sortBy === "layerOrder" && !this.unstyled
+              ? html` <div
+                  class="drag-handle ${layer.get("layerControlDisable")
+                    ? "disabled"
+                    : ""}"
+                >
+                  <span>=</span>
+                </div>`
+              : nothing}
+          </div>
+        </div>
+      </summary>
+      ${this.layerConfig
+        ? keyed(
+            layer.get("id"),
+            html`
               <eox-layerconfig
                 .layerConfig="${this.layerConfig}"
                 .layerControl="${this}"
@@ -289,57 +299,55 @@ export class EOxLayerControl extends LitElement {
                 }}
               ></eox-layerconfig>
             `
-          : nothing}
-        ${this.externalLayerConfig && (<OlLayer>layer).style_?.color
-          ? html`
-              <button @click=${() => this._emitLayerconfig(layer as Layer)}>
-                configure
-              </button>
-            `
-          : nothing}
-        ${(<LayerGroup>(<unknown>layer)).getLayers
-          ? html`
-              ${listItems(
-                this.preFilterLayers(
-                  [
-                    ...(<LayerGroup>(<unknown>layer)).getLayers().getArray(),
-                  ].reverse()
-                ),
-                layer.get(this.layerIdentifier),
-                (<LayerGroup>(<unknown>layer)).getLayers()
-              )}
-            `
-          : nothing}
-      </details>
+          )
+        : nothing}
+      ${this.externalLayerConfig && (<OlLayer>layer).style_?.color
+        ? html`
+            <button @click=${() => this._emitLayerconfig(layer as Layer)}>
+              configure
+            </button>
+          `
+        : nothing}
+      ${(<LayerGroup>(<unknown>layer)).getLayers
+        ? html`
+            ${this.listItems(
+              this.preFilterLayers(
+                [
+                  ...(<LayerGroup>(<unknown>layer)).getLayers().getArray(),
+                ].reverse()
+              ),
+              layer.get(this.layerIdentifier),
+              (<LayerGroup>(<unknown>layer)).getLayers()
+            )}
+          `
+        : nothing}
+    </details>
+  `;
+
+  listItems = (
+    layers: Array<BaseLayer>,
+    group?: string,
+    collection?: Collection<BaseLayer>
+  ): TemplateResult =>
+    html`
+      <ul data-group="${group ?? nothing}">
+        ${repeat(
+          layers,
+          (layer) => html`
+            <li
+              data-layer="${layer.get(this.layerIdentifier)}"
+              data-disabled="${layer.get("layerControlDisable") || nothing}"
+              data-type="${this.getLayerType(layer as Layer, this.olMap)}"
+              data-layerconfig="${this.layerConfig?.length > 0}"
+            >
+              ${this.singleLayer(layer as Layer, group, collection)}
+            </li>
+          `
+        )}
+      </ul>
     `;
 
-    const listItems = (
-      layers: Array<BaseLayer>,
-      group?: string,
-      collection?: Collection<BaseLayer>
-    ): TemplateResult =>
-      this.resetLayers
-        ? html``
-        : html`
-            <ul data-group="${group ?? nothing}">
-              ${repeat(
-                layers,
-                (layer) => layer.get(this.layerIdentifier),
-                (layer) => html`
-                  <li
-                    data-layer="${layer.get(this.layerIdentifier)}"
-                    data-disabled="${layer.get("layerControlDisable") ||
-                    nothing}"
-                    data-type="${this.getLayerType(layer as Layer, this.olMap)}"
-                    data-layerconfig="${this.layerConfig?.length > 0}"
-                  >
-                    ${singleLayer(layer as Layer, group, collection)}
-                  </li>
-                `
-              )}
-            </ul>
-          `;
-
+  render() {
     return html`
       <style>
         ${style}
@@ -351,8 +359,10 @@ export class EOxLayerControl extends LitElement {
           ? html`<input type="text" placeholder="Find layer" />`
           : nothing}
         <div class="layers">
-          ${listItems(
-            this.preFilterLayers(collection.getArray() as Array<BaseLayer>),
+          ${this.listItems(
+            this.preFilterLayers(
+              this.layerCollection.getArray() as Array<BaseLayer>
+            ),
             null,
             this.layerCollection
           )}
@@ -484,6 +494,12 @@ export class EOxLayerControl extends LitElement {
                 }
               });
             },
+          },
+          onStart: () => {
+            this._currentlySorting = true;
+          },
+          onEnd: () => {
+            this._currentlySorting = false;
           },
           onMove: (e: any) => {
             // disallow disabled items to be dragged over
@@ -650,7 +666,6 @@ export class EOxLayerConfig extends LitElement {
               this.layerConfig.filter((lC) =>
                 this.for ? lC !== "opacity" : true
               ),
-              (property) => property,
               (property) => html`
                 <div class="slider-control">
                   <div class="slider-property">${property}</div>
