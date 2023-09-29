@@ -128,6 +128,20 @@ export class EOxLayerControl extends LitElement {
     this.requestUpdate();
   }
 
+  private _getLayerAction(layer: BaseLayer) {
+    let tools = layer.get("tools");
+
+    if (!tools) {
+      tools = ["info"];
+    }
+
+    if (tools.length === 1 && tools[0] === "info") {
+      return html`<span class="info-icon" @click="${(event: Event) => this._onLayerConfigToggle(event, layer.get("id"))}"></span>`;
+    } else {
+      return html`<span class="menu-icon" @click="${(event: Event) => this._onLayerConfigToggle(event, layer.get("id"))}"></span>`;
+    }
+  }
+
   changeOpacity(targetLayer: Layer, value: number) {
     targetLayer.setOpacity(value);
   }
@@ -275,16 +289,8 @@ export class EOxLayerControl extends LitElement {
               </span>
             </div>
             <div class="right">
-              <span class="menu-icon" @click="${(event: Event) => this._onLayerConfigToggle(event, layer.get("id"))}"></span>
-              ${this.sortBy === "layerOrder" && !this.unstyled
-                ? html` <div
-                    class="drag-handle ${layer.get("layerControlDisable")
-                      ? "disabled"
-                      : ""}"
-                  >
-                    <span>=</span>
-                  </div>`
-                : nothing}
+              ${this._getLayerAction(layer)}
+
             </div>
           </div>
         </summary>
@@ -297,7 +303,7 @@ export class EOxLayerControl extends LitElement {
                 .external=${this.externalLayerConfig}
                 .unstyled="${this.unstyled}
                 style="max-height: ${this.isLayerConfigExpanded[layer.get("id")] ? 999 : 0}px"
-                @removeLayer=${() => {
+                @removeLayer=${() =>{
                   collection.remove(layer);
                   const listitem = this.renderRoot.querySelector(
                     `[data-layer='${layer.get(this.layerIdentifier)}'`
@@ -428,6 +434,8 @@ export class EOxLayerControl extends LitElement {
         )}
       </div>
     `;
+
+
   }
 
   updated() {
@@ -814,29 +822,42 @@ class EOxTabs extends LitElement {
   `;
 
   render() {
-    return html`
-      <div class="tabs">
-        <div class="left">
-          ${this.tabs.map((tab, index) => html`
-          <div
-            class="tab ${tab.label} ${this.selectedTabIndex === index ? 'selected' : ''}"
-            @click=${() => this.selectedTabIndex = index}
-          ></div>
-        `)}
-        </div>
+    let tools = this.layer.get("tools");
+    console.log(this.layer);
 
-        <div class="right">
-          <div
-            class="drag-handle ${this.layer.get("layerControlDisable")
-              ? "disabled"
-              : ""}"
-          >
+    if (!tools) {
+      tools = ["info"];
+    }
+
+    if (tools.length === 1 && tools[0] === "info") {
+      return html`<div class="tab-content">${
+        this.tabs.find(t => t.label === "info").content
+      }</div>`;
+    } else {
+      return html`
+        <div class="tabs">
+          <div class="left">
+            ${this.tabs.map((tab, index) => html`
+            <div
+              class="tab ${tab.label} ${this.selectedTabIndex === index ? 'selected' : ''}"
+              @click=${() => this.selectedTabIndex = index}
+            ></div>
+          `)}
+          </div>
+
+          <div class="right">
+            <div
+              class="drag-handle ${this.layer.get("layerControlDisable")
+                ? "disabled"
+                : ""}"
+            >
+            </div>
           </div>
         </div>
-      </div>
-      ${this.tabs.map((tab, index) => html`
-        <div class="tab-content" ?selected=${this.selectedTabIndex === index}>${tab.content}</div>
-      `)}
-    `;
+        ${this.tabs.map((tab, index) => html`
+          <div class="tab-content" ?selected=${this.selectedTabIndex === index}>${tab.content}</div>
+        `)}
+      `;
+    }
   }
 }
