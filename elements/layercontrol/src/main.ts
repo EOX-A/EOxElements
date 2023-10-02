@@ -3,6 +3,7 @@ import { customElement, property, state } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { live } from "lit/directives/live.js";
 import { when } from "lit/directives/when.js";
+import { styleMap } from 'lit/directives/style-map.js';
 import { Map, Collection } from "ol";
 import { Group, Layer } from "ol/layer";
 import BaseLayer from "ol/layer/Base";
@@ -830,7 +831,7 @@ class EOxTabs extends LitElement {
     }
 
     if (tools.length === 1 && tools[0] === "info") {
-      return html`<div class="tab-content">${
+      return html`<div class="tab-content" selected>${
         this.tabs.find(t => t.label === "info").content
       }</div>`;
     } else {
