@@ -1,9 +1,8 @@
 import { LitElement, html, css, nothing, TemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property, state, eventOptions } from "lit/decorators.js";
 import { repeat } from "lit/directives/repeat.js";
 import { live } from "lit/directives/live.js";
 import { when } from "lit/directives/when.js";
-import { styleMap } from 'lit/directives/style-map.js';
 import { Map, Collection } from "ol";
 import { Group, Layer } from "ol/layer";
 import BaseLayer from "ol/layer/Base";
@@ -141,6 +140,10 @@ export class EOxLayerControl extends LitElement {
     } else {
       return html`<span class="menu-icon" @click="${(event: Event) => this._onLayerConfigToggle(event, layer.get("id"))}"></span>`;
     }
+  }
+
+  private isCheckboxEnabled() {
+    return false;
   }
 
   changeOpacity(targetLayer: Layer, value: number) {
@@ -721,7 +724,6 @@ export class EOxLayerConfig extends LitElement {
 
 @customElement("eox-tabs")
 class EOxTabs extends LitElement {
-
   @property({ type: BaseLayer })
   layer: BaseLayer;
 
@@ -734,7 +736,13 @@ class EOxTabs extends LitElement {
 
     {
       label: 'opacity',
-      content: 'Content for Tab 2',
+      content: html`<tab-sliders .sliders=${[{
+        label: "Opacity",
+        value: 0.5,
+        min: 0.0,
+        max: 1.0,
+        step: 0.1,
+      }]}></tab-sliders>`,
     },
 
     {
@@ -860,5 +868,51 @@ class EOxTabs extends LitElement {
         `)}
       `;
     }
+  }
+}
+
+@customElement("tab-sliders")
+class TabSliders extends LitElement {
+  @property({ type: Array })
+  sliders: Array<Object> = [];
+
+  static styles = css`
+    .slider-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .slider-label {
+      font-size: 14px;
+    }
+  `;
+
+  @eventOptions({ passive: false })
+  handleSliderChange(e: Event, label: string) {
+    const value = (e.target as HTMLInputElement).value;
+    this.dispatchEvent(new CustomEvent("slider-change", {
+      detail: { label, value },
+      bubbles: true,
+      composed: true
+    }));
+  }
+
+  render() {
+    return html`
+      <div class="slider-container">
+        ${this.sliders.map(slider => html`
+          <div>
+            <div class="slider-label">${slider.label}</div>
+            <input type="range"
+                   min="${slider.min}"
+                   max="${slider.max}"
+                   value="${slider.value}"
+                   step="${slider.step}"
+                   @input=${(e: Event) => this.handleSliderChange(e, slider.label)}>
+            <span>${slider.value}</span>
+          </div>
+        `)}
+      </div>
+    `;
   }
 }
