@@ -82,10 +82,7 @@ describe("LayerControl", () => {
 
   it("updates if a layer is removed from the root collection", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        { id: "foo", layerControlExpand: true },
-        { id: "bar" },
-      ]);
+      (<MockMap>$el[0]).setLayers([{ id: "foo" }, { id: "bar" }]);
     });
 
     const layerToDelete = "foo";
@@ -93,10 +90,10 @@ describe("LayerControl", () => {
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        cy.get(`[data-layer=${layerToDelete}] eox-layerconfig`)
+        cy.get(`[data-layer=${layerToDelete}] eox-layercontrol-layerconfig`)
           .shadow()
           .within(() => {
-            cy.get("div button.delete").should("be.visible").click();
+            cy.get("button.delete").should("be.visible").click();
           });
         cy.get(`[data-layer=${layerToDelete}]`).should("not.exist");
       });

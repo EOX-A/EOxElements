@@ -90,7 +90,7 @@ describe("LayerControl", () => {
     cy.get("mock-map").and(($el) => {
       (<MockMap>$el[0]).setLayers([
         { visible: true },
-        { layerControlExpand: true },
+        { layerControlExpand: true, layers: [] },
       ]);
     });
     cy.get("eox-layercontrol")
