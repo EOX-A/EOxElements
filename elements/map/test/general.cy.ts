@@ -82,4 +82,19 @@ describe("Map", () => {
       expect(layersArray.find((l) => l.get("id") === "osm")).to.exist;
     });
   });
+
+  it("doesn't reverse the input layer array", { retries: 0 }, () => {
+    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
+    cy.mount(`<eox-map></eox-map>`).as("eox-map");
+    cy.get("eox-map").and(($el) => {
+      const layersArray = [
+        { type: "Tile", properties: { id: "1" }, source: { type: "OSM" } },
+        { type: "Tile", properties: { id: "2" }, source: { type: "OSM" } },
+        { type: "Tile", properties: { id: "3" }, source: { type: "OSM" } },
+      ];
+      (<EOxMap>$el[0]).setLayers(<any>layersArray);
+      expect(layersArray.map((l) => l.properties.id).join("")).to.eq("123");
+      expect(layersArray.map((l) => l.properties.id).join("")).to.not.eq("321");
+    });
+  });
 });

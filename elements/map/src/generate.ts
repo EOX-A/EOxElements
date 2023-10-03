@@ -166,7 +166,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
     return [];
   }
 
-  return layerArray.reverse().map((l) => createLayer(l));
+  return [...layerArray].reverse().map((l) => createLayer(l));
 };
 
 /**
