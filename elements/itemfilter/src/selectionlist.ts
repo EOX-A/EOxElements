@@ -73,8 +73,6 @@ export class EOxSelectionlist extends LitElement {
       this._currentHighlight = this.items.find(
         (f) => f[this.idProperty] === currentListItem.dataset.identifier
       );
-      this.renderRoot.querySelector("input").value =
-        currentListItem.dataset.title;
     }
     this.dispatchEvent(
       new CustomEvent("items-highlighted", { detail: [this._currentHighlight] })
@@ -109,12 +107,25 @@ export class EOxSelectionlist extends LitElement {
     );
   }
 
+  _keyboardEventListener(): void {}
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this.getRootNode().removeEventListener(
+      "keydown",
+      this._keyboardEventListener
+    );
+  }
+
   firstUpdated() {
-    this.getRootNode().addEventListener("keydown", (event) => {
-      if (["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(event.code)) {
-        this._handleKeyboard(event.code);
+    this._keyboardEventListener = this.getRootNode().addEventListener(
+      "keydown",
+      (event) => {
+        if (["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(event.code)) {
+          this._handleKeyboard(event.code);
+        }
       }
-    });
+    );
   }
 
   updated(changedProperties: PropertyValues<this>) {

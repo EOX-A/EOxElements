@@ -1,7 +1,9 @@
 import { LitElement, html } from "lit";
+import { when } from "lit/directives/when.js";
 import { customElement, property } from "lit/decorators.js";
 import dayjs from "dayjs";
 import _debounce from "lodash.debounce";
+import { resetFilter } from "../reset";
 
 @customElement("eox-itemfilter-range")
 export class EOxItemFilterRange extends LitElement {
@@ -18,6 +20,9 @@ export class EOxItemFilterRange extends LitElement {
       [this.filterObject.state.min, this.filterObject.state.max] = [min, max];
       this.filterObject.dirty = true;
     }
+    if (this.filterObject.dirty) {
+      this.filterObject.stringifiedState = `${dayjs(min)} - ${dayjs(max)}`;
+    }
     this.dispatchEvent(new CustomEvent("filter"));
     this.requestUpdate();
   };
@@ -27,9 +32,7 @@ export class EOxItemFilterRange extends LitElement {
   });
 
   public reset() {
-    this.filterObject.state.min = this.filterObject.min;
-    this.filterObject.state.max = this.filterObject.max;
-    delete this.filterObject.dirty;
+    resetFilter(this.filterObject);
     this.requestUpdate();
   }
 
@@ -39,25 +42,28 @@ export class EOxItemFilterRange extends LitElement {
   }
 
   render() {
-    return html`
-      <div class="range-before">
-        ${this.filterObject.format === "date"
-          ? dayjs.unix(this.filterObject.state.min)
-          : this.filterObject.state.min}
-      </div>
-      <tc-range-slider
-        min="${this.filterObject.min}"
-        max="${this.filterObject.max}"
-        value1="${this.filterObject.state.min}"
-        value2="${this.filterObject.state.max}"
-        step="1"
-        @change="${this.debouncedInputHandler}"
-      ></tc-range-slider>
-      <div class="range-after">
-        ${this.filterObject.format === "date"
-          ? dayjs.unix(this.filterObject.state.max)
-          : this.filterObject.state.max}
-      </div>
-    `;
+    return when(
+      this.filterObject,
+      () => html`
+        <div class="range-before">
+          ${this.filterObject.format === "date"
+            ? dayjs.unix(this.filterObject.state.min)
+            : this.filterObject.state.min}
+        </div>
+        <tc-range-slider
+          min="${this.filterObject.min}"
+          max="${this.filterObject.max}"
+          value1="${this.filterObject.state.min}"
+          value2="${this.filterObject.state.max}"
+          step="1"
+          @change="${this.debouncedInputHandler}"
+        ></tc-range-slider>
+        <div class="range-after">
+          ${this.filterObject.format === "date"
+            ? dayjs.unix(this.filterObject.state.max)
+            : this.filterObject.state.max}
+        </div>
+      `
+    );
   }
 }

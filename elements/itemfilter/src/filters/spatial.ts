@@ -2,10 +2,12 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { live } from "lit/directives/live.js";
+import { when } from "lit/directives/when.js";
 import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";
 import { Geometry } from "@turf/helpers";
 import { EOxMap } from "../../../map/main";
+import { resetFilter } from "../reset";
 
 export const intersects = (
   itemGeometry: Geometry,
@@ -29,11 +31,11 @@ export class EOxItemFilterSpatial extends LitElement {
   filterObject: SpatialFilterObject;
 
   public reset() {
-    this.filterObject.state.geometry = undefined;
+    resetFilter(this.filterObject);
+
     const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
       "eox-itemfilter-spatial-filter"
     );
-    delete this.filterObject.dirty;
     spatialFilter.reset();
     this.requestUpdate();
   }
@@ -44,7 +46,9 @@ export class EOxItemFilterSpatial extends LitElement {
   }
 
   render() {
-    return html`
+    return when(
+      this.filterObject,
+      () => html`
       <form style="display: inline">
       ${map(
         ["intersects", "within"],
@@ -76,10 +80,12 @@ export class EOxItemFilterSpatial extends LitElement {
         @filter="${(e: Event) => {
           this.filterObject.state.geometry = (<CustomEvent>e).detail.geometry;
           this.filterObject.dirty = true;
+          this.filterObject.stringifiedState = "Polygon";
           this.dispatchEvent(new CustomEvent("filter"));
         }}"
       ></eox-itemfilter-spatial>
-    `;
+    `
+    );
   }
 }
 
@@ -159,7 +165,8 @@ export class SpatialFilter extends LitElement {
           updateGeometryFilter(e.features.getArray()[0]);
         }
       );
-    });
+      // TODO remove
+    }, 1000);
   }
 
   // TODO move to epx-map helper function?

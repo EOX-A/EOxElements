@@ -1,6 +1,7 @@
 import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { when } from "lit/directives/when.js";
+import { resetFilter } from "../reset";
 import "../autocomplete";
 import "../selectionlist";
 
@@ -20,10 +21,7 @@ export class EOxItemFilterMultiselect extends LitElement {
           f.checked = false;
         }
       });
-    for (const filter in this.filterObject.state) {
-      this.filterObject.state[filter] = false;
-    }
-    delete this.filterObject.dirty;
+    resetFilter(this.filterObject);
     this.requestUpdate();
   }
 
@@ -38,52 +36,58 @@ export class EOxItemFilterMultiselect extends LitElement {
       .map((i) => ({
         id: i,
         title: i.replace(/^./, i[0].toUpperCase()),
-      }))
+      }));
   }
 
   _getSelectedItems() {
     return Object.keys(this.filterObject.state)
-    .filter((i) => this.filterObject.state[i])
-    .map((i) => ({
-      id: i,
-      title: i.replace(/^./, i[0].toUpperCase()),
-    }))
+      .filter((i) => this.filterObject.state[i])
+      .map((i) => ({
+        id: i,
+        title: i.replace(/^./, i[0].toUpperCase()),
+      }));
   }
 
-  _handleSelected(evt: CustomEvent) {
+  _handleSelected(selectedItems) {
     Object.keys(this.filterObject.state).forEach((k) => {
-      this.filterObject.state[k] = evt.detail
-        .map((i) => i.id)
-        .includes(k);
+      this.filterObject.state[k] = selectedItems.map((i) => i.id).includes(k);
     });
+    this.filterObject.stringifiedState = Object.keys(this.filterObject.state)
+      .filter((k) => this.filterObject.state[k])
+      .join(", ");
     this.filterObject.dirty = true;
     this.dispatchEvent(new CustomEvent("filter"));
   }
 
   render() {
-    return html`
-      ${when(
-        Object.keys(this.filterObject.state).length > 1,
-        () => html`
-          <eox-autocomplete
-            multiple
-            .items=${this._getItems()}
-            .selectedItems=${this._getSelectedItems()}
-            .unstyled=${this.unstyled}
-            @items-selected=${(evt: CustomEvent) => this._handleSelected(evt)}
-          >
-          </eox-autocomplete>
-        `,
-        () => html`
-          <eox-selectionlist
-            multiple
-            .items=${this._getItems()}
-            .selectedItems=${this._getSelectedItems()}
-            .unstyled=${this.unstyled}
-            @items-selected=${(evt: CustomEvent) => this._handleSelected(evt)}
-          ></eox-selectionlist>
-        `
-      )}
-    `;
+    return when(
+      this.filterObject,
+      () => html`
+        ${when(
+          Object.keys(this.filterObject.state).length > 10,
+          () => html`
+            <eox-autocomplete
+              multiple
+              .items=${this._getItems()}
+              .selectedItems=${this._getSelectedItems()}
+              .unstyled=${this.unstyled}
+              @items-selected=${(evt: CustomEvent) =>
+                this._handleSelected(evt.detail)}
+            >
+            </eox-autocomplete>
+          `,
+          () => html`
+            <eox-selectionlist
+              multiple
+              .items=${this._getItems()}
+              .selectedItems=${this._getSelectedItems()}
+              .unstyled=${this.unstyled}
+              @items-selected=${(evt: CustomEvent) =>
+                this._handleSelected(evt.detail)}
+            ></eox-selectionlist>
+          `
+        )}
+      `
+    );
   }
 }

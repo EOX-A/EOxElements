@@ -15,7 +15,9 @@ declare type FilterObject = {
   featured?: boolean;
   format?: string;
   key: string;
+  reset: Function;
   state?: FilterState;
+  stringifiedState?: string;
   title?: string;
   type?: "multiselect" | "range" | "select" | "spatial" | "text";
 };

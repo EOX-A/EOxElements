@@ -95,6 +95,149 @@ export const MultiSelect = {
   },
 };
 
+export const InlineMode = {
+  args: {
+    inlineMode: true,
+    titleProperty: "title",
+    filterProperties: [
+      {
+        key: "themes",
+        id: "themes",
+        title: "Theme",
+        type: "multiselect",
+        state: {
+          air: null,
+          agriculture: null,
+        },
+      },
+      {
+        key: "timestamp",
+        id: "date",
+        title: "Date",
+        type: "range",
+        format: "date",
+        state: {
+          min: 1685232950,
+          max: 1686454646,
+        },
+      },
+      {
+        key: "geometry",
+        id: "spatial",
+        type: "spatial",
+        title: "Spatial",
+        state: {
+          mode: "intersects",
+        },
+      },
+      {
+        keys: ["title", "themes"],
+        title: "Search",
+        id: "search",
+        type: "text",
+        expanded: true,
+        state: {
+          title: "no2",
+          themes: "no2",
+        },
+      },
+    ],
+  },
+};
+
+// export const MultiStep = {
+//   render: () => html`
+//     <eox-autocomplete
+//       id="multistep"
+//       .multiStep=${true}
+//       multiple
+//       .items=${[
+//         {
+//           key: "themes",
+//           id: "themes",
+//           title: "Theme",
+//           type: "multiselect",
+//           state: {
+//             air: null,
+//             agriculture: null,
+//           },
+//         },
+//         {
+//           key: "timestamp",
+//           id: "date",
+//           title: "Date",
+//           type: "range",
+//           format: "date",
+//           state: {
+//             min: 1685232950,
+//             max: 1686454646,
+//           },
+//         },
+//         {
+//           key: "geometry",
+//           id: "spatial",
+//           type: "spatial",
+//           title: "Spatial",
+//           state: {
+//             mode: "intersects",
+//           },
+//         },
+//         {
+//           keys: ["title", "themes"],
+//           title: "Search",
+//           id: "search",
+//           type: "text",
+//           expanded: true,
+//           state: {
+//             title: "no2",
+//             themes: "no2",
+//           },
+//         },
+//       ]}
+//       @items-selected=${(evt) => {
+//         const inProgressItem = evt.detail.find((i) => i._inProgress);
+//         document.querySelector(
+//           `eox-itemfilter-${inProgressItem.type}`
+//         ).filterObject = inProgressItem;
+//         document
+//           .querySelector(`eox-itemfilter-${inProgressItem.type}`)
+//           .setAttribute("slot", "dropdown");
+//       }}
+//     >
+//       <eox-itemfilter-multiselect
+//         @filter=${() => {
+//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
+//           document
+//             .querySelector("eox-itemfilter-multiselect")
+//             .removeAttribute("slot");
+//         }}
+//       ></eox-itemfilter-multiselect>
+//       <eox-itemfilter-range
+//         @filter=${() => {
+//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
+//           document
+//             .querySelector("eox-itemfilter-range")
+//             .removeAttribute("slot");
+//         }}
+//       ></eox-itemfilter-range>
+//       <eox-itemfilter-spatial
+//         @filter=${() => {
+//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
+//           document
+//             .querySelector("eox-itemfilter-spatial")
+//             .removeAttribute("slot");
+//         }}
+//       ></eox-itemfilter-spatial>
+//       <eox-itemfilter-text
+//         @filter=${() => {
+//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
+//           document.querySelector("eox-itemfilter-text").removeAttribute("slot");
+//         }}
+//       ></eox-itemfilter-text>
+//     </eox-autocomplete>
+//   `,
+// };
+
 export const Autocomplete = {
   render: () => html`
     <eox-autocomplete
@@ -104,12 +247,9 @@ export const Autocomplete = {
         { id: "c", title: "Catalog" },
       ]}
       @items-selected=${(evt) => {
-        document.querySelector("#output").innerHTML = JSON.stringify(
-          evt.detail
-        );
+        console.log(evt.detail);
       }}
     ></eox-autocomplete>
-    <span id="output"></span>
   `,
 };
 
@@ -123,12 +263,9 @@ export const AutocompleteUnstyled = {
         { id: "c", title: "Catalog" },
       ]}
       @items-selected=${(evt) => {
-        document.querySelector("#output").innerHTML = JSON.stringify(
-          evt.detail
-        );
+        console.log(evt.detail);
       }}
     ></eox-autocomplete>
-    <span id="output"></span>
   `,
 };
 
@@ -141,8 +278,8 @@ export const AutocompleteMultiple = {
         { id: "b", title: "Bicycle" },
         { id: "c", title: "Catalog" },
       ]}
-      @item-selected=${(evt) => {
-        console.log(evt);
+      @items-selected=${(evt) => {
+        console.log(evt.detail);
       }}
     ></eox-autocomplete>
   `,
@@ -158,8 +295,8 @@ export const AutocompleteMultipleUnstyled = {
         { id: "b", title: "Bicycle" },
         { id: "c", title: "Catalog" },
       ]}
-      @item-selected=${(evt) => {
-        console.log(evt);
+      @items-selected=${(evt) => {
+        console.log(evt.detail);
       }}
     ></eox-autocomplete>
   `,
@@ -174,12 +311,9 @@ export const SelectionList = {
         { id: "c", title: "Catalog" },
       ]}
       @items-selected=${(evt) => {
-        document.querySelector("#output").innerHTML = JSON.stringify(
-          evt.detail
-        );
+        console.log(evt.detail);
       }}
     ></eox-selectionlist>
-    <span id="output"></span>
   `,
 };
 
@@ -194,11 +328,8 @@ export const SelectionListMultiple = {
       ]}
       .selectedItems=${[{ id: "b", title: "Bicycle" }]}
       @items-selected=${(evt) => {
-        document.querySelector("#output").innerHTML = JSON.stringify(
-          evt.detail
-        );
+        console.log(evt.detail);
       }}
     ></eox-selectionlist>
-    <span id="output"></span>
   `,
 };
