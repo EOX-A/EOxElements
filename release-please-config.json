@@ -1,0 +1,29 @@
+{
+  "bootstrap-sha": "8c7afca91c115c4a2db2054c3b604beb290f0015",
+  "packages": {
+    "elements/chart": {
+      "release-as": "0.1.0"
+    },
+    "elements/drawtools": {
+      "release-as": "0.4.0"
+    },
+    "elements/itemfilter": {
+      "release-as": "0.8.6"
+    },
+    "elements/layercontrol": {
+      "release-as": "0.6.8"
+    },
+    "elements/map": {
+      "release-as": "0.8.0"
+    },
+    "elements/stacinfo": {
+      "release-as": "0.1.2"
+    },
+    "elements/timecontrol": {
+      "release-as": "0.0.4"
+    }
+  },
+  "plugins": ["sentence-case"],
+  "bump-minor-pre-major": true,
+  "separate-pull-requests": true
+}
