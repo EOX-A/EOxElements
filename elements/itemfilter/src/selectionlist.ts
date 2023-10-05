@@ -1,6 +1,6 @@
 import { LitElement, html, nothing, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { map } from "lit/directives/map.js";
+import { repeat } from "lit/directives/repeat.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
@@ -161,7 +161,7 @@ export class EOxSelectionlist extends LitElement {
         ${!this.unstyled && styleEOX}
       </style>
       <ul>
-        ${map(
+        ${repeat(
           this.items.filter((item) =>
             this.filter
               ? item[this.titleProperty]
@@ -169,6 +169,7 @@ export class EOxSelectionlist extends LitElement {
                   .includes(this.filter.toLowerCase())
               : true
           ),
+          (item) => item[this.idProperty],
           (item) => html`
             <li
               class=${this._currentHighlight === item ? "highlighted" : nothing}

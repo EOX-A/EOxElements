@@ -202,14 +202,18 @@ export class EOxAutocomplete extends LitElement {
         const dropdown = <HTMLElement>(
           this.renderRoot.querySelector("#dropdown")
         );
-        function updatePosition() {
+        const updatePosition = () => {
           if (dropdown.style.display === "block") {
             computePosition(autocomplete, dropdown, { strategy: "fixed" }).then(
               ({ x, y }) => {
+                let dropdownRight = 0;
+                if (this.multiStep) {
+                  dropdownRight = this.renderRoot.querySelector(".chip-container")?.getBoundingClientRect().right;
+                }
                 Object.assign(dropdown.style, {
-                  left: `${x}px`,
+                  left: `${x + dropdownRight / 2}px`,
                   top: `${y}px`,
-                  width: `${autocomplete.getBoundingClientRect().width}px`,
+                  width: `${autocomplete.getBoundingClientRect().width - 2*dropdownRight}px`,
                 });
               }
             );

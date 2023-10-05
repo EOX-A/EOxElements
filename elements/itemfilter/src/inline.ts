@@ -16,6 +16,25 @@ export class EOxItemFilterInline extends LitElement {
   @property()
   items = [];
 
+  _clickOutsideListener = null;
+  connectedCallback() {
+    super.connectedCallback();
+    this._clickOutsideListener = window.addEventListener("click", () => {
+      console.log(this.items)
+      this.items.forEach(item => {
+        delete item._inProgress;
+        // this.selectedItems = this.items.filter(i => i.dirty)
+        this.requestUpdate();
+        // this.renderRoot.querySelector("eox-autocomplete").querySelector("eox-selectionlist").requestUpdate();
+      })
+    })
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener("click", this._clickOutsideListener)
+  }
+
   render() {
     return html`
       <style>
@@ -24,9 +43,10 @@ export class EOxItemFilterInline extends LitElement {
         }
       </style>
       <eox-autocomplete
-        idProperty="type"
+        idProperty="id"
         .multiStep=${true}
         multiple
+        headless
         .items=${this.items}
         @click=${(evt: Event) => {
           evt.stopPropagation();
@@ -41,19 +61,19 @@ export class EOxItemFilterInline extends LitElement {
             // .querySelector(`eox-itemfilter-${inProgressItem.type}`)
             // .setAttribute("slot", "dropdown");
           });
-          //   this.items.forEach((item) => {
-          //     if (
-          //       !evt.detail.find(
-          //         (i) => i[this.idProperty] === item[this.idProperty]
-          //       )
-          //     ) {
-          //       resetFilter(item);
-          //       delete item._inProgress;
-          //       delete item._complete;
-          //       delete item._combinedTitle;
-          //     }
-          //   });
-          //   this.renderRoot.querySelector("eox-autocomplete").requestUpdate();
+            // this.items.forEach((item) => {
+            //   if (
+            //     !evt.detail.find(
+            //       (i) => i[this.idProperty] === item[this.idProperty]
+            //     )
+            //   ) {
+            //     resetFilter(item);
+            //     delete item._inProgress;
+            //     delete item._complete;
+            //     delete item._combinedTitle;
+            //   }
+            // });
+            // this.renderRoot.querySelector("eox-autocomplete").requestUpdate();
         }}
       >
         ${when(
@@ -64,14 +84,13 @@ export class EOxItemFilterInline extends LitElement {
         )}
           data-filter=${this.items.find((i) => i._inProgress)[this.idProperty]}
           slot="dropdown"
-          embedded
           .filterObject=${this.items.find((i) => i._inProgress)}
           @filter=${(evt) => {
             // // this.dispatchEvent(new CustomEvent("filter"))
             // const item = this.items.find((i) => i._inProgress);
-            // // if (!item.isDirty) { return }
-            // // item._inProgress = false;
-            // // item._complete = true;
+            // if (!item.isDirty) { return }
+            // item._inProgress = false;
+            // item._complete = true;
             // // console.log(this.items);
             // // console.log('filter')
             // setTimeout(() => {
@@ -79,7 +98,9 @@ export class EOxItemFilterInline extends LitElement {
             //     item.stringifiedState
             //   }`;
             // });
-            this.requestUpdate();
+            // setTimeout(() => {
+              this.renderRoot.querySelector("eox-autocomplete").requestUpdate();
+            // })
           }}
         ></eox-itemfilter-${unsafeStatic(
           this.items.find((i) => i._inProgress).type

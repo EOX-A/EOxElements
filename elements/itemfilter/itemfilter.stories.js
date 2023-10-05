@@ -131,6 +131,16 @@ export const InlineMode = {
         },
       },
       {
+        key: "code",
+        id: "code",
+        title: "Code",
+        type: "multiselect",
+        // state: {
+        //   air: true,
+        //   agriculture: true,
+        // },
+      },
+      {
         keys: ["title", "themes"],
         title: "Search",
         id: "search",

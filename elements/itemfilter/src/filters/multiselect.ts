@@ -11,6 +11,9 @@ export class EOxItemFilterMultiselect extends LitElement {
   filterObject: FilterObject;
 
   @property({ type: Boolean })
+  embedded = false;
+
+  @property({ type: Boolean })
   unstyled = false;
 
   public reset() {
