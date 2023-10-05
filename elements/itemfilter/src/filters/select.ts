@@ -11,6 +11,9 @@ export class EOxItemFilterSelect extends LitElement {
   filterObject: FilterObject;
 
   @property({ type: Boolean })
+  inline = false;
+
+  @property({ type: Boolean })
   unstyled = false;
 
   public reset() {
@@ -64,7 +67,7 @@ export class EOxItemFilterSelect extends LitElement {
       this.filterObject,
       () => html`
         ${when(
-          Object.keys(this.filterObject.state).length > 1,
+          this.inline || Object.keys(this.filterObject.state).length > 1,
           () => html`
             <eox-autocomplete
               .items=${this._getItems()}

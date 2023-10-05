@@ -45,6 +45,11 @@ export class EOxItemFilterText extends LitElement {
     return when(
       this.filterObject,
       () => html`
+        <style>
+          input {
+            height: 100%;
+          }
+        </style>
         <input
           type="text"
           placeholder="Type something..."

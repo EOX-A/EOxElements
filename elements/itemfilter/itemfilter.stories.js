@@ -3,6 +3,7 @@ import { EOxItemFilter } from "./src/main";
 import "./src/main";
 import "./src/autocomplete";
 import "./src/selectionlist";
+import "./src/chips";
 import items from "./test/testItems.json";
 
 export default {
@@ -153,7 +154,7 @@ export const InlineMode = {
         },
       },
     ],
-    onFilter: (items) => console.log(items)
+    onFilter: (items) => console.log(items),
   },
 };
 
@@ -311,6 +312,37 @@ export const AutocompleteMultipleUnstyled = {
         console.log(evt.detail);
       }}
     ></eox-autocomplete>
+  `,
+};
+
+export const Chips = {
+  render: () => html`
+    <eox-itemfilter-chips
+      .items=${[
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
+      ]}
+      @items-selected=${(evt) => {
+        // console.log(evt.detail);
+      }}
+    ></eox-itemfilter-chips>
+  `,
+};
+
+export const ChipsUnstyled = {
+  render: () => html`
+    <eox-itemfilter-chips
+      .items=${[
+        { id: "a", title: "Autobus" },
+        { id: "b", title: "Bicycle" },
+        { id: "c", title: "Catalog" },
+      ]}
+      unstyled
+      @items-selected=${(evt) => {
+        // console.log(evt.detail);
+      }}
+    ></eox-itemfilter-chips>
   `,
 };
 

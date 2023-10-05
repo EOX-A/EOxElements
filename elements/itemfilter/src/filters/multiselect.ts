@@ -11,7 +11,7 @@ export class EOxItemFilterMultiselect extends LitElement {
   filterObject: FilterObject;
 
   @property({ type: Boolean })
-  embedded = false;
+  inline = false;
 
   @property({ type: Boolean })
   unstyled = false;
@@ -67,7 +67,7 @@ export class EOxItemFilterMultiselect extends LitElement {
       this.filterObject,
       () => html`
         ${when(
-          Object.keys(this.filterObject.state).length > 10,
+          this.inline || Object.keys(this.filterObject.state).length > 10,
           () => html`
             <eox-autocomplete
               multiple
