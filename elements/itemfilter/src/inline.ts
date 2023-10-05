@@ -16,11 +16,13 @@ export class EOxItemFilterInline extends LitElement {
   @property()
   items = [];
 
+  @property()
+  unstyled = false;
+
   _clickOutsideListener = null;
   connectedCallback() {
     super.connectedCallback();
     this._clickOutsideListener = window.addEventListener("click", () => {
-      console.log(this.items)
       this.items.forEach(item => {
         delete item._inProgress;
         // this.selectedItems = this.items.filter(i => i.dirty)
@@ -46,13 +48,25 @@ export class EOxItemFilterInline extends LitElement {
         idProperty="id"
         .multiStep=${true}
         multiple
-        headless
         .items=${this.items}
+        .unstyled=${this.unstyled}
         @click=${(evt: Event) => {
           evt.stopPropagation();
         }}
         @items-selected=${(evt) => {
-          const inProgressItem = evt.detail.find((i) => i._inProgress);
+          // const inProgressItem = evt.detail.find((i) => i._inProgress);
+          this.items.forEach((item) => {
+            if (
+              !evt.detail.find(
+                (i) => i.id === item.id
+              )
+            ) {
+              resetFilter(item);
+              delete item._inProgress;
+              delete item._complete;
+            }
+          });
+          this.dispatchEvent(new CustomEvent("filter"))
           setTimeout(() => {
             this.requestUpdate();
             // console.log(this.renderRoot
@@ -60,20 +74,9 @@ export class EOxItemFilterInline extends LitElement {
             // this.renderRoot
             // .querySelector(`eox-itemfilter-${inProgressItem.type}`)
             // .setAttribute("slot", "dropdown");
+            this.renderRoot.querySelector("eox-autocomplete").requestUpdate();
           });
-            // this.items.forEach((item) => {
-            //   if (
-            //     !evt.detail.find(
-            //       (i) => i[this.idProperty] === item[this.idProperty]
-            //     )
-            //   ) {
-            //     resetFilter(item);
-            //     delete item._inProgress;
-            //     delete item._complete;
-            //     delete item._combinedTitle;
-            //   }
-            // });
-            // this.renderRoot.querySelector("eox-autocomplete").requestUpdate();
+            // this.dispatchEvent()
         }}
       >
         ${when(
@@ -82,11 +85,12 @@ export class EOxItemFilterInline extends LitElement {
         <eox-itemfilter-${unsafeStatic(
           this.items.find((i) => i._inProgress).type
         )}
-          data-filter=${this.items.find((i) => i._inProgress)[this.idProperty]}
+          data-filter=${this.items.find((i) => i._inProgress).id}
           slot="dropdown"
           .filterObject=${this.items.find((i) => i._inProgress)}
+          .unstyled=${this.unstyled}
           @filter=${(evt) => {
-            // // this.dispatchEvent(new CustomEvent("filter"))
+            this.dispatchEvent(new CustomEvent("filter"))
             // const item = this.items.find((i) => i._inProgress);
             // if (!item.isDirty) { return }
             // item._inProgress = false;

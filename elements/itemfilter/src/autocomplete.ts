@@ -88,9 +88,9 @@ export class EOxAutocomplete extends LitElement {
       } else {
         if (this.inputText.length === 0) {
           this.selectedItems = [];
-          this._dispatchEvent();
         }
       }
+      this._dispatchEvent();
     }
     if (key === "ArrowDown" || key === "ArrowUp") {
       this.renderRoot.querySelector("#dropdown").style.display = "block";
@@ -206,14 +206,10 @@ export class EOxAutocomplete extends LitElement {
           if (dropdown.style.display === "block") {
             computePosition(autocomplete, dropdown, { strategy: "fixed" }).then(
               ({ x, y }) => {
-                let dropdownRight = 0;
-                if (this.multiStep) {
-                  dropdownRight = this.renderRoot.querySelector(".chip-container")?.getBoundingClientRect().right;
-                }
                 Object.assign(dropdown.style, {
-                  left: `${x + dropdownRight / 2}px`,
+                  left: `${x}px`,
                   top: `${y}px`,
-                  width: `${autocomplete.getBoundingClientRect().width - 2*dropdownRight}px`,
+                  width: `${autocomplete.getBoundingClientRect().width}px`,
                 });
               }
             );
@@ -245,24 +241,26 @@ export class EOxAutocomplete extends LitElement {
     this._clickEventListener = window.addEventListener("click", () => {
       this.renderRoot.querySelector("#dropdown").style.display = "none";
     });
-    this._keyboardEventListener = this.getRootNode().addEventListener(
-      "keydown",
-      (event) => {
-        const { code } = <KeyboardEvent>event;
-        if (
-          [
-            "ArrowUp",
-            "ArrowDown",
-            "ArrowLeft",
-            "ArrowRight",
-            "Escape",
-            "Backspace",
-          ].includes(code)
-        ) {
-          this._handleKeyboard(code);
+    if (!this.multiStep) {
+      this._keyboardEventListener = this.getRootNode().addEventListener(
+        "keydown",
+        (event) => {
+          const { code } = <KeyboardEvent>event;
+          if (
+            [
+              "ArrowUp",
+              "ArrowDown",
+              "ArrowLeft",
+              "ArrowRight",
+              "Escape",
+              "Backspace",
+            ].includes(code)
+          ) {
+            this._handleKeyboard(code);
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   updated(updatedProperties) {
@@ -398,6 +396,7 @@ export class EOxAutocomplete extends LitElement {
                           : true
                       )}
                     .multiple=${this.multiStep ? true : this.multiple}
+                    .disableKeyboardEvents=${this.multiStep}
                     .selectedItems=${this.multiStep
                       ? this.selectedItems.filter((i) => i.stringifiedState)
                       : this.selectedItems}

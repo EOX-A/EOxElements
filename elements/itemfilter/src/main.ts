@@ -342,6 +342,7 @@ export class EOxItemFilter extends TemplateElement {
           () => html`
             <eox-itemfilter-inline
               .items=${Object.values(this.filters)}
+              .unstyled=${this.unstyled}
               @filter=${() => this.search()}
             >
             </eox-itemfilter-inline>

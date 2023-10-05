@@ -52,6 +52,9 @@ export class EOxItemFilterText extends LitElement {
           part="input-search"
           value="${Object.values(this.filterObject.state)[0]}"
           @input="${this.debouncedInputHandler}"
+          @click=${(evt: Event) => {
+            evt.stopPropagation();
+          }}
         />
       `
     );

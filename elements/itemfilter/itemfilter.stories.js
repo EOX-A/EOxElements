@@ -11,6 +11,7 @@ export default {
   component: "eox-itemfilter",
   render: (args) => {
     const eoxItemFilter = new EOxItemFilter();
+    // eoxItemFilter.unstyled = true;
     eoxItemFilter.config = args;
     eoxItemFilter.apply(items);
     return eoxItemFilter;
@@ -152,6 +153,7 @@ export const InlineMode = {
         },
       },
     ],
+    onFilter: (items) => console.log(items)
   },
 };
 

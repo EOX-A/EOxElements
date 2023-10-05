@@ -7,6 +7,9 @@ import { styleEOX } from "./style.eox";
 @customElement("eox-selectionlist")
 export class EOxSelectionlist extends LitElement {
   @property()
+  disableKeyboardEvents = false;
+  
+  @property()
   filter = "";
 
   @property()
@@ -118,14 +121,16 @@ export class EOxSelectionlist extends LitElement {
   }
 
   firstUpdated() {
-    this._keyboardEventListener = this.getRootNode().addEventListener(
-      "keydown",
-      (event) => {
-        if (["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(event.code)) {
-          this._handleKeyboard(event.code);
+    if (!this.disableKeyboardEvents) {
+      this._keyboardEventListener = this.getRootNode().addEventListener(
+        "keydown",
+        (event) => {
+          if (["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(event.code)) {
+            this._handleKeyboard(event.code);
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   updated(changedProperties: PropertyValues<this>) {

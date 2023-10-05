@@ -29,6 +29,5 @@ export const resetFilter = (filterObject: FilterObject) => {
   }
   delete filterObject.stringifiedState;
   delete filterObject.dirty;
-  console.log(filterObject);
   return filterObject;
 };
