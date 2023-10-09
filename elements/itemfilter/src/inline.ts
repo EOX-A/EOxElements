@@ -70,6 +70,7 @@ export class EOxItemFilterInline extends LitElement {
       delete item.stringifiedState;
     });
     this.requestUpdate();
+    this.dispatchEvent(new CustomEvent("filter"));
   }
 
   _clickOutsideListener = null;
@@ -167,6 +168,7 @@ export class EOxItemFilterInline extends LitElement {
             <input
               slot="trigger"
               type="text"
+              placeholder="Type something..."
               @focus=${() => {
                 this.inputText = "";
                 this.requestUpdate();
