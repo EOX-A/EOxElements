@@ -142,7 +142,7 @@ export function updateLayer(
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
     JSON.stringify(newLayerDefinition.style) !==
-    JSON.stringify(existingJsonDefintion.style)
+      JSON.stringify(existingJsonDefintion.style)
   ) {
     //@ts-ignore
     existingLayer.setStyle(newLayer.getStyle());
