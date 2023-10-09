@@ -3,6 +3,7 @@ export const style = `
   display: flex;
   box-sizing: border-box;
   height: 100%;
+  line-height: 1;
 }
 *,
 *:before,
