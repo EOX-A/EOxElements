@@ -53,6 +53,10 @@ export type EoxLayer = {
   properties: object & {
     id: string;
   };
+  minZoom?: number;
+  maxZoom?: number;
+  minResolution?: number;
+  maxResolution?: number;
   opacity?: number;
   visible?: boolean;
   source?: { type: sourceType };
@@ -138,7 +142,7 @@ export function updateLayer(
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
     JSON.stringify(newLayerDefinition.style) !==
-      JSON.stringify(existingJsonDefintion.style)
+    JSON.stringify(existingJsonDefintion.style)
   ) {
     //@ts-ignore
     existingLayer.setStyle(newLayer.getStyle());
