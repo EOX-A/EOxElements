@@ -89,7 +89,6 @@ export class EOxLayerControlLayerList extends EOxLayerControlBase {
                                 .titleProperty=${this.titleProperty}
                                 .unstyled=${this.unstyled}
                                 @changed=${() => {
-                                  console.log(this.layers.getArray());
                                   this.requestUpdate();
                                 }}
                               ></eox-layercontrol-layer>

@@ -37,7 +37,12 @@ export class EOxLayerControlOptionalList extends EOxLayerControlBase {
           true
         ).map(
           (layer) => html`
-            <option value="${layer.get(this.idProperty)}">
+            <option
+              value="${
+                // @ts-ignore
+                layer.get(this.idProperty) || layer.ol_uid
+              }"
+            >
               ${layer.get(this.titleProperty) ||
               `layer ${layer.get(this.idProperty)}`}
             </option>
@@ -52,7 +57,8 @@ export class EOxLayerControlOptionalList extends EOxLayerControlBase {
             true
           ).find((l) => {
             return (
-              l.get(this.idProperty) ===
+              // @ts-ignore
+              (l.get(this.idProperty) || l.ol_uid) ===
               /** @type HTMLInputElement*/ (
                 this.querySelector("select[name=optional]")
               ).value
@@ -62,7 +68,6 @@ export class EOxLayerControlOptionalList extends EOxLayerControlBase {
           selectedLayer?.set("layerControlOptional", false);
           selectedLayer?.setVisible(true);
           this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
-          console.log(this.layers.getArray());
           this.renderRoot.parentNode
             .querySelectorAll("eox-layercontrol-layer-list")
             .forEach((layerList) =>
