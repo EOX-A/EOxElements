@@ -16,7 +16,8 @@ describe("LayerControl", () => {
 
   it("displays the correct amount of layers", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([{ visible: true }, { visible: false }]);
+      $el /**MockMap*/[0]
+        .setLayers([{ visible: true }, { visible: false }]);
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -30,10 +31,11 @@ describe("LayerControl", () => {
 
   it("hides layers correctly", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        { visible: true },
-        { layerControlHide: true },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { visible: true },
+          { properties: { layerControlHide: true } },
+        ]);
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -44,10 +46,11 @@ describe("LayerControl", () => {
 
   it("renders the optional layer selection", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        { visible: true },
-        { layerControlOptional: true },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { visible: true },
+          { properties: { layerControlOptional: true } },
+        ]);
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -62,10 +65,11 @@ describe("LayerControl", () => {
 
   it("disables the drag handle of the disabled layer", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        { visible: true },
-        { layerControlDisable: true },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { visible: true },
+          { properties: { layerControlDisable: true } },
+        ]);
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -76,7 +80,11 @@ describe("LayerControl", () => {
 
   it("shows the correct layer titles", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([{ title: "foo" }, { title: "bar" }]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { properties: { title: "foo" } },
+          { properties: { title: "bar" } },
+        ]);
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -88,10 +96,14 @@ describe("LayerControl", () => {
 
   it("pre-opens a section if layerControlExpand is present", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        { visible: true },
-        { layerControlExpand: true, layers: [] },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { visible: true },
+          {
+            properties: { layerControlExpand: true },
+            layers: [{ visible: true }],
+          },
+        ]);
     });
     cy.get("eox-layercontrol")
       .shadow()

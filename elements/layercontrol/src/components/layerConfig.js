@@ -36,13 +36,14 @@ export class EOxLayerControlLayerConfig extends EOxLayerControlBase {
         max="1"
         step="0.01"
         value=${live(this.layer?.getOpacity())}
-        @input=${(evt) => this.layer.setOpacity(parseFloat(evt.target.value))}
+        @input=${(/** @type {{ target: { value: string; }; }} */ evt) =>
+          this.layer.setOpacity(parseFloat(evt.target.value))}
       />
       <button
         class="delete"
-        @click=${(evt) => {
-          this.layer.set("layerControlOptional", true);
-          this.layer.setVisible(false);
+        @click=${() => {
+          this.layer?.set("layerControlOptional", true);
+          this.layer?.setVisible(false);
           this.dispatchEvent(
             new CustomEvent("changed", { detail: this.layer, bubbles: true })
           );

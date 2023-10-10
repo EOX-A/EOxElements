@@ -12,23 +12,28 @@ describe("LayerControl", () => {
 
   it("displays the correct amount of layers after multiple calls of setMap()", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        { title: "1st round - foo" },
-        { title: "1st round - bar" },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { properties: { title: "1st round - foo" } },
+          { properties: { title: "1st round - bar" } },
+        ]);
     });
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([]);
+      $el /**MockMap*/[0]
+        .setLayers([]);
     });
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        { title: "2nd round - baz" },
-        { title: "2nd round - qux" },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { properties: { title: "2nd round - baz" } },
+          { properties: { title: "2nd round - qux" } },
+        ]);
     });
-    let numberOfLayers: number;
+    let numberOfLayers;
     cy.get("mock-map").and(($el) => {
-      numberOfLayers = (<MockMap>$el[0]).map.getLayers().getArray().length;
+      numberOfLayers = $el /**MockMap*/[0].map
+        .getLayers()
+        .getArray().length;
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -39,12 +44,14 @@ describe("LayerControl", () => {
 
   it("updates if a layer is pushed to the root collection", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([{ title: "foo" }]);
+      $el /**MockMap*/[0]
+        .setLayers([{ properties: { title: "foo" } }]);
     });
-    cy.wait(100);
 
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).map.getLayers().push({ title: "bar" });
+      $el /**MockMap*/[0].map
+        .getLayers()
+        .push({ properties: { title: "bar" } });
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -55,23 +62,25 @@ describe("LayerControl", () => {
 
   it("updates if a layer is pushed to a group", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        {
-          title: "group",
-          layers: [{ title: "foo" }],
-          layerControlExpand: true,
-        },
-        { title: "bar" },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          {
+            properties: {
+              title: "group",
+              layerControlExpand: true,
+            },
+            layers: [{ properties: { title: "foo" } }],
+          },
+          { properties: { title: "bar" } },
+        ]);
     });
-    cy.wait(100);
 
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).map
+      $el /**MockMap*/[0].map
         .getLayers()
         .getArray()[0]
         .getLayers()
-        .push({ title: "baz" });
+        .push({ properties: { title: "baz" } });
     });
     cy.get("eox-layercontrol")
       .shadow()
@@ -82,7 +91,11 @@ describe("LayerControl", () => {
 
   it("updates if a layer is removed from the root collection", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([{ id: "foo" }, { id: "bar" }]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          { properties: { id: "foo" } },
+          { properties: { id: "bar" } },
+        ]);
     });
 
     const layerToDelete = "foo";
@@ -98,27 +111,36 @@ describe("LayerControl", () => {
         cy.get(`[data-layer=${layerToDelete}]`).should("not.exist");
       });
 
-    cy.get("mock-map").then(($el) => {
-      let layer = (<MockMap>$el[0]).layers.find((l) => l.id === layerToDelete);
-      assert.equal(layer, undefined, "deleted layer should not be found");
-    });
+    // new approach is to just hide layers, not delete
+    // keeping this as reference if we choose to remove layers in future
+    // cy.get("mock-map").then(($el) => {
+    //   let layer = $el /**MockMap*/[0].layers
+    //     .find((l) => l.id === layerToDelete);
+    //   assert.equal(layer, undefined, "deleted layer should not be found");
+    // });
   });
 
   it("updates if a layer is removed from a group", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        {
-          title: "group",
-          layers: [{ title: "baz" }],
-          layerControlExpand: true,
-        },
-        { title: "bar" },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          {
+            properties: {
+              title: "group",
+              layerControlExpand: true,
+            },
+            layers: [{ properties: { title: "baz" } }],
+          },
+          { title: "bar" },
+        ]);
     });
-    cy.wait(100);
 
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).map.getLayers().getArray()[0].getLayers().pop();
+      $el /**MockMap*/[0].map
+        .getLayers()
+        .getArray()[0]
+        .getLayers()
+        .pop();
     });
 
     cy.get("eox-layercontrol")
@@ -130,23 +152,34 @@ describe("LayerControl", () => {
 
   it("adds a layer to a correct group when originally optional", () => {
     cy.get("mock-map").and(($el) => {
-      (<MockMap>$el[0]).setLayers([
-        {
-          title: "group1",
-          layers: [{ title: "title1" }],
-          layerControlExpand: true,
-        },
-        {
-          title: "group2",
-          layers: [
-            { title: "foo" },
-            { title: "title2", layerControlOptional: true, visible: false },
-          ],
-          layerControlExpand: true,
-        },
-      ]);
+      $el /**MockMap*/[0]
+        .setLayers([
+          {
+            properties: {
+              title: "group1",
+              layerControlExpand: true,
+            },
+            layers: [{ properties: { title: "title1" } }],
+          },
+          {
+            properties: {
+              title: "group2",
+              layerControlExpand: true,
+            },
+            layers: [
+              { properties: { title: "foo" } },
+              {
+                properties: {
+                  id: "title2",
+                  title: "title2",
+                  layerControlOptional: true,
+                },
+                visible: false,
+              },
+            ],
+          },
+        ]);
     });
-    cy.wait(100);
 
     cy.get("eox-layercontrol")
       .shadow()
@@ -154,7 +187,6 @@ describe("LayerControl", () => {
         cy.get("[data-cy='optionalLayers']").select("title2");
         cy.get("[data-cy='optionalLayers']").siblings("button").click();
       });
-    cy.wait(50);
 
     cy.get("eox-layercontrol")
       .shadow()

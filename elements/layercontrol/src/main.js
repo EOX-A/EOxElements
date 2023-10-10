@@ -18,16 +18,17 @@ export class EOxLayerControl extends EOxLayerControlBase {
 
   constructor() {
     super();
-
-    /**
-     * The map to attach
-     * @type {import("../../map/main").EOxMap}
-     */
     this.for = "eox-map";
   }
 
   updated() {
-    this.map = document.querySelector(this.for)?.map;
+    /**
+     * @type Element & { map: import("ol").Map }
+     */
+    const foundElement = document.querySelector(this.for);
+    if (foundElement) {
+      this.map = foundElement.map;
+    }
   }
 
   render() {
@@ -53,6 +54,7 @@ export class EOxLayerControl extends EOxLayerControlBase {
       ${when(
         this.map &&
           filterLayers(
+            // @ts-ignore
             this.map.getLayers().getArray(),
             "layerControlOptional",
             true

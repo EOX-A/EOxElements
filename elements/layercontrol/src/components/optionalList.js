@@ -13,7 +13,7 @@ export class EOxLayerControlOptionalList extends EOxLayerControlBase {
 
     /**
      * The OL layer collection
-     * @type {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>}
+     * @type {import("ol").Collection<import("ol/layer").Layer>}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Collection-Collection.html}
      */
     this.layers = null;
@@ -50,18 +50,26 @@ export class EOxLayerControlOptionalList extends EOxLayerControlBase {
             this.layers.getArray(),
             "layerControlOptional",
             true
-          ).find(
-            (l) =>
+          ).find((l) => {
+            return (
               l.get(this.idProperty) ===
-              this.querySelector("select[name=optional]").value
-          );
+              /** @type HTMLInputElement*/ (
+                this.querySelector("select[name=optional]")
+              ).value
+            );
+          });
           // TODO always set the new layer at the first position
-          selectedLayer.set("layerControlOptional", false);
-          selectedLayer.setVisible(true);
+          selectedLayer?.set("layerControlOptional", false);
+          selectedLayer?.setVisible(true);
           this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
+          console.log(this.layers.getArray());
           this.renderRoot.parentNode
             .querySelectorAll("eox-layercontrol-layer-list")
-            .forEach((layerList) => layerList.requestUpdate());
+            .forEach((layerList) =>
+              /** @type {import("lit").LitElement} */ (
+                layerList
+              ).requestUpdate()
+            );
           this.requestUpdate();
         }}"
       >

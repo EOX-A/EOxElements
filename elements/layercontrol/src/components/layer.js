@@ -52,12 +52,17 @@ export class EOxLayerControlLayer extends EOxLayerControlBase {
                   ? "radio"
                   : "checkbox"}
                 .checked=${live(this.layer.getVisible())}
-                @click=${(evt) => {
+                @click=${(
+                  /** @type {{ target: { checked: boolean; }; }} */ evt
+                ) => {
                   this.layer.setVisible(evt.target.checked);
                   if (
                     evt.target.checked &&
                     this.layer.get("layerControlExclusive")
                   ) {
+                    /**
+                     * @type NodeListOf<Element & {layer: any, requestUpdate: function}>
+                     */
                     const siblings =
                       this.parentNode.parentNode.querySelectorAll(
                         "li > eox-layercontrol-layer"
@@ -81,11 +86,11 @@ export class EOxLayerControlLayer extends EOxLayerControlBase {
             </label>
             <button class="tools">+</button>
           </div>
-          <!--<eox-layercontrol-layerconfig
+          <eox-layercontrol-layerconfig
             .layer=${this.layer}
             .unstyled=${this.unstyled}
             @changed=${() => this.requestUpdate()}
-          ></eox-layercontrol-layerconfig>-->
+          ></eox-layercontrol-layerconfig>
         `
       )}
     `;

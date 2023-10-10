@@ -29,6 +29,7 @@ export class EOxLayerControlLayerList extends EOxLayerControlBase {
   }
 
   updated() {
+    // @ts-ignore
     if (!this.layers || this.layers.listeners_?.["change:length"]) {
       return;
     }
@@ -53,7 +54,8 @@ export class EOxLayerControlLayerList extends EOxLayerControlBase {
         ${when(
           this.layers,
           () => html`
-            ${[...this.layers.getArray()]
+            ${this.layers
+              .getArray()
               .filter(
                 (l) =>
                   !l.get("layerControlHide") && !l.get("layerControlOptional")
@@ -67,26 +69,32 @@ export class EOxLayerControlLayerList extends EOxLayerControlBase {
                       data-layer="${layer.get(this.idProperty)}"
                       data-type="${getLayerType(layer, this.map)}"
                     >
-                      ${layer.getLayers
-                        ? html`
-                            <eox-layercontrol-layer-group
-                              .group=${layer}
-                              .idProperty=${this.idProperty}
-                              .map=${this.map}
-                              .titleProperty=${this.titleProperty}
-                              .unstyled=${this.unstyled}
-                              @changed=${() => this.requestUpdate()}
-                            >
-                            </eox-layercontrol-layer-group>
-                          `
-                        : html`
-                            <eox-layercontrol-layer
-                              .layer=${layer}
-                              .titleProperty=${this.titleProperty}
-                              .unstyled=${this.unstyled}
-                              @changed=${() => this.requestUpdate()}
-                            ></eox-layercontrol-layer>
-                          `}
+                      ${
+                        /** @type {import("ol/layer").Group} */ (layer)
+                          .getLayers
+                          ? html`
+                              <eox-layercontrol-layer-group
+                                .group=${layer}
+                                .idProperty=${this.idProperty}
+                                .map=${this.map}
+                                .titleProperty=${this.titleProperty}
+                                .unstyled=${this.unstyled}
+                                @changed=${() => this.requestUpdate()}
+                              >
+                              </eox-layercontrol-layer-group>
+                            `
+                          : html`
+                              <eox-layercontrol-layer
+                                .layer=${layer}
+                                .titleProperty=${this.titleProperty}
+                                .unstyled=${this.unstyled}
+                                @changed=${() => {
+                                  console.log(this.layers.getArray());
+                                  this.requestUpdate();
+                                }}
+                              ></eox-layercontrol-layer>
+                            `
+                      }
                     </li>
                   `
                 )

@@ -240,7 +240,7 @@ export const Primary = {
     titleProperty: "title",
     unstyled: false,
   },
-  render: (args, test) => html`
+  render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol
         .idProperty=${args.idProperty}

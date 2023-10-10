@@ -4,10 +4,16 @@ import Sortable from "sortablejs";
  *
  * @param {HTMLElement} element
  * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} layers
+ * @param {import("lit").LitElement} that
  */
 export const createSortable = (element, layers, that) => {
+  /**
+   * @type {any[]}
+   */
   let childNodes = [];
-  element._sortable = Sortable.create(element, {
+  /** @type HTMLElement & {_sortable: import("sortablejs")}*/ (
+    element
+  )._sortable = Sortable.create(element, {
     handle: ".drag-handle",
     onStart: (e) => {
       // https://github.com/SortableJS/Sortable/issues/546
@@ -31,13 +37,15 @@ export const createSortable = (element, layers, that) => {
       if (e.oldIndex == e.newIndex) return;
       // Then move the element using your own logic.
       // automatically dispatches "sort" event
-      const layer = layers
-        .getArray()
-        .find(
-          (l) =>
-            l.ol_uid ===
-            e.item.querySelector("eox-layercontrol-layer").layer.ol_uid
-        );
+      const layer = layers.getArray().find(
+        (l) =>
+          // @ts-ignore
+          l.ol_uid ===
+          /** @type Element & {layer: import("ol/layer").Layer} */ (
+            e.item.querySelector("eox-layercontrol-layer")
+            // @ts-ignore
+          ).layer.ol_uid
+      );
       layers.remove(layer);
       layers.insertAt(layers.getLength() - e.newIndex, layer);
       that.requestUpdate();
@@ -50,11 +58,20 @@ export const createSortable = (element, layers, that) => {
  *
  * @param {Array<import("ol/layer").Layer>} layers
  * @param {string} key
- * @param {value} any
- * @returns {import("ol/layer").Layer} found layer
+ * @param {any} value
+ * @returns {Array<import("ol/layer").Layer>} found layers
  */
 export const filterLayers = (layers, key, value) => {
+  /**
+   * @type {any[]}
+   */
   let found = [];
+  /**
+   *
+   * @param {any[]} searchLayers
+   * @param {string} key
+   * @param {any} value
+   */
   const search = (searchLayers, key, value) => {
     found = [...found, ...searchLayers.filter((l) => l.get(key) === value)];
     const groups = searchLayers.filter((l) => l.getLayers);
@@ -78,20 +95,25 @@ export const filterLayers = (layers, key, value) => {
  */
 export const getLayerType = (layer, map) => {
   if (!layer || !map) {
-    return;
+    return undefined;
   }
-  return layer.getLayers
+  return /** @type {import("ol/layer").Group} */ (layer).getLayers
     ? "group"
     : map
         .getInteractions()
         .getArray()
+        // @ts-ignore
         .filter((i) => i.freehand_ !== undefined)
+        // @ts-ignore
         .map((i) => i.source_)
+        // @ts-ignore
         ?.ol_uid?.includes(
+          // @ts-ignore
           layer.getSource ? layer.getSource()?.ol_uid : undefined
         )
     ? "draw"
-    : layer.declutter_ !== undefined
+    : // @ts-ignore
+    layer.declutter_ !== undefined
     ? "vector"
     : "raster";
 };
