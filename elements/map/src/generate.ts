@@ -53,6 +53,10 @@ export type EoxLayer = {
   properties: object & {
     id: string;
   };
+  minZoom?: number;
+  maxZoom?: number;
+  minResolution?: number;
+  maxResolution?: number;
   opacity?: number;
   visible?: boolean;
   source?: { type: sourceType };
