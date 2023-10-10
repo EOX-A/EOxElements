@@ -68,17 +68,16 @@ export class EOxSelectInteraction {
     if (this.options.layer) {
       layerDefinition = this.options.layer;
     } else {
-      const type =
-        this.selectLayer instanceof VectorLayer ? "Vector" : "VectorTile";
       // a layer can be defined by only its style property as a shorthand.
+      const originalJsonDefinition = this.selectLayer.get("_jsonDefinition");
       layerDefinition = {
+        ...originalJsonDefinition,
         style: options.style,
-        type,
         properties: {
           id: layerId + "_select",
         },
         source: {
-          type,
+          type: originalJsonDefinition.type,
         },
       } as EoxLayer;
     }
