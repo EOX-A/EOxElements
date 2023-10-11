@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.8 (2023-10-11)
+
+
+### Miscellaneous Chores
+
+* Update readme ([82f3feb](https://github.com/EOX-A/EOxElements/commit/82f3feb2cb88965b9042fe5c9c9c0c2ba1e78c75))
+
+## Changelog
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
