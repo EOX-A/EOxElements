@@ -15,6 +15,13 @@ export function getLayerById(EOxMap: EOxMap, layerId: string) {
   return flatLayers.find((l) => l.get("id") === layerId);
 }
 
+/**
+ * Returns a flat array of all map layers, including groups
+ * To get all layers without groups, you can use the native
+ * OL `getAllLayers` method on the map itself:
+ * https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers
+ * @param layers layers Array
+ */
 export function getFlatLayersArray(layers: Array<Layer>) {
   const flatLayers = [];
   flatLayers.push(...layers);

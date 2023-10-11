@@ -100,3 +100,8 @@ npm publish (requires OTP)
 ### Testing
 
 // TODO
+
+
+## Changelog
+
+Created automatically [here](./CHANGELOG.md)

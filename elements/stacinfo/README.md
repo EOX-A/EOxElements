@@ -25,3 +25,7 @@ npm version <new version>
 npm run build
 npm publish (requires OTP)
 ```
+
+## Changelog
+
+Created automatically [here](./CHANGELOG.md)

@@ -1,0 +1,17 @@
+{
+  "bootstrap-sha": "8c7afca91c115c4a2db2054c3b604beb290f0015",
+  "packages": {
+    "elements/chart": {
+      "release-as": "0.1.0"
+    },
+    "elements/drawtools": {},
+    "elements/itemfilter": {},
+    "elements/layercontrol": {},
+    "elements/map": {},
+    "elements/stacinfo": {},
+    "elements/timecontrol": {}
+  },
+  "plugins": ["sentence-case"],
+  "bump-minor-pre-major": true,
+  "separate-pull-requests": true
+}

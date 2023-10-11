@@ -53,6 +53,10 @@ export type EoxLayer = {
   properties: object & {
     id: string;
   };
+  minZoom?: number;
+  maxZoom?: number;
+  minResolution?: number;
+  maxResolution?: number;
   opacity?: number;
   visible?: boolean;
   source?: { type: sourceType };
@@ -166,7 +170,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
     return [];
   }
 
-  return layerArray.reverse().map((l) => createLayer(l));
+  return [...layerArray].reverse().map((l) => createLayer(l));
 };
 
 /**
@@ -181,9 +185,8 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
   olLayer.on("change:visible", () => {
     eoxLayer.visible = olLayer.getVisible();
   });
-  olLayer.on("change:zIndex", (e) => {
+  olLayer.on("change:zIndex", () => {
     // TO DO
-    console.log(e);
   });
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") {
