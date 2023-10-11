@@ -1,7 +1,6 @@
-import { html } from "lit";
+import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { keyed } from "lit/directives/keyed.js";
-import { EOxLayerControlBase } from "./base";
 import { createSortable, getLayerType } from "../helpers";
 import "./layer";
 import "./layerGroup";
@@ -11,14 +10,22 @@ import "./layerGroup";
  *
  * @element eox-layercontrol-layer-list
  */
-export class EOxLayerControlLayerList extends EOxLayerControlBase {
+export class EOxLayerControlLayerList extends LitElement {
   static properties = {
-    ...super.properties,
+    idProperty: { attribute: "id-property" },
     layers: { attribute: false },
+    map: { attribute: false, state: true },
+    titleProperty: { attribute: "title-property", type: String },
+    unstyled: { type: Boolean },
   };
 
   constructor() {
     super();
+
+    /**
+     * The layer id property
+     */
+    this.idProperty = "id";
 
     /**
      * The OL layer collection
@@ -26,6 +33,23 @@ export class EOxLayerControlLayerList extends EOxLayerControlBase {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Collection-Collection.html}
      */
     this.layers = null;
+
+    /**
+     * The native OL map
+     * @type {import("ol").Map}
+     * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
+     */
+    this.map = null;
+
+    /**
+     * The layer title property
+     */
+    this.titleProperty = "title";
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
   }
 
   updated() {
@@ -47,8 +71,8 @@ export class EOxLayerControlLayerList extends EOxLayerControlBase {
   render() {
     return html`
       <style>
-        ${this.styleBasic}
-        ${!this.unstyled && this.styleEOX}
+        ${this.#styleBasic}
+        ${!this.unstyled && this.#styleEOX}
       </style>
       <ul>
         ${when(
@@ -104,9 +128,9 @@ export class EOxLayerControlLayerList extends EOxLayerControlBase {
     `;
   }
 
-  styleBasic = ``;
+  #styleBasic = ``;
 
-  styleEOX = `
+  #styleEOX = `
     ul {
       padding: 0;
     }

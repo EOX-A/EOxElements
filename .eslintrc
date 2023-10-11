@@ -1,5 +1,9 @@
 {
-  "extends": ["@eox", "plugin:cypress/recommended", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "@eox",
+    "plugin:cypress/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "ignorePatterns": ["**/dist/*", "**/public/*"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["cypress", "@typescript-eslint"],

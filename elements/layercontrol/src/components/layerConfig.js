@@ -1,16 +1,15 @@
-import { html } from "lit";
+import { LitElement, html } from "lit";
 import { live } from "lit/directives/live.js";
-import { EOxLayerControlBase } from "./base";
 
 /**
  * Layer configuration for an individual layer
  *
  * @element eox-layercontrol-layerconfig
  */
-export class EOxLayerControlLayerConfig extends EOxLayerControlBase {
+export class EOxLayerControlLayerConfig extends LitElement {
   static properties = {
-    ...super.properties,
     layer: { attribute: false },
+    unstyled: { type: Boolean },
   };
 
   constructor() {
@@ -22,13 +21,18 @@ export class EOxLayerControlLayerConfig extends EOxLayerControlBase {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
     this.layer = null;
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
   }
 
   render() {
     return html`
       <style>
-        ${this.styleBasic}
-        ${!this.unstyled && this.styleEOX}
+        ${this.#styleBasic}
+        ${!this.unstyled && this.#styleEOX}
       </style>
       <input
         type="range"
@@ -54,9 +58,9 @@ export class EOxLayerControlLayerConfig extends EOxLayerControlBase {
     `;
   }
 
-  styleBasic = ``;
+  #styleBasic = ``;
 
-  styleEOX = ``;
+  #styleEOX = ``;
 }
 
 customElements.define(

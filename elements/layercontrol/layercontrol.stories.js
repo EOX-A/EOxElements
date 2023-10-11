@@ -459,3 +459,21 @@ export const LayerList = {
     </script>
   `,
 };
+
+/**
+ * Unstyled version of the Element
+ */
+export const Unstyled = {
+  args: {
+    unstyled: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .unstyled=${args.unstyled}
+        for="eox-map"
+      ></eox-layercontrol>
+      ${map}
+    </div>
+  `,
+};

@@ -1,6 +1,5 @@
-import { html, nothing } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
-import { EOxLayerControlBase } from "./base";
 import "./layer";
 import "./layerList";
 
@@ -9,10 +8,13 @@ import "./layerList";
  *
  * @element eox-layercontrol-layer-group
  */
-export class EOxLayerControlLayerGroup extends EOxLayerControlBase {
+export class EOxLayerControlLayerGroup extends LitElement {
   static properties = {
-    ...super.properties,
     group: { attribute: false },
+    idProperty: { attribute: "id-property" },
+    map: { attribute: false, state: true },
+    titleProperty: { attribute: "title-property", type: String },
+    unstyled: { type: Boolean },
   };
 
   constructor() {
@@ -24,6 +26,28 @@ export class EOxLayerControlLayerGroup extends EOxLayerControlBase {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Group-LayerGroup.html}
      */
     this.group = null;
+
+    /**
+     * The layer id property
+     */
+    this.idProperty = "id";
+
+    /**
+     * The native OL map
+     * @type {import("ol").Map}
+     * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
+     */
+    this.map = null;
+
+    /**
+     * The layer title property
+     */
+    this.titleProperty = "title";
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
   }
 
   createRenderRoot() {
@@ -33,8 +57,8 @@ export class EOxLayerControlLayerGroup extends EOxLayerControlBase {
   render() {
     return html`
       <style>
-        ${this.styleBasic}
-        ${!this.unstyled && this.styleEOX}
+        ${this.#styleBasic}
+        ${!this.unstyled && this.#styleEOX}
       </style>
       ${when(
         this.group,
@@ -62,9 +86,9 @@ export class EOxLayerControlLayerGroup extends EOxLayerControlBase {
     `;
   }
 
-  styleBasic = ``;
+  #styleBasic = ``;
 
-  styleEOX = `
+  #styleEOX = `
     details summary {
       cursor: pointer;
       display: flex;

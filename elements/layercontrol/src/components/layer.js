@@ -1,7 +1,6 @@
-import { html } from "lit";
+import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
-import { EOxLayerControlBase } from "./base";
 import "./layerConfig";
 import { radio } from "../../../../utils/styles/radio";
 import { checkbox } from "../../../../utils/styles/checkbox";
@@ -11,10 +10,10 @@ import { checkbox } from "../../../../utils/styles/checkbox";
  *
  * @element eox-layercontrol-layer
  */
-export class EOxLayerControlLayer extends EOxLayerControlBase {
+export class EOxLayerControlLayer extends LitElement {
   static properties = {
-    ...super.properties,
     layer: { attribute: false },
+    titleProperty: { attribute: "title-property", type: String },
   };
 
   constructor() {
@@ -26,6 +25,11 @@ export class EOxLayerControlLayer extends EOxLayerControlBase {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
     this.layer = null;
+
+    /**
+     * The layer title property
+     */
+    this.titleProperty = "title";
   }
 
   createRenderRoot() {
@@ -35,8 +39,8 @@ export class EOxLayerControlLayer extends EOxLayerControlBase {
   render() {
     return html`
       <style>
-        ${this.styleBasic}
-        ${!this.unstyled && this.styleEOX}
+        ${this.#styleBasic}
+        ${!this.unstyled && this.#styleEOX}
       </style>
       ${when(
         this.layer,
@@ -96,9 +100,9 @@ export class EOxLayerControlLayer extends EOxLayerControlBase {
     `;
   }
 
-  styleBasic = ``;
+  #styleBasic = ``;
 
-  styleEOX = `
+  #styleEOX = `
     ${radio}
     ${checkbox}
     eox-layercontrol-layer {

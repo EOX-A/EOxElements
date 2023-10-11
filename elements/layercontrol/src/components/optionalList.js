@@ -1,15 +1,21 @@
-import { html } from "lit";
-import { EOxLayerControlBase } from "./base";
+import { LitElement, html } from "lit";
 import { filterLayers } from "../helpers";
 
-export class EOxLayerControlOptionalList extends EOxLayerControlBase {
+export class EOxLayerControlOptionalList extends LitElement {
   static properties = {
-    ...super.properties,
+    idProperty: { attribute: "id-property" },
     layers: { attribute: false },
+    titleProperty: { attribute: "title-property", type: String },
+    unstyled: { type: Boolean },
   };
 
   constructor() {
     super();
+
+    /**
+     * The layer id property
+     */
+    this.idProperty = "id";
 
     /**
      * The OL layer collection
@@ -17,6 +23,16 @@ export class EOxLayerControlOptionalList extends EOxLayerControlBase {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Collection-Collection.html}
      */
     this.layers = null;
+
+    /**
+     * The layer title property
+     */
+    this.titleProperty = "title";
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
   }
 
   createRenderRoot() {
