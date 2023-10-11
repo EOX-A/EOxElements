@@ -1,1 +1,5 @@
-{"elements/map":"0.8.1","elements/drawtools":"0.4.0"}
+{
+  "elements/drawtools":"0.4.0",
+  "elements/map": "0.8.1",
+  "elements/stacinfo": "0.1.2"
+}
