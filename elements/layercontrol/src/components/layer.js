@@ -260,6 +260,9 @@ export class EOxLayerControlLayer extends LitElement {
     details.tools {
       position: relative;
     }
+    eox-layercontrol-layer details summary::before {
+      content: "";
+    }
     details.tools[open] {
       /*border-top: 1px solid #0041703a;*/
     }
