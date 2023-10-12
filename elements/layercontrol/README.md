@@ -91,7 +91,7 @@ npm publish (requires OTP)
 
 ### Testing
 
-// TODO
+This element includes components tests and is part of e2e tests. Please refer to the root README for more details.
 
 ## Changelog
 
