@@ -13,5 +13,7 @@
   },
   "plugins": ["sentence-case"],
   "bump-minor-pre-major": true,
-  "separate-pull-requests": true
+  "separate-pull-requests": true,
+  "draft": true,
+  "pull-request-header": "New release prepared:"
 }
