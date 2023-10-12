@@ -31,7 +31,7 @@ describe("Layer Switcher", () => {
 
   it("adapts to setLayers with changed layer id", () => {
     cy.fixture("agri.json").then((layers) => {
-      layers[0].id = "changedId";
+      layers[0].properties.id = "changedId";
 
       cy.get("eox-map").then(($el) => {
         const eoxMap = $el[0];
@@ -54,7 +54,7 @@ describe("Layer Switcher", () => {
       const groupLayerIndex = layers.findIndex(
         (layer) => layer.type === "Group"
       );
-      layers[groupLayerIndex].layers[0].id = "changed-nested-Id";
+      layers[groupLayerIndex].layers[0].properties.id = "changed-nested-Id";
 
       cy.get("eox-map").then(($el) => {
         const eoxMap = $el[0];
