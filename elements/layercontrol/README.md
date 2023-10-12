@@ -35,21 +35,13 @@ document.querySelector("map-div").map = olMap
 <eox-layercontrol for="#map-div"></eox-layercontrol>
 ```
 
-### `layerIdentifier: string = "id"`
+### `idProperty: string = "id"`
 
 The layer identifier property of the layers. Fallback is set automatically based on `ol_uid` if not provided.
 
-### `layerTitle: string = "title"`
+### `titleProperty: string = "title"`
 
 The layer title property of the layers. "title" by default, fallback is set automatically based on "layer" + `ol_uid` if not provided.
-
-### `layerConfig: Array<string> = ["opacity"]`
-
-// TODO
-
-### `externalLayerConfig: Boolean = undefined`
-
-// TODO
 
 ### `unstyled: Boolean`
 
@@ -79,7 +71,7 @@ Initially hide a layer from the layer control, but make it available as an optio
 
 Make layers mutually exclusive. If two or more layers (on the same level, i.e. at root or inside a layer group) have this property, then only one of them can be visualized at a time.
 
-### `layerControlExpanded?: Boolean`
+### `layerControlExpand?: Boolean`
 
 Pre-expand a layer dropdown so that it is always open when the component initializes.
 
@@ -100,3 +92,7 @@ npm publish (requires OTP)
 ### Testing
 
 // TODO
+
+## Changelog
+
+Created automatically [here](./CHANGELOG.md)

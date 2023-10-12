@@ -1,6 +1,6 @@
 {
   "name": "@eox/stacinfo",
-  "version": "0.0.1",
+  "version": "0.1.2",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -21,7 +21,6 @@
   ],
   "main": "./dist/eox-stacinfo.js",
   "scripts": {
-    "start": "vite",
     "build": "tsc && vite build",
     "watch": "tsc && vite build --watch",
     "format": "prettier --write .",

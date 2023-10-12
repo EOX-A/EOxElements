@@ -3,15 +3,22 @@ import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 // @ts-ignore
-import olCss from "ol/ol.css";
-import { addDraw } from "./src/draw";
-import { addSelect } from "./src/select";
-import { generateLayers, EoxLayer } from "./src/generate";
-import Interaction from "ol/interaction/Interaction";
+import olCss from "ol/ol.css?inline";
+import { DrawOptions, addDraw } from "./src/draw";
+import { EOxSelectInteraction, SelectOptions, addSelect } from "./src/select";
+import {
+  generateLayers,
+  EoxLayer,
+  createLayer,
+  updateLayer,
+} from "./src/generate";
+import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
-import { getLayerById } from "./src/layer";
+import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromAttribute } from "./src/center";
 import { addInitialControls } from "./src/controls";
+import { buffer } from "ol/extent";
+import "./src/compare";
 
 @customElement("eox-map")
 export class EOxMap extends LitElement {
@@ -40,6 +47,12 @@ export class EOxMap extends LitElement {
   zoom: number;
 
   /**
+   * Sync map with another map view by providing its query selector
+   */
+  @property()
+  sync: string;
+
+  /**
    * The native OpenLayers map object.
    * See [https://openlayers.org/en/latest/apidoc/](https://openlayers.org/en/latest/apidoc/)
    */
@@ -57,7 +70,13 @@ export class EOxMap extends LitElement {
    * dictionary of ol interactions associated with the map.
    */
   @state()
-  interactions: { [index: string]: Interaction } = {};
+  interactions: { [index: string]: Draw | Modify } = {};
+
+  /**
+   * dictionary of select interactions.
+   */
+  @state()
+  selectInteractions: { [index: string]: EOxSelectInteraction } = {};
 
   /**
    * dictionary of ol controls associated with the map.
@@ -66,20 +85,42 @@ export class EOxMap extends LitElement {
   mapControls: { [index: string]: Control } = {};
 
   /**
-   * Apply layers from Mapbox Style JSON
-   * @param json a Mapbox Style JSON
+   * Apply layers Eox Layer JSONs
+   * @param json array of EoxLayer JSONs
    * @returns the array of layers
    */
-  setLayers: Function = (json: Array<EoxLayer>) => {
-    this.map.setLayers(generateLayers(json));
+  setLayers = (json: Array<EoxLayer>) => {
+    const layers = generateLayers(json);
+    this.map.setLayers(layers);
+    return layers;
+  };
+
+  /**
+   * creates or updates an existing layer
+   * will update an layer if the ID already exists
+   * @param json EoxLayer JSON definition
+   * @returns the created or updated ol layer
+   */
+  addOrUpdateLayer = async (json: EoxLayer) => {
+    const id = json.properties?.id;
+    const existingLayer = getLayerById(this, id);
+    let layer;
+    if (existingLayer) {
+      await updateLayer(json, existingLayer);
+      layer = existingLayer;
+    } else {
+      layer = createLayer(json);
+      this.map.addLayer(layer);
+    }
+    return layer;
   };
 
   /**
    * Adds draw functionality to a given vector layer.
    * @param layerId id of a vector layer to draw on
-   * @param options options (to do: define draw options)
+   * @param options options
    */
-  addDraw: Function = (layerId: string, options: Object) => {
+  addDraw = (layerId: string, options: DrawOptions) => {
     addDraw(this, layerId, options);
   };
 
@@ -88,34 +129,45 @@ export class EOxMap extends LitElement {
    * @param layerId id of a vector layer to select features from
    * @param options options (to do: define select options)
    */
-  addSelect: Function = (layerId: string, options: Object) => {
+  addSelect = (layerId: string, options: SelectOptions) => {
     return addSelect(this, layerId, options);
   };
 
   /**
-   * removes a given interaction from the map. Layer have to be removed seperately
+   * removes a given ol-interaction from the map. Layer have to be removed seperately
    * @param id id of the interaction
    */
-  removeInteraction: Function = (id: string) => {
+  removeInteraction = (id: string) => {
     this.map.removeInteraction(this.interactions[id]);
     delete this.interactions[id];
+  };
+
+  /**
+   * removes a given EOxSelectInteraction from the map.
+   * @param id id of the interaction
+   */
+  removeSelect = (id: string) => {
+    this.selectInteractions[id].remove();
+    delete this.selectInteractions[id];
   };
 
   /**
    * removes a given control from the map.
    * @param id id of the control element
    */
-  removeControl: Function = (id: string) => {
+  removeControl = (id: string) => {
     this.map.removeControl(this.mapControls[id]);
     delete this.mapControls[id];
   };
 
   /**
-   * gets an OpenLayers-Layer, either by its "id" or one of its Mapbox-Style IDs
+   * gets an OpenLayers-Layer by its "id"
    */
-  getLayerById: Function = (layerId: string) => {
+  getLayerById = (layerId: string) => {
     return getLayerById(this, layerId);
   };
+
+  getFlatLayersArray = getFlatLayersArray;
 
   render() {
     const shadowStyleFix = `
@@ -137,18 +189,36 @@ export class EOxMap extends LitElement {
     `;
   }
 
+  /**
+   * Return extent increased by the provided value.
+   * @param {import("ol/extent").Extent} extent
+   * @param {number} value
+   * @returns {import("ol/extent").Extent}
+   */
+  buffer(extent: import("ol/extent").Extent, value: number) {
+    return buffer(extent, value);
+  }
+
   firstUpdated() {
     addInitialControls(this);
 
     if (this.layers) {
       this.map.setLayers(generateLayers(this.layers));
     }
-    if (this.center) {
-      this.map.getView().setCenter(getCenterFromAttribute(this.center));
+    if (this.sync) {
+      const originMap: EOxMap = document.querySelector(this.sync);
+      if (originMap) {
+        this.map.setView(originMap.map.getView());
+      }
+    } else {
+      if (this.center) {
+        this.map.getView().setCenter(getCenterFromAttribute(this.center));
+      }
+      if (this.zoom) {
+        this.map.getView().setZoom(this.zoom);
+      }
     }
-    if (this.zoom) {
-      this.map.getView().setZoom(this.zoom);
-    }
+
     this.map.setTarget(this.renderRoot.querySelector("div"));
 
     this.map.on("loadend", () => {

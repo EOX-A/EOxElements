@@ -9,7 +9,7 @@ import { styleEOX } from "./style.eox";
 import { UrlFunction } from "ol/Tile";
 
 @customElement("eox-timecontrol")
-export class EOxDrawTools extends LitElement {
+export class EOxTimeControl extends LitElement {
   /**
    * The WMS parameter to update
    */
@@ -169,11 +169,7 @@ export class EOxDrawTools extends LitElement {
         const animationLayer = olMap
           .getLayers()
           .getArray()
-          .find(
-            (l) =>
-              l.get("id") === this.layer ||
-              l.get("mapbox-layers")?.includes(this.layer)
-          ) as Layer;
+          .find((l) => l.get("id") === this.layer) as Layer;
         this._animationSource = animationLayer.getSource() as TileSource;
         this._originalTileUrlFunction =
           //@ts-ignore

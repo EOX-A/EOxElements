@@ -19,6 +19,7 @@ export class EOxItemFilterSelect extends LitElement {
       this.filterObject.state[filter] = false;
     }
     delete this.filterObject.dirty;
+    this.requestUpdate();
   }
 
   // skip shadow root creation

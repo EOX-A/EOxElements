@@ -1,22 +1,45 @@
 import { EOxMap } from "../main";
+import Group from "ol/layer/Group";
+import Layer from "ol/layer/Layer";
 
 /**
  *
  * @param EOxMap instance of eox map class
- * @param layerId id of ol-layer or mapbox style layer
- * @returns Layer
+ * @param layerId id of ol-layer
+ * @returns Layer or `undefined` if layer does not exist
  */
 export function getLayerById(EOxMap: EOxMap, layerId: string) {
-  // get mapbox-style layer or manually generated ol layer
-  const layers = EOxMap.map.getLayers().getArray();
-  const layer =
-    layers.find((l) => l.get("id") === layerId) ||
-    layers
-      .filter((l) => l.get("mapbox-layers"))
-      .find((l) => l.get("mapbox-layers").includes(layerId));
+  const flatLayers = getFlatLayersArray(
+    EOxMap.map.getLayers().getArray() as Array<Layer>
+  );
+  return flatLayers.find((l) => l.get("id") === layerId);
+}
 
-  if (!layer) {
-    throw Error(`Layer with id: ${layerId} does not exist.`);
+/**
+ * Returns a flat array of all map layers, including groups
+ * To get all layers without groups, you can use the native
+ * OL `getAllLayers` method on the map itself:
+ * https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers
+ * @param layers layers Array
+ */
+export function getFlatLayersArray(layers: Array<Layer>) {
+  const flatLayers = [];
+  flatLayers.push(...layers);
+
+  let groupLayers = flatLayers.filter(
+    (l) => l instanceof Group
+  ) as unknown as Array<Group>;
+
+  while (groupLayers.length) {
+    const newGroupLayers = [];
+    for (let i = 0, ii = groupLayers.length; i < ii; i++) {
+      const layersInsideGroup = groupLayers[i].getLayers().getArray();
+      flatLayers.push(...layersInsideGroup);
+      newGroupLayers.push(
+        ...(layersInsideGroup.filter((l) => l instanceof Group) as Array<Group>)
+      );
+    }
+    groupLayers = newGroupLayers;
   }
-  return layer;
+  return flatLayers as Array<Layer>;
 }

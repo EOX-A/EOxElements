@@ -5,21 +5,26 @@ import { simulateEvent } from "./utils/events";
 
 describe("select interaction on click", () => {
   it("adds a select interaction to VectorTile layer", () => {
-    cy.mount(
-      `<eox-map layers='${JSON.stringify(vectorTileLayerStyleJson)}'></eox-map>`
-    ).as("eox-map");
-    cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      eoxMap.addEventListener("select", (evt) => {
-        //@ts-ignore
-        expect(evt.detail.feature).to.exist;
-      });
-      eoxMap
-        .addSelect("countries", {
+    cy.intercept(/^.*geoserver.*$/, {
+      fixture: "/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
+      encoding: "binary",
+    });
+    return new Cypress.Promise((resolve) => {
+      cy.mount(
+        `<eox-map layers='${JSON.stringify(
+          vectorTileLayerStyleJson
+        )}'></eox-map>`
+      ).as("eox-map");
+      cy.get("eox-map").and(($el) => {
+        const eoxMap = <EOxMap>$el[0];
+        eoxMap.addEventListener("select", (evt) => {
+          //@ts-ignore
+          expect(evt.detail.feature).to.exist;
+          resolve();
+        });
+        eoxMap.addSelect("countries", {
           id: "selectInteraction",
-          tooltip: "eox-map-tooltip",
           condition: "click",
-          idProperty: "formal_en",
           layer: {
             type: "VectorTile",
             properties: {
@@ -29,19 +34,21 @@ describe("select interaction on click", () => {
               type: "VectorTile",
             },
             style: {
-              "stroke-color": "white",
-              "stroke-width": 3,
+              "stroke-color": "chartreuse",
+              "stroke-width": 5,
             },
           },
-        })
-        .then(() => {
-          setTimeout(() => {
-            simulateEvent(eoxMap.map, "click", 120, -140);
-          }, 1000);
         });
+        eoxMap.map.on("loadend", () => {
+          simulateEvent(eoxMap.map, "click", 65, 13);
+        });
+      });
     });
   });
   it("adds a select interaction to Vector layer", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
     cy.mount(
       `<eox-map layers='${JSON.stringify(vectorLayerJson)}'></eox-map>`
     ).as("eox-map");
@@ -53,21 +60,18 @@ describe("select interaction on click", () => {
         expect(evt.detail.feature).to.exist;
       });
 
-      eoxMap
-        .addSelect("regions", {
-          id: "selectInteraction",
-          tooltip: "eox-map-tooltip",
-          condition: "click",
-          style: {
-            "stroke-color": "white",
-            "stroke-width": 3,
-          },
-        })
-        .then(() => {
-          setTimeout(() => {
-            simulateEvent(eoxMap.map, "click", 120, -140);
-          }, 1000);
-        });
+      eoxMap.addSelect("regions", {
+        id: "selectInteraction",
+        condition: "click",
+        //@ts-ignore
+        style: {
+          "stroke-color": "white",
+          "stroke-width": 3,
+        },
+      });
+      eoxMap.map.on("loadend", () => {
+        simulateEvent(eoxMap.map, "click", 120, -140);
+      });
     });
   });
 });
