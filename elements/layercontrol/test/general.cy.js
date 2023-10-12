@@ -74,7 +74,10 @@ describe("LayerControl", () => {
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        cy.get(".drag-handle.disabled").should("have.length", 1);
+        cy.get(".tools summary")
+          .click({ multiple: true })
+          .get(".drag-handle:visible")
+          .should("have.length", 1);
       });
   });
 

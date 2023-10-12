@@ -103,11 +103,11 @@ describe("LayerControl", () => {
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        cy.get(`[data-layer=${layerToDelete}] eox-layercontrol-layerconfig`)
-          .shadow()
-          .within(() => {
-            cy.get("button.delete").should("be.visible").click();
-          });
+        cy.get(`[data-layer=${layerToDelete}] .tools > summary`)
+          .click()
+          .get("button.remove-icon:visible")
+          .last()
+          .click();
         cy.get(`[data-layer=${layerToDelete}]`).should("not.exist");
       });
 

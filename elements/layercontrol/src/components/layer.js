@@ -1,8 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
-import "./layerConfig";
-import { radio } from "../../../../utils/styles/radio";
+import "./layerTools";
 import { checkbox } from "../../../../utils/styles/checkbox";
 
 /**
@@ -14,6 +13,8 @@ export class EOxLayerControlLayer extends LitElement {
   static properties = {
     layer: { attribute: false },
     titleProperty: { attribute: "title-property", type: String },
+    tools: { attribute: false },
+    unstyled: { type: Boolean },
   };
 
   constructor() {
@@ -30,6 +31,16 @@ export class EOxLayerControlLayer extends LitElement {
      * The layer title property
      */
     this.titleProperty = "title";
+
+    /**
+     * @type Array<string>
+     */
+    this.tools = [];
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
   }
 
   createRenderRoot() {
@@ -45,11 +56,9 @@ export class EOxLayerControlLayer extends LitElement {
       ${when(
         this.layer,
         () => html`
-          <div class="layer">
+          <div class="layer ${this.layer.getVisible() ? "visible" : ""}">
             <label
-              class="drag-handle ${this.layer.get("layerControlDisable")
-                ? "disabled"
-                : ""}"
+              class="${this.layer.get("layerControlDisable") ? "disabled" : ""}"
             >
               <input
                 type=${this.layer.get("layerControlExclusive")
@@ -80,21 +89,25 @@ export class EOxLayerControlLayer extends LitElement {
                         sibling.requestUpdate();
                       }
                     });
-                    this.dispatchEvent(
-                      new CustomEvent("changed", { bubbles: true })
-                    );
                   }
+                  this.dispatchEvent(
+                    new CustomEvent("changed", { bubbles: true })
+                  );
+                  this.requestUpdate();
                 }}
               />
               <span class="title">${this.layer.get(this.titleProperty)}</span>
+              ${when(
+                this.tools?.length > 0,
+                () => html`<span class="tools-placeholder"></span>`
+              )}
             </label>
-            <button class="tools">+</button>
           </div>
-          <eox-layercontrol-layerconfig
+          <eox-layercontrol-layer-tools
             .layer=${this.layer}
+            .tools=${this.tools}
             .unstyled=${this.unstyled}
-            @changed=${() => this.requestUpdate()}
-          ></eox-layercontrol-layerconfig>
+          ></eox-layercontrol-layer-tools>
         `
       )}
     `;
@@ -103,33 +116,15 @@ export class EOxLayerControlLayer extends LitElement {
   #styleBasic = ``;
 
   #styleEOX = `
-    ${radio}
     ${checkbox}
     eox-layercontrol-layer {
       width: 100%;
     }
     .layer {
       width: 100%;
-      display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 4px 0;
-    }
-    .tools {
-      border: none;
-      border-radius: 2px;
-      background: none;
-      display: flex;
-      place-items: center;
-      padding: 2px;
-      margin: 0 4px;
-      height: 16px;
-      width: 16px;
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edots-vertical%3C/title%3E%3Cpath d='M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z' /%3E%3C/svg%3E");
-      cursor: pointer;
-    }
-    .tools:active {
-      background: #0041703a;
     }
     label, span {
       display: flex;

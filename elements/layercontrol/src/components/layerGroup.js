@@ -14,6 +14,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    tools: { attribute: false },
     unstyled: { type: Boolean },
   };
 
@@ -45,6 +46,11 @@ export class EOxLayerControlLayerGroup extends LitElement {
     this.titleProperty = "title";
 
     /**
+     * @type Array<string>
+     */
+    this.tools = [];
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
@@ -68,6 +74,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
               <eox-layercontrol-layer
                 .layer=${this.group}
                 .titleProperty=${this.titleProperty}
+                .tools=${this.tools}
                 .unstyled=${this.unstyled}
                 @changed=${() => this.requestUpdate()}
               ></eox-layercontrol-layer>
@@ -77,6 +84,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
               .layers=${this.group.getLayers()}
               .map=${this.map}
               .titleProperty=${this.titleProperty}
+              .tools=${this.tools}
               .unstyled=${this.unstyled}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-layer-list>

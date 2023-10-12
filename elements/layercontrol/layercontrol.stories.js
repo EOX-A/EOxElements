@@ -11,7 +11,8 @@ const map = html` <eox-map
     "properties": {
       "id": "group2",
       "title": "Data Layers",
-      "layerControlExpand": true
+      "layerControlExpand": true,
+      "description": "# Hello world"
     },
     "layers": [
       {
@@ -312,6 +313,58 @@ export const ExpandedLayers = {
 };
 
 /**
+ * The layer control accepts a "tools" array, which enable
+ * extra functionalities for layers
+ */
+export const Tools = {
+  args: {},
+  render: (args, test) => html`
+    <p>Default tools: info, opacity, remove, sort</p>
+    <eox-layercontrol for="eox-map#tools"></eox-layercontrol>
+    <hr />
+    <p>Only one tool: info</p>
+    <eox-layercontrol .tools=${["info"]} for="eox-map#tools"></eox-layercontrol>
+    <hr />
+    <p>Only one tool: sort</p>
+    <eox-layercontrol .tools=${["sort"]} for="eox-map#tools"></eox-layercontrol>
+    <hr />
+    <p>No tools</p>
+    <eox-layercontrol .tools=${[]} for="eox-map#tools"></eox-layercontrol>
+    <eox-map
+      id="tools"
+      style="width: 400px; height: 300px; margin-left: 7px;"
+      layers=${JSON.stringify([
+        {
+          type: "Vector",
+          properties: {
+            title: "Regions",
+            id: "regions",
+            description: "Ecological regions of the earth.",
+          },
+          source: {
+            type: "Vector",
+            url: "https://openlayers.org/data/vector/ecoregions.json",
+            format: "GeoJSON",
+            attributions: "Regions: @ openlayers.org",
+          },
+        },
+        {
+          type: "Tile",
+          properties: {
+            title: "Terrain Light",
+          },
+          source: {
+            type: "XYZ",
+            url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+          },
+        },
+      ])}
+    >
+    </eox-map>
+  `,
+};
+
+/**
  * By adding the `layerControlHide` property to map layers,
  * they aren't displayed in the layer control at all (but may
  * be still rendered on the map).
@@ -457,6 +510,18 @@ export const LayerList = {
           olMapList;
       });
     </script>
+  `,
+};
+
+/**
+ * Layer control tabs
+ */
+export const Tabs = {
+  render: () => html`
+    <eox-layercontrol-tabs
+      .actions=${["delete"]}
+      .tabs=${["info", "opacity", "config"]}
+    ></eox-layercontrol-tabs>
   `,
 };
 
