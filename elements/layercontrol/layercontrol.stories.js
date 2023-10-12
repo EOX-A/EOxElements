@@ -340,7 +340,6 @@ export const Tools = {
             title: "Regions",
             id: "regions",
             description: "Ecological regions of the earth.",
-            layerControlDisable: true,
           },
           source: {
             type: "Vector",
