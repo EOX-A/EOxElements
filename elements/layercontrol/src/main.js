@@ -36,11 +36,13 @@ export class EOxLayerControl extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    tools: { attribute: false },
     unstyled: { type: Boolean },
   };
 
   constructor() {
     super();
+
     /**
      * Query selector of an eox-map or another DOM element containing an OL map proeprty
      */
@@ -62,6 +64,8 @@ export class EOxLayerControl extends LitElement {
      * Layer title property
      */
     this.titleProperty = "title";
+
+    this.tools = ["info", "opacity", "remove", "sort"];
 
     /**
      * Render the element without additional styles
@@ -94,6 +98,7 @@ export class EOxLayerControl extends LitElement {
             .layers=${this.map.getLayers()}
             .map=${this.map}
             .titleProperty=${this.titleProperty}
+            .tools=${this.tools}
             .unstyled=${this.unstyled}
             @changed=${() => this.requestUpdate()}
           ></eox-layercontrol-layer-list>

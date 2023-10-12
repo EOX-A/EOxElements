@@ -16,6 +16,7 @@ export class EOxLayerControlLayerList extends LitElement {
     layers: { attribute: false },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    tools: { attribute: false },
     unstyled: { type: Boolean },
   };
 
@@ -42,6 +43,11 @@ export class EOxLayerControlLayerList extends LitElement {
     this.map = null;
 
     /**
+     * @type Array<string>
+     */
+    this.tools = undefined;
+
+    /**
      * The layer title property
      */
     this.titleProperty = "title";
@@ -53,8 +59,7 @@ export class EOxLayerControlLayerList extends LitElement {
   }
 
   updated() {
-    // @ts-ignore
-    if (!this.layers || this.layers.listeners_?.["change:length"]) {
+    if (!this.layers) {
       return;
     }
     this.layers.on("change:length", () => {
@@ -102,6 +107,7 @@ export class EOxLayerControlLayerList extends LitElement {
                                 .idProperty=${this.idProperty}
                                 .map=${this.map}
                                 .titleProperty=${this.titleProperty}
+                                .tools=${this.tools}
                                 .unstyled=${this.unstyled}
                                 @changed=${() => this.requestUpdate()}
                               >
@@ -111,6 +117,7 @@ export class EOxLayerControlLayerList extends LitElement {
                               <eox-layercontrol-layer
                                 .layer=${layer}
                                 .titleProperty=${this.titleProperty}
+                                .tools=${this.tools}
                                 .unstyled=${this.unstyled}
                                 @changed=${() => {
                                   this.requestUpdate();
