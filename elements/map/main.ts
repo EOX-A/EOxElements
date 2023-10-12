@@ -101,12 +101,12 @@ export class EOxMap extends LitElement {
    * @param json EoxLayer JSON definition
    * @returns the created or updated ol layer
    */
-  addOrUpdateLayer = async (json: EoxLayer) => {
+  addOrUpdateLayer = (json: EoxLayer) => {
     const id = json.properties?.id;
     const existingLayer = getLayerById(this, id);
     let layer;
     if (existingLayer) {
-      await updateLayer(json, existingLayer);
+      updateLayer(json, existingLayer);
       layer = existingLayer;
     } else {
       layer = createLayer(json);
