@@ -35,21 +35,13 @@ document.querySelector("map-div").map = olMap
 <eox-layercontrol for="#map-div"></eox-layercontrol>
 ```
 
-### `layerIdentifier: string = "id"`
+### `idProperty: string = "id"`
 
 The layer identifier property of the layers. Fallback is set automatically based on `ol_uid` if not provided.
 
-### `layerTitle: string = "title"`
+### `titleProperty: string = "title"`
 
 The layer title property of the layers. "title" by default, fallback is set automatically based on "layer" + `ol_uid` if not provided.
-
-### `layerConfig: Array<string> = ["opacity"]`
-
-// TODO
-
-### `externalLayerConfig: Boolean = undefined`
-
-// TODO
 
 ### `unstyled: Boolean`
 
@@ -100,7 +92,6 @@ npm publish (requires OTP)
 ### Testing
 
 // TODO
-
 
 ## Changelog
 
