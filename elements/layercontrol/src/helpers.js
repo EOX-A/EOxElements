@@ -15,7 +15,10 @@ export const createSortable = (element, layers, that) => {
     element
   )._sortable = Sortable.create(element, {
     handle: ".drag-handle",
-    filter: "disabled",
+    filter: ".drag-handle.disabled",
+    swapThreshold: 0.5,
+    animation: 150,
+    easing: "cubic-bezier(1, 0, 0, 1)",
     onStart: (e) => {
       // https://github.com/SortableJS/Sortable/issues/546
       const node = e.item;

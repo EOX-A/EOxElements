@@ -156,6 +156,14 @@ export class EOxLayerControlLayerList extends LitElement {
     li:last-child {
       border: none;
     }
+    li.sortable-chosen {
+      background: #eeea;
+    }
+    li.sortable-drag {
+      opacity: 0;
+    }
+    li.sortable-ghost {
+    }
   `;
 }
 
