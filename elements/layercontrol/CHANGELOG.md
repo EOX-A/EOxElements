@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.6.8...layercontrol-v0.7.0) (2023-10-12)
+
+
+### Miscellaneous Chores
+
+* **docs:** Update readme ([47ece11](https://github.com/EOX-A/EOxElements/commit/47ece1152f093bde4761b6ddb4d7cbc553af7376))
+
 ## 0.6.8 (2023-10-11)
 
 
