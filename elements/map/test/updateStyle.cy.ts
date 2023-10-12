@@ -1,4 +1,5 @@
 import "../main";
+import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 
 describe("layers", () => {
@@ -22,7 +23,7 @@ describe("layers", () => {
       //@ts-ignore
       updatedLayerJson.style = [
         {
-          "fill-color": "yellow",
+          "fill-color": ["string", ["get", "COLOR"], "#eee"],
           "stroke-color": "white",
           "stroke-width": 2,
           "text-value": ["string", ["get", "ECO_NAME"], ""],
@@ -30,6 +31,17 @@ describe("layers", () => {
       ];
       //@ts-ignore
       (<EOxMap>$el[0]).addOrUpdateLayer(updatedLayerJson);
+      const layer = (<EOxMap>$el[0]).map.getLayers().getArray()[0];
+      //@ts-ignore
+      const styleFunction = layer.getStyle();
+      //@ts-ignore
+      const appliedStyle = styleFunction(layer.getSource().getFeatures()[0]);
+      expect(appliedStyle[0].getFill().getColor(), "sets color").to.be.equal(
+        "#7BF5CC"
+      );
+      expect(appliedStyle[0].getText().getText(), "sets text").to.be.equal(
+        "Northeast Siberian coastal tundra"
+      );
     });
   });
 });
