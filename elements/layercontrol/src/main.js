@@ -65,6 +65,9 @@ export class EOxLayerControl extends LitElement {
      */
     this.titleProperty = "title";
 
+    /**
+     * Layer tools
+     */
     this.tools = ["info", "opacity", "remove", "sort"];
 
     /**

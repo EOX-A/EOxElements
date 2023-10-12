@@ -313,9 +313,8 @@ export const ExpandedLayers = {
 };
 
 /**
- * By adding the `layerControlHide` property to map layers,
- * they aren't displayed in the layer control at all (but may
- * be still rendered on the map).
+ * The layer control accepts a "tools" array, which enable
+ * extra functionalities for layers
  */
 export const Tools = {
   args: {},
