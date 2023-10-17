@@ -2,10 +2,9 @@ import * as olLayers from "ol/layer";
 import * as olSources from "ol/source";
 import * as olFormats from "ol/format";
 import STAC from "ol-stac";
-import { applyStyle } from "ol-mapbox-style";
 import { FlatStyleLike } from "ol/style/flat";
-import mapboxgl, { AnySourceData } from "mapbox-gl";
 import { Collection } from "ol";
+import { createXYZ } from "ol/tilegrid";
 
 const availableLayers = {
   ...olLayers,
@@ -54,11 +53,15 @@ export type EoxLayer = {
   properties: object & {
     id: string;
   };
+  minZoom?: number;
+  maxZoom?: number;
+  minResolution?: number;
+  maxResolution?: number;
   opacity?: number;
   visible?: boolean;
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
-  style?: mapboxgl.Style | FlatStyleLike;
+  style?: FlatStyleLike;
 };
 
 export function createLayer(layer: EoxLayer): olLayers.Layer {
@@ -83,6 +86,13 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
           // @ts-ignore
           format: new olFormats[layer.source.format](),
         }),
+        // @ts-ignore
+        ...(layer.source.tileGrid && {
+          tileGrid: createXYZ({
+            // @ts-ignore
+            ...layer.source.tileGrid,
+          }),
+        }),
       }),
     }),
     ...(layer.type === "Group" && {
@@ -100,49 +110,14 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   }
 
   if (layer.style) {
-    if ("version" in layer.style) {
-      const mapboxStyle: mapboxgl.Style = layer.style;
-      // existing layer source will not get overridden by "style" property
-      // to allow vector layers without defined sources, create a dummy-geojson-source
-      // if source does exist
-      if (!mapboxStyle.sources) {
-        mapboxStyle.sources = {};
-      }
-      const sourceName = layer.properties.id;
-      if (!mapboxStyle.sources[sourceName]) {
-        const dummy =
-          layer.source.type === "VectorTile"
-            ? {
-                type: "vector",
-              }
-            : {
-                type: "geojson",
-                data: {
-                  type: "FeatureCollection",
-                  //@ts-ignore
-                  features: [],
-                },
-              };
-        mapboxStyle.sources[sourceName] = dummy as AnySourceData;
-      }
-      olLayer.set(
-        "sourcePromise",
-        applyStyle(olLayer, mapboxStyle, sourceName, {
-          updateSource: false,
-        }),
-        true
-      );
-    } else {
-      olLayer.setStyle(layer.style);
-      olLayer.set("sourcePromise", Promise.resolve(), true);
-    }
+    olLayer.setStyle(layer.style);
   }
   olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
   return olLayer;
 }
 
-export async function updateLayer(
+export function updateLayer(
   newLayerDefinition: EoxLayer,
   existingLayer: olLayers.Layer
 ) {
@@ -156,7 +131,6 @@ export async function updateLayer(
     throw new Error(`Layers are not compatible to be updated`);
   }
   const newLayer = createLayer(newLayerDefinition);
-  await newLayer.get("sourcePromise");
 
   if (
     JSON.stringify(newLayerDefinition.source) !==
@@ -181,6 +155,12 @@ export async function updateLayer(
     existingLayer.setProperties(newLayerDefinition.properties);
   }
 
+  if (newLayerDefinition.visible !== existingJsonDefintion.visible) {
+    existingLayer.setVisible(newLayerDefinition.visible);
+  }
+  if (newLayerDefinition.opacity !== existingJsonDefintion.opacity) {
+    existingLayer.setOpacity(newLayerDefinition.opacity);
+  }
   setSyncListeners(existingLayer, newLayerDefinition);
   return existingLayer;
 }
@@ -190,7 +170,7 @@ export const generateLayers = (layerArray: Array<EoxLayer>) => {
     return [];
   }
 
-  return layerArray.reverse().map((l) => createLayer(l));
+  return [...layerArray].reverse().map((l) => createLayer(l));
 };
 
 /**
@@ -205,9 +185,8 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
   olLayer.on("change:visible", () => {
     eoxLayer.visible = olLayer.getVisible();
   });
-  olLayer.on("change:zIndex", (e) => {
+  olLayer.on("change:zIndex", () => {
     // TO DO
-    console.log(e);
   });
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") {

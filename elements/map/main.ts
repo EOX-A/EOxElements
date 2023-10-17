@@ -3,9 +3,9 @@ import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 // @ts-ignore
-import olCss from "ol/ol.css";
+import olCss from "ol/ol.css?inline";
 import { DrawOptions, addDraw } from "./src/draw";
-import { SelectOptions, addSelect } from "./src/select";
+import { EOxSelectInteraction, SelectOptions, addSelect } from "./src/select";
 import {
   generateLayers,
   EoxLayer,
@@ -73,13 +73,19 @@ export class EOxMap extends LitElement {
   interactions: { [index: string]: Draw | Modify } = {};
 
   /**
+   * dictionary of select interactions.
+   */
+  @state()
+  selectInteractions: { [index: string]: EOxSelectInteraction } = {};
+
+  /**
    * dictionary of ol controls associated with the map.
    */
   @state()
   mapControls: { [index: string]: Control } = {};
 
   /**
-   * Apply layers from Mapbox Style JSON
+   * Apply layers Eox Layer JSONs
    * @param json array of EoxLayer JSONs
    * @returns the array of layers
    */
@@ -95,16 +101,15 @@ export class EOxMap extends LitElement {
    * @param json EoxLayer JSON definition
    * @returns the created or updated ol layer
    */
-  addOrUpdateLayer = async (json: EoxLayer) => {
+  addOrUpdateLayer = (json: EoxLayer) => {
     const id = json.properties?.id;
     const existingLayer = getLayerById(this, id);
     let layer;
     if (existingLayer) {
-      await updateLayer(json, existingLayer);
+      updateLayer(json, existingLayer);
       layer = existingLayer;
     } else {
       layer = createLayer(json);
-      await layer.get("sourcePromise");
       this.map.addLayer(layer);
     }
     return layer;
@@ -129,12 +134,21 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * removes a given interaction from the map. Layer have to be removed seperately
+   * removes a given ol-interaction from the map. Layer have to be removed seperately
    * @param id id of the interaction
    */
   removeInteraction = (id: string) => {
     this.map.removeInteraction(this.interactions[id]);
     delete this.interactions[id];
+  };
+
+  /**
+   * removes a given EOxSelectInteraction from the map.
+   * @param id id of the interaction
+   */
+  removeSelect = (id: string) => {
+    this.selectInteractions[id].remove();
+    delete this.selectInteractions[id];
   };
 
   /**
@@ -147,7 +161,7 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * gets an OpenLayers-Layer, either by its "id" or one of its Mapbox-Style IDs
+   * gets an OpenLayers-Layer by its "id"
    */
   getLayerById = (layerId: string) => {
     return getLayerById(this, layerId);
