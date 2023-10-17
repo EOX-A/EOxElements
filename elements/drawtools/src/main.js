@@ -20,7 +20,7 @@ export class EOxDrawTools extends LitElement {
       unstyled: { type: Boolean },
     };
   }
-  
+
   /**
    * @type import("../../map/main").EOxMap
    */
