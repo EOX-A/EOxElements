@@ -24,7 +24,7 @@ describe("Drawtools", () => {
         cy.get("[data-cy='drawBtn']").contains("drawing");
       });
     cy.get("eox-drawtools").and(($el) => {
-      expect($el[0]._drawnFeatures).to.have.length(1);
+      expect($el[0].drawnFeatures).to.have.length(1);
     });
   });
 
@@ -38,7 +38,7 @@ describe("Drawtools", () => {
         cy.get("[data-cy='drawBtn']").should("not.contain", "drawing");
       });
     cy.get("eox-drawtools").should(($el) => {
-      expect($el[0]._drawnFeatures).to.have.length(0);
+      expect($el[0].drawnFeatures).to.have.length(0);
     });
   });
 });
