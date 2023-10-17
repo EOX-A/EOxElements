@@ -1,16 +1,14 @@
 {
   "name": "@eox/map",
-  "version": "0.7.0",
+  "version": "0.8.1",
   "type": "module",
   "dependencies": {
     "lit": "^2.7.4",
     "ol": "^8.1.0",
-    "ol-mapbox-style": "^11.0.3",
     "ol-stac": "^1.0.0-beta.4"
   },
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
-    "@types/mapbox-gl": "^2.7.11",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint-plugin-typescript": "^0.14.0",

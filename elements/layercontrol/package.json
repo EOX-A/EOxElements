@@ -1,6 +1,6 @@
 {
   "name": "@eox/layercontrol",
-  "version": "0.6.8",
+  "version": "0.7.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -23,11 +23,12 @@
   ],
   "main": "./dist/eox-layercontrol.js",
   "scripts": {
-    "build": "tsc && vite build",
-    "watch": "tsc && vite build --watch",
+    "build": "vite build",
+    "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "dayjs": "^1.11.8",

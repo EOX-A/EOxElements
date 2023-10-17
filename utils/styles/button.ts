@@ -57,6 +57,7 @@ button.icon {
   padding: 0;
   border-radius: 50%;
   width: 24px;
+  text-indent: -9999px;
 }
 
 button.icon-text {

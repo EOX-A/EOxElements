@@ -13,29 +13,13 @@
       "attributions": "Regions: @ openlayers.org"
     },
     "style": {
-      "version": 8,
-      "name": "regions",
-      "sources": {},
-      "layers": [
-        {
-          "id": "regions_fill",
-          "type": "fill",
-          "source": "regions",
-          "paint": {
-            "fill-color": ["get", "COLOR"],
-            "fill-opacity": 1
-          }
-        },
-        {
-          "id": "regions_outline",
-          "type": "line",
-          "source": "regions",
-          "paint": {
-            "line-color": "#141414",
-            "line-width": 1.5
-          }
-        }
-      ]
+      "circle-radius": 10,
+      "circle-fill-color": "red",
+      "circle-stroke-color": "black",
+      "circle-stroke-width": 2,
+      "stroke-color": "black",
+      "stroke-width": 5,
+      "fill-color": "red"
     }
   }
 ]

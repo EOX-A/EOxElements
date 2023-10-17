@@ -11,7 +11,8 @@ const map = html` <eox-map
     "properties": {
       "id": "group2",
       "title": "Data Layers",
-      "layerControlExpand": true
+      "layerControlExpand": true,
+      "description": "# Hello world"
     },
     "layers": [
       {
@@ -132,10 +133,19 @@ export default {
  * Basic layercontrol setup.
  */
 export const Primary = {
-  args: {},
-  render: (args, test) => html`
+  args: {
+    idProperty: "id",
+    titleProperty: "title",
+    unstyled: false,
+  },
+  render: (args) => html`
     <div style="display: flex">
-      <eox-layercontrol for="eox-map"></eox-layercontrol>
+      <eox-layercontrol
+        .idProperty=${args.idProperty}
+        .titleProperty=${args.titleProperty}
+        .unstyled=${args.unstyled}
+        for="eox-map"
+      ></eox-layercontrol>
       ${map}
     </div>
   `,
@@ -202,16 +212,6 @@ export const OptionalLayers = {
           {
             type: "Tile",
             properties: {
-              title: "Terrain Light",
-            },
-            source: {
-              type: "XYZ",
-              url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
-            },
-          },
-          {
-            type: "Tile",
-            properties: {
               title: "EOxCloudless 2021",
               layerControlOptional: true,
             },
@@ -245,6 +245,16 @@ export const OptionalLayers = {
             },
             visible: false,
           },
+          {
+            type: "Tile",
+            properties: {
+              title: "Terrain Light",
+            },
+            source: {
+              type: "XYZ",
+              url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+            },
+          },
         ])}
       >
       </eox-map>
@@ -276,21 +286,81 @@ export const ExpandedLayers = {
             },
           },
           {
-            type: "Tile",
+            type: "Group",
             properties: {
-              title: "EOxCloudless",
+              title: "Layer group",
               layerControlExpand: true,
             },
-            source: {
-              type: "XYZ",
-              url: "//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",
-            },
-            visible: false,
+            layers: [
+              {
+                type: "Tile",
+                properties: {
+                  title: "EOxCloudless",
+                },
+                source: {
+                  type: "XYZ",
+                  url: "//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2021_3857/default/g/{z}/{y}/{x}.jpg",
+                },
+                visible: false,
+              },
+            ],
           },
         ])}
       >
       </eox-map>
     </div>
+  `,
+};
+
+/**
+ * The layer control accepts a "tools" array, which enable
+ * extra functionalities for layers
+ */
+export const Tools = {
+  args: {},
+  render: (args, test) => html`
+    <p>Default tools: info, opacity, remove, sort</p>
+    <eox-layercontrol for="eox-map#tools"></eox-layercontrol>
+    <hr />
+    <p>Only one tool: info</p>
+    <eox-layercontrol .tools=${["info"]} for="eox-map#tools"></eox-layercontrol>
+    <hr />
+    <p>Only one tool: sort</p>
+    <eox-layercontrol .tools=${["sort"]} for="eox-map#tools"></eox-layercontrol>
+    <hr />
+    <p>No tools</p>
+    <eox-layercontrol .tools=${[]} for="eox-map#tools"></eox-layercontrol>
+    <eox-map
+      id="tools"
+      style="width: 400px; height: 300px; margin-left: 7px;"
+      layers=${JSON.stringify([
+        {
+          type: "Vector",
+          properties: {
+            title: "Regions",
+            id: "regions",
+            description: "Ecological regions of the earth.",
+          },
+          source: {
+            type: "Vector",
+            url: "https://openlayers.org/data/vector/ecoregions.json",
+            format: "GeoJSON",
+            attributions: "Regions: @ openlayers.org",
+          },
+        },
+        {
+          type: "Tile",
+          properties: {
+            title: "Terrain Light",
+          },
+          source: {
+            type: "XYZ",
+            url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+          },
+        },
+      ])}
+    >
+    </eox-map>
   `,
 };
 
@@ -335,6 +405,140 @@ export const HiddenLayers = {
         ])}
       >
       </eox-map>
+    </div>
+  `,
+};
+
+export const SingleLayer = {
+  args: { idProperty: "id", titleProperty: "title", unstyled: false },
+  render: (args, test) => html`
+    <div style="display: flex">
+      <eox-layercontrol-layer
+        .idProperty=${args.idProperty}
+        .titleProperty=${args.titleProperty}
+        .unstyled=${args.unstyled}
+      ></eox-layercontrol-layer>
+      <eox-map
+        id="single"
+        style="width: 400px; height: 300px;"
+        layers='[
+          {
+            "type": "Tile",
+            "properties": {
+              "id": "osm",
+              "title": "Open Street Map"
+            },
+            "visible": true,
+            "opacity": 0.5,
+            "source": {
+              "type": "OSM"
+            }
+          }
+        ]'
+      ></eox-map>
+    </div>
+    <script>
+      const olMap = document.querySelector("eox-map#single").map;
+      olMap.on("loadend", () => {
+        const firstLayer = olMap.getLayers().getArray()[0];
+        document.querySelector("eox-layercontrol-layer").layer = firstLayer;
+        document.querySelector("eox-layercontrol-layer").olMap = olMap;
+      });
+    </script>
+  `,
+};
+
+export const LayerList = {
+  args: { unstyled: false },
+  render: (args, test) => html`
+    <div style="display: flex">
+      <eox-layercontrol-layer-list
+        .unstyled=${args.unstyled}
+      ></eox-layercontrol-layer-list>
+      <eox-map
+        id="list"
+        style="width: 400px; height: 300px;"
+        layers='[
+          {
+            "type": "Tile",
+            "opacity": 0.5,
+            "visible": false,
+            "properties": {
+              "id": "wind",
+              "title": "WIND"
+            },
+            "source": {
+              "type": "TileWMS",
+              "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              "params": {
+                "LAYERS": "AWS_VIS_WIND_V_10M"
+              }
+            }
+          },
+          {
+            "type": "Tile",
+            "properties": {
+              "id": "osm",
+              "title": "Open Street Map"
+            },
+            "visible": true,
+            "source": {
+              "type": "OSM"
+            }
+          },
+          {
+            "type": "Tile",
+            "properties": {
+              "id": "osm2",
+              "title": "Another OSM"
+            },
+            "visible": true,
+            "source": {
+              "type": "OSM"
+            }
+          }
+        ]'
+      ></eox-map>
+    </div>
+    <script>
+      const olMapList = document.querySelector("eox-map#list").map;
+      olMapList.once("loadend", () => {
+        const layerCollection = olMapList.getLayers();
+        document.querySelector("eox-layercontrol-layer-list").layers =
+          layerCollection;
+        document.querySelector("eox-layercontrol-layer-list").olMapList =
+          olMapList;
+      });
+    </script>
+  `,
+};
+
+/**
+ * Layer control tabs
+ */
+export const Tabs = {
+  render: () => html`
+    <eox-layercontrol-tabs
+      .actions=${["delete"]}
+      .tabs=${["info", "opacity", "config"]}
+    ></eox-layercontrol-tabs>
+  `,
+};
+
+/**
+ * Unstyled version of the Element
+ */
+export const Unstyled = {
+  args: {
+    unstyled: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .unstyled=${args.unstyled}
+        for="eox-map"
+      ></eox-layercontrol>
+      ${map}
     </div>
   `,
 };

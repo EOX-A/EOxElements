@@ -9,7 +9,8 @@
     "source": {
       "type": "VectorTile",
       "url": "https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",
-      "format": "MVT"
+      "format": "MVT",
+      "tileGrid": {}
     }
   }
 ]
