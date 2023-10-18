@@ -8,7 +8,7 @@ export class EOxMapTooltip extends TemplateElement {
    * Useful for e.g. translating keys or introducing a whitelist.
    */
   @property()
-  propertyTransform: Function = (property: [key: string, value: any]) =>
+  propertyTransform = (property: [key: string, value: any]) =>
     property;
 
   renderContent(content: Object) {
