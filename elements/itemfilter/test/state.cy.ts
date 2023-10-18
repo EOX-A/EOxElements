@@ -10,8 +10,9 @@ describe("Item Filter Config", () => {
   beforeEach(() => {
     cy.mount(`<eox-itemfilter></eox-itemfilter>`)
       .as("eox-itemfilter")
-      .then((eoxItemFilter: any) => {
-        eoxItemFilter[0].config = {
+      .then(($el => {
+        const eoxItemFilter = <EOxItemFilter>$el[0];
+        eoxItemFilter.config = {
           titleProperty: "title",
           filterProperties: [
             {
@@ -23,9 +24,9 @@ describe("Item Filter Config", () => {
           ],
           aggregateResults: "themes",
         };
-        eoxItemFilter[0].apply(testItems);
-        eoxItemFilter[0].selectedResult = testItems[selectedResultIndex];
-      });
+        eoxItemFilter.apply(testItems);
+        eoxItemFilter.selectedResult = testItems[selectedResultIndex];
+      }));
   });
 
   it("should render the checkboxes as checked", () => {

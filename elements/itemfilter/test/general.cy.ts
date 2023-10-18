@@ -10,8 +10,9 @@ describe("Item Filter Config", () => {
     </eox-itemfilter>`
     )
       .as("eox-itemfilter")
-      .then((eoxItemFilter: any) => {
-        eoxItemFilter[0].config = {
+      .then(($el) => {
+        const eoxItemFilter = <EOxItemFilter>$el[0];
+        eoxItemFilter.config = {
           titleProperty: "title",
           filterProperties: [
             {
@@ -25,7 +26,7 @@ describe("Item Filter Config", () => {
           aggregateResults: "themes",
           enableHighlighting: true,
         };
-        eoxItemFilter[0].apply(testItems);
+        eoxItemFilter.apply(testItems);
       });
   });
 
