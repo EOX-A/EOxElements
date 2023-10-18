@@ -1,0 +1,45 @@
+name: Manage releases
+
+on:
+  push:
+    branches:
+      - "main"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release Please! 🤖
+        uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          command: manifest
+          monorepo-tags: true
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        # these if statements ensure that a publication only occurs when
+        # a new release is created:
+        if: ${{ steps.release.outputs.releases_created }}
+      - name: Set up NPM 🔧
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: "https://registry.npmjs.org"
+        if: ${{ steps.release.outputs.releases_created }}
+      - name: Install dependencies 🔧
+        run: npm ci
+        if: ${{ steps.release.outputs.releases_created }}
+      - name: Build and publish package 🚀
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          ELEMENT_DIR: ${{ steps.release.outputs.paths_released }}
+        run: |
+          cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
+          npm run build && \
+          npm publish
+        if: ${{ steps.release.outputs.releases_created }}

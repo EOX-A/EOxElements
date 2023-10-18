@@ -1,27 +1,43 @@
 {
   "name": "@eox/elements",
+  "homepage": "https://eox-a.github.io/EOxElements",
   "private": true,
   "version": "2.0.0",
   "workspaces": [
     "elements/*"
   ],
   "scripts": {
+    "start": "concurrently \"npm:watch:generate-manifest\" \"npm:storybook\"",
     "build:all": "npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
     "cypress": "cypress open",
-    "test:all": "cypress run --component",
+    "test:all": "npm run test:component && npm run test:e2e",
+    "test:component": "cypress run --component",
+    "test:e2e": "npm run build:all && cypress run --e2e",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
     "format:check:all": "prettier --check .",
     "lint:all": "npm run lint --ws",
     "lint:fix:all": "npm run lint:fix --ws",
-    "watch:all": "npm run watch --ws"
+    "storybook": "storybook dev -p 6006",
+    "build:storybook": "storybook build -o docs",
+    "generate-manifest": "npx custom-elements-manifest analyze --litelement",
+    "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch"
   },
   "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.9.0",
     "@cypress/mount-utils": "^4.0.0",
-    "cypress": "^12.12.0",
+    "@storybook/addon-essentials": "^7.4.6",
+    "@storybook/blocks": "^7.4.6",
+    "@storybook/theming": "^7.4.6",
+    "@storybook/web-components": "^7.4.6",
+    "@storybook/web-components-vite": "^7.4.6",
+    "concurrently": "^8.2.1",
+    "custom-elements-manifest": "^2.0.0",
+    "cypress": "^13.3.0",
     "cypress-lit": "^0.0.8",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.1",
+    "storybook": "^7.4.6"
   },
   "engines": {
     "node": ">=18.16.0"

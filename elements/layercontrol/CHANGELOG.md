@@ -1,0 +1,50 @@
+# Changelog
+
+## [0.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.6.8...layercontrol-v0.7.0) (2023-10-12)
+
+
+### Miscellaneous Chores
+
+* **docs:** Update readme ([47ece11](https://github.com/EOX-A/EOxElements/commit/47ece1152f093bde4761b6ddb4d7cbc553af7376))
+
+## 0.6.8 (2023-10-11)
+
+
+### Miscellaneous Chores
+
+* Update readme ([82f3feb](https://github.com/EOX-A/EOxElements/commit/82f3feb2cb88965b9042fe5c9c9c0c2ba1e78c75))
+
+## Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+<!--
+    Add new changelog entries here.
+    Each entry may be annotated with "Added", "Changed", "Removed", and "Fixed" or other sections mentioned in the definition of Keep A Changelog.
+
+    Example release:
+
+    ## [1.0.0] - May 16, 2023
+
+    ### Added
+    - New visual identity.
+
+    ### Changed
+    - Start using "changelog" over "change log" since it's the common usage.
+
+    ### Removed
+    - Section about "changelog" vs "CHANGELOG".
+
+    ### Fixed
+    - Fix typos in recent README changes.
+    - Update outdated unreleased diff link.
+-->
+
+## Unreleased
+
+### Added
+
+- Delete button for layers and groups along with a Cypress unit test.

@@ -6,6 +6,8 @@ import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";
 import { Geometry } from "@turf/helpers";
 import { EOxMap } from "../../../map/main";
+import { EoxLayer } from "../../../map/src/generate";
+import { Vector as VectorSource } from "ol/source";
 
 export const intersects = (
   itemGeometry: Geometry,
@@ -103,7 +105,9 @@ export class SpatialFilter extends LitElement {
     const mapLayers = [
       {
         type: "Vector",
-        id: "draw",
+        properties: {
+          id: "draw",
+        },
         source: {
           type: "Vector",
           ...(this.geometry && { format: "GeoJSON" }),
@@ -124,7 +128,7 @@ export class SpatialFilter extends LitElement {
 
     this.eoxMap = this.renderRoot.querySelector("eox-map");
     setTimeout(() => {
-      this.eoxMap.setLayers(mapLayers);
+      this.eoxMap.setLayers(mapLayers as EoxLayer[]);
       this.eoxMap.addDraw("draw", {
         id: "drawInteraction",
         type: "Polygon",
@@ -179,8 +183,8 @@ export class SpatialFilter extends LitElement {
 
   reset() {
     const source = this.eoxMap.getLayerById("draw").getSource();
-    if (source.getFeatures()?.length > 0) {
-      source.clear();
+    if ((source as unknown as VectorSource).getFeatures()?.length > 0) {
+      (source as unknown as VectorSource).clear();
       this.eoxMap.removeInteraction("drawInteraction_modify");
       this.setup();
     }
