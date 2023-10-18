@@ -105,7 +105,7 @@ describe("LayerControl", () => {
       .within(() => {
         cy.get(`[data-layer=${layerToDelete}] .tools > summary`)
           .click()
-          .get("button.remove-icon:visible")
+        cy.get("button.remove-icon:visible")
           .last()
           .click();
         cy.get(`[data-layer=${layerToDelete}]`).should("not.exist");

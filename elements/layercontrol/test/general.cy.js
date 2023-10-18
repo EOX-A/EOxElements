@@ -76,7 +76,7 @@ describe("LayerControl", () => {
       .within(() => {
         cy.get(".tools summary")
           .click({ multiple: true })
-          .get(".drag-handle:visible")
+        cy.get(".drag-handle:visible")
           .should("have.length", 1);
       });
   });

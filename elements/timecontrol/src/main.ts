@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
-import TileSource from "ol/source/Tile";
+import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
@@ -53,7 +53,7 @@ export class EOxTimeControl extends LitElement {
    * ```
    */
   @property()
-  urlFunction: Function;
+  urlFunction: (url: string) => string;
 
   /**
    * Original tile url function of the source.
@@ -110,7 +110,7 @@ export class EOxTimeControl extends LitElement {
   private _animationInterval: ReturnType<typeof setInterval>;
 
   @state()
-  private _animationSource: TileSource;
+  private _animationSource: UrlTile;
 
   @state()
   private _isAnimationPlaying: boolean;
@@ -130,9 +130,7 @@ export class EOxTimeControl extends LitElement {
       this._newTimeIndex = this.animationValues.length - 1;
     }
 
-    //@ts-ignore
     this._animationSource.setTileUrlFunction(
-      //@ts-ignore
       (tileCoord, pixelRatio, projection) => {
         const src = this._originalTileUrlFunction(
           tileCoord,
@@ -153,6 +151,7 @@ export class EOxTimeControl extends LitElement {
         return src.substring(0, src.indexOf("?") + 1) + searchParams.toString();
       }
     );
+    // TODO dont be accessing protected methods!
     //@ts-ignore
     this._animationSource.setKey(new Date());
     this._animationSource.changed();
@@ -170,9 +169,8 @@ export class EOxTimeControl extends LitElement {
           .getLayers()
           .getArray()
           .find((l) => l.get("id") === this.layer) as Layer;
-        this._animationSource = animationLayer.getSource() as TileSource;
+        this._animationSource = animationLayer.getSource() as UrlTile;
         this._originalTileUrlFunction =
-          //@ts-ignore
           this._animationSource.getTileUrlFunction();
       }
     });
