@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.7.0...layercontrol-v0.7.1) (2023-10-18)
+
+
+### Bug Fixes
+
+* Linter errors ([6dda664](https://github.com/EOX-A/EOxElements/commit/6dda66420f8ce5a7a17f9d41a534de72dd8697f0))
+
 ## [0.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.6.8...layercontrol-v0.7.0) (2023-10-12)
 
 
