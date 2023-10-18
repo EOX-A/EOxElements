@@ -9,9 +9,7 @@ describe("VectorTile Layer", () => {
       encoding: "binary",
     });
 
-    // @ts-ignore
     vectorTileLayerStyleJson[0].style = {
-      // @ts-ignore
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 4,
@@ -37,7 +35,6 @@ describe("VectorTile Layer", () => {
     });
   });
   /*it("loads a Vector Tile Layer, applies mapbox style", () => {
-    // @ts-ignore
     vectorTileLayerStyleJson[0].style = {
       version: 8,
       name: "countries",

@@ -14,7 +14,7 @@ type controlType =
   | "Zoom";
 
 type controlDictionary = {
-  [key in controlType]?: Object;
+  [key in controlType]?: object;
 };
 
 /**
@@ -34,9 +34,7 @@ export function addInitialControls(EOxMap: EOxMap) {
       for (let i = 0, ii = keys.length; i < ii; i++) {
         const controlName = keys[i] as controlType;
         const controlOptions = controls[controlName];
-        // @ts-ignore
         if (controlOptions && controlOptions.layers) {
-          // @ts-ignore
           controlOptions.layers = generateLayers(controlOptions.layers); // parse layers (OverviewMap)
         }
         const control = new olControls[controlName](controlOptions);
