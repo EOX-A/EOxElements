@@ -96,14 +96,14 @@ import "@eox/<element>" from "https://cdn.skypack.dev/@eox/<element>"
 
 ### Branch naming convention
 
-Inspired by [this article](https://betterprogramming.pub/enabling-monorepo-with-a-simple-single-github-repository-39bc6347abba#391d)
+Inspired by [this article](https://betterprogramming.pub/enabling-monorepo-with-a-simple-single-github-repository-39bc6347abba#391d).
+
+Please name your branches `<element>/<changetype>/<name>`:
 
 ```
 main
-map/main
 map/feature/new-feature
 map/fix/some-fix
-chart/main
 chart/feature/new-feature
 chart/fix/some-fix
 [...]
@@ -131,9 +131,20 @@ This opens the storybook server on localhost (port 6006), where multiple element
 
 ### Test server
 
-You can run individual tests by using the Cypress testing GUI. It offers access to a suite of configurations for each element, and e2e tests combining multiple elements.
+You can run individual tests by using the Cypress testing GUI. It offers access to a suite of configurations for each element via component tests, and E2E tests combining multiple elements.
 
-In order to be able to run tests for a specific element you need to build that element first, using the `build` or the `watch` (re-building on every change) command:
+#### Component Tests
+
+```
+npm run cypress
+--> select Component Testing
+--> select a browser
+--> select a spec
+```
+
+#### E2E Tests
+
+End-to-end (E2E) Tests use the bundleded versions of the elements. In order to be able to run E2E tests for a specific element you need to build that element first, using the `build` or the `watch` (re-building on every change) command:
 
 ```
 npm run watch -w <element>
@@ -156,7 +167,15 @@ npm run cypress
 
 ### Run automated tests
 
-TODO
+Automated tests (component & E2E tests) are performed by the GitHub action triggered on each PR to main. You can trigger them locally by running:
+
+```
+npm run test:all // component & E2E
+npm run test:component // only component tests
+npm run test:e2e // only E2E test
+```
+
+Temember to build/watch all components before running E2E tests as specified above.
 
 ### Useful commands
 

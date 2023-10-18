@@ -32,6 +32,6 @@ export const MultiPolygon = {
     <eox-drawtools
       for="eox-map#multi"
       layer="draw"
-      multiplefeatures
+      multiple-features
     ></eox-drawtools>`,
 };
