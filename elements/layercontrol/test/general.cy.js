@@ -74,10 +74,8 @@ describe("LayerControl", () => {
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        cy.get(".tools summary")
-          .click({ multiple: true })
-        cy.get(".drag-handle:visible")
-          .should("have.length", 1);
+        cy.get(".tools summary").click({ multiple: true });
+        cy.get(".drag-handle:visible").should("have.length", 1);
       });
   });
 

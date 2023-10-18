@@ -123,15 +123,9 @@ export class EOxStacInfo extends LitElement {
                     ([, value]) => html`
                       <slot name=${value.label.toLowerCase()}>
                         <li>
-                          <span class="label">
-                            ${
-                              value.label
-                            } </span
-                          >:
+                          <span class="label"> ${value.label} </span>:
                           <span class="value">
-                            ${
-                              unsafeHTML(value.formatted)
-                            }
+                            ${unsafeHTML(value.formatted)}
                           </span>
                         </li>
                       </slot>
@@ -152,15 +146,11 @@ export class EOxStacInfo extends LitElement {
                         <slot
                           name="featured-${value.label.toLowerCase()}-summary"
                         >
-                          ${
-                            value.label
-                          }
+                          ${value.label}
                         </slot>
                       </summary>
                       <slot name="featured-${value.label.toLowerCase()}">
-                        ${unsafeHTML(
-                          value.formatted
-                        )}
+                        ${unsafeHTML(value.formatted)}
                       </slot>
                     </details>
                   `
