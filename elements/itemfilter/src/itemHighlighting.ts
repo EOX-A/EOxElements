@@ -1,12 +1,11 @@
-// @ts-nocheck
 // adapted from https://gist.github.com/evenfrost/1ba123656ded32fb7a0cd4651efd4db0
 
 export const highlight = (
-  fuseSearchResult: any,
+  fuseSearchResult: unknown,
   highlightClassName = "highlight",
   matchKey = "title"
 ) => {
-  const set = (obj: object, path: string, value: any) => {
+  const set = (obj: {[key: string]: unknown}, path: string, value: unknown) => {
     const pathValue = path.split(".");
     let i;
 
@@ -24,7 +23,7 @@ export const highlight = (
     let content = "";
     let nextUnhighlightedRegionStartingIndex = 0;
 
-    regions.forEach((region) => {
+    regions.forEach((region: number) => {
       const lastRegionNextIndex = region[1] + 1;
 
       content += [
@@ -42,17 +41,20 @@ export const highlight = (
     return content;
   };
 
-  return fuseSearchResult
-    .filter(({ matches }: any) => matches && matches.length)
-    .map(({ item, matches }: any) => {
-      const highlightedItem = { ...item };
+  return (fuseSearchResult as Array<{ matches?: unknown[], item: unknown }>)
+    .filter(({ matches }) => matches && matches.length)
+    .map(({ item, matches }) => {
+      const highlightedItem: {[key: string]: unknown} = {};
+      for (const [key, value] of Object.entries(item)) {
+        highlightedItem[key] = value;
+      }
 
-      matches.forEach((match: any) => {
+      (matches as Array<{[key: string]: unknown}>).forEach((match) => {
         if (match.key !== matchKey) return;
         set(
           highlightedItem,
-          match.key,
-          generateHighlightedText(match.value, match.indices)
+          match.key as string,
+          generateHighlightedText(match.value as string, match.indices as number[])
         );
       });
 
