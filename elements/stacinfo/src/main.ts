@@ -1,4 +1,4 @@
-import { LitElement, html, nothing, PropertyValueMap } from "lit";
+import { LitElement, html, nothing, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -123,19 +123,9 @@ export class EOxStacInfo extends LitElement {
                     ([, value]) => html`
                       <slot name=${value.label.toLowerCase()}>
                         <li>
-                          <span class="label">
-                            ${
-                              // TODO
-                              // @ts-ignore
-                              value.label
-                            } </span
-                          >:
+                          <span class="label"> ${value.label} </span>:
                           <span class="value">
-                            ${
-                              // TODO
-                              // @ts-ignore
-                              unsafeHTML(value.formatted)
-                            }
+                            ${unsafeHTML(value.formatted)}
                           </span>
                         </li>
                       </slot>
@@ -156,19 +146,11 @@ export class EOxStacInfo extends LitElement {
                         <slot
                           name="featured-${value.label.toLowerCase()}-summary"
                         >
-                          ${
-                            // TODO
-                            // @ts-ignore
-                            value.label
-                          }
+                          ${value.label}
                         </slot>
                       </summary>
                       <slot name="featured-${value.label.toLowerCase()}">
-                        ${unsafeHTML(
-                          // TODO
-                          // @ts-ignore
-                          value.formatted
-                        )}
+                        ${unsafeHTML(value.formatted)}
                       </slot>
                     </details>
                   `
@@ -225,7 +207,7 @@ export class EOxStacInfo extends LitElement {
   }
 
   protected updated(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValues<string> | Map<PropertyKey, unknown>
   ): void {
     if (_changedProperties.has("for")) {
       this.fetchStac(this.for);
