@@ -19,17 +19,35 @@ export class EOxChart extends HTMLElement {
   /**
    * Set chart data, TODO description
    */
-  setData: Function;
+  setData: (body: object) => void;
 
-  setOptions: Function;
+  setOptions: (body: object) => void;
 
-  setSignalsData: Function;
+  setSignalsData: (body: object) => void;
 
-  setSignalsEndpoint: Function;
+  setSignalsEndpoint: (options: {
+    source: string;
+    endpoint: string;
+    active: string[];
+    features: string[][];
+    geometry: object;
+    timeInterval: object;
+    startTime?: string;
+    endTime?: string;
+  }) => void;
 
-  setSignalsGeometry: Function;
+  setSignalsGeometry: (geometry: object) => void;
 
-  setGeoDBEndpoint: Function;
+  setGeoDBEndpoint: (options: {
+    source: string;
+    endpoint: string;
+    active: string[];
+    features: string[][];
+    geometry: object;
+    timeInterval: object;
+    startTime?: string;
+    endTime?: string;
+  }) => void;
 
   constructor() {
     super();

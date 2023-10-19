@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
-// @ts-ignore
+
 import olCss from "ol/ol.css?inline";
 import { DrawOptions, addDraw } from "./src/draw";
 import { EOxSelectInteraction, SelectOptions, addSelect } from "./src/select";

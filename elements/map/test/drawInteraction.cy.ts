@@ -30,7 +30,6 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
       const drawLayer = eoxMap.getLayerById("drawLayer");
-      //@ts-ignore
       const features = drawLayer.getSource().getFeatures();
       const geometry = features[0].getGeometry() as Point;
       expect(features).to.have.length(1);
@@ -57,7 +56,6 @@ describe("draw interaction", () => {
       });
 
       eoxMap.addEventListener("drawend", (evt) => {
-        //@ts-ignore
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
       });
 
@@ -99,7 +97,6 @@ describe("draw interaction", () => {
       });
 
       eoxMap.addEventListener("drawend", (evt) => {
-        //@ts-ignore
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
       });
 
@@ -148,9 +145,7 @@ describe("draw interaction", () => {
       });
 
       eoxMap.addEventListener("drawend", (evt) => {
-        // @ts-ignore
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
-        // @ts-ignore
         const coordinates = evt.detail.geojson.geometry.coordinates[0];
         const isRectangle =
           coordinates[0][1] === coordinates[1][1] &&

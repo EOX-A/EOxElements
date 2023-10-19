@@ -18,7 +18,6 @@ describe("select interaction on click", () => {
       cy.get("eox-map").and(($el) => {
         const eoxMap = <EOxMap>$el[0];
         eoxMap.addEventListener("select", (evt) => {
-          //@ts-ignore
           expect(evt.detail.feature).to.exist;
           resolve();
         });
@@ -56,14 +55,12 @@ describe("select interaction on click", () => {
       const eoxMap = <EOxMap>$el[0];
 
       eoxMap.addEventListener("select", (evt) => {
-        //@ts-ignore
         expect(evt.detail.feature).to.exist;
       });
 
       eoxMap.addSelect("regions", {
         id: "selectInteraction",
         condition: "click",
-        //@ts-ignore
         style: {
           "stroke-color": "white",
           "stroke-width": 3,

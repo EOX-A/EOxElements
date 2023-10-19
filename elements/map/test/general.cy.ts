@@ -1,5 +1,6 @@
 import { equals } from "ol/coordinate";
 import { Layer } from "ol/layer";
+import { EoxLayer } from "../src/generate";
 import "../main";
 
 describe("Map", () => {
@@ -92,7 +93,7 @@ describe("Map", () => {
         { type: "Tile", properties: { id: "2" }, source: { type: "OSM" } },
         { type: "Tile", properties: { id: "3" }, source: { type: "OSM" } },
       ];
-      (<EOxMap>$el[0]).setLayers(<any>layersArray);
+      (<EOxMap>$el[0]).setLayers(<EoxLayer[]>layersArray);
       expect(layersArray.map((l) => l.properties.id).join("")).to.eq("123");
       expect(layersArray.map((l) => l.properties.id).join("")).to.not.eq("321");
     });

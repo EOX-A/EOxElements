@@ -160,7 +160,6 @@ export class EOxTimeControl extends LitElement {
 
   render() {
     const mapQuery = document.querySelector(this.for as string);
-    // @ts-ignore
     const olMap: Map = mapQuery.map || mapQuery;
 
     olMap.once("loadend", () => {
