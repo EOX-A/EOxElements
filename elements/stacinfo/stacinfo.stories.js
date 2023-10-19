@@ -59,6 +59,7 @@ export const PropertiesWhitelist = {
 export const AllProperties = {
   args: {
     ...Basic.args,
+    // @ts-ignore
     properties: undefined,
     featured: undefined,
     footer: undefined,

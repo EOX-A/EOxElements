@@ -149,6 +149,7 @@ export class SpatialFilter extends LitElement {
         this.dispatchEvent(event);
       };
       this.eoxMap.interactions["drawInteraction"].on(
+        // @ts-ignore
         "drawend",
         (e: { feature: unknown }) => {
           updateGeometryFilter(e.feature);
@@ -156,6 +157,7 @@ export class SpatialFilter extends LitElement {
         }
       );
       this.eoxMap.interactions["drawInteraction_modify"].on(
+        // @ts-ignore
         "modifyend",
         (e: { features: unknown }) => {
           updateGeometryFilter(e.features.getArray()[0]);

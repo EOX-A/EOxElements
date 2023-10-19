@@ -153,6 +153,7 @@ export class EOxDrawTools extends LitElement {
     const mapQuery = document.querySelector(this.for);
 
     this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
+    // @ts-ignore
     this.#olMap = /** @type {import("ol").Map} */ this.#eoxMap.map;
 
     this.drawLayer =

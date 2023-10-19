@@ -130,7 +130,9 @@ export class EOxTimeControl extends LitElement {
       this._newTimeIndex = this.animationValues.length - 1;
     }
 
+    //@ts-ignore
     this._animationSource.setTileUrlFunction(
+      //@ts-ignore
       (tileCoord, pixelRatio, projection) => {
         const src = this._originalTileUrlFunction(
           tileCoord,
@@ -171,6 +173,7 @@ export class EOxTimeControl extends LitElement {
           .find((l) => l.get("id") === this.layer) as Layer;
         this._animationSource = animationLayer.getSource() as UrlTile;
         this._originalTileUrlFunction =
+          //@ts-ignore
           this._animationSource.getTileUrlFunction();
       }
     });
