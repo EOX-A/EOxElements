@@ -63,13 +63,15 @@ export class ElementConfig {
    * Callback that is triggered on item search
    * @returns result items
    */
-  public onFilter?: (results: object[], filters: object[]) => object[];
+  // eslint-disable-next-line
+  public onFilter?: Function = () => {};
 
   /**
    * Callback that is triggered on item selection
    * @returns selected item
    */
-  public onSelect?: (items: object[]) => object;
+  // eslint-disable-next-line
+  public onSelect?: Function = () => {};
 
   /**
    * Display results list
