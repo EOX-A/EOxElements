@@ -1,6 +1,6 @@
 {
   "name": "@eox/drawtools",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
