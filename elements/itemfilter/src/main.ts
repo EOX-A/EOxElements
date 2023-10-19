@@ -34,7 +34,7 @@ export class ElementConfig {
    * Use an external search endpoint instead of fuse search.
    * Passed properties: input string, filters object
    */
-  public externalFilter?: Function;
+  public externalFilter?: (input: string, filters: object[]) => string;
 
   /**
    * The filter properties.
@@ -45,7 +45,7 @@ export class ElementConfig {
   /**
    * Native fuse.js config override
    */
-  public fuseConfig?: Object;
+  public fuseConfig?: object;
 
   /**
    * Inline mode, for rendering the itemfilter in avery condensed space.
@@ -63,13 +63,13 @@ export class ElementConfig {
    * Callback that is triggered on item search
    * @returns result items
    */
-  public onFilter?: Function = () => {};
+  public onFilter?: (results: object[], filters: object[]) => object[];
 
   /**
    * Callback that is triggered on item selection
    * @returns selected item
    */
-  public onSelect?: Function = () => {};
+  public onSelect?: (items: object[]) => object;
 
   /**
    * Display results list
@@ -118,13 +118,13 @@ export class EOxItemFilter extends TemplateElement {
     };
     this.requestUpdate("config", oldValue);
   }
-  private _config = new ElementConfig();
   get config() {
     return this._config;
   }
+  private _config = new ElementConfig();
 
   @property()
-  apply = (items: Array<Object>) => {
+  apply = (items: Array<object>) => {
     this.items = items.map((i, index) => ({
       id: `item-${index}`,
       ...i,
@@ -257,7 +257,7 @@ export class EOxItemFilter extends TemplateElement {
     this._config.onFilter(this.results, this.filters);
   }
 
-  aggregateResults(items: Array<Object>, property: string) {
+  aggregateResults(items: Array<object>, property: string) {
     return items.filter((item: Item) => {
       const aggregation = item[this._config.aggregateResults];
       // special check if a currently selected fiter property is part of a filter key
@@ -281,7 +281,7 @@ export class EOxItemFilter extends TemplateElement {
     });
   }
 
-  sortResults(items: Array<Object>) {
+  sortResults(items: Array<object>) {
     return [...items].sort((a: Item, b: Item) =>
       a[this._config.titleProperty].localeCompare(b[this._config.titleProperty])
     );
@@ -306,10 +306,8 @@ export class EOxItemFilter extends TemplateElement {
     if (detailsElement.classList.contains("details-filter")) {
       if (!detailsElement.open || this.config.expandMultipleFilters) return;
 
-      this.shadowRoot!.querySelectorAll(
-        "eox-itemfilter-expandcontainer"
-      ).forEach((container) => {
-        const details = container.shadowRoot!.querySelector(".details-filter");
+      this.shadowRoot.querySelectorAll('eox-itemfilter-expandcontainer').forEach(container => {
+        const details = container.shadowRoot.querySelector('.details-filter');
         if (details && details !== detailsElement) {
           details.removeAttribute("open");
         }
@@ -317,11 +315,13 @@ export class EOxItemFilter extends TemplateElement {
     } else {
       if (!detailsElement.open || this.config.expandMultipleResults) return;
 
-      this.shadowRoot!.querySelectorAll("details").forEach((details) => {
-        if (details !== detailsElement) {
-          details.removeAttribute("open");
-        }
-      });
+      this.shadowRoot
+        .querySelectorAll('details')
+        .forEach(details => {
+          if (details !== detailsElement) {
+              details.removeAttribute('open');
+          }
+        });
     }
   }
 

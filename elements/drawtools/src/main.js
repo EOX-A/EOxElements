@@ -93,6 +93,7 @@ export class EOxDrawTools extends LitElement {
     this.#eoxMap.addDraw(this.layer, {
       id: "drawInteraction",
       type: "Polygon",
+      stopClick: true,
     });
     this.draw = /** @type {import("ol/interaction").Draw} */ (
       /** @type {unknown} */ (this.#eoxMap.interactions["drawInteraction"])

@@ -133,7 +133,7 @@ export class SpatialFilter extends LitElement {
         id: "drawInteraction",
         type: "Polygon",
       });
-      const updateGeometryFilter = (feature: any) => {
+      const updateGeometryFilter = (feature: unknown) => {
         const event = new CustomEvent("filter", {
           detail: {
             geometry: {
@@ -149,17 +149,15 @@ export class SpatialFilter extends LitElement {
         this.dispatchEvent(event);
       };
       this.eoxMap.interactions["drawInteraction"].on(
-        // @ts-ignore
         "drawend",
-        (e: { feature: any }) => {
+        (e: { feature: unknown }) => {
           updateGeometryFilter(e.feature);
           this.eoxMap.removeInteraction("drawInteraction");
         }
       );
       this.eoxMap.interactions["drawInteraction_modify"].on(
-        // @ts-ignore
         "modifyend",
-        (e: { features: any }) => {
+        (e: { features: unknown }) => {
           updateGeometryFilter(e.features.getArray()[0]);
         }
       );
