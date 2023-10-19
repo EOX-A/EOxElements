@@ -57,7 +57,8 @@ export class EOxItemFilterSpatial extends LitElement {
               name="mode"
               .checked="${
                 // @ts-ignore
-                live(this.filterObject.state.mode === mode)}
+                live(this.filterObject.state.mode === mode)
+              }
               "
               value="${mode}"
               @click="${() => {

@@ -154,14 +154,14 @@ export class EOxItemFilter extends TemplateElement {
               // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
-                  // @ts-ignore
-                  ? Math.min(filterKeys.min, currentValues[0])
+                  ? // @ts-ignore
+                    Math.min(filterKeys.min, currentValues[0])
                   : currentValues[0];
               // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
-                  // @ts-ignore
-                  ? Math.max(filterKeys.max, currentValues[1])
+                  ? // @ts-ignore
+                    Math.max(filterKeys.max, currentValues[1])
                   : currentValues[1];
             } else {
               // @ts-ignore
@@ -169,14 +169,14 @@ export class EOxItemFilter extends TemplateElement {
               // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
-                  // @ts-ignore
-                  ? Math.min(filterKeys.min, currentValue)
+                  ? // @ts-ignore
+                    Math.min(filterKeys.min, currentValue)
                   : currentValue;
               // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
-                  // @ts-ignore
-                  ? Math.max(filterKeys.max, currentValue)
+                  ? // @ts-ignore
+                    Math.max(filterKeys.max, currentValue)
                   : currentValue;
             }
             return;

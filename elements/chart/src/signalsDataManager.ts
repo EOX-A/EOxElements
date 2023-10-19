@@ -301,8 +301,8 @@ class SignalsDataManager {
         });
 
         let actualDataAdded = false;
-        let signalData = (
-          data.map((datapoint) => this.requestHandler.convertData(datapoint))
+        let signalData = data.map((datapoint) =>
+          this.requestHandler.convertData(datapoint)
         );
         // Probably best to always sort by time
         signalData.sort((a, b) => a.x - b.x);

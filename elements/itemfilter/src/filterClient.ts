@@ -155,10 +155,10 @@ export const filter = async (
         if (Object.prototype.hasOwnProperty.call(results[i], key)) {
           const test =
             mode === "within"
-              // @ts-ignore
-              ? within(results[i][key], spatialFilters[key].geometry)
-              // @ts-ignore
-              : intersects(results[i][key], spatialFilters[key].geometry);
+              ? // @ts-ignore
+                within(results[i][key], spatialFilters[key].geometry)
+              : // @ts-ignore
+                intersects(results[i][key], spatialFilters[key].geometry);
           if (test) {
             pass[key] = true;
           } else {
