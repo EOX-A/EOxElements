@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -90,12 +90,14 @@ export class EOxLayerControlLayerTools extends LitElement {
         );
       }}
     >
-      x
+      ${this.unstyled ? "x" : nothing}
     </button>
   `;
 
   _sortButton = html`
-    <button class="sort-icon icon drag-handle">sort</button>
+    <button class="sort-icon icon drag-handle">
+      ${this.unstyled ? "sort" : nothing}
+    </button>
   `;
 
   createRenderRoot() {
@@ -145,7 +147,9 @@ export class EOxLayerControlLayerTools extends LitElement {
                   ${map(
                     this._parseTools(this.tools),
                     (tool) => html`
-                      <button slot="${tool}-icon" class="icon">${tool}</button>
+                      <button slot="${tool}-icon" class="icon">
+                        ${this.unstyled ? tool : nothing}
+                      </button>
                     `
                   )}
 
