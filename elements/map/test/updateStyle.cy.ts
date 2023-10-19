@@ -20,7 +20,7 @@ describe("layers", () => {
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const updatedLayerJson = vectorLayerStyleJson[0];
-      //@ts-ignore
+      // @ts-ignore
       updatedLayerJson.style = [
         {
           "fill-color": ["string", ["get", "COLOR"], "#eee"],
@@ -29,12 +29,12 @@ describe("layers", () => {
           "text-value": ["string", ["get", "ECO_NAME"], ""],
         },
       ];
-      //@ts-ignore
+      // @ts-ignore
       (<EOxMap>$el[0]).addOrUpdateLayer(updatedLayerJson);
       const layer = (<EOxMap>$el[0]).map.getLayers().getArray()[0];
-      //@ts-ignore
+      // @ts-ignore
       const styleFunction = layer.getStyle();
-      //@ts-ignore
+      // @ts-ignore
       const appliedStyle = styleFunction(layer.getSource().getFeatures()[0]);
       expect(appliedStyle[0].getFill().getColor(), "sets color").to.be.equal(
         "#7BF5CC"

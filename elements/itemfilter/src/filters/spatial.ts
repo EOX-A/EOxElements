@@ -55,9 +55,14 @@ export class EOxItemFilterSpatial extends LitElement {
             <input
               type="radio"
               name="mode"
-              .checked="${live(this.filterObject.state.mode === mode)}"
+              .checked="${
+                // @ts-ignore
+                live(this.filterObject.state.mode === mode)
+              }
+              "
               value="${mode}"
               @click="${() => {
+                /* @ts-ignore */
                 this.filterObject.state.mode = mode;
                 const event = new CustomEvent("filter", {
                   detail: {
@@ -133,12 +138,13 @@ export class SpatialFilter extends LitElement {
         id: "drawInteraction",
         type: "Polygon",
       });
-      const updateGeometryFilter = (feature: any) => {
+      const updateGeometryFilter = (feature: unknown) => {
         const event = new CustomEvent("filter", {
           detail: {
             geometry: {
               type: "Polygon",
               coordinates: feature
+                // @ts-ignore
                 .getGeometry()
                 .clone()
                 .transform("EPSG:3857", "EPSG:4326")
@@ -151,7 +157,7 @@ export class SpatialFilter extends LitElement {
       this.eoxMap.interactions["drawInteraction"].on(
         // @ts-ignore
         "drawend",
-        (e: { feature: any }) => {
+        (e: { feature: unknown }) => {
           updateGeometryFilter(e.feature);
           this.eoxMap.removeInteraction("drawInteraction");
         }
@@ -159,7 +165,8 @@ export class SpatialFilter extends LitElement {
       this.eoxMap.interactions["drawInteraction_modify"].on(
         // @ts-ignore
         "modifyend",
-        (e: { features: any }) => {
+        (e: { features: unknown }) => {
+          // @ts-ignore
           updateGeometryFilter(e.features.getArray()[0]);
         }
       );

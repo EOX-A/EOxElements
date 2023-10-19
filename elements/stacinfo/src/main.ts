@@ -1,4 +1,4 @@
-import { LitElement, html, nothing, PropertyValueMap } from "lit";
+import { LitElement, html, nothing, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -225,7 +225,7 @@ export class EOxStacInfo extends LitElement {
   }
 
   protected updated(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValues<string> | Map<PropertyKey, unknown>
   ): void {
     if (_changedProperties.has("for")) {
       this.fetchStac(this.for);

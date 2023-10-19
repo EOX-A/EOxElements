@@ -14,7 +14,7 @@ type controlType =
   | "Zoom";
 
 type controlDictionary = {
-  [key in controlType]?: Object;
+  [key in controlType]?: object;
 };
 
 /**

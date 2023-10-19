@@ -157,7 +157,7 @@ export const Primary = {
  */
 export const ExclusiveLayers = {
   args: {},
-  render: (args, test) => html`
+  render: () => html`
     <div style="display: flex">
       <eox-layercontrol for="eox-map#exclusive"></eox-layercontrol>
       <eox-map
@@ -202,7 +202,7 @@ export const ExclusiveLayers = {
  */
 export const OptionalLayers = {
   args: {},
-  render: (args, test) => html`
+  render: () => html`
     <div style="display: flex">
       <eox-layercontrol for="eox-map#optional"></eox-layercontrol>
       <eox-map
@@ -268,7 +268,7 @@ export const OptionalLayers = {
  */
 export const ExpandedLayers = {
   args: {},
-  render: (args, test) => html`
+  render: () => html`
     <div style="display: flex">
       <eox-layercontrol for="eox-map#expanded"></eox-layercontrol>
       <eox-map
@@ -318,7 +318,7 @@ export const ExpandedLayers = {
  */
 export const Tools = {
   args: {},
-  render: (args, test) => html`
+  render: () => html`
     <p>Default tools: info, opacity, remove, sort</p>
     <eox-layercontrol for="eox-map#tools"></eox-layercontrol>
     <hr />
@@ -371,7 +371,7 @@ export const Tools = {
  */
 export const HiddenLayers = {
   args: {},
-  render: (args, test) => html`
+  render: () => html`
     <div style="display: flex">
       <eox-layercontrol for="eox-map#hidden"></eox-layercontrol>
       <eox-map
@@ -411,7 +411,7 @@ export const HiddenLayers = {
 
 export const SingleLayer = {
   args: { idProperty: "id", titleProperty: "title", unstyled: false },
-  render: (args, test) => html`
+  render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol-layer
         .idProperty=${args.idProperty}
@@ -450,7 +450,7 @@ export const SingleLayer = {
 
 export const LayerList = {
   args: { unstyled: false },
-  render: (args, test) => html`
+  render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol-layer-list
         .unstyled=${args.unstyled}
