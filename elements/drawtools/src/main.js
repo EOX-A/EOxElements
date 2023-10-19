@@ -111,9 +111,9 @@ export class EOxDrawTools extends LitElement {
 
   discardDrawing() {
     this.drawnFeatures = [];
-    this.emitDrawnFeatures();
     this.#eoxMap.removeInteraction("drawInteraction");
     this.drawLayer.getSource().clear();
+    this.emitDrawnFeatures();
     this.currentlyDrawing = false;
     this.requestUpdate();
   }
