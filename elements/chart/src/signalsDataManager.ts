@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Chart, {
   ChartDataset,
   LinearScale,
@@ -150,10 +149,8 @@ class SignalsDataManager {
         intersect: false,
       },
       plugins: {
-        // @ts-ignore
         htmlLegend: {
           containerID: "legend-container",
-          // @ts-ignore
           onClick: (_, legendItem) => {
             if (!legendItem.hidden) {
               const idx = this.activeFields.indexOf(legendItem.text);
@@ -188,11 +185,15 @@ class SignalsDataManager {
         tooltip: {
           callbacks: {
             title: (tooltipItem) => {
-              const raw: any = tooltipItem[0]?.raw;
+              const raw = tooltipItem[0]?.raw as { x: DateTime };
               return raw.x.toISODate();
             },
             label: (tooltipItem) => {
-              const raw: any = tooltipItem.raw;
+              const raw = tooltipItem.raw as {
+                y: number;
+                yMin: number | null;
+                yMax: number | null;
+              };
               const minString =
                 raw.yMin !== null ? `; ↓ ${raw.yMin.toPrecision(3)}` : "";
               const maxString =
@@ -297,7 +298,7 @@ class SignalsDataManager {
         });
 
         let actualDataAdded = false;
-        let signalData = <any>(
+        let signalData = (
           data.map((datapoint) => this.requestHandler.convertData(datapoint))
         );
         // Probably best to always sort by time

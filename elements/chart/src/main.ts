@@ -19,7 +19,7 @@ export class EOxChart extends HTMLElement {
   /**
    * Set chart data, TODO description
    */
-  setData: (body: object) => void;
+  setData: (body: { datasets: ChartDataset[] }) => void;
 
   setOptions: (body: object) => void;
 
@@ -91,17 +91,17 @@ export class EOxChart extends HTMLElement {
       ],
     });
 
-    this.setData = (body: any) => {
-      this.chart.data = body;
+    this.setData = (body: { datasets: ChartDataset[] }) => {
+      this.chart.data = body || { datasets: [] };
       this.chart.update("none");
     };
 
-    this.setOptions = (body: any) => {
+    this.setOptions = (body: object) => {
       this.chart.options = body;
       this.chart.update("none");
     };
 
-    this.setSignalsData = (body: any) => {
+    this.setSignalsData = (body: object) => {
       this.chart.data = {
         datasets: Object.entries(body).map(([key, item]): ChartDataset => {
           return {
