@@ -66,7 +66,7 @@ export class EOxLayerControlLayerList extends LitElement {
       this.requestUpdate();
       this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
     });
-    createSortable(this.renderRoot.querySelector("ul"), this.layers, this);
+    createSortable(this.renderRoot.querySelector("ul"));
   }
 
   createRenderRoot() {
