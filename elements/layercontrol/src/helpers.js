@@ -10,7 +10,6 @@ export const createSortable = (element, layers, that) => {
   /**
    * @type {any[]}
    */
-  let childNodes = [];
   /** @type HTMLElement & {_sortable: import("sortablejs")}*/ (
     element
   )._sortable = Sortable.create(element, {
@@ -19,41 +18,6 @@ export const createSortable = (element, layers, that) => {
     swapThreshold: 0.5,
     animation: 150,
     easing: "cubic-bezier(1, 0, 0, 1)",
-    onStart: (e) => {
-      // https://github.com/SortableJS/Sortable/issues/546
-      const node = e.item;
-      // Remember the list of child nodes when drag started.
-      childNodes = Array.prototype.slice.call(node.parentNode.childNodes);
-      // Filter out the 'sortable-fallback' element used on mobile/old browsers.
-      childNodes = childNodes.filter(
-        (node) =>
-          node.nodeType != Node.ELEMENT_NODE ||
-          !node.classList.contains("sortable-fallback")
-      );
-    },
-    onEnd: (e) => {
-      // Undo DOM changes by re-adding all children in their original order.
-      const node = e.item;
-      const parentNode = node.parentNode;
-      for (const childNode of childNodes) {
-        parentNode.appendChild(childNode);
-      }
-      if (e.oldIndex == e.newIndex) return;
-      // Then move the element using your own logic.
-      // automatically dispatches "sort" event
-      const layer = layers.getArray().find(
-        (l) =>
-          // @ts-ignore
-          l.ol_uid ===
-          /** @type Element & {layer: import("ol/layer").Layer} */ (
-            e.item.querySelector("eox-layercontrol-layer")
-            // @ts-ignore
-          ).layer.ol_uid
-      );
-      layers.remove(layer);
-      layers.insertAt(layers.getLength() - e.newIndex, layer);
-      that.requestUpdate();
-    },
   });
 };
 
