@@ -1,5 +1,5 @@
+// @ts-nocheck
 // adapted from https://gist.github.com/evenfrost/1ba123656ded32fb7a0cd4651efd4db0
-
 export const highlight = (
   fuseSearchResult: unknown,
   highlightClassName = "highlight",

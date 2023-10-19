@@ -17,6 +17,7 @@ describe("select interaction with hover", () => {
       let featureSelectCounter = 0;
       eoxMap.addEventListener("select", (evt) => {
         selectCounter++;
+        // @ts-ignore
         if (evt.detail.feature) {
           featureSelectCounter++;
         }

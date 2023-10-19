@@ -20,6 +20,7 @@ describe("layers", () => {
     cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
       fixture: "/ecoregions.json",
     });
+    // @ts-ignore
     vectorLayerStyleJson[0].style = {
       "fill-color": "yellow",
       "stroke-color": "black",
@@ -32,8 +33,11 @@ describe("layers", () => {
       return new Cypress.Promise((resolve) => {
         const layers = (<EOxMap>$el[0]).map.getLayers().getArray();
         // wait for features to load
+        // @ts-ignore
         layers[0].getSource().on("featuresloadend", () => {
+          // @ts-ignore
           const feature = layers[0].getSource().getFeatures()[0];
+          // @ts-ignore
           const styles = layers[0].getStyleFunction()(feature);
           expect(styles).to.have.length(1);
           resolve();
@@ -46,6 +50,7 @@ describe("layers", () => {
       fixture: "/ecoregions.json",
     });
     vectorLayerStyleJson[0].style = {
+      // @ts-ignore
       "fill-color": ["string", ["get", "COLOR"], "#eee"],
       "stroke-color": "black",
       "stroke-width": 2,

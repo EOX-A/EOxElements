@@ -1,3 +1,4 @@
+// @ts-nocheck
 const getOrCreateLegendList = (chart, id) => {
   const legendContainer = document
     .querySelector("eox-chart")

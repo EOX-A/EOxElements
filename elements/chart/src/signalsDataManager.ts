@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Chart, {
   ChartDataset,
   LinearScale,
@@ -149,8 +150,10 @@ class SignalsDataManager {
         intersect: false,
       },
       plugins: {
+        // @ts-ignore
         htmlLegend: {
           containerID: "legend-container",
+          // @ts-ignore
           onClick: (_, legendItem) => {
             if (!legendItem.hidden) {
               const idx = this.activeFields.indexOf(legendItem.text);
