@@ -27,6 +27,7 @@ describe("SH Display", () => {
         startTime: "2022-01-01",
         endTime: "2022-03-30",
       };
+      // @ts-ignore
       (<EOxChart>$el[0]).setGeoDBEndpoint(options);
     });
   });

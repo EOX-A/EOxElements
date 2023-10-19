@@ -11,7 +11,6 @@ describe("VectorTile Layer", () => {
 
     // @ts-ignore
     vectorTileLayerStyleJson[0].style = {
-      // @ts-ignore
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 4,
