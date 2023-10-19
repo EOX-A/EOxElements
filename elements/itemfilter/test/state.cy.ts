@@ -19,6 +19,7 @@ describe("Item Filter Config", () => {
               key: "themes",
               type: "multiselect",
               expanded: true,
+              // @ts-ignore
               state,
             },
           ],

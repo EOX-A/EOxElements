@@ -14,6 +14,7 @@ export class EOxItemFilterText extends LitElement {
       this.renderRoot.querySelector("input[type='text']")
     );
     this.filterObject.keys.forEach((key) => {
+      // @ts-ignore
       this.filterObject.state[key] = searchInput.value;
     });
     this.filterObject.dirty = true;

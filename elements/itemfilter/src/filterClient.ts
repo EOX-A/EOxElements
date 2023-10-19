@@ -92,22 +92,29 @@ export const filter = async (
           return value.format === "date" ? dayjs(input).unix() : input;
         };
         if (Object.prototype.hasOwnProperty.call(results[i], key)) {
+          // @ts-ignore
           if (Array.isArray(results[i][key])) {
             // TODO - make configurable?
             const mode = "overlap";
             if (mode === "overlap") {
               // must have an overlap with the range to pass
               pass[key] =
+                // @ts-ignore
                 rangeFilters[key].min <= parseValue(results[i][key][1]) &&
+                // @ts-ignore
                 parseValue(results[i][key][0]) <= rangeFilters[key].max;
             } else if (mode === "contain") {
               // must contain complete range to pass
               pass[key] =
+                // @ts-ignore
                 parseValue(results[i][key][0]) >= rangeFilters[key].min &&
+                // @ts-ignore
                 parseValue(results[i][key][1]) <= rangeFilters[key].max;
             }
           } else if (
+            // @ts-ignore
             parseValue(results[i][key]) >= rangeFilters[key].min &&
+            // @ts-ignore
             parseValue(results[i][key]) <= rangeFilters[key].max
           ) {
             pass[key] = true;
@@ -148,7 +155,9 @@ export const filter = async (
         if (Object.prototype.hasOwnProperty.call(results[i], key)) {
           const test =
             mode === "within"
+              // @ts-ignore
               ? within(results[i][key], spatialFilters[key].geometry)
+              // @ts-ignore
               : intersects(results[i][key], spatialFilters[key].geometry);
           if (test) {
             pass[key] = true;

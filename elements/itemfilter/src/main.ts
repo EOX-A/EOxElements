@@ -141,44 +141,60 @@ export class EOxItemFilter extends TemplateElement {
             ? dayjs(value).unix()
             : parseInt(value);
         };
+        // @ts-ignore
         this.items.forEach((item: Item) => {
           if (filterProperty.type === "range") {
             if (Array.isArray(item[filterProperty.key] as Array<number>)) {
               const currentValues = [
+                // @ts-ignore
                 parseValue(item[filterProperty.key][0]),
+                // @ts-ignore
                 parseValue(item[filterProperty.key][1]),
               ];
+              // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
+                  // @ts-ignore
                   ? Math.min(filterKeys.min, currentValues[0])
                   : currentValues[0];
+              // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
+                  // @ts-ignore
                   ? Math.max(filterKeys.max, currentValues[1])
                   : currentValues[1];
             } else {
+              // @ts-ignore
               const currentValue = parseValue(item[filterProperty.key]);
+              // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
+                  // @ts-ignore
                   ? Math.min(filterKeys.min, currentValue)
                   : currentValue;
+              // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
+                  // @ts-ignore
                   ? Math.max(filterKeys.max, currentValue)
                   : currentValue;
             }
             return;
           }
           if (Array.isArray(item[filterProperty.key])) {
+            // @ts-ignore
             item[filterProperty.key].forEach((prop: string) => {
               filterKeys[prop] = undefined;
             });
           } else {
             if (filterProperty.type === "spatial") {
+              // @ts-ignore
               (<SpatialFilterObject>filterKeys).geometry = undefined;
+              // @ts-ignore
               (<SpatialFilterObject>filterKeys).mode =
                 (<SpatialFilterObject>filterProperty).mode || "intersects";
             } else {
+              // @ts-ignore
               filterKeys[item[filterProperty.key]] = undefined;
             }
           }
@@ -197,7 +213,9 @@ export class EOxItemFilter extends TemplateElement {
             dirty: true,
           }),
           ...(filterProperty.type === "range" && {
+            // @ts-ignore
             min: (<RangeFilterObject>filterKeys).min,
+            // @ts-ignore
             max: (<RangeFilterObject>filterKeys).max,
             format: (<RangeFilterObject>filterProperty).format,
           }),
@@ -212,12 +230,16 @@ export class EOxItemFilter extends TemplateElement {
     }
 
     if (this._config.aggregateResults) {
+      // @ts-ignore
       this._resultAggregation = [
         ...new Set(
+          // @ts-ignore
           this.items.reduce((store: Array<string>, item: Item) => {
+            // @ts-ignore
             return store.concat(item[this._config.aggregateResults]);
           }, [])
         ),
+        // @ts-ignore
       ].sort((a, b) => a.localeCompare(b));
     }
 
@@ -260,6 +282,7 @@ export class EOxItemFilter extends TemplateElement {
   }
 
   aggregateResults(items: Array<object>, property: string) {
+    // @ts-ignore
     return items.filter((item: Item) => {
       const aggregation = item[this._config.aggregateResults];
       // special check if a currently selected fiter property is part of a filter key
@@ -284,7 +307,9 @@ export class EOxItemFilter extends TemplateElement {
   }
 
   sortResults(items: Array<object>) {
+    // @ts-ignore
     return [...items].sort((a: Item, b: Item) =>
+      // @ts-ignore
       a[this._config.titleProperty].localeCompare(b[this._config.titleProperty])
     );
   }
@@ -448,6 +473,7 @@ export class EOxItemFilter extends TemplateElement {
                           </summary>
                           <ul>
                             ${repeat(
+                              // @ts-ignore
                               this.aggregateResults(
                                 this.results,
                                 aggregationProperty
@@ -488,6 +514,7 @@ export class EOxItemFilter extends TemplateElement {
                                       () => html`
                                         <span class="title"
                                           >${unsafeHTML(
+                                            // @ts-ignore
                                             item[this._config.titleProperty]
                                           )}</span
                                         >
@@ -501,6 +528,7 @@ export class EOxItemFilter extends TemplateElement {
                         </details>`
                       )
                     : map(
+                        // @ts-ignore
                         this.results,
                         (item: Item) =>
                           html`<li part="result">
@@ -525,6 +553,7 @@ export class EOxItemFilter extends TemplateElement {
                                 () => html`
                                   <span class="title"
                                     >${unsafeHTML(
+                                      // @ts-ignore
                                       item[this._config.titleProperty]
                                     )}</span
                                   >

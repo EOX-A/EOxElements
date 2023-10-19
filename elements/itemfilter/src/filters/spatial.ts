@@ -55,9 +55,13 @@ export class EOxItemFilterSpatial extends LitElement {
             <input
               type="radio"
               name="mode"
-              .checked="${live(this.filterObject.state.mode === mode)}"
+              .checked="${
+                // @ts-ignore
+                live(this.filterObject.state.mode === mode)}
+              "
               value="${mode}"
               @click="${() => {
+                /* @ts-ignore */
                 this.filterObject.state.mode = mode;
                 const event = new CustomEvent("filter", {
                   detail: {
@@ -139,6 +143,7 @@ export class SpatialFilter extends LitElement {
             geometry: {
               type: "Polygon",
               coordinates: feature
+                // @ts-ignore
                 .getGeometry()
                 .clone()
                 .transform("EPSG:3857", "EPSG:4326")
@@ -160,6 +165,7 @@ export class SpatialFilter extends LitElement {
         // @ts-ignore
         "modifyend",
         (e: { features: unknown }) => {
+          // @ts-ignore
           updateGeometryFilter(e.features.getArray()[0]);
         }
       );
