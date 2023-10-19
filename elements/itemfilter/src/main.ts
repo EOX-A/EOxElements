@@ -306,22 +306,22 @@ export class EOxItemFilter extends TemplateElement {
     if (detailsElement.classList.contains("details-filter")) {
       if (!detailsElement.open || this.config.expandMultipleFilters) return;
 
-      this.shadowRoot.querySelectorAll('eox-itemfilter-expandcontainer').forEach(container => {
-        const details = container.shadowRoot.querySelector('.details-filter');
-        if (details && details !== detailsElement) {
-          details.removeAttribute("open");
-        }
-      });
+      this.shadowRoot
+        .querySelectorAll("eox-itemfilter-expandcontainer")
+        .forEach((container) => {
+          const details = container.shadowRoot.querySelector(".details-filter");
+          if (details && details !== detailsElement) {
+            details.removeAttribute("open");
+          }
+        });
     } else {
       if (!detailsElement.open || this.config.expandMultipleResults) return;
 
-      this.shadowRoot
-        .querySelectorAll('details')
-        .forEach(details => {
-          if (details !== detailsElement) {
-              details.removeAttribute('open');
-          }
-        });
+      this.shadowRoot.querySelectorAll("details").forEach((details) => {
+        if (details !== detailsElement) {
+          details.removeAttribute("open");
+        }
+      });
     }
   }
 

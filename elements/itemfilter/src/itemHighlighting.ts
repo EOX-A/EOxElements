@@ -5,7 +5,11 @@ export const highlight = (
   highlightClassName = "highlight",
   matchKey = "title"
 ) => {
-  const set = (obj: {[key: string]: unknown}, path: string, value: unknown) => {
+  const set = (
+    obj: { [key: string]: unknown },
+    path: string,
+    value: unknown
+  ) => {
     const pathValue = path.split(".");
     let i;
 
@@ -41,20 +45,23 @@ export const highlight = (
     return content;
   };
 
-  return (fuseSearchResult as Array<{ matches?: unknown[], item: unknown }>)
+  return (fuseSearchResult as Array<{ matches?: unknown[]; item: unknown }>)
     .filter(({ matches }) => matches && matches.length)
     .map(({ item, matches }) => {
-      const highlightedItem: {[key: string]: unknown} = {};
+      const highlightedItem: { [key: string]: unknown } = {};
       for (const [key, value] of Object.entries(item)) {
         highlightedItem[key] = value;
       }
 
-      (matches as Array<{[key: string]: unknown}>).forEach((match) => {
+      (matches as Array<{ [key: string]: unknown }>).forEach((match) => {
         if (match.key !== matchKey) return;
         set(
           highlightedItem,
           match.key as string,
-          generateHighlightedText(match.value as string, match.indices as number[])
+          generateHighlightedText(
+            match.value as string,
+            match.indices as number[]
+          )
         );
       });
 

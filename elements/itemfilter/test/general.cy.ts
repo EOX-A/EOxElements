@@ -88,10 +88,10 @@ describe("Item Filter Config", () => {
       .within(() => {
         cy.get('[type="checkbox"]').first().check();
         cy.get('[type="checkbox"]').eq(1).check();
-        cy.get('[type="checkbox"]').first().check()
+        cy.get('[type="checkbox"]').first().check();
         cy.get('[type="checkbox"]').first().should("be.checked");
         cy.get('[type="checkbox"]').eq(1).check();
-        cy.get('[type="checkbox"]').eq(1).should("be.checked")
+        cy.get('[type="checkbox"]').eq(1).should("be.checked");
       });
   });
 

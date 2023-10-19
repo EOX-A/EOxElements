@@ -124,16 +124,17 @@ export const filter = async (
     }
     results = [...filteredResults];
   }
-  const spatialFilters: { [key: string]: { geometry?: unknown; mode?: string } } =
-    Object.entries(filters)
-      .filter(([, value]) => value.type === "spatial")
-      .reduce((acc: { [key: string]: unknown }, [key, value]) => {
-        acc[key] = {
-          geometry: value.state.geometry,
-          mode: value.state.mode,
-        };
-        return acc;
-      }, {});
+  const spatialFilters: {
+    [key: string]: { geometry?: unknown; mode?: string };
+  } = Object.entries(filters)
+    .filter(([, value]) => value.type === "spatial")
+    .reduce((acc: { [key: string]: unknown }, [key, value]) => {
+      acc[key] = {
+        geometry: value.state.geometry,
+        mode: value.state.mode,
+      };
+      return acc;
+    }, {});
   if (
     Object.values(spatialFilters)
       .map((f) => f.geometry)
