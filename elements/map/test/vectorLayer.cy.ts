@@ -33,11 +33,11 @@ describe("layers", () => {
       return new Cypress.Promise((resolve) => {
         const layers = (<EOxMap>$el[0]).map.getLayers().getArray();
         // wait for features to load
-        //@ts-ignore
+        // @ts-ignore
         layers[0].getSource().on("featuresloadend", () => {
-          //@ts-ignore
+          // @ts-ignore
           const feature = layers[0].getSource().getFeatures()[0];
-          //@ts-ignore
+          // @ts-ignore
           const styles = layers[0].getStyleFunction()(feature);
           expect(styles).to.have.length(1);
           resolve();

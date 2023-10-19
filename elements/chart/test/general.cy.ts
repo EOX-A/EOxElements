@@ -19,6 +19,7 @@ describe("Chart", () => {
         ],
         labels: ["January", "February", "March", "April"],
       };
+      // @ts-ignore
       (<EOxChart>$el[0]).setData(data);
     });
   });
