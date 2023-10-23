@@ -3,8 +3,9 @@ import Sortable from "sortablejs";
 /**
  *
  * @param {HTMLElement} element
+ * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} layers
  */
-export const createSortable = (element) => {
+export const createSortable = (element, layers) => {
   /**
    * @type {any[]}
    */
@@ -16,6 +17,23 @@ export const createSortable = (element) => {
     swapThreshold: 0.5,
     animation: 150,
     easing: "cubic-bezier(1, 0, 0, 1)",
+    onSort:(e)=>{
+      if (e.newIndex > e.oldIndex) {
+        e.from.removeChild(e.item)
+      }
+            const layer = layers.getArray().find(
+        (l) =>
+          // @ts-ignore
+          l.ol_uid ===
+          /** @type Element & {layer: import("ol/layer").Layer} */ (
+            e.item.querySelector("eox-layercontrol-layer")
+            // @ts-ignore
+          ).layer.ol_uid
+      );
+      layers.remove(layer);
+      layers.insertAt(layers.getLength() - e.newIndex, layer);
+
+    }
   });
 };
 
