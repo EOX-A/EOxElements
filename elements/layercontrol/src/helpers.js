@@ -17,11 +17,11 @@ export const createSortable = (element, layers) => {
     swapThreshold: 0.5,
     animation: 150,
     easing: "cubic-bezier(1, 0, 0, 1)",
-    onSort:(e)=>{
+    onSort: (e) => {
       if (e.newIndex > e.oldIndex) {
-        e.from.removeChild(e.item)
+        e.from.removeChild(e.item);
       }
-            const layer = layers.getArray().find(
+      const layer = layers.getArray().find(
         (l) =>
           // @ts-ignore
           l.ol_uid ===
@@ -32,8 +32,7 @@ export const createSortable = (element, layers) => {
       );
       layers.remove(layer);
       layers.insertAt(layers.getLength() - e.newIndex, layer);
-
-    }
+    },
   });
 };
 
