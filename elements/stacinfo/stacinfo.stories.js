@@ -67,6 +67,20 @@ export const AllProperties = {
 };
 
 /**
+ * If only one property is whitelisted, then it renders the content full-width and without the key.
+ */
+export const SingleProperty = {
+  args: {
+    ...Basic.args,
+    header: [],
+    subheader: [],
+    properties: ["description"],
+    featured: [],
+    footer: [],
+  },
+};
+
+/**
  * Individual STAC properties can be rendered in a more prominent way by using the `featured` property.
  */
 export const FeaturedProperties = {
