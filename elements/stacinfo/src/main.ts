@@ -117,19 +117,28 @@ export class EOxStacInfo extends LitElement {
         ${parseEntries(this.properties).length > 0
           ? html`
               <section id="properties" part="properties">
-                <ul>
+                <ul
+                  class=${parseEntries(this.properties).length === 1
+                    ? "single-property"
+                    : nothing}
+                >
                   ${map(
                     parseEntries(this.properties),
                     ([, value]) => html`
                       <slot name=${value.label.toLowerCase()}>
                         <li>
-                          <span class="label">
-                            ${
-                              // TODO
-                              // @ts-ignore
-                              value.label
-                            } </span
-                          >:
+                          ${when(
+                            parseEntries(this.properties).length > 1,
+                            () => html`
+                              <span class="label">
+                                ${
+                                  // TODO
+                                  // @ts-ignore
+                                  value.label
+                                } </span
+                              >:
+                            `
+                          )}
                           <span class="value">
                             ${
                               // TODO
