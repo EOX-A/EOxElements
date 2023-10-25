@@ -39,3 +39,28 @@ export const MultiPolygon = {
       multiple-features
     ></eox-drawtools>`,
 };
+
+/**
+ * By setting the `show-list` attribute or `showList` property to `true`,
+ * List of features will be visible
+ */
+export const MultiPolygonWithList = {
+  render: () => html` 
+    <div style="display: flex">
+      <eox-map
+        id="multi"
+        style="width: 500px; height: 300px;"
+        layers='[
+        {"type": "Vector","id": "draw","source": {"type": "Vector"}},
+        {"type":"Tile","source":{"type":"OSM"}}
+      ]'
+      ></eox-map>
+      <eox-drawtools
+        for="eox-map#multi"
+        layer="draw"
+        multiple-features
+        show-list
+      ></eox-drawtools>
+    </div>
+    `,
+};

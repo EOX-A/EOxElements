@@ -17,6 +17,7 @@ export class EOxDrawTools extends LitElement {
       layer: { type: String },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
+      showList: { attribute: "show-list", type: Boolean },
       unstyled: { type: Boolean },
     };
   }
@@ -82,6 +83,11 @@ export class EOxDrawTools extends LitElement {
      * Allow adding more than one feature at a time
      */
     this.multipleFeatures = false;
+
+    /**
+     * Show list of features
+     */
+    this.showList = false;
 
     /**
      * Render the element without additional styles
@@ -170,6 +176,9 @@ export class EOxDrawTools extends LitElement {
       );
     this.requestUpdate();
 
+    console.log(this.drawLayer)
+    console.log(this.drawnFeatures)
+
     return html`
       <style>
         ${style}
@@ -198,6 +207,16 @@ export class EOxDrawTools extends LitElement {
           discard
         </button>
       </div>
+      ${
+        this.showList && (
+          html`<div>
+            <ul>
+              <li>asaa</li>
+              <li>hghh</li>
+            </ul>
+           </div>`
+        )
+      }
     `;
   }
 }
