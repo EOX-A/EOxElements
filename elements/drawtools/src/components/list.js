@@ -1,5 +1,8 @@
 import { LitElement, html, nothing } from "lit";
+import { keyed } from "lit/directives/keyed.js";
 import { styleEOX, styleListEOX } from "../style.eox";
+import * as ol from "ol/style.js";
+import { getDefaultPolygonStyle, getSelectedPolygonStyle } from "../helpers";
 
 /**
  * Display list of features
@@ -61,11 +64,20 @@ export class EOxDrawToolsList extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Index of selected feature
+     * @type Number || null
+     */
+    this.selectedFeatureIndex = null;
   }
 
   render() {
-    console.log(this.drawLayer);
+    console.log(this.drawLayer.getStyle());
     console.log(this.drawnFeatures[0]?.getProperties());
+    console.log(this.drawnFeatures[0]?.get("ol_uid"));
+    console.log(this.drawnFeatures[0]?.getGeometry().getExtent());
+    console.log(this.olMap.getView());
 
     return html`
       <style>
@@ -73,26 +85,46 @@ export class EOxDrawToolsList extends LitElement {
         ${!this.unstyled && styleListEOX}
       </style>
       <ul>
-        <li>
-          <div class="list">
-            <label>
-              <span class="title">Feature #1</span>
-              <button class="remove-icon icon" @click=${() => {}}>
-                ${this.unstyled ? "x" : nothing}
-              </button>
-            </label>
-          </div>
-        </li>
-        <li>
-          <div class="list">
-            <label>
-              <span class="title">Feature #1234</span>
-              <button class="remove-icon icon" @click=${() => {}}>
-                ${this.unstyled ? "x" : nothing}
-              </button>
-            </label>
-          </div>
-        </li>
+        ${this.drawnFeatures.map((feature, i) =>
+          keyed(
+            i + 1,
+            html`
+              <li
+                class="${this.selectedFeatureIndex === i
+                  ? "selected"
+                  : nothing}"
+                @mouseover=${() => {
+                  if (this.selectedFeatureIndex === i) return;
+                  feature.setStyle(getSelectedPolygonStyle());
+                }}
+                @mouseout=${() => {
+                  if (this.selectedFeatureIndex === i) return;
+                  feature.setStyle(getDefaultPolygonStyle());
+                }}
+                @click=${() => {
+                  if (this.selectedFeatureIndex === i) return;
+                  if (this.selectedFeatureIndex !== null)
+                    this.drawnFeatures[this.selectedFeatureIndex].setStyle(
+                      getDefaultPolygonStyle()
+                    );
+                  feature.setStyle(getSelectedPolygonStyle());
+                  this.olMap.getView().fit(feature.getGeometry().getExtent());
+                  this.selectedFeatureIndex = i;
+                  this.requestUpdate();
+                }}
+              >
+                <div class="list">
+                  <label>
+                    <span class="title">Feature #${i + 1}</span>
+                    <button class="remove-icon icon" @click=${() => {}}>
+                      ${this.unstyled ? "x" : nothing}
+                    </button>
+                  </label>
+                </div>
+              </li>
+            `
+          )
+        )}
       </ul>
     `;
   }

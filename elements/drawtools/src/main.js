@@ -205,18 +205,19 @@ export class EOxDrawTools extends LitElement {
           discard
         </button>
       </div>
-      ${this.showList &&
-      html`<eox-drawtools-list
-        .eoxMap=${this.#eoxMap}
-        .olMap=${this.#olMap}
-        .draw=${this.draw}
-        .drawLayer=${this.drawLayer}
-        .drawnFeatures=${this.drawnFeatures}
-        .modify=${this.modify}
-        .unstyled=${this.unstyled}
-        @changed=${() => this.requestUpdate()}
-      >
-      </eox-drawtools-list>`}
+      ${this.showList && this.drawnFeatures?.length
+        ? html`<eox-drawtools-list
+            .eoxMap=${this.#eoxMap}
+            .olMap=${this.#olMap}
+            .draw=${this.draw}
+            .drawLayer=${this.drawLayer}
+            .drawnFeatures=${this.drawnFeatures}
+            .modify=${this.modify}
+            .unstyled=${this.unstyled}
+            @changed=${() => this.requestUpdate()}
+          >
+          </eox-drawtools-list>`
+        : nothing}
     `;
   }
 }

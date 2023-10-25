@@ -29,6 +29,9 @@ export const styleListEOX = `
   li:hover {
     background: #f0f5f9;
   }
+  li.selected {
+    background: #f0f5f9;
+  }
   li {
     list-style: none;
     padding: 4px;
