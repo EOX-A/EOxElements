@@ -52,13 +52,19 @@ export class EOxLayerControlLayer extends LitElement {
     this.unstyled = false;
   }
 
+  /**
+   * Run zoom event to zoom level change 
+   * and update DOM if `showZoomLayerState` present in layer property
+   */  
   updated() {
-    this.map.getView().on("change:resolution", () => {
-      this.requestUpdate();
-      this.dispatchEvent(
-        new CustomEvent("change:resolution", { bubbles: true })
-      );
-    });
+    if(this.layer?.get("showZoomLayerState")) {
+      this.map.getView().on("change:resolution", () => {
+        this.requestUpdate();
+        this.dispatchEvent(
+          new CustomEvent("change:resolution", { bubbles: true })
+        );
+      });
+    }
   }
 
   createRenderRoot() {

@@ -526,9 +526,10 @@ export const Tabs = {
 };
 
 /**
- * Zoom layer status
+ * Zoom layer state based on `minZoom` and `maxZoom`. 
+ * The color change state only visible when `showZoomLayerState` is set inside layer properties.
  */
-export const ZoomLayerStatus = {
+export const ZoomLayerState = {
   args: {
     idProperty: "id",
     titleProperty: "title",
@@ -560,7 +561,8 @@ export const ZoomLayerStatus = {
                 type: "Tile",
                 properties: {
                   id: "WIND",
-                  title: "WIND"
+                  title: "WIND",
+                  showZoomLayerState: true
                 },
                 source: {
                   type: "TileWMS",
@@ -576,8 +578,7 @@ export const ZoomLayerStatus = {
                 type: "Tile",
                 properties: {
                   id: "NO2",
-                  title: "NO2",
-                  showZoomLayerState: true
+                  title: "NO2"
                 },
                 source: {
                   type: "TileWMS",

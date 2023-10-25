@@ -123,7 +123,7 @@ export const getLayerType = (layer, map) => {
 };
 
 /**
- * Returns layer visibility state based on minZoom and maxZoon 
+ * Returns layer visibility state based on minZoom and maxZoon
  * with respective of current zoom level
  * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
  * @param {import("ol").Map} map
@@ -132,9 +132,11 @@ export const getLayerType = (layer, map) => {
 export const isLayerVisibleBasedOnZoomState = (layer, map) => {
   if (!layer || !map) return false;
 
-  const minZoom = layer.get('minZoom')
-  const maxZoom = layer.get('maxZoom')
-  const zoom = map.getView().getZoom()
+  if (!layer.get("showZoomLayerState")) return true;
 
-  return (zoom > minZoom && zoom < maxZoom) ? true : false
+  const minZoom = layer.get("minZoom");
+  const maxZoom = layer.get("maxZoom");
+  const zoom = map.getView().getZoom();
+
+  return zoom > minZoom && zoom < maxZoom ? true : false;
 };
