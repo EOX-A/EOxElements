@@ -1,7 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
 import { styleEOX, styleListEOX } from "../style.eox";
-import * as ol from "ol/style.js";
 import { getDefaultPolygonStyle, getSelectedPolygonStyle } from "../helpers";
 
 /**
@@ -24,7 +23,7 @@ export class EOxDrawToolsList extends LitElement {
     super();
 
     /**
-     * @type import("../../map/main").EOxMap
+     * @type import("../../../map/main").EOxMap
      */
     this.eoxMap = null;
 
@@ -72,13 +71,51 @@ export class EOxDrawToolsList extends LitElement {
     this.selectedFeatureIndex = null;
   }
 
-  render() {
-    console.log(this.drawLayer.getStyle());
-    console.log(this.drawnFeatures[0]?.getProperties());
-    console.log(this.drawnFeatures[0]?.get("ol_uid"));
-    console.log(this.drawnFeatures[0]?.getGeometry().getExtent());
-    console.log(this.olMap.getView());
+  /**
+   * Delete individual feature @param {any} evt
+   */
+  _handleDelete(evt) {
+    evt.stopPropagation();
+    const index = evt.target.getAttribute("index");
+    const feature = this.drawnFeatures[index];
+    this.drawLayer.getSource().removeFeature(feature);
+    this.drawnFeatures.splice(index, 1);
 
+    // If selected feature gets deletes fit to available bound
+    if (this.selectedFeatureIndex === Number(index)) {
+      const newExtent = this.drawLayer.getSource().getExtent();
+      if (this.drawnFeatures.length) this.olMap.getView().fit(newExtent);
+      this.selectedFeatureIndex = null;
+    }
+
+    // If selected index is greater than deleted feature index then changing index cursor by 1
+    else if (this.selectedFeatureIndex > Number(index)) {
+      this.selectedFeatureIndex = this.selectedFeatureIndex - 1;
+      this._handleSelectFeature(
+        this.selectedFeatureIndex,
+        this.drawnFeatures[this.selectedFeatureIndex]
+      );
+    }
+    this.requestUpdate();
+  }
+
+  /**
+   * Select a feature @param {Number} i
+   * Select a feature @param {import("ol").Feature} feature
+   */
+  _handleSelectFeature(i, feature) {
+    if (this.selectedFeatureIndex === i) return;
+    if (this.selectedFeatureIndex !== null)
+      this.drawnFeatures[this.selectedFeatureIndex].setStyle(
+        getDefaultPolygonStyle()
+      );
+    feature.setStyle(getSelectedPolygonStyle());
+    this.olMap.getView().fit(feature.getGeometry().getExtent());
+    this.selectedFeatureIndex = i;
+    this.requestUpdate();
+  }
+
+  render() {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
@@ -101,25 +138,19 @@ export class EOxDrawToolsList extends LitElement {
                   if (this.selectedFeatureIndex === i) return;
                   feature.setStyle(getDefaultPolygonStyle());
                 }}
-                @click=${() => {
-                  if (this.selectedFeatureIndex === i) return;
-                  if (this.selectedFeatureIndex !== null)
-                    this.drawnFeatures[this.selectedFeatureIndex].setStyle(
-                      getDefaultPolygonStyle()
-                    );
-                  feature.setStyle(getSelectedPolygonStyle());
-                  this.olMap.getView().fit(feature.getGeometry().getExtent());
-                  this.selectedFeatureIndex = i;
-                  this.requestUpdate();
-                }}
               >
-                <div class="list">
-                  <label>
-                    <span class="title">Feature #${i + 1}</span>
-                    <button class="remove-icon icon" @click=${() => {}}>
-                      ${this.unstyled ? "x" : nothing}
-                    </button>
-                  </label>
+                <div
+                  class="list"
+                  @click="${() => this._handleSelectFeature(i, feature)}"
+                >
+                  <span class="title">Feature #${i + 1}</span>
+                  <button
+                    index=${i}
+                    class="remove-icon icon"
+                    @click="${this._handleDelete}"
+                  >
+                    ${this.unstyled ? "x" : nothing}
+                  </button>
                 </div>
               </li>
             `
