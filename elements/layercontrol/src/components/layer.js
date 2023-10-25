@@ -3,6 +3,7 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layerTools";
 import { checkbox } from "../../../../utils/styles/checkbox";
+import { isLayerVisibleBasedOnZoomState } from "../helpers";
 
 /**
  * A single layer display
@@ -55,7 +56,7 @@ export class EOxLayerControlLayer extends LitElement {
     this.map.getView().on("change:resolution", () => {
       this.requestUpdate();
       this.dispatchEvent(
-        new CustomEvent("change:resolution", { bubbles: true, composed: true })
+        new CustomEvent("change:resolution", { bubbles: true })
       );
     });
   }
@@ -73,9 +74,7 @@ export class EOxLayerControlLayer extends LitElement {
       ${when(
         this.layer,
         () => html`
-          <div class="layer ${this.layer.getVisible() ? "visible" : ""} ${
-            this.map.getView().getZoom() < this.layer.get('minZoom') || this.map.getView().getZoom() > this.layer.get('maxZoom') ? "zoom-state-invisible" : ""
-          }">
+          <div class="layer ${this.layer.getVisible() ? "visible" : ""} ${!isLayerVisibleBasedOnZoomState(this.layer, this.map) ? "zoom-state-invisible" : ""}">
             <label
               class="${this.layer.get("layerControlDisable") ? "disabled" : ""}"
             >
