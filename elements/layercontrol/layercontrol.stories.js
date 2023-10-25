@@ -530,22 +530,13 @@ export const Tabs = {
  * The color change state only visible when `showZoomLayerState` is set inside layer properties.
  */
 export const ZoomLayerState = {
-  args: {
-    idProperty: "id",
-    titleProperty: "title",
-    unstyled: false,
-  },
-  render: (args) => html`
+  args: {},
+  render: () => html`
     <div style="display: flex">
-      <eox-layercontrol
-        .idProperty=${args.idProperty}
-        .titleProperty=${args.titleProperty}
-        .unstyled=${args.unstyled}
-        for="eox-map"
-      ></eox-layercontrol>
+      <eox-layercontrol for="eox-map"></eox-layercontrol>
       <eox-map
         id="optional"
-        style="width: 700px; height: 300px; margin-left: 7px;"
+        style="width: 600px; height: 300px; margin-left: 7px;"
         zoom="3"
         layers=${JSON.stringify([
           {
