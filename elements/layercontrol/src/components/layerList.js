@@ -116,6 +116,7 @@ export class EOxLayerControlLayerList extends LitElement {
                           : html`
                               <eox-layercontrol-layer
                                 .layer=${layer}
+                                .map=${this.map}
                                 .titleProperty=${this.titleProperty}
                                 .tools=${this.tools}
                                 .unstyled=${this.unstyled}

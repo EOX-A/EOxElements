@@ -12,6 +12,7 @@ import { checkbox } from "../../../../utils/styles/checkbox";
 export class EOxLayerControlLayer extends LitElement {
   static properties = {
     layer: { attribute: false },
+    map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
     tools: { attribute: false },
     unstyled: { type: Boolean },
@@ -26,6 +27,13 @@ export class EOxLayerControlLayer extends LitElement {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
     this.layer = null;
+
+    /**
+     * The native OL map
+     * @type {import("ol").Map}
+     * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
+     */
+    this.map = null;
 
     /**
      * The layer title property
@@ -43,6 +51,15 @@ export class EOxLayerControlLayer extends LitElement {
     this.unstyled = false;
   }
 
+  updated() {
+    this.map.getView().on("change:resolution", () => {
+      this.requestUpdate();
+      this.dispatchEvent(
+        new CustomEvent("change:resolution", { bubbles: true, composed: true })
+      );
+    });
+  }
+
   createRenderRoot() {
     return this;
   }
@@ -56,7 +73,9 @@ export class EOxLayerControlLayer extends LitElement {
       ${when(
         this.layer,
         () => html`
-          <div class="layer ${this.layer.getVisible() ? "visible" : ""}">
+          <div class="layer ${this.layer.getVisible() ? "visible" : ""} ${
+            this.map.getView().getZoom() < this.layer.get('minZoom') || this.map.getView().getZoom() > this.layer.get('maxZoom') ? "zoom-state-invisible" : ""
+          }">
             <label
               class="${this.layer.get("layerControlDisable") ? "disabled" : ""}"
             >
@@ -119,6 +138,9 @@ export class EOxLayerControlLayer extends LitElement {
     ${checkbox}
     eox-layercontrol-layer {
       width: 100%;
+    }
+    .layer.zoom-state-invisible {
+      background: #f0f5f9;
     }
     .layer {
       width: 100%;

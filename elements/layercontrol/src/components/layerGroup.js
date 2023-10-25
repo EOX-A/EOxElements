@@ -73,6 +73,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
             <summary>
               <eox-layercontrol-layer
                 .layer=${this.group}
+                .map=${this.map}
                 .titleProperty=${this.titleProperty}
                 .tools=${this.tools}
                 .unstyled=${this.unstyled}
