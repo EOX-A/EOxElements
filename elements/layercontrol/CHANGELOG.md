@@ -2,10 +2,9 @@
 
 ## [0.7.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.7.0...layercontrol-v0.7.1) (2023-10-19)
 
-
 ### Bug Fixes
 
-* Removed icon highlight on hover ([#345](https://github.com/EOX-A/EOxElements/issues/345)) ([68692f9](https://github.com/EOX-A/EOxElements/commit/68692f9f6ac24280086c07601c900d350cafd211))
+- Removed icon highlight on hover ([#345](https://github.com/EOX-A/EOxElements/issues/345)) ([68692f9](https://github.com/EOX-A/EOxElements/commit/68692f9f6ac24280086c07601c900d350cafd211))
 
 ## [0.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.6.8...layercontrol-v0.7.0) (2023-10-12)
 

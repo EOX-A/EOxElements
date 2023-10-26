@@ -45,7 +45,7 @@ export const MultiPolygon = {
  * List of features will be visible
  */
 export const MultiPolygonWithList = {
-  render: () => html` 
+  render: () => html`
     <div style="display: flex">
       <eox-map
         id="multi"
@@ -62,5 +62,5 @@ export const MultiPolygonWithList = {
         show-list
       ></eox-drawtools>
     </div>
-    `,
+  `,
 };
