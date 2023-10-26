@@ -145,7 +145,8 @@ export class EOxLayerControlLayer extends LitElement {
       width: 100%;
     }
     .layer.zoom-state-invisible {
-      background: #f0f5f9;
+      background: #d2e2ee;
+      opacity: 0.3;
     }
     .layer {
       width: 100%;
