@@ -53,11 +53,11 @@ export class EOxLayerControlLayer extends LitElement {
   }
 
   /**
-   * Run zoom event to zoom level change 
+   * Run zoom event to zoom level change
    * and update DOM if `showZoomLayerState` present in layer property
-   */  
+   */
   updated() {
-    if(this.layer?.get("showZoomLayerState")) {
+    if (this.layer?.get("showZoomLayerState")) {
       this.map.getView().on("change:resolution", () => {
         this.requestUpdate();
         this.dispatchEvent(
@@ -80,7 +80,13 @@ export class EOxLayerControlLayer extends LitElement {
       ${when(
         this.layer,
         () => html`
-          <div class="layer ${this.layer.getVisible() ? "visible" : ""} ${!isLayerVisibleBasedOnZoomState(this.layer, this.map) ? "zoom-state-invisible" : ""}">
+          <div
+            class="layer ${this.layer.getVisible()
+              ? "visible"
+              : ""} ${!isLayerVisibleBasedOnZoomState(this.layer, this.map)
+              ? "zoom-state-invisible"
+              : ""}"
+          >
             <label
               class="${this.layer.get("layerControlDisable") ? "disabled" : ""}"
             >

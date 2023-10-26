@@ -526,7 +526,7 @@ export const Tabs = {
 };
 
 /**
- * Zoom layer state based on `minZoom` and `maxZoom`. 
+ * Zoom layer state based on `minZoom` and `maxZoom`.
  * The color change state only visible when `showZoomLayerState` is set inside layer properties.
  */
 export const ZoomLayerState = {
@@ -545,7 +545,7 @@ export const ZoomLayerState = {
               id: "group2",
               title: "Data Layers",
               layerControlExpand: true,
-              description: "# Hello world"
+              description: "# Hello world",
             },
             layers: [
               {
@@ -553,48 +553,47 @@ export const ZoomLayerState = {
                 properties: {
                   id: "WIND",
                   title: "WIND",
-                  showZoomLayerState: true
+                  showZoomLayerState: true,
                 },
                 source: {
                   type: "TileWMS",
                   url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
                   params: {
-                    LAYERS: "AWS_VIS_WIND_V_10M"
-                  }
+                    LAYERS: "AWS_VIS_WIND_V_10M",
+                  },
                 },
                 minZoom: 2,
-                maxZoom: 4
+                maxZoom: 4,
               },
               {
                 type: "Tile",
                 properties: {
                   id: "NO2",
-                  title: "NO2"
+                  title: "NO2",
                 },
                 source: {
                   type: "TileWMS",
                   url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
                   params: {
-                    LAYERS: "AWS_NO2-VISUALISATION"
-                  }
-                }
+                    LAYERS: "AWS_NO2-VISUALISATION",
+                  },
+                },
               },
               {
                 type: "Vector",
                 properties: {
                   title: "Regions",
-                  id: "regions"
-        
+                  id: "regions",
                 },
                 source: {
                   type: "Vector",
                   url: "https://openlayers.org/data/vector/ecoregions.json",
                   format: "GeoJSON",
-                  attributions: "Regions: @ openlayers.org"
-                }
-              }
-            ]
-          }
+                  attributions: "Regions: @ openlayers.org",
+                },
+              },
+            ],
+          },
         ])}
       >
       </eox-map>
