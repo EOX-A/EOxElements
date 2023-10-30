@@ -67,6 +67,7 @@ export class EOxLayerControlLayerList extends LitElement {
       return;
     }
     this.layers.on("change:length", () => {
+      this.requestUpdate();
       this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
     });
   }

@@ -18,6 +18,9 @@ export const createSortable = (element, layers) => {
     animation: 150,
     easing: "cubic-bezier(1, 0, 0, 1)",
     onSort: (e) => {
+      if (e.newIndex > e.oldIndex) {
+        e.from.removeChild(e.item);
+      }
       const layer = layers.getArray().find(
         (l) =>
           // @ts-ignore
