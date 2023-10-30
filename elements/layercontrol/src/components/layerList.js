@@ -59,14 +59,16 @@ export class EOxLayerControlLayerList extends LitElement {
   }
 
   firstUpdated() {
+    createSortable(this.renderRoot.querySelector("ul"), this.layers);
+  }
+  
+  updated(){
     if (!this.layers) {
-      return;
+      return
     }
     this.layers.on("change:length", () => {
-      this.requestUpdate();
       this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
     });
-    createSortable(this.renderRoot.querySelector("ul"), this.layers);
   }
 
   createRenderRoot() {
