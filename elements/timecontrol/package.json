@@ -28,7 +28,7 @@
     "lint:fix": "eslint --ext .js,.ts . --fix"
   },
   "dependencies": {
-    "lit": "^2.7.4",
+    "lit": "^3.0.1",
     "toolcool-range-slider": "^4.0.27"
   }
 }
