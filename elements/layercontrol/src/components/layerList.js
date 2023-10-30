@@ -61,10 +61,10 @@ export class EOxLayerControlLayerList extends LitElement {
   firstUpdated() {
     createSortable(this.renderRoot.querySelector("ul"), this.layers);
   }
-  
-  updated(){
+
+  updated() {
     if (!this.layers) {
-      return
+      return;
     }
     this.layers.on("change:length", () => {
       this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
