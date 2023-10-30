@@ -16,6 +16,7 @@ export class EOxItemFilterMultiselect extends LitElement {
         }
       });
     for (const filter in this.filterObject.state) {
+      // @ts-ignore
       this.filterObject.state[filter] = false;
     }
     delete this.filterObject.dirty;
@@ -45,6 +46,7 @@ export class EOxItemFilterMultiselect extends LitElement {
                   id=${key}
                   checked="${this.filterObject.state[key] || nothing}"
                   @click=${() => {
+                    // @ts-ignore
                     this.filterObject.state[key] =
                       !this.filterObject.state[key];
                     this.filterObject.dirty = true;

@@ -1,4 +1,4 @@
-import { LitElement, html, nothing, PropertyValueMap } from "lit";
+import { LitElement, html, nothing, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -117,19 +117,28 @@ export class EOxStacInfo extends LitElement {
         ${parseEntries(this.properties).length > 0
           ? html`
               <section id="properties" part="properties">
-                <ul>
+                <ul
+                  class=${parseEntries(this.properties).length === 1
+                    ? "single-property"
+                    : nothing}
+                >
                   ${map(
                     parseEntries(this.properties),
                     ([, value]) => html`
                       <slot name=${value.label.toLowerCase()}>
                         <li>
-                          <span class="label">
-                            ${
-                              // TODO
-                              // @ts-ignore
-                              value.label
-                            } </span
-                          >:
+                          ${when(
+                            parseEntries(this.properties).length > 1,
+                            () => html`
+                              <span class="label">
+                                ${
+                                  // TODO
+                                  // @ts-ignore
+                                  value.label
+                                } </span
+                              >:
+                            `
+                          )}
                           <span class="value">
                             ${
                               // TODO
@@ -225,7 +234,7 @@ export class EOxStacInfo extends LitElement {
   }
 
   protected updated(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValues<string> | Map<PropertyKey, unknown>
   ): void {
     if (_changedProperties.has("for")) {
       this.fetchStac(this.for);

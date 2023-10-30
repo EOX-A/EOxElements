@@ -19,17 +19,35 @@ export class EOxChart extends HTMLElement {
   /**
    * Set chart data, TODO description
    */
-  setData: Function;
+  setData: (body: { datasets: ChartDataset[] }) => void;
 
-  setOptions: Function;
+  setOptions: (body: object) => void;
 
-  setSignalsData: Function;
+  setSignalsData: (body: object) => void;
 
-  setSignalsEndpoint: Function;
+  setSignalsEndpoint: (options: {
+    source: string;
+    endpoint: string;
+    active: string[];
+    features: string[][];
+    geometry: object;
+    timeInterval: object;
+    startTime?: string;
+    endTime?: string;
+  }) => void;
 
-  setSignalsGeometry: Function;
+  setSignalsGeometry: (geometry: object) => void;
 
-  setGeoDBEndpoint: Function;
+  setGeoDBEndpoint: (options: {
+    source: string;
+    endpoint: string;
+    active: string[];
+    features: string[][];
+    geometry: object;
+    timeInterval: object;
+    startTime?: string;
+    endTime?: string;
+  }) => void;
 
   constructor() {
     super();
@@ -73,17 +91,17 @@ export class EOxChart extends HTMLElement {
       ],
     });
 
-    this.setData = (body: any) => {
-      this.chart.data = body;
+    this.setData = (body: { datasets: ChartDataset[] }) => {
+      this.chart.data = body || { datasets: [] };
       this.chart.update("none");
     };
 
-    this.setOptions = (body: any) => {
+    this.setOptions = (body: object) => {
       this.chart.options = body;
       this.chart.update("none");
     };
 
-    this.setSignalsData = (body: any) => {
+    this.setSignalsData = (body: object) => {
       this.chart.data = {
         datasets: Object.entries(body).map(([key, item]): ChartDataset => {
           return {

@@ -20,6 +20,10 @@ export const Primary = {
     <eox-drawtools for="eox-map#primary" layer="draw"></eox-drawtools>`,
 };
 
+/**
+ * By setting the `multiple-features` attribute or `multipleFeatures` property to `true`,
+ * multiple polygons can be drawn.
+ */
 export const MultiPolygon = {
   render: () => html` <eox-map
       id="multi"

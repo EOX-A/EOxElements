@@ -113,6 +113,7 @@ export class EOxDrawTools extends LitElement {
     this.drawnFeatures = [];
     this.#eoxMap.removeInteraction("drawInteraction");
     this.drawLayer.getSource().clear();
+    this.emitDrawnFeatures();
     this.currentlyDrawing = false;
     this.requestUpdate();
   }
@@ -121,8 +122,7 @@ export class EOxDrawTools extends LitElement {
    *
    * @param {import("ol/interaction/Draw").DrawEvent} evt
    */
-  onDrawEnd(evt) {
-    console.log(evt.target);
+  onDrawEnd() {
     this.emitDrawnFeatures();
     this.#eoxMap.removeInteraction("drawInteraction");
     this.currentlyDrawing = false;
@@ -133,8 +133,7 @@ export class EOxDrawTools extends LitElement {
    *
    * @param {import("ol/interaction/Modify").ModifyEvent} evt
    */
-  onModifyEnd(evt) {
-    console.log(evt);
+  onModifyEnd() {
     this.emitDrawnFeatures();
   }
 
@@ -142,10 +141,16 @@ export class EOxDrawTools extends LitElement {
     setTimeout(() => {
       this.drawnFeatures = this.drawLayer.getSource().getFeatures();
       this.requestUpdate();
-      const drawEvt = new CustomEvent("drawupdate", {
-        detail: this.drawnFeatures,
-      });
-      this.dispatchEvent(drawEvt);
+      /**
+       * Fires whenever features are added, modified or discarded, where the event detail
+       * is the `drawnFeatures` array
+       * @type Array<import("ol").Feature>
+       */
+      this.dispatchEvent(
+        new CustomEvent("drawupdate", {
+          detail: this.drawnFeatures,
+        })
+      );
     }, 0);
   }
 
@@ -174,7 +179,7 @@ export class EOxDrawTools extends LitElement {
         <slot></slot>
         <button
           data-cy="drawBtn"
-          class="icon-text polygon"
+          class="polygon icon"
           disabled="${(!this.multipleFeatures &&
             this.drawnFeatures?.length > 0) ||
           this.currentlyDrawing ||
@@ -185,7 +190,7 @@ export class EOxDrawTools extends LitElement {
         </button>
         <button
           data-cy="discardBtn"
-          class="discard"
+          class="discard icon"
           disabled="${(!this.drawnFeatures?.length && !this.currentlyDrawing) ||
           nothing}"
           @click="${() => this.discardDrawing()}"

@@ -10,8 +10,9 @@ describe("Item Filter Config", () => {
     </eox-itemfilter>`
     )
       .as("eox-itemfilter")
-      .then((eoxItemFilter: any) => {
-        eoxItemFilter[0].config = {
+      .then(($el) => {
+        const eoxItemFilter = <EOxItemFilter>$el[0];
+        eoxItemFilter.config = {
           titleProperty: "title",
           filterProperties: [
             {
@@ -25,7 +26,7 @@ describe("Item Filter Config", () => {
           aggregateResults: "themes",
           enableHighlighting: true,
         };
-        eoxItemFilter[0].apply(testItems);
+        eoxItemFilter.apply(testItems);
       });
   });
 
@@ -87,8 +88,10 @@ describe("Item Filter Config", () => {
       .within(() => {
         cy.get('[type="checkbox"]').first().check();
         cy.get('[type="checkbox"]').eq(1).check();
-        cy.get('[type="checkbox"]').first().check().should("be.checked");
-        cy.get('[type="checkbox"]').eq(1).check().should("be.checked");
+        cy.get('[type="checkbox"]').first().check();
+        cy.get('[type="checkbox"]').first().should("be.checked");
+        cy.get('[type="checkbox"]').eq(1).check();
+        cy.get('[type="checkbox"]').eq(1).should("be.checked");
       });
   });
 

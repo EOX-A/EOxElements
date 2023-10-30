@@ -34,7 +34,7 @@ export class ElementConfig {
    * Use an external search endpoint instead of fuse search.
    * Passed properties: input string, filters object
    */
-  public externalFilter?: Function;
+  public externalFilter?: (input: string, filters: object[]) => string;
 
   /**
    * The filter properties.
@@ -45,7 +45,7 @@ export class ElementConfig {
   /**
    * Native fuse.js config override
    */
-  public fuseConfig?: Object;
+  public fuseConfig?: object;
 
   /**
    * Inline mode, for rendering the itemfilter in avery condensed space.
@@ -63,12 +63,14 @@ export class ElementConfig {
    * Callback that is triggered on item search
    * @returns result items
    */
+  // eslint-disable-next-line
   public onFilter?: Function = () => {};
 
   /**
    * Callback that is triggered on item selection
    * @returns selected item
    */
+  // eslint-disable-next-line
   public onSelect?: Function = () => {};
 
   /**
@@ -118,13 +120,13 @@ export class EOxItemFilter extends TemplateElement {
     };
     this.requestUpdate("config", oldValue);
   }
-  private _config = new ElementConfig();
   get config() {
     return this._config;
   }
+  private _config = new ElementConfig();
 
   @property()
-  apply = (items: Array<Object>) => {
+  apply = (items: Array<object>) => {
     this.items = items.map((i, index) => ({
       id: `item-${index}`,
       ...i,
@@ -139,44 +141,60 @@ export class EOxItemFilter extends TemplateElement {
             ? dayjs(value).unix()
             : parseInt(value);
         };
+        // @ts-ignore
         this.items.forEach((item: Item) => {
           if (filterProperty.type === "range") {
             if (Array.isArray(item[filterProperty.key] as Array<number>)) {
               const currentValues = [
+                // @ts-ignore
                 parseValue(item[filterProperty.key][0]),
+                // @ts-ignore
                 parseValue(item[filterProperty.key][1]),
               ];
+              // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
-                  ? Math.min(filterKeys.min, currentValues[0])
+                  ? // @ts-ignore
+                    Math.min(filterKeys.min, currentValues[0])
                   : currentValues[0];
+              // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
-                  ? Math.max(filterKeys.max, currentValues[1])
+                  ? // @ts-ignore
+                    Math.max(filterKeys.max, currentValues[1])
                   : currentValues[1];
             } else {
+              // @ts-ignore
               const currentValue = parseValue(item[filterProperty.key]);
+              // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
-                  ? Math.min(filterKeys.min, currentValue)
+                  ? // @ts-ignore
+                    Math.min(filterKeys.min, currentValue)
                   : currentValue;
+              // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
-                  ? Math.max(filterKeys.max, currentValue)
+                  ? // @ts-ignore
+                    Math.max(filterKeys.max, currentValue)
                   : currentValue;
             }
             return;
           }
           if (Array.isArray(item[filterProperty.key])) {
+            // @ts-ignore
             item[filterProperty.key].forEach((prop: string) => {
               filterKeys[prop] = undefined;
             });
           } else {
             if (filterProperty.type === "spatial") {
+              // @ts-ignore
               (<SpatialFilterObject>filterKeys).geometry = undefined;
+              // @ts-ignore
               (<SpatialFilterObject>filterKeys).mode =
                 (<SpatialFilterObject>filterProperty).mode || "intersects";
             } else {
+              // @ts-ignore
               filterKeys[item[filterProperty.key]] = undefined;
             }
           }
@@ -195,7 +213,9 @@ export class EOxItemFilter extends TemplateElement {
             dirty: true,
           }),
           ...(filterProperty.type === "range" && {
+            // @ts-ignore
             min: (<RangeFilterObject>filterKeys).min,
+            // @ts-ignore
             max: (<RangeFilterObject>filterKeys).max,
             format: (<RangeFilterObject>filterProperty).format,
           }),
@@ -210,12 +230,16 @@ export class EOxItemFilter extends TemplateElement {
     }
 
     if (this._config.aggregateResults) {
+      // @ts-ignore
       this._resultAggregation = [
         ...new Set(
+          // @ts-ignore
           this.items.reduce((store: Array<string>, item: Item) => {
+            // @ts-ignore
             return store.concat(item[this._config.aggregateResults]);
           }, [])
         ),
+        // @ts-ignore
       ].sort((a, b) => a.localeCompare(b));
     }
 
@@ -257,7 +281,8 @@ export class EOxItemFilter extends TemplateElement {
     this._config.onFilter(this.results, this.filters);
   }
 
-  aggregateResults(items: Array<Object>, property: string) {
+  aggregateResults(items: Array<object>, property: string) {
+    // @ts-ignore
     return items.filter((item: Item) => {
       const aggregation = item[this._config.aggregateResults];
       // special check if a currently selected fiter property is part of a filter key
@@ -281,8 +306,10 @@ export class EOxItemFilter extends TemplateElement {
     });
   }
 
-  sortResults(items: Array<Object>) {
+  sortResults(items: Array<object>) {
+    // @ts-ignore
     return [...items].sort((a: Item, b: Item) =>
+      // @ts-ignore
       a[this._config.titleProperty].localeCompare(b[this._config.titleProperty])
     );
   }
@@ -306,18 +333,18 @@ export class EOxItemFilter extends TemplateElement {
     if (detailsElement.classList.contains("details-filter")) {
       if (!detailsElement.open || this.config.expandMultipleFilters) return;
 
-      this.shadowRoot!.querySelectorAll(
-        "eox-itemfilter-expandcontainer"
-      ).forEach((container) => {
-        const details = container.shadowRoot!.querySelector(".details-filter");
-        if (details && details !== detailsElement) {
-          details.removeAttribute("open");
-        }
-      });
+      this.shadowRoot
+        .querySelectorAll("eox-itemfilter-expandcontainer")
+        .forEach((container) => {
+          const details = container.shadowRoot.querySelector(".details-filter");
+          if (details && details !== detailsElement) {
+            details.removeAttribute("open");
+          }
+        });
     } else {
       if (!detailsElement.open || this.config.expandMultipleResults) return;
 
-      this.shadowRoot!.querySelectorAll("details").forEach((details) => {
+      this.shadowRoot.querySelectorAll("details").forEach((details) => {
         if (details !== detailsElement) {
           details.removeAttribute("open");
         }
@@ -446,6 +473,7 @@ export class EOxItemFilter extends TemplateElement {
                           </summary>
                           <ul>
                             ${repeat(
+                              // @ts-ignore
                               this.aggregateResults(
                                 this.results,
                                 aggregationProperty
@@ -486,6 +514,7 @@ export class EOxItemFilter extends TemplateElement {
                                       () => html`
                                         <span class="title"
                                           >${unsafeHTML(
+                                            // @ts-ignore
                                             item[this._config.titleProperty]
                                           )}</span
                                         >
@@ -499,6 +528,7 @@ export class EOxItemFilter extends TemplateElement {
                         </details>`
                       )
                     : map(
+                        // @ts-ignore
                         this.results,
                         (item: Item) =>
                           html`<li part="result">
@@ -523,6 +553,7 @@ export class EOxItemFilter extends TemplateElement {
                                 () => html`
                                   <span class="title"
                                     >${unsafeHTML(
+                                      // @ts-ignore
                                       item[this._config.titleProperty]
                                     )}</span
                                   >

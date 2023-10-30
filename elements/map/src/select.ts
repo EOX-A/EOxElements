@@ -81,13 +81,13 @@ export class EOxSelectInteraction {
         },
       } as EoxLayer;
     }
-    //@ts-ignore
+    // @ts-ignore
     layerDefinition.renderMode = "vector";
 
     this.selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
       | VectorTileLayer
       | VectorLayer<VectorSource>;
-    //@ts-ignore
+    // @ts-ignore
     this.selectStyleLayer.setSource(this.selectLayer.getSource());
     this.selectStyleLayer.setMap(this.eoxMap.map);
 
@@ -103,7 +103,7 @@ export class EOxSelectInteraction {
       return null;
     });
 
-    const listener = (event: MapBrowserEvent<any>) => {
+    const listener = (event: MapBrowserEvent<UIEvent>) => {
       if (event.dragging || !this.active) {
         return;
       }
@@ -158,7 +158,7 @@ export class EOxSelectInteraction {
     });
 
     this.changeSourceListener = () => {
-      //@ts-ignore
+      // @ts-ignore
       this.selectStyleLayer.setSource(this.selectLayer.getSource());
     };
 

@@ -1,12 +1,12 @@
 {
   "name": "@eox/layercontrol",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@types/sortablejs": "^1.15.1",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
-    "@typescript-eslint/parser": "^5.50.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "eslint-plugin-typescript": "^0.14.0",
     "ol": "^8.1.0",
     "sortablejs": "^1.15.0",
