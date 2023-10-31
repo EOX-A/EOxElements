@@ -112,4 +112,22 @@ describe("LayerControl", () => {
         cy.get("details[open]").should("exist");
       });
   });
+
+  it("pre-opens layer tools section if layerControlToolsExpand is present", () => {
+    cy.get("mock-map").and(($el) => {
+      $el /**MockMap*/[0]
+        .setLayers([
+          { visible: true },
+          {
+            properties: { layerControlToolsExpand: true },
+            layers: [{ visible: true }],
+          },
+        ]);
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get("details[open].tools").should("be.visible");
+      });
+  });
 });

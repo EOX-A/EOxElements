@@ -28,6 +28,9 @@ import { filterLayers } from "./helpers";
  * #### `layerControlExpand?: Boolean`
  * Pre-expand a layer dropdown so that it is always open when the component initializes.
  *
+ * #### `layerControlToolsExpand?: Boolean`
+ * Pre-expand the layer tools so they are visible when the component initializes.
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {

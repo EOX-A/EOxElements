@@ -129,7 +129,10 @@ export class EOxLayerControlLayerTools extends LitElement {
               </div>
             `,
             () => html`
-              <details class="tools">
+              <details
+                class="tools"
+                open=${this.layer.get("layerControlToolsExpand") || nothing}
+              >
                 <summary>
                   <button
                     class="icon ${this.tools.length === 1
