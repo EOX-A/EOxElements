@@ -100,16 +100,21 @@ export class EOxDrawToolsList extends LitElement {
    * Select a feature @param {import("ol").Feature} feature
    */
   _handleSelectFeature(i, feature) {
-    if (this.selectedFeatureIndex === i) return;
-    if (this.selectedFeatureIndex !== null)
-      this.drawnFeatures[this.selectedFeatureIndex].setStyle(
-        getDefaultPolygonStyle()
-      );
-    feature.setStyle(getSelectedPolygonStyle());
-    this.olMap
-      .getView()
-      .fit(feature.getGeometry().getExtent(), { duration: 750 });
-    this.selectedFeatureIndex = i;
+    if (this.selectedFeatureIndex === i) {
+      const newExtent = this.drawLayer.getSource().getExtent();
+      this.olMap.getView().fit(newExtent, { duration: 750 });
+      this.selectedFeatureIndex = null;
+    } else {
+      if (this.selectedFeatureIndex !== null)
+        this.drawnFeatures[this.selectedFeatureIndex].setStyle(
+          getDefaultPolygonStyle()
+        );
+      feature.setStyle(getSelectedPolygonStyle());
+      this.olMap
+        .getView()
+        .fit(feature.getGeometry().getExtent(), { duration: 750 });
+      this.selectedFeatureIndex = i;
+    }
     this.requestUpdate();
   }
 
