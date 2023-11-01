@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
-import { styleEOX, styleListEOX } from "../style.eox";
+import { styleEOX } from "../style.eox";
 import { getDefaultPolygonStyle, getSelectedPolygonStyle } from "../helpers";
 
 /**
@@ -127,7 +127,6 @@ export class EOxDrawToolsList extends LitElement {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
-        ${!this.unstyled && styleListEOX}
       </style>
       <ul>
         ${this.drawnFeatures.map((feature, i) =>
@@ -155,7 +154,7 @@ export class EOxDrawToolsList extends LitElement {
                   <span class="title">Feature #${i + 1}</span>
                   <button
                     index=${i}
-                    class="discard icon"
+                    class="icon small discard"
                     @click="${this._handleDelete}"
                   >
                     ${this.unstyled ? "x" : nothing}
