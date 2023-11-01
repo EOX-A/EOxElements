@@ -87,7 +87,7 @@ export class EOxDrawToolsList extends LitElement {
     // Else If selected index is greater than deleted feature index then changing index cursor by 1
     else if (this.selectedFeatureIndex > Number(index)) {
       this.selectedFeatureIndex = this.selectedFeatureIndex - 1;
-      this._handleSelectFeature(
+      this._handleFeatureSelectAndDeselect(
         this.selectedFeatureIndex,
         this.drawnFeatures[this.selectedFeatureIndex]
       );
@@ -96,15 +96,20 @@ export class EOxDrawToolsList extends LitElement {
   }
 
   /**
-   * Select a feature @param {Number} i
-   * Select a feature @param {import("ol").Feature} feature
+   * Select and Deselect feature from the list
+   *
+   * @param {Number} i
+   * @param {import("ol").Feature} feature
    */
-  _handleSelectFeature(i, feature) {
+  _handleFeatureSelectAndDeselect(i, feature) {
+    // Deselect selected feature
     if (this.selectedFeatureIndex === i) {
       const newExtent = this.drawLayer.getSource().getExtent();
       this.olMap.getView().fit(newExtent, { duration: 750 });
       this.selectedFeatureIndex = null;
-    } else {
+    }
+    // Select the clicked feature
+    else {
       if (this.selectedFeatureIndex !== null)
         this.drawnFeatures[this.selectedFeatureIndex].setStyle(
           getDefaultPolygonStyle()
@@ -144,7 +149,8 @@ export class EOxDrawToolsList extends LitElement {
               >
                 <div
                   class="list"
-                  @click="${() => this._handleSelectFeature(i, feature)}"
+                  @click="${() =>
+                    this._handleFeatureSelectAndDeselect(i, feature)}"
                 >
                   <span class="title">Feature #${i + 1}</span>
                   <button
