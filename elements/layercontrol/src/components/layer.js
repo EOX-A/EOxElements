@@ -19,6 +19,11 @@ export class EOxLayerControlLayer extends LitElement {
     unstyled: { type: Boolean },
   };
 
+  /**
+   * @type Boolean
+   */
+  currLayerVisibilityBasedOnZoom = true;
+
   constructor() {
     super();
 
@@ -53,17 +58,47 @@ export class EOxLayerControlLayer extends LitElement {
   }
 
   /**
-   * Run zoom event to zoom level change
-   * and update DOM if `showZoomLayerState` present in layer property
+   * Check and update layer visibility based on zoom level
+   * and only update DOM if visibility gets updated
    */
-  updated() {
+  updateLayerZoomVisibility() {
+    const newLayerVisibilityBasedOnZoom = isLayerVisibleBasedOnZoomState(
+      this.layer,
+      this.map
+    );
+
+    let visibilityChanged = false;
+
+    // Checking if visibility changed or not and updating `currLayerVisibilityBasedOnZoom`
+    if (!newLayerVisibilityBasedOnZoom && this.currLayerVisibilityBasedOnZoom)
+      (this.currLayerVisibilityBasedOnZoom = false), (visibilityChanged = true);
+    else if (
+      newLayerVisibilityBasedOnZoom &&
+      !this.currLayerVisibilityBasedOnZoom
+    )
+      (this.currLayerVisibilityBasedOnZoom = true), (visibilityChanged = true);
+
+    // if visibilityChanged trigger UI update
+    if (visibilityChanged) {
+      this.requestUpdate();
+      this.dispatchEvent(
+        new CustomEvent("change:resolution", { bubbles: true })
+      );
+    }
+  }
+
+  /**
+   * Check and update layer zoom visibility at beginning
+   * and register "change:resolution" ones at the beginning if `showZoomLayerState` is present
+   */
+  firstUpdated() {
     if (this.layer?.get("showZoomLayerState")) {
-      this.map.getView().on("change:resolution", () => {
-        this.requestUpdate();
-        this.dispatchEvent(
-          new CustomEvent("change:resolution", { bubbles: true })
-        );
-      });
+      this.updateLayerZoomVisibility();
+
+      // Initialize change:resolution event ones
+      this.map
+        .getView()
+        .on("change:resolution", () => this.updateLayerZoomVisibility());
     }
   }
 
@@ -81,9 +116,8 @@ export class EOxLayerControlLayer extends LitElement {
         this.layer,
         () => html`
           <div
-            class="layer ${this.layer.getVisible()
-              ? "visible"
-              : ""} ${!isLayerVisibleBasedOnZoomState(this.layer, this.map)
+            class="layer ${this.layer.getVisible() ? "visible" : ""} 
+            ${!this.currLayerVisibilityBasedOnZoom
               ? "zoom-state-invisible"
               : ""}"
           >
