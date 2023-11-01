@@ -90,6 +90,12 @@ export class ElementConfig {
   public expandMultipleFilters?: boolean = true;
 
   /**
+   * Initialize result accordeons expanded
+   * @default true
+   */
+  public expandResults?: boolean = true;
+
+  /**
    * Allow opening multiple result accordeons in parallel
    * @default true
    */
@@ -458,7 +464,7 @@ export class EOxItemFilter extends TemplateElement {
                         (aggregationProperty) => html`<details
                           class="details-results"
                           @toggle=${this.toggleAccordion}
-                          open
+                          open=${this._config.expandResults || nothing}
                         >
                           <summary>
                             <span class="title">

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.7.1...layercontrol-v0.8.0) (2023-10-31)
+
+
+### Features
+
+* Introduce layerControlToolsExpand property ([266da0d](https://github.com/EOX-A/EOxElements/commit/266da0df89a6775f7e3def5e5de6b785c963a574))
+
 ## [0.7.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.7.0...layercontrol-v0.7.1) (2023-10-19)
 
 ### Bug Fixes
