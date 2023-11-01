@@ -82,13 +82,9 @@ export class EOxDrawToolsList extends LitElement {
     this.drawnFeatures.splice(index, 1);
 
     // If selected feature gets deletes fit to available bound
-    if (this.selectedFeatureIndex === Number(index)) {
-      const newExtent = this.drawLayer.getSource().getExtent();
-      if (this.drawnFeatures.length) this.olMap.getView().fit(newExtent);
+    if (this.selectedFeatureIndex === Number(index))
       this.selectedFeatureIndex = null;
-    }
-
-    // If selected index is greater than deleted feature index then changing index cursor by 1
+    // Else If selected index is greater than deleted feature index then changing index cursor by 1
     else if (this.selectedFeatureIndex > Number(index)) {
       this.selectedFeatureIndex = this.selectedFeatureIndex - 1;
       this._handleSelectFeature(
@@ -110,7 +106,9 @@ export class EOxDrawToolsList extends LitElement {
         getDefaultPolygonStyle()
       );
     feature.setStyle(getSelectedPolygonStyle());
-    this.olMap.getView().fit(feature.getGeometry().getExtent());
+    this.olMap
+      .getView()
+      .fit(feature.getGeometry().getExtent(), { duration: 750 });
     this.selectedFeatureIndex = i;
     this.requestUpdate();
   }
