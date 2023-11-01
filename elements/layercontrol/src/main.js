@@ -28,6 +28,9 @@ import { filterLayers } from "./helpers";
  * #### `layerControlExpand?: Boolean`
  * Pre-expand a layer dropdown so that it is always open when the component initializes.
  *
+ * #### `layerControlToolsExpand?: Boolean`
+ * Pre-expand the layer tools so they are visible when the component initializes.
+ *
  * #### `showZoomLayerState?:Boolean`
  * This property will change the color of the layer when the layer goes beyond the 'min' and 'max' zoom levels.
  *
