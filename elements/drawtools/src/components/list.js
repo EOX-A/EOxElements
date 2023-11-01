@@ -146,7 +146,7 @@ export class EOxDrawToolsList extends LitElement {
                   <span class="title">Feature #${i + 1}</span>
                   <button
                     index=${i}
-                    class="remove-icon icon"
+                    class="discard icon"
                     @click="${this._handleDelete}"
                   >
                     ${this.unstyled ? "x" : nothing}
