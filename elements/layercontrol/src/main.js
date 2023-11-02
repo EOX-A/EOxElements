@@ -38,6 +38,7 @@ export class EOxLayerControl extends LitElement {
     titleProperty: { attribute: "title-property", type: String },
     tools: { attribute: false },
     unstyled: { type: Boolean },
+    styleOverride: { type: String },
   };
 
   constructor() {
@@ -74,6 +75,8 @@ export class EOxLayerControl extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    this.styleOverride = ``;
   }
 
   updated() {
@@ -91,6 +94,7 @@ export class EOxLayerControl extends LitElement {
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
+        ${this.styleOverride}
       </style>
       ${when(
         this.map,
