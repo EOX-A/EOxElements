@@ -47,6 +47,9 @@ export class EOxStacInfo extends LitElement {
   @property({ type: Array })
   footer: Array<string> = [];
 
+  @property()
+  styleOverride: string = "";
+
   @state()
   stacInfo: Array<typeof STAC> = [];
 
@@ -227,6 +230,7 @@ export class EOxStacInfo extends LitElement {
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
+        ${this.styleOverride}
       </style>
       <slot></slot>
       ${this.buildProperties(this.stacInfo)}
