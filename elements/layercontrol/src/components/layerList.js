@@ -18,6 +18,7 @@ export class EOxLayerControlLayerList extends LitElement {
     titleProperty: { attribute: "title-property", type: String },
     tools: { attribute: false },
     unstyled: { type: Boolean },
+    noShadow: { type: Boolean },
   };
 
   constructor() {
@@ -56,6 +57,11 @@ export class EOxLayerControlLayerList extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Renders the element without a shadow root
+     */
+    this.noShadow = true;
   }
 
   firstUpdated() {
@@ -73,7 +79,7 @@ export class EOxLayerControlLayerList extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
@@ -106,6 +112,7 @@ export class EOxLayerControlLayerList extends LitElement {
                           .getLayers
                           ? html`
                               <eox-layercontrol-layer-group
+                                .noShadow=${true}
                                 .group=${layer}
                                 .idProperty=${this.idProperty}
                                 .map=${this.map}
@@ -118,6 +125,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             `
                           : html`
                               <eox-layercontrol-layer
+                                .noShadow=${true}
                                 .layer=${layer}
                                 .titleProperty=${this.titleProperty}
                                 .tools=${this.tools}

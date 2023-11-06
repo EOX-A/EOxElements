@@ -28,6 +28,9 @@ import { filterLayers } from "./helpers";
  * #### `layerControlExpand?: Boolean`
  * Pre-expand a layer dropdown so that it is always open when the component initializes.
  *
+ * #### `layerControlToolsExpand?: Boolean`
+ * Pre-expand the layer tools so they are visible when the component initializes.
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -76,7 +79,10 @@ export class EOxLayerControl extends LitElement {
      */
     this.unstyled = false;
 
-    this.styleOverride = ``;
+    /**
+     * Overrides elements current CSS.
+     */
+    this.styleOverride = "";
   }
 
   updated() {
@@ -100,6 +106,7 @@ export class EOxLayerControl extends LitElement {
         this.map,
         () => html`
           <eox-layercontrol-layer-list
+            .noShadow=${true}
             class="layers"
             .idProperty=${this.idProperty}
             .layers=${this.map.getLayers()}
@@ -121,6 +128,7 @@ export class EOxLayerControl extends LitElement {
           )?.length > 0,
         () => html`
           <eox-layercontrol-optional-list
+            .noShadow=${true}
             .idProperty=${this.idProperty}
             .layers=${this.map.getLayers()}
             .titleProperty=${this.titleProperty}
