@@ -114,16 +114,26 @@ export class EOxLayerControl extends LitElement {
             .titleProperty=${this.titleProperty}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
-            @changed=${() => {
-              this.requestUpdate();
+            @changed=${
               /**
-               * @type Element & { requestUpdate: function }
+               * @param {CustomEvent & {target: Element}} e
                */
-              const optionalListEl = this.renderRoot.querySelector(
-                "eox-layercontrol-optional-list"
-              );
-              optionalListEl.requestUpdate();
-            }}
+              (e) => {
+                this.requestUpdate();
+                /*
+                 * @type Element e.target
+                 */
+                if (e.target.tagName === "EOX-LAYERCONTROL-LAYER-TOOLS") {
+                  /**
+                   * @type Element & { requestUpdate: function }
+                   */
+                  const optionalListEl = this.renderRoot.querySelector(
+                    "eox-layercontrol-optional-list"
+                  );
+                  optionalListEl?.requestUpdate();
+                }
+              }
+            }
           ></eox-layercontrol-layer-list>
         `
       )}
