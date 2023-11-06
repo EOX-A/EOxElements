@@ -114,7 +114,16 @@ export class EOxLayerControl extends LitElement {
             .titleProperty=${this.titleProperty}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
-            @changed=${() => this.requestUpdate()}
+            @changed=${() => {
+              this.requestUpdate();
+              /**
+               * @type Element & { requestUpdate: function }
+               */
+              const optionalListEl = this.renderRoot.querySelector(
+                "eox-layercontrol-optional-list"
+              );
+              optionalListEl.requestUpdate();
+            }}
           ></eox-layercontrol-layer-list>
         `
       )}
