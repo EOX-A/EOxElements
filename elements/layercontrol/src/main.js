@@ -90,7 +90,7 @@ export class EOxLayerControl extends LitElement {
      * @type Element & { map: import("ol").Map }
      */
     const foundElement = document.querySelector(this.for);
-    if (foundElement) {
+    if (foundElement && foundElement?.map !== this.map) {
       this.map = foundElement.map;
     }
   }
