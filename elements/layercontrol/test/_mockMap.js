@@ -56,6 +56,12 @@ class MockCollection {
   };
   layers = [];
   on = (event, fun) => (this.events = { [event]: fun });
+  un = (event, fun) => {
+    if(this.events[event] == fun){
+      delete this.events[event]
+    }
+  };
+  hasListener = (event) => event in this.events
   pop() {
     this.layers.pop();
     this.events["change:length"]();
