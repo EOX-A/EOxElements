@@ -64,7 +64,15 @@ export class EOxLayerControlLayerList extends LitElement {
     this.noShadow = true;
   }
 
+  #handleLayersChangeLength = () => {
+    this.requestUpdate();
+    this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
+  };
+
   firstUpdated() {
+    if (!this.layers) {
+      return;
+    }
     createSortable(this.renderRoot.querySelector("ul"), this.layers);
   }
 
@@ -72,10 +80,10 @@ export class EOxLayerControlLayerList extends LitElement {
     if (!this.layers) {
       return;
     }
-    this.layers.on("change:length", () => {
-      this.requestUpdate();
-      this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
-    });
+    if (this.layers.hasListener("change:length")) {
+      this.layers?.un("change:length", this.#handleLayersChangeLength);
+    }
+    this.layers.on("change:length", this.#handleLayersChangeLength);
   }
 
   createRenderRoot() {
