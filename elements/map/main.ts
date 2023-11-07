@@ -5,7 +5,7 @@ import View from "ol/View.js";
 // @ts-ignore
 
 import olCss from "ol/ol.css?inline";
-import { EOxSelectInteraction, SelectOptions, addSelect } from "./src/select";
+import { EOxSelectInteraction } from "./src/select";
 import {
   generateLayers,
   EoxLayer,
@@ -113,15 +113,6 @@ export class EOxMap extends LitElement {
       this.map.addLayer(layer);
     }
     return layer;
-  };
-
-  /**
-   * Adds a select functionality a given vector layer.
-   * @param layerId id of a vector layer to select features from
-   * @param options options (to do: define select options)
-   */
-  addSelect = (layerId: string, options: SelectOptions) => {
-    return addSelect(this, layerId, options);
   };
 
   /**

@@ -43,7 +43,6 @@ describe("draw interaction", () => {
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      console.log(eoxMap);
       expect(eoxMap.interactions.drawInteraction).to.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.exist;
       (<EOxMap>$el[0]).removeInteraction("drawInteraction");

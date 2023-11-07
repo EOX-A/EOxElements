@@ -131,7 +131,6 @@ export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
   }
   olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
-
   if (layer.interactions?.length) {
     for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
       const interactionDefinition = layer.interactions[i];
