@@ -47,7 +47,7 @@ export class EOxStacInfo extends LitElement {
   @property({ type: Array })
   footer: Array<string> = [];
 
-  @property()
+  @property({ attribute: "style-override" })
   styleOverride: string = "";
 
   @state()
