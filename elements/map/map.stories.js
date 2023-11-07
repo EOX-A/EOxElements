@@ -23,7 +23,29 @@ export const Primary = {
 };
 
 export const VectorLayer = {
-  render: () =>
+  args: {
+    layers: [
+      {
+        "type": "Vector",
+        "background": "#1366dd",
+        "properties": {
+          "id": "regions"
+        },
+        "source": {
+          "type": "Vector",
+          "url": "https://openlayers.org/data/vector/ecoregions.json",
+          "format": "GeoJSON",
+          "attributions": "Regions: @ openlayers.org"
+        },
+        "style": {
+          "stroke-color": "#232323",
+          "stroke-width": 1,
+          "fill-color": ["string", ["get", "COLOR"], "#eee"]
+        }
+      }
+    ]
+  },
+  render: (args) =>
     html` <style>
         eox-map {
           width: 100%;
@@ -31,26 +53,7 @@ export const VectorLayer = {
         }
       </style>
       <eox-map
-        layers='[
-          {
-            "type": "Vector",
-            "background": "#1366dd",
-            "properties": {
-              "id": "regions"
-            },
-            "source": {
-              "type": "Vector",
-              "url": "https://openlayers.org/data/vector/ecoregions.json",
-              "format": "GeoJSON",
-              "attributions": "Regions: @ openlayers.org"
-            },
-            "style": {
-              "stroke-color": "#232323",
-              "stroke-width": 1,
-              "fill-color": ["string", ["get", "COLOR"], "#eee"]
-            }
-          }
-        ]'
+        layers='${JSON.stringify(args.layers)}'
       ></eox-map>`,
 };
 
