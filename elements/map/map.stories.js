@@ -391,12 +391,12 @@ export const ABCompare = {
       <eox-map-compare>
         <eox-map
           slot="first"
-          id="a"
+          id="compareA"
           layers='[{"type":"Tile","source":{"type":"OSM"}}]'
         ></eox-map>
         <eox-map
           slot="second"
-          sync="eox-map#a"
+          sync="eox-map#compareA"
           layers='[
       {
         "type": "Tile",
