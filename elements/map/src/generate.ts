@@ -7,6 +7,7 @@ import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
 import { DrawOptions, addDraw } from "./draw";
 import { EOxMap } from "../main";
+import { SelectOptions, addSelect } from "./select";
 
 const availableLayers = {
   ...olLayers,
@@ -52,7 +53,7 @@ const availableSources = {
 
 export type EOxInteraction = {
   type: "draw" | "select";
-  options: DrawOptions;
+  options: DrawOptions | SelectOptions;
 };
 
 export type EoxLayer = {
@@ -135,7 +136,13 @@ export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
     for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
       const interactionDefinition = layer.interactions[i];
       if (interactionDefinition.type === "draw") {
-        addDraw(EOxMap, olLayer, interactionDefinition.options);
+        addDraw(EOxMap, olLayer, interactionDefinition.options as DrawOptions);
+      } else if (interactionDefinition.type === "select") {
+        addSelect(
+          EOxMap,
+          olLayer,
+          interactionDefinition.options as SelectOptions
+        );
       }
     }
   }
