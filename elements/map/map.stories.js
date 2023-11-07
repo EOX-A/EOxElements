@@ -26,24 +26,24 @@ export const VectorLayer = {
   args: {
     layers: [
       {
-        "type": "Vector",
-        "background": "#1366dd",
-        "properties": {
-          "id": "regions"
+        type: "Vector",
+        background: "#1366dd",
+        properties: {
+          id: "regions",
         },
-        "source": {
-          "type": "Vector",
-          "url": "https://openlayers.org/data/vector/ecoregions.json",
-          "format": "GeoJSON",
-          "attributions": "Regions: @ openlayers.org"
+        source: {
+          type: "Vector",
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: "GeoJSON",
+          attributions: "Regions: @ openlayers.org",
         },
-        "style": {
+        style: {
           "stroke-color": "#232323",
           "stroke-width": 1,
-          "fill-color": ["string", ["get", "COLOR"], "#eee"]
-        }
-      }
-    ]
+          "fill-color": ["string", ["get", "COLOR"], "#eee"],
+        },
+      },
+    ],
   },
   render: (args) =>
     html` <style>
@@ -52,9 +52,7 @@ export const VectorLayer = {
           height: 300px;
         }
       </style>
-      <eox-map
-        layers='${JSON.stringify(args.layers)}'
-      ></eox-map>`,
+      <eox-map layers="${JSON.stringify(args.layers)}"></eox-map>`,
 };
 
 export const VectorTileLayer = {

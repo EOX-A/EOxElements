@@ -26,25 +26,25 @@ export class EOxMap extends LitElement {
    * Map center, can be lon/lat or UTM
    */
   @property({ type: Array })
-  center: Array<number>=[0, 0];
+  center: Array<number> = [0, 0];
 
   /**
    * Map controls
    */
   @property({ type: Object })
-  controls: object={};
+  controls: object = {};
 
   /**
    * Layers array
    */
   @property({ type: Array })
-  layers: Array<EoxLayer>=[];
+  layers: Array<EoxLayer> = [];
 
   /**
    * Map zoom
    */
   @property({ type: Number })
-  zoom: number=0;
+  zoom: number = 0;
 
   /**
    * Sync map with another map view by providing its query selector
