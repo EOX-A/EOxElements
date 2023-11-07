@@ -243,25 +243,6 @@ export const Controls = {
 };
 
 export const Hover = {
-  play: async ({ canvasElement }) => {
-    canvasElement.querySelector("eox-map").addSelect("regions", {
-      id: "myHover",
-      condition: "pointermove",
-      layer: {
-        type: "Vector",
-        properties: {
-          id: "selectLayer",
-        },
-        source: {
-          type: "Vector",
-        },
-        style: {
-          "stroke-color": "red",
-          "stroke-width": 3,
-        },
-      },
-    });
-  },
   render: () => html` <style>
       eox-map {
         width: 100%;
@@ -270,39 +251,44 @@ export const Hover = {
     </style>
     <eox-map
       layers='[
-          {
+        {
+          "type": "Vector",
+          "id": "regions",
+          "source": {
             "type": "Vector",
-            "id": "regions",
-            "source": {
-              "type": "Vector",
-              "url": "https://openlayers.org/data/vector/ecoregions.json",
-              "format": "GeoJSON"
+            "url": "https://openlayers.org/data/vector/ecoregions.json",
+            "format": "GeoJSON"
+          },
+          "interactions": [
+            {
+              "type": "select",
+              "options": {
+                "id": "selectInteraction",
+                "condition": "pointermove",
+                "layer": {
+                  "type": "Vector",
+                  "properties": {
+                    "id": "selectLayer"
+                  },
+                  "source": {
+                    "type": "Vector"
+                  },
+                  "style": {
+                    "stroke-color": "red",
+                    "stroke-width": 3
+                  }
+                }
+              }
             }
-          }
-        ]'
+          ]
+        }
+      ]'
     >
       <eox-map-tooltip></eox-map-tooltip>
     </eox-map>`,
 };
 
 export const Select = {
-  play: async ({ canvasElement }) => {
-    const EOxMap = canvasElement.querySelector("eox-map");
-    EOxMap.addSelect("regions", {
-      id: "mySelection",
-      condition: "click",
-      //@ts-ignore
-      style: {
-        "stroke-color": "white",
-        "stroke-width": 3,
-      },
-    });
-    EOxMap.addEventListener("select", (e) => {
-      canvasElement.querySelector("#ecoName").innerHTML =
-        e.detail.feature?.get("ECO_NAME");
-      console.log(e.detail.feature?.get("ECO_NAME"));
-    });
-  },
   render: () => html`
     <style>
       eox-map {
@@ -328,10 +314,20 @@ export const Select = {
               "stroke-color": "black",
               "stroke-width": 1,
               "fill-color": "red"
-            }
+            },
+            "interactions": [{
+              "type": "select",
+              "options": {
+                "id": "selectInteraction",
+                "condition": "click",
+                "style": {
+                  "stroke-color": "white",
+                  "stroke-width": 3
+                }
+              }
+            }]
           }
-        ]
-        '
+        ]'
     ></eox-map>
     <div id="ecoName"></div>
   `,
