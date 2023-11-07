@@ -18,7 +18,7 @@ export type DrawOptions = Omit<
 
 export function addDraw(
   EOxMap: EOxMap,
-  layerId: string,
+  drawLayer: VectorLayer<VectorSource>,
   options: DrawOptions
 ): void {
   const options_ = Object.assign({}, options);
@@ -27,10 +27,6 @@ export function addDraw(
   }
   options_.modify =
     typeof options_.modify === "boolean" ? options_.modify : true;
-
-  const map = EOxMap.map;
-
-  const drawLayer = EOxMap.getLayerById(layerId) as VectorLayer<VectorSource>;
 
   const source = drawLayer.getSource();
 
@@ -68,14 +64,14 @@ export function addDraw(
   });
 
   // identifier to retrieve the interaction
-  map.addInteraction(drawInteraction);
+  EOxMap.map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
 
   if (options_.modify) {
     const modifyInteraction = new Modify({
       source,
     });
-    map.addInteraction(modifyInteraction);
+    EOxMap.map.addInteraction(modifyInteraction);
     EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
   }
 }

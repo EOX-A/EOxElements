@@ -5,7 +5,6 @@ import View from "ol/View.js";
 // @ts-ignore
 
 import olCss from "ol/ol.css?inline";
-import { DrawOptions, addDraw } from "./src/draw";
 import { EOxSelectInteraction, SelectOptions, addSelect } from "./src/select";
 import {
   generateLayers,
@@ -91,7 +90,7 @@ export class EOxMap extends LitElement {
    * @returns the array of layers
    */
   setLayers = (json: Array<EoxLayer>) => {
-    const layers = generateLayers(json);
+    const layers = generateLayers(this, json);
     this.map.setLayers(layers);
     return layers;
   };
@@ -107,22 +106,13 @@ export class EOxMap extends LitElement {
     const existingLayer = getLayerById(this, id);
     let layer;
     if (existingLayer) {
-      updateLayer(json, existingLayer);
+      updateLayer(this, json, existingLayer);
       layer = existingLayer;
     } else {
-      layer = createLayer(json);
+      layer = createLayer(this, json);
       this.map.addLayer(layer);
     }
     return layer;
-  };
-
-  /**
-   * Adds draw functionality to a given vector layer.
-   * @param layerId id of a vector layer to draw on
-   * @param options options
-   */
-  addDraw = (layerId: string, options: DrawOptions) => {
-    addDraw(this, layerId, options);
   };
 
   /**
@@ -204,7 +194,7 @@ export class EOxMap extends LitElement {
     addInitialControls(this);
 
     if (this.layers) {
-      this.map.setLayers(generateLayers(this.layers));
+      this.map.setLayers(generateLayers(this, this.layers));
     }
     if (this.sync) {
       const originMap: EOxMap = document.querySelector(this.sync);

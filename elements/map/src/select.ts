@@ -84,7 +84,7 @@ export class EOxSelectInteraction {
     // @ts-ignore
     layerDefinition.renderMode = "vector";
 
-    this.selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
+    this.selectStyleLayer = createLayer(eoxMap, layerDefinition as EoxLayer) as
       | VectorTileLayer
       | VectorLayer<VectorSource>;
     // @ts-ignore

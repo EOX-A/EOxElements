@@ -5,6 +5,8 @@ import STAC from "ol-stac";
 import { FlatStyleLike } from "ol/style/flat";
 import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
+import { DrawOptions, addDraw } from "./draw";
+import { EOxMap } from "../main";
 
 const availableLayers = {
   ...olLayers,
@@ -48,6 +50,11 @@ const availableSources = {
   ...olSources,
 };
 
+export type EOxInteraction = {
+  type: "draw" | "select";
+  options: DrawOptions;
+};
+
 export type EoxLayer = {
   type: layerType;
   properties: object & {
@@ -62,9 +69,16 @@ export type EoxLayer = {
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
+  interactions?: Array<EOxInteraction>;
 };
 
-export function createLayer(layer: EoxLayer): olLayers.Layer {
+/**
+ * creates an ol-layer from a given EoxLayer definition object
+ * @param {EOxMap} EOxMap
+ * @param {EoxLayer} layer
+ * @returns {olLayers.Layer}
+ */
+export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
   const newLayer = availableLayers[layer.type];
   const newSource = availableSources[layer.source?.type];
   if (!newLayer) {
@@ -103,7 +117,9 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   });
 
   if (layer.type === "Group") {
-    const groupLayers = layer.layers.reverse().map((l) => createLayer(l));
+    const groupLayers = layer.layers
+      .reverse()
+      .map((l) => createLayer(EOxMap, l));
     // set a reference to the parent group to each layer of the group
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
     olLayer.setLayers(new Collection(groupLayers));
@@ -114,10 +130,20 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   }
   olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
+
+  if (layer.interactions?.length) {
+    for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
+      const interactionDefinition = layer.interactions[i];
+      if (interactionDefinition.type === "draw") {
+        addDraw(EOxMap, olLayer, interactionDefinition.options);
+      }
+    }
+  }
   return olLayer;
 }
 
 export function updateLayer(
+  EOxMap: EOxMap,
   newLayerDefinition: EoxLayer,
   existingLayer: olLayers.Layer
 ) {
@@ -130,7 +156,7 @@ export function updateLayer(
   ) {
     throw new Error(`Layers are not compatible to be updated`);
   }
-  const newLayer = createLayer(newLayerDefinition);
+  const newLayer = createLayer(EOxMap, newLayerDefinition);
 
   if (
     JSON.stringify(newLayerDefinition.source) !==
@@ -165,12 +191,12 @@ export function updateLayer(
   return existingLayer;
 }
 
-export const generateLayers = (layerArray: Array<EoxLayer>) => {
+export const generateLayers = (EOxMap: EOxMap, layerArray: Array<EoxLayer>) => {
   if (!layerArray) {
     return [];
   }
 
-  return [...layerArray].reverse().map((l) => createLayer(l));
+  return [...layerArray].reverse().map((l) => createLayer(EOxMap, l));
 };
 
 /**
