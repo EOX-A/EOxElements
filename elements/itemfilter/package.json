@@ -31,7 +31,7 @@
     "@turf/boolean-intersects": "^6.5.0",
     "@turf/boolean-within": "^6.5.0",
     "fuse.js": "^7.0.0",
-    "lit": "^2.7.4",
+    "lit": "^3.0.2",
     "lodash.debounce": "^4.0.8",
     "toolcool-range-slider": "^4.0.27"
   }
