@@ -8,6 +8,10 @@ import { createXYZ } from "ol/tilegrid";
 import { DrawOptions, addDraw } from "./draw";
 import { EOxMap } from "../main";
 import { SelectOptions, addSelect } from "./select";
+import { register } from "ol/proj/proj4.js";
+import proj4 from "proj4";
+
+register(proj4); // required to support source reprojection
 
 const availableLayers = {
   ...olLayers,
