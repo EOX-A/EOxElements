@@ -432,7 +432,7 @@ export class EOxItemFilter extends TemplateElement {
                     @click=${() => this.resetFilters()}
                   >
                     Reset filters
-                  </a>
+                  </button>
                 `
               )}
             </section>

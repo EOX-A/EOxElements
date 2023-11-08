@@ -166,4 +166,9 @@ eox-itemfilter-range {
 .range-after {
   margin-left: .5rem;
 }
+button#filter-reset-type {
+  font-size:9px;
+  padding: 0px 8px;
+  margin-left:10px
+}
 `;

@@ -21,6 +21,13 @@ export class EOxItemFilterExpandContainer extends LitElement {
     );
   }
 
+  _resetFilter() {
+    const filterEl = this.querySelector(`[slot='filter']`) as Element & {
+      reset: () => void;
+    };
+    filterEl.reset();
+  }
+
   render() {
     return html`
       <style>
@@ -39,6 +46,15 @@ export class EOxItemFilterExpandContainer extends LitElement {
             style="${!this.filterObject.title && "text-transform: capitalize"}"
           >
             ${this.filterObject.title || this.filterObject.key || "Filter"}
+            <button
+              id="filter-reset-type"
+              class="outline small"
+              @click=${() => {
+                this._resetFilter();
+              }}
+            >
+              Reset
+            </button>
           </span>
         </summary>
         <div class="scroll">
