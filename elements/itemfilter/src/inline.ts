@@ -69,9 +69,7 @@ export class EOxItemFilterInline extends LitElement {
       delete item._inProgress;
       delete item.stringifiedState;
     });
-    this.renderRoot
-    .querySelector("[slot=content]")
-    .classList.remove("hidden");
+    this.renderRoot.querySelector("[slot=content]").classList.remove("hidden");
     this.requestUpdate();
     this.dispatchEvent(new CustomEvent("filter"));
   }
@@ -220,8 +218,10 @@ export class EOxItemFilterInline extends LitElement {
                       const items = evt.detail;
                       if (items.length > 0) {
                         items[items.length - 1]._inProgress = true;
-                        this.renderRoot.querySelector('input[slot=trigger]').value = ''
-                        this.inputText = ''
+                        this.renderRoot.querySelector(
+                          "input[slot=trigger]"
+                        ).value = "";
+                        this.inputText = "";
                         this.requestUpdate();
                       }
 
