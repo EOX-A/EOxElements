@@ -1,5 +1,6 @@
 import { EOxItemFilter } from "./src/main";
 import "./src/main";
+import "../map/main";
 import items from "./test/testItems.json";
 
 export default {
@@ -23,10 +24,10 @@ export const Primary = {
         title: "Search",
         type: "text",
         expanded: true,
-        state: {
-          title: "no2",
-          themes: "no2",
-        },
+        // state: {
+        //   title: "no2",
+        //   themes: "no2",
+        // },
       },
       {
         key: "themes",
