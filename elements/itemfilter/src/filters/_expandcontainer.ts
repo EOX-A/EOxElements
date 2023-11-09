@@ -46,15 +46,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
             style="${!this.filterObject.title && "text-transform: capitalize"}"
           >
             ${this.filterObject.title || this.filterObject.key || "Filter"}
-            <button
-              id="filter-reset-type"
-              class="outline small"
-              @click=${() => {
-                this._resetFilter();
-              }}
-            >
-              Reset
-            </button>
+            <slot name="reset-button"></slot>
           </span>
         </summary>
         <div class="scroll">
