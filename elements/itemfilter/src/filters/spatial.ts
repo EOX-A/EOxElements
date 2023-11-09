@@ -1,7 +1,6 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
-import { live } from "lit/directives/live.js";
 import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";
 import { Geometry } from "@turf/helpers";
@@ -55,10 +54,8 @@ export class EOxItemFilterSpatial extends LitElement {
             <input
               type="radio"
               name="mode"
-              .checked="${
-                // @ts-ignore
-                live(this.filterObject.state.mode === mode)
-              }
+              .checked="${(this.filterObject.state.mode as String) === mode ||
+              nothing}
               "
               value="${mode}"
               @click="${() => {
