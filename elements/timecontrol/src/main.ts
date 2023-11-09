@@ -289,67 +289,26 @@ export class SliderTicks extends LitElement {
   }
 
   get yearMarks(): { label: number, position: number }[] {
-    const yearIndices: { label: number, position: number }[] = [];
-    let lastDecade: number = null;
-    let lastYear: number = null;
+    const yearMarks = [];
+    let previousYear = null;
 
-    // Calculate first and last dates as fractions of a year
-    const firstTime = dayjs(this.times[0]);
-    const firstYear = firstTime.year() + (firstTime.dayOfYear() / 365);
-    const lastTime = dayjs(this.times[this.times.length - 1]);
-    const lastTimeYear = lastTime.year() + (lastTime.dayOfYear() / 365);
+    this.lines.forEach((line, index) => {
+      const currentTime = dayjs(this.times[index]);
+      const currentYear = currentTime.year();
 
-    // Calculate the total range in fractions of a year
-    const totalYears = lastTimeYear - firstYear;
-
-    // If the total range of years crosses a certain threshold (e.g., 10 years),
-    // we will show marks for every decade.
-    const showDecades = totalYears > 10;
-
-    this.times.forEach((time: string) => {
-      const currentTime = dayjs(time);
-      const currentTimeYear = currentTime.year() + (currentTime.dayOfYear() / 365);
-
-      if (showDecades) {
-        // If we are in a new decade, place a mark
-        const currentDecade = Math.floor(currentTimeYear / 10) * 10;
-        if (currentDecade !== lastDecade) {
-          yearIndices.push({
-            label: currentDecade,
-            position: ((currentTimeYear - firstYear) / totalYears) * this.width,
-          });
-          lastDecade = currentDecade;
-        }
-      } else {
-        // If we are in a new year, place a mark
-        const currentYear = Math.floor(currentTimeYear);
-        if (currentYear !== lastYear) {
-          yearIndices.push({
-            label: currentYear,
-            position: ((currentTimeYear - firstYear) / totalYears) * this.width,
-          });
-          lastYear = currentYear;
-        }
+      // If it's the first tick or if the year has changed, add a year mark
+      if (index === 0 || currentYear !== previousYear) {
+        yearMarks.push({
+          label: currentYear,
+          position: line // Assuming 'line' is the position of the tick
+        });
       }
+
+      // Update previousYear for the next iteration
+      previousYear = currentYear;
     });
 
-    // Create a new array with removed overlapping labels
-    const nonOverlappingYearIndices = yearIndices.filter((yearMark, index, array) => {
-      // If it's the last item in the array, it can't overlap with a next item
-      if (index === array.length - 1) return true;
-
-      // Get the next item in the array
-      const nextYearMark = array[index + 1];
-
-      // Determine the distance between the current and next labels
-      const distance = nextYearMark.position - yearMark.position;
-
-      // Only keep this label if it's more than a certain distance from the next one
-      const minDistance = 50; // set this to the minimum acceptable distance
-      return distance > minDistance;
-    });
-
-    return nonOverlappingYearIndices;
+    return yearMarks;
   }
 
   isYearLine(line: number): boolean {
@@ -382,7 +341,7 @@ export class SliderTicks extends LitElement {
           ${this.yearMarks.map((year, index) => svg`
             <text
               key=${`y${index}`}
-              x=${year.position - 1}
+              x=${year.position}
               y=${this.height - 1}
               fill="#555"
               font-size="13"
