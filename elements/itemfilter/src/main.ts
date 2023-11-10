@@ -417,6 +417,7 @@ export class EOxItemFilter extends TemplateElement {
                                       "[slot=filter]"
                                     )
                                   )).reset();
+                                  this.search();
                                   this.requestUpdate();
                                 }}
                               >
