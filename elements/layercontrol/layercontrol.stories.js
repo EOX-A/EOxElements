@@ -541,66 +541,45 @@ export const ZoomLayerState = {
   args: {},
   render: () => html`
     <div style="display: flex">
-      <eox-layercontrol for="eox-map"></eox-layercontrol>
+      <eox-layercontrol
+        .showZoomLayerState=${true}
+        for="eox-map"
+      ></eox-layercontrol>
       <eox-map
         id="optional"
         style="width: 600px; height: 300px; margin-left: 7px;"
         zoom="3"
         layers=${JSON.stringify([
           {
-            type: "Group",
+            type: "Vector",
             properties: {
-              id: "group2",
-              title: "Data Layers",
-              layerControlExpand: true,
-              description: "# Hello world",
+              title: "Regions",
+              id: "regions",
+              showZoomLayerState: true,
             },
-            layers: [
-              {
-                type: "Tile",
-                properties: {
-                  id: "WIND",
-                  title: "WIND",
-                  showZoomLayerState: true,
-                },
-                source: {
-                  type: "TileWMS",
-                  url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-                  params: {
-                    LAYERS: "AWS_VIS_WIND_V_10M",
-                  },
-                },
-                minZoom: 2,
-                maxZoom: 4,
+            source: {
+              type: "Vector",
+              url: "https://openlayers.org/data/vector/ecoregions.json",
+              format: "GeoJSON",
+              attributions: "Regions: @ openlayers.org",
+            },
+            minZoom: 2,
+          },
+          {
+            type: "Tile",
+            properties: {
+              id: "WIND",
+              title: "WIND",
+              showZoomLayerState: true,
+            },
+            source: {
+              type: "TileWMS",
+              url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              params: {
+                LAYERS: "AWS_VIS_WIND_V_10M",
               },
-              {
-                type: "Tile",
-                properties: {
-                  id: "NO2",
-                  title: "NO2",
-                },
-                source: {
-                  type: "TileWMS",
-                  url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-                  params: {
-                    LAYERS: "AWS_NO2-VISUALISATION",
-                  },
-                },
-              },
-              {
-                type: "Vector",
-                properties: {
-                  title: "Regions",
-                  id: "regions",
-                },
-                source: {
-                  type: "Vector",
-                  url: "https://openlayers.org/data/vector/ecoregions.json",
-                  format: "GeoJSON",
-                  attributions: "Regions: @ openlayers.org",
-                },
-              },
-            ],
+            },
+            maxZoom: 9,
           },
         ])}
       >
