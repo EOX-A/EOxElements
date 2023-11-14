@@ -1,4 +1,5 @@
 import "../src/main";
+import "./_mockMap";
 import testItems from "./testItems.json";
 
 describe("Item Filter Config", () => {
@@ -187,5 +188,37 @@ describe("Item Filter Config", () => {
 
     checkExclusiveOpen("ul#filters", true);
     checkExclusiveOpen("ul#results");
+  });
+
+  it("should show the map when spatial filter is enabled", () => {
+    cy.get("eox-itemfilter").and(($el) => {
+      const eoxItemFilter = <EOxItemFilter>$el[0];
+      eoxItemFilter.config = {
+        titleProperty: "title",
+        filterProperties: [
+          {
+            key: "geometry",
+            type: "spatial",
+            expanded: true,
+          },
+        ],
+      };
+      eoxItemFilter.apply(testItems);
+    });
+    cy.get("eox-itemfilter")
+      .shadow()
+      .within(() => {
+        cy.get("eox-itemfilter-spatial")
+          .get("eox-itemfilter-spatial-filter")
+          .shadow()
+          .within(() => {
+            cy.get("eox-map").should("exist");
+            cy.get("eox-map")
+              .shadow()
+              .within(() => {
+                cy.get("canvas").should("exist");
+              });
+          });
+      });
   });
 });

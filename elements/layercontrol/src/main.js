@@ -44,6 +44,7 @@ export class EOxLayerControl extends LitElement {
     titleProperty: { attribute: "title-property", type: String },
     tools: { attribute: false },
     unstyled: { type: Boolean },
+    styleOverride: { type: String },
   };
 
   constructor() {
@@ -80,6 +81,11 @@ export class EOxLayerControl extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Overrides elements current CSS.
+     */
+    this.styleOverride = "";
   }
 
   updated() {
@@ -97,11 +103,13 @@ export class EOxLayerControl extends LitElement {
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
+        ${this.styleOverride}
       </style>
       ${when(
         this.map,
         () => html`
           <eox-layercontrol-layer-list
+            .noShadow=${true}
             class="layers"
             .idProperty=${this.idProperty}
             .layers=${this.map.getLayers()}
@@ -109,7 +117,23 @@ export class EOxLayerControl extends LitElement {
             .titleProperty=${this.titleProperty}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
-            @changed=${() => this.requestUpdate()}
+            @changed=${
+              /**
+               * @param {CustomEvent & {target: Element}} e
+               */
+              (e) => {
+                this.requestUpdate();
+                if (e.target.tagName === "EOX-LAYERCONTROL-LAYER-TOOLS") {
+                  /**
+                   * @type Element & { requestUpdate: function }
+                   */
+                  const optionalListEl = this.renderRoot.querySelector(
+                    "eox-layercontrol-optional-list"
+                  );
+                  optionalListEl?.requestUpdate();
+                }
+              }
+            }
           ></eox-layercontrol-layer-list>
         `
       )}
@@ -123,6 +147,7 @@ export class EOxLayerControl extends LitElement {
           )?.length > 0,
         () => html`
           <eox-layercontrol-optional-list
+            .noShadow=${true}
             .idProperty=${this.idProperty}
             .layers=${this.map.getLayers()}
             .titleProperty=${this.titleProperty}

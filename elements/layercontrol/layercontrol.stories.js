@@ -410,10 +410,16 @@ export const HiddenLayers = {
 };
 
 export const SingleLayer = {
-  args: { idProperty: "id", titleProperty: "title", unstyled: false },
+  args: {
+    idProperty: "id",
+    titleProperty: "title",
+    unstyled: false,
+    noShadow: false,
+  },
   render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol-layer
+        .noShadow=${args.noShadow}
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
@@ -449,10 +455,11 @@ export const SingleLayer = {
 };
 
 export const LayerList = {
-  args: { unstyled: false },
+  args: { unstyled: false, noShadow: false },
   render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol-layer-list
+        .noShadow=${args.noShadow}
         .unstyled=${args.unstyled}
       ></eox-layercontrol-layer-list>
       <eox-map
@@ -519,6 +526,7 @@ export const LayerList = {
 export const Tabs = {
   render: () => html`
     <eox-layercontrol-tabs
+      .noShadow=${false}
       .actions=${["delete"]}
       .tabs=${["info", "opacity", "config"]}
     ></eox-layercontrol-tabs>

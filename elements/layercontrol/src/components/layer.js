@@ -17,6 +17,7 @@ export class EOxLayerControlLayer extends LitElement {
     titleProperty: { attribute: "title-property", type: String },
     tools: { attribute: false },
     unstyled: { type: Boolean },
+    noShadow: { type: Boolean },
   };
 
   /**
@@ -55,6 +56,10 @@ export class EOxLayerControlLayer extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+    /**
+     * Renders the element without a shadow root
+     */
+    this.noShadow = true;
   }
 
   /**
@@ -103,7 +108,7 @@ export class EOxLayerControlLayer extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
@@ -168,6 +173,7 @@ export class EOxLayerControlLayer extends LitElement {
             </label>
           </div>
           <eox-layercontrol-layer-tools
+            .noShadow=${true}
             .layer=${this.layer}
             .tools=${this.tools}
             .unstyled=${this.unstyled}

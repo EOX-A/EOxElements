@@ -60,6 +60,19 @@ export class EOxSelectInteraction {
         ...options.overlay,
       });
       this.eoxMap.map.addOverlay(overlay);
+
+      const pointerLeaveListener = () => {
+        overlay.setPosition(undefined);
+      };
+      eoxMap.map.on("change:target", (e) => {
+        e.oldValue.removeEventListener("pointerleave", pointerLeaveListener);
+        e.target
+          .getTargetElement()
+          .addEventListener("pointerleave", pointerLeaveListener);
+      });
+      eoxMap.map
+        .getTargetElement()
+        .addEventListener("pointerleave", pointerLeaveListener);
     }
 
     // a layer that only contains the selected features, for displaying purposes only
