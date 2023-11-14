@@ -198,7 +198,7 @@ describe("LayerControl", () => {
       });
   });
 
-  it("Zoom and check layer state based on min and max - showZoomLayerState", () => {
+  it("Zoom and check layer state based on min and max zoom - showZoomLayerState", () => {
     cy.get("mock-map").and(($el) => {
       $el /**MockMap*/[0]
         .setLayers([
