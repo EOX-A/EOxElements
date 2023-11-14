@@ -168,6 +168,7 @@ export class EOxItemFilterInline extends LitElement {
         <div class="input-container">
           <eox-dropdown .parent=${this} .unstyled=${this.unstyled}>
             <input
+              id="inline-input"
               slot="trigger"
               type="text"
               placeholder="Type something..."

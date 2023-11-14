@@ -129,6 +129,15 @@ export class EOxAutocomplete extends LitElement {
     //   ].classList.add("highlighted");
     // }
     this.renderRoot.querySelector("input").select();
+    if ((<HTMLElement & { inline: boolean }>this.parentElement)?.inline) {
+      if (!["ArrowUp", "ArrowDown"].includes(key)) {
+        (<HTMLInputElement>(
+          this.parentElement.parentElement?.parentElement?.querySelector(
+            "#inline-input"
+          )
+        )).focus();
+      }
+    }
   }
 
   _handleHighlight(items: Array<any>) {
