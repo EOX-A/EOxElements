@@ -121,3 +121,42 @@ export const getLayerType = (layer, map) => {
     ? "vector"
     : "raster";
 };
+
+/**
+ * Returns whether zoom layer state be enabled or not for a particular layer
+ * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
+ * @param {Boolean} showZoomLayerState
+ * @returns {Boolean} state
+ */
+export const isZoomLayerStateRequired = (layer, showZoomLayerState) => {
+  const minZoom = layer.get("minZoom");
+  const maxZoom = layer.get("maxZoom");
+
+  if (showZoomLayerState && (minZoom !== -Infinity || maxZoom !== Infinity))
+    return true;
+  else return false;
+};
+
+/**
+ * Returns layer visibility state based on minZoom and maxZoon
+ * with respective of current zoom level
+ * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
+ * @param {import("ol").Map} map
+ * @param {Boolean} showZoomLayerState
+ * @returns {Boolean} state
+ */
+export const isLayerVisibleBasedOnZoomState = (
+  layer,
+  map,
+  showZoomLayerState
+) => {
+  if (!layer || !map) return false;
+
+  if (!isZoomLayerStateRequired(layer, showZoomLayerState)) return true;
+
+  const minZoom = layer.get("minZoom");
+  const maxZoom = layer.get("maxZoom");
+  const zoom = map.getView().getZoom();
+
+  return zoom > minZoom && zoom < maxZoom ? true : false;
+};

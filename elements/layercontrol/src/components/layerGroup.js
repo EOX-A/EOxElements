@@ -14,6 +14,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showZoomLayerState: { attribute: false, type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
@@ -45,6 +46,11 @@ export class EOxLayerControlLayerGroup extends LitElement {
      * The layer title property
      */
     this.titleProperty = "title";
+
+    /**
+     * Show layer state based on zoom level or not
+     */
+    this.showZoomLayerState = false;
 
     /**
      * @type Array<string>
@@ -80,7 +86,9 @@ export class EOxLayerControlLayerGroup extends LitElement {
               <eox-layercontrol-layer
                 .noShadow=${true}
                 .layer=${this.group}
+                .map=${this.map}
                 .titleProperty=${this.titleProperty}
+                .showZoomLayerState=${this.showZoomLayerState}
                 .tools=${this.tools}
                 .unstyled=${this.unstyled}
                 @changed=${() => this.requestUpdate()}
@@ -92,6 +100,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
               .layers=${this.group.getLayers()}
               .map=${this.map}
               .titleProperty=${this.titleProperty}
+              .showZoomLayerState=${this.showZoomLayerState}
               .tools=${this.tools}
               .unstyled=${this.unstyled}
               @changed=${() => this.requestUpdate()}

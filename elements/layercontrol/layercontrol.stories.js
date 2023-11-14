@@ -534,6 +534,61 @@ export const Tabs = {
 };
 
 /**
+ * Zoom layer state based on `minZoom` and `maxZoom`.
+ * The color change state only visible when `showZoomLayerState` is set inside layer properties.
+ */
+export const ZoomLayerState = {
+  args: {
+    showZoomLayerState: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .showZoomLayerState=${args.showZoomLayerState}
+        for="eox-map#zoomstate"
+      ></eox-layercontrol>
+      <eox-map
+        id="zoomstate"
+        style="width: 600px; height: 300px; margin-left: 7px;"
+        zoom="1"
+        layers=${JSON.stringify([
+          {
+            type: "Vector",
+            properties: {
+              title: "Regions",
+              id: "regions",
+            },
+            source: {
+              type: "Vector",
+              url: "https://openlayers.org/data/vector/ecoregions.json",
+              format: "GeoJSON",
+              attributions: "Regions: @ openlayers.org",
+            },
+            minZoom: 2,
+          },
+          {
+            type: "Tile",
+            properties: {
+              id: "WIND",
+              title: "WIND",
+            },
+            source: {
+              type: "TileWMS",
+              url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              params: {
+                LAYERS: "AWS_VIS_WIND_V_10M",
+              },
+            },
+            maxZoom: 9,
+          },
+        ])}
+      >
+      </eox-map>
+    </div>
+  `,
+};
+
+/**
  * Unstyled version of the Element
  */
 export const Unstyled = {
