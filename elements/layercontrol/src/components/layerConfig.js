@@ -10,6 +10,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
   static properties = {
     layer: { attribute: false },
     unstyled: { type: Boolean },
+    noShadow: { type: Boolean },
   };
 
   constructor() {
@@ -26,6 +27,15 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Renders the element without a shadow root
+     */
+    this.noShadow = true;
+  }
+
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {

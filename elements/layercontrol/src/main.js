@@ -39,8 +39,10 @@ export class EOxLayerControl extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
+    styleOverride: { type: String },
   };
 
   constructor() {
@@ -69,6 +71,11 @@ export class EOxLayerControl extends LitElement {
     this.titleProperty = "title";
 
     /**
+     * Show layer state based on zoom level or not
+     */
+    this.showLayerZoomState = false;
+
+    /**
      * Layer tools
      */
     this.tools = ["info", "opacity", "remove", "sort"];
@@ -77,6 +84,11 @@ export class EOxLayerControl extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Overrides elements current CSS.
+     */
+    this.styleOverride = "";
   }
 
   updated() {
@@ -94,19 +106,38 @@ export class EOxLayerControl extends LitElement {
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
+        ${this.styleOverride}
       </style>
       ${when(
         this.map,
         () => html`
           <eox-layercontrol-layer-list
+            .noShadow=${true}
             class="layers"
             .idProperty=${this.idProperty}
             .layers=${this.map.getLayers()}
             .map=${this.map}
             .titleProperty=${this.titleProperty}
+            .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
-            @changed=${() => this.requestUpdate()}
+            @changed=${
+              /**
+               * @param {CustomEvent & {target: Element}} e
+               */
+              (e) => {
+                this.requestUpdate();
+                if (e.target.tagName === "EOX-LAYERCONTROL-LAYER-TOOLS") {
+                  /**
+                   * @type Element & { requestUpdate: function }
+                   */
+                  const optionalListEl = this.renderRoot.querySelector(
+                    "eox-layercontrol-optional-list"
+                  );
+                  optionalListEl?.requestUpdate();
+                }
+              }
+            }
           ></eox-layercontrol-layer-list>
         `
       )}
@@ -120,6 +151,7 @@ export class EOxLayerControl extends LitElement {
           )?.length > 0,
         () => html`
           <eox-layercontrol-optional-list
+            .noShadow=${true}
             .idProperty=${this.idProperty}
             .layers=${this.map.getLayers()}
             .titleProperty=${this.titleProperty}

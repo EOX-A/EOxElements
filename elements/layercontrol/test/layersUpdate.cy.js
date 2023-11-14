@@ -3,11 +3,14 @@ import "./_mockMap";
 
 describe("LayerControl", () => {
   beforeEach(() => {
+    const showLayerZoomState = Cypress.mocha
+      .getRunner()
+      .suite.ctx.currentTest.title.includes("showLayerZoomState");
+
     cy.mount("<mock-map></mock-map>").as("mock-map");
-    cy.mount(
-      `
-      <eox-layercontrol for="mock-map"></eox-layercontrol>`
-    ).as("eox-layercontrol");
+    cy.mount(`<eox-layercontrol for="mock-map"></eox-layercontrol>`, {
+      properties: { showLayerZoomState },
+    }).as("eox-layercontrol");
   });
 
   it("displays the correct amount of layers after multiple calls of setMap()", () => {
@@ -192,6 +195,56 @@ describe("LayerControl", () => {
           .find(".title")
           .contains("title2")
           .should("have.length", 1);
+      });
+  });
+
+  it("Zoom and check layer state based on min and max zoom - showLayerZoomState", () => {
+    cy.get("mock-map").and(($el) => {
+      $el /**MockMap*/[0]
+        .setLayers([
+          { properties: { id: "foo" }, minZoom: 2 },
+          { properties: { id: "bar" }, maxZoom: 9 },
+        ]);
+    });
+
+    const checkLayerClass = (id, have) => {
+      const haveCheck = !have ? "not." : "";
+      cy.get(`[data-layer=${id}] .layer`).should(
+        `${haveCheck}have.class`,
+        "zoom-state-invisible"
+      );
+    };
+    const changeZoom = (zoom) => {
+      cy.get("mock-map").and(($el) => {
+        $el[0].setZoom(zoom);
+        $el[0].map.getEvents()["change:resolution"].map((func) => func());
+      });
+    };
+
+    // Case 1: Default load with zoom level 1
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        checkLayerClass("foo", true);
+        checkLayerClass("bar");
+      });
+
+    // Case 2: change zoom level to 3
+    changeZoom(3);
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        checkLayerClass("foo");
+        checkLayerClass("bar");
+      });
+
+    // Case 3: change zoom level to 10
+    changeZoom(10);
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        checkLayerClass("foo");
+        checkLayerClass("bar", true);
       });
   });
 });

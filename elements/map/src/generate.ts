@@ -5,6 +5,10 @@ import STAC from "ol-stac";
 import { FlatStyleLike } from "ol/style/flat";
 import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
+import { register } from "ol/proj/proj4.js";
+import proj4 from "proj4";
+
+register(proj4); // required to support source reprojection
 
 const availableLayers = {
   ...olLayers,
