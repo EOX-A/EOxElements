@@ -550,7 +550,7 @@ export const ZoomLayerState = {
       <eox-map
         id="optional"
         style="width: 600px; height: 300px; margin-left: 7px;"
-        zoom="3"
+        zoom="1"
         layers=${JSON.stringify([
           {
             type: "Vector",
