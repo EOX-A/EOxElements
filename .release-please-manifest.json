@@ -3,6 +3,6 @@
   "elements/itemfilter": "0.9.0",
   "elements/layercontrol": "0.9.0",
   "elements/map": "0.8.3",
-  "elements/stacinfo": "0.2.1",
+  "elements/stacinfo": "0.3.0",
   "elements/timecontrol": "0.0.4"
 }
