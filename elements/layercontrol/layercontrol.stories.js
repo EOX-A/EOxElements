@@ -538,11 +538,13 @@ export const Tabs = {
  * The color change state only visible when `showZoomLayerState` is set inside layer properties.
  */
 export const ZoomLayerState = {
-  args: {},
-  render: () => html`
+  args: {
+    showZoomLayerState: true,
+  },
+  render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol
-        .showZoomLayerState=${true}
+        .showZoomLayerState=${args.showZoomLayerState}
         for="eox-map"
       ></eox-layercontrol>
       <eox-map
@@ -555,7 +557,6 @@ export const ZoomLayerState = {
             properties: {
               title: "Regions",
               id: "regions",
-              showZoomLayerState: true,
             },
             source: {
               type: "Vector",
@@ -570,7 +571,6 @@ export const ZoomLayerState = {
             properties: {
               id: "WIND",
               title: "WIND",
-              showZoomLayerState: true,
             },
             source: {
               type: "TileWMS",

@@ -31,9 +31,6 @@ import { filterLayers } from "./helpers";
  * #### `layerControlToolsExpand?: Boolean`
  * Pre-expand the layer tools so they are visible when the component initializes.
  *
- * #### `showZoomLayerState?:Boolean`
- * This property will change the color of the layer when the layer goes beyond the 'min' and 'max' zoom levels.
- *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -42,6 +39,7 @@ export class EOxLayerControl extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showZoomLayerState: { attribute: false, type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
@@ -71,6 +69,11 @@ export class EOxLayerControl extends LitElement {
      * Layer title property
      */
     this.titleProperty = "title";
+
+    /**
+     * Show layer state based on zoom level or not
+     */
+    this.showZoomLayerState = false;
 
     /**
      * Layer tools
@@ -115,6 +118,7 @@ export class EOxLayerControl extends LitElement {
             .layers=${this.map.getLayers()}
             .map=${this.map}
             .titleProperty=${this.titleProperty}
+            .showZoomLayerState=${this.showZoomLayerState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             @changed=${

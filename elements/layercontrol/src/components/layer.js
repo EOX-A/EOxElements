@@ -3,7 +3,10 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layerTools";
 import { checkbox } from "../../../../utils/styles/checkbox";
-import { isLayerVisibleBasedOnZoomState } from "../helpers";
+import {
+  isLayerVisibleBasedOnZoomState,
+  isZoomLayerStateRequired,
+} from "../helpers";
 
 /**
  * A single layer display
@@ -15,6 +18,7 @@ export class EOxLayerControlLayer extends LitElement {
     layer: { attribute: false },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showZoomLayerState: { attribute: false, type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
@@ -48,6 +52,11 @@ export class EOxLayerControlLayer extends LitElement {
     this.titleProperty = "title";
 
     /**
+     * Show layer state based on zoom level or not
+     */
+    this.showZoomLayerState = false;
+
+    /**
      * @type Array<string>
      */
     this.tools = [];
@@ -69,7 +78,8 @@ export class EOxLayerControlLayer extends LitElement {
   updateLayerZoomVisibility() {
     const newLayerVisibilityBasedOnZoom = isLayerVisibleBasedOnZoomState(
       this.layer,
-      this.map
+      this.map,
+      this.showZoomLayerState
     );
 
     let visibilityChanged = false;
@@ -97,7 +107,7 @@ export class EOxLayerControlLayer extends LitElement {
    * and register "change:resolution" ones at the beginning if `showZoomLayerState` is present
    */
   firstUpdated() {
-    if (this.layer?.get("showZoomLayerState")) {
+    if (isZoomLayerStateRequired(this.layer, this.showZoomLayerState)) {
       this.updateLayerZoomVisibility();
 
       // Initialize change:resolution event ones
