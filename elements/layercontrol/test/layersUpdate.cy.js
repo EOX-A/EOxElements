@@ -229,7 +229,7 @@ describe("LayerControl", () => {
         checkLayerClass("bar");
       });
 
-    // Case 2: change level to 3
+    // Case 2: change zoom level to 3
     changeZoom(3);
     cy.get("eox-layercontrol")
       .shadow()
@@ -238,7 +238,7 @@ describe("LayerControl", () => {
         checkLayerClass("bar");
       });
 
-    // Case 3: change level to 10
+    // Case 3: change zoom level to 10
     changeZoom(10);
     cy.get("eox-layercontrol")
       .shadow()
