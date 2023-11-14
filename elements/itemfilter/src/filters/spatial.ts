@@ -54,8 +54,8 @@ export class EOxItemFilterSpatial extends LitElement {
             <input
               type="radio"
               name="mode"
-              .checked="${(this.filterObject.state.mode as String) === mode ||
-              nothing}
+              .checked="${(this.filterObject.state
+                .mode as unknown as string) === mode || nothing}
               "
               value="${mode}"
               @click="${() => {
