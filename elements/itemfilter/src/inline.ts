@@ -47,8 +47,14 @@ export class EOxItemFilterInline extends LitElement {
     //     }
     //   }
     // }
-    if (key === "Escape" || key === "Space") {
-      const inProgressItem = this.items.find((i) => i._inProgress);
+
+    const inProgressItem = this.items.find((i) => i._inProgress);
+    const textInProgress =
+      inProgressItem.type === "text" && inProgressItem.dirty;
+    if (
+      ["Escape", "Space"].includes(key) ||
+      (key == "Enter" && textInProgress)
+    ) {
       if (inProgressItem) {
         delete inProgressItem._inProgress;
         this.requestUpdate();
@@ -81,13 +87,7 @@ export class EOxItemFilterInline extends LitElement {
     this._keyboardEventListener = this.getRootNode().addEventListener(
       "keydown",
       (event) => {
-        if (
-          [
-            // "Enter",
-            "Escape",
-            "Space",
-          ].includes(event.code)
-        ) {
+        if (["Enter", "Escape", "Space"].includes(event.code)) {
           this._handleKeyboard(event.code);
         }
       }

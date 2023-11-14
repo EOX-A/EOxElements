@@ -97,7 +97,7 @@ export class EOxItemFilterChips extends LitElement {
         if (code === "Space") {
           event.preventDefault();
         }
-        if (!["Escape", "Space"].includes(code)) {
+        if (!["Escape", "Space", "Enter"].includes(code)) {
           event.stopPropagation();
         }
         if (["ArrowLeft", "ArrowRight", "Escape", "Backspace"].includes(code)) {

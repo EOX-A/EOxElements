@@ -33,6 +33,7 @@ export class EOxItemFilterText extends LitElement {
     );
     searchInput.value = "";
     resetFilter(this.filterObject);
+    this.filterObject.dirty = false;
     this.requestUpdate();
   }
 
