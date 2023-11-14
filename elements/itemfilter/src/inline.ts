@@ -47,7 +47,7 @@ export class EOxItemFilterInline extends LitElement {
     //     }
     //   }
     // }
-    if (key === "Escape") {
+    if (key === "Escape" || key === "Space") {
       const inProgressItem = this.items.find((i) => i._inProgress);
       if (inProgressItem) {
         delete inProgressItem._inProgress;
@@ -85,6 +85,7 @@ export class EOxItemFilterInline extends LitElement {
           [
             // "Enter",
             "Escape",
+            "Space",
           ].includes(event.code)
         ) {
           this._handleKeyboard(event.code);

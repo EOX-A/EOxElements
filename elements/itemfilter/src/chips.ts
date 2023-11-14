@@ -94,7 +94,10 @@ export class EOxItemFilterChips extends LitElement {
       "keydown",
       (event) => {
         const { code } = <KeyboardEvent>event;
-        if (code !== "Escape") {
+        if (code === "Space") {
+          event.preventDefault();
+        }
+        if (!["Escape", "Space"].includes(code)) {
           event.stopPropagation();
         }
         if (["ArrowLeft", "ArrowRight", "Escape", "Backspace"].includes(code)) {
