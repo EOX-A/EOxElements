@@ -16,7 +16,7 @@ export class EOxLayerControlLayerList extends LitElement {
     layers: { attribute: false },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
-    showZoomLayerState: { attribute: false, type: Boolean },
+    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
@@ -57,7 +57,7 @@ export class EOxLayerControlLayerList extends LitElement {
     /**
      * Show layer state based on zoom level or not
      */
-    this.showZoomLayerState = false;
+    this.showLayerZoomState = false;
 
     /**
      * Render the element without additional styles
@@ -120,7 +120,7 @@ export class EOxLayerControlLayerList extends LitElement {
                                 .idProperty=${this.idProperty}
                                 .map=${this.map}
                                 .titleProperty=${this.titleProperty}
-                                .showZoomLayerState=${this.showZoomLayerState}
+                                .showLayerZoomState=${this.showLayerZoomState}
                                 .tools=${this.tools}
                                 .unstyled=${this.unstyled}
                                 @changed=${() => this.requestUpdate()}
@@ -133,7 +133,7 @@ export class EOxLayerControlLayerList extends LitElement {
                                 .layer=${layer}
                                 .map=${this.map}
                                 .titleProperty=${this.titleProperty}
-                                .showZoomLayerState=${this.showZoomLayerState}
+                                .showLayerZoomState=${this.showLayerZoomState}
                                 .tools=${this.tools}
                                 .unstyled=${this.unstyled}
                                 @changed=${() => {

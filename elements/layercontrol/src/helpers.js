@@ -125,14 +125,14 @@ export const getLayerType = (layer, map) => {
 /**
  * Returns whether zoom layer state be enabled or not for a particular layer
  * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
- * @param {Boolean} showZoomLayerState
+ * @param {Boolean} showLayerZoomState
  * @returns {Boolean} state
  */
-export const isZoomLayerStateRequired = (layer, showZoomLayerState) => {
+export const isLayerZoomStateRequired = (layer, showLayerZoomState) => {
   const minZoom = layer.get("minZoom");
   const maxZoom = layer.get("maxZoom");
 
-  if (showZoomLayerState && (minZoom !== -Infinity || maxZoom !== Infinity))
+  if (showLayerZoomState && (minZoom !== -Infinity || maxZoom !== Infinity))
     return true;
   else return false;
 };
@@ -142,17 +142,17 @@ export const isZoomLayerStateRequired = (layer, showZoomLayerState) => {
  * with respective of current zoom level
  * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
  * @param {import("ol").Map} map
- * @param {Boolean} showZoomLayerState
+ * @param {Boolean} showLayerZoomState
  * @returns {Boolean} state
  */
 export const isLayerVisibleBasedOnZoomState = (
   layer,
   map,
-  showZoomLayerState
+  showLayerZoomState
 ) => {
   if (!layer || !map) return false;
 
-  if (!isZoomLayerStateRequired(layer, showZoomLayerState)) return true;
+  if (!isLayerZoomStateRequired(layer, showLayerZoomState)) return true;
 
   const minZoom = layer.get("minZoom");
   const maxZoom = layer.get("maxZoom");

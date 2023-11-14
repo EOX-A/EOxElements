@@ -39,7 +39,7 @@ export class EOxLayerControl extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
-    showZoomLayerState: { attribute: false, type: Boolean },
+    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
@@ -73,7 +73,7 @@ export class EOxLayerControl extends LitElement {
     /**
      * Show layer state based on zoom level or not
      */
-    this.showZoomLayerState = false;
+    this.showLayerZoomState = false;
 
     /**
      * Layer tools
@@ -118,7 +118,7 @@ export class EOxLayerControl extends LitElement {
             .layers=${this.map.getLayers()}
             .map=${this.map}
             .titleProperty=${this.titleProperty}
-            .showZoomLayerState=${this.showZoomLayerState}
+            .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             @changed=${

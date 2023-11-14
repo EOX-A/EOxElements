@@ -3,13 +3,13 @@ import "./_mockMap";
 
 describe("LayerControl", () => {
   beforeEach(() => {
-    const showZoomLayerState = Cypress.mocha
+    const showLayerZoomState = Cypress.mocha
       .getRunner()
-      .suite.ctx.currentTest.title.includes("showZoomLayerState");
+      .suite.ctx.currentTest.title.includes("showLayerZoomState");
 
     cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(`<eox-layercontrol for="mock-map"></eox-layercontrol>`, {
-      properties: { showZoomLayerState },
+      properties: { showLayerZoomState },
     }).as("eox-layercontrol");
   });
 
@@ -198,7 +198,7 @@ describe("LayerControl", () => {
       });
   });
 
-  it("Zoom and check layer state based on min and max zoom - showZoomLayerState", () => {
+  it("Zoom and check layer state based on min and max zoom - showLayerZoomState", () => {
     cy.get("mock-map").and(($el) => {
       $el /**MockMap*/[0]
         .setLayers([

@@ -535,16 +535,16 @@ export const Tabs = {
 
 /**
  * Zoom layer state based on `minZoom` and `maxZoom`.
- * The color change state only visible when `showZoomLayerState` is set inside layer properties.
+ * The color change state only visible when `showLayerZoomState` is set inside layer properties.
  */
-export const ZoomLayerState = {
+export const LayerZoomState = {
   args: {
-    showZoomLayerState: true,
+    showLayerZoomState: true,
   },
   render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol
-        .showZoomLayerState=${args.showZoomLayerState}
+        .showLayerZoomState=${args.showLayerZoomState}
         for="eox-map#zoomstate"
       ></eox-layercontrol>
       <eox-map
