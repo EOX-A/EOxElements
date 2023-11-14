@@ -1,6 +1,6 @@
 {
   "name": "@eox/stacinfo",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -29,6 +29,6 @@
   },
   "dependencies": {
     "@radiantearth/stac-fields": "^1.2.0",
-    "lit": "^2.7.4"
+    "lit": "^3.0.2"
   }
 }
