@@ -545,10 +545,10 @@ export const ZoomLayerState = {
     <div style="display: flex">
       <eox-layercontrol
         .showZoomLayerState=${args.showZoomLayerState}
-        for="eox-map"
+        for="eox-map#zoomstate"
       ></eox-layercontrol>
       <eox-map
-        id="optional"
+        id="zoomstate"
         style="width: 600px; height: 300px; margin-left: 7px;"
         zoom="1"
         layers=${JSON.stringify([
