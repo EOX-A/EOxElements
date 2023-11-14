@@ -6,7 +6,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import StacFields from "@radiantearth/stac-fields";
+import StacFields, { Formatters } from "@radiantearth/stac-fields";
 import { STAC } from "stac-js";
 
 /**
@@ -29,6 +29,12 @@ import { STAC } from "stac-js";
  */
 @customElement("eox-stacinfo")
 export class EOxStacInfo extends LitElement {
+  /**
+   * Allow HTML rendering in properties (such as description)
+   */
+  @property({ attribute: "allow-html" })
+  allowHtml: boolean;
+
   @property({ type: Boolean })
   unstyled: boolean;
 
@@ -76,6 +82,8 @@ export class EOxStacInfo extends LitElement {
   };
 
   buildProperties(stacArray: Array<typeof STAC>) {
+    Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
+
     const parseEntries = (list: Array<string>) =>
       Object.entries(this.stacProperties)
         .filter(([key]) => {

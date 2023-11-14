@@ -57,4 +57,43 @@ describe("Stacinfo", () => {
         cy.get("#properties ul.single-property").should("exist");
       });
   });
+
+  it("doesn't render HTML if not enabled", () => {
+    testBody({
+      type: "Collection",
+      description: "<button>click me</button>",
+    });
+    cy.mount(
+      `
+      <eox-stacinfo
+        for="/collection"
+        properties='["description"]'
+      ></eox-stacinfo>`
+    ).as("eox-stacinfo");
+    cy.get("eox-stacinfo")
+      .shadow()
+      .within(() => {
+        cy.get("#properties button").should("not.exist");
+      });
+  });
+
+  it("renders HTML if enabled", () => {
+    testBody({
+      type: "Collection",
+      description: "<button>click me</button>",
+    });
+    cy.mount(
+      `
+      <eox-stacinfo
+        for="/collection"
+        allow-html
+        properties='["description"]'
+      ></eox-stacinfo>`
+    ).as("eox-stacinfo");
+    cy.get("eox-stacinfo")
+      .shadow()
+      .within(() => {
+        cy.get("#properties button").should("exist");
+      });
+  });
 });
