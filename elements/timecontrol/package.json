@@ -28,6 +28,7 @@
     "lint:fix": "eslint --ext .js,.ts . --fix"
   },
   "dependencies": {
+    "dayjs": "^1.11.9",
     "lit": "^3.0.2",
     "toolcool-range-slider": "^4.0.27"
   }
