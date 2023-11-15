@@ -10,10 +10,10 @@ export class EOxSelectionlist extends LitElement {
   filter = "";
 
   @property()
-  idProperty = "id";
+  idProperty: string = "id";
 
   @property()
-  items: Array<any> = [];
+  items: FilterObject[] = [];
 
   @property()
   titleProperty = "title";
@@ -22,13 +22,13 @@ export class EOxSelectionlist extends LitElement {
   multiple = false;
 
   @property()
-  selectedItems: Array<any> = [];
+  selectedItems: FilterObject[] = [];
 
   @property({ type: Boolean })
   unstyled = false;
 
   @state()
-  _currentHighlight: any = null;
+  _currentHighlight: FilterObject = null;
 
   _handleKeyboard(key: string) {
     if (this.clientHeight === 0) {
@@ -46,8 +46,10 @@ export class EOxSelectionlist extends LitElement {
     if (key === "Enter") {
       if (currentlyHighlighted) {
         const currentItem = this.items.find(
-          (f) => f[this.idProperty] === currentlyHighlighted.dataset.identifier
-        );
+          (f) =>
+            f[<keyof FilterObject>this.idProperty] ===
+            currentlyHighlighted.dataset.identifier
+        ) as FilterObject;
         this._handleSelect(currentItem);
         this.requestUpdate();
       }
@@ -74,7 +76,9 @@ export class EOxSelectionlist extends LitElement {
     const currentListItem = Array.from(listItems)[currentIndex];
     if (currentListItem) {
       this._currentHighlight = this.items.find(
-        (f) => f[this.idProperty] === currentListItem.dataset.identifier
+        (f) =>
+          f[<keyof FilterObject>this.idProperty] ===
+          currentListItem.dataset.identifier
       );
     }
     this.dispatchEvent(
@@ -82,12 +86,14 @@ export class EOxSelectionlist extends LitElement {
     );
   }
 
-  _handleSelect(item: any) {
+  _handleSelect(item: FilterObject) {
     if (item) {
       if (this.multiple) {
         // In multiple mode, selecting the same item again removes it from the selectedItem list
         const selected = this.selectedItems.find(
-          (i) => i[this.idProperty] === item[this.idProperty]
+          (i) =>
+            i[<keyof FilterObject>this.idProperty] ===
+            item[<keyof FilterObject>this.idProperty]
         );
         if (selected) {
           this.selectedItems.splice(this.selectedItems.indexOf(selected), 1);
@@ -110,7 +116,11 @@ export class EOxSelectionlist extends LitElement {
     );
   }
 
-  _keyboardEventListener(): void {}
+  _keyboardEventListener = ((event: KeyboardEvent) => {
+    if (["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(event.code)) {
+      this._handleKeyboard(event.code);
+    }
+  }) as EventListener;
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
@@ -121,14 +131,7 @@ export class EOxSelectionlist extends LitElement {
   }
 
   firstUpdated() {
-    this._keyboardEventListener = this.getRootNode().addEventListener(
-      "keydown",
-      (event) => {
-        if (["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(event.code)) {
-          this._handleKeyboard(event.code);
-        }
-      }
-    );
+    this.getRootNode().addEventListener("keydown", this._keyboardEventListener);
   }
 
   updated(changedProperties: PropertyValues<this>) {
@@ -138,7 +141,9 @@ export class EOxSelectionlist extends LitElement {
           const firstItem = this.renderRoot.querySelectorAll("li")[0];
           if (firstItem) {
             this._currentHighlight = this.items.find(
-              (f) => f[this.idProperty] === firstItem.dataset.identifier
+              (f) =>
+                f[<keyof FilterObject>this.idProperty] ===
+                firstItem.dataset.identifier
             );
           }
         });
@@ -167,17 +172,23 @@ export class EOxSelectionlist extends LitElement {
         ${repeat(
           this.items.filter((item) =>
             this.filter
-              ? item[this.titleProperty]
+              ? (<string>item[<keyof FilterObject>this.titleProperty])
                   .toLowerCase()
                   .includes(this.filter.toLowerCase())
               : true
           ),
-          (item) => item[this.idProperty],
+          (item) => item[<keyof FilterObject>this.idProperty],
           (item) => html`
             <li
-              class=${this._currentHighlight === item ? "highlighted" : nothing}
-              data-identifier=${item[this.idProperty]}
-              data-title=${item[this.titleProperty]}
+              class=${this._currentHighlight === item
+                ? "highlighted"
+                : (nothing as undefined)}
+              data-identifier=${item[
+                <keyof FilterObject>this.idProperty
+              ] as string}
+              data-title=${item[
+                <keyof FilterObject>this.titleProperty
+              ] as string}
               @mouseenter=${() => {
                 this._currentHighlight = item;
               }}
@@ -188,12 +199,16 @@ export class EOxSelectionlist extends LitElement {
               <label>
                 <input
                   type="${this.multiple ? "checkbox" : "radio"}"
-                  .checked=${this.selectedItems.find(
-                    (i) => i[this.idProperty] === item[this.idProperty]
-                  ) || nothing}
+                  .checked=${!!this.selectedItems.find(
+                    (i) =>
+                      i[<keyof FilterObject>this.idProperty] ===
+                      item[<keyof FilterObject>this.idProperty]
+                  ) || (nothing as null)}
                   @change=${() => this._handleSelect(item)}
                 />
-                <span class="title">${item[this.titleProperty]}</span>
+                <span class="title"
+                  >${item[<keyof FilterObject>this.titleProperty]}</span
+                >
               </label>
             </li>
           `

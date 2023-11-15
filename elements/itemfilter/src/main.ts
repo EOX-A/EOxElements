@@ -111,10 +111,10 @@ export class EOxItemFilter extends TemplateElement {
   public filters: { [key: string]: FilterObject } = {};
 
   @state()
-  public items: Array<object> = [];
+  public items: Record<string, unknown>[] = [];
 
   @state()
-  public results: Array<object>;
+  public results: Record<string, unknown>[];
 
   @state()
   public selectedResult: Item;
@@ -288,7 +288,7 @@ export class EOxItemFilter extends TemplateElement {
     this._config.onFilter(this.results, this.filters);
   }
 
-  aggregateResults(items: Array<object>, property: string) {
+  aggregateResults(items: FilterObject[], property: string) {
     // @ts-ignore
     return items.filter((item: Item) => {
       const aggregation = item[this._config.aggregateResults];
@@ -313,11 +313,11 @@ export class EOxItemFilter extends TemplateElement {
     });
   }
 
-  sortResults(items: Array<object>) {
-    // @ts-ignore
+  sortResults(items: Record<string, unknown>[]) {
     return [...items].sort((a: Item, b: Item) =>
-      // @ts-ignore
-      a[this._config.titleProperty].localeCompare(b[this._config.titleProperty])
+      (<string>a[this._config.titleProperty]).localeCompare(
+        <string>b[this._config.titleProperty]
+      )
     );
   }
 
@@ -384,7 +384,11 @@ export class EOxItemFilter extends TemplateElement {
             ${when(
               this._config.filterProperties.length,
               () => html`
-                <section class="${this.config.inlineMode ? "inline" : nothing}">
+                <section
+                  class="${this.config.inlineMode
+                    ? "inline"
+                    : (nothing as null)}"
+                >
                   ${when(
                     !this.config.inlineMode,
                     () =>
@@ -482,7 +486,8 @@ export class EOxItemFilter extends TemplateElement {
                             (aggregationProperty) => html`<details
                               class="details-results"
                               @toggle=${this.toggleAccordion}
-                              open=${this._config.expandResults || nothing}
+                              ?open=${this._config.expandResults ||
+                              (nothing as null)}
                             >
                               <summary>
                                 <span class="title">
@@ -508,7 +513,7 @@ export class EOxItemFilter extends TemplateElement {
                                         this._config.titleProperty
                                       ] === item[this._config.titleProperty]
                                         ? "highlighted"
-                                        : nothing}
+                                        : (nothing as null)}
                                     >
                                       <label>
                                         <input
@@ -516,12 +521,12 @@ export class EOxItemFilter extends TemplateElement {
                                           type="radio"
                                           class="result-radio"
                                           name="result"
-                                          id="${item.id}"
-                                          checked=${this.selectedResult?.[
+                                          id="${<string>item.id}"
+                                          ?checked=${this.selectedResult?.[
                                             this._config.titleProperty
                                           ] ===
                                             item[this._config.titleProperty] ||
-                                          nothing}
+                                          (nothing as null)}
                                           @click=${() => {
                                             this.selectedResult = item;
                                             this._config.onSelect(item);
@@ -538,7 +543,11 @@ export class EOxItemFilter extends TemplateElement {
                                           () => html`
                                             <span class="title"
                                               >${unsafeHTML(
-                                                item[this._config.titleProperty]
+                                                <string>(
+                                                  item[
+                                                    this._config.titleProperty
+                                                  ]
+                                                )
                                               )}</span
                                             >
                                           `
@@ -558,7 +567,7 @@ export class EOxItemFilter extends TemplateElement {
                                   <input
                                     type="radio"
                                     name="result"
-                                    id="${item.id}"
+                                    id="${<string>item.id}"
                                     @click=${() => {
                                       this.selectedResult = item;
                                       this._config.onSelect(item);
@@ -575,7 +584,9 @@ export class EOxItemFilter extends TemplateElement {
                                     () => html`
                                       <span class="title"
                                         >${unsafeHTML(
-                                          item[this._config.titleProperty]
+                                          <string>(
+                                            item[this._config.titleProperty]
+                                          )
                                         )}</span
                                       >
                                     `

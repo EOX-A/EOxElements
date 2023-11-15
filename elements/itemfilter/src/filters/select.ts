@@ -33,7 +33,7 @@ export class EOxItemFilterSelect extends LitElement {
     return this;
   }
 
-  _getItems() {
+  _getItems(): FilterObject[] {
     return Object.keys(this.filterObject.state)
       .sort((a, b) => a.localeCompare(b))
       .map((i) => ({
@@ -42,7 +42,7 @@ export class EOxItemFilterSelect extends LitElement {
       }));
   }
 
-  _getSelectedItems() {
+  _getSelectedItems(): FilterObject[] {
     return Object.keys(this.filterObject.state)
       .filter((i) => this.filterObject.state[i])
       .map((i) => ({
@@ -53,7 +53,9 @@ export class EOxItemFilterSelect extends LitElement {
 
   _handleSelected(evt: CustomEvent) {
     Object.keys(this.filterObject.state).forEach((k) => {
-      this.filterObject.state[k] = evt.detail.map((i) => i.id).includes(k);
+      this.filterObject.state[k] = (<FilterObject[]>evt.detail)
+        .map((i) => i.id)
+        .includes(k);
     });
     this.filterObject.stringifiedState = Object.keys(
       this.filterObject.state

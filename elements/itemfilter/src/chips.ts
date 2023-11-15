@@ -6,10 +6,10 @@ import { when } from "lit/directives/when.js";
 @customElement("eox-itemfilter-chips")
 export class EOxItemFilterChips extends LitElement {
   @property({ type: Array })
-  items = [];
+  items: FilterObject[] = [];
 
   @property()
-  titleProperty = "title";
+  titleProperty: string = "title";
 
   @property({ type: Boolean })
   unstyled = false;
@@ -82,28 +82,22 @@ export class EOxItemFilterChips extends LitElement {
     }
   }
 
-  _keyboardEventListener(): void {}
+  _keyboardEventListener: EventListener = (event: Event) => {
+    const { code } = <KeyboardEvent>event;
+    if (code === "Space") {
+      event.preventDefault();
+    }
+    if (!["Escape", "Space", "Enter"].includes(code)) {
+      event.stopPropagation();
+    }
+    if (["ArrowLeft", "ArrowRight", "Escape", "Backspace"].includes(code)) {
+      this._handleKeyboard(code, (<HTMLInputElement>event.target).value ?? "");
+    }
+  };
 
   connectedCallback() {
     super.connectedCallback();
-    this._keyboardEventListener = this.getRootNode().addEventListener(
-      "keydown",
-      (event) => {
-        const { code } = <KeyboardEvent>event;
-        if (code === "Space") {
-          event.preventDefault();
-        }
-        if (!["Escape", "Space", "Enter"].includes(code)) {
-          event.stopPropagation();
-        }
-        if (["ArrowLeft", "ArrowRight", "Escape", "Backspace"].includes(code)) {
-          this._handleKeyboard(
-            code,
-            (<HTMLInputElement>event.target).value ?? ""
-          );
-        }
-      }
-    );
+    this.getRootNode().addEventListener("keydown", this._keyboardEventListener);
   }
 
   disconnectedCallback() {
@@ -140,15 +134,17 @@ export class EOxItemFilterChips extends LitElement {
           (item) => html`
             <span
               class="chip"
-              @click=${(evt) => {
+              @click=${(evt: Event) => {
                 this.renderRoot.querySelectorAll(".chip").forEach((chip) => {
                   chip.classList.remove("highlighted");
                 });
-                evt.target.classList.add("highlighted");
+                (<HTMLLIElement>evt.target).classList.add("highlighted");
                 this.requestUpdate();
               }}
             >
-              <span class="chip-title">${item[this.titleProperty]}</span>
+              <span class="chip-title"
+                >${item[this.titleProperty as keyof FilterObject]}</span
+              >
               ${when(item._inProgress, () =>
                 !item.stringifiedState ? html` ... ` : ""
               )}

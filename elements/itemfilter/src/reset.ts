@@ -1,6 +1,6 @@
 export const resetFilter = (filterObject: FilterObject) => {
   if (!filterObject.dirty) {
-    return;
+    return null;
   }
   const filterType = filterObject.type;
   switch (filterType) {
@@ -10,8 +10,9 @@ export const resetFilter = (filterObject: FilterObject) => {
       }
       break;
     case "range":
-      filterObject.state.min = filterObject.min;
-      filterObject.state.max = filterObject.max;
+      console.log(filterObject);
+      filterObject.state.min = (<RangeFilterObject>filterObject).min;
+      filterObject.state.max = (<RangeFilterObject>filterObject).max;
       break;
     case "select":
       for (const filter in filterObject.state) {

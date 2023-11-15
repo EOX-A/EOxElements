@@ -6,9 +6,10 @@ declare type Filter = HTMLElement & {
   reset: () => void;
 };
 
-declare type FilterState = { [key: string]: object };
+declare type FilterState = { [key: string]: object | boolean | number };
 
 declare type FilterObject = {
+  id?: string;
   dirty?: boolean;
   exclusive?: boolean;
   expanded?: boolean;
@@ -16,9 +17,10 @@ declare type FilterObject = {
   format?: string;
   key?: string;
   keys?: string[];
-  reset: Function;
+  reset?: () => void;
   state?: FilterState;
   stringifiedState?: string;
   title?: string;
   type?: "multiselect" | "range" | "select" | "spatial" | "text";
+  _inProgress?: boolean;
 };

@@ -1,5 +1,5 @@
 import { LitElement, html, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { computePosition, autoUpdate } from "@floating-ui/dom";
 
 @customElement("eox-dropdown")
@@ -7,8 +7,8 @@ export class EOxDropdown extends LitElement {
   @property({ type: Boolean })
   open = false;
 
-  @property({ type: Boolean })
-  parent = null;
+  @property()
+  parent: Element = null;
 
   @property({ type: Boolean })
   unstyled = false;
@@ -28,16 +28,24 @@ export class EOxDropdown extends LitElement {
    */
   _overlayCleanup(): void {}
 
-  _clickEventListener(): void {}
-  _keyboardEventListener(): void {}
+  _clickEventListener: EventListener = () => {
+    this.open = false;
+  };
+  _keyboardEventListener = ((event: KeyboardEvent) => {
+    const { code } = <KeyboardEvent>event;
+    if (["Escape"].includes(code)) {
+      this._handleKeyboard(code);
+    }
+  }) as EventListener;
 
   connectedCallback(): void {
     super.connectedCallback();
     if (!this.unstyled) {
       setTimeout(() => {
-        const trigger =
-          this.parent ||
-          this.renderRoot.querySelector("[name=trigger]").assignedNodes()[0];
+        const trigger = (this.parent ||
+          (<HTMLSlotElement>(
+            this.renderRoot.querySelector("[name=trigger]")
+          )).assignedNodes()[0]) as Element;
         const dropdown = <HTMLElement>(
           this.renderRoot.querySelector("#dropdown")
         );
@@ -95,7 +103,7 @@ export class EOxDropdown extends LitElement {
     `;
   }
 
-  updated(changedProperties) {
+  updated(changedProperties: Map<PropertyKey, unknown>) {
     if (changedProperties.has("open")) {
       const dropdown = this.renderRoot.querySelector("#dropdown");
       if (this.open) {
@@ -108,21 +116,11 @@ export class EOxDropdown extends LitElement {
   }
 
   firstUpdated() {
-    this._clickEventListener = window.addEventListener("click", () => {
-      this.open = false;
-    });
-    this._keyboardEventListener = this.getRootNode().addEventListener(
-      "keydown",
-      (event) => {
-        const { code } = <KeyboardEvent>event;
-        if (["Escape"].includes(code)) {
-          this._handleKeyboard(code);
-        }
-      }
-    );
-    const trigger = this.renderRoot
-      .querySelector("[name=trigger]")
-      .assignedNodes()[0];
+    window.addEventListener("click", this._clickEventListener);
+    this.getRootNode().addEventListener("keydown", this._keyboardEventListener);
+    const trigger = (<HTMLSlotElement>(
+      this.renderRoot.querySelector("[name=trigger]")
+    )).assignedNodes()[0];
     trigger.addEventListener("focus", () => {
       this.open = true;
     });

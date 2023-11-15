@@ -11,26 +11,27 @@ import "./filters/text";
 import "./chips";
 import "./selectionlist";
 import { button } from "../../../utils/styles/button";
+import { EOxDropdown } from "./dropdown";
 
 @customElement("eox-itemfilter-inline")
 export class EOxItemFilterInline extends LitElement {
   @property()
-  idProperty = "id";
+  idProperty: string = "id";
 
   @property()
-  items = [];
+  items: FilterObject[] = [];
 
   @property()
-  titleProperty = "title";
+  titleProperty: string = "title";
 
   @property()
-  unstyled = false;
+  unstyled: boolean = false;
 
   @state()
-  inputText = "";
+  inputText: string = "";
 
   @state()
-  replaceInput = null;
+  replaceInput: boolean = null;
 
   _handleKeyboard(key: string) {
     if (this.clientHeight === 0) {
@@ -42,11 +43,13 @@ export class EOxItemFilterInline extends LitElement {
     const inputEl = this.renderRoot.querySelector(
       "#inline-input"
     ) as HTMLInputElement;
-    const highlightedLiItem = this.renderRoot
-      ?.querySelector("[data-filter]")
-      ?.querySelector("eox-autocomplete")
-      ?.renderRoot?.querySelector("eox-selectionlist")
-      ?.renderRoot?.querySelector("li.highlighted");
+    const highlightedLiItem = (<LitElement>(
+      (<LitElement>(
+        this.renderRoot
+          ?.querySelector("[data-filter]")
+          ?.querySelector("eox-autocomplete")
+      ))?.renderRoot?.querySelector("eox-selectionlist")
+    ))?.renderRoot?.querySelector("li.highlighted");
 
     if (key == "Enter" && highlightedLiItem && inputEl.selectionStart) {
       highlightedLiItem
@@ -74,7 +77,7 @@ export class EOxItemFilterInline extends LitElement {
     }
   }
 
-  _handleReset(items) {
+  _handleReset(items: FilterObject[]) {
     items.forEach((item) => {
       resetFilter(item);
       delete item._inProgress;
@@ -85,24 +88,22 @@ export class EOxItemFilterInline extends LitElement {
     this.dispatchEvent(new CustomEvent("filter"));
   }
 
-  _clickOutsideListener = null;
+  _clickOutsideListener = (() => {
+    this.items.forEach((item) => {
+      delete item._inProgress;
+    });
+    this.requestUpdate();
+  }) as EventListener;
+  _keyboardEventListener = ((event: KeyboardEvent) => {
+    if (["Enter", "Escape", "Space"].includes(event.code)) {
+      this._handleKeyboard(event.code);
+    }
+  }) as EventListener;
 
   connectedCallback() {
     super.connectedCallback();
-    this._keyboardEventListener = this.getRootNode().addEventListener(
-      "keydown",
-      (event) => {
-        if (["Enter", "Escape", "Space"].includes(event.code)) {
-          this._handleKeyboard(event.code);
-        }
-      }
-    );
-    this._clickOutsideListener = window.addEventListener("click", () => {
-      this.items.forEach((item) => {
-        delete item._inProgress;
-      });
-      this.requestUpdate();
-    });
+    this.getRootNode().addEventListener("keydown", this._keyboardEventListener);
+    window.addEventListener("click", this._clickOutsideListener);
   }
 
   disconnectedCallback() {
@@ -157,9 +158,10 @@ export class EOxItemFilterInline extends LitElement {
           )}
           .titleProperty=${this.titleProperty}
           .unstyled=${this.unstyled}
-          @items-selected=${(evt) => {
+          @items-selected=${(evt: CustomEvent) => {
             this.items.forEach((item) => {
-              if (!evt.detail.find((i) => i.id === item.id)) {
+              console.log(item);
+              if (!(<FilterObject[]>evt.detail).find((i) => i.id === item.id)) {
                 this._handleReset([item]);
               }
             });
@@ -184,13 +186,14 @@ export class EOxItemFilterInline extends LitElement {
                   .target as HTMLInputElement)!.value.toLowerCase();
                 if (this.replaceInput) {
                   const foundInput =
-                    this.renderRoot
-                      .querySelector("[data-filter]")
-                      .renderRoot.querySelector("input") ||
-                    this.renderRoot
-                      .querySelector("[data-filter]")
-                      .renderRoot.querySelector("eox-autocomplete")
-                      .renderRoot.querySelector("input");
+                    (<LitElement>(
+                      this.renderRoot.querySelector("[data-filter]")
+                    )).renderRoot.querySelector("input") ||
+                    (<LitElement>(
+                      (<LitElement>(
+                        this.renderRoot.querySelector("[data-filter]")
+                      )).renderRoot.querySelector("eox-autocomplete")
+                    )).renderRoot.querySelector("input");
                   if (foundInput) {
                     foundInput.value = this.inputText;
                     foundInput.dispatchEvent(new Event("input"));
@@ -215,7 +218,7 @@ export class EOxItemFilterInline extends LitElement {
                     @click=${(evt: Event) => {
                       evt.stopPropagation();
                     }}
-                    @items-highlighted=${(event: CustomEvent) => {
+                    @items-highlighted=${() => {
                       // this._handleHighlight(event.detail);
                     }}
                     @items-selected=${(evt: CustomEvent) => {
@@ -223,9 +226,9 @@ export class EOxItemFilterInline extends LitElement {
                       const items = evt.detail;
                       if (items.length > 0) {
                         items[items.length - 1]._inProgress = true;
-                        this.renderRoot.querySelector(
-                          "input[slot=trigger]"
-                        ).value = "";
+                        (<HTMLInputElement>(
+                          this.renderRoot.querySelector("input[slot=trigger]")
+                        )).value = "";
                         this.inputText = "";
                         this.requestUpdate();
                       }
@@ -251,12 +254,12 @@ export class EOxItemFilterInline extends LitElement {
                             inProgressItem.type === "multiselect" ||
                             inProgressItem.type === "select"
                           ) {
-                            const found = this.renderRoot
-                              .querySelector("[data-filter]")
-                              .renderRoot.querySelector("eox-autocomplete");
-                            found.renderRoot.querySelector(
-                              "eox-dropdown"
-                            ).open = true;
+                            const found: LitElement = (<LitElement>(
+                              this.renderRoot.querySelector("[data-filter]")
+                            )).renderRoot.querySelector("eox-autocomplete");
+                            (<EOxDropdown>(
+                              found.renderRoot.querySelector("eox-dropdown")
+                            )).open = true;
                             found.renderRoot
                               .querySelector(".container")
                               .classList.add("hidden");
@@ -281,7 +284,7 @@ export class EOxItemFilterInline extends LitElement {
               .filterObject=${this.items.find((i) => i._inProgress)}
               .unstyled=${this.unstyled}
               .inline=${true}
-              @filter=${(evt) => {
+              @filter=${() => {
                 this.dispatchEvent(new CustomEvent("filter"));
               }}
               @click=${(evt: Event) => {

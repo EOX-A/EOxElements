@@ -4,6 +4,10 @@ import { when } from "lit/directives/when.js";
 import "./dropdown";
 import "./chips";
 import { button } from "../../../utils/styles/button";
+import { EOxDropdown } from "./dropdown";
+import { EOxItemFilterMultiselect } from "./filters/multiselect";
+import { EOxSelectionlist } from "./selectionlist";
+import { EOxItemFilterChips } from "./chips";
 
 @customElement("eox-autocomplete")
 export class EOxAutocomplete extends LitElement {
@@ -11,7 +15,7 @@ export class EOxAutocomplete extends LitElement {
   idProperty = "id";
 
   @property()
-  items: Array<any> = [];
+  items: FilterObject[] = [];
 
   @property()
   titleProperty = "title";
@@ -32,7 +36,7 @@ export class EOxAutocomplete extends LitElement {
   public inputText = "";
 
   @state()
-  selectedItems: Array<any> = [];
+  selectedItems: FilterObject[] = [];
 
   _handleKeyboard(key: string) {
     if (this.clientHeight === 0) {
@@ -45,7 +49,8 @@ export class EOxAutocomplete extends LitElement {
         if (this.renderRoot.querySelector("input").value !== "") {
           this.renderRoot.querySelector("input").value = "";
         } else {
-          this.renderRoot.querySelector("eox-dropdown").open = false;
+          (<EOxDropdown>this.renderRoot.querySelector("eox-dropdown")).open =
+            false;
         }
         return;
       }
@@ -55,26 +60,30 @@ export class EOxAutocomplete extends LitElement {
         // wants to abort; resets input to the currently selected item
         if (
           this.renderRoot.querySelector("input").value !==
-          this.selectedItems[0][this.titleProperty]
+          this.selectedItems[0][<keyof FilterObject>this.titleProperty]
         ) {
-          this.renderRoot.querySelector("input").value =
-            this.selectedItems[0][this.titleProperty];
+          this.renderRoot.querySelector("input").value = this.selectedItems[0][
+            <keyof FilterObject>this.titleProperty
+          ] as string;
         } else {
-          this.renderRoot.querySelector("eox-dropdown").open = false;
+          (<EOxDropdown>this.renderRoot.querySelector("eox-dropdown")).open =
+            false;
         }
       }
       return;
     }
 
     if (key === "ArrowDown" || key === "ArrowUp") {
-      this.renderRoot.querySelector("eox-dropdown").open = true;
-      if (this.parentElement?.inline) {
-        this.renderRoot.querySelector("eox-selectionlist")._handleKeyboard(key);
+      (<EOxDropdown>this.renderRoot.querySelector("eox-dropdown")).open = true;
+      if ((<EOxItemFilterMultiselect | undefined>this.parentElement)?.inline) {
+        (<EOxSelectionlist>(
+          this.renderRoot.querySelector("eox-selectionlist")
+        ))._handleKeyboard(key);
       }
     }
 
     this.renderRoot.querySelector("input").select();
-    if ((<HTMLElement & { inline: boolean }>this.parentElement)?.inline) {
+    if ((<EOxItemFilterMultiselect | undefined>this.parentElement)?.inline) {
       if (!["ArrowUp", "ArrowDown"].includes(key)) {
         (<HTMLInputElement>(
           this.parentElement.parentElement?.parentElement?.querySelector(
@@ -85,15 +94,15 @@ export class EOxAutocomplete extends LitElement {
     }
   }
 
-  _handleHighlight(items: Array<any>) {
+  _handleHighlight(items: FilterObject[]) {
     if (!items[0]._inProgress) {
       this.renderRoot.querySelector("input").value =
-        items[0][this.titleProperty] || "";
+        <string>items[0][<keyof FilterObject>this.titleProperty] || "";
       this.renderRoot.querySelector("input").select();
     }
   }
 
-  _handleSelect(items: Array<any>) {
+  _handleSelect(items: FilterObject[]) {
     // TODO
     if (items.length > 0 && this.multiStep) {
       items.forEach((i) => {
@@ -108,13 +117,15 @@ export class EOxAutocomplete extends LitElement {
         this.renderRoot.querySelector("input").value = "";
         this.renderRoot.querySelector("input").focus();
       } else {
-        this.renderRoot.querySelector("input").value =
-          items[0][this.titleProperty];
+        this.renderRoot.querySelector("input").value = items[0][
+          <keyof FilterObject>this.titleProperty
+        ] as string;
 
         // in multi-step items, when the item is still in progress,
         // keep the dropdown open
         if (!items[0]._inProgress) {
-          this.renderRoot.querySelector("eox-dropdown").open = false;
+          (<EOxDropdown>this.renderRoot.querySelector("eox-dropdown")).open =
+            false;
         }
       }
     } else {
@@ -123,7 +134,9 @@ export class EOxAutocomplete extends LitElement {
     }
     this._dispatchEvent();
     this.requestUpdate();
-    this.renderRoot.querySelector("eox-itemfilter-chips")?.requestUpdate();
+    (<EOxItemFilterChips>(
+      this.renderRoot.querySelector("eox-itemfilter-chips")
+    ))?.requestUpdate();
   }
 
   _dispatchEvent() {
@@ -134,7 +147,21 @@ export class EOxAutocomplete extends LitElement {
     );
   }
 
-  _keyboardEventListener(): void {}
+  _keyboardEventListener = ((event: KeyboardEvent) => {
+    const { code } = <KeyboardEvent>event;
+    if (
+      [
+        "ArrowUp",
+        "ArrowDown",
+        // "ArrowLeft",
+        // "ArrowRight",
+        "Escape",
+        "Backspace",
+      ].includes(code)
+    ) {
+      this._handleKeyboard(code);
+    }
+  }) as EventListener;
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
@@ -142,32 +169,14 @@ export class EOxAutocomplete extends LitElement {
       "keydown",
       this._keyboardEventListener
     );
-    window.removeEventListener("click", this._clickEventListener);
   }
 
   firstUpdated() {
-    this._keyboardEventListener = this.getRootNode().addEventListener(
-      "keydown",
-      (event) => {
-        const { code } = <KeyboardEvent>event;
-        if (
-          [
-            "ArrowUp",
-            "ArrowDown",
-            // "ArrowLeft",
-            // "ArrowRight",
-            "Escape",
-            "Backspace",
-          ].includes(code)
-        ) {
-          this._handleKeyboard(code);
-        }
-      }
-    );
+    this.getRootNode().addEventListener("keydown", this._keyboardEventListener);
     // }
   }
 
-  updated(updatedProperties) {
+  updated(updatedProperties: Map<PropertyKey, unknown>) {
     if (updatedProperties.has("selectedItems")) {
       this._handleSelect(this.selectedItems);
     }
@@ -225,7 +234,7 @@ export class EOxAutocomplete extends LitElement {
         )}
         <div class="input-container">
           <eox-dropdown
-            .parent=${this.parentNode.parentNode}
+            .parent=${this.parentNode.parentNode as Element}
             .unstyled=${this.unstyled}
           >
             <input
@@ -254,7 +263,7 @@ export class EOxAutocomplete extends LitElement {
                     )
                     .filter((f) =>
                       this.inputText
-                        ? f[this.titleProperty]
+                        ? (<string>f[<keyof FilterObject>this.titleProperty])
                             .toLowerCase()
                             .includes(this.inputText.toLowerCase())
                         : true

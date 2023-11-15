@@ -33,7 +33,7 @@ export class EOxItemFilterMultiselect extends LitElement {
     return this;
   }
 
-  _getItems() {
+  _getItems(): FilterObject[] {
     return Object.keys(this.filterObject.state)
       .sort((a, b) => a.localeCompare(b))
       .map((i) => ({
@@ -42,7 +42,7 @@ export class EOxItemFilterMultiselect extends LitElement {
       }));
   }
 
-  _getSelectedItems() {
+  _getSelectedItems(): FilterObject[] {
     return Object.keys(this.filterObject.state)
       .filter((i) => this.filterObject.state[i])
       .map((i) => ({
@@ -51,7 +51,9 @@ export class EOxItemFilterMultiselect extends LitElement {
       }));
   }
 
-  _handleSelected(selectedItems) {
+  _handleSelected(selectedItems: FilterObject[]) {
+    console.log(selectedItems);
+
     Object.keys(this.filterObject.state).forEach((k) => {
       this.filterObject.state[k] = selectedItems.map((i) => i.id).includes(k);
     });
@@ -75,7 +77,7 @@ export class EOxItemFilterMultiselect extends LitElement {
               .selectedItems=${this._getSelectedItems()}
               .unstyled=${this.unstyled}
               @items-selected=${(evt: CustomEvent) =>
-                this._handleSelected(evt.detail)}
+                this._handleSelected(<FilterObject[]>evt.detail)}
             >
             </eox-autocomplete>
           `,
