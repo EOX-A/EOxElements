@@ -97,6 +97,9 @@ export class EOxAutocomplete extends LitElement {
     // }
     if (key === "ArrowDown" || key === "ArrowUp") {
       this.renderRoot.querySelector("eox-dropdown").open = true;
+      if (this.parentElement?.inline) {
+        this.renderRoot.querySelector("eox-selectionlist")._handleKeyboard(key);
+      }
     }
     // if (key === "ArrowLeft" || key === "ArrowRight") {
     //   if (this.renderRoot.querySelectorAll(".chip").length < 1) {
