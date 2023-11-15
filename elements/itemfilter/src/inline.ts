@@ -51,17 +51,22 @@ export class EOxItemFilterInline extends LitElement {
     const inProgressItem = this.items.find((i) => i._inProgress);
     const textInProgress =
       inProgressItem?.type === "text" && inProgressItem?.dirty;
+    const inputEl = this.renderRoot.querySelector(
+      "#inline-input"
+    ) as HTMLInputElement;
     const highlightedLiItem = this.renderRoot
       ?.querySelector("[data-filter]")
       ?.querySelector("eox-autocomplete")
       ?.renderRoot?.querySelector("eox-selectionlist")
       ?.renderRoot?.querySelector("li.highlighted");
 
-    if (key == "Enter" && highlightedLiItem) {
-      const checkboxEl = highlightedLiItem.querySelector(
-        "input[type=checkbox]"
-      );
-      checkboxEl.checked = !checkboxEl?.checked;
+    if (key == "Enter" && highlightedLiItem && inputEl.selectionStart) {
+      highlightedLiItem
+        .querySelector("input[type=checkbox]")
+        .dispatchEvent(new Event("change"));
+      inputEl.selectionStart = 0;
+      inputEl.value = "";
+      inputEl.focus();
     }
     if (
       ["Escape", "Space"].includes(key) ||
@@ -99,6 +104,8 @@ export class EOxItemFilterInline extends LitElement {
     this._keyboardEventListener = this.getRootNode().addEventListener(
       "keydown",
       (event) => {
+        console.log(event.target);
+
         if (["Enter", "Escape", "Space"].includes(event.code)) {
           this._handleKeyboard(event.code);
         }
