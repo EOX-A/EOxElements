@@ -47,10 +47,6 @@ export class EOxItemFilterChips extends LitElement {
           lastChip.classList.add("highlighted");
         }
         this.requestUpdate();
-      } else {
-        // if (this.inputText.length === 0) {
-        //   this.selectedItems = [];
-        // }
       }
       this._dispatchEvent();
     }

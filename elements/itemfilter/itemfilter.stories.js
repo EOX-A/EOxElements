@@ -13,7 +13,6 @@ export default {
   component: "eox-itemfilter",
   render: (args) => {
     const eoxItemFilter = new EOxItemFilter();
-    // eoxItemFilter.unstyled = true;
     eoxItemFilter.config = args;
     eoxItemFilter.apply(items);
     return eoxItemFilter;
@@ -158,99 +157,6 @@ export const InlineMode = {
     onFilter: (items) => console.log(items),
   },
 };
-
-// export const MultiStep = {
-//   render: () => html`
-//     <eox-autocomplete
-//       id="multistep"
-//       .multiStep=${true}
-//       multiple
-//       .items=${[
-//         {
-//           key: "themes",
-//           id: "themes",
-//           title: "Theme",
-//           type: "multiselect",
-//           state: {
-//             air: null,
-//             agriculture: null,
-//           },
-//         },
-//         {
-//           key: "timestamp",
-//           id: "date",
-//           title: "Date",
-//           type: "range",
-//           format: "date",
-//           state: {
-//             min: 1685232950,
-//             max: 1686454646,
-//           },
-//         },
-//         {
-//           key: "geometry",
-//           id: "spatial",
-//           type: "spatial",
-//           title: "Spatial",
-//           state: {
-//             mode: "intersects",
-//           },
-//         },
-//         {
-//           keys: ["title", "themes"],
-//           title: "Search",
-//           id: "search",
-//           type: "text",
-//           expanded: true,
-//           state: {
-//             title: "no2",
-//             themes: "no2",
-//           },
-//         },
-//       ]}
-//       @items-selected=${(evt) => {
-//         const inProgressItem = evt.detail.find((i) => i._inProgress);
-//         document.querySelector(
-//           `eox-itemfilter-${inProgressItem.type}`
-//         ).filterObject = inProgressItem;
-//         document
-//           .querySelector(`eox-itemfilter-${inProgressItem.type}`)
-//           .setAttribute("slot", "dropdown");
-//       }}
-//     >
-//       <eox-itemfilter-multiselect
-//         @filter=${() => {
-//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
-//           document
-//             .querySelector("eox-itemfilter-multiselect")
-//             .removeAttribute("slot");
-//         }}
-//       ></eox-itemfilter-multiselect>
-//       <eox-itemfilter-range
-//         @filter=${() => {
-//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
-//           document
-//             .querySelector("eox-itemfilter-range")
-//             .removeAttribute("slot");
-//         }}
-//       ></eox-itemfilter-range>
-//       <eox-itemfilter-spatial
-//         @filter=${() => {
-//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
-//           document
-//             .querySelector("eox-itemfilter-spatial")
-//             .removeAttribute("slot");
-//         }}
-//       ></eox-itemfilter-spatial>
-//       <eox-itemfilter-text
-//         @filter=${() => {
-//           document.querySelector("eox-autocomplete#multistep").requestUpdate();
-//           document.querySelector("eox-itemfilter-text").removeAttribute("slot");
-//         }}
-//       ></eox-itemfilter-text>
-//     </eox-autocomplete>
-//   `,
-// };
 
 export const Autocomplete = {
   render: () => html`

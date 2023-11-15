@@ -36,18 +36,6 @@ export class EOxItemFilterInline extends LitElement {
     if (this.clientHeight === 0) {
       return;
     }
-    // if (key === "Enter") {
-    //   if (this.replaceInput) {
-    //     const foundInput = this.renderRoot.querySelector("[data-filter]").renderRoot.querySelector("input")
-    //     if (foundInput) {
-    //       const ev = document.createEvent('Event');
-    //       ev.initEvent('keypress');
-    //       ev.which = ev.keyCode = 13;
-    //       foundInput.dispatchEvent(ev);
-    //     }
-    //   }
-    // }
-
     const inProgressItem = this.items.find((i) => i._inProgress);
     const textInProgress =
       inProgressItem?.type === "text" && inProgressItem?.dirty;
@@ -112,8 +100,6 @@ export class EOxItemFilterInline extends LitElement {
     this._clickOutsideListener = window.addEventListener("click", () => {
       this.items.forEach((item) => {
         delete item._inProgress;
-        // this.selectedItems = this.items.filter(i => i.dirty)
-        // this.renderRoot.querySelector("eox-autocomplete").querySelector("eox-selectionlist").requestUpdate();
       });
       this.requestUpdate();
     });
@@ -258,10 +244,6 @@ export class EOxItemFilterInline extends LitElement {
                       if (this.replaceInput) {
                         setTimeout(() => {
                           if (inProgressItem.type === "text") {
-                            // const found = this.renderRoot
-                            //     .querySelector("[data-filter]")
-                            //     .renderRoot.querySelector("input");
-                            // found.classList.add("hidden")
                             this.renderRoot
                               .querySelector("[slot=content]")
                               .classList.add("hidden");
@@ -279,20 +261,6 @@ export class EOxItemFilterInline extends LitElement {
                               .querySelector(".container")
                               .classList.add("hidden");
                           }
-                          // else {
-                          //   // if (this.renderRoot
-                          //   //   .querySelector("[slot=content]").classList.contains("hidden)) {
-                          //       // this.renderRoot
-                          //       //   .querySelector("[slot=content]").classList.remove("hidden")
-                          //     // } else {
-
-                          //     // }
-                          //   // this.renderRoot
-                          //   //   .querySelector("[data-filter]")
-                          //   //   .renderRoot.querySelector("eox-autocomplete").renderRoot
-                          //   // .querySelector(".container")
-                          //   // .classList.remove("hidden");
-                          // }
                         });
                         this.renderRoot.querySelector("input").select();
                         this.renderRoot.querySelector("input").focus();
@@ -315,20 +283,6 @@ export class EOxItemFilterInline extends LitElement {
               .inline=${true}
               @filter=${(evt) => {
                 this.dispatchEvent(new CustomEvent("filter"));
-                // const item = this.items.find((i) => i._inProgress);
-                // if (!item.isDirty) { return }
-                // item._inProgress = false;
-                // item._complete = true;
-                // // console.log(this.items);
-                // // console.log('filter')
-                // setTimeout(() => {
-                //   item._combinedTitle = `${item[this.titleProperty]}: ${
-                //     item.stringifiedState
-                //   }`;
-                // });
-                // setTimeout(() => {
-                // this.renderRoot.querySelector("eox-autocomplete").requestUpdate();
-                // })
               }}
               @click=${(evt: Event) => {
                 evt.stopPropagation();

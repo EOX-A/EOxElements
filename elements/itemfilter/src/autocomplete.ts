@@ -66,71 +66,13 @@ export class EOxAutocomplete extends LitElement {
       return;
     }
 
-    // if (key === "Backspace") {
-    //   if (
-    //     this.multiple &&
-    //     this.selectedItems.length &&
-    //     this.renderRoot.querySelector("input[type=text]").value === ""
-    //   ) {
-    //     if (highlightedChip) {
-    //       this.selectedItems.splice(
-    //         Array.from(this.renderRoot.querySelectorAll(".chip")).indexOf(
-    //           highlightedChip
-    //         ),
-    //         1
-    //       );
-    //     }
-    //     const lastChip =
-    //       this.renderRoot.querySelectorAll(".chip")[
-    //         this.renderRoot.querySelectorAll(".chip").length - 1
-    //       ];
-    //     if (!lastChip.classList.contains("highlighted")) {
-    //       lastChip.classList.add("highlighted");
-    //     }
-    //     this.requestUpdate();
-    //   } else {
-    //     if (this.inputText.length === 0) {
-    //       this.selectedItems = [];
-    //     }
-    //   }
-    //   this._dispatchEvent();
-    // }
     if (key === "ArrowDown" || key === "ArrowUp") {
       this.renderRoot.querySelector("eox-dropdown").open = true;
       if (this.parentElement?.inline) {
         this.renderRoot.querySelector("eox-selectionlist")._handleKeyboard(key);
       }
     }
-    // if (key === "ArrowLeft" || key === "ArrowRight") {
-    //   if (this.renderRoot.querySelectorAll(".chip").length < 1) {
-    //     return;
-    //   }
-    //   let highlightedChipIndex = 0;
-    //   const highlightedChip =
-    //     this.renderRoot.querySelector(".chip.highlighted");
-    //   if (highlightedChip) {
-    //     highlightedChipIndex = Array.from(
-    //       this.renderRoot.querySelectorAll(".chip")
-    //     ).indexOf(highlightedChip);
-    //     highlightedChip.classList.remove("highlighted");
-    //   }
-    //   highlightedChipIndex =
-    //     highlightedChipIndex + (key === "ArrowLeft" ? -1 : +1);
-    //   if (key === "ArrowLeft" && highlightedChipIndex < 0) {
-    //     highlightedChipIndex =
-    //       this.renderRoot.querySelectorAll(".chip").length - 1;
-    //   }
-    //   if (
-    //     key === "ArrowRight" &&
-    //     highlightedChipIndex >
-    //       this.renderRoot.querySelectorAll(".chip").length - 1
-    //   ) {
-    //     highlightedChipIndex = 0;
-    //   }
-    //   Array.from(this.renderRoot.querySelectorAll(".chip"))[
-    //     highlightedChipIndex
-    //   ].classList.add("highlighted");
-    // }
+
     this.renderRoot.querySelector("input").select();
     if ((<HTMLElement & { inline: boolean }>this.parentElement)?.inline) {
       if (!["ArrowUp", "ArrowDown"].includes(key)) {
@@ -162,18 +104,12 @@ export class EOxAutocomplete extends LitElement {
     }
     this.selectedItems = items;
     if (items.length > 0) {
-      // let lastAddedItem;
       if (this.multiple) {
-        // lastAddedItem = items[items.length - 1];
         this.renderRoot.querySelector("input").value = "";
         this.renderRoot.querySelector("input").focus();
       } else {
         this.renderRoot.querySelector("input").value =
           items[0][this.titleProperty];
-        // lastAddedItem = items[0];
-        // this.renderRoot.querySelector("input").value =
-        //   lastAddedItem[this.titleProperty];
-        // this.renderRoot.querySelector("input").focus();
 
         // in multi-step items, when the item is still in progress,
         // keep the dropdown open
@@ -181,10 +117,6 @@ export class EOxAutocomplete extends LitElement {
           this.renderRoot.querySelector("eox-dropdown").open = false;
         }
       }
-
-      // if (lastAddedItem.options) {
-      //   console.log("here");
-      // }
     } else {
       this.renderRoot.querySelector("input").select();
       this.renderRoot.querySelector("input").focus();
@@ -203,7 +135,6 @@ export class EOxAutocomplete extends LitElement {
   }
 
   _keyboardEventListener(): void {}
-  // _clickEventListener(): void {}
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
@@ -215,10 +146,6 @@ export class EOxAutocomplete extends LitElement {
   }
 
   firstUpdated() {
-    // this._clickEventListener = window.addEventListener("click", () => {
-    //   this.renderRoot.querySelector("#dropdown").style.display = "none";
-    // });
-    // if (!this.multiStep) {
     this._keyboardEventListener = this.getRootNode().addEventListener(
       "keydown",
       (event) => {
@@ -305,9 +232,6 @@ export class EOxAutocomplete extends LitElement {
               slot="trigger"
               type="text"
               @focus=${() => {
-                // (<HTMLElement>(
-                //   this.renderRoot.querySelector("#dropdown")
-                // )).style.display = "block";
                 this.inputText = "";
                 this.requestUpdate();
               }}
