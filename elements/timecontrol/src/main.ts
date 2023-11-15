@@ -306,9 +306,6 @@ export class SliderTicks extends LitElement {
     return yearMarks.filter((current, i) => {
       const next = yearMarks[i + 1];
 
-      console.log(`year mark`);
-      console.log(current);
-      console.log(next);
       return !(next && next.position - current.position < 25);
     });
   }
