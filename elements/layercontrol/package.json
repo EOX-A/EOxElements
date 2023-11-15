@@ -1,16 +1,16 @@
 {
   "name": "@eox/layercontrol",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@types/sortablejs": "^1.15.1",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint-plugin-typescript": "^0.14.0",
-    "ol": "^7.3.0",
+    "ol": "^8.1.0",
     "sortablejs": "^1.15.0",
-    "typescript": "^4.9.3",
+    "typescript": "^5.2.2",
     "vite": "^4.0.0"
   },
   "engines": {
@@ -23,12 +23,12 @@
   ],
   "main": "./dist/eox-layercontrol.js",
   "scripts": {
-    "start": "vite",
-    "build": "tsc && vite build",
-    "watch": "tsc && vite build --watch",
+    "build": "vite build",
+    "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "dayjs": "^1.11.8",

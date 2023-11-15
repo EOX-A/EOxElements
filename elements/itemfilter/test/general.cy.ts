@@ -10,8 +10,9 @@ describe("Item Filter Config", () => {
     </eox-itemfilter>`
     )
       .as("eox-itemfilter")
-      .then((eoxItemFilter: any) => {
-        eoxItemFilter[0].config = {
+      .then(($el) => {
+        const eoxItemFilter = <EOxItemFilter>$el[0];
+        eoxItemFilter.config = {
           titleProperty: "title",
           filterProperties: [
             {
@@ -25,7 +26,7 @@ describe("Item Filter Config", () => {
           aggregateResults: "themes",
           enableHighlighting: true,
         };
-        eoxItemFilter[0].apply(testItems);
+        eoxItemFilter.apply(testItems);
       });
   });
 
@@ -87,8 +88,10 @@ describe("Item Filter Config", () => {
       .within(() => {
         cy.get('[type="checkbox"]').first().check();
         cy.get('[type="checkbox"]').eq(1).check();
-        cy.get('[type="checkbox"]').first().check().should("be.checked");
-        cy.get('[type="checkbox"]').eq(1).check().should("be.checked");
+        cy.get('[type="checkbox"]').first().check();
+        cy.get('[type="checkbox"]').first().should("be.checked");
+        cy.get('[type="checkbox"]').eq(1).check();
+        cy.get('[type="checkbox"]').eq(1).should("be.checked");
       });
   });
 
@@ -137,4 +140,52 @@ describe("Item Filter Config", () => {
   //         });
   //     });
   // });
+
+  it("should allow only one accordion of each type to be open at a time if configured", () => {
+    cy.get("eox-itemfilter").then(($el) => {
+      (<EOxItemFilter>$el[0]).config.expandMultipleFilters = false;
+      (<EOxItemFilter>$el[0]).config.expandMultipleResults = false;
+    });
+
+    const checkExclusiveOpen = (selector: string, isSubcomponent = false) => {
+      cy.get("eox-itemfilter")
+        .shadow()
+        .within(() => {
+          cy.get(selector).then((accordions) => {
+            for (let i = 0; i < accordions.length; i++) {
+              const accordionToClick = isSubcomponent
+                ? cy
+                    .get(selector)
+                    .eq(i)
+                    .find("eox-itemfilter-expandcontainer")
+                    .shadow()
+                    .find("details")
+                : cy.get(selector).eq(i).find("details");
+
+              accordionToClick.click({ multiple: true, force: true });
+              accordionToClick.should("have.attr", "open");
+
+              // Check that all other accordions are closed
+              for (let j = 0; j < accordions.length; j++) {
+                if (i !== j) {
+                  const accordionToCheck = isSubcomponent
+                    ? cy
+                        .get(selector)
+                        .eq(j)
+                        .find("eox-itemfilter-expandcontainer")
+                        .shadow()
+                        .find("details")
+                    : cy.get(selector).eq(j).find("details");
+
+                  accordionToCheck.should("not.have.attr", "open");
+                }
+              }
+            }
+          });
+        });
+    };
+
+    checkExclusiveOpen("ul#filters", true);
+    checkExclusiveOpen("ul#results");
+  });
 });

@@ -6,6 +6,8 @@ import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";
 import { Geometry } from "@turf/helpers";
 import { EOxMap } from "../../../map/main";
+import { EoxLayer } from "../../../map/src/generate";
+import { Vector as VectorSource } from "ol/source";
 
 export const intersects = (
   itemGeometry: Geometry,
@@ -33,7 +35,9 @@ export class EOxItemFilterSpatial extends LitElement {
     const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
       "eox-itemfilter-spatial-filter"
     );
+    delete this.filterObject.dirty;
     spatialFilter.reset();
+    this.requestUpdate();
   }
 
   // skip shadow root creation
@@ -51,9 +55,14 @@ export class EOxItemFilterSpatial extends LitElement {
             <input
               type="radio"
               name="mode"
-              .checked="${live(this.filterObject.state.mode === mode)}"
+              .checked="${
+                // @ts-ignore
+                live(this.filterObject.state.mode === mode)
+              }
+              "
               value="${mode}"
               @click="${() => {
+                /* @ts-ignore */
                 this.filterObject.state.mode = mode;
                 const event = new CustomEvent("filter", {
                   detail: {
@@ -73,6 +82,7 @@ export class EOxItemFilterSpatial extends LitElement {
         .geometry=${this.filterObject.state?.geometry}
         @filter="${(e: Event) => {
           this.filterObject.state.geometry = (<CustomEvent>e).detail.geometry;
+          this.filterObject.dirty = true;
           this.dispatchEvent(new CustomEvent("filter"));
         }}"
       ></eox-itemfilter-spatial>
@@ -100,7 +110,9 @@ export class SpatialFilter extends LitElement {
     const mapLayers = [
       {
         type: "Vector",
-        id: "draw",
+        properties: {
+          id: "draw",
+        },
         source: {
           type: "Vector",
           ...(this.geometry && { format: "GeoJSON" }),
@@ -120,41 +132,45 @@ export class SpatialFilter extends LitElement {
     ];
 
     this.eoxMap = this.renderRoot.querySelector("eox-map");
-    this.eoxMap.setLayers(mapLayers);
-    this.eoxMap.addDraw("draw", {
-      id: "drawInteraction",
-      type: "Polygon",
-    });
-    const updateGeometryFilter = (feature: any) => {
-      const event = new CustomEvent("filter", {
-        detail: {
-          geometry: {
-            type: "Polygon",
-            coordinates: feature
-              .getGeometry()
-              .clone()
-              .transform("EPSG:3857", "EPSG:4326")
-              .getCoordinates(),
-          },
-        },
+    setTimeout(() => {
+      this.eoxMap.setLayers(mapLayers as EoxLayer[]);
+      this.eoxMap.addDraw("draw", {
+        id: "drawInteraction",
+        type: "Polygon",
       });
-      this.dispatchEvent(event);
-    };
-    this.eoxMap.interactions["drawInteraction"].on(
-      // @ts-ignore
-      "drawend",
-      (e: { feature: any }) => {
-        updateGeometryFilter(e.feature);
-        this.eoxMap.removeInteraction("drawInteraction");
-      }
-    );
-    this.eoxMap.interactions["drawInteraction_modify"].on(
-      // @ts-ignore
-      "modifyend",
-      (e: { features: any }) => {
-        updateGeometryFilter(e.features.getArray()[0]);
-      }
-    );
+      const updateGeometryFilter = (feature: unknown) => {
+        const event = new CustomEvent("filter", {
+          detail: {
+            geometry: {
+              type: "Polygon",
+              coordinates: feature
+                // @ts-ignore
+                .getGeometry()
+                .clone()
+                .transform("EPSG:3857", "EPSG:4326")
+                .getCoordinates(),
+            },
+          },
+        });
+        this.dispatchEvent(event);
+      };
+      this.eoxMap.interactions["drawInteraction"].on(
+        // @ts-ignore
+        "drawend",
+        (e: { feature: unknown }) => {
+          updateGeometryFilter(e.feature);
+          this.eoxMap.removeInteraction("drawInteraction");
+        }
+      );
+      this.eoxMap.interactions["drawInteraction_modify"].on(
+        // @ts-ignore
+        "modifyend",
+        (e: { features: unknown }) => {
+          // @ts-ignore
+          updateGeometryFilter(e.features.getArray()[0]);
+        }
+      );
+    });
   }
 
   // TODO move to epx-map helper function?
@@ -176,8 +192,8 @@ export class SpatialFilter extends LitElement {
 
   reset() {
     const source = this.eoxMap.getLayerById("draw").getSource();
-    if (source.getFeatures()?.length > 0) {
-      source.clear();
+    if ((source as unknown as VectorSource).getFeatures()?.length > 0) {
+      (source as unknown as VectorSource).clear();
       this.eoxMap.removeInteraction("drawInteraction_modify");
       this.setup();
     }

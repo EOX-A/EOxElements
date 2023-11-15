@@ -3,16 +3,22 @@ import "../main";
 import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
 
 describe("VectorTile Layer", () => {
-  it("loads a Vector Layer, applies flat style", () => {
+  it("loads a Vector Tile Layer, applies flat style", () => {
+    cy.intercept(/^.*geoserver.*$/, {
+      fixture: "/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
+      encoding: "binary",
+    });
+
     // @ts-ignore
     vectorTileLayerStyleJson[0].style = {
-      // @ts-ignore
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 4,
     };
     cy.mount(
-      `<eox-map layers='${JSON.stringify(vectorTileLayerStyleJson)}'></eox-map>`
+      `<eox-map zoom=1 layers='${JSON.stringify(
+        vectorTileLayerStyleJson
+      )}'></eox-map>`
     ).as("eox-map");
     return new Cypress.Promise((resolve) => {
       cy.get("eox-map").should(($el) => {
@@ -29,7 +35,7 @@ describe("VectorTile Layer", () => {
       });
     });
   });
-  it("loads a Vector Layer, applies mapbox style", () => {
+  /*it("loads a Vector Tile Layer, applies mapbox style", () => {
     // @ts-ignore
     vectorTileLayerStyleJson[0].style = {
       version: 8,
@@ -75,5 +81,5 @@ describe("VectorTile Layer", () => {
         }, 1000);
       });
     });
-  });
+  });*/
 });

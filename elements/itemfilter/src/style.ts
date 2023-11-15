@@ -9,13 +9,14 @@ export const style = `
 *:after {
   box-sizing: inherit;
 }
-form {
+form#itemfilter {
   height: 100%;
   width: 100%;
   max-width: 100%;
   display: flex;
   flex-direction: column;
 }
-
-
+details {
+  width: 100%;
+}
 `;

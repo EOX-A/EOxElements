@@ -188,11 +188,15 @@ class SignalsDataManager {
         tooltip: {
           callbacks: {
             title: (tooltipItem) => {
-              const raw: any = tooltipItem[0]?.raw;
+              const raw = tooltipItem[0]?.raw as { x: DateTime };
               return raw.x.toISODate();
             },
             label: (tooltipItem) => {
-              const raw: any = tooltipItem.raw;
+              const raw = tooltipItem.raw as {
+                y: number;
+                yMin: number | null;
+                yMax: number | null;
+              };
               const minString =
                 raw.yMin !== null ? `; ↓ ${raw.yMin.toPrecision(3)}` : "";
               const maxString =
@@ -297,8 +301,8 @@ class SignalsDataManager {
         });
 
         let actualDataAdded = false;
-        let signalData = <any>(
-          data.map((datapoint) => this.requestHandler.convertData(datapoint))
+        let signalData = data.map((datapoint) =>
+          this.requestHandler.convertData(datapoint)
         );
         // Probably best to always sort by time
         signalData.sort((a, b) => a.x - b.x);

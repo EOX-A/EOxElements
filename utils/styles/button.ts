@@ -6,6 +6,7 @@ button {
   --error-color: #FF5252;
 
   display: inline-flex;
+  position: relative;
   align-items: center;
   color: #fff;
   border-width: 0;
@@ -25,13 +26,17 @@ button {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-button:hover {
+button:hover:not([disabled]):not(.icon) {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
   background: var(--primary-color-hover);
 }
 
 button, button:active {
   background: var(--primary-color);
+}
+
+button[disabled] {
+  opacity: 0.5;
 }
 
 button.outline {
@@ -52,6 +57,7 @@ button.icon {
   padding: 0;
   border-radius: 50%;
   width: 24px;
+  text-indent: -9999px;
 }
 
 button.icon-text {
@@ -73,5 +79,11 @@ button.icon:before {
 button.icon-text:before {
   width: 18px;
   height: 18px;
+}
+
+button.small {
+  height: 28px;
+  padding: 12.4px;
+  font-size: .75rem;
 }
 `;

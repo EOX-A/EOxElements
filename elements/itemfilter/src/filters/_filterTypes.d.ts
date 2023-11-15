@@ -6,7 +6,7 @@ declare type RangeFilterObject = FilterObject & {
 
 declare type SpatialFilterObject = FilterObject & {
   mode: string;
-  geometry: any;
+  geometry: object;
 };
 
 declare type TextFilterObject = FilterObject & {

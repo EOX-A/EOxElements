@@ -16,8 +16,11 @@ export class EOxItemFilterMultiselect extends LitElement {
         }
       });
     for (const filter in this.filterObject.state) {
+      // @ts-ignore
       this.filterObject.state[filter] = false;
     }
+    delete this.filterObject.dirty;
+    this.requestUpdate();
   }
 
   // skip shadow root creation
@@ -33,16 +36,22 @@ export class EOxItemFilterMultiselect extends LitElement {
             a.localeCompare(b)
           ),
           (key) => html`
-            <li>
+            <li class=${this.filterObject.state[key] ? "highlighted" : nothing}>
               <label>
                 <input
+                  data-cy="multiselect-checkbox"
                   name="selection"
                   type="checkbox"
+                  class="multiselect-checkbox"
+                  id=${key}
                   checked="${this.filterObject.state[key] || nothing}"
                   @click=${() => {
+                    // @ts-ignore
                     this.filterObject.state[key] =
                       !this.filterObject.state[key];
+                    this.filterObject.dirty = true;
                     this.dispatchEvent(new CustomEvent("filter"));
+                    this.requestUpdate();
                   }}
                 />
                 <span class="title">${key}</span>

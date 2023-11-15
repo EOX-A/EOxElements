@@ -16,8 +16,11 @@ export class EOxItemFilterSelect extends LitElement {
         }
       });
     for (const filter in this.filterObject.state) {
+      // @ts-ignore
       this.filterObject.state[filter] = false;
     }
+    delete this.filterObject.dirty;
+    this.requestUpdate();
   }
 
   // skip shadow root creation
@@ -33,17 +36,22 @@ export class EOxItemFilterSelect extends LitElement {
             a.localeCompare(b)
           ),
           (key) => html`
-            <li>
+            <li class=${this.filterObject.state[key] ? "highlighted" : nothing}>
               <label>
                 <input
                   name="selection"
                   type="radio"
+                  class="select-radio"
+                  id=${key}
                   checked="${this.filterObject.state[key] || nothing}"
                   @click=${() => {
                     for (const el in this.filterObject.state) {
+                      // @ts-ignore
                       this.filterObject.state[el] = el === key;
                     }
+                    this.filterObject.dirty = true;
                     this.dispatchEvent(new CustomEvent("filter"));
+                    this.requestUpdate();
                   }}
                 />
                 <span class="title">${key}</span>

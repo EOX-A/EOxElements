@@ -2,7 +2,7 @@ import { LitElement, html, svg } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
-import TileSource from "ol/source/Tile";
+import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
@@ -16,7 +16,7 @@ dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
 
 @customElement("eox-timecontrol")
-export class EOxDrawTools extends LitElement {
+export class EOxTimeControl extends LitElement {
   /**
    * The WMS parameter to update
    */
@@ -60,7 +60,7 @@ export class EOxDrawTools extends LitElement {
    * ```
    */
   @property()
-  urlFunction: Function;
+  urlFunction: (url: string) => string;
 
   /**
    * Original tile url function of the source.
@@ -117,7 +117,7 @@ export class EOxDrawTools extends LitElement {
   private _animationInterval: ReturnType<typeof setInterval>;
 
   @state()
-  private _animationSource: TileSource;
+  private _animationSource: UrlTile;
 
   @state()
   private _isAnimationPlaying: boolean;
@@ -160,6 +160,7 @@ export class EOxDrawTools extends LitElement {
         return src.substring(0, src.indexOf("?") + 1) + searchParams.toString();
       }
     );
+    // TODO dont be accessing protected methods!
     //@ts-ignore
     this._animationSource.setKey(new Date());
     this._animationSource.changed();
@@ -176,12 +177,8 @@ export class EOxDrawTools extends LitElement {
         const animationLayer = olMap
           .getLayers()
           .getArray()
-          .find(
-            (l) =>
-              l.get("id") === this.layer ||
-              l.get("mapbox-layers")?.includes(this.layer)
-          ) as Layer;
-        this._animationSource = animationLayer.getSource() as TileSource;
+          .find((l) => l.get("id") === this.layer) as Layer;
+        this._animationSource = animationLayer.getSource() as UrlTile;
         this._originalTileUrlFunction =
           //@ts-ignore
           this._animationSource.getTileUrlFunction();

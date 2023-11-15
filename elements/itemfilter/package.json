@@ -1,14 +1,14 @@
 {
   "name": "@eox/itemfilter",
-  "version": "0.7.0",
+  "version": "0.8.6",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@types/lodash.debounce": "^4.0.7",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^5.50.0",
     "eslint-plugin-typescript": "^0.14.0",
-    "typescript": "^4.9.3",
+    "typescript": "^5.2.2",
     "vite": "^4.0.0"
   },
   "engines": {
@@ -21,7 +21,6 @@
   ],
   "main": "./dist/eox-itemfilter.js",
   "scripts": {
-    "start": "vite",
     "build": "tsc && vite build",
     "watch": "tsc && vite build --watch",
     "format": "prettier --write .",

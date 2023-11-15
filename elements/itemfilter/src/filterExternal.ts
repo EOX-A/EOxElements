@@ -5,6 +5,7 @@ export const filter = async (
   filters: object,
   config: ElementConfig
 ) => {
+  // @ts-ignore
   const response = await fetch(`${config.externalFilter(items, filters)}`);
   const jsonData = await response.json();
   return jsonData.features;
