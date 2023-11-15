@@ -8,7 +8,9 @@ describe("select interaction with hover", () => {
       fixture: "/ecoregions.json",
     });
     cy.mount(
-      `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
+      `<eox-map layers='${JSON.stringify(
+        vectorLayerStyleJson
+      )}'><eox-map-tooltip></eox-map-tooltip></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
@@ -17,7 +19,7 @@ describe("select interaction with hover", () => {
       let featureSelectCounter = 0;
       eoxMap.addEventListener("select", (evt) => {
         selectCounter++;
-        //@ts-ignore
+        // @ts-ignore
         if (evt.detail.feature) {
           featureSelectCounter++;
         }

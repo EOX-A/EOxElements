@@ -4,6 +4,7 @@ import "./src/main";
 import "./src/autocomplete";
 import "./src/selectionlist";
 import "./src/chips";
+import "../map/main";
 import items from "./test/testItems.json";
 
 export default {
@@ -28,10 +29,10 @@ export const Primary = {
         title: "Search",
         type: "text",
         expanded: true,
-        state: {
-          title: "no2",
-          themes: "no2",
-        },
+        // state: {
+        //   title: "no2",
+        //   themes: "no2",
+        // },
       },
       {
         key: "themes",

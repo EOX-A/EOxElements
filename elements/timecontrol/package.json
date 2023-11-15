@@ -5,7 +5,7 @@
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
-    "@typescript-eslint/parser": "^5.50.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "eslint-plugin-typescript": "^0.14.0",
     "ol": "^8.1.0",
     "typescript": "^5.2.2",
@@ -28,7 +28,8 @@
     "lint:fix": "eslint --ext .js,.ts . --fix"
   },
   "dependencies": {
-    "lit": "^2.7.4",
+    "dayjs": "^1.11.9",
+    "lit": "^3.0.2",
     "toolcool-range-slider": "^4.0.27"
   }
 }

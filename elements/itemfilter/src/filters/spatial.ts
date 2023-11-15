@@ -1,7 +1,6 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
-import { live } from "lit/directives/live.js";
 import { when } from "lit/directives/when.js";
 import booleanIntersects from "@turf/boolean-intersects";
 import booleanWithin from "@turf/boolean-within";
@@ -59,9 +58,12 @@ export class EOxItemFilterSpatial extends LitElement {
             <input
               type="radio"
               name="mode"
-              .checked="${live(this.filterObject.state.mode === mode)}"
+              .checked="${(this.filterObject.state
+                .mode as unknown as string) === mode || nothing}
+              "
               value="${mode}"
               @click="${() => {
+                /* @ts-ignore */
                 this.filterObject.state.mode = mode;
                 const event = new CustomEvent("filter", {
                   detail: {
@@ -139,12 +141,13 @@ export class SpatialFilter extends LitElement {
         id: "drawInteraction",
         type: "Polygon",
       });
-      const updateGeometryFilter = (feature: any) => {
+      const updateGeometryFilter = (feature: unknown) => {
         const event = new CustomEvent("filter", {
           detail: {
             geometry: {
               type: "Polygon",
               coordinates: feature
+                // @ts-ignore
                 .getGeometry()
                 .clone()
                 .transform("EPSG:3857", "EPSG:4326")
@@ -157,7 +160,7 @@ export class SpatialFilter extends LitElement {
       this.eoxMap.interactions["drawInteraction"].on(
         // @ts-ignore
         "drawend",
-        (e: { feature: any }) => {
+        (e: { feature: unknown }) => {
           updateGeometryFilter(e.feature);
           this.eoxMap.removeInteraction("drawInteraction");
         }
@@ -165,7 +168,8 @@ export class SpatialFilter extends LitElement {
       this.eoxMap.interactions["drawInteraction_modify"].on(
         // @ts-ignore
         "modifyend",
-        (e: { features: any }) => {
+        (e: { features: unknown }) => {
+          // @ts-ignore
           updateGeometryFilter(e.features.getArray()[0]);
         }
       );

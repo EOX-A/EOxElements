@@ -60,6 +60,19 @@ export class EOxSelectInteraction {
         ...options.overlay,
       });
       this.eoxMap.map.addOverlay(overlay);
+
+      const pointerLeaveListener = () => {
+        overlay.setPosition(undefined);
+      };
+      eoxMap.map.on("change:target", (e) => {
+        e.oldValue.removeEventListener("pointerleave", pointerLeaveListener);
+        e.target
+          .getTargetElement()
+          .addEventListener("pointerleave", pointerLeaveListener);
+      });
+      eoxMap.map
+        .getTargetElement()
+        .addEventListener("pointerleave", pointerLeaveListener);
     }
 
     // a layer that only contains the selected features, for displaying purposes only
@@ -81,13 +94,13 @@ export class EOxSelectInteraction {
         },
       } as EoxLayer;
     }
-    //@ts-ignore
+    // @ts-ignore
     layerDefinition.renderMode = "vector";
 
     this.selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
       | VectorTileLayer
       | VectorLayer<VectorSource>;
-    //@ts-ignore
+    // @ts-ignore
     this.selectStyleLayer.setSource(this.selectLayer.getSource());
     this.selectStyleLayer.setMap(this.eoxMap.map);
 
@@ -103,7 +116,7 @@ export class EOxSelectInteraction {
       return null;
     });
 
-    const listener = (event: MapBrowserEvent<any>) => {
+    const listener = (event: MapBrowserEvent<UIEvent>) => {
       if (event.dragging || !this.active) {
         return;
       }
@@ -158,7 +171,7 @@ export class EOxSelectInteraction {
     });
 
     this.changeSourceListener = () => {
-      //@ts-ignore
+      // @ts-ignore
       this.selectStyleLayer.setSource(this.selectLayer.getSource());
     };
 

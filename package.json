@@ -19,7 +19,6 @@
     "format:check:all": "prettier --check .",
     "lint:all": "npm run lint --ws",
     "lint:fix:all": "npm run lint:fix --ws",
-    "watch:all": "npm run watch --ws",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",

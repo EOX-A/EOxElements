@@ -2,14 +2,17 @@ export class MockMap extends HTMLElement {
   constructor() {
     super();
   }
+  features = [{}];
   map = {
     getLayers: () => ({
       getArray: () => [
         {
           get: () => "draw",
           getSource: () => ({
-            clear: () => ({}),
-            getFeatures: () => [{}],
+            clear: () => {
+              this.features = [];
+            },
+            getFeatures: () => this.features,
           }),
         },
       ],

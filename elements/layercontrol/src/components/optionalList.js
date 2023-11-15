@@ -7,6 +7,7 @@ export class EOxLayerControlOptionalList extends LitElement {
     layers: { attribute: false },
     titleProperty: { attribute: "title-property", type: String },
     unstyled: { type: Boolean },
+    noShadow: { type: Boolean },
   };
 
   constructor() {
@@ -33,10 +34,15 @@ export class EOxLayerControlOptionalList extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Renders the element without a shadow root
+     */
+    this.noShadow = true;
   }
 
   createRenderRoot() {
-    return this;
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {

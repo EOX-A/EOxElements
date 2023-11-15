@@ -11,8 +11,7 @@ export class EOxItemFilterRange extends LitElement {
   filterObject: RangeFilterObject;
 
   inputHandler = (evt: CustomEvent) => {
-    let min, max;
-    [min, max] = evt.detail.values;
+    const [min, max] = evt.detail.values;
     if (
       min !== this.filterObject.state.min ||
       max != this.filterObject.state.max

@@ -1,4 +1,5 @@
 import "../src/main";
+import "./_mockMap";
 import testItems from "./testItems.json";
 
 describe("Item Filter Config", () => {
@@ -10,8 +11,9 @@ describe("Item Filter Config", () => {
     </eox-itemfilter>`
     )
       .as("eox-itemfilter")
-      .then((eoxItemFilter: any) => {
-        eoxItemFilter[0].config = {
+      .then(($el) => {
+        const eoxItemFilter = <EOxItemFilter>$el[0];
+        eoxItemFilter.config = {
           titleProperty: "title",
           filterProperties: [
             {
@@ -25,7 +27,7 @@ describe("Item Filter Config", () => {
           aggregateResults: "themes",
           enableHighlighting: true,
         };
-        eoxItemFilter[0].apply(testItems);
+        eoxItemFilter.apply(testItems);
       });
   });
 
@@ -87,8 +89,10 @@ describe("Item Filter Config", () => {
       .within(() => {
         cy.get('[type="checkbox"]').first().check();
         cy.get('[type="checkbox"]').eq(1).check();
-        cy.get('[type="checkbox"]').first().check().should("be.checked");
-        cy.get('[type="checkbox"]').eq(1).check().should("be.checked");
+        cy.get('[type="checkbox"]').first().check();
+        cy.get('[type="checkbox"]').first().should("be.checked");
+        cy.get('[type="checkbox"]').eq(1).check();
+        cy.get('[type="checkbox"]').eq(1).should("be.checked");
       });
   });
 
@@ -184,5 +188,37 @@ describe("Item Filter Config", () => {
 
     checkExclusiveOpen("ul#filters", true);
     checkExclusiveOpen("ul#results");
+  });
+
+  it("should show the map when spatial filter is enabled", () => {
+    cy.get("eox-itemfilter").and(($el) => {
+      const eoxItemFilter = <EOxItemFilter>$el[0];
+      eoxItemFilter.config = {
+        titleProperty: "title",
+        filterProperties: [
+          {
+            key: "geometry",
+            type: "spatial",
+            expanded: true,
+          },
+        ],
+      };
+      eoxItemFilter.apply(testItems);
+    });
+    cy.get("eox-itemfilter")
+      .shadow()
+      .within(() => {
+        cy.get("eox-itemfilter-spatial")
+          .get("eox-itemfilter-spatial-filter")
+          .shadow()
+          .within(() => {
+            cy.get("eox-map").should("exist");
+            cy.get("eox-map")
+              .shadow()
+              .within(() => {
+                cy.get("canvas").should("exist");
+              });
+          });
+      });
   });
 });

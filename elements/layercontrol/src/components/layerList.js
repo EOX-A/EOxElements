@@ -16,8 +16,10 @@ export class EOxLayerControlLayerList extends LitElement {
     layers: { attribute: false },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
+    noShadow: { type: Boolean },
   };
 
   constructor() {
@@ -53,9 +55,19 @@ export class EOxLayerControlLayerList extends LitElement {
     this.titleProperty = "title";
 
     /**
+     * Show layer state based on zoom level or not
+     */
+    this.showLayerZoomState = false;
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Renders the element without a shadow root
+     */
+    this.noShadow = true;
   }
 
   updated() {
@@ -70,7 +82,7 @@ export class EOxLayerControlLayerList extends LitElement {
   }
 
   createRenderRoot() {
-    return this;
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
@@ -103,10 +115,12 @@ export class EOxLayerControlLayerList extends LitElement {
                           .getLayers
                           ? html`
                               <eox-layercontrol-layer-group
+                                .noShadow=${true}
                                 .group=${layer}
                                 .idProperty=${this.idProperty}
                                 .map=${this.map}
                                 .titleProperty=${this.titleProperty}
+                                .showLayerZoomState=${this.showLayerZoomState}
                                 .tools=${this.tools}
                                 .unstyled=${this.unstyled}
                                 @changed=${() => this.requestUpdate()}
@@ -115,8 +129,11 @@ export class EOxLayerControlLayerList extends LitElement {
                             `
                           : html`
                               <eox-layercontrol-layer
+                                .noShadow=${true}
                                 .layer=${layer}
+                                .map=${this.map}
                                 .titleProperty=${this.titleProperty}
+                                .showLayerZoomState=${this.showLayerZoomState}
                                 .tools=${this.tools}
                                 .unstyled=${this.unstyled}
                                 @changed=${() => {

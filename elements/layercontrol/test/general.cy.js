@@ -74,10 +74,8 @@ describe("LayerControl", () => {
     cy.get("eox-layercontrol")
       .shadow()
       .within(() => {
-        cy.get(".tools summary")
-          .click({ multiple: true })
-          .get(".drag-handle:visible")
-          .should("have.length", 1);
+        cy.get(".tools summary").click({ multiple: true });
+        cy.get(".drag-handle:visible").should("have.length", 1);
       });
   });
 
@@ -112,6 +110,24 @@ describe("LayerControl", () => {
       .shadow()
       .within(() => {
         cy.get("details[open]").should("exist");
+      });
+  });
+
+  it("pre-opens layer tools section if layerControlToolsExpand is present", () => {
+    cy.get("mock-map").and(($el) => {
+      $el /**MockMap*/[0]
+        .setLayers([
+          { visible: true },
+          {
+            properties: { layerControlToolsExpand: true },
+            layers: [{ visible: true }],
+          },
+        ]);
+    });
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get("details[open].tools").should("be.visible");
       });
   });
 });

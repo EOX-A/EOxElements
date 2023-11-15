@@ -5,6 +5,10 @@ import STAC from "ol-stac";
 import { FlatStyleLike } from "ol/style/flat";
 import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
+import { register } from "ol/proj/proj4.js";
+import proj4 from "proj4";
+
+register(proj4); // required to support source reprojection
 
 const availableLayers = {
   ...olLayers,
@@ -144,7 +148,7 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.style) !==
       JSON.stringify(existingJsonDefintion.style)
   ) {
-    //@ts-ignore
+    // @ts-ignore
     existingLayer.setStyle(newLayer.getStyle());
   }
 
@@ -193,7 +197,7 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
       // do not sync property when setting the "map" of the layer
       return;
     }
-    //@ts-ignore
+    // @ts-ignore
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
 }

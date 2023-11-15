@@ -1,11 +1,11 @@
 {
   "name": "@eox/drawtools",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
-    "@typescript-eslint/parser": "^5.50.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "eslint-plugin-typescript": "^0.14.0",
     "ol": "^8.1.0",
     "typescript": "^5.2.2",
@@ -29,6 +29,6 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "lit": "^2.7.4"
+    "lit": "^3.0.2"
   }
 }

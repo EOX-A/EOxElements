@@ -1,4 +1,4 @@
-import { LitElement, html, nothing, PropertyValueMap } from "lit";
+import { LitElement, html, nothing, PropertyValues } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
@@ -6,7 +6,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import StacFields from "@radiantearth/stac-fields";
+import StacFields, { Formatters } from "@radiantearth/stac-fields";
 import { STAC } from "stac-js";
 
 /**
@@ -29,6 +29,12 @@ import { STAC } from "stac-js";
  */
 @customElement("eox-stacinfo")
 export class EOxStacInfo extends LitElement {
+  /**
+   * Allow HTML rendering in properties (such as description)
+   */
+  @property({ attribute: "allow-html" })
+  allowHtml: boolean;
+
   @property({ type: Boolean })
   unstyled: boolean;
 
@@ -46,6 +52,9 @@ export class EOxStacInfo extends LitElement {
 
   @property({ type: Array })
   footer: Array<string> = [];
+
+  @property({ attribute: "style-override" })
+  styleOverride: string = "";
 
   @state()
   stacInfo: Array<typeof STAC> = [];
@@ -73,6 +82,8 @@ export class EOxStacInfo extends LitElement {
   };
 
   buildProperties(stacArray: Array<typeof STAC>) {
+    Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
+
     const parseEntries = (list: Array<string>) =>
       Object.entries(this.stacProperties)
         .filter(([key]) => {
@@ -117,19 +128,28 @@ export class EOxStacInfo extends LitElement {
         ${parseEntries(this.properties).length > 0
           ? html`
               <section id="properties" part="properties">
-                <ul>
+                <ul
+                  class=${parseEntries(this.properties).length === 1
+                    ? "single-property"
+                    : nothing}
+                >
                   ${map(
                     parseEntries(this.properties),
                     ([, value]) => html`
                       <slot name=${value.label.toLowerCase()}>
                         <li>
-                          <span class="label">
-                            ${
-                              // TODO
-                              // @ts-ignore
-                              value.label
-                            } </span
-                          >:
+                          ${when(
+                            parseEntries(this.properties).length > 1,
+                            () => html`
+                              <span class="label">
+                                ${
+                                  // TODO
+                                  // @ts-ignore
+                                  value.label
+                                } </span
+                              >:
+                            `
+                          )}
                           <span class="value">
                             ${
                               // TODO
@@ -218,6 +238,7 @@ export class EOxStacInfo extends LitElement {
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
+        ${this.styleOverride}
       </style>
       <slot></slot>
       ${this.buildProperties(this.stacInfo)}
@@ -225,7 +246,7 @@ export class EOxStacInfo extends LitElement {
   }
 
   protected updated(
-    _changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+    _changedProperties: PropertyValues<string> | Map<PropertyKey, unknown>
   ): void {
     if (_changedProperties.has("for")) {
       this.fetchStac(this.for);
