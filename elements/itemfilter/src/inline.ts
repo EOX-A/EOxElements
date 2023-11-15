@@ -104,8 +104,6 @@ export class EOxItemFilterInline extends LitElement {
     this._keyboardEventListener = this.getRootNode().addEventListener(
       "keydown",
       (event) => {
-        console.log(event.target);
-
         if (["Enter", "Escape", "Space"].includes(event.code)) {
           this._handleKeyboard(event.code);
         }
