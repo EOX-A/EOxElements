@@ -47,8 +47,31 @@ export class EOxItemFilterInline extends LitElement {
     //     }
     //   }
     // }
-    if (key === "Escape") {
-      const inProgressItem = this.items.find((i) => i._inProgress);
+
+    const inProgressItem = this.items.find((i) => i._inProgress);
+    const textInProgress =
+      inProgressItem?.type === "text" && inProgressItem?.dirty;
+    const inputEl = this.renderRoot.querySelector(
+      "#inline-input"
+    ) as HTMLInputElement;
+    const highlightedLiItem = this.renderRoot
+      ?.querySelector("[data-filter]")
+      ?.querySelector("eox-autocomplete")
+      ?.renderRoot?.querySelector("eox-selectionlist")
+      ?.renderRoot?.querySelector("li.highlighted");
+
+    if (key == "Enter" && highlightedLiItem && inputEl.selectionStart) {
+      highlightedLiItem
+        .querySelector("input[type=checkbox]")
+        .dispatchEvent(new Event("change"));
+      inputEl.selectionStart = 0;
+      inputEl.value = "";
+      inputEl.focus();
+    }
+    if (
+      ["Escape", "Space"].includes(key) ||
+      (key == "Enter" && textInProgress)
+    ) {
       if (inProgressItem) {
         delete inProgressItem._inProgress;
         this.requestUpdate();
@@ -69,6 +92,7 @@ export class EOxItemFilterInline extends LitElement {
       delete item._inProgress;
       delete item.stringifiedState;
     });
+    this.renderRoot.querySelector("[slot=content]").classList.remove("hidden");
     this.requestUpdate();
     this.dispatchEvent(new CustomEvent("filter"));
   }
@@ -80,12 +104,7 @@ export class EOxItemFilterInline extends LitElement {
     this._keyboardEventListener = this.getRootNode().addEventListener(
       "keydown",
       (event) => {
-        if (
-          [
-            // "Enter",
-            "Escape",
-          ].includes(event.code)
-        ) {
+        if (["Enter", "Escape", "Space"].includes(event.code)) {
           this._handleKeyboard(event.code);
         }
       }
@@ -166,6 +185,7 @@ export class EOxItemFilterInline extends LitElement {
         <div class="input-container">
           <eox-dropdown .parent=${this} .unstyled=${this.unstyled}>
             <input
+              id="inline-input"
               slot="trigger"
               type="text"
               placeholder="Type something..."
@@ -217,6 +237,10 @@ export class EOxItemFilterInline extends LitElement {
                       const items = evt.detail;
                       if (items.length > 0) {
                         items[items.length - 1]._inProgress = true;
+                        this.renderRoot.querySelector(
+                          "input[slot=trigger]"
+                        ).value = "";
+                        this.inputText = "";
                         this.requestUpdate();
                       }
 

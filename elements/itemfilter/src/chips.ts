@@ -22,14 +22,14 @@ export class EOxItemFilterChips extends LitElement {
     );
   }
 
-  _handleKeyboard(key: string) {
+  _handleKeyboard(key: string, textValue: string) {
     const highlightedChip = this.renderRoot.querySelector(".chip.highlighted");
-    if (key === "Escape") {
+    if (key === "Escape" || textValue) {
       if (highlightedChip) {
         highlightedChip.classList.remove("highlighted");
       }
     }
-    if (key === "Backspace") {
+    if (key === "Backspace" && !textValue) {
       if (this.items.length) {
         if (highlightedChip) {
           this.items.splice(
@@ -54,7 +54,7 @@ export class EOxItemFilterChips extends LitElement {
       }
       this._dispatchEvent();
     }
-    if (key === "ArrowLeft" || key === "ArrowRight") {
+    if ((key === "ArrowLeft" || key === "ArrowRight") && !textValue) {
       if (this.renderRoot.querySelectorAll(".chip").length < 1) {
         return;
       }
@@ -94,8 +94,17 @@ export class EOxItemFilterChips extends LitElement {
       "keydown",
       (event) => {
         const { code } = <KeyboardEvent>event;
+        if (code === "Space") {
+          event.preventDefault();
+        }
+        if (!["Escape", "Space", "Enter"].includes(code)) {
+          event.stopPropagation();
+        }
         if (["ArrowLeft", "ArrowRight", "Escape", "Backspace"].includes(code)) {
-          this._handleKeyboard(code);
+          this._handleKeyboard(
+            code,
+            (<HTMLInputElement>event.target).value ?? ""
+          );
         }
       }
     );

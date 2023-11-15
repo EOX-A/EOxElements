@@ -97,6 +97,9 @@ export class EOxAutocomplete extends LitElement {
     // }
     if (key === "ArrowDown" || key === "ArrowUp") {
       this.renderRoot.querySelector("eox-dropdown").open = true;
+      if (this.parentElement?.inline) {
+        this.renderRoot.querySelector("eox-selectionlist")._handleKeyboard(key);
+      }
     }
     // if (key === "ArrowLeft" || key === "ArrowRight") {
     //   if (this.renderRoot.querySelectorAll(".chip").length < 1) {
@@ -129,6 +132,15 @@ export class EOxAutocomplete extends LitElement {
     //   ].classList.add("highlighted");
     // }
     this.renderRoot.querySelector("input").select();
+    if ((<HTMLElement & { inline: boolean }>this.parentElement)?.inline) {
+      if (!["ArrowUp", "ArrowDown"].includes(key)) {
+        (<HTMLInputElement>(
+          this.parentElement.parentElement?.parentElement?.querySelector(
+            "#inline-input"
+          )
+        )).focus();
+      }
+    }
   }
 
   _handleHighlight(items: Array<any>) {

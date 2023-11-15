@@ -193,7 +193,7 @@ export class EOxItemFilter extends TemplateElement {
             ...filterProperty.state,
           },
           ...(filterProperty.state && {
-            dirty: true,
+            dirty: false,
           }),
           ...(filterProperty.type === "range" && {
             min: (<RangeFilterObject>filterKeys).min,
