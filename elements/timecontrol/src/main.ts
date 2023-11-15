@@ -289,8 +289,8 @@ export class SliderTicks extends LitElement {
   }
 
   get yearMarks(): { label: number, position: number }[] {
-    const yearMarks = [];
-    let previousYear = null;
+    const yearMarks:  { label: number, position: number }[] = [];
+    let previousYear: number = null;
 
     this.lines.forEach((line, index) => {
       const currentTime = dayjs(this.times[index]);
@@ -308,7 +308,15 @@ export class SliderTicks extends LitElement {
       previousYear = currentYear;
     });
 
-    return yearMarks;
+    // Filter out year marks that are too close together, in favor of the second one.
+    return yearMarks.filter((current, i) => {
+      const next = yearMarks[i + 1];
+
+      console.log(`year mark`);
+      console.log(current);
+      console.log(next);
+      return !(next && next.position - current.position < 25);
+    });
   }
 
   isYearLine(line: number): boolean {
@@ -333,7 +341,7 @@ export class SliderTicks extends LitElement {
               y1="0"
               x2=${line}
               y2=${this.isYearLine(line) ? 12 : 6}
-              stroke=${this.isYearLine(line) ? '#333' : '#7596A2'}
+              stroke=${this.isYearLine(line) ? '#222' : '#7596A2'}
               stroke-width=${this.isYearLine(line) ? 1 : 1}
             ></line>
           `)}
