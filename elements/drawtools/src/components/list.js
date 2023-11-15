@@ -1,7 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
 import { styleEOX } from "../style.eox";
-import { getDefaultPolygonStyle, getSelectedPolygonStyle } from "../helpers";
+import { getDefaultSelectedOption } from "../helpers";
 
 /**
  * Display list of features
@@ -13,11 +13,32 @@ export class EOxDrawToolsList extends LitElement {
     eoxMap: { attribute: false, state: true },
     olMap: { attribute: false, state: true },
     draw: { attribute: false, state: true },
+    layer: { type: String },
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
     modify: { attribute: false, state: true },
     unstyled: { type: Boolean },
   };
+
+  /**
+   * @type import("../../../map/src/select").EOxSelectInteraction
+   */
+  hoverInteraction;
+
+  /**
+   * @type import("../../../map/src/select").EOxSelectInteraction
+   */
+  clickInteraction;
+
+  /**
+   * @type string | number
+   */
+  hoverId;
+
+  /**
+   * @type string | number
+   */
+  clickId;
 
   constructor() {
     super();
@@ -38,6 +59,12 @@ export class EOxDrawToolsList extends LitElement {
      */
 
     this.draw = null;
+
+    /**
+     * The layer id of the draw layer
+     * @default draw
+     */
+    this.layer = "draw";
 
     /**
      * The current native OpenLayers draw `layer`
@@ -63,12 +90,6 @@ export class EOxDrawToolsList extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
-
-    /**
-     * Index of selected feature
-     * @type Number || null
-     */
-    this.selectedFeatureIndex = null;
   }
 
   /**
@@ -80,76 +101,99 @@ export class EOxDrawToolsList extends LitElement {
     const feature = this.drawnFeatures[index];
     this.drawLayer.getSource().removeFeature(feature);
     this.drawnFeatures.splice(index, 1);
-
-    // If selected feature gets deletes fit to available bound
-    if (this.selectedFeatureIndex === Number(index))
-      this.selectedFeatureIndex = null;
-    // Else If selected index is greater than deleted feature index then changing index cursor by 1
-    else if (this.selectedFeatureIndex > Number(index)) {
-      this.selectedFeatureIndex = this.selectedFeatureIndex - 1;
-      this._handleFeatureSelectAndDeselect(
-        this.selectedFeatureIndex,
-        this.drawnFeatures[this.selectedFeatureIndex]
-      );
-    }
     this.requestUpdate();
   }
 
   /**
    * Select and Deselect feature from the list
    *
-   * @param {Number} i
    * @param {import("ol").Feature} feature
    */
-  _handleFeatureSelectAndDeselect(i, feature) {
+  _handleFeatureSelectAndDeselect(feature) {
+    const selectedFeatureId = feature.get("id");
+
     // Deselect selected feature
-    if (this.selectedFeatureIndex === i) {
+    if (this.clickId === selectedFeatureId) {
       const newExtent = this.drawLayer.getSource().getExtent();
       this.olMap.getView().fit(newExtent, { duration: 750 });
-      this.selectedFeatureIndex = null;
+      this.clickInteraction.highlightById([]);
     }
     // Select the clicked feature
     else {
-      if (this.selectedFeatureIndex !== null)
-        this.drawnFeatures[this.selectedFeatureIndex].setStyle(
-          getDefaultPolygonStyle()
-        );
-      feature.setStyle(getSelectedPolygonStyle());
+      this.clickInteraction.highlightById([selectedFeatureId]);
       this.olMap
         .getView()
         .fit(feature.getGeometry().getExtent(), { duration: 750 });
-      this.selectedFeatureIndex = i;
     }
+
     this.requestUpdate();
   }
 
+  firstUpdated() {
+    const isHoverInteractionExist =
+      this.eoxMap?.selectInteractions["draw-hover"];
+    const isClickInteractionExist =
+      this.eoxMap?.selectInteractions["draw-click"];
+
+    /*
+     * Check if interaction exist or not
+     * If not initialize a new interaction for hover and click
+     */
+    if (!isHoverInteractionExist)
+      this.hoverInteraction = this.eoxMap.addSelect(
+        this.layer,
+        getDefaultSelectedOption("draw-hover", "pointermove")
+      );
+    if (!isClickInteractionExist)
+      this.clickInteraction = this.eoxMap.addSelect(
+        this.layer,
+        getDefaultSelectedOption("draw-click", "click", true)
+      );
+
+    // Event trigger when style change due to interaction
+    this.hoverInteraction.selectStyleLayer.on("change", () =>
+      this.requestUpdate()
+    );
+    this.clickInteraction.selectStyleLayer.on("change", () =>
+      this.requestUpdate()
+    );
+  }
+
   render() {
+    this.hoverInteraction = this.eoxMap.selectInteractions["draw-hover"];
+    this.clickInteraction = this.eoxMap.selectInteractions["draw-click"];
+
+    this.hoverId = this.hoverInteraction?.selectedFids[0];
+    this.clickId = this.clickInteraction?.selectedFids[0];
+
     return html`
       <style>
         ${!this.unstyled && styleEOX}
       </style>
       <ul>
-        ${this.drawnFeatures.map((feature, i) =>
-          keyed(
+        ${this.drawnFeatures.map((feature, i) => {
+          const featureId = feature.get("id");
+          const selected =
+            this.hoverId === featureId || this.clickId === featureId;
+
+          return keyed(
             i + 1,
             html`
               <li
-                class="${this.selectedFeatureIndex === i
-                  ? "selected"
-                  : nothing}"
+                class="${selected ? "selected" : nothing}"
                 @mouseover=${() => {
-                  if (this.selectedFeatureIndex === i) return;
-                  feature.setStyle(getSelectedPolygonStyle());
+                  if (this.clickId === featureId) return;
+                  this.hoverInteraction.highlightById([featureId]);
                 }}
                 @mouseout=${() => {
-                  if (this.selectedFeatureIndex === i) return;
-                  feature.setStyle(getDefaultPolygonStyle());
+                  if (this.clickId === featureId) return;
+                  this.hoverInteraction.highlightById([]);
                 }}
               >
                 <div
                   class="list"
                   @click="${() =>
-                    this._handleFeatureSelectAndDeselect(i, feature)}"
+                    this._handleFeatureSelectAndDeselect(feature)}"
                 >
                   <span class="title">Feature #${i + 1}</span>
                   <button
@@ -162,8 +206,8 @@ export class EOxDrawToolsList extends LitElement {
                 </div>
               </li>
             `
-          )
-        )}
+          );
+        })}
       </ul>
     `;
   }

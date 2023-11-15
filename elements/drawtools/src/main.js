@@ -210,6 +210,7 @@ export class EOxDrawTools extends LitElement {
             .eoxMap=${this.#eoxMap}
             .olMap=${this.#olMap}
             .draw=${this.draw}
+            .layer=${this.layer}
             .drawLayer=${this.drawLayer}
             .drawnFeatures=${this.drawnFeatures}
             .modify=${this.modify}

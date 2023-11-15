@@ -1,6 +1,7 @@
 import { html } from "lit";
 import "../map/main";
 import "./src/main";
+import { getDefaultSelectedOption } from "./src/helpers";
 
 export default {
   title: "Elements/eox-drawtools",
@@ -45,18 +46,41 @@ export const MultiPolygon = {
  * List of features will be visible
  */
 export const MultiPolygonWithList = {
+  play: async ({ canvasElement }) => {
+    const EOxMap = canvasElement.querySelector("eox-map");
+
+    EOxMap.addSelect(
+      "draw",
+      getDefaultSelectedOption("draw-hover", "pointermove")
+    );
+    EOxMap.addSelect(
+      "draw",
+      getDefaultSelectedOption("draw-click", "click", true)
+    );
+  },
   render: () => html`
     <div style="display: flex">
       <eox-map
-        id="multi"
+        id="list"
         style="width: 500px; height: 300px;"
-        layers='[
-        {"type": "Vector","id": "draw","source": {"type": "Vector"}},
-        {"type":"Tile","source":{"type":"OSM"}}
-      ]'
+        layers=${JSON.stringify([
+          {
+            type: "Vector",
+            id: "draw",
+            source: {
+              type: "Vector",
+            },
+          },
+          {
+            type: "Tile",
+            source: {
+              type: "OSM",
+            },
+          },
+        ])}
       ></eox-map>
       <eox-drawtools
-        for="eox-map#multi"
+        for="eox-map#list"
         layer="draw"
         multiple-features
         show-list
