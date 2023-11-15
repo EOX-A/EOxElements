@@ -67,7 +67,7 @@ slot[name=footer] {
   list-style: none;
   padding: 0;
 }
-#properties li {
+#properties ul:not(.single-property) li {
   flex-basis: 50%;
   padding: 20px 0;
 }

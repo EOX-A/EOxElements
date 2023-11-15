@@ -1,12 +1,12 @@
 {
   "name": "@eox/itemfilter",
-  "version": "0.8.6",
+  "version": "0.9.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@types/lodash.debounce": "^4.0.7",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
-    "@typescript-eslint/parser": "^5.50.0",
+    "@typescript-eslint/parser": "^6.8.0",
     "eslint-plugin-typescript": "^0.14.0",
     "typescript": "^5.2.2",
     "vite": "^4.0.0"
@@ -30,8 +30,8 @@
   "dependencies": {
     "@turf/boolean-intersects": "^6.5.0",
     "@turf/boolean-within": "^6.5.0",
-    "fuse.js": "^6.6.2",
-    "lit": "^2.7.4",
+    "fuse.js": "^7.0.0",
+    "lit": "^3.0.2",
     "lodash.debounce": "^4.0.8",
     "toolcool-range-slider": "^4.0.27"
   }

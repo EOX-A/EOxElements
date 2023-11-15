@@ -14,8 +14,10 @@ export class EOxLayerControlLayerGroup extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
+    noShadow: { type: Boolean },
   };
 
   constructor() {
@@ -46,6 +48,11 @@ export class EOxLayerControlLayerGroup extends LitElement {
     this.titleProperty = "title";
 
     /**
+     * Show layer state based on zoom level or not
+     */
+    this.showLayerZoomState = false;
+
+    /**
      * @type Array<string>
      */
     this.tools = [];
@@ -54,10 +61,15 @@ export class EOxLayerControlLayerGroup extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Renders the element without a shadow root
+     */
+    this.noShadow = true;
   }
 
   createRenderRoot() {
-    return this;
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
@@ -72,18 +84,23 @@ export class EOxLayerControlLayerGroup extends LitElement {
           <details open=${this.group.get("layerControlExpand") || nothing}>
             <summary>
               <eox-layercontrol-layer
+                .noShadow=${true}
                 .layer=${this.group}
+                .map=${this.map}
                 .titleProperty=${this.titleProperty}
+                .showLayerZoomState=${this.showLayerZoomState}
                 .tools=${this.tools}
                 .unstyled=${this.unstyled}
                 @changed=${() => this.requestUpdate()}
               ></eox-layercontrol-layer>
             </summary>
             <eox-layercontrol-layer-list
+              .noShadow=${true}
               .idProperty=${this.idProperty}
               .layers=${this.group.getLayers()}
               .map=${this.map}
               .titleProperty=${this.titleProperty}
+              .showLayerZoomState=${this.showLayerZoomState}
               .tools=${this.tools}
               .unstyled=${this.unstyled}
               @changed=${() => this.requestUpdate()}

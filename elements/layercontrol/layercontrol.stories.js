@@ -410,10 +410,16 @@ export const HiddenLayers = {
 };
 
 export const SingleLayer = {
-  args: { idProperty: "id", titleProperty: "title", unstyled: false },
+  args: {
+    idProperty: "id",
+    titleProperty: "title",
+    unstyled: false,
+    noShadow: false,
+  },
   render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol-layer
+        .noShadow=${args.noShadow}
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
@@ -449,10 +455,11 @@ export const SingleLayer = {
 };
 
 export const LayerList = {
-  args: { unstyled: false },
+  args: { unstyled: false, noShadow: false },
   render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol-layer-list
+        .noShadow=${args.noShadow}
         .unstyled=${args.unstyled}
       ></eox-layercontrol-layer-list>
       <eox-map
@@ -519,9 +526,65 @@ export const LayerList = {
 export const Tabs = {
   render: () => html`
     <eox-layercontrol-tabs
+      .noShadow=${false}
       .actions=${["delete"]}
       .tabs=${["info", "opacity", "config"]}
     ></eox-layercontrol-tabs>
+  `,
+};
+
+/**
+ * Zoom layer state based on `minZoom` and `maxZoom`.
+ * The color change state only visible when `showLayerZoomState` is set inside layer properties.
+ */
+export const LayerZoomState = {
+  args: {
+    showLayerZoomState: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .showLayerZoomState=${args.showLayerZoomState}
+        for="eox-map#zoomstate"
+      ></eox-layercontrol>
+      <eox-map
+        id="zoomstate"
+        style="width: 600px; height: 300px; margin-left: 7px;"
+        zoom="1"
+        layers=${JSON.stringify([
+          {
+            type: "Vector",
+            properties: {
+              title: "Regions",
+              id: "regions",
+            },
+            source: {
+              type: "Vector",
+              url: "https://openlayers.org/data/vector/ecoregions.json",
+              format: "GeoJSON",
+              attributions: "Regions: @ openlayers.org",
+            },
+            minZoom: 2,
+          },
+          {
+            type: "Tile",
+            properties: {
+              id: "WIND",
+              title: "WIND",
+            },
+            source: {
+              type: "TileWMS",
+              url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              params: {
+                LAYERS: "AWS_VIS_WIND_V_10M",
+              },
+            },
+            maxZoom: 9,
+          },
+        ])}
+      >
+      </eox-map>
+    </div>
   `,
 };
 
