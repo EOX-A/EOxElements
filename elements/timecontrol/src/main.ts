@@ -8,9 +8,9 @@ import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { UrlFunction } from "ol/Tile";
 
-import dayjs from 'dayjs';
-import dayOfYear from 'dayjs/plugin/dayOfYear';
-import isoWeek from 'dayjs/plugin/isoWeek';
+import dayjs from "dayjs";
+import dayOfYear from "dayjs/plugin/dayOfYear";
+import isoWeek from "dayjs/plugin/isoWeek";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -246,7 +246,6 @@ export class EOxTimeControl extends LitElement {
 
 @customElement("eox-sliderticks")
 export class SliderTicks extends LitElement {
-
   @property({ type: Number }) width: number = 0;
   @property({ type: Array }) times: string[] = [];
 
@@ -255,11 +254,11 @@ export class SliderTicks extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener('resize', this.handleResize.bind(this));
+    window.addEventListener("resize", this.handleResize.bind(this));
   }
 
   disconnectedCallback() {
-    window.removeEventListener('resize', this.handleResize.bind(this));
+    window.removeEventListener("resize", this.handleResize.bind(this));
     super.disconnectedCallback();
   }
 
@@ -268,14 +267,12 @@ export class SliderTicks extends LitElement {
   }
 
   handleResize() {
-    this.svgWidth = this.shadowRoot.querySelector('svg').clientWidth;
-    this.height = this.shadowRoot.querySelector('svg').clientHeight;
+    this.svgWidth = this.shadowRoot.querySelector("svg").clientWidth;
+    this.height = this.shadowRoot.querySelector("svg").clientHeight;
   }
 
   get lines() {
-    const num = this.numLines > (this.width / 2)
-      ? (this.width / 2)
-      : this.numLines;
+    const num = this.numLines > this.width / 2 ? this.width / 2 : this.numLines;
 
     const spacing = this.width / (num - 1);
     return Array.from({ length: this.numLines }, (_, i) => i * spacing);
@@ -285,8 +282,8 @@ export class SliderTicks extends LitElement {
     return this.times ? this.times.length : 0;
   }
 
-  get yearMarks(): { label: number, position: number }[] {
-    const yearMarks:  { label: number, position: number }[] = [];
+  get yearMarks(): { label: number; position: number }[] {
+    const yearMarks: { label: number; position: number }[] = [];
     let previousYear: number = null;
 
     this.lines.forEach((line, index) => {
@@ -297,7 +294,7 @@ export class SliderTicks extends LitElement {
       if (index === 0 || currentYear !== previousYear) {
         yearMarks.push({
           label: currentYear,
-          position: line // Assuming 'line' is the position of the tick
+          position: line, // Assuming 'line' is the position of the tick
         });
       }
 
@@ -318,8 +315,9 @@ export class SliderTicks extends LitElement {
 
   isYearLine(line: number): boolean {
     // Check if this line's position is approximately equal to any year mark position
-    const isYearMark = this.yearMarks
-    .some((yearMark) => Math.abs(yearMark.position - line) < 1.0);
+    const isYearMark = this.yearMarks.some(
+      (yearMark) => Math.abs(yearMark.position - line) < 1.0
+    );
 
     return isYearMark;
   }
@@ -331,19 +329,21 @@ export class SliderTicks extends LitElement {
           style="width: ${this.width}px; height: 30px;"
           viewBox="-1 0 ${this.width + 2} ${this.height}"
         >
-          ${this.lines.map((line, index) => svg`
+          ${this.lines.map(
+            (line, index) => svg`
             <line
               key=${index}
               x1=${line}
               y1="0"
               x2=${line}
               y2=${this.isYearLine(line) ? 12 : 6}
-              stroke=${this.isYearLine(line) ? '#222' : '#7596A2'}
+              stroke=${this.isYearLine(line) ? "#222" : "#7596A2"}
               stroke-width=${this.isYearLine(line) ? 1 : 1}
             ></line>
-          `)}
-
-          ${this.yearMarks.map((year, index) => svg`
+          `
+          )}
+          ${this.yearMarks.map(
+            (year, index) => svg`
             <text
               key=${`y${index}`}
               x=${year.position}
@@ -354,7 +354,8 @@ export class SliderTicks extends LitElement {
             >
               ${year.label}
             </text>
-          `)}
+          `
+          )}
         </svg>
       </div>
     `;
