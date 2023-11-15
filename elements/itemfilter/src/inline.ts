@@ -56,7 +56,7 @@ export class EOxItemFilterInline extends LitElement {
       ?.querySelector("eox-autocomplete")
       ?.renderRoot?.querySelector("eox-selectionlist")
       ?.renderRoot?.querySelector("li.highlighted");
-      
+
     if (key == "Enter" && highlightedLiItem) {
       const checkboxEl = highlightedLiItem.querySelector(
         "input[type=checkbox]"

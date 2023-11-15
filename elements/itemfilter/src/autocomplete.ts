@@ -317,7 +317,6 @@ export class EOxAutocomplete extends LitElement {
               this.items.length > 0,
               () => html`
                 <eox-selectionlist
-                  id="ac-selection-list"
                   slot="content"
                   .filter=${this.inputText}
                   .idProperty=${this.idProperty}
