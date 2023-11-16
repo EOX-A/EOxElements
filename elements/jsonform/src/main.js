@@ -19,15 +19,15 @@ class EOxJSONForm extends LitElement {
 
     /**
      * Schema for the form editor
-     * @type {Object}
+     * @type {JsonSchema}
      */
-    this.schema = {};
+    this.schema;
 
     /**
      * Default values for the form editor
-     * @type {Object}
+     * @type {JsonSchema}
      */
-    this.defaultValues = {};
+    this.defaultValues;
 
     /**
      * data input by the user
@@ -62,7 +62,7 @@ class EOxJSONForm extends LitElement {
     return this.defaultValues;
   }
   /**
-   * @param {JSON} newVal
+   * @param {JsonSchema} newVal
    */
   setDefaultValues(newVal) {
     this.defaultValues = newVal;
