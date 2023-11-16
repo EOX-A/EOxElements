@@ -14,6 +14,7 @@ export type DrawOptions = Omit<
   id: string | number;
   type: "Point" | "LineString" | "Polygon" | "Circle" | "Box";
   modify?: boolean;
+  active?: boolean;
 };
 
 /**
@@ -47,6 +48,10 @@ export function addDraw(
     ...options_,
     source,
   } as import("ol/interaction/Draw").Options);
+
+  if (options_.active === false) {
+    drawInteraction.setActive(false);
+  }
 
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {

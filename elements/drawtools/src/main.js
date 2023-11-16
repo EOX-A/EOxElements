@@ -9,6 +9,7 @@ import { styleEOX } from "./style.eox";
 export class EOxDrawTools extends LitElement {
   static get properties() {
     return {
+      allowModify: { attribute: "allow-modify", type: Boolean },
       for: { type: String },
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
       draw: { attribute: false, state: true },
@@ -17,6 +18,7 @@ export class EOxDrawTools extends LitElement {
       layer: { type: String },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
+      type: { type: String },
       unstyled: { type: Boolean },
     };
   }
@@ -33,6 +35,11 @@ export class EOxDrawTools extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Allow modifying the drawn feature(s)
+     */
+    this.allowModify = false;
 
     /**
      * The query selector for the map
@@ -66,12 +73,6 @@ export class EOxDrawTools extends LitElement {
     this.drawnFeatures = [];
 
     /**
-     * The layer id of the draw layer
-     * @default draw
-     */
-    this.layer = "draw";
-
-    /**
      * The current native OpenLayers `modify` interaction
      * @type import("ol/interaction").Modify
      */
@@ -84,17 +85,61 @@ export class EOxDrawTools extends LitElement {
     this.multipleFeatures = false;
 
     /**
+     * Type of the drawn feature
+     * @type {"Polygon" | "Point" | "LineString" | "Circle" | "Box"}
+     */
+    this.type = "Polygon";
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
   }
 
-  startDrawing() {
-    this.#eoxMap.addDraw(this.layer, {
-      id: "drawInteraction",
-      type: "Polygon",
-      stopClick: true,
+  firstUpdated() {
+    const mapQuery = document.querySelector(this.for);
+
+    this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
+    // @ts-ignore
+    this.#olMap = /** @type {import("ol").Map} */ this.#eoxMap.map;
+
+    this.#eoxMap.addOrUpdateLayer({
+      type: "Vector",
+      properties: {
+        id: "drawLayer",
+      },
+      source: {
+        type: "Vector",
+      },
+      style: {
+        "circle-radius": 7,
+        "circle-fill-color": "#00417055",
+        "circle-stroke-color": "#004170",
+        "circle-stroke-width": 2,
+        "stroke-color": "#004170",
+        "stroke-width": 2,
+        "fill-color": "#00417055",
+      },
+      interactions: [
+        {
+          type: "draw",
+          options: {
+            active: false,
+            id: "drawInteraction",
+            type: this.type,
+            modify: this.allowModify,
+            stopClick: true,
+          },
+        },
+      ],
     });
+    this.drawLayer =
+      /** @type {import("ol/layer").Vector<import("ol/source").Vector>} */ (
+        this.#olMap
+          .getLayers()
+          .getArray()
+          .find((l) => l.get("id") === "drawLayer")
+      );
     this.draw = /** @type {import("ol/interaction").Draw} */ (
       /** @type {unknown} */ (this.#eoxMap.interactions["drawInteraction"])
     );
@@ -105,13 +150,17 @@ export class EOxDrawTools extends LitElement {
     );
     this.draw?.on("drawend", (evt) => this.onDrawEnd(evt));
     this.modify?.on("modifyend", (evt) => this.onModifyEnd(evt));
+  }
+
+  startDrawing() {
+    this.draw.setActive(true);
     this.currentlyDrawing = true;
     this.requestUpdate();
   }
 
   discardDrawing() {
     this.drawnFeatures = [];
-    this.#eoxMap.removeInteraction("drawInteraction");
+    this.draw.setActive(false);
     this.drawLayer.getSource().clear();
     this.emitDrawnFeatures();
     this.currentlyDrawing = false;
@@ -124,7 +173,7 @@ export class EOxDrawTools extends LitElement {
    */
   onDrawEnd() {
     this.emitDrawnFeatures();
-    this.#eoxMap.removeInteraction("drawInteraction");
+    this.draw.setActive(false);
     this.currentlyDrawing = false;
     this.requestUpdate();
   }
@@ -155,20 +204,7 @@ export class EOxDrawTools extends LitElement {
   }
 
   render() {
-    const mapQuery = document.querySelector(this.for);
-
-    this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
-    // @ts-ignore
-    this.#olMap = /** @type {import("ol").Map} */ this.#eoxMap.map;
-
-    this.drawLayer =
-      /** @type {import("ol/layer").Vector<import("ol/source").Vector>} */ (
-        this.#olMap
-          .getLayers()
-          .getArray()
-          .find((l) => l.get("id") === this.layer)
-      );
-    this.requestUpdate();
+    // this.requestUpdate();
 
     return html`
       <style>

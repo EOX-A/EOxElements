@@ -243,6 +243,56 @@ export const Controls = {
     `,
 };
 
+export const Draw = {
+  render: () => html` <style>
+      eox-map {
+        width: 100%;
+        height: 300px;
+      }
+    </style>
+    <eox-map
+      layers='[
+        {
+          "type": "Vector",
+          "background": "#1a2b39",
+          "properties": {
+            "id": "drawLayer"
+          },
+          "source": {
+            "type": "Vector"
+          },
+          "style": {
+            "circle-radius": 10,
+            "circle-fill-color": "yellow",
+            "circle-stroke-color": "black",
+            "circle-stroke-width": 2,
+            "stroke-color": "black",
+            "stroke-width": 5,
+            "fill-color": "red"
+          },
+          "interactions": [
+            {
+              "type": "draw",
+              "options": {
+                "id": "drawInteraction",
+                "type": "Point",
+                "modify": true
+              }
+            }
+          ]
+        },
+        {
+          "type": "Tile",
+          "source": {
+            "type": "OSM"
+          }
+        }
+      ]'
+    >
+      <eox-map-tooltip></eox-map-tooltip>
+    </eox-map>`,
+};
+
 export const Hover = {
   render: () => html` <style>
       eox-map {
