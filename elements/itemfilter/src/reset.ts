@@ -10,7 +10,6 @@ export const resetFilter = (filterObject: FilterObject) => {
       }
       break;
     case "range":
-      console.log(filterObject);
       filterObject.state.min = (<RangeFilterObject>filterObject).min;
       filterObject.state.max = (<RangeFilterObject>filterObject).max;
       break;

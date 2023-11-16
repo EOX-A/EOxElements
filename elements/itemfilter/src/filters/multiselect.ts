@@ -52,8 +52,6 @@ export class EOxItemFilterMultiselect extends LitElement {
   }
 
   _handleSelected(selectedItems: FilterObject[]) {
-    console.log(selectedItems);
-
     Object.keys(this.filterObject.state).forEach((k) => {
       this.filterObject.state[k] = selectedItems.map((i) => i.id).includes(k);
     });

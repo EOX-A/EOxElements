@@ -160,7 +160,6 @@ export class EOxItemFilterInline extends LitElement {
           .unstyled=${this.unstyled}
           @items-selected=${(evt: CustomEvent) => {
             this.items.forEach((item) => {
-              console.log(item);
               if (!(<FilterObject[]>evt.detail).find((i) => i.id === item.id)) {
                 this._handleReset([item]);
               }
