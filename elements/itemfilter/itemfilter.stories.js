@@ -231,7 +231,7 @@ export const Chips = {
         { id: "c", title: "Catalog" },
       ]}
       @items-selected=${(evt) => {
-        // console.log(evt.detail);
+        console.log(evt.detail);
       }}
     ></eox-itemfilter-chips>
   `,
@@ -247,7 +247,7 @@ export const ChipsUnstyled = {
       ]}
       unstyled
       @items-selected=${(evt) => {
-        // console.log(evt.detail);
+        console.log(evt.detail);
       }}
     ></eox-itemfilter-chips>
   `,
