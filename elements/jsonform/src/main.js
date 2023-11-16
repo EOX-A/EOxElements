@@ -6,7 +6,7 @@ import { LitElement, html } from "lit";
  * @element eox-jsonform
  */
 
-class EOxJSONForm extends LitElement {
+export class EOxJSONForm extends LitElement {
   static properties = {
     _data: { attribute: false, state: true },
     _editor: { attribute: false, state: true },
@@ -73,8 +73,10 @@ class EOxJSONForm extends LitElement {
      * Data object has been changed
      */
     this.dispatchEvent(
-      new CustomEvent("change", {
+      new CustomEvent("change:json-form", {
         detail: this._data,
+        bubbles: true,
+        composed: true,
       })
     );
     this.requestUpdate();

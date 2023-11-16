@@ -66,6 +66,7 @@ export type EoxLayer = {
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
+  layerConfig?: { formId: string; schema: object; defaultValues?: object };
 };
 
 export function createLayer(layer: EoxLayer): olLayers.Layer {
@@ -118,7 +119,43 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   }
   olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
+
+  const url = olLayer.getSource().getUrls()[0];
+
+  if (layer.layerConfig?.formId) {
+    updateJsonFilterUrl(url, layer.layerConfig.defaultValues, olLayer);
+
+    // @ts-ignore
+    document
+      .querySelector(layer.layerConfig.formId)
+      .addEventListener("change:json-form", (e) =>
+        updateJsonFilterUrl(url, e.detail, olLayer)
+      );
+  }
   return olLayer;
+}
+
+// @ts-ignore
+export function updateJsonFilterUrl(url, defaultValues, olLayer) {
+  const searchParams = new URL(url).searchParams;
+  // @ts-ignore
+  Object.entries(defaultValues).forEach(([key, value]) => {
+    if (typeof value === "object" && !Array.isArray(value) && value !== null) {
+      Object.keys(value).forEach((k) => {
+        if (url.includes(`{${k}}`)) {
+          // @ts-ignore
+          searchParams.set(k, value[k]);
+        }
+      });
+    } else {
+      if (url.includes(`{${key}}`)) {
+        // @ts-ignore
+        searchParams.set(key, value);
+      }
+    }
+  });
+
+  olLayer.getSource().setUrl(url.split("?")[0] + "?" + searchParams.toString());
 }
 
 export function updateLayer(

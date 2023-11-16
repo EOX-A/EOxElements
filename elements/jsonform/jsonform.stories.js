@@ -20,7 +20,6 @@ export const Catalog = {
     <eox-jsonform
       .schema=${args.schema}
       .defaultValues=${args.defaultValues}
-      @change=${(evt) => console.log(evt.detail)}
     ></eox-jsonform>
   `,
 };
@@ -34,7 +33,6 @@ export const Collection = {
     <eox-jsonform
       .schema=${args.schema}
       .defaultValues=${args.defaultValues}
-      @change=${(evt) => console.log(evt.detail)}
     ></eox-jsonform>
   `,
 };
