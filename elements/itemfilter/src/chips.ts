@@ -84,6 +84,12 @@ export class EOxItemFilterChips extends LitElement {
 
   _keyboardEventListener: EventListener = (event: Event) => {
     const { code } = <KeyboardEvent>event;
+    if (
+      this.parentElement.classList.contains("hidden") &&
+      code == "Backspace"
+    ) {
+      return;
+    }
     if (code === "Space") {
       event.preventDefault();
     }
