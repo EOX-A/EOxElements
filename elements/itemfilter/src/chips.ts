@@ -86,7 +86,7 @@ export class EOxItemFilterChips extends LitElement {
     const { code } = <KeyboardEvent>event;
     if (
       this.parentElement.classList.contains("hidden") &&
-      code == "Backspace"
+      ["ArrowLeft", "ArrowRight", "Backspace"].includes(code)
     ) {
       return;
     }
