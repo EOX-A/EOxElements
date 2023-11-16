@@ -49,7 +49,7 @@ export class EOxItemFilterText extends LitElement {
       () => html`
         <style>
           input {
-            height: 100%;
+            max-height: 100%;
           }
         </style>
         <input
