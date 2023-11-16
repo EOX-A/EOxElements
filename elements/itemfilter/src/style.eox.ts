@@ -131,7 +131,7 @@ button#filter-reset:after {
   line-height: initial;
 }
 .scroll {
-  height: 100%;
+  max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 }
