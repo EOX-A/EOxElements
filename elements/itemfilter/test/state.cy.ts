@@ -34,10 +34,11 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("input[data-cy=multiselect-checkbox][checked]").should(
-          "have.length",
-          2
-        );
+        cy.get("eox-selectionlist")
+          .shadow()
+          .within(() => {
+            cy.get('[type="checkbox"]:checked').should("have.length", 2);
+          });
       });
   });
 
