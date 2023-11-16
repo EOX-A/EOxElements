@@ -14,6 +14,7 @@ import "./filters/range";
 import "./filters/select";
 import "./filters/spatial";
 import "./filters/text";
+import "./inline";
 import { indexItems, filter as filterClient } from "./filterClient";
 import { filter as filterExternal } from "./filterExternal";
 import { style } from "./style";
@@ -110,10 +111,10 @@ export class EOxItemFilter extends TemplateElement {
   public filters: { [key: string]: FilterObject } = {};
 
   @state()
-  public items: Array<object> = [];
+  public items: Record<string, unknown>[] = [];
 
   @state()
-  public results: Array<object>;
+  public results: Record<string, unknown>[];
 
   @state()
   public selectedResult: Item;
@@ -216,7 +217,7 @@ export class EOxItemFilter extends TemplateElement {
             ...filterProperty.state,
           },
           ...(filterProperty.state && {
-            dirty: true,
+            dirty: false,
           }),
           ...(filterProperty.type === "range" && {
             // @ts-ignore
@@ -287,7 +288,7 @@ export class EOxItemFilter extends TemplateElement {
     this._config.onFilter(this.results, this.filters);
   }
 
-  aggregateResults(items: Array<object>, property: string) {
+  aggregateResults(items: FilterObject[], property: string) {
     // @ts-ignore
     return items.filter((item: Item) => {
       const aggregation = item[this._config.aggregateResults];
@@ -312,11 +313,11 @@ export class EOxItemFilter extends TemplateElement {
     });
   }
 
-  sortResults(items: Array<object>) {
-    // @ts-ignore
+  sortResults(items: Record<string, unknown>[]) {
     return [...items].sort((a: Item, b: Item) =>
-      // @ts-ignore
-      a[this._config.titleProperty].localeCompare(b[this._config.titleProperty])
+      (<string>a[this._config.titleProperty]).localeCompare(
+        <string>b[this._config.titleProperty]
+      )
     );
   }
 
@@ -370,229 +371,256 @@ export class EOxItemFilter extends TemplateElement {
         @submit="${(evt: FormDataEvent) => evt.preventDefault()}"
       >
         ${when(
-          this._config.filterProperties.length,
+          this._config.inlineMode,
           () => html`
-            <section class="${this.config.inlineMode ? "inline" : nothing}">
-              ${when(
-                !this.config.inlineMode,
-                () =>
-                  html`
-                    <slot name="filterstitle"
-                      ><h4 style="margin-top: 8px">Filters</h4></slot
-                    >
-                  `
-              )}
-              <ul id="filters">
-                ${map(
-                  Object.values(this.filters),
-                  (filterObject) => staticHTML`
-                  <li>
-                    ${
-                      filterObject.featured
-                        ? staticHTML`
-                          <eox-itemfilter-${unsafeStatic(filterObject.type)}
-                            slot="filter"
-                            data-type="filter"
-                            .filterObject=${filterObject}
-                            @filter="${() => this.search()}"
-                          ></eox-itemfilter-${unsafeStatic(filterObject.type)}>
-                        `
-                        : staticHTML`
-                          <eox-itemfilter-expandcontainer
-                            .filterObject=${filterObject}
-                            .unstyled=${this.unstyled}
-                            @details-toggled=${this.toggleAccordion}
-                          >
-                          ${when(
-                            filterObject.dirty,
-                            () => html`
-                              <button
-                                slot="reset-button"
-                                class="reset-icon icon"
-                                @click=${(e: MouseEvent) => {
-                                  (<Element & { reset: () => void }>(
-                                    (<HTMLButtonElement>(
-                                      e.target
-                                    )).parentElement.querySelector(
-                                      "[slot=filter]"
-                                    )
-                                  )).reset();
-                                  this.search();
-                                  this.requestUpdate();
-                                }}
-                              >
-                                ${this.unstyled ? "Reset" : nothing}
-                              </button>
-                            `
-                          )}
+            <eox-itemfilter-inline
+              .items=${Object.values(this.filters)}
+              .unstyled=${this.unstyled}
+              @filter=${() => this.search()}
+            >
+            </eox-itemfilter-inline>
+          `,
+          () => html`
+            ${when(
+              this._config.filterProperties.length,
+              () => html`
+                <section
+                  class="${this.config.inlineMode
+                    ? "inline"
+                    : (nothing as null)}"
+                >
+                  ${when(
+                    !this.config.inlineMode,
+                    () =>
+                      html`
+                        <slot name="filterstitle"
+                          ><h4 style="margin-top: 8px">Filters</h4></slot
+                        >
+                      `
+                  )}
+                  <ul id="filters">
+                    ${map(
+                      Object.values(this.filters),
+                      (filterObject) => staticHTML`
+                    <li>
+                      ${
+                        filterObject.featured
+                          ? staticHTML`
                             <eox-itemfilter-${unsafeStatic(filterObject.type)}
                               slot="filter"
                               data-type="filter"
-                              data-filter="${filterObject.key}"
                               .filterObject=${filterObject}
+                              .unstyled=${this.unstyled}
                               @filter="${() => this.search()}"
                             ></eox-itemfilter-${unsafeStatic(
                               filterObject.type
                             )}>
-                          </eox-itemfilter-expandcontainer>
-                      `
-                    }
-                  </li>
-                `
-                )}
-              </ul>
-              ${when(
-                this._config.filterProperties &&
-                  Object.values(this.filters)
-                    .map((f) => f.dirty)
-                    .filter((f) => f).length > 0,
-                () => html`
-                  <button
-                    id="filter-reset"
-                    class="outline small"
-                    data-cy="filter-reset"
-                    @click=${() => this.resetFilters()}
-                  >
-                    Reset filters
-                  </button>
-                `
-              )}
-            </section>
-          `
-        )}
-        ${when(
-          this.config.showResults && this.results,
-          () => html`
-            <section id="section-results">
-              <div>
-                <slot name="resultstitle"
-                  ><h4 style="margin-top: 8px">Results</h4></slot
-                >
-              </div>
-              <div id="container-results" class="scroll">
-                ${this.results.length < 1
-                  ? html` <small class="no-results">No matching items</small> `
-                  : nothing}
-                <ul id="results" part="results">
-                  ${this._config.aggregateResults
-                    ? map(
-                        this._resultAggregation.filter(
-                          (aggregationProperty) =>
-                            this.aggregateResults(
-                              this.results,
-                              aggregationProperty
-                            ).length
-                        ),
-                        (aggregationProperty) => html`<details
-                          class="details-results"
-                          @toggle=${this.toggleAccordion}
-                          open=${this._config.expandResults || nothing}
-                        >
-                          <summary>
-                            <span class="title">
-                              ${aggregationProperty}
-                              <span class="count"
-                                >${this.aggregateResults(
-                                  this.results,
-                                  aggregationProperty
-                                ).length}</span
-                              >
-                            </span>
-                          </summary>
-                          <ul>
-                            ${repeat(
-                              // @ts-ignore
-                              this.aggregateResults(
-                                this.results,
-                                aggregationProperty
-                              ),
-                              (item: Item) => item.id,
-                              (item: Item) => html`
-                                <li
-                                  class=${this.selectedResult?.[
-                                    this._config.titleProperty
-                                  ] === item[this._config.titleProperty]
-                                    ? "highlighted"
-                                    : nothing}
+                          `
+                          : staticHTML`
+                            <eox-itemfilter-expandcontainer
+                              .filterObject=${filterObject}
+                              .unstyled=${this.unstyled}
+                              @details-toggled=${this.toggleAccordion}
+                            >
+                            ${when(
+                              filterObject.dirty,
+                              () => html`
+                                <button
+                                  slot="reset-button"
+                                  class="reset-icon icon"
+                                  @click=${(e: MouseEvent) => {
+                                    (<Element & { reset: () => void }>(
+                                      (<HTMLButtonElement>(
+                                        e.target
+                                      )).parentElement.querySelector(
+                                        "[slot=filter]"
+                                      )
+                                    )).reset();
+                                    this.search();
+                                    this.requestUpdate();
+                                  }}
                                 >
-                                  <label>
-                                    <input
-                                      data-cy="result-radio"
-                                      type="radio"
-                                      class="result-radio"
-                                      name="result"
-                                      id="${item.id}"
-                                      checked=${this.selectedResult?.[
-                                        this._config.titleProperty
-                                      ] === item[this._config.titleProperty] ||
-                                      nothing}
-                                      @click=${() => {
-                                        this.selectedResult = item;
-                                        this._config.onSelect(item);
-                                      }}
-                                    />
-                                    ${when(
-                                      this.hasTemplate("result"),
-                                      () =>
-                                        this.renderTemplate(
-                                          "result",
-                                          item,
-                                          `result-${item.id}`
-                                        ),
-                                      () => html`
-                                        <span class="title"
-                                          >${unsafeHTML(
-                                            // @ts-ignore
-                                            item[this._config.titleProperty]
-                                          )}</span
-                                        >
-                                      `
-                                    )}
-                                  </label>
-                                </li>
+                                  ${this.unstyled ? "Reset" : nothing}
+                                </button>
                               `
                             )}
-                          </ul>
-                        </details>`
-                      )
-                    : map(
-                        // @ts-ignore
-                        this.results,
-                        (item: Item) =>
-                          html`<li part="result">
-                            <label>
-                              <input
-                                type="radio"
-                                name="result"
-                                id="${item.id}"
-                                @click=${() => {
-                                  this.selectedResult = item;
-                                  this._config.onSelect(item);
-                                }}
-                              />
-                              ${when(
-                                this.hasTemplate("result"),
-                                () =>
-                                  this.renderTemplate(
-                                    "result",
-                                    item,
-                                    `result-${item.id}`
-                                  ),
-                                () => html`
-                                  <span class="title"
-                                    >${unsafeHTML(
-                                      // @ts-ignore
-                                      item[this._config.titleProperty]
-                                    )}</span
+                              <eox-itemfilter-${unsafeStatic(filterObject.type)}
+                                slot="filter"
+                                data-type="filter"
+                                data-filter="${filterObject.key}"
+                                .filterObject=${filterObject}
+                                .unstyled=${this.unstyled}
+                                @filter="${() => this.search()}"
+                              ></eox-itemfilter-${unsafeStatic(
+                                filterObject.type
+                              )}>
+                            </eox-itemfilter-expandcontainer>
+                        `
+                      }
+                    </li>
+                  `
+                    )}
+                  </ul>
+                  ${when(
+                    this._config.filterProperties &&
+                      Object.values(this.filters)
+                        .map((f) => f.dirty)
+                        .filter((f) => f).length > 0,
+                    () => html`
+                    <button
+                      id="filter-reset"
+                      class="outline small"
+                      data-cy="filter-reset"
+                      @click=${() => this.resetFilters()}
+                    >
+                      Reset filters
+                    </a>
+                  `
+                  )}
+                </section>
+              `
+            )}
+            ${when(
+              this.config.showResults && this.results,
+              () => html`
+                <section id="section-results">
+                  <div>
+                    <slot name="resultstitle"
+                      ><h4 style="margin-top: 8px">Results</h4></slot
+                    >
+                  </div>
+                  <div id="container-results" class="scroll">
+                    ${this.results.length < 1
+                      ? html`
+                          <small class="no-results">No matching items</small>
+                        `
+                      : nothing}
+                    <ul id="results" part="results">
+                      ${this._config.aggregateResults
+                        ? map(
+                            this._resultAggregation.filter(
+                              (aggregationProperty) =>
+                                this.aggregateResults(
+                                  this.results,
+                                  aggregationProperty
+                                ).length
+                            ),
+                            (aggregationProperty) => html`<details
+                              class="details-results"
+                              @toggle=${this.toggleAccordion}
+                              ?open=${this._config.expandResults ||
+                              (nothing as null)}
+                            >
+                              <summary>
+                                <span class="title">
+                                  ${aggregationProperty}
+                                  <span class="count"
+                                    >${this.aggregateResults(
+                                      this.results,
+                                      aggregationProperty
+                                    ).length}</span
                                   >
-                                `
-                              )}
-                            </label>
-                          </li>`
-                      )}
-                </ul>
-              </div>
-            </section>
+                                </span>
+                              </summary>
+                              <ul>
+                                ${repeat(
+                                  this.aggregateResults(
+                                    this.results,
+                                    aggregationProperty
+                                  ),
+                                  (item: Item) => item.id,
+                                  (item: Item) => html`
+                                    <li
+                                      class=${this.selectedResult?.[
+                                        this._config.titleProperty
+                                      ] === item[this._config.titleProperty]
+                                        ? "highlighted"
+                                        : (nothing as null)}
+                                    >
+                                      <label>
+                                        <input
+                                          data-cy="result-radio"
+                                          type="radio"
+                                          class="result-radio"
+                                          name="result"
+                                          id="${<string>item.id}"
+                                          ?checked=${this.selectedResult?.[
+                                            this._config.titleProperty
+                                          ] ===
+                                            item[this._config.titleProperty] ||
+                                          (nothing as null)}
+                                          @click=${() => {
+                                            this.selectedResult = item;
+                                            this._config.onSelect(item);
+                                          }}
+                                        />
+                                        ${when(
+                                          this.hasTemplate("result"),
+                                          () =>
+                                            this.renderTemplate(
+                                              "result",
+                                              item,
+                                              `result-${item.id}`
+                                            ),
+                                          () => html`
+                                            <span class="title"
+                                              >${unsafeHTML(
+                                                <string>(
+                                                  item[
+                                                    this._config.titleProperty
+                                                  ]
+                                                )
+                                              )}</span
+                                            >
+                                          `
+                                        )}
+                                      </label>
+                                    </li>
+                                  `
+                                )}
+                              </ul>
+                            </details>`
+                          )
+                        : map(
+                            this.results,
+                            (item: Item) =>
+                              html`<li part="result">
+                                <label>
+                                  <input
+                                    type="radio"
+                                    name="result"
+                                    id="${<string>item.id}"
+                                    @click=${() => {
+                                      this.selectedResult = item;
+                                      this._config.onSelect(item);
+                                    }}
+                                  />
+                                  ${when(
+                                    this.hasTemplate("result"),
+                                    () =>
+                                      this.renderTemplate(
+                                        "result",
+                                        item,
+                                        `result-${item.id}`
+                                      ),
+                                    () => html`
+                                      <span class="title"
+                                        >${unsafeHTML(
+                                          <string>(
+                                            item[this._config.titleProperty]
+                                          )
+                                        )}</span
+                                      >
+                                    `
+                                  )}
+                                </label>
+                              </li>`
+                          )}
+                    </ul>
+                  </div>
+                </section>
+              `
+            )}
           `
         )}
       </form>

@@ -15,7 +15,7 @@ class MockLayer {
     });
   }
   get(prop) {
-    return this.properties[prop];
+    return this.properties[prop] || this[prop];
   }
   getLayers() {
     return this.layers || new MockCollection([]);
@@ -32,6 +32,8 @@ class MockLayer {
     id: "foo",
     title: "layer",
   };
+  minZoom = -Infinity;
+  maxZoom = Infinity;
   set(prop, value) {
     this.properties[prop] = value;
   }
@@ -71,7 +73,9 @@ export class MockMap extends HTMLElement {
     super();
   }
   layers;
-  events = {};
+  events = {
+    "change:resolution": [],
+  };
   map = {
     getInteractions: () => ({
       getArray: () => [{}],
@@ -83,6 +87,20 @@ export class MockMap extends HTMLElement {
         return new MockCollection([]);
       }
     },
+    getEvents: () => this.events,
+    getView: () => ({
+      getZoom: () => this.zoom,
+      on: (type, listener) => {
+        this.events = {
+          ...this.events,
+          [type]: [...this.events[type], listener],
+        };
+      },
+    }),
+  };
+  zoom = 1;
+  setZoom = (z) => {
+    this.zoom = z;
   };
   setLayers = (layers) => {
     this.layers = new MockCollection(layers);
