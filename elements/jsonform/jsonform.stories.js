@@ -14,12 +14,12 @@ export default {
 export const Catalog = {
   args: {
     schema: catalogSchema,
-    startval: exampleCatalog,
+    defaultValues: exampleCatalog,
   },
   render: (args) => html`
     <eox-jsonform
       .schema=${args.schema}
-      .startval=${args.startval}
+      .defaultValues=${args.defaultValues}
       @change=${(evt) => console.log(evt.detail)}
     ></eox-jsonform>
   `,
@@ -28,12 +28,12 @@ export const Catalog = {
 export const Collection = {
   args: {
     schema: collectionSchema,
-    startval: exampleCollection,
+    defaultValues: exampleCollection,
   },
   render: (args) => html`
     <eox-jsonform
       .schema=${args.schema}
-      .startval=${args.startval}
+      .defaultValues=${args.defaultValues}
       @change=${(evt) => console.log(evt.detail)}
     ></eox-jsonform>
   `,
