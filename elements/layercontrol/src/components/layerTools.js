@@ -201,6 +201,12 @@ export class EOxLayerControlLayerTools extends LitElement {
                       id=${this.layerConfig.formId}
                       .schema=${this.layerConfig.schema}
                       .defaultValues=${this.layerConfig.defaultValues}
+                      .options=${{
+                        button_state_mode: 2,
+                        disable_edit_json: true,
+                        disable_collapse: true,
+                        disable_properties: true,
+                      }}
                     ></eox-jsonform>`}
                   </div>
                   <div slot="config-content"></div>

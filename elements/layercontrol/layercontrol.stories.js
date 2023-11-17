@@ -377,7 +377,7 @@ export const LayerWithFormFilter = {
       center="[-7000000, -500000]"
       zoom="4"
       id="tools"
-      style="width: 400px; height: 300px; margin-left: 7px;"
+      style="width: 400px; height: 300px;"
       layers=${JSON.stringify([
         {
           type: "Tile",

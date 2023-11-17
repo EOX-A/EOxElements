@@ -1,5 +1,7 @@
 import { JSONEditor } from "@json-editor/json-editor/dist/jsoneditor.js";
 import { LitElement, html } from "lit";
+import { style } from "./style";
+import { styleEOX } from "./style.eox";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -13,6 +15,8 @@ export class EOxJSONForm extends LitElement {
     id: { attribute: "id", type: String },
     schema: { attribute: "schema", type: Object },
     defaultValues: { attribute: "default-values", type: Object },
+    options: { attribute: "options", type: Object },
+    unstyled: { type: Boolean },
   };
 
   constructor() {
@@ -37,6 +41,12 @@ export class EOxJSONForm extends LitElement {
     this.defaultValues;
 
     /**
+     * Default values for the form editor
+     * @type {object}
+     */
+    this.options = {};
+
+    /**
      * data input by the user
      * @type {{[key: string]: any}}
      */
@@ -47,6 +57,11 @@ export class EOxJSONForm extends LitElement {
      * @type {{[key: string]: any}}
      */
     this._editor = null;
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
   }
 
   /**
@@ -98,6 +113,7 @@ export class EOxJSONForm extends LitElement {
         ...(this.defaultValues ? { startval: this.defaultValues } : {}),
         theme: "html",
         ajax: true,
+        ...this.options,
       });
 
       this._editor.on("change", () => {
@@ -110,9 +126,8 @@ export class EOxJSONForm extends LitElement {
   render() {
     return html`
       <style>
-        * {
-          --primary-color: #004170;
-        }
+        ${style}
+          ${!this.unstyled && styleEOX}
       </style>
       <form></form>
     `;
