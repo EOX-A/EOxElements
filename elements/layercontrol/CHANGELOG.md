@@ -2,31 +2,36 @@
 
 ## [0.10.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.9.0...layercontrol-v0.10.0) (2023-11-16)
 
+
 ### Features
 
-- Add visual feedback if a layer is outside its min/max zoom ([09f5288](https://github.com/EOX-A/EOxElements/commit/09f5288de6e86aab72f8f6cee0ba4cce337c7cfe)), closes [#248](https://github.com/EOX-A/EOxElements/issues/248)
+* Add visual feedback if a layer is outside its min/max zoom ([09f5288](https://github.com/EOX-A/EOxElements/commit/09f5288de6e86aab72f8f6cee0ba4cce337c7cfe)), closes [#248](https://github.com/EOX-A/EOxElements/issues/248)
+
 
 ### Bug Fixes
 
-- Update optional layer list after layer removal ([#391](https://github.com/EOX-A/EOxElements/issues/391)) ([36eb916](https://github.com/EOX-A/EOxElements/commit/36eb916cfe3886fd664c261f31f74b487f054125))
+* Update optional layer list after layer removal ([#391](https://github.com/EOX-A/EOxElements/issues/391)) ([36eb916](https://github.com/EOX-A/EOxElements/commit/36eb916cfe3886fd664c261f31f74b487f054125))
 
 ## [0.9.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.8.0...layercontrol-v0.9.0) (2023-11-03)
 
+
 ### Features
 
-- Introduce optional shadow + styleOverride ([#386](https://github.com/EOX-A/EOxElements/issues/386)) ([a0a2b80](https://github.com/EOX-A/EOxElements/commit/a0a2b8010d092d254031ac8fa5e4945e2a401c6c))
+* Introduce optional shadow + styleOverride ([#386](https://github.com/EOX-A/EOxElements/issues/386)) ([a0a2b80](https://github.com/EOX-A/EOxElements/commit/a0a2b8010d092d254031ac8fa5e4945e2a401c6c))
 
 ## [0.8.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.7.1...layercontrol-v0.8.0) (2023-10-31)
 
+
 ### Features
 
-- Introduce layerControlToolsExpand property ([266da0d](https://github.com/EOX-A/EOxElements/commit/266da0df89a6775f7e3def5e5de6b785c963a574))
+* Introduce layerControlToolsExpand property ([266da0d](https://github.com/EOX-A/EOxElements/commit/266da0df89a6775f7e3def5e5de6b785c963a574))
 
 ## [0.7.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.7.0...layercontrol-v0.7.1) (2023-10-19)
 
+
 ### Bug Fixes
 
-- Removed icon highlight on hover ([#345](https://github.com/EOX-A/EOxElements/issues/345)) ([68692f9](https://github.com/EOX-A/EOxElements/commit/68692f9f6ac24280086c07601c900d350cafd211))
+* Removed icon highlight on hover ([#345](https://github.com/EOX-A/EOxElements/issues/345)) ([68692f9](https://github.com/EOX-A/EOxElements/commit/68692f9f6ac24280086c07601c900d350cafd211))
 
 ## [0.7.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.6.8...layercontrol-v0.7.0) (2023-10-12)
 
