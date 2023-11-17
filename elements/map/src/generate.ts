@@ -120,15 +120,15 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
 
-  const url = olLayer.getSource().getUrls()[0];
-
   if (layer.layerConfig?.formId) {
+    const url = olLayer.getSource().getUrls()[0];
     updateJsonFilterUrl(url, layer.layerConfig.defaultValues, olLayer);
 
     // @ts-ignore
     document
       .querySelector(layer.layerConfig.formId)
       .addEventListener("change:json-form", (e) =>
+        // @ts-ignore
         updateJsonFilterUrl(url, e.detail, olLayer)
       );
   }
