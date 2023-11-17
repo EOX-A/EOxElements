@@ -20,6 +20,7 @@ export class EOxLayerControlLayerTools extends LitElement {
   static properties = {
     layer: { attribute: false },
     tools: { attribute: false },
+    layerConfig: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
   };
@@ -38,6 +39,12 @@ export class EOxLayerControlLayerTools extends LitElement {
      * @type Array<string>
      */
     this.tools = [];
+
+    /**
+     * Layer config for eox-jsonform
+     * @type {{ formId: string, schema: object, defaultValues: object, element: string }}
+     */
+    this.layerConfig = null;
 
     /**
      * Render the element without additional styles
@@ -77,7 +84,7 @@ export class EOxLayerControlLayerTools extends LitElement {
         pass = this.layer.get("description");
       }
       if (t === "form") {
-        pass = this.layer.get("layerConfig");
+        pass = Boolean(this.layerConfig);
       }
       if (t === "config") {
         // @ts-ignore
@@ -119,6 +126,8 @@ export class EOxLayerControlLayerTools extends LitElement {
   }
 
   render() {
+    this.layerConfig = this.layer.get("layerConfig");
+
     return html`
       <style>
         ${this.#styleBasic}
@@ -187,12 +196,12 @@ export class EOxLayerControlLayerTools extends LitElement {
                     />
                   </div>
                   <div slot="form-content">
-                    <eox-jsonform
-                      id=${this.layer.get("layerConfig").formId}
-                      .schema=${this.layer.get("layerConfig").schema}
-                      .defaultValues=${this.layer.get("layerConfig")
-                        .defaultValues}
-                    ></eox-jsonform>
+                    ${this.layerConfig &&
+                    html`<eox-jsonform
+                      id=${this.layerConfig.formId}
+                      .schema=${this.layerConfig.schema}
+                      .defaultValues=${this.layerConfig.defaultValues}
+                    ></eox-jsonform>`}
                   </div>
                   <div slot="config-content"></div>
                   <!--<eox-layercontrol-layerconfig
