@@ -164,7 +164,8 @@ export const WMSLayerWithJSONForm = {
               id: "customId",
             },
             layerConfig: {
-              formId: "eox-jsonform#formLayer",
+              element: "eox-jsonform",
+              formId: "formLayer",
               schema: {
                 type: "object",
                 properties: {

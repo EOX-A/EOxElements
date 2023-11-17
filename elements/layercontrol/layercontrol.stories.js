@@ -365,6 +365,75 @@ export const Tools = {
 };
 
 /**
+ * The layer control accepts a "tools" array, which enable
+ * extra functionalities for layers
+ */
+export const LayerWithFormFilter = {
+  args: {},
+  render: () => html`
+    <eox-layercontrol .tools=${["form"]} for="eox-map#tools"></eox-layercontrol>
+    <hr />
+    <eox-map
+      center="[-7000000, -500000]"
+      zoom="4"
+      id="tools"
+      style="width: 400px; height: 300px; margin-left: 7px;"
+      layers=${JSON.stringify([
+        {
+          type: "Tile",
+          properties: {
+            id: "customId",
+            title: "Tile XYZ",
+          },
+          layerConfig: {
+            element: "eox-layercontrol",
+            formId: "formLayer",
+            schema: {
+              type: "object",
+              properties: {
+                vmin: {
+                  type: "number",
+                  default: 0,
+                  minimum: 0,
+                  maximum: 2,
+                  format: "range",
+                },
+                vmax: {
+                  type: "number",
+                  default: 10,
+                  minimum: 0,
+                  maximum: 10,
+                  format: "range",
+                },
+                cbar: {
+                  type: "string",
+                  enum: ["rain", "temperature"],
+                  default: "rain",
+                },
+              },
+            },
+            defaultValues: { vmin: 0, vmax: 10, cbar: "rain" },
+          },
+          source: {
+            type: "XYZ",
+            url: "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG:3857&time=2018-01-01T00:00:00Z&vmin={vmin}&vmax={vmax}&cbar={cbar}",
+            params: { LAYERS: "topp:states", TILED: true },
+            ratio: 1,
+            serverType: "geoserver",
+          },
+        },
+        {
+          type: "Tile",
+          source: { type: "OSM" },
+          properties: { title: "Base Map" },
+        },
+      ])}
+    >
+    </eox-map>
+  `,
+};
+
+/**
  * By adding the `layerControlHide` property to map layers,
  * they aren't displayed in the layer control at all (but may
  * be still rendered on the map).

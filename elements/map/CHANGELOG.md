@@ -2,12 +2,11 @@
 
 ## [0.9.0](https://github.com/EOX-A/EOxElements/compare/map-v0.8.3...map-v0.9.0) (2023-11-16)
 
-
 ### Features
 
-* Add proj4  in order to support custom projections ([#388](https://github.com/EOX-A/EOxElements/issues/388)) ([4cc398c](https://github.com/EOX-A/EOxElements/commit/4cc398cdb913ba1a884952e6ae37f549863b546a))
-* Display of drawn feature ([#371](https://github.com/EOX-A/EOxElements/issues/371)) ([43753b6](https://github.com/EOX-A/EOxElements/commit/43753b6e24fd799cc71fa1c41a71df37ca50608e))
-* Remove tooltip overlay when pointer leaves ([#389](https://github.com/EOX-A/EOxElements/issues/389)) ([ece6bbd](https://github.com/EOX-A/EOxElements/commit/ece6bbdb2bf0ad7a792051bc01428bbc12811841))
+- Add proj4 in order to support custom projections ([#388](https://github.com/EOX-A/EOxElements/issues/388)) ([4cc398c](https://github.com/EOX-A/EOxElements/commit/4cc398cdb913ba1a884952e6ae37f549863b546a))
+- Display of drawn feature ([#371](https://github.com/EOX-A/EOxElements/issues/371)) ([43753b6](https://github.com/EOX-A/EOxElements/commit/43753b6e24fd799cc71fa1c41a71df37ca50608e))
+- Remove tooltip overlay when pointer leaves ([#389](https://github.com/EOX-A/EOxElements/issues/389)) ([ece6bbd](https://github.com/EOX-A/EOxElements/commit/ece6bbdb2bf0ad7a792051bc01428bbc12811841))
 
 ## [0.8.3](https://github.com/EOX-A/EOxElements/compare/map-v0.8.3...map-v0.8.3) (2023-10-17)
 

@@ -9,6 +9,7 @@ import { button } from "../../../../utils/styles/button";
 import { radio } from "../../../../utils/styles/radio";
 import { checkbox } from "../../../../utils/styles/checkbox";
 import { slider } from "../../../../utils/styles/slider";
+import "../../../jsonform/src/main";
 
 /**
  * Layer tools
@@ -75,6 +76,9 @@ export class EOxLayerControlLayerTools extends LitElement {
       if (t === "info") {
         pass = this.layer.get("description");
       }
+      if (t === "form") {
+        pass = this.layer.get("layerConfig");
+      }
       if (t === "config") {
         // @ts-ignore
         pass = this.layer.style_?.color;
@@ -104,6 +108,10 @@ export class EOxLayerControlLayerTools extends LitElement {
     <button class="sort-icon icon drag-handle">
       ${this.unstyled ? "sort" : nothing}
     </button>
+  `;
+
+  _formButton = html`
+    <button class="form-icon icon">${this.unstyled ? "form" : nothing}</button>
   `;
 
   createRenderRoot() {
@@ -178,6 +186,14 @@ export class EOxLayerControlLayerTools extends LitElement {
                       ) => this.layer.setOpacity(parseFloat(evt.target.value))}
                     />
                   </div>
+                  <div slot="form-content">
+                    <eox-jsonform
+                      id=${this.layer.get("layerConfig").formId}
+                      .schema=${this.layer.get("layerConfig").schema}
+                      .defaultValues=${this.layer.get("layerConfig")
+                        .defaultValues}
+                    ></eox-jsonform>
+                  </div>
                   <div slot="config-content"></div>
                   <!--<eox-layercontrol-layerconfig
                       slot="config-content"
@@ -187,6 +203,7 @@ export class EOxLayerControlLayerTools extends LitElement {
                     ></eox-layercontrol-layerconfig>-->
                   <div slot="remove-icon">${this._removeButton}</div>
                   <div slot="sort-icon">${this._sortButton}</div>
+                  <div slot="form-icon">${this._formButton}</div>
                 </eox-layercontrol-tabs>
               </details>
             `
@@ -287,6 +304,11 @@ export class EOxLayerControlLayerTools extends LitElement {
     .single-action .sort-icon::before,
     [slot=sort-icon] button.icon::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edrag-horizontal-variant%3C/title%3E%3Cpath d='M21 11H3V9H21V11M21 13H3V15H21V13Z' /%3E%3C/svg%3E");
+    }
+    summary .form-icon,
+    .single-action .form-icon::before,
+    [slot=form-icon] button.icon::before {
+      content: url("data:image/svg+xml,%3Csvg viewBox='0 0 576 544' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M46.0687 1.38771C24.4687 6.45437 6.46875 25.121 1.13541 47.7877C-2.06459 61.521 1.66875 80.4544 10.2021 92.9877C12.2021 95.921 58.6021 147.654 113.402 207.921L213.135 317.521L213.402 423.921C213.802 529.121 213.802 530.454 216.602 534.054C223.135 542.988 233.935 546.188 242.602 542.054C245.135 540.854 272.069 519.921 302.469 495.521C342.335 463.654 358.469 449.921 360.069 446.588C362.202 442.321 362.469 436.321 362.469 379.654V317.521L450.869 220.321C499.402 166.854 545.135 116.588 552.335 108.588C567.002 92.321 572.469 82.721 574.869 68.5877C578.735 45.7877 566.869 20.5877 546.335 8.32104C531.402 -0.612292 547.802 -0.078959 287.135 0.0543743C153.535 0.187708 49.0021 0.721041 46.0687 1.38771Z' fill='%23004270'/%3E%3C/svg%3E%0A");
     }
     [slot=info-content],
     [slot=opacity-content] {
