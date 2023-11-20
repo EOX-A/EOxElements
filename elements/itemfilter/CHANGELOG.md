@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.10.0...itemfilter-v0.10.1) (2023-11-20)
+
+
+### Bug Fixes
+
+* **style:** Max height of scroll container ([5d4b362](https://github.com/EOX-A/EOxElements/commit/5d4b362650b71feee488710d183b944ecad79074))
+
 ## [0.10.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.9.0...itemfilter-v0.10.0) (2023-11-16)
 
 
