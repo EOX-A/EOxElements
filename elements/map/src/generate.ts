@@ -128,43 +128,7 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
   }
   olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
-
-  if (layer.layerConfig?.formId) {
-    const url = olLayer.getSource().getUrls()[0];
-    updateJsonFilterUrl(url, layer.layerConfig.defaultValues, olLayer);
-
-    // @ts-ignore
-    document
-      .querySelector(layer.layerConfig.element)
-      ?.addEventListener(`change:json-form#${layer.layerConfig.formId}`, (e) =>
-        // @ts-ignore
-        updateJsonFilterUrl(url, e.detail, olLayer)
-      );
-  }
   return olLayer;
-}
-
-// @ts-ignore
-export function updateJsonFilterUrl(url, defaultValues, olLayer) {
-  const searchParams = new URL(url).searchParams;
-  // @ts-ignore
-  Object.entries(defaultValues).forEach(([key, value]) => {
-    if (typeof value === "object" && !Array.isArray(value) && value !== null) {
-      Object.keys(value).forEach((k) => {
-        if (url.includes(`{${k}}`)) {
-          // @ts-ignore
-          searchParams.set(k, value[k]);
-        }
-      });
-    } else {
-      if (url.includes(`{${key}}`)) {
-        // @ts-ignore
-        searchParams.set(key, value);
-      }
-    }
-  });
-
-  olLayer.getSource().setUrl(url.split("?")[0] + "?" + searchParams.toString());
 }
 
 export function updateLayer(
@@ -192,7 +156,7 @@ export function updateLayer(
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
     JSON.stringify(newLayerDefinition.style) !==
-      JSON.stringify(existingJsonDefintion.style)
+    JSON.stringify(existingJsonDefintion.style)
   ) {
     // @ts-ignore
     existingLayer.setStyle(newLayer.getStyle());

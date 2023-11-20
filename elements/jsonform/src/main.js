@@ -90,6 +90,13 @@ export class EOxJSONForm extends LitElement {
     this.defaultValues = newVal;
   }
 
+  /**
+   * Get default value for rendering the form
+   */
+  getValues() {
+    return this._data;
+  }
+
   #emitData() {
     /**
      * Data object has been changed
@@ -114,6 +121,11 @@ export class EOxJSONForm extends LitElement {
         theme: "html",
         ajax: true,
         ...this.options,
+      });
+
+      this._editor.on("ready", () => {
+        this._data = this._editor.getValue();
+        this.#emitData();
       });
 
       this._editor.on("change", () => {

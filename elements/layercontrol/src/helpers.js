@@ -160,3 +160,24 @@ export const isLayerVisibleBasedOnZoomState = (
 
   return zoom > minZoom && zoom < maxZoom ? true : false;
 };
+
+/**
+ * Update layer's URL using input values
+ * @param {String} url
+ * @param {Object} values
+ * @param {import("ol/layer").Layer} layer
+ */
+export function updateUrl(url, values, layer) {
+  const searchParams = new URL(url).searchParams;
+
+  Object.entries(values).forEach(([key, value]) => {
+    if (typeof value === "object" && !Array.isArray(value) && value !== null) {
+      Object.keys(value).forEach((k) => {
+        searchParams.set(k, value[k]);
+      });
+    } else searchParams.set(key, value);
+  });
+
+  // @ts-ignore
+  layer.getSource().setUrl(url.split("?")[0] + "?" + searchParams.toString());
+}

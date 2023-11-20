@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
 import "../../../jsonform/src/main";
+import { updateUrl } from "../helpers";
 
 /**
  * Layer configuration for an individual layer
@@ -11,6 +12,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
     layer: { attribute: false },
     unstyled: { type: Boolean },
     layerConfig: { attribute: false },
+    _data: { attribute: false, state: true },
   };
 
   constructor() {
@@ -33,6 +35,32 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * @type {{ formId: string, schema: object, defaultValues: object, element: string }}
      */
     this.layerConfig = null;
+
+    /**
+     * data input by the user
+     * @type {{[key: string]: any}}
+     */
+    this._data = {};
+  }
+
+  firstUpdated() {
+    if (this.layerConfig) {
+      document
+        .querySelector(this.layerConfig.element)
+        ?.addEventListener(
+          `change:json-form#${this.layerConfig.formId}`,
+          (e) => {
+            // @ts-ignore
+            this._data = e.detail;
+
+            // @ts-ignore
+            const url = this.layer.getSource().getUrls()[0];
+
+            updateUrl(url, this._data, this.layer);
+            this.requestUpdate();
+          }
+        );
+    }
   }
 
   render() {
