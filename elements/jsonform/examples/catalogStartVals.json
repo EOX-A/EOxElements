@@ -1,0 +1,179 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/definitions/catalog"
+    }
+  ],
+  "definitions": {
+    "catalog": {
+      "title": "STAC Catalog",
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "stac_version",
+        "description",
+        "links",
+        "title"
+      ],
+      "properties": {
+        "type": {
+          "title": "Type of STAC entity",
+          "const": "Catalog"
+        },
+        "id": {
+          "title": "Identifier",
+          "type": "string",
+          "minLength": 1
+        },
+        "stac_version": {
+          "title": "STAC version",
+          "type": "string",
+          "const": "1.0.0"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "minLength": 1
+        },
+        "links": {
+          "title": "Links",
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "href": {
+                  "title": "Link reference",
+                  "type": "string",
+                  "format": "iri-reference",
+                  "minLength": 1
+                },
+                "rel": {
+                  "title": "Link relation type",
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "title": "Link type",
+                  "type": "string"
+                },
+                "title": {
+                  "title": "Link title",
+                  "type": "string"
+                }
+              },
+              "required": ["rel", "href"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "rel": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "proj:epsg": {
+                  "type": "null"
+                },
+                "proj:shape": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "integer"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "rel",
+                "href",
+                "type",
+                "title",
+                "proj:epsg",
+                "proj:shape"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "rel": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": ["rel", "href", "type", "title"]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "rel": {
+                  "type": "string"
+                },
+                "href": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              },
+              "required": ["rel", "href", "type", "title"]
+            }
+          ]
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      }
+    },
+    "link": {
+      "type": "object",
+      "required": ["rel", "href"],
+      "properties": {
+        "href": {
+          "title": "Link reference",
+          "type": "string",
+          "format": "iri-reference",
+          "minLength": 1
+        },
+        "rel": {
+          "title": "Link relation type",
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "title": "Link type",
+          "type": "string"
+        },
+        "title": {
+          "title": "Link title",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
