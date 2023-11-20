@@ -111,7 +111,6 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
       ...layer.properties,
       ...(layer.layerConfig && { layerConfig: layer.layerConfig }),
     },
-    ...layer.properties,
     style: undefined, // override layer style, apply style after
   });
 
