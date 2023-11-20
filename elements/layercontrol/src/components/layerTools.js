@@ -76,7 +76,8 @@ export class EOxLayerControlLayerTools extends LitElement {
         pass = this.layer.get("description");
       }
       if (t === "config") {
-        pass = this.layer.get("layerConfig");
+        // @ts-ignore
+        pass = this.layer.style_?.color;
       }
       return pass;
     });
@@ -102,12 +103,6 @@ export class EOxLayerControlLayerTools extends LitElement {
   _sortButton = html`
     <button class="sort-icon icon drag-handle">
       ${this.unstyled ? "sort" : nothing}
-    </button>
-  `;
-
-  _configButton = html`
-    <button class="config-icon icon">
-      ${this.unstyled ? "config" : nothing}
     </button>
   `;
 
@@ -146,9 +141,9 @@ export class EOxLayerControlLayerTools extends LitElement {
               >
                 <summary>
                   <button
-                    class="icon ${
-                      this.tools.length === 1 ? `${this.tools[0]}-icon` : ""
-                    }"
+                    class="icon ${this.tools.length === 1
+                      ? `${this.tools[0]}-icon`
+                      : ""}"
                   >
                     Tools
                   </button>
@@ -183,19 +178,15 @@ export class EOxLayerControlLayerTools extends LitElement {
                       ) => this.layer.setOpacity(parseFloat(evt.target.value))}
                     />
                   </div>
-                  </div> -->
-                  <div slot="config-content">
-                    <eox-layercontrol-layerconfig
+                  <div slot="config-content"></div>
+                  <!--<eox-layercontrol-layerconfig
                       slot="config-content"
                       .layer=${this.layer}
-                      .layerConfig=${this.layer.get("layerConfig")}
                       .unstyled=${this.unstyled}
                       @changed=${() => this.requestUpdate()}
-                    ></eox-layercontrol-layerconfig>
-                  </div>
+                    ></eox-layercontrol-layerconfig>-->
                   <div slot="remove-icon">${this._removeButton}</div>
                   <div slot="sort-icon">${this._sortButton}</div>
-                  <div slot="config-icon">${this._configButton}</div>
                 </eox-layercontrol-tabs>
               </details>
             `

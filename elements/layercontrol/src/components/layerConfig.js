@@ -1,6 +1,5 @@
 import { LitElement, html } from "lit";
-import "../../../jsonform/src/main";
-import { updateUrl } from "../helpers";
+import { live } from "lit/directives/live.js";
 
 /**
  * Layer configuration for an individual layer
@@ -11,8 +10,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
   static properties = {
     layer: { attribute: false },
     unstyled: { type: Boolean },
-    layerConfig: { attribute: false },
-    _data: { attribute: false, state: true },
+    noShadow: { type: Boolean },
   };
 
   constructor() {
@@ -31,61 +29,47 @@ export class EOxLayerControlLayerConfig extends LitElement {
     this.unstyled = false;
 
     /**
-     * Layer config for eox-jsonform
-     * @type {{ formId: string, schema: object, defaultValues: object, element: string }}
+     * Renders the element without a shadow root
      */
-    this.layerConfig = null;
-
-    /**
-     * data input by the user
-     * @type {{[key: string]: any}}
-     */
-    this._data = {};
+    this.noShadow = true;
   }
 
-  firstUpdated() {
-    if (this.layerConfig) {
-      document
-        .querySelector(this.layerConfig.element)
-        ?.addEventListener(
-          `change:json-form#${this.layerConfig.formId}`,
-          (e) => {
-            // @ts-ignore
-            this._data = e.detail;
-
-            // @ts-ignore
-            const url = this.layer.getSource().getUrls()[0];
-
-            updateUrl(url, this._data, this.layer);
-            this.requestUpdate();
-          }
-        );
-    }
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
-    if (!this.layerConfig) return ``;
-
     return html`
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <eox-jsonform
-        id=${this.layerConfig.formId}
-        .schema=${this.layerConfig.schema}
-        .defaultValues=${this.layerConfig.defaultValues}
-        .options=${{
-          button_state_mode: 2,
-          disable_edit_json: true,
-          disable_collapse: true,
-          disable_properties: true,
+      <input
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value=${live(this.layer?.getOpacity())}
+        @input=${(/** @type {{ target: { value: string; }; }} */ evt) =>
+          this.layer.setOpacity(parseFloat(evt.target.value))}
+      />
+      <button
+        class="delete"
+        @click=${() => {
+          this.layer?.set("layerControlOptional", true);
+          this.layer?.setVisible(false);
+          this.dispatchEvent(
+            new CustomEvent("changed", { detail: this.layer, bubbles: true })
+          );
         }}
-      ></eox-jsonform>
+      >
+        x
+      </button>
     `;
   }
 
   #styleBasic = ``;
+
   #styleEOX = ``;
 }
 

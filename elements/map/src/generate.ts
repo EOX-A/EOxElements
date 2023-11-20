@@ -66,12 +66,6 @@ export type EoxLayer = {
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
-  layerConfig?: {
-    formId: string;
-    schema: object;
-    defaultValues?: object;
-    element: string;
-  };
 };
 
 export function createLayer(layer: EoxLayer): olLayers.Layer {
@@ -108,10 +102,6 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
     ...(layer.type === "Group" && {
       layers: [],
     }),
-    properties: {
-      ...layer.properties,
-      ...(layer.layerConfig && { layerConfig: layer.layerConfig }),
-    },
     ...layer.properties,
     style: undefined, // override layer style, apply style after
   });
@@ -156,7 +146,7 @@ export function updateLayer(
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
     JSON.stringify(newLayerDefinition.style) !==
-    JSON.stringify(existingJsonDefintion.style)
+      JSON.stringify(existingJsonDefintion.style)
   ) {
     // @ts-ignore
     existingLayer.setStyle(newLayer.getStyle());
