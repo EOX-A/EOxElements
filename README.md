@@ -42,6 +42,12 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>🟡</td>
   </tr>
   <tr>
+    <td><a href="./elements/jsonform/">eox-jsonform</a></td>
+    <td>Render a form from a JSON schema</td>
+    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-jsonform--docs">Docs & Examples</a></td>
+    <td>⭕️</td>
+  </tr>
+  <tr>
     <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>
     <td>Manage and modify map layers</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-layercontrol--docs">Docs & Examples</a></td>
