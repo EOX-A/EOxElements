@@ -66,6 +66,11 @@ export type EoxLayer = {
   source?: { type: sourceType };
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
+  layerConfig?: {
+    schema: object;
+    defaultValues?: object;
+    element: string;
+  };
 };
 
 export function createLayer(layer: EoxLayer): olLayers.Layer {
@@ -102,6 +107,10 @@ export function createLayer(layer: EoxLayer): olLayers.Layer {
     ...(layer.type === "Group" && {
       layers: [],
     }),
+    properties: {
+      ...layer.properties,
+      ...(layer.layerConfig && { layerConfig: layer.layerConfig }),
+    },
     ...layer.properties,
     style: undefined, // override layer style, apply style after
   });
