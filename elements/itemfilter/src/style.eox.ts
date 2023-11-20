@@ -68,9 +68,6 @@ details[open] summary::before {
 details[open] summary::after {
   transform: rotate(270deg);
 }
-eox-itemfilter-expandcontainer {
-  max-height: 200px;
-}
 eox-itemfilter-expandcontainer > [data-type=filter] {
   display: block;
   height: calc(100% - 32px);
