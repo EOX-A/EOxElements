@@ -9,7 +9,6 @@ import { button } from "../../../../utils/styles/button";
 import { radio } from "../../../../utils/styles/radio";
 import { checkbox } from "../../../../utils/styles/checkbox";
 import { slider } from "../../../../utils/styles/slider";
-import "../../../jsonform/src/main";
 
 /**
  * Layer tools
@@ -20,7 +19,6 @@ export class EOxLayerControlLayerTools extends LitElement {
   static properties = {
     layer: { attribute: false },
     tools: { attribute: false },
-    layerConfig: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
   };
@@ -39,12 +37,6 @@ export class EOxLayerControlLayerTools extends LitElement {
      * @type Array<string>
      */
     this.tools = [];
-
-    /**
-     * Layer config for eox-jsonform
-     * @type {{ formId: string, schema: object, defaultValues: object, element: string }}
-     */
-    this.layerConfig = null;
 
     /**
      * Render the element without additional styles
@@ -83,12 +75,8 @@ export class EOxLayerControlLayerTools extends LitElement {
       if (t === "info") {
         pass = this.layer.get("description");
       }
-      if (t === "form") {
-        pass = Boolean(this.layerConfig);
-      }
       if (t === "config") {
-        // @ts-ignore
-        pass = this.layer.style_?.color;
+        pass = this.layer.get("layerConfig");
       }
       return pass;
     });
@@ -117,8 +105,10 @@ export class EOxLayerControlLayerTools extends LitElement {
     </button>
   `;
 
-  _formButton = html`
-    <button class="form-icon icon">${this.unstyled ? "form" : nothing}</button>
+  _configButton = html`
+    <button class="config-icon icon">
+      ${this.unstyled ? "config" : nothing}
+    </button>
   `;
 
   createRenderRoot() {
@@ -126,8 +116,6 @@ export class EOxLayerControlLayerTools extends LitElement {
   }
 
   render() {
-    this.layerConfig = this.layer.get("layerConfig");
-
     return html`
       <style>
         ${this.#styleBasic}
@@ -158,9 +146,9 @@ export class EOxLayerControlLayerTools extends LitElement {
               >
                 <summary>
                   <button
-                    class="icon ${this.tools.length === 1
-                      ? `${this.tools[0]}-icon`
-                      : ""}"
+                    class="icon ${
+                      this.tools.length === 1 ? `${this.tools[0]}-icon` : ""
+                    }"
                   >
                     Tools
                   </button>
@@ -195,30 +183,19 @@ export class EOxLayerControlLayerTools extends LitElement {
                       ) => this.layer.setOpacity(parseFloat(evt.target.value))}
                     />
                   </div>
-                  <div slot="form-content">
-                    ${this.layerConfig &&
-                    html`<eox-jsonform
-                      id=${this.layerConfig.formId}
-                      .schema=${this.layerConfig.schema}
-                      .defaultValues=${this.layerConfig.defaultValues}
-                      .options=${{
-                        button_state_mode: 2,
-                        disable_edit_json: true,
-                        disable_collapse: true,
-                        disable_properties: true,
-                      }}
-                    ></eox-jsonform>`}
-                  </div>
-                  <div slot="config-content"></div>
-                  <!--<eox-layercontrol-layerconfig
+                  </div> -->
+                  <div slot="config-content">
+                    <eox-layercontrol-layerconfig
                       slot="config-content"
                       .layer=${this.layer}
+                      .layerConfig=${this.layer.get("layerConfig")}
                       .unstyled=${this.unstyled}
                       @changed=${() => this.requestUpdate()}
-                    ></eox-layercontrol-layerconfig>-->
+                    ></eox-layercontrol-layerconfig>
+                  </div>
                   <div slot="remove-icon">${this._removeButton}</div>
                   <div slot="sort-icon">${this._sortButton}</div>
-                  <div slot="form-icon">${this._formButton}</div>
+                  <div slot="config-icon">${this._configButton}</div>
                 </eox-layercontrol-tabs>
               </details>
             `
@@ -319,12 +296,6 @@ export class EOxLayerControlLayerTools extends LitElement {
     .single-action .sort-icon::before,
     [slot=sort-icon] button.icon::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edrag-horizontal-variant%3C/title%3E%3Cpath d='M21 11H3V9H21V11M21 13H3V15H21V13Z' /%3E%3C/svg%3E");
-    }
-    summary .form-icon,
-    .single-action .form-icon::before,
-    [slot=form-icon] button.icon::before {
-      border-radius: 0px;
-      content: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 256 256' enable-background='new 0 0 256 256' xml:space='preserve'%3E%3Cg%3E%3Cg%3E%3Cpath fill='%23004270' d='M167.9,21.5l-29.1,33.7h-95h-1.5L43.7,210h154.8V141l30.7-41.4v144.1H10V21.5H167.9z'/%3E%3Cpath fill='%23004270' d='M151,167.1'/%3E%3Cpath fill='%23004270' d='M244.5,36.8c0,1.5,1.5,3.1,1.5,4.6c0,1.5,0,3.1,0,4.6c0,1.5,0,3.1-1.5,6.1c0,1.5-1.5,3.1-3.1,4.6c-1.5,1.5-3.1,3.1-4.6,4.6c-1.5,1.5-1.5,1.5-3.1,3.1c-1.5,1.5-1.5,1.5-3.1,3.1l-39.9-39.9c1.5-1.5,3.1-3.1,6.1-6.1c3.1-1.5,4.6-4.6,6.1-4.6c1.5-1.5,4.6-3.1,6.1-3.1s4.6-1.5,6.1-1.5s4.6,0,6.1,1.5c1.5,0,3.1,1.5,4.6,1.5c3.1,1.5,6.1,4.6,9.2,7.7C239.9,27.6,242.9,32.2,244.5,36.8L244.5,36.8L244.5,36.8z'/%3E%3Cpath fill='%23004270' d='M94.3,125.7c0,0,3.1-3.1,6.1-6.1c3.1-3.1,7.7-7.7,12.3-12.3L128,92l15.3-15.3l44.4-44.4l39.9,39.9l-44.4,44.4l-16.9,16.9c-6.1,6.1-10.7,10.7-15.3,15.3c-4.6,3.1-7.7,7.7-10.7,10.7c-3.1,1.5-4.6,4.6-6.1,4.6c-1.5,1.5-3.1,3.1-4.6,4.6c-1.5,1.5-3.1,3.1-6.1,3.1c-1.5,1.5-4.6,1.5-9.2,3.1c-3.1,1.5-7.7,3.1-12.3,4.6c-4.6,1.5-7.7,3.1-12.3,3.1c-3.1,1.5-6.1,1.5-7.7,1.5c-3.1,0-6.1,0-7.7-1.5c-1.5-1.5-1.5-4.6-1.5-7.7c0-1.5,1.5-4.6,1.5-9.2c1.5-3.1,1.5-7.7,3.1-12.3c4.6-3.1,4.6-6.1,6.1-9.2c1.5-3.1,1.5-6.1,3.1-7.7c0-1.5,1.5-3.1,3.1-4.6C89.7,130.3,91.2,127.2,94.3,125.7L94.3,125.7L94.3,125.7z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
     [slot=info-content],
     [slot=opacity-content] {

@@ -371,12 +371,15 @@ export const Tools = {
 export const LayerWithFormFilter = {
   args: {},
   render: () => html`
-    <eox-layercontrol .tools=${["form"]} for="eox-map#tools"></eox-layercontrol>
+    <eox-layercontrol
+      .tools=${["config"]}
+      for="eox-map#config"
+    ></eox-layercontrol>
     <hr />
     <eox-map
       center="[-7000000, -500000]"
       zoom="4"
-      id="tools"
+      id="config"
       style="width: 400px; height: 300px;"
       layers=${JSON.stringify([
         {
