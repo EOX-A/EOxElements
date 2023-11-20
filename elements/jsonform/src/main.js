@@ -10,14 +10,24 @@ import { styleEOX } from "./style.eox";
 
 export class EOxJSONForm extends LitElement {
   static properties = {
-    _data: { attribute: false, state: true },
-    _editor: { attribute: false, state: true },
     id: { attribute: "id", type: String },
     schema: { attribute: "schema", type: Object },
-    defaultValues: { attribute: "default-values", type: Object },
+    startVals: { attribute: "startvals", type: Object },
     options: { attribute: "options", type: Object },
     unstyled: { type: Boolean },
   };
+
+  /**
+   * data input by the user
+   * @type {{[key: string]: any}}
+   */
+  #data = {};
+
+  /**
+   * editor instance generated through - JSONEditor
+   * @type {{[key: string]: any}}
+   */
+  #editor = null;
 
   constructor() {
     super();
@@ -38,25 +48,13 @@ export class EOxJSONForm extends LitElement {
      * Default values for the form editor
      * @type {JsonSchema}
      */
-    this.defaultValues;
+    this.startVals;
 
     /**
      * Default values for the form editor
      * @type {object}
      */
     this.options = {};
-
-    /**
-     * data input by the user
-     * @type {{[key: string]: any}}
-     */
-    this._data = {};
-
-    /**
-     * editor instance generated through - JSONEditor
-     * @type {{[key: string]: any}}
-     */
-    this._editor = null;
 
     /**
      * Render the element without additional styles
@@ -81,20 +79,20 @@ export class EOxJSONForm extends LitElement {
    * Get default value for rendering the form
    */
   getDefaultValues() {
-    return this.defaultValues;
+    return this.startVals;
   }
   /**
    * @param {JsonSchema} newVal
    */
   setDefaultValues(newVal) {
-    this.defaultValues = newVal;
+    this.startVals = newVal;
   }
 
   /**
    * Get default value for rendering the form
    */
   getValues() {
-    return this._data;
+    return this.#data;
   }
 
   #emitData() {
@@ -103,7 +101,7 @@ export class EOxJSONForm extends LitElement {
      */
     this.dispatchEvent(
       new CustomEvent(`change:json-form#${this.id}`, {
-        detail: this._data,
+        detail: this.#data,
         bubbles: true,
         composed: true,
       })
@@ -112,24 +110,24 @@ export class EOxJSONForm extends LitElement {
   }
 
   firstUpdated() {
-    if (!this._editor) {
+    if (!this.#editor) {
       const formEle = this.renderRoot.querySelector("form");
 
-      this._editor = new JSONEditor(formEle, {
+      this.#editor = new JSONEditor(formEle, {
         schema: this.schema,
-        ...(this.defaultValues ? { startval: this.defaultValues } : {}),
+        ...(this.startVals ? { startval: this.startVals } : {}),
         theme: "html",
         ajax: true,
         ...this.options,
       });
 
-      this._editor.on("ready", () => {
-        this._data = this._editor.getValue();
+      this.#editor.on("ready", () => {
+        this.#data = this.#editor.getValue();
         this.#emitData();
       });
 
-      this._editor.on("change", () => {
-        this._data = this._editor.getValue();
+      this.#editor.on("change", () => {
+        this.#data = this.#editor.getValue();
         this.#emitData();
       });
     }
