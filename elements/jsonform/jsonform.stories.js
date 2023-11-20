@@ -1,9 +1,9 @@
 import { html } from "lit";
 import "./src/main";
-import catalogSchema from "./schema/catalog.json";
-import collectionSchema from "./schema/collection.json";
-import exampleCatalog from "./examples/catalog.json";
-import exampleCollection from "./examples/collection.json";
+import catalogSchema from "./examples/catalogSchema.json";
+import collectionSchema from "./examples/collectionSchema.json";
+import catalogStartVals from "./examples/catalogStartVals.json";
+import collectionStartVals from "./examples/collectionStartVals.json";
 
 export default {
   title: "Elements/eox-jsonform",
@@ -14,7 +14,7 @@ export default {
 export const Catalog = {
   args: {
     schema: catalogSchema,
-    startVals: exampleCatalog,
+    startVals: catalogStartVals,
   },
   render: (args) => html`
     <eox-jsonform
@@ -27,7 +27,7 @@ export const Catalog = {
 export const Collection = {
   args: {
     schema: collectionSchema,
-    startVals: exampleCollection,
+    startVals: collectionStartVals,
   },
   render: (args) => html`
     <eox-jsonform

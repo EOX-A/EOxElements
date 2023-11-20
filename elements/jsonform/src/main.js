@@ -10,10 +10,9 @@ import { styleEOX } from "./style.eox";
 
 export class EOxJSONForm extends LitElement {
   static properties = {
-    id: { attribute: "id", type: String },
-    schema: { attribute: "schema", type: Object },
-    startVals: { attribute: "startvals", type: Object },
-    options: { attribute: "options", type: Object },
+    schema: { attribute: false, type: Object },
+    startVals: { attribute: false, type: Object },
+    options: { attribute: false, type: Object },
     unstyled: { type: Boolean },
   };
 
@@ -31,12 +30,6 @@ export class EOxJSONForm extends LitElement {
 
   constructor() {
     super();
-
-    /**
-     * Schema for the form editor
-     * @type {String}
-     */
-    this.id;
 
     /**
      * Schema for the form editor
@@ -100,7 +93,7 @@ export class EOxJSONForm extends LitElement {
      * Data object has been changed
      */
     this.dispatchEvent(
-      new CustomEvent(`change:json-form#${this.id}`, {
+      new CustomEvent(`change`, {
         detail: this.#data,
         bubbles: true,
         composed: true,
