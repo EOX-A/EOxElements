@@ -392,19 +392,25 @@ export const LayerConfig = {
             schema: {
               type: "object",
               properties: {
-                vmin: {
-                  type: "number",
-                  default: 0,
-                  minimum: 0,
-                  maximum: 2,
-                  format: "range",
-                },
-                vmax: {
-                  type: "number",
-                  default: 10,
-                  minimum: 0,
-                  maximum: 10,
-                  format: "range",
+                vminmax: {
+                  type: "object",
+                  properties: {
+                    vmin: {
+                      type: "number",
+                      default: 0,
+                      minimum: 0,
+                      maximum: 10,
+                      format: "range",
+                    },
+                    vmax: {
+                      type: "number",
+                      default: 3,
+                      minimum: 0,
+                      maximum: 10,
+                      format: "range",
+                    },
+                  },
+                  format: "minmax",
                 },
                 cbar: {
                   type: "string",

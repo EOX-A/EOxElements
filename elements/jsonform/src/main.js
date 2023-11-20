@@ -2,6 +2,7 @@ import { JSONEditor } from "@json-editor/json-editor/dist/jsoneditor.js";
 import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
+import addCustomInputs from "./custom-inputs";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -104,6 +105,8 @@ export class EOxJSONForm extends LitElement {
 
   firstUpdated() {
     if (!this.#editor) {
+      addCustomInputs();
+
       const formEle = this.renderRoot.querySelector("form");
 
       this.#editor = new JSONEditor(formEle, {
