@@ -49,7 +49,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
 
     /**
      * Layer config for eox-jsonform
-     * @type {{ schema: object, startVals: object, element: string }}
+     * @type {{ schema: object, element: string }}
      */
     this.layerConfig = null;
   }

@@ -200,10 +200,7 @@ export function getNestedStartVals(schema, queryParams) {
     if (type && type !== "object") {
       startVals[key] =
         type === "number" ? Number(queryParams[key]) : queryParams[key];
-    } else if (
-      typeof schema[key] === "object" &&
-      schema[key].hasOwnProperty("properties")
-    ) {
+    } else if (typeof schema[key] === "object" && schema[key]?.properties) {
       const nestedStartVals = getNestedStartVals(
         schema[key].properties,
         queryParams
@@ -219,7 +216,7 @@ export function getNestedStartVals(schema, queryParams) {
 /**
  * Get startVals from Query Params
  *
- * @param {{[key: string]: any}} layer
+ * @param {import("ol/layer").Layer} layer
  * @param {{[key: string]: any}} layerConfig
  */
 export function getStartVals(layer, layerConfig) {
