@@ -397,14 +397,12 @@ export const LayerConfig = {
                   properties: {
                     vmin: {
                       type: "number",
-                      default: 0,
                       minimum: 0,
                       maximum: 10,
                       format: "range",
                     },
                     vmax: {
                       type: "number",
-                      default: 3,
                       minimum: 0,
                       maximum: 10,
                       format: "range",
@@ -415,7 +413,6 @@ export const LayerConfig = {
                 cbar: {
                   type: "string",
                   enum: ["rain", "temperature"],
-                  default: "rain",
                 },
               },
             },

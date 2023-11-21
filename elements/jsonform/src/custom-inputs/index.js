@@ -10,9 +10,11 @@ const inputs = [
 
 /**
  * Add custom input fields to @json-editor
+ * @param {{[key: string]: any}} startVals
  */
-export const addCustomInputs = () => {
+export const addCustomInputs = (startVals) => {
   inputs.map(({ type, format, func }) => {
+    JSONEditor.defaults["startVals"] = startVals;
     JSONEditor.defaults.editors[format] = func;
     JSONEditor.defaults.resolvers.unshift((schema) => {
       if (schema.type === type && schema.format === format) return format;

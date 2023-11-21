@@ -185,3 +185,50 @@ export function updateUrl(url, values, layer) {
   // @ts-ignore
   layer.getSource().setUrl(newUrl);
 }
+
+/**
+ * Recursive function to retrieve startVal inside schema
+ *
+ * @param {{[key: string]: any}} schema
+ * @param {{[key: string]: any}} queryParams
+ */
+export function getNestedStartVals(schema, queryParams) {
+  let startVals = {};
+
+  for (const key in schema) {
+    const type = schema[key].type;
+    if (type && type !== "object") {
+      startVals[key] =
+        type === "number" ? Number(queryParams[key]) : queryParams[key];
+    } else if (
+      typeof schema[key] === "object" &&
+      schema[key].hasOwnProperty("properties")
+    ) {
+      const nestedStartVals = getNestedStartVals(
+        schema[key].properties,
+        queryParams
+      );
+      if (Object.keys(nestedStartVals).length > 0) {
+        startVals[key] = nestedStartVals;
+      }
+    }
+  }
+  return startVals;
+}
+
+/**
+ * Get startVals from Query Params
+ *
+ * @param {{[key: string]: any}} layer
+ * @param {{[key: string]: any}} layerConfig
+ */
+export function getStartVals(layer, layerConfig) {
+  const url = new URL(layer.getSource().getUrls()[0]);
+  const queryParams = Object.fromEntries(url.searchParams.entries());
+  const startVals = getNestedStartVals(
+    layerConfig.schema?.properties || layerConfig.schema,
+    queryParams
+  );
+
+  return Object.keys(startVals).length ? startVals : null;
+}

@@ -27,6 +27,7 @@ export class MinMaxEditor extends AbstractEditor {
     const options = this.options;
     const description = this.schema.description;
     const theme = this.theme;
+    const startVals = this.defaults.startVals[this.key];
 
     if (!options.compact)
       this.header = this.label = theme.getFormInputLabel(
@@ -50,8 +51,8 @@ export class MinMaxEditor extends AbstractEditor {
     const attributes = {
       min: properties[minKey].minimum,
       max: properties[maxKey].maximum,
-      value1: properties[minKey].default,
-      value2: properties[maxKey].default,
+      value1: startVals?.[minKey] || properties[minKey].default,
+      value2: startVals?.[maxKey] || properties[maxKey].default,
       "slider-bg-fill": "#004170",
       "generate-labels": "true",
       "slider-width": "100%",

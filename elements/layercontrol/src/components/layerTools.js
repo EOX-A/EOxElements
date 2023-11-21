@@ -187,6 +187,7 @@ export class EOxLayerControlLayerTools extends LitElement {
                     <eox-layercontrol-layerconfig
                       slot="config-content"
                       .layer=${this.layer}
+                      .noShadow=${true}
                       .layerConfig=${this.layer.get("layerConfig")}
                       .unstyled=${this.unstyled}
                       @changed=${() => this.requestUpdate()}

@@ -119,7 +119,7 @@ export class EOxJSONForm extends LitElement {
 
   firstUpdated() {
     if (!this.#editor) {
-      addCustomInputs();
+      addCustomInputs(this.startVals || {});
 
       const formEle = this.renderRoot.querySelector("form");
 

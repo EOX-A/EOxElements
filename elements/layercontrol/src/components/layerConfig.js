@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import "../../../jsonform/src/main";
-import { updateUrl } from "../helpers";
+import { getStartVals, updateUrl } from "../helpers";
 
 /**
  * Layer configuration for an individual layer
@@ -11,6 +11,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
   static properties = {
     layer: { attribute: false },
     unstyled: { type: Boolean },
+    noShadow: { type: Boolean },
     layerConfig: { attribute: false },
   };
 
@@ -19,6 +20,12 @@ export class EOxLayerControlLayerConfig extends LitElement {
    * @type {{[key: string]: any}}
    */
   #data = {};
+
+  /**
+   * data input by the user
+   * @type {{[key: string]: any}}
+   */
+  #startVals = null;
 
   constructor() {
     super();
@@ -36,8 +43,13 @@ export class EOxLayerControlLayerConfig extends LitElement {
     this.unstyled = false;
 
     /**
+     * Renders the element without a shadow root
+     */
+    this.noShadow = true;
+
+    /**
      * Layer config for eox-jsonform
-     * @type {{ schema: object, defaultValues: object, element: string }}
+     * @type {{ schema: object, startVals: object, element: string }}
      */
     this.layerConfig = null;
   }
@@ -48,7 +60,6 @@ export class EOxLayerControlLayerConfig extends LitElement {
    */
   #handleDataChange(e) {
     this.#data = e.detail;
-
     // @ts-ignore
     const url = this.layer.getSource().getUrls()[0];
 
@@ -56,8 +67,13 @@ export class EOxLayerControlLayerConfig extends LitElement {
     this.requestUpdate();
   }
 
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
+  }
+
   render() {
     if (!this.layerConfig) return ``;
+    this.#startVals = getStartVals(this.layer, this.layerConfig);
 
     return html`
       <style>
@@ -66,7 +82,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
       </style>
       <eox-jsonform
         .schema=${this.layerConfig.schema}
-        .defaultValues=${this.layerConfig.defaultValues}
+        .startVals=${this.#startVals}
         .options=${{
           disable_edit_json: true,
           disable_collapse: true,

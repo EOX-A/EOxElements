@@ -68,7 +68,6 @@ export type EoxLayer = {
   style?: FlatStyleLike;
   layerConfig?: {
     schema: object;
-    defaultValues?: object;
     element: string;
   };
 };
