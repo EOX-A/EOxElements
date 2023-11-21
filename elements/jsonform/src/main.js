@@ -2,6 +2,7 @@ import { JSONEditor } from "@json-editor/json-editor/dist/jsoneditor.js";
 import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
+import addCustomInputs from "./custom-inputs";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -88,10 +89,10 @@ export class EOxJSONForm extends LitElement {
     return this.#data;
   }
 
+  /**
+   * Data object has been changed
+   */
   #emitData() {
-    /**
-     * Data object has been changed
-     */
     this.dispatchEvent(
       new CustomEvent(`change`, {
         detail: this.#data,
@@ -102,8 +103,24 @@ export class EOxJSONForm extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * Dispatch same function for multiple event type
+   */
+  #dispatchEvent() {
+    const events = ["ready", "change"];
+
+    events.map((evt) => {
+      this.#editor.on(evt, () => {
+        this.#data = this.#editor.getValue();
+        this.#emitData();
+      });
+    });
+  }
+
   firstUpdated() {
     if (!this.#editor) {
+      addCustomInputs(this.startVals || {});
+
       const formEle = this.renderRoot.querySelector("form");
 
       this.#editor = new JSONEditor(formEle, {
@@ -114,15 +131,7 @@ export class EOxJSONForm extends LitElement {
         ...this.options,
       });
 
-      this.#editor.on("ready", () => {
-        this.#data = this.#editor.getValue();
-        this.#emitData();
-      });
-
-      this.#editor.on("change", () => {
-        this.#data = this.#editor.getValue();
-        this.#emitData();
-      });
+      this.#dispatchEvent();
     }
   }
 

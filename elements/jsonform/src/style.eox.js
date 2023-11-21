@@ -110,4 +110,8 @@ export const styleEOX = `
     text-indent: 0;
     line-height: initial;
   }
+  tc-range-slider{
+    display: block;
+    margin: 0.5rem 0;
+  }
 `;
