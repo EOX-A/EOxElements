@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "dayjs": "^1.11.8",
-    "lit": "^3.0.2",
-    "toolcool-range-slider": "^4.0.28"
+    "lit": "^3.0.2"
   }
 }
