@@ -89,10 +89,10 @@ export class EOxJSONForm extends LitElement {
     return this.#data;
   }
 
+  /**
+   * Data object has been changed
+   */
   #emitData() {
-    /**
-     * Data object has been changed
-     */
     this.dispatchEvent(
       new CustomEvent(`change`, {
         detail: this.#data,
@@ -101,6 +101,20 @@ export class EOxJSONForm extends LitElement {
       })
     );
     this.requestUpdate();
+  }
+
+  /**
+   * Dispatch same function for multiple event type
+   */
+  #dispatchEvent() {
+    const events = ["ready", "change"];
+
+    events.map((evt) => {
+      this.#editor.on(evt, () => {
+        this.#data = this.#editor.getValue();
+        this.#emitData();
+      });
+    });
   }
 
   firstUpdated() {
@@ -117,15 +131,7 @@ export class EOxJSONForm extends LitElement {
         ...this.options,
       });
 
-      this.#editor.on("ready", () => {
-        this.#data = this.#editor.getValue();
-        this.#emitData();
-      });
-
-      this.#editor.on("change", () => {
-        this.#data = this.#editor.getValue();
-        this.#emitData();
-      });
+      this.#dispatchEvent();
     }
   }
 

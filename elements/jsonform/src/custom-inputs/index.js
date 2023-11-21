@@ -8,13 +8,14 @@ const inputs = [
   },
 ];
 
+/**
+ * Add custom input fields to @json-editor
+ */
 export const addCustomInputs = () => {
   inputs.map(({ type, format, func }) => {
     JSONEditor.defaults.editors[format] = func;
     JSONEditor.defaults.resolvers.unshift((schema) => {
-      if (schema.type === type && schema.format === format) {
-        return format;
-      }
+      if (schema.type === type && schema.format === format) return format;
     });
   });
 };
