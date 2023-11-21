@@ -5,5 +5,5 @@
   "elements/map": "0.9.0",
   "elements/stacinfo": "0.3.0",
   "elements/timecontrol": "0.1.0",
-  "elements/jsonform": "0.1.0"
+  "elements/jsonform": "0.2.0"
 }
