@@ -31,6 +31,9 @@ import { filterLayers } from "./helpers";
  * #### `layerControlToolsExpand?: Boolean`
  * Pre-expand the layer tools so they are visible when the component initializes.
  *
+ * #### `layerConfig?: Object`
+ * Configuration options for the layer (displayed in the layer tools' "config" tab)
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -78,7 +81,7 @@ export class EOxLayerControl extends LitElement {
     /**
      * Layer tools
      */
-    this.tools = ["info", "opacity", "remove", "sort"];
+    this.tools = ["info", "opacity", "config", "remove", "sort"];
 
     /**
      * Render the element without additional styles

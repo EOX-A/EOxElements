@@ -319,7 +319,7 @@ export const ExpandedLayers = {
 export const Tools = {
   args: {},
   render: () => html`
-    <p>Default tools: info, opacity, remove, sort</p>
+    <p>Default tools: info, opacity, config, remove, sort</p>
     <eox-layercontrol for="eox-map#tools"></eox-layercontrol>
     <hr />
     <p>Only one tool: info</p>
@@ -365,8 +365,9 @@ export const Tools = {
 };
 
 /**
- * The layer control accepts a "tools" array, which enable
- * extra functionalities for layers
+ * The "config" tool reads settings passed via the "layerConfig" property,
+ * e.g. rendering a from from a provided JSON schema that allows updating the
+ * source url parameters.
  */
 export const LayerConfig = {
   args: {},
@@ -387,32 +388,32 @@ export const LayerConfig = {
           properties: {
             id: "customId",
             title: "Tile XYZ",
-          },
-          layerConfig: {
-            schema: {
-              type: "object",
-              properties: {
-                vminmax: {
-                  type: "object",
-                  properties: {
-                    vmin: {
-                      type: "number",
-                      minimum: 0,
-                      maximum: 10,
-                      format: "range",
+            layerConfig: {
+              schema: {
+                type: "object",
+                properties: {
+                  vminmax: {
+                    type: "object",
+                    properties: {
+                      vmin: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 10,
+                        format: "range",
+                      },
+                      vmax: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 10,
+                        format: "range",
+                      },
                     },
-                    vmax: {
-                      type: "number",
-                      minimum: 0,
-                      maximum: 10,
-                      format: "range",
-                    },
+                    format: "minmax",
                   },
-                  format: "minmax",
-                },
-                cbar: {
-                  type: "string",
-                  enum: ["rain", "temperature"],
+                  cbar: {
+                    type: "string",
+                    enum: ["rain", "temperature"],
+                  },
                 },
               },
             },
