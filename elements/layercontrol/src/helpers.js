@@ -178,6 +178,10 @@ export function updateUrl(url, values, layer) {
     } else searchParams.set(key, value);
   });
 
+  const urlWithPath = url.split("?")[0];
+  const searchParamsStr = searchParams.toString();
+  const newUrl = `${urlWithPath}?${searchParamsStr}`;
+
   // @ts-ignore
-  layer.getSource().setUrl(url.split("?")[0] + "?" + searchParams.toString());
+  layer.getSource().setUrl(newUrl);
 }
