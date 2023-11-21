@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.10.0...layercontrol-v0.11.0) (2023-11-21)
+
+
+### Features
+
+* Added layer config tool with url param controls ([#430](https://github.com/EOX-A/EOxElements/issues/430)) ([75b29b3](https://github.com/EOX-A/EOxElements/commit/75b29b35e8f2e468a8c7c35f3c296549f367f28f))
+
+## [0.10.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.9.0...layercontrol-v0.10.0) (2023-11-16)
+
+
+### Features
+
+* Add visual feedback if a layer is outside its min/max zoom ([09f5288](https://github.com/EOX-A/EOxElements/commit/09f5288de6e86aab72f8f6cee0ba4cce337c7cfe)), closes [#248](https://github.com/EOX-A/EOxElements/issues/248)
+
+
+### Bug Fixes
+
+* Update optional layer list after layer removal ([#391](https://github.com/EOX-A/EOxElements/issues/391)) ([36eb916](https://github.com/EOX-A/EOxElements/commit/36eb916cfe3886fd664c261f31f74b487f054125))
+
 ## [0.9.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.8.0...layercontrol-v0.9.0) (2023-11-03)
 
 

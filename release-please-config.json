@@ -6,6 +6,7 @@
     },
     "elements/drawtools": {},
     "elements/itemfilter": {},
+    "elements/jsonform": {},
     "elements/layercontrol": {},
     "elements/map": {},
     "elements/stacinfo": {},
