@@ -76,12 +76,12 @@ export class EOxLayerControlLayerConfig extends LitElement {
       this.layer
         .getSource()
         .setTileUrlFunction((...args) =>
-          updateUrl(this.#originalTileUrlFunction(...args), this.#data, false)
+          updateUrl(this.#originalTileUrlFunction(...args), this.#data)
         );
-    }
 
-    if (this.layer.getSource().getUrls())
-      updateUrl(this.layer.getSource().getUrls()[0], this.#data, this.layer);
+      // TODO dont be accessing protected methods!
+      this.layer.getSource().setKey(new Date());
+    }
 
     this.requestUpdate();
   }
