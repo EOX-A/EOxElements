@@ -105,12 +105,6 @@ export class EOxLayerControlLayerTools extends LitElement {
     </button>
   `;
 
-  _configButton = html`
-    <button class="config-icon icon">
-      ${this.unstyled ? "config" : nothing}
-    </button>
-  `;
-
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
@@ -195,7 +189,6 @@ export class EOxLayerControlLayerTools extends LitElement {
                   </div>
                   <div slot="remove-icon">${this._removeButton}</div>
                   <div slot="sort-icon">${this._sortButton}</div>
-                  <div slot="config-icon">${this._configButton}</div>
                 </eox-layercontrol-tabs>
               </details>
             `
