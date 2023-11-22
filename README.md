@@ -117,13 +117,21 @@ chart/fix/some-fix
 
 ### Initial Setup
 
-In order to use npm workspaces and all the elements properly, please use **Node.js >= 18.16.0 LTS**.
+In order to use npm workspaces and all the elements properly, please use **Node.js >= 20.9.0 LTS**.
 
 Install all root and all element dependencies:
 
 ```
 npm install
 ```
+
+In general, it is recommended to perform all actions from the root level, not from the individual element folders. For example, if you want to build an element, use
+
+```
+npm run build -w @eox/<element-name>
+```
+
+Please refer to [the npm workspace docs](https://docs.npmjs.com/cli/v7/using-npm/workspaces#running-commands-in-the-context-of-workspaces) for more information.
 
 ### Dev server
 
