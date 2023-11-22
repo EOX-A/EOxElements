@@ -27,6 +27,12 @@ export class EOxLayerControlLayerConfig extends LitElement {
    */
   #startVals = null;
 
+  /**
+   * Original tile url function, if it exist
+   * @type {Function}
+   */
+  #originalTileUrlFunction;
+
   constructor() {
     super();
 
@@ -60,10 +66,23 @@ export class EOxLayerControlLayerConfig extends LitElement {
    */
   #handleDataChange(e) {
     this.#data = e.detail;
-    // @ts-ignore
-    const url = this.layer.getSource().getUrls()[0];
 
-    updateUrl(url, this.#data, this.layer);
+    if (this.layer.getSource().getTileUrlFunction()) {
+      if (!this.#originalTileUrlFunction)
+        this.#originalTileUrlFunction = this.layer
+          .getSource()
+          .getTileUrlFunction();
+
+      this.layer
+        .getSource()
+        .setTileUrlFunction((...args) =>
+          updateUrl(this.#originalTileUrlFunction(...args), this.#data, false)
+        );
+    }
+
+    if (this.layer.getSource().getUrls())
+      updateUrl(this.layer.getSource().getUrls()[0], this.#data, this.layer);
+
     this.requestUpdate();
   }
 
