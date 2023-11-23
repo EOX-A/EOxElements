@@ -382,12 +382,13 @@ export const LayerConfig = {
       zoom="4"
       id="config"
       style="width: 400px; height: 300px;"
-      layers=${JSON.stringify([
+      .layers=${[
         {
           type: "Tile",
           properties: {
             id: "customId",
             title: "Tile XYZ",
+            layerControlToolsExpand: true,
             layerConfig: {
               schema: {
                 type: "object",
@@ -421,9 +422,14 @@ export const LayerConfig = {
           source: {
             type: "XYZ",
             url: "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG:3857&time=2018-01-01T00:00:00Z&vmin=0&vmax=3&cbar=rain",
-            params: { LAYERS: "topp:states", TILED: true },
-            ratio: 1,
-            serverType: "geoserver",
+            // tileUrlFunction: (tileCoord) => {
+            //   const url =
+            //     "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG%3A3857&time=2018-01-01T00%3A00%3A00Z&vmin=0&vmax=3&cbar=rain";
+            //   return url
+            //     .replace("{z}", tileCoord[0])
+            //     .replace("{x}", tileCoord[1])
+            //     .replace("{y}", tileCoord[2]);
+            // },
           },
         },
         {
@@ -431,7 +437,7 @@ export const LayerConfig = {
           source: { type: "OSM" },
           properties: { title: "Base Map" },
         },
-      ])}
+      ]}
     >
     </eox-map>
   `,

@@ -165,9 +165,9 @@ export const isLayerVisibleBasedOnZoomState = (
  * Update layer's URL using input values
  * @param {String} url
  * @param {Object} values
- * @param {import("ol/layer").Layer} layer
+ * @param {import("ol/layer").Layer | false} layer
  */
-export function updateUrl(url, values, layer) {
+export function updateUrl(url, values) {
   const searchParams = new URL(url).searchParams;
 
   Object.entries(values).forEach(([key, value]) => {
@@ -182,8 +182,7 @@ export function updateUrl(url, values, layer) {
   const searchParamsStr = searchParams.toString();
   const newUrl = `${urlWithPath}?${searchParamsStr}`;
 
-  // @ts-ignore
-  layer.getSource().setUrl(newUrl);
+  return newUrl;
 }
 
 /**
@@ -220,7 +219,9 @@ export function getNestedStartVals(schema, queryParams) {
  * @param {{[key: string]: any}} layerConfig
  */
 export function getStartVals(layer, layerConfig) {
-  const url = new URL(layer.getSource().getUrls()[0]);
+  if (!layer.getSource().getTileUrlFunction()) return null;
+
+  const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
   const queryParams = Object.fromEntries(url.searchParams.entries());
   const startVals = getNestedStartVals(
     layerConfig.schema?.properties || layerConfig.schema,
