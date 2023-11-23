@@ -3,6 +3,10 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layerTools";
 import { checkbox } from "../../../../utils/styles/checkbox";
+import {
+  isLayerVisibleBasedOnZoomState,
+  isLayerZoomStateRequired,
+} from "../helpers";
 
 /**
  * A single layer display
@@ -12,11 +16,18 @@ import { checkbox } from "../../../../utils/styles/checkbox";
 export class EOxLayerControlLayer extends LitElement {
   static properties = {
     layer: { attribute: false },
+    map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
   };
+
+  /**
+   * @type Boolean
+   */
+  currLayerVisibilityBasedOnZoom = true;
 
   constructor() {
     super();
@@ -29,9 +40,21 @@ export class EOxLayerControlLayer extends LitElement {
     this.layer = null;
 
     /**
+     * The native OL map
+     * @type {import("ol").Map}
+     * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
+     */
+    this.map = null;
+
+    /**
      * The layer title property
      */
     this.titleProperty = "title";
+
+    /**
+     * Show layer state based on zoom level or not
+     */
+    this.showLayerZoomState = false;
 
     /**
      * @type Array<string>
@@ -48,6 +71,52 @@ export class EOxLayerControlLayer extends LitElement {
     this.noShadow = true;
   }
 
+  /**
+   * Check and update layer visibility based on zoom level
+   * and only update DOM if visibility gets updated
+   */
+  updateLayerZoomVisibility() {
+    const newLayerVisibilityBasedOnZoom = isLayerVisibleBasedOnZoomState(
+      this.layer,
+      this.map,
+      this.showLayerZoomState
+    );
+
+    let visibilityChanged = false;
+
+    // Checking if visibility changed or not and updating `currLayerVisibilityBasedOnZoom`
+    if (!newLayerVisibilityBasedOnZoom && this.currLayerVisibilityBasedOnZoom)
+      (this.currLayerVisibilityBasedOnZoom = false), (visibilityChanged = true);
+    else if (
+      newLayerVisibilityBasedOnZoom &&
+      !this.currLayerVisibilityBasedOnZoom
+    )
+      (this.currLayerVisibilityBasedOnZoom = true), (visibilityChanged = true);
+
+    // if visibilityChanged trigger UI update
+    if (visibilityChanged) {
+      this.requestUpdate();
+      this.dispatchEvent(
+        new CustomEvent("change:resolution", { bubbles: true })
+      );
+    }
+  }
+
+  /**
+   * Check and update layer zoom visibility at beginning
+   * and register "change:resolution" ones at the beginning if `showLayerZoomState` is present
+   */
+  firstUpdated() {
+    if (isLayerZoomStateRequired(this.layer, this.showLayerZoomState)) {
+      this.updateLayerZoomVisibility();
+
+      // Initialize change:resolution event ones
+      this.map
+        .getView()
+        .on("change:resolution", () => this.updateLayerZoomVisibility());
+    }
+  }
+
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
@@ -61,7 +130,12 @@ export class EOxLayerControlLayer extends LitElement {
       ${when(
         this.layer,
         () => html`
-          <div class="layer ${this.layer.getVisible() ? "visible" : ""}">
+          <div
+            class="layer ${this.layer.getVisible() ? "visible" : ""} 
+            ${!this.currLayerVisibilityBasedOnZoom
+              ? "zoom-state-invisible"
+              : ""}"
+          >
             <label
               class="${this.layer.get("layerControlDisable") ? "disabled" : ""}"
             >
@@ -125,6 +199,10 @@ export class EOxLayerControlLayer extends LitElement {
     ${checkbox}
     eox-layercontrol-layer {
       width: 100%;
+    }
+    .layer.zoom-state-invisible {
+      background: #d2e2ee;
+      opacity: 0.3;
     }
     .layer {
       width: 100%;

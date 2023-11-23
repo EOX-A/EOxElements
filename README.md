@@ -33,13 +33,19 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td><a href="./elements/drawtools/">eox-drawtools</a></td>
     <td>Draw and manage features on a map</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-drawtools--docs">Docs & Examples</a></td>
-    <td>⭕️</td>
+    <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
     <td>Filter/search large sets of items client-side or server-side</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-itemfilter--docs">Docs & Examples</a></td>
     <td>🟡</td>
+  </tr>
+  <tr>
+    <td><a href="./elements/jsonform/">eox-jsonform</a></td>
+    <td>Render a form from a JSON schema</td>
+    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-jsonform--docs">Docs & Examples</a></td>
+    <td>⭕️</td>
   </tr>
   <tr>
     <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>
@@ -57,7 +63,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td><a href="./elements/stacinfo/">eox-stacinfo</a></td>
     <td>Display properties of STAC files</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-stacinfo--docs">Docs & Examples</a></td>
-    <td>⭕️</td>
+    <td>🟡</td>
   </tr>
   <tr>
     <td><a href="./elements/timecontrol/">eox-timecontrol</a></td>
@@ -111,13 +117,21 @@ chart/fix/some-fix
 
 ### Initial Setup
 
-In order to use npm workspaces and all the elements properly, please use **Node.js >= 18.16.0 LTS**.
+In order to use npm workspaces and all the elements properly, please use **Node.js >= 20.9.0 LTS**.
 
 Install all root and all element dependencies:
 
 ```
 npm install
 ```
+
+In general, it is recommended to perform all actions from the root level, not from the individual element folders. For example, if you want to build an element, use
+
+```
+npm run build -w @eox/<element-name>
+```
+
+Please refer to [the npm workspace docs](https://docs.npmjs.com/cli/v7/using-npm/workspaces#running-commands-in-the-context-of-workspaces) for more information.
 
 ### Dev server
 

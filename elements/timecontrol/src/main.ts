@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, svg } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
@@ -7,6 +7,13 @@ import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { UrlFunction } from "ol/Tile";
+
+import dayjs from "dayjs";
+import dayOfYear from "dayjs/plugin/dayOfYear";
+import isoWeek from "dayjs/plugin/isoWeek";
+
+dayjs.extend(dayOfYear);
+dayjs.extend(isoWeek);
 
 @customElement("eox-timecontrol")
 export class EOxTimeControl extends LitElement {
@@ -206,18 +213,25 @@ export class EOxTimeControl extends LitElement {
 
           ${this.slider
             ? html`
-                <tc-range-slider
-                  data="${this.animationValues}"
-                  part="slider"
-                  value="${this.animationValues[this._newTimeIndex]}"
-                  style="display: inline-block;"
-                  @change="${(evt: { detail: { value: string } }) =>
-                    this._updateStep(
-                      this.animationValues.findIndex(
-                        (v) => v === evt.detail.value
-                      ) - this._newTimeIndex
-                    )}"
-                ></tc-range-slider>
+                <div class="slider-col">
+                  <tc-range-slider
+                    data="${this.animationValues}"
+                    part="slider"
+                    value="${this.animationValues[this._newTimeIndex]}"
+                    style="display: inline-block;"
+                    @change="${(evt: { detail: { value: string } }) =>
+                      this._updateStep(
+                        this.animationValues.findIndex(
+                          (v) => v === evt.detail.value
+                        ) - this._newTimeIndex
+                      )}"
+                  ></tc-range-slider>
+
+                  <eox-sliderticks
+                    width="300"
+                    .times="${this.animationValues}"
+                  ></eox-sliderticks>
+                </div>
               `
             : ""}
 
@@ -226,6 +240,121 @@ export class EOxTimeControl extends LitElement {
           >
         </div>
       </main>
+    `;
+  }
+}
+
+@customElement("eox-sliderticks")
+export class SliderTicks extends LitElement {
+  @property({ type: Number }) width: number = 0;
+  @property({ type: Array }) times: string[] = [];
+
+  @state() height = 6;
+  @state() svgWidth = 0;
+
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener("resize", this.handleResize.bind(this));
+  }
+
+  disconnectedCallback() {
+    window.removeEventListener("resize", this.handleResize.bind(this));
+    super.disconnectedCallback();
+  }
+
+  firstUpdated() {
+    this.handleResize();
+  }
+
+  handleResize() {
+    this.svgWidth = this.shadowRoot.querySelector("svg").clientWidth;
+    this.height = this.shadowRoot.querySelector("svg").clientHeight;
+  }
+
+  get lines() {
+    const num = this.numLines > this.width / 2 ? this.width / 2 : this.numLines;
+
+    const spacing = this.width / (num - 1);
+    return Array.from({ length: this.numLines }, (_, i) => i * spacing);
+  }
+
+  get numLines() {
+    return this.times ? this.times.length : 0;
+  }
+
+  get yearMarks(): { label: number; position: number }[] {
+    const yearMarks: { label: number; position: number }[] = [];
+    let previousYear: number = null;
+
+    this.lines.forEach((line, index) => {
+      const currentTime = dayjs(this.times[index]);
+      const currentYear = currentTime.year();
+
+      // If it's the first tick or if the year has changed, add a year mark
+      if (index === 0 || currentYear !== previousYear) {
+        yearMarks.push({
+          label: currentYear,
+          position: line, // Assuming 'line' is the position of the tick
+        });
+      }
+
+      // Update previousYear for the next iteration
+      previousYear = currentYear;
+    });
+
+    // Filter out year marks that are too close together, in favor of the second one.
+    return yearMarks.filter((current, i) => {
+      const next = yearMarks[i + 1];
+
+      return !(next && next.position - current.position < 25);
+    });
+  }
+
+  isYearLine(line: number): boolean {
+    // Check if this line's position is approximately equal to any year mark position
+    const isYearMark = this.yearMarks.some(
+      (yearMark) => Math.abs(yearMark.position - line) < 1.0
+    );
+
+    return isYearMark;
+  }
+
+  render() {
+    return html`
+      <div class="fill-width" style="margin-top: 3px;">
+        <svg
+          style="width: ${this.width}px; height: 30px;"
+          viewBox="-1 0 ${this.width + 2} ${this.height}"
+        >
+          ${this.lines.map(
+            (line, index) => svg`
+            <line
+              key=${index}
+              x1=${line}
+              y1="0"
+              x2=${line}
+              y2=${this.isYearLine(line) ? 12 : 6}
+              stroke=${this.isYearLine(line) ? "#222" : "#7596A2"}
+              stroke-width=${this.isYearLine(line) ? 1 : 1}
+            ></line>
+          `
+          )}
+          ${this.yearMarks.map(
+            (year, index) => svg`
+            <text
+              key=${`y${index}`}
+              x=${year.position}
+              y=${this.height - 1}
+              fill="#555"
+              font-size="13"
+              font-weight="500"
+            >
+              ${year.label}
+            </text>
+          `
+          )}
+        </svg>
+      </div>
     `;
   }
 }

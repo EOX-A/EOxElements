@@ -1,6 +1,6 @@
 {
   "name": "@eox/timecontrol",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -28,6 +28,7 @@
     "lint:fix": "eslint --ext .js,.ts . --fix"
   },
   "dependencies": {
+    "dayjs": "^1.11.9",
     "lit": "^3.0.2",
     "toolcool-range-slider": "^4.0.27"
   }

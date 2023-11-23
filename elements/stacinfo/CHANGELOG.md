@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.2.1...stacinfo-v0.3.0) (2023-11-14)
+
+
+### Features
+
+* Allow rendering HTML in properties via config ([#419](https://github.com/EOX-A/EOxElements/issues/419)) ([76e10ed](https://github.com/EOX-A/EOxElements/commit/76e10edc2320348a8e80178a02225d90bea3c1af))
+
 ## [0.2.1](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.2.0...stacinfo-v0.2.1) (2023-11-07)
 
 

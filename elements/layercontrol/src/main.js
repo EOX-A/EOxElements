@@ -31,6 +31,9 @@ import { filterLayers } from "./helpers";
  * #### `layerControlToolsExpand?: Boolean`
  * Pre-expand the layer tools so they are visible when the component initializes.
  *
+ * #### `layerConfig?: Object`
+ * Configuration options for the layer (displayed in the layer tools' "config" tab)
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -39,6 +42,7 @@ export class EOxLayerControl extends LitElement {
     idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
+    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
@@ -70,9 +74,14 @@ export class EOxLayerControl extends LitElement {
     this.titleProperty = "title";
 
     /**
+     * Show layer state based on zoom level or not
+     */
+    this.showLayerZoomState = false;
+
+    /**
      * Layer tools
      */
-    this.tools = ["info", "opacity", "remove", "sort"];
+    this.tools = ["info", "opacity", "config", "remove", "sort"];
 
     /**
      * Render the element without additional styles
@@ -112,6 +121,7 @@ export class EOxLayerControl extends LitElement {
             .layers=${this.map.getLayers()}
             .map=${this.map}
             .titleProperty=${this.titleProperty}
+            .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             @changed=${

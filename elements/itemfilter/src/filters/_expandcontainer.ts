@@ -31,7 +31,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         @toggle="${this.handleDetailsToggle}"
         class="details-filter"
         part="details-filter"
-        open=${this.filterObject.expanded || nothing}
+        ?open=${this.filterObject.expanded || (nothing as null)}
       >
         <summary>
           <span

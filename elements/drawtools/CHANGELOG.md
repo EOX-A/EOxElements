@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.4.2...drawtools-v0.5.0) (2023-11-16)
+
+
+### Features
+
+* Display of drawn feature ([#371](https://github.com/EOX-A/EOxElements/issues/371)) ([43753b6](https://github.com/EOX-A/EOxElements/commit/43753b6e24fd799cc71fa1c41a71df37ca50608e))
+
 ## [0.4.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.4.1...drawtools-v0.4.2) (2023-10-19)
 
 

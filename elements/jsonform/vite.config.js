@@ -4,10 +4,10 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     lib: {
-      entry: "./elements/testelement/main.ts",
-      name: "eox-testelement",
+      entry: "./src/main.js",
+      name: "eox-jsonform",
       // the proper extensions will be added
-      fileName: "eox-testelement",
+      fileName: "eox-jsonform",
     },
   },
 });

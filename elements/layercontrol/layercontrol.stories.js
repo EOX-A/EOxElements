@@ -319,7 +319,7 @@ export const ExpandedLayers = {
 export const Tools = {
   args: {},
   render: () => html`
-    <p>Default tools: info, opacity, remove, sort</p>
+    <p>Default tools: info, opacity, config, remove, sort</p>
     <eox-layercontrol for="eox-map#tools"></eox-layercontrol>
     <hr />
     <p>Only one tool: info</p>
@@ -359,6 +359,85 @@ export const Tools = {
           },
         },
       ])}
+    >
+    </eox-map>
+  `,
+};
+
+/**
+ * The "config" tool reads settings passed via the "layerConfig" property,
+ * e.g. rendering a from from a provided JSON schema that allows updating the
+ * source url parameters.
+ */
+export const LayerConfig = {
+  args: {},
+  render: () => html`
+    <eox-layercontrol
+      .tools=${["config"]}
+      for="eox-map#config"
+    ></eox-layercontrol>
+    <hr />
+    <eox-map
+      center="[-7000000, -500000]"
+      zoom="4"
+      id="config"
+      style="width: 400px; height: 300px;"
+      .layers=${[
+        {
+          type: "Tile",
+          properties: {
+            id: "customId",
+            title: "Tile XYZ",
+            layerControlToolsExpand: true,
+            layerConfig: {
+              schema: {
+                type: "object",
+                properties: {
+                  vminmax: {
+                    type: "object",
+                    properties: {
+                      vmin: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 10,
+                        format: "range",
+                      },
+                      vmax: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 10,
+                        format: "range",
+                      },
+                    },
+                    format: "minmax",
+                  },
+                  cbar: {
+                    type: "string",
+                    enum: ["rain", "temperature"],
+                  },
+                },
+              },
+            },
+          },
+          source: {
+            type: "XYZ",
+            url: "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG:3857&time=2018-01-01T00:00:00Z&vmin=0&vmax=3&cbar=rain",
+            // tileUrlFunction: (tileCoord) => {
+            //   const url =
+            //     "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG%3A3857&time=2018-01-01T00%3A00%3A00Z&vmin=0&vmax=3&cbar=rain";
+            //   return url
+            //     .replace("{z}", tileCoord[0])
+            //     .replace("{x}", tileCoord[1])
+            //     .replace("{y}", tileCoord[2]);
+            // },
+          },
+        },
+        {
+          type: "Tile",
+          source: { type: "OSM" },
+          properties: { title: "Base Map" },
+        },
+      ]}
     >
     </eox-map>
   `,
@@ -530,6 +609,61 @@ export const Tabs = {
       .actions=${["delete"]}
       .tabs=${["info", "opacity", "config"]}
     ></eox-layercontrol-tabs>
+  `,
+};
+
+/**
+ * Zoom layer state based on `minZoom` and `maxZoom`.
+ * The color change state only visible when `showLayerZoomState` is set inside layer properties.
+ */
+export const LayerZoomState = {
+  args: {
+    showLayerZoomState: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .showLayerZoomState=${args.showLayerZoomState}
+        for="eox-map#zoomstate"
+      ></eox-layercontrol>
+      <eox-map
+        id="zoomstate"
+        style="width: 600px; height: 300px; margin-left: 7px;"
+        zoom="1"
+        layers=${JSON.stringify([
+          {
+            type: "Vector",
+            properties: {
+              title: "Regions",
+              id: "regions",
+            },
+            source: {
+              type: "Vector",
+              url: "https://openlayers.org/data/vector/ecoregions.json",
+              format: "GeoJSON",
+              attributions: "Regions: @ openlayers.org",
+            },
+            minZoom: 2,
+          },
+          {
+            type: "Tile",
+            properties: {
+              id: "WIND",
+              title: "WIND",
+            },
+            source: {
+              type: "TileWMS",
+              url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              params: {
+                LAYERS: "AWS_VIS_WIND_V_10M",
+              },
+            },
+            maxZoom: 9,
+          },
+        ])}
+      >
+      </eox-map>
+    </div>
   `,
 };
 

@@ -40,7 +40,7 @@
     "storybook": "^7.4.6"
   },
   "engines": {
-    "node": ">=18.16.0"
+    "node": ">=20.9.0"
   },
   "dependencies": {
     "eslint-plugin-cypress": "^2.14.0"
