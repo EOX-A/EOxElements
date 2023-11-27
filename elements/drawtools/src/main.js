@@ -19,6 +19,7 @@ export class EOxDrawTools extends LitElement {
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
+      type: { type: String },
       unstyled: { type: Boolean },
     };
   }
@@ -90,6 +91,12 @@ export class EOxDrawTools extends LitElement {
     this.showList = false;
 
     /**
+     * Type of the drawn feature
+     * @type {"Polygon" | "Point" | "LineString" | "Circle" | "Box"}
+     */
+    this.type = "Polygon";
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
@@ -123,7 +130,7 @@ export class EOxDrawTools extends LitElement {
                 options: {
                   active: false,
                   id: "drawInteraction",
-                  type: "Polygon",
+                  type: this.type,
                   modify: this.allowModify,
                   stopClick: true,
                 },
