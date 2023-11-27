@@ -1,13 +1,5 @@
 [
   {
-    "type": "Vector",
-    "properties": {
-      "id": "draw",
-      "title": "Reference"
-    },
-    "source": { "type": "Vector" }
-  },
-  {
     "type": "Tile",
     "properties": {
       "id": "osm",

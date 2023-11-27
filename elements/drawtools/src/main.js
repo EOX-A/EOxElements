@@ -89,7 +89,7 @@ export class EOxDrawTools extends LitElement {
     this.unstyled = false;
   }
 
-  firstUpdated() {
+  initDrawLayer() {
     const mapQuery = document.querySelector(this.for);
 
     this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
@@ -101,56 +101,54 @@ export class EOxDrawTools extends LitElement {
       type: "Vector",
       properties: {
         id: "drawLayer",
+        layerControlHide: true,
       },
       source: {
         type: "Vector",
       },
-      // style: {
-      //   "circle-radius": 7,
-      //   "circle-fill-color": "#00417055",
-      //   "circle-stroke-color": "#004170",
-      //   "circle-stroke-width": 2,
-      //   "stroke-color": "#004170",
-      //   "stroke-width": 2,
-      //   "fill-color": "#00417055",
-      // },
-      interactions: [
-        {
-          type: "draw",
-          options: {
-            active: false,
-            id: "drawInteraction",
-            type: "Polygon",
-            modify: true,
-            stopClick: true,
-          },
-        },
-        {
-          type: "select",
-          options: {
-            id: "selectHover",
-            condition: "pointermove",
-            style: {
-              "fill-color": "rgba(51, 153, 204,0.5)",
-              "stroke-color": "#3399CC",
-              "stroke-width": 2.5,
-            },
-          },
-        },
-        {
-          type: "select",
-          options: {
-            id: "selectClick",
-            condition: "click",
-            panIn: true,
-            style: {
-              "fill-color": "rgba(51, 153, 204,0.5)",
-              "stroke-color": "#3399CC",
-              "stroke-width": 2.5,
-            },
-          },
-        },
-      ],
+      // check if the drawInteraction has already been added before adding again
+      // TEMP/TODO: this should probably be done by the map in the addOrUpdateLayer method
+      ...(this.#eoxMap.interactions["drawInteraction"]
+        ? {}
+        : {
+            interactions: [
+              {
+                type: "draw",
+                options: {
+                  active: false,
+                  id: "drawInteraction",
+                  type: "Polygon",
+                  modify: true,
+                  stopClick: true,
+                },
+              },
+              {
+                type: "select",
+                options: {
+                  id: "selectHover",
+                  condition: "pointermove",
+                  style: {
+                    "fill-color": "rgba(51, 153, 204,0.5)",
+                    "stroke-color": "#3399CC",
+                    "stroke-width": 2.5,
+                  },
+                },
+              },
+              {
+                type: "select",
+                options: {
+                  id: "selectClick",
+                  condition: "click",
+                  panIn: true,
+                  style: {
+                    "fill-color": "rgba(51, 153, 204,0.5)",
+                    "stroke-color": "#3399CC",
+                    "stroke-width": 2.5,
+                  },
+                },
+              },
+            ],
+          }),
     });
 
     this.draw = /** @type {import("ol/interaction").Draw} */ (
@@ -166,6 +164,7 @@ export class EOxDrawTools extends LitElement {
   }
 
   startDrawing() {
+    this.initDrawLayer();
     this.draw.setActive(true);
     this.currentlyDrawing = true;
     this.requestUpdate();
@@ -175,6 +174,8 @@ export class EOxDrawTools extends LitElement {
     this.drawnFeatures = [];
     this.draw.setActive(false);
     this.drawLayer.getSource().clear();
+    this.#eoxMap.removeInteraction("drawInteraction");
+    this.#olMap.removeLayer(this.drawLayer);
     this.emitDrawnFeatures();
     this.currentlyDrawing = false;
     this.requestUpdate();
