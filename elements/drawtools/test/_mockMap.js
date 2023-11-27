@@ -2,7 +2,7 @@ export class MockMap extends HTMLElement {
   constructor() {
     super();
   }
-  features = [{}];
+  features = [];
   map = {
     getLayers: () => ({
       getArray: () => [
@@ -18,10 +18,11 @@ export class MockMap extends HTMLElement {
       ],
     }),
   };
-  addDraw() {}
+  addOrUpdateLayer = () => this.map.getLayers().getArray()[0];
   interactions = {
     drawInteraction: {
       on: (event, fun) => fun(event),
+      setActive() {},
     },
     drawInteraction_modify: {
       on() {},

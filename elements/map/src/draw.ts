@@ -15,6 +15,8 @@ export type DrawOptions = Omit<
   id: string | number;
   type: "Point" | "LineString" | "Polygon" | "Circle" | "Box";
   modify?: boolean;
+  // TODO
+  active?: boolean;
 };
 
 /**
@@ -48,6 +50,11 @@ export function addDraw(
     ...options_,
     source,
   } as import("ol/interaction/Draw").Options);
+
+  // TODO cleaner way of initializing as inactive?
+  if (options_.active === false) {
+    drawInteraction.setActive(false);
+  }
 
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {

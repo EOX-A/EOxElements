@@ -122,6 +122,16 @@ export class SpatialFilter extends LitElement {
           ...(this.geometry && { url: this.createFeatureUrl(this.geometry) }),
         },
         zIndex: 1,
+        interactions: [
+          {
+            type: "draw",
+            options: {
+              id: "drawInteraction",
+              type: "Box",
+              modify: true,
+            },
+          },
+        ],
       },
       {
         type: "Tile",
@@ -137,10 +147,6 @@ export class SpatialFilter extends LitElement {
     this.eoxMap = this.renderRoot.querySelector("eox-map");
     setTimeout(() => {
       this.eoxMap.setLayers(mapLayers as EoxLayer[]);
-      this.eoxMap.addDraw("draw", {
-        id: "drawInteraction",
-        type: "Polygon",
-      });
       const updateGeometryFilter = (feature: unknown) => {
         const event = new CustomEvent("filter", {
           detail: {
