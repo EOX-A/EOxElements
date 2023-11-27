@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.6.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.5.0...drawtools-v0.6.0) (2023-11-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* introduction of new interaction API ([#400](https://github.com/EOX-A/EOxElements/issues/400))
+
+### Features
+
+* Draw type property ([#472](https://github.com/EOX-A/EOxElements/issues/472)) ([8ae6a71](https://github.com/EOX-A/EOxElements/commit/8ae6a7152828b2c0c5bb49165c946fd248b1465d))
+* Enable modify via property ([#470](https://github.com/EOX-A/EOxElements/issues/470)) ([7fd49f3](https://github.com/EOX-A/EOxElements/commit/7fd49f36bb3b46e0b7d9113cb4821ac67e4362a0))
+* Introduction of new interaction API ([#400](https://github.com/EOX-A/EOxElements/issues/400)) ([808539b](https://github.com/EOX-A/EOxElements/commit/808539b5846b6ac010e3bd7686c0aaf1c5c86cf9))
+
 ## [0.5.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.4.2...drawtools-v0.5.0) (2023-11-16)
 
 
