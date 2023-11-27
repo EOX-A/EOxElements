@@ -10,6 +10,7 @@ import { styleEOX } from "./style.eox";
 export class EOxDrawTools extends LitElement {
   static get properties() {
     return {
+      allowModify: { attribute: "allow-modify", type: Boolean },
       for: { type: String },
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
       draw: { attribute: false, state: true },
@@ -18,6 +19,7 @@ export class EOxDrawTools extends LitElement {
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
+      type: { type: String },
       unstyled: { type: Boolean },
     };
   }
@@ -34,6 +36,11 @@ export class EOxDrawTools extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Allow modifying the drawn feature(s)
+     */
+    this.allowModify = false;
 
     /**
      * The query selector for the map
@@ -84,6 +91,12 @@ export class EOxDrawTools extends LitElement {
     this.showList = false;
 
     /**
+     * Type of the drawn feature
+     * @type {"Polygon" | "Point" | "LineString" | "Circle" | "Box"}
+     */
+    this.type = "Polygon";
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
@@ -117,8 +130,8 @@ export class EOxDrawTools extends LitElement {
                 options: {
                   active: false,
                   id: "drawInteraction",
-                  type: "Polygon",
-                  modify: true,
+                  type: this.type,
+                  modify: this.allowModify,
                   stopClick: true,
                 },
               },
