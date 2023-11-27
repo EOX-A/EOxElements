@@ -1,11 +1,7 @@
 # Changelog
 
-## [0.6.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.5.0...drawtools-v0.6.0) (2023-11-27)
+## [0.5.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.5.1...drawtools-v0.6.0) (2023-11-27)
 
-
-### ⚠ BREAKING CHANGES
-
-* introduction of new interaction API ([#400](https://github.com/EOX-A/EOxElements/issues/400))
 
 ### Features
 
