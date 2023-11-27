@@ -12,7 +12,6 @@ export const Primary = {
   args: {
     allowModify: false,
     multipleFeatures: false,
-  render: () => html` <eox-map
   },
   render: (args) => html` <eox-map
       id="primary"
@@ -25,8 +24,8 @@ export const Primary = {
       for="eox-map#primary"
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
-    <eox-drawtools for="eox-map#primary"></eox-drawtools>`,
-    ></eox-drawtools>`,
+    >
+    </eox-drawtools>`,
 };
 
 /**
