@@ -10,6 +10,7 @@ import { styleEOX } from "./style.eox";
 export class EOxDrawTools extends LitElement {
   static get properties() {
     return {
+      allowModify: { attribute: "allow-modify", type: Boolean },
       for: { type: String },
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
       draw: { attribute: false, state: true },
@@ -34,6 +35,11 @@ export class EOxDrawTools extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Allow modifying the drawn feature(s)
+     */
+    this.allowModify = false;
 
     /**
      * The query selector for the map
@@ -118,7 +124,7 @@ export class EOxDrawTools extends LitElement {
                   active: false,
                   id: "drawInteraction",
                   type: "Polygon",
-                  modify: true,
+                  modify: this.allowModify,
                   stopClick: true,
                 },
               },
