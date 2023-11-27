@@ -12,6 +12,7 @@ export const Primary = {
   args: {
     allowModify: false,
     multipleFeatures: false,
+    type: "Polygon",
   },
   render: (args) => html` <eox-map
       id="primary"
@@ -24,6 +25,7 @@ export const Primary = {
       for="eox-map#primary"
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
+      .type=${args.type}
     >
     </eox-drawtools>`,
 };
@@ -60,6 +62,79 @@ export const ModifyFeatures = {
       multiple-features
       allow-modify
     ></eox-drawtools>`,
+};
+
+/**
+ * The `type` attribute/property controls which drawing type is enabled
+ * (defaults to "Polygon")
+ */
+export const DrawType = {
+  render: () => html` <div style="display: flex">
+    <div>
+      <eox-map
+        id="box"
+        style="width: 400px; height: 300px;"
+        layers='[
+        {"type":"Tile","source":{"type":"OSM"}}
+      ]'
+      ></eox-map>
+      Box
+      <eox-drawtools
+        for="eox-map#box"
+        multiple-features
+        allow-modify
+        type="Box"
+      ></eox-drawtools>
+    </div>
+    <div>
+      <eox-map
+        id="point"
+        style="width: 400px; height: 300px;"
+        layers='[
+        {"type":"Tile","source":{"type":"OSM"}}
+      ]'
+      ></eox-map>
+      Point
+      <eox-drawtools
+        for="eox-map#point"
+        multiple-features
+        allow-modify
+        type="Point"
+      ></eox-drawtools>
+    </div>
+    <div>
+      <eox-map
+        id="circle"
+        style="width: 400px; height: 300px;"
+        layers='[
+        {"type":"Tile","source":{"type":"OSM"}}
+      ]'
+      ></eox-map>
+      Circle
+      <eox-drawtools
+        for="eox-map#circle"
+        multiple-features
+        allow-modify
+        type="Circle"
+      ></eox-drawtools>
+    </div>
+    <div>
+      <eox-map
+        id="linestring"
+        style="width: 400px; height: 300px;"
+        layers='[
+        {"type":"Tile","source":{"type":"OSM"}}
+      ]'
+      ></eox-map>
+      LineString
+      <eox-drawtools
+        for="eox-map#linestring"
+        multiple-features
+        allow-modify
+        type="LineString"
+      ></eox-drawtools>
+    </div>
+  </div>`,
 };
 
 /**
