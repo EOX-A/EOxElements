@@ -10,6 +10,8 @@ import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
 
+export type SelectLayer = VectorTileLayer | VectorLayer<VectorSource>;
+
 export type SelectOptions = Omit<
   import("ol/interaction/Select").Options,
   "condition"
@@ -26,20 +28,23 @@ export type SelectOptions = Omit<
 
 export class EOxSelectInteraction {
   eoxMap: EOxMap;
-  layerId: string;
   options: SelectOptions;
   active: boolean;
   panIn: boolean;
   tooltip: HTMLElement;
   selectedFids: Array<string | number>;
-  selectLayer: VectorTileLayer | VectorLayer<VectorSource>;
+  selectLayer: SelectLayer;
   selectStyleLayer: VectorTileLayer | VectorLayer<VectorSource>;
   changeSourceListener: () => void;
   removeListener: () => void;
 
-  constructor(eoxMap: EOxMap, layerId: string, options: SelectOptions) {
+  constructor(
+    eoxMap: EOxMap,
+    selectLayer: SelectLayer,
+    options: SelectOptions
+  ) {
     this.eoxMap = eoxMap;
-    this.layerId = layerId;
+    this.selectLayer = selectLayer;
     this.options = options;
     this.active = options.active;
     this.panIn = options.panIn || false;
@@ -49,9 +54,6 @@ export class EOxSelectInteraction {
     let overlay: Overlay;
     this.selectedFids = [];
     this.active = options?.active === false ? false : true;
-    this.selectLayer = this.eoxMap.getLayerById(layerId) as
-      | VectorTileLayer
-      | VectorLayer<VectorSource>;
 
     if (this.tooltip) {
       overlay = new Overlay({
@@ -68,14 +70,14 @@ export class EOxSelectInteraction {
         overlay.setPosition(undefined);
       };
       eoxMap.map.on("change:target", (e) => {
-        e.oldValue.removeEventListener("pointerleave", pointerLeaveListener);
+        e.oldValue?.removeEventListener("pointerleave", pointerLeaveListener);
         e.target
           .getTargetElement()
-          .addEventListener("pointerleave", pointerLeaveListener);
+          ?.addEventListener("pointerleave", pointerLeaveListener);
       });
       eoxMap.map
         .getTargetElement()
-        .addEventListener("pointerleave", pointerLeaveListener);
+        ?.addEventListener("pointerleave", pointerLeaveListener);
     }
 
     // a layer that only contains the selected features, for displaying purposes only
@@ -90,7 +92,7 @@ export class EOxSelectInteraction {
         ...originalJsonDefinition,
         style: options.style,
         properties: {
-          id: layerId + "_select",
+          id: this.selectLayer.get("id") + "_select",
         },
         source: {
           type: originalJsonDefinition.type,
@@ -99,10 +101,12 @@ export class EOxSelectInteraction {
     }
     // @ts-ignore
     layerDefinition.renderMode = "vector";
+    delete layerDefinition.interactions;
 
-    this.selectStyleLayer = createLayer(layerDefinition as EoxLayer) as
-      | VectorTileLayer
-      | VectorLayer<VectorSource>;
+    this.selectStyleLayer = createLayer(
+      eoxMap,
+      layerDefinition as EoxLayer
+    ) as SelectLayer;
     // @ts-ignore
     this.selectStyleLayer.setSource(this.selectLayer.getSource());
     this.selectStyleLayer.setMap(this.eoxMap.map);
@@ -197,11 +201,9 @@ export class EOxSelectInteraction {
     this.selectLayer.on("change:source", this.changeSourceListener);
 
     this.removeListener = () => {
-      if (!this.eoxMap.getLayerById(layerId)) {
-        this.selectStyleLayer.setMap(null);
-        if (overlay) {
-          this.eoxMap.map.removeOverlay(overlay);
-        }
+      this.selectStyleLayer.setMap(null);
+      if (overlay) {
+        this.eoxMap.map.removeOverlay(overlay);
       }
     };
     this.eoxMap.map.getLayers().on("remove", this.removeListener);
@@ -247,9 +249,15 @@ export class EOxSelectInteraction {
   }
 }
 
+/**
+ * Adds a `select`-interaction to the map.
+ * @param {EOxMap} EOxMap
+ * @param {SelectLayer} selectLayer
+ * @param {SelectOptions} options
+ */
 export function addSelect(
   EOxMap: EOxMap,
-  layerId: string,
+  selectLayer: VectorTileLayer | VectorLayer<VectorSource>,
   options: SelectOptions
 ) {
   if (EOxMap.interactions[options.id]) {
@@ -257,7 +265,7 @@ export function addSelect(
   }
   EOxMap.selectInteractions[options.id] = new EOxSelectInteraction(
     EOxMap,
-    layerId,
+    selectLayer,
     options
   );
 

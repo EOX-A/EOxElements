@@ -1,21 +1,14 @@
 import "../main";
-import vectorLayerStyleJson from "./drawInteraction.json";
+import drawInteractionStyleJson from "./drawInteraction.json";
 import { simulateEvent } from "./utils/events";
 import { Point } from "ol/geom";
 
 describe("draw interaction", () => {
-  beforeEach(() => {
-    cy.mount(
-      `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
-    ).as("eox-map");
-    cy.get("eox-map").and(($el) => {
-      (<EOxMap>$el[0]).addDraw("drawLayer", {
-        id: "drawInteraction",
-        type: "Point",
-      });
-    });
-  });
+  beforeEach(() => {});
   it("adds a draw interaction", () => {
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(drawInteractionStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       // get the interaction via the source key
       const drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
@@ -25,6 +18,9 @@ describe("draw interaction", () => {
   });
 
   it("creates correct geometry", () => {
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(drawInteractionStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
@@ -42,20 +38,27 @@ describe("draw interaction", () => {
   });
 
   it("remove interaction", () => {
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(drawInteractionStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      expect(eoxMap.interactions.drawInteraction).to.exist;
+      expect(eoxMap.interactions.drawInteraction_modify).to.exist;
       (<EOxMap>$el[0]).removeInteraction("drawInteraction");
+      (<EOxMap>$el[0]).removeInteraction("drawInteraction_modify");
+      expect(eoxMap.interactions.drawInteraction).to.not.exist;
+      expect(eoxMap.interactions.drawInteraction_modify).to.not.exist;
     });
   });
 
   it("creates line and measure event", () => {
+    drawInteractionStyleJson[0].interactions[0].options.type = "LineString";
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(drawInteractionStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      eoxMap.removeInteraction("drawInteraction");
-      eoxMap.addDraw("drawLayer", {
-        id: "drawInteraction",
-        type: "LineString",
-      });
-
       eoxMap.addEventListener("drawend", (evt) => {
         // @ts-ignore
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
@@ -85,19 +88,12 @@ describe("draw interaction", () => {
   });
 
   it("creates polygon and measure event", () => {
+    drawInteractionStyleJson[0].interactions[0].options.type = "Polygon";
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(drawInteractionStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      eoxMap.removeInteraction("drawInteraction");
-      eoxMap.addDraw("drawLayer", {
-        id: "drawInteraction",
-        type: "Polygon",
-        style: {
-          "fill-color": "yellow",
-          "stroke-color": "black",
-          "stroke-width": 4,
-        },
-      });
-
       eoxMap.addEventListener("drawend", (evt) => {
         // @ts-ignore
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
@@ -132,20 +128,13 @@ describe("draw interaction", () => {
   });
 
   it("creates box", () => {
+    drawInteractionStyleJson[0].interactions[0].options.type = "Box";
+    drawInteractionStyleJson[0].interactions[0].options.modify = false;
+    cy.mount(
+      `<eox-map layers='${JSON.stringify(drawInteractionStyleJson)}'></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      eoxMap.removeInteraction("drawInteraction");
-      eoxMap.removeInteraction("drawInteraction_modify");
-      eoxMap.addDraw("drawLayer", {
-        id: "drawInteraction",
-        type: "Box",
-        modify: false,
-        style: {
-          "fill-color": "yellow",
-          "stroke-color": "black",
-          "stroke-width": 4,
-        },
-      });
 
       eoxMap.addEventListener("drawend", (evt) => {
         // @ts-ignore
@@ -164,7 +153,7 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerup", -50, -50);
 
       expect(
-        eoxMap.interactions.modify,
+        eoxMap.interactions.drawInteraction_modify,
         "do not add modify if flag is set to false"
       ).to.not.exist;
     });

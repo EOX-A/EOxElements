@@ -10,12 +10,22 @@
     },
     "style": {
       "circle-radius": 10,
-      "circle-fill-color": "red",
+      "circle-fill-color": "yellow",
       "circle-stroke-color": "black",
       "circle-stroke-width": 2,
       "stroke-color": "black",
       "stroke-width": 5,
       "fill-color": "red"
-    }
+    },
+    "interactions": [
+      {
+        "type": "draw",
+        "options": {
+          "id": "drawInteraction",
+          "type": "Point",
+          "modify": true
+        }
+      }
+    ]
   }
 ]

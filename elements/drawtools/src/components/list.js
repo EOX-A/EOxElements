@@ -1,7 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
 import { styleEOX } from "../style.eox";
-import { getDefaultSelectedOption } from "../helpers";
 
 /**
  * Display list of features
@@ -130,25 +129,8 @@ export class EOxDrawToolsList extends LitElement {
   }
 
   firstUpdated() {
-    const isHoverInteractionExist =
-      this.eoxMap?.selectInteractions["draw-hover"];
-    const isClickInteractionExist =
-      this.eoxMap?.selectInteractions["draw-click"];
-
-    /*
-     * Check if interaction exist or not
-     * If not initialize a new interaction for hover and click
-     */
-    if (!isHoverInteractionExist)
-      this.hoverInteraction = this.eoxMap.addSelect(
-        this.layer,
-        getDefaultSelectedOption("draw-hover", "pointermove")
-      );
-    if (!isClickInteractionExist)
-      this.clickInteraction = this.eoxMap.addSelect(
-        this.layer,
-        getDefaultSelectedOption("draw-click", "click", true)
-      );
+    this.hoverInteraction = this.eoxMap.selectInteractions["selectHover"];
+    this.clickInteraction = this.eoxMap.selectInteractions["selectClick"];
 
     // Event trigger when style change due to interaction
     this.hoverInteraction.selectStyleLayer.on("change", () =>
@@ -160,9 +142,6 @@ export class EOxDrawToolsList extends LitElement {
   }
 
   render() {
-    this.hoverInteraction = this.eoxMap.selectInteractions["draw-hover"];
-    this.clickInteraction = this.eoxMap.selectInteractions["draw-click"];
-
     this.hoverId = this.hoverInteraction?.selectedFids[0];
     this.clickId = this.clickInteraction?.selectedFids[0];
 
