@@ -7,15 +7,11 @@ const layersConfig = [
   {
     type: "Vector",
     id: "draw",
-    source: {
-      type: "Vector",
-    },
+    source: { type: "Vector" },
   },
   {
     type: "Tile",
-    source: {
-      type: "OSM",
-    },
+    source: { type: "OSM" },
   },
 ];
 
