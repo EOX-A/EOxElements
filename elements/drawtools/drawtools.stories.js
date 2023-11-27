@@ -9,14 +9,24 @@ export default {
 };
 
 export const Primary = {
+  args: {
+    allowModify: false,
+    multipleFeatures: false,
   render: () => html` <eox-map
+  },
+  render: (args) => html` <eox-map
       id="primary"
       style="width: 400px; height: 300px;"
       layers='[
     {"type":"Tile","source":{"type":"OSM"}}
   ]'
     ></eox-map>
+    <eox-drawtools
+      for="eox-map#primary"
+      .allowModify=${args.allowModify}
+      .multipleFeatures=${args.multipleFeatures}
     <eox-drawtools for="eox-map#primary"></eox-drawtools>`,
+    ></eox-drawtools>`,
 };
 
 /**
@@ -32,6 +42,25 @@ export const MultiPolygon = {
     ]'
     ></eox-map>
     <eox-drawtools for="eox-map#multi" multiple-features></eox-drawtools>`,
+};
+
+/**
+ * By setting the `allow-modify` attribute or `allowModify` property,
+ * the user can modify features after drawing
+ */
+export const ModifyFeatures = {
+  render: () => html` <eox-map
+      id="modify"
+      style="width: 400px; height: 300px;"
+      layers='[
+      {"type":"Tile","source":{"type":"OSM"}}
+    ]'
+    ></eox-map>
+    <eox-drawtools
+      for="eox-map#modify"
+      multiple-features
+      allow-modify
+    ></eox-drawtools>`,
 };
 
 /**
