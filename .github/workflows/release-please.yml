@@ -41,5 +41,5 @@ jobs:
         run: |
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
           npm run build && \
-          npm publish
+          npm publish --access=public
         if: ${{ steps.release.outputs.releases_created }}
