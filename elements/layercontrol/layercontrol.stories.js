@@ -319,7 +319,7 @@ export const ExpandedLayers = {
 export const Tools = {
   args: {},
   render: () => html`
-    <p>Default tools: info, opacity, remove, sort</p>
+    <p>Default tools: info, opacity, config, remove, sort</p>
     <eox-layercontrol for="eox-map#tools"></eox-layercontrol>
     <hr />
     <p>Only one tool: info</p>
@@ -359,6 +359,85 @@ export const Tools = {
           },
         },
       ])}
+    >
+    </eox-map>
+  `,
+};
+
+/**
+ * The "config" tool reads settings passed via the "layerConfig" property,
+ * e.g. rendering a from from a provided JSON schema that allows updating the
+ * source url parameters.
+ */
+export const LayerConfig = {
+  args: {},
+  render: () => html`
+    <eox-layercontrol
+      .tools=${["config"]}
+      for="eox-map#config"
+    ></eox-layercontrol>
+    <hr />
+    <eox-map
+      center="[-7000000, -500000]"
+      zoom="4"
+      id="config"
+      style="width: 400px; height: 300px;"
+      .layers=${[
+        {
+          type: "Tile",
+          properties: {
+            id: "customId",
+            title: "Tile XYZ",
+            layerControlToolsExpand: true,
+            layerConfig: {
+              schema: {
+                type: "object",
+                properties: {
+                  vminmax: {
+                    type: "object",
+                    properties: {
+                      vmin: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 10,
+                        format: "range",
+                      },
+                      vmax: {
+                        type: "number",
+                        minimum: 0,
+                        maximum: 10,
+                        format: "range",
+                      },
+                    },
+                    format: "minmax",
+                  },
+                  cbar: {
+                    type: "string",
+                    enum: ["rain", "temperature"],
+                  },
+                },
+              },
+            },
+          },
+          source: {
+            type: "XYZ",
+            url: "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG:3857&time=2018-01-01T00:00:00Z&vmin=0&vmax=3&cbar=rain",
+            // tileUrlFunction: (tileCoord) => {
+            //   const url =
+            //     "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG%3A3857&time=2018-01-01T00%3A00%3A00Z&vmin=0&vmax=3&cbar=rain";
+            //   return url
+            //     .replace("{z}", tileCoord[0])
+            //     .replace("{x}", tileCoord[1])
+            //     .replace("{y}", tileCoord[2]);
+            // },
+          },
+        },
+        {
+          type: "Tile",
+          source: { type: "OSM" },
+          properties: { title: "Base Map" },
+        },
+      ]}
     >
     </eox-map>
   `,

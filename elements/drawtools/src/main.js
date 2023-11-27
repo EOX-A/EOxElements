@@ -1,4 +1,5 @@
 import { LitElement, html, nothing } from "lit";
+import "./components/list";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
@@ -17,6 +18,7 @@ export class EOxDrawTools extends LitElement {
       layer: { type: String },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
+      showList: { attribute: "show-list", type: Boolean },
       unstyled: { type: Boolean },
     };
   }
@@ -82,6 +84,11 @@ export class EOxDrawTools extends LitElement {
      * Allow adding more than one feature at a time
      */
     this.multipleFeatures = false;
+
+    /**
+     * Show list of features
+     */
+    this.showList = false;
 
     /**
      * Render the element without additional styles
@@ -198,6 +205,20 @@ export class EOxDrawTools extends LitElement {
           discard
         </button>
       </div>
+      ${this.showList && this.drawnFeatures?.length
+        ? html`<eox-drawtools-list
+            .eoxMap=${this.#eoxMap}
+            .olMap=${this.#olMap}
+            .draw=${this.draw}
+            .layer=${this.layer}
+            .drawLayer=${this.drawLayer}
+            .drawnFeatures=${this.drawnFeatures}
+            .modify=${this.modify}
+            .unstyled=${this.unstyled}
+            @changed=${() => this.requestUpdate()}
+          >
+          </eox-drawtools-list>`
+        : nothing}
     `;
   }
 }

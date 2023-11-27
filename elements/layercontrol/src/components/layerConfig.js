@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
-import { live } from "lit/directives/live.js";
+import "../../../jsonform/src/main";
+import { getStartVals, updateUrl } from "../helpers";
 
 /**
  * Layer configuration for an individual layer
@@ -11,7 +12,26 @@ export class EOxLayerControlLayerConfig extends LitElement {
     layer: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
+    layerConfig: { attribute: false },
   };
+
+  /**
+   * data input by the user
+   * @type {{[key: string]: any}}
+   */
+  #data = {};
+
+  /**
+   * data input by the user
+   * @type {{[key: string]: any}}
+   */
+  #startVals = null;
+
+  /**
+   * Original tile url function, if it exist
+   * @type {Function}
+   */
+  #originalTileUrlFunction;
 
   constructor() {
     super();
@@ -32,6 +52,38 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * Renders the element without a shadow root
      */
     this.noShadow = true;
+
+    /**
+     * Layer config for eox-jsonform
+     * @type {{ schema: object, element: string }}
+     */
+    this.layerConfig = null;
+  }
+
+  /**
+   * Handle eox-jsonform change
+   *  @param  {{ detail: { value: string; }; }} e
+   */
+  #handleDataChange(e) {
+    this.#data = e.detail;
+
+    if (this.layer.getSource().getTileUrlFunction()) {
+      if (!this.#originalTileUrlFunction)
+        this.#originalTileUrlFunction = this.layer
+          .getSource()
+          .getTileUrlFunction();
+
+      this.layer
+        .getSource()
+        .setTileUrlFunction((...args) =>
+          updateUrl(this.#originalTileUrlFunction(...args), this.#data)
+        );
+
+      // TODO dont be accessing protected methods!
+      this.layer.getSource().setKey(new Date());
+    }
+
+    this.requestUpdate();
   }
 
   createRenderRoot() {
@@ -39,32 +91,24 @@ export class EOxLayerControlLayerConfig extends LitElement {
   }
 
   render() {
+    if (!this.layerConfig) return ``;
+    this.#startVals = getStartVals(this.layer, this.layerConfig);
+
     return html`
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        value=${live(this.layer?.getOpacity())}
-        @input=${(/** @type {{ target: { value: string; }; }} */ evt) =>
-          this.layer.setOpacity(parseFloat(evt.target.value))}
-      />
-      <button
-        class="delete"
-        @click=${() => {
-          this.layer?.set("layerControlOptional", true);
-          this.layer?.setVisible(false);
-          this.dispatchEvent(
-            new CustomEvent("changed", { detail: this.layer, bubbles: true })
-          );
+      <eox-jsonform
+        .schema=${this.layerConfig.schema}
+        .startVals=${this.#startVals}
+        .options=${{
+          disable_edit_json: true,
+          disable_collapse: true,
+          disable_properties: true,
         }}
-      >
-        x
-      </button>
+        @change=${this.#handleDataChange}
+      ></eox-jsonform>
     `;
   }
 

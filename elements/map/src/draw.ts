@@ -6,6 +6,7 @@ import { LineString, Polygon } from "ol/geom";
 import GeoJSON from "ol/format/GeoJSON";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
+import { getUid } from "ol";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -61,6 +62,10 @@ export function addDraw(
       const area = getArea(geom, { radius: 6378137, projection: "EPSG:3857" });
       e.feature.set("measure", area);
     }
+    const uid = getUid(e.feature);
+    e.feature.set("id", uid);
+    e.feature.setId(uid);
+
     const geoJsonObject = format.writeFeatureObject(e.feature);
     const drawendEvt = new CustomEvent("drawend", {
       detail: {

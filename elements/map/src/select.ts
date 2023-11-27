@@ -23,12 +23,14 @@ export type SelectOptions = Omit<
   style?: import("ol/style/flat.js").FlatStyleLike;
   overlay?: import("ol/Overlay").Options;
   active?: boolean;
+  panIn?: boolean;
 };
 
 export class EOxSelectInteraction {
   eoxMap: EOxMap;
   options: SelectOptions;
   active: boolean;
+  panIn: boolean;
   tooltip: HTMLElement;
   selectedFids: Array<string | number>;
   selectLayer: SelectLayer;
@@ -45,6 +47,7 @@ export class EOxSelectInteraction {
     this.selectLayer = selectLayer;
     this.options = options;
     this.active = options.active;
+    this.panIn = options.panIn || false;
 
     this.tooltip =
       this.eoxMap.querySelector("eox-map-tooltip") || options.overlay?.element;
@@ -120,6 +123,15 @@ export class EOxSelectInteraction {
       return null;
     });
 
+    // Pan into the feature's extend when `panIn` is true
+    const panIntoFeature = (feature: Feature | RenderFeature) => {
+      if (this.panIn) {
+        this.eoxMap.map
+          .getView()
+          .fit(feature.getGeometry().getExtent(), { duration: 750 });
+      }
+    };
+
     const listener = (event: MapBrowserEvent<UIEvent>) => {
       if (event.dragging || !this.active) {
         return;
@@ -128,8 +140,15 @@ export class EOxSelectInteraction {
         .getFeatures(event.pixel)
         .then((features: Array<Feature | RenderFeature>) => {
           const feature = features.length ? features[0] : null;
-          this.selectedFids = feature ? [this.getId(feature)] : [];
-          this.selectStyleLayer.changed();
+
+          const newSelectFids = feature ? [this.getId(feature)] : [];
+          const idChanged = this.selectedFids[0] !== newSelectFids[0];
+          this.selectedFids = newSelectFids;
+
+          if (idChanged) {
+            this.selectStyleLayer.changed();
+            if (feature) panIntoFeature(feature);
+          }
 
           if (overlay) {
             const xPosition =
@@ -249,4 +268,6 @@ export function addSelect(
     selectLayer,
     options
   );
+
+  return EOxMap.selectInteractions[options.id];
 }

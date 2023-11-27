@@ -1,6 +1,8 @@
 import { LitElement, html } from "lit";
+import { when } from "lit/directives/when.js";
 import { customElement, property } from "lit/decorators.js";
 import _debounce from "lodash.debounce";
+import { resetFilter } from "../reset";
 
 @customElement("eox-itemfilter-text")
 export class EOxItemFilterText extends LitElement {
@@ -18,7 +20,7 @@ export class EOxItemFilterText extends LitElement {
       this.filterObject.state[key] = searchInput.value;
     });
     this.filterObject.dirty = true;
-    // this.filterObject.state = searchInput.value;
+    this.filterObject.stringifiedState = searchInput.value;
     this.dispatchEvent(new CustomEvent("filter"));
   };
 
@@ -31,10 +33,8 @@ export class EOxItemFilterText extends LitElement {
       this.renderRoot.querySelector("input[type='text']")
     );
     searchInput.value = "";
-    this.filterObject.keys.forEach((key) => {
-      this.filterObject.state[key] = undefined;
-    });
-    delete this.filterObject.dirty;
+    resetFilter(this.filterObject);
+    this.filterObject.dirty = false;
     this.requestUpdate();
   }
 
@@ -44,15 +44,26 @@ export class EOxItemFilterText extends LitElement {
   }
 
   render() {
-    return html`
-      <input
-        type="text"
-        placeholder="Type something..."
-        data-cy="search"
-        part="input-search"
-        value="${Object.values(this.filterObject.state)[0]}"
-        @input="${this.debouncedInputHandler}"
-      />
-    `;
+    return when(
+      this.filterObject,
+      () => html`
+        <style>
+          input {
+            max-height: 100%;
+          }
+        </style>
+        <input
+          type="text"
+          placeholder="Type something..."
+          data-cy="search"
+          part="input-search"
+          value="${Object.values(this.filterObject.state)[0]}"
+          @input="${this.debouncedInputHandler}"
+          @click=${(evt: Event) => {
+            evt.stopPropagation();
+          }}
+        />
+      `
+    );
   }
 }

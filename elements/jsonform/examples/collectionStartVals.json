@@ -1,0 +1,54 @@
+{
+  "type": "Collection",
+  "id": "absolute-sea-level-heights-baltics-sar-hsu",
+  "stac_version": "1.0.0",
+  "description": "Time series of absolute sea level heights of tide gauge stations involved in the project BALTIC+ Geodetic SAR for Baltic Height System Unification (SAR-HSU). Product details available at: https://www.asg.ed.tum.de/fileadmin/w00cip/iapg/Baltic/SAR-HSU-TN-0019_Dataset_User_Manual.pdf",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json",
+      "title": "Open Science Catalog"
+    },
+    {
+      "rel": "via",
+      "href": "https://www.asg.ed.tum.de/fileadmin/w00cip/iapg/Baltic/SL-ABS.zip",
+      "title": "Access"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json",
+      "title": "Products"
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/osc/v1.0.0-rc.2/schema.json"
+  ],
+  "title": "SL-ABS: Absolute Sea Level Heights_Baltics_Multimission",
+  "osc:themes": ["Oceans"],
+  "osc:missions": ["GOCE", "Sentinel-1", "GLONASS"],
+  "osc:project": "BALTIC+ Geodetic SAR for Baltic Height System Unification (SAR-HSU)",
+  "osc:variables": ["Sea Surface Height Anomaly (SSHA)"],
+  "osc:status": "ongoing",
+  "osc:region": "Baltics",
+  "osc:type": "product",
+  "osc:standard_name": "absolute_sea_level_heights",
+  "created": "2021-07-07T00:00:00Z",
+  "start_datetime": "2020-01-01T00:00:00Z",
+  "end_datetime": "2020-12-31T23:59:59Z",
+  "extent": {
+    "spatial": {
+      "bbox": [9.0405918788, 53.8666553578, 31.3371258934, 66.1535071282]
+    },
+    "temporal": {
+      "interval": [["2020-01-01T00:00:00Z", "2020-12-31T23:59:59Z"]]
+    }
+  },
+  "license": "proprietary",
+  "keywords": [
+    "Sea Surface Topography",
+    "Sea Surface Height",
+    "Sea Surface Height Anomaly (SSHA)"
+  ]
+}

@@ -1,11 +1,20 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { map } from "lit/directives/map.js";
+import { when } from "lit/directives/when.js";
+import { resetFilter } from "../reset";
+import "../autocomplete";
+import "../selectionlist";
 
 @customElement("eox-itemfilter-select")
 export class EOxItemFilterSelect extends LitElement {
   @property()
   filterObject: FilterObject;
+
+  @property({ type: Boolean })
+  inline = false;
+
+  @property({ type: Boolean })
+  unstyled = false;
 
   public reset() {
     this.renderRoot
@@ -15,11 +24,7 @@ export class EOxItemFilterSelect extends LitElement {
           f.checked = false;
         }
       });
-    for (const filter in this.filterObject.state) {
-      // @ts-ignore
-      this.filterObject.state[filter] = false;
-    }
-    delete this.filterObject.dirty;
+    resetFilter(this.filterObject);
     this.requestUpdate();
   }
 
@@ -28,38 +33,62 @@ export class EOxItemFilterSelect extends LitElement {
     return this;
   }
 
+  _getItems(): FilterObject[] {
+    return Object.keys(this.filterObject.state)
+      .sort((a, b) => a.localeCompare(b))
+      .map((i) => ({
+        id: i,
+        title: i.replace(/^./, i[0].toUpperCase()),
+      }));
+  }
+
+  _getSelectedItems(): FilterObject[] {
+    return Object.keys(this.filterObject.state)
+      .filter((i) => this.filterObject.state[i])
+      .map((i) => ({
+        id: i,
+        title: i.replace(/^./, i[0].toUpperCase()),
+      }));
+  }
+
+  _handleSelected(evt: CustomEvent) {
+    Object.keys(this.filterObject.state).forEach((k) => {
+      this.filterObject.state[k] = (<FilterObject[]>evt.detail)
+        .map((i) => i.id)
+        .includes(k);
+    });
+    this.filterObject.stringifiedState = Object.keys(
+      this.filterObject.state
+    ).filter((k) => this.filterObject.state[k])[0];
+    this.filterObject.dirty = true;
+    this.dispatchEvent(new CustomEvent("filter"));
+  }
+
   render() {
-    return html`
-      <ul>
-        ${map(
-          Object.keys(this.filterObject.state).sort((a, b) =>
-            a.localeCompare(b)
-          ),
-          (key) => html`
-            <li class=${this.filterObject.state[key] ? "highlighted" : nothing}>
-              <label>
-                <input
-                  name="selection"
-                  type="radio"
-                  class="select-radio"
-                  id=${key}
-                  checked="${this.filterObject.state[key] || nothing}"
-                  @click=${() => {
-                    for (const el in this.filterObject.state) {
-                      // @ts-ignore
-                      this.filterObject.state[el] = el === key;
-                    }
-                    this.filterObject.dirty = true;
-                    this.dispatchEvent(new CustomEvent("filter"));
-                    this.requestUpdate();
-                  }}
-                />
-                <span class="title">${key}</span>
-              </label>
-            </li>
+    return when(
+      this.filterObject,
+      () => html`
+        ${when(
+          this.inline || Object.keys(this.filterObject.state).length > 1,
+          () => html`
+            <eox-autocomplete
+              .items=${this._getItems()}
+              .selectedItems=${this._getSelectedItems()}
+              .unstyled=${this.unstyled}
+              @items-selected=${(evt: CustomEvent) => this._handleSelected(evt)}
+            >
+            </eox-autocomplete>
+          `,
+          () => html`
+            <eox-selectionlist
+              .items=${this._getItems()}
+              .selectedItems=${this._getSelectedItems()}
+              .unstyled=${this.unstyled}
+              @items-selected=${(evt: CustomEvent) => this._handleSelected(evt)}
+            ></eox-selectionlist>
           `
         )}
-      </ul>
-    `;
+      `
+    );
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@eox/map",
-  "version": "0.8.3",
+  "version": "0.9.1",
   "type": "module",
   "dependencies": {
     "lit": "^3.0.2",
@@ -15,7 +15,7 @@
     "@typescript-eslint/parser": "^6.8.0",
     "eslint-plugin-typescript": "^0.14.0",
     "typescript": "^5.2.2",
-    "vite": "^4.0.0"
+    "vite": "^5.0.2"
   },
   "engines": {
     "npm": ">=8.0.0",
