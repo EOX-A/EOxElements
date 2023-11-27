@@ -70,14 +70,14 @@ export class EOxSelectInteraction {
         overlay.setPosition(undefined);
       };
       eoxMap.map.on("change:target", (e) => {
-        e.oldValue.removeEventListener("pointerleave", pointerLeaveListener);
+        e.oldValue?.removeEventListener("pointerleave", pointerLeaveListener);
         e.target
           .getTargetElement()
-          .addEventListener("pointerleave", pointerLeaveListener);
+          ?.addEventListener("pointerleave", pointerLeaveListener);
       });
       eoxMap.map
         .getTargetElement()
-        .addEventListener("pointerleave", pointerLeaveListener);
+        ?.addEventListener("pointerleave", pointerLeaveListener);
     }
 
     // a layer that only contains the selected features, for displaying purposes only
