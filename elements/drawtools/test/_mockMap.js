@@ -17,6 +17,7 @@ export class MockMap extends HTMLElement {
         },
       ],
     }),
+    removeLayer() {},
   };
   addOrUpdateLayer = () => this.map.getLayers().getArray()[0];
   interactions = {
