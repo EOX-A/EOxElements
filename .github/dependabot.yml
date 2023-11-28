@@ -11,6 +11,10 @@ updates:
         patterns:
           - "storybook"
           - "@storybook*"
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types*"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

@@ -5,8 +5,7 @@ import View from "ol/View.js";
 // @ts-ignore
 
 import olCss from "ol/ol.css?inline";
-import { DrawOptions, addDraw } from "./src/draw";
-import { EOxSelectInteraction, SelectOptions, addSelect } from "./src/select";
+import { EOxSelectInteraction } from "./src/select";
 import {
   generateLayers,
   EoxLayer,
@@ -27,25 +26,25 @@ export class EOxMap extends LitElement {
    * Map center, can be lon/lat or UTM
    */
   @property({ type: Array })
-  center: Array<number>;
+  center: Array<number> = [0, 0];
 
   /**
    * Map controls
    */
   @property({ type: Object })
-  controls: object;
+  controls: object = {};
 
   /**
    * Layers array
    */
   @property({ type: Array })
-  layers: Array<EoxLayer>;
+  layers: Array<EoxLayer> = [];
 
   /**
    * Map zoom
    */
   @property({ type: Number })
-  zoom: number;
+  zoom: number = 0;
 
   /**
    * Sync map with another map view by providing its query selector
@@ -87,11 +86,11 @@ export class EOxMap extends LitElement {
 
   /**
    * Apply layers Eox Layer JSONs
-   * @param json array of EoxLayer JSONs
-   * @returns the array of layers
+   * @param {Array<EoxLayer>} json array of EoxLayer JSONs
+   * @returns {Array<*>} the array of ol layers
    */
   setLayers = (json: Array<EoxLayer>) => {
-    const layers = generateLayers(json);
+    const layers = generateLayers(this, json);
     this.map.setLayers(layers);
     return layers;
   };
@@ -107,31 +106,13 @@ export class EOxMap extends LitElement {
     const existingLayer = getLayerById(this, id);
     let layer;
     if (existingLayer) {
-      updateLayer(json, existingLayer);
+      updateLayer(this, json, existingLayer);
       layer = existingLayer;
     } else {
-      layer = createLayer(json);
+      layer = createLayer(this, json);
       this.map.addLayer(layer);
     }
     return layer;
-  };
-
-  /**
-   * Adds draw functionality to a given vector layer.
-   * @param layerId id of a vector layer to draw on
-   * @param options options
-   */
-  addDraw = (layerId: string, options: DrawOptions) => {
-    addDraw(this, layerId, options);
-  };
-
-  /**
-   * Adds a select functionality a given vector layer.
-   * @param layerId id of a vector layer to select features from
-   * @param options options (to do: define select options)
-   */
-  addSelect = (layerId: string, options: SelectOptions) => {
-    return addSelect(this, layerId, options);
   };
 
   /**
@@ -204,7 +185,7 @@ export class EOxMap extends LitElement {
     addInitialControls(this);
 
     if (this.layers) {
-      this.map.setLayers(generateLayers(this.layers));
+      this.map.setLayers(generateLayers(this, this.layers));
     }
     if (this.sync) {
       const originMap: EOxMap = document.querySelector(this.sync);

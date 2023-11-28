@@ -15,11 +15,21 @@ export type DrawOptions = Omit<
   id: string | number;
   type: "Point" | "LineString" | "Polygon" | "Circle" | "Box";
   modify?: boolean;
+  // TODO
+  active?: boolean;
 };
 
+/**
+ * Adds a `draw`-interaction to the map.
+ * Additionally, if {options.modify} is set, it also adds a `modify` interaction. The name `modify`-interaction
+ * follows the naming convention `${DrawOptions.id}_modify`
+ * @param {EOxMap} EOxMap
+ * @param {VectorLayer<VectorSource>} drawLayer
+ * @param {DrawOptions} options
+ */
 export function addDraw(
   EOxMap: EOxMap,
-  layerId: string,
+  drawLayer: VectorLayer<VectorSource>,
   options: DrawOptions
 ): void {
   const options_ = Object.assign({}, options);
@@ -28,10 +38,6 @@ export function addDraw(
   }
   options_.modify =
     typeof options_.modify === "boolean" ? options_.modify : true;
-
-  const map = EOxMap.map;
-
-  const drawLayer = EOxMap.getLayerById(layerId) as VectorLayer<VectorSource>;
 
   const source = drawLayer.getSource();
 
@@ -44,6 +50,11 @@ export function addDraw(
     ...options_,
     source,
   } as import("ol/interaction/Draw").Options);
+
+  // TODO cleaner way of initializing as inactive?
+  if (options_.active === false) {
+    drawInteraction.setActive(false);
+  }
 
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {
@@ -73,14 +84,14 @@ export function addDraw(
   });
 
   // identifier to retrieve the interaction
-  map.addInteraction(drawInteraction);
+  EOxMap.map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
 
   if (options_.modify) {
     const modifyInteraction = new Modify({
       source,
     });
-    map.addInteraction(modifyInteraction);
+    EOxMap.map.addInteraction(modifyInteraction);
     EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
   }
 }

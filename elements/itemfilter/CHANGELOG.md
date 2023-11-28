@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.10.1...itemfilter-v0.10.2) (2023-11-27)
+
+
+### Miscellaneous Chores
+
+* Adaptations to new map interaction API ([#400](https://github.com/EOX-A/EOxElements/issues/400)) ([808539b](https://github.com/EOX-A/EOxElements/commit/808539b5846b6ac010e3bd7686c0aaf1c5c86cf9))
+
 ## [0.10.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.10.0...itemfilter-v0.10.1) (2023-11-20)
 
 
