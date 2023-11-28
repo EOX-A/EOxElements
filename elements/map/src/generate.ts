@@ -152,6 +152,12 @@ export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
   return olLayer;
 }
 
+/**
+ * updates an existing layer
+ * @param {EoxLayer} newLayerDefinition
+ * @param {olLayers.Layer} existingLayer
+ * @returns {existingLayer}
+ */
 export function updateLayer(
   EOxMap: EOxMap,
   newLayerDefinition: EoxLayer,
@@ -198,6 +204,30 @@ export function updateLayer(
     existingLayer.setOpacity(newLayerDefinition.opacity);
   }
   setSyncListeners(existingLayer, newLayerDefinition);
+
+  if (newLayerDefinition.type === "Group") {
+    const newLayerIds = newLayerDefinition.layers.map((l) => l.properties.id);
+    // remove all layers from the group that do not exist in the new layer definition
+    //@ts-ignore
+    const layerCollection = existingLayer.getLayers();
+    layerCollection.forEach((l: olLayers.Layer) => {
+      if (!newLayerIds.includes(l.get("id"))) {
+        layerCollection.remove(l);
+      }
+    });
+
+    // after all layers were added/updated/deleted, rearrange them in the correct order
+    layerCollection
+      .getArray()
+      .sort((layerA: olLayers.Layer, layerB: olLayers.Layer) => {
+        return (
+          // change this order?  the reverse order, because we want the topmost layer to be on top
+          newLayerIds.indexOf(layerA.get("id")) -
+          newLayerIds.indexOf(layerB.get("id"))
+        );
+      });
+    layerCollection.changed();
+  }
   return existingLayer;
 }
 

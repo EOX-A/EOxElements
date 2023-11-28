@@ -16,7 +16,11 @@ import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromProperty } from "./src/center";
-import { addInitialControls } from "./src/controls";
+import {
+  addOrUpdateControl,
+  controlDictionary,
+  controlType,
+} from "./src/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
 
@@ -31,14 +35,77 @@ export class EOxMap extends LitElement {
   /**
    * Map controls
    */
-  @property({ attribute: false, type: Object })
-  controls: object = {};
+  private _controls: controlDictionary;
 
-  /**
-   * Layers array
-   */
-  @property({ attribute: false, type: Array })
-  layers: Array<EoxLayer> = [];
+  set controls(controls: controlDictionary) {
+    const oldControls = this._controls;
+    const newControls = controls;
+
+    // remove controls that are not defined anymore
+    if (oldControls) {
+      const oldControlTypes = Object.keys(oldControls);
+      const newControlTypes = Object.keys(newControls);
+      for (let i = 0, ii = oldControlTypes.length; i < ii; i++) {
+        const oldControlType = oldControlTypes[i];
+        if (!newControlTypes.includes(oldControlType)) {
+          this.removeControl(oldControlType);
+        }
+      }
+    }
+    if (newControls) {
+      const keys = Object.keys(controls);
+      for (let i = 0, ii = keys.length; i < ii; i++) {
+        const key = keys[i] as controlType;
+        addOrUpdateControl(this, oldControls, key, controls[key]);
+      }
+    }
+    this._controls = newControls;
+  }
+
+  get controls() {
+    return this._controls;
+  }
+
+  private _layers: Array<EoxLayer>;
+
+  set layers(layers: Array<EoxLayer>) {
+    const oldLayers = this._layers;
+    const newLayers = layers;
+    newLayers.forEach((l) => {
+      this.addOrUpdateLayer(l);
+      // + recursive for groups
+    });
+
+    // remove layers that are not defined anymore
+    if (oldLayers) {
+      oldLayers.forEach((l: EoxLayer) => {
+        if (
+          !newLayers.find(
+            (newLayer) => newLayer.properties.id === l.properties.id
+          )
+        ) {
+          const layerToBeRemoved = getLayerById(this, l.properties.id);
+          this.map.removeLayer(layerToBeRemoved);
+        }
+      });
+    }
+    // after all layers were added/updated/deleted, rearrange them in the correct order
+    const sortedIds = newLayers.map((l) => l.properties.id);
+    this.map
+      .getLayers()
+      .getArray()
+      .sort((layerA, layerB) => {
+        return (
+          sortedIds.indexOf(layerA.get("id")) -
+          sortedIds.indexOf(layerB.get("id"))
+        );
+      });
+  }
+
+  @property({ type: Array })
+  get layers() {
+    return this._layers;
+  }
 
   /**
    * Map zoom
@@ -171,7 +238,7 @@ export class EOxMap extends LitElement {
   }
 
   firstUpdated() {
-    addInitialControls(this);
+    //addInitialControls(this);
 
     if (this.layers) {
       this.map.setLayers(generateLayers(this, this.layers));
@@ -204,12 +271,6 @@ export class EOxMap extends LitElement {
   ): void {
     if (_changedProperties.has("center")) {
       this.map.getView().setCenter(getCenterFromProperty(this.center));
-    }
-    if (_changedProperties.has("controls")) {
-      // TODO reactive controls
-    }
-    if (_changedProperties.has("layers")) {
-      this.setLayers(this.layers);
     }
     if (_changedProperties.has("zoom")) {
       this.map.getView().setZoom(this.zoom || 0);
