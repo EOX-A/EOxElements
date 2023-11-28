@@ -1,26 +1,25 @@
 import { html } from "lit";
 import "../../map/main";
 import "../src/main";
-
-const layersConfig = [
-  {
-    type: "Vector",
-    id: "draw",
-    source: { type: "Vector" },
-  },
-  {
-    type: "Tile",
-    source: { type: "OSM" },
-  },
-];
+import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const Primary = {
-  render: () => html`<eox-map
+  args: {
+    allowModify: false,
+    multipleFeatures: false,
+    type: "Polygon",
+  },
+  render: (args) => html`<eox-map
       id="primary"
-      .layers=${layersConfig}
-      style="width: 400px; height: 300px;"
+      style=${STORIES_MAP_STYLE}
+      .layers=${STORIES_LAYERS_ARRAY}
     />
-    <eox-drawtools for="eox-map#primary" layer="draw" />`,
+    <eox-drawtools
+      for="eox-map#primary"
+      .allowModify=${args.allowModify}
+      .multipleFeatures=${args.multipleFeatures}
+      .type=${args.type}
+    />`,
 };
 
 export default Primary;

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.0...layercontrol-v0.11.1) (2023-11-23)
+
+
+### Bug Fixes
+
+* Handle `tileUrlFunction()` use case for `layerConfig` ([#451](https://github.com/EOX-A/EOxElements/issues/451)) ([0e75e6d](https://github.com/EOX-A/EOxElements/commit/0e75e6d818f02dcda086eed3fc60937aa2c175f9))
+* Use default rendering for config tool button ([4879325](https://github.com/EOX-A/EOxElements/commit/4879325a3c401bfe9f2864cf9d9fc87030ef7db2))
+
 ## [0.11.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.10.0...layercontrol-v0.11.0) (2023-11-21)
 
 
