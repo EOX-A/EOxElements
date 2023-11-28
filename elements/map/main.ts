@@ -208,4 +208,23 @@ export class EOxMap extends LitElement {
       this.dispatchEvent(loadEvt);
     });
   }
+
+  protected updated(
+    _changedProperties:
+      | PropertyValueMap<any>
+      | globalThis.Map<PropertyKey, unknown>
+  ): void {
+    if (_changedProperties.has("center")) {
+      this.map.getView().setCenter(getCenterFromProperty(this.center));
+    }
+    if (_changedProperties.has("controls")) {
+      // TODO reactive controls
+    }
+    if (_changedProperties.has("layers")) {
+      this.setLayers(this.layers);
+    }
+    if (_changedProperties.has("zoom")) {
+      this.map.getView().setZoom(this.zoom || 0);
+    }
+  }
 }
