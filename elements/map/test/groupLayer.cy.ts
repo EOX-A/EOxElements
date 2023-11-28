@@ -1,50 +1,53 @@
+import { html } from "lit";
 import "../main";
 
 describe("layers", () => {
-  it("loads a Vector Layer", () => {
+  it("loads a Vector Layer in a group", () => {
     cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
       fixture: "/ecoregions.json",
     });
     cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
-      `<eox-map layers='[
-        {
-          "type": "Group",
-          "properties": {
-            "id": "group"
-          },
-          "layers": [
-            {
-              "type": "Vector",
-              "properties": {
-                "id": "regions"
-              },
-              "source": {
-                "type": "Vector",
-                "url": "https://openlayers.org/data/vector/ecoregions.json",
-                "format": "GeoJSON"
-              }
+      html`<eox-map
+        .layers=${[
+          {
+            type: "Group",
+            properties: {
+              id: "group",
             },
-            {
-              "type": "Group",
-              "properties": {
-                "id": "groupLayerInsideGroup"
+            layers: [
+              {
+                type: "Vector",
+                properties: {
+                  id: "regions",
+                },
+                source: {
+                  type: "Vector",
+                  url: "https://openlayers.org/data/vector/ecoregions.json",
+                  format: "GeoJSON",
+                },
               },
-              "layers": [
-                {
-                  "type": "Tile",
-                  "properties": {
-                    "id": "layerInsideGroupInsideGroup"
+              {
+                type: "Group",
+                properties: {
+                  id: "groupLayerInsideGroup",
+                },
+                layers: [
+                  {
+                    type: "Tile",
+                    properties: {
+                      id: "layerInsideGroupInsideGroup",
+                    },
+                    source: {
+                      type: "OSM",
+                    },
                   },
-                  "source": {
-                    "type": "OSM"
-                  }
-                }
-              ]
-            }
-          ]
-        }
-      ]'></eox-map>`
+                ],
+              },
+            ],
+          },
+        ]}
+      ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];

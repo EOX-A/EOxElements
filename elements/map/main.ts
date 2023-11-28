@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, PropertyValueMap, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
@@ -15,7 +15,7 @@ import {
 import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
-import { getCenterFromAttribute } from "./src/center";
+import { getCenterFromProperty } from "./src/center";
 import { addInitialControls } from "./src/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
@@ -25,25 +25,25 @@ export class EOxMap extends LitElement {
   /**
    * Map center, can be lon/lat or UTM
    */
-  @property({ type: Array })
+  @property({ attribute: false, type: Array })
   center: Array<number> = [0, 0];
 
   /**
    * Map controls
    */
-  @property({ type: Object })
+  @property({ attribute: false, type: Object })
   controls: object = {};
 
   /**
    * Layers array
    */
-  @property({ type: Array })
+  @property({ attribute: false, type: Array })
   layers: Array<EoxLayer> = [];
 
   /**
    * Map zoom
    */
-  @property({ type: Number })
+  @property({ attribute: false, type: Number })
   zoom: number = 0;
 
   /**
@@ -194,7 +194,7 @@ export class EOxMap extends LitElement {
       }
     } else {
       if (this.center) {
-        this.map.getView().setCenter(getCenterFromAttribute(this.center));
+        this.map.getView().setCenter(getCenterFromProperty(this.center));
       }
       if (this.zoom) {
         this.map.getView().setZoom(this.zoom);

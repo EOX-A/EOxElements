@@ -1,15 +1,16 @@
+import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 
 describe("layers", () => {
-  it("loads a Vector Layer", () => {
+  it("syncs properties", () => {
     cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
       fixture: "/ecoregions.json",
     });
     vectorLayerStyleJson[0].visible = false;
-    cy.mount(
-      `<eox-map layers='${JSON.stringify(vectorLayerStyleJson)}'></eox-map>`
-    ).as("eox-map");
+    cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
+      "eox-map"
+    );
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       const layer = eoxMap.getLayerById("regions");

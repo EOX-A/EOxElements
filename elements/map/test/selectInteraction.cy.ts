@@ -1,3 +1,4 @@
+import { html } from "lit";
 import "../main";
 import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
 import vectorLayerJson from "./vectorLayer.json";
@@ -34,9 +35,7 @@ describe("select interaction on click", () => {
           },
         },
       ];
-      cy.mount(`<eox-map layers='${JSON.stringify(styleJson)}'></eox-map>`).as(
-        "eox-map"
-      );
+      cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
       cy.get("eox-map").and(($el) => {
         const eoxMap = <EOxMap>$el[0];
         eoxMap.addEventListener("select", (evt) => {
@@ -69,9 +68,7 @@ describe("select interaction on click", () => {
         },
       },
     ];
-    cy.mount(`<eox-map layers='${JSON.stringify(styleJson)}'></eox-map>`).as(
-      "eox-map"
-    );
+    cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
 

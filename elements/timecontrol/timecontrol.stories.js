@@ -33,34 +33,38 @@ export const Primary = {
       "2023-04-17",
       "2023-04-24",
     ],
+    // map
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_NO2-VISUALISATION",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_NO2-VISUALISATION",
+          },
+        },
+      },
+      {
+        type: "Tile",
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+    center: [1000000, 6000000],
+    zoom: 3,
   },
   render: (args) => html`
     <eox-map
       id="primary"
       style="width: 400px; height: 300px;"
-      zoom="3"
-      center="[1000000, 6000000]"
-      layers='[
-    {
-      "type": "Tile",
-      "properties": {
-        "id":"AWS_NO2-VISUALISATION"
-      },
-      "source": {
-        "type": "TileWMS",
-        "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-        "params": {
-          "LAYERS": "AWS_NO2-VISUALISATION"
-        }
-      }
-    },
-    {
-      "type":"Tile",
-      "source":{
-        "type":"OSM"
-      }
-    }
-  ]'
+      .zoom=${args.zoom}
+      .center=${args.center}
+      .layers=${args.layers}
     ></eox-map>
     <eox-timecontrol
       .for=${args.for}
@@ -82,29 +86,9 @@ export const Slider = {
     <eox-map
       id="slider"
       style="width: 400px; height: 300px;"
-      zoom="3"
-      center="[1000000, 6000000]"
-      layers='[
-{
-  "type": "Tile",
-  "properties": {
-    "id":"AWS_NO2-VISUALISATION"
-  },
-  "source": {
-    "type": "TileWMS",
-    "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-    "params": {
-      "LAYERS": "AWS_NO2-VISUALISATION"
-    }
-  }
-},
-{
-  "type":"Tile",
-  "source":{
-    "type":"OSM"
-  }
-}
-]'
+      .zoom=${args.zoom}
+      .center=${args.center}
+      .layers=${args.layers}
     ></eox-map>
     <eox-timecontrol
       .for=${args.for}

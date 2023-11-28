@@ -18,7 +18,7 @@ type controlDictionary = {
 };
 
 /**
- * adds initial controls from webcomponent attributes, if any are given.
+ * adds initial controls from webcomponent properties, if any are given.
  */
 export function addInitialControls(EOxMap: EOxMap) {
   const controls = EOxMap.controls as controlDictionary | Array<controlType>;

@@ -17,9 +17,7 @@ export const Primary = {
   render: (args) => html` <eox-map
       id="primary"
       style="width: 400px; height: 300px;"
-      layers='[
-    {"type":"Tile","source":{"type":"OSM"}}
-  ]'
+      .layers=${[{ type: "Tile", source: { type: "OSM" } }]}
     ></eox-map>
     <eox-drawtools
       for="eox-map#primary"
@@ -38,9 +36,7 @@ export const MultiPolygon = {
   render: () => html` <eox-map
       id="multi"
       style="width: 400px; height: 300px;"
-      layers='[
-      {"type":"Tile","source":{"type":"OSM"}}
-    ]'
+      .layers=${[{ type: "Tile", source: { type: "OSM" } }]}
     ></eox-map>
     <eox-drawtools for="eox-map#multi" multiple-features></eox-drawtools>`,
 };
@@ -53,9 +49,7 @@ export const ModifyFeatures = {
   render: () => html` <eox-map
       id="modify"
       style="width: 400px; height: 300px;"
-      layers='[
-      {"type":"Tile","source":{"type":"OSM"}}
-    ]'
+      .layers=${[{ type: "Tile", source: { type: "OSM" } }]}
     ></eox-map>
     <eox-drawtools
       for="eox-map#modify"
@@ -74,9 +68,7 @@ export const DrawType = {
       <eox-map
         id="box"
         style="width: 400px; height: 300px;"
-        layers='[
-        {"type":"Tile","source":{"type":"OSM"}}
-      ]'
+        .layers=${[{ type: "Tile", source: { type: "OSM" } }]}
       ></eox-map>
       Box
       <eox-drawtools
@@ -90,9 +82,7 @@ export const DrawType = {
       <eox-map
         id="point"
         style="width: 400px; height: 300px;"
-        layers='[
-        {"type":"Tile","source":{"type":"OSM"}}
-      ]'
+        .layers=${[{ type: "Tile", source: { type: "OSM" } }]}
       ></eox-map>
       Point
       <eox-drawtools
@@ -106,9 +96,7 @@ export const DrawType = {
       <eox-map
         id="circle"
         style="width: 400px; height: 300px;"
-        layers='[
-        {"type":"Tile","source":{"type":"OSM"}}
-      ]'
+        .layers=${[{ type: "Tile", source: { type: "OSM" } }]}
       ></eox-map>
       Circle
       <eox-drawtools
@@ -122,9 +110,7 @@ export const DrawType = {
       <eox-map
         id="linestring"
         style="width: 400px; height: 300px;"
-        layers='[
-        {"type":"Tile","source":{"type":"OSM"}}
-      ]'
+        .layers=${[{ type: "Tile", source: { type: "OSM" } }]}
       ></eox-map>
       LineString
       <eox-drawtools
@@ -147,14 +133,14 @@ export const MultiPolygonWithList = {
       <eox-map
         id="list"
         style="width: 500px; height: 300px;"
-        layers=${JSON.stringify([
+        .layers=${[
           {
             type: "Tile",
             source: {
               type: "OSM",
             },
           },
-        ])}
+        ]}
       ></eox-map>
       <eox-drawtools
         for="eox-map#list"

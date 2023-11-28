@@ -1,3 +1,4 @@
+import { html } from "lit";
 import "../main";
 import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
@@ -14,12 +15,14 @@ describe("layers", () => {
       "stroke-width": 2,
     };
     cy.mount(
-      `<eox-map zoom=5 center="[20, 50]" layers='${JSON.stringify(
-        vectorLayerStyleJson
-      )}'></eox-map>`
+      html`<eox-map
+        .zoom=${5}
+        .center=${[20, 50]}
+        .layers=${vectorLayerStyleJson}
+      ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const updatedLayerJson = vectorLayerStyleJson[0];
+      const updatedLayerJson = { ...vectorLayerStyleJson[0] };
       // @ts-ignore
       updatedLayerJson.style = [
         {

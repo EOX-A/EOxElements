@@ -7,7 +7,7 @@ describe("Layer Switcher", () => {
     cy.fixture("agri.json").then((layers) => {
       cy.get("eox-map").then(($el) => {
         const eoxMap = $el[0];
-        eoxMap.setLayers(layers);
+        eoxMap.layers = layers;
         cy.get("eox-drawtools")
           .shadow()
           .within(() => {
@@ -33,13 +33,13 @@ describe("Layer Switcher", () => {
     });
   });
 
-  it("adapts to setLayers with changed layer id", () => {
+  it("adapts to changed layers property with changed layer id", () => {
     cy.fixture("agri.json").then((layers) => {
       layers[0].properties.id = "changedId";
 
       cy.get("eox-map").then(($el) => {
         const eoxMap = $el[0];
-        eoxMap.setLayers(layers);
+        eoxMap.layers = layers;
 
         cy.get("eox-layercontrol")
           .shadow()
@@ -53,7 +53,7 @@ describe("Layer Switcher", () => {
     });
   });
 
-  it("adapts to setLayers with changed layer id inside group", () => {
+  it("adapts to changed layers property with changed layer id inside group", () => {
     cy.fixture("agri.json").then((layers) => {
       const groupLayerIndex = layers.findIndex(
         (layer) => layer.type === "Group"
@@ -62,7 +62,7 @@ describe("Layer Switcher", () => {
 
       cy.get("eox-map").then(($el) => {
         const eoxMap = $el[0];
-        eoxMap.setLayers(layers);
+        eoxMap.layers = layers;
 
         cy.get("eox-layercontrol")
           .shadow()

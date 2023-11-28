@@ -1,3 +1,4 @@
+import { html } from "lit";
 import "../main";
 import { EoxLayer } from "../src/generate";
 
@@ -8,7 +9,11 @@ describe("Map", () => {
     });
     cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
-      `<eox-map layers='[{"type":"Tile","properties": {"id": "osm"}, "source":{"type":"OSM"}}]'></eox-map>`
+      html`<eox-map
+        .layers=${[
+          { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+        ]}
+      ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
       const layerDefinition = {
