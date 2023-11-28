@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import "./components/list";
+import "./components/controller";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
@@ -223,40 +224,28 @@ export class EOxDrawTools extends LitElement {
   }
 
   render() {
+    this.showList = Boolean(this.drawnFeatures?.length);
+
     return html`
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
-      <div>
-        <slot></slot>
-        <button
-          data-cy="drawBtn"
-          class="polygon icon"
-          disabled="${(!this.multipleFeatures &&
-            this.drawnFeatures?.length > 0) ||
-          this.currentlyDrawing ||
-          nothing}"
-          @click="${() => this.startDrawing()}"
-        >
-          ${this.currentlyDrawing ? "drawing" : "draw"}
-        </button>
-        <button
-          data-cy="discardBtn"
-          class="discard icon"
-          disabled="${(!this.drawnFeatures?.length && !this.currentlyDrawing) ||
-          nothing}"
-          @click="${() => this.discardDrawing()}"
-        >
-          discard
-        </button>
-      </div>
-      ${this.showList && this.drawnFeatures?.length
+      <eox-drawtools-controller
+        .drawFunc=${{
+          start: () => this.startDrawing(),
+          discard: () => this.discardDrawing(),
+        }}
+        .unstyled=${this.unstyled}
+        .drawnFeatures=${this.drawnFeatures}
+        .currentlyDrawing=${this.currentlyDrawing}
+        .multipleFeatures=${this.multipleFeatures}
+      ></eox-drawtools-controller>
+      ${this.showList
         ? html`<eox-drawtools-list
             .eoxMap=${this.#eoxMap}
             .olMap=${this.#olMap}
             .draw=${this.draw}
-            .layer=${this.layer}
             .drawLayer=${this.drawLayer}
             .drawnFeatures=${this.drawnFeatures}
             .modify=${this.modify}

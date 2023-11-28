@@ -12,7 +12,6 @@ export class EOxDrawToolsList extends LitElement {
     eoxMap: { attribute: false, state: true },
     olMap: { attribute: false, state: true },
     draw: { attribute: false, state: true },
-    layer: { type: String },
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
     modify: { attribute: false, state: true },
@@ -58,12 +57,6 @@ export class EOxDrawToolsList extends LitElement {
      */
 
     this.draw = null;
-
-    /**
-     * The layer id of the draw layer
-     * @default draw
-     */
-    this.layer = "draw";
 
     /**
      * The current native OpenLayers draw `layer`
