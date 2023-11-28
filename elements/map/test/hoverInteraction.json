@@ -1,7 +1,9 @@
 [
   {
     "type": "Vector",
-    "id": "regions",
+    "properties": {
+      "id": "regions"
+    },
     "source": {
       "type": "Vector",
       "url": "https://openlayers.org/data/vector/ecoregions.json",
