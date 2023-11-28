@@ -45,6 +45,23 @@ export class EOxLayerControlOptionalList extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  firstUpdated() {
+    const arr = this.layers.getArray();
+    let i = 0;
+    while (i < arr.length) {
+      if (
+        arr[i].get("layerControlHide") ||
+        arr[i].get("layerControlOptional")
+      ) {
+        const removed = this.layers.remove(arr[i]);
+        if (removed) {
+          this.layers.insertAt(0, removed);
+        }
+      }
+      i++;
+    }
+  }
+
   render() {
     return html`
       <label for="optional">Optional layers</label>

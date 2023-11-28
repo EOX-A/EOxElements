@@ -78,6 +78,20 @@ export class EOxLayerControlLayerList extends LitElement {
     this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
   }, 50);
 
+  /**
+   * EOxLayerControlLayer & EOxLayerControlLayerGroup changed event handler
+   * @param {CustomEvent} e
+   **/
+  #handleLayerChanged = (e) => {
+    if (e.detail) {
+      const removed = this.layers.remove(e.detail);
+      if (removed) {
+        this.layers.insertAt(0, removed);
+      }
+    }
+    this.requestUpdate();
+  };
+
   firstUpdated() {
     if (!this.layers) {
       return;
@@ -135,7 +149,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
-                            @changed=${() => this.requestUpdate()}
+                            @changed=${this.#handleLayerChanged}
                           >
                           </eox-layercontrol-layer-group>
                         `
@@ -148,9 +162,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
-                            @changed=${() => {
-                              this.requestUpdate();
-                            }}
+                            @changed=${this.#handleLayerChanged}
                           ></eox-layercontrol-layer>
                         `
                   }

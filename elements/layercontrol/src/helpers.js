@@ -6,7 +6,7 @@ import Sortable from "sortablejs";
  * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} layers
  * @param {import("lit").LitElement} that
  */
-export const createSortable = (element, layers,that) => {
+export const createSortable = (element, layers, that) => {
   /**
    * @type {any[]}
    */
@@ -52,7 +52,7 @@ export const createSortable = (element, layers,that) => {
       );
       layers.remove(layer);
       layers.insertAt(layers.getLength() - e.newIndex, layer);
-      that.requestUpdate()
+      that.requestUpdate();
     },
   });
 };
