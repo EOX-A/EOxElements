@@ -15,7 +15,7 @@ describe("Map", () => {
         ]}
       ></eox-map>`
     ).as("eox-map");
-    cy.get("eox-map").and(async ($el) => {
+    cy.get("eox-map").and(($el) => {
       const layerDefinition = {
         type: "Vector",
         properties: {
@@ -31,7 +31,8 @@ describe("Map", () => {
         },
       } as EoxLayer;
       const eoxMap = <EOxMap>$el[0];
-      eoxMap.addOrUpdateLayer(layerDefinition);
+      eoxMap.layers = [layerDefinition];
+
       const layer = eoxMap.getLayerById("regions");
       expect(layer).to.exist;
       expect(layer.getOpacity()).to.be.equal(0.9);
@@ -51,7 +52,7 @@ describe("Map", () => {
         },
       } as EoxLayer;
 
-      await eoxMap.addOrUpdateLayer(updatedLayerDefinition);
+      eoxMap.addOrUpdateLayer(updatedLayerDefinition);
       expect(layer.getOpacity()).to.be.equal(1);
     });
   });
