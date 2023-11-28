@@ -72,6 +72,27 @@ class MockCollection {
     this.layers.push(new MockLayer(newLayer));
     this.events["change:length"]();
   }
+  remove(layer) {
+    layer = new MockLayer(layer);
+    const i = this.layers.indexOf(layer);
+    if (i) {
+      this.layers.splice(i, 1);
+      return layer;
+    } else {
+      return undefined;
+    }
+  }
+  insertAt(index, layer) {
+    layer = new MockLayer(layer);
+    this.layers = [
+      ...this.layers.slice(0, index),
+      layer,
+      ...this.layers.slice(index),
+    ];
+  }
+  getLength(){
+    return this.layers.length
+  }
 }
 
 export class MockMap extends HTMLElement {
