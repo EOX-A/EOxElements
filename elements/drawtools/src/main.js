@@ -3,6 +3,13 @@ import "./components/list";
 import "./components/controller";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
+import {
+  discardDrawingMethod,
+  emitDrawnFeaturesMethod,
+  initDrawLayerMethod,
+  onDrawEndMethod,
+  startDrawingMethod,
+} from "./methods";
 
 /**
  * Manage drawn features on a map
@@ -103,129 +110,19 @@ export class EOxDrawTools extends LitElement {
     this.unstyled = false;
   }
 
-  initDrawLayer() {
-    const mapQuery = document.querySelector(this.for);
+  initDrawLayer = () => initDrawLayerMethod(this, this.#eoxMap, this.#olMap);
 
-    this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
-    // @ts-ignore
-    this.#olMap = /** @type {import("ol").Map} */ this.#eoxMap.map;
+  startDrawing = () => startDrawingMethod(this, this.#eoxMap, this.#olMap);
 
-    // @ts-ignore
-    this.drawLayer = this.#eoxMap.addOrUpdateLayer({
-      type: "Vector",
-      properties: {
-        id: "drawLayer",
-        layerControlHide: true,
-      },
-      source: {
-        type: "Vector",
-      },
-      // check if the drawInteraction has already been added before adding again
-      // TEMP/TODO: this should probably be done by the map in the addOrUpdateLayer method
-      ...(this.#eoxMap.interactions["drawInteraction"]
-        ? {}
-        : {
-            interactions: [
-              {
-                type: "draw",
-                options: {
-                  active: false,
-                  id: "drawInteraction",
-                  type: this.type,
-                  modify: this.allowModify,
-                  stopClick: true,
-                },
-              },
-              {
-                type: "select",
-                options: {
-                  id: "selectHover",
-                  condition: "pointermove",
-                  style: {
-                    "fill-color": "rgba(51, 153, 204,0.5)",
-                    "stroke-color": "#3399CC",
-                    "stroke-width": 2.5,
-                  },
-                },
-              },
-              {
-                type: "select",
-                options: {
-                  id: "selectClick",
-                  condition: "click",
-                  panIn: true,
-                  style: {
-                    "fill-color": "rgba(51, 153, 204,0.5)",
-                    "stroke-color": "#3399CC",
-                    "stroke-width": 2.5,
-                  },
-                },
-              },
-            ],
-          }),
-    });
+  discardDrawing = () => discardDrawingMethod(this, this.#eoxMap, this.#olMap);
 
-    this.draw = /** @type {import("ol/interaction").Draw} */ (
-      /** @type {unknown} */ (this.#eoxMap.interactions["drawInteraction"])
-    );
-    this.modify = /** @type {import("ol/interaction").Modify} */ (
-      /** @type {unknown} */ (
-        this.#eoxMap.interactions["drawInteractionmodify"]
-      )
-    );
-    this.draw?.on("drawend", () => this.onDrawEnd());
-    this.modify?.on("modifyend", () => this.onModifyEnd());
-  }
+  onDrawEnd = () => onDrawEndMethod(this);
 
-  startDrawing() {
-    this.initDrawLayer();
-    this.draw.setActive(true);
-    this.currentlyDrawing = true;
-    this.requestUpdate();
-  }
+  onModifyEnd = () => emitDrawnFeaturesMethod(this);
 
-  discardDrawing() {
-    this.drawnFeatures = [];
-    this.draw.setActive(false);
-    this.drawLayer.getSource().clear();
-    this.#eoxMap.removeInteraction("drawInteraction");
-    this.#olMap.removeLayer(this.drawLayer);
-    this.emitDrawnFeatures();
-    this.currentlyDrawing = false;
-    this.requestUpdate();
-  }
-
-  onDrawEnd() {
-    this.emitDrawnFeatures();
-    this.draw.setActive(false);
-    this.currentlyDrawing = false;
-    this.requestUpdate();
-  }
-
-  onModifyEnd() {
-    this.emitDrawnFeatures();
-  }
-
-  emitDrawnFeatures() {
-    setTimeout(() => {
-      this.drawnFeatures = this.drawLayer.getSource().getFeatures();
-      this.requestUpdate();
-      /**
-       * Fires whenever features are added, modified or discarded, where the event detail
-       * is the `drawnFeatures` array
-       * @type Array<import("ol").Feature>
-       */
-      this.dispatchEvent(
-        new CustomEvent("drawupdate", {
-          detail: this.drawnFeatures,
-        })
-      );
-    }, 0);
-  }
+  emitDrawnFeatures = () => emitDrawnFeaturesMethod(this);
 
   render() {
-    this.showList = Boolean(this.drawnFeatures?.length);
-
     return html`
       <style>
         ${style}
@@ -241,7 +138,7 @@ export class EOxDrawTools extends LitElement {
         .currentlyDrawing=${this.currentlyDrawing}
         .multipleFeatures=${this.multipleFeatures}
       ></eox-drawtools-controller>
-      ${this.showList
+      ${this.showList && this.drawnFeatures?.length
         ? html`<eox-drawtools-list
             .eoxMap=${this.#eoxMap}
             .olMap=${this.#olMap}
