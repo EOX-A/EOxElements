@@ -90,8 +90,8 @@ class MockCollection {
       ...this.layers.slice(index),
     ];
   }
-  getLength(){
-    return this.layers.length
+  getLength() {
+    return this.layers.length;
   }
 }
 
