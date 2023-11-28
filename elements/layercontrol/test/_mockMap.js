@@ -41,6 +41,15 @@ class MockLayer {
     this.visible = visible;
   }
   visible = true;
+  events = {
+    ["change"]: () => undefined,
+  };
+  on = (event, fun) => (this.events = { [event]: fun });
+  un = (event, fun) => {
+    if (this.events[event] == fun) {
+      delete this.events[event];
+    }
+  };
 }
 
 class MockCollection {
@@ -92,6 +101,9 @@ class MockCollection {
   }
   getLength() {
     return this.layers.length;
+  }
+  forEach(func) {
+    this.layers.forEach(func);
   }
 }
 
