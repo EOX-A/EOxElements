@@ -210,9 +210,8 @@ export class EOxMap extends LitElement {
   }
 
   protected updated(
-    _changedProperties:
-      | PropertyValueMap<any>
-      | globalThis.Map<PropertyKey, unknown>
+    _changedProperties: // eslint-disable-next-line
+    PropertyValueMap<any> | globalThis.Map<PropertyKey, unknown>
   ): void {
     if (_changedProperties.has("center")) {
       this.map.getView().setCenter(getCenterFromProperty(this.center));
