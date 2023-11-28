@@ -46,6 +46,9 @@ export class EOxLayerControlOptionalList extends LitElement {
   }
 
   firstUpdated() {
+    if (!this.layers) {
+      return;
+    }
     const arr = this.layers.getArray();
     let i = 0;
     while (i < arr.length) {
@@ -106,6 +109,10 @@ export class EOxLayerControlOptionalList extends LitElement {
           // TODO always set the new layer at the first position
           selectedLayer?.set("layerControlOptional", false);
           selectedLayer?.setVisible(true);
+          const removed = this.layers.remove(selectedLayer);
+          if (removed) {
+            this.layers.insertAt(this.layers.getLength(), removed);
+          }
           this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
           this.renderRoot.parentNode
             .querySelectorAll("eox-layercontrol-layer-list")

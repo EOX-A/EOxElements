@@ -83,7 +83,10 @@ export class EOxLayerControlLayerList extends LitElement {
    * @param {CustomEvent} e
    **/
   #handleLayerChanged = (e) => {
-    if (e.detail) {
+    if (
+      e.detail &&
+      (e.detail.get("layerControlHide") || e.detail.get("layerControlOptional"))
+    ) {
       const removed = this.layers.remove(e.detail);
       if (removed) {
         this.layers.insertAt(0, removed);
