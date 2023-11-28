@@ -251,8 +251,7 @@ export class EOxDrawTools extends LitElement {
             .modify=${this.modify}
             .unstyled=${this.unstyled}
             @changed=${() => this.requestUpdate()}
-          >
-          </eox-drawtools-list>`
+          ></eox-drawtools-list>`
         : nothing}
     `;
   }

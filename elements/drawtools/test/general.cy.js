@@ -15,7 +15,7 @@ describe("Drawtools", () => {
   });
 
   it("clicks the draw button", () => {
-    cy.get("eox-drawtools")
+    cy.get("eox-drawtools-controller")
       .shadow()
       .within(() => {
         cy.get("[data-cy='drawBtn']").contains("draw");
@@ -27,7 +27,7 @@ describe("Drawtools", () => {
   });
 
   it("clicks the discard button and clears drawn features", () => {
-    cy.get("eox-drawtools")
+    cy.get("eox-drawtools-controller")
       .shadow()
       .within(() => {
         cy.get("[data-cy='drawBtn']").click();
