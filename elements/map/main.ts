@@ -85,17 +85,6 @@ export class EOxMap extends LitElement {
   mapControls: { [index: string]: Control } = {};
 
   /**
-   * Apply layers Eox Layer JSONs
-   * @param {Array<EoxLayer>} json array of EoxLayer JSONs
-   * @returns {Array<*>} the array of ol layers
-   */
-  setLayers = (json: Array<EoxLayer>) => {
-    const layers = generateLayers(this, json);
-    this.map.setLayers(layers);
-    return layers;
-  };
-
-  /**
    * creates or updates an existing layer
    * will update an layer if the ID already exists
    * @param json EoxLayer JSON definition
