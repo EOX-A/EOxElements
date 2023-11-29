@@ -110,9 +110,12 @@ export class EOxDrawTools extends LitElement {
     this.unstyled = false;
   }
 
-  initDrawLayer = () => initDrawLayerMethod(this, this.#eoxMap, this.#olMap);
+  initDrawLayer = () => {
+    const { EoxMap, OlMap } = initDrawLayerMethod(this);
+    (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
+  };
 
-  startDrawing = () => startDrawingMethod(this, this.#eoxMap, this.#olMap);
+  startDrawing = () => startDrawingMethod(this);
 
   discardDrawing = () => discardDrawingMethod(this, this.#eoxMap, this.#olMap);
 

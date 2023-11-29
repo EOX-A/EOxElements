@@ -2,11 +2,9 @@
  * This method helps to handle
  *
  * @param {import("../main").EOxDrawTools} EoxDrawTool
- * @param {import("../../../map/main").EOxMap} EoxMap
- * @param {import("ol").Map} OlMap
  */
-export const startDrawingMethod = (EoxDrawTool, EoxMap, OlMap) => {
-  initDrawLayerMethod(EoxDrawTool, EoxMap, OlMap);
+export const startDrawingMethod = (EoxDrawTool) => {
+  EoxDrawTool.initDrawLayer();
   EoxDrawTool.draw.setActive(true);
   EoxDrawTool.currentlyDrawing = true;
   EoxDrawTool.requestUpdate();
@@ -67,15 +65,13 @@ export const emitDrawnFeaturesMethod = (EoxDrawTool) => {
 /**
  *
  * @param {import("../main").EOxDrawTools} EoxDrawTool
- * @param {import("../../../map/main").EOxMap} EoxMap
- * @param {import("ol").Map} OlMap
  */
-export const initDrawLayerMethod = (EoxDrawTool, EoxMap, OlMap) => {
+export const initDrawLayerMethod = (EoxDrawTool) => {
   const mapQuery = document.querySelector(EoxDrawTool.for);
 
-  EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
+  const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
   // @ts-ignore
-  OlMap = EoxMap.map;
+  const OlMap = EoxMap.map;
 
   // @ts-ignore
   EoxDrawTool.drawLayer = EoxMap.addOrUpdateLayer({
@@ -142,4 +138,6 @@ export const initDrawLayerMethod = (EoxDrawTool, EoxMap, OlMap) => {
   EoxDrawTool.modify?.on("modifyend", () =>
     emitDrawnFeaturesMethod(EoxDrawTool)
   );
+
+  return { EoxMap, OlMap };
 };
