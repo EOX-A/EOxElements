@@ -163,7 +163,9 @@ export function updateLayer(
   newLayerDefinition: EoxLayer,
   existingLayer: olLayers.Layer
 ) {
-  const existingJsonDefintion = existingLayer.get("_jsonDefinition");
+  const existingJsonDefintion = existingLayer.get(
+    "_jsonDefinition"
+  ) as EoxLayer;
 
   // there are probably more cases that make the layers incompatible
   if (
@@ -202,6 +204,21 @@ export function updateLayer(
   }
   if (newLayerDefinition.opacity !== existingJsonDefintion.opacity) {
     existingLayer.setOpacity(newLayerDefinition.opacity);
+  }
+  if (
+    JSON.stringify(newLayerDefinition.interactions) !==
+    JSON.stringify(existingJsonDefintion.interactions)
+  ) {
+    // remove all interactions that do not exist in the new layer definition
+    existingJsonDefintion.interactions.forEach((interactionDefinition) => {
+      if (
+        !newLayerDefinition.interactions.find(
+          (i) => i.type === interactionDefinition.type
+        )
+      ) {
+        EOxMap.removeInteraction(interactionDefinition.options.id);
+      }
+    });
   }
   setSyncListeners(existingLayer, newLayerDefinition);
 

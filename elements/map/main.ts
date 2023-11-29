@@ -71,7 +71,11 @@ export class EOxMap extends LitElement {
   set layers(layers: Array<EoxLayer>) {
     const oldLayers = this._layers;
     const newLayers = layers;
+
     newLayers.forEach((l) => {
+      if (!l.interactions) {
+        l.interactions = [];
+      }
       this.addOrUpdateLayer(l);
       // + recursive for groups
     });
@@ -175,9 +179,13 @@ export class EOxMap extends LitElement {
    * removes a given ol-interaction from the map. Layer have to be removed seperately
    * @param id id of the interaction
    */
-  removeInteraction = (id: string) => {
+  removeInteraction = (id: string | number) => {
     this.map.removeInteraction(this.interactions[id]);
     delete this.interactions[id];
+    if (this.interactions[`${id}_modify`]) {
+      this.map.removeInteraction(this.interactions[`${id}_modify`]);
+      delete this.interactions[`${id}_modify`];
+    }
   };
 
   /**

@@ -1,25 +1,41 @@
 import { html } from "lit";
 import "../main";
-import drawInteractionStyleJson from "./drawInteraction.json";
+import drawInteractionLayerJson from "./drawInteraction.json";
 import { simulateEvent } from "./utils/events";
 import { Point } from "ol/geom";
+import { EOxMap } from "../main";
 
 describe("draw interaction", () => {
   beforeEach(() => {});
   it("adds a draw interaction", () => {
-    cy.mount(html`<eox-map .layers=${drawInteractionStyleJson}></eox-map>`).as(
+    cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
       // get the interaction via the source key
-      const drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
+      let drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
       expect(drawInteraction).to.exist;
       expect(drawInteraction.getActive()).to.equal(true);
+
+      const eoxMap = <EOxMap>$el[0];
+      const map = eoxMap.map;
+      const originalNumberOfInteractions = map.getInteractions().getLength();
+      console.log(map.getInteractions().getArray());
+      const newLayerJson = [Object.assign({}, drawInteractionLayerJson[0])];
+      delete newLayerJson[0].interactions;
+      //@ts-ignore
+      eoxMap.layers = newLayerJson;
+      drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
+      expect(drawInteraction, 'remove interaction from dictionary').to.not.exist;
+      expect(
+        map.getInteractions().getLength(),
+        "remove draw and modify interaction"
+      ).to.be.equal(originalNumberOfInteractions - 2);
     });
   });
 
   it("creates correct geometry", () => {
-    cy.mount(html`<eox-map .layers=${drawInteractionStyleJson}></eox-map>`).as(
+    cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
@@ -39,7 +55,7 @@ describe("draw interaction", () => {
   });
 
   it("remove interaction", () => {
-    cy.mount(html`<eox-map .layers=${drawInteractionStyleJson}></eox-map>`).as(
+    cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
@@ -54,8 +70,8 @@ describe("draw interaction", () => {
   });
 
   it("creates line and measure event", () => {
-    drawInteractionStyleJson[0].interactions[0].options.type = "LineString";
-    cy.mount(html`<eox-map .layers=${drawInteractionStyleJson}></eox-map>`).as(
+    drawInteractionLayerJson[0].interactions[0].options.type = "LineString";
+    cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
@@ -89,8 +105,8 @@ describe("draw interaction", () => {
   });
 
   it("creates polygon and measure event", () => {
-    drawInteractionStyleJson[0].interactions[0].options.type = "Polygon";
-    cy.mount(html`<eox-map .layers=${drawInteractionStyleJson}></eox-map>`).as(
+    drawInteractionLayerJson[0].interactions[0].options.type = "Polygon";
+    cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
@@ -129,9 +145,9 @@ describe("draw interaction", () => {
   });
 
   it("creates box", () => {
-    drawInteractionStyleJson[0].interactions[0].options.type = "Box";
-    drawInteractionStyleJson[0].interactions[0].options.modify = false;
-    cy.mount(html`<eox-map .layers=${drawInteractionStyleJson}></eox-map>`).as(
+    drawInteractionLayerJson[0].interactions[0].options.type = "Box";
+    drawInteractionLayerJson[0].interactions[0].options.modify = false;
+    cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {

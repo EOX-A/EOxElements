@@ -34,8 +34,8 @@ describe("Map", () => {
 
       eoxMap.zoom = 2;
       expect(eoxMap.map.getView().getZoom()).to.equal(2);
-      
-      const newCenter = [1113195, 2273031]
+
+      const newCenter = [1113195, 2273031];
       eoxMap.center = newCenter;
       expect(eoxMap.map.getView().getCenter()).to.deep.equal(newCenter);
     });
