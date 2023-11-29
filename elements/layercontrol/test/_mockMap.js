@@ -91,6 +91,9 @@ class MockCollection {
       return undefined;
     }
   }
+  removeAt(index) {
+    this.layers = [...this.layers.slice(index)];
+  }
   insertAt(index, layer) {
     layer = new MockLayer(layer);
     this.layers = [

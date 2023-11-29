@@ -3,10 +3,10 @@ import Sortable from "sortablejs";
 /**
  *
  * @param {HTMLElement} element
- * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} layers
+ * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} collection
  * @param {import("lit").LitElement} that
  */
-export const createSortable = (element, layers, that) => {
+export const createSortable = (element, collection, that) => {
   /**
    * @type {any[]}
    */
@@ -41,7 +41,8 @@ export const createSortable = (element, layers, that) => {
       if (e.oldIndex == e.newIndex) return;
       // Then move the element using your own logic.
       // automatically dispatches "sort" event
-      const layer = layers.getArray().find(
+      const layers = collection.getArray();
+      const layer = layers.find(
         (l) =>
           // @ts-ignore
           l.ol_uid ===
@@ -50,8 +51,32 @@ export const createSortable = (element, layers, that) => {
             // @ts-ignore
           ).layer.ol_uid
       );
-      layers.remove(layer);
-      layers.insertAt(layers.getLength() - e.newIndex, layer);
+      const numberOfHiddenLayers = layers.filter(
+        (l) => l.get("layerControlHide") || l.get("layerControlOptional")
+      ).length;
+      const target =
+        layers[layers.length - 1 - e.newIndex - numberOfHiddenLayers];
+      let draggedIndex;
+      let dropIndex;
+      // remove dragged layer from collection
+      for (
+        draggedIndex = layers.length - 1;
+        draggedIndex > -1;
+        draggedIndex--
+      ) {
+        if (layers[draggedIndex] == layer) {
+          collection.removeAt(draggedIndex);
+          break;
+        }
+      }
+      // re-add dragged layer at position of layer that has beend dropped on
+      for (dropIndex = layers.length - 1; dropIndex > -1; dropIndex--) {
+        if (layers[dropIndex] === target) {
+          if (draggedIndex > dropIndex) collection.insertAt(dropIndex, layer);
+          else collection.insertAt(dropIndex + 1, layer);
+          break;
+        }
+      }
       that.requestUpdate();
     },
   });
