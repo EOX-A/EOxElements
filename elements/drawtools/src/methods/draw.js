@@ -1,71 +1,93 @@
 /**
- * This method helps to handle
+ * Starts the drawing method by initializing the draw layer,
+ * activating drawing, and requesting an update.
  *
- * @param {import("../main").EOxDrawTools} EoxDrawTool
+ * @param {import("../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
 export const startDrawingMethod = (EoxDrawTool) => {
-  EoxDrawTool.initDrawLayer();
-  EoxDrawTool.draw.setActive(true);
-  EoxDrawTool.currentlyDrawing = true;
-  EoxDrawTool.requestUpdate();
+  const initializeDrawing = () => {
+    EoxDrawTool.initDrawLayer();
+    EoxDrawTool.draw.setActive(true);
+  };
+
+  const updateDrawingStatus = () => {
+    EoxDrawTool.currentlyDrawing = true;
+    EoxDrawTool.requestUpdate();
+  };
+
+  initializeDrawing();
+  updateDrawingStatus();
 };
 
 /**
- * This method helps to handle when drawing on the map is discarded
- * and reset all the drawing interactions & drawFeature array
- * and clear the
+ * Discards drawing on the map, resets drawing interactions and features,
+ * clears the source, and triggers updates.
  *
- * @param {import("../main").EOxDrawTools} EoxDrawTool
- * @param {import("../../../map/main").EOxMap} EoxMap
- * @param {import("ol").Map} OlMap
+ * @param {import("../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
+ * @param {import("../../../map/main").EOxMap} EoxMap - The map instance.
+ * @param {import("ol").Map} OlMap - The OL map instance.
  */
 export const discardDrawingMethod = (EoxDrawTool, EoxMap, OlMap) => {
-  EoxDrawTool.drawnFeatures = [];
-  EoxDrawTool.draw.setActive(false);
-  EoxDrawTool.drawLayer.getSource().clear();
-  EoxMap.removeInteraction("drawInteraction");
-  OlMap.removeLayer(EoxDrawTool.drawLayer);
-  emitDrawnFeaturesMethod(EoxDrawTool);
-  EoxDrawTool.currentlyDrawing = false;
-  EoxDrawTool.requestUpdate();
+  const discardDrawing = () => {
+    EoxDrawTool.drawnFeatures = [];
+    EoxDrawTool.draw.setActive(false);
+    EoxDrawTool.drawLayer.getSource().clear();
+    EoxMap.removeInteraction("drawInteraction");
+    OlMap.removeLayer(EoxDrawTool.drawLayer);
+  };
+
+  const triggerUpdates = () => {
+    emitDrawnFeaturesMethod(EoxDrawTool);
+    EoxDrawTool.currentlyDrawing = false;
+    EoxDrawTool.requestUpdate();
+  };
+
+  discardDrawing();
+  triggerUpdates();
 };
 
 /**
+ * Handles actions after drawing ends -
+ * emits drawn features, deactivates drawing, and requests an update.
  *
- * @param {import("../main").EOxDrawTools} EoxDrawTool
+ * @param {import("../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
 export const onDrawEndMethod = (EoxDrawTool) => {
-  emitDrawnFeaturesMethod(EoxDrawTool);
-  EoxDrawTool.draw.setActive(false);
-  EoxDrawTool.currentlyDrawing = false;
+  const handleDrawEnd = () => {
+    emitDrawnFeaturesMethod(EoxDrawTool);
+    EoxDrawTool.draw.setActive(false);
+    EoxDrawTool.currentlyDrawing = false;
+  };
+
+  handleDrawEnd();
   EoxDrawTool.requestUpdate();
 };
 
 /**
+ * Emits drawn features after a timeout to allow updating drawn features.
  *
- * @param {import("../main").EOxDrawTools} EoxDrawTool
+ * @param {import("../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
 export const emitDrawnFeaturesMethod = (EoxDrawTool) => {
-  setTimeout(() => {
+  const emitFeatures = () => {
     EoxDrawTool.drawnFeatures = EoxDrawTool.drawLayer.getSource().getFeatures();
     EoxDrawTool.requestUpdate();
-    /**
-     * Fires whenever features are added, modified or discarded, where the event detail
-     * is the `drawnFeatures` array
-     * @type Array<import("ol").Feature>
-     */
+
     EoxDrawTool.dispatchEvent(
       new CustomEvent("drawupdate", {
         detail: EoxDrawTool.drawnFeatures,
       })
     );
-  }, 0);
+  };
+
+  setTimeout(emitFeatures, 0);
 };
 
 /**
+ * Initializes the draw layer, interacts with the map, and returns map instances.
  *
- * @param {import("../main").EOxDrawTools} EoxDrawTool
- * @returns {{EoxMap: import("@eox/map/main").EOxMap, OlMap: import("ol").Map}}
+ * @param {import("../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
+ * @returns {{EoxMap: import("@eox/map/main").EOxMap, OlMap: import("ol").Map}} - The map instances.
  */
 export const initDrawLayerMethod = (EoxDrawTool) => {
   const mapQuery = document.querySelector(EoxDrawTool.for);
