@@ -469,11 +469,11 @@ export class EOxItemFilter extends TemplateElement {
                     () => html`
                     <button
                       id="filter-reset"
-                      class="outline small"
+                      class="outline small icon-text reset-icon"
                       data-cy="filter-reset"
                       @click=${() => this.resetFilters()}
                     >
-                      Reset filters
+                      Reset all
                     </a>
                   `
                   )}
