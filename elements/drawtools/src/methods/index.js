@@ -7,6 +7,7 @@ export {
 } from "./draw";
 
 export {
+  hoverFeatureMethod,
   firstUpdatedMethod,
   deleteFeatureMethod,
   selectAndDeselectFeatureMethod,

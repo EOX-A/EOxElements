@@ -4,6 +4,7 @@ import { styleEOX } from "../style.eox";
 import {
   deleteFeatureMethod,
   firstUpdatedMethod,
+  hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods";
 
@@ -105,6 +106,14 @@ export class EOxDrawToolsList extends LitElement {
     selectAndDeselectFeatureMethod(feature, this);
 
   /**
+   *
+   * @param {Number} featureId - The ID of the feature to hover.
+   * @param {Boolean} mouseOut - Flag indicating mouse out event.
+   */
+  _handleHoverFeature = (featureId, mouseOut = false) =>
+    hoverFeatureMethod(this, featureId, mouseOut);
+
+  /**
    * Initiates initial settings and event triggers upon the component's first update.
    */
   firstUpdated = () => firstUpdatedMethod(this);
@@ -128,14 +137,8 @@ export class EOxDrawToolsList extends LitElement {
             html`
               <li
                 class="${selected ? "selected" : nothing}"
-                @mouseover=${() => {
-                  if (this.clickId === featureId) return;
-                  this.hoverInteraction.highlightById([featureId]);
-                }}
-                @mouseout=${() => {
-                  if (this.clickId === featureId) return;
-                  this.hoverInteraction.highlightById([]);
-                }}
+                @mouseover=${() => this._handleHoverFeature(featureId)}
+                @mouseout=${() => this._handleHoverFeature(featureId, true)}
               >
                 <div
                   class="list"
