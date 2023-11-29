@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.0...itemfilter-v0.11.1) (2023-11-29)
+
+
+### Bug Fixes
+
+* Prevent false dirty state when using autocomplete ([#480](https://github.com/EOX-A/EOxElements/issues/480)) ([b41c9d3](https://github.com/EOX-A/EOxElements/commit/b41c9d32ae8fc04c5ddc51030815fec82236c62e))
+
 ## [0.11.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.10.2...itemfilter-v0.11.0) (2023-11-29)
 
 
