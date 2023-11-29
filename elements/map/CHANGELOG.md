@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.10.0](https://github.com/EOX-A/EOxElements/compare/map-v0.9.1...map-v0.10.0) (2023-11-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* introduction of new interaction API ([#400](https://github.com/EOX-A/EOxElements/issues/400))
+
+### Features
+
+* Introduction of new interaction API ([#400](https://github.com/EOX-A/EOxElements/issues/400)) ([808539b](https://github.com/EOX-A/EOxElements/commit/808539b5846b6ac010e3bd7686c0aaf1c5c86cf9))
+
+## [0.9.1](https://github.com/EOX-A/EOxElements/compare/map-v0.9.0...map-v0.9.1) (2023-11-21)
+
+
+### Miscellaneous Chores
+
+* Adaptations for layerConfig ([#430](https://github.com/EOX-A/EOxElements/issues/430)) ([75b29b3](https://github.com/EOX-A/EOxElements/commit/75b29b35e8f2e468a8c7c35f3c296549f367f28f))
+
 ## [0.9.0](https://github.com/EOX-A/EOxElements/compare/map-v0.8.3...map-v0.9.0) (2023-11-16)
 
 
