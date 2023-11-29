@@ -19,7 +19,7 @@ describe("Map", () => {
     });
   });
 
-  it("should parse the initial zoom/center properties correctly", () => {
+  it("should parse zoom/center properties correctly", () => {
     cy.mount(
       html`<eox-map .zoom=${7} .center=${[1113194, 2273030]}></eox-map>`
     ).as("eox-map");
@@ -28,7 +28,16 @@ describe("Map", () => {
       const zoom = eoxMap.map.getView().getZoom();
       const center = eoxMap.map.getView().getCenter();
       expect(eoxMap.zoom).to.equal(zoom);
+      expect(eoxMap.map.getView().getZoom()).to.equal(zoom);
       expect(eoxMap.center).to.deep.equal(center);
+      expect(eoxMap.map.getView().getCenter()).to.deep.equal(center);
+
+      eoxMap.zoom = 2;
+      expect(eoxMap.map.getView().getZoom()).to.equal(2);
+      
+      const newCenter = [1113195, 2273031]
+      eoxMap.center = newCenter;
+      expect(eoxMap.map.getView().getCenter()).to.deep.equal(newCenter);
     });
   });
 
