@@ -78,57 +78,10 @@ export class EOxLayerControlLayerList extends LitElement {
     this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
   }, 50);
 
-  /**
-   * EOxLayerControlLayer & EOxLayerControlLayerGroup changed event handler
-   * @param {CustomEvent} e
-   **/
-  #handleLayerChanged = (e) => {
-    if (
-      e.detail &&
-      (e.detail.get("layerControlHide") || e.detail.get("layerControlOptional"))
-    ) {
-      const removed = this.layers.remove(e.detail);
-      if (removed) {
-        this.layers.insertAt(0, removed);
-      }
-    }
-    this.requestUpdate();
-  };
-
-  /**
-   *
-   * @param {import("ol/events/Event").default & {key:string}} e
-   */
-  #handleHiddenLayerChange = (e) => {
-    const layer = e.target;
-    if (layer.get(e.key)) {
-      //changes the layer index so it doesn't exist mid sort
-      const removed = this.layers.remove(layer);
-      if (removed) {
-        this.layers.insertAt(0, removed);
-      }
-      console.log("hidden");
-    } else if (layer.get(e.key) === false) {
-      //set shown layer on top
-      const removed = this.layers.remove(layer);
-      if (removed) {
-        this.layers.insertAt(this.layers.getLength(), removed);
-      }
-      console.log("shown");
-    }
-  };
-
   firstUpdated() {
-    if (!this.layers) {
-      return;
+    if (this.layers) {
+      createSortable(this.renderRoot.querySelector("ul"), this.layers, this);
     }
-    this.layers.forEach((layer) => {
-      //@ts-ignore
-      layer.on("change:layerControlOptional", this.#handleHiddenLayerChange);
-      //@ts-ignore
-      layer.on("change:layerControlHide", this.#handleHiddenLayerChange);
-    });
-    createSortable(this.renderRoot.querySelector("ul"), this.layers, this);
   }
 
   updated() {
@@ -181,7 +134,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
-                            @changed=${this.#handleLayerChanged}
+                            @changed=${() => this.requestUpdate()}
                           >
                           </eox-layercontrol-layer-group>
                         `
@@ -194,7 +147,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
-                            @changed=${this.#handleLayerChanged}
+                            @changed=${() => this.requestUpdate()}
                           ></eox-layercontrol-layer>
                         `
                   }
