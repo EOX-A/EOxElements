@@ -55,9 +55,7 @@ export class EOxItemFilterRange extends LitElement {
           value1="${this.filterObject.state.min}"
           value2="${this.filterObject.state.max}"
           step="1"
-          @change="${() => {
-            this.debouncedInputHandler;
-          }}"
+          @change=${this.debouncedInputHandler}
         ></tc-range-slider>
         <div class="range-after">
           ${this.filterObject.format === "date"
