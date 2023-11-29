@@ -174,9 +174,10 @@ describe("draw interaction", () => {
         "consider modify active flag"
       ).to.be.equal(false);
       const newLayerJson = [
-        JSON.parse(JSON.stringify(drawInteractionLayerJson[0])),
+        drawInteractionLayerJson[0],
       ];
       newLayerJson[0].interactions[0].options.modify = true;
+      //@ts-ignore
       eoxMap.layers = newLayerJson;
       expect(
         eoxMap.interactions.drawInteraction_modify.getActive(),

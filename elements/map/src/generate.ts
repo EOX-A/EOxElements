@@ -138,7 +138,7 @@ export function createLayer(
   if (layer.style) {
     olLayer.setStyle(layer.style);
   }
-  olLayer.set("_jsonDefinition", layer, true);
+  olLayer.set("_jsonDefinition", JSON.parse(JSON.stringify(layer)), true);
   setSyncListeners(olLayer, layer);
   if (createInteractions && layer.interactions?.length) {
     for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
