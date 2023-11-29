@@ -87,11 +87,10 @@ export function addDraw(
   EOxMap.map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
 
-  if (options_.modify) {
-    const modifyInteraction = new Modify({
-      source,
-    });
-    EOxMap.map.addInteraction(modifyInteraction);
-    EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
-  }
+  const modifyInteraction = new Modify({
+    source,
+  });
+  modifyInteraction.setActive(options_.modify);
+  EOxMap.map.addInteraction(modifyInteraction);
+  EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
 }

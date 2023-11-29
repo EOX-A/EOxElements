@@ -7,7 +7,7 @@ import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
 import { DrawOptions, addDraw } from "./draw";
 import { EOxMap } from "../main";
-import { SelectOptions, addSelect } from "./select";
+import { EOxSelectInteraction, SelectOptions, addSelect } from "./select";
 import { register } from "ol/proj/proj4.js";
 import proj4 from "proj4";
 
@@ -81,9 +81,14 @@ export type EoxLayer = {
  * creates an ol-layer from a given EoxLayer definition object
  * @param {EOxMap} EOxMap
  * @param {EoxLayer} layer
+ * @param {boolean=} createInteractions
  * @returns {olLayers.Layer}
  */
-export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
+export function createLayer(
+  EOxMap: EOxMap,
+  layer: EoxLayer,
+  createInteractions: boolean = true
+): olLayers.Layer {
   const newLayer = availableLayers[layer.type];
   const newSource = availableSources[layer.source?.type];
   if (!newLayer) {
@@ -135,7 +140,7 @@ export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
   }
   olLayer.set("_jsonDefinition", layer, true);
   setSyncListeners(olLayer, layer);
-  if (layer.interactions?.length) {
+  if (createInteractions && layer.interactions?.length) {
     for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
       const interactionDefinition = layer.interactions[i];
       if (interactionDefinition.type === "draw") {
@@ -174,7 +179,10 @@ export function updateLayer(
   ) {
     throw new Error(`Layers are not compatible to be updated`);
   }
-  const newLayer = createLayer(EOxMap, newLayerDefinition);
+
+  // create a completely new layer to take new source/style/properties from, if changed
+  // interactions are handled seperately
+  const newLayer = createLayer(EOxMap, newLayerDefinition, false);
 
   if (
     JSON.stringify(newLayerDefinition.source) !==
@@ -209,14 +217,36 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.interactions) !==
     JSON.stringify(existingJsonDefintion.interactions)
   ) {
-    // remove all interactions that do not exist in the new layer definition
     existingJsonDefintion.interactions.forEach((interactionDefinition) => {
-      if (
-        !newLayerDefinition.interactions.find(
-          (i) => i.type === interactionDefinition.type
-        )
-      ) {
+      const correspondingNewInteraction = newLayerDefinition.interactions.find(
+        (i) => i.type === interactionDefinition.type
+      );
+      if (!correspondingNewInteraction) {
+        // remove all interactions that do not exist in the new layer definition
         EOxMap.removeInteraction(interactionDefinition.options.id);
+      } else {
+        // interaction exists, but has changed
+        if (correspondingNewInteraction.type === "draw") {
+          const olDrawInteraction = EOxMap.interactions[
+            correspondingNewInteraction.options.id
+          ] as import("ol/interaction").Draw;
+          olDrawInteraction.setActive(
+            correspondingNewInteraction.options.active
+          );
+          const olModifyInteraction = EOxMap.interactions[
+            `${correspondingNewInteraction.options.id}_modify`
+          ] as import("ol/interaction").Modify;
+          olModifyInteraction.setActive(
+            (correspondingNewInteraction.options as DrawOptions).modify
+          );
+        } else {
+          const olSelectInteraction = EOxMap.selectInteractions[
+            correspondingNewInteraction.options.id
+          ] as EOxSelectInteraction;
+          olSelectInteraction.setActive(
+            correspondingNewInteraction.options.active
+          );
+        }
       }
     });
   }
@@ -252,7 +282,6 @@ export const generateLayers = (EOxMap: EOxMap, layerArray: Array<EoxLayer>) => {
   if (!layerArray) {
     return [];
   }
-
   return [...layerArray].reverse().map((l) => createLayer(EOxMap, l));
 };
 

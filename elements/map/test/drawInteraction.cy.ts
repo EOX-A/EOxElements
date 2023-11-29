@@ -20,13 +20,13 @@ describe("draw interaction", () => {
       const eoxMap = <EOxMap>$el[0];
       const map = eoxMap.map;
       const originalNumberOfInteractions = map.getInteractions().getLength();
-      console.log(map.getInteractions().getArray());
       const newLayerJson = [Object.assign({}, drawInteractionLayerJson[0])];
       delete newLayerJson[0].interactions;
       //@ts-ignore
       eoxMap.layers = newLayerJson;
       drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
-      expect(drawInteraction, 'remove interaction from dictionary').to.not.exist;
+      expect(drawInteraction, "remove interaction from dictionary").to.not
+        .exist;
       expect(
         map.getInteractions().getLength(),
         "remove draw and modify interaction"
@@ -170,9 +170,18 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerup", -50, -50);
 
       expect(
-        eoxMap.interactions.drawInteraction_modify,
-        "do not add modify if flag is set to false"
-      ).to.not.exist;
+        eoxMap.interactions.drawInteraction_modify.getActive(),
+        "consider modify active flag"
+      ).to.be.equal(false);
+      const newLayerJson = [
+        JSON.parse(JSON.stringify(drawInteractionLayerJson[0])),
+      ];
+      newLayerJson[0].interactions[0].options.modify = true;
+      eoxMap.layers = newLayerJson;
+      expect(
+        eoxMap.interactions.drawInteraction_modify.getActive(),
+        "reactively activate modify"
+      ).to.be.equal(true);
     });
   });
 });
