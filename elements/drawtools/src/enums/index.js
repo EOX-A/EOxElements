@@ -5,3 +5,5 @@ export {
 } from "./stories";
 
 export { TRANSITION_DURATION } from "./draw";
+
+export { TEST_SELECTORS } from "./test";

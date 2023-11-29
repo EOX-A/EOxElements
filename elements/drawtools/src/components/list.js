@@ -72,7 +72,9 @@ export class EOxDrawToolsList extends LitElement {
     this.drawLayer = null;
 
     /**
-     * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
+     * The array of drawn native OpenLayers features. Normally includes only one feature,
+     * until multiple feature drawing is enabled.
+     *
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
@@ -128,15 +130,19 @@ export class EOxDrawToolsList extends LitElement {
       </style>
       <ul>
         ${this.drawnFeatures.map((feature, i) => {
+          const featureNumber = i + 1;
           const featureId = feature.get("id");
-          const selected =
-            this.hoverId === featureId || this.clickId === featureId;
+
+          const isFeatureHovered = this.hoverId === featureId;
+          const isFeatureClicked = this.clickId === featureId;
+          const isSelected = isFeatureHovered || isFeatureClicked;
+          const selectionClass = isSelected ? "selected" : nothing;
 
           return keyed(
-            i + 1,
+            featureNumber,
             html`
               <li
-                class="${selected ? "selected" : nothing}"
+                class="${selectionClass}"
                 @mouseover=${() => this._handleHoverFeature(featureId)}
                 @mouseout=${() => this._handleHoverFeature(featureId, true)}
               >
@@ -145,7 +151,7 @@ export class EOxDrawToolsList extends LitElement {
                   @click="${() =>
                     this._handleFeatureSelectAndDeselect(feature)}"
                 >
-                  <span class="title">Feature #${i + 1}</span>
+                  <span class="title">Feature #${featureNumber}</span>
                   <button
                     index=${i}
                     class="icon small discard"

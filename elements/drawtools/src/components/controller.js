@@ -34,7 +34,9 @@ export class EOxDrawToolsController extends LitElement {
     this.multipleFeatures = false;
 
     /**
-     * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
+     * The array of drawn native OpenLayers features. Normally includes only one feature,
+     * until multiple feature drawing is enabled.
+     *
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
