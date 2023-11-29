@@ -422,6 +422,28 @@ export class EOxItemFilter extends TemplateElement {
                               .unstyled=${this.unstyled}
                               @details-toggled=${this.toggleAccordion}
                             >
+                            ${when(
+                              filterObject.dirty,
+                              () => html`
+                                <button
+                                  slot="reset-button"
+                                  class="reset-icon icon"
+                                  @click=${(e: MouseEvent) => {
+                                    (<Element & { reset: () => void }>(
+                                      (<HTMLButtonElement>(
+                                        e.target
+                                      )).parentElement.querySelector(
+                                        "[slot=filter]"
+                                      )
+                                    )).reset();
+                                    this.search();
+                                    this.requestUpdate();
+                                  }}
+                                >
+                                  ${this.unstyled ? "Reset" : nothing}
+                                </button>
+                              `
+                            )}
                               <eox-itemfilter-${unsafeStatic(filterObject.type)}
                                 slot="filter"
                                 data-type="filter"
@@ -447,11 +469,11 @@ export class EOxItemFilter extends TemplateElement {
                     () => html`
                     <button
                       id="filter-reset"
-                      class="outline small"
+                      class="outline small icon-text reset-icon"
                       data-cy="filter-reset"
                       @click=${() => this.resetFilters()}
                     >
-                      Reset filters
+                      Reset all
                     </a>
                   `
                   )}
