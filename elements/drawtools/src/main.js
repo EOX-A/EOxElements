@@ -110,19 +110,39 @@ export class EOxDrawTools extends LitElement {
     this.unstyled = false;
   }
 
+  /**
+   * Initialize drawing layer before we can start drawing on map
+   */
   initDrawLayer = () => {
     const { EoxMap, OlMap } = initDrawLayerMethod(this);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
   };
 
-  startDrawing = () => startDrawingMethod(this);
+  /**
+   * @onClick handler to start drawing on map
+   */
+  handleStartDrawing = () => startDrawingMethod(this);
 
-  discardDrawing = () => discardDrawingMethod(this, this.#eoxMap, this.#olMap);
+  /**
+   * @onClick handler to discard/stop drawing on map
+   * and delete the shapes drawn
+   */
+  handleDiscardDrawing = () =>
+    discardDrawingMethod(this, this.#eoxMap, this.#olMap);
 
+  /**
+   * @event onDrawEnd triggers when shape is completely drawn
+   */
   onDrawEnd = () => onDrawEndMethod(this);
 
+  /**
+   * @event onModifyEnd triggers when shape is completely modified
+   */
   onModifyEnd = () => emitDrawnFeaturesMethod(this);
 
+  /**
+   * Triggers different events when shape drawn is completed
+   */
   emitDrawnFeatures = () => emitDrawnFeaturesMethod(this);
 
   render() {
@@ -133,8 +153,8 @@ export class EOxDrawTools extends LitElement {
       </style>
       <eox-drawtools-controller
         .drawFunc=${{
-          start: () => this.startDrawing(),
-          discard: () => this.discardDrawing(),
+          start: () => this.handleStartDrawing(),
+          discard: () => this.handleDiscardDrawing(),
         }}
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}

@@ -65,6 +65,7 @@ export const emitDrawnFeaturesMethod = (EoxDrawTool) => {
 /**
  *
  * @param {import("../main").EOxDrawTools} EoxDrawTool
+ * @returns {{EoxMap: import("@eox/map/main").EOxMap, OlMap: import("ol").Map}}
  */
 export const initDrawLayerMethod = (EoxDrawTool) => {
   const mapQuery = document.querySelector(EoxDrawTool.for);
