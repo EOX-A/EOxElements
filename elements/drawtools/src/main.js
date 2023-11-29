@@ -4,12 +4,12 @@ import "./components/controller";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import {
-  discardDrawingMethod,
-  emitDrawnFeaturesMethod,
-  initDrawLayerMethod,
   onDrawEndMethod,
   startDrawingMethod,
-} from "./methods";
+  initDrawLayerMethod,
+  discardDrawingMethod,
+  emitDrawnFeaturesMethod,
+} from "./methods/draw";
 
 /**
  * Manage drawn features on a map

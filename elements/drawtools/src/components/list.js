@@ -6,7 +6,7 @@ import {
   firstUpdatedMethod,
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
-} from "../methods";
+} from "../methods/list";
 
 /**
  * Display list of features
