@@ -41,6 +41,15 @@ class MockLayer {
     this.visible = visible;
   }
   visible = true;
+  events = {
+    ["change"]: () => undefined,
+  };
+  on = (event, fun) => (this.events = { [event]: fun });
+  un = (event, fun) => {
+    if (this.events[event] == fun) {
+      delete this.events[event];
+    }
+  };
 }
 
 class MockCollection {
@@ -58,6 +67,12 @@ class MockCollection {
   };
   layers = [];
   on = (event, fun) => (this.events = { [event]: fun });
+  un = (event, fun) => {
+    if (this.events[event] == fun) {
+      delete this.events[event];
+    }
+  };
+  hasListener = (event) => event in this.events;
   pop() {
     this.layers.pop();
     this.events["change:length"]();
@@ -65,6 +80,33 @@ class MockCollection {
   push(newLayer) {
     this.layers.push(new MockLayer(newLayer));
     this.events["change:length"]();
+  }
+  remove(layer) {
+    layer = new MockLayer(layer);
+    const i = this.layers.indexOf(layer);
+    if (i) {
+      this.layers.splice(i, 1);
+      return layer;
+    } else {
+      return undefined;
+    }
+  }
+  removeAt(index) {
+    this.layers = [...this.layers.slice(index)];
+  }
+  insertAt(index, layer) {
+    layer = new MockLayer(layer);
+    this.layers = [
+      ...this.layers.slice(0, index),
+      layer,
+      ...this.layers.slice(index),
+    ];
+  }
+  getLength() {
+    return this.layers.length;
+  }
+  forEach(func) {
+    this.layers.forEach(func);
   }
 }
 

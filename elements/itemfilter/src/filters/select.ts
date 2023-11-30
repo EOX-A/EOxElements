@@ -60,7 +60,9 @@ export class EOxItemFilterSelect extends LitElement {
     this.filterObject.stringifiedState = Object.keys(
       this.filterObject.state
     ).filter((k) => this.filterObject.state[k])[0];
-    this.filterObject.dirty = true;
+    if (this.filterObject.stringifiedState?.length > 0) {
+      this.filterObject.dirty = true;
+    }
     this.dispatchEvent(new CustomEvent("filter"));
   }
 

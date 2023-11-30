@@ -1,7 +1,7 @@
 {
   "elements/drawtools": "0.6.0",
-  "elements/itemfilter": "0.10.2",
-  "elements/layercontrol": "0.11.1",
+  "elements/itemfilter": "0.11.1",
+  "elements/layercontrol": "0.11.2",
   "elements/map": "0.10.0",
   "elements/stacinfo": "0.3.0",
   "elements/timecontrol": "0.1.0",

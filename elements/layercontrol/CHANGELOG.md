@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.1...layercontrol-v0.11.2) (2023-11-29)
+
+
+### Bug Fixes
+
+* Make currently active tab unselectable ([#482](https://github.com/EOX-A/EOxElements/issues/482)) ([dcbb7ff](https://github.com/EOX-A/EOxElements/commit/dcbb7fff987036a53aed3d17120d03b4c585d3cc))
+* Mobile sorting improvement and handling of hidden layers ([#344](https://github.com/EOX-A/EOxElements/issues/344)) ([82e12b3](https://github.com/EOX-A/EOxElements/commit/82e12b3c43e64417dcef9a5b321388dcae26c6f6))
+
 ## [0.11.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.0...layercontrol-v0.11.1) (2023-11-23)
 
 
