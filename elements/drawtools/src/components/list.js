@@ -121,6 +121,7 @@ export class EOxDrawToolsList extends LitElement {
   firstUpdated = () => firstUpdatedMethod(this);
 
   render() {
+    // Update hover and click IDs
     this.hoverId = this.hoverInteraction?.selectedFids[0];
     this.clickId = this.clickInteraction?.selectedFids[0];
 
@@ -130,9 +131,11 @@ export class EOxDrawToolsList extends LitElement {
       </style>
       <ul>
         ${this.drawnFeatures.map((feature, i) => {
+          // Determine feature number and ID
           const featureNumber = i + 1;
           const featureId = feature.get("id");
 
+          // Check if the feature is hovered or clicked
           const isFeatureHovered = this.hoverId === featureId;
           const isFeatureClicked = this.clickId === featureId;
           const isSelected = isFeatureHovered || isFeatureClicked;

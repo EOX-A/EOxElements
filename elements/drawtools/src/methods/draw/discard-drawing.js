@@ -9,21 +9,27 @@ import { emitDrawnFeaturesMethod } from "./";
  * @param {import("ol").Map} OlMap - The OL map instance.
  */
 const discardDrawingMethod = (EoxDrawTool, EoxMap, OlMap) => {
-  const discardDrawing = () => {
+  // Function to discard drawing interactions and features
+  const discardDrawingActions = () => {
+    // Reset drawnFeatures, deactivate drawing, and clear drawLayer's source
     EoxDrawTool.drawnFeatures = [];
     EoxDrawTool.draw.setActive(false);
     EoxDrawTool.drawLayer.getSource().clear();
+
+    // Remove draw interaction and drawLayer from the map
     EoxMap.removeInteraction("drawInteraction");
     OlMap.removeLayer(EoxDrawTool.drawLayer);
   };
 
+  // Function to trigger updates after discarding drawing
   const triggerUpdates = () => {
     emitDrawnFeaturesMethod(EoxDrawTool);
     EoxDrawTool.currentlyDrawing = false;
     EoxDrawTool.requestUpdate();
   };
 
-  discardDrawing();
+  // Execute the discard actions and trigger updates
+  discardDrawingActions();
   triggerUpdates();
 };
 

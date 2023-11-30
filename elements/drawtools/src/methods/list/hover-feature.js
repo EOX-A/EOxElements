@@ -6,11 +6,12 @@
  * @param {Boolean} mouseOut - Flag indicating mouse out event.
  */
 const hoverFeatureMethod = (EoxDrawToolList, featureId, mouseOut) => {
-  // If the feature is currently clicked, don't perform hover effect
+  // Check if the feature is currently clicked; if so, don't perform hover effect
   if (EoxDrawToolList.clickId === featureId) return;
 
   // Apply or remove hover effect based on mouse in/out event
-  EoxDrawToolList.hoverInteraction.highlightById(mouseOut ? [] : [featureId]);
+  const featuresToHighlight = mouseOut ? [] : [featureId]; // Create an array of feature IDs to highlight
+  EoxDrawToolList.hoverInteraction.highlightById(featuresToHighlight); // Apply hover effect
 };
 
 export default hoverFeatureMethod;

@@ -13,9 +13,12 @@ import {
 
 /**
  * Manage drawn features on a map
+ * Define EOxDrawTools class extending LitElement
+ *
  * @element eox-drawtools
  */
 export class EOxDrawTools extends LitElement {
+  // Define properties with defaults and types
   static get properties() {
     return {
       allowModify: { attribute: "allow-modify", type: Boolean },
@@ -145,12 +148,15 @@ export class EOxDrawTools extends LitElement {
    */
   emitDrawnFeatures = () => emitDrawnFeaturesMethod(this);
 
+  // Render method for UI display
   render() {
     return html`
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
+
+      <!-- Controller Component -->
       <eox-drawtools-controller
         .drawFunc=${{
           start: () => this.handleStartDrawing(),
@@ -161,6 +167,8 @@ export class EOxDrawTools extends LitElement {
         .currentlyDrawing=${this.currentlyDrawing}
         .multipleFeatures=${this.multipleFeatures}
       ></eox-drawtools-controller>
+
+      <!-- List Component -->
       ${this.showList && this.drawnFeatures?.length
         ? html`<eox-drawtools-list
             .eoxMap=${this.#eoxMap}

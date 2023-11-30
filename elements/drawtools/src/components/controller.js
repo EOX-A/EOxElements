@@ -1,12 +1,14 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { styleEOX } from "../style.eox";
+import { updateButtonStatesMethod } from "../methods/controller";
 
 /**
- * Controllers for draw feature
+ * Controller component for drawing features
  *
  * @element eox-drawtools-controller
  */
 export class EOxDrawToolsController extends LitElement {
+  // Define properties with default values and types
   static properties = {
     multipleFeatures: { attribute: false, type: Boolean },
     drawnFeatures: { attribute: false, state: true, type: Array },
@@ -57,15 +59,18 @@ export class EOxDrawToolsController extends LitElement {
     this.unstyled = false;
   }
 
+  /**
+   * Updates button states based on conditions
+   */
+  updateButtonStates = () => {
+    const { drawDisabled, discardDisabled } = updateButtonStatesMethod(this);
+
+    this.#drawDisabled = drawDisabled;
+    this.#discardDisabled = discardDisabled;
+  };
+
   render() {
-    this.#drawDisabled =
-      (!this.multipleFeatures && this.drawnFeatures?.length > 0) ||
-      this.currentlyDrawing ||
-      nothing;
-
-    this.#discardDisabled =
-      (!this.drawnFeatures?.length && !this.currentlyDrawing) || nothing;
-
+    this.updateButtonStates();
     const drawLabel = this.currentlyDrawing ? "drawing" : "draw";
 
     return html`
@@ -74,18 +79,22 @@ export class EOxDrawToolsController extends LitElement {
       </style>
       <div>
         <slot></slot>
+
+        <!-- Draw Button -->
         <button
           data-cy="drawBtn"
           class="polygon icon"
-          disabled="${this.#drawDisabled}"
+          ?disabled="${this.#drawDisabled}"
           @click="${() => this.drawFunc.start()}"
         >
           ${drawLabel}
         </button>
+
+        <!-- Discard Button -->
         <button
           data-cy="discardBtn"
           class="discard icon"
-          disabled="${this.#discardDisabled}"
+          ?disabled="${this.#discardDisabled}"
           @click="${() => this.drawFunc.discard()}"
         >
           discard

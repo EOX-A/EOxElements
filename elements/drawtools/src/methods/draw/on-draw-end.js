@@ -7,12 +7,14 @@ import { emitDrawnFeaturesMethod } from "./";
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
 const onDrawEndMethod = (EoxDrawTool) => {
+  // Function to handle actions when drawing ends
   const handleDrawEnd = () => {
-    emitDrawnFeaturesMethod(EoxDrawTool);
-    EoxDrawTool.draw.setActive(false);
-    EoxDrawTool.currentlyDrawing = false;
+    emitDrawnFeaturesMethod(EoxDrawTool); // Emit drawn features
+    EoxDrawTool.draw.setActive(false); // Deactivate drawing
+    EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
   };
 
+  // Execute actions on draw end
   handleDrawEnd();
   EoxDrawTool.requestUpdate();
 };
