@@ -1,7 +1,8 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import "./components/layerList";
 import "./components/optionalList";
+import "./components/addLayers";
 import { filterLayers } from "./helpers";
 
 /**
@@ -43,6 +44,7 @@ export class EOxLayerControl extends LitElement {
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
     showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
+    addLayers: { attribute: "add-layers", type: Boolean },
     tools: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
@@ -77,6 +79,11 @@ export class EOxLayerControl extends LitElement {
      * Show layer state based on zoom level or not
      */
     this.showLayerZoomState = false;
+
+    /**
+     * Show layer state based on zoom level or not
+     */
+    this.addLayers = false;
 
     /**
      * Layer tools
@@ -162,6 +169,16 @@ export class EOxLayerControl extends LitElement {
           ></eox-layercontrol-optional-list>
         `
       )}
+      ${this.addLayers
+        ? html`
+            <eox-layercontrol-add-layers
+              .noShadow=${true}
+              .idProperty=${this.idProperty}
+              .titleProperty=${this.titleProperty}
+              @changed=${() => this.requestUpdate()}
+            ></eox-layercontrol-add-layers>
+          `
+        : nothing}
     `;
   }
 

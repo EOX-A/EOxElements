@@ -263,6 +263,40 @@ export const OptionalLayers = {
 };
 
 /**
+ * To be added
+ */
+export const AddLayers = {
+  args: {
+    addLayers: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .addLayers=${args.addLayers}
+        for="eox-map#addlayer"
+      ></eox-layercontrol>
+      <eox-map
+        id="addlayer"
+        style="width: 400px; height: 300px; margin-left: 7px;"
+        .layers=${[
+          {
+            type: "Tile",
+            properties: {
+              title: "Terrain",
+            },
+            source: {
+              type: "XYZ",
+              url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+            },
+          },
+        ]}
+      >
+      </eox-map>
+    </div>
+  `,
+};
+
+/**
  * By adding the `layerControlExpand` property to map layers,
  * they render in the layer control as opened.
  */
