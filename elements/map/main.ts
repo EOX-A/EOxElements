@@ -103,7 +103,7 @@ export class EOxMap extends LitElement {
    */
   addOrUpdateLayer = (json: EoxLayer) => {
     const id = json.properties?.id;
-    const existingLayer = getLayerById(this, id);
+    const existingLayer = id ? getLayerById(this, id) : false;
     let layer;
     if (existingLayer) {
       updateLayer(this, json, existingLayer);

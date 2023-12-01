@@ -50,6 +50,10 @@ export class EOxLayerControl extends LitElement {
     styleOverride: { type: String },
   };
 
+  /**
+   * @type import("../../map/main").EOxMap
+   */
+  #eoxMap;
   constructor() {
     super();
 
@@ -109,6 +113,11 @@ export class EOxLayerControl extends LitElement {
     if (foundElement && foundElement?.map !== this.map) {
       this.map = foundElement.map;
     }
+  }
+
+  firstUpdated() {
+    const mapQuery = document.querySelector(this.for);
+    this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
   }
 
   render() {
@@ -175,6 +184,7 @@ export class EOxLayerControl extends LitElement {
               .noShadow=${true}
               .idProperty=${this.idProperty}
               .titleProperty=${this.titleProperty}
+              .eoxMap=${this.#eoxMap}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-add-layers>
           `

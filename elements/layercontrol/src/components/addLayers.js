@@ -1,25 +1,23 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 
 export class EOxLayerControlAddLayers extends LitElement {
   static properties = {
-    idProperty: { attribute: "id-property" },
-    titleProperty: { attribute: "title-property", type: String },
+    eoxMap: { attribute: false, state: true },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
   };
 
+  /**
+   * @type string
+   */
+  layersInput = null;
   constructor() {
     super();
 
     /**
-     * The layer id property
+     * @type import("../../../map/main").EOxMap
      */
-    this.idProperty = "id";
-
-    /**
-     * The layer title property
-     */
-    this.titleProperty = "title";
+    this.eoxMap = null;
 
     /**
      * Render the element without additional styles
@@ -36,6 +34,43 @@ export class EOxLayerControlAddLayers extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  isLayerJSONValid() {
+    try {
+      JSON.parse(this.layersInput);
+
+      if (this.layersInput) return true;
+      else return false;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  #handleAddLayer() {
+    /**
+     * Converting any array into json and parsing it using JSON.parse
+     *
+     * @type {{data: []}}
+     * */
+    const layers = JSON.parse(`{"data":${this.layersInput}}`);
+
+    if (Array.isArray(layers.data))
+      layers.data.map((layer) => {
+        this.eoxMap.addOrUpdateLayer(layer);
+      });
+    else this.eoxMap.addOrUpdateLayer(layers.data);
+  }
+
+  #handleInputChange(evt) {
+    // Convert any js object to JSON
+    this.layersInput = evt.target.value
+      .replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ') // Remove without quote keys to double quote
+      .replace(/,\s*}/g, "}") // Remove trailing commas before closing braces
+      .replace(/,\s*]/g, "]") // Remove trailing commas before closing brackets
+      .replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1"); // Remove extra spaces around braces, brackets, and commas
+
+    this.requestUpdate();
+  }
+
   render() {
     return html`
       <style>
@@ -44,9 +79,18 @@ export class EOxLayerControlAddLayers extends LitElement {
       <div class="add-layer">
         <div class="main-label">
           <label>Add WMS/XYZ Layer JSON</label>
-          <button disabled class="small">Add</button>
+          <button
+            disabled=${this.isLayerJSONValid() ? nothing : true}
+            class="small"
+            @click=${this.#handleAddLayer}
+          >
+            Add
+          </button>
         </div>
-        <textarea placeholder="Please put a valid layer json."></textarea>
+        <textarea
+          placeholder="Please put a valid layer json."
+          @input=${this.#handleInputChange}
+        ></textarea>
       </div>
     `;
   }
