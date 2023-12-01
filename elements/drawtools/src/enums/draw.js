@@ -1,1 +1,1 @@
-export const TRANSITION_DURATION = { duration: 750 };
+export const FIT_OPTIONS = { duration: 750 };

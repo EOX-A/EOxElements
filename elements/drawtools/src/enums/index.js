@@ -4,6 +4,6 @@ export {
   STORIES_LAYERS_ARRAY,
 } from "./stories";
 
-export { TRANSITION_DURATION } from "./draw";
+export { FIT_OPTIONS } from "./draw";
 
 export { TEST_SELECTORS } from "./test";

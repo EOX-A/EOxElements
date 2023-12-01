@@ -1,4 +1,4 @@
-import { TRANSITION_DURATION } from "../../enums";
+import { FIT_OPTIONS } from "../../enums";
 
 /**
  * Handles selecting and deselecting a feature on the map.
@@ -16,13 +16,13 @@ const selectAndDeselectFeature = (feature, EoxDrawToolList) => {
   if (isSelectedFeature) {
     // Deselect the selected feature and fit the view to its extent
     const newExtent = drawLayer.getSource().getExtent();
-    olMap.getView().fit(newExtent, TRANSITION_DURATION);
+    olMap.getView().fit(newExtent, FIT_OPTIONS);
     clickInteraction.highlightById([]);
   } else {
     // Select the clicked feature and fit the view to its extent
     const featureExtent = featureGeometry.getExtent();
     clickInteraction.highlightById([selectedFeatureId]);
-    olMap.getView().fit(featureExtent, TRANSITION_DURATION);
+    olMap.getView().fit(featureExtent, FIT_OPTIONS);
   }
 
   EoxDrawToolList.requestUpdate();

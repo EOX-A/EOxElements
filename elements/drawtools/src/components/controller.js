@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { styleEOX } from "../style.eox";
 import { updateButtonStatesMethod } from "../methods/controller";
 
@@ -84,7 +84,7 @@ export class EOxDrawToolsController extends LitElement {
         <button
           data-cy="drawBtn"
           class="polygon icon"
-          ?disabled="${this.#drawDisabled}"
+          ?disabled="${this.#drawDisabled || nothing}"
           @click="${() => this.drawFunc.start()}"
         >
           ${drawLabel}
@@ -94,7 +94,7 @@ export class EOxDrawToolsController extends LitElement {
         <button
           data-cy="discardBtn"
           class="discard icon"
-          ?disabled="${this.#discardDisabled}"
+          ?disabled="${this.#discardDisabled || nothing}"
           @click="${() => this.drawFunc.discard()}"
         >
           discard

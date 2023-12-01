@@ -1,5 +1,3 @@
-import { nothing } from "lit";
-
 /**
  * Update button state of draw and discard buttons based on specific conditions.
  *
@@ -13,13 +11,10 @@ const updateButtonStatesMethod = (EoxDrawToolController) => {
 
   // Determine draw button's disabled state based on conditions
   const drawDisabled =
-    (!multipleFeatures && drawnFeatures?.length > 0) ||
-    currentlyDrawing ||
-    nothing;
+    (!multipleFeatures && drawnFeatures?.length > 0) || currentlyDrawing;
 
   // Determine discard button's disabled state based on conditions
-  const discardDisabled =
-    (!drawnFeatures?.length && !currentlyDrawing) || nothing;
+  const discardDisabled = !drawnFeatures?.length && !currentlyDrawing;
 
   // Return the updated button states
   return { drawDisabled, discardDisabled };
