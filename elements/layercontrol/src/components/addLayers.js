@@ -1,4 +1,5 @@
 import { LitElement, html, nothing } from "lit";
+import { isLayerJSONValid } from "../helpers";
 
 export class EOxLayerControlAddLayers extends LitElement {
   static properties = {
@@ -34,40 +35,57 @@ export class EOxLayerControlAddLayers extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
-  isLayerJSONValid() {
-    try {
-      JSON.parse(this.layersInput);
+  /**
+   * Handles the addition of one or multiple layers to the map based on the input.
+   * Parses the layers input into JSON format and adds or updates the layers accordingly.
+   * Supports both single and multiple layer additions.
+   */
+  #handleAddLayer() {
+    /**
+     * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
+     **/
+    const layers = JSON.parse(`{"data":${this.layersInput}}`);
 
-      if (this.layersInput) return true;
-      else return false;
-    } catch (error) {
-      return false;
+    // Check if the parsed data is an array
+    if (Array.isArray(layers.data)) {
+      // Iterate over each layer in the array and add/update it in the map
+      layers.data.forEach((layer) => {
+        this.eoxMap.addOrUpdateLayer(layer);
+      });
+    } else {
+      // If the parsed data is not an array, directly add/update the layer in the map
+      this.eoxMap.addOrUpdateLayer(layers.data);
     }
   }
 
-  #handleAddLayer() {
-    /**
-     * Converting any array into json and parsing it using JSON.parse
-     *
-     * @type {{data: []}}
-     * */
-    const layers = JSON.parse(`{"data":${this.layersInput}}`);
-
-    if (Array.isArray(layers.data))
-      layers.data.map((layer) => {
-        this.eoxMap.addOrUpdateLayer(layer);
-      });
-    else this.eoxMap.addOrUpdateLayer(layers.data);
-  }
-
+  /**
+   * Handles changes in the input field, parsing entered data into JSON format.
+   * Cleans up the input string to ensure valid JSON format and triggers an update.
+   *
+   * @param {Event} evt - The input change event.
+   */
   #handleInputChange(evt) {
-    // Convert any js object to JSON
-    this.layersInput = evt.target.value
-      .replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ') // Remove without quote keys to double quote
-      .replace(/,\s*}/g, "}") // Remove trailing commas before closing braces
-      .replace(/,\s*]/g, "]") // Remove trailing commas before closing brackets
-      .replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1"); // Remove extra spaces around braces, brackets, and commas
+    // Extracts the value entered in the input field
+    const inputValue = evt.target.value;
 
+    // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
+    const replacedQuotes = inputValue.replace(
+      /(['"])?([a-zA-Z0-9_]+)(['"])?:/g,
+      '"$2": '
+    );
+
+    // Remove trailing commas before closing braces and brackets
+    const removedCommas = replacedQuotes
+      .replace(/,\s*}/g, "}")
+      .replace(/,\s*]/g, "]");
+
+    // Remove extra spaces around braces, brackets, and commas for cleaner JSON
+    const cleanedInput = removedCommas.replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1");
+
+    // Update the stored layers input with the cleaned JSON data
+    this.layersInput = cleanedInput;
+
+    // Request a UI update to reflect changes
     this.requestUpdate();
   }
 
@@ -80,7 +98,7 @@ export class EOxLayerControlAddLayers extends LitElement {
         <div class="main-label">
           <label>Add WMS/XYZ Layer JSON</label>
           <button
-            disabled=${this.isLayerJSONValid() ? nothing : true}
+            disabled=${isLayerJSONValid(this.layersInput) ? nothing : true}
             class="small"
             @click=${this.#handleAddLayer}
           >

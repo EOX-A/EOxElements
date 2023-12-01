@@ -255,3 +255,21 @@ export function getStartVals(layer, layerConfig) {
 
   return Object.keys(startVals).length ? startVals : null;
 }
+
+/**
+ * Checks if the stored 'layersInput' is a valid JSON string.
+ * @param {string} str
+ * @returns {boolean} - Returns true if the 'layersInput' is a valid JSON, otherwise false.
+ */
+export function isLayerJSONValid(str) {
+  try {
+    // Parsing the layersInput to test if it's a valid JSON
+    JSON.parse(str);
+
+    // Returning true if 'layersInput' is not empty
+    return !!str;
+  } catch (error) {
+    // Returning false if there's an error parsing or if 'layersInput' is empty
+    return false;
+  }
+}
