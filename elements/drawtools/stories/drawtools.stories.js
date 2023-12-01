@@ -17,8 +17,32 @@ export default {
 };
 
 // Exporting each individual story for the eox-drawtools component.
-export const Primary = PrimaryStory; // Primary story showcasing basic usage.
-export const MultiPolygon = MultiPolygonStory; // Story demonstrating multiple polygons.
-export const ModifyFeatures = ModifyFeaturesStory; // Story showcasing feature modification.
-export const DrawType = DrawTypeStory; // Story illustrating different draw types.
-export const MultiPolygonWithList = MultiPolygonWithListStory; // Story demonstrating polygons with lists.
+
+/**
+ * Primary story showcasing basic usage.
+ */
+export const Primary = PrimaryStory;
+
+/**
+ * By setting the `multiple-features` attribute or `multipleFeatures` property to `true`,
+ * multiple polygons can be drawn.
+ */
+export const MultiPolygon = MultiPolygonStory;
+
+/**
+ * By setting the `allow-modify` attribute or `allowModify` property,
+ * the user can modify features after drawing
+ */
+export const ModifyFeatures = ModifyFeaturesStory;
+
+/**
+ * The `type` attribute/property controls which drawing type is enabled
+ * (defaults to "Polygon")
+ */
+export const DrawType = DrawTypeStory;
+
+/**
+ * By setting the `show-list` attribute or `showList` property to `true`,
+ * List of features will be visible
+ */
+export const MultiPolygonWithList = MultiPolygonWithListStory;
