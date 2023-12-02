@@ -1,5 +1,3 @@
-import { emitDrawnFeaturesMethod } from "./";
-
 /**
  * Discards drawing on the map, resets drawing interactions and features,
  * clears the source, and triggers updates.
@@ -23,7 +21,7 @@ const discardDrawingMethod = (EoxDrawTool, EoxMap, OlMap) => {
 
   // Function to trigger updates after discarding drawing
   const triggerUpdates = () => {
-    emitDrawnFeaturesMethod(EoxDrawTool);
+    EoxDrawTool.emitDrawnFeatures();
     EoxDrawTool.currentlyDrawing = false;
     EoxDrawTool.requestUpdate();
   };

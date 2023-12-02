@@ -62,12 +62,12 @@ export class EOxDrawToolsController extends LitElement {
   /**
    * Updates button states based on conditions
    */
-  updateButtonStates = () => {
+  updateButtonStates() {
     const { drawDisabled, discardDisabled } = updateButtonStatesMethod(this);
 
     this.#drawDisabled = drawDisabled;
     this.#discardDisabled = discardDisabled;
-  };
+  }
 
   render() {
     this.updateButtonStates();

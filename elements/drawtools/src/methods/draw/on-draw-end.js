@@ -1,5 +1,3 @@
-import { emitDrawnFeaturesMethod } from "./";
-
 /**
  * Handles actions after drawing ends -
  * emits drawn features, deactivates drawing, and requests an update.
@@ -9,7 +7,7 @@ import { emitDrawnFeaturesMethod } from "./";
 const onDrawEndMethod = (EoxDrawTool) => {
   // Function to handle actions when drawing ends
   const handleDrawEnd = () => {
-    emitDrawnFeaturesMethod(EoxDrawTool); // Emit drawn features
+    EoxDrawTool.emitDrawnFeatures(); // Emit drawn features
     EoxDrawTool.draw.setActive(false); // Deactivate drawing
     EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
   };

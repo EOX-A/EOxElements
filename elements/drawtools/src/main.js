@@ -116,37 +116,56 @@ export class EOxDrawTools extends LitElement {
   /**
    * Initializes the drawing layer before starting to draw on the map.
    */
-  initDrawLayer = () => {
+  initDrawLayer() {
     const { EoxMap, OlMap } = initDrawLayerMethod(this);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
-  };
+  }
 
   /**
    * @onClick Event handler triggered to start drawing on the map.
    */
-  handleStartDrawing = () => startDrawingMethod(this);
+  handleStartDrawing() {
+    startDrawingMethod(this);
+  }
 
   /**
    * @onClick Event handler triggered to discard/stop drawing
    * on the map and delete the drawn shapes.
    */
-  handleDiscardDrawing = () =>
+  handleDiscardDrawing() {
     discardDrawingMethod(this, this.#eoxMap, this.#olMap);
+  }
 
   /**
    * @event onDrawEnd triggered when the drawing of a shape is completed.
    */
-  onDrawEnd = () => onDrawEndMethod(this);
+  onDrawEnd() {
+    onDrawEndMethod(this);
+  }
 
   /**
    * @event onModifyEnd triggered when the modification of a shape is completed.
    */
-  onModifyEnd = () => emitDrawnFeaturesMethod(this);
+  onModifyEnd() {
+    this.emitDrawnFeatures();
+  }
 
   /**
    * Triggers different events when the drawing of a shape is completed.
    */
-  emitDrawnFeatures = () => emitDrawnFeaturesMethod(this);
+  emitDrawnFeatures() {
+    const drawUpdateEvent = () => {
+      /**
+       * Fires whenever features are added, modified or discarded, where the event detail
+       * is the `drawnFeatures` array
+       * @type Array<import("ol").Feature>
+       */
+      this.dispatchEvent(
+        new CustomEvent("drawupdate", { detail: this.drawnFeatures })
+      );
+    };
+    emitDrawnFeaturesMethod(this, drawUpdateEvent);
+  }
 
   // Render method for UI display
   render() {

@@ -97,28 +97,34 @@ export class EOxDrawToolsList extends LitElement {
    *
    * @param {Event & { target: HTMLButtonElement }} evt - Event object containing button target.
    */
-  _handleDelete = (evt) => deleteFeatureMethod(evt, this);
+  _handleDelete(evt) {
+    deleteFeatureMethod(evt, this);
+  }
 
   /**
    * Handles the selection and deselection of a feature from the list.
    *
    * @param {import("ol").Feature} feature - The selected feature.
    */
-  _handleFeatureSelectAndDeselect = (feature) =>
+  _handleFeatureSelectAndDeselect(feature) {
     selectAndDeselectFeatureMethod(feature, this);
+  }
 
   /**
    *
    * @param {Number} featureId - The ID of the feature to hover.
    * @param {Boolean} mouseOut - Flag indicating mouse out event.
    */
-  _handleHoverFeature = (featureId, mouseOut = false) =>
+  _handleHoverFeature(featureId, mouseOut = false) {
     hoverFeatureMethod(this, featureId, mouseOut);
+  }
 
   /**
    * Initiates initial settings and event triggers upon the component's first update.
    */
-  firstUpdated = () => firstUpdatedMethod(this);
+  firstUpdated() {
+    firstUpdatedMethod(this);
+  }
 
   render() {
     // Update hover and click IDs

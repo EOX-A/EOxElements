@@ -1,4 +1,4 @@
-import { onDrawEndMethod, emitDrawnFeaturesMethod } from "./";
+import { onDrawEndMethod } from "./";
 
 /**
  * Initializes the draw layer, interacts with the map, and returns map instances.
@@ -75,9 +75,7 @@ const initDrawLayerMethod = (EoxDrawTool) => {
     /** @type {unknown} */ (EoxMap.interactions["drawInteractionmodify"])
   );
   EoxDrawTool.draw?.on("drawend", () => onDrawEndMethod(EoxDrawTool));
-  EoxDrawTool.modify?.on("modifyend", () =>
-    emitDrawnFeaturesMethod(EoxDrawTool)
-  );
+  EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.emitDrawnFeatures());
 
   return { EoxMap, OlMap };
 };
