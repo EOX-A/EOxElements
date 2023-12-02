@@ -65,13 +65,14 @@ export class EOxLayerControlAddLayers extends LitElement {
           <label>Add WMS/XYZ Layer JSON</label>
           <button
             disabled=${isLayerJSONValid(this.layersInput) ? nothing : true}
-            class="small"
+            class="small add-layer-btn"
             @click=${this.#handleAddLayer}
           >
             Add
           </button>
         </div>
         <textarea
+          class="add-layer-input"
           placeholder="Please put a valid layer json."
           @input=${this.#handleInputChange}
           .value=${this.layersInput}

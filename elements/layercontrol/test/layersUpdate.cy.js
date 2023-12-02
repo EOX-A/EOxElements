@@ -7,9 +7,13 @@ describe("LayerControl", () => {
       .getRunner()
       .suite.ctx.currentTest.title.includes("showLayerZoomState");
 
+    const addLayers = Cypress.mocha
+      .getRunner()
+      .suite.ctx.currentTest.title.includes("addLayers");
+
     cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(`<eox-layercontrol for="mock-map"></eox-layercontrol>`, {
-      properties: { showLayerZoomState },
+      properties: { showLayerZoomState, addLayers },
     }).as("eox-layercontrol");
   });
 
@@ -245,6 +249,37 @@ describe("LayerControl", () => {
       .within(() => {
         checkLayerClass("foo");
         checkLayerClass("bar", true);
+      });
+  });
+
+  it("Add new external WMS/XYZ Layer - addLayers", () => {
+    cy.get("mock-map").and(($el) => {
+      $el /**MockMap*/[0]
+        .setLayers([{ properties: { id: "foo" } }]);
+    });
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .within(() => {
+        cy.get("eox-layercontrol-add-layers")
+          .within(() => {
+            cy.get(`.add-layer`).should(`have.class`, "add-layer");
+            cy.get(`.add-layer-input`).type("foo");
+            cy.get(`.add-layer-btn`).should("have.attr", "disabled");
+            cy.get(`.add-layer-input`).clear().type(`{
+            properties: {
+              title: "Bar",
+              id: "bar",
+            }
+          }`);
+            cy.get(`.add-layer-btn`).should("not.have.attr", "disabled");
+            cy.get(`.add-layer-btn`).click();
+          })
+          .then(() => {
+            cy.get("eox-layercontrol-layer-list")
+              .find("li")
+              .should("have.attr", "data-layer", "bar");
+          });
       });
   });
 });
