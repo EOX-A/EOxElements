@@ -260,26 +260,29 @@ describe("LayerControl", () => {
 
     cy.get("eox-layercontrol")
       .shadow()
-      .within(() => {
-        cy.get("eox-layercontrol-add-layers")
-          .within(() => {
-            cy.get(`.add-layer`).should(`have.class`, "add-layer");
-            cy.get(`.add-layer-input`).type("foo");
-            cy.get(`.add-layer-btn`).should("have.attr", "disabled");
-            cy.get(`.add-layer-input`).clear().type(`{
+      .find("eox-layercontrol-add-layers")
+      .then(($el) => {
+        cy.wrap($el).within(() => {
+          cy.get(`.add-layer`).should(`have.class`, "add-layer");
+          cy.get(`.add-layer-input`).type("foo");
+          cy.get(`.add-layer-btn`).should("have.attr", "disabled");
+          cy.get(`.add-layer-input`).clear();
+          cy.get(`.add-layer-input`).type(`{
             properties: {
               title: "Bar",
               id: "bar",
             }
           }`);
-            cy.get(`.add-layer-btn`).should("not.have.attr", "disabled");
-            cy.get(`.add-layer-btn`).click();
-          })
-          .then(() => {
-            cy.get("eox-layercontrol-layer-list")
-              .find("li")
-              .should("have.attr", "data-layer", "bar");
-          });
+          cy.get(`.add-layer-btn`).should("not.have.attr", "disabled");
+          cy.get(`.add-layer-btn`).click();
+        });
+      });
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .find("eox-layercontrol-layer-list")
+      .then(($el) => {
+        cy.wrap($el).find("li").should("have.attr", "data-layer", "bar");
       });
   });
 });
