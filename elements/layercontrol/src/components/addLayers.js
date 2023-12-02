@@ -1,5 +1,9 @@
 import { LitElement, html, nothing } from "lit";
-import { isLayerJSONValid } from "../helpers";
+import {
+  handleAddLayerMethod,
+  handleInputChangeMethod,
+  isLayerJSONValid,
+} from "../helpers";
 
 export class EOxLayerControlAddLayers extends LitElement {
   static properties = {
@@ -37,56 +41,18 @@ export class EOxLayerControlAddLayers extends LitElement {
 
   /**
    * Handles the addition of one or multiple layers to the map based on the input.
-   * Parses the layers input into JSON format and adds or updates the layers accordingly.
-   * Supports both single and multiple layer additions.
    */
   #handleAddLayer() {
-    /**
-     * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
-     **/
-    const layers = JSON.parse(`{"data":${this.layersInput}}`);
-
-    // Check if the parsed data is an array
-    if (Array.isArray(layers.data)) {
-      // Iterate over each layer in the array and add/update it in the map
-      layers.data.forEach((layer) => {
-        this.eoxMap.addOrUpdateLayer(layer);
-      });
-    } else {
-      // If the parsed data is not an array, directly add/update the layer in the map
-      this.eoxMap.addOrUpdateLayer(layers.data);
-    }
+    handleAddLayerMethod(this);
   }
 
   /**
-   * Handles changes in the input field, parsing entered data into JSON format.
-   * Cleans up the input string to ensure valid JSON format and triggers an update.
+   * Handles changes in the input field
    *
    * @param {Event} evt - The input change event.
    */
   #handleInputChange(evt) {
-    // Extracts the value entered in the input field
-    const inputValue = evt.target.value;
-
-    // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
-    const replacedQuotes = inputValue.replace(
-      /(['"])?([a-zA-Z0-9_]+)(['"])?:/g,
-      '"$2": '
-    );
-
-    // Remove trailing commas before closing braces and brackets
-    const removedCommas = replacedQuotes
-      .replace(/,\s*}/g, "}")
-      .replace(/,\s*]/g, "]");
-
-    // Remove extra spaces around braces, brackets, and commas for cleaner JSON
-    const cleanedInput = removedCommas.replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1");
-
-    // Update the stored layers input with the cleaned JSON data
-    this.layersInput = cleanedInput;
-
-    // Request a UI update to reflect changes
-    this.requestUpdate();
+    handleInputChangeMethod(evt, this);
   }
 
   render() {
@@ -108,6 +74,7 @@ export class EOxLayerControlAddLayers extends LitElement {
         <textarea
           placeholder="Please put a valid layer json."
           @input=${this.#handleInputChange}
+          .value=${this.layersInput}
         ></textarea>
       </div>
     `;

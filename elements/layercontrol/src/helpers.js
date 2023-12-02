@@ -273,3 +273,64 @@ export function isLayerJSONValid(str) {
     return false;
   }
 }
+
+/**
+ * Handles changes in the input field, parsing entered data into JSON format.
+ * Cleans up the input string to ensure valid JSON format and triggers an update.
+ *
+ * @param {Event} evt - The input change event.
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ */
+export function handleInputChangeMethod(evt, EoxLayerControlAddLayers) {
+  // Extracts the value entered in the input field
+  const inputValue = evt.target.value;
+
+  // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
+  const replacedQuotes = inputValue.replace(
+    /(['"])?([a-zA-Z0-9_]+)(['"])?:/g,
+    '"$2": '
+  );
+
+  // Remove trailing commas before closing braces and brackets
+  const removedCommas = replacedQuotes
+    .replace(/,\s*}/g, "}")
+    .replace(/,\s*]/g, "]");
+
+  // Remove extra spaces around braces, brackets, and commas for cleaner JSON
+  const cleanedInput = removedCommas.replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1");
+
+  // Update the stored layers input with the cleaned JSON data
+  EoxLayerControlAddLayers.layersInput = cleanedInput;
+
+  // Request a UI update to reflect changes
+  EoxLayerControlAddLayers.requestUpdate();
+}
+
+/**
+ * Handles the addition of one or multiple layers to the map based on the input.
+ * Parses the layers input into JSON format and adds or updates the layers accordingly.
+ * Supports both single and multiple layer additions.
+ *
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ */
+export function handleAddLayerMethod(EoxLayerControlAddLayers) {
+  /**
+   * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
+   **/
+  const layers = JSON.parse(`{"data":${EoxLayerControlAddLayers.layersInput}}`);
+
+  // Check if the parsed data is an array
+  if (Array.isArray(layers.data)) {
+    // Iterate over each layer in the array and add/update it in the map
+    layers.data.forEach((layer) => {
+      EoxLayerControlAddLayers.eoxMap.addOrUpdateLayer(layer);
+    });
+  } else {
+    // If the parsed data is not an array, directly add/update the layer in the map
+    EoxLayerControlAddLayers.eoxMap.addOrUpdateLayer(layers.data);
+  }
+
+  // Resetting `layersInput` with null value and re-rendering the component
+  EoxLayerControlAddLayers.layersInput = null;
+  EoxLayerControlAddLayers.requestUpdate();
+}

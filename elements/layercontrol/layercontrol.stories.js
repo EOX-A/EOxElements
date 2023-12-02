@@ -263,7 +263,9 @@ export const OptionalLayers = {
 };
 
 /**
- * To be added
+ * By adding the `addLayers` property to map layers,
+ * Users are allowed to add any external WMS/XYZ layers,
+ * directly with the help of a layer JSON.
  */
 export const AddLayers = {
   args: {
