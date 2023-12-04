@@ -1,4 +1,5 @@
 import Sortable from "sortablejs";
+import { getUid } from "ol/util";
 
 /**
  *
@@ -51,15 +52,15 @@ export const createSortable = (element, collection, that) => {
       const layers = collection.getArray();
       const layer = layers.find(
         (l) =>
-          // @ts-ignore
-          l.ol_uid ===
-          /** @type Element & {layer: import("ol/layer").Layer} */ (
-            e.item.querySelector("eox-layercontrol-layer")
-            // @ts-ignore
-          ).layer.ol_uid
+          getUid(l) ===
+          getUid(
+            /** @type Element & {layer: import("ol/layer").Layer} */ (
+              e.item.querySelector("eox-layercontrol-layer")
+            ).layer
+          )
       );
       const relatedLayer = layers.find(
-        (layer) => layer.ol_uid == related.dataset.layer_uid
+        (layer) => getUid(layer) == related.dataset.layer_uid
       );
       let draggedIndex;
       let dropIndex;

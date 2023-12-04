@@ -5,6 +5,7 @@ import { createSortable, getLayerType } from "../helpers";
 import "./layer";
 import "./layerGroup";
 import _debounce from "lodash.debounce";
+import { getUid } from "ol/util";
 /**
  * Display of a list of layers
  *
@@ -120,7 +121,7 @@ export class EOxLayerControlLayerList extends LitElement {
               (layer) => html`
                 <li
                   data-layer="${layer.get(this.idProperty)}"
-                  data-layer_uid="${layer.ol_uid}"
+                  data-layer_uid="${getUid(layer)}"
                   data-type="${getLayerType(layer, this.map)}"
                 >
                   ${
