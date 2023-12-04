@@ -1,42 +1,32 @@
+// Importing necessary modules, test cases, and enums
 import "../src/main";
 import "./_mockMap";
+import {
+  clickDiscardBtnTest,
+  clickDrawBtnTest,
+  loadDrawToolsTest,
+} from "./cases";
+import { TEST_SELECTORS } from "../src/enums";
 
+// Destructuring TEST_SELECTORS object
+const { drawTools } = TEST_SELECTORS;
+
+// Test suite for Drawtools
 describe("Drawtools", () => {
+  // Setting up the environment before each test
   beforeEach(() => {
+    // Mounting mock-map and eox-drawtools elements
     cy.mount("<mock-map></mock-map>").as("mock-map");
-    cy.mount(
-      `
-      <eox-drawtools for="mock-map"></eox-drawtools>`
-    ).as("eox-drawtools");
+    cy.mount(`<eox-drawtools for="mock-map"></eox-drawtools>`).as(drawTools);
   });
 
-  it("loads the drawtools", () => {
-    cy.get("eox-drawtools").shadow();
-  });
+  // Test case to ensure the drawtools component loads successfully
+  it("loads the drawtools", () => loadDrawToolsTest());
 
-  it("clicks the draw button", () => {
-    cy.get("eox-drawtools")
-      .shadow()
-      .within(() => {
-        cy.get("[data-cy='drawBtn']").contains("draw");
-        cy.get("[data-cy='drawBtn']").should("not.contain", "drawing");
-        cy.get("[data-cy='drawBtn']").click();
-        cy.get("[data-cy='drawBtn']").contains("drawing");
-      });
-    // TODO simulate drawing and add drawn features
-  });
+  // Test case to simulate clicking the draw button
+  it("clicks the draw button", () => clickDrawBtnTest());
 
-  it("clicks the discard button and clears drawn features", () => {
-    cy.get("eox-drawtools")
-      .shadow()
-      .within(() => {
-        cy.get("[data-cy='drawBtn']").click();
-        cy.get("[data-cy='drawBtn']").contains("drawing");
-        cy.get("[data-cy='discardBtn']").click();
-        cy.get("[data-cy='drawBtn']").should("not.contain", "drawing");
-      });
-    cy.get("eox-drawtools").should(($el) => {
-      expect($el[0].drawnFeatures).to.have.length(0);
-    });
-  });
+  // Test case to simulate clicking the discard button and clearing drawn features
+  it("clicks the discard button and clears drawn features", () =>
+    clickDiscardBtnTest());
 });
