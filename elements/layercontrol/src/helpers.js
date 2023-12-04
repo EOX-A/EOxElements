@@ -11,6 +11,10 @@ export const createSortable = (element, collection, that) => {
    * @type {any[]}
    */
   let childNodes = [];
+  /**
+   * @type {HTMLElement}
+   */
+  let related = null;
   /** @type HTMLElement & {_sortable: import("sortablejs")}*/ (
     element
   )._sortable = Sortable.create(element, {
@@ -30,6 +34,9 @@ export const createSortable = (element, collection, that) => {
           node.nodeType != Node.ELEMENT_NODE ||
           !node.classList.contains("sortable-fallback")
       );
+    },
+    onMove(e) {
+      related = e.related;
     },
     onEnd: (e) => {
       // Undo DOM changes by re-adding all children in their original order.
@@ -51,27 +58,19 @@ export const createSortable = (element, collection, that) => {
             // @ts-ignore
           ).layer.ol_uid
       );
-      const numberOfHiddenLayers = layers.filter(
-        (l) => l.get("layerControlHide") || l.get("layerControlOptional")
-      ).length;
-      const target =
-        layers[layers.length - 1 - e.newIndex - numberOfHiddenLayers];
+      const relatedLayer = layers.find(
+        (layer) => layer.ol_uid == related.dataset.layer_uid
+      );
       let draggedIndex;
       let dropIndex;
-      // remove dragged layer from collection
-      for (
-        draggedIndex = layers.length - 1;
-        draggedIndex > -1;
-        draggedIndex--
-      ) {
+      for (draggedIndex = 0; draggedIndex < layers.length; draggedIndex++) {
         if (layers[draggedIndex] == layer) {
           collection.removeAt(draggedIndex);
           break;
         }
       }
-      // re-add dragged layer at position of layer that has beend dropped on
-      for (dropIndex = layers.length - 1; dropIndex > -1; dropIndex--) {
-        if (layers[dropIndex] === target) {
+      for (dropIndex = 0; dropIndex < layers.length; dropIndex++) {
+        if (layers[dropIndex] === relatedLayer) {
           if (draggedIndex > dropIndex) collection.insertAt(dropIndex, layer);
           else collection.insertAt(dropIndex + 1, layer);
           break;

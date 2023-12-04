@@ -120,6 +120,7 @@ export class EOxLayerControlLayerList extends LitElement {
               (layer) => html`
                 <li
                   data-layer="${layer.get(this.idProperty)}"
+                  data-layer_uid="${layer.ol_uid}"
                   data-type="${getLayerType(layer, this.map)}"
                 >
                   ${
