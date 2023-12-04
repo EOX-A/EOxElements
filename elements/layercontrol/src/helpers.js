@@ -5,9 +5,10 @@ import { getUid } from "ol/util";
  *
  * @param {HTMLElement} element
  * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} collection
+ * @param {string} idProperty
  * @param {import("lit").LitElement} that
  */
-export const createSortable = (element, collection, that) => {
+export const createSortable = (element, collection, idProperty, that) => {
   /**
    * @type {any[]}
    */
@@ -52,15 +53,13 @@ export const createSortable = (element, collection, that) => {
       const layers = collection.getArray();
       const layer = layers.find(
         (l) =>
-          getUid(l) ===
-          getUid(
-            /** @type Element & {layer: import("ol/layer").Layer} */ (
-              e.item.querySelector("eox-layercontrol-layer")
-            ).layer
-          )
+          l.get(idProperty) ===
+          /** @type Element & {layer: import("ol/layer").Layer} */ (
+            e.item.querySelector("eox-layercontrol-layer")
+          ).layer.get(idProperty)
       );
       const relatedLayer = layers.find(
-        (layer) => getUid(layer) == related.dataset.layer_uid
+        (layer) => layer.get(idProperty) == related.dataset.layer
       );
       let draggedIndex;
       let dropIndex;
@@ -82,6 +81,26 @@ export const createSortable = (element, collection, that) => {
   });
 };
 
+/**
+ * Initially check if all layers have an id and title,
+ * fill in some backup in case they haven't
+ *
+ * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} collection
+ * @param {string} idProperty
+ * @param {string} titleProperty
+ */
+//
+export function checkProperties(collection, idProperty, titleProperty) {
+  const layerArray = collection.getArray();
+  layerArray.forEach((layer) => {
+    if (!layer.get(idProperty)) {
+      layer.set(idProperty, getUid(layer));
+    }
+    if (!layer.get(titleProperty)) {
+      layer.set(titleProperty, `layer ${getUid(layer)}`);
+    }
+  });
+}
 /**
  * Filter all map layers by property
  *
