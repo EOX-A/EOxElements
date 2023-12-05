@@ -53,7 +53,9 @@ describe("select interaction on click", () => {
     cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
       fixture: "/ecoregions.json",
     });
-    const styleJson = vectorLayerJson as Array<EoxLayer>;
+    const styleJson = JSON.parse(
+      JSON.stringify(vectorLayerJson)
+    ) as Array<EoxLayer>;
     styleJson[0].interactions = [
       {
         type: "select",

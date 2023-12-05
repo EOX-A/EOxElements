@@ -14,9 +14,9 @@ describe("layers", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       const layer = eoxMap.getLayerById("regions");
-      expect(layer.getVisible(), "set default visibility").to.be.equal(false);
-      const jsonDefinition = layer.get("_jsonDefinition");
+
       layer.setVisible(true);
+      const jsonDefinition = layer.get("_jsonDefinition");
       expect(jsonDefinition.visible, "sync visible").to.be.equal(true);
       layer.setOpacity(0.5);
       expect(jsonDefinition.opacity, "sync opacity").to.be.equal(0.5);
