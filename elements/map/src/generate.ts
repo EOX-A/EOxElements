@@ -69,7 +69,7 @@ export type EOxInteraction = {
 
 export type EoxLayer = {
   type: layerType;
-  properties: object & {
+  properties?: object & {
     id: string;
   };
   minZoom?: number;
@@ -291,7 +291,7 @@ export function updateLayer(
   }
 
   if (newLayerDefinition.type === "Group") {
-    const newLayerIds = newLayerDefinition.layers.map((l) => l.properties.id);
+    const newLayerIds = newLayerDefinition.layers.map((l) => l.properties?.id);
     // remove all layers from the group that do not exist in the new layer definition
     //@ts-ignore
     const layerCollection = existingLayer.getLayers();

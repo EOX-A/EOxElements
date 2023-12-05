@@ -20,9 +20,7 @@ export default {
 export const Primary = {
   args: {
     center: [15, 48],
-    layers: [
-      { type: "Tile", source: { type: "OSM" }, properties: { id: "osm" } },
-    ],
+    layers: [{ type: "Tile", source: { type: "OSM" } }],
     zoom: 7,
   },
 };
@@ -207,9 +205,6 @@ export const Hover = {
     layers: [
       {
         type: "Vector",
-        properties: {
-          id: "regions",
-        },
         source: {
           type: "Vector",
           url: "https://openlayers.org/data/vector/ecoregions.json",
@@ -326,15 +321,10 @@ export const MapSync = {
 
 export const ABCompare = {
   args: {
-    layersA: [
-      { type: "Tile", source: { type: "OSM" }, properties: { id: "osm" } },
-    ],
+    layersA: [{ type: "Tile", source: { type: "OSM" } }],
     layersB: [
       {
         type: "Tile",
-        properties: {
-          id: "wind",
-        },
         source: {
           type: "TileWMS",
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",

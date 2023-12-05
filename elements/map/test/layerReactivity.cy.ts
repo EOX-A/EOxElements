@@ -69,4 +69,16 @@ describe("Map", () => {
       expect(eoxMap.interactions.drawInteraction_modify).to.exist;
     });
   });
+
+  it("always completely remake layers without ID", () => {
+    cy.mount(html`<eox-map></eox-map>`).as("eox-map");
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      delete OsmJson.properties;
+      eoxMap.layers = [OsmJson];
+      delete drawInteractionLayerJson[0].properties;
+      eoxMap.layers = [drawInteractionLayerJson[0] as EoxLayer];
+      expect(eoxMap.map.getLayers().getArray().length).to.be.equal(1);
+    });
+  });
 });

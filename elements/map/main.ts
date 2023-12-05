@@ -65,25 +65,28 @@ export class EOxMap extends LitElement {
   set layers(layers: Array<EoxLayer>) {
     const oldLayers = this._layers;
     const newLayers = layers;
-    newLayers.forEach((l) => {
-      this.addOrUpdateLayer(l);
-    });
 
     // remove layers that are not defined anymore
     if (oldLayers) {
       oldLayers.forEach((l: EoxLayer) => {
         if (
+          !l.properties?.id || // always remove old layers without id
           !newLayers.find(
             (newLayer) => newLayer.properties.id === l.properties.id
           )
         ) {
-          const layerToBeRemoved = getLayerById(this, l.properties.id);
+          const layerToBeRemoved = getLayerById(this, l.properties?.id);
           this.map.removeLayer(layerToBeRemoved);
         }
       });
     }
+
+    newLayers.forEach((l) => {
+      this.addOrUpdateLayer(l);
+    });
+
     // after all layers were added/updated/deleted, rearrange them in the correct order
-    const sortedIds = newLayers.map((l) => l.properties.id);
+    const sortedIds = newLayers.map((l) => l.properties?.id);
     this.map
       .getLayers()
       .getArray()
@@ -156,7 +159,9 @@ export class EOxMap extends LitElement {
       json.interactions = [];
     }
     const id = json.properties?.id;
-    const existingLayer = getLayerById(this, id);
+
+    // if id is undefined, never try to update an existing layer, always create a new one instead.
+    const existingLayer = id && getLayerById(this, id);
     let layer;
     if (existingLayer) {
       updateLayer(this, json, existingLayer);
