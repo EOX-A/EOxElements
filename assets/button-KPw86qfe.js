@@ -88,4 +88,3 @@ button.small {
   font-size: .75rem;
 }
 `;export{o as b};
-//# sourceMappingURL=button-KPw86qfe.js.map

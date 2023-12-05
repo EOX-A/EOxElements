@@ -10,4 +10,3 @@ Thus, they can be used in applications built with Vanilla JavaScript, Vue.js, Re
 `,e.jsx(n.h2,{id:"current-state",children:"Current state"}),`
 `,e.jsxs(n.p,{children:[`All of the elements are currently functional, but not yet ready for production-use because of frequent breaking changes.
 Please refer to the repository's `,e.jsx(n.a,{href:"https://github.com/EOX-A/EOxElements/milestones",target:"_blank",rel:"nofollow noopener noreferrer",children:"Milestones"})," to get a feeling of when to expect a producion-ready v1.0.0."]})]})}function c(t={}){const{wrapper:n}=Object.assign({},r(),t.components);return n?e.jsx(n,Object.assign({},t,{children:e.jsx(o,t)})):o(t)}export{c as default};
-//# sourceMappingURL=About-6hdSrIOF.js.map

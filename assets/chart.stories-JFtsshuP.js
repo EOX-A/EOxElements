@@ -162,4 +162,3 @@ select {
   `])))},ns={args:{}};var ua,da,fa;ns.parameters={...ns.parameters,docs:{...(ua=ns.parameters)==null?void 0:ua.docs,source:{originalSource:`{
   args: {}
 }`,...(fa=(da=ns.parameters)==null?void 0:da.docs)==null?void 0:fa.source}}};const sy=["Primary"];export{ns as Primary,sy as __namedExportsOrder,iy as default};
-//# sourceMappingURL=chart.stories-JFtsshuP.js.map

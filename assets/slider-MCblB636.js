@@ -127,4 +127,3 @@ input::-moz-focus-inner, input::-moz-focus-outer {
   border: 0;
 }
 `;export{e as c,t as r,i as s};
-//# sourceMappingURL=slider-MCblB636.js.map

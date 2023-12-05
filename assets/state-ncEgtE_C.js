@@ -11,4 +11,3 @@ import{u as d,f as l}from"./lit-element-Qm8PRmVu.js";/**
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */function g(t){return h({...t,state:!0,attribute:!1})}export{h as n,g as r,m as t};
-//# sourceMappingURL=state-ncEgtE_C.js.map

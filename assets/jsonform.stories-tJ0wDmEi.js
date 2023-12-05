@@ -31,4 +31,3 @@ import{x as c}from"./lit-element-Qm8PRmVu.js";import"./main-X_IRTVp1.js";import"
     ></eox-jsonform>
   \`
 }`,...(l=(a=i.parameters)==null?void 0:a.docs)==null?void 0:l.source}}};const F=["Catalog","Collection"];export{e as Catalog,i as Collection,F as __namedExportsOrder,P as default};
-//# sourceMappingURL=jsonform.stories-tJ0wDmEi.js.map

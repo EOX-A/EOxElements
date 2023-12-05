@@ -177,4 +177,3 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       </style>
       <form></form>
     `}}an=new WeakMap,vr=new WeakMap,Nn=new WeakSet,So=function(){this.dispatchEvent(new CustomEvent("change",{detail:on(this,an),bubbles:!0,composed:!0})),this.requestUpdate()},Dn=new WeakSet,Po=function(){["ready","change"].map(W=>{on(this,vr).on(W,()=>{$i(this,an,on(this,vr).getValue()),Wi(this,Nn,So).call(this)})})},jo(Eo,"properties",{schema:{attribute:!1,type:Object},startVals:{attribute:!1,type:Object},options:{attribute:!1,type:Object},unstyled:{type:Boolean}});customElements.define("eox-jsonform",Eo);
-//# sourceMappingURL=main-X_IRTVp1.js.map
