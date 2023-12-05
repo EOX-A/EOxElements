@@ -2,7 +2,7 @@
   "name": "@eox/elements",
   "homepage": "https://eox-a.github.io/EOxElements",
   "private": true,
-  "version": "2.0.0",
+  "version": "0.1.0",
   "workspaces": [
     "elements/*"
   ],
