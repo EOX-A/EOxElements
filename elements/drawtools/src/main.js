@@ -13,7 +13,6 @@ import {
 
 /**
  * Manage drawn features on a map
- * Define EOxDrawTools class extending LitElement
  *
  * @element eox-drawtools
  */
