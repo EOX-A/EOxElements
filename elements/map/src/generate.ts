@@ -7,9 +7,16 @@ import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
 import { DrawOptions, addDraw } from "./draw";
 import { EOxMap } from "../main";
-import { EOxSelectInteraction, SelectOptions, addSelect } from "./select";
+import {
+  EOxSelectInteraction,
+  SelectLayer,
+  SelectOptions,
+  addSelect,
+} from "./select";
 import { register } from "ol/proj/proj4.js";
 import proj4 from "proj4";
+import VectorLayer from "ol/layer/Vector";
+import VectorSource from "ol/source/Vector";
 
 register(proj4); // required to support source reprojection
 
@@ -89,6 +96,8 @@ export function createLayer(
   layer: EoxLayer,
   createInteractions: boolean = true
 ): olLayers.Layer {
+  layer = JSON.parse(JSON.stringify(layer));
+
   const newLayer = availableLayers[layer.type];
   const newSource = availableSources[layer.source?.type];
   if (!newLayer) {
@@ -126,6 +135,8 @@ export function createLayer(
     style: undefined, // override layer style, apply style after
   });
 
+  olLayer.set("_jsonDefinition", layer, true);
+
   if (layer.type === "Group") {
     const groupLayers = layer.layers
       .reverse()
@@ -138,23 +149,37 @@ export function createLayer(
   if (layer.style) {
     olLayer.setStyle(layer.style);
   }
-  olLayer.set("_jsonDefinition", JSON.parse(JSON.stringify(layer)), true);
-  setSyncListeners(olLayer, layer);
   if (createInteractions && layer.interactions?.length) {
     for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
       const interactionDefinition = layer.interactions[i];
-      if (interactionDefinition.type === "draw") {
-        addDraw(EOxMap, olLayer, interactionDefinition.options as DrawOptions);
-      } else if (interactionDefinition.type === "select") {
-        addSelect(
-          EOxMap,
-          olLayer,
-          interactionDefinition.options as SelectOptions
-        );
-      }
+      addInteraction(EOxMap, olLayer, interactionDefinition);
     }
   }
+
+  setSyncListeners(olLayer, layer);
   return olLayer;
+}
+
+/**
+ * adds an interaction to a given layer
+ * @param EOxMap
+ * @param olLayer
+ * @param interactionDefinition
+ */
+function addInteraction(
+  EOxMap: EOxMap,
+  olLayer: SelectLayer,
+  interactionDefinition: EOxInteraction
+) {
+  if (interactionDefinition.type === "draw") {
+    addDraw(
+      EOxMap,
+      olLayer as VectorLayer<VectorSource>,
+      interactionDefinition.options as DrawOptions
+    );
+  } else if (interactionDefinition.type === "select") {
+    addSelect(EOxMap, olLayer, interactionDefinition.options as SelectOptions);
+  }
 }
 
 /**
@@ -249,8 +274,21 @@ export function updateLayer(
         }
       }
     });
+    // for each truly "new" interaction, add the corresponding interaction
+    newLayerDefinition.interactions.forEach((interactionDefinition) => {
+      const correspondingExistingInteraction =
+        existingJsonDefintion.interactions.find(
+          (i) => i.type === interactionDefinition.type
+        );
+      if (!correspondingExistingInteraction) {
+        addInteraction(
+          EOxMap,
+          existingLayer as SelectLayer,
+          interactionDefinition
+        );
+      }
+    });
   }
-  setSyncListeners(existingLayer, newLayerDefinition);
 
   if (newLayerDefinition.type === "Group") {
     const newLayerIds = newLayerDefinition.layers.map((l) => l.properties.id);
@@ -260,6 +298,28 @@ export function updateLayer(
     layerCollection.forEach((l: olLayers.Layer) => {
       if (!newLayerIds.includes(l.get("id"))) {
         layerCollection.remove(l);
+      }
+    });
+
+    // add or update all layers
+    newLayerDefinition.layers.forEach((layerDefinitionInsideGroup) => {
+      const newLayerId = layerDefinitionInsideGroup.properties.id;
+      if (
+        layerCollection
+          .getArray()
+          .map((l: olLayers.Layer) => l.get("id"))
+          .includes(newLayerId)
+      ) {
+        // layer already existed
+        updateLayer(
+          EOxMap,
+          layerDefinitionInsideGroup,
+          EOxMap.getLayerById(newLayerId)
+        );
+      } else {
+        // new layer inside this group
+        const newLayer = createLayer(EOxMap, layerDefinitionInsideGroup);
+        layerCollection.push(newLayer);
       }
     });
 
@@ -275,6 +335,7 @@ export function updateLayer(
       });
     layerCollection.changed();
   }
+  setSyncListeners(existingLayer, newLayerDefinition);
   return existingLayer;
 }
 

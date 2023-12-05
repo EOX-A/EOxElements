@@ -3,15 +3,9 @@ import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 // @ts-ignore
-
 import olCss from "ol/ol.css?inline";
 import { EOxSelectInteraction } from "./src/select";
-import {
-  generateLayers,
-  EoxLayer,
-  createLayer,
-  updateLayer,
-} from "./src/generate";
+import { EoxLayer, createLayer, updateLayer } from "./src/generate";
 import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
@@ -71,13 +65,8 @@ export class EOxMap extends LitElement {
   set layers(layers: Array<EoxLayer>) {
     const oldLayers = this._layers;
     const newLayers = layers;
-
     newLayers.forEach((l) => {
-      if (!l.interactions) {
-        l.interactions = [];
-      }
       this.addOrUpdateLayer(l);
-      // + recursive for groups
     });
 
     // remove layers that are not defined anymore
@@ -104,6 +93,7 @@ export class EOxMap extends LitElement {
           sortedIds.indexOf(layerB.get("id"))
         );
       });
+    this._layers = newLayers;
   }
 
   @property({ type: Array })
@@ -162,6 +152,9 @@ export class EOxMap extends LitElement {
    * @returns the created or updated ol layer
    */
   addOrUpdateLayer = (json: EoxLayer) => {
+    if (!json.interactions) {
+      json.interactions = [];
+    }
     const id = json.properties?.id;
     const existingLayer = getLayerById(this, id);
     let layer;
@@ -246,11 +239,6 @@ export class EOxMap extends LitElement {
   }
 
   firstUpdated() {
-    //addInitialControls(this);
-
-    if (this.layers) {
-      this.map.setLayers(generateLayers(this, this.layers));
-    }
     if (this.sync) {
       const originMap: EOxMap = document.querySelector(this.sync);
       if (originMap) {
