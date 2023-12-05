@@ -15,5 +15,7 @@
   "plugins": ["sentence-case"],
   "bump-minor-pre-major": true,
   "separate-pull-requests": true,
-  "pull-request-header": "New release prepared:"
+  "pull-request-header": "New release prepared:",
+  "release-type": "node",
+  "include-component-in-tag": true
 }
