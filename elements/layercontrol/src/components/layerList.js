@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { repeat } from "lit/directives/repeat.js";
-import { createSortable, getLayerType } from "../helpers";
+import { checkProperties, createSortable, getLayerType } from "../helpers";
 import "./layer";
 import "./layerGroup";
 import _debounce from "lodash.debounce";
@@ -80,7 +80,13 @@ export class EOxLayerControlLayerList extends LitElement {
 
   firstUpdated() {
     if (this.layers) {
-      createSortable(this.renderRoot.querySelector("ul"), this.layers, this);
+      checkProperties(this.layers, this.idProperty, this.titleProperty);
+      createSortable(
+        this.renderRoot.querySelector("ul"),
+        this.layers,
+        this.idProperty,
+        this
+      );
     }
   }
 
