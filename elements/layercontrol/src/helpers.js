@@ -1,5 +1,4 @@
 import Sortable from "sortablejs";
-import { getUid } from "ol/util";
 
 /**
  *
@@ -94,10 +93,12 @@ export function checkProperties(collection, idProperty, titleProperty) {
   const layerArray = collection.getArray();
   layerArray.forEach((layer) => {
     if (!layer.get(idProperty)) {
-      layer.set(idProperty, getUid(layer));
+      //@ts-ignore
+      layer.set(idProperty, layer.ol_uid);
     }
     if (!layer.get(titleProperty)) {
-      layer.set(titleProperty, `layer ${getUid(layer)}`);
+      //@ts-ignore
+      layer.set(titleProperty, `layer ${layer.ol_uid}`);
     }
   });
 }
