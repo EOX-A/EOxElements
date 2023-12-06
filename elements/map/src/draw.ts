@@ -93,4 +93,13 @@ export function addDraw(
   modifyInteraction.setActive(options_.modify);
   EOxMap.map.addInteraction(modifyInteraction);
   EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
+
+  const removeLayerListener = () => {
+    if (!EOxMap.getLayerById(drawLayer.get("id"))) {
+      EOxMap.removeInteraction(options_.id);
+      EOxMap.removeInteraction(`${options_.id}_modify`);
+      EOxMap.map.getLayerGroup().un("change", removeLayerListener);
+    }
+  };
+  EOxMap.map.getLayerGroup().on("change", removeLayerListener);
 }

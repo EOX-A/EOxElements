@@ -207,6 +207,14 @@ export class EOxSelectInteraction {
       }
     };
     this.eoxMap.map.getLayers().on("remove", this.removeListener);
+
+    const removeLayerListener = () => {
+      if (!eoxMap.getLayerById(selectLayer.get("id"))) {
+        eoxMap.selectInteractions[options.id].remove();
+        eoxMap.map.getLayerGroup().un("change", removeLayerListener);
+      }
+    };
+    eoxMap.map.getLayerGroup().on("change", removeLayerListener);
   }
 
   setActive(active: boolean) {
@@ -224,6 +232,7 @@ export class EOxSelectInteraction {
 
   remove() {
     this.selectStyleLayer.setMap(null);
+    delete this.eoxMap.selectInteractions[this.options.id];
     this.selectLayer.un("change:source", this.changeSourceListener);
     this.eoxMap.map.getLayers().un("remove", this.removeListener);
   }

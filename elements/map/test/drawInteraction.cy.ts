@@ -1,9 +1,11 @@
 import { html } from "lit";
 import "../main";
 import drawInteractionLayerJson from "./drawInteraction.json";
+import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";
 import { Point } from "ol/geom";
 import { EOxMap } from "../main";
+import { EoxLayer } from "../src/generate";
 
 describe("draw interaction", () => {
   beforeEach(() => {});
@@ -64,6 +66,20 @@ describe("draw interaction", () => {
       expect(eoxMap.interactions.drawInteraction_modify).to.exist;
       (<EOxMap>$el[0]).removeInteraction("drawInteraction");
       (<EOxMap>$el[0]).removeInteraction("drawInteraction_modify");
+      expect(eoxMap.interactions.drawInteraction).to.not.exist;
+      expect(eoxMap.interactions.drawInteraction_modify).to.not.exist;
+    });
+  });
+
+  it("remove interaction", () => {
+    cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
+      "eox-map"
+    );
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      expect(eoxMap.interactions.drawInteraction).to.exist;
+      expect(eoxMap.interactions.drawInteraction_modify).to.exist;
+      eoxMap.layers = vectorLayerJson as Array<EoxLayer>;
       expect(eoxMap.interactions.drawInteraction).to.not.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.not.exist;
     });

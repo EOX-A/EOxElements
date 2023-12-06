@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "../main";
-import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
+import vectorTileLayerJson from "./vectorTilesLayer.json";
 import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";
 import { EoxLayer } from "../src/generate";
@@ -12,8 +12,8 @@ describe("select interaction on click", () => {
       encoding: "binary",
     });
     return new Cypress.Promise((resolve) => {
-      const styleJson = vectorTileLayerStyleJson as Array<EoxLayer>;
-      styleJson[0].interactions = [
+      const layerJson = vectorTileLayerJson as Array<EoxLayer>;
+      layerJson[0].interactions = [
         {
           type: "select",
           options: {
@@ -35,7 +35,7 @@ describe("select interaction on click", () => {
           },
         },
       ];
-      cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
+      cy.mount(html`<eox-map .layers=${layerJson}></eox-map>`).as("eox-map");
       cy.get("eox-map").and(($el) => {
         const eoxMap = <EOxMap>$el[0];
         eoxMap.addEventListener("select", (evt) => {
@@ -81,6 +81,33 @@ describe("select interaction on click", () => {
       eoxMap.map.on("loadend", () => {
         simulateEvent(eoxMap.map, "click", 120, -140);
       });
+    });
+  });
+
+  it("remove interaction", () => {
+    const styleJson = JSON.parse(
+      JSON.stringify(vectorTileLayerJson)
+    ) as Array<EoxLayer>;
+    styleJson[0].interactions = [
+      {
+        type: "select",
+        //@ts-ignore
+        options: {
+          id: "selectInteraction",
+          condition: "click",
+          style: {
+            "stroke-color": "white",
+            "stroke-width": 3,
+          },
+        },
+      },
+    ];
+    cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      expect(eoxMap.selectInteractions.selectInteraction).to.exist;
+      eoxMap.layers = vectorLayerJson as Array<EoxLayer>;
+      expect(eoxMap.selectInteractions.selectInteraction).to.not.exist;
     });
   });
 });
