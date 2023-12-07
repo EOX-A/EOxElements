@@ -1,12 +1,13 @@
+import { html } from "lit";
 import "../main";
 import tileWmsLayerStyleJson from "./tileWmsLayer.json";
 
 describe("layers", () => {
   it("loads a tiled WMS Layer", () => {
     cy.intercept(/^.*sentinel-hub.*$/, { fixture: "/tiles/wms/wms0.png" });
-    cy.mount(
-      `<eox-map layers='${JSON.stringify(tileWmsLayerStyleJson)}'></eox-map>`
-    ).as("eox-map");
+    cy.mount(html`<eox-map .layers=${tileWmsLayerStyleJson}></eox-map>`).as(
+      "eox-map"
+    );
     cy.get("eox-map").and(($el) => {
       const layers = (<EOxMap>$el[0]).map.getLayers().getArray();
       expect(layers).to.have.length(1);

@@ -4,119 +4,118 @@ import "./src/main";
 
 const map = html` <eox-map
   style="width: 400px; height: 300px; margin-left: 7px;"
-  zoom="3"
-  layers='[
-  {
-    "type": "Group",
-    "properties": {
-      "id": "group2",
-      "title": "Data Layers",
-      "layerControlExpand": true,
-      "description": "# Hello world"
-    },
-    "layers": [
-      {
-        "type": "Tile",
-        "properties": {
-          "id": "WIND",
-          "title": "WIND"
-        },
-        "source": {
-          "type": "TileWMS",
-          "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          "params": {
-            "LAYERS": "AWS_VIS_WIND_V_10M"
-          }
-        }
+  .zoom=${3}
+  .layers=${[
+    {
+      type: "Group",
+      properties: {
+        id: "group2",
+        title: "Data Layers",
+        layerControlExpand: true,
+        description: "# Hello world",
       },
-      {
-        "type": "Tile",
-        "properties": {
-          "id": "NO2",
-          "title": "NO2"
-        },
-        "source": {
-          "type": "TileWMS",
-          "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          "params": {
-            "LAYERS": "AWS_NO2-VISUALISATION"
-          }
-        }
-      },
-      {
-        "type": "Vector",
-        "properties": {
-          "title": "Regions",
-          "id": "regions"
-
-        },
-        "source": {
-          "type": "Vector",
-          "url": "https://openlayers.org/data/vector/ecoregions.json",
-          "format": "GeoJSON",
-          "attributions": "Regions: @ openlayers.org"
-        }
-      }
-    ]
-  },
-  {
-    "type": "Group",
-    "properties": {
-      "id": "group1",
-      "title": "Background Layers"
-    },
-    "layers": [
-      {
-        "type": "WebGLTile",
-        "properties": {
-          "id": "s2",
-          "layerControlExclusive": true,
-          "title": "s2"
-        },
-        "style": {
-          "variables": {
-            "red": 1,
-            "green": 2,
-            "blue": 3,
-            "redMax": 3000,
-            "greenMax": 3000,
-            "blueMax": 3000
+      layers: [
+        {
+          type: "Tile",
+          properties: {
+            id: "WIND",
+            title: "WIND",
           },
-          "color": [
-            "array",
-            ["/", ["band", ["var", "red"]], ["var", "redMax"]],
-            ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
-            ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
-            1
-          ],
-          "gamma": 1.1
+          source: {
+            type: "TileWMS",
+            url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+            params: {
+              LAYERS: "AWS_VIS_WIND_V_10M",
+            },
+          },
         },
-        "source": {
-          "type": "GeoTIFF",
-          "normalize": false,
-          "sources": [
-            {
-              "url": "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif"
-            }
-          ]
-        }
+        {
+          type: "Tile",
+          properties: {
+            id: "NO2",
+            title: "NO2",
+          },
+          source: {
+            type: "TileWMS",
+            url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+            params: {
+              LAYERS: "AWS_NO2-VISUALISATION",
+            },
+          },
+        },
+        {
+          type: "Vector",
+          properties: {
+            title: "Regions",
+            id: "regions",
+          },
+          source: {
+            type: "Vector",
+            url: "https://openlayers.org/data/vector/ecoregions.json",
+            format: "GeoJSON",
+            attributions: "Regions: @ openlayers.org",
+          },
+        },
+      ],
+    },
+    {
+      type: "Group",
+      properties: {
+        id: "group1",
+        title: "Background Layers",
       },
-      {
-        "type": "Tile",
-        "properties": {
-          "id": "osm",
-          "title": "Open Street Map",
-          "layerControlExclusive": true
+      layers: [
+        {
+          type: "WebGLTile",
+          properties: {
+            id: "s2",
+            layerControlExclusive: true,
+            title: "s2",
+          },
+          style: {
+            variables: {
+              red: 1,
+              green: 2,
+              blue: 3,
+              redMax: 3000,
+              greenMax: 3000,
+              blueMax: 3000,
+            },
+            color: [
+              "array",
+              ["/", ["band", ["var", "red"]], ["var", "redMax"]],
+              ["/", ["band", ["var", "green"]], ["var", "greenMax"]],
+              ["/", ["band", ["var", "blue"]], ["var", "blueMax"]],
+              1,
+            ],
+            gamma: 1.1,
+          },
+          source: {
+            type: "GeoTIFF",
+            normalize: false,
+            sources: [
+              {
+                url: "https://s2downloads.eox.at/demo/EOxCloudless/2020/rgbnir/s2cloudless2020-16bits_sinlge-file_z0-4.tif",
+              },
+            ],
+          },
         },
-        "visible": false,
-        "opacity": 0.5,
-        "source": {
-          "type": "OSM"
-        }
-      }
-    ]
-  }
-]'
+        {
+          type: "Tile",
+          properties: {
+            id: "osm",
+            title: "Open Street Map",
+            layerControlExclusive: true,
+          },
+          visible: false,
+          opacity: 0.5,
+          source: {
+            type: "OSM",
+          },
+        },
+      ],
+    },
+  ]}
 ></eox-map>`;
 
 export default {
@@ -163,7 +162,7 @@ export const ExclusiveLayers = {
       <eox-map
         id="exclusive"
         style="width: 400px; height: 300px; margin-left: 7px;"
-        layers=${JSON.stringify([
+        .layers=${[
           {
             type: "Tile",
             properties: {
@@ -187,7 +186,7 @@ export const ExclusiveLayers = {
             },
             visible: false,
           },
-        ])}
+        ]}
       >
       </eox-map>
     </div>
@@ -208,7 +207,7 @@ export const OptionalLayers = {
       <eox-map
         id="optional"
         style="width: 400px; height: 300px; margin-left: 7px;"
-        layers=${JSON.stringify([
+        .layers=${[
           {
             type: "Tile",
             properties: {
@@ -255,7 +254,7 @@ export const OptionalLayers = {
               url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
             },
           },
-        ])}
+        ]}
       >
       </eox-map>
     </div>
@@ -274,7 +273,7 @@ export const ExpandedLayers = {
       <eox-map
         id="expanded"
         style="width: 400px; height: 300px; margin-left: 7px;"
-        layers=${JSON.stringify([
+        .layers=${[
           {
             type: "Tile",
             properties: {
@@ -305,7 +304,7 @@ export const ExpandedLayers = {
               },
             ],
           },
-        ])}
+        ]}
       >
       </eox-map>
     </div>
@@ -333,7 +332,7 @@ export const Tools = {
     <eox-map
       id="tools"
       style="width: 400px; height: 300px; margin-left: 7px;"
-      layers=${JSON.stringify([
+      .layers=${[
         {
           type: "Vector",
           properties: {
@@ -358,7 +357,7 @@ export const Tools = {
             url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
           },
         },
-      ])}
+      ]}
     >
     </eox-map>
   `,
@@ -378,8 +377,8 @@ export const LayerConfig = {
     ></eox-layercontrol>
     <hr />
     <eox-map
-      center="[-7000000, -500000]"
-      zoom="4"
+      .center=${[-7000000, -500000]}
+      .zoom=${4}
       id="config"
       style="width: 400px; height: 300px;"
       .layers=${[
@@ -456,7 +455,7 @@ export const HiddenLayers = {
       <eox-map
         id="hidden"
         style="width: 400px; height: 300px; margin-left: 7px;"
-        layers=${JSON.stringify([
+        .layers=${[
           {
             type: "Vector",
             properties: {
@@ -481,7 +480,7 @@ export const HiddenLayers = {
               url: "//s2maps-tiles.eu/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
             },
           },
-        ])}
+        ]}
       >
       </eox-map>
     </div>
@@ -506,20 +505,20 @@ export const SingleLayer = {
       <eox-map
         id="single"
         style="width: 400px; height: 300px;"
-        layers='[
+        .layers=${[
           {
-            "type": "Tile",
-            "properties": {
-              "id": "osm",
-              "title": "Open Street Map"
+            type: "Tile",
+            properties: {
+              id: "osm",
+              title: "Open Street Map",
             },
-            "visible": true,
-            "opacity": 0.5,
-            "source": {
-              "type": "OSM"
-            }
-          }
-        ]'
+            visible: true,
+            opacity: 0.5,
+            source: {
+              type: "OSM",
+            },
+          },
+        ]}
       ></eox-map>
     </div>
     <script>
@@ -544,46 +543,46 @@ export const LayerList = {
       <eox-map
         id="list"
         style="width: 400px; height: 300px;"
-        layers='[
+        .layers=${[
           {
-            "type": "Tile",
-            "opacity": 0.5,
-            "visible": false,
-            "properties": {
-              "id": "wind",
-              "title": "WIND"
+            type: "Tile",
+            opacity: 0.5,
+            visible: false,
+            properties: {
+              id: "wind",
+              title: "WIND",
             },
-            "source": {
-              "type": "TileWMS",
-              "url": "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-              "params": {
-                "LAYERS": "AWS_VIS_WIND_V_10M"
-              }
-            }
+            source: {
+              type: "TileWMS",
+              url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              params: {
+                LAYERS: "AWS_VIS_WIND_V_10M",
+              },
+            },
           },
           {
-            "type": "Tile",
-            "properties": {
-              "id": "osm",
-              "title": "Open Street Map"
+            type: "Tile",
+            properties: {
+              id: "osm",
+              title: "Open Street Map",
             },
-            "visible": true,
-            "source": {
-              "type": "OSM"
-            }
+            visible: true,
+            source: {
+              type: "OSM",
+            },
           },
           {
-            "type": "Tile",
-            "properties": {
-              "id": "osm2",
-              "title": "Another OSM"
+            type: "Tile",
+            properties: {
+              id: "osm2",
+              title: "Another OSM",
             },
-            "visible": true,
-            "source": {
-              "type": "OSM"
-            }
-          }
-        ]'
+            visible: true,
+            source: {
+              type: "OSM",
+            },
+          },
+        ]}
       ></eox-map>
     </div>
     <script>
@@ -629,8 +628,8 @@ export const LayerZoomState = {
       <eox-map
         id="zoomstate"
         style="width: 600px; height: 300px; margin-left: 7px;"
-        zoom="1"
-        layers=${JSON.stringify([
+        .zoom=${1}
+        .layers=${[
           {
             type: "Vector",
             properties: {
@@ -660,7 +659,7 @@ export const LayerZoomState = {
             },
             maxZoom: 9,
           },
-        ])}
+        ]}
       >
       </eox-map>
     </div>

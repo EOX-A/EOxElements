@@ -7,9 +7,16 @@ import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
 import { DrawOptions, addDraw } from "./draw";
 import { EOxMap } from "../main";
-import { SelectOptions, addSelect } from "./select";
+import {
+  EOxSelectInteraction,
+  SelectLayer,
+  SelectOptions,
+  addSelect,
+} from "./select";
 import { register } from "ol/proj/proj4.js";
 import proj4 from "proj4";
+import VectorLayer from "ol/layer/Vector";
+import VectorSource from "ol/source/Vector";
 
 register(proj4); // required to support source reprojection
 
@@ -62,7 +69,7 @@ export type EOxInteraction = {
 
 export type EoxLayer = {
   type: layerType;
-  properties: object & {
+  properties?: object & {
     id: string;
   };
   minZoom?: number;
@@ -81,9 +88,16 @@ export type EoxLayer = {
  * creates an ol-layer from a given EoxLayer definition object
  * @param {EOxMap} EOxMap
  * @param {EoxLayer} layer
+ * @param {boolean=} createInteractions
  * @returns {olLayers.Layer}
  */
-export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
+export function createLayer(
+  EOxMap: EOxMap,
+  layer: EoxLayer,
+  createInteractions: boolean = true
+): olLayers.Layer {
+  layer = JSON.parse(JSON.stringify(layer));
+
   const newLayer = availableLayers[layer.type];
   const newSource = availableSources[layer.source?.type];
   if (!newLayer) {
@@ -121,6 +135,8 @@ export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
     style: undefined, // override layer style, apply style after
   });
 
+  olLayer.set("_jsonDefinition", layer, true);
+
   if (layer.type === "Group") {
     const groupLayers = layer.layers
       .reverse()
@@ -133,31 +149,53 @@ export function createLayer(EOxMap: EOxMap, layer: EoxLayer): olLayers.Layer {
   if (layer.style) {
     olLayer.setStyle(layer.style);
   }
-  olLayer.set("_jsonDefinition", layer, true);
-  setSyncListeners(olLayer, layer);
-  if (layer.interactions?.length) {
+  if (createInteractions && layer.interactions?.length) {
     for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
       const interactionDefinition = layer.interactions[i];
-      if (interactionDefinition.type === "draw") {
-        addDraw(EOxMap, olLayer, interactionDefinition.options as DrawOptions);
-      } else if (interactionDefinition.type === "select") {
-        addSelect(
-          EOxMap,
-          olLayer,
-          interactionDefinition.options as SelectOptions
-        );
-      }
+      addInteraction(EOxMap, olLayer, interactionDefinition);
     }
   }
+
+  setSyncListeners(olLayer, layer);
   return olLayer;
 }
 
+/**
+ * adds an interaction to a given layer
+ * @param EOxMap
+ * @param olLayer
+ * @param interactionDefinition
+ */
+function addInteraction(
+  EOxMap: EOxMap,
+  olLayer: SelectLayer,
+  interactionDefinition: EOxInteraction
+) {
+  if (interactionDefinition.type === "draw") {
+    addDraw(
+      EOxMap,
+      olLayer as VectorLayer<VectorSource>,
+      interactionDefinition.options as DrawOptions
+    );
+  } else if (interactionDefinition.type === "select") {
+    addSelect(EOxMap, olLayer, interactionDefinition.options as SelectOptions);
+  }
+}
+
+/**
+ * updates an existing layer
+ * @param {EoxLayer} newLayerDefinition
+ * @param {olLayers.Layer} existingLayer
+ * @returns {existingLayer}
+ */
 export function updateLayer(
   EOxMap: EOxMap,
   newLayerDefinition: EoxLayer,
   existingLayer: olLayers.Layer
 ) {
-  const existingJsonDefintion = existingLayer.get("_jsonDefinition");
+  const existingJsonDefintion = existingLayer.get(
+    "_jsonDefinition"
+  ) as EoxLayer;
 
   // there are probably more cases that make the layers incompatible
   if (
@@ -166,7 +204,10 @@ export function updateLayer(
   ) {
     throw new Error(`Layers are not compatible to be updated`);
   }
-  const newLayer = createLayer(EOxMap, newLayerDefinition);
+
+  // create a completely new layer to take new source/style/properties from, if changed
+  // interactions are handled seperately
+  const newLayer = createLayer(EOxMap, newLayerDefinition, false);
 
   if (
     JSON.stringify(newLayerDefinition.source) !==
@@ -197,6 +238,103 @@ export function updateLayer(
   if (newLayerDefinition.opacity !== existingJsonDefintion.opacity) {
     existingLayer.setOpacity(newLayerDefinition.opacity);
   }
+  if (
+    JSON.stringify(newLayerDefinition.interactions) !==
+    JSON.stringify(existingJsonDefintion.interactions)
+  ) {
+    existingJsonDefintion.interactions.forEach((interactionDefinition) => {
+      const correspondingNewInteraction = newLayerDefinition.interactions.find(
+        (i) => i.type === interactionDefinition.type
+      );
+      if (!correspondingNewInteraction) {
+        // remove all interactions that do not exist in the new layer definition
+        EOxMap.removeInteraction(interactionDefinition.options.id);
+      } else {
+        // interaction exists, but has changed
+        if (correspondingNewInteraction.type === "draw") {
+          const olDrawInteraction = EOxMap.interactions[
+            correspondingNewInteraction.options.id
+          ] as import("ol/interaction").Draw;
+          olDrawInteraction.setActive(
+            correspondingNewInteraction.options.active
+          );
+          const olModifyInteraction = EOxMap.interactions[
+            `${correspondingNewInteraction.options.id}_modify`
+          ] as import("ol/interaction").Modify;
+          olModifyInteraction.setActive(
+            (correspondingNewInteraction.options as DrawOptions).modify
+          );
+        } else {
+          const olSelectInteraction = EOxMap.selectInteractions[
+            correspondingNewInteraction.options.id
+          ] as EOxSelectInteraction;
+          olSelectInteraction.setActive(
+            correspondingNewInteraction.options.active
+          );
+        }
+      }
+    });
+    // for each truly "new" interaction, add the corresponding interaction
+    newLayerDefinition.interactions.forEach((interactionDefinition) => {
+      const correspondingExistingInteraction =
+        existingJsonDefintion.interactions.find(
+          (i) => i.type === interactionDefinition.type
+        );
+      if (!correspondingExistingInteraction) {
+        addInteraction(
+          EOxMap,
+          existingLayer as SelectLayer,
+          interactionDefinition
+        );
+      }
+    });
+  }
+
+  if (newLayerDefinition.type === "Group") {
+    const newLayerIds = newLayerDefinition.layers.map((l) => l.properties?.id);
+    // remove all layers from the group that do not exist in the new layer definition
+    //@ts-ignore
+    const layerCollection = existingLayer.getLayers();
+    layerCollection.forEach((l: olLayers.Layer) => {
+      if (!newLayerIds.includes(l.get("id"))) {
+        layerCollection.remove(l);
+      }
+    });
+
+    // add or update all layers
+    newLayerDefinition.layers.forEach((layerDefinitionInsideGroup) => {
+      const newLayerId = layerDefinitionInsideGroup.properties.id;
+      if (
+        layerCollection
+          .getArray()
+          .map((l: olLayers.Layer) => l.get("id"))
+          .includes(newLayerId)
+      ) {
+        // layer already existed
+        updateLayer(
+          EOxMap,
+          layerDefinitionInsideGroup,
+          EOxMap.getLayerById(newLayerId)
+        );
+      } else {
+        // new layer inside this group
+        const newLayer = createLayer(EOxMap, layerDefinitionInsideGroup);
+        layerCollection.push(newLayer);
+      }
+    });
+
+    // after all layers were added/updated/deleted, rearrange them in the correct order
+    layerCollection
+      .getArray()
+      .sort((layerA: olLayers.Layer, layerB: olLayers.Layer) => {
+        return (
+          // change this order?  the reverse order, because we want the topmost layer to be on top
+          newLayerIds.indexOf(layerA.get("id")) -
+          newLayerIds.indexOf(layerB.get("id"))
+        );
+      });
+    layerCollection.changed();
+  }
   setSyncListeners(existingLayer, newLayerDefinition);
   return existingLayer;
 }
@@ -205,7 +343,6 @@ export const generateLayers = (EOxMap: EOxMap, layerArray: Array<EoxLayer>) => {
   if (!layerArray) {
     return [];
   }
-
   return [...layerArray].reverse().map((l) => createLayer(EOxMap, l));
 };
 

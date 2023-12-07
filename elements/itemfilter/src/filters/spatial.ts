@@ -146,7 +146,7 @@ export class SpatialFilter extends LitElement {
 
     this.eoxMap = this.renderRoot.querySelector("eox-map");
     setTimeout(() => {
-      this.eoxMap.setLayers(mapLayers as EoxLayer[]);
+      this.eoxMap.layers = mapLayers as EoxLayer[];
       const updateGeometryFilter = (feature: unknown) => {
         const event = new CustomEvent("filter", {
           detail: {

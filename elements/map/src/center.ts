@@ -2,17 +2,17 @@ import { equals } from "ol/coordinate";
 import { fromLonLat } from "ol/proj";
 
 /**
- * returns an ol-coordinate from a given center attribute.
+ * returns an ol-coordinate from a given center property.
  * the coordinate expected coordinate system is EPSG:3857, however,
  * if both parts of the coordinate are between -180 and 180, the coordinate
  * system EPSG:4326 is assumed.
  * use `map.getView().setCenter()` to manually set the center of the view.
- * @param {string} centerAttribute
+ * @param {Array<number>} centerProperty
  * @returns {import("ol/coordinate")}
  */
-export function getCenterFromAttribute(centerAttribute: Array<number>) {
-  if (centerAttribute) {
-    const coordinate = centerAttribute;
+export function getCenterFromProperty(centerProperty: Array<number>) {
+  if (centerProperty) {
+    const coordinate = centerProperty;
     // compare:
     // https://github.com/openlayers/openlayers/blob/v7.4.0/src/ol/proj.js
     if (

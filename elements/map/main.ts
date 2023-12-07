@@ -1,22 +1,20 @@
-import { LitElement, html } from "lit";
+import { LitElement, PropertyValueMap, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 // @ts-ignore
-
 import olCss from "ol/ol.css?inline";
 import { EOxSelectInteraction } from "./src/select";
-import {
-  generateLayers,
-  EoxLayer,
-  createLayer,
-  updateLayer,
-} from "./src/generate";
+import { EoxLayer, createLayer, updateLayer } from "./src/generate";
 import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
-import { getCenterFromAttribute } from "./src/center";
-import { addInitialControls } from "./src/controls";
+import { getCenterFromProperty } from "./src/center";
+import {
+  addOrUpdateControl,
+  controlDictionary,
+  controlType,
+} from "./src/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
 
@@ -25,25 +23,93 @@ export class EOxMap extends LitElement {
   /**
    * Map center, can be lon/lat or UTM
    */
-  @property({ type: Array })
+  @property({ attribute: false, type: Array })
   center: Array<number> = [0, 0];
 
   /**
    * Map controls
    */
-  @property({ type: Object })
-  controls: object = {};
+  private _controls: controlDictionary;
 
-  /**
-   * Layers array
-   */
+  set controls(controls: controlDictionary) {
+    const oldControls = this._controls;
+    const newControls = controls;
+
+    // remove controls that are not defined anymore
+    if (oldControls) {
+      const oldControlTypes = Object.keys(oldControls);
+      const newControlTypes = Object.keys(newControls);
+      for (let i = 0, ii = oldControlTypes.length; i < ii; i++) {
+        const oldControlType = oldControlTypes[i];
+        if (!newControlTypes.includes(oldControlType)) {
+          this.removeControl(oldControlType);
+        }
+      }
+    }
+    if (newControls) {
+      const keys = Object.keys(controls);
+      for (let i = 0, ii = keys.length; i < ii; i++) {
+        const key = keys[i] as controlType;
+        addOrUpdateControl(this, oldControls, key, controls[key]);
+      }
+    }
+    this._controls = newControls;
+  }
+
+  get controls() {
+    return this._controls;
+  }
+
+  private _layers: Array<EoxLayer>;
+
+  set layers(layers: Array<EoxLayer>) {
+    const oldLayers = this._layers;
+    const newLayers = JSON.parse(
+      JSON.stringify(layers)
+    ).reverse() as Array<EoxLayer>;
+
+    // remove layers that are not defined anymore
+    if (oldLayers) {
+      oldLayers.forEach((l: EoxLayer) => {
+        if (
+          !l.properties?.id || // always remove old layers without id
+          !newLayers.find(
+            (newLayer) => newLayer.properties.id === l.properties.id
+          )
+        ) {
+          const layerToBeRemoved = getLayerById(this, l.properties?.id);
+          this.map.removeLayer(layerToBeRemoved);
+        }
+      });
+    }
+
+    newLayers.forEach((l) => {
+      this.addOrUpdateLayer(l);
+    });
+
+    // after all layers were added/updated/deleted, rearrange them in the correct order
+    const sortedIds = newLayers.map((l) => l.properties?.id);
+    this.map
+      .getLayers()
+      .getArray()
+      .sort((layerA, layerB) => {
+        return (
+          sortedIds.indexOf(layerA.get("id")) -
+          sortedIds.indexOf(layerB.get("id"))
+        );
+      });
+    this._layers = newLayers;
+  }
+
   @property({ type: Array })
-  layers: Array<EoxLayer> = [];
+  get layers() {
+    return this._layers;
+  }
 
   /**
    * Map zoom
    */
-  @property({ type: Number })
+  @property({ attribute: false, type: Number })
   zoom: number = 0;
 
   /**
@@ -85,25 +151,19 @@ export class EOxMap extends LitElement {
   mapControls: { [index: string]: Control } = {};
 
   /**
-   * Apply layers Eox Layer JSONs
-   * @param {Array<EoxLayer>} json array of EoxLayer JSONs
-   * @returns {Array<*>} the array of ol layers
-   */
-  setLayers = (json: Array<EoxLayer>) => {
-    const layers = generateLayers(this, json);
-    this.map.setLayers(layers);
-    return layers;
-  };
-
-  /**
    * creates or updates an existing layer
    * will update an layer if the ID already exists
    * @param json EoxLayer JSON definition
    * @returns the created or updated ol layer
    */
   addOrUpdateLayer = (json: EoxLayer) => {
+    if (!json.interactions) {
+      json.interactions = [];
+    }
     const id = json.properties?.id;
-    const existingLayer = getLayerById(this, id);
+
+    // if id is undefined, never try to update an existing layer, always create a new one instead.
+    const existingLayer = id && getLayerById(this, id);
     let layer;
     if (existingLayer) {
       updateLayer(this, json, existingLayer);
@@ -119,9 +179,13 @@ export class EOxMap extends LitElement {
    * removes a given ol-interaction from the map. Layer have to be removed seperately
    * @param id id of the interaction
    */
-  removeInteraction = (id: string) => {
+  removeInteraction = (id: string | number) => {
     this.map.removeInteraction(this.interactions[id]);
     delete this.interactions[id];
+    if (this.interactions[`${id}_modify`]) {
+      this.map.removeInteraction(this.interactions[`${id}_modify`]);
+      delete this.interactions[`${id}_modify`];
+    }
   };
 
   /**
@@ -182,11 +246,6 @@ export class EOxMap extends LitElement {
   }
 
   firstUpdated() {
-    addInitialControls(this);
-
-    if (this.layers) {
-      this.map.setLayers(generateLayers(this, this.layers));
-    }
     if (this.sync) {
       const originMap: EOxMap = document.querySelector(this.sync);
       if (originMap) {
@@ -194,7 +253,7 @@ export class EOxMap extends LitElement {
       }
     } else {
       if (this.center) {
-        this.map.getView().setCenter(getCenterFromAttribute(this.center));
+        this.map.getView().setCenter(getCenterFromProperty(this.center));
       }
       if (this.zoom) {
         this.map.getView().setZoom(this.zoom);
@@ -207,5 +266,17 @@ export class EOxMap extends LitElement {
       const loadEvt = new CustomEvent("loadend", { detail: { foo: "bar" } });
       this.dispatchEvent(loadEvt);
     });
+  }
+
+  protected updated(
+    _changedProperties: // eslint-disable-next-line
+    PropertyValueMap<any> | globalThis.Map<PropertyKey, unknown>
+  ): void {
+    if (_changedProperties.has("center")) {
+      this.map.getView().setCenter(getCenterFromProperty(this.center));
+    }
+    if (_changedProperties.has("zoom")) {
+      this.map.getView().setZoom(this.zoom || 0);
+    }
   }
 }

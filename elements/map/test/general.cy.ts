@@ -1,3 +1,4 @@
+import { html } from "lit";
 import { equals } from "ol/coordinate";
 import { Layer } from "ol/layer";
 import { EoxLayer } from "../src/generate";
@@ -7,28 +8,43 @@ describe("Map", () => {
   it("map should exist", () => {
     cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
-      `<eox-map layers='[{"type":"Tile","properties": {"id": "osm"}, "source":{"type":"OSM"}}]'></eox-map>`
+      html`<eox-map
+        .layers=${[
+          { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+        ]}
+      ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       expect((<EOxMap>$el[0]).map).to.exist;
     });
   });
 
-  it("should parse the initial zoom/center attributes correctly", () => {
-    cy.mount(`<eox-map zoom="7" center="[1113194, 2273030]"></eox-map>`).as(
-      "eox-map"
-    );
+  it("should parse zoom/center properties correctly", () => {
+    cy.mount(
+      html`<eox-map .zoom=${7} .center=${[1113194, 2273030]}></eox-map>`
+    ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       const zoom = eoxMap.map.getView().getZoom();
       const center = eoxMap.map.getView().getCenter();
-      expect(JSON.parse(eoxMap.getAttribute("zoom"))).to.equal(zoom);
-      expect(JSON.parse(eoxMap.getAttribute("center"))).to.deep.equal(center);
+      expect(eoxMap.zoom).to.equal(zoom);
+      expect(eoxMap.map.getView().getZoom()).to.equal(zoom);
+      expect(eoxMap.center).to.deep.equal(center);
+      expect(eoxMap.map.getView().getCenter()).to.deep.equal(center);
+
+      eoxMap.zoom = 2;
+      expect(eoxMap.map.getView().getZoom()).to.equal(2);
+
+      const newCenter = [1113195, 2273031];
+      eoxMap.center = newCenter;
+      expect(eoxMap.map.getView().getCenter()).to.deep.equal(newCenter);
     });
   });
 
   it("correctly parses and guesses web mercator and lonLat center coordinate systems", () => {
-    cy.mount(`<eox-map zoom="7" center="[20, 20]"></eox-map>`).as("eox-map");
+    cy.mount(html`<eox-map .zoom=${7} .center=${[20, 20]}></eox-map>`).as(
+      "eox-map"
+    );
     cy.get("eox-map").and(($el) => {
       expect(
         equals(
@@ -41,7 +57,7 @@ describe("Map", () => {
   });
 
   it("correctly initializes center as 0,0 if none provided", () => {
-    cy.mount(`<eox-map zoom="7"></eox-map>`).as("eox-map");
+    cy.mount(html`<eox-map .zoom=${7}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const center = (<EOxMap>$el[0]).map.getView().getCenter();
       expect(
@@ -54,7 +70,11 @@ describe("Map", () => {
   it("should return a layer via id", () => {
     cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
-      `<eox-map layers='[{"type":"Tile","properties": {"id": "osm"}, "source":{"type":"OSM"}}]'></eox-map>`
+      html`<eox-map
+        .layers=${[
+          { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+        ]}
+      ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       expect((<EOxMap>$el[0]).getLayerById("osm").get("id") === "osm").to.exist;
@@ -64,13 +84,27 @@ describe("Map", () => {
   it("should return flat layers array", () => {
     cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
     cy.mount(
-      `<eox-map layers='[
-        {"type": "Group", "properties": {"id": "group1"}, "layers": [
-          {"type": "Group", "properties": {"id": "group2"}, "layers": [
-            {"type": "Tile","properties": {"id": "osm"}, "source": {"type": "OSM"}}
-          ]}
+      html`<eox-map
+        .layers=${[
+          {
+            type: "Group",
+            properties: { id: "group1" },
+            layers: [
+              {
+                type: "Group",
+                properties: { id: "group2" },
+                layers: [
+                  {
+                    type: "Tile",
+                    properties: { id: "osm" },
+                    source: { type: "OSM" },
+                  },
+                ],
+              },
+            ],
+          },
         ]}
-      ]'></eox-map>`
+      ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
@@ -86,16 +120,25 @@ describe("Map", () => {
 
   it("doesn't reverse the input layer array", { retries: 0 }, () => {
     cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
-    cy.mount(`<eox-map></eox-map>`).as("eox-map");
+    cy.mount(html`<eox-map></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const layersArray = [
         { type: "Tile", properties: { id: "1" }, source: { type: "OSM" } },
         { type: "Tile", properties: { id: "2" }, source: { type: "OSM" } },
         { type: "Tile", properties: { id: "3" }, source: { type: "OSM" } },
       ];
-      (<EOxMap>$el[0]).setLayers(<EoxLayer[]>layersArray);
+      const eoxMap = <EOxMap>$el[0];
+      eoxMap.layers = <EoxLayer[]>layersArray;
       expect(layersArray.map((l) => l.properties.id).join("")).to.eq("123");
       expect(layersArray.map((l) => l.properties.id).join("")).to.not.eq("321");
+      expect(
+        eoxMap.map
+          .getLayers()
+          .getArray()
+          .map((l) => l.get("id"))
+          .join(""),
+        "generate layers in reverse painters order"
+      ).to.eq("321");
     });
   });
 });

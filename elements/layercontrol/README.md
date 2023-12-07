@@ -19,7 +19,7 @@ import "@eox/layercontrol"
 The query selector of the `eox-map` you wish to attach the layer control to.
 
 ```
-<eox-map layers="[...]"></eox-map>
+<eox-map .layers="[...]"></eox-map>
 <eox-layercontrol for="eox-map"></eox-layercontrol>
 ```
 

@@ -1,3 +1,4 @@
+import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./hoverInteraction.json";
 import { simulateEvent } from "./utils/events";
@@ -8,9 +9,9 @@ describe("select interaction with hover", () => {
       fixture: "/ecoregions.json",
     });
     cy.mount(
-      `<eox-map layers='${JSON.stringify(
-        vectorLayerStyleJson
-      )}'><eox-map-tooltip></eox-map-tooltip></eox-map>`
+      html`<eox-map .layers=${vectorLayerStyleJson}>
+        <eox-map-tooltip></eox-map-tooltip>
+      </eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
