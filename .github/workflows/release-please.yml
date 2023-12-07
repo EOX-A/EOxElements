@@ -14,12 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Release Please! 🤖
-        uses: google-github-actions/release-please-action@v3
+        uses: google-github-actions/release-please-action@v4
         id: release
-        with:
-          release-type: node
-          command: manifest
-          monorepo-tags: true
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         # these if statements ensure that a publication only occurs when

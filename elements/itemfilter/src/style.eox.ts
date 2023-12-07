@@ -122,13 +122,6 @@ button#filter-reset {
   position: absolute;
   top: 4px;
   right: 0;
-  text-indent: -9999px;
-  line-height: 0;
-}
-button#filter-reset:after {
-  content: "Reset";
-  text-indent: 0px;
-  line-height: initial;
 }
 .scroll {
   max-height: calc(100% - 30px);
@@ -162,4 +155,16 @@ eox-itemfilter-range {
 .range-after {
   margin-left: .5rem;
 }
-`;
+
+button.reset-icon:before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Eclose%3C/title%3E%3Cpath d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z' /%3E%3C/svg%3E");
+}
+eox-itemfilter-expandcontainer button.reset-icon {
+  margin-left: 4px;
+  margin-top: 1px;
+}
+eox-itemfilter-expandcontainer button.reset-icon:before {
+  height: 16px;
+  width: 16px;
+}
+  `;

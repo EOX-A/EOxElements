@@ -1,10 +1,10 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
-import { keyed } from "lit/directives/keyed.js";
-import { createSortable, getLayerType } from "../helpers";
+import { repeat } from "lit/directives/repeat.js";
+import { checkProperties, createSortable, getLayerType } from "../helpers";
 import "./layer";
 import "./layerGroup";
-
+import _debounce from "lodash.debounce";
 /**
  * Display of a list of layers
  *
@@ -70,15 +70,34 @@ export class EOxLayerControlLayerList extends LitElement {
     this.noShadow = true;
   }
 
+  #handleLayersChangeLength = () => {
+    this.#debHandleLayersChangeLength();
+  };
+  #debHandleLayersChangeLength = _debounce(() => {
+    this.requestUpdate();
+    this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
+  }, 50);
+
+  firstUpdated() {
+    if (this.layers) {
+      checkProperties(this.layers, this.idProperty, this.titleProperty);
+      createSortable(
+        this.renderRoot.querySelector("ul"),
+        this.layers,
+        this.idProperty,
+        this
+      );
+    }
+  }
+
   updated() {
     if (!this.layers) {
       return;
     }
-    this.layers.on("change:length", () => {
-      this.requestUpdate();
-      this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
-    });
-    createSortable(this.renderRoot.querySelector("ul"), this.layers, this);
+    if (this.layers.hasListener("change:length")) {
+      this.layers?.un("change:length", this.#handleLayersChangeLength);
+    }
+    this.layers.on("change:length", this.#handleLayersChangeLength);
   }
 
   createRenderRoot() {
@@ -95,57 +114,52 @@ export class EOxLayerControlLayerList extends LitElement {
         ${when(
           this.layers,
           () => html`
-            ${this.layers
-              .getArray()
-              .filter(
-                (l) =>
-                  !l.get("layerControlHide") && !l.get("layerControlOptional")
-              )
-              .reverse()
-              .map((layer) =>
-                keyed(
-                  layer.get(this.idProperty),
-                  html`
-                    <li
-                      data-layer="${layer.get(this.idProperty)}"
-                      data-type="${getLayerType(layer, this.map)}"
-                    >
-                      ${
-                        /** @type {import("ol/layer").Group} */ (layer)
-                          .getLayers
-                          ? html`
-                              <eox-layercontrol-layer-group
-                                .noShadow=${true}
-                                .group=${layer}
-                                .idProperty=${this.idProperty}
-                                .map=${this.map}
-                                .titleProperty=${this.titleProperty}
-                                .showLayerZoomState=${this.showLayerZoomState}
-                                .tools=${this.tools}
-                                .unstyled=${this.unstyled}
-                                @changed=${() => this.requestUpdate()}
-                              >
-                              </eox-layercontrol-layer-group>
-                            `
-                          : html`
-                              <eox-layercontrol-layer
-                                .noShadow=${true}
-                                .layer=${layer}
-                                .map=${this.map}
-                                .titleProperty=${this.titleProperty}
-                                .showLayerZoomState=${this.showLayerZoomState}
-                                .tools=${this.tools}
-                                .unstyled=${this.unstyled}
-                                @changed=${() => {
-                                  this.requestUpdate();
-                                }}
-                              ></eox-layercontrol-layer>
-                            `
-                      }
-                    </li>
-                  `
+            ${repeat(
+              this.layers
+                .getArray()
+                .filter(
+                  (l) =>
+                    !l.get("layerControlHide") && !l.get("layerControlOptional")
                 )
-              )}
+                .reverse(),
+              (layer) => layer,
+              (layer) => html`
+                <li
+                  data-layer="${layer.get(this.idProperty)}"
+                  data-type="${getLayerType(layer, this.map)}"
+                >
+                  ${
+                    /** @type {import("ol/layer").Group} */ (layer).getLayers
+                      ? html`
+                          <eox-layercontrol-layer-group
+                            .noShadow=${true}
+                            .group=${layer}
+                            .idProperty=${this.idProperty}
+                            .map=${this.map}
+                            .titleProperty=${this.titleProperty}
+                            .showLayerZoomState=${this.showLayerZoomState}
+                            .tools=${this.tools}
+                            .unstyled=${this.unstyled}
+                            @changed=${() => this.requestUpdate()}
+                          >
+                          </eox-layercontrol-layer-group>
+                        `
+                      : html`
+                          <eox-layercontrol-layer
+                            .noShadow=${true}
+                            .layer=${layer}
+                            .map=${this.map}
+                            .titleProperty=${this.titleProperty}
+                            .showLayerZoomState=${this.showLayerZoomState}
+                            .tools=${this.tools}
+                            .unstyled=${this.unstyled}
+                            @changed=${() => this.requestUpdate()}
+                          ></eox-layercontrol-layer>
+                        `
+                  }
+                </li>
+              `
+            )}
           `
         )}
       </ul>

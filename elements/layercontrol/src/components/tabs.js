@@ -122,6 +122,7 @@ export class EOxLayerControlTabs extends LitElement {
     }
     .tabbed label.highlighted {
       background: #00417011;
+      pointer-events: none;
     }
     nav div label,
     nav div span {

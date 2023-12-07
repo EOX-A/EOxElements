@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.11.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.0...itemfilter-v0.11.1) (2023-11-29)
+
+
+### Bug Fixes
+
+* Prevent false dirty state when using autocomplete ([#480](https://github.com/EOX-A/EOxElements/issues/480)) ([b41c9d3](https://github.com/EOX-A/EOxElements/commit/b41c9d32ae8fc04c5ddc51030815fec82236c62e))
+
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.10.2...itemfilter-v0.11.0) (2023-11-29)
+
+
+### Features
+
+* Add reset for individual filters ([#413](https://github.com/EOX-A/EOxElements/issues/413)) ([a415adc](https://github.com/EOX-A/EOxElements/commit/a415adc3c59216daae093720062b9e1c9f488166))
+
+
+### Bug Fixes
+
+* Calling of inputhandler ([#478](https://github.com/EOX-A/EOxElements/issues/478)) ([74eb5e8](https://github.com/EOX-A/EOxElements/commit/74eb5e89225b9ea4d696a28208bcc47ada734a73))
+
 ## [0.10.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.10.1...itemfilter-v0.10.2) (2023-11-27)
 
 

@@ -3,14 +3,19 @@ import Sortable from "sortablejs";
 /**
  *
  * @param {HTMLElement} element
- * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} layers
+ * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} collection
+ * @param {string} idProperty
  * @param {import("lit").LitElement} that
  */
-export const createSortable = (element, layers, that) => {
+export const createSortable = (element, collection, idProperty, that) => {
   /**
    * @type {any[]}
    */
   let childNodes = [];
+  /**
+   * @type {HTMLElement}
+   */
+  let related = null;
   /** @type HTMLElement & {_sortable: import("sortablejs")}*/ (
     element
   )._sortable = Sortable.create(element, {
@@ -31,6 +36,9 @@ export const createSortable = (element, layers, that) => {
           !node.classList.contains("sortable-fallback")
       );
     },
+    onMove(e) {
+      related = e.related;
+    },
     onEnd: (e) => {
       // Undo DOM changes by re-adding all children in their original order.
       const node = e.item;
@@ -41,22 +49,59 @@ export const createSortable = (element, layers, that) => {
       if (e.oldIndex == e.newIndex) return;
       // Then move the element using your own logic.
       // automatically dispatches "sort" event
-      const layer = layers.getArray().find(
+      const layers = collection.getArray();
+      const layer = layers.find(
         (l) =>
-          // @ts-ignore
-          l.ol_uid ===
+          l.get(idProperty) ===
           /** @type Element & {layer: import("ol/layer").Layer} */ (
             e.item.querySelector("eox-layercontrol-layer")
-            // @ts-ignore
-          ).layer.ol_uid
+          ).layer.get(idProperty)
       );
-      layers.remove(layer);
-      layers.insertAt(layers.getLength() - e.newIndex, layer);
+      const relatedLayer = layers.find(
+        (layer) => layer.get(idProperty) == related.dataset.layer
+      );
+      let draggedIndex;
+      let dropIndex;
+      for (draggedIndex = 0; draggedIndex < layers.length; draggedIndex++) {
+        if (layers[draggedIndex] == layer) {
+          collection.removeAt(draggedIndex);
+          break;
+        }
+      }
+      for (dropIndex = 0; dropIndex < layers.length; dropIndex++) {
+        if (layers[dropIndex] === relatedLayer) {
+          if (draggedIndex > dropIndex) collection.insertAt(dropIndex, layer);
+          else collection.insertAt(dropIndex + 1, layer);
+          break;
+        }
+      }
       that.requestUpdate();
     },
   });
 };
 
+/**
+ * Initially check if all layers have an id and title,
+ * fill in some backup in case they haven't
+ *
+ * @param {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>} collection
+ * @param {string} idProperty
+ * @param {string} titleProperty
+ */
+//
+export function checkProperties(collection, idProperty, titleProperty) {
+  const layerArray = collection.getArray();
+  layerArray.forEach((layer) => {
+    if (!layer.get(idProperty)) {
+      //@ts-ignore
+      layer.set(idProperty, layer.ol_uid);
+    }
+    if (!layer.get(titleProperty)) {
+      //@ts-ignore
+      layer.set(titleProperty, `layer ${layer.ol_uid}`);
+    }
+  });
+}
 /**
  * Filter all map layers by property
  *

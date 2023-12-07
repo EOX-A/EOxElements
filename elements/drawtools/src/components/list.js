@@ -1,6 +1,12 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
 import { styleEOX } from "../style.eox";
+import {
+  deleteFeatureMethod,
+  firstUpdatedMethod,
+  hoverFeatureMethod,
+  selectAndDeselectFeatureMethod,
+} from "../methods/list";
 
 /**
  * Display list of features
@@ -12,7 +18,6 @@ export class EOxDrawToolsList extends LitElement {
     eoxMap: { attribute: false, state: true },
     olMap: { attribute: false, state: true },
     draw: { attribute: false, state: true },
-    layer: { type: String },
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
     modify: { attribute: false, state: true },
@@ -60,12 +65,6 @@ export class EOxDrawToolsList extends LitElement {
     this.draw = null;
 
     /**
-     * The layer id of the draw layer
-     * @default draw
-     */
-    this.layer = "draw";
-
-    /**
      * The current native OpenLayers draw `layer`
      * @type import("ol/layer").Vector<import("ol/source").Vector>
      */
@@ -73,7 +72,9 @@ export class EOxDrawToolsList extends LitElement {
     this.drawLayer = null;
 
     /**
-     * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
+     * The array of drawn native OpenLayers features. Normally includes only one feature,
+     * until multiple feature drawing is enabled.
+     *
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
@@ -92,56 +93,41 @@ export class EOxDrawToolsList extends LitElement {
   }
 
   /**
-   * Delete individual feature @param {any} evt
+   * Handles the deletion of an individual feature.
+   *
+   * @param {Event & { target: HTMLButtonElement }} evt - Event object containing button target.
    */
   _handleDelete(evt) {
-    evt.stopPropagation();
-    const index = evt.target.getAttribute("index");
-    const feature = this.drawnFeatures[index];
-    this.drawLayer.getSource().removeFeature(feature);
-    this.drawnFeatures.splice(index, 1);
-    this.requestUpdate();
+    deleteFeatureMethod(evt, this);
   }
 
   /**
-   * Select and Deselect feature from the list
+   * Handles the selection and deselection of a feature from the list.
    *
-   * @param {import("ol").Feature} feature
+   * @param {import("ol").Feature} feature - The selected feature.
    */
   _handleFeatureSelectAndDeselect(feature) {
-    const selectedFeatureId = feature.get("id");
-
-    // Deselect selected feature
-    if (this.clickId === selectedFeatureId) {
-      const newExtent = this.drawLayer.getSource().getExtent();
-      this.olMap.getView().fit(newExtent, { duration: 750 });
-      this.clickInteraction.highlightById([]);
-    }
-    // Select the clicked feature
-    else {
-      this.clickInteraction.highlightById([selectedFeatureId]);
-      this.olMap
-        .getView()
-        .fit(feature.getGeometry().getExtent(), { duration: 750 });
-    }
-
-    this.requestUpdate();
+    selectAndDeselectFeatureMethod(feature, this);
   }
 
-  firstUpdated() {
-    this.hoverInteraction = this.eoxMap.selectInteractions["selectHover"];
-    this.clickInteraction = this.eoxMap.selectInteractions["selectClick"];
+  /**
+   *
+   * @param {Number} featureId - The ID of the feature to hover.
+   * @param {Boolean} mouseOut - Flag indicating mouse out event.
+   */
+  _handleHoverFeature(featureId, mouseOut = false) {
+    hoverFeatureMethod(this, featureId, mouseOut);
+  }
 
-    // Event trigger when style change due to interaction
-    this.hoverInteraction.selectStyleLayer.on("change", () =>
-      this.requestUpdate()
-    );
-    this.clickInteraction.selectStyleLayer.on("change", () =>
-      this.requestUpdate()
-    );
+  /**
+   * Initiates initial settings and event triggers upon the component's first update.
+   */
+  firstUpdated() {
+    firstUpdatedMethod(this);
   }
 
   render() {
+    // Update hover and click IDs
     this.hoverId = this.hoverInteraction?.selectedFids[0];
     this.clickId = this.clickInteraction?.selectedFids[0];
 
@@ -151,37 +137,35 @@ export class EOxDrawToolsList extends LitElement {
       </style>
       <ul>
         ${this.drawnFeatures.map((feature, i) => {
+          // Determine feature number and ID
+          const featureNumber = i + 1;
           const featureId = feature.get("id");
-          const selected =
-            this.hoverId === featureId || this.clickId === featureId;
+
+          // Check if the feature is hovered or clicked
+          const isFeatureHovered = this.hoverId === featureId;
+          const isFeatureClicked = this.clickId === featureId;
+          const isSelected = isFeatureHovered || isFeatureClicked;
+          const selectionClass = isSelected ? "selected" : nothing;
 
           return keyed(
-            i + 1,
+            featureNumber,
             html`
               <li
-                class="${selected ? "selected" : nothing}"
-                @mouseover=${() => {
-                  if (this.clickId === featureId) return;
-                  this.hoverInteraction.highlightById([featureId]);
-                }}
-                @mouseout=${() => {
-                  if (this.clickId === featureId) return;
-                  this.hoverInteraction.highlightById([]);
-                }}
+                class="${selectionClass}"
+                @mouseover=${() => this._handleHoverFeature(featureId)}
+                @mouseout=${() => this._handleHoverFeature(featureId, true)}
               >
                 <div
                   class="list"
                   @click="${() =>
                     this._handleFeatureSelectAndDeselect(feature)}"
                 >
-                  <span class="title">Feature #${i + 1}</span>
+                  <span class="title">Feature #${featureNumber}</span>
                   <button
                     index=${i}
                     class="icon small discard"
                     @click="${this._handleDelete}"
-                  >
-                    ${this.unstyled ? "x" : nothing}
-                  </button>
+                  ></button>
                 </div>
               </li>
             `
