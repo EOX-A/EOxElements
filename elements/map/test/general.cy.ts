@@ -127,9 +127,18 @@ describe("Map", () => {
         { type: "Tile", properties: { id: "2" }, source: { type: "OSM" } },
         { type: "Tile", properties: { id: "3" }, source: { type: "OSM" } },
       ];
-      (<EOxMap>$el[0]).layers = <EoxLayer[]>layersArray;
+      const eoxMap = <EOxMap>$el[0];
+      eoxMap.layers = <EoxLayer[]>layersArray;
       expect(layersArray.map((l) => l.properties.id).join("")).to.eq("123");
       expect(layersArray.map((l) => l.properties.id).join("")).to.not.eq("321");
+      expect(
+        eoxMap.map
+          .getLayers()
+          .getArray()
+          .map((l) => l.get("id"))
+          .join(""),
+        "generate layers in reverse painters order"
+      ).to.eq("321");
     });
   });
 });

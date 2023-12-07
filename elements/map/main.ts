@@ -64,7 +64,9 @@ export class EOxMap extends LitElement {
 
   set layers(layers: Array<EoxLayer>) {
     const oldLayers = this._layers;
-    const newLayers = layers;
+    const newLayers = JSON.parse(
+      JSON.stringify(layers)
+    ).reverse() as Array<EoxLayer>;
 
     // remove layers that are not defined anymore
     if (oldLayers) {
