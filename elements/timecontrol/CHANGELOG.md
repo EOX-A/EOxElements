@@ -1,15 +1,11 @@
 # Changelog
 
-## [0.2.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.0...timecontrol-v0.2.0) (2023-12-07)
+## [0.1.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.0...timecontrol-v0.1.1) (2023-12-07)
 
 
-### ⚠ BREAKING CHANGES
+### Miscellaneous Chores
 
-* introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476))
-
-### Features
-
-* Introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476)) ([96cf532](https://github.com/EOX-A/EOxElements/commit/96cf532c482e473438f3e8346775c65fa6859234))
+* Adaptations for eox-map reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476)) ([96cf532](https://github.com/EOX-A/EOxElements/commit/96cf532c482e473438f3e8346775c65fa6859234))
 
 ## [0.1.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.0.4...timecontrol-v0.1.0) (2023-11-16)
 
