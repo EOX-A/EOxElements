@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/map-v0.10.0...map-v0.11.0) (2023-12-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476))
+
+### Features
+
+* Introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476)) ([96cf532](https://github.com/EOX-A/EOxElements/commit/96cf532c482e473438f3e8346775c65fa6859234))
+
 ## [0.10.0](https://github.com/EOX-A/EOxElements/compare/map-v0.9.1...map-v0.10.0) (2023-11-27)
 
 
