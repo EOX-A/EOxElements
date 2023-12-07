@@ -2,7 +2,7 @@
   "elements/drawtools": "0.6.0",
   "elements/itemfilter": "0.11.1",
   "elements/layercontrol": "0.11.3",
-  "elements/map": "0.10.0",
+  "elements/map": "0.11.0",
   "elements/stacinfo": "0.3.0",
   "elements/timecontrol": "0.1.1",
   "elements/jsonform": "0.2.0"
