@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { html, nothing } from "lit";
 import "./components/list";
 import "./components/controller";
 import { style } from "./style";
@@ -11,13 +11,15 @@ import {
   emitDrawnFeaturesMethod,
 } from "./methods/draw";
 
+import { TwindLitElement } from "../../../utils/twind-lit-element";
+
 /**
  * Manage drawn features on a map
  * Define EOxDrawTools class extending LitElement
  *
  * @element eox-drawtools
  */
-export class EOxDrawTools extends LitElement {
+export class EOxDrawTools extends TwindLitElement {
   // Define properties with defaults and types
   static get properties() {
     return {
@@ -174,6 +176,8 @@ export class EOxDrawTools extends LitElement {
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
+
+      <p class="font-bold text(center 5xl yellow-400)">This is Twind!</p>
 
       <!-- Controller Component -->
       <eox-drawtools-controller
