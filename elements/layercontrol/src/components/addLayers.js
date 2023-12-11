@@ -24,12 +24,17 @@ export class EOxLayerControlAddLayers extends LitElement {
   /**
    * @type string
    */
-  url = null;
+  urlInput = null;
 
   /**
    * @type string
    */
-  layersInput = null;
+  open = null;
+
+  /**
+   * @type string
+   */
+  jsonInput = null;
 
   /**
    * @type {import("wms-capabilities").WMSCapabilitiesJSON}
@@ -73,12 +78,12 @@ export class EOxLayerControlAddLayers extends LitElement {
    */
   #handleURLChange(evt) {
     //@ts-ignore
-    this.url = evt.target.value;
+    this.urlInput = evt.target.value;
     this.requestUpdate();
   }
 
   #handleSearchURL() {
-    if (!this.url) return;
+    if (!this.urlInput) return;
     /**
      * @param {string} originalURL - The input change event.
      */
@@ -100,7 +105,7 @@ export class EOxLayerControlAddLayers extends LitElement {
       return new WMSCapabilities(movies).toJSON();
     }
 
-    fetchCapabilities(this.url).then((data) => {
+    fetchCapabilities(this.urlInput).then((data) => {
       this.wmsCapabilities = data;
       this.requestUpdate();
     });
@@ -127,7 +132,7 @@ export class EOxLayerControlAddLayers extends LitElement {
       source: {
         type: "TileWMS",
         // @ts-ignore
-        url: this.url,
+        url: this.urlInput,
         params: {
           LAYERS: id,
         },
@@ -148,7 +153,7 @@ export class EOxLayerControlAddLayers extends LitElement {
       /^(?:(?:https?|ftp):\/\/)?(?:localhost(:\d+)?|(?:\w+\.)+\w+|(?:(?:\d{1,3}\.){3}\d{1,3}))(?::\d+)?(?:\/\S*)?(?:\?\S*)?$/;
 
     // Check if the URL matches the pattern
-    return !url ? false : regex.test(this.url);
+    return !url ? false : regex.test(this.urlInput);
   }
 
   /**
@@ -167,57 +172,94 @@ export class EOxLayerControlAddLayers extends LitElement {
     handleInputChangeMethod(evt, this);
   }
 
+  /**
+   * Handles changes in the input field
+   *
+   * @param {string} tab - The input change event.
+   */
+  #handleOpenCloseTab(tab) {
+    this.open = tab || null;
+    this.urlInput = null;
+    this.jsonInput = null;
+    this.wmsCapabilities = null;
+
+    this.requestUpdate();
+  }
+
   render() {
     return html`
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <div class="eox-add-col justify-end">
-        <button class="add-icon icon"></button>
-      </div>
-      <div class="eox-add">
-        <div class="eox-add-col">
-          <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" @input=${
-            this.#handleURLChange
-          }></input>
-          <button class="search-icon" disabled=${
-            this.isUrlValid(this.url) ? nothing : true
-          } @click=${this.#handleSearchURL}></button>
+      <div class="eox-add-layer-main">
+        <div class="eox-add-layer-col">
+          <ul class="eox-add-layer-tab ${this.open ? "open" : "close"}">
+            <li
+              @click=${() => this.#handleOpenCloseTab("url")}
+              class="${this.open === "url" && "active"}"
+            >
+              URL
+            </li>
+            <li
+              @click=${() => this.#handleOpenCloseTab("json")}
+              class="${this.open === "json" && "active"}"
+            >
+              EOx JSON
+            </li>
+          </ul>
+          <button
+            class="add-icon icon"
+            @click=${() => this.#handleOpenCloseTab(!this.open ? "url" : null)}
+          ></button>
         </div>
-        ${
-          this.wmsCapabilities
-            ? html`<ul>
-                ${this.wmsCapabilities.Capability.Layer.Layer.map(
-                  (layer) => html`
-                    <li>
-                      ${
-                        //@ts-ignore
-                        layer.Name
-                      }<button
-                        class="add-layer-icon icon"
-                        @click=${() =>
-                          // @ts-ignore
-                          this.#addWMSLayer(layer)}
-                      ></button>
-                    </li>
-                  `
-                )}
-              </ul>`
-            : nothing
-        }
-        <div class="divider"><span> OR </span></div>
-        <textarea
-          class="add-layer-input"
-          placeholder="Please put a valid EOX layer json."
-          @input=${this.#handleInputChange}
-          .value=${this.layersInput}
-        ></textarea>
-      <div class="eox-add-col justify-end relative">
-        <button class="add-layer-icon json-add-layer"
-        disabled=${isLayerJSONValid(this.layersInput) ? nothing : true}
-        @click=${this.#handleAddLayer}></button>
-      </div>
+        <div class="eox-add ${this.open ? "open" : "close"}">
+          ${this.open === "url"
+            ? html`
+              <div class="eox-add-layer-col">
+                <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" @input=${
+                  this.#handleURLChange
+                }></input>
+                <button class="search-icon" disabled=${
+                  this.isUrlValid(this.urlInput) ? nothing : true
+                } @click=${this.#handleSearchURL}></button>
+              </div>
+              ${
+                this.wmsCapabilities
+                  ? html`<ul>
+                      ${this.wmsCapabilities.Capability.Layer.Layer.map(
+                        (layer) => html`
+                          <li>
+                            ${
+                              //@ts-ignore
+                              layer.Name
+                            }<button
+                              class="add-layer-icon icon"
+                              @click=${() =>
+                                // @ts-ignore
+                                this.#addWMSLayer(layer)}
+                            ></button>
+                          </li>
+                        `
+                      )}
+                    </ul>`
+                  : nothing
+              }
+              `
+            : html`
+                <textarea
+                  class="add-layer-input"
+                  placeholder="Please put a valid EOX layer json."
+                  @input=${this.#handleInputChange}
+                  .value=${this.jsonInput}
+                ></textarea>
+                <button
+                  class="add-layer-icon json-add-layer"
+                  disabled=${isLayerJSONValid(this.jsonInput) ? nothing : true}
+                  @click=${this.#handleAddLayer}
+                ></button>
+              `}
+        </div>
       </div>
     `;
   }
@@ -232,13 +274,38 @@ export class EOxLayerControlAddLayers extends LitElement {
       font-size: small;
       max-width: 200px;
     }
-    .eox-add-col {
+    .eox-add-layer-col, .eox-add-layer-tab {
       display: flex;
+      width: 100%;
+    }
+    .eox-add-layer-main .close {
+      display: none;
+    }
+    .eox-add-layer-main .open {
+      position: relative;
+    }
+    button.icon.add-icon {
+      flex-grow: 1;
+    }
+    .eox-add-layer-tab li {
+      border: 0 !important;
+      font-size: smaller;
+      padding: 0.2rem 0.7rem;
+      background: #f0f2f5;
+      border-radius: 4px 4px 0px 0px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .eox-add-layer-tab li.active {
+      background: #204270;
+      color: white;
+      font-weight: 700;
     }
     .relative {
       position: relative
     }
-    .eox-add-col.justify-end {
+    .eox-add-layer-col.justify-end {
       justify-content: end;
     }
     .eox-add ul {
@@ -290,28 +357,30 @@ export class EOxLayerControlAddLayers extends LitElement {
       color: white;
     }
     .search-icon, .json-add-layer {
-      padding: 4px;
-      height: 24px;
+      padding: 4px 6px;
+      height: 28px;
       border-radius: 0px 4px 4px 0px;
       box-shadow: none;
     }
     .json-add-layer {
       position: absolute;
-      bottom: 8px;
-      right: 6px;
+      bottom: 16px;
+      right: 14px;
       border-radius: 4px;
+      height: 24px;
+      padding: 4px;
     }
     input.add-url, textarea.add-layer-input {
       box-sizing: border-box !important;
       width: 100%;
-      height: 24px;
+      height: 28px;
       padding: 5px 7px !important;
       border: 1px solid #0004 !important;
       font-size: smaller;
       border-radius: 4px 0px 0px 4px;
     }
     textarea.add-layer-input {
-      height: 100px;
+      height: 90px;
       resize: none;
       border-radius: 4px;
     }

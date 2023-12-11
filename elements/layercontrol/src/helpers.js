@@ -277,21 +277,21 @@ export function getStartVals(layer, layerConfig) {
 }
 
 /**
- * Checks if the stored 'layersInput' is a valid JSON string.
+ * Checks if the stored 'jsonInput' is a valid JSON string.
  * @param {string} str
- * @returns {boolean} - Returns true if the 'layersInput' is a valid JSON, otherwise false.
+ * @returns {boolean} - Returns true if the 'jsonInput' is a valid JSON, otherwise false.
  */
 export function isLayerJSONValid(str) {
   try {
-    // Parsing the layersInput to test if it's a valid JSON
+    // Parsing the jsonInput to test if it's a valid JSON
     JSON.parse(str);
 
     console.log(str);
 
-    // Returning true if 'layersInput' is not empty
+    // Returning true if 'jsonInput' is not empty
     return !!str;
   } catch (error) {
-    // Returning false if there's an error parsing or if 'layersInput' is empty
+    // Returning false if there's an error parsing or if 'jsonInput' is empty
     return false;
   }
 }
@@ -325,7 +325,7 @@ export function handleInputChangeMethod(evt, EoxLayerControlAddLayers) {
   console.log(cleanedInput);
 
   // Update the stored layers input with the cleaned JSON data
-  EoxLayerControlAddLayers.layersInput = cleanedInput;
+  EoxLayerControlAddLayers.jsonInput = cleanedInput;
 
   // Request a UI update to reflect changes
   EoxLayerControlAddLayers.requestUpdate();
@@ -342,7 +342,7 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
   /**
    * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
    **/
-  const layers = JSON.parse(`{"data":${EoxLayerControlAddLayers.layersInput}}`);
+  const layers = JSON.parse(`{"data":${EoxLayerControlAddLayers.jsonInput}}`);
 
   // Check if the parsed data is an array
   if (Array.isArray(layers.data)) {
@@ -355,7 +355,7 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
     EoxLayerControlAddLayers.eoxMap.addOrUpdateLayer(layers.data);
   }
 
-  // Resetting `layersInput` with null value and re-rendering the component
-  EoxLayerControlAddLayers.layersInput = null;
+  // Resetting `jsonInput` with null value and re-rendering the component
+  EoxLayerControlAddLayers.jsonInput = null;
   EoxLayerControlAddLayers.requestUpdate();
 }
