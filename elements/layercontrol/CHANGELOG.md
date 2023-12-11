@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.4](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.3...layercontrol-v0.11.4) (2023-12-07)
+
+
+### Miscellaneous Chores
+
+* Adaptations for eox-map reactive properties ([5121bca](https://github.com/EOX-A/EOxElements/commit/5121bcab7f68ecbee4bdd8899303c6c1b18ca78d))
+
 ## [0.11.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.2...layercontrol-v0.11.3) (2023-12-05)
 
 
