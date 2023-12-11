@@ -1,7 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import "./layer";
 import "./layerGroup";
-import _debounce from "lodash.debounce";
 import WMSCapabilities from "wms-capabilities";
 import {
   handleAddLayerMethod,
@@ -14,7 +13,7 @@ import {
  *
  * @element eox-layercontrol-layer-add
  */
-export class EOxLayerControlLayerAdd extends LitElement {
+export class EOxLayerControlAddLayers extends LitElement {
   static properties = {
     map: { attribute: false, state: true },
     eoxMap: { attribute: false, state: true },
@@ -48,7 +47,7 @@ export class EOxLayerControlLayerAdd extends LitElement {
     this.map = null;
 
     /**
-     * @type import("../../../map/main").EOxMap
+     * @type import("@eox/map/main").EOxMap
      */
     this.eoxMap = null;
 
@@ -116,7 +115,7 @@ export class EOxLayerControlLayerAdd extends LitElement {
     const { Name: id } = layer;
 
     /**
-     * @type {import("../../../map/src/generate").EoxLayer}
+     * @type {import("@eox/map/src/generate").EoxLayer}
      */
     const layerEOXJSON = {
       type: "Tile",
@@ -335,4 +334,4 @@ export class EOxLayerControlLayerAdd extends LitElement {
   `;
 }
 
-customElements.define("eox-layercontrol-layer-add", EOxLayerControlLayerAdd);
+customElements.define("eox-layercontrol-layer-add", EOxLayerControlAddLayers);
