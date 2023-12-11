@@ -3,57 +3,11 @@ import "./layer";
 import "./layerGroup";
 import _debounce from "lodash.debounce";
 import WMSCapabilities from "wms-capabilities";
-
-function xmlToJson(xml) {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(xml, "text/xml");
-  const result = {};
-
-  if (xmlDoc.children.length === 0) {
-    result[xmlDoc.nodeName] = xmlDoc.textContent.trim();
-    return result;
-  }
-
-  const parseNode = (node) => {
-    const obj = {};
-
-    // Attributes
-    if (node.attributes.length > 0) {
-      obj._attributes = {};
-      for (let i = 0; i < node.attributes.length; i++) {
-        const attribute = node.attributes[i];
-        obj._attributes[attribute.nodeName] = attribute.nodeValue;
-      }
-    }
-
-    // Children
-    for (let i = 0; i < node.children.length; i++) {
-      const child = node.children[i];
-      const childName = child.nodeName;
-
-      if (obj[childName] === undefined) {
-        obj[childName] = parseNode(child);
-      } else {
-        if (!Array.isArray(obj[childName])) {
-          const temp = obj[childName];
-          obj[childName] = [];
-          obj[childName].push(temp);
-        }
-        obj[childName].push(parseNode(child));
-      }
-    }
-
-    // Text content
-    const textContent = node.textContent.trim();
-    if (Object.keys(obj).length === 0 && textContent !== "") {
-      return textContent;
-    }
-
-    return obj;
-  };
-
-  return parseNode(xmlDoc.documentElement);
-}
+import {
+  handleAddLayerMethod,
+  handleInputChangeMethod,
+  isLayerJSONValid,
+} from "../helpers";
 
 /**
  * Add layer
@@ -74,7 +28,12 @@ export class EOxLayerControlLayerAdd extends LitElement {
   url = null;
 
   /**
-   * @type object
+   * @type string
+   */
+  layersInput = null;
+
+  /**
+   * @type {import("wms-capabilities").WMSCapabilitiesJSON}
    */
   wmsCapabilities = null;
 
@@ -114,12 +73,16 @@ export class EOxLayerControlLayerAdd extends LitElement {
    * @param {Event} evt - The input change event.
    */
   #handleURLChange(evt) {
+    //@ts-ignore
     this.url = evt.target.value;
     this.requestUpdate();
   }
 
   #handleSearchURL() {
     if (!this.url) return;
+    /**
+     * @param {string} originalURL - The input change event.
+     */
     async function fetchCapabilities(originalURL) {
       let url = new URL(originalURL);
       let params = url.searchParams;
@@ -144,17 +107,27 @@ export class EOxLayerControlLayerAdd extends LitElement {
     });
   }
 
+  /**
+   * Handles changes in the input field
+   *
+   * @param {{"Name": string}} layer - The input change event.
+   */
   #addWMSLayer(layer) {
     const { Name: id } = layer;
 
+    /**
+     * @type {import("../../../map/src/generate").EoxLayer}
+     */
     const layerEOXJSON = {
       type: "Tile",
       properties: {
         id: id,
+        // @ts-ignore
         title: id,
       },
       source: {
         type: "TileWMS",
+        // @ts-ignore
         url: this.url,
         params: {
           LAYERS: id,
@@ -165,6 +138,11 @@ export class EOxLayerControlLayerAdd extends LitElement {
     this.eoxMap.addOrUpdateLayer(layerEOXJSON);
   }
 
+  /**
+   * Handles changes in the input field
+   *
+   * @param {string} url - The input change event.
+   */
   isUrlValid(url) {
     // Regular expression pattern to match URLs with localhost, domain, and IP addresses
     const regex =
@@ -174,8 +152,23 @@ export class EOxLayerControlLayerAdd extends LitElement {
     return !url ? false : regex.test(this.url);
   }
 
+  /**
+   * Handles the addition of one or multiple layers to the map based on the input.
+   */
+  #handleAddLayer() {
+    handleAddLayerMethod(this);
+  }
+
+  /**
+   * Handles changes in the input field
+   *
+   * @param {Event} evt - The input change event.
+   */
+  #handleInputChange(evt) {
+    handleInputChangeMethod(evt, this);
+  }
+
   render() {
-    console.log(this.wmsCapabilities);
     return html`
       <style>
         ${this.#styleBasic}
@@ -199,9 +192,14 @@ export class EOxLayerControlLayerAdd extends LitElement {
                 ${this.wmsCapabilities.Capability.Layer.Layer.map(
                   (layer) => html`
                     <li>
-                      ${layer.Name}<button
+                      ${
+                        //@ts-ignore
+                        layer.Name
+                      }<button
                         class="add-layer-icon icon"
-                        @click=${() => this.#addWMSLayer(layer)}
+                        @click=${() =>
+                          // @ts-ignore
+                          this.#addWMSLayer(layer)}
                       ></button>
                     </li>
                   `
@@ -209,6 +207,18 @@ export class EOxLayerControlLayerAdd extends LitElement {
               </ul>`
             : nothing
         }
+        <div class="divider"><span> OR </span></div>
+        <textarea
+          class="add-layer-input"
+          placeholder="Please put a valid EOX layer json."
+          @input=${this.#handleInputChange}
+          .value=${this.layersInput}
+        ></textarea>
+      <div class="eox-add-col justify-end relative">
+        <button class="add-layer-icon json-add-layer"
+        disabled=${isLayerJSONValid(this.layersInput) ? nothing : true}
+        @click=${this.#handleAddLayer}></button>
+      </div>
       </div>
     `;
   }
@@ -217,13 +227,17 @@ export class EOxLayerControlLayerAdd extends LitElement {
 
   #styleEOX = `
     .eox-add {
-      background: #00417011;
+      background: #f0f2f5;
       border-top: 1px solid #0041701a;
       padding: 0.5rem;
       font-size: small;
+      max-width: 200px;
     }
     .eox-add-col {
       display: flex;
+    }
+    .relative {
+      position: relative
     }
     .eox-add-col.justify-end {
       justify-content: end;
@@ -262,24 +276,33 @@ export class EOxLayerControlLayerAdd extends LitElement {
     .add-layer-icon::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eplus-thick%3C/title%3E%3Cpath fill='%23004270' d='M20 14H14V20H10V14H4V10H10V4H14V10H20V14Z' /%3E%3C/svg%3E");
     }
-    .search-icon::after {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' fill='white' /%3E%3C/svg%3E");
-      color: white;
+    .json-add-layer {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eplus-thick%3C/title%3E%3Cpath fill='white' d='M20 14H14V20H10V14H4V10H10V4H14V10H20V14Z' /%3E%3C/svg%3E");
     }
     .search-icon::after {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' fill='white' /%3E%3C/svg%3E");
+    }
+    .search-icon::after, .json-add-layer::before {
       width: 14px;
       min-width: 14px;
       height: 14px;
       display:flex
       margin-right: 6px;
+      color: white;
     }
-    .search-icon {
+    .search-icon, .json-add-layer {
       padding: 4px;
       height: 24px;
       border-radius: 0px 4px 4px 0px;
       box-shadow: none;
     }
-    input.add-url {
+    .json-add-layer {
+      position: absolute;
+      bottom: 8px;
+      right: 6px;
+      border-radius: 4px;
+    }
+    input.add-url, textarea.add-layer-input {
       box-sizing: border-box !important;
       width: 100%;
       height: 24px;
@@ -287,6 +310,27 @@ export class EOxLayerControlLayerAdd extends LitElement {
       border: 1px solid #0004 !important;
       font-size: smaller;
       border-radius: 4px 0px 0px 4px;
+    }
+    textarea.add-layer-input {
+      height: 100px;
+      resize: none;
+      border-radius: 4px;
+    }
+    .divider {
+      margin: 1rem 0px;
+      height: 1px;
+      border-top: 1.5px solid #00417059;
+      text-align: center;
+      position: relative;
+    }
+    .divider span {
+      position: relative;
+      top: -.6em;
+      padding: 0px 0.5rem;
+      background: #f0f2f5;
+      color: #00417059;
+      font-weight: bold;
+      display: inline-block;
     }
   `;
 }
