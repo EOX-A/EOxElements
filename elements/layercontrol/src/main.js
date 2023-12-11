@@ -2,6 +2,7 @@ import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import "./components/layerList";
 import "./components/optionalList";
+import "./components/layerAdd";
 import { filterLayers } from "./helpers";
 
 /**
@@ -111,6 +112,17 @@ export class EOxLayerControl extends LitElement {
         ${!this.unstyled && this.#styleEOX}
         ${this.styleOverride}
       </style>
+      <eox-layercontrol-layer-add
+        .noShadow=${true}
+        class="layers"
+        .idProperty=${this.idProperty}
+        .map=${this.map}
+        .titleProperty=${this.titleProperty}
+        .showLayerZoomState=${this.showLayerZoomState}
+        .tools=${this.tools}
+        .unstyled=${this.unstyled}
+      >
+      </eox-layercontrol-layer-add>
       ${when(
         this.map,
         () => html`
