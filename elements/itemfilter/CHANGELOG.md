@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.1...itemfilter-v0.11.2) (2023-12-07)
+
+
+### Miscellaneous Chores
+
+* Adaptations for eox-map reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476)) ([96cf532](https://github.com/EOX-A/EOxElements/commit/96cf532c482e473438f3e8346775c65fa6859234))
+
 ## [0.11.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.0...itemfilter-v0.11.1) (2023-11-29)
 
 
