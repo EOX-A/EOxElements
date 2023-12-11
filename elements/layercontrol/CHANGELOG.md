@@ -1,15 +1,11 @@
 # Changelog
 
-## [0.12.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.3...layercontrol-v0.12.0) (2023-12-07)
+## [0.11.4](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.3...layercontrol-v0.11.4) (2023-12-07)
 
 
-### ⚠ BREAKING CHANGES
+### Miscellaneous Chores
 
-* introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476))
-
-### Features
-
-* Introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476)) ([96cf532](https://github.com/EOX-A/EOxElements/commit/96cf532c482e473438f3e8346775c65fa6859234))
+* Adaptations for eox-map reactive properties ([5121bca](https://github.com/EOX-A/EOxElements/commit/5121bcab7f68ecbee4bdd8899303c6c1b18ca78d))
 
 ## [0.11.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.2...layercontrol-v0.11.3) (2023-12-05)
 
