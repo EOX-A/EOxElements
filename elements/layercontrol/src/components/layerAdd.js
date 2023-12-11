@@ -1,7 +1,8 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import "./layer";
 import "./layerGroup";
 import _debounce from "lodash.debounce";
+// import convert from "xml-js/dist/xml-js";
 /**
  * Add layer
  *
@@ -14,13 +15,13 @@ export class EOxLayerControlLayerAdd extends LitElement {
     noShadow: { type: Boolean },
   };
 
+  /**
+   * @type string
+   */
+  url = null;
+
   constructor() {
     super();
-
-    /**
-     * The layer id property
-     */
-    this.idProperty = "id";
 
     /**
      * The native OL map
@@ -28,11 +29,6 @@ export class EOxLayerControlLayerAdd extends LitElement {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
      */
     this.map = null;
-
-    /**
-     * The layer title property
-     */
-    this.titleProperty = "title";
 
     /**
      * Render the element without additional styles
@@ -49,6 +45,40 @@ export class EOxLayerControlLayerAdd extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * Handles changes in the input field
+   *
+   * @param {Event} evt - The input change event.
+   */
+  #handleURLChange(evt) {
+    this.url = evt.target.value;
+    this.requestUpdate();
+  }
+
+  #handleSearchURL() {
+    async function fetchMoviesJSON(url) {
+      const response = await fetch(url);
+      console.log(response);
+      const movies = await response.text();
+
+      // console.log(convert.xml2json(movies));
+      return movies;
+    }
+
+    fetchMoviesJSON(this.url).then((movies) => {
+      movies; // fetched movies
+    });
+  }
+
+  isUrlValid() {
+    // Regular expression pattern to match URLs with localhost, domain, and IP addresses
+    const regex =
+      /^(http:\/\/(?:localhost(:\d+)?|(?:\w+\.)+\w+|(?:(?:\d{1,3}\.){3}\d{1,3}))(?::\d+)?(?:\/\S*)?(?:\?\S*)?)$/;
+
+    // Check if the URL matches the pattern
+    return regex.test(this.url);
+  }
+
   render() {
     return html`
       <style>
@@ -60,10 +90,12 @@ export class EOxLayerControlLayerAdd extends LitElement {
       </div>
       <div class="eox-add">
         <div class="eox-add-col">
-          <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)"></input>
-          <button class="search-icon">
-            
-          </button>
+          <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" @input=${
+            this.#handleURLChange
+          }></input>
+          <button class="search-icon" disabled=${
+            this.isUrlValid() ? nothing : nothing
+          } @click=${this.#handleSearchURL}></button>
         </div>
         <ul>
           <li>Test 123 <button class="add-layer-icon icon"></button></li>
