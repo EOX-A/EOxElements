@@ -4,6 +4,6 @@
   "elements/layercontrol": "0.11.4",
   "elements/map": "0.11.0",
   "elements/stacinfo": "0.3.0",
-  "elements/timecontrol": "0.1.1",
+  "elements/timecontrol": "0.0.4",
   "elements/jsonform": "0.2.0"
 }
