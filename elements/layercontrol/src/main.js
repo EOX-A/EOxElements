@@ -114,12 +114,7 @@ export class EOxLayerControl extends LitElement {
       </style>
       <eox-layercontrol-layer-add
         .noShadow=${true}
-        class="layers"
-        .idProperty=${this.idProperty}
         .map=${this.map}
-        .titleProperty=${this.titleProperty}
-        .showLayerZoomState=${this.showLayerZoomState}
-        .tools=${this.tools}
         .unstyled=${this.unstyled}
       >
       </eox-layercontrol-layer-add>

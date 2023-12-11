@@ -9,11 +9,7 @@ import _debounce from "lodash.debounce";
  */
 export class EOxLayerControlLayerAdd extends LitElement {
   static properties = {
-    idProperty: { attribute: "id-property" },
     map: { attribute: false, state: true },
-    titleProperty: { attribute: "title-property", type: String },
-    showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
-    tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
   };
@@ -34,19 +30,9 @@ export class EOxLayerControlLayerAdd extends LitElement {
     this.map = null;
 
     /**
-     * @type Array<string>
-     */
-    this.tools = undefined;
-
-    /**
      * The layer title property
      */
     this.titleProperty = "title";
-
-    /**
-     * Show layer state based on zoom level or not
-     */
-    this.showLayerZoomState = false;
 
     /**
      * Render the element without additional styles
