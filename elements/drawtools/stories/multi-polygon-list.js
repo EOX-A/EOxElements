@@ -11,21 +11,18 @@ import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 export const MultiPolygonWithList = {
   render: () => html`
     <!-- Render eox-map component with ID "list" -->
-    <div style="display: flex">
-      <eox-map
-        id="list"
-        style=${STORIES_MAP_STYLE}
-        .layers=${STORIES_LAYERS_ARRAY}
-      ></eox-map>
+    <eox-map
+      id="list"
+      style=${STORIES_MAP_STYLE}
+      .layers=${STORIES_LAYERS_ARRAY}
+    ></eox-map>
 
-      <!-- Initialize eox-drawtools for the eox-map with ID "list" -->
-      <eox-drawtools
-        for="eox-map#list"
-        layer="draw"
-        multiple-features
-        show-list
-      ></eox-drawtools>
-    </div>
+    <!-- Initialize eox-drawtools for the eox-map with ID "list" -->
+    <eox-drawtools
+      for="eox-map#list"
+      multiple-features
+      show-list
+    ></eox-drawtools>
   `,
 };
 

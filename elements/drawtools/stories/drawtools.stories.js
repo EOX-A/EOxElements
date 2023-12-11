@@ -8,6 +8,7 @@ import {
   MultiPolygonStory,
   ModifyFeaturesStory,
   MultiPolygonWithListStory,
+  UnstyledStory,
 } from "./index";
 
 export default {
@@ -31,18 +32,23 @@ export const MultiPolygon = MultiPolygonStory;
 
 /**
  * By setting the `allow-modify` attribute or `allowModify` property,
- * the user can modify features after drawing
+ * the user can modify features after drawing.
  */
 export const ModifyFeatures = ModifyFeaturesStory;
 
 /**
  * The `type` attribute/property controls which drawing type is enabled
- * (defaults to "Polygon")
+ * (defaults to "Polygon").
  */
 export const DrawType = DrawTypeStory;
 
 /**
  * By setting the `show-list` attribute or `showList` property to `true`,
- * List of features will be visible
+ * a list of the drawn features will be populated.
  */
 export const MultiPolygonWithList = MultiPolygonWithListStory;
+
+/**
+ * By setting the `unstyled` attribute or property, the element has no styling applied.
+ */
+export const Unstyled = UnstyledStory;
