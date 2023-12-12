@@ -45,6 +45,11 @@ export class EOxLayerControlAddLayers extends LitElement {
   jsonInput = null;
 
   /**
+   * @type boolean
+   */
+  searchLoad = false;
+
+  /**
    * @type {import("wms-capabilities").WMSCapabilitiesJSON}
    */
   wmsCapabilities = null;
@@ -181,7 +186,9 @@ export class EOxLayerControlAddLayers extends LitElement {
 
               <!-- Search button for URL -->
               <button class="search-icon" disabled=${
-                isMapUrlValid(this.urlInput) ? nothing : true
+                !isMapUrlValid(this.urlInput) || this.searchLoad
+                  ? true
+                  : nothing
               } @click=${this.#handleWMSSearchURL}></button>
             </div>
 

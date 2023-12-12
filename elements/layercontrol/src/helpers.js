@@ -353,11 +353,8 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
     EoxLayerControlAddLayers.eoxMap.addOrUpdateLayer(layers.data);
   }
 
-  // Resetting `jsonInput`, `urlInput` and `wmsCapabilities` with null value and re-rendering the component
+  // Resetting `jsonInput` with null value and re-rendering the component
   EoxLayerControlAddLayers.jsonInput = null;
-  EoxLayerControlAddLayers.urlInput = null;
-  EoxLayerControlAddLayers.wmsCapabilities = null;
-
   EoxLayerControlAddLayers.requestUpdate();
 }
 
@@ -441,10 +438,13 @@ export async function fetchCapabilities(originalURL) {
 
   // Fetch the updated URL to get capabilities data
   const response = await fetch(updatedURL);
-  const capabilitiesText = await response.text();
+  if (!response.ok) throw new Error(`Error: ${response.status}`);
+  else {
+    const capabilitiesText = await response.text();
 
-  // Convert the WMS capabilities data to JSON format
-  return new WMSCapabilities(capabilitiesText).toJSON();
+    // Convert the WMS capabilities data to JSON format
+    return new WMSCapabilities(capabilitiesText).toJSON();
+  }
 }
 
 /**
@@ -458,6 +458,11 @@ export async function handleWMSSearchURLMethod(EoxLayerControlAddLayers) {
   // Get the URL input from the EOxLayerControlAddLayers instance
   const url = EoxLayerControlAddLayers.urlInput;
 
+  // Enable loader for search and reset `wmsCapabilities`
+  EoxLayerControlAddLayers.wmsCapabilities = null;
+  EoxLayerControlAddLayers.searchLoad = true;
+  EoxLayerControlAddLayers.requestUpdate();
+
   // If URL input is empty, return false
   if (!url) return false;
 
@@ -466,15 +471,21 @@ export async function handleWMSSearchURLMethod(EoxLayerControlAddLayers) {
     // If the URL type is XYZ, return a layer object with the Name property set to the URL
     return { Name: url };
   } else {
-    // If the URL type is not XYZ, fetch WMS capabilities data
-    const data = await fetchCapabilities(url);
+    try {
+      // If the URL type is not XYZ, fetch WMS capabilities data
+      const data = await fetchCapabilities(url);
 
-    // Set the fetched WMS capabilities to the instance and request an update
-    EoxLayerControlAddLayers.wmsCapabilities = data;
-    EoxLayerControlAddLayers.requestUpdate();
+      // Set the fetched WMS capabilities to the instance and request an update
+      EoxLayerControlAddLayers.wmsCapabilities = data;
+    } catch (error) {
+    } finally {
+      // Disable loader for search
+      EoxLayerControlAddLayers.searchLoad = false;
+      EoxLayerControlAddLayers.requestUpdate();
 
-    // Return false as WMS capabilities are being fetched asynchronously
-    return false;
+      // Return false as WMS capabilities are being fetched asynchronously
+      return false;
+    }
   }
 }
 
