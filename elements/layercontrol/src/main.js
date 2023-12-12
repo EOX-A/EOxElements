@@ -130,11 +130,14 @@ export class EOxLayerControl extends LitElement {
       </style>
       ${
         this.addExternalLayer
-          ? html`<eox-layercontrol-layer-add
-              .noShadow=${true}
-              .eoxMap=${this.#eoxMap}
-              .unstyled=${this.unstyled}
-            ></eox-layercontrol-layer-add>`
+          ? when(
+              this.#eoxMap?.addOrUpdateLayer,
+              () => html`<eox-layercontrol-layer-add
+                .noShadow=${true}
+                .eoxMap=${this.#eoxMap}
+                .unstyled=${this.unstyled}
+              ></eox-layercontrol-layer-add>`
+            )
           : nothing
       }
       </eox-layercontrol-layer-add>
