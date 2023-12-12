@@ -3,16 +3,6 @@
 ## [0.1.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.1...timecontrol-v0.1.2) (2023-12-12)
 
 
-### ⚠ BREAKING CHANGES
-
-* introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476))
-
-### Features
-
-* Introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476)) ([96cf532](https://github.com/EOX-A/EOxElements/commit/96cf532c482e473438f3e8346775c65fa6859234))
-* Time-aware slider ticks ([#186](https://github.com/EOX-A/EOxElements/issues/186)) ([8fa4067](https://github.com/EOX-A/EOxElements/commit/8fa4067d1cb1ec2902434068f4706b461dd2562c))
-
-
 ### Miscellaneous Chores
 
 * **docs:** Update readme ([c07d2a4](https://github.com/EOX-A/EOxElements/commit/c07d2a403ee74b453b1d5ad9b9dd528ab5b6d84f))
