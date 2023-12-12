@@ -612,6 +612,30 @@ export const Tabs = {
 };
 
 /**
+ * Defining the configuration for adding an external layer like WMS/XYZ or import EOx JSON.
+ */
+export const AddExternalLayer = {
+  args: {
+    idProperty: "id",
+    titleProperty: "title",
+    unstyled: false,
+    addExternalLayer: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .idProperty=${args.idProperty}
+        .titleProperty=${args.titleProperty}
+        .unstyled=${args.unstyled}
+        .addExternalLayer=${args.addExternalLayer}
+        for="eox-map"
+      ></eox-layercontrol>
+      ${map}
+    </div>
+  `,
+};
+
+/**
  * Zoom layer state based on `minZoom` and `maxZoom`.
  * The color change state only visible when `showLayerZoomState` is set inside layer properties.
  */
