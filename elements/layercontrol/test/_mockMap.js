@@ -144,6 +144,9 @@ export class MockMap extends HTMLElement {
   setZoom = (z) => {
     this.zoom = z;
   };
+  addOrUpdateLayer = (json) => {
+    this.setLayers([json]);
+  };
   setLayers = (layers) => {
     this.layers = new MockCollection(layers);
   };

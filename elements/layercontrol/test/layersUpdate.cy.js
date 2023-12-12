@@ -7,9 +7,13 @@ describe("LayerControl", () => {
       .getRunner()
       .suite.ctx.currentTest.title.includes("showLayerZoomState");
 
+    const addExternalLayers = Cypress.mocha
+      .getRunner()
+      .suite.ctx.currentTest.title.includes("addExternalLayers");
+
     cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(`<eox-layercontrol for="mock-map"></eox-layercontrol>`, {
-      properties: { showLayerZoomState },
+      properties: { showLayerZoomState, addExternalLayers },
     }).as("eox-layercontrol");
   });
 
@@ -245,6 +249,69 @@ describe("LayerControl", () => {
       .within(() => {
         checkLayerClass("foo");
         checkLayerClass("bar", true);
+      });
+  });
+
+  it("Add new external WMS/XYZ and EOx JSON Layer - addExternalLayers", () => {
+    cy.get("mock-map").and(($el) => {
+      $el /**MockMap*/[0]
+        .setLayers([{ properties: { id: "foo" } }]);
+    });
+
+    let mapTile = "";
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .find("eox-layercontrol-add-layers")
+      .then(($el) => {
+        cy.wrap($el).within(() => {
+          cy.get(".eox-add-layer-main").should(
+            `have.class`,
+            "eox-add-layer-main"
+          );
+          cy.get(".add-icon").click();
+          cy.get(".eox-add").should("have.class", "open");
+          cy.get(".add-url").type("https://ows.mundialis.de/services/service");
+          cy.get(".search-icon").click();
+          cy.get(".add-layer-icon").first().click();
+          cy.wait(50);
+          cy.get(".search-list")
+            .first()
+            .invoke("text") // Get the text content of the element
+            .then((text) => {
+              mapTile = text.trim();
+            });
+        });
+      });
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .find("eox-layercontrol-layer-list")
+      .then(($el) => {
+        cy.wrap($el).find("li").should("have.attr", "data-layer", mapTile);
+      });
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .find("eox-layercontrol-add-layers")
+      .then(($el) => {
+        cy.wrap($el).within(() => {
+          cy.get(".eox-add-layer-tab li").last().click();
+          cy.get("textarea")
+            .click()
+            .type(
+              `{ type: "Tile", properties: { id: "WIND", title: "WIND", }, source: { type: "TileWMS", url: "//services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", params: { LAYERS: "AWS_VIS_WIND_V_10M", }, }, maxZoom: 9, }`,
+              { parseSpecialCharSequences: false }
+            );
+          cy.get(".json-add-layer").click();
+        });
+      });
+
+    cy.get("eox-layercontrol")
+      .shadow()
+      .find("eox-layercontrol-layer-list")
+      .then(($el) => {
+        cy.wrap($el).find("li").should("have.attr", "data-layer", "WIND");
       });
   });
 });

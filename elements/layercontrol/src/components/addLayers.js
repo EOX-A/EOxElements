@@ -195,10 +195,10 @@ export class EOxLayerControlAddLayers extends LitElement {
             <!-- Display layers for WMS capabilities -->
             ${
               this.wmsCapabilities
-                ? html`<ul>
+                ? html`<ul class="search-lists">
                     ${this.wmsCapabilities.Capability.Layer.Layer.map(
                       (layer) => html`
-                        <li>
+                        <li class="search-list">
                           ${
                             //@ts-ignore
                             layer.Name
