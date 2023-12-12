@@ -18,6 +18,34 @@ import {
 import { buffer } from "ol/extent";
 import "./src/compare";
 
+/**
+ * The `eox-map` is a wrapper for the library OpenLayers with additional features and helper functions.
+ *
+ * Basic usage:
+ *
+ * ```
+ * import "@eox/map"
+ *
+ * <eox-map [...]></eox-map>
+ * ```
+ *
+ * Some basic layers, sources and formats are included in the default bundle, for advanced usage it is
+ * required to import the `advanced-layers-and-sources` plugin.
+ *
+ * Included in the base bundle:
+ * - Formats: `GeoJSON`, `MVT`
+ * - Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`,
+ * - Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`
+ *
+ * In order to use all formats, layers and sources provided by OpenLayers, import the plugin as well:
+ *
+ * ```
+ * import "@eox/map/dist/eox-map-advanced-layers-and-sources.js"
+ * import "@eox/map/dist/eox-map.js"
+ *
+ * <eox-map [...]></eox-map>
+ * ```
+ */
 @customElement("eox-map")
 export class EOxMap extends LitElement {
   /**
