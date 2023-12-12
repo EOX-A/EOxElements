@@ -1,18 +1,25 @@
 import { LitElement, html, nothing } from "lit";
 import "./layer";
 import "./layerGroup";
-import WMSCapabilities from "wms-capabilities";
 import {
-  detectMapURLType,
   handleAddLayerMethod,
-  handleInputChangeMethod,
+  handleJsonInputChangeMethod,
+  handleUrlInputChangeMethod,
+  handleUrlLayerMethod,
+  handleWMSSearchURLMethod,
   isLayerJSONValid,
+  isMapUrlValid,
 } from "../helpers";
 
 /**
- * Add layer
+ * EOxLayerControlAddLayers is a class that extends LitElement and provides functionalities
+ * for managing layers on an OpenLayers map within an EOxMap context.
+ * It allows users to add WMS or XYZ layers to the map using URLs or EOx JSON data.
+ * The class provides input fields to handle URLs and EOx JSON, along with methods
+ * to validate and process the input for adding layers dynamically to the map.
  *
  * @element eox-layercontrol-layer-add
+ * @extends LitElement
  */
 export class EOxLayerControlAddLayers extends LitElement {
   static properties = {
@@ -78,41 +85,12 @@ export class EOxLayerControlAddLayers extends LitElement {
    * @param {Event} evt - The input change event.
    */
   #handleURLChange(evt) {
-    //@ts-ignore
-    this.urlInput = evt.target.value;
-    this.requestUpdate();
+    handleUrlInputChangeMethod(evt, this);
   }
 
-  #handleSearchURL() {
-    if (!this.urlInput) return;
-    /**
-     * @param {string} originalURL - The input change event.
-     */
-    async function fetchCapabilities(originalURL) {
-      let url = new URL(originalURL);
-      let params = url.searchParams;
-
-      // Update or add multiple parameters
-      params.set("SERVICE", "WMS");
-      params.set("REQUEST", "GetCapabilities"); // Change or add a new parameter
-
-      // Generate the updated URL
-      let updatedURL = url.toString();
-
-      const response = await fetch(updatedURL);
-      console.log(response);
-      const movies = await response.text();
-
-      return new WMSCapabilities(movies).toJSON();
-    }
-
-    if (detectMapURLType(this.urlInput) === "XYZ")
-      this.#addWMSLayer({ Name: this.urlInput });
-    else
-      fetchCapabilities(this.urlInput).then((data) => {
-        this.wmsCapabilities = data;
-        this.requestUpdate();
-      });
+  #handleWMSSearchURL() {
+    const data = handleWMSSearchURLMethod(this);
+    if (data) this.#handleUrlLayerMethod(data);
   }
 
   /**
@@ -120,54 +98,9 @@ export class EOxLayerControlAddLayers extends LitElement {
    *
    * @param {{"Name": string}} layer - The input change event.
    */
-  #addWMSLayer(layer) {
-    const { Name: id } = layer;
-    const urlType = detectMapURLType(this.urlInput) || "XYZ";
-
-    /**
-     * @type {import("@eox/map/src/generate").EoxLayer}
-     */
-    const layerEOXJSON = {
-      type: "Tile",
-      properties: {
-        id: id,
-        // @ts-ignore
-        title: id,
-      },
-      source: {
-        type: urlType,
-        // @ts-ignore
-        url: this.urlInput,
-        params: {
-          LAYERS: id,
-        },
-      },
-    };
-
-    this.eoxMap.addOrUpdateLayer(layerEOXJSON);
-
-    this.urlInput = null;
-    this.jsonInput = null;
-    this.wmsCapabilities = null;
-
-    this.requestUpdate();
-  }
-
-  /**
-   * Handles changes in the input field
-   *
-   * @param {string} url - The input change event.
-   */
-  isMapUrlValid(url) {
-    // Regular expression pattern to match URLs with localhost, domain, and IP addresses
-    const urlRegex =
-      /^(?:(?:https?|ftp):\/\/|\/\/)?(?:localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|(?:\w+[\w-]*\.)+\w+)(?::\d+)?(?:\/\S*)?$/;
-
-    const urlRegexTest = urlRegex.test(this.urlInput);
-    const mapUrlType = detectMapURLType(this.urlInput);
-
-    if (!url || !urlRegexTest || !mapUrlType) return false;
-    else return true;
+  #handleUrlLayerMethod(layer) {
+    handleUrlLayerMethod(layer, this);
+    handleAddLayerMethod(this);
   }
 
   /**
@@ -183,7 +116,7 @@ export class EOxLayerControlAddLayers extends LitElement {
    * @param {Event} evt - The input change event.
    */
   #handleInputChange(evt) {
-    handleInputChangeMethod(evt, this);
+    handleJsonInputChangeMethod(evt, this);
   }
 
   /**
@@ -235,8 +168,8 @@ export class EOxLayerControlAddLayers extends LitElement {
                   this.urlInput
                 }" @input=${this.#handleURLChange}></input>
                 <button class="search-icon" disabled=${
-                  this.isMapUrlValid(this.urlInput) ? nothing : true
-                } @click=${this.#handleSearchURL}></button>
+                  isMapUrlValid(this.urlInput) ? nothing : true
+                } @click=${this.#handleWMSSearchURL}></button>
               </div>
               ${
                 this.wmsCapabilities
@@ -251,7 +184,7 @@ export class EOxLayerControlAddLayers extends LitElement {
                               class="add-layer-icon icon"
                               @click=${() =>
                                 // @ts-ignore
-                                this.#addWMSLayer(layer)}
+                                this.#handleUrlLayerMethod(layer)}
                             ></button>
                           </li>
                         `
@@ -286,7 +219,6 @@ export class EOxLayerControlAddLayers extends LitElement {
       border-top: 1px solid #0041701a;
       padding: 0.5rem;
       font-size: small;
-      max-width: 200px;
     }
     .eox-add-layer-col, .eox-add-layer-tab {
       display: flex;

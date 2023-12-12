@@ -1,4 +1,5 @@
 import Sortable from "sortablejs";
+import WMSCapabilities from "wms-capabilities";
 
 /**
  *
@@ -286,8 +287,6 @@ export function isLayerJSONValid(str) {
     // Parsing the jsonInput to test if it's a valid JSON
     JSON.parse(str);
 
-    console.log(str);
-
     // Returning true if 'jsonInput' is not empty
     return !!str;
   } catch (error) {
@@ -303,11 +302,10 @@ export function isLayerJSONValid(str) {
  * @param {Event} evt - The input change event.
  * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
  */
-export function handleInputChangeMethod(evt, EoxLayerControlAddLayers) {
+export function handleJsonInputChangeMethod(evt, EoxLayerControlAddLayers) {
   // Extracts the value entered in the input field
   const inputValue = evt.target.value;
 
-  console.log(inputValue);
   // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
   const replacedQuotes = inputValue.replace(
     /(['"])?([a-zA-Z0-9_]+)(['"])?:/g,
@@ -319,14 +317,10 @@ export function handleInputChangeMethod(evt, EoxLayerControlAddLayers) {
     .replace(/,\s*}/g, "}")
     .replace(/,\s*]/g, "]");
 
-  console.log(removedCommas);
-
   // Remove extra spaces around braces, brackets, and commas for cleaner JSON
   const cleanedInput = removedCommas
     .replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1")
     .replaceAll(`": //`, `://`);
-
-  console.log(cleanedInput);
 
   // Update the stored layers input with the cleaned JSON data
   EoxLayerControlAddLayers.jsonInput = cleanedInput;
@@ -347,7 +341,6 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
    * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
    **/
   const layers = JSON.parse(`{"data":${EoxLayerControlAddLayers.jsonInput}}`);
-console.log(layers)
   // Check if the parsed data is an array
   if (Array.isArray(layers.data)) {
     // Iterate over each layer in the array and add/update it in the map
@@ -359,9 +352,42 @@ console.log(layers)
     EoxLayerControlAddLayers.eoxMap.addOrUpdateLayer(layers.data);
   }
 
-  // Resetting `jsonInput` with null value and re-rendering the component
+  // Resetting `jsonInput`, `urlInput` and `wmsCapabilities` with null value and re-rendering the component
   EoxLayerControlAddLayers.jsonInput = null;
+  EoxLayerControlAddLayers.urlInput = null;
+  EoxLayerControlAddLayers.wmsCapabilities = null;
+
   EoxLayerControlAddLayers.requestUpdate();
+}
+
+/**
+ * @param {Event} evt - The input change event.
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ */
+export function handleUrlInputChangeMethod(evt, EoxLayerControlAddLayers) {
+  // Update the stored url input
+  //@ts-ignore
+  EoxLayerControlAddLayers.urlInput = evt.target.value;
+
+  // Request a UI update to reflect changes
+  EoxLayerControlAddLayers.requestUpdate();
+}
+
+/**
+ * Handles changes in the input field
+ *
+ * @param {string} url - The input change event.
+ */
+export function isMapUrlValid(url) {
+  // Regular expression pattern to match URLs with localhost, domain, and IP addresses
+  const urlRegex =
+    /^(?:(?:https?|ftp):\/\/|\/\/)?(?:localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|(?:\w+[\w-]*\.)+\w+)(?::\d+)?(?:\/\S*)?$/;
+
+  const urlRegexTest = urlRegex.test(url);
+  const mapUrlType = detectMapURLType(url);
+
+  if (!url || !urlRegexTest || !mapUrlType) return false;
+  else return true;
 }
 
 /**
@@ -382,4 +408,83 @@ export function detectMapURLType(url) {
 
   // Neither WMS nor XYZ pattern matched
   return false;
+}
+
+/**
+ * @param {string} originalURL - The input change event.
+ */
+export async function fetchCapabilities(originalURL) {
+  let url = new URL(originalURL);
+  let params = url.searchParams;
+
+  // Update or add multiple parameters
+  params.set("SERVICE", "WMS");
+  params.set("REQUEST", "GetCapabilities"); // Change or add a new parameter
+
+  // Generate the updated URL
+  let updatedURL = url.toString();
+
+  const response = await fetch(updatedURL);
+  const movies = await response.text();
+
+  return new WMSCapabilities(movies).toJSON();
+}
+
+/**
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ * @return {{"Name": string} | false}
+ */
+export function handleWMSSearchURLMethod(EoxLayerControlAddLayers) {
+  const url = EoxLayerControlAddLayers.urlInput;
+  if (!url) return false;
+
+  if (detectMapURLType(url) === "XYZ") return { Name: url };
+  else {
+    fetchCapabilities(url).then((data) => {
+      EoxLayerControlAddLayers.wmsCapabilities = data;
+      EoxLayerControlAddLayers.requestUpdate();
+    });
+    return false;
+  }
+}
+
+/**
+ * Handles changes in the input field
+ *
+ * @param {{"Name": string}} layer - The input change event.
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ */
+export function handleUrlLayerMethod(layer, EoxLayerControlAddLayers) {
+  const { Name: id } = layer;
+  const urlType = detectMapURLType(EoxLayerControlAddLayers.urlInput) || "XYZ";
+
+  /**
+   * @type {import("@eox/map/src/generate").EoxLayer}
+   */
+  const layerEOxJSON = {
+    type: "Tile",
+    properties: {
+      id: id,
+      // @ts-ignore
+      title: id,
+    },
+    source: {
+      type: urlType,
+      // @ts-ignore
+      url: EoxLayerControlAddLayers.urlInput,
+      params: {
+        LAYERS: id,
+      },
+    },
+  };
+
+  EoxLayerControlAddLayers.jsonInput = JSON.stringify(layerEOxJSON);
+
+  // this.eoxMap.addOrUpdateLayer(layerEOXJSON);
+
+  // this.urlInput = null;
+  // this.jsonInput = null;
+  // this.wmsCapabilities = null;
+
+  // this.requestUpdate();
 }
