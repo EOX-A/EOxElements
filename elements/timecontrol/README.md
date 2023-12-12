@@ -12,19 +12,11 @@ import "@eox/timecontrol"
 <eox-timecontrol></eox-timecontrol>
 ```
 
-// TODO: add documentation
+Please refer to the [timecontrol docs](https://eox-a.github.io/EOxElements/?path=/docs/elements-eox-timecontrol--docs) for more details.
 
-## Contribute
+## Development
 
-```
-npm watch
-(on root) npm run cypress
-(on root) npm run format
-
-npm version <new version>
-npm run build
-npm publish (requires OTP)
-```
+For a development setup, please check the [root-level readme](../../README.md).
 
 ## Changelog
 

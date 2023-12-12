@@ -165,7 +165,9 @@ export class EOxDrawToolsList extends LitElement {
                     index=${i}
                     class="icon small discard"
                     @click="${this._handleDelete}"
-                  ></button>
+                  >
+                    x
+                  </button>
                 </div>
               </li>
             `
