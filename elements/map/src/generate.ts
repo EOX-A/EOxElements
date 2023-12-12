@@ -147,7 +147,7 @@ export function createLayer(
   if (!newLayer) {
     if (!window.eoxMapAdvancedOlLayers) {
       throw new Error(
-        `Layer type ${layer.type} not created! Forgot to import advanced layers & sources plugin?`
+        `Layer type ${layer.type} not created! Forgot to import advanced layers & sources plugin from @eox/map/dist/eox-map-advanced-layers-and-sources.js?`
       );
     } else {
       throw new Error(`Layer type ${layer.type} not supported!`);
@@ -156,7 +156,7 @@ export function createLayer(
   if (layer.source && !newSource) {
     if (!window.eoxMapAdvancedOlSources) {
       throw new Error(
-        `Source type ${layer.source.type} not created! Forgot to import advanced layers & sources plugin?`
+        `Source type ${layer.source.type} not created! Forgot to import advanced layers & sources plugin from @eox/map/dist/eox-map-advanced-layers-and-sources.js?`
       );
     } else {
       throw new Error(`Source type ${layer.source.type} not supported!`);
