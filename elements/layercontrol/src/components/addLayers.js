@@ -130,10 +130,15 @@ export class EOxLayerControlAddLayers extends LitElement {
     handleOpenCloseTabMethod(tab, this);
   }
 
+  /**
+   * Renders the EOx Layer Control component with tabbed interface for URL and EOx JSON.
+   * Handles input fields, search, and addition of layers.
+   */
   render() {
+    // Determine classes and tab states based on 'open' property
     const openCloseClassName = this.open ? "open" : "close";
-    const isUrlTabOpen = Boolean(this.open === "url");
-    const isJsonTabOpen = Boolean(this.open === "json");
+    const isUrlTabOpen = this.open === "url";
+    const isJsonTabOpen = this.open === "json";
 
     return html`
       <style>
@@ -142,20 +147,23 @@ export class EOxLayerControlAddLayers extends LitElement {
       </style>
       <div class="eox-add-layer-main">
         <div class="eox-add-layer-col">
+          <!-- Tabbed interface for URL and EOx JSON -->
           <ul class="eox-add-layer-tab ${openCloseClassName}">
             <li
               @click=${() => this.#handleOpenCloseTab("url")}
-              class="${isUrlTabOpen && "active"}"
+              class="${isUrlTabOpen ? "active" : ""}"
             >
               URL
             </li>
             <li
               @click=${() => this.#handleOpenCloseTab("json")}
-              class="${isJsonTabOpen && "active"}"
+              class="${isJsonTabOpen ? "active" : ""}"
             >
               EOx JSON
             </li>
           </ul>
+
+          <!-- Button to toggle tabs -->
           <button
             class="add-icon icon"
             @click=${() => this.#handleOpenCloseTab(!this.open ? "url" : null)}
@@ -164,43 +172,52 @@ export class EOxLayerControlAddLayers extends LitElement {
         <div class="eox-add ${openCloseClassName}">
           ${isUrlTabOpen
             ? html`
-              <div class="eox-add-layer-col">
-                <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" .value="${
-                  this.urlInput
-                }" @input=${this.#handleURLChange}></input>
-                <button class="search-icon" disabled=${
-                  isMapUrlValid(this.urlInput) ? nothing : true
-                } @click=${this.#handleWMSSearchURL}></button>
-              </div>
-              ${
-                this.wmsCapabilities
-                  ? html`<ul>
-                      ${this.wmsCapabilities.Capability.Layer.Layer.map(
-                        (layer) => html`
-                          <li>
-                            ${
-                              //@ts-ignore
-                              layer.Name
-                            }<button
-                              class="add-layer-icon icon"
-                              @click=${() =>
-                                // @ts-ignore
-                                this.#handleUrlLayerMethod(layer)}
-                            ></button>
-                          </li>
-                        `
-                      )}
-                    </ul>`
-                  : nothing
-              }
-              `
+
+            <!-- Input field for URL -->
+            <div class="eox-add-layer-col">
+              <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" .value="${
+                this.urlInput
+              }" @input=${this.#handleURLChange}></input>
+
+              <!-- Search button for URL -->
+              <button class="search-icon" disabled=${
+                isMapUrlValid(this.urlInput) ? nothing : true
+              } @click=${this.#handleWMSSearchURL}></button>
+            </div>
+
+            <!-- Display layers for WMS capabilities -->
+            ${
+              this.wmsCapabilities
+                ? html`<ul>
+                    ${this.wmsCapabilities.Capability.Layer.Layer.map(
+                      (layer) => html`
+                        <li>
+                          ${
+                            //@ts-ignore
+                            layer.Name
+                          }
+                          <!-- Button to add layer -->
+                          <button
+                            class="add-layer-icon icon"
+                            @click=${() => this.#handleUrlLayerMethod(layer)}
+                          ></button>
+                        </li>
+                      `
+                    )}
+                  </ul>`
+                : nothing
+            }
+            `
             : html`
+                <!-- Textarea for EOx JSON input -->
                 <textarea
                   class="add-layer-input"
                   placeholder="Please put a valid EOX layer json."
                   @input=${this.#handleInputChange}
                   .value=${this.jsonInput}
                 ></textarea>
+
+                <!-- Button to add EOx JSON layer -->
                 <button
                   class="add-layer-icon json-add-layer"
                   disabled=${isLayerJSONValid(this.jsonInput) ? nothing : true}
