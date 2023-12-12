@@ -19,7 +19,7 @@ import {
  * The class provides input fields to handle URLs and EOx JSON, along with methods
  * to validate and process the input for adding layers dynamically to the map.
  *
- * @element eox-layercontrol-layer-add
+ * @element eox-layercontrol-add-layers
  * @extends LitElement
  */
 export class EOxLayerControlAddLayers extends LitElement {
@@ -374,4 +374,4 @@ export class EOxLayerControlAddLayers extends LitElement {
   `;
 }
 
-customElements.define("eox-layercontrol-layer-add", EOxLayerControlAddLayers);
+customElements.define("eox-layercontrol-add-layers", EOxLayerControlAddLayers);

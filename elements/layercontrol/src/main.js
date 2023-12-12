@@ -128,19 +128,16 @@ export class EOxLayerControl extends LitElement {
         ${!this.unstyled && this.#styleEOX}
         ${this.styleOverride}
       </style>
-      ${
-        this.addExternalLayers
-          ? when(
-              this.#eoxMap?.addOrUpdateLayer,
-              () => html`<eox-layercontrol-layer-add
-                .noShadow=${true}
-                .eoxMap=${this.#eoxMap}
-                .unstyled=${this.unstyled}
-              ></eox-layercontrol-layer-add>`
-            )
-          : nothing
-      }
-      </eox-layercontrol-layer-add>
+      ${this.addExternalLayers
+        ? when(
+            this.#eoxMap?.addOrUpdateLayer,
+            () => html`<eox-layercontrol-add-layers
+              .noShadow=${true}
+              .eoxMap=${this.#eoxMap}
+              .unstyled=${this.unstyled}
+            ></eox-layercontrol-add-layers>`
+          )
+        : nothing}
       ${when(
         this.map,
         () => html`
