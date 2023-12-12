@@ -478,14 +478,15 @@ export async function handleWMSSearchURLMethod(EoxLayerControlAddLayers) {
       // Set the fetched WMS capabilities to the instance and request an update
       EoxLayerControlAddLayers.wmsCapabilities = data;
     } catch (error) {
+      // Error when API Fails
     } finally {
       // Disable loader for search
       EoxLayerControlAddLayers.searchLoad = false;
       EoxLayerControlAddLayers.requestUpdate();
-
-      // Return false as WMS capabilities are being fetched asynchronously
-      return false;
     }
+
+    // Return false as WMS capabilities are being fetched asynchronously
+    return false;
   }
 }
 
