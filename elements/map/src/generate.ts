@@ -1,7 +1,24 @@
-import * as olLayers from "ol/layer";
-import * as olSources from "ol/source";
-import * as olFormats from "ol/format";
-import STAC from "ol-stac";
+import { GeoJSON, MVT } from "ol/format";
+
+import {
+  Group,
+  Image,
+  Tile as TileLayer,
+  Vector as VectorLayer,
+  VectorTile as VectorTileLayer,
+} from "ol/layer";
+
+import {
+  ImageWMS,
+  OSM,
+  Tile as TileSource,
+  TileWMS,
+  Vector as VectorSource,
+  VectorTile as VectorTileSource,
+  WMTS,
+  XYZ,
+} from "ol/source";
+
 import { FlatStyleLike } from "ol/style/flat";
 import { Collection } from "ol";
 import { createXYZ } from "ol/tilegrid";
@@ -13,17 +30,8 @@ import {
   SelectOptions,
   addSelect,
 } from "./select";
-import { register } from "ol/proj/proj4.js";
-import proj4 from "proj4";
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
 
-register(proj4); // required to support source reprojection
-
-const availableLayers = {
-  ...olLayers,
-  STAC,
-};
+import type Layer from "ol/layer/Base";
 
 export type layerType =
   | "Group"
@@ -58,8 +66,43 @@ export type sourceType =
   | "WMTS"
   | "XYZ";
 
+const basicOlFormats = {
+  GeoJSON,
+  MVT,
+};
+
+const basicOlLayers = {
+  Group,
+  Image,
+  Tile: TileLayer,
+  Vector: VectorLayer,
+  VectorTile: VectorTileLayer,
+};
+
+const basicOlSources = {
+  ImageWMS,
+  OSM,
+  Tile: TileSource,
+  TileWMS,
+  Vector: VectorSource,
+  VectorTile: VectorTileSource,
+  WMTS,
+  XYZ,
+};
+
+const availableFormats = {
+  ...basicOlFormats,
+  ...window.eoxMapAdvancedOlFormats,
+};
+
+const availableLayers = {
+  ...basicOlLayers,
+  ...window.eoxMapAdvancedOlLayers,
+};
+
 const availableSources = {
-  ...olSources,
+  ...basicOlSources,
+  ...window.eoxMapAdvancedOlSources,
 };
 
 export type EOxInteraction = {
@@ -90,22 +133,34 @@ export type EoxLayer = {
  * @param {EOxMap} EOxMap
  * @param {EoxLayer} layer
  * @param {boolean=} createInteractions
- * @returns {olLayers.Layer}
+ * @returns {Layer}
  */
 export function createLayer(
   EOxMap: EOxMap,
   layer: EoxLayer,
   createInteractions: boolean = true
-): olLayers.Layer {
+): Layer {
   layer = JSON.parse(JSON.stringify(layer));
 
   const newLayer = availableLayers[layer.type];
   const newSource = availableSources[layer.source?.type];
   if (!newLayer) {
-    throw new Error(`Layer type ${layer.type} not supported!`);
+    if (!window.eoxMapAdvancedOlLayers) {
+      throw new Error(
+        `Layer type ${layer.type} not created! Forgot to import advanced layers & sources plugin?`
+      );
+    } else {
+      throw new Error(`Layer type ${layer.type} not supported!`);
+    }
   }
   if (layer.source && !newSource) {
-    throw new Error(`Source type ${layer.source.type} not supported!`);
+    if (!window.eoxMapAdvancedOlSources) {
+      throw new Error(
+        `Source type ${layer.source.type} not created! Forgot to import advanced layers & sources plugin?`
+      );
+    } else {
+      throw new Error(`Source type ${layer.source.type} not supported!`);
+    }
   }
 
   //@ts-ignore
@@ -118,7 +173,7 @@ export function createLayer(
         // @ts-ignore
         ...(layer.source.format && {
           // @ts-ignore
-          format: new olFormats[layer.source.format](),
+          format: new availableFormats[layer.source.format](),
         }),
         // @ts-ignore
         ...(layer.source.tileGrid && {
@@ -186,13 +241,13 @@ function addInteraction(
 /**
  * updates an existing layer
  * @param {EoxLayer} newLayerDefinition
- * @param {olLayers.Layer} existingLayer
+ * @param {Layer} existingLayer
  * @returns {existingLayer}
  */
 export function updateLayer(
   EOxMap: EOxMap,
   newLayerDefinition: EoxLayer,
-  existingLayer: olLayers.Layer
+  existingLayer: Layer
 ) {
   const existingJsonDefintion = existingLayer.get(
     "_jsonDefinition"
@@ -214,7 +269,9 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.source) !==
     JSON.stringify(existingJsonDefintion.source)
   ) {
-    existingLayer.setSource(newLayer.getSource());
+    (existingLayer as any as VectorLayer<VectorSource>).setSource(
+      (newLayer as any as VectorLayer<VectorSource>).getSource()
+    );
   }
 
   if (
@@ -296,7 +353,7 @@ export function updateLayer(
     // remove all layers from the group that do not exist in the new layer definition
     //@ts-ignore
     const layerCollection = existingLayer.getLayers();
-    layerCollection.forEach((l: olLayers.Layer) => {
+    layerCollection.forEach((l: Layer) => {
       if (!newLayerIds.includes(l.get("id"))) {
         layerCollection.remove(l);
       }
@@ -308,7 +365,7 @@ export function updateLayer(
       if (
         layerCollection
           .getArray()
-          .map((l: olLayers.Layer) => l.get("id"))
+          .map((l: Layer) => l.get("id"))
           .includes(newLayerId)
       ) {
         // layer already existed
@@ -325,15 +382,13 @@ export function updateLayer(
     });
 
     // after all layers were added/updated/deleted, rearrange them in the correct order
-    layerCollection
-      .getArray()
-      .sort((layerA: olLayers.Layer, layerB: olLayers.Layer) => {
-        return (
-          // change this order?  the reverse order, because we want the topmost layer to be on top
-          newLayerIds.indexOf(layerA.get("id")) -
-          newLayerIds.indexOf(layerB.get("id"))
-        );
-      });
+    layerCollection.getArray().sort((layerA: Layer, layerB: Layer) => {
+      return (
+        // change this order?  the reverse order, because we want the topmost layer to be on top
+        newLayerIds.indexOf(layerA.get("id")) -
+        newLayerIds.indexOf(layerB.get("id"))
+      );
+    });
     layerCollection.changed();
   }
   setSyncListeners(existingLayer, newLayerDefinition);
@@ -349,10 +404,10 @@ export const generateLayers = (EOxMap: EOxMap, layerArray: Array<EoxLayer>) => {
 
 /**
  * set listeners to keep state of layer in sync with input json
- * @param {olLayers.Layer} olLayer
+ * @param {Layer} olLayer
  * @param {EoxLayer} eoxLayer
  */
-function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
+function setSyncListeners(olLayer: Layer, eoxLayer: EoxLayer) {
   olLayer.on("change:opacity", () => {
     eoxLayer.opacity = olLayer.getOpacity();
   });
