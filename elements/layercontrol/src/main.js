@@ -45,7 +45,7 @@ export class EOxLayerControl extends LitElement {
     titleProperty: { attribute: "title-property", type: String },
     showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
-    addExternalLayer: { attribute: false },
+    addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
   };
@@ -93,7 +93,7 @@ export class EOxLayerControl extends LitElement {
     /**
      * Enable-disable external layer
      */
-    this.addExternalLayer = false;
+    this.addExternalLayers = false;
 
     /**
      * Render the element without additional styles
@@ -129,7 +129,7 @@ export class EOxLayerControl extends LitElement {
         ${this.styleOverride}
       </style>
       ${
-        this.addExternalLayer
+        this.addExternalLayers
           ? when(
               this.#eoxMap?.addOrUpdateLayer,
               () => html`<eox-layercontrol-layer-add

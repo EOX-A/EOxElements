@@ -619,7 +619,7 @@ export const AddExternalLayer = {
     idProperty: "id",
     titleProperty: "title",
     unstyled: false,
-    addExternalLayer: true,
+    addExternalLayers: true,
   },
   render: (args) => html`
     <div style="display: flex">
@@ -627,7 +627,7 @@ export const AddExternalLayer = {
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
-        .addExternalLayer=${args.addExternalLayer}
+        .addExternalLayers=${args.addExternalLayers}
         for="eox-map"
       ></eox-layercontrol>
       ${map}
