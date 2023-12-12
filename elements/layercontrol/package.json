@@ -34,6 +34,6 @@
     "dayjs": "^1.11.8",
     "lit": "^3.0.2",
     "lodash.debounce": "^4.0.8",
-    "xml-js": "^1.6.11"
+    "wms-capabilities": "^0.6.0"
   }
 }
