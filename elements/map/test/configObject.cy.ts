@@ -13,7 +13,7 @@ describe("config property", () => {
           layers: [
             {
               type: "Tile",
-              properties: { id: "osm" },
+              properties: { id: "osm", title: "foo" },
               source: { type: "OSM" },
             },
           ],
@@ -38,6 +38,32 @@ describe("config property", () => {
       ]);
 
       expect(eoxMap.map.getView().getZoom()).to.be.equal(9);
+    });
+    cy.get("eox-map").and(async ($el) => {
+      const eoxMap = <EOxMap>$el[0];
+
+      eoxMap.config = {
+        controls: {},
+        layers: [
+          {
+            type: "Tile",
+            // @ts-ignore
+            properties: { id: "osm", title: "bar" },
+            source: { type: "OSM" },
+          },
+        ],
+        view: {
+          center: [1113194, 2273030],
+          zoom: 10,
+        },
+      };
+
+      expect(eoxMap.map.getView().getZoom()).to.be.equal(10);
+      expect(eoxMap.map.getControls().getLength()).to.be.equal(0);
+      expect(eoxMap.map.getLayers().getArray().length).to.be.equal(1);
+      expect(eoxMap.map.getLayers().getArray()[0].get("title")).to.be.equal(
+        "bar"
+      );
     });
   });
 });
