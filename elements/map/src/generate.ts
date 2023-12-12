@@ -82,6 +82,7 @@ export type EoxLayer = {
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
   interactions?: Array<EOxInteraction>;
+  zIndex?: number;
 };
 
 /**
@@ -359,7 +360,7 @@ function setSyncListeners(olLayer: olLayers.Layer, eoxLayer: EoxLayer) {
     eoxLayer.visible = olLayer.getVisible();
   });
   olLayer.on("change:zIndex", () => {
-    // TO DO
+    eoxLayer.zIndex = olLayer.getZIndex();
   });
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") {
