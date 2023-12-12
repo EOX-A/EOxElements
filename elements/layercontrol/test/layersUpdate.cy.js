@@ -274,7 +274,6 @@ describe("LayerControl", () => {
           cy.get(".add-url").type("https://ows.mundialis.de/services/service");
           cy.get(".search-icon").click();
           cy.get(".add-layer-icon").first().click();
-          cy.wait(50);
           cy.get(".search-list")
             .first()
             .invoke("text") // Get the text content of the element
@@ -297,12 +296,10 @@ describe("LayerControl", () => {
       .then(($el) => {
         cy.wrap($el).within(() => {
           cy.get(".eox-add-layer-tab li").last().click();
-          cy.get("textarea")
-            .click()
-            .type(
-              `{ type: "Tile", properties: { id: "WIND", title: "WIND", }, source: { type: "TileWMS", url: "//services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", params: { LAYERS: "AWS_VIS_WIND_V_10M", }, }, maxZoom: 9, }`,
-              { parseSpecialCharSequences: false }
-            );
+          cy.get("textarea").type(
+            `{ type: "Tile", properties: { id: "WIND", title: "WIND", }, source: { type: "TileWMS", url: "//services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", params: { LAYERS: "AWS_VIS_WIND_V_10M", }, }, maxZoom: 9, }`,
+            { parseSpecialCharSequences: false }
+          );
           cy.get(".json-add-layer").click();
         });
       });
