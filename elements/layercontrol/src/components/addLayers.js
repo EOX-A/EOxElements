@@ -4,6 +4,7 @@ import "./layerGroup";
 import {
   handleAddLayerMethod,
   handleJsonInputChangeMethod,
+  handleOpenCloseTabMethod,
   handleUrlInputChangeMethod,
   handleUrlLayerMethod,
   handleWMSSearchURLMethod,
@@ -23,7 +24,6 @@ import {
  */
 export class EOxLayerControlAddLayers extends LitElement {
   static properties = {
-    map: { attribute: false, state: true },
     eoxMap: { attribute: false, state: true },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
@@ -53,13 +53,6 @@ export class EOxLayerControlAddLayers extends LitElement {
     super();
 
     /**
-     * The native OL map
-     * @type {import("ol").Map}
-     * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
-     */
-    this.map = null;
-
-    /**
      * @type import("@eox/map/main").EOxMap
      */
     this.eoxMap = null;
@@ -75,28 +68,37 @@ export class EOxLayerControlAddLayers extends LitElement {
     this.noShadow = true;
   }
 
+  /**
+   * Overrides the default behavior of creating the render root element.
+   * If 'noShadow' is set to true, returns 'this'; otherwise, falls back to the default behavior
+   * of creating a shadow root using 'super.createRenderRoot()'.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
   /**
-   * Handles changes in the input field
+   * Handles changes in the input field by invoking the 'handleUrlInputChangeMethod'.
+   * This method is triggered upon an @input change event.
    *
-   * @param {Event} evt - The input change event.
+   * @param {Event} evt - The input change event triggering the method.
    */
   #handleURLChange(evt) {
     handleUrlInputChangeMethod(evt, this);
   }
 
-  #handleWMSSearchURL() {
-    const data = handleWMSSearchURLMethod(this);
+  /**
+   * Asynchronously handles WMS URL search, invokes further processing if data is available.
+   */
+  async #handleWMSSearchURL() {
+    const data = await handleWMSSearchURLMethod(this);
     if (data) this.#handleUrlLayerMethod(data);
   }
 
   /**
-   * Handles changes in the input field
+   * Handles input field changes by triggering layer processing and adding layers.
    *
-   * @param {{"Name": string}} layer - The input change event.
+   * @param {{"Name": string}} layer - The layer information triggering the method.
    */
   #handleUrlLayerMethod(layer) {
     handleUrlLayerMethod(layer, this);
@@ -104,36 +106,35 @@ export class EOxLayerControlAddLayers extends LitElement {
   }
 
   /**
-   * Handles the addition of one or multiple layers to the map based on the input.
+   * Initiates the addition of layers, triggering the handleAddLayerMethod.
    */
   #handleAddLayer() {
     handleAddLayerMethod(this);
   }
 
   /**
-   * Handles changes in the input field
+   * Handles input field changes by invoking the 'handleJsonInputChangeMethod'.
    *
-   * @param {Event} evt - The input change event.
+   * @param {Event} evt - The input change event triggering the method.
    */
   #handleInputChange(evt) {
     handleJsonInputChangeMethod(evt, this);
   }
 
   /**
-   * Handles changes in the input field
+   * Handles tab changes by invoking the 'handleOpenCloseTabMethod'.
    *
-   * @param {string} tab - The input change event.
+   * @param {string} tab - The tab identifier triggering the method.
    */
   #handleOpenCloseTab(tab) {
-    this.open = tab || null;
-    this.urlInput = null;
-    this.jsonInput = null;
-    this.wmsCapabilities = null;
-
-    this.requestUpdate();
+    handleOpenCloseTabMethod(tab, this);
   }
 
   render() {
+    const openCloseClassName = this.open ? "open" : "close";
+    const isUrlTabOpen = Boolean(this.open === "url");
+    const isJsonTabOpen = Boolean(this.open === "json");
+
     return html`
       <style>
         ${this.#styleBasic}
@@ -141,16 +142,16 @@ export class EOxLayerControlAddLayers extends LitElement {
       </style>
       <div class="eox-add-layer-main">
         <div class="eox-add-layer-col">
-          <ul class="eox-add-layer-tab ${this.open ? "open" : "close"}">
+          <ul class="eox-add-layer-tab ${openCloseClassName}">
             <li
               @click=${() => this.#handleOpenCloseTab("url")}
-              class="${this.open === "url" && "active"}"
+              class="${isUrlTabOpen && "active"}"
             >
               URL
             </li>
             <li
               @click=${() => this.#handleOpenCloseTab("json")}
-              class="${this.open === "json" && "active"}"
+              class="${isJsonTabOpen && "active"}"
             >
               EOx JSON
             </li>
@@ -160,8 +161,8 @@ export class EOxLayerControlAddLayers extends LitElement {
             @click=${() => this.#handleOpenCloseTab(!this.open ? "url" : null)}
           ></button>
         </div>
-        <div class="eox-add ${this.open ? "open" : "close"}">
-          ${this.open === "url"
+        <div class="eox-add ${openCloseClassName}">
+          ${isUrlTabOpen
             ? html`
               <div class="eox-add-layer-col">
                 <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" .value="${

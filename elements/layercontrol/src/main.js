@@ -124,9 +124,8 @@ export class EOxLayerControl extends LitElement {
       </style>
       <eox-layercontrol-layer-add
         .noShadow=${true}
-        .map=${this.map}
-        .unstyled=${this.unstyled}
         .eoxMap=${this.#eoxMap}
+        .unstyled=${this.unstyled}
       >
       </eox-layercontrol-layer-add>
       ${when(

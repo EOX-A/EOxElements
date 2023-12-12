@@ -304,6 +304,7 @@ export function isLayerJSONValid(str) {
  */
 export function handleJsonInputChangeMethod(evt, EoxLayerControlAddLayers) {
   // Extracts the value entered in the input field
+  // @ts-ignore
   const inputValue = evt.target.value;
 
   // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
@@ -361,39 +362,47 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
 }
 
 /**
+ * Handles the change event in the URL input field
+ * and updates the stored URL input.
+ *
  * @param {Event} evt - The input change event.
  * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
  */
 export function handleUrlInputChangeMethod(evt, EoxLayerControlAddLayers) {
-  // Update the stored url input
+  // Update the stored URL input value in the EOxLayerControlAddLayers instance
   //@ts-ignore
   EoxLayerControlAddLayers.urlInput = evt.target.value;
 
-  // Request a UI update to reflect changes
+  // Request an update in the UI to reflect the changes
   EoxLayerControlAddLayers.requestUpdate();
 }
 
 /**
- * Handles changes in the input field
+ * Checks if the given URL is a valid map URL based on specified criteria.
  *
- * @param {string} url - The input change event.
+ * @param {string} url - The URL to validate.
+ * @returns {boolean} - Indicates whether the URL is a valid map URL.
  */
 export function isMapUrlValid(url) {
   // Regular expression pattern to match URLs with localhost, domain, and IP addresses
   const urlRegex =
     /^(?:(?:https?|ftp):\/\/|\/\/)?(?:localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|(?:\w+[\w-]*\.)+\w+)(?::\d+)?(?:\/\S*)?$/;
 
-  const urlRegexTest = urlRegex.test(url);
+  // Check if the URL matches the defined pattern
+  const urlMatchesPattern = urlRegex.test(url);
+
+  // Detect the type of map URL using the provided function
   const mapUrlType = detectMapURLType(url);
 
-  if (!url || !urlRegexTest || !mapUrlType) return false;
-  else return true;
+  // Return true if the URL is not empty and matches the pattern and has a valid map URL type, otherwise false
+  return !!(url && urlMatchesPattern && mapUrlType);
 }
 
 /**
+ * Detects the type of map URL based on WMS and XYZ patterns.
  *
- * @param {string} url
- * @return {"TileWMS" | false | "XYZ"}
+ * @param {string} url - The URL to analyze.
+ * @returns {"TileWMS" | false | "XYZ"} - The detected map URL type, or false if not recognized.
  */
 export function detectMapURLType(url) {
   // Regular expressions to match WMS and XYZ patterns
@@ -401,90 +410,124 @@ export function detectMapURLType(url) {
   const xyzPattern = /{(?:z|x|y-?)}\/{(?:z|x|y-?)}\/{(?:z|x|y-?)}/i;
 
   // Check if the URL matches the WMS pattern
-  if (wmsPattern.test(url)) return "TileWMS"; // Detected as WMS
+  if (wmsPattern.test(url)) return "TileWMS";
 
   // Check if the URL matches the XYZ pattern
-  if (xyzPattern.test(url)) return "XYZ"; // Detected as XYZ
+  if (xyzPattern.test(url)) return "XYZ";
 
   // Neither WMS nor XYZ pattern matched
   return false;
 }
 
 /**
- * @param {string} originalURL - The input change event.
+ * Fetches WMS capabilities data from the provided original URL.
+ * It constructs a new URL with additional parameters, makes a fetch request,
+ * and returns the WMS capabilities in JSON format.
+ *
+ * @param {string} originalURL - The original URL to fetch capabilities from.
+ * @returns {Promise<import("wms-capabilities").WMSCapabilitiesJSON>} - A Promise resolving to the fetched WMS capabilities in JSON format.
  */
 export async function fetchCapabilities(originalURL) {
+  // Create a URL object from the original URL string
   let url = new URL(originalURL);
   let params = url.searchParams;
 
-  // Update or add multiple parameters
+  // Update or add multiple parameters for WMS capabilities
   params.set("SERVICE", "WMS");
   params.set("REQUEST", "GetCapabilities"); // Change or add a new parameter
 
-  // Generate the updated URL
+  // Generate the updated URL string
   let updatedURL = url.toString();
 
+  // Fetch the updated URL to get capabilities data
   const response = await fetch(updatedURL);
-  const movies = await response.text();
+  const capabilitiesText = await response.text();
 
-  return new WMSCapabilities(movies).toJSON();
+  // Convert the WMS capabilities data to JSON format
+  return new WMSCapabilities(capabilitiesText).toJSON();
 }
 
 /**
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
- * @return {{"Name": string} | false}
+ * Handles the URL search process in the EOxLayerControlAddLayers context.
+ * It utilizes the provided instance to process the URL input for WMS or XYZ layers.
+ *
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
+ * @return {Promise<{"Name": string} | false>} - An object with layer information if URL type is XYZ, otherwise false.
  */
-export function handleWMSSearchURLMethod(EoxLayerControlAddLayers) {
+export async function handleWMSSearchURLMethod(EoxLayerControlAddLayers) {
+  // Get the URL input from the EOxLayerControlAddLayers instance
   const url = EoxLayerControlAddLayers.urlInput;
+
+  // If URL input is empty, return false
   if (!url) return false;
 
-  if (detectMapURLType(url) === "XYZ") return { Name: url };
-  else {
-    fetchCapabilities(url).then((data) => {
-      EoxLayerControlAddLayers.wmsCapabilities = data;
-      EoxLayerControlAddLayers.requestUpdate();
-    });
+  // Check if the URL type is XYZ
+  if (detectMapURLType(url) === "XYZ") {
+    // If the URL type is XYZ, return a layer object with the Name property set to the URL
+    return { Name: url };
+  } else {
+    // If the URL type is not XYZ, fetch WMS capabilities data
+    const data = await fetchCapabilities(url);
+
+    // Set the fetched WMS capabilities to the instance and request an update
+    EoxLayerControlAddLayers.wmsCapabilities = data;
+    EoxLayerControlAddLayers.requestUpdate();
+
+    // Return false as WMS capabilities are being fetched asynchronously
     return false;
   }
 }
 
 /**
- * Handles changes in the input field
+ * Handles changes in the input field and prepares EOxLayerControlAddLayers
+ * properties based on the provided layer.
  *
- * @param {{"Name": string}} layer - The input change event.
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ * @param {{"Name": string}} layer - The layer information to handle.
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
  */
 export function handleUrlLayerMethod(layer, EoxLayerControlAddLayers) {
+  // Extract the 'Name' property from the provided layer
   const { Name: id } = layer;
+
+  // Detect the type of URL (WMS or XYZ) based on the URL input in EoxLayerControlAddLayers
   const urlType = detectMapURLType(EoxLayerControlAddLayers.urlInput) || "XYZ";
 
-  /**
-   * @type {import("@eox/map/src/generate").EoxLayer}
-   */
+  // Create an EOxJSON layer object
   const layerEOxJSON = {
     type: "Tile",
     properties: {
       id: id,
-      // @ts-ignore
-      title: id,
+      title: id, // Set the title property to the same as id
     },
     source: {
       type: urlType,
-      // @ts-ignore
-      url: EoxLayerControlAddLayers.urlInput,
+      url: EoxLayerControlAddLayers.urlInput, // Set the URL from the instance
       params: {
-        LAYERS: id,
+        LAYERS: id, // Set the 'LAYERS' parameter to the provided layer 'Name'
       },
     },
   };
 
+  // Convert the layerEOxJSON object to a JSON string and assign it to the jsonInput property
   EoxLayerControlAddLayers.jsonInput = JSON.stringify(layerEOxJSON);
+}
 
-  // this.eoxMap.addOrUpdateLayer(layerEOXJSON);
+/**
+ * Handles the opening or closing of tabs in the EOxLayerControlAddLayers instance.
+ * Updates relevant properties based on the selected tab.
+ *
+ * @param {string} tab - The tab identifier to open or close.
+ * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
+ */
+export function handleOpenCloseTabMethod(tab, EoxLayerControlAddLayers) {
+  // Update the 'open' property of EOxLayerControlAddLayers based on the provided tab
+  EoxLayerControlAddLayers.open = tab || null;
 
-  // this.urlInput = null;
-  // this.jsonInput = null;
-  // this.wmsCapabilities = null;
+  // Reset input-related properties when closing the tab
+  EoxLayerControlAddLayers.urlInput = null;
+  EoxLayerControlAddLayers.jsonInput = null;
+  EoxLayerControlAddLayers.wmsCapabilities = null;
 
-  // this.requestUpdate();
+  // Request an update to reflect changes in the UI
+  EoxLayerControlAddLayers.requestUpdate();
 }
