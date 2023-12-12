@@ -319,8 +319,12 @@ export function handleInputChangeMethod(evt, EoxLayerControlAddLayers) {
     .replace(/,\s*}/g, "}")
     .replace(/,\s*]/g, "]");
 
+  console.log(removedCommas);
+
   // Remove extra spaces around braces, brackets, and commas for cleaner JSON
-  const cleanedInput = removedCommas.replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1");
+  const cleanedInput = removedCommas
+    .replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1")
+    .replaceAll(`": //`, `://`);
 
   console.log(cleanedInput);
 
