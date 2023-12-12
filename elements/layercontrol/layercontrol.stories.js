@@ -612,7 +612,7 @@ export const Tabs = {
 };
 
 /**
- * Defining the configuration for adding an external layer like WMS/XYZ or import EOx JSON.
+ * Defining the configuration for adding an external layer like WMS/XYZ or import JSON.
  */
 export const AddExternalLayer = {
   args: {

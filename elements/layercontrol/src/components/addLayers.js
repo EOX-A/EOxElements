@@ -15,8 +15,8 @@ import {
 /**
  * EOxLayerControlAddLayers is a class that extends LitElement and provides functionalities
  * for managing layers on an OpenLayers map within an EOxMap context.
- * It allows users to add WMS or XYZ layers to the map using URLs or EOx JSON data.
- * The class provides input fields to handle URLs and EOx JSON, along with methods
+ * It allows users to add WMS or XYZ layers to the map using URLs or JSON data.
+ * The class provides input fields to handle URLs and JSON, along with methods
  * to validate and process the input for adding layers dynamically to the map.
  *
  * @element eox-layercontrol-add-layers
@@ -136,7 +136,7 @@ export class EOxLayerControlAddLayers extends LitElement {
   }
 
   /**
-   * Renders the EOx Layer Control component with tabbed interface for URL and EOx JSON.
+   * Renders the EOx Layer Control component with tabbed interface for URL and JSON.
    * Handles input fields, search, and addition of layers.
    */
   render() {
@@ -152,7 +152,7 @@ export class EOxLayerControlAddLayers extends LitElement {
       </style>
       <div class="eox-add-layer-main">
         <div class="eox-add-layer-col">
-          <!-- Tabbed interface for URL and EOx JSON -->
+          <!-- Tabbed interface for URL and JSON -->
           <ul class="eox-add-layer-tab ${openCloseClassName}">
             <li
               @click=${() => this.#handleOpenCloseTab("url")}
@@ -164,7 +164,7 @@ export class EOxLayerControlAddLayers extends LitElement {
               @click=${() => this.#handleOpenCloseTab("json")}
               class="${isJsonTabOpen ? "active" : ""}"
             >
-              EOx JSON
+              JSON
             </li>
           </ul>
 
@@ -216,15 +216,15 @@ export class EOxLayerControlAddLayers extends LitElement {
             }
             `
             : html`
-                <!-- Textarea for EOx JSON input -->
+                <!-- Textarea for JSON input -->
                 <textarea
                   class="add-layer-input"
-                  placeholder="Please put a valid EOX layer json."
+                  placeholder="Please put a valid eox-map layer JSON."
                   @input=${this.#handleInputChange}
                   .value=${this.jsonInput}
                 ></textarea>
 
-                <!-- Button to add EOx JSON layer -->
+                <!-- Button to add JSON layer -->
                 <button
                   class="add-layer-icon json-add-layer"
                   disabled=${isLayerJSONValid(this.jsonInput) ? nothing : true}

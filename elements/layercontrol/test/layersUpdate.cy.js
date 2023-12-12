@@ -252,7 +252,7 @@ describe("LayerControl", () => {
       });
   });
 
-  it("Add new external WMS/XYZ and EOx JSON Layer - addExternalLayers", () => {
+  it("Add new external WMS/XYZ and JSON Layer - addExternalLayers", () => {
     cy.get("mock-map").and(($el) => {
       $el /**MockMap*/[0]
         .setLayers([{ properties: { id: "foo" } }]);
