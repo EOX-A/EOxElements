@@ -18,6 +18,14 @@ import {
 import { buffer } from "ol/extent";
 import "./src/compare";
 
+type ConfigObject = {
+  controls: controlDictionary;
+  layers: Array<EoxLayer>;
+  view: {
+    center: Array<number>;
+    zoom: number;
+  };
+};
 @customElement("eox-map")
 export class EOxMap extends LitElement {
   /**
@@ -104,6 +112,25 @@ export class EOxMap extends LitElement {
   @property({ type: Array })
   get layers() {
     return this._layers;
+  }
+
+  private _config: ConfigObject;
+
+  set config(config: ConfigObject) {
+    this._config = config;
+    this.center = config.view?.center;
+    this.zoom = config?.view.zoom;
+    this.layers = config?.layers;
+    this.controls = config?.controls;
+  }
+
+  /**
+   * Config object, including `controls`, `layers` and `view`.
+   * Alternative way of defining the map config.
+   */
+  @property({ attribute: false, type: Object })
+  get config() {
+    return this._config;
   }
 
   /**
