@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.1...timecontrol-v0.1.2) (2023-12-12)
+
+
+### Miscellaneous Chores
+
+* **docs:** Update readme ([c07d2a4](https://github.com/EOX-A/EOxElements/commit/c07d2a403ee74b453b1d5ad9b9dd528ab5b6d84f))
+* Update readme ([b3e8c41](https://github.com/EOX-A/EOxElements/commit/b3e8c41a43f6fbddb3120abed933df6cf0d21f7c))
+
 ## [0.1.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.0...timecontrol-v0.1.1) (2023-12-07)
 
 
