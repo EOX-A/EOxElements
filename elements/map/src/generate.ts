@@ -242,7 +242,7 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.interactions) !==
     JSON.stringify(existingJsonDefintion.interactions)
   ) {
-    existingJsonDefintion.interactions.forEach((interactionDefinition) => {
+    existingJsonDefintion.interactions?.forEach((interactionDefinition) => {
       const correspondingNewInteraction = newLayerDefinition.interactions.find(
         (i) => i.type === interactionDefinition.type
       );
@@ -275,7 +275,7 @@ export function updateLayer(
       }
     });
     // for each truly "new" interaction, add the corresponding interaction
-    newLayerDefinition.interactions.forEach((interactionDefinition) => {
+    newLayerDefinition.interactions?.forEach((interactionDefinition) => {
       const correspondingExistingInteraction =
         existingJsonDefintion.interactions.find(
           (i) => i.type === interactionDefinition.type

@@ -12,7 +12,10 @@ export function getLayerById(EOxMap: EOxMap, layerId: string) {
   const flatLayers = getFlatLayersArray(
     EOxMap.map.getLayers().getArray() as Array<Layer>
   );
-  return flatLayers.find((l) => l.get("id") === layerId);
+  console.log(flatLayers)
+  return flatLayers.find((l) => {
+    console.log(l.get("id") === layerId)
+    return l.get("id") === layerId});
 }
 
 /**

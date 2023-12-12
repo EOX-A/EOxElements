@@ -347,7 +347,7 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
    * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
    **/
   const layers = JSON.parse(`{"data":${EoxLayerControlAddLayers.jsonInput}}`);
-
+console.log(layers)
   // Check if the parsed data is an array
   if (Array.isArray(layers.data)) {
     // Iterate over each layer in the array and add/update it in the map
@@ -362,4 +362,24 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
   // Resetting `jsonInput` with null value and re-rendering the component
   EoxLayerControlAddLayers.jsonInput = null;
   EoxLayerControlAddLayers.requestUpdate();
+}
+
+/**
+ *
+ * @param {string} url
+ * @return {"TileWMS" | false | "XYZ"}
+ */
+export function detectMapURLType(url) {
+  // Regular expressions to match WMS and XYZ patterns
+  const wmsPattern = /\b(?:wms|ows)\b/i;
+  const xyzPattern = /{(?:z|x|y-?)}\/{(?:z|x|y-?)}\/{(?:z|x|y-?)}/i;
+
+  // Check if the URL matches the WMS pattern
+  if (wmsPattern.test(url)) return "TileWMS"; // Detected as WMS
+
+  // Check if the URL matches the XYZ pattern
+  if (xyzPattern.test(url)) return "XYZ"; // Detected as XYZ
+
+  // Neither WMS nor XYZ pattern matched
+  return false;
 }

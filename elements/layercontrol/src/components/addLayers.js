@@ -3,6 +3,7 @@ import "./layer";
 import "./layerGroup";
 import WMSCapabilities from "wms-capabilities";
 import {
+  detectMapURLType,
   handleAddLayerMethod,
   handleInputChangeMethod,
   isLayerJSONValid,
@@ -105,10 +106,13 @@ export class EOxLayerControlAddLayers extends LitElement {
       return new WMSCapabilities(movies).toJSON();
     }
 
-    fetchCapabilities(this.urlInput).then((data) => {
-      this.wmsCapabilities = data;
-      this.requestUpdate();
-    });
+    if (detectMapURLType(this.urlInput) === "XYZ")
+      this.#addWMSLayer({ Name: this.urlInput });
+    else
+      fetchCapabilities(this.urlInput).then((data) => {
+        this.wmsCapabilities = data;
+        this.requestUpdate();
+      });
   }
 
   /**
@@ -118,6 +122,7 @@ export class EOxLayerControlAddLayers extends LitElement {
    */
   #addWMSLayer(layer) {
     const { Name: id } = layer;
+    const urlType = detectMapURLType(this.urlInput) || "XYZ";
 
     /**
      * @type {import("@eox/map/src/generate").EoxLayer}
@@ -130,7 +135,7 @@ export class EOxLayerControlAddLayers extends LitElement {
         title: id,
       },
       source: {
-        type: "TileWMS",
+        type: urlType,
         // @ts-ignore
         url: this.urlInput,
         params: {
@@ -140,6 +145,12 @@ export class EOxLayerControlAddLayers extends LitElement {
     };
 
     this.eoxMap.addOrUpdateLayer(layerEOXJSON);
+
+    this.urlInput = null;
+    this.jsonInput = null;
+    this.wmsCapabilities = null;
+
+    this.requestUpdate();
   }
 
   /**
@@ -147,13 +158,16 @@ export class EOxLayerControlAddLayers extends LitElement {
    *
    * @param {string} url - The input change event.
    */
-  isUrlValid(url) {
+  isMapUrlValid(url) {
     // Regular expression pattern to match URLs with localhost, domain, and IP addresses
-    const regex =
-      /^(?:(?:https?|ftp):\/\/)?(?:localhost(:\d+)?|(?:\w+\.)+\w+|(?:(?:\d{1,3}\.){3}\d{1,3}))(?::\d+)?(?:\/\S*)?(?:\?\S*)?$/;
+    const urlRegex =
+      /^(?:(?:https?|ftp):\/\/|\/\/)?(?:localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|(?:\w+[\w-]*\.)+\w+)(?::\d+)?(?:\/\S*)?$/;
 
-    // Check if the URL matches the pattern
-    return !url ? false : regex.test(this.urlInput);
+    const urlRegexTest = urlRegex.test(this.urlInput);
+    const mapUrlType = detectMapURLType(this.urlInput);
+
+    if (!url || !urlRegexTest || !mapUrlType) return false;
+    else return true;
   }
 
   /**
@@ -217,11 +231,11 @@ export class EOxLayerControlAddLayers extends LitElement {
           ${this.open === "url"
             ? html`
               <div class="eox-add-layer-col">
-                <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" @input=${
-                  this.#handleURLChange
-                }></input>
+                <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" .value="${
+                  this.urlInput
+                }" @input=${this.#handleURLChange}></input>
                 <button class="search-icon" disabled=${
-                  this.isUrlValid(this.urlInput) ? nothing : true
+                  this.isMapUrlValid(this.urlInput) ? nothing : true
                 } @click=${this.#handleSearchURL}></button>
               </div>
               ${
