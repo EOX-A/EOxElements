@@ -23,49 +23,43 @@ const initDrawLayerMethod = (EoxDrawTool) => {
     source: {
       type: "Vector",
     },
-    // check if the drawInteraction has already been added before adding again
-    // TEMP/TODO: this should probably be done by the map in the addOrUpdateLayer method
-    ...(EoxMap.interactions["drawInteraction"]
-      ? {}
-      : {
-          interactions: [
-            {
-              type: "draw",
-              options: {
-                active: false,
-                id: "drawInteraction",
-                type: EoxDrawTool.type,
-                modify: EoxDrawTool.allowModify,
-                stopClick: true,
-              },
-            },
-            {
-              type: "select",
-              options: {
-                id: "selectHover",
-                condition: "pointermove",
-                style: {
-                  "fill-color": "rgba(51, 153, 204,0.5)",
-                  "stroke-color": "#3399CC",
-                  "stroke-width": 2.5,
-                },
-              },
-            },
-            {
-              type: "select",
-              options: {
-                id: "selectClick",
-                condition: "click",
-                panIn: true,
-                style: {
-                  "fill-color": "rgba(51, 153, 204,0.5)",
-                  "stroke-color": "#3399CC",
-                  "stroke-width": 2.5,
-                },
-              },
-            },
-          ],
-        }),
+    interactions: [
+      {
+        type: "draw",
+        options: {
+          active: false,
+          id: "drawInteraction",
+          type: EoxDrawTool.type,
+          modify: EoxDrawTool.allowModify,
+          stopClick: true,
+        },
+      },
+      {
+        type: "select",
+        options: {
+          id: "selectHover",
+          condition: "pointermove",
+          style: {
+            "fill-color": "rgba(51, 153, 204,0.5)",
+            "stroke-color": "#3399CC",
+            "stroke-width": 2.5,
+          },
+        },
+      },
+      {
+        type: "select",
+        options: {
+          id: "selectClick",
+          condition: "click",
+          panIn: true,
+          style: {
+            "fill-color": "rgba(51, 153, 204,0.5)",
+            "stroke-color": "#3399CC",
+            "stroke-width": 2.5,
+          },
+        },
+      },
+    ],
   });
 
   EoxDrawTool.draw = /** @type {import("ol/interaction").Draw} */ (
