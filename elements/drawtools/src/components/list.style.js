@@ -1,0 +1,1 @@
+ import { css } from 'lit'; export default css`.textt { --tw-text-opacity: 1; color: rgb(248 113 113 / var(--tw-text-opacity))}.eox-btn { --tw-bg-opacity: 1; background-color: rgb(21 128 61 / var(--tw-bg-opacity)); --tw-text-opacity: 1; color: rgb(219 234 254 / var(--tw-text-opacity))}`; 

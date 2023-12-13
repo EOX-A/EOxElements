@@ -7,6 +7,8 @@ import {
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
+import ListStyle from "./list.style";
+import MainStyle from "../main.style";
 
 /**
  * Display list of features
@@ -126,7 +128,10 @@ export class EOxDrawToolsList extends LitElement {
     firstUpdatedMethod(this);
   }
 
+  // static styles = [ListStyle];
+
   render() {
+    // console.log(ListStyle);
     // Update hover and click IDs
     this.hoverId = this.hoverInteraction?.selectedFids[0];
     this.clickId = this.clickInteraction?.selectedFids[0];
@@ -134,6 +139,8 @@ export class EOxDrawToolsList extends LitElement {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
+        ${!this.unstyled && ListStyle}
+        ${!this.unstyled && MainStyle}
       </style>
       <ul>
         ${this.drawnFeatures.map((feature, i) => {
@@ -155,6 +162,8 @@ export class EOxDrawToolsList extends LitElement {
                 @mouseover=${() => this._handleHoverFeature(featureId)}
                 @mouseout=${() => this._handleHoverFeature(featureId, true)}
               >
+                <h1 class="text-red-400">Hello World</h1>
+                <button class="eox-btn">ssss</button>
                 <div
                   class="list"
                   @click="${() =>

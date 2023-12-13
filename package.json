@@ -32,12 +32,18 @@
     "@storybook/theming": "^7.4.6",
     "@storybook/web-components": "^7.4.6",
     "@storybook/web-components-vite": "^7.4.6",
+    "autoprefixer": "^10.4.16",
     "concurrently": "^8.2.1",
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^13.3.0",
     "cypress-lit": "^0.0.8",
+    "minify-css-string": "^1.0.0",
+    "postcss": "^8.4.32",
     "rimraf": "^5.0.1",
-    "storybook": "^7.4.6"
+    "sass": "^1.69.5",
+    "storybook": "^7.4.6",
+    "tailwindcss": "^3.3.6",
+    "yargs": "^17.7.2"
   },
   "engines": {
     "node": ">=20.9.0"

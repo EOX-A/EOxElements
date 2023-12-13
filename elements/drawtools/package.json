@@ -21,6 +21,7 @@
   ],
   "main": "./dist/eox-drawtools.js",
   "scripts": {
+    "build-style": "node ../../tasks/build-styles.js drawtools",
     "build": "vite build",
     "watch": "vite build --watch",
     "format": "prettier --write .",

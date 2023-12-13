@@ -1,6 +1,8 @@
 import { LitElement, html, nothing } from "lit";
 import { styleEOX } from "../style.eox";
 import { updateButtonStatesMethod } from "../methods/controller";
+import ListStyle from "./list.style";
+import MainStyle from "../main.style";
 
 /**
  * Controller component for drawing features
@@ -76,6 +78,8 @@ export class EOxDrawToolsController extends LitElement {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
+        ${!this.unstyled && ListStyle}
+        ${!this.unstyled && MainStyle}
       </style>
       <div>
         <slot></slot>
@@ -83,7 +87,7 @@ export class EOxDrawToolsController extends LitElement {
         <!-- Draw Button -->
         <button
           data-cy="drawBtn"
-          class="polygon icon"
+          class="polygon icon text-blue-300"
           ?disabled="${this.#drawDisabled || nothing}"
           @click="${() => this.drawFunc.start()}"
         >
