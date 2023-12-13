@@ -163,7 +163,7 @@ export class EOxMap extends LitElement {
     const id = json.properties?.id;
 
     // if id is undefined, never try to update an existing layer, always create a new one instead.
-    const existingLayer = id && getLayerById(this, id);
+    const existingLayer = id ? getLayerById(this, id) : false;
     let layer;
     if (existingLayer) {
       updateLayer(this, json, existingLayer);

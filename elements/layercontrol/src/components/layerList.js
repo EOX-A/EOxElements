@@ -171,6 +171,7 @@ export class EOxLayerControlLayerList extends LitElement {
   #styleEOX = `
     ul {
       padding: 0;
+      margin: 0;
     }
     ul ul {
       padding-left: 48px;
