@@ -237,7 +237,6 @@ export class EOxLayerControlAddLayers extends LitElement {
   }
 
   #styleBasic = ``;
-
   #styleEOX = `
     .eox-add {
       background: #f0f2f5;
