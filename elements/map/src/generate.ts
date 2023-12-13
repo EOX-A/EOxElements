@@ -90,21 +90,6 @@ const basicOlSources = {
   XYZ,
 };
 
-const availableFormats = {
-  ...basicOlFormats,
-  ...window.eoxMapAdvancedOlFormats,
-};
-
-const availableLayers = {
-  ...basicOlLayers,
-  ...window.eoxMapAdvancedOlLayers,
-};
-
-const availableSources = {
-  ...basicOlSources,
-  ...window.eoxMapAdvancedOlSources,
-};
-
 export type EOxInteraction = {
   type: "draw" | "select";
   options: DrawOptions | SelectOptions;
@@ -141,6 +126,21 @@ export function createLayer(
   createInteractions: boolean = true
 ): Layer {
   layer = JSON.parse(JSON.stringify(layer));
+
+  const availableFormats = {
+    ...basicOlFormats,
+    ...window.eoxMapAdvancedOlFormats,
+  };
+
+  const availableLayers = {
+    ...basicOlLayers,
+    ...window.eoxMapAdvancedOlLayers,
+  };
+
+  const availableSources = {
+    ...basicOlSources,
+    ...window.eoxMapAdvancedOlSources,
+  };
 
   const newLayer = availableLayers[layer.type];
   const newSource = availableSources[layer.source?.type];
