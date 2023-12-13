@@ -276,7 +276,7 @@ describe("LayerControl", () => {
           cy.get(".add-layer-icon").first().click();
           cy.get(".search-list")
             .first()
-            .invoke("text") // Get the text content of the element
+            .invoke("text")
             .then((text) => {
               mapTile = text.trim();
             });

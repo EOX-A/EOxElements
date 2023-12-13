@@ -285,7 +285,7 @@ export function getStartVals(layer, layerConfig) {
 export function isLayerJSONValid(str) {
   try {
     // Parsing the jsonInput to test if it's a valid JSON
-    JSON.parse(str);
+    JSON.parse(cleanJSONInput(str));
 
     // Returning true if 'jsonInput' is not empty
     return !!str;
@@ -297,15 +297,28 @@ export function isLayerJSONValid(str) {
 
 /**
  * Handles changes in the input field, parsing entered data into JSON format.
- * Cleans up the input string to ensure valid JSON format and triggers an update.
  *
- * @param {Event} evt - The input change event.
+ * @param {{target: { value: string }}} evt - The input change event.
  * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
  */
 export function handleJsonInputChangeMethod(evt, EoxLayerControlAddLayers) {
+  // Update the stored layers input with the cleaned JSON data
+  EoxLayerControlAddLayers.jsonInput = evt.target.value;
+
+  // Request a UI update to reflect changes
+  EoxLayerControlAddLayers.requestUpdate();
+}
+
+/**
+ * Cleans up the input string to ensure valid JSON format and triggers an update.
+ *
+ * @param {string} json - JSON Input string
+ * @return {string}
+ */
+export function cleanJSONInput(json) {
   // Extracts the value entered in the input field
   // @ts-ignore
-  const inputValue = evt.target.value;
+  const inputValue = json;
 
   // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
   const replacedQuotes = inputValue.replace(
@@ -323,11 +336,7 @@ export function handleJsonInputChangeMethod(evt, EoxLayerControlAddLayers) {
     .replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1")
     .replaceAll(`": //`, `://`);
 
-  // Update the stored layers input with the cleaned JSON data
-  EoxLayerControlAddLayers.jsonInput = cleanedInput;
-
-  // Request a UI update to reflect changes
-  EoxLayerControlAddLayers.requestUpdate();
+  return cleanedInput;
 }
 
 /**
@@ -341,7 +350,9 @@ export function handleAddLayerMethod(EoxLayerControlAddLayers) {
   /**
    * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
    **/
-  const layers = JSON.parse(`{"data":${EoxLayerControlAddLayers.jsonInput}}`);
+  const layers = JSON.parse(
+    `{"data":${cleanJSONInput(EoxLayerControlAddLayers.jsonInput)}}`
+  );
   // Check if the parsed data is an array
   if (Array.isArray(layers.data)) {
     // Iterate over each layer in the array and add/update it in the map
