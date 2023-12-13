@@ -272,6 +272,7 @@ export class EOxMap extends LitElement {
 
   /**
    * Gets an OpenLayers-Layer by its "id"
+   * @param id id of the layer
    */
   getLayerById = (layerId: string) => {
     return getLayerById(this, layerId);
@@ -331,8 +332,11 @@ export class EOxMap extends LitElement {
     this.map.setTarget(this.renderRoot.querySelector("div"));
 
     this.map.on("loadend", () => {
-      const loadEvt = new CustomEvent("loadend", { detail: { foo: "bar" } });
-      this.dispatchEvent(loadEvt);
+      /**
+       * OpenLayers map has finished loading, passes the map instance as detail.
+       * For all other native events, attach an event listener to the map instance directly
+       */
+      this.dispatchEvent(new CustomEvent("loadend", { detail: this.map }));
     });
   }
 
