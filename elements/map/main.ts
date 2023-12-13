@@ -67,9 +67,6 @@ export class EOxMap extends LitElement {
   @property({ attribute: false, type: Array })
   center: Array<number> = [0, 0];
 
-  /**
-   * Map controls
-   */
   private _controls: controlDictionary;
 
   set controls(controls: controlDictionary) {
@@ -97,12 +94,20 @@ export class EOxMap extends LitElement {
     this._controls = newControls;
   }
 
+  /**
+   * Map controls, in JSON format
+   */
   get controls() {
     return this._controls;
   }
 
   private _layers: Array<EoxLayer>;
 
+  /**
+   * The map layers, in eox-map JSON format!
+   * @type {Array<EoxLayer>}
+   */
+  @property({ attribute: false, type: Array })
   set layers(layers: Array<EoxLayer>) {
     const oldLayers = this._layers;
     const newLayers = JSON.parse(
@@ -142,7 +147,6 @@ export class EOxMap extends LitElement {
     this._layers = newLayers;
   }
 
-  @property({ type: Array })
   get layers() {
     return this._layers;
   }
@@ -193,25 +197,25 @@ export class EOxMap extends LitElement {
   });
 
   /**
-   * dictionary of ol interactions associated with the map.
+   * Dictionary of ol interactions associated with the map.
    */
   @state()
   interactions: { [index: string]: Draw | Modify } = {};
 
   /**
-   * dictionary of select interactions.
+   * Dictionary of select interactions.
    */
   @state()
   selectInteractions: { [index: string]: EOxSelectInteraction } = {};
 
   /**
-   * dictionary of ol controls associated with the map.
+   * Dictionary of ol controls associated with the map.
    */
   @state()
   mapControls: { [index: string]: Control } = {};
 
   /**
-   * creates or updates an existing layer
+   * Creates or updates an existing layer
    * will update an layer if the ID already exists
    * @param json EoxLayer JSON definition
    * @returns the created or updated ol layer
@@ -236,7 +240,7 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * removes a given ol-interaction from the map. Layer have to be removed seperately
+   * Removes a given ol-interaction from the map. Layer have to be removed seperately
    * @param id id of the interaction
    */
   removeInteraction = (id: string | number) => {
@@ -249,7 +253,7 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * removes a given EOxSelectInteraction from the map.
+   * Removes a given EOxSelectInteraction from the map.
    * @param id id of the interaction
    */
   removeSelect = (id: string) => {
@@ -258,7 +262,7 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * removes a given control from the map.
+   * Removes a given control from the map.
    * @param id id of the control element
    */
   removeControl = (id: string) => {
@@ -267,12 +271,17 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * gets an OpenLayers-Layer by its "id"
+   * Gets an OpenLayers-Layer by its "id"
+   * @param id id of the layer
    */
   getLayerById = (layerId: string) => {
     return getLayerById(this, layerId);
   };
 
+  /**
+   * Gets all map layers (including groups and nested layers)
+   * as flat array
+   */
   getFlatLayersArray = getFlatLayersArray;
 
   render() {
@@ -323,8 +332,11 @@ export class EOxMap extends LitElement {
     this.map.setTarget(this.renderRoot.querySelector("div"));
 
     this.map.on("loadend", () => {
-      const loadEvt = new CustomEvent("loadend", { detail: { foo: "bar" } });
-      this.dispatchEvent(loadEvt);
+      /**
+       * OpenLayers map has finished loading, passes the map instance as detail.
+       * For all other native events, attach an event listener to the map instance directly
+       */
+      this.dispatchEvent(new CustomEvent("loadend", { detail: this.map }));
     });
   }
 
