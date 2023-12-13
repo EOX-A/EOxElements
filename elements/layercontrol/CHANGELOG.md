@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.4...layercontrol-v0.12.0) (2023-12-13)
+
+
+### Features
+
+* External WMS/XYZ layer adding ([#502](https://github.com/EOX-A/EOxElements/issues/502)) ([9b9e005](https://github.com/EOX-A/EOxElements/commit/9b9e0050355276bb3c5450ae0d3a23bfcbafd7ed))
+
 ## [0.11.4](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.3...layercontrol-v0.11.4) (2023-12-07)
 
 
