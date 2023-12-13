@@ -1,4 +1,5 @@
 import { html } from "lit";
+import "../map/src/plugins/advancedLayersAndSources/index";
 import "../map/main";
 import "./src/main";
 
