@@ -26,6 +26,39 @@ type ConfigObject = {
     zoom: number;
   };
 };
+
+/**
+ * The `eox-map` is a wrapper for the library [OpenLayers](https://openlayers.org/) with additional features and helper functions.
+ *
+ * Basic usage:
+ *
+ * ```
+ * import "@eox/map"
+ *
+ * <eox-map [...]></eox-map>
+ * ```
+ *
+ * Some basic layers, sources and formats are included in the default bundle, for advanced usage it is
+ * required to import the `advanced-layers-and-sources` plugin.
+ *
+ * Included in the base bundle:
+ * - Formats: `GeoJSON`, `MVT`
+ * - Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`
+ * - Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`
+ *
+ * In order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:
+ *
+ * ```
+ * import "@eox/map/dist/eox-map-advanced-layers-and-sources.js"
+ * import "@eox/map/dist/eox-map.js"
+ *
+ * <eox-map [...]></eox-map>
+ * ```
+ * Included in the advanced plugin bundle:
+ * - Layers: All OpenLayers layer types, plus [STAC](https://github.com/m-mohr/ol-stac)
+ * - Sources: All OpenLayers source types
+ * - Reprojection through [proj4](https://github.com/proj4js/proj4js)
+ */
 @customElement("eox-map")
 export class EOxMap extends LitElement {
   /**
@@ -190,7 +223,7 @@ export class EOxMap extends LitElement {
     const id = json.properties?.id;
 
     // if id is undefined, never try to update an existing layer, always create a new one instead.
-    const existingLayer = id && getLayerById(this, id);
+    const existingLayer = id ? getLayerById(this, id) : false;
     let layer;
     if (existingLayer) {
       updateLayer(this, json, existingLayer);

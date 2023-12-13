@@ -1,4 +1,5 @@
 import { html } from "lit";
+import "../map/src/plugins/advancedLayersAndSources/index";
 import "../map/main";
 import "./src/main";
 
@@ -608,6 +609,30 @@ export const Tabs = {
       .actions=${["delete"]}
       .tabs=${["info", "opacity", "config"]}
     ></eox-layercontrol-tabs>
+  `,
+};
+
+/**
+ * Defining the configuration for adding an external layer like WMS/XYZ or import JSON.
+ */
+export const AddExternalLayer = {
+  args: {
+    idProperty: "id",
+    titleProperty: "title",
+    unstyled: false,
+    addExternalLayers: true,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .idProperty=${args.idProperty}
+        .titleProperty=${args.titleProperty}
+        .unstyled=${args.unstyled}
+        .addExternalLayers=${args.addExternalLayers}
+        for="eox-map"
+      ></eox-layercontrol>
+      ${map}
+    </div>
   `,
 };
 

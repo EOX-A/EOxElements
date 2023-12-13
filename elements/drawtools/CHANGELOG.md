@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.6.0...drawtools-v0.6.1) (2023-12-13)
+
+
+### Bug Fixes
+
+* Remove interaction check ([#518](https://github.com/EOX-A/EOxElements/issues/518)) ([807ed01](https://github.com/EOX-A/EOxElements/commit/807ed010fdf248d6cab30952fc42df664a39d3b9))
+
 ## [0.6.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.5.0...drawtools-v0.6.0) (2023-11-27)
 
 
