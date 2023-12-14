@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/map-v0.11.0...map-v1.0.0) (2023-12-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* extract advanced layers & sources into separate bundle ([#515](https://github.com/EOX-A/EOxElements/issues/515))
+
+### Features
+
+* External WMS/XYZ layer adding ([#502](https://github.com/EOX-A/EOxElements/issues/502)) ([9b9e005](https://github.com/EOX-A/EOxElements/commit/9b9e0050355276bb3c5450ae0d3a23bfcbafd7ed))
+* Extract advanced layers & sources into separate bundle ([#515](https://github.com/EOX-A/EOxElements/issues/515)) ([2ad7893](https://github.com/EOX-A/EOxElements/commit/2ad7893e2d914d775095d8799e0a821b619a9cc9))
+* Introduce config object ([#516](https://github.com/EOX-A/EOxElements/issues/516)) ([394b6ea](https://github.com/EOX-A/EOxElements/commit/394b6eac5439e324f6b4a491a5c95915b741e25f))
+
+
+### Bug Fixes
+
+* Add missing zIndex sync ([#513](https://github.com/EOX-A/EOxElements/issues/513)) ([5052ed8](https://github.com/EOX-A/EOxElements/commit/5052ed8d5419ce307ab192909dbd4d5a9726cf8c))
+
+
+### Miscellaneous Chores
+
+* Update readme ([8226f97](https://github.com/EOX-A/EOxElements/commit/8226f9781bc3dc969b71358c453866b96f5f2842))
+
 ## [0.11.0](https://github.com/EOX-A/EOxElements/compare/map-v0.10.0...map-v0.11.0) (2023-12-07)
 
 
