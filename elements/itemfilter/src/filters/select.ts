@@ -34,14 +34,12 @@ export class EOxItemFilterSelect extends LitElement {
   }
 
   _getItems(): Item[] {
+    const sortCallback =
+      "sort" in this.filterObject
+        ? this.filterObject.sort
+        : (a: string, b: string) => a.localeCompare(b);
     return Object.keys(this.filterObject.state)
-      .sort((a, b) => {
-        if ("sort" in this.filterObject) {
-          return this.filterObject.sort(a, b);
-        } else {
-          return a.localeCompare(b);
-        }
-      })
+      .sort(sortCallback)
       .map((i) => ({
         id: i,
         title: i.replace(/^./, i[0].toUpperCase()),
