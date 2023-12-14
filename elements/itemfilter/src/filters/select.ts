@@ -77,7 +77,7 @@ export class EOxItemFilterSelect extends LitElement {
       this.filterObject,
       () => html`
         ${when(
-          this.inline || (Object.keys(this.filterObject.state).length > 10),
+          this.inline || Object.keys(this.filterObject.state).length > 10,
           () => html`
             <eox-autocomplete
               .items=${this._getItems()}
