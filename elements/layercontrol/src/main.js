@@ -4,6 +4,11 @@ import "./components/layerList";
 import "./components/optionalList";
 import "./components/addLayers";
 import { filterLayers } from "./helpers";
+import {
+  firstUpdatedMethod,
+  layerListChangeMethod,
+  updateMethod,
+} from "./methods/layercontrol";
 
 /**
  * Display layers and groups of a connected OpenLayers map
@@ -107,37 +112,45 @@ export class EOxLayerControl extends LitElement {
   }
 
   updated() {
-    /**
-     * @type Element & { map: import("ol").Map }
-     */
-    const foundElement = document.querySelector(this.for);
-    if (foundElement && foundElement?.map !== this.map) {
-      this.map = foundElement.map;
-    }
+    updateMethod(this);
   }
 
   firstUpdated() {
-    const mapQuery = document.querySelector(this.for);
-    this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
+    this.#eoxMap = firstUpdatedMethod(this);
+  }
+
+  /**
+   * @param {CustomEvent & {target: Element}} evt
+   */
+  #handleLayerControlLayerListChange(evt) {
+    layerListChangeMethod(evt, this);
   }
 
   render() {
+    const layerControlOptionalCondition =
+      this.map &&
+      filterLayers(
+        // @ts-ignore
+        this.map.getLayers().getArray(),
+        "layerControlOptional",
+        true
+      )?.length > 0;
+
     return html`
       <style>
-        ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
         ${this.styleOverride}
       </style>
-      ${this.addExternalLayers
-        ? when(
-            this.#eoxMap?.addOrUpdateLayer,
-            () => html`<eox-layercontrol-add-layers
-              .noShadow=${true}
-              .eoxMap=${this.#eoxMap}
-              .unstyled=${this.unstyled}
-            ></eox-layercontrol-add-layers>`
-          )
-        : nothing}
+      ${when(
+        this.addExternalLayers && this.#eoxMap?.addOrUpdateLayer,
+        () => html`
+          <eox-layercontrol-add-layers
+            .noShadow=${true}
+            .eoxMap=${this.#eoxMap}
+            .unstyled=${this.unstyled}
+          ></eox-layercontrol-add-layers>
+        `
+      )}
       ${when(
         this.map,
         () => html`
@@ -151,34 +164,12 @@ export class EOxLayerControl extends LitElement {
             .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
-            @changed=${
-              /**
-               * @param {CustomEvent & {target: Element}} e
-               */
-              (e) => {
-                this.requestUpdate();
-                if (e.target.tagName === "EOX-LAYERCONTROL-LAYER-TOOLS") {
-                  /**
-                   * @type Element & { requestUpdate: function }
-                   */
-                  const optionalListEl = this.renderRoot.querySelector(
-                    "eox-layercontrol-optional-list"
-                  );
-                  optionalListEl?.requestUpdate();
-                }
-              }
-            }
+            @changed=${this.#handleLayerControlLayerListChange}
           ></eox-layercontrol-layer-list>
         `
       )}
       ${when(
-        this.map &&
-          filterLayers(
-            // @ts-ignore
-            this.map.getLayers().getArray(),
-            "layerControlOptional",
-            true
-          )?.length > 0,
+        layerControlOptionalCondition,
         () => html`
           <eox-layercontrol-optional-list
             .noShadow=${true}
@@ -191,8 +182,6 @@ export class EOxLayerControl extends LitElement {
       )}
     `;
   }
-
-  #styleBasic = ``;
 
   #styleEOX = `
     * {

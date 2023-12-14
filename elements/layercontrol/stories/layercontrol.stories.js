@@ -1,7 +1,7 @@
 import { html } from "lit";
-import "../map/src/plugins/advancedLayersAndSources/index";
-import "../map/main";
-import "./src/main";
+import "@eox/map/src/plugins/advancedLayersAndSources";
+import "@eox/map/main";
+import "../src/main";
 
 const map = html` <eox-map
   style="width: 400px; height: 300px; margin-left: 7px;"
