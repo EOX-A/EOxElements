@@ -1,4 +1,4 @@
-# Map element
+# eox-map
 
 ## Examples
 
