@@ -8,7 +8,7 @@ import "../selectionlist";
 @customElement("eox-itemfilter-select")
 export class EOxItemFilterSelect extends LitElement {
   @property()
-  filterObject: FilterObject;
+  filterObject: SelectFilterObject;
 
   @property({ type: Boolean })
   inline = false;
@@ -33,9 +33,15 @@ export class EOxItemFilterSelect extends LitElement {
     return this;
   }
 
-  _getItems(): FilterObject[] {
+  _getItems(): Item[] {
     return Object.keys(this.filterObject.state)
-      .sort((a, b) => a.localeCompare(b))
+      .sort((a, b) => {
+        if ("sort" in this.filterObject) {
+          return this.filterObject.sort(a, b);
+        } else {
+          return a.localeCompare(b);
+        }
+      })
       .map((i) => ({
         id: i,
         title: i.replace(/^./, i[0].toUpperCase()),
