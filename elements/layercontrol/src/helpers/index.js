@@ -1,5 +1,9 @@
 import Sortable from "sortablejs";
-import WMSCapabilities from "wms-capabilities";
+export { default as fetchCapabilities } from "./fetch-capabilities";
+export { default as detectMapURLType } from "./detect-map-url-type";
+export { default as isMapUrlValid } from "./is-map-url-valid";
+export { default as cleanJSONInput } from "./clean-json-input";
+export { default as isLayerJSONValid } from "./is-layer-json-valid";
 
 /**
  *
@@ -211,7 +215,6 @@ export const isLayerVisibleBasedOnZoomState = (
  * Update layer's URL using input values
  * @param {String} url
  * @param {Object} values
- * @param {import("ol/layer").Layer | false} layer
  */
 export function updateUrl(url, values) {
   const searchParams = new URL(url).searchParams;
@@ -275,125 +278,4 @@ export function getStartVals(layer, layerConfig) {
   );
 
   return Object.keys(startVals).length ? startVals : null;
-}
-
-/**
- * Checks if the stored 'jsonInput' is a valid JSON string.
- * @param {string} str
- * @returns {boolean} - Returns true if the 'jsonInput' is a valid JSON, otherwise false.
- */
-export function isLayerJSONValid(str) {
-  try {
-    // Parsing the jsonInput to test if it's a valid JSON
-    JSON.parse(cleanJSONInput(str));
-
-    // Returning true if 'jsonInput' is not empty
-    return !!str;
-  } catch (error) {
-    // Returning false if there's an error parsing or if 'jsonInput' is empty
-    return false;
-  }
-}
-
-/**
- * Cleans up the input string to ensure valid JSON format and triggers an update.
- *
- * @param {string} json - JSON Input string
- * @return {string}
- */
-export function cleanJSONInput(json) {
-  // Extracts the value entered in the input field
-  // @ts-ignore
-  const inputValue = json;
-
-  // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
-  const replacedQuotes = inputValue.replace(
-    /(['"])?([a-zA-Z0-9_]+)(['"])?:/g,
-    '"$2": '
-  );
-
-  // Remove trailing commas before closing braces and brackets
-  const removedCommas = replacedQuotes
-    .replace(/,\s*}/g, "}")
-    .replace(/,\s*]/g, "]");
-
-  // Remove extra spaces around braces, brackets, and commas for cleaner JSON
-  const cleanedInput = removedCommas
-    .replace(/\s*(\{|}|\[|\]|,)\s*/g, "$1")
-    .replaceAll(`": //`, `://`);
-
-  return cleanedInput;
-}
-
-/**
- * Checks if the given URL is a valid map URL based on specified criteria.
- *
- * @param {string} url - The URL to validate.
- * @returns {boolean} - Indicates whether the URL is a valid map URL.
- */
-export function isMapUrlValid(url) {
-  // Regular expression pattern to match URLs with localhost, domain, and IP addresses
-  const urlRegex =
-    /^(?:(?:https?|ftp):\/\/|\/\/)?(?:localhost|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|(?:\w+[\w-]*\.)+\w+)(?::\d+)?(?:\/\S*)?$/;
-
-  // Check if the URL matches the defined pattern
-  const urlMatchesPattern = urlRegex.test(url);
-
-  // Detect the type of map URL using the provided function
-  const mapUrlType = detectMapURLType(url);
-
-  // Return true if the URL is not empty and matches the pattern and has a valid map URL type, otherwise false
-  return !!(url && urlMatchesPattern && mapUrlType);
-}
-
-/**
- * Detects the type of map URL based on WMS and XYZ patterns.
- *
- * @param {string} url - The URL to analyze.
- * @returns {"TileWMS" | false | "XYZ"} - The detected map URL type, or false if not recognized.
- */
-export function detectMapURLType(url) {
-  // Regular expressions to match WMS and XYZ patterns
-  const wmsPattern = /\b(?:wms|ows)\b/i;
-  const xyzPattern = /{(?:z|x|y-?)}\/{(?:z|x|y-?)}\/{(?:z|x|y-?)}/i;
-
-  // Check if the URL matches the WMS pattern
-  if (wmsPattern.test(url)) return "TileWMS";
-
-  // Check if the URL matches the XYZ pattern
-  if (xyzPattern.test(url)) return "XYZ";
-
-  // Neither WMS nor XYZ pattern matched
-  return false;
-}
-
-/**
- * Fetches WMS capabilities data from the provided original URL.
- * It constructs a new URL with additional parameters, makes a fetch request,
- * and returns the WMS capabilities in JSON format.
- *
- * @param {string} originalURL - The original URL to fetch capabilities from.
- * @returns {Promise<import("wms-capabilities").WMSCapabilitiesJSON>} - A Promise resolving to the fetched WMS capabilities in JSON format.
- */
-export async function fetchCapabilities(originalURL) {
-  // Create a URL object from the original URL string
-  let url = new URL(originalURL);
-  let params = url.searchParams;
-
-  // Update or add multiple parameters for WMS capabilities
-  params.set("SERVICE", "WMS");
-  params.set("REQUEST", "GetCapabilities"); // Change or add a new parameter
-
-  // Generate the updated URL string
-  let updatedURL = url.toString();
-
-  // Fetch the updated URL to get capabilities data
-  const response = await fetch(updatedURL);
-  if (!response.ok) throw new Error(`Error: ${response.status}`);
-  else {
-    const capabilitiesText = await response.text();
-
-    // Convert the WMS capabilities data to JSON format
-    return new WMSCapabilities(capabilitiesText).toJSON();
-  }
 }
