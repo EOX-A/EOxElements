@@ -6,6 +6,13 @@ describe("Item Filter Config", () => {
     agriculture: true,
     health: true,
   };
+  const customOrder = {
+    health: 0,
+    water: 1,
+    air: 2,
+    economy: 3,
+    agriculture: 4,
+  } as { [key: string]: number };
   const selectedResultIndex = 1;
   beforeEach(() => {
     cy.mount(`<eox-itemfilter></eox-itemfilter>`)
@@ -19,6 +26,7 @@ describe("Item Filter Config", () => {
               key: "themes",
               type: "multiselect",
               expanded: true,
+              sort: (a, b) => customOrder[a] - customOrder[b],
               // @ts-ignore
               state,
             },
@@ -71,6 +79,23 @@ describe("Item Filter Config", () => {
           .eq(selectedResultIndex)
           .should("be.checked");
         cy.get("input[data-cy=result-radio][checked]").should("have.length", 1);
+      });
+  });
+
+  it("should have a custom order", () => {
+    cy.get("eox-itemfilter")
+      .shadow()
+      .within(() => {
+        cy.get("eox-itemfilter-multiselect > eox-selectionlist")
+          .shadow()
+          .within(() => {
+            Object.keys(customOrder).forEach((state) => {
+              cy.get("ul [data-identifier]")
+                .eq(customOrder[state])
+                .invoke("attr", "data-identifier")
+                .should("eq", state);
+            });
+          });
       });
   });
 });

@@ -97,6 +97,25 @@ export const MultiSelect = {
   },
 };
 
+export const SortedMultiSelect = {
+  args: {
+    titleProperty: "title",
+    filterProperties: [
+      {
+        key: "themes",
+        title: "Theme",
+        type: "multiselect",
+        expanded: true,
+        sort: (a, b) => b.localeCompare(a),
+        state: {
+          air: true,
+          agriculture: true,
+        },
+      },
+    ],
+  },
+};
+
 export const InlineMode = {
   args: {
     inlineMode: true,

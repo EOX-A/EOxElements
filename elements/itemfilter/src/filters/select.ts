@@ -8,7 +8,7 @@ import "../selectionlist";
 @customElement("eox-itemfilter-select")
 export class EOxItemFilterSelect extends LitElement {
   @property()
-  filterObject: SelectFilterObject;
+  filterObject: FilterObject;
 
   @property({ type: Boolean })
   inline = false;

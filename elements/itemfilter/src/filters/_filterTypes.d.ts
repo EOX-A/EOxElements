@@ -13,11 +13,3 @@ declare type TextFilterObject = FilterObject & {
   key?: string;
   keys: Array<string>;
 };
-
-declare type SelectFilterObject = FilterObject & {
-  sort?: (a: keyof FilterState, b: keyof FilterState) => number;
-};
-
-declare type MultiSelectFilterObject = FilterObject & {
-  sort?: (a: keyof FilterState, b: keyof FilterState) => number;
-};
