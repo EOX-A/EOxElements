@@ -1,6 +1,8 @@
 import { LitElement, html } from "lit";
 import "../../../jsonform/src/main";
-import { getStartVals, updateUrl } from "../helpers";
+import { getStartVals } from "../helpers";
+import { dataChangeMethod } from "../methods/layer-config";
+import { when } from "lit/directives/when.js";
 
 /**
  * Layer configuration for an individual layer
@@ -66,23 +68,11 @@ export class EOxLayerControlLayerConfig extends LitElement {
    */
   #handleDataChange(e) {
     this.#data = e.detail;
-
-    if (this.layer.getSource().getTileUrlFunction()) {
-      if (!this.#originalTileUrlFunction)
-        this.#originalTileUrlFunction = this.layer
-          .getSource()
-          .getTileUrlFunction();
-
-      this.layer
-        .getSource()
-        .setTileUrlFunction((...args) =>
-          updateUrl(this.#originalTileUrlFunction(...args), this.#data)
-        );
-
-      // TODO dont be accessing protected methods!
-      this.layer.getSource().setKey(new Date());
-    }
-
+    this.#originalTileUrlFunction = dataChangeMethod(
+      this.#data,
+      this.#originalTileUrlFunction,
+      this
+    );
     this.requestUpdate();
   }
 
@@ -91,29 +81,33 @@ export class EOxLayerControlLayerConfig extends LitElement {
   }
 
   render() {
-    if (!this.layerConfig) return ``;
     this.#startVals = getStartVals(this.layer, this.layerConfig);
+    const options = {
+      disable_edit_json: true,
+      disable_collapse: true,
+      disable_properties: true,
+    };
 
     return html`
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <eox-jsonform
-        .schema=${this.layerConfig.schema}
-        .startVals=${this.#startVals}
-        .options=${{
-          disable_edit_json: true,
-          disable_collapse: true,
-          disable_properties: true,
-        }}
-        @change=${this.#handleDataChange}
-      ></eox-jsonform>
+      ${when(
+        this.layerConfig,
+        () => html`
+          <eox-jsonform
+            .schema=${this.layerConfig.schema}
+            .startVals=${this.#startVals}
+            .options=${options}
+            @change=${this.#handleDataChange}
+          ></eox-jsonform>
+        `
+      )}
     `;
   }
 
   #styleBasic = ``;
-
   #styleEOX = ``;
 }
 

@@ -4,6 +4,8 @@ export { default as detectMapURLType } from "./detect-map-url-type";
 export { default as isMapUrlValid } from "./is-map-url-valid";
 export { default as cleanJSONInput } from "./clean-json-input";
 export { default as isLayerJSONValid } from "./is-layer-json-valid";
+export { default as updateUrl } from "./update-url";
+export { getNestedStartVals, getStartVals } from "./get-start-vals";
 
 /**
  *
@@ -210,72 +212,3 @@ export const isLayerVisibleBasedOnZoomState = (
 
   return zoom > minZoom && zoom < maxZoom ? true : false;
 };
-
-/**
- * Update layer's URL using input values
- * @param {String} url
- * @param {Object} values
- */
-export function updateUrl(url, values) {
-  const searchParams = new URL(url).searchParams;
-
-  Object.entries(values).forEach(([key, value]) => {
-    if (typeof value === "object" && !Array.isArray(value) && value !== null) {
-      Object.keys(value).forEach((k) => {
-        searchParams.set(k, value[k]);
-      });
-    } else searchParams.set(key, value);
-  });
-
-  const urlWithPath = url.split("?")[0];
-  const searchParamsStr = searchParams.toString();
-  const newUrl = `${urlWithPath}?${searchParamsStr}`;
-
-  return newUrl;
-}
-
-/**
- * Recursive function to retrieve startVal inside schema
- *
- * @param {{[key: string]: any}} schema
- * @param {{[key: string]: any}} queryParams
- */
-export function getNestedStartVals(schema, queryParams) {
-  let startVals = {};
-
-  for (const key in schema) {
-    const type = schema[key].type;
-    if (type && type !== "object") {
-      startVals[key] =
-        type === "number" ? Number(queryParams[key]) : queryParams[key];
-    } else if (typeof schema[key] === "object" && schema[key]?.properties) {
-      const nestedStartVals = getNestedStartVals(
-        schema[key].properties,
-        queryParams
-      );
-      if (Object.keys(nestedStartVals).length > 0) {
-        startVals[key] = nestedStartVals;
-      }
-    }
-  }
-  return startVals;
-}
-
-/**
- * Get startVals from Query Params
- *
- * @param {import("ol/layer").Layer} layer
- * @param {{[key: string]: any}} layerConfig
- */
-export function getStartVals(layer, layerConfig) {
-  if (!layer.getSource().getTileUrlFunction()) return null;
-
-  const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
-  const queryParams = Object.fromEntries(url.searchParams.entries());
-  const startVals = getNestedStartVals(
-    layerConfig.schema?.properties || layerConfig.schema,
-    queryParams
-  );
-
-  return Object.keys(startVals).length ? startVals : null;
-}
