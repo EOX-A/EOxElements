@@ -296,20 +296,6 @@ export function isLayerJSONValid(str) {
 }
 
 /**
- * Handles changes in the input field, parsing entered data into JSON format.
- *
- * @param {{target: { value: string }}} evt - The input change event.
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
- */
-export function handleJsonInputChangeMethod(evt, EoxLayerControlAddLayers) {
-  // Update the stored layers input with the cleaned JSON data
-  EoxLayerControlAddLayers.jsonInput = evt.target.value;
-
-  // Request a UI update to reflect changes
-  EoxLayerControlAddLayers.requestUpdate();
-}
-
-/**
  * Cleans up the input string to ensure valid JSON format and triggers an update.
  *
  * @param {string} json - JSON Input string
@@ -337,52 +323,6 @@ export function cleanJSONInput(json) {
     .replaceAll(`": //`, `://`);
 
   return cleanedInput;
-}
-
-/**
- * Handles the addition of one or multiple layers to the map based on the input.
- * Parses the layers input into JSON format and adds or updates the layers accordingly.
- * Supports both single and multiple layer additions.
- *
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
- */
-export function handleAddLayerMethod(EoxLayerControlAddLayers) {
-  /**
-   * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
-   **/
-  const layers = JSON.parse(
-    `{"data":${cleanJSONInput(EoxLayerControlAddLayers.jsonInput)}}`
-  );
-  // Check if the parsed data is an array
-  if (Array.isArray(layers.data)) {
-    // Iterate over each layer in the array and add/update it in the map
-    layers.data.forEach((layer) => {
-      EoxLayerControlAddLayers.eoxMap.addOrUpdateLayer(layer);
-    });
-  } else {
-    // If the parsed data is not an array, directly add/update the layer in the map
-    EoxLayerControlAddLayers.eoxMap.addOrUpdateLayer(layers.data);
-  }
-
-  // Resetting `jsonInput` with null value and re-rendering the component
-  EoxLayerControlAddLayers.jsonInput = null;
-  EoxLayerControlAddLayers.requestUpdate();
-}
-
-/**
- * Handles the change event in the URL input field
- * and updates the stored URL input.
- *
- * @param {Event} evt - The input change event.
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
- */
-export function handleUrlInputChangeMethod(evt, EoxLayerControlAddLayers) {
-  // Update the stored URL input value in the EOxLayerControlAddLayers instance
-  //@ts-ignore
-  EoxLayerControlAddLayers.urlInput = evt.target.value;
-
-  // Request an update in the UI to reflect the changes
-  EoxLayerControlAddLayers.requestUpdate();
 }
 
 /**
@@ -456,101 +396,4 @@ export async function fetchCapabilities(originalURL) {
     // Convert the WMS capabilities data to JSON format
     return new WMSCapabilities(capabilitiesText).toJSON();
   }
-}
-
-/**
- * Handles the URL search process in the EOxLayerControlAddLayers context.
- * It utilizes the provided instance to process the URL input for WMS or XYZ layers.
- *
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
- * @return {Promise<{"Name": string} | false>} - An object with layer information if URL type is XYZ, otherwise false.
- */
-export async function handleWMSSearchURLMethod(EoxLayerControlAddLayers) {
-  // Get the URL input from the EOxLayerControlAddLayers instance
-  const url = EoxLayerControlAddLayers.urlInput;
-
-  // Enable loader for search and reset `wmsCapabilities`
-  EoxLayerControlAddLayers.wmsCapabilities = null;
-  EoxLayerControlAddLayers.searchLoad = true;
-  EoxLayerControlAddLayers.requestUpdate();
-
-  // If URL input is empty, return false
-  if (!url) return false;
-
-  // Check if the URL type is XYZ
-  if (detectMapURLType(url) === "XYZ") {
-    // If the URL type is XYZ, return a layer object with the Name property set to the URL
-    return { Name: url };
-  } else {
-    try {
-      // If the URL type is not XYZ, fetch WMS capabilities data
-      const data = await fetchCapabilities(url);
-
-      // Set the fetched WMS capabilities to the instance and request an update
-      EoxLayerControlAddLayers.wmsCapabilities = data;
-    } catch (error) {
-      // Error when API Fails
-    } finally {
-      // Disable loader for search
-      EoxLayerControlAddLayers.searchLoad = false;
-      EoxLayerControlAddLayers.requestUpdate();
-    }
-
-    // Return false as WMS capabilities are being fetched asynchronously
-    return false;
-  }
-}
-
-/**
- * Handles changes in the input field and prepares EOxLayerControlAddLayers
- * properties based on the provided layer.
- *
- * @param {{"Name": string}} layer - The layer information to handle.
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
- */
-export function handleUrlLayerMethod(layer, EoxLayerControlAddLayers) {
-  // Extract the 'Name' property from the provided layer
-  const { Name: id } = layer;
-
-  // Detect the type of URL (WMS or XYZ) based on the URL input in EoxLayerControlAddLayers
-  const urlType = detectMapURLType(EoxLayerControlAddLayers.urlInput) || "XYZ";
-
-  // Create an EOxJSON layer object
-  const layerEOxJSON = {
-    type: "Tile",
-    properties: {
-      id: id,
-      title: id, // Set the title property to the same as id
-    },
-    source: {
-      type: urlType,
-      url: EoxLayerControlAddLayers.urlInput, // Set the URL from the instance
-      params: {
-        LAYERS: id, // Set the 'LAYERS' parameter to the provided layer 'Name'
-      },
-    },
-  };
-
-  // Convert the layerEOxJSON object to a JSON string and assign it to the jsonInput property
-  EoxLayerControlAddLayers.jsonInput = JSON.stringify(layerEOxJSON);
-}
-
-/**
- * Handles the opening or closing of tabs in the EOxLayerControlAddLayers instance.
- * Updates relevant properties based on the selected tab.
- *
- * @param {string} tab - The tab identifier to open or close.
- * @param {import("./components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
- */
-export function handleOpenCloseTabMethod(tab, EoxLayerControlAddLayers) {
-  // Update the 'open' property of EOxLayerControlAddLayers based on the provided tab
-  EoxLayerControlAddLayers.open = tab || null;
-
-  // Reset input-related properties when closing the tab
-  EoxLayerControlAddLayers.urlInput = null;
-  EoxLayerControlAddLayers.jsonInput = null;
-  EoxLayerControlAddLayers.wmsCapabilities = null;
-
-  // Request an update to reflect changes in the UI
-  EoxLayerControlAddLayers.requestUpdate();
 }
