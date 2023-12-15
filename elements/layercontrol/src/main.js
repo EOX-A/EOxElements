@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import "./components/layerList";
 import "./components/optionalList";
