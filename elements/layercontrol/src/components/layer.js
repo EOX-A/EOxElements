@@ -3,10 +3,7 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layerTools";
 import { checkbox } from "../../../../utils/styles/checkbox";
-import {
-  isLayerVisibleBasedOnZoomState,
-  isLayerZoomStateRequired,
-} from "../helpers";
+import { firstUpdatedMethod, inputClickMethod } from "../methods/layer";
 
 /**
  * A single layer display
@@ -72,34 +69,16 @@ export class EOxLayerControlLayer extends LitElement {
   }
 
   /**
-   * Check and update layer visibility based on zoom level
-   * and only update DOM if visibility gets updated
+   *
+   * @param {string} key
+   * @returns {any}
    */
-  updateLayerZoomVisibility() {
-    const newLayerVisibilityBasedOnZoom = isLayerVisibleBasedOnZoomState(
-      this.layer,
-      this.map,
-      this.showLayerZoomState
-    );
+  #getLayer(key) {
+    return this.layer?.get(key);
+  }
 
-    let visibilityChanged = false;
-
-    // Checking if visibility changed or not and updating `currLayerVisibilityBasedOnZoom`
-    if (!newLayerVisibilityBasedOnZoom && this.currLayerVisibilityBasedOnZoom)
-      (this.currLayerVisibilityBasedOnZoom = false), (visibilityChanged = true);
-    else if (
-      newLayerVisibilityBasedOnZoom &&
-      !this.currLayerVisibilityBasedOnZoom
-    )
-      (this.currLayerVisibilityBasedOnZoom = true), (visibilityChanged = true);
-
-    // if visibilityChanged trigger UI update
-    if (visibilityChanged) {
-      this.requestUpdate();
-      this.dispatchEvent(
-        new CustomEvent("change:resolution", { bubbles: true })
-      );
-    }
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   /**
@@ -107,21 +86,29 @@ export class EOxLayerControlLayer extends LitElement {
    * and register "change:resolution" ones at the beginning if `showLayerZoomState` is present
    */
   firstUpdated() {
-    if (isLayerZoomStateRequired(this.layer, this.showLayerZoomState)) {
-      this.updateLayerZoomVisibility();
-
-      // Initialize change:resolution event ones
-      this.map
-        .getView()
-        .on("change:resolution", () => this.updateLayerZoomVisibility());
-    }
+    firstUpdatedMethod(this);
   }
 
-  createRenderRoot() {
-    return this.noShadow ? this : super.createRenderRoot();
+  /**
+   * @param {{target: { checked: boolean }}} evt - The input change event triggering the method.
+   */
+  #handleInputClick(evt) {
+    inputClickMethod(evt, this);
   }
 
   render() {
+    const visibility = this.layer.getVisible();
+    const visibilityClass = visibility ? "visible" : "";
+    const layerZoomStateClass = !this.currLayerVisibilityBasedOnZoom
+      ? "zoom-state-invisible"
+      : "";
+    const disableClass = this.#getLayer("layerControlDisable")
+      ? "disabled"
+      : "";
+    const inputType = this.#getLayer("layerControlExclusive")
+      ? "radio"
+      : "checkbox";
+
     return html`
       <style>
         ${this.#styleBasic}
@@ -130,52 +117,14 @@ export class EOxLayerControlLayer extends LitElement {
       ${when(
         this.layer,
         () => html`
-          <div
-            class="layer ${this.layer.getVisible() ? "visible" : ""} 
-            ${!this.currLayerVisibilityBasedOnZoom
-              ? "zoom-state-invisible"
-              : ""}"
-          >
-            <label
-              class="${this.layer.get("layerControlDisable") ? "disabled" : ""}"
-            >
+          <div class="layer ${visibilityClass} ${layerZoomStateClass}">
+            <label class="${disableClass}">
               <input
-                type=${this.layer.get("layerControlExclusive")
-                  ? "radio"
-                  : "checkbox"}
-                .checked=${live(this.layer.getVisible())}
-                @click=${(
-                  /** @type {{ target: { checked: boolean; }; }} */ evt
-                ) => {
-                  this.layer.setVisible(evt.target.checked);
-                  if (
-                    evt.target.checked &&
-                    this.layer.get("layerControlExclusive")
-                  ) {
-                    /**
-                     * @type NodeListOf<Element & {layer: any, requestUpdate: function}>
-                     */
-                    const siblings =
-                      this.parentNode.parentNode.querySelectorAll(
-                        "li > eox-layercontrol-layer"
-                      );
-                    siblings.forEach((sibling) => {
-                      if (
-                        sibling.layer !== this.layer &&
-                        sibling.layer?.get("layerControlExclusive")
-                      ) {
-                        sibling.layer.setVisible(false);
-                        sibling.requestUpdate();
-                      }
-                    });
-                  }
-                  this.dispatchEvent(
-                    new CustomEvent("changed", { bubbles: true })
-                  );
-                  this.requestUpdate();
-                }}
+                type=${inputType}
+                .checked=${live(visibility)}
+                @click=${this.#handleInputClick}
               />
-              <span class="title">${this.layer.get(this.titleProperty)}</span>
+              <span class="title">${this.#getLayer(this.titleProperty)}</span>
               ${when(
                 this.tools?.length > 0,
                 () => html`<span class="tools-placeholder"></span>`
