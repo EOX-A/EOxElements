@@ -1,10 +1,16 @@
 /**
+ * Handles the click event on an input element to control layer visibility.
+ *
  * @param {{target: { checked: boolean }}} evt - The input change event triggering the method.
- * @param {import("../../components/layer").EOxLayerControlLayer} EOxLayerControlLayer - Instance of EOxLayerControlLayer
+ * @param {import("../../components/layer").EOxLayerControlLayer} EOxLayerControlLayer - Instance of EOxLayerControlLayer.
  */
-const inputClick = (evt, EOxLayerControlLayer) => {
-  const layer = EOxLayerControlLayer.layer;
+const inputClickMethod = (evt, EOxLayerControlLayer) => {
+  const layer = EOxLayerControlLayer.layer; // The layer instance associated with the control.
+
+  // Set the visibility of the layer based on the input's checked state.
   layer.setVisible(evt.target.checked);
+
+  // Check if the layer is checked and marked as 'layerControlExclusive'.
   if (evt.target.checked && layer.get("layerControlExclusive")) {
     /**
      * @type NodeListOf<Element & {layer: any, requestUpdate: function}>
@@ -13,6 +19,8 @@ const inputClick = (evt, EOxLayerControlLayer) => {
       EOxLayerControlLayer.parentNode.parentNode.querySelectorAll(
         "li > eox-layercontrol-layer"
       );
+
+    // Loop through the sibling layers to handle exclusive visibility.
     siblings.forEach((sibling) => {
       if (
         sibling.layer !== layer &&
@@ -23,10 +31,14 @@ const inputClick = (evt, EOxLayerControlLayer) => {
       }
     });
   }
+
+  // Dispatch a 'changed' event to signal a change in the layer's state.
   EOxLayerControlLayer.dispatchEvent(
     new CustomEvent("changed", { bubbles: true })
   );
+
+  // Request an update for the layer control to reflect the changes.
   EOxLayerControlLayer.requestUpdate();
 };
 
-export default inputClick;
+export default inputClickMethod;

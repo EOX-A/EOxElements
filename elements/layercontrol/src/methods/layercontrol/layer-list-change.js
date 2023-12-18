@@ -1,19 +1,22 @@
 /**
- * Deletes a feature when clicked on the delete button.
+ * Triggers an update request for the EOxLayerControl and optional list elements upon a layer list change event.
  *
- * @param {CustomEvent & {target: Element}} evt
- * @param {import("../../main").EOxLayerControl} EOxLayerControl
+ * @param {CustomEvent & { target: Element }} evt - The custom event containing the target element.
+ * @param {import("../../main").EOxLayerControl} EOxLayerControl - The EOxLayerControl element.
  */
 const layerListChangeMethod = (evt, EOxLayerControl) => {
+  // Request an update for the EOxLayerControl
   EOxLayerControl.requestUpdate();
+
+  // Check if the event target matches the specified element tag
   if (evt.target.tagName === "EOX-LAYERCONTROL-LAYER-TOOLS") {
-    /**
-     * @type Element & { requestUpdate: function }
-     */
     const optionalListEl = EOxLayerControl.renderRoot.querySelector(
       "eox-layercontrol-optional-list"
     );
-    optionalListEl?.requestUpdate();
+
+    // Request an update for the optional list element if found
+    /** * @type {Element & { requestUpdate: function }} */
+    (optionalListEl)?.requestUpdate();
   }
 };
 

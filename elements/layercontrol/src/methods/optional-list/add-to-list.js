@@ -1,33 +1,43 @@
 import { filterLayers } from "../../helpers";
 
 /**
- * @param {import("../../components/optionalList").EOxLayerControlOptionalList} EOxLayerControlOptionalList
+ * Adds the selected layer to the optional list in the layer control.
+ *
+ * @param {import("../../components/optionalList").EOxLayerControlOptionalList} EOxLayerControlOptionalList - The optional list component.
  */
 const addToListMethod = (EOxLayerControlOptionalList) => {
+  // Get the selected layer based on the value from the dropdown
+  /** @type HTMLInputElement*/
+  const optionalSelect = EOxLayerControlOptionalList.querySelector(
+    "select[name=optional]"
+  );
+  const selectedValue = optionalSelect ? optionalSelect.value : null;
+
   const selectedLayer = filterLayers(
     EOxLayerControlOptionalList.layers.getArray(),
     "layerControlOptional",
     true
-  ).find((l) => {
-    return (
+  ).find(
+    (layer) =>
       // @ts-ignore
-      (l.get(EOxLayerControlOptionalList.idProperty) || l.ol_uid) ===
-      /** @type HTMLInputElement*/ (
-        EOxLayerControlOptionalList.querySelector("select[name=optional]")
-      ).value
-    );
-  });
-  // TODO always set the new layer at the first position
+      (layer.get(EOxLayerControlOptionalList.idProperty) || layer.ol_uid) ===
+      selectedValue
+  );
+
+  // Update visibility and dispatch 'changed' event
   selectedLayer?.set("layerControlOptional", false);
   selectedLayer?.setVisible(true);
   EOxLayerControlOptionalList.dispatchEvent(
     new CustomEvent("changed", { bubbles: true })
   );
+
+  // Update related components
   EOxLayerControlOptionalList.renderRoot.parentNode
     .querySelectorAll("eox-layercontrol-layer-list")
     .forEach((layerList) =>
       /** @type {import("lit").LitElement} */ (layerList).requestUpdate()
     );
+
   EOxLayerControlOptionalList.requestUpdate();
 };
 

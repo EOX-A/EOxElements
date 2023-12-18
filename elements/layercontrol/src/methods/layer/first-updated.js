@@ -9,7 +9,7 @@ import {
  *
  * @param {import("../../components/layer").EOxLayerControlLayer} EOxLayerControlLayer - Instance of EOxLayerControlLayer
  */
-const firstUpdated = (EOxLayerControlLayer) => {
+const firstUpdatedMethod = (EOxLayerControlLayer) => {
   /**
    * Check and update layer visibility based on zoom level
    * and only update DOM if visibility gets updated
@@ -61,4 +61,4 @@ const firstUpdated = (EOxLayerControlLayer) => {
   }
 };
 
-export default firstUpdated;
+export default firstUpdatedMethod;
