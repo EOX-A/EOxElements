@@ -84,8 +84,8 @@ export class EOxLayerControlLayerList extends LitElement {
 
   render() {
     const layers = this.layers
-      .getArray()
-      .filter(
+      ?.getArray()
+      ?.filter(
         (l) => !l.get("layerControlHide") && !l.get("layerControlOptional")
       )
       .reverse();

@@ -70,8 +70,8 @@ export class EOxLayerControlLayerTools extends LitElement {
     const actions = _parseActions(this.tools, this.layer);
     const tools = _parseTools(this.tools, this.layer);
     // @ts-ignore
-    const singleActionEle = this[`_${actions[0]}Button`];
-    const iconClass = this.tools.length === 1 ? `${this.tools[0]}-icon` : "";
+    const singleActionEle = this[`_${actions?.[0]}Button`];
+    const iconClass = this.tools?.length === 1 ? `${this.tools[0]}-icon` : "";
     const actionsLen = actions?.length;
     const toolsLen = tools?.length;
 
