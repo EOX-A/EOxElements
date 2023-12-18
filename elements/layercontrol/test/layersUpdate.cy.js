@@ -272,8 +272,8 @@ describe("LayerControl", () => {
           cy.get(".add-icon").click();
           cy.get(".eox-add").should("have.class", "open");
           cy.get(".add-url").type("https://ows.mundialis.de/services/service");
-          cy.wait(1500); // eslint-disable-line
           cy.get(".search-icon").click();
+          cy.wait(1500); // eslint-disable-line
           cy.get(".add-layer-icon").first().click();
           cy.get(".search-list")
             .first()
