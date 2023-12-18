@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.2.0...jsonform-v0.2.1) (2023-12-18)
+
+
+### Bug Fixes
+
+* Defaults and examples for initial usable state ([#531](https://github.com/EOX-A/EOxElements/issues/531)) ([87e7143](https://github.com/EOX-A/EOxElements/commit/87e714399b55c0f8468c008bd0c3a3876673f81b))
+
 ## [0.2.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.1.0...jsonform-v0.2.0) (2023-11-21)
 
 
