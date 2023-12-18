@@ -2,7 +2,7 @@
  * Cleans up the input string to ensure valid JSON format and triggers an update.
  *
  * @param {string} json - JSON Input string
- * @return {string}
+ * @return {string} - Cleaned and valid JSON string
  */
 export default function cleanJSONInput(json) {
   // Extracts the value entered in the input field

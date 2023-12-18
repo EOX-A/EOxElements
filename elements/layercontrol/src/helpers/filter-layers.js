@@ -1,32 +1,45 @@
 /**
- * Filter all map layers by property
+ * Filter all map layers by property.
  *
- * @param {Array<import("ol/layer").Layer>} layers
- * @param {string} key
- * @param {any} value
- * @returns {Array<import("ol/layer").Layer>} found layers
+ * @param {any[]} layers - Array of layers to search through.
+ * @param {string} key - Property key to filter by.
+ * @param {any} value - Value to match against the property.
+ * @returns {Array<import("ol/layer").Group>} - Array of found layers.
  */
 export default function filterLayers(layers, key, value) {
-  /**
-   * @type {any[]}
-   */
+  /** @type {Array<import("ol/layer").Group>} */
   let found = [];
+
   /**
+   * Filter all map layers by property.
    *
-   * @param {any[]} searchLayers
-   * @param {string} key
-   * @param {any} value
+   * @param {Array<import("ol/layer").Group>} searchLayers - Array of layers to search through.
+   * @param {string} key - Property key to filter by.
+   * @param {any} value - Value to match against the property.
+   * @returns {Array<import("ol/layer").Group>} - Array of found layers.
    */
   const search = (searchLayers, key, value) => {
-    found = [...found, ...searchLayers.filter((l) => l.get(key) === value)];
-    const groups = searchLayers.filter((l) => l.getLayers);
-    if (groups.length > 0) {
+    // Filter layers based on the provided key and value
+    found = [
+      ...found,
+      ...searchLayers.filter((layer) => layer.get(key) === value),
+    ];
+
+    // Check if there are sub-layers (groups)
+    const groups = searchLayers.filter(
+      (layer) => /** @type {import("ol/layer").Group} */ (layer).getLayers
+    );
+
+    // If sub-layers are present, recursively search through them
+    if (groups.length > 0)
       groups.forEach((group) =>
+        // @ts-ignore
         search(group.getLayers().getArray(), key, value)
       );
-    }
+
     return found;
   };
+
   search(layers, key, value);
   return found;
 }
