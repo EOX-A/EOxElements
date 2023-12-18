@@ -143,6 +143,8 @@ export class EOxLayerControlAddLayers extends LitElement {
     const openCloseClassName = this.open ? "open" : "close";
     const isUrlTabOpen = this.open === "url";
     const isJsonTabOpen = this.open === "json";
+    const disableSearchBtn =
+      !isMapUrlValid(this.urlInput) || this.searchLoad ? true : nothing;
 
     return html`
       <style>
@@ -176,45 +178,51 @@ export class EOxLayerControlAddLayers extends LitElement {
         <div class="eox-add ${openCloseClassName}">
           ${isUrlTabOpen
             ? html`
+              <!-- Input field for URL -->
+              <div class="eox-add-layer-col">
+                <input 
+                  type="text" 
+                  class="add-url" 
+                  placeholder="Add URL (WMS/XYZ)" 
+                  .value="${this.urlInput}" 
+                  @input=${this.#handleURLChange}
+                >
+                </input>
+                <!-- Search button for URL -->
+                <button 
+                  class="search-icon" 
+                  disabled=${disableSearchBtn} 
+                  @click=${this.#handleWMSSearchURL}
+                >
+                </button>
+              </div>
 
-            <!-- Input field for URL -->
-            <div class="eox-add-layer-col">
-              <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" .value="${
-                this.urlInput
-              }" @input=${this.#handleURLChange}></input>
+              <!-- Display layers for WMS capabilities -->
+              ${
+                this.wmsCapabilities
+                  ? html`<ul class="search-lists">
+                      ${this.wmsCapabilities.Capability.Layer.Layer.map(
+                        (layer) => {
+                          //@ts-ignore
+                          const name = layer.Name;
 
-              <!-- Search button for URL -->
-              <button class="search-icon" disabled=${
-                !isMapUrlValid(this.urlInput) || this.searchLoad
-                  ? true
+                          return html`
+                            <li class="search-list">
+                              ${name}
+                              <!-- Button to add layer -->
+                              <button
+                                class="add-layer-icon icon"
+                                @click=${() =>
+                                  //@ts-ignore
+                                  this.#handleUrlLayerMethod(layer)}
+                              ></button>
+                            </li>
+                          `;
+                        }
+                      )}
+                    </ul>`
                   : nothing
-              } @click=${this.#handleWMSSearchURL}></button>
-            </div>
-
-            <!-- Display layers for WMS capabilities -->
-            ${
-              this.wmsCapabilities
-                ? html`<ul class="search-lists">
-                    ${this.wmsCapabilities.Capability.Layer.Layer.map(
-                      (layer) => html`
-                        <li class="search-list">
-                          ${
-                            //@ts-ignore
-                            layer.Name
-                          }
-                          <!-- Button to add layer -->
-                          <button
-                            class="add-layer-icon icon"
-                            @click=${() =>
-                              //@ts-ignore
-                              this.#handleUrlLayerMethod(layer)}
-                          ></button>
-                        </li>
-                      `
-                    )}
-                  </ul>`
-                : nothing
-            }
+              }
             `
             : html`
                 <!-- Textarea for JSON input -->

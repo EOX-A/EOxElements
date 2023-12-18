@@ -135,19 +135,16 @@ export class EOxLayerControlTabs extends LitElement {
     }
     nav div label,
     nav div span {
-      padding: 0.2rem 0.5rem;
-      font-weight: 500;
+      width: 20px;
       height: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      text-transform: capitalize;
     }
     figure {
       background: #00417011;
       border-top: 1px solid #0041701a;
-      padding: 0.2rem 0.5rem;
     }
   `;
 }

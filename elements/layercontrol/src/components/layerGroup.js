@@ -73,6 +73,8 @@ export class EOxLayerControlLayerGroup extends LitElement {
   }
 
   render() {
+    const groupOpen = Boolean(this.group?.get("layerControlExpand"));
+
     return html`
       <style>
         ${this.#styleBasic}
@@ -81,7 +83,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
       ${when(
         this.group,
         () => html`
-          <details open=${this.group.get("layerControlExpand") || nothing}>
+          <details open=${groupOpen}>
             <summary>
               <eox-layercontrol-layer
                 .noShadow=${true}

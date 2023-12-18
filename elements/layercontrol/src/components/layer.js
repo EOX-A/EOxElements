@@ -108,6 +108,7 @@ export class EOxLayerControlLayer extends LitElement {
     const inputType = this.#getLayer("layerControlExclusive")
       ? "radio"
       : "checkbox";
+    const isToolsAvail = this.tools?.length > 0;
 
     return html`
       <style>
@@ -126,7 +127,7 @@ export class EOxLayerControlLayer extends LitElement {
               />
               <span class="title">${this.#getLayer(this.titleProperty)}</span>
               ${when(
-                this.tools?.length > 0,
+                isToolsAvail,
                 () => html`<span class="tools-placeholder"></span>`
               )}
             </label>
