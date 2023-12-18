@@ -9,6 +9,13 @@ import { button } from "../../../../utils/styles/button";
 import { radio } from "../../../../utils/styles/radio";
 import { checkbox } from "../../../../utils/styles/checkbox";
 import { slider } from "../../../../utils/styles/slider";
+import {
+  Button,
+  _parseActions,
+  _parseTools,
+  removeButton,
+  sortButton,
+} from "../helpers";
 
 /**
  * Layer tools
@@ -49,88 +56,38 @@ export class EOxLayerControlLayerTools extends LitElement {
     this.noShadow = true;
   }
 
-  /**
-   *
-   * @param {Array<string>} tools
-   */
-  _parseActions = (tools) =>
-    tools?.filter((t) =>
-      ["remove", "sort"]
-        .filter((k) =>
-          this.layer?.get("layerControlDisable") ? k !== "sort" : true
-        )
-        .includes(t)
-    );
-
-  /**
-   *
-   * @param {Array<string>} tools
-   */
-  _parseTools = (tools) =>
-    tools?.filter((t) => {
-      let pass = true;
-      if (["remove", "sort"].includes(t)) {
-        pass = false;
-      }
-      if (t === "info") {
-        pass = this.layer.get("description");
-      }
-      if (t === "config") {
-        pass = this.layer.get("layerConfig");
-      }
-      return pass;
-    });
-
-  _removeButton = html`
-    <button
-      class="remove-icon icon"
-      @click=${() => {
-        this.layer?.set("layerControlOptional", true);
-        this.layer?.setVisible(false);
-        this.dispatchEvent(
-          new CustomEvent("changed", {
-            detail: this.layer,
-            bubbles: true,
-          })
-        );
-      }}
-    >
-      ${this.unstyled ? "x" : nothing}
-    </button>
-  `;
-
-  _sortButton = html`
-    <button class="sort-icon icon drag-handle">
-      ${this.unstyled ? "sort" : nothing}
-    </button>
-  `;
-
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  _removeButton = removeButton(this.layer, this.unstyled, this.dispatchEvent);
+
+  _sortButton = sortButton(this.unstyled);
+
+  _button = (tool) => Button(tool, this.unstyled);
+
   render() {
+    const actions = _parseActions(this.tools, this.layer);
+    const tools = _parseTools(this.tools, this.layer);
+    // @ts-ignore
+    const singleActionEle = this[`_${actions[0]}Button`];
+    const iconClass = this.tools.length === 1 ? `${this.tools[0]}-icon` : "";
+    const actionsLen = actions?.length;
+    const toolsLen = tools?.length;
+
     return html`
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
       ${when(
-        this._parseActions(this.tools)?.length +
-          this._parseTools(this.tools)?.length >
-          0,
+        actionsLen + toolsLen > 0,
         () => html`
           ${when(
-            this._parseActions(this.tools)?.length === 1 &&
-              this._parseTools(this.tools)?.length === 0,
+            actionsLen === 1 && toolsLen === 0,
             () => html`
               <div class="single-action-container">
-                <div class="single-action">
-                  ${
-                    // @ts-ignore
-                    this[`_${this._parseActions(this.tools)[0]}Button`]
-                  }
-                </div>
+                <div class="single-action">${singleActionEle}</div>
               </div>
             `,
             () => html`
@@ -139,29 +96,15 @@ export class EOxLayerControlLayerTools extends LitElement {
                 open=${this.layer.get("layerControlToolsExpand") || nothing}
               >
                 <summary>
-                  <button
-                    class="icon ${this.tools.length === 1
-                      ? `${this.tools[0]}-icon`
-                      : ""}"
-                  >
-                    Tools
-                  </button>
+                  <button class="icon ${iconClass}">Tools</button>
                 </summary>
                 <eox-layercontrol-tabs
                   .noShadow=${false}
-                  .actions=${this._parseActions(this.tools)}
-                  .tabs=${this._parseTools(this.tools)}
+                  .actions=${actions}
+                  .tabs=${tools}
                   .unstyled=${this.unstyled}
                 >
-                  ${map(
-                    this._parseTools(this.tools),
-                    (tool) => html`
-                      <button slot="${tool}-icon" class="icon">
-                        ${this.unstyled ? tool : nothing}
-                      </button>
-                    `
-                  )}
-
+                  ${map(tools, (tool) => this._button(tool))}
                   <div slot="info-content">
                     ${unsafeHTML(this.layer.get("description"))}
                   </div>

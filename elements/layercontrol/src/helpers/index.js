@@ -7,6 +7,13 @@ export { default as updateUrl } from "./update-url";
 export { getNestedStartVals, getStartVals } from "./get-start-vals";
 export { default as createSortable } from "./create-sortable";
 export { default as checkProperties } from "./check-properties";
+export {
+  Button,
+  _parseActions,
+  _parseTools,
+  removeButton,
+  sortButton,
+} from "./layer-tools";
 
 /**
  * Filter all map layers by property
