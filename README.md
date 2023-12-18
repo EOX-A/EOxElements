@@ -4,7 +4,7 @@ A Web Component collection of geospatial UI elements, crafted by EOX.
 
 ## Documentation, Examples
 
-Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements) (currently WIP).
+Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements).
 
 ## Elements
 
