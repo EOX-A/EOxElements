@@ -7,7 +7,7 @@ import { detectMapURLType, fetchCapabilities } from "../../helpers";
  * @param {import("../../components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
  * @return {Promise<{"Name": string} | false>} - An object with layer information if URL type is XYZ, otherwise false.
  */
-const wmsSearchURL = async (EoxLayerControlAddLayers) => {
+export default async function wmsSearchURL(EoxLayerControlAddLayers) {
   // Get the URL input from the EOxLayerControlAddLayers instance
   const url = EoxLayerControlAddLayers.urlInput;
 
@@ -41,6 +41,4 @@ const wmsSearchURL = async (EoxLayerControlAddLayers) => {
     // Return false as WMS capabilities are being fetched asynchronously
     return false;
   }
-};
-
-export default wmsSearchURL;
+}
