@@ -1,85 +1,451 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://schemas.stacspec.org/v1.0.0/catalog-spec/json-schema/catalog.json#",
-  "title": "STAC Catalog Specification",
-  "description": "This object represents Catalogs in a SpatioTemporal Asset Catalog.",
+  "title": "Variable",
   "allOf": [
     {
-      "$ref": "#/definitions/catalog"
-    }
-  ],
-  "definitions": {
-    "catalog": {
-      "title": "STAC Catalog",
       "type": "object",
-      "required": ["stac_version", "type", "id", "description", "links"],
+      "required": [
+        "stac_version",
+        "id",
+        "type",
+        "title",
+        "description",
+        "links"
+      ],
       "properties": {
         "stac_version": {
-          "title": "STAC version",
           "type": "string",
-          "const": "1.0.0"
+          "enum": ["1.0.0", "1.1.0"],
+          "options": { "hidden": true }
         },
         "stac_extensions": {
-          "title": "STAC extensions",
-          "type": "array",
-          "uniqueItems": true,
-          "items": {
-            "title": "Reference to a JSON Schema",
-            "type": "string",
-            "format": "iri"
-          }
+          "options": { "hidden": true },
+          "allOf": [
+            {
+              "title": "Implemented STAC Extensions",
+              "type": "array",
+              "format": "stac-extensions",
+              "items": { "type": "string", "format": "url" }
+            }
+          ]
         },
+        "id": { "type": "string", "options": { "hidden": true } },
         "type": {
-          "title": "Type of STAC entity",
-          "const": "Catalog"
-        },
-        "id": {
-          "title": "Identifier",
           "type": "string",
-          "minLength": 1
+          "enum": ["Catalog"],
+          "options": { "hidden": true }
         },
-        "title": {
-          "title": "Title",
-          "type": "string"
-        },
+        "title": { "title": "Title", "type": "string", "minLength": 1 },
         "description": {
           "title": "Description",
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "format": "markdown"
         },
         "links": {
           "title": "Links",
           "type": "array",
+          "options": {
+            "disable_array_reorder": true,
+            "collapsed": true,
+            "disable_collapse": false
+          },
           "items": {
-            "$ref": "#/definitions/link"
+            "type": "object",
+            "required": ["href", "title", "type", "rel"],
+            "properties": {
+              "href": {
+                "title": "Address",
+                "description": "The URL of the linked resource.",
+                "type": "string",
+                "minLength": 1,
+                "format": "url"
+              },
+              "title": { "title": "Title", "type": "string", "minLength": 1 },
+              "type": {
+                "title": "File Format",
+                "description": "The media type of the linked resource.",
+                "type": "string"
+              },
+              "rel": { "title": "Relation", "type": "string" }
+            }
+          }
+        }
+      },
+      "definitions": {
+        "stac_version": {
+          "type": "string",
+          "enum": ["1.0.0", "1.1.0"],
+          "options": { "hidden": true }
+        },
+        "stac_extensions": {
+          "title": "Implemented STAC Extensions",
+          "type": "array",
+          "format": "stac-extensions",
+          "items": { "type": "string", "format": "url" }
+        },
+        "id": { "type": "string", "options": { "hidden": true } },
+        "title": { "title": "Title", "type": "string", "minLength": 1 },
+        "description": {
+          "title": "Description",
+          "type": "string",
+          "minLength": 1,
+          "format": "markdown"
+        },
+        "links": {
+          "title": "Links",
+          "type": "array",
+          "options": {
+            "disable_array_reorder": true,
+            "collapsed": true,
+            "disable_collapse": false
+          },
+          "items": {
+            "type": "object",
+            "required": ["href", "title", "type", "rel"],
+            "properties": {
+              "href": {
+                "title": "Address",
+                "description": "The URL of the linked resource.",
+                "type": "string",
+                "minLength": 1,
+                "format": "url"
+              },
+              "title": { "title": "Title", "type": "string", "minLength": 1 },
+              "type": {
+                "title": "File Format",
+                "description": "The media type of the linked resource.",
+                "type": "string"
+              },
+              "rel": { "title": "Relation", "type": "string" }
+            }
+          }
+        },
+        "link": {
+          "type": "object",
+          "required": ["href", "title", "type", "rel"],
+          "properties": {
+            "href": {
+              "title": "Address",
+              "description": "The URL of the linked resource.",
+              "type": "string",
+              "minLength": 1,
+              "format": "url"
+            },
+            "title": { "title": "Title", "type": "string", "minLength": 1 },
+            "type": {
+              "title": "File Format",
+              "description": "The media type of the linked resource.",
+              "type": "string"
+            },
+            "rel": { "title": "Relation", "type": "string" }
+          }
+        },
+        "links_root_parent_via_other": {
+          "properties": {
+            "links": {
+              "items": {
+                "oneOf": [
+                  {
+                    "title": "Other Link",
+                    "properties": {
+                      "rel": {
+                        "not": { "enum": ["root", "parent", "child", "via"] }
+                      }
+                    }
+                  },
+                  {
+                    "title": "STAC Root Link",
+                    "properties": {
+                      "href": { "readOnly": true },
+                      "title": { "readOnly": true },
+                      "type": {
+                        "enum": ["application/json"],
+                        "options": { "hidden": true }
+                      },
+                      "rel": { "enum": ["root"], "options": { "hidden": true } }
+                    }
+                  },
+                  {
+                    "title": "STAC Parent Link",
+                    "properties": {
+                      "href": { "readOnly": true },
+                      "type": {
+                        "enum": ["application/json"],
+                        "options": { "hidden": true }
+                      },
+                      "rel": {
+                        "enum": ["parent"],
+                        "options": { "hidden": true }
+                      }
+                    }
+                  },
+                  {
+                    "title": "Via Link",
+                    "properties": {
+                      "type": {
+                        "enum": [
+                          "application/json",
+                          "application/pdf",
+                          "application/zip",
+                          "text/html",
+                          "text/plain"
+                        ],
+                        "options": {
+                          "enum_titles": ["JSON", "PDF", "ZIP", "HTML", "Text"]
+                        }
+                      },
+                      "rel": { "enum": ["via"], "options": { "hidden": true } }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "links_root_parent_child": {
+          "properties": {
+            "links": {
+              "items": {
+                "oneOf": [
+                  {
+                    "title": "STAC Root Link",
+                    "properties": {
+                      "href": { "readOnly": true },
+                      "title": { "readOnly": true },
+                      "type": {
+                        "enum": ["application/json"],
+                        "options": { "hidden": true }
+                      },
+                      "rel": { "enum": ["root"], "options": { "hidden": true } }
+                    }
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "title": "STAC Parent Link",
+                        "properties": {
+                          "href": { "readOnly": true },
+                          "type": {
+                            "enum": ["application/json"],
+                            "options": { "hidden": true }
+                          },
+                          "rel": {
+                            "enum": ["parent"],
+                            "options": { "hidden": true }
+                          }
+                        }
+                      },
+                      { "properties": { "title": { "readOnly": true } } }
+                    ]
+                  },
+                  {
+                    "title": "STAC Child Link",
+                    "properties": {
+                      "type": {
+                        "enum": ["application/json"],
+                        "options": { "hidden": true }
+                      },
+                      "rel": {
+                        "enum": ["child"],
+                        "options": { "hidden": true }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "stac_link_root": {
+          "title": "STAC Root Link",
+          "properties": {
+            "href": { "readOnly": true },
+            "title": { "readOnly": true },
+            "type": {
+              "enum": ["application/json"],
+              "options": { "hidden": true }
+            },
+            "rel": { "enum": ["root"], "options": { "hidden": true } }
+          }
+        },
+        "stac_link_parent": {
+          "title": "STAC Parent Link",
+          "properties": {
+            "href": { "readOnly": true },
+            "type": {
+              "enum": ["application/json"],
+              "options": { "hidden": true }
+            },
+            "rel": { "enum": ["parent"], "options": { "hidden": true } }
+          }
+        },
+        "stac_link_parent_readonly": {
+          "allOf": [
+            {
+              "title": "STAC Parent Link",
+              "properties": {
+                "href": { "readOnly": true },
+                "type": {
+                  "enum": ["application/json"],
+                  "options": { "hidden": true }
+                },
+                "rel": { "enum": ["parent"], "options": { "hidden": true } }
+              }
+            },
+            { "properties": { "title": { "readOnly": true } } }
+          ]
+        },
+        "stac_link_child": {
+          "title": "STAC Child Link",
+          "properties": {
+            "type": {
+              "enum": ["application/json"],
+              "options": { "hidden": true }
+            },
+            "rel": { "enum": ["child"], "options": { "hidden": true } }
+          }
+        },
+        "via_links": {
+          "title": "Via Link",
+          "properties": {
+            "type": {
+              "enum": [
+                "application/json",
+                "application/pdf",
+                "application/zip",
+                "text/html",
+                "text/plain"
+              ],
+              "options": {
+                "enum_titles": ["JSON", "PDF", "ZIP", "HTML", "Text"]
+              }
+            },
+            "rel": { "enum": ["via"], "options": { "hidden": true } }
+          }
+        },
+        "other_links": {
+          "title": "Other Link",
+          "properties": {
+            "rel": { "not": { "enum": ["root", "parent", "child", "via"] } }
           }
         }
       }
     },
-    "link": {
-      "type": "object",
-      "required": ["rel", "href"],
+    {
       "properties": {
-        "href": {
-          "title": "Link reference",
-          "type": "string",
-          "format": "iri-reference",
-          "minLength": 1
-        },
-        "rel": {
-          "title": "Link relation type",
-          "type": "string",
-          "minLength": 1
-        },
-        "type": {
-          "title": "Link type",
-          "type": "string"
-        },
-        "title": {
-          "title": "Link title",
-          "type": "string"
+        "links": {
+          "items": {
+            "oneOf": [
+              {
+                "title": "Other Link",
+                "properties": {
+                  "rel": {
+                    "not": { "enum": ["root", "parent", "child", "via"] }
+                  }
+                }
+              },
+              {
+                "title": "STAC Root Link",
+                "properties": {
+                  "href": { "readOnly": true },
+                  "title": { "readOnly": true },
+                  "type": {
+                    "enum": ["application/json"],
+                    "options": { "hidden": true }
+                  },
+                  "rel": { "enum": ["root"], "options": { "hidden": true } }
+                }
+              },
+              {
+                "title": "STAC Parent Link",
+                "properties": {
+                  "href": { "readOnly": true },
+                  "type": {
+                    "enum": ["application/json"],
+                    "options": { "hidden": true }
+                  },
+                  "rel": { "enum": ["parent"], "options": { "hidden": true } }
+                }
+              },
+              {
+                "title": "Via Link",
+                "properties": {
+                  "type": {
+                    "enum": [
+                      "application/json",
+                      "application/pdf",
+                      "application/zip",
+                      "text/html",
+                      "text/plain"
+                    ],
+                    "options": {
+                      "enum_titles": ["JSON", "PDF", "ZIP", "HTML", "Text"]
+                    }
+                  },
+                  "rel": { "enum": ["via"], "options": { "hidden": true } }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "required": ["themes"],
+      "properties": {
+        "themes": {
+          "title": "Themes",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["concepts", "scheme"],
+            "properties": {
+              "concepts": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["id"],
+                  "properties": {
+                    "id": { "type": "string", "minLength": 1 },
+                    "title": { "type": "string", "minLength": 1 },
+                    "description": { "type": "string", "minLength": 1 },
+                    "url": { "type": "string", "format": "uri" }
+                  }
+                }
+              },
+              "scheme": { "type": "string", "minLength": 1 }
+            },
+            "oneOf": [
+              {
+                "title": "Other",
+                "not": {
+                  "required": ["scheme"],
+                  "properties": {
+                    "scheme": {
+                      "enum": ["https://github.com/stac-extensions/osc#theme"],
+                      "options": { "hidden": true }
+                    }
+                  }
+                }
+              },
+              {
+                "title": "OSC",
+                "type": "object",
+                "format": "osc-themes-concepts",
+                "required": ["scheme"],
+                "properties": {
+                  "scheme": {
+                    "enum": ["https://github.com/stac-extensions/osc#theme"],
+                    "options": { "hidden": true }
+                  }
+                }
+              }
+            ]
+          }
         }
       }
     }
-  }
+  ]
 }
