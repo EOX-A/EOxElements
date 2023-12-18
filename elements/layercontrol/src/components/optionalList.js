@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
 import { filterLayers } from "../helpers";
+import { addToListMethod } from "../methods/optional-list";
 
 export class EOxLayerControlOptionalList extends LitElement {
   static properties = {
@@ -45,7 +46,16 @@ export class EOxLayerControlOptionalList extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  #handleAddToList() {
+    addToListMethod(this);
+  }
+
   render() {
+    const filteredLayersList = filterLayers(
+      this.layers.getArray(),
+      "layerControlOptional",
+      true
+    );
     return html`
       <label for="optional">Optional layers</label>
 
@@ -53,55 +63,17 @@ export class EOxLayerControlOptionalList extends LitElement {
         <option disabled selected value>
           -- select an optional layer to add --
         </option>
-        ${filterLayers(
-          this.layers.getArray(),
-          "layerControlOptional",
-          true
-        ).map(
-          (layer) => html`
-            <option
-              value="${
-                // @ts-ignore
-                layer.get(this.idProperty) || layer.ol_uid
-              }"
-            >
-              ${layer.get(this.titleProperty) ||
-              `layer ${layer.get(this.idProperty)}`}
-            </option>
-          `
-        )}
+        ${filteredLayersList.map((layer) => {
+          // @ts-ignore
+          const value = layer.get(this.idProperty) || layer.ol_uid;
+          const title = layer.get(this.titleProperty);
+          const id = `layer ${layer.get(this.idProperty)}`;
+          const label = title || id;
+
+          return html` <option value="${value}">${label}</option> `;
+        })}
       </select>
-      <button
-        @click="${() => {
-          const selectedLayer = filterLayers(
-            this.layers.getArray(),
-            "layerControlOptional",
-            true
-          ).find((l) => {
-            return (
-              // @ts-ignore
-              (l.get(this.idProperty) || l.ol_uid) ===
-              /** @type HTMLInputElement*/ (
-                this.querySelector("select[name=optional]")
-              ).value
-            );
-          });
-          // TODO always set the new layer at the first position
-          selectedLayer?.set("layerControlOptional", false);
-          selectedLayer?.setVisible(true);
-          this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
-          this.renderRoot.parentNode
-            .querySelectorAll("eox-layercontrol-layer-list")
-            .forEach((layerList) =>
-              /** @type {import("lit").LitElement} */ (
-                layerList
-              ).requestUpdate()
-            );
-          this.requestUpdate();
-        }}"
-      >
-        add
-      </button>
+      <button @click="${this.#handleAddToList}">add</button>
     `;
   }
 }
