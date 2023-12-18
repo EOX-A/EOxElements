@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.2...itemfilter-v0.12.0) (2023-12-18)
+
+
+### Features
+
+* Custom ordering for select and multi select filters ([#526](https://github.com/EOX-A/EOxElements/issues/526)) ([b0ddf52](https://github.com/EOX-A/EOxElements/commit/b0ddf522fc2d4c6850bcf0761406f4f5f1155ddd))
+
 ## [0.11.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.1...itemfilter-v0.11.2) (2023-12-07)
 
 

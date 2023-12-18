@@ -1,6 +1,6 @@
 {
   "elements/drawtools": "0.6.1",
-  "elements/itemfilter": "0.11.2",
+  "elements/itemfilter": "0.12.0",
   "elements/layercontrol": "0.12.0",
   "elements/map": "1.0.0",
   "elements/stacinfo": "0.3.0",
