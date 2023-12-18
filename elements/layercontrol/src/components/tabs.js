@@ -43,7 +43,14 @@ export class EOxLayerControlTabs extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /** @param {number} index */
+  #labelHighlightClass = (index) => this.selectedTab === index && "highlighted";
+
   render() {
+    const tabs = this.tabs;
+    const actions = this.actions;
+    const isListAvail = actions.length + tabs.length > 1;
+
     return html`
       <style>
         ${this.#styleBasic}
@@ -51,30 +58,32 @@ export class EOxLayerControlTabs extends LitElement {
       </style>
       <div class="tabbed">
         ${when(
-          this.actions.length + this.tabs.length > 1,
+          isListAvail,
           () => html`
             <nav>
               <div>
                 ${map(
-                  this.tabs,
-                  (tab, index) => html`
-                    <label
-                      class=${this.selectedTab === index && "highlighted"}
-                      @click=${() => (this.selectedTab = index)}
-                    >
-                      <slot name=${tab + "-icon"}>${tab}</slot>
-                    </label>
-                  `
+                  tabs,
+                  (tab, index) =>
+                    html`
+                      <label
+                        class=${this.#labelHighlightClass(index)}
+                        @click=${() => (this.selectedTab = index)}
+                      >
+                        <slot name=${`${tab}-icon`}>${tab}</slot>
+                      </label>
+                    `
                 )}
               </div>
               <div>
                 ${map(
-                  this.actions,
-                  (action) => html`
-                    <span>
-                      <slot name=${action + "-icon"}>${action}</slot>
-                    </span>
-                  `
+                  actions,
+                  (action) =>
+                    html`
+                      <span>
+                        <slot name=${`${action}-icon`}>${action}</slot>
+                      </span>
+                    `
                 )}
               </div>
             </nav>
@@ -82,10 +91,10 @@ export class EOxLayerControlTabs extends LitElement {
         )}
         <figure>
           ${map(
-            this.tabs,
+            tabs,
             (tab, index) => html`
-              <div class="tab ${this.selectedTab === index && "highlighted"}">
-                <slot name=${tab + "-content"}>${tab}</slot>
+              <div class="tab ${this.#labelHighlightClass(index)}">
+                <slot name=${`${tab}-content`}>${tab}</slot>
               </div>
             `
           )}
@@ -126,16 +135,19 @@ export class EOxLayerControlTabs extends LitElement {
     }
     nav div label,
     nav div span {
-      width: 20px;
+      padding: 0.2rem 0.5rem;
+      font-weight: 500;
       height: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      text-transform: capitalize;
     }
     figure {
       background: #00417011;
       border-top: 1px solid #0041701a;
+      padding: 0.2rem 0.5rem;
     }
   `;
 }
