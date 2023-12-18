@@ -43,7 +43,6 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("eox-selectionlist")
-          .shadow()
           .within(() => {
             cy.get('[type="checkbox"]:checked').should("have.length", 2);
           });
@@ -87,7 +86,6 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("eox-itemfilter-multiselect > eox-selectionlist")
-          .shadow()
           .within(() => {
             Object.keys(customOrder).forEach((state) => {
               cy.get("ul [data-identifier]")

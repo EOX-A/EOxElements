@@ -88,7 +88,6 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("eox-selectionlist")
-          .shadow()
           .within(() => {
             cy.get('[type="checkbox"]').first().check();
             cy.get('[type="checkbox"]').eq(1).check();
