@@ -4,7 +4,7 @@
   "type": "module",
   "dependencies": {
     "lit": "^3.0.2",
-    "ol": "^8.1.0",
+    "ol": "^8.2.0",
     "ol-stac": "^1.0.0-beta.6",
     "proj4": "^2.9.2"
   },
