@@ -60,7 +60,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
-  _removeButton = removeButton(this.layer, this.unstyled, this.dispatchEvent);
+  _removeButton = removeButton(this);
 
   _sortButton = sortButton(this.unstyled);
 

@@ -36,13 +36,14 @@ export const Button = (tool, unstyled) => html`
   <button slot="${tool}-icon" class="icon">${unstyled ? tool : nothing}</button>
 `;
 
-export const removeButton = (layer, unstyled, dispatchEvent) => html`
+export const removeButton = (EOxLayerControlTools) => html`
   <button
     class="remove-icon icon"
     @click=${() => {
+      const { layer } = EOxLayerControlTools;
       layer?.set("layerControlOptional", true);
       layer?.setVisible(false);
-      dispatchEvent(
+      EOxLayerControlTools.dispatchEvent(
         new CustomEvent("changed", {
           detail: layer,
           bubbles: true,
@@ -50,7 +51,7 @@ export const removeButton = (layer, unstyled, dispatchEvent) => html`
       );
     }}
   >
-    ${unstyled ? "x" : nothing}
+    ${EOxLayerControlTools.unstyled ? "x" : nothing}
   </button>
 `;
 
