@@ -21,32 +21,8 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
   ${Cs}
   ${Es}
 
-  ul {
-    padding-left: 0;
-    margin-top: 0;
-  }
-  li {
-    list-style: none;
-  }
-  li span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  li label {
-    display: flex;
-    align-items: center;
-  }
-  li,
-  label,
-  details,
-  input[type="checkbox"],
-  input[type="radio"] {
-    cursor: pointer;
-  }
-  input[type="checkbox"],
-  input[type="radio"] {
-    margin: 0;
+  [data-schemaid=root] > .je-header {
+    display: none;
   }
   input[type="text"], select {
     box-sizing: border-box !important;
@@ -56,73 +32,11 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
     border-radius: 4px !important;
     border: 1px solid #0004 !important;
   }
-  form[data-theme="html"] .je-indented-panel {
-    border: 0px !important;
-    padding: 12px !important;
-    margin: 0px !important;
-  }
-  section:not(section:last-of-type) {
-    margin-bottom: 1rem;
-  }
-  ul li {
-    padding: 5px 10px;
-  }
-  li.highlighted {
-    background: #00417011;
-  }
-  section {
-    position: relative;
-  }
-  .je-indented-panel {
-    border: 0 !important;
-    padding: 12px !important;
-    margin: 0px !important;
-  }
-  label {
-    font-weight: 500 !important;
-    margin-bottom: 0px !important;
-  }
-  p {
-    margin: 0.5rem 0;
-  }
-  label.je-form-input-label {
-    display: flex;
-    font-weight: 500;
-    font-size: small;
-    align-items: center;
-    align-items: center;
-    border-bottom: 1px solid #0002;
-    padding: 0.5rem 0;
-  }
   .je-range-control {
     padding: 0.5rem 0;
   }
   .errmsg {
     font-size: x-small;
-  }
-  .je-header, .je-object__controls {
-    display: none !important;
-  }
-  button.json-editor-btn-collapse {
-    box-shadow: none;
-    display: inline;
-    background: none;
-    width: 24px;
-    height: 24px;
-    font-size: unset;
-    padding: 0;
-    margin: 0;
-    transform: rotate(270deg);
-    border: 0;
-  }
-  button.json-editor-btn-collapse span {
-    text-indent: -999999px;
-    display: flex;
-  }
-  button.json-editor-btn-collapse span:before {
-    position: absolute;
-    text-indent: 0;
-    line-height: initial;
   }
   tc-range-slider{
     display: block;
@@ -170,7 +84,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
       margin: 0 0.5rem;
       white-space: nowrap;
     }
-    `,destroy:T}};window.tcRangeSliderPlugins.push($)})();function Ls(ft,M){Object.keys(M).forEach(q=>{ft.setAttribute(q,M[q])})}class Rs extends Ts{register(){super.register()}unregister(){super.unregister()}build(){const M=this.schema.properties,q=this.options,W=this.schema.description,$=this.theme,Y=this.defaults.startVals[this.key];q.compact||(this.header=this.label=$.getFormInputLabel(this.getTitle(),this.isRequired())),W&&(this.description=$.getFormInputDescription(this.translateProperty(W))),q.infoText&&(this.infoButton=$.getInfoButton(this.translateProperty(q.infoText)));const b=document.createElement("tc-range-slider"),j=Object.keys(M).find(y=>y.includes("min")),o=Object.keys(M).find(y=>y.includes("max")),d={min:M[j].minimum,max:M[o].maximum,value1:(Y==null?void 0:Y[j])||M[j].default,value2:(Y==null?void 0:Y[o])||M[o].default,"slider-bg-fill":"#004170","generate-labels":"true","slider-width":"100%","range-dragging":"false"};Ls(b,d),this.input=b,this.input.id=this.formname,this.control=$.getFormControl(this.label,this.input,this.description,this.infoButton),(this.schema.readOnly||this.schema.readonly)&&(this.disable(!0),this.input.disabled=!0),this.input.addEventListener("change",y=>{y.preventDefault(),y.stopPropagation(),this.value={[j]:y.detail.value1,[o]:y.detail.value2},this.onChange(!0)}),this.container.appendChild(this.control)}destroy(){this.label&&this.label.parentNode&&this.label.parentNode.removeChild(this.label),this.description&&this.description.parentNode&&this.description.parentNode.removeChild(this.description),this.input&&this.input.parentNode&&this.input.parentNode.removeChild(this.input),super.destroy()}}const As=[{type:"object",format:"minmax",func:Rs}],Is=ft=>{As.map(({type:M,format:q,func:W})=>{In.JSONEditor.defaults.startVals=ft,In.JSONEditor.defaults.editors[q]=W,In.JSONEditor.defaults.resolvers.unshift($=>{if($.type===M&&$.format===q)return q})})};var an,vr,Nn,So,Dn,Po;class Eo extends js{constructor(){super();vn(this,Nn);vn(this,Dn);vn(this,an,{});vn(this,vr,null);this.schema,this.startVals,this.options={},this.unstyled=!1}getSchema(){return this.schema}setSchema(q){this.schema=q}getDefaultValues(){return this.startVals}setDefaultValues(q){this.startVals=q}getValues(){return on(this,an)}firstUpdated(){if(!on(this,vr)){Is(this.startVals||{});const q=this.renderRoot.querySelector("form");$i(this,vr,new In.JSONEditor(q,{schema:this.schema,...this.startVals?{startval:this.startVals}:{},theme:"html",ajax:!0,...this.options})),Wi(this,Dn,Po).call(this)}}render(){return xs`
+    `,destroy:T}};window.tcRangeSliderPlugins.push($)})();function Ls(ft,M){Object.keys(M).forEach(q=>{ft.setAttribute(q,M[q])})}class Rs extends Ts{register(){super.register()}unregister(){super.unregister()}build(){const M=this.schema.properties,q=this.options,W=this.schema.description,$=this.theme,Y=this.defaults.startVals[this.key];q.compact||(this.header=this.label=$.getFormInputLabel(this.getTitle(),this.isRequired())),W&&(this.description=$.getFormInputDescription(this.translateProperty(W))),q.infoText&&(this.infoButton=$.getInfoButton(this.translateProperty(q.infoText)));const b=document.createElement("tc-range-slider"),j=Object.keys(M).find(y=>y.includes("min")),o=Object.keys(M).find(y=>y.includes("max")),d={min:M[j].minimum,max:M[o].maximum,value1:(Y==null?void 0:Y[j])||M[j].default,value2:(Y==null?void 0:Y[o])||M[o].default,"slider-bg-fill":"#004170","generate-labels":"true","slider-width":"100%","range-dragging":"false"};Ls(b,d),this.input=b,this.input.id=this.formname,this.control=$.getFormControl(this.label,this.input,this.description,this.infoButton),(this.schema.readOnly||this.schema.readonly)&&(this.disable(!0),this.input.disabled=!0),this.input.addEventListener("change",y=>{y.preventDefault(),y.stopPropagation(),this.value={[j]:y.detail.value1,[o]:y.detail.value2},this.onChange(!0)}),this.container.appendChild(this.control)}destroy(){this.label&&this.label.parentNode&&this.label.parentNode.removeChild(this.label),this.description&&this.description.parentNode&&this.description.parentNode.removeChild(this.description),this.input&&this.input.parentNode&&this.input.parentNode.removeChild(this.input),super.destroy()}}const As=[{type:"object",format:"minmax",func:Rs}],Is=ft=>{As.map(({type:M,format:q,func:W})=>{In.JSONEditor.defaults.startVals=ft,In.JSONEditor.defaults.editors[q]=W,In.JSONEditor.defaults.resolvers.unshift($=>{if($.type===M&&$.format===q)return q})})};var an,vr,Nn,So,Dn,Po;class Eo extends js{constructor(){super();vn(this,Nn);vn(this,Dn);vn(this,an,{});vn(this,vr,null);this.schema,this.startVals,this.options={show_opt_in:!1,disable_collapse:!0,disable_edit_json:!0,disable_properties:!0,disable_array_delete_all_rows:!0,disable_array_delete_last_row:!0,array_controls_top:!0},this.unstyled=!1}getSchema(){return this.schema}setSchema(q){this.schema=q}getDefaultValues(){return this.startVals}setDefaultValues(q){this.startVals=q}getValues(){return on(this,an)}firstUpdated(){if(!on(this,vr)){Is(this.startVals||{});const q=this.renderRoot.querySelector("form");$i(this,vr,new In.JSONEditor(q,{schema:this.schema,...this.startVals?{startval:this.startVals}:{},theme:"html",ajax:!0,...this.options})),Wi(this,Dn,Po).call(this)}}render(){return xs`
       <style>
         ${Ss}
           ${!this.unstyled&&Ps}
