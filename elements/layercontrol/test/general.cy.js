@@ -1,133 +1,49 @@
-import "../src/main";
+// Importing test cases and necessary modules
+import "../src/main"; // Importing main module
 import "./_mockMap";
+import {
+  checkLayerSize,
+  checkPreOpenLayerTools,
+  checkPreOpenSection,
+  disableDrag,
+  hideLayers,
+  renderOptionalLayer,
+  showCorrectLayerTitle,
+} from "./cases/general";
 
 describe("LayerControl", () => {
+  // Set up before each test
   beforeEach(() => {
+    // Mounting mock map and layer control components for testing
     cy.mount("<mock-map></mock-map>").as("mock-map");
-    cy.mount(
-      `
-      <eox-layercontrol for="mock-map"></eox-layercontrol>`
-    ).as("eox-layercontrol");
+    cy.mount(`<eox-layercontrol for="mock-map"></eox-layercontrol>`).as(
+      "eox-layercontrol"
+    );
   });
 
-  it("loads the layercontrol", () => {
-    cy.get("eox-layercontrol").shadow();
-  });
+  // Test to verify if the layer control is successfully loaded
+  it("loads the layer control", () => cy.get("eox-layercontrol").shadow());
 
-  it("displays the correct amount of layers", () => {
-    cy.get("mock-map").and(($el) => {
-      $el /**MockMap*/[0]
-        .setLayers([{ visible: true }, { visible: false }]);
-    });
-    cy.get("eox-layercontrol")
-      .shadow()
-      .within(() => {
-        cy.get(".layers").find("li").should("have.length", 2);
-        cy.get(".layers")
-          .find("input[type=checkbox]:checked")
-          .should("have.length", 1);
-      });
-  });
+  // Test to ensure that the correct number of layers is displayed
+  it("displays the correct amount of layers", () => checkLayerSize());
 
-  it("hides layers correctly", () => {
-    cy.get("mock-map").and(($el) => {
-      $el /**MockMap*/[0]
-        .setLayers([
-          { visible: true },
-          { properties: { layerControlHide: true } },
-        ]);
-    });
-    cy.get("eox-layercontrol")
-      .shadow()
-      .within(() => {
-        cy.get("ul").find("li").should("have.length", 1);
-      });
-  });
+  // Test to validate the hiding of layers
+  it("hides layers correctly", () => hideLayers());
 
-  it("renders the optional layer selection", () => {
-    cy.get("mock-map").and(($el) => {
-      $el /**MockMap*/[0]
-        .setLayers([
-          { visible: true },
-          { properties: { layerControlOptional: true } },
-        ]);
-    });
-    cy.get("eox-layercontrol")
-      .shadow()
-      .within(() => {
-        cy.get("[data-cy='optionalLayers']").should("exist");
-        cy.get("[data-cy='optionalLayers']")
-          .find("option:not([disabled])")
-          .should("have.length", 1);
-        cy.get("[data-cy='optionalLayers']").siblings("button").should("exist");
-      });
-  });
+  // Test to verify the rendering of optional layer selection
+  it("renders the optional layer selection", () => renderOptionalLayer());
 
-  it("disables the drag handle of the disabled layer", () => {
-    cy.get("mock-map").and(($el) => {
-      $el /**MockMap*/[0]
-        .setLayers([
-          { visible: true },
-          { properties: { layerControlDisable: true } },
-        ]);
-    });
-    cy.get("eox-layercontrol")
-      .shadow()
-      .within(() => {
-        cy.get(".tools summary").click({ multiple: true });
-        cy.get(".drag-handle:visible").should("have.length", 1);
-      });
-  });
+  // Test to confirm the disabling of drag functionality for a disabled layer
+  it("disables the drag handle of the disabled layer", () => disableDrag());
 
-  it("shows the correct layer titles", () => {
-    cy.get("mock-map").and(($el) => {
-      $el /**MockMap*/[0]
-        .setLayers([
-          { properties: { title: "foo" } },
-          { properties: { title: "bar" } },
-        ]);
-    });
-    cy.get("eox-layercontrol")
-      .shadow()
-      .within(() => {
-        cy.get(".layer").find(".title").contains("foo");
-        cy.get(".layer").find(".title").contains("bar");
-      });
-  });
+  // Test to ensure the display of correct layer titles
+  it("shows the correct layer titles", () => showCorrectLayerTitle());
 
-  it("pre-opens a section if layerControlExpand is present", () => {
-    cy.get("mock-map").and(($el) => {
-      $el /**MockMap*/[0]
-        .setLayers([
-          { visible: true },
-          {
-            properties: { layerControlExpand: true },
-            layers: [{ visible: true }],
-          },
-        ]);
-    });
-    cy.get("eox-layercontrol")
-      .shadow()
-      .within(() => {
-        cy.get("details[open]").should("exist");
-      });
-  });
+  // Test to check if a section is pre-opened when the layerControlExpand property is present
+  it("pre-opens a section if layerControlExpand is present", () =>
+    checkPreOpenSection());
 
-  it("pre-opens layer tools section if layerControlToolsExpand is present", () => {
-    cy.get("mock-map").and(($el) => {
-      $el /**MockMap*/[0]
-        .setLayers([
-          { visible: true },
-          {
-            properties: { layerControlToolsExpand: true },
-            layers: [{ visible: true }],
-          },
-        ]);
-    });
-    cy.get("eox-layercontrol")
-      .shadow()
-      .within(() => {
-        cy.get("details[open].tools").should("be.visible");
-      });
-  });
+  // Test to verify pre-opening of the layer tools section if layerControlToolsExpand is present
+  it("pre-opens layer tools section if layerControlToolsExpand is present", () =>
+    checkPreOpenLayerTools());
 });
