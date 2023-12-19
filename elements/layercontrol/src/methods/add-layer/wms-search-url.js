@@ -4,7 +4,7 @@ import { detectMapURLType, fetchCapabilities } from "../../helpers";
  * Handles the URL search process in the EOxLayerControlAddLayers context.
  * It utilizes the provided instance to process the URL input for WMS or XYZ layers.
  *
- * @param {import("../../components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
+ * @param {import("../../components/add-layers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
  * @return {Promise<{"Name": string} | false>} - An object with layer information if URL type is XYZ, otherwise false.
  */
 export default async function wmsSearchURL(EoxLayerControlAddLayers) {

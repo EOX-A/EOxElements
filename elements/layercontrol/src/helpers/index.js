@@ -7,6 +7,10 @@ export { default as updateUrl } from "./update-url";
 export { getNestedStartVals, getStartVals } from "./get-start-vals";
 export { default as createSortable } from "./create-sortable";
 export { default as checkProperties } from "./check-properties";
+export { default as filterLayers } from "./filter-layers";
+export { default as isLayerVisibleBasedOnZoomState } from "./is-layer-visible-based-on-zoom-state";
+export { default as isLayerZoomStateRequired } from "./is-layer-zoom-state-req";
+export { default as getLayerType } from "./get-layer-type";
 export {
   Button,
   _parseActions,
@@ -14,75 +18,3 @@ export {
   removeButton,
   sortButton,
 } from "./layer-tools";
-export { default as filterLayers } from "./filter-layers";
-
-/**
- * Trying to guess the layer type from certain properties.
- * The proper way would be to use instanceOf, but for this
- * we'd need OL as a dependency, which we're trying to avoid
- * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
- * @param {import("ol").Map} map
- */
-export const getLayerType = (layer, map) => {
-  if (!layer || !map) {
-    return undefined;
-  }
-  return /** @type {import("ol/layer").Group} */ (layer).getLayers
-    ? "group"
-    : map
-        .getInteractions()
-        .getArray()
-        // @ts-ignore
-        .filter((i) => i.freehand_ !== undefined)
-        // @ts-ignore
-        .map((i) => i.source_)
-        // @ts-ignore
-        ?.ol_uid?.includes(
-          // @ts-ignore
-          layer.getSource ? layer.getSource()?.ol_uid : undefined
-        )
-    ? "draw"
-    : // @ts-ignore
-    layer.declutter_ !== undefined
-    ? "vector"
-    : "raster";
-};
-
-/**
- * Returns whether zoom layer state be enabled or not for a particular layer
- * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
- * @param {Boolean} showLayerZoomState
- * @returns {Boolean} state
- */
-export const isLayerZoomStateRequired = (layer, showLayerZoomState) => {
-  const minZoom = layer.get("minZoom");
-  const maxZoom = layer.get("maxZoom");
-
-  if (showLayerZoomState && (minZoom !== -Infinity || maxZoom !== Infinity))
-    return true;
-  else return false;
-};
-
-/**
- * Returns layer visibility state based on minZoom and maxZoon
- * with respective of current zoom level
- * @param {import("ol/layer").Layer | import("ol/layer").Group} layer
- * @param {import("ol").Map} map
- * @param {Boolean} showLayerZoomState
- * @returns {Boolean} state
- */
-export const isLayerVisibleBasedOnZoomState = (
-  layer,
-  map,
-  showLayerZoomState
-) => {
-  if (!layer || !map) return false;
-
-  if (!isLayerZoomStateRequired(layer, showLayerZoomState)) return true;
-
-  const minZoom = layer.get("minZoom");
-  const maxZoom = layer.get("maxZoom");
-  const zoom = map.getView().getZoom();
-
-  return zoom > minZoom && zoom < maxZoom ? true : false;
-};

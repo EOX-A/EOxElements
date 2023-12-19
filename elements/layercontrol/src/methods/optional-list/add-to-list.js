@@ -3,7 +3,7 @@ import { filterLayers } from "../../helpers";
 /**
  * Adds the selected layer to the optional list in the layer control.
  *
- * @param {import("../../components/optionalList").EOxLayerControlOptionalList} EOxLayerControlOptionalList - The optional list component.
+ * @param {import("../../components/optional-list").EOxLayerControlOptionalList} EOxLayerControlOptionalList - The optional list component.
  */
 const addToListMethod = (EOxLayerControlOptionalList) => {
   // Get the selected layer based on the value from the dropdown

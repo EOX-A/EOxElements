@@ -1,8 +1,8 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
-import "./components/layerList";
-import "./components/optionalList";
-import "./components/addLayers";
+import "./components/layer-list";
+import "./components/optional-list";
+import "./components/add-layers";
 import { filterLayers } from "./helpers";
 import {
   firstUpdatedMethod,
@@ -43,6 +43,7 @@ import {
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
+  // Define static properties for the component
   static properties = {
     for: { type: String },
     idProperty: { attribute: "id-property" },
@@ -56,25 +57,33 @@ export class EOxLayerControl extends LitElement {
   };
 
   /**
-   * @type import("../../map/main").EOxMap
+   * Instance of `eox-map` which is a wrapper for the OL
+   *
+   * @type {import("../../map/main").EOxMap}
    */
   #eoxMap;
 
+  // Constructor to set default values for properties
   constructor() {
     super();
 
     /**
      * Query selector of an eox-map or another DOM element containing an OL map proeprty
+     *
+     * @type {String}
      */
     this.for = "eox-map";
 
     /**
      * Layer id property
+     *
+     * @type {String}
      */
     this.idProperty = "id";
 
     /**
      * The native OL map instance
+     *
      * @type {import("ol").Map}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
      */
@@ -82,44 +91,65 @@ export class EOxLayerControl extends LitElement {
 
     /**
      * Layer title property
+     *
+     * @type {String}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
+     *
+     * @type {Boolean}
      */
     this.showLayerZoomState = false;
 
     /**
      * Layer tools
+     *
+     * @type {Array<String>}
      */
     this.tools = ["info", "opacity", "config", "remove", "sort"];
 
     /**
      * Enable-disable external layer
+     *
+     * @type {Boolean}
      */
     this.addExternalLayers = false;
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Overrides elements current CSS.
+     *
+     * @type {String}
      */
     this.styleOverride = "";
   }
 
+  /**
+   * Called when the component is updated
+   */
   updated() {
     updateMethod(this);
   }
 
+  /**
+   * Called when the component is first updated
+   * Updated #eoxMap after first update.
+   */
   firstUpdated() {
     this.#eoxMap = firstUpdatedMethod(this);
   }
 
   /**
+   * Event handler for changes in the layer list
+   *
    * @param {CustomEvent & {target: Element}} evt
    */
   #handleLayerControlLayerListChange(evt) {
@@ -127,20 +157,19 @@ export class EOxLayerControl extends LitElement {
   }
 
   render() {
+    // Checks if there are any layers with the 'layerControlOptional' property set to true
+    // @ts-ignore
+    const layers = this.map?.getLayers().getArray();
     const layerControlOptionalCondition =
-      this.map &&
-      filterLayers(
-        // @ts-ignore
-        this.map.getLayers().getArray(),
-        "layerControlOptional",
-        true
-      )?.length > 0;
+      layers && filterLayers(layers, "layerControlOptional", true)?.length > 0;
 
     return html`
       <style>
         ${!this.unstyled && this.#styleEOX}
         ${this.styleOverride}
       </style>
+
+      <!-- Conditional rendering of add layers component -->
       ${when(
         this.addExternalLayers && this.#eoxMap?.addOrUpdateLayer,
         () => html`
@@ -151,6 +180,8 @@ export class EOxLayerControl extends LitElement {
           ></eox-layercontrol-add-layers>
         `
       )}
+
+      <!-- Conditional rendering of layer list component -->
       ${when(
         this.map,
         () => html`
@@ -168,6 +199,8 @@ export class EOxLayerControl extends LitElement {
           ></eox-layercontrol-layer-list>
         `
       )}
+
+      <!-- Conditional rendering of optional list component -->
       ${when(
         layerControlOptionalCondition,
         () => html`
@@ -183,11 +216,7 @@ export class EOxLayerControl extends LitElement {
     `;
   }
 
-  #styleEOX = `
-    * {
-      font-family: Roboto, sans-serif;
-    }
-  `;
+  #styleEOX = `* { font-family: Roboto, sans-serif; }`;
 }
 
 customElements.define("eox-layercontrol", EOxLayerControl);

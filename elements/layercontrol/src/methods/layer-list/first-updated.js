@@ -4,7 +4,7 @@ import { checkProperties, createSortable } from "../../helpers";
 /**
  * Handles initial settings and event triggers upon the component's first update.
  *
- * @param {import("../../components/layerList").EOxLayerControlLayerList} EOxLayerControlLayerList - The EOxLayerControlLayerList object containing layers.
+ * @param {import("../../components/layer-list").EOxLayerControlLayerList} EOxLayerControlLayerList - The EOxLayerControlLayerList object containing layers.
  */
 const firstUpdatedMethod = (EOxLayerControlLayerList) => {
   // Destructuring properties from the EOxLayerControlLayerList object

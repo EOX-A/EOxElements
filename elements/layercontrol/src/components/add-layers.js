@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import "./layer";
-import "./layerGroup";
+import "./layer-group";
 import { isMapUrlValid, isLayerJSONValid } from "../helpers";
 import {
   addLayerMethod,
@@ -22,6 +22,7 @@ import {
  * @extends LitElement
  */
 export class EOxLayerControlAddLayers extends LitElement {
+  // Define static properties for the component
   static properties = {
     eoxMap: { attribute: false, state: true },
     unstyled: { type: Boolean },
@@ -29,26 +30,36 @@ export class EOxLayerControlAddLayers extends LitElement {
   };
 
   /**
-   * @type string
+   * State for URL Input for WMS/XYZ URLs
+   *
+   * @type {String}
    */
   urlInput = null;
 
   /**
-   * @type string
-   */
-  open = null;
-
-  /**
-   * @type string
+   * State for JSON Textarea - For EOxMap JSON
+   *
+   * @type {String}
    */
   jsonInput = null;
 
   /**
-   * @type boolean
+   * State for add layer - consist of url/json
+   *
+   * @type {"url" | "json" | null}
+   */
+  open = null;
+
+  /**
+   * Loader state when search is triggered
+   *
+   * @type {Boolean}
    */
   searchLoad = false;
 
   /**
+   * State for `WMS Capabilities JSON`
+   *
    * @type {import("wms-capabilities").WMSCapabilitiesJSON}
    */
   wmsCapabilities = null;
@@ -57,17 +68,23 @@ export class EOxLayerControlAddLayers extends LitElement {
     super();
 
     /**
-     * @type import("@eox/map/main").EOxMap
+     * Instance of `eox-map` which is a wrapper for the OL
+     *
+     * @type {import("@eox/map/main").EOxMap}
      */
     this.eoxMap = null;
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = true;
   }

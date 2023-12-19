@@ -1,16 +1,19 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
-import "./layerTools";
+import "./layer-tools";
 import { checkbox } from "../../../../utils/styles/checkbox";
 import { firstUpdatedMethod, inputClickMethod } from "../methods/layer";
 
 /**
- * A single layer display
+ * `EOxLayerControlLayer` represents a custom web component managing individual layers within the EOxLayerControl system.
+ * This component encapsulates functionalities for handling layers, their properties, and associated tools within the OpenLayers map context.
  *
  * @element eox-layercontrol-layer
+ * @extends LitElement
  */
 export class EOxLayerControlLayer extends LitElement {
+  // Define static properties for the component
   static properties = {
     layer: { attribute: false },
     map: { attribute: false, state: true },
@@ -22,7 +25,9 @@ export class EOxLayerControlLayer extends LitElement {
   };
 
   /**
-   * @type Boolean
+   * Represents the current layer visibility based on zoom level.
+   *
+   * @type {Boolean}
    */
   currLayerVisibilityBasedOnZoom = true;
 
@@ -31,6 +36,7 @@ export class EOxLayerControlLayer extends LitElement {
 
     /**
      * The native OL layer
+     *
      * @type {import("ol/layer").Layer}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
@@ -38,6 +44,7 @@ export class EOxLayerControlLayer extends LitElement {
 
     /**
      * The native OL map
+     *
      * @type {import("ol").Map}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
      */
@@ -45,38 +52,53 @@ export class EOxLayerControlLayer extends LitElement {
 
     /**
      * The layer title property
+     *
+     * @type {String}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
+     *
+     * @type {Boolean}
      */
     this.showLayerZoomState = false;
 
     /**
-     * @type Array<string>
+     * Represents an array of tools.
+     *
+     * @type {Array<string>}
      */
     this.tools = [];
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
+
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = true;
   }
 
   /**
+   * Private method to get layer property by key if available.
    *
-   * @param {string} key
-   * @returns {any}
+   * @param {string} key - The key for the layer property.
+   * @returns {any} - The value of the layer property if exists, otherwise undefined.
    */
   #getLayer(key) {
     return this.layer?.get(key);
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
@@ -90,24 +112,40 @@ export class EOxLayerControlLayer extends LitElement {
   }
 
   /**
-   * @param {{target: { checked: boolean }}} evt - The input change event triggering the method.
+   * Handles the click event on the input element triggering the method.
+   *
+   * @param {{target: { checked: boolean }}} evt - The input change event.
    */
   #handleInputClick(evt) {
     inputClickMethod(evt, this);
   }
 
+  /**
+   * Renders layer controls and tools with conditional display based on certain properties.
+   * Conditionally renders layer visibility controls, title, and tools for the layer based on availability and settings.
+   * Styles are applied conditionally based on the 'unstyled' property.
+   */
   render() {
+    // Retrieve the visibility of the layer
     const visibility = this.layer.getVisible();
+
+    // Apply CSS classes based on the visibility and zoom state of the layer
     const visibilityClass = visibility ? "visible" : "";
     const layerZoomStateClass = !this.currLayerVisibilityBasedOnZoom
       ? "zoom-state-invisible"
       : "";
+
+    // Determine if the layer is disabled based on a specific control property
     const disableClass = this.#getLayer("layerControlDisable")
       ? "disabled"
       : "";
+
+    // Determine the input type (radio or checkbox) based on a specific control property
     const inputType = this.#getLayer("layerControlExclusive")
       ? "radio"
       : "checkbox";
+
+    // Check if tools are available for the layer
     const isToolsAvail = this.tools?.length > 0;
 
     return html`
@@ -118,13 +156,17 @@ export class EOxLayerControlLayer extends LitElement {
       ${when(
         this.layer,
         () => html`
+          <!-- Render the layer -->
           <div class="layer ${visibilityClass} ${layerZoomStateClass}">
             <label class="${disableClass}">
+              <!-- Input element for layer visibility -->
               <input
                 type=${inputType}
                 .checked=${live(visibility)}
                 @click=${this.#handleInputClick}
               />
+
+              <!-- Layer title -->
               <span class="title">${this.#getLayer(this.titleProperty)}</span>
               ${when(
                 isToolsAvail,
@@ -132,6 +174,8 @@ export class EOxLayerControlLayer extends LitElement {
               )}
             </label>
           </div>
+
+          <!-- Render layer tools -->
           <eox-layercontrol-layer-tools
             .noShadow=${true}
             .layer=${this.layer}
@@ -144,7 +188,6 @@ export class EOxLayerControlLayer extends LitElement {
   }
 
   #styleBasic = ``;
-
   #styleEOX = `
     ${checkbox}
     eox-layercontrol-layer {

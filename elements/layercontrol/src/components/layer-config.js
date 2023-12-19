@@ -5,11 +5,15 @@ import { dataChangeMethod } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
 
 /**
- * Layer configuration for an individual layer
+ * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
+ * It allows users to input data, modify layer settings, and update the UI based on those settings.
+ *
  *
  * @element eox-layercontrol-layerconfig
+ * @extends LitElement
  */
 export class EOxLayerControlLayerConfig extends LitElement {
+  // Define static properties for the component
   static properties = {
     layer: { attribute: false },
     unstyled: { type: Boolean },
@@ -19,18 +23,21 @@ export class EOxLayerControlLayerConfig extends LitElement {
 
   /**
    * data input by the user
+   *
    * @type {{[key: string]: any}}
    */
   #data = {};
 
   /**
    * data input by the user
+   *
    * @type {{[key: string]: any}}
    */
   #startVals = null;
 
   /**
    * Original tile url function, if it exist
+   *
    * @type {Function}
    */
   #originalTileUrlFunction;
@@ -40,6 +47,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
 
     /**
      * The native OL layer
+     *
      * @type {import("ol/layer").Layer}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
@@ -47,23 +55,29 @@ export class EOxLayerControlLayerConfig extends LitElement {
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = true;
 
     /**
      * Layer config for eox-jsonform
+     *
      * @type {{ schema: object, element: string }}
      */
     this.layerConfig = null;
   }
 
   /**
-   * Handle eox-jsonform change
+   * Handles changes in eox-jsonform values.
+   *
    *  @param  {{ detail: { value: string; }; }} e
    */
   #handleDataChange(e) {
@@ -76,12 +90,21 @@ export class EOxLayerControlLayerConfig extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * Renders a JSON form for configuration options of a layer.
+   */
   render() {
+    // Fetch initial values for the layer and its configuration
     this.#startVals = getStartVals(this.layer, this.layerConfig);
+
+    // Options for the JSON form rendering
     const options = {
       disable_edit_json: true,
       disable_collapse: true,
@@ -96,6 +119,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
       ${when(
         this.layerConfig,
         () => html`
+          <!-- Render a JSON form for layer configuration -->
           <eox-jsonform
             .schema=${this.layerConfig.schema}
             .startVals=${this.#startVals}

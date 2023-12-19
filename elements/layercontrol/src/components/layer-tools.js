@@ -3,7 +3,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
-import "./layerConfig";
+import "./layer-config";
 import "./tabs";
 import { button } from "../../../../utils/styles/button";
 import { radio } from "../../../../utils/styles/radio";
@@ -18,11 +18,14 @@ import {
 } from "../helpers";
 
 /**
- * Layer tools
+ * EOxLayerControlLayerTools - Custom element to display tools and actions for a given OpenLayers layer.
+ * Manages rendering tools and actions such as remove, sort, information display, layer configuration, and opacity adjustment.
  *
  * @element eox-layercontrol-layer-tools
+ * @extends LitElement
  */
 export class EOxLayerControlLayerTools extends LitElement {
+  // Define static properties for the component
   static properties = {
     layer: { attribute: false },
     tools: { attribute: false },
@@ -35,46 +38,73 @@ export class EOxLayerControlLayerTools extends LitElement {
 
     /**
      * The native OL layer
+     *
      * @type {import("ol/layer").Layer}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
     this.layer = null;
 
     /**
-     * @type Array<string>
+     * Represents an array of tools.
+     *
+     * @type {Array<string>}
      */
     this.tools = [];
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = true;
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  // Initializes '_removeButton' invoking 'removeButton' function with 'this' context.
   _removeButton = removeButton(this);
 
+  // Initializes '_sortButton' invoking 'sortButton' function with 'unstyled' property as a parameter.
   _sortButton = sortButton(this.unstyled);
 
+  /**
+   * Initializes '_button' as a function accepting 'tool' parameter to generate a Button.
+   * Uses 'this.unstyled' as a context parameter for Button generation.
+   *
+   * @param {string} tool - Tool parameter for Button generation.
+   * @returns {import("lit").HTMLTemplateResult} - The generated Button element.
+   */
   _button = (tool) => Button(tool, this.unstyled);
 
   render() {
+    // Obtain actions and tools based on this.tools and this.layer
     const actions = _parseActions(this.tools, this.layer);
     const tools = _parseTools(this.tools, this.layer);
+
+    // Determine the single action element if only one action is present
     // @ts-ignore
     const singleActionEle = this[`_${actions?.[0]}Button`];
+
+    // Determine icon class based on the number of tools
     const iconClass = this.tools?.length === 1 ? `${this.tools[0]}-icon` : "";
+
+    // Determine the number of actions and tools for conditional rendering
     const actionsLen = actions?.length;
     const toolsLen = tools?.length;
 
+    // Render the HTML template based on the conditions
     return html`
       <style>
         ${this.#styleBasic}
@@ -104,11 +134,14 @@ export class EOxLayerControlLayerTools extends LitElement {
                   .tabs=${tools}
                   .unstyled=${this.unstyled}
                 >
+                  <!-- Rendering tabs and content -->
                   ${map(tools, (tool) => this._button(tool))}
+
                   <div slot="info-content">
                     ${unsafeHTML(this.layer.get("description"))}
                   </div>
                   <div slot="opacity-content">
+                    <!-- Input for opacity -->
                     <input
                       type="range"
                       min="0"
@@ -121,6 +154,7 @@ export class EOxLayerControlLayerTools extends LitElement {
                     />
                   </div>
                   <div slot="config-content">
+                    <!-- Layer configuration -->
                     <eox-layercontrol-layerconfig
                       slot="config-content"
                       .layer=${this.layer}

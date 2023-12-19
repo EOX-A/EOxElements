@@ -5,7 +5,7 @@ import { cleanJSONInput } from "../../helpers";
  * Parses the layers input into JSON format and adds or updates the layers accordingly.
  * Supports both single and multiple layer additions.
  *
- * @param {import("../../components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ * @param {import("../../components/add-layers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
  */
 const addLayer = (EoxLayerControlAddLayers) => {
   /**

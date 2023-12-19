@@ -3,7 +3,7 @@
  * and updates the stored URL input.
  *
  * @param {Event} evt - The input change event.
- * @param {import("../../components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ * @param {import("../../components/add-layers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
  */
 const urlInputChange = (evt, EoxLayerControlAddLayers) => {
   // Update the stored URL input value in the EOxLayerControlAddLayers instance

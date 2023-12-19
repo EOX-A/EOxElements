@@ -5,7 +5,7 @@ import { detectMapURLType } from "../../helpers";
  * properties based on the provided layer.
  *
  * @param {{"Name": string}} layer - The layer information to handle.
- * @param {import("../../components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
+ * @param {import("../../components/add-layers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
  */
 const urlLayer = (layer, EoxLayerControlAddLayers) => {
   // Extract the 'Name' property from the provided layer

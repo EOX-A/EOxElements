@@ -4,7 +4,7 @@ import _debounce from "lodash.debounce";
 /**
  * Handles updating and triggering events when the layers change length upon component update.
  *
- * @param {import("../../components/layerList").EOxLayerControlLayerList} EOxLayerControlLayerList - The EOxLayerControlLayerList object containing layers.
+ * @param {import("../../components/layer-list").EOxLayerControlLayerList} EOxLayerControlLayerList - The EOxLayerControlLayerList object containing layers.
  */
 const updateMethod = (EOxLayerControlLayerList) => {
   // Destructuring layers from the EOxLayerControlLayerList object

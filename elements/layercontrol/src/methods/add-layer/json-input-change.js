@@ -2,7 +2,7 @@
  * Handles changes in the input field, parsing entered data into JSON format.
  *
  * @param {{target: { value: string }}} evt - The input change event.
- * @param {import("../../components/addLayers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
+ * @param {import("../../components/add-layers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers
  */
 const jsonInputChange = (evt, EoxLayerControlAddLayers) => {
   // Update the stored layers input with the cleaned JSON data

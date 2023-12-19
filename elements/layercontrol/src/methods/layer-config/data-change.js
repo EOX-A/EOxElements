@@ -6,7 +6,7 @@ import { updateUrl } from "../../helpers";
  *
  * @param {{[key: string]: any}} data - The updated data to be applied to the layer.
  * @param {Function} tileUrlFunc - The function generating the tile URL for the layer.
- * @param {import("../../components/layerConfig").EOxLayerControlLayerConfig} EOxLayerControlLayerConfig - Instance of EOxLayerControlLayer.
+ * @param {import("../../components/layer-config").EOxLayerControlLayerConfig} EOxLayerControlLayerConfig - Instance of EOxLayerControlLayer.
  * @return {Function} - New function generating the tile URL for the layer.
  */
 const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {

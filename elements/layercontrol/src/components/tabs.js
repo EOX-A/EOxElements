@@ -3,6 +3,7 @@ import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 
 export class EOxLayerControlTabs extends LitElement {
+  // Define static properties for the component
   static properties = {
     actions: { attribute: false },
     selectedTab: { state: true },
@@ -16,7 +17,8 @@ export class EOxLayerControlTabs extends LitElement {
 
     /**
      * List of action ids
-     * @type Array<string>
+     *
+     * @type {Array<String>}
      */
     this.actions = [];
 
@@ -24,21 +26,29 @@ export class EOxLayerControlTabs extends LitElement {
 
     /**
      * List of tab ids
-     * @type Array<string>
+     *
+     * @type {Array<String>}
      */
     this.tabs = [];
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = true;
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
@@ -46,6 +56,10 @@ export class EOxLayerControlTabs extends LitElement {
   /** @param {number} index */
   #labelHighlightClass = (index) => this.selectedTab === index && "highlighted";
 
+  /**
+   * Renders a tabbed interface that displays tabs and corresponding content areas based on the provided 'tabs' and 'actions'.
+   * It sets up navigation for switching between tabs and offers customizable icons for tabs and actions.
+   */
   render() {
     const tabs = this.tabs;
     const actions = this.actions;
@@ -57,11 +71,13 @@ export class EOxLayerControlTabs extends LitElement {
         ${!this.unstyled && this.#styleEOX}
       </style>
       <div class="tabbed">
+        <!-- Navigation for tabs and actions -->
         ${when(
           isListAvail,
           () => html`
             <nav>
               <div>
+                <!-- Labels for tabs -->
                 ${map(
                   tabs,
                   (tab, index) =>
@@ -70,17 +86,20 @@ export class EOxLayerControlTabs extends LitElement {
                         class=${this.#labelHighlightClass(index)}
                         @click=${() => (this.selectedTab = index)}
                       >
+                        <!-- Customizable icon for each tab -->
                         <slot name=${`${tab}-icon`}>${tab}</slot>
                       </label>
                     `
                 )}
               </div>
               <div>
+                <!-- Icons for actions -->
                 ${map(
                   actions,
                   (action) =>
                     html`
                       <span>
+                        <!-- Customizable icon for each action -->
                         <slot name=${`${action}-icon`}>${action}</slot>
                       </span>
                     `
@@ -90,10 +109,12 @@ export class EOxLayerControlTabs extends LitElement {
           `
         )}
         <figure>
+          <!-- Content for each tab -->
           ${map(
             tabs,
             (tab, index) => html`
               <div class="tab ${this.#labelHighlightClass(index)}">
+                <!-- Content slot for each tab -->
                 <slot name=${`${tab}-content`}>${tab}</slot>
               </div>
             `
