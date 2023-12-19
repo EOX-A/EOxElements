@@ -19,7 +19,7 @@ const addExternalLayers = () => {
         // Input the URL to fetch layers and select the first layer in the list
         cy.get(".add-url").type("https://ows.mundialis.de/services/service");
         cy.get(".search-icon").click();
-        cy.wait(1500); // Awaiting response
+        cy.wait(2000); // eslint-disable-line
 
         // Select and capture the name of the added layer
         cy.get(".add-layer-icon").first().click();
