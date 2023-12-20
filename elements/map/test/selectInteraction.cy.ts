@@ -49,6 +49,7 @@ describe("select interaction on click", () => {
       });
     });
   });
+
   it("adds a select interaction to Vector layer", () => {
     cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
       fixture: "/ecoregions.json",
@@ -56,6 +57,7 @@ describe("select interaction on click", () => {
     const styleJson = JSON.parse(
       JSON.stringify(vectorLayerJson)
     ) as Array<EoxLayer>;
+    styleJson[0].minZoom = 3;
     styleJson[0].interactions = [
       {
         type: "select",

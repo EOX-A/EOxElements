@@ -23,23 +23,26 @@
     }
   ],
   "stac_extensions": [
-    "https://stac-extensions.github.io/osc/v1.0.0-rc.2/schema.json"
+    "https://stac-extensions.github.io/osc/v1.0.0-rc.3/schema.json",
+    "https://stac-extensions.github.io/cf/v0.2.0/schema.json"
   ],
   "title": "SL-ABS: Absolute Sea Level Heights_Baltics_Multimission",
   "osc:themes": ["Oceans"],
   "osc:missions": ["GOCE", "Sentinel-1", "GLONASS"],
-  "osc:project": "BALTIC+ Geodetic SAR for Baltic Height System Unification (SAR-HSU)",
+  "osc:project": "sar-hsu",
   "osc:variables": ["Sea Surface Height Anomaly (SSHA)"],
   "osc:status": "ongoing",
-  "osc:region": "Baltics",
   "osc:type": "product",
-  "osc:standard_name": "absolute_sea_level_heights",
+  "cf:parameter": [
+    {
+      "name": "absolute_sea_level_heights"
+    }
+  ],
+  "osc:region": "Baltics",
   "created": "2021-07-07T00:00:00Z",
-  "start_datetime": "2020-01-01T00:00:00Z",
-  "end_datetime": "2020-12-31T23:59:59Z",
   "extent": {
     "spatial": {
-      "bbox": [9.0405918788, 53.8666553578, 31.3371258934, 66.1535071282]
+      "bbox": [[9.0405918788, 53.8666553578, 31.3371258934, 66.1535071282]]
     },
     "temporal": {
       "interval": [["2020-01-01T00:00:00Z", "2020-12-31T23:59:59Z"]]

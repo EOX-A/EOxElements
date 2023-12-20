@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.12.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.12.0...itemfilter-v0.12.1) (2023-12-20)
+
+
+### Bug Fixes
+
+* StyleOverride access to selectionlist ([#536](https://github.com/EOX-A/EOxElements/issues/536)) ([8620f93](https://github.com/EOX-A/EOxElements/commit/8620f93d417215b6cf34a4c848eb59818d950353))
+
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.2...itemfilter-v0.12.0) (2023-12-18)
+
+
+### Features
+
+* Custom ordering for select and multi select filters ([#526](https://github.com/EOX-A/EOxElements/issues/526)) ([b0ddf52](https://github.com/EOX-A/EOxElements/commit/b0ddf522fc2d4c6850bcf0761406f4f5f1155ddd))
+
 ## [0.11.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.11.1...itemfilter-v0.11.2) (2023-12-07)
 
 

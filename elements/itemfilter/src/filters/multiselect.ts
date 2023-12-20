@@ -33,9 +33,13 @@ export class EOxItemFilterMultiselect extends LitElement {
     return this;
   }
 
-  _getItems(): FilterObject[] {
+  _getItems(): Item[] {
+    const sortCallback =
+      "sort" in this.filterObject
+        ? this.filterObject.sort
+        : (a: string, b: string) => a.localeCompare(b);
     return Object.keys(this.filterObject.state)
-      .sort((a, b) => a.localeCompare(b))
+      .sort(sortCallback)
       .map((i) => ({
         id: i,
         title: i.replace(/^./, i[0].toUpperCase()),
@@ -83,6 +87,7 @@ export class EOxItemFilterMultiselect extends LitElement {
           `,
           () => html`
             <eox-selectionlist
+              .noShadow=${!this.inline}
               multiple
               .items=${this._getItems()}
               .selectedItems=${this._getSelectedItems()}
