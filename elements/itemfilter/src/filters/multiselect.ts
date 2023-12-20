@@ -87,6 +87,7 @@ export class EOxItemFilterMultiselect extends LitElement {
           `,
           () => html`
             <eox-selectionlist
+              .noShadow=${!this.inline}
               multiple
               .items=${this._getItems()}
               .selectedItems=${this._getSelectedItems()}

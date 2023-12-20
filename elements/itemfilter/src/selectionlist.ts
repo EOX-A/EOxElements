@@ -27,6 +27,9 @@ export class EOxSelectionlist extends LitElement {
   @property({ type: Boolean })
   unstyled = false;
 
+  @property({ type: Boolean })
+  noShadow = false;
+
   @state()
   _currentHighlight: FilterObject = null;
 
@@ -151,6 +154,10 @@ export class EOxSelectionlist extends LitElement {
         this._currentHighlight = null;
       }
     }
+  }
+
+  protected createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
