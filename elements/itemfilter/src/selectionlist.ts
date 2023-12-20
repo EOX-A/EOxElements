@@ -27,7 +27,7 @@ export class EOxSelectionlist extends LitElement {
   @property({ type: Boolean })
   unstyled = false;
 
-  @property({ attribute: "no-shadow", type: Boolean })
+  @property({ type: Boolean })
   noShadow = false;
 
   @state()

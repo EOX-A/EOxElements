@@ -87,7 +87,7 @@ export class EOxItemFilterSelect extends LitElement {
           `,
           () => html`
             <eox-selectionlist
-              ?no-shadow=${!this.inline}
+              ?noShadow=${!this.inline}
               .items=${this._getItems()}
               .selectedItems=${this._getSelectedItems()}
               .unstyled=${this.unstyled}
