@@ -1,4 +1,4 @@
-var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enumerable:!0,configurable:!0,writable:!0,value:r}):t[e]=r;var P=(t,e,r)=>(Fn(t,typeof e!="symbol"?e+"":e,r),r),ir=(t,e,r)=>{if(!e.has(t))throw TypeError("Cannot "+r)};var O=(t,e,r)=>(ir(t,e,"read from private field"),r?r.call(t):e.get(t)),_=(t,e,r)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,r)},Ue=(t,e,r,o)=>(ir(t,e,"write to private field"),o?o.call(t,r):e.set(t,r),r);var J=(t,e,r)=>(ir(t,e,"access private method"),r);var ar=(t,e)=>Pr(Dr(t,"raw",{value:Pr(e||t.slice())}));import{w as yt,T as te,s as ce,x as m}from"./lit-element-Qm8PRmVu.js";import"./sources-JcERCNxJ.js";import"./main-7OiawLgd.js";import{n as re,o as St,a as Yn}from"./unsafe-html-ZhFXPF0T.js";import{_ as jn,c as zn}from"./index-HR78oL6N.js";import{e as Xn,i as kn,t as Te}from"./directive-xgBC_cM0.js";import{f as Wn,m as qn}from"./directive-helpers-k6EzVOeb.js";import"./main-W6pHctbP.js";import{b as Gn}from"./button-KPw86qfe.js";import{r as Jn,c as Qo,s as Kn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-gqtD6auJ.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**!
+var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enumerable:!0,configurable:!0,writable:!0,value:r}):t[e]=r;var P=(t,e,r)=>(Fn(t,typeof e!="symbol"?e+"":e,r),r),ir=(t,e,r)=>{if(!e.has(t))throw TypeError("Cannot "+r)};var O=(t,e,r)=>(ir(t,e,"read from private field"),r?r.call(t):e.get(t)),_=(t,e,r)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,r)},Ue=(t,e,r,o)=>(ir(t,e,"write to private field"),o?o.call(t,r):e.set(t,r),r);var J=(t,e,r)=>(ir(t,e,"access private method"),r);var ar=(t,e)=>Pr(Dr(t,"raw",{value:Pr(e||t.slice())}));import{w as yt,T as te,s as ce,x as m}from"./lit-element-Qm8PRmVu.js";import"./sources-oJfHnfeB.js";import"./main-7OiawLgd.js";import{n as re,o as St,a as Yn}from"./unsafe-html-ZhFXPF0T.js";import{_ as jn,c as zn}from"./index-HR78oL6N.js";import{e as Xn,i as kn,t as Te}from"./directive-xgBC_cM0.js";import{f as Wn,m as qn}from"./directive-helpers-k6EzVOeb.js";import"./main-W6pHctbP.js";import{b as Gn}from"./button-KPw86qfe.js";import{r as Jn,c as Qo,s as Kn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-xTaAQRSr.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**!
  * Sortable 1.15.1
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
@@ -12,7 +12,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const Tn=Xn(class extends kn{constructor(t){if(super(t),t.type!==Te.PROPERTY&&t.type!==Te.ATTRIBUTE&&t.type!==Te.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!Wn(t))throw Error("`live` bindings can only contain a single expression")}render(t){return t}update(t,[e]){if(e===yt||e===te)return e;const r=t.element,o=t.name;if(t.type===Te.PROPERTY){if(e===r[o])return yt}else if(t.type===Te.BOOLEAN_ATTRIBUTE){if(!!e===r.hasAttribute(o))return yt}else if(t.type===Te.ATTRIBUTE&&r.getAttribute(o)===e+"")return yt;return qn(t),e}});var lt,dt,De,It,On,Nt,Vt;class _n extends ce{constructor(){super();_(this,It);_(this,lt,{});_(this,dt,null);_(this,De,void 0);_(this,Nt,"");_(this,Vt,"");this.layer=null,this.unstyled=!1,this.noShadow=!0,this.layerConfig=null}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return this.layerConfig?(Ue(this,dt,wa(this.layer,this.layerConfig)),m`
+ */const Tn=Xn(class extends kn{constructor(t){if(super(t),t.type!==Te.PROPERTY&&t.type!==Te.ATTRIBUTE&&t.type!==Te.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!Wn(t))throw Error("`live` bindings can only contain a single expression")}render(t){return t}update(t,[e]){if(e===yt||e===te)return e;const r=t.element,o=t.name;if(t.type===Te.PROPERTY){if(e===r[o])return yt}else if(t.type===Te.BOOLEAN_ATTRIBUTE){if(!!e===r.hasAttribute(o))return yt}else if(t.type===Te.ATTRIBUTE&&r.getAttribute(o)===e+"")return yt;return qn(t),e}});var lt,dt,De,It,On,Nt,Vt;class _n extends ce{constructor(){super();_(this,It);_(this,lt,{});_(this,dt,null);_(this,De,void 0);_(this,Nt,"");_(this,Vt,"");this.layer=null,this.unstyled=!1,this.noShadow=!1,this.layerConfig=null}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return this.layerConfig?(Ue(this,dt,wa(this.layer,this.layerConfig)),m`
       <style>
         ${O(this,Nt)}
         ${!this.unstyled&&O(this,Vt)}
@@ -64,7 +64,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
       background: #00417011;
       border-top: 1px solid #0041701a;
     }
-  `);this.actions=[],this.selectedTab=0,this.tabs=[],this.unstyled=!1,this.noShadow=!0}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
+  `);this.actions=[],this.selectedTab=0,this.tabs=[],this.unstyled=!1,this.noShadow=!1}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
       <style>
         ${O(this,Ht)}
         ${!this.unstyled&&O(this,Bt)}
@@ -204,7 +204,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
     [slot=opacity-content] {
       padding: 12px 6px;
     }
-  `);this.layer=null,this.tools=[],this.unstyled=!1,this.noShadow=!0}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){var r,o;return m`
+  `);this.layer=null,this.tools=[],this.unstyled=!1,this.noShadow=!1}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){var r,o;return m`
       <style>
         ${O(this,Zt)}
         ${!this.unstyled&&O(this,Ut)}
@@ -310,7 +310,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
     [data-type=draw] .title::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230041703a' viewBox='0 0 24 24'%3E%3Ctitle%3Evector-square-edit%3C/title%3E%3Cpath d='M22.7 14.4L21.7 15.4L19.6 13.3L20.6 12.3C20.8 12.1 21.2 12.1 21.4 12.3L22.7 13.6C22.9 13.8 22.9 14.1 22.7 14.4M13 19.9L19.1 13.8L21.2 15.9L15.1 22H13V19.9M11 19.9V19.1L11.6 18.5L12.1 18H8V16H6V8H8V6H16V8H18V12.1L19.1 11L19.3 10.8C19.5 10.6 19.8 10.4 20.1 10.3V8H22.1V2H16.1V4H8V2H2V8H4V16H2V22H8V20L11 19.9M18 4H20V6H18V4M4 4H6V6H4V4M6 20H4V18H6V20Z' /%3E%3C/svg%3E");
     }
-  `);this.layer=null,this.map=null,this.titleProperty="title",this.showLayerZoomState=!1,this.tools=[],this.unstyled=!1,this.noShadow=!0}updateLayerZoomVisibility(){const r=ba(this.layer,this.map,this.showLayerZoomState);let o=!1;!r&&this.currLayerVisibilityBasedOnZoom?(this.currLayerVisibilityBasedOnZoom=!1,o=!0):r&&!this.currLayerVisibilityBasedOnZoom&&(this.currLayerVisibilityBasedOnZoom=!0,o=!0),o&&(this.requestUpdate(),this.dispatchEvent(new CustomEvent("change:resolution",{bubbles:!0})))}firstUpdated(){Sn(this.layer,this.showLayerZoomState)&&(this.updateLayerZoomVisibility(),this.map.getView().on("change:resolution",()=>this.updateLayerZoomVisibility()))}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
+  `);this.layer=null,this.map=null,this.titleProperty="title",this.showLayerZoomState=!1,this.tools=[],this.unstyled=!1,this.noShadow=!1}updateLayerZoomVisibility(){const r=ba(this.layer,this.map,this.showLayerZoomState);let o=!1;!r&&this.currLayerVisibilityBasedOnZoom?(this.currLayerVisibilityBasedOnZoom=!1,o=!0):r&&!this.currLayerVisibilityBasedOnZoom&&(this.currLayerVisibilityBasedOnZoom=!0,o=!0),o&&(this.requestUpdate(),this.dispatchEvent(new CustomEvent("change:resolution",{bubbles:!0})))}firstUpdated(){Sn(this.layer,this.showLayerZoomState)&&(this.updateLayerZoomVisibility(),this.map.getView().on("change:resolution",()=>this.updateLayerZoomVisibility()))}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
       <style>
         ${O(this,Ft)}
         ${!this.unstyled&&O(this,Yt)}
@@ -360,7 +360,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
     details[open] > summary:before {
       transform: rotate(90deg);
     }
-  `);this.group=null,this.idProperty="id",this.map=null,this.titleProperty="title",this.showLayerZoomState=!1,this.tools=[],this.unstyled=!1,this.noShadow=!0}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
+  `);this.group=null,this.idProperty="id",this.map=null,this.titleProperty="title",this.showLayerZoomState=!1,this.tools=[],this.unstyled=!1,this.noShadow=!1}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
       <style>
         ${O(this,jt)}
         ${!this.unstyled&&O(this,zt)}
@@ -420,7 +420,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
     }
     li.sortable-ghost {
     }
-  `);this.idProperty="id",this.layers=null,this.map=null,this.tools=void 0,this.titleProperty="title",this.showLayerZoomState=!1,this.unstyled=!1,this.noShadow=!0}firstUpdated(){this.layers&&(ma(this.layers,this.idProperty,this.titleProperty),ga(this.renderRoot.querySelector("ul"),this.layers,this.idProperty,this))}updated(){var r;this.layers&&(this.layers.hasListener("change:length")&&((r=this.layers)==null||r.un("change:length",O(this,ut))),this.layers.on("change:length",O(this,ut)))}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
+  `);this.idProperty="id",this.layers=null,this.map=null,this.tools=void 0,this.titleProperty="title",this.showLayerZoomState=!1,this.unstyled=!1,this.noShadow=!1}firstUpdated(){this.layers&&(ma(this.layers,this.idProperty,this.titleProperty),ga(this.renderRoot.querySelector("ul"),this.layers,this.idProperty,this))}updated(){var r;this.layers&&(this.layers.hasListener("change:length")&&((r=this.layers)==null||r.un("change:length",O(this,ut))),this.layers.on("change:length",O(this,ut)))}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
       <style>
         ${O(this,kt)}
         ${!this.unstyled&&O(this,Wt)}
@@ -461,7 +461,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
               `)}
           `)}
       </ul>
-    `}}ut=new WeakMap,Xt=new WeakMap,kt=new WeakMap,Wt=new WeakMap,P(Dn,"properties",{idProperty:{attribute:"id-property"},layers:{attribute:!1},map:{attribute:!1,state:!0},titleProperty:{attribute:"title-property",type:String},showLayerZoomState:{attribute:"show-layer-zoom-state",type:Boolean},tools:{attribute:!1},unstyled:{type:Boolean},noShadow:{type:Boolean}});customElements.define("eox-layercontrol-layer-list",Dn);class Mn extends ce{constructor(){super(),this.idProperty="id",this.layers=null,this.titleProperty="title",this.unstyled=!1,this.noShadow=!0}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
+    `}}ut=new WeakMap,Xt=new WeakMap,kt=new WeakMap,Wt=new WeakMap,P(Dn,"properties",{idProperty:{attribute:"id-property"},layers:{attribute:!1},map:{attribute:!1,state:!0},titleProperty:{attribute:"title-property",type:String},showLayerZoomState:{attribute:"show-layer-zoom-state",type:Boolean},tools:{attribute:!1},unstyled:{type:Boolean},noShadow:{type:Boolean}});customElements.define("eox-layercontrol-layer-list",Dn);class Mn extends ce{constructor(){super(),this.idProperty="id",this.layers=null,this.titleProperty="title",this.unstyled=!1,this.noShadow=!1}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){return m`
       <label for="optional">Optional layers</label>
 
       <select name="optional" data-cy="optionalLayers">
@@ -614,7 +614,7 @@ var Pr=Object.freeze,Dr=Object.defineProperty;var Fn=(t,e,r)=>e in t?Dr(t,e,{enu
       font-weight: bold;
       display: inline-block;
     }
-  `);this.eoxMap=null,this.unstyled=!1,this.noShadow=!0}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){const r=this.open?"open":"close",o=this.open==="url",n=this.open==="json";return m`
+  `);this.eoxMap=null,this.unstyled=!1,this.noShadow=!1}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){const r=this.open?"open":"close",o=this.open==="url",n=this.open==="json";return m`
       <style>
         ${O(this,Qt)}
         ${!this.unstyled&&O(this,er)}
