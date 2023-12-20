@@ -65,7 +65,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
      *
      * @type {Boolean}
      */
-    this.noShadow = true;
+    this.noShadow = false;
 
     /**
      * Layer config for eox-jsonform

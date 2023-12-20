@@ -83,7 +83,7 @@ export class EOxLayerControlLayerList extends LitElement {
      *
      * @type {Boolean}
      */
-    this.noShadow = true;
+    this.noShadow = false;
   }
 
   /**
