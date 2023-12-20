@@ -272,7 +272,8 @@ describe("LayerControl", () => {
           cy.get(".add-icon").click();
           cy.get(".eox-add").should("have.class", "open");
           cy.get(".add-url").type("https://ows.mundialis.de/services/service");
-          cy.get(".search-icon").click();
+          cy.get(".search-icon").as("apibtn").click();
+          cy.get("@apibtn").should("not.be.disabled");
           cy.get(".add-layer-icon").first().click();
           cy.get(".search-list")
             .first()
