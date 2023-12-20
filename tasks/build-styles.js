@@ -11,8 +11,6 @@ const sass = require("sass");
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 
-const { default: minifyCssString } = require("minify-css-string");
-
 const options = yargs(hideBin(process.argv)).argv;
 
 // given an npm script run like:
@@ -94,7 +92,7 @@ styleFiles.forEach((filePath) => {
 
       // write the final file back to its location next to the
       // original .css/.scss file
-      fs.writeFileSync(styleTSFilePath, minifyCssString(cssToTSContents));
+      fs.writeFileSync(styleTSFilePath, cssToTSContents);
     });
 });
 
@@ -141,12 +139,13 @@ postcss([
   .then((result) => {
     // write your "css module" syntax
     // here its TS
-    const cssToTSContents =
-      "import { css } from 'lit'; export default css`" +
-      result.css.replace(/`/g, "") +
-      "`; ";
+
+    const cssToTSContents = `
+    import { css } from 'lit';
+    export default css\`${result.css.replace(/`/g, "").replace(/\\/g, "")}\`;
+ `;
 
     // write the final file back to its location next to the
     // original .css/.scss file
-    fs.writeFileSync(styleTSFilePath, minifyCssString(cssToTSContents));
+    fs.writeFileSync(styleTSFilePath, cssToTSContents);
   });

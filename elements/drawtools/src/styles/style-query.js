@@ -24,10 +24,7 @@ export default function styleQuery(
 ) {
   return `
         ${!unstyled && styleEOX}
-        ${
-          //@ts-ignore
-          !unstyled && styleTailwind._strings.raw[0]
-        }
+        ${!unstyled && styleTailwind}
         ${(!unstyled && styleName && styles[styleName]) || ""}
         ${styleOverride?.["all"] ? styleOverride["all"] : ""}
         ${styleOverride?.[componentName] ? styleOverride[componentName] : ""}
