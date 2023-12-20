@@ -46,7 +46,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     /**
      * Renders the element without a shadow root
      */
-    this.noShadow = true;
+    this.noShadow = false;
   }
 
   /**

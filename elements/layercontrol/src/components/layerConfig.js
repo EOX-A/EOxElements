@@ -51,7 +51,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
     /**
      * Renders the element without a shadow root
      */
-    this.noShadow = true;
+    this.noShadow = false;
 
     /**
      * Layer config for eox-jsonform
