@@ -2,11 +2,9 @@
 
 A Web Component collection of geospatial UI elements, crafted by EOX.
 
-Note: The main branch of this project contains the v2 version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).
-
 ## Documentation, Examples
 
-Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements) (currently WIP).
+Please find [descriptions, API docs and interactive examples here](https://eox-a.github.io/EOxElements).
 
 ## Elements
 
@@ -64,7 +62,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>Map with powerful tools & helpers</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-map--docs">Docs & Examples</a></td>
     <td><a href="elements/map/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/map.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/stacinfo/">eox-stacinfo</a></td>
@@ -222,3 +220,7 @@ npm run clean
 --> deletes all node_module folders
 npm install
 ```
+
+## Previous versions
+
+The main branch of this project contains the v2 version of EOxElements. For the (legacy) v1 EOxElements, please see the [v1 branch](https://github.com/EOX-A/elements/tree/v1).

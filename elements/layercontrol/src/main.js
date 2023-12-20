@@ -1,7 +1,8 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import "./components/layerList";
 import "./components/optionalList";
+import "./components/addLayers";
 import { filterLayers } from "./helpers";
 
 /**
@@ -44,9 +45,15 @@ export class EOxLayerControl extends LitElement {
     titleProperty: { attribute: "title-property", type: String },
     showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
     tools: { attribute: false },
+    addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
   };
+
+  /**
+   * @type import("../../map/main").EOxMap
+   */
+  #eoxMap;
 
   constructor() {
     super();
@@ -84,6 +91,11 @@ export class EOxLayerControl extends LitElement {
     this.tools = ["info", "opacity", "config", "remove", "sort"];
 
     /**
+     * Enable-disable external layer
+     */
+    this.addExternalLayers = false;
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
@@ -104,6 +116,11 @@ export class EOxLayerControl extends LitElement {
     }
   }
 
+  firstUpdated() {
+    const mapQuery = document.querySelector(this.for);
+    this.#eoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
+  }
+
   render() {
     return html`
       <style>
@@ -111,6 +128,16 @@ export class EOxLayerControl extends LitElement {
         ${!this.unstyled && this.#styleEOX}
         ${this.styleOverride}
       </style>
+      ${this.addExternalLayers
+        ? when(
+            this.#eoxMap?.addOrUpdateLayer,
+            () => html`<eox-layercontrol-add-layers
+              .noShadow=${true}
+              .eoxMap=${this.#eoxMap}
+              .unstyled=${this.unstyled}
+            ></eox-layercontrol-add-layers>`
+          )
+        : nothing}
       ${when(
         this.map,
         () => html`

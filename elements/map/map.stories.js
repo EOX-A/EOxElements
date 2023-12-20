@@ -1,4 +1,5 @@
 import { html } from "lit";
+import "./src/plugins/advancedLayersAndSources/index";
 import "./main";
 
 export default {
@@ -352,5 +353,27 @@ export const ABCompare = {
           .layers=${args.layersB}
         ></eox-map>
       </eox-map-compare>
+    `,
+};
+
+export const ConfigObject = {
+  args: {
+    config: {
+      controls: {
+        Zoom: {},
+      },
+      layers: [{ type: "Tile", source: { type: "OSM" } }],
+      view: {
+        center: [16.8, 48.2],
+        zoom: 9,
+      },
+    },
+  },
+  render: (args) =>
+    html`
+      <eox-map
+        style="width: 100%; height: 300px;"
+        .config=${args.config}
+      ></eox-map>
     `,
 };

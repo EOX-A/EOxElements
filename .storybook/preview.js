@@ -35,6 +35,22 @@ const preview = {
     docs: {
       toc: true,
       page: DocumentationTemplate,
+      source: {
+        transform: (code, storyContext) => {
+          return code.replace(
+            `<${storyContext.component}`,
+            `<${storyContext.component} ${Object.entries(storyContext.args)
+              .filter(([key]) => key !== "onLoadend")
+              .map(
+                ([key, value], index, row) =>
+                  `\n .${key}='\${${JSON.stringify(value)}}'${
+                    index + 1 === row.length ? "\n" : ""
+                  }`
+              )
+              .join("")}`
+          );
+        },
+      },
     },
   },
 };

@@ -18,6 +18,7 @@ declare type FilterObject = {
   key?: string;
   keys?: string[];
   reset?: () => void;
+  sort?: (a: string, b: string) => number;
   state?: FilterState;
   stringifiedState?: string;
   title?: string;

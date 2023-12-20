@@ -1,4 +1,5 @@
 import { html } from "lit";
+import "../src/plugins/advancedLayersAndSources/index";
 import "../main";
 import stacLayerJson from "./stacLayer.json";
 

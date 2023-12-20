@@ -5,3 +5,11 @@ declare global {
 
 declare module "*.css";
 declare module "vite";
+
+declare global {
+  interface Window {
+    eoxMapAdvancedOlFormats: any;
+    eoxMapAdvancedOlLayers: any;
+    eoxMapAdvancedOlSources: any;
+  }
+}
