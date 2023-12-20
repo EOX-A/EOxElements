@@ -1,8 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import "./components/list";
 import "./components/controller";
-import { style } from "./style";
-import { styleEOX } from "./style.eox";
+import styleQuery from "./styles/style-query";
 import {
   onDrawEndMethod,
   startDrawingMethod,
@@ -25,6 +24,7 @@ export class EOxDrawTools extends LitElement {
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
+      styleOverride: { attribute: false, type: Object },
       drawnFeatures: { attribute: false, state: true, type: Array },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
@@ -110,6 +110,13 @@ export class EOxDrawTools extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Style override for all the eox components
+     *
+     * @type {{[key: string]: string}}
+     */
+    this.styleOverride = null;
   }
 
   /**
@@ -168,18 +175,23 @@ export class EOxDrawTools extends LitElement {
 
   // Render method for UI display
   render() {
+    const style = styleQuery(
+      this.unstyled,
+      this.styleOverride,
+      null,
+      "eox-drawtools"
+    );
     return html`
       <style>
         ${style}
-        ${!this.unstyled && styleEOX}
       </style>
-
       <!-- Controller Component -->
       <eox-drawtools-controller
         .drawFunc=${{
           start: () => this.handleStartDrawing(),
           discard: () => this.handleDiscardDrawing(),
         }}
+        .styleOverride=${this.styleOverride}
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
@@ -196,6 +208,7 @@ export class EOxDrawTools extends LitElement {
             .drawnFeatures=${this.drawnFeatures}
             .modify=${this.modify}
             .unstyled=${this.unstyled}
+            .styleOverride=${this.styleOverride}
             @changed=${() => this.requestUpdate()}
           ></eox-drawtools-list>`
         : nothing}

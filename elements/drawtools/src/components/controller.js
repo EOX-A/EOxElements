@@ -1,8 +1,6 @@
 import { LitElement, html, nothing } from "lit";
-import { styleEOX } from "../style.eox";
 import { updateButtonStatesMethod } from "../methods/controller";
-import ListStyle from "./list.style";
-import MainStyle from "../main.style";
+import styleQuery from "../styles/style-query";
 
 /**
  * Controller component for drawing features
@@ -17,6 +15,7 @@ export class EOxDrawToolsController extends LitElement {
     currentlyDrawing: { attribute: false, state: true, type: Boolean },
     drawFunc: { attribute: false, type: Object },
     unstyled: { type: Boolean },
+    styleOverride: { attribute: false },
   };
 
   /**
@@ -59,6 +58,13 @@ export class EOxDrawToolsController extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Style override for all the eox components
+     *
+     * @type {{[key: string]: string}}
+     */
+    this.styleOverride = null;
   }
 
   /**
@@ -74,12 +80,16 @@ export class EOxDrawToolsController extends LitElement {
   render() {
     this.updateButtonStates();
     const drawLabel = this.currentlyDrawing ? "drawing" : "draw";
+    const style = styleQuery(
+      this.unstyled,
+      this.styleOverride,
+      null,
+      "eox-drawtools-controller"
+    );
 
     return html`
       <style>
-        ${!this.unstyled && styleEOX}
-        ${!this.unstyled && ListStyle}
-        ${!this.unstyled && MainStyle}
+        ${style}
       </style>
       <div>
         <slot></slot>

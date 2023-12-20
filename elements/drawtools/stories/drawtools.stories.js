@@ -9,6 +9,7 @@ import {
   ModifyFeaturesStory,
   MultiPolygonWithListStory,
   UnstyledStory,
+  StyleOverrideStory,
 } from "./index";
 
 export default {
@@ -52,3 +53,5 @@ export const MultiPolygonWithList = MultiPolygonWithListStory;
  * By setting the `unstyled` attribute or property, the element has no styling applied.
  */
 export const Unstyled = UnstyledStory;
+
+export const StyleOverride = StyleOverrideStory;

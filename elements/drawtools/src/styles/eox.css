@@ -1,0 +1,54 @@
+button {
+  @apply inline-flex relative items-center text-white rounded h-9 cursor-pointer text-sm uppercase tracking-[1.25px] font-medium shadow-[0px_3px_1px_-2px_rgba(0,0,0,0.2),0px_2px_2px_0px_rgba(0,0,0,0.14),0px_1px_5px_0px_rgba(0,0,0,0.12)] transition-[box-shadow,transform,opacity,background] duration-[0.28s] ease-in-out p-4 border-0;
+  /* TODO: why does this only work here and not from :root? */
+  --primary-color: #004170;
+  outline: none;
+  font-family: inherit;
+}
+
+button:hover:not([disabled]):not(.icon) {
+  @apply bg-primary shadow-[0px_2px_4px_-1px_rgba(0,0,0,0.2),0px_4px_5px_0px_rgba(0,0,0,0.14),0px_1px_10px_0px_rgba(0,0,0,0.12)];
+}
+
+button,
+button:active {
+  @apply bg-primary;
+}
+
+button[disabled] {
+  @apply opacity-50;
+}
+
+button.icon {
+  @apply shadow-none w-6 h-6 indent-[-9999px] p-0 rounded-[50%] border-[none] before:w-6 before:h-6 before:mr-0  bg-transparent;
+}
+
+button.icon-text {
+  @apply indent-[26px] before:w-[18px] before:h-[18px];
+}
+
+button.icon:before,
+button.icon-text:before {
+  @apply absolute indent-[0] leading-[initial];
+}
+
+button.small {
+  @apply h-7 text-xs p-[12.4px];
+}
+
+button.discard:before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23FF5252' viewBox='0 0 24 24'%3E%3Ctitle%3Etrash-can-outline%3C/title%3E%3Cpath d='M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z' /%3E%3C/svg%3E");
+}
+
+button.polygon:before {
+  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Eshape-polygon-plus%3C/title%3E%3Cpath d='M17,15.7V13H19V17L10,21L3,14L7,5H11V7H8.3L5.4,13.6L10.4,18.6L17,15.7M22,5V7H19V10H17V7H14V5H17V2H19V5H22Z' /%3E%3C/svg%3E");
+}
+
+button.small.icon,
+button.small.icon::before {
+  @apply h-4 w-4 p-0;
+}
+
+button.discard.icon {
+  @apply opacity-70 hover:opacity-100;
+}

@@ -17,12 +17,9 @@ const options = yargs(hideBin(process.argv)).argv;
 
 // given an npm script run like:
 // $ node ./tasks/build-style.js --package alert
-console.log(options.package); //alert
-console.log(__dirname);
 const styleFiles = glob.sync(
   path.join(__dirname, "../", `elements/drawtools/src/**/*.{scss,css}`)
 );
-console.log(styleFiles);
 
 // maybe you want to throw an error if no style files were found for that package
 if (!styleFiles.length) {
@@ -33,7 +30,6 @@ styleFiles.forEach((filePath) => {
   // parse the filePath for use later
   // https://nodejs.org/api/path.html#pathparsepath
   const parseFilePath = path.parse(filePath);
-  console.log(parseFilePath);
 
   // figure out ahead of time what the output path should be
   // based on the original file path
@@ -108,10 +104,13 @@ const filePath = path.join(
   `elements/drawtools/src/components`
 );
 const parseFilePath = path.parse(filePath);
-console.log(parseFilePath);
 
 const styleTSFilePath = path.format(
-  Object.assign({}, parseFilePath, { base: `main.style.js` })
+  Object.assign(
+    {},
+    path.parse(path.join(__dirname, "../", `elements/drawtools/src/styles`)),
+    { base: `styles/tailwind-purged.style.js` }
+  )
 );
 
 const styleOutput = `
@@ -142,10 +141,10 @@ postcss([
   .then((result) => {
     // write your "css module" syntax
     // here its TS
-    const cssToTSContents = `
-          import { css } from 'lit';
-          export default css\`${result.css.replace(/`/g, "")}\`;
-       `;
+    const cssToTSContents =
+      "import { css } from 'lit'; export default css`" +
+      result.css.replace(/`/g, "") +
+      "`; ";
 
     // write the final file back to its location next to the
     // original .css/.scss file

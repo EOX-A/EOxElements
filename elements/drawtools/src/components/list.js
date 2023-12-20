@@ -1,14 +1,12 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
-import { styleEOX } from "../style.eox";
 import {
   deleteFeatureMethod,
   firstUpdatedMethod,
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
-import ListStyle from "./list.style";
-import MainStyle from "../main.style";
+import styleQuery from "../styles/style-query";
 
 /**
  * Display list of features
@@ -20,6 +18,7 @@ export class EOxDrawToolsList extends LitElement {
     eoxMap: { attribute: false, state: true },
     olMap: { attribute: false, state: true },
     draw: { attribute: false, state: true },
+    styleOverride: { attribute: false },
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
     modify: { attribute: false, state: true },
@@ -92,6 +91,13 @@ export class EOxDrawToolsList extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Style override for all the eox components
+     *
+     * @type {{[key: string]: string}}
+     */
+    this.styleOverride = null;
   }
 
   /**
@@ -131,16 +137,19 @@ export class EOxDrawToolsList extends LitElement {
   // static styles = [ListStyle];
 
   render() {
-    // console.log(ListStyle);
     // Update hover and click IDs
     this.hoverId = this.hoverInteraction?.selectedFids[0];
     this.clickId = this.clickInteraction?.selectedFids[0];
+    const style = styleQuery(
+      this.unstyled,
+      this.styleOverride,
+      "list",
+      "eox-drawtools-list"
+    );
 
     return html`
       <style>
-        ${!this.unstyled && styleEOX}
-        ${!this.unstyled && ListStyle}
-        ${!this.unstyled && MainStyle}
+        ${style}
       </style>
       <ul>
         ${this.drawnFeatures.map((feature, i) => {
@@ -162,8 +171,6 @@ export class EOxDrawToolsList extends LitElement {
                 @mouseover=${() => this._handleHoverFeature(featureId)}
                 @mouseout=${() => this._handleHoverFeature(featureId, true)}
               >
-                <h1 class="text-red-400">Hello World</h1>
-                <button class="eox-btn">ssss</button>
                 <div
                   class="list"
                   @click="${() =>
