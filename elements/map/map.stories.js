@@ -201,7 +201,7 @@ export const Controls = {
   },
 };
 
-export const Hover = {
+export const HoverSelect = {
   args: {
     layers: [
       {
@@ -236,21 +236,9 @@ export const Hover = {
       },
     ],
   },
-  render: (args) =>
-    html`
-      <eox-map
-        style="width: 100%; height: 300px;"
-        .center=${args.center}
-        .controls=${args.controls}
-        .layers=${args.layers}
-        .zoom=${args.zoom}
-      >
-        <eox-map-tooltip></eox-map-tooltip>
-      </eox-map>
-    `,
 };
 
-export const Select = {
+export const ClickSelect = {
   args: {
     layers: [
       {
@@ -286,6 +274,122 @@ export const Select = {
       },
     ],
   },
+};
+
+/**
+ * `eox-map` offers a built-in tooltip, which needs to be placed inside the default slot:
+ * ```
+ * <eox-map [...]>
+ *   <eox-map-tooltip></eox-map-tooltip>
+ * </eox-map>
+ * ```
+ * This renders a list of all feature properties of the currently selected feature.
+ * Note that if multiple interactions are registered (e.g. `pointermove` and `singleclick`),
+ * only the first one will trigger the tooltip.
+ */
+export const Tooltip = {
+  args: {
+    layers: [
+      {
+        type: "Vector",
+        source: {
+          type: "Vector",
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: "GeoJSON",
+        },
+        interactions: [
+          {
+            type: "select",
+            options: {
+              id: "selectInteraction",
+              condition: "pointermove",
+              style: {
+                "stroke-color": "red",
+                "stroke-width": 3,
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+  render: (args) =>
+    html`
+      <eox-map
+        id="tooltipTest"
+        style="width: 100%; height: 300px;"
+        .center=${args.center}
+        .controls=${args.controls}
+        .layers=${args.layers}
+        .zoom=${args.zoom}
+      >
+        <eox-map-tooltip></eox-map-tooltip>
+      </eox-map>
+    `,
+};
+
+/**
+ * The rendering of feature properties inside the tooltip can be transformed
+ * by passing a `propertyTransform` function to the tooltip element which applies to each property in the rendering loop:
+ * ```
+ * <eox-map [...]>
+ *   <eox-map-tooltip
+ *     .propertyTransform=${({key, value}, feature) => key.includes("COLOR") ? { key: key.toLowerCase(), value }}
+ *   ></eox-map-tooltip>
+ * </eox-map>
+ * ```
+ *
+ * The first argument are `key` and `value` of the current feature property; this object needs to be
+ * returned in order to render the property in the list.
+ * Additionally, the entire feature is passed as a second argument, for cases of more advanced property
+ * transformation in which needs access to the entire feature.
+ */
+export const TooltipWithPropertyTransform = {
+  args: {
+    layers: [
+      {
+        type: "Vector",
+        source: {
+          type: "Vector",
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: "GeoJSON",
+        },
+        interactions: [
+          {
+            type: "select",
+            options: {
+              id: "selectInteraction",
+              condition: "pointermove",
+              style: {
+                "stroke-color": "red",
+                "stroke-width": 3,
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+  render: (args) =>
+    html`
+      <eox-map
+        id="tooltipTest"
+        style="width: 100%; height: 300px;"
+        .center=${args.center}
+        .controls=${args.controls}
+        .layers=${args.layers}
+        .zoom=${args.zoom}
+      >
+        <eox-map-tooltip
+          .propertyTransform=${({ key, value }, hoverFeature) => {
+            console.log(hoverFeature);
+            if (key.includes("COLOR")) {
+              return { key: key.toLowerCase(), value };
+            }
+          }}
+        ></eox-map-tooltip>
+      </eox-map>
+    `,
 };
 
 export const MapSync = {
