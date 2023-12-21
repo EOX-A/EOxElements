@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.13.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.12.0...layercontrol-v0.13.0) (2023-12-21)
+
+
+### Bug Fixes
+
+* **test:** Prevent build fail due to async call ([#539](https://github.com/EOX-A/EOxElements/issues/539)) ([09d1e03](https://github.com/EOX-A/EOxElements/commit/09d1e03698d5f2bc34d9cf316bd48e1bebb1dd8d))
+
+
+### Code Refactoring
+
+* New structure ([#527](https://github.com/EOX-A/EOxElements/issues/527)) ([9968efb](https://github.com/EOX-A/EOxElements/commit/9968efb1e87933062cd8d550d5afca337cd779b3))
+
 ## [0.12.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.11.4...layercontrol-v0.12.0) (2023-12-13)
 
 
