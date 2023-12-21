@@ -164,9 +164,7 @@ export class EOxSelectInteraction {
             overlay.setPositioning(`${yPosition}-${xPosition}`);
             overlay.setPosition(feature ? event.coordinate : null);
             if (feature && (<EOxMapTooltip>this.tooltip).renderContent) {
-              (<EOxMapTooltip>this.tooltip).renderContent(
-                feature.getProperties()
-              );
+              (<EOxMapTooltip>this.tooltip).renderContent(feature);
             }
           }
 

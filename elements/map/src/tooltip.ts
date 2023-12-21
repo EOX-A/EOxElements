@@ -1,21 +1,29 @@
 import { html, render } from "lit";
 import { property } from "lit/decorators.js";
+import Feature from "ol/Feature";
 import { TemplateElement } from "../../../utils/templateElement";
 
 export class EOxMapTooltip extends TemplateElement {
   /**
    * Transform the default rendering of each feature property key/value.
    * Useful for e.g. translating keys or introducing a whitelist.
+   * Passes the current property key and value as first argument,
+   * and the hovered feature as second argument.
+   * @example
+   * .propertyTransform=${({key, value}, feature) => myWhitelist.includes(key)}
    */
   @property()
-  propertyTransform = (property: [key: string, value: unknown]) => property;
+  propertyTransform = (
+    property: { key: string; value: unknown },
+    _feature: Feature
+  ) => property;
 
-  renderContent(content: object) {
+  renderContent(feature: Feature) {
     render(
       this.hasTemplate("properties")
         ? html`${this.renderTemplate(
             "properties",
-            content,
+            feature.getProperties(),
             // `tooltip-${this.content.id}`
             "tooltip-1"
           )}`
@@ -34,11 +42,14 @@ export class EOxMapTooltip extends TemplateElement {
               }
             </style>
             <ul>
-              ${Object.entries(content)
-                .map(([key, value]) => this.propertyTransform([key, value]))
+              ${Object.entries(feature.getProperties())
+                .map(([key, value]) =>
+                  this.propertyTransform({ key, value }, feature)
+                )
                 .filter((v) => v)
                 .map(
-                  ([key, value]) => html`<li><span>${key}</span>: ${value}</li>`
+                  ({ key, value }) =>
+                    html`<li><span>${key}</span>: ${value}</li>`
                 )}
             </ul>`,
       this.shadowRoot
