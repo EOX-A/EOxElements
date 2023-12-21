@@ -1,4 +1,3 @@
-import { html } from "lit";
 import { EOxItemFilter } from "./src/main";
 import "./src/main";
 import "./src/autocomplete";
