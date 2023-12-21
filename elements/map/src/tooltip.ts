@@ -1,6 +1,7 @@
 import { html, render } from "lit";
 import { property } from "lit/decorators.js";
 import Feature from "ol/Feature";
+import RenderFeature from "ol/render/Feature";
 import { TemplateElement } from "../../../utils/templateElement";
 
 export class EOxMapTooltip extends TemplateElement {
@@ -15,10 +16,11 @@ export class EOxMapTooltip extends TemplateElement {
   @property()
   propertyTransform = (
     property: { key: string; value: unknown },
-    _feature: Feature
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _feature: Feature | RenderFeature
   ) => property;
 
-  renderContent(feature: Feature) {
+  renderContent(feature: Feature | RenderFeature) {
     render(
       this.hasTemplate("properties")
         ? html`${this.renderTemplate(
