@@ -5,7 +5,7 @@
 
 ### Features
 
-* Pass selection feature as second argument ([#544](https://github.com/EOX-A/EOxElements/issues/544)) ([7255643](https://github.com/EOX-A/EOxElements/commit/7255643fefbb33f5ecb9794fb93d6c9b06db7ff8))
+* Pass selection feature as second argument to tooltip `propertyTransform` function ([#544](https://github.com/EOX-A/EOxElements/issues/544)) ([7255643](https://github.com/EOX-A/EOxElements/commit/7255643fefbb33f5ecb9794fb93d6c9b06db7ff8))
 
 ## [1.0.0](https://github.com/EOX-A/EOxElements/compare/map-v0.11.0...map-v1.0.0) (2023-12-14)
 
