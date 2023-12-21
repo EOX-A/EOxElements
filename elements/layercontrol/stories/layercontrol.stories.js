@@ -6,11 +6,8 @@ import {
   ExpandedLayersStory,
   HiddenLayersStory,
   LayerConfigStory,
-  LayerListStory,
   OptionalLayersStory,
   PrimaryStory,
-  SingleLayerStory,
-  TabsStory,
   ToolsStory,
   addExternalLayerStory,
   layerZoomStateStory,
@@ -71,15 +68,6 @@ export const LayerConfig = LayerConfigStory;
  * be still rendered on the map).
  */
 export const HiddenLayers = HiddenLayersStory;
-
-export const SingleLayer = SingleLayerStory;
-
-export const LayerList = LayerListStory;
-
-/**
- * Layer control tabs
- */
-export const Tabs = TabsStory;
 
 /**
  * Defining the configuration for adding an external layer like WMS/XYZ or import JSON.
