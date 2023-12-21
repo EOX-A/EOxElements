@@ -1,16 +1,15 @@
 import { LitElement, html, nothing } from "lit";
 import "./layer";
-import "./layerGroup";
+import "./layer-group";
+import { isMapUrlValid, isLayerJSONValid } from "../helpers";
 import {
-  handleAddLayerMethod,
-  handleJsonInputChangeMethod,
-  handleOpenCloseTabMethod,
-  handleUrlInputChangeMethod,
-  handleUrlLayerMethod,
-  handleWMSSearchURLMethod,
-  isLayerJSONValid,
-  isMapUrlValid,
-} from "../helpers";
+  addLayerMethod,
+  urlLayerMethod,
+  openCloseTabMethod,
+  wmsSearchURLMethod,
+  urlInputChangeMethod,
+  jsonInputChangeMethod,
+} from "../methods/add-layer";
 
 /**
  * EOxLayerControlAddLayers is a class that extends LitElement and provides functionalities
@@ -23,6 +22,7 @@ import {
  * @extends LitElement
  */
 export class EOxLayerControlAddLayers extends LitElement {
+  // Define static properties for the component
   static properties = {
     eoxMap: { attribute: false, state: true },
     unstyled: { type: Boolean },
@@ -30,26 +30,36 @@ export class EOxLayerControlAddLayers extends LitElement {
   };
 
   /**
-   * @type string
+   * State for URL Input for WMS/XYZ URLs
+   *
+   * @type {String}
    */
   urlInput = null;
 
   /**
-   * @type string
-   */
-  open = null;
-
-  /**
-   * @type string
+   * State for JSON Textarea - For EOxMap JSON
+   *
+   * @type {String}
    */
   jsonInput = null;
 
   /**
-   * @type boolean
+   * State for add layer - consist of url/json
+   *
+   * @type {"url" | "json" | null}
+   */
+  open = null;
+
+  /**
+   * Loader state when search is triggered
+   *
+   * @type {Boolean}
    */
   searchLoad = false;
 
   /**
+   * State for `WMS Capabilities JSON`
+   *
    * @type {import("wms-capabilities").WMSCapabilitiesJSON}
    */
   wmsCapabilities = null;
@@ -58,17 +68,23 @@ export class EOxLayerControlAddLayers extends LitElement {
     super();
 
     /**
-     * @type import("@eox/map/main").EOxMap
+     * Instance of `eox-map` which is a wrapper for the OL
+     *
+     * @type {import("@eox/map/main").EOxMap}
      */
     this.eoxMap = null;
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = false;
   }
@@ -83,20 +99,20 @@ export class EOxLayerControlAddLayers extends LitElement {
   }
 
   /**
-   * Handles changes in the input field by invoking the 'handleUrlInputChangeMethod'.
+   * Handles changes in the input field by invoking the 'urlInputChangeMethod'.
    * This method is triggered upon an @input change event.
    *
    * @param {Event} evt - The input change event triggering the method.
    */
   #handleURLChange(evt) {
-    handleUrlInputChangeMethod(evt, this);
+    urlInputChangeMethod(evt, this);
   }
 
   /**
    * Asynchronously handles WMS URL search, invokes further processing if data is available.
    */
   async #handleWMSSearchURL() {
-    const data = await handleWMSSearchURLMethod(this);
+    const data = await wmsSearchURLMethod(this);
     if (data) this.#handleUrlLayerMethod(data);
   }
 
@@ -106,33 +122,33 @@ export class EOxLayerControlAddLayers extends LitElement {
    * @param {{"Name": string}} layer - The layer information triggering the method.
    */
   #handleUrlLayerMethod(layer) {
-    handleUrlLayerMethod(layer, this);
-    handleAddLayerMethod(this);
+    urlLayerMethod(layer, this);
+    addLayerMethod(this);
   }
 
   /**
    * Initiates the addition of layers, triggering the handleAddLayerMethod.
    */
   #handleAddLayer() {
-    handleAddLayerMethod(this);
+    addLayerMethod(this);
   }
 
   /**
    * Handles input field changes by invoking the 'handleJsonInputChangeMethod'.
    *
-   * @param {Event} evt - The input change event triggering the method.
+   * @param {{target: { value: string }}} evt - The input change event triggering the method.
    */
   #handleInputChange(evt) {
-    handleJsonInputChangeMethod(evt, this);
+    jsonInputChangeMethod(evt, this);
   }
 
   /**
-   * Handles tab changes by invoking the 'handleOpenCloseTabMethod'.
+   * Handles tab changes by invoking the 'openCloseTabMethod'.
    *
    * @param {string} tab - The tab identifier triggering the method.
    */
   #handleOpenCloseTab(tab) {
-    handleOpenCloseTabMethod(tab, this);
+    openCloseTabMethod(tab, this);
   }
 
   /**
@@ -144,6 +160,8 @@ export class EOxLayerControlAddLayers extends LitElement {
     const openCloseClassName = this.open ? "open" : "close";
     const isUrlTabOpen = this.open === "url";
     const isJsonTabOpen = this.open === "json";
+    const disableSearchBtn =
+      !isMapUrlValid(this.urlInput) || this.searchLoad ? true : nothing;
 
     return html`
       <style>
@@ -177,43 +195,51 @@ export class EOxLayerControlAddLayers extends LitElement {
         <div class="eox-add ${openCloseClassName}">
           ${isUrlTabOpen
             ? html`
+              <!-- Input field for URL -->
+              <div class="eox-add-layer-col">
+                <input 
+                  type="text" 
+                  class="add-url" 
+                  placeholder="Add URL (WMS/XYZ)" 
+                  .value="${this.urlInput}" 
+                  @input=${this.#handleURLChange}
+                >
+                </input>
+                <!-- Search button for URL -->
+                <button 
+                  class="search-icon" 
+                  disabled=${disableSearchBtn} 
+                  @click=${this.#handleWMSSearchURL}
+                >
+                </button>
+              </div>
 
-            <!-- Input field for URL -->
-            <div class="eox-add-layer-col">
-              <input type="text" class="add-url" placeholder="Add URL (WMS/XYZ)" .value="${
-                this.urlInput
-              }" @input=${this.#handleURLChange}></input>
+              <!-- Display layers for WMS capabilities -->
+              ${
+                this.wmsCapabilities
+                  ? html`<ul class="search-lists">
+                      ${this.wmsCapabilities.Capability.Layer.Layer.map(
+                        (layer) => {
+                          //@ts-ignore
+                          const name = layer.Name;
 
-              <!-- Search button for URL -->
-              <button class="search-icon" disabled=${
-                !isMapUrlValid(this.urlInput) || this.searchLoad
-                  ? true
+                          return html`
+                            <li class="search-list">
+                              ${name}
+                              <!-- Button to add layer -->
+                              <button
+                                class="add-layer-icon icon"
+                                @click=${() =>
+                                  //@ts-ignore
+                                  this.#handleUrlLayerMethod(layer)}
+                              ></button>
+                            </li>
+                          `;
+                        }
+                      )}
+                    </ul>`
                   : nothing
-              } @click=${this.#handleWMSSearchURL}></button>
-            </div>
-
-            <!-- Display layers for WMS capabilities -->
-            ${
-              this.wmsCapabilities
-                ? html`<ul class="search-lists">
-                    ${this.wmsCapabilities.Capability.Layer.Layer.map(
-                      (layer) => html`
-                        <li class="search-list">
-                          ${
-                            //@ts-ignore
-                            layer.Name
-                          }
-                          <!-- Button to add layer -->
-                          <button
-                            class="add-layer-icon icon"
-                            @click=${() => this.#handleUrlLayerMethod(layer)}
-                          ></button>
-                        </li>
-                      `
-                    )}
-                  </ul>`
-                : nothing
-            }
+              }
             `
             : html`
                 <!-- Textarea for JSON input -->

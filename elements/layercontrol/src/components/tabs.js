@@ -3,6 +3,7 @@ import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 
 export class EOxLayerControlTabs extends LitElement {
+  // Define static properties for the component
   static properties = {
     actions: { attribute: false },
     selectedTab: { state: true },
@@ -16,7 +17,8 @@ export class EOxLayerControlTabs extends LitElement {
 
     /**
      * List of action ids
-     * @type Array<string>
+     *
+     * @type {Array<String>}
      */
     this.actions = [];
 
@@ -24,68 +26,96 @@ export class EOxLayerControlTabs extends LitElement {
 
     /**
      * List of tab ids
-     * @type Array<string>
+     *
+     * @type {Array<String>}
      */
     this.tabs = [];
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = false;
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /** @param {number} index */
+  #labelHighlightClass = (index) => this.selectedTab === index && "highlighted";
+
+  /**
+   * Renders a tabbed interface that displays tabs and corresponding content areas based on the provided 'tabs' and 'actions'.
+   * It sets up navigation for switching between tabs and offers customizable icons for tabs and actions.
+   */
   render() {
+    const tabs = this.tabs;
+    const actions = this.actions;
+    const isListAvail = actions.length + tabs.length > 1;
+
     return html`
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
       <div class="tabbed">
+        <!-- Navigation for tabs and actions -->
         ${when(
-          this.actions.length + this.tabs.length > 1,
+          isListAvail,
           () => html`
             <nav>
               <div>
+                <!-- Labels for tabs -->
                 ${map(
-                  this.tabs,
-                  (tab, index) => html`
-                    <label
-                      class=${this.selectedTab === index && "highlighted"}
-                      @click=${() => (this.selectedTab = index)}
-                    >
-                      <slot name=${tab + "-icon"}>${tab}</slot>
-                    </label>
-                  `
+                  tabs,
+                  (tab, index) =>
+                    html`
+                      <label
+                        class=${this.#labelHighlightClass(index)}
+                        @click=${() => (this.selectedTab = index)}
+                      >
+                        <!-- Customizable icon for each tab -->
+                        <slot name=${`${tab}-icon`}>${tab}</slot>
+                      </label>
+                    `
                 )}
               </div>
               <div>
+                <!-- Icons for actions -->
                 ${map(
-                  this.actions,
-                  (action) => html`
-                    <span>
-                      <slot name=${action + "-icon"}>${action}</slot>
-                    </span>
-                  `
+                  actions,
+                  (action) =>
+                    html`
+                      <span>
+                        <!-- Customizable icon for each action -->
+                        <slot name=${`${action}-icon`}>${action}</slot>
+                      </span>
+                    `
                 )}
               </div>
             </nav>
           `
         )}
         <figure>
+          <!-- Content for each tab -->
           ${map(
-            this.tabs,
+            tabs,
             (tab, index) => html`
-              <div class="tab ${this.selectedTab === index && "highlighted"}">
-                <slot name=${tab + "-content"}>${tab}</slot>
+              <div class="tab ${this.#labelHighlightClass(index)}">
+                <!-- Content slot for each tab -->
+                <slot name=${`${tab}-content`}>${tab}</slot>
               </div>
             `
           )}

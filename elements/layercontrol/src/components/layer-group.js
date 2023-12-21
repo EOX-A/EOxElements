@@ -1,14 +1,17 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import "./layer";
-import "./layerList";
+import "./layer-list";
 
 /**
- * Display of a layer group
+ * Custom element representing a group of layers within a layer control.
+ * Handles rendering a layer control group with expandable details containing layers.
  *
  * @element eox-layercontrol-layer-group
+ * @extends LitElement
  */
 export class EOxLayerControlLayerGroup extends LitElement {
+  // Define static properties for the component
   static properties = {
     group: { attribute: false },
     idProperty: { attribute: "id-property" },
@@ -25,6 +28,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
 
     /**
      * The native OL layer group
+     *
      * @type {import("ol/layer").Group}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Group-LayerGroup.html}
      */
@@ -32,6 +36,8 @@ export class EOxLayerControlLayerGroup extends LitElement {
 
     /**
      * The layer id property
+     *
+     * @type {String}
      */
     this.idProperty = "id";
 
@@ -44,35 +50,56 @@ export class EOxLayerControlLayerGroup extends LitElement {
 
     /**
      * The layer title property
+     *
+     * @type {String}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
+     *
+     * @type {Boolean}
      */
     this.showLayerZoomState = false;
 
     /**
-     * @type Array<string>
+     * Represents an array of tools.
+     *
+     * @type {Array<string>}
      */
     this.tools = [];
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = false;
   }
 
+  /**
+   * Overrides the default behavior of creating the render root element.
+   * If 'noShadow' is set to true, returns 'this'; otherwise, falls back to the default behavior
+   * of creating a shadow root using 'super.createRenderRoot()'.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * Renders a layer control group with expandable details containing layers.
+   */
   render() {
+    // Check if the group should be open based on a specific control property
+    const groupOpen = Boolean(this.group?.get("layerControlExpand"));
+
     return html`
       <style>
         ${this.#styleBasic}
@@ -81,8 +108,10 @@ export class EOxLayerControlLayerGroup extends LitElement {
       ${when(
         this.group,
         () => html`
-          <details open=${this.group.get("layerControlExpand") || nothing}>
+          <!-- Render the details element with the layer control -->
+          <details open=${groupOpen}>
             <summary>
+              <!-- Render the layer control within the summary -->
               <eox-layercontrol-layer
                 .noShadow=${true}
                 .layer=${this.group}
@@ -94,6 +123,8 @@ export class EOxLayerControlLayerGroup extends LitElement {
                 @changed=${() => this.requestUpdate()}
               ></eox-layercontrol-layer>
             </summary>
+
+            <!-- Render the list of layers within the details -->
             <eox-layercontrol-layer-list
               .noShadow=${true}
               .idProperty=${this.idProperty}
@@ -112,7 +143,6 @@ export class EOxLayerControlLayerGroup extends LitElement {
   }
 
   #styleBasic = ``;
-
   #styleEOX = `
     details summary {
       cursor: pointer;

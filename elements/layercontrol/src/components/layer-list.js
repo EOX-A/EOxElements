@@ -1,16 +1,18 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { repeat } from "lit/directives/repeat.js";
-import { checkProperties, createSortable, getLayerType } from "../helpers";
+import { getLayerType } from "../helpers";
 import "./layer";
-import "./layerGroup";
-import _debounce from "lodash.debounce";
+import "./layer-group";
+import { firstUpdatedMethod, updateMethod } from "../methods/layer-list";
 /**
- * Display of a list of layers
+ * EOxLayerControlLayerList: Manages a list of layers within the EOx Layer Control.
  *
  * @element eox-layercontrol-layer-list
+ * @extends LitElement
  */
 export class EOxLayerControlLayerList extends LitElement {
+  // Define static properties for the component
   static properties = {
     idProperty: { attribute: "id-property" },
     layers: { attribute: false },
@@ -27,11 +29,14 @@ export class EOxLayerControlLayerList extends LitElement {
 
     /**
      * The layer id property
+     *
+     * @type {String}
      */
     this.idProperty = "id";
 
     /**
      * The OL layer collection
+     *
      * @type {import("ol").Collection<import("ol/layer").Layer | import("ol/layer").Group>}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Collection-Collection.html}
      */
@@ -39,72 +44,82 @@ export class EOxLayerControlLayerList extends LitElement {
 
     /**
      * The native OL map
+     *
      * @type {import("ol").Map}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html}
      */
     this.map = null;
 
     /**
-     * @type Array<string>
+     * Represents an array of tools.
+     *
+     * @type {Array<string>}
      */
     this.tools = undefined;
 
     /**
      * The layer title property
+     *
+     * @type {String}
      */
     this.titleProperty = "title";
 
     /**
      * Show layer state based on zoom level or not
+     *
+     * @type {Boolean}
      */
     this.showLayerZoomState = false;
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
     /**
      * Renders the element without a shadow root
+     *
+     * @type {Boolean}
      */
     this.noShadow = false;
   }
 
-  #handleLayersChangeLength = () => {
-    this.#debHandleLayersChangeLength();
-  };
-  #debHandleLayersChangeLength = _debounce(() => {
-    this.requestUpdate();
-    this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
-  }, 50);
-
+  /**
+   * Executes specific logic after the initial render of the component.
+   */
   firstUpdated() {
-    if (this.layers) {
-      checkProperties(this.layers, this.idProperty, this.titleProperty);
-      createSortable(
-        this.renderRoot.querySelector("ul"),
-        this.layers,
-        this.idProperty,
-        this
-      );
-    }
+    firstUpdatedMethod(this);
   }
 
+  /**
+   * Executes logic after subsequent updates of the component.
+   */
   updated() {
-    if (!this.layers) {
-      return;
-    }
-    if (this.layers.hasListener("change:length")) {
-      this.layers?.un("change:length", this.#handleLayersChangeLength);
-    }
-    this.layers.on("change:length", this.#handleLayersChangeLength);
+    updateMethod(this);
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * Renders a list of layers for the EOx Layer Control component. Filters layers based on control properties and renders either
+   * layer groups or individual layers accordingly. Utilizes conditional rendering and iterates through available layers.
+   */
   render() {
+    // Filter and reverse layers based on control properties
+    const layers = this.layers
+      ?.getArray()
+      ?.filter(
+        (l) => !l.get("layerControlHide") && !l.get("layerControlOptional")
+      )
+      .reverse();
+
     return html`
       <style>
         ${this.#styleBasic}
@@ -115,13 +130,7 @@ export class EOxLayerControlLayerList extends LitElement {
           this.layers,
           () => html`
             ${repeat(
-              this.layers
-                .getArray()
-                .filter(
-                  (l) =>
-                    !l.get("layerControlHide") && !l.get("layerControlOptional")
-                )
-                .reverse(),
+              layers,
               (layer) => layer,
               (layer) => html`
                 <li
@@ -129,6 +138,7 @@ export class EOxLayerControlLayerList extends LitElement {
                   data-type="${getLayerType(layer, this.map)}"
                 >
                   ${
+                    /** Checks if the layer is a group or individual layer and renders accordingly */
                     /** @type {import("ol/layer").Group} */ (layer).getLayers
                       ? html`
                           <eox-layercontrol-layer-group
@@ -167,7 +177,6 @@ export class EOxLayerControlLayerList extends LitElement {
   }
 
   #styleBasic = ``;
-
   #styleEOX = `
     ul {
       padding: 0;
