@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.13.0...layercontrol-v0.13.1) (2023-12-22)
+
+
+### Bug Fixes
+
+* Various unstyled mode, jsdocs and cypress test fixes ([#546](https://github.com/EOX-A/EOxElements/issues/546)) ([370740b](https://github.com/EOX-A/EOxElements/commit/370740be9d7d6b8f060b3c68b56118d033be22a5))
+
 ## [0.13.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.12.0...layercontrol-v0.13.0) (2023-12-21)
 
 
