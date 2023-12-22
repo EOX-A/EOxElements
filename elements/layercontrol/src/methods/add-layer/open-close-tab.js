@@ -2,7 +2,7 @@
  * Handles the opening or closing of tabs in the EOxLayerControlAddLayers instance.
  * Updates relevant properties based on the selected tab.
  *
- * @param {string} tab - The tab identifier to open or close.
+ * @param {"url" | "json" | null} tab - The tab identifier to open or close.
  * @param {import("../../components/add-layers").EOxLayerControlAddLayers} EoxLayerControlAddLayers - Instance of EOxLayerControlAddLayers.
  */
 const openCloseTab = (tab, EoxLayerControlAddLayers) => {

@@ -145,7 +145,7 @@ export class EOxLayerControlAddLayers extends LitElement {
   /**
    * Handles tab changes by invoking the 'openCloseTabMethod'.
    *
-   * @param {string} tab - The tab identifier triggering the method.
+   * @param {"url" | "json" | null} tab - The tab identifier triggering the method.
    */
   #handleOpenCloseTab(tab) {
     openCloseTabMethod(tab, this);
@@ -190,7 +190,9 @@ export class EOxLayerControlAddLayers extends LitElement {
           <button
             class="add-icon icon"
             @click=${() => this.#handleOpenCloseTab(!this.open ? "url" : null)}
-          ></button>
+          >
+            ${this.unstyled ? "Add Layer" : ""}
+          </button>
         </div>
         <div class="eox-add ${openCloseClassName}">
           ${isUrlTabOpen
@@ -211,6 +213,7 @@ export class EOxLayerControlAddLayers extends LitElement {
                   disabled=${disableSearchBtn} 
                   @click=${this.#handleWMSSearchURL}
                 >
+                  ${this.unstyled ? "Search" : ""}
                 </button>
               </div>
 
@@ -232,7 +235,9 @@ export class EOxLayerControlAddLayers extends LitElement {
                                 @click=${() =>
                                   //@ts-ignore
                                   this.#handleUrlLayerMethod(layer)}
-                              ></button>
+                              >
+                                ${this.unstyled ? "+" : ""}
+                              </button>
                             </li>
                           `;
                         }
@@ -255,14 +260,23 @@ export class EOxLayerControlAddLayers extends LitElement {
                   class="add-layer-icon json-add-layer"
                   disabled=${isLayerJSONValid(this.jsonInput) ? nothing : true}
                   @click=${this.#handleAddLayer}
-                ></button>
+                >
+                  ${this.unstyled ? "Add JSON" : ""}
+                </button>
               `}
         </div>
       </div>
     `;
   }
 
-  #styleBasic = ``;
+  #styleBasic = `
+    .eox-add-layer-main .open {
+      position: relative;
+    }
+    .eox-add-layer-main .close {
+      display: none;
+    }
+  `;
   #styleEOX = `
     .eox-add {
       background: #f0f2f5;
