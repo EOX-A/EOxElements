@@ -74,10 +74,10 @@ export class EOxLayerControlLayerTools extends LitElement {
   }
 
   // Initializes '_removeButton' invoking 'removeButton' function with 'this' context.
-  _removeButton = removeButton(this);
+  _removeButton = () => removeButton(this);
 
   // Initializes '_sortButton' invoking 'sortButton' function with 'unstyled' property as a parameter.
-  _sortButton = sortButton(this.unstyled);
+  _sortButton = () => sortButton(this.unstyled);
 
   /**
    * Initializes '_button' as a function accepting 'tool' parameter to generate a Button.
@@ -164,8 +164,8 @@ export class EOxLayerControlLayerTools extends LitElement {
                       @changed=${() => this.requestUpdate()}
                     ></eox-layercontrol-layerconfig>
                   </div>
-                  <div slot="remove-icon">${this._removeButton}</div>
-                  <div slot="sort-icon">${this._sortButton}</div>
+                  <div slot="remove-icon">${this._removeButton()}</div>
+                  <div slot="sort-icon">${this._sortButton()}</div>
                 </eox-layercontrol-tabs>
               </details>
             `
