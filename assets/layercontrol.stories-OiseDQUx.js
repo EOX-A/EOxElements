@@ -1,4 +1,4 @@
-var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,configurable:!0,writable:!0,value:o}):t[e]=o;var I=(t,e,o)=>(Fn(t,typeof e!="symbol"?e+"":e,o),o),lo=(t,e,o)=>{if(!e.has(t))throw TypeError("Cannot "+o)};var $=(t,e,o)=>(lo(t,e,"read from private field"),o?o.call(t):e.get(t)),C=(t,e,o)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,o)},ke=(t,e,o,r)=>(lo(t,e,"write to private field"),r?r.call(t,o):e.set(t,o),o);var M=(t,e,o)=>(lo(t,e,"access private method"),o);import"./sources-txvGwsSR.js";import"./main-THjY6tgQ.js";import{x as y,T as be,w as yt,s as ce}from"./lit-element-Qm8PRmVu.js";import{n as Q,o as St,a as Zn}from"./unsafe-html-ZhFXPF0T.js";import{_ as kn,c as Yn}from"./index-HR78oL6N.js";import{e as Xn,i as zn,t as _e}from"./directive-xgBC_cM0.js";import{f as jn,m as qn}from"./directive-helpers-k6EzVOeb.js";import"./main-W6pHctbP.js";import{b as Wn}from"./button-KPw86qfe.js";import{r as Gn,c as jr,s as Jn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-gV7l0-Fr.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**
+var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,configurable:!0,writable:!0,value:o}):t[e]=o;var I=(t,e,o)=>(Fn(t,typeof e!="symbol"?e+"":e,o),o),lo=(t,e,o)=>{if(!e.has(t))throw TypeError("Cannot "+o)};var $=(t,e,o)=>(lo(t,e,"read from private field"),o?o.call(t):e.get(t)),C=(t,e,o)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,o)},ke=(t,e,o,r)=>(lo(t,e,"write to private field"),r?r.call(t,o):e.set(t,o),o);var M=(t,e,o)=>(lo(t,e,"access private method"),o);import"./sources-ZrwUl-nJ.js";import"./main-THjY6tgQ.js";import{x as y,T as be,w as yt,s as ce}from"./lit-element-Qm8PRmVu.js";import{n as Q,o as St,a as Zn}from"./unsafe-html-ZhFXPF0T.js";import{_ as kn,c as Yn}from"./index-HR78oL6N.js";import{e as Xn,i as zn,t as _e}from"./directive-xgBC_cM0.js";import{f as jn,m as qn}from"./directive-helpers-k6EzVOeb.js";import"./main-W6pHctbP.js";import{b as Wn}from"./button-KPw86qfe.js";import{r as Gn,c as jr,s as Jn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe--5qCyCRY.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**
  * wms-capabilities @0.6.0
  * @description WMS service Capabilities > JSON, based on openlayers 
  * @license BSD-2-Clause
@@ -122,7 +122,7 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
             `)}
         </figure>
       </div>
-    `}}pt=new WeakMap,Bt=new WeakMap,Ut=new WeakMap,I(Sn,"properties",{actions:{attribute:!1},selectedTab:{state:!0},tabs:{attribute:!1},unstyled:{type:Boolean},noShadow:{type:Boolean}});customElements.define("eox-layercontrol-tabs",Sn);var Ft,Zt;class xn extends ce{constructor(){super();I(this,"_removeButton",Ra(this));I(this,"_sortButton",Oa(this.unstyled));I(this,"_button",o=>$a(o,this.unstyled));C(this,Ft,"");C(this,Zt,`
+    `}}pt=new WeakMap,Bt=new WeakMap,Ut=new WeakMap,I(Sn,"properties",{actions:{attribute:!1},selectedTab:{state:!0},tabs:{attribute:!1},unstyled:{type:Boolean},noShadow:{type:Boolean}});customElements.define("eox-layercontrol-tabs",Sn);var Ft,Zt;class xn extends ce{constructor(){super();I(this,"_removeButton",()=>Ra(this));I(this,"_sortButton",()=>Oa(this.unstyled));I(this,"_button",o=>$a(o,this.unstyled));C(this,Ft,"");C(this,Zt,`
     ${Wn}  
     ${Gn}
     ${jr}
@@ -268,8 +268,8 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
                       @changed=${()=>this.requestUpdate()}
                     ></eox-layercontrol-layerconfig>
                   </div>
-                  <div slot="remove-icon">${this._removeButton}</div>
-                  <div slot="sort-icon">${this._sortButton}</div>
+                  <div slot="remove-icon">${this._removeButton()}</div>
+                  <div slot="sort-icon">${this._sortButton()}</div>
                 </eox-layercontrol-tabs>
               </details>
             `})}
@@ -488,7 +488,14 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
 
       <!-- Button to handle adding layers -->
       <button @click="${M(this,Gt,Rn)}">add</button>
-    `}}Gt=new WeakSet,Rn=function(){Ma(this)},I($n,"properties",{idProperty:{attribute:"id-property"},layers:{attribute:!1},titleProperty:{attribute:"title-property",type:String},unstyled:{type:Boolean},noShadow:{type:Boolean}});customElements.define("eox-layercontrol-optional-list",$n);const Ha=(t,e)=>{e.jsonInput=t.target.value,e.requestUpdate()},jo=t=>{const e=JSON.parse(`{"data":${tn(t.jsonInput)}}`);Array.isArray(e.data)?e.data.forEach(o=>{t.eoxMap.addOrUpdateLayer(o)}):t.eoxMap.addOrUpdateLayer(e.data),t.jsonInput=null,t.requestUpdate()},Va=(t,e)=>{e.urlInput=t.target.value,e.requestUpdate()};async function Ba(t){const e=t.urlInput;if(t.wmsCapabilities=null,t.searchLoad=!0,t.requestUpdate(),!e)return!1;if(Ro(e)==="XYZ")return{Name:e};try{const o=await ki(e);t.wmsCapabilities=o}catch{}finally{t.searchLoad=!1,t.requestUpdate()}return!1}const Ua=(t,e)=>{const{Name:o}=t,r=Ro(e.urlInput)||"XYZ",n={type:"Tile",properties:{id:o,title:o},source:{type:r,url:e.urlInput,params:{LAYERS:o}}};e.jsonInput=JSON.stringify(n)},Fa=(t,e)=>{e.open=t||null,e.urlInput=null,e.jsonInput=null,e.wmsCapabilities=null,e.requestUpdate()};var Jt,Dn,Kt,Pn,ht,_o,Qt,In,eo,Ln,Le,Rt,to,oo;class On extends ce{constructor(){super();C(this,Jt);C(this,Kt);C(this,ht);C(this,Qt);C(this,eo);C(this,Le);I(this,"urlInput",null);I(this,"jsonInput",null);I(this,"open",null);I(this,"searchLoad",!1);I(this,"wmsCapabilities",null);C(this,to,"");C(this,oo,`
+    `}}Gt=new WeakSet,Rn=function(){Ma(this)},I($n,"properties",{idProperty:{attribute:"id-property"},layers:{attribute:!1},titleProperty:{attribute:"title-property",type:String},unstyled:{type:Boolean},noShadow:{type:Boolean}});customElements.define("eox-layercontrol-optional-list",$n);const Ha=(t,e)=>{e.jsonInput=t.target.value,e.requestUpdate()},jo=t=>{const e=JSON.parse(`{"data":${tn(t.jsonInput)}}`);Array.isArray(e.data)?e.data.forEach(o=>{t.eoxMap.addOrUpdateLayer(o)}):t.eoxMap.addOrUpdateLayer(e.data),t.jsonInput=null,t.requestUpdate()},Va=(t,e)=>{e.urlInput=t.target.value,e.requestUpdate()};async function Ba(t){const e=t.urlInput;if(t.wmsCapabilities=null,t.searchLoad=!0,t.requestUpdate(),!e)return!1;if(Ro(e)==="XYZ")return{Name:e};try{const o=await ki(e);t.wmsCapabilities=o}catch{}finally{t.searchLoad=!1,t.requestUpdate()}return!1}const Ua=(t,e)=>{const{Name:o}=t,r=Ro(e.urlInput)||"XYZ",n={type:"Tile",properties:{id:o,title:o},source:{type:r,url:e.urlInput,params:{LAYERS:o}}};e.jsonInput=JSON.stringify(n)},Fa=(t,e)=>{e.open=t||null,e.urlInput=null,e.jsonInput=null,e.wmsCapabilities=null,e.requestUpdate()};var Jt,Dn,Kt,Pn,ht,_o,Qt,In,eo,Ln,Le,Rt,to,oo;class On extends ce{constructor(){super();C(this,Jt);C(this,Kt);C(this,ht);C(this,Qt);C(this,eo);C(this,Le);I(this,"urlInput",null);I(this,"jsonInput",null);I(this,"open",null);I(this,"searchLoad",!1);I(this,"wmsCapabilities",null);C(this,to,`
+    .eox-add-layer-main .open {
+      position: relative;
+    }
+    .eox-add-layer-main .close {
+      display: none;
+    }
+  `);C(this,oo,`
     .eox-add {
       background: #f0f2f5;
       border-top: 1px solid #0041701a;
@@ -648,7 +655,9 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
           <button
             class="add-icon icon"
             @click=${()=>M(this,Le,Rt).call(this,this.open?null:"url")}
-          ></button>
+          >
+            ${this.unstyled?"Add Layer":""}
+          </button>
         </div>
         <div class="eox-add ${o}">
           ${r?y`
@@ -668,6 +677,7 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
                   disabled=${i} 
                   @click=${M(this,Kt,Pn)}
                 >
+                  ${this.unstyled?"Search":""}
                 </button>
               </div>
 
@@ -680,7 +690,9 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
                               <button
                                 class="add-layer-icon icon"
                                 @click=${()=>M(this,ht,_o).call(this,a)}
-                              ></button>
+                              >
+                                ${this.unstyled?"+":""}
+                              </button>
                             </li>
                           `})}
                     </ul>`:be}
@@ -698,7 +710,9 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
                   class="add-layer-icon json-add-layer"
                   disabled=${Xi(this.jsonInput)?be:!0}
                   @click=${M(this,Qt,In)}
-                ></button>
+                >
+                  ${this.unstyled?"Add JSON":""}
+                </button>
               `}
         </div>
       </div>
