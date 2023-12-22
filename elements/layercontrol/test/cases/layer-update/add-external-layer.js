@@ -52,7 +52,8 @@ const addExternalLayers = () => {
           `{ type: "Tile", properties: { id: "WIND", title: "WIND", }, source: { type: "TileWMS", url: "//services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54", params: { LAYERS: "AWS_VIS_WIND_V_10M", }, }, maxZoom: 9, }`,
           { parseSpecialCharSequences: false }
         );
-        cy.get(".json-add-layer").click();
+        cy.get(".json-add-layer").as("jsonbtn").click();
+        cy.get("@jsonbtn").should("be.disabled");
       });
     });
 
