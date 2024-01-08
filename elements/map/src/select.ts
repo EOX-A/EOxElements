@@ -51,7 +51,8 @@ export class EOxSelectInteraction {
 
     this.tooltip =
       this.eoxMap.querySelector("eox-map-tooltip") ||
-      this.eoxMap.shadowRoot.querySelector("eox-map-tooltip");
+      this.eoxMap.shadowRoot.querySelector("eox-map-tooltip") ||
+      options.overlay?.element;
     let overlay: Overlay;
     this.selectedFids = [];
     this.active = options?.active === false ? false : true;
