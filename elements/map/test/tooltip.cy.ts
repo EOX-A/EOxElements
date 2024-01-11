@@ -69,7 +69,7 @@ describe("tooltip", () => {
       .shadow()
       .within(() => {
         cy.get("eox-map-tooltip").should("exist");
-        cy.get("eox-map-tooltip")
+        cy.get("#_eoxTooltip_selectInteraction")
           .shadow()
           .within(() => {
             cy.get("ul").should("exist");
@@ -82,14 +82,18 @@ describe("tooltip", () => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.map.getLayers().getArray()[0].setVisible(false);
       eoxMap.map.getLayers().getArray()[1].setVisible(true);
+      setTimeout(() => {
+        simulateEvent(eoxMap.map, "pointermove", 120, -141);
+      }, 1000)
     });
+
 
     // check if the tooltip on the second rendered layer works
     cy.get("eox-map")
       .shadow()
       .within(() => {
         cy.get("eox-map-tooltip").should("exist");
-        cy.get("eox-map-tooltip")
+        cy.get("#_eoxTooltip_selectInteraction2")
           .shadow()
           .within(() => {
             cy.get("ul").should("exist");
