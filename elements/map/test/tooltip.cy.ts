@@ -84,9 +84,8 @@ describe("tooltip", () => {
       eoxMap.map.getLayers().getArray()[1].setVisible(true);
       setTimeout(() => {
         simulateEvent(eoxMap.map, "pointermove", 120, -141);
-      }, 1000)
+      }, 1000);
     });
-
 
     // check if the tooltip on the second rendered layer works
     cy.get("eox-map")
