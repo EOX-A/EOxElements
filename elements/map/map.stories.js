@@ -481,3 +481,27 @@ export const ConfigObject = {
       ></eox-map>
     `,
 };
+
+export const DisableInteractions = {
+  args: {
+    config: {
+      controls: {
+        Zoom: {},
+      },
+      layers: [{ type: "Tile", source: { type: "OSM" } }],
+      view: {
+        center: [16.8, 48.2],
+        zoom: 9,
+      },
+      disableInteractions: ["MouseWheelZoom", "DoubleClickZoom"],
+    },
+  },
+  render: (args) =>
+    html`
+      <h3>Try to double click or mouse scroll to zoom</h3>
+      <eox-map
+        style="width: 100%; height: 300px;"
+        .config=${args.config}
+      ></eox-map>
+    `,
+};

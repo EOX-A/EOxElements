@@ -17,6 +17,10 @@ import {
 } from "./src/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
+import {
+  DisableInteractionsType,
+  setInteractionInactive,
+} from "./src/interaction";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -25,6 +29,7 @@ type ConfigObject = {
     center: Array<number>;
     zoom: number;
   };
+  disableInteractions: DisableInteractionsType;
 };
 
 /**
@@ -159,6 +164,7 @@ export class EOxMap extends LitElement {
     this.zoom = config?.view.zoom;
     this.layers = config?.layers;
     this.controls = config?.controls;
+    this.disableInteractions = config?.disableInteractions;
   }
 
   /**
@@ -175,6 +181,12 @@ export class EOxMap extends LitElement {
    */
   @property({ attribute: false, type: Number })
   zoom: number = 0;
+
+  /**
+   * List of interactions to be disabled
+   */
+  @property({ attribute: false, type: Array })
+  disableInteractions: DisableInteractionsType = [];
 
   /**
    * Sync map with another map view by providing its query selector
@@ -330,6 +342,9 @@ export class EOxMap extends LitElement {
     }
 
     this.map.setTarget(this.renderRoot.querySelector("div"));
+
+    if (this.disableInteractions.length)
+      setInteractionInactive(this.disableInteractions, this.map);
 
     this.map.on("loadend", () => {
       /**
