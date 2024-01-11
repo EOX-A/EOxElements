@@ -164,7 +164,7 @@ export class EOxMap extends LitElement {
     this.zoom = config?.view.zoom;
     this.layers = config?.layers;
     this.controls = config?.controls;
-    this.disableInteractions = config?.disableInteractions;
+    this.disableInteractions = config?.disableInteractions || [];
   }
 
   /**
