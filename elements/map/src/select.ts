@@ -50,9 +50,18 @@ export class EOxSelectInteraction {
     this.panIn = options.panIn || false;
 
     this.tooltip =
-      this.eoxMap.querySelector("eox-map-tooltip") ||
-      this.eoxMap.shadowRoot?.querySelector("eox-map-tooltip") ||
+      (this.eoxMap
+        .querySelector("eox-map-tooltip")
+        ?.cloneNode(true) as HTMLElement) ||
+      (this.eoxMap.shadowRoot
+        ?.querySelector("eox-map-tooltip")
+        ?.cloneNode(true) as HTMLElement) ||
       options.overlay?.element;
+
+    if (this.tooltip && !this.tooltip.id) {
+      this.tooltip.setAttribute("id", `_eoxTooltip_${options.id}`);
+    }
+
     let overlay: Overlay;
     this.selectedFids = [];
     this.active = options?.active === false ? false : true;
