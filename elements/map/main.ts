@@ -17,10 +17,7 @@ import {
 } from "./src/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
-import {
-  DisableInteractionsType,
-  setInteractionInactive,
-} from "./src/interaction";
+import { InteractionsType, setInteractionInactive } from "./src/interaction";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -29,7 +26,7 @@ type ConfigObject = {
     center: Array<number>;
     zoom: number;
   };
-  disableInteractions: DisableInteractionsType;
+  disableInteractions: InteractionsType;
 };
 
 /**
@@ -186,7 +183,7 @@ export class EOxMap extends LitElement {
    * List of interactions to be disabled
    */
   @property({ attribute: false, type: Array })
-  disableInteractions: DisableInteractionsType = [];
+  disableInteractions: InteractionsType = [];
 
   /**
    * Sync map with another map view by providing its query selector

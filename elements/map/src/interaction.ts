@@ -1,7 +1,7 @@
 import * as interactions from "ol/interaction";
 import Map from "ol/Map.js";
 
-export type DisableInteractionsType =
+export type InteractionsType =
   | [
       "DragRotate",
       "DoubleClickZoom",
@@ -19,11 +19,11 @@ export type DisableInteractionsType =
  * Loop through interactions available on map
  * and setActive to `false
  * `
- * @param {DisableInteractionsType} disableInteractions
+ * @param {InteractionsType} disableInteractions
  * @param {Map} olMap
  */
 export function setInteractionInactive(
-  disableInteractions: DisableInteractionsType,
+  disableInteractions: InteractionsType,
   olMap: Map
 ) {
   olMap.getInteractions().forEach(function (interaction) {
