@@ -49,22 +49,31 @@ export class EOxSelectInteraction {
     this.active = options.active;
     this.panIn = options.panIn || false;
 
-    this.tooltip =
-      this.eoxMap.querySelector("eox-map-tooltip") || options.overlay?.element;
+    const existingTooltip = this.eoxMap.map.getOverlayById("eox-map-tooltip");
+
     let overlay: Overlay;
     this.selectedFids = [];
-    this.active = options?.active === false ? false : true;
 
-    if (this.tooltip) {
-      overlay = new Overlay({
-        element: this.tooltip,
-        position: undefined,
-        offset: [0, 0],
-        positioning: "top-left",
-        className: "eox-map-tooltip",
-        ...options.overlay,
-      });
-      this.eoxMap.map.addOverlay(overlay);
+    if (existingTooltip) {
+      overlay = existingTooltip;
+    } else {
+      this.tooltip =
+        this.eoxMap.querySelector("eox-map-tooltip") ||
+        options.overlay?.element;
+      this.active = options?.active === false ? false : true;
+
+      if (this.tooltip) {
+        overlay = new Overlay({
+          element: this.tooltip,
+          position: undefined,
+          offset: [0, 0],
+          positioning: "top-left",
+          className: "eox-map-tooltip",
+          id: "eox-map-tooltip",
+          ...options.overlay,
+        });
+        this.eoxMap.map.addOverlay(overlay);
+      }
 
       const pointerLeaveListener = () => {
         overlay.setPosition(undefined);
