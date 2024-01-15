@@ -46,14 +46,13 @@ export class EOxSelectInteraction {
     this.eoxMap = eoxMap;
     this.selectLayer = selectLayer;
     this.options = options;
-    this.active = options.active;
+    this.active = options.active || selectLayer.getVisible();
     this.panIn = options.panIn || false;
 
     const existingTooltip = this.eoxMap.map.getOverlayById("eox-map-tooltip");
 
     let overlay: Overlay;
     this.selectedFids = [];
-    this.active = options?.active === false ? false : true;
 
     if (existingTooltip) {
       this.tooltip = existingTooltip.getElement();
@@ -198,6 +197,7 @@ export class EOxSelectInteraction {
     this.selectLayer.on("change:visible", () => {
       const visible = this.selectLayer.getVisible();
       this.selectStyleLayer.setVisible(visible);
+      this.setActive(visible);
       // if (overlay) {
       //   if (visible) {
       //     this.eoxMap.map.addOverlay(overlay);
