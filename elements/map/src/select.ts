@@ -53,14 +53,15 @@ export class EOxSelectInteraction {
 
     let overlay: Overlay;
     this.selectedFids = [];
+    this.active = options?.active === false ? false : true;
 
     if (existingTooltip) {
+      this.tooltip = existingTooltip.getElement();
       overlay = existingTooltip;
     } else {
       this.tooltip =
         this.eoxMap.querySelector("eox-map-tooltip") ||
         options.overlay?.element;
-      this.active = options?.active === false ? false : true;
 
       if (this.tooltip) {
         overlay = new Overlay({
@@ -74,20 +75,20 @@ export class EOxSelectInteraction {
         });
         this.eoxMap.map.addOverlay(overlay);
       }
+    }
 
-      const pointerLeaveListener = () => {
-        overlay.setPosition(undefined);
-      };
-      eoxMap.map.on("change:target", (e) => {
-        e.oldValue?.removeEventListener("pointerleave", pointerLeaveListener);
-        e.target
-          .getTargetElement()
-          ?.addEventListener("pointerleave", pointerLeaveListener);
-      });
-      eoxMap.map
+    const pointerLeaveListener = () => {
+      overlay.setPosition(undefined);
+    };
+    eoxMap.map.on("change:target", (e) => {
+      e.oldValue?.removeEventListener("pointerleave", pointerLeaveListener);
+      e.target
         .getTargetElement()
         ?.addEventListener("pointerleave", pointerLeaveListener);
-    }
+    });
+    eoxMap.map
+      .getTargetElement()
+      ?.addEventListener("pointerleave", pointerLeaveListener);
 
     // a layer that only contains the selected features, for displaying purposes only
     // unmanaged by the map
@@ -197,13 +198,13 @@ export class EOxSelectInteraction {
     this.selectLayer.on("change:visible", () => {
       const visible = this.selectLayer.getVisible();
       this.selectStyleLayer.setVisible(visible);
-      if (overlay) {
-        if (visible) {
-          this.eoxMap.map.addOverlay(overlay);
-        } else {
-          this.eoxMap.map.removeOverlay(overlay);
-        }
-      }
+      // if (overlay) {
+      //   if (visible) {
+      //     this.eoxMap.map.addOverlay(overlay);
+      //   } else {
+      //     this.eoxMap.map.removeOverlay(overlay);
+      //   }
+      // }
     });
 
     this.changeSourceListener = () => {
@@ -214,10 +215,10 @@ export class EOxSelectInteraction {
     this.selectLayer.on("change:source", this.changeSourceListener);
 
     this.removeListener = () => {
-      this.selectStyleLayer.setMap(null);
-      if (overlay) {
-        this.eoxMap.map.removeOverlay(overlay);
-      }
+      // this.selectStyleLayer.setMap(null);
+      // if (overlay) {
+      //   // this.eoxMap.map.removeOverlay(overlay);
+      // }
     };
     this.eoxMap.map.getLayers().on("remove", this.removeListener);
 
