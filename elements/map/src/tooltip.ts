@@ -45,9 +45,11 @@ export class EOxMapTooltip extends TemplateElement {
             </style>
             <ul>
               ${Object.entries(feature.getProperties())
-                .map(([key, value]) =>
-                  this.propertyTransform({ key, value }, feature)
-                )
+                .map(([key, value]) =>{
+                  const transformedValue = this.propertyTransform({ key, value }, feature);
+                  console.log(transformedValue);
+                  return this.propertyTransform({ key, value }, feature)
+                })
                 .filter((v) => v)
                 .map(
                   ({ key, value }) =>

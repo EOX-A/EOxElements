@@ -300,6 +300,7 @@ export const Tooltip = {
         interactions: [
           {
             type: "select",
+            showTooltip: true,
             options: {
               id: "selectInteraction",
               condition: "pointermove",
@@ -360,6 +361,7 @@ export const TooltipWithPropertyTransform = {
             options: {
               id: "selectInteraction",
               condition: "pointermove",
+              tooltipId: 'hoverTooltip',
               style: {
                 "stroke-color": "red",
                 "stroke-width": 3,
@@ -380,8 +382,9 @@ export const TooltipWithPropertyTransform = {
         .layers=${args.layers}
         .zoom=${args.zoom}
       >
-        <eox-map-tooltip
-          .propertyTransform=${({ key, value }, hoverFeature) => {
+        <eox-map-tooltip 
+          id="hoverTooltip"
+          .propertyTransform${({ key, value }, hoverFeature) => {
             console.log(hoverFeature);
             if (key.includes("COLOR")) {
               return { key: key.toLowerCase(), value };

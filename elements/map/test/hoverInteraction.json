@@ -15,6 +15,7 @@
         "options": {
           "id": "selectInteraction",
           "condition": "pointermove",
+          "showTooltip": true,
           "layer": {
             "type": "Vector",
             "properties": {

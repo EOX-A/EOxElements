@@ -22,6 +22,7 @@ export type SelectOptions = Omit<
   layer?: EoxLayer;
   style?: import("ol/style/flat.js").FlatStyleLike;
   overlay?: import("ol/Overlay").Options;
+  tooltipId?: string;
   active?: boolean;
   panIn?: boolean;
 };
@@ -31,6 +32,7 @@ export class EOxSelectInteraction {
   options: SelectOptions;
   active: boolean;
   panIn: boolean;
+  tooltipId: string;
   tooltip: HTMLElement;
   selectedFids: Array<string | number>;
   selectLayer: SelectLayer;
@@ -48,18 +50,23 @@ export class EOxSelectInteraction {
     this.options = options;
     this.active = options.active;
     this.panIn = options.panIn || false;
+    this.tooltipId = options.tooltipId || '';
 
-    this.tooltip =
-      (this.eoxMap
-        .querySelector("eox-map-tooltip")
-        ?.cloneNode(true) as HTMLElement) ||
-      (this.eoxMap.shadowRoot
-        ?.querySelector("eox-map-tooltip")
-        ?.cloneNode(true) as HTMLElement) ||
-      options.overlay?.element;
-
-    if (this.tooltip && !this.tooltip.id) {
-      this.tooltip.setAttribute("id", `_eoxTooltip_${options.id}`);
+    console.log(this.tooltipId)
+    if (this.options.tooltipId) {
+      const originalNode = this.eoxMap.querySelector(
+        `#${this.tooltipId}`
+      ) as EOxMapTooltip || this.eoxMap.shadowRoot?.querySelector(
+        `#${this.tooltipId}`
+      ) as EOxMapTooltip;
+      if (originalNode) {
+        const propertyTransformFunction = originalNode.propertyTransform;
+        const clonedNode = originalNode?.cloneNode(true) as EOxMapTooltip;
+        //clonedNode.propertyTransform = originalNode.propertyTransform;
+        clonedNode.propertyTransform = propertyTransformFunction;
+        clonedNode.setAttribute("id", `_eoxTooltip_${options.id}`);
+        this.tooltip = clonedNode;
+      }
     }
 
     let overlay: Overlay;
