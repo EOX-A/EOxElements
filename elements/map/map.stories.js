@@ -285,7 +285,7 @@ export const ClickSelect = {
  * ```
  * This renders a list of all feature properties of the currently selected feature.
  * Note that if multiple interactions are registered (e.g. `pointermove` and `singleclick`),
- * only the first one will trigger the tooltip.
+ * the `pointermove` interaction will have higher priority for the tooltip.
  */
 export const Tooltip = {
   args: {
@@ -312,6 +312,8 @@ export const Tooltip = {
         ],
       },
     ],
+    center: [15, 48],
+    zoom: 4,
   },
   render: (args) =>
     html`
@@ -369,6 +371,8 @@ export const TooltipWithPropertyTransform = {
         ],
       },
     ],
+    center: [15, 48],
+    zoom: 4,
   },
   render: (args) =>
     html`
