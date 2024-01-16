@@ -185,7 +185,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     ${radio}
     ${checkbox}
     ${slider}
-    button.icon.drag-handle {
+    .drag-handle {
       cursor: n-resize;
     }
     .single-action-container,
@@ -242,11 +242,13 @@ export class EOxLayerControlLayerTools extends LitElement {
       height: 16px;
       width: 16px;
     }
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tabs button.icon,
+    eox-layercontrol-tabs .button.icon {
       display: flex;
       justify-content: center;
     }
-    eox-layercontrol-tabs .icon::before {
+    eox-layercontrol-tabs button.icon::before,
+    eox-layercontrol-tabs .button.icon::before {
       width: 16px;
       height: 16px;
     }
@@ -267,7 +269,7 @@ export class EOxLayerControlLayerTools extends LitElement {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0000' viewBox='0 0 24 24'%3E%3Ctitle%3Edelete-outline%3C/title%3E%3Cpath d='M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z' /%3E%3C/svg%3E");
     }
     .single-action .sort-icon::before,
-    [slot=sort-icon] button.icon::before {
+    [slot=sort-icon] .button.icon::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edrag-horizontal-variant%3C/title%3E%3Cpath d='M21 11H3V9H21V11M21 13H3V15H21V13Z' /%3E%3C/svg%3E");
     }
     [slot=info-content],
