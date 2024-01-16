@@ -17,7 +17,12 @@ const firstUpdatedMethod = (EOxLayerControlLayerList) => {
     const element = renderRoot.querySelector("ul");
 
     // Checking properties of the layers
-    checkProperties(layers, idProperty, titleProperty);
+    checkProperties(
+      layers,
+      idProperty,
+      titleProperty,
+      EOxLayerControlLayerList
+    );
 
     // Creating a sortable list using helper function createSortable
     createSortable(element, layers, idProperty, EOxLayerControlLayerList);
