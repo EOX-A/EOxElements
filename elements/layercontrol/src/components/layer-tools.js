@@ -95,7 +95,10 @@ export class EOxLayerControlLayerTools extends LitElement {
 
     // Determine the single action element if only one action is present
     // @ts-ignore
-    const singleActionEle = this[`_${actions?.[0]}Button`];
+    const singleActionEle = this[`_${actions?.[0]}Button`]
+      ? // @ts-ignore
+        this[`_${actions?.[0]}Button`]()
+      : nothing;
 
     // Determine icon class based on the number of tools
     const iconClass = this.tools?.length === 1 ? `${this.tools[0]}-icon` : "";
