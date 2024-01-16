@@ -1,4 +1,4 @@
-var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,configurable:!0,writable:!0,value:o}):t[e]=o;var I=(t,e,o)=>(Fn(t,typeof e!="symbol"?e+"":e,o),o),lo=(t,e,o)=>{if(!e.has(t))throw TypeError("Cannot "+o)};var $=(t,e,o)=>(lo(t,e,"read from private field"),o?o.call(t):e.get(t)),C=(t,e,o)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,o)},ke=(t,e,o,r)=>(lo(t,e,"write to private field"),r?r.call(t,o):e.set(t,o),o);var M=(t,e,o)=>(lo(t,e,"access private method"),o);import"./sources-9AEKCtIm.js";import"./main-AiT_Xex7.js";import{x as y,T as le,w as yt,s as pe}from"./lit-element-Qm8PRmVu.js";import{n as ee,o as St,a as Zn}from"./unsafe-html-ZhFXPF0T.js";import{_ as kn,c as Yn}from"./index-HR78oL6N.js";import{e as Xn,i as zn,t as _e}from"./directive-xgBC_cM0.js";import{f as jn,m as qn}from"./directive-helpers-k6EzVOeb.js";import"./main-W6pHctbP.js";import{b as Gn}from"./button-KPw86qfe.js";import{r as Wn,c as jr,s as Jn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-SM85Sn4s.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**
+var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,configurable:!0,writable:!0,value:o}):t[e]=o;var I=(t,e,o)=>(Fn(t,typeof e!="symbol"?e+"":e,o),o),lo=(t,e,o)=>{if(!e.has(t))throw TypeError("Cannot "+o)};var $=(t,e,o)=>(lo(t,e,"read from private field"),o?o.call(t):e.get(t)),C=(t,e,o)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,o)},ke=(t,e,o,r)=>(lo(t,e,"write to private field"),r?r.call(t,o):e.set(t,o),o);var M=(t,e,o)=>(lo(t,e,"access private method"),o);import"./sources-rU-gqLOZ.js";import"./main-AiT_Xex7.js";import{x as y,T as le,w as yt,s as pe}from"./lit-element-Qm8PRmVu.js";import{n as ee,o as St,a as Zn}from"./unsafe-html-ZhFXPF0T.js";import{_ as kn,c as Yn}from"./index-HR78oL6N.js";import{e as Xn,i as zn,t as _e}from"./directive-xgBC_cM0.js";import{f as jn,m as qn}from"./directive-helpers-k6EzVOeb.js";import"./main-W6pHctbP.js";import{b as Gn}from"./button-z18YVp5B.js";import{r as Wn,c as jr,s as Jn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-COiOGGE8.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**
  * wms-capabilities @0.6.0
  * @description WMS service Capabilities > JSON, based on openlayers 
  * @license BSD-2-Clause
@@ -18,9 +18,9 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
     ${t.unstyled?"x":le}
   </button>
 `,Oa=t=>y`
-  <button class="sort-icon icon drag-handle">
-    ${t?"sort":le}
-  </button>
+  <span class="button sort-icon icon drag-handle">
+    ${t?"═":le}
+  </span>
 `;/**
  * @license
  * Copyright 2020 Google LLC
@@ -127,7 +127,7 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
     ${Wn}
     ${jr}
     ${Jn}
-    button.icon.drag-handle {
+    .drag-handle {
       cursor: n-resize;
     }
     .single-action-container,
@@ -184,11 +184,13 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
       height: 16px;
       width: 16px;
     }
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tabs button.icon,
+    eox-layercontrol-tabs .button.icon {
       display: flex;
       justify-content: center;
     }
-    eox-layercontrol-tabs .icon::before {
+    eox-layercontrol-tabs button.icon::before,
+    eox-layercontrol-tabs .button.icon::before {
       width: 16px;
       height: 16px;
     }
@@ -209,7 +211,7 @@ var Un=Object.defineProperty;var Fn=(t,e,o)=>e in t?Un(t,e,{enumerable:!0,config
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0000' viewBox='0 0 24 24'%3E%3Ctitle%3Edelete-outline%3C/title%3E%3Cpath d='M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z' /%3E%3C/svg%3E");
     }
     .single-action .sort-icon::before,
-    [slot=sort-icon] button.icon::before {
+    [slot=sort-icon] .button.icon::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edrag-horizontal-variant%3C/title%3E%3Cpath d='M21 11H3V9H21V11M21 13H3V15H21V13Z' /%3E%3C/svg%3E");
     }
     [slot=info-content],
