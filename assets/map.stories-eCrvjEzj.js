@@ -1,4 +1,4 @@
-import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";import"./main-THjY6tgQ.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-do-aL0BD.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";const fe={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>r`
+import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-yNXv76P3.js";import"./main-WKVKiexT.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-_RKrEjZ-.js";import"../sb-preview/runtime.js";import"./state-ncEgtE_C.js";import"./index-EySAwWXj.js";const fe={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>r`
       <eox-map
         style="width: 100%; height: 300px;"
         .center=${e.center}
@@ -6,7 +6,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
         .layers=${e.layers}
         .zoom=${e.zoom}
       ></eox-map>
-    `},n={args:{center:[15,48],layers:[{type:"Tile",source:{type:"OSM"}}],zoom:7}},s={args:{layers:[{type:"Vector",background:"#1366dd",properties:{id:"regions"},source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON",attributions:"Regions: @ openlayers.org"},style:{"stroke-color":"#232323","stroke-width":1,"fill-color":["string",["get","COLOR"],"#eee"]}}]}},a={args:{layers:[{type:"VectorTile",background:"#1a2b39",declutter:!0,properties:{id:"countries"},source:{type:"VectorTile",url:"https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",format:"MVT",tileGrid:{}},style:{"fill-color":"yellow","stroke-color":"#232323","stroke-width":1}}]}},p={args:{center:[-10997148,4569099],layers:[{type:"Tile",properties:{id:"customId"},source:{type:"TileWMS",url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states",TILED:!0},ratio:1,serverType:"geoserver"}}],zoom:3}},i={args:{center:[-122.38,46.1],layers:[{type:"STAC",properties:{id:"stacLayer"},url:"https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json"},{type:"Tile",properties:{id:"customId"},source:{type:"OSM"}}],zoom:7}},c={args:{layers:[{type:"Group",properties:{id:"group"},layers:[{type:"Vector",properties:{id:"regions"},source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"}},{type:"Group",properties:{id:"groupLayerInsideGroup"},layers:[{type:"Tile",properties:{id:"layerInsideGroupInsideGroup"},source:{type:"OSM"}}]}]}]}},l={args:{controls:{Zoom:{},Attribution:{},FullScreen:{},OverviewMap:{layers:[{type:"Tile",properties:{id:"overviewMap"},source:{type:"OSM"}}]}},layers:[{type:"Tile",properties:{id:"customId"},source:{type:"OSM"}}]}},y={args:{layers:[{type:"Vector",source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"pointermove",layer:{type:"Vector",properties:{id:"selectLayer"},source:{type:"Vector"},style:{"stroke-color":"red","stroke-width":3}}}}]}]}},m={args:{layers:[{type:"Vector",background:"#1366dd",properties:{id:"regions"},source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON",attributions:"Regions: @ openlayers.org"},style:{"stroke-color":"black","stroke-width":1,"fill-color":"red"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"click",style:{"stroke-color":"white","stroke-width":3}}}]}]}},o={args:{layers:[{type:"Vector",source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"pointermove",style:{"stroke-color":"red","stroke-width":3}}}]}]},render:e=>r`
+    `},n={args:{center:[15,48],layers:[{type:"Tile",source:{type:"OSM"}}],zoom:7}},s={args:{layers:[{type:"Vector",background:"#1366dd",properties:{id:"regions"},source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON",attributions:"Regions: @ openlayers.org"},style:{"stroke-color":"#232323","stroke-width":1,"fill-color":["string",["get","COLOR"],"#eee"]}}]}},a={args:{layers:[{type:"VectorTile",background:"#1a2b39",declutter:!0,properties:{id:"countries"},source:{type:"VectorTile",url:"https://ahocevar.com/geoserver/gwc/service/tms/1.0.0/ne:ne_10m_admin_0_countries@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf",format:"MVT",tileGrid:{}},style:{"fill-color":"yellow","stroke-color":"#232323","stroke-width":1}}]}},p={args:{center:[-10997148,4569099],layers:[{type:"Tile",properties:{id:"customId"},source:{type:"TileWMS",url:"https://ahocevar.com/geoserver/wms",params:{LAYERS:"topp:states",TILED:!0},ratio:1,serverType:"geoserver"}}],zoom:3}},c={args:{center:[-122.38,46.1],layers:[{type:"STAC",properties:{id:"stacLayer"},url:"https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json"},{type:"Tile",properties:{id:"customId"},source:{type:"OSM"}}],zoom:7}},i={args:{layers:[{type:"Group",properties:{id:"group"},layers:[{type:"Vector",properties:{id:"regions"},source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"}},{type:"Group",properties:{id:"groupLayerInsideGroup"},layers:[{type:"Tile",properties:{id:"layerInsideGroupInsideGroup"},source:{type:"OSM"}}]}]}]}},l={args:{controls:{Zoom:{},Attribution:{},FullScreen:{},OverviewMap:{layers:[{type:"Tile",properties:{id:"overviewMap"},source:{type:"OSM"}}]}},layers:[{type:"Tile",properties:{id:"customId"},source:{type:"OSM"}}]}},y={args:{layers:[{type:"Vector",source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"pointermove",layer:{type:"Vector",properties:{id:"selectLayer"},source:{type:"Vector"},style:{"stroke-color":"red","stroke-width":3}}}}]}]}},m={args:{layers:[{type:"Vector",background:"#1366dd",properties:{id:"regions"},source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON",attributions:"Regions: @ openlayers.org"},style:{"stroke-color":"black","stroke-width":1,"fill-color":"red"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"click",style:{"stroke-color":"white","stroke-width":3}}}]}]}},o={args:{layers:[{type:"Vector",source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"pointermove",style:{"stroke-color":"red","stroke-width":3}}}]}],center:[15,48],zoom:4},render:e=>r`
       <eox-map
         id="tooltipTest"
         style="width: 100%; height: 300px;"
@@ -17,7 +17,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
       >
         <eox-map-tooltip></eox-map-tooltip>
       </eox-map>
-    `},t={args:{layers:[{type:"Vector",source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"pointermove",style:{"stroke-color":"red","stroke-width":3}}}]}]},render:e=>r`
+    `},t={args:{layers:[{type:"Vector",source:{type:"Vector",url:"https://openlayers.org/data/vector/ecoregions.json",format:"GeoJSON"},interactions:[{type:"select",options:{id:"selectInteraction",condition:"pointermove",style:{"stroke-color":"red","stroke-width":3}}}]}],center:[15,48],zoom:4},render:e=>r`
       <eox-map
         id="tooltipTest"
         style="width: 100%; height: 300px;"
@@ -27,7 +27,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
         .zoom=${e.zoom}
       >
         <eox-map-tooltip
-          .propertyTransform=${({key:h,value:ce},le)=>{if(console.log(le),h.includes("COLOR"))return{key:h.toLowerCase(),value:ce}}}
+          .propertyTransform=${({key:h,value:ie},le)=>{if(console.log(le),h.includes("COLOR"))return{key:h.toLowerCase(),value:ie}}}
         ></eox-map-tooltip>
       </eox-map>
     `},d={args:{layers:[{type:"Tile",properties:{id:"osm",title:"Background"},source:{type:"OSM"}}]},render:e=>r`
@@ -141,7 +141,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
     }],
     zoom: 3
   }
-}`,...(A=(L=p.parameters)==null?void 0:L.docs)==null?void 0:A.source}}};var $,b,M;i.parameters={...i.parameters,docs:{...($=i.parameters)==null?void 0:$.docs,source:{originalSource:`{
+}`,...(A=(L=p.parameters)==null?void 0:L.docs)==null?void 0:A.source}}};var $,b,M;c.parameters={...c.parameters,docs:{...($=c.parameters)==null?void 0:$.docs,source:{originalSource:`{
   args: {
     center: [-122.38, 46.1],
     layers: [{
@@ -161,7 +161,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
     }],
     zoom: 7
   }
-}`,...(M=(b=i.parameters)==null?void 0:b.docs)==null?void 0:M.source}}};var G,I,z;c.parameters={...c.parameters,docs:{...(G=c.parameters)==null?void 0:G.docs,source:{originalSource:`{
+}`,...(M=(b=c.parameters)==null?void 0:b.docs)==null?void 0:M.source}}};var G,z,I;i.parameters={...i.parameters,docs:{...(G=i.parameters)==null?void 0:G.docs,source:{originalSource:`{
   args: {
     layers: [{
       type: "Group",
@@ -195,7 +195,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
       }]
     }]
   }
-}`,...(z=(I=c.parameters)==null?void 0:I.docs)==null?void 0:z.source}}};var C,j,E;l.parameters={...l.parameters,docs:{...(C=l.parameters)==null?void 0:C.docs,source:{originalSource:`{
+}`,...(I=(z=i.parameters)==null?void 0:z.docs)==null?void 0:I.source}}};var C,j,E;l.parameters={...l.parameters,docs:{...(C=l.parameters)==null?void 0:C.docs,source:{originalSource:`{
   args: {
     controls: {
       Zoom: {},
@@ -306,7 +306,9 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
           }
         }
       }]
-    }]
+    }],
+    center: [15, 48],
+    zoom: 4
   },
   render: args => html\`
       <eox-map
@@ -320,7 +322,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
         <eox-map-tooltip></eox-map-tooltip>
       </eox-map>
     \`
-}`,...(Y=(F=o.parameters)==null?void 0:F.docs)==null?void 0:Y.source},description:{story:"`eox-map` offers a built-in tooltip, which needs to be placed inside the default slot:\n```\n<eox-map [...]>\n  <eox-map-tooltip></eox-map-tooltip>\n</eox-map>\n```\nThis renders a list of all feature properties of the currently selected feature.\nNote that if multiple interactions are registered (e.g. `pointermove` and `singleclick`),\nonly the first one will trigger the tooltip.",...(H=(Z=o.parameters)==null?void 0:Z.docs)==null?void 0:H.description}}};var q,K,Q,U,X;t.parameters={...t.parameters,docs:{...(q=t.parameters)==null?void 0:q.docs,source:{originalSource:`{
+}`,...(Y=(F=o.parameters)==null?void 0:F.docs)==null?void 0:Y.source},description:{story:"`eox-map` offers a built-in tooltip, which needs to be placed inside the default slot:\n```\n<eox-map [...]>\n  <eox-map-tooltip></eox-map-tooltip>\n</eox-map>\n```\nThis renders a list of all feature properties of the currently selected feature.\nNote that if multiple interactions are registered (e.g. `pointermove` and `singleclick`),\nthe `pointermove` interaction will have higher priority for the tooltip.",...(H=(Z=o.parameters)==null?void 0:Z.docs)==null?void 0:H.description}}};var q,K,Q,U,X;t.parameters={...t.parameters,docs:{...(q=t.parameters)==null?void 0:q.docs,source:{originalSource:`{
   args: {
     layers: [{
       type: "Vector",
@@ -340,7 +342,9 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
           }
         }
       }]
-    }]
+    }],
+    center: [15, 48],
+    zoom: 4
   },
   render: args => html\`
       <eox-map
@@ -432,7 +436,7 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
         ></eox-map>
       </eox-map-compare>
     \`
-}`,...(se=(ne=u.parameters)==null?void 0:ne.docs)==null?void 0:se.source}}};var ae,pe,ie;g.parameters={...g.parameters,docs:{...(ae=g.parameters)==null?void 0:ae.docs,source:{originalSource:`{
+}`,...(se=(ne=u.parameters)==null?void 0:ne.docs)==null?void 0:se.source}}};var ae,pe,ce;g.parameters={...g.parameters,docs:{...(ae=g.parameters)==null?void 0:ae.docs,source:{originalSource:`{
   args: {
     config: {
       controls: {
@@ -456,4 +460,4 @@ import{x as r}from"./lit-element-Qm8PRmVu.js";import"./sources-Qi1nqJM0.js";impo
         .config=\${args.config}
       ></eox-map>
     \`
-}`,...(ie=(pe=g.parameters)==null?void 0:pe.docs)==null?void 0:ie.source}}};const Te=["Primary","VectorLayer","VectorTileLayer","WMSLayer","STACLayer","GroupLayer","Controls","HoverSelect","ClickSelect","Tooltip","TooltipWithPropertyTransform","MapSync","ABCompare","ConfigObject"];export{u as ABCompare,m as ClickSelect,g as ConfigObject,l as Controls,c as GroupLayer,y as HoverSelect,d as MapSync,n as Primary,i as STACLayer,o as Tooltip,t as TooltipWithPropertyTransform,s as VectorLayer,a as VectorTileLayer,p as WMSLayer,Te as __namedExportsOrder,fe as default};
+}`,...(ce=(pe=g.parameters)==null?void 0:pe.docs)==null?void 0:ce.source}}};const Te=["Primary","VectorLayer","VectorTileLayer","WMSLayer","STACLayer","GroupLayer","Controls","HoverSelect","ClickSelect","Tooltip","TooltipWithPropertyTransform","MapSync","ABCompare","ConfigObject"];export{u as ABCompare,m as ClickSelect,g as ConfigObject,l as Controls,i as GroupLayer,y as HoverSelect,d as MapSync,n as Primary,c as STACLayer,o as Tooltip,t as TooltipWithPropertyTransform,s as VectorLayer,a as VectorTileLayer,p as WMSLayer,Te as __namedExportsOrder,fe as default};
