@@ -76,6 +76,6 @@ export const removeButton = (EOxLayerControlLayerTools) => html`
  */
 export const sortButton = (unstyled) => html`
   <span class="button sort-icon icon drag-handle">
-    ${unstyled ? "sort" : nothing}
+    ${unstyled ? "═" : nothing}
   </span>
 `;
