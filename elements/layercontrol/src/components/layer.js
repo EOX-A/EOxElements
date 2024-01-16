@@ -158,7 +158,7 @@ export class EOxLayerControlLayer extends LitElement {
         () => html`
           <!-- Render the layer -->
           <div class="layer ${visibilityClass} ${layerZoomStateClass}">
-            <label class="${disableClass}">
+            <label class="drag-handle ${disableClass}">
               <!-- Input element for layer visibility -->
               <input
                 type=${inputType}

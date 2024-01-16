@@ -19,7 +19,7 @@ const disableDrag = () => {
       cy.get(".tools summary").click({ multiple: true });
 
       // Verifying the visibility of the drag handle
-      cy.get(".drag-handle:visible").should("have.length", 1);
+      cy.get(".drag-handle.disabled").should("have.length", 1);
     });
 };
 
