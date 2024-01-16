@@ -1,5 +1,6 @@
 export const button = `
-button {
+button,
+.button {
   /* TODO: why does this only work here and not from :root? */
   --primary-color: #004170;
   --primary-color-hover: #004170CC;
@@ -26,31 +27,37 @@ button {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-button:hover:not([disabled]):not(.icon) {
+button:hover:not([disabled]):not(.icon),
+.button:hover:not([disabled]):not(.icon) {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
   background: var(--primary-color-hover);
 }
 
-button, button:active {
+button, button:active,
+.button, .button:active {
   background: var(--primary-color);
 }
 
-button[disabled] {
+button[disabled],
+.button[disabled] {
   opacity: 0.5;
 }
 
-button.outline {
+button.outline,
+.button.outline {
   background: transparent;
   box-shadow: none;
   color: var(--primary-color);
   outline: 1px solid var(--primary-color);
 }
 
-button.outline:hover {
+button.outline:hover,
+.button.outline:hover {
   background: transparent;
 }
 
-button.icon {
+button.icon,
+.button.icon {
   background: transparent;
   border: none;
   box-shadow: none;
@@ -61,28 +68,33 @@ button.icon {
   text-indent: -9999px;
 }
 
-button.icon-text {
+button.icon-text,
+.button.icon-text {
   text-indent: 26px;
 }
 
-button.icon:before, button.icon-text:before {
+button.icon:before, button.icon-text:before,
+.button.icon:before, .button.icon-text:before {
   position: absolute;
   text-indent: 0;
   line-height: initial;
 }
 
-button.icon:before {
+button.icon:before,
+.button.icon:before {
   width: 24px;
   height: 24px;
   margin-right: 0;
 }
 
-button.icon-text:before {
+button.icon-text:before,
+.button.icon-text:before {
   width: 18px;
   height: 18px;
 }
 
-button.small {
+button.small,
+.button.small {
   height: 28px;
   padding: 12.4px;
   font-size: .75rem;

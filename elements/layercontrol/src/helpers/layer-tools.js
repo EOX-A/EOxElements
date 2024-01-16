@@ -75,7 +75,7 @@ export const removeButton = (EOxLayerControlLayerTools) => html`
  * @returns {import("lit").HTMLTemplateResult} - Sort button element.
  */
 export const sortButton = (unstyled) => html`
-  <button class="sort-icon icon drag-handle">
+  <span class="button sort-icon icon drag-handle">
     ${unstyled ? "sort" : nothing}
-  </button>
+  </span>
 `;
