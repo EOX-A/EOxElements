@@ -77,7 +77,9 @@ export class EOxSelectInteraction {
     }
 
     const pointerLeaveListener = () => {
-      overlay.setPosition(undefined);
+      if (options.condition === "pointermove") {
+        overlay.setPosition(undefined);
+      }
     };
     eoxMap.map.on("change:target", (e) => {
       e.oldValue?.removeEventListener("pointerleave", pointerLeaveListener);
