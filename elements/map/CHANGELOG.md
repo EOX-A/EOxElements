@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/map-v1.1.0...map-v1.1.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* Check if overlay was already instantiated before creating a new one ([#571](https://github.com/EOX-A/EOxElements/issues/571)) ([3349e99](https://github.com/EOX-A/EOxElements/commit/3349e996619c059c419e15a087275fa7a7f9aad4))
+* Keep tooltip visible if not emitted by pointermove ([#579](https://github.com/EOX-A/EOxElements/issues/579)) ([8f7d9d2](https://github.com/EOX-A/EOxElements/commit/8f7d9d293f828686b4b4f7c1cfb843a3f960bcbb))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/map-v1.0.0...map-v1.1.0) (2023-12-21)
 
 
