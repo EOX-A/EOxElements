@@ -34,7 +34,7 @@ describe("tooltip", () => {
       });
   });
 
-  it.only("displays a tooltip on hover when multiple layers are initialized and only one visible", () => {
+  it("displays a tooltip on hover when multiple layers are initialized and only one visible", () => {
     cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
       fixture: "/ecoregions.json",
     });
