@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.14.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.13.1...layercontrol-v0.14.0) (2024-01-17)
+
+
+### Features
+
+* Allow sorting layers by dragging them ([#582](https://github.com/EOX-A/EOxElements/issues/582)) ([fea7392](https://github.com/EOX-A/EOxElements/commit/fea73924a0fff64436f21a21b0c735e331702623))
+
+
+### Bug Fixes
+
+* Make sure a fallback layer id is rendered in time in order to support sorting ([#588](https://github.com/EOX-A/EOxElements/issues/588)) ([acced90](https://github.com/EOX-A/EOxElements/commit/acced905e93ec89f6ee071e871b217b7423f74e9))
+* Properly render single action button ([#581](https://github.com/EOX-A/EOxElements/issues/581)) ([945d9db](https://github.com/EOX-A/EOxElements/commit/945d9dbcf87ceea8d23c359bee6a957c603bc2a1))
+* Replace empty button to fix firefox sorting ([#583](https://github.com/EOX-A/EOxElements/issues/583)) ([6d9610a](https://github.com/EOX-A/EOxElements/commit/6d9610a7164542302acc076e5239deb070f78b6d))
+
 ## [0.13.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.13.0...layercontrol-v0.13.1) (2023-12-22)
 
 
