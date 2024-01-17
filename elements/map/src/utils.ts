@@ -49,7 +49,7 @@ export function numbersRoughlyEquals(
  * @param {import("ol").Map} map - The OpenLayers map to which the interactions should be added.
  * @param {boolean} customInteraction - state if customInteraction to be added or default
  */
-export function addPreventScrollInteractions(
+export function addScrollInteractions(
   map: import("ol").Map,
   customInteraction: boolean = false
 ) {
@@ -85,7 +85,7 @@ export function addPreventScrollInteractions(
  *
  * @param {import("ol").Map} map - The OpenLayers map from which the interactions should be removed.
  */
-export function removePreventScrollInteractions(map: import("ol").Map) {
+export function removeDefaultScrollInteractions(map: import("ol").Map) {
   map
     .getInteractions()
     .getArray()

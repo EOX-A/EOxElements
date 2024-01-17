@@ -18,8 +18,8 @@ import {
 import { buffer } from "ol/extent";
 import "./src/compare";
 import {
-  addPreventScrollInteractions,
-  removePreventScrollInteractions,
+  addScrollInteractions,
+  removeDefaultScrollInteractions,
 } from "./src/utils";
 
 type ConfigObject = {
@@ -101,9 +101,9 @@ export class EOxMap extends LitElement {
 
   set preventScroll(preventScroll: boolean) {
     if (preventScroll) {
-      removePreventScrollInteractions(this.map);
-      addPreventScrollInteractions(this.map, true);
-    } else addPreventScrollInteractions(this.map);
+      removeDefaultScrollInteractions(this.map);
+      addScrollInteractions(this.map, true);
+    } else addScrollInteractions(this.map);
   }
 
   /**
