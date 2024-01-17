@@ -482,7 +482,7 @@ export const ConfigObject = {
     `,
 };
 
-export const DisableInteractions = {
+export const PreventScroll = {
   args: {
     config: {
       controls: {
@@ -493,12 +493,12 @@ export const DisableInteractions = {
         center: [16.8, 48.2],
         zoom: 9,
       },
-      disableInteractions: ["MouseWheelZoom", "DoubleClickZoom"],
+      preventScroll: true,
     },
   },
   render: (args) =>
     html`
-      <h3>Try to double click or mouse scroll to zoom</h3>
+      <h3>Try to mouse-scroll (on desktop) or drag-touch (on tab/mobile)</h3>
       <eox-map
         style="width: 100%; height: 300px;"
         .config=${args.config}

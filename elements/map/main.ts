@@ -17,7 +17,10 @@ import {
 } from "./src/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
-import { InteractionsType, setInteractionInactive } from "./src/interaction";
+import {
+  addPreventScrollInteractions,
+  removePreventScrollInteractions,
+} from "./src/utils";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -26,7 +29,7 @@ type ConfigObject = {
     center: Array<number>;
     zoom: number;
   };
-  disableInteractions: InteractionsType;
+  preventScroll: Boolean;
 };
 
 /**
@@ -96,6 +99,13 @@ export class EOxMap extends LitElement {
     this._controls = newControls;
   }
 
+  set preventScroll(preventScroll: Boolean) {
+    if (preventScroll) {
+      removePreventScrollInteractions(this.map);
+      addPreventScrollInteractions(this.map, true);
+    } else addPreventScrollInteractions(this.map, false);
+  }
+
   /**
    * Map controls, in JSON format
    */
@@ -161,7 +171,7 @@ export class EOxMap extends LitElement {
     this.zoom = config?.view.zoom;
     this.layers = config?.layers;
     this.controls = config?.controls;
-    this.disableInteractions = config?.disableInteractions || [];
+    this.preventScroll = config?.preventScroll;
   }
 
   /**
@@ -178,12 +188,6 @@ export class EOxMap extends LitElement {
    */
   @property({ attribute: false, type: Number })
   zoom: number = 0;
-
-  /**
-   * List of interactions to be disabled
-   */
-  @property({ attribute: false, type: Array })
-  disableInteractions: InteractionsType = [];
 
   /**
    * Sync map with another map view by providing its query selector
@@ -339,9 +343,6 @@ export class EOxMap extends LitElement {
     }
 
     this.map.setTarget(this.renderRoot.querySelector("div"));
-
-    if (this.disableInteractions.length)
-      setInteractionInactive(this.disableInteractions, this.map);
 
     this.map.on("loadend", () => {
       /**
