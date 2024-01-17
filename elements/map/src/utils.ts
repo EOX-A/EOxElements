@@ -47,11 +47,11 @@ export function numbersRoughlyEquals(
  * Adds interactions for preventing scroll behavior on the specified OpenLayers map.
  *
  * @param {import("ol").Map} map - The OpenLayers map to which the interactions should be added.
- * @param {Boolean} customInteraction - state if customInteraction to be added or default
+ * @param {boolean} customInteraction - state if customInteraction to be added or default
  */
 export function addPreventScrollInteractions(
   map: import("ol").Map,
-  customInteraction: Boolean
+  customInteraction: boolean = false
 ) {
   if (customInteraction) {
     map.addInteraction(

@@ -103,7 +103,7 @@ export class EOxMap extends LitElement {
     if (preventScroll) {
       removePreventScrollInteractions(this.map);
       addPreventScrollInteractions(this.map, true);
-    } else addPreventScrollInteractions(this.map, false);
+    } else addPreventScrollInteractions(this.map);
   }
 
   /**
