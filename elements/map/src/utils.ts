@@ -93,6 +93,7 @@ export function removePreventScrollInteractions(map: import("ol").Map) {
       if (
         interaction instanceof MouseWheelZoom ||
         interaction instanceof DragPan
-      ) map.removeInteraction(interaction);
+      )
+        map.removeInteraction(interaction);
     });
 }

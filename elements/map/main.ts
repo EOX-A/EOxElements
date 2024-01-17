@@ -29,7 +29,7 @@ type ConfigObject = {
     center: Array<number>;
     zoom: number;
   };
-  preventScroll: Boolean;
+  preventScroll: boolean;
 };
 
 /**
@@ -99,7 +99,7 @@ export class EOxMap extends LitElement {
     this._controls = newControls;
   }
 
-  set preventScroll(preventScroll: Boolean) {
+  set preventScroll(preventScroll: boolean) {
     if (preventScroll) {
       removePreventScrollInteractions(this.map);
       addPreventScrollInteractions(this.map, true);
