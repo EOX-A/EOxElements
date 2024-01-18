@@ -1,4 +1,4 @@
-import { JSONEditor } from "@json-editor/json-editor/dist/jsoneditor.js";
+import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
