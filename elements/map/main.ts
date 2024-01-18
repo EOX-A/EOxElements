@@ -99,27 +99,6 @@ export class EOxMap extends LitElement {
     this._controls = newControls;
   }
 
-  private _preventScroll: boolean;
-
-  /**
-   * Set new `preventScroll`
-   */
-  set preventScroll(preventScroll: boolean) {
-    if (preventScroll) {
-      removeDefaultScrollInteractions(this.map);
-      addScrollInteractions(this.map, true);
-    } else addScrollInteractions(this.map);
-
-    this._preventScroll = preventScroll;
-  }
-
-  /**
-   * Return current state of `preventScroll`
-   */
-  get preventScroll() {
-    return this._preventScroll;
-  }
-
   /**
    * Map controls, in JSON format
    */
@@ -175,6 +154,27 @@ export class EOxMap extends LitElement {
 
   get layers() {
     return this._layers;
+  }
+
+  private _preventScroll: boolean;
+
+  /**
+   * Set new `preventScroll`
+   */
+  set preventScroll(preventScroll: boolean) {
+    if (preventScroll) {
+      removeDefaultScrollInteractions(this.map);
+      addScrollInteractions(this.map, true);
+    } else addScrollInteractions(this.map);
+
+    this._preventScroll = preventScroll;
+  }
+
+  /**
+   * Return current state of `preventScroll`
+   */
+  get preventScroll() {
+    return this._preventScroll;
   }
 
   private _config: ConfigObject;
