@@ -17,6 +17,10 @@ import {
 } from "./src/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
+import {
+  addScrollInteractions,
+  removeDefaultScrollInteractions,
+} from "./src/utils";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -25,6 +29,7 @@ type ConfigObject = {
     center: Array<number>;
     zoom: number;
   };
+  preventScroll: boolean;
 };
 
 /**
@@ -151,6 +156,30 @@ export class EOxMap extends LitElement {
     return this._layers;
   }
 
+  private _preventScroll: boolean;
+
+  /**
+   * Set new `preventScroll`
+   */
+  @property({ attribute: "prevent-scroll", type: Boolean })
+  set preventScroll(preventScroll: boolean) {
+    if (preventScroll) {
+      removeDefaultScrollInteractions(this.map);
+      addScrollInteractions(this.map, true);
+    } else addScrollInteractions(this.map);
+
+    this._preventScroll = preventScroll;
+  }
+
+  /**
+   * Prevent accidental scrolling / drag-pan of the map.
+   * Scrolling only enabled while pressing the platform modifier key (ctrl/cmd).
+   * @type Boolean
+   */
+  get preventScroll() {
+    return this._preventScroll;
+  }
+
   private _config: ConfigObject;
 
   set config(config: ConfigObject) {
@@ -159,6 +188,9 @@ export class EOxMap extends LitElement {
     this.zoom = config?.view.zoom;
     this.layers = config?.layers;
     this.controls = config?.controls;
+    if (this.preventScroll === undefined) {
+      this.preventScroll = config?.preventScroll;
+    }
   }
 
   /**
