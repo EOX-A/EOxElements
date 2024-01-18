@@ -161,6 +161,7 @@ export class EOxMap extends LitElement {
   /**
    * Set new `preventScroll`
    */
+  @property({ attribute: "prevent-scroll", type: Boolean })
   set preventScroll(preventScroll: boolean) {
     if (preventScroll) {
       removeDefaultScrollInteractions(this.map);
@@ -171,7 +172,9 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Return current state of `preventScroll`
+   * Prevent accidental scrolling / drag-pan of the map.
+   * Scrolling only enabled while pressing the platform modifier key (ctrl/cmd).
+   * @type Boolean
    */
   get preventScroll() {
     return this._preventScroll;
@@ -185,7 +188,9 @@ export class EOxMap extends LitElement {
     this.zoom = config?.view.zoom;
     this.layers = config?.layers;
     this.controls = config?.controls;
-    this.preventScroll = config?.preventScroll || false;
+    if (this.preventScroll === undefined) {
+      this.preventScroll = config?.preventScroll;
+    }
   }
 
   /**

@@ -482,6 +482,11 @@ export const ConfigObject = {
     `,
 };
 
+/**
+ * By setting the `prevent-scroll` attribute or by setting `preventScroll` property to `true` (either on the element or within the config object),
+ * the map doesnt mouse-scroll (on desktop) or drag-touch (on tab/mobile). Pressing the platform modifier key (ctrl/cmd) will enable scrolling.
+ * Useful for maps embedded in scrollable websites.
+ */
 export const PreventScroll = {
   args: {
     config: {
@@ -498,7 +503,6 @@ export const PreventScroll = {
   },
   render: (args) =>
     html`
-      <h3>Try to mouse-scroll (on desktop) or drag-touch (on tab/mobile)</h3>
       <eox-map
         style="width: 100%; height: 300px;"
         .config=${args.config}
