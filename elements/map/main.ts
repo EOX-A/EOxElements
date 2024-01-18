@@ -99,11 +99,25 @@ export class EOxMap extends LitElement {
     this._controls = newControls;
   }
 
+  private _preventScroll: boolean;
+
+  /**
+   * Set new `preventScroll`
+   */
   set preventScroll(preventScroll: boolean) {
     if (preventScroll) {
       removeDefaultScrollInteractions(this.map);
       addScrollInteractions(this.map, true);
     } else addScrollInteractions(this.map);
+
+    this._preventScroll = preventScroll;
+  }
+
+  /**
+   * Return current state of `preventScroll`
+   */
+  get preventScroll() {
+    return this._preventScroll;
   }
 
   /**
@@ -171,7 +185,7 @@ export class EOxMap extends LitElement {
     this.zoom = config?.view.zoom;
     this.layers = config?.layers;
     this.controls = config?.controls;
-    this.preventScroll = config?.preventScroll;
+    this.preventScroll = config?.preventScroll || false;
   }
 
   /**
