@@ -144,6 +144,9 @@ export class EOxSelectInteraction {
     };
 
     const listener = (event: MapBrowserEvent<UIEvent>) => {
+      if (!this.active) {
+        return;
+      }
       const currentZoom = this.eoxMap.map.getView().getZoom();
       if (
         event.dragging ||
