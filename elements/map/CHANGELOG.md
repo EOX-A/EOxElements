@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/map-v1.1.1...map-v1.2.0) (2024-01-19)
+
+
+### Features
+
+* Accidental scrolling prevention via `preventScroll ` property / `prevent-scroll` attribute ([#569](https://github.com/EOX-A/EOxElements/issues/569)) ([89a6878](https://github.com/EOX-A/EOxElements/commit/89a68788edf0c65ed8cfeb973337e06d694506a8))
+
+
+### Bug Fixes
+
+* Consider active inside listener ([#593](https://github.com/EOX-A/EOxElements/issues/593)) ([bf3bb77](https://github.com/EOX-A/EOxElements/commit/bf3bb773696b671c12c89297e097377081141aaf))
+
 ## [1.1.1](https://github.com/EOX-A/EOxElements/compare/map-v1.1.0...map-v1.1.1) (2024-01-16)
 
 
