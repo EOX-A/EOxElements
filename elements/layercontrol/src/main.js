@@ -25,6 +25,9 @@ import {
  * #### `layerControlHide?: Boolean`
  * Completely hide a layer from the layer control.
  *
+ * #### `layerControlHideGroup?: Boolean`
+ * Hide group sub-layers and make a group look like a normal layer.
+ *
  * #### `layerControlOptional?: Boolean`
  * Initially hide a layer from the layer control, but make it available as an optional layer. If the layer is selected and added, it will be set to visible and pushed to the top of the layer list or (if originally configured within a layer group) to the top of the layer group.
  *
