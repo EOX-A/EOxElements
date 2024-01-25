@@ -11,6 +11,7 @@ import {
   ToolsStory,
   addExternalLayerStory,
   layerZoomStateStory,
+  hiddenGroupStory,
   unstyledStory,
 } from ".";
 
@@ -79,6 +80,12 @@ export const AddExternalLayer = addExternalLayerStory;
  * The color change state only visible when `showLayerZoomState` is set inside layer properties.
  */
 export const LayerZoomState = layerZoomStateStory;
+
+/**
+ * By using the `layerControlHideGroup` property on a layer group,
+ * it will be rendered to look like a layer instead.
+ */
+export const HiddenGroup = hiddenGroupStory;
 
 /**
  * Unstyled version of the Element

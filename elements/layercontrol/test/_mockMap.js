@@ -11,14 +11,14 @@ class MockLayer {
       }
       if (layer.layers) {
         this.layers = new MockCollection(layer.layers);
+        this.getLayers = () => {
+          return this.layers || new MockCollection([]);
+        };
       }
     });
   }
   get(prop) {
     return this.properties[prop] || this[prop];
-  }
-  getLayers() {
-    return this.layers || new MockCollection([]);
   }
   getOpacity() {
     return this.opacity;
@@ -26,7 +26,6 @@ class MockLayer {
   getVisible() {
     return this.visible;
   }
-  layers;
   opacity = 1;
   properties = {
     id: "foo",

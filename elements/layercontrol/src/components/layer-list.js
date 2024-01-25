@@ -139,7 +139,8 @@ export class EOxLayerControlLayerList extends LitElement {
                 >
                   ${
                     /** Checks if the layer is a group or individual layer and renders accordingly */
-                    /** @type {import("ol/layer").Group} */ (layer).getLayers
+                    /** @type {import("ol/layer").Group} */ (layer).getLayers &&
+                    !layer.get("layerControlHideGroup")
                       ? html`
                           <eox-layercontrol-layer-group
                             .noShadow=${true}

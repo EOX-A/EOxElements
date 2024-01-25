@@ -6,6 +6,7 @@ import {
   checkPreOpenLayerTools,
   checkPreOpenSection,
   disableDrag,
+  hideGroups,
   hideLayers,
   renderOptionalLayer,
   showCorrectLayerTitle,
@@ -26,6 +27,9 @@ describe("LayerControl", () => {
 
   // Test to ensure that the correct number of layers is displayed
   it("displays the correct amount of layers", () => checkLayerSize());
+
+  // Test to validate the hiding of groups
+  it("hides groups correctly", () => hideGroups());
 
   // Test to validate the hiding of layers
   it("hides layers correctly", () => hideLayers());
