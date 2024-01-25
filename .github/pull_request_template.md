@@ -1,8 +1,11 @@
-## Describe your changes
+## Implemented changes
 
-## Connected issue
+<!-- description of implemented changes -->
+<!-- to automatically close an issue via this PR, please see https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword -->
 
-[keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) #issue-number
+## Screenshots/Videos
+
+<!-- upload and add here, or delete section if not applicable -->
 
 ## Checklist before requesting a review
 
