@@ -186,6 +186,14 @@ export const STORIES_HIDDEN_GROUP_LAYERS = [
   {
     type: "Group",
     properties: {
+      id: "group-normal",
+      title: "Layer group (normal)",
+    },
+    layers: [STORIES_LAYER_SENTINEL_HUB.no2, STORIES_LAYER_TERRAIN_LIGHT],
+  },
+  {
+    type: "Group",
+    properties: {
       id: "group-hidden",
       title: "Layer group (hidden)",
       layerControlHideGroup: true,
