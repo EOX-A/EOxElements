@@ -113,7 +113,9 @@ export class EOxTimeControl extends LitElement {
     this._updateStep(0);
   }
 
-  setTime(time: string) {
+  get currentTime() { return this.animationValues[this._newTimeIndex] }
+
+  set currentTime(time: string) {
     const idx = this.animationValues.findIndex((v) => v === time);
     if (idx > -1) {
       this._newTimeIndex = idx;
