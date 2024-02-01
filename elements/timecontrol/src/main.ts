@@ -114,12 +114,14 @@ export class EOxTimeControl extends LitElement {
   }
 
   /**
-   * Gets or sets the current selected time as a string.
+   * The currently selected time
+   * @type string
    */
   get currentTime() {
     return this.animationValues[this._newTimeIndex];
   }
 
+  @property({ attribute: "current-time" })
   set currentTime(time: string) {
     const idx = this.animationValues.findIndex((v) => v === time);
     if (idx > -1) {
