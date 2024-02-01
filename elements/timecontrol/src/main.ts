@@ -70,7 +70,7 @@ export class EOxTimeControl extends LitElement {
   private _originalTileUrlFunction: UrlFunction;
 
   /**
-   * Whether to disable the play button or not.
+   * Hides the play button if set.
    */
   @property({ type: Boolean })
   disablePlay: boolean;
