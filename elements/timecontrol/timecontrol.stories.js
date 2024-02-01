@@ -116,11 +116,15 @@ export const ProgrammaticTimeSelection = {
     ></eox-map>
     <div>
       <input type="text" id="time" value="2022-12-26" />
-      <button @click="${() => {
-        const time = document.getElementById("time").value;
-        const timeControl = document.getElementById("programmatic");
-        timeControl.currentTime = time;
-      }}">Go</button>
+      <button
+        @click="${() => {
+          const time = document.getElementById("time").value;
+          const timeControl = document.getElementById("programmatic");
+          timeControl.currentTime = time;
+        }}"
+      >
+        Go
+      </button>
     </div>
     <eox-timecontrol
       id="programmatic"
