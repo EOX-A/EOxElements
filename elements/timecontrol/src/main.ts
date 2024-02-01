@@ -70,6 +70,12 @@ export class EOxTimeControl extends LitElement {
   private _originalTileUrlFunction: UrlFunction;
 
   /**
+   * Whether to disable the play button or not.
+   */
+  @property({ type: Boolean })
+  disablePlay: boolean;
+
+  /**
    * Go to next step
    */
   next() {
@@ -205,6 +211,7 @@ export class EOxTimeControl extends LitElement {
           <button
             part="play"
             class="icon-text ${this._isAnimationPlaying ? "pause" : "play"}"
+            ${this.disablePlay ? `style="display: none"` : ``}
             @click="${() =>
               this.playAnimation(this._isAnimationPlaying ? false : true)}"
           >
