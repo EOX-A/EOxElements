@@ -113,6 +113,9 @@ export class EOxTimeControl extends LitElement {
     this._updateStep(0);
   }
 
+  /**
+   * Gets or sets the current selected time as a string.
+   */
   get currentTime() {
     return this.animationValues[this._newTimeIndex];
   }
