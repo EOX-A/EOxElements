@@ -145,6 +145,7 @@ export const DisabledControlButtons = {
     ...Primary.args,
     for: "eox-map#disabled-controls",
     slider: true,
+    disablePlay: true,
   },
   render: (args) => html`
     <eox-map
@@ -160,7 +161,7 @@ export const DisabledControlButtons = {
       .animationProperty=${args.animationProperty}
       .animationValues=${args.animationValues}
       .slider=${args.slider}
-      .disablePlay=${true}
+      .disablePlay=${args.disablePlay}
     ></eox-timecontrol>
   `,
 };
