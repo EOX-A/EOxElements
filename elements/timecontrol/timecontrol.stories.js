@@ -99,3 +99,28 @@ export const Slider = {
     ></eox-timecontrol>
   `,
 };
+
+export const DisabledControlButtons = {
+  args: {
+    ...Primary.args,
+    for: "eox-map#disabled-controls",
+    slider: true,
+  },
+  render: (args) => html`
+    <eox-map
+      id="disabled-controls"
+      style="width: 400px; height: 300px;"
+      .zoom=${args.zoom}
+      .center=${args.center}
+      .layers=${args.layers}
+    ></eox-map>
+    <eox-timecontrol
+      .for=${args.for}
+      .layer=${args.layer}
+      .animationProperty=${args.animationProperty}
+      .animationValues=${args.animationValues}
+      .slider=${args.slider}
+      .disablePlay=${true}
+    ></eox-timecontrol>
+  `,
+};
