@@ -113,6 +113,24 @@ export class EOxTimeControl extends LitElement {
     this._updateStep(0);
   }
 
+  /**
+   * The currently selected time
+   * @type string
+   */
+  get currentTime() {
+    return this.animationValues[this._newTimeIndex];
+  }
+
+  @property({ attribute: "current-time" })
+  set currentTime(time: string) {
+    const idx = this.animationValues.findIndex((v) => v === time);
+    if (idx > -1) {
+      this._newTimeIndex = idx;
+    } else {
+      console.error(`Unable to find time "${time}" in available times!`);
+    }
+  }
+
   @state()
   private _animationInterval: ReturnType<typeof setInterval>;
 
