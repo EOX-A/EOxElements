@@ -50,6 +50,9 @@ export const Primary = {
       },
       {
         type: "Tile",
+        properties: {
+          id: "OSM"
+        },
         source: {
           type: "OSM",
         },
