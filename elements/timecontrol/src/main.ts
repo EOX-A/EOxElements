@@ -1,4 +1,4 @@
-import { LitElement, html, svg } from "lit";
+import { LitElement, html, svg, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
@@ -68,6 +68,12 @@ export class EOxTimeControl extends LitElement {
    */
   @property()
   private _originalTileUrlFunction: UrlFunction;
+
+  /**
+   * Hides the play button if set.
+   */
+  @property({ attribute: "disable-play", type: Boolean })
+  disablePlay: boolean;
 
   /**
    * Go to next step
@@ -220,15 +226,22 @@ export class EOxTimeControl extends LitElement {
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
-          <button
-            part="play"
-            class="icon-text ${this._isAnimationPlaying ? "pause" : "play"}"
-            @click="${() =>
-              this.playAnimation(this._isAnimationPlaying ? false : true)}"
-          >
-            ${this._isAnimationPlaying ? "Pause" : "Play"}
-          </button>
-
+          ${!this.disablePlay
+            ? html`
+                <button
+                  part="play"
+                  class="icon-text ${this._isAnimationPlaying
+                    ? "pause"
+                    : "play"}"
+                  @click="${() =>
+                    this.playAnimation(
+                      this._isAnimationPlaying ? false : true
+                    )}"
+                >
+                  ${this._isAnimationPlaying ? "Pause" : "Play"}
+                </button>
+              `
+            : nothing}
           ${this.slider
             ? html`
                 <div class="slider-col">
