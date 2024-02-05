@@ -10,14 +10,14 @@ export const ThemeOverride = {
   render: () => html`
     <!-- Render eox-map component with ID "list" -->
     <eox-map
-      id="theme-override"
+      id="theme-style-override"
       style=${STORIES_MAP_STYLE}
       .layers=${STORIES_LAYERS_ARRAY}
     ></eox-map>
 
     <!-- Initialize eox-drawtools for the eox-map with ID "list" -->
     <eox-drawtools
-      for="eox-map#theme-override"
+      for="eox-map#theme-style-override"
       multiple-features
       show-list
       .theme=${{
