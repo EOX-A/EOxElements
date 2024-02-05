@@ -7,7 +7,7 @@
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "eslint-plugin-typescript": "^0.14.0",
-    "stac-js": "^0.0.8",
+    "stac-js": "^0.0.9",
     "typescript": "^5.2.2",
     "vite": "^5.0.2"
   },
