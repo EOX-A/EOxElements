@@ -41,6 +41,7 @@ button, button:active,
 button[disabled],
 .button[disabled] {
   opacity: 0.5;
+  cursor: not-allowed;
 }
 
 button.outline,
@@ -98,5 +99,12 @@ button.small,
   height: 28px;
   padding: 12.4px;
   font-size: .75rem;
+}
+
+button.smallest.icon, 
+button.smallest.icon::before {
+  height: 16px;
+  width: 16px;
+  padding: 0px;
 }
 `;

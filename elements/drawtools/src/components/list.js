@@ -7,6 +7,7 @@ import {
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
+import initStyle from "../../../../utils/styles/init-style";
 
 /**
  * Display list of features
@@ -21,6 +22,8 @@ export class EOxDrawToolsList extends LitElement {
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
     modify: { attribute: false, state: true },
+    theme: { attribute: false, type: Object },
+    noShadow: { type: Boolean },
     unstyled: { type: Boolean },
   };
 
@@ -90,6 +93,20 @@ export class EOxDrawToolsList extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Renders the element without a shadow root
+     *
+     * @type {Boolean}
+     */
+    this.noShadow = false;
+
+    /**
+     * Override existing theme
+     *
+     * @type {Object}
+     */
+    this.theme = {};
   }
 
   /**
@@ -126,6 +143,13 @@ export class EOxDrawToolsList extends LitElement {
     firstUpdatedMethod(this);
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
+  }
+
   render() {
     // Update hover and click IDs
     this.hoverId = this.hoverInteraction?.selectedFids[0];
@@ -133,9 +157,10 @@ export class EOxDrawToolsList extends LitElement {
 
     return html`
       <style>
+        ${!this.unstyled && initStyle(this.theme)}
         ${!this.unstyled && styleEOX}
       </style>
-      <ul>
+      <ul class="list-wrap">
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
@@ -163,7 +188,7 @@ export class EOxDrawToolsList extends LitElement {
                   <span class="title">Feature #${featureNumber}</span>
                   <button
                     index=${i}
-                    class="icon small discard"
+                    class="icon smallest discard"
                     @click="${this._handleDelete}"
                   >
                     x

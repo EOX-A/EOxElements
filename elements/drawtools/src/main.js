@@ -1,7 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import "./components/list";
 import "./components/controller";
-import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import {
   onDrawEndMethod,
@@ -10,6 +9,7 @@ import {
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
 } from "./methods/draw";
+import initStyle from "../../../utils/styles/init-style";
 
 /**
  * Manage drawn features on a map
@@ -29,6 +29,8 @@ export class EOxDrawTools extends LitElement {
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
+      theme: { attribute: false, type: Object },
+      noShadow: { type: Boolean },
       type: { type: String },
       unstyled: { type: Boolean },
     };
@@ -110,6 +112,20 @@ export class EOxDrawTools extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Override existing theme
+     *
+     * @type {Object}
+     */
+    this.theme = {};
+
+    /**
+     * Renders the element without a shadow root
+     *
+     * @type {Boolean}
+     */
+    this.noShadow = false;
   }
 
   /**
@@ -166,11 +182,19 @@ export class EOxDrawTools extends LitElement {
     emitDrawnFeaturesMethod(this, drawUpdateEvent);
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
+  }
+
   // Render method for UI display
   render() {
     return html`
       <style>
-        ${style}
+        :host { display: block; }
+        ${!this.unstyled && initStyle(this.theme)}
         ${!this.unstyled && styleEOX}
       </style>
 
@@ -184,6 +208,8 @@ export class EOxDrawTools extends LitElement {
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
         .multipleFeatures=${this.multipleFeatures}
+        .noShadow=${this.noShadow}
+        .theme=${this.theme}
       ></eox-drawtools-controller>
 
       <!-- List Component -->
@@ -196,6 +222,8 @@ export class EOxDrawTools extends LitElement {
             .drawnFeatures=${this.drawnFeatures}
             .modify=${this.modify}
             .unstyled=${this.unstyled}
+            .noShadow=${this.noShadow}
+            .theme=${this.theme}
             @changed=${() => this.requestUpdate()}
           ></eox-drawtools-list>`
         : nothing}

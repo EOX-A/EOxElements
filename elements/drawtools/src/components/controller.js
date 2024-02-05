@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { styleEOX } from "../style.eox";
 import { updateButtonStatesMethod } from "../methods/controller";
+import initStyle from "../../../../utils/styles/init-style";
 
 /**
  * Controller component for drawing features
@@ -14,6 +15,8 @@ export class EOxDrawToolsController extends LitElement {
     drawnFeatures: { attribute: false, state: true, type: Array },
     currentlyDrawing: { attribute: false, state: true, type: Boolean },
     drawFunc: { attribute: false, type: Object },
+    theme: { attribute: false, type: Object },
+    noShadow: { type: Boolean },
     unstyled: { type: Boolean },
   };
 
@@ -57,6 +60,20 @@ export class EOxDrawToolsController extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     * Override existing theme
+     *
+     * @type {Object}
+     */
+    this.theme = {};
+
+    /**
+     * Renders the element without a shadow root
+     *
+     * @type {Boolean}
+     */
+    this.noShadow = false;
   }
 
   /**
@@ -69,12 +86,20 @@ export class EOxDrawToolsController extends LitElement {
     this.#discardDisabled = discardDisabled;
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
+  }
+
   render() {
     this.updateButtonStates();
     const drawLabel = this.currentlyDrawing ? "drawing" : "draw";
 
     return html`
       <style>
+        ${!this.unstyled && initStyle(this.theme)}
         ${!this.unstyled && styleEOX}
       </style>
       <div>
