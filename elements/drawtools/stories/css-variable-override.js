@@ -21,8 +21,8 @@ export const CSSVariableOverride = {
       html,
       :host,
       :root {
-        --primary-bg-color-hover: #fc730314;
         --secondary-color: #ffa55c;
+        --bg-hover-transparency: 20%;
         --color: #ffa55c;
         --body-font-family: "Comic Sans MS", cursive;
       }

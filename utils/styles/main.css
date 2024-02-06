@@ -7,11 +7,45 @@
   --eox-background-color: var(--background-color, white);
   --eox-color: var(--color, #2c3d49);
   --eox-h-color: var(--h-color, var(--eox-color));
+
+  --eox-hover-transparency: var(--hover-transparency, 20%);
+  --eox-bg-hover-transparency: var(--bg-hover-transparency, 40%);
+  --eox-btn-hover-transparency: var(--btn-hover-transparency, 80%);
+
   --eox-primary-color: var(--primary-color, #004170);
-  --eox-primary-color-hover: var(--primary-color-hover, #004170cc);
-  --eox-primary-bg-color-hover: var(--primary-bg-color-hover, #00417014);
+  --eox-primary-color-hover: color-mix(
+    in srgb,
+    var(--eox-primary-color) var(--eox-hover-transparency),
+    transparent
+  );
+  --eox-primary-bg-color-hover: color-mix(
+    in srgb,
+    var(--eox-primary-color) var(--eox-bg-hover-transparency),
+    transparent
+  );
+  --eox-primary-btn-color-hover: color-mix(
+    in srgb,
+    var(--eox-primary-color) var(--eox-btn-hover-transparency),
+    transparent
+  );
+
   --eox-secondary-color: var(--secondary-color, #c6d4df);
-  --eox-secondary-color-hover: var(--secondary-color-hover, #8898a5);
+  --eox-secondary-color-hover: color-mix(
+    in srgb,
+    var(--eox-secondary-color) var(--eox-hover-transparency),
+    transparent
+  );
+  --eox-secondary-bg-color-hover: color-mix(
+    in srgb,
+    var(--eox-secondary-color) var(--eox-bg-hover-transparency),
+    transparent
+  );
+  --eox-secondary-btn-color-hover: color-mix(
+    in srgb,
+    var(--eox-secondary-color) var(--eox-btn-hover-transparency),
+    transparent
+  );
+
   --eox-success: var(--success, #26cc0f);
   --eox-warning: var(--warning, #f18e32);
   --eox-error: var(--error, #ff5252);

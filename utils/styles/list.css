@@ -3,7 +3,7 @@ ul.list-wrap {
 }
 ul.list-wrap li:hover,
 ul.list-wrap li.selected {
-  background: var(--eox-primary-bg-color-hover);
+  background: var(--eox-secondary-bg-color-hover);
 }
 ul.list-wrap li {
   list-style: none;
