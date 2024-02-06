@@ -13,7 +13,7 @@
   --eox-secondary-color: var(--secondary-color, #c6d4df);
   --eox-secondary-color-hover: var(--secondary-color-hover, #8898a5);
   --eox-success: var(--success, #26cc0f);
-  --eox-warming: var(--warning, #f18e32);
+  --eox-warning: var(--warning, #f18e32);
   --eox-error: var(--error, #ff5252);
   --eox-header-font-family: var(--header-font-family, "Roboto", sans-serif);
   --eox-body-font-family: var(--body-font-family, "Roboto", sans-serif);
