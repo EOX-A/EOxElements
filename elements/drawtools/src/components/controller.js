@@ -1,5 +1,4 @@
 import { LitElement, html, nothing } from "lit";
-import { styleEOX } from "../style.eox";
 import { updateButtonStatesMethod } from "../methods/controller";
 import buttonStyle from "../../../../utils/styles/dist/button.style";
 
@@ -108,9 +107,6 @@ export class EOxDrawToolsController extends LitElement {
           discard
         </button>
       </div>
-      <style>
-        ${!this.unstyled && styleEOX}
-      </style>
     `;
   }
 }
