@@ -1,10 +1,5 @@
 button,
 .button {
-  /* TODO: why does this only work here and not from :root? */
-  --primary-color: #004170;
-  --primary-color-hover: #004170cc;
-  --error-color: #ff5252;
-
   display: inline-flex;
   position: relative;
   align-items: center;
@@ -31,14 +26,14 @@ button:hover:not([disabled]):not(.icon),
 .button:hover:not([disabled]):not(.icon) {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  background: var(--primary-color-hover);
+  background: var(--eox-primary-color-hover);
 }
 
 button,
 button:active,
 .button,
 .button:active {
-  background: var(--primary-color);
+  background: var(--eox-primary-color);
 }
 
 button[disabled],
@@ -51,8 +46,8 @@ button.outline,
 .button.outline {
   background: transparent;
   box-shadow: none;
-  color: var(--primary-color);
-  outline: 1px solid var(--primary-color);
+  color: var(--eox-primary-color);
+  outline: 1px solid var(--eox-primary-color);
 }
 
 button.outline:hover,
