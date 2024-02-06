@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.2...timecontrol-v0.2.0) (2024-02-06)
+
+
+### Features
+
+* Add a `currentTime` property to get and set time programmatically ([#610](https://github.com/EOX-A/EOxElements/issues/610)) ([8da9b54](https://github.com/EOX-A/EOxElements/commit/8da9b5463e3423a5c91db51af6e7361e15d4b9c2))
+* Add a `disablePlay` property to disable the play button ([#615](https://github.com/EOX-A/EOxElements/issues/615)) ([3f54257](https://github.com/EOX-A/EOxElements/commit/3f5425719486fdecbc437c2e28fcc0af05e61173))
+
 ## [0.1.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.1...timecontrol-v0.1.2) (2023-12-12)
 
 
