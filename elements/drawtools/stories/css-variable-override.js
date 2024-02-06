@@ -17,19 +17,22 @@ export const CSSVariableOverride = {
     ></eox-map>
 
     <!-- Initialize eox-drawtools for the eox-map with ID "list" -->
+    <style>
+      html,
+      :host,
+      :root {
+        --primary-bg-color-hover: #fc730314;
+        --secondary-color: #ffa55c;
+        --color: #ffa55c;
+        --body-font-family: "Comic Sans MS", cursive;
+      }
+    </style>
     <eox-drawtools
       for="eox-map#css-var-override"
       multiple-features
       show-list
-      .noShadow=${true}
+      .noShadow=${false}
     ></eox-drawtools>
-    <style>
-      :host,
-      :root {
-        --primary-background-hover: #fc730314;
-        --secondary: #ffa55c;
-      }
-    </style>
   `,
 };
 

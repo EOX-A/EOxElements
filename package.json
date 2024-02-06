@@ -7,12 +7,14 @@
     "elements/*"
   ],
   "scripts": {
-    "start": "concurrently \"npm:watch:generate-manifest\" \"npm:storybook\"",
-    "build:all": "npm run build --ws",
+    "start": "concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
+    "watch:styles": "nodemon --watch ./utils/styles --ext css --exec 'npm run styles'",
+    "styles": "node ./tasks/init-style.js",
+    "build:all": "npm run styles && npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
     "cypress": "cypress open",
-    "test:all": "npm run test:component && npm run test:e2e",
-    "test:component": "cypress run --component",
+    "test:all": "npm run styles && npm run test:component && npm run test:e2e",
+    "test:component": "npm run styles && cypress run --component",
     "test:e2e": "npm run build:all && cypress run --e2e",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
@@ -20,7 +22,7 @@
     "lint:all": "npm run lint --ws",
     "lint:fix:all": "npm run lint:fix --ws",
     "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build -o docs",
+    "build:storybook": "npm run styles && storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch"
   },
@@ -36,6 +38,7 @@
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^13.3.0",
     "cypress-lit": "^0.0.8",
+    "nodemon": "^3.0.3",
     "rimraf": "^5.0.1",
     "storybook": "^7.4.6"
   },

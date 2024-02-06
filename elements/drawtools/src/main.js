@@ -9,7 +9,7 @@ import {
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
 } from "./methods/draw";
-import initStyle from "../../../utils/styles/init-style";
+import mainStyle from "../../../utils/styles/main.style";
 
 /**
  * Manage drawn features on a map
@@ -29,7 +29,7 @@ export class EOxDrawTools extends LitElement {
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
-      theme: { attribute: false, type: Object },
+      styleOverride: { attribute: "style-override", type: String },
       noShadow: { type: Boolean },
       type: { type: String },
       unstyled: { type: Boolean },
@@ -116,9 +116,9 @@ export class EOxDrawTools extends LitElement {
     /**
      * Override existing theme
      *
-     * @type {Object}
+     * @type {String}
      */
-    this.theme = {};
+    this.styleOverride = "";
 
     /**
      * Renders the element without a shadow root
@@ -192,12 +192,6 @@ export class EOxDrawTools extends LitElement {
   // Render method for UI display
   render() {
     return html`
-      <style>
-        :host { display: block; }
-        ${!this.unstyled && initStyle(this.theme)}
-        ${!this.unstyled && styleEOX}
-      </style>
-
       <!-- Controller Component -->
       <eox-drawtools-controller
         .drawFunc=${{
@@ -207,9 +201,6 @@ export class EOxDrawTools extends LitElement {
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
-        .multipleFeatures=${this.multipleFeatures}
-        .noShadow=${this.noShadow}
-        .theme=${this.theme}
       ></eox-drawtools-controller>
 
       <!-- List Component -->
@@ -222,11 +213,15 @@ export class EOxDrawTools extends LitElement {
             .drawnFeatures=${this.drawnFeatures}
             .modify=${this.modify}
             .unstyled=${this.unstyled}
-            .noShadow=${this.noShadow}
-            .theme=${this.theme}
             @changed=${() => this.requestUpdate()}
           ></eox-drawtools-list>`
         : nothing}
+      <style>
+        :host { display: block; }
+        ${!this.unstyled && mainStyle}
+        ${!this.unstyled && styleEOX}
+        ${!this.unstyled && this.styleOverride}
+      </style>
     `;
   }
 }

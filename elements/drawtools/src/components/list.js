@@ -1,13 +1,11 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
-import { styleEOX } from "../style.eox";
 import {
   deleteFeatureMethod,
   firstUpdatedMethod,
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
-import initStyle from "../../../../utils/styles/init-style";
 
 /**
  * Display list of features
@@ -22,8 +20,6 @@ export class EOxDrawToolsList extends LitElement {
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
     modify: { attribute: false, state: true },
-    theme: { attribute: false, type: Object },
-    noShadow: { type: Boolean },
     unstyled: { type: Boolean },
   };
 
@@ -93,20 +89,6 @@ export class EOxDrawToolsList extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
-
-    /**
-     * Renders the element without a shadow root
-     *
-     * @type {Boolean}
-     */
-    this.noShadow = false;
-
-    /**
-     * Override existing theme
-     *
-     * @type {Object}
-     */
-    this.theme = {};
   }
 
   /**
@@ -144,10 +126,10 @@ export class EOxDrawToolsList extends LitElement {
   }
 
   /**
-   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   * Overrides createRenderRoot to handle shadow DOM.
    */
   createRenderRoot() {
-    return this.noShadow ? this : super.createRenderRoot();
+    return this;
   }
 
   render() {
@@ -156,10 +138,6 @@ export class EOxDrawToolsList extends LitElement {
     this.clickId = this.clickInteraction?.selectedFids[0];
 
     return html`
-      <style>
-        ${!this.unstyled && initStyle(this.theme)}
-        ${!this.unstyled && styleEOX}
-      </style>
       <ul class="list-wrap">
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID

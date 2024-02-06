@@ -9,7 +9,6 @@ import {
   ModifyFeaturesStory,
   MultiPolygonWithListStory,
   UnstyledStory,
-  ThemeOverrideStory,
   CSSVariableOverrideStory,
 } from "./index";
 
@@ -49,11 +48,6 @@ export const DrawType = DrawTypeStory;
  * a list of the drawn features will be populated.
  */
 export const MultiPolygonWithList = MultiPolygonWithListStory;
-
-/**
- * By passing property we can override existing theme config.
- */
-export const ThemeOverride = ThemeOverrideStory;
 
 /**
  * By passing `noShadow=true` we can override css variable directly using styles.
