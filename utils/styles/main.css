@@ -6,12 +6,7 @@
 
   --eox-background-color: var(--background-color, white);
   --eox-color: var(--color, #2c3d49);
-  --eox-h1-color: var(--h1-color, var(--eox-color));
-  --eox-h2-color: var(--h2-color, var(--eox-color));
-  --eox-h3-color: var(--h3-color, var(--eox-color));
-  --eox-h4-color: var(--h4-color, var(--eox-color));
-  --eox-h5-color: var(--h5-color, var(--eox-color));
-  --eox-h6-color: var(--h6-color, var(--eox-color));
+  --eox-h-color: var(--h-color, var(--eox-color));
   --eox-primary-color: var(--primary-color, #004170);
   --eox-primary-color-hover: var(--primary-color-hover, #004170cc);
   --eox-primary-bg-color-hover: var(--primary-bg-color-hover, #00417014);
@@ -131,32 +126,8 @@ h5,
 h6 {
   margin-top: 0;
   margin-bottom: var(--eox-typography-spacing-vertical);
-  color: var(--eox-color);
+  color: var(--eox-h-color);
   font-weight: var(--eox-font-weight);
   font-size: var(--eox-font-size);
   font-family: var(--eox-header-font-family);
-}
-
-h1 {
-  --eox-color: var(--eox-h1-color);
-}
-
-h2 {
-  --eox-color: var(--eox-h2-color);
-}
-
-h3 {
-  --eox-color: var(--eox-h3-color);
-}
-
-h4 {
-  --eox-color: var(--eox-h4-color);
-}
-
-h5 {
-  --eox-color: var(--eox-h5-color);
-}
-
-h6 {
-  --eox-color: var(--eox-h6-color);
 }
