@@ -6,6 +6,7 @@ import {
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
+import listStyle from "../../../../utils/styles/dist/list.style";
 
 /**
  * Display list of features
@@ -138,6 +139,9 @@ export class EOxDrawToolsList extends LitElement {
     this.clickId = this.clickInteraction?.selectedFids[0];
 
     return html`
+      <style>
+        ${!this.unstyled && listStyle}
+      </style>
       <ul class="list-wrap">
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID

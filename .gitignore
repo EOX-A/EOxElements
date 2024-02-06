@@ -29,4 +29,4 @@ cypress/videos
 docs
 custom-elements.json
 
-utils/styles/main.style.js
+utils/styles/dist/*.style.js

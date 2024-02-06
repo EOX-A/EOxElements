@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { styleEOX } from "../style.eox";
 import { updateButtonStatesMethod } from "../methods/controller";
+import buttonStyle from "../../../../utils/styles/dist/button.style";
 
 /**
  * Controller component for drawing features
@@ -81,6 +82,9 @@ export class EOxDrawToolsController extends LitElement {
     const drawLabel = this.currentlyDrawing ? "drawing" : "draw";
 
     return html`
+      <style>
+        ${!this.unstyled && buttonStyle}
+      </style>
       <div>
         <slot></slot>
 

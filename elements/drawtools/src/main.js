@@ -9,7 +9,7 @@ import {
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
 } from "./methods/draw";
-import mainStyle from "../../../utils/styles/main.style";
+import mainStyle from "../../../utils/styles/dist/main.style";
 
 /**
  * Manage drawn features on a map
@@ -192,6 +192,12 @@ export class EOxDrawTools extends LitElement {
   // Render method for UI display
   render() {
     return html`
+      <style>
+        ${!this.unstyled && mainStyle}
+        ${!this.unstyled && styleEOX}
+        ${!this.unstyled && this.styleOverride}
+      </style>
+
       <!-- Controller Component -->
       <eox-drawtools-controller
         .drawFunc=${{
@@ -216,12 +222,6 @@ export class EOxDrawTools extends LitElement {
             @changed=${() => this.requestUpdate()}
           ></eox-drawtools-list>`
         : nothing}
-      <style>
-        :host { display: block; }
-        ${!this.unstyled && mainStyle}
-        ${!this.unstyled && styleEOX}
-        ${!this.unstyled && this.styleOverride}
-      </style>
     `;
   }
 }

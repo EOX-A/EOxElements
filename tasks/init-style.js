@@ -1,9 +1,19 @@
 const fs = require("fs");
 const path = require("path");
 
+const DIST_PATH = "../utils/styles/dist"
+
+function fileSync(content, path) {
+  const finalContent = `const style = \`${content.replace(/\n/g, '').replace(/\s\s+/g, ' ')}\`; \nexport default style`;
+  fs.writeFileSync(path, finalContent, "utf8");
+}
+
 function initStyles() {
+  const folderPath = path.join(__dirname, DIST_PATH);
+  if(!fs.existsSync(folderPath)) fs.mkdirSync(folderPath, { recursive: true });
+
   const stylesDir = path.join(__dirname, "../utils/styles");
-  const outputFilePath = path.join(__dirname, "../utils/styles/main.style.js");
+  const outputFilePath = path.join(__dirname, `${DIST_PATH}/all.style.js`);
   let combinedStyles = "";
 
   fs.readdir(stylesDir, (err, files) => {
@@ -12,30 +22,22 @@ function initStyles() {
       return;
     }
 
-    // Ensure main.css is processed first
-    const mainCssIndex = files.indexOf("main.css");
-    if (mainCssIndex > -1) {
-      // Remove main.css from the array and process it first
-      files.splice(mainCssIndex, 1);
-      const mainCssContent = fs.readFileSync(
-        path.join(stylesDir, "main.css"),
-        "utf8"
-      );
-      combinedStyles += mainCssContent + "\n"; // Add a newline for separation
-    }
-
-    // Process the remaining CSS files
     files
       .filter((file) => file.endsWith(".css"))
       .forEach((file) => {
         const filePath = path.join(stylesDir, file);
         const content = fs.readFileSync(filePath, "utf8");
-        combinedStyles += content + "\n"; // Add a newline for separation
+        const ifMainStyle = Boolean(file === "main.css")
+        if(ifMainStyle)
+          combinedStyles = `\n${content}\n${combinedStyles}`
+        else
+          combinedStyles += content + "\n";
+
+        const individualOutputFilePath = path.join(__dirname, `${DIST_PATH}/${file.replace(".css", "")}.style.js`)
+        fileSync(content, individualOutputFilePath)
       });
 
-    // Write the combined styles to main.style.js with export
-    const exportContent = `const mainStyle = \`${combinedStyles}\`; \nexport default mainStyle`;
-    fs.writeFileSync(outputFilePath, exportContent, "utf8");
+    fileSync(combinedStyles, outputFilePath)
     console.log("Styles have been initialized and combined into main.style.js");
   });
 }
