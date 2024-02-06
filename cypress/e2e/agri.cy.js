@@ -11,8 +11,9 @@ describe("Layer Switcher", () => {
         cy.get("eox-drawtools")
           .shadow()
           .within(() => {
-            cy.get("eox-drawtools-controller")
-              .within(() => cy.get("[data-cy='drawBtn']").click());
+            cy.get("eox-drawtools-controller").within(() =>
+              cy.get("[data-cy='drawBtn']").click()
+            );
           });
         cy.get("eox-map")
           .shadow()
