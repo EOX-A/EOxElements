@@ -29,7 +29,6 @@ export class EOxDrawTools extends LitElement {
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
-      styleOverride: { attribute: "style-override", type: String },
       noShadow: { type: Boolean },
       type: { type: String },
       unstyled: { type: Boolean },
@@ -114,13 +113,6 @@ export class EOxDrawTools extends LitElement {
     this.unstyled = false;
 
     /**
-     * Override existing theme
-     *
-     * @type {String}
-     */
-    this.styleOverride = "";
-
-    /**
      * Renders the element without a shadow root
      *
      * @type {Boolean}
@@ -195,7 +187,6 @@ export class EOxDrawTools extends LitElement {
       <style>
         ${!this.unstyled && mainStyle}
         ${!this.unstyled && styleEOX}
-        ${!this.unstyled && this.styleOverride}
       </style>
 
       <!-- Controller Component -->
