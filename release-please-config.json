@@ -8,6 +8,7 @@
     "elements/itemfilter": {},
     "elements/jsonform": {},
     "elements/layercontrol": {},
+    "elements/layout": {},
     "elements/map": {},
     "elements/stacinfo": {},
     "elements/timecontrol": {}
