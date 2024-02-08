@@ -2,6 +2,7 @@ import { html } from "lit";
 import "../src/main";
 import { STORIES_LAYOUT_STYLE } from "../src/enums";
 
+// Generate one [x,y] array for each slot in a 12x12 grid
 const renderItems = () => {
   let items = [];
   for (let x = 0; x < 12; x++) {
