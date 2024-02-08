@@ -63,11 +63,17 @@ export class EOxTimeControl extends LitElement {
   urlFunction: (url: string) => string;
 
   /**
-   * Original tile url function of the source.
+   * Original tile url function of the source (in case of a tiled source).
    * Used to get the correct TileGrid-Values, while manipulating certain parts of the URL.
    */
   @property()
   private _originalTileUrlFunction: UrlFunction;
+
+  /**
+   * Original params (in case of a image source).
+   */
+  @property()
+  private _originalParams: object;
 
   /**
    * Hides the play button if set.
@@ -161,33 +167,42 @@ export class EOxTimeControl extends LitElement {
       this._newTimeIndex = this.animationValues.length - 1;
     }
 
-    //@ts-ignore
-    this._animationSource.setTileUrlFunction(
+    if (this._originalTileUrlFunction) {
       //@ts-ignore
-      (tileCoord, pixelRatio, projection) => {
-        const src = this._originalTileUrlFunction(
-          tileCoord,
-          pixelRatio,
-          projection
-        );
-        if (this.urlFunction) {
-          return this.urlFunction(src);
-        }
-        const searchParams = new URLSearchParams(
-          src.substring(src.indexOf("?"))
-        );
-        searchParams.set(
-          this.animationProperty,
-          this.animationValues[this._newTimeIndex]
-        );
+      this._animationSource.setTileUrlFunction(
+        //@ts-ignore
+        (tileCoord, pixelRatio, projection) => {
+          const src = this._originalTileUrlFunction(
+            tileCoord,
+            pixelRatio,
+            projection
+          );
+          if (this.urlFunction) {
+            return this.urlFunction(src);
+          }
+          const searchParams = new URLSearchParams(
+            src.substring(src.indexOf("?"))
+          );
+          searchParams.set(
+            this.animationProperty,
+            this.animationValues[this._newTimeIndex]
+          );
 
-        return src.substring(0, src.indexOf("?") + 1) + searchParams.toString();
-      }
-    );
-    // TODO dont be accessing protected methods!
-    //@ts-ignore
-    this._animationSource.setKey(new Date());
-    this._animationSource.changed();
+          return (
+            src.substring(0, src.indexOf("?") + 1) + searchParams.toString()
+          );
+        }
+      );
+      // TODO dont be accessing protected methods!
+      //@ts-ignore
+      this._animationSource.setKey(new Date());
+      this._animationSource.changed();
+    } else if (this._originalParams) {
+      // @ts-ignore
+      this._animationSource.updateParams({
+        [this.animationProperty]: this.animationValues[this._newTimeIndex],
+      });
+    }
     this.requestUpdate();
   }
 
@@ -203,9 +218,16 @@ export class EOxTimeControl extends LitElement {
           .getArray()
           .find((l) => l.get("id") === this.layer) as Layer;
         this._animationSource = animationLayer.getSource() as UrlTile;
-        this._originalTileUrlFunction =
-          //@ts-ignore
-          this._animationSource.getTileUrlFunction();
+
+        try {
+          this._originalTileUrlFunction =
+            //@ts-ignore
+            this._animationSource.getTileUrlFunction();
+        } catch (e) {
+          this._originalParams =
+            // @ts-ignore
+            this._animationSource.getParams();
+        }
       }
     });
 
