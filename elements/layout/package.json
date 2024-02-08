@@ -1,6 +1,6 @@
 {
   "name": "@eox/layout",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
