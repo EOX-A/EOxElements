@@ -57,6 +57,13 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td><a href="elements/layercontrol/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/layercontrol.svg?label=%20" /></a></td>
     <td>🟡</td>
   </tr>
+    <tr>
+    <td><a href="./elements/layout/">eox-layout</a></td>
+    <td>Easily create a UI layout</td>
+    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-layout--docs">Docs & Examples</a></td>
+    <td><a href="elements/layout/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/layout.svg?label=%20" /></a></td>
+    <td>🟡</td>
+  </tr>
   <tr>
     <td><a href="./elements/map/">eox-map</a></td>
     <td>Map with powerful tools & helpers</td>

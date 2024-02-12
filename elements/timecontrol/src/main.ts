@@ -2,11 +2,11 @@ import { LitElement, html, svg, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
+import Group from "ol/layer/Group";
 import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import { UrlFunction } from "ol/Tile";
 
 import dayjs from "dayjs";
 import dayOfYear from "dayjs/plugin/dayOfYear";
@@ -48,29 +48,13 @@ export class EOxTimeControl extends LitElement {
   slider: boolean;
 
   /**
-   * Custom url function to manually override the url creation. Receives the current url as property.
-   * @param url the current url function output
-   * @returns url the new url string
-   * @example ```
-   * document.querySelector("eox-timecontrol").urlFunction = (url) => {
-   *   // do something with the url
-   *   const newUrl = url.replace('foo', 'bar');
-   *   return newUrl;
-   *};
-   * ```
+   * Original params of layer source
    */
   @property()
-  urlFunction: (url: string) => string;
+  private _originalParams: object;
 
   /**
-   * Original tile url function of the source.
-   * Used to get the correct TileGrid-Values, while manipulating certain parts of the URL.
-   */
-  @property()
-  private _originalTileUrlFunction: UrlFunction;
-
-  /**
-   * Hides the play button if set.
+   * Hides the play button if set
    */
   @property({ attribute: "disable-play", type: Boolean })
   disablePlay: boolean;
@@ -161,34 +145,41 @@ export class EOxTimeControl extends LitElement {
       this._newTimeIndex = this.animationValues.length - 1;
     }
 
-    //@ts-ignore
-    this._animationSource.setTileUrlFunction(
-      //@ts-ignore
-      (tileCoord, pixelRatio, projection) => {
-        const src = this._originalTileUrlFunction(
-          tileCoord,
-          pixelRatio,
-          projection
-        );
-        if (this.urlFunction) {
-          return this.urlFunction(src);
-        }
-        const searchParams = new URLSearchParams(
-          src.substring(src.indexOf("?"))
-        );
-        searchParams.set(
-          this.animationProperty,
-          this.animationValues[this._newTimeIndex]
-        );
-
-        return src.substring(0, src.indexOf("?") + 1) + searchParams.toString();
-      }
-    );
-    // TODO dont be accessing protected methods!
-    //@ts-ignore
-    this._animationSource.setKey(new Date());
-    this._animationSource.changed();
+    // @ts-ignore
+    this._animationSource.updateParams({
+      [this.animationProperty]: this.animationValues[this._newTimeIndex],
+    });
     this.requestUpdate();
+  }
+
+  /**
+   * TEMP / TO-DO, this is a copy of the function defined in the eox-map:
+   * https://github.com/EOX-A/EOxElements/blob/main/elements/map/src/layer.ts#L25
+   * Consider a way to properly export that function and use it here
+   * @param layers layers Array
+   */
+  getFlatLayersArray(layers: Array<Layer>) {
+    const flatLayers = [];
+    flatLayers.push(...layers);
+
+    let groupLayers = flatLayers.filter(
+      (l) => l instanceof Group
+    ) as unknown as Array<Group>;
+
+    while (groupLayers.length) {
+      const newGroupLayers = [];
+      for (let i = 0, ii = groupLayers.length; i < ii; i++) {
+        const layersInsideGroup = groupLayers[i].getLayers().getArray();
+        flatLayers.push(...layersInsideGroup);
+        newGroupLayers.push(
+          ...(layersInsideGroup.filter(
+            (l) => l instanceof Group
+          ) as Array<Group>)
+        );
+      }
+      groupLayers = newGroupLayers;
+    }
+    return flatLayers as Array<Layer>;
   }
 
   render() {
@@ -197,15 +188,19 @@ export class EOxTimeControl extends LitElement {
     const olMap: Map = mapQuery.map || mapQuery;
 
     olMap.once("loadend", () => {
-      if (!this._originalTileUrlFunction) {
-        const animationLayer = olMap
-          .getLayers()
-          .getArray()
-          .find((l) => l.get("id") === this.layer) as Layer;
+      if (!this._originalParams) {
+        const flatLayers = this.getFlatLayersArray(
+          // @ts-ignore
+          olMap.getLayers().getArray()
+        );
+        const animationLayer = flatLayers.find(
+          (l: Layer) => l.get("id") === this.layer
+        ) as Layer;
         this._animationSource = animationLayer.getSource() as UrlTile;
-        this._originalTileUrlFunction =
-          //@ts-ignore
-          this._animationSource.getTileUrlFunction();
+
+        this._originalParams =
+          // @ts-ignore
+          this._animationSource.getParams();
       }
     });
 
