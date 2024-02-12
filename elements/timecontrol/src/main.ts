@@ -6,7 +6,6 @@ import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import { UrlFunction } from "ol/Tile";
 
 import dayjs from "dayjs";
 import dayOfYear from "dayjs/plugin/dayOfYear";
@@ -46,28 +45,6 @@ export class EOxTimeControl extends LitElement {
    */
   @property({ type: Boolean })
   slider: boolean;
-
-  /**
-   * Custom url function to manually override the url creation. Receives the current url as property.
-   * @param url the current url function output
-   * @returns url the new url string
-   * @example ```
-   * document.querySelector("eox-timecontrol").urlFunction = (url) => {
-   *   // do something with the url
-   *   const newUrl = url.replace('foo', 'bar');
-   *   return newUrl;
-   *};
-   * ```
-   */
-  @property()
-  urlFunction: (url: string) => string;
-
-  /**
-   * Original tile url function of the source (in case of a tiled source).
-   * Used to get the correct TileGrid-Values, while manipulating certain parts of the URL.
-   */
-  @property()
-  private _originalTileUrlFunction: UrlFunction;
 
   /**
    * Original params (in case of a image source).
@@ -167,42 +144,10 @@ export class EOxTimeControl extends LitElement {
       this._newTimeIndex = this.animationValues.length - 1;
     }
 
-    if (this._originalTileUrlFunction) {
-      //@ts-ignore
-      this._animationSource.setTileUrlFunction(
-        //@ts-ignore
-        (tileCoord, pixelRatio, projection) => {
-          const src = this._originalTileUrlFunction(
-            tileCoord,
-            pixelRatio,
-            projection
-          );
-          if (this.urlFunction) {
-            return this.urlFunction(src);
-          }
-          const searchParams = new URLSearchParams(
-            src.substring(src.indexOf("?"))
-          );
-          searchParams.set(
-            this.animationProperty,
-            this.animationValues[this._newTimeIndex]
-          );
-
-          return (
-            src.substring(0, src.indexOf("?") + 1) + searchParams.toString()
-          );
-        }
-      );
-      // TODO dont be accessing protected methods!
-      //@ts-ignore
-      this._animationSource.setKey(new Date());
-      this._animationSource.changed();
-    } else if (this._originalParams) {
-      // @ts-ignore
-      this._animationSource.updateParams({
-        [this.animationProperty]: this.animationValues[this._newTimeIndex],
-      });
-    }
+    // @ts-ignore
+    this._animationSource.updateParams({
+      [this.animationProperty]: this.animationValues[this._newTimeIndex],
+    });
     this.requestUpdate();
   }
 
@@ -212,22 +157,16 @@ export class EOxTimeControl extends LitElement {
     const olMap: Map = mapQuery.map || mapQuery;
 
     olMap.once("loadend", () => {
-      if (!this._originalTileUrlFunction) {
+      if (!this._originalParams) {
         const animationLayer = olMap
           .getLayers()
           .getArray()
           .find((l) => l.get("id") === this.layer) as Layer;
         this._animationSource = animationLayer.getSource() as UrlTile;
 
-        try {
-          this._originalTileUrlFunction =
-            //@ts-ignore
-            this._animationSource.getTileUrlFunction();
-        } catch (e) {
-          this._originalParams =
-            // @ts-ignore
-            this._animationSource.getParams();
-        }
+        this._originalParams =
+          // @ts-ignore
+          this._animationSource.getParams();
       }
     });
 
