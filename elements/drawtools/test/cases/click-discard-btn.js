@@ -10,17 +10,15 @@ const clickDiscardBtnTest = () => {
   cy.get(drawTools)
     .shadow()
     .within(() => {
-      cy.get(controller)
-        .shadow()
-        .within(() => {
-          // Click the draw button and verify if it is in the 'drawing' state
-          cy.get(drawBtn).click();
-          cy.get(drawBtn).contains("drawing");
+      cy.get(controller).within(() => {
+        // Click the draw button and verify if it is in the 'drawing' state
+        cy.get(drawBtn).click();
+        cy.get(drawBtn).contains("drawing");
 
-          // Click the discard button and verify if the 'drawing' state is removed
-          cy.get(discardBtn).click();
-          cy.get(drawBtn).should("not.contain", "drawing");
-        });
+        // Click the discard button and verify if the 'drawing' state is removed
+        cy.get(discardBtn).click();
+        cy.get(drawBtn).should("not.contain", "drawing");
+      });
     });
 
   // Verify if drawn features array is empty after discarding
