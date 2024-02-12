@@ -45,6 +45,7 @@ export const Primary = {
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
+            TIME: "2022-12-05",
           },
         },
       },
