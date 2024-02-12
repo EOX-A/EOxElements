@@ -189,8 +189,8 @@ export class EOxTimeControl extends LitElement {
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
-        // @ts-ignore
         const flatLayers = this.getFlatLayersArray(
+          // @ts-ignore
           olMap.getLayers().getArray()
         );
         const animationLayer = flatLayers.find(
