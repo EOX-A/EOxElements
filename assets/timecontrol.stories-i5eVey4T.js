@@ -103,7 +103,7 @@ button.icon.next:before {
           `)}
         </svg>
       </div>
-    `}};a([p({type:Number})],x.prototype,"width",2);a([p({type:Array})],x.prototype,"times",2);a([g()],x.prototype,"height",2);a([g()],x.prototype,"svgWidth",2);x=a([B("eox-sliderticks")],x);const de={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},u={args:{for:"eox-map#primary",layer:"AWS_NO2-VISUALISATION",animationProperty:"TIME",animationValues:["2022-12-05","2022-12-12","2022-12-19","2022-12-26","2023-01-16","2023-01-23","2023-01-30","2023-02-06","2023-02-13","2023-02-27","2023-03-06","2023-03-13","2023-03-20","2023-03-27","2023-04-03","2023-04-10","2023-04-17","2023-04-24"],layers:[{type:"Tile",properties:{id:"AWS_NO2-VISUALISATION"},source:{type:"TileWMS",url:"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",params:{LAYERS:"AWS_NO2-VISUALISATION"}}},{type:"Tile",properties:{id:"OSM"},source:{type:"OSM"}}],center:[1e6,6e6],zoom:3},render:e=>d`
+    `}};a([p({type:Number})],x.prototype,"width",2);a([p({type:Array})],x.prototype,"times",2);a([g()],x.prototype,"height",2);a([g()],x.prototype,"svgWidth",2);x=a([B("eox-sliderticks")],x);const de={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},u={args:{for:"eox-map#primary",layer:"AWS_NO2-VISUALISATION",animationProperty:"TIME",animationValues:["2022-12-05","2022-12-12","2022-12-19","2022-12-26","2023-01-16","2023-01-23","2023-01-30","2023-02-06","2023-02-13","2023-02-27","2023-03-06","2023-03-13","2023-03-20","2023-03-27","2023-04-03","2023-04-10","2023-04-17","2023-04-24"],layers:[{type:"Tile",properties:{id:"AWS_NO2-VISUALISATION"},source:{type:"TileWMS",url:"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",params:{LAYERS:"AWS_NO2-VISUALISATION",TIME:"2022-12-05"}}},{type:"Tile",properties:{id:"OSM"},source:{type:"OSM"}}],center:[1e6,6e6],zoom:3},render:e=>d`
     <eox-map
       id="primary"
       style="width: 400px; height: 300px;"
@@ -189,7 +189,8 @@ button.icon.next:before {
         type: "TileWMS",
         url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
         params: {
-          LAYERS: "AWS_NO2-VISUALISATION"
+          LAYERS: "AWS_NO2-VISUALISATION",
+          TIME: "2022-12-05"
         }
       }
     }, {
@@ -277,7 +278,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(C=(O=v.parameters)==null?void 0:O.docs)==null?void 0:C.source}}};var z,W,M;w.parameters={...w.parameters,docs:{...(z=w.parameters)==null?void 0:z.docs,source:{originalSource:`{
+}`,...(C=(O=v.parameters)==null?void 0:O.docs)==null?void 0:C.source}}};var M,z,W;w.parameters={...w.parameters,docs:{...(M=w.parameters)==null?void 0:M.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#disabled-controls",
@@ -301,4 +302,4 @@ button.icon.next:before {
       .disablePlay=\${args.disablePlay}
     ></eox-timecontrol>
   \`
-}`,...(M=(W=w.parameters)==null?void 0:W.docs)==null?void 0:M.source}}};const ce=["Primary","Slider","ProgrammaticTimeSelection","DisabledControlButtons"];export{w as DisabledControlButtons,u as Primary,v as ProgrammaticTimeSelection,$ as Slider,ce as __namedExportsOrder,de as default};
+}`,...(W=(z=w.parameters)==null?void 0:z.docs)==null?void 0:W.source}}};const ce=["Primary","Slider","ProgrammaticTimeSelection","DisabledControlButtons"];export{w as DisabledControlButtons,u as Primary,v as ProgrammaticTimeSelection,$ as Slider,ce as __namedExportsOrder,de as default};
