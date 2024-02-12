@@ -47,13 +47,13 @@ export class EOxTimeControl extends LitElement {
   slider: boolean;
 
   /**
-   * Original params (in case of a image source).
+   * Original params of layer source
    */
   @property()
   private _originalParams: object;
 
   /**
-   * Hides the play button if set.
+   * Hides the play button if set
    */
   @property({ attribute: "disable-play", type: Boolean })
   disablePlay: boolean;
