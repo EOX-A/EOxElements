@@ -50,7 +50,7 @@ export const DrawType = DrawTypeStory;
 export const MultiPolygonWithList = MultiPolygonWithListStory;
 
 /**
- * By passing `noShadow=true` we can override css variable directly using styles.
+ * Override css variable directly using styles.
  */
 export const CSSVariableOverride = CSSVariableOverrideStory;
 

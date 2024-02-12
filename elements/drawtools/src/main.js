@@ -185,6 +185,7 @@ export class EOxDrawTools extends LitElement {
   render() {
     return html`
       <style>
+        :host { display: block; }
         ${!this.unstyled && mainStyle}
         ${!this.unstyled && styleEOX}
       </style>

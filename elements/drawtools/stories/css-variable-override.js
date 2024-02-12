@@ -1,6 +1,5 @@
 /**
- * Component demonstrating css variable override when
- * `noShadow` is true and we can override using new CSS variable inside <style>
+ * Component demonstrating css variable override inside <style>
  */
 import { html } from "lit";
 import "@eox/map/main";
@@ -15,8 +14,13 @@ export const CSSVariableOverride = {
       style=${STORIES_MAP_STYLE}
       .layers=${STORIES_LAYERS_ARRAY}
     ></eox-map>
+    <eox-drawtools
+      for="eox-map#css-var-override"
+      multiple-features
+      show-list
+    ></eox-drawtools>
 
-    <!-- Initialize eox-drawtools for the eox-map with ID "list" -->
+    <!-- Style overrides -->
     <style>
       html,
       :host,
@@ -27,12 +31,6 @@ export const CSSVariableOverride = {
         --body-font-family: "Comic Sans MS", cursive;
       }
     </style>
-    <eox-drawtools
-      for="eox-map#css-var-override"
-      multiple-features
-      show-list
-      .noShadow=${false}
-    ></eox-drawtools>
   `,
 };
 
