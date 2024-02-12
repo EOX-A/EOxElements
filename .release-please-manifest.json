@@ -4,7 +4,7 @@
   "elements/layercontrol": "0.14.0",
   "elements/map": "1.2.0",
   "elements/stacinfo": "0.3.0",
-  "elements/timecontrol": "0.2.0",
+  "elements/timecontrol": "0.3.0",
   "elements/jsonform": "0.2.1",
   "elements/layout": "0.1.0"
 }

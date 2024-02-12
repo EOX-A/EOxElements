@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.2.0...timecontrol-v0.3.0) (2024-02-12)
+
+
+### Features
+
+* Add more generic support for multiple source types ([#631](https://github.com/EOX-A/EOxElements/issues/631)) ([3cb48f6](https://github.com/EOX-A/EOxElements/commit/3cb48f62dbf74ae9dcff0712cf75f0de38b17e63))
+
+
+### Bug Fixes
+
+* Support layers inside groups ([#635](https://github.com/EOX-A/EOxElements/issues/635)) ([2cffe6b](https://github.com/EOX-A/EOxElements/commit/2cffe6b6230d574c719871b42a0f8485639419fd))
+
 ## [0.2.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.1.2...timecontrol-v0.2.0) (2024-02-06)
 
 
