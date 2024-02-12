@@ -2,6 +2,7 @@ import { LitElement, html, svg, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
+import Group from "ol/layer/Group";
 import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style";
@@ -151,6 +152,36 @@ export class EOxTimeControl extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * TEMP / TO-DO, this is a copy of the function defined in the eox-map:
+   * https://github.com/EOX-A/EOxElements/blob/main/elements/map/src/layer.ts#L25
+   * Consider a way to properly export that function and use it here
+   * @param layers layers Array
+   */
+  getFlatLayersArray(layers: Array<Layer>) {
+    const flatLayers = [];
+    flatLayers.push(...layers);
+
+    let groupLayers = flatLayers.filter(
+      (l) => l instanceof Group
+    ) as unknown as Array<Group>;
+
+    while (groupLayers.length) {
+      const newGroupLayers = [];
+      for (let i = 0, ii = groupLayers.length; i < ii; i++) {
+        const layersInsideGroup = groupLayers[i].getLayers().getArray();
+        flatLayers.push(...layersInsideGroup);
+        newGroupLayers.push(
+          ...(layersInsideGroup.filter(
+            (l) => l instanceof Group
+          ) as Array<Group>)
+        );
+      }
+      groupLayers = newGroupLayers;
+    }
+    return flatLayers as Array<Layer>;
+  }
+
   render() {
     const mapQuery = document.querySelector(this.for as string);
     // @ts-ignore
@@ -158,10 +189,13 @@ export class EOxTimeControl extends LitElement {
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
-        const animationLayer = olMap
-          .getLayers()
-          .getArray()
-          .find((l) => l.get("id") === this.layer) as Layer;
+        const flatLayers = this.getFlatLayersArray(
+          // @ts-ignore
+          olMap.getLayers().getArray()
+        );
+        const animationLayer = flatLayers.find(
+          (l: Layer) => l.get("id") === this.layer
+        ) as Layer;
         this._animationSource = animationLayer.getSource() as UrlTile;
 
         this._originalParams =
