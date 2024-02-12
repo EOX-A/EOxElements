@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.6.1...drawtools-v0.7.0) (2024-02-12)
+
+
+### Features
+
+* Theming using CSS variables ([#616](https://github.com/EOX-A/EOxElements/issues/616)) ([13bcfae](https://github.com/EOX-A/EOxElements/commit/13bcfaee1ef58764f8f0337bc580317b700201af))
+
 ## [0.6.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.6.0...drawtools-v0.6.1) (2023-12-13)
 
 
