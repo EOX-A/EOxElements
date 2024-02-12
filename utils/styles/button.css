@@ -26,14 +26,14 @@ button:hover:not([disabled]):not(.icon),
 .button:hover:not([disabled]):not(.icon) {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-  background: var(--eox-primary-btn-color-hover);
+  background: var(--primary-btn-color-hover);
 }
 
 button,
 button:active,
 .button,
 .button:active {
-  background: var(--eox-primary-color);
+  background: var(--primary-color);
 }
 
 button[disabled],
@@ -46,8 +46,8 @@ button.outline,
 .button.outline {
   background: transparent;
   box-shadow: none;
-  color: var(--eox-primary-color);
-  outline: 1px solid var(--eox-primary-color);
+  color: var(--primary-color);
+  outline: 1px solid var(--primary-color);
 }
 
 button.outline:hover,

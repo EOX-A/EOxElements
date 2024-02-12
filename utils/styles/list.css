@@ -3,17 +3,17 @@ ul.list-wrap {
 }
 ul.list-wrap li:hover,
 ul.list-wrap li.selected {
-  background: var(--eox-secondary-bg-color-hover);
+  background: var(--secondary-bg-color-hover);
 }
 ul.list-wrap li {
   list-style: none;
   padding: 4px;
 }
 ul.list-wrap li {
-  border-bottom: 1.2px solid var(--eox-secondary-color);
+  border-bottom: 1.2px solid var(--secondary-color);
 }
 ul.list-wrap li:first-child {
-  border-top: 1.2px solid var(--eox-secondary-color);
+  border-top: 1.2px solid var(--secondary-color);
 }
 ul.list-wrap li .list {
   width: 100%;

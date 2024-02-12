@@ -25,10 +25,10 @@ export const CSSVariableOverride = {
       html,
       :host,
       :root {
-        --secondary-color: #ffa55c;
-        --bg-hover-transparency: 20%;
-        --color: #ffa55c;
-        --body-font-family: "Comic Sans MS", cursive;
+        --eox-secondary-color: #ffa55c;
+        --eox-bg-hover-transparency: 20%;
+        --eox-color: #ffa55c;
+        --eox-body-font-family: "Comic Sans MS", cursive;
       }
     </style>
   `,

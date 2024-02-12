@@ -1,60 +1,60 @@
 :root,
 :host {
-  --eox-spacing: 1rem;
-  --eox-block-spacing-vertical: calc(var(--eox-spacing) * 2);
-  --eox-block-spacing-horizontal: var(--eox-spacing);
+  --spacing: 1rem;
+  --block-spacing-vertical: calc(var(--spacing) * 2);
+  --block-spacing-horizontal: var(--spacing);
 
-  --eox-background-color: var(--background-color, white);
-  --eox-color: var(--color, #2c3d49);
-  --eox-h-color: var(--h-color, var(--eox-color));
+  --background-color: var(--eox-background-color, white);
+  --color: var(--eox-color, #2c3d49);
+  --h-color: var(--eox-h-color, var(--color));
 
-  --eox-hover-transparency: var(--hover-transparency, 20%);
-  --eox-bg-hover-transparency: var(--bg-hover-transparency, 40%);
-  --eox-btn-hover-transparency: var(--btn-hover-transparency, 80%);
+  --hover-transparency: var(--eox-hover-transparency, 20%);
+  --bg-hover-transparency: var(--eox-bg-hover-transparency, 40%);
+  --btn-hover-transparency: var(--eox-btn-hover-transparency, 80%);
 
-  --eox-primary-color: var(--primary-color, #004170);
-  --eox-primary-color-hover: color-mix(
+  --primary-color: var(--eox-primary-color, #004170);
+  --primary-color-hover: color-mix(
     in srgb,
-    var(--eox-primary-color) var(--eox-hover-transparency),
+    var(--primary-color) var(--hover-transparency),
     transparent
   );
-  --eox-primary-bg-color-hover: color-mix(
+  --primary-bg-color-hover: color-mix(
     in srgb,
-    var(--eox-primary-color) var(--eox-bg-hover-transparency),
+    var(--primary-color) var(--bg-hover-transparency),
     transparent
   );
-  --eox-primary-btn-color-hover: color-mix(
+  --primary-btn-color-hover: color-mix(
     in srgb,
-    var(--eox-primary-color) var(--eox-btn-hover-transparency),
-    transparent
-  );
-
-  --eox-secondary-color: var(--secondary-color, #c6d4df);
-  --eox-secondary-color-hover: color-mix(
-    in srgb,
-    var(--eox-secondary-color) var(--eox-hover-transparency),
-    transparent
-  );
-  --eox-secondary-bg-color-hover: color-mix(
-    in srgb,
-    var(--eox-secondary-color) var(--eox-bg-hover-transparency),
-    transparent
-  );
-  --eox-secondary-btn-color-hover: color-mix(
-    in srgb,
-    var(--eox-secondary-color) var(--eox-btn-hover-transparency),
+    var(--primary-color) var(--btn-hover-transparency),
     transparent
   );
 
-  --eox-success: var(--success, #26cc0f);
-  --eox-warning: var(--warning, #f18e32);
-  --eox-error: var(--error, #ff5252);
-  --eox-header-font-family: var(--header-font-family, "Roboto", sans-serif);
-  --eox-body-font-family: var(--body-font-family, "Roboto", sans-serif);
+  --secondary-color: var(--eox-secondary-color, #c6d4df);
+  --secondary-color-hover: color-mix(
+    in srgb,
+    var(--secondary-color) var(--hover-transparency),
+    transparent
+  );
+  --secondary-bg-color-hover: color-mix(
+    in srgb,
+    var(--secondary-color) var(--bg-hover-transparency),
+    transparent
+  );
+  --secondary-btn-color-hover: color-mix(
+    in srgb,
+    var(--secondary-color) var(--btn-hover-transparency),
+    transparent
+  );
+
+  --success: var(--eox-success, #26cc0f);
+  --warning: var(--eox-warning, #f18e32);
+  --error: var(--eox-error, #ff5252);
+  --header-font-family: var(--eox-header-font-family, "Roboto", sans-serif);
+  --body-font-family: var(--eox-body-font-family, "Roboto", sans-serif);
 }
 * {
-  font-family: var(--eox-body-font-family);
-  color: var(--color);
+  font-family: var(--body-font-family);
+  color: var(--eox-color);
 }
 h1,
 h2,
@@ -62,39 +62,39 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--eox-header-font-family);
+  font-family: var(--header-font-family);
 }
 span,
 p,
 div,
 main,
 label {
-  font-family: var(--eox-body-font-family);
+  font-family: var(--body-font-family);
 }
 @media (min-width: 576px) {
   .container {
     max-width: 510px;
     padding-right: 0;
     padding-left: 0;
-    --eox-block-spacing-vertical: calc(var(--eox-spacing) * 2.5);
+    --block-spacing-vertical: calc(var(--spacing) * 2.5);
   }
 }
 @media (min-width: 768px) {
   .container {
     max-width: 700px;
-    --eox-block-spacing-vertical: calc(var(--eox-spacing) * 3);
+    --block-spacing-vertical: calc(var(--spacing) * 3);
   }
 }
 @media (min-width: 992px) {
   .container {
     max-width: 920px;
-    --eox-block-spacing-vertical: calc(var(--eox-spacing) * 3.5);
+    --block-spacing-vertical: calc(var(--spacing) * 3.5);
   }
 }
 @media (min-width: 1200px) {
   .container {
     max-width: 1130px;
-    --eox-block-spacing-vertical: calc(var(--eox-spacing) * 4);
+    --block-spacing-vertical: calc(var(--spacing) * 4);
   }
 }
 .container {
@@ -102,7 +102,7 @@ label {
   margin-right: auto;
   margin-left: auto;
   display: block;
-  padding: var(--eox-block-spacing-vertical) var(--eox-block-spacing-horizontal);
+  padding: var(--block-spacing-vertical) var(--block-spacing-horizontal);
 }
 h1,
 h2,
@@ -130,27 +130,27 @@ h3,
 h4,
 h5,
 h6 {
-  --eox-font-weight: 700;
+  --font-weight: 700;
 }
 h1 {
-  --eox-font-size: 3rem;
-  --eox-typography-spacing-vertical: 0.5rem;
+  --font-size: 3rem;
+  --typography-spacing-vertical: 0.5rem;
 }
 h2 {
-  --eox-font-size: 2rem;
-  --eox-typography-spacing-vertical: 0.5rem;
+  --font-size: 2rem;
+  --typography-spacing-vertical: 0.5rem;
 }
 h3 {
-  --eox-font-size: 1.75rem;
-  --eox-typography-spacing-vertical: 0.5rem;
+  --font-size: 1.75rem;
+  --typography-spacing-vertical: 0.5rem;
 }
 h4 {
-  --eox-font-size: 1.5rem;
-  --eox-typography-spacing-vertical: 0.5rem;
+  --font-size: 1.5rem;
+  --typography-spacing-vertical: 0.5rem;
 }
 h5 {
-  --eox-font-size: 1.25rem;
-  --eox-typography-spacing-vertical: 0.5rem;
+  --font-size: 1.25rem;
+  --typography-spacing-vertical: 0.5rem;
 }
 h1,
 h2,
@@ -159,9 +159,9 @@ h4,
 h5,
 h6 {
   margin-top: 0;
-  margin-bottom: var(--eox-typography-spacing-vertical);
-  color: var(--eox-h-color);
-  font-weight: var(--eox-font-weight);
-  font-size: var(--eox-font-size);
-  font-family: var(--eox-header-font-family);
+  margin-bottom: var(--typography-spacing-vertical);
+  color: var(--h-color);
+  font-weight: var(--font-weight);
+  font-size: var(--font-size);
+  font-family: var(--header-font-family);
 }
