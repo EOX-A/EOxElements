@@ -9,6 +9,7 @@ import {
   ModifyFeaturesStory,
   MultiPolygonWithListStory,
   UnstyledStory,
+  CSSVariableOverrideStory,
 } from "./index";
 
 export default {
@@ -47,6 +48,11 @@ export const DrawType = DrawTypeStory;
  * a list of the drawn features will be populated.
  */
 export const MultiPolygonWithList = MultiPolygonWithListStory;
+
+/**
+ * Override css variable directly using styles.
+ */
+export const CSSVariableOverride = CSSVariableOverrideStory;
 
 /**
  * By setting the `unstyled` attribute or property, the element has no styling applied.

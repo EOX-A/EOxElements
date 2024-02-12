@@ -28,3 +28,5 @@ cypress/videos
 
 docs
 custom-elements.json
+
+utils/styles/dist/*.style.js

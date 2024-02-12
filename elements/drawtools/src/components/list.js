@@ -1,12 +1,12 @@
 import { LitElement, html, nothing } from "lit";
 import { keyed } from "lit/directives/keyed.js";
-import { styleEOX } from "../style.eox";
 import {
   deleteFeatureMethod,
   firstUpdatedMethod,
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
+import listStyle from "../../../../utils/styles/dist/list.style";
 
 /**
  * Display list of features
@@ -126,6 +126,13 @@ export class EOxDrawToolsList extends LitElement {
     firstUpdatedMethod(this);
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM.
+   */
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     // Update hover and click IDs
     this.hoverId = this.hoverInteraction?.selectedFids[0];
@@ -133,9 +140,9 @@ export class EOxDrawToolsList extends LitElement {
 
     return html`
       <style>
-        ${!this.unstyled && styleEOX}
+        ${!this.unstyled && listStyle}
       </style>
-      <ul>
+      <ul class="list-wrap">
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
@@ -163,7 +170,7 @@ export class EOxDrawToolsList extends LitElement {
                   <span class="title">Feature #${featureNumber}</span>
                   <button
                     index=${i}
-                    class="icon small discard"
+                    class="icon smallest discard"
                     @click="${this._handleDelete}"
                   >
                     x

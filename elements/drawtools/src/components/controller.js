@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from "lit";
-import { styleEOX } from "../style.eox";
 import { updateButtonStatesMethod } from "../methods/controller";
+import buttonStyle from "../../../../utils/styles/dist/button.style";
 
 /**
  * Controller component for drawing features
@@ -69,13 +69,20 @@ export class EOxDrawToolsController extends LitElement {
     this.#discardDisabled = discardDisabled;
   }
 
+  /**
+   * Overrides createRenderRoot to handle shadow DOM
+   */
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     this.updateButtonStates();
     const drawLabel = this.currentlyDrawing ? "drawing" : "draw";
 
     return html`
       <style>
-        ${!this.unstyled && styleEOX}
+        ${!this.unstyled && buttonStyle}
       </style>
       <div>
         <slot></slot>
