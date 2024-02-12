@@ -1,8 +1,8 @@
-import{s as M,x as d,T as H,b as _}from"./lit-element-uhisBW42.js";import"./main-ks66NksK.js";import{r as x,n as m,t as Y}from"./state-729Pchtv.js";import"./toolcool-range-slider.min-8Vg52R7B.js";import{b as Z}from"./button-z18YVp5B.js";import{d as P}from"./dayjs.min-Sgxub5UU.js";import{c as B,g as N}from"./_commonjsHelpers-4gQjN7DL.js";import"./index-EySAwWXj.js";const G=`
+import{s as Y,x as d,T as H,b as _}from"./lit-element-uhisBW42.js";import{G as S}from"./main-33Oo-lIB.js";import{r as g,n as p,t as B}from"./state-729Pchtv.js";import"./toolcool-range-slider.min-8Vg52R7B.js";import{b as Z}from"./button-z18YVp5B.js";import{d as P}from"./dayjs.min-Sgxub5UU.js";import{c as N,g as U}from"./_commonjsHelpers-4gQjN7DL.js";import"./index-EySAwWXj.js";const F=`
 :host {
   display: block;
 }
-`,F=`
+`,Q=`
 * {
   font-family: Roboto, sans-serif;
 }
@@ -24,10 +24,10 @@ button.icon.previous:before {
 button.icon.next:before {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Earrow-right-drop-circle%3C/title%3E%3Cpath d='M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M10,17L15,12L10,7V17Z' fill='%23004170' /%3E%3C/svg%3E");
 }
-`;var U={exports:{}};(function(e,i){(function(t,r){e.exports=r()})(B,function(){return function(t,r,a){r.prototype.dayOfYear=function(s){var p=Math.round((a(this).startOf("day")-a(this).startOf("year"))/864e5)+1;return s==null?p:this.add(s-p,"day")}}})})(U);var Q=U.exports;const X=N(Q);var R={exports:{}};(function(e,i){(function(t,r){e.exports=r()})(B,function(){var t="day";return function(r,a,s){var p=function(l){return l.add(4-l.isoWeekday(),t)},g=a.prototype;g.isoWeekYear=function(){return p(this).year()},g.isoWeek=function(l){if(!this.$utils().u(l))return this.add(7*(l-this.isoWeek()),t);var u,$,h,b,j=p(this),D=(u=this.isoWeekYear(),$=this.$u,h=($?s.utc:s)().year(u).startOf("year"),b=4-h.isoWeekday(),h.isoWeekday()>4&&(b+=7),h.add(b,t));return j.diff(D,"week")+1},g.isoWeekday=function(l){return this.$utils().u(l)?this.day()||7:this.day(this.day()%7?l:l-7)};var q=g.startOf;g.startOf=function(l,u){var $=this.$utils(),h=!!$.u(u)||u;return $.p(l)==="isoweek"?h?this.date(this.date()-(this.isoWeekday()-1)).startOf("day"):this.date(this.date()-1-(this.isoWeekday()-1)+7).endOf("day"):q.bind(this)(l,u)}}})})(R);var J=R.exports;const K=N(J);var ee=Object.defineProperty,te=Object.getOwnPropertyDescriptor,n=(e,i,t,r)=>{for(var a=r>1?void 0:r?te(i,t):i,s=e.length-1,p;s>=0;s--)(p=e[s])&&(a=(r?p(i,t,a):p(a))||a);return r&&a&&ee(i,t,a),a};P.extend(X);P.extend(K);let o=class extends M{constructor(){super(...arguments),this.animationValues=[],this._newTimeIndex=0}next(){this._updateStep(1)}previous(){this._updateStep(-1)}playAnimation(e){e?this._animationInterval=setInterval(()=>this._updateStep(1),500):clearInterval(this._animationInterval),this._isAnimationPlaying=e,this.requestUpdate()}setConfig(e){this.layer=e.layer??this.layer,this.animationProperty=e.animationProperty??this.animationProperty,this.animationValues=e.animationValues??this.animationValues,this.requestUpdate(),this._updateStep(0)}get currentTime(){return this.animationValues[this._newTimeIndex]}set currentTime(e){const i=this.animationValues.findIndex(t=>t===e);i>-1?this._newTimeIndex=i:console.error(`Unable to find time "${e}" in available times!`)}_updateStep(e=1){this._newTimeIndex=this._newTimeIndex+e,this._newTimeIndex>this.animationValues.length-1&&(this._newTimeIndex=0),this._newTimeIndex<0&&(this._newTimeIndex=this.animationValues.length-1),this._animationSource.updateParams({[this.animationProperty]:this.animationValues[this._newTimeIndex]}),this.requestUpdate()}render(){const e=document.querySelector(this.for),i=e.map||e;return i.once("loadend",()=>{if(!this._originalParams){const t=i.getLayers().getArray().find(r=>r.get("id")===this.layer);this._animationSource=t.getSource(),this._originalParams=this._animationSource.getParams()}}),d`
+`;var R={exports:{}};(function(e,t){(function(i,r){e.exports=r()})(N,function(){return function(i,r,n){r.prototype.dayOfYear=function(o){var l=Math.round((n(this).startOf("day")-n(this).startOf("year"))/864e5)+1;return o==null?l:this.add(o-l,"day")}}})})(R);var X=R.exports;const J=U(X);var G={exports:{}};(function(e,t){(function(i,r){e.exports=r()})(N,function(){var i="day";return function(r,n,o){var l=function(m){return m.add(4-m.isoWeekday(),i)},c=n.prototype;c.isoWeekYear=function(){return l(this).year()},c.isoWeek=function(m){if(!this.$utils().u(m))return this.add(7*(m-this.isoWeek()),i);var y,f,h,b,j=l(this),D=(y=this.isoWeekYear(),f=this.$u,h=(f?o.utc:o)().year(y).startOf("year"),b=4-h.isoWeekday(),h.isoWeekday()>4&&(b+=7),h.add(b,i));return j.diff(D,"week")+1},c.isoWeekday=function(m){return this.$utils().u(m)?this.day()||7:this.day(this.day()%7?m:m-7)};var q=c.startOf;c.startOf=function(m,y){var f=this.$utils(),h=!!f.u(y)||y;return f.p(m)==="isoweek"?h?this.date(this.date()-(this.isoWeekday()-1)).startOf("day"):this.date(this.date()-1-(this.isoWeekday()-1)+7).endOf("day"):q.bind(this)(m,y)}}})})(G);var K=G.exports;const ee=U(K);var te=Object.defineProperty,ie=Object.getOwnPropertyDescriptor,a=(e,t,i,r)=>{for(var n=r>1?void 0:r?ie(t,i):t,o=e.length-1,l;o>=0;o--)(l=e[o])&&(n=(r?l(t,i,n):l(n))||n);return r&&n&&te(t,i,n),n};P.extend(J);P.extend(ee);let s=class extends Y{constructor(){super(...arguments),this.animationValues=[],this._newTimeIndex=0}next(){this._updateStep(1)}previous(){this._updateStep(-1)}playAnimation(e){e?this._animationInterval=setInterval(()=>this._updateStep(1),500):clearInterval(this._animationInterval),this._isAnimationPlaying=e,this.requestUpdate()}setConfig(e){this.layer=e.layer??this.layer,this.animationProperty=e.animationProperty??this.animationProperty,this.animationValues=e.animationValues??this.animationValues,this.requestUpdate(),this._updateStep(0)}get currentTime(){return this.animationValues[this._newTimeIndex]}set currentTime(e){const t=this.animationValues.findIndex(i=>i===e);t>-1?this._newTimeIndex=t:console.error(`Unable to find time "${e}" in available times!`)}_updateStep(e=1){this._newTimeIndex=this._newTimeIndex+e,this._newTimeIndex>this.animationValues.length-1&&(this._newTimeIndex=0),this._newTimeIndex<0&&(this._newTimeIndex=this.animationValues.length-1),this._animationSource.updateParams({[this.animationProperty]:this.animationValues[this._newTimeIndex]}),this.requestUpdate()}getFlatLayersArray(e){const t=[];t.push(...e);let i=t.filter(r=>r instanceof S);for(;i.length;){const r=[];for(let n=0,o=i.length;n<o;n++){const l=i[n].getLayers().getArray();t.push(...l),r.push(...l.filter(c=>c instanceof S))}i=r}return t}render(){const e=document.querySelector(this.for),t=e.map||e;return t.once("loadend",()=>{if(!this._originalParams){const r=this.getFlatLayersArray(t.getLayers().getArray()).find(n=>n.get("id")===this.layer);this._animationSource=r.getSource(),this._originalParams=this._animationSource.getParams()}}),d`
       <style>
-        ${G}
-        ${!this.unstyled&&F}
+        ${F}
+        ${!this.unstyled&&Q}
       </style>
       <main>
         <div id="controls" part="controls">
@@ -57,7 +57,7 @@ button.icon.next:before {
                     part="slider"
                     value="${this.animationValues[this._newTimeIndex]}"
                     style="display: inline-block;"
-                    @change="${t=>this._updateStep(this.animationValues.findIndex(r=>r===t.detail.value)-this._newTimeIndex)}"
+                    @change="${i=>this._updateStep(this.animationValues.findIndex(r=>r===i.detail.value)-this._newTimeIndex)}"
                   ></tc-range-slider>
 
                   <eox-sliderticks
@@ -72,15 +72,15 @@ button.icon.next:before {
           >
         </div>
       </main>
-    `}};n([m({attribute:"animation-property"})],o.prototype,"animationProperty",2);n([m({attribute:"animation-values",type:Array})],o.prototype,"animationValues",2);n([m()],o.prototype,"for",2);n([m()],o.prototype,"layer",2);n([m({type:Boolean})],o.prototype,"slider",2);n([m()],o.prototype,"_originalParams",2);n([m({attribute:"disable-play",type:Boolean})],o.prototype,"disablePlay",2);n([m({attribute:"current-time"})],o.prototype,"currentTime",1);n([x()],o.prototype,"_animationInterval",2);n([x()],o.prototype,"_animationSource",2);n([x()],o.prototype,"_isAnimationPlaying",2);n([x()],o.prototype,"_newTimeIndex",2);n([m({type:Boolean})],o.prototype,"unstyled",2);o=n([Y("eox-timecontrol")],o);let y=class extends M{constructor(){super(...arguments),this.width=0,this.times=[],this.height=6,this.svgWidth=0}connectedCallback(){super.connectedCallback(),window.addEventListener("resize",this.handleResize.bind(this))}disconnectedCallback(){window.removeEventListener("resize",this.handleResize.bind(this)),super.disconnectedCallback()}firstUpdated(){this.handleResize()}handleResize(){this.svgWidth=this.shadowRoot.querySelector("svg").clientWidth,this.height=this.shadowRoot.querySelector("svg").clientHeight}get lines(){const e=this.numLines>this.width/2?this.width/2:this.numLines,i=this.width/(e-1);return Array.from({length:this.numLines},(t,r)=>r*i)}get numLines(){return this.times?this.times.length:0}get yearMarks(){const e=[];let i=null;return this.lines.forEach((t,r)=>{const s=P(this.times[r]).year();(r===0||s!==i)&&e.push({label:s,position:t}),i=s}),e.filter((t,r)=>{const a=e[r+1];return!(a&&a.position-t.position<25)})}isYearLine(e){return this.yearMarks.some(t=>Math.abs(t.position-e)<1)}render(){return d`
+    `}};a([p({attribute:"animation-property"})],s.prototype,"animationProperty",2);a([p({attribute:"animation-values",type:Array})],s.prototype,"animationValues",2);a([p()],s.prototype,"for",2);a([p()],s.prototype,"layer",2);a([p({type:Boolean})],s.prototype,"slider",2);a([p()],s.prototype,"_originalParams",2);a([p({attribute:"disable-play",type:Boolean})],s.prototype,"disablePlay",2);a([p({attribute:"current-time"})],s.prototype,"currentTime",1);a([g()],s.prototype,"_animationInterval",2);a([g()],s.prototype,"_animationSource",2);a([g()],s.prototype,"_isAnimationPlaying",2);a([g()],s.prototype,"_newTimeIndex",2);a([p({type:Boolean})],s.prototype,"unstyled",2);s=a([B("eox-timecontrol")],s);let x=class extends Y{constructor(){super(...arguments),this.width=0,this.times=[],this.height=6,this.svgWidth=0}connectedCallback(){super.connectedCallback(),window.addEventListener("resize",this.handleResize.bind(this))}disconnectedCallback(){window.removeEventListener("resize",this.handleResize.bind(this)),super.disconnectedCallback()}firstUpdated(){this.handleResize()}handleResize(){this.svgWidth=this.shadowRoot.querySelector("svg").clientWidth,this.height=this.shadowRoot.querySelector("svg").clientHeight}get lines(){const e=this.numLines>this.width/2?this.width/2:this.numLines,t=this.width/(e-1);return Array.from({length:this.numLines},(i,r)=>r*t)}get numLines(){return this.times?this.times.length:0}get yearMarks(){const e=[];let t=null;return this.lines.forEach((i,r)=>{const o=P(this.times[r]).year();(r===0||o!==t)&&e.push({label:o,position:i}),t=o}),e.filter((i,r)=>{const n=e[r+1];return!(n&&n.position-i.position<25)})}isYearLine(e){return this.yearMarks.some(i=>Math.abs(i.position-e)<1)}render(){return d`
       <div class="fill-width" style="margin-top: 3px;">
         <svg
           style="width: ${this.width}px; height: 30px;"
           viewBox="-1 0 ${this.width+2} ${this.height}"
         >
-          ${this.lines.map((e,i)=>_`
+          ${this.lines.map((e,t)=>_`
             <line
-              key=${i}
+              key=${t}
               x1=${e}
               y1="0"
               x2=${e}
@@ -89,9 +89,9 @@ button.icon.next:before {
               stroke-width=${this.isYearLine(e),1}
             ></line>
           `)}
-          ${this.yearMarks.map((e,i)=>_`
+          ${this.yearMarks.map((e,t)=>_`
             <text
-              key=${`y${i}`}
+              key=${`y${t}`}
               x=${e.position}
               y=${this.height-1}
               fill="#555"
@@ -103,7 +103,7 @@ button.icon.next:before {
           `)}
         </svg>
       </div>
-    `}};n([m({type:Number})],y.prototype,"width",2);n([m({type:Array})],y.prototype,"times",2);n([x()],y.prototype,"height",2);n([x()],y.prototype,"svgWidth",2);y=n([Y("eox-sliderticks")],y);const pe={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},c={args:{for:"eox-map#primary",layer:"AWS_NO2-VISUALISATION",animationProperty:"TIME",animationValues:["2022-12-05","2022-12-12","2022-12-19","2022-12-26","2023-01-16","2023-01-23","2023-01-30","2023-02-06","2023-02-13","2023-02-27","2023-03-06","2023-03-13","2023-03-20","2023-03-27","2023-04-03","2023-04-10","2023-04-17","2023-04-24"],layers:[{type:"Tile",properties:{id:"AWS_NO2-VISUALISATION"},source:{type:"TileWMS",url:"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",params:{LAYERS:"AWS_NO2-VISUALISATION"}}},{type:"Tile",properties:{id:"OSM"},source:{type:"OSM"}}],center:[1e6,6e6],zoom:3},render:e=>d`
+    `}};a([p({type:Number})],x.prototype,"width",2);a([p({type:Array})],x.prototype,"times",2);a([g()],x.prototype,"height",2);a([g()],x.prototype,"svgWidth",2);x=a([B("eox-sliderticks")],x);const de={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},u={args:{for:"eox-map#primary",layer:"AWS_NO2-VISUALISATION",animationProperty:"TIME",animationValues:["2022-12-05","2022-12-12","2022-12-19","2022-12-26","2023-01-16","2023-01-23","2023-01-30","2023-02-06","2023-02-13","2023-02-27","2023-03-06","2023-03-13","2023-03-20","2023-03-27","2023-04-03","2023-04-10","2023-04-17","2023-04-24"],layers:[{type:"Tile",properties:{id:"AWS_NO2-VISUALISATION"},source:{type:"TileWMS",url:"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",params:{LAYERS:"AWS_NO2-VISUALISATION"}}},{type:"Tile",properties:{id:"OSM"},source:{type:"OSM"}}],center:[1e6,6e6],zoom:3},render:e=>d`
     <eox-map
       id="primary"
       style="width: 400px; height: 300px;"
@@ -118,7 +118,7 @@ button.icon.next:before {
       .animationValues=${e.animationValues}
       .slider=${e.slider}
     ></eox-timecontrol>
-  `},f={args:{...c.args,for:"eox-map#slider",slider:!0},render:e=>d`
+  `},$={args:{...u.args,for:"eox-map#slider",slider:!0},render:e=>d`
     <eox-map
       id="slider"
       style="width: 400px; height: 300px;"
@@ -133,7 +133,7 @@ button.icon.next:before {
       .animationValues=${e.animationValues}
       .slider=${e.slider}
     ></eox-timecontrol>
-  `},v={args:{...c.args,for:"eox-map#programmatic-time-selection",slider:!0},render:e=>d`
+  `},v={args:{...u.args,for:"eox-map#programmatic-time-selection",slider:!0},render:e=>d`
     <eox-map
       id="programmatic-time-selection"
       style="width: 400px; height: 300px;"
@@ -144,7 +144,7 @@ button.icon.next:before {
     <div>
       <input type="text" id="time" value="2022-12-26" />
       <button
-        @click="${()=>{const i=document.getElementById("time").value,t=document.getElementById("programmatic");t.currentTime=i}}"
+        @click="${()=>{const t=document.getElementById("time").value,i=document.getElementById("programmatic");i.currentTime=t}}"
       >
         Go
       </button>
@@ -157,7 +157,7 @@ button.icon.next:before {
       .animationValues=${e.animationValues}
       .slider=${e.slider}
     ></eox-timecontrol>
-  `},w={args:{...c.args,for:"eox-map#disabled-controls",slider:!0,disablePlay:!0},render:e=>d`
+  `},w={args:{...u.args,for:"eox-map#disabled-controls",slider:!0,disablePlay:!0},render:e=>d`
     <eox-map
       id="disabled-controls"
       style="width: 400px; height: 300px;"
@@ -173,7 +173,7 @@ button.icon.next:before {
       .slider=${e.slider}
       .disablePlay=${e.disablePlay}
     ></eox-timecontrol>
-  `};var S,I,V;c.parameters={...c.parameters,docs:{...(S=c.parameters)==null?void 0:S.docs,source:{originalSource:`{
+  `};var I,V,A;u.parameters={...u.parameters,docs:{...(I=u.parameters)==null?void 0:I.docs,source:{originalSource:`{
   args: {
     for: "eox-map#primary",
     layer: "AWS_NO2-VISUALISATION",
@@ -220,7 +220,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(V=(I=c.parameters)==null?void 0:I.docs)==null?void 0:V.source}}};var A,T,E;f.parameters={...f.parameters,docs:{...(A=f.parameters)==null?void 0:A.docs,source:{originalSource:`{
+}`,...(A=(V=u.parameters)==null?void 0:V.docs)==null?void 0:A.source}}};var T,E,k;$.parameters={...$.parameters,docs:{...(T=$.parameters)==null?void 0:T.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#slider",
@@ -242,7 +242,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(E=(T=f.parameters)==null?void 0:T.docs)==null?void 0:E.source}}};var k,O,C;v.parameters={...v.parameters,docs:{...(k=v.parameters)==null?void 0:k.docs,source:{originalSource:`{
+}`,...(k=(E=$.parameters)==null?void 0:E.docs)==null?void 0:k.source}}};var L,O,C;v.parameters={...v.parameters,docs:{...(L=v.parameters)==null?void 0:L.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#programmatic-time-selection",
@@ -277,7 +277,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(C=(O=v.parameters)==null?void 0:O.docs)==null?void 0:C.source}}};var L,z,W;w.parameters={...w.parameters,docs:{...(L=w.parameters)==null?void 0:L.docs,source:{originalSource:`{
+}`,...(C=(O=v.parameters)==null?void 0:O.docs)==null?void 0:C.source}}};var z,W,M;w.parameters={...w.parameters,docs:{...(z=w.parameters)==null?void 0:z.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#disabled-controls",
@@ -301,4 +301,4 @@ button.icon.next:before {
       .disablePlay=\${args.disablePlay}
     ></eox-timecontrol>
   \`
-}`,...(W=(z=w.parameters)==null?void 0:z.docs)==null?void 0:W.source}}};const de=["Primary","Slider","ProgrammaticTimeSelection","DisabledControlButtons"];export{w as DisabledControlButtons,c as Primary,v as ProgrammaticTimeSelection,f as Slider,de as __namedExportsOrder,pe as default};
+}`,...(M=(W=w.parameters)==null?void 0:W.docs)==null?void 0:M.source}}};const ce=["Primary","Slider","ProgrammaticTimeSelection","DisabledControlButtons"];export{w as DisabledControlButtons,u as Primary,v as ProgrammaticTimeSelection,$ as Slider,ce as __namedExportsOrder,de as default};
