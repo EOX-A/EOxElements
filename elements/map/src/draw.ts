@@ -8,7 +8,7 @@ import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 import { getUid } from "ol";
 import { DragAndDrop } from "ol/interaction";
-import { pasteFeaturesFromClipboard } from "../helpers";
+import { addNewFeature, pasteFeaturesFromClipboard } from "../helpers";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -103,38 +103,15 @@ export function addDraw(
     formatConstructors: [GeoJSON, new KML({ extractStyles: false }), TopoJSON],
   });
 
-  // Drag and drop upload shape file's event
-  function addNewFeature(e) {
-    const currFeatures = drawLayer.getSource().getFeatures().length;
-    if (
-      !drawLayer.get("multipleFeatures") &&
-      (currFeatures || e.features.length > 1)
-    )
-      throw new Error("Multiple features detected!");
-
-    //@ts-ignore
-    e.features.forEach((feature) => feature.set("id", feature.ol_uid));
-
-    //@ts-ignore
-    drawLayer.getSource().addFeatures(e.features);
-    EOxMap.map
-      .getView()
-      .fit(drawLayer.getSource().getExtent(), { duration: 750 });
-
-    const drawendEvt = new CustomEvent("addfeatures", {
-      detail: {
-        originalEvent: e,
-      },
-    });
-    EOxMap.dispatchEvent(drawendEvt);
-  }
-  dragAndDropInteraction.on("addfeatures", addNewFeature);
+  dragAndDropInteraction.on("addfeatures", (e) =>
+    addNewFeature(e, drawLayer, EOxMap)
+  );
   EOxMap.map.addInteraction(dragAndDropInteraction);
   EOxMap.interactions["dragAndDropInteraction"] = dragAndDropInteraction;
 
   document.addEventListener("keydown", (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key === "v")
-      pasteFeaturesFromClipboard(addNewFeature);
+      pasteFeaturesFromClipboard(drawLayer, EOxMap);
   });
 
   const removeLayerListener = () => {
