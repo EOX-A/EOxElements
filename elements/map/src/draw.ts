@@ -3,11 +3,12 @@ import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
 import { getArea, getLength } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
-import { GPX, GeoJSON, IGC, KML, TopoJSON } from "ol/format.js";
+import { GeoJSON, KML, TopoJSON } from "ol/format.js";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 import { getUid } from "ol";
 import { DragAndDrop } from "ol/interaction";
+import { pasteFeaturesFromClipboard } from "../helpers";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -99,17 +100,11 @@ export function addDraw(
 
   // Drag and drop upload shape file
   const dragAndDropInteraction = new DragAndDrop({
-    formatConstructors: [
-      GPX,
-      GeoJSON,
-      IGC,
-      new KML({ extractStyles: false }),
-      TopoJSON,
-    ],
+    formatConstructors: [GeoJSON, new KML({ extractStyles: false }), TopoJSON],
   });
 
   // Drag and drop upload shape file's event
-  dragAndDropInteraction.on("addfeatures", function (e) {
+  function addNewFeature(e) {
     const currFeatures = drawLayer.getSource().getFeatures().length;
     if (
       !drawLayer.get("multipleFeatures") &&
@@ -125,10 +120,22 @@ export function addDraw(
     EOxMap.map
       .getView()
       .fit(drawLayer.getSource().getExtent(), { duration: 750 });
-  });
 
+    const drawendEvt = new CustomEvent("addfeatures", {
+      detail: {
+        originalEvent: e,
+      },
+    });
+    EOxMap.dispatchEvent(drawendEvt);
+  }
+  dragAndDropInteraction.on("addfeatures", addNewFeature);
   EOxMap.map.addInteraction(dragAndDropInteraction);
   EOxMap.interactions["dragAndDropInteraction"] = dragAndDropInteraction;
+
+  document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "v")
+      pasteFeaturesFromClipboard(addNewFeature);
+  });
 
   const removeLayerListener = () => {
     if (!EOxMap.getLayerById(drawLayer.get("id"))) {

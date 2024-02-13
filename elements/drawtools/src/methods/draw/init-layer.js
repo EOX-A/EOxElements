@@ -77,9 +77,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     );
   EoxDrawTool.draw?.on("drawend", () => onDrawEndMethod(EoxDrawTool));
   EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.emitDrawnFeatures());
-  EoxDrawTool.dragAndDrop?.on("addfeatures", () =>
-    onDrawEndMethod(EoxDrawTool)
-  );
+  EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
 
   return { EoxMap, OlMap };
 };
