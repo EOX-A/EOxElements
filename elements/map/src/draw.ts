@@ -3,10 +3,11 @@ import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
 import { getArea, getLength } from "ol/sphere";
 import { LineString, Polygon } from "ol/geom";
-import GeoJSON from "ol/format/GeoJSON";
+import { GPX, GeoJSON, IGC, KML, TopoJSON } from "ol/format.js";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 import { getUid } from "ol";
+import { DragAndDrop } from "ol/interaction";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -58,6 +59,8 @@ export function addDraw(
 
   const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {
+    if (!drawLayer.get("isDrawingEnabled")) return;
+
     const geom = e.feature.getGeometry();
     if (geom instanceof LineString) {
       const length = getLength(geom, {
@@ -93,6 +96,39 @@ export function addDraw(
   modifyInteraction.setActive(options_.modify);
   EOxMap.map.addInteraction(modifyInteraction);
   EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
+
+  // Drag and drop upload shape file
+  const dragAndDropInteraction = new DragAndDrop({
+    formatConstructors: [
+      GPX,
+      GeoJSON,
+      IGC,
+      new KML({ extractStyles: false }),
+      TopoJSON,
+    ],
+  });
+
+  // Drag and drop upload shape file's event
+  dragAndDropInteraction.on("addfeatures", function (e) {
+    const currFeatures = drawLayer.getSource().getFeatures().length;
+    if (
+      !drawLayer.get("multipleFeatures") &&
+      (currFeatures || e.features.length > 1)
+    )
+      throw new Error("Multiple features detected!");
+
+    //@ts-ignore
+    e.features.forEach((feature) => feature.set("id", feature.ol_uid));
+
+    //@ts-ignore
+    drawLayer.getSource().addFeatures(e.features);
+    EOxMap.map
+      .getView()
+      .fit(drawLayer.getSource().getExtent(), { duration: 750 });
+  });
+
+  EOxMap.map.addInteraction(dragAndDropInteraction);
+  EOxMap.interactions["dragAndDropInteraction"] = dragAndDropInteraction;
 
   const removeLayerListener = () => {
     if (!EOxMap.getLayerById(drawLayer.get("id"))) {

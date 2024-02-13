@@ -5,7 +5,7 @@ import { styleEOX } from "./style.eox";
 import {
   onDrawEndMethod,
   startDrawingMethod,
-  initDrawLayerMethod,
+  initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
 } from "./methods/draw";
@@ -88,8 +88,13 @@ export class EOxDrawTools extends LitElement {
      * The current native OpenLayers `modify` interaction
      * @type import("ol/interaction").Modify
      */
-
     this.modify = null;
+
+    /**
+     * The current native OpenLayers `modify` interaction
+     * @type import("ol/interaction").DragAndDrop
+     */
+    this.dragAndDrop = null;
 
     /**
      * Allow adding more than one feature at a time
@@ -118,14 +123,6 @@ export class EOxDrawTools extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
-  }
-
-  /**
-   * Initializes the drawing layer before starting to draw on the map.
-   */
-  initDrawLayer() {
-    const { EoxMap, OlMap } = initDrawLayerMethod(this);
-    (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
   }
 
   /**
@@ -181,6 +178,20 @@ export class EOxDrawTools extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * Initialize vector map source on map loads
+   * And instance of EoxMap and OlMap from `eox-map`
+   */
+  firstUpdated() {
+    const { EoxMap, OlMap } = initLayerMethod(
+      this,
+      false,
+      this.multipleFeatures
+    );
+    (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
+    this.requestUpdate();
+  }
+
   // Render method for UI display
   render() {
     return html`
@@ -199,6 +210,7 @@ export class EOxDrawTools extends LitElement {
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
+        .multipleFeatures=${this.multipleFeatures}
       ></eox-drawtools-controller>
 
       <!-- List Component -->

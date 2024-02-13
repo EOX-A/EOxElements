@@ -7,7 +7,7 @@
 const startDrawingMethod = (EoxDrawTool) => {
   // Function to initialize the drawing process
   const initializeDrawing = () => {
-    EoxDrawTool.initDrawLayer();
+    EoxDrawTool.drawLayer.set("isDrawingEnabled", true);
     EoxDrawTool.draw.setActive(true);
   };
 

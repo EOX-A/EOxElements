@@ -8,8 +8,10 @@ const onDrawEndMethod = (EoxDrawTool) => {
   // Function to handle actions when drawing ends
   const handleDrawEnd = () => {
     EoxDrawTool.emitDrawnFeatures(); // Emit drawn features
-    EoxDrawTool.draw.setActive(false); // Deactivate drawing
-    EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
+    if (!EoxDrawTool.multipleFeatures) {
+      EoxDrawTool.draw.setActive(false); // Deactivate drawing
+      EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
+    }
   };
 
   // Execute actions on draw end

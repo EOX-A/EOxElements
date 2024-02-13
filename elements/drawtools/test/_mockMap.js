@@ -13,6 +13,7 @@ export class MockMap extends HTMLElement {
           {
             // Simulating get method
             get: () => "draw",
+            set: () => "",
             getSource: () => ({
               // Simulating clear method to reset features array
               clear: () => {

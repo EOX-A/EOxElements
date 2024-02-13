@@ -6,7 +6,7 @@ import View from "ol/View.js";
 import olCss from "ol/ol.css?inline";
 import { EOxSelectInteraction } from "./src/select";
 import { EoxLayer, createLayer, updateLayer } from "./src/generate";
-import { Draw, Modify } from "ol/interaction";
+import { DragAndDrop, Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
 import { getCenterFromProperty } from "./src/center";
@@ -232,7 +232,7 @@ export class EOxMap extends LitElement {
    * Dictionary of ol interactions associated with the map.
    */
   @state()
-  interactions: { [index: string]: Draw | Modify } = {};
+  interactions: { [index: string]: Draw | Modify | DragAndDrop } = {};
 
   /**
    * Dictionary of select interactions.

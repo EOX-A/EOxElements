@@ -13,10 +13,6 @@ const discardDrawingMethod = (EoxDrawTool, EoxMap, OlMap) => {
     EoxDrawTool.drawnFeatures = [];
     EoxDrawTool.draw.setActive(false);
     EoxDrawTool.drawLayer.getSource().clear();
-
-    // Remove draw interaction and drawLayer from the map
-    EoxMap.removeInteraction("drawInteraction");
-    OlMap.removeLayer(EoxDrawTool.drawLayer);
   };
 
   // Function to trigger updates after discarding drawing
