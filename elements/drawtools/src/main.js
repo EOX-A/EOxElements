@@ -179,15 +179,12 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * Initialize vector map source on map loads
-   * And instance of EoxMap and OlMap from `eox-map`
+   * initializes the EOxMap and OlMap instances
+   * And stores them in the private properties #eoxMap and #olMap, respectively.
+   * It then calls requestUpdate to trigger a re-render.
    */
   firstUpdated() {
-    const { EoxMap, OlMap } = initLayerMethod(
-      this,
-      false,
-      this.multipleFeatures
-    );
+    const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
     this.requestUpdate();
   }

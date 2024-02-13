@@ -4,11 +4,10 @@ import { onDrawEndMethod } from "./";
  * Initializes the draw layer, interacts with the map, and returns map instances.
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
- * @param {Boolean} isDrawingEnabled - State if drawing is enabled
  * @param {Boolean} multipleFeatures - Allow adding more than one feature at a time
  * @returns {{EoxMap: import("@eox/map/main").EOxMap, OlMap: import("ol").Map}} - The map instances.
  */
-const initLayerMethod = (EoxDrawTool, isDrawingEnabled, multipleFeatures) => {
+const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = document.querySelector(EoxDrawTool.for);
 
   const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
@@ -21,7 +20,7 @@ const initLayerMethod = (EoxDrawTool, isDrawingEnabled, multipleFeatures) => {
     properties: {
       id: "drawLayer",
       layerControlHide: true,
-      isDrawingEnabled: isDrawingEnabled,
+      isDrawingEnabled: false,
       multipleFeatures: multipleFeatures,
     },
     source: {
