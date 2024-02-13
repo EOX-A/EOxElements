@@ -137,7 +137,7 @@ export class EOxDrawTools extends LitElement {
    * on the map and delete the drawn shapes.
    */
   handleDiscardDrawing() {
-    discardDrawingMethod(this, this.#eoxMap, this.#olMap);
+    discardDrawingMethod(this);
   }
 
   /**
