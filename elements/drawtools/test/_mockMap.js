@@ -45,6 +45,8 @@ export class MockMap extends HTMLElement {
     };
     // Simulating removeInteraction method
     this.removeInteraction = () => {};
+    // Simulate parse features
+    this.parseFeature = () => {};
   }
 }
 
