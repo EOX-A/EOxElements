@@ -11,6 +11,7 @@ const discardDrawingMethod = (EoxDrawTool) => {
     EoxDrawTool.drawnFeatures = [];
     EoxDrawTool.draw.setActive(false);
     EoxDrawTool.drawLayer.getSource().clear();
+    EoxDrawTool.geoJSON = null;
   };
 
   // Function to trigger updates after discarding drawing

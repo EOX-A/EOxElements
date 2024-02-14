@@ -27,17 +27,20 @@ const READ_FEATURES_OPTIONS = {
  * @param {string} type - the type of the event to dispatch
  * @param {DrawEvent | DragAndDropEvent | { features: any }} e
  * @param {{[p: string]: any}} geojson
+ * @param {{[p: string]: any}} totalgeojson
  */
 function dispatchEvt(
   EOxMap: EOxMap,
   type: string,
   e: DrawEvent | DragAndDropEvent | { features: any },
-  geojson?: { [p: string]: any }
+  geojson: { [p: string]: any },
+  totalgeojson: { [p: string]: any }
 ) {
   const evt = new CustomEvent(type, {
     detail: {
       originalEvent: e,
-      ...(geojson && { geojson: geojson }),
+      geojson,
+      totalgeojson,
     },
   });
   EOxMap.dispatchEvent(evt);
@@ -60,10 +63,10 @@ export function addNewFeature(
   // @ts-ignore
   const features = isDraw ? [e.feature] : e.features;
 
-  const currFeatures = drawLayer.getSource().getFeatures().length;
+  const currFeatures = drawLayer.getSource().getFeatures();
   if (
     !drawLayer.get("multipleFeatures") &&
-    (currFeatures || features.length > 1)
+    (currFeatures.length || features.length > 1)
   )
     throw new Error("Multiple features detected!");
 
@@ -85,19 +88,24 @@ export function addNewFeature(
     feature.setId(uid);
   });
 
-  if (isDraw) {
-    const format = new GeoJSON();
-    const geoJsonObject = format.writeFeatureObject(features[0]);
-    dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
-  } else {
+  if (!isDraw) {
     drawLayer.getSource().addFeatures(features);
 
     EOxMap.map
       .getView()
       .fit(drawLayer.getSource().getExtent(), { duration: 750 });
-
-    dispatchEvt(EOxMap, "addfeatures", e);
   }
+
+  const format = new GeoJSON();
+  const geoJsonObject = JSON.parse(
+    format.writeFeatures(features, READ_FEATURES_OPTIONS)
+  );
+  const totalGeoJsonObject = JSON.parse(
+    format.writeFeatures([...currFeatures, ...features], READ_FEATURES_OPTIONS)
+  );
+  if (isDraw)
+    dispatchEvt(EOxMap, "drawend", e, geoJsonObject, totalGeoJsonObject);
+  dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject, totalGeoJsonObject);
 }
 
 /**

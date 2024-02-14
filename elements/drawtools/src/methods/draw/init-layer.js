@@ -75,9 +75,11 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     /** @type {import("ol/interaction").DragAndDrop} */ (
       /** @type {unknown} */ (EoxMap.interactions["dragAndDropInteraction"])
     );
-  EoxDrawTool.draw?.on("drawend", () => onDrawEndMethod(EoxDrawTool));
+
   EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.emitDrawnFeatures());
-  EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
+  EoxMap.addEventListener("addfeatures", (e) =>
+    onDrawEndMethod(EoxDrawTool, e.detail.totalgeojson)
+  );
 
   return { EoxMap, OlMap };
 };

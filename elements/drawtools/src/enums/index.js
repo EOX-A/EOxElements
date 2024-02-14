@@ -4,6 +4,6 @@ export {
   STORIES_LAYERS_ARRAY,
 } from "./stories";
 
-export { FIT_OPTIONS } from "./draw";
+export { FIT_OPTIONS, DUMMY_GEO_JSON } from "./draw";
 
 export { TEST_SELECTORS } from "./test";

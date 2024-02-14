@@ -3,8 +3,9 @@
  * emits drawn features, deactivates drawing, and requests an update.
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
+ * @param {{ [p: string]: any }} geoJSON - Encoded features in geo-json format
  */
-const onDrawEndMethod = (EoxDrawTool) => {
+const onDrawEndMethod = (EoxDrawTool, geoJSON) => {
   // Function to handle actions when drawing ends
   const handleDrawEnd = () => {
     EoxDrawTool.emitDrawnFeatures(); // Emit drawn features
@@ -12,6 +13,7 @@ const onDrawEndMethod = (EoxDrawTool) => {
       EoxDrawTool.draw.setActive(false); // Deactivate drawing
       EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
     }
+    EoxDrawTool.geoJSON = geoJSON;
   };
 
   // Execute actions on draw end

@@ -8,4 +8,12 @@ export const styleEOX = `
   eox-drawtools-list {
     width: 100%;
   }
+  .json-wrapper {
+    margin: 0.4rem 0rem;
+    padding: 0.75rem;
+    background: var(--secondary-color-hover);
+  }
+  .json-wrapper textarea {
+    height: 200px;
+  }
 `;

@@ -1,6 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { updateButtonStatesMethod } from "../methods/controller";
 import buttonStyle from "../../../../utils/styles/dist/button.style";
+import inputStyle from "../../../../utils/styles/dist/input.style";
 
 /**
  * Controller component for drawing features
@@ -12,6 +13,7 @@ export class EOxDrawToolsController extends LitElement {
   static properties = {
     multipleFeatures: { attribute: false, type: Boolean },
     drawnFeatures: { attribute: false, state: true, type: Array },
+    geoJSON: { attribute: false, state: true, type: Object },
     currentlyDrawing: { attribute: false, state: true, type: Boolean },
     drawFunc: { attribute: false, type: Object },
     unstyled: { type: Boolean },
@@ -42,6 +44,11 @@ export class EOxDrawToolsController extends LitElement {
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
+
+    /**
+     * Encoded features in geo-json format
+     */
+    this.geoJSON = null;
 
     /**
      * Whether the user is currently in the process of drawing or not
@@ -83,6 +90,7 @@ export class EOxDrawToolsController extends LitElement {
     return html`
       <style>
         ${!this.unstyled && buttonStyle}
+        ${!this.unstyled && inputStyle}
       </style>
       <div>
         <slot></slot>
@@ -106,6 +114,15 @@ export class EOxDrawToolsController extends LitElement {
         >
           discard
         </button>
+      </div>
+      </div>
+
+      <!-- Geo JSON Wrapper -->
+      <div class="json-wrapper">
+        <textarea 
+          disabled 
+          .value=${this.geoJSON}
+        ></textarea>
       </div>
     `;
   }
