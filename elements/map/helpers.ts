@@ -28,7 +28,7 @@ export function addNewFeature(
 ) {
   const currFeatures = drawLayer.getSource().getFeatures().length;
   if (
-    !drawLayer.get("multipleFeatures") &&
+    !drawLayer.get("multipleFeatures") && //@ts-ignore
     (currFeatures || e.features.length > 1)
   )
     throw new Error("Multiple features detected!");
