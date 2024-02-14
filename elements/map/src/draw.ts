@@ -1,12 +1,9 @@
 import Modify from "ol/interaction/Modify";
 import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
-import { getArea, getLength } from "ol/sphere";
-import { LineString, Polygon } from "ol/geom";
 import { GeoJSON, KML, TopoJSON } from "ol/format.js";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
-import { getUid } from "ol";
 import { DragAndDrop } from "ol/interaction";
 import { addNewFeature, pasteFeaturesFromClipboard } from "../helpers";
 
@@ -58,33 +55,9 @@ export function addDraw(
     drawInteraction.setActive(false);
   }
 
-  const format = new GeoJSON();
   drawInteraction.on("drawend", (e) => {
     if (!drawLayer.get("isDrawingEnabled")) return;
-
-    const geom = e.feature.getGeometry();
-    if (geom instanceof LineString) {
-      const length = getLength(geom, {
-        radius: 6378137,
-        projection: "EPSG:3857",
-      });
-      e.feature.set("measure", length);
-    } else if (geom instanceof Polygon) {
-      const area = getArea(geom, { radius: 6378137, projection: "EPSG:3857" });
-      e.feature.set("measure", area);
-    }
-    const uid = getUid(e.feature);
-    e.feature.set("id", uid);
-    e.feature.setId(uid);
-
-    const geoJsonObject = format.writeFeatureObject(e.feature);
-    const drawendEvt = new CustomEvent("drawend", {
-      detail: {
-        originalEvent: e,
-        geojson: geoJsonObject,
-      },
-    });
-    EOxMap.dispatchEvent(drawendEvt);
+    addNewFeature(e, drawLayer, EOxMap, true);
   });
 
   // identifier to retrieve the interaction

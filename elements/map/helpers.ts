@@ -5,6 +5,12 @@ import TopoJSON from "ol/format/TopoJSON";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
 import { EOxMap } from "./main";
+import { LineString, Polygon } from "ol/geom";
+import { getArea, getLength } from "ol/sphere";
+import { getUid } from "ol";
+import { DrawEvent } from "ol/interaction/Draw";
+import { DragAndDropEvent } from "ol/interaction/DragAndDrop";
+import Feature from "ol/Feature";
 
 /**
  * Define the read options with proper typing
@@ -15,39 +21,83 @@ const READ_FEATURES_OPTIONS = {
 };
 
 /**
+ * Dispatches a custom event with the given type and optional eventInitDict.
+ *
+ * @param {EOxMap} EOxMap - the map instance on which to dispatch the event
+ * @param {string} type - the type of the event to dispatch
+ * @param {DrawEvent | DragAndDropEvent | { features: any }} e
+ * @param {{[p: string]: any}} geojson
+ */
+function dispatchEvt(
+  EOxMap: EOxMap,
+  type: string,
+  e: DrawEvent | DragAndDropEvent | { features: any },
+  geojson?: { [p: string]: any }
+) {
+  const evt = new CustomEvent(type, {
+    detail: {
+      originalEvent: e,
+      ...(geojson && { geojson: geojson }),
+    },
+  });
+  EOxMap.dispatchEvent(evt);
+}
+
+/**
  * Drag and drop upload shape file's event
  *
- * @param {object} e
+ * @param {DrawEvent | DragAndDropEvent} e
  * @param {VectorLayer<VectorSource>} drawLayer
  * @param {EOxMap} EOxMap
+ * @param {boolean} isDraw
  */
 export function addNewFeature(
-  e: object,
+  e: DrawEvent | DragAndDropEvent | { features: any },
   drawLayer: VectorLayer<VectorSource>,
-  EOxMap: EOxMap
+  EOxMap: EOxMap,
+  isDraw?: boolean
 ) {
+  // @ts-ignore
+  const features = isDraw ? [e.feature] : e.features;
+
   const currFeatures = drawLayer.getSource().getFeatures().length;
   if (
-    !drawLayer.get("multipleFeatures") && //@ts-ignore
-    (currFeatures || e.features.length > 1)
+    !drawLayer.get("multipleFeatures") &&
+    (currFeatures || features.length > 1)
   )
     throw new Error("Multiple features detected!");
 
-  //@ts-ignore
-  e.features.forEach((feature) => feature.set("id", feature.ol_uid));
+  features.forEach((feature: Feature) => {
+    const geom = feature.getGeometry();
 
-  //@ts-ignore
-  drawLayer.getSource().addFeatures(e.features);
-  EOxMap.map
-    .getView()
-    .fit(drawLayer.getSource().getExtent(), { duration: 750 });
-
-  const drawendEvt = new CustomEvent("addfeatures", {
-    detail: {
-      originalEvent: e,
-    },
+    if (geom instanceof LineString) {
+      const length = getLength(geom, {
+        radius: 6378137,
+        projection: "EPSG:3857",
+      });
+      feature.set("measure", length);
+    } else if (geom instanceof Polygon) {
+      const area = getArea(geom, { radius: 6378137, projection: "EPSG:3857" });
+      feature.set("measure", area);
+    }
+    const uid = getUid(feature);
+    feature.set("id", uid);
+    feature.setId(uid);
   });
-  EOxMap.dispatchEvent(drawendEvt);
+
+  if (isDraw) {
+    const format = new GeoJSON();
+    const geoJsonObject = format.writeFeatureObject(features[0]);
+    dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
+  } else {
+    drawLayer.getSource().addFeatures(features);
+
+    EOxMap.map
+      .getView()
+      .fit(drawLayer.getSource().getExtent(), { duration: 750 });
+
+    dispatchEvt(EOxMap, "addfeatures", e);
+  }
 }
 
 /**
