@@ -109,8 +109,8 @@ export function addNewFeature(
 }
 
 /**
- * This function reads text from the clipboard and attempts to parse it as GeoJSON, KML, or TopoJSON.
- * If successful, it adds the parsed features to the map.
+ * This function reads text from the clipboard and
+ * attempts to parse it as GeoJSON, KML, or TopoJSON.
  *
  * @param {VectorLayer<VectorSource>} drawLayer
  * @param {EOxMap} EOxMap
@@ -122,31 +122,47 @@ export function pasteFeaturesFromClipboard(
   navigator.clipboard
     .readText()
     .then((text: string) => {
-      try {
-        let features;
-
-        if (isGeoJSON(text))
-          features = new GeoJSON().readFeatures(text, READ_FEATURES_OPTIONS);
-        else if (isKML(text))
-          features = new KML({ extractStyles: false }).readFeatures(
-            text,
-            READ_FEATURES_OPTIONS
-          );
-        else if (isTopoJSON(text))
-          features = new TopoJSON().readFeatures(text, READ_FEATURES_OPTIONS);
-        else {
-          console.error("Unsupported format or invalid data");
-          return;
-        }
-
-        addNewFeature({ features }, drawLayer, EOxMap);
-      } catch (err) {
-        console.error("Error parsing data from clipboard:", err);
-      }
+      parseTextToFeature(text, drawLayer, EOxMap);
     })
     .catch((err: Error) => {
       console.error("Failed to read from clipboard:", err);
     });
+}
+
+/**
+ * This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
+ * If successful, it adds the parsed features to the map.
+ *
+ * @param {string} text
+ * @param {VectorLayer<VectorSource>} drawLayer
+ * @param {EOxMap} EOxMap
+ */
+export function parseTextToFeature(
+  text: string,
+  drawLayer: VectorLayer<VectorSource>,
+  EOxMap: EOxMap
+) {
+  try {
+    let features;
+
+    if (isGeoJSON(text))
+      features = new GeoJSON().readFeatures(text, READ_FEATURES_OPTIONS);
+    else if (isKML(text))
+      features = new KML({ extractStyles: false }).readFeatures(
+        text,
+        READ_FEATURES_OPTIONS
+      );
+    else if (isTopoJSON(text))
+      features = new TopoJSON().readFeatures(text, READ_FEATURES_OPTIONS);
+    else {
+      console.error("Unsupported format or invalid data");
+      return;
+    }
+
+    addNewFeature({ features }, drawLayer, EOxMap);
+  } catch (err) {
+    console.error("Error parsing data from clipboard:", err);
+  }
 }
 
 /**
@@ -178,4 +194,78 @@ export function isTopoJSON(text: string): boolean {
   } catch (e) {
     return false;
   }
+}
+
+/**
+ * Generates events for upload, drag-drop and copy-paste
+ *
+ * @param {VectorLayer<VectorSource>} drawLayer
+ * @param {EOxMap} EOxMap
+ */
+export function generateUploadEvents(
+  drawLayer: VectorLayer<VectorSource>,
+  EOxMap: EOxMap
+) {
+  document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === "v")
+      pasteFeaturesFromClipboard(drawLayer, EOxMap);
+  });
+
+  // Prevent default drag behaviors
+  document.body.addEventListener("drop", preventDefaults, false);
+  document.body.addEventListener("dragstart", preventDefaults, false);
+  document.body.addEventListener("dragover", preventDefaults, false);
+
+  function preventDefaults(e: any) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  ["dragenter", "dragover"].forEach((eventName) => {
+    document.body.addEventListener(eventName, highlight, false);
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    document.body.addEventListener(eventName, unHighlight, false);
+  });
+
+  // Handle dropped files
+  document.body.addEventListener(
+    "drop",
+    (e: DragEvent) => handleDrop(e, drawLayer, EOxMap),
+    false
+  );
+}
+
+function highlight() {
+  document.body.style.opacity = "0.4";
+}
+
+function unHighlight() {
+  document.body.style.opacity = "1";
+}
+
+function handleDrop(
+  e: DragEvent,
+  drawLayer: VectorLayer<VectorSource>,
+  EOxMap: EOxMap
+) {
+  const dt = e.dataTransfer;
+  const files = dt.files;
+
+  // @ts-ignore
+  [...files].forEach((file) => uploadFile(file, drawLayer, EOxMap));
+}
+
+function uploadFile(
+  file: File,
+  drawLayer: VectorLayer<VectorSource>,
+  EOxMap: EOxMap
+) {
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.onloadend = function () {
+    if (typeof reader.result === "string")
+      parseTextToFeature(reader.result, drawLayer, EOxMap);
+  };
 }

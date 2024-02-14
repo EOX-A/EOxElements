@@ -1,11 +1,9 @@
 import Modify from "ol/interaction/Modify";
 import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
-import { GeoJSON, KML, TopoJSON } from "ol/format.js";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
-import { DragAndDrop } from "ol/interaction";
-import { addNewFeature, pasteFeaturesFromClipboard } from "../helpers";
+import { addNewFeature, generateUploadEvents } from "../helpers";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -63,7 +61,6 @@ export function addDraw(
   // identifier to retrieve the interaction
   EOxMap.map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
-
   const modifyInteraction = new Modify({
     source,
   });
@@ -71,21 +68,7 @@ export function addDraw(
   EOxMap.map.addInteraction(modifyInteraction);
   EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
 
-  // Drag and drop upload shape file
-  const dragAndDropInteraction = new DragAndDrop({
-    formatConstructors: [GeoJSON, new KML({ extractStyles: false }), TopoJSON],
-  });
-
-  dragAndDropInteraction.on("addfeatures", (e) =>
-    addNewFeature(e, drawLayer, EOxMap)
-  );
-  EOxMap.map.addInteraction(dragAndDropInteraction);
-  EOxMap.interactions["dragAndDropInteraction"] = dragAndDropInteraction;
-
-  document.addEventListener("keydown", (event) => {
-    if ((event.ctrlKey || event.metaKey) && event.key === "v")
-      pasteFeaturesFromClipboard(drawLayer, EOxMap);
-  });
+  generateUploadEvents(drawLayer, EOxMap);
 
   const removeLayerListener = () => {
     if (!EOxMap.getLayerById(drawLayer.get("id"))) {

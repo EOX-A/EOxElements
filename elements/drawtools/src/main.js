@@ -91,12 +91,6 @@ export class EOxDrawTools extends LitElement {
     this.modify = null;
 
     /**
-     * The current native OpenLayers `modify` interaction
-     * @type import("ol/interaction").DragAndDrop
-     */
-    this.dragAndDrop = null;
-
-    /**
      * Allow adding more than one feature at a time
      */
     this.multipleFeatures = false;

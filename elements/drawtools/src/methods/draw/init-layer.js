@@ -71,10 +71,6 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   EoxDrawTool.modify = /** @type {import("ol/interaction").Modify} */ (
     /** @type {unknown} */ (EoxMap.interactions["drawInteractionmodify"])
   );
-  EoxDrawTool.dragAndDrop =
-    /** @type {import("ol/interaction").DragAndDrop} */ (
-      /** @type {unknown} */ (EoxMap.interactions["dragAndDropInteraction"])
-    );
 
   EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.emitDrawnFeatures());
   EoxMap.addEventListener("addfeatures", (e) =>
