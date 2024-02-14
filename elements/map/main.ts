@@ -21,6 +21,10 @@ import {
   addScrollInteractions,
   removeDefaultScrollInteractions,
 } from "./src/utils";
+import GeoJSON from "ol/format/GeoJSON";
+import { READ_FEATURES_OPTIONS } from "./helpers";
+import Feature from "ol/Feature";
+import { Geometry } from "ol/geom";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -308,6 +312,15 @@ export class EOxMap extends LitElement {
    */
   getLayerById = (layerId: string) => {
     return getLayerById(this, layerId);
+  };
+
+  /**
+   * Parse GeoJSON
+   * @param features
+   */
+  parseFeature = (features: Feature<Geometry>[]) => {
+    const format = new GeoJSON();
+    return format.writeFeaturesObject(features, READ_FEATURES_OPTIONS);
   };
 
   /**

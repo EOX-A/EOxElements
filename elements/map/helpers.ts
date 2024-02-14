@@ -15,7 +15,7 @@ import Feature from "ol/Feature";
 /**
  * Define the read options with proper typing
  */
-const READ_FEATURES_OPTIONS = {
+export const READ_FEATURES_OPTIONS = {
   dataProjection: "EPSG:4326", // Define the source projection
   featureProjection: "EPSG:3857", // Define the target projection for the map
 };
@@ -27,20 +27,17 @@ const READ_FEATURES_OPTIONS = {
  * @param {string} type - the type of the event to dispatch
  * @param {DrawEvent | DragAndDropEvent | { features: any }} e
  * @param {{[p: string]: any}} geojson
- * @param {{[p: string]: any}} totalgeojson
  */
 function dispatchEvt(
   EOxMap: EOxMap,
   type: string,
   e: DrawEvent | DragAndDropEvent | { features: any },
-  geojson: { [p: string]: any },
-  totalgeojson: { [p: string]: any }
+  geojson: { [p: string]: any }
 ) {
   const evt = new CustomEvent(type, {
     detail: {
       originalEvent: e,
       geojson,
-      totalgeojson,
     },
   });
   EOxMap.dispatchEvent(evt);
@@ -100,12 +97,8 @@ export function addNewFeature(
   const geoJsonObject = JSON.parse(
     format.writeFeatures(features, READ_FEATURES_OPTIONS)
   );
-  const totalGeoJsonObject = JSON.parse(
-    format.writeFeatures([...currFeatures, ...features], READ_FEATURES_OPTIONS)
-  );
-  if (isDraw)
-    dispatchEvt(EOxMap, "drawend", e, geoJsonObject, totalGeoJsonObject);
-  dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject, totalGeoJsonObject);
+  if (isDraw) dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
+  dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject);
 }
 
 /**

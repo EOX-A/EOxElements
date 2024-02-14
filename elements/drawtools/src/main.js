@@ -26,7 +26,6 @@ export class EOxDrawTools extends LitElement {
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
       drawnFeatures: { attribute: false, state: true, type: Array },
-      geoJSON: { attribute: false, state: true, type: Object },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
@@ -94,11 +93,6 @@ export class EOxDrawTools extends LitElement {
      * Allow adding more than one feature at a time
      */
     this.multipleFeatures = false;
-
-    /**
-     * Encoded features in geo-json format
-     */
-    this.geoJSON = null;
 
     /**
      * Show list of features
@@ -200,7 +194,8 @@ export class EOxDrawTools extends LitElement {
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
         .multipleFeatures=${this.multipleFeatures}
-        .geoJSON=${JSON.stringify(this.geoJSON || DUMMY_GEO_JSON)}
+        .geoJSON=${this.#eoxMap?.parseFeature(this.drawnFeatures) ||
+        DUMMY_GEO_JSON}
       ></eox-drawtools-controller>
 
       <!-- List Component -->

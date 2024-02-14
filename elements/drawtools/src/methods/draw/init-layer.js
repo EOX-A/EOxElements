@@ -73,9 +73,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   );
 
   EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.emitDrawnFeatures());
-  EoxMap.addEventListener("addfeatures", (e) =>
-    onDrawEndMethod(EoxDrawTool, e.detail.totalgeojson)
-  );
+  EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
 
   return { EoxMap, OlMap };
 };
