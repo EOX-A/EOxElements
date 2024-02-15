@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { repeat } from "lit/directives/repeat.js";
-import { getLayerType } from "../helpers";
+import { getLayerType, hideLayersBasedOnProperties } from "../helpers";
 import "./layer";
 import "./layer-group";
 import { firstUpdatedMethod, updateMethod } from "../methods/layer-list";
@@ -113,12 +113,7 @@ export class EOxLayerControlLayerList extends LitElement {
    */
   render() {
     // Filter and reverse layers based on control properties
-    const layers = this.layers
-      ?.getArray()
-      ?.filter(
-        (l) => !l.get("layerControlHide") && !l.get("layerControlOptional")
-      )
-      .reverse();
+    const layers = hideLayersBasedOnProperties(this.layers).reverse();
 
     return html`
       <style>

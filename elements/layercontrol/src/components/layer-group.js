@@ -1,5 +1,6 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
+import { hideLayersBasedOnProperties } from "../helpers";
 import "./layer";
 import "./layer-list";
 
@@ -99,6 +100,9 @@ export class EOxLayerControlLayerGroup extends LitElement {
   render() {
     // Check if the group should be open based on a specific control property
     const groupOpen = Boolean(this.group?.get("layerControlExpand"));
+    const numberOfChildLayers = hideLayersBasedOnProperties(
+      this.group.getLayers()
+    )?.length;
 
     return html`
       <style>
@@ -109,7 +113,10 @@ export class EOxLayerControlLayerGroup extends LitElement {
         this.group,
         () => html`
           <!-- Render the details element with the layer control -->
-          <details open=${groupOpen}>
+          <details
+            open=${groupOpen || nothing}
+            data-children-length=${numberOfChildLayers}
+          >
             <summary>
               <!-- Render the layer control within the summary -->
               <eox-layercontrol-layer
@@ -163,6 +170,9 @@ export class EOxLayerControlLayerGroup extends LitElement {
     }
     details[open] > summary:before {
       transform: rotate(90deg);
+    }
+    details[data-children-length="0"] summary::before {
+      display: none;
     }
   `;
 }
