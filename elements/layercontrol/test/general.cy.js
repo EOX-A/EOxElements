@@ -32,7 +32,7 @@ describe("LayerControl", () => {
   it("hides layers correctly", () => hideLayers());
 
   // Test if groups with no layers are shown as not expandable
-  it.only("shows groups with no layers as not expandable", () => emptyGroup());
+  it("shows groups with no layers as not expandable", () => emptyGroup());
 
   // Test to verify the rendering of optional layer selection
   it("renders the optional layer selection", () => renderOptionalLayer());
