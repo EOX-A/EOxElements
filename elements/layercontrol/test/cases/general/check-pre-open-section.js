@@ -6,7 +6,10 @@ const checkPreOpenSection = () => {
 
     // Setting layers: one visible and another with layerControlExpand: true
     mockMap.setLayers([
-      { visible: true },
+      {
+        properties: { layerControlExpand: undefined },
+        layers: [{ visible: true }],
+      },
       {
         properties: { layerControlExpand: true },
         layers: [{ visible: true }],
@@ -19,7 +22,7 @@ const checkPreOpenSection = () => {
     .shadow()
     .within(() => {
       // Checking if a details tag (any open section) exists
-      cy.get("details[open]").should("exist");
+      cy.get("details[open]").should("have.length", 1);
     });
 };
 

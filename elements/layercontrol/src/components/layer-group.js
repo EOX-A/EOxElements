@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { hideLayersBasedOnProperties } from "../helpers";
 import "./layer";
@@ -114,7 +114,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
         () => html`
           <!-- Render the details element with the layer control -->
           <details
-            open=${groupOpen}
+            open=${groupOpen || nothing}
             data-children-length=${numberOfChildLayers}
           >
             <summary>
