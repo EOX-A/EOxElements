@@ -3,7 +3,7 @@ import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
 import { Vector as VectorLayer } from "ol/layer";
 import { Vector as VectorSource } from "ol/source";
-import { addNewFeature, generateUploadEvents } from "../helpers";
+import { addNewFeature } from "../helpers";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -67,8 +67,6 @@ export function addDraw(
   modifyInteraction.setActive(options_.modify);
   EOxMap.map.addInteraction(modifyInteraction);
   EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
-
-  generateUploadEvents(drawLayer, EOxMap);
 
   const removeLayerListener = () => {
     if (!EOxMap.getLayerById(drawLayer.get("id"))) {

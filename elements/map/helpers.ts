@@ -47,22 +47,22 @@ function dispatchEvt(
  * Drag and drop upload shape file's event
  *
  * @param {DrawEvent | DragAndDropEvent} e
- * @param {VectorLayer<VectorSource>} drawLayer
+ * @param {VectorLayer<VectorSource>} vectorLayer
  * @param {EOxMap} EOxMap
  * @param {boolean} isDraw
  */
 export function addNewFeature(
   e: DrawEvent | DragAndDropEvent | { features: any },
-  drawLayer: VectorLayer<VectorSource>,
+  vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap,
   isDraw?: boolean
 ) {
   // @ts-ignore
   const features = isDraw ? [e.feature] : e.features;
 
-  const currFeatures = drawLayer.getSource().getFeatures();
+  const currFeatures = vectorLayer.getSource().getFeatures();
   if (
-    !drawLayer.get("multipleFeatures") &&
+    !vectorLayer.get("multipleFeatures") &&
     (currFeatures.length || features.length > 1)
   )
     throw new Error("Multiple features detected!");
@@ -86,11 +86,11 @@ export function addNewFeature(
   });
 
   if (!isDraw) {
-    drawLayer.getSource().addFeatures(features);
+    vectorLayer.getSource().addFeatures(features);
 
     EOxMap.map
       .getView()
-      .fit(drawLayer.getSource().getExtent(), { duration: 750 });
+      .fit(vectorLayer.getSource().getExtent(), { duration: 750 });
   }
 
   const format = new GeoJSON();
@@ -102,37 +102,16 @@ export function addNewFeature(
 }
 
 /**
- * This function reads text from the clipboard and
- * attempts to parse it as GeoJSON, KML, or TopoJSON.
- *
- * @param {VectorLayer<VectorSource>} drawLayer
- * @param {EOxMap} EOxMap
- */
-export function pasteFeaturesFromClipboard(
-  drawLayer: VectorLayer<VectorSource>,
-  EOxMap: EOxMap
-): void {
-  navigator.clipboard
-    .readText()
-    .then((text: string) => {
-      parseTextToFeature(text, drawLayer, EOxMap);
-    })
-    .catch((err: Error) => {
-      console.error("Failed to read from clipboard:", err);
-    });
-}
-
-/**
  * This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
  * If successful, it adds the parsed features to the map.
  *
  * @param {string} text
- * @param {VectorLayer<VectorSource>} drawLayer
+ * @param {VectorLayer<VectorSource>} vectorLayer
  * @param {EOxMap} EOxMap
  */
-export function parseTextToFeature(
+export function parseText(
   text: string,
-  drawLayer: VectorLayer<VectorSource>,
+  vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap
 ) {
   try {
@@ -152,7 +131,7 @@ export function parseTextToFeature(
       return;
     }
 
-    addNewFeature({ features }, drawLayer, EOxMap);
+    addNewFeature({ features }, vectorLayer, EOxMap);
   } catch (err) {
     console.error("Error parsing data from clipboard:", err);
   }
@@ -187,78 +166,4 @@ export function isTopoJSON(text: string): boolean {
   } catch (e) {
     return false;
   }
-}
-
-/**
- * Generates events for upload, drag-drop and copy-paste
- *
- * @param {VectorLayer<VectorSource>} drawLayer
- * @param {EOxMap} EOxMap
- */
-export function generateUploadEvents(
-  drawLayer: VectorLayer<VectorSource>,
-  EOxMap: EOxMap
-) {
-  document.addEventListener("keydown", (event) => {
-    if ((event.ctrlKey || event.metaKey) && event.key === "v")
-      pasteFeaturesFromClipboard(drawLayer, EOxMap);
-  });
-
-  // Prevent default drag behaviors
-  document.body.addEventListener("drop", preventDefaults, false);
-  document.body.addEventListener("dragstart", preventDefaults, false);
-  document.body.addEventListener("dragover", preventDefaults, false);
-
-  function preventDefaults(e: any) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
-  ["dragenter", "dragover"].forEach((eventName) => {
-    document.body.addEventListener(eventName, highlight, false);
-  });
-
-  ["dragleave", "drop"].forEach((eventName) => {
-    document.body.addEventListener(eventName, unHighlight, false);
-  });
-
-  // Handle dropped files
-  document.body.addEventListener(
-    "drop",
-    (e: DragEvent) => handleDrop(e, drawLayer, EOxMap),
-    false
-  );
-}
-
-function highlight() {
-  document.body.style.opacity = "0.4";
-}
-
-function unHighlight() {
-  document.body.style.opacity = "1";
-}
-
-function handleDrop(
-  e: DragEvent,
-  drawLayer: VectorLayer<VectorSource>,
-  EOxMap: EOxMap
-) {
-  const dt = e.dataTransfer;
-  const files = dt.files;
-
-  // @ts-ignore
-  [...files].forEach((file) => uploadFile(file, drawLayer, EOxMap));
-}
-
-function uploadFile(
-  file: File,
-  drawLayer: VectorLayer<VectorSource>,
-  EOxMap: EOxMap
-) {
-  const reader = new FileReader();
-  reader.readAsText(file);
-  reader.onloadend = function () {
-    if (typeof reader.result === "string")
-      parseTextToFeature(reader.result, drawLayer, EOxMap);
-  };
 }

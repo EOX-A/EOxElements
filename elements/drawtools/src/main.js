@@ -10,6 +10,7 @@ import {
 } from "./methods/draw";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
+import { generateUploadEvents } from "./helpers/generate-upload-events.js";
 
 /**
  * Manage drawn features on a map
@@ -185,6 +186,7 @@ export class EOxDrawTools extends LitElement {
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
+    generateUploadEvents(this.drawLayer, this.#eoxMap);
     this.updateGeoJSON();
     this.requestUpdate();
   }
