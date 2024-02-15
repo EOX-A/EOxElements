@@ -10,6 +10,7 @@ import {
   MultiPolygonWithListStory,
   UnstyledStory,
   CSSVariableOverrideStory,
+  ImportFeaturesWithEditorStory,
 } from "./index";
 
 export default {
@@ -48,6 +49,8 @@ export const DrawType = DrawTypeStory;
  * a list of the drawn features will be populated.
  */
 export const MultiPolygonWithList = MultiPolygonWithListStory;
+
+export const ImportFeaturesWithEditor = ImportFeaturesWithEditorStory;
 
 /**
  * Override css variable directly using styles.

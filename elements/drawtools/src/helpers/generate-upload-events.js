@@ -6,14 +6,15 @@
  */
 export function generateUploadEvents(vectorLayer, EOxMap) {
   document.addEventListener("keydown", (event) => {
+    console.log(event);
     if ((event.ctrlKey || event.metaKey) && event.key === "v")
       pasteFeaturesFromClipboard(vectorLayer, EOxMap);
   });
 
   // Prevent default drag behaviors
-  document.body.addEventListener("drop", preventDefaults, false);
-  document.body.addEventListener("dragstart", preventDefaults, false);
-  document.body.addEventListener("dragover", preventDefaults, false);
+  EOxMap.addEventListener("drop", preventDefaults, false);
+  EOxMap.addEventListener("dragstart", preventDefaults, false);
+  EOxMap.addEventListener("dragover", preventDefaults, false);
 
   function preventDefaults(e) {
     e.preventDefault();
@@ -21,15 +22,15 @@ export function generateUploadEvents(vectorLayer, EOxMap) {
   }
 
   ["dragenter", "dragover"].forEach((eventName) => {
-    document.body.addEventListener(eventName, highlight, false);
+    EOxMap.addEventListener(eventName, highlight, false);
   });
 
   ["dragleave", "drop"].forEach((eventName) => {
-    document.body.addEventListener(eventName, unHighlight, false);
+    EOxMap.addEventListener(eventName, unHighlight, false);
   });
 
   // Handle dropped files
-  document.body.addEventListener(
+  EOxMap.addEventListener(
     "drop",
     (e) => handleDrop(e, vectorLayer, EOxMap),
     false
@@ -54,12 +55,12 @@ export function pasteFeaturesFromClipboard(vectorLayer, EOxMap) {
     });
 }
 
-function highlight() {
-  document.body.style.opacity = "0.4";
+function highlight(e) {
+  e.srcElement.style.opacity = "0.4";
 }
 
-function unHighlight() {
-  document.body.style.opacity = "1";
+function unHighlight(e) {
+  e.srcElement.style.opacity = "1";
 }
 
 function handleDrop(e, vectorLayer, EOxMap) {

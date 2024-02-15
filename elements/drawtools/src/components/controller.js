@@ -3,6 +3,7 @@ import { updateButtonStatesMethod } from "../methods/controller";
 import buttonStyle from "../../../../utils/styles/dist/button.style";
 import inputStyle from "../../../../utils/styles/dist/input.style";
 import { copyTextToClipboard } from "../helpers/index.js";
+import { when } from "lit/directives/when.js";
 
 /**
  * Controller component for drawing features
@@ -16,6 +17,8 @@ export class EOxDrawToolsController extends LitElement {
     drawnFeatures: { attribute: false, state: true, type: Array },
     currentlyDrawing: { attribute: false, state: true, type: Boolean },
     drawFunc: { attribute: false, type: Object },
+    importFeatures: { attribute: "import-features", type: Boolean },
+    showEditor: { attribute: "show-editor", type: Boolean },
     unstyled: { type: Boolean },
   };
 
@@ -44,6 +47,16 @@ export class EOxDrawToolsController extends LitElement {
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
+
+    /**
+     * Allow import features using drag-drop and upload button
+     */
+    this.importFeatures = false;
+
+    /**
+     * Show geo-json editor for draw tool
+     */
+    this.showEditor = false;
 
     /**
      * Whether the user is currently in the process of drawing or not
@@ -113,18 +126,20 @@ export class EOxDrawToolsController extends LitElement {
       </div>
 
       <!-- Geo JSON Wrapper -->
-      <div class="json-wrapper">
-        <textarea 
-          disabled
-          .value=${this.geoJSON}
-        ></textarea>
-        <button 
-          class="icon-copy" 
-          @click=${() => copyTextToClipboard(this.geoJSON)}
-        >
-          ${this.unstyled ? "copy" : nothing}
-        </button>
-      </div>
+      ${when(
+        this.showEditor,
+        () => html`
+          <div class="json-wrapper">
+            <textarea .value=${this.geoJSON}></textarea>
+            <button
+              class="icon-copy"
+              @click=${() => copyTextToClipboard(this.geoJSON)}
+            >
+              ${this.unstyled ? "copy" : nothing}
+            </button>
+          </div>
+        `
+      )}
     `;
   }
 }

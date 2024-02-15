@@ -29,6 +29,8 @@ export class EOxDrawTools extends LitElement {
       drawnFeatures: { attribute: false, state: true, type: Array },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
+      importFeatures: { attribute: "import-features", type: Boolean },
+      showEditor: { attribute: "show-editor", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
       noShadow: { type: Boolean },
       type: { type: String },
@@ -99,6 +101,16 @@ export class EOxDrawTools extends LitElement {
      * Allow adding more than one feature at a time
      */
     this.multipleFeatures = false;
+
+    /**
+     * Allow import features using drag-drop and upload button
+     */
+    this.importFeatures = false;
+
+    /**
+     * Show geo-json editor for draw tool
+     */
+    this.showEditor = false;
 
     /**
      * Show list of features
@@ -186,7 +198,8 @@ export class EOxDrawTools extends LitElement {
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
-    generateUploadEvents(this.drawLayer, this.#eoxMap);
+    console.log(this.querySelector);
+    if (this.importFeatures) generateUploadEvents(this.drawLayer, this.#eoxMap);
     this.updateGeoJSON();
     this.requestUpdate();
   }
@@ -210,6 +223,8 @@ export class EOxDrawTools extends LitElement {
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
         .multipleFeatures=${this.multipleFeatures}
+        .importFeature=${this.importFeatures}
+        .showEditor=${this.showEditor}
         .geoJSON=${this.#geoJSON}
       ></eox-drawtools-controller>
 
