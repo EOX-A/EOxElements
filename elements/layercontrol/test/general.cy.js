@@ -7,6 +7,7 @@ import {
   checkPreOpenSection,
   disableDrag,
   hideLayers,
+  emptyGroup,
   renderOptionalLayer,
   showCorrectLayerTitle,
 } from "./cases/general";
@@ -29,6 +30,9 @@ describe("LayerControl", () => {
 
   // Test to validate the hiding of layers
   it("hides layers correctly", () => hideLayers());
+
+  // Test if groups with no layers are shown as not expandable
+  it.only("shows groups with no layers as not expandable", () => emptyGroup());
 
   // Test to verify the rendering of optional layer selection
   it("renders the optional layer selection", () => renderOptionalLayer());

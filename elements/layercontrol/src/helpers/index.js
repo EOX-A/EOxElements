@@ -18,3 +18,4 @@ export {
   removeButton,
   sortButton,
 } from "./layer-tools";
+export { hideLayersBasedOnProperties } from "./hide-layers-based-on-property";
