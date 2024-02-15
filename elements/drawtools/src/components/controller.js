@@ -2,6 +2,7 @@ import { LitElement, html, nothing } from "lit";
 import { updateButtonStatesMethod } from "../methods/controller";
 import buttonStyle from "../../../../utils/styles/dist/button.style";
 import inputStyle from "../../../../utils/styles/dist/input.style";
+import { copyTextToClipboard } from "../helpers/index.js";
 
 /**
  * Controller component for drawing features
@@ -115,8 +116,14 @@ export class EOxDrawToolsController extends LitElement {
       <div class="json-wrapper">
         <textarea 
           disabled
-          .value=${JSON.stringify(this.geoJSON, undefined, 2)}
+          .value=${this.geoJSON}
         ></textarea>
+        <button 
+          class="icon-copy" 
+          @click=${() => copyTextToClipboard(this.geoJSON)}
+        >
+          ${this.unstyled ? "copy" : nothing}
+        </button>
       </div>
     `;
   }

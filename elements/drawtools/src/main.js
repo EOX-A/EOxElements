@@ -45,6 +45,11 @@ export class EOxDrawTools extends LitElement {
    */
   #olMap;
 
+  /**
+   * @type string
+   */
+  #geoJSON;
+
   constructor() {
     super();
 
@@ -140,6 +145,14 @@ export class EOxDrawTools extends LitElement {
     this.emitDrawnFeatures();
   }
 
+  updateGeoJSON() {
+    this.#geoJSON = JSON.stringify(
+      this.#eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
+      undefined,
+      2
+    );
+  }
+
   /**
    * Triggers different events when the drawing of a shape is completed.
    */
@@ -172,6 +185,7 @@ export class EOxDrawTools extends LitElement {
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
+    this.updateGeoJSON();
     this.requestUpdate();
   }
 
@@ -194,8 +208,7 @@ export class EOxDrawTools extends LitElement {
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
         .multipleFeatures=${this.multipleFeatures}
-        .geoJSON=${this.#eoxMap?.parseFeature(this.drawnFeatures) ||
-        DUMMY_GEO_JSON}
+        .geoJSON=${this.#geoJSON}
       ></eox-drawtools-controller>
 
       <!-- List Component -->
@@ -208,7 +221,10 @@ export class EOxDrawTools extends LitElement {
             .drawnFeatures=${this.drawnFeatures}
             .modify=${this.modify}
             .unstyled=${this.unstyled}
-            @changed=${() => this.requestUpdate()}
+            @changed=${() => {
+              this.updateGeoJSON();
+              this.requestUpdate();
+            }}
           ></eox-drawtools-list>`
         : nothing}
     `;

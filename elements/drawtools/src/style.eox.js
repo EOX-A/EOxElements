@@ -12,8 +12,25 @@ export const styleEOX = `
     margin: 0.4rem 0rem;
     padding: 0.75rem;
     background: var(--secondary-color-hover);
+    position: relative;
   }
   .json-wrapper textarea {
     height: 200px;
   }
+  .icon-copy {
+    position: absolute;
+    bottom: 26px;
+    right: 26px;
+    border-radius: 4px;
+    height: 26px;
+    padding: 4px 6px;
+  }
+  .icon-copy:before {
+    width: 14px;
+    min-width: 14px;
+    height: 14px;
+    display: flex margin-right: 6px;
+    color: white;
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Econtent-copy%3C/title%3E%3Cpath d='M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z' fill='white' /%3E%3C/svg%3E")
+   }
 `;
