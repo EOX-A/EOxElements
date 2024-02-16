@@ -72,7 +72,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     /** @type {unknown} */ (EoxMap.interactions["drawInteractionmodify"])
   );
 
-  EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.emitDrawnFeatures());
+  EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.onModifyEnd());
   EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
 
   return { EoxMap, OlMap };

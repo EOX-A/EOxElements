@@ -333,15 +333,15 @@ export class EOxMap extends LitElement {
    *
    * @param text - The string representation of the features to be parsed.
    * @param vectorLayer - The vector layer to which the parsed features will be added.
-   * @param replace - A boolean flag indicating whether to replace the existing features in the vector layer.
+   * @param replaceFeatures - A boolean flag indicating whether to replace the existing features in the vector layer.
    */
 
   parseTextToFeature = (
     text: string,
     vectorLayer: VectorLayer<VectorSource>,
-    replace: boolean
+    replaceFeatures: boolean = false
   ) => {
-    parseText(text, vectorLayer, this, replace);
+    parseText(text, vectorLayer, this, replaceFeatures);
   };
 
   /**

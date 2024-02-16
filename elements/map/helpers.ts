@@ -56,20 +56,20 @@ function dispatchEvt(
  * @param vectorLayer - The vector layer to which features will be added.
  * @param EOxMap - The EOxMap instance for dispatching custom events and adjusting the view.
  * @param isDraw - Optional. If true, indicates the features come from a drawing event.
- * @param replace - Optional. If true, existing features in the layer are cleared before adding new ones.
+ * @param replaceFeatures - Optional. If true, existing features in the layer are cleared before adding new ones.
  */
 export function addNewFeature(
   e: DrawEvent | DragAndDropEvent | { features: any },
   vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap,
-  isDraw?: boolean,
-  replace?: boolean
+  isDraw: boolean = false,
+  replaceFeatures: boolean = false
 ) {
   // Determine the source of the features based on the event type and isDraw flag.
   // @ts-ignore
   const features = isDraw ? [e.feature] : e.features;
 
-  if (replace) vectorLayer.getSource().clear(); // Clear the layer's existing features if the replace flag is true.
+  if (replaceFeatures) vectorLayer.getSource().clear(); // Clear the layer's existing features if the replace flag is true.
 
   // Check for multiple features when not permitted by the layer configuration.
   const currFeatures = vectorLayer.getSource().getFeatures();
@@ -102,7 +102,7 @@ export function addNewFeature(
   });
 
   // Add the new features to the layer and fit the map view to their extent unless it's a draw event.
-  if (!isDraw) {
+  if (!isDraw && features.length) {
     vectorLayer.getSource().addFeatures(features);
 
     EOxMap.map
@@ -117,7 +117,8 @@ export function addNewFeature(
   );
 
   // Dispatch relevant events based on operation type.
-  if (isDraw || replace) dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
+  if (isDraw || replaceFeatures)
+    dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
   dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject);
 }
 
@@ -128,13 +129,13 @@ export function addNewFeature(
  * @param text - The string containing the geographic data to be parsed.
  * @param vectorLayer - The vector layer to which the parsed features will be added.
  * @param EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
- * @param replace - Optional boolean flag indicating whether to replace the existing features with the new ones.
+ * @param replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
  */
 export function parseText(
   text: string,
   vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap,
-  replace: boolean = false
+  replaceFeatures: boolean = false
 ): void {
   try {
     // Attempt to parse the input text in various formats
@@ -148,7 +149,13 @@ export function parseText(
     const features = formatReader.readFeatures(text, READ_FEATURES_OPTIONS);
 
     // Utilize the previously defined function to add these features to the vector layer
-    addNewFeature({ features: features }, vectorLayer, EOxMap, false, replace);
+    addNewFeature(
+      { features: features },
+      vectorLayer,
+      EOxMap,
+      false,
+      replaceFeatures
+    );
   } catch (err) {
     console.error("Error parsing data:", err);
   }

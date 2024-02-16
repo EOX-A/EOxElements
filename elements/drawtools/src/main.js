@@ -155,14 +155,20 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * @param {string} text
-   * @param {boolean} replace
-   * */
-  handleFeatureChange(text, replace = false) {
-    this.#eoxMap.parseTextToFeature(text, this.drawLayer, replace);
+   * @param {string} text - The string representation of the features to be parsed.
+   * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
+   */
+  handleFeatureChange(text, replaceFeatures = false) {
+    this.#eoxMap.parseTextToFeature(
+      text || JSON.stringify(DUMMY_GEO_JSON),
+      this.drawLayer,
+      replaceFeatures
+    );
   }
 
-  /** @param {DragEvent | Event} evt */
+  /**
+   * @param {DragEvent | Event} evt - The event object from the file input interaction.
+   */
   handleFilesChange(evt) {
     handleFiles(evt, this);
   }
@@ -174,6 +180,9 @@ export class EOxDrawTools extends LitElement {
     this.emitDrawnFeatures();
   }
 
+  /**
+   * Update #geoJSON with stringify feature.
+   */
   updateGeoJSON() {
     this.#geoJSON = JSON.stringify(
       this.#eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
@@ -214,7 +223,9 @@ export class EOxDrawTools extends LitElement {
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
+
     if (this.importFeatures) initMapDragDropImport(this, this.#eoxMap);
+
     this.updateGeoJSON();
     this.requestUpdate();
   }
