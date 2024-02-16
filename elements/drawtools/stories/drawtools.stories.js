@@ -50,6 +50,11 @@ export const DrawType = DrawTypeStory;
  */
 export const MultiPolygonWithList = MultiPolygonWithListStory;
 
+/**
+ * By setting the `show-editor` attribute or `import-features` property to `true`,
+ * generates an editor to edit features and allow users to drag-drop/upload/paste shape files in
+ * - GeoJSON, TopoJSON and KML format.
+ */
 export const ImportFeaturesWithEditor = ImportFeaturesWithEditorStory;
 
 /**
