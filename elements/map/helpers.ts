@@ -50,16 +50,19 @@ function dispatchEvt(
  * @param {VectorLayer<VectorSource>} vectorLayer
  * @param {EOxMap} EOxMap
  * @param {boolean} isDraw
+ * @param {boolean} replace
  */
 export function addNewFeature(
   e: DrawEvent | DragAndDropEvent | { features: any },
   vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap,
-  isDraw?: boolean
+  isDraw?: boolean,
+  replace?: boolean
 ) {
   // @ts-ignore
   const features = isDraw ? [e.feature] : e.features;
 
+  if (replace) vectorLayer.getSource().clear();
   const currFeatures = vectorLayer.getSource().getFeatures();
   if (
     !vectorLayer.get("multipleFeatures") &&
@@ -97,7 +100,7 @@ export function addNewFeature(
   const geoJsonObject = JSON.parse(
     format.writeFeatures(features, READ_FEATURES_OPTIONS)
   );
-  if (isDraw) dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
+  if (isDraw || replace) dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
   dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject);
 }
 
@@ -108,11 +111,13 @@ export function addNewFeature(
  * @param {string} text
  * @param {VectorLayer<VectorSource>} vectorLayer
  * @param {EOxMap} EOxMap
+ * @param {boolean} replace
  */
 export function parseText(
   text: string,
   vectorLayer: VectorLayer<VectorSource>,
-  EOxMap: EOxMap
+  EOxMap: EOxMap,
+  replace?: boolean
 ) {
   try {
     let features;
@@ -131,7 +136,7 @@ export function parseText(
       return;
     }
 
-    addNewFeature({ features }, vectorLayer, EOxMap);
+    addNewFeature({ features }, vectorLayer, EOxMap, false, replace);
   } catch (err) {
     console.error("Error parsing data from clipboard:", err);
   }

@@ -10,7 +10,10 @@ import {
 } from "./methods/draw";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
-import { generateUploadEvents } from "./helpers/generate-upload-events.js";
+import {
+  generateUploadEvents,
+  handleFiles,
+} from "./helpers/generate-upload-events.js";
 
 /**
  * Manage drawn features on a map
@@ -152,6 +155,19 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
+   * @param {string} text
+   * @param {boolean} replace
+   * */
+  handleFeatureChange(text, replace = false) {
+    this.#eoxMap.parseTextToFeature(text, this.drawLayer, replace);
+  }
+
+  /** @param {{ target: { files: []; }; }} evt */
+  handleFilesChange(evt) {
+    handleFiles(evt, this);
+  }
+
+  /**
    * @event onModifyEnd triggered when the modification of a shape is completed.
    */
   onModifyEnd() {
@@ -198,8 +214,7 @@ export class EOxDrawTools extends LitElement {
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
-    console.log(this.querySelector);
-    if (this.importFeatures) generateUploadEvents(this.drawLayer, this.#eoxMap);
+    if (this.importFeatures) generateUploadEvents(this, this.#eoxMap);
     this.updateGeoJSON();
     this.requestUpdate();
   }
@@ -218,12 +233,16 @@ export class EOxDrawTools extends LitElement {
         .drawFunc=${{
           start: () => this.handleStartDrawing(),
           discard: () => this.handleDiscardDrawing(),
+          editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
+            this.handleFeatureChange(evt.target.value, true),
+          import: (/** @type {{ target: { files: []; }; }} */ evt) =>
+            this.handleFilesChange(evt),
         }}
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
         .multipleFeatures=${this.multipleFeatures}
-        .importFeature=${this.importFeatures}
+        .importFeatures=${this.importFeatures}
         .showEditor=${this.showEditor}
         .geoJSON=${this.#geoJSON}
       ></eox-drawtools-controller>

@@ -100,29 +100,49 @@ export class EOxDrawToolsController extends LitElement {
         ${!this.unstyled && buttonStyle}
         ${!this.unstyled && inputStyle}
       </style>
-      <div>
+      <div class="wrap-btn">
         <slot></slot>
+        <div>
+          <!-- Draw Button -->
+          <button
+            data-cy="drawBtn"
+            class="polygon icon"
+            ?disabled="${this.#drawDisabled || nothing}"
+            @click="${() => this.drawFunc.start()}"
+          >
+            ${drawLabel}
+          </button>
 
-        <!-- Draw Button -->
-        <button
-          data-cy="drawBtn"
-          class="polygon icon"
-          ?disabled="${this.#drawDisabled || nothing}"
-          @click="${() => this.drawFunc.start()}"
-        >
-          ${drawLabel}
-        </button>
+          <!-- Discard Button -->
+          <button
+            data-cy="discardBtn"
+            class="discard icon"
+            ?disabled="${this.#discardDisabled || nothing}"
+            @click="${() => this.drawFunc.discard()}"
+          >
+            discard
+          </button>
+        </div>
 
         <!-- Discard Button -->
-        <button
-          data-cy="discardBtn"
-          class="discard icon"
-          ?disabled="${this.#discardDisabled || nothing}"
-          @click="${() => this.drawFunc.discard()}"
-        >
-          discard
-        </button>
-      </div>
+        ${when(
+          this.importFeatures,
+          () => html`
+            <input
+              type="file"
+              id="import-file"
+              style="display: none;"
+              @change="${this.drawFunc.import}"
+            />
+            <button
+              data-cy="importBtn"
+              class="import icon"
+              @click=${() => this.querySelector("#import-file").click()}
+            >
+              import
+            </button>
+          `
+        )}
       </div>
 
       <!-- Geo JSON Wrapper -->
@@ -130,7 +150,11 @@ export class EOxDrawToolsController extends LitElement {
         this.showEditor,
         () => html`
           <div class="json-wrapper">
-            <textarea .value=${this.geoJSON}></textarea>
+            <textarea
+              @drop=${this.drawFunc.import}
+              @input=${this.drawFunc.editor}
+              .value=${this.geoJSON}
+            ></textarea>
             <button
               class="icon-copy"
               @click=${() => copyTextToClipboard(this.geoJSON)}
