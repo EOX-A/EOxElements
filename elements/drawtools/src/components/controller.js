@@ -19,6 +19,7 @@ export class EOxDrawToolsController extends LitElement {
     drawFunc: { attribute: false, type: Object },
     importFeatures: { attribute: "import-features", type: Boolean },
     showEditor: { attribute: "show-editor", type: Boolean },
+    geoJSON: { attribute: "geo-json", type: String },
     unstyled: { type: Boolean },
   };
 
@@ -50,11 +51,13 @@ export class EOxDrawToolsController extends LitElement {
 
     /**
      * Allow import features using drag-drop and upload button
+     * @type Boolean
      */
     this.importFeatures = false;
 
     /**
      * Show geo-json editor for draw tool
+     * @type Boolean
      */
     this.showEditor = false;
 
@@ -67,6 +70,12 @@ export class EOxDrawToolsController extends LitElement {
      * List of draw function object like start, discard etc.
      */
     this.drawFunc = null;
+
+    /**
+     * Parsed and Stringify Geo JSON
+     * @type String
+     */
+    this.geoJSON = "";
 
     /**
      * Render the element without additional styles
@@ -124,16 +133,19 @@ export class EOxDrawToolsController extends LitElement {
           </button>
         </div>
 
-        <!-- Discard Button -->
+        <!-- Import Button -->
         ${when(
           this.importFeatures,
           () => html`
+            <!-- Import Input Field : Hidden -->
             <input
               type="file"
               id="import-file"
               style="display: none;"
-              @change="${this.drawFunc.import}"
+              @change=${this.drawFunc.import}
             />
+
+            <!-- Main Import Button -->
             <button
               data-cy="importBtn"
               class="import icon"
@@ -150,11 +162,14 @@ export class EOxDrawToolsController extends LitElement {
         this.showEditor,
         () => html`
           <div class="json-wrapper">
+            <!-- Geo JSON Editor -->
             <textarea
               @drop=${this.drawFunc.import}
               @input=${this.drawFunc.editor}
               .value=${this.geoJSON}
             ></textarea>
+
+            <!-- Geo JSON Copy Button -->
             <button
               class="icon-copy"
               @click=${() => copyTextToClipboard(this.geoJSON)}
