@@ -317,13 +317,24 @@ export class EOxMap extends LitElement {
   };
 
   /**
-   * Parse GeoJSON
-   * @param features
+   * Converts an array of OpenLayers Feature objects into a GeoJSON object.
+   * This function utilizes the OpenLayers GeoJSON format writer to serialize
+   *
+   * @param features - The array of features to be serialized.
+   * @returns The GeoJSON representation of the input features.
    */
   parseFeature = (features: Feature<Geometry>[]) => {
     const format = new GeoJSON();
     return format.writeFeaturesObject(features, READ_FEATURES_OPTIONS);
   };
+
+  /**
+   * Parses a text representation of geographic features and adds them to a vector layer.
+   *
+   * @param text - The string representation of the features to be parsed.
+   * @param vectorLayer - The vector layer to which the parsed features will be added.
+   * @param replace - A boolean flag indicating whether to replace the existing features in the vector layer.
+   */
 
   parseTextToFeature = (
     text: string,

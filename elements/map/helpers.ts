@@ -13,44 +13,50 @@ import { DragAndDropEvent } from "ol/interaction/DragAndDrop";
 import Feature from "ol/Feature";
 
 /**
- * Define the read options with proper typing
+ * Specifies the options for reading features with defined source and target projections.
+ * `dataProjection` specifies the projection of the input data.
+ * `featureProjection` specifies the projection that features should be transformed to.
  */
-export const READ_FEATURES_OPTIONS = {
+export const READ_FEATURES_OPTIONS: {
+  dataProjection: string;
+  featureProjection: string;
+} = {
   dataProjection: "EPSG:4326", // Define the source projection
   featureProjection: "EPSG:3857", // Define the target projection for the map
 };
 
 /**
- * Dispatches a custom event with the given type and optional eventInitDict.
+ * Dispatches a custom event on the provided EOxMap instance with specified details.
  *
- * @param {EOxMap} EOxMap - the map instance on which to dispatch the event
- * @param {string} type - the type of the event to dispatch
- * @param {DrawEvent | DragAndDropEvent | { features: any }} e
- * @param {{[p: string]: any}} geojson
+ * @param EOxMap - The EOxMap instance on which the custom event will be dispatched.
+ * @param type - A string specifying the type of the event to be dispatched.
+ * @param e - An event object which can be of type DrawEvent, DragAndDropEvent, or an object with a features property.
+ * @param geoJSON - An object representing GeoJSON data associated with the event.
  */
 function dispatchEvt(
   EOxMap: EOxMap,
   type: string,
   e: DrawEvent | DragAndDropEvent | { features: any },
-  geojson: { [p: string]: any }
+  geoJSON: { [p: string]: any }
 ) {
   const evt = new CustomEvent(type, {
     detail: {
       originalEvent: e,
-      geojson,
+      geoJSON,
     },
   });
   EOxMap.dispatchEvent(evt);
 }
 
 /**
- * Drag and drop upload shape file's event
+ * Adds new features to a specified vector layer from drawing/upload/input change events.
+ * This function supports handling both single and multiple features.
  *
- * @param {DrawEvent | DragAndDropEvent} e
- * @param {VectorLayer<VectorSource>} vectorLayer
- * @param {EOxMap} EOxMap
- * @param {boolean} isDraw
- * @param {boolean} replace
+ * @param e - The event object from drawing or drag-and-drop actions, containing the features.
+ * @param vectorLayer - The vector layer to which features will be added.
+ * @param EOxMap - The EOxMap instance for dispatching custom events and adjusting the view.
+ * @param isDraw - Optional. If true, indicates the features come from a drawing event.
+ * @param replace - Optional. If true, existing features in the layer are cleared before adding new ones.
  */
 export function addNewFeature(
   e: DrawEvent | DragAndDropEvent | { features: any },
@@ -59,20 +65,25 @@ export function addNewFeature(
   isDraw?: boolean,
   replace?: boolean
 ) {
+  // Determine the source of the features based on the event type and isDraw flag.
   // @ts-ignore
   const features = isDraw ? [e.feature] : e.features;
 
-  if (replace) vectorLayer.getSource().clear();
+  if (replace) vectorLayer.getSource().clear(); // Clear the layer's existing features if the replace flag is true.
+
+  // Check for multiple features when not permitted by the layer configuration.
   const currFeatures = vectorLayer.getSource().getFeatures();
   if (
     !vectorLayer.get("multipleFeatures") &&
     (currFeatures.length || features.length > 1)
   )
-    throw new Error("Multiple features detected!");
+    return console.error("Multiple features detected!");
 
+  // Process each feature: calculate measurements for lines and polygons, assign unique IDs.
   features.forEach((feature: Feature) => {
     const geom = feature.getGeometry();
 
+    // Calculate and set the measure based on geometry type.
     if (geom instanceof LineString) {
       const length = getLength(geom, {
         radius: 6378137,
@@ -83,11 +94,14 @@ export function addNewFeature(
       const area = getArea(geom, { radius: 6378137, projection: "EPSG:3857" });
       feature.set("measure", area);
     }
+
+    // Assign a unique ID to each feature for identification.
     const uid = getUid(feature);
     feature.set("id", uid);
     feature.setId(uid);
   });
 
+  // Add the new features to the layer and fit the map view to their extent unless it's a draw event.
   if (!isDraw) {
     vectorLayer.getSource().addFeatures(features);
 
@@ -96,10 +110,13 @@ export function addNewFeature(
       .fit(vectorLayer.getSource().getExtent(), { duration: 750 });
   }
 
+  // Convert features to GeoJSON and dispatch custom events for drawing end or feature addition.
   const format = new GeoJSON();
   const geoJsonObject = JSON.parse(
     format.writeFeatures(features, READ_FEATURES_OPTIONS)
   );
+
+  // Dispatch relevant events based on operation type.
   if (isDraw || replace) dispatchEvt(EOxMap, "drawend", e, geoJsonObject);
   dispatchEvt(EOxMap, "addfeatures", e, geoJsonObject);
 }
@@ -108,42 +125,53 @@ export function addNewFeature(
  * This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
  * If successful, it adds the parsed features to the map.
  *
- * @param {string} text
- * @param {VectorLayer<VectorSource>} vectorLayer
- * @param {EOxMap} EOxMap
- * @param {boolean} replace
+ * @param text - The string containing the geographic data to be parsed.
+ * @param vectorLayer - The vector layer to which the parsed features will be added.
+ * @param EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
+ * @param replace - Optional boolean flag indicating whether to replace the existing features with the new ones.
  */
 export function parseText(
   text: string,
   vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap,
-  replace?: boolean
-) {
+  replace: boolean = false
+): void {
   try {
-    let features;
-
-    if (isGeoJSON(text))
-      features = new GeoJSON().readFeatures(text, READ_FEATURES_OPTIONS);
-    else if (isKML(text))
-      features = new KML({ extractStyles: false }).readFeatures(
-        text,
-        READ_FEATURES_OPTIONS
-      );
-    else if (isTopoJSON(text))
-      features = new TopoJSON().readFeatures(text, READ_FEATURES_OPTIONS);
-    else {
+    // Attempt to parse the input text in various formats
+    const formatReader = getFormatReader(text);
+    if (!formatReader) {
       console.error("Unsupported format or invalid data");
       return;
     }
 
-    addNewFeature({ features }, vectorLayer, EOxMap, false, replace);
+    // Parse features with the detected format
+    const features = formatReader.readFeatures(text, READ_FEATURES_OPTIONS);
+
+    // Utilize the previously defined function to add these features to the vector layer
+    addNewFeature({ features: features }, vectorLayer, EOxMap, false, replace);
   } catch (err) {
-    console.error("Error parsing data from clipboard:", err);
+    console.error("Error parsing data:", err);
   }
 }
 
 /**
+ * Determines the appropriate format reader for the given text based on its content.
+ *
+ * @param text - The string containing the geographic data.
+ * @returns A format reader (GeoJSON, KML, or TopoJSON) if a matching format is detected, otherwise null.
+ */
+function getFormatReader(text: string): GeoJSON | KML | TopoJSON | null {
+  if (isGeoJSON(text)) return new GeoJSON();
+  else if (isKML(text)) return new KML({ extractStyles: false });
+  else if (isTopoJSON(text)) return new TopoJSON();
+  else return null;
+}
+
+/**
  * Function to check if a string is valid GeoJSON
+ *
+ * @param text The string to be checked.
+ * @returns `true` if the string is a valid GeoJSON object, `false` otherwise.
  */
 export function isGeoJSON(text: string): boolean {
   try {
@@ -156,6 +184,9 @@ export function isGeoJSON(text: string): boolean {
 
 /**
  * Function to check if a string is valid KML
+ *
+ * @param text The string to be checked.
+ * @returns `true` if the string contains KML tags, `false` otherwise.
  */
 export function isKML(text: string): boolean {
   return text.includes("<kml") && text.includes("</kml>");
@@ -163,6 +194,9 @@ export function isKML(text: string): boolean {
 
 /**
  * Function to check if a string is valid TopoJSON
+ *
+ * @param text The string to be checked.
+ * @returns `true` if the string is a valid TopoJSON object, `false` otherwise.
  */
 export function isTopoJSON(text: string): boolean {
   try {
