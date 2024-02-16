@@ -1,78 +1,82 @@
 /**
- * Generates events for upload, drag-drop and copy-paste
+ * Initializes upload-related event listeners for drag-and-drop interactions on a map element.
+ * It configures the map to react visually to drag-and-drop actions and processes dropped files.
  *
- * @param {EOxDraw} EOxDraw
- * @param {EOxMap} EOxMap
+ * @param {import("../main.js").EOxDrawTools} EOxDrawTool - The drawing tool instance.
+ * @param {import("@eox/map/main").EOxMap} EOxMap - The EOx Map instance.
  */
-export function generateUploadEvents(EOxDraw, EOxMap) {
-  // document.addEventListener("keydown", (event) => {
-  //   console.log(event);
-  //   if ((event.ctrlKey || event.metaKey) && event.key === "v")
-  //     pasteFeaturesFromClipboard(vectorLayer, EOxMap);
-  // });
+export function initMapDragDropImport(EOxDrawTool, EOxMap) {
+  // Helper function to prevent default behavior for drag and drop events
+  function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
 
-  // Prevent default drag behaviors
-  EOxMap.addEventListener("drop", preventDefaults, false);
-  EOxMap.addEventListener("dragstart", preventDefaults, false);
-  EOxMap.addEventListener("dragover", preventDefaults, false);
+  // Changes the opacity of the map element to indicate a drag-and-drop action is in progress
+  function highlight(e) {
+    e.srcElement.style.opacity = "0.4";
+  }
 
-  ["dragenter", "dragover"].forEach((eventName) => {
-    EOxMap.addEventListener(eventName, highlight, false);
+  // Reverts the opacity of the map element back to normal
+  function unHighlight(e) {
+    e.srcElement.style.opacity = "1";
+  }
+
+  // Attaches event listeners for drag-and-drop actions
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    EOxMap.addEventListener(eventName, preventDefaults, false);
+    if (["dragenter", "dragover"].includes(eventName))
+      EOxMap.addEventListener(eventName, highlight, false);
+    else EOxMap.addEventListener(eventName, unHighlight, false);
   });
 
-  ["dragleave", "drop"].forEach((eventName) => {
-    EOxMap.addEventListener(eventName, unHighlight, false);
-  });
-
-  // Handle dropped files
-  EOxMap.addEventListener("drop", (e) => handleFiles(e, EOxDraw), false);
+  // Handle dropped files specifically
+  EOxMap.addEventListener("drop", (e) => handleFiles(e, EOxDrawTool), false);
 }
 
+/**
+ * Prevents the default action of an event from occurring
+ * and stops it from propagating further.
+ *
+ * @param {Event} e - The event object to be handled.
+ */
 function preventDefaults(e) {
   e.preventDefault();
   e.stopPropagation();
 }
 
 /**
- * This function reads text from the clipboard and
- * attempts to parse it as GeoJSON, KML, or TopoJSON.
+ * Handles file input from drag-and-drop or file selection events,
+ * forwarding each file to a specified processing function.
  *
- * @param {EOxDraw} EOxDraw
- * @param {EOxMap} EOxMap
+ * @param {DragEvent | Event} e - The event object from the file input interaction.
+ * @param {import("../main.js").EOxDrawTools} EOxDrawTool - The drawing tool instance.
  */
-export function pasteFeaturesFromClipboard(vectorLayer, EOxMap) {
-  navigator.clipboard
-    .readText()
-    .then((text) => {
-      EOxMap.parseTextToFeature(text, vectorLayer);
-    })
-    .catch((err) => {
-      console.error("Failed to read from clipboard:", err);
-    });
-}
-
-function highlight(e) {
-  e.srcElement.style.opacity = "0.4";
-}
-
-function unHighlight(e) {
-  e.srcElement.style.opacity = "1";
-}
-
-export function handleFiles(e, EOxDraw) {
+export function handleFiles(e, EOxDrawTool) {
   preventDefaults(e);
-  const dt = e.dataTransfer;
-  const files = dt?.files || e.target.files;
 
-  // @ts-ignore
-  [...files].forEach((file) => importFile(file, EOxDraw));
+  // Extract files from the event, supporting both drag-and-drop and file input sources
+  const files = e.dataTransfer ? e.dataTransfer.files : e.target.files;
+
+  Array.from(files).forEach((file) => importFile(file, EOxDrawTool));
 }
 
-function importFile(file, EOxDraw) {
+/**
+ * Reads the content of a provided file as text and
+ * then triggers a specified handling function
+ *
+ * @param {File} file - The file object to be read.
+ * @param {import("../main.js").EOxDrawTools} EOxDrawTool - The drawing tool instance.
+ */
+function importFile(file, EOxDrawTool) {
   const reader = new FileReader();
+
+  // Initiate reading the file's content as text
   reader.readAsText(file);
+
+  // Define the onloadend event handler
   reader.onloadend = function () {
     if (typeof reader.result === "string")
-      EOxDraw.handleFeatureChange(reader.result);
+      EOxDrawTool.handleFeatureChange(reader.result);
   };
 }

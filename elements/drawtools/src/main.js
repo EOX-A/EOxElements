@@ -11,7 +11,7 @@ import {
 import mainStyle from "../../../utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
-  generateUploadEvents,
+  initMapDragDropImport,
   handleFiles,
 } from "./helpers/generate-upload-events.js";
 
@@ -162,7 +162,7 @@ export class EOxDrawTools extends LitElement {
     this.#eoxMap.parseTextToFeature(text, this.drawLayer, replace);
   }
 
-  /** @param {{ target: { files: []; }; }} evt */
+  /** @param {DragEvent | Event} evt */
   handleFilesChange(evt) {
     handleFiles(evt, this);
   }
@@ -214,7 +214,7 @@ export class EOxDrawTools extends LitElement {
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
-    if (this.importFeatures) generateUploadEvents(this, this.#eoxMap);
+    if (this.importFeatures) initMapDragDropImport(this, this.#eoxMap);
     this.updateGeoJSON();
     this.requestUpdate();
   }
@@ -235,7 +235,7 @@ export class EOxDrawTools extends LitElement {
           discard: () => this.handleDiscardDrawing(),
           editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
             this.handleFeatureChange(evt.target.value, true),
-          import: (/** @type {{ target: { files: []; }; }} */ evt) =>
+          import: (/** @type {DragEvent | Event} */ evt) =>
             this.handleFilesChange(evt),
         }}
         .unstyled=${this.unstyled}
