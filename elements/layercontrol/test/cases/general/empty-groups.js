@@ -8,14 +8,14 @@ const emptyGroup = () => {
     mockMap.setLayers([
       {
         layers: [
-          { properties: { layerControlHide: true } },
-          { properties: { layerControlHide: true } },
+          { properties: { layerControlHide: false } },
+          { properties: { layerControlHide: false } },
         ],
       },
       {
         layers: [
-          { properties: { layerControlHide: false } },
-          { properties: { layerControlHide: false } },
+          { properties: { layerControlHide: true } },
+          { properties: { layerControlHide: true } },
         ],
       },
     ]);

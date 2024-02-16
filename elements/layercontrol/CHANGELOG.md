@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.15.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.14.0...layercontrol-v0.15.0) (2024-02-15)
+
+
+### Features
+
+* Hide styled details marker if no children are in group ([#651](https://github.com/EOX-A/EOxElements/issues/651)) ([37bafeb](https://github.com/EOX-A/EOxElements/commit/37bafeb4b06db6d4db53db996fa64d5e8ae0fe47))
+
+
+### Bug Fixes
+
+* Don't expand layer if `layerControlExpand` is falsy ([#653](https://github.com/EOX-A/EOxElements/issues/653)) ([3d70769](https://github.com/EOX-A/EOxElements/commit/3d707690e82de29ea585d3ce1de89e37ee9b1af6))
+* **test:** Mock map layer order ([#654](https://github.com/EOX-A/EOxElements/issues/654)) ([31c61ac](https://github.com/EOX-A/EOxElements/commit/31c61ac57ad5ba455bc90415626ed8582940d242))
+
 ## [0.14.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.13.1...layercontrol-v0.14.0) (2024-01-17)
 
 

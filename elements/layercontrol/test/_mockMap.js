@@ -148,7 +148,7 @@ export class MockMap extends HTMLElement {
     this.setLayers([json]);
   };
   setLayers = (layers) => {
-    this.layers = new MockCollection(layers);
+    this.layers = new MockCollection(layers.reverse());
   };
 }
 customElements.define("mock-map", MockMap);

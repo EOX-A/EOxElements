@@ -2,6 +2,7 @@ const checkLayerPushedToGroup = () => {
   // Setting up the mock map with layers and a group
   cy.get("mock-map").and(($el) => {
     $el[0].setLayers([
+      { properties: { title: "bar" } }, // Adding a standalone layer
       {
         properties: {
           title: "group",
@@ -9,7 +10,6 @@ const checkLayerPushedToGroup = () => {
         },
         layers: [{ properties: { title: "foo" } }], // Adding a layer to a group
       },
-      { properties: { title: "bar" } }, // Adding a standalone layer
     ]);
   });
 

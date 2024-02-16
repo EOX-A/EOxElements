@@ -2,6 +2,7 @@ const checkLayerRemovedFromGroup = () => {
   // Set up the mock map with a group containing a layer
   cy.get("mock-map").and(($el) => {
     $el[0].setLayers([
+      { title: "bar" }, // Another separate layer outside the group
       {
         properties: {
           title: "group",
@@ -9,7 +10,6 @@ const checkLayerRemovedFromGroup = () => {
         },
         layers: [{ properties: { title: "baz" } }], // Initial layer in the group
       },
-      { title: "bar" }, // Another separate layer outside the group
     ]);
   });
 
