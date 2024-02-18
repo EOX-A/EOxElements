@@ -6,6 +6,11 @@ import collectionSchema from "./examples/collectionSchema.json";
 import catalogStartVals from "./examples/catalogStartVals.json";
 import collectionStartVals from "./examples/collectionStartVals.json";
 
+const externalSchema =
+  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogSchema.json";
+const externalStartVals =
+  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogStartVals.json";
+
 export default {
   title: "Elements/eox-jsonform",
   tags: ["autodocs"],
@@ -36,5 +41,12 @@ export const Collection = {
   args: {
     schema: collectionSchema,
     startVals: collectionStartVals,
+  },
+};
+
+export const External = {
+  args: {
+    schema: externalSchema,
+    startVals: externalStartVals,
   },
 };

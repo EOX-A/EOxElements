@@ -63,7 +63,28 @@ export class EOxJSONForm extends LitElement {
      */
     this.unstyled = false;
   }
-
+  /**
+   * @param {JsonSchema | String} property
+   */
+  async parseProperty(property) {
+    if (property) {
+      if (typeof property !== "object") {
+        // Property is a URL so we need to fetch it
+        try {
+          const response = await fetch(property);
+          if (response.ok) {
+            const json = await response.json();
+            return json;
+          } else {
+            console.error("Failed to fetch schema from URL: ", response.status);
+          }
+        } catch (error) {
+          console.error("Error fetching schema: ", error);
+        }
+      }
+    }
+    return property;
+  }
   /**
    * Get The JSON schema for rendering the form
    */
@@ -125,7 +146,9 @@ export class EOxJSONForm extends LitElement {
     });
   }
 
-  firstUpdated() {
+  async firstUpdated() {
+    this.setSchema(await this.parseProperty(this.schema));
+    this.setDefaultValues(await this.parseProperty(this.startVals));
     if (!this.#editor) {
       addCustomInputs(this.startVals || {});
 
