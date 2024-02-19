@@ -3,6 +3,7 @@ import "../../../jsonform/src/main";
 import { getStartVals } from "../helpers";
 import { dataChangeMethod } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
+import debounce from "../../../../utils/debounce.js";
 
 /**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
@@ -73,6 +74,14 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * @type {{ schema: object, element: string }}
      */
     this.layerConfig = null;
+
+    /**
+     * Debounce #handleDataChange() by 1000 milliseconds
+     */
+    this.debouncedDataChange = debounce(
+      this.#handleDataChange.bind(this),
+      1000
+    );
   }
 
   /**
@@ -124,7 +133,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .schema=${this.layerConfig.schema}
             .startVals=${this.#startVals}
             .options=${options}
-            @change=${this.#handleDataChange}
+            @change=${this.debouncedDataChange}
           ></eox-jsonform>
         `
       )}
