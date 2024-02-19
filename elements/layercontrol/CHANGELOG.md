@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.15.0...layercontrol-v0.15.1) (2024-02-19)
+
+
+### Bug Fixes
+
+* Debounce data change function in layer config ([#656](https://github.com/EOX-A/EOxElements/issues/656)) ([8fc3006](https://github.com/EOX-A/EOxElements/commit/8fc3006e28d38b3e2957012c57d00b8b32526ebe))
+
 ## [0.15.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.14.0...layercontrol-v0.15.0) (2024-02-15)
 
 
