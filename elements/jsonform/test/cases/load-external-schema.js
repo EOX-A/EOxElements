@@ -1,20 +1,16 @@
 import { html } from "lit";
 import { TEST_SELECTORS } from "../../src/enums";
+import schemaFixture from "../fixtures/catalogSchema.json";
 
 // Destructure TEST_SELECTORS object
 const { jsonForm } = TEST_SELECTORS;
 
 const loadExternalSchemaTest = () => {
-  cy.intercept(
-    "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogSchema.json",
-    {
-      fixture: "/catalogSchema.json",
-    }
-  );
+  cy.intercept("**/catalogSchema.json", (req) => {
+    req.reply(schemaFixture);
+  });
   cy.mount(
-    html`<eox-jsonform
-      .schema=${"https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogSchema.json"}
-    ></eox-jsonform>`
+    html`<eox-jsonform .schema=${"/catalogSchema.json"}></eox-jsonform>`
   ).as(jsonForm);
   cy.get(jsonForm)
     .shadow()
