@@ -150,6 +150,13 @@ export class EOxTimeControl extends LitElement {
       [this.animationProperty]: this.animationValues[this._newTimeIndex],
     });
     this.requestUpdate();
+
+    let event = new CustomEvent('onTimeChange', {
+      detail: {
+        time: this.animationValues[this._newTimeIndex],
+      }
+    });
+    this.dispatchEvent(event);
   }
 
   /**
