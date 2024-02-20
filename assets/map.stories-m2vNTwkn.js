@@ -1,4 +1,4 @@
-import{x as r}from"./lit-element-uhisBW42.js";import"./sources-8tufVZv8.js";import"./main-33Oo-lIB.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-CLq2R4Lw.js";import"../sb-preview/runtime.js";import"./state-729Pchtv.js";import"./index-EySAwWXj.js";const Ve={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>r`
+import{x as r}from"./lit-element-uhisBW42.js";import"./sources-i2pqFbCY.js";import"./main-33Oo-lIB.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-oM0WLo32.js";import"../sb-preview/runtime.js";import"./state-729Pchtv.js";import"./index-EySAwWXj.js";const Ve={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>r`
       <eox-map
         style="width: 100%; height: 300px;"
         .center=${e.center}
