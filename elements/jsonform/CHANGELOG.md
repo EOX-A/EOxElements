@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.2.1...jsonform-v0.3.0) (2024-02-20)
+
+
+### Features
+
+* Support passing json from URL as schema or startVals ([#655](https://github.com/EOX-A/EOxElements/issues/655)) ([878e871](https://github.com/EOX-A/EOxElements/commit/878e87167d30c099afaaa479c767788ab486eef3))
+
 ## [0.2.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.2.0...jsonform-v0.2.1) (2023-12-18)
 
 
