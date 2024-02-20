@@ -1,9 +1,15 @@
 // Importing necessary modules, test cases, and enums
 import "../src/main";
-import { loadJsonFormTest } from "./cases";
+import {
+  loadJsonFormTest,
+  loadExternalSchemaTest,
+  loadExternalStartValsTest,
+} from "./cases";
 
-// Test suite for Drawtools
-describe("Drawtools", () => {
+// Test suite for Jsonform
+describe("Jsonform", () => {
   // Test case to ensure the jsonform component loads successfully
   it("loads the jsonform", () => loadJsonFormTest());
+  it("loads schema from url", () => loadExternalSchemaTest());
+  it("loads startVals from url", () => loadExternalStartValsTest());
 });
