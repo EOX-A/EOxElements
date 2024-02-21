@@ -5,9 +5,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: "./src/main.js",
-      name: "eox-jsonform",
+      name: "eox-storytelling",
       // the proper extensions will be added
-      fileName: "eox-jsonform",
+      fileName: "eox-storytelling",
     },
   },
 });
