@@ -11,7 +11,8 @@
     "elements/layout": {},
     "elements/map": {},
     "elements/stacinfo": {},
-    "elements/timecontrol": {}
+    "elements/timecontrol": {},
+    "elements/storytelling": {}
   },
   "plugins": ["sentence-case"],
   "bump-minor-pre-major": true,
