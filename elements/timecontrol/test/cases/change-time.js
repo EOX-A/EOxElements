@@ -7,7 +7,7 @@ const { timeControl } = TEST_SELECTORS;
 
 const testParam = "TIME";
 const testTimes = ["2024-01-01", "2024-01-02"];
-let timeChangeEventValue = '';
+let timeChangeEventValue = "";
 
 let testLayer;
 
@@ -22,7 +22,9 @@ const changeTimeTest = () => {
       layer="TEST_ID"
       .animationProperty=${testParam}
       .animationValues=${testTimes}
-      @onTimeChange="${(e) => {timeChangeEventValue = e.detail.time}}"
+      @onTimeChange="${(e) => {
+        timeChangeEventValue = e.detail.time;
+      }}"
     ></eox-timecontrol>`
   ).as(timeControl);
 
@@ -49,7 +51,7 @@ const changeTimeTest = () => {
 
   cy.get(timeControl).and(($el) => {
     expect(timeChangeEventValue).to.be.eq($el[0].currentTime);
-  })
+  });
 };
 
 export default changeTimeTest;
