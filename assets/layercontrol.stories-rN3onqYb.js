@@ -1,4 +1,4 @@
-var Zn=Object.defineProperty;var kn=(t,e,o)=>e in t?Zn(t,e,{enumerable:!0,configurable:!0,writable:!0,value:o}):t[e]=o;var I=(t,e,o)=>(kn(t,typeof e!="symbol"?e+"":e,o),o),lo=(t,e,o)=>{if(!e.has(t))throw TypeError("Cannot "+o)};var $=(t,e,o)=>(lo(t,e,"read from private field"),o?o.call(t):e.get(t)),C=(t,e,o)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,o)},ke=(t,e,o,r)=>(lo(t,e,"write to private field"),r?r.call(t,o):e.set(t,o),o);var M=(t,e,o)=>(lo(t,e,"access private method"),o);import"./sources-9HdRbaEI.js";import"./main-33Oo-lIB.js";import{x as y,T as oe,w as yt,s as pe}from"./lit-element-uhisBW42.js";import{n as ee,o as St,a as Yn}from"./unsafe-html-O8CL1HCr.js";import{_ as jr,c as Xn}from"./index-2KC-5ke1.js";import{e as zn,i as jn,t as _e}from"./directive-xgBC_cM0.js";import{f as qn,m as Gn}from"./directive-helpers-qkjFCehB.js";import"./main-tRZ2Kt1Q.js";import{b as Wn}from"./button--cdmXcoW.js";import{r as Jn,c as qr,s as Kn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-_xpplABG.js";import"../sb-preview/runtime.js";import"./state-729Pchtv.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**
+var Zn=Object.defineProperty;var kn=(t,e,o)=>e in t?Zn(t,e,{enumerable:!0,configurable:!0,writable:!0,value:o}):t[e]=o;var I=(t,e,o)=>(kn(t,typeof e!="symbol"?e+"":e,o),o),lo=(t,e,o)=>{if(!e.has(t))throw TypeError("Cannot "+o)};var $=(t,e,o)=>(lo(t,e,"read from private field"),o?o.call(t):e.get(t)),C=(t,e,o)=>{if(e.has(t))throw TypeError("Cannot add the same private member more than once");e instanceof WeakSet?e.add(t):e.set(t,o)},ke=(t,e,o,r)=>(lo(t,e,"write to private field"),r?r.call(t,o):e.set(t,o),o);var M=(t,e,o)=>(lo(t,e,"access private method"),o);import"./sources-_eWUSXmT.js";import"./main-G_0A_pV2.js";import{x as y,T as oe,w as yt,s as pe}from"./lit-element-uhisBW42.js";import{e as Yn,i as Xn,t as _e,n as ee}from"./when-fh6s5Pmf.js";import{_ as jr,c as zn}from"./index-EJ4ljtJk.js";import{f as jn,m as qn}from"./directive-helpers-qkjFCehB.js";import{o as St,a as Gn}from"./unsafe-html-tYmGKq4D.js";import"./main-tRZ2Kt1Q.js";import{b as Wn}from"./button--cdmXcoW.js";import{r as Jn,c as qr,s as Kn}from"./slider-MCblB636.js";import"./_commonjsHelpers-4gQjN7DL.js";import"./iframe-VY9_10qe.js";import"../sb-preview/runtime.js";import"./state-729Pchtv.js";import"./index-EySAwWXj.js";import"./toolcool-range-slider.min-8Vg52R7B.js";/**
  * wms-capabilities @0.6.0
  * @description WMS service Capabilities > JSON, based on openlayers 
  * @license BSD-2-Clause
@@ -25,7 +25,7 @@ var Zn=Object.defineProperty;var kn=(t,e,o)=>e in t?Zn(t,e,{enumerable:!0,config
  * @license
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */const wn=zn(class extends jn{constructor(t){if(super(t),t.type!==_e.PROPERTY&&t.type!==_e.ATTRIBUTE&&t.type!==_e.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!qn(t))throw Error("`live` bindings can only contain a single expression")}render(t){return t}update(t,[e]){if(e===yt||e===oe)return e;const o=t.element,r=t.name;if(t.type===_e.PROPERTY){if(e===o[r])return yt}else if(t.type===_e.BOOLEAN_ATTRIBUTE){if(!!e===o.hasAttribute(r))return yt}else if(t.type===_e.ATTRIBUTE&&o.getAttribute(r)===e+"")return yt;return Gn(t),e}}),Pa=(t,e,o)=>{let r=e;return o.layer.getSource().getTileUrlFunction()&&(r||(r=o.layer.getSource().getTileUrlFunction()),o.layer.getSource().setTileUrlFunction((...n)=>ji(r(...n),t)),o.layer.getSource().setKey(new Date)),r};var dt,ut,ct,Mt,xn,Ht,Bt;class Sn extends pe{constructor(){super();C(this,Mt);C(this,dt,{});C(this,ut,null);C(this,ct,void 0);C(this,Ht,"");C(this,Bt,"");this.layer=null,this.unstyled=!1,this.noShadow=!1,this.layerConfig=null,this.debouncedDataChange=jr(M(this,Mt,xn),1e3,{leading:!0})}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){ke(this,ut,_a(this.layer,this.layerConfig));const o={disable_edit_json:!0,disable_collapse:!0,disable_properties:!0};return y`
+ */const wn=Yn(class extends Xn{constructor(t){if(super(t),t.type!==_e.PROPERTY&&t.type!==_e.ATTRIBUTE&&t.type!==_e.BOOLEAN_ATTRIBUTE)throw Error("The `live` directive is not allowed on child or event bindings");if(!jn(t))throw Error("`live` bindings can only contain a single expression")}render(t){return t}update(t,[e]){if(e===yt||e===oe)return e;const o=t.element,r=t.name;if(t.type===_e.PROPERTY){if(e===o[r])return yt}else if(t.type===_e.BOOLEAN_ATTRIBUTE){if(!!e===o.hasAttribute(r))return yt}else if(t.type===_e.ATTRIBUTE&&o.getAttribute(r)===e+"")return yt;return qn(t),e}}),Pa=(t,e,o)=>{let r=e;return o.layer.getSource().getTileUrlFunction()&&(r||(r=o.layer.getSource().getTileUrlFunction()),o.layer.getSource().setTileUrlFunction((...n)=>ji(r(...n),t)),o.layer.getSource().setKey(new Date)),r};var dt,ut,ct,Mt,xn,Ht,Bt;class Sn extends pe{constructor(){super();C(this,Mt);C(this,dt,{});C(this,ut,null);C(this,ct,void 0);C(this,Ht,"");C(this,Bt,"");this.layer=null,this.unstyled=!1,this.noShadow=!1,this.layerConfig=null,this.debouncedDataChange=jr(M(this,Mt,xn),1e3,{leading:!0})}createRenderRoot(){return this.noShadow?this:super.createRenderRoot()}render(){ke(this,ut,_a(this.layer,this.layerConfig));const o={disable_edit_json:!0,disable_collapse:!0,disable_properties:!0};return y`
       <style>
         ${$(this,Ht)}
         ${!this.unstyled&&$(this,Bt)}
@@ -246,7 +246,7 @@ var Zn=Object.defineProperty;var kn=(t,e,o)=>e in t?Zn(t,e,{enumerable:!0,config
                   ${St(r,p=>this._button(p))}
 
                   <div slot="info-content">
-                    ${Yn(this.layer.get("description"))}
+                    ${Gn(this.layer.get("description"))}
                   </div>
                   <div slot="opacity-content">
                     <!-- Input for opacity -->
@@ -445,7 +445,7 @@ var Zn=Object.defineProperty;var kn=(t,e,o)=>e in t?Zn(t,e,{enumerable:!0,config
       </style>
       <ul>
         ${ee(this.layers,()=>y`
-            ${Xn(o,r=>r,r=>y`
+            ${zn(o,r=>r,r=>y`
                 <li
                   data-layer="${r.get(this.idProperty)}"
                   data-type="${Ta(r,this.map)}"
