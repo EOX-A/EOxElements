@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.3.0...timecontrol-v0.4.0) (2024-02-22)
+
+
+### Features
+
+* Fire `onTimeChange` event when time is changed ([#668](https://github.com/EOX-A/EOxElements/issues/668)) ([7b67043](https://github.com/EOX-A/EOxElements/commit/7b670431edc8910bbbee26aa2fca76e824167642))
+
 ## [0.3.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.2.0...timecontrol-v0.3.0) (2024-02-12)
 
 
