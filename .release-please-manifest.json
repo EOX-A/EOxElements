@@ -6,5 +6,6 @@
   "elements/stacinfo": "0.3.0",
   "elements/timecontrol": "0.3.0",
   "elements/jsonform": "0.3.0",
-  "elements/layout": "0.1.0"
+  "elements/layout": "0.1.0",
+  "elements/storytelling": "1.0.0"
 }
