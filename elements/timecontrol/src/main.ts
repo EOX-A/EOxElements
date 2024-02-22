@@ -150,6 +150,18 @@ export class EOxTimeControl extends LitElement {
       [this.animationProperty]: this.animationValues[this._newTimeIndex],
     });
     this.requestUpdate();
+
+    /**
+     * Triggers when *currentTime* is updated.
+     * `event.detail.currentTime` returns the new *currentTime* value.
+     */
+    this.dispatchEvent(
+      new CustomEvent("onTimeChange", {
+        detail: {
+          currentTime: this.currentTime,
+        },
+      })
+    );
   }
 
   /**
