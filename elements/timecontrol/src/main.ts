@@ -153,12 +153,12 @@ export class EOxTimeControl extends LitElement {
 
     /**
      * Triggers when *currentTime* is updated.
-     * `event.detail.time` returns the new *currentTime* value.
+     * `event.detail.currentTime` returns the new *currentTime* value.
      */
     this.dispatchEvent(
       new CustomEvent("onTimeChange", {
         detail: {
-          time: this.animationValues[this._newTimeIndex],
+          currentTime: this.currentTime,
         },
       })
     );
