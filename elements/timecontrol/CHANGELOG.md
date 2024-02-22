@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.4.0...timecontrol-v0.4.1) (2024-02-22)
+
+
+### Miscellaneous Chores
+
+* Rename `onTimeChange` event to `timechange` ([#675](https://github.com/EOX-A/EOxElements/issues/675)) ([3a2b3bb](https://github.com/EOX-A/EOxElements/commit/3a2b3bb405d92bc46d75f99fec3ef07fdc4d0467))
+
 ## [0.4.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.3.0...timecontrol-v0.4.0) (2024-02-22)
 
 
