@@ -4,9 +4,10 @@ import { onDrawEndMethod } from "./";
  * Initializes the draw layer, interacts with the map, and returns map instances.
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
+ * @param {Boolean} multipleFeatures - Allow adding more than one feature at a time
  * @returns {{EoxMap: import("@eox/map/main").EOxMap, OlMap: import("ol").Map}} - The map instances.
  */
-const initDrawLayerMethod = (EoxDrawTool) => {
+const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = document.querySelector(EoxDrawTool.for);
 
   const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
@@ -19,6 +20,8 @@ const initDrawLayerMethod = (EoxDrawTool) => {
     properties: {
       id: "drawLayer",
       layerControlHide: true,
+      isDrawingEnabled: false,
+      multipleFeatures: multipleFeatures,
     },
     source: {
       type: "Vector",
@@ -68,10 +71,11 @@ const initDrawLayerMethod = (EoxDrawTool) => {
   EoxDrawTool.modify = /** @type {import("ol/interaction").Modify} */ (
     /** @type {unknown} */ (EoxMap.interactions["drawInteractionmodify"])
   );
-  EoxDrawTool.draw?.on("drawend", () => onDrawEndMethod(EoxDrawTool));
-  EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.emitDrawnFeatures());
+
+  EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.onModifyEnd());
+  EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
 
   return { EoxMap, OlMap };
 };
 
-export default initDrawLayerMethod;
+export default initLayerMethod;

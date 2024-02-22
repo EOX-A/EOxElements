@@ -3,13 +3,17 @@ import "./components/list";
 import "./components/controller";
 import { styleEOX } from "./style.eox";
 import {
-  onDrawEndMethod,
   startDrawingMethod,
-  initDrawLayerMethod,
+  initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
 } from "./methods/draw";
 import mainStyle from "../../../utils/styles/dist/main.style";
+import { DUMMY_GEO_JSON } from "./enums/index.js";
+import {
+  initMapDragDropImport,
+  handleFiles,
+} from "./helpers/generate-upload-events.js";
 
 /**
  * Manage drawn features on a map
@@ -28,6 +32,8 @@ export class EOxDrawTools extends LitElement {
       drawnFeatures: { attribute: false, state: true, type: Array },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
+      importFeatures: { attribute: "import-features", type: Boolean },
+      showEditor: { attribute: "show-editor", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
       noShadow: { type: Boolean },
       type: { type: String },
@@ -44,6 +50,11 @@ export class EOxDrawTools extends LitElement {
    * @type import("ol").Map
    */
   #olMap;
+
+  /**
+   * @type string
+   */
+  #geoJSON;
 
   constructor() {
     super();
@@ -68,7 +79,6 @@ export class EOxDrawTools extends LitElement {
      * The current native OpenLayers `draw` interaction
      * @type import("ol/interaction").Draw
      */
-
     this.draw = null;
 
     /**
@@ -88,13 +98,22 @@ export class EOxDrawTools extends LitElement {
      * The current native OpenLayers `modify` interaction
      * @type import("ol/interaction").Modify
      */
-
     this.modify = null;
 
     /**
      * Allow adding more than one feature at a time
      */
     this.multipleFeatures = false;
+
+    /**
+     * Allow import features using drag-drop and upload button
+     */
+    this.importFeatures = false;
+
+    /**
+     * Show geo-json editor for draw tool
+     */
+    this.showEditor = false;
 
     /**
      * Show list of features
@@ -121,14 +140,6 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * Initializes the drawing layer before starting to draw on the map.
-   */
-  initDrawLayer() {
-    const { EoxMap, OlMap } = initDrawLayerMethod(this);
-    (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
-  }
-
-  /**
    * @onClick Event handler triggered to start drawing on the map.
    */
   handleStartDrawing() {
@@ -140,14 +151,26 @@ export class EOxDrawTools extends LitElement {
    * on the map and delete the drawn shapes.
    */
   handleDiscardDrawing() {
-    discardDrawingMethod(this, this.#eoxMap, this.#olMap);
+    discardDrawingMethod(this);
   }
 
   /**
-   * @event onDrawEnd triggered when the drawing of a shape is completed.
+   * @param {string} text - The string representation of the features to be parsed.
+   * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
    */
-  onDrawEnd() {
-    onDrawEndMethod(this);
+  handleFeatureChange(text, replaceFeatures = false) {
+    this.#eoxMap.parseTextToFeature(
+      text || JSON.stringify(DUMMY_GEO_JSON),
+      this.drawLayer,
+      replaceFeatures
+    );
+  }
+
+  /**
+   * @param {DragEvent | Event} evt - The event object from the file input interaction.
+   */
+  handleFilesChange(evt) {
+    handleFiles(evt, this);
   }
 
   /**
@@ -155,6 +178,17 @@ export class EOxDrawTools extends LitElement {
    */
   onModifyEnd() {
     this.emitDrawnFeatures();
+  }
+
+  /**
+   * Update #geoJSON with stringify feature.
+   */
+  updateGeoJSON() {
+    this.#geoJSON = JSON.stringify(
+      this.#eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
+      undefined,
+      2
+    );
   }
 
   /**
@@ -181,6 +215,21 @@ export class EOxDrawTools extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * initializes the EOxMap and OlMap instances
+   * And stores them in the private properties #eoxMap and #olMap, respectively.
+   * It then calls requestUpdate to trigger a re-render.
+   */
+  firstUpdated() {
+    const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
+    (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
+
+    if (this.importFeatures) initMapDragDropImport(this, this.#eoxMap);
+
+    this.updateGeoJSON();
+    this.requestUpdate();
+  }
+
   // Render method for UI display
   render() {
     return html`
@@ -195,10 +244,18 @@ export class EOxDrawTools extends LitElement {
         .drawFunc=${{
           start: () => this.handleStartDrawing(),
           discard: () => this.handleDiscardDrawing(),
+          editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
+            this.handleFeatureChange(evt.target.value, true),
+          import: (/** @type {DragEvent | Event} */ evt) =>
+            this.handleFilesChange(evt),
         }}
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
+        .multipleFeatures=${this.multipleFeatures}
+        .importFeatures=${this.importFeatures}
+        .showEditor=${this.showEditor}
+        .geoJSON=${this.#geoJSON}
       ></eox-drawtools-controller>
 
       <!-- List Component -->
@@ -211,7 +268,10 @@ export class EOxDrawTools extends LitElement {
             .drawnFeatures=${this.drawnFeatures}
             .modify=${this.modify}
             .unstyled=${this.unstyled}
-            @changed=${() => this.requestUpdate()}
+            @changed=${() => {
+              this.updateGeoJSON();
+              this.requestUpdate();
+            }}
           ></eox-drawtools-list>`
         : nothing}
     `;

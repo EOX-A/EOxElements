@@ -77,7 +77,7 @@ export class EOxSelectInteraction {
     }
 
     const pointerLeaveListener = () => {
-      if (options.condition === "pointermove") {
+      if (overlay && options.condition === "pointermove") {
         overlay.setPosition(undefined);
       }
     };

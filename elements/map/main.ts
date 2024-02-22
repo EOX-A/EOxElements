@@ -21,6 +21,12 @@ import {
   addScrollInteractions,
   removeDefaultScrollInteractions,
 } from "./src/utils";
+import GeoJSON from "ol/format/GeoJSON";
+import { parseText, READ_FEATURES_OPTIONS } from "./helpers";
+import Feature from "ol/Feature";
+import { Geometry } from "ol/geom";
+import VectorLayer from "ol/layer/Vector.js";
+import VectorSource from "ol/source/Vector.js";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -308,6 +314,34 @@ export class EOxMap extends LitElement {
    */
   getLayerById = (layerId: string) => {
     return getLayerById(this, layerId);
+  };
+
+  /**
+   * Converts an array of OpenLayers Feature objects into a GeoJSON object.
+   * This function utilizes the OpenLayers GeoJSON format writer to serialize
+   *
+   * @param features - The array of features to be serialized.
+   * @returns The GeoJSON representation of the input features.
+   */
+  parseFeature = (features: Feature<Geometry>[]) => {
+    const format = new GeoJSON();
+    return format.writeFeaturesObject(features, READ_FEATURES_OPTIONS);
+  };
+
+  /**
+   * Parses a text representation of geographic features and adds them to a vector layer.
+   *
+   * @param text - The string representation of the features to be parsed.
+   * @param vectorLayer - The vector layer to which the parsed features will be added.
+   * @param replaceFeatures - A boolean flag indicating whether to replace the existing features in the vector layer.
+   */
+
+  parseTextToFeature = (
+    text: string,
+    vectorLayer: VectorLayer<VectorSource>,
+    replaceFeatures: boolean = false
+  ) => {
+    parseText(text, vectorLayer, this, replaceFeatures);
   };
 
   /**

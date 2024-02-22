@@ -13,6 +13,7 @@ export class MockMap extends HTMLElement {
           {
             // Simulating get method
             get: () => "draw",
+            set: () => "",
             getSource: () => ({
               // Simulating clear method to reset features array
               clear: () => {
@@ -44,6 +45,8 @@ export class MockMap extends HTMLElement {
     };
     // Simulating removeInteraction method
     this.removeInteraction = () => {};
+    // Simulate parse features
+    this.parseFeature = () => {};
   }
 }
 

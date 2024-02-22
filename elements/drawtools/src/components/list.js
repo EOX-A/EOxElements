@@ -99,6 +99,7 @@ export class EOxDrawToolsList extends LitElement {
    */
   _handleDelete(evt) {
     deleteFeatureMethod(evt, this);
+    this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
   }
 
   /**

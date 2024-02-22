@@ -9,6 +9,7 @@ const emitDrawnFeaturesMethod = (EoxDrawTool, drawUpdateEvent) => {
   const emitFeatures = () => {
     // Update drawnFeatures with features from drawLayer's source
     EoxDrawTool.drawnFeatures = EoxDrawTool.drawLayer.getSource().getFeatures();
+    EoxDrawTool.updateGeoJSON();
     EoxDrawTool.requestUpdate();
 
     // Triggering `drawupdate` event after drawFeature is updated

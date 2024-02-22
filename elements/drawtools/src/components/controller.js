@@ -1,6 +1,9 @@
 import { LitElement, html, nothing } from "lit";
 import { updateButtonStatesMethod } from "../methods/controller";
 import buttonStyle from "../../../../utils/styles/dist/button.style";
+import inputStyle from "../../../../utils/styles/dist/input.style";
+import { copyTextToClipboard } from "../helpers/index.js";
+import { when } from "lit/directives/when.js";
 
 /**
  * Controller component for drawing features
@@ -14,6 +17,9 @@ export class EOxDrawToolsController extends LitElement {
     drawnFeatures: { attribute: false, state: true, type: Array },
     currentlyDrawing: { attribute: false, state: true, type: Boolean },
     drawFunc: { attribute: false, type: Object },
+    importFeatures: { attribute: "import-features", type: Boolean },
+    showEditor: { attribute: "show-editor", type: Boolean },
+    geoJSON: { attribute: "geo-json", type: String },
     unstyled: { type: Boolean },
   };
 
@@ -44,6 +50,18 @@ export class EOxDrawToolsController extends LitElement {
     this.drawnFeatures = [];
 
     /**
+     * Allow import features using drag-drop and upload button
+     * @type Boolean
+     */
+    this.importFeatures = false;
+
+    /**
+     * Show geo-json editor for draw tool
+     * @type Boolean
+     */
+    this.showEditor = false;
+
+    /**
      * Whether the user is currently in the process of drawing or not
      */
     this.currentlyDrawing = false;
@@ -52,6 +70,12 @@ export class EOxDrawToolsController extends LitElement {
      * List of draw function object like start, discard etc.
      */
     this.drawFunc = null;
+
+    /**
+     * Parsed and Stringify Geo JSON
+     * @type String
+     */
+    this.geoJSON = "";
 
     /**
      * Render the element without additional styles
@@ -83,30 +107,79 @@ export class EOxDrawToolsController extends LitElement {
     return html`
       <style>
         ${!this.unstyled && buttonStyle}
+        ${!this.unstyled && inputStyle}
       </style>
-      <div>
+      <div class="wrap-btn">
         <slot></slot>
+        <div>
+          <!-- Draw Button -->
+          <button
+            data-cy="drawBtn"
+            class="polygon icon"
+            ?disabled="${this.#drawDisabled || nothing}"
+            @click="${() => this.drawFunc.start()}"
+          >
+            ${drawLabel}
+          </button>
 
-        <!-- Draw Button -->
-        <button
-          data-cy="drawBtn"
-          class="polygon icon"
-          ?disabled="${this.#drawDisabled || nothing}"
-          @click="${() => this.drawFunc.start()}"
-        >
-          ${drawLabel}
-        </button>
+          <!-- Discard Button -->
+          <button
+            data-cy="discardBtn"
+            class="discard icon"
+            ?disabled="${this.#discardDisabled || nothing}"
+            @click="${() => this.drawFunc.discard()}"
+          >
+            discard
+          </button>
+        </div>
 
-        <!-- Discard Button -->
-        <button
-          data-cy="discardBtn"
-          class="discard icon"
-          ?disabled="${this.#discardDisabled || nothing}"
-          @click="${() => this.drawFunc.discard()}"
-        >
-          discard
-        </button>
+        <!-- Import Button -->
+        ${when(
+          this.importFeatures,
+          () => html`
+            <!-- Import Input Field : Hidden -->
+            <input
+              type="file"
+              id="import-file"
+              style="display: none;"
+              @change=${this.drawFunc.import}
+            />
+
+            <!-- Main Import Button -->
+            <button
+              data-cy="importBtn"
+              class="import icon"
+              @click=${() => this.querySelector("#import-file").click()}
+            >
+              import
+            </button>
+          `
+        )}
       </div>
+
+      <!-- Geo JSON Wrapper -->
+      ${when(
+        this.showEditor,
+        () => html`
+          <div class="json-wrapper">
+            <!-- Geo JSON Editor -->
+            <textarea
+              @drop=${this.drawFunc.import}
+              @input=${this.drawFunc.editor}
+              .value=${this.geoJSON}
+            ></textarea>
+
+            <!-- Geo JSON Copy Button -->
+            <button
+              data-cy="copyBtn"
+              class="icon-copy"
+              @click=${() => copyTextToClipboard(this.geoJSON)}
+            >
+              ${this.unstyled ? "copy" : nothing}
+            </button>
+          </div>
+        `
+      )}
     `;
   }
 }
