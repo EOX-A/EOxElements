@@ -24,7 +24,7 @@ button.icon.previous:before {
 button.icon.next:before {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Earrow-right-drop-circle%3C/title%3E%3Cpath d='M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M10,17L15,12L10,7V17Z' fill='%23004170' /%3E%3C/svg%3E");
 }
-`;var R={exports:{}};(function(e,t){(function(i,r){e.exports=r()})(N,function(){return function(i,r,n){r.prototype.dayOfYear=function(o){var l=Math.round((n(this).startOf("day")-n(this).startOf("year"))/864e5)+1;return o==null?l:this.add(o-l,"day")}}})})(R);var X=R.exports;const J=U(X);var G={exports:{}};(function(e,t){(function(i,r){e.exports=r()})(N,function(){var i="day";return function(r,n,o){var l=function(m){return m.add(4-m.isoWeekday(),i)},c=n.prototype;c.isoWeekYear=function(){return l(this).year()},c.isoWeek=function(m){if(!this.$utils().u(m))return this.add(7*(m-this.isoWeek()),i);var y,f,h,b,j=l(this),D=(y=this.isoWeekYear(),f=this.$u,h=(f?o.utc:o)().year(y).startOf("year"),b=4-h.isoWeekday(),h.isoWeekday()>4&&(b+=7),h.add(b,i));return j.diff(D,"week")+1},c.isoWeekday=function(m){return this.$utils().u(m)?this.day()||7:this.day(this.day()%7?m:m-7)};var q=c.startOf;c.startOf=function(m,y){var f=this.$utils(),h=!!f.u(y)||y;return f.p(m)==="isoweek"?h?this.date(this.date()-(this.isoWeekday()-1)).startOf("day"):this.date(this.date()-1-(this.isoWeekday()-1)+7).endOf("day"):q.bind(this)(m,y)}}})})(G);var K=G.exports;const ee=U(K);var te=Object.defineProperty,ie=Object.getOwnPropertyDescriptor,a=(e,t,i,r)=>{for(var n=r>1?void 0:r?ie(t,i):t,o=e.length-1,l;o>=0;o--)(l=e[o])&&(n=(r?l(t,i,n):l(n))||n);return r&&n&&te(t,i,n),n};P.extend(J);P.extend(ee);let s=class extends Y{constructor(){super(...arguments),this.animationValues=[],this._newTimeIndex=0}next(){this._updateStep(1)}previous(){this._updateStep(-1)}playAnimation(e){e?this._animationInterval=setInterval(()=>this._updateStep(1),500):clearInterval(this._animationInterval),this._isAnimationPlaying=e,this.requestUpdate()}setConfig(e){this.layer=e.layer??this.layer,this.animationProperty=e.animationProperty??this.animationProperty,this.animationValues=e.animationValues??this.animationValues,this.requestUpdate(),this._updateStep(0)}get currentTime(){return this.animationValues[this._newTimeIndex]}set currentTime(e){const t=this.animationValues.findIndex(i=>i===e);t>-1?this._newTimeIndex=t:console.error(`Unable to find time "${e}" in available times!`)}_updateStep(e=1){this._newTimeIndex=this._newTimeIndex+e,this._newTimeIndex>this.animationValues.length-1&&(this._newTimeIndex=0),this._newTimeIndex<0&&(this._newTimeIndex=this.animationValues.length-1),this._animationSource.updateParams({[this.animationProperty]:this.animationValues[this._newTimeIndex]}),this.requestUpdate()}getFlatLayersArray(e){const t=[];t.push(...e);let i=t.filter(r=>r instanceof S);for(;i.length;){const r=[];for(let n=0,o=i.length;n<o;n++){const l=i[n].getLayers().getArray();t.push(...l),r.push(...l.filter(c=>c instanceof S))}i=r}return t}render(){const e=document.querySelector(this.for),t=e.map||e;return t.once("loadend",()=>{if(!this._originalParams){const r=this.getFlatLayersArray(t.getLayers().getArray()).find(n=>n.get("id")===this.layer);this._animationSource=r.getSource(),this._originalParams=this._animationSource.getParams()}}),d`
+`;var R={exports:{}};(function(e,t){(function(i,r){e.exports=r()})(N,function(){return function(i,r,n){r.prototype.dayOfYear=function(o){var l=Math.round((n(this).startOf("day")-n(this).startOf("year"))/864e5)+1;return o==null?l:this.add(o-l,"day")}}})})(R);var X=R.exports;const J=U(X);var G={exports:{}};(function(e,t){(function(i,r){e.exports=r()})(N,function(){var i="day";return function(r,n,o){var l=function(m){return m.add(4-m.isoWeekday(),i)},c=n.prototype;c.isoWeekYear=function(){return l(this).year()},c.isoWeek=function(m){if(!this.$utils().u(m))return this.add(7*(m-this.isoWeek()),i);var h,f,y,b,j=l(this),D=(h=this.isoWeekYear(),f=this.$u,y=(f?o.utc:o)().year(h).startOf("year"),b=4-y.isoWeekday(),y.isoWeekday()>4&&(b+=7),y.add(b,i));return j.diff(D,"week")+1},c.isoWeekday=function(m){return this.$utils().u(m)?this.day()||7:this.day(this.day()%7?m:m-7)};var q=c.startOf;c.startOf=function(m,h){var f=this.$utils(),y=!!f.u(h)||h;return f.p(m)==="isoweek"?y?this.date(this.date()-(this.isoWeekday()-1)).startOf("day"):this.date(this.date()-1-(this.isoWeekday()-1)+7).endOf("day"):q.bind(this)(m,h)}}})})(G);var K=G.exports;const ee=U(K);var te=Object.defineProperty,ie=Object.getOwnPropertyDescriptor,a=(e,t,i,r)=>{for(var n=r>1?void 0:r?ie(t,i):t,o=e.length-1,l;o>=0;o--)(l=e[o])&&(n=(r?l(t,i,n):l(n))||n);return r&&n&&te(t,i,n),n};P.extend(J);P.extend(ee);let s=class extends Y{constructor(){super(...arguments),this.animationValues=[],this._newTimeIndex=0}next(){this._updateStep(1)}previous(){this._updateStep(-1)}playAnimation(e){e?this._animationInterval=setInterval(()=>this._updateStep(1),500):clearInterval(this._animationInterval),this._isAnimationPlaying=e,this.requestUpdate()}setConfig(e){this.layer=e.layer??this.layer,this.animationProperty=e.animationProperty??this.animationProperty,this.animationValues=e.animationValues??this.animationValues,this.requestUpdate(),this._updateStep(0)}get currentTime(){return this.animationValues[this._newTimeIndex]}set currentTime(e){const t=this.animationValues.findIndex(i=>i===e);t>-1?this._newTimeIndex=t:console.error(`Unable to find time "${e}" in available times!`)}_updateStep(e=1){this._newTimeIndex=this._newTimeIndex+e,this._newTimeIndex>this.animationValues.length-1&&(this._newTimeIndex=0),this._newTimeIndex<0&&(this._newTimeIndex=this.animationValues.length-1),this._animationSource.updateParams({[this.animationProperty]:this.animationValues[this._newTimeIndex]}),this.requestUpdate(),this.dispatchEvent(new CustomEvent("onTimeChange",{detail:{currentTime:this.currentTime}}))}getFlatLayersArray(e){const t=[];t.push(...e);let i=t.filter(r=>r instanceof S);for(;i.length;){const r=[];for(let n=0,o=i.length;n<o;n++){const l=i[n].getLayers().getArray();t.push(...l),r.push(...l.filter(c=>c instanceof S))}i=r}return t}render(){const e=document.querySelector(this.for),t=e.map||e;return t.once("loadend",()=>{if(!this._originalParams){const r=this.getFlatLayersArray(t.getLayers().getArray()).find(n=>n.get("id")===this.layer);this._animationSource=r.getSource(),this._originalParams=this._animationSource.getParams()}}),d`
       <style>
         ${F}
         ${!this.unstyled&&Q}
@@ -173,7 +173,7 @@ button.icon.next:before {
       .slider=${e.slider}
       .disablePlay=${e.disablePlay}
     ></eox-timecontrol>
-  `};var I,V,A;u.parameters={...u.parameters,docs:{...(I=u.parameters)==null?void 0:I.docs,source:{originalSource:`{
+  `};var I,T,V;u.parameters={...u.parameters,docs:{...(I=u.parameters)==null?void 0:I.docs,source:{originalSource:`{
   args: {
     for: "eox-map#primary",
     layer: "AWS_NO2-VISUALISATION",
@@ -221,7 +221,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(A=(V=u.parameters)==null?void 0:V.docs)==null?void 0:A.source}}};var T,E,k;$.parameters={...$.parameters,docs:{...(T=$.parameters)==null?void 0:T.docs,source:{originalSource:`{
+}`,...(V=(T=u.parameters)==null?void 0:T.docs)==null?void 0:V.source}}};var A,E,k;$.parameters={...$.parameters,docs:{...(A=$.parameters)==null?void 0:A.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#slider",
@@ -243,7 +243,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(k=(E=$.parameters)==null?void 0:E.docs)==null?void 0:k.source}}};var L,O,C;v.parameters={...v.parameters,docs:{...(L=v.parameters)==null?void 0:L.docs,source:{originalSource:`{
+}`,...(k=(E=$.parameters)==null?void 0:E.docs)==null?void 0:k.source}}};var C,L,O;v.parameters={...v.parameters,docs:{...(C=v.parameters)==null?void 0:C.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#programmatic-time-selection",
@@ -278,7 +278,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(C=(O=v.parameters)==null?void 0:O.docs)==null?void 0:C.source}}};var M,z,W;w.parameters={...w.parameters,docs:{...(M=w.parameters)==null?void 0:M.docs,source:{originalSource:`{
+}`,...(O=(L=v.parameters)==null?void 0:L.docs)==null?void 0:O.source}}};var M,z,W;w.parameters={...w.parameters,docs:{...(M=w.parameters)==null?void 0:M.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#disabled-controls",
