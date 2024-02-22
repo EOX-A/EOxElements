@@ -22,7 +22,7 @@ const changeTimeTest = () => {
       layer="TEST_ID"
       .animationProperty=${testParam}
       .animationValues=${testTimes}
-      @timeChange="${(e) => {
+      @timechange="${(e) => {
         timeChangeEventValue = e.detail.currentTime;
       }}"
     ></eox-timecontrol>`
