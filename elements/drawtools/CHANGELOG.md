@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.7.0...drawtools-v0.8.0) (2024-02-22)
+
+
+### Features
+
+* Feature editor with shape upload and drag&drop ([#649](https://github.com/EOX-A/EOxElements/issues/649)) ([71acb56](https://github.com/EOX-A/EOxElements/commit/71acb560fa99a15688519af0256e6c8c4a2882da))
+
 ## [0.7.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.6.1...drawtools-v0.7.0) (2024-02-12)
 
 
