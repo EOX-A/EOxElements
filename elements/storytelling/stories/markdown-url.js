@@ -1,14 +1,12 @@
 /**
  * Primary component demonstrating the configuration options for eox-storytelling
- * It renders storytelling markdown based on string content we provide.
+ * It renders storytelling based on markdown URL.
  */
 import { html } from "lit";
 import "../src/main.js";
 
 export const MarkdownAsURL = {
-  args: {
-    markdownURL: `${window.location.origin}/sample.md`,
-  },
+  args: { markdownURL: `${window.location.origin}/sample.md` },
   render: (args) => html`
     <!-- Render eox-storytelling with basic markdown url. -->
     <eox-storytelling

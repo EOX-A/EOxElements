@@ -2,11 +2,8 @@ import { LitElement, html } from "lit";
 import markdownit from "markdown-it";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadMarkdownURL } from "./helpers/index";
-const md = markdownit({
-  html: true,
-  linkify: true,
-  typographer: true,
-});
+import mainStyle from "../../../utils/styles/dist/main.style";
+const md = markdownit({ html: true });
 
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
@@ -14,6 +11,8 @@ export class EOxStoryTelling extends LitElement {
     return {
       markdown: { attribute: "markdown", type: String },
       markdownURL: { attribute: "markdown-url", type: String },
+      noShadow: { type: Boolean },
+      unstyled: { type: Boolean },
     };
   }
 
@@ -29,21 +28,39 @@ export class EOxStoryTelling extends LitElement {
      * @type String - Markdown Content URL
      */
     this.markdownURL = null;
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
+
+    /**
+     * Renders the element without a shadow root
+     *
+     * @type {Boolean}
+     */
+    this.noShadow = false;
   }
 
-  async markdownURLFetch() {
-    if (this.markdownURL) {
-      this.markdown = await loadMarkdownURL(this.markdownURL);
+  /**
+   * @param {Map} changedProperties - A map of changed properties.
+   */
+  async updated(changedProperties) {
+    if (changedProperties.has("markdownURL") && this.markdownURL) {
+      this.markdown =
+        (await loadMarkdownURL(this.markdownURL)) || this.markdown;
       this.requestUpdate();
     }
   }
 
-  async updated(changedProperties) {
-    if (changedProperties.has("markdownURL")) await this.markdownURLFetch();
-  }
-
   render() {
-    return html` ${unsafeHTML(md.render(this.markdown))} `;
+    return html`
+      <style>
+        :host { display: block; }
+        ${!this.unstyled && mainStyle}
+      </style>
+      ${unsafeHTML(md.render(this.markdown))}
+    `;
   }
 }
 

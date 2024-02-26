@@ -13,7 +13,7 @@ export default {
 // Exporting each individual story for the eox-storytelling component.
 
 /**
- * Primary story showcasing basic usage.
+ * StoryTelling using basic markdownL.
  */
 export const Primary = PrimaryStory;
 
