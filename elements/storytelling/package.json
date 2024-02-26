@@ -28,6 +28,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "isomorphic-dompurify": "^2.4.0",
     "lit": "^3.0.2",
     "markdown-it": "^14.0.0"
   }

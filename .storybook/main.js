@@ -23,6 +23,6 @@ const config = {
     autodocs: "tag",
     toc: true,
   },
-  staticDirs: ["../public"],
+  staticDirs: ["../elements/storytelling/stories/public/"],
 };
 export default config;

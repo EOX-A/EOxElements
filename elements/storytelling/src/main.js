@@ -1,8 +1,10 @@
 import { LitElement, html } from "lit";
+import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadMarkdownURL } from "./helpers/index";
 import mainStyle from "../../../utils/styles/dist/main.style";
+import DOMPurify from "isomorphic-dompurify";
 const md = markdownit({ html: true });
 
 export class EOxStoryTelling extends LitElement {
@@ -16,6 +18,10 @@ export class EOxStoryTelling extends LitElement {
     };
   }
 
+  /**
+   * @type String - Generated HTML string using markdown
+   */
+  #html;
   constructor() {
     super();
 
@@ -46,9 +52,16 @@ export class EOxStoryTelling extends LitElement {
    * @param {Map} changedProperties - A map of changed properties.
    */
   async updated(changedProperties) {
+    // Attempt to fetch new markdown content from the URL if `markdownURL` changed
     if (changedProperties.has("markdownURL") && this.markdownURL) {
       this.markdown =
         (await loadMarkdownURL(this.markdownURL)) || this.markdown;
+      this.requestUpdate();
+    }
+
+    // Check if 'markdown' property itself has changed and generate sanitized html
+    if (changedProperties.has("markdown")) {
+      this.#html = DOMPurify.sanitize(md.render(this.markdown));
       this.requestUpdate();
     }
   }
@@ -59,7 +72,7 @@ export class EOxStoryTelling extends LitElement {
         :host { display: block; }
         ${!this.unstyled && mainStyle}
       </style>
-      ${unsafeHTML(md.render(this.markdown))}
+      ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
     `;
   }
 }
