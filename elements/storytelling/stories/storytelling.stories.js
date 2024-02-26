@@ -2,7 +2,7 @@
  * Stories for eox-storytelling component showcasing various configurations.
  * These stories provide visual representations and usage examples for different scenarios.
  */
-import { PrimaryStory } from "./index";
+import { PrimaryStory, MarkdownAsURLStory } from "./index";
 
 export default {
   title: "Elements/eox-storytelling",
@@ -16,3 +16,8 @@ export default {
  * Primary story showcasing basic usage.
  */
 export const Primary = PrimaryStory;
+
+/**
+ * StoryTelling using markdown URL.
+ */
+export const MarkdownAsURL = MarkdownAsURLStory;

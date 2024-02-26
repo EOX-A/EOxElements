@@ -5,17 +5,17 @@
 import { html } from "lit";
 import "../src/main.js";
 
-export const Primary = {
+export const MarkdownAsURL = {
   args: {
-    markdown: "## Hello World, Welcome to EOxStoryTelling.",
+    markdownURL: `${window.location.origin}/sample.md`,
   },
   render: (args) => html`
-    <!-- Render eox-storytelling with basic markdown. -->
+    <!-- Render eox-storytelling with basic markdown url. -->
     <eox-storytelling
-      id="markdown-str"
-      markdown=${args.markdown}
+      id="markdown-url"
+      markdown-url=${args.markdownURL}
     ></eox-storytelling>
   `,
 };
 
-export default Primary;
+export default MarkdownAsURL;
