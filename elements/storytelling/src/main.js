@@ -19,24 +19,26 @@ export class EOxStoryTelling extends LitElement {
   }
 
   /**
-   * @type String - Generated HTML string using markdown
+   * @type {String} - Generated HTML string using markdown
    */
   #html;
   constructor() {
     super();
 
     /**
-     * @type String - Markdown Content
+     * @type {String} - Markdown Content
      */
     this.markdown = "";
 
     /**
-     * @type String - Markdown Content URL
+     * @type {String} - Markdown Content URL
      */
     this.markdownURL = null;
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
 
