@@ -6,7 +6,9 @@ import { html } from "lit";
 import "../src/main.js";
 
 export const MarkdownAsURL = {
-  args: { markdownURL: `${window.location.origin}/sample.md` },
+  args: {
+    markdownURL: `${window.location.href.split("iframe.html")[0]}/sample.md`,
+  },
   render: (args) => html`
     <!-- Render eox-storytelling with basic markdown url. -->
     <eox-storytelling
