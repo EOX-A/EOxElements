@@ -68,16 +68,23 @@ export class EOxStoryTelling extends LitElement {
     }
   }
 
+  /**
+   * Handles changes to the slot's content, updating the component's internal state.
+   */
   handleSlotChange() {
+    // Query the shadow DOM for the slot element
     const slot = this.shadowRoot.querySelector("slot");
+
     if (slot) {
+      // Retrieve all nodes assigned to the slot, flattening any nested nodes
       const slottedContent = slot.assignedNodes({ flatten: true });
+
+      // Map each node to its text content, filtering out any non-text nodes, and join into a single string
       this.markdown = slottedContent
-        .map((node) => {
-          return node.textContent ? node.textContent : "";
-        })
+        .map((node) => (node.textContent ? node.textContent : ""))
         .join("");
 
+      // Request an update to re-render the component with the new content
       this.requestUpdate();
     }
   }
@@ -86,9 +93,10 @@ export class EOxStoryTelling extends LitElement {
     return html`
       <style>
         :host { display: block; }
+        .slot-hide { display: none; }
         ${!this.unstyled && mainStyle}
       </style>
-      <slot style="display: none;" @slotchange=${this.handleSlotChange}></slot>
+      <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
       ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
     `;
   }
