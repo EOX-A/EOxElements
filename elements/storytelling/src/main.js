@@ -68,12 +68,27 @@ export class EOxStoryTelling extends LitElement {
     }
   }
 
+  handleSlotChange() {
+    const slot = this.shadowRoot.querySelector("slot");
+    if (slot) {
+      const slottedContent = slot.assignedNodes({ flatten: true });
+      this.markdown = slottedContent
+        .map((node) => {
+          return node.textContent ? node.textContent : "";
+        })
+        .join("");
+
+      this.requestUpdate();
+    }
+  }
+
   render() {
     return html`
       <style>
         :host { display: block; }
         ${!this.unstyled && mainStyle}
       </style>
+      <slot style="display: none;" @slotchange=${this.handleSlotChange}></slot>
       ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
     `;
   }
