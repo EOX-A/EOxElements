@@ -37,10 +37,13 @@ const preview = {
       page: DocumentationTemplate,
       source: {
         transform: (code, storyContext) => {
+          const undecorated = storyContext.undecoratedStoryFn(storyContext);
           return code.replace(
             `<${storyContext.component}`,
             `<${storyContext.component} ${Object.entries(storyContext.args)
-              .filter(([key]) => key !== "onLoadend")
+              .filter(([key]) =>
+                undecorated.strings.find((s) => s.includes(`.${key}=`))
+              )
               .map(
                 ([key, value], index, row) =>
                   `\n .${key}='\${${JSON.stringify(value)}}'${
