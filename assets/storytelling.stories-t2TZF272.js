@@ -28,7 +28,7 @@ var v0=(u,e,t)=>{if(!e.has(u))throw TypeError("Cannot "+t)};var Re=(u,e,t)=>(v0(
       id="markdown-str"
       markdown=${u.markdown}
     ></eox-storytelling>
-  `},mi={args:{markdownURL:`${window.location.origin}/sample.md`},render:u=>Bu`
+  `},mi={args:{markdownURL:`${window.location.href.split("iframe.html")[0]}/sample.md`},render:u=>Bu`
     <!-- Render eox-storytelling with basic markdown url. -->
     <eox-storytelling
       id="markdown-url"
