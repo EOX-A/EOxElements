@@ -2,7 +2,12 @@
  * Stories for eox-storytelling component showcasing various configurations.
  * These stories provide visual representations and usage examples for different scenarios.
  */
-import { PrimaryStory, MarkdownAsURLStory, MarkdownSlotStory } from "./index";
+import {
+  PrimaryStory,
+  MarkdownAsURLStory,
+  MarkdownSlotStory,
+  MarkdownAttrCommentStory,
+} from "./index";
 
 export default {
   title: "Elements/eox-storytelling",
@@ -26,3 +31,8 @@ export const MarkdownAsURL = MarkdownAsURLStory;
  * StoryTelling using markdown from the slot.
  */
 export const MarkdownInsideSlot = MarkdownSlotStory;
+
+/**
+ * Renders storytelling using attribute as a comment in markdown.
+ */
+export const MarkdownWithAttributeAsComment = MarkdownAttrCommentStory;

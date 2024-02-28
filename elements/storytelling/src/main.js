@@ -5,7 +5,10 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { loadMarkdownURL } from "./helpers/index";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
+import { markdownItDecorateImproved } from "./markdown-it-plugin";
 const md = markdownit({ html: true });
+
+md.use(markdownItDecorateImproved);
 
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
