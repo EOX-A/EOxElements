@@ -1,7 +1,9 @@
 import { TAGS_EXPR, TAGS_OPENING, TAGS_SELF_CLOSING } from "../enums";
 
 /**
- * Plugin registration with Markdown-it
+ * Plugin registration with Markdown-it - Annotate Markdown documents with HTML attributes, IDs and classes.
+ * This plugin is improved ES6 version of `markdown-it-decorate`
+ * Ref - https://github.com/rstacruz/markdown-it-decorate
  *
  * @param {import("markdown-it").default} md - Markdown-It instances
  */
