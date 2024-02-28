@@ -3,3 +3,4 @@
 export { default as loadMarkdownTest } from "./load-markdown";
 export { default as loadMarkdownUrlTest } from "./load-markdown-url";
 export { default as loadMarkdownSlot } from "./load-markdown-slot";
+export { default as loadMarkdownAttrComment } from "./load-markdown-attribute-comment";

@@ -5,6 +5,7 @@ import {
   loadMarkdownTest,
   loadMarkdownUrlTest,
   loadMarkdownSlot,
+  loadMarkdownAttrComment,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -17,4 +18,7 @@ describe("Storytelling", () => {
 
   // Test case to ensure the storytelling component loads successfully and renders passed markdown from the slot
   it("loads markdown from slot", () => loadMarkdownSlot());
+
+  // Test case to ensure the storytelling component loads with attribute from comments
+  it("load markdown as attribute as comments", () => loadMarkdownAttrComment());
 });
