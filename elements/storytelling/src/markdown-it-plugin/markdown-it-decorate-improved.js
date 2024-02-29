@@ -8,6 +8,7 @@ import { TAGS_EXPR, TAGS_OPENING, TAGS_SELF_CLOSING } from "../enums";
  * @param {import("markdown-it").default} md - Markdown-It instances
  */
 export default function attributes(md) {
+  md.nav = [];
   md.core.ruler.push("curly_attributes", curlyAttrs);
 }
 
@@ -21,6 +22,7 @@ function curlyAttrs(state) {
   const omissions = [];
   let parent;
   const stack = { len: 0, contents: [], types: {} };
+  const nav = [];
 
   tokens.forEach((token, i) => {
     if (isOpener(token.type) || TAGS_SELF_CLOSING[token.type]) {
@@ -38,11 +40,12 @@ function curlyAttrs(state) {
     }
 
     if (token.type === "inline") {
-      curlyInline(token.children, stack);
+      curlyInline(token.children, stack, nav);
     }
   });
 
   omissions.forEach((idx) => tokens.splice(idx, 1));
+  state.md.nav = nav || [];
 }
 
 // Utility functions below this line handle specific tasks within the plugin logic
@@ -63,8 +66,9 @@ function isOpener(type) {
  *
  * @param {Array<Object>} children - Inline children
  * @param {Object} stack
+ * @param {Array<Object>} nav
  */
-function curlyInline(children, stack) {
+function curlyInline(children, stack, nav) {
   let lastText;
   const omissions = [];
 
@@ -88,6 +92,15 @@ function curlyInline(children, stack) {
 
     if (child.type === "text") lastText = child;
   });
+
+  if (stack.last.tag === "h2") {
+    const title = (lastText && lastText["content"]) || children[0].content;
+    const id =
+      (stack.last.attrs || []).find((subArr) => subArr[0] === "id")?.[1] ||
+      title.toLowerCase().replace(/ /g, "-");
+
+    nav.push({ title, id });
+  }
 
   omissions.forEach((idx) => children.splice(idx, 1));
 }

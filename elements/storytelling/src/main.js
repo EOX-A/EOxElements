@@ -16,6 +16,7 @@ export class EOxStoryTelling extends LitElement {
     return {
       markdown: { attribute: "markdown", type: String },
       markdownURL: { attribute: "markdown-url", type: String },
+      enableNav: { type: Boolean },
       noShadow: { type: Boolean },
       unstyled: { type: Boolean },
     };
@@ -51,6 +52,20 @@ export class EOxStoryTelling extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * Enable or disable navigation
+     *
+     * @type {Boolean}
+     */
+    this.enableNav = false;
+
+    /**
+     * List of items in navigation
+     *
+     * @type {Array<Object>}
+     */
+    this.nav = [];
   }
 
   /**
@@ -67,6 +82,7 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       this.#html = DOMPurify.sanitize(md.render(this.markdown));
+      if (this.enableNav) this.nav = md.nav;
       this.requestUpdate();
     }
   }
@@ -99,6 +115,16 @@ export class EOxStoryTelling extends LitElement {
         .slot-hide { display: none; }
         ${!this.unstyled && mainStyle}
       </style>
+      ${when(
+        this.enableNav && this.nav.length,
+        () => html`
+          <ul class="nav">
+            ${this.nav.map(
+              ({ id, title }) => html`<li><a href="#${id}">${title}</a></li>`
+            )}
+          </ul>
+        `
+      )}
       <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
       ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
     `;
