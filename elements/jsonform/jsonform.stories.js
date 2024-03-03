@@ -11,6 +11,11 @@ const externalSchema =
 const externalStartVals =
   "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogStartVals.json";
 
+const dereferenceSchema =
+  "https://raw.githubusercontent.com/EOEPCA/open-science-catalog-metadata-testing/ui-schemas/schemas/variables/children.json";
+const dereferenceStartVals =
+  "https://raw.githubusercontent.com/EOEPCA/open-science-catalog-metadata-testing/ui-schemas/variables/ablation-zones-accumulation-zones/catalog.json";
+
 export default {
   title: "Elements/eox-jsonform",
   tags: ["autodocs"],
@@ -48,5 +53,12 @@ export const External = {
   args: {
     schema: externalSchema,
     startVals: externalStartVals,
+  },
+};
+
+export const Dereference = {
+  args: {
+    schema: dereferenceSchema,
+    startVals: dereferenceStartVals,
   },
 };
