@@ -1,6 +1,6 @@
 {
   "name": "@eox/storytelling",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -28,6 +28,8 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "lit": "^3.0.2"
+    "isomorphic-dompurify": "^2.4.0",
+    "lit": "^3.0.2",
+    "markdown-it": "^14.0.0"
   }
 }

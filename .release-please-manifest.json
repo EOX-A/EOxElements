@@ -2,10 +2,10 @@
   "elements/drawtools": "0.8.0",
   "elements/itemfilter": "0.12.1",
   "elements/layercontrol": "0.15.1",
-  "elements/map": "1.2.0",
+  "elements/map": "1.3.0",
   "elements/stacinfo": "0.3.0",
   "elements/timecontrol": "0.4.1",
   "elements/jsonform": "0.3.0",
   "elements/layout": "0.1.0",
-  "elements/storytelling": "0.0.0"
+  "elements/storytelling": "0.1.0"
 }

@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/map-v1.2.0...map-v1.3.0) (2024-02-26)
+
+
+### Features
+
+* Feature editor with shape upload and drag&drop ([#649](https://github.com/EOX-A/EOxElements/issues/649)) ([c21eaf6](https://github.com/EOX-A/EOxElements/commit/c21eaf658217a642f54982dfb1d094d1b8da0bf8))
+
+### Miscellaneous Chores
+
+* Update ol versions to ^9.0.0 ([#689](https://github.com/EOX-A/EOxElements/issues/689)) ([71acb56](https://github.com/EOX-A/EOxElements/commit/71acb560fa99a15688519af0256e6c8c4a2882da))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/map-v1.1.1...map-v1.2.0) (2024-01-19)
 
 
