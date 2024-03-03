@@ -2,7 +2,6 @@
   "name": "@eox/jsonform",
   "version": "0.3.0",
   "type": "module",
-  "browser": true,
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
