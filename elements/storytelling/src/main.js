@@ -97,6 +97,11 @@ export class EOxStoryTelling extends LitElement {
       <style>
         :host { display: block; }
         .slot-hide { display: none; }
+        iframe,
+        img,
+        video {
+          max-width: 100%;
+        }
         ${!this.unstyled && mainStyle}
       </style>
       <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
