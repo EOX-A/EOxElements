@@ -1,4 +1,4 @@
-import "@eox/map/src/plugins/advancedLayersAndSources";
+import "@eox/map/dist/plugins/advancedLayersAndSources";
 import "@eox/map";
 import "@eox/jsonform";
 import "../src/main";
