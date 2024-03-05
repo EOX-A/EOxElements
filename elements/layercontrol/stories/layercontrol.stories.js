@@ -1,5 +1,6 @@
 import "@eox/map/src/plugins/advancedLayersAndSources";
 import "@eox/map/main";
+import "@eox/jsonform";
 import "../src/main";
 import {
   ExclusiveLayersStory,
@@ -59,6 +60,7 @@ export const Tools = ToolsStory;
  * The "config" tool reads settings passed via the "layerConfig" property,
  * e.g. rendering a from from a provided JSON schema that allows updating the
  * source url parameters.
+ * Needs import of `@eox/jsonform` in order to work.
  */
 export const LayerConfig = LayerConfigStory;
 
