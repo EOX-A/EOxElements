@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
-import "../../../jsonform/src/main";
+// import "../../../jsonform/src/main";
+// import "@eox/jsonform";
 import { getStartVals } from "../helpers";
 import { dataChangeMethod } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
@@ -111,7 +112,9 @@ export class EOxLayerControlLayerConfig extends LitElement {
   render() {
     // Fetch initial values for the layer and its configuration
     this.#startVals = getStartVals(this.layer, this.layerConfig);
-
+    if (!customElements.get("eox-jsonform")) {
+      console.error("Please import @eox/jsonform in order to use layerconfig");
+    }
     // Options for the JSON form rendering
     const options = {
       disable_edit_json: true,
@@ -133,7 +136,9 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .startVals=${this.#startVals}
             .options=${options}
             @change=${this.debouncedDataChange}
-          ></eox-jsonform>
+            >Please import @eox/jsonform in order to use
+            layerconfig</eox-jsonform
+          >
         `
       )}
     `;
