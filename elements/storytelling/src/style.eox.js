@@ -1,4 +1,9 @@
 const styleEOX = `
+  iframe,
+  img,
+  video {
+    max-width: 100%;
+  }
   .navigation {
     width: 100%;
     background: white;
