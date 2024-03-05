@@ -1,5 +1,5 @@
 import "@eox/map/src/plugins/advancedLayersAndSources";
-import "@eox/map/main";
+import "@eox/map";
 import "../src/main";
 import { LayerListStory, SingleLayerStory, TabsStory } from ".";
 
