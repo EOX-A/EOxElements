@@ -1,6 +1,4 @@
 import { LitElement, html } from "lit";
-// import "../../../jsonform/src/main";
-// import "@eox/jsonform";
 import { getStartVals } from "../helpers";
 import { dataChangeMethod } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
