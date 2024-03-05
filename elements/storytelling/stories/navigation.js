@@ -37,7 +37,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
     ></eox-storytelling>
     <style>
       .sb-show-main.sb-main-padded {
-          padding: 0;
+        padding: 0;
       }
     </style>
   `,

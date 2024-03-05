@@ -23,15 +23,39 @@ function curlyAttrs(state) {
   let parent;
   const stack = { len: 0, contents: [], types: {} };
   const nav = [];
+  let finalTokens = [];
+  let sectionStart = false;
+  let sectionStartIndex = 0;
 
-  tokens.forEach((token, i) => {
+  // Iterate through tokens to process them
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+
     if (isOpener(token.type) || TAGS_SELF_CLOSING[token.type]) {
       sPush(stack, token);
     }
 
+    if (token.type === "heading_open" && token.tag === "h2") {
+      if (sectionStart) {
+        finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
+        sectionStart = false;
+        sectionStartIndex = -1;
+      }
+
+      if (!sectionStart) {
+        finalTokens.push(addNewHTMLSection(state, `<div id="{id}">`, 0, 1));
+        sectionStart = true;
+        sectionStartIndex = finalTokens.length - 1;
+      }
+    }
+
     if (token.type === "html_block") {
       const m = token.content.match(TAGS_EXPR);
-      if (!m) return;
+      if (!m) {
+        token.level = token.level + 1;
+        finalTokens.push(token);
+        return;
+      }
 
       parent = findParent(stack, m[1], m[2]);
       if (parent && applyToToken(parent, m[3])) {
@@ -39,16 +63,43 @@ function curlyAttrs(state) {
       }
     }
 
-    if (token.type === "inline") {
-      curlyInline(token.children, stack, nav);
-    }
-  });
+    if (token.type === "inline")
+      finalTokens = curlyInline(
+        token.children,
+        stack,
+        nav,
+        finalTokens,
+        sectionStartIndex
+      );
+
+    token.level = token.level + 1;
+    finalTokens.push(token);
+  }
+  if (sectionStart)
+    finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
 
   omissions.forEach((idx) => tokens.splice(idx, 1));
+  state.tokens = finalTokens;
   state.md.nav = nav || [];
 }
 
 // Utility functions below this line handle specific tasks within the plugin logic
+
+/**
+ * Add new html section token
+ *
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {String} html
+ * @param {Number} level
+ * @param {Number} nesting
+ */
+function addNewHTMLSection(state, html, level, nesting) {
+  const token = new state.Token("html_block", "", level);
+  token.content = html;
+  token.nesting = nesting;
+
+  return token;
+}
 
 /**
  * Check if a token type is a block opener
@@ -67,8 +118,12 @@ function isOpener(type) {
  * @param {Array<Object>} children - Inline children
  * @param {Object} stack
  * @param {Array<Object>} nav
+ * @param {Array<Object>} finalTokens
+ * @param {Number} sectionStartIndex
+ * @return {Array<Object>} finalTokens
+ *
  */
-function curlyInline(children, stack, nav) {
+function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
   let lastText;
   const omissions = [];
 
@@ -95,14 +150,22 @@ function curlyInline(children, stack, nav) {
 
   if (stack.last.tag === "h2") {
     const title = (lastText && lastText["content"]) || children[0].content;
-    const id =
-      (stack.last.attrs || []).find((subArr) => subArr[0] === "id")?.[1] ||
-      title.toLowerCase().replace(/ /g, "-");
+    const attrsId = (stack.last.attrs || []).find(
+      (subArr) => subArr[0] === "id"
+    )?.[1];
+    const titleSlug = title.toLowerCase().replace(/ /g, "-");
+    const id = `section-${attrsId || titleSlug}`;
+
+    finalTokens[sectionStartIndex].content = finalTokens[
+      sectionStartIndex
+    ].content.replace("{id}", id);
 
     nav.push({ title, id });
   }
 
   omissions.forEach((idx) => children.splice(idx, 1));
+
+  return finalTokens;
 }
 
 /**

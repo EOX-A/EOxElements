@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import {highlightNavigation, loadMarkdownURL} from "./helpers/index";
+import { highlightNavigation, loadMarkdownURL } from "./helpers/index";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import { markdownItDecorateImproved } from "./markdown-it-plugin";
@@ -130,19 +130,19 @@ export class EOxStoryTelling extends LitElement {
 
       <div class="story-telling">
         ${when(
-  this.enableNav && this.nav.length,
-  () => html`
-              <div class="navigation">
-                <div class="container">
-                  <ul>
-                    ${this.nav.map(
-                      ({ id, title }) =>
-                        html`<li><a href="#${id}">${title}</a></li>`
-                      )}
-                  </ul>
-                </div>
+          this.enableNav && this.nav.length,
+          () => html`
+            <div class="navigation">
+              <div class="container">
+                <ul>
+                  ${this.nav.map(
+                    ({ id, title }) =>
+                      html`<li><a href="#${id}">${title}</a></li>`
+                  )}
+                </ul>
               </div>
-            `
+            </div>
+          `
         )}
         <div class="container">
           <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
