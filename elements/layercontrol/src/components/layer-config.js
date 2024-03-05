@@ -134,9 +134,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .startVals=${this.#startVals}
             .options=${options}
             @change=${this.debouncedDataChange}
-            >Please import @eox/jsonform in order to use
-            layerconfig</eox-jsonform
-          >
+          ></eox-jsonform>
         `
       )}
     `;
