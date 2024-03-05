@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.16.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.15.1...layercontrol-v0.16.0) (2024-03-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove @eox/jsonform from layercontrol bundle ([#714](https://github.com/EOX-A/EOxElements/issues/714))
+
+### Bug Fixes
+
+* Remove @eox/jsonform from layercontrol bundle ([#714](https://github.com/EOX-A/EOxElements/issues/714)) ([273cb6c](https://github.com/EOX-A/EOxElements/commit/273cb6c051d34872df79a0465980e124e8043eaf))
+
 ## [0.15.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.15.0...layercontrol-v0.15.1) (2024-02-19)
 
 
