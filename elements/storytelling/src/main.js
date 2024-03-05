@@ -2,10 +2,11 @@ import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { loadMarkdownURL } from "./helpers/index";
+import {highlightNavigation, loadMarkdownURL} from "./helpers/index";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import { markdownItDecorateImproved } from "./markdown-it-plugin";
+import styleEOX from "./style.eox.js";
 const md = markdownit({ html: true });
 
 md.use(markdownItDecorateImproved);
@@ -108,25 +109,46 @@ export class EOxStoryTelling extends LitElement {
     }
   }
 
+  // Lifecycle method called after the first update
+  firstUpdated() {
+    // Add scroll event listener for navigation highlighting
+    document.addEventListener("scroll", highlightNavigation);
+  }
+
+  createRenderRoot() {
+    return this;
+  }
+
   render() {
     return html`
       <style>
         :host { display: block; }
         .slot-hide { display: none; }
+        ${!this.unstyled && styleEOX}
         ${!this.unstyled && mainStyle}
       </style>
-      ${when(
-        this.enableNav && this.nav.length,
-        () => html`
-          <ul class="nav">
-            ${this.nav.map(
-              ({ id, title }) => html`<li><a href="#${id}">${title}</a></li>`
-            )}
-          </ul>
-        `
-      )}
-      <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
-      ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
+
+      <div class="story-telling">
+        ${when(
+  this.enableNav && this.nav.length,
+  () => html`
+              <div class="navigation">
+                <div class="container">
+                  <ul>
+                    ${this.nav.map(
+                      ({ id, title }) =>
+                        html`<li><a href="#${id}">${title}</a></li>`
+                      )}
+                  </ul>
+                </div>
+              </div>
+            `
+        )}
+        <div class="container">
+          <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
+          ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
+        </div>
+      </div>
     `;
   }
 }
