@@ -43,7 +43,9 @@ function curlyAttrs(state) {
       }
 
       if (!sectionStart) {
-        finalTokens.push(addNewHTMLSection(state, `<div id="{id}">`, 0, 1));
+        finalTokens.push(
+          addNewHTMLSection(state, `<div id="{id}" class="section-wrap">`, 0, 1)
+        );
         sectionStart = true;
         sectionStartIndex = finalTokens.length - 1;
       }

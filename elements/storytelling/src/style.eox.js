@@ -63,5 +63,8 @@ const styleEOX = `
   .navigation li a:hover {
     --primary-background-hover: transparent;
   }
+  .section-wrap {
+    scroll-margin: 120px;
+  }
 `;
 export default styleEOX;

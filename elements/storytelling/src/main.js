@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { highlightNavigation, loadMarkdownURL } from "./helpers/index";
+import { loadMarkdownURL } from "./helpers/index";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import { markdownItDecorateImproved } from "./markdown-it-plugin";
@@ -17,6 +17,7 @@ export class EOxStoryTelling extends LitElement {
     return {
       markdown: { attribute: "markdown", type: String },
       markdownURL: { attribute: "markdown-url", type: String },
+      nav: { type: Array },
       enableNav: { type: Boolean },
       noShadow: { type: Boolean },
       unstyled: { type: Boolean },
@@ -86,6 +87,17 @@ export class EOxStoryTelling extends LitElement {
       if (this.enableNav) this.nav = md.nav;
       this.requestUpdate();
     }
+
+    if (changedProperties.has("nav")) {
+      this.shadowRoot.querySelectorAll(".navigation a").forEach((doc) => {
+        doc.addEventListener("click", (e) => {
+          e.preventDefault();
+          this.shadowRoot
+            .querySelector(e.target.hash)
+            .scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    }
   }
 
   /**
@@ -109,18 +121,9 @@ export class EOxStoryTelling extends LitElement {
     }
   }
 
-  // Lifecycle method called after the first update
-  firstUpdated() {
-    // Add scroll event listener for navigation highlighting
-    document.addEventListener("scroll", highlightNavigation);
-  }
-
-  createRenderRoot() {
-    return this;
-  }
-
   render() {
     return html`
+      <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
       <style>
         :host { display: block; }
         .slot-hide { display: none; }
@@ -137,17 +140,16 @@ export class EOxStoryTelling extends LitElement {
                 <ul>
                   ${this.nav.map(
                     ({ id, title }) =>
-                      html`<li><a href="#${id}">${title}</a></li>`
+                      html`<li class="nav-${id}">
+                        <a href="#${id}">${title}</a>
+                      </li>`
                   )}
                 </ul>
               </div>
             </div>
           `
         )}
-        <div class="container">
-          <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
-          ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
-        </div>
+        ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
       </div>
     `;
   }
