@@ -8,6 +8,7 @@ import {
   MarkdownSlotStory,
   MarkdownAttrCommentStory,
   NavigationStory,
+  MarkdownBasicConfigStory,
 } from "./index";
 
 export default {
@@ -39,6 +40,11 @@ export const MarkdownInsideSlot = MarkdownSlotStory;
 export const MarkdownWithAttributeAsComment = MarkdownAttrCommentStory;
 
 /**
+ * StoryTelling with Basic Config
+ */
+export const MarkdownWithBasicConfig = MarkdownBasicConfigStory;
+
+/**
  * StoryTelling with Navigation
  */
-export const WithNavigation = NavigationStory;
+export const MarkdownWithNavigation = NavigationStory;

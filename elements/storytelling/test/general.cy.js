@@ -8,6 +8,7 @@ import {
   loadMarkdownAttrComment,
   loadSectionsTest,
   loadNavigationTest,
+  loadMarkdownConfigTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -30,4 +31,8 @@ describe("Storytelling", () => {
   // Test case to ensure all the navigation generated using sections
   it("loads all the navigation with help of sections", () =>
     loadNavigationTest());
+
+  // Test case to loads basic config through storytelling markdown
+  it("loads basic config through storytelling markdown", () =>
+    loadMarkdownConfigTest());
 });

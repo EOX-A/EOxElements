@@ -29,6 +29,8 @@ const styleEOX = `
     -ms-overflow-style: none;
     scrollbar-width: none;
     overflow-x: auto;
+    margin: 0;
+    padding: 0;
   }
   .navigation .container ul::-webkit-scrollbar { 
     display: none;

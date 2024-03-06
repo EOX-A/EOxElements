@@ -9,11 +9,14 @@ import {
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
-import { markdownItDecorateImproved } from "./markdown-it-plugin";
+import {
+  markdownItConfig,
+  markdownItDecorateImproved,
+} from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
 const md = markdownit({ html: true });
 
-md.use(markdownItDecorateImproved);
+md.use(markdownItDecorateImproved).use(markdownItConfig);
 
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
@@ -32,6 +35,13 @@ export class EOxStoryTelling extends LitElement {
    * @type {String} - Generated HTML string using markdown
    */
   #html;
+
+  /**
+   * Basic config
+   *
+   * @type {Object}
+   */
+  #config = {};
   constructor() {
     super();
 
@@ -90,6 +100,11 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       this.#html = DOMPurify.sanitize(md.render(this.markdown));
+      this.#config = md.config;
+
+      if (typeof this.#config.nav === "boolean")
+        this.showNav = this.#config.nav;
+
       if (this.showNav) this.nav = md.nav;
       this.requestUpdate();
     }
