@@ -7,6 +7,7 @@ import {
   MarkdownAsURLStory,
   MarkdownSlotStory,
   MarkdownAttrCommentStory,
+  NavigationStory,
 } from "./index";
 
 export default {
@@ -36,3 +37,8 @@ export const MarkdownInsideSlot = MarkdownSlotStory;
  * Renders storytelling using attribute as a comment in markdown.
  */
 export const MarkdownWithAttributeAsComment = MarkdownAttrCommentStory;
+
+/**
+ * StoryTelling with Navigation
+ */
+export const WithNavigation = NavigationStory;
