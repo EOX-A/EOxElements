@@ -1,5 +1,6 @@
-import{j as e}from"./jsx-runtime-vNq4Oc-g.js";import{u as r}from"./index-Dbo06S9W.js";import"./index-4g5l5LRQ.js";import"./_commonjsHelpers-4gQjN7DL.js";function o(t){const n=Object.assign({h1:"h1",p:"p",a:"a",h2:"h2"},r(),t.components);return e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{id:"eoxelements-beta",children:"EOxElements [beta]"}),`
-`,e.jsx(n.p,{children:e.jsx(n.a,{href:"https://github.com/EOX-A/EOxElements",target:"_blank",rel:"nofollow noopener noreferrer",children:"GitHub repository"})}),`
+import{j as e}from"./jsx-runtime-vNq4Oc-g.js";import{u as r}from"./index-Dbo06S9W.js";import"./index-4g5l5LRQ.js";import"./_commonjsHelpers-4gQjN7DL.js";function o(t){const n=Object.assign({h1:"h1",h2:"h2",p:"p",a:"a"},r(),t.components);return e.jsxs(e.Fragment,{children:[e.jsx(n.h1,{id:"eoxelements-beta",children:"EOxElements [beta]"}),`
+`,`
+`,e.jsxs("a",{href:"https://github.com/EOX-A/EOxElements",target:"_blank",style:{display:"flex",alignItems:"center",margin:"20px 0"},children:[e.jsx("img",{src:"/github-mark.svg",alt:"github logo",width:"25",style:{marginRight:"6px"}}),"GitHub repository"]}),`
 `,e.jsx(n.h2,{id:"introduction",children:"Introduction"}),`
 `,e.jsx(n.p,{children:`EOxElements are a set of reusable, modular and highly configurable components for building geospatial applications.
 The goal is to reduce code duplication during development, and offer ready-made solutions for quick bootstrapping and
