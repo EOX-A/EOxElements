@@ -29,6 +29,8 @@ const styleEOX = `
     -ms-overflow-style: none;
     scrollbar-width: none;
     overflow-x: auto;
+    margin: 0;
+    padding: 0;
   }
   .navigation .container ul::-webkit-scrollbar { 
     display: none;
@@ -65,10 +67,6 @@ const styleEOX = `
   }
   .section-wrap {
     scroll-margin: 120px;
-  }
-  .config-wrap textarea {
-    width: 100%;
-    height: 200px;
   }
 `;
 export default styleEOX;

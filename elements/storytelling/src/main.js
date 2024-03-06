@@ -25,9 +25,7 @@ export class EOxStoryTelling extends LitElement {
       markdown: { attribute: "markdown", type: String },
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
-      config: { state: true, attribute: false, type: Object },
       showNav: { attribute: "show-nav", type: Boolean },
-      showConfig: { attribute: "show-config", type: Boolean },
       noShadow: { type: Boolean },
       unstyled: { type: Boolean },
     };
@@ -37,6 +35,13 @@ export class EOxStoryTelling extends LitElement {
    * @type {String} - Generated HTML string using markdown
    */
   #html;
+
+  /**
+   * Basic config
+   *
+   * @type {Object}
+   */
+  #config = {};
   constructor() {
     super();
 
@@ -74,25 +79,11 @@ export class EOxStoryTelling extends LitElement {
     this.showNav = false;
 
     /**
-     * Show config for debug purpose
-     *
-     * @type {Boolean}
-     */
-    this.showConfig = false;
-
-    /**
      * List of items in navigation
      *
      * @type {Array<Object>}
      */
     this.nav = [];
-
-    /**
-     * Basic config
-     *
-     * @type {Object}
-     */
-    this.config = {};
   }
 
   /**
@@ -109,9 +100,10 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       this.#html = DOMPurify.sanitize(md.render(this.markdown));
-      this.config = md.config;
+      this.#config = md.config;
 
-      if (typeof this.config.nav === "boolean") this.showNav = this.config.nav;
+      if (typeof this.#config.nav === "boolean")
+        this.showNav = this.#config.nav;
 
       if (this.showNav) this.nav = md.nav;
       this.requestUpdate();
@@ -185,13 +177,6 @@ export class EOxStoryTelling extends LitElement {
         )}
         ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
       </div>
-
-      ${when(this.showConfig && this.config, () => {
-        const config = JSON.stringify(this.config || {}, null, 2);
-        return html`<div class="config-wrap">
-          <textarea disabled>${config}</textarea>
-        </div>`;
-      })}
     `;
   }
 }
