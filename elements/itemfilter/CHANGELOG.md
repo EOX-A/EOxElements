@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.12.1...itemfilter-v0.13.0) (2024-03-06)
+
+
+### Features
+
+* Introduce reactive `items` property ([#720](https://github.com/EOX-A/EOxElements/issues/720)) ([3281be4](https://github.com/EOX-A/EOxElements/commit/3281be4fdaf42e48ca10184e7ef008be86e957b9))
+
 ## [0.12.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.12.0...itemfilter-v0.12.1) (2023-12-20)
 
 
