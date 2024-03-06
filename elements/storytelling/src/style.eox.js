@@ -66,5 +66,9 @@ const styleEOX = `
   .section-wrap {
     scroll-margin: 120px;
   }
+  .config-wrap textarea {
+    width: 100%;
+    height: 200px;
+  }
 `;
 export default styleEOX;

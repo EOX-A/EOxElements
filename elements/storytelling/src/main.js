@@ -9,11 +9,14 @@ import {
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
-import { markdownItDecorateImproved } from "./markdown-it-plugin";
+import {
+  markdownItConfig,
+  markdownItDecorateImproved,
+} from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
 const md = markdownit({ html: true });
 
-md.use(markdownItDecorateImproved);
+md.use(markdownItDecorateImproved).use(markdownItConfig);
 
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
@@ -22,7 +25,9 @@ export class EOxStoryTelling extends LitElement {
       markdown: { attribute: "markdown", type: String },
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
+      config: { state: true, attribute: false, type: Object },
       showNav: { attribute: "show-nav", type: Boolean },
+      showConfig: { attribute: "show-config", type: Boolean },
       noShadow: { type: Boolean },
       unstyled: { type: Boolean },
     };
@@ -69,11 +74,25 @@ export class EOxStoryTelling extends LitElement {
     this.showNav = false;
 
     /**
+     * Show config for debug purpose
+     *
+     * @type {Boolean}
+     */
+    this.showConfig = false;
+
+    /**
      * List of items in navigation
      *
      * @type {Array<Object>}
      */
     this.nav = [];
+
+    /**
+     * Basic config
+     *
+     * @type {Object}
+     */
+    this.config = {};
   }
 
   /**
@@ -90,6 +109,10 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       this.#html = DOMPurify.sanitize(md.render(this.markdown));
+      this.config = md.config;
+
+      if (typeof this.config.nav === "boolean") this.showNav = this.config.nav;
+
       if (this.showNav) this.nav = md.nav;
       this.requestUpdate();
     }
@@ -162,6 +185,17 @@ export class EOxStoryTelling extends LitElement {
         )}
         ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
       </div>
+
+      ${when(
+        this.showConfig && this.config,
+        () => html`
+          <div class="config-wrap">
+            <textarea disabled>
+${JSON.stringify(this.config || {}, null, 2)}</textarea
+            >
+          </div>
+        `
+      )}
     `;
   }
 }

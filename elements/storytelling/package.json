@@ -30,6 +30,7 @@
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
     "isomorphic-dompurify": "^2.4.0",
+    "js-yaml": "^4.1.0",
     "lit": "^3.0.2",
     "markdown-it": "^14.0.0"
   }
