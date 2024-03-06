@@ -20,10 +20,10 @@ const changeTimeTest = () => {
     html`<eox-timecontrol
       for="mock-map"
       layer="TEST_ID"
-      .animationProperty=${testParam}
-      .animationValues=${testTimes}
+      .controlProperty=${testParam}
+      .controlValues=${testTimes}
       @timechange="${(e) => {
-        timeChangeEventValue = e.detail.currentTime;
+        timeChangeEventValue = e.detail.currentStep;
       }}"
     ></eox-timecontrol>`
   ).as(timeControl);
@@ -34,7 +34,7 @@ const changeTimeTest = () => {
     testLayer = map.getLayers().getArray()[0];
   });
   cy.get(timeControl).and(($el) => {
-    expect($el[0].currentTime).to.be.eq(testTimes[0]);
+    expect($el[0].currentStep).to.be.eq(testTimes[0]);
     expect(testLayer.getSource().getParams()[testParam]).to.be.eq(testTimes[0]);
   });
 
@@ -45,12 +45,12 @@ const changeTimeTest = () => {
     });
 
   cy.get(timeControl).and(($el) => {
-    expect($el[0].currentTime).to.be.eq(testTimes[1]);
+    expect($el[0].currentStep).to.be.eq(testTimes[1]);
     expect(testLayer.getSource().getParams()[testParam]).to.be.eq(testTimes[1]);
   });
 
   cy.get(timeControl).and(($el) => {
-    expect(timeChangeEventValue).to.be.eq($el[0].currentTime);
+    expect(timeChangeEventValue).to.be.eq($el[0].currentStep);
   });
 };
 

@@ -12,8 +12,8 @@ export const Primary = {
   args: {
     for: "eox-map#primary",
     layer: "AWS_NO2-VISUALISATION",
-    animationProperty: "TIME",
-    animationValues: [
+    controlProperty: "TIME",
+    controlValues: [
       "2022-12-05",
       "2022-12-12",
       "2022-12-19",
@@ -73,8 +73,8 @@ export const Primary = {
     <eox-timecontrol
       .for=${args.for}
       .layer=${args.layer}
-      .animationProperty=${args.animationProperty}
-      .animationValues=${args.animationValues}
+      .controlProperty=${args.controlProperty}
+      .controlValues=${args.controlValues}
       .slider=${args.slider}
     ></eox-timecontrol>
   `,
@@ -97,8 +97,8 @@ export const Slider = {
     <eox-timecontrol
       .for=${args.for}
       .layer=${args.layer}
-      .animationProperty=${args.animationProperty}
-      .animationValues=${args.animationValues}
+      .controlProperty=${args.controlProperty}
+      .controlValues=${args.controlValues}
       .slider=${args.slider}
     ></eox-timecontrol>
   `,
@@ -124,7 +124,7 @@ export const ProgrammaticTimeSelection = {
         @click="${() => {
           const time = document.getElementById("time").value;
           const timeControl = document.getElementById("programmatic");
-          timeControl.currentTime = time;
+          timeControl.currentStep = time;
         }}"
       >
         Go
@@ -134,23 +134,22 @@ export const ProgrammaticTimeSelection = {
       id="programmatic"
       .for=${args.for}
       .layer=${args.layer}
-      .animationProperty=${args.animationProperty}
-      .animationValues=${args.animationValues}
+      .controlProperty=${args.controlProperty}
+      .controlValues=${args.controlValues}
       .slider=${args.slider}
     ></eox-timecontrol>
   `,
 };
 
-export const DisabledControlButtons = {
+export const DisabledPlayButton = {
   args: {
     ...Primary.args,
-    for: "eox-map#disabled-controls",
-    slider: true,
+    for: "eox-map#disabled-play",
     disablePlay: true,
   },
   render: (args) => html`
     <eox-map
-      id="disabled-controls"
+      id="disabled-play"
       style="width: 400px; height: 300px;"
       .zoom=${args.zoom}
       .center=${args.center}
@@ -159,8 +158,8 @@ export const DisabledControlButtons = {
     <eox-timecontrol
       .for=${args.for}
       .layer=${args.layer}
-      .animationProperty=${args.animationProperty}
-      .animationValues=${args.animationValues}
+      .controlProperty=${args.controlProperty}
+      .controlValues=${args.controlValues}
       .slider=${args.slider}
       .disablePlay=${args.disablePlay}
     ></eox-timecontrol>

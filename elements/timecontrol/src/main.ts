@@ -20,14 +20,14 @@ export class EOxTimeControl extends LitElement {
   /**
    * The WMS parameter to update
    */
-  @property({ attribute: "animation-property" })
-  animationProperty?: string;
+  @property({ attribute: "control-property" })
+  controlProperty?: string;
 
   /**
    * The list of available values for the animation property
    */
-  @property({ attribute: "animation-values", type: Array })
-  animationValues: Array<string> = [];
+  @property({ attribute: "control-values", type: Array })
+  controlValues: Array<string> = [];
 
   /**
    * The query selector for the map
@@ -93,31 +93,31 @@ export class EOxTimeControl extends LitElement {
    */
   setConfig(config: {
     layer: string;
-    animationProperty: string;
-    animationValues: Array<string>;
+    controlProperty: string;
+    controlValues: Array<string>;
   }) {
     this.layer = config.layer ?? this.layer;
-    this.animationProperty = config.animationProperty ?? this.animationProperty;
-    this.animationValues = config.animationValues ?? this.animationValues;
+    this.controlProperty = config.controlProperty ?? this.controlProperty;
+    this.controlValues = config.controlValues ?? this.controlValues;
     this.requestUpdate();
     this._updateStep(0);
   }
 
   /**
-   * The currently selected time
+   * The currently selected step
    * @type string
    */
-  get currentTime() {
-    return this.animationValues[this._newTimeIndex];
+  get currentStep() {
+    return this.controlValues[this._newStepIndex];
   }
 
-  @property({ attribute: "current-time" })
-  set currentTime(time: string) {
-    const idx = this.animationValues.findIndex((v) => v === time);
+  @property({ attribute: "current-step" })
+  set currentStep(step: string) {
+    const idx = this.controlValues.findIndex((v) => v === step);
     if (idx > -1) {
-      this._newTimeIndex = idx;
+      this._newStepIndex = idx;
     } else {
-      console.error(`Unable to find time "${time}" in available times!`);
+      console.error(`Unable to find step "${step}" in available times!`);
     }
   }
 
@@ -125,40 +125,40 @@ export class EOxTimeControl extends LitElement {
   private _animationInterval: ReturnType<typeof setInterval>;
 
   @state()
-  private _animationSource: UrlTile;
+  private _controlSource: UrlTile;
 
   @state()
   private _isAnimationPlaying: boolean;
 
   @state()
-  private _newTimeIndex = 0;
+  private _newStepIndex = 0;
 
   @property({ type: Boolean })
   unstyled: boolean;
 
   private _updateStep(step = 1) {
-    this._newTimeIndex = this._newTimeIndex + step;
-    if (this._newTimeIndex > this.animationValues.length - 1) {
-      this._newTimeIndex = 0;
+    this._newStepIndex = this._newStepIndex + step;
+    if (this._newStepIndex > this.controlValues.length - 1) {
+      this._newStepIndex = 0;
     }
-    if (this._newTimeIndex < 0) {
-      this._newTimeIndex = this.animationValues.length - 1;
+    if (this._newStepIndex < 0) {
+      this._newStepIndex = this.controlValues.length - 1;
     }
 
     // @ts-ignore
-    this._animationSource.updateParams({
-      [this.animationProperty]: this.animationValues[this._newTimeIndex],
+    this._controlSource?.updateParams({
+      [this.controlProperty]: this.controlValues[this._newStepIndex],
     });
     this.requestUpdate();
 
     /**
-     * Triggers when *currentTime* is updated.
-     * `event.detail.currentTime` returns the new *currentTime* value.
+     * Triggers when *currentStep* is updated.
+     * `event.detail.currentStep` returns the new *currentStep* value.
      */
     this.dispatchEvent(
-      new CustomEvent("timechange", {
+      new CustomEvent("stepchange", {
         detail: {
-          currentTime: this.currentTime,
+          currentStep: this.currentStep,
         },
       })
     );
@@ -208,11 +208,11 @@ export class EOxTimeControl extends LitElement {
         const animationLayer = flatLayers.find(
           (l: Layer) => l.get("id") === this.layer
         ) as Layer;
-        this._animationSource = animationLayer.getSource() as UrlTile;
+        this._controlSource = animationLayer.getSource() as UrlTile;
 
         this._originalParams =
           // @ts-ignore
-          this._animationSource.getParams();
+          this._controlSource.getParams();
       }
     });
 
@@ -253,29 +253,27 @@ export class EOxTimeControl extends LitElement {
             ? html`
                 <div class="slider-col">
                   <tc-range-slider
-                    data="${this.animationValues}"
+                    data="${this.controlValues}"
                     part="slider"
-                    value="${this.animationValues[this._newTimeIndex]}"
+                    value="${this.controlValues[this._newStepIndex]}"
                     style="display: inline-block;"
                     @change="${(evt: { detail: { value: string } }) =>
                       this._updateStep(
-                        this.animationValues.findIndex(
+                        this.controlValues.findIndex(
                           (v) => v === evt.detail.value
-                        ) - this._newTimeIndex
+                        ) - this._newStepIndex
                       )}"
                   ></tc-range-slider>
 
                   <eox-sliderticks
                     width="300"
-                    .times="${this.animationValues}"
+                    .values="${this.controlValues}"
                   ></eox-sliderticks>
                 </div>
               `
             : ""}
 
-          <span part="current"
-            >${this.animationValues[this._newTimeIndex]}</span
-          >
+          <span part="current">${this.controlValues[this._newStepIndex]}</span>
         </div>
       </main>
     `;
@@ -285,7 +283,7 @@ export class EOxTimeControl extends LitElement {
 @customElement("eox-sliderticks")
 export class SliderTicks extends LitElement {
   @property({ type: Number }) width: number = 0;
-  @property({ type: Array }) times: string[] = [];
+  @property({ type: Array }) values: string[] = [];
 
   @state() height = 6;
   @state() svgWidth = 0;
@@ -317,7 +315,7 @@ export class SliderTicks extends LitElement {
   }
 
   get numLines() {
-    return this.times ? this.times.length : 0;
+    return this.values ? this.values.length : 0;
   }
 
   get yearMarks(): { label: number; position: number }[] {
@@ -325,8 +323,8 @@ export class SliderTicks extends LitElement {
     let previousYear: number = null;
 
     this.lines.forEach((line, index) => {
-      const currentTime = dayjs(this.times[index]);
-      const currentYear = currentTime.year();
+      const currentStep = dayjs(this.values[index]);
+      const currentYear = currentStep.year();
 
       // If it's the first tick or if the year has changed, add a year mark
       if (index === 0 || currentYear !== previousYear) {
