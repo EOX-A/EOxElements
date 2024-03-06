@@ -13,21 +13,23 @@ describe("Item Filter Config", () => {
       .as("eox-itemfilter")
       .then(($el) => {
         const eoxItemFilter = <EOxItemFilter>$el[0];
-        eoxItemFilter.config = {
-          titleProperty: "title",
-          filterProperties: [
-            {
-              keys: ["title", "themes"],
-              title: "Search",
-              type: "text",
-              expanded: true,
-            },
-            { key: "themes", expanded: true },
-          ],
-          aggregateResults: "themes",
-          enableHighlighting: true,
-        };
-        eoxItemFilter.apply(testItems);
+        Object.assign(eoxItemFilter, {
+          config: {
+            titleProperty: "title",
+            filterProperties: [
+              {
+                keys: ["title", "themes"],
+                title: "Search",
+                type: "text",
+                expanded: true,
+              },
+              { key: "themes", expanded: true },
+            ],
+            aggregateResults: "themes",
+            enableHighlighting: true,
+          },
+          items: testItems,
+        });
       });
   });
 
@@ -195,17 +197,19 @@ describe("Item Filter Config", () => {
   it("should show the map when spatial filter is enabled", () => {
     cy.get("eox-itemfilter").and(($el) => {
       const eoxItemFilter = <EOxItemFilter>$el[0];
-      eoxItemFilter.config = {
-        titleProperty: "title",
-        filterProperties: [
-          {
-            key: "geometry",
-            type: "spatial",
-            expanded: true,
-          },
-        ],
-      };
-      eoxItemFilter.apply(testItems);
+      Object.assign(eoxItemFilter, {
+        config: {
+          titleProperty: "title",
+          filterProperties: [
+            {
+              key: "geometry",
+              type: "spatial",
+              expanded: true,
+            },
+          ],
+        },
+        items: testItems,
+      });
     });
     cy.get("eox-itemfilter")
       .shadow()

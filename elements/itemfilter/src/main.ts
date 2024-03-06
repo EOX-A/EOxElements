@@ -107,17 +107,23 @@ export class ElementConfig {
 export class EOxItemFilter extends TemplateElement {
   _resultAggregation: Array<string> = [];
 
-  @state()
-  public filters: { [key: string]: FilterObject } = {};
+  _items: Record<string, unknown>[] = [];
 
   @state()
-  public items: Record<string, unknown>[] = [];
+  public filters: { [key: string]: FilterObject } = {};
 
   @state()
   public results: Record<string, unknown>[];
 
   @state()
   public selectedResult: Item;
+
+  @property({ attribute: false }) set items(items) {
+    this.apply(items);
+  }
+  get items() {
+    return this._items;
+  }
 
   @property({ attribute: false }) set config(config) {
     const oldValue = this._config;
@@ -134,7 +140,7 @@ export class EOxItemFilter extends TemplateElement {
 
   @property()
   apply = (items: Array<object>) => {
-    this.items = items.map((i, index) => ({
+    this._items = items.map((i, index) => ({
       id: `item-${index}`,
       ...i,
     }));
@@ -149,7 +155,7 @@ export class EOxItemFilter extends TemplateElement {
             : parseInt(value);
         };
         // @ts-ignore
-        this.items.forEach((item: Item) => {
+        this._items.forEach((item: Item) => {
           if (filterProperty.type === "range") {
             if (Array.isArray(item[filterProperty.key] as Array<number>)) {
               const currentValues = [
@@ -232,7 +238,7 @@ export class EOxItemFilter extends TemplateElement {
 
     if (this._config.matchAllWhenEmpty !== false) {
       // initially render all items
-      this.results = this.sortResults(this.items);
+      this.results = this.sortResults(this._items);
       this.requestUpdate();
     }
 
@@ -241,7 +247,7 @@ export class EOxItemFilter extends TemplateElement {
       this._resultAggregation = [
         ...new Set(
           // @ts-ignore
-          this.items.reduce((store: Array<string>, item: Item) => {
+          this._items.reduce((store: Array<string>, item: Item) => {
             // @ts-ignore
             return store.concat(item[this._config.aggregateResults]);
           }, [])
@@ -264,7 +270,7 @@ export class EOxItemFilter extends TemplateElement {
         }
       }
     });
-    indexItems(this.items, {
+    indexItems(this._items, {
       keys: fuseKeys,
       ...this._config.fuseConfig,
     });
@@ -280,9 +286,9 @@ export class EOxItemFilter extends TemplateElement {
   private async search() {
     let results;
     if (this.config.externalFilter) {
-      results = await filterExternal(this.items, this.filters, this._config);
+      results = await filterExternal(this._items, this.filters, this._config);
     } else {
-      results = await filterClient(this.items, this.filters, this._config);
+      results = await filterClient(this._items, this.filters, this._config);
     }
     this.results = this.sortResults(results);
     this._config.onFilter(this.results, this.filters);

@@ -19,22 +19,25 @@ describe("Item Filter Config", () => {
       .as("eox-itemfilter")
       .then(($el) => {
         const eoxItemFilter = <EOxItemFilter>$el[0];
-        eoxItemFilter.config = {
-          titleProperty: "title",
-          filterProperties: [
-            {
-              key: "themes",
-              type: "multiselect",
-              expanded: true,
-              sort: (a, b) => customOrder[a] - customOrder[b],
-              // @ts-ignore
-              state,
-            },
-          ],
-          aggregateResults: "themes",
-        };
-        eoxItemFilter.apply(testItems);
-        eoxItemFilter.selectedResult = testItems[selectedResultIndex];
+        Object.assign(eoxItemFilter, {
+          config: {
+            titleProperty: "title",
+            filterProperties: [
+              {
+                key: "themes",
+                type: "multiselect",
+                expanded: true,
+                // @ts-ignore
+                sort: (a, b) => customOrder[a] - customOrder[b],
+                // @ts-ignore
+                state,
+              },
+            ],
+            aggregateResults: "themes",
+          },
+          items: testItems,
+          selectedResult: testItems[selectedResultIndex],
+        });
       });
   });
 
