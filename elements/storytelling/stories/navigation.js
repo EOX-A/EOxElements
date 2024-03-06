@@ -31,7 +31,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
   render: (args) => html`
     <!-- Render eox-storytelling with attribute as comment markdown. -->
     <eox-storytelling
-      enableNav=${true}
+      show-nav
       id="markdown-str"
       markdown=${args.markdown}
     ></eox-storytelling>

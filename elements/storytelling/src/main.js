@@ -2,7 +2,11 @@ import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { loadMarkdownURL } from "./helpers/index";
+import {
+  loadMarkdownURL,
+  scrollAnchorClickEvent,
+  scrollIntoView,
+} from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import { markdownItDecorateImproved } from "./markdown-it-plugin";
@@ -17,8 +21,8 @@ export class EOxStoryTelling extends LitElement {
     return {
       markdown: { attribute: "markdown", type: String },
       markdownURL: { attribute: "markdown-url", type: String },
-      nav: { type: Array },
-      enableNav: { type: Boolean },
+      nav: { state: true, attribute: false, type: Array },
+      showNav: { attribute: "show-nav", type: Boolean },
       noShadow: { type: Boolean },
       unstyled: { type: Boolean },
     };
@@ -30,6 +34,8 @@ export class EOxStoryTelling extends LitElement {
   #html;
   constructor() {
     super();
+
+    this.#html = undefined;
 
     /**
      * @type {String} - Markdown Content
@@ -60,7 +66,7 @@ export class EOxStoryTelling extends LitElement {
      *
      * @type {Boolean}
      */
-    this.enableNav = false;
+    this.showNav = false;
 
     /**
      * List of items in navigation
@@ -84,20 +90,13 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       this.#html = DOMPurify.sanitize(md.render(this.markdown));
-      if (this.enableNav) this.nav = md.nav;
+      if (this.showNav) this.nav = md.nav;
       this.requestUpdate();
     }
 
-    if (changedProperties.has("nav")) {
-      this.shadowRoot.querySelectorAll(".navigation a").forEach((doc) => {
-        doc.addEventListener("click", (e) => {
-          e.preventDefault();
-          this.shadowRoot
-            .querySelector(e.target.hash)
-            .scrollIntoView({ behavior: "smooth" });
-        });
-      });
-    }
+    // Check if 'nav' property itself has changed and generate anchor click event
+    if (changedProperties.has("nav"))
+      scrollAnchorClickEvent(this, ".navigation a");
   }
 
   /**
@@ -121,6 +120,18 @@ export class EOxStoryTelling extends LitElement {
     }
   }
 
+  async firstUpdated() {
+    // Check if this.#html is initialized, if not, wait for it
+    if (this.#html === undefined) await this.waitForHtmlInitialization();
+    scrollIntoView(this);
+  }
+
+  // A utility function to pause execution for a given time
+  async waitForHtmlInitialization() {
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    while (this.#html === undefined) await sleep(100);
+  }
+
   render() {
     return html`
       <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
@@ -133,7 +144,7 @@ export class EOxStoryTelling extends LitElement {
 
       <div class="story-telling">
         ${when(
-          this.enableNav && this.nav.length,
+          this.showNav && this.nav.length,
           () => html`
             <div class="navigation">
               <div class="container">

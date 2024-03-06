@@ -1,4 +1,5 @@
 import { TAGS_EXPR, TAGS_OPENING, TAGS_SELF_CLOSING } from "../enums";
+import slugify from "@sindresorhus/slugify";
 
 /**
  * Plugin registration with Markdown-it - Annotate Markdown documents with HTML attributes, IDs and classes.
@@ -155,7 +156,7 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
     const attrsId = (stack.last.attrs || []).find(
       (subArr) => subArr[0] === "id"
     )?.[1];
-    const titleSlug = title.toLowerCase().replace(/ /g, "-");
+    const titleSlug = slugify(title);
     const id = `section-${attrsId || titleSlug}`;
 
     finalTokens[sectionStartIndex].content = finalTokens[

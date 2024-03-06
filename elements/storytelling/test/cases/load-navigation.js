@@ -17,7 +17,7 @@ Section 2 Content Here
 `;
 
   cy.mount(
-    `<eox-storytelling enableNav=${true} markdown="${testText}"></eox-storytelling>`
+    `<eox-storytelling show-nav markdown="${testText}"></eox-storytelling>`
   ).as(storyTelling);
 
   cy.get(storyTelling)
