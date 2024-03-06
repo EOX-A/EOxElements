@@ -27,6 +27,7 @@ describe("Item Filter Config", () => {
                 key: "themes",
                 type: "multiselect",
                 expanded: true,
+                // @ts-ignore
                 sort: (a, b) => customOrder[a] - customOrder[b],
                 // @ts-ignore
                 state,
