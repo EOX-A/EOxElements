@@ -5,7 +5,6 @@
  * @param {import("../../main").EOxLayerControl} EOxLayerControl - The EOxLayerControl element.
  */
 const layerListChangeMethod = (evt, EOxLayerControl) => {
-  EOxLayerControl._emitLayerChangeEvent(evt.detail);
   // Request an update for the EOxLayerControl
   EOxLayerControl.requestUpdate();
 
