@@ -34,7 +34,7 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
 
   // Dispatch a 'changed' event to signal a change in the layer's state.
   EOxLayerControlLayer.dispatchEvent(
-    new CustomEvent("changed", { bubbles: true })
+    new CustomEvent("changed", { bubbles: true, detail: layer })
   );
 
   // Request an update for the layer control to reflect the changes.
