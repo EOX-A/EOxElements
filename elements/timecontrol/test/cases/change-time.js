@@ -5,8 +5,8 @@ import "../_mockMap";
 // Destructure TEST_SELECTORS object
 const { timeControl } = TEST_SELECTORS;
 
-const testParam = "TIME";
-const testTimes = ["2024-01-01", "2024-01-02"];
+const testProperty = "TIME";
+const testValues = ["2024-01-01", "2024-01-02"];
 let timeChangeEventValue = "";
 
 let testLayer;
@@ -20,9 +20,9 @@ const changeTimeTest = () => {
     html`<eox-timecontrol
       for="mock-map"
       layer="TEST_ID"
-      .controlProperty=${testParam}
-      .controlValues=${testTimes}
-      @timechange="${(e) => {
+      .controlProperty=${testProperty}
+      .controlValues=${testValues}
+      @stepchange="${(e) => {
         timeChangeEventValue = e.detail.currentStep;
       }}"
     ></eox-timecontrol>`
@@ -34,8 +34,10 @@ const changeTimeTest = () => {
     testLayer = map.getLayers().getArray()[0];
   });
   cy.get(timeControl).and(($el) => {
-    expect($el[0].currentStep).to.be.eq(testTimes[0]);
-    expect(testLayer.getSource().getParams()[testParam]).to.be.eq(testTimes[0]);
+    expect($el[0].currentStep).to.be.eq(testValues[0]);
+    expect(testLayer.getSource().getParams()[testProperty]).to.be.eq(
+      testValues[0]
+    );
   });
 
   cy.get(timeControl)
@@ -45,8 +47,10 @@ const changeTimeTest = () => {
     });
 
   cy.get(timeControl).and(($el) => {
-    expect($el[0].currentStep).to.be.eq(testTimes[1]);
-    expect(testLayer.getSource().getParams()[testParam]).to.be.eq(testTimes[1]);
+    expect($el[0].currentStep).to.be.eq(testValues[1]);
+    expect(testLayer.getSource().getParams()[testProperty]).to.be.eq(
+      testValues[1]
+    );
   });
 
   cy.get(timeControl).and(($el) => {
