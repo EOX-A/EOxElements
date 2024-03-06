@@ -10,15 +10,16 @@ function markdownItConfig(md) {
     const regex = /^\s*---\s*\n([\s\S]+?)\n\s*---\s*/;
     const match = state.src.match(regex);
 
-    // Init config with null
+    // Init config with {}
     md.config = {};
 
     if (match) {
       try {
+        // Config generate with help of yaml load
         md.config = yaml.load(match[1]);
         state.src = state.src.replace(match[0], "");
       } catch (e) {
-        console.error("Error parsing YAML front matter:", e);
+        console.error("Error parsing frontmatter:", e);
         return null;
       }
     }

@@ -186,16 +186,12 @@ export class EOxStoryTelling extends LitElement {
         ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
       </div>
 
-      ${when(
-        this.showConfig && this.config,
-        () => html`
-          <div class="config-wrap">
-            <textarea disabled>
-${JSON.stringify(this.config || {}, null, 2)}</textarea
-            >
-          </div>
-        `
-      )}
+      ${when(this.showConfig && this.config, () => {
+        const config = JSON.stringify(this.config || {}, null, 2);
+        return html`<div class="config-wrap">
+          <textarea disabled>${config}</textarea>
+        </div>`;
+      })}
     `;
   }
 }
