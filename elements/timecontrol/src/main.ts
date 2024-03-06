@@ -267,7 +267,7 @@ export class EOxTimeControl extends LitElement {
 
                   <eox-sliderticks
                     width="300"
-                    .values="${this.controlValues}"
+                    .steps="${this.controlValues}"
                   ></eox-sliderticks>
                 </div>
               `
@@ -283,7 +283,7 @@ export class EOxTimeControl extends LitElement {
 @customElement("eox-sliderticks")
 export class SliderTicks extends LitElement {
   @property({ type: Number }) width: number = 0;
-  @property({ type: Array }) values: string[] = [];
+  @property({ type: Array }) steps: string[] = [];
 
   @state() height = 6;
   @state() svgWidth = 0;
@@ -315,7 +315,7 @@ export class SliderTicks extends LitElement {
   }
 
   get numLines() {
-    return this.values ? this.values.length : 0;
+    return this.steps ? this.steps.length : 0;
   }
 
   get yearMarks(): { label: number; position: number }[] {
@@ -323,7 +323,7 @@ export class SliderTicks extends LitElement {
     let previousYear: number = null;
 
     this.lines.forEach((line, index) => {
-      const currentStep = dayjs(this.values[index]);
+      const currentStep = dayjs(this.steps[index]);
       const currentYear = currentStep.year();
 
       // If it's the first tick or if the year has changed, add a year mark
