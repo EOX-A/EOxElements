@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.16.0...layercontrol-v0.17.0) (2024-03-07)
+
+
+### Features
+
+* Dispatch layerchange event ([#721](https://github.com/EOX-A/EOxElements/issues/721)) ([6f54911](https://github.com/EOX-A/EOxElements/commit/6f54911c7c786caa30fd580dca82fe645387a8af))
+
 ## [0.16.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.15.1...layercontrol-v0.16.0) (2024-03-05)
 
 
