@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.4.1...timecontrol-v0.5.0) (2024-03-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* rename time-related and animation-related properties ([#719](https://github.com/EOX-A/EOxElements/issues/719))
+
+### Features
+
+* Rename time-related and animation-related properties ([#719](https://github.com/EOX-A/EOxElements/issues/719)) ([764a9e2](https://github.com/EOX-A/EOxElements/commit/764a9e2ccdebad3aef07c80201fc79d32e2ddf64))
+
 ## [0.4.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.4.0...timecontrol-v0.4.1) (2024-02-22)
 
 
