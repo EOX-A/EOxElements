@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.1.0...storytelling-v0.2.0) (2024-03-07)
+
+
+### Features
+
+* Automated navigation from headings ([#703](https://github.com/EOX-A/EOxElements/issues/703)) ([0610749](https://github.com/EOX-A/EOxElements/commit/0610749fcc38b2ec3410a22e4f3978613d84d258))
+* Basic frontmatter config ([#725](https://github.com/EOX-A/EOxElements/issues/725)) ([68f7a36](https://github.com/EOX-A/EOxElements/commit/68f7a366a97bf4972e9d6e787f941dcd2c3e5a0d))
+* Basic styling for storytelling ([#729](https://github.com/EOX-A/EOxElements/issues/729)) ([aca2ca3](https://github.com/EOX-A/EOxElements/commit/aca2ca3854cd4e960bba7faad566525ea18bca86))
+* Render attributes via comment tags  ([#700](https://github.com/EOX-A/EOxElements/issues/700)) ([83c2139](https://github.com/EOX-A/EOxElements/commit/83c2139fcd5abdc6cb5d2ba8de7e782546b94bd2))
+
+
+### Bug Fixes
+
+* **style:** Restrict iframe, img, video max width by default ([#705](https://github.com/EOX-A/EOxElements/issues/705)) ([53a3cf7](https://github.com/EOX-A/EOxElements/commit/53a3cf720e59ccde42e6b65c62ad2aba4658cb7d))
+
 ## [0.1.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.0.0...storytelling-v0.1.0) (2024-02-27)
 
 
