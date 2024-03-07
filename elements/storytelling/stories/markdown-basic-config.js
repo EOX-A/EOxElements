@@ -24,11 +24,6 @@ It is a long established fact that a reader will be distracted by the readable c
       id="markdown-config"
       markdown=${args.markdown}
     ></eox-storytelling>
-    <style>
-      .sb-show-main.sb-main-padded {
-        padding: 0;
-      }
-    </style>
   `,
 };
 

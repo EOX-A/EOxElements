@@ -10,11 +10,21 @@ import {
   NavigationStory,
   MarkdownBasicConfigStory,
 } from "./index";
+import { html } from "lit";
 
 export default {
   title: "Elements/eox-storytelling",
   tags: ["autodocs"],
   component: "eox-storytelling",
+  decorators: [
+    (story) =>
+      html`${story()}
+        <style>
+          .sb-show-main.sb-main-padded {
+            padding: 0;
+          }
+        </style>`,
+  ],
 };
 
 // Exporting each individual story for the eox-storytelling component.
