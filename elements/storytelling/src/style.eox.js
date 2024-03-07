@@ -68,5 +68,58 @@ const styleEOX = `
   .section-wrap {
     scroll-margin: 120px;
   }
+  .story-telling p {
+    --font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 170%;
+    margin-top: 0.8rem;
+    margin-bottom: 1.6rem;
+  }
+  .story-telling a {
+    --font-size: 1.1rem;
+    --color: var(--primary-color);
+    --background-color: transparent;
+    outline: 0;
+    background-color: var(--background-color);
+    color: var(--color);
+    text-underline-offset: 4px;
+    font-size: var(--font-size)
+  }
+  .story-telling a:hover {
+    --bg-hover-transparency: 10%;
+    background-color: color-mix(
+      in srgb,
+      var(--primary-color) var(--bg-hover-transparency),
+      transparent
+    );
+  }
+  .story-telling li {
+    margin-bottom: 1rem;
+  }
+  .story-telling table {
+    width:100%;
+    color: var(--color);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1rem;
+    margin: 2rem 0rem;
+  }
+  .story-telling td, 
+  .story-telling th {
+    padding: 1rem;
+    color: var(--color);
+    font-weight: 400;
+    font-size: 1rem;
+    text-align: left;
+    text-align: start;
+    border-bottom: 1px solid var(--color);
+  }
+  .story-telling th {
+    font-weight: 600;
+    border-bottom: 3px solid var(--color);
+  }
+  .story-telling .container {
+    width: 90%;
+  }
 `;
 export default styleEOX;
