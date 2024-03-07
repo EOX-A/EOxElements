@@ -224,7 +224,7 @@ export class EOxMap extends LitElement {
   /**
    * projection of the map view as SRS-identifier (e.g. EPSG:4326)
    */
-  @property({ attribute: "prevent-scroll", type: Boolean })
+  @property({ attribute: "projection", type: String })
   set projection(projection: ProjectionLike) {
     const oldView = this.map.getView();
     if (projection && projection !== oldView.getProjection().getCode()) {
