@@ -9,6 +9,7 @@ import {
   checkLayerRemovedFromRoot,
   checkLayerSizeAfterMultipleCalls,
   checkLayerZoomState,
+  checkLayerChangedEvent,
 } from "./cases/layer-update";
 
 describe("LayerControl", () => {
@@ -64,4 +65,8 @@ describe("LayerControl", () => {
   // Test case: Add new external layers (WMS/XYZ and JSON)
   it("Add new external WMS/XYZ and JSON Layer - addExternalLayers", () =>
     addExternalLayers());
+
+  // Test case: `layerchange` event
+  it("Checks if a `layerchange` event is dispatched", () =>
+    checkLayerChangedEvent());
 });

@@ -6,3 +6,4 @@ export { default as checkLayerRemovedFromGroup } from "./check-layer-removed-fro
 export { default as addLayerFromOptional } from "./add-layer-from-optional";
 export { default as checkLayerZoomState } from "./check-layer-zoom-state";
 export { default as addExternalLayers } from "./add-external-layer";
+export { default as checkLayerChangedEvent } from "./check-layer-changed-event";

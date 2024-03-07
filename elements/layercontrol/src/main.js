@@ -154,6 +154,11 @@ export class EOxLayerControl extends LitElement {
    */
   #handleLayerControlLayerListChange(evt) {
     layerListChangeMethod(evt, this);
+    /**
+     * A generic layer change event; could be a layer visibility, group length updates and others.
+     * Passes the changed layer in the `detail`.
+     */
+    this.dispatchEvent(new CustomEvent("layerchange", { detail: evt.detail }));
   }
 
   render() {
