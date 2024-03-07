@@ -8,9 +8,9 @@ export const Navigation = {
   args: {
     markdown: `
 ## What is Lorem Ipsum? <!--{#what}-->
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Lorem Ipsum is simply dummy text of the **printing and typesetting** industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and **scrambled it to make a type specimen book.** It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-Sustainable Development Goal 13 is to _“take urgent action to combat climate change and its impacts”_, [according to the United Nations](https://www.un.org/sustainabledevelopment/climate-change/).
+Sustainable Development Goal 13 is to _**“take urgent action to combat climate change and its impacts”**_, [according to the United Nations](https://www.un.org/sustainabledevelopment/climate-change/).
 
 The visualizations and data below present the global perspective on where the world stands today and how it has changed over time. Further data and statistics can be found at the Our World in Data topic pages on CO2 and Greenhouse Gas Emissions and [Climate Change](https://ourworldindata.org/climate-change).
 

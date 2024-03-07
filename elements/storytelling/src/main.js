@@ -26,7 +26,7 @@ export class EOxStoryTelling extends LitElement {
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
-      noShadow: { type: Boolean },
+      noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
     };
   }
@@ -145,6 +145,13 @@ export class EOxStoryTelling extends LitElement {
   async waitForHtmlInitialization() {
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     while (this.#html === undefined) await sleep(100);
+  }
+
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
