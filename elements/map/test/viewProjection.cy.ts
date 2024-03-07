@@ -1,5 +1,7 @@
 import { html } from "lit";
 import "../main";
+import { registerProjection } from "../helpers";
+import vectorLayerStyleJson from "./vectorLayer.json";
 
 describe("view projections", () => {
   it("can set the initial projection of the view", () => {
@@ -85,6 +87,33 @@ describe("view projections", () => {
             "keeps center listener"
           ).to.be.true;
         }, 100);
+      }, 1000);
+    });
+  });
+
+  it("use special projection", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
+    registerProjection(
+      "ESRI:53009",
+      "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
+        "+b=6371000 +units=m +no_defs"
+    );
+    // not using osm because of performance issues while testing
+    cy.mount(
+      html`<eox-map
+        .layers=${vectorLayerStyleJson}
+        .projection=${"ESRI:53009"}
+      ></eox-map>`
+    ).as("eox-map");
+
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      setTimeout(() => {
+        expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
+          "ESRI:53009"
+        );
       }, 1000);
     });
   });

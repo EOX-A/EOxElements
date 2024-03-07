@@ -11,6 +11,8 @@ import { getUid } from "ol";
 import { DrawEvent } from "ol/interaction/Draw";
 import { DragAndDropEvent } from "ol/interaction/DragAndDrop";
 import Feature from "ol/Feature";
+import proj4 from "proj4";
+import { register } from "ol/proj/proj4";
 
 /**
  * Specifies the options for reading features with defined source and target projections.
@@ -212,4 +214,12 @@ export function isTopoJSON(text: string): boolean {
   } catch (e) {
     return false;
   }
+}
+
+export function registerProjection(
+  name: string,
+  projection: string | proj4.ProjectionDefinition
+) {
+  proj4.defs(name, projection);
+  register(proj4);
 }
