@@ -1,7 +1,7 @@
 import { LitElement, PropertyValueMap, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
-import View from "ol/View.js";
+import View, { ViewObjectEventTypes } from "ol/View.js";
 // @ts-ignore
 import olCss from "ol/ol.css?inline";
 import { EOxSelectInteraction } from "./src/select";
@@ -27,6 +27,7 @@ import Feature from "ol/Feature";
 import { Geometry } from "ol/geom";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
+import { ProjectionLike, transform } from "ol/proj";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -34,6 +35,7 @@ type ConfigObject = {
   view: {
     center: Array<number>;
     zoom: number;
+    projection: ProjectionLike;
   };
   preventScroll: boolean;
 };
@@ -73,7 +75,7 @@ type ConfigObject = {
 @customElement("eox-map")
 export class EOxMap extends LitElement {
   /**
-   * Map center, can be lon/lat or UTM
+   * Map center, can be lon/lat or web mercator
    */
   @property({ attribute: false, type: Array })
   center: Array<number> = [0, 0];
@@ -191,7 +193,8 @@ export class EOxMap extends LitElement {
   set config(config: ConfigObject) {
     this._config = config;
     this.center = config.view?.center;
-    this.zoom = config?.view.zoom;
+    this.zoom = config?.view?.zoom;
+    this.projection = config?.view?.projection || "EPSG:3857";
     this.layers = config?.layers;
     this.controls = config?.controls;
     if (this.preventScroll === undefined) {
@@ -206,6 +209,56 @@ export class EOxMap extends LitElement {
   @property({ attribute: false, type: Object })
   get config() {
     return this._config;
+  }
+
+  private _projection: ProjectionLike;
+
+  /**
+   * @type ProjectionLike
+   */
+  get projection() {
+    return this._projection;
+  }
+
+  /**
+   * projection of the map view as SRS-identifier (e.g. EPSG:4326)
+   */
+  @property({ attribute: "prevent-scroll", type: Boolean })
+  set projection(projection: ProjectionLike) {
+    const oldView = this.map.getView();
+    if (projection && projection !== oldView.getProjection().getCode()) {
+      const newView = new View({
+        zoom: oldView.getZoom(),
+        center: transform(oldView.getCenter(), oldView.getProjection().getCode(), projection),
+        rotation: oldView.getRotation(),
+        projection,
+      });
+      const eventTypes = [
+        "change:center",
+        "change:resolution",
+        "change:rotation",
+        "propertychange",
+      ] as Array<ViewObjectEventTypes>;
+      eventTypes.forEach((eventType: ViewObjectEventTypes) => {
+        const existingListeners = oldView.getListeners(eventType);
+        if (existingListeners?.length) {
+          for (let i = existingListeners.length - 1; i >= 0; i--) {
+            const listener = existingListeners[i];
+            //@ts-ignore
+            oldView.un(eventType, listener);
+            //@ts-ignore
+            newView.on(eventType, listener);
+          }
+        }
+      });
+      this.map.setView(newView);
+      this._projection = projection;
+      this.map
+        .getLayers()
+        .getArray()
+        .forEach((l) => l.changed());
+      this.map.changed();
+    }
   }
 
   /**
@@ -231,6 +284,7 @@ export class EOxMap extends LitElement {
     view: new View({
       center: [0, 0],
       zoom: 0,
+      projection: this.projection,
     }),
   });
 
