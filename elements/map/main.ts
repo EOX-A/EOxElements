@@ -19,6 +19,7 @@ import { buffer } from "ol/extent";
 import "./src/compare";
 import {
   addScrollInteractions,
+  coordinatesRoughlyEquals,
   removeDefaultScrollInteractions,
 } from "./src/utils";
 import GeoJSON from "ol/format/GeoJSON";
@@ -35,7 +36,7 @@ type ConfigObject = {
   view: {
     center: Array<number>;
     zoom: number;
-    projection: ProjectionLike;
+    projection?: ProjectionLike;
   };
   preventScroll: boolean;
 };
@@ -227,9 +228,14 @@ export class EOxMap extends LitElement {
   set projection(projection: ProjectionLike) {
     const oldView = this.map.getView();
     if (projection && projection !== oldView.getProjection().getCode()) {
+      const newCenter = transform(
+        this.center,
+        oldView.getProjection().getCode(),
+        projection
+      );
       const newView = new View({
         zoom: oldView.getZoom(),
-        center: transform(oldView.getCenter(), oldView.getProjection().getCode(), projection),
+        center: newCenter,
         rotation: oldView.getRotation(),
         projection,
       });
@@ -253,11 +259,7 @@ export class EOxMap extends LitElement {
       });
       this.map.setView(newView);
       this._projection = projection;
-      this.map
-        .getLayers()
-        .getArray()
-        .forEach((l) => l.changed());
-      this.map.changed();
+      this.center = newCenter;
     }
   }
 
@@ -441,7 +443,11 @@ export class EOxMap extends LitElement {
         this.map.setView(originMap.map.getView());
       }
     } else {
-      if (this.center) {
+      const centerIsSame = coordinatesRoughlyEquals(
+        this.center,
+        this.map.getView().getCenter()
+      );
+      if (this.center && !centerIsSame) {
         this.map.getView().setCenter(getCenterFromProperty(this.center));
       }
       if (this.zoom) {
