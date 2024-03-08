@@ -89,7 +89,7 @@ export class EOxMap extends LitElement {
   private _center: Coordinate = [0, 0];
 
   set center(center: Coordinate) {
-    const centerIsSame = coordinatesRoughlyEquals(
+    const centerIsSame = center?.length && coordinatesRoughlyEquals(
       center,
       this.map.getView().getCenter()
     );
