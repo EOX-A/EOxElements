@@ -18,7 +18,7 @@ describe("config property", () => {
             },
           ],
           view: {
-            center: [10, 20],
+            center: [16, 48],
             zoom: 9,
             projection: "EPSG:4326",
           },
@@ -27,7 +27,6 @@ describe("config property", () => {
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
       const eoxMap = <EOxMap>$el[0];
-
       expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
 
       expect(eoxMap.map.getLayers().getArray().length).to.be.equal(1);
@@ -37,9 +36,8 @@ describe("config property", () => {
       expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
         "EPSG:4326"
       );
-      expect(eoxMap.map.getView().getCenter()[0]).to.be.closeTo(10, 0.0001);
-      expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(20, 0.0001);
-
+      expect(eoxMap.map.getView().getCenter()[0]).to.be.closeTo(16, 0.0001);
+      expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(48, 0.0001);
       expect(eoxMap.map.getView().getZoom()).to.be.equal(9);
     });
     cy.get("eox-map").and(async ($el) => {
@@ -56,7 +54,7 @@ describe("config property", () => {
           },
         ],
         view: {
-          center: [1113194, 2273030],
+          center: [1113194, 2273030], // [10, 20]
           zoom: 10,
           projection: "EPSG:3857",
         },

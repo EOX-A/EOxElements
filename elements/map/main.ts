@@ -29,6 +29,7 @@ import { Geometry } from "ol/geom";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import { ProjectionLike, transform } from "ol/proj";
+import { Coordinate } from "ol/coordinate";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -75,11 +76,33 @@ type ConfigObject = {
  */
 @customElement("eox-map")
 export class EOxMap extends LitElement {
+
+  private _center: Coordinate = [0, 0];
+
+  set center(center: Coordinate) {
+    const centerIsSame = coordinatesRoughlyEquals(
+      center,
+      this.map.getView().getCenter()
+    );
+    if (center && !centerIsSame) {
+      if (!this.projection || this.projection === "EPSG:3857") {
+        // we allow lat-lon center when map is in web mercator
+        const mercatorCenter = getCenterFromProperty(center)
+        this.map.getView().setCenter(mercatorCenter);
+        this._center = mercatorCenter;
+      } else {
+        this.map.getView().setCenter(center);
+        this._center = center;
+      }
+    }
+  }
   /**
-   * Map center, can be lon/lat or web mercator
+   * Map center, always in the same projection as the view.
+   * when setting the map center, 
    */
-  @property({ attribute: false, type: Array })
-  center: Array<number> = [0, 0];
+  get center() {
+    return this._center;
+  }
 
   private _controls: controlDictionary;
 
@@ -193,9 +216,9 @@ export class EOxMap extends LitElement {
 
   set config(config: ConfigObject) {
     this._config = config;
-    this.center = config.view?.center;
     this.zoom = config?.view?.zoom;
     this.projection = config?.view?.projection || "EPSG:3857";
+    this.center = config.view?.center; // set center after projection, order matters
     this.layers = config?.layers;
     this.controls = config?.controls;
     if (this.preventScroll === undefined) {
@@ -229,7 +252,7 @@ export class EOxMap extends LitElement {
     const oldView = this.map.getView();
     if (projection && projection !== oldView.getProjection().getCode()) {
       const newCenter = transform(
-        this.center,
+        oldView.getCenter(),
         oldView.getProjection().getCode(),
         projection
       );
@@ -442,19 +465,12 @@ export class EOxMap extends LitElement {
       if (originMap) {
         this.map.setView(originMap.map.getView());
       }
-    } else {
-      const centerIsSame = coordinatesRoughlyEquals(
-        this.center,
-        this.map.getView().getCenter()
-      );
-      if (this.center && !centerIsSame) {
-        this.map.getView().setCenter(getCenterFromProperty(this.center));
-      }
-      if (this.zoom) {
-        this.map.getView().setZoom(this.zoom);
-      }
     }
 
+    this.map.once('change:target', (e) => {
+      // set center again after target, as y-coordinate might be 0 otherwise
+      e.target.getView().setCenter(this.center);
+    })
     this.map.setTarget(this.renderRoot.querySelector("div"));
 
     this.map.on("loadend", () => {
@@ -470,9 +486,6 @@ export class EOxMap extends LitElement {
     _changedProperties: // eslint-disable-next-line
     PropertyValueMap<any> | globalThis.Map<PropertyKey, unknown>
   ): void {
-    if (_changedProperties.has("center")) {
-      this.map.getView().setCenter(getCenterFromProperty(this.center));
-    }
     if (_changedProperties.has("zoom")) {
       this.map.getView().setZoom(this.zoom || 0);
     }
