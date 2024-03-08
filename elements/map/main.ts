@@ -23,7 +23,12 @@ import {
   removeDefaultScrollInteractions,
 } from "./src/utils";
 import GeoJSON from "ol/format/GeoJSON";
-import { parseText, READ_FEATURES_OPTIONS } from "./helpers";
+import {
+  parseText,
+  registerProjection,
+  registerProjectionFromCode,
+  READ_FEATURES_OPTIONS,
+} from "./helpers";
 import Feature from "ol/Feature";
 import { Geometry } from "ol/geom";
 import VectorLayer from "ol/layer/Vector.js";
@@ -445,6 +450,10 @@ export class EOxMap extends LitElement {
   ) => {
     parseText(text, vectorLayer, this, replaceFeatures);
   };
+
+  registerProjectionFromCode = registerProjectionFromCode;
+
+  registerProjection = registerProjection;
 
   /**
    * Gets all map layers (including groups and nested layers)
