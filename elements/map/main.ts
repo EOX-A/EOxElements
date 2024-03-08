@@ -89,10 +89,9 @@ export class EOxMap extends LitElement {
   private _center: Coordinate = [0, 0];
 
   set center(center: Coordinate) {
-    const centerIsSame = center?.length && coordinatesRoughlyEquals(
-      center,
-      this.map.getView().getCenter()
-    );
+    const centerIsSame =
+      center?.length &&
+      coordinatesRoughlyEquals(center, this.map.getView().getCenter());
     if (center && !centerIsSame) {
       if (!this.projection || this.projection === "EPSG:3857") {
         // we allow lat-lon center when map is in web mercator
