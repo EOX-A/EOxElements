@@ -18,25 +18,26 @@ describe("config property", () => {
             },
           ],
           view: {
-            center: [1113194, 2273030],
+            center: [16, 48],
             zoom: 9,
+            projection: "EPSG:4326",
           },
         }}
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
       const eoxMap = <EOxMap>$el[0];
-
       expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
 
       expect(eoxMap.map.getLayers().getArray().length).to.be.equal(1);
 
       expect(eoxMap.map.getLayers().getArray()[0].get("id")).to.be.equal("osm");
 
-      expect(eoxMap.map.getView().getCenter()).to.deep.equal([
-        1113194, 2273030,
-      ]);
-
+      expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
+        "EPSG:4326"
+      );
+      expect(eoxMap.map.getView().getCenter()[0]).to.be.closeTo(16, 0.0001);
+      expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(48, 0.0001);
       expect(eoxMap.map.getView().getZoom()).to.be.equal(9);
     });
     cy.get("eox-map").and(async ($el) => {
@@ -53,8 +54,9 @@ describe("config property", () => {
           },
         ],
         view: {
-          center: [1113194, 2273030],
+          center: [1113194, 2273030], // [10, 20]
           zoom: 10,
+          projection: "EPSG:3857",
         },
       };
 
@@ -64,6 +66,12 @@ describe("config property", () => {
       expect(eoxMap.map.getLayers().getArray()[0].get("title")).to.be.equal(
         "bar"
       );
+
+      expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
+        "EPSG:3857"
+      );
+      expect(eoxMap.map.getView().getCenter()[0]).to.be.closeTo(1113194, 0.01);
+      expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(2273030, 0.01);
     });
   });
 });

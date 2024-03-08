@@ -487,6 +487,54 @@ export const ConfigObject = {
 };
 
 /**
+ * The projection of the view can be changed via the `projection`-attribute.
+ * Out-of-the-box the projections EPSG:3857 (default) and EPSG:4326 (geographic coordinates)
+ * are included, additional projections can be used by registering them via the `registerProjection` or
+ * `registerProjectionFromCode` helper functions beforehand.
+ */
+export const Projection = {
+  args: {
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "osm",
+          title: "Background",
+        },
+        source: { type: "OSM" },
+      },
+    ],
+    center: [16.8, 48.2],
+    zoom: 7,
+  },
+  render: (args) =>
+    html`
+      <eox-map
+        id="projectionMap"
+        style="width: 100%; height: 300px;"
+        .center=${args.center}
+        .controls=${args.controls}
+        .layers=${args.layers}
+        .zoom=${args.zoom}
+      >
+      </eox-map>
+      <button
+        @click=${() => {
+          const eoxMap = document.querySelector("#projectionMap");
+          eoxMap.setAttribute(
+            "projection",
+            eoxMap.map.getView().getProjection().getCode() === "EPSG:4326"
+              ? "EPSG:3857"
+              : "EPSG:4326"
+          );
+        }}
+      >
+        change projection
+      </button>
+    `,
+};
+
+/**
  * By setting the `prevent-scroll` attribute or by setting `preventScroll` property to `true` (either on the element or within the config object),
  * the map doesnt mouse-scroll (on desktop) or drag-touch (on tab/mobile). Pressing the platform modifier key (ctrl/cmd) will enable scrolling.
  * Useful for maps embedded in scrollable websites.

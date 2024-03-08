@@ -14,10 +14,6 @@ export function coordinatesRoughlyEquals(
   coordinate2: import("ol/coordinate").Coordinate,
   epsilon = 0.001
 ): boolean {
-  /*if (!!coordinate1 !== !!coordinate2) { // if exactly one coordinate is not defined, the coordinates are not equal
-    return false;
-  }*/
-  return false;
   let equals = true;
   for (let i = coordinate1.length - 1; i >= 0; --i) {
     if (!numbersRoughlyEquals(coordinate1[i], coordinate2[i], epsilon)) {

@@ -11,6 +11,8 @@ import { getUid } from "ol";
 import { DrawEvent } from "ol/interaction/Draw";
 import { DragAndDropEvent } from "ol/interaction/DragAndDrop";
 import Feature from "ol/Feature";
+import proj4 from "proj4";
+import { fromEPSGCode, register } from "ol/proj/proj4";
 
 /**
  * Specifies the options for reading features with defined source and target projections.
@@ -212,4 +214,28 @@ export function isTopoJSON(text: string): boolean {
   } catch (e) {
     return false;
   }
+}
+
+/**
+ * given a projection code, this fetches the definition from epsg.io
+ * and registers the projection using proj4
+ * @param code The EPSG code (e.g. 4326 or 'EPSG:4326').
+ *
+ */
+export async function registerProjectionFromCode(code: string | number) {
+  register(proj4);
+  return await fromEPSGCode(code);
+}
+
+/**
+ * registers a projection under a given name, defined via a proj4 definition
+ * @param name name of the projection (e.g. "EPSG:4326")
+ * @param projection proj4 projection definition string
+ */
+export function registerProjection(
+  name: string,
+  projection: string | proj4.ProjectionDefinition
+) {
+  proj4.defs(name, projection);
+  register(proj4);
 }
