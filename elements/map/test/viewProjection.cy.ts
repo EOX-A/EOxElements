@@ -1,6 +1,6 @@
 import { html } from "lit";
 import "../main";
-import { registerProjection } from "../helpers";
+import { registerProjection, registerProjectionFromCode } from "../helpers";
 import vectorLayerStyleJson from "./vectorLayer.json";
 
 describe("view projections", () => {
@@ -115,6 +115,57 @@ describe("view projections", () => {
           "ESRI:53009"
         );
       }, 1000);
+    });
+  });
+
+  it("fetch projection from code", () => {
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
+      fixture: "/ecoregions.json",
+    });
+    cy.mount(
+      html`<eox-map
+        .controls=${{
+          Zoom: {},
+          Attribution: {},
+          FullScreen: {},
+          OverviewMap: {
+            layers: [
+              {
+                type: "Tile",
+                properties: {
+                  id: "customId",
+                },
+                source: {
+                  type: "OSM",
+                },
+              },
+            ],
+          },
+        }}
+        .layers=${[
+          {
+            type: "Tile",
+            properties: {
+              id: "customId",
+            },
+            source: {
+              type: "OSM",
+            },
+          },
+        ]}
+      ></eox-map>`
+    ).as("eox-map");
+
+    cy.get("eox-map").and(($el) => {
+      registerProjectionFromCode("EPSG:32633").then(() => {
+        const eoxMap = <EOxMap>$el[0];
+        eoxMap.setAttribute("projection", "EPSG:32633");
+        setTimeout(() => {
+          expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
+            "EPSG:32633"
+          );
+        }, 1000);
+      });
     });
   });
 });
