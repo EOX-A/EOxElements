@@ -28,7 +28,12 @@ import Feature from "ol/Feature";
 import { Geometry } from "ol/geom";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
-import { ProjectionLike, transform } from "ol/proj";
+import {
+  ProjectionLike,
+  transform,
+  getPointResolution,
+  get as getProjection,
+} from "ol/proj";
 import { Coordinate } from "ol/coordinate";
 
 type ConfigObject = {
@@ -76,7 +81,6 @@ type ConfigObject = {
  */
 @customElement("eox-map")
 export class EOxMap extends LitElement {
-
   private _center: Coordinate = [0, 0];
 
   set center(center: Coordinate) {
@@ -87,7 +91,7 @@ export class EOxMap extends LitElement {
     if (center && !centerIsSame) {
       if (!this.projection || this.projection === "EPSG:3857") {
         // we allow lat-lon center when map is in web mercator
-        const mercatorCenter = getCenterFromProperty(center)
+        const mercatorCenter = getCenterFromProperty(center);
         this.map.getView().setCenter(mercatorCenter);
         this._center = mercatorCenter;
       } else {
@@ -98,7 +102,7 @@ export class EOxMap extends LitElement {
   }
   /**
    * Map center, always in the same projection as the view.
-   * when setting the map center, 
+   * when setting the map center,
    */
   get center() {
     return this._center;
@@ -256,9 +260,28 @@ export class EOxMap extends LitElement {
         oldView.getProjection().getCode(),
         projection
       );
+
+      const newProjection = getProjection(projection);
+      const oldResolution = oldView.getResolution();
+      const oldMPU = oldView.getProjection().getMetersPerUnit();
+      const newMPU = newProjection.getMetersPerUnit();
+      const oldPointResolution =
+        getPointResolution(
+          oldView.getProjection(),
+          1 / oldMPU,
+          oldView.getCenter(),
+          "m"
+        ) * oldMPU;
+      const newPointResolution =
+        getPointResolution(newProjection, 1 / newMPU, newCenter, "m") * newMPU;
+
+      const newResolution =
+        (oldResolution * oldPointResolution) / newPointResolution;
+
       const newView = new View({
         zoom: oldView.getZoom(),
         center: newCenter,
+        resolution: newResolution,
         rotation: oldView.getRotation(),
         projection,
       });
@@ -467,10 +490,10 @@ export class EOxMap extends LitElement {
       }
     }
 
-    this.map.once('change:target', (e) => {
+    this.map.once("change:target", (e) => {
       // set center again after target, as y-coordinate might be 0 otherwise
       e.target.getView().setCenter(this.center);
-    })
+    });
     this.map.setTarget(this.renderRoot.querySelector("div"));
 
     this.map.on("loadend", () => {
