@@ -486,6 +486,12 @@ export const ConfigObject = {
     `,
 };
 
+/**
+ * The projection of the view can be changed via the `projection`-attribute.
+ * Out-of-the-box the projections EPSG:3857 (default) and EPSG:4326 (geographic coordinates)
+ * are included, additional projections can be used by registering them via the `registerProjection` or 
+ * `registerProjectionFromCode` helper functions beforehand. 
+ */
 export const Projection = {
   args: {
     layers: [
