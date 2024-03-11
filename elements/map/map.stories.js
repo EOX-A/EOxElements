@@ -496,6 +496,14 @@ export const Projection = {
   args: {
     layers: [
       {
+        type: "Vector",
+        source: {
+          type: "Vector",
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: "GeoJSON",
+        },
+      },
+      {
         type: "Tile",
         properties: {
           id: "osm",
