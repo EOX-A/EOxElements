@@ -146,7 +146,7 @@ export class EOxJSONForm extends LitElement {
     });
   }
 
-  async firstUpdated() {
+  async updated() {
     this.setSchema(await this.parseProperty(this.schema));
     this.setDefaultValues(await this.parseProperty(this.startVals));
     if (!this.#editor) {
