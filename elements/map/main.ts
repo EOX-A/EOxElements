@@ -40,6 +40,7 @@ import {
   get as getProjection,
 } from "ol/proj";
 import { Coordinate } from "ol/coordinate";
+import { Layer } from "ol/layer";
 
 type ConfigObject = {
   controls: controlDictionary;
@@ -308,6 +309,9 @@ export class EOxMap extends LitElement {
         }
       });
       this.map.setView(newView);
+      this.getFlatLayersArray(this.map.getLayers().getArray() as Array<Layer>)
+        .filter((l) => l instanceof VectorLayer)
+        .forEach((l) => l.getSource().refresh());
       this._projection = projection;
       this.center = newCenter;
     }
