@@ -86,7 +86,7 @@ export class EOxJSONForm extends LitElement {
     return property;
   }
   /**
-   * Get The JSON schema for rendering the form
+   * JSON schema used to render the form
    */
   get schema() {
     return this._schema;
@@ -94,6 +94,7 @@ export class EOxJSONForm extends LitElement {
   /**
    * @param {JsonSchema} newSchema
    */
+
   set schema(newSchema) {
     let oldValue = this._schema;
     this._schema = newSchema;
@@ -101,7 +102,7 @@ export class EOxJSONForm extends LitElement {
   }
 
   /**
-   * Get default value for rendering the form
+   * Default values to fill the form
    */
   get startVals() {
     return this._startVals;
