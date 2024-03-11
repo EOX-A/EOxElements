@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,4 +11,5 @@ export default defineConfig({
       fileName: "eox-jsonform",
     },
   },
+  plugins: [nodePolyfills()],
 });

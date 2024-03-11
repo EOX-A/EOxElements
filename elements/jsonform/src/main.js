@@ -1,3 +1,4 @@
+import RefParser from "@apidevtools/json-schema-ref-parser";
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { LitElement, html } from "lit";
 import { style } from "./style";
@@ -147,7 +148,7 @@ export class EOxJSONForm extends LitElement {
   }
 
   async firstUpdated() {
-    this.setSchema(await this.parseProperty(this.schema));
+    this.setSchema(await RefParser.dereference(this.schema));
     this.setDefaultValues(await this.parseProperty(this.startVals));
     if (!this.#editor) {
       addCustomInputs(this.startVals || {});
