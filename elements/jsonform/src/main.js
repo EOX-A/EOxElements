@@ -88,34 +88,31 @@ export class EOxJSONForm extends LitElement {
   /**
    * Get The JSON schema for rendering the form
    */
-  getSchema() {
-    return this.schema;
+  get schema() {
+    return this._schema;
   }
   /**
    * @param {JsonSchema} newSchema
    */
-  setSchema(newSchema) {
-    this.schema = newSchema;
+  set schema(newSchema) {
+    let oldValue = this._schema;
+    this._schema = newSchema;
+    this.requestUpdate("schema", oldValue);
   }
 
   /**
    * Get default value for rendering the form
    */
-  getDefaultValues() {
-    return this.startVals;
+  get startVals() {
+    return this._startVals;
   }
   /**
    * @param {JsonSchema} newVal
    */
-  setDefaultValues(newVal) {
-    this.startVals = newVal;
-  }
-
-  /**
-   * Get default value for rendering the form
-   */
-  getValues() {
-    return this.#data;
+  set startVals(newVal) {
+    let oldValue = this._startVals;
+    this._startVals = newVal;
+    this.requestUpdate("startVals", oldValue);
   }
 
   /**
@@ -147,8 +144,8 @@ export class EOxJSONForm extends LitElement {
   }
 
   async updated() {
-    this.setSchema(await this.parseProperty(this.schema));
-    this.setDefaultValues(await this.parseProperty(this.startVals));
+    this.schema = await this.parseProperty(this.schema);
+    this.startVals = await this.parseProperty(this.startVals);
     if (!this.#editor) {
       addCustomInputs(this.startVals || {});
 
