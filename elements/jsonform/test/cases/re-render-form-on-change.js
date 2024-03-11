@@ -28,12 +28,14 @@ const loadReRenderFormOnChangeTest = () => {
   ).as(jsonForm);
   cy.get(jsonForm).then(($jsonForm) => {
     $jsonForm[0].schema = "/collectionSchema.json";
-    $jsonForm[0].startVals = "./collectionStartVals.json";
+    $jsonForm[0].startVals = "/collectionStartVals.json";
   });
   cy.get(jsonForm)
     .shadow()
     .within(() => {
-      cy.get('div[data-schemapath="root.extent.spatial.bbox"]');
+      cy.get('input[id="root[extent][spatial][bbox][0][0]"]')
+        .invoke("val")
+        .should("eq", "9.0405918788");
     });
 };
 
