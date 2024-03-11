@@ -106,7 +106,6 @@ export class EOxLayerControlLayerTools extends LitElement {
     // Determine the number of actions and tools for conditional rendering
     const actionsLen = actions?.length;
     const toolsLen = tools?.length;
-
     // Render the HTML template based on the conditions
     return html`
       <style>
@@ -158,14 +157,19 @@ export class EOxLayerControlLayerTools extends LitElement {
                   </div>
                   <div slot="config-content">
                     <!-- Layer configuration -->
-                    <eox-layercontrol-layerconfig
-                      slot="config-content"
-                      .layer=${this.layer}
-                      .noShadow=${true}
-                      .layerConfig=${this.layer.get("layerConfig")}
-                      .unstyled=${this.unstyled}
-                      @changed=${() => this.requestUpdate()}
-                    ></eox-layercontrol-layerconfig>
+                    ${when(
+                      this.layer.get("layerConfig"),
+                      () => html`
+                        <eox-layercontrol-layerconfig
+                          slot="config-content"
+                          .layer=${this.layer}
+                          .noShadow=${true}
+                          .layerConfig=${this.layer.get("layerConfig")}
+                          .unstyled=${this.unstyled}
+                          @changed=${() => this.requestUpdate()}
+                        ></eox-layercontrol-layerconfig>
+                      `
+                    )}
                   </div>
                   <div slot="remove-icon">${this._removeButton()}</div>
                   <div slot="sort-icon">${this._sortButton()}</div>
