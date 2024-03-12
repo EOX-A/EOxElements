@@ -256,7 +256,7 @@ ${"  ".repeat(s)}${d}[`))}catch{u=n}return`<pre>${u}</pre>`},fileSizeUnits:["B",
       ?unstyled=${r.unstyled}
       style="width: 400px"
     ></eox-stacinfo>
-  `},xr={args:{for:"https://metadata.opensciencedata.esa.int/open-science-catalog-metadata/products/bathymetry-arctic-cp4o/collection.json",header:["title"],properties:["osc:region","osc:status","osc:missions","created"],footer:["osc:project"]}},te={args:{...xr.args,properties:["title","description","osc:missions","osc:project","osc:region","osc:status","osc:themes","osc:type"]}},ae={args:{...xr.args,properties:void 0,featured:void 0,footer:void 0}},ne={args:{...xr.args,header:[],subheader:[],properties:["description"],featured:[],footer:[]}},ie={args:{...xr.args,featured:["description","extent"],footer:void 0}},Zr={args:{...xr.args,featured:["description","extent"],footer:["osc:project"]}};var OP;const oe={args:{...xr.args},render:r=>wr(OP||(OP=y6([`
+  `},xr={args:{for:`${window.location.href.split("iframe.html")[0]}/collection.json`,header:["title"],properties:["osc:region","osc:status","osc:missions","created"],footer:["osc:project"]}},te={args:{...xr.args,properties:["title","description","osc:missions","osc:project","osc:region","osc:status","osc:themes","osc:type"]}},ae={args:{...xr.args,properties:void 0,featured:void 0,footer:void 0}},ne={args:{...xr.args,header:[],subheader:[],properties:["description"],featured:[],footer:[]}},ie={args:{...xr.args,featured:["description","extent"],footer:void 0}},Zr={args:{...xr.args,featured:["description","extent"],footer:["osc:project"]}};var OP;const oe={args:{...xr.args},render:r=>wr(OP||(OP=y6([`
     <eox-stacinfo
       id="slot"
       for=`,`
@@ -288,7 +288,7 @@ ${"  ".repeat(s)}${d}[`))}catch{u=n}return`<pre>${u}</pre>`},fileSizeUnits:["B",
     <\/script>
   `])),r.for,r.header,r.properties,r.featured,r.footer,r.unstyled)},se={args:{...Zr.args,unstyled:!0}};var RP,NP,FP,$P,BP;xr.parameters={...xr.parameters,docs:{...(RP=xr.parameters)==null?void 0:RP.docs,source:{originalSource:`{
   args: {
-    for: "https://metadata.opensciencedata.esa.int/open-science-catalog-metadata/products/bathymetry-arctic-cp4o/collection.json",
+    for: \`\${window.location.href.split("iframe.html")[0]}/collection.json\`,
     header: ["title"],
     properties: ["osc:region", "osc:status", "osc:missions", "created"],
     footer: ["osc:project"]
