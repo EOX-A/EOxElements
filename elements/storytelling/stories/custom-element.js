@@ -23,7 +23,6 @@ export const CustomElement = {
         width: 100%;
       }
       .custom-block:before {
-        width: 100%;
         padding: 1rem;
         display: block;
         font-weight: 600;
