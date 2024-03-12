@@ -10,6 +10,8 @@ import slugify from "@sindresorhus/slugify";
  */
 export default function attributes(md) {
   md.nav = [];
+  md.customElements = ["eox-", "story-telling-"];
+  md.attrs = [];
   md.core.ruler.push("curly_attributes", curlyAttrs);
 }
 
@@ -72,8 +74,21 @@ function curlyAttrs(state) {
         stack,
         nav,
         finalTokens,
-        sectionStartIndex
+        sectionStartIndex,
+        state
       );
+
+    if (
+      token.type === "heading_open" &&
+      token.tag === "h1" &&
+      tokens[i + 1].content.includes("as=")
+    )
+      continue;
+
+    if (stack.last.tag === "h1" && token.content.includes("as=")) {
+      i += 1;
+      continue;
+    }
 
     token.level = token.level + 1;
     finalTokens.push(token);
@@ -81,6 +96,17 @@ function curlyAttrs(state) {
   if (sectionStart)
     finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
 
+  finalTokens.forEach((token) => {
+    const attrs = token.attrs || [];
+    attrs.forEach((attr) => {
+      if (!state.md.attrs.includes(attr[0]))
+        state.md.attrs = [...state.md.attrs, attr[0]];
+      if (attr[0] === "as") {
+        if (!state.md.customElements.includes(attr[1]))
+          state.md.customElements.push(attr[1]);
+      }
+    });
+  });
   omissions.forEach((idx) => tokens.splice(idx, 1));
   state.tokens = finalTokens;
   state.md.nav = nav || [];
@@ -124,9 +150,17 @@ function isOpener(type) {
  * @param {Array<Object>} finalTokens
  * @param {Number} sectionStartIndex
  * @return {Array<Object>} finalTokens
+ * @param {{tokens: Array<Object>}} state - Token state
  *
  */
-function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
+function curlyInline(
+  children,
+  stack,
+  nav,
+  finalTokens,
+  sectionStartIndex,
+  state
+) {
   let lastText;
   const omissions = [];
 
@@ -166,9 +200,53 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
     nav.push({ title, id });
   }
 
+  // Generate custom element if h1 has `as` attribute.
+  if (stack.last.tag === "h1") {
+    const attrAs = (stack.last.attrs || []).find(
+      (subArr) => subArr[0] === "as"
+    )?.[1];
+
+    if (attrAs)
+      finalTokens = [
+        ...finalTokens,
+        ...transformToCustomElement(
+          children[1],
+          attrAs,
+          state,
+          stack.last.attrs
+        ),
+      ];
+  }
+
   omissions.forEach((idx) => children.splice(idx, 1));
 
   return finalTokens;
+}
+
+/**
+ * Transform H1 to custom element based on `as`
+ *
+ * @param {Object} token - List of markdown tokens
+ * @param {String} as - value of custom element
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {{tokens: Array}} attrs - List of attribute with key and value
+ * @return {Array<Object>} finalTokens
+ *
+ */
+function transformToCustomElement(token, as, state, attrs) {
+  // Generate HTML open token for custom element
+  const openToken = new state.Token("html_open", as, 1);
+  openToken.attrs = attrs;
+
+  // Generate HTML inline token for custom element
+  const contentToken = new state.Token("html_inline", as, 0);
+  contentToken.level = 1;
+  contentToken.children = token.children;
+
+  // Generate HTML close token for custom element
+  const closeToken = new state.Token("html_close", as, -1);
+
+  return [openToken, contentToken, closeToken];
 }
 
 /**
@@ -240,6 +318,11 @@ function applyToToken(token, attrs) {
     }
     // Skip whitespace
     else if ((m = attrs.match(/^\s+/))) {
+      attrs = attrs.slice(m[0].length);
+    }
+    // Match "as" attribute
+    else if ((m = attrs.match(/^\s*as="([a-zA-Z0-9\-_]+)"/))) {
+      addAttr(token, "as", m[1]);
       attrs = attrs.slice(m[0].length);
     }
     // If no matches are found, break the loop to avoid an infinite loop

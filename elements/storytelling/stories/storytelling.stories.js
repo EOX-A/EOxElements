@@ -9,6 +9,7 @@ import {
   MarkdownAttrCommentStory,
   NavigationStory,
   MarkdownBasicConfigStory,
+  CustomElementStory,
 } from "./index";
 import { html } from "lit";
 
@@ -58,3 +59,8 @@ export const MarkdownWithBasicConfig = MarkdownBasicConfigStory;
  * StoryTelling with Navigation
  */
 export const MarkdownWithNavigation = NavigationStory;
+
+/**
+ * StoryTelling with custom element
+ */
+export const CustomElement = CustomElementStory;
