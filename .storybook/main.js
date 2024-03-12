@@ -24,7 +24,12 @@ const config = {
     autodocs: "tag",
     toc: true,
   },
-  staticDirs: ["./public", "../elements/storytelling/stories/public/"],
+  staticDirs: [
+    "./public",
+    "../elements/jsonform/stories/public/",
+    "../elements/stacinfo/stories/public/",
+    "../elements/storytelling/stories/public/",
+  ],
 };
 export default config;
 
