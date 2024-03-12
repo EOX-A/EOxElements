@@ -1,15 +1,17 @@
 import { html } from "lit";
 import "./src/main";
-import basicSchema from "./examples/basicSchema.json";
-import catalogSchema from "./examples/catalogSchema.json";
-import collectionSchema from "./examples/collectionSchema.json";
-import catalogStartVals from "./examples/catalogStartVals.json";
-import collectionStartVals from "./examples/collectionStartVals.json";
+import basicSchema from "./stories/public/basicSchema.json";
+import catalogSchema from "./stories/public/catalogSchema.json";
+import collectionSchema from "./stories/public/collectionSchema.json";
+import catalogStartVals from "./stories/public/catalogStartVals.json";
+import collectionStartVals from "./stories/public/collectionStartVals.json";
 
-const externalSchema =
-  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/stories/public/catalogSchema.json";
-const externalStartVals =
-  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/stories/public/catalogStartVals.json";
+const externalSchema = `${
+  window.location.href.split("iframe.html")[0]
+}/catalogSchema.json`;
+const externalStartVals = `${
+  window.location.href.split("iframe.html")[0]
+}/catalogStartVals.json`;
 
 export default {
   title: "Elements/eox-jsonform",

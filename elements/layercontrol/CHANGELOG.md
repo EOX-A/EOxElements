@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.0...layercontrol-v0.17.1) (2024-03-11)
+
+
+### Bug Fixes
+
+* Only use layerConfig element when layerConfig property is used ([#735](https://github.com/EOX-A/EOxElements/issues/735)) ([16d7dc2](https://github.com/EOX-A/EOxElements/commit/16d7dc2524a0af3c685c62d01294cbee5eb3d28b))
+
 ## [0.17.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.16.0...layercontrol-v0.17.0) (2024-03-07)
 
 

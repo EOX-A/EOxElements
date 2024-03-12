@@ -1,0 +1,110 @@
+{
+  "type": "Collection",
+  "id": "bedrock-topography-antarctica-bedmachine",
+  "stac_version": "1.0.0",
+  "description": "This data set, part of the NASA Making Earth System Data Records for Use in Research Environments (MEaSUREs) program, contains a bed topography/bathymetry map of Antarctica based on mass conservation, streamline diffusion, and other methods. The data set also includes ice thickness, surface elevation, an ice/ocean/land mask, ice thickness estimation errors, and a map showing where each method was utilized.",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json",
+      "title": "Open Science Catalog"
+    },
+    {
+      "rel": "via",
+      "href": "https://nsidc.org/data/nsidc-0756/versions/3",
+      "title": "Access"
+    },
+    {
+      "rel": "via",
+      "href": "https://nsidc.org/sites/default/files/documents/user-guide/nsidc-0756-v003-userguide.pdf",
+      "title": "Documentation"
+    },
+    {
+      "rel": "child",
+      "href": "https://s3.waw2-1.cloudferro.com/swift/v1/AUTH_3f7e5dd853f54cebb046a29a69f1bba6/Catalogs/4DANTARCTICA/bedrock-topography-antarctica-bedmachine/catalog.json",
+      "type": "application/json",
+      "title": "Items"
+    },
+    {
+      "rel": "parent",
+      "href": "../catalog.json",
+      "type": "application/json",
+      "title": "Products"
+    },
+    {
+      "rel": "related",
+      "href": "../../projects/4d-antarctica/collection.json",
+      "type": "application/json",
+      "title": "Project: 4D-ANTARCTICA"
+    },
+    {
+      "rel": "related",
+      "href": "../../themes/cryosphere/catalog.json",
+      "type": "application/json",
+      "title": "Theme: Cryosphere"
+    },
+    {
+      "rel": "related",
+      "href": "../../variables/ice-depth-thickness/catalog.json",
+      "type": "application/json",
+      "title": "Variable: Ice Depth/Thickness"
+    },
+    {
+      "rel": "related",
+      "href": "../../variables/glacier-thickness-ice-sheet-thickness/catalog.json",
+      "type": "application/json",
+      "title": "Variable: Glacier Thickness/Ice Sheet Thickness"
+    },
+    {
+      "rel": "related",
+      "href": "../../eo-missions/numerical-models/catalog.json",
+      "type": "application/json",
+      "title": "EO Mission: Numerical models"
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/osc/v1.0.0-rc.2/schema.json"
+  ],
+  "osc:themes": ["Cryosphere"],
+  "osc:missions": ["Numerical models"],
+  "osc:project": "4D-ANTARCTICA",
+  "osc:variables": [
+    "Ice Depth/Thickness",
+    "Glacier Thickness/Ice Sheet Thickness"
+  ],
+  "osc:status": "ongoing",
+  "osc:region": "Antarctica",
+  "osc:type": "product",
+  "osc:standard_name": "bedrock-topography-antarctica-bedmachine",
+  "created": "2022-10-11T00:00:00Z",
+  "version": "3.0",
+  "sci:doi": "10.5067/FPSU0V1MWUB6",
+  "start_datetime": "1970-01-01T00:00:00Z",
+  "end_datetime": "2019-10-01T23:59:59Z",
+  "updated": "2024-03-01T10:20:42Z",
+  "title": "Bedrock topography: MEaSUREs BedMachine Antarctica v.3",
+  "extent": {
+    "spatial": {
+      "bbox": [[180.0, -53.0, -180.0, -90.0]]
+    },
+    "temporal": {
+      "interval": [["1970-01-01T00:00:00Z", "2019-10-01T23:59:59Z"]]
+    }
+  },
+  "license": "proprietary",
+  "keywords": [
+    "Ice Depth/Thickness",
+    "Cryospheric Indicators",
+    "Snow/Ice",
+    "Glaciers/Ice Sheets",
+    "Glacier Thickness/Ice Sheet Thickness",
+    "Sea Ice",
+    "theme:Cryosphere",
+    "variable:Ice Depth/Thickness",
+    "variable:Glacier Thickness/Ice Sheet Thickness",
+    "mission:Numerical models",
+    "region:Antarctica",
+    "project:4D-ANTARCTICA"
+  ]
+}
