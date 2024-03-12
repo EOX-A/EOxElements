@@ -3,6 +3,7 @@ import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import {
+  getCustomEleHandling,
   loadMarkdownURL,
   scrollAnchorClickEvent,
   scrollIntoView,
@@ -101,13 +102,7 @@ export class EOxStoryTelling extends LitElement {
     if (changedProperties.has("markdown")) {
       const unsafeHTML = md.render(this.markdown);
       this.#html = DOMPurify.sanitize(unsafeHTML, {
-        CUSTOM_ELEMENT_HANDLING: {
-          tagNameCheck: (tagName) =>
-            tagName.match(new RegExp(md.customElements.join("|"))),
-          attributeNameCheck: (attr) =>
-            attr.match(new RegExp(md.attrs.join("|"))),
-          allowCustomizedBuiltInElements: () => true,
-        },
+        CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
       });
       this.#config = md.config;
 

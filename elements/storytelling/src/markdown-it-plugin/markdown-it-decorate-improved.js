@@ -96,17 +96,8 @@ function curlyAttrs(state) {
   if (sectionStart)
     finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
 
-  finalTokens.forEach((token) => {
-    const attrs = token.attrs || [];
-    attrs.forEach((attr) => {
-      if (!state.md.attrs.includes(attr[0]))
-        state.md.attrs = [...state.md.attrs, attr[0]];
-      if (attr[0] === "as") {
-        if (!state.md.customElements.includes(attr[1]))
-          state.md.customElements.push(attr[1]);
-      }
-    });
-  });
+  generateCustomEleAndAttrsList(finalTokens, state.md);
+
   omissions.forEach((idx) => tokens.splice(idx, 1));
   state.tokens = finalTokens;
   state.md.nav = nav || [];
@@ -383,4 +374,23 @@ function sPush(stack, token) {
  */
 function trimRight(obj, attr) {
   obj[attr] = obj[attr].replace(/\s*$/, "");
+}
+
+/**
+ * Generate list of custom elements tag and it's attribute for DOM sanitize whitelist.
+ *
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function generateCustomEleAndAttrsList(tokens, md) {
+  tokens.forEach((token) => {
+    const attrs = token.attrs || [];
+    attrs.forEach((attr) => {
+      if (!md.attrs.includes(attr[0])) md.attrs = [...md.attrs, attr[0]];
+      if (attr[0] === "as") {
+        if (!md.customElements.includes(attr[1]))
+          md.customElements.push(attr[1]);
+      }
+    });
+  });
 }

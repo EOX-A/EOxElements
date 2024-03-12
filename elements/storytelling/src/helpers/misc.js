@@ -24,3 +24,22 @@ export function scrollIntoView(that) {
   const element = hash ? that.shadowRoot.querySelector(hash) : null;
   if (element) element.scrollIntoView({ behavior: "smooth" });
 }
+
+/**
+ * Generate custom element handling config.
+ *
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ * @return {{tagNameCheck: String, attributeNameCheck: String, allowCustomizedBuiltInElements: Boolean}}
+ */
+export function getCustomEleHandling(md) {
+  const tagNameCheck = (tagName) =>
+    tagName.match(new RegExp(md.customElements.join("|")));
+  const attributeNameCheck = (attr) =>
+    attr.match(new RegExp(md.attrs.join("|")));
+
+  return {
+    tagNameCheck,
+    attributeNameCheck,
+    allowCustomizedBuiltInElements: true,
+  };
+}
