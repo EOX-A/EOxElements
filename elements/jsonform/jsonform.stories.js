@@ -7,9 +7,9 @@ import catalogStartVals from "./examples/catalogStartVals.json";
 import collectionStartVals from "./examples/collectionStartVals.json";
 
 const externalSchema =
-  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogSchema.json";
+  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/stories/public/catalogSchema.json";
 const externalStartVals =
-  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogStartVals.json";
+  "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/stories/public/catalogStartVals.json";
 
 export default {
   title: "Elements/eox-jsonform",

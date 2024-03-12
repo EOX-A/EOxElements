@@ -144,9 +144,19 @@ export class EOxJSONForm extends LitElement {
     });
   }
 
-  async updated() {
-    this.schema = await this.parseProperty(this.schema);
-    this.startVals = await this.parseProperty(this.startVals);
+  async updated(changedProperties) {
+    if (changedProperties.has("schema")) {
+      this.schema = await this.parseProperty(this.schema);
+    }
+    // if startVals is a string it means the component just
+    // got created or the prop got changed => we need to parse it,
+    // otherwise we prevent needlessly parsing it
+    if (typeof this.startVals == "string") {
+      console.log("STRING");
+      this.startVals = await this.parseProperty(this.startVals);
+    }
+    console.log(this.startVals);
+
     if (!this.#editor) {
       addCustomInputs(this.startVals || {});
 
