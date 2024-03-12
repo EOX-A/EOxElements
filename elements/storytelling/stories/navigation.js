@@ -2,7 +2,6 @@
  * Renders storytelling along with navigation.
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const Navigation = {
   args: {

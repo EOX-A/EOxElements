@@ -2,8 +2,6 @@
  * Component demonstrating css variable override inside <style>
  */
 import { html } from "lit";
-import "@eox/map/main";
-import "../src/main";
 import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const CSSVariableOverride = {

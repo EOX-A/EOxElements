@@ -1,9 +1,5 @@
 import { html } from "lit";
 import "./src/main";
-import "./src/autocomplete";
-import "./src/selectionlist";
-import "./src/chips";
-import "../map/main";
 import items from "./test/testItems.json";
 
 export default {

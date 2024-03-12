@@ -1,5 +1,4 @@
 import { html } from "lit";
-import "../map/main";
 import "./src/main";
 
 export default {
