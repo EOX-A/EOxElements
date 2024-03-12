@@ -6,16 +6,15 @@ export default {
   title: "Elements/eox-map",
   tags: ["autodocs"],
   component: "eox-map",
-  render: (args) =>
-    html`
-      <eox-map
-        style="width: 100%; height: 300px;"
-        .center=${args.center}
-        .controls=${args.controls}
-        .layers=${args.layers}
-        .zoom=${args.zoom}
-      ></eox-map>
-    `,
+  render: (args) => html`
+    <eox-map
+      style="width: 100%; height: 300px;"
+      .center=${args.center}
+      .controls=${args.controls}
+      .layers=${args.layers}
+      .zoom=${args.zoom}
+    ></eox-map>
+  `,
 };
 
 export const Primary = {
@@ -315,19 +314,18 @@ export const Tooltip = {
     center: [15, 48],
     zoom: 4,
   },
-  render: (args) =>
-    html`
-      <eox-map
-        id="tooltipTest"
-        style="width: 100%; height: 300px;"
-        .center=${args.center}
-        .controls=${args.controls}
-        .layers=${args.layers}
-        .zoom=${args.zoom}
-      >
-        <eox-map-tooltip></eox-map-tooltip>
-      </eox-map>
-    `,
+  render: (args) => html`
+    <eox-map
+      id="tooltipTest"
+      style="width: 100%; height: 300px;"
+      .center=${args.center}
+      .controls=${args.controls}
+      .layers=${args.layers}
+      .zoom=${args.zoom}
+    >
+      <eox-map-tooltip></eox-map-tooltip>
+    </eox-map>
+  `,
 };
 
 /**
@@ -374,26 +372,25 @@ export const TooltipWithPropertyTransform = {
     center: [15, 48],
     zoom: 4,
   },
-  render: (args) =>
-    html`
-      <eox-map
-        id="tooltipTest"
-        style="width: 100%; height: 300px;"
-        .center=${args.center}
-        .controls=${args.controls}
-        .layers=${args.layers}
-        .zoom=${args.zoom}
-      >
-        <eox-map-tooltip
-          .propertyTransform=${({ key, value }, hoverFeature) => {
-            console.log(hoverFeature);
-            if (key.includes("COLOR")) {
-              return { key: key.toLowerCase(), value };
-            }
-          }}
-        ></eox-map-tooltip>
-      </eox-map>
-    `,
+  render: (args) => html`
+    <eox-map
+      id="tooltipTest"
+      style="width: 100%; height: 300px;"
+      .center=${args.center}
+      .controls=${args.controls}
+      .layers=${args.layers}
+      .zoom=${args.zoom}
+    >
+      <eox-map-tooltip
+        .propertyTransform=${({ key, value }, hoverFeature) => {
+          console.log(hoverFeature);
+          if (key.includes("COLOR")) {
+            return { key: key.toLowerCase(), value };
+          }
+        }}
+      ></eox-map-tooltip>
+    </eox-map>
+  `,
 };
 
 export const MapSync = {
@@ -409,23 +406,22 @@ export const MapSync = {
       },
     ],
   },
-  render: (args) =>
-    html`
-      <style>
-        eox-map-compare,
-        eox-map {
-          width: 50%;
-          height: 300px;
-        }
-        .container {
-          display: flex;
-        }
-      </style>
-      <div class="container">
-        <eox-map id="a" .layers=${args.layers}> </eox-map>
-        <eox-map id="b" sync="#a" .layers=${args.layers}></eox-map>
-      </div>
-    `,
+  render: (args) => html`
+    <style>
+      eox-map-compare,
+      eox-map {
+        width: 50%;
+        height: 300px;
+      }
+      .container {
+        display: flex;
+      }
+    </style>
+    <div class="container">
+      <eox-map id="a" .layers=${args.layers}> </eox-map>
+      <eox-map id="b" sync="#a" .layers=${args.layers}></eox-map>
+    </div>
+  `,
 };
 
 export const ABCompare = {
@@ -444,24 +440,23 @@ export const ABCompare = {
       },
     ],
   },
-  render: (args) =>
-    html`
-      <style>
-        eox-map-compare,
-        eox-map {
-          width: 100%;
-          height: 300px;
-        }
-      </style>
-      <eox-map-compare>
-        <eox-map slot="first" id="compareA" .layers=${args.layersA}></eox-map>
-        <eox-map
-          slot="second"
-          sync="eox-map#compareA"
-          .layers=${args.layersB}
-        ></eox-map>
-      </eox-map-compare>
-    `,
+  render: (args) => html`
+    <style>
+      eox-map-compare,
+      eox-map {
+        width: 100%;
+        height: 300px;
+      }
+    </style>
+    <eox-map-compare>
+      <eox-map slot="first" id="compareA" .layers=${args.layersA}></eox-map>
+      <eox-map
+        slot="second"
+        sync="eox-map#compareA"
+        .layers=${args.layersB}
+      ></eox-map>
+    </eox-map-compare>
+  `,
 };
 
 export const ConfigObject = {
@@ -477,13 +472,12 @@ export const ConfigObject = {
       },
     },
   },
-  render: (args) =>
-    html`
-      <eox-map
-        style="width: 100%; height: 300px;"
-        .config=${args.config}
-      ></eox-map>
-    `,
+  render: (args) => html`
+    <eox-map
+      style="width: 100%; height: 300px;"
+      .config=${args.config}
+    ></eox-map>
+  `,
 };
 
 /**
@@ -515,31 +509,30 @@ export const Projection = {
     center: [16.8, 48.2],
     zoom: 7,
   },
-  render: (args) =>
-    html`
-      <eox-map
-        id="projectionMap"
-        style="width: 100%; height: 300px;"
-        .center=${args.center}
-        .controls=${args.controls}
-        .layers=${args.layers}
-        .zoom=${args.zoom}
-      >
-      </eox-map>
-      <button
-        @click=${() => {
-          const eoxMap = document.querySelector("#projectionMap");
-          eoxMap.setAttribute(
-            "projection",
-            eoxMap.map.getView().getProjection().getCode() === "EPSG:4326"
-              ? "EPSG:3857"
-              : "EPSG:4326"
-          );
-        }}
-      >
-        change projection
-      </button>
-    `,
+  render: (args) => html`
+    <eox-map
+      id="projectionMap"
+      style="width: 100%; height: 300px;"
+      .center=${args.center}
+      .controls=${args.controls}
+      .layers=${args.layers}
+      .zoom=${args.zoom}
+    >
+    </eox-map>
+    <button
+      @click=${() => {
+        const eoxMap = document.querySelector("#projectionMap");
+        eoxMap.setAttribute(
+          "projection",
+          eoxMap.map.getView().getProjection().getCode() === "EPSG:4326"
+            ? "EPSG:3857"
+            : "EPSG:4326"
+        );
+      }}
+    >
+      change projection
+    </button>
+  `,
 };
 
 /**
@@ -561,11 +554,10 @@ export const PreventScroll = {
       preventScroll: true,
     },
   },
-  render: (args) =>
-    html`
-      <eox-map
-        style="width: 100%; height: 300px;"
-        .config=${args.config}
-      ></eox-map>
-    `,
+  render: (args) => html`
+    <eox-map
+      style="width: 100%; height: 300px;"
+      .config=${args.config}
+    ></eox-map>
+  `,
 };
