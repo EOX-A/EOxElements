@@ -13,7 +13,7 @@ export const CustomElement = {
   render: (args) => html`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
-      id="markdown-str"
+      id="markdown-custom-element"
       markdown=${args.markdown}
       no-shadow
     ></eox-storytelling>
