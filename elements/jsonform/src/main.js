@@ -29,6 +29,15 @@ export class EOxJSONForm extends LitElement {
    */
   #editor = null;
 
+  /**
+   * Parsed schema for the form editor
+   */
+  #parsedSchema = {};
+
+  /**
+   * Parsed start values for the form editor
+   */
+  #parsedStartVals = {};
   constructor() {
     super();
 
@@ -145,14 +154,12 @@ export class EOxJSONForm extends LitElement {
   }
 
   async updated(changedProperties) {
-    if (changedProperties.has("schema")) {
-      this.schema = await this.parseProperty(this.schema);
+    // check if schema or startVals has been changed to prevent useless parsing
+    if (changedProperties.has("schema") || this.#parsedSchema == {}) {
+      this.#parsedSchema = await this.parseProperty(this.schema);
     }
-    // if startVals is a string it means the component just
-    // got created or the prop got changed => we need to parse it,
-    // otherwise we prevent needlessly parsing it
-    if (typeof this.startVals == "string") {
-      this.startVals = await this.parseProperty(this.startVals);
+    if (changedProperties.has("startVals" || this.#parsedStartVals == {})) {
+      this.#parsedStartVals = await this.parseProperty(this.startVals);
     }
 
     if (!this.#editor) {
@@ -161,8 +168,8 @@ export class EOxJSONForm extends LitElement {
       const formEle = this.renderRoot.querySelector("form");
 
       this.#editor = new JSONEditor(formEle, {
-        schema: this.schema,
-        ...(this.startVals ? { startval: this.startVals } : {}),
+        schema: this.#parsedSchema,
+        ...(this.startVals ? { startval: this.#parsedStartVals } : {}),
         theme: "html",
         ajax: true,
         ...this.options,
