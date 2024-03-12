@@ -10,7 +10,6 @@ import slugify from "@sindresorhus/slugify";
  */
 export default function attributes(md) {
   md.nav = [];
-  md.customElements = ["eox-", "story-telling-"];
   md.attrs = [];
   md.core.ruler.push("curly_attributes", curlyAttrs);
 }
@@ -96,7 +95,7 @@ function curlyAttrs(state) {
   if (sectionStart)
     finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
 
-  generateCustomEleAndAttrsList(finalTokens, state.md);
+  generateCustomAttrsList(finalTokens, state.md);
 
   omissions.forEach((idx) => tokens.splice(idx, 1));
   state.tokens = finalTokens;
@@ -377,20 +376,16 @@ function trimRight(obj, attr) {
 }
 
 /**
- * Generate list of custom elements tag and it's attribute for DOM sanitize whitelist.
+ * Generate list of custom attributes for DOM sanitize whitelist.
  *
  * @param {Array<Object>} tokens - List of markdown tokens
  * @param {import("markdown-it").default} md - Markdown-It instances
  */
-function generateCustomEleAndAttrsList(tokens, md) {
+function generateCustomAttrsList(tokens, md) {
   tokens.forEach((token) => {
     const attrs = token.attrs || [];
     attrs.forEach((attr) => {
       if (!md.attrs.includes(attr[0])) md.attrs = [...md.attrs, attr[0]];
-      if (attr[0] === "as") {
-        if (!md.customElements.includes(attr[1]))
-          md.customElements.push(attr[1]);
-      }
     });
   });
 }

@@ -5,7 +5,7 @@
  * @param {String} selector - element selector string
  */
 export function scrollAnchorClickEvent(that, selector) {
-  that.shadowRoot.querySelectorAll(selector).forEach((doc) => {
+  (that.shadowRoot || that).querySelectorAll(selector).forEach((doc) => {
     doc.addEventListener("click", (e) => {
       e.preventDefault();
       window.parent.location.hash = e.target.hash.replace("#", "");
@@ -33,7 +33,7 @@ export function scrollIntoView(that) {
  */
 export function getCustomEleHandling(md) {
   const tagNameCheck = (tagName) =>
-    tagName.match(new RegExp(md.customElements.join("|")));
+    tagName.match(new RegExp(/^[a-z]+(-[a-z0-9]+)*$/));
   const attributeNameCheck = (attr) =>
     attr.match(new RegExp(md.attrs.join("|")));
 
