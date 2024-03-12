@@ -1,4 +1,3 @@
-import "../src/main.js";
 /**
  * Stories for eox-storytelling component showcasing various configurations.
  * These stories provide visual representations and usage examples for different scenarios.

@@ -1,4 +1,3 @@
-import "../src/main";
 /**
  * Stories for eox-drawtools component showcasing various configurations.
  * These stories provide visual representations and usage examples for different scenarios.

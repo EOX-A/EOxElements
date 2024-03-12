@@ -1,5 +1,4 @@
 import { html } from "lit";
-import "./src/main";
 import items from "./test/testItems.json";
 
 export default {

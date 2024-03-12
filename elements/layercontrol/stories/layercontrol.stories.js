@@ -1,4 +1,3 @@
-import "../src/main";
 import {
   ExclusiveLayersStory,
   ExpandedLayersStory,

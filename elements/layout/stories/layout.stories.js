@@ -1,4 +1,3 @@
-import "../src/main";
 /**
  * Stories for eox-layout component showcasing various configurations.
  * These stories provide visual representations and usage examples for different scenarios.
