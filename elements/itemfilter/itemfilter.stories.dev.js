@@ -1,16 +1,9 @@
 import { html } from "lit";
-import { EOxItemFilter } from "./src/main";
-import items from "./test/testItems.json";
 
 export default {
   title: "Elements/eox-itemfilter",
   tags: ["autodocs"],
   component: "eox-itemfilter",
-  render: (args) =>
-    html`<eox-itemfilter
-      .config=${args.config}
-      .items=${args.items}
-    ></eox-itemfilter>`,
 };
 
 export const Autocomplete = {
