@@ -152,10 +152,8 @@ export class EOxJSONForm extends LitElement {
     // got created or the prop got changed => we need to parse it,
     // otherwise we prevent needlessly parsing it
     if (typeof this.startVals == "string") {
-      console.log("STRING");
       this.startVals = await this.parseProperty(this.startVals);
     }
-    console.log(this.startVals);
 
     if (!this.#editor) {
       addCustomInputs(this.startVals || {});
