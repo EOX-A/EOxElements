@@ -27,7 +27,7 @@ export default {
  */
 export const Basic = {
   args: {
-    for: "https://metadata.opensciencedata.esa.int/open-science-catalog-metadata/products/bathymetry-arctic-cp4o/collection.json",
+    for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
     header: ["title"],
     properties: ["osc:region", "osc:status", "osc:missions", "created"],
     footer: ["osc:project"],
