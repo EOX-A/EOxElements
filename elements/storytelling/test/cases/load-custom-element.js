@@ -11,7 +11,7 @@ const LoadCustomElementTest = () => {
   let testText = "";
 
   TAGS.forEach((tag) => {
-    testText += `# ${tag} <!--{as="${tag}" .custom-block}--> \n`;
+    testText += `## ${tag} <!--{as="${tag}" .custom-block}--> \n`;
   });
 
   cy.mount(`<eox-storytelling markdown='${testText}'></eox-storytelling>`).as(

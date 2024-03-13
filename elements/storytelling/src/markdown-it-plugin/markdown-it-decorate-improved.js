@@ -79,12 +79,12 @@ function curlyAttrs(state) {
 
     if (
       token.type === "heading_open" &&
-      token.tag === "h1" &&
+      token.tag === "h2" &&
       tokens[i + 1].content.includes("as=")
     )
       continue;
 
-    if (stack.last.tag === "h1" && token.content.includes("as=")) {
+    if (stack.last.tag === "h2" && token.content.includes("as=")) {
       i += 1;
       continue;
     }
@@ -188,10 +188,7 @@ function curlyInline(
     ].content.replace("{id}", id);
 
     nav.push({ title, id });
-  }
 
-  // Generate custom element if h1 has `as` attribute.
-  if (stack.last.tag === "h1") {
     const attrAs = (stack.last.attrs || []).find(
       (subArr) => subArr[0] === "as"
     )?.[1];
@@ -203,7 +200,8 @@ function curlyInline(
           children[1],
           attrAs,
           state,
-          stack.last.attrs
+          stack.last.attrs,
+          title
         ),
       ];
   }
@@ -219,14 +217,16 @@ function curlyInline(
  * @param {Object} token - List of markdown tokens
  * @param {String} as - value of custom element
  * @param {{tokens: Array<Object>}} state - Token state
- * @param {{tokens: Array}} attrs - List of attribute with key and value
+ * @param {Array<Object>} attrs - List of attribute with key and value
+ * @param {String} text - Text inside heading
  * @return {Array<Object>} finalTokens
  *
  */
-function transformToCustomElement(token, as, state, attrs) {
+function transformToCustomElement(token, as, state, attrs, text) {
   // Generate HTML open token for custom element
   const openToken = new state.Token("html_open", as, 1);
   openToken.attrs = attrs;
+  openToken.attrs.push(["text", text]);
 
   // Generate HTML inline token for custom element
   const contentToken = new state.Token("html_inline", as, 0);

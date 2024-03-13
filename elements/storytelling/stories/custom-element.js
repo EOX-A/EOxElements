@@ -6,9 +6,9 @@ import "../src/main.js";
 
 export const CustomElement = {
   args: {
-    markdown: `# First Custom Element <!--{as="foo-bar" .custom-block}-->
-# Second Custom Element <!--{as="baz-que" .custom-block}-->
-# Third Custom Element <!--{as="quux-corge" .custom-block}-->`,
+    markdown: `## First Custom Element <!--{as="foo-bar" .custom-block}-->
+## Second Custom Element <!--{as="baz-que" .custom-block}-->
+## Third Custom Element <!--{as="quux-corge" .custom-block}-->`,
   },
   render: (args) => html`
     <!-- Render eox-storytelling with basic markdown. -->
