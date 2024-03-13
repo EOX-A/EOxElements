@@ -212,7 +212,7 @@ function curlyInline(
 }
 
 /**
- * Transform H1 to custom element based on `as`
+ * Transform H2 to custom element based on `as`
  *
  * @param {Object} token - List of markdown tokens
  * @param {String} as - value of custom element

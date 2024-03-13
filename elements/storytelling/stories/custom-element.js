@@ -1,5 +1,5 @@
 /**
- * It will render custom elements using h1 and 'as' attribute in decorate
+ * It will render custom elements using H2 and 'as' attribute in decorate
  */
 import { html } from "lit";
 import "../src/main.js";

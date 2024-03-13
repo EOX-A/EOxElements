@@ -4,7 +4,7 @@ import { TEST_SELECTORS } from "../../src/enums";
 const { storyTelling } = TEST_SELECTORS;
 
 /**
- * Loads custom element through h1 and decorate.
+ * Loads custom element through H2 and decorate.
  */
 const LoadCustomElementTest = () => {
   const TAGS = ["foo-bar", "baz-que", "quux-corge"];
