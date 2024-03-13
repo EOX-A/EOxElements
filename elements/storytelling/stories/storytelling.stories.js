@@ -61,6 +61,7 @@ export const MarkdownWithBasicConfig = MarkdownBasicConfigStory;
 export const MarkdownWithNavigation = NavigationStory;
 
 /**
- * StoryTelling with custom element
+ * With the `as` attribute, `h2` sections can be replaced by other elements (native and custom elements).
+ * The newly rendered element replaces the original `h2' text content (fallback for vanilla md rendering) completely.
  */
 export const CustomElement = CustomElementStory;
