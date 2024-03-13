@@ -9,6 +9,7 @@ import {
   loadSectionsTest,
   loadNavigationTest,
   loadMarkdownConfigTest,
+  LoadCustomElementTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -35,4 +36,7 @@ describe("Storytelling", () => {
   // Test case to loads basic config through storytelling markdown
   it("loads basic config through storytelling markdown", () =>
     loadMarkdownConfigTest());
+
+  // Test case to load custom element
+  it("Load custom element", () => LoadCustomElementTest());
 });

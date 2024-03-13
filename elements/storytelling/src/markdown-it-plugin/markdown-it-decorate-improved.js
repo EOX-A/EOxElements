@@ -10,6 +10,7 @@ import slugify from "@sindresorhus/slugify";
  */
 export default function attributes(md) {
   md.nav = [];
+  md.attrs = [];
   md.core.ruler.push("curly_attributes", curlyAttrs);
 }
 
@@ -72,14 +73,29 @@ function curlyAttrs(state) {
         stack,
         nav,
         finalTokens,
-        sectionStartIndex
+        sectionStartIndex,
+        state
       );
+
+    if (
+      token.type === "heading_open" &&
+      token.tag === "h2" &&
+      tokens[i + 1].content.includes("as=")
+    )
+      continue;
+
+    if (stack.last.tag === "h2" && token.content.includes("as=")) {
+      i += 1;
+      continue;
+    }
 
     token.level = token.level + 1;
     finalTokens.push(token);
   }
   if (sectionStart)
     finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
+
+  generateCustomAttrsList(finalTokens, state.md);
 
   omissions.forEach((idx) => tokens.splice(idx, 1));
   state.tokens = finalTokens;
@@ -124,9 +140,17 @@ function isOpener(type) {
  * @param {Array<Object>} finalTokens
  * @param {Number} sectionStartIndex
  * @return {Array<Object>} finalTokens
+ * @param {{tokens: Array<Object>}} state - Token state
  *
  */
-function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
+function curlyInline(
+  children,
+  stack,
+  nav,
+  finalTokens,
+  sectionStartIndex,
+  state
+) {
   let lastText;
   const omissions = [];
 
@@ -164,11 +188,55 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
     ].content.replace("{id}", id);
 
     nav.push({ title, id });
+
+    const attrAs = (stack.last.attrs || []).find(
+      (subArr) => subArr[0] === "as"
+    )?.[1];
+
+    if (attrAs)
+      finalTokens = [
+        ...finalTokens,
+        ...transformToCustomElement(
+          children[1],
+          attrAs,
+          state,
+          stack.last.attrs,
+          title
+        ),
+      ];
   }
 
   omissions.forEach((idx) => children.splice(idx, 1));
 
   return finalTokens;
+}
+
+/**
+ * Transform H2 to custom element based on `as`
+ *
+ * @param {Object} token - List of markdown tokens
+ * @param {String} as - value of custom element
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {Array<Object>} attrs - List of attribute with key and value
+ * @param {String} text - Text inside heading
+ * @return {Array<Object>} finalTokens
+ *
+ */
+function transformToCustomElement(token, as, state, attrs, text) {
+  // Generate HTML open token for custom element
+  const openToken = new state.Token("html_open", as, 1);
+  openToken.attrs = attrs;
+  openToken.attrs.push(["text", text]);
+
+  // Generate HTML inline token for custom element
+  const contentToken = new state.Token("html_inline", as, 0);
+  contentToken.level = 1;
+  contentToken.children = token.children;
+
+  // Generate HTML close token for custom element
+  const closeToken = new state.Token("html_close", as, -1);
+
+  return [openToken, contentToken, closeToken];
 }
 
 /**
@@ -242,6 +310,11 @@ function applyToToken(token, attrs) {
     else if ((m = attrs.match(/^\s+/))) {
       attrs = attrs.slice(m[0].length);
     }
+    // Match "as" attribute
+    else if ((m = attrs.match(/^\s*as="([a-zA-Z0-9\-_]+)"/))) {
+      addAttr(token, "as", m[1]);
+      attrs = attrs.slice(m[0].length);
+    }
     // If no matches are found, break the loop to avoid an infinite loop
     else {
       break;
@@ -300,4 +373,19 @@ function sPush(stack, token) {
  */
 function trimRight(obj, attr) {
   obj[attr] = obj[attr].replace(/\s*$/, "");
+}
+
+/**
+ * Generate list of custom attributes for DOM sanitize whitelist.
+ *
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function generateCustomAttrsList(tokens, md) {
+  tokens.forEach((token) => {
+    const attrs = token.attrs || [];
+    attrs.forEach((attr) => {
+      if (!md.attrs.includes(attr[0])) md.attrs = [...md.attrs, attr[0]];
+    });
+  });
 }

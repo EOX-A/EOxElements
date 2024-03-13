@@ -7,3 +7,4 @@ export { default as loadMarkdownAttrComment } from "./load-markdown-attribute-co
 export { default as loadSectionsTest } from "./load-sections";
 export { default as loadNavigationTest } from "./load-navigation";
 export { default as loadMarkdownConfigTest } from "./load-markdown-config";
+export { default as LoadCustomElementTest } from "./load-custom-element";
