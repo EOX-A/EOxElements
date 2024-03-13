@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/map-v1.3.0...map-v1.4.0) (2024-03-13)
+
+
+### Features
+
+* Switch projections & allow advanced projections ([#730](https://github.com/EOX-A/EOxElements/issues/730)) ([6a1a544](https://github.com/EOX-A/EOxElements/commit/6a1a544514eb6776895eee3a2a8d510521f052b3))
+
+
+### Bug Fixes
+
+* Refresh source of VectorLayer after projection change ([#733](https://github.com/EOX-A/EOxElements/issues/733)) ([4947ec8](https://github.com/EOX-A/EOxElements/commit/4947ec822db8535b45bbf7b5a3bfa686502694ca))
+
 ## [1.3.0](https://github.com/EOX-A/EOxElements/compare/map-v1.2.0...map-v1.3.0) (2024-02-26)
 
 
