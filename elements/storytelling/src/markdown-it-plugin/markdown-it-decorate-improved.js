@@ -38,18 +38,24 @@ function curlyAttrs(state) {
     }
 
     if (token.type === "heading_open" && token.tag === "h2") {
+      // Adding closing section div
       if (sectionStart) {
-        finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
+        const tag = finalTokens[sectionStartIndex].tag;
+        finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
         sectionStart = false;
         sectionStartIndex = -1;
       }
 
+      // Adding opening section div
       if (!sectionStart) {
         finalTokens.push(
-          addNewHTMLSection(state, `<div id="{id}" class="section-wrap">`, 0, 1)
+          addNewHTMLSection(state, "div", 0, 1, "html_open", [
+            ["class", "section-wrap"],
+          ])
         );
         sectionStart = true;
         sectionStartIndex = finalTokens.length - 1;
+        stack.last.as = !!tokens[i + 1].content.includes("as=");
       }
     }
 
@@ -73,27 +79,17 @@ function curlyAttrs(state) {
         stack,
         nav,
         finalTokens,
-        sectionStartIndex,
-        state
+        sectionStartIndex
       );
 
-    if (
-      token.type === "heading_open" &&
-      token.tag === "h2" &&
-      tokens[i + 1].content.includes("as=")
-    )
-      continue;
-
-    if (stack.last.tag === "h2" && token.content.includes("as=")) {
-      i += 1;
-      continue;
-    }
-
     token.level = token.level + 1;
-    finalTokens.push(token);
+    if (!stack.last.as) finalTokens.push(token);
   }
-  if (sectionStart)
-    finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
+
+  if (sectionStart) {
+    const tag = finalTokens[sectionStartIndex].tag;
+    finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
+  }
 
   generateCustomAttrsList(finalTokens, state.md);
 
@@ -108,13 +104,15 @@ function curlyAttrs(state) {
  * Add new html section token
  *
  * @param {{tokens: Array<Object>}} state - Token state
- * @param {String} html
+ * @param {String} tag
  * @param {Number} level
  * @param {Number} nesting
+ * @param {String} type
+ * @param {Array<Array> | null} attrs
  */
-function addNewHTMLSection(state, html, level, nesting) {
-  const token = new state.Token("html_block", "", level);
-  token.content = html;
+function addNewHTMLSection(state, tag, level, nesting, type, attrs = null) {
+  const token = new state.Token(type, tag, level);
+  token.attrs = attrs;
   token.nesting = nesting;
 
   return token;
@@ -140,17 +138,9 @@ function isOpener(type) {
  * @param {Array<Object>} finalTokens
  * @param {Number} sectionStartIndex
  * @return {Array<Object>} finalTokens
- * @param {{tokens: Array<Object>}} state - Token state
  *
  */
-function curlyInline(
-  children,
-  stack,
-  nav,
-  finalTokens,
-  sectionStartIndex,
-  state
-) {
+function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
   let lastText;
   const omissions = [];
 
@@ -175,35 +165,30 @@ function curlyInline(
     if (child.type === "text") lastText = child;
   });
 
+  // Generate nav value and transform div section to `as` attribute
   if (stack.last.tag === "h2") {
     const title = (lastText && lastText["content"]) || children[0].content;
-    const attrsId = (stack.last.attrs || []).find(
-      (subArr) => subArr[0] === "id"
-    )?.[1];
+    const attrsId = getAttr(stack.last.attrs, "id");
     const titleSlug = slugify(title);
     const id = `section-${attrsId || titleSlug}`;
 
-    finalTokens[sectionStartIndex].content = finalTokens[
-      sectionStartIndex
-    ].content.replace("{id}", id);
-
     nav.push({ title, id });
 
-    const attrAs = (stack.last.attrs || []).find(
-      (subArr) => subArr[0] === "as"
-    )?.[1];
+    const attrAs = getAttr(stack.last.attrs, "as");
+    const currentSectionToken = finalTokens[sectionStartIndex];
+    currentSectionToken.attrs.push(["id", id]);
 
-    if (attrAs)
-      finalTokens = [
-        ...finalTokens,
-        ...transformToCustomElement(
-          children[1],
-          attrAs,
-          state,
-          stack.last.attrs,
-          title
-        ),
-      ];
+    // Transform section div to `as` attribute
+    if (attrAs) {
+      currentSectionToken.tag = attrAs;
+      currentSectionToken.as = attrAs;
+
+      // Combining div attribute with h2 attributes
+      applyToToken(
+        currentSectionToken,
+        `${stack.last.attrStr} #${id} .${currentSectionToken.attrs[0][1]}`
+      );
+    }
   }
 
   omissions.forEach((idx) => children.splice(idx, 1));
@@ -212,31 +197,15 @@ function curlyInline(
 }
 
 /**
- * Transform H2 to custom element based on `as`
+ * Get attribute value from 3d attribute array
  *
- * @param {Object} token - List of markdown tokens
- * @param {String} as - value of custom element
- * @param {{tokens: Array<Object>}} state - Token state
- * @param {Array<Object>} attrs - List of attribute with key and value
- * @param {String} text - Text inside heading
- * @return {Array<Object>} finalTokens
+ * @param {Array<Array>} attrs - 3d array of attributes
+ * @param {String} key - key which we need to get
+ * @return {String | null} Attribute Value
  *
  */
-function transformToCustomElement(token, as, state, attrs, text) {
-  // Generate HTML open token for custom element
-  const openToken = new state.Token("html_open", as, 1);
-  openToken.attrs = attrs;
-  openToken.attrs.push(["text", text]);
-
-  // Generate HTML inline token for custom element
-  const contentToken = new state.Token("html_inline", as, 0);
-  contentToken.level = 1;
-  contentToken.children = token.children;
-
-  // Generate HTML close token for custom element
-  const closeToken = new state.Token("html_close", as, -1);
-
-  return [openToken, contentToken, closeToken];
+function getAttr(attrs, key) {
+  return (attrs || []).find((subArr) => subArr[0] === key)?.[1] || null;
 }
 
 /**
@@ -273,6 +242,7 @@ function findParent(stack, tag, depth) {
  */
 function applyToToken(token, attrs) {
   let m;
+  token.attrStr = attrs;
 
   // Iterate over the attributes string to find all matches for id, class, or other attributes
   while (attrs.length > 0) {
