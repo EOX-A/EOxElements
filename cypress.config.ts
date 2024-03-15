@@ -5,7 +5,9 @@ const pathsChanged = process.env.CI_PATHS_CHANGED;
 let specPatternComponentTests = ["**/*.cy.{js,jsx,ts,tsx}"];
 console.log(pathsChanged);
 if (pathsChanged) {
-  const changed = pathsChanged.split(" ");
+  const changed = pathsChanged.split("\n");
+  console.log("changed");
+  console.log(changed);
   // if cypress folder changed, always run all component tests
   if (!changed.some((item) => item.startsWith("cypress"))) {
     // otherwise filter the tests to run specs only for that component based on list of changed paths
