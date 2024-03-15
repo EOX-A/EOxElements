@@ -26,6 +26,8 @@ npm run build
 npm publish (requires OTP)
 ```
 
+TEST!
+
 ## Changelog
 
 Created automatically [here](./CHANGELOG.md)
