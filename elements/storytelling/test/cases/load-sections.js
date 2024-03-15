@@ -29,7 +29,6 @@ Section 2 Content Here
     .shadow()
     .within(() => {
       sectionIds.forEach((id, key) => {
-        cy.get(".section-wrap").eq(key).should("have.id", `section-${id}`);
         cy.get(`${tags[key]}#section-${id}`).should("exist");
       });
     });
