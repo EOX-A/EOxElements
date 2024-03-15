@@ -3,11 +3,8 @@ const pathsChanged = process.env.CI_PATHS_CHANGED;
 
 // by default all component tests are run
 let specPatternComponentTests = ["**/*.cy.{js,jsx,ts,tsx}"];
-console.log(pathsChanged);
 if (pathsChanged) {
   const changed = pathsChanged.split("\n");
-  console.log("changed");
-  console.log(changed);
   // if cypress folder changed, always run all component tests
   if (!changed.some((item) => item.startsWith("cypress"))) {
     // otherwise filter the tests to run specs only for that component based on list of changed paths
@@ -20,14 +17,9 @@ if (pathsChanged) {
       specPatternComponentTests = uniqueElementFolders.map(
         (item) => `elements/${item}/**/*.cy.{js,jsx,ts,tsx}`
       );
-    } else {
-      // no elements were changed, no need to run component tests
-      specPatternComponentTests = [];
-      // CI action takes care of handling graceful exit
     }
   }
 }
-console.log(specPatternComponentTests);
 export default defineConfig({
   e2e: {
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
