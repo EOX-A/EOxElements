@@ -3,9 +3,7 @@ name: Run tests
 on:
   pull_request:
     branches:
-      - "main"
-      - "**/main"
-      - "!release-please*"
+      - "tests/chore/run-component-tests-only-on-change-of-element"
     types:
       - opened
       - reopened
