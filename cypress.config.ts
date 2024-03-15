@@ -17,6 +17,9 @@ if (pathsChanged) {
       specPatternComponentTests = uniqueElementFolders.map(
         (item) => `elements/${item}/**/*.cy.{js,jsx,ts,tsx}`
       );
+    } else {
+      // no elements were changed, no need to run component tests
+      specPatternComponentTests = [];
     }
   }
 }
