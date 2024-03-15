@@ -47,7 +47,13 @@ jobs:
       - name: Run component tests 👀
         run: |
           export CI_PATHS_CHANGED=$(git diff --name-only -r HEAD^1 HEAD)
-          npm run test:component
-
+          echo $CI_PATHS_CHANGED
+          output=$(npm run test:component || true)
+          echo "$output"
+          if [[ "$output" == *"Can't run because no spec files were found."* ]]; then
+            exit 0
+          else
+            exit 1 # Replace with appropriate failure check
+          fi
       - name: Run e2e tests 👀
         run: npm run test:e2e

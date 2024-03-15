@@ -20,6 +20,7 @@ if (pathsChanged) {
     } else {
       // no elements were changed, no need to run component tests
       specPatternComponentTests = [];
+      // CI action takes care of handling graceful exit
     }
   }
 }
