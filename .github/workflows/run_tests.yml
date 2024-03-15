@@ -55,6 +55,5 @@ jobs:
           else
             exit 1
           fi
-        shell: bash
       - name: Run e2e tests 👀
         run: npm run test:e2e
