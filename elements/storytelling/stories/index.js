@@ -5,3 +5,4 @@ export { default as MarkdownAttrCommentStory } from "./markdown-attr-comment"; /
 export { default as NavigationStory } from "./navigation"; // StoryTelling with Navigation
 export { default as MarkdownBasicConfigStory } from "./markdown-basic-config"; // StoryTelling with basic config
 export { default as CustomElementStory } from "./custom-element"; // StoryTelling with custom element
+export { default as MarkdownSectionsStory } from "./markdown-sections"; // StoryTelling with sections

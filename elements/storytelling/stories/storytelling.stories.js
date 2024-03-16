@@ -10,6 +10,7 @@ import {
   NavigationStory,
   MarkdownBasicConfigStory,
   CustomElementStory,
+  MarkdownSectionsStory,
 } from "./index";
 import { html } from "lit";
 
@@ -65,3 +66,5 @@ export const MarkdownWithNavigation = NavigationStory;
  * The newly rendered element replaces the original `h2' text content (fallback for vanilla md rendering) completely.
  */
 export const CustomElement = CustomElementStory;
+
+export const MarkdownWithSections = MarkdownSectionsStory;

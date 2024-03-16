@@ -69,6 +69,7 @@ const styleEOX = `
     scroll-margin: 120px;
   }
   .story-telling p {
+    display: block;
     --font-size: 1.1rem;
     font-weight: 400;
     line-height: 170%;
