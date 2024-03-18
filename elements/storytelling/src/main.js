@@ -7,6 +7,7 @@ import {
   loadMarkdownURL,
   scrollAnchorClickEvent,
   scrollIntoView,
+  renderHtmlString,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -104,6 +105,7 @@ export class EOxStoryTelling extends LitElement {
       this.#html = DOMPurify.sanitize(unsafeHTML, {
         CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
       });
+      renderHtmlString(this.#html);
       this.#config = md.config;
 
       if (typeof this.#config.nav === "boolean")

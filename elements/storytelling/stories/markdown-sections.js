@@ -7,6 +7,8 @@ import "../src/main.js";
 export const MarkdownSections = {
   args: {
     markdown: `
+## Eox Map <!--{as="eox-map" center="[15,48]" layers='[ { "type": "Tile", "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ]'}-->
+
 ## EarthCODE Portal <!--{as="esa-main-section" title="EarthCODE Portal"}-->
 ### EarthCODE
 This portal shall provide an entry point to the collaborative development tools and resources, as well as access to community guidelines and open documentation to help researchers adopt FAIR principles in their scientific practice.
