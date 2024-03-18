@@ -167,7 +167,7 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
 
   // Generate nav value and transform div section to `as` attribute
   if (stack.last.tag === "h2") {
-    const title = (lastText && lastText["content"]) || children[0].content;
+    const title = (lastText && lastText["content"]) || children[0]?.content;
     const attrsId = getAttr(stack.last.attrs, "id");
     const titleSlug = slugify(title);
     const id = `section-${attrsId || titleSlug}`;
@@ -186,7 +186,9 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
       // Combining div attribute with h2 attributes
       applyToToken(
         currentSectionToken,
-        `title='${lastText.content}' ${stack.last.attrStr} #${id} .${currentSectionToken.attrs[0][1]}`
+        `${lastText ? `title='${lastText.content}'` : ""}${
+          stack.last.attrStr
+        } #${id} .${currentSectionToken.attrs[0][1]}`
       );
     }
   }
