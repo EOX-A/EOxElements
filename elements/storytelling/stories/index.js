@@ -6,3 +6,4 @@ export { default as NavigationStory } from "./navigation"; // StoryTelling with 
 export { default as MarkdownBasicConfigStory } from "./markdown-basic-config"; // StoryTelling with basic config
 export { default as CustomElementStory } from "./custom-element"; // StoryTelling with custom element
 export { default as MarkdownSectionsStory } from "./markdown-sections"; // StoryTelling with sections
+export { default as MarkdownMapSectionStory } from "./markdown-map-section"; // StoryTelling with eox-map sections
