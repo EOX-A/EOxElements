@@ -20,7 +20,7 @@ export default {
   render: (args) => html`
     <eox-jsonform
       .schema=${args.schema}
-      .startVals=${args.startVals}
+      .value=${args.startVals}
       .unstyled=${args.unstyled}
     ></eox-jsonform>
   `,

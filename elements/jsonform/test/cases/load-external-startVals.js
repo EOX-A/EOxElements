@@ -22,7 +22,7 @@ const loadExternalStartValsTest = () => {
   cy.mount(
     html`<eox-jsonform
       .schema=${"https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogSchema.json"}
-      .startVals=${"https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogStartVals.json"}
+      .value=${"https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogStartVals.json"}
     ></eox-jsonform>`
   ).as(jsonForm);
   cy.get(jsonForm)

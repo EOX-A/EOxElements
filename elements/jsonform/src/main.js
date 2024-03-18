@@ -12,16 +12,10 @@ import addCustomInputs from "./custom-inputs";
 export class EOxJSONForm extends LitElement {
   static properties = {
     schema: { attribute: false, type: Object },
-    startVals: { attribute: false, type: Object },
+    value: { attribute: false, type: Object },
     options: { attribute: false, type: Object },
     unstyled: { type: Boolean },
   };
-
-  /**
-   * data input by the user
-   * @type {{[key: string]: any}}
-   */
-  #data = {};
 
   /**
    * editor instance generated through - JSONEditor
@@ -29,15 +23,6 @@ export class EOxJSONForm extends LitElement {
    */
   #editor = null;
 
-  /**
-   * Parsed schema for the form editor
-   */
-  #parsedSchema = {};
-
-  /**
-   * Parsed start values for the form editor
-   */
-  #parsedStartVals = {};
   constructor() {
     super();
 
@@ -51,7 +36,7 @@ export class EOxJSONForm extends LitElement {
      * Default values for the form editor
      * @type {JsonSchema}
      */
-    this.startVals;
+    this.value;
 
     /**
      * Default values for the form editor
@@ -107,36 +92,54 @@ export class EOxJSONForm extends LitElement {
   set schema(newSchema) {
     let oldValue = this._schema;
     this._schema = newSchema;
+    if (this.#editor) {
+      this.#editor.destroy();
+      addCustomInputs(this.value || {});
+
+      const formEle = this.renderRoot.querySelector("form");
+
+      this.#editor = new JSONEditor(formEle, {
+        schema: this.schema,
+        ...(this.value ? { startval: this.value } : {}),
+        theme: "html",
+        ajax: true,
+        ...this.options,
+      });
+
+      this.#dispatchEvent();
+    }
     this.requestUpdate("schema", oldValue);
   }
 
   /**
    * Default values to fill the form
    */
-  get startVals() {
-    return this._startVals;
+  get value() {
+    return this._value;
   }
   /**
    * @param {JsonSchema} newVal
    */
-  set startVals(newVal) {
-    let oldValue = this._startVals;
-    this._startVals = newVal;
-    this.requestUpdate("startVals", oldValue);
+  set value(newVal) {
+    let oldValue = this._value;
+    this._value = newVal;
+    if (this.#editor && this.#editor.ready) {
+      this.#editor.setValue(this.value);
+    }
+    this.requestUpdate("value", oldValue);
   }
 
   /**
-   * Data object has been changed
+   * Value object has been changed
    */
-  #emitData() {
+  #emitValue() {
     this.dispatchEvent(
       new CustomEvent(`change`, {
-        detail: this.#data,
+        detail: this.value,
         bubbles: true,
         composed: true,
       })
     );
-    this.requestUpdate();
   }
 
   /**
@@ -146,30 +149,32 @@ export class EOxJSONForm extends LitElement {
     const events = ["ready", "change"];
 
     events.map((evt) => {
-      this.#editor.on(evt, () => {
-        this.#data = this.#editor.getValue();
-        this.#emitData();
+      this.#editor.on(evt, async () => {
+        if (evt == "ready") {
+          this.#editor.setValue(await this.parseProperty(this.value));
+        }
+
+        this._value = this.#editor.getValue();
+        this.#emitValue();
       });
     });
   }
 
   async updated(changedProperties) {
     // check if schema or startVals has been changed to prevent useless parsing
-    if (changedProperties.has("schema") || this.#parsedSchema == {}) {
-      this.#parsedSchema = await this.parseProperty(this.schema);
+    if (changedProperties.has("schema")) {
+      this.schema = await this.parseProperty(this.schema);
     }
-    if (changedProperties.has("startVals" || this.#parsedStartVals == {})) {
-      this.#parsedStartVals = await this.parseProperty(this.startVals);
-    }
+    this.value = await this.parseProperty(this.value);
 
     if (!this.#editor) {
-      addCustomInputs(this.startVals || {});
+      addCustomInputs(this.value || {});
 
       const formEle = this.renderRoot.querySelector("form");
 
       this.#editor = new JSONEditor(formEle, {
-        schema: this.#parsedSchema,
-        ...(this.startVals ? { startval: this.#parsedStartVals } : {}),
+        schema: this.schema,
+        ...(this.value ? { startval: this.value } : {}),
         theme: "html",
         ajax: true,
         ...this.options,

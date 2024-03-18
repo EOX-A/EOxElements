@@ -23,12 +23,12 @@ const loadReRenderFormOnChangeTest = () => {
   cy.mount(
     html`<eox-jsonform
       .schema=${"/catalogSchema.json"}
-      .startVals=${"/catalogStartVals.json"}
+      .value=${"/catalogStartVals.json"}
     ></eox-jsonform>`
   ).as(jsonForm);
   cy.get(jsonForm).then(($jsonForm) => {
     $jsonForm[0].schema = "/collectionSchema.json";
-    $jsonForm[0].startVals = "/collectionStartVals.json";
+    $jsonForm[0].value = "/collectionStartVals.json";
   });
   cy.get(jsonForm)
     .shadow()
