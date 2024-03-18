@@ -102,10 +102,12 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       const unsafeHTML = md.render(this.markdown);
-      this.#html = DOMPurify.sanitize(unsafeHTML, {
-        CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
-      });
-      renderHtmlString(this.#html);
+      this.#html = renderHtmlString(
+        DOMPurify.sanitize(unsafeHTML, {
+          CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
+        })
+      );
+      // renderHtmlString(this.#html);
       this.#config = md.config;
 
       if (typeof this.#config.nav === "boolean")
@@ -189,7 +191,7 @@ export class EOxStoryTelling extends LitElement {
           `
         )}
         <div class="container">
-          ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
+          ${when(this.#html, () => html`${this.#html}`)}
         </div>
       </div>
     `;
