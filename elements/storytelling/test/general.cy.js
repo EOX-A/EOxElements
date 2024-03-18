@@ -10,6 +10,7 @@ import {
   loadNavigationTest,
   loadMarkdownConfigTest,
   LoadCustomElementTest,
+  loadMapSectionTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -39,4 +40,7 @@ describe("Storytelling", () => {
 
   // Test case to load custom element
   it("Load custom element", () => LoadCustomElementTest());
+
+  // Test case to load eox-map as a section
+  it("Load eox-map section", () => loadMapSectionTest());
 });
