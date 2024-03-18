@@ -1,7 +1,6 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import {
   getCustomEleHandling,
   loadMarkdownURL,
@@ -107,7 +106,6 @@ export class EOxStoryTelling extends LitElement {
           CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
         })
       );
-      // renderHtmlString(this.#html);
       this.#config = md.config;
 
       if (typeof this.#config.nav === "boolean")
