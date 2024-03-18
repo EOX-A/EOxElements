@@ -186,7 +186,7 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
       // Combining div attribute with h2 attributes
       applyToToken(
         currentSectionToken,
-        `${stack.last.attrStr} #${id} .${currentSectionToken.attrs[0][1]}`
+        `title='${lastText.content}' ${stack.last.attrStr} #${id} .${currentSectionToken.attrs[0][1]}`
       );
     }
   }
