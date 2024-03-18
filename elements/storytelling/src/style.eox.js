@@ -17,6 +17,7 @@ const styleEOX = `
     justify-content: center;
     position: sticky;
     top: 0;
+    z-index: 1;
   }
   .navigation .container {
     padding: 0px;

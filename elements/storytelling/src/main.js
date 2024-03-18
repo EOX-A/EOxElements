@@ -1,12 +1,12 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import {
   getCustomEleHandling,
   loadMarkdownURL,
   scrollAnchorClickEvent,
   scrollIntoView,
+  renderHtmlString,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -101,9 +101,11 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       const unsafeHTML = md.render(this.markdown);
-      this.#html = DOMPurify.sanitize(unsafeHTML, {
-        CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
-      });
+      this.#html = renderHtmlString(
+        DOMPurify.sanitize(unsafeHTML, {
+          CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
+        })
+      );
       this.#config = md.config;
 
       if (typeof this.#config.nav === "boolean")
@@ -187,7 +189,7 @@ export class EOxStoryTelling extends LitElement {
           `
         )}
         <div class="container">
-          ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
+          ${when(this.#html, () => html`${this.#html}`)}
         </div>
       </div>
     `;

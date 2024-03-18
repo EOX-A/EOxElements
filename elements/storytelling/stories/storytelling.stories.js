@@ -10,6 +10,7 @@ import {
   NavigationStory,
   MarkdownBasicConfigStory,
   CustomElementStory,
+  MarkdownMapSectionStory,
   MarkdownSectionsStory,
 } from "./index";
 import { html } from "lit";
@@ -67,4 +68,12 @@ export const MarkdownWithNavigation = NavigationStory;
  */
 export const CustomElement = CustomElementStory;
 
+/**
+ * StoryTelling with simple and custom sections
+ */
 export const MarkdownWithSections = MarkdownSectionsStory;
+
+/**
+ * StoryTelling with @eox-map sections
+ */
+export const MarkdownMapSection = MarkdownMapSectionStory;

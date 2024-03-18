@@ -188,7 +188,7 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
         currentSectionToken,
         `${lastText ? `title='${lastText.content}'` : ""}${
           stack.last.attrStr
-        } #${id} .${currentSectionToken.attrs[0][1]}`
+        } #${id} .${currentSectionToken.attrs[0][1]} .section-custom`
       );
     }
   }
