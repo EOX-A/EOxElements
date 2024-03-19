@@ -30,8 +30,8 @@ import {
   SelectOptions,
   addSelect,
 } from "./select";
-
 import type Layer from "ol/layer/Base";
+import WMTSCapabilities from "./custom/sources/WMTSCapabilities";
 
 export type layerType =
   | "Group"
@@ -64,7 +64,8 @@ export type sourceType =
   | "Vector"
   | "VectorTile"
   | "WMTS"
-  | "XYZ";
+  | "XYZ"
+  | "WMTSCapabilities";
 
 const basicOlFormats = {
   GeoJSON,
@@ -88,6 +89,7 @@ const basicOlSources = {
   VectorTile: VectorTileSource,
   WMTS,
   XYZ,
+  WMTSCapabilities,
 };
 
 export type EOxInteraction = {
