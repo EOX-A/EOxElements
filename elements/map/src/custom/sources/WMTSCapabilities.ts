@@ -12,7 +12,7 @@ type WMTSCapabilitiesOptions = {
   attributions?: AttributionLike;
   attributionsCollapsible?: boolean;
   cacheSize?: number;
-  crossOrigin?: null|string;
+  crossOrigin?: null | string;
   interpolate?: boolean;
   projection?: ProjectionLike;
   transition?: number;
@@ -41,11 +41,12 @@ class WMTSCapabilities extends TileImage {
       key: options.key,
       attributionsCollapsible: options.attributionsCollapsible,
       zDirection: options.zDirection,
-      wrapX: options.wrapX
+      wrapX: options.wrapX,
     });
 
     this.version_ = options.version !== undefined ? options?.version : "1.0.0";
-    this.dimensions_ = options.dimensions !== undefined ? options.dimensions : {};
+    this.dimensions_ =
+      options.dimensions !== undefined ? options.dimensions : {};
     this.layer_ = options.layer;
 
     fetch(options.url)
@@ -73,10 +74,7 @@ class WMTSCapabilities extends TileImage {
   handleCapabilitiesResponse(xml: Document, options: WMTSCapabilitiesOptions) {
     const format = new WMTSCapabilitiesFormat();
     const parsedXml = format.read(xml);
-    const capabilitiesOptions = optionsFromCapabilities(
-      parsedXml,
-      options
-    );
+    const capabilitiesOptions = optionsFromCapabilities(parsedXml, options);
 
     this.crossOrigin = capabilitiesOptions.crossOrigin;
     this.projection = capabilitiesOptions.projection as Projection;
@@ -137,7 +135,6 @@ class WMTSCapabilities extends TileImage {
        * @return {string|undefined} Tile URL.
        */
       function (tileCoord: Array<number>) {
-        console.log("tileUrlFunction");
         if (!tileCoord) {
           return undefined;
         }
