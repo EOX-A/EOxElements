@@ -149,7 +149,7 @@ class WMTSCapabilities extends TileImage {
         if (requestEncoding == "KVP") {
           url = appendParams(url, localContext);
         } else {
-          url = url.replace(/\{(\w+?)\}/g, function (m, p) {
+          url = url.replace(/\{(\w+?)\}/g, function (_, p) {
             //@ts-ignore
             return localContext[p];
           });
