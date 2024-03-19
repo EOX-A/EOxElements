@@ -188,9 +188,7 @@ export class EOxStoryTelling extends LitElement {
             </div>
           `
         )}
-        <div class="container">
-          ${when(this.#html, () => html`${this.#html}`)}
-        </div>
+        <div>${when(this.#html, () => html`${this.#html}`)}</div>
       </div>
     `;
   }

@@ -24,11 +24,19 @@ function processNode(node) {
     node.nodeType === Node.ELEMENT_NODE &&
     node.classList.contains("section-custom")
   ) {
-    Array.from(node.attributes).forEach(
-      // Update the attribute with its converted value
-      (attr) =>
-        (node[attr.name] = convertAttributeValueBasedOnItsType(node, attr.name))
-    );
+    const childElements = node.querySelectorAll("*");
+    childElements.forEach((element) => {
+      if (/^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase())) {
+        Array.from(element.attributes).forEach(
+          // Update the attribute with its converted value
+          (attr) =>
+            (element[attr.name] = convertAttributeValueBasedOnItsType(
+              element,
+              attr.name
+            ))
+        );
+      }
+    });
   }
   return node;
 }

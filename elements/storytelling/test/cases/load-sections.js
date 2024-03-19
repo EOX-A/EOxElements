@@ -8,7 +8,7 @@ const { storyTelling } = TEST_SELECTORS;
  */
 const loadSectionsTest = () => {
   const sectionIds = ["hello-world", "custom-id", "image", "custom-element"];
-  const tags = ["div", "div", "img", "eox-element"];
+  const tags = ["h2", "h2", "img", "eox-element"];
   const testText = `
 ## Hello World
 Section 1 Content Here
@@ -29,7 +29,7 @@ Section 2 Content Here
     .shadow()
     .within(() => {
       sectionIds.forEach((id, key) => {
-        cy.get(`${tags[key]}#section-${id}`).should("exist");
+        cy.get(`#section-${id} ${tags[key]}`).should("exist");
       });
     });
 };

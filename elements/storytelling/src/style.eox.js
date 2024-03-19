@@ -122,6 +122,15 @@ const styleEOX = `
   }
   .story-telling .container {
     width: 90%;
+    --block-spacing-vertical: 1rem;
+  }
+  .story-telling .tour {
+    width: 100%;
+    height: 100vh
+  }
+  .story-telling .tour eox-map {
+    width: 100%;
+    height: 100vh;
   }
 `;
 export default styleEOX;

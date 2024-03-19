@@ -12,6 +12,7 @@ import {
   CustomElementStory,
   MarkdownMapSectionStory,
   MarkdownSectionsStory,
+  MarkdownMapTourStory,
 } from "./index";
 import { html } from "lit";
 
@@ -77,3 +78,8 @@ export const MarkdownWithSections = MarkdownSectionsStory;
  * StoryTelling with @eox-map sections
  */
 export const MarkdownMapSection = MarkdownMapSectionStory;
+
+/**
+ * StoryTelling with map tour
+ */
+export const MarkdownMapTour = MarkdownMapTourStory;

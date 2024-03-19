@@ -37,25 +37,35 @@ function curlyAttrs(state) {
       sPush(stack, token);
     }
 
-    if (token.type === "heading_open" && token.tag === "h2") {
-      // Adding closing section div
-      if (sectionStart) {
-        const tag = finalTokens[sectionStartIndex].tag;
-        finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
-        sectionStart = false;
-        sectionStartIndex = -1;
+    if (token.tag === "h2") {
+      if (token.type === "heading_close") {
+        token.tag = finalTokens[finalTokens.length - 2].tag;
+        token.type = finalTokens[finalTokens.length - 2].type.replace(
+          "_open",
+          "_close"
+        );
       }
 
-      // Adding opening section div
-      if (!sectionStart) {
-        finalTokens.push(
-          addNewHTMLSection(state, "div", 0, 1, "html_open", [
-            ["class", "section-wrap"],
-          ])
-        );
-        sectionStart = true;
-        sectionStartIndex = finalTokens.length - 1;
-        stack.last.as = !!tokens[i + 1].content.includes("as=");
+      // Adding closing section div
+      if (token.type === "heading_open") {
+        if (sectionStart) {
+          const tag = finalTokens[sectionStartIndex].tag;
+          finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
+          sectionStart = false;
+          sectionStartIndex = -1;
+        }
+
+        // Adding opening section div
+        if (!sectionStart) {
+          finalTokens.push(
+            addNewHTMLSection(state, "div", 0, 1, "html_open", [
+              ["class", "section-wrap"],
+            ])
+          );
+          sectionStart = true;
+          sectionStartIndex = finalTokens.length - 1;
+          stack.last.as = !!tokens[i + 1].content.includes("as=");
+        }
       }
     }
 
@@ -75,7 +85,7 @@ function curlyAttrs(state) {
 
     if (token.type === "inline")
       finalTokens = curlyInline(
-        token.children,
+        token,
         stack,
         nav,
         finalTokens,
@@ -83,7 +93,7 @@ function curlyAttrs(state) {
       );
 
     token.level = token.level + 1;
-    if (!stack.last.as) finalTokens.push(token);
+    finalTokens.push(token);
   }
 
   if (sectionStart) {
@@ -132,7 +142,7 @@ function isOpener(type) {
 /**
  * Process inline tokens for attributes
  *
- * @param {Array<Object>} children - Inline children
+ * @param {Object} token - current token
  * @param {Object} stack
  * @param {Array<Object>} nav
  * @param {Array<Object>} finalTokens
@@ -140,11 +150,11 @@ function isOpener(type) {
  * @return {Array<Object>} finalTokens
  *
  */
-function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
+function curlyInline(token, stack, nav, finalTokens, sectionStartIndex) {
   let lastText;
   const omissions = [];
 
-  children.forEach((child, i) => {
+  token.children.forEach((child, i) => {
     if (
       isOpener(child.type) ||
       TAGS_SELF_CLOSING[child.type] ||
@@ -167,33 +177,51 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
 
   // Generate nav value and transform div section to `as` attribute
   if (stack.last.tag === "h2") {
-    const title = (lastText && lastText["content"]) || children[0]?.content;
+    const title =
+      (lastText && lastText["content"]) || token.children[0]?.content;
     const attrsId = getAttr(stack.last.attrs, "id");
+    const isTour = getAttr(stack.last.attrs, "tour");
     const titleSlug = slugify(title);
-    const id = `section-${attrsId || titleSlug}`;
+    const id = attrsId || titleSlug;
+    const sectionId = `section-${id}`;
 
-    nav.push({ title, id });
+    nav.push({ title, id: sectionId });
 
     const attrAs = getAttr(stack.last.attrs, "as");
     const currentSectionToken = finalTokens[sectionStartIndex];
-    currentSectionToken.attrs.push(["id", id]);
+    const currentH2SectionToken = finalTokens[finalTokens.length - 1];
+
+    const sectionClass = isTour ? ".tour" : ".container";
+    currentSectionToken.attrs.push(["id", sectionId]);
 
     // Transform section div to `as` attribute
     if (attrAs) {
-      currentSectionToken.tag = attrAs;
-      currentSectionToken.as = attrAs;
+      currentH2SectionToken.tag = attrAs;
+      currentH2SectionToken.type = "html_open";
+      currentH2SectionToken.as = attrAs;
+
+      token.type = "html_inline";
+      token.content = "";
+      token.children = null;
+
+      applyToToken(
+        currentH2SectionToken,
+        `${lastText ? `title='${lastText.content}'` : ""}${
+          stack.last.attrStr
+        } #${id}`
+      );
 
       // Combining div attribute with h2 attributes
       applyToToken(
         currentSectionToken,
-        `${lastText ? `title='${lastText.content}'` : ""}${
-          stack.last.attrStr
-        } #${id} .${currentSectionToken.attrs[0][1]} .section-custom`
+        `#${sectionId} .${currentSectionToken.attrs[0][1]} .section-custom`
       );
     }
+
+    applyToToken(currentSectionToken, sectionClass);
   }
 
-  omissions.forEach((idx) => children.splice(idx, 1));
+  if (token.children) omissions.forEach((idx) => token.children.splice(idx, 1));
 
   return finalTokens;
 }
