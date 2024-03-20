@@ -31,7 +31,6 @@ import {
   addSelect,
 } from "./select";
 import type Layer from "ol/layer/Base";
-import WMTSCapabilities from "./custom/sources/WMTSCapabilities";
 
 export type layerType =
   | "Group"
@@ -89,7 +88,6 @@ const basicOlSources = {
   VectorTile: VectorTileSource,
   WMTS,
   XYZ,
-  WMTSCapabilities,
 };
 
 export type EOxInteraction = {
