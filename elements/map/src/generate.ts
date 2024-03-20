@@ -30,7 +30,6 @@ import {
   SelectOptions,
   addSelect,
 } from "./select";
-
 import type Layer from "ol/layer/Base";
 
 export type layerType =
@@ -64,7 +63,8 @@ export type sourceType =
   | "Vector"
   | "VectorTile"
   | "WMTS"
-  | "XYZ";
+  | "XYZ"
+  | "WMTSCapabilities";
 
 const basicOlFormats = {
   GeoJSON,

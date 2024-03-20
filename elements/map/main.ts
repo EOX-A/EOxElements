@@ -81,8 +81,12 @@ type ConfigObject = {
  * <eox-map [...]></eox-map>
  * ```
  * Included in the advanced plugin bundle:
- * - Layers: All OpenLayers layer types, plus [STAC](https://github.com/m-mohr/ol-stac)
- * - Sources: All OpenLayers source types
+ * - Layers:
+ *   - All OpenLayers layer types
+ *   - [`STAC`](https://github.com/m-mohr/ol-stac)
+ * - Sources:
+ *   - All OpenLayers source types
+ *   - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)
  * - Reprojection through [proj4](https://github.com/proj4js/proj4js)
  */
 @customElement("eox-map")
