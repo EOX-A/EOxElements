@@ -28,6 +28,8 @@ function curlyAttrs(state) {
   let finalTokens = [];
   let sectionStart = false;
   let sectionStartIndex = 0;
+  let sectionSteps = false;
+  let sectionStepsIndex = 0;
 
   // Iterate through tokens to process them
   for (let i = 0; i < tokens.length; i++) {
@@ -69,6 +71,33 @@ function curlyAttrs(state) {
       }
     }
 
+    if (
+      token.tag === "h3" &&
+      token.type === "heading_open" &&
+      sectionStart &&
+      finalTokens[sectionStartIndex].mode === "tour"
+    ) {
+      if (sectionSteps) {
+        finalTokens.push(
+          addNewHTMLSection(state, "section-step", -1, -1, "html_close")
+        );
+        sectionSteps = false;
+        sectionStepsIndex = -1;
+      }
+
+      // Adding opening section div
+      if (!sectionSteps) {
+        finalTokens.push(
+          addNewHTMLSection(state, "section-step", 0, 1, "html_open", [
+            ["class", "section-step-wrap"],
+          ])
+        );
+        sectionSteps = true;
+        sectionStepsIndex = finalTokens.length - 1;
+        stack.last.as = !!tokens[i + 1].content.includes("as=");
+      }
+    }
+
     if (token.type === "html_block") {
       const m = token.content.match(TAGS_EXPR);
       if (!m) {
@@ -98,6 +127,11 @@ function curlyAttrs(state) {
 
   if (sectionStart) {
     const tag = finalTokens[sectionStartIndex].tag;
+    finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
+  }
+
+  if (sectionSteps) {
+    const tag = finalTokens[sectionStepsIndex].tag;
     finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
   }
 
@@ -180,7 +214,7 @@ function curlyInline(token, stack, nav, finalTokens, sectionStartIndex) {
     const title =
       (lastText && lastText["content"]) || token.children[0]?.content;
     const attrsId = getAttr(stack.last.attrs, "id");
-    const isTour = getAttr(stack.last.attrs, "tour");
+    const mode = getAttr(stack.last.attrs, "mode") || "container";
     const titleSlug = slugify(title);
     const id = attrsId || titleSlug;
     const sectionId = `section-${id}`;
@@ -191,7 +225,7 @@ function curlyInline(token, stack, nav, finalTokens, sectionStartIndex) {
     const currentSectionToken = finalTokens[sectionStartIndex];
     const currentH2SectionToken = finalTokens[finalTokens.length - 1];
 
-    const sectionClass = isTour ? ".tour" : ".container";
+    const sectionClass = `.${mode}`;
     currentSectionToken.attrs.push(["id", sectionId]);
 
     // Transform section div to `as` attribute
@@ -210,6 +244,8 @@ function curlyInline(token, stack, nav, finalTokens, sectionStartIndex) {
           stack.last.attrStr
         } #${id}`
       );
+
+      currentSectionToken.mode = mode;
 
       // Combining div attribute with h2 attributes
       applyToToken(

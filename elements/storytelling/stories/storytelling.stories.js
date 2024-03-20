@@ -15,6 +15,7 @@ import {
   MarkdownMapTourStory,
 } from "./index";
 import { html } from "lit";
+import "../../map/main";
 
 export default {
   title: "Elements/eox-storytelling",

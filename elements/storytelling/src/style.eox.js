@@ -126,11 +126,24 @@ const styleEOX = `
   }
   .story-telling .tour {
     width: 100%;
-    height: 100vh
+    justify-items: start;
+    display: grid;
   }
   .story-telling .tour eox-map {
     width: 100%;
     height: 100vh;
+    position: sticky;
+    top:0;
+    z-index: 0;
+  }
+  .story-telling .tour section-step {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    min-height: 8vh;
+    margin-bottom: calc(100%);
+    display: block;
+    z-index: 1;
   }
 `;
 export default styleEOX;
