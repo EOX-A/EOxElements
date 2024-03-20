@@ -1,5 +1,6 @@
 import { html } from "lit";
 import "../main";
+import "../src/plugins/advancedLayersAndSources/index";
 
 describe("WMTS Capabilities Source", () => {
   it("loads a layer from WMTS capabilities", () => {
