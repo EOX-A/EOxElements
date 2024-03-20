@@ -44,12 +44,17 @@ function processNode(node) {
 /**
  * Converts an attribute value of a DOM element into its detected type and returns the converted value.
  *
- * @param {Element} element - The DOM element containing the attribute.
+ * @param {Element|String} element - The DOM element containing the attribute or element with actual value.
  * @param {string} attributeName - The name of the attribute to convert.
  * @returns {string|number|boolean|array|object} The attribute value converted to its detected type.
  */
-function convertAttributeValueBasedOnItsType(element, attributeName) {
-  const attributeValue = element.getAttribute(attributeName);
+export function convertAttributeValueBasedOnItsType(
+  element,
+  attributeName = undefined
+) {
+  const attributeValue = attributeName
+    ? element.getAttribute(attributeName)
+    : element;
   let convertedValue;
 
   try {

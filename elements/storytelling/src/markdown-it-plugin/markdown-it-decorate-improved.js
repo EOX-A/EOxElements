@@ -1,5 +1,6 @@
 import { TAGS_EXPR, TAGS_OPENING, TAGS_SELF_CLOSING } from "../enums";
 import slugify from "@sindresorhus/slugify";
+import { convertAttributeValueBasedOnItsType } from "../helpers/render-html-string.js";
 
 /**
  * Plugin registration with Markdown-it - Annotate Markdown documents with HTML attributes, IDs and classes.
@@ -11,6 +12,7 @@ import slugify from "@sindresorhus/slugify";
 export default function attributes(md) {
   md.nav = [];
   md.attrs = [];
+  md.sections = {};
   md.core.ruler.push("curly_attributes", curlyAttrs);
 }
 
@@ -88,9 +90,7 @@ function curlyAttrs(state) {
       // Adding opening section div
       if (!sectionSteps) {
         finalTokens.push(
-          addNewHTMLSection(state, "section-step", 0, 1, "html_open", [
-            ["class", "section-step-wrap"],
-          ])
+          addNewHTMLSection(state, "section-step", 0, 1, "html_open")
         );
         sectionSteps = true;
         sectionStepsIndex = finalTokens.length - 1;
@@ -118,7 +118,8 @@ function curlyAttrs(state) {
         stack,
         nav,
         finalTokens,
-        sectionStartIndex
+        sectionStartIndex,
+        sectionStepsIndex
       );
 
     token.level = token.level + 1;
@@ -135,7 +136,7 @@ function curlyAttrs(state) {
     finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
   }
 
-  generateCustomAttrsList(finalTokens, state.md);
+  generateCustomAttrsAndSectionMetaList(finalTokens, state.md);
 
   omissions.forEach((idx) => tokens.splice(idx, 1));
   state.tokens = finalTokens;
@@ -181,10 +182,18 @@ function isOpener(type) {
  * @param {Array<Object>} nav
  * @param {Array<Object>} finalTokens
  * @param {Number} sectionStartIndex
+ * @param {Number} sectionStepsIndex
  * @return {Array<Object>} finalTokens
  *
  */
-function curlyInline(token, stack, nav, finalTokens, sectionStartIndex) {
+function curlyInline(
+  token,
+  stack,
+  nav,
+  finalTokens,
+  sectionStartIndex,
+  sectionStepsIndex
+) {
   let lastText;
   const omissions = [];
 
@@ -209,6 +218,12 @@ function curlyInline(token, stack, nav, finalTokens, sectionStartIndex) {
     if (child.type === "text") lastText = child;
   });
 
+  if (stack.last.tag === "h3" && sectionStepsIndex !== -1) {
+    const currentSectionStepToken = finalTokens[sectionStepsIndex];
+    currentSectionStepToken.section = finalTokens[sectionStartIndex].id;
+    applyToToken(currentSectionStepToken, stack.last.attrStr);
+  }
+
   // Generate nav value and transform div section to `as` attribute
   if (stack.last.tag === "h2") {
     const title =
@@ -227,12 +242,14 @@ function curlyInline(token, stack, nav, finalTokens, sectionStartIndex) {
 
     const sectionClass = `.${mode}`;
     currentSectionToken.attrs.push(["id", sectionId]);
+    currentSectionToken.id = sectionId;
 
     // Transform section div to `as` attribute
     if (attrAs) {
       currentH2SectionToken.tag = attrAs;
       currentH2SectionToken.type = "html_open";
       currentH2SectionToken.as = attrAs;
+      currentH2SectionToken.section = sectionId;
 
       token.type = "html_inline";
       token.content = "";
@@ -417,11 +434,35 @@ function trimRight(obj, attr) {
  * @param {Array<Object>} tokens - List of markdown tokens
  * @param {import("markdown-it").default} md - Markdown-It instances
  */
-function generateCustomAttrsList(tokens, md) {
+function generateCustomAttrsAndSectionMetaList(tokens, md) {
   tokens.forEach((token) => {
     const attrs = token.attrs || [];
+    if (token.section) {
+      if (token.tag === "section-step" && !md.sections[token.section].steps)
+        md.sections[token.section].steps = [];
+      if (token.markup === "##") md.sections[token.section] = {};
+    }
+
+    md.sections[token.section]?.steps?.push({});
     attrs.forEach((attr) => {
       if (!md.attrs.includes(attr[0])) md.attrs = [...md.attrs, attr[0]];
+      if (token.section) {
+        if (token.markup === "##") {
+          md.sections[token.section] = {
+            [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
+            ...md.sections[token.section],
+          };
+        }
+        if (token.tag === "section-step") {
+          const steps = md.sections[token.section].steps;
+          const currStep = steps[steps.length - 1];
+
+          steps[steps.length - 1] = {
+            [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
+            ...currStep,
+          };
+        }
+      }
     });
   });
 }
