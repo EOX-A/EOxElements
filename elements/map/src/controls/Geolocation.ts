@@ -2,22 +2,26 @@ import { Control } from "ol/control.js";
 import Feature from "ol/Feature.js";
 import Geolocation from "ol/Geolocation.js";
 import Point from "ol/geom/Point.js";
-import { Circle as CircleStyle, Fill, Stroke, Style } from "ol/style.js";
 import { Vector as VectorSource } from "ol/source.js";
 import { Vector as VectorLayer } from "ol/layer.js";
+import { Fill, Stroke, Style } from "ol/style";
 
-
-// The certificate is at "./localhost.pem" and the key at "./localhost-key.pem" ✅
+export type GeolocationOptions = import("ol/control/Control").Options & {
+  style?: import("ol/style/flat.js").FlatStyleLike;
+  centerWhenReady?: boolean;
+  highAccuracy?: boolean;
+  trackAccuracy?: boolean;
+  trackHeading?: boolean;
+};
 
 export default class GeolocationControl extends Control {
   /**
-   * @param {Object} [opt_options] Control options.
+   * @param {GeolocationOptions} [opt_options] Control options.
    */
-  constructor(opt_options: import("ol/control/Control").Options) {
+  constructor(opt_options: GeolocationOptions) {
     const options = opt_options || {};
 
     const button = document.createElement("button");
-    //button.innerHTML = '&#1792;';
     button.innerHTML = "&#6816";
 
     const element = document.createElement("div");
@@ -26,12 +30,46 @@ export default class GeolocationControl extends Control {
 
     super({
       element: element,
-      target: options.target,
     });
 
     this.centerWhenReady_ = options.centerWhenReady;
     this.highAccuracy_ = options.highAccuracy;
-    this.trackAccuracy_ = true;
+    this.trackAccuracy_ = options.trackAccuracy;
+    this.trackHeading_ = options.trackHeading;
+
+    this.positionFeature_ = new Feature({
+      geometry: new Point([0, 0]),
+    });
+
+    this.source_ = new VectorSource({
+      features: [this.positionFeature_],
+    });
+    if (this.trackAccuracy_) {
+      this.accuracyFeature_ = new Feature();
+      // flat styles only work at the layer atm.
+      // for now, override the accuracy-feature style with a default one
+      this.accuracyFeature_.setStyle(
+        new Style({
+          fill: new Fill({
+            color: "rgba(0, 0, 0, 0.2)",
+          }),
+          stroke: new Stroke({
+            width: 2,
+            color: "rgba(0, 0, 0, 0.7)",
+          }),
+        })
+      );
+      this.source_.addFeature(this.accuracyFeature_);
+    }
+
+    this.layer_ = new VectorLayer({
+      source: this.source_,
+    });
+
+    if (options.style) {
+      this.layer_.setStyle(options.style);
+    }
+
     button.addEventListener("click", this.centerOnPosition.bind(this), false);
   }
 
@@ -40,14 +78,11 @@ export default class GeolocationControl extends Control {
    * Pass `null` to just remove the control from the current map.
    * Subclasses may set up event handlers to get notified about changes to
    * the map here.
-   * @param {import("../Map.js").default|null} map Map.
+   * @param {import("ol/Map").default|null} map Map.
    * @api
    */
   setMap(map: import("ol/Map.js").default | null) {
-    console.log("set map");
     if (map) {
-      console.log(map);
-      console.log(map.getView().getProjection());
       this.geolocation_ = new Geolocation({
         // take the projection to use from the map's view
         tracking: true,
@@ -56,75 +91,48 @@ export default class GeolocationControl extends Control {
         },
         projection: map.getView().getProjection(),
       });
-      
+
       if (this.centerWhenReady_) {
-        this.geolocation_.once('change:position', (e) => {
+        this.geolocation_.once("change:position", (e) => {
           map.getView().setCenter(e.target.getPosition());
-        })
+        });
       }
-
-      this.accuracyFeature_ = new Feature();
-
-      this.positionFeature_ = new Feature({
-        geometry: new Point([0, 0]),
-      })
-      this.positionFeature_.setStyle(new Style({
-        image: new CircleStyle({
-          radius: 6,
-          fill: new Fill({
-            color: "orangered",
-          }),
-          stroke: new Stroke({
-            color: "#fff",
-            width: 2,
-          }),
-        }),
-      }))
-      this.source_ = new VectorSource({
-        features: [this.positionFeature_]
-      })
-      this.layer_ = new VectorLayer({
-        source: this.source_
-      })
-      this.layer_.setMap(map);
-
-      // listen to changes in position
-      this.geolocation_.on("change", function (e) {
-        console.log("geolocation changed");
-        console.log(e);
-        console.log(e.target.getPosition());
-      });
 
       this.geolocation_.on("error", function (evt) {
         console.log(evt);
       });
 
-      this.geolocation_.on('change:accuracyGeometry', () => {
+      this.geolocation_.on("change:accuracyGeometry", () => {
         if (this.trackAccuracy_) {
-          this.accuracyFeature_.setGeometry(this.geolocation_.getAccuracyGeometry());
+          this.accuracyFeature_.setGeometry(
+            this.geolocation_.getAccuracyGeometry()
+          );
         }
       });
-      this.geolocation_.on('change:heading', (e) => {
-        console.log('changeHeading');
-        console.log(e);
-        if (this.trackHeading_ && this.highAccuracy_) {
-          this.accuracyFeature_.getStyle().setRotation(e.target.getHeading());
-        }
+      this.geolocation_.on("change:heading", () => {
+        // TO DO
+        /*if (this.trackHeading_ && this.highAccuracy_) {
+          const style = this.layer_.getStyle();
+          console.log(style);
+          this.layer_.getStyle().setRotation(e.target.getHeading());
+        }*/
       });
-
 
       this.geolocation_.on("change:position", () => {
-        console.log("change position");
         const coordinates = this.geolocation_.getPosition();
-        console.log(coordinates);
-        this.positionFeature_.getGeometry().setCoordinates(coordinates ? coordinates : null)
+        this.positionFeature_
+          .getGeometry()
+          .setCoordinates(coordinates ? coordinates : null);
       });
 
       this.geolocation_.on("change:accuracyGeometry", () => {
-        this.accuracyFeature_.setGeometry(this.geolocation_.getAccuracyGeometry());
+        this.accuracyFeature_.setGeometry(
+          this.geolocation_.getAccuracyGeometry()
+        );
       });
     }
 
+    this.layer_.setMap(map);
     super.setMap(map);
   }
 

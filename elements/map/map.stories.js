@@ -202,8 +202,22 @@ export const Controls = {
 
 export const Geolocation = {
   args: {
+    zoom: 7,
     controls: {
-      Geolocation: {},
+      Geolocation: {
+        tracking: true,
+        trackHeading: true,
+        centerWhenReady: true,
+        highAccuracy: true,
+        trackAccuracy: true,
+        style: {
+          "circle-radius": 10,
+          "circle-fill-color": "red",
+          "circle-stroke-color": "white",
+          "circle-stroke-width": 2,
+        },
+      },
+      Zoom: {},
     },
     layers: [
       {
