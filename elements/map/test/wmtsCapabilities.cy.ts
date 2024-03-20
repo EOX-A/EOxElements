@@ -2,7 +2,7 @@ import { html } from "lit";
 import "../main";
 
 describe("WMTS Capabilities Source", () => {
-  it("loads a Vector Tile Layer, applies flat style", () => {
+  it("loads a layer from WMTS capabilities", () => {
     cy.fixture("eoxCapabilities.xml").then(() => {
       cy.intercept(
         "GET",

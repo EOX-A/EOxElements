@@ -98,6 +98,10 @@ export const WMSLayer = {
   },
 };
 
+/**
+ * A source with type `WMTSCapabilities` automatically fetches the provided capabilities url
+ * and renders the specified layer.
+ */
 export const WMTSCapabilitiesLayer = {
   args: {
     center: [20, 40],
