@@ -14,7 +14,7 @@ import {
   addOrUpdateControl,
   controlDictionary,
   controlType,
-} from "./src/controls";
+} from "./src/controls/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
 import {

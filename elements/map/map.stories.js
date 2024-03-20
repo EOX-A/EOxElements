@@ -200,6 +200,25 @@ export const Controls = {
   },
 };
 
+export const Geolocation = {
+  args: {
+    controls: {
+      Geolocation: {},
+    },
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+  },
+};
+
 export const HoverSelect = {
   args: {
     layers: [
