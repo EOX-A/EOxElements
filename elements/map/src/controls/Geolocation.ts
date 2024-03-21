@@ -71,6 +71,7 @@ export default class GeolocationControl extends Control {
 
     this._positionFeature = new Feature({
       geometry: new Point([0, 0]),
+      heading: 0
     });
 
     this._source = new VectorSource({
