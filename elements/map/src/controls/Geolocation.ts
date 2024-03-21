@@ -42,15 +42,13 @@ export default class GeolocationControl extends Control {
     const options = opt_options || {};
 
     const element = document.createElement("div");
-    element.className = "ol-unselectable ol-control";
-    element.style.top = "65px";
-    element.style.left = ".5em";
+    element.className = "geolocation ol-unselectable ol-control";
     const button = document.createElement("button");
     if (options.buttonIcon) {
       const image = document.createElement("img");
       image.src = options.buttonIcon;
-      image.style.height = "22px";
-      image.style.width = "22px";
+      image.style.height = "100%";
+      image.style.width = "100%";
       image.style.position = "absolute";
       image.style.pointerEvents = "none";
       element.appendChild(image);
