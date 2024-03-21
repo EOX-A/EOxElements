@@ -129,6 +129,15 @@ const styleEOX = `
     justify-items: start;
     display: grid;
   }
+  .story-telling .tour.left {
+    justify-items: start;
+  }
+  .story-telling .tour.right {
+    justify-items: end;
+  }
+  .story-telling .tour.center {
+    justify-items: center;
+  }
   .story-telling .tour eox-map {
     width: 100%;
     height: 100vh;
@@ -138,12 +147,19 @@ const styleEOX = `
   }
   .story-telling .tour section-step {
     background: white;
-    padding: 1rem;
-    border-radius: 10px;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
     min-height: 8vh;
-    margin-bottom: calc(100%);
+    margin: 1rem;
+    margin-bottom: calc(80%);
     display: block;
     z-index: 1;
+    max-width: 40%;
+  }
+  @media screen and (max-width: 1024px) {
+    .story-telling .tour section-step {
+      max-width: 100%;
+    }
   }
 `;
 export default styleEOX;

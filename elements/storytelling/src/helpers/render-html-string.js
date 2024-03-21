@@ -18,9 +18,10 @@ export function renderHtmlString(htmlString, sections, that) {
     if (EVENT_REQ_MODES.includes(section.mode) && section.steps) {
       const parent = that.shadowRoot || that;
       let currentSection = null;
+      const elementSelector = `${section.as}#${section.id}`;
 
       const handleScroll = () => {
-        const element = parent.querySelector(`${section.as}#${section.id}`);
+        const element = parent.querySelector(elementSelector);
         const contentChildren = parent.querySelectorAll(
           `#${sectionId} section-step`
         );
@@ -52,7 +53,6 @@ export function renderHtmlString(htmlString, sections, that) {
 
           if (currentSection) {
             const index = currentSection.index;
-            // const contentEle = currentSection.dom;
 
             Object.keys(section.steps[index]).forEach((attr) => {
               element[attr] = section.steps[index][attr];
@@ -68,9 +68,14 @@ export function renderHtmlString(htmlString, sections, that) {
         contentParent.removeEventListener("wheel", handleScroll);
         setTimeout(
           () => contentParent.addEventListener("wheel", handleScroll),
-          1000
+          200
         );
-      }, 500);
+
+        const element = parent.querySelector(elementSelector);
+        Object.keys(section.steps[0]).forEach((attr) => {
+          element[attr] = section.steps[0][attr];
+        });
+      }, 100);
     }
   });
   // Process child nodes of the document body

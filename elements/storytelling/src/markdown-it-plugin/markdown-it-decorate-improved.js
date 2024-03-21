@@ -230,6 +230,7 @@ function curlyInline(
       (lastText && lastText["content"]) || token.children[0]?.content;
     const attrsId = getAttr(stack.last.attrs, "id");
     const mode = getAttr(stack.last.attrs, "mode") || "container";
+    const position = getAttr(stack.last.attrs, "position") || "left";
     const titleSlug = slugify(title);
     const id = attrsId || titleSlug;
     const sectionId = `section-${id}`;
@@ -240,7 +241,7 @@ function curlyInline(
     const currentSectionToken = finalTokens[sectionStartIndex];
     const currentH2SectionToken = finalTokens[finalTokens.length - 1];
 
-    const sectionClass = `.${mode}`;
+    const sectionClass = `.${mode} .${position}`;
     currentSectionToken.attrs.push(["id", sectionId]);
     currentSectionToken.id = sectionId;
 
@@ -263,6 +264,7 @@ function curlyInline(
       );
 
       currentSectionToken.mode = mode;
+      currentSectionToken.position = position;
 
       // Combining div attribute with h2 attributes
       applyToToken(
@@ -323,7 +325,7 @@ function findParent(stack, tag, depth) {
  * @param {Object} token
  * @param {String} attrs
  */
-function applyToToken(token, attrs) {
+function applyToToken(token, attrs = "") {
   let m;
   token.attrStr = attrs;
 
