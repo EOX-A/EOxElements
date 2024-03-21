@@ -439,32 +439,77 @@ function trimRight(obj, attr) {
 function generateCustomAttrsAndSectionMetaList(tokens, md) {
   tokens.forEach((token) => {
     const attrs = token.attrs || [];
-    if (token.section) {
-      if (token.tag === "section-step" && !md.sections[token.section].steps)
-        md.sections[token.section].steps = [];
-      if (token.markup === "##") md.sections[token.section] = {};
-    }
 
-    md.sections[token.section]?.steps?.push({});
+    // Initialize sections meta
+    initializeSectionsMeta(token, md);
+
+    // Process each attribute for the current token
     attrs.forEach((attr) => {
-      if (!md.attrs.includes(attr[0])) md.attrs = [...md.attrs, attr[0]];
-      if (token.section) {
-        if (token.markup === "##") {
-          md.sections[token.section] = {
-            [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
-            ...md.sections[token.section],
-          };
-        }
-        if (token.tag === "section-step") {
-          const steps = md.sections[token.section].steps;
-          const currStep = steps[steps.length - 1];
+      // Add attribute to md.attrs if it's not already included
+      if (!md.attrs.includes(attr[0])) {
+        md.attrs.push(attr[0]);
+      }
 
-          steps[steps.length - 1] = {
-            [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
-            ...currStep,
-          };
-        }
+      // Special handling for sections based on markup and tag
+      if (token.section) {
+        updateSectionMetaBasedOnMarkup(token, attr, md);
+        updateStepBasedOnStepSection(token, attr, md);
       }
     });
   });
+}
+
+/**
+ * Initialize sections meta list
+ *
+ * @param {Object} token - Markdown token
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function initializeSectionsMeta(token, md) {
+  if (token.section) {
+    if (token.tag === "section-step" && !md.sections[token.section].steps) {
+      md.sections[token.section].steps = [];
+    }
+    if (token.markup === "##") {
+      md.sections[token.section] = md.sections[token.section] || {};
+    }
+
+    md.sections[token.section]?.steps?.push({});
+  }
+}
+
+/**
+ * Update section list based on attribute values mentioned in comment decorate
+ *
+ * @param {Object} token - Markdown token
+ * @param {Array} attr - Attribute key & value
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function updateSectionMetaBasedOnMarkup(token, attr, md) {
+  if (token.markup === "##") {
+    md.sections[token.section] = {
+      [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
+      ...md.sections[token.section],
+    };
+  }
+}
+
+/**
+ * Update section list based on attribute values declared in <section-step>
+ *
+ * @param {Object} token - Markdown token
+ * @param {Array} attr - Attribute key & value
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function updateStepBasedOnStepSection(token, attr, md) {
+  if (token.tag === "section-step") {
+    const steps = md.sections[token.section].steps;
+    const currentStepIndex = steps.length - 1;
+    const currentStep = steps[currentStepIndex];
+
+    steps[currentStepIndex] = {
+      [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
+      ...currentStep,
+    };
+  }
 }

@@ -17,69 +17,118 @@ export function renderHtmlString(htmlString, sections, that) {
     const section = sections[sectionId];
     if (EVENT_REQ_MODES.includes(section.mode) && section.steps) {
       const parent = that.shadowRoot || that;
-      let currentSection = null;
       const elementSelector = `${section.as}#${section.id}`;
+      let currentSection = null;
 
+      // Handle event function
       const handleScroll = () => {
-        const element = parent.querySelector(elementSelector);
-        const contentChildren = parent.querySelectorAll(
-          `#${sectionId} section-step`
+        currentSection = updateEleBasedOnSectionChange(
+          currentSection,
+          getCurrentSection(section, sectionId, parent),
+          section,
+          elementSelector,
+          parent
         );
-
-        const scrollY = window.scrollY;
-        let newCurrentSection = null;
-
-        contentChildren.forEach((content, key) => {
-          const rect = content.getBoundingClientRect();
-          const sectionTop = rect.top + window.scrollY;
-          const sectionBottom = sectionTop + rect.height;
-
-          const threshold =
-            sectionTop + rect.height * (section.mode === "sidecar" ? -0.4 : -7);
-
-          if (scrollY >= threshold && scrollY < sectionBottom) {
-            newCurrentSection = {
-              index: key,
-              dom: content,
-            };
-          }
-        });
-
-        if (
-          newCurrentSection?.index !== currentSection?.index ||
-          !currentSection
-        ) {
-          currentSection = newCurrentSection;
-
-          if (currentSection) {
-            const index = currentSection.index;
-
-            Object.keys(section.steps[index]).forEach((attr) => {
-              element[attr] = section.steps[index][attr];
-            });
-          }
-        }
       };
 
+      // Create scroll handle with a wait time
       setTimeout(() => {
         const contentParent = parent.querySelector(`#${sectionId}`);
         if (!contentParent) return;
 
         contentParent.removeEventListener("wheel", handleScroll);
-        setTimeout(
-          () => contentParent.addEventListener("wheel", handleScroll),
-          200
-        );
+        const createScrollEvt = () =>
+          contentParent.addEventListener("wheel", handleScroll);
+        setTimeout(createScrollEvt, 200);
 
-        const element = parent.querySelector(elementSelector);
-        Object.keys(section.steps[0]).forEach((attr) => {
-          element[attr] = section.steps[0][attr];
-        });
+        assignNewAttrValue(section, 0, elementSelector, parent);
       }, 100);
     }
   });
+
   // Process child nodes of the document body
   return Array.from(doc.body.childNodes).map(processNode);
+}
+
+/**
+ * get current section index and dom based on it's visibility
+ *
+ * @param {Object} section - section meta
+ * @param {String} sectionId - section id based on scroll generation
+ * @param {import("lit").LitElement} parent - The LitElement instance.
+ * @returns {{ index: Number, dom: Node }} new current section based on scroll
+ */
+function getCurrentSection(section, sectionId, parent) {
+  const contentChildren = parent.querySelectorAll(`#${sectionId} section-step`);
+
+  const scrollY = window.scrollY;
+  let newCurrentSection = null;
+
+  contentChildren.forEach((content, key) => {
+    const rect = content.getBoundingClientRect();
+    const sectionTop = rect.top + window.scrollY;
+    const sectionBottom = sectionTop + rect.height;
+
+    const threshold =
+      sectionTop + rect.height * (section.mode === "tour" ? -7 : -0.4);
+
+    if (scrollY >= threshold && scrollY < sectionBottom) {
+      newCurrentSection = {
+        index: key,
+        dom: content,
+      };
+    }
+  });
+
+  return newCurrentSection;
+}
+
+/**
+ * Update elements attribute value based on section visibility change
+ *
+ * @param {{ index: Number, dom: Node }} currentSection - current section which was updated earlier
+ * @param {{ index: Number, dom: Node }} newCurrentSection - new current section changed based on scroll
+ * @param {Object} section - section meta
+ * @param {String} elementSelector - sector string for element
+ * @param {import("lit").LitElement} parent - The LitElement instance.
+ * @returns {{ index: Number, dom: Node }} new current section based on scroll
+ */
+function updateEleBasedOnSectionChange(
+  currentSection,
+  newCurrentSection,
+  section,
+  elementSelector,
+  parent
+) {
+  if (newCurrentSection?.index !== currentSection?.index || !currentSection) {
+    currentSection = newCurrentSection;
+
+    if (currentSection)
+      assignNewAttrValue(
+        section,
+        currentSection.index,
+        elementSelector,
+        parent
+      );
+  }
+
+  return currentSection;
+}
+
+/**
+ * Assign new value for attribute of element
+ *
+ * @param {Object} section - section meta
+ * @param {Number} index - current section index
+ * @param {String} elementSelector - sector string for element
+ * @param {import("lit").LitElement} parent - The LitElement instance.
+ */
+function assignNewAttrValue(section, index, elementSelector, parent) {
+  const element = parent.querySelector(elementSelector);
+
+  Object.keys(section.steps[index]).forEach((attr) => {
+    element[attr] = section.steps[index][attr];
+  });
 }
 
 /**
