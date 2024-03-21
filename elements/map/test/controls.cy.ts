@@ -3,19 +3,6 @@ import "../main";
 import tileWmsLayerStyleJson from "./tileWmsLayer.json";
 
 describe("webcomponent property parsing", () => {
-  /*it("set simple initial controls via webcomponent properties as Array", () => {
-    cy.mount(
-      html`<eox-map
-        .controls=${["Zoom", "Attribution", "FullScreen"]}
-      ></eox-map>`
-    ).as("eox-map");
-    cy.get("eox-map").and(($el) => {
-      expect(
-        (<EOxMap>$el[0]).map.getControls().getLength(),
-        "set controls via webcomponent properties (Array)"
-      ).to.be.equal(3);
-    });
-  });*/
   it("set controls via webcomponent properties", () => {
     cy.mount(
       html`<eox-map
@@ -84,6 +71,35 @@ describe("webcomponent property parsing", () => {
           .getParams().LAYERS,
         "update controls by changing the control prop"
       ).to.be.equal("AWS_NO2-VISUALISATION");
+    });
+  });
+
+  it("Geolocation Control", () => {
+    cy.mount(
+      html`<eox-map
+        .zoom=${0}
+        .center=${[0, 0]}
+        .layers=${[
+          {
+            type: "Tile",
+            properties: {
+              id: "customId",
+            },
+            source: {
+              type: "OSM",
+            },
+          },
+        ]}
+        .controls=${{
+          Geolocation: {},
+        }}
+      ></eox-map>`
+    ).as("eox-map");
+    cy.get("eox-map").and(async ($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
+      //@ts-ignore
+      expect(eoxMap.map.getControls().getArray()[0].getElement()).to.exist;
     });
   });
 });
