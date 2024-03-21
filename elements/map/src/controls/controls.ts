@@ -73,7 +73,7 @@ export function addInitialControls(EOxMap: EOxMap) {
   if (controls) {
     if (Array.isArray(controls)) {
       controls.forEach((controlName) => {
-        const control = new availableControls[controlName]();
+        const control = new availableControls[controlName]({});
         EOxMap.map.addControl(control);
         EOxMap.mapControls[controlName] = control;
       });
