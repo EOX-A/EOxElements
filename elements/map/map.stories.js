@@ -216,6 +216,8 @@ export const Geolocation = {
           "circle-stroke-color": "white",
           "circle-stroke-width": 2,
         },
+        buttonIcon:
+          "https://upload.wikimedia.org/wikipedia/commons/7/74/Location_icon_from_Noun_Project.png",
       },
       Zoom: {},
     },
