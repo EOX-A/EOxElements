@@ -7,11 +7,31 @@ import { Vector as VectorLayer } from "ol/layer.js";
 import { Fill, Stroke, Style } from "ol/style";
 
 export type GeolocationOptions = import("ol/control/Control").Options & {
+  /**
+   * @property {import("ol/style/flat.js").FlatStyleLike} style style definition of the position feature.
+   */
   style?: import("ol/style/flat.js").FlatStyleLike;
+  /**
+   * @property {boolean} centerWhenReady will pan the view to the user-location on the first position update.
+   */
   centerWhenReady?: boolean;
+  /**
+   * @property {boolean} highAccuracy enables high accuracy of geolocator. Required for tracking the heading.
+   */
   highAccuracy?: boolean;
+  /**
+   * @property {boolean} trackAccuracy tracks accuracy and displays it as a circle underneath the position feature.
+   */
   trackAccuracy?: boolean;
+  /**
+   * @property {boolean} trackHeading tracks heading and sets it as 'heading'-property on the position feature.
+   * "highAccuracy" must be set in order to track heading.
+   */
   trackHeading?: boolean;
+  /**
+   * @property {string} buttonIcon image src of control element icon
+   */
+  buttonIcon?: string;
 };
 
 export default class GeolocationControl extends Control {
@@ -21,34 +41,46 @@ export default class GeolocationControl extends Control {
   constructor(opt_options: GeolocationOptions) {
     const options = opt_options || {};
 
-    const button = document.createElement("button");
-    button.innerHTML = "&#6816";
-
     const element = document.createElement("div");
-    element.className = "rotate-north ol-unselectable ol-control";
+    element.className = "ol-unselectable ol-control";
+    element.style.top = "65px";
+    element.style.left = ".5em";
+    const button = document.createElement("button");
+    if (options.buttonIcon) {
+      const image = document.createElement("img");
+      image.src = options.buttonIcon;
+      image.style.height = "22px";
+      image.style.width = "22px";
+      image.style.position = "absolute";
+      image.style.pointerEvents = "none";
+      element.appendChild(image);
+    } else {
+      // fallback icon
+      button.innerHTML = "&#6816";
+    }
     element.appendChild(button);
 
     super({
       element: element,
     });
 
-    this.centerWhenReady_ = options.centerWhenReady;
-    this.highAccuracy_ = options.highAccuracy;
-    this.trackAccuracy_ = options.trackAccuracy;
-    this.trackHeading_ = options.trackHeading;
+    this._centerWhenReady = options.centerWhenReady;
+    this._highAccuracy = options.highAccuracy;
+    this._trackAccuracy = options.trackAccuracy;
+    this._trackHeading = options.trackHeading;
 
-    this.positionFeature_ = new Feature({
+    this._positionFeature = new Feature({
       geometry: new Point([0, 0]),
     });
 
-    this.source_ = new VectorSource({
-      features: [this.positionFeature_],
+    this._source = new VectorSource({
+      features: [this._positionFeature],
     });
-    if (this.trackAccuracy_) {
-      this.accuracyFeature_ = new Feature();
+    if (this._trackAccuracy) {
+      this._accuracyFeature = new Feature();
       // flat styles only work at the layer atm.
       // for now, override the accuracy-feature style with a default one
-      this.accuracyFeature_.setStyle(
+      this._accuracyFeature.setStyle(
         new Style({
           fill: new Fill({
             color: "rgba(0, 0, 0, 0.2)",
@@ -59,15 +91,15 @@ export default class GeolocationControl extends Control {
           }),
         })
       );
-      this.source_.addFeature(this.accuracyFeature_);
+      this._source.addFeature(this._accuracyFeature);
     }
 
-    this.layer_ = new VectorLayer({
-      source: this.source_,
+    this._layer = new VectorLayer({
+      source: this._source,
     });
 
     if (options.style) {
-      this.layer_.setStyle(options.style);
+      this._layer.setStyle(options.style);
     }
 
     button.addEventListener("click", this.centerOnPosition.bind(this), false);
@@ -83,70 +115,77 @@ export default class GeolocationControl extends Control {
    */
   setMap(map: import("ol/Map.js").default | null) {
     if (map) {
-      this.geolocation_ = new Geolocation({
+      this._geolocation = new Geolocation({
         // take the projection to use from the map's view
         tracking: true,
         trackingOptions: {
-          enableHighAccuracy: this.highAccuracy_,
+          enableHighAccuracy: this._highAccuracy,
         },
         projection: map.getView().getProjection(),
       });
 
-      if (this.centerWhenReady_) {
-        this.geolocation_.once("change:position", (e) => {
+      if (this._centerWhenReady) {
+        this._geolocation.once("change:position", (e) => {
           map.getView().setCenter(e.target.getPosition());
         });
       }
 
-      this.geolocation_.on("error", function (evt) {
+      this._geolocation.on("error", function (evt) {
         console.log(evt);
       });
 
-      this.geolocation_.on("change:accuracyGeometry", () => {
-        if (this.trackAccuracy_) {
-          this.accuracyFeature_.setGeometry(
-            this.geolocation_.getAccuracyGeometry()
+      this._geolocation.on("change:accuracyGeometry", () => {
+        if (this._trackAccuracy) {
+          this._accuracyFeature.setGeometry(
+            this._geolocation.getAccuracyGeometry()
           );
         }
       });
-      this.geolocation_.on("change:heading", () => {
-        // TO DO
-        /*if (this.trackHeading_ && this.highAccuracy_) {
-          const style = this.layer_.getStyle();
-          console.log(style);
-          this.layer_.getStyle().setRotation(e.target.getHeading());
-        }*/
+      this._geolocation.on("change:heading", (e) => {
+        if (this._trackHeading && this._highAccuracy) {
+          this._positionFeature.set("heading", e.target.getHeading());
+        }
       });
 
-      this.geolocation_.on("change:position", () => {
-        const coordinates = this.geolocation_.getPosition();
-        this.positionFeature_
+      this._geolocation.on("change:position", () => {
+        const coordinates = this._geolocation.getPosition();
+        this._positionFeature
           .getGeometry()
           .setCoordinates(coordinates ? coordinates : null);
       });
 
-      this.geolocation_.on("change:accuracyGeometry", () => {
-        this.accuracyFeature_.setGeometry(
-          this.geolocation_.getAccuracyGeometry()
-        );
+      this._geolocation.on("change:accuracyGeometry", () => {
+        if (this._trackAccuracy && this._accuracyFeature) {
+          this._accuracyFeature.setGeometry(
+            this._geolocation.getAccuracyGeometry()
+          );
+        }
       });
     }
 
-    this.layer_.setMap(map);
+    this._layer.setMap(map);
     super.setMap(map);
   }
 
-  centerWhenReady_: boolean;
-  highAccuracy_: boolean;
-  positionFeature_: Feature<Point>;
-  accuracyFeature_: Feature;
-  trackAccuracy_: boolean;
-  trackHeading_: boolean;
-  layer_: VectorLayer<VectorSource>;
-  source_: VectorSource;
-  geolocation_: Geolocation;
+  private _centerWhenReady: boolean;
+  private _highAccuracy: boolean;
+  private _positionFeature: Feature<Point>;
+  private _accuracyFeature: Feature;
+  private _trackAccuracy: boolean;
+  private _trackHeading: boolean;
+  private _layer: VectorLayer<VectorSource>;
+  private _source: VectorSource;
+  private _geolocation: Geolocation;
+
+  /**
+   * returns the geolocation control button
+   * @returns
+   */
+  getElement() {
+    return this.element;
+  }
 
   centerOnPosition() {
-    this.getMap().getView().setCenter(this.geolocation_.getPosition());
+    this.getMap().getView().setCenter(this._geolocation.getPosition());
   }
 }
