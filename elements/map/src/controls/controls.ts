@@ -1,6 +1,12 @@
-import { EOxMap } from "../main";
+import { EOxMap } from "../../main";
 import * as olControls from "ol/control";
-import { generateLayers } from "./generate";
+import { generateLayers } from "../generate";
+import Geolocation from "./Geolocation";
+
+const availableControls = {
+  ...olControls,
+  Geolocation,
+};
 
 export type controlType =
   | "Attribution"
@@ -11,7 +17,8 @@ export type controlType =
   | "ScaleLine"
   | "ZoomSlider"
   | "ZoomToExtent"
-  | "Zoom";
+  | "Zoom"
+  | "Geolocation";
 
 export type controlDictionary = {
   [key in controlType]?: object;
@@ -53,7 +60,7 @@ export function addControl(EOxMap: EOxMap, type: controlType, options: object) {
     //@ts-ignore
     controlOptions.layers = generateLayers(EOxMap, options.layers); // parse layers (OverviewMap)
   }
-  const control = new olControls[type](controlOptions);
+  const control = new availableControls[type](controlOptions);
   EOxMap.map.addControl(control);
   EOxMap.mapControls[type] = control;
 }
@@ -66,7 +73,7 @@ export function addInitialControls(EOxMap: EOxMap) {
   if (controls) {
     if (Array.isArray(controls)) {
       controls.forEach((controlName) => {
-        const control = new olControls[controlName]();
+        const control = new availableControls[controlName]({});
         EOxMap.map.addControl(control);
         EOxMap.mapControls[controlName] = control;
       });
@@ -80,7 +87,7 @@ export function addInitialControls(EOxMap: EOxMap) {
           // @ts-ignore
           controlOptions.layers = generateLayers(controlOptions.layers); // parse layers (OverviewMap)
         }
-        const control = new olControls[controlName](controlOptions);
+        const control = new availableControls[controlName](controlOptions);
         EOxMap.map.addControl(control);
         EOxMap.mapControls[controlName] = control;
       }

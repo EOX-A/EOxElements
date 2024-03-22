@@ -224,6 +224,41 @@ export const Controls = {
   },
 };
 
+export const Geolocation = {
+  args: {
+    zoom: 7,
+    controls: {
+      Geolocation: {
+        tracking: true,
+        trackHeading: true,
+        centerWhenReady: true,
+        highAccuracy: true,
+        trackAccuracy: true,
+        style: {
+          "circle-radius": 10,
+          "circle-fill-color": "red",
+          "circle-stroke-color": "white",
+          "circle-stroke-width": 2,
+        },
+        buttonIcon:
+          "https://upload.wikimedia.org/wikipedia/commons/7/74/Location_icon_from_Noun_Project.png",
+      },
+      Zoom: {},
+    },
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+  },
+};
+
 export const HoverSelect = {
   args: {
     layers: [

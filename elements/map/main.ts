@@ -4,6 +4,8 @@ import Map from "ol/Map.js";
 import View, { ViewObjectEventTypes } from "ol/View.js";
 // @ts-ignore
 import olCss from "ol/ol.css?inline";
+// @ts-ignore
+import controlCss from "./src/controls/controls.css?inline";
 import { EOxSelectInteraction } from "./src/select";
 import { EoxLayer, createLayer, updateLayer } from "./src/generate";
 import { Draw, Modify } from "ol/interaction";
@@ -14,7 +16,7 @@ import {
   addOrUpdateControl,
   controlDictionary,
   controlType,
-} from "./src/controls";
+} from "./src/controls/controls";
 import { buffer } from "ol/extent";
 import "./src/compare";
 import {
@@ -482,6 +484,7 @@ export class EOxMap extends LitElement {
       <style>
         ${shadowStyleFix}
         ${olCss}
+        ${controlCss}
       </style>
       <div style="width: 100%; height: 100%"></div>
       <slot></slot>

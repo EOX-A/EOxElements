@@ -1,0 +1,7 @@
+.geolocation {
+  top: 65px;
+  left: 0.5em;
+}
+.ol-touch .geolocation {
+  top: 80px;
+}
