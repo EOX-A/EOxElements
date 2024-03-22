@@ -37,67 +37,46 @@ function curlyAttrs(state) {
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
 
+    // Initialise opening tag
     if (isOpener(token.type) || TAGS_SELF_CLOSING[token.type]) {
       sPush(stack, token);
     }
 
+    // Parse opening section through h2 tag
     if (token.tag === "h2") {
-      if (token.type === "heading_close") {
-        token.tag = finalTokens[finalTokens.length - 2].tag;
-        token.type = finalTokens[finalTokens.length - 2].type.replace(
-          "_open",
-          "_close"
-        );
-      }
-
-      // Adding closing section div
-      if (token.type === "heading_open") {
-        if (sectionStart) {
-          const tag = finalTokens[sectionStartIndex].tag;
-          finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
-          sectionStart = false;
-          sectionStartIndex = -1;
-        }
-
-        // Adding opening section div
-        if (!sectionStart) {
-          finalTokens.push(
-            addNewHTMLSection(state, "div", 0, 1, "html_open", [
-              ["class", "section-wrap"],
-            ])
-          );
-          sectionStart = true;
-          sectionStartIndex = finalTokens.length - 1;
-          stack.last.as = !!tokens[i + 1].content.includes("as=");
-        }
-      }
+      const data = parseSection(
+        i,
+        tokens,
+        finalTokens,
+        sectionStart,
+        sectionStartIndex,
+        state,
+        stack
+      );
+      sectionStart = data.sectionStart;
+      sectionStartIndex = data.sectionStartIndex;
     }
 
-    if (
-      token.tag === "h3" &&
-      token.type === "heading_open" &&
-      sectionStart &&
-      finalTokens[sectionStartIndex].mode === "tour"
-    ) {
-      if (sectionSteps) {
-        finalTokens.push(
-          addNewHTMLSection(state, "section-step", -1, -1, "html_close")
-        );
-        sectionSteps = false;
-        sectionStepsIndex = -1;
-      }
-
-      // Adding opening section div
-      if (!sectionSteps) {
-        finalTokens.push(
-          addNewHTMLSection(state, "section-step", 0, 1, "html_open")
-        );
-        sectionSteps = true;
-        sectionStepsIndex = finalTokens.length - 1;
-        stack.last.as = !!tokens[i + 1].content.includes("as=");
-      }
+    // Parse opening step section through h3 tag
+    if (token.tag === "h3") {
+      const data = parseStepSection(
+        i,
+        tokens,
+        finalTokens,
+        sectionStart,
+        sectionStartIndex,
+        sectionSteps,
+        sectionStepsIndex,
+        state,
+        stack
+      );
+      sectionStart = data.sectionStart;
+      sectionSteps = data.sectionSteps;
+      sectionStartIndex = data.sectionStartIndex;
+      sectionStepsIndex = data.sectionStepsIndex;
     }
 
+    // Parse html block and apply token
     if (token.type === "html_block") {
       const m = token.content.match(TAGS_EXPR);
       if (!m) {
@@ -112,8 +91,9 @@ function curlyAttrs(state) {
       }
     }
 
+    // Parse inline content
     if (token.type === "inline")
-      finalTokens = curlyInline(
+      finalTokens = parseInlineContent(
         token,
         stack,
         nav,
@@ -126,15 +106,9 @@ function curlyAttrs(state) {
     finalTokens.push(token);
   }
 
-  if (sectionStart) {
-    const tag = finalTokens[sectionStartIndex].tag;
-    finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
-  }
-
-  if (sectionSteps) {
-    const tag = finalTokens[sectionStepsIndex].tag;
-    finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
-  }
+  // Close opened sections and step section tags if opened
+  if (sectionStart) pushClosingTag(finalTokens, sectionStartIndex, state);
+  if (sectionSteps) pushClosingTag(finalTokens, sectionStepsIndex, state);
 
   generateCustomAttrsAndSectionMetaList(finalTokens, state.md);
 
@@ -186,7 +160,7 @@ function isOpener(type) {
  * @return {Array<Object>} finalTokens
  *
  */
-function curlyInline(
+function parseInlineContent(
   token,
   stack,
   nav,
@@ -279,6 +253,135 @@ function curlyInline(
   if (token.children) omissions.forEach((idx) => token.children.splice(idx, 1));
 
   return finalTokens;
+}
+
+/**
+ * Process section tokens with help of h2 tag
+ *
+ * @param {Object} index - current token index
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {Boolean} sectionStart - Section started or not
+ * @param {Boolean} sectionStartIndex - Section start index
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {Object} stack
+ * @return {Object} - Final list of updated states
+ */
+function parseSection(
+  index,
+  tokens,
+  finalTokens,
+  sectionStart,
+  sectionStartIndex,
+  state,
+  stack
+) {
+  const token = tokens[index];
+
+  if (token.type === "heading_close") {
+    token.tag = finalTokens[finalTokens.length - 2].tag;
+    token.type = finalTokens[finalTokens.length - 2].type.replace(
+      "_open",
+      "_close"
+    );
+  }
+
+  // Adding closing section div
+  if (token.type === "heading_open") {
+    if (sectionStart) {
+      const tag = finalTokens[sectionStartIndex].tag;
+      finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
+      sectionStart = false;
+      sectionStartIndex = -1;
+    }
+
+    // Adding opening section div
+    if (!sectionStart) {
+      finalTokens.push(
+        addNewHTMLSection(state, "div", 0, 1, "html_open", [
+          ["class", "section-wrap"],
+        ])
+      );
+      sectionStart = true;
+      sectionStartIndex = finalTokens.length - 1;
+      stack.last.as = !!tokens[index + 1].content.includes("as=");
+    }
+  }
+
+  return { sectionStart, sectionStartIndex, stack, finalTokens };
+}
+
+/**
+ * Process step section tokens with help of h3 tag
+ *
+ * @param {Object} index - current token index
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {Boolean} sectionStart - Section started or not
+ * @param {Boolean} sectionStartIndex - Section start index
+ * @param {Boolean} sectionSteps - Step Section started or not
+ * @param {Boolean} sectionStepsIndex - Step Section start index
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {Object} stack
+ * @return {Object} - Final list of updated states
+ */
+function parseStepSection(
+  index,
+  tokens,
+  finalTokens,
+  sectionStart,
+  sectionStartIndex,
+  sectionSteps,
+  sectionStepsIndex,
+  state,
+  stack
+) {
+  const token = tokens[index];
+
+  if (
+    token.type === "heading_open" &&
+    sectionStart &&
+    finalTokens[sectionStartIndex].mode === "tour"
+  ) {
+    if (sectionSteps) {
+      finalTokens.push(
+        addNewHTMLSection(state, "section-step", -1, -1, "html_close")
+      );
+      sectionSteps = false;
+      sectionStepsIndex = -1;
+    }
+
+    // Adding opening section div
+    if (!sectionSteps) {
+      finalTokens.push(
+        addNewHTMLSection(state, "section-step", 0, 1, "html_open")
+      );
+      sectionSteps = true;
+      sectionStepsIndex = finalTokens.length - 1
+      stack.last.as = !!tokens[index + 1].content.includes("as=");
+    }
+  }
+
+  return {
+    sectionStart,
+    sectionStartIndex,
+    sectionSteps,
+    sectionStepsIndex,
+    stack,
+    finalTokens,
+  };
+}
+
+/**
+ * Process and push closing tags for section and step section
+ *
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {Object} index - current token index
+ * @param {{tokens: Array<Object>}} state - Token state
+ */
+function pushClosingTag(finalTokens, index, state) {
+  const tag = finalTokens[index].tag;
+  finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
 }
 
 /**
