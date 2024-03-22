@@ -357,7 +357,7 @@ function parseStepSection(
         addNewHTMLSection(state, "section-step", 0, 1, "html_open")
       );
       sectionSteps = true;
-      sectionStepsIndex = finalTokens.length - 1
+      sectionStepsIndex = finalTokens.length - 1;
       stack.last.as = !!tokens[index + 1].content.includes("as=");
     }
   }
