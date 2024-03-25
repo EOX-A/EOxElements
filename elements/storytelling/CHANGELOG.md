@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.2.0...storytelling-v0.3.0) (2024-03-25)
+
+
+### Features
+
+* Map tour mode ([#766](https://github.com/EOX-A/EOxElements/issues/766)) ([9fe659e](https://github.com/EOX-A/EOxElements/commit/9fe659e8a2336c8374b20fa5a97959bf9f18050d))
+* Replace `h2` tags via `as` attr ([#748](https://github.com/EOX-A/EOxElements/issues/748)) ([214a2b9](https://github.com/EOX-A/EOxElements/commit/214a2b96a0c40a5f0615f02e66bd4c3fe9acdade))
+* Storytelling map section powered by @eox/map ([#761](https://github.com/EOX-A/EOxElements/issues/761)) ([a0f96c4](https://github.com/EOX-A/EOxElements/commit/a0f96c4b759113e1ece715a35d5e862032baa0eb))
+* Storytelling sections ([#755](https://github.com/EOX-A/EOxElements/issues/755)) ([bf8a706](https://github.com/EOX-A/EOxElements/commit/bf8a706f2657bed4cace8a29fe187e450963819c))
+
+
+### Bug Fixes
+
+* Allow empty section titles ([#760](https://github.com/EOX-A/EOxElements/issues/760)) ([62234a6](https://github.com/EOX-A/EOxElements/commit/62234a67b5f9fd056c610f5fb732e99926637031))
+
 ## [0.2.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.1.0...storytelling-v0.2.0) (2024-03-07)
 
 
