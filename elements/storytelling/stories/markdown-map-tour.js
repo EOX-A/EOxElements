@@ -5,17 +5,34 @@ import { html } from "lit";
 import "../src/main.js";
 
 export const MarkdownMapTour = {
+  parameters: {
+    docs: {
+      story: {
+        // To show the effect on the docs page we need to limit the height
+        inline: false,
+        height: "400px",
+      },
+    },
+  },
   args: {
     markdown: `
-## EOX Map <!--{as="eox-map" mode="tour" position="left" prevent-scroll="true" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {} }, "layers": [ { "type": "Tile", "properties":{"id":"tile","title":"tiles"}, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+## Map tour
+The map is initialized with mode "tour".
 
-### <!--{ layers='[{"type":"Tile","properties":{"id":"osmq","title":"OpenStreetMapq"},"source":{"type":"OSM"}}]' zoom="5" }-->
-#### Hello World
-Description of step two, which changes the zoom property
+Please scroll to start the tour.
 
-### <!--{ zoom="2" layers='[{"type":"Tile","properties":{"title":"EOxCloudless2019","id":"EOxCloudless"},"source":{"type":"XYZ","url":"//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2019_3857/default/g/{z}/{y}/{x}.jpg"}},{"type":"Vector","properties":{"title":"Regions","id":"regions","description":"Ecologicalregionsoftheearth."},"source":{"type":"Vector","url":"https://openlayers.org/data/vector/ecoregions.json","format":"GeoJSON","attributions":"Regions:@openlayers.org"}}]' }-->
-#### Hello World
-Description of step two, which changes the zoom property    
+## EOX Map <!--{ as="eox-map" mode="tour" prevent-scroll="true" }-->
+
+### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[15,48] zoom="5" }-->
+#### Tour step one
+Sets layers to OSM layer, the center to [15,48] and the zoom to 5.
+
+### <!--{ zoom="2" layers='[{"type":"Tile","properties":{"id":"EOxCloudless"},"source":{"type":"XYZ","url":"//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpg"}}]' }-->
+#### Tour step two
+Sets the layers to EOxCloudless, and the zoom to 2
+
+## Map tour end
+Section after the map tour
 `,
   },
   render: (args) => html`
