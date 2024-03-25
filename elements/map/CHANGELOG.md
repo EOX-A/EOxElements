@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/map-v1.4.0...map-v1.5.0) (2024-03-25)
+
+
+### Features
+
+* Custom WMTSCapabilities Source ([#767](https://github.com/EOX-A/EOxElements/issues/767)) ([0186a4f](https://github.com/EOX-A/EOxElements/commit/0186a4f46ade37b4cc105b8bfbc81cd0cf15eeb7))
+* Geolocation control ([#769](https://github.com/EOX-A/EOxElements/issues/769)) ([10ae84b](https://github.com/EOX-A/EOxElements/commit/10ae84b4f9687e575df05c52fbdb15a23f80c3c9))
+
+
+### Bug Fixes
+
+* Add fallback values if config properties are not defined ([#772](https://github.com/EOX-A/EOxElements/issues/772)) ([e6fd179](https://github.com/EOX-A/EOxElements/commit/e6fd179e270db509e988d6da5f807e9bc767498d))
+
 ## [1.4.0](https://github.com/EOX-A/EOxElements/compare/map-v1.3.0...map-v1.4.0) (2024-03-13)
 
 
