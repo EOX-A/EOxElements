@@ -1,4 +1,4 @@
-import{s as Y,x as d,T as H,b as P}from"./lit-element-uhisBW42.js";import"./main-iBfWFgpK.js";import{r as g,n as c,t as B}from"./state-729Pchtv.js";import{G as _}from"./proj4-wH500JqA.js";import"./toolcool-range-slider.min-8Vg52R7B.js";import{b as Z}from"./button--cdmXcoW.js";import{d as b}from"./dayjs.min-Sgxub5UU.js";import{c as N,g as U}from"./_commonjsHelpers-4gQjN7DL.js";import"./index-EySAwWXj.js";const F=`
+import{s as Y,x as d,T as H,b as P}from"./lit-element-uhisBW42.js";import{G as _}from"./main-rel89txC.js";import{r as g,n as c,t as B}from"./state-729Pchtv.js";import"./toolcool-range-slider.min-8Vg52R7B.js";import{b as Z}from"./button--cdmXcoW.js";import{d as b}from"./dayjs.min-Sgxub5UU.js";import{c as N,g as U}from"./_commonjsHelpers-4gQjN7DL.js";import"./index-EySAwWXj.js";const F=`
 :host {
   display: block;
 }
@@ -24,7 +24,7 @@ button.icon.previous:before {
 button.icon.next:before {
   content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Earrow-right-drop-circle%3C/title%3E%3Cpath d='M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M10,17L15,12L10,7V17Z' fill='%23004170' /%3E%3C/svg%3E");
 }
-`;var R={exports:{}};(function(e,t){(function(r,o){e.exports=o()})(N,function(){return function(r,o,n){o.prototype.dayOfYear=function(i){var l=Math.round((n(this).startOf("day")-n(this).startOf("year"))/864e5)+1;return i==null?l:this.add(i-l,"day")}}})})(R);var X=R.exports;const J=U(X);var G={exports:{}};(function(e,t){(function(r,o){e.exports=o()})(N,function(){var r="day";return function(o,n,i){var l=function(p){return p.add(4-p.isoWeekday(),r)},y=n.prototype;y.isoWeekYear=function(){return l(this).year()},y.isoWeek=function(p){if(!this.$utils().u(p))return this.add(7*(p-this.isoWeek()),r);var u,f,h,S,j=l(this),D=(u=this.isoWeekYear(),f=this.$u,h=(f?i.utc:i)().year(u).startOf("year"),S=4-h.isoWeekday(),h.isoWeekday()>4&&(S+=7),h.add(S,r));return j.diff(D,"week")+1},y.isoWeekday=function(p){return this.$utils().u(p)?this.day()||7:this.day(this.day()%7?p:p-7)};var q=y.startOf;y.startOf=function(p,u){var f=this.$utils(),h=!!f.u(u)||u;return f.p(p)==="isoweek"?h?this.date(this.date()-(this.isoWeekday()-1)).startOf("day"):this.date(this.date()-1-(this.isoWeekday()-1)+7).endOf("day"):q.bind(this)(p,u)}}})})(G);var K=G.exports;const ee=U(K);var te=Object.defineProperty,re=Object.getOwnPropertyDescriptor,s=(e,t,r,o)=>{for(var n=o>1?void 0:o?re(t,r):t,i=e.length-1,l;i>=0;i--)(l=e[i])&&(n=(o?l(t,r,n):l(n))||n);return o&&n&&te(t,r,n),n};b.extend(J);b.extend(ee);let a=class extends Y{constructor(){super(...arguments),this.controlValues=[],this._newStepIndex=0}next(){this._updateStep(1)}previous(){this._updateStep(-1)}playAnimation(e){e?this._animationInterval=setInterval(()=>this._updateStep(1),500):clearInterval(this._animationInterval),this._isAnimationPlaying=e,this.requestUpdate()}setConfig(e){this.layer=e.layer??this.layer,this.controlProperty=e.controlProperty??this.controlProperty,this.controlValues=e.controlValues??this.controlValues,this.requestUpdate(),this._updateStep(0)}get currentStep(){return this.controlValues[this._newStepIndex]}set currentStep(e){const t=this.controlValues.findIndex(r=>r===e);t>-1?this._newStepIndex=t:console.error(`Unable to find step "${e}" in available times!`)}_updateStep(e=1){var t;this._newStepIndex=this._newStepIndex+e,this._newStepIndex>this.controlValues.length-1&&(this._newStepIndex=0),this._newStepIndex<0&&(this._newStepIndex=this.controlValues.length-1),(t=this._controlSource)==null||t.updateParams({[this.controlProperty]:this.controlValues[this._newStepIndex]}),this.requestUpdate(),this.dispatchEvent(new CustomEvent("stepchange",{detail:{currentStep:this.currentStep}}))}getFlatLayersArray(e){const t=[];t.push(...e);let r=t.filter(o=>o instanceof _);for(;r.length;){const o=[];for(let n=0,i=r.length;n<i;n++){const l=r[n].getLayers().getArray();t.push(...l),o.push(...l.filter(y=>y instanceof _))}r=o}return t}render(){const e=document.querySelector(this.for),t=e.map||e;return t.once("loadend",()=>{if(!this._originalParams){const o=this.getFlatLayersArray(t.getLayers().getArray()).find(n=>n.get("id")===this.layer);this._controlSource=o.getSource(),this._originalParams=this._controlSource.getParams()}}),d`
+`;var R={exports:{}};(function(e,t){(function(r,o){e.exports=o()})(N,function(){return function(r,o,n){o.prototype.dayOfYear=function(i){var l=Math.round((n(this).startOf("day")-n(this).startOf("year"))/864e5)+1;return i==null?l:this.add(i-l,"day")}}})})(R);var X=R.exports;const J=U(X);var G={exports:{}};(function(e,t){(function(r,o){e.exports=o()})(N,function(){var r="day";return function(o,n,i){var l=function(p){return p.add(4-p.isoWeekday(),r)},y=n.prototype;y.isoWeekYear=function(){return l(this).year()},y.isoWeek=function(p){if(!this.$utils().u(p))return this.add(7*(p-this.isoWeek()),r);var m,f,h,S,j=l(this),D=(m=this.isoWeekYear(),f=this.$u,h=(f?i.utc:i)().year(m).startOf("year"),S=4-h.isoWeekday(),h.isoWeekday()>4&&(S+=7),h.add(S,r));return j.diff(D,"week")+1},y.isoWeekday=function(p){return this.$utils().u(p)?this.day()||7:this.day(this.day()%7?p:p-7)};var q=y.startOf;y.startOf=function(p,m){var f=this.$utils(),h=!!f.u(m)||m;return f.p(p)==="isoweek"?h?this.date(this.date()-(this.isoWeekday()-1)).startOf("day"):this.date(this.date()-1-(this.isoWeekday()-1)+7).endOf("day"):q.bind(this)(p,m)}}})})(G);var K=G.exports;const ee=U(K);var te=Object.defineProperty,re=Object.getOwnPropertyDescriptor,s=(e,t,r,o)=>{for(var n=o>1?void 0:o?re(t,r):t,i=e.length-1,l;i>=0;i--)(l=e[i])&&(n=(o?l(t,r,n):l(n))||n);return o&&n&&te(t,r,n),n};b.extend(J);b.extend(ee);let a=class extends Y{constructor(){super(...arguments),this.controlValues=[],this._newStepIndex=0}next(){this._updateStep(1)}previous(){this._updateStep(-1)}playAnimation(e){e?this._animationInterval=setInterval(()=>this._updateStep(1),500):clearInterval(this._animationInterval),this._isAnimationPlaying=e,this.requestUpdate()}setConfig(e){this.layer=e.layer??this.layer,this.controlProperty=e.controlProperty??this.controlProperty,this.controlValues=e.controlValues??this.controlValues,this.requestUpdate(),this._updateStep(0)}get currentStep(){return this.controlValues[this._newStepIndex]}set currentStep(e){const t=this.controlValues.findIndex(r=>r===e);t>-1?this._newStepIndex=t:console.error(`Unable to find step "${e}" in available times!`)}_updateStep(e=1){var t;this._newStepIndex=this._newStepIndex+e,this._newStepIndex>this.controlValues.length-1&&(this._newStepIndex=0),this._newStepIndex<0&&(this._newStepIndex=this.controlValues.length-1),(t=this._controlSource)==null||t.updateParams({[this.controlProperty]:this.controlValues[this._newStepIndex]}),this.requestUpdate(),this.dispatchEvent(new CustomEvent("stepchange",{detail:{currentStep:this.currentStep}}))}getFlatLayersArray(e){const t=[];t.push(...e);let r=t.filter(o=>o instanceof _);for(;r.length;){const o=[];for(let n=0,i=r.length;n<i;n++){const l=r[n].getLayers().getArray();t.push(...l),o.push(...l.filter(y=>y instanceof _))}r=o}return t}render(){const e=document.querySelector(this.for),t=e.map||e;return t.once("loadend",()=>{if(!this._originalParams){const o=this.getFlatLayersArray(t.getLayers().getArray()).find(n=>n.get("id")===this.layer);this._controlSource=o.getSource(),this._originalParams=this._controlSource.getParams()}}),d`
       <style>
         ${F}
         ${!this.unstyled&&Q}
@@ -101,7 +101,7 @@ button.icon.next:before {
           `)}
         </svg>
       </div>
-    `}};s([c({type:Number})],x.prototype,"width",2);s([c({type:Array})],x.prototype,"steps",2);s([g()],x.prototype,"height",2);s([g()],x.prototype,"svgWidth",2);x=s([B("eox-sliderticks")],x);const ye={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},m={args:{for:"eox-map#primary",layer:"AWS_NO2-VISUALISATION",controlProperty:"TIME",controlValues:["2022-12-05","2022-12-12","2022-12-19","2022-12-26","2023-01-16","2023-01-23","2023-01-30","2023-02-06","2023-02-13","2023-02-27","2023-03-06","2023-03-13","2023-03-20","2023-03-27","2023-04-03","2023-04-10","2023-04-17","2023-04-24"],layers:[{type:"Tile",properties:{id:"AWS_NO2-VISUALISATION"},source:{type:"TileWMS",url:"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",params:{LAYERS:"AWS_NO2-VISUALISATION",TIME:"2022-12-05"}}},{type:"Tile",properties:{id:"OSM"},source:{type:"OSM"}}],center:[1e6,6e6],zoom:3},render:e=>d`
+    `}};s([c({type:Number})],x.prototype,"width",2);s([c({type:Array})],x.prototype,"steps",2);s([g()],x.prototype,"height",2);s([g()],x.prototype,"svgWidth",2);x=s([B("eox-sliderticks")],x);const de={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},u={args:{for:"eox-map#primary",layer:"AWS_NO2-VISUALISATION",controlProperty:"TIME",controlValues:["2022-12-05","2022-12-12","2022-12-19","2022-12-26","2023-01-16","2023-01-23","2023-01-30","2023-02-06","2023-02-13","2023-02-27","2023-03-06","2023-03-13","2023-03-20","2023-03-27","2023-04-03","2023-04-10","2023-04-17","2023-04-24"],layers:[{type:"Tile",properties:{id:"AWS_NO2-VISUALISATION"},source:{type:"TileWMS",url:"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",params:{LAYERS:"AWS_NO2-VISUALISATION",TIME:"2022-12-05"}}},{type:"Tile",properties:{id:"OSM"},source:{type:"OSM"}}],center:[1e6,6e6],zoom:3},render:e=>d`
     <eox-map
       id="primary"
       style="width: 400px; height: 300px;"
@@ -116,7 +116,7 @@ button.icon.next:before {
       .controlValues=${e.controlValues}
       .slider=${e.slider}
     ></eox-timecontrol>
-  `},$={args:{...m.args,for:"eox-map#slider",slider:!0},render:e=>d`
+  `},$={args:{...u.args,for:"eox-map#slider",slider:!0},render:e=>d`
     <eox-map
       id="slider"
       style="width: 400px; height: 300px;"
@@ -131,7 +131,7 @@ button.icon.next:before {
       .controlValues=${e.controlValues}
       .slider=${e.slider}
     ></eox-timecontrol>
-  `},v={args:{...m.args,for:"eox-map#programmatic-time-selection",slider:!0},render:e=>d`
+  `},v={args:{...u.args,for:"eox-map#programmatic-time-selection",slider:!0},render:e=>d`
     <eox-map
       id="programmatic-time-selection"
       style="width: 400px; height: 300px;"
@@ -155,7 +155,7 @@ button.icon.next:before {
       .controlValues=${e.controlValues}
       .slider=${e.slider}
     ></eox-timecontrol>
-  `},w={args:{...m.args,for:"eox-map#disabled-play",disablePlay:!0},render:e=>d`
+  `},w={args:{...u.args,for:"eox-map#disabled-play",disablePlay:!0},render:e=>d`
     <eox-map
       id="disabled-play"
       style="width: 400px; height: 300px;"
@@ -171,7 +171,7 @@ button.icon.next:before {
       .slider=${e.slider}
       .disablePlay=${e.disablePlay}
     ></eox-timecontrol>
-  `};var I,V,A;m.parameters={...m.parameters,docs:{...(I=m.parameters)==null?void 0:I.docs,source:{originalSource:`{
+  `};var I,V,A;u.parameters={...u.parameters,docs:{...(I=u.parameters)==null?void 0:I.docs,source:{originalSource:`{
   args: {
     for: "eox-map#primary",
     layer: "AWS_NO2-VISUALISATION",
@@ -219,7 +219,7 @@ button.icon.next:before {
       .slider=\${args.slider}
     ></eox-timecontrol>
   \`
-}`,...(A=(V=m.parameters)==null?void 0:V.docs)==null?void 0:A.source}}};var E,k,L;$.parameters={...$.parameters,docs:{...(E=$.parameters)==null?void 0:E.docs,source:{originalSource:`{
+}`,...(A=(V=u.parameters)==null?void 0:V.docs)==null?void 0:A.source}}};var E,k,L;$.parameters={...$.parameters,docs:{...(E=$.parameters)==null?void 0:E.docs,source:{originalSource:`{
   args: {
     ...Primary.args,
     for: "eox-map#slider",
@@ -299,4 +299,4 @@ button.icon.next:before {
       .disablePlay=\${args.disablePlay}
     ></eox-timecontrol>
   \`
-}`,...(T=(W=w.parameters)==null?void 0:W.docs)==null?void 0:T.source}}};const me=["Primary","Slider","ProgrammaticTimeSelection","DisabledPlayButton"];export{w as DisabledPlayButton,m as Primary,v as ProgrammaticTimeSelection,$ as Slider,me as __namedExportsOrder,ye as default};
+}`,...(T=(W=w.parameters)==null?void 0:W.docs)==null?void 0:T.source}}};const ye=["Primary","Slider","ProgrammaticTimeSelection","DisabledPlayButton"];export{w as DisabledPlayButton,u as Primary,v as ProgrammaticTimeSelection,$ as Slider,ye as __namedExportsOrder,de as default};
