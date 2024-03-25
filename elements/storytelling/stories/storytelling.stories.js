@@ -12,8 +12,10 @@ import {
   CustomElementStory,
   MarkdownMapSectionStory,
   MarkdownSectionsStory,
+  MarkdownMapTourStory,
 } from "./index";
 import { html } from "lit";
+import "../../map/main";
 
 export default {
   title: "Elements/eox-storytelling",
@@ -77,3 +79,8 @@ export const MarkdownWithSections = MarkdownSectionsStory;
  * StoryTelling with @eox-map sections
  */
 export const MarkdownMapSection = MarkdownMapSectionStory;
+
+/**
+ * StoryTelling with map tour
+ */
+export const MarkdownMapTour = MarkdownMapTourStory;

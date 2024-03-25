@@ -104,7 +104,9 @@ export class EOxStoryTelling extends LitElement {
       this.#html = renderHtmlString(
         DOMPurify.sanitize(unsafeHTML, {
           CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
-        })
+        }),
+        md.sections,
+        this
       );
       this.#config = md.config;
 
@@ -188,9 +190,7 @@ export class EOxStoryTelling extends LitElement {
             </div>
           `
         )}
-        <div class="container">
-          ${when(this.#html, () => html`${this.#html}`)}
-        </div>
+        <div>${when(this.#html, () => html`${this.#html}`)}</div>
       </div>
     `;
   }
