@@ -22,7 +22,7 @@ const loadJsonFormTest = () => {
           },
         },
       }}
-      .startVals=${{
+      .value=${{
         [testVals.key]: testVals.value,
       }}
     ></eox-jsonform>`
