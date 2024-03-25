@@ -1,9 +1,9 @@
 import { html } from "lit";
 import { TEST_SELECTORS } from "../../src/enums";
 import schemaFixture from "../fixtures/catalogSchema.json";
-import startValsFixture from "../fixtures/catalogStartVals.json";
+import valueFixture from "../fixtures/catalogValue.json";
 import collectionSchemaFixture from "../fixtures/collectionSchema.json";
-import collectionStartVals from "../fixtures/collectionStartVals.json";
+import collectionValue from "../fixtures/collectionValue.json";
 // Destructure TEST_SELECTORS object
 const { jsonForm } = TEST_SELECTORS;
 
@@ -14,21 +14,21 @@ const loadReRenderFormOnChangeTest = () => {
   cy.intercept("**/collectionSchema.json", (req) => {
     req.reply(collectionSchemaFixture);
   });
-  cy.intercept("**/catalogStartVals.json", (req) => {
-    req.reply(startValsFixture);
+  cy.intercept("**/catalogValue.json", (req) => {
+    req.reply(valueFixture);
   });
-  cy.intercept("**/collectionStartVals.json", (req) => {
-    req.reply(collectionStartVals);
+  cy.intercept("**/collectionValue.json", (req) => {
+    req.reply(collectionValue);
   });
   cy.mount(
     html`<eox-jsonform
       .schema=${"/catalogSchema.json"}
-      .value=${"/catalogStartVals.json"}
+      .value=${"/catalogValue.json"}
     ></eox-jsonform>`
   ).as(jsonForm);
   cy.get(jsonForm).then(($jsonForm) => {
     $jsonForm[0].schema = "/collectionSchema.json";
-    $jsonForm[0].value = "/collectionStartVals.json";
+    $jsonForm[0].value = "/collectionValue.json";
   });
   cy.get(jsonForm)
     .shadow()

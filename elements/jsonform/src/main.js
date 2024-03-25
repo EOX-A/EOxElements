@@ -161,7 +161,7 @@ export class EOxJSONForm extends LitElement {
   }
 
   async updated(changedProperties) {
-    // check if schema or startVals has been changed to prevent useless parsing
+    // check if schema or value has been changed to prevent useless parsing
     if (changedProperties.has("schema")) {
       this.schema = await this.parseProperty(this.schema);
     }
