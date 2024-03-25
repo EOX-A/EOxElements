@@ -21,7 +21,7 @@ The map is initialized with mode "tour".
 
 Please scroll to start the tour.
 
-## EOX Map <!--{ as="eox-map" mode="tour" prevent-scroll="true" }-->
+## EOX Map <!--{ as="eox-map" mode="tour" }-->
 
 ### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[15,48] zoom="5" }-->
 #### Tour step one
