@@ -5,4 +5,4 @@ export {
   TAGS_SELF_CLOSING,
   DEFAULT_MODE_ATTRS,
 } from "./plugin";
-export { EVENT_REQ_MODES } from "./render";
+export { EVENT_REQ_MODES, DEFAULT_SENSITIVE_TAGS } from "./render";

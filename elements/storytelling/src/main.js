@@ -15,6 +15,7 @@ import {
   markdownItDecorateImproved,
 } from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
+import { DEFAULT_SENSITIVE_TAGS } from "./enums";
 const md = markdownit({ html: true });
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
@@ -104,6 +105,7 @@ export class EOxStoryTelling extends LitElement {
       this.#html = renderHtmlString(
         DOMPurify.sanitize(unsafeHTML, {
           CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
+          ADD_TAGS: DEFAULT_SENSITIVE_TAGS,
         }),
         md.sections,
         this

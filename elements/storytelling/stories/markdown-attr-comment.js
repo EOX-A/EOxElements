@@ -11,6 +11,8 @@ export const MarkdownAttrComment = {
   Some text with red color <!--{#red-color style="color:red;"}-->
   
   ![Image](https://www.gstatic.com/prettyearth/assets/full/14617.jpg)<!-- {width=300} -->
+  
+  ## Natural Disasters <!--{as="iframe" src="https://ourworldindata.org/grapher/deaths-and-missing-persons-due-to-natural-disasters" style="width: 100%; height: 600px; border: none;"}-->
 `,
   },
   render: (args) => html`
