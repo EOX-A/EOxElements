@@ -1,5 +1,4 @@
 import { html } from "lit";
-import "./src/main";
 import basicSchema from "./stories/public/basicSchema.json";
 import catalogSchema from "./stories/public/catalogSchema.json";
 import collectionSchema from "./stories/public/collectionSchema.json";

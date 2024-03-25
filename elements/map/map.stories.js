@@ -1,6 +1,4 @@
 import { html } from "lit";
-import "./src/plugins/advancedLayersAndSources/index";
-import "./main";
 
 export default {
   title: "Elements/eox-map",

@@ -3,7 +3,6 @@
  * It renders storytelling markdown based on the content from the slot.
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const MarkdownSlot = {
   args: {

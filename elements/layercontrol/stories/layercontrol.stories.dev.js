@@ -1,6 +1,3 @@
-import "@eox/map/dist/eox-map-advanced-layers-and-sources.js";
-import "@eox/map";
-import "../src/main";
 import { LayerListStory, SingleLayerStory, TabsStory } from ".";
 
 export default {

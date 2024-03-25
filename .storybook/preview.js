@@ -2,6 +2,18 @@ import { setCustomElementsManifest } from "@storybook/web-components";
 import customElements from "../custom-elements.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
+import "../elements/chart/src/main.ts";
+import "../elements/drawtools/src/main.js";
+import "../elements/itemfilter/src/main.ts";
+import "../elements/jsonform/src/main.js";
+import "../elements/layercontrol/src/main.js";
+import "../elements/layout/src/main.js";
+import "../elements/map/main.ts";
+import "../elements/map/src/plugins/advancedLayersAndSources/index.ts";
+import "../elements/stacinfo/src/main.ts";
+import "../elements/storytelling/src/main.js";
+import "../elements/timecontrol/src/main.ts";
+
 /**
  * A custom wrapper for the default setCustomElementsManifest function.
  * Allows to set `privateFileds` to `false` in order to filter out

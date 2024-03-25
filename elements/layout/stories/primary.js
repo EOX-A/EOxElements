@@ -1,5 +1,4 @@
 import { html } from "lit";
-import "../src/main";
 import { STORIES_LAYOUT_STYLE } from "../src/enums";
 
 export const Primary = {
