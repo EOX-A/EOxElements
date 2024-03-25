@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.1...layercontrol-v0.17.2) (2024-03-25)
+
+
+### Bug Fixes
+
+* Replace startVals with value in jsonform usage ([#776](https://github.com/EOX-A/EOxElements/issues/776)) ([66e9b66](https://github.com/EOX-A/EOxElements/commit/66e9b6679d8a4f9e38b89aa5a985b50b0c91c989))
+
 ## [0.17.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.0...layercontrol-v0.17.1) (2024-03-11)
 
 
