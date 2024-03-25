@@ -231,11 +231,11 @@ export class EOxMap extends LitElement {
 
   set config(config: ConfigObject) {
     this._config = config;
-    this.zoom = config?.view?.zoom;
+    this.zoom = config?.view?.zoom || 0;
     this.projection = config?.view?.projection || "EPSG:3857";
-    this.center = config.view?.center; // set center after projection, order matters
-    this.layers = config?.layers;
-    this.controls = config?.controls;
+    this.center = config.view?.center || [0, 0]; // set center after projection, order matters
+    this.layers = config?.layers || [];
+    this.controls = config?.controls || {};
     if (this.preventScroll === undefined) {
       this.preventScroll = config?.preventScroll;
     }
