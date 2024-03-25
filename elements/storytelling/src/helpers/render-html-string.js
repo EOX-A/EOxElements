@@ -1,5 +1,7 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
 
+let observers = [];
+
 /**
  * Converts an HTML string into DOM nodes and processes each node.
  *
@@ -13,33 +15,43 @@ export function renderHtmlString(htmlString, sections, that) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
 
+  // Disconnecting old observers to create new observer
+  observers.forEach((observer) => observer?.disconnect());
+  observers = [];
+
+  // Creating new scroll observer
   Object.keys(sections).forEach((sectionId) => {
     const section = sections[sectionId];
     if (EVENT_REQ_MODES.includes(section.mode) && section.steps) {
       const parent = that.shadowRoot || that;
       const elementSelector = `${section.as}#${section.id}`;
-      let currentSection = null;
 
-      // Handle event function
-      const handleScroll = () => {
-        currentSection = updateEleBasedOnSectionChange(
-          currentSection,
-          getCurrentSection(section, sectionId, parent),
-          section,
-          elementSelector,
-          parent
-        );
-      };
+      // Creating new scroll observer and assign new value for attribute of element
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const intersecting = entry.isIntersecting;
+          const index = Number(entry.target.getAttribute("key"));
 
-      // Create scroll handle with a wait time
+          if (intersecting)
+            assignNewAttrValue(section, index, elementSelector, parent);
+        });
+      });
+
+      // Create scroll observer with a small delay
       setTimeout(() => {
         const contentParent = parent.querySelector(`#${sectionId}`);
         if (!contentParent) return;
 
-        contentParent.removeEventListener("wheel", handleScroll);
-        const createScrollEvt = () =>
-          contentParent.addEventListener("wheel", handleScroll);
-        setTimeout(createScrollEvt, 200);
+        const contentChildren = parent.querySelectorAll(
+          `#${sectionId} section-step`
+        );
+
+        contentChildren.forEach((dom, key) => {
+          dom.setAttribute("key", `${key}`);
+          observer.observe(dom);
+        });
+
+        observers.push(observer);
 
         assignNewAttrValue(section, 0, elementSelector, parent);
       }, 100);
@@ -48,71 +60,6 @@ export function renderHtmlString(htmlString, sections, that) {
 
   // Process child nodes of the document body
   return Array.from(doc.body.childNodes).map(processNode);
-}
-
-/**
- * get current section index and dom based on it's visibility
- *
- * @param {Object} section - section meta
- * @param {String} sectionId - section id based on scroll generation
- * @param {import("lit").LitElement} parent - The LitElement instance.
- * @returns {{ index: Number, dom: Node }} new current section based on scroll
- */
-function getCurrentSection(section, sectionId, parent) {
-  const contentChildren = parent.querySelectorAll(`#${sectionId} section-step`);
-
-  const scrollY = window.scrollY;
-  let newCurrentSection = null;
-
-  contentChildren.forEach((content, key) => {
-    const rect = content.getBoundingClientRect();
-    const sectionTop = rect.top + window.scrollY;
-    const sectionBottom = sectionTop + rect.height;
-
-    const threshold =
-      sectionTop + rect.height * (section.mode === "tour" ? -7 : -0.4);
-
-    if (scrollY >= threshold && scrollY < sectionBottom) {
-      newCurrentSection = {
-        index: key,
-        dom: content,
-      };
-    }
-  });
-
-  return newCurrentSection;
-}
-
-/**
- * Update elements attribute value based on section visibility change
- *
- * @param {{ index: Number, dom: Node }} currentSection - current section which was updated earlier
- * @param {{ index: Number, dom: Node }} newCurrentSection - new current section changed based on scroll
- * @param {Object} section - section meta
- * @param {String} elementSelector - sector string for element
- * @param {import("lit").LitElement} parent - The LitElement instance.
- * @returns {{ index: Number, dom: Node }} new current section based on scroll
- */
-function updateEleBasedOnSectionChange(
-  currentSection,
-  newCurrentSection,
-  section,
-  elementSelector,
-  parent
-) {
-  if (newCurrentSection?.index !== currentSection?.index || !currentSection) {
-    currentSection = newCurrentSection;
-
-    if (currentSection)
-      assignNewAttrValue(
-        section,
-        currentSection.index,
-        elementSelector,
-        parent
-      );
-  }
-
-  return currentSection;
 }
 
 /**

@@ -151,7 +151,7 @@ const styleEOX = `
     border-radius: 0.5rem;
     min-height: 8vh;
     margin: 1rem;
-    margin-bottom: calc(80%);
+    margin-bottom: calc(120vh);
     display: block;
     z-index: 1;
     max-width: 40%;
