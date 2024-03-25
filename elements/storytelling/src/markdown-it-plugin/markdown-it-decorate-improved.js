@@ -1,4 +1,9 @@
-import { TAGS_EXPR, TAGS_OPENING, TAGS_SELF_CLOSING } from "../enums";
+import {
+  DEFAULT_MODE_ATTRS,
+  TAGS_EXPR,
+  TAGS_OPENING,
+  TAGS_SELF_CLOSING,
+} from "../enums";
 import slugify from "@sindresorhus/slugify";
 import { convertAttributeValueBasedOnItsType } from "../helpers/render-html-string.js";
 
@@ -478,6 +483,15 @@ function applyToToken(token, attrs = "") {
       break;
     }
   }
+
+  const asAttr = getAttr(token.attrs, "as");
+  const modeAttr = getAttr(token.attrs, "mode");
+
+  // Adding default attribute based on mode and as
+  DEFAULT_MODE_ATTRS[asAttr]?.[modeAttr]?.forEach((attr) => {
+    addAttr(token, attr[0], attr[1]);
+    attrs = attrs.slice(attr[0].length);
+  });
 
   return true;
 }
