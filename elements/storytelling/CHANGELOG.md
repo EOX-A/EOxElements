@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.3.0...storytelling-v0.3.1) (2024-03-25)
+
+
+### Bug Fixes
+
+* Add default sensitive tag like iframe ([#773](https://github.com/EOX-A/EOxElements/issues/773)) ([b6f867e](https://github.com/EOX-A/EOxElements/commit/b6f867edacf2581c11ce717461c541a967e2d294))
+
 ## [0.3.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.2.0...storytelling-v0.3.0) (2024-03-25)
 
 
