@@ -20,7 +20,7 @@ It is a long established fact that a reader will be distracted by the readable c
   },
   render: (args) => html`
     <eox-storytelling
-      id="markdown-map-sections"
+      id="markdown-editor"
       show-editor
       markdown=${args.markdown}
     ></eox-storytelling>
