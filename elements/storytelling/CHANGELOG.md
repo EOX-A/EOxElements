@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.3.1...storytelling-v0.3.2) (2024-03-26)
+
+
+### Features
+
+* StoryTelling with Editor Mode ([#788](https://github.com/EOX-A/EOxElements/issues/788)) ([5ed4599](https://github.com/EOX-A/EOxElements/commit/5ed45995624c11dc403bde3d641ca1b58d6c0015))
+
 ## [0.3.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.3.0...storytelling-v0.3.1) (2024-03-25)
 
 
