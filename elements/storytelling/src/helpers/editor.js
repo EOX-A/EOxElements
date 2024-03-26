@@ -7,17 +7,27 @@ buildWorkerDefinition(
   false
 );
 
-// Function to disable text selection
+/**
+ * Function to disable text selection
+ */
 function disableTextSelection() {
   document.body.style.userSelect = "none";
 }
 
-// Function to enable text selection
+/**
+ * Function to enable text selection
+ */
 function enableTextSelection() {
   document.body.style.userSelect = "";
 }
 
-// Function to handle mouse down on the editor container
+/**
+ * Function to handle mouse down on the editor container
+ *
+ * @param {{target: Object, clientX: Number, clientY: Number}} e - Event for handle mouse move.
+ * @param {Object} editorContainer - editor container dom
+ * @param {Element} StoryTellingEditor - Dom element
+ */
 function handleEditorContainerMouseDown(
   e,
   editorContainer,
@@ -31,7 +41,13 @@ function handleEditorContainerMouseDown(
   }
 }
 
-// Function to handle mouse move for dragging and resizing
+/**
+ * Function to handle mouse move for dragging and resizing
+ *
+ * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
+ * @param {Object} editorContainer - editor container dom
+ * @param {Element} StoryTellingEditor - Dom element
+ */
 function handleMouseMove(e, editorContainer, StoryTellingEditor) {
   if (StoryTellingEditor.dragging) {
     let dx = e.clientX - StoryTellingEditor.lastX;
@@ -61,14 +77,23 @@ function handleMouseMove(e, editorContainer, StoryTellingEditor) {
   }
 }
 
-// Function to handle mouse up and enable text selection
+/**
+ * Function to handle mouse up and enable text selection
+ *
+ * @param {Element} StoryTellingEditor - Dom element
+ */
 function handleMouseUp(StoryTellingEditor) {
   enableTextSelection();
   StoryTellingEditor.dragging = false;
   StoryTellingEditor.resizing = false;
 }
 
-// Function to handle resize handle mouse down
+/**
+ * Function to handle resize handle mouse down
+ *
+ * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
+ * @param {Element} StoryTellingEditor - Dom element
+ */
 export function handleResizeHandleMouseDown(e, StoryTellingEditor) {
   e.stopPropagation();
   disableTextSelection();
@@ -77,22 +102,33 @@ export function handleResizeHandleMouseDown(e, StoryTellingEditor) {
   StoryTellingEditor.lastY = e.clientY;
 }
 
-// Function to create Monaco editor
+/**
+ * Function to create Monaco editor
+ *
+ * @param {Element} StoryTellingEditor - Dom element
+ */
 function createMonacoEditor(StoryTellingEditor) {
   return monaco.editor.create(StoryTellingEditor.querySelector("#editor"), {
     language: "markdown",
     theme: "vs",
     automaticLayout: true,
-    lineNumbersMinChars: 4,
+    lineNumbersMinChars: 2,
     mouseWheelZoom: true,
     minimap: { enabled: false },
     wordWrap: true,
-    wrappingIndent: null,
+    wrappingIndent: "200px",
     value: StoryTellingEditor.markdown,
-    fontSize: "16px",
+    fontSize: "14px",
   });
 }
 
+/**
+ * Function to initialise monaco editor
+ *
+ * @param {Object} editorContainer - editor container dom
+ * @param {Element} resizeHandle - Dom element
+ * @param {Element} StoryTellingEditor - Dom element
+ */
 export default function initEditor(
   editorContainer,
   resizeHandle,
@@ -108,7 +144,9 @@ export default function initEditor(
 
   window.addEventListener("mouseup", () => handleMouseUp(StoryTellingEditor));
 
-  // TODO: Need to look into bug why not working as expected.
+  /*
+   * TODO: Need to look into bug why not working as expected.
+   */
   // resizeHandle.addEventListener("mousedown", (e) =>
   //   handleResizeHandleMouseDown(e, StoryTellingEditor),
   // );

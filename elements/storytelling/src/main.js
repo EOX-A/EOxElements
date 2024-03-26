@@ -202,13 +202,18 @@ export class EOxStoryTelling extends LitElement {
           `
         )}
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
-        <story-telling-editor
-          .markdown=${this.markdown}
-          .isNavigation=${Boolean(this.showNav)}
-          @change=${(e) => {
-            if (e.detail) this.markdown = e.detail.markdown;
-          }}
-        ></story-telling-editor>
+        ${when(
+          this.showEditor,
+          () => html`
+            <story-telling-editor
+              .markdown=${this.markdown}
+              .isNavigation=${Boolean(this.showNav)}
+              @change=${(e) => {
+                if (e.detail) this.markdown = e.detail.markdown;
+              }}
+            ></story-telling-editor>
+          `
+        )}
       </div>
     `;
   }
