@@ -69,7 +69,7 @@ function handleMouseUp(StoryTellingEditor) {
 }
 
 // Function to handle resize handle mouse down
-function handleResizeHandleMouseDown(e, StoryTellingEditor) {
+export function handleResizeHandleMouseDown(e, StoryTellingEditor) {
   e.stopPropagation();
   disableTextSelection();
   StoryTellingEditor.resizing = true;
