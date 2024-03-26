@@ -174,6 +174,7 @@ const styleEOX = `
       background: #f2f2f2;
       cursor: move;
       box-shadow: 0px 0px 3px 2px #80808026;
+      box-sizing: border-box;
     }
     .resize-handle {
       display: none;
