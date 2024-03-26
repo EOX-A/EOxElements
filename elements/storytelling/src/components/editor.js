@@ -1,5 +1,7 @@
 import { LitElement, html } from "lit";
-import initEditor from "../helpers/editor";
+import "../../../jsonform/src/main.js";
+import "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js";
+// TODO import helpers for moving editor etc.
 
 // Define LitElement for the editor
 class StoryTellingEditor extends LitElement {
@@ -69,51 +71,13 @@ class StoryTellingEditor extends LitElement {
   /**
    * Lifecycle method called after the first update
    */
-  async firstUpdated() {
+  firstUpdated() {
     // Get editor container and resize handle elements
     const editorContainer = this.querySelector(".editor-wrapper");
     const resizeHandle = this.querySelector(".resize-handle");
 
-    this.editor = await initEditor(editorContainer, resizeHandle, this);
+    this.editor = this.renderRoot.querySelector("eox-jsonform");
     this.#editorUpdate = true;
-
-    // Event listener for editor content change
-    this.editor.onDidChangeModelContent(() => {
-      this.#editorUpdate = true;
-      if (this.#debounceSetTimeoutEvent)
-        clearTimeout(this.#debounceSetTimeoutEvent);
-      this.querySelector(".editor-saver").style.display = "inline-block";
-
-      this.#debounceSetTimeoutEvent = setTimeout(() => {
-        this.dispatchEvent(
-          new CustomEvent("change", {
-            detail: { markdown: this.getCurrentValue() },
-            bubbles: true,
-            composed: true,
-          })
-        );
-
-        this.querySelector(".editor-saver").style.display = "none";
-      }, 2500);
-    });
-  }
-
-  /**
-   * Method to get the current value of the editor
-   */
-  getCurrentValue() {
-    if (this.editor) return this.editor.getValue();
-    else return "";
-  }
-
-  /**
-   * Lifecycle method called when the element is removed from the DOM
-   */
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    if (this.editor) {
-      this.editor.dispose();
-    }
   }
 
   /**
@@ -137,7 +101,7 @@ class StoryTellingEditor extends LitElement {
    * Lifecycle triggered after a DOM or state update
    */
   updateEditorContent(markdown) {
-    if (this.editor && markdown) this.editor.setValue(markdown);
+    if (this.editor && markdown) this.editor.value = { markdown };
   }
 
   /**
@@ -161,10 +125,55 @@ class StoryTellingEditor extends LitElement {
 
     return html`
       <style>
-        @import url("https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css");
+        @import url("https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css");
       </style>
       <div class="editor-wrapper ${editorView} ${navHeight}">
-        <div id="editor"></div>
+        <eox-jsonform
+          no-shadow
+          .schema=${{
+            title: "Story",
+            properties: {
+              Story: {
+                type: "string",
+                format: "markdown",
+                options: {
+                  simplemde: {
+                    toolbar: [
+                      "bold",
+                      "italic",
+                      "heading",
+                      "|",
+                      "link",
+                      "quote",
+                      "|",
+                      // "preview",
+                      // "fullscreen",
+                      "guide",
+                      {
+                        name: "custom",
+                        action: function customFunction(editor) {
+                          // Add your own code
+                          alert("hello world");
+                        },
+                        className: "fa fa-star",
+                        title: "Custom Button",
+                      },
+                    ],
+                    spellChecker: false,
+                  },
+                },
+              },
+            },
+          }}
+          .value=${{
+            Story: this.markdown,
+          }}
+          @change=${(evt) => {
+            this.#editorUpdate = true;
+            // the change event also bubbles up to the parent, so evt.detail can be read by it
+          }}
+          style="display: block; height: 100%; overflow-y: auto"
+        ></eox-jsonform>
         <div class="resize-handle"></div>
         <span class="editor-saver"></span>
       </div>

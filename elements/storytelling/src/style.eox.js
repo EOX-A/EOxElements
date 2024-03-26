@@ -162,8 +162,6 @@ const styleEOX = `
     }
   }
   .editor-wrapper {
-      padding: 20px;
-      padding-right: 22px;
       z-index: 9999;
       width: 35%;
       height: calc(100vh - 80px);

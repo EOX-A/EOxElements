@@ -209,7 +209,8 @@ export class EOxStoryTelling extends LitElement {
               .markdown=${this.markdown}
               .isNavigation=${Boolean(this.showNav)}
               @change=${(e) => {
-                if (e.detail) this.markdown = e.detail.markdown;
+                // bubbled up by eox-jsonform
+                if (e.detail) this.markdown = e.detail.Story;
               }}
             ></story-telling-editor>
           `
