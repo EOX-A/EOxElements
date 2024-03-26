@@ -1,5 +1,7 @@
-import * as monaco from "monaco-editor/esm/vs/editor/editor.main";
 import { buildWorkerDefinition } from "monaco-editor-workers";
+const monaco = import.meta?.url.includes("__cypress")
+  ? ""
+  : await import("monaco-editor");
 
 buildWorkerDefinition(
   "../../../../node_modules/monaco-editor-workers/dist/workers",
