@@ -15,6 +15,7 @@ import {
   markdownItDecorateImproved,
 } from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
+import "./components/editor";
 import { DEFAULT_SENSITIVE_TAGS } from "./enums";
 const md = markdownit({ html: true });
 
@@ -28,6 +29,7 @@ export class EOxStoryTelling extends LitElement {
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
+      showEditor: { attribute: "show-editor", type: Boolean },
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
     };
@@ -72,6 +74,13 @@ export class EOxStoryTelling extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * Enable or disable editor
+     *
+     * @type {Boolean}
+     */
+    this.showEditor = false;
 
     /**
      * Enable or disable navigation
@@ -193,6 +202,13 @@ export class EOxStoryTelling extends LitElement {
           `
         )}
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
+        <story-telling-editor
+          .markdown=${this.markdown}
+          .isNavigation=${Boolean(this.showNav)}
+          @change=${(e) => {
+            if (e.detail) this.markdown = e.detail.markdown;
+          }}
+        ></story-telling-editor>
       </div>
     `;
   }

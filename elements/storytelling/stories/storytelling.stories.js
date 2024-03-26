@@ -13,6 +13,7 @@ import {
   MarkdownMapSectionStory,
   MarkdownSectionsStory,
   MarkdownMapTourStory,
+  MarkdownEditorStory,
 } from "./index";
 import { html } from "lit";
 import "../../map/main";
@@ -84,3 +85,8 @@ export const MarkdownMapSection = MarkdownMapSectionStory;
  * StoryTelling with map tour
  */
 export const MarkdownMapTour = MarkdownMapTourStory;
+
+/**
+ * StoryTelling with editor
+ */
+export const MarkdownWithEditor = MarkdownEditorStory;
