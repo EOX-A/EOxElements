@@ -69,12 +69,12 @@ class StoryTellingEditor extends LitElement {
   /**
    * Lifecycle method called after the first update
    */
-  firstUpdated() {
+  async firstUpdated() {
     // Get editor container and resize handle elements
     const editorContainer = this.querySelector(".editor-wrapper");
     const resizeHandle = this.querySelector(".resize-handle");
 
-    this.editor = initEditor(editorContainer, resizeHandle, this);
+    this.editor = await initEditor(editorContainer, resizeHandle, this);
     this.#editorUpdate = true;
 
     // Event listener for editor content change
@@ -160,6 +160,9 @@ class StoryTellingEditor extends LitElement {
     const navHeight = this.isNavigation ? "partial-height" : "";
 
     return html`
+      <style>
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css");
+      </style>
       <div class="editor-wrapper ${editorView} ${navHeight}">
         <div id="editor"></div>
         <div class="resize-handle"></div>

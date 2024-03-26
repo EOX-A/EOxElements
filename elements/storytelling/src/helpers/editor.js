@@ -1,7 +1,4 @@
 import { buildWorkerDefinition } from "monaco-editor-workers";
-const monaco = import.meta?.url.includes("__cypress")
-  ? ""
-  : await import("monaco-editor");
 
 buildWorkerDefinition(
   "../../../../node_modules/monaco-editor-workers/dist/workers",
@@ -109,7 +106,8 @@ export function handleResizeHandleMouseDown(e, StoryTellingEditor) {
  *
  * @param {Element} StoryTellingEditor - Dom element
  */
-function createMonacoEditor(StoryTellingEditor) {
+async function createMonacoEditor(StoryTellingEditor) {
+  const monaco = await import("monaco-editor/esm/vs/editor/editor.main");
   return monaco.editor.create(StoryTellingEditor.querySelector("#editor"), {
     language: "markdown",
     theme: "vs",
@@ -131,7 +129,7 @@ function createMonacoEditor(StoryTellingEditor) {
  * @param {Element} resizeHandle - Dom element
  * @param {Element} StoryTellingEditor - Dom element
  */
-export default function initEditor(
+export default async function initEditor(
   editorContainer,
   resizeHandle,
   StoryTellingEditor
@@ -153,5 +151,5 @@ export default function initEditor(
   //   handleResizeHandleMouseDown(e, StoryTellingEditor),
   // );
 
-  return createMonacoEditor(StoryTellingEditor);
+  return await createMonacoEditor(StoryTellingEditor);
 }
