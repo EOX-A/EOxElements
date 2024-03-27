@@ -131,9 +131,8 @@ export class EOxStoryTelling extends LitElement {
         const editorDOM = parent.querySelector("eox-storytelling-editor");
         const jsonFormDOM = editorDOM.querySelector("eox-jsonform");
 
-        if (this.markdown !== jsonFormDOM?.value.Story) {
+        if (this.markdown !== jsonFormDOM?.value.Story)
           editorDOM.markdown = this.markdown;
-        }
       }
 
       this.requestUpdate();
