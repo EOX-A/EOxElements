@@ -1,31 +1,22 @@
 import { LitElement, html } from "lit";
 import "../../../jsonform/src/main.js";
 import "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js";
-// TODO import helpers for moving editor etc.
+import { initEditorEvents } from "../helpers";
+import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
 class StoryTellingEditor extends LitElement {
   // Define static properties for LitElement
   static properties = {
-    errors: { attribute: false, type: Array },
     markdown: { attribute: "markdown", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
-
-  /**
-   * @type {Boolean} - Debounce set timeout event
-   */
-  #debounceSetTimeoutEvent = false;
 
   /**
    * @type {Boolean} - Temporary enable/disable editor state for switch button
    */
   #temporaryEnableEditor = true;
 
-  /**
-   * @type {Boolean} - Edit or update state
-   */
-  #editorUpdate = false;
   constructor() {
     super();
 
@@ -76,8 +67,10 @@ class StoryTellingEditor extends LitElement {
     const editorContainer = this.querySelector(".editor-wrapper");
     const resizeHandle = this.querySelector(".resize-handle");
 
-    this.editor = this.renderRoot.querySelector("eox-jsonform");
-    this.#editorUpdate = true;
+    this.editor = this.renderRoot.querySelector(
+      "eox-jsonform#storytelling-editor"
+    );
+    initEditorEvents(editorContainer, resizeHandle, this);
   }
 
   /**
@@ -85,23 +78,6 @@ class StoryTellingEditor extends LitElement {
    */
   createRenderRoot() {
     return this;
-  }
-
-  /**
-   * Lifecycle triggered after a DOM or state update
-   */
-  updated(changedProperties) {
-    if (changedProperties.has("markdown") && !this.#editorUpdate)
-      this.updateEditorContent(this.markdown);
-
-    this.#editorUpdate = false;
-  }
-
-  /**
-   * Lifecycle triggered after a DOM or state update
-   */
-  updateEditorContent(markdown) {
-    if (this.editor && markdown) this.editor.value = { markdown };
   }
 
   /**
@@ -124,55 +100,12 @@ class StoryTellingEditor extends LitElement {
     const navHeight = this.isNavigation ? "partial-height" : "";
 
     return html`
-      <style>
-        @import url("https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css");
-      </style>
       <div class="editor-wrapper ${editorView} ${navHeight}">
         <eox-jsonform
+          id="storytelling-editor"
           no-shadow
-          .schema=${{
-            title: "Story",
-            properties: {
-              Story: {
-                type: "string",
-                format: "markdown",
-                options: {
-                  simplemde: {
-                    toolbar: [
-                      "bold",
-                      "italic",
-                      "heading",
-                      "|",
-                      "link",
-                      "quote",
-                      "|",
-                      // "preview",
-                      // "fullscreen",
-                      "guide",
-                      {
-                        name: "custom",
-                        action: function customFunction(editor) {
-                          // Add your own code
-                          alert("hello world");
-                        },
-                        className: "fa fa-star",
-                        title: "Custom Button",
-                      },
-                    ],
-                    spellChecker: false,
-                  },
-                },
-              },
-            },
-          }}
-          .value=${{
-            Story: this.markdown,
-          }}
-          @change=${(evt) => {
-            this.#editorUpdate = true;
-            // the change event also bubbles up to the parent, so evt.detail can be read by it
-          }}
-          style="display: block; height: 100%; overflow-y: auto"
+          .schema=${EDITOR_SCHEMA}
+          .value=${{ Story: this.markdown }}
         ></eox-jsonform>
         <div class="resize-handle"></div>
         <span class="editor-saver"></span>
@@ -190,9 +123,55 @@ class StoryTellingEditor extends LitElement {
           <i class="icon editor-icon"></i>
         </label>
       </div>
+      <style>
+        @import url("https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css");
+        eox-jsonform#storytelling-editor {
+          display: block;
+          height: 100%;
+          overflow-y: auto;
+          cursor: default;
+        }
+        .editor-wrapper {
+          padding: 1rem;
+        }
+        .editor-statusbar {
+          position: sticky;
+          bottom: 0;
+          z-index: 1;
+          background: #f2f2f2;
+          border-top: 1px solid #bbbbbb63;
+        }
+        .editor-toolbar {
+          position: sticky;
+          top: 0;
+          z-index: 3;
+          opacity: 1;
+          background: #f2f2f2;
+          border: 1px solid #bbbbbb63;
+        }
+        .editor-toolbar:hover {
+          opacity: 1;
+        }
+        form[data-theme="html"] .je-indented-panel {
+          padding: 0;
+          margin: 0;
+          border: none;
+        }
+        .CodeMirror {
+          border: none;
+          height: 100vh;
+        }
+        .je-form-input-label,
+        .je-object__controls {
+          display: none !important;
+        }
+        eox-jsonform {
+          height: inherit;
+        }
+      </style>
     `;
   }
 }
 
 // Define custom element "story-telling-editor"
-customElements.define("story-telling-editor", StoryTellingEditor);
+customElements.define("eox-storytelling-editor", StoryTellingEditor);
