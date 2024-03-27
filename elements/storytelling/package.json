@@ -32,8 +32,6 @@
     "isomorphic-dompurify": "^2.4.0",
     "js-yaml": "^4.1.0",
     "lit": "^3.0.2",
-    "markdown-it": "^14.0.0",
-    "monaco-editor": "^0.47.0",
-    "monaco-editor-workers": "^0.45.0"
+    "markdown-it": "^14.0.0"
   }
 }
