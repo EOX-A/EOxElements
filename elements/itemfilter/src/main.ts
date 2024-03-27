@@ -559,38 +559,41 @@ export class EOxItemFilter extends TemplateElement {
                                   aggregationProperty
                                 ).length
                             ),
-                            (aggregationProperty) => html` ${when(
-                              this.aggregateResults(
-                                this.results,
-                                aggregationProperty
-                              ).length > 1,
-                              () => html`
-                                <details
-                                  class="details-results"
-                                  @toggle=${this.toggleAccordion}
-                                  ?open=${this._config.expandResults ||
-                                  (nothing as null)}
-                                >
-                                  <summary>
-                                    <span class="title">
-                                      ${aggregationProperty}
-                                      <span class="count"
-                                        >${this.aggregateResults(
-                                          this.results,
-                                          aggregationProperty
-                                        ).length}</span
-                                      >
-                                    </span>
-                                  </summary>
-                                  <div style="margin-left: 15px">
-                                    ${this.createItemList(aggregationProperty)}
-                                  </div>
-                                </details>
-                              `,
-                              () => html` <div style="margin-left: -8px">
-                                ${this.createItemList(aggregationProperty)}
-                              </div>`
-                            )}`
+                            (aggregationProperty) =>
+                              html` ${when(
+                                this.aggregateResults(
+                                  this.results,
+                                  aggregationProperty
+                                ).length > 1,
+                                () => html`
+                                  <details
+                                    class="details-results"
+                                    @toggle=${this.toggleAccordion}
+                                    ?open=${this._config.expandResults ||
+                                    (nothing as null)}
+                                  >
+                                    <summary>
+                                      <span class="title">
+                                        ${aggregationProperty}
+                                        <span class="count"
+                                          >${this.aggregateResults(
+                                            this.results,
+                                            aggregationProperty
+                                          ).length}</span
+                                        >
+                                      </span>
+                                    </summary>
+                                    <div style="margin-left: 15px">
+                                      ${this.createItemList(
+                                        aggregationProperty
+                                      )}
+                                    </div>
+                                  </details>
+                                `,
+                                () => html` <div style="margin-left: -8px">
+                                  ${this.createItemList(aggregationProperty)}
+                                </div>`
+                              )}`
                           )
                         : map(
                             this.results,
