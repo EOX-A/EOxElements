@@ -321,63 +321,49 @@ export class EOxItemFilter extends TemplateElement {
 
   createItemList(aggregationProperty: string) {
     return html`
-    <ul>
-      ${repeat(
-        this.aggregateResults(
-          this.results,
-          aggregationProperty
-        ),
-        (item: Item) => item.id,
-        (item: Item) => html`
-          <li
-            class=${this.selectedResult?.[
-              this._config.titleProperty
-            ] === item[this._config.titleProperty]
-              ? "highlighted"
-              : (nothing as null)}
-          >
-            <label>
-              <input
-                data-cy="result-radio"
-                type="radio"
-                class="result-radio"
-                name="result"
-                id="${<string>item.id}"
-                ?checked=${this.selectedResult?.[
-                  this._config.titleProperty
-                ] ===
-                  item[this._config.titleProperty] ||
-                (nothing as null)}
-                @click=${() => {
-                  this.selectedResult = item;
-                  this._config.onSelect(item);
-                }}
-              />
-              ${when(
-                this.hasTemplate("result"),
-                () =>
-                  this.renderTemplate(
-                    "result",
-                    item,
-                    `result-${item.id}`
-                  ),
-                () => html`
-                  <span class="title"
-                    >${unsafeHTML(
-                      <string>(
-                        item[
-                          this._config.titleProperty
-                        ]
-                      )
-                    )}</span
-                  >
-                `
-              )}
-            </label>
-          </li>
-        `
-      )}
-    </ul>
+      <ul>
+        ${repeat(
+          this.aggregateResults(this.results, aggregationProperty),
+          (item: Item) => item.id,
+          (item: Item) => html`
+            <li
+              class=${this.selectedResult?.[this._config.titleProperty] ===
+              item[this._config.titleProperty]
+                ? "highlighted"
+                : (nothing as null)}
+            >
+              <label>
+                <input
+                  data-cy="result-radio"
+                  type="radio"
+                  class="result-radio"
+                  name="result"
+                  id="${<string>item.id}"
+                  ?checked=${this.selectedResult?.[
+                    this._config.titleProperty
+                  ] === item[this._config.titleProperty] || (nothing as null)}
+                  @click=${() => {
+                    this.selectedResult = item;
+                    this._config.onSelect(item);
+                  }}
+                />
+                ${when(
+                  this.hasTemplate("result"),
+                  () =>
+                    this.renderTemplate("result", item, `result-${item.id}`),
+                  () => html`
+                    <span class="title"
+                      >${unsafeHTML(
+                        <string>item[this._config.titleProperty]
+                      )}</span
+                    >
+                  `
+                )}
+              </label>
+            </li>
+          `
+        )}
+      </ul>
     `;
   }
 
@@ -573,35 +559,37 @@ export class EOxItemFilter extends TemplateElement {
                                   aggregationProperty
                                 ).length
                             ),
-                            (aggregationProperty) => html`
-                            ${when(this.aggregateResults(this.results,aggregationProperty).length > 1,
+                            (aggregationProperty) => html` ${when(
+                              this.aggregateResults(
+                                this.results,
+                                aggregationProperty
+                              ).length > 1,
                               () => html`
-                              <details
-                              class="details-results"
-                              @toggle=${this.toggleAccordion}
-                              ?open=${this._config.expandResults ||
-                              (nothing as null)}
-                            >
-                              <summary>
-                                <span class="title">
-                                  ${aggregationProperty}
-                                  <span class="count"
-                                    >${this.aggregateResults(
-                                      this.results,
-                                      aggregationProperty
-                                    ).length}</span
-                                  >
-                                </span>
-                              </summary>
-                              <div style="margin-left: 15px">
-                              ${this.createItemList(aggregationProperty)}
-                              </div>
-                              </details>
-                            `,
-                            () => html`
-                            <div style="margin-left: -8px">
-                            ${this.createItemList(aggregationProperty)}
-                            </div>`
+                                <details
+                                  class="details-results"
+                                  @toggle=${this.toggleAccordion}
+                                  ?open=${this._config.expandResults ||
+                                  (nothing as null)}
+                                >
+                                  <summary>
+                                    <span class="title">
+                                      ${aggregationProperty}
+                                      <span class="count"
+                                        >${this.aggregateResults(
+                                          this.results,
+                                          aggregationProperty
+                                        ).length}</span
+                                      >
+                                    </span>
+                                  </summary>
+                                  <div style="margin-left: 15px">
+                                    ${this.createItemList(aggregationProperty)}
+                                  </div>
+                                </details>
+                              `,
+                              () => html` <div style="margin-left: -8px">
+                                ${this.createItemList(aggregationProperty)}
+                              </div>`
                             )}`
                           )
                         : map(
