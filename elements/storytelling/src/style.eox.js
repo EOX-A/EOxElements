@@ -202,7 +202,7 @@ const styleEOX = `
     }
   }
   .editor-hide {
-    display: none;
+    opacity: 0;
   }
   .editor-error {
     cursor: auto;

@@ -15,9 +15,6 @@ import { convertAttributeValueBasedOnItsType } from "../helpers/render-html-stri
  * @param {import("markdown-it").default} md - Markdown-It instances
  */
 export default function attributes(md) {
-  md.nav = [];
-  md.attrs = [];
-  md.sections = {};
   md.core.ruler.push("curly_attributes", curlyAttrs);
 }
 
@@ -27,6 +24,10 @@ export default function attributes(md) {
  * @param {{tokens: Array<Object>}} state - Token state
  */
 function curlyAttrs(state) {
+  state.md.nav = [];
+  state.md.attrs = [];
+  state.md.sections = {};
+
   const tokens = state.tokens;
   const omissions = [];
   let parent;
@@ -55,11 +56,15 @@ function curlyAttrs(state) {
         finalTokens,
         sectionStart,
         sectionStartIndex,
+        sectionSteps,
+        sectionStepsIndex,
         state,
         stack
       );
       sectionStart = data.sectionStart;
+      sectionSteps = data.sectionSteps;
       sectionStartIndex = data.sectionStartIndex;
+      sectionStepsIndex = data.sectionStepsIndex;
     }
 
     // Parse opening step section through h3 tag
@@ -268,6 +273,8 @@ function parseInlineContent(
  * @param {Array<Object>} finalTokens - Processed final set of markdown token
  * @param {Boolean} sectionStart - Section started or not
  * @param {Boolean} sectionStartIndex - Section start index
+ * @param {Boolean} sectionSteps - Step Section started or not
+ * @param {Boolean} sectionStepsIndex - Step Section start index
  * @param {{tokens: Array<Object>}} state - Token state
  * @param {Object} stack
  * @return {Object} - Final list of updated states
@@ -278,6 +285,8 @@ function parseSection(
   finalTokens,
   sectionStart,
   sectionStartIndex,
+  sectionSteps,
+  sectionStepsIndex,
   state,
   stack
 ) {
@@ -294,6 +303,12 @@ function parseSection(
   // Adding closing section div
   if (token.type === "heading_open") {
     if (sectionStart) {
+      if (sectionSteps) {
+        pushClosingTag(finalTokens, sectionStepsIndex, state);
+        sectionSteps = false;
+        sectionStepsIndex = -1;
+      }
+
       const tag = finalTokens[sectionStartIndex].tag;
       finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
       sectionStart = false;
@@ -313,7 +328,14 @@ function parseSection(
     }
   }
 
-  return { sectionStart, sectionStartIndex, stack, finalTokens };
+  return {
+    sectionStart,
+    sectionStartIndex,
+    sectionSteps,
+    sectionStepsIndex,
+    stack,
+    finalTokens,
+  };
 }
 
 /**

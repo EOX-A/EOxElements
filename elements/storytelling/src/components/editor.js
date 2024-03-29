@@ -85,12 +85,6 @@ class StoryTellingEditor extends LitElement {
    */
   #switchEditorView() {
     this.#temporaryEnableEditor = Boolean(!this.#temporaryEnableEditor);
-    const addNodes = this.querySelectorAll(".add-wrap");
-
-    addNodes.forEach((node) => {
-      node.style.display = this.#temporaryEnableEditor ? "flex" : "none";
-    });
-
     this.requestUpdate();
   }
 
