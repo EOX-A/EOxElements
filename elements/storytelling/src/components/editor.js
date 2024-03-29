@@ -85,6 +85,7 @@ class StoryTellingEditor extends LitElement {
    */
   #switchEditorView() {
     this.#temporaryEnableEditor = Boolean(!this.#temporaryEnableEditor);
+    this.markdown = this.editor.value.Story;
     this.requestUpdate();
   }
 
