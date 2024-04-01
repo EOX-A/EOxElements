@@ -2,11 +2,12 @@ import { html } from "lit";
 import "../main";
 import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
+import ecoRegionsFixture from "./fixtures/ecoregions.json"
 
 describe("layers", () => {
   it("correctly updates applies flat style", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
+      req.reply(ecoRegionsFixture)
     });
     // @ts-ignore
     vectorLayerStyleJson[0].style = {

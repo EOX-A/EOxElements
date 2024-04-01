@@ -1,9 +1,10 @@
 import { html } from "lit";
 import "../main";
+import tilesFixture from "./fixtures/tiles/osm/0/0/0.png"
 
 describe("config property", () => {
   it("sets controls, layers and view using the config object", () => {
-    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
+    cy.intercept(/^.*openstreetmap.*$/, (req) => { req.reply(tilesFixture) });
     cy.mount(
       html`<eox-map
         .config=${{

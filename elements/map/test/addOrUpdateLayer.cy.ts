@@ -1,13 +1,15 @@
 import { html } from "lit";
 import "../main";
 import { EoxLayer } from "../src/generate";
+import ecoRegionsFixture from "./fixtures/ecoregions.json"
+import tilesFixture from "./fixtures/tiles/osm/0/0/0.png"
 
 describe("Map", () => {
   it("add and update layer", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
+      req.reply(ecoRegionsFixture)
     });
-    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
+    cy.intercept(/^.*openstreetmap.*$/, (req) => { req.reply(tilesFixture) });
     cy.mount(
       html`<eox-map
         .layers=${[

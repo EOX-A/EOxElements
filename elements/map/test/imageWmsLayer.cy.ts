@@ -1,11 +1,12 @@
 import { html } from "lit";
 import "../main";
 import imageWmsLayerStyleJson from "./imageWmsLayer.json";
+import wmsFixture from "./fixtures/tiles/wms/wms0.png"
 
 // fixme: imageWMS is identical to tileWMS
 describe("layers", () => {
   it("loads a WMS Layer", () => {
-    cy.intercept(/^.*geoserver.*$/, { fixture: "/tiles/wms/wms0.png" });
+    cy.intercept(/^.*geoserver.*$/, (req) => { req.reply(wmsFixture) });
     cy.mount(html`<eox-map .layers=${imageWmsLayerStyleJson}></eox-map>`).as(
       "eox-map"
     );

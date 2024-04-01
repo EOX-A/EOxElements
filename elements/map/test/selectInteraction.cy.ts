@@ -4,12 +4,12 @@ import vectorTileLayerJson from "./vectorTilesLayer.json";
 import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";
 import { EoxLayer } from "../src/generate";
-
+import ecoRegionsFixture from "./fixtures/ecoregions.json"
+import mapboxFixture from "./fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf"
 describe("select interaction on click", () => {
   it("adds a select interaction to VectorTile layer", () => {
-    cy.intercept(/^.*geoserver.*$/, {
-      fixture: "/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
-      encoding: "binary",
+    cy.intercept(/^.*geoserver.*$/, (req) => {
+      req.reply(mapboxFixture)
     });
     return new Cypress.Promise((resolve) => {
       const layerJson = vectorTileLayerJson as Array<EoxLayer>;
@@ -51,8 +51,8 @@ describe("select interaction on click", () => {
   });
 
   it("adds a select interaction to Vector layer", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
+      req.reply(ecoRegionsFixture)
     });
     const styleJson = JSON.parse(
       JSON.stringify(vectorLayerJson)

@@ -2,11 +2,12 @@ import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./hoverInteraction.json";
 import { simulateEvent } from "./utils/events";
+import ecoRegionsFixture from "./fixtures/ecoregions.json"
 
 describe("select interaction with hover", () => {
   it("adds a select interaction", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
+    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
+      req.reply(ecoRegionsFixture)
     });
     cy.mount(
       html`<eox-map .layers=${vectorLayerStyleJson}>
