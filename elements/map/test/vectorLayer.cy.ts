@@ -1,13 +1,16 @@
 import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
-import ecoRegionsFixture from "./fixtures/ecoregions.json"
+import ecoRegionsFixture from "./fixtures/ecoregions.json";
 
 describe("layers", () => {
   it("loads a Vector Layer", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
-      req.reply(ecoRegionsFixture)
-    });
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
     cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
       "eox-map"
     );
@@ -19,9 +22,12 @@ describe("layers", () => {
     });
   });
   it("correctly applies flat style", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
-      req.reply(ecoRegionsFixture)
-    });
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
     // @ts-ignore
     vectorLayerStyleJson[0].style = {
       "fill-color": "yellow",
@@ -48,9 +54,12 @@ describe("layers", () => {
     });
   });
   it("correctly applies style expression", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
-      req.reply(ecoRegionsFixture)
-    });
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
     vectorLayerStyleJson[0].style = {
       // @ts-ignore
       "fill-color": ["string", ["get", "COLOR"], "#eee"],

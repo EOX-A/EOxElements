@@ -4,7 +4,9 @@ import tileWmsLayerStyleJson from "./tileWmsLayer.json";
 
 describe("layers", () => {
   it("loads a tiled WMS Layer", () => {
-    cy.intercept(/^.*sentinel-hub.*$/, { fixture: "./map/test/fixtures/tiles/wms/wms0.png" });
+    cy.intercept(/^.*sentinel-hub.*$/, {
+      fixture: "./map/test/fixtures/tiles/wms/wms0.png",
+    });
     cy.mount(html`<eox-map .layers=${tileWmsLayerStyleJson}></eox-map>`).as(
       "eox-map"
     );

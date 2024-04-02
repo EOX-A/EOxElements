@@ -1,8 +1,8 @@
 import { html } from "lit";
 import "../main";
 import { EoxLayer } from "../src/generate";
-import ecoRegionsFixture from "./fixtures/ecoregions.json"
-import tilesFixture from "./fixtures/tiles/osm/0/0/0.png"
+import ecoRegionsFixture from "./fixtures/ecoregions.json";
+import tilesFixture from "./fixtures/tiles/osm/0/0/0.png";
 
 const osmJson = {
   type: "Tile",
@@ -55,10 +55,15 @@ const layersJson = [
 
 describe("layers", () => {
   it("loads a Vector Layer in a group", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
-      req.reply(ecoRegionsFixture)
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
+    cy.intercept(/^.*openstreetmap.*$/, (req) => {
+      req.reply(tilesFixture);
     });
-    cy.intercept(/^.*openstreetmap.*$/, (req) => { req.reply(tilesFixture) });
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
@@ -94,10 +99,15 @@ describe("layers", () => {
   });
 
   it("reactively adds layer to group", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
-      req.reply(ecoRegionsFixture)
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
+    cy.intercept(/^.*openstreetmap.*$/, (req) => {
+      req.reply(tilesFixture);
     });
-    cy.intercept(/^.*openstreetmap.*$/, (req) => { req.reply(tilesFixture) });
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
@@ -111,10 +121,15 @@ describe("layers", () => {
   });
 
   it("reactively removes layer from group", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
-      req.reply(ecoRegionsFixture)
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
+    cy.intercept(/^.*openstreetmap.*$/, (req) => {
+      req.reply(tilesFixture);
     });
-    cy.intercept(/^.*openstreetmap.*$/, (req) => { req.reply(tilesFixture) });
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {

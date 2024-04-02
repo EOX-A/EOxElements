@@ -6,7 +6,8 @@ import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
 describe("VectorTile Layer", () => {
   it("loads a Vector Tile Layer, applies flat style", () => {
     cy.intercept(/^.*geoserver.*$/, {
-      fixture: "./map/test/fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
+      fixture:
+        "./map/test/fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
       encoding: "binary",
     });
 

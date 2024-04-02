@@ -1,7 +1,7 @@
 import { html } from "lit";
 import "../main";
 import "../src/plugins/advancedLayersAndSources/index";
-import cloudlessFixture from "./fixtures/tiles/wms/eox_cloudless.jpeg"
+import cloudlessFixture from "./fixtures/tiles/wms/eox_cloudless.jpeg";
 
 describe("WMTS Capabilities Source", () => {
   it("loads a layer from WMTS capabilities", () => {
@@ -9,9 +9,12 @@ describe("WMTS Capabilities Source", () => {
       cy.intercept(
         "GET",
         "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
-        (req) => { req.reply("./map/test/fixtures/eoxCapabilities.xml") });
+        (req) => {
+          req.reply("./map/test/fixtures/eoxCapabilities.xml");
+        }
+      );
       cy.intercept("*Request=GetTile*", (req) => {
-        req.reply(cloudlessFixture)
+        req.reply(cloudlessFixture);
       });
       const layersJson = [
         {
