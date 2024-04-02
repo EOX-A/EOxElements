@@ -3,12 +3,16 @@ import "../main";
 import vectorLayerStyleJson from "./hoverInteraction.json";
 import { simulateEvent } from "./utils/events";
 import { EoxLayer } from "../src/generate";
+import ecoRegionsFixture from "./fixtures/ecoregions.json";
 
 describe("tooltip", () => {
   it("displays a tooltip on hover", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
-    });
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
     cy.mount(
       html`<eox-map .layers=${vectorLayerStyleJson}>
         <eox-map-tooltip></eox-map-tooltip>
@@ -35,9 +39,12 @@ describe("tooltip", () => {
   });
 
   it("displays a tooltip on hover when multiple layers are initialized and only one visible", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
-    });
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
     const multiplelayersJson = [...vectorLayerStyleJson] as EoxLayer[];
     const secondLayer = structuredClone(vectorLayerStyleJson[0]) as EoxLayer;
     multiplelayersJson.unshift(secondLayer);

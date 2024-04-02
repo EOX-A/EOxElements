@@ -1,11 +1,3 @@
-import { buildWorkerDefinition } from "monaco-editor-workers";
-
-buildWorkerDefinition(
-  "../../../../node_modules/monaco-editor-workers/dist/workers",
-  import.meta.url,
-  false
-);
-
 /**
  * Function to disable text selection
  */
@@ -60,7 +52,7 @@ function handleMouseMove(e, editorContainer, StoryTellingEditor) {
     StoryTellingEditor.lastY = e.clientY;
   }
 
-  if (StoryTellingEditor.dragging) {
+  if (StoryTellingEditor.dragging || StoryTellingEditor.resizing) {
     let dx = StoryTellingEditor.lastX - e.clientX;
     let dy = e.clientY - StoryTellingEditor.lastY;
     let { width, height, left } = editorContainer.getBoundingClientRect();
@@ -93,7 +85,7 @@ function handleMouseUp(StoryTellingEditor) {
  * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
  * @param {Element} StoryTellingEditor - Dom element
  */
-export function handleResizeHandleMouseDown(e, StoryTellingEditor) {
+function handleResizeHandleMouseDown(e, StoryTellingEditor) {
   e.stopPropagation();
   disableTextSelection();
   StoryTellingEditor.resizing = true;
@@ -102,34 +94,13 @@ export function handleResizeHandleMouseDown(e, StoryTellingEditor) {
 }
 
 /**
- * Function to create Monaco editor
- *
- * @param {Element} StoryTellingEditor - Dom element
- */
-async function createMonacoEditor(StoryTellingEditor) {
-  const monaco = await import("monaco-editor/esm/vs/editor/editor.main");
-  return monaco.editor.create(StoryTellingEditor.querySelector("#editor"), {
-    language: "markdown",
-    theme: "vs",
-    automaticLayout: true,
-    lineNumbersMinChars: 2,
-    mouseWheelZoom: true,
-    minimap: { enabled: false },
-    wordWrap: true,
-    wrappingIndent: "200px",
-    value: StoryTellingEditor.markdown,
-    fontSize: "14px",
-  });
-}
-
-/**
  * Function to initialise monaco editor
  *
  * @param {Object} editorContainer - editor container dom
- * @param {Element} resizeHandle - Dom element
+ * @param {Object} resizeHandle - Dom element
  * @param {Element} StoryTellingEditor - Dom element
  */
-export default async function initEditor(
+export default async function initEditorEvents(
   editorContainer,
   resizeHandle,
   StoryTellingEditor
@@ -144,12 +115,7 @@ export default async function initEditor(
 
   window.addEventListener("mouseup", () => handleMouseUp(StoryTellingEditor));
 
-  /*
-   * TODO: Need to look into bug why not working as expected.
-   */
-  // resizeHandle.addEventListener("mousedown", (e) =>
-  //   handleResizeHandleMouseDown(e, StoryTellingEditor),
-  // );
-
-  return await createMonacoEditor(StoryTellingEditor);
+  resizeHandle.addEventListener("mousedown", (e) =>
+    handleResizeHandleMouseDown(e, StoryTellingEditor)
+  );
 }

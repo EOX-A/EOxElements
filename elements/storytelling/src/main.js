@@ -125,6 +125,16 @@ export class EOxStoryTelling extends LitElement {
         this.showNav = this.#config.nav;
 
       if (this.showNav) this.nav = md.nav;
+
+      if (this.showEditor) {
+        const parent = this.shadowRoot || this;
+        const editorDOM = parent.querySelector("eox-storytelling-editor");
+        const jsonFormDOM = editorDOM.querySelector("eox-jsonform");
+
+        if (this.markdown !== jsonFormDOM?.value.Story)
+          editorDOM.markdown = this.markdown;
+      }
+
       this.requestUpdate();
     }
 
@@ -205,13 +215,15 @@ export class EOxStoryTelling extends LitElement {
         ${when(
           this.showEditor,
           () => html`
-            <story-telling-editor
-              .markdown=${this.markdown}
+            <eox-storytelling-editor
               .isNavigation=${Boolean(this.showNav)}
               @change=${(e) => {
-                if (e.detail) this.markdown = e.detail.markdown;
+                if (e.detail) {
+                  this.markdown = e.detail.Story;
+                  this.requestUpdate();
+                }
               }}
-            ></story-telling-editor>
+            ></eox-storytelling-editor>
           `
         )}
       </div>
