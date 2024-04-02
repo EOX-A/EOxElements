@@ -52,7 +52,7 @@ function handleMouseMove(e, editorContainer, StoryTellingEditor) {
     StoryTellingEditor.lastY = e.clientY;
   }
 
-  if (StoryTellingEditor.dragging) {
+  if (StoryTellingEditor.dragging || StoryTellingEditor.resizing) {
     let dx = StoryTellingEditor.lastX - e.clientX;
     let dy = e.clientY - StoryTellingEditor.lastY;
     let { width, height, left } = editorContainer.getBoundingClientRect();
@@ -85,7 +85,7 @@ function handleMouseUp(StoryTellingEditor) {
  * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
  * @param {Element} StoryTellingEditor - Dom element
  */
-export function handleResizeHandleMouseDown(e, StoryTellingEditor) {
+function handleResizeHandleMouseDown(e, StoryTellingEditor) {
   e.stopPropagation();
   disableTextSelection();
   StoryTellingEditor.resizing = true;
@@ -115,10 +115,7 @@ export default async function initEditorEvents(
 
   window.addEventListener("mouseup", () => handleMouseUp(StoryTellingEditor));
 
-  /*
-   * TODO: Need to look into bug why not working as expected.
-   */
-  // resizeHandle.addEventListener("mousedown", (e) =>
-  //   handleResizeHandleMouseDown(e, StoryTellingEditor),
-  // );
+  resizeHandle.addEventListener("mousedown", (e) =>
+    handleResizeHandleMouseDown(e, StoryTellingEditor)
+  );
 }

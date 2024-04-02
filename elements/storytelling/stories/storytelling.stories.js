@@ -16,6 +16,7 @@ import {
   MarkdownEditorStory,
 } from "./index";
 import { html } from "lit";
+import "../../jsonform/src/main";
 import "../../map/main";
 
 export default {

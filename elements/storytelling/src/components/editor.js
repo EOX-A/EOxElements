@@ -1,5 +1,4 @@
 import { LitElement, html } from "lit";
-import "../../../jsonform/src/main.js";
 import "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js";
 import { initEditorEvents } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
@@ -91,6 +90,11 @@ class StoryTellingEditor extends LitElement {
 
   // Override render method to define the HTML structure
   render() {
+    if (!customElements.get("eox-jsonform"))
+      console.error(
+        "Please import @eox/jsonform in order to use StoryTelling Editor"
+      );
+
     const editorView = !this.#temporaryEnableEditor ? "editor-hide" : "";
     const navHeight = this.isNavigation ? "partial-height" : "";
 
@@ -135,6 +139,9 @@ class StoryTellingEditor extends LitElement {
           padding: 0;
           margin: 0;
           border: none;
+        }
+        .CodeMirror {
+          height: 100%;
         }
         eox-jsonform form[data-theme="html"],
         eox-jsonform div[data-schemaid="root"],

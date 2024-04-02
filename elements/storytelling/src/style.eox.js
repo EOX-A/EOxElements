@@ -175,7 +175,6 @@ const styleEOX = `
     box-sizing: border-box;
   }
   .resize-handle {
-    display: none;
     position: absolute;
     width: 10px;
     height: 10px;
