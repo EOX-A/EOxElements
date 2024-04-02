@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.13.0...itemfilter-v0.14.0) (2024-04-02)
+
+
+### Features
+
+* Added autoSpreadSingle option to not show summary for single item groups ([#792](https://github.com/EOX-A/EOxElements/issues/792)) ([2c3c6e7](https://github.com/EOX-A/EOxElements/commit/2c3c6e70f1a9fb5d011c7e00eef199273b066386))
+
 ## [0.13.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.12.1...itemfilter-v0.13.0) (2024-03-06)
 
 
