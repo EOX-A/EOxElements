@@ -80,6 +80,43 @@ export const Primary = {
   },
 };
 
+export const AutoSpread = {
+  args: {
+    config: {
+      titleProperty: "title",
+      filterProperties: [
+        {
+          keys: ["title", "themes"],
+          title: "Search",
+          type: "text",
+          expanded: true,
+        },
+        {
+          key: "themes",
+          title: "Theme",
+          type: "multiselect",
+        },
+        {
+          key: "timestamp",
+          type: "range",
+          format: "date",
+        },
+        {
+          key: "geometry",
+          type: "spatial",
+        },
+      ],
+      aggregateResults: "themes",
+      autoSpreadSingle: true,
+      enableHighlighting: true,
+      onSelect: (item) => {
+        console.log(item);
+      },
+    },
+    items,
+  },
+};
+
 export const MultiSelect = {
   args: {
     config: {
