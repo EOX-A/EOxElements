@@ -33,7 +33,7 @@ jobs:
       - name: Build and publish package 🚀
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          ELEMENT_DIR: ${{ fromJSON(steps.release.outputs.paths_released) }}
+          ELEMENT_DIR: ${{ steps.release.outputs.paths_released }}
         run: |
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
           npm run build && \
