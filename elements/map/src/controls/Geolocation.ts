@@ -44,6 +44,7 @@ export default class GeolocationControl extends Control {
     const element = document.createElement("div");
     element.className = "geolocation ol-unselectable ol-control";
     const button = document.createElement("button");
+    button.title = "Show your location";
     const image = document.createElement("img");
     if (options.buttonIcon) {
       image.src = options.buttonIcon;
@@ -61,7 +62,6 @@ export default class GeolocationControl extends Control {
     image.style.position = "absolute";
     image.style.pointerEvents = "none";
     element.appendChild(image);
-    button.title = "Show your location";
     element.appendChild(button);
 
     super({
