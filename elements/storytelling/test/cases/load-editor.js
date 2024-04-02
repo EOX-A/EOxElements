@@ -1,4 +1,5 @@
 import { TEST_SELECTORS } from "../../src/enums";
+import "../../../jsonform/src/main";
 
 // Destructure TEST_SELECTORS object
 const { storyTelling } = TEST_SELECTORS;
