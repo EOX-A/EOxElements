@@ -5,3 +5,4 @@ export {
   scrollIntoView,
   getCustomEleHandling,
 } from "./misc";
+export { default as initEditorEvents } from "./editor";

@@ -12,6 +12,7 @@ import {
   LoadCustomElementTest,
   loadMapSectionTest,
   loadMapTourTest,
+  loadMarkdownEditorTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -47,4 +48,7 @@ describe("Storytelling", () => {
 
   // Test case to load map tour with sections and step sections
   it("Load map tour sections and step sections", () => loadMapTourTest());
+
+  // Test case to load markdown editor
+  it("Load markdown editor", () => loadMarkdownEditorTest());
 });

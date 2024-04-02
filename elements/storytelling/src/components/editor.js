@@ -1,29 +1,21 @@
 import { LitElement, html } from "lit";
-import initEditor from "../helpers/editor";
+import "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js";
+import { initEditorEvents } from "../helpers";
+import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
 class StoryTellingEditor extends LitElement {
   // Define static properties for LitElement
   static properties = {
-    errors: { attribute: false, type: Array },
     markdown: { attribute: "markdown", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
-
-  /**
-   * @type {Boolean} - Debounce set timeout event
-   */
-  #debounceSetTimeoutEvent = false;
 
   /**
    * @type {Boolean} - Temporary enable/disable editor state for switch button
    */
   #temporaryEnableEditor = true;
 
-  /**
-   * @type {Boolean} - Edit or update state
-   */
-  #editorUpdate = false;
   constructor() {
     super();
 
@@ -69,51 +61,15 @@ class StoryTellingEditor extends LitElement {
   /**
    * Lifecycle method called after the first update
    */
-  async firstUpdated() {
+  firstUpdated() {
     // Get editor container and resize handle elements
     const editorContainer = this.querySelector(".editor-wrapper");
     const resizeHandle = this.querySelector(".resize-handle");
 
-    this.editor = await initEditor(editorContainer, resizeHandle, this);
-    this.#editorUpdate = true;
-
-    // Event listener for editor content change
-    this.editor.onDidChangeModelContent(() => {
-      this.#editorUpdate = true;
-      if (this.#debounceSetTimeoutEvent)
-        clearTimeout(this.#debounceSetTimeoutEvent);
-      this.querySelector(".editor-saver").style.display = "inline-block";
-
-      this.#debounceSetTimeoutEvent = setTimeout(() => {
-        this.dispatchEvent(
-          new CustomEvent("change", {
-            detail: { markdown: this.getCurrentValue() },
-            bubbles: true,
-            composed: true,
-          })
-        );
-
-        this.querySelector(".editor-saver").style.display = "none";
-      }, 2500);
-    });
-  }
-
-  /**
-   * Method to get the current value of the editor
-   */
-  getCurrentValue() {
-    if (this.editor) return this.editor.getValue();
-    else return "";
-  }
-
-  /**
-   * Lifecycle method called when the element is removed from the DOM
-   */
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    if (this.editor) {
-      this.editor.dispose();
-    }
+    this.editor = this.renderRoot.querySelector(
+      "eox-jsonform#storytelling-editor"
+    );
+    initEditorEvents(editorContainer, resizeHandle, this);
   }
 
   /**
@@ -124,47 +80,32 @@ class StoryTellingEditor extends LitElement {
   }
 
   /**
-   * Lifecycle triggered after a DOM or state update
-   */
-  updated(changedProperties) {
-    if (changedProperties.has("markdown") && !this.#editorUpdate)
-      this.updateEditorContent(this.markdown);
-
-    this.#editorUpdate = false;
-  }
-
-  /**
-   * Lifecycle triggered after a DOM or state update
-   */
-  updateEditorContent(markdown) {
-    if (this.editor && markdown) this.editor.setValue(markdown);
-  }
-
-  /**
    * Switch between editor or viewer mode
    */
   #switchEditorView() {
     this.#temporaryEnableEditor = Boolean(!this.#temporaryEnableEditor);
-    const addNodes = this.querySelectorAll(".add-wrap");
-
-    addNodes.forEach((node) => {
-      node.style.display = this.#temporaryEnableEditor ? "flex" : "none";
-    });
-
+    this.markdown = this.editor.value.Story;
     this.requestUpdate();
   }
 
   // Override render method to define the HTML structure
   render() {
+    if (!customElements.get("eox-jsonform"))
+      console.error(
+        "Please import @eox/jsonform in order to use StoryTelling Editor"
+      );
+
     const editorView = !this.#temporaryEnableEditor ? "editor-hide" : "";
     const navHeight = this.isNavigation ? "partial-height" : "";
 
     return html`
-      <style>
-        @import url("https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.47.0/min/vs/editor/editor.main.min.css");
-      </style>
       <div class="editor-wrapper ${editorView} ${navHeight}">
-        <div id="editor"></div>
+        <eox-jsonform
+          id="storytelling-editor"
+          no-shadow
+          .schema=${EDITOR_SCHEMA}
+          .value=${{ Story: this.markdown }}
+        ></eox-jsonform>
         <div class="resize-handle"></div>
         <span class="editor-saver"></span>
       </div>
@@ -181,9 +122,53 @@ class StoryTellingEditor extends LitElement {
           <i class="icon editor-icon"></i>
         </label>
       </div>
+      <style>
+        @import url("https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css");
+        eox-jsonform#storytelling-editor {
+          display: block;
+          height: 100%;
+          cursor: default;
+        }
+        .editor-wrapper {
+          padding: 0.5rem;
+        }
+        .editor-toolbar:hover {
+          opacity: 1;
+        }
+        form[data-theme="html"] .je-indented-panel {
+          padding: 0;
+          margin: 0;
+          border: none;
+        }
+        .CodeMirror {
+          height: 100%;
+        }
+        eox-jsonform form[data-theme="html"],
+        eox-jsonform div[data-schemaid="root"],
+        eox-jsonform div.je-indented-panel,
+        eox-jsonform div.je-indented-panel > div,
+        eox-jsonform div.je-indented-panel > div > div,
+        eox-jsonform div.row,
+        eox-jsonform div[data-schematype="string"],
+        eox-jsonform div.form-control {
+          height: 100%;
+        }
+        eox-jsonform div.form-control {
+          display: flex;
+          flex-direction: column;
+        }
+        eox-jsonform div.editor-toolbar,
+        eox-jsonform div.editor-statusbar {
+          flex-shrink: 1;
+        }
+        .je-form-input-label,
+        .je-object__controls {
+          display: none !important;
+        }
+      </style>
     `;
   }
 }
 
 // Define custom element "story-telling-editor"
-customElements.define("story-telling-editor", StoryTellingEditor);
+customElements.define("eox-storytelling-editor", StoryTellingEditor);
