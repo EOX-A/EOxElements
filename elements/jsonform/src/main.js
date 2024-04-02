@@ -14,6 +14,7 @@ export class EOxJSONForm extends LitElement {
     schema: { attribute: false, type: Object },
     value: { attribute: false, type: Object },
     options: { attribute: false, type: Object },
+    noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
   };
 
@@ -51,6 +52,13 @@ export class EOxJSONForm extends LitElement {
       disable_array_delete_last_row: true,
       array_controls_top: true,
     };
+
+    /**
+     * Renders the element without a shadow root
+     *
+     * @type {Boolean}
+     */
+    this.noShadow = false;
 
     /**
      * Render the element without additional styles
@@ -178,6 +186,13 @@ export class EOxJSONForm extends LitElement {
 
       this.#dispatchEvent();
     }
+  }
+
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {
