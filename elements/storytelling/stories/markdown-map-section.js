@@ -2,8 +2,6 @@
  * Renders storytelling with eox-map sections.
  */
 import { html } from "lit";
-import "../src/main.js";
-import "../../map/src/plugins/advancedLayersAndSources";
 
 export const MarkdownMapSection = {
   args: {

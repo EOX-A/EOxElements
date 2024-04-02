@@ -3,8 +3,6 @@
  * It showcases the settings for allowModify, multipleFeatures, and type properties.
  */
 import { html } from "lit";
-import "../../map/main";
-import "../src/main";
 import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const Primary = {

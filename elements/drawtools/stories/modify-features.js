@@ -4,8 +4,6 @@
  * set to enable the modification functionality for the drawn features on the map.
  */
 import { html } from "lit";
-import "../../map/main";
-import "../src/main";
 import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const ModifyFeatures = {

@@ -4,8 +4,6 @@
  * to display a list of features corresponding to drawn polygons on the map.
  */
 import { html } from "lit";
-import "../../map/main";
-import "../src/main";
 import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const MultiPolygonWithList = {

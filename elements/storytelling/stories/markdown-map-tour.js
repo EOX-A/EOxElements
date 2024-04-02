@@ -2,7 +2,6 @@
  * Renders map tour in StoryTelling
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const MarkdownMapTour = {
   parameters: {

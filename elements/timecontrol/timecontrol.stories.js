@@ -1,6 +1,5 @@
+// Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import "../map/main";
-import "./src/main";
 
 export default {
   title: "Elements/eox-timecontrol",

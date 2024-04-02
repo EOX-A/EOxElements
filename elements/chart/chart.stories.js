@@ -1,5 +1,5 @@
+// Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import "./src/main";
 
 export default {
   title: "Elements/eox-chart",

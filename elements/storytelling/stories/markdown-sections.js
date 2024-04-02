@@ -2,7 +2,6 @@
  * Renders storytelling sections.
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const MarkdownSections = {
   args: {
