@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/EOX-A/EOxElements/compare/map-v1.5.0...map-v1.5.1) (2024-04-02)
+
+
+### Bug Fixes
+
+* Update default geolocation control icon ([#802](https://github.com/EOX-A/EOxElements/issues/802)) ([4119da7](https://github.com/EOX-A/EOxElements/commit/4119da7054e0f7dbc4b90c100897672b2933cc1b))
+
 ## [1.5.0](https://github.com/EOX-A/EOxElements/compare/map-v1.4.0...map-v1.5.0) (2024-03-25)
 
 
