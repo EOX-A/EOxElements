@@ -31,6 +31,7 @@ export default defineConfig({
     devServer: {
       bundler: "vite",
     },
+    fixturesFolder: "./elements", // changes fixture folder location from ./cypress/fixtures for component tests
     specPattern: specPatternComponentTests,
     indexHtmlFile: "cypress/support/component-index.html",
     assetsInclude: ['**/*.xml', '**/*.png'],

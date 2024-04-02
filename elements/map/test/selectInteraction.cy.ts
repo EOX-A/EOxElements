@@ -5,11 +5,12 @@ import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";
 import { EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json"
-import mapboxFixture from "./fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf"
+
 describe("select interaction on click", () => {
   it("adds a select interaction to VectorTile layer", () => {
-    cy.intercept(/^.*geoserver.*$/, (req) => {
-      req.reply(mapboxFixture)
+    cy.intercept(/^.*geoserver.*$/, {
+      fixture: "./map/test/fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
+      encoding: "binary",
     });
     return new Cypress.Promise((resolve) => {
       const layerJson = vectorTileLayerJson as Array<EoxLayer>;

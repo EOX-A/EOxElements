@@ -1,16 +1,15 @@
 import { html } from "lit";
 import "../main";
 import "../src/plugins/advancedLayersAndSources/index";
-import eoxFixture from "./fixtures/eoxCapabilities.xml"
 import cloudlessFixture from "./fixtures/tiles/wms/eox_cloudless.jpeg"
 
 describe("WMTS Capabilities Source", () => {
   it("loads a layer from WMTS capabilities", () => {
-    cy.fixture("eoxCapabilities.xml").then(() => {
+    cy.fixture("./map/test/fixtures/eoxCapabilities.xml").then(() => {
       cy.intercept(
         "GET",
         "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
-        (req) => { req.reply(eoxFixture) });
+        (req) => { req.reply("./map/test/fixtures/eoxCapabilities.xml") });
       cy.intercept("*Request=GetTile*", (req) => {
         req.reply(cloudlessFixture)
       });
