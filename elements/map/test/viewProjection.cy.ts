@@ -2,12 +2,11 @@ import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
-import tilesFixture from "./fixtures/tiles/osm/0/0/0.png";
 
 describe("view projections", () => {
   it("can set the initial projection of the view", () => {
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
     cy.mount(
       html`<eox-map
@@ -34,8 +33,8 @@ describe("view projections", () => {
   });
 
   it("can change the projection of the view", () => {
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
 
     cy.mount(

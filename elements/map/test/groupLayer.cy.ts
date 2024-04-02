@@ -2,7 +2,6 @@ import { html } from "lit";
 import "../main";
 import { EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
-import tilesFixture from "./fixtures/tiles/osm/0/0/0.png";
 
 const osmJson = {
   type: "Tile",
@@ -61,8 +60,8 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
@@ -105,8 +104,8 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
@@ -127,8 +126,8 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");

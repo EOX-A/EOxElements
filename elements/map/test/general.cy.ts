@@ -3,12 +3,11 @@ import { equals } from "ol/coordinate";
 import { Layer } from "ol/layer";
 import { EoxLayer } from "../src/generate";
 import "../main";
-import tilesFixture from "./fixtures/tiles/osm/0/0/0.png";
 
 describe("Map", () => {
   it("map should exist", () => {
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
     cy.mount(
       html`<eox-map
@@ -71,8 +70,8 @@ describe("Map", () => {
   });
 
   it("should return a layer via id", () => {
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
     cy.mount(
       html`<eox-map
@@ -87,8 +86,8 @@ describe("Map", () => {
   });
 
   it("should return flat layers array", () => {
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
     cy.mount(
       html`<eox-map
@@ -126,8 +125,8 @@ describe("Map", () => {
   });
 
   it("doesn't reverse the input layer array", { retries: 0 }, () => {
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
     cy.mount(html`<eox-map></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {

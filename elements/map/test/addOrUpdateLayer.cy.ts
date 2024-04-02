@@ -2,7 +2,6 @@ import { html } from "lit";
 import "../main";
 import { EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
-import tilesFixture from "./fixtures/tiles/osm/0/0/0.png";
 
 describe("Map", () => {
   it("add and update layer", () => {
@@ -12,8 +11,8 @@ describe("Map", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    cy.intercept(/^.*openstreetmap.*$/, (req) => {
-      req.reply(tilesFixture);
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
     cy.mount(
       html`<eox-map
