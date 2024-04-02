@@ -123,26 +123,10 @@ class StoryTellingEditor extends LitElement {
         eox-jsonform#storytelling-editor {
           display: block;
           height: 100%;
-          overflow-y: auto;
           cursor: default;
         }
         .editor-wrapper {
-          padding: 1rem;
-        }
-        .editor-statusbar {
-          position: sticky;
-          bottom: 0;
-          z-index: 1;
-          background: #f2f2f2;
-          border-top: 1px solid #bbbbbb63;
-        }
-        .editor-toolbar {
-          position: sticky;
-          top: 0;
-          z-index: 3;
-          opacity: 1;
-          background: #f2f2f2;
-          border: 1px solid #bbbbbb63;
+          padding: 0.5rem;
         }
         .editor-toolbar:hover {
           opacity: 1;
@@ -152,16 +136,27 @@ class StoryTellingEditor extends LitElement {
           margin: 0;
           border: none;
         }
-        .CodeMirror {
-          border: none;
-          height: 100vh;
+        eox-jsonform form[data-theme="html"],
+        eox-jsonform div[data-schemaid="root"],
+        eox-jsonform div.je-indented-panel,
+        eox-jsonform div.je-indented-panel > div,
+        eox-jsonform div.je-indented-panel > div > div,
+        eox-jsonform div.row,
+        eox-jsonform div[data-schematype="string"],
+        eox-jsonform div.form-control {
+          height: 100%;
+        }
+        eox-jsonform div.form-control {
+          display: flex;
+          flex-direction: column;
+        }
+        eox-jsonform div.editor-toolbar,
+        eox-jsonform div.editor-statusbar {
+          flex-shrink: 1;
         }
         .je-form-input-label,
         .je-object__controls {
           display: none !important;
-        }
-        eox-jsonform {
-          height: inherit;
         }
       </style>
     `;
