@@ -1,10 +1,13 @@
 import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
+import ecoRegionsFixture from "./fixtures/ecoregions.json";
 
 describe("view projections", () => {
   it("can set the initial projection of the view", () => {
-    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+    });
     cy.mount(
       html`<eox-map
         .layers=${[
@@ -30,7 +33,9 @@ describe("view projections", () => {
   });
 
   it("can change the projection of the view", () => {
-    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+    });
 
     cy.mount(
       html`<eox-map
@@ -91,9 +96,12 @@ describe("view projections", () => {
   });
 
   it("use special projection", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
-    });
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
     // not using osm because of performance issues while testing
     cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
       "eox-map"
@@ -114,9 +122,12 @@ describe("view projections", () => {
   });
 
   it("fetch projection from code", () => {
-    cy.intercept("https://openlayers.org/data/vector/ecoregions.json", {
-      fixture: "/ecoregions.json",
-    });
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
     cy.mount(
       html`<eox-map
         .controls=${{

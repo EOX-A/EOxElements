@@ -4,14 +4,16 @@ import "../src/plugins/advancedLayersAndSources/index";
 
 describe("WMTS Capabilities Source", () => {
   it("loads a layer from WMTS capabilities", () => {
-    cy.fixture("eoxCapabilities.xml").then(() => {
+    cy.fixture("./map/test/fixtures/eoxCapabilities.xml").then(() => {
       cy.intercept(
         "GET",
         "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
-        { fixture: "/eoxCapabilities.xml" }
+        (req) => {
+          req.reply("./map/test/fixtures/eoxCapabilities.xml");
+        }
       );
       cy.intercept("*Request=GetTile*", {
-        fixture: "/tiles/wms/eox_cloudless.jpeg",
+        fixture: "./map/test/fixtures/tiles/wms/eox_cloudless.jpeg",
       });
       const layersJson = [
         {

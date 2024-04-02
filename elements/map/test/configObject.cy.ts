@@ -3,7 +3,9 @@ import "../main";
 
 describe("config property", () => {
   it("sets controls, layers and view using the config object", () => {
-    cy.intercept(/^.*openstreetmap.*$/, { fixture: "/tiles/osm/0/0/0.png" });
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+    });
     cy.mount(
       html`<eox-map
         .config=${{
