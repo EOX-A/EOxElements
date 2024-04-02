@@ -592,7 +592,7 @@ export class EOxItemFilter extends TemplateElement {
                                         >
                                       </span>
                                     </summary>
-                                    <div style="margin-left: 15px">
+                                    <div>
                                       ${this.createItemList(
                                         aggregationProperty
                                       )}
