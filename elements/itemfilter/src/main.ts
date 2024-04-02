@@ -27,6 +27,12 @@ export class ElementConfig {
   public aggregateResults?: string = undefined;
 
   /**
+   * Automatically spread single item summaries
+   * removing the summary header
+   */
+  public autoSpreadSingle?: boolean = false;
+
+  /**
    * Highlighting of search result character matches
    */
   public enableHighlighting?: boolean = false;
@@ -564,7 +570,10 @@ export class EOxItemFilter extends TemplateElement {
                                 this.aggregateResults(
                                   this.results,
                                   aggregationProperty
-                                ).length > 1,
+                                ).length === 1 && this.config.autoSpreadSingle,
+                                () => html` <div style="margin-left: -8px">
+                                  ${this.createItemList(aggregationProperty)}
+                                </div>`,
                                 () => html`
                                   <details
                                     class="details-results"
@@ -589,10 +598,7 @@ export class EOxItemFilter extends TemplateElement {
                                       )}
                                     </div>
                                   </details>
-                                `,
-                                () => html` <div style="margin-left: -8px">
-                                  ${this.createItemList(aggregationProperty)}
-                                </div>`
+                                `
                               )}`
                           )
                         : map(
