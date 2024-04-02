@@ -1,0 +1,199 @@
+import{x as a}from"./lit-element-Bq1Y8_dt.js";const f={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},r={args:{for:"eox-map#primary",layer:"AWS_NO2-VISUALISATION",controlProperty:"TIME",controlValues:["2022-12-05","2022-12-12","2022-12-19","2022-12-26","2023-01-16","2023-01-23","2023-01-30","2023-02-06","2023-02-13","2023-02-27","2023-03-06","2023-03-13","2023-03-20","2023-03-27","2023-04-03","2023-04-10","2023-04-17","2023-04-24"],layers:[{type:"Tile",properties:{id:"AWS_NO2-VISUALISATION"},source:{type:"TileWMS",url:"https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",params:{LAYERS:"AWS_NO2-VISUALISATION",TIME:"2022-12-05"}}},{type:"Tile",properties:{id:"OSM"},source:{type:"OSM"}}],center:[1e6,6e6],zoom:3},render:e=>a`
+    <eox-map
+      id="primary"
+      style="width: 400px; height: 300px;"
+      .zoom=${e.zoom}
+      .center=${e.center}
+      .layers=${e.layers}
+    ></eox-map>
+    <eox-timecontrol
+      .for=${e.for}
+      .layer=${e.layer}
+      .controlProperty=${e.controlProperty}
+      .controlValues=${e.controlValues}
+      .slider=${e.slider}
+    ></eox-timecontrol>
+  `},o={args:{...r.args,for:"eox-map#slider",slider:!0},render:e=>a`
+    <eox-map
+      id="slider"
+      style="width: 400px; height: 300px;"
+      .zoom=${e.zoom}
+      .center=${e.center}
+      .layers=${e.layers}
+    ></eox-map>
+    <eox-timecontrol
+      .for=${e.for}
+      .layer=${e.layer}
+      .controlProperty=${e.controlProperty}
+      .controlValues=${e.controlValues}
+      .slider=${e.slider}
+    ></eox-timecontrol>
+  `},t={args:{...r.args,for:"eox-map#programmatic-time-selection",slider:!0},render:e=>a`
+    <eox-map
+      id="programmatic-time-selection"
+      style="width: 400px; height: 300px;"
+      .zoom=${e.zoom}
+      .center=${e.center}
+      .layers=${e.layers}
+    ></eox-map>
+    <div>
+      <input type="text" id="time" value="2022-12-26" />
+      <button
+        @click="${()=>{const S=document.getElementById("time").value,P=document.getElementById("programmatic");P.currentStep=S}}"
+      >
+        Go
+      </button>
+    </div>
+    <eox-timecontrol
+      id="programmatic"
+      .for=${e.for}
+      .layer=${e.layer}
+      .controlProperty=${e.controlProperty}
+      .controlValues=${e.controlValues}
+      .slider=${e.slider}
+    ></eox-timecontrol>
+  `},n={args:{...r.args,for:"eox-map#disabled-play",disablePlay:!0},render:e=>a`
+    <eox-map
+      id="disabled-play"
+      style="width: 400px; height: 300px;"
+      .zoom=${e.zoom}
+      .center=${e.center}
+      .layers=${e.layers}
+    ></eox-map>
+    <eox-timecontrol
+      .for=${e.for}
+      .layer=${e.layer}
+      .controlProperty=${e.controlProperty}
+      .controlValues=${e.controlValues}
+      .slider=${e.slider}
+      .disablePlay=${e.disablePlay}
+    ></eox-timecontrol>
+  `};var l,s,i;r.parameters={...r.parameters,docs:{...(l=r.parameters)==null?void 0:l.docs,source:{originalSource:`{
+  args: {
+    for: "eox-map#primary",
+    layer: "AWS_NO2-VISUALISATION",
+    controlProperty: "TIME",
+    controlValues: ["2022-12-05", "2022-12-12", "2022-12-19", "2022-12-26", "2023-01-16", "2023-01-23", "2023-01-30", "2023-02-06", "2023-02-13", "2023-02-27", "2023-03-06", "2023-03-13", "2023-03-20", "2023-03-27", "2023-04-03", "2023-04-10", "2023-04-17", "2023-04-24"],
+    // map
+    layers: [{
+      type: "Tile",
+      properties: {
+        id: "AWS_NO2-VISUALISATION"
+      },
+      source: {
+        type: "TileWMS",
+        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+        params: {
+          LAYERS: "AWS_NO2-VISUALISATION",
+          TIME: "2022-12-05"
+        }
+      }
+    }, {
+      type: "Tile",
+      properties: {
+        id: "OSM"
+      },
+      source: {
+        type: "OSM"
+      }
+    }],
+    center: [1000000, 6000000],
+    zoom: 3
+  },
+  render: args => html\`
+    <eox-map
+      id="primary"
+      style="width: 400px; height: 300px;"
+      .zoom=\${args.zoom}
+      .center=\${args.center}
+      .layers=\${args.layers}
+    ></eox-map>
+    <eox-timecontrol
+      .for=\${args.for}
+      .layer=\${args.layer}
+      .controlProperty=\${args.controlProperty}
+      .controlValues=\${args.controlValues}
+      .slider=\${args.slider}
+    ></eox-timecontrol>
+  \`
+}`,...(i=(s=r.parameters)==null?void 0:s.docs)==null?void 0:i.source}}};var c,m,p;o.parameters={...o.parameters,docs:{...(c=o.parameters)==null?void 0:c.docs,source:{originalSource:`{
+  args: {
+    ...Primary.args,
+    for: "eox-map#slider",
+    slider: true
+  },
+  render: args => html\`
+    <eox-map
+      id="slider"
+      style="width: 400px; height: 300px;"
+      .zoom=\${args.zoom}
+      .center=\${args.center}
+      .layers=\${args.layers}
+    ></eox-map>
+    <eox-timecontrol
+      .for=\${args.for}
+      .layer=\${args.layer}
+      .controlProperty=\${args.controlProperty}
+      .controlValues=\${args.controlValues}
+      .slider=\${args.slider}
+    ></eox-timecontrol>
+  \`
+}`,...(p=(m=o.parameters)==null?void 0:m.docs)==null?void 0:p.source}}};var d,y,$;t.parameters={...t.parameters,docs:{...(d=t.parameters)==null?void 0:d.docs,source:{originalSource:`{
+  args: {
+    ...Primary.args,
+    for: "eox-map#programmatic-time-selection",
+    slider: true
+  },
+  render: args => html\`
+    <eox-map
+      id="programmatic-time-selection"
+      style="width: 400px; height: 300px;"
+      .zoom=\${args.zoom}
+      .center=\${args.center}
+      .layers=\${args.layers}
+    ></eox-map>
+    <div>
+      <input type="text" id="time" value="2022-12-26" />
+      <button
+        @click="\${() => {
+    const time = document.getElementById("time").value;
+    const timeControl = document.getElementById("programmatic");
+    timeControl.currentStep = time;
+  }}"
+      >
+        Go
+      </button>
+    </div>
+    <eox-timecontrol
+      id="programmatic"
+      .for=\${args.for}
+      .layer=\${args.layer}
+      .controlProperty=\${args.controlProperty}
+      .controlValues=\${args.controlValues}
+      .slider=\${args.slider}
+    ></eox-timecontrol>
+  \`
+}`,...($=(y=t.parameters)==null?void 0:y.docs)==null?void 0:$.source}}};var u,x,g;n.parameters={...n.parameters,docs:{...(u=n.parameters)==null?void 0:u.docs,source:{originalSource:`{
+  args: {
+    ...Primary.args,
+    for: "eox-map#disabled-play",
+    disablePlay: true
+  },
+  render: args => html\`
+    <eox-map
+      id="disabled-play"
+      style="width: 400px; height: 300px;"
+      .zoom=\${args.zoom}
+      .center=\${args.center}
+      .layers=\${args.layers}
+    ></eox-map>
+    <eox-timecontrol
+      .for=\${args.for}
+      .layer=\${args.layer}
+      .controlProperty=\${args.controlProperty}
+      .controlValues=\${args.controlValues}
+      .slider=\${args.slider}
+      .disablePlay=\${args.disablePlay}
+    ></eox-timecontrol>
+  \`
+}`,...(g=(x=n.parameters)==null?void 0:x.docs)==null?void 0:g.source}}};const I=["Primary","Slider","ProgrammaticTimeSelection","DisabledPlayButton"];export{n as DisabledPlayButton,r as Primary,t as ProgrammaticTimeSelection,o as Slider,I as __namedExportsOrder,f as default};
