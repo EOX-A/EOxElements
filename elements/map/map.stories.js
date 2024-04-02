@@ -96,6 +96,30 @@ export const WMSLayer = {
   },
 };
 
+/**
+ * A source with type `WMTSCapabilities` automatically fetches the provided capabilities url
+ * and renders the specified layer.
+ */
+export const WMTSCapabilitiesLayer = {
+  args: {
+    center: [20, 40],
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "WMTSCapabilities",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
+          layer: "s2cloudless-2017",
+        },
+      },
+    ],
+    zoom: 5,
+  },
+};
+
 export const STACLayer = {
   args: {
     center: [-122.38, 46.1],
@@ -183,6 +207,41 @@ export const Controls = {
           },
         ],
       },
+    },
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+  },
+};
+
+export const Geolocation = {
+  args: {
+    zoom: 7,
+    controls: {
+      Geolocation: {
+        tracking: true,
+        trackHeading: true,
+        centerWhenReady: true,
+        highAccuracy: true,
+        trackAccuracy: true,
+        style: {
+          "circle-radius": 10,
+          "circle-fill-color": "red",
+          "circle-stroke-color": "white",
+          "circle-stroke-width": 2,
+        },
+        buttonIcon:
+          "https://upload.wikimedia.org/wikipedia/commons/7/74/Location_icon_from_Noun_Project.png",
+      },
+      Zoom: {},
     },
     layers: [
       {

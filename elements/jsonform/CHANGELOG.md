@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.4.0...jsonform-v0.5.0) (2024-04-02)
+
+
+### Features
+
+* Add no-shadow attribute/property ([#799](https://github.com/EOX-A/EOxElements/issues/799)) ([a42fe8e](https://github.com/EOX-A/EOxElements/commit/a42fe8e1fb91ad67a8b4e438ce06bda1bedccc2f))
+
+## [0.4.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.3.0...jsonform-v0.4.0) (2024-03-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* reactive props ([#737](https://github.com/EOX-A/EOxElements/issues/737)) ([4d93dd3](https://github.com/EOX-A/EOxElements/commit/4d93dd3e691133f448e57ebb569138cd99f133d8))
+
+### Features
+
+* Reactive props ([#737](https://github.com/EOX-A/EOxElements/issues/737)) ([4d93dd3](https://github.com/EOX-A/EOxElements/commit/4d93dd3e691133f448e57ebb569138cd99f133d8))
+
 ## [0.3.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.2.1...jsonform-v0.3.0) (2024-02-20)
 
 

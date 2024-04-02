@@ -1,5 +1,11 @@
-import { TAGS_EXPR, TAGS_OPENING, TAGS_SELF_CLOSING } from "../enums";
+import {
+  DEFAULT_MODE_ATTRS,
+  TAGS_EXPR,
+  TAGS_OPENING,
+  TAGS_SELF_CLOSING,
+} from "../enums";
 import slugify from "@sindresorhus/slugify";
+import { convertAttributeValueBasedOnItsType } from "../helpers/render-html-string.js";
 
 /**
  * Plugin registration with Markdown-it - Annotate Markdown documents with HTML attributes, IDs and classes.
@@ -10,6 +16,8 @@ import slugify from "@sindresorhus/slugify";
  */
 export default function attributes(md) {
   md.nav = [];
+  md.attrs = [];
+  md.sections = {};
   md.core.ruler.push("curly_attributes", curlyAttrs);
 }
 
@@ -27,31 +35,53 @@ function curlyAttrs(state) {
   let finalTokens = [];
   let sectionStart = false;
   let sectionStartIndex = 0;
+  let sectionSteps = false;
+  let sectionStepsIndex = 0;
 
   // Iterate through tokens to process them
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
 
+    // Initialise opening tag
     if (isOpener(token.type) || TAGS_SELF_CLOSING[token.type]) {
       sPush(stack, token);
     }
 
-    if (token.type === "heading_open" && token.tag === "h2") {
-      if (sectionStart) {
-        finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
-        sectionStart = false;
-        sectionStartIndex = -1;
-      }
-
-      if (!sectionStart) {
-        finalTokens.push(
-          addNewHTMLSection(state, `<div id="{id}" class="section-wrap">`, 0, 1)
-        );
-        sectionStart = true;
-        sectionStartIndex = finalTokens.length - 1;
-      }
+    // Parse opening section through h2 tag
+    if (token.tag === "h2") {
+      const data = parseSection(
+        i,
+        tokens,
+        finalTokens,
+        sectionStart,
+        sectionStartIndex,
+        state,
+        stack
+      );
+      sectionStart = data.sectionStart;
+      sectionStartIndex = data.sectionStartIndex;
     }
 
+    // Parse opening step section through h3 tag
+    if (token.tag === "h3") {
+      const data = parseStepSection(
+        i,
+        tokens,
+        finalTokens,
+        sectionStart,
+        sectionStartIndex,
+        sectionSteps,
+        sectionStepsIndex,
+        state,
+        stack
+      );
+      sectionStart = data.sectionStart;
+      sectionSteps = data.sectionSteps;
+      sectionStartIndex = data.sectionStartIndex;
+      sectionStepsIndex = data.sectionStepsIndex;
+    }
+
+    // Parse html block and apply token
     if (token.type === "html_block") {
       const m = token.content.match(TAGS_EXPR);
       if (!m) {
@@ -66,20 +96,26 @@ function curlyAttrs(state) {
       }
     }
 
+    // Parse inline content
     if (token.type === "inline")
-      finalTokens = curlyInline(
-        token.children,
+      finalTokens = parseInlineContent(
+        token,
         stack,
         nav,
         finalTokens,
-        sectionStartIndex
+        sectionStartIndex,
+        sectionStepsIndex
       );
 
     token.level = token.level + 1;
     finalTokens.push(token);
   }
-  if (sectionStart)
-    finalTokens.push(addNewHTMLSection(state, "</div>", -1, -1));
+
+  // Close opened sections and step section tags if opened
+  if (sectionStart) pushClosingTag(finalTokens, sectionStartIndex, state);
+  if (sectionSteps) pushClosingTag(finalTokens, sectionStepsIndex, state);
+
+  generateCustomAttrsAndSectionMetaList(finalTokens, state.md);
 
   omissions.forEach((idx) => tokens.splice(idx, 1));
   state.tokens = finalTokens;
@@ -92,13 +128,15 @@ function curlyAttrs(state) {
  * Add new html section token
  *
  * @param {{tokens: Array<Object>}} state - Token state
- * @param {String} html
+ * @param {String} tag
  * @param {Number} level
  * @param {Number} nesting
+ * @param {String} type
+ * @param {Array<Array> | null} attrs
  */
-function addNewHTMLSection(state, html, level, nesting) {
-  const token = new state.Token("html_block", "", level);
-  token.content = html;
+function addNewHTMLSection(state, tag, level, nesting, type, attrs = null) {
+  const token = new state.Token(type, tag, level);
+  token.attrs = attrs;
   token.nesting = nesting;
 
   return token;
@@ -118,19 +156,27 @@ function isOpener(type) {
 /**
  * Process inline tokens for attributes
  *
- * @param {Array<Object>} children - Inline children
+ * @param {Object} token - current token
  * @param {Object} stack
  * @param {Array<Object>} nav
  * @param {Array<Object>} finalTokens
  * @param {Number} sectionStartIndex
+ * @param {Number} sectionStepsIndex
  * @return {Array<Object>} finalTokens
  *
  */
-function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
+function parseInlineContent(
+  token,
+  stack,
+  nav,
+  finalTokens,
+  sectionStartIndex,
+  sectionStepsIndex
+) {
   let lastText;
   const omissions = [];
 
-  children.forEach((child, i) => {
+  token.children.forEach((child, i) => {
     if (
       isOpener(child.type) ||
       TAGS_SELF_CLOSING[child.type] ||
@@ -151,24 +197,208 @@ function curlyInline(children, stack, nav, finalTokens, sectionStartIndex) {
     if (child.type === "text") lastText = child;
   });
 
-  if (stack.last.tag === "h2") {
-    const title = (lastText && lastText["content"]) || children[0].content;
-    const attrsId = (stack.last.attrs || []).find(
-      (subArr) => subArr[0] === "id"
-    )?.[1];
-    const titleSlug = slugify(title);
-    const id = `section-${attrsId || titleSlug}`;
-
-    finalTokens[sectionStartIndex].content = finalTokens[
-      sectionStartIndex
-    ].content.replace("{id}", id);
-
-    nav.push({ title, id });
+  if (stack.last.tag === "h3" && sectionStepsIndex !== -1) {
+    const currentSectionStepToken = finalTokens[sectionStepsIndex];
+    currentSectionStepToken.section = finalTokens[sectionStartIndex].id;
+    applyToToken(currentSectionStepToken, stack.last.attrStr);
   }
 
-  omissions.forEach((idx) => children.splice(idx, 1));
+  // Generate nav value and transform div section to `as` attribute
+  if (stack.last.tag === "h2") {
+    const title =
+      (lastText && lastText["content"]) || token.children[0]?.content;
+    const attrsId = getAttr(stack.last.attrs, "id");
+    const mode = getAttr(stack.last.attrs, "mode") || "container";
+    const position = getAttr(stack.last.attrs, "position") || "left";
+    const titleSlug = slugify(title);
+    const id = attrsId || titleSlug;
+    const sectionId = `section-${id}`;
+
+    nav.push({ title, id: sectionId });
+
+    const attrAs = getAttr(stack.last.attrs, "as");
+    const currentSectionToken = finalTokens[sectionStartIndex];
+    const currentH2SectionToken = finalTokens[finalTokens.length - 1];
+
+    const sectionClass = `.${mode} .${position}`;
+    currentSectionToken.attrs.push(["id", sectionId]);
+    currentSectionToken.id = sectionId;
+
+    // Transform section div to `as` attribute
+    if (attrAs) {
+      currentH2SectionToken.tag = attrAs;
+      currentH2SectionToken.type = "html_open";
+      currentH2SectionToken.as = attrAs;
+      currentH2SectionToken.section = sectionId;
+
+      token.type = "html_inline";
+      token.content = "";
+      token.children = null;
+
+      applyToToken(
+        currentH2SectionToken,
+        `${lastText ? `title='${lastText.content}'` : ""}${
+          stack.last.attrStr
+        } #${id}`
+      );
+
+      currentSectionToken.mode = mode;
+      currentSectionToken.position = position;
+
+      // Combining div attribute with h2 attributes
+      applyToToken(
+        currentSectionToken,
+        `#${sectionId} .${currentSectionToken.attrs[0][1]} .section-custom`
+      );
+    }
+
+    applyToToken(currentSectionToken, sectionClass);
+  }
+
+  if (token.children) omissions.forEach((idx) => token.children.splice(idx, 1));
 
   return finalTokens;
+}
+
+/**
+ * Process section tokens with help of h2 tag
+ *
+ * @param {Object} index - current token index
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {Boolean} sectionStart - Section started or not
+ * @param {Boolean} sectionStartIndex - Section start index
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {Object} stack
+ * @return {Object} - Final list of updated states
+ */
+function parseSection(
+  index,
+  tokens,
+  finalTokens,
+  sectionStart,
+  sectionStartIndex,
+  state,
+  stack
+) {
+  const token = tokens[index];
+
+  if (token.type === "heading_close") {
+    token.tag = finalTokens[finalTokens.length - 2].tag;
+    token.type = finalTokens[finalTokens.length - 2].type.replace(
+      "_open",
+      "_close"
+    );
+  }
+
+  // Adding closing section div
+  if (token.type === "heading_open") {
+    if (sectionStart) {
+      const tag = finalTokens[sectionStartIndex].tag;
+      finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
+      sectionStart = false;
+      sectionStartIndex = -1;
+    }
+
+    // Adding opening section div
+    if (!sectionStart) {
+      finalTokens.push(
+        addNewHTMLSection(state, "div", 0, 1, "html_open", [
+          ["class", "section-wrap"],
+        ])
+      );
+      sectionStart = true;
+      sectionStartIndex = finalTokens.length - 1;
+      stack.last.as = !!tokens[index + 1].content.includes("as=");
+    }
+  }
+
+  return { sectionStart, sectionStartIndex, stack, finalTokens };
+}
+
+/**
+ * Process step section tokens with help of h3 tag
+ *
+ * @param {Object} index - current token index
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {Boolean} sectionStart - Section started or not
+ * @param {Boolean} sectionStartIndex - Section start index
+ * @param {Boolean} sectionSteps - Step Section started or not
+ * @param {Boolean} sectionStepsIndex - Step Section start index
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {Object} stack
+ * @return {Object} - Final list of updated states
+ */
+function parseStepSection(
+  index,
+  tokens,
+  finalTokens,
+  sectionStart,
+  sectionStartIndex,
+  sectionSteps,
+  sectionStepsIndex,
+  state,
+  stack
+) {
+  const token = tokens[index];
+
+  if (
+    token.type === "heading_open" &&
+    sectionStart &&
+    finalTokens[sectionStartIndex].mode === "tour"
+  ) {
+    if (sectionSteps) {
+      finalTokens.push(
+        addNewHTMLSection(state, "section-step", -1, -1, "html_close")
+      );
+      sectionSteps = false;
+      sectionStepsIndex = -1;
+    }
+
+    // Adding opening section div
+    if (!sectionSteps) {
+      finalTokens.push(
+        addNewHTMLSection(state, "section-step", 0, 1, "html_open")
+      );
+      sectionSteps = true;
+      sectionStepsIndex = finalTokens.length - 1;
+      stack.last.as = !!tokens[index + 1].content.includes("as=");
+    }
+  }
+
+  return {
+    sectionStart,
+    sectionStartIndex,
+    sectionSteps,
+    sectionStepsIndex,
+    stack,
+    finalTokens,
+  };
+}
+
+/**
+ * Process and push closing tags for section and step section
+ *
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {Object} index - current token index
+ * @param {{tokens: Array<Object>}} state - Token state
+ */
+function pushClosingTag(finalTokens, index, state) {
+  const tag = finalTokens[index].tag;
+  finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
+}
+
+/**
+ * Get attribute value from 3d attribute array
+ *
+ * @param {Array<Array>} attrs - 3d array of attributes
+ * @param {String} key - key which we need to get
+ * @return {String | null} Attribute Value
+ *
+ */
+function getAttr(attrs, key) {
+  return (attrs || []).find((subArr) => subArr[0] === key)?.[1] || null;
 }
 
 /**
@@ -203,8 +433,9 @@ function findParent(stack, tag, depth) {
  * @param {Object} token
  * @param {String} attrs
  */
-function applyToToken(token, attrs) {
+function applyToToken(token, attrs = "") {
   let m;
+  token.attrStr = attrs;
 
   // Iterate over the attributes string to find all matches for id, class, or other attributes
   while (attrs.length > 0) {
@@ -242,11 +473,25 @@ function applyToToken(token, attrs) {
     else if ((m = attrs.match(/^\s+/))) {
       attrs = attrs.slice(m[0].length);
     }
+    // Match "as" attribute
+    else if ((m = attrs.match(/^\s*as="([a-zA-Z0-9\-_]+)"/))) {
+      addAttr(token, "as", m[1]);
+      attrs = attrs.slice(m[0].length);
+    }
     // If no matches are found, break the loop to avoid an infinite loop
     else {
       break;
     }
   }
+
+  const asAttr = getAttr(token.attrs, "as");
+  const modeAttr = getAttr(token.attrs, "mode");
+
+  // Adding default attribute based on mode and as
+  DEFAULT_MODE_ATTRS[asAttr]?.[modeAttr]?.forEach((attr) => {
+    addAttr(token, attr[0], attr[1]);
+    attrs = attrs.slice(attr[0].length);
+  });
 
   return true;
 }
@@ -300,4 +545,88 @@ function sPush(stack, token) {
  */
 function trimRight(obj, attr) {
   obj[attr] = obj[attr].replace(/\s*$/, "");
+}
+
+/**
+ * Generate list of custom attributes for DOM sanitize whitelist.
+ *
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function generateCustomAttrsAndSectionMetaList(tokens, md) {
+  tokens.forEach((token) => {
+    const attrs = token.attrs || [];
+
+    // Initialize sections meta
+    initializeSectionsMeta(token, md);
+
+    // Process each attribute for the current token
+    attrs.forEach((attr) => {
+      // Add attribute to md.attrs if it's not already included
+      if (!md.attrs.includes(attr[0])) {
+        md.attrs.push(attr[0]);
+      }
+
+      // Special handling for sections based on markup and tag
+      if (token.section) {
+        updateSectionMetaBasedOnMarkup(token, attr, md);
+        updateStepBasedOnStepSection(token, attr, md);
+      }
+    });
+  });
+}
+
+/**
+ * Initialize sections meta list
+ *
+ * @param {Object} token - Markdown token
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function initializeSectionsMeta(token, md) {
+  if (token.section) {
+    if (token.tag === "section-step" && !md.sections[token.section].steps) {
+      md.sections[token.section].steps = [];
+    }
+    if (token.markup === "##") {
+      md.sections[token.section] = md.sections[token.section] || {};
+    }
+
+    md.sections[token.section]?.steps?.push({});
+  }
+}
+
+/**
+ * Update section list based on attribute values mentioned in comment decorate
+ *
+ * @param {Object} token - Markdown token
+ * @param {Array} attr - Attribute key & value
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function updateSectionMetaBasedOnMarkup(token, attr, md) {
+  if (token.markup === "##") {
+    md.sections[token.section] = {
+      [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
+      ...md.sections[token.section],
+    };
+  }
+}
+
+/**
+ * Update section list based on attribute values declared in <section-step>
+ *
+ * @param {Object} token - Markdown token
+ * @param {Array} attr - Attribute key & value
+ * @param {import("markdown-it").default} md - Markdown-It instances
+ */
+function updateStepBasedOnStepSection(token, attr, md) {
+  if (token.tag === "section-step") {
+    const steps = md.sections[token.section].steps;
+    const currentStepIndex = steps.length - 1;
+    const currentStep = steps[currentStepIndex];
+
+    steps[currentStepIndex] = {
+      [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
+      ...currentStep,
+    };
+  }
 }

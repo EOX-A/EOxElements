@@ -1,5 +1,7 @@
 // Exported test methods
 
 export { default as loadJsonFormTest } from "./load-jsonform";
+export { default as loadJsonFormNoShadowTest } from "./load-jsonform-no-shadow";
 export { default as loadExternalSchemaTest } from "./load-external-schema";
-export { default as loadExternalStartValsTest } from "./load-external-startVals";
+export { default as loadExternalValueTest } from "./load-external-value";
+export { default as loadReRenderFormOnChangeTest } from "./re-render-form-on-change";

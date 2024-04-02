@@ -9,6 +9,9 @@ import {
   loadSectionsTest,
   loadNavigationTest,
   loadMarkdownConfigTest,
+  LoadCustomElementTest,
+  loadMapSectionTest,
+  loadMapTourTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -35,4 +38,13 @@ describe("Storytelling", () => {
   // Test case to loads basic config through storytelling markdown
   it("loads basic config through storytelling markdown", () =>
     loadMarkdownConfigTest());
+
+  // Test case to load custom element
+  it("Load custom element", () => LoadCustomElementTest());
+
+  // Test case to load eox-map as a section
+  it("Load eox-map section", () => loadMapSectionTest());
+
+  // Test case to load map tour with sections and step sections
+  it("Load map tour sections and step sections", () => loadMapTourTest());
 });

@@ -12,16 +12,11 @@ import addCustomInputs from "./custom-inputs";
 export class EOxJSONForm extends LitElement {
   static properties = {
     schema: { attribute: false, type: Object },
-    startVals: { attribute: false, type: Object },
+    value: { attribute: false, type: Object },
     options: { attribute: false, type: Object },
+    noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
   };
-
-  /**
-   * data input by the user
-   * @type {{[key: string]: any}}
-   */
-  #data = {};
 
   /**
    * editor instance generated through - JSONEditor
@@ -42,7 +37,7 @@ export class EOxJSONForm extends LitElement {
      * Default values for the form editor
      * @type {JsonSchema}
      */
-    this.startVals;
+    this.value;
 
     /**
      * Default values for the form editor
@@ -57,6 +52,13 @@ export class EOxJSONForm extends LitElement {
       disable_array_delete_last_row: true,
       array_controls_top: true,
     };
+
+    /**
+     * Renders the element without a shadow root
+     *
+     * @type {Boolean}
+     */
+    this.noShadow = false;
 
     /**
      * Render the element without additional styles
@@ -86,50 +88,66 @@ export class EOxJSONForm extends LitElement {
     return property;
   }
   /**
-   * Get The JSON schema for rendering the form
+   * JSON schema used to render the form
    */
-  getSchema() {
-    return this.schema;
+  get schema() {
+    return this._schema;
   }
   /**
    * @param {JsonSchema} newSchema
    */
-  setSchema(newSchema) {
-    this.schema = newSchema;
+
+  set schema(newSchema) {
+    let oldValue = this._schema;
+    this._schema = newSchema;
+    if (this.#editor) {
+      this.#editor.destroy();
+      addCustomInputs(this.value || {});
+
+      const formEle = this.renderRoot.querySelector("form");
+
+      this.#editor = new JSONEditor(formEle, {
+        schema: this.schema,
+        ...(this.value ? { startval: this.value } : {}),
+        theme: "html",
+        ajax: true,
+        ...this.options,
+      });
+
+      this.#dispatchEvent();
+    }
+    this.requestUpdate("schema", oldValue);
   }
 
   /**
-   * Get default value for rendering the form
+   * Default values to fill the form
    */
-  getDefaultValues() {
-    return this.startVals;
+  get value() {
+    return this._value;
   }
   /**
    * @param {JsonSchema} newVal
    */
-  setDefaultValues(newVal) {
-    this.startVals = newVal;
+  set value(newVal) {
+    let oldValue = this._value;
+    this._value = newVal;
+    if (this.#editor && this.#editor.ready) {
+      this.#editor.setValue(this.value);
+    }
+    this.requestUpdate("value", oldValue);
   }
 
   /**
-   * Get default value for rendering the form
+   * Value object has been changed
    */
-  getValues() {
-    return this.#data;
-  }
-
-  /**
-   * Data object has been changed
-   */
-  #emitData() {
+  #emitValue() {
     this.dispatchEvent(
       new CustomEvent(`change`, {
-        detail: this.#data,
+        detail: this.value,
         bubbles: true,
         composed: true,
       })
     );
-    this.requestUpdate();
   }
 
   /**
@@ -139,24 +157,28 @@ export class EOxJSONForm extends LitElement {
     const events = ["ready", "change"];
 
     events.map((evt) => {
-      this.#editor.on(evt, () => {
-        this.#data = this.#editor.getValue();
-        this.#emitData();
+      this.#editor.on(evt, async () => {
+        this._value = this.#editor.getValue();
+        this.#emitValue();
       });
     });
   }
 
-  async firstUpdated() {
-    this.setSchema(await this.parseProperty(this.schema));
-    this.setDefaultValues(await this.parseProperty(this.startVals));
+  async updated(changedProperties) {
+    // check if schema or value has been changed to prevent useless parsing
+    if (changedProperties.has("schema")) {
+      this.schema = await this.parseProperty(this.schema);
+    }
+    this.value = await this.parseProperty(this.value);
+
     if (!this.#editor) {
-      addCustomInputs(this.startVals || {});
+      addCustomInputs(this.value || {});
 
       const formEle = this.renderRoot.querySelector("form");
 
       this.#editor = new JSONEditor(formEle, {
         schema: this.schema,
-        ...(this.startVals ? { startval: this.startVals } : {}),
+        ...(this.value ? { startval: this.value } : {}),
         theme: "html",
         ajax: true,
         ...this.options,
@@ -164,6 +186,13 @@ export class EOxJSONForm extends LitElement {
 
       this.#dispatchEvent();
     }
+  }
+
+  /**
+   * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
+   */
+  createRenderRoot() {
+    return this.noShadow ? this : super.createRenderRoot();
   }
 
   render() {

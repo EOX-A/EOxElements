@@ -9,11 +9,12 @@ const testVals = {
   value: "bar",
 };
 /**
- * Test to verify if the jsonform component loads successfully.
+ * Test to verify if the jsonform component loads successfully without shadow.
  */
-const loadJsonFormTest = () => {
+const loadJsonFormNoShadowTest = () => {
   cy.mount(
     html`<eox-jsonform
+      no-shadow
       .schema=${{
         type: "object",
         properties: {
@@ -27,13 +28,10 @@ const loadJsonFormTest = () => {
       }}
     ></eox-jsonform>`
   ).as(jsonForm);
-  // Find the jsonForm element and access its shadow DOM
-  cy.get(jsonForm)
-    .shadow()
-    .within(() => {
-      cy.get(".je-form-input-label").invoke("html").should("eq", testVals.key);
-      cy.get("input[name]").invoke("val").should("eq", testVals.value);
-    });
+  // Find the jsonForm element and assure there is no shadow DOM
+  cy.get(jsonForm).shadow().should("not.exist");
+  cy.get(".je-form-input-label").invoke("html").should("eq", testVals.key);
+  cy.get("input[name]").invoke("val").should("eq", testVals.value);
 };
 
-export default loadJsonFormTest;
+export default loadJsonFormNoShadowTest;

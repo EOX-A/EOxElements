@@ -1,11 +1,12 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import {
+  getCustomEleHandling,
   loadMarkdownURL,
   scrollAnchorClickEvent,
   scrollIntoView,
+  renderHtmlString,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -14,6 +15,8 @@ import {
   markdownItDecorateImproved,
 } from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
+import "./components/editor";
+import { DEFAULT_SENSITIVE_TAGS } from "./enums";
 const md = markdownit({ html: true });
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
@@ -26,6 +29,7 @@ export class EOxStoryTelling extends LitElement {
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
+      showEditor: { attribute: "show-editor", type: Boolean },
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
     };
@@ -72,6 +76,13 @@ export class EOxStoryTelling extends LitElement {
     this.noShadow = false;
 
     /**
+     * Enable or disable editor
+     *
+     * @type {Boolean}
+     */
+    this.showEditor = false;
+
+    /**
      * Enable or disable navigation
      *
      * @type {Boolean}
@@ -99,7 +110,15 @@ export class EOxStoryTelling extends LitElement {
 
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
-      this.#html = DOMPurify.sanitize(md.render(this.markdown));
+      const unsafeHTML = md.render(this.markdown);
+      this.#html = renderHtmlString(
+        DOMPurify.sanitize(unsafeHTML, {
+          CUSTOM_ELEMENT_HANDLING: getCustomEleHandling(md),
+          ADD_TAGS: DEFAULT_SENSITIVE_TAGS,
+        }),
+        md.sections,
+        this
+      );
       this.#config = md.config;
 
       if (typeof this.#config.nav === "boolean")
@@ -182,9 +201,19 @@ export class EOxStoryTelling extends LitElement {
             </div>
           `
         )}
-        <div class="container">
-          ${when(this.#html, () => html`${unsafeHTML(this.#html)}`)}
-        </div>
+        <div>${when(this.#html, () => html`${this.#html}`)}</div>
+        ${when(
+          this.showEditor,
+          () => html`
+            <story-telling-editor
+              .markdown=${this.markdown}
+              .isNavigation=${Boolean(this.showNav)}
+              @change=${(e) => {
+                if (e.detail) this.markdown = e.detail.markdown;
+              }}
+            ></story-telling-editor>
+          `
+        )}
       </div>
     `;
   }

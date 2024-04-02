@@ -2,14 +2,19 @@
 import "../src/main";
 import {
   loadJsonFormTest,
+  loadJsonFormNoShadowTest,
   loadExternalSchemaTest,
-  loadExternalStartValsTest,
+  loadExternalValueTest,
+  loadReRenderFormOnChangeTest,
 } from "./cases";
 
 // Test suite for Jsonform
 describe("Jsonform", () => {
   // Test case to ensure the jsonform component loads successfully
   it("loads the jsonform", () => loadJsonFormTest());
+  it("loads the jsonform without shadow root", () =>
+    loadJsonFormNoShadowTest());
   it("loads schema from url", () => loadExternalSchemaTest());
-  it("loads startVals from url", () => loadExternalStartValsTest());
+  it("loads value from url", () => loadExternalValueTest());
+  it("re-renders form on change", () => loadReRenderFormOnChangeTest());
 });

@@ -1,2 +1,7 @@
 export { default as loadMarkdownURL } from "./load-markdown-url.js";
-export { scrollAnchorClickEvent, scrollIntoView } from "./misc";
+export { renderHtmlString } from "./render-html-string";
+export {
+  scrollAnchorClickEvent,
+  scrollIntoView,
+  getCustomEleHandling,
+} from "./misc";

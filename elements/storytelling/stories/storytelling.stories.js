@@ -9,8 +9,14 @@ import {
   MarkdownAttrCommentStory,
   NavigationStory,
   MarkdownBasicConfigStory,
+  CustomElementStory,
+  MarkdownMapSectionStory,
+  MarkdownSectionsStory,
+  MarkdownMapTourStory,
+  MarkdownEditorStory,
 } from "./index";
 import { html } from "lit";
+import "../../map/main";
 
 export default {
   title: "Elements/eox-storytelling",
@@ -58,3 +64,29 @@ export const MarkdownWithBasicConfig = MarkdownBasicConfigStory;
  * StoryTelling with Navigation
  */
 export const MarkdownWithNavigation = NavigationStory;
+
+/**
+ * With the `as` attribute, `h2` sections can be replaced by other elements (native and custom elements).
+ * The newly rendered element replaces the original `h2' text content (fallback for vanilla md rendering) completely.
+ */
+export const CustomElement = CustomElementStory;
+
+/**
+ * StoryTelling with simple and custom sections
+ */
+export const MarkdownWithSections = MarkdownSectionsStory;
+
+/**
+ * StoryTelling with @eox-map sections
+ */
+export const MarkdownMapSection = MarkdownMapSectionStory;
+
+/**
+ * StoryTelling with map tour
+ */
+export const MarkdownMapTour = MarkdownMapTourStory;
+
+/**
+ * StoryTelling with editor
+ */
+export const MarkdownWithEditor = MarkdownEditorStory;

@@ -24,3 +24,9 @@ export const TAGS_SELF_CLOSING = {
   hr: true,
   image: true,
 };
+
+export const DEFAULT_MODE_ATTRS = {
+  "eox-map": {
+    tour: [["prevent-scroll", true]],
+  },
+};

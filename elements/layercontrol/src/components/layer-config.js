@@ -131,7 +131,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
           <!-- Render a JSON form for layer configuration -->
           <eox-jsonform
             .schema=${this.layerConfig.schema}
-            .startVals=${this.#startVals}
+            .value=${this.#startVals}
             .options=${options}
             @change=${this.debouncedDataChange}
           ></eox-jsonform>

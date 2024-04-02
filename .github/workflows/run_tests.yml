@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
+        # necessary for git diff of changed files in the PR
+        with:
+          fetch-depth: 2
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
@@ -31,7 +34,7 @@ jobs:
           check-latest: true
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v4.0.1
+        uses: actions/cache@v4.0.2
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -42,7 +45,8 @@ jobs:
         run: npm ci --prefer-offline --no-audit
 
       - name: Run component tests 👀
-        run: npm run test:component
-
+        run: |
+          export CI_PATHS_CHANGED=$(git diff --name-only -r HEAD^1 HEAD)
+          npm run test:component
       - name: Run e2e tests 👀
         run: npm run test:e2e

@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.5.1](https://github.com/EOX-A/EOxElements/compare/map-v1.5.0...map-v1.5.1) (2024-04-02)
+
+
+### Bug Fixes
+
+* Update default geolocation control icon ([#802](https://github.com/EOX-A/EOxElements/issues/802)) ([4119da7](https://github.com/EOX-A/EOxElements/commit/4119da7054e0f7dbc4b90c100897672b2933cc1b))
+
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/map-v1.4.0...map-v1.5.0) (2024-03-25)
+
+
+### Features
+
+* Custom WMTSCapabilities Source ([#767](https://github.com/EOX-A/EOxElements/issues/767)) ([0186a4f](https://github.com/EOX-A/EOxElements/commit/0186a4f46ade37b4cc105b8bfbc81cd0cf15eeb7))
+* Geolocation control ([#769](https://github.com/EOX-A/EOxElements/issues/769)) ([10ae84b](https://github.com/EOX-A/EOxElements/commit/10ae84b4f9687e575df05c52fbdb15a23f80c3c9))
+
+
+### Bug Fixes
+
+* Add fallback values if config properties are not defined ([#772](https://github.com/EOX-A/EOxElements/issues/772)) ([e6fd179](https://github.com/EOX-A/EOxElements/commit/e6fd179e270db509e988d6da5f807e9bc767498d))
+
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/map-v1.3.0...map-v1.4.0) (2024-03-13)
+
+
+### Features
+
+* Switch projections & allow advanced projections ([#730](https://github.com/EOX-A/EOxElements/issues/730)) ([6a1a544](https://github.com/EOX-A/EOxElements/commit/6a1a544514eb6776895eee3a2a8d510521f052b3))
+
+
+### Bug Fixes
+
+* Refresh source of VectorLayer after projection change ([#733](https://github.com/EOX-A/EOxElements/issues/733)) ([4947ec8](https://github.com/EOX-A/EOxElements/commit/4947ec822db8535b45bbf7b5a3bfa686502694ca))
+
 ## [1.3.0](https://github.com/EOX-A/EOxElements/compare/map-v1.2.0...map-v1.3.0) (2024-02-26)
 
 
