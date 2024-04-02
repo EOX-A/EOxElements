@@ -1,3 +1,4 @@
+// Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
 import items from "./test/testItems.json";
 

@@ -1,3 +1,4 @@
+// Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
 import basicSchema from "./stories/public/basicSchema.json";
 import catalogSchema from "./stories/public/catalogSchema.json";
