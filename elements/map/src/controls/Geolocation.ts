@@ -44,18 +44,22 @@ export default class GeolocationControl extends Control {
     const element = document.createElement("div");
     element.className = "geolocation ol-unselectable ol-control";
     const button = document.createElement("button");
+    const image = document.createElement("img");
     if (options.buttonIcon) {
-      const image = document.createElement("img");
       image.src = options.buttonIcon;
-      image.style.height = "100%";
-      image.style.width = "100%";
-      image.style.position = "absolute";
-      image.style.pointerEvents = "none";
-      element.appendChild(image);
     } else {
       // fallback icon
-      button.innerHTML = "&#6816";
+      image.style.background = "var(--ol-subtle-foreground-color)";
+      image.style.maskImage = `url(
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-6 -6 36 36'%3E %3Cpath d='M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M3.05,13H1V11H3.05C3.5,6.83 6.83,3.5 11,3.05V1H13V3.05C17.17,3.5 20.5,6.83 20.95,11H23V13H20.95C20.5,17.17 17.17,20.5 13,20.95V23H11V20.95C6.83,20.5 3.5,17.17 3.05,13M12,5A7,7 0 0,0 5,12A7,7 0 0,0 12,19A7,7 0 0,0 19,12A7,7 0 0,0 12,5Z' /%3E%3C/svg%3E"
+      )`;
     }
+    image.style.height = "100%";
+    image.style.width = "100%";
+    image.style.position = "absolute";
+    image.style.pointerEvents = "none";
+    element.appendChild(image);
+    button.title = "Show your location";
     element.appendChild(button);
 
     super({
