@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.0...jsonform-v0.6.1) (2024-04-03)
+
+
+### Bug Fixes
+
+* Prevent looping when loading external schema ([#814](https://github.com/EOX-A/EOxElements/issues/814)) ([e8dfaec](https://github.com/EOX-A/EOxElements/commit/e8dfaec9b367bfbef767e25b63be7453afffe6d6))
+
 ## [0.6.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.5.0...jsonform-v0.6.0) (2024-04-03)
 
 
