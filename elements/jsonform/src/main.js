@@ -105,12 +105,10 @@ export class EOxJSONForm extends LitElement {
    * @param {JsonSchema} newSchema
    */
   set schema(newSchema) {
-    let oldValue = this._schema;
     this._schema = newSchema;
     if (this.#editor) {
       this.#editor.destroy();
     }
-    this.requestUpdate("schema", oldValue);
   }
 
   /**
@@ -123,12 +121,10 @@ export class EOxJSONForm extends LitElement {
    * @param {JsonSchema} newVal
    */
   set value(newVal) {
-    let oldValue = this._value;
     this._value = newVal;
     if (this.#editor && this.#editor.ready) {
       this.#editor.setValue(this.value);
     }
-    this.requestUpdate("value", oldValue);
   }
 
   /**
@@ -159,15 +155,14 @@ export class EOxJSONForm extends LitElement {
   }
 
   async updated(changedProperties) {
-    // check if schema or value has been changed to prevent useless parsing
+    this._value = await this.parseProperty(this.value);
+    // check if schema has been changed to prevent useless parsing
     if (changedProperties.has("schema")) {
-      this.schema = await this.parseProperty(this.schema);
-    }
-    this.value = await this.parseProperty(this.value);
-
-    if (!this.#editor) {
-      this.#editor = await createEditor(this);
-      this.#dispatchEvent();
+      this._schema = await this.parseProperty(this.schema);
+      if (!this.#editor) {
+        this.#editor = await createEditor(this);
+        this.#dispatchEvent();
+      }
     }
   }
 
