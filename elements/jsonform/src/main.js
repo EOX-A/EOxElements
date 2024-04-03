@@ -151,7 +151,7 @@ export class EOxJSONForm extends LitElement {
     const events = ["ready", "change"];
 
     events.map((evt) => {
-      this.#editor.on(evt, async () => {
+      this.#editor.on(evt, () => {
         this._value = this.#editor.getValue();
         this.#emitValue();
       });

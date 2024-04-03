@@ -50,7 +50,6 @@ export const createEditor = (element) => {
         });
         element.renderRoot.appendChild(script);
       } else {
-        console.log("default");
         resolve(editor);
       }
     });
