@@ -119,3 +119,44 @@ export default async function initEditorEvents(
     handleResizeHandleMouseDown(e, StoryTellingEditor)
   );
 }
+
+/**
+ * Function import md file into editor
+ *
+ * @param {Object} editor - The SimpleMDE instance
+ */
+export function importMdFile(editor) {
+  const fileInput = document.createElement("input");
+  fileInput.type = "file";
+  fileInput.accept = ".md";
+  fileInput.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target.result;
+      editor.value(content);
+    };
+    reader.readAsText(file);
+  };
+  fileInput.click();
+}
+
+/**
+ * Function upload md file from editor
+ *
+ * @param {Object} editor - The SimpleMDE instance
+ */
+export function exportMdFile(editor) {
+  const content = editor.value();
+  const blob = new Blob([content], { type: "text/markdown" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "document.md";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
