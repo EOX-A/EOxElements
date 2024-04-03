@@ -32,12 +32,12 @@ export const createEditor = (element) => {
         editor.destroy();
 
         // Add SimpleMDE styles
-        const style = element.renderRoot.querySelector("style");
+        const style = document.createElement("style");
         style.innerHTML = `
           @import url("https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css");
           @import url("https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css");
-          ${style.innerHTML}
         `;
+        element.renderRoot.appendChild(style);
 
         // Add SimpleMDE bundle
         const script = document.createElement("script");
