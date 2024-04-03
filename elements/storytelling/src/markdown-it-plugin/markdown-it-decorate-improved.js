@@ -48,8 +48,8 @@ function curlyAttrs(state) {
       sPush(stack, token);
     }
 
-    // Parse opening section through h2 tag
-    if (token.tag === "h2") {
+    // Parse opening section through h1/h2 tag
+    if (token.tag === "h1" || token.tag === "h2") {
       const data = parseSection(
         i,
         tokens,
@@ -116,6 +116,31 @@ function curlyAttrs(state) {
     finalTokens.push(token);
   }
 
+  // For Hero sections render the hero title as h1
+  finalTokens
+    .filter((t) => getAttr(t.attrs, "mode") === "hero")
+    .forEach((t) => {
+      const open = addNewHTMLSection(state, "h1", 2, 1, "heading_open", [
+        ["class", "hero-header"],
+      ]);
+      const inline = addNewHTMLSection(state, "", 3, 0, "inline");
+      inline.children = [
+        addNewHTMLSection(
+          state,
+          "",
+          4,
+          0,
+          "text",
+          [],
+          getAttr(t.attrs, "title")
+        ),
+      ];
+      const close = addNewHTMLSection(state, "h1", 2, -1, "heading_close");
+
+      const heading = [open, inline, close];
+      finalTokens.splice(finalTokens.indexOf(t), 0, ...heading);
+    });
+
   // Close opened sections and step section tags if opened
   if (sectionStart) pushClosingTag(finalTokens, sectionStartIndex, state);
   if (sectionSteps) pushClosingTag(finalTokens, sectionStepsIndex, state);
@@ -139,8 +164,17 @@ function curlyAttrs(state) {
  * @param {String} type
  * @param {Array<Array> | null} attrs
  */
-function addNewHTMLSection(state, tag, level, nesting, type, attrs = null) {
+function addNewHTMLSection(
+  state,
+  tag,
+  level,
+  nesting,
+  type,
+  attrs = null,
+  content = ""
+) {
   const token = new state.Token(type, tag, level);
+  token.content = content;
   token.attrs = attrs;
   token.nesting = nesting;
 
@@ -209,7 +243,7 @@ function parseInlineContent(
   }
 
   // Generate nav value and transform div section to `as` attribute
-  if (stack.last.tag === "h2") {
+  if (stack.last.tag === "h1" || stack.last.tag === "h2") {
     const title =
       (lastText && lastText["content"]) || token.children[0]?.content;
     const attrsId = getAttr(stack.last.attrs, "id");
@@ -223,7 +257,7 @@ function parseInlineContent(
 
     const attrAs = getAttr(stack.last.attrs, "as");
     const currentSectionToken = finalTokens[sectionStartIndex];
-    const currentH2SectionToken = finalTokens[finalTokens.length - 1];
+    const currentHeaderSectionToken = finalTokens[finalTokens.length - 1];
 
     const sectionClass = `.${mode} .${position}`;
     currentSectionToken.attrs.push(["id", sectionId]);
@@ -231,17 +265,17 @@ function parseInlineContent(
 
     // Transform section div to `as` attribute
     if (attrAs) {
-      currentH2SectionToken.tag = attrAs;
-      currentH2SectionToken.type = "html_open";
-      currentH2SectionToken.as = attrAs;
-      currentH2SectionToken.section = sectionId;
+      currentHeaderSectionToken.tag = attrAs;
+      currentHeaderSectionToken.type = "html_open";
+      currentHeaderSectionToken.as = attrAs;
+      currentHeaderSectionToken.section = sectionId;
 
       token.type = "html_inline";
       token.content = "";
       token.children = null;
 
       applyToToken(
-        currentH2SectionToken,
+        currentHeaderSectionToken,
         `${lastText ? `title='${lastText.content}'` : ""}${
           stack.last.attrStr
         } #${id}`
@@ -266,7 +300,7 @@ function parseInlineContent(
 }
 
 /**
- * Process section tokens with help of h2 tag
+ * Process section tokens with help of h1/h2 tag
  *
  * @param {Object} index - current token index
  * @param {Array<Object>} tokens - List of markdown tokens
@@ -609,7 +643,7 @@ function initializeSectionsMeta(token, md) {
     if (token.tag === "section-step" && !md.sections[token.section].steps) {
       md.sections[token.section].steps = [];
     }
-    if (token.markup === "##") {
+    if (token.markup === "#" || token.markup === "##") {
       md.sections[token.section] = md.sections[token.section] || {};
     }
 
@@ -625,7 +659,7 @@ function initializeSectionsMeta(token, md) {
  * @param {import("markdown-it").default} md - Markdown-It instances
  */
 function updateSectionMetaBasedOnMarkup(token, attr, md) {
-  if (token.markup === "##") {
+  if (token.markup === "#" || token.markup === "##") {
     md.sections[token.section] = {
       [attr[0]]: convertAttributeValueBasedOnItsType(attr[1]),
       ...md.sections[token.section],
