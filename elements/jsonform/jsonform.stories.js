@@ -52,3 +52,25 @@ export const External = {
     value: externalValue,
   },
 };
+
+export const Markdown = {
+  args: {
+    schema: {
+      type: "object",
+      properties: {
+        md: {
+          type: "string",
+          format: "markdown",
+          options: {
+            simplemde: {
+              spellChecker: false,
+            },
+          },
+        },
+      },
+    },
+    value: {
+      md: "# Hello world! This is [markdown](https://en.wikipedia.org/wiki/Markdown).",
+    },
+  },
+};
