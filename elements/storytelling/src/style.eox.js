@@ -129,6 +129,54 @@ const styleEOX = `
     justify-items: start;
     display: grid;
   }
+  .story-telling .hero {
+    position: relative;      
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .story-telling .hero * {
+    color: white;
+    margin: 0rem 0.8rem;
+  }
+  .story-telling .hero::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    top: 0;
+    left:0;
+    background-image: linear-gradient(to bottom,rgba(0,0,0,0.7) 25%,rgba(0,0,0,0.06) 100%);
+    z-index: -1;
+  }
+  .story-telling .hero.center {
+    align-items: center;
+    text-align: center;
+  }
+  .story-telling .hero.left {
+    align-items: start;
+    text-align: left;
+  }
+  .story-telling .hero.right {
+    align-items: end;
+    text-align: right;
+  }
+  .story-telling .hero img, 
+  .story-telling .hero video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    margin: 0rem;
+  }
   .story-telling .tour.left {
     justify-items: start;
   }

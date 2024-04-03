@@ -9,3 +9,4 @@ export { default as MarkdownSectionsStory } from "./markdown-sections"; // Story
 export { default as MarkdownMapSectionStory } from "./markdown-map-section"; // StoryTelling with eox-map sections
 export { default as MarkdownMapTourStory } from "./markdown-map-tour"; // StoryTelling with map tour
 export { default as MarkdownEditorStory } from "./markdown-editor"; // StoryTelling with editor
+export { default as MarkdownHeroStory } from "./markdown-hero"; // StoryTelling with Hero Section

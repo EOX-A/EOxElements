@@ -13,6 +13,7 @@ import {
   loadMapSectionTest,
   loadMapTourTest,
   loadMarkdownEditorTest,
+  loadHeroSectionTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -51,4 +52,7 @@ describe("Storytelling", () => {
 
   // Test case to load markdown editor
   it("Load markdown editor", () => loadMarkdownEditorTest());
+
+  // Test case to ensure hero section loaded with content
+  it("Load hero section", () => loadHeroSectionTest());
 });

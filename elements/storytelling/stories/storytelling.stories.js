@@ -14,6 +14,7 @@ import {
   MarkdownSectionsStory,
   MarkdownMapTourStory,
   MarkdownEditorStory,
+  MarkdownHeroStory,
 } from "./index";
 import { html } from "lit";
 import "../../jsonform/src/main";
@@ -91,3 +92,8 @@ export const MarkdownMapTour = MarkdownMapTourStory;
  * StoryTelling with editor
  */
 export const MarkdownWithEditor = MarkdownEditorStory;
+
+/**
+ * StoryTelling with Hero Image and Video
+ */
+export const MarkdownWithHeroSection = MarkdownHeroStory;
