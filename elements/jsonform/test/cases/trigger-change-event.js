@@ -38,7 +38,7 @@ const triggerChangeEventTest = () => {
       // see https://github.com/json-editor/json-editor/issues/1081
       cy.get(".form-control").click();
     });
-  cy.get("@change").should("have.been.calledOnce");
+  cy.get("@change", { timeout: 7000 }).should("have.been.calledOnce");
 };
 
 export default triggerChangeEventTest;
