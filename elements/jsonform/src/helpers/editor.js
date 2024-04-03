@@ -27,10 +27,7 @@ export const createEditor = (element) => {
       // Check if one of the editors requires SimpleMDE and it's not yet installed.
       // If so, destroy the editor instance, load SimpleMDE and re-init the editor.
       if (
-        Object.values(editor.editors).some(
-          (e) => e instanceof SimplemdeEditor
-        ) &&
-        !window.SimpleMDE
+        Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
       ) {
         editor.destroy();
 
@@ -53,6 +50,7 @@ export const createEditor = (element) => {
         });
         element.renderRoot.appendChild(script);
       } else {
+        console.log("default");
         resolve(editor);
       }
     });
