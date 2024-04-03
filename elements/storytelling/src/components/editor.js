@@ -1,5 +1,4 @@
 import { LitElement, html } from "lit";
-import "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js";
 import { initEditorEvents } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
@@ -123,7 +122,6 @@ class StoryTellingEditor extends LitElement {
         </label>
       </div>
       <style>
-        @import url("https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css");
         eox-jsonform#storytelling-editor {
           display: block;
           height: 100%;
