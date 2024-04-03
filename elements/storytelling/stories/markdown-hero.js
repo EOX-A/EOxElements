@@ -17,7 +17,6 @@ export const MarkdownHero = {
 `,
   },
   render: (args) => html`
-    <!-- TEMP: no-shadow needed because of font-awesome -->
     <eox-storytelling
       id="markdown-hero"
       markdown=${args.markdown}
