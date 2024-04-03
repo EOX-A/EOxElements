@@ -101,8 +101,6 @@ export class EOxJSONForm extends LitElement {
     this._schema = newSchema;
     if (this.#editor) {
       this.#editor.destroy();
-      this.#editor = createEditor(this);
-      this.#dispatchEvent();
     }
     this.requestUpdate("schema", oldValue);
   }
@@ -160,7 +158,7 @@ export class EOxJSONForm extends LitElement {
     this.value = await this.parseProperty(this.value);
 
     if (!this.#editor) {
-      this.#editor = createEditor(this);
+      this.#editor = await createEditor(this);
       this.#dispatchEvent();
     }
   }
