@@ -10,11 +10,6 @@ class StoryTellingEditor extends LitElement {
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
-  /**
-   * @type {Boolean} - Temporary enable/disable editor state for switch button
-   */
-  #temporaryEnableEditor = true;
-
   constructor() {
     super();
 
@@ -81,10 +76,13 @@ class StoryTellingEditor extends LitElement {
   /**
    * Switch between editor or viewer mode
    */
-  #switchEditorView() {
-    this.#temporaryEnableEditor = Boolean(!this.#temporaryEnableEditor);
-    this.markdown = this.editor.value.Story;
-    this.requestUpdate();
+  #switchEditorView(evt) {
+    const wrapper = this.renderRoot.querySelector(".editor-wrapper");
+    if (!evt.target.checked) {
+      wrapper.classList.add("editor-hide");
+    } else {
+      wrapper.classList.remove("editor-hide");
+    }
   }
 
   // Override render method to define the HTML structure
@@ -94,11 +92,10 @@ class StoryTellingEditor extends LitElement {
         "Please import @eox/jsonform in order to use StoryTelling Editor"
       );
 
-    const editorView = !this.#temporaryEnableEditor ? "editor-hide" : "";
     const navHeight = this.isNavigation ? "partial-height" : "";
 
     return html`
-      <div class="editor-wrapper ${editorView} ${navHeight}">
+      <div class="editor-wrapper ${navHeight}">
         <eox-jsonform
           id="storytelling-editor"
           no-shadow
@@ -114,8 +111,8 @@ class StoryTellingEditor extends LitElement {
           <input
             class="switch-input"
             type="checkbox"
-            @click=${this.#switchEditorView}
-            .checked=${!!this.#temporaryEnableEditor}
+            @change=${this.#switchEditorView}
+            checked
           />
           <span class="switch-slider round"></span>
           <i class="icon editor-icon"></i>
@@ -134,12 +131,13 @@ class StoryTellingEditor extends LitElement {
           opacity: 1;
         }
         form[data-theme="html"] .je-indented-panel {
-          padding: 0;
-          margin: 0;
-          border: none;
+          padding: 0 !important;
+          margin: 0 !important;
+          border: none !important;
         }
         .CodeMirror {
           height: 100%;
+          min-height: unset;
         }
         eox-jsonform form[data-theme="html"],
         eox-jsonform div[data-schemaid="root"],
