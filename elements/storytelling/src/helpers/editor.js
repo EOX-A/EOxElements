@@ -131,9 +131,8 @@ export function importMdFile(editor) {
   fileInput.accept = ".md";
   fileInput.onchange = (e) => {
     const file = e.target.files[0];
-    if (!file) {
-      return;
-    }
+    if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (e) => {
       const content = e.target.result;
@@ -154,8 +153,10 @@ export function exportMdFile(editor) {
   const blob = new Blob([content], { type: "text/markdown" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
+
   a.href = url;
   a.download = "document.md";
+
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
