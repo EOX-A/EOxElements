@@ -6,6 +6,7 @@ import {
   loadExternalSchemaTest,
   loadExternalValueTest,
   loadReRenderFormOnChangeTest,
+  loadMarkdownTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -17,4 +18,5 @@ describe("Jsonform", () => {
   it("loads schema from url", () => loadExternalSchemaTest());
   it("loads value from url", () => loadExternalValueTest());
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
+  it("loads the markdown editor", () => loadMarkdownTest());
 });

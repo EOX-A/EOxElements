@@ -86,16 +86,24 @@ export class EOxJSONForm extends LitElement {
     }
     return property;
   }
+
+  /**
+   * The JSONEditor instance
+   */
+  get editor() {
+    return this.#editor;
+  }
+
   /**
    * JSON schema used to render the form
    */
   get schema() {
     return this._schema;
   }
+
   /**
    * @param {JsonSchema} newSchema
    */
-
   set schema(newSchema) {
     let oldValue = this._schema;
     this._schema = newSchema;
