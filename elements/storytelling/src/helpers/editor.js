@@ -155,7 +155,7 @@ export function exportMdFile(editor) {
   const a = document.createElement("a");
 
   a.href = url;
-  a.download = "document.md";
+  a.download = `${document.title}.md`;
 
   document.body.appendChild(a);
   a.click();
