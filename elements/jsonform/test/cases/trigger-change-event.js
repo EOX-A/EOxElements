@@ -36,7 +36,7 @@ const triggerChangeEventTest = () => {
       cy.get("input[name]").type(testVals.value);
       // String input needs blur to trigger change event
       // see https://github.com/json-editor/json-editor/issues/1081
-      cy.get(".form-control").click();
+      cy.get(".form-control").click({ force: true });
     });
   cy.get("@change", { timeout: 7000 }).should("have.been.calledOnce");
 };
