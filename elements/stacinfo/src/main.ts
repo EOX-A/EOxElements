@@ -191,7 +191,7 @@ export class EOxStacInfo extends LitElement {
               <section id="featured" part="featured">
                 ${map(
                   parseEntries(this.featured).filter(([_, value]) =>
-                    value.length ? value.length > 0 : true
+                    value.length !== undefined ? value.length > 0 : true
                   ),
                   ([, value]) => html`
                     <details>
