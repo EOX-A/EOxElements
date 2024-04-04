@@ -47,6 +47,19 @@ export const EDITOR_SCHEMA = {
             ),
             "|",
             addCustomTool(
+              "hero-image",
+              `\n\n# Hero Image <!--{ as="img" mode="hero" src="image-url" }-->\n`,
+              "fa fa-file-image-o",
+              "Insert Image based Hero Section"
+            ),
+            addCustomTool(
+              "hero-video",
+              `\n\n# Hero Video <!--{ as="video" mode="hero" src="video-url" }-->\n`,
+              "fa fa-file-video-o",
+              "Insert Video based Hero Section"
+            ),
+            "|",
+            addCustomTool(
               "import",
               null,
               "fa fa-upload",
