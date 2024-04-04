@@ -49,7 +49,7 @@ function curlyAttrs(state) {
       sPush(stack, token);
     }
 
-    // Parse opening section through h2 tag
+    // Parse opening section through h1/h2 tag
     if (token.tag === "h1" || token.tag === "h2") {
       const data = parseSection(
         i,
@@ -232,7 +232,7 @@ function parseInlineContent(
     if (stack.last.tag === "h2" && title) nav.push({ title, id: sectionId });
 
     const currentSectionToken = finalTokens[sectionStartIndex];
-    const currentH2SectionToken = finalTokens[finalTokens.length - 1];
+    const currentHeadingSectionToken = finalTokens[finalTokens.length - 1];
 
     const sectionClass = `.${mode} .${position}`;
     currentSectionToken.attrs.push(["id", sectionId]);
@@ -240,17 +240,17 @@ function parseInlineContent(
 
     // Transform section div to `as` attribute
     if (attrAs) {
-      currentH2SectionToken.tag = attrAs;
-      currentH2SectionToken.type = "html_open";
-      currentH2SectionToken.as = attrAs;
-      currentH2SectionToken.section = sectionId;
+      currentHeadingSectionToken.tag = attrAs;
+      currentHeadingSectionToken.type = "html_open";
+      currentHeadingSectionToken.as = attrAs;
+      currentHeadingSectionToken.section = sectionId;
 
       token.type = "html_inline";
       token.content = "";
       token.children = null;
 
       applyToToken(
-        currentH2SectionToken,
+        currentHeadingSectionToken,
         `${lastText ? `title='${lastText.content}'` : ""}${
           stack.last.attrStr
         } #${id}`
@@ -275,7 +275,7 @@ function parseInlineContent(
 }
 
 /**
- * Process section tokens with help of h2 tag
+ * Process section tokens with help of h1/h2 tag
  *
  * @param {Object} index - current token index
  * @param {Array<Object>} tokens - List of markdown tokens
