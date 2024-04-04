@@ -7,17 +7,17 @@ export default {
   component: "eox-stacinfo",
   parameters: {
     componentSubtitle: "Automatically fetch & display properties of STAC files",
-    layout: "centered",
+    layout: "fullscreen",
   },
   render: (args) => html`
     <eox-stacinfo
       for=${args.for}
       .header=${args.header}
+      .tags="${args.tags}"
       .properties="${args.properties}"
       .featured=${args.featured}
       .footer=${args.footer}
       ?unstyled=${args.unstyled}
-      style="width: 400px"
     ></eox-stacinfo>
   `,
 };
@@ -29,8 +29,10 @@ export const Basic = {
   args: {
     for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
     header: ["title"],
-    properties: ["osc:region", "osc:status", "osc:missions", "created"],
-    footer: ["osc:project"],
+    tags: ["tags"],
+    properties: ["satellite", "sensor", "agency", "extent"],
+    featured: ["description", "providers", "assets", "links"],
+    footer: ["sci:citation"],
   },
 };
 

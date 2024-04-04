@@ -44,6 +44,11 @@ button[disabled],
   cursor: not-allowed;
 }
 
+button.block,
+.button.block {
+  display: block;
+}
+
 button.outline,
 .button.outline {
   background: transparent;
@@ -74,11 +79,21 @@ button.icon-text,
   text-indent: 26px;
 }
 
+button.icon-text.block,
+.button.icon-text.block {
+  text-indent: 20px;
+}
+
 button.icon:before, button.icon-text:before,
 .button.icon:before, .button.icon-text:before {
   position: absolute;
   text-indent: 0;
   line-height: initial;
+}
+
+button.icon-text.block:before,
+.button.icon-text.block:before {
+  text-indent: -54px;
 }
 
 button.icon:before,

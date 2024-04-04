@@ -1,0 +1,1 @@
+export { transformProperties } from "./properties";
