@@ -29,4 +29,17 @@ export const DEFAULT_MODE_ATTRS = {
   "eox-map": {
     tour: [["prevent-scroll", true]],
   },
+  img: {
+    hero: [["position", "center"]],
+  },
+  video: {
+    hero: [
+      ["position", "center"],
+      ["loop", true],
+      ["muted", true],
+      ["autoplay", true],
+    ],
+  },
 };
+
+export const HERO_MEDIA_TYPES = ["img", "video"];

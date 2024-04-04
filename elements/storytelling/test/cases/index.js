@@ -11,3 +11,4 @@ export { default as LoadCustomElementTest } from "./load-custom-element";
 export { default as loadMapSectionTest } from "./load-map-section";
 export { default as loadMapTourTest } from "./load-map-tour";
 export { default as loadMarkdownEditorTest } from "./load-editor";
+export { default as loadHeroSectionTest } from "./load-hero-section";
