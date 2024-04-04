@@ -30,14 +30,10 @@ export const DEFAULT_MODE_ATTRS = {
     tour: [["prevent-scroll", true]],
   },
   img: {
-    hero: [
-      ["mode", "hero"],
-      ["position", "center"],
-    ],
+    hero: [["position", "center"]],
   },
   video: {
     hero: [
-      ["mode", "hero"],
       ["position", "center"],
       ["loop", true],
       ["muted", true],
