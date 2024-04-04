@@ -1,5 +1,5 @@
+// Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import "./src/main";
 import basicSchema from "./stories/public/basicSchema.json";
 import catalogSchema from "./stories/public/catalogSchema.json";
 import collectionSchema from "./stories/public/collectionSchema.json";
@@ -50,5 +50,27 @@ export const External = {
   args: {
     schema: externalSchema,
     value: externalValue,
+  },
+};
+
+export const Markdown = {
+  args: {
+    schema: {
+      type: "object",
+      properties: {
+        md: {
+          type: "string",
+          format: "markdown",
+          options: {
+            simplemde: {
+              spellChecker: false,
+            },
+          },
+        },
+      },
+    },
+    value: {
+      md: "# Hello world! This is [markdown](https://en.wikipedia.org/wiki/Markdown).",
+    },
   },
 };

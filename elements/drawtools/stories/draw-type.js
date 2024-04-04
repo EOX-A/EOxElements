@@ -1,6 +1,4 @@
 import { html } from "lit";
-import "../../map/main";
-import "../src/main";
 import {
   STORIES_MAP_STYLE,
   STORIES_DRAW_TYPES,

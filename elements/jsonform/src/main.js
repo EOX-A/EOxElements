@@ -1,8 +1,7 @@
-import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { LitElement, html } from "lit";
+import { createEditor } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import addCustomInputs from "./custom-inputs";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -87,36 +86,29 @@ export class EOxJSONForm extends LitElement {
     }
     return property;
   }
+
+  /**
+   * The JSONEditor instance
+   */
+  get editor() {
+    return this.#editor;
+  }
+
   /**
    * JSON schema used to render the form
    */
   get schema() {
     return this._schema;
   }
+
   /**
    * @param {JsonSchema} newSchema
    */
-
   set schema(newSchema) {
-    let oldValue = this._schema;
     this._schema = newSchema;
     if (this.#editor) {
       this.#editor.destroy();
-      addCustomInputs(this.value || {});
-
-      const formEle = this.renderRoot.querySelector("form");
-
-      this.#editor = new JSONEditor(formEle, {
-        schema: this.schema,
-        ...(this.value ? { startval: this.value } : {}),
-        theme: "html",
-        ajax: true,
-        ...this.options,
-      });
-
-      this.#dispatchEvent();
     }
-    this.requestUpdate("schema", oldValue);
   }
 
   /**
@@ -129,12 +121,10 @@ export class EOxJSONForm extends LitElement {
    * @param {JsonSchema} newVal
    */
   set value(newVal) {
-    let oldValue = this._value;
     this._value = newVal;
     if (this.#editor && this.#editor.ready) {
       this.#editor.setValue(this.value);
     }
-    this.requestUpdate("value", oldValue);
   }
 
   /**
@@ -157,7 +147,7 @@ export class EOxJSONForm extends LitElement {
     const events = ["ready", "change"];
 
     events.map((evt) => {
-      this.#editor.on(evt, async () => {
+      this.#editor.on(evt, () => {
         this._value = this.#editor.getValue();
         this.#emitValue();
       });
@@ -165,26 +155,14 @@ export class EOxJSONForm extends LitElement {
   }
 
   async updated(changedProperties) {
-    // check if schema or value has been changed to prevent useless parsing
+    this._value = await this.parseProperty(this.value);
+    // check if schema has been changed to prevent useless parsing
     if (changedProperties.has("schema")) {
-      this.schema = await this.parseProperty(this.schema);
-    }
-    this.value = await this.parseProperty(this.value);
-
-    if (!this.#editor) {
-      addCustomInputs(this.value || {});
-
-      const formEle = this.renderRoot.querySelector("form");
-
-      this.#editor = new JSONEditor(formEle, {
-        schema: this.schema,
-        ...(this.value ? { startval: this.value } : {}),
-        theme: "html",
-        ajax: true,
-        ...this.options,
-      });
-
-      this.#dispatchEvent();
+      this._schema = await this.parseProperty(this.schema);
+      if (!this.#editor) {
+        this.#editor = await createEditor(this);
+        this.#dispatchEvent();
+      }
     }
   }
 
@@ -199,7 +177,7 @@ export class EOxJSONForm extends LitElement {
     return html`
       <style>
         ${style}
-          ${!this.unstyled && styleEOX}
+        ${!this.unstyled && styleEOX}
       </style>
       <form></form>
     `;

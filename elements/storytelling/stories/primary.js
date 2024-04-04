@@ -3,7 +3,6 @@
  * It renders storytelling markdown based on string content we provide.
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const Primary = {
   args: {

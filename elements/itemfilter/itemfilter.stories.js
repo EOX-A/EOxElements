@@ -1,9 +1,5 @@
+// Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import "./src/main";
-import "./src/autocomplete";
-import "./src/selectionlist";
-import "./src/chips";
-import "../map/main";
 import items from "./test/testItems.json";
 
 export default {
@@ -71,6 +67,43 @@ export const Primary = {
         },
       ],
       aggregateResults: "themes",
+      enableHighlighting: true,
+      onSelect: (item) => {
+        console.log(item);
+      },
+    },
+    items,
+  },
+};
+
+export const AutoSpread = {
+  args: {
+    config: {
+      titleProperty: "title",
+      filterProperties: [
+        {
+          keys: ["title", "themes"],
+          title: "Search",
+          type: "text",
+          expanded: true,
+        },
+        {
+          key: "themes",
+          title: "Theme",
+          type: "multiselect",
+        },
+        {
+          key: "timestamp",
+          type: "range",
+          format: "date",
+        },
+        {
+          key: "geometry",
+          type: "spatial",
+        },
+      ],
+      aggregateResults: "themes",
+      autoSpreadSingle: true,
       enableHighlighting: true,
       onSelect: (item) => {
         console.log(item);

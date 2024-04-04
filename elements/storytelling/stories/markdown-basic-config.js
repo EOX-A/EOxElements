@@ -2,7 +2,6 @@
  * Renders storytelling with basic config using plugin
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const MarkdownBasicConfig = {
   args: {

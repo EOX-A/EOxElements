@@ -2,7 +2,6 @@
  * Renders storytelling using attribute as a comment in markdown.
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const MarkdownAttrComment = {
   args: {

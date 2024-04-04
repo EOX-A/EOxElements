@@ -3,7 +3,6 @@
  * It renders storytelling based on markdown URL.
  */
 import { html } from "lit";
-import "../src/main.js";
 
 export const MarkdownAsURL = {
   args: {

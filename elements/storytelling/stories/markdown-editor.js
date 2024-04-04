@@ -2,8 +2,6 @@
  * Renders storytelling with text editor.
  */
 import { html } from "lit";
-import "../src/main.js";
-import "../../map/src/plugins/advancedLayersAndSources";
 
 export const MarkdownEditor = {
   args: {
@@ -19,11 +17,9 @@ It is a long established fact that a reader will be distracted by the readable c
 `,
   },
   render: (args) => html`
-    <!-- TEMP: no-shadow needed because of font-awesome -->
     <eox-storytelling
       id="markdown-editor"
       show-editor
-      no-shadow
       markdown=${args.markdown}
     ></eox-storytelling>
   `,
