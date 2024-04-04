@@ -2,6 +2,7 @@ export { TEST_SELECTORS } from "./test";
 export {
   TAGS_EXPR,
   TAGS_OPENING,
+  HERO_MEDIA_TYPES,
   TAGS_SELF_CLOSING,
   DEFAULT_MODE_ATTRS,
 } from "./plugin";

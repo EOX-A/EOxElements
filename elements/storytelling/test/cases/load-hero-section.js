@@ -9,8 +9,7 @@ const { storyTelling } = TEST_SELECTORS;
 const loadHeroSectionTest = () => {
   const img = "https://www.gstatic.com/prettyearth/assets/full/14617.jpg";
   const testText = `
-## Hero Bg Image <!--{ as="img" mode="hero" position="center" src="${img}" }-->
-# Foo
+# Foo <!--{ as="img" mode="hero" src="${img}" }-->
 #### Bar
 `;
 

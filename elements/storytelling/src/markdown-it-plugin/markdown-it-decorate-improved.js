@@ -2,6 +2,7 @@ import {
   DEFAULT_MODE_ATTRS,
   TAGS_EXPR,
   TAGS_OPENING,
+  HERO_MEDIA_TYPES,
   TAGS_SELF_CLOSING,
 } from "../enums";
 import slugify from "@sindresorhus/slugify";
@@ -49,7 +50,7 @@ function curlyAttrs(state) {
     }
 
     // Parse opening section through h2 tag
-    if (token.tag === "h2") {
+    if (token.tag === "h1" || token.tag === "h2") {
       const data = parseSection(
         i,
         tokens,
@@ -109,11 +110,18 @@ function curlyAttrs(state) {
         nav,
         finalTokens,
         sectionStartIndex,
-        sectionStepsIndex
+        sectionStepsIndex,
+        sectionSteps
       );
 
     token.level = token.level + 1;
     finalTokens.push(token);
+
+    const currAttr = getAttr(stack.last.attrs, "as");
+    if (stack.last.markup === "#" && HERO_MEDIA_TYPES.includes(currAttr)) {
+      finalTokens = parseHeroSection(finalTokens, state, stack);
+      i++;
+    }
   }
 
   // Close opened sections and step section tags if opened
@@ -167,6 +175,7 @@ function isOpener(type) {
  * @param {Array<Object>} finalTokens
  * @param {Number} sectionStartIndex
  * @param {Number} sectionStepsIndex
+ * @param {Boolean} sectionSteps
  * @return {Array<Object>} finalTokens
  *
  */
@@ -176,7 +185,8 @@ function parseInlineContent(
   nav,
   finalTokens,
   sectionStartIndex,
-  sectionStepsIndex
+  sectionStepsIndex,
+  sectionSteps
 ) {
   let lastText;
   const omissions = [];
@@ -202,26 +212,25 @@ function parseInlineContent(
     if (child.type === "text") lastText = child;
   });
 
-  if (stack.last.tag === "h3" && sectionStepsIndex !== -1) {
+  if (stack.last.tag === "h3" && sectionSteps && sectionStepsIndex !== -1) {
     const currentSectionStepToken = finalTokens[sectionStepsIndex];
     currentSectionStepToken.section = finalTokens[sectionStartIndex].id;
     applyToToken(currentSectionStepToken, stack.last.attrStr);
   }
 
   // Generate nav value and transform div section to `as` attribute
-  if (stack.last.tag === "h2") {
-    const title =
-      (lastText && lastText["content"]) || token.children[0]?.content;
+  if (stack.last.tag === "h1" || stack.last.tag === "h2") {
+    const title = lastText && lastText["content"];
     const attrsId = getAttr(stack.last.attrs, "id");
+    const attrAs = getAttr(stack.last.attrs, "as");
     const mode = getAttr(stack.last.attrs, "mode") || "container";
     const position = getAttr(stack.last.attrs, "position") || "left";
-    const titleSlug = slugify(title);
+    const titleSlug = slugify(title || "");
     const id = attrsId || titleSlug;
     const sectionId = `section-${id}`;
 
-    nav.push({ title, id: sectionId });
+    if (stack.last.tag === "h2" && title) nav.push({ title, id: sectionId });
 
-    const attrAs = getAttr(stack.last.attrs, "as");
     const currentSectionToken = finalTokens[sectionStartIndex];
     const currentH2SectionToken = finalTokens[finalTokens.length - 1];
 
@@ -397,6 +406,32 @@ function parseStepSection(
     stack,
     finalTokens,
   };
+}
+
+/**
+ * Process hero section
+ *
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {{tokens: Array<Object>}} state - Token state
+ * @param {Object} stack
+ * @return {Object} - Final processed markdown tokens
+ */
+function parseHeroSection(finalTokens, state, stack) {
+  finalTokens.push(
+    addNewHTMLSection(state, stack.last.tag, 1, -1, "html_close", null)
+  );
+
+  finalTokens.push(addNewHTMLSection(state, "h1", 1, 1, "html_open", null));
+
+  finalTokens.push(addNewHTMLSection(state, "h1", 2, 0, "html_inline", null));
+  finalTokens[finalTokens.length - 1].content = getAttr(
+    stack.last.attrs,
+    "title"
+  );
+
+  finalTokens.push(addNewHTMLSection(state, "h1", 1, -1, "html_close", null));
+
+  return finalTokens;
 }
 
 /**
@@ -609,7 +644,7 @@ function initializeSectionsMeta(token, md) {
     if (token.tag === "section-step" && !md.sections[token.section].steps) {
       md.sections[token.section].steps = [];
     }
-    if (token.markup === "##") {
+    if (token.markup === "#" || token.markup === "##") {
       md.sections[token.section] = md.sections[token.section] || {};
     }
 
