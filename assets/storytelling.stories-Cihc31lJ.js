@@ -1,19 +1,19 @@
-import{x as o}from"./lit-element-Bq1Y8_dt.js";const he={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
+import{x as o}from"./lit-element-Bq1Y8_dt.js";import"./main-Ds0twqWE.js";import"./_commonjsHelpers-BosuxZz1.js";const be={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id="markdown-str"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},ge={args:{markdownURL:`${window.location.href.split("iframe.html")[0]}/sample.md`},render:e=>o`
+  `},ve={args:{markdownURL:`${window.location.href.split("iframe.html")[0]}/sample.md`},render:e=>o`
     <!-- Render eox-storytelling with basic markdown url. -->
     <eox-storytelling
       id="markdown-url"
       markdown-url=${e.markdownURL}
     ></eox-storytelling>
-  `},ye={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>o`
+  `},Le={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>o`
     <!-- Render eox-storytelling from markdown inside the slot. -->
     <eox-storytelling id="markdown-slot">${e.markdown}</eox-storytelling>
-  `},fe={args:{markdown:`
+  `},Ie={args:{markdown:`
   ## Hero World section <!--{.some-comment}-->
   Some text with red color <!--{#red-color style="color:red;"}-->
   
@@ -26,7 +26,7 @@ import{x as o}from"./lit-element-Bq1Y8_dt.js";const he={args:{markdown:"## Hello
       id="markdown-str"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},we={args:{markdown:`
+  `},Ce={args:{markdown:`
 ## What is Lorem Ipsum? <!--{#what}-->
 Lorem Ipsum is simply dummy text of the **printing and typesetting** industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and **scrambled it to make a type specimen book.** It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -87,7 +87,7 @@ The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for t
       id="markdown-str"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},be={args:{markdown:`
+  `},Se={args:{markdown:`
 ---
 nav: true
 ---
@@ -103,7 +103,7 @@ It is a long established fact that a reader will be distracted by the readable c
       id="markdown-config"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},ke={args:{markdown:`## First Custom Element <!--{as="foo-bar" .custom-block}-->
+  `},Me={args:{markdown:`## First Custom Element <!--{as="foo-bar" .custom-block}-->
 ## Second Custom Element <!--{as="baz-que" .custom-block}-->
 ## Third Custom Element <!--{as="quux-corge" .custom-block}-->`},render:e=>o`
     <!-- Render eox-storytelling with basic markdown. -->
@@ -139,7 +139,7 @@ It is a long established fact that a reader will be distracted by the readable c
         background: wheat;
       }
     </style>
-  `},ve={args:{markdown:`
+  `},xe={args:{markdown:`
 ## EarthCODE Portal <!--{as="esa-main-section" title="EarthCODE Portal"}-->
 ### EarthCODE
 This portal shall provide an entry point to the collaborative development tools and resources, as well as access to community guidelines and open documentation to help researchers adopt FAIR principles in their scientific practice.
@@ -163,7 +163,7 @@ For all components (technology, community, partnerships), the Reproducible Open 
       id="markdown-sections"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},Le={args:{markdown:`
+  `},Te={args:{markdown:`
 ## EOX Map <!--{as="eox-map" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
 
 ### What is Lorem Ipsum? <!--{ style="padding-top: 2rem;" }-->
@@ -177,7 +177,7 @@ It is a long established fact that a reader will be distracted by the readable c
       id="markdown-map-sections"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},Ie={parameters:{docs:{story:{inline:!1,height:"400px"}}},args:{markdown:`
+  `},Ee={parameters:{docs:{story:{inline:!1,height:"400px"}}},args:{markdown:`
 ## Map tour
 The map is initialized with mode "tour".
 
@@ -200,7 +200,7 @@ Section after the map tour
       id="markdown-map-tour"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},Ce={args:{markdown:`
+  `},Re={args:{markdown:`
 ## EOX Map <!--{as="eox-map" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
 
 ### What is Lorem Ipsum? <!--{ style="padding-top: 2rem;" }-->
@@ -215,9 +215,20 @@ It is a long established fact that a reader will be distracted by the readable c
       show-editor
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},Me={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>o`${e()}
+  `},Be={args:{markdown:`
+# Hero Bg Image <!--{ as="img" mode="hero" src="https://www.gstatic.com/prettyearth/assets/full/14617.jpg" }-->
+### by EOX <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
+
+# Hero Bg Video <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+#### by EOX <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
+`},render:e=>o`
+    <eox-storytelling
+      id="markdown-hero"
+      markdown=${e.markdown}
+    ></eox-storytelling>
+  `},Fe={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>o`${e()}
         <style>
           .sb-show-main.sb-main-padded {
             padding: 0;
           }
-        </style>`]},t=he,r=ge,a=ye,i=fe,s=be,n=we,d=ke,l=ve,c=Le,m=Ie,u=Ce;var p,h,g,y,f;t.parameters={...t.parameters,docs:{...(p=t.parameters)==null?void 0:p.docs,source:{originalSource:"PrimaryStory",...(g=(h=t.parameters)==null?void 0:h.docs)==null?void 0:g.source},description:{story:"StoryTelling using basic markdownL.",...(f=(y=t.parameters)==null?void 0:y.docs)==null?void 0:f.description}}};var w,b,k,v,L;r.parameters={...r.parameters,docs:{...(w=r.parameters)==null?void 0:w.docs,source:{originalSource:"MarkdownAsURLStory",...(k=(b=r.parameters)==null?void 0:b.docs)==null?void 0:k.source},description:{story:"StoryTelling using markdown URL.",...(L=(v=r.parameters)==null?void 0:v.docs)==null?void 0:L.description}}};var I,C,S,M,x;a.parameters={...a.parameters,docs:{...(I=a.parameters)==null?void 0:I.docs,source:{originalSource:"MarkdownSlotStory",...(S=(C=a.parameters)==null?void 0:C.docs)==null?void 0:S.source},description:{story:"StoryTelling using markdown from the slot.",...(x=(M=a.parameters)==null?void 0:M.docs)==null?void 0:x.description}}};var T,E,R,B,O;i.parameters={...i.parameters,docs:{...(T=i.parameters)==null?void 0:T.docs,source:{originalSource:"MarkdownAttrCommentStory",...(R=(E=i.parameters)==null?void 0:E.docs)==null?void 0:R.source},description:{story:"Renders storytelling using attribute as a comment in markdown.",...(O=(B=i.parameters)==null?void 0:B.docs)==null?void 0:O.description}}};var G,W,F,A,$;s.parameters={...s.parameters,docs:{...(G=s.parameters)==null?void 0:G.docs,source:{originalSource:"MarkdownBasicConfigStory",...(F=(W=s.parameters)==null?void 0:W.docs)==null?void 0:F.source},description:{story:"StoryTelling with Basic Config",...($=(A=s.parameters)==null?void 0:A.docs)==null?void 0:$.description}}};var H,D,P,z,V;n.parameters={...n.parameters,docs:{...(H=n.parameters)==null?void 0:H.docs,source:{originalSource:"NavigationStory",...(P=(D=n.parameters)==null?void 0:D.docs)==null?void 0:P.source},description:{story:"StoryTelling with Navigation",...(V=(z=n.parameters)==null?void 0:z.docs)==null?void 0:V.description}}};var U,N,j,q,_;d.parameters={...d.parameters,docs:{...(U=d.parameters)==null?void 0:U.docs,source:{originalSource:"CustomElementStory",...(j=(N=d.parameters)==null?void 0:N.docs)==null?void 0:j.source},description:{story:"With the `as` attribute, `h2` sections can be replaced by other elements (native and custom elements).\nThe newly rendered element replaces the original `h2' text content (fallback for vanilla md rendering) completely.",...(_=(q=d.parameters)==null?void 0:q.docs)==null?void 0:_.description}}};var X,Z,Y,J,Q;l.parameters={...l.parameters,docs:{...(X=l.parameters)==null?void 0:X.docs,source:{originalSource:"MarkdownSectionsStory",...(Y=(Z=l.parameters)==null?void 0:Z.docs)==null?void 0:Y.source},description:{story:"StoryTelling with simple and custom sections",...(Q=(J=l.parameters)==null?void 0:J.docs)==null?void 0:Q.description}}};var K,ee,oe,te,re;c.parameters={...c.parameters,docs:{...(K=c.parameters)==null?void 0:K.docs,source:{originalSource:"MarkdownMapSectionStory",...(oe=(ee=c.parameters)==null?void 0:ee.docs)==null?void 0:oe.source},description:{story:"StoryTelling with @eox-map sections",...(re=(te=c.parameters)==null?void 0:te.docs)==null?void 0:re.description}}};var ae,ie,se,ne,de;m.parameters={...m.parameters,docs:{...(ae=m.parameters)==null?void 0:ae.docs,source:{originalSource:"MarkdownMapTourStory",...(se=(ie=m.parameters)==null?void 0:ie.docs)==null?void 0:se.source},description:{story:"StoryTelling with map tour",...(de=(ne=m.parameters)==null?void 0:ne.docs)==null?void 0:de.description}}};var le,ce,me,ue,pe;u.parameters={...u.parameters,docs:{...(le=u.parameters)==null?void 0:le.docs,source:{originalSource:"MarkdownEditorStory",...(me=(ce=u.parameters)==null?void 0:ce.docs)==null?void 0:me.source},description:{story:"StoryTelling with editor",...(pe=(ue=u.parameters)==null?void 0:ue.docs)==null?void 0:pe.description}}};const xe=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithAttributeAsComment","MarkdownWithBasicConfig","MarkdownWithNavigation","CustomElement","MarkdownWithSections","MarkdownMapSection","MarkdownMapTour","MarkdownWithEditor"];export{d as CustomElement,r as MarkdownAsURL,a as MarkdownInsideSlot,c as MarkdownMapSection,m as MarkdownMapTour,i as MarkdownWithAttributeAsComment,s as MarkdownWithBasicConfig,u as MarkdownWithEditor,n as MarkdownWithNavigation,l as MarkdownWithSections,t as Primary,xe as __namedExportsOrder,Me as default};
+        </style>`]},t=be,r=ve,a=Le,i=Ie,s=Se,n=Ce,d=Me,l=xe,c=Te,m=Ee,p=Re,u=Be;var h,g,y,f,w;t.parameters={...t.parameters,docs:{...(h=t.parameters)==null?void 0:h.docs,source:{originalSource:"PrimaryStory",...(y=(g=t.parameters)==null?void 0:g.docs)==null?void 0:y.source},description:{story:"StoryTelling using basic markdownL.",...(w=(f=t.parameters)==null?void 0:f.docs)==null?void 0:w.description}}};var k,b,v,L,I;r.parameters={...r.parameters,docs:{...(k=r.parameters)==null?void 0:k.docs,source:{originalSource:"MarkdownAsURLStory",...(v=(b=r.parameters)==null?void 0:b.docs)==null?void 0:v.source},description:{story:"StoryTelling using markdown URL.",...(I=(L=r.parameters)==null?void 0:L.docs)==null?void 0:I.description}}};var C,S,M,x,T;a.parameters={...a.parameters,docs:{...(C=a.parameters)==null?void 0:C.docs,source:{originalSource:"MarkdownSlotStory",...(M=(S=a.parameters)==null?void 0:S.docs)==null?void 0:M.source},description:{story:"StoryTelling using markdown from the slot.",...(T=(x=a.parameters)==null?void 0:x.docs)==null?void 0:T.description}}};var E,R,B,O,W;i.parameters={...i.parameters,docs:{...(E=i.parameters)==null?void 0:E.docs,source:{originalSource:"MarkdownAttrCommentStory",...(B=(R=i.parameters)==null?void 0:R.docs)==null?void 0:B.source},description:{story:"Renders storytelling using attribute as a comment in markdown.",...(W=(O=i.parameters)==null?void 0:O.docs)==null?void 0:W.description}}};var G,F,A,H,$;s.parameters={...s.parameters,docs:{...(G=s.parameters)==null?void 0:G.docs,source:{originalSource:"MarkdownBasicConfigStory",...(A=(F=s.parameters)==null?void 0:F.docs)==null?void 0:A.source},description:{story:"StoryTelling with Basic Config",...($=(H=s.parameters)==null?void 0:H.docs)==null?void 0:$.description}}};var z,V,D,P,N;n.parameters={...n.parameters,docs:{...(z=n.parameters)==null?void 0:z.docs,source:{originalSource:"NavigationStory",...(D=(V=n.parameters)==null?void 0:V.docs)==null?void 0:D.source},description:{story:"StoryTelling with Navigation",...(N=(P=n.parameters)==null?void 0:P.docs)==null?void 0:N.description}}};var U,j,_,q,X;d.parameters={...d.parameters,docs:{...(U=d.parameters)==null?void 0:U.docs,source:{originalSource:"CustomElementStory",...(_=(j=d.parameters)==null?void 0:j.docs)==null?void 0:_.source},description:{story:"With the `as` attribute, `h2` sections can be replaced by other elements (native and custom elements).\nThe newly rendered element replaces the original `h2' text content (fallback for vanilla md rendering) completely.",...(X=(q=d.parameters)==null?void 0:q.docs)==null?void 0:X.description}}};var Z,Y,J,Q,K;l.parameters={...l.parameters,docs:{...(Z=l.parameters)==null?void 0:Z.docs,source:{originalSource:"MarkdownSectionsStory",...(J=(Y=l.parameters)==null?void 0:Y.docs)==null?void 0:J.source},description:{story:"StoryTelling with simple and custom sections",...(K=(Q=l.parameters)==null?void 0:Q.docs)==null?void 0:K.description}}};var ee,oe,te,re,ae;c.parameters={...c.parameters,docs:{...(ee=c.parameters)==null?void 0:ee.docs,source:{originalSource:"MarkdownMapSectionStory",...(te=(oe=c.parameters)==null?void 0:oe.docs)==null?void 0:te.source},description:{story:"StoryTelling with @eox-map sections",...(ae=(re=c.parameters)==null?void 0:re.docs)==null?void 0:ae.description}}};var ie,se,ne,de,le;m.parameters={...m.parameters,docs:{...(ie=m.parameters)==null?void 0:ie.docs,source:{originalSource:"MarkdownMapTourStory",...(ne=(se=m.parameters)==null?void 0:se.docs)==null?void 0:ne.source},description:{story:"StoryTelling with map tour",...(le=(de=m.parameters)==null?void 0:de.docs)==null?void 0:le.description}}};var ce,me,pe,ue,he;p.parameters={...p.parameters,docs:{...(ce=p.parameters)==null?void 0:ce.docs,source:{originalSource:"MarkdownEditorStory",...(pe=(me=p.parameters)==null?void 0:me.docs)==null?void 0:pe.source},description:{story:"StoryTelling with editor",...(he=(ue=p.parameters)==null?void 0:ue.docs)==null?void 0:he.description}}};var ge,ye,fe,we,ke;u.parameters={...u.parameters,docs:{...(ge=u.parameters)==null?void 0:ge.docs,source:{originalSource:"MarkdownHeroStory",...(fe=(ye=u.parameters)==null?void 0:ye.docs)==null?void 0:fe.source},description:{story:"StoryTelling with Hero Image and Video",...(ke=(we=u.parameters)==null?void 0:we.docs)==null?void 0:ke.description}}};const Ae=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithAttributeAsComment","MarkdownWithBasicConfig","MarkdownWithNavigation","CustomElement","MarkdownWithSections","MarkdownMapSection","MarkdownMapTour","MarkdownWithEditor","MarkdownWithHeroSection"];export{d as CustomElement,r as MarkdownAsURL,a as MarkdownInsideSlot,c as MarkdownMapSection,m as MarkdownMapTour,i as MarkdownWithAttributeAsComment,s as MarkdownWithBasicConfig,p as MarkdownWithEditor,u as MarkdownWithHeroSection,n as MarkdownWithNavigation,l as MarkdownWithSections,t as Primary,Ae as __namedExportsOrder,Fe as default};
