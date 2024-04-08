@@ -230,7 +230,7 @@ export const Geolocation = {
       Geolocation: {
         tracking: true,
         trackHeading: true,
-        centerWhenReady: true,
+        centerWhenReady: false,
         highAccuracy: true,
         trackAccuracy: true,
         style: {

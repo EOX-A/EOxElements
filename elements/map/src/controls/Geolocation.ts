@@ -74,7 +74,7 @@ export default class GeolocationControl extends Control {
     this._trackHeading = options.trackHeading;
 
     this._positionFeature = new Feature({
-      geometry: new Point([0, 0]),
+      geometry: new Point([NaN, NaN]),
       heading: 0,
     });
 
@@ -119,15 +119,42 @@ export default class GeolocationControl extends Control {
    * @api
    */
   setMap(map: import("ol/Map.js").default | null) {
-    if (map) {
-      this._geolocation = new Geolocation({
-        // take the projection to use from the map's view
-        tracking: true,
-        trackingOptions: {
-          enableHighAccuracy: this._highAccuracy,
-        },
-        projection: map.getView().getProjection(),
-      });
+    this._layer.setMap(map);
+    super.setMap(map);
+    if (map && this._centerWhenReady) {
+      this.initGeolocation();
+    }
+  }
+
+  private _centerWhenReady: boolean;
+  private _highAccuracy: boolean;
+  private _positionFeature: Feature<Point>;
+  private _accuracyFeature: Feature;
+  private _trackAccuracy: boolean;
+  private _trackHeading: boolean;
+  private _layer: VectorLayer<VectorSource>;
+  private _source: VectorSource;
+  private _geolocation: Geolocation;
+
+  /**
+   * initializes the geolocation control.
+   * calling this will cause a user prompt about allowing geolocation in the browser.
+   * @returns {Promise} returns a promise that resolves to coordinates on success, or an error event.
+   * this can be used to await the users input on the browsers location accept/deny
+   */
+  initGeolocation() {
+    return new Promise((resolve, reject) => {
+      const map = this.getMap();
+      if (map) {
+        this._geolocation = new Geolocation({
+          tracking: true,
+          trackingOptions: {
+            enableHighAccuracy: this._highAccuracy,
+          },
+          // take the projection to use from the map's view
+          projection: map.getView().getProjection(),
+        });
+      }
 
       if (this._centerWhenReady) {
         this._geolocation.once("change:position", (e) => {
@@ -136,7 +163,7 @@ export default class GeolocationControl extends Control {
       }
 
       this._geolocation.on("error", function (evt) {
-        console.log(evt);
+        reject(evt);
       });
 
       this._geolocation.on("change:accuracyGeometry", () => {
@@ -157,6 +184,7 @@ export default class GeolocationControl extends Control {
         this._positionFeature
           .getGeometry()
           .setCoordinates(coordinates ? coordinates : null);
+        resolve(coordinates);
       });
 
       this._geolocation.on("change:accuracyGeometry", () => {
@@ -166,21 +194,8 @@ export default class GeolocationControl extends Control {
           );
         }
       });
-    }
-
-    this._layer.setMap(map);
-    super.setMap(map);
+    });
   }
-
-  private _centerWhenReady: boolean;
-  private _highAccuracy: boolean;
-  private _positionFeature: Feature<Point>;
-  private _accuracyFeature: Feature;
-  private _trackAccuracy: boolean;
-  private _trackHeading: boolean;
-  private _layer: VectorLayer<VectorSource>;
-  private _source: VectorSource;
-  private _geolocation: Geolocation;
 
   /**
    * returns the geolocation control button
@@ -190,7 +205,19 @@ export default class GeolocationControl extends Control {
     return this.element;
   }
 
-  centerOnPosition() {
-    this.getMap().getView().setCenter(this._geolocation.getPosition());
+  /**
+   * centers the map on the position of the geolocation, if possible
+   */
+  async centerOnPosition() {
+    try {
+      await this.initGeolocation();
+      const coordinates = this._geolocation?.getPosition();
+      if (coordinates) {
+        this.getMap()?.getView().setCenter(coordinates);
+      }
+    } catch (e) {
+      // user denied geolocation
+      console.error(e);
+    }
   }
 }
