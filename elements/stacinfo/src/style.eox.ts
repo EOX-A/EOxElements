@@ -42,13 +42,6 @@ section#tags ul {
 section#tags li {
   list-style: none;
 }
-section#tags ul>li {
-  background: #00000033;
-  border-radius: 12px;
-  padding: 4px 8px;
-  margin: 0 4px 4px 0;
-  font-size: small;
-}
 main {
   padding-bottom: 50px;
   flex: 1;
@@ -185,6 +178,7 @@ details summary::before {
 details[open] summary::before {
   transform: rotate(90deg);
 }
+section#tags ul>li,
 .count {
   display: flex;
   justify-content: center;
@@ -196,5 +190,9 @@ details[open] summary::before {
   color: #004170;
   font-weight: 500;
   margin-left: 9px;
+}
+section#tags ul>li {
+  padding: 2px 12px;
+  margin: 0 4px 4px 0;
 }
 `;
