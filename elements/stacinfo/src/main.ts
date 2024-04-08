@@ -88,7 +88,7 @@ export class EOxStacInfo extends LitElement {
   buildProperties(stacArray: Array<typeof STAC>) {
     Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
 
-    const parseEntries = (list: Array<string>) =>
+    const parseEntries = (list: Array<string>, type: string) =>
       transformProperties(
         Object.entries(this.stacProperties)
           .filter(([key]) => {
@@ -99,7 +99,8 @@ export class EOxStacInfo extends LitElement {
           .reverse()
           .sort(([keyA], [keyB]) =>
             list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1
-          )
+          ),
+        type
       );
 
     if (stacArray.length < 1) {
@@ -196,11 +197,11 @@ export class EOxStacInfo extends LitElement {
               </section>
             `
           : nothing}
-        ${parseEntries(this.featured).length > 0
+        ${parseEntries(this.featured, "featured").length > 0
           ? html`
               <section id="featured" part="featured">
                 ${map(
-                  parseEntries(this.featured).filter(([_, value]) =>
+                  parseEntries(this.featured, "featured").filter(([_, value]) =>
                     value.length !== undefined ? value.length > 0 : true
                   ),
                   ([, value]) => html`
