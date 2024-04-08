@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.3.0...stacinfo-v0.3.1) (2024-04-08)
+
+
+### Bug Fixes
+
+* **style:** Improve link rendering, tag rendering, details styling etc. ([#820](https://github.com/EOX-A/EOxElements/issues/820)) ([d564134](https://github.com/EOX-A/EOxElements/commit/d5641349b22594381cae7535d9aaa138e4d181bc))
+
 ## [0.3.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.2.1...stacinfo-v0.3.0) (2023-11-14)
 
 
