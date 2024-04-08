@@ -20,6 +20,7 @@ describe("Map", () => {
         type: "Vector",
         properties: {
           id: "regions",
+          value: 1,
         },
         visible: true,
         opacity: 0.9,
@@ -34,13 +35,14 @@ describe("Map", () => {
       eoxMap.layers = [layerDefinition];
 
       const layer = eoxMap.getLayerById("regions");
-      expect(layer).to.exist;
-      expect(layer.getOpacity()).to.be.equal(0.9);
+      expect(layer, "add layer").to.exist;
+      expect(layer.getOpacity(), "set opacity on new layer").to.be.equal(0.9);
 
       const updatedLayerDefinition = {
         type: "Vector",
         properties: {
           id: "regions",
+          value: 2,
         },
         visible: true,
         opacity: 1,
@@ -53,7 +55,11 @@ describe("Map", () => {
       } as EoxLayer;
 
       eoxMap.addOrUpdateLayer(updatedLayerDefinition);
-      expect(layer.getOpacity()).to.be.equal(1);
+      expect(layer.getOpacity(), "update opacity").to.be.equal(1);
+      expect(
+        layer.get("_jsonDefinition").properties.value,
+        "update json definition object"
+      ).to.be.equal(2);
     });
   });
 });
