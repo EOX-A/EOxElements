@@ -392,6 +392,7 @@ export function updateLayer(
     layerCollection.changed();
   }
   setSyncListeners(existingLayer, newLayerDefinition);
+  existingLayer.set("_jsonDefinition", newLayerDefinition, true);
   return existingLayer;
 }
 
