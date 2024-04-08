@@ -62,7 +62,7 @@ export const transformProperties = (properties: Array<any>) => {
                   : ``
               }
               <a class="button icon-text small block" target="_blank" href="${
-                itemValue.href
+                itemValue.href || itemValue.url
               }"
                 >${itemValue.name || itemValue.title || itemKey}
                 </a>
