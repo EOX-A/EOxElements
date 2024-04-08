@@ -172,11 +172,21 @@ export class EOxStacInfo extends LitElement {
                               ><span class="colon">:</span>`
                           )}
                           <span class="value">
-                            ${
-                              // TODO
-                              // @ts-ignore
-                              unsafeHTML(value.formatted)
-                            }
+                            ${when(
+                              value.label.toLowerCase() === "description",
+                              () => html`
+                                <eox-stacinfo-shadow
+                                  .content=${value.formatted}
+                                >
+                                </eox-stacinfo-shadow>
+                              `,
+                              () =>
+                                html`${unsafeHTML(
+                                  // TODO
+                                  // @ts-ignore
+                                  value.formatted
+                                )}`
+                            )}
                           </span>
                         </li>
                       </slot>
@@ -215,10 +225,18 @@ export class EOxStacInfo extends LitElement {
                       </summary>
                       <div class="featured-container">
                         <slot name="featured-${value.label.toLowerCase()}">
-                          ${unsafeHTML(
-                            // TODO
-                            // @ts-ignore
-                            value.formatted
+                          ${when(
+                            value.label.toLowerCase() === "description",
+                            () => html`
+                              <eox-stacinfo-shadow .content=${value.formatted}>
+                              </eox-stacinfo-shadow>
+                            `,
+                            () =>
+                              html`${unsafeHTML(
+                                // TODO
+                                // @ts-ignore
+                                value.formatted
+                              )}`
                           )}
                         </slot>
                       </div>
@@ -281,5 +299,21 @@ export class EOxStacInfo extends LitElement {
     if (_changedProperties.has("for")) {
       this.fetchStac(this.for);
     }
+  }
+}
+
+/**
+ * For some property renderings, we want a separate
+ * custom element with its own shadow root, so that
+ * the general styling does not affect it (except globals
+ * like fonts, variables etc.)
+ */
+@customElement("eox-stacinfo-shadow")
+export class EOxStacInfoShadow extends LitElement {
+  @property()
+  content: null;
+
+  render() {
+    return html`<div>${unsafeHTML(this.content)}</div>`;
   }
 }
