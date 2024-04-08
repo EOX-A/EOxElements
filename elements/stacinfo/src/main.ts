@@ -88,7 +88,7 @@ export class EOxStacInfo extends LitElement {
   buildProperties(stacArray: Array<typeof STAC>) {
     Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
 
-    const parseEntries = (list: Array<string>, type: string) =>
+    const parseEntries = (list: Array<string>, type?: string) =>
       transformProperties(
         Object.entries(this.stacProperties)
           .filter(([key]) => {
