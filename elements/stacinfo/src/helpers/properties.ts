@@ -3,7 +3,7 @@ export const transformProperties = (properties: Array<any>) => {
     // Transform extent to only show temporal
     if (key === "extent") {
       if (property.value?.temporal?.interval.length > 0) {
-        let extent = property.value.temporal.interval[0];
+        const extent = property.value.temporal.interval[0];
         if (
           Array.isArray(extent) &&
           (typeof extent[0] === "string" || typeof extent[1] === "string")
@@ -19,7 +19,7 @@ export const transformProperties = (properties: Array<any>) => {
 
     // Replace all links (that haven't been converted yet)
     property.formatted = property.formatted.replaceAll(
-      /(?<!href=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])/gi,
+      /(?<!href=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
       (url: string) => {
         return `<a target="_blank" href="${url}">${url}</a>`;
       }
