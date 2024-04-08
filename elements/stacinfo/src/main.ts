@@ -4,6 +4,7 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
+import { transformProperties } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import StacFields, { Formatters } from "@radiantearth/stac-fields";
@@ -43,6 +44,9 @@ export class EOxStacInfo extends LitElement {
 
   @property({ type: Array })
   header: Array<string> = [];
+
+  @property({ type: Array })
+  tags: Array<string> = [];
 
   @property({ type: Array })
   properties: Array<string> = [];
@@ -85,16 +89,19 @@ export class EOxStacInfo extends LitElement {
     Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
 
     const parseEntries = (list: Array<string>) =>
-      Object.entries(this.stacProperties)
-        .filter(([key]) => {
-          return list === this.properties && (!list || list.length < 1)
-            ? true
-            : list?.includes(key);
-        })
-        .reverse()
-        .sort(([keyA], [keyB]) =>
-          list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1
-        );
+      transformProperties(
+        Object.entries(this.stacProperties)
+          .filter(([key]) => {
+            return list === this.properties && (!list || list.length < 1)
+              ? true
+              : list?.includes(key);
+          })
+          .reverse()
+          .sort(([keyA], [keyB]) =>
+            list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1
+          )
+      );
+
     if (stacArray.length < 1) {
       return null;
     }
@@ -125,8 +132,24 @@ export class EOxStacInfo extends LitElement {
           `
         : nothing}
       <main>
-        ${parseEntries(this.properties).length > 0
+        ${parseEntries(this.tags).length +
+          parseEntries(this.properties).length >
+        0
           ? html`
+              <section id="tags" part="tags">
+                <ul>
+                  ${map(
+                    parseEntries(this.tags),
+                    ([, value]) => html`<slot name=${value.label.toLowerCase()}
+                      ><li>
+                        <span class="label"
+                          >${unsafeHTML(value.formatted)}</span
+                        >
+                      </li></slot
+                    >`
+                  )}
+                </ul>
+              </section>
               <section id="properties" part="properties">
                 <ul
                   class=${parseEntries(this.properties).length === 1
@@ -140,15 +163,13 @@ export class EOxStacInfo extends LitElement {
                         <li>
                           ${when(
                             parseEntries(this.properties).length > 1,
-                            () => html`
-                              <span class="label">
+                            () => html` <span class="label">
                                 ${
                                   // TODO
                                   // @ts-ignore
                                   value.label
-                                } </span
-                              >:
-                            `
+                                }</span
+                              ><span class="colon">:</span>`
                           )}
                           <span class="value">
                             ${
@@ -169,27 +190,38 @@ export class EOxStacInfo extends LitElement {
           ? html`
               <section id="featured" part="featured">
                 ${map(
-                  parseEntries(this.featured),
+                  parseEntries(this.featured).filter(([_, value]) =>
+                    value.length !== undefined ? value.length > 0 : true
+                  ),
                   ([, value]) => html`
                     <details>
                       <summary>
                         <slot
                           name="featured-${value.label.toLowerCase()}-summary"
+                          class="title"
                         >
                           ${
                             // TODO
                             // @ts-ignore
                             value.label
                           }
+                          ${when(
+                            value.length,
+                            () => html`
+                              <span class="count">${value.length}</span>
+                            `
+                          )}
                         </slot>
                       </summary>
-                      <slot name="featured-${value.label.toLowerCase()}">
-                        ${unsafeHTML(
-                          // TODO
-                          // @ts-ignore
-                          value.formatted
-                        )}
-                      </slot>
+                      <div class="featured-container">
+                        <slot name="featured-${value.label.toLowerCase()}">
+                          ${unsafeHTML(
+                            // TODO
+                            // @ts-ignore
+                            value.formatted
+                          )}
+                        </slot>
+                      </div>
                     </details>
                   `
                 )}
@@ -213,15 +245,13 @@ export class EOxStacInfo extends LitElement {
                 ${when(
                   key === "sci:citation",
                   () => html`
-                    <div>
-                      <button
-                        class="copy icon-text"
-                        @click=${() =>
-                          navigator.clipboard.writeText(value.formatted)}
-                      >
-                        copy
-                      </button>
-                    </div>
+                    <button
+                      class="copy icon"
+                      @click=${() =>
+                        navigator.clipboard.writeText(value.formatted)}
+                    >
+                      copy
+                    </button>
                   `
                 )}
               `

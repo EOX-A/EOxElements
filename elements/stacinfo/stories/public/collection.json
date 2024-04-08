@@ -1,110 +1,106 @@
 {
   "type": "Collection",
-  "id": "bedrock-topography-antarctica-bedmachine",
+  "id": "ports_cars_aq",
   "stac_version": "1.0.0",
-  "description": "This data set, part of the NASA Making Earth System Data Records for Use in Research Environments (MEaSUREs) program, contains a bed topography/bathymetry map of Antarctica based on mass conservation, streamline diffusion, and other methods. The data set also includes ice thickness, surface elevation, an ice/ocean/land mask, ice thickness estimation errors, and a map showing where each method was utilized.",
+  "description": "## Ports and cars - impact on air quality \n\nThis indicator aims at assessing ports pollution levels over the time interval 2019-2020 by correlating:\n- normalized NO2 data from the TROPOMI sensor onboard Sentinel-5P satellite (daily observations)\n- Automatic Identification Systems (AIS) data from all the boats coming to the ports\n- GNSS data (TomTom) quantifying the mean daily number of cars accessing the main street to the ports\n- Anonymised cellular data (Vodafone) providing the total number of people present in the port area (2020 observations)   \n\nThis integrated analysis shows:\n- **high correlation** between NO2 levels and boat traffic\n- **low correlation** between NO2 levels and car traffic\n\nOn the indicator chart, for each day, the light/dark red-colored background indicates whether there were \nCOVID-19 restrictions or lockdown measure in place in the country where the city is located.\n",
   "links": [
     {
       "rel": "root",
       "href": "../../catalog.json",
       "type": "application/json",
-      "title": "Open Science Catalog"
+      "title": "RACE"
     },
     {
-      "rel": "via",
-      "href": "https://nsidc.org/data/nsidc-0756/versions/3",
-      "title": "Access"
-    },
-    {
-      "rel": "via",
-      "href": "https://nsidc.org/sites/default/files/documents/user-guide/nsidc-0756-v003-userguide.pdf",
-      "title": "Documentation"
-    },
-    {
-      "rel": "child",
-      "href": "https://s3.waw2-1.cloudferro.com/swift/v1/AUTH_3f7e5dd853f54cebb046a29a69f1bba6/Catalogs/4DANTARCTICA/bedrock-topography-antarctica-bedmachine/catalog.json",
+      "rel": "item",
+      "href": "./ports_cars_aq/2020/Gioia Tauro.json",
       "type": "application/json",
-      "title": "Items"
+      "id": "IT16",
+      "latlng": "38.45339,15.9024",
+      "country": "IT",
+      "city": "Gioia Tauro"
+    },
+    {
+      "rel": "item",
+      "href": "./ports_cars_aq/2020/Genoa.json",
+      "type": "application/json",
+      "id": "IT3",
+      "latlng": "44.40572,8.93364",
+      "country": "IT",
+      "city": "Genoa"
     },
     {
       "rel": "parent",
-      "href": "../catalog.json",
+      "href": "../collection.json",
       "type": "application/json",
-      "title": "Products"
-    },
-    {
-      "rel": "related",
-      "href": "../../projects/4d-antarctica/collection.json",
-      "type": "application/json",
-      "title": "Project: 4D-ANTARCTICA"
-    },
-    {
-      "rel": "related",
-      "href": "../../themes/cryosphere/catalog.json",
-      "type": "application/json",
-      "title": "Theme: Cryosphere"
-    },
-    {
-      "rel": "related",
-      "href": "../../variables/ice-depth-thickness/catalog.json",
-      "type": "application/json",
-      "title": "Variable: Ice Depth/Thickness"
-    },
-    {
-      "rel": "related",
-      "href": "../../variables/glacier-thickness-ice-sheet-thickness/catalog.json",
-      "type": "application/json",
-      "title": "Variable: Glacier Thickness/Ice Sheet Thickness"
-    },
-    {
-      "rel": "related",
-      "href": "../../eo-missions/numerical-models/catalog.json",
-      "type": "application/json",
-      "title": "EO Mission: Numerical models"
+      "title": "Air quality in ports"
     }
   ],
   "stac_extensions": [
-    "https://stac-extensions.github.io/osc/v1.0.0-rc.2/schema.json"
+    "https://stac-extensions.github.io/web-map-links/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/example-links/v0.0.1/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
   ],
-  "osc:themes": ["Cryosphere"],
-  "osc:missions": ["Numerical models"],
-  "osc:project": "4D-ANTARCTICA",
-  "osc:variables": [
-    "Ice Depth/Thickness",
-    "Glacier Thickness/Ice Sheet Thickness"
-  ],
-  "osc:status": "ongoing",
-  "osc:region": "Antarctica",
-  "osc:type": "product",
-  "osc:standard_name": "bedrock-topography-antarctica-bedmachine",
-  "created": "2022-10-11T00:00:00Z",
-  "version": "3.0",
-  "sci:doi": "10.5067/FPSU0V1MWUB6",
-  "start_datetime": "1970-01-01T00:00:00Z",
-  "end_datetime": "2019-10-01T23:59:59Z",
-  "updated": "2024-03-01T10:20:42Z",
-  "title": "Bedrock topography: MEaSUREs BedMachine Antarctica v.3",
+  "subtitle": "Port Activities, sources of pollution and NO2 levels",
+  "yAxis": "Normalized NO2 concentration & Mean number of people",
+  "themes": ["economy", "air"],
+  "subcode": "C2",
+  "tags": ["Air quality", "NO2", "Ports", "Multi-sensors"],
+  "agency": ["ESA"],
+  "sensor": ["TROPOMI-Very long sensor name with a lot of width"],
+  "satellite": ["Sentinel-5P", "GNSS"],
+  "insituSources": ["AIS", "Mobile"],
+  "geoDBID": "C2",
+  "endpointtype": "GeoDB",
+  "title": "Car sources",
   "extent": {
     "spatial": {
-      "bbox": [[180.0, -53.0, -180.0, -90.0]]
+      "bbox": [[8.92364, 38.44339, 15.9124, 44.41572]]
     },
     "temporal": {
-      "interval": [["1970-01-01T00:00:00Z", "2019-10-01T23:59:59Z"]]
+      "interval": [["2020-02-01T00:00:00Z", "2020-05-01T00:00:00Z"]]
     }
   },
   "license": "proprietary",
-  "keywords": [
-    "Ice Depth/Thickness",
-    "Cryospheric Indicators",
-    "Snow/Ice",
-    "Glaciers/Ice Sheets",
-    "Glacier Thickness/Ice Sheet Thickness",
-    "Sea Ice",
-    "theme:Cryosphere",
-    "variable:Ice Depth/Thickness",
-    "variable:Glacier Thickness/Ice Sheet Thickness",
-    "mission:Numerical models",
-    "region:Antarctica",
-    "project:4D-ANTARCTICA"
-  ]
+  "providers": [
+    {
+      "name": "e-GEOS",
+      "description": "e-GEOS is a leading international player in the Earth Observation (EO) and Geo-Spatial Information business.",
+      "url": "https://www.e-geos.it/#/"
+    },
+    {
+      "name": "ExpertLab",
+      "description": "ExpertLab - Information and Communication Systems",
+      "url": "http://www.expertlab.it/"
+    },
+    {
+      "name": "CherryData",
+      "url": "https://www.cherry-data.com/"
+    }
+  ],
+  "summaries": {
+    "cities": ["Gioia Tauro", "Genoa"],
+    "countries": ["IT"]
+  },
+  "assets": {
+    "reference_1": {
+      "href": "https://www.imo.org/en/OurWork/Safety/Pages/AIS.aspx",
+      "type": "text/html",
+      "title": "AIS data",
+      "description": "Asset description",
+      "roles": ["metadata"]
+    },
+    "reference_2": {
+      "href": "https://www.tomtom.com/products/traffic-and-travel-information/",
+      "type": "text/html",
+      "title": "TomTom data",
+      "roles": ["metadata"]
+    },
+    "reference_3": {
+      "href": "https://covidtracker.bsg.ox.ac.uk/",
+      "type": "text/html",
+      "title": "Oxford University\u2019s coronavirus government response tracker",
+      "roles": ["metadata"]
+    }
+  },
+  "sci:citation": "This is a very long citation citing a lot of long text. The lenght is purely for style-adaptation purposes. EOX et al 2024, powered by stac-fields and other libraries, all subject to different licenses."
 }
