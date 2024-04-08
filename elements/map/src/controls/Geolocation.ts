@@ -74,7 +74,7 @@ export default class GeolocationControl extends Control {
     this._trackHeading = options.trackHeading;
 
     this._positionFeature = new Feature({
-      geometry: new Point([0, 0]),
+      geometry: new Point([NaN, NaN]),
       heading: 0,
     });
 
