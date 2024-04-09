@@ -11,11 +11,14 @@ const loadHeroSectionTest = () => {
   const testText = `
 # Foo <!--{ as="img" mode="hero" src="${img}" }-->
 #### Bar
+
+## Hello World
+Section 1 Content Here
 `;
 
-  cy.mount(`<eox-storytelling markdown='${testText}'></eox-storytelling>`).as(
-    storyTelling
-  );
+  cy.mount(
+    `<eox-storytelling show-nav markdown='${testText}'></eox-storytelling>`
+  ).as(storyTelling);
 
   cy.get(storyTelling)
     .shadow()
@@ -24,6 +27,11 @@ const loadHeroSectionTest = () => {
       cy.get(".section-wrap.hero img").should("have.attr", "src", img);
       cy.get(".section-wrap.hero h1").should("have.text", "Foo");
       cy.get(".section-wrap.hero h4").should("have.text", "Bar");
+
+      cy.get(".story-telling div > :nth-child(1)").filter('[class*="hero"]');
+      cy.get(".story-telling div > :nth-child(2)").filter(
+        '[class*="navigation"]'
+      );
     });
 };
 

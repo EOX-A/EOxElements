@@ -138,3 +138,36 @@ export function convertAttributeValueBasedOnItsType(
 
   return convertedValue;
 }
+
+/**
+ * Parse Nav and generate a new Element Node
+ *
+ * @param {Array<Element>} html - List of html elements
+ * @param {Array} nav - List of nav elements
+ * @returns {Element[]} An array of processed DOM nodes after adding navigation.
+ */
+export function parseNav(html, nav) {
+  const parser = new DOMParser();
+  let navIndex = 0;
+
+  const navHtml = `
+    <div class="navigation">
+      <div class="container">
+        <ul>
+          ${nav
+            .map(
+              ({ id, title }) =>
+                `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
+            )
+            .join("")}
+        </ul>
+      </div>
+    </div>
+  `;
+  const navDOM = parser.parseFromString(navHtml, "text/html").body.firstChild;
+
+  if (html[0].classList.contains("hero")) navIndex = 1;
+  html.splice(navIndex, 0, navDOM);
+
+  return html;
+}
