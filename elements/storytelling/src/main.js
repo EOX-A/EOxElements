@@ -7,6 +7,7 @@ import {
   scrollAnchorClickEvent,
   scrollIntoView,
   renderHtmlString,
+  parseNav,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -126,6 +127,9 @@ export class EOxStoryTelling extends LitElement {
 
       if (this.showNav) this.nav = md.nav;
 
+      if (this.showNav && this.nav.length && this.#html.length)
+        this.#html = parseNav(this.#html, this.nav);
+
       if (this.showEditor) {
         const parent = this.shadowRoot || this;
         const editorDOM = parent.querySelector("eox-storytelling-editor");
@@ -194,23 +198,6 @@ export class EOxStoryTelling extends LitElement {
       </style>
 
       <div class="story-telling">
-        ${when(
-          this.showNav && this.nav.length,
-          () => html`
-            <div class="navigation">
-              <div class="container">
-                <ul>
-                  ${this.nav.map(
-                    ({ id, title }) =>
-                      html`<li class="nav-${id}">
-                        <a href="#${id}">${title}</a>
-                      </li>`
-                  )}
-                </ul>
-              </div>
-            </div>
-          `
-        )}
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
           this.showEditor,

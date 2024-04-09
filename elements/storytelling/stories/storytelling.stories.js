@@ -15,6 +15,7 @@ import {
   MarkdownMapTourStory,
   MarkdownEditorStory,
   MarkdownHeroStory,
+  MarkdownHeroWithNavStory,
 } from "./index";
 import { html } from "lit";
 
@@ -95,3 +96,8 @@ export const MarkdownWithEditor = MarkdownEditorStory;
  * StoryTelling with Hero Image and Video
  */
 export const MarkdownWithHeroSection = MarkdownHeroStory;
+
+/**
+ * StoryTelling with Hero and Nav
+ */
+export const MarkdownHeroWithNav = MarkdownHeroWithNavStory;
