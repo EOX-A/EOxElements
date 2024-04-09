@@ -51,7 +51,7 @@ jobs:
       - name: Run e2e tests 👀
         run: npm run test:e2e
       - name: Upload failed test screenshots 📷
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: cypress-screenshots
