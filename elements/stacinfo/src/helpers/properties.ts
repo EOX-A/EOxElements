@@ -1,4 +1,7 @@
-export const transformProperties = (properties: Array<any>) => {
+export const transformProperties = (
+  properties: Array<any>,
+  type: string = "property"
+) => {
   return properties.map(([key, property]) => {
     // Transform extent to only show temporal
     if (key === "extent") {
@@ -37,38 +40,36 @@ export const transformProperties = (properties: Array<any>) => {
 
     // Format assets to look like button
     if (key === "assets" || key === "links" || key === "providers") {
-      // console.log(property);
-      // property.formatted = `<ul>${filterLinks(property.value)
-      //   .map(
-      //     ([itemKey, itemValue]) =>
-      //       `<li>
-      //         <a target="_blank" href="${itemValue.href}"
-      //           >${itemValue.title || itemKey}</a
-      //         >${
-      //           itemValue.description
-      //             ? `<div><p>${itemValue.description}</p></div>`
-      //             : ``
-      //         }
-      //       </li>`
-      //   )
-      //   .join("")}</ul>`;
-      property.formatted = filterLinks(property.value)
-        .map(
-          ([itemKey, itemValue]) =>
-            `<div class="button-container">
-              ${
-                itemValue.description
-                  ? `<div><p>${itemValue.description}</p></div>`
-                  : ``
-              }
-              <a class="button icon-text small block" target="_blank" href="${
-                itemValue.href || itemValue.url
-              }"
-                >${itemValue.name || itemValue.title || itemKey}
-                </a>
-            </div>`
-        )
-        .join("");
+      if (type === "property") {
+        property.formatted = `<ul>${filterLinks(property.value)
+          .map(
+            ([itemKey, itemValue]) =>
+              `<li>
+                <a target="_blank" href="${itemValue.href || itemValue.url}"
+                  >${itemValue.name || itemValue.title || itemKey}</a
+                >
+              </li>`
+          )
+          .join("")}</ul>`;
+      } else if (type === "featured") {
+        property.formatted = filterLinks(property.value)
+          .map(
+            ([itemKey, itemValue]) =>
+              `<div class="button-container">
+                ${
+                  itemValue.description
+                    ? `<div><p>${itemValue.description}</p></div>`
+                    : ``
+                }
+                <a class="button icon-text small block" target="_blank" href="${
+                  itemValue.href || itemValue.url
+                }"
+                  >${itemValue.name || itemValue.title || itemKey}
+                  </a>
+              </div>`
+          )
+          .join("");
+      }
     }
 
     // Add length information to display in list
