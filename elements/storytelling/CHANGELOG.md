@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.3.1...storytelling-v0.4.0) (2024-04-09)
+
+
+### Features
+
+* Added image/video based hero section to StoryTelling ([#808](https://github.com/EOX-A/EOxElements/issues/808)) ([03e99a0](https://github.com/EOX-A/EOxElements/commit/03e99a0f6889331b2bf74116eae746a657bc1b2b))
+* Export/Import for storytelling editor  ([#809](https://github.com/EOX-A/EOxElements/issues/809)) ([40aee95](https://github.com/EOX-A/EOxElements/commit/40aee95039c7a2604be2819e1c535d3c4eae76f6))
+* StoryTelling with Editor Mode ([#788](https://github.com/EOX-A/EOxElements/issues/788)) ([5ed4599](https://github.com/EOX-A/EOxElements/commit/5ed45995624c11dc403bde3d641ca1b58d6c0015))
+* Use eox-jsonform instead of monaco editor ([#791](https://github.com/EOX-A/EOxElements/issues/791)) ([91a6ba9](https://github.com/EOX-A/EOxElements/commit/91a6ba95e25487d09125b0c9a6ce3ac0f68d005c))
+
+
+### Bug Fixes
+
+* **style:** Adapt styling to new editor ([#813](https://github.com/EOX-A/EOxElements/issues/813)) ([03d61f9](https://github.com/EOX-A/EOxElements/commit/03d61f9a73e93ab1c790f79563f55997404da11c))
+
 ## [0.3.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.3.0...storytelling-v0.3.1) (2024-03-25)
 
 
