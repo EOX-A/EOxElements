@@ -154,10 +154,12 @@ export function parseNav(html, nav) {
     <div class="navigation">
       <div class="container">
         <ul>
-          ${nav.map(
-            ({ id, title }) =>
-              `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
-          )}
+          ${nav
+            .map(
+              ({ id, title }) =>
+                `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
+            )
+            .join("")}
         </ul>
       </div>
     </div>
