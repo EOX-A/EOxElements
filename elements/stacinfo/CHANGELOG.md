@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.3.1...stacinfo-v0.3.2) (2024-04-09)
+
+
+### Bug Fixes
+
+* **style:** Improve property columns, description and link rendering ([#833](https://github.com/EOX-A/EOxElements/issues/833)) ([bbc8a68](https://github.com/EOX-A/EOxElements/commit/bbc8a68710d906eae168825bcaf232383901fdff))
+
 ## [0.3.1](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.3.0...stacinfo-v0.3.1) (2024-04-08)
 
 
