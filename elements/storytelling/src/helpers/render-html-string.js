@@ -210,7 +210,7 @@ export function parseNav(html, nav, showNav) {
     html.splice(navIndex, 0, navDOM);
   }
 
-  html[navIndex + 1].classList.add("section-start");
+  if (html.length) html[navIndex + 1].classList.add("section-start");
 
   return html;
 }
