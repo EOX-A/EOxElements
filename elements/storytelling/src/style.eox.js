@@ -58,7 +58,7 @@ const styleEOX = `
     background: black;
   }
   .navigation li.active a {
-    font-weight: 900;
+    font-weight: 700;
   }
   .navigation li.active a:after {
     background: black;
@@ -122,7 +122,16 @@ const styleEOX = `
   }
   .story-telling .container {
     width: 90%;
-    --block-spacing-vertical: 1rem;
+    --block-spacing-vertical: 2rem;
+  }
+  .story-telling .section-wrap.container.section-start {
+    padding-top: 4rem;
+  }
+  .story-telling p:last-child {
+    margin-bottom: 0;
+  }
+  .story-telling .section-wrap.container:last-child {
+    padding-bottom: 4rem; 
   }
   .story-telling .tour {
     width: 100%;
