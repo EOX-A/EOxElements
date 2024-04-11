@@ -11,8 +11,8 @@ export const MarkdownFallbackMode = {
 Above fallback image is hidden and can only be visible in a Github markdown renderer.
 
 ## Section 2
-![](https://www.gstatic.com/prettyearth/assets/full/14617.jpg) <!--{ mode="fallback" }-->
-Above fallback image is hidden and can only be visible in a Github markdown renderer.
+This is section 2 fallback image ![](https://www.gstatic.com/prettyearth/assets/full/14617.jpg) <!--{ mode="fallback" }-->
+Above fallback title/image is hidden and can only be visible in a Github markdown renderer.
 `,
   },
   render: (args) => html`

@@ -192,8 +192,13 @@ function parseFallBack(tokens, nextInlineToken) {
     // Check if any next line content present if true then remove fallback image from rendering
     if (newLineRegex.test(nextInlineToken.content)) {
       const nextLineTextArr = nextInlineToken.content.split(newLineRegex);
+
       nextLineTextArr.shift();
       nextInlineToken.content = nextLineTextArr.join(/\n/);
+
+      if (nextInlineToken.children[0].type === "text")
+        nextInlineToken.children.shift();
+
       nextInlineToken.children.shift();
     } else shouldContinue = true;
   }
