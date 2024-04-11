@@ -91,7 +91,7 @@ var Ei=Object.defineProperty;var ki=(u,e,n)=>e in u?Ei(u,e,{enumerable:!0,config
     justify-content: center;
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 2;
   }
   .navigation .container {
     padding: 0px;
