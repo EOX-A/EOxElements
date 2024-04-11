@@ -193,12 +193,15 @@ function parseFallBack(tokens, nextInlineToken) {
     if (newLineRegex.test(nextInlineToken.content)) {
       const nextLineTextArr = nextInlineToken.content.split(newLineRegex);
 
+      // Remove fallback content and image
       nextLineTextArr.shift();
       nextInlineToken.content = nextLineTextArr.join(/\n/);
 
+      // Remove fallback title from children array
       if (nextInlineToken.children[0].type === "text")
         nextInlineToken.children.shift();
 
+      // Remove fallback image from children array
       nextInlineToken.children.shift();
     } else shouldContinue = true;
   }
