@@ -16,6 +16,7 @@ import {
   MarkdownEditorStory,
   MarkdownHeroStory,
   MarkdownHeroWithNavStory,
+  MarkdownFallbackModeStory,
 } from "./index";
 import { html } from "lit";
 
@@ -101,3 +102,8 @@ export const MarkdownWithHeroSection = MarkdownHeroStory;
  * StoryTelling with Hero and Nav
  */
 export const MarkdownHeroWithNav = MarkdownHeroWithNavStory;
+
+/**
+ * StoryTelling with hidden fallback mode
+ */
+export const MarkdownFallbackMode = MarkdownFallbackModeStory;
