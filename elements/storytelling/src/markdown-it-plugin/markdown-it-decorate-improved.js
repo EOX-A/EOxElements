@@ -180,7 +180,7 @@ function isOpener(type) {
  *
  * @param {Array<Object>} tokens - List of markdown tokens
  * @param {Object} nextInlineToken - Next inline token
- * @return {{ shouldContinue: Boolean }} - Final list of updated states
+ * @return {{ shouldContinue: Boolean }} - Status to continue to next opening token or not
  */
 function parseFallBack(tokens, nextInlineToken) {
   const newLineRegex = /\r\n|\r|\n/;
