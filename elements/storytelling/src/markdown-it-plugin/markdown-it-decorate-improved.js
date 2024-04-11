@@ -49,7 +49,7 @@ function curlyAttrs(state) {
       const { shouldContinue } = parseFallBack(tokens, tokens[i + 1]);
       if (shouldContinue) {
         i = i + 2;
-        continue; // continuing with next opening token if just fallback mode is present
+        continue; // continuing with the next opening token if just fallback mode is present
       }
     }
 
