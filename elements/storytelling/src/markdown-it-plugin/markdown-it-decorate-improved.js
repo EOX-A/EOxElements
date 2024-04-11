@@ -44,6 +44,15 @@ function curlyAttrs(state) {
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
 
+    // Parse fallback mode
+    if (token.tag === "p") {
+      const { shouldContinue } = parseFallBack(tokens, tokens[i + 1]);
+      if (shouldContinue) {
+        i = i + 2;
+        continue; // continuing with next opening token if just fallback mode is present
+      }
+    }
+
     // Initialise opening tag
     if (isOpener(token.type) || TAGS_SELF_CLOSING[token.type]) {
       sPush(stack, token);
@@ -164,6 +173,32 @@ function isOpener(type) {
   return (
     type.match(/_(open|start)$/) || type === "fence" || type === "code_block"
   );
+}
+
+/**
+ * Process fallback mode
+ *
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {Object} nextInlineToken - Next inline token
+ * @return {{ shouldContinue: Boolean }} - Final list of updated states
+ */
+function parseFallBack(tokens, nextInlineToken) {
+  const newLineRegex = /\r\n|\r|\n/;
+  const fallBackModeRegex = /mode\s*=\s*(['"])fallback\1/g;
+  let shouldContinue = false;
+
+  // Check content contain fallback mode or not
+  if (fallBackModeRegex.test(nextInlineToken?.content || "")) {
+    // Check if any next line content present if true then remove fallback image from rendering
+    if (newLineRegex.test(nextInlineToken.content)) {
+      const nextLineTextArr = nextInlineToken.content.split(newLineRegex);
+      nextLineTextArr.shift();
+      nextInlineToken.content = nextLineTextArr.join(/\n/);
+      nextInlineToken.children.shift();
+    } else shouldContinue = true;
+  }
+
+  return { shouldContinue };
 }
 
 /**
