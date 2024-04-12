@@ -42,7 +42,7 @@ export function renderHtmlString(htmlString, sections, that) {
             }
           });
         },
-        { threshold: 1 }
+        { rootMargin: "-50% 0px" }
       );
 
       setTimeout(() => {
