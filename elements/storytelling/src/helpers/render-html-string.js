@@ -149,7 +149,9 @@ function processNode(node, noShadow) {
     // Loop over each image
     images.forEach((img) => {
       // Check if the image is already inside a link (to avoid double wrapping)
-      if (img.parentNode.tagName !== "A") {
+      const mode = img.getAttribute("mode");
+
+      if (img.parentNode.tagName !== "A" && mode !== "hero") {
         const anchor = document.createElement("a");
 
         // Add the data-fslightbox attribute
