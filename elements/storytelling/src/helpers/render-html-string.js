@@ -1,4 +1,5 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
+import GLightbox from "glightbox";
 
 let sectionObservers = [];
 let stepSectionObservers = [];
@@ -95,9 +96,7 @@ export function renderHtmlString(htmlString, sections, that) {
   });
 
   // Process child nodes of the document body
-  return Array.from(doc.body.childNodes).map((node) =>
-    processNode(node, that.noShadow)
-  );
+  return Array.from(doc.body.childNodes).map(processNode);
 }
 
 /**
@@ -120,10 +119,9 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
  * Processes a DOM node by potentially modifying its attributes value based on it's datatype
  *
  * @param {Element} node - The DOM node to process.
- * @param {Boolean} noShadow - noShadow state
  * @returns {Element} The processed DOM node.
  */
-function processNode(node, noShadow) {
+function processNode(node) {
   if (
     node.nodeType === Node.ELEMENT_NODE &&
     node.classList.contains("section-custom")
@@ -143,26 +141,36 @@ function processNode(node, noShadow) {
     });
   }
 
-  if (noShadow) {
-    const images = node.querySelectorAll("img");
+  /**
+   * Lightbox setup
+   * See https://github.com/biati-digital/glightbox?tab=readme-ov-file#lightbox-options
+   */
+  if (node.querySelectorAll) {
+    // Set up empty Lightbox
+    const lightboxGallery = GLightbox({
+      autoplayVideos: true,
+    });
+    const lightboxElements = [];
 
+    const images = node.querySelectorAll("img");
     // Loop over each image
     images.forEach((img) => {
       // Check if the image is already inside a link (to avoid double wrapping)
       const mode = img.getAttribute("mode");
 
       if (img.parentNode.tagName !== "A" && mode !== "hero") {
-        const anchor = document.createElement("a");
+        img.style.cursor = "zoom-in";
+        img.addEventListener("click", () => {
+          lightboxGallery.open();
+        });
 
-        // Add the data-fslightbox attribute
-        anchor.setAttribute("data-fslightbox", true);
-        anchor.href = img.src;
-
-        // Insert the anchor in the DOM tree just before the image
-        img.parentNode.insertBefore(anchor, img);
-        anchor.appendChild(img);
+        lightboxElements.push({
+          type: "image",
+          href: img.src,
+        });
       }
     });
+    lightboxGallery.setElements(lightboxElements);
   }
 
   return node;

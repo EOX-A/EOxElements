@@ -12,15 +12,17 @@ const loadMarkdownLightBox = () => {
 ![Image](${imgURL})
   `;
 
-  cy.mount(
-    `<eox-storytelling no-shadow markdown="${testText}"></eox-storytelling>`
-  ).as(storyTelling);
+  cy.mount(`<eox-storytelling markdown="${testText}"></eox-storytelling>`).as(
+    storyTelling
+  );
 
-  cy.get(storyTelling).within(() => {
-    cy.get("img").click();
-  });
+  cy.get(storyTelling)
+    .shadow()
+    .within(() => {
+      cy.get("img").click();
+    });
 
-  cy.get("img.fslightbox-source").should("have.attr", "src", imgURL);
+  cy.get(".glightbox-container img").should("have.attr", "src", imgURL);
 };
 
 export default loadMarkdownLightBox;

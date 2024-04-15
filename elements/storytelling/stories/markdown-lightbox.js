@@ -6,7 +6,8 @@ import { html } from "lit";
 export const MarkdownLightBox = {
   args: {
     markdown: `
-  ## Satellite Data <!--{.some-comment}-->
+  ## Lightbox Images <!--{.some-comment}-->
+  Click on any image to open it in a lightbox.
   ![Image](https://i.imgur.com/GDAStfX.jpeg)<!-- {width=700} -->
   
   ## Img Section <!--{ as="img" src="https://i.imgur.com/6ldFbdn.gif" style="height:600px;" }-->
@@ -15,7 +16,6 @@ export const MarkdownLightBox = {
   render: (args) => html`
     <!-- Render eox-storytelling with attribute as comment markdown. -->
     <eox-storytelling
-      no-shadow
       id="markdown-lightbox"
       markdown=${args.markdown}
     ></eox-storytelling>

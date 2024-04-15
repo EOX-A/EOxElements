@@ -171,7 +171,7 @@ export class EOxStoryTelling extends LitElement {
   }
 
   async firstUpdated() {
-    if (this.noShadow) addLightBoxScript(this);
+    addLightBoxScript(this);
 
     // Check if this.#html is initialized, if not, wait for it
     if (this.#html === undefined) await this.waitForHtmlInitialization();
