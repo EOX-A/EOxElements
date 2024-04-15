@@ -315,6 +315,13 @@ export class EOxStacInfoShadow extends LitElement {
   content: null;
 
   render() {
-    return html`<div>${unsafeHTML(this.content)}</div>`;
+    return html`<style>
+        img,
+        video,
+        iframe {
+          max-width: 100%;
+        }
+      </style>
+      <div>${unsafeHTML(this.content)}</div>`;
   }
 }
