@@ -47,7 +47,7 @@ export function getCustomEleHandling(md) {
 /**
  * Add lightbox external library CSS
  */
-export function addLightBoxScript(element) {
+export function addLightBoxScript() {
   const style = document.createElement("style");
   style.innerHTML = `
       @import url("https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css");
