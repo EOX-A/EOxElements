@@ -22,7 +22,7 @@ export const transformProperties = (
 
     // Replace all links (that haven't been converted yet)
     property.formatted = property.formatted.replaceAll(
-      /(?<!href=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
+      /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
       (url: string) => {
         return `<a target="_blank" href="${url}">${url}</a>`;
       }
