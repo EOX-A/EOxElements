@@ -95,7 +95,9 @@ export function renderHtmlString(htmlString, sections, that) {
   });
 
   // Process child nodes of the document body
-  return Array.from(doc.body.childNodes).map(processNode);
+  return Array.from(doc.body.childNodes).map((node) =>
+    processNode(node, that.noShadow)
+  );
 }
 
 /**
@@ -118,9 +120,10 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
  * Processes a DOM node by potentially modifying its attributes value based on it's datatype
  *
  * @param {Element} node - The DOM node to process.
+ * @param {Boolean} noShadow - noShadow state
  * @returns {Element} The processed DOM node.
  */
-function processNode(node) {
+function processNode(node, noShadow) {
   if (
     node.nodeType === Node.ELEMENT_NODE &&
     node.classList.contains("section-custom")
@@ -139,6 +142,27 @@ function processNode(node) {
       }
     });
   }
+
+  if (noShadow) {
+    const images = node.querySelectorAll("img");
+
+    // Loop over each image
+    images.forEach((img) => {
+      // Check if the image is already inside a link (to avoid double wrapping)
+      if (img.parentNode.tagName !== "A") {
+        const anchor = document.createElement("a");
+
+        // Add the data-fslightbox attribute
+        anchor.setAttribute("data-fslightbox", true);
+        anchor.href = img.src;
+
+        // Insert the anchor in the DOM tree just before the image
+        img.parentNode.insertBefore(anchor, img);
+        anchor.appendChild(img);
+      }
+    });
+  }
+
   return node;
 }
 

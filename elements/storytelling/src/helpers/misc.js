@@ -43,3 +43,16 @@ export function getCustomEleHandling(md) {
     allowCustomizedBuiltInElements: true,
   };
 }
+
+/**
+ * Add lightbox external library script
+ *
+ * @param element - the lit element instance
+ */
+export function addLightBoxScript(element) {
+  const script = document.createElement("script");
+  script.src =
+    "https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.min.js";
+
+  element.renderRoot.appendChild(script);
+}

@@ -14,6 +14,7 @@ import {
   loadMapTourTest,
   loadMarkdownEditorTest,
   loadHeroSectionTest,
+  loadMarkdownLightBoxTest,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -55,4 +56,6 @@ describe("Storytelling", () => {
 
   // Test case to ensure hero section loaded with content
   it("Load hero section", () => loadHeroSectionTest());
+
+  it("Load lightbox", () => loadMarkdownLightBoxTest());
 });
