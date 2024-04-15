@@ -8,7 +8,9 @@ export const MarkdownLightBox = {
     markdown: `
   ## Lightbox Images <!--{.some-comment}-->
   Click on any image to open it in a lightbox.
+
   ![Image](https://i.imgur.com/GDAStfX.jpeg)<!-- {width=700} -->
+  ![Image](https://i.imgur.com/m6A4LzQ.jpeg)<!-- {width=700} -->
   
   ## Img Section <!--{ as="img" src="https://i.imgur.com/6ldFbdn.gif" style="height:600px;" }-->
 `,
