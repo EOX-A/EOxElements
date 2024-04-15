@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.3](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.3.2...stacinfo-v0.3.3) (2024-04-15)
+
+
+### Bug Fixes
+
+* Apply max-width to img, videos and iframes inside shadow element ([#856](https://github.com/EOX-A/EOxElements/issues/856)) ([5557cab](https://github.com/EOX-A/EOxElements/commit/5557cabcdaa6c9c5c5b4e0e03135cc9756a49546))
+* Prevent img src link replacement ([#855](https://github.com/EOX-A/EOxElements/issues/855)) ([46abcd7](https://github.com/EOX-A/EOxElements/commit/46abcd70a8e9cbf3fe5d243c540edf49936bc839))
+
 ## [0.3.2](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.3.1...stacinfo-v0.3.2) (2024-04-09)
 
 
