@@ -1,4 +1,5 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
+import GLightbox from "glightbox";
 
 let sectionObservers = [];
 let stepSectionObservers = [];
@@ -139,6 +140,39 @@ function processNode(node) {
       }
     });
   }
+
+  /**
+   * Lightbox setup
+   * See https://github.com/biati-digital/glightbox?tab=readme-ov-file#lightbox-options
+   */
+  if (node.querySelectorAll) {
+    // Set up empty Lightbox
+    const lightboxGallery = GLightbox({
+      autoplayVideos: true,
+    });
+    const lightboxElements = [];
+
+    const images = node.querySelectorAll("img");
+    // Loop over each image
+    images.forEach((img) => {
+      // Check if the image is already inside a link (to avoid double wrapping)
+      const mode = img.getAttribute("mode");
+
+      if (img.parentNode.tagName !== "A" && mode !== "hero") {
+        img.style.cursor = "zoom-in";
+        img.addEventListener("click", () => {
+          lightboxGallery.open();
+        });
+
+        lightboxElements.push({
+          type: "image",
+          href: img.src,
+        });
+      }
+    });
+    lightboxGallery.setElements(lightboxElements);
+  }
+
   return node;
 }
 

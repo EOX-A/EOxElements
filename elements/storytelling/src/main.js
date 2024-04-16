@@ -8,6 +8,7 @@ import {
   scrollIntoView,
   renderHtmlString,
   parseNav,
+  addLightBoxScript,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -170,6 +171,8 @@ export class EOxStoryTelling extends LitElement {
   }
 
   async firstUpdated() {
+    addLightBoxScript(this);
+
     // Check if this.#html is initialized, if not, wait for it
     if (this.#html === undefined) await this.waitForHtmlInitialization();
     scrollIntoView(this);
