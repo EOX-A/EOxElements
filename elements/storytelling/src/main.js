@@ -8,6 +8,7 @@ import {
   scrollIntoView,
   renderHtmlString,
   parseNav,
+  validateMarkdownAttrs,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -112,6 +113,8 @@ export class EOxStoryTelling extends LitElement {
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
       const unsafeHTML = md.render(this.markdown);
+
+      await validateMarkdownAttrs(md.attrs.sections);
 
       this.#config = md.config;
 

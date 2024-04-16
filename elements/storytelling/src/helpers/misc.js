@@ -35,7 +35,7 @@ export function getCustomEleHandling(md) {
   const tagNameCheck = (tagName) =>
     tagName.match(new RegExp(/^[a-z]+(-[a-z0-9]+)*$/));
   const attributeNameCheck = (attr) =>
-    attr.match(new RegExp(md.attrs.join("|")));
+    attr.match(new RegExp(md.attrs.keys.join("|")));
 
   return {
     tagNameCheck,

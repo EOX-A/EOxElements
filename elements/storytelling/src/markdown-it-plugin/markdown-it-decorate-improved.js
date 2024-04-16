@@ -26,7 +26,7 @@ export default function attributes(md) {
  */
 function curlyAttrs(state) {
   state.md.nav = [];
-  state.md.attrs = [];
+  state.md.attrs = { keys: [], sections: {} };
   state.md.sections = {};
 
   const tokens = state.tokens;
@@ -656,16 +656,22 @@ function trimRight(obj, attr) {
 function generateCustomAttrsAndSectionMetaList(tokens, md) {
   tokens.forEach((token) => {
     const attrs = token.attrs || [];
+    let attrsObj = {};
 
     // Initialize sections meta
     initializeSectionsMeta(token, md);
 
     // Process each attribute for the current token
     attrs.forEach((attr) => {
-      // Add attribute to md.attrs if it's not already included
-      if (!md.attrs.includes(attr[0])) {
-        md.attrs.push(attr[0]);
+      // Add attribute to md.attrs.keys if it's not already included
+      if (!md.attrs.keys.includes(attr[0])) {
+        md.attrs.keys.push(attr[0]);
       }
+
+      attrsObj = {
+        ...attrsObj,
+        [attr[0]]: attr[1],
+      };
 
       // Special handling for sections based on markup and tag
       if (token.section) {
@@ -673,6 +679,13 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
         updateStepBasedOnStepSection(token, attr, md);
       }
     });
+
+    if (attrs.length && token.section) {
+      md.attrs.sections = {
+        ...md.attrs.sections,
+        [token.section]: attrsObj,
+      };
+    }
   });
 }
 

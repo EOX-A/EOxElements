@@ -6,3 +6,4 @@ export {
   getCustomEleHandling,
 } from "./misc";
 export { default as initEditorEvents } from "./editor";
+export { validateMarkdownAttrs } from "./validator";
