@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.4.0...storytelling-v0.5.0) (2024-04-16)
+
+
+### Features
+
+* Dedicated fallback mode ([#847](https://github.com/EOX-A/EOxElements/issues/847)) ([005b06d](https://github.com/EOX-A/EOxElements/commit/005b06d60f2ecf25f4a81338c373218848c5d6fc))
+* Lightbox for images ([#858](https://github.com/EOX-A/EOxElements/issues/858)) ([3226751](https://github.com/EOX-A/EOxElements/commit/3226751684e4d8e7e715f6d1ec70d337e9bd0291))
+* Sticky navigation after hero ([#837](https://github.com/EOX-A/EOxElements/issues/837)) ([8bf25a3](https://github.com/EOX-A/EOxElements/commit/8bf25a3cfb3d428c0bc5f91c6adce6c6d95626c8))
+
+
+### Bug Fixes
+
+* StoryTelling styling and highlight active nav item ([#842](https://github.com/EOX-A/EOxElements/issues/842)) ([ec1b7cf](https://github.com/EOX-A/EOxElements/commit/ec1b7cf9c2b3f03dfc8dfca92a6f29ad64b5b8c1))
+* **style:** Navigation z-index ([#848](https://github.com/EOX-A/EOxElements/issues/848)) ([ec425c6](https://github.com/EOX-A/EOxElements/commit/ec425c655201c7b6c23af27b859d42e1a4b6f304))
+
 ## [0.4.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.3.1...storytelling-v0.4.0) (2024-04-09)
 
 
