@@ -65,15 +65,16 @@ export function addLightBoxScript() {
  * @return {Number} - Number based converted version
  */
 export function versionToInteger(version) {
-  const parts = version.split("-")[0].split(".").map(Number);
-  let integer = 0;
+  const versionParts = version.split("-")[0].split(".").map(Number);
+  let versionInteger = 0;
   const base = 1000;
 
-  for (let i = 0; i < parts.length; i++) {
-    integer += parts[i] * Math.pow(base, parts.length - i - 1);
+  for (let i = 0; i < versionParts.length; i++) {
+    versionInteger +=
+      versionParts[i] * Math.pow(base, versionParts.length - i - 1);
   }
 
-  return integer;
+  return versionInteger;
 }
 
 /**
