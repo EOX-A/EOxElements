@@ -17,6 +17,7 @@ import {
   MarkdownHeroStory,
   MarkdownHeroWithNavStory,
   MarkdownFallbackModeStory,
+  MarkdownLightBoxStory,
 } from "./index";
 import { html } from "lit";
 
@@ -107,3 +108,8 @@ export const MarkdownHeroWithNav = MarkdownHeroWithNavStory;
  * StoryTelling with hidden fallback mode
  */
 export const MarkdownFallbackMode = MarkdownFallbackModeStory;
+
+/**
+ * StoryTelling with lightbox
+ */
+export const MarkdownWithLightbox = MarkdownLightBoxStory;

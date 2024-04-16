@@ -14,3 +14,4 @@ export { default as MarkdownEditorStory } from "./markdown-editor"; // StoryTell
 export { default as MarkdownHeroStory } from "./markdown-hero"; // StoryTelling with Hero Section
 export { default as MarkdownHeroWithNavStory } from "./markdown-hero-with-nav"; // StoryTelling with Hero Section with Nav
 export { default as MarkdownFallbackModeStory } from "./markdown-fallback"; // StoryTelling with hidden fallback image
+export { default as MarkdownLightBoxStory } from "./markdown-lightbox"; // StoryTelling with lightbox

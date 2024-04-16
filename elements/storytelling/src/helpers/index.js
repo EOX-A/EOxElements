@@ -4,6 +4,7 @@ export {
   scrollAnchorClickEvent,
   scrollIntoView,
   getCustomEleHandling,
+  addLightBoxScript,
 } from "./misc";
 export { default as initEditorEvents } from "./editor";
 export { validateMarkdownAttrs } from "./validator";
