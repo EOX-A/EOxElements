@@ -5,6 +5,8 @@ export {
   scrollIntoView,
   getCustomEleHandling,
   addLightBoxScript,
+  versionToInteger,
+  checkMarkdownVersion,
 } from "./misc";
 export { default as initEditorEvents } from "./editor";
 export { validateMarkdownAttrs } from "./validator";
