@@ -22,7 +22,7 @@ Please scroll to start the tour.
 
 ## EOX Map <!--{ as="eox-map" mode="tour" }-->
 
-### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[15.3,48] zoom="5" }-->
+### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[15,48] zoom="5" }-->
 #### Tour step one
 Sets layers to OSM layer, the center to [15,48] and the zoom to 5.
 
