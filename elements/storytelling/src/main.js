@@ -115,7 +115,7 @@ export class EOxStoryTelling extends LitElement {
     if (changedProperties.has("markdown")) {
       const unsafeHTML = md.render(this.markdown);
 
-      await validateMarkdownAttrs(md.attrs.sections);
+      validateMarkdownAttrs(md.attrs.sections);
 
       this.#config = md.config;
 

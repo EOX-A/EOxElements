@@ -6,7 +6,10 @@ import {
   TAGS_SELF_CLOSING,
 } from "../enums";
 import slugify from "@sindresorhus/slugify";
-import { convertAttributeValueBasedOnItsType } from "../helpers/render-html-string.js";
+import {
+  convertAttributeValueBasedOnItsType,
+  convertValueToType,
+} from "../helpers/render-html-string.js";
 
 /**
  * Plugin registration with Markdown-it - Annotate Markdown documents with HTML attributes, IDs and classes.
@@ -670,7 +673,7 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
 
       attrsObj = {
         ...attrsObj,
-        [attr[0]]: attr[1],
+        [attr[0]]: convertValueToType(attr[1]),
       };
 
       // Special handling for sections based on markup and tag
@@ -681,9 +684,28 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
     });
 
     if (attrs.length && token.section) {
+      const isStepSection = token.tag === "section-step";
+      const attrKey = `${token.section}${
+        isStepSection ? ` ${token.tag} ` : ""
+      }`;
+
+      const numberOfSection = isStepSection
+        ? Object.keys(md.attrs.sections).filter(
+            (item) => !!item.startsWith(attrKey)
+          ).length + 1
+        : "";
+
       md.attrs.sections = {
         ...md.attrs.sections,
-        [token.section]: attrsObj,
+        [`${attrKey}${numberOfSection}`]: {
+          ...attrsObj,
+          ...(isStepSection
+            ? {
+                as: token.tag,
+                mode: "tour",
+              }
+            : {}),
+        },
       };
     }
   });
