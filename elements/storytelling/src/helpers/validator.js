@@ -89,7 +89,7 @@ export function validateMarkdownAttrs(attrs) {
       if (schema) {
         const result = schema.validate(attr, { abortEarly: false });
         result.error?.details.forEach((error) => {
-          console.error(section, error.message);
+          console.error(`#${section}`, error.message);
         });
       }
     }
