@@ -12,7 +12,9 @@ function markdownItConfig(md) {
     const match = state.src.match(regex);
 
     // Init config with {}
-    md.config = {};
+    md.config = {
+      versionCheck: md.config?.versionCheck || false,
+    };
 
     if (match) {
       try {
@@ -25,7 +27,10 @@ function markdownItConfig(md) {
       }
     }
 
-    md.config.version = Number(checkMarkdownVersion(md.config.version));
+    if (!md.config.versionCheck) {
+      md.config.version = Number(checkMarkdownVersion(md.config.version));
+      md.config.versionCheck = true;
+    }
   });
 }
 
