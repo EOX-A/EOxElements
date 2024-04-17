@@ -683,21 +683,23 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
       }
     });
 
+    // Generating sections attrs for validation purpose
     if (attrs.length && token.section) {
       const isStepSection = token.tag === "section-step";
-      const attrKey = `${token.section}${
-        isStepSection ? ` ${token.tag} ` : ""
-      }`;
+      const sectionStepSuffix = isStepSection ? ` ${token.tag} ` : "";
+      const sectionKey = token.section + sectionStepSuffix;
 
-      const numberOfSection = isStepSection
-        ? Object.keys(md.attrs.sections).filter(
-            (item) => !!item.startsWith(attrKey)
-          ).length + 1
-        : "";
+      const numOfStepSection =
+        Object.keys(md.attrs.sections).filter(
+          (item) => !!item.startsWith(sectionKey)
+        ).length + 1;
+
+      const numOfStepSectionKey = isStepSection ? numOfStepSection : "";
+      const attrKey = sectionKey + numOfStepSectionKey;
 
       md.attrs.sections = {
         ...md.attrs.sections,
-        [`${attrKey}${numberOfSection}`]: {
+        [attrKey]: {
           ...attrsObj,
           ...(isStepSection
             ? {

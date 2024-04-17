@@ -1,9 +1,11 @@
 import joi from "joi";
 
+// Basic schema for all type
 const basicSchema = {
   id: joi.string().required(),
 };
 
+// Basic validate schema for all hero sections
 const basicHeroSchema = {
   ...basicSchema,
   as: joi.string().valid("img", "video").required(),
@@ -11,6 +13,7 @@ const basicHeroSchema = {
   position: joi.string().valid("center", "left", "right"),
 };
 
+// EOxMap validation schema
 const eoxMapSchema = {
   layers: joi
     .array()
@@ -39,6 +42,7 @@ const eoxMapSchema = {
   zoom: joi.number().optional(),
 };
 
+// EOxMap config attribute validation schema
 const eoxMapSchemaConfig = {
   config: joi
     .object({
@@ -48,12 +52,14 @@ const eoxMapSchemaConfig = {
     .optional(),
 };
 
+// Tag based (as) validation schema
 const tagBasedSchema = {
   "eox-map": joi
     .object({ ...basicSchema, ...eoxMapSchema, ...eoxMapSchemaConfig })
     .unknown(),
 };
 
+// Mode based validation schema
 const modeBasedSchema = {
   hero: {
     img: joi.object({ ...basicHeroSchema }).unknown(),
@@ -67,10 +73,16 @@ const modeBasedSchema = {
   },
 };
 
+/**
+ * Validate markdown attributes based on mode and as
+ *
+ * @param {Object} attrs - List of attributes
+ */
 export function validateMarkdownAttrs(attrs) {
   for (const section of Object.keys(attrs)) {
     const attr = attrs[section];
     if (attr.as) {
+      // Identifying schema based on mode and as
       const schema = attr.mode
         ? modeBasedSchema[attr.mode]?.[attr.as]
         : tagBasedSchema[attr.as];
