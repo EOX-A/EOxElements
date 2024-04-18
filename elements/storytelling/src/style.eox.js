@@ -267,12 +267,13 @@ const styleEOX = `
     display: none;
     cursor: auto;
     position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 100%;
+    bottom: 39px;
+    left: 9px;
+    width: calc(100% - 20px);
     height: 105px;
     background: #ffc7d3;
-    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
     border: 2px solid #ff7b9640;
     z-index: 1;
   }
