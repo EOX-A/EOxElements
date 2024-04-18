@@ -15,6 +15,7 @@ import {
   loadMarkdownEditorTest,
   loadHeroSectionTest,
   loadMarkdownLightBoxTest,
+  loadMarkdownErrorStory,
 } from "./cases";
 
 // Test suite for Storytelling
@@ -57,5 +58,9 @@ describe("Storytelling", () => {
   // Test case to ensure hero section loaded with content
   it("Load hero section", () => loadHeroSectionTest());
 
+  // Test case to ensure lightbox loaded
   it("Load lightbox", () => loadMarkdownLightBoxTest());
+
+  // Test case to ensure markdown error loaded
+  it("Load markdown error", () => loadMarkdownErrorStory());
 });

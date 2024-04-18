@@ -190,20 +190,20 @@ export function convertAttributeValueBasedOnItsType(
   const attributeValue = attributeName
     ? element.getAttribute(attributeName)
     : element;
+
+  return convertValueToType(attributeValue);
+}
+
+export function convertValueToType(value) {
   let convertedValue;
 
   try {
-    convertedValue = JSON.parse(attributeValue);
+    convertedValue = JSON.parse(value);
   } catch (e) {
-    if (!isNaN(attributeValue) && attributeValue.trim() !== "") {
-      convertedValue = Number(attributeValue);
-    } else if (attributeValue === "true") {
-      convertedValue = true;
-    } else if (attributeValue === "false") {
-      convertedValue = false;
-    } else {
-      convertedValue = attributeValue;
-    }
+    if (!isNaN(value) && value.trim() !== "") convertedValue = Number(value);
+    else if (value === "true") convertedValue = true;
+    else if (value === "false") convertedValue = false;
+    else convertedValue = value;
   }
 
   return convertedValue;
