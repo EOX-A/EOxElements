@@ -92,7 +92,7 @@ export function checkMarkdownVersion(version) {
 
   if (!version || !currenMarkdownVersion) {
     console.warn(
-      `Version not (or wrong) specified in your markdown. Assuming syntax from the latest markdown version (v${latestMarkdownVersion}).`
+      `Version not (or wrongly) specified in markdown frontmatter. Assuming latest markdown syntax version (v${latestMarkdownVersion}).`
     );
     return latestMarkdownVersion;
   } else if (latestMarkdownVersion === version) return version;
@@ -109,7 +109,7 @@ export function checkMarkdownVersion(version) {
       return version;
     } else {
       console.error(
-        `You are using an older or newer version of ${packageInfo.name} package, which is not compatible with the version mentioned on markdown. Please update the ${packageInfo.name} package to (>=${currenMarkdownVersion[0]} and <=${currenMarkdownVersion[1]}) or change the markdown version to ${packageInfo.version}`
+        `You are using an older or newer version of ${packageInfo.name} package, which is not compatible with the version defined in the markdown frontmatter. Please update the ${packageInfo.name} package to (>=${currenMarkdownVersion[0]} and <=${currenMarkdownVersion[1]}) or change the markdown syntax version to ${packageInfo.version}`
       );
       return version;
     }
