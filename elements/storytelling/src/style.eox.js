@@ -264,6 +264,7 @@ const styleEOX = `
     opacity: 0;
   }
   .editor-error {
+    display: none;
     cursor: auto;
     position: absolute;
     bottom: 0;
@@ -273,12 +274,13 @@ const styleEOX = `
     background: #ffc7d3;
     border-bottom-right-radius: 10px;
     border: 2px solid #ff7b9640;
+    z-index: 1;
   }
   .editor-error .editor-error-wrapper {
     padding: 0.5rem;
-    height: 100%;
+    height: 85%;
   }
-  .editor-error .editor-error-wrapper .overflow { 
+  .editor-error .editor-error-wrapper .overflow {
     height: 100%;
     overflow-y: auto;
     -ms-overflow-style: none;
@@ -296,10 +298,11 @@ const styleEOX = `
   }
   .editor-error .editor-error-wrapper ul {
     margin-top: 0.25rem;
+    padding-inline-start: 20px;
   }
   .editor-error .editor-error-wrapper li {
     color: #dd264c;
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     font-weight: 400;
     margin-bottom: 0;
     margin-left: 0.2rem;
