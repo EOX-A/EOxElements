@@ -215,7 +215,7 @@ class StoryTellingEditor extends LitElement {
         }
         .editor-error .editor-error-wrapper li {
           color: #dd264c;
-          font-size: 0.6rem;
+          font-size: 0.7rem;
           font-weight: 400;
           margin-bottom: 0;
           margin-left: 0.2rem;

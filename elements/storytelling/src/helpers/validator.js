@@ -102,11 +102,9 @@ export function validateMarkdownAttrs(attrs, that) {
     }
   }
 
-  setTimeout(
-    () =>
-      (that.shadowRoot || that)
-        .querySelector("eox-storytelling-editor")
-        .updateErrors(errors),
-    300
+  const editorDom = (that.shadowRoot || that).querySelector(
+    "eox-storytelling-editor"
   );
+
+  setTimeout(() => editorDom?.updateErrors(errors), 300);
 }
