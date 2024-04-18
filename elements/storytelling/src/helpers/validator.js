@@ -77,8 +77,11 @@ const modeBasedSchema = {
  * Validate markdown attributes based on mode and as
  *
  * @param {Object} attrs - List of attributes
+ * @param {import("lit").LitElement} that - The LitElement instance.
  */
-export function validateMarkdownAttrs(attrs) {
+export function validateMarkdownAttrs(attrs, that) {
+  let errors = [];
+
   for (const section of Object.keys(attrs)) {
     const attr = attrs[section];
     if (attr.as) {
@@ -89,9 +92,21 @@ export function validateMarkdownAttrs(attrs) {
       if (schema) {
         const result = schema.validate(attr, { abortEarly: false });
         result.error?.details.forEach((error) => {
+          errors.push({
+            ref: `#${section}`,
+            message: error.message,
+          });
           console.error(`#${section}`, error.message);
         });
       }
     }
   }
+
+  setTimeout(
+    () =>
+      (that.shadowRoot || that)
+        .querySelector("eox-storytelling-editor")
+        .updateErrors(errors),
+    300
+  );
 }

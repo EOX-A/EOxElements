@@ -237,12 +237,12 @@ const styleEOX = `
     height: 20px;
     bottom: 4px;
     left: 4px;
-    background-color: #444444;
+    background-color: black;
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eresize-bottom-right%3C/title%3E%3Cpath d='M22,22H20V20H22V22M22,18H20V16H22V18M18,22H16V20H18V22M18,18H16V16H18V18M14,22H12V20H14V22M22,14H20V12H22V14Z' /%3E%3C/svg%3E");
     webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eresize-bottom-right%3C/title%3E%3Cpath d='M22,22H20V20H22V22M22,18H20V16H22V18M18,22H16V20H18V22M18,18H16V16H18V18M14,22H12V20H14V22M22,14H20V12H22V14Z' /%3E%3C/svg%3E");
     transform: rotate(90deg);
     cursor: sw-resize;
-    z-index: 1;
+    z-index: 2;
   }
   .editor-wrapper.partial-height {
     height: calc(100vh - 120px);
