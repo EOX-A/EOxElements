@@ -135,8 +135,8 @@ export class EOxLayerControl extends LitElement {
   /**
    * Called when the component is updated
    */
-  updated() {
-    updateMethod(this);
+  updated(changedProperties) {
+    if (changedProperties.size) updateMethod(this);
   }
 
   /**
