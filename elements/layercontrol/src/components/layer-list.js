@@ -97,7 +97,7 @@ export class EOxLayerControlLayerList extends LitElement {
    * Executes logic after subsequent updates of the component.
    */
   updated(changedProperties) {
-    if (changedProperties.size) updateMethod(this);
+    if (changedProperties.has("layers")) updateMethod(this);
   }
 
   /**
