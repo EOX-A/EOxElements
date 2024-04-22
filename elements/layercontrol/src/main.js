@@ -7,7 +7,6 @@ import { filterLayers } from "./helpers";
 import {
   firstUpdatedMethod,
   layerListChangeMethod,
-  updateMethod,
 } from "./methods/layercontrol";
 
 /**
@@ -130,13 +129,6 @@ export class EOxLayerControl extends LitElement {
      * @type {String}
      */
     this.styleOverride = "";
-  }
-
-  /**
-   * Called when the component is updated
-   */
-  updated() {
-    updateMethod(this);
   }
 
   /**
