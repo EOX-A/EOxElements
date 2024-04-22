@@ -1,6 +1,6 @@
 {
   "name": "@eox/storytelling",
-  "version": "0.3.1",
+  "version": "0.5.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
@@ -29,7 +29,9 @@
   },
   "dependencies": {
     "@sindresorhus/slugify": "^2.2.1",
+    "glightbox": "^3.3.0",
     "isomorphic-dompurify": "^2.4.0",
+    "joi": "^17.12.3",
     "js-yaml": "^4.1.0",
     "lit": "^3.0.2",
     "markdown-it": "^14.0.0"

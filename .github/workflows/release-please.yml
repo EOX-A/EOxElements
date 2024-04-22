@@ -35,6 +35,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           ELEMENT_DIR: ${{ steps.release.outputs.paths_released }}
         run: |
+          npm run styles && \
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
           npm run build && \
           npm publish --access=public

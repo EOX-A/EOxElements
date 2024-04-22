@@ -50,7 +50,7 @@ main {
 section#properties ul {
   padding: 0;
 }
-section#properties > ul {
+section#properties > ul:not(.single-property) {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;

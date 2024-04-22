@@ -6,7 +6,10 @@ import {
   TAGS_SELF_CLOSING,
 } from "../enums";
 import slugify from "@sindresorhus/slugify";
-import { convertAttributeValueBasedOnItsType } from "../helpers/render-html-string.js";
+import {
+  convertAttributeValueBasedOnItsType,
+  convertValueToType,
+} from "../helpers/render-html-string.js";
 
 /**
  * Plugin registration with Markdown-it - Annotate Markdown documents with HTML attributes, IDs and classes.
@@ -26,7 +29,7 @@ export default function attributes(md) {
  */
 function curlyAttrs(state) {
   state.md.nav = [];
-  state.md.attrs = [];
+  state.md.attrs = { keys: [], sections: {} };
   state.md.sections = {};
 
   const tokens = state.tokens;
@@ -43,6 +46,15 @@ function curlyAttrs(state) {
   // Iterate through tokens to process them
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
+
+    // Parse fallback mode
+    if (token.tag === "p") {
+      const { shouldContinue } = parseFallBack(tokens, tokens[i + 1]);
+      if (shouldContinue) {
+        i = i + 2;
+        continue; // continuing with the next opening token if just fallback mode is present
+      }
+    }
 
     // Initialise opening tag
     if (isOpener(token.type) || TAGS_SELF_CLOSING[token.type]) {
@@ -164,6 +176,40 @@ function isOpener(type) {
   return (
     type.match(/_(open|start)$/) || type === "fence" || type === "code_block"
   );
+}
+
+/**
+ * Process fallback mode
+ *
+ * @param {Array<Object>} tokens - List of markdown tokens
+ * @param {Object} nextInlineToken - Next inline token
+ * @return {{ shouldContinue: Boolean }} - Status to continue to next opening token or not
+ */
+function parseFallBack(tokens, nextInlineToken) {
+  const newLineRegex = /\r\n|\r|\n/;
+  const fallBackModeRegex = /mode\s*=\s*(['"])fallback\1/g;
+  let shouldContinue = false;
+
+  // Check content contain fallback mode or not
+  if (fallBackModeRegex.test(nextInlineToken?.content || "")) {
+    // Check if any next line content present if true then remove fallback image from rendering
+    if (newLineRegex.test(nextInlineToken.content)) {
+      const nextLineTextArr = nextInlineToken.content.split(newLineRegex);
+
+      // Remove fallback content and image
+      nextLineTextArr.shift();
+      nextInlineToken.content = nextLineTextArr.join(/\n/);
+
+      // Remove fallback title from children array
+      if (nextInlineToken.children[0].type === "text")
+        nextInlineToken.children.shift();
+
+      // Remove fallback image from children array
+      nextInlineToken.children.shift();
+    } else shouldContinue = true;
+  }
+
+  return { shouldContinue };
 }
 
 /**
@@ -613,16 +659,22 @@ function trimRight(obj, attr) {
 function generateCustomAttrsAndSectionMetaList(tokens, md) {
   tokens.forEach((token) => {
     const attrs = token.attrs || [];
+    let attrsObj = {};
 
     // Initialize sections meta
     initializeSectionsMeta(token, md);
 
     // Process each attribute for the current token
     attrs.forEach((attr) => {
-      // Add attribute to md.attrs if it's not already included
-      if (!md.attrs.includes(attr[0])) {
-        md.attrs.push(attr[0]);
+      // Add attribute to md.attrs.keys if it's not already included
+      if (!md.attrs.keys.includes(attr[0])) {
+        md.attrs.keys.push(attr[0]);
       }
+
+      attrsObj = {
+        ...attrsObj,
+        [attr[0]]: convertValueToType(attr[1]),
+      };
 
       // Special handling for sections based on markup and tag
       if (token.section) {
@@ -630,6 +682,34 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
         updateStepBasedOnStepSection(token, attr, md);
       }
     });
+
+    // Generating sections attrs for validation purpose
+    if (attrs.length && token.section) {
+      const isStepSection = token.tag === "section-step";
+      const sectionStepSuffix = isStepSection ? ` ${token.tag} ` : "";
+      const sectionKey = token.section + sectionStepSuffix;
+
+      const numOfStepSection =
+        Object.keys(md.attrs.sections).filter(
+          (item) => !!item.startsWith(sectionKey)
+        ).length + 1;
+
+      const numOfStepSectionKey = isStepSection ? numOfStepSection : "";
+      const attrKey = sectionKey + numOfStepSectionKey;
+
+      md.attrs.sections = {
+        ...md.attrs.sections,
+        [attrKey]: {
+          ...attrsObj,
+          ...(isStepSection
+            ? {
+                as: token.tag,
+                mode: "tour",
+              }
+            : {}),
+        },
+      };
+    }
   });
 }
 

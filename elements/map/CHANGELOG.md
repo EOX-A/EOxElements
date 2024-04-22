@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.6.1](https://github.com/EOX-A/EOxElements/compare/map-v1.6.0...map-v1.6.1) (2024-04-10)
+
+
+### Miscellaneous Chores
+
+* **deps:** Update ol-stac package ([#845](https://github.com/EOX-A/EOxElements/issues/845)) ([53f3c12](https://github.com/EOX-A/EOxElements/commit/53f3c1274f675f4377abf80df75e83327fe8ec20))
+
+## [1.6.0](https://github.com/EOX-A/EOxElements/compare/map-v1.5.1...map-v1.6.0) (2024-04-08)
+
+
+### Features
+
+* Delayed location popup for geolocation ([#825](https://github.com/EOX-A/EOxElements/issues/825)) ([f9e5481](https://github.com/EOX-A/EOxElements/commit/f9e5481658605fd7ee1d886998e97b12ea55165d))
+
+
+### Bug Fixes
+
+* Update internal `_jsonDefinition` ([#823](https://github.com/EOX-A/EOxElements/issues/823)) ([65326f0](https://github.com/EOX-A/EOxElements/commit/65326f0211e2b2092873833d6e27dbbe7fb87eaf))
+
 ## [1.5.1](https://github.com/EOX-A/EOxElements/compare/map-v1.5.0...map-v1.5.1) (2024-04-02)
 
 

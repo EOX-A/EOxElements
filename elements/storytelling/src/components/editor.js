@@ -66,6 +66,19 @@ class StoryTellingEditor extends LitElement {
     initEditorEvents(editorContainer, resizeHandle, this);
   }
 
+  updateErrors(errors) {
+    const errorDom = this.renderRoot.querySelector(".editor-error");
+
+    if (errorDom && errors.length) {
+      errorDom.style.display = "block";
+      errorDom.querySelector("ul").innerHTML = errors
+        .map(
+          (error) => `<li><strong>${error.ref}</strong>: ${error.message}</li>`
+        )
+        .join("");
+    } else errorDom.style.display = "none";
+  }
+
   /**
    * Override createRenderRoot to use LitElement as the render root
    */
@@ -104,6 +117,14 @@ class StoryTellingEditor extends LitElement {
         ></eox-jsonform>
         <div class="resize-handle"></div>
         <span class="editor-saver"></span>
+        <div class="editor-error">
+          <div class="editor-error-wrapper">
+            <div class="overflow">
+              <h6>⛔ Error</h6>
+              <ul></ul>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="switch-button">
         <label class="switch">
@@ -156,6 +177,9 @@ class StoryTellingEditor extends LitElement {
         eox-jsonform div.editor-toolbar,
         eox-jsonform div.editor-statusbar {
           flex-shrink: 1;
+        }
+        eox-jsonform .CodeMirror-sizer {
+          padding-bottom: 100px !important;
         }
         .je-form-input-label,
         .je-object__controls {

@@ -43,3 +43,7 @@ export const DEFAULT_MODE_ATTRS = {
 };
 
 export const HERO_MEDIA_TYPES = ["img", "video"];
+
+export const MARKDOWN_VERSION_MAP = {
+  1: ["0.0.0"],
+};

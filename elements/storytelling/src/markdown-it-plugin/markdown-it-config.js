@@ -1,4 +1,5 @@
 import yaml from "js-yaml";
+import { checkMarkdownVersion } from "../helpers";
 
 /**
  * Extends markdown-it instance with a custom plugin to extract basic config for StoryTelling
@@ -11,7 +12,9 @@ function markdownItConfig(md) {
     const match = state.src.match(regex);
 
     // Init config with {}
-    md.config = {};
+    md.config = {
+      versionCheck: md.config?.versionCheck || false,
+    };
 
     if (match) {
       try {
@@ -22,6 +25,11 @@ function markdownItConfig(md) {
         console.error("Error parsing frontmatter:", e);
         return null;
       }
+    }
+
+    if (!md.config.versionCheck) {
+      md.config.version = Number(checkMarkdownVersion(md.config.version));
+      md.config.versionCheck = true;
     }
   });
 }

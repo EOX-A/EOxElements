@@ -93,7 +93,11 @@ describe("Stacinfo", () => {
     cy.get("eox-stacinfo")
       .shadow()
       .within(() => {
-        cy.get("#properties button").should("exist");
+        cy.get("#properties eox-stacinfo-shadow")
+          .shadow()
+          .within(() => {
+            cy.get("button").should("exist");
+          });
       });
   });
 });

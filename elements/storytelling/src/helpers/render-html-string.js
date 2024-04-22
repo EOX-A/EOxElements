@@ -1,6 +1,8 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
+import GLightbox from "glightbox";
 
-let observers = [];
+let sectionObservers = [];
+let stepSectionObservers = [];
 
 /**
  * Converts an HTML string into DOM nodes and processes each node.
@@ -14,20 +16,55 @@ export function renderHtmlString(htmlString, sections, that) {
   // Parse the HTML string into a document
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
+  const parent = that.shadowRoot || that;
 
-  // Disconnecting old observers to create new observer
-  observers.forEach((observer) => observer?.disconnect());
-  observers = [];
+  const isNavigation = !!(that.showNav && that.nav.length);
 
-  // Creating new scroll observer
+  // Disconnecting old observers to create new empty Observers
+  sectionObservers.forEach((observer) => observer?.disconnect());
+  sectionObservers = [];
+  stepSectionObservers.forEach((observer) => observer?.disconnect());
+  stepSectionObservers = [];
+
+  // Creating new Section Observer for navigation and section intersection
+  if (isNavigation) {
+    that.nav.forEach((section) => {
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const intersecting = entry.isIntersecting;
+            const id = entry.target.getAttribute("id");
+            if (intersecting) {
+              parent.querySelectorAll(".navigation li").forEach((nav) => {
+                if (nav.classList.contains(`nav-${id}`))
+                  nav.classList.add("active");
+                else nav.classList.remove("active");
+              });
+            }
+          });
+        },
+        { rootMargin: "-50% 0px" }
+      );
+
+      setTimeout(() => {
+        const sectionDom = parent.querySelector(`#${section.id}`);
+        if (sectionDom) {
+          sectionObserver.observe(sectionDom);
+          sectionObservers.push(sectionObserver);
+        }
+      }, 200);
+    });
+  }
+
+  // Creating new scroll Step Section Observer
   Object.keys(sections).forEach((sectionId) => {
     const section = sections[sectionId];
+
     if (EVENT_REQ_MODES.includes(section.mode) && section.steps) {
-      const parent = that.shadowRoot || that;
       const elementSelector = `${section.as}#${section.id}`;
 
-      // Creating new scroll observer and assign new value for attribute of element
-      const observer = new IntersectionObserver((entries) => {
+      // Creating new scroll Step Section Observer and assign new value for attribute of element
+      const stepSectionObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           const intersecting = entry.isIntersecting;
           const index = Number(entry.target.getAttribute("key"));
@@ -37,7 +74,7 @@ export function renderHtmlString(htmlString, sections, that) {
         });
       });
 
-      // Create scroll observer with a small delay
+      // Create scroll Step Section Observer with a small delay
       setTimeout(() => {
         const contentParent = parent.querySelector(`#${sectionId}`);
         if (!contentParent) return;
@@ -48,10 +85,10 @@ export function renderHtmlString(htmlString, sections, that) {
 
         contentChildren.forEach((dom, key) => {
           dom.setAttribute("key", `${key}`);
-          observer.observe(dom);
+          stepSectionObserver.observe(dom);
         });
 
-        observers.push(observer);
+        stepSectionObservers.push(stepSectionObserver);
 
         assignNewAttrValue(section, 0, elementSelector, parent);
       }, 100);
@@ -103,6 +140,39 @@ function processNode(node) {
       }
     });
   }
+
+  /**
+   * Lightbox setup
+   * See https://github.com/biati-digital/glightbox?tab=readme-ov-file#lightbox-options
+   */
+  if (node.querySelectorAll) {
+    // Set up empty Lightbox
+    const lightboxGallery = GLightbox({
+      autoplayVideos: true,
+    });
+    const lightboxElements = [];
+
+    const images = node.querySelectorAll("img");
+    // Loop over each image
+    images.forEach((img) => {
+      // Check if the image is already inside a link (to avoid double wrapping)
+      const mode = img.getAttribute("mode");
+
+      if (img.parentNode.tagName !== "A" && mode !== "hero") {
+        img.style.cursor = "zoom-in";
+        img.addEventListener("click", () => {
+          lightboxGallery.open();
+        });
+
+        lightboxElements.push({
+          type: "image",
+          href: img.src,
+        });
+      }
+    });
+    lightboxGallery.setElements(lightboxElements);
+  }
+
   return node;
 }
 
@@ -120,21 +190,61 @@ export function convertAttributeValueBasedOnItsType(
   const attributeValue = attributeName
     ? element.getAttribute(attributeName)
     : element;
+
+  return convertValueToType(attributeValue);
+}
+
+export function convertValueToType(value) {
   let convertedValue;
 
   try {
-    convertedValue = JSON.parse(attributeValue);
+    convertedValue = JSON.parse(value);
   } catch (e) {
-    if (!isNaN(attributeValue) && attributeValue.trim() !== "") {
-      convertedValue = Number(attributeValue);
-    } else if (attributeValue === "true") {
-      convertedValue = true;
-    } else if (attributeValue === "false") {
-      convertedValue = false;
-    } else {
-      convertedValue = attributeValue;
-    }
+    if (!isNaN(value) && value.trim() !== "") convertedValue = Number(value);
+    else if (value === "true") convertedValue = true;
+    else if (value === "false") convertedValue = false;
+    else convertedValue = value;
   }
 
   return convertedValue;
+}
+
+/**
+ * Parse Nav and generate a new Element Node
+ *
+ * @param {Array<Element>} html - List of html elements
+ * @param {Array} nav - List of nav elements
+ * @param {Boolean} showNav - Whether to show nav or not
+ * @returns {Element[]} An array of processed DOM nodes after adding navigation.
+ */
+export function parseNav(html, nav, showNav) {
+  const parser = new DOMParser();
+  let navIndex = -1;
+
+  if (showNav && nav.length && html.length) {
+    navIndex = 0;
+
+    const navHtml = `
+    <div class="navigation">
+      <div class="container">
+        <ul>
+          ${nav
+            .map(
+              ({ id, title }) =>
+                `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
+            )
+            .join("")}
+        </ul>
+      </div>
+    </div>
+  `;
+    const navDOM = parser.parseFromString(navHtml, "text/html").body.firstChild;
+
+    if (html[0].classList.contains("hero")) navIndex = 1;
+    html.splice(navIndex, 0, navDOM);
+  }
+
+  if (html.length) html[navIndex + 1].classList.add("section-start");
+
+  return html;
 }
