@@ -95,6 +95,27 @@ export function renderHtmlString(htmlString, sections, that) {
     }
   });
 
+  setTimeout(() => {
+    // Event for parallax effect on hero section
+    parent.addEventListener("wheel", function () {
+      const scrolledHeight = window.pageYOffset;
+      const parallaxItems = [
+        ...parent.querySelectorAll(".section-wrap.hero img"),
+        ...parent.querySelectorAll(".section-wrap.hero video"),
+      ];
+      parallaxItems.forEach((parallaxItem) => {
+        const parallaxEnabled =
+          parallaxItem.getAttribute("data-parallax") === "true";
+        const limit = parallaxItem.offsetHeight - window.innerHeight;
+
+        // Update transform effect using style update
+        if (scrolledHeight <= limit && parallaxEnabled)
+          parallaxItem.style.transform =
+            "translate3d(0px, " + scrolledHeight * 0.5 + "px, 0px)";
+      });
+    });
+  }, 200);
+
   // Process child nodes of the document body
   return Array.from(doc.body.childNodes).map(processNode);
 }

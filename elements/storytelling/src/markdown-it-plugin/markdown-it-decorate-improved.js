@@ -592,8 +592,10 @@ function applyToToken(token, attrs = "") {
 
   // Adding default attribute based on mode and as
   DEFAULT_MODE_ATTRS[asAttr]?.[modeAttr]?.forEach((attr) => {
-    addAttr(token, attr[0], attr[1]);
-    attrs = attrs.slice(attr[0].length);
+    if (!getAttr(token.attrs, attr[0])) {
+      addAttr(token, attr[0], attr[1]);
+      attrs = attrs.slice(attr[0].length);
+    }
   });
 
   return true;

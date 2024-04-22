@@ -178,11 +178,11 @@ const styleEOX = `
   .story-telling .hero img, 
   .story-telling .hero video {
     position: absolute;
-    top: 0;
+    top: -35%;
     left: 0;
     z-index: -1;
     width: 100%;
-    height: 100%;
+    height: 135%;
     object-fit: cover;
     margin: 0rem;
   }
