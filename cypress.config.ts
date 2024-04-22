@@ -25,7 +25,8 @@ export default defineConfig({
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
-    baseUrl: 'http://localhost:6006',
+    // excludeSpecPattern: ["**/storybook.cy.js"]
+    // baseUrl: 'http://localhost:6006',
   },
   component: {
     supportFile: "cypress/support/component.ts",

@@ -15,7 +15,7 @@
     "cypress": "cypress open",
     "test:all": "npm run styles && npm run test:component && npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
-    "test:e2e": "npm run build:all && cypress run --e2e",
+    "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && concurrently \"npm:start\" \"cypress run --e2e\"",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
     "format:check:all": "prettier --check .",
