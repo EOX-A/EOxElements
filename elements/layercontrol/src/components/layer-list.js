@@ -4,7 +4,7 @@ import { repeat } from "lit/directives/repeat.js";
 import { getLayerType, hideLayersBasedOnProperties } from "../helpers";
 import "./layer";
 import "./layer-group";
-import { firstUpdatedMethod, updateMethod } from "../methods/layer-list";
+import { firstUpdatedMethod } from "../methods/layer-list";
 /**
  * EOxLayerControlLayerList: Manages a list of layers within the EOx Layer Control.
  *
@@ -94,13 +94,6 @@ export class EOxLayerControlLayerList extends LitElement {
   }
 
   /**
-   * Executes logic after subsequent updates of the component.
-   */
-  updated(changedProperties) {
-    if (changedProperties.has("layers")) updateMethod(this);
-  }
-
-  /**
    * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
    */
   createRenderRoot() {
@@ -113,7 +106,9 @@ export class EOxLayerControlLayerList extends LitElement {
    */
   render() {
     // Filter and reverse layers based on control properties
-    const layers = hideLayersBasedOnProperties(this.layers).reverse();
+    const layers = this.layers
+      ? hideLayersBasedOnProperties(this.layers).reverse()
+      : [];
 
     return html`
       <style>
