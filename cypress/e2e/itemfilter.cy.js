@@ -1,15 +1,19 @@
-describe("Itemfilter", () => {
-  beforeEach(() => {
-    cy.visit(
-      "http://localhost:6006/iframe.html?id=elements-eox-itemfilter--primary"
-    );
-  });
-  it("Should select geometry", () => {
-    cy.get("eox-itemfilter")
-      .shadow()
-      .within(() => {
-        cy.get("ul#filters>li").last().click();
-        cy.get("eox-map");
+import "cypress-network-idle";
+
+describe("Stories test", () => {
+  it("Should go through every story", () => {
+    cy.request("/index.json").as("stories");
+    cy.get("@stories").then((response) => {
+      console.log(response.body);
+      let count = 0;
+      Object.values(response.body.entries).forEach((element) => {
+        if (element.type && element.type == "story") {
+          count += 1;
+          cy.visit(`/iframe.html?id=${element.id}`);
+          cy.waitForNetworkIdle(1000);
+        }
       });
+      console.log(count);
+    });
   });
 });

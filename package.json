@@ -24,13 +24,15 @@
     "storybook": "storybook dev -p 6006",
     "build:storybook": "npm run styles && storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
-    "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch"
+    "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
+    "test-storybook": "test-storybook"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.9.0",
     "@cypress/mount-utils": "^4.0.0",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/blocks": "^8.0.0",
+    "@storybook/test-runner": "^0.17.0",
     "@storybook/theming": "^8.0.0",
     "@storybook/web-components": "^8.0.0",
     "@storybook/web-components-vite": "^8.0.0",
@@ -38,6 +40,7 @@
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^13.3.0",
     "cypress-lit": "^0.0.8",
+    "cypress-network-idle": "^1.14.2",
     "nodemon": "^3.0.3",
     "rimraf": "^5.0.1",
     "storybook": "^8.0.0"
@@ -46,6 +49,7 @@
     "node": ">=20.9.0"
   },
   "dependencies": {
+    "cypress-fail-on-console-error": "^5.1.0",
     "eslint-plugin-cypress": "^2.14.0"
   }
 }

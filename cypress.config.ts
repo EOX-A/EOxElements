@@ -23,8 +23,9 @@ if (pathsChanged) {
 export default defineConfig({
   e2e: {
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
-    supportFile: false,
+    supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
+    baseUrl: 'http://localhost:6006',
   },
   component: {
     supportFile: "cypress/support/component.ts",
