@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.2...layercontrol-v0.17.3) (2024-04-22)
+
+
+### Bug Fixes
+
+* Infinite rendering loop ([#875](https://github.com/EOX-A/EOxElements/issues/875)) ([2f7dd5e](https://github.com/EOX-A/EOxElements/commit/2f7dd5e948bc9a7745c4d1f2d06ffce6b6d75162))
+
 ## [0.17.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.1...layercontrol-v0.17.2) (2024-03-25)
 
 
