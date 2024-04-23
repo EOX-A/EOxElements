@@ -109,7 +109,7 @@ export function renderHtmlString(htmlString, sections, that) {
       const parallaxEnabled =
         parallaxItem.getAttribute("data-parallax") === "true";
       if (parallaxEnabled)
-        parallaxItem.style.transform = "translateY(" + scrolled * 0.4 + "px)";
+        parallaxItem.style.transform = "translateY(" + scrolled * 0.3 + "px)";
     });
   }
 
