@@ -185,6 +185,8 @@ const styleEOX = `
     height: 135%;
     object-fit: cover;
     margin: 0rem;
+    will-change: transform;
+    backface-visibility: hidden;
   }
   .story-telling .tour.left {
     justify-items: start;

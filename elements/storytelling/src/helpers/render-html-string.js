@@ -95,26 +95,27 @@ export function renderHtmlString(htmlString, sections, that) {
     }
   });
 
-  setTimeout(() => {
-    // Event for parallax effect on hero section
-    parent.addEventListener("wheel", function () {
-      const scrolledHeight = window.pageYOffset;
-      const parallaxItems = [
-        ...parent.querySelectorAll(".section-wrap.hero img"),
-        ...parent.querySelectorAll(".section-wrap.hero video"),
-      ];
-      parallaxItems.forEach((parallaxItem) => {
-        const parallaxEnabled =
-          parallaxItem.getAttribute("data-parallax") === "true";
-        const limit = parallaxItem.offsetHeight - window.innerHeight;
+  function generateParallaxEffect() {
+    // Get the current scroll position
+    const scrolled = window.scrollY;
 
-        // Update transform effect using style update
-        if (scrolledHeight <= limit && parallaxEnabled)
-          parallaxItem.style.transform =
-            "translate3d(0px, " + scrolledHeight * 0.5 + "px, 0px)";
-      });
+    // Find all elements with the specified selector
+    const parallaxItems = parent.querySelectorAll(
+      ".story-telling .hero img, .story-telling .hero video"
+    );
+
+    // Apply the transformation to each element
+    parallaxItems.forEach(function (parallaxItem) {
+      const parallaxEnabled =
+        parallaxItem.getAttribute("data-parallax") === "true";
+      if (parallaxEnabled)
+        parallaxItem.style.transform = "translateY(" + scrolled * 0.4 + "px)";
     });
-  }, 200);
+  }
+
+  // Listen for the scroll event on the window
+  window.removeEventListener("scroll", generateParallaxEffect);
+  window.addEventListener("scroll", generateParallaxEffect);
 
   // Process child nodes of the document body
   return Array.from(doc.body.childNodes).map(processNode);
