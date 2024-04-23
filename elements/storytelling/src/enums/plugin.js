@@ -30,7 +30,10 @@ export const DEFAULT_MODE_ATTRS = {
     tour: [["prevent-scroll", true]],
   },
   img: {
-    hero: [["position", "center"]],
+    hero: [
+      ["position", "center"],
+      ["data-parallax", true],
+    ],
   },
   video: {
     hero: [
@@ -38,6 +41,7 @@ export const DEFAULT_MODE_ATTRS = {
       ["loop", true],
       ["muted", true],
       ["autoplay", true],
+      ["data-parallax", true],
     ],
   },
 };

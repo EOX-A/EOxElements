@@ -95,6 +95,28 @@ export function renderHtmlString(htmlString, sections, that) {
     }
   });
 
+  function generateParallaxEffect() {
+    // Get the current scroll position
+    const scrolled = window.scrollY;
+
+    // Find all elements with the specified selector
+    const parallaxItems = parent.querySelectorAll(
+      ".story-telling .hero img, .story-telling .hero video"
+    );
+
+    // Apply the transformation to each element
+    parallaxItems.forEach(function (parallaxItem) {
+      const parallaxEnabled =
+        parallaxItem.getAttribute("data-parallax") === "true";
+      if (parallaxEnabled)
+        parallaxItem.style.transform = "translateY(" + scrolled * 0.3 + "px)";
+    });
+  }
+
+  // Listen for the scroll event on the window
+  window.removeEventListener("scroll", generateParallaxEffect);
+  window.addEventListener("scroll", generateParallaxEffect);
+
   // Process child nodes of the document body
   return Array.from(doc.body.childNodes).map(processNode);
 }
