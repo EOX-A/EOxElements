@@ -1,5 +1,5 @@
 export { default as loadMarkdownURL } from "./load-markdown-url.js";
-export { renderHtmlString, parseNav } from "./render-html-string";
+export { renderHtmlString, parseNavWithAddSection } from "./render-html-string";
 export {
   scrollAnchorClickEvent,
   scrollIntoView,

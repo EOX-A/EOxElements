@@ -231,15 +231,40 @@ export function convertValueToType(value) {
   return convertedValue;
 }
 
+function generateAddSectionClickEvt(event, isFirstSection, that) {
+  const rect = that.getBoundingClientRect();
+
+  const center = (rect.right + rect.left) / 2;
+  const halfSizeBtn = 25 / 2;
+
+  const addBeforeBtnTop = isFirstSection ? rect.top - halfSizeBtn : undefined;
+  const addBeforeBtnBottom = isFirstSection
+    ? rect.top + halfSizeBtn
+    : undefined;
+  const addAfterBtnTop = rect.bottom - halfSizeBtn;
+  const addAfterBtnBottom = rect.bottom + halfSizeBtn;
+  const addBtnLeft = center - halfSizeBtn;
+  const addBtnRight = center + halfSizeBtn;
+
+  const { clientX, clientY } = event;
+
+  const isClicked =
+    clientX >= addBtnLeft &&
+    clientX <= addBtnRight &&
+    (clientY >= addAfterBtnTop || clientY >= addBeforeBtnTop) &&
+    (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
+}
+
 /**
- * Parse Nav and generate a new Element Node
+ * Parse Nav and generate a new Element Node with add section button
  *
  * @param {Array<Element>} html - List of html elements
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
+ * @param {Boolean} showEditor - Whether to show editor or not
  * @returns {Element[]} An array of processed DOM nodes after adding navigation.
  */
-export function parseNav(html, nav, showNav) {
+export function parseNavWithAddSection(html, nav, showNav, showEditor) {
   const parser = new DOMParser();
   let navIndex = -1;
 
@@ -266,7 +291,22 @@ export function parseNav(html, nav, showNav) {
     html.splice(navIndex, 0, navDOM);
   }
 
-  if (html.length) html[navIndex + 1].classList.add("section-start");
+  if (html.length) {
+    const sectionStartIndex = navIndex + 1;
+    html[sectionStartIndex].classList.add("section-start");
+    html.slice(sectionStartIndex).forEach((section, key) => {
+      section.classList.add("section-item");
+      section.setAttribute("data-section", `${key + 1}`);
+
+      if (showEditor) {
+        const isFirstSection = section.classList.contains("section-start");
+
+        section.addEventListener("click", function (event) {
+          generateAddSectionClickEvt(event, isFirstSection, this);
+        });
+      }
+    });
+  }
 
   return html;
 }

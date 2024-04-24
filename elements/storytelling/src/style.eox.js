@@ -124,6 +124,35 @@ const styleEOX = `
     width: 90%;
     --block-spacing-vertical: 2rem;
   }
+  .story-telling.editor-enabled .section-wrap.section-item {
+    position: relative;
+    border-bottom: 1px solid #efefef;
+  }
+  .story-telling .section-wrap.section-item.section-start {
+    border-top: 1px solid #efefef;
+  }
+  .story-telling .section-wrap.section-item::after, 
+  .story-telling .section-wrap.section-item.section-start::before {
+    content: "+";
+    background: white;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    position: absolute;
+    bottom: -12px;
+    left: calc(50% - 12.5px);
+    z-index: 2;
+    border-radius: 100%;
+    box-shadow: 1px 1px 10px #80808094;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: larger;
+    cursor: pointer;
+  }
+  .story-telling .section-wrap.section-item.section-start::before {
+    top: -12px;
+   }
   .story-telling .section-wrap.container.section-start {
     padding-top: 4rem;
   }

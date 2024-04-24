@@ -7,7 +7,7 @@ import {
   scrollAnchorClickEvent,
   scrollIntoView,
   renderHtmlString,
-  parseNav,
+  parseNavWithAddSection,
   validateMarkdownAttrs,
   addLightBoxScript,
 } from "./helpers";
@@ -133,7 +133,12 @@ export class EOxStoryTelling extends LitElement {
         this
       );
 
-      this.#html = parseNav(this.#html, this.nav, this.showNav);
+      this.#html = parseNavWithAddSection(
+        this.#html,
+        this.nav,
+        this.showNav,
+        this.showEditor
+      );
 
       if (this.showEditor) {
         const parent = this.shadowRoot || this;
@@ -204,7 +209,7 @@ export class EOxStoryTelling extends LitElement {
         ${!this.unstyled && mainStyle}
       </style>
 
-      <div class="story-telling">
+      <div class="story-telling ${this.showEditor ? "editor-enabled" : ""}">
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
           this.showEditor,
