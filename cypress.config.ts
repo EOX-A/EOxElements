@@ -23,10 +23,8 @@ if (pathsChanged) {
 export default defineConfig({
   e2e: {
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
-    supportFile: "cypress/support/e2e.js",
+    supportFile: false,
     experimentalRunAllSpecs: true,
-    // excludeSpecPattern: ["**/storybook.cy.js"]
-    // baseUrl: 'http://localhost:6006',
   },
   component: {
     supportFile: "cypress/support/component.ts",
