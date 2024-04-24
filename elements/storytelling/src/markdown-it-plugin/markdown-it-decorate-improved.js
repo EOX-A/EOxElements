@@ -497,7 +497,7 @@ function parseAsSectionWrapper(finalTokens, sectionStartIndex) {
   const as = getAttr(asSectionToken.attrs, "as");
   const mode = getAttr(asSectionToken.attrs, "mode");
 
-  // Add main section wrapper is section is a custom section and mode is not present
+  // Add main section wrapper if section is a custom section and mode is not present
   if (as && !mode) {
     finalTokens.splice(sectionStartIndex + 2, 1); // Remove main section inline token
     finalTokens.slice(sectionStartIndex + 3).forEach((finalToken) => {
