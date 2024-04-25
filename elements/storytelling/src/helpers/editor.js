@@ -161,3 +161,37 @@ export function exportMdFile(editor) {
   a.click();
   document.body.removeChild(a);
 }
+
+export function addCustomSection(
+  markdown,
+  customSectionIndex,
+  newMarkdown,
+  EOxStoryTelling
+) {
+  const sectionIndexes = [];
+  const markdownArr = markdown.split("\n");
+
+  const parent = EOxStoryTelling.shadowRoot || EOxStoryTelling;
+  const editorDOM = parent.querySelector("eox-storytelling-editor");
+
+  markdownArr.forEach((line, index) => {
+    if (
+      line.startsWith("## ") ||
+      (line.startsWith("# ") && sectionIndexes.length)
+    ) {
+      sectionIndexes.push(index);
+    }
+  });
+
+  const insertPos = sectionIndexes[customSectionIndex];
+
+  if (insertPos) markdownArr.splice(insertPos, 0, newMarkdown);
+  else markdownArr.push(newMarkdown);
+
+  editorDOM.editor.editor.editors["root.Story"].setValue(
+    markdownArr.join("\n")
+  );
+
+  EOxStoryTelling.addCustomSectionIndex = -1;
+  EOxStoryTelling.requestUpdate();
+}

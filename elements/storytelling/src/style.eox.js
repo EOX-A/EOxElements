@@ -128,11 +128,11 @@ const styleEOX = `
     position: relative;
     border-bottom: 1px solid #efefef;
   }
-  .story-telling .section-wrap.section-item.section-start {
+  .story-telling.editor-enabled .section-wrap.section-item.section-start {
     border-top: 1px solid #efefef;
   }
-  .story-telling .section-wrap.section-item::after, 
-  .story-telling .section-wrap.section-item.section-start::before {
+  .story-telling.editor-enabled .section-wrap.section-item::after, 
+  .story-telling.editor-enabled .section-wrap.section-item.section-start::before {
     content: "+";
     background: white;
     width: 25px;
@@ -141,7 +141,7 @@ const styleEOX = `
     position: absolute;
     bottom: -12px;
     left: calc(50% - 12.5px);
-    z-index: 2;
+    z-index: 1;
     border-radius: 100%;
     box-shadow: 1px 1px 10px #80808094;
     justify-content: center;
@@ -150,9 +150,9 @@ const styleEOX = `
     font-size: larger;
     cursor: pointer;
   }
-  .story-telling .section-wrap.section-item.section-start::before {
+  .story-telling.editor-enabled .section-wrap.section-item.section-start::before {
     top: -12px;
-   }
+  }
   .story-telling .section-wrap.container.section-start {
     padding-top: 4rem;
   }
@@ -250,7 +250,7 @@ const styleEOX = `
     }
   }
   .editor-wrapper {
-    z-index: 9999;
+    z-index: 4;
     width: 35%;
     height: calc(100vh - 40px);
     position: fixed;
@@ -374,7 +374,7 @@ const styleEOX = `
     right: 60px;
     display: inline-block;
     font-size: 0;
-    z-index: 99999;
+    z-index: 5;
     border: 5px white solid;
     border-radius: 34px;
     box-shadow: 1px 2px 10px 1px #7e7e7e59;
@@ -456,6 +456,99 @@ const styleEOX = `
   }
   .switch .icon.editor-view {
     opacity: 0;
+  }
+  .story-telling-custom-section-list {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000b5;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .story-telling-custom-section-list .overlay-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+  }
+  .story-telling-custom-section-list .story-telling-popup {
+    width: 450px;
+    height: 500px;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 20px;
+  }
+  .story-telling-popup-wrapper {
+    overflow-y: auto;
+    height: 100%;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header:first-child {
+    margin-top:0px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header p {
+    background: #2273EC;
+    border-radius: 20px;
+    padding: 0px 15px;
+    color: white;
+    height: 1.1rem;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 0.75rem;
+  }
+  .story-telling-custom-section-list .story-telling-popup hr {
+    border-top: 2.5px solid #e5eaf0;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item {
+    text-align: center;
+    cursor: pointer;
+    padding: 0px;
+    border: 1px solid #e1e6eb;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item:hover {
+    border-color: #2273EC;
+    background-color: #f7f7f7;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item icon {
+    font-size: 0px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item icon::before {
+    width: 100%;
+    color: black;
+    display: inline-block;
+    border-radius: 6px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item p {
+    padding: 0px;
+    margin: 0px;
+    font-size: 0.8rem;
+    color: #555555;
+    font-weight: 500;
+    padding: 4px 0px;
   }
   @media screen and (max-width: 1024px) {
     .switch-button {

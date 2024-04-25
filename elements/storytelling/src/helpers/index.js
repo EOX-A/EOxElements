@@ -8,5 +8,5 @@ export {
   versionToInteger,
   checkMarkdownVersion,
 } from "./misc";
-export { default as initEditorEvents } from "./editor";
+export { default as initEditorEvents, addCustomSection } from "./editor";
 export { validateMarkdownAttrs } from "./validator";

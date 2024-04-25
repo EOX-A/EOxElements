@@ -231,7 +231,12 @@ export function convertValueToType(value) {
   return convertedValue;
 }
 
-function generateAddSectionClickEvt(event, isFirstSection, that) {
+function generateAddSectionClickEvt(
+  event,
+  isFirstSection,
+  that,
+  EOxStoryTelling
+) {
   const rect = that.getBoundingClientRect();
 
   const center = (rect.right + rect.left) / 2;
@@ -253,6 +258,19 @@ function generateAddSectionClickEvt(event, isFirstSection, that) {
     clientX <= addBtnRight &&
     (clientY >= addAfterBtnTop || clientY >= addBeforeBtnTop) &&
     (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
+
+  if (isClicked) {
+    const isBeforeBtnTriggered = isFirstSection
+      ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
+      : false;
+    const sectionIndex = Number(that.getAttribute("data-section"));
+
+    EOxStoryTelling.addCustomSectionIndex = isBeforeBtnTriggered
+      ? sectionIndex - 1
+      : sectionIndex;
+
+    EOxStoryTelling.requestUpdate();
+  }
 }
 
 /**
@@ -262,9 +280,16 @@ function generateAddSectionClickEvt(event, isFirstSection, that) {
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
  * @param {Boolean} showEditor - Whether to show editor or not
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {Element[]} An array of processed DOM nodes after adding navigation.
  */
-export function parseNavWithAddSection(html, nav, showNav, showEditor) {
+export function parseNavWithAddSection(
+  html,
+  nav,
+  showNav,
+  showEditor,
+  EOxStoryTelling
+) {
   const parser = new DOMParser();
   let navIndex = -1;
 
@@ -302,7 +327,12 @@ export function parseNavWithAddSection(html, nav, showNav, showEditor) {
         const isFirstSection = section.classList.contains("section-start");
 
         section.addEventListener("click", function (event) {
-          generateAddSectionClickEvt(event, isFirstSection, this);
+          generateAddSectionClickEvt(
+            event,
+            isFirstSection,
+            this,
+            EOxStoryTelling
+          );
         });
       }
     });
