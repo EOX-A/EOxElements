@@ -166,6 +166,8 @@ export function addCustomSection(
   markdown,
   customSectionIndex,
   newMarkdown,
+  fields,
+  updatedFieldValues,
   EOxStoryTelling
 ) {
   const sectionIndexes = [];
@@ -184,6 +186,27 @@ export function addCustomSection(
   });
 
   const insertPos = sectionIndexes[customSectionIndex];
+
+  if (fields) {
+    if (updatedFieldValues) {
+      const jsonForm = parent.querySelector(
+        "eox-jsonform#storytelling-editor-fields"
+      );
+      const updatedFields = jsonForm.editor.getValue();
+      Object.keys(updatedFields).forEach((key) => {
+        const value = updatedFields[key];
+        newMarkdown = newMarkdown.replaceAll(`{${key}}`, value);
+      });
+      EOxStoryTelling.selectedCustomElement = null;
+    } else {
+      EOxStoryTelling.selectedCustomElement = {
+        markdown: newMarkdown,
+        fields: fields,
+      };
+      EOxStoryTelling.requestUpdate();
+      return;
+    }
+  }
 
   if (insertPos) markdownArr.splice(insertPos, 0, newMarkdown);
   else markdownArr.push(newMarkdown);

@@ -1,4 +1,14 @@
+import { button } from "../../../utils/styles/button";
+import { checkbox } from "../../../utils/styles/checkbox";
+import { radio } from "../../../utils/styles/radio";
+import { slider } from "../../../utils/styles/slider";
+
 const styleEOX = `
+${button}
+${checkbox}
+${radio}
+${slider}
+
   iframe,
   img,
   video {
@@ -476,6 +486,7 @@ const styleEOX = `
     width: 100vw;
     height: 100vh;
     z-index: -1;
+    cursor: pointer;
   }
   .story-telling-custom-section-list .story-telling-popup {
     width: 450px;
@@ -483,6 +494,28 @@ const styleEOX = `
     background: white;
     border-radius: 0.5rem;
     padding: 20px;
+    position: relative;
+  }
+  .story-telling-section-fields-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    background: #000000c9;
+    height: 100%;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  .story-telling-section-fields-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70%;
+    background: white;
+    height: 100%;
+    border-bottom-right-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    box-shadow: -14px 3px 20px 0px #0e0e0e26;
   }
   .story-telling-popup-wrapper {
     overflow-y: auto;
@@ -549,6 +582,40 @@ const styleEOX = `
     color: #555555;
     font-weight: 500;
     padding: 4px 0px;
+  }
+  eox-jsonform#storytelling-editor-fields {
+    padding-bottom: 80px;
+    height: auto;
+    display: block;
+  }
+  eox-jsonform#storytelling-editor-fields div {
+    height: auto;
+  }
+  .story-telling-section-fields-overflow {
+    overflow-y: auto;
+    height: calc(100% - 60px);
+    padding: 20px;
+  }
+  .story-telling-section-submit-wrapper {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 10px 0px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    box-shadow: -2px -10px 10px #00000017;
+    border-bottom-right-radius: 0.5rem;
+  }
+  .story-telling-section-submit-wrapper button {
+    width: 92%;
+    justify-content: center;
+  }
+  eox-jsonform#storytelling-editor-fields .je-form-input-label {
+    text-transform: capitalize;
+  }
+  eox-jsonform#storytelling-editor-fields .je-object__controls {
+    display: none; 
   }
   @media screen and (max-width: 1024px) {
     .switch-button {

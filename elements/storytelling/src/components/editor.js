@@ -181,8 +181,8 @@ class StoryTellingEditor extends LitElement {
         eox-jsonform .CodeMirror-sizer {
           padding-bottom: 100px !important;
         }
-        .je-form-input-label,
-        .je-object__controls {
+        eox-jsonform#storytelling-editor .je-form-input-label,
+        eox-jsonform#storytelling-editor .je-object__controls {
           display: none !important;
         }
       </style>

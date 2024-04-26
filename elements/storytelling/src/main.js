@@ -37,6 +37,7 @@ export class EOxStoryTelling extends LitElement {
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
       addCustomSectionIndex: { type: Number, state: true },
+      selectedCustomElement: { type: Object, state: true },
     };
   }
 
@@ -107,6 +108,8 @@ export class EOxStoryTelling extends LitElement {
      * @type {Number}
      */
     this.addCustomSectionIndex = -1;
+
+    this.selectedCustomElement = null;
   }
 
   /**
@@ -245,10 +248,49 @@ export class EOxStoryTelling extends LitElement {
               class="overlay-popup"
               @click=${() => {
                 this.addCustomSectionIndex = -1;
+                this.selectedCustomElement = null;
                 this.requestUpdate();
               }}
             ></div>
             <div class="story-telling-popup">
+              ${when(
+                this.selectedCustomElement,
+                () => html`
+                  <div class="story-telling-section-fields">
+                    <div
+                      class="story-telling-section-fields-overlay"
+                      @click=${() => {
+                        this.selectedCustomElement = null;
+                        this.requestUpdate();
+                      }}
+                    ></div>
+                    <div class="story-telling-section-fields-wrapper">
+                      <div class="story-telling-section-fields-overflow">
+                        <eox-jsonform
+                          id="storytelling-editor-fields"
+                          no-shadow
+                          .schema=${this.selectedCustomElement.fields}
+                        ></eox-jsonform>
+                      </div>
+                      <div class="story-telling-section-submit-wrapper">
+                        <button
+                          @click=${() =>
+                            addCustomSection(
+                              this.markdown,
+                              this.addCustomSectionIndex,
+                              this.selectedCustomElement.markdown,
+                              this.selectedCustomElement.fields,
+                              true,
+                              this
+                            )}
+                        >
+                          Add Section
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `
+              )}
               <div class="story-telling-popup-wrapper">
                 ${SAMPLE_ELEMENTS.map(
                   (category) => html`
@@ -265,6 +307,8 @@ export class EOxStoryTelling extends LitElement {
                               this.markdown,
                               this.addCustomSectionIndex,
                               element.markdown,
+                              element.fields,
+                              false,
                               this
                             )}
                           class="grid-item"
