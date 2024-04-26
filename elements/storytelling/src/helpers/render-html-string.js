@@ -96,9 +96,6 @@ export function renderHtmlString(htmlString, sections, that) {
   });
 
   function generateParallaxEffect() {
-    // Get the current scroll position
-    const scrolled = window.scrollY;
-
     // Find all elements with the specified selector
     const parallaxItems = parent.querySelectorAll(
       ".story-telling .hero img, .story-telling .hero video"
@@ -109,7 +106,10 @@ export function renderHtmlString(htmlString, sections, that) {
       const parallaxEnabled =
         parallaxItem.getAttribute("data-parallax") === "true";
       if (parallaxEnabled)
-        parallaxItem.style.transform = "translateY(" + scrolled * 0.3 + "px)";
+        parallaxItem.style.transform =
+          "translateY(" +
+          parallaxItem.getBoundingClientRect().top * 0.1 +
+          "px)";
     });
   }
 
