@@ -1,4 +1,14 @@
+import { button } from "../../../utils/styles/button";
+import { checkbox } from "../../../utils/styles/checkbox";
+import { radio } from "../../../utils/styles/radio";
+import { slider } from "../../../utils/styles/slider";
+
 const styleEOX = `
+${button}
+${checkbox}
+${radio}
+${slider}
+
   iframe,
   img,
   video {
@@ -124,6 +134,35 @@ const styleEOX = `
     width: 90%;
     --block-spacing-vertical: 2rem;
   }
+  .story-telling.editor-enabled .section-wrap.section-item {
+    position: relative;
+    border-bottom: 1px solid #efefef;
+  }
+  .story-telling.editor-enabled .section-wrap.section-item.section-start {
+    border-top: 1px solid #efefef;
+  }
+  .story-telling.editor-enabled .section-wrap.section-item::after, 
+  .story-telling.editor-enabled .section-wrap.section-item.section-start::before {
+    content: "+";
+    background: white;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    position: absolute;
+    bottom: -12px;
+    left: calc(50% - 12.5px);
+    z-index: 1;
+    border-radius: 100%;
+    box-shadow: 1px 1px 10px #80808094;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: larger;
+    cursor: pointer;
+  }
+  .story-telling.editor-enabled .section-wrap.section-item.section-start::before {
+    top: -12px;
+  }
   .story-telling .section-wrap.container.section-start {
     padding-top: 4rem;
   }
@@ -152,17 +191,6 @@ const styleEOX = `
     color: white;
     margin: 0rem 0.8rem;
   }
-  .story-telling .hero::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    top: 0;
-    left:0;
-    background-image: linear-gradient(to bottom,rgba(0,0,0,0.7) 25%,rgba(0,0,0,0.06) 100%);
-    z-index: -1;
-  }
   .story-telling .hero.center {
     align-items: center;
     text-align: center;
@@ -178,7 +206,7 @@ const styleEOX = `
   .story-telling .hero img, 
   .story-telling .hero video {
     position: absolute;
-    top: -35%;
+    top: -17.5%;
     left: 0;
     z-index: -1;
     width: 100%;
@@ -187,6 +215,7 @@ const styleEOX = `
     margin: 0rem;
     will-change: transform;
     backface-visibility: hidden;
+    filter: brightness(60%) contrast(100%);
   }
   .story-telling .tour.left {
     justify-items: start;
@@ -221,7 +250,7 @@ const styleEOX = `
     }
   }
   .editor-wrapper {
-    z-index: 9999;
+    z-index: 4;
     width: 35%;
     height: calc(100vh - 40px);
     position: fixed;
@@ -334,7 +363,7 @@ const styleEOX = `
     right: 60px;
     display: inline-block;
     font-size: 0;
-    z-index: 99999;
+    z-index: 5;
     border: 5px white solid;
     border-radius: 34px;
     box-shadow: 1px 2px 10px 1px #7e7e7e59;
@@ -416,6 +445,156 @@ const styleEOX = `
   }
   .switch .icon.editor-view {
     opacity: 0;
+  }
+  .story-telling-custom-section-list {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000b5;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .story-telling-custom-section-list .overlay-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    cursor: pointer;
+  }
+  .story-telling-custom-section-list .story-telling-popup {
+    width: 450px;
+    height: 500px;
+    background: white;
+    border-radius: 0.5rem;
+    padding: 20px;
+    position: relative;
+  }
+  .story-telling-section-fields-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    background: #000000c9;
+    height: 100%;
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+  .story-telling-section-fields-wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 70%;
+    background: white;
+    height: 100%;
+    border-bottom-right-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    box-shadow: -14px 3px 20px 0px #0e0e0e26;
+  }
+  .story-telling-popup-wrapper {
+    overflow-y: auto;
+    height: 100%;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header:first-child {
+    margin-top:0px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+  }
+  .story-telling-custom-section-list .story-telling-popup .header p {
+    background: #2273EC;
+    border-radius: 20px;
+    padding: 0px 15px;
+    color: white;
+    height: 1.1rem;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    font-size: 0.75rem;
+  }
+  .story-telling-custom-section-list .story-telling-popup hr {
+    border-top: 2.5px solid #e5eaf0;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item {
+    text-align: center;
+    cursor: pointer;
+    padding: 0px;
+    border: 1px solid #e1e6eb;
+    border-radius: 6px;
+    transition: all 0.2s ease-in-out;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item:hover {
+    border-color: #2273EC;
+    background-color: #f7f7f7;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item icon {
+    font-size: 0px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item icon::before {
+    width: 100%;
+    color: black;
+    display: inline-block;
+    border-radius: 6px;
+  }
+  .story-telling-custom-section-list .story-telling-popup .grid-container .grid-item p {
+    padding: 0px;
+    margin: 0px;
+    font-size: 0.8rem;
+    color: #555555;
+    font-weight: 500;
+    padding: 4px 0px;
+  }
+  eox-jsonform#storytelling-editor-fields {
+    padding-bottom: 80px;
+    height: auto;
+    display: block;
+  }
+  eox-jsonform#storytelling-editor-fields div {
+    height: auto;
+  }
+  .story-telling-section-fields-overflow {
+    overflow-y: auto;
+    height: calc(100% - 60px);
+    padding: 20px;
+  }
+  .story-telling-section-submit-wrapper {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 10px 0px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    box-shadow: -2px -10px 10px #00000017;
+    border-bottom-right-radius: 0.5rem;
+  }
+  .story-telling-section-submit-wrapper button {
+    width: 92%;
+    justify-content: center;
+  }
+  eox-jsonform#storytelling-editor-fields .je-form-input-label {
+    text-transform: capitalize;
+  }
+  eox-jsonform#storytelling-editor-fields .je-object__controls {
+    display: none; 
   }
   @media screen and (max-width: 1024px) {
     .switch-button {

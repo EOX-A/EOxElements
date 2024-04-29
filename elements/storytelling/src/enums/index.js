@@ -8,3 +8,4 @@ export {
 } from "./plugin";
 export { EVENT_REQ_MODES, DEFAULT_SENSITIVE_TAGS } from "./render";
 export { EDITOR_SCHEMA } from "./editor";
+export { SAMPLE_ELEMENTS } from "./sample";

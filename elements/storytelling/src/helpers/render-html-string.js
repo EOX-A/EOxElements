@@ -96,9 +96,6 @@ export function renderHtmlString(htmlString, sections, that) {
   });
 
   function generateParallaxEffect() {
-    // Get the current scroll position
-    const scrolled = window.scrollY;
-
     // Find all elements with the specified selector
     const parallaxItems = parent.querySelectorAll(
       ".story-telling .hero img, .story-telling .hero video"
@@ -109,7 +106,10 @@ export function renderHtmlString(htmlString, sections, that) {
       const parallaxEnabled =
         parallaxItem.getAttribute("data-parallax") === "true";
       if (parallaxEnabled)
-        parallaxItem.style.transform = "translateY(" + scrolled * 0.3 + "px)";
+        parallaxItem.style.transform =
+          "translateY(" +
+          parallaxItem.getBoundingClientRect().top * 0.1 +
+          "px)";
     });
   }
 
@@ -232,14 +232,75 @@ export function convertValueToType(value) {
 }
 
 /**
- * Parse Nav and generate a new Element Node
+ * Click event for add section button in ::after and ::before
+ *
+ * @param {Event} event - Click event
+ * @param {Boolean} isFirstSection - Whether the clicked section is first section or not
+ * @param {Element} that - DOM Element
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
+ */
+function generateAddSectionClickEvt(
+  event,
+  isFirstSection,
+  that,
+  EOxStoryTelling
+) {
+  // Positioning click button
+  const rect = that.getBoundingClientRect();
+
+  const center = (rect.right + rect.left) / 2;
+  const halfSizeBtn = 25 / 2;
+
+  const addBeforeBtnTop = isFirstSection ? rect.top - halfSizeBtn : undefined;
+  const addBeforeBtnBottom = isFirstSection
+    ? rect.top + halfSizeBtn
+    : undefined;
+  const addAfterBtnTop = rect.bottom - halfSizeBtn;
+  const addAfterBtnBottom = rect.bottom + halfSizeBtn;
+  const addBtnLeft = center - halfSizeBtn;
+  const addBtnRight = center + halfSizeBtn;
+
+  const { clientX, clientY } = event;
+
+  // Check click happen or not
+  const isClicked =
+    clientX >= addBtnLeft &&
+    clientX <= addBtnRight &&
+    (clientY >= addAfterBtnTop || clientY >= addBeforeBtnTop) &&
+    (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
+
+  // If click happened enable custom section selection popup
+  if (isClicked) {
+    const isBeforeBtnTriggered = isFirstSection
+      ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
+      : false;
+    const sectionIndex = Number(that.getAttribute("data-section"));
+
+    EOxStoryTelling.addCustomSectionIndex = isBeforeBtnTriggered
+      ? sectionIndex - 1
+      : sectionIndex;
+
+    EOxStoryTelling.requestUpdate();
+  }
+}
+
+/**
+ * Parse Nav and generate a new Element Node with add section button
  *
  * @param {Array<Element>} html - List of html elements
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
+ * @param {Boolean} showEditor - Whether to show editor or not
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {Element[]} An array of processed DOM nodes after adding navigation.
  */
-export function parseNav(html, nav, showNav) {
+export function parseNavWithAddSection(
+  html,
+  nav,
+  showNav,
+  showEditor,
+  EOxStoryTelling
+) {
   const parser = new DOMParser();
   let navIndex = -1;
 
@@ -266,7 +327,28 @@ export function parseNav(html, nav, showNav) {
     html.splice(navIndex, 0, navDOM);
   }
 
-  if (html.length) html[navIndex + 1].classList.add("section-start");
+  if (html.length) {
+    const sectionStartIndex = navIndex + 1;
+    html[sectionStartIndex].classList.add("section-start");
+    html.slice(sectionStartIndex).forEach((section, key) => {
+      section.classList.add("section-item");
+      section.setAttribute("data-section", `${key + 1}`);
+
+      // Add click event function to identify add button click
+      if (showEditor) {
+        const isFirstSection = section.classList.contains("section-start");
+
+        section.addEventListener("click", function (event) {
+          generateAddSectionClickEvt(
+            event,
+            isFirstSection,
+            this,
+            EOxStoryTelling
+          );
+        });
+      }
+    });
+  }
 
   return html;
 }

@@ -1,5 +1,5 @@
 export { default as loadMarkdownURL } from "./load-markdown-url.js";
-export { renderHtmlString, parseNav } from "./render-html-string";
+export { renderHtmlString, parseNavWithAddSection } from "./render-html-string";
 export {
   scrollAnchorClickEvent,
   scrollIntoView,
@@ -8,5 +8,10 @@ export {
   versionToInteger,
   checkMarkdownVersion,
 } from "./misc";
-export { default as initEditorEvents, generateAutoSave } from "./editor";
+export {
+  default as initEditorEvents,
+  addCustomSection,
+  getSectionIndexes,
+  generateAutoSave,
+} from "./editor";
 export { validateMarkdownAttrs } from "./validator";

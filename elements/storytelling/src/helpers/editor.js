@@ -163,6 +163,98 @@ export function exportMdFile(editor) {
 }
 
 /**
+ * Get indexes of sections with help of markdown array
+ *
+ * @param {Array} markdownArr - Current markdown array
+ * @return {Array}
+ */
+export function getSectionIndexes(markdownArr) {
+  const sectionIndexes = [];
+
+  // Check and get current section index from markdown array
+  markdownArr.forEach((line, index) => {
+    if (
+      line.startsWith("## ") ||
+      (line.startsWith("# ") && sectionIndexes.length)
+    ) {
+      sectionIndexes.push(index);
+    }
+  });
+
+  return sectionIndexes;
+}
+
+/**
+ * Add custom section markdown based on insert position and updated field value
+ *
+ * @param {String} markdown - Current markdown
+ * @param {Boolean} customSectionIndex - Section index where new section markdown will go
+ * @param {String} newMarkdown - Custom section markdown which is to be inserted
+ * @param {Object} fields - json-form fields which is used to insert custom value to markdown
+ * @param {Boolean} updatedFieldValues - State whether there is updated field values or not
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
+ */
+export function addCustomSection(
+  markdown,
+  customSectionIndex,
+  newMarkdown,
+  fields,
+  updatedFieldValues,
+  EOxStoryTelling
+) {
+  const markdownArr = markdown.split("\n");
+
+  const parent = EOxStoryTelling.shadowRoot || EOxStoryTelling;
+  const editorDOM = parent.querySelector("eox-storytelling-editor");
+
+  // Check and get current section index from markdown array
+  const sectionIndexes = getSectionIndexes(markdownArr);
+
+  // Identify insert pos
+  const insertPos = sectionIndexes[customSectionIndex];
+
+  if (fields) {
+    // Get updated json form field value and replace it with literals
+    if (updatedFieldValues) {
+      const jsonForm = parent.querySelector(
+        "eox-jsonform#storytelling-editor-fields"
+      );
+      const updatedFields = jsonForm.editor.getValue();
+      Object.keys(updatedFields).forEach((key) => {
+        const value = updatedFields[key];
+        newMarkdown = newMarkdown.replaceAll(`{${key}}`, value);
+      });
+      EOxStoryTelling.selectedCustomElement = null;
+    } else {
+      EOxStoryTelling.selectedCustomElement = {
+        markdown: newMarkdown,
+        fields: fields,
+      };
+      EOxStoryTelling.requestUpdate();
+      return;
+    }
+  }
+
+  // Insert new custom section markdown
+  if (insertPos >= 0) markdownArr.splice(insertPos, 0, newMarkdown);
+  else markdownArr.push(newMarkdown);
+
+  editorDOM.editor.editor.editors["root.Story"].setValue(
+    markdownArr.join("\n")
+  );
+
+  setTimeout(() => {
+    const updatedDom = parent.querySelector(
+      `div[data-section="${customSectionIndex + 1}"]`
+    );
+    if (updatedDom) window.scrollTo(0, updatedDom.offsetTop);
+  }, 200);
+
+  EOxStoryTelling.addCustomSectionIndex = -1;
+  EOxStoryTelling.requestUpdate();
+}
+
+/**
  * Generate auto save functionality when markdown changes
  *
  * @param {Element} StoryTellingEditor - Dom element
