@@ -206,7 +206,7 @@ ${slider}
   .story-telling .hero img, 
   .story-telling .hero video {
     position: absolute;
-    top: 0;
+    top: -17.5%;
     left: 0;
     z-index: -1;
     width: 100%;
