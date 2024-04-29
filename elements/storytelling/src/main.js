@@ -199,7 +199,7 @@ export class EOxStoryTelling extends LitElement {
   async firstUpdated() {
     if (this.showEditor) {
       const prevMarkdown = localStorage.getItem("markdown");
-      if (prevMarkdown) {
+      if (prevMarkdown && prevMarkdown !== this.markdown) {
         const updatePrevMarkdown = confirm(
           "Recover your Story from the last time you edited?"
         );
