@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { initEditorEvents } from "../helpers";
+import { generateAutoSave, initEditorEvents } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
@@ -64,21 +64,9 @@ class StoryTellingEditor extends LitElement {
       "eox-jsonform#storytelling-editor"
     );
     setTimeout(() => {
-      const instance =
+      const simpleMDEInstance =
         this.editor.editor.editors["root.Story"].simplemde_instance;
-      const that = this;
-      let timeOutId = null;
-      instance.codemirror.on("change", function () {
-        const saveEle = that.querySelector(".editor-saver");
-        saveEle.innerText = "Auto Saving...";
-        if (timeOutId) clearTimeout(timeOutId);
-
-        timeOutId = setTimeout(() => {
-          saveEle.innerText = "Saved";
-          localStorage.setItem("markdown", instance.value());
-          timeOutId = null;
-        }, 4000);
-      });
+      generateAutoSave(this, simpleMDEInstance);
     }, 2500);
     initEditorEvents(editorContainer, resizeHandle, this);
   }

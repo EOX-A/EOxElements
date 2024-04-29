@@ -161,3 +161,25 @@ export function exportMdFile(editor) {
   a.click();
   document.body.removeChild(a);
 }
+
+/**
+ * Generate auto save functionality when markdown changes
+ *
+ * @param {Element} StoryTellingEditor - Dom element
+ * @param {{codemirror, value}} simpleMDEInstance - Simple MDE instance
+ */
+export function generateAutoSave(StoryTellingEditor, simpleMDEInstance) {
+  let timeOutId = null;
+
+  simpleMDEInstance.codemirror.on("change", function () {
+    const saveEle = StoryTellingEditor.querySelector(".editor-saver");
+    saveEle.innerText = "Auto Saving...";
+    if (timeOutId) clearTimeout(timeOutId);
+
+    timeOutId = setTimeout(() => {
+      saveEle.innerText = "Saved";
+      localStorage.setItem("markdown", simpleMDEInstance.value());
+      timeOutId = null;
+    }, 2500);
+  });
+}
