@@ -162,6 +162,16 @@ export function exportMdFile(editor) {
   document.body.removeChild(a);
 }
 
+/**
+ * Add custom section markdown based on insert position and updated field value
+ *
+ * @param {String} markdown - Current markdown
+ * @param {Boolean} customSectionIndex - Section index where new section markdown will go
+ * @param {String} newMarkdown - Custom section markdown which is to be inserted
+ * @param {Object} fields - json-form fields which is used to insert custom value to markdown
+ * @param {Boolean} updatedFieldValues - State whether there is updated field values or not
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
+ */
 export function addCustomSection(
   markdown,
   customSectionIndex,
@@ -176,6 +186,7 @@ export function addCustomSection(
   const parent = EOxStoryTelling.shadowRoot || EOxStoryTelling;
   const editorDOM = parent.querySelector("eox-storytelling-editor");
 
+  // Check and get current section index from markdown array
   markdownArr.forEach((line, index) => {
     if (
       line.startsWith("## ") ||
@@ -185,9 +196,11 @@ export function addCustomSection(
     }
   });
 
+  // Identify insert pos
   const insertPos = sectionIndexes[customSectionIndex];
 
   if (fields) {
+    // Get updated json form field value and replace it with literals
     if (updatedFieldValues) {
       const jsonForm = parent.querySelector(
         "eox-jsonform#storytelling-editor-fields"
@@ -208,6 +221,7 @@ export function addCustomSection(
     }
   }
 
+  // Insert new custom section markdown
   if (insertPos >= 0) markdownArr.splice(insertPos, 0, newMarkdown);
   else markdownArr.push(newMarkdown);
 

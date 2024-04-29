@@ -231,12 +231,21 @@ export function convertValueToType(value) {
   return convertedValue;
 }
 
+/**
+ * Click event for add section button in ::after and ::before
+ *
+ * @param {Event} event - Click event
+ * @param {Boolean} isFirstSection - Whether the clicked section is first section or not
+ * @param {Element} that - DOM Element
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
+ */
 function generateAddSectionClickEvt(
   event,
   isFirstSection,
   that,
   EOxStoryTelling
 ) {
+  // Positioning click button
   const rect = that.getBoundingClientRect();
 
   const center = (rect.right + rect.left) / 2;
@@ -253,12 +262,14 @@ function generateAddSectionClickEvt(
 
   const { clientX, clientY } = event;
 
+  // Check click happen or not
   const isClicked =
     clientX >= addBtnLeft &&
     clientX <= addBtnRight &&
     (clientY >= addAfterBtnTop || clientY >= addBeforeBtnTop) &&
     (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
 
+  // If click happened enable custom section selection popup
   if (isClicked) {
     const isBeforeBtnTriggered = isFirstSection
       ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
@@ -323,6 +334,7 @@ export function parseNavWithAddSection(
       section.classList.add("section-item");
       section.setAttribute("data-section", `${key + 1}`);
 
+      // Add click event function to identify add button click
       if (showEditor) {
         const isFirstSection = section.classList.contains("section-start");
 

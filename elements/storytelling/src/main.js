@@ -109,6 +109,11 @@ export class EOxStoryTelling extends LitElement {
      */
     this.addCustomSectionIndex = -1;
 
+    /**
+     * Selected custom element object
+     *
+     * @type {Object | null}
+     */
     this.selectedCustomElement = null;
   }
 
