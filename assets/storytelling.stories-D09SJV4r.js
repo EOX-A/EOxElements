@@ -1,4 +1,4 @@
-import{x as o}from"./lit-element-Bq1Y8_dt.js";import"./main-BHHP8UMl.js";import"./_commonjsHelpers-BosuxZz1.js";const $e={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
+import{x as o}from"./lit-element-Bq1Y8_dt.js";import"./main-jNKA_Mqd.js";import"./_commonjsHelpers-BosuxZz1.js";const $e={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id="markdown-str"
@@ -252,6 +252,7 @@ For all components (technology, community, partnerships), the Reproducible Open 
     <eox-storytelling
       id="markdown-hero-with-nav"
       show-nav
+      show-editor
       markdown=${e.markdown}
     ></eox-storytelling>
   `},Je={args:{markdown:`
