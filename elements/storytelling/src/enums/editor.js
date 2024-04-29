@@ -1,4 +1,5 @@
 import { importMdFile, exportMdFile } from "../helpers/editor.js";
+import { getSectionIndexes } from "../helpers";
 
 const addCustomTool = (name, output, className, title, action) => ({
   name,
@@ -52,8 +53,11 @@ export const EDITOR_SCHEMA = {
               "Add custom section",
               () => {
                 const element = document.querySelector("eox-storytelling");
+                const markdownArr = element.markdown.split("\n");
+                const sectionIndexes = getSectionIndexes(markdownArr);
+
                 if (element) {
-                  element.addCustomSectionIndex = 0;
+                  element.addCustomSectionIndex = sectionIndexes.length;
                   element.requestUpdate();
                 }
               }

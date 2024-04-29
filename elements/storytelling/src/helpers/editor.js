@@ -163,6 +163,28 @@ export function exportMdFile(editor) {
 }
 
 /**
+ * Get indexes of sections with help of markdown array
+ *
+ * @param {Array} markdownArr - Current markdown array
+ * @return {Array}
+ */
+export function getSectionIndexes(markdownArr) {
+  const sectionIndexes = [];
+
+  // Check and get current section index from markdown array
+  markdownArr.forEach((line, index) => {
+    if (
+      line.startsWith("## ") ||
+      (line.startsWith("# ") && sectionIndexes.length)
+    ) {
+      sectionIndexes.push(index);
+    }
+  });
+
+  return sectionIndexes;
+}
+
+/**
  * Add custom section markdown based on insert position and updated field value
  *
  * @param {String} markdown - Current markdown
@@ -180,21 +202,13 @@ export function addCustomSection(
   updatedFieldValues,
   EOxStoryTelling
 ) {
-  const sectionIndexes = [];
   const markdownArr = markdown.split("\n");
 
   const parent = EOxStoryTelling.shadowRoot || EOxStoryTelling;
   const editorDOM = parent.querySelector("eox-storytelling-editor");
 
   // Check and get current section index from markdown array
-  markdownArr.forEach((line, index) => {
-    if (
-      line.startsWith("## ") ||
-      (line.startsWith("# ") && sectionIndexes.length)
-    ) {
-      sectionIndexes.push(index);
-    }
-  });
+  const sectionIndexes = getSectionIndexes(markdownArr);
 
   // Identify insert pos
   const insertPos = sectionIndexes[customSectionIndex];
@@ -228,6 +242,13 @@ export function addCustomSection(
   editorDOM.editor.editor.editors["root.Story"].setValue(
     markdownArr.join("\n")
   );
+
+  setTimeout(() => {
+    const updatedDom = parent.querySelector(
+      `div[data-section="${customSectionIndex + 1}"]`
+    );
+    if (updatedDom) window.scrollTo(0, updatedDom.offsetTop);
+  }, 200);
 
   EOxStoryTelling.addCustomSectionIndex = -1;
   EOxStoryTelling.requestUpdate();
