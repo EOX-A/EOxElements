@@ -67,7 +67,7 @@ class StoryTellingEditor extends LitElement {
       const simpleMDEInstance =
         this.editor.editor.editors["root.Story"].simplemde_instance;
       generateAutoSave(this, simpleMDEInstance);
-    }, 2500);
+    }, 200);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
 
