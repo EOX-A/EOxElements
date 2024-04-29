@@ -63,6 +63,23 @@ class StoryTellingEditor extends LitElement {
     this.editor = this.renderRoot.querySelector(
       "eox-jsonform#storytelling-editor"
     );
+    setTimeout(() => {
+      const instance =
+        this.editor.editor.editors["root.Story"].simplemde_instance;
+      const that = this;
+      let timeOutId = null;
+      instance.codemirror.on("change", function () {
+        const saveEle = that.querySelector(".editor-saver");
+        saveEle.innerText = "Auto Saving...";
+        if (timeOutId) clearTimeout(timeOutId);
+
+        timeOutId = setTimeout(() => {
+          saveEle.innerText = "Saved";
+          localStorage.setItem("markdown", instance.value());
+          timeOutId = null;
+        }, 4000);
+      });
+    }, 2500);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
 
@@ -116,7 +133,7 @@ class StoryTellingEditor extends LitElement {
           .value=${{ Story: this.markdown }}
         ></eox-jsonform>
         <div class="resize-handle"></div>
-        <span class="editor-saver"></span>
+        <span class="editor-saver">Saved</span>
         <div class="editor-error">
           <div class="editor-error-wrapper">
             <div class="overflow">

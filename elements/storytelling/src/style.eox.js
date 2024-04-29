@@ -311,23 +311,12 @@ const styleEOX = `
     margin-left: 0.2rem;
   }
   .editor-saver {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    animation: rotate 1s linear infinite;
-    display: none;
-  }
-  .editor-saver::before {
-    content: "";
-    box-sizing: border-box;
-    position: absolute;
-    inset: 0px;
-    border-radius: 50%;
-    border: 5px solid #5b5b5b85;
-    animation: spin 2s linear infinite ;
+    position: absolute;    
+    bottom: 18px;
+    left: 17px;
+    font-size: 12px;
+    color: #959694;
+    text-align: right;
   }
   @keyframes rotate {
     100% {transform: rotate(360deg)}
