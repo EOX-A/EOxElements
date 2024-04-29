@@ -208,7 +208,7 @@ export function addCustomSection(
     }
   }
 
-  if (insertPos) markdownArr.splice(insertPos, 0, newMarkdown);
+  if (insertPos >= 0) markdownArr.splice(insertPos, 0, newMarkdown);
   else markdownArr.push(newMarkdown);
 
   editorDOM.editor.editor.editors["root.Story"].setValue(

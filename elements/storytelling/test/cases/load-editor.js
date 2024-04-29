@@ -8,7 +8,7 @@ const { storyTelling } = TEST_SELECTORS;
  * Load markdown editor
  */
 const loadMarkdownEditorTest = () => {
-  const testText = "# Foo";
+  const testText = "## Foo";
   const editorSelector = "eox-storytelling-editor";
   const jsonFormSelector = `${editorSelector} eox-jsonform`;
 
@@ -22,11 +22,15 @@ const loadMarkdownEditorTest = () => {
       cy.get(editorSelector).should("exist");
       cy.get(jsonFormSelector).should("exist");
       cy.get(jsonFormSelector).then(($jsonform) => {
-        const newMardown = "# Bar";
+        const newMardown = "## Bar";
         $jsonform[0].value = { Story: newMardown };
         expect($jsonform[0].value.Story).to.eq(newMardown);
       });
-      cy.get("h1").should("have.text", "Bar");
+      cy.get("h2").should("have.text", "Bar");
+      cy.get("a[title='Add custom section']").click();
+      cy.get(".grid-item").eq(3).click();
+      cy.get(".story-telling-section-submit-wrapper button").click();
+      cy.get(".section-wrap").eq(0).should("have.id", "section-map-example");
     });
 };
 

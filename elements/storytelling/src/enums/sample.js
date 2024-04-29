@@ -30,7 +30,7 @@ const SIMPLE_MAP_FIELDS = {
   properties: {
     title: {
       type: "string",
-      default: "EOx Map Example",
+      default: "Map Example",
       format: "text",
     },
     layers: {
@@ -71,7 +71,7 @@ const MAP_TOUR_FIELDS = {
   properties: {
     title: {
       type: "string",
-      default: "EOX Map Tour Example",
+      default: "Map Tour Example",
       format: "text",
     },
     layers: {
