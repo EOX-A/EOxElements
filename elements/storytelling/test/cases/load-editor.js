@@ -30,7 +30,7 @@ const loadMarkdownEditorTest = () => {
       cy.get("a[title='Add custom section']").click();
       cy.get(".grid-item").eq(3).click();
       cy.get(".story-telling-section-submit-wrapper button").click();
-      cy.get(".section-wrap").eq(0).should("have.id", "section-map-example");
+      cy.get(".section-wrap").eq(1).should("have.id", "section-map-example");
     });
 };
 
