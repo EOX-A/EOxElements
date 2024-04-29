@@ -263,7 +263,7 @@ export function addCustomSection(
 export function generateAutoSave(StoryTellingEditor, simpleMDEInstance) {
   let timeOutId = null;
 
-  simpleMDEInstance.codemirror.on("change", function () {
+  simpleMDEInstance?.codemirror.on("change", function () {
     const saveEle = StoryTellingEditor.querySelector(".editor-saver");
     saveEle.innerText = "Auto Saving...";
     if (timeOutId) clearTimeout(timeOutId);
