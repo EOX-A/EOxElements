@@ -16,7 +16,7 @@
     "test:all": "npm run styles && npm run test:component && npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
     "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && concurrently --kill-others \"npm:start\" \"cypress run --e2e\"",
-    "test:storybook": "npm run generate-manifest && npm run build:storybook && concurrently --kill-others \"npm:start\" \"npm:cypress:storybook\"",
+    "test:storybook": "npm run build:all && npm run generate-manifest && npm run build:storybook && concurrently --kill-others \"npm:start\" \"npm:cypress:storybook\"",
     "cypress:storybook": "cypress run --config excludeSpecPattern='[\"**/layercontrol.cy.js\"]' --spec ./cypress/e2e/storybook.cy.js",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
