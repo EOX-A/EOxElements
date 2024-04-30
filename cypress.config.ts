@@ -25,7 +25,7 @@ export default defineConfig({
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: false,
     experimentalRunAllSpecs: true,
-    excludeSpecPattern: ["**/storybook.cy.js"]
+    excludeSpecPattern: ["**/storybook.cy.js"],
   },
   component: {
     supportFile: "cypress/support/component.ts",
