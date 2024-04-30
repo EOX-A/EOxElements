@@ -10,7 +10,7 @@ export const styleEOX = `
   [data-schemaid=root] > .je-header {
     display: none;
   }
-  input[type="text"], select {
+  input[type="text"], input[type="number"], textarea, select {
     box-sizing: border-box !important;
     width: 100% !important;
     margin: 0.5rem 0rem !important;

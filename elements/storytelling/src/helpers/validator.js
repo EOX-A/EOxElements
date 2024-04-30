@@ -11,6 +11,7 @@ const basicHeroSchema = {
   as: joi.string().valid("img", "video").required(),
   src: joi.string().uri().required(),
   position: joi.string().valid("center", "left", "right"),
+  "data-parallax": joi.boolean().required(),
 };
 
 // EOxMap validation schema

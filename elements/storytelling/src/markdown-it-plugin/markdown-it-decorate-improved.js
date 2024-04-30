@@ -137,7 +137,10 @@ function curlyAttrs(state) {
   }
 
   // Close opened sections and step section tags if opened
-  if (sectionStart) pushClosingTag(finalTokens, sectionStartIndex, state);
+  if (sectionStart) {
+    parseAsSectionWrapper(finalTokens, sectionStartIndex);
+    pushClosingTag(finalTokens, sectionStartIndex, state);
+  }
   if (sectionSteps) pushClosingTag(finalTokens, sectionStepsIndex, state);
 
   generateCustomAttrsAndSectionMetaList(finalTokens, state.md);
@@ -327,9 +330,9 @@ function parseInlineContent(
  * @param {Array<Object>} tokens - List of markdown tokens
  * @param {Array<Object>} finalTokens - Processed final set of markdown token
  * @param {Boolean} sectionStart - Section started or not
- * @param {Boolean} sectionStartIndex - Section start index
+ * @param {Number} sectionStartIndex - Section start index
  * @param {Boolean} sectionSteps - Step Section started or not
- * @param {Boolean} sectionStepsIndex - Step Section start index
+ * @param {Number} sectionStepsIndex - Step Section start index
  * @param {{tokens: Array<Object>}} state - Token state
  * @param {Object} stack
  * @return {Object} - Final list of updated states
@@ -365,6 +368,8 @@ function parseSection(
       }
 
       const tag = finalTokens[sectionStartIndex].tag;
+      parseAsSectionWrapper(finalTokens, sectionStartIndex);
+
       finalTokens.push(addNewHTMLSection(state, tag, -1, -1, "html_close"));
       sectionStart = false;
       sectionStartIndex = -1;
@@ -400,9 +405,9 @@ function parseSection(
  * @param {Array<Object>} tokens - List of markdown tokens
  * @param {Array<Object>} finalTokens - Processed final set of markdown token
  * @param {Boolean} sectionStart - Section started or not
- * @param {Boolean} sectionStartIndex - Section start index
+ * @param {Number} sectionStartIndex - Section start index
  * @param {Boolean} sectionSteps - Step Section started or not
- * @param {Boolean} sectionStepsIndex - Step Section start index
+ * @param {Number} sectionStepsIndex - Step Section start index
  * @param {{tokens: Array<Object>}} state - Token state
  * @param {Object} stack
  * @return {Object} - Final list of updated states
@@ -478,6 +483,29 @@ function parseHeroSection(finalTokens, state, stack) {
   finalTokens.push(addNewHTMLSection(state, "h1", 1, -1, "html_close", null));
 
   return finalTokens;
+}
+
+/**
+ * Process and parse `as` section wrapper if mode is not present
+ *
+ * @param {Array<Object>} finalTokens - Processed final set of markdown token
+ * @param {Number} sectionStartIndex - Section start index
+ */
+function parseAsSectionWrapper(finalTokens, sectionStartIndex) {
+  const asSectionToken = finalTokens[sectionStartIndex + 1];
+
+  const as = getAttr(asSectionToken.attrs, "as");
+  const mode = getAttr(asSectionToken.attrs, "mode");
+
+  // Add main section wrapper if section is a custom section and mode is not present
+  if (as && !mode) {
+    finalTokens.splice(sectionStartIndex + 2, 1); // Remove main section inline token
+    finalTokens.slice(sectionStartIndex + 3).forEach((finalToken) => {
+      finalToken.level = 1; // Increase one level of each token which goes inside as child
+    });
+    finalTokens.push(finalTokens[sectionStartIndex + 2]); // Push main section closing tag towards end
+    finalTokens.splice(sectionStartIndex + 2, 1); // Removing duplicate main section's closing tag
+  }
 }
 
 /**
@@ -592,8 +620,10 @@ function applyToToken(token, attrs = "") {
 
   // Adding default attribute based on mode and as
   DEFAULT_MODE_ATTRS[asAttr]?.[modeAttr]?.forEach((attr) => {
-    addAttr(token, attr[0], attr[1]);
-    attrs = attrs.slice(attr[0].length);
+    if (!getAttr(token.attrs, attr[0])) {
+      addAttr(token, attr[0], attr[1]);
+      attrs = attrs.slice(attr[0].length);
+    }
   });
 
   return true;

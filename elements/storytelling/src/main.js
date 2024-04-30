@@ -7,9 +7,10 @@ import {
   scrollAnchorClickEvent,
   scrollIntoView,
   renderHtmlString,
-  parseNav,
+  parseNavWithAddSection,
   validateMarkdownAttrs,
   addLightBoxScript,
+  addCustomSection,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -19,7 +20,7 @@ import {
 } from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
 import "./components/editor";
-import { DEFAULT_SENSITIVE_TAGS } from "./enums";
+import { DEFAULT_SENSITIVE_TAGS, SAMPLE_ELEMENTS } from "./enums";
 const md = markdownit({ html: true });
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
@@ -35,6 +36,8 @@ export class EOxStoryTelling extends LitElement {
       showEditor: { attribute: "show-editor", type: Boolean },
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
+      addCustomSectionIndex: { type: Number, state: true },
+      selectedCustomElement: { type: Object, state: true },
     };
   }
 
@@ -98,6 +101,20 @@ export class EOxStoryTelling extends LitElement {
      * @type {Array<Object>}
      */
     this.nav = [];
+
+    /**
+     * custom section index
+     *
+     * @type {Number}
+     */
+    this.addCustomSectionIndex = -1;
+
+    /**
+     * Selected custom element object
+     *
+     * @type {Object | null}
+     */
+    this.selectedCustomElement = null;
   }
 
   /**
@@ -133,7 +150,13 @@ export class EOxStoryTelling extends LitElement {
         this
       );
 
-      this.#html = parseNav(this.#html, this.nav, this.showNav);
+      this.#html = parseNavWithAddSection(
+        this.#html,
+        this.nav,
+        this.showNav,
+        this.showEditor,
+        this
+      );
 
       if (this.showEditor) {
         const parent = this.shadowRoot || this;
@@ -204,7 +227,7 @@ export class EOxStoryTelling extends LitElement {
         ${!this.unstyled && mainStyle}
       </style>
 
-      <div class="story-telling">
+      <div class="story-telling ${this.showEditor ? "editor-enabled" : ""}">
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
           this.showEditor,
@@ -221,6 +244,97 @@ export class EOxStoryTelling extends LitElement {
           `
         )}
       </div>
+
+      ${when(
+        this.addCustomSectionIndex > -1,
+        () => html`
+          <div class="story-telling-custom-section-list">
+            <div
+              class="overlay-popup"
+              @click=${() => {
+                this.addCustomSectionIndex = -1;
+                this.selectedCustomElement = null;
+                this.requestUpdate();
+              }}
+            ></div>
+            <div class="story-telling-popup">
+              ${when(
+                this.selectedCustomElement,
+                () => html`
+                  <div class="story-telling-section-fields">
+                    <div
+                      class="story-telling-section-fields-overlay"
+                      @click=${() => {
+                        this.selectedCustomElement = null;
+                        this.requestUpdate();
+                      }}
+                    ></div>
+                    <div class="story-telling-section-fields-wrapper">
+                      <div class="story-telling-section-fields-overflow">
+                        <eox-jsonform
+                          id="storytelling-editor-fields"
+                          no-shadow
+                          .schema=${this.selectedCustomElement.fields}
+                        ></eox-jsonform>
+                      </div>
+                      <div class="story-telling-section-submit-wrapper">
+                        <button
+                          @click=${() =>
+                            addCustomSection(
+                              this.markdown,
+                              this.addCustomSectionIndex,
+                              this.selectedCustomElement.markdown,
+                              this.selectedCustomElement.fields,
+                              true,
+                              this
+                            )}
+                        >
+                          Add Section
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                `
+              )}
+              <div class="story-telling-popup-wrapper">
+                ${SAMPLE_ELEMENTS.map(
+                  (category) => html`
+                    <div class="header">
+                      <h4>${category.name}</h4>
+                      <p>${category.elements.length}</p>
+                    </div>
+                    <hr />
+                    <div class="grid-container">
+                      ${category.elements.map(
+                        (element) => html`<div
+                          @click=${() =>
+                            addCustomSection(
+                              this.markdown,
+                              this.addCustomSectionIndex,
+                              element.markdown,
+                              element.fields,
+                              false,
+                              this
+                            )}
+                          class="grid-item"
+                        >
+                          <icon id="${element.id}"></icon>
+                          <p>${element.name}</p>
+                          <style>
+                            icon#${element.id}::before {
+                              content: url("${element.icon}");
+                            }
+                          </style>
+                        </div>`
+                      )}
+                    </div>
+                  `
+                )}
+              </div>
+            </div>
+          </div>
+        `
+      )}
     `;
   }
 }
