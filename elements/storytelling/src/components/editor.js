@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { initEditorEvents } from "../helpers";
+import { initEditorEvents, positionEditor } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
@@ -63,6 +63,7 @@ class StoryTellingEditor extends LitElement {
     this.editor = this.renderRoot.querySelector(
       "eox-jsonform#storytelling-editor"
     );
+    positionEditor(this);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
 

@@ -121,6 +121,29 @@ export default async function initEditorEvents(
 }
 
 /**
+ * Function to position editor based on parent height
+ *
+ * @param {Element} StoryTellingEditor - Dom element
+ */
+export function positionEditor(StoryTellingEditor) {
+  const storyTellingContainer = document.querySelector("eox-storytelling");
+  const { y } = storyTellingContainer.getBoundingClientRect();
+  const editorWrapper = StoryTellingEditor.querySelector(".editor-wrapper");
+
+  const pxToValue = (prop) => Number(prop.replace("px", ""));
+
+  const editorWrapperStyle = window.getComputedStyle(editorWrapper);
+  const bottomPos = pxToValue(editorWrapperStyle.bottom);
+  const extraPadding = pxToValue(editorWrapperStyle.padding) * 2;
+  const navHeight = editorWrapper.classList.contains("partial-height") ? 80 : 0;
+
+  const editorHeight =
+    window.innerHeight - y - bottomPos - extraPadding - navHeight;
+
+  editorWrapper.style.height = `${editorHeight}px`;
+}
+
+/**
  * Function import md file into editor
  *
  * @param {Object} editor - The SimpleMDE instance
