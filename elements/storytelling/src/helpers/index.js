@@ -13,5 +13,6 @@ export {
   addCustomSection,
   getSectionIndexes,
   generateAutoSave,
+  positionEditor,
 } from "./editor";
 export { validateMarkdownAttrs } from "./validator";

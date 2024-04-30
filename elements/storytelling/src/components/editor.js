@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { generateAutoSave, initEditorEvents } from "../helpers";
+import { generateAutoSave, initEditorEvents, positionEditor } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
@@ -63,6 +63,7 @@ class StoryTellingEditor extends LitElement {
     this.editor = this.renderRoot.querySelector(
       "eox-jsonform#storytelling-editor"
     );
+    positionEditor(this);
     setTimeout(() => {
       const simpleMDEInstance =
         this.editor.editor.editors["root.Story"].simplemde_instance;

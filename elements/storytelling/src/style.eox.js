@@ -252,9 +252,8 @@ ${slider}
   .editor-wrapper {
     z-index: 4;
     width: 35%;
-    height: calc(100vh - 40px);
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     right: 20px;
     border-radius: 10px;
     background: #f2f2f2;
@@ -274,10 +273,6 @@ ${slider}
     transform: rotate(90deg);
     cursor: sw-resize;
     z-index: 2;
-  }
-  .editor-wrapper.partial-height {
-    height: calc(100vh - 120px);
-    top: 100px
   }
   #editor {
     width: 100%;
