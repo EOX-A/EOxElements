@@ -12,5 +12,6 @@ export {
   default as initEditorEvents,
   addCustomSection,
   getSectionIndexes,
+  generateAutoSave,
 } from "./editor";
 export { validateMarkdownAttrs } from "./validator";
