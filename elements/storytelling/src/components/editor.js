@@ -7,6 +7,7 @@ class StoryTellingEditor extends LitElement {
   // Define static properties for LitElement
   static properties = {
     markdown: { attribute: "markdown", type: String },
+    storyId: { attribute: "story-id", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
@@ -17,6 +18,11 @@ class StoryTellingEditor extends LitElement {
      * @type {String} - Markdown Content
      */
     this.markdown = "";
+
+    /**
+     * @type {String | null} - id of eox-storytelling
+     */
+    this.storyId = null;
 
     /**
      * @type {Boolean} - is navigation enabled or not
@@ -67,7 +73,7 @@ class StoryTellingEditor extends LitElement {
     setTimeout(() => {
       const simpleMDEInstance =
         this.editor.editor.editors["root.Story"].simplemde_instance;
-      generateAutoSave(this, simpleMDEInstance);
+      generateAutoSave(this, this.storyId, simpleMDEInstance);
     }, 1000);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
