@@ -11,6 +11,7 @@ import {
   validateMarkdownAttrs,
   addLightBoxScript,
   addCustomSection,
+  initSavedMarkdown,
 } from "./helpers";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
@@ -197,16 +198,7 @@ export class EOxStoryTelling extends LitElement {
   }
 
   async firstUpdated() {
-    if (this.showEditor) {
-      const prevMarkdown = localStorage.getItem("markdown");
-      if (prevMarkdown && prevMarkdown !== this.markdown) {
-        const updatePrevMarkdown = confirm(
-          "Recover your Story from the last time you edited?"
-        );
-        if (updatePrevMarkdown) this.markdown = prevMarkdown;
-        else localStorage.removeItem("markdown");
-      } else localStorage.removeItem("markdown");
-    }
+    initSavedMarkdown(this);
     addLightBoxScript(this);
 
     // Check if this.#html is initialized, if not, wait for it
@@ -244,6 +236,7 @@ export class EOxStoryTelling extends LitElement {
           () => html`
             <eox-storytelling-editor
               .isNavigation=${Boolean(this.showNav)}
+              .storyId=${this.id}
               @change=${(e) => {
                 if (e.detail) {
                   this.markdown = e.detail.Story;

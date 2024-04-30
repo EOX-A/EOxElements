@@ -14,5 +14,6 @@ export {
   getSectionIndexes,
   generateAutoSave,
   positionEditor,
+  initSavedMarkdown,
 } from "./editor";
 export { validateMarkdownAttrs } from "./validator";

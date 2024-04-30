@@ -282,9 +282,14 @@ export function addCustomSection(
  * Generate auto save functionality when markdown changes
  *
  * @param {Element} StoryTellingEditor - Dom element
+ * @param {String | null} storyId - ID of story
  * @param {{codemirror, value}} simpleMDEInstance - Simple MDE instance
  */
-export function generateAutoSave(StoryTellingEditor, simpleMDEInstance) {
+export function generateAutoSave(
+  StoryTellingEditor,
+  storyId,
+  simpleMDEInstance
+) {
   let timeOutId = null;
 
   simpleMDEInstance?.codemirror.on("change", function () {
@@ -294,8 +299,48 @@ export function generateAutoSave(StoryTellingEditor, simpleMDEInstance) {
 
     timeOutId = setTimeout(() => {
       saveEle.innerText = "Saved";
-      localStorage.setItem("markdown", simpleMDEInstance.value());
+      const existingMarkdownObj = JSON.parse(
+        localStorage.getItem("markdown") || "{}"
+      );
+
+      localStorage.setItem(
+        "markdown",
+        JSON.stringify({
+          ...existingMarkdownObj,
+          [storyId || "default"]: simpleMDEInstance.value(),
+        })
+      );
       timeOutId = null;
     }, 2500);
   });
+}
+
+/**
+ * Init saved markdown if it is present
+ *
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
+ */
+export function initSavedMarkdown(EOxStoryTelling) {
+  if (EOxStoryTelling.showEditor) {
+    let existingMarkdownObj = JSON.parse(
+      localStorage.getItem("markdown") || "{}"
+    );
+    const storyId = EOxStoryTelling.id || "default";
+    const prevMarkdown = existingMarkdownObj[storyId];
+
+    // Check previous markdown exist and not similar to new one
+    if (prevMarkdown && prevMarkdown !== EOxStoryTelling.markdown) {
+      // Prompt whether to recover previous markdown
+      const updatePrevMarkdown = confirm(
+        "Recover your Story from the last time you edited?"
+      );
+
+      // update markdown if previous markdown to be recovered, otherwise just delete the previous one
+      if (updatePrevMarkdown) EOxStoryTelling.markdown = prevMarkdown;
+      else {
+        delete existingMarkdownObj[storyId];
+        localStorage.setItem("markdown", JSON.stringify(existingMarkdownObj));
+      }
+    }
+  }
 }
