@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.1...jsonform-v0.7.0) (2024-04-30)
+
+
+### Features
+
+* Section adding popup ([#889](https://github.com/EOX-A/EOxElements/issues/889)) ([f2f492b](https://github.com/EOX-A/EOxElements/commit/f2f492b81abec2f8d0b37e0aaf23894d19106f85))
+
 ## [0.6.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.0...jsonform-v0.6.1) (2024-04-03)
 
 
