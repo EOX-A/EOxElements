@@ -653,7 +653,7 @@ ${wf}
     }
   }
   .editor-hide {
-    opacity: 0;
+    display: none;
   }
   .editor-error {
     display: none;
