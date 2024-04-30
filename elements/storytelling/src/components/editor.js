@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { initEditorEvents, positionEditor } from "../helpers";
+import { generateAutoSave, initEditorEvents, positionEditor } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
@@ -64,6 +64,11 @@ class StoryTellingEditor extends LitElement {
       "eox-jsonform#storytelling-editor"
     );
     positionEditor(this);
+    setTimeout(() => {
+      const simpleMDEInstance =
+        this.editor.editor.editors["root.Story"].simplemde_instance;
+      generateAutoSave(this, simpleMDEInstance);
+    }, 1000);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
 
@@ -117,7 +122,7 @@ class StoryTellingEditor extends LitElement {
           .value=${{ Story: this.markdown }}
         ></eox-jsonform>
         <div class="resize-handle"></div>
-        <span class="editor-saver"></span>
+        <span class="editor-saver">Saved</span>
         <div class="editor-error">
           <div class="editor-error-wrapper">
             <div class="overflow">

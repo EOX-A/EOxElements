@@ -197,6 +197,16 @@ export class EOxStoryTelling extends LitElement {
   }
 
   async firstUpdated() {
+    if (this.showEditor) {
+      const prevMarkdown = localStorage.getItem("markdown");
+      if (prevMarkdown && prevMarkdown !== this.markdown) {
+        const updatePrevMarkdown = confirm(
+          "Recover your Story from the last time you edited?"
+        );
+        if (updatePrevMarkdown) this.markdown = prevMarkdown;
+        else localStorage.setItem("markdown", this.markdown);
+      }
+    }
     addLightBoxScript(this);
 
     // Check if this.#html is initialized, if not, wait for it
