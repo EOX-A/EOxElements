@@ -204,8 +204,8 @@ export class EOxStoryTelling extends LitElement {
           "Recover your Story from the last time you edited?"
         );
         if (updatePrevMarkdown) this.markdown = prevMarkdown;
-        else localStorage.setItem("markdown", this.markdown);
-      }
+        else localStorage.removeItem("markdown");
+      } else localStorage.removeItem("markdown");
     }
     addLightBoxScript(this);
 

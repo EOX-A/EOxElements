@@ -55,11 +55,12 @@ function handleMouseMove(e, editorContainer, StoryTellingEditor) {
   if (StoryTellingEditor.dragging || StoryTellingEditor.resizing) {
     let dx = StoryTellingEditor.lastX - e.clientX;
     let dy = e.clientY - StoryTellingEditor.lastY;
-    let { width, height, left } = editorContainer.getBoundingClientRect();
+    let { width, height, left, top } = editorContainer.getBoundingClientRect();
 
     if (StoryTellingEditor.resizing) {
       editorContainer.style.width = `${width + dx}px`;
       editorContainer.style.height = `${height + dy}px`;
+      editorContainer.style.top = `${top}px`;
     }
     editorContainer.style.left = `${left - dx}px`;
 
