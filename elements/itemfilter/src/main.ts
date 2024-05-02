@@ -344,9 +344,7 @@ export class EOxItemFilter extends TemplateElement {
                   class="result-radio"
                   name="result"
                   id="${<string>item.id}"
-                  ?checked=${this.selectedResult?.[
-                    this._config.titleProperty
-                  ] === item[this._config.titleProperty] || (nothing as null)}
+                  ?checked=${this.selectedResult?.id === item.id || (nothing as null)}
                   @click=${() => {
                     this.selectedResult = item;
                     this._config.onSelect(item);
