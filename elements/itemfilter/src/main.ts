@@ -333,8 +333,7 @@ export class EOxItemFilter extends TemplateElement {
           (item: Item) => item.id,
           (item: Item) => html`
             <li
-              class=${this.selectedResult?.[this._config.titleProperty] ===
-              item[this._config.titleProperty]
+              class=${this.selectedResult?.id === item.id
                 ? "highlighted"
                 : (nothing as null)}
             >
