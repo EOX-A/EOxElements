@@ -1,4 +1,8 @@
-import { importMdFile, exportMdFile } from "../helpers/editor.js";
+import {
+  importMdFile,
+  exportMdFile,
+  toggleComments,
+} from "../helpers/editor.js";
 import { getSectionIndexes } from "../helpers";
 
 const addCustomTool = (name, output, className, title, action) => ({
@@ -46,6 +50,13 @@ export const EDITOR_SCHEMA = {
               exportMdFile
             ),
             "|",
+            addCustomTool(
+              "comments",
+              null,
+              "fa fa-eye-slash",
+              "Preview markdown with (or without) comments",
+              toggleComments
+            ),
             addCustomTool(
               "add-custom-section",
               null,

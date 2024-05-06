@@ -187,6 +187,32 @@ export function exportMdFile(editor) {
 }
 
 /**
+ * Function to toggle comment inside markdown editor
+ *
+ * @param {Object} editor - The SimpleMDE instance
+ */
+export function toggleComments(editor) {
+  const toolbarElements = editor.toolbarElements;
+  const commentElement = toolbarElements.comments;
+  let mainFormElement = null;
+  while (!mainFormElement || mainFormElement.tagName !== "EOX-JSONFORM") {
+    mainFormElement = (mainFormElement || editor.element.parentElement)
+      .parentElement;
+  }
+  const mainEditorInstance = mainFormElement.editor.editors["root.Story"];
+
+  if (commentElement.classList.contains("active")) {
+    commentElement.classList.remove("active");
+    mainEditorInstance.enable();
+    mainFormElement.classList.remove("hide-comments");
+  } else {
+    commentElement.classList.add("active");
+    mainEditorInstance.disable();
+    mainFormElement.classList.add("hide-comments");
+  }
+}
+
+/**
  * Get indexes of sections with help of markdown array
  *
  * @param {Array} markdownArr - Current markdown array
@@ -281,7 +307,7 @@ export function addCustomSection(
 /**
  * Generate auto save functionality when markdown changes
  *
- * @param {Element} StoryTellingEditor - Dom element
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
  * @param {String | null} storyId - ID of story
  * @param {{codemirror, value}} simpleMDEInstance - Simple MDE instance
  */
@@ -313,6 +339,50 @@ export function generateAutoSave(
       timeOutId = null;
     }, 2500);
   });
+}
+
+/**
+ * Generate toggle comment event function when markdown data changes
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ * @param {{codemirror, value}} simpleMDEInstance - Simple MDE instance
+ */
+export function generateToggleCommentEvent(
+  StoryTellingEditor,
+  simpleMDEInstance
+) {
+  simpleMDEInstance?.codemirror.on("change", function () {
+    if (StoryTellingEditor.editor.classList.contains("hide-comments")) {
+      setTimeout(() => {
+        toggleComments(simpleMDEInstance);
+      }, 200);
+    }
+  });
+}
+
+/**
+ * Prevent editor outside scrolling
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ */
+export function preventEditorOutsideScroll(StoryTellingEditor) {
+  (StoryTellingEditor.shadowRoot || StoryTellingEditor)
+    .querySelector(".CodeMirror-scroll")
+    .addEventListener(
+      "wheel",
+      function (event) {
+        const deltaY = event.deltaY;
+        const contentHeight = this.scrollHeight; // Total scrollable content height
+        const visibleHeight = this.clientHeight; // Visible portion of the textarea
+
+        if (
+          (this.scrollTop === 0 && deltaY < 0) ||
+          (this.scrollTop + visibleHeight >= contentHeight && deltaY > 0)
+        )
+          event.preventDefault(); // Prevent scrolling
+      },
+      { passive: false }
+    );
 }
 
 /**

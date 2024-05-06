@@ -1,5 +1,11 @@
 import { LitElement, html } from "lit";
-import { generateAutoSave, initEditorEvents, positionEditor } from "../helpers";
+import {
+  generateAutoSave,
+  generateToggleCommentEvent,
+  initEditorEvents,
+  positionEditor,
+  preventEditorOutsideScroll,
+} from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
@@ -74,24 +80,8 @@ class StoryTellingEditor extends LitElement {
       const simpleMDEInstance =
         this.editor.editor.editors["root.Story"].simplemde_instance;
       generateAutoSave(this, this.storyId, simpleMDEInstance);
-
-      (this.shadowRoot || this)
-        .querySelector(".CodeMirror-scroll")
-        .addEventListener(
-          "wheel",
-          function (event) {
-            const deltaY = event.deltaY;
-            const contentHeight = this.scrollHeight; // Total scrollable content height
-            const visibleHeight = this.clientHeight; // Visible portion of the textarea
-
-            if (
-              (this.scrollTop === 0 && deltaY < 0) ||
-              (this.scrollTop + visibleHeight >= contentHeight && deltaY > 0)
-            )
-              event.preventDefault(); // Prevent scrolling
-          },
-          { passive: false }
-        );
+      generateToggleCommentEvent(this, simpleMDEInstance);
+      preventEditorOutsideScroll(this);
     }, 1000);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
@@ -213,6 +203,9 @@ class StoryTellingEditor extends LitElement {
         }
         eox-jsonform#storytelling-editor .je-form-input-label,
         eox-jsonform#storytelling-editor .je-object__controls {
+          display: none !important;
+        }
+        eox-jsonform.hide-comments .cm-comment {
           display: none !important;
         }
       </style>
