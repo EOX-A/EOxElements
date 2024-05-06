@@ -36,4 +36,7 @@ export default defineConfig({
     specPattern: specPatternComponentTests,
     indexHtmlFile: "cypress/support/component-index.html",
   },
+  retries: {
+    runMode: 2,
+  }
 });

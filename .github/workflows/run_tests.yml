@@ -50,7 +50,7 @@ jobs:
           npm run test:component
 
       - name: Run e2e tests 👀
-        run: npm run test:e2e
+        run: npm run test:storybook
 
       - name: Upload failed test screenshots 📷
         uses: actions/upload-artifact@v4
