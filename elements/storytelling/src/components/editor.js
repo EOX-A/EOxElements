@@ -74,6 +74,24 @@ class StoryTellingEditor extends LitElement {
       const simpleMDEInstance =
         this.editor.editor.editors["root.Story"].simplemde_instance;
       generateAutoSave(this, this.storyId, simpleMDEInstance);
+
+      (this.shadowRoot || this)
+        .querySelector(".CodeMirror-scroll")
+        .addEventListener(
+          "wheel",
+          function (event) {
+            const deltaY = event.deltaY;
+            const contentHeight = this.scrollHeight; // Total scrollable content height
+            const visibleHeight = this.clientHeight; // Visible portion of the textarea
+
+            if (
+              (this.scrollTop === 0 && deltaY < 0) ||
+              (this.scrollTop + visibleHeight >= contentHeight && deltaY > 0)
+            )
+              event.preventDefault(); // Prevent scrolling
+          },
+          { passive: false }
+        );
     }, 1000);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
