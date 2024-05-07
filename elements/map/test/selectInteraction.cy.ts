@@ -37,7 +37,9 @@ describe("select interaction on click", () => {
           },
         },
       ];
-      cy.mount(html`<eox-map .layers=${layerJson} .animationOptions=${{}}></eox-map>`).as("eox-map");
+      cy.mount(
+        html`<eox-map .layers=${layerJson} .animationOptions=${{}}></eox-map>`
+      ).as("eox-map");
       cy.get("eox-map").and(($el) => {
         const eoxMap = <EOxMap>$el[0];
         eoxMap.addEventListener("select", (evt) => {
