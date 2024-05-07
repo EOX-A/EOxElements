@@ -1,3 +1,5 @@
+import mockData from "./mockData";
+
 function debounce(func, timeout = 300){
     let timer;
     return (...args) => {
@@ -5,25 +7,27 @@ function debounce(func, timeout = 300){
       timer = setTimeout(() => { func.apply(this, args); }, timeout);
     };
 }
-  
 
 class EOxGeoSearch extends HTMLElement {
-    static observedAttributes = ["limit", "size"];
-
-    limit;
-
     // TODO: Find a solution to avoid storing key in the code
     async performSearch (q) {
-        let key = 'API_KEY';
-        let url = `https://api.opencagedata.com/geocode/v1/json?=&q=${q}&key=${key}&limit=${this.limit}`;
-        
-        // OpenCage API yields a 400 error if the query is less than 2 characters
-        if (q.length < 2) { return; }
+        let url = `/test.json`;
 
         const response = await fetch(url);
         const json = await response.json();
         console.log(json);
+        this.data = json;
     } 
+
+    emit(searchString) {
+        let event = new CustomEvent('input', {
+            bubbles: true,
+            cancelable: true,
+            value: searchString,
+        });
+
+        this.dispatchEvent(event);
+    }
 
 	/**
 	 * The class constructor object
@@ -32,7 +36,10 @@ class EOxGeoSearch extends HTMLElement {
 		// Always call super first in constructor
 		super();
 
+        this.searchString = '';
+        this.resultItems = this.getAttribute('items') || [];
         this.limit = this.getAttribute('limit') || 5;
+        this.isListVisible = true;
 
         // Render HTML
         this.innerHTML = `
@@ -72,8 +79,9 @@ class EOxGeoSearch extends HTMLElement {
 	connectedCallback () {
 		console.log('connected!', this);
 
+        // Re-emit the input event. Could this be omitted by using event bubbling?
         document.querySelector('#gazetteer')
-            .addEventListener('input', (e) => this.performSearch(e.target.value));
+            .addEventListener('input', (e) => this.emit(e.target.value));
 	}
 
 	/**
@@ -85,10 +93,6 @@ class EOxGeoSearch extends HTMLElement {
 }
 
 class EOxGeoSearchItem extends HTMLElement {
-
-    performSearch (q, limit) {
-        let url = `https://api.opencagedata.com/geocode/v1/json?=&q=${q}&key=18144e224ffb4d52819100803cd9b6cc&limit=${limit}`;
-    }
 
 	/**
 	 * The class constructor object
