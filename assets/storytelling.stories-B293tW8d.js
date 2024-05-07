@@ -1,4 +1,4 @@
-import{x as o}from"./lit-element-Bq1Y8_dt.js";import"./main-DrtuorY5.js";import"./_commonjsHelpers-BosuxZz1.js";const $e={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
+import{x as o}from"./lit-element-Bq1Y8_dt.js";import"./main-9AN0o90Z.js";import"./_commonjsHelpers-BosuxZz1.js";const $e={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id="markdown-str"
