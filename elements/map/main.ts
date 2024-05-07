@@ -53,6 +53,7 @@ type ConfigObject = {
     projection?: ProjectionLike;
   };
   preventScroll: boolean;
+  animationOptions: import("ol/View").AnimationOptions
 };
 
 /**
@@ -103,20 +104,60 @@ export class EOxMap extends LitElement {
       if (!this.projection || this.projection === "EPSG:3857") {
         // we allow lat-lon center when map is in web mercator
         const mercatorCenter = getCenterFromProperty(center);
-        this.map.getView().setCenter(mercatorCenter);
+        const animateToOptions = Object.assign({}, this.animationOptions);
+        animateToOptions.center = center;
+        this.map.getView().animate(animateToOptions);
         this._center = mercatorCenter;
       } else {
-        this.map.getView().setCenter(center);
+        const animateToOptions = Object.assign({}, this.animationOptions);
+        animateToOptions.center = center;
+        this.map.getView().animate(animateToOptions);
         this._center = center;
       }
     }
   }
+
   /**
    * Map center, always in the same projection as the view.
    * when setting the map center,
    */
+  @property({ attribute: false, type: Array<number> })
   get center() {
     return this._center;
+  }
+
+  private _zoom: number = 0;
+
+  set zoom(zoom: number) {
+    const animateToOptions = Object.assign({}, this.animationOptions);
+    animateToOptions.zoom = zoom;
+    this.map.getView().animate(animateToOptions);
+    this._zoom = zoom;
+  }
+
+  /**
+   * Map center, always in the same projection as the view.
+   * when setting the map center,
+   */
+  get zoom() {
+    return this._zoom;
+  }
+
+
+  private _zoomExtent: import("ol/extent").Extent;
+
+  set zoomExtent(extent: import("ol/extent").Extent) {
+    const animateToOptions = Object.assign({}, this.animationOptions);
+    this.map.getView().animate(animateToOptions);
+    this._zoomExtent = extent;
+  }
+
+  /**
+   * Map center, always in the same projection as the view.
+   * when setting the map center,
+   */
+  get zoomExtent() {
+    return this._zoom;
   }
 
   private _controls: controlDictionary;
@@ -236,9 +277,27 @@ export class EOxMap extends LitElement {
     this.center = config.view?.center || [0, 0]; // set center after projection, order matters
     this.layers = config?.layers || [];
     this.controls = config?.controls || {};
+    this.animationOptions = config?.animationOptions || {
+      ...this.animationOptions
+    }
     if (this.preventScroll === undefined) {
       this.preventScroll = config?.preventScroll;
     }
+  }
+
+  private _animationOptions: import("ol/View").AnimationOptions = {
+    duration: 1000
+  };
+
+  set animationOptions(animationOptions: import("ol/View").AnimationOptions) {
+    this._animationOptions = animationOptions;
+  }
+    /**
+   * sets animation properties 
+   * @type {import("ol/View").AnimationOptions} animationOptions
+   */
+  get animationOptions() {
+    return this._animationOptions;
   }
 
   /**
@@ -322,12 +381,6 @@ export class EOxMap extends LitElement {
       this.center = newCenter;
     }
   }
-
-  /**
-   * Map zoom
-   */
-  @property({ attribute: false, type: Number })
-  zoom: number = 0;
 
   /**
    * Sync map with another map view by providing its query selector
@@ -527,9 +580,5 @@ export class EOxMap extends LitElement {
   protected updated(
     _changedProperties: // eslint-disable-next-line
     PropertyValueMap<any> | globalThis.Map<PropertyKey, unknown>
-  ): void {
-    if (_changedProperties.has("zoom")) {
-      this.map.getView().setZoom(this.zoom || 0);
-    }
-  }
+  ): void {}
 }
