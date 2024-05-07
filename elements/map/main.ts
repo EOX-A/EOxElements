@@ -30,6 +30,7 @@ import {
   registerProjection,
   registerProjectionFromCode,
   READ_FEATURES_OPTIONS,
+  cancelAnimation,
 } from "./helpers";
 import Feature from "ol/Feature";
 import { Geometry } from "ol/geom";
@@ -53,8 +54,10 @@ type ConfigObject = {
     projection?: ProjectionLike;
   };
   preventScroll: boolean;
-  animationOptions: import("ol/View").AnimationOptions
+  animationOptions: import("ol/View").AnimationOptions;
 };
+
+type EOxAnimationOptions = import("ol/View").AnimationOptions & import("ol/View").FitOptions;
 
 /**
  * The `eox-map` is a wrapper for the library [OpenLayers](https://openlayers.org/) with additional features and helper functions.
@@ -104,9 +107,6 @@ export class EOxMap extends LitElement {
       if (!this.projection || this.projection === "EPSG:3857") {
         // we allow lat-lon center when map is in web mercator
         const mercatorCenter = getCenterFromProperty(center);
-        const animateToOptions = Object.assign({}, this.animationOptions);
-        animateToOptions.center = center;
-        this.map.getView().animate(animateToOptions);
         this._center = mercatorCenter;
       } else {
         const animateToOptions = Object.assign({}, this.animationOptions);
@@ -114,6 +114,12 @@ export class EOxMap extends LitElement {
         this.map.getView().animate(animateToOptions);
         this._center = center;
       }
+      const animateToOptions = Object.assign({}, this.animationOptions);
+      animateToOptions.center = getCenterFromProperty(this.center);
+      animateToOptions.zoom = this.zoom;
+      const view = this.map.getView();
+      cancelAnimation(view);
+      view.animate(animateToOptions)
     }
   }
 
@@ -130,8 +136,11 @@ export class EOxMap extends LitElement {
 
   set zoom(zoom: number) {
     const animateToOptions = Object.assign({}, this.animationOptions);
+    animateToOptions.center = getCenterFromProperty(this.center);
     animateToOptions.zoom = zoom;
-    this.map.getView().animate(animateToOptions);
+    const view = this.map.getView();
+    cancelAnimation(view);
+    view.animate(animateToOptions);
     this._zoom = zoom;
   }
 
@@ -143,21 +152,19 @@ export class EOxMap extends LitElement {
     return this._zoom;
   }
 
-
-  private _zoomExtent: import("ol/extent").Extent;
-
-  set zoomExtent(extent: import("ol/extent").Extent) {
-    const animateToOptions = Object.assign({}, this.animationOptions);
-    this.map.getView().animate(animateToOptions);
-    this._zoomExtent = extent;
-  }
-
   /**
-   * Map center, always in the same projection as the view.
-   * when setting the map center,
+   * extent or geometry to zoom to
+   * @type {import("ol/extent").Extent | import("ol/geom/SimpleGeometry").default}
    */
-  get zoomExtent() {
-    return this._zoom;
+  set zoomExtentOrGeometry(
+    extentOrGeometry:
+      | import("ol/extent").Extent
+      | import("ol/geom/SimpleGeometry").default
+  ) {
+    const animateToOptions = Object.assign({}, this.animationOptions);
+    const view = this.map.getView();
+    cancelAnimation(view);
+    view.fit(extentOrGeometry, animateToOptions);
   }
 
   private _controls: controlDictionary;
@@ -278,22 +285,31 @@ export class EOxMap extends LitElement {
     this.layers = config?.layers || [];
     this.controls = config?.controls || {};
     this.animationOptions = config?.animationOptions || {
-      ...this.animationOptions
-    }
+      ...this.animationOptions,
+    };
     if (this.preventScroll === undefined) {
       this.preventScroll = config?.preventScroll;
     }
   }
+  
 
-  private _animationOptions: import("ol/View").AnimationOptions = {
-    duration: 1000
+  private _animationOptions: EOxAnimationOptions = {
+    duration: 500,
+    padding: [50, 50, 50, 50],
   };
 
-  set animationOptions(animationOptions: import("ol/View").AnimationOptions) {
+  /**
+   * option that are used when setting the `zoom`, `center` or `zoomExtent` of the map.
+   * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
+   * animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions 
+   * by default, a duration of 500ms is set for all animations.
+   * zoomExtent-animations have a default padding of 50 pixel.
+   */
+  set animationOptions(animationOptions: EOxAnimationOptions) {
     this._animationOptions = animationOptions;
   }
-    /**
-   * sets animation properties 
+  /**
+   * sets animation properties
    * @type {import("ol/View").AnimationOptions} animationOptions
    */
   get animationOptions() {
