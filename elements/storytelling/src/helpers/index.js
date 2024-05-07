@@ -16,7 +16,6 @@ export {
   positionEditor,
   initSavedMarkdown,
   generateToggleCommentEvent,
-  preventEditorOutsideScroll,
   toggleComments,
 } from "./editor";
 export { validateMarkdownAttrs } from "./validator";

@@ -4,7 +4,6 @@ import {
   generateToggleCommentEvent,
   initEditorEvents,
   positionEditor,
-  preventEditorOutsideScroll,
 } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
@@ -81,7 +80,6 @@ class StoryTellingEditor extends LitElement {
         this.editor.editor.editors["root.Story"].simplemde_instance;
       generateAutoSave(this, this.storyId, simpleMDEInstance);
       generateToggleCommentEvent(this, simpleMDEInstance);
-      preventEditorOutsideScroll(this);
     }, 1000);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
