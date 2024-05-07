@@ -1,5 +1,10 @@
 import { LitElement, html } from "lit";
-import { generateAutoSave, initEditorEvents, positionEditor } from "../helpers";
+import {
+  generateAutoSave,
+  initEditorEvents,
+  positionEditor,
+  preventEditorOutsideScroll,
+} from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
@@ -74,6 +79,7 @@ class StoryTellingEditor extends LitElement {
       const simpleMDEInstance =
         this.editor.editor.editors["root.Story"].simplemde_instance;
       generateAutoSave(this, this.storyId, simpleMDEInstance);
+      preventEditorOutsideScroll(this);
     }, 1000);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
