@@ -316,6 +316,31 @@ export function generateAutoSave(
 }
 
 /**
+ * Prevent editor outside scrolling
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ */
+export function preventEditorOutsideScroll(StoryTellingEditor) {
+  (StoryTellingEditor.shadowRoot || StoryTellingEditor)
+    .querySelector(".CodeMirror-scroll")
+    .addEventListener(
+      "wheel",
+      function (event) {
+        const deltaY = event.deltaY;
+        const contentHeight = this.scrollHeight; // Total scrollable content height
+        const visibleHeight = this.clientHeight; // Visible portion of the textarea
+
+        if (
+          (this.scrollTop === 0 && deltaY < 0) ||
+          (this.scrollTop + visibleHeight >= contentHeight && deltaY > 0)
+        )
+          event.preventDefault(); // Prevent scrolling
+      },
+      { passive: false }
+    );
+}
+
+/**
  * Init saved markdown if it is present
  *
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
