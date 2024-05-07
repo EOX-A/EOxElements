@@ -57,7 +57,8 @@ type ConfigObject = {
   animationOptions: import("ol/View").AnimationOptions;
 };
 
-type EOxAnimationOptions = import("ol/View").AnimationOptions & import("ol/View").FitOptions;
+type EOxAnimationOptions = import("ol/View").AnimationOptions &
+  import("ol/View").FitOptions;
 
 /**
  * The `eox-map` is a wrapper for the library [OpenLayers](https://openlayers.org/) with additional features and helper functions.
@@ -109,17 +110,9 @@ export class EOxMap extends LitElement {
         const mercatorCenter = getCenterFromProperty(center);
         this._center = mercatorCenter;
       } else {
-        const animateToOptions = Object.assign({}, this.animationOptions);
-        animateToOptions.center = center;
-        this.map.getView().animate(animateToOptions);
         this._center = center;
       }
-      const animateToOptions = Object.assign({}, this.animationOptions);
-      animateToOptions.center = getCenterFromProperty(this.center);
-      animateToOptions.zoom = this.zoom;
-      const view = this.map.getView();
-      cancelAnimation(view);
-      view.animate(animateToOptions)
+      this._animateToState();
     }
   }
 
@@ -135,13 +128,8 @@ export class EOxMap extends LitElement {
   private _zoom: number = 0;
 
   set zoom(zoom: number) {
-    const animateToOptions = Object.assign({}, this.animationOptions);
-    animateToOptions.center = getCenterFromProperty(this.center);
-    animateToOptions.zoom = zoom;
-    const view = this.map.getView();
-    cancelAnimation(view);
-    view.animate(animateToOptions);
     this._zoom = zoom;
+    this._animateToState();
   }
 
   /**
@@ -156,15 +144,13 @@ export class EOxMap extends LitElement {
    * extent or geometry to zoom to
    * @type {import("ol/extent").Extent | import("ol/geom/SimpleGeometry").default}
    */
-  set zoomExtentOrGeometry(
-    extentOrGeometry:
-      | import("ol/extent").Extent
-      | import("ol/geom/SimpleGeometry").default
-  ) {
+  set zoomExtent(extent: import("ol/extent").Extent) {
     const animateToOptions = Object.assign({}, this.animationOptions);
     const view = this.map.getView();
     cancelAnimation(view);
-    view.fit(extentOrGeometry, animateToOptions);
+    setTimeout(() => {
+      view.fit(extent, animateToOptions);
+    }, 0);
   }
 
   private _controls: controlDictionary;
@@ -291,7 +277,6 @@ export class EOxMap extends LitElement {
       this.preventScroll = config?.preventScroll;
     }
   }
-  
 
   private _animationOptions: EOxAnimationOptions = {
     duration: 500,
@@ -301,7 +286,7 @@ export class EOxMap extends LitElement {
   /**
    * option that are used when setting the `zoom`, `center` or `zoomExtent` of the map.
    * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
-   * animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions 
+   * animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions
    * by default, a duration of 500ms is set for all animations.
    * zoomExtent-animations have a default padding of 50 pixel.
    */
@@ -436,6 +421,24 @@ export class EOxMap extends LitElement {
    */
   @state()
   mapControls: { [index: string]: Control } = {};
+
+  /**
+   * animates to current definition.
+   * will animate to zoom/center if animationOptions are set
+   */
+  private _animateToState() {
+    const animateToOptions = Object.assign({}, this.animationOptions);
+    const view = this.map.getView();
+    cancelAnimation(view);
+    if (!animateToOptions || !Object.keys(animateToOptions).length) {
+      view.setCenter(this.center);
+      view.setZoom(this.zoom);
+      return;
+    }
+    animateToOptions.center = getCenterFromProperty(this.center);
+    animateToOptions.zoom = this.zoom;
+    view.animate(animateToOptions);
+  }
 
   /**
    * Creates or updates an existing layer
