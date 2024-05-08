@@ -5,12 +5,7 @@
 
 ### Bug Fixes
 
-* Editor autofocus ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
 * Json-form hidden issue ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
-* Opening all links in new tabs ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
-* Story saving issues ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
-* Using html code in a story ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
-* Various bug fixes ([#932](https://github.com/EOX-A/EOxElements/issues/932)) ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
 
 ## [0.6.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.1...jsonform-v0.6.2) (2024-04-30)
 
