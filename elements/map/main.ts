@@ -259,6 +259,8 @@ export class EOxMap extends LitElement {
           },
           layers: this.extractLayerConfig(l.getLayersArray()),
         });
+      } else if (l.constructor.name.includes("STACLayer")) {
+        layers.push(l.get("_jsonDefinition"));
       } else {
         layers.push({
           type: <EoxLayer["type"]>l.constructor.name.replace("Layer", ""),
