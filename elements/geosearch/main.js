@@ -3,18 +3,18 @@ import { LitElement, html, css } from 'lit';
 class EOxGeoSearch extends LitElement {
     static get properties() {
         return {
-          data: {type: String},
-          isListVisible: {attribute: false},
-          searchString: {type: Array},
+          _data: {type: Array},
+          _isListVisible: {attribute: false},
+          _searchString: {type: String},
         };
       }
 
     constructor() {
         super();
 
-        this.data = [];
-        this.isListVisible = false;
-        this.searchString = '';
+        this._data = [];
+        this._isListVisible = false;
+        this._searchString = '';
     }
 
     static styles = css`
@@ -28,8 +28,7 @@ class EOxGeoSearch extends LitElement {
         }
         .results-container {
             min-height: 100px;
-            width: 300px;
-            padding: 0 16px;
+            width: 332px;
             background: #ccc;
             border-radius: 6px;
             margin-top: 10px;
@@ -43,12 +42,13 @@ class EOxGeoSearch extends LitElement {
             border: none;
         }
         input::before {
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' color='%23999999' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
+            background: url("_data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' color='%23999999' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
             width: 48px;
             height: 48px;
             display: inline-block;
         }
     `;
+
 
     // TODO: Find a solution to avoid storing key in the code
     async performSearch (q) {
@@ -57,38 +57,38 @@ class EOxGeoSearch extends LitElement {
         const response = await fetch(url);
         const json = await response.json();
         console.log(json.results);
-        this.data = json.results;
-        this.renderItems();
+        this._data = json.results;
     } 
 
-    emit(searchString) {
+    emit(_searchString) {
         let event = new CustomEvent('input', {
             bubbles: true,
             cancelable: true,
-            value: searchString,
+            value: _searchString,
         });
 
         this.dispatchEvent(event);
     }
 
-    onInput(searchString) {
-        if (searchString.length > 1) {
-            //console.log(`this.isListVisible: ${this.isListVisible}`);
-            this.performSearch(searchString);
-            this.isListVisible = true;
+    onInput(e) {
+        this._searchString = e.target.value;
+        if (this._searchString.length > 1) {
+            console.log(`this._isListVisible: ${this._isListVisible}`);
+            this.performSearch(this._searchString);
+            this._isListVisible = true;
         } else {
-            this.isListVisible = false;
+            this._isListVisible = false;
         }
-
-        this.updateVisibility();
     }
 
     render() {
         return html`
             <div class="search-container">
-                <input id="gazetteer" type="text" placeholder="Type to search" .value="${this.searchString}" @input="${this.onInput}">
-                <div class="results-container ${this.isListVisible ? '' : 'hidden'}">
-                    ${this.data.map(item => html`<eox-geosearch-item></eox-geosearch-item>`)}
+                <input id="gazetteer" type="text" placeholder="Type to search" .value="${this._searchString}" @input="${this.onInput}">
+                <div class="results-container ${this._isListVisible ? '' : 'hidden'}">
+                    ${this._data.map(item => html`<eox-geosearch-item
+                        .name="${item.formatted}"
+                    />`)}
                 </div>
             </div>
         `;
@@ -100,10 +100,6 @@ class EOxGeoSearch extends LitElement {
 	connectedCallback () {
         super.connectedCallback();
 		console.log('connected!', this);
-
-        // Re-emit the input event. Could this be omitted by using event bubbling?
-        document.querySelector('#gazetteer')
-            .addEventListener('input', (e) => this.onInput(e.target.value));
 	}
 
 	/**
@@ -115,6 +111,51 @@ class EOxGeoSearch extends LitElement {
 	}
 }
 
+class EOxGeoSearchI extends LitElement {
+    static get properties() {
+        return {
+          name: {type: String},
+        };
+    }
+
+    constructor() {
+        super();
+    }
+
+    static styles = css`
+        input {
+            background: #0041703a;
+            height: 48px;
+            border-radius: 6px;
+            padding: 0 16px;
+            border: none;
+        }
+
+        input::before {
+            background: url("_data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' color='%23999999' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
+            width: 48px;
+            height: 48px;
+            display: inline-block;
+        }
+
+        .search-result {
+            padding: 10px;
+            border-bottom: 1px solid #aaa;
+        }
+
+        .search-result:hover {
+            background: #bbb;
+        }
+    `;
+
+    render() {
+        return html`
+            <div class="search-result">
+                <div class="name">${this.name}</div>
+            </div>
+        `;
+    }
+}
 class EOxGeoSearchItem extends HTMLElement {
 
 	/**
@@ -138,13 +179,24 @@ class EOxGeoSearchItem extends HTMLElement {
                 }
 
                 input::before {
-                    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' color='%23999999' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
+                    background: url("_data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' color='%23999999' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
                     width: 48px;
                     height: 48px;
                     display: inline-block;
                 }
+
+                .search-result {
+                    padding: 10px;
+                    border-bottom: 1px solid #aaa;
+                }
+
+                .search-result:hover {
+                    background: #bbb;
+                }
             </style>
-            <h1>Result Item</h1>
+            <div class="search-result">
+                <div class="name">${this.getAttribute('name')}</div>
+            </div>
         `;
 	}
 
@@ -162,6 +214,9 @@ class EOxGeoSearchItem extends HTMLElement {
 		console.log('disconnected', this);
 	}
 }
+
+customElements.define("eox-geosearch", EOxGeoSearch);
+customElements.define("eox-geosearch-item", EOxGeoSearchI);
 
 export {
     EOxGeoSearch,
