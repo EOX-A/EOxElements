@@ -13,6 +13,7 @@ import "../elements/map/src/plugins/advancedLayersAndSources/index.ts";
 import "../elements/stacinfo/src/main.ts";
 import "../elements/storytelling/src/main.js";
 import "../elements/timecontrol/src/main.ts";
+import "../elements/geosearch/main.js";
 
 /**
  * A custom wrapper for the default setCustomElementsManifest function.
