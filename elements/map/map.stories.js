@@ -594,7 +594,7 @@ export const Projection = {
 };
 
 /**
- * changing the properties `zoom`, `center` or `zoomExtent` will trigger animations, if the 
+ * changing the properties `zoom`, `center` or `zoomExtent` will trigger animations, if the
  * `animationOptions`-property is set.
  * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
  * animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions
@@ -612,7 +612,7 @@ export const Animations = {
       },
     ],
     animationOptions: {
-      duration: 500
+      duration: 500,
     },
     center: [16.8, 48.2],
     zoom: 7,
@@ -624,9 +624,7 @@ export const Animations = {
       .center=${args.center}
       .layers=${args.layers}
       .zoom=${args.zoom}
-      .animationOptions=${
-        args.animationOptions
-      }
+      .animationOptions=${args.animationOptions}
     >
     </eox-map>
     <button
