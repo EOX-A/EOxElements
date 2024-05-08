@@ -1,19 +1,19 @@
-import{x as a}from"./lit-element-Bq1Y8_dt.js";const E={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>a`
+import{x as s}from"./lit-element-Bq1Y8_dt.js";const E={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>s`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id="markdown-str"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},L={args:{markdownURL:`${window.location.href.split("iframe.html")[0]}/sample.md`},render:e=>a`
+  `},O={args:{markdownURL:`${window.location.href.split("iframe.html")[0]}/sample.md`},render:e=>s`
     <!-- Render eox-storytelling with basic markdown url. -->
     <eox-storytelling
       id="markdown-url"
       markdown-url=${e.markdownURL}
     ></eox-storytelling>
-  `},I={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>a`
+  `},L={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>s`
     <!-- Render eox-storytelling from markdown inside the slot. -->
     <eox-storytelling id="markdown-slot">${e.markdown}</eox-storytelling>
-  `},O={args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+  `},W={args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 
@@ -100,27 +100,27 @@ We will now have a more in-depth look about the map section. The map section sho
 #### This is a map tour.
 It allows you to have different layers, zoom and center settings for each tour "step".
 
-### <!--{ zoom="10" }-->
+### <!--{ layers='[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}},{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="10" }-->
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ center="[16.36,48.2]" layers='[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]' }-->
+### <!--{ layers='[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}},{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
 #### Third tour step.
 To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map
 
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
-    `},render:e=>a`
+    `},render:e=>s`
     <eox-storytelling
       id="markdown-editor"
       show-nav
       show-editor="close"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},H={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>a`${e()}
+  `},H={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>s`${e()}
         <style>
           .sb-show-main.sb-main-padded {
             padding: 0;
           }
-        </style>`]},t=E,o=L,i=I,r=O;var s,n,d,l,h;t.parameters={...t.parameters,docs:{...(s=t.parameters)==null?void 0:s.docs,source:{originalSource:"PrimaryStory",...(d=(n=t.parameters)==null?void 0:n.docs)==null?void 0:d.source},description:{story:"StoryTelling using basic markdownL.",...(h=(l=t.parameters)==null?void 0:l.docs)==null?void 0:h.description}}};var c,m,p,g,w;o.parameters={...o.parameters,docs:{...(c=o.parameters)==null?void 0:c.docs,source:{originalSource:"MarkdownAsURLStory",...(p=(m=o.parameters)==null?void 0:m.docs)==null?void 0:p.source},description:{story:"StoryTelling using markdown URL.",...(w=(g=o.parameters)==null?void 0:g.docs)==null?void 0:w.description}}};var u,y,f,k,x;i.parameters={...i.parameters,docs:{...(u=i.parameters)==null?void 0:u.docs,source:{originalSource:"MarkdownSlotStory",...(f=(y=i.parameters)==null?void 0:y.docs)==null?void 0:f.source},description:{story:"StoryTelling using markdown from the slot.",...(x=(k=i.parameters)==null?void 0:k.docs)==null?void 0:x.description}}};var b,v,M,T,S;r.parameters={...r.parameters,docs:{...(b=r.parameters)==null?void 0:b.docs,source:{originalSource:"MarkdownEditorStory",...(M=(v=r.parameters)==null?void 0:v.docs)==null?void 0:M.source},description:{story:"StoryTelling with editor",...(S=(T=r.parameters)==null?void 0:T.docs)==null?void 0:S.description}}};const A=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor"];export{o as MarkdownAsURL,i as MarkdownInsideSlot,r as MarkdownWithEditor,t as Primary,A as __namedExportsOrder,H as default};
+        </style>`]},t=E,o=O,i=L,r=W;var a,n,d,l,c;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:"PrimaryStory",...(d=(n=t.parameters)==null?void 0:n.docs)==null?void 0:d.source},description:{story:"StoryTelling using basic markdownL.",...(c=(l=t.parameters)==null?void 0:l.docs)==null?void 0:c.description}}};var h,m,p,g,w;o.parameters={...o.parameters,docs:{...(h=o.parameters)==null?void 0:h.docs,source:{originalSource:"MarkdownAsURLStory",...(p=(m=o.parameters)==null?void 0:m.docs)==null?void 0:p.source},description:{story:"StoryTelling using markdown URL.",...(w=(g=o.parameters)==null?void 0:g.docs)==null?void 0:w.description}}};var u,y,f,k,x;i.parameters={...i.parameters,docs:{...(u=i.parameters)==null?void 0:u.docs,source:{originalSource:"MarkdownSlotStory",...(f=(y=i.parameters)==null?void 0:y.docs)==null?void 0:f.source},description:{story:"StoryTelling using markdown from the slot.",...(x=(k=i.parameters)==null?void 0:k.docs)==null?void 0:x.description}}};var b,M,v,T,S;r.parameters={...r.parameters,docs:{...(b=r.parameters)==null?void 0:b.docs,source:{originalSource:"MarkdownEditorStory",...(v=(M=r.parameters)==null?void 0:M.docs)==null?void 0:v.source},description:{story:"StoryTelling with editor",...(S=(T=r.parameters)==null?void 0:T.docs)==null?void 0:S.description}}};const A=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor"];export{o as MarkdownAsURL,i as MarkdownInsideSlot,r as MarkdownWithEditor,t as Primary,A as __namedExportsOrder,H as default};
