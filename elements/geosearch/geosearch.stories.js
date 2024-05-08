@@ -1,4 +1,5 @@
-import { default as EOxGeoSearch } from './index';
+import { EOxGeoSearch } from './main';
+import { html } from 'lit';
 
 export default {
     title: "Elements/eox-geosearch",
@@ -12,5 +13,5 @@ export default {
  * to learn how to use render functions.
  */
 export const Primary = {
-  render: () => '<eox-geosearch></eox-geosearch>',
+  render: () => html`<eox-geosearch></eox-geosearch>`,
 };
