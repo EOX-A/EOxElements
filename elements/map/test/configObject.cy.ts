@@ -104,27 +104,25 @@ describe("config property", () => {
         }),
       ]);
       const eoxMapconfig = eoxMap.config;
-      console.log(eoxMapconfig);
       expect(eoxMapconfig.view.center).to.deep.eq(testCenter);
       expect(eoxMapconfig.view.zoom).to.eq(testZoom);
       expect(eoxMapconfig.layers).to.deep.eq([
         {
-          type: "Tile",
-          source: {
-            type: "OSM",
-          },
+          "type":"Tile",
+          "properties": {"id":"19"},
+          "source":{"type":"OSM"}
         },
         {
-          type: "Group",
-          layers: [
+          "type":"Group",
+          "properties":{"id":"22"},
+          "layers":[
             {
-              type: "Tile",
-              source: {
-                type: "OSM",
-              },
-            },
-          ],
-        },
+              "type":"Tile",
+              "properties":{"id":"21"},
+              "source":{"type":"OSM"}
+            }
+          ]
+        }
       ]);
     });
   });

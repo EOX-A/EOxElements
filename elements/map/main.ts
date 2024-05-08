@@ -2,12 +2,13 @@ import { LitElement, PropertyValueMap, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View, { ViewObjectEventTypes } from "ol/View.js";
+import { getUid } from 'ol/util';
 // @ts-ignore
 import olCss from "ol/ol.css?inline";
 // @ts-ignore
 import controlCss from "./src/controls/controls.css?inline";
 import { EOxSelectInteraction } from "./src/select";
-import { EoxLayer, createLayer, updateLayer } from "./src/generate";
+import { EoxLayer, createLayer, sourceType, updateLayer } from "./src/generate";
 import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
@@ -242,6 +243,38 @@ export class EOxMap extends LitElement {
   }
 
   /**
+   * Extracts current OL layer group state as
+   * EoxLayer array configuration
+   * @param layerArray OL Layer array
+   * @returns EoxLayer array JSON definition
+   */
+  extractLayerConfig = (layerArray: Array<Layer>) => {
+    const layers: Array<EoxLayer> = [];
+    layerArray.map((l) => {
+      if (l.constructor.name.includes("LayerGroup")) {
+        layers.push({
+            type: "Group",
+            properties: {
+              id: l.get("id") ? l.get("id") : getUid(l),
+            },
+            layers: this.extractLayerConfig(l.getLayersArray()),
+        });
+      } else {
+        layers.push({
+          type: <EoxLayer["type"]> l.constructor.name.replace("Layer", ""),
+          properties: {
+            id: l.get("id") ? l.get("id") : getUid(l),
+          },
+          source: {
+            type: <sourceType> l.getSource().constructor.name.replace("Source", ""),
+          },
+        });
+      }
+    });
+    return layers;
+  };
+
+  /**
    * Config object, including `controls`, `layers` and `view`.
    * Alternative way of defining the map config.
    */
@@ -251,24 +284,19 @@ export class EOxMap extends LitElement {
       return this._config;
     } else {
       const olLayers = this.map.getLayers();
-      const layers = olLayers.getArray().map((l) => {
-        return {
-          type: l.constructor.name.replace("Layer", ""),
-          source: {
-            type: l.getSource().constructor.name.replace("Source", ""),
-          },
-        };
-      });
-
+      const layers = this.extractLayerConfig(<Array<Layer>> olLayers.getArray());
       const olView = this.map.getView();
       const view = {
         center: olView.getCenter(),
         zoom: olView.getZoom(),
       };
-      console.log(view);
+      const controls = <controlDictionary>{};
+      // TODO: we need to investigate if we can extract the controls somehow
       return {
         layers,
         view,
+        controls,
+        preventScroll: false,
       };
     }
   }
