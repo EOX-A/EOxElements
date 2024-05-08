@@ -82,7 +82,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>StoryTelling tools based on markdown</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-storytelling--docs">Docs & Examples</a></td>
     <td><a href="elements/storytelling/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/storytelling.svg?label=%20" /></a></td>
-    <td>⭕</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/timecontrol/">eox-timecontrol</a></td>
