@@ -7,62 +7,105 @@ export const MarkdownEditor = {
   args: {
     markdown: `
 # Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
-#### An introduction on how to write interactive and multimedial stories using markdown. Scroll to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
+#### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 
 
 ## Why storytelling?
 
-Scientific data is often times cdifficult to communicate; by guiding the audience you can communicate better.
+Storytelling is crucial in the realm of science because scientific data, while rich in information, can often be complex and challenging to communicate. By framing data within narratives, storytelling makes scientific concepts accessible, engaging, and memorable to a wider audience. It bridges the gap between the technical details of research and the public's understanding, fostering appreciation, curiosity, and ultimately, a deeper connection to the wonders of science.
 
 ## How do I get started?
-In the background you see live preview, on the right you see the  markdown editor. This editor can be dragged, resized, hidden. Any time you write something in the editor, it updates the live preview. Try typing something in this line!
-editor offers a toolbar for formatting, exporting and importing markdown files, and creating sections (see below)
+### Story editor and live preview
+The main view of this page shows the live preview of the finished story. Floating above that you can see the story editor, which you can show and hide using the toggle:
 
-### Write in Markdown
-bla markdown
+![](./img/editor-toggle-off.png) ![](./img/editor-toggle-on.png)
 
-### Markdown extension
-Addtiionally to normal markdown, the storytelling rendering engine allows adding additional configuration (which is transformed and hidden in the rendered output).
+This editor can also be dragged and resized in order to position it in such a way that you can comfortably see the live preview of the story.
 
-Let's say we want an image with a specific size and a colored text underneath. With basic markdown it would look like this:
+To resize it, drag the lower left corner of the editor window:
 
-X
-X
+![](./img/editor-resize.png)
 
-Let's add some configuration,
+To move it, drag any of the borders of the editor window:
 
-![Image](https://www.gstatic.com/prettyearth/assets/full/14617.jpg)<!-- {width=300} -->
+![](./img/editor-move.png)
 
-Some text with red color <!--{#red-color style="color:red;"}-->
+Try moving and resizing the editor in order to find a location that suits you best!
+
+Any time you write something in the editor, it updates the live preview. This helps you seeing the final story without immediately. Try typing something and see how the preview changes.
+
+The editor offers a toolbar for formatting (volid, italic, strikethrough etc.), exporting and importing markdown files, and creating sections (more on this later). Her's how the toolbar looks like:
+
+![](./img/editor-toolbar.png)
+
+For this introduction, compare both the content of the editor and the live preview, as you might find some interesting behind-the-scenes information in the editor 😉
+
+### Markdown with superpowers
+The main story language is Markdown, a lightweight markup language that uses plain text formatting syntax to convert plain text into structured HTML documents. Read more about Markdown [in this Wikipedia article](https://en.wikipedia.org/wiki/Markdown) and find a guide on how to get started (including a cheatsheet) [here](https://www.markdownguide.org/).
+
+Addtiionally to normal Markdown, the storytelling rendering engine allows adding additional configuration; this configuration is only visible to you, the editor, and is hidden to the reader.
+It allows adding "superpowers" to Markdown using [HTML](https://en.wikipedia.org/wiki/HTML) comments and attributes.
+
+To write a HTML comment, use the syntax ![](./img/editor-comments.png)
+
+---
+
+Let's say we want a small image with a specific size and a colored text underneath. With normal Markdown you would write it like this:
+
+![Image](https://placehold.co/800x100)
+
+*Some italic text*
+
+---
+
+Let's add some configuration to reduce the width of the image and add color to the text:
+
+![Image](https://placehold.co/800x100) <!-- { width="300" } -->
+
+*Some italic text, now in red* <!--{ style="color:red" }-->
+
+---
+
+In the editor, try to change the height of the following image!
+
+![Image](https://placehold.co/200x200)
+
+You can use any HTML attributes, plus some shorthands: *#* is a shorthand for *id* (e.g. <code>#hello</code> renders as <code>id="hello"</code>) and *.* is a shorthand for *class* (e.g. <code>.foo</code> renders as <code>class="foo"</code>).
 
 ## Story structure
-### hero -h1
-### sections -h2
-each section is automatically added to the nav menu
-### special sections
-plus icon in toolbar or in live preview
+### The hero
+The hero is the initial section of a story. It can be either a full-screen image or a full-screen video, with some overlaying text. You can either write the hero section by hand, or by using the "plus" icon in the editor toolbar (or in the story preview).
+In each story, only one hero should be added at the very beginning. After the hero, you will see the nav menu, and after that, the story content. The hero uses the Markdown syntax for *h1* (Header 1), so it starts with one *#*.
 
-special "map" section see below
+### Story sections
+To start a new section, use the Markdown syntax for *h2* (Header 2), so starting with *##*. Eeach section is automatically added to the nav menu. 
 
-## map
--> how to create map JSON?
+### Special sections
+Additionally to the hero section, there are other special sections (like media, map), and the most convenient way to add them is via the "plus" icon.
+We will now have a more in-depth look about the map section.
 
-## EOX Map <!--{as="eox-map" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
-
-
-## map tour section
-
-## final words
-get started writing your own!
-more features to come, follow progress on GitHub (link)
+## Map section <!--{as="eox-map" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+The map section shows a single map, with optional text underneath. It is powered by [EOxMap](https://eox-a.github.io/EOxElements/?path=/docs/elements-eox-map--docs), so you can use the same syntax as with any EOxMap.
 
 
+## Map Tour section <!--{ as="eox-map" mode="tour" }-->
 
+### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" }-->
+#### This is a map tour.
+It allows you to have different layers, zoom and center settings for each tour "step".
 
-    
+### <!--{ zoom="10" }-->
+#### Second tour step.
+Each tour step is described as an *h3* (*###*) heading.
 
-    
+### <!--{ center=[16.36,48.2] }-->
+#### Second tour step.
+To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax.
+
+## Final Words
+Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
+More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
     `,
   },
   render: (args) => html`
