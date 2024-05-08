@@ -1,4 +1,6 @@
 import { html } from "lit";
+import { Group as LayerGroup, Tile as TileLayer } from "ol/layer.js";
+import OSM from "ol/source/OSM";
 import "../main";
 
 describe("config property", () => {
@@ -74,6 +76,54 @@ describe("config property", () => {
       );
       expect(eoxMap.map.getView().getCenter()[0]).to.be.closeTo(1113194, 0.01);
       expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(2273030, 0.01);
+    });
+  });
+  it.only("returns a config object even if none was set initially", () => {
+    // cy.intercept(/^.*openstreetmap.*$/, {
+    //   fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+    // });
+    cy.mount(html`<eox-map></eox-map>`).as("eox-map");
+    cy.get("eox-map").and(async ($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      const olMap = eoxMap.map;
+
+      const testCenter = [1000, 1000];
+      const testZoom = 2;
+      olMap.getView().setCenter(testCenter);
+      olMap.getView().setZoom(testZoom);
+      olMap.setLayers([
+        new TileLayer({
+          source: new OSM(),
+        }),
+        new LayerGroup({
+          layers: [
+            new TileLayer({
+              source: new OSM(),
+            }),
+          ],
+        }),
+      ]);
+      const eoxMapconfig = eoxMap.config;
+      expect(eoxMapconfig.view.center).to.deep.eq(testCenter);
+      expect(eoxMapconfig.view.zoom).to.eq(testZoom);
+      expect(eoxMapconfig.layers).to.deep.eq([
+        {
+          type: "Tile",
+          properties: { id: "19" },
+          source: { type: "OSM" },
+        },
+        {
+          type: "Group",
+          properties: { id: "22" },
+          layers: [
+            {
+              type: "Tile",
+              properties: { id: "21" },
+              source: { type: "OSM" },
+            },
+          ],
+        },
+      ]);
     });
   });
 });

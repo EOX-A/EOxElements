@@ -64,7 +64,6 @@ export const EDITOR_SCHEMA = {
             ),
           ],
           spellChecker: false,
-          autofocus: true,
         },
       },
     },

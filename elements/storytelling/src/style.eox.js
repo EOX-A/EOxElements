@@ -160,6 +160,10 @@ ${slider}
     font-size: larger;
     cursor: pointer;
   }
+  .story-telling.editor-enabled.editor-close .section-wrap.section-item::after, 
+  .story-telling.editor-enabled.editor-close .section-wrap.section-item.section-start::before {
+    display: none;
+  }
   .story-telling.editor-enabled .section-wrap.section-item.section-start::before {
     top: -12px;
   }
@@ -285,6 +289,9 @@ ${slider}
       right: 2.5%;
       width: 95%;
     }
+  }
+  .editor-opacity-none {
+    opacity: 0;
   }
   .editor-hide {
     display: none;

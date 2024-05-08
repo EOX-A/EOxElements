@@ -108,8 +108,8 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
   render: (args) => html`
     <eox-storytelling
       id="markdown-editor"
-      show-editor
       show-nav
+      show-editor="open"
       markdown=${args.markdown}
     ></eox-storytelling>
   `,
