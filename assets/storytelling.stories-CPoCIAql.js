@@ -1,4 +1,4 @@
-import{x as o}from"./lit-element-Bq1Y8_dt.js";import"./main-D3xzKDaw.js";import"./_commonjsHelpers-BosuxZz1.js";const $e={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
+import{x as o}from"./lit-element-Bq1Y8_dt.js";import"./main-D9q8i1AA.js";import"./_commonjsHelpers-BosuxZz1.js";const $e={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>o`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id="markdown-str"
@@ -212,7 +212,7 @@ It is a long established fact that a reader will be distracted by the readable c
 `},render:e=>o`
     <eox-storytelling
       id="markdown-editor"
-      show-editor
+      show-editor="open"
       markdown=${e.markdown}
     ></eox-storytelling>
   `},Ze={args:{markdown:`
@@ -252,7 +252,7 @@ For all components (technology, community, partnerships), the Reproducible Open 
     <eox-storytelling
       id="markdown-hero-with-nav"
       show-nav
-      show-editor
+      show-editor="close"
       markdown=${e.markdown}
     ></eox-storytelling>
   `},Je={args:{markdown:`
