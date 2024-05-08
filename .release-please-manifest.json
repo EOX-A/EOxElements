@@ -5,7 +5,7 @@
   "elements/map": "1.6.1",
   "elements/stacinfo": "0.3.3",
   "elements/timecontrol": "0.5.0",
-  "elements/jsonform": "0.6.2",
+  "elements/jsonform": "0.6.3",
   "elements/layout": "0.1.0",
   "elements/storytelling": "0.6.0"
 }
