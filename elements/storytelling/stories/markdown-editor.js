@@ -109,7 +109,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
     <eox-storytelling
       id="markdown-editor"
       show-nav
-      show-editor="open"
+      show-editor="close"
       markdown=${args.markdown}
     ></eox-storytelling>
   `,
