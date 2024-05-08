@@ -97,7 +97,7 @@ It allows you to have different layers, zoom and center settings for each tour "
 Each tour step is described as an *h3* (*###*) heading.
 
 ### <!--{ center="[16.36,48.2]" layers='[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]' }-->
-#### Second tour step.
+#### Third tour step.
 To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map
 
 ## Final Words
