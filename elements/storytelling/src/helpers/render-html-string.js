@@ -20,6 +20,10 @@ export function renderHtmlString(htmlString, sections, that) {
 
   const isNavigation = !!(that.showNav && that.nav.length);
 
+  // Open all links inside story in a new tab
+  const anchorTagsArr = doc.querySelectorAll("a");
+  anchorTagsArr.forEach((anchor) => (anchor.target = "_blank"));
+
   // Disconnecting old observers to create new empty Observers
   sectionObservers.forEach((observer) => observer?.disconnect());
   sectionObservers = [];
