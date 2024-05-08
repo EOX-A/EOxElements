@@ -247,7 +247,30 @@ export class EOxMap extends LitElement {
    */
   @property({ attribute: false, type: Object })
   get config() {
-    return this._config;
+    if (this._config) {
+      return this._config;
+    } else {
+      const olLayers = this.map.getLayers();
+      const layers = olLayers.getArray().map((l) => {
+        return {
+          type: l.constructor.name.replace("Layer", ""),
+          source: {
+            type: l.getSource().constructor.name.replace("Source", ""),
+          },
+        };
+      });
+
+      const olView = this.map.getView();
+      const view = {
+        center: olView.getCenter(),
+        zoom: olView.getZoom(),
+      };
+      console.log(view);
+      return {
+        layers,
+        view,
+      };
+    }
   }
 
   private _projection: ProjectionLike;
