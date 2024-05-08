@@ -369,3 +369,17 @@ export function initSavedMarkdown(EOxStoryTelling) {
     }
   }
 }
+
+/**
+ * Run when editor is initialised with all it's instance values
+ */
+export function runWhenEditorInitialised() {
+  if (this.editor.editor) {
+    const simpleMDEInstance =
+      this.editor.editor.editors["root.Story"].simplemde_instance;
+    generateAutoSave(this, this.storyId, simpleMDEInstance);
+    preventEditorOutsideScroll(this);
+  } else {
+    setTimeout(runWhenEditorInitialised.bind(this), 100);
+  }
+}
