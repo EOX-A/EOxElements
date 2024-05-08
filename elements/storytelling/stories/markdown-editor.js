@@ -19,7 +19,7 @@ It is a long established fact that a reader will be distracted by the readable c
   render: (args) => html`
     <eox-storytelling
       id="markdown-editor"
-      show-editor
+      show-editor="open"
       markdown=${args.markdown}
     ></eox-storytelling>
   `,

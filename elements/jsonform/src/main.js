@@ -2,6 +2,7 @@ import { LitElement, html } from "lit";
 import { createEditor } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
+import isEqual from "lodash.isequal";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -105,10 +106,10 @@ export class EOxJSONForm extends LitElement {
    * @param {JsonSchema} newSchema
    */
   set schema(newSchema) {
-    this._schema = newSchema;
-    if (this.#editor) {
+    if (this.#editor && !isEqual(this._schema, newSchema)) {
       this.#editor.destroy();
     }
+    this._schema = newSchema;
   }
 
   /**
@@ -121,10 +122,10 @@ export class EOxJSONForm extends LitElement {
    * @param {JsonSchema} newVal
    */
   set value(newVal) {
-    this._value = newVal;
-    if (this.#editor && this.#editor.ready) {
+    if (this.#editor && this.#editor.ready && !isEqual(this._value, newVal)) {
       this.#editor.setValue(this.value);
     }
+    this._value = newVal;
   }
 
   /**
@@ -159,7 +160,7 @@ export class EOxJSONForm extends LitElement {
     // check if schema has been changed to prevent useless parsing
     if (changedProperties.has("schema")) {
       this._schema = await this.parseProperty(this.schema);
-      if (!this.#editor) {
+      if (!this.#editor || this.#editor.destroyed) {
         this.#editor = await createEditor(this);
         this.#dispatchEvent();
       }

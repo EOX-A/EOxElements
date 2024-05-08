@@ -34,7 +34,7 @@ export class EOxStoryTelling extends LitElement {
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
-      showEditor: { attribute: "show-editor", type: Boolean },
+      showEditor: { attribute: "show-editor", type: String },
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
       addCustomSectionIndex: { type: Number, state: true },
@@ -85,9 +85,9 @@ export class EOxStoryTelling extends LitElement {
     /**
      * Enable or disable editor
      *
-     * @type {Boolean}
+     * @type {String}
      */
-    this.showEditor = false;
+    this.showEditor = null;
 
     /**
      * Enable or disable navigation
@@ -220,6 +220,10 @@ export class EOxStoryTelling extends LitElement {
   }
 
   render() {
+    const editorClass = `${this.showEditor ? "editor-enabled" : ""} editor-${
+      this.showEditor
+    }`;
+
     return html`
       <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
       <style>
@@ -229,7 +233,7 @@ export class EOxStoryTelling extends LitElement {
         ${!this.unstyled && mainStyle}
       </style>
 
-      <div class="story-telling ${this.showEditor ? "editor-enabled" : ""}">
+      <div class="story-telling ${editorClass}">
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
           this.showEditor,
@@ -237,6 +241,7 @@ export class EOxStoryTelling extends LitElement {
             <eox-storytelling-editor
               .isNavigation=${Boolean(this.showNav)}
               .storyId=${this.id}
+              show-editor="${this.showEditor}"
               @change=${(e) => {
                 if (e.detail) {
                   this.markdown = e.detail.Story;
