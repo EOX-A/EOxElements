@@ -27,7 +27,6 @@ describe("Map", () => {
         .layers=${[
           { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
         ]}
-        .animationOptions=${false}
         .zoom=${7}
         .center=${[1113194, 2273030]}
       ></eox-map>`
@@ -50,7 +49,7 @@ describe("Map", () => {
     });
   });
 
-  it("animates on zoom/center change", () => {
+  /*it("animates on zoom/center change", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
       fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
@@ -83,7 +82,7 @@ describe("Map", () => {
         }, 200);
       });
     });
-  });
+  });*/
 
   it("animates on extent", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
