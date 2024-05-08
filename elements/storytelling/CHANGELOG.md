@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.6.0...storytelling-v1.0.0) (2024-05-08)
+
+
+### Bug Fixes
+
+* Editor autofocus ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Json-form hidden issue ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Opening all links in new tabs ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Story saving issues ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Using html code in a story ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Various bug fixes ([#932](https://github.com/EOX-A/EOxElements/issues/932)) ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+
+
+### Miscellaneous Chores
+
+* Update readme ([8d73a62](https://github.com/EOX-A/EOxElements/commit/8d73a6251368c53c0374185f029cd054f8684e4a))
+
 ## [0.6.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.5.0...storytelling-v0.6.0) (2024-05-07)
 
 
