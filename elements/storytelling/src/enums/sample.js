@@ -190,29 +190,29 @@ const HERO_VIDEO_FIELDS = {
 };
 
 export const SAMPLE_ELEMENTS = [
-  {
-    name: "Basic",
-    elements: [
-      {
-        name: "Textual",
-        id: "ele-textual",
-        markdown: BASIC_TEXTUAL,
-        icon: "data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 138 112' xmlns='http://www.w3.org/2000/svg'%3E%3Crect fill='%23f7f7f7' rx='4' height='112' width='138'/%3E%3Crect x='27' y='22' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='34' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='46' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='58' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='70' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='82' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3C/svg%3E",
-      },
-      {
-        name: "Table",
-        id: "ele-table",
-        markdown: BASIC_TABLE,
-        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 137 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='137' height='112' rx='4' fill='%23f7f7f7'/%3E%3Crect x='26' y='22' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='34' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='46' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='58' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='73' width='84' height='14' rx='7' fill='%23D9D9D9'/%3E%3C/svg%3E%0A",
-      },
-      {
-        name: "List",
-        id: "ele-list",
-        markdown: BASIC_LIST,
-        icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23f7f7f7'/%3E%3Crect x='38' y='22' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='34' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='46' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='58' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='70' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='82' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Ccircle cx='30.5' cy='25.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='37.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='49.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='61.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='73.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='85.5' r='3.5' fill='%23BFBFBF'/%3E%3C/svg%3E%0A",
-      },
-    ],
-  },
+  // {
+  //   name: "Basic",
+  //   elements: [
+  //     {
+  //       name: "Textual",
+  //       id: "ele-textual",
+  //       markdown: BASIC_TEXTUAL,
+  //       icon: "data:image/svg+xml,%3Csvg fill='none' viewBox='0 0 138 112' xmlns='http://www.w3.org/2000/svg'%3E%3Crect fill='%23f7f7f7' rx='4' height='112' width='138'/%3E%3Crect x='27' y='22' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='34' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='46' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='58' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='70' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='27' y='82' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3C/svg%3E",
+  //     },
+  //     {
+  //       name: "Table",
+  //       id: "ele-table",
+  //       markdown: BASIC_TABLE,
+  //       icon: "data:image/svg+xml,%3Csvg viewBox='0 0 137 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='137' height='112' rx='4' fill='%23f7f7f7'/%3E%3Crect x='26' y='22' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='34' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='46' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='58' width='84' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='26' y='73' width='84' height='14' rx='7' fill='%23D9D9D9'/%3E%3C/svg%3E%0A",
+  //     },
+  //     {
+  //       name: "List",
+  //       id: "ele-list",
+  //       markdown: BASIC_LIST,
+  //       icon: "data:image/svg+xml,%3Csvg viewBox='0 0 138 112' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='138' height='112' rx='4' fill='%23f7f7f7'/%3E%3Crect x='38' y='22' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='34' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='46' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='58' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='70' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Crect x='38' y='82' width='73' height='7' rx='3.5' fill='%235E5E5E'/%3E%3Ccircle cx='30.5' cy='25.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='37.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='49.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='61.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='73.5' r='3.5' fill='%23BFBFBF'/%3E%3Ccircle cx='30.5' cy='85.5' r='3.5' fill='%23BFBFBF'/%3E%3C/svg%3E%0A",
+  //     },
+  //   ],
+  // },
   {
     name: "Map",
     elements: [
