@@ -88,7 +88,7 @@ We will now have a more in-depth look about the map section. The map section sho
 
 ## Map Tour section <!--{ as="eox-map" mode="tour" }-->
 
-### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" }-->
+### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
 #### This is a map tour.
 It allows you to have different layers, zoom and center settings for each tour "step".
 
