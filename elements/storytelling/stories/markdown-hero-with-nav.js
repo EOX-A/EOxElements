@@ -34,7 +34,7 @@ For all components (technology, community, partnerships), the Reproducible Open 
     <eox-storytelling
       id="markdown-hero-with-nav"
       show-nav
-      show-editor
+      show-editor="close"
       markdown=${args.markdown}
     ></eox-storytelling>
   `,

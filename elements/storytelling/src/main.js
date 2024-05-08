@@ -34,7 +34,7 @@ export class EOxStoryTelling extends LitElement {
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
-      showEditor: { attribute: "show-editor", type: Boolean },
+      showEditor: { attribute: "show-editor", type: String },
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
       addCustomSectionIndex: { type: Number, state: true },
@@ -85,7 +85,7 @@ export class EOxStoryTelling extends LitElement {
     /**
      * Enable or disable editor
      *
-     * @type {Boolean}
+     * @type {Boolean | "close" | "open"}
      */
     this.showEditor = false;
 
@@ -229,7 +229,11 @@ export class EOxStoryTelling extends LitElement {
         ${!this.unstyled && mainStyle}
       </style>
 
-      <div class="story-telling ${this.showEditor ? "editor-enabled" : ""}">
+      <div
+        class="story-telling ${this.showEditor
+          ? "editor-enabled"
+          : ""} editor-${this.showEditor}"
+      >
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
           this.showEditor,
@@ -237,6 +241,7 @@ export class EOxStoryTelling extends LitElement {
             <eox-storytelling-editor
               .isNavigation=${Boolean(this.showNav)}
               .storyId=${this.id}
+              show-editor=${this.showEditor}
               @change=${(e) => {
                 if (e.detail) {
                   this.markdown = e.detail.Story;

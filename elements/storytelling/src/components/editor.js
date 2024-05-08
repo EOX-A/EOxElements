@@ -12,6 +12,7 @@ class StoryTellingEditor extends LitElement {
   static properties = {
     markdown: { attribute: "markdown", type: String },
     storyId: { attribute: "story-id", type: String },
+    showEditor: { attribute: "show-editor", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
@@ -43,6 +44,13 @@ class StoryTellingEditor extends LitElement {
      */
     this.resizing = false;
 
+    /**
+     * Enable or disable editor
+     *
+     * @type {Boolean | "close" | "open"}
+     */
+    this.showEditor = false;
+
     // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
     this.enableTextSelection = this.enableTextSelection.bind(this);
@@ -66,6 +74,9 @@ class StoryTellingEditor extends LitElement {
    * Lifecycle method called after the first update
    */
   firstUpdated() {
+    if (this.showEditor === "close")
+      this.querySelector(".switch-input").click();
+
     // Get editor container and resize handle elements
     const editorContainer = this.querySelector(".editor-wrapper");
     const resizeHandle = this.querySelector(".resize-handle");
@@ -104,10 +115,18 @@ class StoryTellingEditor extends LitElement {
    */
   #switchEditorView(evt) {
     const wrapper = this.renderRoot.querySelector(".editor-wrapper");
+    const storyIdSelector = this.storyId ? `#${this.storyId}` : "";
+    const storyDOM = document.querySelector(
+      `eox-storytelling${storyIdSelector}`
+    );
     if (!evt.target.checked) {
-      wrapper.classList.add("editor-hide");
+      wrapper.classList.add("editor-opacity-none");
+      setTimeout(() => wrapper.classList.add("editor-hide"), 100);
+      storyDOM.setAttribute("show-editor", "close");
     } else {
+      wrapper.classList.remove("editor-opacity-none");
       wrapper.classList.remove("editor-hide");
+      storyDOM.setAttribute("show-editor", "open");
     }
   }
 

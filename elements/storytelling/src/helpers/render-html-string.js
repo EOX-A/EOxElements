@@ -270,7 +270,7 @@ function generateAddSectionClickEvt(
     (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
 
   // If click happened enable custom section selection popup
-  if (isClicked) {
+  if (isClicked && EOxStoryTelling.showEditor !== "close") {
     const isBeforeBtnTriggered = isFirstSection
       ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
       : false;
