@@ -25,7 +25,11 @@ import { DEFAULT_SENSITIVE_TAGS, SAMPLE_ELEMENTS } from "./enums";
 const md = markdownit({ html: true });
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
-
+/**
+ * Manage drawn features on a map
+ *
+ * @element eox-storytelling
+ */
 export class EOxStoryTelling extends LitElement {
   // Define properties with defaults and types
   static get properties() {
