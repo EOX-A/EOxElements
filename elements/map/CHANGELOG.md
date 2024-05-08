@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/map-v1.6.1...map-v1.7.0) (2024-05-08)
+
+
+### Features
+
+* Config getter transforming native OL state ([#926](https://github.com/EOX-A/EOxElements/issues/926)) ([14c81de](https://github.com/EOX-A/EOxElements/commit/14c81deb77ac776e549d885d52e6fcabd0913bf8))
+* Map animations via properties ([#922](https://github.com/EOX-A/EOxElements/issues/922)) ([d7eff90](https://github.com/EOX-A/EOxElements/commit/d7eff901af9ae530811392bf63d35bc6f9de5241))
+
 ## [1.6.1](https://github.com/EOX-A/EOxElements/compare/map-v1.6.0...map-v1.6.1) (2024-04-10)
 
 
