@@ -5,8 +5,7 @@ import { html } from "lit";
 
 export const MarkdownEditor = {
   args: {
-    markdown: `
-# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+    markdown: `# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 
@@ -35,7 +34,7 @@ Try moving and resizing the editor in order to find a location that suits you be
 
 Any time you write something in the editor, it updates the live preview. This helps you seeing the final story without immediately. Try typing something and see how the preview changes.
 
-The editor offers a toolbar for formatting (volid, italic, strikethrough etc.), exporting and importing markdown files, and creating sections (more on this later). Her's how the toolbar looks like:
+The editor offers a toolbar for formatting (bold, italic, strikethrough etc.), exporting and importing markdown files, and creating sections (more on this later). Her's how the toolbar looks like:
 
 ![](./img/editor-toolbar.png)
 
@@ -61,7 +60,7 @@ Let's say we want a small image with a specific size and a colored text undernea
 
 Let's add some configuration to reduce the width of the image and add color to the text:
 
-![Image](https://placehold.co/800x100) <!-- { width="300" } -->
+![Image](https://placehold.co/800x100) <!--{ width="300" }-->
 
 *Some italic text, now in red* <!--{ style="color:red" }-->
 
@@ -82,12 +81,10 @@ In each story, only one hero should be added at the very beginning. After the he
 To start a new section, use the Markdown syntax for *h2* (Header 2), so starting with *##*. Eeach section is automatically added to the nav menu. 
 
 ### Special sections
-Additionally to the hero section, there are other special sections (like media, map), and the most convenient way to add them is via the "plus" icon.
-We will now have a more in-depth look about the map section.
+Additionally to the hero section, there are other special sections (like media, map), and the most convenient way to add them is via the "plus" icon. They use the "as" attribute, which replaces the entire section with the corresponding element. So, for example, *as="div"* will replace the entire sectioni (including the title) with a *div*.
+We will now have a more in-depth look about the map section. The map section shows a single map, with optional text underneath. It is powered by [EOxMap](https://eox-a.github.io/EOxElements/?path=/docs/elements-eox-map--docs), so you can use the same syntax as with any EOxMap.
 
 ## Map section <!--{as="eox-map" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
-The map section shows a single map, with optional text underneath. It is powered by [EOxMap](https://eox-a.github.io/EOxElements/?path=/docs/elements-eox-map--docs), so you can use the same syntax as with any EOxMap.
-
 
 ## Map Tour section <!--{ as="eox-map" mode="tour" }-->
 
@@ -99,9 +96,9 @@ It allows you to have different layers, zoom and center settings for each tour "
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ center=[16.36,48.2] }-->
+### <!--{ center="[16.36,48.2]" layers='[{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]' }-->
 #### Second tour step.
-To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax.
+To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map
 
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
