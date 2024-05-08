@@ -1,4 +1,4 @@
-import mockData from "./mockData";
+import mockData from "./mockData.js";
 
 function debounce(func, timeout = 300){
     let timer;
@@ -11,12 +11,13 @@ function debounce(func, timeout = 300){
 class EOxGeoSearch extends HTMLElement {
     // TODO: Find a solution to avoid storing key in the code
     async performSearch (q) {
-        let url = `/test.json`;
+        let url = `/opencage-mock-data.json`;
 
         const response = await fetch(url);
         const json = await response.json();
-        console.log(json);
-        this.data = json;
+        console.log(json.results);
+        this.data = json.results;
+        this.renderItems();
     } 
 
     emit(searchString) {
@@ -29,6 +30,38 @@ class EOxGeoSearch extends HTMLElement {
         this.dispatchEvent(event);
     }
 
+    onInput(searchString) {
+        if (searchString.length > 1) {
+            //console.log(`this.isListVisible: ${this.isListVisible}`);
+            this.performSearch(searchString);
+            this.isListVisible = true;
+        } else {
+            this.isListVisible = false;
+        }
+
+        this.updateVisibility();
+    }
+
+    updateVisibility() {
+        const resultsContainer = this.querySelector('.results-container');
+        if (resultsContainer) {
+            if (this.isListVisible) {
+                resultsContainer.classList.remove('hidden');
+            } else {
+                resultsContainer.classList.add('hidden');
+            }
+        }
+    }
+
+    renderItems() {
+        const resultsContainer = this.querySelector('.results-container');
+        console.log(this.data.map((item, index) => `<eox-geosearch-item></eox-geosearch-item>`).join(''));
+        if (resultsContainer) {
+            console.log('Setting innerHTML');
+            resultsContainer.innerHTML = this.data.map((item, index) => `<eox-geosearch-item />`).join('');
+        }
+    }
+
 	/**
 	 * The class constructor object
 	 */
@@ -39,7 +72,10 @@ class EOxGeoSearch extends HTMLElement {
         this.searchString = '';
         this.resultItems = this.getAttribute('items') || [];
         this.limit = this.getAttribute('limit') || 5;
-        this.isListVisible = true;
+        
+        if (!this.data) {
+            this.data = [];
+        }
 
         // Render HTML
         this.innerHTML = `
@@ -48,6 +84,17 @@ class EOxGeoSearch extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     align-items: start;
+                }
+                .hidden {
+                    display: none;
+                }
+                .results-container {
+                    min-height: 100px;
+                    width: 300px;
+                    padding: 0 16px;
+                    background: #ccc;
+                    border-radius: 6px;
+                    margin-top: 10px;
                 }
                 input {
                     background: #0041703a;
@@ -66,8 +113,8 @@ class EOxGeoSearch extends HTMLElement {
             </style>
             <div class="search-container">
                 <input id="gazetteer" type="text" placeholder="Type to search" />
-                <div class="results-container">
-                
+                <div class="results-container ${this.isListVisible ? '' : 'hidden'}">
+                    ${this.data.map((item, index) => `<eox-geosearch-item />`).join('')}
                 </div>
             </div>
         `;
@@ -81,7 +128,7 @@ class EOxGeoSearch extends HTMLElement {
 
         // Re-emit the input event. Could this be omitted by using event bubbling?
         document.querySelector('#gazetteer')
-            .addEventListener('input', (e) => this.emit(e.target.value));
+            .addEventListener('input', (e) => this.onInput(e.target.value));
 	}
 
 	/**
@@ -143,4 +190,6 @@ class EOxGeoSearchItem extends HTMLElement {
 customElements.define("eox-geosearch", EOxGeoSearch);
 customElements.define("eox-geosearch-item", EOxGeoSearchItem);
 
-export default EOxGeoSearch;
+export {
+    EOxGeoSearch,
+};
