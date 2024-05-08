@@ -290,7 +290,7 @@ function generateAddSectionClickEvt(
  * @param {Array<Element>} html - List of html elements
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
- * @param {Boolean} showEditor - Whether to show editor or not
+ * @param {String} showEditor - Whether to show editor or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {Element[]} An array of processed DOM nodes after adding navigation.
  */

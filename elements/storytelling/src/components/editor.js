@@ -47,7 +47,7 @@ class StoryTellingEditor extends LitElement {
     /**
      * Enable or disable editor
      *
-     * @type {Boolean | "close" | "open"}
+     * @type {String}
      */
     this.showEditor = false;
 
