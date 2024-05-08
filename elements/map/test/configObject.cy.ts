@@ -108,21 +108,21 @@ describe("config property", () => {
       expect(eoxMapconfig.view.zoom).to.eq(testZoom);
       expect(eoxMapconfig.layers).to.deep.eq([
         {
-          "type":"Tile",
-          "properties": {"id":"19"},
-          "source":{"type":"OSM"}
+          type: "Tile",
+          properties: { id: "19" },
+          source: { type: "OSM" },
         },
         {
-          "type":"Group",
-          "properties":{"id":"22"},
-          "layers":[
+          type: "Group",
+          properties: { id: "22" },
+          layers: [
             {
-              "type":"Tile",
-              "properties":{"id":"21"},
-              "source":{"type":"OSM"}
-            }
-          ]
-        }
+              type: "Tile",
+              properties: { id: "21" },
+              source: { type: "OSM" },
+            },
+          ],
+        },
       ]);
     });
   });

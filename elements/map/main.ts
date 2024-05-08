@@ -2,7 +2,7 @@ import { LitElement, PropertyValueMap, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View, { ViewObjectEventTypes } from "ol/View.js";
-import { getUid } from 'ol/util';
+import { getUid } from "ol/util";
 // @ts-ignore
 import olCss from "ol/ol.css?inline";
 // @ts-ignore
@@ -253,20 +253,22 @@ export class EOxMap extends LitElement {
     layerArray.map((l) => {
       if (l.constructor.name.includes("LayerGroup")) {
         layers.push({
-            type: "Group",
-            properties: {
-              id: l.get("id") ? l.get("id") : getUid(l),
-            },
-            layers: this.extractLayerConfig(l.getLayersArray()),
+          type: "Group",
+          properties: {
+            id: l.get("id") ? l.get("id") : getUid(l),
+          },
+          layers: this.extractLayerConfig(l.getLayersArray()),
         });
       } else {
         layers.push({
-          type: <EoxLayer["type"]> l.constructor.name.replace("Layer", ""),
+          type: <EoxLayer["type"]>l.constructor.name.replace("Layer", ""),
           properties: {
             id: l.get("id") ? l.get("id") : getUid(l),
           },
           source: {
-            type: <sourceType> l.getSource().constructor.name.replace("Source", ""),
+            type: <sourceType>(
+              l.getSource().constructor.name.replace("Source", "")
+            ),
           },
         });
       }
@@ -284,7 +286,7 @@ export class EOxMap extends LitElement {
       return this._config;
     } else {
       const olLayers = this.map.getLayers();
-      const layers = this.extractLayerConfig(<Array<Layer>> olLayers.getArray());
+      const layers = this.extractLayerConfig(<Array<Layer>>olLayers.getArray());
       const olView = this.map.getView();
       const view = {
         center: olView.getCenter(),
