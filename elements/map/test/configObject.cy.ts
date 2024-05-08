@@ -24,7 +24,6 @@ describe("config property", () => {
             zoom: 9,
             projection: "EPSG:4326",
           },
-          animationOptions: {},
         }}
       ></eox-map>`
     ).as("eox-map");

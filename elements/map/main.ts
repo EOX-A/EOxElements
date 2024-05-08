@@ -285,17 +285,13 @@ export class EOxMap extends LitElement {
     this.zoomExtent = config?.view?.zoomExtent;
   }
 
-  private _animationOptions: EOxAnimationOptions = {
-    duration: 500,
-    padding: [50, 50, 50, 50],
-  };
+  private _animationOptions: EOxAnimationOptions = {};
 
   /**
    * option that are used when setting the `zoom`, `center` or `zoomExtent` of the map.
    * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
    * animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions
-   * by default, a duration of 500ms is set for all animations.
-   * zoomExtent-animations have a default padding of 50 pixel.
+   * by default, no animations are disabled
    */
   set animationOptions(animationOptions: EOxAnimationOptions) {
     this._animationOptions = animationOptions;
