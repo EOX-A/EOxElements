@@ -40,9 +40,7 @@ jobs:
         run: npm ci --prefer-offline --no-audit
 
       - name: Run storybook tests 👀
-        run: |
-          export CI_PATHS_CHANGED=$(git diff --name-only -r HEAD^1 HEAD)
-          npm run test:storybook
+        run: npm run test:storybook
 
       - name: Upload failed test screenshots 📷
         uses: actions/upload-artifact@v4
