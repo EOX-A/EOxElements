@@ -55,11 +55,12 @@ function handleMouseMove(e, editorContainer, StoryTellingEditor) {
   if (StoryTellingEditor.dragging || StoryTellingEditor.resizing) {
     let dx = StoryTellingEditor.lastX - e.clientX;
     let dy = e.clientY - StoryTellingEditor.lastY;
-    let { width, height, left } = editorContainer.getBoundingClientRect();
+    let { width, height, left, top } = editorContainer.getBoundingClientRect();
 
     if (StoryTellingEditor.resizing) {
       editorContainer.style.width = `${width + dx}px`;
       editorContainer.style.height = `${height + dy}px`;
+      editorContainer.style.top = `${top}px`;
     }
     editorContainer.style.left = `${left - dx}px`;
 
@@ -118,6 +119,29 @@ export default async function initEditorEvents(
   resizeHandle.addEventListener("mousedown", (e) =>
     handleResizeHandleMouseDown(e, StoryTellingEditor)
   );
+}
+
+/**
+ * Function to position editor based on parent height
+ *
+ * @param {Element} StoryTellingEditor - Dom element
+ */
+export function positionEditor(StoryTellingEditor) {
+  const storyTellingContainer = document.querySelector("eox-storytelling");
+  const { y } = storyTellingContainer.getBoundingClientRect();
+  const editorWrapper = StoryTellingEditor.querySelector(".editor-wrapper");
+
+  const pxToValue = (prop) => Number(prop.replace("px", ""));
+
+  const editorWrapperStyle = window.getComputedStyle(editorWrapper);
+  const bottomPos = pxToValue(editorWrapperStyle.bottom);
+  const extraPadding = pxToValue(editorWrapperStyle.padding) * 2;
+  const navHeight = editorWrapper.classList.contains("partial-height") ? 80 : 0;
+
+  const editorHeight =
+    window.innerHeight - y - bottomPos - extraPadding - navHeight;
+
+  editorWrapper.style.height = `${editorHeight}px`;
 }
 
 /**
@@ -252,4 +276,110 @@ export function addCustomSection(
 
   EOxStoryTelling.addCustomSectionIndex = -1;
   EOxStoryTelling.requestUpdate();
+}
+
+/**
+ * Generate auto save functionality when markdown changes
+ *
+ * @param {Element} StoryTellingEditor - Dom element
+ * @param {String | null} storyId - ID of story
+ * @param {{codemirror, value}} simpleMDEInstance - Simple MDE instance
+ */
+export function generateAutoSave(
+  StoryTellingEditor,
+  storyId,
+  simpleMDEInstance
+) {
+  let timeOutId = null;
+
+  simpleMDEInstance?.codemirror.on("change", function () {
+    const saveEle = StoryTellingEditor.querySelector(".editor-saver");
+    saveEle.innerText = "Auto Saving...";
+    if (timeOutId) clearTimeout(timeOutId);
+
+    timeOutId = setTimeout(() => {
+      saveEle.innerText = "Saved";
+      const existingMarkdownObj = JSON.parse(
+        localStorage.getItem("markdown") || "{}"
+      );
+
+      localStorage.setItem(
+        "markdown",
+        JSON.stringify({
+          ...existingMarkdownObj,
+          [storyId || "default"]: simpleMDEInstance.value(),
+        })
+      );
+      timeOutId = null;
+    }, 2500);
+  });
+}
+
+/**
+ * Prevent editor outside scrolling
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ */
+export function preventEditorOutsideScroll(StoryTellingEditor) {
+  (StoryTellingEditor.shadowRoot || StoryTellingEditor)
+    .querySelector(".CodeMirror-scroll")
+    .addEventListener(
+      "wheel",
+      function (event) {
+        const deltaY = event.deltaY;
+        const contentHeight = this.scrollHeight; // Total scrollable content height
+        const visibleHeight = this.clientHeight; // Visible portion of the textarea
+
+        if (
+          (this.scrollTop === 0 && deltaY < 0) ||
+          (this.scrollTop + visibleHeight >= contentHeight && deltaY > 0)
+        )
+          event.preventDefault(); // Prevent scrolling
+      },
+      { passive: false }
+    );
+}
+
+/**
+ * Init saved markdown if it is present
+ *
+ * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
+ */
+export function initSavedMarkdown(EOxStoryTelling) {
+  if (EOxStoryTelling.showEditor) {
+    let existingMarkdownObj = JSON.parse(
+      localStorage.getItem("markdown") || "{}"
+    );
+    const storyId = EOxStoryTelling.id || "default";
+    const prevMarkdown = existingMarkdownObj[storyId];
+
+    // Check previous markdown exist and not similar to new one
+    if (prevMarkdown && prevMarkdown !== EOxStoryTelling.markdown) {
+      // Prompt whether to recover previous markdown
+      const updatePrevMarkdown = confirm(
+        "Recover your Story from the last time you edited?"
+      );
+
+      // update markdown if previous markdown to be recovered, otherwise just delete the previous one
+      if (updatePrevMarkdown) EOxStoryTelling.markdown = prevMarkdown;
+      else {
+        delete existingMarkdownObj[storyId];
+        localStorage.setItem("markdown", JSON.stringify(existingMarkdownObj));
+      }
+    }
+  }
+}
+
+/**
+ * Run when editor is initialised with all it's instance values
+ */
+export function runWhenEditorInitialised() {
+  if (this.editor.editor) {
+    const simpleMDEInstance =
+      this.editor.editor.editors["root.Story"].simplemde_instance;
+    generateAutoSave(this, this.storyId, simpleMDEInstance);
+    preventEditorOutsideScroll(this);
+  } else {
+    setTimeout(runWhenEditorInitialised.bind(this), 100);
+  }
 }

@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.6.0...storytelling-v1.0.0) (2024-05-08)
+
+
+### Bug Fixes
+
+* Editor autofocus ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Json-form hidden issue ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Opening all links in new tabs ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Story saving issues ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Using html code in a story ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+* Various bug fixes ([#932](https://github.com/EOX-A/EOxElements/issues/932)) ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+
+
+### Miscellaneous Chores
+
+* Update readme ([8d73a62](https://github.com/EOX-A/EOxElements/commit/8d73a6251368c53c0374185f029cd054f8684e4a))
+
+## [0.6.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.5.0...storytelling-v0.6.0) (2024-05-07)
+
+
+### Features
+
+* Autosave to localstorage ([#892](https://github.com/EOX-A/EOxElements/issues/892)) ([ea30ac8](https://github.com/EOX-A/EOxElements/commit/ea30ac84b4a596eae69536c61ae993206638fcd2))
+* Parallax effect on hero section  ([#877](https://github.com/EOX-A/EOxElements/issues/877)) ([833bbc3](https://github.com/EOX-A/EOxElements/commit/833bbc3dfe97fb9ff9f391bdb598903a1fa170ac))
+* Section adding popup ([#889](https://github.com/EOX-A/EOxElements/issues/889)) ([f2f492b](https://github.com/EOX-A/EOxElements/commit/f2f492b81abec2f8d0b37e0aaf23894d19106f85))
+* Syntax versioning, validation and error handling ([#867](https://github.com/EOX-A/EOxElements/issues/867)) ([a950cc6](https://github.com/EOX-A/EOxElements/commit/a950cc6c0581eb2379ba8116272cb6b5735eedaf))
+
+
+### Bug Fixes
+
+* Custom section DOM structure ([#888](https://github.com/EOX-A/EOxElements/issues/888)) ([e33e542](https://github.com/EOX-A/EOxElements/commit/e33e54284ccc1d14e63a7b1f201a7c822b3b6c07))
+* Prevent repetitive prompt to load saved markdown  ([#906](https://github.com/EOX-A/EOxElements/issues/906)) ([9de8730](https://github.com/EOX-A/EOxElements/commit/9de8730e02d60b4928527b36353c4f370fea9bcf))
+* Prevent scroll-through editor ([#923](https://github.com/EOX-A/EOxElements/issues/923)) ([78f61be](https://github.com/EOX-A/EOxElements/commit/78f61be7e5ff9abf2ded03f3882e5d808d3f5128))
+
 ## [0.5.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.4.0...storytelling-v0.5.0) (2024-04-16)
 
 

@@ -105,7 +105,7 @@ function curlyAttrs(state) {
       if (!m) {
         token.level = token.level + 1;
         finalTokens.push(token);
-        return;
+        continue;
       }
 
       parent = findParent(stack, m[1], m[2]);

@@ -50,6 +50,7 @@
     "node": ">=20.9.0"
   },
   "dependencies": {
-    "eslint-plugin-cypress": "^2.14.0"
+    "eslint-plugin-cypress": "^3.0.2",
+    "lodash.isequal": "^4.5.0"
   }
 }

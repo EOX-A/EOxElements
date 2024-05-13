@@ -6,18 +6,7 @@ import {
   PrimaryStory,
   MarkdownAsURLStory,
   MarkdownSlotStory,
-  MarkdownAttrCommentStory,
-  NavigationStory,
-  MarkdownBasicConfigStory,
-  CustomElementStory,
-  MarkdownMapSectionStory,
-  MarkdownSectionsStory,
-  MarkdownMapTourStory,
   MarkdownEditorStory,
-  MarkdownHeroStory,
-  MarkdownHeroWithNavStory,
-  MarkdownFallbackModeStory,
-  MarkdownLightBoxStory,
 } from "./index";
 import { html } from "lit";
 
@@ -54,62 +43,6 @@ export const MarkdownAsURL = MarkdownAsURLStory;
 export const MarkdownInsideSlot = MarkdownSlotStory;
 
 /**
- * Renders storytelling using attribute as a comment in markdown.
- */
-export const MarkdownWithAttributeAsComment = MarkdownAttrCommentStory;
-
-/**
- * StoryTelling with Basic Config
- */
-export const MarkdownWithBasicConfig = MarkdownBasicConfigStory;
-
-/**
- * StoryTelling with Navigation
- */
-export const MarkdownWithNavigation = NavigationStory;
-
-/**
- * With the `as` attribute, `h2` sections can be replaced by other elements (native and custom elements).
- * The newly rendered element replaces the original `h2' text content (fallback for vanilla md rendering) completely.
- */
-export const CustomElement = CustomElementStory;
-
-/**
- * StoryTelling with simple and custom sections
- */
-export const MarkdownWithSections = MarkdownSectionsStory;
-
-/**
- * StoryTelling with @eox-map sections
- */
-export const MarkdownMapSection = MarkdownMapSectionStory;
-
-/**
- * StoryTelling with map tour
- */
-export const MarkdownMapTour = MarkdownMapTourStory;
-
-/**
  * StoryTelling with editor
  */
 export const MarkdownWithEditor = MarkdownEditorStory;
-
-/**
- * StoryTelling with Hero Image and Video
- */
-export const MarkdownWithHeroSection = MarkdownHeroStory;
-
-/**
- * StoryTelling with Hero and Nav
- */
-export const MarkdownHeroWithNav = MarkdownHeroWithNavStory;
-
-/**
- * StoryTelling with hidden fallback mode
- */
-export const MarkdownFallbackMode = MarkdownFallbackModeStory;
-
-/**
- * StoryTelling with lightbox
- */
-export const MarkdownWithLightbox = MarkdownLightBoxStory;
