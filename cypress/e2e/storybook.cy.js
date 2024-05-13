@@ -1,7 +1,7 @@
 import "cypress-network-idle";
 import stories from "../../docs/index.json";
 
-const pathsChanged = Cypress.env(CI_PATHS_CHANGED);
+const pathsChanged = process.env.CI_PATHS_CHANGED;
 
 describe("Stories test", () => {
   console.log(pathsChanged);
