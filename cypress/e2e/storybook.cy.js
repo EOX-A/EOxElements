@@ -1,6 +1,10 @@
 import "cypress-network-idle";
 import stories from "../../docs/index.json";
+
+const pathsChanged = Cypress.env(CI_PATHS_CHANGED);
+
 describe("Stories test", () => {
+  console.log(pathsChanged);
   Object.values(stories.entries).forEach((story) => {
     if (story.type && story.type == "story") {
       it(`${story.id}`, () => {
