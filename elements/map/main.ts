@@ -339,20 +339,27 @@ export class EOxMap extends LitElement {
         };
         // Evaluate what other information we need to extract for different source types
         const olsource: any = l.getSource();
-        if (["XYZ", "TileWMS", "WMS"].includes(olsource.constructor.name)) {
-          source.urls = olsource.urls;
-        } else if (olsource.constructor.name === "VectorSource") {
-          source.url = olsource.getUrl();
-          source.format = olsource.getFormat()?.constructor.name;
-        }
-        // Extract possible other configuration options
-        if (["TileWMS", "WMS"].includes(olsource.constructor.name)) {
-          source.params = olsource.getParams();
-          source.serverType = olsource.serverType_;
-        }
-        if (olsource.constructor.name === "VectorSource") {
-          // TODO: the getStyle function does not return the applied style as described in OL docs
-          layerConfig.style = ""; // l.getStyle();
+        // only export visible layers
+        if (olsource && l.isVisible()) {
+          if (["XYZ", "TileWMS", "WMS"].includes(olsource.constructor.name)) {
+            if ("url" in olsource) {
+              source.url = olsource.url;
+            } else if ("urls" in olsource) {
+              source.urls = olsource.urls;
+            }
+          } else if (olsource.constructor.name === "VectorSource") {
+            source.url = olsource.getUrl();
+            source.format = olsource.getFormat()?.constructor.name;
+          }
+          // Extract possible other configuration options
+          if (["TileWMS", "WMS"].includes(olsource.constructor.name)) {
+            source.params = olsource.getParams();
+            source.serverType = olsource.serverType_;
+          }
+          if (olsource.constructor.name === "VectorSource") {
+            // TODO: the getStyle function does not return the applied style as described in OL docs
+            layerConfig.style = ""; // l.getStyle();
+          }
         }
         layerConfig.source = source;
         layers.push(layerConfig);
@@ -383,7 +390,7 @@ export class EOxMap extends LitElement {
         layers,
         view,
         controls,
-        preventScroll: false,
+        preventScroll: true,
       };
     }
   }
