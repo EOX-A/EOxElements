@@ -343,7 +343,7 @@ export class EOxMap extends LitElement {
           source.urls = olsource.urls;
         } else if (olsource.constructor.name === "VectorSource") {
           source.url = olsource.getUrl();
-          source.format = olsource.getFormat().constructor.name;
+          source.format = olsource.getFormat()?.constructor.name;
         }
         // Extract possible other configuration options
         if (["TileWMS", "WMS"].includes(olsource.constructor.name)) {
