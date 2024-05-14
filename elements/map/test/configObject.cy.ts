@@ -5,7 +5,6 @@ import XYZ from "ol/source/XYZ.js";
 import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON.js";
-import TileLayer from "ol/layer/Tile.js";
 import TileWMS from "ol/source/TileWMS.js";
 import chaiExclude from "chai-exclude";
 chai.use(chaiExclude);

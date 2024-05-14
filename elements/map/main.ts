@@ -325,20 +325,20 @@ export class EOxMap extends LitElement {
       } else if (l.constructor.name.includes("STACLayer")) {
         layers.push(l.get("_jsonDefinition"));
       } else {
-        const layerConfig = {
+        const layerConfig: any = {
           type: <EoxLayer["type"]>l.constructor.name.replace("Layer", ""),
           properties: {
             id: l.get("id") ? l.get("id") : getUid(l),
           },
         };
         // Extract source config
-        const source = {
+        const source: any = {
           type: <sourceType>(
             l.getSource().constructor.name.replace("Source", "")
           ),
         };
         // Evaluate what other information we need to extract for different source types
-        const olsource = l.getSource();
+        const olsource: any = l.getSource();
         if (["XYZ", "TileWMS", "WMS"].includes(olsource.constructor.name)) {
           source.urls = olsource.urls;
         } else if (olsource.constructor.name === "VectorSource") {
