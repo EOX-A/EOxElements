@@ -325,17 +325,37 @@ export class EOxMap extends LitElement {
       } else if (l.constructor.name.includes("STACLayer")) {
         layers.push(l.get("_jsonDefinition"));
       } else {
-        layers.push({
+        const layerConfig = {
           type: <EoxLayer["type"]>l.constructor.name.replace("Layer", ""),
           properties: {
             id: l.get("id") ? l.get("id") : getUid(l),
           },
-          source: {
-            type: <sourceType>(
-              l.getSource().constructor.name.replace("Source", "")
-            ),
-          },
-        });
+        };
+        // Extract source config
+        const source = {
+          type: <sourceType>(
+            l.getSource().constructor.name.replace("Source", "")
+          ),
+        };
+        // Evaluate what other information we need to extract for different source types
+        const olsource = l.getSource();
+        if (["XYZ", "TileWMS", "WMS"].includes(olsource.constructor.name)) {
+          source.urls = olsource.urls;
+        } else if (olsource.constructor.name === "VectorSource") {
+          source.url = olsource.getUrl();
+          source.format = olsource.getFormat().constructor.name;
+        }
+        // Extract possible other configuration options
+        if (["TileWMS", "WMS"].includes(olsource.constructor.name)) {
+          source.params = olsource.getParams();
+          source.serverType = olsource.serverType_;
+        }
+        if (olsource.constructor.name === "VectorSource") {
+          // TODO: the getStyle function does not return the applied style as described in OL docs
+          layerConfig.style = ""; // l.getStyle();
+        }
+        layerConfig.source = source;
+        layers.push(layerConfig);
       }
     });
     return layers;
