@@ -14,29 +14,47 @@ const basicHeroSchema = {
   "data-parallax": joi.boolean().required(),
 };
 
+const basicLayerSchema = {
+  layers: joi.array().items(
+    joi
+      .object({
+        type: joi.string().required(),
+        properties: joi
+          .object({
+            id: joi.string().required(),
+          })
+          .unknown()
+          .required(),
+        source: joi
+          .object({
+            type: joi.string().required(),
+          })
+          .unknown()
+          .required(),
+      })
+      .unknown()
+      .required()
+  ),
+};
+
 // EOxMap validation schema
 const eoxMapSchema = {
   layers: joi
-    .array()
-    .items(
-      joi
-        .object({
-          type: joi.string().required(),
+    .alternatives()
+    .try(
+      basicLayerSchema.layers,
+      joi.array().items(
+        joi.object({
+          type: joi.string().valid("group", "Group"),
           properties: joi
             .object({
               id: joi.string().required(),
             })
             .unknown()
             .required(),
-          source: joi
-            .object({
-              type: joi.string().required(),
-            })
-            .unknown()
-            .required(),
+          layers: basicLayerSchema.layers,
         })
-        .unknown()
-        .required()
+      )
     )
     .optional(),
   center: joi.array().items(joi.number()).min(2).max(2).optional(),
