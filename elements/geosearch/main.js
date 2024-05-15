@@ -250,7 +250,11 @@ class EOxGeoSearch extends LitElement {
                         ${this._data.map(item => html`
                             <eox-geosearch-item
                                 .item="${item}"
-                                .onClick="${this.onSelect}"
+                                .onClick="${(e) => {
+                                    this._isListVisible = false;
+                                    this._inputValue = '';
+                                    this.onSelect(e);
+                                }}"
                             />
                         `)}
                     </div>
