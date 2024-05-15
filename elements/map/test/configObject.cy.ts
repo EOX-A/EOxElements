@@ -7,8 +7,12 @@ import VectorSource from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON.js";
 import TileWMS from "ol/source/TileWMS.js";
 import chaiExclude from "chai-exclude";
-chai.use(chaiExclude);
 import "../main";
+
+// Use chaiExlude in order to make the deep.eq inside the
+// test work, since OL generates random layer ids
+// (see "excludingEvery("id")")
+chai.use(chaiExclude);
 
 describe("config property", () => {
   it("sets controls, layers and view using the config object", () => {
@@ -85,7 +89,7 @@ describe("config property", () => {
       expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(2273030, 0.01);
     });
   });
-  it.only("returns a config object even if none was set initially", () => {
+  it("returns a config object even if none was set initially", () => {
     // cy.intercept(/^.*openstreetmap.*$/, {
     //   fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     // });
