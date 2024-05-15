@@ -3,6 +3,7 @@ import {
   initEditorEvents,
   positionEditor,
   runWhenEditorInitialised,
+  updateEditorInitVisibility,
 } from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
@@ -74,8 +75,7 @@ class StoryTellingEditor extends LitElement {
    * Lifecycle method called after the first update
    */
   firstUpdated() {
-    if (this.showEditor === "close")
-      this.querySelector(".switch-input").click();
+    if (this.showEditor === "close") updateEditorInitVisibility(this);
 
     // Get editor container and resize handle elements
     const editorContainer = this.querySelector(".editor-wrapper");
@@ -120,8 +120,7 @@ class StoryTellingEditor extends LitElement {
       `eox-storytelling${storyIdSelector}`
     );
     if (!evt.target.checked) {
-      wrapper.classList.add("editor-opacity-none");
-      setTimeout(() => wrapper.classList.add("editor-hide"), 100);
+      wrapper.classList.add("editor-hide");
       storyDOM.setAttribute("show-editor", "close");
     } else {
       wrapper.classList.remove("editor-opacity-none");
