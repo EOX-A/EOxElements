@@ -314,7 +314,7 @@ export class EOxMap extends LitElement {
   extractLayerConfig = (layerArray: Array<Layer>) => {
     const layers: Array<EoxLayer> = [];
     layerArray.map((l) => {
-      if (["Group", "LayerGroup"].includes(l.constructor.name)) {
+      if (["Group", "_LayerGroup"].includes(l.constructor.name)) {
         layers.push({
           type: "Group",
           properties: {
