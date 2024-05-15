@@ -52,6 +52,9 @@ jobs:
       - name: Run e2e tests 👀
         run: npm run test:e2e
 
+      - name: Run storybook tests 👀
+        run: npm run test:storybook
+
       - name: Upload failed test screenshots 📷
         uses: actions/upload-artifact@v4
         if: failure()
