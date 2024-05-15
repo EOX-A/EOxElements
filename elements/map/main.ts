@@ -314,7 +314,7 @@ export class EOxMap extends LitElement {
   extractLayerConfig = (layerArray: Array<Layer>) => {
     const layers: Array<EoxLayer> = [];
     layerArray.map((l) => {
-      if (l.constructor.name.includes("LayerGroup")) {
+      if (["Group", "LayerGroup"].includes(l.constructor.name)) {
         layers.push({
           type: "Group",
           properties: {
@@ -331,16 +331,16 @@ export class EOxMap extends LitElement {
             id: l.get("id") ? l.get("id") : getUid(l),
           },
         };
-        // Extract source config
-        const source: any = {
-          type: <sourceType>(
-            l.getSource().constructor.name.replace("Source", "")
-          ),
-        };
         // Evaluate what other information we need to extract for different source types
         const olsource: any = l.getSource();
         // only export visible layers
         if (olsource && l.isVisible()) {
+          // Extract source config
+          const source: any = {
+            type: <sourceType>(
+              l.getSource().constructor.name.replace("Source", "")
+            ),
+          };
           if (["XYZ", "TileWMS", "WMS"].includes(olsource.constructor.name)) {
             if ("url" in olsource) {
               source.url = olsource.url;
@@ -360,9 +360,9 @@ export class EOxMap extends LitElement {
             // TODO: the getStyle function does not return the applied style as described in OL docs
             layerConfig.style = ""; // l.getStyle();
           }
+          layerConfig.source = source;
+          layers.push(layerConfig);
         }
-        layerConfig.source = source;
-        layers.push(layerConfig);
       }
     });
     return layers;
