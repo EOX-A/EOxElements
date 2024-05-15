@@ -68,7 +68,7 @@ export const MapSearch = {
         button
         small
         direction="left"
-        .onSelect="${(item) => args.center = [item.geometry.lng, item.geometry.lat]}"
+        .onSelect="${(item) => document.querySelector("eox-map#geosearch-map").center = [item.geometry.lng, item.geometry.lat]}"
       ></eox-geosearch>
 
       <eox-map
