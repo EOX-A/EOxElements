@@ -44,6 +44,10 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: npm ci --prefer-offline --no-audit
 
+      - name: Run storybook tests 👀
+        run: |
+          export CI_PATHS_CHANGED=$(git diff --name-only -r HEAD^1 HEAD) && npm run test:storybook
+
       - name: Run component tests 👀
         run: |
           export CI_PATHS_CHANGED=$(git diff --name-only -r HEAD^1 HEAD)
@@ -51,11 +55,6 @@ jobs:
 
       - name: Run e2e tests 👀
         run: npm run test:e2e
-
-      - name: Run storybook tests 👀
-        run: |
-          export CI_PATHS_CHANGED=$(git diff --name-only -r HEAD^1 HEAD) && npm run test:storybook
-          echo $(git diff --name-only main..)
 
       - name: Upload failed test screenshots 📷
         uses: actions/upload-artifact@v4
