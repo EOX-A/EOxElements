@@ -8,6 +8,14 @@
 * Editor loading race condition ([#945](https://github.com/EOX-A/EOxElements/issues/945)) ([513d952](https://github.com/EOX-A/EOxElements/commit/513d9526ad8eaf0498b3fe5e68e3e00359892fae))
 * Validation schema for layer groups ([#946](https://github.com/EOX-A/EOxElements/issues/946)) ([841f6b1](https://github.com/EOX-A/EOxElements/commit/841f6b10916677a7d1e51e91ac61899db1ca3d2a))
 
+## [1.0.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.0...storytelling-v1.0.1) (2024-05-15)
+
+
+### Bug Fixes
+
+* Editor loading race condition ([#945](https://github.com/EOX-A/EOxElements/issues/945)) ([513d952](https://github.com/EOX-A/EOxElements/commit/513d9526ad8eaf0498b3fe5e68e3e00359892fae))
+* Validation schema for layer groups ([#946](https://github.com/EOX-A/EOxElements/issues/946)) ([841f6b1](https://github.com/EOX-A/EOxElements/commit/841f6b10916677a7d1e51e91ac61899db1ca3d2a))
+
 ## [1.0.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v0.6.0...storytelling-v1.0.0) (2024-05-08)
 
 
