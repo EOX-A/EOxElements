@@ -55,3 +55,29 @@ export const CustomDirection = {
     ></eox-geosearch>
   `,
 };
+
+export const MapSearch = {
+  args: {
+    center: [15.0, 48.0],
+  },
+  render: (args) => {
+    return html`
+      <eox-geosearch
+        label="Search"
+        style="position: absolute; top: 36px; right: 24px; z-index: 12;"
+        button
+        small
+        direction="left"
+        .onSelect="${(item) => args.center = [item.geometry.lng, item.geometry.lat]}"
+      ></eox-geosearch>
+
+      <eox-map
+        id="geosearch-map"
+        .center='${args.center}'
+        .layers='${[{"type":"Tile","source":{"type":"OSM"}}]}'
+        .zoom='${7}'
+        style="width: 100%; height: 500px;">
+      </eox-map>
+    `
+  },
+};
