@@ -1,19 +1,63 @@
 import { LitElement, html, css } from 'lit';
+import { ref, createRef } from 'lit/directives/ref.js';
 
 import { button } from "../../utils/styles/button";
 
 class EOxGeoSearch extends LitElement {
+    inputRef = createRef();
+
     static get properties() {
         return {
           _data: {attribute: false},
           _isListVisible: {attribute: false},
           _isInputVisible: {attribute: false},
           _inputValue: {attribute: false},
+          /**
+           * The OpenCage API endpoint to use for the search.
+           *
+           */
+          endpoint: {type: String},
+          /**
+           * The API key to use for the search.
+           *
+           */
+          key: {type: String},
+          /**
+           * The query selector for the map target, if any.
+           *
+           */
+          for: {type: String},
+          /**
+           * A function to be called when a search result is selected, to enable
+           * the parent component to handle the selection.
+           *
+           */
           onSelect: {type: Function},
-          // Enable button mode? as in <eox-geosearch button></eox-geosearch>
+          /**
+           * Whether or not to enable button mode, which hides and shows the input field
+           * similar to how a modal works.
+           *
+           */
           button: {type: Boolean},
+          /**
+           * Enables a smaller version of the button for use in map controls.
+           *
+           */
+          small: {type: Boolean},
+          /**
+           * Which text to use for the button if it is enabled.
+           *
+           */
           label: {type: String},
-          // The position of the input field, as 'left', 'top', 'right' or 'bottom'.
+          /**
+           * Which direction the search input and results should open to. One of the following options:
+           *
+           * - `left`
+           * - `top`
+           * - `right`
+           * - `bottom`
+           *
+           */
           direction: {type: String},
         };
       }
@@ -22,9 +66,7 @@ class EOxGeoSearch extends LitElement {
         super();
 
         this._data = [];
-        // Whether the result list is visible or not
         this._isListVisible = false;
-        // Whether the input is visible or not
         this._isInputVisible = false;
         this._inputValue = '';
     }
@@ -56,7 +98,7 @@ class EOxGeoSearch extends LitElement {
             margin-top: 10px;
         }
         input {
-            background: #0041703a;
+            background: #C6D4DD;
             height: 48px;
             border-radius: 6px;
             padding: 0 16px;
@@ -68,6 +110,40 @@ class EOxGeoSearch extends LitElement {
             width: 48px;
             height: 48px;
             display: inline-block;
+        }
+        button {
+            height: auto;
+        }
+
+        button.small {
+            height: 32px;
+            width: 32px;
+        }
+
+        .chevron {
+            width: 24px;
+            height: 24px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23FFF' viewBox='0 0 24 24'%3E%3Ctitle%3Echevron-left%3C/title%3E%3Cpath d='M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z' /%3E%3C/svg%3E");
+            margin-right: 9px;
+        }
+
+        .chevron.right {
+            transform: rotate(180deg);
+            margin-left: 9px;
+        }
+
+        .chevron.top {
+            transform: rotate(90deg);
+            margin-bottom: 9px;
+        }
+
+        .chevron.bottom {
+            transform: rotate(-90deg);
+            margin-top: 9px;
+        }
+
+        .chevron.right.active {
+            transform: rotate(180deg);
         }
     `;
 
@@ -87,6 +163,8 @@ class EOxGeoSearch extends LitElement {
             value: _inputValue,
         });
 
+        console.log(_inputValue);
+
         this.dispatchEvent(event);
     }
 
@@ -102,11 +180,17 @@ class EOxGeoSearch extends LitElement {
 
     onButtonClick() {
         this._isInputVisible = !this._isInputVisible;
+
+        if (this._isInputVisible) {
+            this.renderRoot.querySelector('#gazetteer').focus();
+        }
+
         console.log(`switched input visibility ${this._isInputVisible ? 'on' : 'off'}`);
     }
 
     handleSelect(item) {
         this._isListVisible = false;
+
         this.onSelect(item);
     }
 
@@ -122,14 +206,21 @@ class EOxGeoSearch extends LitElement {
                 'row'
             }">
                 <button
-                    class="${this.button ? '' : 'hidden'}"
+                    class="${this.button ? '' : 'hidden'} ${this.small ? 'small' : ''}"
                     style="
                         margin-${this.direction ?? 'right'}: 12px;
                         background: ${this._isInputVisible ? '#0078CE' : '#004170'};
+                        flex-direction: ${
+                            this.direction === 'top' ? 'column' :
+                            this.direction === 'left' ? 'row' :
+                            this.direction === 'bottom' ? 'column-reverse' :
+                            'row-reverse'
+                        }
                     "
                     @click="${this.onButtonClick}"
                 >
-                    ${this.label ?? 'Search'}
+                    <span class="chevron ${this.direction ?? 'right'} ${this._isInputVisible ? 'active': ''}"></span>
+                    <span style="display: ${this.small ? 'none' : 'flex'}">${this.label ?? 'Search'}</span>
                 </button>
                 <div
                     class="search-container ${
@@ -159,7 +250,7 @@ class EOxGeoSearch extends LitElement {
                         ${this._data.map(item => html`
                             <eox-geosearch-item
                                 .item="${item}"
-                                .onClick="${this.handleSelect}"
+                                .onClick="${this.onSelect}"
                             />
                         `)}
                     </div>
