@@ -1,59 +1,46 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { SimplemdeEditor } from "@json-editor/json-editor/src/editors/simplemde.js";
+import EasyMDE from "easymde/dist/easymde.min.js";
 import addCustomInputs from "../custom-inputs";
+
+// using a drop-in replacement for EasyMDE,
+// see https://github.com/json-editor/json-editor/issues/1093
+window.SimpleMDE = EasyMDE;
 
 /**
  * Create the editor instance
  * @param element the eox-jsonform instance
  */
 export const createEditor = (element) => {
-  return new Promise((resolve) => {
-    addCustomInputs(element.value || {});
+  addCustomInputs(element.value || {});
 
-    const formEle = element.renderRoot.querySelector("form");
+  const formEle = element.renderRoot.querySelector("form");
 
-    const initEditor = () =>
-      new JSONEditor(formEle, {
-        schema: element.schema,
-        ...(element.value ? { startval: element.value } : {}),
-        theme: "html",
-        ajax: true,
-        ...element.options,
-      });
-
-    let editor = initEditor();
-
-    editor.on("ready", () => {
-      // Check if one of the editors requires SimpleMDE and it's not yet installed.
-      // If so, destroy the editor instance, load SimpleMDE and re-init the editor.
-      if (
-        Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
-      ) {
-        editor.destroy();
-
-        // Add SimpleMDE styles
-        const style = document.createElement("style");
-        style.innerHTML = `
-          @import url("https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css");
-          @import url("https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css");
-        `;
-        element.renderRoot.appendChild(style);
-
-        // Add SimpleMDE bundle
-        const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js";
-        script.addEventListener("load", () => {
-          // Create new editor, this time already using SimpleMDE
-          editor = initEditor();
-          resolve(editor);
-        });
-        element.renderRoot.appendChild(script);
-      } else {
-        resolve(editor);
-      }
+  const initEditor = () =>
+    new JSONEditor(formEle, {
+      schema: element.schema,
+      ...(element.value ? { startval: element.value } : {}),
+      theme: "html",
+      ajax: true,
+      ...element.options,
     });
 
-    return editor;
+  let editor = initEditor();
+
+  editor.on("ready", () => {
+    // Check if one of the editors requires SimpleMDE.
+    // If so, load the required stylesheets for SimpleMDE.
+    if (
+      Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
+    ) {
+      // Add SimpleMDE styles
+      const style = document.createElement("style");
+      style.innerHTML = `
+          @import url("https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css");
+          @import url("https://unpkg.com/easymde/dist/easymde.min.css");
+        `;
+      element.renderRoot.appendChild(style);
+    }
   });
+  return editor;
 };
