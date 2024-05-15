@@ -115,9 +115,21 @@ class EOxGeoSearch extends LitElement {
             height: auto;
         }
 
-        button.small {
+        button.map-control {
             height: 32px;
             width: 32px;
+            padding: 6px;
+        }
+
+        button.map-control .icon {
+            min-width: 20px;
+            height: 20px;
+            transform: translateX(1px);
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
+        }
+
+        button.map-control .chevron {
+            display: none;
         }
 
         .chevron {
@@ -206,7 +218,7 @@ class EOxGeoSearch extends LitElement {
                 'row'
             }">
                 <button
-                    class="${this.button ? '' : 'hidden'} ${this.small ? 'small' : ''}"
+                    class="${this.button ? '' : 'hidden'} ${this.small ? 'map-control' : ''}"
                     style="
                         margin-${this.direction ?? 'right'}: 12px;
                         background: ${this._isInputVisible ? '#0078CE' : '#004170'};
@@ -219,6 +231,7 @@ class EOxGeoSearch extends LitElement {
                     "
                     @click="${this.onButtonClick}"
                 >
+                    <span class="icon"></span>
                     <span class="chevron ${this.direction ?? 'right'} ${this._isInputVisible ? 'active': ''}"></span>
                     <span style="display: ${this.small ? 'none' : 'flex'}">${this.label ?? 'Search'}</span>
                 </button>
