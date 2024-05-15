@@ -17,7 +17,7 @@
     "test:component": "npm run styles && cypress run --component",
     "test:e2e": "npm run build:all && cypress run --e2e",
     "test:storybook": "npm run build:all && npm run generate-manifest && npm run build:storybook && npm run cypress:storybook",
-    "cypress:storybook": "cypress run --env CI_PATHS_CHANGED=$(git diff --name-only -r HEAD^1 HEAD) --config excludeSpecPattern='[\"**/layercontrol.cy.js\"]' --spec ./cypress/e2e/storybook.cy.js",
+    "cypress:storybook": "cypress run --config excludeSpecPattern='[\"**/layercontrol.cy.js\"]' --spec ./cypress/e2e/storybook.cy.js",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
     "format:check:all": "prettier --check .",
