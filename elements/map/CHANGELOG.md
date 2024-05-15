@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15)
+
+
+### Features
+
+* Improved vanilla ol map config export ([#944](https://github.com/EOX-A/EOxElements/issues/944)) ([ba20a5f](https://github.com/EOX-A/EOxElements/commit/ba20a5fbe41550023f002df96c8a7f919527b597))
+
 ## [1.7.0](https://github.com/EOX-A/EOxElements/compare/map-v1.6.1...map-v1.7.0) (2024-05-08)
 
 

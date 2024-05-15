@@ -383,3 +383,23 @@ export function runWhenEditorInitialised() {
     setTimeout(runWhenEditorInitialised.bind(this), 100);
   }
 }
+
+/**
+ * Update initial editor visibility
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ */
+export function updateEditorInitVisibility(StoryTellingEditor) {
+  const wrapper =
+    StoryTellingEditor.renderRoot.querySelector(".editor-wrapper");
+  wrapper.classList.add("editor-opacity-none");
+
+  if (
+    StoryTellingEditor.editor &&
+    StoryTellingEditor.editor.editor &&
+    StoryTellingEditor.editor.editor.ready &&
+    StoryTellingEditor.editor.editor?.editors["root.Story"].simplemde_instance
+  )
+    StoryTellingEditor.querySelector(".switch-input").click();
+  else setTimeout(() => updateEditorInitVisibility(StoryTellingEditor), 100);
+}

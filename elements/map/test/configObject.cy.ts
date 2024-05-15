@@ -1,7 +1,18 @@
 import { html } from "lit";
 import { Group as LayerGroup, Tile as TileLayer } from "ol/layer.js";
 import OSM from "ol/source/OSM";
+import XYZ from "ol/source/XYZ.js";
+import VectorLayer from "ol/layer/Vector.js";
+import VectorSource from "ol/source/Vector.js";
+import GeoJSON from "ol/format/GeoJSON.js";
+import TileWMS from "ol/source/TileWMS.js";
+import chaiExclude from "chai-exclude";
 import "../main";
+
+// Use chaiExlude in order to make the deep.eq inside the
+// test work, since OL generates random layer ids
+// (see "excludingEvery("id")")
+chai.use(chaiExclude);
 
 describe("config property", () => {
   it("sets controls, layers and view using the config object", () => {
@@ -78,7 +89,7 @@ describe("config property", () => {
       expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(2273030, 0.01);
     });
   });
-  it.only("returns a config object even if none was set initially", () => {
+  it("returns a config object even if none was set initially", () => {
     // cy.intercept(/^.*openstreetmap.*$/, {
     //   fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     // });
@@ -102,28 +113,82 @@ describe("config property", () => {
             }),
           ],
         }),
+        new TileLayer({
+          source: new XYZ({
+            url: "https://s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpg",
+          }),
+        }),
+        new VectorLayer({
+          background: "#1a2b39",
+          source: new VectorSource({
+            url: "https://openlayers.org/data/vector/ecoregions.json",
+            format: new GeoJSON(),
+          }),
+          style: {
+            "fill-color": ["string", ["get", "COLOR"], "#eee"],
+          },
+        }),
+        new TileLayer({
+          source: new TileWMS({
+            url: "https://ahocevar.com/geoserver/wms",
+            params: { LAYERS: "topp:states", TILED: true },
+            serverType: "geoserver",
+          }),
+        }),
       ]);
       const eoxMapconfig = eoxMap.config;
       expect(eoxMapconfig.view.center).to.deep.eq(testCenter);
       expect(eoxMapconfig.view.zoom).to.eq(testZoom);
-      expect(eoxMapconfig.layers).to.deep.eq([
-        {
-          type: "Tile",
-          properties: { id: "19" },
-          source: { type: "OSM" },
-        },
-        {
-          type: "Group",
-          properties: { id: "22" },
-          layers: [
-            {
-              type: "Tile",
-              properties: { id: "21" },
-              source: { type: "OSM" },
+      expect(eoxMapconfig.layers)
+        .excludingEvery("id")
+        .to.deep.eq([
+          {
+            type: "Tile",
+            properties: { id: "37089" },
+            source: { type: "OSM" },
+          },
+          {
+            type: "Group",
+            properties: { id: "37092" },
+            layers: [
+              {
+                type: "Tile",
+                properties: { id: "37091" },
+                source: { type: "OSM" },
+              },
+            ],
+          },
+          {
+            type: "Tile",
+            properties: { id: "37095" },
+            source: {
+              type: "XYZ",
+              urls: [
+                "https://s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpg",
+              ],
             },
-          ],
-        },
-      ]);
+          },
+          {
+            type: "Vector",
+            properties: { id: "37097" },
+            style: "",
+            source: {
+              type: "Vector",
+              url: "https://openlayers.org/data/vector/ecoregions.json",
+              format: "GeoJSON",
+            },
+          },
+          {
+            type: "Tile",
+            properties: { id: "37099" },
+            source: {
+              type: "TileWMS",
+              urls: ["https://ahocevar.com/geoserver/wms"],
+              params: { LAYERS: "topp:states", TILED: true },
+              serverType: "geoserver",
+            },
+          },
+        ]);
     });
   });
 });
