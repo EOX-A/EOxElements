@@ -22,7 +22,7 @@ if (pathsChanged) {
 }
 export default defineConfig({
   env: {
-    CI_PATHS_CHANGED: pathsChanged
+    CI_PATHS_CHANGED: pathsChanged,
   },
   e2e: {
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",

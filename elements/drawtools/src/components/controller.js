@@ -88,7 +88,6 @@ export class EOxDrawToolsController extends LitElement {
    */
   updateButtonStates() {
     const { drawDisabled, discardDisabled } = updateButtonStatesMethod(this);
-    console.log("test");
     this.#drawDisabled = drawDisabled;
     this.#discardDisabled = discardDisabled;
   }
