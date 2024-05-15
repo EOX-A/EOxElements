@@ -54,7 +54,7 @@ jobs:
 
       - name: Run storybook tests 👀
         run: |
-          export CI_PATHS_CHANGED=$(git diff --name-only main..) && npm run test:storybook
+          export CI_PATHS_CHANGED=$(git diff --name-only $GITHUB_HEAD_REF..$GITHUB_BASE_REF) && npm run test:storybook
           echo $(git diff --name-only main..)
 
       - name: Upload failed test screenshots 📷
