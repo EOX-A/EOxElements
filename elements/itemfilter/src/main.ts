@@ -291,6 +291,7 @@ export class EOxItemFilter extends TemplateElement {
 
   private async search() {
     let results;
+    console.log("test")
     if (this.config.externalFilter) {
       results = await filterExternal(this._items, this.filters, this._config);
     } else {
