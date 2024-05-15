@@ -10,6 +10,7 @@ import { when } from "lit/directives/when.js";
  *
  * @element eox-drawtools-controller
  */
+
 export class EOxDrawToolsController extends LitElement {
   // Define properties with default values and types
   static properties = {
