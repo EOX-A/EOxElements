@@ -121,7 +121,7 @@ class StoryTellingEditor extends LitElement {
     );
     if (!evt.target.checked) {
       wrapper.classList.add("editor-opacity-none");
-      setTimeout(() => wrapper.classList.add("editor-hide"), 100);
+      setTimeout(() => wrapper.classList.add("editor-hide"), 500);
       storyDOM.setAttribute("show-editor", "close");
     } else {
       wrapper.classList.remove("editor-opacity-none");
