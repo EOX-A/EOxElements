@@ -1,19 +1,35 @@
 import { LitElement, html, css } from 'lit';
 import { ref, createRef } from 'lit/directives/ref.js';
+import Handlebars from 'handlebars';
 
 import { button } from "../../utils/styles/button";
 
 class EOxGeoSearch extends LitElement {
-    inputRef = createRef();
-
     static get properties() {
         return {
+        /**
+           * Internal storage of OpenCage API data after a successful API request.
+           *
+        */
           _data: {attribute: false},
-          _isListVisible: {attribute: false},
-          _isInputVisible: {attribute: false},
-          _inputValue: {attribute: false},
           /**
-           * The OpenCage API endpoint to use for the search.
+           * Whether or not the list dropdown is visible.
+           *
+           */
+          _isListVisible: {attribute: false},
+          /**
+           * Whether or not the input field is visible.
+           *
+           */
+          _isInputVisible: {attribute: false},
+          /**
+           * The search query, which is bound to the input field.
+           *
+           */
+          _query: {attribute: false},
+          _useMockData: {attribute: false},
+          /**
+           * The OpenCage API endpoint to use for the search, as a Handlebars template string with `query` and `key` variables.
            *
            */
           endpoint: {type: String},
@@ -39,6 +55,11 @@ class EOxGeoSearch extends LitElement {
            *
            */
           button: {type: Boolean},
+          /**
+           * Limit the search results to a certain number of items.
+           *
+           */
+          limit: {type: Number, default: 10},
           /**
            * Enables a smaller version of the button for use in map controls.
            *
@@ -68,7 +89,8 @@ class EOxGeoSearch extends LitElement {
         this._data = [];
         this._isListVisible = false;
         this._isInputVisible = false;
-        this._inputValue = '';
+        this._query = '';
+        this._useMockData = true;
     }
 
     static styles = css`
@@ -93,9 +115,11 @@ class EOxGeoSearch extends LitElement {
         .results-container {
             min-height: 100px;
             width: 332px;
-            background: #ccc;
+            background: #EAF1F5;
+            overflow: hidden;
             border-radius: 6px;
             margin-top: 10px;
+            box-shadow: 0px 3px 5px -2px rgba(0, 0, 0, 0.08), 0px 2px 2px 0px rgba(0, 0, 0, 0.08), 0px 1px 5px 0px rgba(0, 0, 0, 0.08);
         }
         input {
             background: #C6D4DD;
@@ -104,6 +128,7 @@ class EOxGeoSearch extends LitElement {
             padding: 0 16px;
             min-width: 300px;
             border: none;
+            box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
         }
         input::before {
             background: url("_data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' color='%23999999' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
@@ -115,21 +140,25 @@ class EOxGeoSearch extends LitElement {
             height: auto;
         }
 
-        button.map-control {
+        .geosearch.small button {
             height: 32px;
             width: 32px;
             padding: 6px;
         }
 
-        button.map-control .icon {
+        .geosearch.small button .icon {
             min-width: 20px;
             height: 20px;
             transform: translateX(1px);
             background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
         }
 
-        button.map-control .chevron {
+        .geosearch.small button .chevron {
             display: none;
+        }
+
+        .geosearch.small input {
+            background: #FFF;
         }
 
         .chevron {
@@ -160,44 +189,66 @@ class EOxGeoSearch extends LitElement {
     `;
 
     // TODO: Find a solution to avoid storing key in the code
-    async performSearch (q) {
+    async useMockData() {
         let url = `/opencage-mock-data.json`;
 
         const response = await fetch(url);
         const json = await response.json();
         this._data = json.results;
-    } 
+    }
 
-    emit(_inputValue) {
+    async fetchRemoteData(url) {
+        const response = await fetch(url);
+        const json = await response.json();
+        this._data = json.results;
+    }
+
+    emit(_query) {
         let event = new CustomEvent('input', {
             bubbles: true,
             cancelable: true,
-            value: _inputValue,
+            value: _query,
         });
-
-        console.log(_inputValue);
 
         this.dispatchEvent(event);
     }
 
-    onInput(e) {
-        this._inputValue = e.target.value;
-        if (this._inputValue.length > 1) {
-            this.performSearch(this._inputValue);
-            this._isListVisible = true;
-        } else {
+    async onInput(e) {
+        this._query = e.target.value;
+
+        // Ignore requests with less than 2 characters since the API might respond with a 400 to them.
+        if (this._query.length <= 1) {
             this._isListVisible = false;
+            return;
+        } else {
+            this._isListVisible = true;
+        }
+
+        // Switch from mock data to API if `endpoint` and `key` are set and not empty.
+        if ((this.endpoint && this.key) && (this.endpoint.length > 0 && this.key.length > 0)) {
+            var template = Handlebars.compile(this.endpoint);
+
+            // Execute the compiled template and store the resulting URL.
+            let url = template({
+                query: this._query,
+                key: this.key,
+                limit: this.limit,
+            });
+
+            await this.fetchRemoteData(url);
+        } else {
+            this.useMockData();
+            console.info('Using mock data for EOxGeoSearch');
         }
     }
 
     onButtonClick() {
         this._isInputVisible = !this._isInputVisible;
 
+        // Auto-focus the input field when it becomes visible
         if (this._isInputVisible) {
             this.renderRoot.querySelector('#gazetteer').focus();
         }
-
-        console.log(`switched input visibility ${this._isInputVisible ? 'on' : 'off'}`);
     }
 
     handleSelect(item) {
@@ -211,14 +262,14 @@ class EOxGeoSearch extends LitElement {
             <style>
                 ${button}
             </style>
-            <div class="geosearch" style="flex-direction: ${
+            <div class="geosearch ${this.small ? 'small' : ''}" style="flex-direction: ${
                 this.direction === 'top' ? 'column-reverse' :
                 this.direction === 'left' ? 'row-reverse' :
                 this.direction === 'bottom' ? 'column' :
                 'row'
             }">
                 <button
-                    class="${this.button ? '' : 'hidden'} ${this.small ? 'map-control' : ''}"
+                    class="${this.button ? '' : 'hidden'}"
                     style="
                         margin-${this.direction ?? 'right'}: 12px;
                         background: ${this._isInputVisible ? '#0078CE' : '#004170'};
@@ -251,7 +302,7 @@ class EOxGeoSearch extends LitElement {
                         id="gazetteer"
                         type="text"
                         placeholder="Type to search"
-                        .value="${this._inputValue}"
+                        .value="${this._query}"
                         style="margin-top: ${
                             this.direction === 'top'
                                 ? 12
@@ -265,7 +316,7 @@ class EOxGeoSearch extends LitElement {
                                 .item="${item}"
                                 .onClick="${(e) => {
                                     this._isListVisible = false;
-                                    this._inputValue = '';
+                                    this._query = '';
                                     this.onSelect(e);
                                 }}"
                             />
@@ -281,7 +332,6 @@ class EOxGeoSearch extends LitElement {
 	 */
 	connectedCallback () {
         super.connectedCallback();
-		console.log('connected!', this);
 	}
 
 	/**
@@ -289,7 +339,6 @@ class EOxGeoSearch extends LitElement {
 	 */
 	disconnectedCallback () {
         super.disconnectedCallback()
-		console.log('disconnected', this);
 	}
 }
 
@@ -310,10 +359,11 @@ class EOxGeoSearchItem extends LitElement {
             padding: 10px;
             border-bottom: 1px solid #aaa;
             cursor: pointer;
+            font-size: 0.9rem;
         }
 
         .search-result:hover {
-            background: #bbb;
+            background: #0001;
         }
     `;
 
