@@ -59,6 +59,8 @@ export const CustomDirection = {
 export const MapSearch = {
   args: {
     center: [15.0, 48.0],
+    endpoint: 'https://api.opencagedata.com/geocode/v1/json?=&q={{query}}&key={{key}}&limit={{limit}}',
+    key: '',
   },
   render: (args) => {
     return html`
@@ -68,7 +70,10 @@ export const MapSearch = {
         button
         small
         direction="left"
+        limit="8"
         .onSelect="${(item) => document.querySelector("eox-map#geosearch-map").center = [item.geometry.lng, item.geometry.lat]}"
+        .endpoint="${args.endpoint}"
+        .key="${args.key}"
       ></eox-geosearch>
 
       <eox-map
