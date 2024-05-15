@@ -53,9 +53,7 @@ jobs:
         run: npm run test:e2e
 
       - name: Run storybook tests 👀
-        run: |
-          export CI_PATHS_CHANGED=$(git diff --name-only main..)
-          npm run test:storybook
+        run: export CI_PATHS_CHANGED=$(git diff --name-only main..) && npm run test:storybook
 
       - name: Upload failed test screenshots 📷
         uses: actions/upload-artifact@v4
