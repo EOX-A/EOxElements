@@ -86,7 +86,7 @@ class StoryTellingEditor extends LitElement {
     if (this.showEditor === "close") updateEditorInitVisibility(this);
 
     positionEditor(this);
-    runWhenEditorInitialised.call(this);
+    runWhenEditorInitialised(this);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
 
