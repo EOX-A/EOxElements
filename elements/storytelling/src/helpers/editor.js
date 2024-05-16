@@ -283,16 +283,12 @@ export function addCustomSection(
  *
  * @param {Element} StoryTellingEditor - Dom element
  * @param {String | null} storyId - ID of story
- * @param {{codemirror, value}} simpleMDEInstance - Simple MDE instance
+ * @param {{codemirror, value}} easyMDEInstance - Simple MDE instance
  */
-export function generateAutoSave(
-  StoryTellingEditor,
-  storyId,
-  simpleMDEInstance
-) {
+export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
   let timeOutId = null;
 
-  simpleMDEInstance?.codemirror.on("change", function () {
+  easyMDEInstance?.codemirror.on("change", function () {
     const saveEle = StoryTellingEditor.querySelector(".editor-saver");
     saveEle.innerText = "Auto Saving...";
     if (timeOutId) clearTimeout(timeOutId);
@@ -307,7 +303,7 @@ export function generateAutoSave(
         "markdown",
         JSON.stringify({
           ...existingMarkdownObj,
-          [storyId || "default"]: simpleMDEInstance.value(),
+          [storyId || "default"]: easyMDEInstance.value(),
         })
       );
       timeOutId = null;
@@ -375,9 +371,9 @@ export function initSavedMarkdown(EOxStoryTelling) {
  */
 export function runWhenEditorInitialised() {
   if (this.editor.editor) {
-    const simpleMDEInstance =
+    const easyMDEInstance =
       this.editor.editor.editors["root.Story"].simplemde_instance;
-    generateAutoSave(this, this.storyId, simpleMDEInstance);
+    generateAutoSave(this, this.storyId, easyMDEInstance);
     preventEditorOutsideScroll(this);
   } else {
     setTimeout(runWhenEditorInitialised.bind(this), 100);
