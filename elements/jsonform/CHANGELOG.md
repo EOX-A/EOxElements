@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.2...jsonform-v0.6.3) (2024-05-08)
+
+
+### Bug Fixes
+
+* Json-form hidden issue ([c474eef](https://github.com/EOX-A/EOxElements/commit/c474eefba55082657f03ee291ec13ff55016ac3a))
+
 ## [0.6.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.1...jsonform-v0.6.2) (2024-04-30)
 
 

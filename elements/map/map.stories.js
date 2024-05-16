@@ -594,6 +594,59 @@ export const Projection = {
 };
 
 /**
+ * changing the properties `zoom`, `center` or `zoomExtent` will trigger animations, if the
+ * `animationOptions`-property is set.
+ * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
+ * animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions
+ */
+export const Animations = {
+  args: {
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "osm",
+          title: "Background",
+        },
+        source: { type: "OSM" },
+      },
+    ],
+    animationOptions: {
+      duration: 500,
+    },
+    center: [16.8, 48.2],
+    zoom: 7,
+  },
+  render: (args) => html`
+    <eox-map
+      id="animationMap"
+      style="width: 100%; height: 300px;"
+      .center=${args.center}
+      .layers=${args.layers}
+      .zoom=${args.zoom}
+      .animationOptions=${args.animationOptions}
+    >
+    </eox-map>
+    <button
+      @click=${() => {
+        const eoxMap = document.querySelector("#animationMap");
+        eoxMap.zoom = eoxMap.zoom + 1;
+      }}
+    >
+      zoom in animation
+    </button>
+    <button
+      @click=${() => {
+        const eoxMap = document.querySelector("#animationMap");
+        eoxMap.zoom = eoxMap.zoom - 1;
+      }}
+    >
+      zoom out animation
+    </button>
+  `,
+};
+
+/**
  * By setting the `prevent-scroll` attribute or by setting `preventScroll` property to `true` (either on the element or within the config object),
  * the map doesnt mouse-scroll (on desktop) or drag-touch (on tab/mobile). Pressing the platform modifier key (ctrl/cmd) will enable scrolling.
  * Useful for maps embedded in scrollable websites.

@@ -316,6 +316,31 @@ export function generateAutoSave(
 }
 
 /**
+ * Prevent editor outside scrolling
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ */
+export function preventEditorOutsideScroll(StoryTellingEditor) {
+  (StoryTellingEditor.shadowRoot || StoryTellingEditor)
+    .querySelector(".CodeMirror-scroll")
+    .addEventListener(
+      "wheel",
+      function (event) {
+        const deltaY = event.deltaY;
+        const contentHeight = this.scrollHeight; // Total scrollable content height
+        const visibleHeight = this.clientHeight; // Visible portion of the textarea
+
+        if (
+          (this.scrollTop === 0 && deltaY < 0) ||
+          (this.scrollTop + visibleHeight >= contentHeight && deltaY > 0)
+        )
+          event.preventDefault(); // Prevent scrolling
+      },
+      { passive: false }
+    );
+}
+
+/**
  * Init saved markdown if it is present
  *
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
@@ -343,4 +368,38 @@ export function initSavedMarkdown(EOxStoryTelling) {
       }
     }
   }
+}
+
+/**
+ * Run when editor is initialised with all it's instance values
+ */
+export function runWhenEditorInitialised() {
+  if (this.editor.editor) {
+    const simpleMDEInstance =
+      this.editor.editor.editors["root.Story"].simplemde_instance;
+    generateAutoSave(this, this.storyId, simpleMDEInstance);
+    preventEditorOutsideScroll(this);
+  } else {
+    setTimeout(runWhenEditorInitialised.bind(this), 100);
+  }
+}
+
+/**
+ * Update initial editor visibility
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ */
+export function updateEditorInitVisibility(StoryTellingEditor) {
+  const wrapper =
+    StoryTellingEditor.renderRoot.querySelector(".editor-wrapper");
+  wrapper.classList.add("editor-opacity-none");
+
+  if (
+    StoryTellingEditor.editor &&
+    StoryTellingEditor.editor.editor &&
+    StoryTellingEditor.editor.editor.ready &&
+    StoryTellingEditor.editor.editor?.editors["root.Story"].simplemde_instance
+  )
+    StoryTellingEditor.querySelector(".switch-input").click();
+  else setTimeout(() => updateEditorInitVisibility(StoryTellingEditor), 100);
 }

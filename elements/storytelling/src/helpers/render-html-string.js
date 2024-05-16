@@ -20,6 +20,10 @@ export function renderHtmlString(htmlString, sections, that) {
 
   const isNavigation = !!(that.showNav && that.nav.length);
 
+  // Open all links inside story in a new tab
+  const anchorTagsArr = doc.querySelectorAll("a");
+  anchorTagsArr.forEach((anchor) => (anchor.target = "_blank"));
+
   // Disconnecting old observers to create new empty Observers
   sectionObservers.forEach((observer) => observer?.disconnect());
   sectionObservers = [];
@@ -270,7 +274,7 @@ function generateAddSectionClickEvt(
     (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
 
   // If click happened enable custom section selection popup
-  if (isClicked) {
+  if (isClicked && EOxStoryTelling.showEditor !== "close") {
     const isBeforeBtnTriggered = isFirstSection
       ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
       : false;
@@ -290,7 +294,7 @@ function generateAddSectionClickEvt(
  * @param {Array<Element>} html - List of html elements
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
- * @param {Boolean} showEditor - Whether to show editor or not
+ * @param {String} showEditor - Whether to show editor or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {Element[]} An array of processed DOM nodes after adding navigation.
  */

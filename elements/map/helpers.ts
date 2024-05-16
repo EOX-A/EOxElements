@@ -239,3 +239,11 @@ export function registerProjection(
   proj4.defs(name, projection);
   register(proj4);
 }
+
+/**
+ * cancells any animation of the given view
+ * @param {import("ol/View").default} view
+ */
+export function cancelAnimation(view: import("ol/View").default) {
+  view.setRotation(view.getRotation());
+}

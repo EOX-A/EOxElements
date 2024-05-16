@@ -15,5 +15,8 @@ export {
   generateAutoSave,
   positionEditor,
   initSavedMarkdown,
+  preventEditorOutsideScroll,
+  runWhenEditorInitialised,
+  updateEditorInitVisibility,
 } from "./editor";
 export { validateMarkdownAttrs } from "./validator";

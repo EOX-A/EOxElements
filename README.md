@@ -82,7 +82,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>StoryTelling tools based on markdown</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-storytelling--docs">Docs & Examples</a></td>
     <td><a href="elements/storytelling/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/storytelling.svg?label=%20" /></a></td>
-    <td>⭕</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/timecontrol/">eox-timecontrol</a></td>
@@ -161,7 +161,7 @@ To start the storybook dev server, use:
 npm start
 ```
 
-This opens the storybook server on localhost (port 6006), where multiple element states can be used for development. Edit the corresponding element `stories.js` files to create and work on multiple states of an element.
+This opens the storybook server on localhost (port 6006), where multiple element states can be used for development. Edit the corresponding element `*.stories.js` files to create and work on multiple states of an element.
 
 ### Test server
 
@@ -233,6 +233,21 @@ npm run clean
 --> deletes all node_module folders
 npm install
 ```
+
+### Bootstrapping a new element
+
+In essence, all what is needed is a new subfolder in the [`/elements` directory](./elements/). Additionally, it is recommended to also add the corresponding entries in [preview.js](./.storybook/preview.js) (to have a centralized place for all the element imports into storybook) and [release-please-config.json](./release-please-config.json) (for release automation). Some more recommendations include:
+
+- the preferred language for new elements is JS + [JSDoc](https://jsdoc.app/) (for type checking with TypeScript)
+- the preferred bundler is [Vite](https://github.com/vitejs/vite)
+- component tests (done via [Cypress](https://github.com/cypress-io/cypress)) should only test the specific element, everything else is ideally mocked
+- if needed, webcomponent-creating frameworks such as [lit](https://github.com/lit/lit) are handy
+
+Some things are handled by the root "system":
+
+- testing (centralized Cypress setup, automatically looking for `*.cy.js` files inside `elements` subfolder)
+- linting & formatting (scripts in root [package.json](./package.json) - see section above)
+- storybook (centralized Storybook setup, automatically looking for `*.stories.js` files inside `elements` subfolder)
 
 ## Previous versions
 

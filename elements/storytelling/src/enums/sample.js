@@ -60,7 +60,7 @@ const SIMPLE_MAP_FIELDS = {
 
 const MAP_TOUR = `## {title} <!--{ as="eox-map" mode="tour" }-->
 
-### <!--{ layers='{layers}' center=[{longitude},{latitude}] zoom="{zoom}" }-->
+### <!--{ layers='{layers}' center=[{longitude},{latitude}] zoom="{zoom}" animationOptions="{duration:500}" }-->
 #### {tourTitle}
 {description}
 `;

@@ -1,5 +1,10 @@
 import { LitElement, html } from "lit";
-import { generateAutoSave, initEditorEvents, positionEditor } from "../helpers";
+import {
+  initEditorEvents,
+  positionEditor,
+  runWhenEditorInitialised,
+  updateEditorInitVisibility,
+} from "../helpers";
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
@@ -8,6 +13,7 @@ class StoryTellingEditor extends LitElement {
   static properties = {
     markdown: { attribute: "markdown", type: String },
     storyId: { attribute: "story-id", type: String },
+    showEditor: { attribute: "show-editor", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
@@ -39,6 +45,13 @@ class StoryTellingEditor extends LitElement {
      */
     this.resizing = false;
 
+    /**
+     * Enable or disable editor
+     *
+     * @type {String}
+     */
+    this.showEditor = false;
+
     // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
     this.enableTextSelection = this.enableTextSelection.bind(this);
@@ -62,6 +75,8 @@ class StoryTellingEditor extends LitElement {
    * Lifecycle method called after the first update
    */
   firstUpdated() {
+    if (this.showEditor === "close") updateEditorInitVisibility(this);
+
     // Get editor container and resize handle elements
     const editorContainer = this.querySelector(".editor-wrapper");
     const resizeHandle = this.querySelector(".resize-handle");
@@ -69,12 +84,9 @@ class StoryTellingEditor extends LitElement {
     this.editor = this.renderRoot.querySelector(
       "eox-jsonform#storytelling-editor"
     );
+
     positionEditor(this);
-    setTimeout(() => {
-      const simpleMDEInstance =
-        this.editor.editor.editors["root.Story"].simplemde_instance;
-      generateAutoSave(this, this.storyId, simpleMDEInstance);
-    }, 1000);
+    runWhenEditorInitialised.call(this);
     initEditorEvents(editorContainer, resizeHandle, this);
   }
 
@@ -103,10 +115,17 @@ class StoryTellingEditor extends LitElement {
    */
   #switchEditorView(evt) {
     const wrapper = this.renderRoot.querySelector(".editor-wrapper");
+    const storyIdSelector = this.storyId ? `#${this.storyId}` : "";
+    const storyDOM = document.querySelector(
+      `eox-storytelling${storyIdSelector}`
+    );
     if (!evt.target.checked) {
       wrapper.classList.add("editor-hide");
+      storyDOM.setAttribute("show-editor", "close");
     } else {
+      wrapper.classList.remove("editor-opacity-none");
       wrapper.classList.remove("editor-hide");
+      storyDOM.setAttribute("show-editor", "open");
     }
   }
 
