@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/EOX-A/EOxElements/compare/map-v1.8.0...map-v1.8.1) (2024-05-16)
+
+
+### Miscellaneous Chores
+
+* Update changelog with revert message ([6abaa2b](https://github.com/EOX-A/EOxElements/commit/6abaa2b2fd1a5b903b81b68355421f3e91ecb742))
+
 ## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15) - REVERTED
 
 
