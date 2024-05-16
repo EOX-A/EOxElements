@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.1...storytelling-v1.0.2) (2024-05-16)
+
+
+### Bug Fixes
+
+* Adaptations to new eox-jsonform md editor ([#957](https://github.com/EOX-A/EOxElements/issues/957)) ([4a644ca](https://github.com/EOX-A/EOxElements/commit/4a644ca1fa81ad0981761b7f92469198950bfed2))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.0...storytelling-v1.0.1) (2024-05-15)
 
 
