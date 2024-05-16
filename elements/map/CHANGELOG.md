@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15)
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15) - REVERTED
 
 
 ### Features
