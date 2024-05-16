@@ -5,6 +5,8 @@ import proj4 from "proj4";
 
 import { button } from "../../utils/styles/button";
 
+import styles from "./style";
+
 class EOxGeoSearch extends LitElement {
   static get properties() {
     return {
@@ -72,7 +74,7 @@ class EOxGeoSearch extends LitElement {
        */
       label: { type: String },
       /**
-       * Which direction the search input and results should open to. One of the following options:
+       * The direction of the search input relative to the button, with the following options:
        *
        * - `left`
        * - `top`
@@ -81,6 +83,11 @@ class EOxGeoSearch extends LitElement {
        *
        */
       direction: { type: String },
+      /**
+       * The direction of the search results relative to the input field, with the same options as described above.
+       *
+       */
+      secondaryDirection: { type: String },
     };
   }
 
@@ -94,104 +101,8 @@ class EOxGeoSearch extends LitElement {
     this._useMockData = true;
   }
 
-  static styles = css`
-    .hidden {
-      display: none;
-    }
+  static styles = styles;
 
-    .geosearch {
-      display: flex;
-      flex-direction: row;
-      align-items: start;
-    }
-
-    .search-container {
-      display: flex;
-      flex-direction: column;
-      align-items: start;
-    }
-    .search-container.hidden {
-      opacity: 0;
-    }
-    .results-container {
-      min-height: 100px;
-      width: 332px;
-      background: #eaf1f5;
-      overflow: hidden;
-      border-radius: 6px;
-      margin-top: 10px;
-      box-shadow: 0px 3px 5px -2px rgba(0, 0, 0, 0.08),
-        0px 2px 2px 0px rgba(0, 0, 0, 0.08), 0px 1px 5px 0px rgba(0, 0, 0, 0.08);
-    }
-    input {
-      background: #c6d4dd;
-      height: 48px;
-      border-radius: 6px;
-      padding: 0 16px;
-      min-width: 300px;
-      border: none;
-      box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.1),
-        0px 2px 2px 0px rgba(0, 0, 0, 0.1), 0px 1px 5px 0px rgba(0, 0, 0, 0.1);
-    }
-    input::before {
-      background: url("_data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' color='%23999999' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
-      width: 48px;
-      height: 48px;
-      display: inline-block;
-    }
-    button {
-      height: auto;
-    }
-
-    .geosearch.small button {
-      height: 32px;
-      width: 32px;
-      padding: 6px;
-    }
-
-    .geosearch.small button .icon {
-      min-width: 20px;
-      height: 20px;
-      transform: translateX(1px);
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
-    }
-
-    .geosearch.small button .chevron {
-      display: none;
-    }
-
-    .geosearch.small input {
-      background: #fff;
-    }
-
-    .chevron {
-      width: 24px;
-      height: 24px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23FFF' viewBox='0 0 24 24'%3E%3Ctitle%3Echevron-left%3C/title%3E%3Cpath d='M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z' /%3E%3C/svg%3E");
-      margin-right: 9px;
-    }
-
-    .chevron.right {
-      transform: rotate(180deg);
-      margin-left: 9px;
-    }
-
-    .chevron.top {
-      transform: rotate(90deg);
-      margin-bottom: 9px;
-    }
-
-    .chevron.bottom {
-      transform: rotate(-90deg);
-      margin-top: 9px;
-    }
-
-    .chevron.right.active {
-      transform: rotate(180deg);
-    }
-  `;
-
-  // TODO: Find a solution to avoid storing key in the code
   async useMockData() {
     let url = `/opencage-mock-data.json`;
 
@@ -265,6 +176,42 @@ class EOxGeoSearch extends LitElement {
     this.onSelect(item);
   }
 
+  getFlexDirection() {
+    return this.direction === "top"
+        ? "row-reverse"
+        : this.direction === "left"
+        ? "row-reverse"
+        : this.direction === "bottom"
+        ? "column"
+        : this.direction === "right"
+        ? "column"
+        : "row";
+  }
+
+  getVerticalAlign() {
+    return this.direction === "top"
+        ? "end"
+        : this.direction === "left"
+        ? "start"
+        : this.direction === "bottom"
+        ? "end"
+        : this.direction === "right"
+        ? "start"
+        : "row";
+  }
+
+  getMarginDirection() {
+    return this.direction === "top"
+        ? "left"
+        : this.direction === "left"
+        ? "left"
+        : this.direction === "bottom"
+        ? "right"
+        : this.direction === "right"
+        ? "right"
+        : "row";
+  }
+
   render() {
     return html`
       <style>
@@ -272,18 +219,15 @@ class EOxGeoSearch extends LitElement {
       </style>
       <div
         class="geosearch ${this.small ? "small" : ""}"
-        style="flex-direction: ${this.direction === "top"
-          ? "column-reverse"
-          : this.direction === "left"
-          ? "row-reverse"
-          : this.direction === "bottom"
-          ? "column"
-          : "row"}"
+        style="
+            flex-direction: ${this.getFlexDirection()};
+            align-items: ${this.getVerticalAlign()};
+        "
       >
         <button
           class="${this.button ? "" : "hidden"}"
           style="
-                        margin-${this.direction ?? "right"}: 12px;
+                        margin-${this.getMarginDirection()}: 12px;
                         background: ${this._isInputVisible
             ? "#0078CE"
             : "#004170"};
