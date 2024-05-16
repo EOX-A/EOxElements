@@ -93,14 +93,17 @@ class StoryTellingEditor extends LitElement {
   updateErrors(errors) {
     const errorDom = this.renderRoot.querySelector(".editor-error");
 
-    if (errorDom && errors.length) {
-      errorDom.style.display = "block";
-      errorDom.querySelector("ul").innerHTML = errors
-        .map(
-          (error) => `<li><strong>${error.ref}</strong>: ${error.message}</li>`
-        )
-        .join("");
-    } else errorDom.style.display = "none";
+    if (errorDom) {
+      if (errors.length) {
+        errorDom.style.display = "block";
+        errorDom.querySelector("ul").innerHTML = errors
+          .map(
+            (error) =>
+              `<li><strong>${error.ref}</strong>: ${error.message}</li>`
+          )
+          .join("");
+      } else errorDom.style.display = "none";
+    }
   }
 
   /**
