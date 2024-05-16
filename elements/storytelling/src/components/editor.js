@@ -75,8 +75,6 @@ class StoryTellingEditor extends LitElement {
    * Lifecycle method called after the first update
    */
   firstUpdated() {
-    if (this.showEditor === "close") updateEditorInitVisibility(this);
-
     // Get editor container and resize handle elements
     const editorContainer = this.querySelector(".editor-wrapper");
     const resizeHandle = this.querySelector(".resize-handle");
@@ -84,6 +82,8 @@ class StoryTellingEditor extends LitElement {
     this.editor = this.renderRoot.querySelector(
       "eox-jsonform#storytelling-editor"
     );
+
+    if (this.showEditor === "close") updateEditorInitVisibility(this);
 
     positionEditor(this);
     runWhenEditorInitialised.call(this);
@@ -187,9 +187,53 @@ class StoryTellingEditor extends LitElement {
           margin: 0 !important;
           border: none !important;
         }
-        .CodeMirror {
+        .editor-wrapper .CodeMirror {
           height: 100%;
           min-height: unset;
+        }
+        .editor-wrapper .EasyMDEContainer {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+        .editor-wrapper .EasyMDEContainer .CodeMirror-scroll {
+          min-height: 1000px;
+        }
+        .editor-toolbar button {
+          box-shadow: none;
+          color: #2c3e50 !important;
+        }
+        .editor-toolbar button:hover:not([disabled]):not(.icon),
+        .editor-toolbar button:hover:not([disabled]):not(.icon) {
+          box-shadow: none;
+          background: #fcfcfc;
+          border-color: #95a5a6;
+        }
+        .editor-toolbar button i {
+          font-size: 17px;
+        }
+        .editor-wrapper .cm-header-1 {
+          font-size: 200%;
+        }
+        .editor-wrapper .cm-header-1 {
+          font-size: 200%;
+          line-height: 200%;
+        }
+        .editor-wrapper .cm-header-2 {
+          font-size: 160%;
+          line-height: 160%;
+        }
+        .editor-wrapper .cm-header-3 {
+          font-size: 125%;
+          line-height: 125%;
+        }
+        .editor-wrapper .cm-header-4 {
+          font-size: 110%;
+          line-height: 110%;
+        }
+        .editor-wrapper .cm-comment {
+          background: rgba(0, 0, 0, 0.05);
+          border-radius: 2px;
         }
         eox-jsonform form[data-theme="html"],
         eox-jsonform div[data-schemaid="root"],
