@@ -1,6 +1,13 @@
 # Changelog
 
-## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15) - REVERTED
+## [1.8.1](https://github.com/EOX-A/EOxElements/compare/map-v1.8.0...map-v1.8.1) (2024-05-16)
+
+
+### Miscellaneous Chores
+
+* Revert non-working parts of config extraction ([5b622cc](https://github.com/EOX-A/EOxElements/commit/5b622cc836bd0863e687111489ed9f16cef86360))
+
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15) - DEPRECATED
 
 
 ### Features
