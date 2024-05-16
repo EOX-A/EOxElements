@@ -2,13 +2,12 @@ import { LitElement, PropertyValueMap, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View, { ViewObjectEventTypes } from "ol/View.js";
-import { getUid } from "ol/util";
 // @ts-ignore
 import olCss from "ol/ol.css?inline";
 // @ts-ignore
 import controlCss from "./src/controls/controls.css?inline";
 import { EOxSelectInteraction } from "./src/select";
-import { EoxLayer, createLayer, sourceType, updateLayer } from "./src/generate";
+import { EoxLayer, createLayer, updateLayer } from "./src/generate";
 import { Draw, Modify } from "ol/interaction";
 import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "./src/layer";
@@ -306,93 +305,12 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Extracts current OL layer group state as
-   * EoxLayer array configuration
-   * @param layerArray OL Layer array
-   * @returns EoxLayer array JSON definition
-   */
-  extractLayerConfig = (layerArray: Array<Layer>) => {
-    const layers: Array<EoxLayer> = [];
-    layerArray.map((l) => {
-      if (["Group", "_LayerGroup"].includes(l.constructor.name)) {
-        layers.push({
-          type: "Group",
-          properties: {
-            id: l.get("id") ? l.get("id") : getUid(l),
-          },
-          layers: this.extractLayerConfig(l.getLayersArray()),
-        });
-      } else if (l.constructor.name.includes("STACLayer")) {
-        layers.push(l.get("_jsonDefinition"));
-      } else {
-        const layerConfig: any = {
-          type: <EoxLayer["type"]>l.constructor.name.replace("Layer", ""),
-          properties: {
-            id: l.get("id") ? l.get("id") : getUid(l),
-          },
-        };
-        // Evaluate what other information we need to extract for different source types
-        const olsource: any = l.getSource();
-        // only export visible layers
-        if (olsource && l.isVisible()) {
-          // Extract source config
-          const source: any = {
-            type: <sourceType>(
-              l.getSource().constructor.name.replace("Source", "")
-            ),
-          };
-          if (["XYZ", "TileWMS", "WMS"].includes(olsource.constructor.name)) {
-            if ("url" in olsource) {
-              source.url = olsource.url;
-            } else if ("urls" in olsource) {
-              source.urls = olsource.urls;
-            }
-          } else if (olsource.constructor.name === "VectorSource") {
-            source.url = olsource.getUrl();
-            source.format = olsource.getFormat()?.constructor.name;
-          }
-          // Extract possible other configuration options
-          if (["TileWMS", "WMS"].includes(olsource.constructor.name)) {
-            source.params = olsource.getParams();
-            source.serverType = olsource.serverType_;
-          }
-          if (olsource.constructor.name === "VectorSource") {
-            // TODO: the getStyle function does not return the applied style as described in OL docs
-            layerConfig.style = ""; // l.getStyle();
-          }
-          layerConfig.source = source;
-          layers.push(layerConfig);
-        }
-      }
-    });
-    return layers;
-  };
-
-  /**
    * Config object, including `controls`, `layers` and `view`.
    * Alternative way of defining the map config.
    */
   @property({ attribute: false, type: Object })
   get config() {
-    if (this._config) {
-      return this._config;
-    } else {
-      const olLayers = this.map.getLayers();
-      const layers = this.extractLayerConfig(<Array<Layer>>olLayers.getArray());
-      const olView = this.map.getView();
-      const view = {
-        center: olView.getCenter(),
-        zoom: olView.getZoom(),
-      };
-      const controls = <controlDictionary>{};
-      // TODO: we need to investigate if we can extract the controls somehow
-      return {
-        layers,
-        view,
-        controls,
-        preventScroll: true,
-      };
-    }
+    return this._config;
   }
 
   private _projection: ProjectionLike;
