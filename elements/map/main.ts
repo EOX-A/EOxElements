@@ -129,6 +129,7 @@ export class EOxMap extends LitElement {
   private _zoom: number = 0;
 
   set zoom(zoom: number) {
+    if (!zoom) return
     this._zoom = zoom;
     this._animateToState();
   }
