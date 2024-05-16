@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.7.0...jsonform-v0.7.1) (2024-05-16)
+
+
+### Bug Fixes
+
+* Adaptations to new eox-jsonform md editor ([#957](https://github.com/EOX-A/EOxElements/issues/957)) ([4a644ca](https://github.com/EOX-A/EOxElements/commit/4a644ca1fa81ad0981761b7f92469198950bfed2))
+
 ## [0.7.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.3...jsonform-v0.7.0) (2024-05-16)
 
 
