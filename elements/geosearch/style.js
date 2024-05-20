@@ -15,6 +15,7 @@ const styles = css`
         display: flex;
         flex-direction: column;
         align-items: start;
+        min-height: 300px;
     }
     .search-container.hidden {
         opacity: 0;
@@ -25,7 +26,6 @@ const styles = css`
         background: #eaf1f5;
         overflow: hidden;
         border-radius: 6px;
-        margin-top: 10px;
         box-shadow: 0px 3px 5px -2px rgba(0, 0, 0, 0.08),
         0px 2px 2px 0px rgba(0, 0, 0, 0.08), 0px 1px 5px 0px rgba(0, 0, 0, 0.08);
     }
