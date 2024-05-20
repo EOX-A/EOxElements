@@ -44,3 +44,27 @@ export const createEditor = (element) => {
   });
   return editor;
 };
+
+/**
+ * Fetch properties from URL and return it
+ *
+ * @typedef {JSON & {properties: object}} JsonSchema
+ * @param {JsonSchema | String} property
+ * @return {JsonSchema | String}
+ */
+export async function parseProperty(property) {
+  if (property) {
+    if (typeof property !== "object") {
+      // Property is a URL so we need to fetch it
+      try {
+        const response = await fetch(property);
+        if (response.ok) return await response.json();
+        else
+          console.error("Failed to fetch schema from URL: ", response.status);
+      } catch (error) {
+        console.error("Error fetching schema: ", error);
+      }
+    }
+  }
+  return property;
+}
