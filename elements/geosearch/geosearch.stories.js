@@ -123,7 +123,7 @@ export const CustomAlignments = {
         button
         direction="left"
         resultsDirection="down"
-        limit="8"
+        limit="5"
         .onSelect="${(item) =>
           document
             .querySelector("eox-map#geosearch-map-primary")
@@ -141,7 +141,7 @@ export const CustomAlignments = {
         button
         direction="right"
         resultsDirection="down"
-        limit="8"
+        limit="5"
         .onSelect="${(item) =>
           document
             .querySelector("eox-map#geosearch-map-primary")
@@ -159,7 +159,7 @@ export const CustomAlignments = {
         button
         direction="left"
         resultsDirection="up"
-        limit="8"
+        limit="5"
         .onSelect="${(item) =>
           document
             .querySelector("eox-map#geosearch-map-primary")
@@ -177,7 +177,7 @@ export const CustomAlignments = {
         button
         direction="right"
         resultsDirection="up"
-        limit="8"
+        limit="5"
         .onSelect="${(item) =>
           document
             .querySelector("eox-map#geosearch-map-primary")
