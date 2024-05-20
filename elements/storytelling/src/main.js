@@ -143,7 +143,6 @@ export class EOxStoryTelling extends LitElement {
 
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
-      console.log("update up");
       const unsafeHTML = md.render(this.markdown);
 
       validateMarkdownAttrs(md.attrs.sections, this);
@@ -211,19 +210,19 @@ export class EOxStoryTelling extends LitElement {
   }
 
   async firstUpdated() {
-    initSavedMarkdown(this);
-    addLightBoxScript(this);
-
-    // Check if this.#html is initialized, if not, wait for it
-    if (this.#html === undefined) await this.waitForHtmlInitialization();
-    scrollIntoView(this);
-
     this.#debounceUpdateMarkdown = _debounce((e) => {
       if (e.detail) {
         this.markdown = e.detail.Story;
         this.requestUpdate();
       }
     }, 1000);
+
+    initSavedMarkdown(this);
+    addLightBoxScript(this);
+
+    // Check if this.#html is initialized, if not, wait for it
+    if (this.#html === undefined) await this.waitForHtmlInitialization();
+    scrollIntoView(this);
   }
 
   // A utility function to pause execution for a given time
@@ -263,6 +262,7 @@ export class EOxStoryTelling extends LitElement {
               .storyId=${this.id}
               show-editor="${this.showEditor}"
               @change=${this.#debounceUpdateMarkdown}
+              }
             ></eox-storytelling-editor>
           `
         )}
