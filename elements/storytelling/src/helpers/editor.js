@@ -319,7 +319,7 @@ export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
 export function preventEditorOutsideScroll(StoryTellingEditor) {
   (StoryTellingEditor.shadowRoot || StoryTellingEditor)
     .querySelector(".CodeMirror-scroll")
-    .addEventListener(
+    ?.addEventListener(
       "wheel",
       function (event) {
         const deltaY = event.deltaY;
@@ -372,7 +372,7 @@ export function initSavedMarkdown(EOxStoryTelling) {
  * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
  */
 export function runWhenEditorInitialised(StoryTellingEditor) {
-  if (StoryTellingEditor.editor.editor) {
+  if (StoryTellingEditor.editor.editor?.editors?.["root.Story"]) {
     const easyMDEInstance =
       StoryTellingEditor.editor.editor.editors["root.Story"].simplemde_instance;
     generateAutoSave(
