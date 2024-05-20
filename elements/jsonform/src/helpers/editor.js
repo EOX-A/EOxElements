@@ -9,13 +9,18 @@ window.SimpleMDE = EasyMDE;
 
 /**
  * Create the editor instance
- * @param element the eox-jsonform instance
+ *
+ * @param {HTMLElement} element - The eox-jsonform instance
+ * @returns {JSONEditor} - The initialized JSONEditor instance
  */
 export const createEditor = (element) => {
+  // Add custom inputs if any
   addCustomInputs(element.value || {});
 
+  // Get the form element from the shadow DOM
   const formEle = element.renderRoot.querySelector("form");
 
+  // Initialize the JSONEditor with the given schema, value, and options
   const initEditor = () =>
     new JSONEditor(formEle, {
       schema: element.schema,
@@ -25,11 +30,12 @@ export const createEditor = (element) => {
       ...element.options,
     });
 
+  // Create the editor instance
   let editor = initEditor();
 
+  // Event listener for the 'ready' event
   editor.on("ready", () => {
-    // Check if one of the editors requires SimpleMDE.
-    // If so, load the required stylesheets for SimpleMDE.
+    /// Check if any editor requires SimpleMDE and load necessary stylesheets
     if (
       Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
     ) {
@@ -46,11 +52,11 @@ export const createEditor = (element) => {
 };
 
 /**
- * Fetch properties from URL and return it
+ * Fetch properties from a URL and return them
  *
  * @typedef {JSON & {properties: object}} JsonSchema
- * @param {JsonSchema | String} property
- * @return {JsonSchema | String}
+ * @param {JsonSchema | String} property - The property to fetch or parse
+ * @returns {Promise<JsonSchema | String>} - The parsed property or fetched schema
  */
 export async function parseProperty(property) {
   if (property) {
