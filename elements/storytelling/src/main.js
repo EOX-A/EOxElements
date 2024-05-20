@@ -22,6 +22,7 @@ import {
 import styleEOX from "./style.eox.js";
 import "./components/editor";
 import { DEFAULT_SENSITIVE_TAGS, SAMPLE_ELEMENTS } from "./enums";
+import _debounce from "lodash.debounce";
 const md = markdownit({ html: true });
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
@@ -57,6 +58,13 @@ export class EOxStoryTelling extends LitElement {
    * @type {Object}
    */
   #config = {};
+
+  /**
+   * Debounce update markdown
+   *
+   * @type {Object}
+   */
+  #debounceUpdateMarkdown = null;
   constructor() {
     super();
 
@@ -135,6 +143,7 @@ export class EOxStoryTelling extends LitElement {
 
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
+      console.log("update up");
       const unsafeHTML = md.render(this.markdown);
 
       validateMarkdownAttrs(md.attrs.sections, this);
@@ -208,6 +217,13 @@ export class EOxStoryTelling extends LitElement {
     // Check if this.#html is initialized, if not, wait for it
     if (this.#html === undefined) await this.waitForHtmlInitialization();
     scrollIntoView(this);
+
+    this.#debounceUpdateMarkdown = _debounce((e) => {
+      if (e.detail) {
+        this.markdown = e.detail.Story;
+        this.requestUpdate();
+      }
+    }, 1000);
   }
 
   // A utility function to pause execution for a given time
@@ -246,12 +262,7 @@ export class EOxStoryTelling extends LitElement {
               .isNavigation=${Boolean(this.showNav)}
               .storyId=${this.id}
               show-editor="${this.showEditor}"
-              @change=${(e) => {
-                if (e.detail) {
-                  this.markdown = e.detail.Story;
-                  this.requestUpdate();
-                }
-              }}
+              @change=${this.#debounceUpdateMarkdown}
             ></eox-storytelling-editor>
           `
         )}

@@ -34,6 +34,7 @@
     "joi": "^17.12.3",
     "js-yaml": "^4.1.0",
     "lit": "^3.0.2",
+    "lodash.debounce": "^4.0.8",
     "markdown-it": "^14.0.0"
   }
 }
