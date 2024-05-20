@@ -84,6 +84,16 @@ class EOxGeoSearch extends LitElement {
        */
       direction: { type: String },
       /**
+       * The direction of the results box relative to the input, with the following options:
+       *
+       * - `left`
+       * - `top`
+       * - `right`
+       * - `bottom`
+       *
+       */
+      resultsDirection: { type: String, default: "rightx" },
+      /**
        * The direction of the search results relative to the input field, with the same options as described above.
        *
        */
@@ -112,7 +122,7 @@ class EOxGeoSearch extends LitElement {
   }
 
   async fetchRemoteData(url) {
-    const response = await fetch(url);
+    const response = await fetch(encodeURI(url));
     const json = await response.json();
     this._data = json.results;
   }
@@ -177,37 +187,43 @@ class EOxGeoSearch extends LitElement {
   }
 
   getFlexDirection() {
-    return this.direction === "top"
-        ? "row-reverse"
+    return this.direction === "up"
+        ? "column-reverse"
         : this.direction === "left"
         ? "row-reverse"
-        : this.direction === "bottom"
+        : this.direction === "down"
         ? "column"
         : this.direction === "right"
+        ? "row"
+        : "row";
+  }
+
+  getResultsDirection() {
+    return this.resultsDirection === "up"
+        ? "column-reverse"
+        : this.resultsDirection === "left"
+        ? "row-reverse"
+        : this.resultsDirection === "down"
         ? "column"
+        : this.resultsDirection === "right"
+        ? "row"
         : "row";
   }
 
   getVerticalAlign() {
-    return this.direction === "top"
+    return this.resultsDirection === "up"
         ? "end"
-        : this.direction === "left"
-        ? "start"
-        : this.direction === "bottom"
-        ? "end"
-        : this.direction === "right"
-        ? "start"
-        : "row";
+        : "start";
   }
 
-  getMarginDirection() {
-    return this.direction === "top"
+  getMarginDirection(direction) {
+    return direction === "up"
+        ? "top"
+        : direction === "left"
         ? "left"
-        : this.direction === "left"
-        ? "left"
-        : this.direction === "bottom"
-        ? "right"
-        : this.direction === "right"
+        : direction === "down"
+        ? "bottom"
+        : direction === "right"
         ? "right"
         : "row";
   }
@@ -227,17 +243,11 @@ class EOxGeoSearch extends LitElement {
         <button
           class="${this.button ? "" : "hidden"}"
           style="
-                        margin-${this.getMarginDirection()}: 12px;
+                        margin-${this.getMarginDirection(this.direction)}: 12px;
                         background: ${this._isInputVisible
-            ? "#0078CE"
-            : "#004170"};
-                        flex-direction: ${this.direction === "top"
-            ? "column"
-            : this.direction === "left"
-            ? "row"
-            : this.direction === "bottom"
-            ? "column-reverse"
-            : "row-reverse"}
+                            ? "#0078CE"
+                            : "#004170"};
+                        flex-direction: ${this.getFlexDirection()}
                     "
           @click="${this.onButtonClick}"
         >
@@ -257,16 +267,14 @@ class EOxGeoSearch extends LitElement {
               ? ""
               : "hidden"
             : ""}"
-          style="flex-direction: ${this.direction === "top"
-            ? "column-reverse"
-            : "column"}"
+          style="flex-direction: ${this.getResultsDirection()}"
         >
           <input
             id="gazetteer"
             type="text"
             placeholder="Type to search"
             .value="${this._query}"
-            style="margin-top: ${this.direction === "top" ? 12 : 0}px"
+            style="margin-${this.getMarginDirection(this.resultsDirection)}: 12px"
             @input="${this.onInput}"
           />
           <div class="results-container ${this._isListVisible ? "" : "hidden"}">
