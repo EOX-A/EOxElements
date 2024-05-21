@@ -319,7 +319,7 @@ export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
 export function preventEditorOutsideScroll(StoryTellingEditor) {
   (StoryTellingEditor.shadowRoot || StoryTellingEditor)
     .querySelector(".CodeMirror-scroll")
-    .addEventListener(
+    ?.addEventListener(
       "wheel",
       function (event) {
         const deltaY = event.deltaY;
