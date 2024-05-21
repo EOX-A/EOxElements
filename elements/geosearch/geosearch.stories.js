@@ -26,11 +26,9 @@ export const Primary = {
         direction="left"
         resultsDirection="down"
         limit="8"
-        .onSelect="${(item) => {
-          console.log(item.zoomExtent);
-          document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
-            item.zoomExtent;
-        }}"
+        .onSelect="${(item) =>
+          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
+            item.zoomExtent)}"
         .endpoint="${args.endpoint}"
         .key="${args.key}"
       ></eox-geosearch>
@@ -76,11 +74,9 @@ export const ButtonMode = {
         direction="left"
         resultsDirection="down"
         limit="8"
-        .onSelect="${(item) => {
-          console.log(item.zoomExtent);
-          document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
-            item.zoomExtent;
-        }}"
+        .onSelect="${(item) =>
+          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
+            item.zoomExtent)}"
         .endpoint="${args.endpoint}"
         .key="${args.key}"
       ></eox-geosearch>
