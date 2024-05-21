@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { ref, createRef } from "lit/directives/ref.js";
 import Handlebars from "handlebars";
 import proj4 from "proj4";
+import _debounce from "lodash.debounce";
 
 import { button } from "../../utils/styles/button";
 
@@ -148,27 +149,31 @@ class EOxGeoSearch extends LitElement {
       this._isListVisible = true;
     }
 
-    // Switch from mock data to API if `endpoint` and `key` are set and not empty.
-    if (
-      this.endpoint &&
-      this.key &&
-      this.endpoint.length > 0 &&
-      this.key.length > 0
-    ) {
-      var template = Handlebars.compile(this.endpoint);
+    let bounce = _debounce(async () => {
+      // Switch from mock data to API if `endpoint` and `key` are set and not empty.
+      if (
+        this.endpoint &&
+        this.key &&
+        this.endpoint.length > 0 &&
+        this.key.length > 0
+      ) {
+        var template = Handlebars.compile(this.endpoint);
 
-      // Execute the compiled template and store the resulting URL.
-      let url = template({
-        query: this._query,
-        key: this.key,
-        limit: this.limit,
-      });
+        // Execute the compiled template and store the resulting URL.
+        let url = template({
+          query: this._query,
+          key: this.key,
+          limit: this.limit,
+        });
 
-      await this.fetchRemoteData(url);
-    } else {
-      this.useMockData();
-      console.info("Using mock data for EOxGeoSearch");
-    }
+        await this.fetchRemoteData(url);
+      } else {
+          this.useMockData();
+          console.info("Using mock data for EOxGeoSearch");
+      }
+    }, 100);
+
+    bounce();
   }
 
   onButtonClick() {
