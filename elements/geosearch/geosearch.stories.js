@@ -52,7 +52,7 @@ export default {
       </eox-map>
 
       <p>
-        Set both the <code>endpoint</code> and <code>key</code> attributes to switch to actual real-time API access.
+        Set both the <code>endpoint</code> and <code>key</code> attributes to enable real-time API access.
       </p>
     `;
   },
@@ -100,7 +100,7 @@ export const ButtonMode = {
       </eox-map>
 
       <p>
-        Set both the <code>endpoint</code> and <code>key</code> attributes to switch to actual real-time API access.
+        Set both the <code>endpoint</code> and <code>key</code> attributes to enable real-time API access.
       </p>
     `;
   },
@@ -204,7 +204,7 @@ export const CustomAlignments = {
       </eox-map>
 
       <p>
-        Set both the <code>endpoint</code> and <code>key</code> attributes to switch to actual real-time API access.
+        Set both the <code>endpoint</code> and <code>key</code> attributes to enable real-time API access.
       </p>
     `;
   },
