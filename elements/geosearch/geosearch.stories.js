@@ -24,6 +24,7 @@ export const Primary = {
         label="Search"
         style="position: absolute; top: 36px; right: 32px; z-index: 12;"
         direction="left"
+        resultsDirection="down"
         limit="8"
         .onSelect="${(item) => {
           console.log(item.zoomExtent);
@@ -73,6 +74,7 @@ export const ButtonMode = {
         small
         button
         direction="left"
+        resultsDirection="down"
         limit="8"
         .onSelect="${(item) => {
           console.log(item.zoomExtent);
