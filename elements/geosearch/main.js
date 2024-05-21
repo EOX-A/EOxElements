@@ -97,12 +97,7 @@ class EOxGeoSearch extends LitElement {
        * - `bottom`
        *
        */
-      resultsDirection: { type: String, default: "rightx" },
-      /**
-       * The direction of the search results relative to the input field, with the same options as described above.
-       *
-       */
-      secondaryDirection: { type: String },
+      resultsDirection: { type: String, default: "right" },
     };
   }
 
