@@ -11,7 +11,7 @@ export default {
  * See https://storybook.js.org/docs/api/csf
  * to learn how to use render functions.
  */
- export const Primary = {
+export const Primary = {
   args: {
     center: [15.0, 48.0],
     endpoint:
@@ -51,7 +51,8 @@ export default {
       </eox-map>
 
       <p>
-        Set both the <code>endpoint</code> and <code>key</code> attributes to enable real-time API access.
+        Set both the <code>endpoint</code> and <code>key</code> attributes to
+        enable real-time API access.
       </p>
     `;
   },
@@ -99,7 +100,8 @@ export const ButtonMode = {
       </eox-map>
 
       <p>
-        Set both the <code>endpoint</code> and <code>key</code> attributes to enable real-time API access.
+        Set both the <code>endpoint</code> and <code>key</code> attributes to
+        enable real-time API access.
       </p>
     `;
   },
@@ -124,10 +126,8 @@ export const CustomAlignments = {
         resultsDirection="down"
         limit="5"
         .onSelect="${(item) =>
-          document
-            .querySelector("eox-map#geosearch-map-primary")
-            .zoomExtent = item.zoomExtent
-        }"
+          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
+            item.zoomExtent)}"
         .endpoint="${args.endpoint}"
         .key="${args.key}"
       ></eox-geosearch>
@@ -142,10 +142,8 @@ export const CustomAlignments = {
         resultsDirection="down"
         limit="5"
         .onSelect="${(item) =>
-          document
-            .querySelector("eox-map#geosearch-map-primary")
-            .zoomExtent = item.zoomExtent
-        }"
+          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
+            item.zoomExtent)}"
         .endpoint="${args.endpoint}"
         .key="${args.key}"
       ></eox-geosearch>
@@ -160,10 +158,8 @@ export const CustomAlignments = {
         resultsDirection="up"
         limit="5"
         .onSelect="${(item) =>
-          document
-            .querySelector("eox-map#geosearch-map-primary")
-            .zoomExtent = item.zoomExtent
-        }"
+          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
+            item.zoomExtent)}"
         .endpoint="${args.endpoint}"
         .key="${args.key}"
       ></eox-geosearch>
@@ -178,10 +174,8 @@ export const CustomAlignments = {
         resultsDirection="up"
         limit="5"
         .onSelect="${(item) =>
-          document
-            .querySelector("eox-map#geosearch-map-primary")
-            .zoomExtent = item.zoomExtent
-        }"
+          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
+            item.zoomExtent)}"
         .endpoint="${args.endpoint}"
         .key="${args.key}"
       ></eox-geosearch>
@@ -203,7 +197,8 @@ export const CustomAlignments = {
       </eox-map>
 
       <p>
-        Set both the <code>endpoint</code> and <code>key</code> attributes to enable real-time API access.
+        Set both the <code>endpoint</code> and <code>key</code> attributes to
+        enable real-time API access.
       </p>
     `;
   },

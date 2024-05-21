@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit";
-import { ref, createRef } from "lit/directives/ref.js";
 import Handlebars from "handlebars";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
@@ -64,6 +63,11 @@ class EOxGeoSearch extends LitElement {
        *
        */
       limit: { type: Number, default: 10 },
+      /**
+       * Set a custom interval for the debounce function.
+       *
+       */
+      interval: { type: Number, default: 200 },
       /**
        * Enables a smaller version of the button for use in map controls.
        *
@@ -168,10 +172,10 @@ class EOxGeoSearch extends LitElement {
 
         await this.fetchRemoteData(url);
       } else {
-          this.useMockData();
-          console.info("Using mock data for EOxGeoSearch");
+        this.useMockData();
+        console.info("Using mock data for EOxGeoSearch");
       }
-    }, 100);
+    }, this.interval);
 
     bounce();
   }
@@ -193,44 +197,42 @@ class EOxGeoSearch extends LitElement {
 
   getFlexDirection() {
     return this.direction === "up"
-        ? "column-reverse"
-        : this.direction === "left"
-        ? "row-reverse"
-        : this.direction === "down"
-        ? "column"
-        : this.direction === "right"
-        ? "row"
-        : "row";
+      ? "column-reverse"
+      : this.direction === "left"
+      ? "row-reverse"
+      : this.direction === "down"
+      ? "column"
+      : this.direction === "right"
+      ? "row"
+      : "row";
   }
 
   getResultsDirection() {
     return this.resultsDirection === "up"
-        ? "column-reverse"
-        : this.resultsDirection === "left"
-        ? "row-reverse"
-        : this.resultsDirection === "down"
-        ? "column"
-        : this.resultsDirection === "right"
-        ? "row"
-        : "row";
+      ? "column-reverse"
+      : this.resultsDirection === "left"
+      ? "row-reverse"
+      : this.resultsDirection === "down"
+      ? "column"
+      : this.resultsDirection === "right"
+      ? "row"
+      : "row";
   }
 
   getVerticalAlign() {
-    return this.resultsDirection === "up"
-        ? "end"
-        : "start";
+    return this.resultsDirection === "up" ? "end" : "start";
   }
 
   getMarginDirection(direction) {
     return direction === "up"
-        ? "top"
-        : direction === "left"
-        ? "left"
-        : direction === "down"
-        ? "bottom"
-        : direction === "right"
-        ? "right"
-        : "row";
+      ? "top"
+      : direction === "left"
+      ? "left"
+      : direction === "down"
+      ? "bottom"
+      : direction === "right"
+      ? "right"
+      : "row";
   }
 
   render() {
@@ -250,8 +252,8 @@ class EOxGeoSearch extends LitElement {
           style="
                         margin-${this.getMarginDirection(this.direction)}: 12px;
                         background: ${this._isInputVisible
-                            ? "#0078CE"
-                            : "#004170"};
+            ? "#0078CE"
+            : "#004170"};
                         flex-direction: ${this.getFlexDirection()}
                     "
           @click="${this.onButtonClick}"
@@ -279,7 +281,9 @@ class EOxGeoSearch extends LitElement {
             type="text"
             placeholder="Type to search"
             .value="${this._query}"
-            style="margin-${this.getMarginDirection(this.resultsDirection)}: 12px"
+            style="margin-${this.getMarginDirection(
+              this.resultsDirection
+            )}: 12px"
             @input="${this.onInput}"
           />
           <div class="results-container ${this._isListVisible ? "" : "hidden"}">
