@@ -291,7 +291,6 @@ class EOxGeoSearch extends LitElement {
               this.resultsDirection
             )}: 12px"
             @input="${this.onInput}"
-            @blur="${this.onInputBlur}"
           />
           <div class="results-container ${this._isListVisible ? "" : "hidden"}">
             ${this._data.map(
