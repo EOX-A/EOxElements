@@ -24,7 +24,7 @@ export const Primary = {
         label="Search"
         style="position: absolute; top: 36px; right: 32px; z-index: 12;"
         direction="left"
-        resultsDirection="down"
+        results-direction="down"
         limit="8"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
@@ -72,7 +72,7 @@ export const ButtonMode = {
         small
         button
         direction="left"
-        resultsDirection="down"
+        results-direction="down"
         limit="8"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
@@ -121,7 +121,7 @@ export const CustomAlignments = {
         small
         button
         direction="left"
-        resultsDirection="down"
+        results-direction="down"
         limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
@@ -137,7 +137,7 @@ export const CustomAlignments = {
         small
         button
         direction="right"
-        resultsDirection="down"
+        results-direction="down"
         limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
@@ -153,7 +153,7 @@ export const CustomAlignments = {
         small
         button
         direction="left"
-        resultsDirection="up"
+        results-direction="up"
         limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
@@ -169,7 +169,7 @@ export const CustomAlignments = {
         small
         button
         direction="right"
-        resultsDirection="up"
+        results-direction="up"
         limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =

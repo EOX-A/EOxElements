@@ -51,7 +51,7 @@ class EOxGeoSearch extends LitElement {
        * the parent component to handle the selection.
        *
        */
-      onSelect: { type: Function },
+      onSelect: { type: Function, attribute: false },
       /**
        * Whether or not to enable button mode, which hides and shows the input field
        * similar to how a modal works.
@@ -97,7 +97,11 @@ class EOxGeoSearch extends LitElement {
        * - `bottom`
        *
        */
-      resultsDirection: { type: String, default: "right" },
+      resultsDirection: {
+        type: String,
+        default: "right",
+        attribute: "results-direction",
+      },
     };
   }
 
