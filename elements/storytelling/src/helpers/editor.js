@@ -283,16 +283,12 @@ export function addCustomSection(
  *
  * @param {Element} StoryTellingEditor - Dom element
  * @param {String | null} storyId - ID of story
- * @param {{codemirror, value}} simpleMDEInstance - Simple MDE instance
+ * @param {{codemirror, value}} easyMDEInstance - Simple MDE instance
  */
-export function generateAutoSave(
-  StoryTellingEditor,
-  storyId,
-  simpleMDEInstance
-) {
+export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
   let timeOutId = null;
 
-  simpleMDEInstance?.codemirror.on("change", function () {
+  easyMDEInstance?.codemirror.on("change", function () {
     const saveEle = StoryTellingEditor.querySelector(".editor-saver");
     saveEle.innerText = "Auto Saving...";
     if (timeOutId) clearTimeout(timeOutId);
@@ -307,7 +303,7 @@ export function generateAutoSave(
         "markdown",
         JSON.stringify({
           ...existingMarkdownObj,
-          [storyId || "default"]: simpleMDEInstance.value(),
+          [storyId || "default"]: easyMDEInstance.value(),
         })
       );
       timeOutId = null;
@@ -372,15 +368,21 @@ export function initSavedMarkdown(EOxStoryTelling) {
 
 /**
  * Run when editor is initialised with all it's instance values
+ *
+ * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
  */
-export function runWhenEditorInitialised() {
-  if (this.editor.editor) {
-    const simpleMDEInstance =
-      this.editor.editor.editors["root.Story"].simplemde_instance;
-    generateAutoSave(this, this.storyId, simpleMDEInstance);
-    preventEditorOutsideScroll(this);
+export function runWhenEditorInitialised(StoryTellingEditor) {
+  if (StoryTellingEditor.editor.editor) {
+    const easyMDEInstance =
+      StoryTellingEditor.editor.editor.editors["root.Story"].simplemde_instance;
+    generateAutoSave(
+      StoryTellingEditor,
+      StoryTellingEditor.storyId,
+      easyMDEInstance
+    );
+    preventEditorOutsideScroll(StoryTellingEditor);
   } else {
-    setTimeout(runWhenEditorInitialised.bind(this), 100);
+    setTimeout(() => runWhenEditorInitialised(StoryTellingEditor), 100);
   }
 }
 

@@ -1,6 +1,20 @@
 # Changelog
 
-## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15)
+## [1.8.2](https://github.com/EOX-A/EOxElements/compare/map-v1.8.1...map-v1.8.2) (2024-05-16)
+
+
+### Bug Fixes
+
+* Prevent reaction to undefined zoom ([#961](https://github.com/EOX-A/EOxElements/issues/961)) ([4dcb512](https://github.com/EOX-A/EOxElements/commit/4dcb512eac3acf6b73d1cff09d4ad2c3c475a70c))
+
+## [1.8.1](https://github.com/EOX-A/EOxElements/compare/map-v1.8.0...map-v1.8.1) (2024-05-16)
+
+
+### Miscellaneous Chores
+
+* Revert non-working parts of config extraction ([5b622cc](https://github.com/EOX-A/EOxElements/commit/5b622cc836bd0863e687111489ed9f16cef86360))
+
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/map-v1.7.0...map-v1.8.0) (2024-05-15) - DEPRECATED
 
 
 ### Features

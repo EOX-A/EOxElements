@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.3...jsonform-v0.7.0) (2024-05-16)
+
+
+### Miscellaneous Chores
+
+* Replace simplemde with easymde and bundle js ([b4a9971](https://github.com/EOX-A/EOxElements/commit/b4a99710f79c57493768a87e6ff78926b754faaa))
+
 ## [0.6.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.2...jsonform-v0.6.3) (2024-05-08)
 
 
