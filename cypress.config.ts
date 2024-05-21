@@ -21,6 +21,9 @@ if (pathsChanged) {
   }
 }
 export default defineConfig({
+  env: {
+    CI_PATHS_CHANGED: pathsChanged,
+  },
   e2e: {
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: false,
@@ -34,5 +37,8 @@ export default defineConfig({
     fixturesFolder: "./elements", // changes fixture folder location from ./cypress/fixtures for component tests
     specPattern: specPatternComponentTests,
     indexHtmlFile: "cypress/support/component-index.html",
+  },
+  retries: {
+    runMode: 2,
   },
 });
