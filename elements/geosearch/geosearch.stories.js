@@ -1,4 +1,3 @@
-import { EOxGeoSearch } from "./main";
 import { html } from "lit";
 
 export default {
