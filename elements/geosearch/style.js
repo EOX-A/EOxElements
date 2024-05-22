@@ -15,7 +15,6 @@ const styles = css`
     display: flex;
     flex-direction: column;
     align-items: start;
-    min-height: 300px;
   }
   .search-container.hidden {
     opacity: 0;
@@ -23,14 +22,15 @@ const styles = css`
   .results-container {
     min-height: 100px;
     width: 332px;
-    background: #eaf1f5;
+    background: var(--results-bg, #eaf1f5);
     overflow: hidden;
     border-radius: 6px;
     box-shadow: 0px 3px 5px -2px rgba(0, 0, 0, 0.08),
       0px 2px 2px 0px rgba(0, 0, 0, 0.08), 0px 1px 5px 0px rgba(0, 0, 0, 0.08);
   }
   input {
-    background: #c6d4dd;
+    background: var(--input-bg, #c6d4dd);
+    color: var(--input-fg, #c6d4dd);
     height: 48px;
     border-radius: 6px;
     padding: 0 16px;
