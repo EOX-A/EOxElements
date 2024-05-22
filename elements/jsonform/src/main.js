@@ -80,6 +80,8 @@ export class EOxJSONForm extends LitElement {
 
   /**
    * Getter for the JSON schema used to render the form
+   *
+   * @return {JsonSchema | String}
    */
   get schema() {
     return this._schema;
@@ -146,7 +148,7 @@ export class EOxJSONForm extends LitElement {
   /**
    * Lifecycle method called when the element is updated
    *
-   * @param {Object} changedProperties
+   * @param {import("lit").PropertyValues} changedProperties
    */
   async updated(changedProperties) {
     this._value = await parseProperty(this.value);
