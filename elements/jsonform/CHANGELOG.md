@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.7.0...jsonform-v0.8.0) (2024-05-22)
+
+
+### Features
+
+* Refactoring and new styling ([#967](https://github.com/EOX-A/EOxElements/issues/967)) ([414ca26](https://github.com/EOX-A/EOxElements/commit/414ca2623710bd78c5fbb41d1c465e77cee947fc))
+
+
+### Bug Fixes
+
+* Adaptations to new eox-jsonform md editor ([#957](https://github.com/EOX-A/EOxElements/issues/957)) ([4a644ca](https://github.com/EOX-A/EOxElements/commit/4a644ca1fa81ad0981761b7f92469198950bfed2))
+
 ## [0.7.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.6.3...jsonform-v0.7.0) (2024-05-16)
 
 
