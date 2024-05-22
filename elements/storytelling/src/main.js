@@ -22,6 +22,7 @@ import {
 import styleEOX from "./style.eox.js";
 import "./components/editor";
 import { DEFAULT_SENSITIVE_TAGS, SAMPLE_ELEMENTS } from "./enums";
+import _debounce from "lodash.debounce";
 const md = markdownit({ html: true });
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
@@ -57,6 +58,13 @@ export class EOxStoryTelling extends LitElement {
    * @type {Object}
    */
   #config = {};
+
+  /**
+   * Debounce update markdown
+   *
+   * @type {Object}
+   */
+  #debounceUpdateMarkdown = null;
   constructor() {
     super();
 
@@ -202,6 +210,13 @@ export class EOxStoryTelling extends LitElement {
   }
 
   async firstUpdated() {
+    this.#debounceUpdateMarkdown = _debounce((e) => {
+      if (e.detail) {
+        this.markdown = e.detail.Story;
+        this.requestUpdate();
+      }
+    }, 1000);
+
     initSavedMarkdown(this);
     addLightBoxScript(this);
 
@@ -246,12 +261,8 @@ export class EOxStoryTelling extends LitElement {
               .isNavigation=${Boolean(this.showNav)}
               .storyId=${this.id}
               show-editor="${this.showEditor}"
-              @change=${(e) => {
-                if (e.detail) {
-                  this.markdown = e.detail.Story;
-                  this.requestUpdate();
-                }
-              }}
+              @change=${this.#debounceUpdateMarkdown}
+              }
             ></eox-storytelling-editor>
           `
         )}
