@@ -3,9 +3,10 @@ import "toolcool-range-slider/dist/plugins/tcrs-generated-labels.min.js";
 import "toolcool-range-slider";
 
 /**
- * Set multiple attribute to element
- * @param {Element} element
- * @param {{[key: string]: any}} attributes
+ * Set multiple attributes to an element
+ *
+ * @param {Element} element - The DOM element to set attributes on
+ * @param {{[key: string]: any}} attributes - The attributes to set on the element
  */
 function setAttributes(element, attributes) {
   Object.keys(attributes).forEach((attr) => {
@@ -13,6 +14,7 @@ function setAttributes(element, attributes) {
   });
 }
 
+// Define a custom editor class extending AbstractEditor
 export class MinMaxEditor extends AbstractEditor {
   register() {
     super.register();
@@ -22,6 +24,7 @@ export class MinMaxEditor extends AbstractEditor {
     super.unregister();
   }
 
+  // Build the editor UI
   build() {
     const properties = this.schema.properties;
     const options = this.options;
@@ -29,6 +32,7 @@ export class MinMaxEditor extends AbstractEditor {
     const theme = this.theme;
     const startVals = this.defaults.startVals[this.key];
 
+    // Create label and description elements if not in compact mode
     if (!options.compact)
       this.header = this.label = theme.getFormInputLabel(
         this.getTitle(),
@@ -43,11 +47,13 @@ export class MinMaxEditor extends AbstractEditor {
         this.translateProperty(options.infoText)
       );
 
+    // Create the range slider element
     const range = document.createElement("tc-range-slider");
     // TODO - better logic to find min & max properties?
     const minKey = Object.keys(properties).find((k) => k.includes("min"));
     const maxKey = Object.keys(properties).find((k) => k.includes("max"));
 
+    // Define attributes for the range slider
     const attributes = {
       min: properties[minKey].minimum,
       max: properties[maxKey].maximum,
@@ -74,6 +80,7 @@ export class MinMaxEditor extends AbstractEditor {
       this.input.disabled = true;
     }
 
+    // Add event listener for change events on the range slider
     this.input.addEventListener("change", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -87,6 +94,7 @@ export class MinMaxEditor extends AbstractEditor {
     this.container.appendChild(this.control);
   }
 
+  // Destroy the editor and remove all associated elements
   destroy() {
     if (this.label && this.label.parentNode)
       this.label.parentNode.removeChild(this.label);
