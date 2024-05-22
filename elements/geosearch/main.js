@@ -255,7 +255,7 @@ class EOxGeoSearch extends LitElement {
             : ""}"
           style="
             flex-direction: ${this.getResultsDirection()};
-            min-height: ${this._isListVisible ? 300 : 48}px;
+            min-height: 300px;
           "
         >
           <input
