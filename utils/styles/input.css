@@ -9,3 +9,21 @@ textarea {
   font-size: smaller;
   background: var(--background-color);
 }
+
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+select {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 5px 7px;
+  border-radius: 4px;
+  border: 1px solid #0004;
+}

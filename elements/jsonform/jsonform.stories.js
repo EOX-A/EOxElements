@@ -21,6 +21,7 @@ export default {
     <eox-jsonform
       .schema=${args.schema}
       .value=${args.value}
+      .noShadow=${true}
       .unstyled=${args.unstyled}
     ></eox-jsonform>
   `,

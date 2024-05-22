@@ -3,6 +3,7 @@ import { createEditor, parseProperty } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
+import allStyle from "../../../utils/styles/dist/all.style";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -174,6 +175,7 @@ export class EOxJSONForm extends LitElement {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
       </style>
       <form></form>
