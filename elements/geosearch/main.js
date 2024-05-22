@@ -232,9 +232,9 @@ class EOxGeoSearch extends LitElement {
             ? "active"
             : ""}"
           style="
-                        margin-${this.getMarginDirection(this.direction)}: 12px;
-                        flex-direction: ${this.getFlexDirection()}
-                    "
+            margin-${this.getMarginDirection(this.direction)}: 12px;
+            flex-direction: ${this.getFlexDirection()};
+          "
           @click="${this.onButtonClick}"
         >
           <span class="icon"></span>
@@ -254,7 +254,7 @@ class EOxGeoSearch extends LitElement {
               : "hidden"
             : ""}"
           style="
-            flex-direction: ${this.getResultsDirection()}
+            flex-direction: ${this.getResultsDirection()};
             min-height: ${this._isListVisible ? 300 : 48}px;
           "
         >
