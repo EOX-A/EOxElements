@@ -45,7 +45,7 @@ export const createEditor = (element) => {
           @import url("https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css");
           @import url("https://unpkg.com/easymde/dist/easymde.min.css");
         `;
-      element.renderRoot.appendChild(style);
+      element.renderRoot.insertBefore(style, element.renderRoot.firstChild);
     }
   });
   return editor;

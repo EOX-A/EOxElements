@@ -24,7 +24,7 @@ export const styleEOX = `
   }
   .je-header span:first-of-type, form[data-theme="html"] .je-form-input-label {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
   }
   form[data-theme="html"] .je-indented-panel {
     border: none;
@@ -87,8 +87,22 @@ export const styleEOX = `
   .je-indented-panel .row {
     margin-top: 10px;
   }
-  
-  
+  .EasyMDEContainer span {
+    display: unset;
+  }
+  .editor-toolbar button {
+    box-shadow: none;
+    color: #2c3e50 !important;
+  }
+  .editor-toolbar button:hover:not([disabled]):not(.icon),
+  .editor-toolbar button:hover:not([disabled]):not(.icon) {
+    box-shadow: none;
+    background: #fcfcfc;
+    border-color: #95a5a6;
+  }
+  .editor-toolbar button i {
+    font-size: 17px;
+  }
   .cm-header-1 {
     font-size: 200% !important;
   }
