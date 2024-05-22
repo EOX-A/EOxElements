@@ -47,7 +47,7 @@ const styles = css`
   }
   button {
     height: auto;
-    background: var(--button-bg, #004170)
+    background: var(--button-bg, #004170);
   }
 
   .geosearch.small button {
