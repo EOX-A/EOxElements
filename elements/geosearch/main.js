@@ -30,22 +30,21 @@ class EOxGeoSearch extends LitElement {
        *
        */
       _query: { attribute: false },
-      _useMockData: { attribute: false },
       /**
-       * The OpenCage API endpoint to use for the search, as a Handlebars template string with `query` and `key` variables.
+       * The OpenCage API endpoint to use for the search, without the query parameter.
        *
        */
       endpoint: { type: String },
       /**
-       * The API key to use for the search.
+       * The name of the query parameter to use for the search query in the endpoint URI.
        *
        */
-      key: { type: String },
+      queryParameter: { type: String, default: "q" },
       /**
-       * The query selector for the map target, if any.
+       * Use this to set the search results if they are fetched from a local source.
        *
        */
-      for: { type: String },
+      data: { type: Object },
       /**
        * A function to be called when a search result is selected, to enable
        * the parent component to handle the selection.
@@ -58,11 +57,6 @@ class EOxGeoSearch extends LitElement {
        *
        */
       button: { type: Boolean },
-      /**
-       * Limit the search results to a certain number of items.
-       *
-       */
-      limit: { type: Number, default: 10 },
       /**
        * Set a custom interval for the debounce function.
        *
@@ -87,7 +81,11 @@ class EOxGeoSearch extends LitElement {
        * - `bottom`
        *
        */
-      direction: { type: String },
+      direction: {
+        type: String,
+        //default: "left",
+        attribute: "list-direction",
+      },
       /**
        * The direction of the results box relative to the input, with the following options:
        *
@@ -112,18 +110,9 @@ class EOxGeoSearch extends LitElement {
     this._isListVisible = false;
     this._isInputVisible = false;
     this._query = "";
-    this._useMockData = true;
   }
 
   static styles = styles;
-
-  async useMockData() {
-    let url = `/opencage-mock-data.json`;
-
-    const response = await fetch(url);
-    const json = await response.json();
-    this._data = json.results;
-  }
 
   async fetchRemoteData(url) {
     const response = await fetch(encodeURI(url));
@@ -153,26 +142,12 @@ class EOxGeoSearch extends LitElement {
     }
 
     let bounce = _debounce(async () => {
-      // Switch from mock data to API if `endpoint` and `key` are set and not empty.
-      if (
-        this.endpoint &&
-        this.key &&
-        this.endpoint.length > 0 &&
-        this.key.length > 0
-      ) {
-        var template = Handlebars.compile(this.endpoint);
-
-        // Execute the compiled template and store the resulting URL.
-        let url = template({
-          query: this._query,
-          key: this.key,
-          limit: this.limit,
-        });
-
-        await this.fetchRemoteData(url);
+      if (this.endpoint && this.endpoint.length > 0) {
+        const uri = `${this.endpoint}${this.endpoint.includes("?") ? "&" : "?"}${this.queryParameter ?? "q"}=${this._query}`;
+        console.log(uri);
+        await this.fetchRemoteData(uri);
       } else {
-        this.useMockData();
-        console.info("Using mock data for EOxGeoSearch");
+        console.error("No endpoint provided for GeoSearch element.");
       }
     }, this.interval);
 
@@ -253,12 +228,11 @@ class EOxGeoSearch extends LitElement {
         "
       >
         <button
-          class="${this.button ? "" : "hidden"}"
+          class="${this.button ? "" : "hidden"} ${this._isInputVisible
+            ? "active"
+            : ""}"
           style="
                         margin-${this.getMarginDirection(this.direction)}: 12px;
-                        background: ${this._isInputVisible
-            ? "#0078CE"
-            : "#004170"};
                         flex-direction: ${this.getFlexDirection()}
                     "
           @click="${this.onButtonClick}"
@@ -279,7 +253,10 @@ class EOxGeoSearch extends LitElement {
               ? ""
               : "hidden"
             : ""}"
-          style="flex-direction: ${this.getResultsDirection()}"
+          style="
+            flex-direction: ${this.getResultsDirection()}
+            min-height: ${this._isListVisible ? 300 : 48}px;
+          "
         >
           <input
             id="gazetteer"
@@ -349,7 +326,8 @@ class EOxGeoSearchItem extends LitElement {
   static styles = css`
     .search-result {
       padding: 10px;
-      border-bottom: 1px solid #aaa;
+      border-bottom: 1px solid var(--results-border-color, #aaa);
+      color: var(--results-fg, #000);
       cursor: pointer;
       font-size: 0.9rem;
     }
