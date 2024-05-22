@@ -12,22 +12,22 @@ class EOxGeoSearch extends LitElement {
     return {
       /**
        * Internal storage of OpenCage API data after a successful API request.
-       *
+       * @private
        */
       _data: { attribute: false },
       /**
        * Whether or not the list dropdown is visible.
-       *
+       * @private
        */
       _isListVisible: { attribute: false },
       /**
        * Whether or not the input field is visible.
-       *
+       * @private
        */
       _isInputVisible: { attribute: false },
       /**
        * The search query, which is bound to the input field.
-       *
+       * @private
        */
       _query: { attribute: false },
       /**
@@ -40,11 +40,6 @@ class EOxGeoSearch extends LitElement {
        *
        */
       queryParameter: { type: String, default: "q" },
-      /**
-       * Use this to set the search results if they are fetched from a local source.
-       *
-       */
-      data: { type: Object },
       /**
        * A function to be called when a search result is selected, to enable
        * the parent component to handle the selection.
