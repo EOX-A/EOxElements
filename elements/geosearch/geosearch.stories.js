@@ -15,14 +15,13 @@ export const Primary = {
   args: {
     center: [15.0, 48.0],
     endpoint: "./opencage-mock-data.json",
-    key: "",
   },
   render: (args) => {
     return html`
       <eox-geosearch
         label="Search"
         style="position: absolute; top: 36px; right: 32px; z-index: 12;"
-        direction="left"
+        list-direction="left"
         results-direction="down"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
@@ -57,9 +56,7 @@ export const Primary = {
 export const ButtonMode = {
   args: {
     center: [15.0, 48.0],
-    endpoint:
-      "https://api.opencagedata.com/geocode/v1/json?=&q={{query}}&key={{key}}&limit={{limit}}",
-    key: "",
+    endpoint: "./opencage-mock-data.json",
   },
   render: (args) => {
     return html`
@@ -68,7 +65,7 @@ export const ButtonMode = {
         style="position: absolute; top: 36px; right: 32px; z-index: 12;"
         small
         button
-        direction="left"
+        list-direction="left"
         results-direction="down"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
@@ -103,8 +100,7 @@ export const ButtonMode = {
 export const CustomAlignments = {
   args: {
     center: [15.0, 48.0],
-    endpoint: "",
-    key: "",
+    endpoint: "./opencage-mock-data.json",
   },
   render: (args) => {
     return html`
