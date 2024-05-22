@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.2...storytelling-v1.0.3) (2024-05-22)
+
+
+### Bug Fixes
+
+* Debounce editor updates  ([#965](https://github.com/EOX-A/EOxElements/issues/965)) ([83f9df7](https://github.com/EOX-A/EOxElements/commit/83f9df793a751a4650ec24ac6357d049b731d588))
+* Wheel event listener error when querySelector is null ([#976](https://github.com/EOX-A/EOxElements/issues/976)) ([03da42e](https://github.com/EOX-A/EOxElements/commit/03da42ed641c701a1045e753f62abf5b268e8979))
+
 ## [1.0.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.1...storytelling-v1.0.2) (2024-05-16)
 
 
