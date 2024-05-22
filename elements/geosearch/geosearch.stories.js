@@ -14,8 +14,7 @@ export default {
 export const Primary = {
   args: {
     center: [15.0, 48.0],
-    endpoint:
-      "https://api.opencagedata.com/geocode/v1/json?=&q={{query}}&key={{key}}&limit={{limit}}",
+    endpoint: "./opencage-mock-data.json",
     key: "",
   },
   render: (args) => {
@@ -25,12 +24,10 @@ export const Primary = {
         style="position: absolute; top: 36px; right: 32px; z-index: 12;"
         direction="left"
         results-direction="down"
-        limit="8"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
             item.zoomExtent)}"
         .endpoint="${args.endpoint}"
-        .key="${args.key}"
       ></eox-geosearch>
 
       <eox-map
@@ -73,12 +70,10 @@ export const ButtonMode = {
         button
         direction="left"
         results-direction="down"
-        limit="8"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
             item.zoomExtent)}"
         .endpoint="${args.endpoint}"
-        .key="${args.key}"
       ></eox-geosearch>
 
       <eox-map
@@ -108,8 +103,7 @@ export const ButtonMode = {
 export const CustomAlignments = {
   args: {
     center: [15.0, 48.0],
-    endpoint:
-      "https://api.opencagedata.com/geocode/v1/json?=&q={{query}}&key={{key}}&limit={{limit}}",
+    endpoint: "",
     key: "",
   },
   render: (args) => {
@@ -120,14 +114,12 @@ export const CustomAlignments = {
         style="position: absolute; top: 36px; right: 32px; z-index: 12;"
         small
         button
-        direction="left"
+        list-direction="left"
         results-direction="down"
-        limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
             item.zoomExtent)}"
         .endpoint="${args.endpoint}"
-        .key="${args.key}"
       ></eox-geosearch>
 
       <!-- Top Left -->
@@ -136,14 +128,12 @@ export const CustomAlignments = {
         style="position: absolute; top: 36px; left: 32px; z-index: 12;"
         small
         button
-        direction="right"
+        list-direction="right"
         results-direction="down"
-        limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
             item.zoomExtent)}"
         .endpoint="${args.endpoint}"
-        .key="${args.key}"
       ></eox-geosearch>
 
       <!-- Bottom Right -->
@@ -152,14 +142,12 @@ export const CustomAlignments = {
         style="position: absolute; top: 296px; right: 32px; z-index: 12;"
         small
         button
-        direction="left"
+        list-direction="left"
         results-direction="up"
-        limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
             item.zoomExtent)}"
         .endpoint="${args.endpoint}"
-        .key="${args.key}"
       ></eox-geosearch>
 
       <!-- Bottom Left -->
@@ -168,14 +156,12 @@ export const CustomAlignments = {
         style="position: absolute; top: 296px; left: 32px; z-index: 12;"
         small
         button
-        direction="right"
+        list-direction="right"
         results-direction="up"
-        limit="5"
         .onSelect="${(item) =>
           (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
             item.zoomExtent)}"
         .endpoint="${args.endpoint}"
-        .key="${args.key}"
       ></eox-geosearch>
 
       <eox-map
