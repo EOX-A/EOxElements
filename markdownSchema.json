@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "Markdown": {
+      "type": "string",
+      "format": "markdown",
+      "options": {
+        "simplemde": {
+          "spellChecker": false
+        }
+      }
+    }
+  }
+}
