@@ -134,15 +134,6 @@ export class EOxSelectInteraction {
       return null;
     });
 
-    // Pan into the feature's extend when `panIn` is true
-    const panIntoFeature = (feature: Feature | RenderFeature) => {
-      if (this.panIn) {
-        this.eoxMap.map
-          .getView()
-          .fit(feature.getGeometry().getExtent(), { duration: 750 });
-      }
-    };
-
     const listener = (event: MapBrowserEvent<UIEvent>) => {
       if (!this.active) {
         return;
@@ -167,7 +158,7 @@ export class EOxSelectInteraction {
 
           if (idChanged) {
             this.selectStyleLayer.changed();
-            if (feature) panIntoFeature(feature);
+            if (feature) this.panIntoFeatures([feature]);
           }
 
           if (overlay) {
@@ -226,17 +217,42 @@ export class EOxSelectInteraction {
     eoxMap.map.getLayerGroup().on("change", removeLayerListener);
   }
 
+  // Pan into the feature's extend when `panIn` is true
+  panIntoFeatures(features: Array<Feature | RenderFeature>) {
+    if (this.panIn && features.length) {
+
+        this.eoxMap.map
+          .getView()
+          .fit(feature.getGeometry().getExtent(), this.eoxMap.animationOptions || { duration: 750 });
+      }
+    };
+
   setActive(active: boolean) {
     this.active = active;
   }
 
   /**
-   * highlights one or more features by their IDs. Does not fire select events.
+   * highlights one or more features by their IDs
    * @param {Array<string | number>} ids
    */
   highlightById(ids: Array<string | number>) {
     this.selectedFids = ids;
     this.selectStyleLayer.changed(); // force rerender to highlight selected fids
+    let selectedFeatures;
+    if (this.selectLayer instanceof VectorLayer) {
+      selectedFeatures = this.selectLayer.getSource().getFeatures().filter(f => ids.includes(this.getId(f)));
+    } else {
+      // get all renderfeatures in extent
+
+    }
+    this.panIntoFeatures();
+    const selectdEvt = new CustomEvent("select", {
+      detail: {
+        id: ids,
+        feature: selectedFeatures,
+      },
+    });
+    this.eoxMap.dispatchEvent(selectdEvt);
   }
 
   remove() {

@@ -239,6 +239,28 @@ export class EOxMap extends LitElement {
     if (this.preventScroll === undefined) {
       this.preventScroll = config?.preventScroll;
     }
+    this.zoom = config?.view?.zoom || 0;
+    this.center = config?.view?.center || [0, 0]; // set center after projection, order matters
+    this.zoomExtent = config?.view?.zoomExtent;
+  }
+
+  private _animationOptions: EOxAnimationOptions | boolean = false;
+
+  /**
+   * option that are used when setting the `zoom`, `center` or `zoomExtent` of the map.
+   * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
+   * animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions
+   * by default, no animations are disabled
+   */
+  set animationOptions(animationOptions: EOxAnimationOptions) {
+    this._animationOptions = animationOptions;
+  }
+  /**
+   * sets animation properties
+   * @type {import("ol/View").AnimationOptions} animationOptions
+   */
+  get animationOptions() {
+    return this._animationOptions;
   }
 
   /**
