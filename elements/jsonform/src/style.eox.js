@@ -18,6 +18,10 @@ export const styleEOX = `
     border-bottom: 1px solid #0002;
     padding: 0.5rem 0;
   }
+  .je-range-control {
+    display: flex;
+    align-items: center;
+  }
   .je-indented-panel span {
     display: flex;
     align-items: center;
