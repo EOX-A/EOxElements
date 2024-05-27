@@ -137,7 +137,9 @@ class EOxGeoSearch extends LitElement {
 
     let bounce = _debounce(async () => {
       if (this.endpoint && this.endpoint.length > 0) {
-        const uri = `${this.endpoint}${this.endpoint.includes("?") ? "&" : "?"}${this.queryParameter ?? "q"}=${this._query}`;
+        const uri = `${this.endpoint}${
+          this.endpoint.includes("?") ? "&" : "?"
+        }${this.queryParameter ?? "q"}=${this._query}`;
         console.log(uri);
         await this.fetchRemoteData(uri);
       } else {

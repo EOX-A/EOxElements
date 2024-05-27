@@ -1,4 +1,3 @@
-
 # EOxGeoSearch
 
 An autocompleted search input for geographic locations.
@@ -28,4 +27,3 @@ To style the component, the following CSS variables are supported:
 ## Screenshots/Videos
 
 ![Screen Recording 2024-05-21 at 12 11 02](https://github.com/EOX-A/EOxElements/assets/94269527/5d207fbb-6abf-42d5-b053-74ad4e75f930)
-
