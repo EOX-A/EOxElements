@@ -21,11 +21,25 @@ const loadMarkdownEditorTest = () => {
     .within(() => {
       cy.get(editorSelector).should("exist");
       cy.get(jsonFormSelector).should("exist");
+
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1500);
       cy.get(jsonFormSelector).then(($jsonform) => {
         const newMardown = "## Bar";
-        $jsonform[0].value = { Story: newMardown };
-        $jsonform[0].editor.setValue($jsonform[0].value);
-        expect($jsonform[0].value.Story).to.eq(newMardown);
+        const formDOM = $jsonform[0];
+        formDOM.value = { Story: newMardown };
+
+        const startPos = { line: 0, ch: 0, sticky: null };
+        const endPos = { line: 0, ch: 6, sticky: null };
+        formDOM.editor.editors[
+          "root.Story"
+        ].simplemde_instance.codemirror.replaceRange(
+          "## Bar",
+          startPos,
+          endPos
+        );
+
+        expect(formDOM.value.Story).to.eq(newMardown);
       });
       cy.get("h2").should("have.text", "Bar");
       cy.get("button[title='Add custom section']").click();

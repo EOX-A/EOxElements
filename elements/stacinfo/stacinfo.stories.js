@@ -123,20 +123,17 @@ export const CustomSlotContent = {
       style="width: 400px"
     >
       <div
-        slot="region"
+        slot="agency"
         style="background: lightgrey; width: 100%; padding: 10px 20px; border-radius: 4px;"
       >
-        <p>
-          Replacing the "region" property slot to render it in a custom manner:
-        </p>
-        <p>--> <strong>Region:</strong> <span class="content"></span>!</p>
+        <p>--> <strong>Agency:</strong> <span class="content"></span>!</p>
       </div>
     </eox-stacinfo>
     <script>
       const stacInfo = document.querySelector("eox-stacinfo#slot");
       stacInfo.addEventListener("loaded", () => {
         setTimeout(() => {
-          const value = stacInfo.stacProperties["osc:region"];
+          const value = stacInfo.stacProperties["agency"];
           document.querySelector(".content").innerHTML = value.formatted;
         });
       });

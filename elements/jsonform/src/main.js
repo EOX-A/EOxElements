@@ -1,14 +1,14 @@
 import { LitElement, html } from "lit";
-import { createEditor } from "./helpers";
+import { createEditor, parseProperty } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
+import allStyle from "../../../utils/styles/dist/all.style";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
  * @element eox-jsonform
  */
-
 export class EOxJSONForm extends LitElement {
   static properties = {
     schema: { attribute: false, type: Object },
@@ -20,27 +20,30 @@ export class EOxJSONForm extends LitElement {
 
   /**
    * editor instance generated through - JSONEditor
+   *
    * @type {{[key: string]: any}}
    */
   #editor = null;
-
   constructor() {
     super();
 
     /**
      * Schema for the form editor
+     *
      * @type {JsonSchema}
      */
     this.schema;
 
     /**
      * Default values for the form editor
+     *
      * @type {JsonSchema}
      */
     this.value;
 
     /**
      * Default values for the form editor
+     *
      * @type {object}
      */
     this.options = {
@@ -62,47 +65,31 @@ export class EOxJSONForm extends LitElement {
 
     /**
      * Render the element without additional styles
+     *
+     * @type {Boolean}
      */
     this.unstyled = false;
   }
-  /**
-   * @param {JsonSchema | String} property
-   */
-  async parseProperty(property) {
-    if (property) {
-      if (typeof property !== "object") {
-        // Property is a URL so we need to fetch it
-        try {
-          const response = await fetch(property);
-          if (response.ok) {
-            const json = await response.json();
-            return json;
-          } else {
-            console.error("Failed to fetch schema from URL: ", response.status);
-          }
-        } catch (error) {
-          console.error("Error fetching schema: ", error);
-        }
-      }
-    }
-    return property;
-  }
 
   /**
-   * The JSONEditor instance
+   * Getter for the JSONEditor instance
    */
   get editor() {
     return this.#editor;
   }
 
   /**
-   * JSON schema used to render the form
+   * Getter for the JSON schema used to render the form
+   *
+   * @return {JsonSchema | String}
    */
   get schema() {
     return this._schema;
   }
 
   /**
+   * Setter for the JSON schema used to render the form
+   *
    * @param {JsonSchema} newSchema
    */
   set schema(newSchema) {
@@ -113,18 +100,21 @@ export class EOxJSONForm extends LitElement {
   }
 
   /**
-   * Default values to fill the form
+   * Getter for the default values to fill the form
    */
   get value() {
     return this._value;
   }
+
   /**
+   *  Setter for the default values to fill the form
+   *
    * @param {JsonSchema} newVal
    */
   set value(newVal) {
-    if (this.#editor && this.#editor.ready && !isEqual(this._value, newVal)) {
+    if (this.#editor && this.#editor.ready && !isEqual(this._value, newVal))
       this.#editor.setValue(this.value);
-    }
+
     this._value = newVal;
   }
 
@@ -155,11 +145,17 @@ export class EOxJSONForm extends LitElement {
     });
   }
 
+  /**
+   * Lifecycle method called when the element is updated
+   *
+   * @param {import("lit").PropertyValues} changedProperties
+   */
   async updated(changedProperties) {
-    this._value = await this.parseProperty(this.value);
+    this._value = await parseProperty(this.value);
     // check if schema has been changed to prevent useless parsing
     if (changedProperties.has("schema")) {
-      this._schema = await this.parseProperty(this.schema);
+      this._schema = await parseProperty(this.schema);
+
       if (!this.#editor || this.#editor.destroyed) {
         this.#editor = await createEditor(this);
         this.#dispatchEvent();
@@ -174,10 +170,14 @@ export class EOxJSONForm extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * Renders the component's HTML and CSS
+   */
   render() {
     return html`
       <style>
         ${style}
+        ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
       </style>
       <form></form>

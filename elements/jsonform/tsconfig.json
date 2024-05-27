@@ -17,7 +17,8 @@
     "experimentalDecorators": true,
     "allowJs": true,
     "checkJs": true,
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "noImplicitAny": false
   },
   "include": ["src/*.js"]
 }
