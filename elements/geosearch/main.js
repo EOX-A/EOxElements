@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit";
-import Handlebars from "handlebars";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
