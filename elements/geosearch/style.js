@@ -30,7 +30,7 @@ const styles = css`
   }
   input {
     background: var(--input-bg, #c6d4dd);
-    color: var(--input-fg, #c6d4dd);
+    color: var(--input-fg, #333);
     height: 48px;
     border-radius: 6px;
     padding: 0 16px;
