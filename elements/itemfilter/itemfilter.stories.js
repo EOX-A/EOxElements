@@ -226,6 +226,7 @@ export const ItemFilter2 = {
     <eox-itemfilter-v2
       .items=${items}
       .config=${{
+        inlineMode: true,
         titleProperty: "title",
         filterProperties: [
           {

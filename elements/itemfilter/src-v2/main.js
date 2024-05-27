@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
 import { map } from "lit/directives/map.js";
+import { when } from "lit/directives/when.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
@@ -8,6 +9,7 @@ import allStyle from "../../../utils/styles/dist/all.style";
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
 import "./components/expand-container";
+import "./components/itemfilter-container";
 
 export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
@@ -36,7 +38,7 @@ export class EOxItemFilter extends LitElement {
       case "multiselect":
         const result = uniq(flatMap(this.items, filter.key));
         return html`
-          <ul slot="filter">
+          <ul class="multiselect" slot="filter">
             ${map(
               result,
               (item) => html`
@@ -68,11 +70,26 @@ export class EOxItemFilter extends LitElement {
         ${this.styleOverride}
       </style>
       <form id="itemfilter" @submit="${(evt) => evt.preventDefault()}">
-        ${map(
-          this.config?.filterProperties || [],
-          (filter) => html` <itemfilter-expandcontainer .filterObject=${filter}
-            >${this.createFilter(filter)}
-          </itemfilter-expandcontainer>`
+        ${when(
+          this.config?.filterProperties,
+          () => html`
+            <eox-itemfilter-container
+              .inlineMode=${this.config.inlineMode || false}
+            >
+              <section slot="section">
+                <ul id="filters">
+                  ${map(
+                    this.config.filterProperties,
+                    (filter) => html` <li>
+                      <itemfilter-expandcontainer .filterObject=${filter}
+                        >${this.createFilter(filter)}
+                      </itemfilter-expandcontainer>
+                    </li>`
+                  )}
+                </ul>
+              </section>
+            </eox-itemfilter-container>
+          `
         )}
       </form>
     `;

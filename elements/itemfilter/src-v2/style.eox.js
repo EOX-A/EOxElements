@@ -102,7 +102,7 @@ section:not(section:last-of-type) {
 ul li {
   padding: 5px 10px;
 }
-#itemfilter li:hover {
+#itemfilter .multiselect li:hover {
   background: #00417011;
 }
 section {
