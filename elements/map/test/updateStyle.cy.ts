@@ -39,14 +39,21 @@ describe("layers", () => {
       // @ts-ignore
       (<EOxMap>$el[0]).addOrUpdateLayer(updatedLayerJson);
       const layer = (<EOxMap>$el[0]).map.getLayers().getArray()[0];
+
       // @ts-ignore
-      const styleFunction = layer.getStyle();
+      const features = layer.getSource().getFeatures();
+
+      expect(features.length).to.be.greaterThan(0);
+
       // @ts-ignore
-      const appliedStyle = styleFunction(layer.getSource().getFeatures()[0]);
-      expect(appliedStyle[0].getFill().getColor(), "sets color").to.be.equal(
-        "#7BF5CC"
-      );
-      expect(appliedStyle[0].getText().getText(), "sets text").to.be.equal(
+      const styleFunction = layer.getStyleFunction();
+      const featureStyle = styleFunction(features[0])[0];
+
+      const featureColor = featureStyle.getFill().getColor();
+
+      expect(featureColor, "sets color").to.be.equal("#7BF5CC");
+      const featureText = featureStyle.getText().getText();
+      expect(featureText, "sets text").to.be.equal(
         "Northeast Siberian coastal tundra"
       );
     });
