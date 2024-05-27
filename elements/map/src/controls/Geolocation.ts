@@ -5,6 +5,7 @@ import Point from "ol/geom/Point.js";
 import { Vector as VectorSource } from "ol/source.js";
 import { Vector as VectorLayer } from "ol/layer.js";
 import { Fill, Stroke, Style } from "ol/style";
+import { Geometry } from "ol/geom";
 
 export type GeolocationOptions = import("ol/control/Control").Options & {
   /**
@@ -96,9 +97,11 @@ export default class GeolocationControl extends Control {
           }),
         })
       );
+      // @ts-ignore
       this._source.addFeature(this._accuracyFeature);
     }
 
+    // @ts-ignore
     this._layer = new VectorLayer({
       source: this._source,
     });
@@ -129,11 +132,12 @@ export default class GeolocationControl extends Control {
   private _centerWhenReady: boolean;
   private _highAccuracy: boolean;
   private _positionFeature: Feature<Point>;
-  private _accuracyFeature: Feature;
+  private _accuracyFeature: Feature<Geometry>;
   private _trackAccuracy: boolean;
   private _trackHeading: boolean;
+  //@ts-ignore
   private _layer: VectorLayer<VectorSource>;
-  private _source: VectorSource;
+  private _source: VectorSource<Feature<Point>>;
   private _geolocation: Geolocation;
 
   /**

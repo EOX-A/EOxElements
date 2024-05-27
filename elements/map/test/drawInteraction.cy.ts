@@ -113,6 +113,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
+        //@ts-ignore
       ) as import("ol/layer").Vector<import("ol/source").Vector>;
       const source = drawLayer.getSource();
       const features = source.getFeatures();
@@ -154,6 +155,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
+        //@ts-ignore
       ) as import("ol/layer").Vector<import("ol/source").Vector>;
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);

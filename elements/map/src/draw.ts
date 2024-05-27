@@ -26,6 +26,7 @@ export type DrawOptions = Omit<
  */
 export function addDraw(
   EOxMap: EOxMap,
+  // @ts-ignore
   drawLayer: VectorLayer<VectorSource>,
   options: DrawOptions
 ): void {
@@ -45,8 +46,9 @@ export function addDraw(
 
   const drawInteraction = new Draw({
     ...options_,
+    //@ts-ignore
     source,
-  } as import("ol/interaction/Draw").Options);
+  });
 
   // TODO cleaner way of initializing as inactive?
   if (options_.active === false) {
@@ -62,6 +64,7 @@ export function addDraw(
   EOxMap.map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
   const modifyInteraction = new Modify({
+    // @ts-ignore
     source,
   });
   modifyInteraction.setActive(options_.modify);

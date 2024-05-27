@@ -75,9 +75,11 @@ describe("layers", () => {
         const eoxMap = <EOxMap>$el[0];
         const layer = eoxMap.getLayerById(
           "regions"
+          //@ts-ignore
         ) as import("ol/layer").Vector<import("ol/source").Vector>;
         layer.getSource().on("featuresloadend", () => {
           const feature = layer.getSource().getFeatures()[0];
+          //@ts-ignore
           const styles = layer.getStyleFunction()(feature, 100);
           expect(styles).to.have.length(1);
           resolve();

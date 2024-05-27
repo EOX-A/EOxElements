@@ -530,6 +530,7 @@ export class EOxMap extends LitElement {
 
   parseTextToFeature = (
     text: string,
+    //@ts-ignore
     vectorLayer: VectorLayer<VectorSource>,
     replaceFeatures: boolean = false
   ) => {

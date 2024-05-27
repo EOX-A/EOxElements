@@ -230,6 +230,7 @@ function addInteraction(
   if (interactionDefinition.type === "draw") {
     addDraw(
       EOxMap,
+      //@ts-ignore
       olLayer as VectorLayer<VectorSource>,
       interactionDefinition.options as DrawOptions
     );
@@ -269,8 +270,10 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.source) !==
     JSON.stringify(existingJsonDefintion.source)
   ) {
-    (existingLayer as any as VectorLayer<VectorSource>).setSource(
-      (newLayer as any as VectorLayer<VectorSource>).getSource()
+    //@ts-ignore
+    (existingLayer as VectorLayer<VectorSource>).setSource(
+      //@ts-ignore
+      (newLayer as VectorLayer<VectorSource>).getSource()
     );
   }
 

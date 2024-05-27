@@ -62,6 +62,7 @@ function dispatchEvt(
  */
 export function addNewFeature(
   e: DrawEvent | DragAndDropEvent | { features: any },
+  //@ts-ignore
   vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap,
   isDraw: boolean = false,
@@ -135,6 +136,7 @@ export function addNewFeature(
  */
 export function parseText(
   text: string,
+  // @ts-ignore
   vectorLayer: VectorLayer<VectorSource>,
   EOxMap: EOxMap,
   replaceFeatures: boolean = false

@@ -10,6 +10,7 @@ import VectorLayer from "ol/layer/Vector.js";
 import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
 
+//@ts-ignore
 export type SelectLayer = VectorTileLayer | VectorLayer<VectorSource>;
 
 export type SelectOptions = Omit<
@@ -34,6 +35,7 @@ export class EOxSelectInteraction {
   tooltip: HTMLElement;
   selectedFids: Array<string | number>;
   selectLayer: SelectLayer;
+  //@ts-ignore
   selectStyleLayer: VectorTileLayer | VectorLayer<VectorSource>;
   changeSourceListener: () => void;
   removeListener: () => void;
@@ -124,7 +126,7 @@ export class EOxSelectInteraction {
 
     const initialStyle = this.selectStyleLayer.getStyleFunction();
 
-    this.selectStyleLayer.setStyle((feature, resolution) => {
+    this.selectStyleLayer.setStyle((feature: Feature, resolution: number) => {
       if (
         this.selectedFids.length &&
         this.selectedFids.includes(this.getId(feature))
@@ -275,6 +277,7 @@ export class EOxSelectInteraction {
  */
 export function addSelect(
   EOxMap: EOxMap,
+  //@ts-ignore
   selectLayer: VectorTileLayer | VectorLayer<VectorSource>,
   options: SelectOptions
 ) {

@@ -23,7 +23,9 @@ describe("VectorTile Layer", () => {
     return new Cypress.Promise((resolve) => {
       cy.get("eox-map").should(($el) => {
         const eoxMap = <EOxMap>$el[0];
-        const layer = eoxMap.getLayerById("countries") as VectorTile;
+        const layer = eoxMap.getLayerById("countries") as VectorTile<
+          import("ol/render/Feature").default
+        >;
         setTimeout(() => {
           // to do: not able to wait for rendercomplete directly, as `applyStyle` is async
           const features = layer
