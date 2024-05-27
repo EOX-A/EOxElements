@@ -6,37 +6,21 @@ describe('EOxGeoSearch', () => {
         cy.mount(`
         <eox-geosearch
             label="Search"
+            button
+            small
             list-direction="right"
             results-direction="down"
-            .onSelect="${(_item) => console.log('select')}"
             endpoint="./opencage-mock-data.json"
         ></eox-geosearch>
       `
-        );
+        ).as("eox-geosearch");
     });
-  
-    it('should render the component', () => {
-      cy.get('eox-geosearch').should('exist');
+
+    // TODO: Replace this very basic test with an actual test suite
+    //       and find out why Cypress will not render the shadow
+    //       DOM of the eox-geosearch element.
+    it('should find the geosearch element', () => {
+        cy.get('eox-geosearch').should('exist');
     });
-/*
-    it('should render the input field when button is clicked', () => {
-      cy.get('eox-geosearch').then($component => {
-        console.log($component[0]);
-        const shadowRoot = $component[0].shadowRoot;
-        cy.wrap(shadowRoot).find('button').click();
-        cy.wrap(shadowRoot).find('input#gazetteer').should('be.visible');
-      });
-    });
-  
-    it('should hide the input field when button is clicked again', () => {
-      cy.get('eox-geosearch').then($component => {
-        const shadowRoot = $component[0].shadowRoot;
-        cy.wrap(shadowRoot).find('button').click();
-        cy.wrap(shadowRoot).find('input#gazetteer').should('be.visible');
-        cy.wrap(shadowRoot).find('button').click();
-        cy.wrap(shadowRoot).find('input#gazetteer').should('not.be.visible');
-      });
-    });
-*/
   });
   
