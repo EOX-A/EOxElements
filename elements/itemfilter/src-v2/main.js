@@ -7,6 +7,7 @@ import allStyle from "../../../utils/styles/dist/all.style";
 
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
+import "./components/expand-container";
 
 export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
@@ -28,13 +29,14 @@ export class EOxItemFilter extends LitElement {
       case "text":
         return html`<input
           type="text"
+          slot="filter"
           placeholder="${filter.placeholder}"
           value=""
         />`;
       case "multiselect":
         const result = uniq(flatMap(this.items, filter.key));
         return html`
-          <ul>
+          <ul slot="filter">
             ${map(
               result,
               (item) => html`
@@ -58,7 +60,8 @@ export class EOxItemFilter extends LitElement {
 
   render() {
     console.log(this.config?.filterProperties);
-    return html` <style>
+    return html`
+      <style>
         ${style}
         ${!this.unstyled && styleEOX}
         ${!this.unstyled && allStyle}
@@ -67,9 +70,12 @@ export class EOxItemFilter extends LitElement {
       <form id="itemfilter" @submit="${(evt) => evt.preventDefault()}">
         ${map(
           this.config?.filterProperties || [],
-          (filter) => html` ${this.createFilter(filter)} `
+          (filter) => html` <itemfilter-expandcontainer .filterObject=${filter}
+            >${this.createFilter(filter)}
+          </itemfilter-expandcontainer>`
         )}
-      </form>`;
+      </form>
+    `;
   }
 }
 
