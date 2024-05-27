@@ -140,7 +140,6 @@ class EOxGeoSearch extends LitElement {
         const uri = `${this.endpoint}${
           this.endpoint.includes("?") ? "&" : "?"
         }${this.queryParameter ?? "q"}=${this._query}`;
-        console.log(uri);
         await this.fetchRemoteData(uri);
       } else {
         console.error("No endpoint provided for GeoSearch element.");
