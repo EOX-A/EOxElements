@@ -15,7 +15,7 @@
     "cypress": "cypress open",
     "test:all": "npm run styles && npm run test:component && npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
-    "test:e2e": "npm run build:all && cypress run --e2e",
+    "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && cypress run --e2e",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
     "format:check:all": "prettier --check .",
@@ -37,7 +37,9 @@
     "concurrently": "^8.2.1",
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^13.3.0",
+    "cypress-fail-on-console-error": "^5.1.0",
     "cypress-lit": "^0.0.8",
+    "cypress-network-idle": "^1.14.2",
     "nodemon": "^3.0.3",
     "rimraf": "^5.0.1",
     "storybook": "^8.0.0"
