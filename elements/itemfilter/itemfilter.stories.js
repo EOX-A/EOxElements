@@ -1,6 +1,7 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
 import items from "./test/testItems.json";
+import "./src-v2/main.js";
 
 export default {
   title: "Elements/eox-itemfilter",
@@ -218,4 +219,28 @@ export const InlineMode = {
     },
     items,
   },
+};
+
+export const ItemFilter2 = {
+  render: () => html`
+    <eox-itemfilter-v2
+      .items=${items}
+      .config=${{
+        titleProperty: "title",
+        filterProperties: [
+          {
+            keys: ["title", "themes"],
+            title: "Search",
+            type: "text",
+            placeholder: "Type Something...",
+          },
+          {
+            key: "themes",
+            title: "Theme",
+            type: "multiselect",
+          },
+        ],
+      }}
+    ></eox-itemfilter-v2>
+  `,
 };
