@@ -157,4 +157,22 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
   height: 16px;
   width: 16px;
 }
+.inline-content {
+  padding: 4px;
+  border: 1px solid #bbbbbb3b;
+  border-radius: 4px;
+  box-shadow: 2px 2px 2px #0000000f;
+  position: absolute;
+  width: calc(100% - 10px);
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+.inline-container {
+  position: relative;
+}
+.inline-container-wrapper {
+  width: 100%;
+  position: relative;
+}
   `;

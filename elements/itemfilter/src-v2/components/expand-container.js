@@ -25,13 +25,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
     );
   }
 
-  // _resetFilter() {
-  //   const filterEl = this.querySelector(`[slot='filter']`) as Element & {
-  //     reset: () => void;
-  //   };
-  //   filterEl.reset();
-  // }
-
   render() {
     return html`
       <style>
