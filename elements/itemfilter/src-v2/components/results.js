@@ -101,7 +101,7 @@ export class EOxItemFilterResults extends TemplateElement {
     return html`
       <section id="section-results">
         <div>
-          <h4 style="margin-top: 8px">Results</h4>
+          <h6 style="padding: 8px 0px;">Results</h6>
         </div>
         <div id="container-results" class="scroll">
           ${when(
