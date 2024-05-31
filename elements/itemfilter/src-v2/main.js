@@ -5,11 +5,16 @@ import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
 import allStyle from "../../../utils/styles/dist/all.style";
-
-import uniq from "lodash.uniq";
-import flatMap from "lodash.flatmap";
 import "./components/expand-container";
 import "./components/itemfilter-container";
+import "./components/filters/text";
+import { ELEMENT_CONFIG } from "./enums";
+import {
+  filterApplyMethod,
+  searchMethod,
+  createFilterMethod,
+  sortResultsMethod,
+} from "./methods/itemfilter";
 
 export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
@@ -17,51 +22,67 @@ export class EOxItemFilter extends LitElement {
     return {
       config: { attribute: false, type: Object },
       items: { attribute: false, type: Object },
+      results: { state: true, type: Object },
+      filters: { state: true, type: Object },
     };
   }
+
+  /**
+   * @type Array<string>
+   */
+  #resultAggregation = [];
+
+  /**
+   * @type Array<object>
+   */
+  #items = [];
+
+  /**
+   * @type Object
+   */
+  #config = ELEMENT_CONFIG;
 
   constructor() {
     super();
     this.config = null;
     this.items = null;
+    this.filters = {};
   }
 
-  createFilter(filter) {
-    switch (filter.type) {
-      case "text":
-        return html`<input
-          type="text"
-          slot="filter"
-          placeholder="${filter.placeholder}"
-          value=""
-        />`;
-      case "multiselect":
-        const result = uniq(flatMap(this.items, filter.key));
-        return html`
-          <ul class="multiselect" slot="filter">
-            ${map(
-              result,
-              (item) => html`
-                <li
-                  data-identifier="${item.toLowerCase()}"
-                  data-title="${item}"
-                >
-                  <label>
-                    <input type="checkbox" />
-                    <span class="title">${item}</span>
-                  </label>
-                </li>
-              `
-            )}
-          </ul>
-        `;
-      default:
-        return html``;
-    }
+  apply() {
+    this.#resultAggregation = filterApplyMethod(
+      this.#config,
+      this.#items,
+      this
+    );
+    this.search();
+  }
+
+  async search() {
+    await searchMethod(this.#config, this.#items, this);
+    this.requestUpdate();
+  }
+
+  sortResults(items) {
+    return sortResultsMethod(items, this.#config);
+  }
+
+  #createFilter(filterObject, tabIndex) {
+    return createFilterMethod(filterObject, tabIndex, this);
+  }
+
+  firstUpdated(_changedProperties) {
+    this.#config = {
+      ...ELEMENT_CONFIG,
+      ...this.config,
+    };
+    this.#items = this.items.map((i, index) =>
+      Object.assign({ id: `item-${index}` }, i)
+    );
+    this.apply();
   }
 
   render() {
-    console.log(this.config?.filterProperties);
     return html`
       <style>
         ${style}
@@ -79,10 +100,12 @@ export class EOxItemFilter extends LitElement {
               <section slot="section">
                 <ul id="filters">
                   ${map(
-                    this.config.filterProperties,
-                    (filter) => html` <li>
-                      <itemfilter-expandcontainer .filterObject=${filter}
-                        >${this.createFilter(filter)}
+                    Object.values(this.filters),
+                    (filterObject, index) => html` <li>
+                      <itemfilter-expandcontainer
+                        .tabIndex=${index * 2 + 1}
+                        .filterObject=${filterObject}
+                        >${this.#createFilter(filterObject, index * 2 + 2)}
                       </itemfilter-expandcontainer>
                     </li>`
                   )}

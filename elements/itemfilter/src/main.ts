@@ -125,6 +125,7 @@ export class EOxItemFilter extends TemplateElement {
   public selectedResult: Item;
 
   @property({ attribute: false }) set items(items) {
+    console.log("second");
     this.apply(items);
   }
   get items() {
@@ -132,6 +133,7 @@ export class EOxItemFilter extends TemplateElement {
   }
 
   @property({ attribute: false }) set config(config) {
+    console.log("first");
     const oldValue = this._config;
     this._config = {
       ...new ElementConfig(),

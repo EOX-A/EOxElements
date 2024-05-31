@@ -17,120 +17,63 @@ export class EOxItemFilterContainer extends LitElement {
     this.unstyled = false;
     this.inlineMode = false;
     this.inlineContentElement = false;
+    this.showDropdown = false;
+  }
+
+  _onFocus() {
+    this.showDropdown = true;
+    this.requestUpdate();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    document.removeEventListener("click", this._handleOutsideClick.bind(this));
+  }
+
+  _handleOutsideClick(event) {
+    if (!this.shadowRoot.contains(event.target)) {
+      this.showDropdown = false;
+      this.requestUpdate();
+    }
   }
 
   firstUpdated() {
     if (this.inlineMode) {
-      this.inputElement = this.shadowRoot.querySelector("#inline-input");
-      this.inlineContentElement =
-        this.shadowRoot.querySelector(".inline-content");
+      document.addEventListener("click", this._handleOutsideClick.bind(this));
 
-      this.inputElement.addEventListener("focus", () => {
-        this.inlineContentVisible = true;
-        this.requestUpdate();
-      });
-
-      this.inputElement.addEventListener("blur", () => {
-        this.inlineContentVisible = false;
-        this.requestUpdate();
-      });
+      // [".inline-container-wrapper", ".inline-content"].forEach((selector) => {
+      //   this.inputElement = this.shadowRoot.querySelector(selector);
+      //   this.inlineContentElement =
+      //     this.shadowRoot.querySelector(".inline-content");
+      //
+      //   console.log(this.inputElement)
+      //
+      //   this.inputElement.addEventListener("focusin", () => {
+      //     setTimeout(() => {
+      //       console.log("entry")
+      //       this.inlineContentVisible = true;
+      //       this.requestUpdate();
+      //     }, 5);
+      //   });
+      //
+      //   this.inputElement.addEventListener("focusout", (event) => {
+      //     console.log(event.relatedTarget)
+      //     setTimeout(() => {
+      //       if (!this.inputElement.contains(event.relatedTarget)) {
+      //         this.inlineContentVisible = false;
+      //         this.requestUpdate();
+      //       }
+      //     }, 0);
+      //   });
+      // })
     }
   }
 
   render() {
     return html`
       <style>
-        ${!this.unstyled && styleEOX} .inline-container {
-          position: relative;
-          border: 1px solid #00417066;
-          border-radius: 4px;
-          height: 24px;
-          padding: 5px;
-          flex: 1;
-          justify-content: space-between;
-          cursor: text;
-          transition: all 0.2s ease-in-out;
-          overflow-x: auto;
-          display: flex;
-        }
-        .inline-container:hover {
-          border: 1px solid #004170;
-        }
-        .input-container {
-          display: flex;
-          flex: 1;
-          align-items: center;
-        }
-        .input-container input,
-        .input-container input:focus {
-          height: 100%;
-          border: none;
-          outline: none;
-          border: 0;
-        }
-        .button-container {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: absolute;
-          right: 1px;
-          top: 5px;
-          height: calc(100% - 10px);
-          width: 34px;
-          background: white;
-        }
-        button.icon {
-          color: #004170;
-          height: 24px;
-          font-size: large;
-          width: unset;
-        }
-        .inline-container::-webkit-scrollbar {
-          height: 2px;
-        }
-        .inline-container::-webkit-scrollbar-thumb {
-          background: lightgrey;
-          border-radius: 2px;
-        }
-        .hidden {
-          height: 0;
-          padding: 0;
-          border: none;
-        }
-        .hidden:hover {
-          border: none;
-        }
-        .chip.highlighted {
-          background: lightgrey;
-        }
-        .chip-title {
-          pointer-events: none;
-        }
-        .chip-container {
-          display: flex;
-          flex: 0;
-        }
-        .chip {
-          display: flex;
-          align-items: center;
-          background: #00417022;
-          border-radius: 4px;
-          margin-right: 4px;
-          padding: 5px 10px;
-          font-size: small;
-          cursor: default;
-          white-space: nowrap;
-        }
-        .chip.highlighted {
-          background: #004170;
-          color: white;
-        }
-        .chip-close {
-          cursor: pointer;
-          margin-left: 4px;
-        }
-        .inline-content {
-          display: ${this.inlineContentVisible ? "block" : "none"};
+        ${!this.unstyled && styleEOX} .inline-content {
+          display: ${this.showDropdown ? "block" : "none"};
         }
       </style>
       ${this.inlineMode
@@ -147,6 +90,7 @@ export class EOxItemFilterContainer extends LitElement {
                 </div>
                 <div class="input-container">
                   <input
+                    @focus=${this._onFocus}
                     id="inline-input"
                     slot="trigger"
                     type="text"

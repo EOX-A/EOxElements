@@ -234,6 +234,7 @@ export const ItemFilter2 = {
             title: "Search",
             type: "text",
             placeholder: "Type Something...",
+            expanded: true,
           },
           {
             key: "themes",

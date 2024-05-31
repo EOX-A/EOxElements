@@ -1,0 +1,85 @@
+export const ELEMENT_CONFIG = Object.freeze({
+  /**
+   * Aggregate results by a property key
+   */
+  aggregateResults: undefined,
+
+  /**
+   * Automatically spread single item summaries
+   * removing the summary header
+   */
+  autoSpreadSingle: false,
+
+  /**
+   * Highlighting of search result character matches
+   */
+  enableHighlighting: false,
+
+  /**
+   * Use an external search endpoint instead of fuse search.
+   * Passed properties: input string, filters object
+   */
+  externalFilter: (input, filters) => {},
+
+  /**
+   * The filter properties.
+   */
+  filterProperties: [],
+
+  /**
+   * Native fuse.js config override
+   */
+  fuseConfig: {},
+
+  /**
+   * Inline mode, for rendering the itemfilter in a very condensed space.
+   * Expects showResults to be false
+   */
+  inlineMode: false,
+
+  /**
+   * Show all result items if nothing is input by the user
+   * @default true
+   */
+  matchAllWhenEmpty: true,
+
+  /**
+   * Callback that is triggered on item search
+   * @returns result items
+   */
+  onFilter: () => {},
+
+  /**
+   * Callback that is triggered on item selection
+   * @returns selected item
+   */
+  onSelect: () => {},
+
+  /**
+   * Display results list
+   */
+  showResults: true,
+
+  /**
+   * The property of the result items used for display
+   */
+  titleProperty: "title",
+
+  /**
+   * Allow opening multiple filter accordions in parallel
+   * @default true
+   */
+  expandMultipleFilters: true,
+
+  /**
+   * Initialize result accordions expanded
+   * @default true
+   */
+  expandResults: true,
+
+  /**
+   * Allow opening multiple result accordions in parallel
+   * @default true
+   */
+  expandMultipleResults: true,
+});
