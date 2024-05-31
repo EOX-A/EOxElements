@@ -2,6 +2,7 @@
 import { html } from "lit";
 import items from "./test/testItems.json";
 import "./src-v2/main.js";
+import "./src-v2/dropdown.js";
 
 export default {
   title: "Elements/eox-itemfilter",
@@ -248,5 +249,22 @@ export const ItemFilter2 = {
         ],
       }}
     ></eox-itemfilter-v2>
+  `,
+};
+
+export const Tes = {
+  render: () => html`
+    <dropdown-selector
+      .suggestions="${[
+        "Apple",
+        "Banana",
+        "Cherry",
+        "Date",
+        "Fig",
+        "Grape",
+        "Honeydew",
+      ]}"
+      .multiple="${true}"
+    ></dropdown-selector>
   `,
 };
