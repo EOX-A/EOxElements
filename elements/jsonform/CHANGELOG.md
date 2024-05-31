@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.8.0...jsonform-v0.8.1) (2024-05-27)
+
+
+### Bug Fixes
+
+* **style:** Stacking issue when range value becomes bigger ([#985](https://github.com/EOX-A/EOxElements/issues/985)) ([2c3c6d5](https://github.com/EOX-A/EOxElements/commit/2c3c6d58b7ee1eb8089d2bbd1e22874388ff979d))
+
 ## [0.8.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.7.0...jsonform-v0.8.0) (2024-05-22)
 
 
