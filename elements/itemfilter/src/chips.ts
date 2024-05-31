@@ -18,7 +18,7 @@ export class EOxItemFilterChips extends LitElement {
     this.dispatchEvent(
       new CustomEvent("items-selected", {
         detail: this.items,
-      }),
+      })
     );
   }
 
@@ -34,9 +34,9 @@ export class EOxItemFilterChips extends LitElement {
         if (highlightedChip) {
           this.items.splice(
             Array.from(this.renderRoot.querySelectorAll(".chip")).indexOf(
-              highlightedChip,
+              highlightedChip
             ),
-            1,
+            1
           );
         }
         const lastChip =
@@ -59,7 +59,7 @@ export class EOxItemFilterChips extends LitElement {
         this.renderRoot.querySelector(".chip.highlighted");
       if (highlightedChip) {
         highlightedChipIndex = Array.from(
-          this.renderRoot.querySelectorAll(".chip"),
+          this.renderRoot.querySelectorAll(".chip")
         ).indexOf(highlightedChip);
         highlightedChip.classList.remove("highlighted");
       }
@@ -110,7 +110,7 @@ export class EOxItemFilterChips extends LitElement {
     super.disconnectedCallback();
     this.getRootNode().removeEventListener(
       "keydown",
-      this._keyboardEventListener,
+      this._keyboardEventListener
     );
   }
 
@@ -152,11 +152,11 @@ export class EOxItemFilterChips extends LitElement {
                 >${item[this.titleProperty as keyof FilterObject]}</span
               >
               ${when(item._inProgress, () =>
-                !item.stringifiedState ? html` ... ` : "",
+                !item.stringifiedState ? html` ... ` : ""
               )}
               ${when(
                 item.stringifiedState,
-                () => html`: ${item.stringifiedState}`,
+                () => html`: ${item.stringifiedState}`
               )}
               <span
                 class="chip-close"
@@ -169,7 +169,7 @@ export class EOxItemFilterChips extends LitElement {
                 >✕</span
               >
             </span>
-          `,
+          `
         )}
       </span>
     `;

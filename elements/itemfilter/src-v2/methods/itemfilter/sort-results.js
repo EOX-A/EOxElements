@@ -1,6 +1,6 @@
 function sortResultsMethod(items, config) {
   return [...items].sort((a, b) =>
-    a[config.titleProperty].localeCompare(b[config.titleProperty]),
+    a[config.titleProperty].localeCompare(b[config.titleProperty])
   );
 }
 

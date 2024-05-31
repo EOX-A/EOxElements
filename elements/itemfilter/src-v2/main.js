@@ -55,7 +55,7 @@ export class EOxItemFilter extends TemplateElement {
     this.#resultAggregation = filterApplyMethod(
       this.#config,
       this.#items,
-      this,
+      this
     );
     this.search();
   }
@@ -79,7 +79,7 @@ export class EOxItemFilter extends TemplateElement {
       ...this.config,
     };
     this.#items = this.items.map((i, index) =>
-      Object.assign({ id: `item-${index}` }, i),
+      Object.assign({ id: `item-${index}` }, i)
     );
     this.apply();
   }
@@ -110,12 +110,12 @@ export class EOxItemFilter extends TemplateElement {
                           .filterObject=${filterObject}
                           >${this.#createFilter(filterObject, index * 2 + 2)}
                         </itemfilter-expandcontainer>
-                      </li>`,
+                      </li>`
                   )}
                 </ul>
               </section>
             </eox-itemfilter-container>
-          `,
+          `
         )}
         ${when(
           this.#config?.showResults && this.results,
@@ -126,7 +126,7 @@ export class EOxItemFilter extends TemplateElement {
               .filters=${this.filters}
               .resultAggregation=${this.#resultAggregation}
             ></eox-itemfilter-results>
-          `,
+          `
         )}
       </form>
     `;

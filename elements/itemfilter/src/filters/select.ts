@@ -62,7 +62,7 @@ export class EOxItemFilterSelect extends LitElement {
         .includes(k);
     });
     this.filterObject.stringifiedState = Object.keys(
-      this.filterObject.state,
+      this.filterObject.state
     ).filter((k) => this.filterObject.state[k])[0];
     if (this.filterObject.stringifiedState?.length > 0) {
       this.filterObject.dirty = true;
@@ -93,9 +93,9 @@ export class EOxItemFilterSelect extends LitElement {
               .unstyled=${this.unstyled}
               @items-selected=${(evt: CustomEvent) => this._handleSelected(evt)}
             ></eox-selectionlist>
-          `,
+          `
         )}
-      `,
+      `
     );
   }
 }

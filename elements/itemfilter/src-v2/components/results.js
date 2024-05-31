@@ -59,11 +59,11 @@ export class EOxItemFilterResults extends TemplateElement {
                     <span class="title"
                       >${unsafeHTML(item[this.config.titleProperty])}</span
                     >
-                  `,
+                  `
                 )}
               </label>
             </li>
-          `,
+          `
         )}
       </ul>
     `;
@@ -79,7 +79,7 @@ export class EOxItemFilterResults extends TemplateElement {
       let currentFilter;
       if (this.filters[this.config.aggregateResults]) {
         currentFilter = Object.keys(
-          this.filters[this.config.aggregateResults],
+          this.filters[this.config.aggregateResults]
         ).filter((f) => this.filters[this.config.aggregateResults].state[f]);
       }
 
@@ -107,7 +107,7 @@ export class EOxItemFilterResults extends TemplateElement {
           ${when(
             this.results.length < 1,
             () => html`<small class="no-results">No matching items</small>`,
-            () => nothing,
+            () => nothing
           )}
           <ul id="results" part="results">
             ${when(
@@ -117,7 +117,7 @@ export class EOxItemFilterResults extends TemplateElement {
                   this.resultAggregation.filter(
                     (aggregationProperty) =>
                       this.aggregateResults(this.results, aggregationProperty)
-                        .length,
+                        .length
                   ),
                   (aggregationProperty) =>
                     html`${when(
@@ -139,15 +139,15 @@ export class EOxItemFilterResults extends TemplateElement {
                               <span class="count"
                                 >${this.aggregateResults(
                                   this.results,
-                                  aggregationProperty,
+                                  aggregationProperty
                                 ).length}</span
                               >
                             </span>
                           </summary>
                           <div>${this.createItemList(aggregationProperty)}</div>
                         </details>
-                      `,
-                    )}`,
+                      `
+                    )}`
                 ),
               () =>
                 map(
@@ -170,19 +170,19 @@ export class EOxItemFilterResults extends TemplateElement {
                             this.renderTemplate(
                               "result",
                               item,
-                              `result-${item.id}`,
+                              `result-${item.id}`
                             ),
                           () => html`
                             <span class="title"
                               >${unsafeHTML(
-                                item[this.config.titleProperty],
+                                item[this.config.titleProperty]
                               )}</span
                             >
-                          `,
+                          `
                         )}
                       </label>
-                    </li>`,
-                ),
+                    </li>`
+                )
             )}
           </ul>
         </div>

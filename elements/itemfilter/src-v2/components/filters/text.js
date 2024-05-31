@@ -50,7 +50,7 @@ export class EOxItemFilterText extends LitElement {
           @input="${this.debouncedInputHandler}"
           @click=${(evt) => evt.stopPropagation()}
         />
-      `,
+      `
     );
   }
 }

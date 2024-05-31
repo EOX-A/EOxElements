@@ -38,7 +38,7 @@ export class EOxSelectionlist extends LitElement {
       return;
     }
     const currentlyHighlighted = this.renderRoot.querySelector(
-      "li.highlighted",
+      "li.highlighted"
     ) as HTMLLIElement;
     if (key === "Escape") {
       if (this._currentHighlight) {
@@ -51,7 +51,7 @@ export class EOxSelectionlist extends LitElement {
         const currentItem = this.items.find(
           (f) =>
             f[<keyof FilterObject>this.idProperty] ===
-            currentlyHighlighted.dataset.identifier,
+            currentlyHighlighted.dataset.identifier
         ) as FilterObject;
         this._handleSelect(currentItem);
         this.requestUpdate();
@@ -81,13 +81,13 @@ export class EOxSelectionlist extends LitElement {
       this._currentHighlight = this.items.find(
         (f) =>
           f[<keyof FilterObject>this.idProperty] ===
-          currentListItem.dataset.identifier,
+          currentListItem.dataset.identifier
       );
     }
     this.dispatchEvent(
       new CustomEvent("items-highlighted", {
         detail: [this._currentHighlight],
-      }),
+      })
     );
   }
 
@@ -98,7 +98,7 @@ export class EOxSelectionlist extends LitElement {
         const selected = this.selectedItems.find(
           (i) =>
             i[<keyof FilterObject>this.idProperty] ===
-            item[<keyof FilterObject>this.idProperty],
+            item[<keyof FilterObject>this.idProperty]
         );
         if (selected) {
           this.selectedItems.splice(this.selectedItems.indexOf(selected), 1);
@@ -117,7 +117,7 @@ export class EOxSelectionlist extends LitElement {
 
   _dispatchEvent() {
     this.dispatchEvent(
-      new CustomEvent("items-selected", { detail: this.selectedItems }),
+      new CustomEvent("items-selected", { detail: this.selectedItems })
     );
   }
 
@@ -131,7 +131,7 @@ export class EOxSelectionlist extends LitElement {
     super.disconnectedCallback();
     this.getRootNode().removeEventListener(
       "keydown",
-      this._keyboardEventListener,
+      this._keyboardEventListener
     );
   }
 
@@ -148,7 +148,7 @@ export class EOxSelectionlist extends LitElement {
             this._currentHighlight = this.items.find(
               (f) =>
                 f[<keyof FilterObject>this.idProperty] ===
-                firstItem.dataset.identifier,
+                firstItem.dataset.identifier
             );
           }
         });
@@ -184,7 +184,7 @@ export class EOxSelectionlist extends LitElement {
               ? (<string>item[<keyof FilterObject>this.titleProperty])
                   .toLowerCase()
                   .includes(this.filter.toLowerCase())
-              : true,
+              : true
           ),
           (item) => item[<keyof FilterObject>this.idProperty],
           (item) => html`
@@ -211,7 +211,7 @@ export class EOxSelectionlist extends LitElement {
                   .checked=${!!this.selectedItems.find(
                     (i) =>
                       i[<keyof FilterObject>this.idProperty] ===
-                      item[<keyof FilterObject>this.idProperty],
+                      item[<keyof FilterObject>this.idProperty]
                   ) || (nothing as null)}
                   @change=${() => this._handleSelect(item)}
                 />
@@ -220,7 +220,7 @@ export class EOxSelectionlist extends LitElement {
                 >
               </label>
             </li>
-          `,
+          `
         )}
       </ul>
     `;

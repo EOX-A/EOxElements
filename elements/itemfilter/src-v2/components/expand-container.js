@@ -24,7 +24,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         detail: event,
         bubbles: true,
         composed: true,
-      }),
+      })
     );
   }
 
@@ -57,7 +57,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
             <div class="scroll">
               <slot name="filter"></slot>
             </div>
-          </details>`,
+          </details>`
       )}
     `;
   }
@@ -65,5 +65,5 @@ export class EOxItemFilterExpandContainer extends LitElement {
 
 customElements.define(
   "itemfilter-expandcontainer",
-  EOxItemFilterExpandContainer,
+  EOxItemFilterExpandContainer
 );

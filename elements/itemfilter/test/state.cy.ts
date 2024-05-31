@@ -58,16 +58,16 @@ describe("Item Filter Config", () => {
         Object.keys(state).forEach((key) => {
           cy.get(".details-results > summary > .title").should(
             "contain.text",
-            key,
+            key
           );
           cy.get(".details-results > summary > .title").should(
             "contain.text",
-            key,
+            key
           );
         });
         cy.get(".details-results > summary > .title").should(
           "have.length",
-          Object.keys(state).length,
+          Object.keys(state).length
         );
       });
   });

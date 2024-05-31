@@ -41,7 +41,7 @@ export class EOxItemFilterInline extends LitElement {
     const textInProgress =
       inProgressItem?.type === "text" && inProgressItem?.dirty;
     const inputEl = this.renderRoot.querySelector(
-      "#inline-input",
+      "#inline-input"
     ) as HTMLInputElement;
     const highlightedLiItem = (<LitElement>(
       (<LitElement>(
@@ -110,7 +110,7 @@ export class EOxItemFilterInline extends LitElement {
     super.disconnectedCallback();
     this.getRootNode().removeEventListener(
       "keydown",
-      this._keyboardEventListener,
+      this._keyboardEventListener
     );
     window.removeEventListener("click", this._clickOutsideListener);
   }
@@ -154,7 +154,7 @@ export class EOxItemFilterInline extends LitElement {
       >
         <eox-itemfilter-chips
           .items=${this.items.filter(
-            (i) => i._inProgress || i.stringifiedState,
+            (i) => i._inProgress || i.stringifiedState
           )}
           .titleProperty=${this.titleProperty}
           .unstyled=${this.unstyled}
@@ -211,7 +211,7 @@ export class EOxItemFilterInline extends LitElement {
                     .items=${this.items.filter((f) => !f.stringifiedState)}
                     .multiple=${false}
                     .selectedItems=${this.items.filter(
-                      (i) => i.stringifiedState,
+                      (i) => i.stringifiedState
                     )}
                     .unstyled=${this.unstyled}
                     @click=${(evt: Event) => {
@@ -233,7 +233,7 @@ export class EOxItemFilterInline extends LitElement {
                       }
 
                       const inProgressItem = this.items.find(
-                        (i) => i._inProgress,
+                        (i) => i._inProgress
                       );
                       if (
                         (inProgressItem && inProgressItem.type === "text") ||
@@ -270,13 +270,13 @@ export class EOxItemFilterInline extends LitElement {
                     }}
                   >
                   </eox-selectionlist>
-                `,
+                `
               )}
               ${when(
                 this.items.find((i) => i._inProgress),
                 () => staticHTML`
             <eox-itemfilter-${unsafeStatic(
-              this.items.find((i) => i._inProgress).type,
+              this.items.find((i) => i._inProgress).type
             )}
               data-filter=${this.items.find((i) => i._inProgress).id}
               slot="dropdown"
@@ -290,9 +290,9 @@ export class EOxItemFilterInline extends LitElement {
                 evt.stopPropagation();
               }}
             ></eox-itemfilter-${unsafeStatic(
-              this.items.find((i) => i._inProgress).type,
+              this.items.find((i) => i._inProgress).type
             )}>
-  `,
+  `
               )}
             </div>
           </eox-dropdown>
@@ -307,14 +307,14 @@ export class EOxItemFilterInline extends LitElement {
               class="icon"
               @click=${() => {
                 this._handleReset(
-                  this.items.filter((i) => i.stringifiedState || i._inProgress),
+                  this.items.filter((i) => i.stringifiedState || i._inProgress)
                 );
               }}
             >
               ✕
             </button>
           </div>
-        `,
+        `
       )}
     `;
   }

@@ -8,7 +8,7 @@ describe("Item Filter Config", () => {
       `<eox-itemfilter>
       <h4 slot="filterstitle">Filter</h4>
       <h4 slot="resultstitle">Results</h4>
-    </eox-itemfilter>`,
+    </eox-itemfilter>`
     )
       .as("eox-itemfilter")
       .then(($el) => {
