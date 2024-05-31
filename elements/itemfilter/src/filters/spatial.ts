@@ -12,7 +12,7 @@ import { Vector as VectorSource } from "ol/source";
 
 export const intersects = (
   itemGeometry: Geometry,
-  filterGeometry: Geometry
+  filterGeometry: Geometry,
 ) => {
   if (!filterGeometry) {
     return true;
@@ -35,7 +35,7 @@ export class EOxItemFilterSpatial extends LitElement {
     resetFilter(this.filterObject);
 
     const spatialFilter: SpatialFilter = this.renderRoot.querySelector(
-      "eox-itemfilter-spatial-filter"
+      "eox-itemfilter-spatial-filter",
     );
     spatialFilter.reset();
     this.requestUpdate();
@@ -75,7 +75,7 @@ export class EOxItemFilterSpatial extends LitElement {
             />
             <small>${mode} filter geometry</small>
           </label>
-        `
+        `,
       )}
       </form>
       <eox-itemfilter-spatial-filter
@@ -88,7 +88,7 @@ export class EOxItemFilterSpatial extends LitElement {
           this.dispatchEvent(new CustomEvent("filter"));
         }}"
       ></eox-itemfilter-spatial>
-    `
+    `,
     );
   }
 }
@@ -169,7 +169,7 @@ export class SpatialFilter extends LitElement {
         (e: { feature: unknown }) => {
           updateGeometryFilter(e.feature);
           this.eoxMap.removeInteraction("drawInteraction");
-        }
+        },
       );
       this.eoxMap.interactions["drawInteraction_modify"].on(
         // @ts-ignore
@@ -177,7 +177,7 @@ export class SpatialFilter extends LitElement {
         (e: { features: unknown }) => {
           // @ts-ignore
           updateGeometryFilter(e.features.getArray()[0]);
-        }
+        },
       );
       // TODO remove
     }, 1000);
@@ -195,7 +195,7 @@ export class SpatialFilter extends LitElement {
             geometry,
           },
         ],
-      })
+      }),
     );
     return `data:text/json,${featureString}`;
   }

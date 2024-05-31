@@ -20,7 +20,7 @@ export const filter = async (items, filters, config) => {
       ([, filter]) =>
         filter.type === "text" ||
         filter.type === "select" ||
-        filter.type === "multiselect"
+        filter.type === "multiselect",
     )
     .reduce((store, [key, filter]) => {
       const operator = "$or";

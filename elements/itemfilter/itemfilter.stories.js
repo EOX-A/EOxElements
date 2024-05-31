@@ -68,7 +68,7 @@ export const Primary = {
         },
       ],
       aggregateResults: "themes",
-      enableHighlighting: true,
+      enableHighlighting: false,
       onSelect: (item) => {
         console.log(item);
       },
@@ -228,6 +228,9 @@ export const ItemFilter2 = {
       .config=${{
         inlineMode: false,
         titleProperty: "title",
+        aggregateResults: "themes",
+        enableHighlighting: true,
+        autoSpreadSingle: true,
         filterProperties: [
           {
             keys: ["title", "themes"],

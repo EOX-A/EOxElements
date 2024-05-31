@@ -95,9 +95,9 @@ export class EOxItemFilterMultiselect extends LitElement {
               @items-selected=${(evt: CustomEvent) =>
                 this._handleSelected(evt.detail)}
             ></eox-selectionlist>
-          `
+          `,
         )}
-      `
+      `,
     );
   }
 }

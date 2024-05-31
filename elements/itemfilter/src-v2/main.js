@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { html } from "lit";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { style } from "./style";
@@ -8,6 +8,7 @@ import allStyle from "../../../utils/styles/dist/all.style";
 import "./components/expand-container";
 import "./components/itemfilter-container";
 import "./components/filters/text";
+import "./components/results";
 import { ELEMENT_CONFIG } from "./enums";
 import {
   filterApplyMethod,
@@ -15,8 +16,9 @@ import {
   createFilterMethod,
   sortResultsMethod,
 } from "./methods/itemfilter";
+import { TemplateElement } from "../../../utils/templateElement";
 
-export class EOxItemFilter extends LitElement {
+export class EOxItemFilter extends TemplateElement {
   // Define properties with defaults and types
   static get properties() {
     return {
@@ -53,7 +55,7 @@ export class EOxItemFilter extends LitElement {
     this.#resultAggregation = filterApplyMethod(
       this.#config,
       this.#items,
-      this
+      this,
     );
     this.search();
   }
@@ -77,7 +79,7 @@ export class EOxItemFilter extends LitElement {
       ...this.config,
     };
     this.#items = this.items.map((i, index) =>
-      Object.assign({ id: `item-${index}` }, i)
+      Object.assign({ id: `item-${index}` }, i),
     );
     this.apply();
   }
@@ -101,18 +103,30 @@ export class EOxItemFilter extends LitElement {
                 <ul id="filters">
                   ${map(
                     Object.values(this.filters),
-                    (filterObject, index) => html` <li>
-                      <itemfilter-expandcontainer
-                        .tabIndex=${index * 2 + 1}
-                        .filterObject=${filterObject}
-                        >${this.#createFilter(filterObject, index * 2 + 2)}
-                      </itemfilter-expandcontainer>
-                    </li>`
+                    (filterObject, index) =>
+                      html` <li>
+                        <itemfilter-expandcontainer
+                          .tabIndex=${index * 2 + 1}
+                          .filterObject=${filterObject}
+                          >${this.#createFilter(filterObject, index * 2 + 2)}
+                        </itemfilter-expandcontainer>
+                      </li>`,
                   )}
                 </ul>
               </section>
             </eox-itemfilter-container>
-          `
+          `,
+        )}
+        ${when(
+          this.#config?.showResults && this.results,
+          () => html`
+            <eox-itemfilter-results
+              .config=${this.#config}
+              .results=${this.results}
+              .filters=${this.filters}
+              .resultAggregation=${this.#resultAggregation}
+            ></eox-itemfilter-results>
+          `,
         )}
       </form>
     `;

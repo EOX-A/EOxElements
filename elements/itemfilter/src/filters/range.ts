@@ -62,7 +62,7 @@ export class EOxItemFilterRange extends LitElement {
             ? dayjs.unix(<number>this.filterObject.state.max)
             : this.filterObject.state.max}
         </div>
-      `
+      `,
     );
   }
 }

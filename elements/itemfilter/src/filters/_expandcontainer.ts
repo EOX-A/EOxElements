@@ -17,7 +17,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         detail: event,
         bubbles: true,
         composed: true,
-      })
+      }),
     );
   }
 

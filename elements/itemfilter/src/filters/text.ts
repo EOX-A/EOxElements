@@ -63,7 +63,7 @@ export class EOxItemFilterText extends LitElement {
             evt.stopPropagation();
           }}
         />
-      `
+      `,
     );
   }
 }

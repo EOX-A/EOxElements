@@ -21,14 +21,14 @@ export const indexItems = (items: Array<object>, fuseConfig: object) => {
 export const filter = async (
   items: Array<object>,
   filters: object,
-  config: ElementConfig
+  config: ElementConfig,
 ) => {
   const parsedFilters = Object.entries(filters)
     .filter(
       ([, filter]) =>
         filter.type === "text" ||
         filter.type === "select" ||
-        filter.type === "multiselect"
+        filter.type === "multiselect",
     )
     .reduce((store, [key, filter]) => {
       const operator = "$or";

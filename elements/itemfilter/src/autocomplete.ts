@@ -87,7 +87,7 @@ export class EOxAutocomplete extends LitElement {
       if (!["ArrowUp", "ArrowDown"].includes(key)) {
         (<HTMLInputElement>(
           this.parentElement.parentElement?.parentElement?.querySelector(
-            "#inline-input"
+            "#inline-input",
           )
         )).focus();
       }
@@ -143,7 +143,7 @@ export class EOxAutocomplete extends LitElement {
     this.dispatchEvent(
       new CustomEvent("items-selected", {
         detail: this.selectedItems,
-      })
+      }),
     );
   }
 
@@ -167,7 +167,7 @@ export class EOxAutocomplete extends LitElement {
     super.disconnectedCallback();
     this.getRootNode().removeEventListener(
       "keydown",
-      this._keyboardEventListener
+      this._keyboardEventListener,
     );
   }
 
@@ -230,7 +230,7 @@ export class EOxAutocomplete extends LitElement {
               .titleProperty=${this.titleProperty}
               .unstyled=${this.unstyled}
             ></eox-itemfilter-chips>
-          `
+          `,
         )}
         <div class="input-container">
           <eox-dropdown
@@ -259,14 +259,14 @@ export class EOxAutocomplete extends LitElement {
                   .titleProperty=${this.titleProperty}
                   .items=${this.items
                     .filter((f) =>
-                      this.multiStep ? !f.stringifiedState : true
+                      this.multiStep ? !f.stringifiedState : true,
                     )
                     .filter((f) =>
                       this.inputText
                         ? (<string>f[<keyof FilterObject>this.titleProperty])
                             .toLowerCase()
                             .includes(this.inputText.toLowerCase())
-                        : true
+                        : true,
                     )}
                   .multiple=${this.multiStep ? true : this.multiple}
                   .disableKeyboardEvents=${this.multiStep}
@@ -282,7 +282,7 @@ export class EOxAutocomplete extends LitElement {
                   }}
                 >
                 </eox-selectionlist>
-              `
+              `,
             )}
           </eox-dropdown>
         </div>
@@ -300,7 +300,7 @@ export class EOxAutocomplete extends LitElement {
               ✕
             </button>
           </div>
-        `
+        `,
       )}
     `;
   }

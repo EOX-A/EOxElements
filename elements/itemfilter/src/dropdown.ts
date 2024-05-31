@@ -58,7 +58,7 @@ export class EOxDropdown extends LitElement {
                   top: `${y}px`,
                   width: `${trigger.getBoundingClientRect().width}px`,
                 });
-              }
+              },
             );
           }
         };
@@ -72,7 +72,7 @@ export class EOxDropdown extends LitElement {
     this._overlayCleanup();
     this.getRootNode().removeEventListener(
       "keydown",
-      this._keyboardEventListener
+      this._keyboardEventListener,
     );
     window.removeEventListener("click", this._clickEventListener);
   }

@@ -25,7 +25,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
                   <span class="title">${item}</span>
                 </label>
               </li>
-            `
+            `,
           )}
         </ul>
       `;

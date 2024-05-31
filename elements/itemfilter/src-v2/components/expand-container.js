@@ -24,7 +24,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         detail: event,
         bubbles: true,
         composed: true,
-      })
+      }),
     );
   }
 
@@ -37,26 +37,27 @@ export class EOxItemFilterExpandContainer extends LitElement {
       ${when(
         this.filterObject.featured,
         () => html`<slot name="filter"></slot>`,
-        () => html`<details
-          @toggle="${this.handleDetailsToggle}"
-          class="details-filter"
-          ?open=${this.filterObject.expanded || nothing}
-          tabindex=${this.tabIndex}
-        >
-          <summary>
-            <span
-              class="title"
-              style="${!this.filterObject.title &&
-              "text-transform: capitalize"}"
-            >
-              ${this.filterObject.title || this.filterObject.key || "Filter"}
-              <slot name="reset-button"></slot>
-            </span>
-          </summary>
-          <div class="scroll">
-            <slot name="filter"></slot>
-          </div>
-        </details>`
+        () =>
+          html`<details
+            @toggle="${this.handleDetailsToggle}"
+            class="details-filter"
+            ?open=${this.filterObject.expanded || nothing}
+            tabindex=${this.tabIndex}
+          >
+            <summary>
+              <span
+                class="title"
+                style="${!this.filterObject.title &&
+                "text-transform: capitalize"}"
+              >
+                ${this.filterObject.title || this.filterObject.key || "Filter"}
+                <slot name="reset-button"></slot>
+              </span>
+            </summary>
+            <div class="scroll">
+              <slot name="filter"></slot>
+            </div>
+          </details>`,
       )}
     `;
   }
@@ -64,5 +65,5 @@ export class EOxItemFilterExpandContainer extends LitElement {
 
 customElements.define(
   "itemfilter-expandcontainer",
-  EOxItemFilterExpandContainer
+  EOxItemFilterExpandContainer,
 );

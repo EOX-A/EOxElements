@@ -1,7 +1,7 @@
 function highlight(
   fuseSearchResult,
   highlightClassName = "highlight",
-  matchKey = "title"
+  matchKey = "title",
 ) {
   const set = (obj, path, value) => {
     const pathValue = path.split(".");
@@ -46,7 +46,7 @@ function highlight(
         set(
           highlightedItem,
           match.key,
-          generateHighlightedText(match.value, match.indices)
+          generateHighlightedText(match.value, match.indices),
         );
       });
 

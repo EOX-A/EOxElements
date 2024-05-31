@@ -3,12 +3,12 @@
 export const highlight = (
   fuseSearchResult: unknown,
   highlightClassName = "highlight",
-  matchKey = "title"
+  matchKey = "title",
 ) => {
   const set = (
     obj: { [key: string]: unknown },
     path: string,
-    value: unknown
+    value: unknown,
   ) => {
     const pathValue = path.split(".");
     let i;
@@ -22,7 +22,7 @@ export const highlight = (
 
   const generateHighlightedText = (
     inputText: string,
-    regions: number[] = []
+    regions: number[] = [],
   ) => {
     let content = "";
     let nextUnhighlightedRegionStartingIndex = 0;
@@ -60,8 +60,8 @@ export const highlight = (
           match.key as string,
           generateHighlightedText(
             match.value as string,
-            match.indices as number[]
-          )
+            match.indices as number[],
+          ),
         );
       });
 

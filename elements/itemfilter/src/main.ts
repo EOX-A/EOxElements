@@ -258,7 +258,7 @@ export class EOxItemFilter extends TemplateElement {
           this._items.reduce((store: Array<string>, item: Item) => {
             // @ts-ignore
             return store.concat(item[this._config.aggregateResults]);
-          }, [])
+          }, []),
         ),
         // @ts-ignore
       ].sort((a, b) => a.localeCompare(b));
@@ -313,7 +313,7 @@ export class EOxItemFilter extends TemplateElement {
       let currentFilter;
       if (this.filters[this._config.aggregateResults]) {
         currentFilter = Object.keys(
-          this.filters[this._config.aggregateResults]
+          this.filters[this._config.aggregateResults],
         ).filter((f) => this.filters[this._config.aggregateResults].state[f]);
       }
 
@@ -328,6 +328,7 @@ export class EOxItemFilter extends TemplateElement {
   }
 
   createItemList(aggregationProperty: string) {
+    console.log(this.config?.showResults);
     return html`
       <ul>
         ${repeat(
@@ -362,14 +363,14 @@ export class EOxItemFilter extends TemplateElement {
                   () => html`
                     <span class="title"
                       >${unsafeHTML(
-                        <string>item[this._config.titleProperty]
+                        <string>item[this._config.titleProperty],
                       )}</span
                     >
-                  `
+                  `,
                 )}
               </label>
             </li>
-          `
+          `,
         )}
       </ul>
     `;
@@ -378,8 +379,8 @@ export class EOxItemFilter extends TemplateElement {
   sortResults(items: Record<string, unknown>[]) {
     return [...items].sort((a: Item, b: Item) =>
       (<string>a[this._config.titleProperty]).localeCompare(
-        <string>b[this._config.titleProperty]
-      )
+        <string>b[this._config.titleProperty],
+      ),
     );
   }
 
@@ -453,12 +454,11 @@ export class EOxItemFilter extends TemplateElement {
                 >
                   ${when(
                     !this.config.inlineMode,
-                    () =>
-                      html`
-                        <slot name="filterstitle"
-                          ><h4 style="margin-top: 8px">Filters</h4></slot
-                        >
-                      `
+                    () => html`
+                      <slot name="filterstitle"
+                        ><h4 style="margin-top: 8px">Filters</h4></slot
+                      >
+                    `,
                   )}
                   <ul id="filters">
                     ${map(
@@ -475,7 +475,7 @@ export class EOxItemFilter extends TemplateElement {
                               .unstyled=${this.unstyled}
                               @filter="${() => this.search()}"
                             ></eox-itemfilter-${unsafeStatic(
-                              filterObject.type
+                              filterObject.type,
                             )}>
                           `
                           : staticHTML`
@@ -495,7 +495,7 @@ export class EOxItemFilter extends TemplateElement {
                                       (<HTMLButtonElement>(
                                         e.target
                                       )).parentElement.querySelector(
-                                        "[slot=filter]"
+                                        "[slot=filter]",
                                       )
                                     )).reset();
                                     this.search();
@@ -504,7 +504,7 @@ export class EOxItemFilter extends TemplateElement {
                                 >
                                   ${this.unstyled ? "Reset" : nothing}
                                 </button>
-                              `
+                              `,
                             )}
                               <eox-itemfilter-${unsafeStatic(filterObject.type)}
                                 slot="filter"
@@ -514,13 +514,13 @@ export class EOxItemFilter extends TemplateElement {
                                 .unstyled=${this.unstyled}
                                 @filter="${() => this.search()}"
                               ></eox-itemfilter-${unsafeStatic(
-                                filterObject.type
+                                filterObject.type,
                               )}>
                             </eox-itemfilter-expandcontainer>
                         `
                       }
                     </li>
-                  `
+                  `,
                     )}
                   </ul>
                   ${when(
@@ -537,10 +537,10 @@ export class EOxItemFilter extends TemplateElement {
                     >
                       Reset all
                     </a>
-                  `
+                  `,
                   )}
                 </section>
-              `
+              `,
             )}
             ${when(
               this.config.showResults && this.results,
@@ -564,18 +564,19 @@ export class EOxItemFilter extends TemplateElement {
                               (aggregationProperty) =>
                                 this.aggregateResults(
                                   this.results,
-                                  aggregationProperty
-                                ).length
+                                  aggregationProperty,
+                                ).length,
                             ),
                             (aggregationProperty) =>
                               html` ${when(
                                 this.aggregateResults(
                                   this.results,
-                                  aggregationProperty
+                                  aggregationProperty,
                                 ).length === 1 && this.config.autoSpreadSingle,
-                                () => html` <div style="margin-left: -8px">
-                                  ${this.createItemList(aggregationProperty)}
-                                </div>`,
+                                () =>
+                                  html` <div style="margin-left: -8px">
+                                    ${this.createItemList(aggregationProperty)}
+                                  </div>`,
                                 () => html`
                                   <details
                                     class="details-results"
@@ -589,19 +590,19 @@ export class EOxItemFilter extends TemplateElement {
                                         <span class="count"
                                           >${this.aggregateResults(
                                             this.results,
-                                            aggregationProperty
+                                            aggregationProperty,
                                           ).length}</span
                                         >
                                       </span>
                                     </summary>
                                     <div>
                                       ${this.createItemList(
-                                        aggregationProperty
+                                        aggregationProperty,
                                       )}
                                     </div>
                                   </details>
-                                `
-                              )}`
+                                `,
+                              )}`,
                           )
                         : map(
                             this.results,
@@ -623,27 +624,27 @@ export class EOxItemFilter extends TemplateElement {
                                       this.renderTemplate(
                                         "result",
                                         item,
-                                        `result-${item.id}`
+                                        `result-${item.id}`,
                                       ),
                                     () => html`
                                       <span class="title"
                                         >${unsafeHTML(
                                           <string>(
                                             item[this._config.titleProperty]
-                                          )
+                                          ),
                                         )}</span
                                       >
-                                    `
+                                    `,
                                   )}
                                 </label>
-                              </li>`
+                              </li>`,
                           )}
                     </ul>
                   </div>
                 </section>
-              `
+              `,
             )}
-          `
+          `,
         )}
       </form>
     `;
