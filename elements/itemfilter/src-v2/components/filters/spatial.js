@@ -4,7 +4,7 @@ import { when } from "lit/directives/when.js";
 import booleanWithin from "@turf/boolean-within";
 import "../../../../map/main";
 import { getMapLayers } from "../../helpers/";
-// import { resetFilter } from "../reset";
+import { resetFilter } from "../../helpers/index.js";
 
 export const within = (itemGeometry, filterGeometry) => {
   if (!filterGeometry) {
@@ -26,10 +26,10 @@ class EOxItemFilterSpatial extends LitElement {
   }
 
   reset() {
-    // resetFilter(this.filterObject);
+    resetFilter(this.filterObject);
 
     const spatialFilter = this.renderRoot.querySelector(
-      "eox-itemfilter-spatial-filter"
+      "itemfilter-spatial-filter"
     );
     spatialFilter.reset();
     this.requestUpdate();
@@ -69,7 +69,7 @@ class EOxItemFilterSpatial extends LitElement {
             `
           )}
         </form>
-        <eox-itemfilter-spatial-filter
+        <itemfilter-spatial-filter
           exportparts="map: spatial-filter-map"
           .geometry="${this.filterObject.state?.geometry}"
           @filter="${(e) => {
@@ -78,7 +78,7 @@ class EOxItemFilterSpatial extends LitElement {
             this.filterObject.stringifiedState = "Polygon";
             this.dispatchEvent(new CustomEvent("filter"));
           }}"
-        ></eox-itemfilter-spatial>
+        ></itemfilter-spatial>
       `
     );
   }
@@ -101,7 +101,7 @@ class SpatialFilter extends LitElement {
   }
 
   render() {
-    return html`<eox-map part="map" style="height: 400px"></eox-map>`;
+    return html`<div id="eox-map"></div>`;
   }
 
   firstUpdated() {
@@ -109,6 +109,10 @@ class SpatialFilter extends LitElement {
   }
 
   setup() {
+    const parentEOxMap = this.renderRoot.querySelector("#eox-map");
+    if (parentEOxMap.innerHTML === "")
+      parentEOxMap.innerHTML = `<eox-map part="map" style="height: 400px"></eox-map>`;
+
     const url = this.geometry && this.createFeatureUrl(this.geometry);
     const mapLayers = getMapLayers(this.geometry, url);
 
@@ -160,12 +164,8 @@ class SpatialFilter extends LitElement {
   }
 
   reset() {
-    const source = this.eoxMap.getLayerById("draw").getSource();
-    if (source.getFeatures()?.length > 0) {
-      source.clear();
-      this.eoxMap.removeInteraction("drawInteraction_modify");
-      this.setup();
-    }
+    this.renderRoot.querySelector("#eox-map").innerHTML = "";
+    this.setup();
   }
 }
 

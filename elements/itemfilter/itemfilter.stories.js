@@ -257,7 +257,6 @@ export const ItemFilter2 = {
           {
             key: "geometry",
             type: "spatial",
-            expanded: true,
           },
         ],
       }}

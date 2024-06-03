@@ -3,7 +3,7 @@ import { when } from "lit/directives/when.js";
 import dayjs from "dayjs";
 import _debounce from "lodash.debounce";
 import "toolcool-range-slider";
-// import { resetFilter } from "../reset";
+import { resetFilter } from "../../helpers/index.js";
 
 export class EOxItemFilterRange extends LitElement {
   static properties = {
@@ -38,7 +38,7 @@ export class EOxItemFilterRange extends LitElement {
   }
 
   reset() {
-    // resetFilter(this.filterObject);
+    resetFilter(this.filterObject);
     this.requestUpdate();
   }
 

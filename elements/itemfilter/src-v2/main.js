@@ -18,8 +18,10 @@ import {
   searchMethod,
   createFilterMethod,
   sortResultsMethod,
+  createResetMethod,
 } from "./methods/itemfilter";
 import { TemplateElement } from "../../../utils/templateElement";
+import { getTabIndex } from "./helpers/index.js";
 
 export class EOxItemFilter extends TemplateElement {
   // Define properties with defaults and types
@@ -76,6 +78,10 @@ export class EOxItemFilter extends TemplateElement {
     return createFilterMethod(filterObject, tabIndex, this);
   }
 
+  #createReset(filterObject, tabIndex) {
+    return createResetMethod(filterObject, tabIndex, this);
+  }
+
   firstUpdated(_changedProperties) {
     this.#config = {
       ...ELEMENT_CONFIG,
@@ -109,9 +115,17 @@ export class EOxItemFilter extends TemplateElement {
                     (filterObject, index) =>
                       html` <li>
                         <itemfilter-expandcontainer
-                          .tabIndex=${index * 2 + 1}
+                          .tabIndex=${getTabIndex(index, 1)}
                           .filterObject=${filterObject}
-                          >${this.#createFilter(filterObject, index * 2 + 2)}
+                        >
+                          ${this.#createReset(
+                            filterObject,
+                            getTabIndex(index, 2)
+                          )}
+                          ${this.#createFilter(
+                            filterObject,
+                            getTabIndex(index, 3)
+                          )}
                         </itemfilter-expandcontainer>
                       </li>`
                   )}

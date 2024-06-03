@@ -4,6 +4,7 @@ import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
+import { resetFilter } from "../../helpers/index.js";
 
 export class EOxSelector extends LitElement {
   static properties = {
@@ -112,7 +113,8 @@ export class EOxSelector extends LitElement {
   }
 
   removeItem(index) {
-    this.selectedItems = this.selectedItems.filter((_, i) => i !== index);
+    this.selectedItems =
+      index === -1 ? [] : this.selectedItems.filter((_, i) => i !== index);
     this.updateSuggestions();
     this.updateFilterList(this.selectedItems);
   }
@@ -120,6 +122,20 @@ export class EOxSelector extends LitElement {
   debouncedInputHandler = _debounce(this.toggleItem, 500, {
     leading: true,
   });
+
+  reset() {
+    if (this.filterObject.inline) this.removeItem(-1);
+    else {
+      const type = this.type === "select" ? "radio" : "checkbox";
+      const selector = `input[type='${type}']`;
+      this.renderRoot.querySelectorAll(selector).forEach((f) => {
+        if (f) f.checked = false;
+      });
+    }
+
+    resetFilter(this.filterObject);
+    this.requestUpdate();
+  }
 
   render() {
     return html`

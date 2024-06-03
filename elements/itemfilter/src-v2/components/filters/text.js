@@ -2,6 +2,7 @@ import { LitElement, html } from "lit";
 import inputStyle from "../../../../../utils/styles/dist/input.style.js";
 import _debounce from "lodash.debounce";
 import { when } from "lit/directives/when.js";
+import { resetFilter } from "../../helpers";
 
 export class EOxItemFilterText extends LitElement {
   static get properties() {
@@ -10,6 +11,13 @@ export class EOxItemFilterText extends LitElement {
       tabIndex: { attribute: false, type: Number },
       unstyled: { type: Boolean },
     };
+  }
+
+  constructor() {
+    super();
+    this.filterObject = {};
+    this.unstyled = false;
+    this.tabIndex = 0;
   }
 
   inputHandler = () => {
@@ -26,11 +34,11 @@ export class EOxItemFilterText extends LitElement {
     leading: true,
   });
 
-  constructor() {
-    super();
-    this.filterObject = {};
-    this.unstyled = false;
-    this.tabIndex = 0;
+  reset() {
+    const searchInput = this.renderRoot.querySelector("input[type='text']");
+    searchInput.value = "";
+    resetFilter(this.filterObject);
+    this.requestUpdate();
   }
 
   render() {
