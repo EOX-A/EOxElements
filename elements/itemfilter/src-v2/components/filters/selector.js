@@ -84,12 +84,14 @@ export class EOxSelector extends LitElement {
     Object.keys(this.filterObject.state).forEach((k) => {
       this.filterObject.state[k] = selectedItems.map((i) => i).includes(k);
     });
-    this.filterObject.stringifiedState = Object.keys(this.filterObject.state)
-      .filter((k) => this.filterObject.state[k])
-      .join(", ");
-    if (this.filterObject.stringifiedState?.length > 0) {
-      this.filterObject.dirty = true;
-    }
+    this.filterObject.stringifiedState =
+      Object.keys(this.filterObject.state)
+        .filter((k) => this.filterObject.state[k])
+        .join(", ") || "";
+
+    this.filterObject.dirty = Boolean(
+      this.filterObject.stringifiedState.length > 0
+    );
 
     this.dispatchEvent(new CustomEvent("filter"));
     this.requestUpdate();

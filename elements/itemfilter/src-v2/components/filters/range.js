@@ -34,7 +34,9 @@ export class EOxItemFilterRange extends LitElement {
       this.filterObject.stringifiedState = `${dayjs(min)} - ${dayjs(max)}`;
 
     this.dispatchEvent(new CustomEvent("filter"));
-    this.requestUpdate();
+    if (min === this.filterObject.min && max === this.filterObject.max)
+      this.reset();
+    else this.requestUpdate();
   }
 
   reset() {

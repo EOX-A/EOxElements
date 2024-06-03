@@ -28,6 +28,7 @@ export class EOxItemFilterText extends LitElement {
     this.filterObject.dirty = true;
     this.filterObject.stringifiedState = searchInput.value;
     this.dispatchEvent(new CustomEvent("filter"));
+    if (searchInput.value === "") this.reset();
   };
 
   debouncedInputHandler = _debounce(this.inputHandler, 500, {
