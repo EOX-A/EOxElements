@@ -2,7 +2,7 @@
 import { html } from "lit";
 import items from "./test/testItems.json";
 import "./src-v2/main.js";
-import "./src-v2/dropdown.js";
+import "./src-v2/components/dropdown.js";
 
 export default {
   title: "Elements/eox-itemfilter",
@@ -252,7 +252,7 @@ export const ItemFilter2 = {
   `,
 };
 
-export const Tes = {
+export const Dropdown = {
   render: () => html`
     <dropdown-selector
       .suggestions="${[
