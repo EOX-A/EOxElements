@@ -37,6 +37,12 @@ details > summary::-webkit-details-marker {
   align-items: center;
   text-transform: capitalize;
 }
+h6.main-heading {
+  font-size: 1rem;
+  margin-block-start: 1.33em;
+  margin-block-end: 1.33em;
+  margin-top: 8px;
+}
 details summary .title {
   display: flex;
   font-weight: 500;
@@ -112,6 +118,7 @@ button#filter-reset {
   position: absolute;
   top: 4px;
   right: 0;
+  padding: 2px 10px;
 }
 .scroll {
   max-height: calc(100% - 30px);

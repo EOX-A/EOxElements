@@ -19,6 +19,7 @@ import {
   createFilterMethod,
   sortResultsMethod,
   createResetMethod,
+  resetFilterMethod,
 } from "./methods/itemfilter";
 import { TemplateElement } from "../../../utils/templateElement";
 import { getTabIndex } from "./helpers/index.js";
@@ -82,6 +83,10 @@ export class EOxItemFilter extends TemplateElement {
     return createResetMethod(filterObject, tabIndex, this);
   }
 
+  resetFilters() {
+    resetFilterMethod(this);
+  }
+
   firstUpdated(_changedProperties) {
     this.#config = {
       ...ELEMENT_CONFIG,
@@ -109,6 +114,14 @@ export class EOxItemFilter extends TemplateElement {
               .inlineMode=${this.config.inlineMode || false}
             >
               <section slot="section">
+                ${when(
+                  !this.config.inlineMode,
+                  () => html`
+                    <slot name="filterstitle"
+                      ><h6 class="main-heading">Filters</h6></slot
+                    >
+                  `
+                )}
                 <ul id="filters">
                   ${map(
                     Object.values(this.filters),
@@ -130,6 +143,22 @@ export class EOxItemFilter extends TemplateElement {
                       </li>`
                   )}
                 </ul>
+                ${when(
+                  this.#config.filterProperties &&
+                    Object.values(this.filters)
+                      .map((f) => f.dirty)
+                      .filter((f) => f).length > 0,
+                  () => html`
+                    <button
+                      id="filter-reset"
+                      class="outline small icon-text reset-icon"
+                      data-cy="filter-reset"
+                      @click=${() => this.resetFilters()}
+                    >
+                      Reset all
+                    </a>
+                  `
+                )}
               </section>
             </eox-itemfilter-container>
           `
