@@ -3,27 +3,28 @@ import { classMap } from "lit/directives/class-map.js";
 import Fuse from "fuse.js";
 import { styleEOX } from "../style.eox.js";
 import { when } from "lit/directives/when.js";
+import allStyle from "../../../../utils/styles/dist/all.style";
 
-class DropdownSelector extends LitElement {
+export class EOxSelector extends LitElement {
   static properties = {
     suggestions: { attribute: false, type: Array },
     selectedItems: { state: true, type: Array },
-    multiple: { attribute: false, type: Boolean },
     query: { state: true, type: String },
     showSuggestions: { state: true, type: Boolean },
     highlightedIndex: { state: true, type: Number },
     filteredSuggestions: { state: true, type: Array },
+    type: { attribute: true, type: String },
   };
 
   constructor() {
     super();
     this.suggestions = [];
     this.selectedItems = [];
-    this.multiple = false;
     this.query = "";
     this.showSuggestions = false;
     this.highlightedIndex = -1;
     this.filteredSuggestions = [];
+    this.type = "multiautocomplete"; // Default type
     this.fuse = new Fuse(this.suggestions, { threshold: 0.3 });
   }
 
@@ -79,7 +80,7 @@ class DropdownSelector extends LitElement {
     if (itemIndex >= 0) {
       this.selectedItems = this.selectedItems.filter((_, i) => i !== itemIndex);
     } else {
-      if (this.multiple) {
+      if (this.type === "multiautocomplete" || this.type === "multiselect") {
         this.selectedItems = [...this.selectedItems, item];
       } else {
         this.selectedItems = [item];
@@ -101,10 +102,96 @@ class DropdownSelector extends LitElement {
     );
   }
 
+  renderAutocomplete() {
+    return html`
+      <div class="autocomplete-container">
+        <div class="autocomplete-container-wrapper">
+          <div class="selected-items">
+            <span class="chip-container">
+              ${this.selectedItems.map(
+                (item, index) => html`
+                  <span class="chip">
+                    <span class="chip-title">${item}</span>
+                    <span
+                      @click=${() => this.removeItem(index)}
+                      class="chip-close"
+                      >x</span
+                    >
+                  </span>
+                `
+              )}
+            </span>
+          </div>
+          <input
+            class="autocomplete-input"
+            type="text"
+            .value=${this.query}
+            @input=${this.handleInput}
+            @keydown=${this.handleKeyDown}
+            @blur=${() => {
+              this.showSuggestions = false;
+            }}
+            @focus=${() => {
+              this.showSuggestions = true;
+            }}
+          />
+        </div>
+        ${when(
+          this.showSuggestions,
+          () => html`
+            <div class="suggestions-list">
+              ${this.filteredSuggestions.map(
+                (suggestion, index) =>
+                  html`
+                    <div
+                      class=${classMap({
+                        "suggestion-item": true,
+                        highlighted: index === this.highlightedIndex,
+                        selected: this.selectedItems.includes(suggestion),
+                      })}
+                      @mousedown=${() => this.toggleItem(suggestion)}
+                    >
+                      ${suggestion}
+                    </div>
+                  `
+              )}
+            </div>
+          `
+        )}
+      </div>
+    `;
+  }
+
+  renderSelect() {
+    const type = this.type.includes("multi") ? "checkbox" : "radio";
+    return html`
+      <div class="select-container">
+        <ul class="${this.type}" slot="filter">
+          ${this.suggestions.map(
+            (suggestion) => html`
+              <li data-identifier="${suggestion}" data-title="${suggestion}">
+                <label>
+                  <input
+                    type="${type}"
+                    name="select"
+                    .checked=${this.selectedItems.includes(suggestion)}
+                    @change=${() => this.toggleItem(suggestion)}
+                    tabindex=""
+                  />
+                  <span class="title">${suggestion}</span>
+                </label>
+              </li>
+            `
+          )}
+        </ul>
+      </div>
+    `;
+  }
+
   render() {
     return html`
       <style>
-        ${styleEOX} .autocomplete-container {
+        ${styleEOX} ${allStyle} .autocomplete-container {
           position: relative;
           align-items: center;
           width: 100%;
@@ -191,64 +278,28 @@ class DropdownSelector extends LitElement {
           font-size: 16px;
           line-height: 1;
         }
+        .multiselect-container,
+        .select-container {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .multiselect-container label,
+        .select-container label {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+        .multiselect-container input,
+        .select-container input {
+          margin-right: 8px;
+        }
       </style>
-      <div class="autocomplete-container">
-        <div class="autocomplete-container-wrapper">
-          <div class="selected-items">
-            <span class="chip-container">
-              ${this.selectedItems.map(
-                (item, index) => html`
-                  <span class="chip">
-                    <span class="chip-title">${item}</span>
-                    <span
-                      @click=${() => this.removeItem(index)}
-                      class="chip-close"
-                      >x</span
-                    >
-                  </span>
-                `
-              )}
-            </span>
-          </div>
-          <input
-            class="autocomplete-input"
-            type="text"
-            .value=${this.query}
-            @input=${this.handleInput}
-            @keydown=${this.handleKeyDown}
-            @blur=${() => {
-              this.showSuggestions = false;
-            }}
-            @focus=${() => {
-              this.showSuggestions = true;
-            }}
-          />
-        </div>
-        ${when(
-          this.showSuggestions,
-          () => html`
-            <div class="suggestions-list">
-              ${this.filteredSuggestions.map(
-                (suggestion, index) =>
-                  html`
-                    <div
-                      class=${classMap({
-                        "suggestion-item": true,
-                        highlighted: index === this.highlightedIndex,
-                        selected: this.selectedItems.includes(suggestion),
-                      })}
-                      @mousedown=${() => this.toggleItem(suggestion)}
-                    >
-                      ${suggestion}
-                    </div>
-                  `
-              )}
-            </div>
-          `
-        )}
-      </div>
+      ${this.type.includes("autocomplete")
+        ? this.renderAutocomplete()
+        : this.renderSelect()}
     `;
   }
 }
 
-customElements.define("dropdown-selector", DropdownSelector);
+customElements.define("eox-selector", EOxSelector);
