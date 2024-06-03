@@ -10,6 +10,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         .tabIndex=${tabIndex}
         .filterObject=${filterObject}
         @filter=${() => EOxItemFilter.search()}
+        .unstyled=${EOxItemFilter.unstyled}
       ></itemfilter-text>`;
     case "multiselect":
     case "select":
@@ -21,6 +22,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           .suggestions="${result}"
           @filter=${() => EOxItemFilter.search()}
           type="${filterObject.type}"
+          .unstyled=${EOxItemFilter.unstyled}
         ></eox-selector>
       `;
     default:

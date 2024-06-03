@@ -15,6 +15,7 @@ export class EOxSelector extends LitElement {
     highlightedIndex: { state: true, type: Number },
     filteredSuggestions: { state: true, type: Array },
     type: { attribute: true, type: String },
+    unstyled: { type: Boolean },
   };
 
   constructor() {
@@ -28,6 +29,7 @@ export class EOxSelector extends LitElement {
     this.filteredSuggestions = [];
     this.type = "select"; // Default type
     this.fuse = new Fuse(this.suggestions, { threshold: 0.3 });
+    this.unstyled = false;
   }
 
   updated(changedProperties) {
@@ -121,113 +123,7 @@ export class EOxSelector extends LitElement {
   render() {
     return html`
       <style>
-        ${styleEOX} .autocomplete-container {
-          position: relative;
-          align-items: center;
-          width: 100%;
-          box-sizing: border-box;
-          border: 1px solid #00417066;
-          border-radius: 4px;
-          justify-content: space-between;
-          cursor: text;
-          margin-top: 0.5rem;
-          margin-bottom: 0.5rem;
-        }
-        .autocomplete-container:hover {
-          border: 1px solid #004170;
-        }
-        .autocomplete-container-wrapper {
-          padding: 4px;
-          position: relative;
-          display: flex;
-          align-items: center;
-          flex: 1;
-          overflow-x: auto;
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .autocomplete-container-wrapper::-webkit-scrollbar {
-          display: none; /* Safari and Chrome */
-        }
-        .autocomplete-input {
-          flex: 1;
-          border: none !important;
-          outline: none;
-          box-sizing: border-box;
-          margin-top: 0 !important;
-          margin-bottom: 0 !important;
-          padding: 3px 0px !important;
-          min-width: 150px;
-          border-radius: 4px;
-        }
-        .suggestions-list {
-          position: absolute;
-          top: 110%;
-          left: 0;
-          right: 0;
-          z-index: 1000;
-          background: #fff;
-          max-height: 200px;
-          overflow-y: auto;
-          box-sizing: border-box;
-          border-radius: 4px;
-          border: 1px solid #00417036;
-          display: contents;
-        }
-        .suggestion-item {
-          padding: 8px;
-          cursor: pointer;
-          white-space: nowrap;
-          font-size: 0.85rem;
-          text-transform: capitalize;
-        }
-        .suggestion-item.selected {
-          background-color: #00417022;
-          font-weight: 500;
-        }
-        .suggestion-item.highlighted,
-        .suggestion-item:hover {
-          background-color: #00417042;
-        }
-        .selected-items {
-          display: flex;
-          flex-wrap: nowrap;
-          gap: 4px;
-        }
-        .selected-item {
-          background: #00417022;
-          padding: 4px 8px;
-          border-radius: 4px;
-          display: flex;
-          align-items: center;
-        }
-        .selected-item span {
-          margin-right: 8px;
-        }
-        .selected-item button {
-          background: none;
-          border: none;
-          color: #fff;
-          cursor: pointer;
-          font-size: 16px;
-          line-height: 1;
-        }
-        .multiselect-container,
-        .select-container {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-        .multiselect-container label,
-        .select-container label {
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-        }
-        .multiselect-container input,
-        .select-container input {
-          margin-right: 8px;
-        }
+        ${!this.unstyled && styleEOX}
       </style>
       ${this.filterObject.inline
         ? this.renderAutocomplete()
