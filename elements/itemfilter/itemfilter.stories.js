@@ -2,7 +2,7 @@
 import { html } from "lit";
 import items from "./test/testItems.json";
 import "./src-v2/main.js";
-import "./src-v2/components/selector.js";
+import "./src-v2/components/filters/selector.js";
 
 export default {
   title: "Elements/eox-itemfilter",

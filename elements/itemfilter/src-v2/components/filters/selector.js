@@ -1,9 +1,9 @@
 import { LitElement, html } from "lit";
 import { classMap } from "lit/directives/class-map.js";
 import Fuse from "fuse.js";
-import { styleEOX } from "../style.eox.js";
+import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
-import allStyle from "../../../../utils/styles/dist/all.style";
+import allStyle from "../../../../../utils/styles/dist/all.style.js";
 
 export class EOxSelector extends LitElement {
   static properties = {
