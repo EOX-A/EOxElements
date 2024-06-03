@@ -91,6 +91,7 @@ export class EOxSelector extends LitElement {
     }
 
     this.dispatchEvent(new CustomEvent("filter"));
+    this.requestUpdate();
   }
 
   toggleItem(item) {

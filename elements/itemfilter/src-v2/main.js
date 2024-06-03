@@ -10,6 +10,7 @@ import "./components/itemfilter-container";
 import "./components/filters/text";
 import "./components/results";
 import "./components/filters/selector";
+import "./components/filters/range";
 import { ELEMENT_CONFIG } from "./enums";
 import {
   filterApplyMethod,

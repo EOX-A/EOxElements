@@ -9,8 +9,8 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         slot="filter"
         .tabIndex=${tabIndex}
         .filterObject=${filterObject}
-        @filter=${() => EOxItemFilter.search()}
         .unstyled=${EOxItemFilter.unstyled}
+        @filter=${() => EOxItemFilter.search()}
       ></itemfilter-text>`;
     case "multiselect":
     case "select":
@@ -20,10 +20,19 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           .filterObject=${filterObject}
           slot="filter"
           .suggestions="${result}"
-          @filter=${() => EOxItemFilter.search()}
           type="${filterObject.type}"
           .unstyled=${EOxItemFilter.unstyled}
+          @filter=${() => EOxItemFilter.search()}
         ></eox-selector>
+      `;
+    case "range":
+      return html`
+        <itemfilter-range
+          .filterObject=${filterObject}
+          slot="filter"
+          .unstyled=${EOxItemFilter.unstyled}
+          @filter=${() => EOxItemFilter.search()}
+        ></itemfilter-range>
       `;
     default:
       return html``;

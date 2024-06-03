@@ -248,6 +248,12 @@ export const ItemFilter2 = {
             expanded: true,
             inline: true,
           },
+          {
+            key: "timestamp",
+            type: "range",
+            format: "date",
+            expanded: true,
+          },
         ],
       }}
     ></eox-itemfilter-v2>

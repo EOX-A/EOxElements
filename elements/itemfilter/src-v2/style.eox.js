@@ -130,20 +130,19 @@ button#filter-reset {
   font-weight: 500;
   margin-left: 9px;
 }
-eox-itemfilter-range {
-  display: flex;
+eox-itemfilter-range,
+tc-range-slider {
   align-items: center;
-  padding: .5rem 0;
+  display: block;
+  padding-left: 0.6rem;
 }
 .range-before,
 .range-after {
   font-size: small;
 }
-.range-before {
-  margin-right: .5rem;
-}
+.range-before,
 .range-after {
-  margin-left: .5rem;
+  margin: 1rem 0px;
 }
 
 button.reset-icon:before {
