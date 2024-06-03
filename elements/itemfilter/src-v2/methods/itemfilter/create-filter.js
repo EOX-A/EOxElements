@@ -34,6 +34,14 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           @filter=${() => EOxItemFilter.search()}
         ></itemfilter-range>
       `;
+    case "spatial":
+      return html`
+        <itemfilter-spatial
+          .filterObject=${filterObject}
+          slot="filter"
+          @filter=${() => EOxItemFilter.search()}
+        ></itemfilter-spatial>
+      `;
     default:
       return html``;
   }

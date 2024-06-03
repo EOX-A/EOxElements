@@ -254,6 +254,11 @@ export const ItemFilter2 = {
             format: "date",
             expanded: true,
           },
+          {
+            key: "geometry",
+            type: "spatial",
+            expanded: true,
+          },
         ],
       }}
     ></eox-itemfilter-v2>
