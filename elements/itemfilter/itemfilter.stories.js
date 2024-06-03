@@ -70,9 +70,7 @@ export const Primary = {
       ],
       aggregateResults: "themes",
       enableHighlighting: false,
-      onSelect: (item) => {
-        console.log(item);
-      },
+      onSelect: () => {},
     },
     items,
   },
@@ -107,9 +105,7 @@ export const AutoSpread = {
       aggregateResults: "themes",
       autoSpreadSingle: true,
       enableHighlighting: true,
-      onSelect: (item) => {
-        console.log(item);
-      },
+      onSelect: () => {},
     },
     items,
   },
@@ -216,7 +212,7 @@ export const InlineMode = {
           },
         },
       ],
-      onFilter: (items) => console.log(items),
+      onFilter: () => {},
     },
     items,
   },
