@@ -9,7 +9,6 @@ async function searchMethod(config, items, EOxItemFilter) {
   }
   EOxItemFilter.results = EOxItemFilter.sortResults(results);
   config.onFilter(EOxItemFilter.results, EOxItemFilter.filters);
-  console.log(config, items, EOxItemFilter.results, EOxItemFilter.filters);
 }
 
 export default searchMethod;

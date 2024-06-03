@@ -9,6 +9,7 @@ import "./components/expand-container";
 import "./components/itemfilter-container";
 import "./components/filters/text";
 import "./components/results";
+import "./components/filters/selector";
 import { ELEMENT_CONFIG } from "./enums";
 import {
   filterApplyMethod,

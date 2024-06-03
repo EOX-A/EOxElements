@@ -1,7 +1,6 @@
 import { html } from "lit";
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
-import { map } from "lit/directives/map.js";
 
 function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
   switch (filterObject.type) {
@@ -13,21 +12,16 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         @filter=${() => EOxItemFilter.search()}
       ></itemfilter-text>`;
     case "multiselect":
+    case "select":
       const result = uniq(flatMap(EOxItemFilter.items, filterObject.key));
       return html`
-        <ul class="multiselect" slot="filter">
-          ${map(
-            result,
-            (item) => html`
-              <li data-identifier="${item.toLowerCase()}" data-title="${item}">
-                <label>
-                  <input type="checkbox" tabindex=${tabIndex} />
-                  <span class="title">${item}</span>
-                </label>
-              </li>
-            `
-          )}
-        </ul>
+        <eox-selector
+          .filterObject=${filterObject}
+          slot="filter"
+          .suggestions="${result}"
+          @filter=${() => EOxItemFilter.search()}
+          type="${filterObject.type}"
+        ></eox-selector>
       `;
     default:
       return html``;

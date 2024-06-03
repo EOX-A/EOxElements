@@ -3,10 +3,11 @@ import { classMap } from "lit/directives/class-map.js";
 import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
-import allStyle from "../../../../../utils/styles/dist/all.style.js";
+import _debounce from "lodash.debounce";
 
 export class EOxSelector extends LitElement {
   static properties = {
+    filterObject: { attribute: false, type: Object },
     suggestions: { attribute: false, type: Array },
     selectedItems: { state: true, type: Array },
     query: { state: true, type: String },
@@ -18,13 +19,14 @@ export class EOxSelector extends LitElement {
 
   constructor() {
     super();
+    this.filterObject = {};
     this.suggestions = [];
     this.selectedItems = [];
     this.query = "";
     this.showSuggestions = false;
     this.highlightedIndex = -1;
     this.filteredSuggestions = [];
-    this.type = "multiautocomplete"; // Default type
+    this.type = "select"; // Default type
     this.fuse = new Fuse(this.suggestions, { threshold: 0.3 });
   }
 
@@ -75,12 +77,26 @@ export class EOxSelector extends LitElement {
     }
   }
 
+  updateFilterList(selectedItems) {
+    Object.keys(this.filterObject.state).forEach((k) => {
+      this.filterObject.state[k] = selectedItems.map((i) => i).includes(k);
+    });
+    this.filterObject.stringifiedState = Object.keys(this.filterObject.state)
+      .filter((k) => this.filterObject.state[k])
+      .join(", ");
+    if (this.filterObject.stringifiedState?.length > 0) {
+      this.filterObject.dirty = true;
+    }
+
+    this.dispatchEvent(new CustomEvent("filter"));
+  }
+
   toggleItem(item) {
     const itemIndex = this.selectedItems.indexOf(item);
     if (itemIndex >= 0) {
       this.selectedItems = this.selectedItems.filter((_, i) => i !== itemIndex);
     } else {
-      if (this.type === "multiautocomplete" || this.type === "multiselect") {
+      if (this.type === "multiselect") {
         this.selectedItems = [...this.selectedItems, item];
       } else {
         this.selectedItems = [item];
@@ -89,109 +105,23 @@ export class EOxSelector extends LitElement {
     }
     this.query = "";
     this.updateSuggestions();
-    this.dispatchEvent(
-      new CustomEvent("item-selected", { detail: this.selectedItems })
-    );
+    this.updateFilterList(this.selectedItems);
   }
 
   removeItem(index) {
     this.selectedItems = this.selectedItems.filter((_, i) => i !== index);
     this.updateSuggestions();
-    this.dispatchEvent(
-      new CustomEvent("item-selected", { detail: this.selectedItems })
-    );
+    this.updateFilterList(this.selectedItems);
   }
 
-  renderAutocomplete() {
-    return html`
-      <div class="autocomplete-container">
-        <div class="autocomplete-container-wrapper">
-          <div class="selected-items">
-            <span class="chip-container">
-              ${this.selectedItems.map(
-                (item, index) => html`
-                  <span class="chip">
-                    <span class="chip-title">${item}</span>
-                    <span
-                      @click=${() => this.removeItem(index)}
-                      class="chip-close"
-                      >x</span
-                    >
-                  </span>
-                `
-              )}
-            </span>
-          </div>
-          <input
-            class="autocomplete-input"
-            type="text"
-            .value=${this.query}
-            @input=${this.handleInput}
-            @keydown=${this.handleKeyDown}
-            @blur=${() => {
-              this.showSuggestions = false;
-            }}
-            @focus=${() => {
-              this.showSuggestions = true;
-            }}
-          />
-        </div>
-        ${when(
-          this.showSuggestions,
-          () => html`
-            <div class="suggestions-list">
-              ${this.filteredSuggestions.map(
-                (suggestion, index) =>
-                  html`
-                    <div
-                      class=${classMap({
-                        "suggestion-item": true,
-                        highlighted: index === this.highlightedIndex,
-                        selected: this.selectedItems.includes(suggestion),
-                      })}
-                      @mousedown=${() => this.toggleItem(suggestion)}
-                    >
-                      ${suggestion}
-                    </div>
-                  `
-              )}
-            </div>
-          `
-        )}
-      </div>
-    `;
-  }
-
-  renderSelect() {
-    const type = this.type.includes("multi") ? "checkbox" : "radio";
-    return html`
-      <div class="select-container">
-        <ul class="${this.type}" slot="filter">
-          ${this.suggestions.map(
-            (suggestion) => html`
-              <li data-identifier="${suggestion}" data-title="${suggestion}">
-                <label>
-                  <input
-                    type="${type}"
-                    name="select"
-                    .checked=${this.selectedItems.includes(suggestion)}
-                    @change=${() => this.toggleItem(suggestion)}
-                    tabindex=""
-                  />
-                  <span class="title">${suggestion}</span>
-                </label>
-              </li>
-            `
-          )}
-        </ul>
-      </div>
-    `;
-  }
+  debouncedInputHandler = _debounce(this.toggleItem, 500, {
+    leading: true,
+  });
 
   render() {
     return html`
       <style>
-        ${styleEOX} ${allStyle} .autocomplete-container {
+        ${styleEOX} .autocomplete-container {
           position: relative;
           align-items: center;
           width: 100%;
@@ -200,6 +130,8 @@ export class EOxSelector extends LitElement {
           border-radius: 4px;
           justify-content: space-between;
           cursor: text;
+          margin-top: 0.5rem;
+          margin-bottom: 0.5rem;
         }
         .autocomplete-container:hover {
           border: 1px solid #004170;
@@ -224,7 +156,7 @@ export class EOxSelector extends LitElement {
           box-sizing: border-box;
           margin-top: 0 !important;
           margin-bottom: 0 !important;
-          padding: 4px 0px !important;
+          padding: 3px 0px !important;
           min-width: 150px;
           border-radius: 4px;
         }
@@ -240,12 +172,14 @@ export class EOxSelector extends LitElement {
           box-sizing: border-box;
           border-radius: 4px;
           border: 1px solid #00417036;
+          display: contents;
         }
         .suggestion-item {
           padding: 8px;
           cursor: pointer;
           white-space: nowrap;
           font-size: 0.85rem;
+          text-transform: capitalize;
         }
         .suggestion-item.selected {
           background-color: #00417022;
@@ -295,9 +229,101 @@ export class EOxSelector extends LitElement {
           margin-right: 8px;
         }
       </style>
-      ${this.type.includes("autocomplete")
+      ${this.filterObject.inline
         ? this.renderAutocomplete()
         : this.renderSelect()}
+    `;
+  }
+
+  renderAutocomplete() {
+    return html`
+      <div class="autocomplete-container">
+        <div class="autocomplete-container-wrapper">
+          <div class="selected-items">
+            <span class="chip-container">
+              ${this.selectedItems.map(
+                (item, index) => html`
+                  <span class="chip">
+                    <span class="chip-title">${item}</span>
+                    <span
+                      @click=${() => this.removeItem(index)}
+                      class="chip-close"
+                      >x</span
+                    >
+                  </span>
+                `
+              )}
+            </span>
+          </div>
+          <input
+            class="autocomplete-input"
+            type="text"
+            .value=${this.query}
+            placeholder="${this.filterObject.placeholder || ""}"
+            @input=${this.handleInput}
+            @keydown=${this.handleKeyDown}
+            @blur=${() => {
+              this.showSuggestions = false;
+            }}
+            @focus=${() => {
+              this.showSuggestions = true;
+            }}
+          />
+        </div>
+        ${when(
+          this.showSuggestions,
+          () => html`
+            <div class="suggestions-list">
+              ${this.filteredSuggestions.map(
+                (suggestion, index) =>
+                  html`
+                    <div
+                      data-identifier="${suggestion.toLowerCase()}"
+                      data-title="${suggestion}"
+                      class=${classMap({
+                        "suggestion-item": true,
+                        highlighted: index === this.highlightedIndex,
+                        selected: this.selectedItems.includes(suggestion),
+                      })}
+                      @mousedown=${() => this.debouncedInputHandler(suggestion)}
+                    >
+                      ${suggestion}
+                    </div>
+                  `
+              )}
+            </div>
+          `
+        )}
+      </div>
+    `;
+  }
+
+  renderSelect() {
+    const type = this.type.includes("multi") ? "checkbox" : "radio";
+    return html`
+      <div class="select-container">
+        <ul class="${this.type}">
+          ${this.suggestions.map(
+            (suggestion) => html`
+              <li
+                data-identifier="${suggestion.toLowerCase()}"
+                data-title="${suggestion}"
+              >
+                <label>
+                  <input
+                    type="${type}"
+                    name="select"
+                    .checked=${this.selectedItems.includes(suggestion)}
+                    @change=${() => this.debouncedInputHandler(suggestion)}
+                    tabindex=""
+                  />
+                  <span class="title">${suggestion}</span>
+                </label>
+              </li>
+            `
+          )}
+        </ul>
+      </div>
     `;
   }
 }

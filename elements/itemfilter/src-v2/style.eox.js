@@ -239,6 +239,7 @@ button.icon {
 }
 .chip-title {
   pointer-events: none;
+  text-transform: capitalize;
 }
 .chip-container {
   display: flex;
@@ -261,6 +262,7 @@ button.icon {
 }
 .chip-close {
   cursor: pointer;
-  margin-left: 4px;
+  margin-left: 8px;
+  font-weight: 600;
 }
 `;

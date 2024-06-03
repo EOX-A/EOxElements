@@ -243,8 +243,10 @@ export const ItemFilter2 = {
           {
             key: "themes",
             title: "Theme",
-            type: "multiselect",
+            type: "select",
+            placeholder: "Select a theme",
             expanded: true,
+            inline: true,
           },
         ],
       }}

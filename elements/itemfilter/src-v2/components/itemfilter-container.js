@@ -40,32 +40,6 @@ export class EOxItemFilterContainer extends LitElement {
   firstUpdated() {
     if (this.inlineMode) {
       document.addEventListener("click", this._handleOutsideClick.bind(this));
-
-      // [".inline-container-wrapper", ".inline-content"].forEach((selector) => {
-      //   this.inputElement = this.shadowRoot.querySelector(selector);
-      //   this.inlineContentElement =
-      //     this.shadowRoot.querySelector(".inline-content");
-      //
-      //   console.log(this.inputElement)
-      //
-      //   this.inputElement.addEventListener("focusin", () => {
-      //     setTimeout(() => {
-      //       console.log("entry")
-      //       this.inlineContentVisible = true;
-      //       this.requestUpdate();
-      //     }, 5);
-      //   });
-      //
-      //   this.inputElement.addEventListener("focusout", (event) => {
-      //     console.log(event.relatedTarget)
-      //     setTimeout(() => {
-      //       if (!this.inputElement.contains(event.relatedTarget)) {
-      //         this.inlineContentVisible = false;
-      //         this.requestUpdate();
-      //       }
-      //     }, 0);
-      //   });
-      // })
     }
   }
 
