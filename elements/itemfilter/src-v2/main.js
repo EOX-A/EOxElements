@@ -111,6 +111,7 @@ export class EOxItemFilter extends TemplateElement {
           this.config?.filterProperties,
           () => html`
             <eox-itemfilter-container
+              .filters=${this.filters}
               .inlineMode=${this.config.inlineMode || false}
             >
               <section slot="section">
@@ -144,7 +145,10 @@ export class EOxItemFilter extends TemplateElement {
                   )}
                 </ul>
                 ${when(
-                  this.#config.filterProperties &&
+                  !this.config.inlineMode &&
+                    this.#config.filterProperties &&
+                    !this.config.inlineMode &&
+                    this.#config.filterProperties &&
                     Object.values(this.filters)
                       .map((f) => f.dirty)
                       .filter((f) => f).length > 0,

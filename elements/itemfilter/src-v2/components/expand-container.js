@@ -54,7 +54,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
                 <slot name="reset-button"></slot>
               </span>
             </summary>
-            <div class="scroll">
+            <div>
               <slot name="filter"></slot>
             </div>
           </details>`

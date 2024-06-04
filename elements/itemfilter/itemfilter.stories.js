@@ -3,6 +3,7 @@ import { html } from "lit";
 import items from "./test/testItems.json";
 import "./src-v2/main.js";
 import "./src-v2/components/filters/selector.js";
+import "./src-v2/dropdown";
 
 export default {
   title: "Elements/eox-itemfilter",
@@ -223,7 +224,7 @@ export const ItemFilter2 = {
     <eox-itemfilter-v2
       .items=${items}
       .config=${{
-        inlineMode: false,
+        inlineMode: true,
         titleProperty: "title",
         aggregateResults: "themes",
         enableHighlighting: true,
@@ -262,18 +263,7 @@ export const ItemFilter2 = {
 
 export const Dropdown = {
   render: () => html`
-    <eox-selector
-      .suggestions="${[
-        "Apple",
-        "Banana",
-        "Cherry",
-        "Date",
-        "Fig",
-        "Grape",
-        "Honeydew",
-      ]}"
-      .multiple="${true}"
-      type="multiautocomplete"
-    ></eox-selector>
+    <dropdown-form></dropdown-form>
+    <input />
   `,
 };

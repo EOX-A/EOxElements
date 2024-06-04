@@ -120,11 +120,6 @@ button#filter-reset {
   right: 0;
   padding: 2px 10px;
 }
-.scroll {
-  max-height: calc(100% - 30px);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
 .count {
   display: flex;
   justify-content: center;
@@ -176,6 +171,8 @@ itemfilter-expandcontainer button.reset-icon:before {
   width: calc(100% - 10px);
   max-height: 200px;
   overflow-y: auto;
+  background: white;
+  z-index: 1;
 }
 .inline-container {
   position: relative;
@@ -183,6 +180,7 @@ itemfilter-expandcontainer button.reset-icon:before {
 .inline-container-wrapper {
   width: 100%;
   position: relative;
+  padding-bottom: 1rem;
 }
 .inline-container {
   position: relative;
@@ -326,7 +324,6 @@ button.icon {
   box-sizing: border-box;
   border-radius: 4px;
   border: 1px solid #00417036;
-  display: contents;
 }
 .suggestion-item {
   padding: 8px;
