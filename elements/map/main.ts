@@ -99,10 +99,6 @@ type ConfigObject = {
  */
 @customElement("eox-map")
 export class EOxMap extends LitElement {
-  constructor() {
-    super();
-    this.dispatchEvent(new CustomEvent("mapCreated", { detail: this.map }));
-  }
   private _center: Coordinate = [0, 0];
 
   set center(center: Coordinate) {
@@ -606,7 +602,7 @@ export class EOxMap extends LitElement {
        */
       this.dispatchEvent(new CustomEvent("loadend", { detail: this.map }));
     });
-    this.dispatchEvent(new CustomEvent("mapMounted", { detail: this.map }));
+    this.dispatchEvent(new CustomEvent("mapmounted", { detail: this.map }));
   }
 
   protected updated(
