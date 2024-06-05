@@ -2,6 +2,7 @@ import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
+import { EoxLayer } from "../src/generate";
 
 describe("layers", () => {
   it("loads a Vector Layer", () => {
@@ -21,6 +22,40 @@ describe("layers", () => {
       expect(eoxMap.getLayerById("regions")).to.exist;
     });
   });
+  it("apply geojson format options", () => {
+    cy.intercept(
+      "https://openlayers.org/data/vector/ecoregions.json",
+      (req) => {
+        req.reply(ecoRegionsFixture);
+      }
+    );
+    cy.mount(html`<eox-map .layers=${[]}></eox-map>`).as("eox-map");
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = <EOxMap>$el[0];
+      eoxMap.registerProjection(
+        "ESRI:53009",
+        "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
+          "+b=6371000 +units=m +no_defs"
+      );
+      eoxMap.setAttribute("projection", "ESRI:53009");
+
+      const layerWithFormats = Object.assign(
+        {},
+        vectorLayerStyleJson[0]
+      ) as EoxLayer;
+
+      layerWithFormats.source.format = {
+        type: "GeoJSON",
+        dataProjection: "EPSG:53009",
+      };
+      eoxMap.layers = [layerWithFormats];
+
+      const layers = eoxMap.map.getLayers().getArray();
+      expect(layers).to.have.length(1);
+      expect(eoxMap.getLayerById("regions")).to.exist;
+    });
+  });
+
   it("correctly applies flat style", () => {
     cy.intercept(
       "https://openlayers.org/data/vector/ecoregions.json",
