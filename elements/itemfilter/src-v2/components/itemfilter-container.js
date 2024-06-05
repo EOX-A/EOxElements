@@ -48,6 +48,7 @@ export class EOxItemFilterContainer extends LitElement {
     if (
       this.inlineMode &&
       event.target.tagName !== "DROPDOWN-FORM" &&
+      event.target.tagName !== "EOX-ITEMFILTER-V2" &&
       this.showDropdown
     ) {
       this.showDropdown = false;
@@ -81,6 +82,13 @@ export class EOxItemFilterContainer extends LitElement {
     if (this.inlineMode) event.stopPropagation();
   }
 
+  resetFilter(event) {
+    const filterKey = event.target.getAttribute("data-close");
+    this.querySelector(`#filter-${filterKey}`).reset();
+    this.dispatchEvent(new CustomEvent("filter"));
+    this.requestUpdate();
+  }
+
   render() {
     return html`
       <style>
@@ -105,7 +113,12 @@ export class EOxItemFilterContainer extends LitElement {
                                 >${filter}:
                                 ${this.filters[filter].stringifiedState}
                               </span>
-                              <span class="chip-close">✕</span>
+                              <span
+                                class="chip-close"
+                                data-close="${filter}"
+                                @click="${this.resetFilter}"
+                                >✕</span
+                              >
                             </span>
                           `
                         )}
@@ -117,7 +130,6 @@ export class EOxItemFilterContainer extends LitElement {
                   <input
                     type="text"
                     @click="${this.toggleDropdown}"
-                    @keydown="${this.toggleDropdown}"
                     @focus="${this.showDropdownOnFocus}"
                     placeholder="Click to open form"
                     aria-haspopup="true"

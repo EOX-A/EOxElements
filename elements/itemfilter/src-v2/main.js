@@ -113,6 +113,7 @@ export class EOxItemFilter extends TemplateElement {
             <eox-itemfilter-container
               .filters=${this.filters}
               .inlineMode=${this.config.inlineMode || false}
+              @filter=${() => this.search()}
             >
               <section slot="section">
                 ${when(

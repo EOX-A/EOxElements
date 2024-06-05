@@ -5,6 +5,8 @@ import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
 import { resetFilter } from "../../helpers/index.js";
+import checkboxStyle from "../../../../../utils/styles/dist/checkbox.style.js";
+import radioStyle from "../../../../../utils/styles/dist/radio.style.js";
 
 export class EOxSelector extends LitElement {
   static properties = {
@@ -143,6 +145,8 @@ export class EOxSelector extends LitElement {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
+        ${!this.unstyled && checkboxStyle}
+        ${!this.unstyled && radioStyle}
       </style>
       ${this.filterObject.inline
         ? this.renderAutocomplete()
@@ -193,7 +197,7 @@ export class EOxSelector extends LitElement {
                 (suggestion, index) =>
                   html`
                     <div
-                      data-identifier="${suggestion.toLowerCase()}"
+                      data-identifier="${suggestion.toString().toLowerCase()}"
                       data-title="${suggestion}"
                       class=${classMap({
                         "suggestion-item": true,
@@ -221,7 +225,7 @@ export class EOxSelector extends LitElement {
           ${this.suggestions.map(
             (suggestion) => html`
               <li
-                data-identifier="${suggestion.toLowerCase()}"
+                data-identifier="${suggestion.toString().toLowerCase()}"
                 data-title="${suggestion}"
               >
                 <label>

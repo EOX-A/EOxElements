@@ -55,13 +55,13 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           }
         }
       });
-      EOxItemFilter.filters[
-        filterProperty.key || filterProperty.keys.join("|")
-      ] = Object.assign(
+      const filterKey = filterProperty.key || filterProperty.keys.join("|");
+      EOxItemFilter.filters[filterKey] = Object.assign(
         {
           type: filterProperty.type || "multiselect",
           state: Object.assign({}, filterKeys, filterProperty.state),
           dirty: filterProperty.state ? false : undefined,
+          key: filterKey,
         },
         filterProperty.type === "range"
           ? {

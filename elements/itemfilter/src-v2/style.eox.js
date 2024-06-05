@@ -169,9 +169,9 @@ itemfilter-expandcontainer button.reset-icon:before {
   box-shadow: 2px 2px 2px #0000000f;
   position: absolute;
   width: calc(100% - 10px);
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
-  background: white;
+  background: #f3f4f5;
   z-index: 1;
 }
 .inline-container {

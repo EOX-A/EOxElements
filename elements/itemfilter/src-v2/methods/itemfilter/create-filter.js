@@ -3,11 +3,14 @@ import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
 
 function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
+  const filterId = `filter-${filterObject.key}`;
+
   switch (filterObject.type) {
     case "text":
       return html`<itemfilter-text
         data-type="filter"
         slot="filter"
+        id="${filterId}"
         .tabIndex=${tabIndex}
         .filterObject=${filterObject}
         .unstyled=${EOxItemFilter.unstyled}
@@ -19,6 +22,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
       return html`
         <eox-selector
           data-type="filter"
+          id="${filterId}"
           .filterObject=${filterObject}
           slot="filter"
           .suggestions="${result}"
@@ -30,6 +34,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
     case "range":
       return html`
         <itemfilter-range
+          id="${filterId}"
           data-type="filter"
           .filterObject=${filterObject}
           slot="filter"
@@ -40,6 +45,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
     case "spatial":
       return html`
         <itemfilter-spatial
+          id="${filterId}"
           data-type="filter"
           .filterObject=${filterObject}
           slot="filter"
