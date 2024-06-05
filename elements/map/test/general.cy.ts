@@ -21,6 +21,23 @@ describe("Map", () => {
     });
   });
 
+  it.only("map fires lifecycle events", () => {
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+    });
+    cy.mount(
+      html`<eox-map
+        .layers=${[
+          { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+        ]}
+        @mapmounted=${(e: CustomEvent) => {
+          expect(e.detail.getTargetElement(), "fires mounted event").to.not.be
+            .undefined;
+        }}
+      ></eox-map>`
+    ).as("eox-map");
+  });
+
   it("should parse zoom/center properties correctly", () => {
     cy.mount(
       html`<eox-map
