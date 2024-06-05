@@ -18,8 +18,10 @@ export const ELEMENT_CONFIG = Object.freeze({
   /**
    * Use an external search endpoint instead of fuse search.
    * Passed properties: input string, filters object
+   *
+   * (input, filters) => {}
    */
-  externalFilter: (input, filters) => {},
+  externalFilter: () => {},
 
   /**
    * The filter properties.

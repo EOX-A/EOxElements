@@ -6,6 +6,7 @@ export default function resetFilter(filterObject) {
   switch (filterType) {
     case "multiselect":
       for (const filter in filterObject.state) {
+        // eslint-disable-next-line
         if (filterObject.state.hasOwnProperty(filter)) {
           filterObject.state[filter] = false;
         }
@@ -17,6 +18,7 @@ export default function resetFilter(filterObject) {
       break;
     case "select":
       for (const filter in filterObject.state) {
+        // eslint-disable-next-line
         if (filterObject.state.hasOwnProperty(filter)) {
           filterObject.state[filter] = false;
         }

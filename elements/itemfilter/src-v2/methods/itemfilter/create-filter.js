@@ -18,14 +18,13 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
       ></itemfilter-text>`;
     case "multiselect":
     case "select":
-      const result = uniq(flatMap(EOxItemFilter.items, filterObject.key));
       return html`
         <eox-selector
           data-type="filter"
           id="${filterId}"
           .filterObject=${filterObject}
           slot="filter"
-          .suggestions="${result}"
+          .suggestions="${uniq(flatMap(EOxItemFilter.items, filterObject.key))}"
           type="${filterObject.type}"
           .unstyled=${EOxItemFilter.unstyled}
           @filter=${() => EOxItemFilter.search()}
