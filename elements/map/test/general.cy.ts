@@ -49,7 +49,7 @@ describe("Map", () => {
     });
   });
 
-  /*it("animates on zoom/center change", () => {
+  it("animates on zoom/center change", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
       fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
@@ -82,7 +82,7 @@ describe("Map", () => {
         }, 200);
       });
     });
-  });*/
+  });
 
   it("animates on extent", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
