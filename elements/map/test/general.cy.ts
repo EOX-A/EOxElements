@@ -21,7 +21,7 @@ describe("Map", () => {
     });
   });
 
-  it.only("map fires lifecycle events", () => {
+  it("map fires lifecycle events", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
       fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
