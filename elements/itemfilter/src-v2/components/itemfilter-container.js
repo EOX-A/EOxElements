@@ -2,6 +2,7 @@ import { LitElement, html } from "lit";
 import { styleEOX } from "../style.eox";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
+import Fuse from "fuse.js";
 
 export class EOxItemFilterContainer extends LitElement {
   static get properties() {
@@ -44,6 +45,11 @@ export class EOxItemFilterContainer extends LitElement {
     super.disconnectedCallback();
   }
 
+  resetSearch() {
+    this.renderRoot.querySelector("#itemfilter-input-search").value = "";
+    this.searchFilter({ target: { value: "" } });
+  }
+
   handleClickOutside(event) {
     if (
       this.inlineMode &&
@@ -51,6 +57,7 @@ export class EOxItemFilterContainer extends LitElement {
       event.target.tagName !== "EOX-ITEMFILTER-V2" &&
       this.showDropdown
     ) {
+      this.resetSearch();
       this.showDropdown = false;
       this.requestUpdate();
     }
@@ -58,6 +65,7 @@ export class EOxItemFilterContainer extends LitElement {
 
   handleKeyDown(event) {
     if (this.inlineMode && event.key === "Escape" && this.showDropdown) {
+      this.resetSearch();
       this.showDropdown = false;
       this.requestUpdate();
     }
@@ -83,10 +91,28 @@ export class EOxItemFilterContainer extends LitElement {
   }
 
   resetFilter(event) {
-    const filterKey = event.target.getAttribute("data-close");
+    const filterKey = event.target.getAttribute("data-close").replace("|", "-");
     this.querySelector(`#filter-${filterKey}`).reset();
     this.dispatchEvent(new CustomEvent("filter"));
     this.requestUpdate();
+  }
+
+  searchFilter(event) {
+    const fuse = new Fuse(this.filterProperties, {
+      keys: ["title"],
+    });
+    const inputText = event.target.value;
+    const result = fuse.search(inputText);
+    const matches = result.map(
+      (res) => res.item.key || res.item.keys.join("|")
+    );
+
+    Object.keys(this.filters).forEach((filter) => {
+      this.querySelector(
+        `[data-details="${filter}"]`
+      ).parentElement.style.display =
+        matches.includes(filter) || !inputText ? "" : "none";
+    });
   }
 
   render() {
@@ -128,9 +154,11 @@ export class EOxItemFilterContainer extends LitElement {
                 </div>
                 <div class="input-container">
                   <input
+                    id="itemfilter-input-search"
                     type="text"
                     @click="${this.toggleDropdown}"
                     @focus="${this.showDropdownOnFocus}"
+                    @input="${this.searchFilter}"
                     placeholder="Click to open form"
                     aria-haspopup="true"
                     aria-expanded="${this.showDropdown}"

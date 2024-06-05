@@ -3,7 +3,7 @@ import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
 
 function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
-  const filterId = `filter-${filterObject.key}`;
+  const filterId = `filter-${filterObject.key}`.replace("|", "-");
 
   switch (filterObject.type) {
     case "text":

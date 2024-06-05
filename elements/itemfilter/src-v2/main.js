@@ -112,6 +112,7 @@ export class EOxItemFilter extends TemplateElement {
           () => html`
             <eox-itemfilter-container
               .filters=${this.filters}
+              .filterProperties=${this.config.filterProperties}
               .inlineMode=${this.config.inlineMode || false}
               @filter=${() => this.search()}
             >
@@ -132,6 +133,7 @@ export class EOxItemFilter extends TemplateElement {
                         <itemfilter-expandcontainer
                           .tabIndex=${getTabIndex(index, 1)}
                           .filterObject=${filterObject}
+                          data-details="${filterObject.key}"
                         >
                           ${this.#createReset(
                             filterObject,

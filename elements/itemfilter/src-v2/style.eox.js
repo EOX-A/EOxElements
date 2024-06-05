@@ -209,6 +209,7 @@ itemfilter-expandcontainer button.reset-icon:before {
   border: none;
   outline: none;
   border: 0;
+  min-width: 150px;
 }
 .button-container {
   display: flex;
