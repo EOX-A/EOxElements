@@ -12,6 +12,7 @@ import "./components/results";
 import "./components/filters/selector";
 import "./components/filters/range";
 import "./components/filters/spatial";
+import "./components/chips";
 import { ELEMENT_CONFIG } from "./enums";
 import {
   filterApplyMethod,

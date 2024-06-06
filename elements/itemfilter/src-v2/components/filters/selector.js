@@ -155,24 +155,21 @@ export class EOxSelector extends LitElement {
   }
 
   renderAutocomplete() {
+    const chipItems = this.selectedItems.map((item) => ({
+      title: item,
+      key: item,
+    }));
     return html`
       <div class="autocomplete-container">
         <div class="autocomplete-container-wrapper">
           <div class="selected-items">
-            <span class="chip-container">
-              ${this.selectedItems.map(
-                (item, index) => html`
-                  <span class="chip">
-                    <span class="chip-title">${item}</span>
-                    <span
-                      @click=${() => this.removeItem(index)}
-                      class="chip-close"
-                      >x</span
-                    >
-                  </span>
-                `
-              )}
-            </span>
+            <eox-itemfilter-chips-v2
+              .items=${chipItems}
+              .controller=${{
+                remove: (event, index) => this.removeItem(index),
+              }}
+            >
+            </eox-itemfilter-chips-v2>
           </div>
           <input
             class="autocomplete-input"

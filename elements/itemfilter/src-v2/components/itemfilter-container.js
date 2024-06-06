@@ -115,6 +115,15 @@ export class EOxItemFilterContainer extends LitElement {
     });
   }
 
+  chipItems() {
+    return Object.keys(this.filters)
+      .map((filter) => ({
+        title: `${filter}:${this.filters[filter].stringifiedState}`,
+        key: filter,
+      }))
+      .filter((item) => this.filters[item.key].dirty);
+  }
+
   render() {
     return html`
       <style>
@@ -127,30 +136,13 @@ export class EOxItemFilterContainer extends LitElement {
             <div class="inline-container-wrapper">
               <div class="inline-container" part="container">
                 <div>
-                  <span class="chip-container">
-                    ${map(
-                      Object.keys(this.filters),
-                      (filter) => html`
-                        ${when(
-                          this.filters[filter].dirty,
-                          () => html`
-                            <span class="chip">
-                              <span class="chip-title"
-                                >${filter}:
-                                ${this.filters[filter].stringifiedState}
-                              </span>
-                              <span
-                                class="chip-close"
-                                data-close="${filter}"
-                                @click="${this.resetFilter}"
-                                >✕</span
-                              >
-                            </span>
-                          `
-                        )}
-                      `
-                    )}
-                  </span>
+                  <eox-itemfilter-chips-v2
+                    .items=${this.chipItems()}
+                    .controller=${{
+                      remove: (event) => this.resetFilter(event),
+                    }}
+                  >
+                  </eox-itemfilter-chips-v2>
                 </div>
                 <div class="input-container">
                   <input
