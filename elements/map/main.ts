@@ -2,9 +2,7 @@ import { LitElement, PropertyValueMap, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Map from "ol/Map.js";
 import View, { ViewObjectEventTypes } from "ol/View.js";
-// @ts-ignore
 import olCss from "ol/ol.css?inline";
-// @ts-ignore
 import controlCss from "./src/controls/controls.css?inline";
 import { EOxSelectInteraction } from "./src/select";
 import { EoxLayer, createLayer, updateLayer } from "./src/generate";
