@@ -191,7 +191,9 @@ describe("Map", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       const layersArray = eoxMap.getFlatLayersArray(
-        eoxMap.map.getLayers().getArray() as Array<import("../src/generate").AnyLayer>
+        eoxMap.map.getLayers().getArray() as Array<
+          import("../src/generate").AnyLayer
+        >
       );
       expect(layersArray.length).to.equal(3);
       expect(layersArray.find((l) => l.get("id") === "group1")).to.exist;

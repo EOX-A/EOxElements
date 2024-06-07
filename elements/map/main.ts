@@ -373,7 +373,11 @@ export class EOxMap extends LitElement {
         }
       });
       this.map.setView(newView);
-      this.getFlatLayersArray(this.map.getLayers().getArray() as Array<import("./src/generate").AnyLayer>)
+      this.getFlatLayersArray(
+        this.map.getLayers().getArray() as Array<
+          import("./src/generate").AnyLayer
+        >
+      )
         .filter((l) => l instanceof VectorLayer)
         .forEach((l) => l.getSource().refresh());
       this._projection = projection;
