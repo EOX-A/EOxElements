@@ -83,7 +83,7 @@ export class EOxDrawTools extends LitElement {
 
     /**
      * The current native OpenLayers draw `layer`
-     * @type import("ol/layer").Vector<import("ol/source").Vector>
+     * @type import("ol/layer/Vector").default<import("ol/Feature").FeatureLike>
      */
 
     this.drawLayer = null;
