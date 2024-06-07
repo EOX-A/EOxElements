@@ -23,8 +23,11 @@ export function simulateEvent(
     preventDefault: function () {},
     pointerType: "mouse",
   };
-  // @ts-ignore
-  const simulatedEvent = new MapBrowserEvent(type, map, event);
+  const simulatedEvent = new MapBrowserEvent(
+    type,
+    map,
+    event as unknown as UIEvent
+  );
   map.handleMapBrowserEvent(simulatedEvent);
   return simulatedEvent;
 }

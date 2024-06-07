@@ -2,7 +2,6 @@ import Modify from "ol/interaction/Modify";
 import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
 import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSource } from "ol/source";
 import { addNewFeature } from "../helpers";
 
 export type DrawOptions = Omit<
@@ -21,13 +20,12 @@ export type DrawOptions = Omit<
  * Additionally, if {options.modify} is set, it also adds a `modify` interaction. The name `modify`-interaction
  * follows the naming convention `${DrawOptions.id}_modify`
  * @param {EOxMap} EOxMap
- * @param {VectorLayer<VectorSource>} drawLayer
+ * @param {VectorLayer<import("ol/Feature").default>} drawLayer
  * @param {DrawOptions} options
  */
 export function addDraw(
   EOxMap: EOxMap,
-  // @ts-ignore
-  drawLayer: VectorLayer<VectorSource>,
+  drawLayer: VectorLayer<import("ol/Feature").default>,
   options: DrawOptions
 ): void {
   const options_ = Object.assign({}, options);
@@ -44,9 +42,9 @@ export function addDraw(
     options_.type = "Circle";
   }
 
+  //@ts-expect-error box
   const drawInteraction = new Draw({
     ...options_,
-    //@ts-ignore
     source,
   });
 
@@ -64,7 +62,6 @@ export function addDraw(
   EOxMap.map.addInteraction(drawInteraction);
   EOxMap.interactions[options_.id] = drawInteraction;
   const modifyInteraction = new Modify({
-    // @ts-ignore
     source,
   });
   modifyInteraction.setActive(options_.modify);

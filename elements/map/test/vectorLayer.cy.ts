@@ -28,8 +28,7 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    // @ts-ignore
-    vectorLayerStyleJson[0].style = {
+    (vectorLayerStyleJson[0] as import("../src/generate").EoxLayer).style = {
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 2,
@@ -39,14 +38,15 @@ describe("layers", () => {
     );
     cy.get("eox-map").and(($el) => {
       return new Cypress.Promise((resolve) => {
-        const layers = (<EOxMap>$el[0]).map.getLayers().getArray();
+        const layer = (<EOxMap>$el[0]).map
+          .getLayers()
+          .getArray()[0] as import("ol/layer/Vector").default<
+          import("ol/Feature").FeatureLike
+        >;
         // wait for features to load
-        // @ts-ignore
-        layers[0].getSource().on("featuresloadend", () => {
-          // @ts-ignore
-          const feature = layers[0].getSource().getFeatures()[0];
-          // @ts-ignore
-          const styles = layers[0].getStyleFunction()(feature);
+        layer.getSource().on("featuresloadend", () => {
+          const feature = layer.getSource().getFeatures()[0];
+          const styles = layer.getStyleFunction()(feature, 1);
           expect(styles).to.have.length(1);
           resolve();
         });
@@ -60,8 +60,7 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    vectorLayerStyleJson[0].style = {
-      // @ts-ignore
+    (vectorLayerStyleJson[0] as import("../src/generate").EoxLayer).style = {
       "fill-color": ["string", ["get", "COLOR"], "#eee"],
       "stroke-color": "black",
       "stroke-width": 2,
@@ -75,11 +74,14 @@ describe("layers", () => {
         const eoxMap = <EOxMap>$el[0];
         const layer = eoxMap.getLayerById(
           "regions"
-          //@ts-ignore
-        ) as import("ol/layer").Vector<import("ol/source").Vector>;
-        layer.getSource().on("featuresloadend", () => {
-          const feature = layer.getSource().getFeatures()[0];
-          //@ts-ignore
+        ) as import("ol/layer/Vector").default<
+          import("ol/Feature").FeatureLike
+        >;
+        const source = layer.getSource() as import("ol/source/Vector").default<
+          import("ol/Feature").FeatureLike
+        >;
+        source.on("featuresloadend", () => {
+          const feature = source.getFeatures()[0];
           const styles = layer.getStyleFunction()(feature, 100);
           expect(styles).to.have.length(1);
           resolve();

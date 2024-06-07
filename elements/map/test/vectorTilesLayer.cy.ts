@@ -2,6 +2,7 @@ import { html } from "lit";
 import { VectorTile } from "ol/layer";
 import "../main";
 import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
+import { EoxLayer } from "../src/generate";
 
 describe("VectorTile Layer", () => {
   it("loads a Vector Tile Layer, applies flat style", () => {
@@ -11,8 +12,7 @@ describe("VectorTile Layer", () => {
       encoding: "binary",
     });
 
-    // @ts-ignore
-    vectorTileLayerStyleJson[0].style = {
+    (vectorTileLayerStyleJson[0] as EoxLayer).style = {
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 4,

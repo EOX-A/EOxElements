@@ -7,11 +7,11 @@ import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";
 import VectorTileLayer from "ol/layer/VectorTile.js";
 import VectorLayer from "ol/layer/Vector.js";
-import VectorSource from "ol/source/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
 
-//@ts-ignore
-export type SelectLayer = VectorTileLayer | VectorLayer<VectorSource>;
+export type SelectLayer =
+  | VectorTileLayer<import("ol/Feature").FeatureLike>
+  | VectorLayer<import("ol/Feature").FeatureLike>;
 
 export type SelectOptions = Omit<
   import("ol/interaction/Select").Options,
@@ -35,8 +35,7 @@ export class EOxSelectInteraction {
   tooltip: HTMLElement;
   selectedFids: Array<string | number>;
   selectLayer: SelectLayer;
-  //@ts-ignore
-  selectStyleLayer: VectorTileLayer | VectorLayer<VectorSource>;
+  selectStyleLayer: SelectLayer;
   changeSourceListener: () => void;
   removeListener: () => void;
 
@@ -112,7 +111,6 @@ export class EOxSelectInteraction {
         },
       } as EoxLayer;
     }
-    // @ts-ignore
     layerDefinition.renderMode = "vector";
     delete layerDefinition.interactions;
 
@@ -120,21 +118,24 @@ export class EOxSelectInteraction {
       eoxMap,
       layerDefinition as EoxLayer
     ) as SelectLayer;
-    // @ts-ignore
+
+    //@ts-expect-error VectorSource for VectorLayer, VectorTileSource for VectorTileLayer
     this.selectStyleLayer.setSource(this.selectLayer.getSource());
     this.selectStyleLayer.setMap(this.eoxMap.map);
 
     const initialStyle = this.selectStyleLayer.getStyleFunction();
 
-    this.selectStyleLayer.setStyle((feature: Feature, resolution: number) => {
-      if (
-        this.selectedFids.length &&
-        this.selectedFids.includes(this.getId(feature))
-      ) {
-        return initialStyle(feature, resolution);
+    this.selectStyleLayer.setStyle(
+      (feature: import("ol/Feature").FeatureLike, resolution: number) => {
+        if (
+          this.selectedFids.length &&
+          this.selectedFids.includes(this.getId(feature))
+        ) {
+          return initialStyle(feature, resolution);
+        }
+        return null;
       }
-      return null;
-    });
+    );
 
     // Pan into the feature's extend when `panIn` is true
     const panIntoFeature = (feature: Feature | RenderFeature) => {
@@ -208,7 +209,7 @@ export class EOxSelectInteraction {
     });
 
     this.changeSourceListener = () => {
-      // @ts-ignore
+      //@ts-expect-error VectorSource for VectorLayer, VectorTileSource for VectorTileLayer
       this.selectStyleLayer.setSource(this.selectLayer.getSource());
     };
 
@@ -277,8 +278,7 @@ export class EOxSelectInteraction {
  */
 export function addSelect(
   EOxMap: EOxMap,
-  //@ts-ignore
-  selectLayer: VectorTileLayer | VectorLayer<VectorSource>,
+  selectLayer: SelectLayer,
   options: SelectOptions
 ) {
   if (EOxMap.interactions[options.id]) {

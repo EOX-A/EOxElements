@@ -5,7 +5,6 @@ import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";
 import { Point } from "ol/geom";
 import { EOxMap } from "../main";
-import { EoxLayer } from "../src/generate";
 
 describe("draw interaction", () => {
   beforeEach(() => {});
@@ -22,9 +21,10 @@ describe("draw interaction", () => {
       const eoxMap = <EOxMap>$el[0];
       const map = eoxMap.map;
       const originalNumberOfInteractions = map.getInteractions().getLength();
-      const newLayerJson = [Object.assign({}, drawInteractionLayerJson[0])];
+      const newLayerJson = [
+        Object.assign({}, drawInteractionLayerJson[0]),
+      ] as Array<import("../src/generate").EoxLayer>;
       delete newLayerJson[0].interactions;
-      //@ts-ignore
       eoxMap.layers = newLayerJson;
       drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
       expect(drawInteraction, "remove interaction from dictionary").to.not
@@ -44,8 +44,9 @@ describe("draw interaction", () => {
       const eoxMap = <EOxMap>$el[0];
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
-      const drawLayer = eoxMap.getLayerById("drawLayer");
-      // @ts-ignore
+      const drawLayer = eoxMap.getLayerById(
+        "drawLayer"
+      ) as import("ol/layer/Vector").default<import("ol/Feature").FeatureLike>;
       const features = drawLayer.getSource().getFeatures();
       const geometry = features[0].getGeometry() as Point;
       expect(features).to.have.length(1);
@@ -79,7 +80,9 @@ describe("draw interaction", () => {
       const eoxMap = <EOxMap>$el[0];
       expect(eoxMap.interactions.drawInteraction).to.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.exist;
-      eoxMap.layers = vectorLayerJson as Array<EoxLayer>;
+      eoxMap.layers = vectorLayerJson as Array<
+        import("../src/generate").EoxLayer
+      >;
       expect(eoxMap.interactions.drawInteraction).to.not.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.not.exist;
     });
@@ -93,7 +96,7 @@ describe("draw interaction", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.addEventListener("drawend", (evt) => {
-        // @ts-ignore
+        //@ts-expect-error geojson is defined on drawend event.
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
       });
 
@@ -113,8 +116,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-        //@ts-ignore
-      ) as import("ol/layer").Vector<import("ol/source").Vector>;
+      ) as import("ol/layer").Vector<import("ol/Feature").FeatureLike>;
       const source = drawLayer.getSource();
       const features = source.getFeatures();
       expect(features).to.have.length(1);
@@ -129,7 +131,7 @@ describe("draw interaction", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.addEventListener("drawend", (evt) => {
-        // @ts-ignore
+        //@ts-expect-error geojson is defined on drawend event.
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
       });
 
@@ -155,8 +157,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-        //@ts-ignore
-      ) as import("ol/layer").Vector<import("ol/source").Vector>;
+      ) as import("ol/layer").Vector<import("ol/Feature").FeatureLike>;
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);
     });
@@ -171,11 +172,11 @@ describe("draw interaction", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
 
-      eoxMap.addEventListener("drawend", (evt) => {
-        // @ts-ignore
-        expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
-        // @ts-ignore
-        const coordinates = evt.detail.geojson.geometry.coordinates[0];
+      eoxMap.addEventListener("drawend", (evt: UIEventInit) => {
+        //@ts-expect-error geojson is defined in drawend event
+        const geojson = evt.detail.geojson;
+        expect(geojson.properties.measure).to.be.greaterThan(0);
+        const coordinates = geojson.geometry.coordinates[0];
         const isRectangle =
           coordinates[0][1] === coordinates[1][1] &&
           coordinates[1][0] === coordinates[2][0];

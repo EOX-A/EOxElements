@@ -33,7 +33,6 @@ import {
 import Feature from "ol/Feature";
 import { Geometry } from "ol/geom";
 import VectorLayer from "ol/layer/Vector.js";
-import VectorSource from "ol/source/Vector.js";
 import {
   ProjectionLike,
   transform,
@@ -41,7 +40,6 @@ import {
   get as getProjection,
 } from "ol/proj";
 import { Coordinate } from "ol/coordinate";
-import { Layer } from "ol/layer";
 
 type EOxAnimationOptions = import("ol/View").AnimationOptions &
   import("ol/View").FitOptions;
@@ -369,15 +367,13 @@ export class EOxMap extends LitElement {
         if (existingListeners?.length) {
           for (let i = existingListeners.length - 1; i >= 0; i--) {
             const listener = existingListeners[i];
-            //@ts-ignore
-            oldView.un(eventType, listener);
-            //@ts-ignore
-            newView.on(eventType, listener);
+            oldView.un(eventType as any, listener as any);
+            newView.on(eventType as any, listener as any);
           }
         }
       });
       this.map.setView(newView);
-      this.getFlatLayersArray(this.map.getLayers().getArray() as Array<Layer>)
+      this.getFlatLayersArray(this.map.getLayers().getArray() as Array<import("./src/generate").AnyLayer>)
         .filter((l) => l instanceof VectorLayer)
         .forEach((l) => l.getSource().refresh());
       this._projection = projection;
@@ -528,8 +524,7 @@ export class EOxMap extends LitElement {
 
   parseTextToFeature = (
     text: string,
-    //@ts-ignore
-    vectorLayer: VectorLayer<VectorSource>,
+    vectorLayer: VectorLayer<import("ol/Feature").default>,
     replaceFeatures: boolean = false
   ) => {
     parseText(text, vectorLayer, this, replaceFeatures);
