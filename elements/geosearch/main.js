@@ -280,7 +280,15 @@ class EOxGeoSearch extends LitElement {
                       e.bounds.northeast.lat,
                     ]);
                     e.zoomExtent = [sw[0], sw[1], ne[0], ne[1]];
-                    this.onSelect(e);
+
+                    const options = {
+                      detail: e.zoomExtent,
+                      bubbles: true,
+                      composed: true,
+                    };
+                    window.dispatchEvent(new CustomEvent('geosearchSelect', options));
+
+                    if (this.onSelect) this.onSelect(e);
                   }}"
                 />
               `
