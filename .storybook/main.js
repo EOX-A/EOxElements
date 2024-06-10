@@ -26,6 +26,7 @@ const config = {
   },
   staticDirs: [
     "./public",
+    "../elements/geosearch/stories/public/",
     "../elements/jsonform/stories/public/",
     "../elements/stacinfo/stories/public/",
     "../elements/storytelling/stories/public/",
