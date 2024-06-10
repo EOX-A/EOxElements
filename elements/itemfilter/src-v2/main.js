@@ -25,6 +25,18 @@ import {
 import { TemplateElement } from "../../../utils/templateElement";
 import { getTabIndex } from "./helpers/index.js";
 
+/**
+ * EOxItemFilter is a custom web component that provides a comprehensive item filtering system.
+ * It includes methods for applying filters, searching, sorting results, and resetting filters.
+ * The component supports both inline and dropdown modes for filter display.
+ *
+ * @module EOxItemFilter
+ * @extends {TemplateElement}
+ * @property {Object} config - The configuration object for the filter.
+ * @property {Object} items - The items to be filtered.
+ * @property {Object} results - The state object containing the filtered results.
+ * @property {Object} filters - The state object containing the applied filters.
+ */
 export class EOxItemFilter extends TemplateElement {
   // Define properties with defaults and types
   static get properties() {
@@ -53,11 +65,26 @@ export class EOxItemFilter extends TemplateElement {
 
   constructor() {
     super();
+
+    /**
+     * @type Object
+     */
     this.config = null;
+
+    /**
+     * @type Object
+     */
     this.items = null;
+
+    /**
+     * @type Object
+     */
     this.filters = {};
   }
 
+  /**
+   * Applies the filters to the items and updates the result aggregation.
+   */
   apply() {
     this.#resultAggregation = filterApplyMethod(
       this.#config,
@@ -67,27 +94,62 @@ export class EOxItemFilter extends TemplateElement {
     this.search();
   }
 
+  /**
+   * Performs a search based on the current configuration and items.
+   * Requests an update after the search completes.
+   */
   async search() {
     await searchMethod(this.#config, this.#items, this);
     this.requestUpdate();
   }
 
+  /**
+   * Sorts the given items based on the current configuration.
+   *
+   * @param {Array<object>} items - The items to be sorted.
+   * @returns {Array<object>} - The sorted items.
+   */
   sortResults(items) {
     return sortResultsMethod(items, this.#config);
   }
 
+  /**
+   * Creates a filter element based on the given filter object and tab index.
+   *
+   * @param {Object} filterObject - The filter object.
+   * @param {number} tabIndex - The tab index for the filter element.
+   * @returns {import("lit")} - The template result for the filter element.
+   * @private
+   */
   #createFilter(filterObject, tabIndex) {
     return createFilterMethod(filterObject, tabIndex, this);
   }
 
+  /**
+   * Creates a reset element for the given filter object and tab index.
+   *
+   * @param {Object} filterObject - The filter object.
+   * @param {number} tabIndex - The tab index for the reset element.
+   * @returns {import("lit")} - The template result for the filter element.
+   * @private
+   */
   #createReset(filterObject, tabIndex) {
     return createResetMethod(filterObject, tabIndex, this);
   }
 
+  /**
+   * Resets all applied filters.
+   */
   resetFilters() {
     resetFilterMethod(this);
   }
 
+  /**
+   * Lifecycle method called after the first update.
+   * Initializes the configuration and items, and applies the filters.
+   *
+   * @param {Map} _changedProperties - The changed properties.
+   */
   firstUpdated(_changedProperties) {
     this.#config = {
       ...ELEMENT_CONFIG,
@@ -99,6 +161,9 @@ export class EOxItemFilter extends TemplateElement {
     this.apply();
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       <style>

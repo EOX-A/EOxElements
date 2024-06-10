@@ -54,7 +54,7 @@ export class EOxItemFilterResults extends TemplateElement {
    * Creates a list of items based on the aggregation property.
    *
    * @param {string} aggregationProperty - The property used for aggregation.
-   * @returns {TemplateResult} - The template result for the item list.
+   * @returns {import("lit")} - The template result for the item list.
    * @private
    */
   #createItemList(aggregationProperty) {
