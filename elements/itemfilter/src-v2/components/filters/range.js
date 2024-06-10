@@ -1,9 +1,12 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
-import dayjs from "dayjs";
 import _debounce from "lodash.debounce";
 import "toolcool-range-slider";
-import { resetFilter } from "../../helpers/index.js";
+import {
+  rangeInputHandlerMethod,
+  rangeLabelMethod,
+  resetRangeMethod,
+} from "../../methods/filters/index.js";
 
 export class EOxItemFilterRange extends LitElement {
   static properties = {
@@ -13,38 +16,23 @@ export class EOxItemFilterRange extends LitElement {
   constructor() {
     super();
     this.filterObject = {};
-    this.inputHandler = this.inputHandler.bind(this);
+    this.inputHandler = this.#inputHandler.bind(this);
     this.debouncedInputHandler = _debounce(this.inputHandler, 0, {
       leading: true,
     });
   }
 
-  inputHandler(evt) {
-    const [min, max] = evt.detail.values;
+  #inputHandler(evt) {
+    rangeInputHandlerMethod(evt, this);
+  }
 
-    if (
-      min !== this.filterObject.state.min ||
-      max !== this.filterObject.state.max
-    ) {
-      [this.filterObject.state.min, this.filterObject.state.max] = [min, max];
-      this.filterObject.dirty = true;
-    }
-
-    if (this.filterObject.dirty)
-      this.filterObject.stringifiedState = `${dayjs(min)} - ${dayjs(max)}`;
-
-    this.dispatchEvent(new CustomEvent("filter"));
-    if (min === this.filterObject.min && max === this.filterObject.max)
-      this.reset();
-    else this.requestUpdate();
+  #label(val, pos) {
+    return rangeLabelMethod(val, pos, this);
   }
 
   reset() {
-    resetFilter(this.filterObject);
-    this.requestUpdate();
+    resetRangeMethod(this);
   }
-
-  // skip shadow root creation
   createRenderRoot() {
     return this;
   }
@@ -53,7 +41,7 @@ export class EOxItemFilterRange extends LitElement {
     return when(
       this.filterObject,
       () => html`
-        ${this.label("min", "before")}
+        ${this.#label("min", "before")}
         <tc-range-slider
           min="${this.filterObject.min}"
           max="${this.filterObject.max}"
@@ -62,16 +50,9 @@ export class EOxItemFilterRange extends LitElement {
           step="1"
           @change=${this.debouncedInputHandler}
         ></tc-range-slider>
-        ${this.label("max", "after")}
+        ${this.#label("max", "after")}
       `
     );
-  }
-
-  label(val, pos) {
-    const isDate = Boolean(this.filterObject.format === "date");
-    const filteredVal = this.filterObject.state[val];
-    const label = isDate ? dayjs.unix(filteredVal) : filteredVal;
-    return html`<div class="range-${pos}">${label}</div>`;
   }
 }
 

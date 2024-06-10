@@ -20,7 +20,7 @@ export class EOxItemFilterText extends LitElement {
     this.tabIndex = 0;
   }
 
-  inputHandler = () => {
+  #inputHandler = () => {
     textInputHandlerMethod(this);
   };
 
@@ -28,7 +28,7 @@ export class EOxItemFilterText extends LitElement {
     resetTextMethod(this);
   }
 
-  debouncedInputHandler = _debounce(this.inputHandler, 500, {
+  debouncedInputHandler = _debounce(this.#inputHandler, 500, {
     leading: true,
   });
 
