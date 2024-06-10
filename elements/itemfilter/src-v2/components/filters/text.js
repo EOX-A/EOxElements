@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import inputStyle from "../../../../../utils/styles/dist/input.style.js";
 import _debounce from "lodash.debounce";
 import { when } from "lit/directives/when.js";
-import { resetFilter } from "../../helpers";
+import { resetTextMethod, textInputHandlerMethod } from "../../methods/filters";
 
 export class EOxItemFilterText extends LitElement {
   static get properties() {
@@ -21,26 +21,16 @@ export class EOxItemFilterText extends LitElement {
   }
 
   inputHandler = () => {
-    const searchInput = this.renderRoot.querySelector("input[type='text']");
-    this.filterObject.keys.forEach((key) => {
-      this.filterObject.state[key] = searchInput.value;
-    });
-    this.filterObject.dirty = true;
-    this.filterObject.stringifiedState = searchInput.value;
-    this.dispatchEvent(new CustomEvent("filter"));
-    if (searchInput.value === "") this.reset();
+    textInputHandlerMethod(this);
   };
+
+  reset() {
+    resetTextMethod(this);
+  }
 
   debouncedInputHandler = _debounce(this.inputHandler, 500, {
     leading: true,
   });
-
-  reset() {
-    const searchInput = this.renderRoot.querySelector("input[type='text']");
-    searchInput.value = "";
-    resetFilter(this.filterObject);
-    this.requestUpdate();
-  }
 
   render() {
     return when(
