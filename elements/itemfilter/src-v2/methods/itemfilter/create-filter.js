@@ -22,6 +22,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         <eox-selector
           data-type="filter"
           id="${filterId}"
+          .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
           .suggestions="${uniq(flatMap(EOxItemFilter.items, filterObject.key))}"
@@ -35,6 +36,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         <itemfilter-range
           id="${filterId}"
           data-type="filter"
+          .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
           .unstyled=${EOxItemFilter.unstyled}
@@ -46,6 +48,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         <itemfilter-spatial
           id="${filterId}"
           data-type="filter"
+          .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
           @filter=${() => EOxItemFilter.search()}

@@ -1,4 +1,4 @@
 export default function getTabIndex(index, subIndex) {
-  const totalComponentInAFilter = 3;
+  const totalComponentInAFilter = 2;
   return index * totalComponentInAFilter + subIndex;
 }

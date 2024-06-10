@@ -6,7 +6,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
   static get properties() {
     return {
       filterObject: { attribute: false, type: Object },
-      tabIndex: { attribute: false, type: Number },
       unstyled: { type: Boolean },
     };
   }
@@ -15,7 +14,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
     super();
     this.filterObject = {};
     this.unstyled = false;
-    this.tabIndex = 0;
   }
 
   handleDetailsToggle(event) {
@@ -42,7 +40,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
             @toggle="${this.handleDetailsToggle}"
             class="details-filter"
             ?open=${this.filterObject.expanded || nothing}
-            tabindex=${this.tabIndex}
           >
             <summary>
               <span

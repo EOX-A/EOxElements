@@ -132,17 +132,16 @@ export class EOxItemFilter extends TemplateElement {
                     (filterObject, index) =>
                       html` <li>
                         <itemfilter-expandcontainer
-                          .tabIndex=${getTabIndex(index, 1)}
                           .filterObject=${filterObject}
                           data-details="${filterObject.key}"
                         >
                           ${this.#createReset(
                             filterObject,
-                            getTabIndex(index, 2)
+                            getTabIndex(index, 1)
                           )}
                           ${this.#createFilter(
                             filterObject,
-                            getTabIndex(index, 3)
+                            getTabIndex(index, 2)
                           )}
                         </itemfilter-expandcontainer>
                       </li>`

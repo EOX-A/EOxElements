@@ -26,6 +26,7 @@ export class EOxSelector extends LitElement {
     filteredSuggestions: { state: true, type: Array },
     type: { attribute: true, type: String },
     unstyled: { type: Boolean },
+    tabIndex: { attribute: false, type: Number },
   };
 
   constructor() {
@@ -40,6 +41,7 @@ export class EOxSelector extends LitElement {
     this.type = "select"; // Default type
     this.fuse = new Fuse(this.suggestions, { threshold: 0.3 });
     this.unstyled = false;
+    this.tabIndex = 0;
   }
 
   updated(changedProperties) {
@@ -101,6 +103,7 @@ export class EOxSelector extends LitElement {
             </eox-itemfilter-chips-v2>
           </div>
           <input
+            tabindex=${this.tabIndex}
             class="autocomplete-input"
             type="text"
             .value=${this.query}

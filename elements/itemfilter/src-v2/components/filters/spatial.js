@@ -21,12 +21,14 @@ class EOxItemFilterSpatial extends LitElement {
   static get properties() {
     return {
       filterObject: { type: Object },
+      tabIndex: { attribute: false, type: Number },
     };
   }
 
   constructor() {
     super();
     this.filterObject = {};
+    this.tabIndex = 0;
   }
 
   reset() {
@@ -51,6 +53,7 @@ class EOxItemFilterSpatial extends LitElement {
             (mode) => html`
               <label>
                 <input
+                  tabindex=${this.tabIndex}
                   type="radio"
                   name="mode"
                   .checked="${(this.filterObject.state.mode || "") === mode ||

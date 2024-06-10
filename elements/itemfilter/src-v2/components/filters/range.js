@@ -11,11 +11,13 @@ import {
 export class EOxItemFilterRange extends LitElement {
   static properties = {
     filterObject: { attribute: false, type: Object },
+    tabIndex: { attribute: false, type: Number },
   };
 
   constructor() {
     super();
     this.filterObject = {};
+    this.tabIndex = 0;
     this.inputHandler = this.#inputHandler.bind(this);
     this.debouncedInputHandler = _debounce(this.inputHandler, 0, {
       leading: true,
