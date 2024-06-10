@@ -4,7 +4,7 @@ An autocompleted search input for geographic locations.
 
 The element comes with a configurable button mode which can be enabled with the boolean attributes `button` and, additionally, `small`, to use the button in a map toolbar.
 
-Real-time OpenCage API access is enabled by setting both the `endpoint` and `key` attributes. Optionally, a `limit` attribute may be set to restrict the number of fetched locations.
+Real-time OpenCage API access is enabled by setting the `endpoint` attribute. Optionally, a `limit` attribute may be set to restrict the number of fetched locations.
 
 ## Configuration
 
