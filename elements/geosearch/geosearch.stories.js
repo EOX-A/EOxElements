@@ -14,7 +14,7 @@ export default {
 export const Primary = {
   args: {
     center: [15.0, 48.0],
-    endpoint: "./opencage-mock-data.json",
+    endpoint: `${window.location.href.split("iframe.html")[0]}/opencage-mock-data.json`,
   },
   render: (args) => {
     return html`
