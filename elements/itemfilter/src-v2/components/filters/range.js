@@ -8,7 +8,18 @@ import {
   resetRangeMethod,
 } from "../../methods/filters/index.js";
 
+/**
+ * EOxItemFilterRange is a custom web component that provides a range slider for filtering items.
+ * It uses the LitElement base class and integrates with external methods for handling input events,
+ * generating labels, and resetting the range filter.
+ *
+ * @module EOxItemFilterRange
+ * @extends LitElement
+ * @property {Object} filterObject - The filter object containing state and range limits.
+ * @property {Number} tabIndex - The tab index for the input elements.
+ */
 export class EOxItemFilterRange extends LitElement {
+  // Define properties with defaults and types
   static properties = {
     filterObject: { attribute: false, type: Object },
     tabIndex: { attribute: false, type: Number },
@@ -16,29 +27,71 @@ export class EOxItemFilterRange extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * @type Object
+     */
     this.filterObject = {};
+
+    /**
+     * @type Boolean
+     */
     this.tabIndex = 0;
+
+    /**
+     * @type Function
+     */
     this.inputHandler = this.#inputHandler.bind(this);
+
+    /**
+     * @type Function
+     */
     this.debouncedInputHandler = _debounce(this.inputHandler, 0, {
       leading: true,
     });
   }
 
+  /**
+   * Handles the input event for the range slider.
+   *
+   * @param {Event} evt - The input event.
+   * @private
+   */
   #inputHandler(evt) {
     rangeInputHandlerMethod(evt, this);
   }
 
+  /**
+   * Generates labels for the range slider.
+   *
+   * @param {string} val - The value of the label.
+   * @param {string} pos - The position of the label (before or after).
+   * @returns {string} - The generated label.
+   * @private
+   */
   #label(val, pos) {
     return rangeLabelMethod(val, pos, this);
   }
 
+  /**
+   * Resets the range filter using the resetRangeMethod.
+   */
   reset() {
     resetRangeMethod(this);
   }
+
+  /**
+   * Overrides the default createRenderRoot method to render in the light DOM.
+   *
+   * @returns {this} - The current instance to render in the light DOM.
+   */
   createRenderRoot() {
     return this;
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return when(
       this.filterObject,
