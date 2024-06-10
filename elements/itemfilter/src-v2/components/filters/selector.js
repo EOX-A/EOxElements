@@ -4,9 +4,16 @@ import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
-import { resetFilter } from "../../helpers/index.js";
 import checkboxStyle from "../../../../../utils/styles/dist/checkbox.style.js";
 import radioStyle from "../../../../../utils/styles/dist/radio.style.js";
+import {
+  resetSelectorMethod,
+  removeItemSelectorMethod,
+  toggleItemSelectorMethod,
+  handleInputSelectorMethod,
+  handleKeyDownSelectorMethod,
+  updatedSelectorMethod,
+} from "../../methods/filters";
 
 export class EOxSelector extends LitElement {
   static properties = {
@@ -36,110 +43,32 @@ export class EOxSelector extends LitElement {
   }
 
   updated(changedProperties) {
-    if (changedProperties.has("suggestions")) {
-      this.fuse = new Fuse(this.suggestions, { threshold: 0.3 });
-      this.updateSuggestions();
-    }
-    if (changedProperties.has("query")) {
-      this.updateSuggestions();
-    }
+    updatedSelectorMethod(changedProperties, this);
   }
 
-  updateSuggestions() {
-    if (this.query) {
-      this.filteredSuggestions = this.fuse
-        .search(this.query)
-        .map((result) => result.item);
-    } else {
-      this.filteredSuggestions = this.suggestions;
-    }
-    this.highlightedIndex = -1;
+  #handleInput(event) {
+    handleInputSelectorMethod(event, this);
   }
 
-  handleInput(event) {
-    this.query = event.target.value;
-    this.showSuggestions = true;
+  #handleKeyDown(event) {
+    handleKeyDownSelectorMethod(event, this);
   }
 
-  handleKeyDown(event) {
-    switch (event.key) {
-      case "ArrowDown":
-        this.highlightedIndex = Math.min(
-          this.highlightedIndex + 1,
-          this.filteredSuggestions.length - 1
-        );
-        break;
-      case "ArrowUp":
-        this.highlightedIndex = Math.max(this.highlightedIndex - 1, 0);
-        break;
-      case "Enter":
-        if (this.highlightedIndex >= 0)
-          this.toggleItem(this.filteredSuggestions[this.highlightedIndex]);
-        break;
-      case "Escape":
-        this.showSuggestions = false;
-        break;
-    }
+  #toggleItem(item) {
+    toggleItemSelectorMethod(item, this);
   }
 
-  updateFilterList(selectedItems) {
-    Object.keys(this.filterObject.state).forEach((k) => {
-      this.filterObject.state[k] = selectedItems.map((i) => i).includes(k);
-    });
-    this.filterObject.stringifiedState =
-      Object.keys(this.filterObject.state)
-        .filter((k) => this.filterObject.state[k])
-        .join(", ") || "";
-
-    this.filterObject.dirty = Boolean(
-      this.filterObject.stringifiedState.length > 0
-    );
-
-    this.dispatchEvent(new CustomEvent("filter"));
-    this.requestUpdate();
+  #removeItem(index) {
+    removeItemSelectorMethod(index, this);
   }
-
-  toggleItem(item) {
-    const itemIndex = this.selectedItems.indexOf(item);
-    if (itemIndex >= 0) {
-      this.selectedItems = this.selectedItems.filter((_, i) => i !== itemIndex);
-    } else {
-      if (this.type === "multiselect") {
-        this.selectedItems = [...this.selectedItems, item];
-      } else {
-        this.selectedItems = [item];
-        this.showSuggestions = false;
-      }
-    }
-    this.query = "";
-    this.updateSuggestions();
-    this.updateFilterList(this.selectedItems);
-  }
-
-  removeItem(index) {
-    this.selectedItems =
-      index === -1 ? [] : this.selectedItems.filter((_, i) => i !== index);
-    this.updateSuggestions();
-    this.updateFilterList(this.selectedItems);
-  }
-
-  debouncedInputHandler = _debounce(this.toggleItem, 500, {
-    leading: true,
-  });
 
   reset() {
-    if (this.filterObject.inline) this.removeItem(-1);
-    else {
-      const type = this.type === "select" ? "radio" : "checkbox";
-      const selector = `input[type='${type}']`;
-      this.renderRoot.querySelectorAll(selector).forEach((f) => {
-        if (f) f.checked = false;
-      });
-    }
-
-    resetFilter(this.filterObject);
-    this.requestUpdate();
+    resetSelectorMethod(this);
   }
+
+  debouncedInputHandler = _debounce(this.#toggleItem, 500, {
+    leading: true,
+  });
 
   render() {
     return html`
@@ -166,7 +95,7 @@ export class EOxSelector extends LitElement {
             <eox-itemfilter-chips-v2
               .items=${chipItems}
               .controller=${{
-                remove: (event, index) => this.removeItem(index),
+                remove: (event, index) => this.#removeItem(index),
               }}
             >
             </eox-itemfilter-chips-v2>
@@ -176,14 +105,10 @@ export class EOxSelector extends LitElement {
             type="text"
             .value=${this.query}
             placeholder="${this.filterObject.placeholder || ""}"
-            @input=${this.handleInput}
-            @keydown=${this.handleKeyDown}
-            @blur=${() => {
-              this.showSuggestions = false;
-            }}
-            @focus=${() => {
-              this.showSuggestions = true;
-            }}
+            @input=${this.#handleInput}
+            @keydown=${this.#handleKeyDown}
+            @blur=${() => (this.showSuggestions = false)}
+            @focus=${() => (this.showSuggestions = true)}
           />
         </div>
         ${when(
