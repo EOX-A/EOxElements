@@ -2,7 +2,6 @@ import { LitElement, html, nothing } from "lit";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import booleanWithin from "@turf/boolean-within";
-import "../../../../map/main";
 import {
   handleClickSpatialMethod,
   resetSpatialFilterMethod,
