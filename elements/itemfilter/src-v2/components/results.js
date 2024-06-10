@@ -8,6 +8,18 @@ import {
   createItemListMethod,
 } from "../methods/results/index.js";
 
+/**
+ * EOxItemFilterResults is a custom web component that displays the results of item filtering.
+ * It uses the TemplateElement base class and integrates with external methods for aggregating results
+ * and creating item details and lists.
+ *
+ * @module EOxItemFilterResults
+ * @extends TemplateElement
+ * @property {Object} config - The configuration object for the results display.
+ * @property {Object} results - The state object containing the filter results.
+ * @property {Object} filters - The state object containing the applied filters.
+ * @property {Array} resultAggregation - The array of properties used for result aggregation.
+ */
 export class EOxItemFilterResults extends TemplateElement {
   // Define properties with defaults and types
   static get properties() {
@@ -21,27 +33,68 @@ export class EOxItemFilterResults extends TemplateElement {
 
   constructor() {
     super();
+
+    /**
+     * @type Object
+     */
     this.config = null;
+
+    /**
+     * @type Object
+     */
     this.filters = {};
+
+    /**
+     * @type Array
+     */
     this.resultAggregation = [];
   }
 
+  /**
+   * Creates a list of items based on the aggregation property.
+   *
+   * @param {string} aggregationProperty - The property used for aggregation.
+   * @returns {TemplateResult} - The template result for the item list.
+   * @private
+   */
   #createItemList(aggregationProperty) {
     return createItemListMethod(aggregationProperty, this);
   }
 
+  /**
+   * Creates item details based on the aggregation property.
+   *
+   * @param {string} aggregationProperty - The property used for aggregation.
+   * @returns {import("lit")} - The template result for the item details.
+   * @private
+   */
   #createItemDetails(aggregationProperty) {
     return createItemDetailsMethod(aggregationProperty, this);
   }
 
+  /**
+   * Aggregates results based on the specified property.
+   *
+   * @param {Array} items - The array of items to be aggregated.
+   * @param {string} property - The property used for aggregation.
+   * @returns {Array} - The aggregated results.
+   */
   aggregateResults(items, property) {
     return aggregateResultsMethod(items, property, this);
   }
 
+  /**
+   * Overrides the default createRenderRoot method to render in the light DOM.
+   *
+   * @returns {this} - The current instance to render in the light DOM.
+   */
   createRenderRoot() {
     return this;
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       <section id="section-results">
