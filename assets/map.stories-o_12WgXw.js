@@ -1,4 +1,4 @@
-import{x as r}from"./lit-element-Bq1Y8_dt.js";const Ne={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>r`
+import{x as r}from"./lit-element-DBwSto7d.js";const Ne={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>r`
     <eox-map
       style="width: 100%; height: 300px;"
       .center=${e.center}

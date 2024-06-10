@@ -1,4 +1,4 @@
-var d=Object.freeze,ee=Object.defineProperty;var p=(e,Z)=>d(ee(e,"raw",{value:d(Z||e.slice())}));import{x as Y}from"./lit-element-Bq1Y8_dt.js";const se={title:"Elements/eox-stacinfo",tags:["autodocs"],component:"eox-stacinfo",parameters:{componentSubtitle:"Automatically fetch & display properties of STAC files",layout:"fullscreen"},render:e=>Y`
+var d=Object.freeze,ee=Object.defineProperty;var p=(e,Z)=>d(ee(e,"raw",{value:d(Z||e.slice())}));import{x as Y}from"./lit-element-DBwSto7d.js";const se={title:"Elements/eox-stacinfo",tags:["autodocs"],component:"eox-stacinfo",parameters:{componentSubtitle:"Automatically fetch & display properties of STAC files",layout:"fullscreen"},render:e=>Y`
     <eox-stacinfo
       for=${e.for}
       .header=${e.header}

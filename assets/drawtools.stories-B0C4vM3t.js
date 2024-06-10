@@ -1,4 +1,4 @@
-import{x as e}from"./lit-element-Bq1Y8_dt.js";const t=[{type:"Tile",source:{type:"OSM"}}],r="width: 400px; height: 300px;",Z=[{id:"box",type:"Box"},{id:"point",type:"Point"},{id:"circle",type:"Circle"},{id:"linestring",type:"LineString"}],ee={args:{allowModify:!1,multipleFeatures:!1,type:"Polygon"},render:o=>e`
+import{x as e}from"./lit-element-DBwSto7d.js";const t=[{type:"Tile",source:{type:"OSM"}}],r="width: 400px; height: 300px;",Z=[{id:"box",type:"Box"},{id:"point",type:"Point"},{id:"circle",type:"Circle"},{id:"linestring",type:"LineString"}],ee={args:{allowModify:!1,multipleFeatures:!1,type:"Polygon"},render:o=>e`
     <!-- Render eox-map component with ID "primary" -->
     <eox-map
       id="primary"

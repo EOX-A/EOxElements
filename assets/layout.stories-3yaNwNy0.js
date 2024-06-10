@@ -1,4 +1,4 @@
-import{x as s}from"./lit-element-Bq1Y8_dt.js";const y="width: 100%; height: 400px;",f={args:{},render:()=>s`
+import{x as s}from"./lit-element-DBwSto7d.js";const y="width: 100%; height: 400px;",f={args:{},render:()=>s`
     <!-- Render eox-layout component -->
     <eox-layout style="${y}">
       <eox-layout-item x="0" y="0" w="3" h="2">
