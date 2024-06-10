@@ -51,8 +51,8 @@ const styles = css`
   }
 
   .geosearch.small button {
-    height: 32px;
-    width: 32px;
+    height: var(--button-size, 32px);
+    width: var(--button-size, 32px);
     padding: 6px;
   }
 
