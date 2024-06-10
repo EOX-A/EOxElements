@@ -600,6 +600,7 @@ export class EOxMap extends LitElement {
        */
       this.dispatchEvent(new CustomEvent("loadend", { detail: this.map }));
     });
+    this.dispatchEvent(new CustomEvent("mapmounted", { detail: this.map }));
   }
 
   protected updated(

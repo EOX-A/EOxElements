@@ -20,6 +20,23 @@ describe("Map", () => {
     });
   });
 
+  it("map fires lifecycle events", () => {
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+    });
+    cy.mount(
+      html`<eox-map
+        .layers=${[
+          { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+        ]}
+        @mapmounted=${(e: CustomEvent) => {
+          expect(e.detail.getTargetElement(), "fires mounted event").to.not.be
+            .undefined;
+        }}
+      ></eox-map>`
+    ).as("eox-map");
+  });
+
   it("should parse zoom/center properties correctly", () => {
     cy.mount(
       html`<eox-map
@@ -48,7 +65,7 @@ describe("Map", () => {
     });
   });
 
-  /*it("animates on zoom/center change", () => {
+  it("animates on zoom/center change", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
       fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
@@ -81,7 +98,7 @@ describe("Map", () => {
         }, 200);
       });
     });
-  });*/
+  });
 
   it("animates on extent", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
