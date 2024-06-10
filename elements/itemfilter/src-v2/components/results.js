@@ -1,8 +1,6 @@
 import { TemplateElement } from "../../../../utils/templateElement";
 import { html, nothing } from "lit";
-import { repeat } from "lit/directives/repeat.js";
 import { when } from "lit/directives/when.js";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { map } from "lit/directives/map.js";
 import {
   aggregateResultsMethod,
