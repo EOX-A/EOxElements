@@ -8,12 +8,7 @@ const Primary = {
     return html`
       <eox-geosearch
         label="Search"
-        style="position: absolute; top: 36px; right: 32px; z-index: 12;"
-        list-direction="left"
-        results-direction="down"
-        .onSelect="${(item) =>
-          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
-            item.zoomExtent)}"
+        style="position: absolute; top: 36px; left: 32px; z-index: 12;"
         .endpoint="${args.endpoint}"
       ></eox-geosearch>
 

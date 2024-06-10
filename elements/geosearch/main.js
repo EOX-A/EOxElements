@@ -35,6 +35,10 @@ class EOxGeoSearch extends LitElement {
        */
       endpoint: { type: String },
       /**
+       * Selector for the eox-map instance
+       */
+      for: { type: String },
+      /**
        * The name of the query parameter to use for the search query in the endpoint URI.
        *
        */
@@ -77,7 +81,6 @@ class EOxGeoSearch extends LitElement {
        */
       direction: {
         type: String,
-        //default: "left",
         attribute: "list-direction",
       },
       /**
@@ -91,11 +94,15 @@ class EOxGeoSearch extends LitElement {
        */
       resultsDirection: {
         type: String,
-        default: "right",
         attribute: "results-direction",
       },
     };
   }
+
+  /**
+   * @type import("../../map/main").EOxMap
+   */
+  #eoxMap;
 
   constructor() {
     super();
@@ -104,6 +111,14 @@ class EOxGeoSearch extends LitElement {
     this._isListVisible = false;
     this._isInputVisible = false;
     this._query = "";
+
+    /**
+     * The query selector for the map
+     * @default eox-map
+     */
+    this.for = "eox-map";
+    this.listDirection = "right";
+    this.resultsDirection = "down";
   }
 
   static styles = styles;
@@ -210,6 +225,14 @@ class EOxGeoSearch extends LitElement {
       : "row";
   }
 
+  /**
+   * initializes the EOxMap instance
+   * And stores it in the private property #eoxMap.
+   */
+  firstUpdated() {
+    this.#eoxMap = document.querySelector(this.for);
+  }
+
   render() {
     return html`
       <style>
@@ -286,7 +309,12 @@ class EOxGeoSearch extends LitElement {
                       bubbles: true,
                       composed: true,
                     };
-                    window.dispatchEvent(new CustomEvent('geosearchSelect', options));
+
+                    this.#eoxMap.zoomExtent = e.zoomExtent;
+
+                    this.dispatchEvent(
+                      new CustomEvent("geosearchSelect", options)
+                    );
 
                     if (this.onSelect) this.onSelect(e);
                   }}"

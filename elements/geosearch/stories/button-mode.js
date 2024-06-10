@@ -13,9 +13,6 @@ const ButtonMode = {
         button
         list-direction="left"
         results-direction="down"
-        .onSelect="${(item) =>
-          (document.querySelector("eox-map#geosearch-map-primary").zoomExtent =
-            item.zoomExtent)}"
         .endpoint="${args.endpoint}"
       ></eox-geosearch>
 
