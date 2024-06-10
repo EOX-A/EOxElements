@@ -3,8 +3,12 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import booleanWithin from "@turf/boolean-within";
 import "../../../../map/main";
-import { getMapLayers } from "../../helpers/";
-import { resetFilter } from "../../helpers/index.js";
+import {
+  handleClickSpatialMethod,
+  resetSpatialFilterMethod,
+  resetSpatialMethod,
+  setupSpatialMethod,
+} from "../../methods/filters/index.js";
 
 export const within = (itemGeometry, filterGeometry) => {
   if (!filterGeometry) {
@@ -26,17 +30,15 @@ class EOxItemFilterSpatial extends LitElement {
   }
 
   reset() {
-    resetFilter(this.filterObject);
-
-    const spatialFilter = this.renderRoot.querySelector(
-      "itemfilter-spatial-filter"
-    );
-    spatialFilter.reset();
-    this.requestUpdate();
+    resetSpatialMethod(this);
   }
 
   createRenderRoot() {
     return this;
+  }
+
+  #handleClick(mode) {
+    handleClickSpatialMethod(mode, this);
   }
 
   render() {
@@ -54,15 +56,7 @@ class EOxItemFilterSpatial extends LitElement {
                   .checked="${(this.filterObject.state.mode || "") === mode ||
                   nothing}"
                   value="${mode}"
-                  @click="${() => {
-                    this.filterObject.state.mode = mode;
-                    const event = new CustomEvent("filter", {
-                      detail: {
-                        [this.filterObject.key]: {},
-                      },
-                    });
-                    this.dispatchEvent(event);
-                  }}"
+                  @click=${() => this.#handleClick(mode)}
                 />
                 <small>${mode} filter geometry</small>
               </label>
@@ -100,72 +94,20 @@ class SpatialFilter extends LitElement {
     };
   }
 
-  render() {
-    return html`<div id="eox-map"></div>`;
-  }
-
   firstUpdated() {
-    this.setup();
+    this.#setup();
   }
 
-  setup() {
-    const parentEOxMap = this.renderRoot.querySelector("#eox-map");
-    if (parentEOxMap.innerHTML === "")
-      parentEOxMap.innerHTML = `<eox-map part="map" style="height: 400px"></eox-map>`;
-
-    const url = this.geometry && this.createFeatureUrl(this.geometry);
-    const mapLayers = getMapLayers(this.geometry, url);
-
-    this.eoxMap = this.renderRoot.querySelector("eox-map");
-    setTimeout(() => {
-      this.eoxMap.layers = mapLayers;
-      const updateGeometryFilter = (feature) => {
-        const event = new CustomEvent("filter", {
-          detail: {
-            geometry: {
-              type: "Polygon",
-              coordinates: feature
-                .getGeometry()
-                .clone()
-                .transform("EPSG:3857", "EPSG:4326")
-                .getCoordinates(),
-            },
-          },
-        });
-        this.dispatchEvent(event);
-      };
-      this.eoxMap.interactions["drawInteraction"].on("drawend", (e) => {
-        updateGeometryFilter(e.feature);
-        this.eoxMap.removeInteraction("drawInteraction");
-      });
-      this.eoxMap.interactions["drawInteraction_modify"].on(
-        "modifyend",
-        (e) => {
-          updateGeometryFilter(e.features.getArray()[0]);
-        }
-      );
-    }, 1000);
-  }
-
-  createFeatureUrl(geometry) {
-    const featureString = encodeURIComponent(
-      JSON.stringify({
-        type: "FeatureCollection",
-        features: [
-          {
-            type: "Feature",
-            properties: null,
-            geometry,
-          },
-        ],
-      })
-    );
-    return `data:text/json,${featureString}`;
+  #setup() {
+    setupSpatialMethod(this);
   }
 
   reset() {
-    this.renderRoot.querySelector("#eox-map").innerHTML = "";
-    this.setup();
+    resetSpatialFilterMethod(this);
+  }
+
+  render() {
+    return html`<div id="eox-map"></div>`;
   }
 }
 

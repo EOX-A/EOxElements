@@ -12,3 +12,9 @@ export {
   handleKeyDownSelectorMethod,
   updatedSelectorMethod,
 } from "./selector";
+export {
+  resetSpatialMethod,
+  handleClickSpatialMethod,
+  setupSpatialMethod,
+  resetSpatialFilterMethod,
+} from "./spatial";
