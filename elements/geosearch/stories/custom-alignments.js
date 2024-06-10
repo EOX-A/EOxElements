@@ -72,11 +72,6 @@ const CustomAlignments = {
         style="width: 100%; height: 600px;"
       >
       </eox-map>
-
-      <p>
-        Set both the <code>endpoint</code> and <code>key</code> attributes to
-        enable real-time API access.
-      </p>
     `;
   },
 };

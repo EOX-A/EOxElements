@@ -2,9 +2,9 @@ import { LitElement, html, css } from "lit";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
-import { button } from "../../utils/styles/button";
-
-import styles from "./style";
+import mainStyle from "../../../utils/styles/dist/main.style";
+import buttonStyle from "../../../utils/styles/dist/button.style";
+import { styleEOX } from "./style.eox";
 
 class EOxGeoSearch extends LitElement {
   static get properties() {
@@ -30,7 +30,7 @@ class EOxGeoSearch extends LitElement {
        */
       _query: { attribute: false },
       /**
-       * The OpenCage API endpoint to use for the search, without the query parameter.
+       * The OpenCage API endpoint to use for the search, including the key but without the query parameter.
        *
        */
       endpoint: { type: String },
@@ -90,6 +90,7 @@ class EOxGeoSearch extends LitElement {
         type: String,
         attribute: "results-direction",
       },
+      unstyled: { type: Boolean },
     };
   }
 
@@ -115,22 +116,10 @@ class EOxGeoSearch extends LitElement {
     this.resultsDirection = "down";
   }
 
-  static styles = styles;
-
   async fetchRemoteData(url) {
     const response = await fetch(encodeURI(url));
     const json = await response.json();
     this._data = json.results;
-  }
-
-  emit(_query) {
-    let event = new CustomEvent("input", {
-      bubbles: true,
-      cancelable: true,
-      value: _query,
-    });
-
-    this.dispatchEvent(event);
   }
 
   async onInput(e) {
@@ -251,7 +240,12 @@ class EOxGeoSearch extends LitElement {
   render() {
     return html`
       <style>
-        ${button}
+        .hidden {
+          display: none;
+        }
+        ${!this.unstyled && mainStyle}
+        ${!this.unstyled && buttonStyle}
+        ${!this.unstyled && styleEOX}
       </style>
       <div
         class="geosearch ${this.small ? "small" : ""}"
@@ -276,8 +270,9 @@ class EOxGeoSearch extends LitElement {
               ? "active"
               : ""}"
           ></span>
-          <span style="display: ${this.small ? "none" : "flex"}"
-            >${this.label ?? "Search"}</span
+          <span
+            style="display: ${this.small && !this.unstyled ? "none" : "flex"}"
+            >${(this.label || this.unstyled) ?? "Search"}</span
           >
         </button>
         <div
@@ -301,7 +296,7 @@ class EOxGeoSearch extends LitElement {
             )}: 12px"
             @input="${this.onInput}"
           />
-          <div class="results-container ${this._isListVisible ? "" : "hidden"}">
+          <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
             ${this._data.map(
               (item) => html`
                 <eox-geosearch-item
@@ -309,10 +304,11 @@ class EOxGeoSearch extends LitElement {
                   .onClick="${(e) => {
                     this.handleSelect(e);
                   }}"
+                  .unstyled=${this.unstyled}
                 />
               `
             )}
-          </div>
+          </ul>
         </div>
       </div>
     `;
@@ -338,6 +334,7 @@ class EOxGeoSearchItem extends LitElement {
     return {
       item: { type: Object },
       onClick: { type: Function },
+      unstyled: { type: Boolean },
     };
   }
 
@@ -345,25 +342,15 @@ class EOxGeoSearchItem extends LitElement {
     super();
   }
 
-  static styles = css`
-    .search-result {
-      padding: 10px;
-      border-bottom: 1px solid var(--results-border-color, #aaa);
-      color: var(--results-fg, #000);
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-
-    .search-result:hover {
-      background: #0001;
-    }
-  `;
-
   render() {
     return html`
-      <div class="search-result" @click="${() => this.onClick(this.item)}">
-        <div class="name">${this.item.formatted}</div>
-      </div>
+      <style>
+        ${!this.unstyled && mainStyle}
+        ${!this.unstyled && styleEOX}
+      </style>
+      <li class="search-result" @click="${() => this.onClick(this.item)}">
+        <span class="name">${this.item.formatted}</span>
+      </li>
     `;
   }
 }
