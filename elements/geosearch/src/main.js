@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html } from "lit";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
