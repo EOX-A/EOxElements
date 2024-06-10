@@ -44,12 +44,6 @@ class EOxGeoSearch extends LitElement {
        */
       queryParameter: { type: String, default: "q" },
       /**
-       * A function to be called when a search result is selected, to enable
-       * the parent component to handle the selection.
-       *
-       */
-      onSelect: { type: Function, attribute: false },
-      /**
        * Whether or not to enable button mode, which hides and shows the input field
        * similar to how a modal works.
        *
@@ -179,12 +173,6 @@ class EOxGeoSearch extends LitElement {
     }
   }
 
-  handleSelect(item) {
-    this._isListVisible = false;
-
-    this.onSelect(item);
-  }
-
   getFlexDirection() {
     return this.direction === "up"
       ? "column-reverse"
@@ -223,6 +211,33 @@ class EOxGeoSearch extends LitElement {
       : direction === "right"
       ? "right"
       : "row";
+  }
+
+  handleSelect(event) {
+    this._isListVisible = false;
+    this._query = "";
+
+    /**
+     * This for now only supports OpenCage
+     */
+    const viewProjection = this.#eoxMap.map.getView().getProjection().getCode();
+
+    let sw = proj4("EPSG:4326", viewProjection, [
+      event.bounds.southwest.lng,
+      event.bounds.southwest.lat,
+    ]);
+    let ne = proj4("EPSG:4326", viewProjection, [
+      event.bounds.northeast.lng,
+      event.bounds.northeast.lat,
+    ]);
+    const zoomExtent = [sw[0], sw[1], ne[0], ne[1]];
+
+    this.#eoxMap.zoomExtent = zoomExtent;
+
+    /**
+     * The select event, including the details of the selected item
+     */
+    this.dispatchEvent(new CustomEvent("geosearchSelect", event));
   }
 
   /**
@@ -292,31 +307,7 @@ class EOxGeoSearch extends LitElement {
                 <eox-geosearch-item
                   .item="${item}"
                   .onClick="${(e) => {
-                    this._isListVisible = false;
-                    this._query = "";
-                    let sw = proj4("EPSG:4326", "EPSG:3857", [
-                      e.bounds.southwest.lng,
-                      e.bounds.southwest.lat,
-                    ]);
-                    let ne = proj4("EPSG:4326", "EPSG:3857", [
-                      e.bounds.northeast.lng,
-                      e.bounds.northeast.lat,
-                    ]);
-                    e.zoomExtent = [sw[0], sw[1], ne[0], ne[1]];
-
-                    const options = {
-                      detail: e.zoomExtent,
-                      bubbles: true,
-                      composed: true,
-                    };
-
-                    this.#eoxMap.zoomExtent = e.zoomExtent;
-
-                    this.dispatchEvent(
-                      new CustomEvent("geosearchSelect", options)
-                    );
-
-                    if (this.onSelect) this.onSelect(e);
+                    this.handleSelect(e);
                   }}"
                 />
               `
