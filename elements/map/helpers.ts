@@ -3,7 +3,6 @@ import GeoJSON from "ol/format/GeoJSON";
 import KML from "ol/format/KML";
 import TopoJSON from "ol/format/TopoJSON";
 import { Vector as VectorLayer } from "ol/layer";
-import { Vector as VectorSource } from "ol/source";
 import { EOxMap } from "./main";
 import { LineString, Polygon } from "ol/geom";
 import { getArea, getLength } from "ol/sphere";
@@ -61,15 +60,19 @@ function dispatchEvt(
  * @param replaceFeatures - Optional. If true, existing features in the layer are cleared before adding new ones.
  */
 export function addNewFeature(
-  e: DrawEvent | DragAndDropEvent | { features: any },
-  vectorLayer: VectorLayer<VectorSource>,
+  e:
+    | DrawEvent
+    | DragAndDropEvent
+    | { features: Array<import("ol/Feature").default> },
+  vectorLayer: VectorLayer<import("ol/Feature").default>,
   EOxMap: EOxMap,
   isDraw: boolean = false,
   replaceFeatures: boolean = false
 ) {
   // Determine the source of the features based on the event type and isDraw flag.
-  // @ts-ignore
-  const features = isDraw ? [e.feature] : e.features;
+  const features = isDraw
+    ? [(e as DrawEvent).feature]
+    : ((e as DragAndDropEvent).features as Array<Feature>);
 
   if (replaceFeatures) vectorLayer.getSource().clear(); // Clear the layer's existing features if the replace flag is true.
 
@@ -135,7 +138,7 @@ export function addNewFeature(
  */
 export function parseText(
   text: string,
-  vectorLayer: VectorLayer<VectorSource>,
+  vectorLayer: VectorLayer<import("ol/Feature").default>,
   EOxMap: EOxMap,
   replaceFeatures: boolean = false
 ): void {

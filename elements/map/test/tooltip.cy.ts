@@ -50,8 +50,10 @@ describe("tooltip", () => {
     multiplelayersJson.unshift(secondLayer);
     secondLayer.properties.id = "regions2";
     secondLayer.interactions[0].options.id = "selectInteraction2";
-    // @ts-ignore
-    secondLayer.interactions[0].options.layer.properties.id = "selectLayer2";
+    (
+      secondLayer.interactions[0]
+        .options as import("../src/select").SelectOptions
+    ).layer.properties.id = "selectLayer2";
     secondLayer.visible = false;
     cy.mount(
       html`<eox-map .layers=${multiplelayersJson}>

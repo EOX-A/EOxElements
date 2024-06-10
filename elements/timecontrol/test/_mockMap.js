@@ -31,7 +31,6 @@ export class MockMap extends HTMLElement {
         events: {
           loadend: () => undefined,
         },
-        // @ts-ignore
         once: (event, fun) => (this.map.events = { [event]: fun }),
       });
   }

@@ -1,6 +1,5 @@
 import { html } from "lit";
 import { equals } from "ol/coordinate";
-import { Layer } from "ol/layer";
 import { EoxLayer } from "../src/generate";
 import "../main";
 
@@ -192,7 +191,9 @@ describe("Map", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       const layersArray = eoxMap.getFlatLayersArray(
-        eoxMap.map.getLayers().getArray() as Array<Layer>
+        eoxMap.map.getLayers().getArray() as Array<
+          import("../src/generate").AnyLayer
+        >
       );
       expect(layersArray.length).to.equal(3);
       expect(layersArray.find((l) => l.get("id") === "group1")).to.exist;

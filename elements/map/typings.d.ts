@@ -3,7 +3,6 @@ declare global {
   export type EOxMap = eoxMap;
 }
 
-declare module "*.css";
 declare module "vite";
 
 declare global {
