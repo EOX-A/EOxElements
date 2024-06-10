@@ -10,26 +10,6 @@ class EOxGeoSearch extends LitElement {
   static get properties() {
     return {
       /**
-       * Internal storage of OpenCage API data after a successful API request.
-       * @private
-       */
-      _data: { attribute: false },
-      /**
-       * Whether or not the list dropdown is visible.
-       * @private
-       */
-      _isListVisible: { attribute: false },
-      /**
-       * Whether or not the input field is visible.
-       * @private
-       */
-      _isInputVisible: { attribute: false },
-      /**
-       * The search query, which is bound to the input field.
-       * @private
-       */
-      _query: { attribute: false },
-      /**
        * The OpenCage API endpoint to use for the search, without the query parameter.
        *
        */
@@ -97,13 +77,30 @@ class EOxGeoSearch extends LitElement {
     };
   }
 
+  /**
+   * Internal storage of OpenCage API data after a successful API request.
+   */
+  #data;
+  /**
+   * Whether or not the list dropdown is visible.
+   */
+  #isListVisible;
+  /**
+   * Whether or not the input field is visible.
+   */
+  #isInputVisible;
+  /**
+   * The search query, which is bound to the input field.
+   */
+  #query;
+
   constructor() {
     super();
 
-    this._data = [];
-    this._isListVisible = false;
-    this._isInputVisible = false;
-    this._query = "";
+    this.#data = [];
+    this.#isListVisible = false;
+    this.#isInputVisible = false;
+    this.#query = "";
   }
 
   static styles = styles;
@@ -111,35 +108,35 @@ class EOxGeoSearch extends LitElement {
   async fetchRemoteData(url) {
     const response = await fetch(encodeURI(url));
     const json = await response.json();
-    this._data = json.results;
+    this.#data = json.results;
   }
 
-  emit(_query) {
+  emit(query) {
     let event = new CustomEvent("input", {
       bubbles: true,
       cancelable: true,
-      value: _query,
+      value: query,
     });
 
     this.dispatchEvent(event);
   }
 
   async onInput(e) {
-    this._query = e.target.value;
+    this.#query = e.target.value;
 
     // Ignore requests with less than 2 characters since the API might respond with a 400 to them.
-    if (this._query.length <= 1) {
-      this._isListVisible = false;
+    if (this.#query.length <= 1) {
+      this.#isListVisible = false;
       return;
     } else {
-      this._isListVisible = true;
+      this.#isListVisible = true;
     }
 
     let bounce = _debounce(async () => {
       if (this.endpoint && this.endpoint.length > 0) {
         const uri = `${this.endpoint}${
           this.endpoint.includes("?") ? "&" : "?"
-        }${this.queryParameter ?? "q"}=${this._query}`;
+        }${this.queryParameter ?? "q"}=${this.#query}`;
         await this.fetchRemoteData(uri);
       } else {
         console.error("No endpoint provided for GeoSearch element.");
@@ -150,22 +147,22 @@ class EOxGeoSearch extends LitElement {
   }
 
   onInputBlur() {
-    this._isInputVisible = false;
-    this._isListVisible = false;
-    this._query = "";
+    this.#isInputVisible = false;
+    this.#isListVisible = false;
+    this.#query = "";
   }
 
   onButtonClick() {
-    this._isInputVisible = !this._isInputVisible;
+    this.#isInputVisible = !this.#isInputVisible;
 
     // Auto-focus the input field when it becomes visible
-    if (this._isInputVisible) {
+    if (this.#isInputVisible) {
       this.renderRoot.querySelector("#gazetteer").focus();
     }
   }
 
   handleSelect(item) {
-    this._isListVisible = false;
+    this.#isListVisible = false;
 
     this.onSelect(item);
   }
@@ -223,7 +220,7 @@ class EOxGeoSearch extends LitElement {
         "
       >
         <button
-          class="${this.button ? "" : "hidden"} ${this._isInputVisible
+          class="${this.button ? "" : "hidden"} ${this.#isInputVisible
             ? "active"
             : ""}"
           style="
@@ -234,7 +231,7 @@ class EOxGeoSearch extends LitElement {
         >
           <span class="icon"></span>
           <span
-            class="chevron ${this.direction ?? "right"} ${this._isInputVisible
+            class="chevron ${this.direction ?? "right"} ${this.#isInputVisible
               ? "active"
               : ""}"
           ></span>
@@ -244,7 +241,7 @@ class EOxGeoSearch extends LitElement {
         </button>
         <div
           class="search-container ${this.button
-            ? this._isInputVisible
+            ? this.#isInputVisible
               ? ""
               : "hidden"
             : ""}"
@@ -257,20 +254,20 @@ class EOxGeoSearch extends LitElement {
             id="gazetteer"
             type="text"
             placeholder="Type to search"
-            .value="${this._query}"
+            .value="${this.#query}"
             style="margin-${this.getMarginDirection(
               this.resultsDirection
             )}: 12px"
             @input="${this.onInput}"
           />
-          <div class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${this._data.map(
+          <div class="results-container ${this.#isListVisible ? "" : "hidden"}">
+            ${this.#data.map(
               (item) => html`
                 <eox-geosearch-item
                   .item="${item}"
                   .onClick="${(e) => {
-                    this._isListVisible = false;
-                    this._query = "";
+                    this.#isListVisible = false;
+                    this.#query = "";
                     let sw = proj4("EPSG:4326", "EPSG:3857", [
                       e.bounds.southwest.lng,
                       e.bounds.southwest.lat,
@@ -286,7 +283,9 @@ class EOxGeoSearch extends LitElement {
                       bubbles: true,
                       composed: true,
                     };
-                    window.dispatchEvent(new CustomEvent('geosearchSelect', options));
+                    window.dispatchEvent(
+                      new CustomEvent("geosearchSelect", options)
+                    );
 
                     if (this.onSelect) this.onSelect(e);
                   }}"
