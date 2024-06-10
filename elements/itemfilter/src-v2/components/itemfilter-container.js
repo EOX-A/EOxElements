@@ -1,8 +1,15 @@
 import { LitElement, html } from "lit";
 import { styleEOX } from "../style.eox";
-import { map } from "lit/directives/map.js";
-import { when } from "lit/directives/when.js";
-import Fuse from "fuse.js";
+import {
+  searchFilterMethod,
+  resetFilterMethod,
+  handleFormClickMethod,
+  handleShowDropdownOnFocusMethod,
+  handleToggleDropdownMethod,
+  handleKeyDownMethod,
+  handleClickOutsideMethod,
+} from "../methods/container";
+import { getChipItems } from "../helpers";
 
 export class EOxItemFilterContainer extends LitElement {
   static get properties() {
@@ -23,105 +30,54 @@ export class EOxItemFilterContainer extends LitElement {
     this.inlineContentElement = false;
     this.showDropdown = false;
     this.filters = {};
-    this.handleClickOutside = this.handleClickOutside.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this._handleClickOutside = this.#handleClickOutside.bind(this);
+    this._handleKeyDown = this.#handleKeyDown.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
     if (this.inlineMode) {
-      document.addEventListener("click", this.handleClickOutside);
-      document.addEventListener("focusout", this.handleClickOutside);
-      document.addEventListener("keydown", this.handleKeyDown);
+      document.addEventListener("click", this._handleClickOutside);
+      document.addEventListener("focusout", this._handleClickOutside);
+      document.addEventListener("keydown", this._handleKeyDown);
     }
   }
 
   disconnectedCallback() {
     if (this.inlineMode) {
-      document.removeEventListener("click", this.handleClickOutside);
-      document.removeEventListener("focusout", this.handleClickOutside);
-      document.removeEventListener("keydown", this.handleKeyDown);
+      document.removeEventListener("click", this._handleClickOutside);
+      document.removeEventListener("focusout", this._handleClickOutside);
+      document.removeEventListener("keydown", this._handleKeyDown);
     }
     super.disconnectedCallback();
   }
 
-  resetSearch() {
-    this.renderRoot.querySelector("#itemfilter-input-search").value = "";
-    this.searchFilter({ target: { value: "" } });
+  #handleClickOutside(event) {
+    handleClickOutsideMethod(event, this);
   }
 
-  handleClickOutside(event) {
-    if (
-      this.inlineMode &&
-      event.target.tagName !== "DROPDOWN-FORM" &&
-      event.target.tagName !== "EOX-ITEMFILTER-V2" &&
-      this.showDropdown
-    ) {
-      this.resetSearch();
-      this.showDropdown = false;
-      this.requestUpdate();
-    }
+  #handleKeyDown(event) {
+    handleKeyDownMethod(event, this);
   }
 
-  handleKeyDown(event) {
-    if (this.inlineMode && event.key === "Escape" && this.showDropdown) {
-      this.resetSearch();
-      this.showDropdown = false;
-      this.requestUpdate();
-    }
+  #handleToggleDropdown(event) {
+    handleToggleDropdownMethod(event, this);
   }
 
-  toggleDropdown(event) {
-    if (this.inlineMode) {
-      event.stopPropagation();
-      this.showDropdown = true;
-      this.requestUpdate();
-    }
+  #handleShowDropdownOnFocus() {
+    handleShowDropdownOnFocusMethod(this);
   }
 
-  showDropdownOnFocus() {
-    if (this.inlineMode) {
-      this.showDropdown = true;
-      this.requestUpdate();
-    }
+  #handleFormClick(event) {
+    handleFormClickMethod(event, this);
   }
 
-  handleFormClick(event) {
-    if (this.inlineMode) event.stopPropagation();
+  #resetFilter(event) {
+    resetFilterMethod(event, this);
   }
 
-  resetFilter(event) {
-    const filterKey = event.target.getAttribute("data-close").replace("|", "-");
-    this.querySelector(`#filter-${filterKey}`).reset();
-    this.dispatchEvent(new CustomEvent("filter"));
-    this.requestUpdate();
-  }
-
-  searchFilter(event) {
-    const fuse = new Fuse(this.filterProperties, {
-      keys: ["title"],
-    });
-    const inputText = event.target.value;
-    const result = fuse.search(inputText);
-    const matches = result.map(
-      (res) => res.item.key || res.item.keys.join("|")
-    );
-
-    Object.keys(this.filters).forEach((filter) => {
-      this.querySelector(
-        `[data-details="${filter}"]`
-      ).parentElement.style.display =
-        matches.includes(filter) || !inputText ? "" : "none";
-    });
-  }
-
-  chipItems() {
-    return Object.keys(this.filters)
-      .map((filter) => ({
-        title: `${filter}:${this.filters[filter].stringifiedState}`,
-        key: filter,
-      }))
-      .filter((item) => this.filters[item.key].dirty);
+  #searchFilter(event) {
+    searchFilterMethod(event, this);
   }
 
   render() {
@@ -137,9 +93,9 @@ export class EOxItemFilterContainer extends LitElement {
               <div class="inline-container" part="container">
                 <div>
                   <eox-itemfilter-chips-v2
-                    .items=${this.chipItems()}
+                    .items=${getChipItems(this.filters)}
                     .controller=${{
-                      remove: (event) => this.resetFilter(event),
+                      remove: (event) => this.#resetFilter(event),
                     }}
                   >
                   </eox-itemfilter-chips-v2>
@@ -148,9 +104,9 @@ export class EOxItemFilterContainer extends LitElement {
                   <input
                     id="itemfilter-input-search"
                     type="text"
-                    @click="${this.toggleDropdown}"
-                    @focus="${this.showDropdownOnFocus}"
-                    @input="${this.searchFilter}"
+                    @click="${this.#handleToggleDropdown}"
+                    @focus="${this.#handleShowDropdownOnFocus}"
+                    @input="${this.#searchFilter}"
                     placeholder="Click to open form"
                     aria-haspopup="true"
                     aria-expanded="${this.showDropdown}"
@@ -160,9 +116,9 @@ export class EOxItemFilterContainer extends LitElement {
               <div
                 class="inline-content ${this.showDropdown ? "" : "hidden"}"
                 slot="content"
-                @keydown="${this.handleKeyDown}"
-                @click="${this.handleFormClick}"
-                @focus="${this.handleFormClick}"
+                @keydown="${this.#handleKeyDown}"
+                @click="${this.#handleFormClick}"
+                @focus="${this.#handleFormClick}"
               >
                 <slot name="section"></slot>
               </div>
