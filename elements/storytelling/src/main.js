@@ -131,6 +131,18 @@ export class EOxStoryTelling extends LitElement {
   }
 
   /**
+   * @param {Element} element - Dom element
+   * @private
+   */
+  #dispatchInitEvent(element) {
+    this.dispatchEvent(
+      new CustomEvent("init", {
+        detail: element,
+      })
+    );
+  }
+
+  /**
    * @param {Map} changedProperties - A map of changed properties.
    */
   async updated(changedProperties) {
@@ -160,6 +172,7 @@ export class EOxStoryTelling extends LitElement {
           ADD_TAGS: DEFAULT_SENSITIVE_TAGS,
         }),
         md.sections,
+        this.#dispatchInitEvent.bind(this),
         this
       );
 

@@ -9,10 +9,11 @@ let stepSectionObservers = [];
  *
  * @param {string} htmlString - The HTML string to be rendered.
  * @param {Object} sections - List of sections meta
+ * @param {Function} initDispatchFunc - Init dispatch event
  * @param {import("lit").LitElement} that - The LitElement instance.
  * @returns {Element[]} An array of processed DOM nodes.
  */
-export function renderHtmlString(htmlString, sections, that) {
+export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   // Parse the HTML string into a document
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
@@ -122,7 +123,9 @@ export function renderHtmlString(htmlString, sections, that) {
   window.addEventListener("scroll", generateParallaxEffect);
 
   // Process child nodes of the document body
-  return Array.from(doc.body.childNodes).map(processNode);
+  return Array.from(doc.body.childNodes).map((node) =>
+    processNode(node, initDispatchFunc)
+  );
 }
 
 /**
@@ -145,9 +148,10 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
  * Processes a DOM node by potentially modifying its attributes value based on it's datatype
  *
  * @param {Element} node - The DOM node to process.
+ * @param {Function} initDispatchFunc - Init dispatch event
  * @returns {Element} The processed DOM node.
  */
-function processNode(node) {
+function processNode(node, initDispatchFunc) {
   if (
     node.nodeType === Node.ELEMENT_NODE &&
     node.classList.contains("section-custom")
@@ -163,6 +167,7 @@ function processNode(node) {
               attr.name
             ))
         );
+        setTimeout(() => initDispatchFunc(element), 100);
       }
     });
   }
