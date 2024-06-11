@@ -39,7 +39,7 @@
     "concurrently": "^8.2.1",
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^13.3.0",
-    "cypress-fail-on-console-error": "^5.1.0",
+    "cypress-fail-on-console-error": "^5.1.1",
     "cypress-lit": "^0.0.8",
     "cypress-network-idle": "^1.14.2",
     "nodemon": "^3.0.3",
