@@ -1,6 +1,6 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import { userEvent, within, waitFor, expect } from "@storybook/test";
+import { waitFor, expect } from "@storybook/test";
 
 import items from "./test/testItems.json";
 
