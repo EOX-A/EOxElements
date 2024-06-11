@@ -37,6 +37,13 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>🟡</td>
   </tr>
   <tr>
+    <td><a href="./elements/geosearch/">eox-geosearch</a></td>
+    <td>An autocompleted search input for geographic locations</td>
+    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-geosearch--docs">Docs & Examples</a></td>
+    <td><a href="elements/geosearch/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/geosearch.svg?label=%20" /></a></td>
+    <td>⭕️</td>
+  </tr>
+  <tr>
     <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
     <td>Filter/search large sets of items client-side or server-side</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-itemfilter--docs">Docs & Examples</a></td>

@@ -1,6 +1,5 @@
 import { html } from "lit";
 import { equals } from "ol/coordinate";
-import { Layer } from "ol/layer";
 import { EoxLayer } from "../src/generate";
 import "../main";
 
@@ -19,6 +18,23 @@ describe("Map", () => {
     cy.get("eox-map").and(($el) => {
       expect((<EOxMap>$el[0]).map).to.exist;
     });
+  });
+
+  it("map fires lifecycle events", () => {
+    cy.intercept(/^.*openstreetmap.*$/, {
+      fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
+    });
+    cy.mount(
+      html`<eox-map
+        .layers=${[
+          { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+        ]}
+        @mapmounted=${(e: CustomEvent) => {
+          expect(e.detail.getTargetElement(), "fires mounted event").to.not.be
+            .undefined;
+        }}
+      ></eox-map>`
+    ).as("eox-map");
   });
 
   it("should parse zoom/center properties correctly", () => {
@@ -49,7 +65,7 @@ describe("Map", () => {
     });
   });
 
-  /*it("animates on zoom/center change", () => {
+  it("animates on zoom/center change", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
       fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
     });
@@ -82,7 +98,7 @@ describe("Map", () => {
         }, 200);
       });
     });
-  });*/
+  });
 
   it("animates on extent", () => {
     cy.intercept(/^.*openstreetmap.*$/, {
@@ -192,7 +208,9 @@ describe("Map", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       const layersArray = eoxMap.getFlatLayersArray(
-        eoxMap.map.getLayers().getArray() as Array<Layer>
+        eoxMap.map.getLayers().getArray() as Array<
+          import("../src/generate").AnyLayer
+        >
       );
       expect(layersArray.length).to.equal(3);
       expect(layersArray.find((l) => l.get("id") === "group1")).to.exist;

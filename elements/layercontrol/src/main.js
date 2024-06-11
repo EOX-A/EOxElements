@@ -155,7 +155,6 @@ export class EOxLayerControl extends LitElement {
 
   render() {
     // Checks if there are any layers with the 'layerControlOptional' property set to true
-    // @ts-ignore
     const layers = this.map?.getLayers().getArray();
     const layerControlOptionalCondition =
       layers && filterLayers(layers, "layerControlOptional", true)?.length > 0;

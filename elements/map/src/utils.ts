@@ -63,8 +63,8 @@ export function addScrollInteractions(
         new DragPan({
           condition: function (event) {
             return (
-              //@ts-ignore
-              this.getPointerCount() === 2 || platformModifierKeyOnly(event)
+              (this as DragPan).getPointerCount() === 2 ||
+              platformModifierKeyOnly(event)
             );
           },
         })

@@ -55,9 +55,9 @@ export function addOrUpdateControl(
  */
 export function addControl(EOxMap: EOxMap, type: controlType, options: object) {
   const controlOptions = Object.assign({}, options);
-  // @ts-ignore
+  //@ts-expect-error options need to be according to the given control.
   if (options && options.layers) {
-    //@ts-ignore
+    //@ts-expect-error layers is not defined for each control
     controlOptions.layers = generateLayers(EOxMap, options.layers); // parse layers (OverviewMap)
   }
   const control = new availableControls[type](controlOptions);
@@ -82,9 +82,9 @@ export function addInitialControls(EOxMap: EOxMap) {
       for (let i = 0, ii = keys.length; i < ii; i++) {
         const controlName = keys[i] as controlType;
         const controlOptions = controls[controlName];
-        // @ts-ignore
+        //@ts-expect-error layers is not defined for each control
         if (controlOptions && controlOptions.layers) {
-          // @ts-ignore
+          //@ts-expect-error layers is not defined for each control
           controlOptions.layers = generateLayers(controlOptions.layers); // parse layers (OverviewMap)
         }
         const control = new availableControls[controlName](controlOptions);

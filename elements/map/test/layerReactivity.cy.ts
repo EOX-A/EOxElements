@@ -59,12 +59,10 @@ describe("Map", () => {
       const eoxMap = <EOxMap>$el[0];
       const interactions = drawInteractionLayerJson[0].interactions;
       delete drawInteractionLayerJson[0].interactions;
-      //@ts-ignore
-      eoxMap.layers = drawInteractionLayerJson;
+      eoxMap.layers = drawInteractionLayerJson as Array<EoxLayer>;
 
       drawInteractionLayerJson[0].interactions = interactions;
-      //@ts-ignore
-      eoxMap.layers = drawInteractionLayerJson;
+      eoxMap.layers = drawInteractionLayerJson as Array<EoxLayer>;
       expect(eoxMap.interactions.drawInteraction).to.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.exist;
     });

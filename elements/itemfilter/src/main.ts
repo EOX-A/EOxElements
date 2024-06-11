@@ -160,7 +160,6 @@ export class EOxItemFilter extends TemplateElement {
             ? dayjs(value).unix()
             : parseInt(value);
         };
-        // @ts-ignore
         this._items.forEach((item: Item) => {
           if (filterProperty.type === "range") {
             if (Array.isArray(item[filterProperty.key] as Array<number>)) {
@@ -170,13 +169,11 @@ export class EOxItemFilter extends TemplateElement {
                 // @ts-ignore
                 parseValue(item[filterProperty.key][1]),
               ];
-              // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
                   ? // @ts-ignore
                     Math.min(filterKeys.min, currentValues[0])
                   : currentValues[0];
-              // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
                   ? // @ts-ignore
@@ -185,13 +182,11 @@ export class EOxItemFilter extends TemplateElement {
             } else {
               // @ts-ignore
               const currentValue = parseValue(item[filterProperty.key]);
-              // @ts-ignore
               filterKeys.min =
                 filterKeys.min !== undefined
                   ? // @ts-ignore
                     Math.min(filterKeys.min, currentValue)
                   : currentValue;
-              // @ts-ignore
               filterKeys.max =
                 filterKeys.max !== undefined
                   ? // @ts-ignore

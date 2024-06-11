@@ -50,7 +50,7 @@ const layersJson = [
       },
     ],
   },
-];
+] as Array<EoxLayer>;
 
 describe("layers", () => {
   it("loads a Vector Layer in a group", () => {
@@ -111,7 +111,6 @@ describe("layers", () => {
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      //@ts-ignore
       layersJson[0].layers.push(osmJson);
       eoxMap.layers = layersJson as Array<EoxLayer>;
       const newOsmInGroup = eoxMap.getLayerById("osm");

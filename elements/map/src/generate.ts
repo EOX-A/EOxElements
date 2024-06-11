@@ -66,6 +66,23 @@ export type sourceType =
   | "XYZ"
   | "WMTSCapabilities";
 
+export type VectorOrVectorTileLayer =
+  | VectorLayer<import("ol/Feature").FeatureLike>
+  | VectorTileLayer<import("ol/Feature").FeatureLike>;
+
+export type AnyLayerWithSource =
+  | import("ol/layer/BaseImage").default<
+      import("ol/source/Image").default,
+      import("ol/renderer/canvas/ImageLayer").default
+    >
+  | import("ol/layer/Tile").default<import("ol/source/Tile").default>
+  | VectorOrVectorTileLayer;
+
+/**
+ * any realistic layer, image, tile, vector. has "setSource"
+ */
+export type AnyLayer = AnyLayerWithSource | import("ol/layer/Group").default;
+
 const basicOlFormats = {
   GeoJSON,
   MVT,
@@ -111,6 +128,7 @@ export type EoxLayer = {
   style?: FlatStyleLike;
   interactions?: Array<EOxInteraction>;
   zIndex?: number;
+  renderMode?: "vector" | "vectorImage";
 };
 
 /**
@@ -118,13 +136,13 @@ export type EoxLayer = {
  * @param {EOxMap} EOxMap
  * @param {EoxLayer} layer
  * @param {boolean=} createInteractions
- * @returns {Layer}
+ * @returns {AnyLayer}
  */
 export function createLayer(
   EOxMap: EOxMap,
   layer: EoxLayer,
   createInteractions: boolean = true
-): Layer {
+): AnyLayer {
   layer = JSON.parse(JSON.stringify(layer));
 
   const availableFormats = {
@@ -163,11 +181,9 @@ export function createLayer(
     }
   }
 
-  //@ts-ignore
   const olLayer = new newLayer({
     ...layer,
     ...(layer.source && {
-      //@ts-ignore
       source: new newSource({
         ...layer.source,
         // @ts-ignore
@@ -189,7 +205,7 @@ export function createLayer(
     }),
     ...layer.properties,
     style: undefined, // override layer style, apply style after
-  });
+  }) as AnyLayer;
 
   olLayer.set("_jsonDefinition", layer, true);
 
@@ -199,16 +215,18 @@ export function createLayer(
       .map((l) => createLayer(EOxMap, l));
     // set a reference to the parent group to each layer of the group
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
-    olLayer.setLayers(new Collection(groupLayers));
+    (olLayer as unknown as import("ol/layer/Group").default).setLayers(
+      new Collection(groupLayers)
+    );
   }
 
   if (layer.style) {
-    olLayer.setStyle(layer.style);
+    (olLayer as VectorOrVectorTileLayer).setStyle(layer.style);
   }
   if (createInteractions && layer.interactions?.length) {
     for (let i = 0, ii = layer.interactions.length; i < ii; i++) {
       const interactionDefinition = layer.interactions[i];
-      addInteraction(EOxMap, olLayer, interactionDefinition);
+      addInteraction(EOxMap, olLayer as SelectLayer, interactionDefinition);
     }
   }
 
@@ -230,7 +248,7 @@ function addInteraction(
   if (interactionDefinition.type === "draw") {
     addDraw(
       EOxMap,
-      olLayer as VectorLayer<VectorSource>,
+      olLayer as VectorLayer<import("ol/Feature").default>,
       interactionDefinition.options as DrawOptions
     );
   } else if (interactionDefinition.type === "select") {
@@ -241,13 +259,13 @@ function addInteraction(
 /**
  * updates an existing layer
  * @param {EoxLayer} newLayerDefinition
- * @param {Layer} existingLayer
+ * @param {AnyLayer} existingLayer
  * @returns {existingLayer}
  */
 export function updateLayer(
   EOxMap: EOxMap,
   newLayerDefinition: EoxLayer,
-  existingLayer: Layer
+  existingLayer: AnyLayer
 ) {
   const existingJsonDefintion = existingLayer.get(
     "_jsonDefinition"
@@ -269,8 +287,9 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.source) !==
     JSON.stringify(existingJsonDefintion.source)
   ) {
-    (existingLayer as any as VectorLayer<VectorSource>).setSource(
-      (newLayer as any as VectorLayer<VectorSource>).getSource()
+    (existingLayer as AnyLayerWithSource).setSource(
+      //@ts-expect-error format is not defined on image layer. expect the sources to be of the same type.
+      newLayer.getSource()
     );
   }
 
@@ -279,8 +298,9 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.style) !==
       JSON.stringify(existingJsonDefintion.style)
   ) {
-    // @ts-ignore
-    existingLayer.setStyle(newLayer.getStyle());
+    (existingLayer as VectorLayer<import("ol/Feature").FeatureLike>).setStyle(
+      (newLayer as VectorLayer<import("ol/Feature").FeatureLike>).getStyle()
+    );
   }
 
   if (
@@ -351,8 +371,9 @@ export function updateLayer(
   if (newLayerDefinition.type === "Group") {
     const newLayerIds = newLayerDefinition.layers.map((l) => l.properties?.id);
     // remove all layers from the group that do not exist in the new layer definition
-    //@ts-ignore
-    const layerCollection = existingLayer.getLayers();
+    const layerCollection = (
+      existingLayer as unknown as import("ol/layer/Group").default
+    ).getLayers();
     layerCollection.forEach((l: Layer) => {
       if (!newLayerIds.includes(l.get("id"))) {
         layerCollection.remove(l);
@@ -423,7 +444,7 @@ function setSyncListeners(olLayer: Layer, eoxLayer: EoxLayer) {
       // do not sync property when setting the "map" of the layer
       return;
     }
-    // @ts-ignore
+    //@ts-ignore
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
 }

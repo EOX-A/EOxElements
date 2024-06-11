@@ -40,8 +40,7 @@ describe("select interaction on click", () => {
       cy.mount(html`<eox-map .layers=${layerJson}></eox-map>`).as("eox-map");
       cy.get("eox-map").and(($el) => {
         const eoxMap = <EOxMap>$el[0];
-        eoxMap.addEventListener("select", (evt) => {
-          // @ts-ignore
+        eoxMap.addEventListener("select", (evt: CustomEventInit) => {
           expect(evt.detail.feature).to.exist;
           resolve();
         });
@@ -66,7 +65,6 @@ describe("select interaction on click", () => {
     styleJson[0].interactions = [
       {
         type: "select",
-        //@ts-ignore
         options: {
           id: "selectInteraction",
           condition: "click",
@@ -74,15 +72,14 @@ describe("select interaction on click", () => {
             "stroke-color": "white",
             "stroke-width": 3,
           },
-        },
+        } as import("../src/select").SelectOptions,
       },
     ];
     cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
 
-      eoxMap.addEventListener("select", (evt) => {
-        // @ts-ignore
+      eoxMap.addEventListener("select", (evt: CustomEventInit) => {
         expect(evt.detail.feature).to.exist;
       });
       eoxMap.map.on("loadend", () => {
@@ -98,7 +95,6 @@ describe("select interaction on click", () => {
     styleJson[0].interactions = [
       {
         type: "select",
-        //@ts-ignore
         options: {
           id: "selectInteraction",
           condition: "click",
@@ -106,7 +102,7 @@ describe("select interaction on click", () => {
             "stroke-color": "white",
             "stroke-width": 3,
           },
-        },
+        } as import("../src/select").SelectOptions,
       },
     ];
     cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");

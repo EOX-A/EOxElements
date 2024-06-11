@@ -4,6 +4,7 @@ import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
 import "../elements/chart/src/main.ts";
 import "../elements/drawtools/src/main.js";
+import "../elements/geosearch/src/main.js";
 import "../elements/itemfilter/src/main.ts";
 import "../elements/jsonform/src/main.js";
 import "../elements/layercontrol/src/main.js";

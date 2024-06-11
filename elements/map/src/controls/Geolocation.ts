@@ -80,7 +80,9 @@ export default class GeolocationControl extends Control {
 
     this._source = new VectorSource({
       features: [this._positionFeature],
-    });
+    }) as VectorSource<
+      Feature<import("ol/geom").Polygon | import("ol/geom").Point>
+    >;
     if (this._trackAccuracy) {
       this._accuracyFeature = new Feature();
       // flat styles only work at the layer atm.
@@ -129,11 +131,15 @@ export default class GeolocationControl extends Control {
   private _centerWhenReady: boolean;
   private _highAccuracy: boolean;
   private _positionFeature: Feature<Point>;
-  private _accuracyFeature: Feature;
+  private _accuracyFeature: Feature<import("ol/geom").Polygon>;
   private _trackAccuracy: boolean;
   private _trackHeading: boolean;
-  private _layer: VectorLayer<VectorSource>;
-  private _source: VectorSource;
+  private _layer: VectorLayer<
+    Feature<import("ol/geom").Polygon | import("ol/geom").Point>
+  >;
+  private _source: VectorSource<
+    Feature<import("ol/geom").Polygon | import("ol/geom").Point>
+  >;
   private _geolocation: Geolocation;
 
   /**
