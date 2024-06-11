@@ -1,5 +1,7 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
+import { userEvent, within, waitFor, expect } from "@storybook/test";
+
 import items from "./test/testItems.json";
 
 export default {
@@ -11,6 +13,23 @@ export default {
       .config=${args.config}
       .items=${args.items}
     ></eox-itemfilter>`,
+  play: async ({ canvasElement, step }) => {
+    await waitFor(() => {
+      const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
+      expect(itemFilterComponent).toBeTruthy();
+      expect(itemFilterComponent.shadowRoot).toBeTruthy();
+    });
+    const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
+    const shadowRoot = itemFilterComponent.shadowRoot;
+
+    await step("Searching for Asparagus", async () => {
+      const inputElement = shadowRoot.querySelector(
+        'input[placeholder="Type something..."]'
+      );
+      inputElement.value = "Asparagus";
+      inputElement.dispatchEvent(new Event("input"));
+    });
+  },
 };
 
 export const Primary = {
