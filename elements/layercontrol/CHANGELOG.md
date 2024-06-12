@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.4](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.3...layercontrol-v0.17.4) (2024-06-12)
+
+
+### Miscellaneous chores
+
+* Adaptations for updated ol version ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
+
 ## [0.17.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.2...layercontrol-v0.17.3) (2024-04-22)
 
 
