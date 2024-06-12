@@ -3,9 +3,9 @@
 ## [0.14.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.14.0...itemfilter-v0.14.1) (2024-06-10)
 
 
-### Bug Fixes
+### Miscellaneous chores
 
-* Update ol version and style test ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
+* Adaptations for updated ol version ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
 
 ## [0.14.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.13.0...itemfilter-v0.14.0) (2024-04-02)
 
