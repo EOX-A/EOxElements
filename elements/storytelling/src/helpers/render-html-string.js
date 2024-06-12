@@ -152,13 +152,13 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
  * @returns {Element} The processed DOM node.
  */
 function processNode(node, initDispatchFunc) {
-  if (
-    node.nodeType === Node.ELEMENT_NODE &&
-    node.classList.contains("section-custom")
-  ) {
+  if (node.nodeType === Node.ELEMENT_NODE) {
     const childElements = node.querySelectorAll("*");
     childElements.forEach((element) => {
-      if (/^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase())) {
+      if (
+        /^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase()) &&
+        node.classList.contains("section-custom")
+      ) {
         Array.from(element.attributes).forEach(
           // Update the attribute with its converted value
           (attr) =>
@@ -167,8 +167,8 @@ function processNode(node, initDispatchFunc) {
               attr.name
             ))
         );
-        setTimeout(() => initDispatchFunc(element), 100);
       }
+      setTimeout(() => initDispatchFunc(element), 100);
     });
   }
 
