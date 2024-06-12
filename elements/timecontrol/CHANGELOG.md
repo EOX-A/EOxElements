@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.5.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.5.0...timecontrol-v0.5.1) (2024-06-12)
+## [0.5.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.5.0...timecontrol-v0.5.1) (2024-06-10)
 
 
 ### Miscellaneous chores
