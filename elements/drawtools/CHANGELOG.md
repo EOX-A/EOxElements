@@ -3,9 +3,9 @@
 ## [0.8.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.8.0...drawtools-v0.8.1) (2024-06-12)
 
 
-### Bug Fixes
+### Miscellaneous chores
 
-* Update ol version and style test ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
+* Adaptations for updated ol version ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
 
 ## [0.8.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.7.0...drawtools-v0.8.0) (2024-02-22)
 
