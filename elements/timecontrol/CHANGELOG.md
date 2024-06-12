@@ -3,9 +3,9 @@
 ## [0.5.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.5.0...timecontrol-v0.5.1) (2024-06-10)
 
 
-### Bug Fixes
+### Miscellaneous chores
 
-* Update ol version and style test ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
+* Adaptations for updated ol version ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
 
 ## [0.5.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.4.1...timecontrol-v0.5.0) (2024-03-07)
 
