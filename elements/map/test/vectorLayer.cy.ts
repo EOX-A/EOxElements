@@ -51,7 +51,7 @@ describe("layers", () => {
           type: "Vector",
           url: "https://budapest",
           format: {
-        type: "GeoJSON",
+            type: "GeoJSON",
             dataProjection: "EPSG:3035",
           },
         },
@@ -60,7 +60,7 @@ describe("layers", () => {
 
       const source = eoxMap
         .getLayerById("0")
-        .getSource() as import("ol/source/Vector").default<
+        .getSource() as unknown as import("ol/source/Vector").default<
         import("ol/Feature").default<import("ol/geom/MultiPolygon").default>
       >;
       const coordinates = source
