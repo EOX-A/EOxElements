@@ -36,9 +36,7 @@ export const styleEOX = css`
     color: #00f;
     width: 100%;
     text-align: center;
-
   }
-
 
   input {
     background: var(--input-bg, #c6d4dd);

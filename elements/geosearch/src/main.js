@@ -295,26 +295,24 @@ class EOxGeoSearch extends LitElement {
             @input="${this.onInput}"
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${
-              this._query.length < 2
-                ? html`<span class="hint">Enter at least two characters to search</span>`
-                : html``
-            }
-            ${
-              this._query.length >= 2
-                ? this._data.map(
-                    (item) => html`
-                      <eox-geosearch-item
-                        .item="${item}"
-                        .onClick="${(e) => {
-                          this.handleSelect(e);
-                        }}"
-                        .unstyled=${this.unstyled}
-                      />
-                    `
-                  )
-                : html``
-            }
+            ${this._query.length < 2
+              ? html`<span class="hint"
+                  >Enter at least two characters to search</span
+                >`
+              : html``}
+            ${this._query.length >= 2
+              ? this._data.map(
+                  (item) => html`
+                    <eox-geosearch-item
+                      .item="${item}"
+                      .onClick="${(e) => {
+                        this.handleSelect(e);
+                      }}"
+                      .unstyled=${this.unstyled}
+                    />
+                  `
+                )
+              : html``}
           </ul>
         </div>
       </div>
