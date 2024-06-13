@@ -291,7 +291,7 @@ class EOxGeoSearch extends LitElement {
             .value="${this._query}"
             style="margin-${this.getMarginDirection(
               this.resultsDirection
-            )}: 12px"
+            )}: ${this._isListVisible ? 12 : 0}px"
             @input="${this.onInput}"
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
