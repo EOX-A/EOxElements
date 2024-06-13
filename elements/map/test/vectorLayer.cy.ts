@@ -2,7 +2,7 @@ import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
-import { EoxLayer } from "../src/generate";
+import tempFixture from "./fixtures/budapest3035.json";
 
 describe("layers", () => {
   it("loads a Vector Layer", () => {
@@ -29,30 +29,53 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
+    cy.intercept("https://budapest", (req) => {
+      req.reply(tempFixture);
+    });
     cy.mount(html`<eox-map .layers=${[]}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.registerProjection(
-        "ESRI:53009",
-        "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
-          "+b=6371000 +units=m +no_defs"
+        "EPSG:3035",
+        "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs"
       );
-      eoxMap.setAttribute("projection", "ESRI:53009");
 
-      const layerWithFormats = Object.assign(
-        {},
-        vectorLayerStyleJson[0]
-      ) as EoxLayer;
-
-      layerWithFormats.source.format = {
+      const layerWithFormats = {
+        type: "Vector",
+        properties: { id: "0" },
+        style: {
+          "stroke-color": "black",
+          "stroke-width": 1,
+        },
+        source: {
+          type: "Vector",
+          url: "https://budapest",
+          format: {
         type: "GeoJSON",
-        dataProjection: "EPSG:53009",
-      };
+            dataProjection: "EPSG:3035",
+          },
+        },
+      } as import("../src/generate").EoxLayer;
       eoxMap.layers = [layerWithFormats];
 
-      const layers = eoxMap.map.getLayers().getArray();
-      expect(layers).to.have.length(1);
-      expect(eoxMap.getLayerById("regions")).to.exist;
+      const source = eoxMap
+        .getLayerById("0")
+        .getSource() as import("ol/source/Vector").default<
+        import("ol/Feature").default<import("ol/geom/MultiPolygon").default>
+      >;
+      const coordinates = source
+        .getFeatures()[0]
+        .getGeometry()
+        .getCoordinates();
+      const firstVertex = coordinates[0][0][0];
+      expect(
+        Math.floor(firstVertex[0]),
+        "correctly transforms coordinates"
+      ).to.be.equal(2106704);
+      expect(
+        Math.floor(firstVertex[1]),
+        "correctly transforms coordinates"
+      ).to.be.equal(6027918);
     });
   });
 

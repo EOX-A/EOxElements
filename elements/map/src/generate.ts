@@ -203,7 +203,7 @@ export function createLayer(
             // @ts-ignore
             ...(typeof layer.source.format === "object" && {
               // @ts-ignore
-              ...layer.source.format.options,
+              ...layer.source.format,
             }),
           }),
         }),
