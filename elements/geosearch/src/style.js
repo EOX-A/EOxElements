@@ -20,6 +20,9 @@ const styles = css`
     opacity: 0;
   }
   .results-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     min-height: 100px;
     width: 332px;
     background: var(--results-bg, #eaf1f5);
@@ -31,6 +34,7 @@ const styles = css`
   input {
     background: var(--input-bg, #c6d4dd);
     color: var(--input-fg, #333);
+    color: #f00;
     height: 48px;
     border-radius: 6px;
     padding: 0 16px;
