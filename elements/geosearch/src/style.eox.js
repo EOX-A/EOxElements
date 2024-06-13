@@ -123,6 +123,14 @@ export const styleEOX = css`
   }
 
   .hint {
+    display: flex;
     color: #0008;
+    height: 40px;
+    width: 100%;
+    margin: 30px 0;
+    text-align: center;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
   }
 `;
