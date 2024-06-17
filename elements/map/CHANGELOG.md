@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/map-v1.8.2...map-v1.9.0) (2024-06-17)
+
+
+### Features
+
+* Emit mapmounted event ([#1007](https://github.com/EOX-A/EOxElements/issues/1007)) ([9bdb5aa](https://github.com/EOX-A/EOxElements/commit/9bdb5aa4908082262b983d8b6e8f2167e2d763b0))
+* Format options ([#1006](https://github.com/EOX-A/EOxElements/issues/1006)) ([cab9b1e](https://github.com/EOX-A/EOxElements/commit/cab9b1e03f9a64d73b041103d23cf2257257c161))
+
+
+### Bug Fixes
+
+* Update ol version and style test ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
+
 ## [1.8.2](https://github.com/EOX-A/EOxElements/compare/map-v1.8.1...map-v1.8.2) (2024-05-16)
 
 
