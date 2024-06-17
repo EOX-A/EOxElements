@@ -88,6 +88,12 @@ const basicOlFormats = {
   MVT,
 };
 
+export type formatWithOptions = {
+  type: string;
+  dataProjection?: string;
+  featureProjection?: string;
+};
+
 const basicOlLayers = {
   Group,
   Image,
@@ -123,7 +129,7 @@ export type EoxLayer = {
   maxResolution?: number;
   opacity?: number;
   visible?: boolean;
-  source?: { type: sourceType };
+  source?: { type: sourceType; format?: string | formatWithOptions };
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
   interactions?: Array<EOxInteraction>;
@@ -189,7 +195,17 @@ export function createLayer(
         // @ts-ignore
         ...(layer.source.format && {
           // @ts-ignore
-          format: new availableFormats[layer.source.format](),
+          format: new availableFormats[
+            typeof layer.source.format === "object"
+              ? layer.source.format.type
+              : layer.source.format
+          ]({
+            // @ts-ignore
+            ...(typeof layer.source.format === "object" && {
+              // @ts-ignore
+              ...layer.source.format,
+            }),
+          }),
         }),
         // @ts-ignore
         ...(layer.source.tileGrid && {
