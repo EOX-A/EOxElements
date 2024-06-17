@@ -1,19 +1,19 @@
-import{x as s}from"./lit-element-DBwSto7d.js";const E={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>s`
+import{x as t}from"./lit-element-DBwSto7d.js";const z={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>t`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id="markdown-str"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},O={args:{markdownURL:`${window.location.href.split("iframe.html")[0]}/sample.md`},render:e=>s`
+  `},H={args:{markdownURL:`${window.location.href.split("iframe.html")[0]}/sample.md`},render:e=>t`
     <!-- Render eox-storytelling with basic markdown url. -->
     <eox-storytelling
       id="markdown-url"
       markdown-url=${e.markdownURL}
     ></eox-storytelling>
-  `},L={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>s`
+  `},P={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>t`
     <!-- Render eox-storytelling from markdown inside the slot. -->
     <eox-storytelling id="markdown-slot">${e.markdown}</eox-storytelling>
-  `},W={args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+  `},j={args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 
@@ -111,16 +111,34 @@ To change individual parameters like zoom or center, or to change the map layers
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
-    `},render:e=>s`
+    `},render:e=>t`
     <eox-storytelling
       id="markdown-editor"
       show-nav
       show-editor="close"
       markdown=${e.markdown}
     ></eox-storytelling>
-  `},H={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>s`${e()}
+  `};function $(e){if((e==null?void 0:e.tagName)==="EOX-MAP"){e.registerProjection("ESRI:53009","+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs");const n=e.getAttribute("projection");n&&e.setAttribute("projection",n)}}const _={args:{markdown:`## Map section <!--{as="eox-map" projection="ESRI:53009" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+
+## Map Tour section <!--{ projection="ESRI:53009" as="eox-map" zoom="9" center=[12.46,41.89] mode="tour" layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' }-->
+
+### <!--{ projection="ESRI:53009" animationOptions="{duration:500}" }-->
+#### ESRI:53009
+
+### <!--{ projection="EPSG:3857" animationOptions="{duration:500}" }-->
+#### EPSG:3857
+
+### <!--{ projection="EPSG:4326" animationOptions="{duration:500}" }-->
+#### EPSG:4326
+`},render:e=>t`
+    <eox-storytelling
+      id="markdown-editor"
+      markdown=${e.markdown}
+      @init=${({detail:n})=>$(n)}
+    ></eox-storytelling>
+  `},F={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>t`${e()}
         <style>
           .sb-show-main.sb-main-padded {
             padding: 0;
           }
-        </style>`]},t=E,o=O,i=L,r=W;var a,n,d,l,c;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:"PrimaryStory",...(d=(n=t.parameters)==null?void 0:n.docs)==null?void 0:d.source},description:{story:"StoryTelling using basic markdownL.",...(c=(l=t.parameters)==null?void 0:l.docs)==null?void 0:c.description}}};var h,m,p,g,w;o.parameters={...o.parameters,docs:{...(h=o.parameters)==null?void 0:h.docs,source:{originalSource:"MarkdownAsURLStory",...(p=(m=o.parameters)==null?void 0:m.docs)==null?void 0:p.source},description:{story:"StoryTelling using markdown URL.",...(w=(g=o.parameters)==null?void 0:g.docs)==null?void 0:w.description}}};var u,y,f,k,x;i.parameters={...i.parameters,docs:{...(u=i.parameters)==null?void 0:u.docs,source:{originalSource:"MarkdownSlotStory",...(f=(y=i.parameters)==null?void 0:y.docs)==null?void 0:f.source},description:{story:"StoryTelling using markdown from the slot.",...(x=(k=i.parameters)==null?void 0:k.docs)==null?void 0:x.description}}};var b,M,v,T,S;r.parameters={...r.parameters,docs:{...(b=r.parameters)==null?void 0:b.docs,source:{originalSource:"MarkdownEditorStory",...(v=(M=r.parameters)==null?void 0:M.docs)==null?void 0:v.source},description:{story:"StoryTelling with editor",...(S=(T=r.parameters)==null?void 0:T.docs)==null?void 0:S.description}}};const A=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor"];export{o as MarkdownAsURL,i as MarkdownInsideSlot,r as MarkdownWithEditor,t as Primary,A as __namedExportsOrder,H as default};
+        </style>`]},o=z,i=H,r=P,s=j,a=_;var d,l,c,h,p;o.parameters={...o.parameters,docs:{...(d=o.parameters)==null?void 0:d.docs,source:{originalSource:"PrimaryStory",...(c=(l=o.parameters)==null?void 0:l.docs)==null?void 0:c.source},description:{story:"StoryTelling using basic markdownL.",...(p=(h=o.parameters)==null?void 0:h.docs)==null?void 0:p.description}}};var m,g,u,w,y;i.parameters={...i.parameters,docs:{...(m=i.parameters)==null?void 0:m.docs,source:{originalSource:"MarkdownAsURLStory",...(u=(g=i.parameters)==null?void 0:g.docs)==null?void 0:u.source},description:{story:"StoryTelling using markdown URL.",...(y=(w=i.parameters)==null?void 0:w.docs)==null?void 0:y.description}}};var f,k,v,M,S;r.parameters={...r.parameters,docs:{...(f=r.parameters)==null?void 0:f.docs,source:{originalSource:"MarkdownSlotStory",...(v=(k=r.parameters)==null?void 0:k.docs)==null?void 0:v.source},description:{story:"StoryTelling using markdown from the slot.",...(S=(M=r.parameters)==null?void 0:M.docs)==null?void 0:S.description}}};var x,b,T,E,O;s.parameters={...s.parameters,docs:{...(x=s.parameters)==null?void 0:x.docs,source:{originalSource:"MarkdownEditorStory",...(T=(b=s.parameters)==null?void 0:b.docs)==null?void 0:T.source},description:{story:"StoryTelling with editor",...(O=(E=s.parameters)==null?void 0:E.docs)==null?void 0:O.description}}};var I,R,W,A,L;a.parameters={...a.parameters,docs:{...(I=a.parameters)==null?void 0:I.docs,source:{originalSource:"MarkdownInitEventStory",...(W=(R=a.parameters)==null?void 0:R.docs)==null?void 0:W.source},description:{story:"StoryTelling with @init event",...(L=(A=a.parameters)==null?void 0:A.docs)==null?void 0:L.description}}};const G=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor","MarkdownInitEvent"];export{i as MarkdownAsURL,a as MarkdownInitEvent,r as MarkdownInsideSlot,s as MarkdownWithEditor,o as Primary,G as __namedExportsOrder,F as default};
