@@ -325,11 +325,7 @@ export class EOxMap extends LitElement {
   @property({ attribute: "projection", type: String })
   set projection(projection: ProjectionLike) {
     const oldView = this.map.getView();
-    if (
-      projection &&
-      getProjection(projection) &&
-      projection !== oldView.getProjection().getCode()
-    ) {
+    if (projection && projection !== oldView.getProjection().getCode()) {
       const newCenter = transform(
         oldView.getCenter(),
         oldView.getProjection().getCode(),
