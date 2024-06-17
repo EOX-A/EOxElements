@@ -126,7 +126,7 @@ class EOxGeoSearch extends LitElement {
     this._query = e.target.value;
 
     // Ignore requests with less than 2 characters since the API might respond with a 400 to them.
-    if (this._query.length <= 1) {
+    if (this._query.length == 0) {
       this._isListVisible = false;
       return;
     } else {
@@ -134,6 +134,7 @@ class EOxGeoSearch extends LitElement {
     }
 
     let bounce = _debounce(async () => {
+      if (this._query.length < 2) return;
       if (this.endpoint && this.endpoint.length > 0) {
         const uri = `${this.endpoint}${
           this.endpoint.includes("?") ? "&" : "?"
@@ -281,10 +282,7 @@ class EOxGeoSearch extends LitElement {
               ? ""
               : "hidden"
             : ""}"
-          style="
-            flex-direction: ${this.getResultsDirection()};
-            min-height: 300px;
-          "
+          style="flex-direction: ${this.getResultsDirection()};"
         >
           <input
             id="gazetteer"
@@ -293,21 +291,28 @@ class EOxGeoSearch extends LitElement {
             .value="${this._query}"
             style="margin-${this.getMarginDirection(
               this.resultsDirection
-            )}: 12px"
+            )}: ${this._isListVisible ? 12 : 0}px"
             @input="${this.onInput}"
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${this._data.map(
-              (item) => html`
-                <eox-geosearch-item
-                  .item="${item}"
-                  .onClick="${(e) => {
-                    this.handleSelect(e);
-                  }}"
-                  .unstyled=${this.unstyled}
-                />
-              `
-            )}
+            ${this._query.length < 2
+              ? html`<span class="hint"
+                  >Enter at least two characters to search</span
+                >`
+              : html``}
+            ${this._query.length >= 2
+              ? this._data.map(
+                  (item) => html`
+                    <eox-geosearch-item
+                      .item="${item}"
+                      .onClick="${(e) => {
+                        this.handleSelect(e);
+                      }}"
+                      .unstyled=${this.unstyled}
+                    />
+                  `
+                )
+              : html``}
           </ul>
         </div>
       </div>
