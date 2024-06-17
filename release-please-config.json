@@ -5,6 +5,7 @@
       "release-as": "0.1.0"
     },
     "elements/drawtools": {},
+    "elements/geosearch": {},
     "elements/itemfilter": {},
     "elements/jsonform": {},
     "elements/layercontrol": {},
