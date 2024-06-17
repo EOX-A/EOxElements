@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.3...storytelling-v1.0.4) (2024-06-17)
+
+
+### Features
+
+* The widget hook initialize based on the [@init](https://github.com/init) event  ([#1025](https://github.com/EOX-A/EOxElements/issues/1025)) ([9376e3f](https://github.com/EOX-A/EOxElements/commit/9376e3ffe548afad100f0994728b8ed30d9a7038))
+
 ## [1.0.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.2...storytelling-v1.0.3) (2024-05-22)
 
 
