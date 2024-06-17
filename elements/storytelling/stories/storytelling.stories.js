@@ -7,6 +7,7 @@ import {
   MarkdownAsURLStory,
   MarkdownSlotStory,
   MarkdownEditorStory,
+  MarkdownInitEventStory,
 } from "./index";
 import { html } from "lit";
 
@@ -46,3 +47,8 @@ export const MarkdownInsideSlot = MarkdownSlotStory;
  * StoryTelling with editor
  */
 export const MarkdownWithEditor = MarkdownEditorStory;
+
+/**
+ * StoryTelling with @init event
+ */
+export const MarkdownInitEvent = MarkdownInitEventStory;
