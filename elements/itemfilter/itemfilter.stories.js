@@ -13,23 +13,6 @@ export default {
       .config=${args.config}
       .items=${args.items}
     ></eox-itemfilter>`,
-  play: async ({ canvasElement, step }) => {
-    await waitFor(() => {
-      const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
-      expect(itemFilterComponent).toBeTruthy();
-      expect(itemFilterComponent.shadowRoot).toBeTruthy();
-    });
-    const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
-    const shadowRoot = itemFilterComponent.shadowRoot;
-
-    await step("Searching for Asparagus", async () => {
-      const inputElement = shadowRoot.querySelector(
-        'input[placeholder="Type something..."]'
-      );
-      inputElement.value = "Asparagus";
-      inputElement.dispatchEvent(new Event("input"));
-    });
-  },
 };
 
 export const Primary = {
@@ -92,6 +75,23 @@ export const Primary = {
       },
     },
     items,
+  },
+  play: async ({ canvasElement, step }) => {
+    await waitFor(() => {
+      const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
+      expect(itemFilterComponent).toBeTruthy();
+      expect(itemFilterComponent.shadowRoot).toBeTruthy();
+    });
+    const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
+    const shadowRoot = itemFilterComponent.shadowRoot;
+
+    await step("Searching for Asparagus", async () => {
+      const inputElement = shadowRoot.querySelector(
+        'input[placeholder="Type something..."]'
+      );
+      inputElement.value = "Asparagus";
+      inputElement.dispatchEvent(new Event("input"));
+    });
   },
 };
 
