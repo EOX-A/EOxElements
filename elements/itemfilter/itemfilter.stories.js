@@ -1,6 +1,7 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
 import { waitFor, expect } from "@storybook/test";
+import { userEvent } from "@storybook/testing-library";
 
 import items from "./test/testItems.json";
 
@@ -89,8 +90,7 @@ export const Primary = {
       const inputElement = shadowRoot.querySelector(
         'input[placeholder="Type something..."]'
       );
-      inputElement.value = "Asparagus";
-      inputElement.dispatchEvent(new Event("input"));
+      await userEvent.type(inputElement, "Asparagus", { delay: 100 });
     });
   },
 };
