@@ -10,7 +10,6 @@ li {
   list-style: none;
 }
 li span {
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -369,6 +368,8 @@ button.icon {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  max-height: 185px;
+  overflow-y: auto;
 }
 .multiselect-container label,
 .select-container label {

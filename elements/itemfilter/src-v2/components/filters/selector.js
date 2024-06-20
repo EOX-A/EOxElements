@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { classMap } from "lit/directives/class-map.js";
 import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";
@@ -183,9 +183,7 @@ export class EOxSelector extends LitElement {
         ${!this.unstyled && checkboxStyle}
         ${!this.unstyled && radioStyle}
       </style>
-      ${this.filterObject.inline
-        ? this.renderAutocomplete()
-        : this.renderSelect()}
+      ${this.renderSelect()}
     `;
   }
 
@@ -255,9 +253,27 @@ export class EOxSelector extends LitElement {
   renderSelect() {
     const type = this.type.includes("multi") ? "checkbox" : "radio";
     return html`
+      ${when(
+        this.suggestions.length > 10,
+        () => html`<div class="autocomplete-container">
+          <div class="autocomplete-container-wrapper">
+            <input
+              tabindex=${this.tabIndex}
+              class="autocomplete-input"
+              type="text"
+              .value=${this.query}
+              placeholder="${this.filterObject.placeholder || ""}"
+              @input=${this.#handleInput}
+              @keydown=${this.#handleKeyDown}
+              @blur=${() => (this.showSuggestions = false)}
+              @focus=${() => (this.showSuggestions = true)}
+            />
+          </div>
+        </div>`
+      )}
       <div class="select-container">
         <ul class="${this.type}">
-          ${this.suggestions.map(
+          ${this.filteredSuggestions.map(
             (suggestion) => html`
               <li
                 data-identifier="${suggestion.toString().toLowerCase()}"
