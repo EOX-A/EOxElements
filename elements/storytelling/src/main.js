@@ -39,7 +39,10 @@ export class EOxStoryTelling extends LitElement {
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
-      showEditor: { attribute: "show-editor", type: String },
+      showEditor: {
+        attribute: "show-editor",
+        type: String | "closed" | undefined,
+      },
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
       addCustomSectionIndex: { type: Number, state: true },
@@ -97,9 +100,9 @@ export class EOxStoryTelling extends LitElement {
     /**
      * Enable or disable editor
      *
-     * @type {String}
+     * @type {String | "closed" | undefined}
      */
-    this.showEditor = null;
+    this.showEditor = undefined;
 
     /**
      * Enable or disable navigation
@@ -184,7 +187,7 @@ export class EOxStoryTelling extends LitElement {
         this
       );
 
-      if (this.showEditor) {
+      if (this.showEditor !== undefined) {
         const parent = this.shadowRoot || this;
         const editorDOM = parent.querySelector("eox-storytelling-editor");
         const jsonFormDOM = editorDOM.querySelector("eox-jsonform");
@@ -252,9 +255,9 @@ export class EOxStoryTelling extends LitElement {
   }
 
   render() {
-    const editorClass = `${this.showEditor ? "editor-enabled" : ""} editor-${
-      this.showEditor
-    }`;
+    const editorClass = `${
+      this.showEditor !== undefined ? "editor-enabled" : ""
+    } editor-${this.showEditor}`;
 
     return html`
       <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
@@ -268,12 +271,12 @@ export class EOxStoryTelling extends LitElement {
       <div class="story-telling ${editorClass}">
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
-          this.showEditor,
+          this.showEditor !== undefined,
           () => html`
             <eox-storytelling-editor
               .isNavigation=${Boolean(this.showNav)}
               .storyId=${this.id}
-              show-editor="${this.showEditor}"
+              show-editor=${this.showEditor}
               @change=${this.#debounceUpdateMarkdown}
               }
             ></eox-storytelling-editor>

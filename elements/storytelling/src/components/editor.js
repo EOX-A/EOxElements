@@ -13,7 +13,10 @@ class StoryTellingEditor extends LitElement {
   static properties = {
     markdown: { attribute: "markdown", type: String },
     storyId: { attribute: "story-id", type: String },
-    showEditor: { attribute: "show-editor", type: String },
+    showEditor: {
+      attribute: "show-editor",
+      type: String | "closed" | undefined,
+    },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
@@ -50,7 +53,7 @@ class StoryTellingEditor extends LitElement {
      *
      * @type {String}
      */
-    this.showEditor = false;
+    this.showEditor = undefined;
 
     // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
