@@ -4,6 +4,7 @@
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
+    "@types/geojson": "^7946.0.14",
     "@types/lodash.debounce": "^4.0.7",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
@@ -29,8 +30,8 @@
   },
   "dependencies": {
     "@floating-ui/dom": "^1.5.3",
-    "@turf/boolean-intersects": "^6.5.0",
-    "@turf/boolean-within": "^6.5.0",
+    "@turf/boolean-intersects": "^7.0.0",
+    "@turf/boolean-within": "^7.0.0",
     "fuse.js": "^7.0.0",
     "lit": "^3.0.2",
     "lodash.debounce": "^4.0.8",
