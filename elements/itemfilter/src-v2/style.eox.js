@@ -345,6 +345,10 @@ button.icon {
   flex-wrap: nowrap;
   gap: 4px;
 }
+li.highlighted,
+.select-container li:hover{
+  background: #00417011;
+}
 .selected-item {
   background: #00417022;
   padding: 4px 8px;

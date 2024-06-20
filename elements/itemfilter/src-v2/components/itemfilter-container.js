@@ -173,6 +173,10 @@ export class EOxItemFilterContainer extends LitElement {
     searchFilterMethod(event, this);
   }
 
+  updateInline() {
+    if (this.inlineMode) this.requestUpdate();
+  }
+
   /**
    * Renders the HTML template for the component.
    */

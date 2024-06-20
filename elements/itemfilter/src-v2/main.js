@@ -100,6 +100,8 @@ export class EOxItemFilter extends TemplateElement {
    */
   async search() {
     await searchMethod(this.#config, this.#items, this);
+    if (this.config.inlineMode)
+      this.renderRoot.querySelector("eox-itemfilter-container").updateInline();
     this.requestUpdate();
   }
 
