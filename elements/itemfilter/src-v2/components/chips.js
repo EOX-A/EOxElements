@@ -119,15 +119,9 @@ export class EOxItemFilterChipsV2 extends LitElement {
       <span class="chip-container">
         ${map(
           this.items,
-          (item, index) => html`
+          (item) => html`
             <span class="chip" @click=${this.#handleChipClick.bind(this)}>
               <span class="chip-title">${item.title}</span>
-              <span
-                class="chip-close"
-                data-close="${item.key}"
-                @click=${(e) => this.#handleClose(e, index)}
-                >x</span
-              >
             </span>
           `
         )}

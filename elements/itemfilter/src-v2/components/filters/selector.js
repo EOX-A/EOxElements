@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { classMap } from "lit/directives/class-map.js";
 import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";

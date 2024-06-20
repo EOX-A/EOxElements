@@ -1,5 +1,4 @@
 import { LitElement, html } from "lit";
-import inputStyle from "../../../../../utils/styles/dist/input.style.js";
 import _debounce from "lodash.debounce";
 import { when } from "lit/directives/when.js";
 import { resetTextMethod, textInputHandlerMethod } from "../../methods/filters";
@@ -65,24 +64,36 @@ export class EOxItemFilterText extends LitElement {
     leading: true,
   });
 
+  /**
+   * Overrides the default createRenderRoot method to render in the light DOM.
+   *
+   * @returns {this} - The current instance to render in the light DOM.
+   */
+  createRenderRoot() {
+    return this;
+  }
+
   // Render method for UI display
   render() {
     return when(
       this.filterObject,
       () => html`
-        <style>
-          ${!this.unstyled && inputStyle}
-        </style>
-        <input
-          type="text"
-          placeholder=${this.filterObject.placeholder}
-          data-cy="search"
-          part="input-search"
-          value="${Object.values(this.filterObject.state)[0]}"
-          tabindex=${this.tabIndex}
-          @input="${this.debouncedInputHandler}"
-          @click=${(evt) => evt.stopPropagation()}
-        />
+        <style></style>
+        <div class="text-container">
+          <div class="text-container-wrapper">
+            <input
+              type="text"
+              placeholder=${this.filterObject.placeholder}
+              data-cy="search"
+              class="text-input"
+              part="input-search"
+              value="${Object.values(this.filterObject.state)[0]}"
+              tabindex=${this.tabIndex}
+              @input="${this.debouncedInputHandler}"
+              @click=${(evt) => evt.stopPropagation()}
+            />
+          </div>
+        </div>
       `
     );
   }

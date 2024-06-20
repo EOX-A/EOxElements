@@ -257,7 +257,7 @@ button.icon {
   display: flex;
   align-items: center;
   background: #00417022;
-  border-radius: 4px;
+  border-radius: 30px;
   margin-right: 4px;
   padding: 5px 10px;
   font-size: small;
@@ -273,7 +273,8 @@ button.icon {
   margin-left: 8px;
   font-weight: 600;
 }
-.autocomplete-container {
+.autocomplete-container,
+.text-container {
   position: relative;
   align-items: center;
   width: 100%;
@@ -284,11 +285,14 @@ button.icon {
   cursor: text;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
+  background: white;
 }
-.autocomplete-container:hover {
+.autocomplete-container:hover,
+.text-container:hover {
   border: 1px solid #004170;
 }
-.autocomplete-container-wrapper {
+.autocomplete-container-wrapper,
+.text-container-wrapper {
   padding: 4px;
   position: relative;
   display: flex;
@@ -301,7 +305,8 @@ button.icon {
 .autocomplete-container-wrapper::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
-.autocomplete-input {
+.autocomplete-input,
+.text-input {
   flex: 1;
   border: none !important;
   outline: none;
