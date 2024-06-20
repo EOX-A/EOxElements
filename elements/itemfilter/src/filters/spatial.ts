@@ -4,7 +4,7 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { booleanIntersects } from "@turf/boolean-intersects";
 import { booleanWithin } from "@turf/boolean-within";
-import { Geometry } from "@turf/helpers";
+import type { Geometry } from "geojson";
 import { EOxMap } from "../../../map/main";
 import { resetFilter } from "../reset";
 import { EoxLayer } from "../../../map/src/generate";
