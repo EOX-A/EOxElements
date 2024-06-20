@@ -13,10 +13,7 @@ class StoryTellingEditor extends LitElement {
   static properties = {
     markdown: { attribute: "markdown", type: String },
     storyId: { attribute: "story-id", type: String },
-    showEditor: {
-      attribute: "show-editor",
-      type: String | "closed" | undefined,
-    },
+    showEditor: { attribute: "show-editor", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
   };
 
@@ -86,7 +83,7 @@ class StoryTellingEditor extends LitElement {
       "eox-jsonform#storytelling-editor"
     );
 
-    if (this.showEditor === "close") updateEditorInitVisibility(this);
+    if (this.showEditor === "closed") updateEditorInitVisibility(this);
 
     positionEditor(this);
     runWhenEditorInitialised(this);

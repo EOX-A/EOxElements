@@ -39,10 +39,7 @@ export class EOxStoryTelling extends LitElement {
       markdownURL: { attribute: "markdown-url", type: String },
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
-      showEditor: {
-        attribute: "show-editor",
-        type: String | "closed" | undefined,
-      },
+      showEditor: { attribute: "show-editor", type: String },
       noShadow: { attribute: "no-shadow", type: Boolean },
       unstyled: { type: Boolean },
       addCustomSectionIndex: { type: Number, state: true },
