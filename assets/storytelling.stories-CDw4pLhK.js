@@ -115,7 +115,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
     <eox-storytelling
       id="markdown-editor"
       show-nav
-      show-editor="close"
+      show-editor="closed"
       markdown=${e.markdown}
     ></eox-storytelling>
   `};function $(e){if((e==null?void 0:e.tagName)==="EOX-MAP"){e.registerProjection("ESRI:53009","+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs");const n=e.getAttribute("projection");n&&e.setAttribute("projection",n)}}const _={args:{markdown:`## Map section <!--{as="eox-map" projection="ESRI:53009" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
