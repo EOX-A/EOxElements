@@ -52,11 +52,11 @@ export const styleEOX = css`
   .geosearch.small button {
     height: var(--button-size, 32px);
     width: var(--button-size, 32px);
-    padding: 6px;
+    padding: calc((var(--button-size, 32px) - 20px) / 2);
   }
 
   .geosearch.small button .icon {
-    min-width: 20px;
+    width: 20px;
     height: 20px;
     transform: translateX(1px);
     fill: var(--button-fg, #fff);
