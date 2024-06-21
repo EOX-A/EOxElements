@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.4...storytelling-v1.0.5) (2024-06-21)
+
+
+### Bug Fixes
+
+* `show-editor` attribute behavior ([#1042](https://github.com/EOX-A/EOxElements/issues/1042)) ([13ff493](https://github.com/EOX-A/EOxElements/commit/13f4f9327ec83b231b389ae3e86f498787285882))
+
 ## [1.0.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.3...storytelling-v1.0.4) (2024-06-17)
 
 
