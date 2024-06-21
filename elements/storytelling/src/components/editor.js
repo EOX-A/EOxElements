@@ -50,7 +50,7 @@ class StoryTellingEditor extends LitElement {
      *
      * @type {String}
      */
-    this.showEditor = false;
+    this.showEditor = undefined;
 
     // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
@@ -83,7 +83,7 @@ class StoryTellingEditor extends LitElement {
       "eox-jsonform#storytelling-editor"
     );
 
-    if (this.showEditor === "close") updateEditorInitVisibility(this);
+    if (this.showEditor === "closed") updateEditorInitVisibility(this);
 
     positionEditor(this);
     runWhenEditorInitialised(this);

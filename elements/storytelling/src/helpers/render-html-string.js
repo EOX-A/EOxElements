@@ -279,7 +279,7 @@ function generateAddSectionClickEvt(
     (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
 
   // If click happened enable custom section selection popup
-  if (isClicked && EOxStoryTelling.showEditor !== "close") {
+  if (isClicked && EOxStoryTelling.showEditor !== "closed") {
     const isBeforeBtnTriggered = isFirstSection
       ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
       : false;
@@ -299,7 +299,7 @@ function generateAddSectionClickEvt(
  * @param {Array<Element>} html - List of html elements
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
- * @param {String} showEditor - Whether to show editor or not
+ * @param {String | "closed" | undefined} showEditor - Whether to show editor or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {Element[]} An array of processed DOM nodes after adding navigation.
  */
@@ -344,7 +344,7 @@ export function parseNavWithAddSection(
       section.setAttribute("data-section", `${key + 1}`);
 
       // Add click event function to identify add button click
-      if (showEditor) {
+      if (showEditor !== undefined) {
         const isFirstSection = section.classList.contains("section-start");
 
         section.addEventListener("click", function (event) {
