@@ -13,8 +13,9 @@ export const styleEOX = css`
     flex-direction: column;
     align-items: start;
   }
-  .search-container.hidden {
-    opacity: 0;
+  .hidden {
+    display: none;
+    pointer-events: none;
   }
   .results-container {
     min-height: 100px;
@@ -27,6 +28,16 @@ export const styleEOX = css`
     padding: 0;
     margin: 0;
   }
+  .results-container.too-short {
+    height: 64px;
+  }
+
+  .results-container.too-short span {
+    color: #00f;
+    width: 100%;
+    text-align: center;
+  }
+
   input {
     background: var(--input-bg, #c6d4dd);
     color: var(--input-fg, #333);
@@ -108,5 +119,17 @@ export const styleEOX = css`
 
   .search-result:hover {
     background: #0001;
+  }
+
+  .hint {
+    display: flex;
+    color: #0008;
+    height: 40px;
+    width: 100%;
+    margin: 30px 0;
+    text-align: center;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
   }
 `;

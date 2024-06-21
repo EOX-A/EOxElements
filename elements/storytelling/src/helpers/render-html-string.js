@@ -9,10 +9,11 @@ let stepSectionObservers = [];
  *
  * @param {string} htmlString - The HTML string to be rendered.
  * @param {Object} sections - List of sections meta
+ * @param {Function} initDispatchFunc - Init dispatch event
  * @param {import("lit").LitElement} that - The LitElement instance.
  * @returns {Element[]} An array of processed DOM nodes.
  */
-export function renderHtmlString(htmlString, sections, that) {
+export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   // Parse the HTML string into a document
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
@@ -122,7 +123,9 @@ export function renderHtmlString(htmlString, sections, that) {
   window.addEventListener("scroll", generateParallaxEffect);
 
   // Process child nodes of the document body
-  return Array.from(doc.body.childNodes).map(processNode);
+  return Array.from(doc.body.childNodes).map((node) =>
+    processNode(node, initDispatchFunc)
+  );
 }
 
 /**
@@ -145,16 +148,17 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
  * Processes a DOM node by potentially modifying its attributes value based on it's datatype
  *
  * @param {Element} node - The DOM node to process.
+ * @param {Function} initDispatchFunc - Init dispatch event
  * @returns {Element} The processed DOM node.
  */
-function processNode(node) {
-  if (
-    node.nodeType === Node.ELEMENT_NODE &&
-    node.classList.contains("section-custom")
-  ) {
+function processNode(node, initDispatchFunc) {
+  if (node.nodeType === Node.ELEMENT_NODE) {
     const childElements = node.querySelectorAll("*");
     childElements.forEach((element) => {
-      if (/^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase())) {
+      if (
+        /^[a-z]+(-[a-z0-9]+)*$/.test(element.tagName.toLowerCase()) &&
+        node.classList.contains("section-custom")
+      ) {
         Array.from(element.attributes).forEach(
           // Update the attribute with its converted value
           (attr) =>
@@ -164,6 +168,7 @@ function processNode(node) {
             ))
         );
       }
+      setTimeout(() => initDispatchFunc(element), 100);
     });
   }
 
@@ -274,7 +279,7 @@ function generateAddSectionClickEvt(
     (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
 
   // If click happened enable custom section selection popup
-  if (isClicked && EOxStoryTelling.showEditor !== "close") {
+  if (isClicked && EOxStoryTelling.showEditor !== "closed") {
     const isBeforeBtnTriggered = isFirstSection
       ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
       : false;
@@ -294,7 +299,7 @@ function generateAddSectionClickEvt(
  * @param {Array<Element>} html - List of html elements
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
- * @param {String} showEditor - Whether to show editor or not
+ * @param {String | "closed" | undefined} showEditor - Whether to show editor or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  * @returns {Element[]} An array of processed DOM nodes after adding navigation.
  */
@@ -339,7 +344,7 @@ export function parseNavWithAddSection(
       section.setAttribute("data-section", `${key + 1}`);
 
       // Add click event function to identify add button click
-      if (showEditor) {
+      if (showEditor !== undefined) {
         const isFirstSection = section.classList.contains("section-start");
 
         section.addEventListener("click", function (event) {

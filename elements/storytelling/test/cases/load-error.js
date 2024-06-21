@@ -14,7 +14,7 @@ Lorem Ipsum
   `;
 
   cy.mount(
-    `<eox-storytelling show-editor="open" markdown="${testText}"></eox-storytelling>`
+    `<eox-storytelling show-editor markdown="${testText}"></eox-storytelling>`
   ).as(storyTelling);
 
   cy.get(storyTelling)
