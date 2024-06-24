@@ -51,7 +51,7 @@ const styles = css`
   }
   button {
     height: auto;
-    background: var(--button-bg, #FFF);
+    background: var(--button-bg, #fff);
     color: var(--button-fg, #111);
   }
 

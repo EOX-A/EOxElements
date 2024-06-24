@@ -57,7 +57,7 @@ export const styleEOX = css`
   }
   button {
     height: auto;
-    background: var(--button-bg, #FFF);
+    background: var(--button-bg, #fff);
   }
 
   .geosearch.small button {
