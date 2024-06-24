@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.1.0...geosearch-v0.1.1) (2024-06-24)
+
+
+### Bug Fixes
+
+* Add a few usability and style improvements for the integration into `eodash` ([#1047](https://github.com/EOX-A/EOxElements/issues/1047)) ([f359266](https://github.com/EOX-A/EOxElements/commit/f35926606dcc84c34d1de84ac1291c98f304dd14))
+
 ## [0.1.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.1.0...geosearch-v0.1.0) (2024-06-17)
 
 
