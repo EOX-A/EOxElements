@@ -204,6 +204,7 @@ class EOxGeoSearch extends LitElement {
   }
 
   handleSelect(event) {
+    this._isInputVisible = false;
     this._isListVisible = false;
     this._query = "";
 

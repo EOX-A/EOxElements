@@ -18,6 +18,7 @@ Furthermore, the alignment of the input and search results can be configured to 
 To style the component, the following CSS variables are supported:
 
 - `--button-bg`
+- `--button-fg`
 - `--input-fg`
 - `--input-bg`
 - `--results-fg`
