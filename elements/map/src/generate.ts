@@ -152,18 +152,18 @@ export function createLayer(
   layer = JSON.parse(JSON.stringify(layer));
 
   const availableFormats = {
-    ...basicOlFormats,
     ...window.eoxMapAdvancedOlFormats,
+    ...basicOlFormats,
   };
 
   const availableLayers = {
-    ...basicOlLayers,
     ...window.eoxMapAdvancedOlLayers,
+    ...basicOlLayers,
   };
 
   const availableSources = {
-    ...basicOlSources,
     ...window.eoxMapAdvancedOlSources,
+    ...basicOlSources,
   };
 
   const newLayer = availableLayers[layer.type];
