@@ -1,6 +1,6 @@
 {
   "name": "@eox/layercontrol",
-  "version": "0.17.4",
+  "version": "0.17.5",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
