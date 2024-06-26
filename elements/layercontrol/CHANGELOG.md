@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.5](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.4...layercontrol-v0.17.5) (2024-06-25)
+
+
+### Bug Fixes
+
+* Add support for exclusive groups ([#1058](https://github.com/EOX-A/EOxElements/issues/1058)) ([d05e8d6](https://github.com/EOX-A/EOxElements/commit/d05e8d6833432427b887026e29fd970244a441a9))
+
 ## [0.17.4](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.3...layercontrol-v0.17.4) (2024-06-12)
 
 
