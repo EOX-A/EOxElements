@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/EOX-A/EOxElements/compare/map-v1.9.0...map-v1.9.1) (2024-06-25)
+
+
+### Bug Fixes
+
+* Order of format, layer and source import ([#1056](https://github.com/EOX-A/EOxElements/issues/1056)) ([56c19c5](https://github.com/EOX-A/EOxElements/commit/56c19c53af15f3c29c4ccd465b6bcb91a6640937))
+
 ## [1.9.0](https://github.com/EOX-A/EOxElements/compare/map-v1.8.2...map-v1.9.0) (2024-06-17)
 
 
