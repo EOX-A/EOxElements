@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.9.1](https://github.com/EOX-A/EOxElements/compare/map-v1.9.0...map-v1.9.1) (2024-06-25)
+## [1.9.1](https://github.com/EOX-A/EOxElements/compare/map-v1.9.0...map-v1.9.1) (2024-06-26)
 
 
 ### Bug Fixes
