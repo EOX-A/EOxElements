@@ -1,0 +1,256 @@
+import { html } from "lit";
+import { map } from "lit/directives/map.js";
+import { when } from "lit/directives/when.js";
+import { style } from "./style";
+import { styleEOX } from "./style.eox";
+
+import allStyle from "../../../utils/styles/dist/all.style";
+import "./components/expand-container";
+import "./components/itemfilter-container";
+import "./components/filters/text";
+import "./components/results";
+import "./components/filters/selector";
+import "./components/filters/range";
+import "./components/filters/spatial";
+import "./components/chips";
+import { ELEMENT_CONFIG } from "./enums";
+import {
+  filterApplyMethod,
+  searchMethod,
+  createFilterMethod,
+  sortResultsMethod,
+  createResetMethod,
+  resetFilterMethod,
+} from "./methods/itemfilter";
+import { TemplateElement } from "../../../utils/templateElement";
+import { getTabIndex } from "./helpers/index.js";
+
+/**
+ * EOxItemFilter is a custom web component that provides a comprehensive item filtering system.
+ * It includes methods for applying filters, searching, sorting results, and resetting filters.
+ * The component supports both inline and dropdown modes for filter display.
+ *
+ * @module EOxItemFilter
+ * @extends {TemplateElement}
+ * @property {Object} config - The configuration object for the filter.
+ * @property {Object} items - The items to be filtered.
+ * @property {Object} results - The state object containing the filtered results.
+ * @property {Object} filters - The state object containing the applied filters.
+ */
+export class EOxItemFilter extends TemplateElement {
+  // Define properties with defaults and types
+  static get properties() {
+    return {
+      config: { attribute: false, type: Object },
+      items: { attribute: false, type: Object },
+      results: { state: true, type: Object },
+      filters: { state: true, type: Object },
+    };
+  }
+
+  /**
+   * @type Array<string>
+   */
+  #resultAggregation = [];
+
+  /**
+   * @type Array<object>
+   */
+  #items = [];
+
+  /**
+   * @type Object
+   */
+  #config = ELEMENT_CONFIG;
+
+  constructor() {
+    super();
+
+    /**
+     * @type Object
+     */
+    this.config = null;
+
+    /**
+     * @type Object
+     */
+    this.items = null;
+
+    /**
+     * @type Object
+     */
+    this.filters = {};
+  }
+
+  /**
+   * Applies the filters to the items and updates the result aggregation.
+   */
+  apply() {
+    this.#resultAggregation = filterApplyMethod(
+      this.#config,
+      this.#items,
+      this
+    );
+    this.search();
+  }
+
+  /**
+   * Performs a search based on the current configuration and items.
+   * Requests an update after the search completes.
+   */
+  async search() {
+    await searchMethod(this.#config, this.#items, this);
+    if (this.config.inlineMode)
+      this.renderRoot.querySelector("eox-itemfilter-container").updateInline();
+    this.requestUpdate();
+  }
+
+  /**
+   * Sorts the given items based on the current configuration.
+   *
+   * @param {Array<object>} items - The items to be sorted.
+   * @returns {Array<object>} - The sorted items.
+   */
+  sortResults(items) {
+    return sortResultsMethod(items, this.#config);
+  }
+
+  /**
+   * Creates a filter element based on the given filter object and tab index.
+   *
+   * @param {Object} filterObject - The filter object.
+   * @param {number} tabIndex - The tab index for the filter element.
+   * @returns {import("lit")} - The template result for the filter element.
+   * @private
+   */
+  #createFilter(filterObject, tabIndex) {
+    return createFilterMethod(filterObject, tabIndex, this);
+  }
+
+  /**
+   * Creates a reset element for the given filter object and tab index.
+   *
+   * @param {Object} filterObject - The filter object.
+   * @param {number} tabIndex - The tab index for the reset element.
+   * @returns {import("lit")} - The template result for the filter element.
+   * @private
+   */
+  #createReset(filterObject, tabIndex) {
+    return createResetMethod(filterObject, tabIndex, this);
+  }
+
+  /**
+   * Resets all applied filters.
+   */
+  resetFilters() {
+    resetFilterMethod(this);
+  }
+
+  /**
+   * Lifecycle method called after the first update.
+   * Initializes the configuration and items, and applies the filters.
+   *
+   * @param {Map} _changedProperties - The changed properties.
+   */
+  firstUpdated(_changedProperties) {
+    this.#config = {
+      ...ELEMENT_CONFIG,
+      ...this.config,
+    };
+    this.#items = this.items.map((i, index) =>
+      Object.assign({ id: `item-${index}` }, i)
+    );
+    this.apply();
+  }
+
+  /**
+   * Renders the HTML template for the component.
+   */
+  render() {
+    return html`
+      <style>
+        ${style}
+        ${!this.unstyled && styleEOX}
+        ${!this.unstyled && allStyle}
+        ${this.styleOverride}
+      </style>
+      <form id="itemfilter" @submit="${(evt) => evt.preventDefault()}">
+        ${when(
+          this.config?.filterProperties,
+          () => html`
+            <eox-itemfilter-container
+              .filters=${this.filters}
+              .filterProperties=${this.config.filterProperties}
+              .inlineMode=${this.config.inlineMode || false}
+              @filter=${() => this.search()}
+            >
+              <section slot="section">
+                ${when(
+                  !this.config.inlineMode,
+                  () => html`
+                    <slot name="filterstitle"
+                      ><h6 class="main-heading">Filters</h6></slot
+                    >
+                  `
+                )}
+                <ul id="filters">
+                  ${map(
+                    Object.values(this.filters),
+                    (filterObject, index) =>
+                      html` <li>
+                        <itemfilter-expandcontainer
+                          .filterObject=${filterObject}
+                          data-details="${filterObject.key}"
+                        >
+                          ${this.#createReset(
+                            filterObject,
+                            getTabIndex(index, 1)
+                          )}
+                          ${this.#createFilter(
+                            filterObject,
+                            getTabIndex(index, 2)
+                          )}
+                        </itemfilter-expandcontainer>
+                      </li>`
+                  )}
+                </ul>
+                ${when(
+                  !this.config.inlineMode &&
+                    this.#config.filterProperties &&
+                    !this.config.inlineMode &&
+                    this.#config.filterProperties &&
+                    Object.values(this.filters)
+                      .map((f) => f.dirty)
+                      .filter((f) => f).length > 0,
+                  () => html`
+                    <button
+                      id="filter-reset"
+                      class="outline small icon-text reset-icon"
+                      data-cy="filter-reset"
+                      @click=${() => this.resetFilters()}
+                    >
+                      Reset all
+                    </a>
+                  `
+                )}
+              </section>
+            </eox-itemfilter-container>
+          `
+        )}
+        ${when(
+          this.#config?.showResults && this.results,
+          () => html`
+            <eox-itemfilter-results
+              .config=${this.#config}
+              .results=${this.results}
+              .filters=${this.filters}
+              .resultAggregation=${this.#resultAggregation}
+            ></eox-itemfilter-results>
+          `
+        )}
+      </form>
+    `;
+  }
+}
+
+customElements.define("eox-itemfilter-v2", EOxItemFilter);

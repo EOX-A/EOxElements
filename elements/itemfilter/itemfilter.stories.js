@@ -3,6 +3,8 @@ import { html } from "lit";
 import { waitFor, expect, userEvent } from "@storybook/test";
 
 import items from "./test/testItems.json";
+import "./src-v2/main.js";
+import "./src-v2/components/filters/selector.js";
 
 export default {
   title: "Elements/eox-itemfilter",
@@ -69,10 +71,8 @@ export const Primary = {
         },
       ],
       aggregateResults: "themes",
-      enableHighlighting: true,
-      onSelect: (item) => {
-        console.log(item);
-      },
+      enableHighlighting: false,
+      onSelect: () => {},
     },
     items,
   },
@@ -123,9 +123,7 @@ export const AutoSpread = {
       aggregateResults: "themes",
       autoSpreadSingle: true,
       enableHighlighting: true,
-      onSelect: (item) => {
-        console.log(item);
-      },
+      onSelect: () => {},
     },
     items,
   },
@@ -232,8 +230,113 @@ export const InlineMode = {
           },
         },
       ],
-      onFilter: (items) => console.log(items),
+      onFilter: () => {},
     },
     items,
   },
+};
+
+export const ItemFilter2 = {
+  render: () => html`
+    <eox-itemfilter-v2
+      .items=${items}
+      .config=${{
+        inlineMode: false,
+        titleProperty: "title",
+        aggregateResults: "themes",
+        enableHighlighting: true,
+        autoSpreadSingle: true,
+        filterProperties: [
+          {
+            keys: ["title", "themes"],
+            title: "Search",
+            type: "text",
+            placeholder: "Type Something...",
+            expanded: true,
+          },
+          {
+            key: "code",
+            title: "Codes",
+            type: "multiselect",
+            placeholder: "Select codes",
+            expanded: true,
+            inline: true,
+          },
+          {
+            key: "themes",
+            title: "Theme",
+            type: "select",
+            placeholder: "Select a theme",
+            expanded: true,
+            inline: false,
+          },
+          {
+            key: "tags",
+            title: "Tags",
+            type: "multiselect",
+            placeholder: "Select tags",
+            expanded: true,
+            inline: false,
+          },
+          {
+            key: "timestamp",
+            type: "range",
+            format: "date",
+            expanded: true,
+          },
+          {
+            key: "geometry",
+            type: "spatial",
+          },
+        ],
+      }}
+    ></eox-itemfilter-v2>
+  `,
+};
+
+export const ItemFilterInline2 = {
+  render: () => html`
+    <eox-itemfilter-v2
+      .items=${items}
+      .config=${{
+        inlineMode: true,
+        titleProperty: "title",
+        aggregateResults: "themes",
+        enableHighlighting: true,
+        autoSpreadSingle: true,
+        showResults: false,
+        filterProperties: [
+          {
+            keys: ["title", "themes"],
+            title: "Search",
+            type: "text",
+            placeholder: "Type Something...",
+            expanded: true,
+          },
+          {
+            key: "code",
+            title: "Codes",
+            type: "multiselect",
+            placeholder: "Select codes",
+            expanded: true,
+            inline: true,
+          },
+          {
+            key: "themes",
+            title: "Theme",
+            type: "select",
+            placeholder: "Select a theme",
+            expanded: true,
+            inline: false,
+          },
+          {
+            key: "timestamp",
+            type: "range",
+            format: "date",
+            expanded: true,
+          },
+        ],
+      }}
+    ></eox-itemfilter-v2>
+  `,
 };

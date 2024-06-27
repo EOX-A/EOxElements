@@ -85,7 +85,9 @@ export class EOxSelectionlist extends LitElement {
       );
     }
     this.dispatchEvent(
-      new CustomEvent("items-highlighted", { detail: [this._currentHighlight] })
+      new CustomEvent("items-highlighted", {
+        detail: [this._currentHighlight],
+      })
     );
   }
 

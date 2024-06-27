@@ -446,12 +446,11 @@ export class EOxItemFilter extends TemplateElement {
                 >
                   ${when(
                     !this.config.inlineMode,
-                    () =>
-                      html`
-                        <slot name="filterstitle"
-                          ><h4 style="margin-top: 8px">Filters</h4></slot
-                        >
-                      `
+                    () => html`
+                      <slot name="filterstitle"
+                        ><h4 style="margin-top: 8px">Filters</h4></slot
+                      >
+                    `
                   )}
                   <ul id="filters">
                     ${map(
@@ -566,9 +565,10 @@ export class EOxItemFilter extends TemplateElement {
                                   this.results,
                                   aggregationProperty
                                 ).length === 1 && this.config.autoSpreadSingle,
-                                () => html` <div style="margin-left: -8px">
-                                  ${this.createItemList(aggregationProperty)}
-                                </div>`,
+                                () =>
+                                  html` <div style="margin-left: -8px">
+                                    ${this.createItemList(aggregationProperty)}
+                                  </div>`,
                                 () => html`
                                   <details
                                     class="details-results"
