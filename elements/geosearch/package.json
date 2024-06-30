@@ -2,17 +2,17 @@
   "name": "@eox/geosearch",
   "version": "0.1.1",
   "type": "module",
-  "main": "./dist/main.js",
+  "main": "./src/main.js",
   "engines": {
     "npm": ">=8.0.0",
     "node": ">=18.0.0"
   },
   "files": [
-    "dist",
+    "src",
     "test"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "",
     "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",

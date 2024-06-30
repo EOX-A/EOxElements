@@ -17,12 +17,12 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "dist",
+    "src",
     "test"
   ],
-  "main": "./dist/main.js",
+  "main": "./src/main.js",
   "scripts": {
-    "build": "vite build",
+    "build": "",
     "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
