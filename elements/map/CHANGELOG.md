@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/EOX-A/EOxElements/compare/map-v1.9.1...map-v1.9.2) (2024-07-01)
+
+
+### Features
+
+* WMTS Tile Grid & Source Projections ([#1046](https://github.com/EOX-A/EOxElements/issues/1046)) ([d613bd1](https://github.com/EOX-A/EOxElements/commit/d613bd1fb64c4d5adeefa827998a8b13667c3341))
+
 ## [1.9.1](https://github.com/EOX-A/EOxElements/compare/map-v1.9.0...map-v1.9.1) (2024-06-25)
 
 
