@@ -1,0 +1,11 @@
+{
+  "name": "@eox/elements-styles",
+  "version": "0.0.1",
+  "description": "",
+  "main": "styles/main.css",
+  "files": [
+    "styles"
+  ],
+  "author": "",
+  "license": "ISC"
+}

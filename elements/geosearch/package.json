@@ -2,17 +2,17 @@
   "name": "@eox/geosearch",
   "version": "0.1.2",
   "type": "module",
-  "main": "./dist/eox-geosearch.js",
+  "main": "./src/main.js",
   "engines": {
     "npm": ">=8.0.0",
     "node": ">=18.0.0"
   },
   "files": [
-    "dist",
+    "src",
     "test"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "",
     "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
@@ -22,11 +22,13 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "glob": "^10.4.2",
     "vite": "^5.2.11"
   },
   "dependencies": {
+    "@eox/elements-styles": "file:../../utils/eox-elements-styles-0.0.1.tgz",
     "lit": "^3.1.3",
-    "proj4": "^2.11.0",
-    "lodash.debounce": "^4.0.8"
+    "lodash.debounce": "^4.0.8",
+    "proj4": "^2.11.0"
   }
 }

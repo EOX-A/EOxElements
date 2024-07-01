@@ -2,8 +2,8 @@ import { LitElement, html } from "lit";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
-import mainStyle from "../../../utils/styles/dist/main.style";
-import buttonStyle from "../../../utils/styles/dist/button.style";
+import mainStyle from "@eox/elements-styles/styles/dist/main.style";
+import buttonStyle from "@eox/elements-styles/styles/dist/button.style";
 import { styleEOX } from "./style.eox";
 
 class EOxGeoSearch extends LitElement {

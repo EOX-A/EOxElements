@@ -7,6 +7,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "eslint-plugin-typescript": "^0.14.0",
+    "glob": "^10.4.2",
     "ol": "^9.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.2"
@@ -16,12 +17,12 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "dist",
+    "src",
     "test"
   ],
-  "main": "./dist/eox-drawtools.js",
+  "main": "./src/main.js",
   "scripts": {
-    "build": "vite build",
+    "build": "",
     "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
@@ -29,6 +30,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@eox/elements-styles": "file:../../utils/eox-elements-styles-0.0.1.tgz",
     "lit": "^3.0.2"
   }
 }
