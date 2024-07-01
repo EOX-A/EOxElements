@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
+    "@eox/eslint-config": "^2.0.0",
     "vite": "^5.0.2"
   },
   "files": [

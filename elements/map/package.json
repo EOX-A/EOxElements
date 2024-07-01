@@ -9,7 +9,7 @@
     "proj4": "^2.9.2"
   },
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
+    "@eox/eslint-config": "^2.0.0",
     "@types/proj4": "^2.5.4",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
