@@ -28,12 +28,12 @@ export function generateTileGrid(layer: import("./generate").EoxLayer) {
       }
 
       tileGrid = new WMTSTileGrid({
-        ...layer.source.tileGrid,
         resolutions: resolutions,
         origin: getTopLeft(projectionExtent),
         // @ts-ignore
         projection: layer.source.tileGrid.projection || "EPSG:3857",
         matrixIds: matrixIds,
+        ...layer.source.tileGrid,
       });
     } else {
       tileGrid = createXYZ({
