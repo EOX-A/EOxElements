@@ -6,7 +6,7 @@ import { get as getProjection } from "ol/proj.js";
 /**
  * generates a WMTS tile grid for WMTS layers or else an XYZ tile grid, if defined.
  * @param layer
- * @returns
+ * @returns {WMTSTileGrid | import("ol/tilegrid/TileGrid").default | undefined}
  */
 export function generateTileGrid(layer: import("./generate").EoxLayer) {
   let tileGrid;
