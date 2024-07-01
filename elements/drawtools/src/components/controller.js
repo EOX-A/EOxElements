@@ -1,7 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { updateButtonStatesMethod } from "../methods/controller";
-import buttonStyle from "../../../../utils/styles/dist/button.style";
-import inputStyle from "../../../../utils/styles/dist/input.style";
+import buttonStyle from "@eox/elements-styles/styles/dist/button.style";
+import inputStyle from "@eox/elements-styles/styles/dist/input.style";
 import { copyTextToClipboard } from "../helpers/index.js";
 import { when } from "lit/directives/when.js";
 

@@ -30,6 +30,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@eox/elements-styles": "file:../../utils/eox-elements-styles-0.0.1.tgz",
     "lit": "^3.0.2"
   }
 }
