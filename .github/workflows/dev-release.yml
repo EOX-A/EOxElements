@@ -5,14 +5,14 @@ on:
     inputs:
       branch_name:
         description: "name of the branch to be released"
-        required: true
+        required: false
         type: string
       element:
         description: "name of the element folder to be released"
         required: true
         type: string
       preid:
-        description: 'optional postfix of the released version, defaults to "dev"'
+        description: "postfix of the released version"
         required: false
         default: dev
         type: string
