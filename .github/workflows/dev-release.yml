@@ -1,21 +1,21 @@
 name: Create dev release
 
 on:
- workflow_dispatch:
-     inputs:
-       branch_name:
-         description: 'name of the branch to be released'
-         required: true
-         type: string
-       element:
-           description: 'name of the element to be released'
-           required: true
-           type: string
-       preid:
-           description: 'optional postfix of the released version, defaults to "dev"'
-           required: false
-           default: dev
-           type: string
+  workflow_dispatch:
+    inputs:
+      branch_name:
+        description: "name of the branch to be released"
+        required: true
+        type: string
+      element:
+        description: "name of the element to be released"
+        required: true
+        type: string
+      preid:
+        description: 'optional postfix of the released version, defaults to "dev"'
+        required: false
+        default: dev
+        type: string
 
 permissions:
   contents: write
@@ -23,13 +23,13 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    steps:  
+    steps:
       - name: Release Please! 🤖
         uses: google-github-actions/release-please-action@v4
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
-         ref: ${{ inputs.branch_name }}
+          ref: ${{ inputs.branch_name }}
         # these if statements ensure that a publication only occurs when
         # a new release is created:
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
