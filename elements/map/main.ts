@@ -498,7 +498,7 @@ export class EOxMap extends LitElement {
    * Removes a given EOxSelectInteraction from the map.
    * @param id id of the interaction
    */
-  removeSelect = (id: string) => {
+  removeSelect = (id: string | number) => {
     this.selectInteractions[id].remove();
     delete this.selectInteractions[id];
   };
