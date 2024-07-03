@@ -1,0 +1,55 @@
+name: Create dev release
+
+on:
+ workflow_dispatch:
+     inputs:
+       branch_name:
+         description: 'name of the branch to be released'
+         required: true
+         type: string
+       element:
+           description: 'name of the element to be released'
+           required: true
+           type: string
+       preid:
+           description: 'optional postfix of the released version, defaults to "dev"'
+           required: false
+           default: dev
+           type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:  
+      - name: Release Please! 🤖
+        uses: google-github-actions/release-please-action@v4
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+         ref: ${{ inputs.branch_name }}
+        # these if statements ensure that a publication only occurs when
+        # a new release is created:
+        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
+      - name: Set up NPM 🔧
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
+      - name: Install dependencies 🔧
+        run: npm ci
+        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
+      - name: Build and publish package 🚀
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          ELEMENT_DIR: ${{ steps.release.outputs.paths_released }}
+        run: |
+          npm run styles && \
+          cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
+          npm run build && \
+          npm version prerelease --preid ${{ inputs.preid }} && \
+          npm publish --access=public
+        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
