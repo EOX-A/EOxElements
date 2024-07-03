@@ -46,7 +46,7 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-      ) as import("ol/layer/Vector").default<import("ol/Feature").FeatureLike>;
+      ) as import("ol/layer/Vector").default;
       const features = drawLayer.getSource().getFeatures();
       const geometry = features[0].getGeometry() as Point;
       expect(features).to.have.length(1);
@@ -116,7 +116,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-      ) as import("ol/layer").Vector<import("ol/Feature").FeatureLike>;
+      ) as import("ol/layer").Vector;
       const source = drawLayer.getSource();
       const features = source.getFeatures();
       expect(features).to.have.length(1);
@@ -157,7 +157,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-      ) as import("ol/layer").Vector<import("ol/Feature").FeatureLike>;
+      ) as import("ol/layer").Vector;
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);
     });

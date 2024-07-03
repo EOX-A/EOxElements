@@ -9,9 +9,7 @@ import VectorTileLayer from "ol/layer/VectorTile.js";
 import VectorLayer from "ol/layer/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
 
-export type SelectLayer =
-  | VectorTileLayer<import("ol/Feature").FeatureLike>
-  | VectorLayer<import("ol/Feature").FeatureLike>;
+export type SelectLayer = VectorTileLayer | VectorLayer;
 
 export type SelectOptions = Omit<
   import("ol/interaction/Select").Options,
