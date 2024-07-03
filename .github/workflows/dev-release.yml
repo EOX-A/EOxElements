@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       element:
-        description: "name of the element to be released"
+        description: "name of the element folder to be released"
         required: true
         type: string
       preid:
@@ -21,35 +21,27 @@ permissions:
   contents: write
 
 jobs:
-  release-please:
+  dev-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Release Please! 🤖
-        uses: google-github-actions/release-please-action@v4
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.branch_name }}
-        # these if statements ensure that a publication only occurs when
-        # a new release is created:
-        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Set up NPM 🔧
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
-        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Install dependencies 🔧
         run: npm ci
-        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Build and publish package 🚀
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          ELEMENT_DIR: ${{ steps.release.outputs.paths_released }}
+          ELEMENT_DIR: elements/${{ inputs.element }}
         run: |
           npm run styles && \
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
           npm run build && \
           npm version prerelease --preid ${{ inputs.preid }} && \
           npm publish --access=public
-        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
