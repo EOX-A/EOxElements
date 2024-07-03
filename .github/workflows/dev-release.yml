@@ -21,7 +21,7 @@ permissions:
   contents: write
 
 jobs:
-  release-please:
+  dev-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
