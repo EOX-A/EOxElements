@@ -3,16 +3,12 @@ name: Create dev release
 on:
   workflow_dispatch:
     inputs:
-      branch_name:
-        description: "name of the branch to be released"
-        required: true
-        type: string
       element:
         description: "name of the element folder to be released"
         required: true
         type: string
       preid:
-        description: 'optional postfix of the released version, defaults to "dev"'
+        description: "postfix of the released version"
         required: false
         default: dev
         type: string
@@ -26,8 +22,6 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.branch_name }}
       - name: Set up NPM 🔧
         uses: actions/setup-node@v4
         with:
@@ -38,7 +32,7 @@ jobs:
       - name: Build and publish package 🚀
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          ELEMENT_DIR: ${{ inputs.element }}
+          ELEMENT_DIR: elements/${{ inputs.element }}
         run: |
           npm run styles && \
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
