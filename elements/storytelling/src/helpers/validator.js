@@ -26,11 +26,7 @@ const basicLayerSchema = joi.object({
       id: joi.string().required(),
     })
     .unknown()
-    .when("type", {
-      is: "STAC",
-      then: joi.optional(),
-      otherwise: joi.required(),
-    }),
+    .required(),
   source: joi
     .object({
       type: joi.string().required(),
