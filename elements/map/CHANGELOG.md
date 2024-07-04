@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.3](https://github.com/EOX-A/EOxElements/compare/map-v1.9.2...map-v1.9.3) (2024-07-04)
+
+
+### Bug Fixes
+
+* Unmanaged Styles ([#1078](https://github.com/EOX-A/EOxElements/issues/1078)) ([be75396](https://github.com/EOX-A/EOxElements/commit/be75396f9cf90f31a4a872794c02789a598b1086))
+
 ## [1.9.2](https://github.com/EOX-A/EOxElements/compare/map-v1.9.1...map-v1.9.2) (2024-07-01)
 
 
