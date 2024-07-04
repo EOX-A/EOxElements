@@ -213,6 +213,16 @@ export class EOxMap extends LitElement {
           )
         ) {
           const layerToBeRemoved = getLayerById(this, l.properties?.id);
+          const jsonDefinition = layerToBeRemoved.get("_jsonDefinition");
+          jsonDefinition.interactions?.forEach(
+            (interaction: import("./src/generate").EOxInteraction) => {
+              if (interaction.type === "select") {
+                this.removeSelect(interaction.options.id);
+              } else {
+                this.removeInteraction(interaction.options.id);
+              }
+            }
+          );
           this.map.removeLayer(layerToBeRemoved);
         }
       });
@@ -488,7 +498,7 @@ export class EOxMap extends LitElement {
    * Removes a given EOxSelectInteraction from the map.
    * @param id id of the interaction
    */
-  removeSelect = (id: string) => {
+  removeSelect = (id: string | number) => {
     this.selectInteractions[id].remove();
     delete this.selectInteractions[id];
   };
