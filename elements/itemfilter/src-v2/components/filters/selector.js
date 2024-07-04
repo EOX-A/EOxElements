@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { classMap } from "lit/directives/class-map.js";
 import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";
@@ -258,6 +258,7 @@ export class EOxSelector extends LitElement {
         () => html`<div class="autocomplete-container">
           <div class="autocomplete-container-wrapper">
             <input
+              autocomplete="off"
               tabindex=${this.tabIndex}
               class="autocomplete-input"
               type="text"
@@ -271,7 +272,11 @@ export class EOxSelector extends LitElement {
           </div>
         </div>`
       )}
-      <div class="select-container">
+      <div
+        class="select-container ${this.filteredSuggestions.length > 5
+          ? "select-overflow"
+          : nothing}"
+      >
         <ul class="${this.type}">
           ${this.filteredSuggestions.map(
             (suggestion) => html`

@@ -175,6 +175,7 @@ itemfilter-expandcontainer button.reset-icon:before {
 }
 .inline-container {
   position: relative;
+  align-items: center;
 }
 .inline-container-wrapper {
   width: 100%;
@@ -191,7 +192,6 @@ itemfilter-expandcontainer button.reset-icon:before {
   justify-content: space-between;
   cursor: text;
   transition: all 0.2s ease-in-out;
-  overflow-x: auto;
   display: flex;
 }
 .inline-container:hover {
@@ -270,7 +270,7 @@ button.icon {
 }
 .chip-close {
   cursor: pointer;
-  margin-left: 8px;
+  margin: 0px 8px;
   font-weight: 600;
 }
 .autocomplete-container,
@@ -377,8 +377,6 @@ li.highlighted,
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-height: 185px;
-  overflow-y: auto;
 }
 .multiselect-container label,
 .select-container label {
@@ -389,5 +387,12 @@ li.highlighted,
 .multiselect-container input,
 .select-container input {
   margin-right: 8px;
+}
+.select-overflow {
+  max-height: 185px;
+  overflow-y: auto;
+}
+.chip-title strong {
+  font-weight: 500;
 }
 `;

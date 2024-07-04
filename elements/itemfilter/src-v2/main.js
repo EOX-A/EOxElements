@@ -182,6 +182,7 @@ export class EOxItemFilter extends TemplateElement {
               .filters=${this.filters}
               .filterProperties=${this.config.filterProperties}
               .inlineMode=${this.config.inlineMode || false}
+              @reset=${() => this.resetFilters()}
               @filter=${() => this.search()}
             >
               <section slot="section">

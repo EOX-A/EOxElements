@@ -19,7 +19,6 @@ import { getChipItems } from "../helpers";
  * @property {Object} filterProperties - The properties for the filter.
  * @property {Boolean} inlineMode - Flag to determine if the component should operate in inline mode.
  * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
- * @property {Boolean} inlineContentElement - State property to manage inline content visibility.
  * @property {Object} filters - The filters applied in the container.
  */
 export class EOxItemFilterContainer extends LitElement {
@@ -29,7 +28,6 @@ export class EOxItemFilterContainer extends LitElement {
       filterProperties: { attribute: false, type: Object },
       inlineMode: { attribute: "inline-mode", type: Boolean },
       unstyled: { type: Boolean },
-      inlineContentElement: { state: true, type: Boolean },
       filters: { state: true, type: Object },
     };
   }
@@ -51,11 +49,6 @@ export class EOxItemFilterContainer extends LitElement {
      * @type Boolean
      */
     this.inlineMode = false;
-
-    /**
-     * @type Boolean
-     */
-    this.inlineContentElement = false;
 
     /**
      * @type Boolean
@@ -202,6 +195,7 @@ export class EOxItemFilterContainer extends LitElement {
                 </div>
                 <div class="input-container">
                   <input
+                    autocomplete="off"
                     id="itemfilter-input-search"
                     type="text"
                     @click="${this.#handleToggleDropdown}"
@@ -212,6 +206,11 @@ export class EOxItemFilterContainer extends LitElement {
                     aria-expanded="${this.showDropdown}"
                   />
                 </div>
+                <span
+                  class="chip-close"
+                  @click=${() => this.dispatchEvent(new CustomEvent("reset"))}
+                  >x</span
+                >
               </div>
               <div
                 class="inline-content ${this.showDropdown ? "" : "hidden"}"
