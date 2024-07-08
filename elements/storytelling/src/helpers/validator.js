@@ -14,30 +14,32 @@ const basicHeroSchema = {
   "data-parallax": joi.boolean().required(),
 };
 
-const basicLayerSchema = joi.object({
-  type: joi.string().required(),
-  url: joi.string().when("type", {
-    is: "STAC",
-    then: joi.string().required(),
-    otherwise: joi.string().optional(),
-  }),
-  properties: joi
-    .object({
-      id: joi.string().required(),
-    })
-    .unknown()
-    .required(),
-  source: joi
-    .object({
-      type: joi.string().required(),
-    })
-    .unknown()
-    .when("type", {
+const basicLayerSchema = joi
+  .object({
+    type: joi.string().required(),
+    url: joi.string().when("type", {
       is: "STAC",
-      then: joi.optional(),
-      otherwise: joi.required(),
+      then: joi.string().required(),
+      otherwise: joi.string().optional(),
     }),
-});
+    properties: joi
+      .object({
+        id: joi.string().required(),
+      })
+      .unknown()
+      .required(),
+    source: joi
+      .object({
+        type: joi.string().required(),
+      })
+      .unknown()
+      .when("type", {
+        is: "STAC",
+        then: joi.optional(),
+        otherwise: joi.required(),
+      }),
+  })
+  .pattern(joi.string(), joi.any());
 
 const groupLayerSchema = joi.object({
   type: joi.string().valid("group", "Group"),
