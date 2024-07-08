@@ -46,6 +46,7 @@ export class EOxSelector extends LitElement {
     type: { attribute: true, type: String },
     unstyled: { type: Boolean },
     tabIndex: { attribute: false, type: Number },
+    inlineMode: { attribute: "inline-mode", type: Boolean },
   };
 
   constructor() {
@@ -105,6 +106,11 @@ export class EOxSelector extends LitElement {
      * @type Number
      */
     this.tabIndex = 0;
+
+    /**
+     * @type Boolean
+     */
+    this.inlineMode = false;
   }
 
   /**
@@ -287,11 +293,12 @@ export class EOxSelector extends LitElement {
                 <label>
                   <input
                     type="${type}"
-                    name="select"
+                    name=${suggestion}
                     .checked=${this.selectedItems.includes(suggestion)}
                     @change=${() => this.debouncedInputHandler(suggestion)}
                     @keydown=${(e) => {
-                      if (e.key === " ") this.debouncedInputHandler(suggestion);
+                      if (e.key === " " && this.inlineMode)
+                        this.debouncedInputHandler(suggestion);
                     }}
                     tabindex=${this.tabIndex + 1}
                   />

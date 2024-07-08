@@ -32,8 +32,9 @@ function handleKeyboard(key, textValue, that) {
   }
   if (key === "Backspace" && !textValue) {
     if (that.items.length) {
+      console.log(highlightedChip);
       if (highlightedChip) {
-        highlightedChip.querySelector(".chip-close").click();
+        highlightedChip.querySelector(".chip-item-close").click();
         that.items.splice(
           Array.from(that.renderRoot.querySelectorAll(".chip")).indexOf(
             highlightedChip

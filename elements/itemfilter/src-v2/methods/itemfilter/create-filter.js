@@ -20,6 +20,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
     case "select":
       return html`
         <eox-selector
+          .inlineMode=${EOxItemFilter.config.inlineMode || false}
           data-type="filter"
           id="${filterId}"
           .tabIndex=${tabIndex}
