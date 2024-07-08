@@ -9,7 +9,8 @@ import {
   handleKeyDownMethod,
   handleClickOutsideMethod,
 } from "../methods/container";
-import { getChipItems } from "../helpers";
+import { getChipItems, isFiltersDirty } from "../helpers";
+import { when } from "lit/directives/when.js";
 
 /**
  * EOxItemFilterContainer is a custom web component that provides a container for item filters.
@@ -182,18 +183,39 @@ export class EOxItemFilterContainer extends LitElement {
       </style>
       ${this.inlineMode
         ? html`
-            <div class="inline-container-wrapper">
+            <div
+              class="inline-container-wrapper"
+              @click="${this.#handleToggleDropdown}"
+            >
               <div class="inline-container" part="container">
-                <div>
-                  <eox-itemfilter-chips-v2
-                    .items=${getChipItems(this.filters)}
-                    .controller=${{
-                      remove: (event) => this.#resetFilter(event),
-                    }}
-                  >
-                  </eox-itemfilter-chips-v2>
+                <div class="chip-container">
+                  <div class="chip-wrapper">
+                    <eox-itemfilter-chips-v2
+                      .items=${getChipItems(this.filters)}
+                      .controller=${{
+                        remove: (event) => this.#resetFilter(event),
+                      }}
+                    >
+                    </eox-itemfilter-chips-v2>
+                  </div>
+
+                  ${when(
+                    isFiltersDirty(this.filters),
+                    () => html`
+                      <span
+                        class="chip-close"
+                        @click=${() =>
+                          this.dispatchEvent(new CustomEvent("reset"))}
+                        >x</span
+                      >
+                    `
+                  )}
                 </div>
-                <div class="input-container">
+                <div
+                  class="input-container ${isFiltersDirty(this.filters)
+                    ? "dirty-filter-input"
+                    : ""}"
+                >
                   <input
                     autocomplete="off"
                     id="itemfilter-input-search"
@@ -201,16 +223,11 @@ export class EOxItemFilterContainer extends LitElement {
                     @click="${this.#handleToggleDropdown}"
                     @focus="${this.#handleShowDropdownOnFocus}"
                     @input="${this.#searchFilter}"
-                    placeholder="Click to open form"
+                    placeholder="Search and add filter"
                     aria-haspopup="true"
                     aria-expanded="${this.showDropdown}"
                   />
                 </div>
-                <span
-                  class="chip-close"
-                  @click=${() => this.dispatchEvent(new CustomEvent("reset"))}
-                  >x</span
-                >
               </div>
               <div
                 class="inline-content ${this.showDropdown ? "" : "hidden"}"

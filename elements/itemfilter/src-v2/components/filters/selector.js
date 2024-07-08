@@ -290,7 +290,10 @@ export class EOxSelector extends LitElement {
                     name="select"
                     .checked=${this.selectedItems.includes(suggestion)}
                     @change=${() => this.debouncedInputHandler(suggestion)}
-                    tabindex=""
+                    @keydown=${(e) => {
+                      if (e.key === " ") this.debouncedInputHandler(suggestion);
+                    }}
+                    tabindex=${this.tabIndex + 1}
                   />
                   <span class="title">${suggestion}</span>
                 </label>

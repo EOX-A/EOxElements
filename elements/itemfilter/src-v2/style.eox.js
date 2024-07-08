@@ -172,6 +172,7 @@ itemfilter-expandcontainer button.reset-icon:before {
   overflow-y: auto;
   background: #f3f4f5;
   z-index: 1;
+  margin-top: 0.5rem;
 }
 .inline-container {
   position: relative;
@@ -180,7 +181,6 @@ itemfilter-expandcontainer button.reset-icon:before {
 .inline-container-wrapper {
   width: 100%;
   position: relative;
-  padding-bottom: 1rem;
 }
 .inline-container {
   position: relative;
@@ -208,7 +208,7 @@ itemfilter-expandcontainer button.reset-icon:before {
   border: none;
   outline: none;
   border: 0;
-  min-width: 150px;
+  min-width: 25%;
 }
 .button-container {
   display: flex;
@@ -249,10 +249,6 @@ button.icon {
   pointer-events: none;
   text-transform: capitalize;
 }
-.chip-container {
-  display: flex;
-  flex: 0;
-}
 .chip {
   display: flex;
   align-items: center;
@@ -270,8 +266,19 @@ button.icon {
 }
 .chip-close {
   cursor: pointer;
-  margin: 0px 8px;
   font-weight: 600;
+  position: absolute;
+  right: -25px;
+  background: white;
+  padding: 0 0.5rem;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.chip-container {
+  position: relative;
+  max-width: 75%;
 }
 .autocomplete-container,
 .text-container {
@@ -394,5 +401,16 @@ li.highlighted,
 }
 .chip-title strong {
   font-weight: 500;
+}
+.chip-wrapper {
+  max-width: 100%;
+  overflow-x: scroll;
+}
+.chip-container {
+  display: flex;
+  flex: 0;
+}
+.input-container.dirty-filter-input {
+  margin-left: 25px;
 }
 `;

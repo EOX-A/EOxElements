@@ -23,7 +23,7 @@ import {
   resetFilterMethod,
 } from "./methods/itemfilter";
 import { TemplateElement } from "../../../utils/templateElement";
-import { getTabIndex } from "./helpers/index.js";
+import { getTabIndex, isFiltersDirty } from "./helpers/index.js";
 
 /**
  * EOxItemFilter is a custom web component that provides a comprehensive item filtering system.
@@ -220,9 +220,7 @@ export class EOxItemFilter extends TemplateElement {
                     this.#config.filterProperties &&
                     !this.config.inlineMode &&
                     this.#config.filterProperties &&
-                    Object.values(this.filters)
-                      .map((f) => f.dirty)
-                      .filter((f) => f).length > 0,
+                    isFiltersDirty(this.filters),
                   () => html`
                     <button
                       id="filter-reset"
