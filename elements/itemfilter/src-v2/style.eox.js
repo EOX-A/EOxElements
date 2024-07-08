@@ -374,7 +374,8 @@ button.icon {
   gap: 4px;
 }
 li.highlighted,
-.select-container li:hover{
+.select-container li:hover,
+.highlight-item {
   background: #00417011;
 }
 .selected-item {

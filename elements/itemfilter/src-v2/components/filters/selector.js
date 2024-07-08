@@ -289,6 +289,9 @@ export class EOxSelector extends LitElement {
               <li
                 data-identifier="${suggestion.toString().toLowerCase()}"
                 data-title="${suggestion}"
+                class="${this.selectedItems.includes(suggestion)
+                  ? "highlight-item"
+                  : ""}"
               >
                 <label>
                   <input
