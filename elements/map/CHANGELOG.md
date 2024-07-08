@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.9.3](https://github.com/EOX-A/EOxElements/compare/map-v1.9.2...map-v1.9.3) (2024-07-04)
+
+
+### Bug Fixes
+
+* Unmanaged Styles ([#1078](https://github.com/EOX-A/EOxElements/issues/1078)) ([be75396](https://github.com/EOX-A/EOxElements/commit/be75396f9cf90f31a4a872794c02789a598b1086))
+
+## [1.9.2](https://github.com/EOX-A/EOxElements/compare/map-v1.9.1...map-v1.9.2) (2024-07-01)
+
+
+### Features
+
+* WMTS Tile Grid & Source Projections ([#1046](https://github.com/EOX-A/EOxElements/issues/1046)) ([d613bd1](https://github.com/EOX-A/EOxElements/commit/d613bd1fb64c4d5adeefa827998a8b13667c3341))
+
+## [1.9.1](https://github.com/EOX-A/EOxElements/compare/map-v1.9.0...map-v1.9.1) (2024-06-25)
+
+
+### Bug Fixes
+
+* Order of format, layer and source import ([#1056](https://github.com/EOX-A/EOxElements/issues/1056)) ([56c19c5](https://github.com/EOX-A/EOxElements/commit/56c19c53af15f3c29c4ccd465b6bcb91a6640937))
+
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/map-v1.8.2...map-v1.9.0) (2024-06-17)
+
+
+### Features
+
+* Emit mapmounted event ([#1007](https://github.com/EOX-A/EOxElements/issues/1007)) ([9bdb5aa](https://github.com/EOX-A/EOxElements/commit/9bdb5aa4908082262b983d8b6e8f2167e2d763b0))
+* Format options ([#1006](https://github.com/EOX-A/EOxElements/issues/1006)) ([cab9b1e](https://github.com/EOX-A/EOxElements/commit/cab9b1e03f9a64d73b041103d23cf2257257c161))
+
+
+### Bug Fixes
+
+* Update ol version and style test ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
+
 ## [1.8.2](https://github.com/EOX-A/EOxElements/compare/map-v1.8.1...map-v1.8.2) (2024-05-16)
 
 

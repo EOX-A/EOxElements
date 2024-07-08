@@ -1,6 +1,6 @@
 {
   "name": "@eox/map",
-  "version": "1.8.2",
+  "version": "1.9.3",
   "type": "module",
   "dependencies": {
     "lit": "^3.0.2",

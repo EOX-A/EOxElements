@@ -53,7 +53,7 @@ class EOxGeoSearch extends LitElement {
        * Set a custom interval for the debounce function.
        *
        */
-      interval: { type: Number, default: 200 },
+      interval: { type: Number, default: 800 },
       /**
        * Enables a smaller version of the button for use in map controls.
        *
@@ -106,7 +106,6 @@ class EOxGeoSearch extends LitElement {
     this._isListVisible = false;
     this._isInputVisible = false;
     this._query = "";
-
     /**
      * The query selector for the map
      * @default eox-map
@@ -114,37 +113,32 @@ class EOxGeoSearch extends LitElement {
     this.for = "eox-map";
     this.listDirection = "right";
     this.resultsDirection = "down";
-  }
+    this.interval = 800;
 
-  async fetchRemoteData(url) {
-    const response = await fetch(encodeURI(url));
-    const json = await response.json();
-    this._data = json.results;
+    this.fetchDebounced = _debounce(async () => {
+      if (this._query.length <= 2) return;
+      try {
+        const uri = `${this.endpoint}${
+          this.endpoint.includes("?") ? "&" : "?"
+        }${this.queryParameter ?? "q"}=${this._query}`;
+        const response = await fetch(encodeURI(uri));
+        const json = await response.json();
+        this._data = json.results;
+      } catch (error) {
+        console.log("Error setting up or requesting from geosearch endpoint");
+      }
+    }, this.interval);
   }
 
   async onInput(e) {
     this._query = e.target.value;
-
-    // Ignore requests with less than 2 characters since the API might respond with a 400 to them.
-    if (this._query.length <= 1) {
+    if (this._query.length == 0) {
       this._isListVisible = false;
       return;
     } else {
       this._isListVisible = true;
     }
-
-    let bounce = _debounce(async () => {
-      if (this.endpoint && this.endpoint.length > 0) {
-        const uri = `${this.endpoint}${
-          this.endpoint.includes("?") ? "&" : "?"
-        }${this.queryParameter ?? "q"}=${this._query}`;
-        await this.fetchRemoteData(uri);
-      } else {
-        console.error("No endpoint provided for GeoSearch element.");
-      }
-    }, this.interval);
-
-    bounce();
+    this.fetchDebounced();
   }
 
   onInputBlur() {
@@ -158,7 +152,7 @@ class EOxGeoSearch extends LitElement {
 
     // Auto-focus the input field when it becomes visible
     if (this._isInputVisible) {
-      this.renderRoot.querySelector("#gazetteer").focus();
+      setTimeout(() => this.renderRoot.querySelector("#gazetteer").focus());
     }
   }
 
@@ -203,6 +197,7 @@ class EOxGeoSearch extends LitElement {
   }
 
   handleSelect(event) {
+    this._isInputVisible = false;
     this._isListVisible = false;
     this._query = "";
 
@@ -281,10 +276,7 @@ class EOxGeoSearch extends LitElement {
               ? ""
               : "hidden"
             : ""}"
-          style="
-            flex-direction: ${this.getResultsDirection()};
-            min-height: 300px;
-          "
+          style="flex-direction: ${this.getResultsDirection()};"
         >
           <input
             id="gazetteer"
@@ -293,21 +285,28 @@ class EOxGeoSearch extends LitElement {
             .value="${this._query}"
             style="margin-${this.getMarginDirection(
               this.resultsDirection
-            )}: 12px"
+            )}: ${this._isListVisible ? 12 : 0}px"
             @input="${this.onInput}"
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${this._data.map(
-              (item) => html`
-                <eox-geosearch-item
-                  .item="${item}"
-                  .onClick="${(e) => {
-                    this.handleSelect(e);
-                  }}"
-                  .unstyled=${this.unstyled}
-                />
-              `
-            )}
+            ${this._query.length <= 2
+              ? html`<span class="hint"
+                  >Enter at least two characters to search</span
+                >`
+              : html``}
+            ${this._query.length >= 2
+              ? this._data.map(
+                  (item) => html`
+                    <eox-geosearch-item
+                      .item="${item}"
+                      .onClick="${(e) => {
+                        this.handleSelect(e);
+                      }}"
+                      .unstyled=${this.unstyled}
+                    />
+                  `
+                )
+              : html``}
           </ul>
         </div>
       </div>

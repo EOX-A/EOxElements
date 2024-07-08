@@ -1,0 +1,41 @@
+name: Create dev release
+
+on:
+  workflow_dispatch:
+    inputs:
+      element:
+        description: "name of the element folder to be released"
+        required: true
+        type: string
+      preid:
+        description: "postfix of the released version"
+        required: false
+        default: dev
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  dev-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Set up NPM 🔧
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+      - name: Install dependencies 🔧
+        run: npm ci
+      - name: Build and publish package 🚀
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+          ELEMENT_DIR: elements/${{ inputs.element }}
+        run: |
+          npm run styles && \
+          cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
+          npm run build && \
+          npm version prerelease --preid ${{ inputs.preid }} && \
+          npm publish --access=public

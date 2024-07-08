@@ -21,7 +21,6 @@ import {
 
 import { FlatStyleLike } from "ol/style/flat";
 import { Collection } from "ol";
-import { createXYZ } from "ol/tilegrid";
 import { DrawOptions, addDraw } from "./draw";
 import { EOxMap } from "../main";
 import {
@@ -88,6 +87,12 @@ const basicOlFormats = {
   MVT,
 };
 
+export type formatWithOptions = {
+  type: string;
+  dataProjection?: string;
+  featureProjection?: string;
+};
+
 const basicOlLayers = {
   Group,
   Image,
@@ -123,13 +128,20 @@ export type EoxLayer = {
   maxResolution?: number;
   opacity?: number;
   visible?: boolean;
-  source?: { type: sourceType };
+  source?: {
+    type: sourceType;
+    format?: string | formatWithOptions;
+    tileGrid?: object;
+    projection?: import("ol/proj").ProjectionLike;
+  };
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
   interactions?: Array<EOxInteraction>;
   zIndex?: number;
   renderMode?: "vector" | "vectorImage";
 };
+import { get as getProjection } from "ol/proj.js";
+import { generateTileGrid } from "./tileGrid";
 
 /**
  * creates an ol-layer from a given EoxLayer definition object
@@ -146,18 +158,18 @@ export function createLayer(
   layer = JSON.parse(JSON.stringify(layer));
 
   const availableFormats = {
-    ...basicOlFormats,
     ...window.eoxMapAdvancedOlFormats,
+    ...basicOlFormats,
   };
 
   const availableLayers = {
-    ...basicOlLayers,
     ...window.eoxMapAdvancedOlLayers,
+    ...basicOlLayers,
   };
 
   const availableSources = {
-    ...basicOlSources,
     ...window.eoxMapAdvancedOlSources,
+    ...basicOlSources,
   };
 
   const newLayer = availableLayers[layer.type];
@@ -181,22 +193,34 @@ export function createLayer(
     }
   }
 
+  const tileGrid = generateTileGrid(layer);
+
   const olLayer = new newLayer({
     ...layer,
     ...(layer.source && {
       source: new newSource({
         ...layer.source,
         // @ts-ignore
-        ...(layer.source.format && {
-          // @ts-ignore
-          format: new availableFormats[layer.source.format](),
-        }),
-        // @ts-ignore
-        ...(layer.source.tileGrid && {
-          tileGrid: createXYZ({
+        ...(layer.source.format &&
+          layer.source.type !== "WMTS" && {
             // @ts-ignore
-            ...layer.source.tileGrid,
+            format: new availableFormats[
+              typeof layer.source.format === "object"
+                ? layer.source.format.type
+                : layer.source.format
+            ]({
+              // @ts-ignore
+              ...(typeof layer.source.format === "object" && {
+                // @ts-ignore
+                ...layer.source.format,
+              }),
+            }),
           }),
+        ...(layer.source.tileGrid && {
+          tileGrid,
+        }),
+        ...(layer.source.projection && {
+          projection: getProjection(layer.source.projection),
         }),
       }),
     }),

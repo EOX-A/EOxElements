@@ -18,7 +18,10 @@ const config = {
   },
   experimental_indexers: (existingIndexers) =>
     [csfIndexer].concat(existingIndexers || []),
-  addons: [getAbsolutePath("@storybook/addon-essentials")],
+  addons: [
+    getAbsolutePath("@storybook/addon-essentials"),
+    getAbsolutePath("@storybook/addon-interactions"),
+  ],
   framework: getAbsolutePath("@storybook/web-components-vite"),
   docs: {
     autodocs: "tag",

@@ -13,8 +13,9 @@ export const styleEOX = css`
     flex-direction: column;
     align-items: start;
   }
-  .search-container.hidden {
-    opacity: 0;
+  .hidden {
+    display: none;
+    pointer-events: none;
   }
   .results-container {
     min-height: 100px;
@@ -27,6 +28,16 @@ export const styleEOX = css`
     padding: 0;
     margin: 0;
   }
+  .results-container.too-short {
+    height: 64px;
+  }
+
+  .results-container.too-short span {
+    color: #00f;
+    width: 100%;
+    text-align: center;
+  }
+
   input {
     background: var(--input-bg, #c6d4dd);
     color: var(--input-fg, #333);
@@ -46,20 +57,21 @@ export const styleEOX = css`
   }
   button {
     height: auto;
-    background: var(--button-bg, #004170);
+    background: var(--button-bg, #fff);
   }
 
   .geosearch.small button {
     height: var(--button-size, 32px);
     width: var(--button-size, 32px);
-    padding: 6px;
+    padding: calc((var(--button-size, 32px) - 20px) / 2);
   }
 
   .geosearch.small button .icon {
-    min-width: 20px;
+    width: 20px;
     height: 20px;
     transform: translateX(1px);
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
+    fill: var(--button-fg, #fff);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Emagnify%3C/title%3E%3Cpath d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
   }
 
   .geosearch.small button .chevron {
@@ -107,5 +119,17 @@ export const styleEOX = css`
 
   .search-result:hover {
     background: #0001;
+  }
+
+  .hint {
+    display: flex;
+    color: #0008;
+    height: 40px;
+    width: 100%;
+    margin: 30px 0;
+    text-align: center;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
   }
 `;

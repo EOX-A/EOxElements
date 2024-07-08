@@ -342,7 +342,7 @@ export function preventEditorOutsideScroll(StoryTellingEditor) {
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  */
 export function initSavedMarkdown(EOxStoryTelling) {
-  if (EOxStoryTelling.showEditor) {
+  if (EOxStoryTelling.showEditor !== undefined) {
     let existingMarkdownObj = JSON.parse(
       localStorage.getItem("markdown") || "{}"
     );
