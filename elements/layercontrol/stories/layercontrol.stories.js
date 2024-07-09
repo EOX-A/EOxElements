@@ -3,6 +3,7 @@ import {
   ExpandedLayersStory,
   HiddenLayersStory,
   LayerConfigStory,
+  LayerStylesConfigStory,
   OptionalLayersStory,
   PrimaryStory,
   ToolsStory,
@@ -59,6 +60,8 @@ export const Tools = ToolsStory;
  * Needs import of `@eox/jsonform` in order to work.
  */
 export const LayerConfig = LayerConfigStory;
+
+export const LayerStylesConfig = LayerStylesConfigStory;
 
 /**
  * By adding the `layerControlHide` property to map layers,
