@@ -9,8 +9,10 @@ import {
 // registering the projection of CROPOMHUSC2_VECTOR_CONFIG_STYLE_LAYER
 setTimeout(async () => {
   //@ts-expect-error EOX Map API
-  await document.querySelector("eox-map#config").registerProjectionFromCode(3035)
-})
+  await document
+    .querySelector("eox-map#config")
+    .registerProjectionFromCode(3035);
+});
 
 export default {
   args: {},
@@ -25,7 +27,11 @@ export default {
       .zoom=${5.5}
       id="config"
       .style=${STORIES_MAP_STYLE}
-      .layers=${[STORIES_LAYER_SEE, STORIES_LAYER_CROPOMHUSC2, STORIES_LAYER_TERRAIN_LIGHT]}
+      .layers=${[
+        STORIES_LAYER_SEE,
+        STORIES_LAYER_CROPOMHUSC2,
+        STORIES_LAYER_TERRAIN_LIGHT,
+      ]}
     >
     </eox-map>
   `,
