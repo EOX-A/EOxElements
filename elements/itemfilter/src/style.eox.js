@@ -1,4 +1,26 @@
 export const styleEOX = `
+:host, :root {
+  --item-color: color-mix(
+    in srgb,
+    var(--primary-color) 10%,
+    transparent
+  );
+  --item-hover-color: color-mix(
+    in srgb,
+    var(--secondary-color) 30%,
+    transparent
+  );
+  --inline-bg-color: color-mix(
+    in srgb,
+    var(--secondary-color) 10%,
+    transparent
+  );
+  --border-color: color-mix(
+    in srgb,
+    #000000 20%,
+    transparent
+  );
+}
 * {
   font-family: Roboto, sans-serif;
 }
@@ -93,7 +115,7 @@ input[type="text"] {
   margin-bottom: 0.5rem;
   padding: 5px 7px;
   border-radius: 4px;
-  border: 1px solid #0004;
+  border: 1px solid var(--border-color);
 }
 section:not(section:last-of-type) {
   margin-bottom: 1rem;
@@ -106,9 +128,6 @@ section:not(section:last-of-type) {
 }
 ul li {
   padding: 5px 10px;
-}
-#itemfilter .multiselect li:hover {
-  background: #00417011;
 }
 section {
   position: relative;
@@ -123,11 +142,11 @@ button#filter-reset {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #00417044;
+  background: var(--secondary-color);
   padding: 0 12px;
   height: 20px;
   border-radius: 10px;
-  color: #004170;
+  color: var(--primary-color);
   font-weight: 500;
   margin-left: 9px;
 }
@@ -161,14 +180,14 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
 }
 .inline-content {
   padding: 4px;
-  border: 1px solid #bbbbbb3b;
+  border: 1px solid var(--secondary-color);
   border-radius: 4px;
-  box-shadow: 2px 2px 2px #0000000f;
+  box-shadow: 2px 2px 2px var(--border-color);
   position: absolute;
   width: calc(100% - 10px);
   max-height: 300px;
   overflow-y: auto;
-  background: #f3f4f5;
+  background: var(--inline-bg-color);
   z-index: 1;
   margin-top: 0.5rem;
 }
@@ -182,7 +201,7 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
 }
 .inline-container {
   position: relative;
-  border: 1px solid #00417066;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   height: 24px;
   padding: 5px;
@@ -193,7 +212,7 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
   display: flex;
 }
 .inline-container:hover {
-  border: 1px solid #004170;
+  border: 1px solid var(--primary-color);
 }
 .input-container {
   display: flex;
@@ -240,9 +259,6 @@ button.icon {
 .hidden:hover {
   border: none;
 }
-.chip.highlighted {
-  background: lightgrey;
-}
 .chip-title {
   pointer-events: none;
   text-transform: capitalize;
@@ -250,7 +266,7 @@ button.icon {
 .chip {
   display: flex;
   align-items: center;
-  background: #00417022;
+  background: var(--item-color);
   border-radius: 30px;
   margin-right: 4px;
   padding: 5px 10px;
@@ -259,7 +275,7 @@ button.icon {
   white-space: nowrap;
 }
 .chip.highlighted {
-  background: #004170;
+  background: var(--primary-color);
   color: white;
 }
 .chip-close {
@@ -293,7 +309,7 @@ button.icon {
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #00417066;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   justify-content: space-between;
   cursor: text;
@@ -303,7 +319,7 @@ button.icon {
 }
 .autocomplete-container:hover,
 .text-container:hover {
-  border: 1px solid #004170;
+  border: 1px solid var(--primary-color);
 }
 .autocomplete-container-wrapper,
 .text-container-wrapper {
@@ -338,34 +354,6 @@ button.icon {
   min-width: 150px;
   border-radius: 4px;
 }
-.suggestions-list {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background: #fff;
-  max-height: 200px;
-  overflow-y: auto;
-  box-sizing: border-box;
-  border-radius: 4px;
-  border: 1px solid #00417036;
-}
-.suggestion-item {
-  padding: 8px;
-  cursor: pointer;
-  white-space: nowrap;
-  font-size: 0.85rem;
-  text-transform: capitalize;
-}
-.suggestion-item.selected {
-  background-color: #00417022;
-  font-weight: 500;
-}
-.suggestion-item.highlighted,
-.suggestion-item:hover {
-  background-color: #00417042;
-}
 .selected-items {
   display: flex;
   flex-wrap: nowrap;
@@ -374,14 +362,7 @@ button.icon {
 li.highlighted,
 .select-container li:hover,
 .highlight-item {
-  background: #00417011;
-}
-.selected-item {
-  background: #00417022;
-  padding: 4px 8px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
+  background: var(--item-hover-color);
 }
 .selected-item span {
   margin-right: 8px;
