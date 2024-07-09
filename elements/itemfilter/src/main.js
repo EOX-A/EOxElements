@@ -82,6 +82,16 @@ export class EOxItemFilter extends TemplateElement {
     this.filters = {};
   }
 
+  setConfig(config) {
+    this.config = config;
+    this.firstUpdated();
+  }
+
+  setItems(items) {
+    this.items = items;
+    this.firstUpdated();
+  }
+
   /**
    * Applies the filters to the items and updates the result aggregation.
    */
@@ -100,7 +110,7 @@ export class EOxItemFilter extends TemplateElement {
    */
   async search() {
     await searchMethod(this.#config, this.#items, this);
-    if (this.config.inlineMode)
+    if (this.config?.inlineMode)
       this.renderRoot.querySelector("eox-itemfilter-container").updateInline();
     this.requestUpdate();
   }
@@ -157,10 +167,16 @@ export class EOxItemFilter extends TemplateElement {
       ...ELEMENT_CONFIG,
       ...this.config,
     };
-    this.#items = this.items.map((i, index) =>
-      Object.assign({ id: `item-${index}` }, i)
-    );
+    this.#items =
+      this.items?.map((i, index) =>
+        Object.assign({ id: `item-${index}` }, i)
+      ) || [];
     this.apply();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("config") || changedProperties.has("items"))
+      this.firstUpdated();
   }
 
   /**

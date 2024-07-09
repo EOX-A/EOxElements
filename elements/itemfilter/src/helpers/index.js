@@ -6,3 +6,4 @@ export { default as resetFilter } from "./reset-filter";
 export { default as getTabIndex } from "./tab-index";
 export { default as getChipItems } from "./chip-items";
 export { default as isFiltersDirty } from "./is-filters-dirty";
+export { default as filterExternal } from "./filter-external";

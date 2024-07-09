@@ -4,15 +4,26 @@ import testItems from "./testItems.json";
 
 describe("Item Filter Config", () => {
   beforeEach(() => {
-    cy.mount(
-      `<eox-itemfilter>
-      <h4 slot="filterstitle">Filter</h4>
-      <h4 slot="resultstitle">Results</h4>
-    </eox-itemfilter>`
-    )
+    cy.mount(`<eox-itemfilter></eox-itemfilter>`)
       .as("eox-itemfilter")
       .then(($el) => {
-        const eoxItemFilter = <EOxItemFilter>$el[0];
+        const eoxItemFilter = $el[0];
+        // eoxItemFilter.setConfig({
+        //   titleProperty: "title",
+        //   filterProperties: [
+        //     {
+        //       keys: ["title", "themes"],
+        //       title: "Search",
+        //       type: "text",
+        //       expanded: true,
+        //     },
+        //     { key: "themes", expanded: true },
+        //   ],
+        //   aggregateResults: "themes",
+        //   enableHighlighting: true,
+        // })
+        //
+        // eoxItemFilter.setItems(testItems)
         Object.assign(eoxItemFilter, {
           config: {
             titleProperty: "title",
@@ -55,19 +66,27 @@ describe("Item Filter Config", () => {
       .shadow()
       .within(() => {
         cy.get("[data-cy='search']").type("white");
-        cy.get("mark.highlight").contains("White");
+        cy.get("eox-itemfilter-results").within(() => {
+          cy.get("mark.highlight").contains("White");
+        });
       });
   });
 
   it("should disable highlight", () => {
     cy.get("eox-itemfilter").should(($el) => {
-      (<EOxItemFilter>$el[0]).config.enableHighlighting = false;
+      $el[0].config = {
+        ...$el[0].config,
+        enableHighlighting: false,
+      };
     });
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
         cy.get("[data-cy='search']").type("white");
-        cy.get("mark.highlight").should("not.exist");
+
+        cy.get("eox-itemfilter-results").within(() => {
+          cy.get("mark.highlight").should("not.exist");
+        });
       });
   });
 
@@ -89,14 +108,16 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("eox-selectionlist").within(() => {
-          cy.get('[type="checkbox"]').first().check();
-          cy.get('[type="checkbox"]').eq(1).check();
-          cy.get('[type="checkbox"]').first().check();
-          cy.get('[type="checkbox"]').first().should("be.checked");
-          cy.get('[type="checkbox"]').eq(1).check();
-          cy.get('[type="checkbox"]').eq(1).should("be.checked");
-        });
+        cy.get("eox-itemfilter-select")
+          .shadow()
+          .within(() => {
+            cy.get('[type="checkbox"]').first().check();
+            cy.get('[type="checkbox"]').eq(1).check();
+            cy.get('[type="checkbox"]').first().check();
+            cy.get('[type="checkbox"]').first().should("be.checked");
+            cy.get('[type="checkbox"]').eq(1).check();
+            cy.get('[type="checkbox"]').eq(1).should("be.checked");
+          });
       });
   });
 
@@ -170,6 +191,8 @@ describe("Item Filter Config", () => {
               accordionToClick.click({ multiple: true, force: true });
               accordionToClick.should("have.attr", "open");
 
+              console.log(accordionToClick);
+
               // Check that all other accordions are closed
               for (let j = 0; j < accordions.length; j++) {
                 if (i !== j) {
@@ -181,6 +204,8 @@ describe("Item Filter Config", () => {
                         .shadow()
                         .find("details")
                     : cy.get(selector).eq(j).find("details");
+
+                  console.log(isSubcomponent);
 
                   accordionToCheck.should("not.have.attr", "open");
                 }

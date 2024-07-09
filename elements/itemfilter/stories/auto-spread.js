@@ -1,7 +1,6 @@
 import items from "../test/testItems.json";
-import { expect, userEvent, waitFor } from "@storybook/test";
 
-function PrimaryStory() {
+function AutoSpreadStory() {
   return {
     args: {
       config: {
@@ -9,7 +8,7 @@ function PrimaryStory() {
         titleProperty: "title",
         aggregateResults: "themes",
         enableHighlighting: true,
-        autoSpreadSingle: false,
+        autoSpreadSingle: true,
         filterProperties: [
           {
             keys: ["title", "themes"],
@@ -23,6 +22,7 @@ function PrimaryStory() {
             title: "Codes",
             type: "multiselect",
             placeholder: "Search Codes",
+            expanded: true,
             inline: true,
           },
           {
@@ -30,6 +30,7 @@ function PrimaryStory() {
             title: "Theme",
             type: "select",
             placeholder: "Select a theme",
+            expanded: true,
             inline: false,
           },
           {
@@ -37,12 +38,14 @@ function PrimaryStory() {
             title: "Tags",
             type: "multiselect",
             placeholder: "Select tags",
+            expanded: true,
             inline: false,
           },
           {
             key: "timestamp",
             type: "range",
             format: "date",
+            expanded: true,
           },
           {
             key: "geometry",
@@ -52,24 +55,7 @@ function PrimaryStory() {
       },
       items,
     },
-    play: async ({ canvasElement, step }) => {
-      await waitFor(() => {
-        const itemFilterComponent =
-          canvasElement.querySelector("eox-itemfilter");
-        expect(itemFilterComponent).toBeTruthy();
-        expect(itemFilterComponent.shadowRoot).toBeTruthy();
-      });
-      const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
-      const shadowRoot = itemFilterComponent.shadowRoot;
-
-      await step("Searching for Asparagus", async () => {
-        const inputElement = shadowRoot.querySelector(
-          'input[placeholder="Type Something..."]'
-        );
-        await userEvent.type(inputElement, "Asparagus", { delay: 100 });
-      });
-    },
   };
 }
 
-export default PrimaryStory;
+export default AutoSpreadStory;

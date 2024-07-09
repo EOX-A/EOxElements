@@ -1,9 +1,8 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import { waitFor, expect, userEvent } from "@storybook/test";
 
 import items from "../test/testItems.json";
-import { InlineModeStory, PrimaryStory } from "./index.js";
+import { AutoSpreadStory, InlineModeStory, PrimaryStory } from "./index.js";
 
 export default {
   title: "Elements/eox-itemfilter",
@@ -16,84 +15,9 @@ export default {
     ></eox-itemfilter>`,
 };
 
-const Primary2 = {
-  args: {
-    config: {
-      titleProperty: "title",
-      filterProperties: [
-        {
-          keys: ["title", "themes"],
-          title: "Search",
-          type: "text",
-          expanded: true,
-          // state: {
-          //   title: "no2",
-          //   themes: "no2",
-          // },
-        },
-        {
-          key: "themes",
-          title: "Theme",
-          type: "multiselect",
-          // state: {
-          //   air: true,
-          //   agriculture: true,
-          // },
-        },
-        {
-          key: "timestamp",
-          type: "range",
-          format: "date",
-          // state: {
-          //   min: 1685232950,
-          //   max: 1686454646,
-          // },
-        },
-        {
-          key: "geometry",
-          type: "spatial",
-          // state: {
-          //   mode: "within",
-          //   geometry: {
-          //     type: "Polygon",
-          //     coordinates: [
-          //       [
-          //         [-97.71428571428572, 38.00407795331557],
-          //         [-102.00000000000001, -40.329636215359066],
-          //         [81.85714285714282, -47.42214099287611],
-          //         [50.57142857142855, 51.0574434128921],
-          //         [-97.71428571428572, 38.00407795331557],
-          //       ],
-          //     ],
-          //   },
-          // },
-        },
-      ],
-      aggregateResults: "themes",
-      enableHighlighting: false,
-      onSelect: () => {},
-    },
-    items,
-  },
-  play: async ({ canvasElement, step }) => {
-    await waitFor(() => {
-      const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
-      expect(itemFilterComponent).toBeTruthy();
-      expect(itemFilterComponent.shadowRoot).toBeTruthy();
-    });
-    const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
-    const shadowRoot = itemFilterComponent.shadowRoot;
+export const Primary = PrimaryStory();
 
-    await step("Searching for Asparagus", async () => {
-      const inputElement = shadowRoot.querySelector(
-        'input[placeholder="Type something..."]'
-      );
-      await userEvent.type(inputElement, "Asparagus", { delay: 100 });
-    });
-  },
-};
-
-const AutoSpread = {
+const AutoSpread2 = {
   args: {
     config: {
       titleProperty: "title",
@@ -235,6 +159,6 @@ const InlineMode2 = {
   },
 };
 
-export const Primary = PrimaryStory();
+export const AutoSpread = AutoSpreadStory();
 
 export const InlineMode = InlineModeStory();
