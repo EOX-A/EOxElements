@@ -2,9 +2,8 @@
 import { html } from "lit";
 import { waitFor, expect, userEvent } from "@storybook/test";
 
-import items from "./test/testItems.json";
-// import "./src-v2/main.js";
-// import "./src-v2/components/filters/selector.js";
+import items from "../test/testItems.json";
+import { InlineModeStory, PrimaryStory } from "./index.js";
 
 export default {
   title: "Elements/eox-itemfilter",
@@ -236,103 +235,6 @@ const InlineMode2 = {
   },
 };
 
-export const Primary = {
-  args: {
-    config: {
-      inlineMode: false,
-      titleProperty: "title",
-      aggregateResults: "themes",
-      enableHighlighting: true,
-      autoSpreadSingle: true,
-      filterProperties: [
-        {
-          keys: ["title", "themes"],
-          title: "Search",
-          type: "text",
-          placeholder: "Type Something...",
-          expanded: true,
-        },
-        {
-          key: "code",
-          title: "Codes",
-          type: "multiselect",
-          placeholder: "Search Codes",
-          expanded: true,
-          inline: true,
-        },
-        {
-          key: "themes",
-          title: "Theme",
-          type: "select",
-          placeholder: "Select a theme",
-          expanded: true,
-          inline: false,
-        },
-        {
-          key: "tags",
-          title: "Tags",
-          type: "multiselect",
-          placeholder: "Select tags",
-          expanded: true,
-          inline: false,
-        },
-        {
-          key: "timestamp",
-          type: "range",
-          format: "date",
-          expanded: true,
-        },
-        {
-          key: "geometry",
-          type: "spatial",
-        },
-      ],
-    },
-    items,
-  },
-};
+export const Primary = PrimaryStory();
 
-export const InlineMode = {
-  args: {
-    config: {
-      inlineMode: true,
-      titleProperty: "title",
-      aggregateResults: "themes",
-      enableHighlighting: true,
-      autoSpreadSingle: true,
-      showResults: false,
-      filterProperties: [
-        {
-          keys: ["title", "themes"],
-          title: "Search",
-          type: "text",
-          placeholder: "Type Something...",
-          expanded: true,
-        },
-        {
-          key: "code",
-          title: "Codes",
-          type: "multiselect",
-          placeholder: "Search codes",
-          expanded: true,
-          inline: true,
-        },
-        {
-          key: "themes",
-          title: "Theme",
-          type: "select",
-          placeholder: "Select a theme",
-          expanded: true,
-          inline: false,
-        },
-        {
-          key: "timestamp",
-          type: "range",
-          format: "date",
-          expanded: true,
-        },
-      ],
-    },
-    items,
-  },
-};
+export const InlineMode = InlineModeStory();
