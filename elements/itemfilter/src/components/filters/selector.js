@@ -179,86 +179,29 @@ export class EOxSelector extends LitElement {
     leading: true,
   });
 
+  firstUpdated() {
+    if (this.filterObject.state) {
+      this.selectedItems = Object.keys(this.filterObject.state)
+        .map((item) => (this.filterObject.state[item] ? item : null))
+        .filter((item) => Boolean(item));
+
+      this.filterObject.stringifiedState = this.selectedItems.join(", ") || "";
+
+      this.requestUpdate();
+    }
+  }
+
   /**
    * Renders the HTML template for the component.
    */
   render() {
+    const type = this.type.includes("multi") ? "checkbox" : "radio";
     return html`
       <style>
         ${!this.unstyled && styleEOX}
         ${!this.unstyled && checkboxStyle}
         ${!this.unstyled && radioStyle}
       </style>
-      ${this.renderSelect()}
-    `;
-  }
-
-  /**
-   * Renders the autocomplete interface.
-   */
-  renderAutocomplete() {
-    const chipItems = this.selectedItems.map((item) => ({
-      title: item,
-      key: item,
-    }));
-    return html`
-      <div class="autocomplete-container">
-        <div class="autocomplete-container-wrapper">
-          <div class="selected-items">
-            <eox-itemfilter-chips
-              .items=${chipItems}
-              .controller=${{
-                remove: (event, index) => this.#removeItem(index),
-              }}
-            >
-            </eox-itemfilter-chips>
-          </div>
-          <input
-            tabindex=${this.tabIndex}
-            class="autocomplete-input"
-            type="text"
-            .value=${this.query}
-            placeholder="${this.filterObject.placeholder || ""}"
-            @input=${this.#handleInput}
-            @keydown=${this.#handleKeyDown}
-            @blur=${() => (this.showSuggestions = false)}
-            @focus=${() => (this.showSuggestions = true)}
-          />
-        </div>
-        ${when(
-          this.showSuggestions,
-          () => html`
-            <div class="suggestions-list">
-              ${this.filteredSuggestions.map(
-                (suggestion, index) =>
-                  html`
-                    <div
-                      data-identifier="${suggestion.toString().toLowerCase()}"
-                      data-title="${suggestion}"
-                      class=${classMap({
-                        "suggestion-item": true,
-                        highlighted: index === this.highlightedIndex,
-                        selected: this.selectedItems.includes(suggestion),
-                      })}
-                      @mousedown=${() => this.debouncedInputHandler(suggestion)}
-                    >
-                      ${suggestion}
-                    </div>
-                  `
-              )}
-            </div>
-          `
-        )}
-      </div>
-    `;
-  }
-
-  /**
-   * Renders the select interface.
-   */
-  renderSelect() {
-    const type = this.type.includes("multi") ? "checkbox" : "radio";
-    return html`
       ${when(
         this.suggestions.length > 10,
         () => html`<div class="autocomplete-container">

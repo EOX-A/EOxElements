@@ -2,15 +2,7 @@ import { resetFilter } from "../../helpers/index.js";
 import Fuse from "fuse.js";
 
 export function resetSelectorMethod(EOxItemFilterSelector) {
-  if (EOxItemFilterSelector.filterObject.inline)
-    removeItemSelectorMethod(-1, EOxItemFilterSelector);
-  else {
-    const type = EOxItemFilterSelector.type === "select" ? "radio" : "checkbox";
-    const selector = `input[type='${type}']`;
-    EOxItemFilterSelector.renderRoot.querySelectorAll(selector).forEach((f) => {
-      if (f) f.checked = false;
-    });
-  }
+  removeItemSelectorMethod(-1, EOxItemFilterSelector);
 
   resetFilter(EOxItemFilterSelector.filterObject);
   EOxItemFilterSelector.requestUpdate();

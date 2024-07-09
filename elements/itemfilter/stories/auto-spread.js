@@ -32,6 +32,9 @@ function AutoSpreadStory() {
             placeholder: "Select a theme",
             expanded: true,
             inline: false,
+            state: {
+              air: true,
+            },
           },
           {
             key: "tags",

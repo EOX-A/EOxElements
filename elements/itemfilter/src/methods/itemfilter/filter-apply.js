@@ -59,7 +59,6 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       EOxItemFilter.filters[filterKey] = Object.assign(
         {
           type: filterProperty.type || "multiselect",
-          state: Object.assign({}, filterKeys, filterProperty.state),
           dirty: filterProperty.state ? false : undefined,
           key: filterKey,
         },
@@ -71,6 +70,11 @@ function filterApplyMethod(config, items, EOxItemFilter) {
             }
           : {},
         filterProperty
+      );
+      EOxItemFilter.filters[filterKey].state = Object.assign(
+        {},
+        filterKeys,
+        filterProperty.state
       );
     });
   }

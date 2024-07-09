@@ -28,6 +28,7 @@ export class EOxItemFilterResults extends TemplateElement {
       results: { state: true, type: Object },
       filters: { state: true, type: Object },
       resultAggregation: { attribute: false, type: Array },
+      selectedResult: { state: true, type: Object },
     };
   }
 
@@ -48,6 +49,11 @@ export class EOxItemFilterResults extends TemplateElement {
      * @type Array
      */
     this.resultAggregation = [];
+
+    /**
+     * @type Object
+     */
+    this.selectedResult = null;
   }
 
   /**

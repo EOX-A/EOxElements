@@ -45,6 +45,7 @@ export class EOxItemFilter extends TemplateElement {
       items: { attribute: false, type: Object },
       results: { state: true, type: Object },
       filters: { state: true, type: Object },
+      selectedResult: { attribute: false, type: Object },
     };
   }
 
@@ -80,6 +81,11 @@ export class EOxItemFilter extends TemplateElement {
      * @type Object
      */
     this.filters = {};
+
+    /**
+     * @type Object
+     */
+    this.selectedResult = null;
   }
 
   setConfig(config) {
@@ -260,6 +266,11 @@ export class EOxItemFilter extends TemplateElement {
               .results=${this.results}
               .filters=${this.filters}
               .resultAggregation=${this.#resultAggregation}
+              .selectedResult=${this.selectedResult}
+              @result="${(e) => {
+                this.selectedResult = e.detail;
+                this.requestUpdate();
+              }}"
             ></eox-itemfilter-results>
           `
         )}

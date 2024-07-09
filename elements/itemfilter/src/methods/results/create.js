@@ -68,6 +68,11 @@ export function createItemListMethod(
                 @click=${() => {
                   EOxItemFilterResults.selectedResult = item;
                   config.onSelect(item);
+                  EOxItemFilterResults.dispatchEvent(
+                    new CustomEvent("result", {
+                      detail: item,
+                    })
+                  );
                 }}
               />
               ${when(

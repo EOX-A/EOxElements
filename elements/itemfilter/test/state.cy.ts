@@ -45,9 +45,11 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("eox-selectionlist").within(() => {
-          cy.get('[type="checkbox"]:checked').should("have.length", 2);
-        });
+        cy.get("eox-itemfilter-select")
+          .shadow()
+          .within(() => {
+            cy.get('[type="checkbox"]:checked').should("have.length", 2);
+          });
       });
   });
 
@@ -55,20 +57,22 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        Object.keys(state).forEach((key) => {
+        cy.get("eox-itemfilter-results").within(() => {
+          Object.keys(state).forEach((key) => {
+            cy.get(".details-results > summary > .title").should(
+              "contain.text",
+              key
+            );
+            cy.get(".details-results > summary > .title").should(
+              "contain.text",
+              key
+            );
+          });
           cy.get(".details-results > summary > .title").should(
-            "contain.text",
-            key
-          );
-          cy.get(".details-results > summary > .title").should(
-            "contain.text",
-            key
+            "have.length",
+            Object.keys(state).length
           );
         });
-        cy.get(".details-results > summary > .title").should(
-          "have.length",
-          Object.keys(state).length
-        );
       });
   });
 
@@ -76,10 +80,15 @@ describe("Item Filter Config", () => {
     cy.get("eox-itemfilter")
       .shadow()
       .within(() => {
-        cy.get("input[data-cy=result-radio]")
-          .eq(selectedResultIndex)
-          .should("be.checked");
-        cy.get("input[data-cy=result-radio][checked]").should("have.length", 1);
+        cy.get("eox-itemfilter-results").within(() => {
+          cy.get("input[data-cy=result-radio]")
+            .eq(selectedResultIndex)
+            .should("be.checked");
+          cy.get("input[data-cy=result-radio][checked]").should(
+            "have.length",
+            1
+          );
+        });
       });
   });
 
