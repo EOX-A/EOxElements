@@ -199,7 +199,7 @@ export class EOxItemFilter extends TemplateElement {
                     Object.values(this.filters),
                     (filterObject, index) =>
                       html` <li>
-                        <itemfilter-expandcontainer
+                        <eox-itemfilter-expandcontainer
                           .filterObject=${filterObject}
                           data-details="${filterObject.key}"
                         >
@@ -211,7 +211,7 @@ export class EOxItemFilter extends TemplateElement {
                             filterObject,
                             getTabIndex(index, 2)
                           )}
-                        </itemfilter-expandcontainer>
+                        </eox-itemfilter-expandcontainer>
                       </li>`
                   )}
                 </ul>
@@ -252,4 +252,4 @@ export class EOxItemFilter extends TemplateElement {
   }
 }
 
-customElements.define("eox-itemfilter-v2", EOxItemFilter);
+customElements.define("eox-itemfilter", EOxItemFilter);

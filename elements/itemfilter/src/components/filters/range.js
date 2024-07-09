@@ -111,4 +111,4 @@ export class EOxItemFilterRange extends LitElement {
   }
 }
 
-customElements.define("itemfilter-range", EOxItemFilterRange);
+customElements.define("eox-itemfilter-range", EOxItemFilterRange);

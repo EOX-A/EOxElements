@@ -205,13 +205,13 @@ export class EOxSelector extends LitElement {
       <div class="autocomplete-container">
         <div class="autocomplete-container-wrapper">
           <div class="selected-items">
-            <eox-itemfilter-chips-v2
+            <eox-itemfilter-chips
               .items=${chipItems}
               .controller=${{
                 remove: (event, index) => this.#removeItem(index),
               }}
             >
-            </eox-itemfilter-chips-v2>
+            </eox-itemfilter-chips>
           </div>
           <input
             tabindex=${this.tabIndex}
@@ -316,4 +316,4 @@ export class EOxSelector extends LitElement {
   }
 }
 
-customElements.define("eox-selector", EOxSelector);
+customElements.define("eox-itemfilter-select", EOxSelector);

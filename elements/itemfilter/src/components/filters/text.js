@@ -99,4 +99,4 @@ export class EOxItemFilterText extends LitElement {
   }
 }
 
-customElements.define("itemfilter-text", EOxItemFilterText);
+customElements.define("eox-itemfilter-text", EOxItemFilterText);

@@ -140,4 +140,4 @@ export class EOxItemFilterChipsV2 extends LitElement {
   }
 }
 
-customElements.define("eox-itemfilter-chips-v2", EOxItemFilterChipsV2);
+customElements.define("eox-itemfilter-chips", EOxItemFilterChipsV2);

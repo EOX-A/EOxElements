@@ -191,13 +191,13 @@ export class EOxItemFilterContainer extends LitElement {
               <div class="inline-container" part="container">
                 <div class="chip-container">
                   <div class="chip-wrapper">
-                    <eox-itemfilter-chips-v2
+                    <eox-itemfilter-chips
                       .items=${getChipItems(this.filters)}
                       .controller=${{
                         remove: (event) => this.#resetFilter(event),
                       }}
                     >
-                    </eox-itemfilter-chips-v2>
+                    </eox-itemfilter-chips>
                   </div>
 
                   ${when(

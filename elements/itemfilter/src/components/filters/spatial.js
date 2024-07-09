@@ -107,7 +107,7 @@ class EOxItemFilterSpatial extends LitElement {
             `
           )}
         </form>
-        <itemfilter-spatial-filter
+        <eox-itemfilter-spatial-filter
           exportparts="map: spatial-filter-map"
           .geometry="${this.filterObject.state?.geometry}"
           @filter="${(e) => {
@@ -116,13 +116,13 @@ class EOxItemFilterSpatial extends LitElement {
             this.filterObject.stringifiedState = "Polygon";
             this.dispatchEvent(new CustomEvent("filter"));
           }}"
-        ></itemfilter-spatial>
+        ></eox-itemfilter-spatial>
       `
     );
   }
 }
 
-customElements.define("itemfilter-spatial", EOxItemFilterSpatial);
+customElements.define("eox-itemfilter-spatial", EOxItemFilterSpatial);
 
 /**
  * SpatialFilter is a custom web component that renders a map and allows users to apply spatial filters.
@@ -187,6 +187,6 @@ class SpatialFilter extends LitElement {
   }
 }
 
-customElements.define("itemfilter-spatial-filter", SpatialFilter);
+customElements.define("eox-itemfilter-spatial-filter", SpatialFilter);
 
 export { EOxItemFilterSpatial, SpatialFilter };

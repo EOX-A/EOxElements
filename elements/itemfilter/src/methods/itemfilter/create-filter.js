@@ -7,7 +7,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
 
   switch (filterObject.type) {
     case "text":
-      return html`<itemfilter-text
+      return html`<eox-itemfilter-text
         data-type="filter"
         slot="filter"
         id="${filterId}"
@@ -15,11 +15,11 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         .filterObject=${filterObject}
         .unstyled=${EOxItemFilter.unstyled}
         @filter=${() => EOxItemFilter.search()}
-      ></itemfilter-text>`;
+      ></eox-itemfilter-text>`;
     case "multiselect":
     case "select":
       return html`
-        <eox-selector
+        <eox-itemfilter-select
           .inlineMode=${EOxItemFilter.config.inlineMode || false}
           data-type="filter"
           id="${filterId}"
@@ -30,11 +30,11 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           type="${filterObject.type}"
           .unstyled=${EOxItemFilter.unstyled}
           @filter=${() => EOxItemFilter.search()}
-        ></eox-selector>
+        ></eox-itemfilter-select>
       `;
     case "range":
       return html`
-        <itemfilter-range
+        <eox-itemfilter-range
           id="${filterId}"
           data-type="filter"
           .tabIndex=${tabIndex}
@@ -42,18 +42,18 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           slot="filter"
           .unstyled=${EOxItemFilter.unstyled}
           @filter=${() => EOxItemFilter.search()}
-        ></itemfilter-range>
+        ></eox-itemfilter-range>
       `;
     case "spatial":
       return html`
-        <itemfilter-spatial
+        <eox-itemfilter-spatial
           id="${filterId}"
           data-type="filter"
           .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
           @filter=${() => EOxItemFilter.search()}
-        ></itemfilter-spatial>
+        ></eox-itemfilter-spatial>
       `;
     default:
       return html``;

@@ -89,6 +89,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
 }
 
 customElements.define(
-  "itemfilter-expandcontainer",
+  "eox-itemfilter-expandcontainer",
   EOxItemFilterExpandContainer
 );
