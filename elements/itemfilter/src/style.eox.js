@@ -180,9 +180,8 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
 }
 .inline-content {
   padding: 4px;
-  border: 1px solid var(--secondary-color);
+  border: 1.5px solid var(--secondary-color);
   border-radius: 4px;
-  box-shadow: 2px 2px 2px var(--border-color);
   position: absolute;
   width: calc(100% - 10px);
   max-height: 300px;
@@ -204,7 +203,7 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
   border: 1px solid var(--border-color);
   border-radius: 4px;
   height: 24px;
-  padding: 5px;
+  padding: 8px;
   flex: 1;
   justify-content: space-between;
   cursor: text;
@@ -323,7 +322,7 @@ button.icon {
 }
 .autocomplete-container-wrapper,
 .text-container-wrapper {
-  padding: 4px;
+  padding: 6px;
   position: relative;
   display: flex;
   align-items: center;
