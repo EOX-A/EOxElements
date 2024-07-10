@@ -11,7 +11,6 @@ import {
 } from "../methods/container";
 import { getChipItems, isFiltersDirty } from "../helpers";
 import { when } from "lit/directives/when.js";
-import buttonStyle from "../../../../utils/styles/dist/button.style";
 
 /**
  * EOxItemFilterContainer is a custom web component that provides a container for item filters.
@@ -168,6 +167,10 @@ export class EOxItemFilterContainer extends LitElement {
     searchFilterMethod(event, this);
   }
 
+  /**
+   * Re renders when inline mode is configured
+   *
+   */
   updateInline() {
     if (this.inlineMode) this.requestUpdate();
   }

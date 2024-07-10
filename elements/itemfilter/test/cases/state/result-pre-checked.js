@@ -1,3 +1,9 @@
+/**
+ * Tests that the specified result is pre-checked in the eox-itemfilter-results component.
+ * It verifies that the radio button at the specified index is checked and that only one radio button is checked.
+ *
+ * @param {number} selectedResultIndex - The index of the result that should be pre-checked.
+ */
 const resultPreCheckedTest = (selectedResultIndex) => {
   cy.get("eox-itemfilter")
     .shadow()

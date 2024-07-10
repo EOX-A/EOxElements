@@ -19,6 +19,7 @@ import {
  * @property {Object} results - The state object containing the filter results.
  * @property {Object} filters - The state object containing the applied filters.
  * @property {Array} resultAggregation - The array of properties used for result aggregation.
+ * @property {Object} selectedResult - Property with pre-selected result
  */
 export class EOxItemFilterResults extends TemplateElement {
   // Define properties with defaults and types

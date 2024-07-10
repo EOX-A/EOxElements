@@ -1,3 +1,6 @@
+/**
+ * Tests the behavior of the eox-itemfilter-select component to ensure checkboxes can be toggled correctly.
+ */
 const disableHighlightTest = () => {
   cy.get("eox-itemfilter")
     .shadow()

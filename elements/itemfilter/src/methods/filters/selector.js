@@ -1,6 +1,11 @@
 import { resetFilter } from "../../helpers/index.js";
 import Fuse from "fuse.js";
 
+/**
+ * Resets the selector filter to its default state and updates the component.
+ *
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 export function resetSelectorMethod(EOxItemFilterSelector) {
   removeItemSelectorMethod(-1, EOxItemFilterSelector);
 
@@ -8,6 +13,12 @@ export function resetSelectorMethod(EOxItemFilterSelector) {
   EOxItemFilterSelector.requestUpdate();
 }
 
+/**
+ * Removes an item from the selected items list and updates suggestions and filter list.
+ *
+ * @param {number} index - The index of the item to remove, or -1 to remove all items.
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 export function removeItemSelectorMethod(index, EOxItemFilterSelector) {
   EOxItemFilterSelector.selectedItems =
     index === -1
@@ -18,12 +29,20 @@ export function removeItemSelectorMethod(index, EOxItemFilterSelector) {
   updateFilterList(EOxItemFilterSelector);
 }
 
+/**
+ * Toggles the selection of an item and updates the component.
+ *
+ * @param {Object} item - The item to toggle.
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 export function toggleItemSelectorMethod(item, EOxItemFilterSelector) {
   const itemIndex = EOxItemFilterSelector.selectedItems.indexOf(item);
   if (itemIndex >= 0) {
+    // Remove the item if it's already selected
     EOxItemFilterSelector.selectedItems =
       EOxItemFilterSelector.selectedItems.filter((_, i) => i !== itemIndex);
   } else {
+    // Add the item if it's not selected
     if (EOxItemFilterSelector.type === "multiselect") {
       EOxItemFilterSelector.selectedItems = [
         ...EOxItemFilterSelector.selectedItems,
@@ -36,30 +55,48 @@ export function toggleItemSelectorMethod(item, EOxItemFilterSelector) {
   }
   EOxItemFilterSelector.query = "";
 
+  // Update suggestions and filter list
   updateSuggestions(EOxItemFilterSelector);
   updateFilterList(EOxItemFilterSelector);
 }
 
+/**
+ * Handles input changes for the selector and updates the query and suggestions.
+ *
+ * @param {Event} event - The input event.
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 export function handleInputSelectorMethod(event, EOxItemFilterSelector) {
   EOxItemFilterSelector.query = event.target.value;
   EOxItemFilterSelector.showSuggestions = true;
 }
 
+/**
+ * Handles keydown events for the selector and navigates or selects items based on the key pressed.
+ *
+ * @param {Event} event - The keydown event.
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
   switch (event.key) {
     case "ArrowDown":
+      // Navigate down the suggestions list
       EOxItemFilterSelector.highlightedIndex = Math.min(
         EOxItemFilterSelector.highlightedIndex + 1,
         EOxItemFilterSelector.filteredSuggestions.length - 1
       );
       break;
+
     case "ArrowUp":
+      // Navigate up the suggestions list
       EOxItemFilterSelector.highlightedIndex = Math.max(
         EOxItemFilterSelector.highlightedIndex - 1,
         0
       );
       break;
+
     case "Enter":
+      // Select the highlighted item
       if (EOxItemFilterSelector.highlightedIndex >= 0)
         toggleItemSelectorMethod(
           EOxItemFilterSelector.filteredSuggestions[
@@ -68,17 +105,26 @@ export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
           EOxItemFilterSelector
         );
       break;
+
     case "Escape":
+      // Hide suggestions
       EOxItemFilterSelector.showSuggestions = false;
       break;
   }
 }
 
+/**
+ * Updates the Fuse.js instance and suggestions when properties change.
+ *
+ * @param {Object} changedProperties - The properties that changed.
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 export function updatedSelectorMethod(
   changedProperties,
   EOxItemFilterSelector
 ) {
   if (changedProperties.has("suggestions")) {
+    // Update the Fuse.js instance with new suggestions
     EOxItemFilterSelector.fuse = new Fuse(EOxItemFilterSelector.suggestions, {
       threshold: 0.3,
     });
@@ -87,6 +133,13 @@ export function updatedSelectorMethod(
   if (changedProperties.has("query")) updateSuggestions(EOxItemFilterSelector);
 }
 
+/**
+ * Sorts and returns the suggestions based on the filter's sort method or default string comparison.
+ *
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ * @param {Array<Object>} suggestion - The suggestions to sort.
+ * @returns {Array<Object>} The sorted suggestions.
+ */
 function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
   const sortCallback =
     EOxItemFilterSelector.filterObject?.sort || ((a, b) => a.localeCompare(b));
@@ -94,6 +147,11 @@ function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
   return suggestion.sort(sortCallback).map((i) => i);
 }
 
+/**
+ * Updates the filtered suggestions based on the current query.
+ *
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 function updateSuggestions(EOxItemFilterSelector) {
   let suggestion = EOxItemFilterSelector.suggestions;
   if (EOxItemFilterSelector.query) {
@@ -109,20 +167,30 @@ function updateSuggestions(EOxItemFilterSelector) {
   EOxItemFilterSelector.highlightedIndex = -1;
 }
 
+/**
+ * Updates the filter list based on the selected items.
+ *
+ * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
+ */
 function updateFilterList(EOxItemFilterSelector) {
+  // Update the state of the filter object based on the selected items
   Object.keys(EOxItemFilterSelector.filterObject.state).forEach((k) => {
     EOxItemFilterSelector.filterObject.state[k] =
       EOxItemFilterSelector.selectedItems.map((i) => i).includes(k);
   });
+
+  // Update the stringified state of the filter object
   EOxItemFilterSelector.filterObject.stringifiedState =
     Object.keys(EOxItemFilterSelector.filterObject.state)
       .filter((k) => EOxItemFilterSelector.filterObject.state[k])
       .join(", ") || "";
 
+  // Mark the filter as dirty if there are selected items
   EOxItemFilterSelector.filterObject.dirty = Boolean(
     EOxItemFilterSelector.filterObject.stringifiedState.length > 0
   );
 
+  // Dispatch a custom event named "filter" and request an update
   EOxItemFilterSelector.dispatchEvent(new CustomEvent("filter"));
   EOxItemFilterSelector.requestUpdate();
 }

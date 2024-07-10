@@ -1,6 +1,14 @@
 import { html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 
+/**
+ * Creates a reset button for the filter object if it is dirty.
+ *
+ * @param {Object} filterObject - The filter object containing filter details.
+ * @param {number} tabIndex - The tab index for the reset button.
+ * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @returns {TemplateResult} The HTML template for the reset button.
+ */
 function createResetMethod(filterObject, tabIndex, EOxItemFilter) {
   return html`
     ${when(

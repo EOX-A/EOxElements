@@ -1,6 +1,14 @@
 import dayjs from "dayjs";
 import { indexItems } from "../../helpers";
 
+/**
+ * Applies filters to the provided items based on the given configuration and updates the EOxItemFilter instance.
+ *
+ * @param {Object} config - The configuration object for the filters.
+ * @param {Array<Object>} items - The items to be filtered.
+ * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @returns {Array<string>} The aggregated results if config.aggregateResults is specified, otherwise an empty array.
+ */
 function filterApplyMethod(config, items, EOxItemFilter) {
   // build filters
   let resultAggregation = [];
@@ -8,12 +16,15 @@ function filterApplyMethod(config, items, EOxItemFilter) {
   if (config.filterProperties.length) {
     config.filterProperties.forEach((filterProperty) => {
       const filterKeys = {};
+
+      // Function to parse values based on their format
       const parseValue = (value) => {
         return filterProperty.format === "date"
           ? dayjs(value).unix()
           : parseInt(value, 10);
       };
 
+      // Iterate over items to build filter keys
       items.forEach((item) => {
         if (filterProperty.type === "range") {
           if (Array.isArray(item[filterProperty.key])) {
@@ -55,6 +66,8 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           }
         }
       });
+
+      // Combine filter properties into the filter object
       const filterKey = filterProperty.key || filterProperty.keys.join("|");
       EOxItemFilter.filters[filterKey] = Object.assign(
         {
@@ -79,12 +92,14 @@ function filterApplyMethod(config, items, EOxItemFilter) {
     });
   }
 
+  // Render all items if matchAllWhenEmpty is true
   if (config.matchAllWhenEmpty !== false) {
     // initially render all items
     EOxItemFilter.results = EOxItemFilter.sortResults(items);
     EOxItemFilter.requestUpdate();
   }
 
+  // Aggregate results if specified in the configuration
   if (config.aggregateResults) {
     resultAggregation = Array.from(
       new Set(
@@ -96,6 +111,7 @@ function filterApplyMethod(config, items, EOxItemFilter) {
     ).sort((a, b) => a.localeCompare(b));
   }
 
+  // Build Fuse.js search keys
   const fuseKeys = [];
   Object.values(EOxItemFilter.filters).forEach((f) => {
     if (f.type === "text") {

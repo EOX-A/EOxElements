@@ -65,17 +65,6 @@ export class EOxItemFilterChipsV2 extends LitElement {
   }
 
   /**
-   * Handles the close event for a chip.
-   *
-   * @param {Event} event - The close event.
-   * @param {number} index - The index of the chip to be closed.
-   * @private
-   */
-  #handleClose(event, index) {
-    handleCloseMethod(event, index, this);
-  }
-
-  /**
    * Dispatches a custom event with the selected items.
    *
    * @private

@@ -1,3 +1,9 @@
+/**
+ * Tests that the results in the eox-itemfilter-results component are correctly displayed
+ * based on the pre-set filters provided in the state.
+ *
+ * @param {Object} state - An object representing the pre-set filters, where keys are filter names.
+ */
 const resultsWithPreSetFiltersTest = (state) => {
   cy.get("eox-itemfilter")
     .shadow()

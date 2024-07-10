@@ -1,9 +1,19 @@
+/**
+ * Tests the accordion functionality of the eox-itemfilter component to ensure only one accordion is open at a time.
+ */
 const accordionTest = () => {
+  // Set the configuration to disable multiple filters and results expansion
   cy.get("eox-itemfilter").then(($el) => {
     $el[0].config.expandMultipleFilters = false;
     $el[0].config.expandMultipleResults = false;
   });
 
+  /**
+   * Checks that only one accordion is open at a time for the given selector.
+   *
+   * @param {string} selector - The CSS selector for the accordion elements.
+   * @param {boolean} isSubcomponent - Flag indicating if the selector targets subcomponents.
+   */
   const checkExclusiveOpen = (selector, isSubcomponent) => {
     cy.get("eox-itemfilter")
       .shadow()
@@ -34,8 +44,6 @@ const accordionTest = () => {
                       .find("details")
                   : cy.get(selector).eq(j).find("details");
 
-                console.log(isSubcomponent);
-
                 accordionToCheck.should("not.have.attr", "open");
               }
             }
@@ -44,6 +52,7 @@ const accordionTest = () => {
       });
   };
 
+  // Check exclusive open behavior for filters and results
   checkExclusiveOpen("ul#filters", true);
   checkExclusiveOpen("ul#results");
 };

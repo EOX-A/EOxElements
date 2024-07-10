@@ -1,5 +1,10 @@
 import items from "../test/testItems.json";
 
+/**
+ * Generates a story configuration for the Auto Spread result.
+ *
+ * @returns {Object} The story configuration with arguments for the component.
+ */
 function AutoSpreadStory() {
   return {
     args: {

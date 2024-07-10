@@ -1,3 +1,7 @@
+/**
+ * Tests the behavior of the checkboxes within the eox-itemfilter-select component,
+ * ensuring that checkboxes can be toggled correctly.
+ */
 const spatialFilterTest = () => {
   cy.get("eox-itemfilter")
     .shadow()

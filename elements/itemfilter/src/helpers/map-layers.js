@@ -1,3 +1,10 @@
+/**
+ * Generates an array of map layer configurations.
+ *
+ * @param {Object} [geometry] - Optional geometry data to include in the Vector source.
+ * @param {string} [url] - Optional URL for the GeoJSON data source.
+ * @returns {Array<Object>} An array of map layer configurations.
+ */
 export default function getMapLayers(geometry, url) {
   return [
     {

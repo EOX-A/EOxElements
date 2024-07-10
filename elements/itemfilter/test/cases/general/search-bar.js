@@ -1,3 +1,6 @@
+/**
+ * Tests the existence of the search bar in the eox-itemfilter component.
+ */
 const searchBarTest = () => {
   cy.get("eox-itemfilter")
     .shadow()

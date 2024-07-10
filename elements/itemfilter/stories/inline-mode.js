@@ -1,5 +1,10 @@
 import items from "../test/testItems.json";
 
+/**
+ * Generates a story configuration for the InlineMode item filter.
+ *
+ * @returns {Object} The story configuration with arguments for the component.
+ */
 function InlineModeStory() {
   return {
     args: {

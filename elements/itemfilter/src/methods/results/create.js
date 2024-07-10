@@ -3,6 +3,13 @@ import { repeat } from "lit/directives/repeat.js";
 import { when } from "lit/directives/when.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
+/**
+ * Creates the item details view for the aggregation property in the EOxItemFilterResults component.
+ *
+ * @param {string} aggregationProperty - The property used for aggregation.
+ * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
+ * @returns {TemplateResult} The HTML template for the item details view.
+ */
 export function createItemDetailsMethod(
   aggregationProperty,
   EOxItemFilterResults
@@ -31,6 +38,13 @@ export function createItemDetailsMethod(
   `;
 }
 
+/**
+ * Creates the item list view for the aggregation property in the EOxItemFilterResults component.
+ *
+ * @param {string} aggregationProperty - The property used for aggregation.
+ * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
+ * @returns {TemplateResult} The HTML template for the item list view.
+ */
 export function createItemListMethod(
   aggregationProperty,
   EOxItemFilterResults

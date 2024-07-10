@@ -1,3 +1,7 @@
+/**
+ * Tests the highlighting functionality in the eox-itemfilter-results component.
+ * It types a search query and checks if the expected text is highlighted.
+ */
 const highlightResultTest = () => {
   cy.get("eox-itemfilter")
     .shadow()

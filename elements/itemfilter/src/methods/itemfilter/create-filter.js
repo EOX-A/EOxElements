@@ -2,11 +2,22 @@ import { html } from "lit";
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
 
+/**
+ * Creates a filter element based on the filter object type.
+ *
+ * @param {Object} filterObject - The filter object containing filter details.
+ * @param {number} tabIndex - The tab index for the filter element.
+ * @param {Object} EOxItemFilter - The EOxItemFilter component instance.
+ * @returns {TemplateResult} The HTML template for the filter element.
+ */
 function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
+  // Create a unique ID for the filter element by replacing '|' with '-'
   const filterId = `filter-${filterObject.key}`.replace("|", "-");
 
+  // Generate the appropriate filter element based on the filter type
   switch (filterObject.type) {
     case "text":
+      // Return a text filter element
       return html`<eox-itemfilter-text
         data-type="filter"
         slot="filter"
@@ -16,8 +27,10 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         .unstyled=${EOxItemFilter.unstyled}
         @filter=${() => EOxItemFilter.search()}
       ></eox-itemfilter-text>`;
+
     case "multiselect":
     case "select":
+      // Return a select or multiselect filter element
       return html`
         <eox-itemfilter-select
           .inlineMode=${EOxItemFilter.config.inlineMode || false}
@@ -33,6 +46,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         ></eox-itemfilter-select>
       `;
     case "range":
+      // Return a range filter element
       return html`
         <eox-itemfilter-range
           id="${filterId}"
@@ -45,6 +59,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         ></eox-itemfilter-range>
       `;
     case "spatial":
+      // Return a spatial filter element
       return html`
         <eox-itemfilter-spatial
           id="${filterId}"
@@ -55,7 +70,9 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           @filter=${() => EOxItemFilter.search()}
         ></eox-itemfilter-spatial>
       `;
+
     default:
+      // Return an empty template for unknown filter types
       return html``;
   }
 }

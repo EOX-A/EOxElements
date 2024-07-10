@@ -1,3 +1,7 @@
+/**
+ * Tests the rendering of checkboxes within the eox-itemfilter-select component.
+ * It verifies that the expected number of checkboxes are checked.
+ */
 const renderCheckboxTest = () => {
   cy.get("eox-itemfilter")
     .shadow()

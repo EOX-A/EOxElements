@@ -32,6 +32,7 @@ import {
  * @property {String} type - The type of selector ("select", "multi-select", etc.).
  * @property {Boolean} unstyled - Flag to determine if default styles should be applied.
  * @property {Number} tabIndex - The tab index for the input elements.
+ * @property {Boolean} inlineMode - State whether to enable or disable inline mode
  */
 export class EOxSelector extends LitElement {
   // Define properties with defaults and types
@@ -169,6 +170,10 @@ export class EOxSelector extends LitElement {
     leading: true,
   });
 
+  /**
+   * Initialise pre-defined selected items using `state`
+   *
+   */
   firstUpdated() {
     if (this.filterObject.state) {
       this.selectedItems = Object.keys(this.filterObject.state)
@@ -186,6 +191,8 @@ export class EOxSelector extends LitElement {
    */
   render() {
     const type = this.type.includes("multi") ? "checkbox" : "radio";
+    const selectOverflowClass =
+      this.filteredSuggestions.length > 5 ? "select-overflow" : nothing;
     return html`
       <style>
         ${!this.unstyled && styleEOX}
@@ -211,11 +218,7 @@ export class EOxSelector extends LitElement {
           </div>
         </div>`
       )}
-      <div
-        class="select-container ${this.filteredSuggestions.length > 5
-          ? "select-overflow"
-          : nothing}"
-      >
+      <div class="select-container ${selectOverflowClass}">
         <ul class="${this.type}">
           ${this.filteredSuggestions.map(
             (suggestion) => html`

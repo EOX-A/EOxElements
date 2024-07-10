@@ -1,5 +1,10 @@
 import { resetFilter } from "../../helpers/index.js";
 
+/**
+ * Resets the text filter to its default state and updates the component.
+ *
+ * @param {Object} EOxItemFilterText - The EOxItemFilterText component instance.
+ */
 export function resetTextMethod(EOxItemFilterText) {
   const searchInput =
     EOxItemFilterText.renderRoot.querySelector("input[type='text']");
@@ -8,6 +13,11 @@ export function resetTextMethod(EOxItemFilterText) {
   EOxItemFilterText.requestUpdate();
 }
 
+/**
+ * Handles input changes for the text filter and updates the filter state accordingly.
+ *
+ * @param {Object} EOxItemFilterText - The EOxItemFilterText component instance.
+ */
 export function textInputHandlerMethod(EOxItemFilterText) {
   const searchInput =
     EOxItemFilterText.renderRoot.querySelector("input[type='text']");

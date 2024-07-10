@@ -1,5 +1,10 @@
 import items from "../test/testItems.json";
 
+/**
+ * Generates a story configuration for the Sorted Multi Select item filter with pre-selected items.
+ *
+ * @returns {Object} The story configuration with arguments for the component.
+ */
 function SortedMultiSelectStory() {
   return {
     args: {

@@ -1,3 +1,6 @@
+/**
+ * Tests the behavior of the eox-itemfilter-select component to ensure multiple checkboxes can be toggled correctly.
+ */
 const multipleResultTest = () => {
   cy.get("eox-itemfilter")
     .shadow()
