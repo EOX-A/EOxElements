@@ -22,8 +22,6 @@ const accordionTest = () => {
             accordionToClick.click({ multiple: true, force: true });
             accordionToClick.should("have.attr", "open");
 
-            console.log(accordionToClick);
-
             // Check that all other accordions are closed
             for (let j = 0; j < accordions.length; j++) {
               if (i !== j) {
