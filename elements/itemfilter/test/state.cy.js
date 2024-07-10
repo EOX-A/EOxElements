@@ -56,5 +56,5 @@ describe("Item Filter Config", () => {
   it("should render the pre-set result as checked", () =>
     resultPreCheckedTest(selectedResultIndex));
 
-  it("should have a custom order", () => customOrderTest());
+  it("should have a custom order", () => customOrderTest(customOrder));
 });
