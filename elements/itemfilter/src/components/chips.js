@@ -3,7 +3,6 @@ import { map } from "lit/directives/map.js";
 import { styleEOX } from "../style.eox";
 import {
   handleChipClickMethod,
-  handleCloseMethod,
   keyboardEventListenerMethod,
 } from "../methods/chips";
 

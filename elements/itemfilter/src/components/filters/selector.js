@@ -1,5 +1,4 @@
 import { LitElement, html, nothing } from "lit";
-import { classMap } from "lit/directives/class-map.js";
 import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
@@ -8,7 +7,6 @@ import checkboxStyle from "../../../../../utils/styles/dist/checkbox.style.js";
 import radioStyle from "../../../../../utils/styles/dist/radio.style.js";
 import {
   resetSelectorMethod,
-  removeItemSelectorMethod,
   toggleItemSelectorMethod,
   handleInputSelectorMethod,
   handleKeyDownSelectorMethod,
