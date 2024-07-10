@@ -87,15 +87,25 @@ export function updatedSelectorMethod(
   if (changedProperties.has("query")) updateSuggestions(EOxItemFilterSelector);
 }
 
+function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
+  const sortCallback =
+    EOxItemFilterSelector.filterObject?.sort || ((a, b) => a.localeCompare(b));
+
+  return suggestion.sort(sortCallback).map((i) => i);
+}
+
 function updateSuggestions(EOxItemFilterSelector) {
+  let suggestion = EOxItemFilterSelector.suggestions;
   if (EOxItemFilterSelector.query) {
-    EOxItemFilterSelector.filteredSuggestions = EOxItemFilterSelector.fuse
+    suggestion = EOxItemFilterSelector.fuse
       .search(EOxItemFilterSelector.query)
       .map((result) => result.item);
-  } else {
-    EOxItemFilterSelector.filteredSuggestions =
-      EOxItemFilterSelector.suggestions;
   }
+  EOxItemFilterSelector.filteredSuggestions = getSortedSuggestions(
+    EOxItemFilterSelector,
+    suggestion
+  );
+
   EOxItemFilterSelector.highlightedIndex = -1;
 }
 

@@ -153,16 +153,6 @@ export class EOxSelector extends LitElement {
   }
 
   /**
-   * Removes an item from the selected items.
-   *
-   * @param {Number} index - The index of the item to remove.
-   * @private
-   */
-  #removeItem(index) {
-    removeItemSelectorMethod(index, this);
-  }
-
-  /**
    * Resets the selector using the resetSelectorMethod.
    */
   reset() {

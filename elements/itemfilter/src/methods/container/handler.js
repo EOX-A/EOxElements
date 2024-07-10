@@ -35,9 +35,10 @@ export function handleClickOutsideMethod(event, EOxItemFilterContainer) {
   if (
     EOxItemFilterContainer.inlineMode &&
     event.target.tagName !== "DROPDOWN-FORM" &&
-    event.target.tagName !== "EOX-ITEMFILTER-V2" &&
+    event.target.tagName !== "EOX-ITEMFILTER" &&
     EOxItemFilterContainer.showDropdown
   ) {
+    console.log(event.target.tagName);
     resetSearchMethod(EOxItemFilterContainer);
     EOxItemFilterContainer.showDropdown = false;
     EOxItemFilterContainer.requestUpdate();
