@@ -36,6 +36,7 @@ import { getTabIndex, isFiltersDirty } from "./helpers/index.js";
  * @property {Object} items - The items to be filtered.
  * @property {Object} results - The state object containing the filtered results.
  * @property {Object} filters - The state object containing the applied filters.
+ * @property {Object} selectedResult - Property with pre-selected result
  */
 export class EOxItemFilter extends TemplateElement {
   // Define properties with defaults and types
@@ -86,16 +87,6 @@ export class EOxItemFilter extends TemplateElement {
      * @type Object
      */
     this.selectedResult = null;
-  }
-
-  setConfig(config) {
-    this.config = config;
-    this.firstUpdated();
-  }
-
-  setItems(items) {
-    this.items = items;
-    this.firstUpdated();
   }
 
   /**
@@ -180,9 +171,25 @@ export class EOxItemFilter extends TemplateElement {
     this.apply();
   }
 
+  /**
+   * Called when the element is updated.
+   * Re-Initialize itemfilter when `config` and `items` changes.
+   *
+   * @param {Map} changedProperties - The properties that have changed.
+   */
   updated(changedProperties) {
     if (changedProperties.has("config") || changedProperties.has("items"))
       this.firstUpdated();
+  }
+
+  /**
+   * Updates selected result when result component triggers the "result" event.
+   *
+   * @param {{detail: Object}} evt - "result" event triggered by result component
+   */
+  updateResult(evt) {
+    this.selectedResult = evt.detail;
+    this.requestUpdate();
   }
 
   /**
@@ -267,10 +274,7 @@ export class EOxItemFilter extends TemplateElement {
               .filters=${this.filters}
               .resultAggregation=${this.#resultAggregation}
               .selectedResult=${this.selectedResult}
-              @result="${(e) => {
-                this.selectedResult = e.detail;
-                this.requestUpdate();
-              }}"
+              @result=${this.updateResult}
             ></eox-itemfilter-results>
           `
         )}
