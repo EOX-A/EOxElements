@@ -1,3 +1,5 @@
+import WebGLTileLayer from "ol/layer/WebGLTile";
+
 /**
  * Recursively traverses the schema object to extract startVals based on values of nested properties.
  *
@@ -35,7 +37,7 @@ export function getNestedStartVals(schema, nestedValues) {
  * Retrieves startVals from Query Params or style variables based on layer configuration.
  *
  * @param {import("ol/layer").Layer} layer - The layer object.
- * @param {{[key: string]: any}} layerConfig - Configuration object for the layer.
+ * @param {import("../components/layer-config").EOxLayerControlLayerConfig['layerConfig']} layerConfig - Configuration object for the layer.
  * @returns {object | null} - Object containing the startVals or null if not found.
  */
 export function getStartVals(layer, layerConfig) {
@@ -46,21 +48,21 @@ export function getStartVals(layer, layerConfig) {
   let nestedValues = {};
   // extract style variables from layer
   let styleVars =
-    layer.get("type") === "WebGLTile"
+    layer.get("type") === "WebGLTile" || layer instanceof WebGLTileLayer
       ? /** @type {import("ol/layer/WebGLTile").default} */
         (layer)["style_"]?.variables
-      : layer.get("styles")?.variables;
-  if (layerConfig.type === "style" && styleVars) {
+      : layerConfig.style?.variables;
+  if ((layerConfig.type === "style" || layerConfig.style) && styleVars) {
     nestedValues = styleVars;
 
     //@ts-expect-error
   } else if (layer.getSource()?.getTileUrlFunction?.()) {
     // Extract query parameters from tile URL
-    //@ts-ignore
+    //@ts-expect-error
     const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
 
     // Retrieve startVals based on schema and query parameters
-    //@ts-ignore
+    //@ts-expect-error
     nestedValues = Object.fromEntries(url.searchParams.entries());
   } else return null;
 

@@ -290,13 +290,12 @@ export const STORIES_LAYER_CROPOMHUSC2 = {
     url: "https://api.cropom-dev.com/crop_model/regional_forecast?region_code=HU332",
     format: "GeoJSON",
   },
-  styles: STYLES_LAYER_CROPOMHUSC2,
   properties: {
     id: "id",
     title: "Crop Yield Vector Example",
     layerConfig: {
-      type: "style",
       schema: JSONFORM_SCHEMA_LAYER_CROPOMHUSC2,
+      style: STYLES_LAYER_CROPOMHUSC2,
     },
   },
 };

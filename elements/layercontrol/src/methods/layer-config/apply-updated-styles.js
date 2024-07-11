@@ -1,12 +1,21 @@
+import VectorLayer from "ol/layer/Vector";
+import WebGLTileLayer from "ol/layer/WebGLTile";
+
 /**
  * @param {Record<string,number>} jsonformOutput
  * @param { import("ol/layer/Layer").default} layer
+ * @param { import("../../components/layer-config").EOxLayerControlLayerConfig['layerConfig']} layerConfig
  * */
-export default function (jsonformOutput, layer) {
-  const styles =
-    layer.get("type") === "WebGLTile"
-      ? /** @type {import('ol/layer/WebGLTile').default} */ (layer)["style_"]
-      : layer.get("styles");
+export default function (jsonformOutput, layer, layerConfig) {
+  // check whether the layer is Vector or Tile
+  const isTile =
+    layer.get("type") === "WebGLTile" || layer instanceof WebGLTileLayer;
+  const isVector =
+    layer.get("type") === "Vector" || layer instanceof VectorLayer;
+
+  const styles = isTile
+    ? /** @type {import('ol/layer/WebGLTile').default} */ (layer)["style_"]
+    : layerConfig.style;
   let styleVars = styles?.variables;
   if (styleVars) {
     const updatedValues = flattenObject(jsonformOutput);
@@ -16,12 +25,12 @@ export default function (jsonformOutput, layer) {
       ...updatedValues,
     };
 
-    if (layer.get("type") === "Vector") {
+    if (isVector) {
       const updatedStyles = updateVectorLayerStyle(styles);
       /** @type {import('ol/layer/Vector').default} */ (layer).setStyle(
         updatedStyles
       );
-    } else if (layer.get("type") === "WebGLTile") {
+    } else if (isTile) {
       /** @type {import('ol/layer/WebGLTile').default} */ (
         layer
       ).updateStyleVariables(updatedValues);
