@@ -37,6 +37,14 @@ const loadReRenderFormOnChangeTest = () => {
         .invoke("val")
         .should("eq", "9.0405918788");
     });
+  cy.get(jsonForm).then(($jsonForm) => {
+    $jsonForm[0].value = { title: "foobar" };
+  });
+  cy.get(jsonForm)
+    .shadow()
+    .within(() => {
+      cy.get('input[id="root[title]"]').invoke("val").should("eq", "foobar");
+    });
 };
 
 export default loadReRenderFormOnChangeTest;
