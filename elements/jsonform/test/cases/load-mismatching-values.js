@@ -17,6 +17,7 @@ const loadMisMatchingValuesTest = () => {
     html`<eox-jsonform
       .schema=${{
         type: "object",
+        required: [testVals.key1, testVals.key2],
         properties: {
           [testVals.key1]: {
             type: "string",
