@@ -1,4 +1,4 @@
-import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json"
+import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json";
 
 const SENTINEL_HUB_URL =
   "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54";
@@ -289,7 +289,9 @@ export const STORIES_LAYER_CROPOMHUSC2 = {
   type: "Vector",
   source: {
     type: "Vector",
-    url: "data:," + encodeURIComponent(JSON.stringify(FEATURE_COLLECTION_LAYER_CROPOMHUSC)),
+    url:
+      "data:," +
+      encodeURIComponent(JSON.stringify(FEATURE_COLLECTION_LAYER_CROPOMHUSC)),
     format: "GeoJSON",
   },
   properties: {
