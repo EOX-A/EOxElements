@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.8.1...jsonform-v0.8.2) (2024-07-15)
+
+
+### Bug Fixes
+
+* Value updating for existing form ([#1090](https://github.com/EOX-A/EOxElements/issues/1090)) ([f9e8d1b](https://github.com/EOX-A/EOxElements/commit/f9e8d1bd727fd41a464ca3569ac29ad2e586b341))
+
 ## [0.8.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.8.0...jsonform-v0.8.1) (2024-05-27)
 
 
