@@ -113,7 +113,7 @@ export class EOxJSONForm extends LitElement {
    */
   set value(newVal) {
     if (this.#editor && this.#editor.ready && !isEqual(this._value, newVal))
-      this.#editor.setValue(this.value);
+      this.#editor.setValue(newVal);
 
     this._value = newVal;
   }
