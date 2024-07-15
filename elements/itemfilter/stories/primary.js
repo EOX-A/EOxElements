@@ -28,7 +28,6 @@ function PrimaryStory() {
             title: "Codes",
             type: "multiselect",
             placeholder: "Search Codes",
-            inline: true,
           },
           {
             key: "themes",

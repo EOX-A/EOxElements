@@ -29,7 +29,6 @@ function InlineModeStory() {
             type: "multiselect",
             placeholder: "Search codes",
             expanded: true,
-            inline: true,
           },
           {
             key: "themes",
@@ -37,7 +36,6 @@ function InlineModeStory() {
             type: "select",
             placeholder: "Select a theme",
             expanded: true,
-            inline: false,
           },
           {
             key: "timestamp",
