@@ -3,8 +3,6 @@ import { getStartVals } from "../helpers";
 import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
-import VectorLayer from "ol/layer/Vector";
-import WebGLTileLayer from "ol/layer/WebGLTile";
 /**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
  * It allows users to input data, modify layer settings, and update the UI based on those settings.
@@ -91,17 +89,15 @@ export class EOxLayerControlLayerConfig extends LitElement {
   #handleDataChange(e) {
     this.#data = e.detail;
     if (this.layerConfig.type === "style" || this.layerConfig.style) {
-      const isVectorOrTile =
-        ["Vector", "WebGLTile"].includes(this.layer.get("type")) ||
-        this.layer instanceof VectorLayer ||
-        this.layer instanceof WebGLTileLayer;
-      if (isVectorOrTile) {
+      const supportStyleConfig =
+        "setStyle" in this.layer || "updateStyleVariables" in this.layer;
+      if (supportStyleConfig) {
         applyUpdatedStyles(this.#data, this.layer, this.layerConfig);
       } else {
         console.error(
-          `Layer type ${this.layer.get(
-            "type"
-          )} does not support styles configuration`
+          `Layer type ${
+            this.layer.get("type") ?? ""
+          } does not support styles configuration`
         );
       }
     } else {

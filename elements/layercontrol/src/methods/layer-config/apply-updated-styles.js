@@ -1,6 +1,3 @@
-import VectorLayer from "ol/layer/Vector";
-import WebGLTileLayer from "ol/layer/WebGLTile";
-
 /**
  * @param {Record<string,number>} jsonformOutput
  * @param { import("ol/layer/Layer").default} layer
@@ -8,10 +5,8 @@ import WebGLTileLayer from "ol/layer/WebGLTile";
  * */
 export default function (jsonformOutput, layer, layerConfig) {
   // check whether the layer is Vector or Tile
-  const isTile =
-    layer.get("type") === "WebGLTile" || layer instanceof WebGLTileLayer;
-  const isVector =
-    layer.get("type") === "Vector" || layer instanceof VectorLayer;
+  const isTile = "updateStyleVariables" in layer;
+  const isVector = "setStyle" in layer;
 
   const styles = isTile
     ? /** @type {import('ol/layer/WebGLTile').default} */ (layer)["style_"]
@@ -25,15 +20,16 @@ export default function (jsonformOutput, layer, layerConfig) {
       ...updatedValues,
     };
 
-    if (isVector) {
+    // check if it supports updating the variables using ol first
+    if (isTile) {
+      /** @type {import('ol/layer/WebGLTile').default} */ (
+        layer
+      ).updateStyleVariables(updatedValues);
+    } else if (isVector) {
       const updatedStyles = updateVectorLayerStyle(styles);
       /** @type {import('ol/layer/Vector').default} */ (layer).setStyle(
         updatedStyles
       );
-    } else if (isTile) {
-      /** @type {import('ol/layer/WebGLTile').default} */ (
-        layer
-      ).updateStyleVariables(updatedValues);
     }
   }
 }
@@ -45,7 +41,7 @@ const flattenObject = (obj) => {
   /**
    * the flattened object to be returned
    *  @type {Record<string,number>} */
-  const falt = {};
+  const flat = {};
   // loop through the keys of the object
   for (const key in obj) {
     // if the property is of type object
@@ -56,16 +52,17 @@ const flattenObject = (obj) => {
       );
       // assign all of its values to the flat object to be returned
       for (const nestedKey in flatObject) {
-        falt[nestedKey] = flatObject?.[nestedKey];
+        flat[nestedKey] = flatObject?.[nestedKey];
       }
     } else {
       // the property is of a primitive value
       // assign it to the object to be returned
-      falt[key] = obj?.[key];
+      flat[key] = obj?.[key];
     }
   }
-  return falt;
+  return flat;
 };
+
 /**
  * updating the variables assigned in the layer style
  * from the `styles.variables` property
@@ -85,7 +82,7 @@ function updateVectorLayerStyle(styles) {
     for (const key in variables) {
       // ol styles expects numbers to be assigned as typeof number
       if (typeof variables[key] === "number") {
-        //@ts-expect-error expects a string param and got a numbed
+        //@ts-expect-error ol styles expects number values to be assigned as type number
         rawStyle = rawStyle.replaceAll(`["var","${key}"]`, variables[key]);
       } else {
         // replace all styles variables set of the specific key with the variables value
