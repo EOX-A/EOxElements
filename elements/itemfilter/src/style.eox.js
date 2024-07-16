@@ -334,12 +334,14 @@ button.icon {
 .autocomplete-container-wrapper::-webkit-scrollbar {
   display: none;
 }
-.chip-container {
+.chip-wrapper {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-.chip-container::-webkit-scrollbar {
+.chip-wrapper::-webkit-scrollbar {
   display: none;
+  width: 0;
+  background: transparent;
 }
 .autocomplete-input,
 .text-input {
