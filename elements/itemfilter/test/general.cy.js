@@ -20,10 +20,6 @@ describe("Item Filter Config", () => {
    * Runs before each test case to mount the eox-itemfilter component and configure it.
    */
   beforeEach(() => {
-    const isExternalFilter = Cypress.mocha
-      .getRunner()
-      .suite.ctx.currentTest.title.includes("external filter");
-
     cy.mount(`<eox-itemfilter></eox-itemfilter>`)
       .as("eox-itemfilter")
       .then(($el) => {
