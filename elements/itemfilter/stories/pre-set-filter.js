@@ -1,11 +1,11 @@
 import items from "../test/testItems.json";
 
 /**
- * Generates a story configuration for the Sorted Multi Select item filter with pre-selected items.
+ * Generates a story configuration for the pre-set filter state
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-function SortedMultiSelectStory() {
+function PreSetFilterStory() {
   return {
     args: {
       config: {
@@ -16,7 +16,6 @@ function SortedMultiSelectStory() {
             title: "Theme",
             type: "multiselect",
             expanded: true,
-            sort: (a, b) => b.localeCompare(a),
             state: {
               air: true,
               agriculture: true,
@@ -29,4 +28,4 @@ function SortedMultiSelectStory() {
   };
 }
 
-export default SortedMultiSelectStory;
+export default PreSetFilterStory;

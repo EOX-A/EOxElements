@@ -4,9 +4,8 @@ import { html } from "lit";
 import {
   AutoSpreadStory,
   InlineModeStory,
-  MultiSelectStory,
+  PreSetFilterStory,
   PrimaryStory,
-  SortedMultiSelectStory,
 } from "./index.js";
 
 export default {
@@ -26,16 +25,6 @@ export default {
 export const Primary = PrimaryStory();
 
 /**
- * a story configuration for the Multi Select item filter with pre-selected items.
- */
-export const MultiSelect = MultiSelectStory();
-
-/**
- * a story configuration for the Sorted Multi Select item filter with pre-selected items.
- */
-export const SortedMultiSelect = SortedMultiSelectStory();
-
-/**
  * a story configuration for the Auto Spread result.
  */
 export const AutoSpread = AutoSpreadStory();
@@ -44,3 +33,8 @@ export const AutoSpread = AutoSpreadStory();
  * a story configuration for the InlineMode item filter.
  */
 export const InlineMode = InlineModeStory();
+
+/**
+ * a story configuration for the pre-set item filter.
+ */
+export const PreSetFilter = PreSetFilterStory();
