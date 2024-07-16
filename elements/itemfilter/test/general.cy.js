@@ -9,6 +9,7 @@ import {
   disableHighlightTest,
   accordionTest,
   spatialFilterTest,
+  externalFilterTest,
 } from "./cases/general/";
 
 /**
@@ -19,6 +20,10 @@ describe("Item Filter Config", () => {
    * Runs before each test case to mount the eox-itemfilter component and configure it.
    */
   beforeEach(() => {
+    const isExternalFilter = Cypress.mocha
+      .getRunner()
+      .suite.ctx.currentTest.title.includes("external filter");
+
     cy.mount(`<eox-itemfilter></eox-itemfilter>`)
       .as("eox-itemfilter")
       .then(($el) => {
@@ -80,4 +85,9 @@ describe("Item Filter Config", () => {
    */
   it("should show the map when spatial filter is enabled", () =>
     spatialFilterTest());
+
+  /**
+   * Test case to check whether itemfilter is using external filter correctly or not.
+   */
+  it("should run external filter", () => externalFilterTest());
 });

@@ -11,8 +11,8 @@ async function filterExternal(items, filters, config) {
   const response = await fetch(`${config.externalFilter(items, filters)}`);
   const jsonData = await response.json();
 
-  // Return the 'features' array from the parsed JSON data
-  return jsonData.features;
+  // Return the array from the parsed JSON data
+  return jsonData;
 }
 
 export default filterExternal;

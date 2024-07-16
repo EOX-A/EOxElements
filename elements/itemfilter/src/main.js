@@ -22,6 +22,7 @@ import {
   createResetMethod,
   resetFilterMethod,
 } from "./methods/itemfilter";
+import _debounce from "lodash.debounce";
 import { TemplateElement } from "../../../utils/templateElement";
 import { getTabIndex, isFiltersDirty } from "./helpers/index.js";
 
@@ -87,6 +88,13 @@ export class EOxItemFilter extends TemplateElement {
      * @type Object
      */
     this.selectedResult = null;
+
+    /**
+     * @type Function
+     */
+    this.search = _debounce(this.searchHandler, 100, {
+      leading: true,
+    });
   }
 
   /**
@@ -105,7 +113,7 @@ export class EOxItemFilter extends TemplateElement {
    * Performs a search based on the current configuration and items.
    * Requests an update after the search completes.
    */
-  async search() {
+  async searchHandler() {
     await searchMethod(this.#config, this.#items, this);
     this.dispatchEvent(
       new CustomEvent("filter", {
