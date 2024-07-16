@@ -52,12 +52,6 @@ export const ELEMENT_CONFIG = Object.freeze({
   onFilter: () => {},
 
   /**
-   * Callback that is triggered on item selection
-   * @returns selected item
-   */
-  onSelect: () => {},
-
-  /**
    * Display results list
    */
   showResults: true,

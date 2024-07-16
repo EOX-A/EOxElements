@@ -81,7 +81,6 @@ export function createItemListMethod(
                 ] === item[config.titleProperty] || nothing}
                 @click=${() => {
                   EOxItemFilterResults.selectedResult = item;
-                  config.onSelect(item);
                   EOxItemFilterResults.dispatchEvent(
                     new CustomEvent("result", {
                       detail: item,

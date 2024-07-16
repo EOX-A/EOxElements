@@ -189,6 +189,13 @@ export class EOxItemFilter extends TemplateElement {
    */
   updateResult(evt) {
     this.selectedResult = evt.detail;
+    this.dispatchEvent(
+      new CustomEvent("select", {
+        detail: this.selectedResult,
+        bubbles: true,
+        composed: true,
+      })
+    );
     this.requestUpdate();
   }
 
