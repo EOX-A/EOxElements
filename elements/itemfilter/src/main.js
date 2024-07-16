@@ -107,6 +107,16 @@ export class EOxItemFilter extends TemplateElement {
    */
   async search() {
     await searchMethod(this.#config, this.#items, this);
+    this.dispatchEvent(
+      new CustomEvent("filter", {
+        detail: {
+          results: this.results,
+          filters: this.filters,
+        },
+        bubbles: true,
+        composed: true,
+      })
+    );
     if (this.config?.inlineMode)
       this.renderRoot.querySelector("eox-itemfilter-container").updateInline();
     this.requestUpdate();

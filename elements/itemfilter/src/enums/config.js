@@ -46,12 +46,6 @@ export const ELEMENT_CONFIG = Object.freeze({
   matchAllWhenEmpty: true,
 
   /**
-   * Callback that is triggered on item search
-   * @returns result items
-   */
-  onFilter: () => {},
-
-  /**
    * Display results list
    */
   showResults: true,
