@@ -15,6 +15,7 @@ function createResetMethod(filterObject, tabIndex, EOxItemFilter) {
       filterObject.dirty,
       () => html`
         <button
+          type="button"
           tabindex=${tabIndex}
           slot="reset-button"
           class="reset-icon icon"

@@ -283,6 +283,7 @@ export class EOxItemFilter extends TemplateElement {
                     isFiltersDirty(this.filters),
                   () => html`
                     <button
+                      type="button"
                       id="filter-reset"
                       class="outline small icon-text reset-icon"
                       data-cy="filter-reset"
