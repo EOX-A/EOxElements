@@ -576,12 +576,26 @@ export const ABCompare = {
       ></eox-map>
     </eox-map-compare>
     <button
-      @click=${() => {
-        const compareContainer = document.querySelector("eox-map-compare");
-        compareContainer.disabled = !compareContainer.disabled;
-      }}
+      @click=${() =>
+        document
+          .querySelector("eox-map-compare")
+          .setAttribute("enabled", "first")}
     >
-      toggle
+      First
+    </button>
+    <button
+      @click=${() =>
+        document
+          .querySelector("eox-map-compare")
+          .setAttribute("enabled", "second")}
+    >
+      Second
+    </button>
+    <button
+      @click=${() =>
+        document.querySelector("eox-map-compare").removeAttribute("enabled")}
+    >
+      Both (default)
     </button>
   `,
 };

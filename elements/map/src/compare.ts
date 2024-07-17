@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { when } from "lit/directives/when.js";
+import { choose } from "lit/directives/choose.js";
 import { property } from "lit/decorators.js";
 import { TemplateElement } from "../../../utils/templateElement";
 
@@ -10,8 +10,8 @@ export class EOxMapCompare extends TemplateElement {
   @property()
   value = 50;
 
-  @property()
-  disabled = true;
+  @property({ type: String })
+  enabled = "true";
 
   render() {
     return html`
@@ -105,9 +105,12 @@ export class EOxMapCompare extends TemplateElement {
           appearance: none;
         }
       </style>
-      ${when(
-        this.disabled,
-        () => html` <slot name="first"></slot> `,
+      ${choose(
+        this.enabled,
+        [
+          ["first", () => html`<slot name="first"></slot>`],
+          ["second", () => html`<slot name="second"></slot>`],
+        ],
         () => html`
           <div class="eox-map-compare">
             <div class="eox-map-compare__first">
