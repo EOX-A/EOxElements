@@ -26,7 +26,6 @@ export class EOxMapCompare extends TemplateElement {
         .eox-map-compare::after {
           content: "";
           display: block;
-          padding-bottom: 50%;
         }
         .eox-map-compare__first,
         .eox-map-compare__second {
