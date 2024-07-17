@@ -20,6 +20,7 @@ export const styleEOX = `
     #000000 20%,
     transparent
   );
+  --background-color: #fff;
 }
 * {
   font-family: Roboto, sans-serif;
@@ -131,6 +132,7 @@ ul li {
 }
 section {
   position: relative;
+  background-color: var(--background-color);
 }
 button#filter-reset {
   position: absolute;
