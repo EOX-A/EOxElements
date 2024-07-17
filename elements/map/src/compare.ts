@@ -25,11 +25,11 @@ export class EOxMapCompare extends TemplateElement {
           --thumb-w: 0.2rem;
 
           position: relative;
+          height: 100%;
         }
         .eox-map-compare::after {
           content: "";
           display: block;
-          padding-bottom: 50%;
         }
         .eox-map-compare__first,
         .eox-map-compare__second {
