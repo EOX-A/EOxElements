@@ -21,6 +21,7 @@ export class EOxMapCompare extends TemplateElement {
           --thumb-w: 0.2rem;
 
           position: relative;
+          height: 100%;
         }
         .eox-map-compare::after {
           content: "";
