@@ -1,4 +1,5 @@
 import { html } from "lit";
+import { choose } from "lit/directives/choose.js";
 import { property } from "lit/decorators.js";
 import { TemplateElement } from "../../../utils/templateElement";
 
@@ -8,6 +9,9 @@ type HTMLElementEvent<T extends HTMLElement> = Event & {
 export class EOxMapCompare extends TemplateElement {
   @property()
   value = 50;
+
+  @property({ type: String })
+  enabled = "true";
 
   render() {
     return html`
@@ -101,23 +105,32 @@ export class EOxMapCompare extends TemplateElement {
           appearance: none;
         }
       </style>
-      <div class="eox-map-compare">
-        <div class="eox-map-compare__first">
-          <slot name="first"></slot>
-        </div>
-        <div class="eox-map-compare__second">
-          <slot name="second"></slot>
-        </div>
-        <input
-          type="range"
-          class="eox-map-compare__range"
-          min="0"
-          max="100"
-          value=${this.value}
-          @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
-            (this.value = parseInt(evt.target.value))}
-        />
-      </div>
+      ${choose(
+        this.enabled,
+        [
+          ["first", () => html`<slot name="first"></slot>`],
+          ["second", () => html`<slot name="second"></slot>`],
+        ],
+        () => html`
+          <div class="eox-map-compare">
+            <div class="eox-map-compare__first">
+              <slot name="first"></slot>
+            </div>
+            <div class="eox-map-compare__second">
+              <slot name="second"></slot>
+            </div>
+            <input
+              type="range"
+              class="eox-map-compare__range"
+              min="0"
+              max="100"
+              value=${this.value}
+              @input=${(evt: HTMLElementEvent<HTMLInputElement>) =>
+                (this.value = parseInt(evt.target.value))}
+            />
+          </div>
+        `
+      )}
     `;
   }
 }
