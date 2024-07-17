@@ -38,4 +38,4 @@ jobs:
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
           npm run build && \
           npm version prerelease --preid ${{ inputs.preid }} && \
-          npm publish --access=public
+          npm publish --access=public --tag dev
