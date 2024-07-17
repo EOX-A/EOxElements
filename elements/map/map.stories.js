@@ -575,6 +575,14 @@ export const ABCompare = {
         .layers=${args.layersB}
       ></eox-map>
     </eox-map-compare>
+    <button
+      @click=${() => {
+        const compareContainer = document.querySelector("eox-map-compare");
+        compareContainer.disabled = !compareContainer.disabled;
+      }}
+    >
+      toggle
+    </button>
   `,
 };
 
