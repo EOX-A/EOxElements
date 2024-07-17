@@ -92,11 +92,6 @@ export class EOxSelector extends LitElement {
     this.type = "select";
 
     /**
-     * @type Object
-     */
-    this.fuse = new Fuse(this.suggestions, { threshold: 0.3 });
-
-    /**
      * @type Boolean
      */
     this.unstyled = false;

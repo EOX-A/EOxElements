@@ -53,7 +53,7 @@ export function toggleItemSelectorMethod(item, EOxItemFilterSelector) {
       EOxItemFilterSelector.showSuggestions = false;
     }
   }
-  EOxItemFilterSelector.query = "";
+  // EOxItemFilterSelector.query = "";
 
   // Update suggestions and filter list
   updateSuggestions(EOxItemFilterSelector);
@@ -123,14 +123,9 @@ export function updatedSelectorMethod(
   changedProperties,
   EOxItemFilterSelector
 ) {
-  if (changedProperties.has("suggestions")) {
-    // Update the Fuse.js instance with new suggestions
-    EOxItemFilterSelector.fuse = new Fuse(EOxItemFilterSelector.suggestions, {
-      threshold: 0.3,
-    });
+  if (changedProperties.has("suggestions") || changedProperties.has("query")) {
     updateSuggestions(EOxItemFilterSelector);
   }
-  if (changedProperties.has("query")) updateSuggestions(EOxItemFilterSelector);
 }
 
 /**
@@ -153,15 +148,18 @@ function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
  * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 function updateSuggestions(EOxItemFilterSelector) {
-  let suggestion = EOxItemFilterSelector.suggestions;
+  let filteredSuggestion;
   if (EOxItemFilterSelector.query) {
-    suggestion = EOxItemFilterSelector.fuse
+    const fuse = new Fuse(EOxItemFilterSelector.suggestions, {
+      threshold: 0.4,
+    });
+    filteredSuggestion = fuse
       .search(EOxItemFilterSelector.query)
       .map((result) => result.item);
   }
   EOxItemFilterSelector.filteredSuggestions = getSortedSuggestions(
     EOxItemFilterSelector,
-    suggestion
+    filteredSuggestion || EOxItemFilterSelector.suggestions
   );
 
   EOxItemFilterSelector.highlightedIndex = -1;
