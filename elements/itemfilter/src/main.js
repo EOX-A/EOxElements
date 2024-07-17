@@ -115,6 +115,9 @@ export class EOxItemFilter extends TemplateElement {
    */
   async searchHandler() {
     await searchMethod(this.#config, this.#items, this);
+    /**
+     * Fires when the filters are changed; event detail includes `filters` and `results`
+     */
     this.dispatchEvent(
       new CustomEvent("filter", {
         detail: {
@@ -207,6 +210,9 @@ export class EOxItemFilter extends TemplateElement {
    */
   updateResult(evt) {
     this.selectedResult = evt.detail;
+    /**
+     * Fires when a result is selected; event detail is `selectedResult`
+     */
     this.dispatchEvent(
       new CustomEvent("select", {
         detail: this.selectedResult,
