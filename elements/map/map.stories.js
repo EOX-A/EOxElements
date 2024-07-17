@@ -512,6 +512,9 @@ export const TooltipWithPropertyTransform = {
   `,
 };
 
+/**
+ * Sync the views of two maps using the `sync` attribute (e.g. `sync="eox-map#a"`).
+ */
 export const MapSync = {
   args: {
     layers: [
@@ -543,6 +546,14 @@ export const MapSync = {
   `,
 };
 
+/**
+ * To compare two maps, wrap them in an `<eox-map-compare>` element and assign them to the slot `first` and `second`.
+ * Also use the `sync` attribute so both move their view together.
+ *
+ * `eox-map-compare` also takes a `value` property (0 - 100) which determines the position of the comparison slider;
+ * and an `enabled` attribute, which can be either `"first"` (only left map visible), `"second"` (only second map visible)
+ * or `undefined` (default, both visible).
+ */
 export const ABCompare = {
   args: {
     layersA: [{ type: "Tile", source: { type: "OSM" } }],
