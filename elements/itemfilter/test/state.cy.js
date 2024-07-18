@@ -33,6 +33,7 @@ describe("Item Filter Config", () => {
         const eoxItemFilter = $el[0];
         Object.assign(eoxItemFilter, {
           config: {
+            idProperty: "title",
             titleProperty: "title",
             filterProperties: [
               {

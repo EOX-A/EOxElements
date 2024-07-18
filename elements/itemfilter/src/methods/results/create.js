@@ -57,8 +57,8 @@ export function createItemListMethod(
   const config = EOxItemFilterResults.config;
 
   const className = (item) =>
-    EOxItemFilterResults.selectedResult?.[config.titleProperty] ===
-    item[config.titleProperty]
+    EOxItemFilterResults.selectedResult?.[config.idProperty] ===
+    item[config.idProperty]
       ? "highlighted"
       : nothing;
 
@@ -69,25 +69,21 @@ export function createItemListMethod(
         (item) => item.id,
         (item) => html`
           <li class=${className(item)}>
-            <label>
-              <input
-                data-cy="result-radio"
-                type="radio"
-                class="result-radio"
-                name="result"
-                id="${item.id}"
-                ?checked=${EOxItemFilterResults.selectedResult?.[
-                  config.titleProperty
-                ] === item[config.titleProperty] || nothing}
-                @click=${() => {
+            <span
+              id="${item.id}"
+              @click=${() => {
+                if (EOxItemFilterResults.selectedResult === item) {
+                  EOxItemFilterResults.selectedResult = null;
+                } else {
                   EOxItemFilterResults.selectedResult = item;
-                  EOxItemFilterResults.dispatchEvent(
-                    new CustomEvent("result", {
-                      detail: item,
-                    })
-                  );
-                }}
-              />
+                }
+                EOxItemFilterResults.dispatchEvent(
+                  new CustomEvent("result", {
+                    detail: EOxItemFilterResults.selectedResult,
+                  })
+                );
+              }}
+            >
               ${when(
                 EOxItemFilterResults.hasTemplate("result"),
                 () =>
@@ -97,12 +93,27 @@ export function createItemListMethod(
                     `result-${item.id}`
                   ),
                 () => html`
-                  <span class="title"
-                    >${unsafeHTML(item[config.titleProperty])}</span
-                  >
+                  ${when(
+                    config.subTitleProperty,
+                    () => html`
+                      <div class="title-container">
+                        <span class="title"
+                          >${unsafeHTML(item[config.titleProperty])}</span
+                        >
+                        <span class="subtitle"
+                          >${unsafeHTML(item[config.subTitleProperty])}</span
+                        >
+                      </div>
+                    `,
+                    () => html`
+                      <span class="title"
+                        >${unsafeHTML(item[config.titleProperty])}</span
+                      >
+                    `
+                  )}
                 `
               )}
-            </label>
+            </span>
           </li>
         `
       )}

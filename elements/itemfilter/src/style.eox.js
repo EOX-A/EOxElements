@@ -55,9 +55,18 @@ details > summary::-webkit-details-marker {
 }
 
 .title {
-  font-size: small;
+  font-size: 13px;
   align-items: center;
   text-transform: capitalize;
+}
+.subtitle {
+  font-size: 11px;
+  opacity: .7;
+  margin-top: 6px;
+}
+.title-container {
+  display: flex;
+  flex-direction: column;
 }
 h6.main-heading {
   font-size: 1rem;
@@ -127,7 +136,7 @@ section:not(section:last-of-type) {
   display: flex;
   flex-direction: column;
 }
-ul li {
+ul:not(#filters) > li {
   padding: 5px 10px;
 }
 section {
