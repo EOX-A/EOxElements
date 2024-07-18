@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.5...storytelling-v1.0.6) (2024-07-09)
+
+
+### Bug Fixes
+
+* Validation for STAC layers  ([#1080](https://github.com/EOX-A/EOxElements/issues/1080)) ([cc5f5db](https://github.com/EOX-A/EOxElements/commit/cc5f5dba3295c9e2ee80fa7877826818f555b754))
+
 ## [1.0.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.4...storytelling-v1.0.5) (2024-06-21)
 
 

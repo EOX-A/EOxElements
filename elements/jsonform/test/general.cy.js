@@ -8,6 +8,8 @@ import {
   loadReRenderFormOnChangeTest,
   loadMarkdownTest,
   triggerChangeEventTest,
+  loadValuesTest,
+  loadMisMatchingValuesTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -21,4 +23,6 @@ describe("Jsonform", () => {
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
   it("loads the markdown editor", () => loadMarkdownTest());
   it("triggers a change event when typing", () => triggerChangeEventTest());
+  it("loads values", () => loadValuesTest());
+  it("loads mismatching values", () => loadMisMatchingValuesTest());
 });

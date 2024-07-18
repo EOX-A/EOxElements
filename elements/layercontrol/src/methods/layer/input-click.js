@@ -15,10 +15,9 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
     /**
      * @type NodeListOf<Element & {layer: any, requestUpdate: function}>
      */
-    const siblings =
-      EOxLayerControlLayer.parentNode.parentNode.querySelectorAll(
-        "li > eox-layercontrol-layer"
-      );
+    const siblings = EOxLayerControlLayer.closest(
+      ".layers > ul"
+    ).querySelectorAll("eox-layercontrol-layer");
 
     // Loop through the sibling layers to handle exclusive visibility.
     siblings.forEach((sibling) => {

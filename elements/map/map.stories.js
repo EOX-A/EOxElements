@@ -121,6 +121,35 @@ export const WMTSCapabilitiesLayer = {
   },
 };
 
+/**
+ * `WMTS` data can also be accessed directly without the need of fetching the capabilities.
+ * A TileGrid can be defined via the `tileGrid`-property of the Source
+ */
+export const WMTSTileGrid = {
+  args: {
+    center: [20, 40],
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "WMTS",
+          url: "https://tiles.maps.eox.at/wmts",
+          layer: "s2cloudless-2017_3857",
+          style: "default",
+          matrixSet: "GoogleMapsCompatible",
+          tileGrid: {
+            tileSize: [128, 128],
+          },
+        },
+      },
+    ],
+    zoom: 5,
+  },
+};
+
 export const STACLayer = {
   args: {
     center: [-122.38, 46.1],
@@ -143,6 +172,38 @@ export const STACLayer = {
       },
     ],
     zoom: 7,
+  },
+};
+
+export const GeoTIFFLayer = {
+  args: {
+    center: [5, 16.3],
+    layers: [
+      {
+        type: "WebGLTile",
+        properties: {
+          id: "geotiffLayer",
+        },
+        source: {
+          type: "GeoTIFF",
+          sources: [
+            {
+              url: "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif",
+            },
+          ],
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+    zoom: 8,
   },
 };
 
@@ -451,6 +512,9 @@ export const TooltipWithPropertyTransform = {
   `,
 };
 
+/**
+ * Sync the views of two maps using the `sync` attribute (e.g. `sync="eox-map#a"`).
+ */
 export const MapSync = {
   args: {
     layers: [
@@ -482,6 +546,14 @@ export const MapSync = {
   `,
 };
 
+/**
+ * To compare two maps, wrap them in an `<eox-map-compare>` element and assign them to the slot `first` and `second`.
+ * Also use the `sync` attribute so both move their view together.
+ *
+ * `eox-map-compare` also takes a `value` property (0 - 100) which determines the position of the comparison slider;
+ * and an `enabled` attribute, which can be either `"first"` (only left map visible), `"second"` (only second map visible)
+ * or `undefined` (default, both visible).
+ */
 export const ABCompare = {
   args: {
     layersA: [{ type: "Tile", source: { type: "OSM" } }],
@@ -514,6 +586,28 @@ export const ABCompare = {
         .layers=${args.layersB}
       ></eox-map>
     </eox-map-compare>
+    <button
+      @click=${() =>
+        document
+          .querySelector("eox-map-compare")
+          .setAttribute("enabled", "first")}
+    >
+      First
+    </button>
+    <button
+      @click=${() =>
+        document
+          .querySelector("eox-map-compare")
+          .setAttribute("enabled", "second")}
+    >
+      Second
+    </button>
+    <button
+      @click=${() =>
+        document.querySelector("eox-map-compare").removeAttribute("enabled")}
+    >
+      Both (default)
+    </button>
   `,
 };
 

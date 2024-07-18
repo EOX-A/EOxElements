@@ -6,6 +6,7 @@ import {
   checkPreOpenLayerTools,
   checkPreOpenSection,
   disableDrag,
+  exclusiveLayers,
   hideLayers,
   emptyGroup,
   renderOptionalLayer,
@@ -30,6 +31,9 @@ describe("LayerControl", () => {
 
   // Test to validate the hiding of layers
   it("hides layers correctly", () => hideLayers());
+
+  // Test to verify that layers with `layerContorlExclusive` are shown/hidden exclusively
+  it("supports exclusive layers", () => exclusiveLayers());
 
   // Test if groups with no layers are shown as not expandable
   it("shows groups with no layers as not expandable", () => emptyGroup());
