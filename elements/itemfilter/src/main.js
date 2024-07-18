@@ -237,7 +237,7 @@ export class EOxItemFilter extends TemplateElement {
       </style>
       <form
         id="itemfilter"
-        class=${this.config.inlineMode ? "inline" : nothing}
+        class=${this.config?.inlineMode ? "inline" : nothing}
         @submit="${(evt) => evt.preventDefault()}"
       >
         ${when(
