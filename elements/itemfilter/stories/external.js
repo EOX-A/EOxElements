@@ -25,7 +25,7 @@ function ExternalStory() {
             title: "Completed",
             type: "multiselect",
             expanded: true,
-            filterKeys: ["true", "false"],
+            filterKeys: [true, false],
             state: {
               true: true,
             },
@@ -35,7 +35,7 @@ function ExternalStory() {
             title: "User ID",
             type: "multiselect",
             expanded: true,
-            filterKeys: ["1", "2", "3"],
+            filterKeys: [1, 2, 3],
           },
         ],
       },

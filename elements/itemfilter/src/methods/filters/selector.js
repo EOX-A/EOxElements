@@ -165,14 +165,16 @@ function updateSuggestions(EOxItemFilterSelector) {
   // if `filterKeys` is defined, force filter keys
   if (EOxItemFilterSelector.filterObject?.filterKeys) {
     EOxItemFilterSelector.filteredSuggestions =
-      EOxItemFilterSelector.filterObject?.filterKeys;
+      EOxItemFilterSelector.filterObject?.filterKeys.map((k) => `${k}`);
     EOxItemFilterSelector.filterObject.state =
-      EOxItemFilterSelector.filterObject?.filterKeys.reduce((acc, curr) => {
-        if (!(curr in acc)) {
-          acc[curr] = undefined;
-        }
-        return acc;
-      }, EOxItemFilterSelector.filterObject.state);
+      EOxItemFilterSelector.filterObject?.filterKeys
+        .map((k) => `${k}`)
+        .reduce((acc, curr) => {
+          if (!(curr in acc)) {
+            acc[curr] = undefined;
+          }
+          return acc;
+        }, EOxItemFilterSelector.filterObject.state);
   }
 
   EOxItemFilterSelector.highlightedIndex = -1;
