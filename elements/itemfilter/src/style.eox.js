@@ -138,7 +138,7 @@ section {
 button#filter-reset {
   position: absolute;
   top: 4px;
-  right: 0;
+  right: 4px;
   padding: 2px 10px;
 }
 .count {
