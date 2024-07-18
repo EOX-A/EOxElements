@@ -17,6 +17,9 @@ form#itemfilter {
   display: flex;
   flex-direction: column;
 }
+form#itemfilter:not(.inline) {
+  overflow-y: auto;
+}
 details {
   width: 100%;
 }

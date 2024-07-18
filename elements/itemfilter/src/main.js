@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { html, nothing } from "lit";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { style } from "./style";
@@ -235,7 +235,11 @@ export class EOxItemFilter extends TemplateElement {
         ${!this.unstyled && allStyle}
         ${this.styleOverride}
       </style>
-      <form id="itemfilter" @submit="${(evt) => evt.preventDefault()}">
+      <form
+        id="itemfilter"
+        class=${this.config.inlineMode ? "inline" : nothing}
+        @submit="${(evt) => evt.preventDefault()}"
+      >
         ${when(
           this.config?.filterProperties,
           () => html`
