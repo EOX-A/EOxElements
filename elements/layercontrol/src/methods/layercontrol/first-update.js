@@ -1,4 +1,4 @@
-import { getElement } from '../../../../../utils/getElement.js';
+import { getElement } from '../../../../../utils';
 
 /**
  * Retrieves the EOxMap element based on the provided selector in EOxLayerControl's 'for' property.
@@ -8,15 +8,15 @@ import { getElement } from '../../../../../utils/getElement.js';
  * @returns {import("@eox/map/main").EOxMap | null} The EOxMap element or null if not found.
  */
 const firstUpdatedMethod = (EOxLayerControl) => {
-  const mapElement = getElement(EOxLayerControl.for);
+  const foundElement = getElement(EOxLayerControl.for);
 
   // Check if the element exists and its map property differs from EOxLayerControl.map
-  if (mapElement && mapElement.map !== EOxLayerControl.map) {
+  if (foundElement && foundElement.map !== EOxLayerControl.map) {
     // Update the EOxLayerControl's map property
-    EOxLayerControl.map = mapElement.map;
+    EOxLayerControl.map = foundElement.map;
   }
 
-  return mapElement.map;
+  return foundElement.map;
 };
 
 export default firstUpdatedMethod;
