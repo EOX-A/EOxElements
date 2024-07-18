@@ -29,6 +29,9 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - name: Install dependencies 🔧
         run: npm ci
+      - name: Get Timestamp 🕒
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +%s)"
       - name: Build and publish package 🚀
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
@@ -37,5 +40,5 @@ jobs:
           npm run styles && \
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
           npm run build && \
-          npm version prerelease --preid ${{ inputs.preid }} && \
+          npm version prerelease --preid ${{ inputs.preid }}.${{ steps.timestamp.outputs.timestamp }} && \
           npm publish --access=public --tag ${{ inputs.preid }}
