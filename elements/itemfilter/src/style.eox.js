@@ -133,6 +133,7 @@ ul li {
 section {
   position: relative;
   background-color: var(--background-color);
+  padding: 4px;
 }
 button#filter-reset {
   position: absolute;
@@ -181,11 +182,10 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
   width: 14px;
 }
 .inline-content {
-  padding: 4px;
   border: 1.5px solid var(--secondary-color);
   border-radius: 4px;
   position: absolute;
-  width: calc(100% - 10px);
+  width: calc(100% - 3px);
   max-height: 300px;
   overflow-y: auto;
   background: var(--inline-bg-color);

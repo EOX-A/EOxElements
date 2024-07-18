@@ -221,7 +221,7 @@ export class EOxItemFilterContainer extends LitElement {
                 >
                   <input
                     autocomplete="off"
-                    id="itemfilter-input-search"
+                    id="eox-itemfilter-input-search"
                     type="text"
                     @click="${this.#handleToggleDropdown}"
                     @focus="${this.#handleShowDropdownOnFocus}"

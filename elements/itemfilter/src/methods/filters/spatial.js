@@ -9,7 +9,7 @@ export function resetSpatialMethod(EOxItemFilterSpatial) {
   resetFilter(EOxItemFilterSpatial.filterObject);
 
   const spatialFilter = EOxItemFilterSpatial.renderRoot.querySelector(
-    "itemfilter-spatial-filter"
+    "eox-itemfilter-spatial-filter"
   );
   spatialFilter.reset();
   EOxItemFilterSpatial.requestUpdate();
