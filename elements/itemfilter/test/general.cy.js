@@ -10,6 +10,7 @@ import {
   accordionTest,
   spatialFilterTest,
   externalFilterTest,
+  nestedPropertyTest,
 } from "./cases/general/";
 
 /**
@@ -86,4 +87,9 @@ describe("Item Filter Config", () => {
    * Test case to check whether itemfilter is using external filter correctly or not.
    */
   it("should run external filter", () => externalFilterTest());
+
+  /**
+   * Test case to check whether nested properties work or not
+   */
+  it("should run with nested property", () => nestedPropertyTest());
 });
