@@ -14,47 +14,64 @@ const basicHeroSchema = {
   "data-parallax": joi.boolean().required(),
 };
 
-const basicLayerSchema = {
-  layers: joi.array().items(
-    joi
+const basicLayerSchema = joi
+  .object({
+    type: joi.string().required(),
+    url: joi.string().when("type", {
+      is: "STAC",
+      then: joi.string().required(),
+      otherwise: joi.string().optional(),
+    }),
+    properties: joi
       .object({
-        type: joi.string().required(),
-        properties: joi
-          .object({
-            id: joi.string().required(),
-          })
-          .unknown()
-          .required(),
-        source: joi
-          .object({
-            type: joi.string().required(),
-          })
-          .unknown()
-          .required(),
+        id: joi.string().required(),
       })
       .unknown()
-      .required()
-  ),
-};
+      .required(),
+    source: joi
+      .object({
+        type: joi.string().required(),
+      })
+      .unknown()
+      .when("type", {
+        is: "STAC",
+        then: joi.optional(),
+        otherwise: joi.required(),
+      }),
+  })
+  .pattern(joi.string(), joi.any());
+
+const groupLayerSchema = joi.object({
+  type: joi.string().valid("group", "Group"),
+  properties: joi
+    .object({
+      id: joi.string().required(),
+    })
+    .unknown()
+    .required(),
+  layers: basicLayerSchema,
+});
 
 // EOxMap validation schema
 const eoxMapSchema = {
   layers: joi
-    .alternatives()
-    .try(
-      basicLayerSchema.layers,
-      joi.array().items(
-        joi.object({
-          type: joi.string().valid("group", "Group"),
-          properties: joi
-            .object({
-              id: joi.string().required(),
-            })
-            .unknown()
-            .required(),
-          layers: basicLayerSchema.layers,
+    .array()
+    .items(
+      joi
+        .object()
+        .keys({
+          type: joi.string().required(),
         })
-      )
+        .unknown()
+        .custom((value, helpers) => {
+          const { error } =
+            value.type === "Group"
+              ? groupLayerSchema.validate(value)
+              : basicLayerSchema.validate(value);
+
+          if (error) return helpers.message(error.message);
+          return value;
+        }, "Custom validator for map schema.")
     )
     .optional(),
   center: joi.array().items(joi.number()).min(2).max(2).optional(),

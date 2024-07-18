@@ -1,0 +1,1 @@
+export { getElement } from "./getElement";
