@@ -48,6 +48,7 @@ export class EOxItemFilter extends TemplateElement {
       results: { state: true, attribute: false, type: Object },
       filters: { state: true, attribute: false, type: Object },
       selectedResult: { attribute: false, type: Object },
+      unstyled: { type: Boolean },
     };
   }
 
