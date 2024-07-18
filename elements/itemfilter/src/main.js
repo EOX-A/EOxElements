@@ -33,7 +33,7 @@ import { getTabIndex, isFiltersDirty } from "./helpers/index.js";
  *
  * @module EOxItemFilter
  * @extends {TemplateElement}
- * @property {Object} config - The configuration object for the filter.
+ * @property {Object} config - The configuration object for the filter. See [the config options](https://github.com/EOX-A/EOxElements/blob/main/elements/itemfilter/src/enums/config.js).
  * @property {Object} items - The items to be filtered.
  * @property {Object} results - The state object containing the filtered results.
  * @property {Object} filters - The state object containing the applied filters.
