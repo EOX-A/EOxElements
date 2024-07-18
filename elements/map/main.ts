@@ -399,11 +399,32 @@ export class EOxMap extends LitElement {
     }
   }
 
+  private _sync: string | EOxMap | undefined;
   /**
-   * Sync map with another map view by providing its query selector
+   * Sync map with another map view by providing its query selector or an eox-map DOM element
    */
   @property()
-  sync: string;
+  set sync(sync: string | EOxMap | undefined) {
+    this._sync = sync;
+    if (sync) {
+      let originMap: EOxMap;
+      // Wait for next render tick
+      setTimeout(() => {
+        if (typeof sync === "string") {
+          originMap = document.querySelector(sync);
+        } else {
+          originMap = sync;
+        }
+        if (originMap) {
+          this.map.setView(originMap.map.getView());
+        }
+      });
+    }
+  }
+
+  get sync() {
+    return this._sync;
+  }
 
   /**
    * The native OpenLayers map object.
@@ -590,13 +611,6 @@ export class EOxMap extends LitElement {
   }
 
   firstUpdated() {
-    if (this.sync) {
-      const originMap: EOxMap = document.querySelector(this.sync);
-      if (originMap) {
-        this.map.setView(originMap.map.getView());
-      }
-    }
-
     this.map.once("change:target", (e) => {
       // set center again after target, as y-coordinate might be 0 otherwise
       e.target.getView().setCenter(this.center);
