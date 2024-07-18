@@ -40,6 +40,7 @@ import {
   get as getProjection,
 } from "ol/proj";
 import { Coordinate } from "ol/coordinate";
+import { getElement } from "../../utils";
 
 type EOxAnimationOptions = import("ol/View").AnimationOptions &
   import("ol/View").FitOptions;
@@ -407,14 +408,9 @@ export class EOxMap extends LitElement {
   set sync(sync: string | EOxMap | undefined) {
     this._sync = sync;
     if (sync) {
-      let originMap: EOxMap;
       // Wait for next render tick
       setTimeout(() => {
-        if (typeof sync === "string") {
-          originMap = document.querySelector(sync);
-        } else {
-          originMap = sync;
-        }
+        const originMap = getElement(sync) as EOxMap;
         if (originMap) {
           this.map.setView(originMap.map.getView());
         }
