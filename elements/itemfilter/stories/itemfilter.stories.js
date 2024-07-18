@@ -3,6 +3,7 @@ import { html } from "lit";
 
 import {
   AutoSpreadStory,
+  ExternalStory,
   InlineModeStory,
   NestedPropertyStory,
   PreSetFilterStory,
@@ -40,6 +41,11 @@ export const PreSetFilter = PreSetFilterStory();
  * By using dots (`.`) a nested property can be used as key.
  */
 export const NestedProperty = NestedPropertyStory();
+
+/**
+ * Example showcasing how to use an external API endpoint
+ */
+export const External = ExternalStory();
 
 /**
  * When using the config option `autoSpreadSingle`, then result aggregations that have only one item.
