@@ -1,11 +1,6 @@
 import "../src/main";
 import testItems from "./testItems.json";
-import {
-  customOrderTest,
-  renderCheckboxTest,
-  resultPreCheckedTest,
-  resultsWithPreSetFiltersTest,
-} from "./cases/state/";
+import { filterkeysTest } from "./cases/filters/";
 
 describe("Item Filter Config", () => {
   const state = {
@@ -22,6 +17,8 @@ describe("Item Filter Config", () => {
   };
 
   const selectedResultIndex = 1;
+
+  const filterKeys = ["foo", "bar", 0, true];
 
   /**
    * Runs before each test case to mount the eox-itemfilter component and configure it.
@@ -41,6 +38,7 @@ describe("Item Filter Config", () => {
                 expanded: true,
                 sort: (a, b) => customOrder[a] - customOrder[b],
                 state,
+                filterKeys,
               },
             ],
             aggregateResults: "themes",
@@ -52,24 +50,7 @@ describe("Item Filter Config", () => {
   });
 
   /**
-   * Test case to render the checkboxes as checked
+   * Test case for filterKeys
    */
-  it("should render the checkboxes as checked", () => renderCheckboxTest());
-
-  /**
-   * Test case to only show the results of the pre-set filters
-   */
-  it("should only show the results of the pre-set filters", () =>
-    resultsWithPreSetFiltersTest(state));
-
-  /**
-   * Test case to render the pre-set result as checked
-   */
-  it("should render the pre-set result as checked", () =>
-    resultPreCheckedTest(selectedResultIndex));
-
-  /**
-   * Test case to have a custom order
-   */
-  it("should have a custom order", () => customOrderTest(customOrder));
+  it("should support setting filterKeys", () => filterkeysTest(filterKeys));
 });
