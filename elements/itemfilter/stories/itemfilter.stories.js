@@ -4,6 +4,7 @@ import { html } from "lit";
 import {
   AutoSpreadStory,
   InlineModeStory,
+  NestedPropertyStory,
   PreSetFilterStory,
   PrimaryStory,
 } from "./index.js";
@@ -38,3 +39,5 @@ export const InlineMode = InlineModeStory();
  * a story configuration for the pre-set item filter.
  */
 export const PreSetFilter = PreSetFilterStory();
+
+export const NestedProperty = NestedPropertyStory();

@@ -5,3 +5,4 @@ export { default as PrimaryStory } from "./primary"; // Primary story showcasing
 export { default as InlineModeStory } from "./inline-mode"; // Item filter with inline-mode
 export { default as AutoSpreadStory } from "./auto-spread"; // Item filter with auto spread
 export { default as PreSetFilterStory } from "./pre-set-filter"; // Item filter with pre-set filter
+export { default as NestedPropertyStory } from "./nested-property"; // Item filter with nested property

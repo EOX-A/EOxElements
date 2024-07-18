@@ -39,7 +39,9 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
           .tabIndex=${tabIndex}
           .filterObject=${filterObject}
           slot="filter"
-          .suggestions="${uniq(flatMap(EOxItemFilter.items, filterObject.key))}"
+          .suggestions="${uniq(
+            flatMap(EOxItemFilter.items, filterObject.key)
+          ).filter((i) => i)}"
           type="${filterObject.type}"
           .unstyled=${EOxItemFilter.unstyled}
           @filter=${() => EOxItemFilter.search()}

@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 import { indexItems } from "../../helpers";
+import uniq from "lodash.uniq";
+import flatMap from "lodash.flatmap";
 
 /**
  * Applies filters to the provided items based on the given configuration and updates the EOxItemFilter instance.
@@ -62,7 +64,13 @@ function filterApplyMethod(config, items, EOxItemFilter) {
             filterKeys.geometry = undefined;
             filterKeys.mode = filterProperty.mode || "intersects";
           } else {
-            filterKeys[item[filterProperty.key]] = undefined;
+            if (filterProperty.key?.includes(".")) {
+              uniq(flatMap(EOxItemFilter.items, filterProperty.key))
+                .filter((i) => i)
+                .forEach((key) => {
+                  filterKeys[key] = undefined;
+                });
+            } else filterKeys[item[filterProperty.key]] = undefined;
           }
         }
       });
