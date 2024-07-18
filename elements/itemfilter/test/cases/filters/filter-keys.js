@@ -8,6 +8,7 @@ const filterKeysTest = (filterKeys) => {
   cy.get("eox-itemfilter")
     .shadow()
     .within(() => {
+      cy.wait(500);
       cy.get("eox-itemfilter-select")
         .shadow()
         .within(($el) => {
