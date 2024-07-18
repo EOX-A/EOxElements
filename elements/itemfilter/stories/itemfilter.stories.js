@@ -21,23 +21,28 @@ export default {
 };
 
 /**
- * story configuration for the Primary item filter.
+ * A basic example for an item filter configuration.
  */
 export const Primary = PrimaryStory();
 
 /**
- * a story configuration for the Auto Spread result.
- */
-export const AutoSpread = AutoSpreadStory();
-
-/**
- * a story configuration for the InlineMode item filter.
+ * Using `inlineMode`, the itemfilter is rendered in a single input field.
  */
 export const InlineMode = InlineModeStory();
 
 /**
- * a story configuration for the pre-set item filter.
+ * By using `state` inside the `filterProperties', it is possible to start the itemfilter.
+ * with a pre-defined state.
  */
 export const PreSetFilter = PreSetFilterStory();
 
+/**
+ * By using dots (`.`) a nested property can be used as key.
+ */
 export const NestedProperty = NestedPropertyStory();
+
+/**
+ * When using the config option `autoSpreadSingle`, then result aggregations that have only one item.
+ * get spread to the root level
+ */
+export const AutoSpread = AutoSpreadStory();

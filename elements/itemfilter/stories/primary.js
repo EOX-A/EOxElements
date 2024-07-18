@@ -14,7 +14,6 @@ function PrimaryStory() {
         titleProperty: "title",
         aggregateResults: "themes",
         enableHighlighting: true,
-        autoSpreadSingle: false,
         filterProperties: [
           {
             keys: ["title", "themes"],
