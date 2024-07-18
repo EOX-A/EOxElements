@@ -1,5 +1,4 @@
 import { LitElement, html, nothing } from "lit";
-import Fuse from "fuse.js";
 import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
