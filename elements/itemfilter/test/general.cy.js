@@ -98,5 +98,5 @@ describe("Item Filter Config", () => {
   /**
    * Test case to check if subtitles are rendered correctly
    */
-  it.only("should render subtitles", () => subtitleTest(testItems));
+  it.only("should render subtitles", () => subtitleTest());
 });

@@ -2,7 +2,7 @@
  * Tests the subtitle functionality. If the confif option `subTitleProperty` is set,
  * then an additional subtitle is rendered.
  */
-const subtitleTest = (testItems) => {
+const subtitleTest = () => {
   cy.get("eox-itemfilter")
     .shadow()
     .within(() => {
