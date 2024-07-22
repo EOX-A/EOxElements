@@ -24,7 +24,11 @@ import {
 } from "./methods/itemfilter";
 import _debounce from "lodash.debounce";
 import { TemplateElement } from "../../../utils/templateElement";
-import { getTabIndex, isFiltersDirty } from "./helpers/index.js";
+import {
+  getTabIndex,
+  isFiltersDirty,
+  toggleAccordion,
+} from "./helpers/index.js";
 
 /**
  * EOxItemFilter is a custom web component that provides a comprehensive item filtering system.
@@ -261,7 +265,7 @@ export class EOxItemFilter extends TemplateElement {
                       html` <li>
                         <eox-itemfilter-expandcontainer
                           .filterObject=${filterObject}
-                          .config=${this.config}
+                          @details-toggled=${(e) => toggleAccordion(e, this)}
                           data-details="${filterObject.key}"
                         >
                           ${this.#createReset(

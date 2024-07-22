@@ -18,9 +18,7 @@ export function createItemDetailsMethod(
     <details
       class="details-results"
       @toggle=${EOxItemFilterResults.handleAccordion}
-      ?open=${EOxItemFilterResults.config?.expandMultipleFilters ||
-      EOxItemFilterResults.config.expandResults ||
-      nothing}
+      ?open=${EOxItemFilterResults.config.expandResults || nothing}
     >
       <summary>
         <span class="title">

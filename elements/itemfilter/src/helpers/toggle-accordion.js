@@ -10,7 +10,7 @@ function toggleAccordion(event, that) {
   if (event.detail) {
     detailsElement = event.detail.target;
   } else {
-    // detailsElement = event.target;
+    detailsElement = event.target;
   }
 
   if (detailsElement?.classList.contains("details-filter")) {

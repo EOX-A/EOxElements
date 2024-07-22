@@ -18,7 +18,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
     return {
       filterObject: { attribute: false, type: Object },
       unstyled: { type: Boolean },
-      config: { attribute: false, type: Object },
     };
   }
 
@@ -34,11 +33,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
      * @type Boolean
      */
     this.unstyled = false;
-
-    /**
-     * @type Object
-     */
-    this.config = null;
   }
 
   /**
@@ -49,7 +43,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
    * @private
    */
   #handleDetailsToggle(event) {
-    toggleAccordion(event, this);
     this.dispatchEvent(
       new CustomEvent("details-toggled", {
         detail: event,
@@ -74,9 +67,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         () => html`<details
           @toggle="${this.#handleDetailsToggle}"
           class="details-filter"
-          ?open=${this.config?.expandMultipleFilters ||
-          this.filterObject.expanded ||
-          nothing}
+          ?open=${this.filterObject.expanded || nothing}
         >
           <summary>
             <span
