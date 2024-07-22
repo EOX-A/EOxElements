@@ -2,9 +2,10 @@
  * Handles the toggle event for the accordion.
  *
  * @param {Event} event - The toggle event.
+ * @param {Object} config - The configuration object for item-filter.
  * @param {Element} that
  */
-function toggleAccordion(event, that) {
+function toggleAccordion(event, config, that) {
   let detailsElement;
 
   if (event.detail) {
@@ -14,7 +15,7 @@ function toggleAccordion(event, that) {
   }
 
   if (detailsElement?.classList.contains("details-filter")) {
-    if (!detailsElement.open || that?.config.expandMultipleFilters) return;
+    if (!detailsElement.open || config?.expandMultipleFilters) return;
 
     that.shadowRoot
       .querySelectorAll("eox-itemfilter-expandcontainer")
@@ -25,7 +26,7 @@ function toggleAccordion(event, that) {
         }
       });
   } else {
-    if (!detailsElement?.open || that?.config.expandMultipleResults) return;
+    if (!detailsElement?.open || config?.expandMultipleResults) return;
 
     that.querySelectorAll("details").forEach((details) => {
       if (details !== detailsElement) {

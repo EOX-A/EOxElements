@@ -106,7 +106,7 @@ export class EOxItemFilterResults extends TemplateElement {
    * @param {Event} event - The toggle event.
    */
   handleAccordion(event) {
-    toggleAccordion(event, this);
+    toggleAccordion(event, this.config, this);
   }
 
   /**

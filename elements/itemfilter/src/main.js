@@ -265,7 +265,8 @@ export class EOxItemFilter extends TemplateElement {
                       html` <li>
                         <eox-itemfilter-expandcontainer
                           .filterObject=${filterObject}
-                          @details-toggled=${(e) => toggleAccordion(e, this)}
+                          @details-toggled=${(e) =>
+                            toggleAccordion(e, this.#config, this)}
                           data-details="${filterObject.key}"
                         >
                           ${this.#createReset(
