@@ -1,8 +1,5 @@
 import { LitElement, html, svg, nothing } from "lit";
-import { Map } from "ol";
-import Layer from "ol/layer/Layer";
 import Group from "ol/layer/Group";
-import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
