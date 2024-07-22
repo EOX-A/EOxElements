@@ -162,6 +162,21 @@ function updateSuggestions(EOxItemFilterSelector) {
     filteredSuggestion || EOxItemFilterSelector.suggestions
   );
 
+  // if `filterKeys` is defined, force filter keys
+  if (EOxItemFilterSelector.filterObject?.filterKeys) {
+    EOxItemFilterSelector.filteredSuggestions =
+      EOxItemFilterSelector.filterObject?.filterKeys.map((k) => `${k}`);
+    EOxItemFilterSelector.filterObject.state =
+      EOxItemFilterSelector.filterObject?.filterKeys
+        .map((k) => `${k}`)
+        .reduce((acc, curr) => {
+          if (!(curr in acc)) {
+            acc[curr] = undefined;
+          }
+          return acc;
+        }, EOxItemFilterSelector.filterObject.state);
+  }
+
   EOxItemFilterSelector.highlightedIndex = -1;
 }
 
@@ -174,7 +189,7 @@ function updateFilterList(EOxItemFilterSelector) {
   // Update the state of the filter object based on the selected items
   Object.keys(EOxItemFilterSelector.filterObject.state).forEach((k) => {
     EOxItemFilterSelector.filterObject.state[k] =
-      EOxItemFilterSelector.selectedItems.map((i) => i).includes(k);
+      EOxItemFilterSelector.selectedItems.includes(k);
   });
 
   // Update the stringified state of the filter object

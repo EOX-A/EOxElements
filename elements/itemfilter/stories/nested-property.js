@@ -9,11 +9,8 @@ function NestedPropertyStory() {
   return {
     args: {
       config: {
-        inlineMode: false,
         titleProperty: "title",
         aggregateResults: "themes",
-        enableHighlighting: true,
-        autoSpreadSingle: true,
         filterProperties: [
           {
             key: "status.code",

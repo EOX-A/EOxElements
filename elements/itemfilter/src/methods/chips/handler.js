@@ -33,7 +33,10 @@ export function handleCloseMethod(event, index, EOxItemFilterChips) {
  * @param {Object} EOxItemFilterChips - The EOxItemFilterChips component instance.
  */
 export function keyboardEventListenerMethod(event, EOxItemFilterChips) {
-  const { code } = event;
+  const { code, target } = event;
+
+  // Ignore are events that don't come from seach input
+  if (target.id !== "eox-itemfilter-input-search") return;
 
   // If the parent element is hidden and the key is one of the specified keys, do nothing
   if (

@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { html, nothing } from "lit";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { style } from "./style";
@@ -37,7 +37,7 @@ import {
  *
  * @module EOxItemFilter
  * @extends {TemplateElement}
- * @property {Object} config - The configuration object for the filter.
+ * @property {Object} config - The configuration object for the filter. See [the config options](https://github.com/EOX-A/EOxElements/blob/main/elements/itemfilter/src/enums/config.js).
  * @property {Object} items - The items to be filtered.
  * @property {Object} results - The state object containing the filtered results.
  * @property {Object} filters - The state object containing the applied filters.
@@ -52,6 +52,7 @@ export class EOxItemFilter extends TemplateElement {
       results: { state: true, attribute: false, type: Object },
       filters: { state: true, attribute: false, type: Object },
       selectedResult: { attribute: false, type: Object },
+      unstyled: { type: Boolean },
     };
   }
 
@@ -238,7 +239,11 @@ export class EOxItemFilter extends TemplateElement {
         ${!this.unstyled && allStyle}
         ${this.styleOverride}
       </style>
-      <form id="itemfilter" @submit="${(evt) => evt.preventDefault()}">
+      <form
+        id="itemfilter"
+        class=${this.config?.inlineMode ? "inline" : nothing}
+        @submit="${(evt) => evt.preventDefault()}"
+      >
         ${when(
           this.config?.filterProperties,
           () => html`

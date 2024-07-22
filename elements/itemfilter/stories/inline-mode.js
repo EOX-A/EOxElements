@@ -12,8 +12,6 @@ function InlineModeStory() {
         inlineMode: true,
         titleProperty: "title",
         aggregateResults: "themes",
-        enableHighlighting: true,
-        autoSpreadSingle: true,
         showResults: false,
         filterProperties: [
           {
