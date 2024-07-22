@@ -1,7 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { styleEOX } from "../style.eox";
 import { when } from "lit/directives/when.js";
-import { toggleAccordion } from "../helpers/index.js";
 
 /**
  * EOxItemFilterExpandContainer is a custom web component that provides an expandable container for item filters.
