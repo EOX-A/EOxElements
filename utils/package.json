@@ -4,7 +4,8 @@
   "description": "",
   "main": "styles/main.css",
   "files": [
-    "styles"
+    "styles",
+    "./"
   ],
   "author": "",
   "license": "ISC"
