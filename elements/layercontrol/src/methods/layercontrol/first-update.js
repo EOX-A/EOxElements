@@ -1,4 +1,4 @@
-import { getElement } from '../../../../../utils';
+import { getElement } from "../../../../../utils";
 
 /**
  * Retrieves the EOxMap element based on the provided selector in EOxLayerControl's 'for' property.
