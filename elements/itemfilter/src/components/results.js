@@ -7,6 +7,7 @@ import {
   createItemDetailsMethod,
   createItemListMethod,
 } from "../methods/results/index.js";
+import { toggleAccordion } from "../helpers";
 
 /**
  * EOxItemFilterResults is a custom web component that displays the results of item filtering.
@@ -97,6 +98,15 @@ export class EOxItemFilterResults extends TemplateElement {
    */
   createRenderRoot() {
     return this;
+  }
+
+  /**
+   * Handles the toggle event for accordion.
+   *
+   * @param {Event} event - The toggle event.
+   */
+  handleAccordion(event) {
+    toggleAccordion(event, this);
   }
 
   /**

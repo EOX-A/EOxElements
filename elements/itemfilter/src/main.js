@@ -261,6 +261,7 @@ export class EOxItemFilter extends TemplateElement {
                       html` <li>
                         <eox-itemfilter-expandcontainer
                           .filterObject=${filterObject}
+                          .config=${this.config}
                           data-details="${filterObject.key}"
                         >
                           ${this.#createReset(
