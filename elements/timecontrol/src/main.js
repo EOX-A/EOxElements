@@ -1,5 +1,4 @@
 import { LitElement, html, svg, nothing } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
 import { Map } from "ol";
 import Layer from "ol/layer/Layer";
 import Group from "ol/layer/Group";
@@ -15,49 +14,61 @@ import isoWeek from "dayjs/plugin/isoWeek";
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
 
-@customElement("eox-timecontrol")
+/**
+ * @element eox-timecontrol
+ */
 export class EOxTimeControl extends LitElement {
-  /**
-   * The WMS parameter to update
-   */
-  @property({ attribute: "control-property" })
-  controlProperty?: string;
+  static get properties() {
+    return {
+      /**
+       * The WMS parameter to update
+       */
+      controlProperty: { type: String, attribute: "control-property" },
 
-  /**
-   * The list of available values for the animation property
-   */
-  @property({ attribute: "control-values", type: Array })
-  controlValues: Array<string> = [];
+      /**
+       * The list of available values for the animation property
+       */
+      controlValues: { type: Array, attribute: "control-values" },
 
-  /**
-   * The query selector for the map
-   */
-  @property()
-  for: string;
+      /**
+       * The query selector for the map
+       */
+      for: { type: String },
 
-  /**
-   * The layerid of the animated layer
-   */
-  @property()
-  layer: string;
+      /**
+       * The layerid of the animated layer
+       */
+      layer: { type: String },
 
-  /**
-   * Display a slider for the values
-   */
-  @property({ type: Boolean })
-  slider: boolean;
+      /**
+       * Display a slider for the values
+       */
+      slider: { type: Boolean },
 
-  /**
-   * Original params of layer source
-   */
-  @property()
-  private _originalParams: object;
+      /**
+       * Original params of layer source
+       */
+      _originalParams: { type: Object },
 
-  /**
-   * Hides the play button if set
-   */
-  @property({ attribute: "disable-play", type: Boolean })
-  disablePlay: boolean;
+      /**
+       * Hides the play button if set
+       */
+      disablePlay: { type: Boolean, attribute: "disable-play" },
+
+      currentStep: { type: String, attribute: "current-step" },
+      _animationInterval: { state: true },
+      _controlSource: { state: true },
+      _isAnimationPlaying: { state: true },
+      _newStepIndex: { state: true },
+      unstyled: { type: Boolean },
+    };
+  }
+
+  constructor() {
+    super();
+    this.controlValues = [];
+    this._newStepIndex = 0;
+  }
 
   /**
    * Go to next step
@@ -75,9 +86,9 @@ export class EOxTimeControl extends LitElement {
 
   /**
    * Toggle play animation
-   * @param on animation on/off
+   * @param {boolean} on animation on/off
    */
-  playAnimation(on: boolean) {
+  playAnimation(on) {
     if (on) {
       this._animationInterval = setInterval(() => this._updateStep(1), 500);
     } else {
@@ -89,13 +100,12 @@ export class EOxTimeControl extends LitElement {
 
   /**
    * Set the config at a later point
-   * @param config
+   * @param {Object} config
+   * @param {string} [config.layer]
+   * @param {string} [config.controlProperty]
+   * @param {Array<string>} [config.controlValues]
    */
-  setConfig(config: {
-    layer: string;
-    controlProperty: string;
-    controlValues: Array<string>;
-  }) {
+  setConfig(config) {
     this.layer = config.layer ?? this.layer;
     this.controlProperty = config.controlProperty ?? this.controlProperty;
     this.controlValues = config.controlValues ?? this.controlValues;
@@ -105,14 +115,13 @@ export class EOxTimeControl extends LitElement {
 
   /**
    * The currently selected step
-   * @type string
+   * @type {string}
    */
   get currentStep() {
     return this.controlValues[this._newStepIndex];
   }
 
-  @property({ attribute: "current-step" })
-  set currentStep(step: string) {
+  set currentStep(step) {
     const idx = this.controlValues.findIndex((v) => v === step);
     if (idx > -1) {
       this._newStepIndex = idx;
@@ -121,22 +130,11 @@ export class EOxTimeControl extends LitElement {
     }
   }
 
-  @state()
-  private _animationInterval: ReturnType<typeof setInterval>;
-
-  @state()
-  private _controlSource: UrlTile;
-
-  @state()
-  private _isAnimationPlaying: boolean;
-
-  @state()
-  private _newStepIndex = 0;
-
-  @property({ type: Boolean })
-  unstyled: boolean;
-
-  private _updateStep(step = 1) {
+  /**
+   * @param {number} [step=1]
+   * @private
+   */
+  _updateStep(step = 1) {
     this._newStepIndex = this._newStepIndex + step;
     if (this._newStepIndex > this.controlValues.length - 1) {
       this._newStepIndex = 0;
@@ -168,15 +166,15 @@ export class EOxTimeControl extends LitElement {
    * TEMP / TO-DO, this is a copy of the function defined in the eox-map:
    * https://github.com/EOX-A/EOxElements/blob/main/elements/map/src/layer.ts#L25
    * Consider a way to properly export that function and use it here
-   * @param layers layers Array
+   * @param {Array<Layer>} layers layers Array
+   * @returns {Array<Layer>}
    */
-  getFlatLayersArray(layers: Array<Layer>) {
+  getFlatLayersArray(layers) {
     const flatLayers = [];
     flatLayers.push(...layers);
 
-    let groupLayers = flatLayers.filter(
-      (l) => l instanceof Group
-    ) as unknown as Array<Group>;
+    /** @type {Array<Group>} */
+    let groupLayers = flatLayers.filter((l) => l instanceof Group);
 
     while (groupLayers.length) {
       const newGroupLayers = [];
@@ -184,20 +182,18 @@ export class EOxTimeControl extends LitElement {
         const layersInsideGroup = groupLayers[i].getLayers().getArray();
         flatLayers.push(...layersInsideGroup);
         newGroupLayers.push(
-          ...(layersInsideGroup.filter(
-            (l) => l instanceof Group
-          ) as Array<Group>)
+          ...layersInsideGroup.filter((l) => l instanceof Group)
         );
       }
       groupLayers = newGroupLayers;
     }
-    return flatLayers as Array<Layer>;
+    return flatLayers;
   }
 
   render() {
-    const mapQuery = document.querySelector(this.for as string);
+    const mapQuery = document.querySelector(this.for);
     // @ts-ignore
-    const olMap: Map = mapQuery.map || mapQuery;
+    const olMap = mapQuery.map || mapQuery;
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
@@ -206,9 +202,9 @@ export class EOxTimeControl extends LitElement {
           olMap.getLayers().getArray()
         );
         const animationLayer = flatLayers.find(
-          (l: Layer) => l.get("id") === this.layer
-        ) as Layer;
-        this._controlSource = animationLayer.getSource() as UrlTile;
+          (l) => l.get("id") === this.layer
+        );
+        this._controlSource = animationLayer.getSource();
 
         this._originalParams =
           // @ts-ignore
@@ -227,9 +223,7 @@ export class EOxTimeControl extends LitElement {
             part="previous"
             class="icon previous"
             @click="${() => this.previous()}"
-          >
-            <
-          </button>
+          ></button>
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
@@ -257,7 +251,7 @@ export class EOxTimeControl extends LitElement {
                     part="slider"
                     value="${this.controlValues[this._newStepIndex]}"
                     style="display: inline-block;"
-                    @change="${(evt: { detail: { value: string } }) =>
+                    @change="${(evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(
                           (v) => v === evt.detail.value
@@ -280,13 +274,28 @@ export class EOxTimeControl extends LitElement {
   }
 }
 
-@customElement("eox-sliderticks")
-export class SliderTicks extends LitElement {
-  @property({ type: Number }) width: number = 0;
-  @property({ type: Array }) steps: string[] = [];
+customElements.define("eox-timecontrol", EOxTimeControl);
 
-  @state() height = 6;
-  @state() svgWidth = 0;
+/**
+ * @element eox-sliderticks
+ */
+export class SliderTicks extends LitElement {
+  static get properties() {
+    return {
+      width: { type: Number },
+      steps: { type: Array },
+      height: { state: true },
+      svgWidth: { state: true },
+    };
+  }
+
+  constructor() {
+    super();
+    this.width = 0;
+    this.steps = [];
+    this.height = 6;
+    this.svgWidth = 0;
+  }
 
   connectedCallback() {
     super.connectedCallback();
@@ -318,9 +327,9 @@ export class SliderTicks extends LitElement {
     return this.steps ? this.steps.length : 0;
   }
 
-  get yearMarks(): { label: number; position: number }[] {
-    const yearMarks: { label: number; position: number }[] = [];
-    let previousYear: number = null;
+  get yearMarks() {
+    const yearMarks = [];
+    let previousYear = null;
 
     this.lines.forEach((line, index) => {
       const currentStep = dayjs(this.steps[index]);
@@ -346,7 +355,11 @@ export class SliderTicks extends LitElement {
     });
   }
 
-  isYearLine(line: number): boolean {
+  /**
+   * @param {number} line
+   * @returns {boolean}
+   */
+  isYearLine(line) {
     // Check if this line's position is approximately equal to any year mark position
     const isYearMark = this.yearMarks.some(
       (yearMark) => Math.abs(yearMark.position - line) < 1.0
@@ -394,3 +407,5 @@ export class SliderTicks extends LitElement {
     `;
   }
 }
+
+customElements.define("eox-sliderticks", SliderTicks);
