@@ -16,7 +16,7 @@ const firstUpdatedMethod = (EOxLayerControl) => {
     EOxLayerControl.map = foundElement.map;
   }
 
-  return foundElement.map;
+  return foundElement;
 };
 
 export default firstUpdatedMethod;
