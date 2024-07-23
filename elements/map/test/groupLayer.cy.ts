@@ -231,7 +231,7 @@ describe("layers", () => {
     });
   });
 
-  it.only("realistic groupLayer reactivity", () => {
+  it("realistic groupLayer reactivity", () => {
     const layersJson = [
       {
         type: "Group",
