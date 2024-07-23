@@ -4,8 +4,8 @@
 const accordionTest = () => {
   // Set the configuration to disable multiple filters and results expansion
   cy.get("eox-itemfilter").then(($el) => {
-    $el[0].config.expandMultipleFilters = false;
-    $el[0].config.expandMultipleResults = false;
+    $el[0].expandMultipleFilters = false;
+    $el[0].expandMultipleResults = false;
   });
 
   /**

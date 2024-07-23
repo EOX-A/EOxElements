@@ -27,20 +27,18 @@ describe("Item Filter Config", () => {
         const eoxItemFilter = $el[0];
         // Set the configuration and items for the eox-itemfilter component
         Object.assign(eoxItemFilter, {
-          config: {
-            titleProperty: "title",
-            filterProperties: [
-              {
-                keys: ["title", "themes"],
-                title: "Search",
-                type: "text",
-                expanded: true,
-              },
-              { key: "themes", expanded: true },
-            ],
-            aggregateResults: "themes",
-            enableHighlighting: true,
-          },
+          titleProperty: "title",
+          filterProperties: [
+            {
+              keys: ["title", "themes"],
+              title: "Search",
+              type: "text",
+              expanded: true,
+            },
+            { key: "themes", expanded: true },
+          ],
+          aggregateResults: "themes",
+          enableHighlighting: true,
           items: testItems,
         });
       });

@@ -7,12 +7,9 @@ const externalFilterTest = () => {
   cy.intercept("https://external-api-url.com", [{ ...testItems[5] }]);
 
   cy.get("eox-itemfilter").then(($el) => {
-    $el[0].config = {
-      ...$el[0].config,
-      externalFilter: (items, filter) => {
-        expect(filter.themes.dirty).to.be.equal($el[0].filters.themes.dirty);
-        return "https://external-api-url.com";
-      },
+    $el[0].externalFilter = (items, filter) => {
+      expect(filter.themes.dirty).to.be.equal($el[0].filters.themes.dirty);
+      return "https://external-api-url.com";
     };
   });
 

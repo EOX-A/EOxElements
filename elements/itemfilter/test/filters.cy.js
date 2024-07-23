@@ -29,20 +29,18 @@ describe("Item Filter Config", () => {
       .then(($el) => {
         const eoxItemFilter = $el[0];
         Object.assign(eoxItemFilter, {
-          config: {
-            titleProperty: "title",
-            filterProperties: [
-              {
-                key: "themes",
-                type: "multiselect",
-                expanded: true,
-                sort: (a, b) => customOrder[a] - customOrder[b],
-                state,
-                filterKeys,
-              },
-            ],
-            aggregateResults: "themes",
-          },
+          titleProperty: "title",
+          filterProperties: [
+            {
+              key: "themes",
+              type: "multiselect",
+              expanded: true,
+              sort: (a, b) => customOrder[a] - customOrder[b],
+              state,
+              filterKeys,
+            },
+          ],
+          aggregateResults: "themes",
           items: testItems,
           selectedResult: testItems[selectedResultIndex],
         });

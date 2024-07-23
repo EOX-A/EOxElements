@@ -3,13 +3,10 @@
  */
 const nestedPropertyTest = () => {
   cy.get("eox-itemfilter").then(($el) => {
-    $el[0].config = {
-      ...$el[0].config,
-      filterProperties: [
-        ...$el[0].config.filterProperties,
-        { key: "status.code", title: "Status", expanded: true },
-      ],
-    };
+    $el[0].filterProperties = [
+      ...$el[0].filterProperties,
+      { key: "status.code", title: "Status", expanded: true },
+    ];
   });
 
   cy.get("eox-itemfilter")
