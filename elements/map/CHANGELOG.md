@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/EOX-A/EOxElements/compare/map-v1.10.0...map-v1.10.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* **deps:** Support `ol` version `9.2.5-dev.1719634408469` ([#1077](https://github.com/EOX-A/EOxElements/issues/1077)) ([de6cef1](https://github.com/EOX-A/EOxElements/commit/de6cef114ca47c9cd38b514a2ac25476d78d9182))
+
 ## [1.10.0](https://github.com/EOX-A/EOxElements/compare/map-v1.9.3...map-v1.10.0) (2024-07-18)
 
 
