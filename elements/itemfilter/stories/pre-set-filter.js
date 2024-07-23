@@ -1,4 +1,5 @@
 import items from "../test/testItems.json";
+import { html } from "lit";
 
 /**
  * Generates a story configuration for the pre-set filter state
@@ -7,22 +8,26 @@ import items from "../test/testItems.json";
  */
 function PreSetFilterStory() {
   return {
+    render: (args) =>
+      html`<eox-itemfilter
+        .items=${args.items}
+        .titleProperty=${args.titleProperty}
+        .filterProperties=${args.filterProperties}
+      ></eox-itemfilter>`,
     args: {
-      config: {
-        titleProperty: "title",
-        filterProperties: [
-          {
-            key: "themes",
-            title: "Theme",
-            type: "multiselect",
-            expanded: true,
-            state: {
-              air: true,
-              agriculture: true,
-            },
+      titleProperty: "title",
+      filterProperties: [
+        {
+          key: "themes",
+          title: "Theme",
+          type: "multiselect",
+          expanded: true,
+          state: {
+            air: true,
+            agriculture: true,
           },
-        ],
-      },
+        },
+      ],
       items,
     },
   };

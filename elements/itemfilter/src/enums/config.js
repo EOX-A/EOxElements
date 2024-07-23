@@ -73,3 +73,20 @@ export const ELEMENT_CONFIG = Object.freeze({
    */
   expandMultipleResults: true,
 });
+
+export const ELEMENT_PROPERTIES = [
+  "aggregateResults",
+  "autoSpreadSingle",
+  "enableHighlighting",
+  "externalFilter",
+  "filterProperties",
+  "fuseConfig",
+  "inlineMode",
+  "matchAllWhenEmpty",
+  "showResults",
+  "titleProperty",
+  "expandMultipleFilters",
+  "expandResults",
+  "expandMultipleResults",
+  "items",
+];

@@ -13,7 +13,7 @@ import "./components/filters/selector";
 import "./components/filters/range";
 import "./components/filters/spatial";
 import "./components/chips";
-import { ELEMENT_CONFIG } from "./enums";
+import { ELEMENT_CONFIG, ELEMENT_PROPERTIES } from "./enums";
 import {
   filterApplyMethod,
   searchMethod,
@@ -22,7 +22,7 @@ import {
   createResetMethod,
   resetFilterMethod,
 } from "./methods/itemfilter";
-import _debounce from "lodash.debounce";
+import _debounce, { property } from "lodash.debounce";
 import { TemplateElement } from "../../../utils/templateElement";
 import {
   getTabIndex,
@@ -47,11 +47,29 @@ export class EOxItemFilter extends TemplateElement {
   // Define properties with defaults and types
   static get properties() {
     return {
-      config: { attribute: false, type: Object },
       items: { attribute: false, type: Object },
       results: { state: true, attribute: false, type: Object },
       filters: { state: true, attribute: false, type: Object },
       selectedResult: { attribute: false, type: Object },
+      aggregateResults: { attribute: "aggregate-results", type: String },
+      autoSpreadSingle: { attribute: "auto-spread-single", type: Boolean },
+      enableHighlighting: { attribute: "enable-highlighting", type: Boolean },
+      filterProperties: { attribute: false, type: Array },
+      fuseConfig: { attribute: false, type: Object },
+      inlineMode: { attribute: "inline-mode", type: Boolean },
+      matchAllWhenEmpty: { attribute: "match-all-when-empty", type: Boolean },
+      showResults: { attribute: "show-result", type: Boolean },
+      titleProperty: { attribute: "title-property", type: String },
+      expandMultipleFilters: {
+        attribute: "enable-multiple-filter",
+        type: Boolean,
+      },
+      expandResults: { attribute: "expand-result", type: Boolean },
+      expandMultipleResults: {
+        attribute: "expand-multiple-results",
+        type: Boolean,
+      },
+      externalFilter: { attribute: false, type: Function },
       unstyled: { type: Boolean },
     };
   }
@@ -77,11 +95,6 @@ export class EOxItemFilter extends TemplateElement {
     /**
      * @type Object
      */
-    this.config = null;
-
-    /**
-     * @type Object
-     */
     this.items = null;
 
     /**
@@ -100,6 +113,99 @@ export class EOxItemFilter extends TemplateElement {
     this.search = _debounce(this.searchHandler, 100, {
       leading: true,
     });
+
+    /**
+     * Aggregate results by a property key
+     *
+     * @type String
+     */
+    this.aggregateResults = undefined;
+
+    /**
+     * Automatically spread single item summaries
+     * removing the summary header
+     *
+     * @type Boolean
+     */
+    this.autoSpreadSingle = false;
+
+    /**
+     * Highlighting of search result character matches
+     *
+     * @type Boolean
+     */
+    this.enableHighlighting = false;
+
+    /**
+     * Use an external search endpoint instead of fuse search.
+     * Passed properties: input string, filters object
+     *
+     * @type Function
+     */
+    this.externalFilter = null;
+
+    /**
+     * The filter properties.
+     *
+     * @type Array
+     */
+    this.filterProperties = [];
+
+    /**
+     * Native fuse.js config override
+     *
+     * @type Object
+     */
+    this.fuseConfig = {};
+
+    /**
+     * Inline mode, for rendering the itemfilter in a very condensed space.
+     * Expects showResults to be false
+     *
+     * @type Boolean
+     */
+    this.inlineMode = false;
+
+    /**
+     * Show all result items if nothing is input by the user
+     *
+     * @type Boolean
+     */
+    this.matchAllWhenEmpty = true;
+
+    /**
+     * Display results list
+     *
+     * @type Boolean
+     */
+    this.showResults = true;
+
+    /**
+     * The property of the result items used for display
+     *
+     * @type String
+     */
+    this.titleProperty = "title";
+
+    /**
+     * Allow opening multiple filter accordions in parallel
+     *
+     * @type Boolean
+     */
+    this.expandMultipleFilters = true;
+
+    /**
+     * Initialize result accordions expanded
+     *
+     * @type Boolean
+     */
+    this.expandResults = true;
+    /**
+     * Allow opening multiple result accordions in parallel
+     *
+     * @type Boolean
+     */
+    this.expandMultipleResults = true;
   }
 
   /**
@@ -133,7 +239,7 @@ export class EOxItemFilter extends TemplateElement {
         composed: true,
       })
     );
-    if (this.config?.inlineMode)
+    if (this.inlineMode)
       this.renderRoot.querySelector("eox-itemfilter-container").updateInline();
     this.requestUpdate();
   }
@@ -186,10 +292,14 @@ export class EOxItemFilter extends TemplateElement {
    * @param {Map} _changedProperties - The changed properties.
    */
   firstUpdated(_changedProperties) {
-    this.#config = {
-      ...ELEMENT_CONFIG,
-      ...this.config,
-    };
+    let config = {};
+    ELEMENT_PROPERTIES.map((property) => {
+      config = {
+        ...config,
+        [property]: this[property],
+      };
+    });
+    this.#config = config;
     this.#items =
       this.items?.map((i, index) =>
         Object.assign({ id: `item-${index}` }, i)
@@ -204,8 +314,12 @@ export class EOxItemFilter extends TemplateElement {
    * @param {Map} changedProperties - The properties that have changed.
    */
   updated(changedProperties) {
-    if (changedProperties.has("config") || changedProperties.has("items"))
-      this.firstUpdated();
+    ELEMENT_PROPERTIES.map((property) => {
+      if (changedProperties.has(property)) {
+        this.firstUpdated();
+        return true;
+      }
+    });
   }
 
   /**
@@ -241,22 +355,22 @@ export class EOxItemFilter extends TemplateElement {
       </style>
       <form
         id="itemfilter"
-        class=${this.config?.inlineMode ? "inline" : nothing}
+        class=${this.inlineMode ? "inline" : nothing}
         @submit="${(evt) => evt.preventDefault()}"
       >
         ${when(
-          this.config?.filterProperties,
+          this.filterProperties,
           () => html`
             <eox-itemfilter-container
               .filters=${this.filters}
-              .filterProperties=${this.config.filterProperties}
-              .inlineMode=${this.config.inlineMode || false}
+              .filterProperties=${this.filterProperties}
+              .inlineMode=${this.inlineMode || false}
               @reset=${() => this.resetFilters()}
               @filter=${() => this.search()}
             >
               <section slot="section">
                 ${when(
-                  !this.config.inlineMode,
+                  !this.inlineMode,
                   () => html`
                     <slot name="filterstitle"
                       ><h6 class="main-heading">Filters</h6></slot
@@ -287,9 +401,9 @@ export class EOxItemFilter extends TemplateElement {
                   )}
                 </ul>
                 ${when(
-                  !this.config.inlineMode &&
+                  !this.inlineMode &&
                     this.#config.filterProperties &&
-                    !this.config.inlineMode &&
+                    !this.inlineMode &&
                     this.#config.filterProperties &&
                     isFiltersDirty(this.filters),
                   () => html`

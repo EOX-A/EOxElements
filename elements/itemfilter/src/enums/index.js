@@ -1,1 +1,1 @@
-export { ELEMENT_CONFIG } from "./config";
+export { ELEMENT_CONFIG, ELEMENT_PROPERTIES } from "./config";

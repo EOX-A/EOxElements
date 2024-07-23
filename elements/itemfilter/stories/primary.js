@@ -1,5 +1,6 @@
 import items from "../test/testItems.json";
 import { expect, userEvent, waitFor } from "@storybook/test";
+import { html } from "lit";
 
 /**
  * Generates a story configuration for the Primary item filter.
@@ -8,51 +9,58 @@ import { expect, userEvent, waitFor } from "@storybook/test";
  */
 function PrimaryStory() {
   return {
+    render: (args) =>
+      html`<eox-itemfilter
+        .items=${args.items}
+        .inlineMode=${args.inlineMode}
+        .titleProperty=${args.titleProperty}
+        .aggregateResults=${args.aggregateResults}
+        .enableHighlighting=${args.enableHighlighting}
+        .filterProperties=${args.filterProperties}
+      ></eox-itemfilter>`,
     args: {
-      config: {
-        inlineMode: false,
-        titleProperty: "title",
-        aggregateResults: "themes",
-        enableHighlighting: true,
-        filterProperties: [
-          {
-            keys: ["title", "themes"],
-            title: "Search",
-            type: "text",
-            placeholder: "Type Something...",
-            expanded: true,
-          },
-          {
-            key: "code",
-            title: "Codes",
-            type: "multiselect",
-            placeholder: "Search Codes",
-          },
-          {
-            key: "themes",
-            title: "Theme",
-            type: "select",
-            placeholder: "Select a theme",
-            inline: false,
-          },
-          {
-            key: "tags",
-            title: "Tags",
-            type: "multiselect",
-            placeholder: "Select tags",
-            inline: false,
-          },
-          {
-            key: "timestamp",
-            type: "range",
-            format: "date",
-          },
-          {
-            key: "geometry",
-            type: "spatial",
-          },
-        ],
-      },
+      inlineMode: false,
+      titleProperty: "title",
+      aggregateResults: "themes",
+      enableHighlighting: true,
+      filterProperties: [
+        {
+          keys: ["title", "themes"],
+          title: "Search",
+          type: "text",
+          placeholder: "Type Something...",
+          expanded: true,
+        },
+        {
+          key: "code",
+          title: "Codes",
+          type: "multiselect",
+          placeholder: "Search Codes",
+        },
+        {
+          key: "themes",
+          title: "Theme",
+          type: "select",
+          placeholder: "Select a theme",
+          inline: false,
+        },
+        {
+          key: "tags",
+          title: "Tags",
+          type: "multiselect",
+          placeholder: "Select tags",
+          inline: false,
+        },
+        {
+          key: "timestamp",
+          type: "range",
+          format: "date",
+        },
+        {
+          key: "geometry",
+          type: "spatial",
+        },
+      ],
       items,
     },
     play: async ({ canvasElement, step }) => {

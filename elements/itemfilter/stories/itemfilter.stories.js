@@ -1,5 +1,4 @@
 // Global import of eox-elements in .storybook/preview.js!
-import { html } from "lit";
 
 import {
   AutoSpreadStory,
@@ -14,11 +13,6 @@ export default {
   title: "Elements/eox-itemfilter",
   tags: ["autodocs"],
   component: "eox-itemfilter",
-  render: (args) =>
-    html`<eox-itemfilter
-      .config=${args.config}
-      .items=${args.items}
-    ></eox-itemfilter>`,
 };
 
 /**

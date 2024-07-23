@@ -11,7 +11,7 @@ import { filterExternal } from "../../helpers";
  */
 async function searchMethod(config, items, EOxItemFilter) {
   let results;
-  if (EOxItemFilter.config?.externalFilter) {
+  if (EOxItemFilter.externalFilter) {
     results = await filterExternal(items, EOxItemFilter.filters, config);
   } else {
     results = await filterClient(items, EOxItemFilter.filters, config);

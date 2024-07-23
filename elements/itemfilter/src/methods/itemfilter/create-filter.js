@@ -33,7 +33,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
       // Return a select or multiselect filter element
       return html`
         <eox-itemfilter-select
-          .inlineMode=${EOxItemFilter.config.inlineMode || false}
+          .inlineMode=${EOxItemFilter.inlineMode || false}
           data-type="filter"
           id="${filterId}"
           .tabIndex=${tabIndex}
