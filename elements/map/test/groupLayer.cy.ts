@@ -222,13 +222,12 @@ describe("layers", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.layers = layersJson as Array<EoxLayer>;
-      const layer = eoxMap.getLayerById("regionsRed") as import("ol/layer").Vector<import("ol/Feature").default>;
+      const layer = eoxMap.getLayerById(
+        "regionsRed"
+      ) as import("ol/layer").Vector<import("ol/Feature").default>;
       const styleObject = layer.getStyle() as import("ol/style/flat").FlatStyle;
-      const fillColor = styleObject['fill-color'];
-      expect(
-        fillColor,
-        "reactive layer 2 levels deep"
-      ).to.be.equal("red");
+      const fillColor = styleObject["fill-color"];
+      expect(fillColor, "reactive layer 2 levels deep").to.be.equal("red");
     });
   });
 
@@ -244,7 +243,7 @@ describe("layers", () => {
             type: "Vector",
             properties: {
               id: "dummyInsideGroup1",
-            }
+            },
           },
         ],
       },
@@ -258,7 +257,7 @@ describe("layers", () => {
             type: "Vector",
             properties: {
               id: "dummyInsideGroup2",
-            }
+            },
           },
         ],
       },
@@ -272,7 +271,7 @@ describe("layers", () => {
             type: "Vector",
             properties: {
               id: "dummyInsideGroup3",
-            }
+            },
           },
         ],
       },
@@ -281,21 +280,40 @@ describe("layers", () => {
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
-      const allRealLayers = eoxMap.getFlatLayersArray(eoxMap.map.getAllLayers());
+      const allRealLayers = eoxMap.getFlatLayersArray(
+        eoxMap.map.getAllLayers()
+      );
       expect(allRealLayers.length).to.be.equal(3);
-      layersJson[0].layers = [{
+      layersJson[0].layers = [
+        {
+          type: "Vector",
+          properties: {
+            id: "newDummyInsideGroup1",
+          },
+          opacity: 0.5,
+        },
+      ];
+      layersJson[0].layers.push({
         type: "Vector",
         properties: {
-          id: "newDummyInsideGroup1",
+          id: "newDummyInsideGroup2",
         },
-        opacity: 0.5
-      },]
+        opacity: 0.5,
+      });
       eoxMap.layers = layersJson as Array<EoxLayer>;
-      const newRealLayers = eoxMap.getFlatLayersArray(eoxMap.map.getAllLayers());
+      const newRealLayers = eoxMap.getFlatLayersArray(
+        eoxMap.map.getAllLayers()
+      );
 
-      expect(newRealLayers.length, 'correctly updates a layer inside group').to.be.equal(3);
-      const newLayer = eoxMap.getLayerById('newDummyInsideGroup1');
-      expect(newLayer.getOpacity(), 'correctly updates a layer inside group').to.be.equal(0.5);
+      expect(
+        newRealLayers.length,
+        "correctly updates a layer inside group"
+      ).to.be.equal(4);
+      const newLayer = eoxMap.getLayerById("newDummyInsideGroup1");
+      expect(
+        newLayer.getOpacity(),
+        "correctly updates a layer inside group"
+      ).to.be.equal(0.5);
     });
   });
 });
