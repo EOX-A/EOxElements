@@ -22,7 +22,7 @@ import {
   createResetMethod,
   resetFilterMethod,
 } from "./methods/itemfilter";
-import _debounce, { property } from "lodash.debounce";
+import _debounce from "lodash.debounce";
 import { TemplateElement } from "../../../utils/templateElement";
 import {
   getTabIndex,
