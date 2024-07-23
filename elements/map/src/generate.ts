@@ -65,9 +65,7 @@ export type sourceType =
   | "XYZ"
   | "WMTSCapabilities";
 
-export type VectorOrVectorTileLayer =
-  | VectorLayer<import("ol/Feature").FeatureLike>
-  | VectorTileLayer<import("ol/Feature").FeatureLike>;
+export type VectorOrVectorTileLayer = VectorLayer | VectorTileLayer;
 
 export type AnyLayerWithSource =
   | import("ol/layer/BaseImage").default<
@@ -272,7 +270,7 @@ function addInteraction(
   if (interactionDefinition.type === "draw") {
     addDraw(
       EOxMap,
-      olLayer as VectorLayer<import("ol/Feature").default>,
+      olLayer as VectorLayer,
       interactionDefinition.options as DrawOptions
     );
   } else if (interactionDefinition.type === "select") {
@@ -322,8 +320,8 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.style) !==
       JSON.stringify(existingJsonDefintion.style)
   ) {
-    (existingLayer as VectorLayer<import("ol/Feature").FeatureLike>).setStyle(
-      (newLayer as VectorLayer<import("ol/Feature").FeatureLike>).getStyle()
+    (existingLayer as VectorLayer).setStyle(
+      (newLayer as VectorLayer).getStyle()
     );
   }
 

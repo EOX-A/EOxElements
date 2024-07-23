@@ -559,7 +559,7 @@ export class EOxMap extends LitElement {
 
   parseTextToFeature = (
     text: string,
-    vectorLayer: VectorLayer<import("ol/Feature").default>,
+    vectorLayer: VectorLayer,
     replaceFeatures: boolean = false
   ) => {
     parseText(text, vectorLayer, this, replaceFeatures);

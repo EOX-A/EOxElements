@@ -25,7 +25,7 @@ export type DrawOptions = Omit<
  */
 export function addDraw(
   EOxMap: EOxMap,
-  drawLayer: VectorLayer<import("ol/Feature").default>,
+  drawLayer: VectorLayer,
   options: DrawOptions
 ): void {
   const options_ = Object.assign({}, options);
