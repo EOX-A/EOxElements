@@ -224,7 +224,7 @@ describe("layers", () => {
       eoxMap.layers = layersJson as Array<EoxLayer>;
       const layer = eoxMap.getLayerById(
         "regionsRed"
-      ) as import("ol/layer").Vector<import("ol/Feature").default>;
+      ) as import("ol/layer").Vector;
       const styleObject = layer.getStyle() as import("ol/style/flat").FlatStyle;
       const fillColor = styleObject["fill-color"];
       expect(fillColor, "reactive layer 2 levels deep").to.be.equal("red");
@@ -281,7 +281,7 @@ describe("layers", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
       const allRealLayers = eoxMap.getFlatLayersArray(
-        eoxMap.map.getAllLayers()
+        eoxMap.map.getAllLayers() as Array<import("../src/generate").AnyLayer>
       );
       expect(allRealLayers.length).to.be.equal(3);
       layersJson[0].layers = [
@@ -302,7 +302,7 @@ describe("layers", () => {
       });
       eoxMap.layers = layersJson as Array<EoxLayer>;
       const newRealLayers = eoxMap.getFlatLayersArray(
-        eoxMap.map.getAllLayers()
+        eoxMap.map.getAllLayers() as Array<import("../src/generate").AnyLayer>
       );
 
       expect(
