@@ -51,9 +51,19 @@ export const ELEMENT_CONFIG = Object.freeze({
   showResults: true,
 
   /**
+   * Unique id property of items
+   */
+  idProperty: "id",
+
+  /**
    * The property of the result items used for display
    */
   titleProperty: "title",
+
+  /**
+   * The property of the result items used for a subtitle
+   */
+  subTitleProperty: undefined,
 
   /**
    * Allow opening multiple filter accordions in parallel

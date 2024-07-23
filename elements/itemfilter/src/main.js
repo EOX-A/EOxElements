@@ -192,7 +192,7 @@ export class EOxItemFilter extends TemplateElement {
     };
     this.#items =
       this.items?.map((i, index) =>
-        Object.assign({ id: `item-${index}` }, i)
+        Object.assign({ id: i[this.config.idProperty] || `item-${index}` }, i)
       ) || [];
     this.apply();
   }

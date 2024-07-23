@@ -12,6 +12,7 @@ function PrimaryStory() {
       config: {
         inlineMode: false,
         titleProperty: "title",
+        subTitleProperty: "description",
         aggregateResults: "themes",
         enableHighlighting: true,
         filterProperties: [
