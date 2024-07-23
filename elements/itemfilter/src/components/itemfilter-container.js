@@ -1,4 +1,6 @@
 import { LitElement, html } from "lit";
+import { when } from "lit/directives/when.js";
+import { computePosition, autoUpdate } from "@floating-ui/dom";
 import { styleEOX } from "../style.eox";
 import {
   searchFilterMethod,
@@ -10,7 +12,6 @@ import {
   handleClickOutsideMethod,
 } from "../methods/container";
 import { getChipItems, isFiltersDirty } from "../helpers";
-import { when } from "lit/directives/when.js";
 
 /**
  * EOxItemFilterContainer is a custom web component that provides a container for item filters.
@@ -52,11 +53,6 @@ export class EOxItemFilterContainer extends LitElement {
     this.inlineMode = false;
 
     /**
-     * @type Boolean
-     */
-    this.showDropdown = false;
-
-    /**
      * @type Object
      */
     this.filters = {};
@@ -73,6 +69,17 @@ export class EOxItemFilterContainer extends LitElement {
   }
 
   /**
+   * @type Boolean
+   */
+  set showDropdown(show) {
+    this.renderRoot.querySelector("[popover]").togglePopover(show);
+  }
+
+  get showDropdown() {
+    return this.renderRoot.querySelector("[popover]")?.matches(":popover-open");
+  }
+
+  /**
    * Lifecycle method called when the element is connected to the DOM.
    * Adds event listeners if inline mode is enabled.
    */
@@ -82,6 +89,30 @@ export class EOxItemFilterContainer extends LitElement {
       document.addEventListener("click", this._handleClickOutside);
       document.addEventListener("focusout", this._handleClickOutside);
       document.addEventListener("keydown", this._handleKeyDown);
+      // Wait for first render tick
+      setTimeout(() => {
+        const trigger = this.renderRoot.querySelector(
+          ".inline-container-wrapper"
+        );
+        const dropdown = this.renderRoot.querySelector("[popover]");
+        const updatePosition = () => {
+          // Only compute position if popover is open
+          if (dropdown.matches(":popover-open")) {
+            computePosition(trigger, dropdown, { strategy: "fixed" }).then(
+              ({ x, y }) => {
+                Object.assign(dropdown.style, {
+                  left: `${x}px`,
+                  top: `${y}px`,
+                  width: `${trigger.getBoundingClientRect().width}px`,
+                });
+              }
+            );
+          }
+        };
+        this._overlayCleanup = autoUpdate(trigger, dropdown, updatePosition, {
+          animationFrame: true,
+        });
+      });
     }
   }
 
@@ -94,9 +125,17 @@ export class EOxItemFilterContainer extends LitElement {
       document.removeEventListener("click", this._handleClickOutside);
       document.removeEventListener("focusout", this._handleClickOutside);
       document.removeEventListener("keydown", this._handleKeyDown);
+      this._overlayCleanup();
     }
     super.disconnectedCallback();
   }
+
+  /**
+   * Stores the autoUpdate cleanup function to be called
+   * when disconnected
+   * @private
+   */
+  _overlayCleanup() {}
 
   /**
    * Handles click events outside the component to close the dropdown.
@@ -181,9 +220,7 @@ export class EOxItemFilterContainer extends LitElement {
   render() {
     return html`
       <style>
-        ${!this.unstyled && styleEOX} .inline-content {
-          display: ${this.showDropdown ? "block" : "none"};
-        }
+        ${!this.unstyled && styleEOX}
       </style>
       ${this.inlineMode
         ? html`
@@ -232,14 +269,16 @@ export class EOxItemFilterContainer extends LitElement {
                   />
                 </div>
               </div>
-              <div
-                class="inline-content ${this.showDropdown ? "" : "hidden"}"
-                slot="content"
-                @keydown="${this.#handleKeyDown}"
-                @click="${this.#handleFormClick}"
-                @focus="${this.#handleFormClick}"
-              >
-                <slot name="section"></slot>
+              <div popover="manual">
+                <div
+                  class="inline-content"
+                  slot="content"
+                  @keydown="${this.#handleKeyDown}"
+                  @click="${this.#handleFormClick}"
+                  @focus="${this.#handleFormClick}"
+                >
+                  <slot name="section"></slot>
+                </div>
               </div>
             </div>
           `

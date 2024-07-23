@@ -142,7 +142,6 @@ ul:not(#filters) > li {
 section {
   position: relative;
   background-color: var(--background-color);
-  padding: 4px;
 }
 button#filter-reset {
   position: absolute;
@@ -193,13 +192,11 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
 .inline-content {
   border: 1.5px solid var(--secondary-color);
   border-radius: 4px;
-  position: absolute;
-  width: calc(100% - 3px);
   max-height: 300px;
   overflow-y: auto;
   background: var(--inline-bg-color);
-  z-index: 1;
-  margin-top: 0.5rem;
+  margin-top: 4px;
+  padding: 8px;
 }
 .inline-container {
   position: relative;
@@ -223,6 +220,15 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
 }
 .inline-container:hover {
   border: 1px solid var(--primary-color);
+}
+[popover] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  border: none;
 }
 .input-container {
   display: flex;
