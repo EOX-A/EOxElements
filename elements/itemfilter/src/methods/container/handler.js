@@ -18,7 +18,6 @@ export function handleFormClickMethod(event, EOxItemFilterContainer) {
 export function handleShowDropdownOnFocusMethod(EOxItemFilterContainer) {
   if (EOxItemFilterContainer.inlineMode) {
     EOxItemFilterContainer.showDropdown = true;
-    EOxItemFilterContainer.requestUpdate();
   }
 }
 
@@ -32,7 +31,6 @@ export function handleToggleDropdownMethod(event, EOxItemFilterContainer) {
   if (EOxItemFilterContainer.inlineMode) {
     event.stopPropagation();
     EOxItemFilterContainer.showDropdown = true;
-    EOxItemFilterContainer.requestUpdate();
   }
 }
 
@@ -50,7 +48,6 @@ export function handleKeyDownMethod(event, EOxItemFilterContainer) {
   ) {
     resetSearchMethod(EOxItemFilterContainer);
     EOxItemFilterContainer.showDropdown = false;
-    EOxItemFilterContainer.requestUpdate();
   }
 }
 
@@ -69,6 +66,5 @@ export function handleClickOutsideMethod(event, EOxItemFilterContainer) {
   ) {
     resetSearchMethod(EOxItemFilterContainer);
     EOxItemFilterContainer.showDropdown = false;
-    EOxItemFilterContainer.requestUpdate();
   }
 }
