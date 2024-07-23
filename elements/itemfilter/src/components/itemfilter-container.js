@@ -1,4 +1,4 @@
-import { LitElement, html, nothing } from "lit";
+import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { computePosition, autoUpdate } from "@floating-ui/dom";
 import { styleEOX } from "../style.eox";
