@@ -26,7 +26,7 @@ const externalFilterTest = () => {
       cy.get("eox-itemfilter-results summary .title")
         .first()
         .contains(testItems[5].themes[0]);
-      cy.get("eox-itemfilter-results label .title")
+      cy.get("eox-itemfilter-results li .title")
         .first()
         .contains(testItems[5].title);
     });

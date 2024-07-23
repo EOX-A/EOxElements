@@ -55,9 +55,18 @@ details > summary::-webkit-details-marker {
 }
 
 .title {
-  font-size: small;
+  font-size: 13px;
   align-items: center;
   text-transform: capitalize;
+}
+.subtitle {
+  font-size: 11px;
+  opacity: .7;
+  margin-top: 6px;
+}
+.title-container {
+  display: flex;
+  flex-direction: column;
 }
 h6.main-heading {
   font-size: 1rem;
@@ -127,13 +136,12 @@ section:not(section:last-of-type) {
   display: flex;
   flex-direction: column;
 }
-ul li {
+ul:not(#filters) > li {
   padding: 5px 10px;
 }
 section {
   position: relative;
   background-color: var(--background-color);
-  padding: 4px;
 }
 button#filter-reset {
   position: absolute;
@@ -184,13 +192,11 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
 .inline-content {
   border: 1.5px solid var(--secondary-color);
   border-radius: 4px;
-  position: absolute;
-  width: calc(100% - 3px);
   max-height: 300px;
   overflow-y: auto;
   background: var(--inline-bg-color);
-  z-index: 1;
-  margin-top: 0.5rem;
+  margin-top: 4px;
+  padding: 8px;
 }
 .inline-container {
   position: relative;
@@ -214,6 +220,15 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
 }
 .inline-container:hover {
   border: 1px solid var(--primary-color);
+}
+[popover] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  border: none;
 }
 .input-container {
   display: flex;

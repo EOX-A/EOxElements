@@ -22,6 +22,7 @@ function PrimaryStory() {
       inlineMode: false,
       titleProperty: "title",
       aggregateResults: "themes",
+      subTitleProperty: "description",
       enableHighlighting: true,
       filterProperties: [
         {

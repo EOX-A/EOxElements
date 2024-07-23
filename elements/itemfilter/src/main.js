@@ -59,7 +59,9 @@ export class EOxItemFilter extends TemplateElement {
       inlineMode: { attribute: "inline-mode", type: Boolean },
       matchAllWhenEmpty: { attribute: "match-all-when-empty", type: Boolean },
       showResults: { attribute: "show-result", type: Boolean },
+      idProperty: { attribute: "id-property", type: String },
       titleProperty: { attribute: "title-property", type: String },
+      subTitleProperty: { attribute: "sub-title-property", type: String },
       expandMultipleFilters: {
         attribute: "enable-multiple-filter",
         type: Boolean,
@@ -188,6 +190,20 @@ export class EOxItemFilter extends TemplateElement {
     this.titleProperty = "title";
 
     /**
+     * The property of the result items used for a subtitle
+     *
+     * @type String
+     */
+    this.subTitleProperty = undefined;
+
+    /**
+     * Unique id property of items
+     *
+     * @type String
+     */
+    this.idProperty = "id";
+
+    /**
      * Allow opening multiple filter accordions in parallel
      *
      * @type Boolean
@@ -302,7 +318,7 @@ export class EOxItemFilter extends TemplateElement {
     this.#config = config;
     this.#items =
       this.items?.map((i, index) =>
-        Object.assign({ id: `item-${index}` }, i)
+        Object.assign({ id: i[this.idProperty] || `item-${index}` }, i)
       ) || [];
     this.apply();
   }

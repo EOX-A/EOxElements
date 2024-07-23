@@ -11,6 +11,7 @@ import {
   spatialFilterTest,
   externalFilterTest,
   nestedPropertyTest,
+  subtitleTest,
 } from "./cases/general/";
 
 /**
@@ -28,6 +29,7 @@ describe("Item Filter Config", () => {
         // Set the configuration and items for the eox-itemfilter component
         Object.assign(eoxItemFilter, {
           titleProperty: "title",
+          subTitleProperty: "description",
           filterProperties: [
             {
               keys: ["title", "themes"],
@@ -90,4 +92,9 @@ describe("Item Filter Config", () => {
    * Test case to check whether nested properties work or not
    */
   it("should run with nested property", () => nestedPropertyTest());
+
+  /**
+   * Test case to check if subtitles are rendered correctly
+   */
+  it.only("should render subtitles", () => subtitleTest());
 });
