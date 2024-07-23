@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.10.0](https://github.com/EOX-A/EOxElements/compare/map-v1.9.3...map-v1.10.0) (2024-07-18)
+
+
+### Features
+
+* Allow passing an eox-map DOM element to `sync` property ([#1106](https://github.com/EOX-A/EOxElements/issues/1106)) ([0fd08ae](https://github.com/EOX-A/EOxElements/commit/0fd08ae3a1b363968b4aeeb4a6ff3e1bce8350b2))
+* Enable/disable compare ([#1100](https://github.com/EOX-A/EOxElements/issues/1100)) ([c7ee092](https://github.com/EOX-A/EOxElements/commit/c7ee09211ab279eb26f898f4f93f964f84d7bf04))
+
+
+### Bug Fixes
+
+* Height of compare container ([#1099](https://github.com/EOX-A/EOxElements/issues/1099)) ([8a77926](https://github.com/EOX-A/EOxElements/commit/8a77926a6737ff10ee046f109366bc31a190e465))
+
+## [1.9.3](https://github.com/EOX-A/EOxElements/compare/map-v1.9.2...map-v1.9.3) (2024-07-04)
+
+
+### Bug Fixes
+
+* Unmanaged Styles ([#1078](https://github.com/EOX-A/EOxElements/issues/1078)) ([be75396](https://github.com/EOX-A/EOxElements/commit/be75396f9cf90f31a4a872794c02789a598b1086))
+
 ## [1.9.2](https://github.com/EOX-A/EOxElements/compare/map-v1.9.1...map-v1.9.2) (2024-07-01)
 
 

@@ -35,7 +35,6 @@ export class EOxSelectInteraction {
   selectLayer: SelectLayer;
   selectStyleLayer: SelectLayer;
   changeSourceListener: () => void;
-  removeListener: () => void;
 
   constructor(
     eoxMap: EOxMap,
@@ -165,7 +164,6 @@ export class EOxSelectInteraction {
           const newSelectFids = feature ? [this.getId(feature)] : [];
           const idChanged = this.selectedFids[0] !== newSelectFids[0];
           this.selectedFids = newSelectFids;
-
           if (idChanged) {
             this.selectStyleLayer.changed();
             if (feature) panIntoFeature(feature);
@@ -213,18 +211,19 @@ export class EOxSelectInteraction {
 
     this.selectLayer.on("change:source", this.changeSourceListener);
 
-    this.removeListener = () => {
-      //
-    };
-    this.eoxMap.map.getLayers().on("remove", this.removeListener);
-
-    const removeLayerListener = () => {
-      if (!eoxMap.getLayerById(selectLayer.get("id"))) {
-        eoxMap.selectInteractions[options.id].remove();
-        eoxMap.map.getLayerGroup().un("change", removeLayerListener);
+    const changeLayerListener = () => {
+      if (eoxMap.getLayerById(selectLayer.get("id"))) {
+        eoxMap.selectInteractions[options.id]?.setActive(true);
+        this.selectStyleLayer?.setMap(this.eoxMap.map);
+        overlay?.setMap(this.eoxMap.map);
+      } else {
+        // remove the baselayer and the interaction if vector layer is removed
+        eoxMap.selectInteractions[options.id]?.setActive(false);
+        this.selectStyleLayer?.setMap(null);
+        overlay?.setMap(null);
       }
     };
-    eoxMap.map.getLayerGroup().on("change", removeLayerListener);
+    eoxMap.map.getLayerGroup().on("change", changeLayerListener);
   }
 
   setActive(active: boolean) {
@@ -240,11 +239,14 @@ export class EOxSelectInteraction {
     this.selectStyleLayer.changed(); // force rerender to highlight selected fids
   }
 
+  /**
+   * removes this interaction and the connected unmanaged layer from the map
+   */
   remove() {
     this.selectStyleLayer.setMap(null);
     delete this.eoxMap.selectInteractions[this.options.id];
     this.selectLayer.un("change:source", this.changeSourceListener);
-    this.eoxMap.map.getLayers().un("remove", this.removeListener);
+    //this.eoxMap.map.getLayers().un("remove", this.removeListener);
   }
 
   /**

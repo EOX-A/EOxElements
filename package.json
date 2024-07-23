@@ -43,11 +43,11 @@
     "cypress-lit": "^0.0.8",
     "cypress-network-idle": "^1.14.2",
     "nodemon": "^3.0.3",
-    "rimraf": "^5.0.1",
+    "rimraf": "^6.0.1",
     "storybook": "^8.0.0"
   },
   "engines": {
-    "node": ">=20.9.0"
+    "node": "20.15.1"
   },
   "dependencies": {
     "eslint-plugin-cypress": "^3.0.2",
