@@ -25,7 +25,8 @@
     "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "dayjs": "^1.11.9",
