@@ -1,5 +1,8 @@
 import { LitElement, html, svg, nothing } from "lit";
+import { Map } from "ol";
+import Layer from "ol/layer/Layer";
 import Group from "ol/layer/Group";
+import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
@@ -192,23 +195,28 @@ export class EOxTimeControl extends LitElement {
 
   render() {
     const mapQuery = document.querySelector(this.for);
-    // @ts-ignore
+    /**
+     * @type {Map}
+     */
     const olMap = mapQuery.map || mapQuery;
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
         const flatLayers = this.getFlatLayersArray(
-          // @ts-ignore
           olMap.getLayers().getArray()
         );
+        /**
+         * @type {Layer}
+         */
         const animationLayer = flatLayers.find(
           (l) => l.get("id") === this.layer
         );
+        /**
+         * @type {UrlTile}
+         */
         this._controlSource = animationLayer.getSource();
 
-        this._originalParams =
-          // @ts-ignore
-          this._controlSource.getParams();
+        this._originalParams = this._controlSource.getParams();
       }
     });
 
