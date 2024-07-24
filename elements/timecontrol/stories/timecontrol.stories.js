@@ -1,5 +1,4 @@
 // Global import of eox-elements in .storybook/preview.js!
-import { html } from "lit";
 import {
   PrimaryStory,
   SliderStory,
