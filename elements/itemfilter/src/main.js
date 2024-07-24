@@ -37,11 +37,6 @@ import {
  *
  * @module EOxItemFilter
  * @extends {TemplateElement}
- * @property {Object} config - The configuration object for the filter. See [the config options](https://github.com/EOX-A/EOxElements/blob/main/elements/itemfilter/src/enums/config.js).
- * @property {Object} items - The items to be filtered.
- * @property {Object} results - The state object containing the filtered results.
- * @property {Object} filters - The state object containing the applied filters.
- * @property {Object} selectedResult - Property with pre-selected result
  */
 export class EOxItemFilter extends TemplateElement {
   // Define properties with defaults and types
@@ -94,23 +89,32 @@ export class EOxItemFilter extends TemplateElement {
   constructor() {
     super();
 
-    /**
-     * @type Object
+    /** The items to be filtered
+     * @type Array<Object>
      */
     this.items = null;
 
     /**
+     * The state object containing the applied filters.
      * @type Object
      */
     this.filters = {};
 
     /**
+     * The state object containing the filtered results.
+     * @type Array<Object>
+     */
+    this.results = [];
+
+    /**
+     * The currently selected result
      * @type Object
      */
     this.selectedResult = null;
 
     /**
      * @type Function
+     * @private
      */
     this.search = _debounce(this.searchHandler, 100, {
       leading: true,
@@ -148,8 +152,7 @@ export class EOxItemFilter extends TemplateElement {
 
     /**
      * The filter properties.
-     *
-     * @type Array
+     * @type Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>
      */
     this.filterProperties = [];
 
@@ -222,6 +225,11 @@ export class EOxItemFilter extends TemplateElement {
      * @type Boolean
      */
     this.expandMultipleResults = true;
+
+    /**
+     * Render the element without additional styles
+     */
+    this.unstyled = false;
   }
 
   /**
