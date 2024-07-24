@@ -3,7 +3,7 @@
   "version": "0.18.0",
   "type": "module",
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
+    "@eox/eslint-config": "^2.0.0",
     "@eox/jsonform": "latest",
     "@eox/map": "latest",
     "@types/sortablejs": "^1.15.1",
