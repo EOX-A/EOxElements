@@ -17,5 +17,5 @@
     "experimentalDecorators": true,
     "types": ["cypress"]
   },
-  "include": ["**/*.ts", "../../cypress/cypress.d.ts"]
+  "include": ["**/*.js", "../../cypress/cypress.d.ts"]
 }
