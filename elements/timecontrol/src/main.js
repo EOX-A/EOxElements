@@ -1,8 +1,5 @@
-import { LitElement, html, svg, nothing } from "lit";
-import { Map } from "ol";
-import Layer from "ol/layer/Layer";
+import { LitElement, html, nothing } from "lit";
 import Group from "ol/layer/Group";
-import UrlTile from "ol/source/UrlTile";
 import "toolcool-range-slider";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
@@ -144,7 +141,6 @@ export class EOxTimeControl extends LitElement {
       this._newStepIndex = this.controlValues.length - 1;
     }
 
-    // @ts-ignore
     this._controlSource?.updateParams({
       [this.controlProperty]: this.controlValues[this._newStepIndex],
     });
@@ -169,8 +165,8 @@ export class EOxTimeControl extends LitElement {
    * Consider a way to properly export that function and use it here
    * See also:
    * https://github.com/EOX-A/EOxElements/issues/974
-   * @param {Array<Layer>} layers layers Array
-   * @returns {Array<Layer>}
+   * @param {Array<import('ol/layer/Layer').default>} layers
+   * @returns {Array<import('ol/layer/Layer').default>}
    */
   getFlatLayersArray(layers) {
     const flatLayers = [];
@@ -196,7 +192,7 @@ export class EOxTimeControl extends LitElement {
   render() {
     const mapQuery = document.querySelector(this.for);
     /**
-     * @type {Map}
+     * @type {import('ol').Map}
      */
     const olMap = mapQuery.map || mapQuery;
 
@@ -206,13 +202,13 @@ export class EOxTimeControl extends LitElement {
           olMap.getLayers().getArray()
         );
         /**
-         * @type {Layer}
+         * @type {import('ol/layer/Layer').default}
          */
         const animationLayer = flatLayers.find(
           (l) => l.get("id") === this.layer
         );
         /**
-         * @type {UrlTile}
+         * @type {import('ol/source/UrlTile').default}
          */
         this._controlSource = animationLayer.getSource();
 
