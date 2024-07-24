@@ -40,20 +40,14 @@ describe("layers", () => {
       (<EOxMap>$el[0]).addOrUpdateLayer(updatedLayerJson as EoxLayer);
       const layer = (<EOxMap>$el[0]).map.getLayers().getArray()[0];
 
-      const features = (
-        layer as import("ol/layer/Vector").default<
-          import("ol/Feature").FeatureLike
-        >
-      )
+      const features = (layer as import("ol/layer/Vector").default)
         .getSource()
         .getFeatures();
 
       expect(features.length).to.be.greaterThan(0);
 
       const styleFunction = (
-        layer as import("ol/layer/Vector").default<
-          import("ol/Feature").FeatureLike
-        >
+        layer as import("ol/layer/Vector").default
       ).getStyleFunction();
       const featureStyle = (
         styleFunction(features[0], 1) as Array<import("ol/style").Style>

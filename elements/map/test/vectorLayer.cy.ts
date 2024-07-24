@@ -98,9 +98,7 @@ describe("layers", () => {
       return new Cypress.Promise((resolve) => {
         const layer = (<EOxMap>$el[0]).map
           .getLayers()
-          .getArray()[0] as import("ol/layer/Vector").default<
-          import("ol/Feature").FeatureLike
-        >;
+          .getArray()[0] as import("ol/layer/Vector").default;
         // wait for features to load
         layer.getSource().on("featuresloadend", () => {
           const feature = layer.getSource().getFeatures()[0];
@@ -132,12 +130,8 @@ describe("layers", () => {
         const eoxMap = <EOxMap>$el[0];
         const layer = eoxMap.getLayerById(
           "regions"
-        ) as import("ol/layer/Vector").default<
-          import("ol/Feature").FeatureLike
-        >;
-        const source = layer.getSource() as import("ol/source/Vector").default<
-          import("ol/Feature").FeatureLike
-        >;
+        ) as import("ol/layer/Vector").default;
+        const source = layer.getSource() as import("ol/source/Vector").default;
         source.on("featuresloadend", () => {
           const feature = source.getFeatures()[0];
           const styles = layer.getStyleFunction()(feature, 100);

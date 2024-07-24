@@ -134,9 +134,7 @@ export default class GeolocationControl extends Control {
   private _accuracyFeature: Feature<import("ol/geom").Polygon>;
   private _trackAccuracy: boolean;
   private _trackHeading: boolean;
-  private _layer: VectorLayer<
-    Feature<import("ol/geom").Polygon | import("ol/geom").Point>
-  >;
+  private _layer: VectorLayer;
   private _source: VectorSource<
     Feature<import("ol/geom").Polygon | import("ol/geom").Point>
   >;
