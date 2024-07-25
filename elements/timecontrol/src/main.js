@@ -230,7 +230,9 @@ export class EOxTimeControl extends LitElement {
             part="previous"
             class="icon previous"
             @click="${() => this.previous()}"
-          ></button>
+          >
+            <
+          </button>
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>

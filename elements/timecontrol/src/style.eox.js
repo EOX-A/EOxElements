@@ -5,12 +5,6 @@ export const styleEOX = `
   font-family: Roboto, sans-serif;
 }
 
-#controls {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
 ${button}
 
 button.icon-text.play:before {
