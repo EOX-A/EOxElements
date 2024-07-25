@@ -64,6 +64,9 @@ export class EOxTimeControl extends LitElement {
 
   constructor() {
     super();
+    /**
+     * @type Array<string>
+     */
     this.controlValues = [];
     this._newStepIndex = 0;
   }
