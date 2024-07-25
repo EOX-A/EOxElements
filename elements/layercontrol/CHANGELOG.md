@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.5...layercontrol-v0.18.0) (2024-07-23)
+
+
+### Features
+
+* Allow passing an eox-map DOM element to `for` property  ([#1107](https://github.com/EOX-A/EOxElements/issues/1107)) ([1947f7f](https://github.com/EOX-A/EOxElements/commit/1947f7f574071611d061a7479da0a9e1e44eda69))
+
 ## [0.17.5](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.4...layercontrol-v0.17.5) (2024-06-25)
 
 
