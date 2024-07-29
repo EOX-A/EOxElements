@@ -4,7 +4,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
   build: {
     lib: {
-      entry: "./src/main.ts",
+      entry: "./src/main.js",
       name: "eox-timecontrol",
       // the proper extensions will be added
       fileName: "eox-timecontrol",

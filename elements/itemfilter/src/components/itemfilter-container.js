@@ -1,6 +1,5 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
-import { computePosition, autoUpdate } from "@floating-ui/dom";
 import { styleEOX } from "../style.eox";
 import {
   searchFilterMethod,
@@ -10,6 +9,7 @@ import {
   handleToggleDropdownMethod,
   handleKeyDownMethod,
   handleClickOutsideMethod,
+  initPopoverMethod,
 } from "../methods/container";
 import { getChipItems, isFiltersDirty } from "../helpers";
 
@@ -79,41 +79,38 @@ export class EOxItemFilterContainer extends LitElement {
     return this.renderRoot.querySelector("[popover]")?.matches(":popover-open");
   }
 
+  #handlePopover() {
+    // Wait for first render tick
+    setTimeout(() => (this._overlayCleanup = initPopoverMethod(this)));
+  }
+
+  /**
+   * Function to add all the inline mode event listener
+   */
+  #addInlineModeEventListener() {
+    document.addEventListener("click", this._handleClickOutside);
+    document.addEventListener("focusout", this._handleClickOutside);
+    document.addEventListener("keydown", this._handleKeyDown);
+    this.#handlePopover();
+  }
+
   /**
    * Lifecycle method called when the element is connected to the DOM.
    * Adds event listeners if inline mode is enabled.
    */
   connectedCallback() {
     super.connectedCallback();
-    if (this.inlineMode) {
-      document.addEventListener("click", this._handleClickOutside);
-      document.addEventListener("focusout", this._handleClickOutside);
-      document.addEventListener("keydown", this._handleKeyDown);
-      // Wait for first render tick
-      setTimeout(() => {
-        const trigger = this.renderRoot.querySelector(
-          ".inline-container-wrapper"
-        );
-        const dropdown = this.renderRoot.querySelector("[popover]");
-        const updatePosition = () => {
-          // Only compute position if popover is open
-          if (dropdown.matches(":popover-open")) {
-            computePosition(trigger, dropdown, { strategy: "fixed" }).then(
-              ({ x, y }) => {
-                Object.assign(dropdown.style, {
-                  left: `${x}px`,
-                  top: `${y}px`,
-                  width: `${trigger.getBoundingClientRect().width}px`,
-                });
-              }
-            );
-          }
-        };
-        this._overlayCleanup = autoUpdate(trigger, dropdown, updatePosition, {
-          animationFrame: true,
-        });
-      });
-    }
+    if (this.inlineMode) this.#addInlineModeEventListener();
+  }
+
+  /**
+   * Function to remove all the inline mode event listener
+   */
+  #removeInlineModeEventListener() {
+    document.removeEventListener("click", this._handleClickOutside);
+    document.removeEventListener("focusout", this._handleClickOutside);
+    document.removeEventListener("keydown", this._handleKeyDown);
+    this._overlayCleanup();
   }
 
   /**
@@ -121,12 +118,7 @@ export class EOxItemFilterContainer extends LitElement {
    * Removes event listeners if inline mode is enabled.
    */
   disconnectedCallback() {
-    if (this.inlineMode) {
-      document.removeEventListener("click", this._handleClickOutside);
-      document.removeEventListener("focusout", this._handleClickOutside);
-      document.removeEventListener("keydown", this._handleKeyDown);
-      this._overlayCleanup();
-    }
+    if (this.inlineMode) this.#removeInlineModeEventListener();
     super.disconnectedCallback();
   }
 
@@ -212,6 +204,13 @@ export class EOxItemFilterContainer extends LitElement {
    */
   updateInline() {
     if (this.inlineMode) this.requestUpdate();
+  }
+
+  updated(_changedProperties) {
+    if (_changedProperties.has("inlineMode")) {
+      if (this.inlineMode) this.#addInlineModeEventListener();
+      else this.#removeInlineModeEventListener();
+    }
   }
 
   /**
