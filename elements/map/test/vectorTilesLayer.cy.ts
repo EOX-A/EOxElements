@@ -26,9 +26,9 @@ describe("VectorTile Layer", () => {
         const layer = eoxMap.getLayerById("countries") as VectorTile;
         setTimeout(() => {
           // to do: not able to wait for rendercomplete directly, as `applyStyle` is async
-          const features = layer
-            .getSource()
-            .getFeaturesInExtent(eoxMap.map.getView().calculateExtent());
+          const features = layer.getFeaturesInExtent(
+            eoxMap.map.getView().calculateExtent()
+          );
           expect(features.length).to.be.greaterThan(10);
           resolve();
         }, 1000);
