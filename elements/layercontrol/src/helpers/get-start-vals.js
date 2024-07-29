@@ -1,5 +1,3 @@
-import WebGLTileLayer from "ol/layer/WebGLTile";
-
 /**
  * Recursively traverses the schema object to extract startVals based on values of nested properties.
  *
@@ -48,7 +46,7 @@ export function getStartVals(layer, layerConfig) {
   let nestedValues = {};
   // extract style variables from layer
   let styleVars =
-    layer.get("type") === "WebGLTile" || layer instanceof WebGLTileLayer
+   "updateStyleVariables" in layer
       ? /** @type {import("ol/layer/WebGLTile").default} */
         (layer)["style_"]?.variables
       : layerConfig.style?.variables;
