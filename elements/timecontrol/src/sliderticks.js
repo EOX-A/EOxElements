@@ -106,7 +106,7 @@ export class SliderTicks extends LitElement {
   isYearLine(line) {
     // Check if this line's position is approximately equal to any year mark position
     const isYearMark = this.yearMarks.some(
-      (yearMark) => Math.abs(yearMark.position - line) < 1.0
+      (yearMark) => Math.abs(yearMark.position - line) < 1.0,
     );
 
     return isYearMark;
@@ -130,7 +130,7 @@ export class SliderTicks extends LitElement {
               stroke=${this.isYearLine(line) ? "#222" : "#7596A2"}
               stroke-width=${this.isYearLine(line) ? 1 : 1}
             ></line>
-          `
+          `,
           )}
           ${this.yearMarks.map(
             (year, index) => svg`
@@ -144,7 +144,7 @@ export class SliderTicks extends LitElement {
             >
               ${year.label}
             </text>
-          `
+          `,
           )}
         </svg>
       </div>
