@@ -5,7 +5,7 @@
 
 ### Dependency upgrade
 
-* **deps:** Upgrade `ol` to version `10.0.0` ([#1104](https://github.com/EOX-A/EOxElements/issues/1104)) ([a594d2d](https://github.com/EOX-A/EOxElements/commit/a594d2df80702225afa5836be43f388bb6c0362c))
+* **deps:** Upgrade `ol` to version `10.0.0` ([#1141](https://github.com/EOX-A/EOxElements/pull/1141)) ([a594d2d](https://github.com/EOX-A/EOxElements/commit/a594d2df80702225afa5836be43f388bb6c0362c))
 
 ## [1.10.1](https://github.com/EOX-A/EOxElements/compare/map-v1.10.0...map-v1.10.1) (2024-07-23)
 
