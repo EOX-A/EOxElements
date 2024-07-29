@@ -2,6 +2,12 @@ import { LitElement, html, svg } from "lit";
 import dayjs from "dayjs";
 
 /**
+ * @typedef {Object} YearMark
+ * @property {number} label
+ * @property {number} position
+ */
+
+/**
  * @element eox-sliderticks
  */
 export class SliderTicks extends LitElement {
@@ -9,16 +15,18 @@ export class SliderTicks extends LitElement {
     return {
       width: { type: Number },
       steps: { type: Array },
-      height: { state: true },
-      svgWidth: { state: true },
     };
   }
 
   constructor() {
     super();
+    /** @type {number} */
     this.width = 0;
+    /** @type {string[]} */
     this.steps = [];
+    /** @type {number} */
     this.height = 6;
+    /** @type {number} */
     this.svgWidth = 0;
   }
 
@@ -41,6 +49,9 @@ export class SliderTicks extends LitElement {
     this.height = this.shadowRoot.querySelector("svg").clientHeight;
   }
 
+  /**
+   * @returns {number[]}
+   */
   get lines() {
     const num = this.numLines > this.width / 2 ? this.width / 2 : this.numLines;
 
@@ -48,12 +59,20 @@ export class SliderTicks extends LitElement {
     return Array.from({ length: this.numLines }, (_, i) => i * spacing);
   }
 
+  /**
+   * @returns {number}
+   */
   get numLines() {
     return this.steps ? this.steps.length : 0;
   }
 
+  /**
+   * @returns {YearMark[]}
+   */
   get yearMarks() {
+    /** @type {YearMark[]} */
     const yearMarks = [];
+    /** @type {number | null} */
     let previousYear = null;
 
     this.lines.forEach((line, index) => {

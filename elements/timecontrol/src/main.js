@@ -64,11 +64,22 @@ export class EOxTimeControl extends LitElement {
 
   constructor() {
     super();
-    /**
-     * @type Array<string>
-     */
+    /** @type {string[]} */
     this.controlValues = [];
+    /** @type {number} */
     this._newStepIndex = 0;
+    /** @type {boolean} */
+    this.unstyled = false;
+    /** @type {boolean} */
+    this.disablePlay = false;
+    /** @type {boolean} */
+    this.slider = false;
+    /** @type {string} */
+    this.for = "";
+    /** @type {string} */
+    this.layer = "";
+    /** @type {string | undefined} */
+    this.controlProperty = undefined;
   }
 
   /**
@@ -144,6 +155,7 @@ export class EOxTimeControl extends LitElement {
       this._newStepIndex = this.controlValues.length - 1;
     }
 
+    // @ts-ignore
     this._controlSource?.updateParams({
       [this.controlProperty]: this.controlValues[this._newStepIndex],
     });
@@ -168,8 +180,8 @@ export class EOxTimeControl extends LitElement {
    * Consider a way to properly export that function and use it here
    * See also:
    * https://github.com/EOX-A/EOxElements/issues/974
-   * @param {Array<import('ol/layer/Layer').default>} layers
-   * @returns {Array<import('ol/layer/Layer').default>}
+   * @param {import('ol/layer/Base').default[]} layers
+   * @returns {import('ol/layer/Base').default[]}
    */
   getFlatLayersArray(layers) {
     const flatLayers = [];
@@ -177,7 +189,6 @@ export class EOxTimeControl extends LitElement {
 
     /** @type {Array<Group>} */
     let groupLayers = flatLayers.filter((l) => l instanceof Group);
-
     while (groupLayers.length) {
       const newGroupLayers = [];
       for (let i = 0, ii = groupLayers.length; i < ii; i++) {
@@ -197,24 +208,24 @@ export class EOxTimeControl extends LitElement {
     /**
      * @type {import('ol').Map}
      */
+    // @ts-ignore
     const olMap = mapQuery.map || mapQuery;
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
         const flatLayers = this.getFlatLayersArray(
-          olMap.getLayers().getArray()
+          /** @type {import('ol/layer/Base').default[]} */ (
+            olMap.getLayers().getArray()
+          )
         );
-        /**
-         * @type {import('ol/layer/Layer').default}
-         */
-        const animationLayer = flatLayers.find(
-          (l) => l.get("id") === this.layer
+        const animationLayer = /** @type {import('ol/layer/Layer').default} */ (
+          flatLayers.find((l) => l.get("id") === this.layer)
         );
-        /**
-         * @type {import('ol/source/UrlTile').default}
-         */
-        this._controlSource = animationLayer.getSource();
-
+        this._controlSource =
+          /** @type {import('ol/source/UrlTile').default} */ (
+            animationLayer.getSource()
+          );
+        // @ts-ignore
         this._originalParams = this._controlSource.getParams();
       }
     });
@@ -260,7 +271,7 @@ export class EOxTimeControl extends LitElement {
                     part="slider"
                     value="${this.controlValues[this._newStepIndex]}"
                     style="display: inline-block;"
-                    @change="${(evt) =>
+                    @change="${(/** @type {CustomEvent} */ evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(
                           (v) => v === evt.detail.value
