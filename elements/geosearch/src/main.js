@@ -6,6 +6,8 @@ import mainStyle from "../../../utils/styles/dist/main.style";
 import buttonStyle from "../../../utils/styles/dist/button.style";
 import { styleEOX } from "./style.eox";
 
+import { getElement } from "../../../utils/getElement";
+
 class EOxGeoSearch extends LitElement {
   static get properties() {
     return {
@@ -37,7 +39,19 @@ class EOxGeoSearch extends LitElement {
       /**
        * Selector for the eox-map instance
        */
-      for: { type: String },
+      for: {
+        type: String,
+        reflect: true,
+        converter: (value, type) => {
+          const foundElement = getElement(value);
+
+          const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
+          this.#eoxMap = foundElement;
+          console.log(this.#eoxMap);
+
+          return foundElement;
+        },
+      },
       /**
        * The name of the query parameter to use for the search query in the endpoint URI.
        *
@@ -218,6 +232,9 @@ class EOxGeoSearch extends LitElement {
 
     this.#eoxMap.zoomExtent = zoomExtent;
 
+    console.log(`Zooming to extent: ${zoomExtent}`);
+    console.log(JSON.stringify(this.#eoxMap));
+
     /**
      * The select event, including the details of the selected item
      */
@@ -229,7 +246,15 @@ class EOxGeoSearch extends LitElement {
    * And stores it in the private property #eoxMap.
    */
   firstUpdated() {
-    this.#eoxMap = document.querySelector(this.for);
+    const foundElement = getElement(this.for);
+
+    if (foundElement) {
+      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
+      this.#eoxMap = foundElement;
+      console.log(this.#eoxMap);
+    } else {
+      console.error("No eox-map element found");
+    }
   }
 
   render() {

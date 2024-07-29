@@ -10,6 +10,7 @@ const Primary = {
         label="Search"
         style="position: absolute; top: 36px; left: 32px; z-index: 12;"
         .endpoint="${args.endpoint}"
+        .for="${document.querySelector("#geosearch-map-primary")}"
       ></eox-geosearch>
 
       <eox-map
