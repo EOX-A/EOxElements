@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.5.1...timecontrol-v0.6.0) (2024-07-29)
+
+
+### Features
+
+* Re-write `timecontrol` in js ([#1113](https://github.com/EOX-A/EOxElements/issues/1113)) ([88f21b4](https://github.com/EOX-A/EOxElements/commit/88f21b49083fb21c59b2a251712c51fab75d6c3a))
+
 ## [0.5.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.5.0...timecontrol-v0.5.1) (2024-06-10)
 
 
