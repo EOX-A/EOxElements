@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import Group from "ol/layer/Group";
+import { getElement } from "../../../utils";
 import "toolcool-range-slider";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
@@ -74,7 +75,7 @@ export class EOxTimeControl extends LitElement {
     this.disablePlay = false;
     /** @type {boolean} */
     this.slider = false;
-    /** @type {string} */
+    /** @type {string|HTMLElement} */
     this.for = "";
     /** @type {string} */
     this.layer = "";
@@ -155,7 +156,6 @@ export class EOxTimeControl extends LitElement {
       this._newStepIndex = this.controlValues.length - 1;
     }
 
-    // @ts-ignore
     this._controlSource?.updateParams({
       [this.controlProperty]: this.controlValues[this._newStepIndex],
     });
@@ -204,12 +204,10 @@ export class EOxTimeControl extends LitElement {
   }
 
   render() {
-    const mapQuery = document.querySelector(this.for);
-    /**
-     * @type {import('ol').Map}
-     */
-    // @ts-ignore
-    const olMap = mapQuery.map || mapQuery;
+    const foundElement = /** @type {import('../../map/main').EOxMap} */ (
+      getElement(this.for)
+    );
+    const olMap = foundElement.map;
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
@@ -222,10 +220,10 @@ export class EOxTimeControl extends LitElement {
           flatLayers.find((l) => l.get("id") === this.layer)
         );
         this._controlSource =
-          /** @type {import('ol/source/UrlTile').default} */ (
+          /** @type {import('ol/source/TileWMS').default} */ (
             animationLayer.getSource()
           );
-        // @ts-ignore
+
         this._originalParams = this._controlSource.getParams();
       }
     });

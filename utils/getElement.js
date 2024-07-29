@@ -7,7 +7,9 @@
 export const getElement = (stringOrElement) => {
   let domElement;
   if (typeof stringOrElement === "string") {
-    domElement = document.querySelector(stringOrElement);
+    domElement = /** @type {HTMLElement} */ (
+      document.querySelector(stringOrElement)
+    );
   } else {
     domElement = stringOrElement;
   }
