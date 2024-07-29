@@ -1,0 +1,19 @@
+{
+  "name": "vite-test",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.3.1"
+  },
+  "dependencies": {
+    "@eox/drawtools": "file:../../elements/drawtools/src/main.js",
+    "@eox/geosearch": "file:../../elements/geosearch/src/main.js",
+    "@eox/map": "^1.9.0"
+  }
+}

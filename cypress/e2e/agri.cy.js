@@ -1,6 +1,6 @@
 describe("Layer Switcher", () => {
   beforeEach(() => {
-    cy.visit("/cypress/e2e/agri.html");
+    cy.visit("http://localhost:5173/agri.html");
   });
 
   it("draws on the map", () => {
