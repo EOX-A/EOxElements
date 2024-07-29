@@ -19,5 +19,5 @@
     "checkJs": true,
     "types": ["cypress"]
   },
-  "include": ["src/*.js"]
+  "include": ["src/*.js", "../map/typings.d.ts", "../map/css.d.ts"]
 }

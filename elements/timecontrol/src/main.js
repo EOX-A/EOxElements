@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import Group from "ol/layer/Group";
+import { getElement } from "../../../utils";
 import "toolcool-range-slider";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
@@ -64,11 +65,22 @@ export class EOxTimeControl extends LitElement {
 
   constructor() {
     super();
-    /**
-     * @type Array<string>
-     */
+    /** @type {string[]} */
     this.controlValues = [];
+    /** @type {number} */
     this._newStepIndex = 0;
+    /** @type {boolean} */
+    this.unstyled = false;
+    /** @type {boolean} */
+    this.disablePlay = false;
+    /** @type {boolean} */
+    this.slider = false;
+    /** @type {string|HTMLElement} */
+    this.for = "";
+    /** @type {string} */
+    this.layer = "";
+    /** @type {string | undefined} */
+    this.controlProperty = undefined;
   }
 
   /**
@@ -168,8 +180,8 @@ export class EOxTimeControl extends LitElement {
    * Consider a way to properly export that function and use it here
    * See also:
    * https://github.com/EOX-A/EOxElements/issues/974
-   * @param {Array<import('ol/layer/Layer').default>} layers
-   * @returns {Array<import('ol/layer/Layer').default>}
+   * @param {import('ol/layer/Base').default[]} layers
+   * @returns {import('ol/layer/Base').default[]}
    */
   getFlatLayersArray(layers) {
     const flatLayers = [];
@@ -177,7 +189,6 @@ export class EOxTimeControl extends LitElement {
 
     /** @type {Array<Group>} */
     let groupLayers = flatLayers.filter((l) => l instanceof Group);
-
     while (groupLayers.length) {
       const newGroupLayers = [];
       for (let i = 0, ii = groupLayers.length; i < ii; i++) {
@@ -193,27 +204,25 @@ export class EOxTimeControl extends LitElement {
   }
 
   render() {
-    const mapQuery = document.querySelector(this.for);
-    /**
-     * @type {import('ol').Map}
-     */
-    const olMap = mapQuery.map || mapQuery;
+    const foundElement = /** @type {import('../../map/main').EOxMap} */ (
+      getElement(this.for)
+    );
+    const olMap = foundElement.map;
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
         const flatLayers = this.getFlatLayersArray(
-          olMap.getLayers().getArray()
+          /** @type {import('ol/layer/Base').default[]} */ (
+            olMap.getLayers().getArray()
+          )
         );
-        /**
-         * @type {import('ol/layer/Layer').default}
-         */
-        const animationLayer = flatLayers.find(
-          (l) => l.get("id") === this.layer
+        const animationLayer = /** @type {import('ol/layer/Layer').default} */ (
+          flatLayers.find((l) => l.get("id") === this.layer)
         );
-        /**
-         * @type {import('ol/source/UrlTile').default}
-         */
-        this._controlSource = animationLayer.getSource();
+        this._controlSource =
+          /** @type {import('ol/source/TileWMS').default} */ (
+            animationLayer.getSource()
+          );
 
         this._originalParams = this._controlSource.getParams();
       }
@@ -260,7 +269,7 @@ export class EOxTimeControl extends LitElement {
                     part="slider"
                     value="${this.controlValues[this._newStepIndex]}"
                     style="display: inline-block;"
-                    @change="${(evt) =>
+                    @change="${(/** @type {CustomEvent} */ evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(
                           (v) => v === evt.detail.value
