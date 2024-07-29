@@ -2,10 +2,12 @@ import { EOxMap } from "../../main";
 import * as olControls from "ol/control";
 import { generateLayers } from "../generate";
 import Geolocation from "./Geolocation";
+import LoadingIndicator from "./LoadingIndicator";
 
 const availableControls = {
   ...olControls,
   Geolocation,
+  LoadingIndicator
 };
 
 export type controlType =
@@ -18,7 +20,8 @@ export type controlType =
   | "ZoomSlider"
   | "ZoomToExtent"
   | "Zoom"
-  | "Geolocation";
+  | "Geolocation"
+  | "LoadingIndicator";
 
 export type controlDictionary = {
   [key in controlType]?: object;
