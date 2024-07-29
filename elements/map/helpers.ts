@@ -64,7 +64,7 @@ export function addNewFeature(
     | DrawEvent
     | DragAndDropEvent
     | { features: Array<import("ol/Feature").default> },
-  vectorLayer: VectorLayer<import("ol/Feature").default>,
+  vectorLayer: VectorLayer,
   EOxMap: EOxMap,
   isDraw: boolean = false,
   replaceFeatures: boolean = false
@@ -138,7 +138,7 @@ export function addNewFeature(
  */
 export function parseText(
   text: string,
-  vectorLayer: VectorLayer<import("ol/Feature").default>,
+  vectorLayer: VectorLayer,
   EOxMap: EOxMap,
   replaceFeatures: boolean = false
 ): void {

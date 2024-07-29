@@ -1,12 +1,12 @@
 {
   "elements/drawtools": "0.8.1",
-  "elements/itemfilter": "0.14.1",
-  "elements/layercontrol": "0.17.5",
-  "elements/map": "1.9.0",
+  "elements/itemfilter": "1.0.1",
+  "elements/layercontrol": "0.18.0",
+  "elements/map": "1.11.0",
   "elements/stacinfo": "0.3.3",
-  "elements/timecontrol": "0.5.1",
-  "elements/jsonform": "0.8.1",
+  "elements/timecontrol": "0.6.0",
+  "elements/jsonform": "0.8.2",
   "elements/layout": "0.1.0",
-  "elements/storytelling": "1.0.5",
-  "elements/geosearch": "0.1.1"
+  "elements/storytelling": "1.0.6",
+  "elements/geosearch": "0.1.2"
 }

@@ -16,7 +16,6 @@ type WMTSCapabilitiesOptions = {
   interpolate?: boolean;
   projection?: ProjectionLike;
   transition?: number;
-  opaque?: boolean;
   key?: string;
   tilePixelRatio?: number;
   zDirection?: number;
@@ -33,7 +32,6 @@ class WMTSCapabilities extends TileImage {
     super({
       attributions: options.attributions,
       cacheSize: options.cacheSize,
-      opaque: options.opaque,
       tilePixelRatio: options.tilePixelRatio,
       transition: options.transition,
       interpolate:

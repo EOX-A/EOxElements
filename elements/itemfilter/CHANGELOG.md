@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.0.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.0...itemfilter-v1.0.1) (2024-07-29)
+
+
+### Bug Fixes
+
+* Support inline mode state change ([#1138](https://github.com/EOX-A/EOxElements/issues/1138)) ([cbe4250](https://github.com/EOX-A/EOxElements/commit/cbe42501d491237fb5b14615fd207f3d929fb56b))
+
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.14.1...itemfilter-v1.0.0) (2024-07-24)
+
+
+This is a complete rewrite of the itemfilter in JS with many bug fixes
+
+### ⚠ BREAKING CHANGES
+- `filter` and `select` events: listeners need to be added to `filter` and `select` events instead of setting `onFilter` and `onSelect` config properties ([842c30e](https://github.com/EOX-A/EOxElements/pull/989/commits/842c30e88849bb78f2951181710921290998e3e6)) ([ccdea8b](https://github.com/EOX-A/EOxElements/pull/989/commits/ccdea8b21884d5ccf20946544dc4c558b7e1d7d6))
+- remove `apply` function: the `apply` function has been deprecated, the `items` property needs to be used instead
+- remove `config` object: the `config` object has been deprecated, the config properties need to be passed individually ([3826047](https://github.com/EOX-A/EOxElements/pull/989/commits/3826047a8e9a2f802a7ed22c4c3fe7ce479928f6))
+
+### Features
+- Nested filter properties ([0c488b9](https://github.com/EOX-A/EOxElements/pull/989/commits/0c488b9c864f9397ccc11dcde6ee86743620f4ed))
+- Force filter keys via `filterKeys` ([c1b88db](https://github.com/EOX-A/EOxElements/pull/989/commits/c1b88db289c337c265fd5b1adde0881eb0f21d46))
+- Restyling of result list ([#1109](https://github.com/EOX-A/EOxElements/pull/1109)) ([ddae31a](https://github.com/EOX-A/EOxElements/pull/989/commits/ddae31a91c316c2bf5a25f3684bb4cbccbb67dff))
+- Deselection of results ([#1109](https://github.com/EOX-A/EOxElements/pull/1109)) ([ddae31a](https://github.com/EOX-A/EOxElements/pull/989/commits/ddae31a91c316c2bf5a25f3684bb4cbccbb67dff))
+- Optional subtitles for results ([#1109](https://github.com/EOX-A/EOxElements/pull/1109)) ([ddae31a](https://github.com/EOX-A/EOxElements/pull/989/commits/ddae31a91c316c2bf5a25f3684bb4cbccbb67dff))
+- Dropdown in top-layer ([#1125](https://github.com/EOX-A/EOxElements/pull/1125)) ([f121142](https://github.com/EOX-A/EOxElements/pull/989/commits/f12114202c19db9fd802112075cdba91d830c4b0))
+
+### Miscellaneous chores
+- Improve and rewrite itemfilter
+
 ## [0.14.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.14.0...itemfilter-v0.14.1) (2024-06-10)
 
 

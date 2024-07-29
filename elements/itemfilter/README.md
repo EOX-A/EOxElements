@@ -12,29 +12,11 @@ import "@eox/itemfilter"
 <eox-itemfilter></eox-itemfilter>
 ```
 
-// TODO: add documentation
+Please refer to the [itemfilter docs](https://eox-a.github.io/EOxElements/?path=/docs/elements-eox-itemfilter--docs) for more details.
 
-## Attributes
+## Development
 
-### `expandMultipleFilters?: boolean = true`
-
-Allow opening multiple filter accordeons in parallel.
-
-### `expandMultipleResults?: boolean = true`
-
-Allow opening multiple result accordeons in parallel.
-
-## Contribute
-
-```
-npm watch
-(on root) npm run cypress
-(on root) npm run format
-
-npm version <new version>
-npm run build
-npm publish (requires OTP)
-```
+For a development setup, please check the [root-level readme](../../README.md).
 
 ## Changelog
 

@@ -86,6 +86,201 @@
 </ows:OperationsMetadata>
 <Contents>
 <Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2018 by EOX - 3857</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2017 &amp; 2018) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a></ows:Abstract>
+<ows:Identifier>s2cloudless-2018_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2018_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Coastline overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Coastline overlay</a> { Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>coastline</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/coastline/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2020 by EOX - 4326</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a></ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>s2cloudless-2020</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>OpenStreetMap background layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">OpenStreetMap</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:Identifier>osm_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/osm_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2016 by EOX - 3857</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 &amp; 2017) released under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</ows:Abstract>
+<ows:Identifier>s2cloudless_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Terrain background layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Terrain</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors and <a href="https://maps.eox.at/#data">others</a>, Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:Identifier>terrain_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/terrain_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Bright overlay layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay bright</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:Identifier>overlay_base_bright_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay_base_bright_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Hydrography overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Hydrography overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>hydrography</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/hydrography/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Graticules overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Graticules</a> { Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>graticules</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/graticules/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Overlay layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:Identifier>overlay_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Blue marble background layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Blue Marble</a> { &copy; <a href="http://nasa.gov">NASA</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>bluemarble</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/bluemarble/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Black coastline overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Black coastline overlay</a> { Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>coastline_black</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/coastline_black/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
 <ows:Title>Sentinel-2 cloudless layer for 2017 by EOX - 3857</ows:Title>
 <ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2017) released under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</ows:Abstract>
 <ows:Identifier>s2cloudless-2017_3857</ows:Identifier>
@@ -100,6 +295,408 @@
 <TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
 </TileMatrixSetLink>
 <ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2017_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Streets overlay layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Streets overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:Identifier>streets_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/streets_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Bright overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay bright</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>overlay_bright</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay_bright/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2019 by EOX - 3857</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a></ows:Abstract>
+<ows:Identifier>s2cloudless-2019_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2019_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>overlay</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Black marble background layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Black Marble</a> { &copy; <a href="http://nasa.gov">NASA</a> }</ows:Abstract>
+<ows:Identifier>blackmarble_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/blackmarble_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Hydrography overlay layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Hydrography overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:Identifier>hydrography_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/hydrography_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2017 by EOX - 4326</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2017) released under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>s2cloudless-2017</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2017/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Streets overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Streets overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>streets</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/streets/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2018 by EOX - 4326</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2017 &amp; 2018) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a></ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>s2cloudless-2018</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2018/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2019 by EOX - 4326</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2019) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a></ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>s2cloudless-2019</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2019/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>OpenStreetMap background layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">OpenStreetMap</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>osm</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/osm/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Black marble background layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Black Marble</a> { &copy; <a href="http://nasa.gov">NASA</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>blackmarble</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/blackmarble/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Terrain Light background layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Terrain Light</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors and <a href="https://maps.eox.at/#data">others</a>, Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:Identifier>terrain-light_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2020 by EOX - 3857</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a></ows:Abstract>
+<ows:Identifier>s2cloudless-2020_3857_512</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible_512</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857_512/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Blue marble background layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Blue Marble</a> { &copy; <a href="http://nasa.gov">NASA</a> }</ows:Abstract>
+<ows:Identifier>bluemarble_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/bluemarble_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Overlay layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:Identifier>overlay_base_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay_base_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2016 by EOX - 4326</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2016 &amp; 2017) released under <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>s2cloudless</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Terrain background layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Terrain</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors and <a href="https://maps.eox.at/#data">others</a>, Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>terrain</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/terrain/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Bright overlay layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay bright</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:Identifier>overlay_bright_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay_bright_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Coastline overlay layer by EOX - 3857</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Coastline overlay</a> { Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:Identifier>coastline_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/coastline_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Sentinel-2 cloudless layer for 2020 by EOX - 3857</ows:Title>
+<ows:Abstract><a xmlns:dct="http://purl.org/dc/terms/" href="https://s2maps.eu" property="dct:title">Sentinel-2 cloudless - https://s2maps.eu</a> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://eox.at" property="cc:attributionName" rel="cc:attributionURL">EOX IT Services GmbH</a> (Contains modified Copernicus Sentinel data 2020) released under <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>. For commercial usage please see <a href="https://cloudless.eox.at">https://cloudless.eox.at</a></ows:Abstract>
+<ows:Identifier>s2cloudless-2020_3857</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>g</TileMatrixSet>
+</TileMatrixSetLink>
+<TileMatrixSetLink>
+<TileMatrixSet>GoogleMapsCompatible</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Magnetic Graticules overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Magnetic Graticules</a> { Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>magnetic_graticules</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/magnetic_graticules/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Terrain Light background layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Terrain Light</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors and <a href="https://maps.eox.at/#data">others</a>, Rendering &copy; <a href="https://eox.at">EOX</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>terrain-light</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/jpeg</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/jpeg" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/terrain-light/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.jpg"/>
+</Layer>
+<Layer>
+<ows:Title>Bright overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay bright</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>overlay_base_bright</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay_base_bright/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
+</Layer>
+<Layer>
+<ows:Title>Overlay layer by EOX - 4326</ows:Title>
+<ows:Abstract><a href="https://maps.eox.at">Overlay</a> { Data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Rendering &copy; <a href="https://eox.at">EOX</a> and <a href="https://github.com/mapserver/basemaps">MapServer</a> }</ows:Abstract>
+<ows:WGS84BoundingBox>
+<ows:LowerCorner>-180.000000 -90.000000</ows:LowerCorner>
+<ows:UpperCorner>180.000000 90.000000</ows:UpperCorner>
+</ows:WGS84BoundingBox>
+<ows:Identifier>overlay_base</ows:Identifier>
+<Style isDefault="true">
+<ows:Identifier>default</ows:Identifier>
+</Style>
+<Format>image/png</Format>
+<TileMatrixSetLink>
+<TileMatrixSet>WGS84</TileMatrixSet>
+</TileMatrixSetLink>
+<ResourceURL format="image/png" resourceType="tile" template="https://tiles.maps.eox.at/wmts/1.0.0/overlay_base/default/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png"/>
 </Layer>
 <TileMatrixSet>
 <ows:Identifier>GoogleMapsCompatible_512</ows:Identifier>
@@ -804,5 +1401,4 @@
 </TileMatrix>
 </TileMatrixSet>
 </Contents>
-<script id="bw-fido2-page-script"/>
 </Capabilities>

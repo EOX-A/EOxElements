@@ -5,7 +5,7 @@ import DocumentationTemplate from "./DocumentationTemplate.mdx";
 import "../elements/chart/src/main.ts";
 import "../elements/drawtools/src/main.js";
 import "../elements/geosearch/src/main.js";
-import "../elements/itemfilter/src/main.ts";
+import "../elements/itemfilter/src/main.js";
 import "../elements/jsonform/src/main.js";
 import "../elements/layercontrol/src/main.js";
 import "../elements/layout/src/main.js";
@@ -13,7 +13,7 @@ import "../elements/map/main.ts";
 import "../elements/map/src/plugins/advancedLayersAndSources/index.ts";
 import "../elements/stacinfo/src/main.ts";
 import "../elements/storytelling/src/main.js";
-import "../elements/timecontrol/src/main.ts";
+import "../elements/timecontrol/src/main.js";
 
 /**
  * A custom wrapper for the default setCustomElementsManifest function.

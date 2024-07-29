@@ -21,7 +21,6 @@ import {
 
 import { FlatStyleLike } from "ol/style/flat";
 import { Collection } from "ol";
-import { createXYZ } from "ol/tilegrid";
 import { DrawOptions, addDraw } from "./draw";
 import { EOxMap } from "../main";
 import {
@@ -66,9 +65,7 @@ export type sourceType =
   | "XYZ"
   | "WMTSCapabilities";
 
-export type VectorOrVectorTileLayer =
-  | VectorLayer<import("ol/Feature").FeatureLike>
-  | VectorTileLayer<import("ol/Feature").FeatureLike>;
+export type VectorOrVectorTileLayer = VectorLayer | VectorTileLayer;
 
 export type AnyLayerWithSource =
   | import("ol/layer/BaseImage").default<
@@ -129,13 +126,20 @@ export type EoxLayer = {
   maxResolution?: number;
   opacity?: number;
   visible?: boolean;
-  source?: { type: sourceType; format?: string | formatWithOptions };
+  source?: {
+    type: sourceType;
+    format?: string | formatWithOptions;
+    tileGrid?: object;
+    projection?: import("ol/proj").ProjectionLike;
+  };
   layers?: Array<EoxLayer>;
   style?: FlatStyleLike;
   interactions?: Array<EOxInteraction>;
   zIndex?: number;
   renderMode?: "vector" | "vectorImage";
 };
+import { get as getProjection } from "ol/proj.js";
+import { generateTileGrid } from "./tileGrid";
 
 /**
  * creates an ol-layer from a given EoxLayer definition object
@@ -187,32 +191,34 @@ export function createLayer(
     }
   }
 
+  const tileGrid = generateTileGrid(layer);
+
   const olLayer = new newLayer({
     ...layer,
     ...(layer.source && {
       source: new newSource({
         ...layer.source,
         // @ts-ignore
-        ...(layer.source.format && {
-          // @ts-ignore
-          format: new availableFormats[
-            typeof layer.source.format === "object"
-              ? layer.source.format.type
-              : layer.source.format
-          ]({
+        ...(layer.source.format &&
+          layer.source.type !== "WMTS" && {
             // @ts-ignore
-            ...(typeof layer.source.format === "object" && {
+            format: new availableFormats[
+              typeof layer.source.format === "object"
+                ? layer.source.format.type
+                : layer.source.format
+            ]({
               // @ts-ignore
-              ...layer.source.format,
+              ...(typeof layer.source.format === "object" && {
+                // @ts-ignore
+                ...layer.source.format,
+              }),
             }),
           }),
-        }),
-        // @ts-ignore
         ...(layer.source.tileGrid && {
-          tileGrid: createXYZ({
-            // @ts-ignore
-            ...layer.source.tileGrid,
-          }),
+          tileGrid,
+        }),
+        ...(layer.source.projection && {
+          projection: getProjection(layer.source.projection),
         }),
       }),
     }),
@@ -264,7 +270,7 @@ function addInteraction(
   if (interactionDefinition.type === "draw") {
     addDraw(
       EOxMap,
-      olLayer as VectorLayer<import("ol/Feature").default>,
+      olLayer as VectorLayer,
       interactionDefinition.options as DrawOptions
     );
   } else if (interactionDefinition.type === "select") {
@@ -314,8 +320,8 @@ export function updateLayer(
     JSON.stringify(newLayerDefinition.style) !==
       JSON.stringify(existingJsonDefintion.style)
   ) {
-    (existingLayer as VectorLayer<import("ol/Feature").FeatureLike>).setStyle(
-      (newLayer as VectorLayer<import("ol/Feature").FeatureLike>).getStyle()
+    (existingLayer as VectorLayer).setStyle(
+      (newLayer as VectorLayer).getStyle()
     );
   }
 
