@@ -46,7 +46,7 @@ export function getStartVals(layer, layerConfig) {
   let nestedValues = {};
   // extract style variables from layer
   let styleVars =
-   "updateStyleVariables" in layer
+    "updateStyleVariables" in layer
       ? /** @type {import("ol/layer/WebGLTile").default} */
         (layer)["style_"]?.variables
       : layerConfig.style?.variables;
