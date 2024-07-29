@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.0...itemfilter-v1.0.1) (2024-07-29)
+
+
+### Bug Fixes
+
+* Support inline mode state change ([#1138](https://github.com/EOX-A/EOxElements/issues/1138)) ([cbe4250](https://github.com/EOX-A/EOxElements/commit/cbe42501d491237fb5b14615fd207f3d929fb56b))
+
 ## [1.0.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v0.14.1...itemfilter-v1.0.0) (2024-07-24)
 
 
