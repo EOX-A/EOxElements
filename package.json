@@ -48,7 +48,7 @@
     "storybook": "^8.0.0"
   },
   "engines": {
-    "node": "20.15.1"
+    "node": ">=20.0.0"
   },
   "dependencies": {
     "eslint-plugin-cypress": "^3.0.2",
