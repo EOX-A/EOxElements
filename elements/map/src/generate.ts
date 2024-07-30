@@ -396,7 +396,12 @@ export function updateLayer(
     const layerCollection = (
       existingLayer as unknown as import("ol/layer/Group").default
     ).getLayers();
-    layerCollection.getArray().forEach((l: Layer) => {
+    // We can't remove the layers of a collection while iterating on it,
+    // this fails in removing all layers as expected.
+    // One solution is to create a shallow copy which we iterate
+    // in order to remove the layers from the actual layer collection
+    const layerArray = layerCollection.getArray().slice();
+    layerArray.forEach((l: Layer) => {
       if (!newLayerIds.includes(l.get("id"))) {
         layerCollection.remove(l);
       }
