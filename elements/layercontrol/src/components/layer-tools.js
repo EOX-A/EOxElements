@@ -4,6 +4,7 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-config";
+import "./layer-datetime";
 import "./tabs";
 import { button } from "../../../../utils/styles/button";
 import { radio } from "../../../../utils/styles/radio";
@@ -171,6 +172,22 @@ export class EOxLayerControlLayerTools extends LitElement {
                       `
                     )}
                   </div>
+                  <div slot="datetime-content">
+                    <!-- Layer datetime -->
+                    ${when(
+                      this.layer.get("layerDatetime"),
+                      () => html`
+                        <eox-layercontrol-layer-datetime
+                          slot="datetime-content"
+                          .noShadow=${true}
+                          .layerDatetime=${this.layer.get("layerDatetime")}
+                          .layer=${this.layer}
+                          .unstyled=${this.unstyled}
+                          @changed=${() => this.requestUpdate()}
+                        ></eox-layercontrol-layer-datetime>
+                      `
+                    )}
+                  </div>
                   <div slot="remove-icon">${this._removeButton()}</div>
                   <div slot="sort-icon">${this._sortButton()}</div>
                 </eox-layercontrol-tabs>
@@ -267,6 +284,10 @@ export class EOxLayerControlLayerTools extends LitElement {
     details.tools summary .config-icon,
     button.icon[slot=config-icon]::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Etune%3C/title%3E%3Cpath d='M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z' /%3E%3C/svg%3E");
+    }
+    details.tools summary .datetime-icon,
+    button.icon[slot=datetime-icon]::before {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Etimer-sand%3C/title%3E%3Cpath fill-stroke='%2313414' d='M6,2H18V8H18V8L14,12L18,16V16H18V22H6V16H6V16L10,12L6,8V8H6V2M16,16.5L12,12.5L8,16.5V20H16V16.5M12,11.5L16,7.5V4H8V7.5L12,11.5M10,6H14V6.75L12,8.75L10,6.75V6Z' /%3E%3C/svg%3E");
     }
     .single-action .remove-icon::before,
     [slot=remove-icon] button.icon::before {

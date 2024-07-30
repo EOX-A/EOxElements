@@ -28,7 +28,7 @@ export const _parseTools = (tools, layer) =>
     if (["remove", "sort"].includes(t)) pass = false;
     if (t === "info") pass = layer.get("description");
     if (t === "config") pass = layer.get("layerConfig");
-
+    if (t === "datetime") pass = layer.get("layerDatetime");
     return pass;
   });
 

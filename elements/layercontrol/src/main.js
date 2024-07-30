@@ -153,6 +153,16 @@ export class EOxLayerControl extends LitElement {
     this.dispatchEvent(new CustomEvent("layerchange", { detail: evt.detail }));
   }
 
+  /**
+   * Dispatches datetime updates from layer datetime to the layercontrol
+   * @param {CustomEvent} evt
+   */
+  #handleDatetimeUpdate(evt) {
+    this.dispatchEvent(
+      new CustomEvent("datetime:updated", { detail: evt.detail })
+    );
+  }
+
   render() {
     // Checks if there are any layers with the 'layerControlOptional' property set to true
     const layers = this.map?.getLayers().getArray();
@@ -192,6 +202,7 @@ export class EOxLayerControl extends LitElement {
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             @changed=${this.#handleLayerControlLayerListChange}
+            @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>
         `
       )}

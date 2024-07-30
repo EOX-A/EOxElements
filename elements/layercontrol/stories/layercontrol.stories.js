@@ -7,6 +7,7 @@ import {
   PrimaryStory,
   ToolsStory,
   addExternalLayerStory,
+  layerDatetimeStory,
   layerZoomStateStory,
   unstyledStory,
 } from ".";
@@ -82,3 +83,5 @@ export const LayerZoomState = layerZoomStateStory;
  * Unstyled version of the Element
  */
 export const Unstyled = unstyledStory;
+
+export const LayerDateTime = layerDatetimeStory;
