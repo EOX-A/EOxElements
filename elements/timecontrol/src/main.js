@@ -148,6 +148,10 @@ export class EOxTimeControl extends LitElement {
    * @private
    */
   _updateStep(step = 1) {
+    if (!step) {
+      return;
+    }
+
     this._newStepIndex = this._newStepIndex + step;
     if (this._newStepIndex > this.controlValues.length - 1) {
       this._newStepIndex = 0;
@@ -156,9 +160,11 @@ export class EOxTimeControl extends LitElement {
       this._newStepIndex = this.controlValues.length - 1;
     }
 
-    this._controlSource?.updateParams({
-      [this.controlProperty]: this.controlValues[this._newStepIndex],
-    });
+    if (this.layer && this.for) {
+      this._controlSource?.updateParams({
+        [this.controlProperty]: this.controlValues[this._newStepIndex],
+      });
+    }
     this.requestUpdate();
 
     /**
@@ -204,29 +210,33 @@ export class EOxTimeControl extends LitElement {
   }
 
   render() {
-    const foundElement = /** @type {import('../../map/main').EOxMap} */ (
-      getElement(this.for)
-    );
-    const olMap = foundElement.map;
+    if (this.layer && this.for) {
+      const foundElement = /** @type {import('../../map/main').EOxMap} */ (
+        getElement(this.for)
+      );
 
-    olMap.once("loadend", () => {
-      if (!this._originalParams) {
-        const flatLayers = this.getFlatLayersArray(
-          /** @type {import('ol/layer/Base').default[]} */ (
-            olMap.getLayers().getArray()
-          )
-        );
-        const animationLayer = /** @type {import('ol/layer/Layer').default} */ (
-          flatLayers.find((l) => l.get("id") === this.layer)
-        );
-        this._controlSource =
-          /** @type {import('ol/source/TileWMS').default} */ (
-            animationLayer.getSource()
+      const olMap = foundElement.map;
+
+      olMap.once("loadend", () => {
+        if (!this._originalParams) {
+          const flatLayers = this.getFlatLayersArray(
+            /** @type {import('ol/layer/Base').default[]} */ (
+              olMap.getLayers().getArray()
+            )
           );
+          const animationLayer =
+            /** @type {import('ol/layer/Layer').default} */ (
+              flatLayers.find((l) => l.get("id") === this.layer)
+            );
+          this._controlSource =
+            /** @type {import('ol/source/TileWMS').default} */ (
+              animationLayer.getSource()
+            );
 
-        this._originalParams = this._controlSource.getParams();
-      }
-    });
+          this._originalParams = this._controlSource.getParams();
+        }
+      });
+    }
 
     return html`
       <style>
