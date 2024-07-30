@@ -315,5 +315,58 @@ describe("layers", () => {
         "correctly updates a layer inside group"
       ).to.be.equal(0.5);
     });
+
+    it("update tile layer inside group ", () => {
+      cy.intercept(/^.*s2maps-tiles.*$/, {
+        fixture: "./map/test/fixtures/tiles/wms/wms0.png",
+      });
+
+      let groupLayer = {
+        type: "Group",
+        properties: { id: "BASELAYERS", title: "Base Layers" },
+        layers: [
+          {
+            type: "Tile",
+            properties: {
+              id: "cloudless-2022",
+              name: "original layer",
+            },
+            source: {
+              type: "XYZ",
+              url: "//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpeg",
+            },
+          },
+        ],
+      };
+
+      cy.mount(html`<eox-map .layers=${[groupLayer]}></eox-map>`).as("eox-map");
+      cy.get("eox-map").and(($el) => {
+        const eoxMap = <EOxMap>$el[0];
+        groupLayer = {
+          type: "Group",
+          properties: { id: "BASELAYERS", title: "Base Layers" },
+          layers: [
+            {
+              type: "Tile",
+              properties: {
+                id: "cloudless-2022",
+                name: "updated layer",
+              },
+              source: {
+                type: "XYZ",
+                url: "//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpeg",
+              },
+            },
+          ],
+        };
+        eoxMap.layers = [groupLayer] as Array<EoxLayer>;
+        const layer = eoxMap.getLayerById("cloudless-2022");
+
+        expect(
+          layer.get("name"),
+          "update layer inside group in realistic setting (testing instanceof checks)"
+        ).to.be.equal("updated layer");
+      });
+    });
   });
 });
