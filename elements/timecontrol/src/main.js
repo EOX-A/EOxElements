@@ -148,6 +148,10 @@ export class EOxTimeControl extends LitElement {
    * @private
    */
   _updateStep(step = 1) {
+    if (!step) {
+      return
+    }
+
     this._newStepIndex = this._newStepIndex + step;
     if (this._newStepIndex > this.controlValues.length - 1) {
       this._newStepIndex = 0;
