@@ -55,9 +55,12 @@ section#properties > ul:not(.single-property) {
   -webkit-columns: 2;
   -moz-columns: 2;
 }
-section#properties slot > li {
+section#properties li {
   margin-bottom: 8px;
   break-inside: avoid;
+}
+section#properties .value li {
+  margin-bottom: 0px;    
 }
 section#properties slot:not([name=description]) ul li {
   list-style: none;

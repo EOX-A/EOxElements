@@ -15,7 +15,9 @@
     "noImplicitReturns": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "checkJs": true,
+    "allowJs": true
   },
-  "include": ["**/*.ts", "../../cypress/cypress.d.ts"]
+  "include": ["**/*.ts", "../../cypress/cypress.d.ts", "**/*.js"]
 }

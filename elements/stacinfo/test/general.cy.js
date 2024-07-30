@@ -1,4 +1,4 @@
-import "../src/main";
+import "../src/main.js";
 
 describe("Stacinfo", () => {
   const testBody = (json) => {
