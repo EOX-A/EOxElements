@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.1](https://github.com/EOX-A/EOxElements/compare/map-v1.11.0...map-v1.11.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* Layer update of group layers ([#1147](https://github.com/EOX-A/EOxElements/issues/1147)) ([5f44bc0](https://github.com/EOX-A/EOxElements/commit/5f44bc0aaaa7b003923f6d51d89ad882bb0fb324))
+
 ## [1.11.0](https://github.com/EOX-A/EOxElements/compare/map-v1.10.1...map-v1.11.0) (2024-07-29)
 
 
