@@ -4,6 +4,7 @@ import {
   SliderStory,
   ProgrammaticTimeSelectionStory,
   DisabledPlayButtonStory,
+  NoMapStory,
 } from "./index";
 
 export default {
@@ -19,3 +20,5 @@ export const Slider = SliderStory;
 export const ProgrammaticTimeSelection = ProgrammaticTimeSelectionStory;
 
 export const DisabledPlayButton = DisabledPlayButtonStory;
+
+export const NoMap = NoMapStory;
