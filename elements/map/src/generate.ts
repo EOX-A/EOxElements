@@ -396,7 +396,7 @@ export function updateLayer(
     const layerCollection = (
       existingLayer as unknown as import("ol/layer/Group").default
     ).getLayers();
-    layerCollection.forEach((l: Layer) => {
+    layerCollection.getArray().forEach((l: Layer) => {
       if (!newLayerIds.includes(l.get("id"))) {
         layerCollection.remove(l);
       }
