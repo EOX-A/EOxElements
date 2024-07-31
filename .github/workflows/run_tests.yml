@@ -33,8 +33,16 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
 
+      - name: Cache node_modules 📦
+        uses: actions/cache@v4.0.2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies 👨🏻‍💻
-        run: npm ci --no-audit
+        run: npm ci --prefer-offline --no-audit
 
       - name: Run component tests 👀
         run: |
