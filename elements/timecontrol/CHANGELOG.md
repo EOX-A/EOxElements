@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.6.0...timecontrol-v0.6.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* Enable timecontrol to have no map ([#1156](https://github.com/EOX-A/EOxElements/issues/1156)) ([4bfa8cd](https://github.com/EOX-A/EOxElements/commit/4bfa8cda7dc818dc2684cbe2498c9f329309de05))
+
 ## [0.6.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.5.1...timecontrol-v0.6.0) (2024-07-29)
 
 

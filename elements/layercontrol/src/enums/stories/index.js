@@ -1,3 +1,5 @@
+import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json";
+
 const SENTINEL_HUB_URL =
   "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54";
 
@@ -181,6 +183,246 @@ export const STORIES_LAYER_DEFORESTED_BIOMASS = {
     url: "https://reccap2.api.dev.brockmann-consult.de/api/tiles/cop28~reccap2-9x108x139-0.0.1.zarr/deforested_biomass/{z}/{y}/{x}?crs=EPSG:3857&time=2018-01-01T00:00:00Z&vmin=0&vmax=3&cbar=rain",
   },
 };
+
+const STYLES_LAYER_CROPOMHUSC2 = {
+  variables: {
+    vmin: 0,
+    vmax: 500,
+    crop: "Maize",
+    vstat: "average",
+  },
+  "fill-color": [
+    "case",
+    ["==", ["get", "water_need", ["var", "crop"], ["var", "vstat"]], "N/A"],
+    [253, 231, 37, 0.25],
+    [
+      "interpolate",
+      ["linear"],
+      [
+        "/",
+        [
+          "-",
+          ["get", "water_need", ["var", "crop"], ["var", "vstat"]],
+          ["var", "vmin"],
+        ],
+        ["var", "vmax"],
+      ],
+      0,
+      [68, 1, 84, 1],
+      0.06666666666666667,
+      [70, 23, 103, 1],
+      0.13333333333333333,
+      [71, 44, 122, 1],
+      0.2,
+      [65, 63, 131, 1],
+      0.26666666666666666,
+      [59, 81, 139, 1],
+      0.3333333333333333,
+      [52, 97, 141, 1],
+      0.4,
+      [44, 113, 142, 1],
+      0.4666666666666667,
+      [39, 129, 142, 1],
+      0.5333333333333333,
+      [33, 144, 141, 1],
+      0.6,
+      [39, 173, 129, 1],
+      0.6666666666666666,
+      [66, 187, 114, 1],
+      0.7333333333333333,
+      [92, 200, 99, 1],
+      0.8,
+      [131, 210, 75, 1],
+      0.8666666666666667,
+      [170, 220, 50, 1],
+      0.9333333333333333,
+      [212, 226, 44, 1],
+      1,
+      [253, 231, 37, 1],
+    ],
+  ],
+  "stroke-color": "black",
+  "stroke-width": 1,
+};
+const JSONFORM_SCHEMA_LAYER_CROPOMHUSC2 = {
+  type: "object",
+  title: "Data configuration",
+  properties: {
+    crop: {
+      title: "Crop",
+      type: "string",
+      enum: ["Maize", "Soybean", "Sunflower", "Wheat"],
+      default: "Maize",
+    },
+    vstat: {
+      title: "Statistical value",
+      type: "string",
+      enum: ["average", "best", "worst"],
+      default: "average",
+    },
+    vminmax: {
+      title: "Dynamic range",
+      description: "Water need [mm]",
+      type: "object",
+      properties: {
+        vmin: {
+          type: "number",
+          minimum: 0,
+          maximum: 800,
+          format: "range",
+          default: 0,
+        },
+        vmax: {
+          type: "number",
+          minimum: 0,
+          maximum: 800,
+          format: "range",
+          default: 500,
+        },
+      },
+      format: "minmax",
+    },
+  },
+};
+
+export const STORIES_LAYER_CROPOMHUSC2 = {
+  type: "Vector",
+  source: {
+    type: "Vector",
+    url:
+      "data:," +
+      encodeURIComponent(JSON.stringify(FEATURE_COLLECTION_LAYER_CROPOMHUSC)),
+    format: "GeoJSON",
+  },
+  properties: {
+    id: "id",
+    title: "Crop Yield Vector Example",
+    layerConfig: {
+      schema: JSONFORM_SCHEMA_LAYER_CROPOMHUSC2,
+      style: STYLES_LAYER_CROPOMHUSC2,
+    },
+  },
+};
+
+const LAYERCONFIG_LAYER_SEE = {
+  type: "style",
+  schema: {
+    type: "object",
+    title: "Data configuration",
+    properties: {
+      settlementDistance: {
+        type: "number",
+        minimum: 0,
+        maximum: 5000,
+        format: "range",
+        default: 0,
+      },
+      vminmax: {
+        title: "Global horizontal irradiation",
+        description: "[kWh/m²/day]",
+        type: "object",
+        properties: {
+          vmin: {
+            type: "number",
+            minimum: 0,
+            maximum: 5,
+            format: "range",
+            default: 2,
+          },
+          vmax: {
+            type: "number",
+            minimum: 0,
+            maximum: 5,
+            format: "range",
+            default: 5,
+          },
+        },
+        format: "minmax",
+      },
+    },
+  },
+};
+
+const STYLES_LAYER_SEE = {
+  variables: {
+    vmin: 2,
+    vmax: 5,
+    settlementDistance: 0,
+  },
+  color: [
+    "case",
+    [
+      "all",
+      [">", ["band", 1], 1],
+      [">=", ["band", 2], ["var", "settlementDistance"]],
+    ],
+    [
+      "interpolate",
+      ["linear"],
+      [
+        "/",
+        ["-", ["band", 1], ["var", "vmin"]],
+        ["-", ["var", "vmax"], ["var", "vmin"]],
+      ],
+      0,
+      [68, 1, 84, 1],
+      0.067,
+      [70, 23, 103, 1],
+      0.133,
+      [71, 44, 122, 1],
+      0.2,
+      [65, 63, 131, 1],
+      0.266,
+      [59, 81, 139, 1],
+      0.333,
+      [52, 97, 141, 1],
+      0.4,
+      [44, 113, 142, 1],
+      0.467,
+      [39, 129, 142, 1],
+      0.533,
+      [33, 144, 141, 1],
+      0.6,
+      [39, 173, 129, 1],
+      0.666,
+      [66, 187, 114, 1],
+      0.733,
+      [92, 200, 99, 1],
+      0.8,
+      [131, 210, 75, 1],
+      0.867,
+      [170, 220, 50, 1],
+      0.933,
+      [212, 226, 44, 1],
+      1,
+      [253, 231, 37, 1],
+    ],
+    ["color", 0, 0, 0, 0],
+  ],
+};
+
+export const STORIES_LAYER_SEE = {
+  type: "WebGLTile",
+  style: STYLES_LAYER_SEE,
+  properties: {
+    id: Symbol(),
+    title: "Solar Energy COG Example",
+    layerConfig: LAYERCONFIG_LAYER_SEE,
+  },
+  source: {
+    type: "GeoTIFF",
+    normalize: false,
+    sources: [
+      {
+        url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/DHI/v2/SolarPowerPotential_Annual_COG_clipped_3857_fixed.tif",
+      },
+      {
+        url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/DHI/WSF_EucDist_Austria_3857_COG_fix.tif",
+      },
+    ],
+  },
+};
+
 
 export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
   type: "Tile",
