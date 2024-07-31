@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.1](https://github.com/EOX-A/EOxElements/compare/map-v1.11.0...map-v1.11.1) (2024-07-31)
+
+
+### Bug Fixes
+
+* Issue of layer groups not removing all previous layers ([#1161](https://github.com/EOX-A/EOxElements/issues/1161)) ([e888a61](https://github.com/EOX-A/EOxElements/commit/e888a61c93aafaa73f1130e00b3ab606986407a4))
+* Layer update of group layers ([#1147](https://github.com/EOX-A/EOxElements/issues/1147)) ([5f44bc0](https://github.com/EOX-A/EOxElements/commit/5f44bc0aaaa7b003923f6d51d89ad882bb0fb324))
+
 ## [1.11.1](https://github.com/EOX-A/EOxElements/compare/map-v1.11.0...map-v1.11.1) (2024-07-30)
 
 
