@@ -1,5 +1,62 @@
 # Changelog
 
+## [1.8.1](https://github.com/EOX-A/EOxElements/compare/map-v1.11.2...map-v1.8.1) (2024-07-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* extract advanced layers & sources into separate bundle ([#515](https://github.com/EOX-A/EOxElements/issues/515))
+* introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476))
+
+### Features
+
+* Accidental scrolling prevention via `preventScroll ` property / `prevent-scroll` attribute ([#569](https://github.com/EOX-A/EOxElements/issues/569)) ([89a6878](https://github.com/EOX-A/EOxElements/commit/89a68788edf0c65ed8cfeb973337e06d694506a8))
+* Allow passing an eox-map DOM element to `sync` property ([#1106](https://github.com/EOX-A/EOxElements/issues/1106)) ([0fd08ae](https://github.com/EOX-A/EOxElements/commit/0fd08ae3a1b363968b4aeeb4a6ff3e1bce8350b2))
+* Config getter transforming native OL state ([#926](https://github.com/EOX-A/EOxElements/issues/926)) ([14c81de](https://github.com/EOX-A/EOxElements/commit/14c81deb77ac776e549d885d52e6fcabd0913bf8))
+* Custom WMTSCapabilities Source ([#767](https://github.com/EOX-A/EOxElements/issues/767)) ([0186a4f](https://github.com/EOX-A/EOxElements/commit/0186a4f46ade37b4cc105b8bfbc81cd0cf15eeb7))
+* Delayed location popup for geolocation ([#825](https://github.com/EOX-A/EOxElements/issues/825)) ([f9e5481](https://github.com/EOX-A/EOxElements/commit/f9e5481658605fd7ee1d886998e97b12ea55165d))
+* Emit mapmounted event ([#1007](https://github.com/EOX-A/EOxElements/issues/1007)) ([9bdb5aa](https://github.com/EOX-A/EOxElements/commit/9bdb5aa4908082262b983d8b6e8f2167e2d763b0))
+* Enable/disable compare ([#1100](https://github.com/EOX-A/EOxElements/issues/1100)) ([c7ee092](https://github.com/EOX-A/EOxElements/commit/c7ee09211ab279eb26f898f4f93f964f84d7bf04))
+* External WMS/XYZ layer adding ([#502](https://github.com/EOX-A/EOxElements/issues/502)) ([9b9e005](https://github.com/EOX-A/EOxElements/commit/9b9e0050355276bb3c5450ae0d3a23bfcbafd7ed))
+* Extract advanced layers & sources into separate bundle ([#515](https://github.com/EOX-A/EOxElements/issues/515)) ([2ad7893](https://github.com/EOX-A/EOxElements/commit/2ad7893e2d914d775095d8799e0a821b619a9cc9))
+* Feature editor with shape upload and drag&drop ([#649](https://github.com/EOX-A/EOxElements/issues/649)) ([71acb56](https://github.com/EOX-A/EOxElements/commit/71acb560fa99a15688519af0256e6c8c4a2882da))
+* Format options ([#1006](https://github.com/EOX-A/EOxElements/issues/1006)) ([cab9b1e](https://github.com/EOX-A/EOxElements/commit/cab9b1e03f9a64d73b041103d23cf2257257c161))
+* Geolocation control ([#769](https://github.com/EOX-A/EOxElements/issues/769)) ([10ae84b](https://github.com/EOX-A/EOxElements/commit/10ae84b4f9687e575df05c52fbdb15a23f80c3c9))
+* Improved vanilla ol map config export ([#944](https://github.com/EOX-A/EOxElements/issues/944)) ([ba20a5f](https://github.com/EOX-A/EOxElements/commit/ba20a5fbe41550023f002df96c8a7f919527b597))
+* Introduce config object ([#516](https://github.com/EOX-A/EOxElements/issues/516)) ([394b6ea](https://github.com/EOX-A/EOxElements/commit/394b6eac5439e324f6b4a491a5c95915b741e25f))
+* Introduce reactive properties ([#476](https://github.com/EOX-A/EOxElements/issues/476)) ([96cf532](https://github.com/EOX-A/EOxElements/commit/96cf532c482e473438f3e8346775c65fa6859234))
+* Map animations via properties ([#922](https://github.com/EOX-A/EOxElements/issues/922)) ([d7eff90](https://github.com/EOX-A/EOxElements/commit/d7eff901af9ae530811392bf63d35bc6f9de5241))
+* Pass selection feature as second argument ([#544](https://github.com/EOX-A/EOxElements/issues/544)) ([7255643](https://github.com/EOX-A/EOxElements/commit/7255643fefbb33f5ecb9794fb93d6c9b06db7ff8))
+* Switch projections & allow advanced projections ([#730](https://github.com/EOX-A/EOxElements/issues/730)) ([6a1a544](https://github.com/EOX-A/EOxElements/commit/6a1a544514eb6776895eee3a2a8d510521f052b3))
+* WMTS Tile Grid & Source Projections ([#1046](https://github.com/EOX-A/EOxElements/issues/1046)) ([d613bd1](https://github.com/EOX-A/EOxElements/commit/d613bd1fb64c4d5adeefa827998a8b13667c3341))
+
+
+### Bug Fixes
+
+* Add fallback values if config properties are not defined ([#772](https://github.com/EOX-A/EOxElements/issues/772)) ([e6fd179](https://github.com/EOX-A/EOxElements/commit/e6fd179e270db509e988d6da5f807e9bc767498d))
+* Add missing zIndex sync ([#513](https://github.com/EOX-A/EOxElements/issues/513)) ([5052ed8](https://github.com/EOX-A/EOxElements/commit/5052ed8d5419ce307ab192909dbd4d5a9726cf8c))
+* Check if overlay was already instantiated before creating a new one ([#571](https://github.com/EOX-A/EOxElements/issues/571)) ([3349e99](https://github.com/EOX-A/EOxElements/commit/3349e996619c059c419e15a087275fa7a7f9aad4))
+* Consider active inside listener ([#593](https://github.com/EOX-A/EOxElements/issues/593)) ([bf3bb77](https://github.com/EOX-A/EOxElements/commit/bf3bb773696b671c12c89297e097377081141aaf))
+* **deps:** Support `ol` version `9.2.5-dev.1719634408469` ([#1077](https://github.com/EOX-A/EOxElements/issues/1077)) ([de6cef1](https://github.com/EOX-A/EOxElements/commit/de6cef114ca47c9cd38b514a2ac25476d78d9182))
+* Height of compare container ([#1099](https://github.com/EOX-A/EOxElements/issues/1099)) ([8a77926](https://github.com/EOX-A/EOxElements/commit/8a77926a6737ff10ee046f109366bc31a190e465))
+* Issue of layer groups not removing all previous layers ([#1161](https://github.com/EOX-A/EOxElements/issues/1161)) ([e888a61](https://github.com/EOX-A/EOxElements/commit/e888a61c93aafaa73f1130e00b3ab606986407a4))
+* Keep tooltip visible if not emitted by pointermove ([#579](https://github.com/EOX-A/EOxElements/issues/579)) ([8f7d9d2](https://github.com/EOX-A/EOxElements/commit/8f7d9d293f828686b4b4f7c1cfb843a3f960bcbb))
+* Layer update of group layers ([#1147](https://github.com/EOX-A/EOxElements/issues/1147)) ([5f44bc0](https://github.com/EOX-A/EOxElements/commit/5f44bc0aaaa7b003923f6d51d89ad882bb0fb324))
+* Order of format, layer and source import ([#1056](https://github.com/EOX-A/EOxElements/issues/1056)) ([56c19c5](https://github.com/EOX-A/EOxElements/commit/56c19c53af15f3c29c4ccd465b6bcb91a6640937))
+* Prevent reaction to undefined zoom ([#961](https://github.com/EOX-A/EOxElements/issues/961)) ([4dcb512](https://github.com/EOX-A/EOxElements/commit/4dcb512eac3acf6b73d1cff09d4ad2c3c475a70c))
+* Refresh source of VectorLayer after projection change ([#733](https://github.com/EOX-A/EOxElements/issues/733)) ([4947ec8](https://github.com/EOX-A/EOxElements/commit/4947ec822db8535b45bbf7b5a3bfa686502694ca))
+* Unmanaged Styles ([#1078](https://github.com/EOX-A/EOxElements/issues/1078)) ([be75396](https://github.com/EOX-A/EOxElements/commit/be75396f9cf90f31a4a872794c02789a598b1086))
+* Update default geolocation control icon ([#802](https://github.com/EOX-A/EOxElements/issues/802)) ([4119da7](https://github.com/EOX-A/EOxElements/commit/4119da7054e0f7dbc4b90c100897672b2933cc1b))
+* Update internal `_jsonDefinition` ([#823](https://github.com/EOX-A/EOxElements/issues/823)) ([65326f0](https://github.com/EOX-A/EOxElements/commit/65326f0211e2b2092873833d6e27dbbe7fb87eaf))
+* Update ol version and style test ([#987](https://github.com/EOX-A/EOxElements/issues/987)) ([5475125](https://github.com/EOX-A/EOxElements/commit/5475125ae7e280550f8ab90e18cad011d478579e))
+
+
+### Miscellaneous Chores
+
+* **deps:** Update ol-stac package ([#845](https://github.com/EOX-A/EOxElements/issues/845)) ([53f3c12](https://github.com/EOX-A/EOxElements/commit/53f3c1274f675f4377abf80df75e83327fe8ec20))
+* Update changelog with revert message ([6abaa2b](https://github.com/EOX-A/EOxElements/commit/6abaa2b2fd1a5b903b81b68355421f3e91ecb742))
+* Update readme ([8226f97](https://github.com/EOX-A/EOxElements/commit/8226f9781bc3dc969b71358c453866b96f5f2842))
+
 ## [1.11.2](https://github.com/EOX-A/EOxElements/compare/map-v1.11.1...map-v1.11.2) (2024-07-31)
 
 
