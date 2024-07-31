@@ -1,9 +1,8 @@
 import { LitElement, html } from "lit";
 import { getStartVals } from "../helpers";
-import { dataChangeMethod } from "../methods/layer-config";
+import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
-
 /**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
  * It allows users to input data, modify layer settings, and update the UI based on those settings.
@@ -70,7 +69,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
     /**
      * Layer config for eox-jsonform
      *
-     * @type {{ schema: object, element: string }}
+     * @type {{ schema: Record<string,any>; element: string; type?:"tileUrl"|"style"; style?:import("ol/layer/WebGLTile").Style}}
      */
     this.layerConfig = null;
 
@@ -89,12 +88,26 @@ export class EOxLayerControlLayerConfig extends LitElement {
    */
   #handleDataChange(e) {
     this.#data = e.detail;
-    this.#originalTileUrlFunction = dataChangeMethod(
-      this.#data,
-      this.#originalTileUrlFunction,
-      this
-    );
-    this.requestUpdate();
+    if (this.layerConfig.type === "style" || this.layerConfig.style) {
+      const supportStyleConfig =
+        "setStyle" in this.layer || "updateStyleVariables" in this.layer;
+      if (supportStyleConfig) {
+        applyUpdatedStyles(this.#data, this.layer, this.layerConfig);
+      } else {
+        console.error(
+          `Layer type ${
+            this.layer.get("type") ?? ""
+          } does not support styles configuration`
+        );
+      }
+    } else {
+      this.#originalTileUrlFunction = dataChangeMethod(
+        this.#data,
+        this.#originalTileUrlFunction,
+        this
+      );
+      this.requestUpdate();
+    }
   }
 
   /**
