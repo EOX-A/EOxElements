@@ -11,12 +11,10 @@ setTimeout(async () => {
   if (document.querySelector("eox-map#configReproject")) {
     //@ts-expect-error EOX Map API
     await document
-        .querySelector("eox-map#configReproject")
-        .registerProjectionFromCode(3035);
-    }
+      .querySelector("eox-map#configReproject")
+      .registerProjectionFromCode(3035);
   }
-);
-
+});
 
 export default {
   args: {},
