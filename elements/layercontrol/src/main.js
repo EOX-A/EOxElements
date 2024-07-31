@@ -107,7 +107,7 @@ export class EOxLayerControl extends LitElement {
      *
      * @type {Array<String>}
      */
-    this.tools = ["info", "opacity", "config", "remove", "sort", "datetime"];
+    this.tools = ["info", "opacity", "datetime", "config", "remove", "sort"];
 
     /**
      * Enable-disable external layer
