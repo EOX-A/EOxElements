@@ -190,7 +190,7 @@ Unable to find an `+(a===!1?"accessible ":"")+'element with the role "'+t+'"'+l+
         .aggregateResults=${e.aggregateResults}
         .showResults=${e.showResults}
         .filterProperties=${e.filterProperties}
-      ></eox-itemfilter>`,args:{inlineMode:!0,titleProperty:"title",aggregateResults:"themes",showResults:!1,filterProperties:[{keys:["title","themes"],title:"Search",type:"text",placeholder:"Type Something...",expanded:!0},{key:"code",title:"Codes",type:"multiselect",placeholder:"Search codes",expanded:!0},{key:"themes",title:"Theme",type:"select",placeholder:"Select a theme",expanded:!0},{key:"timestamp",type:"range",format:"date",expanded:!0}],items:Xr}}}function hO(){return{render:e=>pr`<eox-itemfilter
+      ></eox-itemfilter>`,args:{inlineMode:!0,titleProperty:"title",aggregateResults:"themes",showResults:!1,filterProperties:[{keys:["title","themes"],title:"Search",type:"text",placeholder:"Type Something...",expanded:!0},{key:"code",title:"Codes",type:"multiselect",placeholder:"Search codes",expanded:!0},{key:"themes",title:"Theme",type:"select",placeholder:"Select a theme",expanded:!0},{key:"timestamp",type:"range",title:"Timestamp",format:"date",expanded:!0}],items:Xr}}}function hO(){return{render:e=>pr`<eox-itemfilter
         .items=${e.items}
         .titleProperty=${e.titleProperty}
         .aggregateResults=${e.aggregateResults}
