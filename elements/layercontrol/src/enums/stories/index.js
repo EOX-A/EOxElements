@@ -432,6 +432,8 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
     layerControlExpand: true,
     layerControlToolsExpand: true,
     layerDatetime: {
+      disablePlay:true,
+      slider:true,
       current: "2021-03-01",
       values: [
         "2022-12-01",

@@ -38,7 +38,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     /**
      * Layer config for eox-jsonform
      *
-     * @type {{ current:string|number, values:(string|number)[] }}
+     * @type {{ disablePlay?:boolean;slider?:boolean;current:string|number, values:(string|number)[] }}
      */
     this.layerDatetime = null;
 
@@ -101,8 +101,8 @@ export class EOxLayerControlLayerDatetime extends LitElement {
             ?unstyled=${this.unstyled}
             .for=${undefined}
             .layer=${undefined}
-            slider=${true}
-            .disablePlay=${true}
+            .slider=${this.layerDatetime.slider ?? false}
+            .disablePlay=${this.layerDatetime.disablePlay ?? false}
             .controlValues=${this.layerDatetime.values}
             .controlProperty=${undefined}
             current-step=${this.layerDatetime.current}
