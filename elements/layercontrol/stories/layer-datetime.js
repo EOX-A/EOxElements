@@ -7,16 +7,9 @@ import {
 
 export const LayerDateTime = {
   args: {
-    /** @param {CustomEvent<{datetime:string|number,layer:string}>} evt */
+    /** @param {CustomEvent<{datetime:string|number,layer:import("ol/layer").Layer}>} evt */
     onDatetimeUpdated: (evt) => {
-      /** @type {import('../../map/main').EOxMap} */
-      const eoxMap = document.querySelector("eox-map#datetime");
-      const olMap = eoxMap.map;
-      const layer = olMap
-        .getLayers()
-        .getArray()
-        .find((l) => l.get("id") === evt.detail.layer);
-      layer.getSource().updateParams({ TIME: evt.detail.datetime });
+        evt.detail.layer.getSource().updateParams({ TIME: evt.detail.datetime });
     },
   },
   render: (args) => html`
