@@ -70,7 +70,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
         bubbles: true,
         detail: {
           datetime: evt.detail.currentStep,
-          layer: this.layer.get("id"),
+          layer: this.layer,
         },
       })
     );
