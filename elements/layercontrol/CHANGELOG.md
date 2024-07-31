@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.18.0...layercontrol-v0.18.1) (2024-07-31)
+
+
+### Features
+
+* Support updating style variables from layer configurations  ([#1088](https://github.com/EOX-A/EOxElements/issues/1088)) ([a049923](https://github.com/EOX-A/EOxElements/commit/a049923fea5893567013904910bea7edc5af2b0e))
+
 ## [0.18.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.17.5...layercontrol-v0.18.0) (2024-07-23)
 
 
