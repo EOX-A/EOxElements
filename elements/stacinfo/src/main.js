@@ -1,11 +1,12 @@
 import { LitElement, html, nothing } from "lit";
-import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
-import { fetchSTAC, transformProperties } from "./helpers";
-import { style } from "./style";
-import { styleEOX } from "./style.eox";
+import {
+  fetchSTAC,
+  parseEntries,
+  updateProperties,
+} from "./helpers/index.js";
+import { style } from "./style.js";
+import { styleEOX } from "./style.eox.js";
 import { Formatters } from "@radiantearth/stac-fields";
 import "./components/shadow";
 import "./components/header";
@@ -62,36 +63,11 @@ class EOxStacInfo extends LitElement {
     this.stacProperties = [];
   }
 
-  parseEntries(list, type) {
-    return transformProperties(
-      Object.entries(this.stacProperties)
-        .filter(([key]) => {
-          return list === this.properties && (!list || list.length < 1)
-            ? true
-            : list?.includes(key);
-        })
-        .reverse()
-        .sort(([keyA], [keyB]) =>
-          list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1
-        ),
-      type
-    );
-  }
-
   updated(_changedProperties) {
     if (_changedProperties.has("for")) fetchSTAC(this);
     if (_changedProperties.has("stacInfo")) {
       Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
-      if (this.stacInfo.length) {
-        this.stacProperties = this.stacInfo.reduce(
-          (acc, curr) => ({
-            ...acc,
-            ...curr.properties,
-          }),
-          {}
-        );
-        this.requestUpdate();
-      }
+      updateProperties(this);
     }
   }
 
@@ -106,27 +82,27 @@ class EOxStacInfo extends LitElement {
         this.stacInfo.length,
         () => html`
           <eox-stacinfo-header
-            .header=${this.parseEntries(this.header)}
+            .header=${parseEntries(this.header, this)}
           ></eox-stacinfo-header>
           <main>
-            ${this.parseEntries(this.tags).length +
-              this.parseEntries(this.properties).length >
+            ${parseEntries(this.tags, this).length +
+              parseEntries(this.properties, this).length >
             0
               ? html`
                   <eox-stacinfo-tags
-                    .tags=${this.parseEntries(this.tags)}
+                    .tags=${parseEntries(this.tags, this)}
                   ></eox-stacinfo-tags>
                   <eox-stacinfo-properties
-                    .properties=${this.parseEntries(this.properties)}
+                    .properties=${parseEntries(this.properties, this)}
                   ></eox-stacinfo-properties>
                 `
               : nothing}
             <eox-stacinfo-featured
-              .featured=${this.parseEntries(this.featured, "featured")}
+              .featured=${parseEntries(this.featured, this, "featured")}
             ></eox-stacinfo-featured>
           </main>
           <eox-stacinfo-footer
-            .footer=${this.parseEntries(this.footer)}
+            .footer=${parseEntries(this.footer, this)}
           ></eox-stacinfo-footer>
         `,
         () => html`${nothing}`

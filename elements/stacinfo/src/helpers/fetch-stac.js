@@ -1,4 +1,4 @@
-import { parseSTAC } from "./index";
+import { parseSTAC } from "./index.js";
 
 /**
  *

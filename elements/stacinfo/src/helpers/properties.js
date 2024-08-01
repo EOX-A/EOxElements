@@ -1,7 +1,4 @@
-export const transformProperties = (
-  properties: Array<any>,
-  type: string = "property"
-) => {
+export function transformProperties(properties, type = "property") {
   return properties.map(([key, property]) => {
     // Transform extent to only show temporal
     if (key === "extent") {
@@ -21,15 +18,15 @@ export const transformProperties = (
     }
 
     // Replace all links (that haven't been converted yet)
-    property.formatted = property.formatted.replaceAll(
+    property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
-      (url: string) => {
+      (url) => {
         return `<a target="_blank" href="${url}">${url}</a>`;
       }
     );
 
     // Only show assets with roles "metadata" and links with rel "example"
-    const filterLinks = (links: Array<any>) => {
+    const filterLinks = (links) => {
       return Object.entries(links).filter(([_, itemValue]) => {
         let pass = true;
         if (itemValue.roles) pass = itemValue.roles.includes("metadata");
@@ -79,4 +76,17 @@ export const transformProperties = (
 
     return [key, property];
   });
-};
+}
+
+export function updateProperties(that) {
+  if (that.stacInfo.length) {
+    that.stacProperties = that.stacInfo.reduce(
+      (acc, curr) => ({
+        ...acc,
+        ...curr.properties,
+      }),
+      {}
+    );
+    that.requestUpdate();
+  }
+}
