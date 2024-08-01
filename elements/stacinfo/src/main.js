@@ -11,6 +11,8 @@ import "./components/shadow";
 import "./components/header";
 import "./components/tags";
 import "./components/properties";
+import "./components/featured";
+import "./components/footer";
 
 /**
  * ### Introduction
@@ -41,7 +43,6 @@ class EOxStacInfo extends LitElement {
       properties: { type: Array },
       featured: { type: Array },
       footer: { type: Array },
-      styleOverride: { type: String, attribute: "style-override" },
       stacInfo: { state: true },
       stacProperties: { state: true },
     };
@@ -57,7 +58,6 @@ class EOxStacInfo extends LitElement {
     this.properties = [];
     this.featured = [];
     this.footer = [];
-    this.styleOverride = "";
     this.stacInfo = [];
     this.stacProperties = [];
   }
@@ -78,12 +78,28 @@ class EOxStacInfo extends LitElement {
     );
   }
 
+  updated(_changedProperties) {
+    if (_changedProperties.has("for")) fetchSTAC(this);
+    if (_changedProperties.has("stacInfo")) {
+      Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
+      if (this.stacInfo.length) {
+        this.stacProperties = this.stacInfo.reduce(
+          (acc, curr) => ({
+            ...acc,
+            ...curr.properties,
+          }),
+          {}
+        );
+        this.requestUpdate();
+      }
+    }
+  }
+
   render() {
     return html`
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
-        ${this.styleOverride}
       </style>
       <slot></slot>
       ${when(
@@ -105,103 +121,17 @@ class EOxStacInfo extends LitElement {
                   ></eox-stacinfo-properties>
                 `
               : nothing}
-            ${this.parseEntries(this.featured, "featured").length > 0
-              ? html`
-                  <section id="featured" part="featured">
-                    ${map(
-                      this.parseEntries(this.featured, "featured").filter(
-                        ([_, value]) =>
-                          value.length !== undefined ? value.length > 0 : true
-                      ),
-                      ([, value]) => html`
-                        <details>
-                          <summary>
-                            <span
-                              name="featured-${value.label.toLowerCase()}-summary"
-                              class="title"
-                            >
-                              ${value.label}
-                              ${when(
-                                value.length,
-                                () => html`
-                                  <span class="count">${value.length}</span>
-                                `
-                              )}
-                            </span>
-                          </summary>
-                          <div class="featured-container">
-                            ${when(
-                              value.label.toLowerCase() === "description",
-                              () => html`
-                                <eox-stacinfo-shadow
-                                  .content=${value.formatted}
-                                >
-                                </eox-stacinfo-shadow>
-                              `,
-                              () => html`${unsafeHTML(value.formatted)}`
-                            )}
-                          </div>
-                        </details>
-                      `
-                    )}
-                  </section>
-                `
-              : nothing}
+            <eox-stacinfo-featured
+              .featured=${this.parseEntries(this.featured, "featured")}
+            ></eox-stacinfo-featured>
           </main>
-          ${this.parseEntries(this.footer).length > 0
-            ? html`
-                <footer part="footer">
-                  <slot name="footer">
-                    ${map(
-                      this.parseEntries(this.footer),
-                      ([key, value], index) => staticHTML`
-                <div class="footer-container">
-                  <h${unsafeStatic((index + 1).toString())}>
-                    ${unsafeHTML(value.label)}
-                  </h${unsafeStatic((index + 1).toString())}>
-                  <small>${unsafeHTML(value.formatted)}</small>
-                </div>
-                ${when(
-                  key === "sci:citation",
-                  () => html`
-                    <button
-                      class="copy icon"
-                      @click=${() =>
-                        navigator.clipboard.writeText(value.formatted)}
-                    >
-                      copy
-                    </button>
-                  `
-                )}
-              `
-                    )}
-                  </slot>
-                </footer>
-              `
-            : nothing}
+          <eox-stacinfo-footer
+            .footer=${this.parseEntries(this.footer)}
+          ></eox-stacinfo-footer>
         `,
         () => html`${nothing}`
       )}
     `;
-  }
-
-  updated(_changedProperties) {
-    if (_changedProperties.has("for")) {
-      fetchSTAC(this);
-    }
-    if (_changedProperties.has("stacInfo")) {
-      Formatters.allowHtmlInCommonMark = this.allowHtml !== undefined;
-      if (this.stacInfo.length) {
-        this.stacProperties = this.stacInfo.reduce(
-          (acc, curr) => ({
-            ...acc,
-            ...curr.properties,
-          }),
-          {}
-        );
-        this.requestUpdate();
-      }
-    }
   }
 }
 
