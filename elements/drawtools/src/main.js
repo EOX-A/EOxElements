@@ -159,7 +159,7 @@ export class EOxDrawTools extends LitElement {
    * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
    */
   handleFeatureChange(text, replaceFeatures = false) {
-    this.#eoxMap.parseTextToFeature(
+    this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
       replaceFeatures
@@ -185,7 +185,7 @@ export class EOxDrawTools extends LitElement {
    */
   updateGeoJSON() {
     this.#geoJSON = JSON.stringify(
-      this.#eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
+      this.eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
       undefined,
       2
     );
@@ -222,12 +222,31 @@ export class EOxDrawTools extends LitElement {
    */
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-    (this.#eoxMap = EoxMap), (this.#olMap = OlMap);
+    (this.eoxMap = EoxMap), (this.#olMap = OlMap);
 
-    if (this.importFeatures) initMapDragDropImport(this, this.#eoxMap);
+    if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
 
     this.updateGeoJSON();
     this.requestUpdate();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has('for')) {
+      console.log('for property has changed, reloading map reference');
+      const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
+      console.log(EoxMap);
+      (this.eoxMap = EoxMap), (this.#olMap = OlMap);
+    }
+  }
+
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this.#eoxMap;
+    this.#eoxMap = value;
+    this.requestUpdate('eoxMap', oldValue);
   }
 
   // Render method for UI display
@@ -261,7 +280,7 @@ export class EOxDrawTools extends LitElement {
       <!-- List Component -->
       ${this.showList && this.drawnFeatures?.length
         ? html`<eox-drawtools-list
-            .eoxMap=${this.#eoxMap}
+            .eoxMap=${this.eoxMap}
             .olMap=${this.#olMap}
             .draw=${this.draw}
             .drawLayer=${this.drawLayer}
