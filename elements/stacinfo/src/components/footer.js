@@ -5,8 +5,12 @@ import { when } from "lit/directives/when.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 
 /**
+ * EOxStacInfoFooter is a custom element that displays footer information
+ * for STAC properties. This element filters, formats, and displays properties
+ * in a structured footer layout.
  *
- *
+ * @module EOxStacInfoFooter
+ * @extends {import("lit").LitElement}
  */
 export class EOxStacInfoFooter extends LitElement {
   static get properties() {
@@ -17,6 +21,11 @@ export class EOxStacInfoFooter extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Array of footer properties to display.
+     * @type {Array}
+     */
     this.footer = [];
   }
 
@@ -27,6 +36,9 @@ export class EOxStacInfoFooter extends LitElement {
     return this;
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       ${when(

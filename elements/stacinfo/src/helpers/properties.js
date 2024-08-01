@@ -1,4 +1,12 @@
+/**
+ * Transforms and formats a list of STAC properties.
+ *
+ * @param {Array} properties - The list of properties to transform.
+ * @param {string} [type="property"] - The type of transformation to apply.
+ * @returns {Array} The transformed and formatted properties.
+ */
 export function transformProperties(properties, type = "property") {
+  // Transform extent to only show temporal information.
   return properties.map(([key, property]) => {
     // Transform extent to only show temporal
     if (key === "extent") {
@@ -17,7 +25,7 @@ export function transformProperties(properties, type = "property") {
       }
     }
 
-    // Replace all links (that haven't been converted yet)
+    // Replace all plain text URLs with clickable links, unless already converted.
     property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
       (url) => {
@@ -25,7 +33,12 @@ export function transformProperties(properties, type = "property") {
       }
     );
 
-    // Only show assets with roles "metadata" and links with rel "example"
+    /**
+     * Filters links based on their roles and relationships.
+     *
+     * @param {Object} links - The links to filter.
+     * @returns {Array} The filtered links.
+     */
     const filterLinks = (links) => {
       return Object.entries(links).filter(([_, itemValue]) => {
         let pass = true;
@@ -35,7 +48,7 @@ export function transformProperties(properties, type = "property") {
       });
     };
 
-    // Format assets to look like button
+    // Format assets, links, or providers into HTML, depending on the type.
     if (key === "assets" || key === "links" || key === "providers") {
       if (type === "property") {
         property.formatted = `<ul>${filterLinks(property.value)
@@ -69,7 +82,7 @@ export function transformProperties(properties, type = "property") {
       }
     }
 
-    // Add length information to display in list
+    // Add length information to properties of type "providers", "assets", or "links".
     if (["providers", "assets", "links"].includes(key)) {
       property.length = filterLinks(property.value).length;
     }
@@ -78,6 +91,11 @@ export function transformProperties(properties, type = "property") {
   });
 }
 
+/**
+ * Updates the STAC properties of the component.
+ *
+ * @param {import("../main.js").EOxStacInfo} that - The component instance.
+ */
 export function updateProperties(that) {
   if (that.stacInfo.length) {
     that.stacProperties = that.stacInfo.reduce(

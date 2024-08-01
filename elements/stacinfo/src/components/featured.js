@@ -4,8 +4,11 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 
 /**
+ * EOxStacInfoFeatured is a custom element that displays featured STAC properties.
+ * This element filters, formats, and displays properties in a structured way.
  *
- *
+ * @module EOxStacInfoFeatured
+ * @extends {import("lit").LitElement}
  */
 export class EOxStacInfoFeatured extends LitElement {
   static get properties() {
@@ -16,6 +19,11 @@ export class EOxStacInfoFeatured extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Array of featured properties to display.
+     * @type {Array}
+     */
     this.featured = [];
   }
 
@@ -26,6 +34,9 @@ export class EOxStacInfoFeatured extends LitElement {
     return this;
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       ${when(

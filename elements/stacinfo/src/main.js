@@ -1,10 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
-import {
-  fetchSTAC,
-  parseEntries,
-  updateProperties,
-} from "./helpers/index.js";
+import { fetchSTAC, parseEntries, updateProperties } from "./helpers/index.js";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
 import { Formatters } from "@radiantearth/stac-fields";
@@ -32,37 +28,96 @@ import "./components/footer";
  *
  * #### Technology
  * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
+ *
+ * @module EOxStacInfo
+ * @extends {import("lit").LitElement}
  */
-class EOxStacInfo extends LitElement {
+export class EOxStacInfo extends LitElement {
   static get properties() {
     return {
-      allowHtml: { type: Boolean, attribute: "allow-html" },
-      unstyled: { type: Boolean },
-      for: { type: String },
-      header: { type: Array },
-      tags: { type: Array },
-      properties: { type: Array },
-      featured: { type: Array },
-      footer: { type: Array },
-      stacInfo: { state: true },
-      stacProperties: { state: true },
+      allowHtml: { attribute: "allow-html", type: Boolean },
+      unstyled: { attribute: "unstyled", type: Boolean },
+      for: { attribute: "for", type: String },
+      header: { attribute: false, type: Array },
+      tags: { attribute: false, type: Array },
+      properties: { attribute: false, type: Array },
+      featured: { attribute: false, type: Array },
+      footer: { attribute: false, type: Array },
+      stacInfo: { attribute: false, state: true, type: Array },
+      stacProperties: { attribute: false, state: true, type: Array },
     };
   }
 
   constructor() {
     super();
+
+    /**
+     * Whether to allow HTML in the property display.
+     * @type {boolean}
+     */
     this.allowHtml = false;
+
+    /**
+     * Whether to use unstyled mode.
+     * @type {boolean}
+     */
     this.unstyled = false;
+
+    /**
+     * The identifier for the STAC resource to fetch.
+     * @type {string}
+     */
     this.for = "";
+
+    /**
+     * Array of header properties to display.
+     * @type {Array}
+     */
     this.header = [];
+
+    /**
+     * Array of tags to display.
+     * @type {Array}
+     */
     this.tags = [];
+
+    /**
+     * Array of properties to display.
+     * @type {Array}
+     */
     this.properties = [];
+
+    /**
+     * Array of featured properties to display.
+     * @type {Array}
+     */
     this.featured = [];
+
+    /**
+     * Array of footer properties to display.
+     * @type {Array}
+     */
     this.footer = [];
+
+    /**
+     * The state object containing the fetched STAC information.
+     * @type {Array}
+     */
     this.stacInfo = [];
+
+    /**
+     * The state object containing the STAC properties.
+     * @type {Array}
+     */
     this.stacProperties = [];
   }
 
+  /**
+   * Lifecycle method called when the element's properties change.
+   * Fetches STAC data and updates properties accordingly.
+   *
+   * @param {Map} _changedProperties - The properties that changed.
+   */
   updated(_changedProperties) {
     if (_changedProperties.has("for")) fetchSTAC(this);
     if (_changedProperties.has("stacInfo")) {
@@ -71,6 +126,9 @@ class EOxStacInfo extends LitElement {
     }
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       <style>

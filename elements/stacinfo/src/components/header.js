@@ -4,8 +4,12 @@ import { map } from "lit/directives/map.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 
 /**
+ * EOxStacInfoHeader is a custom element that displays header information
+ * for STAC properties. This element filters, formats, and displays properties
+ * in a structured header layout.
  *
- *
+ * @module EOxStacInfoHeader
+ * @extends {import("lit").LitElement}
  */
 export class EOxStacInfoHeader extends LitElement {
   static get properties() {
@@ -16,6 +20,11 @@ export class EOxStacInfoHeader extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Array of header properties to display.
+     * @type {Array}
+     */
     this.header = [];
   }
 
@@ -26,6 +35,9 @@ export class EOxStacInfoHeader extends LitElement {
     return this;
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       ${this.header.length > 0

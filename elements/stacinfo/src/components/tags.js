@@ -3,8 +3,10 @@ import { LitElement, html } from "lit";
 import { map } from "lit/directives/map.js";
 
 /**
+ * EOxStacInfoTags is a custom element that displays tags for STAC items.
+ * This element filters, formats, and displays tags in a structured layout.
  *
- *
+ * @extends LitElement
  */
 export class EOxStacInfoTags extends LitElement {
   static get properties() {
@@ -15,6 +17,11 @@ export class EOxStacInfoTags extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Array of tags to display.
+     * @type {Array}
+     */
     this.tags = [];
   }
 
@@ -25,6 +32,9 @@ export class EOxStacInfoTags extends LitElement {
     return this;
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       <section id="tags">

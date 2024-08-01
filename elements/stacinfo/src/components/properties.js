@@ -4,8 +4,12 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 
 /**
+ * EOxStacInfoProperties is a custom element that displays properties
+ * for STAC items. This element filters, formats, and displays properties
+ * in a structured layout.
  *
- *
+ * @module EOxStacInfoProperties
+ * @extends {import("lit").LitElement}
  */
 export class EOxStacInfoProperties extends LitElement {
   static get properties() {
@@ -16,6 +20,11 @@ export class EOxStacInfoProperties extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Array of properties to display.
+     * @type {Array}
+     */
     this.properties = [];
   }
 
@@ -26,6 +35,9 @@ export class EOxStacInfoProperties extends LitElement {
     return this;
   }
 
+  /**
+   * Renders the HTML template for the component.
+   */
   render() {
     return html`
       <section id="properties">
