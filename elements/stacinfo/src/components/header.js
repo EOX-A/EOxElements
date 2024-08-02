@@ -2,6 +2,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { LitElement, html, nothing } from "lit";
 import { map } from "lit/directives/map.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
+import { styleEOX } from "../style.eox.js";
 
 /**
  * EOxStacInfoHeader is a custom element that displays header information
@@ -15,6 +16,7 @@ export class EOxStacInfoHeader extends LitElement {
   static get properties() {
     return {
       header: { attribute: false, type: Array },
+      unstyled: { attribute: "unstyled", type: Boolean },
     };
   }
 
@@ -26,13 +28,12 @@ export class EOxStacInfoHeader extends LitElement {
      * @type {Array}
      */
     this.header = [];
-  }
 
-  /**
-   * Override createRenderRoot to use LitElement as the render root
-   */
-  createRenderRoot() {
-    return this;
+    /**
+     * Whether to use unstyled mode.
+     * @type {boolean}
+     */
+    this.unstyled = false;
   }
 
   /**
@@ -40,17 +41,22 @@ export class EOxStacInfoHeader extends LitElement {
    */
   render() {
     return html`
+      <style>
+        ${!this.unstyled && styleEOX}
+      </style>
       ${this.header.length > 0
         ? html`
             <header part="header">
-              ${map(
-                this.header,
-                ([, value], index) => staticHTML`
+              <slot name="header">
+                ${map(
+                  this.header,
+                  ([, value], index) => staticHTML`
               <h${unsafeStatic((index + 1).toString())}>${unsafeHTML(
-                  value.formatted
-                )}</h${unsafeStatic((index + 1).toString())}>
+                    value.formatted
+                  )}</h${unsafeStatic((index + 1).toString())}>
               `
-              )}
+                )}
+              </slot>
             </header>
           `
         : nothing}

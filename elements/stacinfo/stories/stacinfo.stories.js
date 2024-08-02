@@ -1,5 +1,13 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
+import {
+  AllPropertiesStory,
+  BasicStory,
+  FeaturedPropertiesStory,
+  FooterStory,
+  PropertiesWhitelistStory,
+  SinglePropertyStory,
+} from "./";
 
 export default {
   title: "Elements/eox-stacinfo",
@@ -25,84 +33,32 @@ export default {
 /**
  * In its most basic form, the element fetches a STAC file and displays its properties.
  */
-export const Basic = {
-  args: {
-    for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
-    header: ["title"],
-    tags: ["tags"],
-    properties: ["satellite", "sensor", "agency", "extent"],
-    featured: ["description", "providers", "assets", "links"],
-    footer: ["sci:citation"],
-  },
-};
+export const Basic = BasicStory;
 
 /**
  * The rendered STAC properties can be whitelisted to show only certain properties (by setting the `properties` array). By default, title and description are always rendered at the top.
  */
-export const PropertiesWhitelist = {
-  args: {
-    ...Basic.args,
-    properties: [
-      "title",
-      "description",
-      "osc:missions",
-      "osc:project",
-      "osc:region",
-      "osc:status",
-      "osc:themes",
-      "osc:type",
-    ],
-  },
-};
+export const PropertiesWhitelist = PropertiesWhitelistStory;
 
 /**
  * If no `properties` whitelist is defined, all properties from the STAC JSON are rendered.
  */
-export const AllProperties = {
-  args: {
-    ...Basic.args,
-    // @ts-ignore
-    properties: undefined,
-    featured: undefined,
-    footer: undefined,
-  },
-};
+export const AllProperties = AllPropertiesStory;
 
 /**
  * If only one property is whitelisted, then it renders the content full-width and without the key.
  */
-export const SingleProperty = {
-  args: {
-    ...Basic.args,
-    header: [],
-    subheader: [],
-    properties: ["description"],
-    featured: [],
-    footer: [],
-  },
-};
+export const SingleProperty = SinglePropertyStory;
 
 /**
  * Individual STAC properties can be rendered in a more prominent way by using the `featured` property.
  */
-export const FeaturedProperties = {
-  args: {
-    ...Basic.args,
-    featured: ["description", "extent"],
-    footer: undefined,
-  },
-};
+export const FeaturedProperties = FeaturedPropertiesStory;
 
 /**
  * The footer allows to highlight one or more properties.
  */
-export const Footer = {
-  args: {
-    ...Basic.args,
-    featured: ["description", "extent"],
-    footer: ["osc:project"],
-  },
-};
+export const Footer = FooterStory;
 
 /**
  * Custom rendering of properties can be achieved using `slots`. Automatically generated slots are provided for properties, featured properties, featured summaries, header and footer.
