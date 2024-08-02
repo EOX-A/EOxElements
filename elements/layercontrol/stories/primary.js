@@ -13,7 +13,7 @@ export const Primary = {
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
-        .for="${document.querySelector('eox-map')}"
+        for="eox-map"
       ></eox-layercontrol>
       <eox-map
         .style=${STORIES_MAP_STYLE}
