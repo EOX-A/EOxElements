@@ -41,16 +41,6 @@ class EOxGeoSearch extends LitElement {
        */
       for: {
         type: String,
-        reflect: true,
-        converter: (value, type) => {
-          const foundElement = getElement(value);
-
-          const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
-          this.#eoxMap = foundElement;
-          console.log(this.#eoxMap);
-
-          return foundElement;
-        },
       },
       /**
        * The name of the query parameter to use for the search query in the endpoint URI.
