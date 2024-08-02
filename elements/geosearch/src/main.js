@@ -233,7 +233,7 @@ class EOxGeoSearch extends LitElement {
 
     if (foundElement) {
       const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
-      this.eoxMap = foundElement;
+      this.eoxMap = EoxMap;
     }
   }
 
