@@ -7,7 +7,7 @@ import LoadingIndicator from "./LoadingIndicator";
 const availableControls = {
   ...olControls,
   Geolocation,
-  LoadingIndicator
+  LoadingIndicator,
 };
 
 export type controlType =
