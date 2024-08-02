@@ -21,7 +21,7 @@ export default class LoadingIndicatorControl extends Control {
   /**
    * @param {LoadingIndicatorOptions} [opt_options] Control options.
    */
-  constructor(opt_options: LoadingIndicatorControl) {
+  constructor(opt_options: LoadingIndicatorOptions) {
     const options = (opt_options || {}) as LoadingIndicatorOptions;
     if (options.opacity === undefined) {
       options.opacity = 1;
