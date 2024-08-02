@@ -238,8 +238,6 @@ class EOxGeoSearch extends LitElement {
       const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
       this.eoxMap = foundElement;
       console.log(this.eoxMap);
-    } else {
-      console.error("No eox-map element found");
     }
   }
 
