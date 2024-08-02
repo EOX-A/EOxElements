@@ -232,7 +232,9 @@ class EOxGeoSearch extends LitElement {
     const foundElement = getElement(this.for);
 
     if (foundElement) {
-      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
+      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (
+        foundElement
+      );
       this.eoxMap = EoxMap;
     }
   }
@@ -246,7 +248,7 @@ class EOxGeoSearch extends LitElement {
   }
 
   updated(changedProperties) {
-    if (changedProperties.has('for')) {
+    if (changedProperties.has("for")) {
       this.updateMap();
     }
   }
@@ -258,7 +260,7 @@ class EOxGeoSearch extends LitElement {
   set eoxMap(value) {
     const oldValue = this.#eoxMap;
     this.#eoxMap = value;
-    this.requestUpdate('eoxMap', oldValue);
+    this.requestUpdate("eoxMap", oldValue);
   }
 
   render() {

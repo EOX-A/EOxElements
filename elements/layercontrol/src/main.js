@@ -140,7 +140,7 @@ export class EOxLayerControl extends LitElement {
   }
 
   updated(changedProperties) {
-    if (changedProperties.has('for')) {
+    if (changedProperties.has("for")) {
       this.eoxMap = firstUpdatedMethod(this);
     }
   }
@@ -152,7 +152,7 @@ export class EOxLayerControl extends LitElement {
   set eoxMap(value) {
     const oldValue = this.#eoxMap;
     this.#eoxMap = value;
-    this.requestUpdate('eoxMap', oldValue);
+    this.requestUpdate("eoxMap", oldValue);
   }
 
   /**
