@@ -231,7 +231,7 @@ export class EOxDrawTools extends LitElement {
   }
 
   updated(changedProperties) {
-    if (changedProperties.has('for')) {
+    if (changedProperties.has("for")) {
       const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
       (this.eoxMap = EoxMap), (this.#olMap = OlMap);
     }
@@ -244,7 +244,7 @@ export class EOxDrawTools extends LitElement {
   set eoxMap(value) {
     const oldValue = this.#eoxMap;
     this.#eoxMap = value;
-    this.requestUpdate('eoxMap', oldValue);
+    this.requestUpdate("eoxMap", oldValue);
   }
 
   // Render method for UI display
