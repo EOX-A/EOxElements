@@ -222,9 +222,6 @@ class EOxGeoSearch extends LitElement {
 
     this.eoxMap.zoomExtent = zoomExtent;
 
-    console.log(`Zooming to extent: ${zoomExtent}`);
-    console.log(JSON.stringify(this.eoxMap));
-
     /**
      * The select event, including the details of the selected item
      */
@@ -237,7 +234,6 @@ class EOxGeoSearch extends LitElement {
     if (foundElement) {
       const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
       this.eoxMap = foundElement;
-      console.log(this.eoxMap);
     }
   }
 
@@ -252,7 +248,6 @@ class EOxGeoSearch extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has('for')) {
       this.updateMap();
-      console.log('new map', this.eoxMap);
     }
   }
 

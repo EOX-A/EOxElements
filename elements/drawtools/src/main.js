@@ -232,9 +232,7 @@ export class EOxDrawTools extends LitElement {
 
   updated(changedProperties) {
     if (changedProperties.has('for')) {
-      console.log('for property has changed, reloading map reference');
       const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-      console.log(EoxMap);
       (this.eoxMap = EoxMap), (this.#olMap = OlMap);
     }
   }
