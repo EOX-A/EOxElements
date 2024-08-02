@@ -208,7 +208,7 @@ class EOxGeoSearch extends LitElement {
     /**
      * This for now only supports OpenCage
      */
-    const viewProjection = this.#eoxMap.map.getView().getProjection().getCode();
+    const viewProjection = this.eoxMap.map.getView().getProjection().getCode();
 
     let sw = proj4("EPSG:4326", viewProjection, [
       event.bounds.southwest.lng,
@@ -220,10 +220,10 @@ class EOxGeoSearch extends LitElement {
     ]);
     const zoomExtent = [sw[0], sw[1], ne[0], ne[1]];
 
-    this.#eoxMap.zoomExtent = zoomExtent;
+    this.eoxMap.zoomExtent = zoomExtent;
 
     console.log(`Zooming to extent: ${zoomExtent}`);
-    console.log(JSON.stringify(this.#eoxMap));
+    console.log(JSON.stringify(this.eoxMap));
 
     /**
      * The select event, including the details of the selected item
@@ -231,20 +231,41 @@ class EOxGeoSearch extends LitElement {
     this.dispatchEvent(new CustomEvent("geosearchSelect", event));
   }
 
+  updateMap() {
+    const foundElement = getElement(this.for);
+
+    if (foundElement) {
+      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
+      this.eoxMap = foundElement;
+      console.log(this.eoxMap);
+    } else {
+      console.error("No eox-map element found");
+    }
+  }
+
   /**
    * initializes the EOxMap instance
    * And stores it in the private property #eoxMap.
    */
   firstUpdated() {
-    const foundElement = getElement(this.for);
+    this.updateMap();
+  }
 
-    if (foundElement) {
-      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (foundElement);
-      this.#eoxMap = foundElement;
-      console.log(this.#eoxMap);
-    } else {
-      console.error("No eox-map element found");
+  updated(changedProperties) {
+    if (changedProperties.has('for')) {
+      this.updateMap();
+      console.log('new map', this.eoxMap);
     }
+  }
+
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this.#eoxMap;
+    this.#eoxMap = value;
+    this.requestUpdate('eoxMap', oldValue);
   }
 
   render() {
