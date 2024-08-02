@@ -237,7 +237,7 @@ export class EOxSelectInteraction {
       featureOrExtent instanceof RenderFeature
         ? featureOrExtent.getGeometry().getExtent()
         : featureOrExtent;
-        this.eoxMap.map.getView().fit(extent, options || { duration: 750 });
+    this.eoxMap.map.getView().fit(extent, options || { duration: 750 });
   };
 
   /**
@@ -273,7 +273,7 @@ export class EOxSelectInteraction {
         }
       }
       if (!isEmpty(extent)) {
-        this.panIntoFeature(extent, fitOptions)
+        this.panIntoFeature(extent, fitOptions);
       }
     }
     this.selectStyleLayer.changed(); // force rerender to highlight selected fids
