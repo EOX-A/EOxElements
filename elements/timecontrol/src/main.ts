@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 
+import { getElement } from "../../../utils/getElement.js";
+
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
 
@@ -133,6 +135,9 @@ export class EOxTimeControl extends LitElement {
   @state()
   private _newStepIndex = 0;
 
+  @state()
+  private _eoxMap: HTMLElement;
+
   @property({ type: Boolean })
   unstyled: boolean;
 
@@ -194,10 +199,44 @@ export class EOxTimeControl extends LitElement {
     return flatLayers as Array<Layer>;
   }
 
+  updateMap() {
+    const foundElement = getElement(this.for);
+
+    if (foundElement) {
+      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (
+        foundElement
+      );
+      this.eoxMap = EoxMap;
+    }
+  }
+
+  /**
+   * initializes the EOxMap instance
+   * And stores it in the private property #eoxMap.
+   */
+  firstUpdated() {
+    this.updateMap();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("for")) {
+      this.updateMap();
+    }
+  }
+
+  get eoxMap() {
+    return this._eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this._eoxMap;
+    this._eoxMap = value;
+    this.requestUpdate("eoxMap", oldValue);
+  }
+
   render() {
-    const mapQuery = document.querySelector(this.for as string);
     // @ts-ignore
-    const olMap: Map = mapQuery.map || mapQuery;
+    const olMap: Map = this.eoxMap.map;
 
     olMap.once("loadend", () => {
       if (!this._originalParams) {
