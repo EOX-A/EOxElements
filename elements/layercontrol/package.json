@@ -6,6 +6,7 @@
     "@eox/eslint-config": "^1.0.0",
     "@eox/jsonform": "latest",
     "@eox/map": "latest",
+    "@eox/timecontrol": "latest",
     "@types/sortablejs": "^1.15.1",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
