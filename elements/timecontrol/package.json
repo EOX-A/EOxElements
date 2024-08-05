@@ -1,13 +1,13 @@
 {
   "name": "@eox/timecontrol",
-  "version": "0.5.1",
+  "version": "0.6.1",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^7.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "eslint-plugin-typescript": "^0.14.0",
-    "ol": "^9.2.5-dev.1719634408469",
+    "ol": "^10.0.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.2"
   },
@@ -21,11 +21,12 @@
   ],
   "main": "./dist/eox-timecontrol.js",
   "scripts": {
-    "build": "tsc && vite build",
-    "watch": "tsc && vite build --watch",
+    "build": "vite build",
+    "watch": "vite build --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "dayjs": "^1.11.9",
