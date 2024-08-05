@@ -1,5 +1,9 @@
 import { DragPan, MouseWheelZoom } from "ol/interaction";
 import { platformModifierKeyOnly } from "ol/events/condition";
+import {
+  transform as olTransform,
+  transformExtent as olTransformExtent,
+} from "ol/proj";
 
 /**
  * a helper function to determin approximate equality between 2 coordinates.
@@ -92,4 +96,42 @@ export function removeDefaultScrollInteractions(map: import("ol").Map) {
       )
         map.removeInteraction(interaction);
     });
+}
+
+/**
+ * Transforms coordinates to a given projection.
+ * If no `destination` is defined, the coordinate is transformed to EPSG:4326
+ * @param {import('ol/coordinate').Coordinate} coordinate
+ * @param {import('ol/proj').ProjectionLike} source
+ * @param {import('ol/proj').ProjectionLike=} destination
+ * @returns {import('ol/coordinate'.Coordinate)}
+ */
+export function transform(
+  coordinate: import("ol/coordinate").Coordinate,
+  source: import("ol/proj").ProjectionLike,
+  destination?: import("ol/proj").ProjectionLike
+) {
+  if (!destination) {
+    destination = "EPSG:4326";
+  }
+  return olTransform(coordinate, source, destination);
+}
+
+/**
+ * Transforms an extent to a given projection.
+ * Uf no `destination` is defined, the extent is transformed to EPSG:4326.
+ * @param {import('ol/extent').Extent} extent
+ * @param {import('ol/proj').ProjectionLike} source
+ * @param {import('ol/proj').ProjectionLike=} destination
+ * @returns {import('ol/extent').Extent}
+ */
+export function transformExtent(
+  extent: import("ol/extent").Extent,
+  source: import("ol/proj").ProjectionLike,
+  destination?: import("ol/proj").ProjectionLike
+) {
+  if (!destination) {
+    destination = "EPSG:4326";
+  }
+  return olTransformExtent(extent, source, destination);
 }

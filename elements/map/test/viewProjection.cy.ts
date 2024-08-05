@@ -118,16 +118,35 @@ describe("view projections", () => {
       expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
         "ESRI:53009"
       );
+
+      eoxMap.getLayerById("regions").getSource().refresh();
+      const transformedCoordinateFromWgs = eoxMap.transform(
+        [10, 10],
+        "EPSG:4326",
+        "ESRI:53009"
+      );
+      expect(
+        transformedCoordinateFromWgs.map(Math.round),
+        "can transform coordinate to custom system"
+      ).to.be.deep.equal([991693, 1232660]);
+      const transformedCoordinateToWgs = eoxMap.transform(
+        [991693, 1232660],
+        "ESRI:53009"
+      );
+      expect(
+        transformedCoordinateToWgs.map(Math.round),
+        "can transform coordinate from custom system"
+      ).to.be.deep.equal([10, 10]);
+
+      const transformedExtentFromWgs = eoxMap.transformExtent([10, 10, 11, 11], 'EPSG:4326', 'ESRI:53009');
+      expect(transformedExtentFromWgs.map(Math.round), 'can transform extent to custom system').to.be.deep.equal([989714, 1232660, 1090862, 1355370])
+      const transformedExtentToWgs = eoxMap.transformExtent([989714.093446643, 1232660.4789432778, 1090862.1263438729, 1355370.4556459172], 'ESRI:53009');
+      expect(transformedExtentToWgs.map(Math.round), 'can transform extent from custom system').to.be.deep.equal([10, 10, 11, 11])
+
     });
   });
 
   it("fetch projection from code", () => {
-    cy.intercept(
-      "https://openlayers.org/data/vector/ecoregions.json",
-      (req) => {
-        req.reply(ecoRegionsFixture);
-      }
-    );
     cy.mount(
       html`<eox-map
         .controls=${{

@@ -21,6 +21,8 @@ import {
   addScrollInteractions,
   coordinatesRoughlyEquals,
   removeDefaultScrollInteractions,
+  transform,
+  transformExtent,
 } from "./src/utils";
 import GeoJSON from "ol/format/GeoJSON";
 import {
@@ -35,7 +37,7 @@ import { Geometry } from "ol/geom";
 import VectorLayer from "ol/layer/Vector.js";
 import {
   ProjectionLike,
-  transform,
+  transform as olTransform,
   getPointResolution,
   get as getProjection,
 } from "ol/proj";
@@ -341,7 +343,7 @@ export class EOxMap extends LitElement {
       getProjection(projection) &&
       projection !== oldView.getProjection().getCode()
     ) {
-      const newCenter = transform(
+      const newCenter = olTransform(
         oldView.getCenter(),
         oldView.getProjection().getCode(),
         projection
@@ -574,6 +576,10 @@ export class EOxMap extends LitElement {
    * as flat array
    */
   getFlatLayersArray = getFlatLayersArray;
+
+  transform = transform;
+
+  transformExtent = transformExtent;
 
   render() {
     const shadowStyleFix = `
