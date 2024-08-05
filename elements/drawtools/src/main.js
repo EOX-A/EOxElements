@@ -65,8 +65,10 @@ export class EOxDrawTools extends LitElement {
     this.allowModify = false;
 
     /**
-     * The query selector for the map
-     * @default eox-map
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
+     *
+     * @type {String|HTMLElement}
      */
     this.for = "eox-map";
 

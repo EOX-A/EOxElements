@@ -67,7 +67,8 @@ export class EOxLayerControl extends LitElement {
     super();
 
     /**
-     * Query selector of an eox-map or another DOM element containing an OL map proeprty
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
      * @type {String|HTMLElement}
      */
