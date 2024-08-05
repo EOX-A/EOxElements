@@ -6,6 +6,8 @@ import mainStyle from "../../../utils/styles/dist/main.style";
 import buttonStyle from "../../../utils/styles/dist/button.style";
 import { styleEOX } from "./style.eox";
 
+import { getElement } from "../../../utils/getElement";
+
 class EOxGeoSearch extends LitElement {
   static get properties() {
     return {
@@ -34,10 +36,9 @@ class EOxGeoSearch extends LitElement {
        *
        */
       endpoint: { type: String },
-      /**
-       * Selector for the eox-map instance
-       */
-      for: { type: String },
+      for: {
+        type: String,
+      },
       /**
        * The name of the query parameter to use for the search query in the endpoint URI.
        *
@@ -107,8 +108,10 @@ class EOxGeoSearch extends LitElement {
     this._isInputVisible = false;
     this._query = "";
     /**
-     * The query selector for the map
-     * @default eox-map
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
+     *
+     * @type {String|HTMLElement}
      */
     this.for = "eox-map";
     this.listDirection = "right";
@@ -204,7 +207,7 @@ class EOxGeoSearch extends LitElement {
     /**
      * This for now only supports OpenCage
      */
-    const viewProjection = this.#eoxMap.map.getView().getProjection().getCode();
+    const viewProjection = this.eoxMap.map.getView().getProjection().getCode();
 
     let sw = proj4("EPSG:4326", viewProjection, [
       event.bounds.southwest.lng,
@@ -216,7 +219,7 @@ class EOxGeoSearch extends LitElement {
     ]);
     const zoomExtent = [sw[0], sw[1], ne[0], ne[1]];
 
-    this.#eoxMap.zoomExtent = zoomExtent;
+    this.eoxMap.zoomExtent = zoomExtent;
 
     /**
      * The select event, including the details of the selected item
@@ -224,12 +227,39 @@ class EOxGeoSearch extends LitElement {
     this.dispatchEvent(new CustomEvent("geosearchSelect", event));
   }
 
+  updateMap() {
+    const foundElement = getElement(this.for);
+
+    if (foundElement) {
+      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (
+        foundElement
+      );
+      this.eoxMap = EoxMap;
+    }
+  }
+
   /**
    * initializes the EOxMap instance
    * And stores it in the private property #eoxMap.
    */
   firstUpdated() {
-    this.#eoxMap = document.querySelector(this.for);
+    this.updateMap();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("for")) {
+      this.updateMap();
+    }
+  }
+
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this.#eoxMap;
+    this.#eoxMap = value;
+    this.requestUpdate("eoxMap", oldValue);
   }
 
   render() {
