@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     emptyOutDir: false,
     lib: {
-      entry: "./main.js",
+      entry: "./main.ts",
       name: "eox-map",
       // the proper extensions will be added
       fileName: "eox-map",
