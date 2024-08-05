@@ -518,7 +518,7 @@ export const TooltipWithPropertyTransform = {
  * Optionally, passing a second argument allows to set the [`fitOptions`](https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions),
  * adding view animation to the selection.
  */
-export const ZoomToFeatures = {
+export const HighlightFeaturesAndAnimate = {
   args: {
     config: {
       layers: [
