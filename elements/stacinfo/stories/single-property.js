@@ -8,10 +8,14 @@ import { BasicStory } from "./";
 const SinglePropertyStory = {
   args: {
     ...BasicStory.args,
+    // @ts-ignore
     header: [],
+    // @ts-ignore
     subheader: [],
     properties: ["description"],
+    // @ts-ignore
     featured: [],
+    // @ts-ignore
     footer: [],
   },
 };

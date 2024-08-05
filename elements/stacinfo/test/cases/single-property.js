@@ -17,6 +17,7 @@ const SinglePropertyTest = () => {
   ).as("eox-stacinfo");
 
   cy.get("eox-stacinfo").then(($el) => {
+    // @ts-ignore
     $el[0].properties = ["description"];
   });
 

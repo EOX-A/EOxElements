@@ -19,17 +19,19 @@ export default {
     componentSubtitle: "Automatically fetch & display properties of STAC files",
     layout: "fullscreen",
   },
-  render: (args) => html`
-    <eox-stacinfo
-      for=${args.for}
-      .header=${args.header}
-      .tags="${args.tags}"
-      .properties="${args.properties}"
-      .featured=${args.featured}
-      .footer=${args.footer}
-      ?unstyled=${args.unstyled}
-    ></eox-stacinfo>
-  `,
+  render:
+    // @ts-ignore
+    (args) => html`
+      <eox-stacinfo
+        for=${args.for}
+        .header=${args.header}
+        .tags="${args.tags}"
+        .properties="${args.properties}"
+        .featured=${args.featured}
+        .footer=${args.footer}
+        ?unstyled=${args.unstyled}
+      ></eox-stacinfo>
+    `,
 };
 
 /**

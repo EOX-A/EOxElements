@@ -6,11 +6,13 @@ import {
   htmlRenderTest,
   SinglePropertyTest,
 } from "./cases/index.js";
-export const testBody = (json) => {
-  cy.intercept("/collection*", {
-    body: json,
-  });
-};
+export const testBody =
+  // @ts-ignore
+  (json) => {
+    cy.intercept("/collection*", {
+      body: json,
+    });
+  };
 
 describe("Stacinfo", () => {
   /**

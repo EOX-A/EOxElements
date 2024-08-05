@@ -9,6 +9,7 @@ const FeaturedPropertiesStory = {
   args: {
     ...BasicStory.args,
     featured: ["description", "extent"],
+    // @ts-ignore
     footer: undefined,
   },
 };

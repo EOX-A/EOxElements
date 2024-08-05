@@ -17,10 +17,7 @@ const CreateListTest = () => {
   cy.get("eox-stacinfo")
     .shadow()
     .within(() => {
-      cy.get("li", { multiple: true }).should(
-        "have.length",
-        Object.keys(body).length
-      );
+      cy.get("li").should("have.length", Object.keys(body).length);
     });
 };
 
