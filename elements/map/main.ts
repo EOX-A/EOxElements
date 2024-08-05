@@ -125,6 +125,29 @@ export class EOxMap extends LitElement {
     return this._center;
   }
 
+  /**
+   * current center of the view in EPSG:4326
+   */
+  get lonLatCenter() {
+    if (this.projection === "EPSG:4326") {
+      return this.map.getView().getCenter();
+    }
+    return transform(this.map.getView().getCenter(), this.projection);
+  }
+
+  /**
+   * current extent
+   */
+  get lonLatExtent() {
+    const currentExtent = this.map
+      .getView()
+      .calculateExtent(this.map.getSize());
+    if (this.projection === "EPSG:4326") {
+      return currentExtent;
+    }
+    return transformExtent(currentExtent, this.projection);
+  }
+
   private _zoom: number = 0;
 
   set zoom(zoom: number) {
@@ -143,7 +166,7 @@ export class EOxMap extends LitElement {
 
   private _zoomExtent: import("ol/extent").Extent;
   /**
-   * extent to zoom to
+   * extent to zoom to (debounced)
    * @type {import("ol/extent").Extent}
    */
   set zoomExtent(extent: import("ol/extent").Extent) {

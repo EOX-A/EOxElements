@@ -2,6 +2,7 @@ import { html } from "lit";
 import "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
+import { EOxMap } from "../main";
 
 describe("view projections", () => {
   it("can set the initial projection of the view", () => {
@@ -138,11 +139,39 @@ describe("view projections", () => {
         "can transform coordinate from custom system"
       ).to.be.deep.equal([10, 10]);
 
-      const transformedExtentFromWgs = eoxMap.transformExtent([10, 10, 11, 11], 'EPSG:4326', 'ESRI:53009');
-      expect(transformedExtentFromWgs.map(Math.round), 'can transform extent to custom system').to.be.deep.equal([989714, 1232660, 1090862, 1355370])
-      const transformedExtentToWgs = eoxMap.transformExtent([989714.093446643, 1232660.4789432778, 1090862.1263438729, 1355370.4556459172], 'ESRI:53009');
-      expect(transformedExtentToWgs.map(Math.round), 'can transform extent from custom system').to.be.deep.equal([10, 10, 11, 11])
+      const transformedExtentFromWgs = eoxMap.transformExtent(
+        [10, 10, 11, 11],
+        "EPSG:4326",
+        "ESRI:53009"
+      );
+      expect(
+        transformedExtentFromWgs.map(Math.round),
+        "can transform extent to custom system"
+      ).to.be.deep.equal([989714, 1232660, 1090862, 1355370]);
 
+      const transformedExtentToWgs = eoxMap.transformExtent(
+        [
+          989714.093446643, 1232660.4789432778, 1090862.1263438729,
+          1355370.4556459172,
+        ],
+        "ESRI:53009"
+      );
+      expect(
+        transformedExtentToWgs.map(Math.round),
+        "can transform extent from custom system"
+      ).to.be.deep.equal([10, 10, 11, 11]);
+
+      eoxMap.zoomExtent = transformedExtentFromWgs;
+      setTimeout(() => {
+        expect(
+          eoxMap.lonLatExtent.map(Math.round),
+          "getter of lonLatExtent"
+        ).to.be.deep.equal(transformedExtentToWgs.map(Math.round));
+        expect(
+          transformedExtentToWgs.map(Math.round),
+          "can transform extent from custom system"
+        ).to.be.deep.equal([10, 10, 11, 11]);
+      }, 10);
     });
   });
 
