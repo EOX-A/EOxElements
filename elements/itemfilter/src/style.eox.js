@@ -10,6 +10,7 @@ export const styleEOX = `
     var(--secondary-color) 30%,
     transparent
   );
+  --item-select-color: var(--primary-color);
   --inline-bg-color: color-mix(
     in srgb,
     var(--secondary-color) 10%,
@@ -377,10 +378,14 @@ button.icon {
   flex-wrap: nowrap;
   gap: 4px;
 }
-li.highlighted,
-.select-container li:hover,
-.highlight-item {
+.select li:hover,
+.multiselect li:hover,
+eox-itemfilter-results li:hover {
   background: var(--item-hover-color);
+}
+eox-itemfilter-results li.highlighted {
+  color: var(--background-color);
+  background: var(--item-select-color);
 }
 .selected-item span {
   margin-right: 8px;
