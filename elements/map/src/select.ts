@@ -8,6 +8,8 @@ import RenderFeature from "ol/render/Feature";
 import VectorTileLayer from "ol/layer/VectorTile.js";
 import VectorLayer from "ol/layer/Vector.js";
 import MapBrowserEvent from "ol/MapBrowserEvent";
+import { Extent, createEmpty, extend, isEmpty } from "ol/extent";
+import { FitOptions } from "ol/View";
 
 export type SelectLayer = VectorTileLayer | VectorLayer;
 
@@ -89,7 +91,7 @@ export class EOxSelectInteraction {
       .getTargetElement()
       ?.addEventListener("pointerleave", pointerLeaveListener);
 
-    // a layer that only contains the selected features, for displaying purposes only
+    // a layer that only renders the selected features, for displaying purposes only
     // unmanaged by the map
     let layerDefinition;
     if (this.options.layer) {
@@ -134,15 +136,6 @@ export class EOxSelectInteraction {
       }
     );
 
-    // Pan into the feature's extend when `panIn` is true
-    const panIntoFeature = (feature: Feature | RenderFeature) => {
-      if (this.panIn) {
-        this.eoxMap.map
-          .getView()
-          .fit(feature.getGeometry().getExtent(), { duration: 750 });
-      }
-    };
-
     const listener = (event: MapBrowserEvent<UIEvent>) => {
       if (!this.active) {
         return;
@@ -166,7 +159,7 @@ export class EOxSelectInteraction {
           this.selectedFids = newSelectFids;
           if (idChanged) {
             this.selectStyleLayer.changed();
-            if (feature) panIntoFeature(feature);
+            if (feature && this.panIn) this.panIntoFeature(feature);
           }
 
           if (overlay) {
@@ -231,11 +224,58 @@ export class EOxSelectInteraction {
   }
 
   /**
+   * Pan into the feature's extent
+   * @param featureOrExtent Feature, Render Feature or Extent
+   * @param options fit options, defaults to 750ms animation
+   */
+  panIntoFeature = (
+    featureOrExtent: Feature | RenderFeature | Extent,
+    options?: FitOptions
+  ) => {
+    const extent =
+      featureOrExtent instanceof Feature ||
+      featureOrExtent instanceof RenderFeature
+        ? featureOrExtent.getGeometry().getExtent()
+        : featureOrExtent;
+    this.eoxMap.map.getView().fit(extent, options || { duration: 750 });
+  };
+
+  /**
    * highlights one or more features by their IDs. Does not fire select events.
    * @param {Array<string | number>} ids
+   * @param {FitOptions} fitOptions
    */
-  highlightById(ids: Array<string | number>) {
+  highlightById(ids: Array<string | number>, fitOptions?: FitOptions) {
     this.selectedFids = ids;
+    if (ids.length && fitOptions) {
+      const extent = createEmpty();
+      if (this.selectLayer instanceof VectorLayer) {
+        for (let i = 0, ii = this.selectedFids.length; i < ii; i++) {
+          const id = this.selectedFids[i];
+          const feature = this.selectLayer.getSource().getFeatureById(id);
+          if (feature && feature.getGeometry()) {
+            extend(extent, feature.getGeometry().getExtent());
+          }
+        }
+      } else {
+        const map = this.eoxMap.map;
+        if (!map.getView()) {
+          return;
+        }
+        const allRenderedFeatures = this.selectLayer.getFeaturesInExtent(
+          map.getView().calculateExtent(map.getSize())
+        );
+        for (let i = 0, ii = allRenderedFeatures.length; i < ii; i++) {
+          const renderFeature = allRenderedFeatures[i];
+          if (this.selectedFids.includes(this.getId(renderFeature))) {
+            extend(extent, renderFeature.getGeometry().getExtent());
+          }
+        }
+      }
+      if (!isEmpty(extent)) {
+        this.panIntoFeature(extent, fitOptions);
+      }
+    }
     this.selectStyleLayer.changed(); // force rerender to highlight selected fids
   }
 

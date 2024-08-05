@@ -571,6 +571,67 @@ export const TooltipWithPropertyTransform = {
 };
 
 /**
+ * Select interactions offer a `highlightById` method, with which vector features can be programmatically selected via their id property.
+ * It expects an array with a list of ids to be selected.
+ * Optionally, passing a second argument allows to set the [`fitOptions`](https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions),
+ * adding view animation to the selection.
+ */
+export const HighlightFeaturesAndAnimate = {
+  args: {
+    config: {
+      layers: [
+        {
+          type: "Vector",
+          background: "lightgrey",
+          properties: {
+            id: "regions",
+          },
+          source: {
+            type: "Vector",
+            url: "https://openlayers.org/data/vector/ecoregions.json",
+            format: "GeoJSON",
+            attributions: "Regions: @ openlayers.org",
+          },
+          style: {
+            "stroke-color": "black",
+            "stroke-width": 1,
+            "fill-color": "darkgrey",
+          },
+          interactions: [
+            {
+              type: "select",
+              options: {
+                id: "selectInteraction",
+                condition: "click",
+                style: {
+                  "stroke-color": "white",
+                  "stroke-width": 3,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+  render: (args) => html`
+    <eox-map
+      id="highlightAndAnimate"
+      style="width: 100%; height: 300px;"
+      .config=${args.config}
+      @loadend=${() => {
+        document
+          .querySelector("eox-map#highlightAndAnimate")
+          .selectInteractions.selectInteraction.highlightById([664, 795, 789], {
+            duration: 400,
+            padding: [50, 50, 50, 50],
+          });
+      }}
+    ></eox-map>
+  `,
+};
+
+/**
  * Sync the views of two maps using the `sync` attribute (e.g. `sync="eox-map#a"`).
  */
 export const MapSync = {
