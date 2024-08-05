@@ -11,7 +11,10 @@ const CustomSlotContentStory = {
   args: {
     ...BasicStory.args,
   },
-  render: (args) => html`
+  render: (
+    // {
+    args
+  ) => html`
     <eox-stacinfo
       id="slot"
       for=${args.for}

@@ -6,8 +6,12 @@ import { map } from "lit/directives/map.js";
  * This parser displays tags for STAC items.
  * This element filters, formats, and displays tags in a structured layout.
  *
- * @param {Array} tags - Array of tags to display.
- * @return {import("lit").html.TemplateResult}
+ * @typedef {Object} Property
+ * @property {string} label
+ * @property {string} formatted
+ *
+ * @param {Array<Array<(Property)>>} tags - Array of tags to display.
+ * @return {import("lit-html").TemplateResult}
  */
 export default function parseTags(tags = []) {
   return html`

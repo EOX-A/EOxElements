@@ -8,8 +8,11 @@ import { BasicStory } from "./";
 const AllPropertiesStory = {
   args: {
     ...BasicStory.args,
+    // @ts-ignore
     properties: undefined,
+    // @ts-ignore
     featured: undefined,
+    // @ts-ignore
     footer: undefined,
   },
 };

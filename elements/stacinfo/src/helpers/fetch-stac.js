@@ -13,7 +13,7 @@ async function fetchSTAC(that) {
 
   // Parse the fetched JSON response.
   const stac = await response.json();
-  that.stacInfo = await parseSTAC(stac);
+  that.stacInfo = parseSTAC(stac);
 
   // Dispatch a custom "loaded" event to signal that the STAC data has been loaded.
   that.dispatchEvent(new CustomEvent("loaded"));

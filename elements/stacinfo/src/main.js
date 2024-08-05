@@ -30,7 +30,7 @@ import "./components/shadow";
  * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
  *
  * @module EOxStacInfo
- * @extends {import("lit").LitElement}
+ * @extends {LitElement}
  */
 export class EOxStacInfo extends LitElement {
   static get properties() {
@@ -71,43 +71,43 @@ export class EOxStacInfo extends LitElement {
 
     /**
      * Array of header properties to display.
-     * @type {Array}
+     * @type {Array<any>}
      */
     this.header = [];
 
     /**
      * Array of tags to display.
-     * @type {Array}
+     * @type {Array<any>}
      */
     this.tags = [];
 
     /**
      * Array of properties to display.
-     * @type {Array}
+     * @type {Array<any>}
      */
     this.properties = [];
 
     /**
      * Array of featured properties to display.
-     * @type {Array}
+     * @type {Array<any>}
      */
     this.featured = [];
 
     /**
      * Array of footer properties to display.
-     * @type {Array}
+     * @type {Array<any>}
      */
     this.footer = [];
 
     /**
      * The state object containing the fetched STAC information.
-     * @type {Array}
+     * @type {Array<any>}
      */
     this.stacInfo = [];
 
     /**
      * The state object containing the STAC properties.
-     * @type {Array}
+     * @type {Array<any>}
      */
     this.stacProperties = [];
   }
@@ -116,7 +116,7 @@ export class EOxStacInfo extends LitElement {
    * Lifecycle method called when the element's properties change.
    * Fetches STAC data and updates properties accordingly.
    *
-   * @param {Map} _changedProperties - The properties that changed.
+   * @param {{has: function}} _changedProperties - The properties that changed.
    */
   updated(_changedProperties) {
     if (_changedProperties.has("for")) fetchSTAC(this);

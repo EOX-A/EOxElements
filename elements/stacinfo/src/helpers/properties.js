@@ -1,9 +1,9 @@
 /**
  * Transforms and formats a list of STAC properties.
  *
- * @param {Array} properties - The list of properties to transform.
+ * @param {Array<any>} properties - The list of properties to transform.
  * @param {string} [type="property"] - The type of transformation to apply.
- * @returns {Array} The transformed and formatted properties.
+ * @returns {Array<any>} The transformed and formatted properties.
  */
 export function transformProperties(properties, type = "property") {
   // Transform extent to only show temporal information.
@@ -28,7 +28,10 @@ export function transformProperties(properties, type = "property") {
     // Replace all plain text URLs with clickable links, unless already converted.
     property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
-      (url) => {
+      (
+        // @ts-ignore
+        url
+      ) => {
         return `<a target="_blank" href="${url}">${url}</a>`;
       }
     );
@@ -37,7 +40,7 @@ export function transformProperties(properties, type = "property") {
      * Filters links based on their roles and relationships.
      *
      * @param {Object} links - The links to filter.
-     * @returns {Array} The filtered links.
+     * @returns {Array<any>} The filtered links.
      */
     const filterLinks = (links) => {
       return Object.entries(links).filter(([_, itemValue]) => {
@@ -105,6 +108,7 @@ export function updateProperties(that) {
       }),
       {}
     );
+
     that.requestUpdate();
   }
 }

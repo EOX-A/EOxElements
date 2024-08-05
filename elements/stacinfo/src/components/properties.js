@@ -7,8 +7,12 @@ import { when } from "lit/directives/when.js";
  * This parser displays properties for STAC items.
  * This element filters, formats, and displays properties in a structured layout.
  *
- * @param {Array} properties - Array of properties to display.
- * @return {import("lit").html.TemplateResult}
+ * @typedef {Object} Property
+ * @property {string} label
+ * @property {string} formatted
+ *
+ * @param {Array<Array<(Property)>>} properties - Array of properties to display.
+ * @return {import("lit-html").TemplateResult}
  */
 export default function parseProperties(properties = []) {
   return html`

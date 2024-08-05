@@ -7,7 +7,7 @@ import { LitElement, html } from "lit";
  * exceed the width of their container.
  *
  * @module EOxStacInfoProperties
- * @extends {import("lit").LitElement}
+ * @extends {LitElement}
  */
 export class EOxStacInfoShadow extends LitElement {
   static get properties() {

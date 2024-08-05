@@ -8,8 +8,12 @@ import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
  * This parser displays footer information for STAC properties.
  * This element filters, formats, and displays properties in a structured footer layout.
  *
- * @param {Array} footer - Array of footer properties to display.
- * @return {import("lit").html.TemplateResult}
+ * @typedef {Object} Property
+ * @property {string} label
+ * @property {string} formatted
+ *
+ * @param {Array<Array<(Property)>>} footer - Array of footer properties to display.
+ * @return {import("lit-html").TemplateResult}
  */
 export default function parseFooter(footer = []) {
   return html`
@@ -28,6 +32,7 @@ export default function parseFooter(footer = []) {
                     <small>${unsafeHTML(value.formatted)}</small>
                   </div>
                   ${when(
+                    // @ts-ignore
                     key === "sci:citation",
                     () => html`
                       <button
