@@ -28,7 +28,7 @@ const CustomSlotContentStory = {
           slot="agency"
           style="background: lightgrey; width: 100%; padding: 10px 20px; border-radius: 4px;"
         >
-          <p>--> <strong>Agency:</strong> <span class="content"></span>!</p>
+          <p><strong>Agency:</strong> <span class="content"></span>!</p>
         </div>
       </eox-stacinfo>
       <script>

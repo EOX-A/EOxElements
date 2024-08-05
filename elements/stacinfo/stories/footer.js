@@ -9,7 +9,7 @@ const FooterStory = {
   args: {
     ...BasicStory.args,
     featured: ["description", "extent"],
-    footer: ["osc:project"],
+    footer: ["sci:citation"],
   },
 };
 
