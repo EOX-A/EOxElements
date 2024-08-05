@@ -570,8 +570,13 @@ export class EOxMap extends LitElement {
   registerProjection = registerProjection;
 
   /**
-   * Gets all map layers (including groups and nested layers)
-   * as flat array
+   * Returns a flat array of provided layers, including groups and nested layers.
+   * To get all layers without groups, you can use the native
+   * OL `getAllLayers` method on the map itself:
+   * https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers
+   *
+   * @param layers layers Array
+   * @example getFlatLayersArray(eoxMap.map.getAllLayers())
    */
   getFlatLayersArray = getFlatLayersArray;
 

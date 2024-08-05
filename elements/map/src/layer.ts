@@ -17,11 +17,13 @@ export function getLayerById(EOxMap: EOxMap, layerId: string) {
 }
 
 /**
- * Returns a flat array of all map layers, including groups
+ * Returns a flat array of all map layers, including groups and nested layers.
  * To get all layers without groups, you can use the native
  * OL `getAllLayers` method on the map itself:
  * https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers
+ *
  * @param layers layers Array
+ *  @example getFlatLayersArray(eoxMap.map.getAllLayers())
  */
 export function getFlatLayersArray(
   layers: Array<import("./generate").AnyLayer>
