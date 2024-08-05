@@ -36,12 +36,6 @@ class EOxGeoSearch extends LitElement {
        *
        */
       endpoint: { type: String },
-      /**
-       * Query selector of an `eox-map` (`String`, passed as an attribute or property)
-       * or an `eox-map` DOM element (`HTMLElement`, passed as property)
-       *
-       * @type {String|HTMLElement}
-       */
       for: {
         type: String,
       },
@@ -113,6 +107,12 @@ class EOxGeoSearch extends LitElement {
     this._isListVisible = false;
     this._isInputVisible = false;
     this._query = "";
+    /**
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
+     *
+     * @type {String|HTMLElement}
+     */
     this.for = "eox-map";
     this.listDirection = "right";
     this.resultsDirection = "down";

@@ -29,12 +29,6 @@ export class EOxTimeControl extends LitElement {
        */
       controlValues: { type: Array, attribute: "control-values" },
 
-      /**
-       * Query selector of an `eox-map` (`String`, passed as an attribute or property)
-       * or an `eox-map` DOM element (`HTMLElement`, passed as property)
-       *
-       * @type {String|HTMLElement}
-       */
       for: { type: String },
 
       /**
@@ -79,7 +73,12 @@ export class EOxTimeControl extends LitElement {
     this.disablePlay = false;
     /** @type {boolean} */
     this.slider = false;
-    /** @type {string|HTMLElement} */
+    /**
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
+     *
+     * @type {String|HTMLElement}
+     */
     this.for = "eox-map";
     /** @type {string} */
     this.layer = "";
