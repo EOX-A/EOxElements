@@ -21,10 +21,14 @@ footer {
 header {
   background: var(--color-primary-lighter);
 }
+h1 {
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  line-height: 1.5;
+}
 header h1 {
   font-size: 24px;
   color: var(--primary-color);
-  margin: 16px 0px;
 }
 header h2 {
   font-size: 22px;
@@ -109,7 +113,8 @@ footer {
   padding: 10px 30px 20px;
   position: relative;
 }
-footer a {
+footer a,
+footer h1 {
   color: white;
 }
 footer h1 {

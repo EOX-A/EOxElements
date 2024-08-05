@@ -11,7 +11,7 @@ import "../elements/layercontrol/src/main.js";
 import "../elements/layout/src/main.js";
 import "../elements/map/main.ts";
 import "../elements/map/src/plugins/advancedLayersAndSources/index.ts";
-import "@eox/stacinfo/src/main.js";
+import "../elements/stacinfo/src/main.js";
 import "../elements/storytelling/src/main.js";
 import "../elements/timecontrol/src/main.js";
 
