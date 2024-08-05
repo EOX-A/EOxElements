@@ -49,7 +49,6 @@ main {
 }
 section#properties ul {
   padding: 0;
-  margin: 0;
 }
 section#properties > ul:not(.single-property) {
   columns: 2;

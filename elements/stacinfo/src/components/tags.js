@@ -1,47 +1,27 @@
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { LitElement, html } from "lit";
+import { html } from "lit";
 import { map } from "lit/directives/map.js";
 
 /**
- * EOxStacInfoTags is a custom element that displays tags for STAC items.
+ * This parser displays tags for STAC items.
  * This element filters, formats, and displays tags in a structured layout.
  *
- * @extends LitElement
+ * @param {Array} tags - Array of tags to display.
+ * @return {import("lit").html.TemplateResult}
  */
-export class EOxStacInfoTags extends LitElement {
-  static get properties() {
-    return {
-      tags: { attribute: false, type: Array },
-    };
-  }
-
-  constructor() {
-    super();
-
-    /**
-     * Array of tags to display.
-     * @type {Array}
-     */
-    this.tags = [];
-  }
-
-  /**
-   * Override createRenderRoot to use LitElement as the render root
-   */
-  createRenderRoot() {
-    return this;
-  }
-
-  /**
-   * Renders the HTML template for the component.
-   */
-  render() {
-    return html`
-      <section id="tags">
-        ${map(this.tags, ([, value]) => html`${unsafeHTML(value.formatted)}`)}
-      </section>
-    `;
-  }
+export default function parseTags(tags = []) {
+  return html`
+    <section id="tags" part="tags">
+      <ul>
+        ${map(
+          tags,
+          ([, value]) => html`<slot name=${value.label.toLowerCase()}
+            ><li>
+              <span class="label">${unsafeHTML(value.formatted)}</span>
+            </li></slot
+          >`
+        )}
+      </ul>
+    </section>
+  `;
 }
-
-customElements.define("eox-stacinfo-tags", EOxStacInfoTags);

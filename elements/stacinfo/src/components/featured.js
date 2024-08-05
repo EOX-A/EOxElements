@@ -1,67 +1,41 @@
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { LitElement, html, nothing } from "lit";
+import { html } from "lit";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 
 /**
- * EOxStacInfoFeatured is a custom element that displays featured STAC properties.
+ * This parser displays featured STAC properties.
  * This element filters, formats, and displays properties in a structured way.
  *
- * @module EOxStacInfoFeatured
- * @extends {import("lit").LitElement}
+ * @param {Array} featured - Array of featured properties to display.
+ * @return {import("lit").html.TemplateResult}
  */
-export class EOxStacInfoFeatured extends LitElement {
-  static get properties() {
-    return {
-      featured: { attribute: false, type: Array },
-    };
-  }
-
-  constructor() {
-    super();
-
-    /**
-     * Array of featured properties to display.
-     * @type {Array}
-     */
-    this.featured = [];
-  }
-
-  /**
-   * Override createRenderRoot to use LitElement as the render root
-   */
-  createRenderRoot() {
-    return this;
-  }
-
-  /**
-   * Renders the HTML template for the component.
-   */
-  render() {
-    return html`
-      ${when(
-        this.featured.length > 0,
-        () => html`
-          <section id="featured" part="featured">
-            ${map(
-              this.featured.filter(([_, value]) =>
-                value.length !== undefined ? value.length > 0 : true
-              ),
-              ([, value]) => html`
-                <details>
-                  <summary>
-                    <span
-                      name="featured-${value.label.toLowerCase()}-summary"
-                      class="title"
-                    >
-                      ${value.label}
-                      ${when(
-                        value.length,
-                        () => html` <span class="count">${value.length}</span> `
-                      )}
-                    </span>
-                  </summary>
-                  <div class="featured-container">
+export default function parseFeatured(featured = []) {
+  return html`
+    ${when(
+      featured.length > 0,
+      () => html`
+        <section id="featured" part="featured">
+          ${map(
+            featured.filter(([_, value]) =>
+              value.length !== undefined ? value.length > 0 : true
+            ),
+            ([, value]) => html`
+              <details>
+                <summary>
+                  <slot
+                    name="featured-${value.label.toLowerCase()}-summary"
+                    class="title"
+                  >
+                    ${value.label}
+                    ${when(
+                      value.length,
+                      () => html` <span class="count">${value.length}</span> `
+                    )}
+                  </slot>
+                </summary>
+                <div class="featured-container">
+                  <slot name="featured-${value.label.toLowerCase()}">
                     ${when(
                       value.label.toLowerCase() === "description",
                       () => html`
@@ -70,15 +44,13 @@ export class EOxStacInfoFeatured extends LitElement {
                       `,
                       () => html`${unsafeHTML(value.formatted)}`
                     )}
-                  </div>
-                </details>
-              `
-            )}
-          </section>
-        `
-      )}
-    `;
-  }
+                  </slot>
+                </div>
+              </details>
+            `
+          )}
+        </section>
+      `
+    )}
+  `;
 }
-
-customElements.define("eox-stacinfo-featured", EOxStacInfoFeatured);

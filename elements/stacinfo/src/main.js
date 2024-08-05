@@ -4,12 +4,12 @@ import { fetchSTAC, parseEntries, updateProperties } from "./helpers/index.js";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
 import { Formatters } from "@radiantearth/stac-fields";
+import parseProperties from "./components/properties";
+import parseHeader from "./components/header.js";
+import parseTags from "./components/tags.js";
+import parseFeatured from "./components/featured.js";
+import parseFooter from "./components/footer.js";
 import "./components/shadow";
-import "./components/header";
-import "./components/tags";
-import "./components/properties";
-import "./components/featured";
-import "./components/footer";
 
 /**
  * ### Introduction
@@ -139,29 +139,27 @@ export class EOxStacInfo extends LitElement {
       ${when(
         this.stacInfo.length,
         () => html`
-          <eox-stacinfo-header
-            .header=${parseEntries(this.header, this)}
-          ></eox-stacinfo-header>
+          <!-- Header Component-->
+          ${parseHeader(parseEntries(this.header, this))}
           <main>
             ${parseEntries(this.tags, this).length +
               parseEntries(this.properties, this).length >
             0
               ? html`
-                  <eox-stacinfo-tags
-                    .tags=${parseEntries(this.tags, this)}
-                  ></eox-stacinfo-tags>
-                  <eox-stacinfo-properties
-                    .properties=${parseEntries(this.properties, this)}
-                  ></eox-stacinfo-properties>
+                  <!-- Tags Component-->
+                  ${parseTags(parseEntries(this.tags, this))}
+
+                  <!-- Properties Component-->
+                  ${parseProperties(parseEntries(this.properties, this))}
                 `
               : nothing}
-            <eox-stacinfo-featured
-              .featured=${parseEntries(this.featured, this, "featured")}
-            ></eox-stacinfo-featured>
+
+            <!-- Featured Component-->
+            ${parseFeatured(parseEntries(this.featured, this, "featured"))}
           </main>
-          <eox-stacinfo-footer
-            .footer=${parseEntries(this.footer, this)}
-          ></eox-stacinfo-footer>
+
+          <!-- Footer Component-->
+          ${parseFooter(parseEntries(this.footer, this))}
         `,
         () => html`${nothing}`
       )}
