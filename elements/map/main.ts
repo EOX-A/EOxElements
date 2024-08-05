@@ -581,7 +581,6 @@ export class EOxMap extends LitElement {
    * @param vectorLayer - The vector layer to which the parsed features will be added.
    * @param replaceFeatures - A boolean flag indicating whether to replace the existing features in the vector layer.
    */
-
   parseTextToFeature = (
     text: string,
     vectorLayer: VectorLayer,
@@ -590,8 +589,19 @@ export class EOxMap extends LitElement {
     parseText(text, vectorLayer, this, replaceFeatures);
   };
 
+  /**
+   * given a projection code, this fetches the definition from epsg.io
+   * and registers the projection using proj4
+   * @param code The EPSG code (e.g. 4326 or 'EPSG:4326').
+   *
+   */
   registerProjectionFromCode = registerProjectionFromCode;
 
+  /**
+   * registers a projection under a given name, defined via a proj4 definition
+   * @param name name of the projection (e.g. "EPSG:4326")
+   * @param projection proj4 projection definition string
+   */
   registerProjection = registerProjection;
 
   /**
@@ -600,8 +610,24 @@ export class EOxMap extends LitElement {
    */
   getFlatLayersArray = getFlatLayersArray;
 
+  /**
+   * Transforms coordinates to a given projection.
+   * If no `destination` is defined, the coordinate is transformed to EPSG:4326
+   * @param {import('ol/coordinate').Coordinate} coordinate
+   * @param {import('ol/proj').ProjectionLike} source
+   * @param {import('ol/proj').ProjectionLike=} destination
+   * @returns {import('ol/coordinate'.Coordinate)}
+   */
   transform = transform;
 
+  /**
+   * Transforms an extent to a given projection.
+   * If no `destination` is defined, the extent is transformed to EPSG:4326.
+   * @param {import('ol/extent').Extent} extent
+   * @param {import('ol/proj').ProjectionLike} source
+   * @param {import('ol/proj').ProjectionLike=} destination
+   * @returns {import('ol/extent').Extent}
+   */
   transformExtent = transformExtent;
 
   render() {
