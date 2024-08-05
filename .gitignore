@@ -30,3 +30,6 @@ docs
 custom-elements.json
 
 utils/styles/dist/*.style.js
+
+instrumented
+elements-instrumented

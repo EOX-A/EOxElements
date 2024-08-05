@@ -1,0 +1,22 @@
+{
+  "all": true,
+  "include": [
+    "elements/**/src/**/*.js",
+    "elements/**/src/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.stories.js",
+    "**/*.stories.ts",
+    "**/stories/**/*",
+    "**/test/**/*",
+    "**/*.d.ts"
+  ],
+  "extension": [
+    ".js",
+    ".ts"
+  ],
+  "reporter": [
+    "text",
+    "lcov"
+  ]
+}

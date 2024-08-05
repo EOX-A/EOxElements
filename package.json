@@ -15,7 +15,7 @@
     "cypress": "cypress open",
     "test:all": "npm run styles && npm run test:component && npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
-    "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && cypress run --e2e",
+    "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && CYPRESS_COVERAGE=true cypress run --e2e",
     "format": "prettier --write .",
     "format:all": "npm run format --ws",
     "format:check:all": "prettier --check .",
@@ -24,10 +24,13 @@
     "storybook": "storybook dev -p 6006",
     "build:storybook": "npm run styles && storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
-    "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch"
+    "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
+    "instrument": "nyc instrument ./elements ./elements-instrumented",
+    "coverage:report": "nyc report --reporter=text-summary"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.2",
+    "@cypress/code-coverage": "^3.12.44",
     "@cypress/mount-utils": "^4.0.0",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.1.6",
@@ -43,9 +46,12 @@
     "cypress-fail-on-console-error": "^5.1.1",
     "cypress-lit": "^0.0.8",
     "cypress-network-idle": "^1.14.2",
+    "istanbul-lib-coverage": "^3.2.2",
     "nodemon": "^3.0.3",
+    "nyc": "^17.0.0",
     "rimraf": "^6.0.1",
-    "storybook": "^8.0.0"
+    "storybook": "^8.0.0",
+    "vite-plugin-istanbul": "^6.0.2"
   },
   "engines": {
     "node": ">=20.0.0"
