@@ -1,11 +1,6 @@
-import { button } from "../../../utils/styles/button";
-
 export const styleEOX = `
-${button}
-
 :host {
-  --color-primary: #004170;
-  --color-primary-lighter: color-mix(in srgb, var(--color-primary), #fff 95%);
+  --color-primary-lighter: color-mix(in srgb, var(--primary-color), #fff 95%);
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -28,11 +23,12 @@ header {
 }
 header h1 {
   font-size: 24px;
-  color: var(--color-primary);
+  color: var(--primary-color);
+  margin: 16px 0px;
 }
 header h2 {
   font-size: 22px;
-  color: var(--color-primary);
+  color: var(--primary-color);
 }
 section#tags ul {
   padding: 0;
@@ -108,7 +104,7 @@ section#featured .button-container > div > p {
   margin-bottom: 0;
 }
 footer {
-  background: var(--color-primary);
+  background: var(--primary-color);
   color: white;
   padding: 10px 30px 20px;
   position: relative;

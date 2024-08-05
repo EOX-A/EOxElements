@@ -1,8 +1,8 @@
 import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { fetchSTAC, parseEntries, updateProperties } from "./helpers/index.js";
-import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
+import allStyle from "../../../utils/styles/dist/all.style";
 import { Formatters } from "@radiantearth/stac-fields";
 import parseProperties from "./components/properties";
 import parseHeader from "./components/header.js";
@@ -132,7 +132,10 @@ export class EOxStacInfo extends LitElement {
   render() {
     return html`
       <style>
-        ${style}
+        :host {
+          display: block;
+        }
+        ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
       </style>
       <slot></slot>
