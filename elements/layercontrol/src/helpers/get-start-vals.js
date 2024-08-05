@@ -1,11 +1,11 @@
 /**
- * Recursively traverses the schema object to extract startVals based on query parameters.
+ * Recursively traverses the schema object to extract startVals based on values of nested properties.
  *
  * @param {{[key: string]: any}} schema - The schema object to traverse.
- * @param {{[key: string]: any}} queryParams - Query parameters to extract startVals.
+ * @param {{[key: string]: any}} nestedValues - values of nested properties to extract startVals.
  * @returns {object} - Object containing the startVals.
  */
-export function getNestedStartVals(schema, queryParams) {
+export function getNestedStartVals(schema, nestedValues) {
   let startVals = {};
 
   for (const key in schema) {
@@ -15,12 +15,12 @@ export function getNestedStartVals(schema, queryParams) {
     if (type && type !== "object") {
       //@ts-ignore
       startVals[key] =
-        type === "number" ? Number(queryParams[key]) : queryParams[key];
+        type === "number" ? Number(nestedValues[key]) : nestedValues[key];
     } else if (typeof schema[key] === "object" && schema[key]?.properties) {
       // Recursively traverse nested properties
       const nestedStartVals = getNestedStartVals(
         schema[key].properties,
-        queryParams
+        nestedValues
       );
       if (Object.keys(nestedStartVals).length > 0) {
         //@ts-ignore
@@ -32,27 +32,41 @@ export function getNestedStartVals(schema, queryParams) {
 }
 
 /**
- * Retrieves startVals from Query Params based on layer configuration.
+ * Retrieves startVals from Query Params or style variables based on layer configuration.
  *
  * @param {import("ol/layer").Layer} layer - The layer object.
- * @param {{[key: string]: any}} layerConfig - Configuration object for the layer.
+ * @param {import("../components/layer-config").EOxLayerControlLayerConfig['layerConfig']} layerConfig - Configuration object for the layer.
  * @returns {object | null} - Object containing the startVals or null if not found.
  */
 export function getStartVals(layer, layerConfig) {
   // Check for layer configuration and tile URL function availability
-  //@ts-ignore
-  if (!layerConfig || !layer.getSource().getTileUrlFunction()) return null;
+  if (!layerConfig) return null;
 
-  // Extract query parameters from tile URL
-  //@ts-ignore
-  const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
+  /** @type {Record<string,unknown>}*/
+  let nestedValues = {};
+  // extract style variables from layer
+  let styleVars =
+    "updateStyleVariables" in layer
+      ? /** @type {import("ol/layer/WebGLTile").default} */
+        (layer)["style_"]?.variables
+      : layerConfig.style?.variables;
+  if ((layerConfig.type === "style" || layerConfig.style) && styleVars) {
+    nestedValues = styleVars;
 
-  // Retrieve startVals based on schema and query parameters
-  //@ts-ignore
-  const queryParams = Object.fromEntries(url.searchParams.entries());
+    //@ts-expect-error
+  } else if (layer.getSource()?.getTileUrlFunction?.()) {
+    // Extract query parameters from tile URL
+    //@ts-expect-error
+    const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
+
+    // Retrieve startVals based on schema and query parameters
+    //@ts-expect-error
+    nestedValues = Object.fromEntries(url.searchParams.entries());
+  } else return null;
+
   const startVals = getNestedStartVals(
     layerConfig.schema?.properties || layerConfig.schema,
-    queryParams
+    nestedValues
   );
 
   return Object.keys(startVals).length ? startVals : null;
