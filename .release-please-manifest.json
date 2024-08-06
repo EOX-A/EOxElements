@@ -8,5 +8,5 @@
   "elements/jsonform": "0.8.2",
   "elements/layout": "0.1.0",
   "elements/storytelling": "1.0.7",
-  "elements/geosearch": "0.1.2"
+  "elements/geosearch": "0.2.0"
 }
