@@ -807,6 +807,53 @@ export const Projection = {
 };
 
 /**
+ * With the convenience functions `transform` and `transformExtent` it is possible to transform coordinates
+ * and extents from any projection to EPSG.4326 (default) or any other projection.
+ * Basically, these methods are the `ol/proj` [transform](https://openlayers.org/en/latest/apidoc/module-ol_proj.html#.transform)
+ * and [transformExtent](https://openlayers.org/en/latest/apidoc/module-ol_proj.html#.transformExtent) functions,
+ * with the small adaptation that the destination defaults to EPSG:4326 if not defined.
+ */
+export const ProjectionTransform = {
+  args: {
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "osm",
+          title: "Background",
+        },
+        source: { type: "OSM" },
+      },
+    ],
+    center: [16.8, 48.2],
+    zoom: 7,
+  },
+  render: (args) => html`
+    <eox-map
+      id="transformMap"
+      style="width: 100%; height: 300px; display: none"
+      .center=${args.center}
+      .controls=${args.controls}
+      .zoom=${args.zoom}
+    >
+    </eox-map>
+    <button
+      @click=${() => {
+        const eoxMap = document.querySelector("#transformMap");
+        eoxMap.registerProjection(
+          "ESRI:53009",
+          "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
+            "+b=6371000 +units=m +no_defs"
+        );
+        alert(eoxMap.transform([991693, 1232660], "ESRI:53009"));
+      }}
+    >
+      Transform [991693, 1232660] ("ESRI:53009")
+    </button>
+  `,
+};
+
+/**
  * changing the properties `zoom`, `center` or `zoomExtent` will trigger animations, if the
  * `animationOptions`-property is set.
  * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
