@@ -19,5 +19,6 @@
     "checkJs": true,
     "allowJs": true
   },
-  "include": ["**/*.ts", "../../cypress/cypress.d.ts", "**/*.js"]
+  "include": ["**/*.ts", "../../cypress/cypress.d.ts", "**/*.js"],
+  "exclude": ["dist"]
 }
