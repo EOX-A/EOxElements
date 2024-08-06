@@ -14,6 +14,12 @@ const CreateListTest = () => {
     `
       <eox-stacinfo for="/collection"></eox-stacinfo>`
   ).as("eox-stacinfo");
+
+  cy.get("eox-stacinfo").then(($el) => {
+    // @ts-ignore
+    $el[0].body = Object.keys(body);
+  });
+
   cy.get("eox-stacinfo")
     .shadow()
     .within(() => {

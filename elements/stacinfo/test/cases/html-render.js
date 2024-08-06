@@ -14,14 +14,18 @@ const htmlRenderTest = () => {
       <eox-stacinfo
         for="/collection"
         allow-html
-        properties='["description"]'
       ></eox-stacinfo>`
   ).as("eox-stacinfo");
+
+  cy.get("eox-stacinfo").then(($el) => {
+    // @ts-ignore
+    $el[0].body = ["description"];
+  });
 
   cy.get("eox-stacinfo")
     .shadow()
     .within(() => {
-      cy.get("#properties eox-stacinfo-shadow")
+      cy.get("#body eox-stacinfo-shadow")
         .shadow()
         .within(() => {
           cy.get("button").should("exist");

@@ -18,13 +18,13 @@ const SinglePropertyTest = () => {
 
   cy.get("eox-stacinfo").then(($el) => {
     // @ts-ignore
-    $el[0].properties = ["description"];
+    $el[0].body = ["description"];
   });
 
   cy.get("eox-stacinfo")
     .shadow()
     .within(() => {
-      cy.get("#properties ul.single-property").should("exist");
+      cy.get("#body ul.single-property").should("exist");
     });
 };
 
