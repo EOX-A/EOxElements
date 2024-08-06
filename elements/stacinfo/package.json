@@ -1,6 +1,6 @@
 {
   "name": "@eox/stacinfo",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
