@@ -1,5 +1,3 @@
-import { BasicStory } from "./";
-
 /**
  * Individual STAC properties can be rendered in a more prominent way by using the `featured` property.
  *
@@ -7,10 +5,8 @@ import { BasicStory } from "./";
  */
 const FeaturedPropertiesStory = {
   args: {
-    ...BasicStory.args,
+    for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
     featured: ["description", "extent"],
-    // @ts-ignore
-    footer: undefined,
   },
 };
 

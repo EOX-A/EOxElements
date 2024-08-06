@@ -3,15 +3,15 @@
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-const BasicStory = {
+const PrimaryStory = {
   args: {
     for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
     header: ["title"],
     tags: ["tags"],
-    properties: ["satellite", "sensor", "agency", "extent"],
+    body: ["satellite", "sensor", "agency", "extent"],
     featured: ["description", "providers", "assets", "links"],
     footer: ["sci:citation"],
   },
 };
 
-export default BasicStory;
+export default PrimaryStory;

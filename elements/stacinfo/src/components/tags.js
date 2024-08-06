@@ -3,7 +3,7 @@ import { html } from "lit";
 import { map } from "lit/directives/map.js";
 
 /**
- * This parser displays tags for STAC items.
+ * This parser displays STAC items in the tags section.
  * This element filters, formats, and displays tags in a structured layout.
  *
  * @typedef {Object} Property

@@ -4,7 +4,7 @@ import { map } from "lit/directives/map.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 
 /**
- * This parser displays header information for STAC properties.
+ * This parser displays STAC properties in the header.
  * This element filters, formats, and displays properties in a structured header layout.
  *
  * @typedef {Object} Property

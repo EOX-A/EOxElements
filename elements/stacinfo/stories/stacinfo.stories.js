@@ -1,13 +1,13 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
 import {
-  AllPropertiesStory,
-  BasicStory,
+  PrimaryStory,
   CustomSlotContentStory,
   FeaturedPropertiesStory,
   FooterStory,
-  PropertiesWhitelistStory,
+  HeaderPropertiesStory,
   SinglePropertyStory,
+  TagsStory,
   UnstyledStory,
 } from "./";
 
@@ -26,7 +26,7 @@ export default {
         for=${args.for}
         .header=${args.header}
         .tags="${args.tags}"
-        .properties="${args.properties}"
+        .body="${args.body}"
         .featured=${args.featured}
         .footer=${args.footer}
         ?unstyled=${args.unstyled}
@@ -37,22 +37,22 @@ export default {
 /**
  * In its most basic form, the element fetches a STAC file and displays its properties.
  */
-export const Basic = BasicStory;
+export const Primary = PrimaryStory;
 
 /**
- * The rendered STAC properties can be whitelisted to show only certain properties (by setting the `properties` array). By default, title and description are always rendered at the top.
- */
-export const PropertiesWhitelist = PropertiesWhitelistStory;
-
-/**
- * If no `properties` whitelist is defined, all properties from the STAC JSON are rendered.
- */
-export const AllProperties = AllPropertiesStory;
-
-/**
- * If only one property is whitelisted, then it renders the content full-width and without the key.
+ * If only one body property is whitelisted, then it renders the content full-width and without the key.
  */
 export const SingleProperty = SinglePropertyStory;
+
+/**
+ * Individual STAC properties can be rendered in the header by using the `header` property.
+ */
+export const Header = HeaderPropertiesStory;
+
+/**
+ * Individual STAC properties can be rendered as tags by using the `tags` property.
+ */
+export const Tags = TagsStory;
 
 /**
  * Individual STAC properties can be rendered in a more prominent way by using the `featured` property.
@@ -60,12 +60,13 @@ export const SingleProperty = SinglePropertyStory;
 export const FeaturedProperties = FeaturedPropertiesStory;
 
 /**
- * The footer allows to highlight one or more properties.
+ * The `footer` allows to highlight one or more properties in a dedicated section.
  */
 export const Footer = FooterStory;
 
 /**
- * Custom rendering of properties can be achieved using `slots`. Automatically generated slots are provided for properties, featured properties, featured summaries, header and footer.
+ * Custom rendering of properties can be achieved using `slots`.
+ * Automatically generated slots are provided for body properties, featured properties, featured summaries, header and footer.
  */
 export const CustomSlotContent = CustomSlotContentStory;
 

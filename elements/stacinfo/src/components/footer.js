@@ -5,7 +5,7 @@ import { when } from "lit/directives/when.js";
 import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
 
 /**
- * This parser displays footer information for STAC properties.
+ * This parser displays STAC properties in the footer.
  * This element filters, formats, and displays properties in a structured footer layout.
  *
  * @typedef {Object} Property

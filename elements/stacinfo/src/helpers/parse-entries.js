@@ -13,11 +13,7 @@ export default function parseEntries(list, that, type) {
   // Transform the filtered, reversed, and sorted properties.
   return transformProperties(
     Object.entries(that.stacProperties)
-      .filter(([key]) => {
-        return list === that.properties && (!list || list.length < 1)
-          ? true
-          : list?.includes(key);
-      })
+      .filter(([key]) => list?.includes(key))
       .reverse()
       .sort(([keyA], [keyB]) =>
         list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1

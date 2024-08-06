@@ -4,7 +4,7 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 
 /**
- * This parser displays featured STAC properties.
+ * This parser displays STAC properties in the featured section.
  * This element filters, formats, and displays properties in a structured way.
  *
  * @typedef {Object} Property

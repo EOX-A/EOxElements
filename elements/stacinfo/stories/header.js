@@ -1,13 +1,13 @@
 /**
- * The `footer` allows to highlight one or more properties in a dedicated section.
+ * Individual STAC properties can be rendered in the header by using the `header` property.
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-const FooterStory = {
+const HeaderPropertiesStory = {
   args: {
     for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
-    footer: ["sci:citation"],
+    header: ["title"],
   },
 };
 
-export default FooterStory;
+export default HeaderPropertiesStory;

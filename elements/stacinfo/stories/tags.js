@@ -1,13 +1,13 @@
 /**
- * The `footer` allows to highlight one or more properties in a dedicated section.
+ * Individual STAC properties can be rendered as tags by using the `tags` property.
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-const FooterStory = {
+const TagsStory = {
   args: {
     for: `${window.location.href.split("iframe.html")[0]}/collection.json`,
-    footer: ["sci:citation"],
+    tags: ["themes"],
   },
 };
 
-export default FooterStory;
+export default TagsStory;

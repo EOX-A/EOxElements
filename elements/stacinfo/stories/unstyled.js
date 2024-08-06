@@ -1,4 +1,4 @@
-import { FooterStory } from "./";
+import { PrimaryStory } from "./";
 
 /**
  * By using the `unstyled` attribute, only the bare minimum styles are applied to the element.
@@ -7,7 +7,7 @@ import { FooterStory } from "./";
  */
 const UnstyledStory = {
   args: {
-    ...FooterStory.args,
+    ...PrimaryStory.args,
     unstyled: true,
   },
 };

@@ -47,36 +47,36 @@ main {
   flex: 1;
   font-size: small;
 }
-section#properties ul {
+section#body ul {
   padding: 0;
 }
-section#properties > ul:not(.single-property) {
+section#body > ul:not(.single-property) {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
 }
-section#properties li {
+section#body li {
   margin-bottom: 8px;
   break-inside: avoid;
 }
-section#properties .value li {
+section#body .value li {
   margin-bottom: 0px;    
 }
-section#properties slot:not([name=description]) ul li {
+section#body slot:not([name=description]) ul li {
   list-style: none;
 }
-section#properties .colon {
+section#body .colon {
   margin-right: 4px;
 }
-section#properties .label {
+section#body .label {
   font-weight: bold;
 }
-section#properties ul li,
-section#properties ul li ul {
+section#body ul li,
+section#body ul li ul {
   display: flex;
   flex-wrap: wrap;
 }
-section#properties ul li ul li:not(:last-child):after {
+section#body ul li ul li:not(:last-child):after {
   content: ",";
   margin-right: 4px;
 }

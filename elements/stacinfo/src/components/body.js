@@ -4,27 +4,27 @@ import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 
 /**
- * This parser displays properties for STAC items.
+ * This parser displays STAC properties in the body.
  * This element filters, formats, and displays properties in a structured layout.
  *
  * @typedef {Object} Property
  * @property {string} label
  * @property {string} formatted
  *
- * @param {Array<Array<(Property)>>} properties - Array of properties to display.
+ * @param {Array<Array<(Property)>>} body - Array of body properties to display.
  * @return {import("lit-html").TemplateResult}
  */
-export default function parseProperties(properties = []) {
+export default function parseBody(body = []) {
   return html`
-    <section id="properties" part="properties">
-      <ul class=${properties.length === 1 ? "single-property" : nothing}>
+    <section id="body" part="body">
+      <ul class=${body.length === 1 ? "single-property" : nothing}>
         ${map(
-          properties,
+          body,
           ([, value]) => html`
             <slot name=${value.label.toLowerCase()}>
               <li>
                 ${when(
-                  properties.length > 1,
+                  body.length > 1,
                   () => html` <span class="label"> ${value.label}</span
                     ><span class="colon">:</span>`
                 )}

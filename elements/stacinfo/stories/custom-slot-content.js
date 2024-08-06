@@ -1,15 +1,15 @@
 import { html } from "lit";
-import { BasicStory } from "./";
+import { PrimaryStory } from "./";
 
 /**
  * Custom rendering of properties can be achieved using `slots`.
- * Automatically generated slots are provided for properties, featured properties, featured summaries, header and footer.
+ * Automatically generated slots are provided for body properties, featured properties, featured summaries, header and footer.
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
 const CustomSlotContentStory = {
   args: {
-    ...BasicStory.args,
+    ...PrimaryStory.args,
   },
   render:
     // @ts-ignore
@@ -18,11 +18,10 @@ const CustomSlotContentStory = {
         id="slot"
         for=${args.for}
         .header=${args.header}
-        .properties="${args.properties}"
+        .body="${args.body}"
         .featured=${args.featured}
         .footer=${args.footer}
         ?unstyled=${args.unstyled}
-        style="width: 400px"
       >
         <div
           slot="agency"
@@ -32,7 +31,7 @@ const CustomSlotContentStory = {
         </div>
       </eox-stacinfo>
       <script>
-        const stacInfo = document.querySelector("eox-stacinfo#slot");
+        globalThis.stacInfo = document.querySelector("eox-stacinfo#slot");
         stacInfo.addEventListener("loaded", () => {
           setTimeout(() => {
             const value = stacInfo.stacProperties["agency"];

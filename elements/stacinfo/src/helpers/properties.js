@@ -101,6 +101,8 @@ export function transformProperties(properties, type = "property") {
  */
 export function updateProperties(that) {
   if (that.stacInfo.length) {
+    // Throwing all properties from all extensions into one object
+    // TODO render extensions in separate sections?
     that.stacProperties = that.stacInfo.reduce(
       (acc, curr) => ({
         ...acc,
