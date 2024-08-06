@@ -32,6 +32,11 @@ class EOxGeoSearch extends LitElement {
        */
       _query: { attribute: false },
       /**
+       * Returns true if the element is currently loading data from the API.
+       * @private
+       */
+      _isLoading: { attribute: false },
+      /**
        * The OpenCage API endpoint to use for the search, including the key but without the query parameter.
        *
        */
@@ -107,6 +112,7 @@ class EOxGeoSearch extends LitElement {
     this._isListVisible = false;
     this._isInputVisible = false;
     this._query = "";
+    this._isLoading = false;
     /**
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
@@ -119,7 +125,8 @@ class EOxGeoSearch extends LitElement {
     this.interval = 800;
 
     this.fetchDebounced = _debounce(async () => {
-      if (this._query.length <= 2) return;
+      if (this._query.length < 2) return;
+      this._isLoading = true;
       try {
         const uri = `${this.endpoint}${
           this.endpoint.includes("?") ? "&" : "?"
@@ -127,6 +134,7 @@ class EOxGeoSearch extends LitElement {
         const response = await fetch(encodeURI(uri));
         const json = await response.json();
         this._data = json.results;
+        this._isLoading = false;
       } catch (error) {
         console.log("Error setting up or requesting from geosearch endpoint");
       }
@@ -139,6 +147,9 @@ class EOxGeoSearch extends LitElement {
       this._isListVisible = false;
       return;
     } else {
+      if (this._query.length >= 2) {
+        this._isLoading = true;
+      }
       this._isListVisible = true;
     }
     this.fetchDebounced();
@@ -271,6 +282,41 @@ class EOxGeoSearch extends LitElement {
         ${!this.unstyled && mainStyle}
         ${!this.unstyled && buttonStyle}
         ${!this.unstyled && styleEOX}
+
+        .loader {
+            width: 25px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            border: 4px solid #0000;
+            border-right-color: #004170;
+            position: relative;
+            animation: l24 1s infinite linear;
+          }
+          .loader:before,
+          .loader:after {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: inherit;
+            animation: inherit;
+            animation-duration: 2s;
+          }
+          .loader:after {
+            animation-duration: 4s;
+          }
+          @keyframes l24 {
+            100% {transform: rotate(1turn)}
+          }
+
+          .fill {
+            width: 100%;
+            height: 100%;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
       </style>
       <div
         class="geosearch ${this.small ? "small" : ""}"
@@ -319,24 +365,25 @@ class EOxGeoSearch extends LitElement {
             @input="${this.onInput}"
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${this._query.length <= 2
-              ? html`<span class="hint"
-                  >Enter at least two characters to search</span
-                >`
-              : html``}
-            ${this._query.length >= 2
-              ? this._data.map(
-                  (item) => html`
-                    <eox-geosearch-item
-                      .item="${item}"
-                      .onClick="${(e) => {
-                        this.handleSelect(e);
-                      }}"
-                      .unstyled=${this.unstyled}
-                    />
-                  `
-                )
-              : html``}
+            ${
+              this._isLoading
+                ? html`<div class="fill"><div class="loader"></div></div>`
+                : this._query.length < 2
+                  ? html`<span class="hint"
+                      >Enter at least two characters to search</span
+                    >`
+                  : this._data.map(
+                    (item) => html`
+                      <eox-geosearch-item
+                        .item="${item}"
+                        .onClick="${(e) => {
+                          this.handleSelect(e);
+                        }}"
+                        .unstyled=${this.unstyled}
+                      />
+                    `
+                  )
+            }
           </ul>
         </div>
       </div>
