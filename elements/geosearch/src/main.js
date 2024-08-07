@@ -9,10 +9,33 @@ import { styleEOX } from "./style.eox";
 import { getElement } from "../../../utils/getElement";
 
 const loaderSvg = html`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="50" height="50" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="xMidYMid"
+    width="50"
+    height="50"
+    style="shape-rendering: auto; display: block; background: transparent;"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+  >
     <g>
-      <circle stroke-dasharray="120 50" r="30" stroke-width="22" stroke="#cd4609" fill="none" cy="50" cx="50">
-        <animateTransform keyTimes="0;1" values="0 50 50;360 50 50" dur="0.4s" repeatCount="indefinite" type="rotate" attributeName="transform"></animateTransform>
+      <circle
+        stroke-dasharray="120 50"
+        r="30"
+        stroke-width="22"
+        stroke="#cd4609"
+        fill="none"
+        cy="50"
+        cx="50"
+      >
+        <animateTransform
+          keyTimes="0;1"
+          values="0 50 50;360 50 50"
+          dur="0.4s"
+          repeatCount="indefinite"
+          type="rotate"
+          attributeName="transform"
+        ></animateTransform>
       </circle>
       <g></g>
     </g>
@@ -291,10 +314,9 @@ class EOxGeoSearch extends LitElement {
           display: none;
         }
         ${!this.unstyled && mainStyle}
-        ${!this.unstyled && buttonStyle}
-        ${!this.unstyled && styleEOX}
-
-        .fill {
+          ${!this.unstyled && buttonStyle}
+          ${!this.unstyled && styleEOX}
+          .fill {
           width: 100%;
           height: 100%;
           min-height: 100px;
@@ -350,25 +372,23 @@ class EOxGeoSearch extends LitElement {
             @input="${this.onInput}"
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${
-              this._isLoading
-                ? html`<div class="fill">${loaderSvg}</div>`
-                : this._query.length < 2
-                  ? html`<span class="hint"
-                      >Enter at least two characters to search</span
-                    >`
-                  : this._data.map(
-                    (item) => html`
-                      <eox-geosearch-item
-                        .item="${item}"
-                        .onClick="${(e) => {
-                          this.handleSelect(e);
-                        }}"
-                        .unstyled=${this.unstyled}
-                      />
-                    `
-                  )
-            }
+            ${this._isLoading
+              ? html`<div class="fill">${loaderSvg}</div>`
+              : this._query.length < 2
+              ? html`<span class="hint"
+                  >Enter at least two characters to search</span
+                >`
+              : this._data.map(
+                  (item) => html`
+                    <eox-geosearch-item
+                      .item="${item}"
+                      .onClick="${(e) => {
+                        this.handleSelect(e);
+                      }}"
+                      .unstyled=${this.unstyled}
+                    />
+                  `
+                )}
           </ul>
         </div>
       </div>
