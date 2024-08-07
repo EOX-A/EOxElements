@@ -9,9 +9,37 @@ import { styleEOX } from "./style.eox";
 import { getElement } from "../../../utils/getElement";
 
 const loaderSvg = html`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="50" height="50" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink"><g><circle stroke-dasharray="164.93361431346415 56.97787143782138" r="35" stroke-width="12" stroke="#1a467c" fill="none" cy="50" cx="50">
-  <animateTransform keyTimes="0;1" values="0 50 50;360 50 50" dur="1.2222222222222223s" repeatCount="indefinite" type="rotate" attributeName="transform"></animateTransform>
-  </circle><g></g></g></svg>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="xMidYMid"
+    width="50"
+    height="50"
+    style="shape-rendering: auto; display: block; background: transparent;"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+  >
+    <g>
+      <circle
+        stroke-dasharray="164.93361431346415 56.97787143782138"
+        r="35"
+        stroke-width="12"
+        stroke="#1a467c"
+        fill="none"
+        cy="50"
+        cx="50"
+      >
+        <animateTransform
+          keyTimes="0;1"
+          values="0 50 50;360 50 50"
+          dur="1.2222222222222223s"
+          repeatCount="indefinite"
+          type="rotate"
+          attributeName="transform"
+        ></animateTransform>
+      </circle>
+      <g></g>
+    </g>
+  </svg>
 `;
 
 class EOxGeoSearch extends LitElement {
@@ -103,6 +131,7 @@ class EOxGeoSearch extends LitElement {
         attribute: "results-direction",
       },
       unstyled: { type: Boolean },
+      loaderSvg: { type: String },
     };
   }
 
@@ -129,6 +158,39 @@ class EOxGeoSearch extends LitElement {
     this.listDirection = "right";
     this.resultsDirection = "down";
     this.interval = 800;
+    this.loaderSvg = html`
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+        width="50"
+        height="50"
+        style="shape-rendering: auto; display: block; background: transparent;"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <g>
+          <circle
+            stroke-dasharray="164.93361431346415 56.97787143782138"
+            r="35"
+            stroke-width="12"
+            stroke="#1a467c"
+            fill="none"
+            cy="50"
+            cx="50"
+          >
+            <animateTransform
+              keyTimes="0;1"
+              values="0 50 50;360 50 50"
+              dur="1.2222222222222223s"
+              repeatCount="indefinite"
+              type="rotate"
+              attributeName="transform"
+            ></animateTransform>
+          </circle>
+          <g></g>
+        </g>
+      </svg>
+    `;
 
     this.fetchDebounced = _debounce(async () => {
       if (this._query.length < 2) return;
@@ -345,7 +407,7 @@ class EOxGeoSearch extends LitElement {
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
             ${this._isLoading
-              ? html`<div class="fill">${loaderSvg}</div>`
+              ? html`<div class="fill">${this.loaderSvg}</div>`
               : this._query.length < 2
               ? html`<span class="hint"
                   >Enter at least two characters to search</span
