@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
+import { unsafeSVG } from "lit/directives/unsafe-svg.js";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
