@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { unsafeSVG } from "lit/directives/unsafe-svg.js";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
@@ -7,6 +8,40 @@ import buttonStyle from "../../../utils/styles/dist/button.style";
 import { styleEOX } from "./style.eox";
 
 import { getElement } from "../../../utils/getElement";
+
+const loaderSvg = `
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    preserveAspectRatio="xMidYMid"
+    width="50"
+    height="50"
+    style="shape-rendering: auto; display: block; background: transparent;"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+  >
+    <g>
+      <circle
+        stroke-dasharray="164.93361431346415 56.97787143782138"
+        r="35"
+        stroke-width="12"
+        stroke="#1a467c"
+        fill="none"
+        cy="50"
+        cx="50"
+      >
+        <animateTransform
+          keyTimes="0;1"
+          values="0 50 50;360 50 50"
+          dur="1.2222222222222223s"
+          repeatCount="indefinite"
+          type="rotate"
+          attributeName="transform"
+        ></animateTransform>
+      </circle>
+      <g></g>
+    </g>
+  </svg>
+`;
 
 class EOxGeoSearch extends LitElement {
   static get properties() {
@@ -31,6 +66,11 @@ class EOxGeoSearch extends LitElement {
        * @private
        */
       _query: { attribute: false },
+      /**
+       * Returns true if the element is currently loading data from the API.
+       * @private
+       */
+      _isLoading: { attribute: false },
       /**
        * The OpenCage API endpoint to use for the search, including the key but without the query parameter.
        *
@@ -92,6 +132,10 @@ class EOxGeoSearch extends LitElement {
         attribute: "results-direction",
       },
       unstyled: { type: Boolean },
+      loaderSvg: {
+        type: String,
+        attribute: "loader-svg",
+      },
     };
   }
 
@@ -107,6 +151,7 @@ class EOxGeoSearch extends LitElement {
     this._isListVisible = false;
     this._isInputVisible = false;
     this._query = "";
+    this._isLoading = false;
     /**
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
@@ -117,9 +162,11 @@ class EOxGeoSearch extends LitElement {
     this.listDirection = "right";
     this.resultsDirection = "down";
     this.interval = 800;
+    this.loaderSvg = loaderSvg;
 
     this.fetchDebounced = _debounce(async () => {
-      if (this._query.length <= 2) return;
+      if (this._query.length < 2) return;
+      this._isLoading = true;
       try {
         const uri = `${this.endpoint}${
           this.endpoint.includes("?") ? "&" : "?"
@@ -127,6 +174,7 @@ class EOxGeoSearch extends LitElement {
         const response = await fetch(encodeURI(uri));
         const json = await response.json();
         this._data = json.results;
+        this._isLoading = false;
       } catch (error) {
         console.log("Error setting up or requesting from geosearch endpoint");
       }
@@ -139,6 +187,9 @@ class EOxGeoSearch extends LitElement {
       this._isListVisible = false;
       return;
     } else {
+      if (this._query.length >= 2) {
+        this._isLoading = true;
+      }
       this._isListVisible = true;
     }
     this.fetchDebounced();
@@ -269,8 +320,16 @@ class EOxGeoSearch extends LitElement {
           display: none;
         }
         ${!this.unstyled && mainStyle}
-        ${!this.unstyled && buttonStyle}
-        ${!this.unstyled && styleEOX}
+          ${!this.unstyled && buttonStyle}
+          ${!this.unstyled && styleEOX}
+          .fill {
+          width: 100%;
+          height: 100%;
+          min-height: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
       </style>
       <div
         class="geosearch ${this.small ? "small" : ""}"
@@ -319,13 +378,13 @@ class EOxGeoSearch extends LitElement {
             @input="${this.onInput}"
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${this._query.length <= 2
+            ${this._isLoading
+              ? html`<div class="fill">${unsafeSVG(this.loaderSvg)}</div>`
+              : this._query.length < 2
               ? html`<span class="hint"
                   >Enter at least two characters to search</span
                 >`
-              : html``}
-            ${this._query.length >= 2
-              ? this._data.map(
+              : this._data.map(
                   (item) => html`
                     <eox-geosearch-item
                       .item="${item}"
@@ -335,8 +394,7 @@ class EOxGeoSearch extends LitElement {
                       .unstyled=${this.unstyled}
                     />
                   `
-                )
-              : html``}
+                )}
           </ul>
         </div>
       </div>
