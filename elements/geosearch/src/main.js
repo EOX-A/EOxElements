@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { unsafeSVG } from 'lit/directives/unsafe-svg.js';
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
@@ -8,7 +9,7 @@ import { styleEOX } from "./style.eox";
 
 import { getElement } from "../../../utils/getElement";
 
-const loaderSvg = html`
+const loaderSvg = `
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 100 100"
@@ -375,7 +376,7 @@ class EOxGeoSearch extends LitElement {
           />
           <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
             ${this._isLoading
-              ? html`<div class="fill">${this.loaderSvg}</div>`
+              ? html`<div class="fill">${unsafeSVG(this.loaderSvg)}</div>`
               : this._query.length < 2
               ? html`<span class="hint"
                   >Enter at least two characters to search</span

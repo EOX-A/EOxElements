@@ -3,7 +3,7 @@ import { html } from "lit";
 const CustomLoader = {
   args: {
     endpoint: "/opencage-mock-data.json",
-    customLoader: html`
+    loaderSvg: `
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="48px"
@@ -82,7 +82,7 @@ const CustomLoader = {
         label="Search"
         style="position: absolute; top: 36px; left: 32px; z-index: 12;"
         .endpoint="${args.endpoint}"
-        .loaderSvg="${args.customLoader}"
+        .loaderSvg="${args.loaderSvg}"
       ></eox-geosearch>
 
       <eox-map
