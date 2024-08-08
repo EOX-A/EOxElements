@@ -132,7 +132,10 @@ class EOxGeoSearch extends LitElement {
         attribute: "results-direction",
       },
       unstyled: { type: Boolean },
-      loaderSvg: { type: String },
+      loaderSvg: {
+        type: String,
+        attribute: "loader-svg",
+      },
     };
   }
 
