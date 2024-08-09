@@ -1,0 +1,28 @@
+.geolocation {
+  top: 65px;
+  left: 0.5em;
+}
+.ol-touch.geolocation {
+  top: 80px;
+}
+
+.loading-indicator {
+  position: absolute;
+  pointer-events: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.loading-indicator.small {
+  bottom: 0.5em;
+  left: 0.5em;
+  width: 30px;
+  height: 30px;
+}
+
+.loading-indicator.fullscreen {
+  width: 100%;
+  height: 100%;
+}
