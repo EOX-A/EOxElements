@@ -32,4 +32,5 @@ custom-elements.json
 utils/styles/dist/*.style.js
 
 instrumented
-elements-instrumented
+/coverage
+/.nyc_output

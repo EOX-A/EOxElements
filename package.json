@@ -26,7 +26,7 @@
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
     "instrument": "nyc instrument ./elements ./instrumented",
-    "coverage:report": "nyc report --reporter=text-summary"
+    "nyc:report": "nyc report --reporter=text-summary"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.10.2",
