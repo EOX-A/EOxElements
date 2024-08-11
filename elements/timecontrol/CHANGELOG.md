@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.7.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.6.1...timecontrol-v0.7.0) (2024-08-06)
+
+
+### Features
+
+* Allow passing `eox-map` DOM element to `for` property reactively ([#1152](https://github.com/EOX-A/EOxElements/issues/1152)) ([379d885](https://github.com/EOX-A/EOxElements/commit/379d885ddf14980e6b861172fbd066df36bf152d))
+
+## [0.6.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.6.0...timecontrol-v0.6.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* Enable timecontrol to have no map ([#1156](https://github.com/EOX-A/EOxElements/issues/1156)) ([4bfa8cd](https://github.com/EOX-A/EOxElements/commit/4bfa8cda7dc818dc2684cbe2498c9f329309de05))
+
 ## [0.6.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.5.1...timecontrol-v0.6.0) (2024-07-29)
 
 

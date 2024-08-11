@@ -1,11 +1,6 @@
-import { button } from "../../../utils/styles/button";
-
 export const styleEOX = `
-${button}
-
 :host {
-  --color-primary: #004170;
-  --color-primary-lighter: color-mix(in srgb, var(--color-primary), #fff 95%);
+  --color-primary-lighter: color-mix(in srgb, var(--primary-color), #fff 95%);
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -26,13 +21,18 @@ footer {
 header {
   background: var(--color-primary-lighter);
 }
+h1 {
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  line-height: 1.5;
+}
 header h1 {
   font-size: 24px;
-  color: var(--color-primary);
+  color: var(--primary-color);
 }
 header h2 {
   font-size: 22px;
-  color: var(--color-primary);
+  color: var(--primary-color);
 }
 section#tags ul {
   padding: 0;
@@ -47,33 +47,36 @@ main {
   flex: 1;
   font-size: small;
 }
-section#properties ul {
+section#body ul {
   padding: 0;
 }
-section#properties > ul:not(.single-property) {
+section#body > ul:not(.single-property) {
   columns: 2;
   -webkit-columns: 2;
   -moz-columns: 2;
 }
-section#properties slot > li {
+section#body li {
   margin-bottom: 8px;
   break-inside: avoid;
 }
-section#properties slot:not([name=description]) ul li {
+section#body .value li {
+  margin-bottom: 0px;    
+}
+section#body slot:not([name=description]) ul li {
   list-style: none;
 }
-section#properties .colon {
+section#body .colon {
   margin-right: 4px;
 }
-section#properties .label {
+section#body .label {
   font-weight: bold;
 }
-section#properties ul li,
-section#properties ul li ul {
+section#body ul li,
+section#body ul li ul {
   display: flex;
   flex-wrap: wrap;
 }
-section#properties ul li ul li:not(:last-child):after {
+section#body ul li ul li:not(:last-child):after {
   content: ",";
   margin-right: 4px;
 }
@@ -105,12 +108,13 @@ section#featured .button-container > div > p {
   margin-bottom: 0;
 }
 footer {
-  background: var(--color-primary);
+  background: var(--primary-color);
   color: white;
   padding: 10px 30px 20px;
   position: relative;
 }
-footer a {
+footer a,
+footer h1 {
   color: white;
 }
 footer h1 {
