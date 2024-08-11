@@ -12,7 +12,7 @@
     "styles": "node ./tasks/init-style.js",
     "build:all": "npm run styles && npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
-    "cypress": "cypress open",
+    "cypress": "CYPRESS_COVERAGE='true' cypress open",
     "test:all": "npm run styles && npm run test:component && npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
     "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && CYPRESS_COVERAGE=true cypress run --e2e",
@@ -25,7 +25,7 @@
     "build:storybook": "npm run styles && storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
-    "instrument": "nyc instrument ./elements ./elements-instrumented",
+    "instrument": "nyc instrument ./elements ./instrumented",
     "coverage:report": "nyc report --reporter=text-summary"
   },
   "devDependencies": {
@@ -51,7 +51,7 @@
     "nyc": "^17.0.0",
     "rimraf": "^6.0.1",
     "storybook": "^8.0.0",
-    "vite-plugin-istanbul": "^6.0.2"
+    "vite-plugin-istanbul": "^3.0.1"
   },
   "engines": {
     "node": ">=20.0.0"

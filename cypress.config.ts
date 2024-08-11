@@ -24,7 +24,7 @@ export default defineConfig({
   env: {
     CI_PATHS_CHANGED: pathsChanged,
     codeCoverage: {
-      url: 'http://localhost:3000/__coverage__',
+      // url: 'http://localhost:3000/__coverage__',
       exclude: ['cypress/**/*.*', '**/stories/**/*.*', '**/*.stories.js', '**/*.stories.ts'],
     }
   },
@@ -39,6 +39,10 @@ export default defineConfig({
   },
   component: {
     supportFile: "cypress/support/component.ts",
+    setupNodeEvents(on, config) {
+      require('@cypress/code-coverage/task')(on, config)
+      return config
+    },
     devServer: {
       bundler: "vite",
     },
