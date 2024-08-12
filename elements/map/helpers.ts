@@ -239,13 +239,12 @@ export async function registerProjectionFromCode(code: string | number) {
 export function registerProjection(
   name: string,
   projection: string | proj4.ProjectionDefinition,
-  extent?: number[]
+  extent?: import("ol/extent").Extent
 ) {
   proj4.defs(name, projection);
   register(proj4);
   if (typeof extent !== "undefined") {
-    const projection = getProj(name);
-    projection.setExtent(extent);
+    getProj(name).setExtent(extent);
   }
 }
 
