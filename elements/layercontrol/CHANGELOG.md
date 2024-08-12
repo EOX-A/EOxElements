@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.19.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.19.0...layercontrol-v0.19.1) (2024-08-12)
+
+
+### Features
+
+* Introduce Layercontrol datetime tool ([#1162](https://github.com/EOX-A/EOxElements/issues/1162)) ([6df8daa](https://github.com/EOX-A/EOxElements/commit/6df8daac8d8be6bf7d0a3447c940e2810734f739))
+
 ## [0.19.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.18.1...layercontrol-v0.19.0) (2024-08-06)
 
 

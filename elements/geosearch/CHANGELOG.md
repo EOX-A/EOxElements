@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.2.0...geosearch-v0.3.0) (2024-08-12)
+
+
+### Features
+
+* Implement loading indicator ([#1200](https://github.com/EOX-A/EOxElements/issues/1200)) ([ed7e20b](https://github.com/EOX-A/EOxElements/commit/ed7e20bd76122d0b6ce67d09ce4fca28076f3239))
+
 ## [0.2.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.1.2...geosearch-v0.2.0) (2024-08-06)
 
 
