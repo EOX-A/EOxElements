@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.7.0...timecontrol-v0.7.1) (2024-08-12)
+
+
+### Bug Fixes
+
+* Pre-calculate slider ticks to reduce loading time ([#1208](https://github.com/EOX-A/EOxElements/issues/1208)) ([a1a2fcb](https://github.com/EOX-A/EOxElements/commit/a1a2fcb4803e780d0e9fdc00c0dc4e43eb9fafed))
+
 ## [0.7.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.6.1...timecontrol-v0.7.0) (2024-08-06)
 
 
