@@ -4,13 +4,13 @@ import {
   HiddenLayersStory,
   LayerConfigStory,
   LayerStylesConfigStory,
+  unstyledStory,
   OptionalLayersStory,
   PrimaryStory,
   ToolsStory,
   addExternalLayerStory,
   layerDatetimeStory,
   layerZoomStateStory,
-  unstyledStory,
 } from ".";
 
 export default {
@@ -65,6 +65,13 @@ export const LayerConfig = LayerConfigStory;
 export const LayerStylesConfig = LayerStylesConfigStory;
 
 /**
+ * By adding "datetime" as tool, the time for a specific layer can be modified.
+ * The `layerDatetime` property of the layer allows passing the properties of eox-timecontrol.
+ *
+ */
+export const LayerDateTime = layerDatetimeStory;
+
+/**
  * By adding the `layerControlHide` property to map layers,
  * they aren't displayed in the layer control at all (but may
  * be still rendered on the map).
@@ -86,5 +93,3 @@ export const LayerZoomState = layerZoomStateStory;
  * Unstyled version of the Element
  */
 export const Unstyled = unstyledStory;
-
-export const LayerDateTime = layerDatetimeStory;

@@ -39,6 +39,9 @@ import {
  * #### `layerConfig?: Object`
  * Configuration options for the layer (displayed in the layer tools' "config" tab)
  *
+ * #### `layerDateTime?: Object`
+ * The eox-timecontrol config passed to the "datetime" tool.
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
