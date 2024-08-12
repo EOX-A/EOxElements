@@ -47,9 +47,11 @@ export class SliderTicks extends LitElement {
     this.handleResize();
   }
 
-  updated() {
-    this.yearMarks = this.calculateYearMarks();
-    this.handleResize();
+  updated(changedProperties) {
+    if (changedProperties.has("steps")) {
+      this.yearMarks = this.calculateYearMarks();
+      this.handleResize();
+    }
   }
 
   handleResize() {
