@@ -1,10 +1,7 @@
 {
   "all": true,
   "check-coverage": true,
-  "include": [
-    "elements/**/src/**/*.js",
-    "elements/**/src/**/*.ts"
-  ],
+  "include": ["elements/**/src/**/*.js", "elements/**/src/**/*.ts"],
   "exclude": [
     "**/*.stories.js",
     "**/*.stories.ts",
@@ -12,12 +9,6 @@
     "**/test/**/*",
     "**/*.d.ts"
   ],
-  "extension": [
-    ".js",
-    ".ts"
-  ],
-  "reporter": [
-    "text",
-    "lcov"
-  ]
+  "extension": [".js", ".ts"],
+  "reporter": ["text", "lcov"]
 }

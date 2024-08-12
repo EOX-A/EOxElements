@@ -24,24 +24,28 @@ export default defineConfig({
   env: {
     CI_PATHS_CHANGED: pathsChanged,
     codeCoverage: {
-      // url: 'http://localhost:3000/__coverage__',
-      exclude: ['cypress/**/*.*', '**/stories/**/*.*', '**/*.stories.js', '**/*.stories.ts'],
-    }
+      exclude: [
+        "cypress/**/*.*",
+        "**/stories/**/*.*",
+        "**/*.stories.js",
+        "**/*.stories.ts",
+      ],
+    },
   },
   e2e: {
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
     setupNodeEvents(on, config) {
-      require('@cypress/code-coverage/task')(on, config)
-      return config
+      require("@cypress/code-coverage/task")(on, config);
+      return config;
     },
   },
   component: {
     supportFile: "cypress/support/component.ts",
     setupNodeEvents(on, config) {
-      require('@cypress/code-coverage/task')(on, config)
-      return config
+      require("@cypress/code-coverage/task")(on, config);
+      return config;
     },
     devServer: {
       bundler: "vite",
