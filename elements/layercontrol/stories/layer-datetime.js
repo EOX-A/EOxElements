@@ -9,7 +9,7 @@ export const LayerDateTime = {
   args: {
     /** @param {CustomEvent<{datetime:string|number,layer:import("ol/layer").Layer}>} evt */
     onDatetimeUpdated: (evt) => {
-        evt.detail.layer.getSource().updateParams({ TIME: evt.detail.datetime });
+      evt.detail.layer.getSource().updateParams({ TIME: evt.detail.datetime });
     },
   },
   render: (args) => html`
