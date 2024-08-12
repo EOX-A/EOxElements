@@ -6,7 +6,7 @@
     "@eox/eslint-config": "^1.0.0",
     "@types/geojson": "^7946.0.14",
     "@types/lodash.debounce": "^4.0.7",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.0.1",
     "@typescript-eslint/parser": "^7.0.1",
     "eslint-plugin-typescript": "^0.14.0",
     "typescript": "^5.2.2",
