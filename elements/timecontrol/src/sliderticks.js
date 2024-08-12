@@ -47,6 +47,11 @@ export class SliderTicks extends LitElement {
     this.handleResize();
   }
 
+  updated() {
+    this.yearMarks = this.calculateYearMarks();
+    this.handleResize();
+  }
+
   handleResize() {
     this.svgWidth = this.shadowRoot.querySelector("svg").clientWidth;
     this.height = this.shadowRoot.querySelector("svg").clientHeight;
