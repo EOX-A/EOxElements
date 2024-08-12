@@ -53,6 +53,7 @@ export class EOxLayerControl extends LitElement {
     addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
+    disableTabs: { type: Boolean },
   };
 
   /**
@@ -130,6 +131,13 @@ export class EOxLayerControl extends LitElement {
      * @type {String}
      */
     this.styleOverride = "";
+
+    /**
+     * If enabled, disable the tab interface and render everything in a column.
+     *
+     * @type {Boolean}
+     */
+    this.disableTabs = false;
   }
 
   /**
