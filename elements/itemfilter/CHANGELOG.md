@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.2...itemfilter-v1.0.3) (2024-08-05)
+
+
+### Bug Fixes
+
+* **style:** Highlight on hover and primary color on select ([#1178](https://github.com/EOX-A/EOxElements/issues/1178)) ([bcd557c](https://github.com/EOX-A/EOxElements/commit/bcd557cae699dba502be4772d40f044db33aa518))
+
+## [1.0.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.1...itemfilter-v1.0.2) (2024-07-31)
+
+
+### Bug Fixes
+
+* Added non date format to chip and use title as chip text not key ([#1171](https://github.com/EOX-A/EOxElements/issues/1171)) ([b1d8115](https://github.com/EOX-A/EOxElements/commit/b1d81157684603029876468d9edd115fdb51b292))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.0...itemfilter-v1.0.1) (2024-07-29)
 
 

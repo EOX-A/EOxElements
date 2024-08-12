@@ -275,7 +275,7 @@ export class EOxStoryTelling extends LitElement {
               .storyId=${this.id}
               show-editor=${this.showEditor}
               @change=${this.#debounceUpdateMarkdown}
-              }
+              .markdown=${this.markdown}
             ></eox-storytelling-editor>
           `
         )}

@@ -33,10 +33,14 @@ jobs:
       - name: Build and publish package 🚀
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          ELEMENT_DIR: ${{ steps.release.outputs.paths_released }}
+          ELEMENT_PATHS: ${{ steps.release.outputs.paths_released }}
         run: |
           npm run styles && \
-          cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
+          for path in `echo ${ELEMENT_PATHS//,/ } | tr -d '[]"'`
+          do \
+          cd $path && \
           npm run build && \
-          npm publish --access=public
+          npm publish --access=public && \
+          cd ../../
+          done
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}

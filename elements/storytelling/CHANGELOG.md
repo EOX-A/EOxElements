@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.6...storytelling-v1.0.7) (2024-08-02)
+
+
+### Bug Fixes
+
+* Added missing markdown property ([#1174](https://github.com/EOX-A/EOxElements/issues/1174)) ([b13a77a](https://github.com/EOX-A/EOxElements/commit/b13a77aaa211d8c49c0153f46e54d32413459f87))
+
 ## [1.0.6](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.5...storytelling-v1.0.6) (2024-07-09)
 
 

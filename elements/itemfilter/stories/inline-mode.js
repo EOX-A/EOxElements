@@ -47,6 +47,7 @@ function InlineModeStory() {
         {
           key: "timestamp",
           type: "range",
+          title: "Timestamp",
           format: "date",
           expanded: true,
         },

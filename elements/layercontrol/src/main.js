@@ -67,7 +67,8 @@ export class EOxLayerControl extends LitElement {
     super();
 
     /**
-     * Query selector of an eox-map or another DOM element containing an OL map proeprty
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
      * @type {String|HTMLElement}
      */
@@ -136,7 +137,23 @@ export class EOxLayerControl extends LitElement {
    * Updated #eoxMap after first update.
    */
   firstUpdated() {
-    this.#eoxMap = firstUpdatedMethod(this);
+    this.eoxMap = firstUpdatedMethod(this);
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("for")) {
+      this.eoxMap = firstUpdatedMethod(this);
+    }
+  }
+
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this.#eoxMap;
+    this.#eoxMap = value;
+    this.requestUpdate("eoxMap", oldValue);
   }
 
   /**

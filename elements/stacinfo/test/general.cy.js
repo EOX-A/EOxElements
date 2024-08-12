@@ -1,103 +1,43 @@
-import "../src/main";
-
-describe("Stacinfo", () => {
-  const testBody = (json) => {
+import "../src/main.js";
+import {
+  CreateListTest,
+  LoadStacinfoTest,
+  NoHtmlRenderTest,
+  htmlRenderTest,
+  SinglePropertyTest,
+} from "./cases/index.js";
+export const testBody =
+  // @ts-ignore
+  (json) => {
     cy.intercept("/collection*", {
       body: json,
     });
   };
 
-  it("loads stacinfo", () => {
-    testBody({
-      type: "Collection",
-    });
-    cy.mount(
-      `
-      <eox-stacinfo for="/collection"></eox-stacinfo>`
-    ).as("eox-stacinfo");
-    cy.get("eox-stacinfo").shadow();
-  });
+describe("Stacinfo", () => {
+  /**
+   * Test case to check whether STAC is loaded or not
+   */
+  it("loads stacinfo", () => LoadStacinfoTest());
 
-  it("creates list items for all properties", () => {
-    const body = {
-      type: "Collection",
-      title: "Foobar",
-      id: "foobar",
-    };
-    testBody(body);
-    cy.mount(
-      `
-      <eox-stacinfo for="/collection"></eox-stacinfo>`
-    ).as("eox-stacinfo");
-    cy.get("eox-stacinfo")
-      .shadow()
-      .within(() => {
-        cy.get("li", { multiple: true }).should(
-          "have.length",
-          Object.keys(body).length
-        );
-      });
-  });
+  /**
+   * Test case to check whether list item for all the properties created or not
+   */
+  it("creates list items for all properties", () => CreateListTest());
 
-  it("creates a single-property class if only one property is whitelisted", () => {
-    testBody({
-      type: "Collection",
-      description: "Hello world!",
-    });
-    cy.mount(
-      `
-      <eox-stacinfo
-        for="/collection"
-        properties='["description"]'
-      ></eox-stacinfo>`
-    ).as("eox-stacinfo");
-    cy.get("eox-stacinfo")
-      .shadow()
-      .within(() => {
-        cy.get("#properties ul.single-property").should("exist");
-      });
-  });
+  /**
+   * Test case to check whether single property is whitelisted or not.
+   */
+  it("creates a single-property class if only one property is whitelisted", () =>
+    SinglePropertyTest());
 
-  it("doesn't render HTML if not enabled", () => {
-    testBody({
-      type: "Collection",
-      description: "<button>click me</button>",
-    });
-    cy.mount(
-      `
-      <eox-stacinfo
-        for="/collection"
-        properties='["description"]'
-      ></eox-stacinfo>`
-    ).as("eox-stacinfo");
-    cy.get("eox-stacinfo")
-      .shadow()
-      .within(() => {
-        cy.get("#properties button").should("not.exist");
-      });
-  });
+  /**
+   * Test case to check whether STACInfo doesn't render HTML if not enabled
+   */
+  it("doesn't render HTML if not enabled", () => NoHtmlRenderTest());
 
-  it("renders HTML if enabled", () => {
-    testBody({
-      type: "Collection",
-      description: "<button>click me</button>",
-    });
-    cy.mount(
-      `
-      <eox-stacinfo
-        for="/collection"
-        allow-html
-        properties='["description"]'
-      ></eox-stacinfo>`
-    ).as("eox-stacinfo");
-    cy.get("eox-stacinfo")
-      .shadow()
-      .within(() => {
-        cy.get("#properties eox-stacinfo-shadow")
-          .shadow()
-          .within(() => {
-            cy.get("button").should("exist");
-          });
-      });
-  });
+  /**
+   * Test case to check whether STACInfo render HTML if it's enabled
+   */
+  it("renders HTML if enabled", () => htmlRenderTest());
 });

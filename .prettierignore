@@ -1,4 +1,4 @@
 dist
 docs
-cypress/fixtures
+fixtures
 CHANGELOG.md

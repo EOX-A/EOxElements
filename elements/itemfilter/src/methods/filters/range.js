@@ -34,10 +34,12 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
     EOxItemFilterRange.filterObject.dirty = true;
   }
 
-  if (EOxItemFilterRange.filterObject.dirty)
-    EOxItemFilterRange.filterObject.stringifiedState = `${dayjs(min)} - ${dayjs(
-      max
-    )}`;
+  if (EOxItemFilterRange.filterObject.dirty) {
+    EOxItemFilterRange.filterObject.stringifiedState =
+      EOxItemFilterRange.filterObject.format === "date"
+        ? `${dayjs(min)} - ${dayjs(max)}`
+        : `${min} - ${max}`;
+  }
 
   EOxItemFilterRange.dispatchEvent(new CustomEvent("filter"));
 
