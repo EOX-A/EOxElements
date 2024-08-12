@@ -28,6 +28,8 @@ export class SliderTicks extends LitElement {
     this.height = 6;
     /** @type {number} */
     this.svgWidth = 0;
+    /** @type {YearMark[]} */
+    this._yearMarks = [];
   }
 
   connectedCallback() {
@@ -41,7 +43,15 @@ export class SliderTicks extends LitElement {
   }
 
   firstUpdated() {
+    this.yearMarks = this.calculateYearMarks();
     this.handleResize();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("steps")) {
+      this.yearMarks = this.calculateYearMarks();
+      this.handleResize();
+    }
   }
 
   handleResize() {
@@ -66,10 +76,19 @@ export class SliderTicks extends LitElement {
     return this.steps ? this.steps.length : 0;
   }
 
+  get yearMarks() {
+    return this._yearMarks;
+  }
+
+  set yearMarks(value) {
+    this._yearMarks = value;
+    this.requestUpdate();
+  }
+
   /**
    * @returns {YearMark[]}
    */
-  get yearMarks() {
+  calculateYearMarks() {
     /** @type {YearMark[]} */
     const yearMarks = [];
     /** @type {number | null} */
@@ -105,7 +124,7 @@ export class SliderTicks extends LitElement {
    */
   isYearLine(line) {
     // Check if this line's position is approximately equal to any year mark position
-    const isYearMark = this.yearMarks.some(
+    const isYearMark = this._yearMarks.some(
       (yearMark) => Math.abs(yearMark.position - line) < 1.0
     );
 
