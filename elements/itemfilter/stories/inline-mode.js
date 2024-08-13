@@ -51,6 +51,15 @@ function InlineModeStory() {
           format: "date",
           expanded: true,
         },
+        {
+          key: "range",
+          title: "Range",
+          type: "range",
+          expanded: true,
+          min: -100,
+          max: 100,
+          step: 10
+        }
       ],
       items,
     },

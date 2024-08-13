@@ -100,8 +100,8 @@ export class EOxItemFilterRange extends LitElement {
         <tc-range-slider
           min="${this.filterObject.min}"
           max="${this.filterObject.max}"
-          value1="${this.filterObject.state.min}"
-          value2="${this.filterObject.state.max}"
+          value1="${this.filterObject.min || this.filterObject.state.min}"
+          value2="${this.filterObject.max ||this.filterObject.state.max}"
           step="${this.filterObject.step}"
           @change=${this.debouncedInputHandler}
         ></tc-range-slider>
