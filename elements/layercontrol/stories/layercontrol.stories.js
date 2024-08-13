@@ -4,12 +4,13 @@ import {
   HiddenLayersStory,
   LayerConfigStory,
   LayerStylesConfigStory,
+  unstyledStory,
   OptionalLayersStory,
   PrimaryStory,
   ToolsStory,
   addExternalLayerStory,
+  layerDatetimeStory,
   layerZoomStateStory,
-  unstyledStory,
 } from ".";
 
 export default {
@@ -62,6 +63,16 @@ export const Tools = ToolsStory;
 export const LayerConfig = LayerConfigStory;
 
 export const LayerStylesConfig = LayerStylesConfigStory;
+
+/**
+ * By adding "datetime" as tool, the time for a specific layer can be modified.
+ * The `layerDatetime` property of the layer allows passing the following properties of eox-timecontrol:
+ * `disablePlay`: allows disabling the timecontrol play button.
+ * `slider`: show/hide timecontrol slider.
+ * `currentStep`: current datetime string.
+ * `controlValues`: The list of available values.
+ */
+export const LayerDateTime = layerDatetimeStory;
 
 /**
  * By adding the `layerControlHide` property to map layers,

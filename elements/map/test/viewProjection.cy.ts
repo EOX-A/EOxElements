@@ -110,15 +110,21 @@ describe("view projections", () => {
 
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
+      const testExtent = [-10, -9, 10, 9];
       eoxMap.registerProjection(
         "ESRI:53009",
         "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
-          "+b=6371000 +units=m +no_defs"
+          "+b=6371000 +units=m +no_defs",
+        testExtent
       );
       eoxMap.setAttribute("projection", "ESRI:53009");
       expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
         "ESRI:53009"
       );
+      expect(
+        eoxMap.map.getView().getProjection().getExtent(),
+        "passes the projection extent correctly"
+      ).to.be.deep.equal(testExtent);
 
       eoxMap.getLayerById("regions").getSource().refresh();
       const transformedCoordinateFromWgs = eoxMap.transform(
@@ -160,6 +166,16 @@ describe("view projections", () => {
         transformedExtentToWgs.map(Math.round),
         "can transform extent from custom system"
       ).to.be.deep.equal([10, 10, 11, 11]);
+
+      const transformedCoordinateOutsideExtent = eoxMap.transform(
+        [20, 20],
+        "EPSG:4326",
+        "ESRI:53009"
+      );
+      expect(
+        transformedCoordinateOutsideExtent.map(Math.round),
+        "can transform coordinate to custom system"
+      ).to.be.deep.equal([1926715, 2450840]);
 
       eoxMap.zoomExtent = transformedExtentFromWgs;
       setTimeout(() => {
