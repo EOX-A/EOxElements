@@ -58,8 +58,8 @@ function InlineModeStory() {
           expanded: true,
           min: -100,
           max: 100,
-          step: 10
-        }
+          step: 10,
+        },
       ],
       items,
     },
