@@ -8,6 +8,7 @@ import allStyle from "../../../utils/styles/dist/all.style";
 import "./components/expand-container";
 import "./components/itemfilter-container";
 import "./components/filters/text";
+import "./components/filters/number";
 import "./components/results";
 import "./components/filters/selector";
 import "./components/filters/range";

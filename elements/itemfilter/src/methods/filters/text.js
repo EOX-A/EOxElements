@@ -19,6 +19,7 @@ export function resetTextMethod(EOxItemFilterText) {
  * @param {Object} EOxItemFilterText - The EOxItemFilterText component instance.
  */
 export function textInputHandlerMethod(EOxItemFilterText) {
+  console.log(EOxItemFilterText.filterObject)
   const searchInput =
     EOxItemFilterText.renderRoot.querySelector("input[type='text']");
   EOxItemFilterText.filterObject.keys.forEach((key) => {

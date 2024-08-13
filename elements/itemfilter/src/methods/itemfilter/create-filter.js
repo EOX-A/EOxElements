@@ -28,6 +28,19 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         @filter=${() => EOxItemFilter.search()}
       ></eox-itemfilter-text>`;
 
+      case "number":
+        // Return a text filter element
+        return html`<eox-itemfilter-number
+          data-type="filter"
+          slot="filter"
+          id="${filterId}"
+          .tabIndex=${tabIndex}
+          .filterObject=${filterObject}
+          .unstyled=${EOxItemFilter.unstyled}
+          @filter=${() => EOxItemFilter.search()}
+        ></eox-itemfilter-number>`;
+  
+
     case "multiselect":
     case "select":
       // Return a select or multiselect filter element

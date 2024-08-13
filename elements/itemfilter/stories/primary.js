@@ -61,6 +61,10 @@ function PrimaryStory() {
           key: "geometry",
           type: "spatial",
         },
+        {
+          key: "number",
+          type: "number"
+        },
       ],
       items,
     },
