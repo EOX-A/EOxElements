@@ -1,5 +1,6 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
+import "./src-2/main.js";
 
 export default {
   title: "Elements/eox-map",
@@ -13,6 +14,13 @@ export default {
       .layers=${args.layers}
       .zoom=${args.zoom}
     ></eox-map>
+    <eox-map-2
+      style="width: 100%; height: 300px;"
+      .center=${args.center}
+      .controls=${args.controls}
+      .layers=${args.layers}
+      .zoom=${args.zoom}
+    ></eox-map-2>
   `,
 };
 
