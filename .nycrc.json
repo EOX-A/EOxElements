@@ -9,6 +9,5 @@
     "**/test/**/*",
     "**/*.d.ts"
   ],
-  "extension": [".js", ".ts"],
-  "reporter": ["text", "lcov"]
+  "extension": [".js", ".ts"]
 }
