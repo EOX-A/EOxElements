@@ -52,8 +52,8 @@ function InlineModeStory() {
           expanded: true,
         },
         {
-          key: "range",
-          title: "Range",
+          key: "rating",
+          title: "Rating",
           type: "range",
           expanded: true,
           min: -100,
