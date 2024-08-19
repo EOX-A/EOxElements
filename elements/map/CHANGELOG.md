@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/map-v1.12.0...map-v1.13.0) (2024-08-12)
+
+
+### Features
+
+* Optionally add extent to registerProjection function ([#1205](https://github.com/EOX-A/EOxElements/issues/1205)) ([cbfc366](https://github.com/EOX-A/EOxElements/commit/cbfc366d5c035503098f0e5ddfbd21c1d489933e))
+
 ## [1.12.0](https://github.com/EOX-A/EOxElements/compare/map-v1.11.2...map-v1.12.0) (2024-08-06)
 
 

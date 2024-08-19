@@ -9,6 +9,7 @@ import { getArea, getLength } from "ol/sphere";
 import { getUid } from "ol";
 import { DrawEvent } from "ol/interaction/Draw";
 import { DragAndDropEvent } from "ol/interaction/DragAndDrop";
+import { get as getProj } from "ol/proj";
 import Feature from "ol/Feature";
 import proj4 from "proj4";
 import { fromEPSGCode, register } from "ol/proj/proj4";
@@ -237,10 +238,14 @@ export async function registerProjectionFromCode(code: string | number) {
  */
 export function registerProjection(
   name: string,
-  projection: string | proj4.ProjectionDefinition
+  projection: string | proj4.ProjectionDefinition,
+  extent?: import("ol/extent").Extent
 ) {
   proj4.defs(name, projection);
   register(proj4);
+  if (typeof extent !== "undefined") {
+    getProj(name).setExtent(extent);
+  }
 }
 
 /**
