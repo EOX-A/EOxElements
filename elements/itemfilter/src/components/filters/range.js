@@ -102,7 +102,7 @@ export class EOxItemFilterRange extends LitElement {
           max="${this.filterObject.max}"
           value1="${this.filterObject.min || this.filterObject.state.min}"
           value2="${this.filterObject.max || this.filterObject.state.max}"
-          step="${this.filterObject.step}"
+          step="${this.filterObject.step || 1}"
           @change=${this.debouncedInputHandler}
         ></tc-range-slider>
         ${this.#label("max", "after")}
