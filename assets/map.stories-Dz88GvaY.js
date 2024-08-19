@@ -1,4 +1,4 @@
-import{x as t}from"./lit-element-1x-rNuFE.js";const Mo={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>t`
+import{k as t}from"./lit-element-CHc5qsYe.js";const Mo={title:"Elements/eox-map",tags:["autodocs"],component:"eox-map",render:e=>t`
     <eox-map
       style="width: 100%; height: 300px;"
       .center=${e.center}

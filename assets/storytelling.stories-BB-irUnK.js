@@ -1,4 +1,4 @@
-import{x as t}from"./lit-element-1x-rNuFE.js";const z={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>t`
+import{k as t}from"./lit-element-CHc5qsYe.js";const z={args:{markdown:"## Hello World, Welcome to EOxStoryTelling."},render:e=>t`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
       id="markdown-str"
