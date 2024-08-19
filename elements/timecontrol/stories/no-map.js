@@ -1,9 +1,11 @@
 import { html } from "lit";
 import { DEFAULT_ARGS } from "../src/enums/stories";
+import longControlValues from "./testLongTimeSeries.json";
 
 const NoMap = {
   args: {
     ...DEFAULT_ARGS,
+    controlValues: longControlValues,
     disablePlay: true,
     layer: undefined,
     for: undefined,
