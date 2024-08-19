@@ -125,7 +125,21 @@ export class SliderTicks extends LitElement {
     return yearGroups;
   }
 
-  get sliderTicks() {
+  get sliderTicksOld() {
+    console.log('steps:', this.steps.length);
+    console.log('width:', this.width);
+
+    // Determines if the ticks fit within the available width, where every tick is one pixel
+    // wide and has a minimum of 1 pixel horizontal spacing between them.
+    //
+    // If this density value turns out to be less than 2, we simply render a bar for the day
+    // ticks instead of trying to render individual ticks.
+    console.log('density:', this.width / this.steps.length);
+
+    const isHighDensity = this.width / this.steps.length < 2;
+
+    console.log(`isHighDensity? ${isHighDensity}`);
+
     return this._years.flatMap((year, yearIndex) => {
       const totalDatesInYear = year.dates.length;
       const maxTicksForYear = Math.floor(this.width / this._years.length / 2); // Adjust based on the available width for each year
@@ -152,6 +166,108 @@ export class SliderTicks extends LitElement {
         });
     });
   }
+
+  get sliderTicks() {
+    console.log('steps:', this.steps.length);
+    console.log('width:', this.width);
+
+    // Calculate the density (number of steps per pixel)
+    const density = this.steps.length / this.width;
+    const isHighDensity = density > 0.5;
+
+    console.log(`isHighDensity? ${isHighDensity}`);
+
+    if (isHighDensity) {
+      const minBarWidth = 30;
+      
+      // High density: Render bars for each year instead of individual day ticks
+      const barSpacing = 2; // Adjust this value to control the spacing between bars
+      return this._years.flatMap((year, yearIndex) => {
+          // Calculate the start and end position of the bar for the year
+          const startPosition = (this.steps.indexOf(year.dates[0].date) / (this.steps.length - 1)) * this.width;
+          const endPosition = (this.steps.indexOf(year.dates[year.dates.length - 1].date) / (this.steps.length - 1)) * this.width;
+          const barWidth = Math.max(0, endPosition - startPosition - barSpacing); // Subtract barSpacing from width
+
+          const elements = [];
+
+          // Render the year bar
+          elements.push(svg`
+              <rect
+                key=${yearIndex}
+                x=${startPosition + (barSpacing / 2)} // Add half the spacing to the start position
+                y="0"
+                width=${barWidth}
+                height="6"
+                fill="#7596A2"
+              ></rect>
+          `);
+
+          // Conditionally render the year label if the bar width is sufficient
+          if (barWidth >= minBarWidth) {
+              elements.push(svg`
+                  <text
+                    key=${`label-${yearIndex}`}
+                    x=${startPosition + 16}
+                    y="26"
+                    fill="#555"
+                    font-size="14"
+                    text-anchor="middle"
+                  >
+                    ${year.year}
+                  </text>
+              `);
+          }
+
+          return elements;
+      });
+    } else {
+      return this._years.flatMap((year, yearIndex) => {
+        // Calculate the number of ticks that should be evenly spaced across the slider
+        const totalSteps = this.steps.length;
+        const tickInterval = Math.max(1, Math.floor(totalSteps / this.width)); // Ensure at least one tick per pixel
+    
+        return year.dates
+            .filter((_, dateIndex) => dateIndex % tickInterval === 0) // Filter dates to achieve even spacing
+            .map((date, i) => {
+                // Calculate position within the entire slider based on global index
+                const globalIndex = this.steps.indexOf(date.date);
+                const position = (globalIndex / (this.steps.length - 1)) * this.width;
+
+                const elements = [];
+    
+                elements.push(svg`
+                  <line
+                    key=${yearIndex}-${i}
+                    x1=${position}
+                    y1="0"
+                    x2=${position}
+                    y2=${date.isYearMarker ? 12 : 6}
+                    stroke=${date.isYearMarker ? "#222" : "#7596A2"}
+                    stroke-width="1"
+                  ></line>
+                `);
+
+                if (date.isYearMarker) {
+                  elements.push(svg`
+                    <text
+                      key=${`label-${yearIndex}`}
+                      x=${position + 16}
+                      y="30"
+                      fill="#555"
+                      font-size="14"
+                      text-anchor="middle"
+                    >
+                      ${year.year}
+                    </text>
+                  `);
+                }
+
+                return elements;
+            });
+    });
+    }
+}
+
 
   /**
    * @returns {number[]}
