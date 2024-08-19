@@ -337,47 +337,6 @@ export class SliderTicks extends LitElement {
       </div>
     `;
   }
-
-  /*
-  render() {
-    return html`
-      <div class="fill-width" style="margin-top: 3px;">
-        <svg
-          style="width: ${this.width}px; height: 30px;"
-          viewBox="-1 0 ${this.width + 2} ${this.height}"
-        >
-          ${this.lines.map(
-            (line, index) => svg`
-            <line
-              key=${index}
-              x1=${line}
-              y1="0"
-              x2=${line}
-              y2=${this.isYearLine(line) ? 12 : 6}
-              stroke=${this.isYearLine(line) ? "#222" : "#7596A2"}
-              stroke-width=${this.isYearLine(line) ? 1 : 1}
-            ></line>
-          `
-          )}
-          ${this.yearMarks.map(
-            (year, index) => svg`
-            <text
-              key=${`y${index}`}
-              x=${year.position}
-              y=${this.height - 1}
-              fill="#555"
-              font-size="13"
-              font-weight="500"
-            >
-              ${year.label}
-            </text>
-          `
-          )}
-        </svg>
-      </div>
-    `;
-  }
-*/
 }
 
 customElements.define("eox-sliderticks", SliderTicks);
