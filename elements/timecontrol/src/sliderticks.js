@@ -116,13 +116,12 @@ export class SliderTicks extends LitElement {
           dates: [],
         };
         yearGroups.push(yearGroup);
-      } else {
-        // We've seen this before, add it to the existing year group
-        yearGroup.dates.push({
-          date: step,
-          isYearMarker: yearGroup.dates.length === 0,
-        });
       }
+
+      yearGroup.dates.push({
+        date: step,
+        isYearMarker: yearGroup.dates.length === 0,
+      });
     });
 
     for (let g of yearGroups) {
