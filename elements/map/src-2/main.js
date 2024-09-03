@@ -56,17 +56,18 @@ export class EOxMap extends LitElement {
     };
   }
 
+  _zoomExtent = undefined
+  _controls = undefined;
+  _layers = undefined;
+  _preventScroll = undefined
+  _config = undefined
+  _animationOptions = undefined
+  _sync = undefined
+  _center = [0, 0];
+  _zoom = 0;
+  _projection = "EPSG:3857";
   constructor() {
     super();
-    // this._center = [0, 0];
-    // this._zoom = 0;
-    // this._controls = {};
-    // this._layers = [];
-    // this._preventScroll = false;
-    // this._config = null;
-    // this._animationOptions = {};
-    // this._projection = "EPSG:3857";
-    // this._sync = undefined;
     this.map = new Map({
       controls: [],
       layers: [],
@@ -223,6 +224,8 @@ export class EOxMap extends LitElement {
       addScrollInteractions(this.map, true);
     } else addScrollInteractions(this.map);
 
+    console.log(preventScroll)
+
     this._preventScroll = preventScroll;
   }
 
@@ -238,6 +241,7 @@ export class EOxMap extends LitElement {
     this.projection = config?.view?.projection || "EPSG:3857";
     this.layers = config?.layers || [];
     this.controls = config?.controls || {};
+    console.log(this._preventScroll)
     if (this.preventScroll === undefined) {
       this.preventScroll = config?.preventScroll;
     }
@@ -450,4 +454,4 @@ export class EOxMap extends LitElement {
   }
 }
 
-customElements.define("eox-map-2", EOxMap);
+customElements.define("eox-map", EOxMap);
