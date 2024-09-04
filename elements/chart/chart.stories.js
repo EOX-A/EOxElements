@@ -31,3 +31,5 @@ export default {
 export const Primary = {
   args: {},
 };
+
+export var TestStory = {};

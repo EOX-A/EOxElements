@@ -9,3 +9,4 @@ export { default as MultiPolygonWithListStory } from "./multi-polygon-list"; // 
 export { default as ImportFeaturesWithEditorStory } from "./import-features"; //
 export { default as UnstyledStory } from "./unstyled"; // Story demonstrating unstyled variant of element.
 export { default as CSSVariableOverrideStory } from "./css-variable-override"; // Story demonstrating css override
+export { default as TestStory } from "./test-story"; // Story demonstrating css override
