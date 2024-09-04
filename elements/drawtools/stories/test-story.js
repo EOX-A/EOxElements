@@ -7,7 +7,7 @@ import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const TestStory = {
   args: {
-    allowModify: false,
+    allowModify: true,
     multipleFeatures: false,
     type: "Polygon",
   },
@@ -21,7 +21,7 @@ export const TestStory = {
 
     <!-- Initialize eox-drawtools for the eox-map with ID "primary" -->
     <eox-drawtools
-      for="eox-map#primary"
+      for="eox-map#test-story"
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
