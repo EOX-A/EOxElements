@@ -31,6 +31,10 @@ function PrimaryStory() {
           type: "text",
           placeholder: "Type Something...",
           expanded: true,
+          validation: {
+            pattern: "[a-z]{0,10}",
+            message: "Maximum 10 lowercase characters"
+          }
         },
         {
           key: "code",

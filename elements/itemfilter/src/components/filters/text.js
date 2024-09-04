@@ -19,6 +19,7 @@ export class EOxItemFilterText extends LitElement {
       filterObject: { attribute: false, type: Object },
       tabIndex: { attribute: false, type: Number },
       unstyled: { type: Boolean },
+      invalid: { attribute: false, type: Boolean },
     };
   }
 
@@ -39,6 +40,11 @@ export class EOxItemFilterText extends LitElement {
      * @type Number
      */
     this.tabIndex = 0;
+
+    /**
+     * @type Boolean
+     */
+    this.unstyled = false;
   }
 
   /**
@@ -89,11 +95,14 @@ export class EOxItemFilterText extends LitElement {
               part="input-search"
               value="${Object.values(this.filterObject.state)[0]}"
               tabindex=${this.tabIndex}
+              pattern="${this.filterObject.validation?.pattern}"
               @input="${this.debouncedInputHandler}"
               @click=${(evt) => evt.stopPropagation()}
+              @invalid=${() => this.invalid = true}
             />
           </div>
         </div>
+        <small class="error-validation">${this.filterObject.validation && this.invalid ? this.filterObject.validation.message : this.invalid }</small>
       `
     );
   }
