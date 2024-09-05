@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { VectorTile } from "ol/layer";
-import "../main";
+import "../src-2/main";
 import vectorTileLayerStyleJson from "./vectorTilesLayer.json";
 import { EoxLayer } from "../src/generate";
 

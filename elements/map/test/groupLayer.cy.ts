@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../main";
+import "../src-2/main";
 import { EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
 

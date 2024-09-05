@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../main";
+import "../src-2/main";
 import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";

@@ -1,7 +1,7 @@
 import { html } from "lit";
 import { equals } from "ol/coordinate";
 import { EoxLayer } from "../src/generate";
-import "../main";
+import "../src-2/main";
 
 describe("Map", () => {
   it("map should exist", () => {

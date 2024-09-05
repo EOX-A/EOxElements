@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../main";
+import "../src-2/main";
 import vectorLayerStyleJson from "./hoverInteraction.json";
 import { simulateEvent } from "./utils/events";
 import { EoxLayer } from "../src/generate";

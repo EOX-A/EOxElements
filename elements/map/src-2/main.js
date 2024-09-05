@@ -53,19 +53,23 @@ export class EOxMap extends LitElement {
       config: { attribute: false, type: Object },
       sync: { attribute: "sync", type: String },
       projection: { attribute: "projection", type: String },
+      map: { attribute: false, state: true },
+      intersections: { attribute: false, state: true, type: Object },
+      selectInteractions: { attribute: false, state: true, type: Object },
+      mapControls: { attribute: false, state: true, type: Object },
     };
   }
 
-  _zoomExtent = undefined
-  _controls = undefined;
-  _layers = undefined;
-  _preventScroll = undefined
-  _config = undefined
-  _animationOptions = undefined
-  _sync = undefined
-  _center = [0, 0];
-  _zoom = 0;
-  _projection = "EPSG:3857";
+  #zoomExtent = undefined;
+  #controls = undefined;
+  #layers = undefined;
+  #preventScroll = undefined;
+  #config = undefined;
+  #animationOptions = undefined;
+  #sync = undefined;
+  #center = [0, 0];
+  #zoom = 0;
+  #projection = "EPSG:3857";
   constructor() {
     super();
     this.map = new Map({
@@ -88,26 +92,28 @@ export class EOxMap extends LitElement {
       coordinatesRoughlyEquals(center, this.map.getView().getCenter());
     if (center && !centerIsSame) {
       if (!this.projection || this.projection === "EPSG:3857") {
-        const mercatorCenter = getCenterFromProperty(center);
-        this._center = mercatorCenter;
-      } else {
-        this._center = center;
-      }
-      this._animateToState();
+        this.#center = getCenterFromProperty(center);
+      } else this.#center = center;
+
+      this.#animateToState();
     }
   }
 
   get center() {
-    return this._center;
+    return this.#center;
   }
 
+  /**
+   * current center of the view in EPSG:4326
+   */
   get lonLatCenter() {
-    if (this.projection === "EPSG:4326") {
-      return this.map.getView().getCenter();
-    }
+    if (this.projection === "EPSG:4326") return this.map.getView().getCenter();
     return transform(this.map.getView().getCenter(), this.projection);
   }
 
+  /**
+   * current extent
+   */
   get lonLatExtent() {
     const currentExtent = this.map
       .getView()
@@ -120,17 +126,25 @@ export class EOxMap extends LitElement {
 
   set zoom(zoom) {
     if (zoom === undefined) return;
-    this._zoom = zoom;
-    this._animateToState();
+    this.#zoom = zoom;
+    this.#animateToState();
   }
 
+  /**
+   * Map center, always in the same projection as the view.
+   * when setting the map center,
+   */
   get zoom() {
-    return this._zoom;
+    return this.#zoom;
   }
 
+  /**
+   * extent to zoom to (debounced)
+   * @type {import("ol/extent").Extent}
+   */
   set zoomExtent(extent) {
     if (!extent || !extent.length) {
-      this._zoomExtent = undefined;
+      this.#zoomExtent = undefined;
       return;
     }
     const view = this.map.getView();
@@ -138,16 +152,14 @@ export class EOxMap extends LitElement {
     setTimeout(() => {
       view.fit(extent, this.animationOptions);
     }, 0);
-    this._zoomExtent = extent;
+    this.#zoomExtent = extent;
   }
 
   set controls(controls) {
-    const oldControls = this._controls;
+    const oldControls = this.#controls;
     const newControls = controls;
-    console.log(controls);
 
     if (oldControls) {
-      console.log(oldControls);
       const oldControlTypes = Object.keys(oldControls);
       const newControlTypes = Object.keys(newControls);
       for (let i = 0, ii = oldControlTypes.length; i < ii; i++) {
@@ -164,15 +176,15 @@ export class EOxMap extends LitElement {
         addOrUpdateControl(this, oldControls, key, controls[key]);
       }
     }
-    this._controls = newControls;
+    this.#controls = newControls;
   }
 
   get controls() {
-    return this._controls;
+    return this.#controls;
   }
 
   set layers(layers) {
-    const oldLayers = this._layers;
+    const oldLayers = this.#layers;
     const newLayers = JSON.parse(JSON.stringify(layers)).reverse();
 
     if (oldLayers) {
@@ -185,6 +197,7 @@ export class EOxMap extends LitElement {
         ) {
           const layerToBeRemoved = getLayerById(this, l.properties?.id);
           const jsonDefinition = layerToBeRemoved.get("_jsonDefinition");
+
           jsonDefinition.interactions?.forEach((interaction) => {
             if (interaction.type === "select") {
               this.removeSelect(interaction.options.id);
@@ -211,11 +224,11 @@ export class EOxMap extends LitElement {
           sortedIds.indexOf(layerB.get("id"))
         );
       });
-    this._layers = newLayers;
+    this.#layers = newLayers;
   }
 
   get layers() {
-    return this._layers;
+    return this.#layers;
   }
 
   set preventScroll(preventScroll) {
@@ -224,24 +237,22 @@ export class EOxMap extends LitElement {
       addScrollInteractions(this.map, true);
     } else addScrollInteractions(this.map);
 
-    console.log(preventScroll)
-
-    this._preventScroll = preventScroll;
+    this.#preventScroll = preventScroll;
   }
 
   get preventScroll() {
-    return this._preventScroll;
+    return this.#preventScroll;
   }
 
   set config(config) {
-    this._config = config;
+    this.#config = config;
     if (config?.animationOptions !== undefined) {
       this.animationOptions = config.animationOptions;
     }
     this.projection = config?.view?.projection || "EPSG:3857";
     this.layers = config?.layers || [];
     this.controls = config?.controls || {};
-    console.log(this._preventScroll)
+
     if (this.preventScroll === undefined) {
       this.preventScroll = config?.preventScroll;
     }
@@ -250,16 +261,16 @@ export class EOxMap extends LitElement {
     this.zoomExtent = config?.view?.zoomExtent;
   }
 
+  get config() {
+    return this.#config;
+  }
+
   set animationOptions(animationOptions) {
-    this._animationOptions = animationOptions;
+    this.#animationOptions = animationOptions;
   }
 
   get animationOptions() {
-    return this._animationOptions;
-  }
-
-  get config() {
-    return this._config;
+    return this.#animationOptions;
   }
 
   set projection(projection) {
@@ -319,13 +330,17 @@ export class EOxMap extends LitElement {
       this.getFlatLayersArray(this.map.getLayers().getArray())
         .filter((l) => l instanceof VectorLayer)
         .forEach((l) => l.getSource().refresh());
-      this._projection = projection;
+      this.#projection = projection;
       this.center = newCenter;
     }
   }
 
+  get projection() {
+    return this.#projection || "EPSG:3857";
+  }
+
   set sync(sync) {
-    this._sync = sync;
+    this.#sync = sync;
     if (sync) {
       setTimeout(() => {
         const originMap = getElement(sync);
@@ -337,7 +352,7 @@ export class EOxMap extends LitElement {
   }
 
   get sync() {
-    return this._sync;
+    return this.#sync;
   }
 
   addOrUpdateLayer = (json) => {
@@ -409,10 +424,10 @@ export class EOxMap extends LitElement {
       e.target.getView().setCenter(this.center);
     });
     this.map.setTarget(this.renderRoot.querySelector("div"));
-    if (this._zoomExtent) {
-      this.map.getView().fit(this._zoomExtent, this.animationOptions);
+    if (this.#zoomExtent) {
+      this.map.getView().fit(this.#zoomExtent, this.animationOptions);
     } else {
-      this._animateToState();
+      this.#animateToState();
     }
     this.map.on("loadend", () => {
       this.dispatchEvent(new CustomEvent("loadend", { detail: this.map }));
@@ -420,7 +435,7 @@ export class EOxMap extends LitElement {
     this.dispatchEvent(new CustomEvent("mapmounted", { detail: this.map }));
   }
 
-  _animateToState() {
+  #animateToState() {
     const animateToOptions = Object.assign({}, this.animationOptions);
     const view = this.map.getView();
     cancelAnimation(view);

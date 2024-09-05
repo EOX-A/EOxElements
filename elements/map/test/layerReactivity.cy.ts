@@ -1,7 +1,7 @@
 import { html } from "lit";
 import drawInteractionLayerJson from "./drawInteraction.json";
 import { EoxLayer } from "../src/generate";
-import "../main";
+import "../src-2/main";
 
 const OsmJson = {
   type: "Tile",

@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../main";
+import "../src-2/main";
 import imageWmsLayerStyleJson from "./imageWmsLayer.json";
 
 // fixme: imageWMS is identical to tileWMS

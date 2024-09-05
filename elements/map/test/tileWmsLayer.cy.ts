@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../main";
+import "../src-2/main";
 import tileWmsLayerStyleJson from "./tileWmsLayer.json";
 
 describe("layers", () => {

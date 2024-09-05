@@ -9,7 +9,7 @@ import "../elements/itemfilter/src/main.js";
 import "../elements/jsonform/src/main.js";
 import "../elements/layercontrol/src/main.js";
 import "../elements/layout/src/main.js";
-import "../elements/map/main.ts";
+import "../elements/map/src-2/main.js";
 import "../elements/map/src/plugins/advancedLayersAndSources/index.ts";
 import "../elements/stacinfo/src/main.js";
 import "../elements/storytelling/src/main.js";

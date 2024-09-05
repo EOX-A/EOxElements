@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../main";
+import "../src-2/main";
 
 describe("layers", () => {
   it("create wmts with tile grid", () => {
