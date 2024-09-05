@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.7.1...timecontrol-v0.7.2) (2024-08-19)
+
+
+### Bug Fixes
+
+* Render high-density slider ticks correctly ([#1221](https://github.com/EOX-A/EOxElements/issues/1221)) ([fc272f1](https://github.com/EOX-A/EOxElements/commit/fc272f11911faa7f574936b2b953252069f3e48d))
+
 ## [0.7.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.7.0...timecontrol-v0.7.1) (2024-08-12)
 
 

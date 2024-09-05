@@ -23,7 +23,7 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       const parseValue = (value) => {
         return filterProperty.format === "date"
           ? dayjs(value).unix()
-          : parseInt(value, 10);
+          : parseFloat(value);
       };
 
       // Iterate over items to build filter keys

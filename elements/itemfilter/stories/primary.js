@@ -58,6 +58,12 @@ function PrimaryStory() {
           format: "date",
         },
         {
+          key: "correlation",
+          title: "Correlation",
+          type: "range",
+          step: 0.1,
+        },
+        {
           key: "geometry",
           type: "spatial",
         },
