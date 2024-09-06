@@ -1,6 +1,6 @@
 {
   "name": "@eox/timecontrol",
-  "version": "0.6.1",
+  "version": "0.7.2",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",

@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.4.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.3.3...stacinfo-v0.4.0) (2024-08-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* refactor and convert ts to js ([#1180](https://github.com/EOX-A/EOxElements/issues/1180))
+
+### Features
+
+* Refactor and convert ts to js ([#1180](https://github.com/EOX-A/EOxElements/issues/1180)) ([669f46a](https://github.com/EOX-A/EOxElements/commit/669f46a7bc18b47375acabe8d56b8d1db1fc8142))
+
 ## [0.3.3](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.3.2...stacinfo-v0.3.3) (2024-04-15)
 
 

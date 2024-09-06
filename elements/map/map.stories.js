@@ -319,6 +319,64 @@ export const Geolocation = {
   },
 };
 
+/**
+ * A simple, unobtrusive loading indicator in the bottom left that appears any time when the map is loading.
+ */
+export const StandardLoadingIndicator = {
+  args: {
+    zoom: 9,
+    center: [0, 51.5],
+    controls: {
+      LoadingIndicator: {},
+      Zoom: {},
+    },
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+  },
+};
+
+/**
+ * Loading Indicators can also be centered over the entire map by setting the option `type` to `'fullscreen'`, adapting the opacity is adviced when doing so.
+ *
+ * Custom rotating SVG-Icons can be used by setting the svg data as the `spinnerSvg`-option.
+ */
+export const CustomFullScreenLoadingIndicator = {
+  args: {
+    zoom: 9,
+    center: [0, 51.5],
+    controls: {
+      LoadingIndicator: {
+        type: "fullscreen",
+        opacity: 0.2,
+        spinnerSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" width="50" height="50" style="shape-rendering: auto; display: block; background: transparent;" xmlns:xlink="http://www.w3.org/1999/xlink"><g><circle stroke-dasharray="120 50" r="30" stroke-width="22" stroke="#cd4609" fill="none" cy="50" cx="50">
+        <animateTransform keyTimes="0;1" values="0 50 50;360 50 50" dur="0.4s" repeatCount="indefinite" type="rotate" attributeName="transform"></animateTransform>
+            </circle><g></g></g></svg>`,
+      },
+      Zoom: {},
+    },
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+  },
+};
+
 export const HoverSelect = {
   args: {
     layers: [
@@ -513,6 +571,67 @@ export const TooltipWithPropertyTransform = {
 };
 
 /**
+ * Select interactions offer a `highlightById` method, with which vector features can be programmatically selected via their id property.
+ * It expects an array with a list of ids to be selected.
+ * Optionally, passing a second argument allows to set the [`fitOptions`](https://openlayers.org/en/latest/apidoc/module-ol_View.html#~FitOptions),
+ * adding view animation to the selection.
+ */
+export const HighlightFeaturesAndAnimate = {
+  args: {
+    config: {
+      layers: [
+        {
+          type: "Vector",
+          background: "lightgrey",
+          properties: {
+            id: "regions",
+          },
+          source: {
+            type: "Vector",
+            url: "https://openlayers.org/data/vector/ecoregions.json",
+            format: "GeoJSON",
+            attributions: "Regions: @ openlayers.org",
+          },
+          style: {
+            "stroke-color": "black",
+            "stroke-width": 1,
+            "fill-color": "darkgrey",
+          },
+          interactions: [
+            {
+              type: "select",
+              options: {
+                id: "selectInteraction",
+                condition: "click",
+                style: {
+                  "stroke-color": "white",
+                  "stroke-width": 3,
+                },
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+  render: (args) => html`
+    <eox-map
+      id="highlightAndAnimate"
+      style="width: 100%; height: 300px;"
+      .config=${args.config}
+      @loadend=${() => {
+        document
+          .querySelector("eox-map#highlightAndAnimate")
+          .selectInteractions.selectInteraction.highlightById([664, 795, 789], {
+            duration: 400,
+            padding: [50, 50, 50, 50],
+          });
+      }}
+    ></eox-map>
+  `,
+};
+
+/**
  * Sync the views of two maps using the `sync` attribute (e.g. `sync="eox-map#a"`).
  */
 export const MapSync = {
@@ -683,6 +802,53 @@ export const Projection = {
       }}
     >
       change projection
+    </button>
+  `,
+};
+
+/**
+ * With the convenience functions `transform` and `transformExtent` it is possible to transform coordinates
+ * and extents from any projection to EPSG.4326 (default) or any other projection.
+ * Basically, these methods are the `ol/proj` [transform](https://openlayers.org/en/latest/apidoc/module-ol_proj.html#.transform)
+ * and [transformExtent](https://openlayers.org/en/latest/apidoc/module-ol_proj.html#.transformExtent) functions,
+ * with the small adaptation that the destination defaults to EPSG:4326 if not defined.
+ */
+export const ProjectionTransform = {
+  args: {
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "osm",
+          title: "Background",
+        },
+        source: { type: "OSM" },
+      },
+    ],
+    center: [16.8, 48.2],
+    zoom: 7,
+  },
+  render: (args) => html`
+    <eox-map
+      id="transformMap"
+      style="width: 100%; height: 300px; display: none"
+      .center=${args.center}
+      .controls=${args.controls}
+      .zoom=${args.zoom}
+    >
+    </eox-map>
+    <button
+      @click=${() => {
+        const eoxMap = document.querySelector("#transformMap");
+        eoxMap.registerProjection(
+          "ESRI:53009",
+          "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
+            "+b=6371000 +units=m +no_defs"
+        );
+        alert(eoxMap.transform([991693, 1232660], "ESRI:53009"));
+      }}
+    >
+      Transform [991693, 1232660] ("ESRI:53009")
     </button>
   `,
 };

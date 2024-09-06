@@ -39,6 +39,9 @@ import {
  * #### `layerConfig?: Object`
  * Configuration options for the layer (displayed in the layer tools' "config" tab)
  *
+ * #### `layerDateTime?: Object`
+ * Partial eox-timecontrol config passed to the "datetime" tool
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -67,7 +70,8 @@ export class EOxLayerControl extends LitElement {
     super();
 
     /**
-     * Query selector of an eox-map or another DOM element containing an OL map proeprty
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
      * @type {String|HTMLElement}
      */
@@ -107,7 +111,7 @@ export class EOxLayerControl extends LitElement {
      *
      * @type {Array<String>}
      */
-    this.tools = ["info", "opacity", "config", "remove", "sort"];
+    this.tools = ["info", "opacity", "datetime", "config", "remove", "sort"];
 
     /**
      * Enable-disable external layer
@@ -136,7 +140,23 @@ export class EOxLayerControl extends LitElement {
    * Updated #eoxMap after first update.
    */
   firstUpdated() {
-    this.#eoxMap = firstUpdatedMethod(this);
+    this.eoxMap = firstUpdatedMethod(this);
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("for")) {
+      this.eoxMap = firstUpdatedMethod(this);
+    }
+  }
+
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this.#eoxMap;
+    this.#eoxMap = value;
+    this.requestUpdate("eoxMap", oldValue);
   }
 
   /**
@@ -151,6 +171,16 @@ export class EOxLayerControl extends LitElement {
      * Passes the changed layer in the `detail`.
      */
     this.dispatchEvent(new CustomEvent("layerchange", { detail: evt.detail }));
+  }
+
+  /**
+   * Dispatches datetime updates from layer datetime to the layercontrol
+   * @param {CustomEvent} evt
+   */
+  #handleDatetimeUpdate(evt) {
+    this.dispatchEvent(
+      new CustomEvent("datetime:updated", { detail: evt.detail })
+    );
   }
 
   render() {
@@ -192,6 +222,7 @@ export class EOxLayerControl extends LitElement {
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             @changed=${this.#handleLayerControlLayerListChange}
+            @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>
         `
       )}
