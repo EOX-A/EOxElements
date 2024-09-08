@@ -177,6 +177,11 @@ describe("view projections", () => {
         transformedCoordinateOutsideExtent.map(Math.round),
         "can transform coordinate to custom system"
       ).to.be.deep.equal([1926715, 2450840]);
+
+      expect(
+        transformedExtentToWgs.map(Math.round),
+        "can transform extent from custom system"
+      ).to.be.deep.equal([10, 10, 11, 11]);
     });
     cy.get("eox-map").then(($el) => {
       const eoxMap = <EOxMap>$el[0];
@@ -187,11 +192,6 @@ describe("view projections", () => {
           eoxMap.lonLatExtent.map(Math.round),
           "getter of lonLatExtent"
         ).to.be.deep.equal(transformedExtentToWgs.map(Math.round));
-
-        expect(
-          transformedExtentToWgs.map(Math.round),
-          "can transform extent from custom system"
-        ).to.be.deep.equal([10, 10, 11, 11]);
       });
     });
   });
