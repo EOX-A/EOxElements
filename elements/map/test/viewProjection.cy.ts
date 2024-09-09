@@ -187,11 +187,14 @@ describe("view projections", () => {
       const eoxMap = <EOxMap>$el[0];
       eoxMap.zoomExtent = transformedExtentFromWgs;
 
-      return cy.wait("@ecoRegionsIntercept").then(() => {
-        expect(
-          eoxMap.lonLatExtent.map(Math.round),
-          "getter of lonLatExtent"
-        ).to.be.deep.equal(transformedExtentToWgs.map(Math.round));
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => {
+          expect(
+            eoxMap.lonLatExtent.map(Math.round),
+            "getter of lonLatExtent"
+          ).to.be.deep.equal(transformedExtentToWgs.map(Math.round));
+          resolve()
+        }, 10);
       });
     });
   });
