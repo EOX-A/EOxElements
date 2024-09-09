@@ -102,7 +102,7 @@ describe("view projections", () => {
       (req) => {
         req.reply(ecoRegionsFixture);
       }
-    ).as("ecoRegionsIntercept");
+    );
     let transformedExtentFromWgs, transformedExtentToWgs;
     // not using osm because of performance issues while testing
     cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
