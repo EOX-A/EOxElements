@@ -193,7 +193,7 @@ describe("view projections", () => {
             eoxMap.lonLatExtent.map(Math.round),
             "getter of lonLatExtent"
           ).to.be.deep.equal(transformedExtentToWgs.map(Math.round));
-          resolve()
+          resolve();
         }, 10);
       });
     });
