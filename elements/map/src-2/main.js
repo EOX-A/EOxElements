@@ -43,6 +43,7 @@ import {
   get as getProjection,
 } from "ol/proj";
 import { getElement } from "../../../utils";
+import { animateToStateMethod } from "./methods/map/";
 
 export class EOxMap extends LitElement {
   static get properties() {
@@ -95,7 +96,7 @@ export class EOxMap extends LitElement {
         this.#center = getCenterFromProperty(center);
       } else this.#center = center;
 
-      this.#animateToState();
+      animateToStateMethod(this);
     }
   }
 
@@ -127,7 +128,7 @@ export class EOxMap extends LitElement {
   set zoom(zoom) {
     if (zoom === undefined) return;
     this.#zoom = zoom;
-    this.#animateToState();
+    animateToStateMethod(this);
   }
 
   /**
@@ -427,7 +428,7 @@ export class EOxMap extends LitElement {
     if (this.#zoomExtent) {
       this.map.getView().fit(this.#zoomExtent, this.animationOptions);
     } else {
-      this.#animateToState();
+      animateToStateMethod(this);
     }
     this.map.on("loadend", () => {
       this.dispatchEvent(new CustomEvent("loadend", { detail: this.map }));
