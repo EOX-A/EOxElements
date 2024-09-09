@@ -13,7 +13,7 @@ import { addNewFeature } from "./";
  * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
  * @return {void}
  */
-export default function parseText(
+export default function parseTextToFeature(
   text,
   vectorLayer,
   EOxMap,

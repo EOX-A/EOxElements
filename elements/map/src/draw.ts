@@ -2,7 +2,7 @@ import Modify from "ol/interaction/Modify";
 import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
 import { Vector as VectorLayer } from "ol/layer";
-import { addNewFeature } from "../helpers";
+import { addNewFeature } from "../src-2/helpers";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,

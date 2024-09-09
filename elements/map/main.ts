@@ -26,12 +26,12 @@ import {
 } from "./src/utils";
 import GeoJSON from "ol/format/GeoJSON";
 import {
-  parseText,
+  parseTextToFeature as parseText,
   registerProjection,
   registerProjectionFromCode,
-  READ_FEATURES_OPTIONS,
   cancelAnimation,
-} from "./helpers";
+} from "./src-2/helpers";
+import { READ_FEATURES_OPTIONS } from "./src-2/enums";
 import Feature from "ol/Feature";
 import { Geometry } from "ol/geom";
 import VectorLayer from "ol/layer/Vector.js";

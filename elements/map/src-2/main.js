@@ -3,47 +3,34 @@ import Map from "ol/Map.js";
 import View from "ol/View.js";
 import olCss from "ol/ol.css?inline";
 import controlCss from "../src/controls/controls.css?inline";
-// import { EOxSelectInteraction } from "../src/select";
-import {
-  // EoxLayer,
-  createLayer,
-  updateLayer,
-} from "../src/generate";
-// import { Draw, Modify } from "ol/interaction";
-// import Control from "ol/control/Control";
 import { getLayerById, getFlatLayersArray } from "../src/layer";
-import { getCenterFromProperty } from "../src/center";
-import {
-  addOrUpdateControl,
-  // controlDictionary,
-  // controlType,
-} from "../src/controls/controls";
 import { buffer } from "ol/extent";
 import "../src/compare";
+import { transform, transformExtent } from "../src/utils";
 import {
-  addScrollInteractions,
-  coordinatesRoughlyEquals,
-  removeDefaultScrollInteractions,
-  transform,
-  transformExtent,
-} from "../src/utils";
-import GeoJSON from "ol/format/GeoJSON";
+  animateToStateMethod,
+  setCenterMethod,
+  getLonLatCenterMethod,
+  getLonLatExtentMethod,
+  setZoomExtentMethod,
+  setControlsMethod,
+  setLayersMethod,
+  setPreventScrollMethod,
+  setConfigMethod,
+  setProjectionMethod,
+  setSyncMethod,
+  addOrUpdateLayerMethod,
+  removeInteractionMethod,
+  removeSelectMethod,
+  removeControlMethod,
+  firstUpdatedMethod,
+} from "./methods/map/";
 import {
-  parseText,
+  parseFeature,
+  parseTextToFeature,
   registerProjection,
   registerProjectionFromCode,
-  READ_FEATURES_OPTIONS,
-  cancelAnimation,
-} from "../helpers";
-// import Feature from "ol/Feature";
-import VectorLayer from "ol/layer/Vector.js";
-import {
-  transform as olTransform,
-  getPointResolution,
-  get as getProjection,
-} from "ol/proj";
-import { getElement } from "../../../utils";
-import { animateToStateMethod } from "./methods/map/";
+} from "./helpers";
 
 export class EOxMap extends LitElement {
   static get properties() {
@@ -88,14 +75,9 @@ export class EOxMap extends LitElement {
   }
 
   set center(center) {
-    const centerIsSame =
-      center?.length &&
-      coordinatesRoughlyEquals(center, this.map.getView().getCenter());
-    if (center && !centerIsSame) {
-      if (!this.projection || this.projection === "EPSG:3857") {
-        this.#center = getCenterFromProperty(center);
-      } else this.#center = center;
-
+    const newCenter = setCenterMethod(center, this);
+    if (newCenter !== undefined) {
+      this.#center = newCenter;
       animateToStateMethod(this);
     }
   }
@@ -104,25 +86,12 @@ export class EOxMap extends LitElement {
     return this.#center;
   }
 
-  /**
-   * current center of the view in EPSG:4326
-   */
   get lonLatCenter() {
-    if (this.projection === "EPSG:4326") return this.map.getView().getCenter();
-    return transform(this.map.getView().getCenter(), this.projection);
+    return getLonLatCenterMethod(this);
   }
 
-  /**
-   * current extent
-   */
   get lonLatExtent() {
-    const currentExtent = this.map
-      .getView()
-      .calculateExtent(this.map.getSize());
-    if (this.projection === "EPSG:4326") {
-      return currentExtent;
-    }
-    return transformExtent(currentExtent, this.projection);
+    return getLonLatExtentMethod(this);
   }
 
   set zoom(zoom) {
@@ -131,53 +100,16 @@ export class EOxMap extends LitElement {
     animateToStateMethod(this);
   }
 
-  /**
-   * Map center, always in the same projection as the view.
-   * when setting the map center,
-   */
   get zoom() {
     return this.#zoom;
   }
 
-  /**
-   * extent to zoom to (debounced)
-   * @type {import("ol/extent").Extent}
-   */
   set zoomExtent(extent) {
-    if (!extent || !extent.length) {
-      this.#zoomExtent = undefined;
-      return;
-    }
-    const view = this.map.getView();
-    cancelAnimation(view);
-    setTimeout(() => {
-      view.fit(extent, this.animationOptions);
-    }, 0);
-    this.#zoomExtent = extent;
+    this.#zoomExtent = setZoomExtentMethod(extent, this);
   }
 
   set controls(controls) {
-    const oldControls = this.#controls;
-    const newControls = controls;
-
-    if (oldControls) {
-      const oldControlTypes = Object.keys(oldControls);
-      const newControlTypes = Object.keys(newControls);
-      for (let i = 0, ii = oldControlTypes.length; i < ii; i++) {
-        const oldControlType = oldControlTypes[i];
-        if (!newControlTypes.includes(oldControlType)) {
-          this.removeControl(oldControlType);
-        }
-      }
-    }
-    if (newControls) {
-      const keys = Object.keys(controls);
-      for (let i = 0, ii = keys.length; i < ii; i++) {
-        const key = keys[i];
-        addOrUpdateControl(this, oldControls, key, controls[key]);
-      }
-    }
-    this.#controls = newControls;
+    this.#controls = setControlsMethod(controls, this.#controls, this);
   }
 
   get controls() {
@@ -185,47 +117,7 @@ export class EOxMap extends LitElement {
   }
 
   set layers(layers) {
-    const oldLayers = this.#layers;
-    const newLayers = JSON.parse(JSON.stringify(layers)).reverse();
-
-    if (oldLayers) {
-      oldLayers.forEach((l) => {
-        if (
-          !l.properties?.id ||
-          !newLayers.find(
-            (newLayer) => newLayer.properties.id === l.properties.id
-          )
-        ) {
-          const layerToBeRemoved = getLayerById(this, l.properties?.id);
-          const jsonDefinition = layerToBeRemoved.get("_jsonDefinition");
-
-          jsonDefinition.interactions?.forEach((interaction) => {
-            if (interaction.type === "select") {
-              this.removeSelect(interaction.options.id);
-            } else {
-              this.removeInteraction(interaction.options.id);
-            }
-          });
-          this.map.removeLayer(layerToBeRemoved);
-        }
-      });
-    }
-
-    newLayers.forEach((l) => {
-      this.addOrUpdateLayer(l);
-    });
-
-    const sortedIds = newLayers.map((l) => l.properties?.id);
-    this.map
-      .getLayers()
-      .getArray()
-      .sort((layerA, layerB) => {
-        return (
-          sortedIds.indexOf(layerA.get("id")) -
-          sortedIds.indexOf(layerB.get("id"))
-        );
-      });
-    this.#layers = newLayers;
+    this.#layers = setLayersMethod(layers, this.#layers, this);
   }
 
   get layers() {
@@ -233,12 +125,7 @@ export class EOxMap extends LitElement {
   }
 
   set preventScroll(preventScroll) {
-    if (preventScroll) {
-      removeDefaultScrollInteractions(this.map);
-      addScrollInteractions(this.map, true);
-    } else addScrollInteractions(this.map);
-
-    this.#preventScroll = preventScroll;
+    this.#preventScroll = setPreventScrollMethod(preventScroll, this);
   }
 
   get preventScroll() {
@@ -246,20 +133,7 @@ export class EOxMap extends LitElement {
   }
 
   set config(config) {
-    this.#config = config;
-    if (config?.animationOptions !== undefined) {
-      this.animationOptions = config.animationOptions;
-    }
-    this.projection = config?.view?.projection || "EPSG:3857";
-    this.layers = config?.layers || [];
-    this.controls = config?.controls || {};
-
-    if (this.preventScroll === undefined) {
-      this.preventScroll = config?.preventScroll;
-    }
-    this.zoom = config?.view?.zoom || 0;
-    this.center = config?.view?.center || [0, 0];
-    this.zoomExtent = config?.view?.zoomExtent;
+    this.#config = setConfigMethod(config, this);
   }
 
   get config() {
@@ -275,65 +149,7 @@ export class EOxMap extends LitElement {
   }
 
   set projection(projection) {
-    const oldView = this.map.getView();
-    if (
-      projection &&
-      getProjection(projection) &&
-      projection !== oldView.getProjection().getCode()
-    ) {
-      const newCenter = olTransform(
-        oldView.getCenter(),
-        oldView.getProjection().getCode(),
-        projection
-      );
-
-      const newProjection = getProjection(projection);
-      const oldResolution = oldView.getResolution();
-      const oldMPU = oldView.getProjection().getMetersPerUnit();
-      const newMPU = newProjection.getMetersPerUnit();
-      const oldPointResolution =
-        getPointResolution(
-          oldView.getProjection(),
-          1 / oldMPU,
-          oldView.getCenter(),
-          "m"
-        ) * oldMPU;
-      const newPointResolution =
-        getPointResolution(newProjection, 1 / newMPU, newCenter, "m") * newMPU;
-
-      const newResolution =
-        (oldResolution * oldPointResolution) / newPointResolution;
-
-      const newView = new View({
-        zoom: oldView.getZoom(),
-        center: newCenter,
-        resolution: newResolution,
-        rotation: oldView.getRotation(),
-        projection,
-      });
-      const eventTypes = [
-        "change:center",
-        "change:resolution",
-        "change:rotation",
-        "propertychange",
-      ];
-      eventTypes.forEach((eventType) => {
-        const existingListeners = oldView.getListeners(eventType);
-        if (existingListeners?.length) {
-          for (let i = existingListeners.length - 1; i >= 0; i--) {
-            const listener = existingListeners[i];
-            oldView.un(eventType, listener);
-            newView.on(eventType, listener);
-          }
-        }
-      });
-      this.map.setView(newView);
-      this.getFlatLayersArray(this.map.getLayers().getArray())
-        .filter((l) => l instanceof VectorLayer)
-        .forEach((l) => l.getSource().refresh());
-      this.#projection = projection;
-      this.center = newCenter;
-    }
+    this.#projection = setProjectionMethod(projection, this.#projection, this);
   }
 
   get projection() {
@@ -341,70 +157,40 @@ export class EOxMap extends LitElement {
   }
 
   set sync(sync) {
-    this.#sync = sync;
-    if (sync) {
-      setTimeout(() => {
-        const originMap = getElement(sync);
-        if (originMap) {
-          this.map.setView(originMap.map.getView());
-        }
-      });
-    }
+    this.#sync = setSyncMethod(sync, this);
   }
 
   get sync() {
     return this.#sync;
   }
 
-  addOrUpdateLayer = (json) => {
-    if (!json.interactions) {
-      json.interactions = [];
-    }
-    const id = json.properties?.id;
+  addOrUpdateLayer(json) {
+    return addOrUpdateLayerMethod(json, this);
+  }
 
-    const existingLayer = id ? getLayerById(this, id) : false;
-    let layer;
-    if (existingLayer) {
-      updateLayer(this, json, existingLayer);
-      layer = existingLayer;
-    } else {
-      layer = createLayer(this, json);
-      this.map.addLayer(layer);
-    }
-    return layer;
-  };
+  removeInteraction(id) {
+    removeInteractionMethod(id, this);
+  }
 
-  removeInteraction = (id) => {
-    this.map.removeInteraction(this.interactions[id]);
-    delete this.interactions[id];
-    if (this.interactions[`${id}_modify`]) {
-      this.map.removeInteraction(this.interactions[`${id}_modify`]);
-      delete this.interactions[`${id}_modify`];
-    }
-  };
+  removeSelect(id) {
+    removeSelectMethod(id, this);
+  }
 
-  removeSelect = (id) => {
-    this.selectInteractions[id].remove();
-    delete this.selectInteractions[id];
-  };
+  removeControl(id) {
+    removeControlMethod(id, this);
+  }
 
-  removeControl = (id) => {
-    this.map.removeControl(this.mapControls[id]);
-    delete this.mapControls[id];
-  };
-
-  getLayerById = (layerId) => {
+  getLayerById(layerId) {
     return getLayerById(this, layerId);
-  };
+  }
 
-  parseFeature = (features) => {
-    const format = new GeoJSON();
-    return format.writeFeaturesObject(features, READ_FEATURES_OPTIONS);
-  };
+  firstUpdated() {
+    firstUpdatedMethod(this.#zoomExtent, this);
+  }
 
-  parseTextToFeature = (text, vectorLayer, replaceFeatures = false) => {
-    parseText(text, vectorLayer, this, replaceFeatures);
-  };
+  parseFeature = parseFeature;
+
+  parseTextToFeature = parseTextToFeature;
 
   registerProjectionFromCode = registerProjectionFromCode;
 
@@ -416,41 +202,7 @@ export class EOxMap extends LitElement {
 
   transformExtent = transformExtent;
 
-  buffer(extent, value) {
-    return buffer(extent, value);
-  }
-
-  firstUpdated() {
-    this.map.once("change:target", (e) => {
-      e.target.getView().setCenter(this.center);
-    });
-    this.map.setTarget(this.renderRoot.querySelector("div"));
-    if (this.#zoomExtent) {
-      this.map.getView().fit(this.#zoomExtent, this.animationOptions);
-    } else {
-      animateToStateMethod(this);
-    }
-    this.map.on("loadend", () => {
-      this.dispatchEvent(new CustomEvent("loadend", { detail: this.map }));
-    });
-    this.dispatchEvent(new CustomEvent("mapmounted", { detail: this.map }));
-  }
-
-  #animateToState() {
-    const animateToOptions = Object.assign({}, this.animationOptions);
-    const view = this.map.getView();
-    cancelAnimation(view);
-    if (!animateToOptions || !Object.keys(animateToOptions).length) {
-      view.setCenter(this.center);
-      view.setZoom(this.zoom);
-      return;
-    }
-    animateToOptions.center = getCenterFromProperty(this.center);
-    animateToOptions.zoom = this.zoom;
-    view.animate(animateToOptions);
-  }
-
-  updated(_changedProperties) {}
+  buffer = buffer;
 
   render() {
     return html`
