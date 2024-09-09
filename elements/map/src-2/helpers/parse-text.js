@@ -2,6 +2,7 @@ import TopoJSON from "ol/format/TopoJSON";
 import GeoJSON from "ol/format/GeoJSON";
 import KML from "ol/format/KML";
 import { addNewFeature } from "./";
+import { READ_FEATURES_OPTIONS } from "../enums";
 
 /**
  * This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
