@@ -11,7 +11,7 @@ import { READ_FEATURES_OPTIONS } from "../enums";
  *
  * @param {import("ol/interaction/Draw").DrawEvent | import("ol/interaction/DragAndDrop").DragAndDropEvent | { features: Array<import("ol/Feature").default> }} e - The event object from drawing or drag-and-drop actions, containing the features.
  * @param {import("ol/layer").Vector} vectorLayer - The vector layer to which features will be added.
- * @param {import("../main").EOxMap} EOxMap - The EOxMap instance for dispatching custom events and adjusting the view.
+ * @param {import("../main").EOxMap | import("../../main").EOxMap} EOxMap - The EOxMap instance for dispatching custom events and adjusting the view.
  * @param {boolean} isDraw - Optional. If true, indicates the features come from a drawing event.
  * @param {boolean} replaceFeatures - Optional. If true, existing features in the layer are cleared before adding new ones.
  */

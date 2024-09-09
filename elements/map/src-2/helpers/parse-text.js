@@ -10,7 +10,7 @@ import { READ_FEATURES_OPTIONS } from "../enums";
  *
  * @param {string} text - The string containing the geographic data to be parsed.
  * @param {import("ol/layer").Vector} vectorLayer - The vector layer to which the parsed features will be added.
- * @param {import("../main").EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
+ * @param {import("../main").EOxMap | import("../../main").EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
  * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
  * @return {void}
  */

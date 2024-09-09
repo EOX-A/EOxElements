@@ -8,7 +8,11 @@ import { register } from "ol/proj/proj4";
  * @param {string | proj4.ProjectionDefinition} projection -  proj4 projection definition string
  * @param {import("ol/extent").Extent} extent
  */
-export default function registerProjection(name, projection, extent) {
+export default function registerProjection(
+  name,
+  projection,
+  extent = undefined
+) {
   proj4.defs(name, projection);
   register(proj4);
   if (typeof extent !== "undefined") {
