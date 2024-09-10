@@ -103,7 +103,7 @@ describe("view projections", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    let transformedExtentFromWgs, transformedExtentToWgs;
+
     // not using osm because of performance issues while testing
     cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
       "eox-map"
@@ -146,7 +146,7 @@ describe("view projections", () => {
         "can transform coordinate from custom system"
       ).to.be.deep.equal([10, 10]);
 
-      transformedExtentFromWgs = eoxMap.transformExtent(
+      const transformedExtentFromWgs = eoxMap.transformExtent(
         [10, 10, 11, 11],
         "EPSG:4326",
         "ESRI:53009"
@@ -156,7 +156,7 @@ describe("view projections", () => {
         "can transform extent to custom system"
       ).to.be.deep.equal([989714, 1232660, 1090862, 1355370]);
 
-      transformedExtentToWgs = eoxMap.transformExtent(
+      const transformedExtentToWgs = eoxMap.transformExtent(
         [
           989714.093446643, 1232660.4789432778, 1090862.1263438729,
           1355370.4556459172,
