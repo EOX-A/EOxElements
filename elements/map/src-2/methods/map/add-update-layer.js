@@ -1,5 +1,4 @@
-import { createLayer, updateLayer } from "../../../src/generate";
-import { getLayerById } from "../../../src/layer";
+import { createLayer, updateLayer, getLayerById } from "../../helpers";
 
 export default function addOrUpdateLayerMethod(json, EOxMap) {
   if (!json.interactions) {

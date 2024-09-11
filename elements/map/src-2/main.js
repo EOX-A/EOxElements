@@ -3,9 +3,8 @@ import Map from "ol/Map.js";
 import View from "ol/View.js";
 import olCss from "ol/ol.css?inline";
 import controlCss from "../src/controls/controls.css?inline";
-import { getLayerById, getFlatLayersArray } from "../src/layer";
 import { buffer } from "ol/extent";
-import "../src/compare";
+import "./components/compare";
 import {
   transform,
   transformExtent,
@@ -13,6 +12,8 @@ import {
   parseTextToFeature,
   registerProjection,
   registerProjectionFromCode,
+  getLayerById,
+  getFlatLayersArray,
 } from "./helpers";
 import {
   animateToStateMethod,

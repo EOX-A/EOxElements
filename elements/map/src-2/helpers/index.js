@@ -1,5 +1,3 @@
-import coordinatesRoughlyEquals from "./coordinates-roughly-equals.js";
-
 export { default as addNewFeature } from "./add-new-feature";
 export { default as cancelAnimation } from "./cancel-animation";
 export { default as parseTextToFeature } from "./parse-text";
@@ -12,3 +10,9 @@ export {
   removeDefaultScrollInteractions,
 } from "./interactions";
 export { default as coordinatesRoughlyEquals } from "./coordinates-roughly-equals";
+export { getCenterFromProperty } from "./center";
+export { addDraw } from "./draw";
+export { EOxSelectInteraction, addSelect } from "./select";
+export { generateTileGrid } from "./tile-grid";
+export { getLayerById, getFlatLayersArray } from "./layer";
+export { createLayer, updateLayer } from "./generate";

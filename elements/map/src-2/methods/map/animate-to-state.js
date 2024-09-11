@@ -1,5 +1,4 @@
-import { cancelAnimation } from "../../helpers";
-import { getCenterFromProperty } from "../../../src/center.ts";
+import { cancelAnimation, getCenterFromProperty } from "../../helpers";
 
 export default function animateToStateMethod(EOxMap) {
   const animateToOptions = Object.assign({}, EOxMap.animationOptions);

@@ -1,12 +1,12 @@
-import { getCenterFromProperty } from "../../../src/center";
 import {
   cancelAnimation,
+  getCenterFromProperty,
   addScrollInteractions,
   coordinatesRoughlyEquals,
   removeDefaultScrollInteractions,
+  getLayerById,
 } from "../../helpers";
 import { addOrUpdateControl } from "../../../src/controls/controls";
-import { getLayerById } from "../../../src/layer";
 import {
   get as getProjection,
   getPointResolution,
