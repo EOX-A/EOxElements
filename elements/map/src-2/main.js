@@ -6,7 +6,14 @@ import controlCss from "../src/controls/controls.css?inline";
 import { getLayerById, getFlatLayersArray } from "../src/layer";
 import { buffer } from "ol/extent";
 import "../src/compare";
-import { transform, transformExtent } from "../src/utils";
+import {
+  transform,
+  transformExtent,
+  parseFeature,
+  parseTextToFeature,
+  registerProjection,
+  registerProjectionFromCode,
+} from "./helpers";
 import {
   animateToStateMethod,
   setCenterMethod,
@@ -25,12 +32,6 @@ import {
   removeControlMethod,
   firstUpdatedMethod,
 } from "./methods/map/";
-import {
-  parseFeature,
-  parseTextToFeature,
-  registerProjection,
-  registerProjectionFromCode,
-} from "./helpers";
 
 export class EOxMap extends LitElement {
   static get properties() {

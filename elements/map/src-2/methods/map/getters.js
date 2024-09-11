@@ -1,4 +1,4 @@
-import { transform, transformExtent } from "../../../src/utils";
+import { transform, transformExtent } from "../../helpers";
 
 export function getLonLatCenterMethod(EOxMap) {
   if (EOxMap.projection === "EPSG:4326")
