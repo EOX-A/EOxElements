@@ -90,7 +90,6 @@ export class EOxLayerControlList extends LitElement {
       -webkit-border-radius: 3px 3px 3px 3px;
       -moz-border-radius: 3px 3px 3px 3px;
       border: 1px solid #eee;
-      padding: 10px;
     }
     .toollist {
       font-size: small;
