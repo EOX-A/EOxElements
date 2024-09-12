@@ -265,22 +265,19 @@ export class EOxLayerControlLayerTools extends LitElement {
     }
     .single-action,
     details.tools summary,
-    eox-layercontrol-tabs button.icon,
-    eox-layercontrol-list button.icon {
+    eox-layercontrol-tabs button.icon {
       transition: opacity .2s;
     }
     .single-action,
     details.tools summary {
       opacity: .5;
     }
-    eox-layercontrol-tabs button.icon ,
-    eox-layercontrol-list button.icon {
+    eox-layercontrol-tabs button.icon {
       opacity: .7;
     }
     .single-action:hover,
     details.tools summary:hover,
-    eox-layercontrol-tabs button.icon:hover,
-    eox-layercontrol-list button.icon:hover {
+    eox-layercontrol-tabs button.icon:hover {
       opacity: 1;
     }
     .tools-placeholder,
@@ -292,16 +289,12 @@ export class EOxLayerControlLayerTools extends LitElement {
       width: 16px;
     }
     eox-layercontrol-tabs button.icon,
-    eox-layercontrol-tabs .button.icon,
-    eox-layercontrol-list button.icon,
-    eox-layercontrol-list .button.icon {
+    eox-layercontrol-tabs .button.icon {
       display: flex;
       justify-content: center;
     }
     eox-layercontrol-tabs button.icon::before,
-    eox-layercontrol-tabs .button.icon::before,
-    eox-layercontrol-list button.icon::before {
-    eox-layercontrol-list .button.icon::before {
+    eox-layercontrol-tabs .button.icon::before {
       width: 16px;
       height: 16px;
     }
