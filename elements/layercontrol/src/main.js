@@ -39,6 +39,9 @@ import {
  * #### `layerConfig?: Object`
  * Configuration options for the layer (displayed in the layer tools' "config" tab)
  *
+ * #### `layerDateTime?: Object`
+ * Partial eox-timecontrol config passed to the "datetime" tool
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -109,7 +112,7 @@ export class EOxLayerControl extends LitElement {
      *
      * @type {Array<String>}
      */
-    this.tools = ["info", "opacity", "config", "remove", "sort"];
+    this.tools = ["info", "opacity", "datetime", "config", "remove", "sort"];
 
     /**
      * Enable-disable external layer
@@ -178,6 +181,16 @@ export class EOxLayerControl extends LitElement {
     this.dispatchEvent(new CustomEvent("layerchange", { detail: evt.detail }));
   }
 
+  /**
+   * Dispatches datetime updates from layer datetime to the layercontrol
+   * @param {CustomEvent} evt
+   */
+  #handleDatetimeUpdate(evt) {
+    this.dispatchEvent(
+      new CustomEvent("datetime:updated", { detail: evt.detail })
+    );
+  }
+
   render() {
     // Checks if there are any layers with the 'layerControlOptional' property set to true
     const layers = this.map?.getLayers().getArray();
@@ -218,6 +231,7 @@ export class EOxLayerControl extends LitElement {
             .unstyled=${this.unstyled}
             .disableTabs=${this.disableTabs}
             @changed=${this.#handleLayerControlLayerListChange}
+            @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>
         `
       )}

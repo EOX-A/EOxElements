@@ -8,6 +8,7 @@ export { default as ExpandedLayersStory } from "./expanded-layers";
 export { default as ToolsStory } from "./tools";
 export { default as LayerConfigStory } from "./layer-config";
 export { default as LayerStylesConfigStory } from "./layer-config-styles";
+export { default as layerDatetimeStory } from "./layer-datetime";
 export { default as HiddenLayersStory } from "./hidden-layer";
 export { default as SingleLayerStory } from "./single-layer";
 export { default as LayerListStory } from "./layer-list";

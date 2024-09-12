@@ -103,6 +103,7 @@ describe("view projections", () => {
         req.reply(ecoRegionsFixture);
       }
     );
+
     // not using osm because of performance issues while testing
     cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
       "eox-map"
@@ -110,15 +111,21 @@ describe("view projections", () => {
 
     cy.get("eox-map").and(($el) => {
       const eoxMap = <EOxMap>$el[0];
+      const testExtent = [-10, -9, 10, 9];
       eoxMap.registerProjection(
         "ESRI:53009",
         "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
-          "+b=6371000 +units=m +no_defs"
+          "+b=6371000 +units=m +no_defs",
+        testExtent
       );
       eoxMap.setAttribute("projection", "ESRI:53009");
       expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
         "ESRI:53009"
       );
+      expect(
+        eoxMap.map.getView().getProjection().getExtent(),
+        "passes the projection extent correctly"
+      ).to.be.deep.equal(testExtent);
 
       eoxMap.getLayerById("regions").getSource().refresh();
       const transformedCoordinateFromWgs = eoxMap.transform(
@@ -161,17 +168,20 @@ describe("view projections", () => {
         "can transform extent from custom system"
       ).to.be.deep.equal([10, 10, 11, 11]);
 
-      eoxMap.zoomExtent = transformedExtentFromWgs;
-      setTimeout(() => {
-        expect(
-          eoxMap.lonLatExtent.map(Math.round),
-          "getter of lonLatExtent"
-        ).to.be.deep.equal(transformedExtentToWgs.map(Math.round));
-        expect(
-          transformedExtentToWgs.map(Math.round),
-          "can transform extent from custom system"
-        ).to.be.deep.equal([10, 10, 11, 11]);
-      }, 10);
+      const transformedCoordinateOutsideExtent = eoxMap.transform(
+        [20, 20],
+        "EPSG:4326",
+        "ESRI:53009"
+      );
+      expect(
+        transformedCoordinateOutsideExtent.map(Math.round),
+        "can transform coordinate to custom system"
+      ).to.be.deep.equal([1926715, 2450840]);
+
+      expect(
+        transformedExtentToWgs.map(Math.round),
+        "can transform extent from custom system"
+      ).to.be.deep.equal([10, 10, 11, 11]);
     });
   });
 
@@ -217,6 +227,35 @@ describe("view projections", () => {
         expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
           "EPSG:32633"
         );
+      });
+    });
+  });
+
+  it("lonLatExtent delivering correct WGS coordinates", () => {
+    cy.mount(html`<eox-map .layers=${[]}></eox-map>`).as("eox-map");
+
+    cy.get("eox-map").then(($el) => {
+      return new Cypress.Promise((resolve) => {
+        const eoxMap = <EOxMap>$el[0];
+        eoxMap.registerProjection(
+          "EPSG:32633",
+          "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs"
+        );
+        eoxMap.setAttribute("projection", "EPSG:32633");
+
+        eoxMap.zoomExtent = [
+          392701.77019148885, 5265405.179340378, 406068.14557063236,
+          5275429.960874735,
+        ]; // hallstatt in 32633
+
+        // timeout because setting zoomExtent causes debounced animation
+        setTimeout(() => {
+          expect(
+            eoxMap.lonLatExtent.map((n) => n.toFixed(4)),
+            "getter of lonLatExtent"
+          ).to.be.deep.equal(["13.5719", "47.5332", "13.7519", "47.6255"]);
+          resolve();
+        }, 10);
       });
     });
   });
