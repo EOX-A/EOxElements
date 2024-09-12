@@ -133,7 +133,7 @@ export class EOxLayerControl extends LitElement {
     this.styleOverride = "";
 
     /**
-     * If enabled, disable the tab interface and render everything in a column.
+     * If enabled, the tools section will be rendered as list.
      *
      * @type {Boolean}
      */
@@ -216,6 +216,7 @@ export class EOxLayerControl extends LitElement {
             .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
+            .disableTabs=${this.disableTabs}
             @changed=${this.#handleLayerControlLayerListChange}
           ></eox-layercontrol-layer-list>
         `

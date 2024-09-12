@@ -22,6 +22,7 @@ export class EOxLayerControlLayerList extends LitElement {
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
+    disableTabs: { type: Boolean },
   };
 
   constructor() {
@@ -84,6 +85,13 @@ export class EOxLayerControlLayerList extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.disableTabs = false;
   }
 
   /**
@@ -140,6 +148,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
+                            .disableTabs=${this.disableTabs}
                             @changed=${() => this.requestUpdate()}
                           >
                           </eox-layercontrol-layer-group>
@@ -153,6 +162,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
+                            .disableTabs=${this.disableTabs}
                             @changed=${() => this.requestUpdate()}
                           ></eox-layercontrol-layer>
                         `

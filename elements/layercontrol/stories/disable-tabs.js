@@ -5,12 +5,14 @@ export const DisableTabs = {
   args: {
     idProperty: "id",
     titleProperty: "title",
+    disableTabs: true,
   },
   render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
+        .disableTabs=${args.disableTabs}
         for="eox-map"
       ></eox-layercontrol>
       <eox-map
