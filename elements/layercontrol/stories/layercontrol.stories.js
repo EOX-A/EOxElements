@@ -11,7 +11,7 @@ import {
   addExternalLayerStory,
   layerDatetimeStory,
   layerZoomStateStory,
-  DisabledTabsStory,
+  disabledTabsStory,
 } from ".";
 
 export default {
@@ -101,4 +101,4 @@ export const Unstyled = unstyledStory;
 /**
  * Tools rendered as list instead of tabs
  */
-export const DisableTabs = DisabledTabsStory;
+export const DisableTabs = disabledTabsStory;

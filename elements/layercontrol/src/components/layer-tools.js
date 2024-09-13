@@ -5,8 +5,7 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-config";
 import "./layer-datetime";
-import "./tabs";
-import "./list";
+import "./tools-items";
 import { button } from "../../../../utils/styles/button";
 import { radio } from "../../../../utils/styles/radio";
 import { checkbox } from "../../../../utils/styles/checkbox";
@@ -194,28 +193,19 @@ export class EOxLayerControlLayerTools extends LitElement {
                 <summary>
                   <button class="icon ${iconClass}">Tools</button>
                 </summary>
-                ${when(
-                  this.disableTabs,
-                  () => html` <eox-layercontrol-list
-                    .noShadow=${false}
-                    .listitems=${tools}
-                    .unstyled=${this.unstyled}
-                  >
-                    <!-- Including default tools -->
-                    ${this._getDefaultTools()}
-                  </eox-layercontrol-list>`,
-                  () => html` <eox-layercontrol-tabs
-                    .noShadow=${false}
-                    .actions=${actions}
-                    .tabs=${tools}
-                    .unstyled=${this.unstyled}
-                  >
-                    <!-- Rendering tabs and content -->
-                    ${map(tools, (tool) => this._button(tool))}
-                    <!-- Including default tools -->
-                    ${this._getDefaultTools()}
-                  </eox-layercontrol-tabs>`
-                )}
+                <eox-layercontrol-tools-items
+                  class="${this.disableTabs ? "tools-list" : "tools-tab"}"
+                  .noShadow=${false}
+                  .actions=${actions}
+                  .tabs=${tools}
+                  .unstyled=${this.unstyled}
+                  .disableTabs=${this.disableTabs}
+                >
+                  <!-- Rendering tabs and content -->
+                  ${map(tools, (tool) => this._button(tool))}
+                  <!-- Including default tools -->
+                  ${this._getDefaultTools()}
+                </eox-layercontrol-tools-items>
               </details>
             `
           )}
@@ -265,20 +255,26 @@ export class EOxLayerControlLayerTools extends LitElement {
     }
     .single-action,
     details.tools summary,
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tools-items button.icon {
       transition: opacity .2s;
     }
     .single-action,
     details.tools summary {
       opacity: .5;
     }
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tools-items button.icon {
       opacity: .7;
+    }
+    eox-layercontrol-tools-items.tools-list button.icon {
+      cursor: auto;
     }
     .single-action:hover,
     details.tools summary:hover,
-    eox-layercontrol-tabs button.icon:hover {
+    eox-layercontrol-tools-items button.icon:hover {
       opacity: 1;
+    }
+    eox-layercontrol-tools-items.tools-list button.icon:hover {
+      opacity: .7;
     }
     .tools-placeholder,
     .single-action .icon,
@@ -288,13 +284,13 @@ export class EOxLayerControlLayerTools extends LitElement {
       height: 16px;
       width: 16px;
     }
-    eox-layercontrol-tabs button.icon,
-    eox-layercontrol-tabs .button.icon {
+    eox-layercontrol-tools-items button.icon,
+    eox-layercontrol-tools-items .button.icon {
       display: flex;
       justify-content: center;
     }
-    eox-layercontrol-tabs button.icon::before,
-    eox-layercontrol-tabs .button.icon::before {
+    eox-layercontrol-tools-items button.icon::before,
+    eox-layercontrol-tools-items .button.icon::before {
       width: 16px;
       height: 16px;
     }
