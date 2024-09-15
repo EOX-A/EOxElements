@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.3...itemfilter-v1.1.0) (2024-08-19)
+
+
+### Features
+
+* Allow setting step in range filter ([#1202](https://github.com/EOX-A/EOxElements/issues/1202)) ([ec22599](https://github.com/EOX-A/EOxElements/commit/ec225990e2d49bbaccc51a56dd2742c83cdf9151))
+
 ## [1.0.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.2...itemfilter-v1.0.3) (2024-08-05)
 
 
