@@ -56,6 +56,12 @@ jobs:
       - name: Code coverage 📈
         run: |
           npm run nyc:report
+      
+      - name: Upload code coverage 📈
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage
+          path: coverage/lcov-report
 
       - name: Upload failed test screenshots 📷
         uses: actions/upload-artifact@v4
