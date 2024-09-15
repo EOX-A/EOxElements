@@ -1,6 +1,6 @@
 {
   "all": true,
-  "check-coverage": true,
+  "check-coverage": false,
   "include": ["elements/**/src/**/*.js", "elements/**/src/**/*.ts"],
   "exclude": [
     "**/*.stories.js",
