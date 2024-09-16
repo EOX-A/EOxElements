@@ -6,7 +6,7 @@ import {
   removeDefaultScrollInteractions,
   getLayerById,
 } from "../../helpers";
-import { addOrUpdateControl } from "../../../src/controls/controls";
+import { addOrUpdateControl } from "../../controls/controls";
 import {
   get as getProjection,
   getPointResolution,

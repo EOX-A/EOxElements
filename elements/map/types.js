@@ -77,3 +77,79 @@
  * @property {boolean} [active] - Whether the interaction is active.
  * @property {boolean} [panIn] - Whether to pan into the selected feature.
  */
+
+/**
+ * @typedef {import('ol/control/Control').Options} ControlOptions
+ */
+
+/**
+ * @typedef {Object} GeolocationOptions
+ * @extends ControlOptions
+ *
+ * @property {import('ol/style/flat.js').FlatStyleLike} [style] - Style definition of the position feature.
+ * @property {boolean} [centerWhenReady] - Will pan the view to the user location on the first position update.
+ * @property {boolean} [highAccuracy] - Enables high accuracy of geolocator. Required for tracking the heading.
+ * @property {boolean} [trackAccuracy] - Tracks accuracy and displays it as a circle underneath the position feature.
+ * @property {boolean} [trackHeading] - Tracks heading and sets it as a 'heading' property on the position feature. "highAccuracy" must be set in order to track heading.
+ * @property {string} [buttonIcon] - Image source of the control element icon.
+ */
+
+/**
+ * @typedef {"small" | "fullscreen"} LoadingIndicatorType
+ */
+
+/**
+ * @typedef {import('ol/control/Control').Options} ControlOptions
+ */
+
+/**
+ * @typedef {Object} LoadingIndicatorOptions
+ * @extends ControlOptions
+ *
+ * @property {string} [spinnerSvg] - SVG to be used as the spinner icon.
+ * @property {number} [opacity] - Opacity, defaults to 1.
+ * @property {LoadingIndicatorType} [type] - Type of appearance: "small" or "fullscreen". Defaults to "button" style.
+ */
+
+/**
+ * @typedef {"Attribution" | "FullScreen" | "MousePosition" | "OverviewMap" | "Rotate" | "ScaleLine" | "ZoomSlider" | "ZoomToExtent" | "Zoom" | "Geolocation" | "LoadingIndicator"} ControlType
+ */
+
+/**
+ * @typedef {Object} ControlDictionary
+ * @property {Object} [Attribution] - Options for the Attribution control.
+ * @property {Object} [FullScreen] - Options for the FullScreen control.
+ * @property {Object} [MousePosition] - Options for the MousePosition control.
+ * @property {Object} [OverviewMap] - Options for the OverviewMap control.
+ * @property {Object} [Rotate] - Options for the Rotate control.
+ * @property {Object} [ScaleLine] - Options for the ScaleLine control.
+ * @property {Object} [ZoomSlider] - Options for the ZoomSlider control.
+ * @property {Object} [ZoomToExtent] - Options for the ZoomToExtent control.
+ * @property {Object} [Zoom] - Options for the Zoom control.
+ * @property {Object} [Geolocation] - Options for the Geolocation control.
+ * @property {Object} [LoadingIndicator] - Options for the LoadingIndicator control.
+ */
+
+/**
+ * @typedef {import('ol/Attribution').default | string | Array<string>} AttributionLike
+ * @typedef {import('ol/proj').ProjectionLike} ProjectionLike
+ */
+
+/**
+ * @typedef {Object} WMTSCapabilitiesOptions
+ * @property {string} url - The URL for the WMTS service.
+ * @property {string} layer - The layer name.
+ * @property {AttributionLike} [attributions] - Attributions for the layer.
+ * @property {boolean} [attributionsCollapsible] - Whether the attributions are collapsible.
+ * @property {number} [cacheSize] - The cache size.
+ * @property {null | string} [crossOrigin] - The cross-origin attribute.
+ * @property {boolean} [interpolate] - Whether to interpolate pixel values.
+ * @property {ProjectionLike} [projection] - The map projection.
+ * @property {number} [transition] - The duration of the transition.
+ * @property {string} [key] - Optional key for the layer.
+ * @property {number} [tilePixelRatio] - Pixel ratio for the tiles.
+ * @property {number} [zDirection] - Z-direction for tile rendering.
+ * @property {boolean} [wrapX] - Whether to wrap the X-axis.
+ * @property {Object} dimensions - Dimensions for the WMTS request.
+ * @property {string} version - The WMTS version.
+ */

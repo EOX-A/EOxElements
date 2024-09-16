@@ -1,6 +1,5 @@
 import { Overlay } from "ol";
-import "../../src/tooltip";
-import { EOxMapTooltip } from "../../src/tooltip";
+import "../components/tooltip";
 import { createLayer } from "./generate";
 import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";

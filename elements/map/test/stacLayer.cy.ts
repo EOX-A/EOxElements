@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../src/plugins/advancedLayersAndSources/index";
+import "../src-2/plugins/advancedLayersAndSources/index";
 import "../src-2/main";
 import stacLayerJson from "./stacLayer.json";
 import stacFixture from "./fixtures/stac.json";

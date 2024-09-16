@@ -1,26 +1,19 @@
 import { html, render } from "lit";
-import { property } from "lit/decorators.js";
-import Feature from "ol/Feature";
-import RenderFeature from "ol/render/Feature";
-import { TemplateElement } from "../../../utils/templateElement";
+import { TemplateElement } from "../../../../utils/templateElement";
 
 export class EOxMapTooltip extends TemplateElement {
-  /**
-   * Transform the default rendering of each feature property key/value.
-   * Useful for e.g. translating keys or introducing a whitelist.
-   * Passes the current property key and value as first argument,
-   * and the hovered feature as second argument.
-   * @example
-   * .propertyTransform=${({key, value}, feature) => myWhitelist.includes(key)}
-   */
-  @property()
-  propertyTransform = (
-    property: { key: string; value: unknown },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _feature: Feature | RenderFeature
-  ) => property;
+  static get properties() {
+    return {
+      propertyTransform: { attribute: false, property: true, type: Function },
+    };
+  }
 
-  renderContent(feature: Feature | RenderFeature) {
+  constructor() {
+    super();
+    this.propertyTransform = (property, _feature) => property;
+  }
+
+  renderContent(feature) {
     render(
       this.hasTemplate("properties")
         ? html`${this.renderTemplate(
@@ -57,10 +50,6 @@ export class EOxMapTooltip extends TemplateElement {
       this.shadowRoot
     );
   }
-
-  constructor() {
-    super();
-  }
 }
 
-customElements.define("eox-map-tooltip-2", EOxMapTooltip);
+customElements.define("eox-map-tooltip", EOxMapTooltip);

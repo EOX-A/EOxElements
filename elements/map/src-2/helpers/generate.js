@@ -221,6 +221,20 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 }
 
 /**
+ * Generates layers for the map from an array of layer definitions.
+ *
+ * @param {EOxMap} EOxMap - The map instance.
+ * @param {Array<EoxLayer>} layerArray - Array of layer definitions.
+ * @returns {Array} - An array of created layers.
+ */
+export const generateLayers = (EOxMap, layerArray) => {
+  if (!layerArray) {
+    return [];
+  }
+  return [...layerArray].reverse().map((l) => createLayer(EOxMap, l));
+};
+
+/**
  * Set listeners to keep the state of the layer in sync with the input JSON definition.
  *
  * @param {AnyLayer} olLayer - The OpenLayers layer.

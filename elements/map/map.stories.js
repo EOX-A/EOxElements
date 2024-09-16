@@ -567,8 +567,7 @@ export const TooltipWithPropertyTransform = {
       .zoom=${args.zoom}
     >
       <eox-map-tooltip
-        .propertyTransform=${({ key, value }, hoverFeature) => {
-          console.log(hoverFeature);
+        .propertyTransform=${({ key, value }) => {
           if (key.includes("COLOR")) {
             return { key: key.toLowerCase(), value };
           }

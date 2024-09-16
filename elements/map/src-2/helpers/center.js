@@ -14,8 +14,6 @@ import { fromLonLat } from "ol/proj";
 export function getCenterFromProperty(centerProperty) {
   if (centerProperty) {
     const coordinate = centerProperty;
-    // compare:
-    // https://github.com/openlayers/openlayers/blob/v7.4.0/src/ol/proj.js
     if (
       !equals(coordinate, [0, 0]) &&
       coordinate[0] >= -180 &&

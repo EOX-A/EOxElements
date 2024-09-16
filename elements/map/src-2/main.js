@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import Map from "ol/Map.js";
 import View from "ol/View.js";
 import olCss from "ol/ol.css?inline";
-import controlCss from "../src/controls/controls.css?inline";
+import controlCss from "./controls/controls.css?inline";
 import { buffer } from "ol/extent";
 import "./components/compare";
 import {
