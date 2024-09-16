@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../src-2/main";
+import "../src/main";
 import vectorLayerStyleJson from "./hoverInteraction.json";
 import { simulateEvent } from "./utils/events";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";

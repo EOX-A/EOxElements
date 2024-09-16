@@ -1,6 +1,6 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import "./src-2/main.js";
+import "./src/main.js";
 
 export default {
   title: "Elements/eox-map",

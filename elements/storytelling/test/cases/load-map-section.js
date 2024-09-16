@@ -1,5 +1,5 @@
 import { TEST_SELECTORS } from "../../src/enums";
-import "../../../map/src-2/main";
+import "../../../map/src/main";
 
 // Destructure TEST_SELECTORS object
 const { storyTelling } = TEST_SELECTORS;

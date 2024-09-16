@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../src-2/main";
+import "../src/main";
 import vectorTileLayerJson from "./vectorTilesLayer.json";
 import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";

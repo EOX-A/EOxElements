@@ -1,6 +1,6 @@
 import { html } from "lit";
 import drawInteractionLayerJson from "./drawInteraction.json";
-import "../src-2/main";
+import "../src/main";
 
 const OsmJson = {
   type: "Tile",

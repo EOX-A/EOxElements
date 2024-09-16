@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../src-2/main";
+import "../src/main";
 
 describe("config property", () => {
   it("sets controls, layers and view using the config object", () => {

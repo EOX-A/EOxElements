@@ -1,4 +1,4 @@
-import { EOxMap as eoxMap } from "./src-2/main";
+import { EOxMap as eoxMap } from "./src/main";
 declare global {
   export type EOxMap = eoxMap;
 }

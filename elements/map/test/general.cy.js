@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { equals } from "ol/coordinate";
-import "../src-2/main";
+import "../src/main";
 
 describe("Map", () => {
   it("map should exist", () => {
