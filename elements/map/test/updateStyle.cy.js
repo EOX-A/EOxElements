@@ -1,9 +1,7 @@
 import { html } from "lit";
 import "../src-2/main";
-import { EOxMap } from "../main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
-import { EoxLayer } from "../src/generate";
 
 describe("layers", () => {
   it("correctly updates applies flat style", () => {
@@ -13,7 +11,7 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    (vectorLayerStyleJson[0] as import("../src/generate").EoxLayer).style = {
+    (vectorLayerStyleJson[0]).style = {
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 2,
@@ -28,7 +26,7 @@ describe("layers", () => {
     cy.get("eox-map").and(($el) => {
       const updatedLayerJson = {
         ...vectorLayerStyleJson[0],
-      } as import("../src/generate").EoxLayer;
+      };
       updatedLayerJson.style = [
         {
           "fill-color": ["string", ["get", "COLOR"], "#eee"],
@@ -37,20 +35,20 @@ describe("layers", () => {
           "text-value": ["string", ["get", "ECO_NAME"], ""],
         },
       ];
-      (<EOxMap>$el[0]).addOrUpdateLayer(updatedLayerJson as EoxLayer);
-      const layer = (<EOxMap>$el[0]).map.getLayers().getArray()[0];
+      $el[0].addOrUpdateLayer(updatedLayerJson);
+      const layer = $el[0].map.getLayers().getArray()[0];
 
-      const features = (layer as import("ol/layer/Vector").default)
+      const features = (layer)
         .getSource()
         .getFeatures();
 
       expect(features.length).to.be.greaterThan(0);
 
       const styleFunction = (
-        layer as import("ol/layer/Vector").default
+        layer
       ).getStyleFunction();
       const featureStyle = (
-        styleFunction(features[0], 1) as Array<import("ol/style").Style>
+        styleFunction(features[0], 1)
       )[0];
 
       const featureColor = featureStyle.getFill().getColor();

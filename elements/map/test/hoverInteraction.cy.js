@@ -18,7 +18,7 @@ describe("select interaction with hover", () => {
       </eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
       let selectCounter = 0;
       let featureSelectCounter = 0;
@@ -52,7 +52,7 @@ describe("select interaction with hover", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    (vectorLayerStyleJson as Array<import("../src/generate").EoxLayer>).push({
+    (vectorLayerStyleJson).push({
       type: "Tile",
       properties: {
         id: "osm",
@@ -68,7 +68,7 @@ describe("select interaction with hover", () => {
       </eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       let selectCounter = 0;
       let featureSelectCounter = 0;
       eoxMap.addEventListener("select", (evt) => {

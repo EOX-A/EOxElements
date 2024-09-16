@@ -1,5 +1,5 @@
 import { html } from "lit";
-import "../main";
+import "../src-2/main";
 import "../src-2/plugins/advancedLayersAndSources/index";
 
 describe("WMTS Capabilities Source", () => {
@@ -35,7 +35,7 @@ describe("WMTS Capabilities Source", () => {
           ).as("eox-map");
 
           cy.get("eox-map").should(($el) => {
-            const eoxMap = <EOxMap>$el[0];
+            const eoxMap = $el[0];
             const layer = eoxMap.getLayerById("wmtsLayer");
             layer.once("postrender", (e) => {
               expect(e.target.getSource().getState()).to.be.equal("ready");

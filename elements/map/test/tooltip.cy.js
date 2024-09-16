@@ -2,7 +2,6 @@ import { html } from "lit";
 import "../src-2/main";
 import vectorLayerStyleJson from "./hoverInteraction.json";
 import { simulateEvent } from "./utils/events";
-import { EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
 
 describe("tooltip", () => {
@@ -19,7 +18,7 @@ describe("tooltip", () => {
       </eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
       eoxMap.map.on("loadend", () => {
         simulateEvent(eoxMap.map, "pointermove", 120, -140);
@@ -45,14 +44,14 @@ describe("tooltip", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    const multiplelayersJson = [...vectorLayerStyleJson] as EoxLayer[];
-    const secondLayer = structuredClone(vectorLayerStyleJson[0]) as EoxLayer;
+    const multiplelayersJson = [...vectorLayerStyleJson];
+    const secondLayer = structuredClone(vectorLayerStyleJson[0]);
     multiplelayersJson.unshift(secondLayer);
     secondLayer.properties.id = "regions2";
     secondLayer.interactions[0].options.id = "selectInteraction2";
     (
       secondLayer.interactions[0]
-        .options as import("../src/select").SelectOptions
+        .options
     ).layer.properties.id = "selectLayer2";
     secondLayer.visible = false;
     cy.mount(
@@ -61,7 +60,7 @@ describe("tooltip", () => {
       </eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
       eoxMap.map.on("loadend", () => {
         simulateEvent(eoxMap.map, "pointermove", 120, -140);
@@ -83,7 +82,7 @@ describe("tooltip", () => {
 
     // hide first rendered layer and show second layer
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       eoxMap.map.getLayers().getArray()[0].setVisible(false);
       eoxMap.map.getLayers().getArray()[1].setVisible(true);
       setTimeout(() => {

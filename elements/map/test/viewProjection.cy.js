@@ -2,7 +2,6 @@ import { html } from "lit";
 import "../src-2/main";
 import vectorLayerStyleJson from "./vectorLayer.json";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
-import { EOxMap } from "../main";
 
 describe("view projections", () => {
   it("can set the initial projection of the view", () => {
@@ -26,7 +25,7 @@ describe("view projections", () => {
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
         "EPSG:4326"
       );
@@ -54,7 +53,7 @@ describe("view projections", () => {
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       eoxMap.map
         .getView()
         .on("change:resolution", (e) =>
@@ -110,7 +109,7 @@ describe("view projections", () => {
     );
 
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       const testExtent = [-10, -9, 10, 9];
       eoxMap.registerProjection(
         "ESRI:53009",
@@ -221,7 +220,7 @@ describe("view projections", () => {
     ).as("eox-map");
 
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       eoxMap.registerProjectionFromCode("EPSG:32633").then(() => {
         eoxMap.setAttribute("projection", "EPSG:32633");
         expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
@@ -236,7 +235,7 @@ describe("view projections", () => {
 
     cy.get("eox-map").then(($el) => {
       return new Cypress.Promise((resolve) => {
-        const eoxMap = <EOxMap>$el[0];
+        const eoxMap = $el[0];
         eoxMap.registerProjection(
           "EPSG:32633",
           "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs"

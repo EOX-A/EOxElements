@@ -3,7 +3,6 @@ import "../src-2/main";
 import vectorTileLayerJson from "./vectorTilesLayer.json";
 import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";
-import { EOxInteraction, EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
 
 const vectorTileInteraction = [
@@ -39,13 +38,13 @@ describe("select interaction on click", () => {
     return new Cypress.Promise((resolve) => {
       const layerJson = JSON.parse(
         JSON.stringify(vectorTileLayerJson)
-      ) as Array<EoxLayer>;
+      );
       layerJson[0].interactions =
-        vectorTileInteraction as Array<EOxInteraction>;
+        vectorTileInteraction;
       cy.mount(html`<eox-map .layers=${layerJson}></eox-map>`).as("eox-map");
       cy.get("eox-map").and(($el) => {
-        const eoxMap = <EOxMap>$el[0];
-        eoxMap.addEventListener("select", (evt: CustomEventInit) => {
+        const eoxMap = $el[0];
+        eoxMap.addEventListener("select", (evt) => {
           expect(evt.detail.feature).to.exist;
           resolve();
         });
@@ -65,7 +64,7 @@ describe("select interaction on click", () => {
     );
     const styleJson = JSON.parse(
       JSON.stringify(vectorLayerJson)
-    ) as Array<EoxLayer>;
+    );
     styleJson[0].minZoom = 3;
     styleJson[0].interactions = [
       {
@@ -77,14 +76,14 @@ describe("select interaction on click", () => {
             "stroke-color": "white",
             "stroke-width": 3,
           },
-        } as import("../src/select").SelectOptions,
+        },
       },
     ];
     cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
-      eoxMap.addEventListener("select", (evt: CustomEventInit) => {
+      eoxMap.addEventListener("select", (evt) => {
         expect(evt.detail.feature).to.exist;
       });
       eoxMap.map.on("loadend", () => {
@@ -103,7 +102,7 @@ describe("select interaction on click", () => {
       );
       const styleJson = JSON.parse(
         JSON.stringify(vectorLayerJson)
-      ) as Array<EoxLayer>;
+      );
       styleJson[0].interactions = [
         {
           type: "select",
@@ -114,7 +113,7 @@ describe("select interaction on click", () => {
               "stroke-color": "white",
               "stroke-width": 3,
             },
-          } as import("../src/select").SelectOptions,
+          },
         },
       ];
       cy.mount(
@@ -122,7 +121,7 @@ describe("select interaction on click", () => {
       ).as("eox-map");
 
       cy.get("eox-map").and(($el) => {
-        const eoxMap = <EOxMap>$el[0];
+        const eoxMap = $el[0];
         eoxMap.map.on("loadend", () => {
           //on loadend, programmatically select a few features...
           eoxMap.selectInteractions.selectInteraction.highlightById(
@@ -148,8 +147,8 @@ describe("select interaction on click", () => {
   it.only("programmatically highlight by IDs (VectorTileLayer)", () => {
     const layerJson = JSON.parse(
       JSON.stringify(vectorTileLayerJson)
-    ) as Array<EoxLayer>;
-    layerJson[0].interactions = vectorTileInteraction as Array<EOxInteraction>;
+    );
+    layerJson[0].interactions = vectorTileInteraction;
     return new Cypress.Promise((resolve) => {
       cy.intercept(/^.*geoserver.*$/, {
         fixture:
@@ -157,13 +156,13 @@ describe("select interaction on click", () => {
         encoding: "binary",
       });
       layerJson[0].interactions =
-        vectorTileInteraction as Array<EOxInteraction>;
+        vectorTileInteraction;
       cy.mount(
         html`<eox-map .center=${[0, 0]} .layers=${layerJson}></eox-map>`
       ).as("eox-map");
 
       cy.get("eox-map").and(($el) => {
-        const eoxMap = <EOxMap>$el[0];
+        const eoxMap = $el[0];
         eoxMap.map.on("loadend", () => {
           //on loadend, programmatically select a few features...
           eoxMap.selectInteractions.selectInteraction.highlightById([889], {
@@ -186,7 +185,7 @@ describe("select interaction on click", () => {
   it("remove interaction", () => {
     const styleJson = JSON.parse(
       JSON.stringify(vectorTileLayerJson)
-    ) as Array<EoxLayer>;
+    );
     styleJson[0].interactions = [
       {
         type: "select",
@@ -197,14 +196,14 @@ describe("select interaction on click", () => {
             "stroke-color": "white",
             "stroke-width": 3,
           },
-        } as import("../src/select").SelectOptions,
+        },
       },
     ];
     cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.selectInteractions.selectInteraction).to.exist;
-      eoxMap.layers = vectorLayerJson as Array<EoxLayer>;
+      eoxMap.layers = vectorLayerJson;
       expect(eoxMap.selectInteractions.selectInteraction).to.not.exist;
     });
   });

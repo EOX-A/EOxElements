@@ -14,7 +14,7 @@ describe("layers", () => {
     );
     cy.mount(html`<eox-map .layers=${stacLayerJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       eoxMap.map.getLayers().getArray();
       const stacLayer = eoxMap.getLayerById("stacLayer");
       expect(stacLayer).to.exist;

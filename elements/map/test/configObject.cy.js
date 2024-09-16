@@ -28,7 +28,7 @@ describe("config property", () => {
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
 
       expect(eoxMap.map.getLayers().getArray().length).to.be.equal(1);
@@ -43,14 +43,13 @@ describe("config property", () => {
       expect(eoxMap.map.getView().getZoom()).to.be.equal(9);
     });
     cy.get("eox-map").and(async ($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
       eoxMap.config = {
         controls: {},
         layers: [
           {
             type: "Tile",
-            // @ts-ignore
             properties: { id: "osm", title: "bar" },
             source: { type: "OSM" },
           },

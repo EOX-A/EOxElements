@@ -11,7 +11,7 @@ describe("layers", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const layers = (<EOxMap>$el[0]).map.getLayers().getArray();
+      const layers = $el[0].map.getLayers().getArray();
       expect(layers).to.have.length(1);
       expect(layers[0].get("id")).to.be.equal("customId");
     });

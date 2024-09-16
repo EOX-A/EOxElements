@@ -1,6 +1,5 @@
 import { html } from "lit";
 import "../src-2/main";
-import { EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
 
 describe("Map", () => {
@@ -36,8 +35,8 @@ describe("Map", () => {
           format: "GeoJSON",
           attributions: "Regions: @ openlayers.org",
         },
-      } as EoxLayer;
-      const eoxMap = <EOxMap>$el[0];
+      };
+      const eoxMap = $el[0];
       eoxMap.layers = [layerDefinition];
 
       const layer = eoxMap.getLayerById("regions");
@@ -58,7 +57,7 @@ describe("Map", () => {
           format: "GeoJSON",
           attributions: "Regions: @ openlayers.org",
         },
-      } as EoxLayer;
+      };
 
       eoxMap.addOrUpdateLayer(updatedLayerDefinition);
       expect(layer.getOpacity(), "update opacity").to.be.equal(1);

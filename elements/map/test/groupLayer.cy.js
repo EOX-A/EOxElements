@@ -1,6 +1,5 @@
 import { html } from "lit";
 import "../src-2/main";
-import { EoxLayer } from "../src/generate";
 import ecoRegionsFixture from "./fixtures/ecoregions.json";
 
 const osmJson = {
@@ -11,7 +10,7 @@ const osmJson = {
   source: {
     type: "OSM",
   },
-} as EoxLayer;
+};
 
 const layersJson = [
   {
@@ -50,7 +49,7 @@ const layersJson = [
       },
     ],
   },
-] as Array<EoxLayer>;
+];
 
 describe("layers", () => {
   it("loads a Vector Layer in a group", () => {
@@ -66,7 +65,7 @@ describe("layers", () => {
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
       const groupLayer = eoxMap.getLayerById("group");
       expect(groupLayer, "find group layer").to.exist;
@@ -110,9 +109,9 @@ describe("layers", () => {
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       layersJson[0].layers.push(osmJson);
-      eoxMap.layers = layersJson as Array<EoxLayer>;
+      eoxMap.layers = layersJson;
       const newOsmInGroup = eoxMap.getLayerById("osm");
       expect(newOsmInGroup, "reactively add layer to group").to.exist;
     });
@@ -131,7 +130,7 @@ describe("layers", () => {
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       const jsonCopy = JSON.parse(JSON.stringify(layersJson));
       jsonCopy[0].layers.length = 1;
       eoxMap.layers = jsonCopy;
@@ -154,10 +153,10 @@ describe("layers", () => {
     });
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
       layersJson[0].layers[1].layers[0].opacity = 0.2;
-      eoxMap.layers = layersJson as Array<EoxLayer>;
+      eoxMap.layers = layersJson;
 
       expect(
         eoxMap.getLayerById("layerInsideGroupInsideGroup").getOpacity(),
@@ -200,7 +199,7 @@ describe("layers", () => {
           },
         ],
       },
-    ] as Array<EoxLayer>;
+    ];
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
 
@@ -217,15 +216,15 @@ describe("layers", () => {
         url: "https://openlayers.org/data/vector/ecoregions.json",
         format: "GeoJSON",
       },
-    } as EoxLayer);
+    });
 
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      eoxMap.layers = layersJson as Array<EoxLayer>;
+      const eoxMap = $el[0];
+      eoxMap.layers = layersJson;
       const layer = eoxMap.getLayerById(
         "regionsRed"
-      ) as import("ol/layer").Vector;
-      const styleObject = layer.getStyle() as import("ol/style/flat").FlatStyle;
+      );
+      const styleObject = layer.getStyle();
       const fillColor = styleObject["fill-color"];
       expect(fillColor, "reactive layer 2 levels deep").to.be.equal("red");
     });
@@ -275,13 +274,13 @@ describe("layers", () => {
           },
         ],
       },
-    ] as Array<EoxLayer>;
+    ];
 
     cy.mount(html`<eox-map .layers=${layersJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       const allRealLayers = eoxMap.getFlatLayersArray(
-        eoxMap.map.getAllLayers() as Array<import("../src/generate").AnyLayer>
+        eoxMap.map.getAllLayers()
       );
       expect(allRealLayers.length).to.be.equal(3);
       layersJson[0].layers = [
@@ -300,9 +299,9 @@ describe("layers", () => {
         },
         opacity: 0.5,
       });
-      eoxMap.layers = layersJson as Array<EoxLayer>;
+      eoxMap.layers = layersJson;
       const newRealLayers = eoxMap.getFlatLayersArray(
-        eoxMap.map.getAllLayers() as Array<import("../src/generate").AnyLayer>
+        eoxMap.map.getAllLayers()
       );
 
       expect(
@@ -341,7 +340,7 @@ describe("layers", () => {
 
       cy.mount(html`<eox-map .layers=${[groupLayer]}></eox-map>`).as("eox-map");
       cy.get("eox-map").and(($el) => {
-        const eoxMap = <EOxMap>$el[0];
+        const eoxMap = $el[0];
         groupLayer = {
           type: "Group",
           properties: { id: "BASELAYERS", title: "Base Layers" },
@@ -359,7 +358,7 @@ describe("layers", () => {
             },
           ],
         };
-        eoxMap.layers = [groupLayer] as Array<EoxLayer>;
+        eoxMap.layers = [groupLayer];
         const layer = eoxMap.getLayerById("cloudless-2022");
 
         expect(

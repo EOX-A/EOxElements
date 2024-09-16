@@ -9,12 +9,12 @@ describe("map syncing", () => {
       html`<eox-map id="a"></eox-map> <eox-map id="b" sync="#a"></eox-map>`
     );
     cy.get("eox-map#a").and(($el) => {
-      const olMapView = (<EOxMap>$el[0]).map.getView();
+      const olMapView = $el[0].map.getView();
       olMapView.setZoom(zoom);
       olMapView.setCenter(center);
     });
     cy.get("eox-map#b").and(($el) => {
-      const olMapView = (<EOxMap>$el[0]).map.getView();
+      const olMapView = $el[0].map.getView();
       expect(olMapView.getZoom()).to.be.equal(zoom);
       expect(olMapView.getCenter()).to.deep.eq(center);
     });
@@ -24,13 +24,13 @@ describe("map syncing", () => {
     const center = [10, 10];
     cy.mount(html`<eox-map id="a"></eox-map> <eox-map id="b"></eox-map>`);
     cy.get("eox-map#a").and(($el) => {
-      const olMapView = (<EOxMap>$el[0]).map.getView();
+      const olMapView = $el[0].map.getView();
       olMapView.setZoom(zoom);
       olMapView.setCenter(center);
     });
     cy.get("eox-map#b").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
-      eoxMap.sync = <EOxMap>document.querySelector("eox-map#a");
+      const eoxMap = $el[0];
+      eoxMap.sync = document.querySelector("eox-map#a");
       const olMapView = eoxMap.map.getView();
       expect(olMapView.getZoom()).to.be.equal(zoom);
       expect(olMapView.getCenter()).to.deep.eq(center);

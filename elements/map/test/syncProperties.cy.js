@@ -16,7 +16,7 @@ describe("layers", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       const layer = eoxMap.getLayerById("regions");
 
       layer.setVisible(true);

@@ -3,8 +3,6 @@ import "../src-2/main";
 import drawInteractionLayerJson from "./drawInteraction.json";
 import vectorLayerJson from "./vectorLayer.json";
 import { simulateEvent } from "./utils/events";
-import { Point } from "ol/geom";
-import { EOxMap } from "../main";
 
 describe("draw interaction", () => {
   beforeEach(() => {});
@@ -14,19 +12,19 @@ describe("draw interaction", () => {
     );
     cy.get("eox-map").and(($el) => {
       // get the interaction via the source key
-      let drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
+      let drawInteraction = $el[0].interactions["drawInteraction"];
       expect(drawInteraction).to.exist;
       expect(drawInteraction.getActive()).to.equal(true);
 
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       const map = eoxMap.map;
       const originalNumberOfInteractions = map.getInteractions().getLength();
       const newLayerJson = [
         Object.assign({}, drawInteractionLayerJson[0]),
-      ] as Array<import("../src/generate").EoxLayer>;
+      ];
       delete newLayerJson[0].interactions;
       eoxMap.layers = newLayerJson;
-      drawInteraction = (<EOxMap>$el[0]).interactions["drawInteraction"];
+      drawInteraction = $el[0].interactions["drawInteraction"];
       expect(drawInteraction, "remove interaction from dictionary").to.not
         .exist;
       expect(
@@ -41,14 +39,14 @@ describe("draw interaction", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-      ) as import("ol/layer/Vector").default;
+      );
       const features = drawLayer.getSource().getFeatures();
-      const geometry = features[0].getGeometry() as Point;
+      const geometry = features[0].getGeometry();
       expect(features).to.have.length(1);
       expect(geometry.getCoordinates().length).to.be.equal(2);
       const buffer = eoxMap.buffer(geometry.getExtent(), 100);
@@ -62,11 +60,11 @@ describe("draw interaction", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.interactions.drawInteraction).to.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.exist;
-      (<EOxMap>$el[0]).removeInteraction("drawInteraction");
-      (<EOxMap>$el[0]).removeInteraction("drawInteraction_modify");
+      $el[0].removeInteraction("drawInteraction");
+      $el[0].removeInteraction("drawInteraction_modify");
       expect(eoxMap.interactions.drawInteraction).to.not.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.not.exist;
     });
@@ -77,12 +75,10 @@ describe("draw interaction", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.interactions.drawInteraction).to.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.exist;
-      eoxMap.layers = vectorLayerJson as Array<
-        import("../src/generate").EoxLayer
-      >;
+      eoxMap.layers = vectorLayerJson;
       expect(eoxMap.interactions.drawInteraction).to.not.exist;
       expect(eoxMap.interactions.drawInteraction_modify).to.not.exist;
     });
@@ -94,7 +90,7 @@ describe("draw interaction", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       eoxMap.addEventListener("drawend", (evt) => {
         //@ts-expect-error geojson is defined on drawend event.
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
@@ -116,7 +112,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-      ) as import("ol/layer").Vector;
+      );
       const source = drawLayer.getSource();
       const features = source.getFeatures();
       expect(features).to.have.length(1);
@@ -129,7 +125,7 @@ describe("draw interaction", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       eoxMap.addEventListener("drawend", (evt) => {
         //@ts-expect-error geojson is defined on drawend event.
         expect(evt.detail.geojson.properties.measure).to.be.greaterThan(0);
@@ -157,7 +153,7 @@ describe("draw interaction", () => {
 
       const drawLayer = eoxMap.getLayerById(
         "drawLayer"
-      ) as import("ol/layer").Vector;
+      );
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);
     });
@@ -170,9 +166,9 @@ describe("draw interaction", () => {
       "eox-map"
     );
     cy.get("eox-map").and(($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
 
-      eoxMap.addEventListener("drawend", (evt: UIEventInit) => {
+      eoxMap.addEventListener("drawend", (evt) => {
         //@ts-expect-error geojson is defined in drawend event
         const geojson = evt.detail.geojson;
         expect(geojson.properties.measure).to.be.greaterThan(0);
@@ -194,7 +190,6 @@ describe("draw interaction", () => {
       ).to.be.equal(false);
       const newLayerJson = [drawInteractionLayerJson[0]];
       newLayerJson[0].interactions[0].options.modify = true;
-      //@ts-ignore
       eoxMap.layers = newLayerJson;
       expect(
         eoxMap.interactions.drawInteraction_modify.getActive(),

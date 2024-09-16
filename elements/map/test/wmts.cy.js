@@ -26,13 +26,13 @@ describe("layers", () => {
 
     cy.mount(html`<eox-map .layers=${[layer]}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const layer = (<EOxMap>$el[0]).map
+      const layer = $el[0].map
         .getLayers()
-        .getArray()[0] as import("../src/generate").AnyLayerWithSource;
+        .getArray()[0];
       expect(layer).to.exist;
       expect(layer.get("id")).to.be.equal("customId");
 
-      const source = layer.getSource() as import("ol/source/WMTS").default;
+      const source = layer.getSource();
       expect(
         source.getTileGrid().getTileSize(0),
         "use tileGrid options"

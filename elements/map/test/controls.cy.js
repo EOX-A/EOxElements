@@ -27,7 +27,7 @@ describe("webcomponent property parsing", () => {
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(
         eoxMap.map.getControls().getLength(),
         "set controls via webcomponent properties"
@@ -63,7 +63,6 @@ describe("webcomponent property parsing", () => {
         eoxMap.map
           .getControls()
           .getArray()[0]
-          //@ts-ignore
           .getOverviewMap()
           .getLayers()
           .getArray()[0]
@@ -96,9 +95,8 @@ describe("webcomponent property parsing", () => {
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
-      //@ts-ignore
       expect(eoxMap.map.getControls().getArray()[0].getElement()).to.exist;
     });
   });
@@ -113,7 +111,7 @@ describe("webcomponent property parsing", () => {
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
       const loadingIndicatorElement = eoxMap.map
         .getTargetElement()
@@ -137,7 +135,7 @@ describe("webcomponent property parsing", () => {
       ></eox-map>`
     ).as("eox-map");
     cy.get("eox-map").and(async ($el) => {
-      const eoxMap = <EOxMap>$el[0];
+      const eoxMap = $el[0];
       expect(eoxMap.map.getControls().getLength()).to.be.equal(1);
       const loadingIndicatorElement = eoxMap.map
         .getTargetElement()
