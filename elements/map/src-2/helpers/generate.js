@@ -177,15 +177,18 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
 export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   const existingJsonDefinition = existingLayer.get("_jsonDefinition");
 
+  // Check if the new layer is compatible with the existing one
   if (
     newLayerDefinition.type !== existingJsonDefinition.type ||
     newLayerDefinition.source?.type !== existingJsonDefinition.source?.type
   ) {
-    throw new Error("Layers are not compatible to be updated");
+    throw new Error(`Layers are not compatible to be updated`);
   }
 
+  // Create a new layer to update properties, source, and interactions if needed
   const newLayer = createLayer(EOxMap, newLayerDefinition, false);
 
+  // Update source if different
   if (
     JSON.stringify(newLayerDefinition.source) !==
     JSON.stringify(existingJsonDefinition.source)
@@ -193,6 +196,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     existingLayer.setSource(newLayer.getSource());
   }
 
+  // Update style if different
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
     JSON.stringify(newLayerDefinition.style) !==
@@ -201,6 +205,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     existingLayer.setStyle(newLayer.getStyle());
   }
 
+  // Update properties if different
   if (
     JSON.stringify(newLayerDefinition.properties) !==
     JSON.stringify(existingJsonDefinition.properties)
@@ -208,6 +213,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     existingLayer.setProperties(newLayerDefinition.properties);
   }
 
+  // Update visibility and opacity if different
   if (newLayerDefinition.visible !== existingJsonDefinition.visible) {
     existingLayer.setVisible(newLayerDefinition.visible);
   }
@@ -215,8 +221,110 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     existingLayer.setOpacity(newLayerDefinition.opacity);
   }
 
+  // Update interactions if different
+  if (
+    JSON.stringify(newLayerDefinition.interactions) !==
+    JSON.stringify(existingJsonDefinition.interactions)
+  ) {
+    existingJsonDefinition.interactions?.forEach((interactionDefinition) => {
+      const correspondingNewInteraction = newLayerDefinition.interactions.find(
+        (i) => i.type === interactionDefinition.type
+      );
+
+      if (!correspondingNewInteraction) {
+        // Remove interactions that don't exist in the new definition
+        EOxMap.removeInteraction(interactionDefinition.options.id);
+      } else {
+        // Update existing interaction if it has changed
+        if (correspondingNewInteraction.type === "draw") {
+          const olDrawInteraction =
+            EOxMap.interactions[correspondingNewInteraction.options.id];
+          olDrawInteraction.setActive(
+            correspondingNewInteraction.options.active
+          );
+
+          const olModifyInteraction =
+            EOxMap.interactions[
+              `${correspondingNewInteraction.options.id}_modify`
+            ];
+          olModifyInteraction.setActive(
+            correspondingNewInteraction.options.modify
+          );
+        } else {
+          const olSelectInteraction =
+            EOxMap.selectInteractions[correspondingNewInteraction.options.id];
+          olSelectInteraction.setActive(
+            correspondingNewInteraction.options.active
+          );
+        }
+      }
+    });
+
+    // Add new interactions
+    newLayerDefinition.interactions?.forEach((interactionDefinition) => {
+      const correspondingExistingInteraction =
+        existingJsonDefinition.interactions.find(
+          (i) => i.type === interactionDefinition.type
+        );
+
+      if (!correspondingExistingInteraction) {
+        addInteraction(EOxMap, existingLayer, interactionDefinition);
+      }
+    });
+  }
+
+  // Update group layers if the layer is a group
+  if (newLayerDefinition.type === "Group") {
+    const newLayerIds = newLayerDefinition.layers.map((l) => l.properties?.id);
+    const layerCollection = existingLayer.getLayers();
+
+    // Create a shallow copy of the layers to avoid modifying the collection while iterating
+    const layerArray = layerCollection.getArray().slice();
+
+    // Remove layers that do not exist in the new definition
+    layerArray.forEach((l) => {
+      if (!newLayerIds.includes(l.get("id"))) {
+        layerCollection.remove(l);
+      }
+    });
+
+    // Add or update layers in the group
+    newLayerDefinition.layers.forEach((layerDefinitionInsideGroup) => {
+      const newLayerId = layerDefinitionInsideGroup.properties.id;
+      if (
+        layerCollection
+          .getArray()
+          .map((l) => l.get("id"))
+          .includes(newLayerId)
+      ) {
+        // Layer already exists, update it
+        updateLayer(
+          EOxMap,
+          layerDefinitionInsideGroup,
+          EOxMap.getLayerById(newLayerId)
+        );
+      } else {
+        // New layer, add it to the group
+        const newLayer = createLayer(EOxMap, layerDefinitionInsideGroup);
+        layerCollection.push(newLayer);
+      }
+    });
+
+    // Reorder the layers to match the new definition
+    layerCollection.getArray().sort((layerA, layerB) => {
+      return (
+        newLayerIds.indexOf(layerA.get("id")) -
+        newLayerIds.indexOf(layerB.get("id"))
+      );
+    });
+
+    layerCollection.changed();
+  }
+
+  // Synchronize properties
   setSyncListeners(existingLayer, newLayerDefinition);
   existingLayer.set("_jsonDefinition", newLayerDefinition, true);
+
   return existingLayer;
 }
 
