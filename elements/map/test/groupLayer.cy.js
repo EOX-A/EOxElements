@@ -221,9 +221,7 @@ describe("layers", () => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = $el[0];
       eoxMap.layers = layersJson;
-      const layer = eoxMap.getLayerById(
-        "regionsRed"
-      );
+      const layer = eoxMap.getLayerById("regionsRed");
       const styleObject = layer.getStyle();
       const fillColor = styleObject["fill-color"];
       expect(fillColor, "reactive layer 2 levels deep").to.be.equal("red");

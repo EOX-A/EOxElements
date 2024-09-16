@@ -11,7 +11,7 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    (vectorLayerStyleJson[0]).style = {
+    vectorLayerStyleJson[0].style = {
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 2,
@@ -38,18 +38,12 @@ describe("layers", () => {
       $el[0].addOrUpdateLayer(updatedLayerJson);
       const layer = $el[0].map.getLayers().getArray()[0];
 
-      const features = (layer)
-        .getSource()
-        .getFeatures();
+      const features = layer.getSource().getFeatures();
 
       expect(features.length).to.be.greaterThan(0);
 
-      const styleFunction = (
-        layer
-      ).getStyleFunction();
-      const featureStyle = (
-        styleFunction(features[0], 1)
-      )[0];
+      const styleFunction = layer.getStyleFunction();
+      const featureStyle = styleFunction(features[0], 1)[0];
 
       const featureColor = featureStyle.getFill().getColor();
 

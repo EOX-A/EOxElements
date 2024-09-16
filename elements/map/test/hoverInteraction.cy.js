@@ -52,7 +52,7 @@ describe("select interaction with hover", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    (vectorLayerStyleJson).push({
+    vectorLayerStyleJson.push({
       type: "Tile",
       properties: {
         id: "osm",

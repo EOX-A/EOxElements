@@ -36,11 +36,8 @@ describe("select interaction on click", () => {
       encoding: "binary",
     });
     return new Cypress.Promise((resolve) => {
-      const layerJson = JSON.parse(
-        JSON.stringify(vectorTileLayerJson)
-      );
-      layerJson[0].interactions =
-        vectorTileInteraction;
+      const layerJson = JSON.parse(JSON.stringify(vectorTileLayerJson));
+      layerJson[0].interactions = vectorTileInteraction;
       cy.mount(html`<eox-map .layers=${layerJson}></eox-map>`).as("eox-map");
       cy.get("eox-map").and(($el) => {
         const eoxMap = $el[0];
@@ -62,9 +59,7 @@ describe("select interaction on click", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    const styleJson = JSON.parse(
-      JSON.stringify(vectorLayerJson)
-    );
+    const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
     styleJson[0].minZoom = 3;
     styleJson[0].interactions = [
       {
@@ -100,9 +95,7 @@ describe("select interaction on click", () => {
           req.reply(ecoRegionsFixture);
         }
       );
-      const styleJson = JSON.parse(
-        JSON.stringify(vectorLayerJson)
-      );
+      const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
       styleJson[0].interactions = [
         {
           type: "select",
@@ -145,9 +138,7 @@ describe("select interaction on click", () => {
   });
 
   it.only("programmatically highlight by IDs (VectorTileLayer)", () => {
-    const layerJson = JSON.parse(
-      JSON.stringify(vectorTileLayerJson)
-    );
+    const layerJson = JSON.parse(JSON.stringify(vectorTileLayerJson));
     layerJson[0].interactions = vectorTileInteraction;
     return new Cypress.Promise((resolve) => {
       cy.intercept(/^.*geoserver.*$/, {
@@ -155,8 +146,7 @@ describe("select interaction on click", () => {
           "./map/test/fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
         encoding: "binary",
       });
-      layerJson[0].interactions =
-        vectorTileInteraction;
+      layerJson[0].interactions = vectorTileInteraction;
       cy.mount(
         html`<eox-map .center=${[0, 0]} .layers=${layerJson}></eox-map>`
       ).as("eox-map");
@@ -183,9 +173,7 @@ describe("select interaction on click", () => {
   });
 
   it("remove interaction", () => {
-    const styleJson = JSON.parse(
-      JSON.stringify(vectorTileLayerJson)
-    );
+    const styleJson = JSON.parse(JSON.stringify(vectorTileLayerJson));
     styleJson[0].interactions = [
       {
         type: "select",

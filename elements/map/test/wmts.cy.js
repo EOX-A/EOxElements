@@ -26,9 +26,7 @@ describe("layers", () => {
 
     cy.mount(html`<eox-map .layers=${[layer]}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
-      const layer = $el[0].map
-        .getLayers()
-        .getArray()[0];
+      const layer = $el[0].map.getLayers().getArray()[0];
       expect(layer).to.exist;
       expect(layer.get("id")).to.be.equal("customId");
 

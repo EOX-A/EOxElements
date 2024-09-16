@@ -19,9 +19,7 @@ describe("draw interaction", () => {
       const eoxMap = $el[0];
       const map = eoxMap.map;
       const originalNumberOfInteractions = map.getInteractions().getLength();
-      const newLayerJson = [
-        Object.assign({}, drawInteractionLayerJson[0]),
-      ];
+      const newLayerJson = [Object.assign({}, drawInteractionLayerJson[0])];
       delete newLayerJson[0].interactions;
       eoxMap.layers = newLayerJson;
       drawInteraction = $el[0].interactions["drawInteraction"];
@@ -42,9 +40,7 @@ describe("draw interaction", () => {
       const eoxMap = $el[0];
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
-      const drawLayer = eoxMap.getLayerById(
-        "drawLayer"
-      );
+      const drawLayer = eoxMap.getLayerById("drawLayer");
       const features = drawLayer.getSource().getFeatures();
       const geometry = features[0].getGeometry();
       expect(features).to.have.length(1);
@@ -110,9 +106,7 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerdown", 30, 20);
       simulateEvent(eoxMap.map, "pointerup", 30, 20);
 
-      const drawLayer = eoxMap.getLayerById(
-        "drawLayer"
-      );
+      const drawLayer = eoxMap.getLayerById("drawLayer");
       const source = drawLayer.getSource();
       const features = source.getFeatures();
       expect(features).to.have.length(1);
@@ -151,9 +145,7 @@ describe("draw interaction", () => {
       simulateEvent(eoxMap.map, "pointerdown", 10, 20);
       simulateEvent(eoxMap.map, "pointerup", 10, 20);
 
-      const drawLayer = eoxMap.getLayerById(
-        "drawLayer"
-      );
+      const drawLayer = eoxMap.getLayerById("drawLayer");
       const features = drawLayer.getSource().getFeatures();
       expect(features).to.have.length(1);
     });

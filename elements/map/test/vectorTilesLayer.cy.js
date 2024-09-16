@@ -10,7 +10,7 @@ describe("VectorTile Layer", () => {
       encoding: "binary",
     });
 
-    (vectorTileLayerStyleJson[0]).style = {
+    vectorTileLayerStyleJson[0].style = {
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 4,

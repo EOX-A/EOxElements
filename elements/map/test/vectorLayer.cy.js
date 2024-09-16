@@ -58,9 +58,7 @@ describe("layers", () => {
       };
       eoxMap.layers = [layerWithFormats];
 
-      const source = eoxMap
-        .getLayerById("0")
-        .getSource();
+      const source = eoxMap.getLayerById("0").getSource();
       const coordinates = source
         .getFeatures()[0]
         .getGeometry()
@@ -84,7 +82,7 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    (vectorLayerStyleJson[0]).style = {
+    vectorLayerStyleJson[0].style = {
       "fill-color": "yellow",
       "stroke-color": "black",
       "stroke-width": 2,
@@ -94,9 +92,7 @@ describe("layers", () => {
     );
     cy.get("eox-map").and(($el) => {
       return new Cypress.Promise((resolve) => {
-        const layer = $el[0].map
-          .getLayers()
-          .getArray()[0];
+        const layer = $el[0].map.getLayers().getArray()[0];
         // wait for features to load
         layer.getSource().on("featuresloadend", () => {
           const feature = layer.getSource().getFeatures()[0];
@@ -114,7 +110,7 @@ describe("layers", () => {
         req.reply(ecoRegionsFixture);
       }
     );
-    (vectorLayerStyleJson[0]).style = {
+    vectorLayerStyleJson[0].style = {
       "fill-color": ["string", ["get", "COLOR"], "#eee"],
       "stroke-color": "black",
       "stroke-width": 2,
@@ -126,9 +122,7 @@ describe("layers", () => {
       return new Cypress.Promise((resolve) => {
         // wait for features to load
         const eoxMap = $el[0];
-        const layer = eoxMap.getLayerById(
-          "regions"
-        );
+        const layer = eoxMap.getLayerById("regions");
         const source = layer.getSource();
         source.on("featuresloadend", () => {
           const feature = source.getFeatures()[0];
