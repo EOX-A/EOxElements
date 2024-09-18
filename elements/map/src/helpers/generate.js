@@ -62,42 +62,45 @@ const basicOlSources = {
 /**
  * Creates an OpenLayers layer from a given EoxLayer definition object.
  *
- * @param {EOxMap} EOxMap - The map instance.
+ * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {EoxLayer} layer - The layer definition.
- * @param {boolean=} createInteractions - Whether to create interactions for the layer.
+ * @param {boolean=} createInteractions - Whether to create interactions for the layer (default: true).
  * @returns {AnyLayer} - The created OpenLayers layer.
+ *
+ * @throws Will throw an error if the specified layer or source type is not supported.
  */
 export function createLayer(EOxMap, layer, createInteractions = true) {
   layer = JSON.parse(JSON.stringify(layer));
 
+  // Merge available formats, layers, and sources from global scope (if any) with basic ones
   const availableFormats = {
     ...window.eoxMapAdvancedOlFormats,
     ...basicOlFormats,
   };
-
   const availableLayers = {
     ...window.eoxMapAdvancedOlLayers,
     ...basicOlLayers,
   };
-
   const availableSources = {
     ...window.eoxMapAdvancedOlSources,
     ...basicOlSources,
   };
 
+  // Get the layer and source constructors based on the provided layer definition
   const newLayer = availableLayers[layer.type];
   const newSource = availableSources[layer.source?.type];
 
+  // Throw an error if the specified layer type or source type is not supported
   if (!newLayer) {
     throw new Error(`Layer type ${layer.type} not supported!`);
   }
-
   if (layer.source && !newSource) {
     throw new Error(`Source type ${layer.source.type} not supported!`);
   }
 
   const tileGrid = generateTileGrid(layer);
 
+  // Create the OpenLayers layer with the specified options
   const olLayer = new newLayer({
     ...layer,
     ...(layer.source && {
@@ -105,6 +108,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
         ...layer.source,
         ...(layer.source.format &&
           layer.source.type !== "WMTS" && {
+            // Set the format (e.g., GeoJSON, MVT) for the source
             format: new availableFormats[
               typeof layer.source.format === "object"
                 ? layer.source.format.type
@@ -115,19 +119,22 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
               }),
             }),
           }),
+        // Set the format (e.g., GeoJSON, MVT) for the source
         ...(layer.source.tileGrid && { tileGrid }),
+        // Set the projection, converting it using OpenLayers' `getProjection` method
         ...(layer.source.projection && {
           projection: getProjection(layer.source.projection),
         }),
       }),
     }),
-    ...(layer.type === "Group" && { layers: [] }),
+    ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
     ...layer.properties,
-    style: undefined, // override layer style, apply style after
+    style: undefined, // Reset the style; it will be applied later if specified
   });
 
   olLayer.set("_jsonDefinition", layer, true);
 
+  // Handle group layers by recursively creating their sublayers
   if (layer.type === "Group") {
     const groupLayers = layer.layers
       .reverse()
@@ -140,6 +147,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
     olLayer.setStyle(layer.style);
   }
 
+  // Add interactions (e.g., draw, select) to the layer if requested
   if (createInteractions && layer.interactions?.length) {
     for (let i = 0; i < layer.interactions.length; i++) {
       const interactionDefinition = layer.interactions[i];
@@ -147,32 +155,35 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
     }
   }
 
+  // Add interactions (e.g., draw, select) to the layer if requested
   setSyncListeners(olLayer, layer);
   return olLayer;
 }
 
 /**
- * Adds an interaction to a given layer.
+ * Adds an interaction (e.g., draw, select) to a given layer.
  *
- * @param {EOxMap} EOxMap - The map instance.
+ * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {AnyLayer} olLayer - The OpenLayers layer.
  * @param {EOxInteraction} interactionDefinition - The interaction definition.
  */
 function addInteraction(EOxMap, olLayer, interactionDefinition) {
-  if (interactionDefinition.type === "draw") {
+  // Add draw or select interactions based on the interaction type
+  if (interactionDefinition.type === "draw")
     addDraw(EOxMap, olLayer, interactionDefinition.options);
-  } else if (interactionDefinition.type === "select") {
+  else if (interactionDefinition.type === "select")
     addSelect(EOxMap, olLayer, interactionDefinition.options);
-  }
 }
 
 /**
  * Updates an existing layer with a new definition.
  *
- * @param {EOxMap} EOxMap - The map instance.
+ * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {EoxLayer} newLayerDefinition - The new layer definition.
  * @param {AnyLayer} existingLayer - The existing layer to be updated.
  * @returns {AnyLayer} - The updated layer.
+ *
+ * @throws Will throw an error if the new layer is not compatible with the existing one.
  */
 export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   const existingJsonDefinition = existingLayer.get("_jsonDefinition");
@@ -331,14 +342,14 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 /**
  * Generates layers for the map from an array of layer definitions.
  *
- * @param {EOxMap} EOxMap - The map instance.
+ * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {Array<EoxLayer>} layerArray - Array of layer definitions.
  * @returns {Array} - An array of created layers.
  */
 export const generateLayers = (EOxMap, layerArray) => {
-  if (!layerArray) {
-    return [];
-  }
+  if (!layerArray) return [];
+
+  // Reverse the layer array to maintain the stacking order
   return [...layerArray].reverse().map((l) => createLayer(EOxMap, l));
 };
 
@@ -349,15 +360,22 @@ export const generateLayers = (EOxMap, layerArray) => {
  * @param {EoxLayer} eoxLayer - The EoxLayer definition.
  */
 function setSyncListeners(olLayer, eoxLayer) {
+  // Sync opacity changes to the layer definition
   olLayer.on("change:opacity", () => {
     eoxLayer.opacity = olLayer.getOpacity();
   });
+
+  // Sync visibility changes to the layer definition
   olLayer.on("change:visible", () => {
     eoxLayer.visible = olLayer.getVisible();
   });
+
+  // Sync zIndex changes to the layer definition
   olLayer.on("change:zIndex", () => {
     eoxLayer.zIndex = olLayer.getZIndex();
   });
+
+  // Sync other property changes to the layer definition
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") return;
     eoxLayer.properties[e.key] = e.target.get(e.key);

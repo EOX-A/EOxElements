@@ -15,12 +15,14 @@ import { createEmpty, extend, isEmpty } from "ol/extent";
 
 /**
  * Class representing the EOxSelectInteraction.
+ * Handles the selection interaction for a specified layer, including highlighting features,
+ * displaying tooltips, and panning into selected features.
  */
 export class EOxSelectInteraction {
   /**
-   * @param {EOxMap} eoxMap - Instance of EOxMap class.
+   * @param {EOxMap} eoxMap - Instance of the EOxMap class.
    * @param {SelectLayer} selectLayer - Layer for selection.
-   * @param {SelectOptions} options - Options for selection interaction.
+   * @param {SelectOptions} options - Options for the selection interaction.
    */
   constructor(eoxMap, selectLayer, options) {
     this.eoxMap = eoxMap;
@@ -28,11 +30,11 @@ export class EOxSelectInteraction {
     this.options = options;
     this.active = options.active || selectLayer.getVisible();
     this.panIn = options.panIn || false;
-
-    const existingTooltip = this.eoxMap.map.getOverlayById("eox-map-tooltip");
-
-    let overlay;
     this.selectedFids = [];
+
+    // Retrieve or create the tooltip overlay for displaying feature information
+    const existingTooltip = this.eoxMap.map.getOverlayById("eox-map-tooltip");
+    let overlay;
 
     if (existingTooltip) {
       this.tooltip = existingTooltip.getElement();
@@ -56,6 +58,7 @@ export class EOxSelectInteraction {
       }
     }
 
+    // Set up event listeners to handle pointer leave events
     const pointerLeaveListener = () => {
       if (overlay && options.condition === "pointermove") {
         overlay.setPosition(undefined);
@@ -71,6 +74,7 @@ export class EOxSelectInteraction {
       .getTargetElement()
       ?.addEventListener("pointerleave", pointerLeaveListener);
 
+    // Set up the layer for the selection styling
     let layerDefinition;
     if (this.options.layer) {
       layerDefinition = this.options.layer;
@@ -90,24 +94,26 @@ export class EOxSelectInteraction {
     layerDefinition.renderMode = "vector";
     delete layerDefinition.interactions;
 
+    // Create a new layer for the selection styling
     this.selectStyleLayer = createLayer(eoxMap, layerDefinition);
 
     //@ts-expect-error VectorSource for VectorLayer, VectorTileSource for VectorTileLayer
     this.selectStyleLayer.setSource(this.selectLayer.getSource());
     this.selectStyleLayer.setMap(this.eoxMap.map);
 
+    // Set up the initial style for the selection layer
     const initialStyle = this.selectStyleLayer.getStyleFunction();
-
     this.selectStyleLayer.setStyle((feature, resolution) => {
       if (
         this.selectedFids.length &&
         this.selectedFids.includes(this.getId(feature))
       ) {
-        return initialStyle(feature, resolution);
+        return initialStyle(feature, resolution); // Apply style only if the feature is selected
       }
       return null;
     });
 
+    // Listener to handle selection events
     const listener = (event) => {
       if (!this.active) {
         return;
@@ -121,6 +127,8 @@ export class EOxSelectInteraction {
       ) {
         return;
       }
+
+      // Fetch features at the clicked pixel
       this.selectLayer.getFeatures(event.pixel).then((features) => {
         const feature = features.length ? features[0] : null;
 
@@ -132,6 +140,7 @@ export class EOxSelectInteraction {
           if (feature && this.panIn) this.panIntoFeature(feature);
         }
 
+        // Fetch features at the clicked pixel
         if (overlay) {
           const xPosition =
             event.pixel[0] > this.eoxMap.offsetWidth / 2 ? "right" : "left";
@@ -154,8 +163,11 @@ export class EOxSelectInteraction {
         this.eoxMap.dispatchEvent(selectdEvt);
       });
     };
+
+    // Set up the map event listener for the specified condition (e.g., click, pointermove)
     this.eoxMap.map.on(options.condition || "click", listener);
 
+    // Set up the map event listener for the specified condition (e.g., click, pointermove)
     this.selectLayer.on("change:opacity", () => {
       this.selectStyleLayer.setOpacity(this.selectLayer.getOpacity());
     });
@@ -166,6 +178,7 @@ export class EOxSelectInteraction {
       this.setActive(visible);
     });
 
+    // Set up the map event listener for the specified condition (e.g., click, pointermove)
     this.changeSourceListener = () => {
       //@ts-expect-error VectorSource for VectorLayer, VectorTileSource for VectorTileLayer
       this.selectStyleLayer.setSource(this.selectLayer.getSource());
@@ -173,6 +186,7 @@ export class EOxSelectInteraction {
 
     this.selectLayer.on("change:source", this.changeSourceListener);
 
+    // Set up the map event listener for the specified condition (e.g., click, pointermove)
     const changeLayerListener = () => {
       if (eoxMap.getLayerById(selectLayer.get("id"))) {
         eoxMap.selectInteractions[options.id]?.setActive(true);
@@ -187,10 +201,19 @@ export class EOxSelectInteraction {
     eoxMap.map.getLayerGroup().on("change", changeLayerListener);
   }
 
+  /**
+   * Sets the active state of the interaction.
+   * @param {boolean} active - Whether the interaction should be active.
+   */
   setActive(active) {
     this.active = active;
   }
 
+  /**
+   * Pans the map to the specified feature or extent.
+   * @param {Feature | RenderFeature | import("ol/extent").Extent} featureOrExtent - The feature or extent to pan to.
+   * @param {Object} [options] - Additional options for the panning animation.
+   */
   panIntoFeature = (featureOrExtent, options) => {
     const extent =
       featureOrExtent instanceof Feature ||
@@ -200,6 +223,11 @@ export class EOxSelectInteraction {
     this.eoxMap.map.getView().fit(extent, options || { duration: 750 });
   };
 
+  /**
+   * Highlights features by their IDs and optionally pans into their extent.
+   * @param {Array<string>} ids - Array of feature IDs to highlight.
+   * @param {Object} [fitOptions] - Options for panning into the highlighted features.
+   */
   highlightById(ids, fitOptions) {
     this.selectedFids = ids;
     if (ids.length && fitOptions) {
@@ -231,12 +259,21 @@ export class EOxSelectInteraction {
     this.selectStyleLayer.changed();
   }
 
+  /**
+   * Removes the selection interaction and associated layers from the map.
+   */
   remove() {
     this.selectStyleLayer.setMap(null);
     delete this.eoxMap.selectInteractions[this.options.id];
     this.selectLayer.un("change:source", this.changeSourceListener);
   }
 
+  /**
+   * Retrieves the ID of the given feature.
+   * @param {Feature | RenderFeature} feature - The feature whose ID is to be retrieved.
+   * @returns {string} - The ID of the feature.
+   * @throws Will throw an error if no valid ID is found.
+   */
   getId(feature) {
     if (this.options.idProperty) {
       return feature.get(this.options.idProperty);
@@ -254,10 +291,14 @@ export class EOxSelectInteraction {
 }
 
 /**
- * Adds a `select`-interaction to the map.
+ * Adds a `select` interaction to the map.
+ *
  * @param {EOxMap} EOxMap - Instance of EOxMap class.
  * @param {SelectLayer} selectLayer - Layer to be selected.
  * @param {SelectOptions} options - Options for the select interaction.
+ * @returns {EOxSelectInteraction} - The created selection interaction instance.
+ *
+ * @throws Will throw an error if an interaction with the specified ID already exists.
  */
 export function addSelect(EOxMap, selectLayer, options) {
   if (EOxMap.interactions[options.id]) {

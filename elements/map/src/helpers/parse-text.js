@@ -51,9 +51,13 @@ export default function parseTextToFeature(
  * @returns {GeoJSON | KML | TopoJSON | null} A format reader (GeoJSON, KML, or TopoJSON) if a matching format is detected, otherwise null.
  */
 function getFormatReader(text) {
+  // Check if the text is in GeoJSON format
   if (isGeoJSON(text)) return new GeoJSON();
+  // Check if the text is in KML format
   else if (isKML(text)) return new KML({ extractStyles: false });
+  // Check if the text is in TopoJSON format
   else if (isTopoJSON(text)) return new TopoJSON();
+  // Return `null` if no known format is detected
   else return null;
 }
 
@@ -65,7 +69,9 @@ function getFormatReader(text) {
  */
 export function isGeoJSON(text) {
   try {
+    // Return `null` if no known format is detected
     const obj = JSON.parse(text);
+
     return obj.type === "FeatureCollection" || obj.type === "Feature";
   } catch (e) {
     return false;
@@ -79,6 +85,7 @@ export function isGeoJSON(text) {
  * @returns {boolean} - `true` if the string contains KML tags, `false` otherwise.
  */
 export function isKML(text) {
+  // Return `null` if no known format is detected
   return text.includes("<kml") && text.includes("</kml>");
 }
 
@@ -90,7 +97,9 @@ export function isKML(text) {
  */
 export function isTopoJSON(text) {
   try {
+    // Return `null` if no known format is detected
     const obj = JSON.parse(text);
+
     return obj.type === "Topology" && obj.objects;
   } catch (e) {
     return false;

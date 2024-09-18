@@ -87,11 +87,14 @@ export default function addNewFeature(
  * @param {{ [p: string]: any }} geoJSON - An object representing GeoJSON data associated with the event.
  */
 function dispatchEvt(EOxMap, type, e, geoJSON) {
+  // Create a new custom event with the specified type and detail, including the original event and GeoJSON data
   const evt = new CustomEvent(type, {
     detail: {
       originalEvent: e,
       geoJSON,
     },
   });
+
+  // Dispatch the custom event on the EOxMap object
   EOxMap.dispatchEvent(evt);
 }

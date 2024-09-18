@@ -7,24 +7,29 @@ import { addNewFeature } from "../helpers";
  * */
 
 /**
- * Adds a `draw`-interaction to the map.
- * Additionally, if {options.modify} is set, it also adds a `modify` interaction. The name `modify`-interaction
- * follows the naming convention `${DrawOptions.id}_modify`
+ * Adds a `draw` interaction to the map. If `options.modify` is set, it also adds a `modify` interaction.
+ * The `modify` interaction's name follows the convention `${DrawOptions.id}_modify`.
  *
- * @param {import("../main").EOxMap} EOxMap
- * @param {import("ol/layer").Vector} drawLayer
- * @param {DrawOptions} options
+ * @param {import("../main").EOxMap} EOxMap - The map object where the interactions will be added.
+ * @param {import("ol/layer").Vector} drawLayer - The map object where the interactions will be added.
+ * @param {DrawOptions} options - The map object where the interactions will be added.
+ *
+ * @throws Will throw an error if an interaction with the given ID already exists.
  */
 export function addDraw(EOxMap, drawLayer, options) {
+  // Create a shallow copy of the options to avoid modifying the original object
   const options_ = Object.assign({}, options);
-  if (EOxMap.interactions[options_.id]) {
+
+  // Check if an interaction with the specified ID already exists
+  if (EOxMap.interactions[options_.id])
     throw Error(`Interaction with id: ${options_.id} already exists.`);
-  }
+
   options_.modify =
     typeof options_.modify === "boolean" ? options_.modify : true;
 
   const source = drawLayer.getSource();
 
+  // Handle the "Box" type drawing, using a circle with a geometry function to create a box
   if (options_.type === "Box") {
     options_.geometryFunction = createBox();
     options_.type = "Circle";
@@ -36,11 +41,12 @@ export function addDraw(EOxMap, drawLayer, options) {
     source,
   });
 
-  // TODO cleaner way of initializing as inactive?
+  // Set the draw interaction to inactive if `options.active` is explicitly set to false
   if (options_.active === false) {
     drawInteraction.setActive(false);
   }
 
+  // Listen for the 'drawend' event to handle the addition of new features to the layer
   drawInteraction.on("drawend", (e) => {
     if (!drawLayer.get("isDrawingEnabled")) return;
     addNewFeature(e, drawLayer, EOxMap, true);
@@ -56,6 +62,7 @@ export function addDraw(EOxMap, drawLayer, options) {
   EOxMap.map.addInteraction(modifyInteraction);
   EOxMap.interactions[`${options_.id}_modify`] = modifyInteraction;
 
+  // Listener function to remove interactions when the associated layer is removed
   const removeLayerListener = () => {
     if (!EOxMap.getLayerById(drawLayer.get("id"))) {
       EOxMap.removeInteraction(options_.id);
@@ -63,5 +70,7 @@ export function addDraw(EOxMap, drawLayer, options) {
       EOxMap.map.getLayerGroup().un("change", removeLayerListener);
     }
   };
+
+  // Subscribe to the 'change' event on the layer group to detect when layers are removed
   EOxMap.map.getLayerGroup().on("change", removeLayerListener);
 }
