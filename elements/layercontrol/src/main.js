@@ -56,6 +56,7 @@ export class EOxLayerControl extends LitElement {
     addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
+    isGloballyExclusive: { type: Boolean },
   };
 
   /**
@@ -133,6 +134,13 @@ export class EOxLayerControl extends LitElement {
      * @type {String}
      */
     this.styleOverride = "";
+
+    /**
+     * Enable global exclusivity for layers that is not restricted to a group
+     *
+     * @type {Boolean}
+     */
+    this.isGloballyExclusive = false;
   }
 
   /**
