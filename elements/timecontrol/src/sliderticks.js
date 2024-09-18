@@ -202,8 +202,7 @@ export class SliderTicks extends LitElement {
         .map((date, i) => {
           // Calculate position within the entire slider based on global index
           const globalIndex = this.steps.indexOf(date.date);
-          const position =
-            (globalIndex / (this.steps.length - 1)) * this.width;
+          const position = (globalIndex / (this.steps.length - 1)) * this.width;
 
           const elements = [];
 
@@ -248,13 +247,13 @@ export class SliderTicks extends LitElement {
     console.log("No. of Steps: ", this.steps.length);
 
     if (this.density <= 0.5) {
-      console.log('TICKS START');
+      console.log("TICKS START");
       return this.calculateIndividualTicks();
     } else if (this.density > 0.5 && this.density < 10.0) {
-      console.log('YEARBARS START');
+      console.log("YEARBARS START");
       return this.calculateYearBars();
     } else if (this.density >= 10.0) {
-      console.log('DECADEBARS START');
+      console.log("DECADEBARS START");
       return this.calculateDecadeBars();
     }
   }
@@ -319,7 +318,11 @@ export class SliderTicks extends LitElement {
     });
 
     const endTime = performance.now();
-    console.log('Time taken to calculate decade bars: ', endTime - startTime, 'ms');
+    console.log(
+      "Time taken to calculate decade bars: ",
+      endTime - startTime,
+      "ms"
+    );
 
     return res;
   }
@@ -413,8 +416,7 @@ export class SliderTicks extends LitElement {
           style="width: ${this.width}px; height: 30px;"
           viewBox="-1 0 ${this.width + 2} ${this.height}"
         >
-          ${this.sliderTicks}
-          ${this.yearMarks}
+          ${this.sliderTicks} ${this.yearMarks}
         </svg>
       </div>
     `;
