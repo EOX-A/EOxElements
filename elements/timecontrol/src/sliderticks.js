@@ -243,17 +243,11 @@ export class SliderTicks extends LitElement {
   }
 
   calculateSliderTicks() {
-    console.log("Density: ", this.density);
-    console.log("No. of Steps: ", this.steps.length);
-
     if (this.density <= 0.5) {
-      console.log("TICKS START");
       return this.calculateIndividualTicks();
     } else if (this.density > 0.5 && this.density < 10.0) {
-      console.log("YEARBARS START");
       return this.calculateYearBars();
     } else if (this.density >= 10.0) {
-      console.log("DECADEBARS START");
       return this.calculateDecadeBars();
     }
   }
@@ -318,11 +312,11 @@ export class SliderTicks extends LitElement {
     });
 
     const endTime = performance.now();
-    console.log(
+    /*console.log(
       "Time taken to calculate decade bars: ",
       endTime - startTime,
       "ms"
-    );
+    );*/
 
     return res;
   }
