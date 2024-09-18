@@ -253,7 +253,7 @@ export class SliderTicks extends LitElement {
   }
 
   calculateDecadeBars() {
-    const startTime = performance.now();
+    //const startTime = performance.now();
 
     const minBarWidth = 30;
     // Very high density: Render bars or labels for each decade
@@ -311,7 +311,7 @@ export class SliderTicks extends LitElement {
       return elements;
     });
 
-    const endTime = performance.now();
+    //const endTime = performance.now();
     /*console.log(
       "Time taken to calculate decade bars: ",
       endTime - startTime,
