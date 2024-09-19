@@ -1,6 +1,10 @@
 import { html, render } from "lit";
 import { TemplateElement } from "../../../../utils/templateElement";
 
+/**
+ * A custom element that serves as a tooltip for the map.
+ * Displays information about map features in a styled format.
+ */
 export class EOxMapTooltip extends TemplateElement {
   static get properties() {
     return {
@@ -10,13 +14,21 @@ export class EOxMapTooltip extends TemplateElement {
 
   constructor() {
     super();
+
+    /**
+     * A function to transform properties before rendering.
+     *
+     * @type {Function}
+     */
     this.propertyTransform = (property, _feature) => property;
   }
 
   renderContent(feature) {
     render(
+      // Check if a custom template named "properties" is available
       this.hasTemplate("properties")
         ? html`${this.renderTemplate(
+            // Render the custom template
             "properties",
             feature.getProperties(),
             // `tooltip-${this.content.id}`
@@ -52,4 +64,5 @@ export class EOxMapTooltip extends TemplateElement {
   }
 }
 
+// Define the custom element
 customElements.define("eox-map-tooltip", EOxMapTooltip);

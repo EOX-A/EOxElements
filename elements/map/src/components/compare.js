@@ -2,6 +2,10 @@ import { html } from "lit";
 import { choose } from "lit/directives/choose.js";
 import { TemplateElement } from "../../../../utils/templateElement";
 
+/**
+ * A custom element for comparing two map layers or images using a slider.
+ * This component creates a split-screen view with an adjustable slider to compare two images or layers.
+ */
 export class EOxMapCompare extends TemplateElement {
   static get properties() {
     return {
@@ -12,12 +16,26 @@ export class EOxMapCompare extends TemplateElement {
 
   constructor() {
     super();
+
+    /**
+     * The current position of the comparison slider (0 to 100).
+     * @type {Number}
+     */
     this.value = 50;
+
+    /**
+     * Whether the comparison is enabled and which part is visible.
+     * Accepts values: "first", "second", or "true" (default).
+     * @type {String}
+     */
     this.enabled = "true";
   }
 
   /**
+   * Handles input events on the slider to update the comparison value.
+   *
    * @param {Event & {target: T }} evt - input event
+   * @private
    **/
   #handleInput(evt) {
     this.value = parseInt(evt.target.value);
@@ -144,4 +162,5 @@ export class EOxMapCompare extends TemplateElement {
   }
 }
 
+// Define the custom element
 customElements.define("eox-map-compare", EOxMapCompare);
