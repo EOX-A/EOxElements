@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.21.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.20.0...layercontrol-v0.21.0) (2024-09-23)
+
+
+### Features
+
+* Changed update of style to throttle ([#1264](https://github.com/EOX-A/EOxElements/issues/1264)) ([5efa15b](https://github.com/EOX-A/EOxElements/commit/5efa15bc34adf3fc2a2f03e88e5348cb20eaee64))
+* Implementation of list style option for layer tools ([#1250](https://github.com/EOX-A/EOxElements/issues/1250)) ([74241ad](https://github.com/EOX-A/EOxElements/commit/74241ad8bb1b4099e9a67def3dc1e68030939581))
+
+
+### Bug Fixes
+
+* Update maps tiles url to public domain ([#1262](https://github.com/EOX-A/EOxElements/issues/1262)) ([3f57038](https://github.com/EOX-A/EOxElements/commit/3f570381472beb3d93656958d818eece4084ef65))
+
 ## [0.20.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.19.0...layercontrol-v0.20.0) (2024-08-12)
 
 

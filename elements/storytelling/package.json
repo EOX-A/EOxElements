@@ -1,6 +1,6 @@
 {
   "name": "@eox/storytelling",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "type": "module",
   "devDependencies": {
     "@eox/eslint-config": "^1.0.0",
