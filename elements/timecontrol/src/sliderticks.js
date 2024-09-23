@@ -416,19 +416,4 @@ export class SliderTicks extends LitElement {
   }
 }
 
-/*
-this.years.map((year, index) => svg`
-  <text
-    key=${`y${index}`}
-    x=${year.position}
-    y=${this.height - 1}
-    fill="#555"
-    font-size="13"
-    font-weight="500"
-  >
-    ${year.label}
-  </text>
-`)
-*/
-
 customElements.define("eox-sliderticks", SliderTicks);
