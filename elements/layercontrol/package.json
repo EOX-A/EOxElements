@@ -36,7 +36,7 @@
   "dependencies": {
     "dayjs": "^1.11.8",
     "lit": "^3.0.2",
-    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "wms-capabilities": "^0.6.0"
   }
 }

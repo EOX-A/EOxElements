@@ -278,7 +278,11 @@ function parseInlineContent(
     const id = attrsId || titleSlug;
     const sectionId = `section-${id}`;
 
-    if (stack.last.tag === "h2" && title) nav.push({ title, id: sectionId });
+    const attrNav = getAttr(stack.last.attrs, "nav");
+    const navState = attrNav !== "false";
+
+    if (stack.last.tag === "h2" && title)
+      nav.push({ title, id: sectionId, state: navState });
 
     const currentSectionToken = finalTokens[sectionStartIndex];
     const currentHeadingSectionToken = finalTokens[finalTokens.length - 1];
