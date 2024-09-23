@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/EOX-A/EOxElements/compare/map-v1.13.0...map-v1.13.1) (2024-09-23)
+
+
+### Bug Fixes
+
+* Update maps tiles url to public domain ([#1262](https://github.com/EOX-A/EOxElements/issues/1262)) ([3f57038](https://github.com/EOX-A/EOxElements/commit/3f570381472beb3d93656958d818eece4084ef65))
+
 ## [1.13.0](https://github.com/EOX-A/EOxElements/compare/map-v1.12.0...map-v1.13.0) (2024-08-12)
 
 
