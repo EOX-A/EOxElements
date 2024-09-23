@@ -90,7 +90,7 @@ export class EOxTimeControl extends LitElement {
 
     this._width = 300;
 
-    window.addEventListener('resize', (e) => {
+    window.addEventListener("resize", () => {
       this._width = this.clientWidth;
     });
   }

@@ -218,11 +218,12 @@ export class SliderTicks extends LitElement {
                 ></line>
               `);
 
-          if (date.isYearMarker
-                && this.density > 0.03
-                && this.density < 0.5
-                && yearIndex % 2 == 0
-              ) {
+          if (
+            date.isYearMarker &&
+            this.density > 0.03 &&
+            this.density < 0.5 &&
+            yearIndex % 2 == 0
+          ) {
             elements.push(svg`
                   <text
                     key=${`label-${yearIndex}`}
