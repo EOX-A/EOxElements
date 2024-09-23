@@ -72,18 +72,25 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * @type {{ schema: Record<string,any>; element: string; type?:"tileUrl"|"style"; style?:import("ol/layer/WebGLTile").Style}}
      */
     this.layerConfig = null;
+
+    /**
+     * Throttle #handleDataChange() by 1000 milliseconds
+     */
+    this.throttleDataChange = _throttle(this.#handleDataChange, 1000);
   }
 
   /** Decide what type of throttling to do based on layerConfig type
+   *
    * @param {import("lit").PropertyValues} changedProperties - The changed properties.
    */
   updated(changedProperties) {
     if (changedProperties.has("layerConfig")) {
-      if (this.layerConfig.type === "style" || this.layerConfig.style) {
-        this.throttleDataChange = _throttle(this.#handleDataChange, 100);
-      } else {
-        this.throttleDataChange = _throttle(this.#handleDataChange, 1000);
-      }
+      const throttleTime =
+        this.layerConfig.type === "style" || this.layerConfig.style
+          ? 100
+          : 1000;
+
+      this.throttleDataChange = _throttle(this.#handleDataChange, throttleTime);
       this.requestUpdate();
     }
   }
