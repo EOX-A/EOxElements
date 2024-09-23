@@ -11,6 +11,7 @@ import {
   addExternalLayerStory,
   layerDatetimeStory,
   layerZoomStateStory,
+  toolsAsListStory,
 } from ".";
 
 export default {
@@ -96,3 +97,8 @@ export const LayerZoomState = layerZoomStateStory;
  * Unstyled version of the Element
  */
 export const Unstyled = unstyledStory;
+
+/**
+ * Tools rendered as list instead of tabs
+ */
+export const ToolsAsList = toolsAsListStory;

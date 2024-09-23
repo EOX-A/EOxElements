@@ -5,7 +5,7 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-config";
 import "./layer-datetime";
-import "./tabs";
+import "./tools-items";
 import { button } from "../../../../utils/styles/button";
 import { radio } from "../../../../utils/styles/radio";
 import { checkbox } from "../../../../utils/styles/checkbox";
@@ -32,6 +32,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   constructor() {
@@ -65,6 +66,13 @@ export class EOxLayerControlLayerTools extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
   }
 
   /**
@@ -88,6 +96,60 @@ export class EOxLayerControlLayerTools extends LitElement {
    * @returns {import("lit").HTMLTemplateResult} - The generated Button element.
    */
   _button = (tool) => Button(tool, this.unstyled);
+
+  _getDefaultTools = () => {
+    return html`
+      <div slot="info-content">
+        ${unsafeHTML(this.layer.get("description"))}
+      </div>
+      <div slot="datetime-content">
+        <!-- Layer datetime -->
+        ${when(
+          this.layer.get("layerDatetime"),
+          () => html`
+            <eox-layercontrol-layer-datetime
+              slot="datetime-content"
+              .noShadow=${true}
+              .layerDatetime=${this.layer.get("layerDatetime")}
+              .layer=${this.layer}
+              .unstyled=${this.unstyled}
+              @changed=${() => this.requestUpdate()}
+            ></eox-layercontrol-layer-datetime>
+          `
+        )}
+      </div>
+      <div slot="opacity-content">
+        <!-- Input for opacity -->
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value=${live(this.layer?.getOpacity())}
+          @input=${(/** @type {{ target: { value: string; }; }} */ evt) =>
+            this.layer.setOpacity(parseFloat(evt.target.value))}
+        />
+      </div>
+      <div slot="config-content">
+        <!-- Layer configuration -->
+        ${when(
+          this.layer.get("layerConfig"),
+          () => html`
+            <eox-layercontrol-layerconfig
+              slot="config-content"
+              .layer=${this.layer}
+              .noShadow=${true}
+              .layerConfig=${this.layer.get("layerConfig")}
+              .unstyled=${this.unstyled}
+              @changed=${() => this.requestUpdate()}
+            ></eox-layercontrol-layerconfig>
+          `
+        )}
+      </div>
+      <div slot="remove-icon">${this._removeButton()}</div>
+      <div slot="sort-icon">${this._sortButton()}</div>
+    `;
+  };
 
   render() {
     // Obtain actions and tools based on this.tools and this.layer
@@ -131,66 +193,19 @@ export class EOxLayerControlLayerTools extends LitElement {
                 <summary>
                   <button class="icon ${iconClass}">Tools</button>
                 </summary>
-                <eox-layercontrol-tabs
+                <eox-layercontrol-tools-items
+                  class="${this.toolsAsList ? "tools-list" : "tools-tab"}"
                   .noShadow=${false}
                   .actions=${actions}
                   .tabs=${tools}
                   .unstyled=${this.unstyled}
+                  .toolsAsList=${this.toolsAsList}
                 >
                   <!-- Rendering tabs and content -->
                   ${map(tools, (tool) => this._button(tool))}
-
-                  <div slot="info-content">
-                    ${unsafeHTML(this.layer.get("description"))}
-                  </div>
-                  <div slot="opacity-content">
-                    <!-- Input for opacity -->
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.01"
-                      value=${live(this.layer?.getOpacity())}
-                      @input=${(
-                        /** @type {{ target: { value: string; }; }} */ evt
-                      ) => this.layer.setOpacity(parseFloat(evt.target.value))}
-                    />
-                  </div>
-                  <div slot="config-content">
-                    <!-- Layer configuration -->
-                    ${when(
-                      this.layer.get("layerConfig"),
-                      () => html`
-                        <eox-layercontrol-layerconfig
-                          slot="config-content"
-                          .layer=${this.layer}
-                          .noShadow=${true}
-                          .layerConfig=${this.layer.get("layerConfig")}
-                          .unstyled=${this.unstyled}
-                          @changed=${() => this.requestUpdate()}
-                        ></eox-layercontrol-layerconfig>
-                      `
-                    )}
-                  </div>
-                  <div slot="datetime-content">
-                    <!-- Layer datetime -->
-                    ${when(
-                      this.layer.get("layerDatetime"),
-                      () => html`
-                        <eox-layercontrol-layer-datetime
-                          slot="datetime-content"
-                          .noShadow=${true}
-                          .layerDatetime=${this.layer.get("layerDatetime")}
-                          .layer=${this.layer}
-                          .unstyled=${this.unstyled}
-                          @changed=${() => this.requestUpdate()}
-                        ></eox-layercontrol-layer-datetime>
-                      `
-                    )}
-                  </div>
-                  <div slot="remove-icon">${this._removeButton()}</div>
-                  <div slot="sort-icon">${this._sortButton()}</div>
-                </eox-layercontrol-tabs>
+                  <!-- Including default tools -->
+                  ${this._getDefaultTools()}
+                </eox-layercontrol-tools-items>
               </details>
             `
           )}
@@ -240,20 +255,26 @@ export class EOxLayerControlLayerTools extends LitElement {
     }
     .single-action,
     details.tools summary,
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tools-items button.icon {
       transition: opacity .2s;
     }
     .single-action,
     details.tools summary {
       opacity: .5;
     }
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tools-items button.icon {
       opacity: .7;
+    }
+    eox-layercontrol-tools-items.tools-list button.icon {
+      cursor: auto;
     }
     .single-action:hover,
     details.tools summary:hover,
-    eox-layercontrol-tabs button.icon:hover {
+    eox-layercontrol-tools-items button.icon:hover {
       opacity: 1;
+    }
+    eox-layercontrol-tools-items.tools-list button.icon:hover {
+      opacity: .7;
     }
     .tools-placeholder,
     .single-action .icon,
@@ -263,13 +284,13 @@ export class EOxLayerControlLayerTools extends LitElement {
       height: 16px;
       width: 16px;
     }
-    eox-layercontrol-tabs button.icon,
-    eox-layercontrol-tabs .button.icon {
+    eox-layercontrol-tools-items button.icon,
+    eox-layercontrol-tools-items .button.icon {
       display: flex;
       justify-content: center;
     }
-    eox-layercontrol-tabs button.icon::before,
-    eox-layercontrol-tabs .button.icon::before {
+    eox-layercontrol-tools-items button.icon::before,
+    eox-layercontrol-tools-items .button.icon::before {
       width: 16px;
       height: 16px;
     }
