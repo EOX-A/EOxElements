@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { getStartVals } from "../helpers";
 import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
-import _debounce from "lodash.debounce";
+import _throttle from "lodash.throttle";
 /**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
  * It allows users to input data, modify layer settings, and update the UI based on those settings.
@@ -72,15 +72,21 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * @type {{ schema: Record<string,any>; element: string; type?:"tileUrl"|"style"; style?:import("ol/layer/WebGLTile").Style}}
      */
     this.layerConfig = null;
-
-    /**
-     * Debounce #handleDataChange() by 1000 milliseconds
-     */
-    this.debouncedDataChange = _debounce(this.#handleDataChange, 1000, {
-      leading: true,
-    });
   }
 
+  /** Decide what type of throttling to do based on layerConfig type
+   * @param {import("lit").PropertyValues} changedProperties - The changed properties.
+   */
+  updated(changedProperties) {
+    if (changedProperties.has("layerConfig")) {
+      if (this.layerConfig.type === "style" || this.layerConfig.style) {
+        this.throttleDataChange = _throttle(this.#handleDataChange, 100);
+      } else {
+        this.throttleDataChange = _throttle(this.#handleDataChange, 1000);
+      }
+      this.requestUpdate();
+    }
+  }
   /**
    * Handles changes in eox-jsonform values.
    *
@@ -146,7 +152,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .schema=${this.layerConfig.schema}
             .value=${this.#startVals}
             .options=${options}
-            @change=${this.debouncedDataChange}
+            @change=${this.throttleDataChange}
           ></eox-jsonform>
         `
       )}
