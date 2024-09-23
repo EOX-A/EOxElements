@@ -36,6 +36,10 @@ import {
 
 /**
  * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../types").EOxAnimationOptions} EOxAnimationOptions
+ * @typedef {import("../types").ControlDictionary} ControlDictionary
+ * @typedef {import("../types").ConfigObject} ConfigObject
+ * @typedef {import("../types").ProjectionLike} ProjectionLike
  * */
 
 /**
@@ -97,16 +101,14 @@ export class EOxMap extends LitElement {
    * The current zoom extent of the map.
    * This is used to define the maximum and minimum zoom levels.
    *
-   * @type {Array}
-   * @private
+   * @type {import("ol/extent").Extent}
    */
   #zoomExtent;
 
   /**
    * Stores the controls applied to the map, such as zoom and navigation tools.
    *
-   * @type {Object}
-   * @private
+   * @type {ControlDictionary}
    */
   #controls;
 
@@ -114,7 +116,6 @@ export class EOxMap extends LitElement {
    * The array of layers currently added to the map.
    *
    * @type {Array<EoxLayer>}
-   * @private
    */
   #layers;
 
@@ -122,23 +123,20 @@ export class EOxMap extends LitElement {
    * Indicates whether the map's scroll interactions (zooming, panning) are prevented.
    *
    * @type {Boolean}
-   * @private
    */
   #preventScroll;
 
   /**
    * Holds the configuration object for initializing and managing the map's settings.
    *
-   * @type {Object}
-   * @private
+   * @type {ConfigObject}
    */
   #config;
 
   /**
    * Options for animating changes to the map's view, such as panning or zooming.
    *
-   * @type {Object}
-   * @private
+   * @type {EOxAnimationOptions}
    */
   #animationOptions;
 
@@ -146,7 +144,6 @@ export class EOxMap extends LitElement {
    * Represents the sync state of the map with another map instance.
    *
    * @type {String}
-   * @private
    */
   #sync;
 
@@ -155,7 +152,6 @@ export class EOxMap extends LitElement {
    * Stored as an array of two numbers representing the x and y coordinates.
    *
    * @type {Array<number>}
-   * @private
    */
   #center = [0, 0];
 
@@ -163,7 +159,6 @@ export class EOxMap extends LitElement {
    * The current zoom level of the map.
    *
    * @type {number}
-   * @private
    */
   #zoom = 0;
 
@@ -171,8 +166,7 @@ export class EOxMap extends LitElement {
    * The map's projection system, specifying how coordinates are mapped on the globe.
    * Defaults to "EPSG:3857".
    *
-   * @type {string}
-   * @private
+   * @type {ProjectionLike}
    */
   #projection = "EPSG:3857";
 
@@ -204,7 +198,7 @@ export class EOxMap extends LitElement {
     /**
      * Object to store selection interactions for the map.
      *
-     * @type {Object.<string, import("ol/interaction/Select").default>}
+     * @type {Object.<string, import("./helpers/select").EOxSelectInteraction>}
      */
     this.selectInteractions = {};
 
@@ -279,7 +273,7 @@ export class EOxMap extends LitElement {
   /**
    * Sets the zoom extent of the map.
    *
-   * @param {Array} extent - The new zoom extent.
+   * @param {import("ol/extent").Extent} extent - The new zoom extent.
    */
   set zoomExtent(extent) {
     this.#zoomExtent = setZoomExtentMethod(extent, this);
@@ -288,7 +282,7 @@ export class EOxMap extends LitElement {
   /**
    * Sets the controls for the map.
    *
-   * @param {Object} controls - An array of control configurations.
+   * @param {ControlDictionary} controls - An array of control configurations.
    */
   set controls(controls) {
     this.#controls = setControlsMethod(controls, this.#controls, this);
@@ -342,7 +336,7 @@ export class EOxMap extends LitElement {
   /**
    * Sets the configuration for the map.
    *
-   * @param {Object} config - The configuration object.
+   * @param {ConfigObject} config - The configuration object.
    */
   set config(config) {
     this.#config = setConfigMethod(config, this);
@@ -351,7 +345,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current configuration of the map.
    *
-   * @returns {Object} The map's configuration object.
+   * @returns {ConfigObject} The map's configuration object.
    */
   get config() {
     return this.#config;
@@ -360,7 +354,7 @@ export class EOxMap extends LitElement {
   /**
    * Sets animation options for map view changes.
    *
-   * @param {Object} animationOptions - The animation options.
+   * @param {EOxAnimationOptions} animationOptions - The animation options.
    */
   set animationOptions(animationOptions) {
     this.#animationOptions = animationOptions;
@@ -369,7 +363,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current animation options.
    *
-   * @returns {Object} The current animation options for the map.
+   * @returns {EOxAnimationOptions} The current animation options for the map.
    */
   get animationOptions() {
     return this.#animationOptions;
@@ -378,7 +372,7 @@ export class EOxMap extends LitElement {
   /**
    * Sets the map's projection.
    *
-   * @param {string} projection - The projection code (e.g., "EPSG:3857").
+   * @param {ProjectionLike} projection - The projection code (e.g., "EPSG:3857").
    */
   set projection(projection) {
     this.#projection = setProjectionMethod(projection, this.#projection, this);
@@ -387,7 +381,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current map projection.
    *
-   * @returns {string} The map's projection code.
+   * @returns {ProjectionLike} The map's projection code.
    */
   get projection() {
     return this.#projection || "EPSG:3857";
@@ -414,7 +408,7 @@ export class EOxMap extends LitElement {
   /**
    * Adds or updates a layer on the map.
    *
-   * @param {Object} json - The layer configuration in JSON format.
+   * @param {EoxLayer} json - The layer configuration in JSON format.
    * @returns {Object} The added or updated layer.
    */
   addOrUpdateLayer(json) {
@@ -424,7 +418,7 @@ export class EOxMap extends LitElement {
   /**
    * Removes an interaction from the map by its ID.
    *
-   * @param {string} id - The ID of the interaction to remove.
+   * @param {string | number} id - The ID of the interaction to remove.
    */
   removeInteraction(id) {
     removeInteractionMethod(id, this);

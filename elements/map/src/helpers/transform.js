@@ -8,8 +8,8 @@ import {
  * If no `destination` is defined, the coordinate is transformed to EPSG:4326
  * @param {import('ol/coordinate').Coordinate} coordinate
  * @param {import('ol/proj').ProjectionLike} source
- * @param {import('ol/proj').ProjectionLike=} destination
- * @returns {import('ol/coordinate'.Coordinate)}
+ * @param {import('ol/proj').ProjectionLike} destination
+ * @returns {import('ol/coordinate').Coordinate}
  */
 export function transform(coordinate, source, destination = undefined) {
   if (!destination) {

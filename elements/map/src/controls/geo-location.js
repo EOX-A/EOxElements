@@ -74,6 +74,7 @@ export default class GeolocationControl extends Control {
           stroke: new Stroke({ width: 2, color: "rgba(0, 0, 0, 0.7)" }),
         })
       );
+      //@ts-expect-error options need to be according to the given control.
       this._source.addFeature(this._accuracyFeature);
     }
 
@@ -110,8 +111,6 @@ export default class GeolocationControl extends Control {
   /**
    * Initializes the geolocation control.
    * This will prompt the user for geolocation permissions in the browser.
-   *
-   * @returns {Promise} - A promise that resolves to the coordinates on success, or an error event on failure.
    */
   initGeolocation() {
     return new Promise((resolve, reject) => {

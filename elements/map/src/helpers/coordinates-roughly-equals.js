@@ -2,8 +2,8 @@
  * A helper function to determine approximate equality between two coordinates.
  * This function is based on OpenLayers' "equals" method but includes a tolerance (epsilon).
  *
- * @param {import("ol/coordinate")} coordinate1 - The first coordinate to compare.
- * @param {import("ol/coordinate")} coordinate2 - The first coordinate to compare.
+ * @param {import("ol/coordinate").Coordinate} coordinate1 - The first coordinate to compare.
+ * @param {import("ol/coordinate").Coordinate} coordinate2 - The first coordinate to compare.
  * @param {number?} [epsilon] - The first coordinate to compare.
  *
  * @return {boolean} - True if the coordinates are approximately equal, false otherwise.

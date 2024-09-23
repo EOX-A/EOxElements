@@ -11,6 +11,7 @@ import { createEmpty, extend, isEmpty } from "ol/extent";
  * @typedef {import("../../types").EoxLayer} EoxLayer
  * @typedef {import("../../types").SelectLayer} SelectLayer
  * @typedef {import("../../types").SelectOptions} SelectOptions
+ * @typedef {import("../../types").DrawOptions} DrawOptions
  */
 
 /**
@@ -30,10 +31,13 @@ export class EOxSelectInteraction {
     this.options = options;
     this.active = options.active || selectLayer.getVisible();
     this.panIn = options.panIn || false;
+    /** @type {Array<string|number>} **/
     this.selectedFids = [];
 
     // Retrieve or create the tooltip overlay for displaying feature information
     const existingTooltip = this.eoxMap.map.getOverlayById("eox-map-tooltip");
+
+    /** @type {import("ol").Overlay} **/
     let overlay;
 
     if (existingTooltip) {
@@ -46,6 +50,7 @@ export class EOxSelectInteraction {
 
       if (this.tooltip) {
         overlay = new Overlay({
+          // @ts-expect-error - Type 'Element' is missing the following properties from type 'HTMLElement'
           element: this.tooltip,
           position: undefined,
           offset: [0, 0],
@@ -97,23 +102,31 @@ export class EOxSelectInteraction {
     // Create a new layer for the selection styling
     this.selectStyleLayer = createLayer(eoxMap, layerDefinition);
 
-    //@ts-expect-error VectorSource for VectorLayer, VectorTileSource for VectorTileLayer
     this.selectStyleLayer.setSource(this.selectLayer.getSource());
     this.selectStyleLayer.setMap(this.eoxMap.map);
 
     // Set up the initial style for the selection layer
     const initialStyle = this.selectStyleLayer.getStyleFunction();
-    this.selectStyleLayer.setStyle((feature, resolution) => {
-      if (
-        this.selectedFids.length &&
-        this.selectedFids.includes(this.getId(feature))
-      ) {
-        return initialStyle(feature, resolution); // Apply style only if the feature is selected
+    this.selectStyleLayer.setStyle(
+      /**
+       * @param {import("ol/Feature").FeatureLike} feature
+       * @param {number} resolution
+       * **/
+      (feature, resolution) => {
+        if (
+          this.selectedFids.length &&
+          this.selectedFids.includes(`${this.getId(feature)}`)
+        ) {
+          return initialStyle(feature, resolution); // Apply style only if the feature is selected
+        }
+        return null;
       }
-      return null;
-    });
+    );
 
-    // Listener to handle selection events
+    /**
+     * Listener to handle selection events
+     * @param {import("ol/MapBrowserEvent").default<UIEvent>} event
+     * **/
     const listener = (event) => {
       if (!this.active) {
         return;
@@ -180,7 +193,6 @@ export class EOxSelectInteraction {
 
     // Set up the map event listener for the specified condition (e.g., click, pointermove)
     this.changeSourceListener = () => {
-      //@ts-expect-error VectorSource for VectorLayer, VectorTileSource for VectorTileLayer
       this.selectStyleLayer.setSource(this.selectLayer.getSource());
     };
 
@@ -271,7 +283,7 @@ export class EOxSelectInteraction {
   /**
    * Retrieves the ID of the given feature.
    * @param {Feature | RenderFeature} feature - The feature whose ID is to be retrieved.
-   * @returns {string} - The ID of the feature.
+   * @returns {string | number} - The ID of the feature.
    * @throws Will throw an error if no valid ID is found.
    */
   getId(feature) {
@@ -295,7 +307,7 @@ export class EOxSelectInteraction {
  *
  * @param {EOxMap} EOxMap - Instance of EOxMap class.
  * @param {SelectLayer} selectLayer - Layer to be selected.
- * @param {SelectOptions} options - Options for the select interaction.
+ * @param {SelectOptions | DrawOptions} options - Options for the select interaction.
  * @returns {EOxSelectInteraction} - The created selection interaction instance.
  *
  * @throws Will throw an error if an interaction with the specified ID already exists.
@@ -307,6 +319,7 @@ export function addSelect(EOxMap, selectLayer, options) {
   EOxMap.selectInteractions[options.id] = new EOxSelectInteraction(
     EOxMap,
     selectLayer,
+    // @ts-expect-error - Argument of type 'DrawOptions | SelectOptions' is not assignable to parameter of type 'SelectOptions'
     options
   );
 

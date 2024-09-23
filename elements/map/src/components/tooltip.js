@@ -19,10 +19,15 @@ export class EOxMapTooltip extends TemplateElement {
      * A function to transform properties before rendering.
      *
      * @type {Function}
+     * @param {{ key: string; value: unknown }} property
+     * @param {import("ol/Feature").default | import("ol/render/Feature").default} _feature
      */
     this.propertyTransform = (property, _feature) => property;
   }
 
+  /**
+   * @param {import("ol/Feature").default | import("ol/render/Feature").default} feature
+   */
   renderContent(feature) {
     render(
       // Check if a custom template named "properties" is available

@@ -4,6 +4,7 @@ import buttonStyle from "../../../../utils/styles/dist/button.style";
 import inputStyle from "../../../../utils/styles/dist/input.style";
 import { copyTextToClipboard } from "../helpers/index.js";
 import { when } from "lit/directives/when.js";
+import { initLayerMethod } from "../methods/draw/index.js";
 
 /**
  * Controller component for drawing features

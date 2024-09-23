@@ -31,6 +31,7 @@
     "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.ts && vite build --config vite.config.ts --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "typecheck": "tsc"
   }
 }

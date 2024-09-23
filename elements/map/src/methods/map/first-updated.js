@@ -4,7 +4,7 @@ import { animateToStateMethod } from "./";
  * Sets up the initial state of the map and handles its first update, including setting the center,
  * zoom extent, and dispatching events when the map is loaded and mounted.
  *
- * @param {Object} zoomExtent - Optional extent to fit the map view to a specific area.
+ * @param {import("ol/extent").Extent} zoomExtent - Optional extent to fit the map view to a specific area.
  * @param {import("../../main").EOxMap} EOxMap - The map object containing the map instance, center, animation options, and other properties.
  */
 export default function firstUpdatedMethod(zoomExtent, EOxMap) {

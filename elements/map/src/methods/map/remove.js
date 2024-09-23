@@ -1,7 +1,7 @@
 /**
  * Removes an interaction from the map and deletes it from the interaction list in EOxMap.
  *
- * @param {string} id - The identifier for the interaction to be removed.
+ * @param {string | number} id - The identifier for the interaction to be removed.
  * @param {import("../../main").EOxMap} EOxMap - The map object containing the map instance and interactions list.
  */
 export function removeInteractionMethod(id, EOxMap) {

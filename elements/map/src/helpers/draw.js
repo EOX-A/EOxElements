@@ -4,6 +4,7 @@ import { addNewFeature } from "../helpers";
 
 /**
  * @typedef {import("../../types").DrawOptions} DrawOptions
+ * @typedef {import("../../types").SelectOptions} SelectOptions
  * */
 
 /**
@@ -12,7 +13,7 @@ import { addNewFeature } from "../helpers";
  *
  * @param {import("../main").EOxMap} EOxMap - The map object where the interactions will be added.
  * @param {import("ol/layer").Vector} drawLayer - The map object where the interactions will be added.
- * @param {DrawOptions} options - The map object where the interactions will be added.
+ * @param {DrawOptions | SelectOptions} options - The map object where the interactions will be added.
  *
  * @throws Will throw an error if an interaction with the given ID already exists.
  */

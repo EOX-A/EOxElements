@@ -87,8 +87,7 @@ class WMTSCapabilities extends TileImage {
   /**
    * Creates a URL function for WMTS tiles based on a template.
    *
-   * @param {string} template - The WMTS URL template.
-   * @return {import("../Tile.js").UrlFunction} - The tile URL function.
+   * @param {String} template - The WMTS URL template.
    */
   createFromWMTSTemplate(template) {
     const requestEncoding = this.requestEncoding_;
@@ -114,19 +113,19 @@ class WMTSCapabilities extends TileImage {
       requestEncoding === "KVP"
         ? appendParams(template, context)
         : template.replace(/\{(\w+?)\}/g, (m, p) =>
+            // @ts-expect-error - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
             p.toLowerCase() in context ? context[p.toLowerCase()] : m
           );
 
-    const tileGrid = /** @type {import("../tilegrid/WMTS.js").default} */ (
-      this.tileGrid
-    );
+    const tileGrid =
+      /** @type {import("ol/tilegrid/WMTS").default} **/ this.tileGrid;
     const dimensions = this.dimensions_;
 
     return (
       /**
        * Returns the tile URL based on the tile coordinates.
        *
-       * @param {import("../tilecoord.js").TileCoord} tileCoord - The tile coordinate.
+       * @param {Array<number>} tileCoord - The tile coordinate.
        * @return {string|undefined} - The tile URL, or `undefined` if tileCoord is invalid.
        */
       function (tileCoord) {
@@ -136,6 +135,7 @@ class WMTSCapabilities extends TileImage {
 
         // Create the local context for the tile URL, including matrix, row, and column
         const localContext = {
+          // @ts-expect-error - Property 'getMatrixId' does not exist on type 'TileGrid'
           TileMatrix: tileGrid.getMatrixId(tileCoord[0]),
           TileCol: tileCoord[1],
           TileRow: tileCoord[2],
@@ -148,6 +148,7 @@ class WMTSCapabilities extends TileImage {
         if (requestEncoding === "KVP") {
           url = appendParams(url, localContext);
         } else {
+          // @ts-expect-error - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
           url = url.replace(/\{(\w+?)\}/g, (_, p) => localContext[p]);
         }
         return url;

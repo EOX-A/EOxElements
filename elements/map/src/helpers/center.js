@@ -9,7 +9,7 @@ import { fromLonLat } from "ol/proj";
  * use `map.getView().setCenter()` to manually set the center of the view.
  *
  * @param {Array<number>} centerProperty - The input coordinate as [longitude, latitude].
- * @returns {import("ol/coordinate")} - The converted coordinate in EPSG:3857.
+ * @returns {import("ol/coordinate").Coordinate} - The converted coordinate in EPSG:3857.
  */
 export function getCenterFromProperty(centerProperty) {
   if (centerProperty) {

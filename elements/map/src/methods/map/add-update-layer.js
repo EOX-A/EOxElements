@@ -1,9 +1,13 @@
 import { createLayer, updateLayer, getLayerById } from "../../helpers";
 
 /**
+ * @typedef {import("../../../types").EoxLayer} EoxLayer
+ * */
+
+/**
  * Adds a new layer to the map or updates an existing layer based on the provided JSON data.
  *
- * @param {Object} json - The JSON data containing layer properties and interactions.
+ * @param {EoxLayer} json - The JSON data containing layer properties and interactions.
  * @param {import("../../main").EOxMap} EOxMap - The map object where the layer will be added or updated.
  * @returns {Object} - The newly created or updated layer object.
  */

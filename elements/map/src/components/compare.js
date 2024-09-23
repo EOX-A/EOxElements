@@ -34,8 +34,7 @@ export class EOxMapCompare extends TemplateElement {
   /**
    * Handles input events on the slider to update the comparison value.
    *
-   * @param {Event & {target: T }} evt - input event
-   * @private
+   * @param {Event & {target: { value: string } }} evt - input event
    **/
   #handleInput(evt) {
     this.value = parseInt(evt.target.value);

@@ -48,6 +48,7 @@ export function generateTileGrid(layer) {
       tileGrid = new WMTSTileGrid({
         resolutions: resolutions,
         origin: getTopLeft(projectionExtent),
+        // @ts-expect-error - 'projection' not specified inside WMTS.d.ts types
         projection: layer.source.tileGrid.projection || "EPSG:3857",
         matrixIds: matrixIds,
         ...layer.source.tileGrid,

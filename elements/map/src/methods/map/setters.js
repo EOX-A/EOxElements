@@ -17,6 +17,15 @@ import View from "ol/View";
 import { getElement } from "../../../../../utils";
 
 /**
+ * @typedef {import("../../../types").EoxLayer} EoxLayer
+ * @typedef {import("../../../types").ControlType} ControlType
+ * @typedef {import("../../../types").ControlDictionary} ControlDictionary
+ * @typedef {import("../../../types").SelectOptions} SelectOptions
+ * @typedef {import("../../../types").ConfigObject} ConfigObject
+ * @typedef {import("../../../types").ProjectionLike} ProjectionLike
+ * */
+
+/**
  * Sets the new center of the map if it differs from the current center.
  *
  * @param {Array<number>} center - The new center coordinates.
@@ -45,9 +54,9 @@ export function setCenterMethod(center, EOxMap) {
 /**
  * Adjusts the map view to fit the specified extent.
  *
- * @param {Array<number>} extent - The extent to fit the map view to.
+ * @param {import("ol/extent").Extent} extent - The extent to fit the map view to.
  * @param {import("../../main").EOxMap} EOxMap - The map object containing the map view and animation options.
- * @returns {Array<number>|undefined} - The extent if valid, otherwise undefined.
+ * @returns {import("ol/extent").Extent} - The extent if valid, otherwise undefined.
  */
 export function setZoomExtentMethod(extent, EOxMap) {
   // If the extent is not provided or is empty, exit the function
@@ -68,18 +77,20 @@ export function setZoomExtentMethod(extent, EOxMap) {
 /**
  * Adds or updates controls on the map, removing any outdated controls.
  *
- * @param {Object} controls - New controls to set on the map.
- * @param {Object} oldControls - Previously set controls on the map.
+ * @param {ControlDictionary} controls - New controls to set on the map.
+ * @param {ControlDictionary} oldControls - Previously set controls on the map.
  * @param {import("../../main").EOxMap} EOxMap - The map object containing the control management functions.
- * @returns {Object} - The new controls.
+ * @returns {ControlDictionary} - The new controls.
  */
 export function setControlsMethod(controls, oldControls, EOxMap) {
-  const newControls = controls;
+  const newControls = /** @type {ControlDictionary} **/ controls;
 
   // Remove old controls not present in the new controls
   if (oldControls) {
-    const oldControlTypes = Object.keys(oldControls);
-    const newControlTypes = Object.keys(newControls);
+    const oldControlTypes =
+      /** @type {ControlType[]} **/ Object.keys(oldControls);
+    const newControlTypes =
+      /** @type {ControlType[]} **/ Object.keys(newControls);
 
     // Loop through each old control type
     for (let i = 0, ii = oldControlTypes.length; i < ii; i++) {
@@ -93,11 +104,12 @@ export function setControlsMethod(controls, oldControls, EOxMap) {
 
   // Add or update new controls
   if (newControls) {
-    const keys = Object.keys(controls);
+    const keys = /** @type {ControlType[]} **/ Object.keys(controls);
     for (let i = 0, ii = keys.length; i < ii; i++) {
-      const key = keys[i];
+      const key = /** @type {ControlType} **/ keys[i];
 
       // Add or update the control using the helper function
+      // @ts-expect-error - Error throwing even type is declared.
       addOrUpdateControl(EOxMap, oldControls, key, controls[key]);
     }
   }
@@ -106,16 +118,26 @@ export function setControlsMethod(controls, oldControls, EOxMap) {
 }
 
 /**
+ * Parse and reverse the layers array
+ *
+ * @param {Array<EoxLayer>} layers
+ * @return {Array<EoxLayer>}
+ * */
+function parseLayer(layers) {
+  return JSON.parse(JSON.stringify(layers)).reverse();
+}
+
+/**
  * Adds or updates layers on the map, removing any outdated layers.
  *
- * @param {Array<Object>} layers - New layers to set on the map.
- * @param {Array<Object>} oldLayers - Previously set layers on the map.
+ * @param {Array<EoxLayer>} layers - New layers to set on the map.
+ * @param {Array<EoxLayer>} oldLayers - Previously set layers on the map.
  * @param {import("../../main").EOxMap} EOxMap - The map object containing layer management functions.
- * @returns {Array<Object>} - The new layers.
+ * @returns {Array<EoxLayer>} - The new layers.
  */
 export function setLayersMethod(layers, oldLayers, EOxMap) {
   // Deep copy the new layers array and reverse it to maintain correct layer stacking order
-  const newLayers = JSON.parse(JSON.stringify(layers)).reverse();
+  const newLayers = parseLayer(layers);
 
   // Remove old layers not present in the new layers
   if (oldLayers) {
@@ -130,15 +152,20 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
         // Retrieve the layer to be removed from the map
         const layerToBeRemoved = getLayerById(EOxMap, l.properties?.id);
         const jsonDefinition = layerToBeRemoved.get("_jsonDefinition");
+        const intersections = jsonDefinition.interactions;
 
         // Remove any interactions associated with the layer
-        jsonDefinition.interactions?.forEach((interaction) => {
-          if (interaction.type === "select") {
-            EOxMap.removeSelect(interaction.options.id);
-          } else {
-            EOxMap.removeInteraction(interaction.options.id);
+        intersections?.forEach(
+          /** @param {{type: string, options: { id: string}}} interaction  **/ (
+            interaction
+          ) => {
+            if (interaction.type === "select") {
+              EOxMap.removeSelect(interaction.options.id);
+            } else {
+              EOxMap.removeInteraction(interaction.options.id);
+            }
           }
-        });
+        );
 
         // Remove the layer from the map
         EOxMap.map.removeLayer(layerToBeRemoved);
@@ -190,9 +217,9 @@ export function setPreventScrollMethod(preventScroll, EOxMap) {
 /**
  * Sets the map's configuration options.
  *
- * @param {Object} config - Configuration object containing view, layers, controls, and other properties.
+ * @param {ConfigObject} config - Configuration object containing view, layers, controls, and other properties.
  * @param {import("../../main").EOxMap} EOxMap - The map object to configure.
- * @returns {Object} - The applied configuration.
+ * @returns {ConfigObject} - The applied configuration.
  */
 export function setConfigMethod(config, EOxMap) {
   // Update animation options if provided in the configuration
@@ -222,10 +249,10 @@ export function setConfigMethod(config, EOxMap) {
 /**
  * Sets a new projection for the map, transforming the view and adjusting related properties.
  *
- * @param {string} projection - The new projection code.
- * @param {string} oldProjection - The current projection code.
+ * @param {ProjectionLike} projection - The new projection code.
+ * @param {ProjectionLike} oldProjection - The current projection code.
  * @param {import("../../main").EOxMap} EOxMap - The map object containing the current view and layer management functions.
- * @returns {string} - The new projection code.
+ * @returns {ProjectionLike} - The new projection code.
  */
 export function setProjectionMethod(projection, oldProjection, EOxMap) {
   let newProj = oldProjection;
@@ -273,6 +300,7 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
     });
 
     // Transfer existing event listeners from the old view to the new view
+    /** @type {Array<import("ol/View").ViewObjectEventTypes>} **/
     const eventTypes = [
       "change:center",
       "change:resolution",
@@ -283,8 +311,11 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
       const existingListeners = oldView.getListeners(eventType);
       if (existingListeners?.length) {
         for (let i = existingListeners.length - 1; i >= 0; i--) {
-          const listener = existingListeners[i];
+          const listener = /** @type {any} **/ existingListeners[i];
+
+          // @ts-expect-error - Type '"propertychange"' is not assignable to type 'EventTypes'.
           oldView.un(eventType, listener);
+          // @ts-expect-error - Type '"propertychange"' is not assignable to type 'EventTypes'.
           newView.on(eventType, listener);
         }
       }
@@ -316,7 +347,12 @@ export function setSyncMethod(sync, EOxMap) {
   if (sync) {
     // Use a timeout to ensure the target map is ready before syncing views
     setTimeout(() => {
-      const originMap = getElement(sync);
+      const originElement =
+        /** @type {import("../../main").EOxMap} **/ getElement(sync);
+      const originMap =
+        /** @type {import("../../main").EOxMap} **/ originElement
+          ? originElement.map
+          : null;
 
       // Set the view of the current map to match the view of the origin map
       if (originMap) EOxMap.map.setView(originMap.map.getView());

@@ -24,6 +24,7 @@ import { get as getProjection } from "ol/proj";
  * @typedef {import("../../types").AnyLayer} AnyLayer
  * @typedef {import("../../types").EoxLayer} EoxLayer
  * @typedef {import("../../types").SelectLayer} SelectLayer
+ * @typedef {import("../../types").EOxInteraction} EOxInteraction
  * */
 
 /**
@@ -65,7 +66,6 @@ const basicOlSources = {
  * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {EoxLayer} layer - The layer definition.
  * @param {boolean=} createInteractions - Whether to create interactions for the layer (default: true).
- * @returns {AnyLayer} - The created OpenLayers layer.
  *
  * @throws Will throw an error if the specified layer or source type is not supported.
  */
@@ -164,7 +164,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
  * Adds an interaction (e.g., draw, select) to a given layer.
  *
  * @param {import("../main").EOxMap} EOxMap - The map instance.
- * @param {AnyLayer} olLayer - The OpenLayers layer.
+ * @param {SelectLayer} olLayer - The OpenLayers layer.
  * @param {EOxInteraction} interactionDefinition - The interaction definition.
  */
 function addInteraction(EOxMap, olLayer, interactionDefinition) {
