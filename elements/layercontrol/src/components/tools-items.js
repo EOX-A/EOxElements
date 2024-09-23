@@ -10,7 +10,7 @@ export class EOxLayerControlTabs extends LitElement {
     tabs: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
-    disableTabs: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   constructor() {
@@ -51,7 +51,7 @@ export class EOxLayerControlTabs extends LitElement {
      *
      * @type {Boolean}
      */
-    this.disableTabs = false;
+    this.toolsAsList = false;
   }
 
   /**
@@ -63,7 +63,7 @@ export class EOxLayerControlTabs extends LitElement {
 
   /** @param {number} index */
   #labelHighlightClass = (index) =>
-    (this.selectedTab === index || this.disableTabs) && "highlighted";
+    (this.selectedTab === index || this.toolsAsList) && "highlighted";
 
   /**
    * Renders a tabbed interface that displays tabs and corresponding content areas based on the provided 'tabs' and 'actions'.
@@ -86,7 +86,7 @@ export class EOxLayerControlTabs extends LitElement {
           () => html`
             <nav>
               ${when(
-                !this.disableTabs,
+                !this.toolsAsList,
                 () => html`
                   <div>
                     <!-- Labels for tabs -->
@@ -128,7 +128,7 @@ export class EOxLayerControlTabs extends LitElement {
             tabs,
             (tab, index) => html`
               ${when(
-                this.disableTabs,
+                this.toolsAsList,
                 () => html`
                   <label class="listed">
                     <!-- Customizable icon for each tab -->

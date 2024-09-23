@@ -56,7 +56,7 @@ export class EOxLayerControl extends LitElement {
     addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
-    disableTabs: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   /**
@@ -140,7 +140,7 @@ export class EOxLayerControl extends LitElement {
      *
      * @type {Boolean}
      */
-    this.disableTabs = false;
+    this.toolsAsList = false;
   }
 
   /**
@@ -229,7 +229,7 @@ export class EOxLayerControl extends LitElement {
             .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
-            .disableTabs=${this.disableTabs}
+            .toolsAsList=${this.toolsAsList}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>

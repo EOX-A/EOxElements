@@ -32,7 +32,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
-    disableTabs: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   constructor() {
@@ -72,7 +72,7 @@ export class EOxLayerControlLayerTools extends LitElement {
      *
      * @type {Boolean}
      */
-    this.disableTabs = false;
+    this.toolsAsList = false;
   }
 
   /**
@@ -194,12 +194,12 @@ export class EOxLayerControlLayerTools extends LitElement {
                   <button class="icon ${iconClass}">Tools</button>
                 </summary>
                 <eox-layercontrol-tools-items
-                  class="${this.disableTabs ? "tools-list" : "tools-tab"}"
+                  class="${this.toolsAsList ? "tools-list" : "tools-tab"}"
                   .noShadow=${false}
                   .actions=${actions}
                   .tabs=${tools}
                   .unstyled=${this.unstyled}
-                  .disableTabs=${this.disableTabs}
+                  .toolsAsList=${this.toolsAsList}
                 >
                   <!-- Rendering tabs and content -->
                   ${map(tools, (tool) => this._button(tool))}

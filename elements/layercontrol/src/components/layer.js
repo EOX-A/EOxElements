@@ -22,7 +22,7 @@ export class EOxLayerControlLayer extends LitElement {
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
-    disableTabs: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   /**
@@ -91,7 +91,7 @@ export class EOxLayerControlLayer extends LitElement {
      *
      * @type {Boolean}
      */
-    this.disableTabs = false;
+    this.toolsAsList = false;
   }
 
   /**
@@ -189,7 +189,7 @@ export class EOxLayerControlLayer extends LitElement {
             .layer=${this.layer}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
-            .disableTabs=${this.disableTabs}
+            .toolsAsList=${this.toolsAsList}
           ></eox-layercontrol-layer-tools>
         `
       )}

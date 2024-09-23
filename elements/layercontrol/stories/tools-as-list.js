@@ -1,18 +1,18 @@
 import { html } from "lit";
 import { STORIES_MAIN_MAP_LAYERS, STORIES_MAP_STYLE } from "../src/enums";
 
-export const DisableTabs = {
+export const ToolsAsList = {
   args: {
     idProperty: "id",
     titleProperty: "title",
-    disableTabs: true,
+    toolsAsList: true,
   },
   render: (args) => html`
     <div style="display: flex">
       <eox-layercontrol
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
-        .disableTabs=${args.disableTabs}
+        .toolsAsList=${args.toolsAsList}
         for="eox-map"
       ></eox-layercontrol>
       <eox-map
@@ -24,4 +24,4 @@ export const DisableTabs = {
   `,
 };
 
-export default DisableTabs;
+export default ToolsAsList;
