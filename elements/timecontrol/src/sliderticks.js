@@ -218,7 +218,11 @@ export class SliderTicks extends LitElement {
                 ></line>
               `);
 
-          if (date.isYearMarker) {
+          if (date.isYearMarker
+                && this.density > 0.03
+                && this.density < 0.5
+                && yearIndex % 2 == 0
+              ) {
             elements.push(svg`
                   <text
                     key=${`label-${yearIndex}`}
@@ -356,6 +360,7 @@ export class SliderTicks extends LitElement {
     this.requestUpdate();
   }
 
+  // TODO: Can this be fully removed yet (as the year marks are generated alongside ticks)?
   /**
    * @returns {YearMark[]}
    */
@@ -381,13 +386,6 @@ export class SliderTicks extends LitElement {
       // Update previousYear for the next iteration
       previousYear = currentYear;
     });
-
-    // Filter out year marks that are too close together, in favor of the second one.
-    return yearMarks.filter((current, i) => {
-      const next = yearMarks[i + 1];
-
-      return !(next && next.position - current.position < 25);
-    });
   }
 
   /**
@@ -410,7 +408,7 @@ export class SliderTicks extends LitElement {
           style="width: ${this.width}px; height: 30px;"
           viewBox="-1 0 ${this.width + 2} ${this.height}"
         >
-          ${this.sliderTicks} ${this.yearMarks}
+          ${this.sliderTicks}
         </svg>
       </div>
     `;
