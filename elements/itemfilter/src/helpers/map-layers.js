@@ -33,7 +33,7 @@ export default function getMapLayers(geometry, url) {
       type: "Tile",
       source: {
         type: "XYZ",
-        url: "https://s2maps-tiles.eu/wmts/1.0.0/osm_3857/default/g/{z}/{y}/{x}.jpg",
+        url: "https://tiles.maps.eox.at/wmts/1.0.0/osm_3857/default/g/{z}/{y}/{x}.jpg",
         attribution:
           "{ OSM: Data &copy; OpenStreetMap contributors and others, Rendering &copy; EOX }",
       },
