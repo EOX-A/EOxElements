@@ -292,9 +292,12 @@ export class EOxTimeControl extends LitElement {
           >
             <
           </button>
+          <span part="current">${this.controlValues[this._newStepIndex]}</span>
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
+        </div>
+        <div>
           ${!this.disablePlay
             ? html`
                 <button
@@ -334,8 +337,6 @@ export class EOxTimeControl extends LitElement {
                 </div>
               `
             : ""}
-
-          <span part="current">${this.controlValues[this._newStepIndex]}</span>
         </div>
       </main>
     `;
