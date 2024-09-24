@@ -347,12 +347,9 @@ export function setSyncMethod(sync, EOxMap) {
   if (sync) {
     // Use a timeout to ensure the target map is ready before syncing views
     setTimeout(() => {
-      const originElement =
-        /** @type {import("../../main").EOxMap} **/ getElement(sync);
-      const originMap =
-        /** @type {import("../../main").EOxMap} **/ originElement
-          ? originElement.map
-          : null;
+      const originMap = /** @type {import("../../main").EOxMap} **/ (
+        /** @type {any} **/ getElement(sync)
+      );
 
       // Set the view of the current map to match the view of the origin map
       if (originMap) EOxMap.map.setView(originMap.map.getView());

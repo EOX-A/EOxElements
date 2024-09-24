@@ -25,6 +25,10 @@ import { get as getProjection } from "ol/proj";
  * @typedef {import("../../types").EoxLayer} EoxLayer
  * @typedef {import("../../types").SelectLayer} SelectLayer
  * @typedef {import("../../types").EOxInteraction} EOxInteraction
+ * @typedef {import("../../types").DrawOptions} DrawOptions
+ * @typedef {import("../../types").SelectOptions} SelectOptions
+ * @typedef {import("../../types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("../../types").VectorOrVectorTileLayer} VectorOrVectorTileLayer
  * */
 
 /**
@@ -66,7 +70,6 @@ const basicOlSources = {
  * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {EoxLayer} layer - The layer definition.
  * @param {boolean=} createInteractions - Whether to create interactions for the layer (default: true).
- *
  * @throws Will throw an error if the specified layer or source type is not supported.
  */
 export function createLayer(EOxMap, layer, createInteractions = true) {
@@ -101,7 +104,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   const tileGrid = generateTileGrid(layer);
 
   // Create the OpenLayers layer with the specified options
-  const olLayer = new newLayer({
+  const olLayer = /** @type {AnyLayer} **/ new newLayer({
     ...layer,
     ...(layer.source && {
       source: new newSource({
@@ -140,18 +143,24 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
       .reverse()
       .map((l) => createLayer(EOxMap, l));
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
-    olLayer.setLayers(new Collection(groupLayers));
+    /** @type {import("ol/layer/Group").default} **/ olLayer.setLayers(
+      new Collection(groupLayers)
+    );
   }
 
   if (layer.style) {
-    olLayer.setStyle(layer.style);
+    /** @type {VectorOrVectorTileLayer} **/ olLayer.setStyle(layer.style);
   }
 
   // Add interactions (e.g., draw, select) to the layer if requested
   if (createInteractions && layer.interactions?.length) {
     for (let i = 0; i < layer.interactions.length; i++) {
       const interactionDefinition = layer.interactions[i];
-      addInteraction(EOxMap, olLayer, interactionDefinition);
+      addInteraction(
+        EOxMap,
+        /** @type {SelectLayer} **/ olLayer,
+        interactionDefinition
+      );
     }
   }
 
@@ -170,9 +179,17 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
 function addInteraction(EOxMap, olLayer, interactionDefinition) {
   // Add draw or select interactions based on the interaction type
   if (interactionDefinition.type === "draw")
-    addDraw(EOxMap, olLayer, interactionDefinition.options);
+    addDraw(
+      EOxMap,
+      /** @type {import("ol/layer").Vector} **/ (olLayer),
+      /** @type {DrawOptions} **/ (interactionDefinition.options)
+    );
   else if (interactionDefinition.type === "select")
-    addSelect(EOxMap, olLayer, interactionDefinition.options);
+    addSelect(
+      EOxMap,
+      olLayer,
+      /** @type {SelectOptions} **/ (interactionDefinition.options)
+    );
 }
 
 /**
@@ -180,13 +197,14 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
  *
  * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {EoxLayer} newLayerDefinition - The new layer definition.
- * @param {AnyLayer} existingLayer - The existing layer to be updated.
- * @returns {AnyLayer} - The updated layer.
+ * @param {import("ol/layer/Base").default} existingLayer - The existing layer to be updated.
+ * @returns {import("ol/layer/Base").default} - The updated layer.
  *
  * @throws Will throw an error if the new layer is not compatible with the existing one.
  */
 export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
-  const existingJsonDefinition = existingLayer.get("_jsonDefinition");
+  const existingJsonDefinition =
+    /** @type {EoxLayer} **/ existingLayer.get("_jsonDefinition");
 
   // Check if the new layer is compatible with the existing one
   if (
@@ -204,7 +222,13 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     JSON.stringify(newLayerDefinition.source) !==
     JSON.stringify(existingJsonDefinition.source)
   ) {
-    existingLayer.setSource(newLayer.getSource());
+    /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
+      /** @type {any} **/ existingLayer
+    ).setSource(
+      /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
+        /** @type {any} **/ newLayer
+      ).getSource()
+    );
   }
 
   // Update style if different
@@ -213,6 +237,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     JSON.stringify(newLayerDefinition.style) !==
       JSON.stringify(existingJsonDefinition.style)
   ) {
+    // @ts-ignore
     existingLayer.setStyle(newLayer.getStyle());
   }
 
@@ -237,49 +262,59 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     JSON.stringify(newLayerDefinition.interactions) !==
     JSON.stringify(existingJsonDefinition.interactions)
   ) {
-    existingJsonDefinition.interactions?.forEach((interactionDefinition) => {
-      const correspondingNewInteraction = newLayerDefinition.interactions.find(
-        (i) => i.type === interactionDefinition.type
-      );
-
-      if (!correspondingNewInteraction) {
-        // Remove interactions that don't exist in the new definition
-        EOxMap.removeInteraction(interactionDefinition.options.id);
-      } else {
-        // Update existing interaction if it has changed
-        if (correspondingNewInteraction.type === "draw") {
-          const olDrawInteraction =
-            EOxMap.interactions[correspondingNewInteraction.options.id];
-          olDrawInteraction.setActive(
-            correspondingNewInteraction.options.active
+    existingJsonDefinition.interactions?.forEach(
+      /** @param {EOxInteraction} interactionDefinition **/ (
+        interactionDefinition
+      ) => {
+        const correspondingNewInteraction =
+          newLayerDefinition.interactions.find(
+            (i) => i.type === interactionDefinition.type
           );
 
-          const olModifyInteraction =
-            EOxMap.interactions[
-              `${correspondingNewInteraction.options.id}_modify`
-            ];
-          olModifyInteraction.setActive(
-            correspondingNewInteraction.options.modify
-          );
+        if (!correspondingNewInteraction) {
+          // Remove interactions that don't exist in the new definition
+          EOxMap.removeInteraction(interactionDefinition.options.id);
         } else {
-          const olSelectInteraction =
-            EOxMap.selectInteractions[correspondingNewInteraction.options.id];
-          olSelectInteraction.setActive(
-            correspondingNewInteraction.options.active
-          );
+          // Update existing interaction if it has changed
+          if (correspondingNewInteraction.type === "draw") {
+            const olDrawInteraction =
+              EOxMap.interactions[correspondingNewInteraction.options.id];
+            olDrawInteraction.setActive(
+              correspondingNewInteraction.options.active
+            );
+
+            const olModifyInteraction =
+              EOxMap.interactions[
+                `${correspondingNewInteraction.options.id}_modify`
+              ];
+            olModifyInteraction.setActive(
+              correspondingNewInteraction.options.modify
+            );
+          } else {
+            const olSelectInteraction =
+              EOxMap.selectInteractions[correspondingNewInteraction.options.id];
+            olSelectInteraction.setActive(
+              correspondingNewInteraction.options.active
+            );
+          }
         }
       }
-    });
+    );
 
     // Add new interactions
     newLayerDefinition.interactions?.forEach((interactionDefinition) => {
       const correspondingExistingInteraction =
         existingJsonDefinition.interactions.find(
+          /** @param {EOxInteraction} i **/
           (i) => i.type === interactionDefinition.type
         );
 
       if (!correspondingExistingInteraction) {
-        addInteraction(EOxMap, existingLayer, interactionDefinition);
+        addInteraction(
+          EOxMap,
+          /** @type {SelectLayer} **/ (/** @type {any} **/ existingLayer),
+          interactionDefinition
+        );
       }
     });
   }
@@ -287,13 +322,14 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Update group layers if the layer is a group
   if (newLayerDefinition.type === "Group") {
     const newLayerIds = newLayerDefinition.layers.map((l) => l.properties?.id);
+    //@ts-ignore
     const layerCollection = existingLayer.getLayers();
 
     // Create a shallow copy of the layers to avoid modifying the collection while iterating
     const layerArray = layerCollection.getArray().slice();
 
     // Remove layers that do not exist in the new definition
-    layerArray.forEach((l) => {
+    layerArray.forEach((/** @type {import("ol/layer/Base").default}  **/ l) => {
       if (!newLayerIds.includes(l.get("id"))) {
         layerCollection.remove(l);
       }
@@ -305,7 +341,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       if (
         layerCollection
           .getArray()
-          .map((l) => l.get("id"))
+          .map((/** @type {import("ol/layer/Base").default}  **/ l) =>
+            l.get("id")
+          )
           .includes(newLayerId)
       ) {
         // Layer already exists, update it
@@ -322,12 +360,19 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     });
 
     // Reorder the layers to match the new definition
-    layerCollection.getArray().sort((layerA, layerB) => {
-      return (
-        newLayerIds.indexOf(layerA.get("id")) -
-        newLayerIds.indexOf(layerB.get("id"))
+    layerCollection
+      .getArray()
+      .sort(
+        (
+          /** @type {import("ol/layer/Base").default} **/ layerA,
+          /** @type {import("ol/layer/Base").default} **/ layerB
+        ) => {
+          return (
+            newLayerIds.indexOf(layerA.get("id")) -
+            newLayerIds.indexOf(layerB.get("id"))
+          );
+        }
       );
-    });
 
     layerCollection.changed();
   }
@@ -344,7 +389,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
  *
  * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {Array<EoxLayer>} layerArray - Array of layer definitions.
- * @returns {Array} - An array of created layers.
+ * @returns {Array<EoxLayer>} - An array of created layers.
  */
 export const generateLayers = (EOxMap, layerArray) => {
   if (!layerArray) return [];
@@ -378,6 +423,8 @@ function setSyncListeners(olLayer, eoxLayer) {
   // Sync other property changes to the layer definition
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") return;
+
+    // @ts-ignore
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
 }

@@ -25,10 +25,9 @@ export function addScrollInteractions(map, customInteraction = false) {
       // On touch devices, allow dragging with two fingers or a modifier key
       map.addInteraction(
         new DragPan({
-          condition: (event) => {
+          condition: function (event) {
             // @ts-expect-error - 'this' implicitly has type 'any'
-            const pointerCount =
-              /** @type {import("ol/interaction/DragPan").default} **/ this.getPointerCount();
+            const pointerCount = this.getPointerCount();
             return pointerCount === 2 || platformModifierKeyOnly(event);
           },
         })

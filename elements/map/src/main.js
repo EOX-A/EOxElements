@@ -40,6 +40,7 @@ import {
  * @typedef {import("../types").ControlDictionary} ControlDictionary
  * @typedef {import("../types").ConfigObject} ConfigObject
  * @typedef {import("../types").ProjectionLike} ProjectionLike
+ * @typedef {import("../types").AnyLayerWithSource} AnyLayerWithSource
  * */
 
 /**
@@ -446,7 +447,7 @@ export class EOxMap extends LitElement {
    * Retrieves a layer from the map by its ID.
    *
    * @param {string} layerId - The ID of the layer to retrieve.
-   * @returns {Object} The layer object.
+   * @returns {AnyLayerWithSource} The layer object.
    */
   getLayerById(layerId) {
     return getLayerById(this, layerId);

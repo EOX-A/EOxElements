@@ -161,7 +161,9 @@ export class EOxSelectInteraction {
             event.pixel[1] > this.eoxMap.offsetHeight / 2 ? "bottom" : "top";
           overlay.setPositioning(`${yPosition}-${xPosition}`);
           overlay.setPosition(feature ? event.coordinate : null);
-          if (feature && this.tooltip.renderContent) {
+          // @ts-expect-error - Property 'renderContent' does not exist on type 'Element'
+          if (feature && this.tooltip?.renderContent) {
+            // @ts-expect-error - Property 'renderContent' does not exist on type 'Element'
             this.tooltip.renderContent(feature);
           }
         }

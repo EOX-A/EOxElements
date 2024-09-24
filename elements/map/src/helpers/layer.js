@@ -10,7 +10,7 @@ import Group from "ol/layer/Group";
  *
  * @param {import("../main").EOxMap} EOxMap - Instance of the EOxMap class.
  * @param {string} layerId - The ID of the OpenLayers layer to find.
- * @returns {AnyLayerWithSource | undefined} - The layer with the specified ID, or `undefined` if it does not exist.
+ * @returns {AnyLayerWithSource} - The layer with the specified ID, or `undefined` if it does not exist.
  */
 export function getLayerById(EOxMap, layerId) {
   // Get a flat array of all layers in the map, including those inside groups
@@ -27,7 +27,6 @@ export function getLayerById(EOxMap, layerId) {
  * https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers
  *
  * @param {Array<AnyLayer>} layers - Array of OpenLayers layers, possibly containing groups.
- * @returns {Array<AnyLayerWithSource>} - A flat array of all layers, including those inside groups.
  */
 export function getFlatLayersArray(layers) {
   const flatLayers = [];
