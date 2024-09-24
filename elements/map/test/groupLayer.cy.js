@@ -314,7 +314,7 @@ describe("layers", () => {
     });
 
     it("update tile layer inside group ", () => {
-      cy.intercept(/^.*s2maps-tiles.*$/, {
+      cy.intercept(/^.*tiles.maps.eox.*$/, {
         fixture: "./map/test/fixtures/tiles/wms/wms0.png",
       });
 
@@ -330,7 +330,7 @@ describe("layers", () => {
             },
             source: {
               type: "XYZ",
-              url: "//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpeg",
+              url: "//tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpeg",
             },
           },
         ],
@@ -351,7 +351,7 @@ describe("layers", () => {
               },
               source: {
                 type: "XYZ",
-                url: "//s2maps-tiles.eu/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpeg",
+                url: "//tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2022_3857/default/g/{z}/{y}/{x}.jpeg",
               },
             },
           ],

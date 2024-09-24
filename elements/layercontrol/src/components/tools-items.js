@@ -10,6 +10,7 @@ export class EOxLayerControlTabs extends LitElement {
     tabs: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   constructor() {
@@ -44,6 +45,13 @@ export class EOxLayerControlTabs extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
   }
 
   /**
@@ -54,7 +62,8 @@ export class EOxLayerControlTabs extends LitElement {
   }
 
   /** @param {number} index */
-  #labelHighlightClass = (index) => this.selectedTab === index && "highlighted";
+  #labelHighlightClass = (index) =>
+    (this.selectedTab === index || this.toolsAsList) && "highlighted";
 
   /**
    * Renders a tabbed interface that displays tabs and corresponding content areas based on the provided 'tabs' and 'actions'.
@@ -76,35 +85,40 @@ export class EOxLayerControlTabs extends LitElement {
           isListAvail,
           () => html`
             <nav>
-              <div>
-                <!-- Labels for tabs -->
-                ${map(
-                  tabs,
-                  (tab, index) =>
-                    html`
-                      <label
-                        class=${this.#labelHighlightClass(index)}
-                        @click=${() => (this.selectedTab = index)}
-                      >
-                        <!-- Customizable icon for each tab -->
-                        <slot name=${`${tab}-icon`}>${tab}</slot>
-                      </label>
-                    `
-                )}
-              </div>
-              <div>
-                <!-- Icons for actions -->
-                ${map(
-                  actions,
-                  (action) =>
-                    html`
-                      <span>
-                        <!-- Customizable icon for each action -->
-                        <slot name=${`${action}-icon`}>${action}</slot>
-                      </span>
-                    `
-                )}
-              </div>
+              ${when(
+                !this.toolsAsList,
+                () => html`
+                  <div>
+                    <!-- Labels for tabs -->
+                    ${map(
+                      tabs,
+                      (tab, index) =>
+                        html`
+                          <label
+                            class=${this.#labelHighlightClass(index)}
+                            @click=${() => (this.selectedTab = index)}
+                          >
+                            <!-- Customizable icon for each tab -->
+                            <slot name=${`${tab}-icon`}>${tab}</slot>
+                          </label>
+                        `
+                    )}
+                  </div>
+                  <div>
+                    <!-- Icons for actions -->
+                    ${map(
+                      actions,
+                      (action) =>
+                        html`
+                          <span>
+                            <!-- Customizable icon for each action -->
+                            <slot name=${`${action}-icon`}>${action}</slot>
+                          </span>
+                        `
+                    )}
+                  </div>
+                `
+              )}
             </nav>
           `
         )}
@@ -113,6 +127,15 @@ export class EOxLayerControlTabs extends LitElement {
           ${map(
             tabs,
             (tab, index) => html`
+              ${when(
+                this.toolsAsList,
+                () => html`
+                  <label class="listed">
+                    <!-- Customizable icon for each tab -->
+                    <slot name=${`${tab}-icon`}>${tab}</slot>
+                  </label>
+                `
+              )}
               <div class="tab ${this.#labelHighlightClass(index)}">
                 <!-- Content slot for each tab -->
                 <slot name=${`${tab}-content`}>${tab}</slot>
@@ -147,6 +170,11 @@ export class EOxLayerControlTabs extends LitElement {
   `;
 
   #styleEOX = `
+    .listed {
+      background: #ffffff !important;
+      display: flex;
+      justify-content: end;
+    }
     .tabbed {
       font-size: small;
     }
@@ -170,4 +198,4 @@ export class EOxLayerControlTabs extends LitElement {
   `;
 }
 
-customElements.define("eox-layercontrol-tabs", EOxLayerControlTabs);
+customElements.define("eox-layercontrol-tools-items", EOxLayerControlTabs);

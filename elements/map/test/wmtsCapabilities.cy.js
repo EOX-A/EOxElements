@@ -36,12 +36,9 @@ describe("WMTS Capabilities Source", () => {
 
           cy.get("eox-map").should(($el) => {
             const eoxMap = $el[0];
-            const layer = eoxMap.getLayerById("wmtsLayer");
-            layer.once("postrender", (e) => {
-              expect(e.target.getSource().getState()).to.be.equal("ready");
-              expect(e.target.getSource().tileCache.count_).to.be.greaterThan(
-                0
-              );
+            const source = eoxMap.getLayerById("wmtsLayer").getSource();
+            source.once("tileloadend", (e) => {
+              expect(e.tile.getState()).to.be.equal(2);
               resolve();
             });
           });
