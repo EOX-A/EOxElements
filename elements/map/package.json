@@ -1,10 +1,10 @@
 {
   "name": "@eox/map",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "type": "module",
   "dependencies": {
     "lit": "^3.0.2",
-    "ol": "^10.0.0",
+    "ol": "^10.2.0",
     "ol-stac": "^1.0.0-beta.10",
     "proj4": "^2.9.2"
   },
