@@ -4,3 +4,4 @@ export { default as CollectionStory } from "./collection"; // Input form based o
 export { default as ExternalStory } from "./external"; // Input form based on External URL
 export { default as MarkdownStory } from "./markdown"; // Input form based on Markdown Editor config
 export { default as UnStyledStory } from "./unstyled"; // Unstyled input form
+export { default as DrawToolsStory } from "./drawtools"; // Input form based on drawtools

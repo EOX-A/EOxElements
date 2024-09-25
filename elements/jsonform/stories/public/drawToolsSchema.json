@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "properties": {
+    "bboxes": {
+      "title": "Multi bbox example",
+      "type": "object",
+      "properties": {},
+      "format": "bounding-boxes"
+    },
+    "bbox": {
+      "title": "Single bbox example",
+      "type": "object",
+      "properties": {},
+      "format": "bounding-box"
+    }
+  }
+}

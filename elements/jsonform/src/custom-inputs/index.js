@@ -1,5 +1,6 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { MinMaxEditor } from "./minmax";
+import { BoundingBoxesEditor } from "./bounding-boxes";
 
 // Define custom input types
 const inputs = [
@@ -7,6 +8,16 @@ const inputs = [
     type: "object",
     format: "minmax",
     func: MinMaxEditor,
+  },
+  {
+    type: "object",
+    format: "bounding-boxes",
+    func: BoundingBoxesEditor,
+  },
+  {
+    type: "object",
+    format: "bounding-box",
+    func: BoundingBoxesEditor,
   },
 ];
 
