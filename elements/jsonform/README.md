@@ -1,5 +1,7 @@
 # Jsonform
 
+Based on [JSON Editor](https://github.com/json-editor/json-editor).
+
 ## Usage
 
 ```
