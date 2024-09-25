@@ -36,10 +36,6 @@ export default defineConfig({
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
-    setupNodeEvents(on, config) {
-      require("@cypress/code-coverage/task")(on, config);
-      return config;
-    },
   },
   component: {
     supportFile: "cypress/support/component.ts",

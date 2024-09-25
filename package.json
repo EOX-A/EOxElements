@@ -25,7 +25,6 @@
     "build:storybook": "npm run styles && storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
-    "instrument": "nyc instrument ./elements ./instrumented",
     "nyc:report": "nyc report --reporter=text-summary"
   },
   "devDependencies": {
