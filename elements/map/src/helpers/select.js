@@ -239,7 +239,7 @@ export class EOxSelectInteraction {
 
   /**
    * Highlights features by their IDs and optionally pans into their extent.
-   * @param {Array<string>} ids - Array of feature IDs to highlight.
+   * @param {Array<string | number>} ids - Array of feature IDs to highlight.
    * @param {Object} [fitOptions] - Options for panning into the highlighted features.
    */
   highlightById(ids, fitOptions) {

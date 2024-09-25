@@ -20,5 +20,5 @@
     "checkJs": true
   },
   "include": ["**/*.ts", "../../cypress/cypress.d.ts", "**/*.js"],
-  "exclude": ["dist", "test", "map.stories.js"]
+  "exclude": ["dist", "test"] // "test" can be removed once we refactor `test` code
 }
