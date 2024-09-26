@@ -23,6 +23,7 @@ export const styleEOX = `
   );
   --background-color: #fff;
   --padding: 0.5rem;
+  --text-transform: capitalize;
 }
 * {
   font-family: Roboto, sans-serif;
@@ -59,7 +60,7 @@ details > summary::-webkit-details-marker {
 .title {
   font-size: 13px;
   align-items: center;
-  text-transform: capitalize;
+  text-transform: var(--text-transform);
 }
 .subtitle {
   font-size: 11px;
@@ -110,7 +111,7 @@ eox-itemfilter-expandcontainer > [data-type=filter] {
 }
 [data-type=filter] .title,
 details summary {
-  text-transform: capitalize;
+  text-transform: var(--text-transform);
 }
 li,
 label,
@@ -290,7 +291,7 @@ button.icon {
 }
 .chip-title {
   pointer-events: none;
-  text-transform: capitalize;
+  text-transform: var(--text-transform);
 }
 .chip {
   display: flex;
