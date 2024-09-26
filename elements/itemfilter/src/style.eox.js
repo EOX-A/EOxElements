@@ -142,6 +142,9 @@ section:not(section:last-of-type) {
   flex-direction: column;
 }
 ul:not(#filters) > li {
+  padding: 5px 0;
+}
+.details-results ul:not(#filters) li {
   padding: 5px var(--padding);
 }
 section {
