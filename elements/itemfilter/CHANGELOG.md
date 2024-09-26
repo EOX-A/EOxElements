@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.1...itemfilter-v1.1.2) (2024-09-26)
+
+
+### Bug Fixes
+
+* **style:** Introduce padding variable and fix slider padding ([#1280](https://github.com/EOX-A/EOxElements/issues/1280)) ([9e80a04](https://github.com/EOX-A/EOxElements/commit/9e80a04dfa370fd57d61a10c7d4e121c8327af5f))
+
 ## [1.1.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.0...itemfilter-v1.1.1) (2024-09-23)
 
 
