@@ -252,7 +252,10 @@ export class EOxLayerControl extends LitElement {
     `;
   }
 
-  #styleEOX = `* { font-family: Roboto, sans-serif; }`;
+  #styleEOX = `* {
+    font-family: Roboto, sans-serif;
+    --padding: 0.5rem
+  }`;
 }
 
 customElements.define("eox-layercontrol", EOxLayerControl);
