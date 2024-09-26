@@ -144,7 +144,7 @@ section:not(section:last-of-type) {
 ul:not(#filters) > li {
   padding: 5px 0;
 }
-.details-results ul:not(#filters) li {
+ul#results li {
   padding: 5px var(--padding);
 }
 section {
