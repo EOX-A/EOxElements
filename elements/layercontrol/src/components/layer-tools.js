@@ -283,6 +283,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     details.tools summary .icon::before {
       height: 16px;
       width: 16px;
+      margin-right: var(--padding);
     }
     eox-layercontrol-tools-items button.icon,
     eox-layercontrol-tools-items .button.icon {
