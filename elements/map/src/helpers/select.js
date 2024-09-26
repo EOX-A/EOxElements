@@ -115,7 +115,7 @@ export class EOxSelectInteraction {
       (feature, resolution) => {
         if (
           this.selectedFids.length &&
-          this.selectedFids.includes(`${this.getId(feature)}`)
+          this.selectedFids.includes(this.getId(feature))
         ) {
           return initialStyle(feature, resolution); // Apply style only if the feature is selected
         }
