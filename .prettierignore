@@ -2,3 +2,5 @@ dist
 docs
 fixtures
 CHANGELOG.md
+coverage
+.nyc_output
