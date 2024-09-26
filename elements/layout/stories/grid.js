@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { STORIES_LAYOUT_STYLE } from "../src/enums";
+import { STORIES_LAYOUT_STYLE, STORIES_LAYOUT_ITEM_STYLE } from "../src/enums";
 
 // Generate one [x,y] array for each slot in a 12x12 grid
 const renderItems = () => {
@@ -24,6 +24,11 @@ export const Grid = {
           >`
       )}
     </eox-layout>
+    <style>
+      eox-layout-item {
+        ${STORIES_LAYOUT_ITEM_STYLE}
+      }
+    </style>
   `,
 };
 
