@@ -22,6 +22,7 @@ export const styleEOX = `
     transparent
   );
   --background-color: #fff;
+  --padding: 0.5rem;
 }
 * {
   font-family: Roboto, sans-serif;
@@ -48,7 +49,7 @@ details summary {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #0002;
-  padding: .5rem 0;
+  padding: .5rem var(--padding);
 }
 
 details > summary::-webkit-details-marker {
@@ -73,7 +74,8 @@ h6.main-heading {
   font-size: 1rem;
   margin-block-start: 1.33em;
   margin-block-end: 1.33em;
-  margin-top: 8px;
+  margin-top: var(--padding);
+  padding: 0 var(--padding);
 }
 details summary .title {
   display: flex;
@@ -103,6 +105,8 @@ eox-itemfilter-expandcontainer > [data-type=filter] {
   display: block;
   height: calc(100% - 32px);
   overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 var(--padding);
 }
 [data-type=filter] .title,
 details summary {
@@ -138,7 +142,10 @@ section:not(section:last-of-type) {
   flex-direction: column;
 }
 ul:not(#filters) > li {
-  padding: 5px 10px;
+  padding: 5px 0;
+}
+.details-results ul:not(#filters) li {
+  padding: 5px var(--padding);
 }
 section {
   position: relative;
@@ -146,8 +153,8 @@ section {
 }
 button#filter-reset {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 0;
+  right: var(--padding);
   padding: 2px 10px;
 }
 .count {
@@ -166,7 +173,12 @@ eox-itemfilter-range,
 tc-range-slider {
   align-items: center;
   display: block;
-  padding-left: 0.6rem;
+}
+tc-range-slider {
+  width: calc(100% - 16px);
+  margin-left: 8px;
+  margin-right: 8px;
+  --width: 100%;
 }
 .range-before,
 .range-after {
