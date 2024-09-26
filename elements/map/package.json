@@ -27,8 +27,8 @@
   ],
   "main": "./dist/eox-map.js",
   "scripts": {
-    "build": "tsc && vite build --config vite.config.advancedLayersAndSources.ts && vite build --config vite.config.ts",
-    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.ts && vite build --config vite.config.ts --watch",
+    "build": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
+    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
     "lint:fix": "eslint --ext .js,.ts . --fix",
