@@ -1,12 +1,12 @@
 {
   "elements/drawtools": "0.9.0",
-  "elements/itemfilter": "1.1.1",
-  "elements/layercontrol": "0.21.0",
+  "elements/itemfilter": "1.1.2",
+  "elements/layercontrol": "0.21.1",
   "elements/map": "1.13.1",
   "elements/stacinfo": "0.4.0",
   "elements/timecontrol": "0.8.0",
   "elements/jsonform": "0.8.2",
-  "elements/layout": "0.1.0",
+  "elements/layout": "0.1.1",
   "elements/storytelling": "1.1.0",
   "elements/geosearch": "0.3.0"
 }
