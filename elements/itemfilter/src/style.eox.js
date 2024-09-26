@@ -22,7 +22,7 @@ export const styleEOX = `
     transparent
   );
   --background-color: #fff;
-  --padding: 0;
+  --padding: 0.5rem;
 }
 * {
   font-family: Roboto, sans-serif;
