@@ -192,9 +192,6 @@ export class EOxLayerControlLayerList extends LitElement {
     li {
       border-bottom: 1px solid #0041703a;
     }
-    li:first-child {
-      border-top: 1px solid #0041703a;
-    }
     li:last-child {
       border: none;
     }
