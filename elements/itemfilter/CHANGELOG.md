@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.2...itemfilter-v1.2.0) (2024-09-26)
+
+
+### Features
+
+* **style:** Add text-transform variable ([#1285](https://github.com/EOX-A/EOxElements/issues/1285)) ([ea4aa65](https://github.com/EOX-A/EOxElements/commit/ea4aa65881cd687c0a959262f6e786ed17667e12))
+
+
+### Bug Fixes
+
+* **style:** Adapt padding for non-aggregated lists ([#1283](https://github.com/EOX-A/EOxElements/issues/1283)) ([253deef](https://github.com/EOX-A/EOxElements/commit/253deeff4c5ed99daeb72e9e50630c2e6cf13c51))
+
 ## [1.1.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.1...itemfilter-v1.1.2) (2024-09-26)
 
 
