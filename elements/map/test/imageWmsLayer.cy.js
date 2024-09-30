@@ -1,21 +1,13 @@
-import { html } from "lit";
 import "../src/main";
-import imageWmsLayerStyleJson from "./imageWmsLayer.json";
+import { loadImageWmsLayer } from "./cases/layer-type/index.js";
 
 // fixme: imageWMS is identical to tileWMS
+/**
+ * Test suite for the EOX Map to load WMS layer
+ */
 describe("layers", () => {
-  it("loads a WMS Layer", () => {
-    cy.intercept(/^.*geoserver.*$/, {
-      fixture: "./map/test/fixtures/tiles/wms/wms0.png",
-    });
-    cy.mount(html`<eox-map .layers=${imageWmsLayerStyleJson}></eox-map>`).as(
-      "eox-map"
-    );
-    cy.get("eox-map").and(($el) => {
-      const eoxMap = $el[0];
-      eoxMap.map.getView().setZoom(0);
-      const layers = eoxMap.map.getLayers().getArray();
-      expect(layers).to.have.length(1);
-    });
-  });
+  /**
+   * Test case to load Image WMS Layer
+   */
+  it("loads a WMS Layer", () => loadImageWmsLayer());
 });

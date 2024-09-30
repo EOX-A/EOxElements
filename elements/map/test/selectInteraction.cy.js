@@ -1,9 +1,11 @@
-import { html } from "lit";
 import "../src/main";
-import vectorTileLayerJson from "./vectorTilesLayer.json";
-import vectorLayerJson from "./vectorLayer.json";
-import { simulateEvent } from "./utils/events";
-import ecoRegionsFixture from "./fixtures/ecoregions.json";
+import {
+  addSelectInteractionVector,
+  addSelectInteractionVectorTile,
+  highlightByIdVectorLayer,
+  highlightByIdVectorTileLayer,
+  removeSelectInteraction,
+} from "./cases/select/index.js";
 
 const vectorTileInteraction = [
   {
@@ -28,171 +30,36 @@ const vectorTileInteraction = [
   },
 ];
 
+/**
+ * Test suite for the EOX Map to test select interaction
+ */
 describe("select interaction on click", () => {
-  it("adds a select interaction to VectorTile layer", () => {
-    cy.intercept(/^.*geoserver.*$/, {
-      fixture:
-        "./map/test/fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
-      encoding: "binary",
-    });
-    return new Cypress.Promise((resolve) => {
-      const layerJson = JSON.parse(JSON.stringify(vectorTileLayerJson));
-      layerJson[0].interactions = vectorTileInteraction;
-      cy.mount(html`<eox-map .layers=${layerJson}></eox-map>`).as("eox-map");
-      cy.get("eox-map").and(($el) => {
-        const eoxMap = $el[0];
-        eoxMap.addEventListener("select", (evt) => {
-          expect(evt.detail.feature).to.exist;
-          resolve();
-        });
-        eoxMap.map.on("loadend", () => {
-          simulateEvent(eoxMap.map, "click", 65, 13);
-        });
-      });
-    });
-  });
+  /**
+   * Test case to adds a select interaction to VectorTile layer
+   */
+  it("adds a select interaction to VectorTile layer", () =>
+    addSelectInteractionVectorTile(vectorTileInteraction));
 
-  it("adds a select interaction to Vector layer", () => {
-    cy.intercept(
-      "https://openlayers.org/data/vector/ecoregions.json",
-      (req) => {
-        req.reply(ecoRegionsFixture);
-      }
-    );
-    const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
-    styleJson[0].minZoom = 3;
-    styleJson[0].interactions = [
-      {
-        type: "select",
-        options: {
-          id: "selectInteraction",
-          condition: "click",
-          style: {
-            "stroke-color": "white",
-            "stroke-width": 3,
-          },
-        },
-      },
-    ];
-    cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
-    cy.get("eox-map").and(($el) => {
-      const eoxMap = $el[0];
+  /**
+   * Test case to adds a select interaction to Vector layer
+   */
+  it("adds a select interaction to Vector layer", () =>
+    addSelectInteractionVector());
 
-      eoxMap.addEventListener("select", (evt) => {
-        expect(evt.detail.feature).to.exist;
-      });
-      eoxMap.map.on("loadend", () => {
-        simulateEvent(eoxMap.map, "click", 120, -140);
-      });
-    });
-  });
+  /**
+   * Test case to highlight by ID (Vector Layer)
+   */
+  it("programmatically highlight by IDs (VectorLayer)", () =>
+    highlightByIdVectorLayer());
 
-  it("programmatically highlight by IDs (VectorLayer)", () => {
-    return new Cypress.Promise((resolve) => {
-      cy.intercept(
-        "https://openlayers.org/data/vector/ecoregions.json",
-        (req) => {
-          req.reply(ecoRegionsFixture);
-        }
-      );
-      const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
-      styleJson[0].interactions = [
-        {
-          type: "select",
-          options: {
-            id: "selectInteraction",
-            condition: "click",
-            style: {
-              "stroke-color": "white",
-              "stroke-width": 3,
-            },
-          },
-        },
-      ];
-      cy.mount(
-        html`<eox-map .center=${[0, 0]} .layers=${styleJson}></eox-map>`
-      ).as("eox-map");
+  /**
+   * Test case to highlight by ID (Vector Tile Layer)
+   */
+  it.only("programmatically highlight by IDs (VectorTileLayer)", () =>
+    highlightByIdVectorTileLayer(vectorTileInteraction));
 
-      cy.get("eox-map").and(($el) => {
-        const eoxMap = $el[0];
-        eoxMap.map.on("loadend", () => {
-          //on loadend, programmatically select a few features...
-          eoxMap.selectInteractions.selectInteraction.highlightById(
-            [710, 717, 828],
-            {
-              duration: 400,
-              padding: [50, 50, 50, 50],
-            }
-          );
-          // ..and expect the map to animate to them
-          setTimeout(() => {
-            const center = eoxMap.map.getView().getCenter();
-            expect(center, "animates to selected features").to.not.deep.equal([
-              0, 0,
-            ]);
-            resolve();
-          }, 200);
-        });
-      });
-    });
-  });
-
-  it.only("programmatically highlight by IDs (VectorTileLayer)", () => {
-    const layerJson = JSON.parse(JSON.stringify(vectorTileLayerJson));
-    layerJson[0].interactions = vectorTileInteraction;
-    return new Cypress.Promise((resolve) => {
-      cy.intercept(/^.*geoserver.*$/, {
-        fixture:
-          "./map/test/fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
-        encoding: "binary",
-      });
-      layerJson[0].interactions = vectorTileInteraction;
-      cy.mount(
-        html`<eox-map .center=${[0, 0]} .layers=${layerJson}></eox-map>`
-      ).as("eox-map");
-
-      cy.get("eox-map").and(($el) => {
-        const eoxMap = $el[0];
-        eoxMap.map.on("loadend", () => {
-          //on loadend, programmatically select a few features...
-          eoxMap.selectInteractions.selectInteraction.highlightById([889], {
-            duration: 400,
-            padding: [50, 50, 50, 50],
-          });
-          // ..and expect the map to animate to them
-          setTimeout(() => {
-            const center = eoxMap.map.getView().getCenter();
-            expect(center, "animates to selected features").to.not.deep.equal([
-              0, 0,
-            ]);
-            resolve();
-          }, 200);
-        });
-      });
-    });
-  });
-
-  it("remove interaction", () => {
-    const styleJson = JSON.parse(JSON.stringify(vectorTileLayerJson));
-    styleJson[0].interactions = [
-      {
-        type: "select",
-        options: {
-          id: "selectInteraction",
-          condition: "click",
-          style: {
-            "stroke-color": "white",
-            "stroke-width": 3,
-          },
-        },
-      },
-    ];
-    cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
-    cy.get("eox-map").and(($el) => {
-      const eoxMap = $el[0];
-      expect(eoxMap.selectInteractions.selectInteraction).to.exist;
-      eoxMap.layers = vectorLayerJson;
-      expect(eoxMap.selectInteractions.selectInteraction).to.not.exist;
-    });
-  });
+  /**
+   * Test case to remove interaction
+   */
+  it("remove interaction", () => removeSelectInteraction());
 });

@@ -1,16 +1,11 @@
-import { Map, MapBrowserEvent } from "ol";
+import { MapBrowserEvent } from "ol";
 
 const width = 400;
 const height = 400;
 /**
  * Simulates a browser event on the map viewport.
  */
-export function simulateEvent(
-  map: Map,
-  type: "pointermove" | "pointerup" | "pointerdown" | "click",
-  x: number,
-  y: number
-) {
+export function simulateEvent(map, type, x, y) {
   const viewport = map.getViewport();
   // calculated in case body has top < 0 (test runner with small window)
   const position = viewport.getBoundingClientRect();
@@ -23,11 +18,7 @@ export function simulateEvent(
     preventDefault: function () {},
     pointerType: "mouse",
   };
-  const simulatedEvent = new MapBrowserEvent(
-    type,
-    map,
-    event as unknown as UIEvent
-  );
+  const simulatedEvent = new MapBrowserEvent(type, map, event);
   map.handleMapBrowserEvent(simulatedEvent);
   return simulatedEvent;
 }

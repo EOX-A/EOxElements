@@ -1,19 +1,12 @@
-import { html } from "lit";
 import "../src/main";
-import tileWmsLayerStyleJson from "./tileWmsLayer.json";
+import { loadTileWmsLayer } from "./cases/layer-type";
 
+/**
+ * Test suite for the EOX Map to load Tile WMS layer
+ */
 describe("layers", () => {
-  it("loads a tiled WMS Layer", () => {
-    cy.intercept(/^.*sentinel-hub.*$/, {
-      fixture: "./map/test/fixtures/tiles/wms/wms0.png",
-    });
-    cy.mount(html`<eox-map .layers=${tileWmsLayerStyleJson}></eox-map>`).as(
-      "eox-map"
-    );
-    cy.get("eox-map").and(($el) => {
-      const layers = $el[0].map.getLayers().getArray();
-      expect(layers).to.have.length(1);
-      expect(layers[0].get("id")).to.be.equal("customId");
-    });
-  });
+  /**
+   * Test case to load Tile WMS Layer
+   */
+  it("loads a tiled WMS Layer", () => loadTileWmsLayer());
 });

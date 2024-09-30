@@ -1,39 +1,21 @@
-import { html } from "lit";
 import "../src/main";
+import {
+  syncOneMapToAnother,
+  syncOneMapToAnotherUsingMapEle,
+} from "./cases/sync/index.js";
 
+/**
+ * Test suite for the EOX Map to sync map
+ */
 describe("map syncing", () => {
-  it("syncs one map to another", () => {
-    const zoom = 7;
-    const center = [10, 10];
-    cy.mount(
-      html`<eox-map id="a"></eox-map> <eox-map id="b" sync="#a"></eox-map>`
-    );
-    cy.get("eox-map#a").and(($el) => {
-      const olMapView = $el[0].map.getView();
-      olMapView.setZoom(zoom);
-      olMapView.setCenter(center);
-    });
-    cy.get("eox-map#b").and(($el) => {
-      const olMapView = $el[0].map.getView();
-      expect(olMapView.getZoom()).to.be.equal(zoom);
-      expect(olMapView.getCenter()).to.deep.eq(center);
-    });
-  });
-  it("supports passing an eox-map to the sync property", () => {
-    const zoom = 7;
-    const center = [10, 10];
-    cy.mount(html`<eox-map id="a"></eox-map> <eox-map id="b"></eox-map>`);
-    cy.get("eox-map#a").and(($el) => {
-      const olMapView = $el[0].map.getView();
-      olMapView.setZoom(zoom);
-      olMapView.setCenter(center);
-    });
-    cy.get("eox-map#b").and(($el) => {
-      const eoxMap = $el[0];
-      eoxMap.sync = document.querySelector("eox-map#a");
-      const olMapView = eoxMap.map.getView();
-      expect(olMapView.getZoom()).to.be.equal(zoom);
-      expect(olMapView.getCenter()).to.deep.eq(center);
-    });
-  });
+  /**
+   * Test case to syncs one map to another
+   */
+  it("syncs one map to another", () => syncOneMapToAnother());
+
+  /**
+   * Test case to syncs one map to another using `eox-map` element
+   */
+  it("supports passing an eox-map to the sync property", () =>
+    syncOneMapToAnotherUsingMapEle());
 });
