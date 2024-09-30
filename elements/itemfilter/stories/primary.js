@@ -33,8 +33,8 @@ function PrimaryStory() {
           expanded: true,
           validation: {
             pattern: "[a-z]{0,10}",
-            message: "Maximum 10 lowercase characters"
-          }
+            message: "Maximum 10 lowercase characters",
+          },
         },
         {
           key: "code",

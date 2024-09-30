@@ -67,8 +67,8 @@ export class EOxItemFilterText extends LitElement {
    * Debounced version of the input handler to improve performance by limiting the rate at which the input handler is called.
    */
   debouncedInputHandler = _debounce(this.#inputHandler, 500, {
-      leading: true,
-    });
+    leading: true,
+  });
 
   /**
    * Overrides the default createRenderRoot method to render in the light DOM.
@@ -101,7 +101,11 @@ export class EOxItemFilterText extends LitElement {
             />
           </div>
         </div>
-        <small class="error-validation">${this.filterObject.validation && this.isValid === false ? this.filterObject.validation.message : "" }</small>
+        <small class="error-validation"
+          >${this.filterObject.validation && this.isValid === false
+            ? this.filterObject.validation.message
+            : ""}</small
+        >
       `
     );
   }
