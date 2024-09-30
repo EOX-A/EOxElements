@@ -95,7 +95,7 @@ export class EOxItemFilterText extends LitElement {
               part="input-search"
               value="${Object.values(this.filterObject.state)[0]}"
               tabindex=${this.tabIndex}
-              pattern="${this.filterObject.validation?.pattern}"
+              pattern="${this.filterObject.validation?.pattern || ".*"}"
               @input="${this.debouncedInputHandler}"
               @click=${(evt) => evt.stopPropagation()}
             />
