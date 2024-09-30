@@ -19,7 +19,7 @@ export class EOxItemFilterText extends LitElement {
       filterObject: { attribute: false, type: Object },
       tabIndex: { attribute: false, type: Number },
       unstyled: { type: Boolean },
-      invalid: { attribute: false, type: Boolean },
+      isValid: { state: true, type: Boolean },
     };
   }
 
@@ -67,8 +67,8 @@ export class EOxItemFilterText extends LitElement {
    * Debounced version of the input handler to improve performance by limiting the rate at which the input handler is called.
    */
   debouncedInputHandler = _debounce(this.#inputHandler, 500, {
-    leading: true,
-  });
+      leading: true,
+    });
 
   /**
    * Overrides the default createRenderRoot method to render in the light DOM.
@@ -98,11 +98,10 @@ export class EOxItemFilterText extends LitElement {
               pattern="${this.filterObject.validation?.pattern}"
               @input="${this.debouncedInputHandler}"
               @click=${(evt) => evt.stopPropagation()}
-              @invalid=${() => this.invalid = true}
             />
           </div>
         </div>
-        <small class="error-validation">${this.filterObject.validation && this.invalid ? this.filterObject.validation.message : this.invalid }</small>
+        <small class="error-validation">${this.filterObject.validation && this.isValid === false ? this.filterObject.validation.message : "" }</small>
       `
     );
   }

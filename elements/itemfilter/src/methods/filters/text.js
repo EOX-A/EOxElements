@@ -21,6 +21,7 @@ export function resetTextMethod(EOxItemFilterText) {
 export function textInputHandlerMethod(EOxItemFilterText) {
   const searchInput =
     EOxItemFilterText.renderRoot.querySelector("input[type='text']");
+  EOxItemFilterText.isValid = searchInput.checkValidity();
   EOxItemFilterText.filterObject.keys.forEach((key) => {
     EOxItemFilterText.filterObject.state[key] = searchInput.value;
   });
