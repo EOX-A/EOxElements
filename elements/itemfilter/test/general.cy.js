@@ -12,6 +12,7 @@ import {
   externalFilterTest,
   nestedPropertyTest,
   subtitleTest,
+  validationTest,
 } from "./cases/general/";
 
 /**
@@ -36,6 +37,10 @@ describe("Item Filter Config", () => {
               title: "Search",
               type: "text",
               expanded: true,
+              validation: {
+                pattern: "[a-z]{0,10}",
+                message: "Maximum 10 lowercase characters",
+              },
             },
             { key: "themes", expanded: true },
           ],
@@ -97,4 +102,9 @@ describe("Item Filter Config", () => {
    * Test case to check if subtitles are rendered correctly
    */
   it("should render subtitles", () => subtitleTest());
+
+  /**
+   * Test case to check if input validation is working
+   */
+  it("should have working validation", () => validationTest());
 });
