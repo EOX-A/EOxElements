@@ -38,8 +38,8 @@ describe("Item Filter Config", () => {
               type: "text",
               expanded: true,
               validation: {
-                pattern: "[a-z]{0,10}",
-                message: "Maximum 10 lowercase characters",
+                pattern: ".{0,10}",
+                message: "Maximum 10 characters",
               },
             },
             { key: "themes", expanded: true },
