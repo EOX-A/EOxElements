@@ -1,4 +1,4 @@
-var r=Object.freeze,l=Object.defineProperty;var t=(e,d)=>r(l(e,"raw",{value:r(d||e.slice())}));import{k as p}from"./lit-element-CHc5qsYe.js";var s;const u={title:"Elements/eox-chart",tags:["autodocs"],component:"eox-chart",render:()=>p(s||(s=t([`
+var r=Object.freeze,l=Object.defineProperty;var t=(e,d)=>r(l(e,"raw",{value:r(d||e.slice())}));import{k as p}from"./lit-element-C80UzK4d.js";var s;const u={title:"Elements/eox-chart",tags:["autodocs"],component:"eox-chart",render:()=>p(s||(s=t([`
     <eox-chart></eox-chart>
     <script>
       const data = {

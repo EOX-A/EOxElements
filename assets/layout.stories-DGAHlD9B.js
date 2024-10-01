@@ -1,4 +1,4 @@
-import{k as s}from"./lit-element-CHc5qsYe.js";const i="width: 100%; height: 400px;",d="background: lightgrey; border: 1px solid darkgrey; border-radius: 4px; padding: 4px 8px;",_={args:{},render:()=>s`
+import{k as s}from"./lit-element-C80UzK4d.js";const i="width: 100%; height: 400px;",d="background: lightgrey; border: 1px solid darkgrey; border-radius: 4px; padding: 4px 8px;",_={args:{},render:()=>s`
     <!-- Render eox-layout component -->
     <eox-layout style="${i}">
       <eox-layout-item x="0" y="0" w="3" h="2">
