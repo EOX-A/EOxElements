@@ -104,12 +104,11 @@ export function setControlsMethod(controls, oldControls, EOxMap) {
 
   // Add or update new controls
   if (newControls) {
-    const keys = /** @type {ControlType[]} **/ Object.keys(controls);
+    const keys = /** @type {ControlType[]} **/ (Object.keys(controls));
     for (let i = 0, ii = keys.length; i < ii; i++) {
-      const key = /** @type {ControlType} **/ keys[i];
+      const key = keys[i];
 
       // Add or update the control using the helper function
-      // @ts-expect-error - Error throwing even type is declared.
       addOrUpdateControl(EOxMap, oldControls, key, controls[key]);
     }
   }

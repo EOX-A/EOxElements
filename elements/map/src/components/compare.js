@@ -141,7 +141,7 @@ export class EOxMapCompare extends TemplateElement {
         () => html`
           <div class="eox-map-compare">
             <div class="eox-map-compare__first">
-              <slot name="first">hujhjjh</slot>
+              <slot name="first"></slot>
             </div>
             <div class="eox-map-compare__second">
               <slot name="second"></slot>
