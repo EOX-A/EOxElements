@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.2.0...itemfilter-v1.3.0) (2024-10-01)
+
+
+### Features
+
+* Regex text validation ([#1240](https://github.com/EOX-A/EOxElements/issues/1240)) ([c933310](https://github.com/EOX-A/EOxElements/commit/c933310d8a8ce9ec1b2209525dd9485a87bb3fd1))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.2...itemfilter-v1.2.0) (2024-09-26)
 
 
