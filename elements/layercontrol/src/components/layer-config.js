@@ -75,11 +75,26 @@ export class EOxLayerControlLayerConfig extends LitElement {
     this.layerConfig = null;
 
     /**
-     * Throttle #handleDataChange() by 200 milliseconds
+     * Throttle #handleDataChange() by 1000 milliseconds
      */
-    this.debouncedDataChange = _throttle(this.#handleDataChange, 200);
+    this.throttleDataChange = _throttle(this.#handleDataChange, 1000);
   }
 
+  /** Decide what type of throttling to do based on layerConfig type
+   *
+   * @param {import("lit").PropertyValues} changedProperties - The changed properties.
+   */
+  updated(changedProperties) {
+    if (changedProperties.has("layerConfig")) {
+      const throttleTime =
+        this.layerConfig.type === "style" || this.layerConfig.style
+          ? 100
+          : 1000;
+
+      this.throttleDataChange = _throttle(this.#handleDataChange, throttleTime);
+      this.requestUpdate();
+    }
+  }
   /**
    * Handles changes in eox-jsonform values.
    *
@@ -160,7 +175,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .schema=${this.layerConfig.schema}
             .value=${this.#startVals}
             .options=${options}
-            @change=${this.debouncedDataChange}
+            @change=${this.throttleDataChange}
           ></eox-jsonform>
         `
       )}

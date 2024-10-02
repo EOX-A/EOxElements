@@ -4,7 +4,7 @@ const SENTINEL_HUB_URL =
   "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54";
 
 const S2MAP_URL = (id) =>
-  `//s2maps-tiles.eu/wmts/1.0.0/${id}/default/g/{z}/{y}/{x}.jpg`;
+  `//tiles.maps.eox.at/wmts/1.0.0/${id}/default/g/{z}/{y}/{x}.jpg`;
 
 const LAYER_EOX_CLOUDLESS = (year) => ({
   type: "Tile",

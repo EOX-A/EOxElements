@@ -5,6 +5,10 @@ export const styleEOX = `
   font-family: Roboto, sans-serif;
 }
 
+main {
+  text-align: center;
+}
+
 ${button}
 
 button.icon-text.play:before {

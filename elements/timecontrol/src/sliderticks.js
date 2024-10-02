@@ -38,6 +38,8 @@ export class SliderTicks extends LitElement {
     this._yearMarks = [];
     /** @type {YearGroup[]} */
     this._years = [];
+    /** @type {SVGElement[]} */
+    this._sliderTicks = [];
   }
 
   connectedCallback() {
@@ -52,12 +54,14 @@ export class SliderTicks extends LitElement {
 
   firstUpdated() {
     this.yearMarks = this.calculateYearMarks();
+    this.sliderTicks = this.calculateSliderTicks();
     this.handleResize();
   }
 
   updated(changedProperties) {
     if (changedProperties.has("steps")) {
       this.yearMarks = this.calculateYearMarks();
+      this.sliderTicks = this.calculateSliderTicks();
       this.handleResize();
     }
   }
@@ -97,12 +101,14 @@ export class SliderTicks extends LitElement {
   preprocessDates() {
     const yearGroups = [];
 
+    // Group all of the date strings by year
     this.steps.forEach((step) => {
       const date = dayjs(step);
       const year = date.year();
       let yearGroup = yearGroups.find((yg) => yg.year === year);
 
       if (!yearGroup) {
+        // We've encountered a new year, so create a new year group
         yearGroup = {
           year,
           // How much of the total time this year represents
@@ -126,107 +132,198 @@ export class SliderTicks extends LitElement {
   }
 
   get sliderTicks() {
-    // Calculate the density (number of steps per pixel)
-    const density = this.steps.length / this.width;
-    const isHighDensity = density > 0.5;
+    return this._sliderTicks;
+  }
 
-    if (isHighDensity) {
-      const minBarWidth = 30;
+  set sliderTicks(value) {
+    this._sliderTicks = value;
+    this.requestUpdate();
+  }
 
-      // High density: Render bars for each year instead of individual day ticks
-      const barSpacing = 2; // Adjust this value to control the spacing between bars
-      return this._years.flatMap((year, yearIndex) => {
-        // Calculate the start and end position of the bar for the year
-        const startPosition =
-          (this.steps.indexOf(year.dates[0].date) / (this.steps.length - 1)) *
-          this.width;
-        const endPosition =
-          (this.steps.indexOf(year.dates[year.dates.length - 1].date) /
-            (this.steps.length - 1)) *
-          this.width;
-        const barWidth = Math.max(0, endPosition - startPosition - barSpacing); // Subtract barSpacing from width
+  calculateYearBars() {
+    const minBarWidth = 30; // Minimum width for a bar to render the year label
+    const barSpacing = 2; // Adjust this value to control the spacing between bars
 
-        const elements = [];
+    return this._years.flatMap((year, yearIndex) => {
+      // Calculate the start and end position of the bar for the year
+      const startPosition =
+        (this.steps.indexOf(year.dates[0].date) / (this.steps.length - 1)) *
+        this.width;
+      const endPosition =
+        (this.steps.indexOf(year.dates[year.dates.length - 1].date) /
+          (this.steps.length - 1)) *
+        this.width;
+      const barWidth = Math.max(0, endPosition - startPosition - barSpacing); // Subtract barSpacing from width
 
-        // Render the year bar
+      const elements = [];
+
+      // Render the year bar
+      elements.push(svg`
+            <rect
+              key=${yearIndex}
+              x=${
+                startPosition + barSpacing / 2
+              } // Add half the spacing to the start position
+              y="0"
+              width=${barWidth}
+              height="6"
+              fill="#7596A2"
+            ></rect>
+        `);
+
+      // Conditionally render the year label if the bar width is sufficient
+      if (barWidth >= minBarWidth) {
         elements.push(svg`
-              <rect
-                key=${yearIndex}
-                x=${
-                  startPosition + barSpacing / 2
-                } // Add half the spacing to the start position
-                y="0"
-                width=${barWidth}
-                height="6"
-                fill="#7596A2"
-              ></rect>
-          `);
+                <text
+                  key=${`label-${yearIndex}`}
+                  x=${startPosition + 16}
+                  y="26"
+                  fill="#555"
+                  font-size="14"
+                  text-anchor="middle"
+                >
+                  ${year.year}
+                </text>
+            `);
+      }
 
-        // Conditionally render the year label if the bar width is sufficient
-        if (barWidth >= minBarWidth) {
+      return elements;
+    });
+  }
+
+  calculateIndividualTicks() {
+    return this._years.flatMap((year, yearIndex) => {
+      // Calculate the number of ticks that should be evenly spaced across the slider
+      const totalSteps = this.steps.length;
+      const tickInterval = Math.max(1, Math.floor(totalSteps / this.width)); // Ensure at least one tick per pixel
+
+      return year.dates
+        .filter((_, dateIndex) => dateIndex % tickInterval === 0) // Filter dates to achieve even spacing
+        .map((date, i) => {
+          // Calculate position within the entire slider based on global index
+          const globalIndex = this.steps.indexOf(date.date);
+          const position = (globalIndex / (this.steps.length - 1)) * this.width;
+
+          const elements = [];
+
           elements.push(svg`
+                <line
+                  key=${yearIndex}-${i}
+                  x1=${position}
+                  y1="0"
+                  x2=${position}
+                  y2=${date.isYearMarker ? 12 : 6}
+                  stroke=${date.isYearMarker ? "#222" : "#7596A2"}
+                  stroke-width="1"
+                ></line>
+              `);
+
+          if (
+            date.isYearMarker &&
+            this.density > 0.03 &&
+            this.density < 0.5 &&
+            yearIndex % 2 == 0
+          ) {
+            elements.push(svg`
                   <text
                     key=${`label-${yearIndex}`}
-                    x=${startPosition + 16}
-                    y="26"
+                    x=${position + 16}
+                    y="30"
                     fill="#555"
                     font-size="14"
                     text-anchor="middle"
                   >
                     ${year.year}
                   </text>
-              `);
-        }
-
-        return elements;
-      });
-    } else {
-      return this._years.flatMap((year, yearIndex) => {
-        // Calculate the number of ticks that should be evenly spaced across the slider
-        const totalSteps = this.steps.length;
-        const tickInterval = Math.max(1, Math.floor(totalSteps / this.width)); // Ensure at least one tick per pixel
-
-        return year.dates
-          .filter((_, dateIndex) => dateIndex % tickInterval === 0) // Filter dates to achieve even spacing
-          .map((date, i) => {
-            // Calculate position within the entire slider based on global index
-            const globalIndex = this.steps.indexOf(date.date);
-            const position =
-              (globalIndex / (this.steps.length - 1)) * this.width;
-
-            const elements = [];
-
-            elements.push(svg`
-                  <line
-                    key=${yearIndex}-${i}
-                    x1=${position}
-                    y1="0"
-                    x2=${position}
-                    y2=${date.isYearMarker ? 12 : 6}
-                    stroke=${date.isYearMarker ? "#222" : "#7596A2"}
-                    stroke-width="1"
-                  ></line>
                 `);
+          }
 
-            if (date.isYearMarker) {
-              elements.push(svg`
-                    <text
-                      key=${`label-${yearIndex}`}
-                      x=${position + 16}
-                      y="30"
-                      fill="#555"
-                      font-size="14"
-                      text-anchor="middle"
-                    >
-                      ${year.year}
-                    </text>
-                  `);
-            }
+          return elements;
+        });
+    });
+  }
 
-            return elements;
-          });
-      });
+  get density() {
+    return this.steps.length / this.width;
+  }
+
+  calculateSliderTicks() {
+    if (this.density <= 0.5) {
+      return this.calculateIndividualTicks();
+    } else if (this.density > 0.5 && this.density < 10.0) {
+      return this.calculateYearBars();
+    } else if (this.density >= 10.0) {
+      return this.calculateDecadeBars();
     }
+  }
+
+  calculateDecadeBars() {
+    //const startTime = performance.now();
+
+    const minBarWidth = 30;
+    // Very high density: Render bars or labels for each decade
+    const barSpacing = 2;
+    const decadeGroups = this._years.reduce((acc, yearGroup) => {
+      const decade = Math.floor(yearGroup.year / 10) * 10;
+      if (!acc[decade]) {
+        acc[decade] = [];
+      }
+      acc[decade].push(...yearGroup.dates);
+      return acc;
+    }, {});
+
+    const res = Object.keys(decadeGroups).flatMap((decade, index) => {
+      const startPosition =
+        (this.steps.indexOf(decadeGroups[decade][0].date) /
+          (this.steps.length - 1)) *
+        this.width;
+      const endPosition =
+        (this.steps.indexOf(
+          decadeGroups[decade][decadeGroups[decade].length - 1].date
+        ) /
+          (this.steps.length - 1)) *
+        this.width;
+      const barWidth = Math.max(0, endPosition - startPosition - barSpacing);
+
+      const elements = [];
+
+      elements.push(svg`
+            <rect
+              key=${`decade-${index}`}
+              x=${startPosition + barSpacing / 2}
+              y="0"
+              width=${barWidth}
+              height="6"
+              fill="#555"
+            ></rect>
+        `);
+
+      if (barWidth >= minBarWidth) {
+        elements.push(svg`
+                <text
+                  key=${`decade-label-${index}`}
+                  x=${startPosition + 18}
+                  y="26"
+                  fill="#333"
+                  font-size="14"
+                  text-anchor="middle"
+                >
+                  ${decade}
+                </text>
+            `);
+      }
+
+      return elements;
+    });
+
+    //const endTime = performance.now();
+    /*console.log(
+      "Time taken to calculate decade bars: ",
+      endTime - startTime,
+      "ms"
+    );*/
+
+    return res;
   }
 
   /**
@@ -264,6 +361,7 @@ export class SliderTicks extends LitElement {
     this.requestUpdate();
   }
 
+  // TODO: Can this be fully removed yet (as the year marks are generated alongside ticks)?
   /**
    * @returns {YearMark[]}
    */
@@ -289,13 +387,6 @@ export class SliderTicks extends LitElement {
       // Update previousYear for the next iteration
       previousYear = currentYear;
     });
-
-    // Filter out year marks that are too close together, in favor of the second one.
-    return yearMarks.filter((current, i) => {
-      const next = yearMarks[i + 1];
-
-      return !(next && next.position - current.position < 25);
-    });
   }
 
   /**
@@ -319,20 +410,6 @@ export class SliderTicks extends LitElement {
           viewBox="-1 0 ${this.width + 2} ${this.height}"
         >
           ${this.sliderTicks}
-          ${this.years.map(
-            (year, index) => svg`
-              <text
-                key=${`y${index}`}
-                x=${year.position}
-                y=${this.height - 1}
-                fill="#555"
-                font-size="13"
-                font-weight="500"
-              >
-                ${year.label}
-              </text>
-            `
-          )}
         </svg>
       </div>
     `;

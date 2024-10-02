@@ -49,7 +49,7 @@ const groupLayerSchema = joi.object({
     })
     .unknown()
     .required(),
-  layers: basicLayerSchema,
+  layers: joi.array().items(basicLayerSchema),
 });
 
 // EOxMap validation schema

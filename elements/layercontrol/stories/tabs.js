@@ -2,11 +2,11 @@ import { html } from "lit";
 
 export const Tabs = {
   render: () => html`
-    <eox-layercontrol-tabs
+    <eox-layercontrol-tools-items
       .noShadow=${false}
       .actions=${["delete"]}
       .tabs=${["info", "opacity", "config"]}
-    ></eox-layercontrol-tabs>
+    ></eox-layercontrol-tools-items>
   `,
 };
 

@@ -20,6 +20,7 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
       // Return a text filter element
       return html`<eox-itemfilter-text
         data-type="filter"
+        data-cy="text-filter"
         slot="filter"
         id="${filterId}"
         .tabIndex=${tabIndex}

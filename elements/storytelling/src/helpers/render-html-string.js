@@ -321,9 +321,10 @@ export function parseNavWithAddSection(
       <div class="container">
         <ul>
           ${nav
-            .map(
-              ({ id, title }) =>
-                `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
+            .map(({ id, title, state }) =>
+              state
+                ? `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
+                : ""
             )
             .join("")}
         </ul>

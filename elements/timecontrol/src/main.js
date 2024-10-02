@@ -57,6 +57,7 @@ export class EOxTimeControl extends LitElement {
       _isAnimationPlaying: { state: true },
       _newStepIndex: { state: true },
       _eoxMap: { state: true },
+      _width: { state: true },
       unstyled: { type: Boolean },
     };
   }
@@ -86,6 +87,12 @@ export class EOxTimeControl extends LitElement {
     this.controlProperty = undefined;
     /** @type {HTMLElement |undefined} */
     this._eoxMap = undefined;
+
+    this._width = 300;
+
+    window.addEventListener("resize", () => {
+      this._width = this.clientWidth;
+    });
   }
 
   /**
@@ -292,9 +299,12 @@ export class EOxTimeControl extends LitElement {
           >
             <
           </button>
+          <span part="current">${this.controlValues[this._newStepIndex]}</span>
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
+        </div>
+        <div>
           ${!this.disablePlay
             ? html`
                 <button
@@ -328,14 +338,12 @@ export class EOxTimeControl extends LitElement {
                   ></tc-range-slider>
 
                   <eox-sliderticks
-                    width="300"
+                    .width="${this._width}"
                     .steps="${this.controlValues}"
                   ></eox-sliderticks>
                 </div>
               `
             : ""}
-
-          <span part="current">${this.controlValues[this._newStepIndex]}</span>
         </div>
       </main>
     `;

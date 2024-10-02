@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.8...storytelling-v1.1.0) (2024-09-23)
+
+
+### Features
+
+* Addded nav state to individual title ([#1260](https://github.com/EOX-A/EOxElements/issues/1260)) ([d901013](https://github.com/EOX-A/EOxElements/commit/d9010137708dcd51d4eb14b99d41adf4f4d99f69))
+
+## [1.0.8](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.7...storytelling-v1.0.8) (2024-09-09)
+
+
+### Bug Fixes
+
+* Update layers validation as per array ([#1239](https://github.com/EOX-A/EOxElements/issues/1239)) ([2d3af34](https://github.com/EOX-A/EOxElements/commit/2d3af344ee7af3fd1ddd2c86e8ab909676c0f525))
+
 ## [1.0.7](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.6...storytelling-v1.0.7) (2024-08-02)
 
 

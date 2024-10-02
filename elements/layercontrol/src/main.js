@@ -56,6 +56,7 @@ export class EOxLayerControl extends LitElement {
     addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
+    toolsAsList: { type: Boolean },
   };
 
   /**
@@ -133,6 +134,13 @@ export class EOxLayerControl extends LitElement {
      * @type {String}
      */
     this.styleOverride = "";
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
   }
 
   /**
@@ -221,6 +229,7 @@ export class EOxLayerControl extends LitElement {
             .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
+            .toolsAsList=${this.toolsAsList}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>
@@ -243,7 +252,15 @@ export class EOxLayerControl extends LitElement {
     `;
   }
 
-  #styleEOX = `* { font-family: Roboto, sans-serif; }`;
+  #styleEOX = `
+    :host, :root {
+      font-family: Roboto, sans-serif;
+      --padding: 0.5rem;
+
+      display: block;
+      padding: var(--padding) 0;
+    }
+  `;
 }
 
 customElements.define("eox-layercontrol", EOxLayerControl);

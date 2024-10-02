@@ -72,7 +72,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
             <span
               class="title"
               style="${!this.filterObject.title &&
-              "text-transform: capitalize"}"
+              "text-transform: var(--text-transform)"}"
             >
               ${this.filterObject.title || this.filterObject.key || "Filter"}
               <slot name="reset-button"></slot>
