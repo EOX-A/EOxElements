@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.1.0...storytelling-v1.2.0) (2024-10-02)
+
+
+### Features
+
+* Refactor and convert code from `ts` to `js` ([#1206](https://github.com/EOX-A/EOxElements/issues/1206)) ([e417b3f](https://github.com/EOX-A/EOxElements/commit/e417b3f65373824b68d3ece327e2952100dd90e7))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.8...storytelling-v1.1.0) (2024-09-23)
 
 
