@@ -1,9 +1,10 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, css } from "lit";
 import { getStartVals } from "../helpers";
 import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
 import _throttle from "lodash.throttle";
 import "color-legend-element";
+import { flattenObject } from "../methods/layer-config";
 /**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
  * It allows users to input data, modify layer settings, and update the UI based on those settings.
@@ -70,7 +71,18 @@ export class EOxLayerControlLayerConfig extends LitElement {
     /**
      * Layer config for eox-jsonform
      *
-     * @type {{ schema: Record<string,any>; element: string; type?:"tileUrl"|"style"; style?:import("ol/layer/WebGLTile").Style}}
+     * @type {{
+     *  schema: Record<string,any>;
+     *  element: string;
+     *  type?:"tileUrl"|"style";
+     *  style?:import("ol/layer/WebGLTile").Style
+     *  legend?:{
+     *   title:string;
+     *   range:string[]
+     *   domainProperties?:string[]
+     *   domain?:number[]|string[]
+     *  }
+     * }}
      */
     this.layerConfig = null;
 
@@ -102,7 +114,6 @@ export class EOxLayerControlLayerConfig extends LitElement {
    */
   #handleDataChange(e) {
     this.#data = e.detail;
-    this.children[0].domain = [this.#data.vminmax.vmin, this.#data.vminmax.vmax];
     if (this.layerConfig.type === "style" || this.layerConfig.style) {
       const supportStyleConfig =
         "setStyle" in this.layer || "updateStyleVariables" in this.layer;
@@ -138,14 +149,12 @@ export class EOxLayerControlLayerConfig extends LitElement {
    * Renders a JSON form for configuration options of a layer.
    */
   render() {
-    console.log("rendering");
     // Fetch initial values for the layer and its configuration
     this.#startVals = getStartVals(this.layer, this.layerConfig);
     if (Object.keys(this.#data).length !== 0) {
       this.#startVals = this.#data;
     }
-    console.log("startVals", this.#startVals);
-    console.log("data", this.#data);
+
     if (!customElements.get("eox-jsonform")) {
       console.error("Please import @eox/jsonform in order to use layerconfig");
     }
@@ -155,14 +164,8 @@ export class EOxLayerControlLayerConfig extends LitElement {
       disable_collapse: true,
       disable_properties: true,
     };
-
+    const flatData_ = flattenObject(this.#data);
     return html`
-      <color-legend
-        .id="${Math.random().toString().replace("0.", "")}"
-        range='["#ffffb2","#fecc5c","#fd8d3c","#f03b20","#bd0026"]'
-        .domain="${[this.#startVals.vminmax.vmin, this.#startVals.vminmax.vmax]}"
-      >
-      </color-legend>
       <style>
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
@@ -170,6 +173,20 @@ export class EOxLayerControlLayerConfig extends LitElement {
       ${when(
         this.layerConfig,
         () => html`
+          ${when(
+            this.layerConfig.legend,
+            () => html`
+              <color-legend
+                id="${this.layer.get("id")}"
+                .range="${this.layerConfig.legend.range}"
+                titleText=${this.layerConfig.legend.title}
+                .domain="${this.layerConfig.legend.domainProperties?.map(
+                  (prop) => flatData_[prop]
+                ) ?? this.layerConfig.legend.domain}"
+              >
+              </color-legend>
+            `
+          )}
           <!-- Render a JSON form for layer configuration -->
           <eox-jsonform
             .schema=${this.layerConfig.schema}
@@ -182,7 +199,16 @@ export class EOxLayerControlLayerConfig extends LitElement {
     `;
   }
 
-  #styleBasic = ``;
+  #styleBasic = css`
+  color-legend {
+  --cle-background :transparent;
+  --cle-font-family:inherit;
+  --cle-font-size:inherit;
+  --cle-font-weight :inherit
+  --cle-letter-spacing :inherit;
+  --cle-letter-spacing-title :inherit;
+  }
+  `;
   #styleEOX = ``;
 }
 

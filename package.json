@@ -39,6 +39,7 @@
     "@storybook/theming": "^8.0.0",
     "@storybook/web-components": "^8.0.0",
     "@storybook/web-components-vite": "^8.0.0",
+    "@types/lodash.throttle": "^4.1.9",
     "concurrently": "^9.0.0",
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^13.3.0",

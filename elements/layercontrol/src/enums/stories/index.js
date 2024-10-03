@@ -306,6 +306,15 @@ export const STORIES_LAYER_CROPOMHUSC2 = {
 
 const LAYERCONFIG_LAYER_SEE = {
   type: "style",
+  legend: {
+    title: "Global horizontal irradiation",
+    range: [
+      "rgba(253, 231, 37, 1)",
+      "rgba(33, 144, 141, 1)",
+      "rgba(68, 1, 84, 1)",
+    ],
+    domainProperties: ["vmin", "vmax"],
+  },
   schema: {
     type: "object",
     title: "Data configuration",
