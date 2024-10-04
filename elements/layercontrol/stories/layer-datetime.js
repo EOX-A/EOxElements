@@ -14,7 +14,7 @@ export const LayerDateTime = {
   },
   render: (args) => html`
     <eox-layercontrol
-      .tools=${["datetime"]}
+      .tools=${["datetime", "legend"]}
       for="eox-map#datetime"
       @datetime:updated=${args.onDatetimeUpdated}
     ></eox-layercontrol>

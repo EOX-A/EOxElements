@@ -12,6 +12,7 @@ import {
   layerDatetimeStory,
   layerZoomStateStory,
   toolsAsListStory,
+  layerLegendStory,
 } from ".";
 
 export default {
@@ -74,6 +75,8 @@ export const LayerStylesConfig = LayerStylesConfigStory;
  * `controlValues`: The list of available values.
  */
 export const LayerDateTime = layerDatetimeStory;
+
+export const LayerLegend = layerLegendStory;
 
 /**
  * By adding the `layerControlHide` property to map layers,

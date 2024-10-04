@@ -81,6 +81,8 @@ export class EOxLayerControlLayerConfig extends LitElement {
      *   range:string[]
      *   domainProperties?:string[]
      *   domain?:number[]|string[]
+    *    scaleType?:import("color-legend-element").ColorLegendElement["scaleType"]
+    *    markType?:import("color-legend-element").ColorLegendElement["markType"]
      *  }
      * }}
      */
@@ -177,7 +179,9 @@ export class EOxLayerControlLayerConfig extends LitElement {
             this.layerConfig.legend,
             () => html`
               <color-legend
-                id="${this.layer.get("id")}"
+                id="${this.layer.get("id")}-config"
+                scaleType=${this.layerConfig.legend.scaleType}
+                markType=${this.layerConfig.legend.markType}
                 .range="${this.layerConfig.legend.range}"
                 titleText=${this.layerConfig.legend.title}
                 .domain="${this.layerConfig.legend.domainProperties?.map(
