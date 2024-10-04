@@ -185,6 +185,12 @@ export type AttributionLike =
   | Array<string>;
 export type ProjectionLike = import("ol/proj").ProjectionLike;
 
+export type FlatGeoBufOptions = {
+  url: string;
+  attributions?: import("ol/source/Source").AttributionLike;
+  wrapX?: boolean;
+};
+
 export type WMTSCapabilitiesOptions = {
   url: string;
   layer: string;
