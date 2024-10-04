@@ -1,10 +1,10 @@
 import { LitElement, html, css } from "lit";
+import { getLegendConfig } from "../helpers";
 import { getStartVals } from "../helpers";
 import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
 import _throttle from "lodash.throttle";
 import "color-legend-element";
-import { flattenObject } from "../methods/layer-config";
 /**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
  * It allows users to input data, modify layer settings, and update the UI based on those settings.
@@ -76,15 +76,11 @@ export class EOxLayerControlLayerConfig extends LitElement {
      *  element: string;
      *  type?:"tileUrl"|"style";
      *  style?:import("ol/layer/WebGLTile").Style
-     *  legend?:{
-     *   title:string;
-     *   range:string[]
-     *   domainProperties?:string[]
-     *   domain?:number[]|string[]
-    *    scaleType?:import("color-legend-element").ColorLegendElement["scaleType"]
-    *    markType?:import("color-legend-element").ColorLegendElement["markType"]
-     *  }
-     * }}
+     *  legend?: Partial<import("./layer-legend").LegendConfig> & {
+     *     range:string[];
+     *     domainProperties:string[]
+     *    }
+     *  }}
      */
     this.layerConfig = null;
 
@@ -134,10 +130,8 @@ export class EOxLayerControlLayerConfig extends LitElement {
         this.#originalTileUrlFunction,
         this
       );
-      this.requestUpdate();
     }
     this.requestUpdate();
-    this.render();
   }
 
   /**
@@ -156,17 +150,16 @@ export class EOxLayerControlLayerConfig extends LitElement {
     if (Object.keys(this.#data).length !== 0) {
       this.#startVals = this.#data;
     }
-
     if (!customElements.get("eox-jsonform")) {
       console.error("Please import @eox/jsonform in order to use layerconfig");
     }
+
     // Options for the JSON form rendering
     const options = {
       disable_edit_json: true,
       disable_collapse: true,
       disable_properties: true,
     };
-    const flatData_ = flattenObject(this.#data);
     return html`
       <style>
         ${this.#styleBasic}
@@ -178,17 +171,15 @@ export class EOxLayerControlLayerConfig extends LitElement {
           ${when(
             this.layerConfig.legend,
             () => html`
-              <color-legend
-                id="${this.layer.get("id")}-config"
-                scaleType=${this.layerConfig.legend.scaleType}
-                markType=${this.layerConfig.legend.markType}
-                .range="${this.layerConfig.legend.range}"
-                titleText=${this.layerConfig.legend.title}
-                .domain="${this.layerConfig.legend.domainProperties?.map(
-                  (prop) => flatData_[prop]
-                ) ?? this.layerConfig.legend.domain}"
-              >
-              </color-legend>
+              <eox-layercontrol-layer-legend
+                .noShadow=${true}
+                .unstyled=${this.unstyled}
+                .layer=${this.layer}
+                .layerLegend=${getLegendConfig(
+                  this.layerConfig.legend,
+                  this.#data
+                )}
+              ></eox-layercontrol-layer-legend>
             `
           )}
           <!-- Render a JSON form for layer configuration -->

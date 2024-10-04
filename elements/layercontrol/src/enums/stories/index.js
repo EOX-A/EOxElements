@@ -313,10 +313,7 @@ const LAYERCONFIG_LAYER_SEE = {
       "rgba(33, 144, 141, 1)",
       "rgba(68, 1, 84, 1)",
     ],
-    // domainProperties: ["vmin", "vmax"],
-    domain: [0,2,5],
-    scaleType:"discrete",
-    
+    domainProperties: ["vmin", "vmax"],
   },
   schema: {
     type: "object",
@@ -444,8 +441,7 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
     layerControlToolsExpand: true,
     layerLegend: {
       title: "total ships presence time per squared km",
-      domain: [0.5, 20, 50, 100, 150],
-      tickValues: [0.5, 20, 50, 100, 150],
+      domain: [0.5, 150],
       range: ["#C3EBDC", "#0ADC00", "#FEF500", "#F29300", "#800303"],
     },
     layerDatetime: {

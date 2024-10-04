@@ -1,6 +1,23 @@
 import { LitElement, html, css } from "lit";
 import { when } from "lit/directives/when.js";
 import "color-legend-element";
+import { ifDefined } from "lit/directives/if-defined.js";
+
+/**
+ * Legend configurations
+ *
+ * @typedef {{
+ *   domain:import("color-legend-element").ColorLegendElement["domain"]
+ *   width?:number;
+ *   range:string[];
+ *   title?:string;
+ *   tickFormat?:import("color-legend-element").ColorLegendElement["tickFormat"]
+ *   ticks?:import("color-legend-element").ColorLegendElement["ticks"]
+ *   tickValues?:import("color-legend-element").ColorLegendElement["tickValues"]
+ *   scaleType?:import("color-legend-element").ColorLegendElement["scaleType"]
+ *   markType?:import("color-legend-element").ColorLegendElement["markType"]
+ * }} LegendConfig
+ **/
 
 /**
  * `EOxLayerControlLayerLegend` is a component that handles creating a legend from a range of colors & the domain of the color values.
@@ -35,19 +52,9 @@ export class EOxLayerControlLayerLegend extends LitElement {
     this.noShadow = false;
 
     /**
-     * Layer config for eox-jsonform
-     *
-     * @type {{
-     *   domain:import("color-legend-element").ColorLegendElement["domain"]
-     *   range:string[];
-     *   title?:string;
-     *   tickFormat?:import("color-legend-element").ColorLegendElement["tickFormat"]
-     *   ticks?:import("color-legend-element").ColorLegendElement["ticks"]
-     *   tickValues?:import("color-legend-element").ColorLegendElement["tickValues"]
-     *   tickSize?:import("color-legend-element").ColorLegendElement["tickSize"]
-     *   scaleType?:import("color-legend-element").ColorLegendElement["scaleType"]
-     *   markType?:import("color-legend-element").ColorLegendElement["markType"]
-     * }|null}
+     * Legend configurations
+     * @type {LegendConfig}
+     * @see {@link https://clhenrick.github.io/color-legend-element/}
      */
     this.layerLegend = null;
 
@@ -79,32 +86,34 @@ export class EOxLayerControlLayerLegend extends LitElement {
       ${when(
         this.layerLegend,
         () => html`
-          <!-- Render color-legend-->
-          <color-legend
-            id="${this.layer.get("id")}"
-            width="${this.parentElement.parentElement.offsetWidth}"
-            scaleType=${this.layerLegend.scaleType ?? "continuous"}
-            markType=${this.layerLegend.markType}
-            titleText=${this.layerLegend.title ?? ""}
-            .range="${this.layerLegend.range}"
-            .domain="${
-              /** @type {number[]|string[]} */ ([
-                this.layerLegend.domain[0],
-                this.layerLegend.domain[this.layerLegend.domain.length - 1],
-              ])
-            }"
-            tickFormat="${this.layerLegend.tickFormat}"
-            .ticks="${this.layerLegend.ticks}"
-            .tickValues="${this.layerLegend.tickValues}"
-            .tickSize="${this.layerLegend.tickSize}"
-          >
-          </color-legend>
+          <div class="legend-container">
+            <!-- Render color-legend-->
+            <color-legend
+              id="${this.layer.get("id")}"
+              width=${this.layerLegend.width ?? 325}
+              scaleType="${ifDefined(this.layerLegend.scaleType)}"
+              markType="${ifDefined(this.layerLegend.markType)}"
+              titleText="${ifDefined(this.layerLegend.title)}"
+              .range=${this.layerLegend.range}
+              .domain=${this.layerLegend.domain}
+              tickFormat="${ifDefined(this.layerLegend.tickFormat)}"
+              .ticks=${this.layerLegend.ticks ?? 5}
+              .tickValues=${this.layerLegend.tickValues}
+            >
+            </color-legend>
+          </div>
         `
       )}
     `;
   }
 
   #styleBasic = css`
+
+.legend-container{
+    display:flex;
+    justify-content:center
+  }
+
   color-legend {
   --cle-background :transparent;
   --cle-font-family:inherit;

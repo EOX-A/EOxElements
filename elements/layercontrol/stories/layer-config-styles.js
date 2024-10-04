@@ -8,10 +8,10 @@ import {
 
 // registering the projection of CROPOMHUSC2_VECTOR_CONFIG_STYLE_LAYER
 setTimeout(async () => {
-  if (document.querySelector("eox-map#configReproject")) {
+  if (document.querySelector("eox-map#config-styles")) {
     //@ts-expect-error EOX Map API
     await document
-      .querySelector("eox-map#configReproject")
+      .querySelector("eox-map#config-styles")
       .registerProjectionFromCode(3035);
   }
 });
@@ -21,13 +21,13 @@ export default {
   render: () => html`
     <eox-layercontrol
       .tools=${["config"]}
-      for="eox-map#configReproject"
+      for="eox-map#config-styles"
     ></eox-layercontrol>
     <hr />
     <eox-map
       .center=${[1820000, 5959912]}
       .zoom=${5.5}
-      id="configReproject"
+      id="config-styles"
       .style=${STORIES_MAP_STYLE}
       .layers=${[
         STORIES_LAYER_SEE,
