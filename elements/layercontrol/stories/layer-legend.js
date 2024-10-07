@@ -1,4 +1,5 @@
 import { html } from "lit";
+import "color-legend-element";
 import {
   STORIES_LAYER_VESSEL_DENSITY_CARGO,
   STORIES_MAP_STYLE,

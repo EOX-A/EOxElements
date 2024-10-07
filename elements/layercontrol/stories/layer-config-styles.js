@@ -1,4 +1,5 @@
 import { html } from "lit";
+import "color-legend-element";
 import {
   STORIES_LAYER_CROPOMHUSC2,
   STORIES_MAP_STYLE,

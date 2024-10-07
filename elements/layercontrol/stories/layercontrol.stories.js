@@ -76,6 +76,11 @@ export const LayerStylesConfig = LayerStylesConfigStory;
  */
 export const LayerDateTime = layerDatetimeStory;
 
+/**
+ * The "legend" tool reads configurations passed via the "layerLegend" property,
+ * and creates a dynamic color legend based on it. `layerLegend` holds a partial subset of
+ * the attributes and properties of Color Legend Element, read more https://clhenrick.github.io/color-legend-element/
+ */
 export const LayerLegend = layerLegendStory;
 
 /**

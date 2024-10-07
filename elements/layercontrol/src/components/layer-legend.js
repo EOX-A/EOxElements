@@ -1,6 +1,5 @@
 import { LitElement, html, css } from "lit";
 import { when } from "lit/directives/when.js";
-import "color-legend-element";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 /**
@@ -78,6 +77,10 @@ export class EOxLayerControlLayerLegend extends LitElement {
    * Renders a Time Control for datetime options of a layer.
    */
   render() {
+    if (!customElements.get("color-legend")) {
+      console.error("Please import `color-legend-element` in order to use layerLegend");
+    }
+
     return html`
       <style>
         ${this.#styleBasic}
