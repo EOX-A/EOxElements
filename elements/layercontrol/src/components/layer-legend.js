@@ -78,7 +78,9 @@ export class EOxLayerControlLayerLegend extends LitElement {
    */
   render() {
     if (!customElements.get("color-legend")) {
-      console.error("Please import `color-legend-element` in order to use layerLegend");
+      console.error(
+        "Please import `color-legend-element` in order to use layerLegend"
+      );
     }
 
     return html`
