@@ -1,6 +1,6 @@
 import Fuse from "fuse.js";
 import dayjs from "dayjs";
-import { intersects, within, highlight, fetchValue } from "./";
+import { intersects, within, highlight, getValue } from "./";
 
 let _fuse;
 
@@ -101,7 +101,7 @@ export const filter = async (items, filters, config) => {
         const parseValue = (input) => {
           return value.format === "date" ? dayjs(input).unix() : input;
         };
-        const rangeValue = fetchValue(key, results[i]);
+        const rangeValue = getValue(key, results[i]);
         if (rangeValue) {
           if (Array.isArray(rangeValue)) {
             const mode = "overlap"; // Mode for handling array values
@@ -153,7 +153,7 @@ export const filter = async (items, filters, config) => {
     for (let i = 0; i < results.length; i++) {
       const pass = {};
       for (const key of Object.keys(spatialFilters)) {
-        const spatialValue = fetchValue(key, results[i]);
+        const spatialValue = getValue(key, results[i]);
         const mode = spatialFilters[key].mode || "within";
         if (spatialValue) {
           const test =

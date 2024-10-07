@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { fetchValue, indexItems } from "../../helpers";
+import { getValue, indexItems } from "../../helpers";
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
 
@@ -29,7 +29,7 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       // Iterate over items to build filter keys
       items.forEach((item) => {
         if (filterProperty.type === "range") {
-          const value = fetchValue(filterProperty.key, item);
+          const value = getValue(filterProperty.key, item);
           if (Array.isArray(value)) {
             const currentValues = [parseValue(value[0]), parseValue(value[1])];
             filterKeys.min =
