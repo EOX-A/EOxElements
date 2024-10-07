@@ -4,6 +4,7 @@ export { default as VectorTileLayerStory } from "./vector-tile-layer";
 export { default as WMSLayerStory } from "./wms-layer";
 export { default as WMTSCapabilitiesLayerStory } from "./wmts-capabilities-layer";
 export { default as WMTSTileGridStory } from "./wmts-tile-grid";
+export { default as StaticImageLayerStory } from "./static-image";
 export { default as STACLayerStory } from "./stac-layer";
 export { default as GeoTIFFLayerStory } from "./geo-tiff-layer";
 export { default as GroupLayerStory } from "./group-layer";

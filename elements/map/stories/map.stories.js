@@ -8,6 +8,7 @@ import {
   WMSLayerStory,
   WMTSCapabilitiesLayerStory,
   WMTSTileGridStory,
+  StaticImageLayerStory,
   STACLayerStory,
   GeoTIFFLayerStory,
   GroupLayerStory,
@@ -80,6 +81,11 @@ export const WMTSCapabilitiesLayer = WMTSCapabilitiesLayerStory;
  * Renders `WMTSCapabilities` layer and fetches the provided capabilities url
  */
 export const WMTSTileGrid = WMTSTileGridStory;
+
+/**
+ * Renders a static image layer
+ */
+export const StaticImage = StaticImageLayerStory;
 
 /**
  * Renders STAC Layer using STAC url json.
