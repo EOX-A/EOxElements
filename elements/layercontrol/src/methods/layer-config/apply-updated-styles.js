@@ -37,7 +37,7 @@ export default function (jsonformOutput, layer, layerConfig) {
 /***
  * @param {Record<string,any>} obj
  **/
-const flattenObject = (obj) => {
+export const flattenObject = (obj) => {
   /**
    * the flattened object to be returned
    *  @type {Record<string,number>} */

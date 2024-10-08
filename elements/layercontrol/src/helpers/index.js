@@ -10,6 +10,7 @@ export { default as filterLayers } from "./filter-layers";
 export { default as isLayerVisibleBasedOnZoomState } from "./is-layer-visible-based-on-zoom-state";
 export { default as isLayerZoomStateRequired } from "./is-layer-zoom-state-req";
 export { default as getLayerType } from "./get-layer-type";
+export { default as getLegendConfig } from "./get-legend-config.js";
 export { getNestedStartVals, getStartVals } from "./get-start-vals";
 export {
   Button,
