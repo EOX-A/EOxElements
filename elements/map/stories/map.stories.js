@@ -28,6 +28,7 @@ import {
   ProjectionTransformStory,
   AnimationsStory,
   PreventScrollStory,
+  FlatGeoBufStory,
 } from "./index.js";
 
 export default {
@@ -76,6 +77,11 @@ export const WMSLayer = WMSLayerStory;
  * Renders `WMTSCapabilities` layer and fetches the provided capabilities url
  */
 export const WMTSCapabilitiesLayer = WMTSCapabilitiesLayerStory;
+
+/**
+ * Renders `FlatGeoBuf` layer
+ */
+export const FlatGeoBuf = FlatGeoBufStory;
 
 /**
  * Renders `WMTSCapabilities` layer and fetches the provided capabilities url

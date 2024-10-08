@@ -24,3 +24,4 @@ export { default as ProjectionStory } from "./projection";
 export { default as ProjectionTransformStory } from "./projection-transform";
 export { default as AnimationsStory } from "./animations";
 export { default as PreventScrollStory } from "./prevent-scroll";
+export { default as FlatGeoBufStory } from "./flatGeoBuf-layer";

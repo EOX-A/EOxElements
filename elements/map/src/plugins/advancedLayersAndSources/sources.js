@@ -1,5 +1,6 @@
 import * as olSources from "ol/source";
 import WMTSCapabilities from "../../custom/sources/WMTSCapabilities";
+import FlatGeoBuf from "../../custom/sources/FlatGeoBuf";
 
 // Extend the global window object to include advanced OpenLayers sources.
 // This includes all standard OpenLayers sources (imported as `olSources`) and a custom `WMTSCapabilities` source.
@@ -7,4 +8,5 @@ import WMTSCapabilities from "../../custom/sources/WMTSCapabilities";
 window.eoxMapAdvancedOlSources = {
   ...olSources,
   WMTSCapabilities,
+  FlatGeoBuf,
 };
