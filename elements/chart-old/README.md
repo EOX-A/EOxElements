@@ -1,6 +1,4 @@
-# Chart
-
-Based on [Vega-Lite](https://github.com/vega/vega-lite).
+# Chart element
 
 ## Usage
 
@@ -27,7 +25,3 @@ npm version <new version>
 npm run build
 npm publish (requires OTP)
 ```
-
-## Changelog
-
-Created automatically [here](./CHANGELOG.md)
