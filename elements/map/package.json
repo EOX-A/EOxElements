@@ -1,6 +1,6 @@
 {
   "name": "@eox/map",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "type": "module",
   "dependencies": {
     "flatgeobuf": "^3.35.0",
