@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/EOX-A/EOxElements/compare/map-v1.14.0...map-v1.15.0) (2024-10-08)
+
+
+### Features
+
+* FlatGeoBuf source ([#1298](https://github.com/EOX-A/EOxElements/issues/1298)) ([3f59636](https://github.com/EOX-A/EOxElements/commit/3f5963675deab91c124b7a6770feaffff83dff6e))
+
 ## [1.14.0](https://github.com/EOX-A/EOxElements/compare/map-v1.13.1...map-v1.14.0) (2024-10-01)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.3.0...itemfilter-v1.3.1) (2024-10-08)
+
+
+### Bug Fixes
+
+* Nested property access for range and spatial filters ([#1299](https://github.com/EOX-A/EOxElements/issues/1299)) ([0501b2e](https://github.com/EOX-A/EOxElements/commit/0501b2e2dca838cd234752ab4d3268ffc944391e))
+
 ## [1.3.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.2.0...itemfilter-v1.3.0) (2024-10-01)
 
 
