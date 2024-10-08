@@ -223,7 +223,7 @@ export class EOxTimeControl extends LitElement {
         detail: {
           currentStep: this.currentStep,
         },
-      })
+      }),
     );
   }
 
@@ -248,7 +248,7 @@ export class EOxTimeControl extends LitElement {
         const layersInsideGroup = groupLayers[i].getLayers().getArray();
         flatLayers.push(...layersInsideGroup);
         newGroupLayers.push(
-          ...layersInsideGroup.filter((l) => l instanceof Group)
+          ...layersInsideGroup.filter((l) => l instanceof Group),
         );
       }
       groupLayers = newGroupLayers;
@@ -269,7 +269,7 @@ export class EOxTimeControl extends LitElement {
           const flatLayers = this.getFlatLayersArray(
             /** @type {import('ol/layer/Base').default[]} */ (
               olMap.getLayers().getArray()
-            )
+            ),
           );
           const animationLayer =
             /** @type {import('ol/layer/Layer').default} */ (
@@ -314,7 +314,7 @@ export class EOxTimeControl extends LitElement {
                     : "play"}"
                   @click="${() =>
                     this.playAnimation(
-                      this._isAnimationPlaying ? false : true
+                      this._isAnimationPlaying ? false : true,
                     )}"
                 >
                   ${this._isAnimationPlaying ? "Pause" : "Play"}
@@ -332,8 +332,8 @@ export class EOxTimeControl extends LitElement {
                     @change="${(/** @type {CustomEvent} */ evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(
-                          (v) => v === evt.detail.value
-                        ) - this._newStepIndex
+                          (v) => v === evt.detail.value,
+                        ) - this._newStepIndex,
                       )}"
                   ></tc-range-slider>
 

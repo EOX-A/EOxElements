@@ -14,7 +14,7 @@ const htmlRenderTest = () => {
       <eox-stacinfo
         for="/collection"
         allow-html
-      ></eox-stacinfo>`
+      ></eox-stacinfo>`,
   ).as("eox-stacinfo");
 
   cy.get("eox-stacinfo").then(($el) => {

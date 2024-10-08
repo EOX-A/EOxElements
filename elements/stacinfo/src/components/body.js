@@ -25,8 +25,9 @@ export default function parseBody(body = []) {
               <li>
                 ${when(
                   body.length > 1,
-                  () => html` <span class="label"> ${value.label}</span
-                    ><span class="colon">:</span>`
+                  () =>
+                    html` <span class="label"> ${value.label}</span
+                      ><span class="colon">:</span>`,
                 )}
                 <span class="value">
                   ${when(
@@ -35,12 +36,12 @@ export default function parseBody(body = []) {
                       <eox-stacinfo-shadow .content=${value.formatted}>
                       </eox-stacinfo-shadow>
                     `,
-                    () => html`${unsafeHTML(value.formatted)}`
+                    () => html`${unsafeHTML(value.formatted)}`,
                   )}
                 </span>
               </li>
             </slot>
-          `
+          `,
         )}
       </ul>
     </section>

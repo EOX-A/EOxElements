@@ -11,7 +11,7 @@
 export default function coordinatesRoughlyEquals(
   coordinate1,
   coordinate2,
-  epsilon = 0.001
+  epsilon = 0.001,
 ) {
   let equals = true;
 

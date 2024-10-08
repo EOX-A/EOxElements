@@ -17,7 +17,7 @@ const firstUpdatedMethod = (EOxLayerControlLayerList) => {
   const debHandleLayersChangeLength = _debounce(() => {
     EOxLayerControlLayerList.requestUpdate();
     EOxLayerControlLayerList.dispatchEvent(
-      new CustomEvent("changed", { bubbles: true })
+      new CustomEvent("changed", { bubbles: true }),
     );
   }, 50);
 
@@ -44,7 +44,7 @@ const firstUpdatedMethod = (EOxLayerControlLayerList) => {
       layers,
       idProperty,
       titleProperty,
-      EOxLayerControlLayerList
+      EOxLayerControlLayerList,
     );
 
     // Creating a sortable list using helper function createSortable

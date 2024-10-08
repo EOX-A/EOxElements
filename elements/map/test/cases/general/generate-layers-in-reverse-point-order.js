@@ -24,7 +24,7 @@ const generateLayersInReversePointOrder = () => {
         .getArray()
         .map((l) => l.get("id"))
         .join(""),
-      "generate layers in reverse painters order"
+      "generate layers in reverse painters order",
     ).to.eq("321");
   });
 };

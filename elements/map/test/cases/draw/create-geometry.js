@@ -7,7 +7,7 @@ import { simulateEvent } from "../../utils/events";
  */
 const createGeometry = () => {
   cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];

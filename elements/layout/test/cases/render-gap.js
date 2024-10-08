@@ -15,7 +15,7 @@ const renderGap = () => {
       <eox-layout-item x="0" y="1" w="1" h="1"></eox-layout-item>
       <eox-layout-item x="0" y="2" w="1" h="1"></eox-layout-item>
     </eox-layout>
-  `
+  `,
   ).as(layoutElement);
 
   cy.get(layoutElement).and(($el) => {

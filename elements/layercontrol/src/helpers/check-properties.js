@@ -12,7 +12,7 @@ export default function checkProperties(
   collection,
   idProperty,
   titleProperty,
-  that
+  that,
 ) {
   const layerArray = collection.getArray(); // Get an array of layers from the collection.
 

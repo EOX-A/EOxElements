@@ -42,13 +42,13 @@ export default function parseFooter(footer = []) {
                       >
                         copy
                       </button>
-                    `
+                    `,
                   )}
-                `
+                `,
             )}
           </slot>
         </footer>
-      `
+      `,
     )}
   `;
 }

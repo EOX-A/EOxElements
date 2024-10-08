@@ -12,7 +12,7 @@ const addLayer = (EoxLayerControlAddLayers) => {
    * @type {{data: []}} Converting any array into json and parsing it using JSON.parse
    **/
   const layers = JSON.parse(
-    `{"data":${cleanJSONInput(EoxLayerControlAddLayers.jsonInput)}}`
+    `{"data":${cleanJSONInput(EoxLayerControlAddLayers.jsonInput)}}`,
   );
   // Check if the parsed data is an array
   if (Array.isArray(layers.data)) {

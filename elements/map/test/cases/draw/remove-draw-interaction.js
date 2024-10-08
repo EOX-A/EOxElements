@@ -7,7 +7,7 @@ import vectorLayerJson from "../../fixtures/vectorLayer.json";
  */
 const removeDrawInteractionFirstCase = () => {
   cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
@@ -25,7 +25,7 @@ const removeDrawInteractionFirstCase = () => {
  */
 const removeDrawInteractionSecondCase = () => {
   cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];

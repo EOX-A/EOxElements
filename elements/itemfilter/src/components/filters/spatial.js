@@ -104,7 +104,7 @@ class EOxItemFilterSpatial extends LitElement {
                 />
                 <small>${mode} filter geometry</small>
               </label>
-            `
+            `,
           )}
         </form>
         <eox-itemfilter-spatial-filter
@@ -117,7 +117,7 @@ class EOxItemFilterSpatial extends LitElement {
             this.dispatchEvent(new CustomEvent("filter"));
           }}"
         ></eox-itemfilter-spatial>
-      `
+      `,
     );
   }
 }

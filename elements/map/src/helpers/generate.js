@@ -144,7 +144,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
       .map((l) => createLayer(EOxMap, l));
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
     /** @type {import("ol/layer/Group").default} **/ olLayer.setLayers(
-      new Collection(groupLayers)
+      new Collection(groupLayers),
     );
   }
 
@@ -159,7 +159,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
       addInteraction(
         EOxMap,
         /** @type {SelectLayer} **/ olLayer,
-        interactionDefinition
+        interactionDefinition,
       );
     }
   }
@@ -182,13 +182,13 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
     addDraw(
       EOxMap,
       /** @type {import("ol/layer").Vector} **/ (olLayer),
-      /** @type {DrawOptions} **/ (interactionDefinition.options)
+      /** @type {DrawOptions} **/ (interactionDefinition.options),
     );
   else if (interactionDefinition.type === "select")
     addSelect(
       EOxMap,
       olLayer,
-      /** @type {SelectOptions} **/ (interactionDefinition.options)
+      /** @type {SelectOptions} **/ (interactionDefinition.options),
     );
 }
 
@@ -227,7 +227,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     ).setSource(
       /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
         /** @type {any} **/ newLayer
-      ).getSource()
+      ).getSource(),
     );
   }
 
@@ -264,11 +264,11 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   ) {
     existingJsonDefinition.interactions?.forEach(
       /** @param {EOxInteraction} interactionDefinition **/ (
-        interactionDefinition
+        interactionDefinition,
       ) => {
         const correspondingNewInteraction =
           newLayerDefinition.interactions.find(
-            (i) => i.type === interactionDefinition.type
+            (i) => i.type === interactionDefinition.type,
           );
 
         if (!correspondingNewInteraction) {
@@ -280,7 +280,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
             const olDrawInteraction =
               EOxMap.interactions[correspondingNewInteraction.options.id];
             olDrawInteraction.setActive(
-              correspondingNewInteraction.options.active
+              correspondingNewInteraction.options.active,
             );
 
             const olModifyInteraction =
@@ -288,17 +288,17 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
                 `${correspondingNewInteraction.options.id}_modify`
               ];
             olModifyInteraction.setActive(
-              correspondingNewInteraction.options.modify
+              correspondingNewInteraction.options.modify,
             );
           } else {
             const olSelectInteraction =
               EOxMap.selectInteractions[correspondingNewInteraction.options.id];
             olSelectInteraction.setActive(
-              correspondingNewInteraction.options.active
+              correspondingNewInteraction.options.active,
             );
           }
         }
-      }
+      },
     );
 
     // Add new interactions
@@ -306,14 +306,14 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       const correspondingExistingInteraction =
         existingJsonDefinition.interactions.find(
           /** @param {EOxInteraction} i **/
-          (i) => i.type === interactionDefinition.type
+          (i) => i.type === interactionDefinition.type,
         );
 
       if (!correspondingExistingInteraction) {
         addInteraction(
           EOxMap,
           /** @type {SelectLayer} **/ (/** @type {any} **/ existingLayer),
-          interactionDefinition
+          interactionDefinition,
         );
       }
     });
@@ -342,7 +342,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
         layerCollection
           .getArray()
           .map((/** @type {import("ol/layer/Base").default}  **/ l) =>
-            l.get("id")
+            l.get("id"),
           )
           .includes(newLayerId)
       ) {
@@ -350,7 +350,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
         updateLayer(
           EOxMap,
           layerDefinitionInsideGroup,
-          EOxMap.getLayerById(newLayerId)
+          EOxMap.getLayerById(newLayerId),
         );
       } else {
         // New layer, add it to the group
@@ -365,13 +365,13 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       .sort(
         (
           /** @type {import("ol/layer/Base").default} **/ layerA,
-          /** @type {import("ol/layer/Base").default} **/ layerB
+          /** @type {import("ol/layer/Base").default} **/ layerB,
         ) => {
           return (
             newLayerIds.indexOf(layerA.get("id")) -
             newLayerIds.indexOf(layerB.get("id"))
           );
-        }
+        },
       );
 
     layerCollection.changed();

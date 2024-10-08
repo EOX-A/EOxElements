@@ -12,7 +12,7 @@ export default function cleanJSONInput(json) {
   // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON
   const replacedQuotes = inputValue.replace(
     /(['"])?([a-zA-Z0-9_]+)(['"])?:/g,
-    '"$2": '
+    '"$2": ',
   );
 
   // Remove trailing commas before closing braces and brackets

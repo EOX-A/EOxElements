@@ -29,7 +29,7 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
       .getSource()
       // @ts-ignore
       .setTileUrlFunction((...args) =>
-        updateUrl(newTileUrlFunc(...args), data)
+        updateUrl(newTileUrlFunc(...args), data),
       );
 
     // TODO: It's not advisable to access protected methods directly.

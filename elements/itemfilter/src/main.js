@@ -238,7 +238,7 @@ export class EOxItemFilter extends LitElement {
     this.#resultAggregation = filterApplyMethod(
       this.#config,
       this.#items,
-      this
+      this,
     );
     this.search();
   }
@@ -260,7 +260,7 @@ export class EOxItemFilter extends LitElement {
         },
         bubbles: true,
         composed: true,
-      })
+      }),
     );
     if (this.inlineMode)
       this.renderRoot.querySelector("eox-itemfilter-container").updateInline();
@@ -325,7 +325,7 @@ export class EOxItemFilter extends LitElement {
     this.#config = config;
     this.#items =
       this.items?.map((i, index) =>
-        Object.assign({ id: i[this.idProperty] || `item-${index}` }, i)
+        Object.assign({ id: i[this.idProperty] || `item-${index}` }, i),
       ) || [];
     this.apply();
   }
@@ -360,7 +360,7 @@ export class EOxItemFilter extends LitElement {
         detail: this.selectedResult,
         bubbles: true,
         composed: true,
-      })
+      }),
     );
     this.requestUpdate();
   }
@@ -398,7 +398,7 @@ export class EOxItemFilter extends LitElement {
                     <slot name="filterstitle"
                       ><h6 class="main-heading">Filters</h6></slot
                     >
-                  `
+                  `,
                 )}
                 <ul id="filters">
                   ${map(
@@ -413,14 +413,14 @@ export class EOxItemFilter extends LitElement {
                         >
                           ${this.#createReset(
                             filterObject,
-                            getTabIndex(index, 1)
+                            getTabIndex(index, 1),
                           )}
                           ${this.#createFilter(
                             filterObject,
-                            getTabIndex(index, 2)
+                            getTabIndex(index, 2),
                           )}
                         </eox-itemfilter-expandcontainer>
-                      </li>`
+                      </li>`,
                   )}
                 </ul>
                 ${when(
@@ -439,11 +439,11 @@ export class EOxItemFilter extends LitElement {
                     >
                       Reset all
                     </a>
-                  `
+                  `,
                 )}
               </section>
             </eox-itemfilter-container>
-          `
+          `,
         )}
         ${when(
           this.#config?.showResults && this.results,
@@ -456,7 +456,7 @@ export class EOxItemFilter extends LitElement {
               .selectedResult=${this.selectedResult}
               @result=${this.updateResult}
             ></eox-itemfilter-results>
-          `
+          `,
         )}
       </form>
     `;

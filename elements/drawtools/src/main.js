@@ -164,7 +164,7 @@ export class EOxDrawTools extends LitElement {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
-      replaceFeatures
+      replaceFeatures,
     );
   }
 
@@ -189,7 +189,7 @@ export class EOxDrawTools extends LitElement {
     this.#geoJSON = JSON.stringify(
       this.eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
       undefined,
-      2
+      2,
     );
   }
 
@@ -204,7 +204,7 @@ export class EOxDrawTools extends LitElement {
        * @type Array<import("ol").Feature>
        */
       this.dispatchEvent(
-        new CustomEvent("drawupdate", { detail: this.drawnFeatures })
+        new CustomEvent("drawupdate", { detail: this.drawnFeatures }),
       );
     };
     emitDrawnFeaturesMethod(this, drawUpdateEvent);

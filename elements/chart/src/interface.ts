@@ -73,7 +73,7 @@ const createChart = (div: HTMLElement | null) => {
       "src",
       import.meta?.url?.includes("localhost")
         ? "http://localhost:5173/index.html"
-        : "about:blank"
+        : "about:blank",
     );
     iframe.setAttribute("id", "EOxChart");
     div?.appendChild(iframe);

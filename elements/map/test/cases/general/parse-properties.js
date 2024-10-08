@@ -11,7 +11,7 @@ const parseProperties = () => {
       ]}
       .zoom=${7}
       .center=${[1113194, 2273030]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];

@@ -127,7 +127,7 @@ export class EOxJSONForm extends LitElement {
         detail: this.value,
         bubbles: true,
         composed: true,
-      })
+      }),
     );
   }
 

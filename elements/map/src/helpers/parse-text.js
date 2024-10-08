@@ -18,7 +18,7 @@ export default function parseTextToFeature(
   text,
   vectorLayer,
   EOxMap,
-  replaceFeatures = false
+  replaceFeatures = false,
 ) {
   try {
     // Attempt to parse the input text in various formats
@@ -37,7 +37,7 @@ export default function parseTextToFeature(
       vectorLayer,
       EOxMap,
       false,
-      replaceFeatures
+      replaceFeatures,
     );
   } catch (err) {
     console.error("Error parsing data:", err);

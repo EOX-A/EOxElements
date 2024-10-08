@@ -30,7 +30,7 @@ const loadMisMatchingValuesTest = () => {
       .value=${{
         [testVals.key1]: testVals.value1,
       }}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   // Find the jsonForm element and access its shadow DOM
   cy.get(jsonForm)

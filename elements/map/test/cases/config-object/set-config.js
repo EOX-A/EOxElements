@@ -26,7 +26,7 @@ const setConfig = () => {
           projection: "EPSG:4326",
         },
       }}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(async ($el) => {
     const eoxMap = $el[0];
@@ -37,7 +37,7 @@ const setConfig = () => {
     expect(eoxMap.map.getLayers().getArray()[0].get("id")).to.be.equal("osm");
 
     expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
-      "EPSG:4326"
+      "EPSG:4326",
     );
     expect(eoxMap.map.getView().getCenter()[0]).to.be.closeTo(16, 0.0001);
     expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(48, 0.0001);
@@ -66,11 +66,11 @@ const setConfig = () => {
     expect(eoxMap.map.getControls().getLength()).to.be.equal(0);
     expect(eoxMap.map.getLayers().getArray().length).to.be.equal(1);
     expect(eoxMap.map.getLayers().getArray()[0].get("title")).to.be.equal(
-      "bar"
+      "bar",
     );
 
     expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
-      "EPSG:3857"
+      "EPSG:3857",
     );
     expect(eoxMap.map.getView().getCenter()[0]).to.be.closeTo(1113194, 0.01);
     expect(eoxMap.map.getView().getCenter()[1]).to.be.closeTo(2273030, 0.01);

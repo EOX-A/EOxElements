@@ -20,11 +20,11 @@ const firstUpdatedMethod = (EoxDrawToolList) => {
   // Add listeners for style change in both hover and click interactions
   EoxDrawToolList.hoverInteraction.selectStyleLayer.on(
     "change",
-    handleInteractionStyleChange
+    handleInteractionStyleChange,
   );
   EoxDrawToolList.clickInteraction.selectStyleLayer.on(
     "change",
-    handleInteractionStyleChange
+    handleInteractionStyleChange,
   );
 };
 

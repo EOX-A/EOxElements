@@ -15,7 +15,7 @@ export function addScrollInteractions(map, customInteraction = false) {
     map.addInteraction(
       new MouseWheelZoom({
         condition: platformModifierKeyOnly,
-      })
+      }),
     );
 
     const isTouchDevice =
@@ -30,7 +30,7 @@ export function addScrollInteractions(map, customInteraction = false) {
             const pointerCount = this.getPointerCount();
             return pointerCount === 2 || platformModifierKeyOnly(event);
           },
-        })
+        }),
       );
     } else map.addInteraction(new DragPan()); // On non-touch devices, add the default DragPan interaction
   } else {

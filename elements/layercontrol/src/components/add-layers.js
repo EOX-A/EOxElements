@@ -240,7 +240,7 @@ export class EOxLayerControlAddLayers extends LitElement {
                               </button>
                             </li>
                           `;
-                        }
+                        },
                       )}
                     </ul>`
                   : nothing

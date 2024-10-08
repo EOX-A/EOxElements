@@ -178,7 +178,7 @@ export class EOxLayerControlLayer extends LitElement {
               <span class="title">${this.#getLayer(this.titleProperty)}</span>
               ${when(
                 isToolsAvail,
-                () => html`<span class="tools-placeholder"></span>`
+                () => html`<span class="tools-placeholder"></span>`,
               )}
             </label>
           </div>
@@ -191,7 +191,7 @@ export class EOxLayerControlLayer extends LitElement {
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
           ></eox-layercontrol-layer-tools>
-        `
+        `,
       )}
     `;
   }

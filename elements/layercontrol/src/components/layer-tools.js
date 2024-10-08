@@ -128,7 +128,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .unstyled=${this.unstyled}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-layerconfig>
-          `
+          `,
         )}
       </div>
       <div slot="datetime-content">
@@ -144,7 +144,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .unstyled=${this.unstyled}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-layer-datetime>
-          `
+          `,
         )}
       </div>
       <div slot="legend-content">
@@ -160,7 +160,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .unstyled=${this.unstyled}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-layer-legend>
-          `
+          `,
         )}
       </div>
       <div slot="remove-icon">${this._removeButton()}</div>
@@ -224,9 +224,9 @@ export class EOxLayerControlLayerTools extends LitElement {
                   ${this._getDefaultTools()}
                 </eox-layercontrol-tools-items>
               </details>
-            `
+            `,
           )}
-        `
+        `,
       )}
     `;
   }
@@ -349,5 +349,5 @@ export class EOxLayerControlLayerTools extends LitElement {
 
 customElements.define(
   "eox-layercontrol-layer-tools",
-  EOxLayerControlLayerTools
+  EOxLayerControlLayerTools,
 );

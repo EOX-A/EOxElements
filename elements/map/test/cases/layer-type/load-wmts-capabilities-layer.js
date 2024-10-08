@@ -10,7 +10,7 @@ const loadWmtsCapabilitiesLayer = () => {
         cy.intercept(
           "GET",
           "https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml",
-          eoxCapabilitiesXML
+          eoxCapabilitiesXML,
         );
         cy.intercept("*Request=GetTile*", {
           fixture: "./map/test/fixtures/tiles/wms/eox_cloudless.jpeg",
@@ -31,7 +31,7 @@ const loadWmtsCapabilitiesLayer = () => {
         ];
 
         cy.mount(html`<eox-map .zoom=${1} .layers=${layersJson}></eox-map>`).as(
-          "eox-map"
+          "eox-map",
         );
 
         cy.get("eox-map").should(($el) => {
@@ -42,7 +42,7 @@ const loadWmtsCapabilitiesLayer = () => {
             resolve();
           });
         });
-      }
+      },
     );
   });
 };

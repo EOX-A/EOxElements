@@ -279,7 +279,7 @@ export class SliderTicks extends LitElement {
         this.width;
       const endPosition =
         (this.steps.indexOf(
-          decadeGroups[decade][decadeGroups[decade].length - 1].date
+          decadeGroups[decade][decadeGroups[decade].length - 1].date,
         ) /
           (this.steps.length - 1)) *
         this.width;
@@ -396,7 +396,7 @@ export class SliderTicks extends LitElement {
   isYearLine(line) {
     // Check if this line's position is approximately equal to any year mark position
     const isYearMark = this._yearMarks.some(
-      (yearMark) => Math.abs(yearMark.position - line) < 1.0
+      (yearMark) => Math.abs(yearMark.position - line) < 1.0,
     );
 
     return isYearMark;

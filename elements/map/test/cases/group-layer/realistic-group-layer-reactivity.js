@@ -75,12 +75,12 @@ const realisticGroupLayerReactivity = () => {
 
     expect(
       newRealLayers.length,
-      "correctly updates a layer inside group"
+      "correctly updates a layer inside group",
     ).to.be.equal(4);
     const newLayer = eoxMap.getLayerById("newDummyInsideGroup1");
     expect(
       newLayer.getOpacity(),
-      "correctly updates a layer inside group"
+      "correctly updates a layer inside group",
     ).to.be.equal(0.5);
   });
 
@@ -132,7 +132,7 @@ const realisticGroupLayerReactivity = () => {
 
       expect(
         layer.get("name"),
-        "update layer inside group in realistic setting (testing instanceof checks)"
+        "update layer inside group in realistic setting (testing instanceof checks)",
       ).to.be.equal("updated layer");
     });
   });

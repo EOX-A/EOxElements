@@ -6,7 +6,7 @@ import drawInteractionLayerJson from "../../fixtures/drawInteraction.json";
  */
 const addDrawInteraction = () => {
   cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     // get the interaction via the source key
@@ -24,7 +24,7 @@ const addDrawInteraction = () => {
     expect(drawInteraction, "remove interaction from dictionary").to.not.exist;
     expect(
       map.getInteractions().getLength(),
-      "remove draw and modify interaction"
+      "remove draw and modify interaction",
     ).to.be.equal(originalNumberOfInteractions - 2);
   });
 };

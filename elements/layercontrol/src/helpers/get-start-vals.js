@@ -20,7 +20,7 @@ export function getNestedStartVals(schema, nestedValues) {
       // Recursively traverse nested properties
       const nestedStartVals = getNestedStartVals(
         schema[key].properties,
-        nestedValues
+        nestedValues,
       );
       if (Object.keys(nestedStartVals).length > 0) {
         //@ts-ignore
@@ -66,7 +66,7 @@ export function getStartVals(layer, layerConfig) {
 
   const startVals = getNestedStartVals(
     layerConfig.schema?.properties || layerConfig.schema,
-    nestedValues
+    nestedValues,
   );
 
   return Object.keys(startVals).length ? startVals : null;

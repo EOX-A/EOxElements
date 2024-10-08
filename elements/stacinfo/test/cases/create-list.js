@@ -12,7 +12,7 @@ const CreateListTest = () => {
   testBody(body);
   cy.mount(
     `
-      <eox-stacinfo for="/collection"></eox-stacinfo>`
+      <eox-stacinfo for="/collection"></eox-stacinfo>`,
   ).as("eox-stacinfo");
 
   cy.get("eox-stacinfo").then(($el) => {

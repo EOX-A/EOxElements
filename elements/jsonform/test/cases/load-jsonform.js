@@ -25,7 +25,7 @@ const loadJsonFormTest = () => {
       .value=${{
         [testVals.key]: testVals.value,
       }}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   // Find the jsonForm element and access its shadow DOM
   cy.get(jsonForm)

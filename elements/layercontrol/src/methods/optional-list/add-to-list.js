@@ -9,33 +9,33 @@ const addToListMethod = (EOxLayerControlOptionalList) => {
   // Get the selected layer based on the value from the dropdown
   /** @type HTMLInputElement*/
   const optionalSelect = EOxLayerControlOptionalList.querySelector(
-    "select[name=optional]"
+    "select[name=optional]",
   );
   const selectedValue = optionalSelect ? optionalSelect.value : null;
 
   const selectedLayer = filterLayers(
     EOxLayerControlOptionalList.layers.getArray(),
     "layerControlOptional",
-    true
+    true,
   ).find(
     (layer) =>
       // @ts-ignore
       (layer.get(EOxLayerControlOptionalList.idProperty) || layer.ol_uid) ===
-      selectedValue
+      selectedValue,
   );
 
   // Update visibility and dispatch 'changed' event
   selectedLayer?.set("layerControlOptional", false);
   selectedLayer?.setVisible(true);
   EOxLayerControlOptionalList.dispatchEvent(
-    new CustomEvent("changed", { bubbles: true })
+    new CustomEvent("changed", { bubbles: true }),
   );
 
   // Update related components
   EOxLayerControlOptionalList.renderRoot.parentNode
     .querySelectorAll("eox-layercontrol-layer-list")
     .forEach((layerList) =>
-      /** @type {import("lit").LitElement} */ (layerList).requestUpdate()
+      /** @type {import("lit").LitElement} */ (layerList).requestUpdate(),
     );
 
   EOxLayerControlOptionalList.requestUpdate();

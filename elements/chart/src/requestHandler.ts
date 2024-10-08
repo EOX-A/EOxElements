@@ -22,7 +22,7 @@ class RequestHandler {
     source?: string,
     table?: string,
     geometry?: object,
-    timeParameter?: string
+    timeParameter?: string,
   ) {
     this.type = type;
     this.endpoint = endpoint;
@@ -72,7 +72,7 @@ class RequestHandler {
     return pRetry(fetchSignalsFunction, {
       onFailedAttempt: (error) => {
         console.log(
-          `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
+          `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
         );
       },
       retries: this.retries,
@@ -112,7 +112,7 @@ class RequestHandler {
     return pRetry(fetchSignalsFunction, {
       onFailedAttempt: (error) => {
         console.log(
-          `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`
+          `Attempt ${error.attemptNumber} failed. There are ${error.retriesLeft} retries left.`,
         );
       },
       retries: this.retries,

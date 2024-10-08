@@ -193,22 +193,23 @@ export class EOxSelector extends LitElement {
       </style>
       ${when(
         this.suggestions.length > 10,
-        () => html`<div class="autocomplete-container">
-          <div class="autocomplete-container-wrapper">
-            <input
-              autocomplete="off"
-              tabindex=${this.tabIndex}
-              class="autocomplete-input"
-              type="text"
-              .value=${this.query}
-              placeholder="${this.filterObject.placeholder || ""}"
-              @input=${this.#handleInput}
-              @keydown=${this.#handleKeyDown}
-              @blur=${() => (this.showSuggestions = false)}
-              @focus=${() => (this.showSuggestions = true)}
-            />
-          </div>
-        </div>`
+        () =>
+          html`<div class="autocomplete-container">
+            <div class="autocomplete-container-wrapper">
+              <input
+                autocomplete="off"
+                tabindex=${this.tabIndex}
+                class="autocomplete-input"
+                type="text"
+                .value=${this.query}
+                placeholder="${this.filterObject.placeholder || ""}"
+                @input=${this.#handleInput}
+                @keydown=${this.#handleKeyDown}
+                @blur=${() => (this.showSuggestions = false)}
+                @focus=${() => (this.showSuggestions = true)}
+              />
+            </div>
+          </div>`,
       )}
       <div class="select-container ${selectOverflowClass}">
         <ul class="${this.type}">
@@ -233,7 +234,7 @@ export class EOxSelector extends LitElement {
                   <span class="title">${suggestion}</span>
                 </label>
               </li>
-            `
+            `,
           )}
         </ul>
       </div>

@@ -7,7 +7,7 @@ const syncOneMapToAnother = () => {
   const zoom = 7;
   const center = [10, 10];
   cy.mount(
-    html`<eox-map id="a"></eox-map> <eox-map id="b" sync="#a"></eox-map>`
+    html`<eox-map id="a"></eox-map> <eox-map id="b" sync="#a"></eox-map>`,
   );
   cy.get("eox-map#a").and(($el) => {
     const olMapView = $el[0].map.getView();

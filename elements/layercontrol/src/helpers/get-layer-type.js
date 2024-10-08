@@ -25,7 +25,7 @@ export default function getLayerType(layer, map) {
     // @ts-ignore
     ?.ol_uid?.includes(
       // @ts-ignore
-      layer.getSource ? layer.getSource()?.ol_uid : undefined
+      layer.getSource ? layer.getSource()?.ol_uid : undefined,
     );
 
   if (isDrawing) return "draw";

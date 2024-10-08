@@ -135,7 +135,7 @@ export class EOxChart extends HTMLElement {
       new ChartControls(
         document.getElementById("controls"),
         sdmInstance,
-        options
+        options,
       );
       sdmInstance.setActiveFields(options.active);
     };
@@ -154,7 +154,7 @@ export class EOxChart extends HTMLElement {
       new ChartControls(
         document.getElementById("controls"),
         sdmInstance,
-        options
+        options,
       );
       sdmInstance.setActiveFields(options.active);
     };

@@ -85,7 +85,7 @@ export class EOxLayerControlOptionalList extends LitElement {
     const filteredLayersList = filterLayers(
       this.layers.getArray(),
       "layerControlOptional",
-      true
+      true,
     );
 
     return html`
@@ -120,5 +120,5 @@ export class EOxLayerControlOptionalList extends LitElement {
 
 customElements.define(
   "eox-layercontrol-optional-list",
-  EOxLayerControlOptionalList
+  EOxLayerControlOptionalList,
 );

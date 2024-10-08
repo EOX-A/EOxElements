@@ -25,7 +25,7 @@ Chart.register(
   ScatterWithErrorBarsChart,
   ScatterWithErrorBarsController,
   LinearScale,
-  CategoryScale
+  CategoryScale,
 );
 
 type status = "ready" | "loading" | "error";
@@ -120,7 +120,7 @@ class SignalsDataManager {
       this.options.source,
       this.options.table,
       this.options.geometry,
-      this.options.timeParameter
+      this.options.timeParameter,
     );
     this.status = "ready";
     this.chartOptions = {
@@ -202,7 +202,7 @@ class SignalsDataManager {
               const maxString =
                 raw.yMax !== null ? `, ↑ ${raw.yMax.toPrecision(3)}` : "";
               return `${tooltipItem.dataset.label}: ↔ ${raw.y.toPrecision(
-                3
+                3,
               )}${minString}${maxString}`;
             },
           },
@@ -302,7 +302,7 @@ class SignalsDataManager {
 
         let actualDataAdded = false;
         let signalData = data.map((datapoint) =>
-          this.requestHandler.convertData(datapoint)
+          this.requestHandler.convertData(datapoint),
         );
         // Probably best to always sort by time
         signalData.sort((a, b) => a.x - b.x);
@@ -390,7 +390,7 @@ class SignalsDataManager {
               dp.yMin = (dp.yMin - totalMin) / extent;
               dp.yMax = (dp.yMax - totalMin) / extent;
               return dp;
-            }
+            },
           );
         }
 
@@ -493,7 +493,7 @@ class SignalsDataManager {
                 month: currDate.month,
               })
                 .plus({ month: 1 })
-                .minus({ second: 1 })
+                .minus({ second: 1 }),
             )
             .then((data) => {
               this.dataStorage[index][timeslot].data = data;
@@ -642,7 +642,7 @@ class SignalsDataManager {
       week?: number;
       month?: number;
       year?: number;
-    } | null
+    } | null,
   ) {
     this.timeAggregation = aggregation;
     this.updateChart();

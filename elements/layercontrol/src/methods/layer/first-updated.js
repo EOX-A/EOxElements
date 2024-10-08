@@ -18,7 +18,7 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     const newLayerVisibilityBasedOnZoom = isLayerVisibleBasedOnZoomState(
       EOxLayerControlLayer.layer,
       EOxLayerControlLayer.map,
-      EOxLayerControlLayer.showLayerZoomState
+      EOxLayerControlLayer.showLayerZoomState,
     );
 
     let visibilityChanged = false;
@@ -41,7 +41,7 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     if (visibilityChanged) {
       EOxLayerControlLayer.requestUpdate();
       EOxLayerControlLayer.dispatchEvent(
-        new CustomEvent("change:resolution", { bubbles: true })
+        new CustomEvent("change:resolution", { bubbles: true }),
       );
     }
   };
@@ -49,7 +49,7 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
   if (
     isLayerZoomStateRequired(
       EOxLayerControlLayer.layer,
-      EOxLayerControlLayer.showLayerZoomState
+      EOxLayerControlLayer.showLayerZoomState,
     )
   ) {
     updateLayerZoomVisibility();

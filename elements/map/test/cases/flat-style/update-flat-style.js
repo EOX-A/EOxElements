@@ -19,7 +19,7 @@ const updateFlatStyle = () => {
       .zoom=${5}
       .center=${[20, 50]}
       .layers=${vectorLayerStyleJson}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     const updatedLayerJson = {
@@ -48,7 +48,7 @@ const updateFlatStyle = () => {
     expect(featureColor, "sets color").to.be.equal("#7BF5CC");
     const featureText = featureStyle.getText().getText();
     expect(featureText, "sets text").to.be.equal(
-      "Northeast Siberian coastal tundra"
+      "Northeast Siberian coastal tundra",
     );
   });
 };

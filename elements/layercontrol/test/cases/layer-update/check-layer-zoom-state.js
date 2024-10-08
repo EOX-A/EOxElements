@@ -12,7 +12,7 @@ const checkLayerZoomState = () => {
     const haveCheck = !have ? "not." : "";
     cy.get(`[data-layer=${id}] .layer`).should(
       `${haveCheck}have.class`,
-      "zoom-state-invisible"
+      "zoom-state-invisible",
     );
   };
 

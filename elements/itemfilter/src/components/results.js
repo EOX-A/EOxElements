@@ -121,7 +121,7 @@ export class EOxItemFilterResults extends LitElement {
           ${when(
             this.results.length < 1,
             () => html`<small class="no-results">No matching items</small>`,
-            () => nothing
+            () => nothing,
           )}
           <ul id="results" part="results">
             ${when(
@@ -131,7 +131,7 @@ export class EOxItemFilterResults extends LitElement {
                   this.resultAggregation.filter(
                     (aggregationProperty) =>
                       this.aggregateResults(this.results, aggregationProperty)
-                        .length
+                        .length,
                   ),
                   (aggregationProperty) =>
                     html`${when(
@@ -141,10 +141,10 @@ export class EOxItemFilterResults extends LitElement {
                         html`<div style="margin-left: -8px">
                           ${this.#createItemList(aggregationProperty)}
                         </div>`,
-                      () => this.#createItemDetails(aggregationProperty)
-                    )}`
+                      () => this.#createItemDetails(aggregationProperty),
+                    )}`,
                 ),
-              () => this.#createItemList()
+              () => this.#createItemList(),
             )}
           </ul>
         </div>

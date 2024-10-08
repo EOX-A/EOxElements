@@ -12,7 +12,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
  */
 export function createItemDetailsMethod(
   aggregationProperty,
-  EOxItemFilterResults
+  EOxItemFilterResults,
 ) {
   return html`
     <details
@@ -26,7 +26,7 @@ export function createItemDetailsMethod(
           <span class="count"
             >${EOxItemFilterResults.aggregateResults(
               EOxItemFilterResults.results,
-              aggregationProperty
+              aggregationProperty,
             ).length}</span
           >
         </span>
@@ -47,7 +47,7 @@ export function createItemDetailsMethod(
  */
 export function createItemListMethod(
   aggregationProperty,
-  EOxItemFilterResults
+  EOxItemFilterResults,
 ) {
   const results = EOxItemFilterResults.results;
   const items = aggregationProperty
@@ -80,7 +80,7 @@ export function createItemListMethod(
                 EOxItemFilterResults.dispatchEvent(
                   new CustomEvent("result", {
                     detail: EOxItemFilterResults.selectedResult,
-                  })
+                  }),
                 );
               }}
             >
@@ -90,7 +90,7 @@ export function createItemListMethod(
                   EOxItemFilterResults.renderTemplate(
                     "result",
                     item,
-                    `result-${item.id}`
+                    `result-${item.id}`,
                   ),
                 () => html`
                   ${when(
@@ -109,13 +109,13 @@ export function createItemListMethod(
                       <span class="title"
                         >${unsafeHTML(item[config.titleProperty])}</span
                       >
-                    `
+                    `,
                   )}
-                `
+                `,
               )}
             </span>
           </li>
-        `
+        `,
       )}
     </ul>
   `;

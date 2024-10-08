@@ -67,6 +67,6 @@ describe("Map", () => {
    * Test case to check whether layers is generated in reverse point order
    */
   it("doesn't reverse the input layer array", { retries: 0 }, () =>
-    generateLayersInReversePointOrder()
+    generateLayersInReversePointOrder(),
   );
 });

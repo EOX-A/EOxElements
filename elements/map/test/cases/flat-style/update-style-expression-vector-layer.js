@@ -15,7 +15,7 @@ const updateStyleExpressionVectorLayer = () => {
     "stroke-width": 2,
   };
   cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     return new Cypress.Promise((resolve) => {

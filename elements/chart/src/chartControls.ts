@@ -13,7 +13,7 @@ class ChartControls {
     element: HTMLElement,
     sdm: SignalsDataManager,
     sdmOptions: SDMOptions,
-    options?: ChartControlOptions
+    options?: ChartControlOptions,
   ) {
     this.element = element;
     this.sdm = sdm;
@@ -31,7 +31,7 @@ class ChartControls {
     document
       .querySelector("eox-chart")
       .shadowRoot.querySelector<HTMLElement>(
-        "#legend-container"
+        "#legend-container",
       ).style.display = "block";
     document
       .querySelector("eox-chart")
@@ -174,13 +174,13 @@ class ChartControls {
         case "month":
           this.sdm.setTimeInterval(
             currDate.minus({ month: Number(val) }),
-            currDate
+            currDate,
           );
           break;
         case "year":
           this.sdm.setTimeInterval(
             currDate.minus({ year: Number(val) }),
-            currDate
+            currDate,
           );
           break;
         case "custom":

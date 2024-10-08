@@ -51,11 +51,12 @@ export class EOxMapTooltip extends LitElement {
           <ul>
             ${Object.entries(this.feature.getProperties())
               .map(([key, value]) =>
-                this.propertyTransform({ key, value }, this.feature)
+                this.propertyTransform({ key, value }, this.feature),
               )
               .filter((v) => v)
               .map(
-                ({ key, value }) => html`<li><span>${key}</span>: ${value}</li>`
+                ({ key, value }) =>
+                  html`<li><span>${key}</span>: ${value}</li>`,
               )}
           </ul>`
       : nothing;

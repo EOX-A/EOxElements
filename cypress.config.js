@@ -15,7 +15,7 @@ if (pathsChanged) {
     // if only one folder was modified update spec
     if (uniqueElementFolders.length > 0) {
       specPatternComponentTests = uniqueElementFolders.map(
-        (item) => `elements/${item}/**/*.cy.{js,jsx,ts,tsx}`
+        (item) => `elements/${item}/**/*.cy.{js,jsx,ts,tsx}`,
       );
     }
   }

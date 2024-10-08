@@ -154,7 +154,7 @@ export class EOxMapCompare extends LitElement {
               @input=${this.#handleInput}
             />
           </div>
-        `
+        `,
       )}
     `;
   }
