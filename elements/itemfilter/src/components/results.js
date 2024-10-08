@@ -1,5 +1,4 @@
-import { TemplateElement } from "../../../../utils/templateElement";
-import { html, nothing } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
 import {
@@ -11,18 +10,18 @@ import { toggleAccordion } from "../helpers";
 
 /**
  * EOxItemFilterResults is a custom web component that displays the results of item filtering.
- * It uses the TemplateElement base class and integrates with external methods for aggregating results
+ * It uses the LitElement base class and integrates with external methods for aggregating results
  * and creating item details and lists.
  *
  * @module EOxItemFilterResults
- * @extends TemplateElement
+ * @extends LitElement
  * @property {Object} config - The configuration object for the results display.
  * @property {Object} results - The state object containing the filter results.
  * @property {Object} filters - The state object containing the applied filters.
  * @property {Array} resultAggregation - The array of properties used for result aggregation.
  * @property {Object} selectedResult - Property with pre-selected result
  */
-export class EOxItemFilterResults extends TemplateElement {
+export class EOxItemFilterResults extends LitElement {
   // Define properties with defaults and types
   static get properties() {
     return {

@@ -1,19 +1,26 @@
-import { html, render } from "lit";
-import { TemplateElement } from "../../../../utils/templateElement";
+import { LitElement, html, nothing } from "lit";
 
 /**
  * A custom element that serves as a tooltip for the map.
  * Displays information about map features in a styled format.
  */
-export class EOxMapTooltip extends TemplateElement {
+export class EOxMapTooltip extends LitElement {
   static get properties() {
     return {
+      feature: { attribute: false, property: true, type: Object },
       propertyTransform: { attribute: false, property: true, type: Function },
     };
   }
 
   constructor() {
     super();
+
+    /**
+     * The rendered feature.
+     *
+     * @type {import("ol/Feature").default | import("ol/render/Feature").default}
+     */
+    this.feature = null;
 
     /**
      * A function to transform properties before rendering.
@@ -25,47 +32,33 @@ export class EOxMapTooltip extends TemplateElement {
     this.propertyTransform = (property, _feature) => property;
   }
 
-  /**
-   * @param {import("ol/Feature").default | import("ol/render/Feature").default} feature
-   */
-  renderContent(feature) {
-    render(
-      // Check if a custom template named "properties" is available
-      this.hasTemplate("properties")
-        ? html`${this.renderTemplate(
-            // Render the custom template
-            "properties",
-            feature.getProperties(),
-            // `tooltip-${this.content.id}`
-            "tooltip-1"
-          )}`
-        : html` <style>
-              ul {
-                margin: 0;
-                padding: 15px 15px 15px 30px;
-                background: #0008;
-                border-radius: 15px;
-                color: white;
-                max-width: 250px;
-                font-size: small;
-              }
-              span {
-                font-weight: bold;
-              }
-            </style>
-            <ul>
-              ${Object.entries(feature.getProperties())
-                .map(([key, value]) =>
-                  this.propertyTransform({ key, value }, feature)
-                )
-                .filter((v) => v)
-                .map(
-                  ({ key, value }) =>
-                    html`<li><span>${key}</span>: ${value}</li>`
-                )}
-            </ul>`,
-      this.shadowRoot
-    );
+  render() {
+    return this.feature
+      ? html` <style>
+            ul {
+              margin: 0;
+              padding: 15px 15px 15px 30px;
+              background: #0008;
+              border-radius: 15px;
+              color: white;
+              max-width: 250px;
+              font-size: small;
+            }
+            span {
+              font-weight: bold;
+            }
+          </style>
+          <ul>
+            ${Object.entries(this.feature.getProperties())
+              .map(([key, value]) =>
+                this.propertyTransform({ key, value }, this.feature)
+              )
+              .filter((v) => v)
+              .map(
+                ({ key, value }) => html`<li><span>${key}</span>: ${value}</li>`
+              )}
+          </ul>`
+      : nothing;
   }
 }
 

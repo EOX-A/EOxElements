@@ -1,4 +1,4 @@
-import { html, nothing } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { style } from "./style";
@@ -23,7 +23,6 @@ import {
   resetFilterMethod,
 } from "./methods/itemfilter";
 import _debounce from "lodash.debounce";
-import { TemplateElement } from "../../../utils/templateElement";
 import {
   getTabIndex,
   isFiltersDirty,
@@ -36,9 +35,9 @@ import {
  * The component supports both inline and dropdown modes for filter display.
  *
  * @module EOxItemFilter
- * @extends {TemplateElement}
+ * @extends {LitElement}
  */
-export class EOxItemFilter extends TemplateElement {
+export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
   static get properties() {
     return {
