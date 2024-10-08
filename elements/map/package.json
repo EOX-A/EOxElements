@@ -23,7 +23,7 @@
   ],
   "main": "./dist/eox-map.js",
   "scripts": {
-    "build": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
-    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
+    "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
+    "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
   }
 }
