@@ -17,7 +17,7 @@ const SinglePropertyTest = () => {
   ).as("eox-stacinfo");
 
   cy.get("eox-stacinfo").then(($el) => {
-    // @ts-expect error TODO
+    // @ts-expect-error TODO
     $el[0].body = ["description"];
   });
 

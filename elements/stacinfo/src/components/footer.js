@@ -32,7 +32,7 @@ export default function parseFooter(footer = []) {
                     <small>${unsafeHTML(value.formatted)}</small>
                   </div>
                   ${when(
-                    // @ts-expect error TODO
+                    // @ts-expect-error TODO
                     key === "sci:citation",
                     () => html`
                       <button

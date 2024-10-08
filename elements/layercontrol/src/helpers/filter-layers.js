@@ -33,7 +33,7 @@ export default function filterLayers(layers, key, value) {
     // If sub-layers are present, recursively search through them
     if (groups.length > 0)
       groups.forEach((group) =>
-        // @ts-expect error TODO
+        // @ts-expect-error TODO
         search(group.getLayers().getArray(), key, value),
       );
 

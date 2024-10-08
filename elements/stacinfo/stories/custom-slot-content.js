@@ -12,7 +12,7 @@ const CustomSlotContentStory = {
     ...PrimaryStory.args,
   },
   render:
-    // @ts-expect error TODO
+    // @ts-expect-error TODO
     (args) => html`
       <eox-stacinfo
         id="slot"

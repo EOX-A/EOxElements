@@ -174,9 +174,9 @@ export class EOxLayerControlLayerTools extends LitElement {
     const tools = _parseTools(this.tools, this.layer);
 
     // Determine the single action element if only one action is present
-    // @ts-expect error TODO
+    // @ts-expect-error TODO
     const singleActionEle = this[`_${actions?.[0]}Button`]
-      ? // @ts-expect error TODO
+      ? // @ts-expect-error TODO
         this[`_${actions?.[0]}Button`]()
       : nothing;
 

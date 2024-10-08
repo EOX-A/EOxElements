@@ -237,7 +237,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     JSON.stringify(newLayerDefinition.style) !==
       JSON.stringify(existingJsonDefinition.style)
   ) {
-    // @ts-expect error TODO
+    // @ts-expect-error TODO
     existingLayer.setStyle(newLayer.getStyle());
   }
 
@@ -322,7 +322,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Update group layers if the layer is a group
   if (newLayerDefinition.type === "Group") {
     const newLayerIds = newLayerDefinition.layers.map((l) => l.properties?.id);
-    // @ts-expect error TODO
+    // @ts-expect-error TODO
     const layerCollection = existingLayer.getLayers();
 
     // Create a shallow copy of the layers to avoid modifying the collection while iterating
@@ -424,7 +424,7 @@ function setSyncListeners(olLayer, eoxLayer) {
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") return;
 
-    // @ts-expect error TODO
+    // @ts-expect-error TODO
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
 }

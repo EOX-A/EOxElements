@@ -34,7 +34,7 @@ const selectAfterReArrangingLayers = () => {
     let featureSelectCounter = 0;
     eoxMap.addEventListener("select", (evt) => {
       selectCounter++;
-      // @ts-expect error TODO
+      // @ts-expect-error TODO
       if (evt.detail.feature) {
         featureSelectCounter++;
       }

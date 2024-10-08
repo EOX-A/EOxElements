@@ -15,7 +15,7 @@ const getLegendConfig = (legendConfig, data) => {
       const flatData_ = flattenObject(data);
       legend["domain"] = legendConfig[key].map((k) => flatData_[k]);
     } else {
-      // @ts-expect error TODO
+      // @ts-expect-error TODO
       legend[key] = legendConfig[key];
     }
     return legend;

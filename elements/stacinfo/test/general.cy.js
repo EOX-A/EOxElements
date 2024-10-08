@@ -7,7 +7,7 @@ import {
   SinglePropertyTest,
 } from "./cases/index.js";
 export const testBody =
-  // @ts-expect error TODO
+  // @ts-expect-error TODO
   (json) => {
     cy.intercept("/collection*", {
       body: json,

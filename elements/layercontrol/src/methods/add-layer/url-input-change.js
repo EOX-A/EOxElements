@@ -7,7 +7,7 @@
  */
 const urlInputChange = (evt, EoxLayerControlAddLayers) => {
   // Update the stored URL input value in the EOxLayerControlAddLayers instance
-  // @ts-expect error TODO
+  // @ts-expect-error TODO
   EoxLayerControlAddLayers.urlInput = evt.target.value;
 
   // Request an update in the UI to reflect the changes
