@@ -5,18 +5,18 @@
  */
 const FlatGeoBufStory = {
   args: {
-    center: [-89.378, 43.076],
-    zoom: 14.5,
+    center: [16.346, 48.182],
+    zoom: 12.5,
     layers: [
       {
         type: "Vector",
         properties: {
           id: "FlatGeoBufLayer",
-          minZoom: 14,
+          minZoom: 12,
         },
         source: {
           type: "FlatGeoBuf",
-          url: "https://flatgeobuf.septima.dk/population_areas.fgb",
+          url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/admin_borders/STATISTIK_AUSTRIA_GEM_20220101.fgb",
         },
       },
       {

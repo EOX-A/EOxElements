@@ -10,11 +10,17 @@ const loadFlatGeoBufLayer = () => {
         type: "Vector",
         properties: {
           id: "FlatGeoBufLayer",
-          minZoom: 14,
+          minZoom: 12,
         },
         source: {
           type: "FlatGeoBuf",
-          url: "https://flatgeobuf.septima.dk/population_areas.fgb",
+          url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/admin_borders/STATISTIK_AUSTRIA_GEM_20220101.fgb",
+        },
+      },
+      {
+        type: "Tile",
+        source: {
+          type: "OSM",
         },
       },
     ];
@@ -22,8 +28,8 @@ const loadFlatGeoBufLayer = () => {
     cy.mount(
       html`<eox-map
         .zoomExtent=${[
-          -8236633.559453848, 4976608.248133842, -8235956.382385788,
-          4977116.130934887,
+          1813753.6854159434, 6135076.792463355, 1826020.0058429672,
+          6141440.849782808,
         ]}
         .layers=${layersJson}
       ></eox-map>`
@@ -36,7 +42,7 @@ const loadFlatGeoBufLayer = () => {
         expect(
           e.features.length,
           "loads features from FlatGeoBuf-source"
-        ).to.be.greaterThan(40);
+        ).to.be.greaterThan(20);
         resolve();
       });
     });
