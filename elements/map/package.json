@@ -10,12 +10,7 @@
     "proj4": "^2.9.2"
   },
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
     "@types/proj4": "^2.5.4",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
-    "eslint-plugin-typescript": "^0.14.0",
-    "typescript": "^5.2.2",
     "vite": "^5.0.2"
   },
   "engines": {
@@ -29,10 +24,6 @@
   "main": "./dist/eox-map.js",
   "scripts": {
     "build": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
-    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch",
-    "format": "prettier --write .",
-    "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix",
-    "typecheck": "tsc"
+    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
   }
 }

@@ -8,14 +8,9 @@
     "chartjs-chart-error-bars": "^4.1.2"
   },
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
     "@types/luxon": "^3.2.0",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
-    "eslint-plugin-typescript": "^0.14.0",
     "luxon": "^3.3.0",
     "p-retry": "^6.1.0",
-    "typescript": "^5.2.2",
     "vite": "^5.0.2"
   },
   "engines": {
@@ -29,9 +24,6 @@
   "main": "./dist/eox-chart.js",
   "scripts": {
     "build": "tsc && vite build",
-    "watch": "tsc && vite build --watch",
-    "format": "prettier --write .",
-    "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "watch": "tsc && vite build --watch"
   }
 }
