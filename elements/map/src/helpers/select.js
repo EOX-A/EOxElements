@@ -162,7 +162,7 @@ export class EOxSelectInteraction {
           overlay.setPositioning(`${yPosition}-${xPosition}`);
           overlay.setPosition(feature ? event.coordinate : null);
           if (feature && this.tooltip) {
-            // @ts-expect-error
+            // @ts-expect error TODO
             this.tooltip.feature = feature;
           }
         }

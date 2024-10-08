@@ -101,7 +101,7 @@ export class EOxLayerControlOptionalList extends LitElement {
 
         <!-- Mapping through filtered layers list to generate dropdown options -->
         ${filteredLayersList.map((layer) => {
-          // @ts-ignore
+          // @ts-expect error TODO
           const value = layer.get(this.idProperty) || layer.ol_uid;
           const title = layer.get(this.titleProperty);
           const id = `layer ${layer.get(this.idProperty)}`;

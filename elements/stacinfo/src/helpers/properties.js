@@ -29,7 +29,7 @@ export function transformProperties(properties, type = "property") {
     property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
       (
-        // @ts-ignore
+        // @ts-expect error TODO
         url,
       ) => {
         return `<a target="_blank" href="${url}">${url}</a>`;

@@ -223,7 +223,7 @@ export class EOxLayerControlAddLayers extends LitElement {
                   ? html`<ul class="search-lists">
                       ${this.wmsCapabilities.Capability.Layer.Layer.map(
                         (layer) => {
-                          //@ts-ignore
+                          // @ts-expect error TODO
                           const name = layer.Name;
 
                           return html`
@@ -233,7 +233,7 @@ export class EOxLayerControlAddLayers extends LitElement {
                               <button
                                 class="add-layer-icon icon"
                                 @click=${() =>
-                                  //@ts-ignore
+                                  // @ts-expect error TODO
                                   this.#handleUrlLayerMethod(layer)}
                               >
                                 ${this.unstyled ? "+" : ""}

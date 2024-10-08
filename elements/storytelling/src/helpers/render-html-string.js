@@ -230,7 +230,7 @@ export function convertValueToType(value) {
 
   try {
     convertedValue = JSON.parse(value);
-  } catch (e) {
+  } catch (_) {
     if (!isNaN(value) && value.trim() !== "") convertedValue = Number(value);
     else if (value === "true") convertedValue = true;
     else if (value === "false") convertedValue = false;

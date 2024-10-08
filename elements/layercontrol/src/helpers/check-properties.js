@@ -19,7 +19,7 @@ export default function checkProperties(
   let requestUpdateNecessary = false;
   // Loop through each layer in the array to check and assign properties if missing.
   layerArray.forEach((layer) => {
-    //@ts-ignore
+    // @ts-expect error TODO
     const olUID = layer.ol_uid;
 
     // Check and assign an ID property if it's missing.

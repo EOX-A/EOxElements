@@ -74,7 +74,7 @@ class FlatGeoBuf extends Vector {
         super.addFeatures(features);
         success(features);
       }
-    } catch (e) {
+    } catch (_) {
       failure();
     }
   }

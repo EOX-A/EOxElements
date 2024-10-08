@@ -224,7 +224,8 @@ export class EOxDrawTools extends LitElement {
    */
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-    (this.eoxMap = EoxMap), (this.#olMap = OlMap);
+    this.eoxMap = EoxMap;
+    this.#olMap = OlMap;
 
     if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
 
@@ -235,7 +236,8 @@ export class EOxDrawTools extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has("for")) {
       const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-      (this.eoxMap = EoxMap), (this.#olMap = OlMap);
+      this.eoxMap = EoxMap;
+      this.#olMap = OlMap;
     }
   }
 

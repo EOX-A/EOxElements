@@ -73,7 +73,7 @@ export function isGeoJSON(text) {
     const obj = JSON.parse(text);
 
     return obj.type === "FeatureCollection" || obj.type === "Feature";
-  } catch (e) {
+  } catch (_) {
     return false;
   }
 }
@@ -101,7 +101,7 @@ export function isTopoJSON(text) {
     const obj = JSON.parse(text);
 
     return obj.type === "Topology" && obj.objects;
-  } catch (e) {
+  } catch (_) {
     return false;
   }
 }

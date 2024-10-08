@@ -27,15 +27,16 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     if (
       !newLayerVisibilityBasedOnZoom &&
       EOxLayerControlLayer.currLayerVisibilityBasedOnZoom
-    )
-      (EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = false),
-        (visibilityChanged = true);
-    else if (
+    ) {
+      EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = false;
+      visibilityChanged = true;
+    } else if (
       newLayerVisibilityBasedOnZoom &&
       !EOxLayerControlLayer.currLayerVisibilityBasedOnZoom
-    )
-      (EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = true),
-        (visibilityChanged = true);
+    ) {
+      EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = true;
+      visibilityChanged = true;
+    }
 
     // if visibilityChanged trigger UI update
     if (visibilityChanged) {

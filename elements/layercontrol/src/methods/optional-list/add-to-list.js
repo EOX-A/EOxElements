@@ -19,7 +19,7 @@ const addToListMethod = (EOxLayerControlOptionalList) => {
     true,
   ).find(
     (layer) =>
-      // @ts-ignore
+      // @ts-expect error TODO
       (layer.get(EOxLayerControlOptionalList.idProperty) || layer.ol_uid) ===
       selectedValue,
   );

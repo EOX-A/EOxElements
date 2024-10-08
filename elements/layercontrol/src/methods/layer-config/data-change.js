@@ -15,26 +15,26 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
   // Checking if the layer's tile URL function exists.
   // If it does, set 'newTileUrlFunc' to the layer's tile URL function.
   // This step ensures the original tile URL function is preserved if 'tileUrlFunc' is not provided.
-  // @ts-ignore
+  // @ts-expect error TODO
   if (EOxLayerControlLayerConfig.layer.getSource().getTileUrlFunction()) {
     if (!newTileUrlFunc) {
       newTileUrlFunc = EOxLayerControlLayerConfig.layer
         .getSource()
-        // @ts-ignore
+        // @ts-expect error TODO
         .getTileUrlFunction();
     }
 
     // Setting a new tile URL function for the layer's source by applying updated data to the existing function.
     EOxLayerControlLayerConfig.layer
       .getSource()
-      // @ts-ignore
+      // @ts-expect error TODO
       .setTileUrlFunction((...args) =>
         updateUrl(newTileUrlFunc(...args), data),
       );
 
     // TODO: It's not advisable to access protected methods directly.
     // Setting a new key for the layer source to trigger a refresh.
-    // @ts-ignore
+    // @ts-expect error TODO
     EOxLayerControlLayerConfig.layer.getSource().setKey(new Date());
   }
 

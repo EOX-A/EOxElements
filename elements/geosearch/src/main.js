@@ -175,7 +175,7 @@ class EOxGeoSearch extends LitElement {
         const json = await response.json();
         this._data = json.results;
         this._isLoading = false;
-      } catch (error) {
+      } catch (_) {
         console.log("Error setting up or requesting from geosearch endpoint");
       }
     }, this.interval);
