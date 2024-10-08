@@ -85,32 +85,21 @@ export function createItemListMethod(
               }}
             >
               ${when(
-                EOxItemFilterResults.hasTemplate("result"),
-                () =>
-                  EOxItemFilterResults.renderTemplate(
-                    "result",
-                    item,
-                    `result-${item.id}`,
-                  ),
+                config.subTitleProperty,
                 () => html`
-                  ${when(
-                    config.subTitleProperty,
-                    () => html`
-                      <div class="title-container">
-                        <span class="title"
-                          >${unsafeHTML(item[config.titleProperty])}</span
-                        >
-                        <span class="subtitle"
-                          >${unsafeHTML(item[config.subTitleProperty])}</span
-                        >
-                      </div>
-                    `,
-                    () => html`
-                      <span class="title"
-                        >${unsafeHTML(item[config.titleProperty])}</span
-                      >
-                    `,
-                  )}
+                  <div class="title-container">
+                    <span class="title"
+                      >${unsafeHTML(item[config.titleProperty])}</span
+                    >
+                    <span class="subtitle"
+                      >${unsafeHTML(item[config.subTitleProperty])}</span
+                    >
+                  </div>
+                `,
+                () => html`
+                  <span class="title"
+                    >${unsafeHTML(item[config.titleProperty])}</span
+                  >
                 `,
               )}
             </span>
