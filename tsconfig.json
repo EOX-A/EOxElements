@@ -20,5 +20,5 @@
     "checkJs": true
   },
   "include": ["elements/**/*.js", "elements/**/*.ts"],
-  "exclude": ["**/dist/*", "**/test/*", "**/stories/*"]
+  "exclude": ["**/dist/*", "**/test/*", "**/stories/*", "elements/chart"]
 }
