@@ -38,7 +38,7 @@ export default defineConfig({
     experimentalRunAllSpecs: true,
   },
   component: {
-    supportFile: "cypress/support/component.ts",
+    supportFile: "cypress/support/component.js",
     setupNodeEvents(on, config) {
       require("@cypress/code-coverage/task")(on, config);
       return config;
