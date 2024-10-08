@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.21.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.21.1...layercontrol-v0.21.2) (2024-10-08)
+## [0.22.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.21.1...layercontrol-v0.22.0) (2024-10-08)
 
 
 ### Features
