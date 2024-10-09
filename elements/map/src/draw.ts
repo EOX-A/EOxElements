@@ -3,6 +3,9 @@ import Draw, { createBox } from "ol/interaction/Draw";
 import { EOxMap } from "../main";
 import { Vector as VectorLayer } from "ol/layer";
 import { addNewFeature } from "../helpers";
+import { getArea, getLength } from "ol/sphere";
+import Overlay from "ol/Overlay";
+import Polygon from "ol/geom/Polygon";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -53,6 +56,39 @@ export function addDraw(
     drawInteraction.setActive(false);
   }
 
+  drawInteraction.on("drawstart", (evt) => {
+    let sketch = evt.feature;
+    let tooltipCoord = evt.coordinate;
+
+    // Create measure tooltip
+    let measureTooltipElement = document.createElement('div');
+    measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
+    let measureTooltip = new Overlay({
+      element: measureTooltipElement,
+      offset: [0, -15],
+      positioning: 'bottom-center',
+      stopEvent: false,
+      insertFirst: false,
+    });
+    EOxMap.map.addOverlay(measureTooltip);
+
+    let listener = sketch.getGeometry().on('change', function (evt) {
+      const geom = evt.target;
+      let output;
+      if (geom instanceof Polygon) {
+          output = formatArea(geom);
+          tooltipCoord = geom.getInteriorPoint().getCoordinates();
+        } else if (geom instanceof LineString) {
+          output = formatLength(geom);
+          tooltipCoord = geom.getLastCoordinate();
+        }
+        measureTooltipElement.innerHTML = output;
+
+        measureTooltip.setPosition(tooltipCoord);
+
+      });
+    });
+
   drawInteraction.on("drawend", (e) => {
     if (!drawLayer.get("isDrawingEnabled")) return;
     addNewFeature(e, drawLayer, EOxMap, true);
@@ -77,3 +113,30 @@ export function addDraw(
   };
   EOxMap.map.getLayerGroup().on("change", removeLayerListener);
 }
+
+const formatLength = function (line) {
+  const length = getLength(line);
+  let output;
+  if (length > 100) {
+    output = Math.round((length / 1000) * 100) / 100 + ' ' + 'km';
+  } else {
+    output = Math.round(length * 100) / 100 + ' ' + 'm';
+  }
+  return output;
+};
+
+/**
+ * Format area output.
+ * @param {Polygon} polygon The polygon.
+ * @return {string} Formatted area.
+ */
+const formatArea = function (polygon) {
+  const area = getArea(polygon);
+  let output;
+  if (area > 10000) {
+    output = Math.round((area / 1000000) * 100) / 100 + ' ' + 'km<sup>2</sup>';
+  } else {
+    output = Math.round(area * 100) / 100 + ' ' + 'm<sup>2</sup>';
+  }
+  return output;
+};
