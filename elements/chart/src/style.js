@@ -1,5 +1,5 @@
 export const style = `
-  eox-chart {
+  :root, :host, eox-chart {
     display: block;
   }
   #vis {
