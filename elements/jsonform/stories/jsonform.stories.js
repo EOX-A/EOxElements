@@ -8,6 +8,7 @@ import {
   PrimaryStory,
   UnStyledStory,
   DrawToolsStory,
+  PolygonStory,
 } from "./index.js";
 
 export default {
@@ -58,3 +59,8 @@ export const Unstyled = UnStyledStory;
  * Unstyled JSON Form
  */
 export const DrawTools = DrawToolsStory;
+
+/**
+ * Unstyled JSON Form
+ */
+export const Polygons = PolygonStory;

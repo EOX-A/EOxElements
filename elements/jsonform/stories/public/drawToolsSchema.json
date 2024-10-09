@@ -12,6 +12,18 @@
       "type": "object",
       "properties": {},
       "format": "bounding-box"
+    },
+    "bboxes-editor": {
+      "title": "Multi bbox example + Editor",
+      "type": "object",
+      "properties": {},
+      "format": "bounding-boxes-editor"
+    },
+    "bbox-editor": {
+      "title": "Single bbox example + Editor",
+      "type": "object",
+      "properties": {},
+      "format": "bounding-box-editor"
     }
   }
 }

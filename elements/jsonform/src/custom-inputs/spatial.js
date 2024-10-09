@@ -14,14 +14,14 @@ function setAttributes(element, attributes) {
 }
 
 // Define a custom editor class extending AbstractEditor
-export class BoundingBoxesEditor extends AbstractEditor {
-  register() {
-    super.register();
-  }
+export class SpatialEditor extends AbstractEditor {
+  // register() {
+  //   super.register();
+  // }
 
-  unregister() {
-    super.unregister();
-  }
+  // unregister() {
+  //   super.unregister();
+  // }
 
   // Build the editor UI
   build() {
@@ -48,11 +48,25 @@ export class BoundingBoxesEditor extends AbstractEditor {
 
     const drawtoolsEl = document.createElement("eox-drawtools");
 
+    const isPolygon = ["polygon", "polygons"].some(p => this.schema.format.includes(p))
+    const isMulti = ["bounding-boxes", "polygons"].some(m => this.schema.format.includes(m))
+    const enableEditor = this.schema.format.includes("editor")
+
+    const drawType = isPolygon ? "Polygon" : "Box"
     const attributes = {
-      type: "Box",
+      type: drawType
     };
-    if (this.schema.format === "bounding-boxes") {
+    if (isMulti) {
       attributes["multiple-features"] = true;
+    }
+
+    if (enableEditor) {
+      attributes["import-features"] = true
+      attributes["show-editor"] = true
+      if (isMulti) {
+        attributes["show-list"] = true
+      }
+      console.log("🚀 ~ SpatialEditor ~ build ~ isMulti:", this.formname, isMulti)
     }
 
     if ("for" in this.options) {
@@ -63,6 +77,7 @@ export class BoundingBoxesEditor extends AbstractEditor {
       eoxmapEl.projection = "EPSG:4326";
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
+
       setAttributes(eoxmapEl, {
         id: mapId,
         style: "width: 100%; height: 300px;",

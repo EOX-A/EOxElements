@@ -1,6 +1,6 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { MinMaxEditor } from "./minmax";
-import { BoundingBoxesEditor } from "./bounding-boxes";
+import { SpatialEditor } from "./spatial";
 
 // Define custom input types
 const inputs = [
@@ -12,12 +12,42 @@ const inputs = [
   {
     type: "object",
     format: "bounding-boxes",
-    func: BoundingBoxesEditor,
+    func: SpatialEditor,
   },
   {
     type: "object",
     format: "bounding-box",
-    func: BoundingBoxesEditor,
+    func: SpatialEditor,
+  },
+  {
+    type: "object",
+    format: "bounding-boxes-editor",
+    func: SpatialEditor,
+  },
+  {
+    type: "object",
+    format: "bounding-box-editor",
+    func: SpatialEditor,
+  },
+  {
+    type: "object",
+    format: "polygons",
+    func: SpatialEditor,
+  },
+  {
+    type: "object",
+    format: "polygon",
+    func: SpatialEditor,
+  },
+  {
+    type: "object",
+    format: "polygons-editor",
+    func: SpatialEditor,
+  },
+  {
+    type: "object",
+    format: "polygon-editor",
+    func: SpatialEditor,
   },
 ];
 
