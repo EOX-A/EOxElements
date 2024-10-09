@@ -11,6 +11,7 @@ export default {
       .spec=${args.spec}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
+      style="width:100%; height: 400px;"
     ></eox-chart>
   `,
 };

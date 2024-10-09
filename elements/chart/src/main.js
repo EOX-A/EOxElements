@@ -2,7 +2,9 @@ import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import allStyle from "../../../utils/styles/dist/all.style";
+import { DEFAULT_SPEC } from "./enums";
 import { default as vegaEmbed } from "vega-embed";
+import { deepmerge } from "deepmerge-ts";
 
 /**
  * @element eox-chart
@@ -45,10 +47,10 @@ export class EOxChart extends LitElement {
    * @param {import("vega-embed").VisualizationSpec} spec
    */
   renderVega(spec) {
-    /** */
+    const mergedSpec = deepmerge(DEFAULT_SPEC, spec);
     vegaEmbed(
       /** @type {HTMLElement} */ (this.renderRoot.querySelector("#vis")),
-      spec
+      mergedSpec
     );
   }
 

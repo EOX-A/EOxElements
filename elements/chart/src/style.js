@@ -1,5 +1,9 @@
 export const style = `
-  * {
-    font-family: Roboto, sans-serif;
+  eox-chart {
+    display: block;
+  }
+  #vis {
+    width: 100%;
+    height: 100%;
   }
 `;
