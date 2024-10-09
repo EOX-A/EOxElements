@@ -16,7 +16,7 @@ const Primary = {
           { a: "I", b: 52 },
         ],
       },
-      mark: { type: "bar", tooltip: true, cursor: "pointer", fill: "#004170" },
+      mark: { type: "bar", tooltip: true, fill: "#004170" },
       encoding: {
         x: { field: "a", type: "ordinal" },
         y: { field: "b", type: "quantitative" },
