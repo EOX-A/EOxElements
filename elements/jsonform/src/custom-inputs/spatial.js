@@ -48,25 +48,28 @@ export class SpatialEditor extends AbstractEditor {
 
     const drawtoolsEl = document.createElement("eox-drawtools");
 
-    const isPolygon = ["polygon", "polygons"].some(p => this.schema.format.includes(p))
-    const isMulti = ["bounding-boxes", "polygons"].some(m => this.schema.format.includes(m))
-    const enableEditor = this.schema.format.includes("editor")
+    const isPolygon = ["polygon", "polygons"].some((p) =>
+      this.schema.format.includes(p)
+    );
+    const isMulti = ["bounding-boxes", "polygons"].some((m) =>
+      this.schema.format.includes(m)
+    );
+    const enableEditor = this.schema.format.includes("editor");
 
-    const drawType = isPolygon ? "Polygon" : "Box"
+    const drawType = isPolygon ? "Polygon" : "Box";
     const attributes = {
-      type: drawType
+      type: drawType,
     };
     if (isMulti) {
       attributes["multiple-features"] = true;
     }
 
     if (enableEditor) {
-      attributes["import-features"] = true
-      attributes["show-editor"] = true
+      attributes["import-features"] = true;
+      attributes["show-editor"] = true;
       if (isMulti) {
-        attributes["show-list"] = true
+        attributes["show-list"] = true;
       }
-      console.log("🚀 ~ SpatialEditor ~ build ~ isMulti:", this.formname, isMulti)
     }
 
     if ("for" in this.options) {

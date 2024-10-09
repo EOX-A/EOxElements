@@ -6,7 +6,7 @@ import polygonsScheme from "./public/polygonSchema.json";
 
 const Polygons = {
   args: {
-    schema:polygonsScheme,
+    schema: polygonsScheme,
   },
 };
 export default Polygons;
