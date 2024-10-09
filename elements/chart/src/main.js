@@ -66,10 +66,6 @@ export class EOxChart extends LitElement {
     }
   }
 
-  firstUpdated() {
-    this.renderVega(this.spec);
-  }
-
   /**
    * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
    */
