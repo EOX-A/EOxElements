@@ -5,6 +5,7 @@ import allStyle from "../../../utils/styles/dist/all.style";
 import { DEFAULT_SPEC } from "./enums";
 import { default as vegaEmbed } from "vega-embed";
 import { deepmerge } from "deepmerge-ts";
+import pRetry, { AbortError } from "p-retry";
 
 /**
  * @element eox-chart
@@ -51,7 +52,29 @@ export class EOxChart extends LitElement {
     vegaEmbed(
       /** @type {HTMLElement} */ (this.renderRoot.querySelector("#vis")),
       mergedSpec
-    );
+    ).then(async (res) => {
+      if (this.requestChunking) {
+        for (let chunkUrl of this.requestChunking.chunkUrls) {
+          const run = async () => {
+            const response = await fetch(chunkUrl);
+
+            // Abort retrying if the resource doesn't exist
+            if (response.status === 404) {
+              throw new AbortError(response.statusText);
+            }
+
+            return await response.json();
+          };
+          const chunkData = await pRetry(run, { retries: 5 });
+          res.view
+            .insert(this.requestChunking.dataName, [
+              res.view.data(this.requestChunking.dataName),
+              ...chunkData,
+            ])
+            .run();
+        }
+      }
+    });
   }
 
   /**
