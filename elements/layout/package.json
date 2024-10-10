@@ -6,9 +6,11 @@
     "vite": "^5.0.2"
   },
   "files": [
-    "dist"
+    "dist",
+    "src",
+    "test"
   ],
-  "main": "./dist/eox-layout.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch"

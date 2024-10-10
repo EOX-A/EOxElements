@@ -12,9 +12,10 @@
   },
   "files": [
     "dist",
+    "src",
     "test"
   ],
-  "main": "./dist/eox-timecontrol.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch"

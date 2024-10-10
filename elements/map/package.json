@@ -20,9 +20,10 @@
   },
   "files": [
     "dist",
+    "src",
     "test"
   ],
-  "main": "./dist/eox-map.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
     "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"

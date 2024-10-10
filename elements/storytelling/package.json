@@ -11,9 +11,10 @@
   },
   "files": [
     "dist",
+    "src",
     "test"
   ],
-  "main": "./dist/eox-storytelling.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch"
