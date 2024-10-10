@@ -7,6 +7,11 @@ import { default as vegaEmbed } from "vega-embed";
 import { deepmerge } from "deepmerge-ts";
 
 /**
+ * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
+ * Pass a valid Vega spec as `spec` property in order to render a chart.
+ *
+ * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
+ *
  * @element eox-chart
  */
 export class EOxChart extends LitElement {
@@ -21,18 +26,18 @@ export class EOxChart extends LitElement {
     super();
 
     /**
-     * Data values passed on runtime. Requires a name data source "temp"
-     *
-     * @type {Object}
-     */
-    this.dataValues;
-
-    /**
-     * Vega-Lite spec
+     * [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html)
      *
      * @type {import("vega-embed").VisualizationSpec}
      */
-    this.spec;
+    this.spec = undefined;
+
+    /**
+     * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`
+     *
+     * @type {{[dataSourceName: string]: import("vega-lite/build/src/data").InlineData}}
+     */
+    this.dataValues = undefined;
 
     /**
      * Renders the element without a shadow root
