@@ -2,8 +2,8 @@ import { LitElement, html, nothing } from "lit";
 import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
-import checkboxStyle from "../../../../../utils/styles/dist/checkbox.style.js";
-import radioStyle from "../../../../../utils/styles/dist/radio.style.js";
+import checkboxStyle from "@eox/elements-utils/styles/dist/checkbox.style.js";
+import radioStyle from "@eox/elements-utils/styles/dist/radio.style.js";
 import {
   resetSelectorMethod,
   toggleItemSelectorMethod,

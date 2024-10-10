@@ -3,6 +3,7 @@
   "version": "1.15.0",
   "type": "module",
   "dependencies": {
+    "@eox/elements-utils": "^0.0.1",
     "flatgeobuf": "^3.35.0",
     "lit": "^3.0.2",
     "ol": "^10.2.0",
@@ -19,9 +20,9 @@
   },
   "files": [
     "dist",
-    "test"
+    "src"
   ],
-  "main": "./dist/eox-map.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
     "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"

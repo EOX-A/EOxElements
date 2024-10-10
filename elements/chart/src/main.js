@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import allStyle from "../../../utils/styles/dist/all.style";
+import allStyle from "@eox/elements-utils/styles/dist/all.style";
 import { renderChartMethod } from "./methods/render";
 
 /**

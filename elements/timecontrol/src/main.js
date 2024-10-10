@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import Group from "ol/layer/Group";
-import { getElement } from "../../../utils";
+import { getElement } from "@eox/elements-utils";
 import "toolcool-range-slider";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";

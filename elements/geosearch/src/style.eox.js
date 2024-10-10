@@ -1,5 +1,4 @@
 import { css } from "lit";
-// import { button } from "../../utils/styles/button";
 
 export const styleEOX = css`
   .geosearch {

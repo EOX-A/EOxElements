@@ -3,11 +3,11 @@ import { unsafeSVG } from "lit/directives/unsafe-svg.js";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
-import mainStyle from "../../../utils/styles/dist/main.style";
-import buttonStyle from "../../../utils/styles/dist/button.style";
+import mainStyle from "@eox/elements-utils/styles/dist/main.style";
+import buttonStyle from "@eox/elements-utils/styles/dist/button.style";
 import { styleEOX } from "./style.eox";
 
-import { getElement } from "../../../utils/getElement";
+import { getElement } from "@eox/elements-utils";
 
 const loaderSvg = `
   <svg

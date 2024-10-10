@@ -1,7 +1,7 @@
-import { button } from "../../../utils/styles/button";
-import { checkbox } from "../../../utils/styles/checkbox";
-import { radio } from "../../../utils/styles/radio";
-import { slider } from "../../../utils/styles/slider";
+import { button } from "@eox/elements-utils/styles/button";
+import { checkbox } from "@eox/elements-utils/styles/checkbox";
+import { radio } from "@eox/elements-utils/styles/radio";
+import { slider } from "@eox/elements-utils/styles/slider";
 
 const styleEOX = `
 ${button}

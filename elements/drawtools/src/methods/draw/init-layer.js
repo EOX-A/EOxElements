@@ -1,6 +1,6 @@
 import { onDrawEndMethod } from "./";
 
-import { getElement } from "../../../../../utils";
+import { getElement } from "@eox/elements-utils";
 
 /**
  * Initializes the draw layer, interacts with the map, and returns map instances.

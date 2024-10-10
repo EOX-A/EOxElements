@@ -14,7 +14,7 @@ import {
 } from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import View from "ol/View";
-import { getElement } from "../../../../../utils";
+import { getElement } from "@eox/elements-utils";
 
 /**
  * @typedef {import("../../../types").EoxLayer} EoxLayer

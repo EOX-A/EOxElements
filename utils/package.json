@@ -1,0 +1,12 @@
+{
+  "name": "@eox/elements-utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./index.js",
+  "files": [
+    "styles",
+    "./"
+  ],
+  "author": "",
+  "license": "ISC"
+}
