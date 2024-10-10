@@ -8,5 +8,6 @@
   "elements/jsonform": "0.8.2",
   "elements/layout": "0.1.1",
   "elements/storytelling": "1.1.0",
-  "elements/geosearch": "0.3.0"
+  "elements/geosearch": "0.3.0",
+  "elements/chart": "0.1.0"
 }

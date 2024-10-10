@@ -2,7 +2,7 @@ import { setCustomElementsManifest } from "@storybook/web-components";
 import customElements from "../custom-elements.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
-import "../elements/chart/src/main.ts";
+import "../elements/chart/src/main.js";
 import "../elements/drawtools/src/main.js";
 import "../elements/geosearch/src/main.js";
 import "../elements/itemfilter/src/main.js";
