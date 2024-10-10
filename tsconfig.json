@@ -20,5 +20,5 @@
     "types": ["cypress"],
     "noImplicitAny": false
   },
-  "include": ["src/*.js"]
+  "include": ["**/src/*.js"]
 }
