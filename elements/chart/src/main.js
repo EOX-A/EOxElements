@@ -11,6 +11,7 @@ import { deepmerge } from "deepmerge-ts";
  */
 export class EOxChart extends LitElement {
   static properties = {
+    dataValues: { attribute: false, type: Object },
     spec: { attribute: false, type: Object },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
@@ -18,6 +19,13 @@ export class EOxChart extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * Data values passed on runtime. Requires a name data source "temp"
+     *
+     * @type {Object}
+     */
+    this.dataValues;
 
     /**
      * Vega-Lite spec
@@ -45,13 +53,21 @@ export class EOxChart extends LitElement {
    * Render Vega-Lite using vega-embed
    *
    * @param {import("vega-embed").VisualizationSpec} spec
+   * @param {Object} dataValues
    */
-  renderVega(spec) {
+  renderVega(spec, dataValues) {
     const mergedSpec = deepmerge(DEFAULT_SPEC, spec);
     vegaEmbed(
       /** @type {HTMLElement} */ (this.renderRoot.querySelector("#vis")),
       mergedSpec
-    );
+    ).then((res) => {
+      if (dataValues) {
+        Object.keys(dataValues).forEach((dataSourceName) => {
+          res.view.insert(dataSourceName, dataValues[dataSourceName]);
+        });
+        res.view.run();
+      }
+    });
   }
 
   /**
@@ -60,9 +76,8 @@ export class EOxChart extends LitElement {
    * @param {import("lit").PropertyValues} changedProperties
    */
   async updated(changedProperties) {
-    // check if spec has been changed to prevent useless parsing
-    if (changedProperties.has("spec")) {
-      this.renderVega(this.spec);
+    if (changedProperties.has("spec") || changedProperties.has("dataValues")) {
+      this.renderVega(this.spec, this.dataValues);
     }
   }
 
