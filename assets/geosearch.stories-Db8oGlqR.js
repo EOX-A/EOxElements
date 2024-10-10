@@ -1,4 +1,4 @@
-import{k as n}from"./lit-element-CHc5qsYe.js";const b={args:{endpoint:"/opencage-mock-data.json"},render:e=>n`
+import{x as n}from"./lit-element-Dh4_iwrW.js";const b={args:{endpoint:"/opencage-mock-data.json"},render:e=>n`
       <eox-geosearch
         label="Search"
         style="position: absolute; top: 36px; left: 32px; z-index: 12;"
