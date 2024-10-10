@@ -1,8 +1,8 @@
 {
-  "name": "@eox/elements-styles",
+  "name": "@eox/elements-utils",
   "version": "0.0.1",
   "description": "",
-  "main": "styles/main.css",
+  "main": "./index.js",
   "files": [
     "styles",
     "./"

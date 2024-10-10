@@ -12,8 +12,9 @@
     "vite": "^5.3.1"
   },
   "dependencies": {
-    "@eox/drawtools": "file:../../elements/drawtools/src/main.js",
-    "@eox/geosearch": "file:../../elements/geosearch/src/main.js",
-    "@eox/map": "^1.9.0"
+    "@eox/drawtools": "file:../../elements/drawtools",
+    "@eox/geosearch": "file:../../elements/layercontrol",
+    "@eox/map": "file:../../elements/map",
+    "@eox/elements-utils": "file:../../utils"
   }
 }
