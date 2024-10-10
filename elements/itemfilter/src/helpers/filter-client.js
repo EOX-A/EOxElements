@@ -1,6 +1,6 @@
 import Fuse from "fuse.js";
 import dayjs from "dayjs";
-import { intersects, within, highlight } from "./";
+import { intersects, within, highlight, getValue } from "./";
 
 let _fuse;
 
@@ -101,21 +101,22 @@ export const filter = async (items, filters, config) => {
         const parseValue = (input) => {
           return value.format === "date" ? dayjs(input).unix() : input;
         };
-        if (Object.prototype.hasOwnProperty.call(results[i], key)) {
-          if (Array.isArray(results[i][key])) {
+        const rangeValue = getValue(key, results[i]);
+        if (rangeValue) {
+          if (Array.isArray(rangeValue)) {
             const mode = "overlap"; // Mode for handling array values
             if (mode === "overlap") {
               pass[key] =
-                rangeFilters[key].min <= parseValue(results[i][key][1]) &&
-                parseValue(results[i][key][0]) <= rangeFilters[key].max;
+                rangeFilters[key].min <= parseValue(rangeValue[1]) &&
+                parseValue(rangeValue[0]) <= rangeFilters[key].max;
             } else if (mode === "contain") {
               pass[key] =
-                parseValue(results[i][key][0]) >= rangeFilters[key].min &&
-                parseValue(results[i][key][1]) <= rangeFilters[key].max;
+                parseValue(rangeValue[0]) >= rangeFilters[key].min &&
+                parseValue(rangeValue[1]) <= rangeFilters[key].max;
             }
           } else if (
-            parseValue(results[i][key]) >= rangeFilters[key].min &&
-            parseValue(results[i][key]) <= rangeFilters[key].max
+            parseValue(rangeValue) >= rangeFilters[key].min &&
+            parseValue(rangeValue) <= rangeFilters[key].max
           ) {
             pass[key] = true;
           } else {
@@ -152,12 +153,13 @@ export const filter = async (items, filters, config) => {
     for (let i = 0; i < results.length; i++) {
       const pass = {};
       for (const key of Object.keys(spatialFilters)) {
+        const spatialValue = getValue(key, results[i]);
         const mode = spatialFilters[key].mode || "within";
-        if (Object.prototype.hasOwnProperty.call(results[i], key)) {
+        if (spatialValue) {
           const test =
             mode === "within"
-              ? within(results[i][key], spatialFilters[key].geometry)
-              : intersects(results[i][key], spatialFilters[key].geometry);
+              ? within(spatialValue, spatialFilters[key].geometry)
+              : intersects(spatialValue, spatialFilters[key].geometry);
           if (test) {
             pass[key] = true;
           } else {

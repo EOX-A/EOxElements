@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { indexItems } from "../../helpers";
+import { getValue, indexItems } from "../../helpers";
 import uniq from "lodash.uniq";
 import flatMap from "lodash.flatmap";
 
@@ -29,11 +29,9 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       // Iterate over items to build filter keys
       items.forEach((item) => {
         if (filterProperty.type === "range") {
-          if (Array.isArray(item[filterProperty.key])) {
-            const currentValues = [
-              parseValue(item[filterProperty.key][0]),
-              parseValue(item[filterProperty.key][1]),
-            ];
+          const value = getValue(filterProperty.key, item);
+          if (Array.isArray(value)) {
+            const currentValues = [parseValue(value[0]), parseValue(value[1])];
             filterKeys.min =
               filterKeys.min !== undefined
                 ? Math.min(filterKeys.min, currentValues[0])
@@ -43,7 +41,7 @@ function filterApplyMethod(config, items, EOxItemFilter) {
                 ? Math.max(filterKeys.max, currentValues[1])
                 : currentValues[1];
           } else {
-            const currentValue = parseValue(item[filterProperty.key]);
+            const currentValue = parseValue(value);
             filterKeys.min =
               filterKeys.min !== undefined
                 ? Math.min(filterKeys.min, currentValue)

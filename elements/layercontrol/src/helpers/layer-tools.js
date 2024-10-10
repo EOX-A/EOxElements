@@ -29,6 +29,7 @@ export const _parseTools = (tools, layer) =>
     if (t === "info") pass = layer.get("description");
     if (t === "config") pass = layer.get("layerConfig");
     if (t === "datetime") pass = layer.get("layerDatetime");
+    if (t === "legend") pass = layer.get("layerLegend");
     return pass;
   });
 

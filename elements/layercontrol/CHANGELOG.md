@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.22.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.21.1...layercontrol-v0.22.0) (2024-10-08)
+
+
+### Features
+
+* Dynamic color legend ([#1297](https://github.com/EOX-A/EOxElements/issues/1297)) ([69c4569](https://github.com/EOX-A/EOxElements/commit/69c45690f6c3d9c80903627ce7677694178929b7))
+
+## [0.21.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.21.0...layercontrol-v0.21.1) (2024-09-26)
+
+
+### Bug Fixes
+
+* **style:** Introduce padding variable ([#1282](https://github.com/EOX-A/EOxElements/issues/1282)) ([3b0cdb8](https://github.com/EOX-A/EOxElements/commit/3b0cdb8e264476cfbb8b6fcf0c468a9ed90dbf8a))
+
 ## [0.21.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.20.0...layercontrol-v0.21.0) (2024-09-23)
 
 

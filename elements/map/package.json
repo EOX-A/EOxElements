@@ -1,8 +1,9 @@
 {
   "name": "@eox/map",
-  "version": "1.13.1",
+  "version": "1.15.0",
   "type": "module",
   "dependencies": {
+    "flatgeobuf": "^3.35.0",
     "lit": "^3.0.2",
     "ol": "^10.2.0",
     "ol-stac": "^1.0.0-beta.10",
@@ -27,10 +28,11 @@
   ],
   "main": "./dist/eox-map.js",
   "scripts": {
-    "build": "tsc && vite build --config vite.config.advancedLayersAndSources.ts && vite build --config vite.config.ts",
-    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.ts && vite build --config vite.config.ts --watch",
+    "build": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
+    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch",
     "format": "prettier --write .",
     "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "typecheck": "tsc"
   }
 }

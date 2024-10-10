@@ -15,13 +15,13 @@ function setAttributes(element, attributes) {
 
 // Define a custom editor class extending AbstractEditor
 export class SpatialEditor extends AbstractEditor {
-  // register() {
-  //   super.register();
-  // }
+  register() {
+    super.register();
+  }
 
-  // unregister() {
-  //   super.unregister();
-  // }
+  unregister() {
+    super.unregister();
+  }
 
   // Build the editor UI
   build() {

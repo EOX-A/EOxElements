@@ -42,6 +42,9 @@ import {
  * #### `layerDateTime?: Object`
  * Partial eox-timecontrol config passed to the "datetime" tool
  *
+ * ### `layerLegend`?: Object
+ * Creates a dynamic color legend based on range & domain of values. Extenteds partial config of `color-legend-element`
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -62,7 +65,7 @@ export class EOxLayerControl extends LitElement {
   /**
    * Instance of `eox-map` which is a wrapper for the OL
    *
-   * @type {import("../../map/main").EOxMap}
+   * @type {import("../../map/src/main").EOxMap}
    */
   #eoxMap;
 
@@ -252,7 +255,15 @@ export class EOxLayerControl extends LitElement {
     `;
   }
 
-  #styleEOX = `* { font-family: Roboto, sans-serif; }`;
+  #styleEOX = `
+    :host, :root {
+      font-family: Roboto, sans-serif;
+      --padding: 0.5rem;
+
+      display: block;
+      padding: var(--padding) 0;
+    }
+  `;
 }
 
 customElements.define("eox-layercontrol", EOxLayerControl);

@@ -306,6 +306,15 @@ export const STORIES_LAYER_CROPOMHUSC2 = {
 
 const LAYERCONFIG_LAYER_SEE = {
   type: "style",
+  legend: {
+    title: "Global horizontal irradiation",
+    range: [
+      "rgba(253, 231, 37, 1)",
+      "rgba(33, 144, 141, 1)",
+      "rgba(68, 1, 84, 1)",
+    ],
+    domainProperties: ["vmin", "vmax"],
+  },
   schema: {
     type: "object",
     title: "Data configuration",
@@ -430,6 +439,11 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
     title: "vessel_density_cargo",
     layerControlExpand: true,
     layerControlToolsExpand: true,
+    layerLegend: {
+      title: "total ships presence time per squared km",
+      domain: [0.5, 150],
+      range: ["#C3EBDC", "#0ADC00", "#FEF500", "#F29300", "#800303"],
+    },
     layerDatetime: {
       disablePlay: true,
       slider: true,

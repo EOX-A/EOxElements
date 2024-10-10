@@ -31,6 +31,10 @@ function PrimaryStory() {
           type: "text",
           placeholder: "Type Something...",
           expanded: true,
+          validation: {
+            pattern: ".{0,10}",
+            message: "Maximum 10 characters",
+          },
         },
         {
           key: "code",

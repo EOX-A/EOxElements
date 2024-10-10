@@ -187,12 +187,10 @@ export class EOxLayerControlLayerList extends LitElement {
     }
     li {
       list-style: none;
+      padding-left: var(--padding);
     }
     li {
       border-bottom: 1px solid #0041703a;
-    }
-    li:first-child {
-      border-top: 1px solid #0041703a;
     }
     li:last-child {
       border: none;
