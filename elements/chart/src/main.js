@@ -2,9 +2,7 @@ import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import allStyle from "../../../utils/styles/dist/all.style";
-import { DEFAULT_SPEC } from "./enums";
-import { default as vegaEmbed } from "vega-embed";
-import { deepmerge } from "deepmerge-ts";
+import { renderChartMethod } from "./methods/render";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
@@ -55,34 +53,13 @@ export class EOxChart extends LitElement {
   }
 
   /**
-   * Render Vega-Lite using vega-embed
-   *
-   * @param {import("vega-embed").VisualizationSpec} spec
-   * @param {Object} dataValues
-   */
-  renderVega(spec, dataValues) {
-    const mergedSpec = deepmerge(DEFAULT_SPEC, spec);
-    vegaEmbed(
-      /** @type {HTMLElement} */ (this.renderRoot.querySelector("#vis")),
-      mergedSpec
-    ).then((res) => {
-      if (dataValues) {
-        Object.keys(dataValues).forEach((dataSourceName) => {
-          res.view.insert(dataSourceName, dataValues[dataSourceName]);
-        });
-        res.view.run();
-      }
-    });
-  }
-
-  /**
    * Lifecycle method called when the element is updated
    *
    * @param {import("lit").PropertyValues} changedProperties
    */
   async updated(changedProperties) {
     if (changedProperties.has("spec") || changedProperties.has("dataValues")) {
-      this.renderVega(this.spec, this.dataValues);
+      renderChartMethod(this, this.spec, this.dataValues);
     }
   }
 
