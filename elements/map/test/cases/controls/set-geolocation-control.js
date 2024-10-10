@@ -22,7 +22,7 @@ const setGeoLocationControl = () => {
       .controls=${{
         Geolocation: {},
       }}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(async ($el) => {
     const eoxMap = $el[0];

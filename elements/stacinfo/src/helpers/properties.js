@@ -29,11 +29,11 @@ export function transformProperties(properties, type = "property") {
     property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
       (
-        // @ts-ignore
-        url
+        // @ts-expect-error TODO
+        url,
       ) => {
         return `<a target="_blank" href="${url}">${url}</a>`;
-      }
+      },
     );
 
     /**
@@ -61,7 +61,7 @@ export function transformProperties(properties, type = "property") {
                 <a target="_blank" href="${itemValue.href || itemValue.url}"
                   >${itemValue.name || itemValue.title || itemKey}</a
                 >
-              </li>`
+              </li>`,
           )
           .join("")}</ul>`;
       } else if (type === "featured") {
@@ -79,7 +79,7 @@ export function transformProperties(properties, type = "property") {
                 }"
                   >${itemValue.name || itemValue.title || itemKey}
                   </a>
-              </div>`
+              </div>`,
           )
           .join("");
       }
@@ -108,7 +108,7 @@ export function updateProperties(that) {
         ...acc,
         ...curr.properties,
       }),
-      {}
+      {},
     );
 
     that.requestUpdate();

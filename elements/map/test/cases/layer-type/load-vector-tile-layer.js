@@ -17,7 +17,7 @@ const loadVectorTileLayer = () => {
     "stroke-width": 4,
   };
   cy.mount(
-    html`<eox-map .zoom=${1} .layers=${vectorTileLayerStyleJson}></eox-map>`
+    html`<eox-map .zoom=${1} .layers=${vectorTileLayerStyleJson}></eox-map>`,
   ).as("eox-map");
   return new Cypress.Promise((resolve) => {
     cy.get("eox-map").should(($el) => {
@@ -26,7 +26,7 @@ const loadVectorTileLayer = () => {
       setTimeout(() => {
         // to do: not able to wait for rendercomplete directly, as `applyStyle` is async
         const features = layer.getFeaturesInExtent(
-          eoxMap.map.getView().calculateExtent()
+          eoxMap.map.getView().calculateExtent(),
         );
         expect(features.length).to.be.greaterThan(10);
         resolve();

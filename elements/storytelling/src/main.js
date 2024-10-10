@@ -138,7 +138,7 @@ export class EOxStoryTelling extends LitElement {
     this.dispatchEvent(
       new CustomEvent("init", {
         detail: element,
-      })
+      }),
     );
   }
 
@@ -173,7 +173,7 @@ export class EOxStoryTelling extends LitElement {
         }),
         md.sections,
         this.#dispatchInitEvent.bind(this),
-        this
+        this,
       );
 
       this.#html = parseNavWithAddSection(
@@ -181,7 +181,7 @@ export class EOxStoryTelling extends LitElement {
         this.nav,
         this.showNav,
         this.showEditor,
-        this
+        this,
       );
 
       if (this.showEditor !== undefined) {
@@ -277,7 +277,7 @@ export class EOxStoryTelling extends LitElement {
               @change=${this.#debounceUpdateMarkdown}
               .markdown=${this.markdown}
             ></eox-storytelling-editor>
-          `
+          `,
         )}
       </div>
 
@@ -322,7 +322,7 @@ export class EOxStoryTelling extends LitElement {
                               this.selectedCustomElement.markdown,
                               this.selectedCustomElement.fields,
                               true,
-                              this
+                              this,
                             )}
                         >
                           Add Section
@@ -330,7 +330,7 @@ export class EOxStoryTelling extends LitElement {
                       </div>
                     </div>
                   </div>
-                `
+                `,
               )}
               <div class="story-telling-popup-wrapper">
                 ${SAMPLE_ELEMENTS.map(
@@ -342,34 +342,35 @@ export class EOxStoryTelling extends LitElement {
                     <hr />
                     <div class="grid-container">
                       ${category.elements.map(
-                        (element) => html`<div
-                          @click=${() =>
-                            addCustomSection(
-                              this.markdown,
-                              this.addCustomSectionIndex,
-                              element.markdown,
-                              element.fields,
-                              false,
-                              this
-                            )}
-                          class="grid-item"
-                        >
-                          <icon id="${element.id}"></icon>
-                          <p>${element.name}</p>
-                          <style>
-                            icon#${element.id}::before {
-                              content: url("${element.icon}");
-                            }
-                          </style>
-                        </div>`
+                        (element) =>
+                          html`<div
+                            @click=${() =>
+                              addCustomSection(
+                                this.markdown,
+                                this.addCustomSectionIndex,
+                                element.markdown,
+                                element.fields,
+                                false,
+                                this,
+                              )}
+                            class="grid-item"
+                          >
+                            <icon id="${element.id}"></icon>
+                            <p>${element.name}</p>
+                            <style>
+                              icon#${element.id}::before {
+                                content: url("${element.icon}");
+                              }
+                            </style>
+                          </div>`,
                       )}
                     </div>
-                  `
+                  `,
                 )}
               </div>
             </div>
           </div>
-        `
+        `,
       )}
     `;
   }

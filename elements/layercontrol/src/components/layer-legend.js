@@ -79,7 +79,7 @@ export class EOxLayerControlLayerLegend extends LitElement {
   render() {
     if (!customElements.get("color-legend")) {
       console.error(
-        "Please import `color-legend-element` in order to use layerLegend"
+        "Please import `color-legend-element` in order to use layerLegend",
       );
     }
 
@@ -107,31 +107,29 @@ export class EOxLayerControlLayerLegend extends LitElement {
             >
             </color-legend>
           </div>
-        `
+        `,
       )}
     `;
   }
 
   #styleBasic = css`
+    .legend-container {
+      display: flex;
+      justify-content: center;
+    }
 
-.legend-container{
-    display:flex;
-    justify-content:center
-  }
-
-  color-legend {
-  --cle-background :transparent;
-  --cle-font-family:inherit;
-  --cle-font-size:inherit;
-  --cle-font-weight :inherit
-  --cle-letter-spacing :inherit;
-  --cle-letter-spacing-title :inherit;
-  }
+    color-legend {
+      --cle-background: transparent;
+      --cle-font-family: inherit;
+      --cle-font-size: inherit;
+      --cle-font-weight: inherit --cle-letter-spacing: inherit;
+      --cle-letter-spacing-title: inherit;
+    }
   `;
   #styleEOX = ``;
 }
 
 customElements.define(
   "eox-layercontrol-layer-legend",
-  EOxLayerControlLayerLegend
+  EOxLayerControlLayerLegend,
 );

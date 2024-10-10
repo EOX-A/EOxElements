@@ -34,7 +34,7 @@ const loadWmtsWithTileGrid = () => {
     const source = layer.getSource();
     expect(
       source.getTileGrid().getTileSize(0),
-      "use tileGrid options"
+      "use tileGrid options",
     ).to.be.deep.equal([128, 128]);
   });
 };

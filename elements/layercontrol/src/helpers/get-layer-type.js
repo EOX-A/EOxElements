@@ -10,7 +10,7 @@ export default function getLayerType(layer, map) {
   if (!layer || !map) return undefined;
 
   // Check if the layer is a group
-  // @ts-ignore
+  // @ts-expect-error TODO
   if (layer.getLayers) return "group"; // Identified as a layer group
 
   // Attempt to infer based on other properties
@@ -18,18 +18,18 @@ export default function getLayerType(layer, map) {
 
   // Filter interactions for drawing - assuming freehand_ property as an indicator
   const isDrawing = interactions
-    // @ts-ignore
+    // @ts-expect-error TODO
     .filter((i) => i.freehand_ !== undefined)
-    // @ts-ignore
+    // @ts-expect-error TODO
     .map((i) => i.source_)
-    // @ts-ignore
+    // @ts-expect-error TODO
     ?.ol_uid?.includes(
-      // @ts-ignore
-      layer.getSource ? layer.getSource()?.ol_uid : undefined
+      // @ts-expect-error TODO
+      layer.getSource ? layer.getSource()?.ol_uid : undefined,
     );
 
   if (isDrawing) return "draw";
-  // @ts-ignore
+  // @ts-expect-error TODO
   else if (layer.declutter_ !== undefined) return "vector";
   else return "raster";
 }

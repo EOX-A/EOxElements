@@ -10,7 +10,7 @@ const loadVectorLayer = () => {
     req.reply(ecoRegionsFixture);
   });
   cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];

@@ -164,7 +164,7 @@ export class EOxDrawTools extends LitElement {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
-      replaceFeatures
+      replaceFeatures,
     );
   }
 
@@ -189,7 +189,7 @@ export class EOxDrawTools extends LitElement {
     this.#geoJSON = JSON.stringify(
       this.eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
       undefined,
-      2
+      2,
     );
   }
 
@@ -204,7 +204,7 @@ export class EOxDrawTools extends LitElement {
        * @type Array<import("ol").Feature>
        */
       this.dispatchEvent(
-        new CustomEvent("drawupdate", { detail: this.drawnFeatures })
+        new CustomEvent("drawupdate", { detail: this.drawnFeatures }),
       );
     };
     emitDrawnFeaturesMethod(this, drawUpdateEvent);
@@ -224,7 +224,8 @@ export class EOxDrawTools extends LitElement {
    */
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-    (this.eoxMap = EoxMap), (this.#olMap = OlMap);
+    this.eoxMap = EoxMap;
+    this.#olMap = OlMap;
 
     if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
 
@@ -235,7 +236,8 @@ export class EOxDrawTools extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has("for")) {
       const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-      (this.eoxMap = EoxMap), (this.#olMap = OlMap);
+      this.eoxMap = EoxMap;
+      this.#olMap = OlMap;
     }
   }
 

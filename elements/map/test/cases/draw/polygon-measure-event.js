@@ -8,7 +8,7 @@ import { simulateEvent } from "../../utils/events";
 const createPolygonMeasureEvent = () => {
   drawInteractionLayerJson[0].interactions[0].options.type = "Polygon";
   cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];

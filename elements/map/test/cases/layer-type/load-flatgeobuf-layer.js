@@ -32,7 +32,7 @@ const loadFlatGeoBufLayer = () => {
           6141440.849782808,
         ]}
         .layers=${layersJson}
-      ></eox-map>`
+      ></eox-map>`,
     ).as("eox-map");
 
     cy.get("eox-map").should(($el) => {
@@ -41,7 +41,7 @@ const loadFlatGeoBufLayer = () => {
       source.once("featuresloadend", (e) => {
         expect(
           e.features.length,
-          "loads features from FlatGeoBuf-source"
+          "loads features from FlatGeoBuf-source",
         ).to.be.greaterThan(20);
         resolve();
       });

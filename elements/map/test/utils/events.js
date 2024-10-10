@@ -14,7 +14,6 @@ export function simulateEvent(map, type, x, y) {
     target: viewport.firstChild,
     clientX: position.left + x + width / 2,
     clientY: position.top + y + height / 2,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     preventDefault: function () {},
     pointerType: "mouse",
   };

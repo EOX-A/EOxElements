@@ -20,7 +20,7 @@ export default {
     layout: "fullscreen",
   },
   render:
-    // @ts-ignore
+    // @ts-expect-error TODO
     (args) => html`
       <eox-stacinfo
         for=${args.for}

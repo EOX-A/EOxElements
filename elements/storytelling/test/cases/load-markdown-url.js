@@ -14,7 +14,7 @@ const loadMarkdownUrlTest = () => {
   });
 
   cy.mount(`<eox-storytelling markdown-url="/test.md"></eox-storytelling>`).as(
-    storyTelling
+    storyTelling,
   );
 
   cy.get(storyTelling)

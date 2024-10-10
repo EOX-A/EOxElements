@@ -49,7 +49,7 @@ export function getFlatLayersArray(layers) {
 
       // Check for nested groups inside the current group and add them to the newGroupLayers array
       newGroupLayers.push(
-        ...layersInsideGroup.filter((l) => l instanceof Group)
+        ...layersInsideGroup.filter((l) => l instanceof Group),
       );
     }
 

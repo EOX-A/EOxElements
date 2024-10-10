@@ -26,7 +26,7 @@ const loadJsonFormNoShadowTest = () => {
       .value=${{
         [testVals.key]: testVals.value,
       }}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   // Find the jsonForm element and assure there is no shadow DOM
   cy.get(jsonForm).shadow().should("not.exist");

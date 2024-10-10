@@ -38,7 +38,7 @@ const ProjectionTransformStory = {
         eoxMap.registerProjection(
           "ESRI:53009",
           "+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 " +
-            "+b=6371000 +units=m +no_defs"
+            "+b=6371000 +units=m +no_defs",
         );
         alert(eoxMap.transform([991693, 1232660], "ESRI:53009"));
       }}

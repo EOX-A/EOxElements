@@ -11,7 +11,7 @@ export const _parseActions = (tools, layer) => {
   return tools?.filter((t) =>
     ["remove", "sort"]
       .filter((k) => (layer?.get("layerControlDisable") ? k !== "sort" : true))
-      .includes(t)
+      .includes(t),
   );
 };
 
@@ -61,7 +61,7 @@ export const removeButton = (EOxLayerControlLayerTools) => html`
         new CustomEvent("changed", {
           detail: layer,
           bubbles: true,
-        })
+        }),
       );
     }}
   >

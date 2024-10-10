@@ -25,13 +25,13 @@ const setBasicControls = () => {
           ],
         },
       }}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(async ($el) => {
     const eoxMap = $el[0];
     expect(
       eoxMap.map.getControls().getLength(),
-      "set controls via webcomponent properties"
+      "set controls via webcomponent properties",
     ).to.be.equal(4);
 
     eoxMap.controls = {
@@ -51,7 +51,7 @@ const setBasicControls = () => {
     };
     expect(
       eoxMap.map.getControls().getLength(),
-      "remove controls by setting new control object"
+      "remove controls by setting new control object",
     ).to.be.equal(1);
 
     eoxMap.controls = {
@@ -69,7 +69,7 @@ const setBasicControls = () => {
         .getArray()[0]
         .getSource()
         .getParams().LAYERS,
-      "update controls by changing the control prop"
+      "update controls by changing the control prop",
     ).to.be.equal("AWS_NO2-VISUALISATION");
   });
 };

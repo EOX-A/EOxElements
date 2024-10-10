@@ -16,8 +16,8 @@ export default function parseEntries(list, that, type) {
       .filter(([key]) => list?.includes(key))
       .reverse()
       .sort(([keyA], [keyB]) =>
-        list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1
+        list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1,
       ),
-    type
+    type,
   );
 }

@@ -28,12 +28,12 @@ const getFlatLayersArr = () => {
           ],
         },
       ]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
     const layersArray = eoxMap.getFlatLayersArray(
-      eoxMap.map.getLayers().getArray()
+      eoxMap.map.getLayers().getArray(),
     );
     expect(layersArray.length).to.equal(3);
     expect(layersArray.find((l) => l.get("id") === "group1")).to.exist;

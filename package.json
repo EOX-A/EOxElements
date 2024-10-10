@@ -17,10 +17,10 @@
     "test:component": "npm run styles && cypress run --component",
     "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && cypress run --e2e",
     "format": "prettier --write .",
-    "format:all": "npm run format --ws",
-    "format:check:all": "prettier --check .",
-    "lint:all": "npm run lint --ws",
-    "lint:fix:all": "npm run lint:fix --ws",
+    "format:check": "prettier --check .",
+    "lint": "eslint elements",
+    "lint:fix": "eslint elements --fix",
+    "typecheck": "tsc",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "npm run styles && storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
@@ -28,6 +28,7 @@
     "nyc:report": "nyc report --reporter=text-summary"
   },
   "devDependencies": {
+    "@eox/eslint-config": "^2.0.0",
     "@custom-elements-manifest/analyzer": "^0.10.2",
     "@cypress/code-coverage": "^3.12.44",
     "@cypress/mount-utils": "^4.0.0",
@@ -54,9 +55,5 @@
   },
   "engines": {
     "node": ">=20.0.0"
-  },
-  "dependencies": {
-    "eslint-plugin-cypress": "^3.0.2",
-    "lodash.isequal": "^4.5.0"
   }
 }

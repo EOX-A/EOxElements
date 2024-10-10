@@ -164,7 +164,7 @@ export class EOxStacInfo extends LitElement {
           <!-- Footer Component-->
           ${parseFooter(parseEntries(this.footer, this))}
         `,
-        () => html`${nothing}`
+        () => html`${nothing}`,
       )}
     `;
   }

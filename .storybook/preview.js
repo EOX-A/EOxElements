@@ -22,7 +22,7 @@ import "../elements/timecontrol/src/main.js";
  */
 export const setCustomElementsManifestWithOptions = (
   customElements,
-  options
+  options,
 ) => {
   let { privateFields = true } = options;
   if (!privateFields) {
@@ -89,9 +89,9 @@ const preview = {
                       typeof tags[tag][key] === "string"
                         ? tags[tag][key]
                         : JSON.stringify(tags[tag][key])
-                    }\}'`
+                    }\}'`,
                 )
-                .join("\n  ")}\n  `
+                .join("\n  ")}\n  `,
             );
           });
           return code;

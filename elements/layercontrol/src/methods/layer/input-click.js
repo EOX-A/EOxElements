@@ -16,7 +16,7 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
      * @type NodeListOf<Element & {layer: any, requestUpdate: function}>
      */
     const siblings = EOxLayerControlLayer.closest(
-      ".layers > ul"
+      ".layers > ul",
     ).querySelectorAll("eox-layercontrol-layer");
 
     // Loop through the sibling layers to handle exclusive visibility.
@@ -33,7 +33,7 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
 
   // Dispatch a 'changed' event to signal a change in the layer's state.
   EOxLayerControlLayer.dispatchEvent(
-    new CustomEvent("changed", { bubbles: true, detail: layer })
+    new CustomEvent("changed", { bubbles: true, detail: layer }),
   );
 
   // Request an update for the layer control to reflect the changes.

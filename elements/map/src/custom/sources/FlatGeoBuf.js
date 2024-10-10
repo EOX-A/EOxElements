@@ -39,7 +39,7 @@ class FlatGeoBuf extends Vector {
     const transformedExtent = transformExtent(
       extent,
       projection.getCode(),
-      "EPSG:4326"
+      "EPSG:4326",
     );
     return {
       minX: transformedExtent[0],
@@ -74,7 +74,7 @@ class FlatGeoBuf extends Vector {
         super.addFeatures(features);
         success(features);
       }
-    } catch (e) {
+    } catch (_) {
       failure();
     }
   }

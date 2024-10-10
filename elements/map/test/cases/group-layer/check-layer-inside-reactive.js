@@ -20,7 +20,7 @@ const checkLayerInsideReactive = (layersJson) => {
 
     expect(
       eoxMap.getLayerById("layerInsideGroupInsideGroup").getOpacity(),
-      "reactive layer 2 levels deep"
+      "reactive layer 2 levels deep",
     ).to.be.equal(0.2);
   });
 };

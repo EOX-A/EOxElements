@@ -24,7 +24,7 @@ const showOnlySecondMap = () => {
         .layers=${imageWmsLayerStyleJson}
         style="height: 300px"
       ></eox-map>
-    </eox-map-compare>`
+    </eox-map-compare>`,
   ).as("eox-map-compare");
   cy.get("eox-map[slot=first]").should("not.be.visible");
   cy.get("eox-map[slot=first]").should("exist");

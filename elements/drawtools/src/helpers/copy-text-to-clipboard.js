@@ -8,6 +8,6 @@ export default function copyTextToClipboard(text) {
     function () {},
     function (err) {
       console.error("Could not copy text: ", err);
-    }
+    },
   );
 }

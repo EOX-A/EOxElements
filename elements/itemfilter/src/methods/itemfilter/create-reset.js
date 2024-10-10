@@ -31,7 +31,7 @@ function createResetMethod(filterObject, tabIndex, EOxItemFilter) {
         >
           ${EOxItemFilter.unstyled ? "Reset" : nothing}
         </button>
-      `
+      `,
     )}
   `;
 }

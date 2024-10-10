@@ -12,7 +12,7 @@ const getLayerById = () => {
       .layers=${[
         { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
       ]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     expect($el[0].getLayerById("osm").get("id") === "osm").to.exist;

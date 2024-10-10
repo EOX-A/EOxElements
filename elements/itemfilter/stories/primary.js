@@ -90,7 +90,7 @@ function PrimaryStory() {
       // Simulate user interaction: Searching for "Asparagus"
       await step("Searching for Asparagus", async () => {
         const inputElement = shadowRoot.querySelector(
-          'input[placeholder="Type Something..."]'
+          'input[placeholder="Type Something..."]',
         );
         await userEvent.type(inputElement, "Asparagus", { delay: 100 });
       });

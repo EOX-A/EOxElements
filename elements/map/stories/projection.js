@@ -47,7 +47,7 @@ const ProjectionStory = {
           "projection",
           eoxMap.map.getView().getProjection().getCode() === "EPSG:4326"
             ? "EPSG:3857"
-            : "EPSG:4326"
+            : "EPSG:4326",
         );
       }}
     >
