@@ -20,8 +20,7 @@
   },
   "files": [
     "dist",
-    "src",
-    "test"
+    "src"
   ],
   "main": "./src/main.js",
   "scripts": {
