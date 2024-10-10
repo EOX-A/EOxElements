@@ -15,7 +15,7 @@ describe("Chart", () => {
   beforeEach(() => {
     // Mounting eox-chart element
     cy.mount(
-      `<eox-chart style="width: ${chartHeight}px; height: ${chartHeight}px"></eox-chart>`
+      `<eox-chart style="width: ${chartHeight}px; height: ${chartHeight}px"></eox-chart>`,
     ).as(chart);
   });
 

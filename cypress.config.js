@@ -48,7 +48,6 @@ export default defineConfig({
     },
     fixturesFolder: "./elements", // changes fixture folder location from ./cypress/fixtures for component tests
     specPattern: specPatternComponentTests,
-    excludeSpecPattern: ["**/chart"],
     indexHtmlFile: "cypress/support/component-index.html",
   },
   retries: {
