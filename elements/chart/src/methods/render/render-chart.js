@@ -14,7 +14,7 @@ const renderChartMethod = (EOxChart, spec, dataValues) => {
   const mergedSpec = deepmerge(DEFAULT_SPEC, spec);
   vegaEmbed(
     /** @type {HTMLElement} */ (EOxChart.renderRoot.querySelector("#vis")),
-    mergedSpec
+    mergedSpec,
   ).then((res) => {
     if (dataValues) {
       Object.keys(dataValues).forEach((dataSourceName) => {
