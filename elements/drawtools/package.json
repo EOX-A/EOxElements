@@ -21,7 +21,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-styles": "file:../../utils/eox-elements-styles-0.0.1.tgz",
+    "@eox/elements-utils": "^0.0.1",
     "lit": "^3.0.2"
   }
 }

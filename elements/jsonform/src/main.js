@@ -3,7 +3,7 @@ import { createEditor, parseProperty } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
-import allStyle from "../../../utils/styles/dist/all.style";
+import allStyle from "@eox/elements-utils/styles/dist/all.style";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema

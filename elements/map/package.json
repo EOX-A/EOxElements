@@ -3,6 +3,7 @@
   "version": "1.15.0",
   "type": "module",
   "dependencies": {
+    "@eox/elements-utils": "^0.0.1",
     "flatgeobuf": "^3.35.0",
     "lit": "^3.0.2",
     "ol": "^10.2.0",
