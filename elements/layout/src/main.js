@@ -49,12 +49,7 @@ export class EOxLayoutItem extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         :host {
-          background: lightgrey;
-          border: 1px solid darkgrey;
-          border-radius: 4px;
-          padding: 4px 8px;
           overflow: hidden;
-
 
           grid-column: ${
             parseInt(this.getAttribute("x")) + 1

@@ -27,7 +27,7 @@ const copyGeoJsonEditorTest = () => {
         // Check whether the copied json matches with `DUMMY_GEO_JSON`
         cy.window().then((win) => {
           expect(win.navigator.clipboard.writeText).to.be.calledWith(
-            JSON.stringify(DUMMY_GEO_JSON, undefined, 2)
+            JSON.stringify(DUMMY_GEO_JSON, undefined, 2),
           );
         });
       });

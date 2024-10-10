@@ -1,4 +1,6 @@
 dist
 docs
-cypress/fixtures
+fixtures
 CHANGELOG.md
+coverage
+.nyc_output

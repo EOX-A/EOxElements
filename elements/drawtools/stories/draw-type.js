@@ -33,7 +33,7 @@ export const DrawType = {
               type="${type}"
             />
           </div>
-        `
+        `,
       )}
     </div>
   `,

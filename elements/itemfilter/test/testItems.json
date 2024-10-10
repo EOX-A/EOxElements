@@ -10,6 +10,8 @@
     "year": 2000,
     "likes": 4,
     "years": [2000, 2000],
+    "correlation": 0.3,
+    "rating": 20,
     "timestamp": "2023-06-14T13:56:38+00:00",
     "datetime": ["2023-06-14T10:56:38+00:00", "2023-06-14T22:56:38+00:00"],
     "bbox": [-90.0, 60.0, -20.0, 82.0],
@@ -27,6 +29,20 @@
     "tags": ["agriculture", "Sentinel-2", "asparagus"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-06-14T13:56:38+00:00",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-90.0, 60.0],
+            [-20.0, 60.0],
+            [-20.0, 82.0],
+            [-90.0, 82.0]
+          ]
+        ]
+      }
     }
   },
   {
@@ -40,6 +56,8 @@
     "year": 2020,
     "likes": 46,
     "years": [2007, 2020],
+    "correlation": 0.3,
+    "rating": 10,
     "timestamp": "2023-06-13T13:56:38+00:00",
     "datetime": ["2023-06-13T10:56:38+00:00", "2023-06-13T22:56:38+00:00"],
     "bbox": [0, 0, 10, 10],
@@ -57,6 +75,20 @@
     "tags": ["agriculture", "workers", "availability"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-06-13T13:56:38+00:00",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [0, 0],
+            [10, 0],
+            [10, 10],
+            [0, 10]
+          ]
+        ]
+      }
     }
   },
   {
@@ -70,6 +102,8 @@
     "year": 2023,
     "likes": 34,
     "years": [2008, 2023],
+    "correlation": -0.4,
+    "rating": -30,
     "timestamp": "2023-06-12T13:56:38+00:00",
     "datetime": ["2023-06-12T10:56:38+00:00", "2023-06-12T22:56:38+00:00"],
     "bbox": [-180.0, -80.0, 180.0, -61.0],
@@ -87,6 +121,20 @@
     "tags": ["air quality", "sea ice", "freeboard"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-06-12T13:56:38+00:00",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-180.0, -80.0],
+            [180.0, -80.0],
+            [180.0, -61.0],
+            [-180.0, -61.0]
+          ]
+        ]
+      }
     }
   },
   {
@@ -100,11 +148,16 @@
     "year": 2022,
     "likes": 177,
     "years": [2021, 2022],
+    "correlation": 0.3,
+    "rating": -50,
     "timestamp": "2023-06-11T13:56:38+00:00",
     "datetime": ["2023-06-11T10:56:38+00:00", "2023-06-11T22:56:38+00:00"],
     "tags": ["economy", "vessel density", "average"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-06-11T13:56:38+00:00"
     }
   },
   {
@@ -118,11 +171,16 @@
     "year": 2016,
     "likes": 0,
     "years": [2005, 2016],
+    "correlation": 0.3,
+    "rating": -100,
     "timestamp": "2023-06-10T13:56:38+00:00",
     "datetime": ["2023-06-10T10:56:38+00:00", "2023-06-10T22:56:38+00:00"],
     "tags": ["economy", "vessel density", "cargo"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-06-10T13:56:38+00:00"
     }
   },
   {
@@ -136,11 +194,16 @@
     "year": 2017,
     "likes": 0,
     "years": [2006, 2017],
+    "correlation": 0.7,
+    "rating": 100,
     "timestamp": "2023-06-09T13:56:38+00:00",
     "datetime": ["2023-06-09T10:56:38+00:00", "2023-06-09T22:56:38+00:00"],
     "tags": ["economy", "vessel density", "tanker"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-06-09T13:56:38+00:00"
     }
   },
   {
@@ -154,11 +217,16 @@
     "year": 2003,
     "likes": 2,
     "years": [2001, 2003],
+    "correlation": 1,
+    "rating": 20,
     "timestamp": "2023-06-08T13:56:38+00:00",
     "datetime": ["2023-06-08T10:56:38+00:00", "2023-06-08T22:56:38+00:00"],
     "tags": ["economy", "vessel density", "others"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-06-08T13:56:38+00:00"
     }
   },
   {
@@ -173,11 +241,16 @@
     "year": 2020,
     "likes": 65,
     "years": [2015, 2020],
+    "correlation": 0.2,
+    "rating": 50,
     "timestamp": "2023-06-07T13:56:38+00:00",
     "datetime": ["2023-06-07T10:56:38+00:00", "2023-06-07T22:56:38+00:00"],
     "tags": ["economy", "air", "NO2", "boat traffic"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-06-07T13:56:38+00:00"
     }
   },
   {
@@ -191,11 +264,16 @@
     "year": 2021,
     "likes": 34,
     "years": [2021, 2021],
+    "correlation": 0.1,
+    "rating": -10,
     "timestamp": "2023-06-06T13:56:38+00:00",
     "datetime": ["2023-06-06T10:56:38+00:00", "2023-06-06T22:56:38+00:00"],
     "tags": ["air", "temperature", "C3S Data"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-06-06T13:56:38+00:00"
     }
   },
   {
@@ -209,11 +287,16 @@
     "year": 2023,
     "likes": 88,
     "years": [2000, 2023],
+    "correlation": 0.1,
+    "rating": 0,
     "timestamp": "2023-06-05T13:56:38+00:00",
     "datetime": ["2023-06-05T10:56:38+00:00", "2023-06-05T22:56:38+00:00"],
     "tags": ["air", "PM2.5", "city level"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-06-05T13:56:38+00:00"
     }
   },
   {
@@ -227,11 +310,16 @@
     "year": 2022,
     "likes": 77,
     "years": [2019, 2022],
+    "correlation": -0.2,
+    "rating": -90,
     "timestamp": "2023-06-04T13:56:38+00:00",
     "datetime": ["2023-06-04T10:56:38+00:00", "2023-06-04T22:56:38+00:00"],
     "tags": ["air", "NO2", "city level"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-06-04T13:56:38+00:00"
     }
   },
   {
@@ -245,11 +333,16 @@
     "year": 2018,
     "likes": 23,
     "years": [2014, 2018],
+    "correlation": -0.1,
+    "rating": -20,
     "timestamp": "2023-06-03T13:56:38+00:00",
     "datetime": ["2023-06-03T10:56:38+00:00", "2023-06-03T22:56:38+00:00"],
     "tags": ["air", "PM10", "city level"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-06-03T13:56:38+00:00"
     }
   },
   {
@@ -263,11 +356,16 @@
     "year": 2018,
     "likes": 56,
     "years": [2017, 2018],
+    "correlation": -0.2,
+    "rating": -100,
     "timestamp": "2023-06-02T13:56:38+00:00",
     "datetime": ["2023-06-02T10:56:38+00:00", "2023-06-02T22:56:38+00:00"],
     "tags": ["air", "O3", "city level"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-06-02T13:56:38+00:00"
     }
   },
   {
@@ -281,11 +379,16 @@
     "year": 2019,
     "likes": 11,
     "years": [2018, 2019],
+    "correlation": 0,
+    "rating": 10,
     "timestamp": "2023-06-01T13:56:38+00:00",
     "datetime": ["2023-06-01T10:56:38+00:00", "2023-06-01T22:56:38+00:00"],
     "tags": ["economy", "cargo ships", "AIS data"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-06-01T13:56:38+00:00"
     }
   },
   {
@@ -299,11 +402,16 @@
     "year": 2017,
     "likes": 8,
     "years": [2015, 2017],
+    "correlation": 0.6,
+    "rating": 90,
     "timestamp": "2023-05-29T13:56:38+00:00",
     "datetime": ["2023-05-29T10:56:38+00:00", "2023-05-29T22:56:38+00:00"],
     "tags": ["economy", "traffic", "mobile data"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-05-29T13:56:38+00:00"
     }
   },
   {
@@ -317,11 +425,16 @@
     "year": 2015,
     "likes": 37,
     "years": [2014, 2015],
+    "correlation": 0.4,
+    "rating": -40,
     "timestamp": "2023-05-28T13:56:38+00:00",
     "datetime": ["2023-05-28T10:56:38+00:00", "2023-05-28T22:56:38+00:00"],
     "tags": ["water", "CHL-a", "concentration"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-05-28T13:56:38+00:00"
     }
   },
   {
@@ -335,11 +448,16 @@
     "year": 2013,
     "likes": 4,
     "years": [2001, 2013],
+    "correlation": -0.5,
+    "rating": -70,
     "timestamp": "2023-05-27T13:56:38+00:00",
     "datetime": ["2023-05-27T10:56:38+00:00", "2023-05-27T22:56:38+00:00"],
     "tags": ["health", "Covid-19", "cases"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-05-27T13:56:38+00:00"
     }
   },
   {
@@ -353,11 +471,16 @@
     "year": 2016,
     "likes": 39,
     "years": [2015, 2016],
+    "correlation": -0.9,
+    "rating": 70,
     "timestamp": "2023-05-26T13:56:38+00:00",
     "datetime": ["2023-05-26T10:56:38+00:00", "2023-05-26T22:56:38+00:00"],
     "tags": ["health", "Covid-19", "vaccinations"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-05-26T13:56:38+00:00"
     }
   },
   {
@@ -371,11 +494,16 @@
     "year": 2020,
     "likes": 28,
     "years": [2014, 2020],
+    "correlation": -0.9,
+    "rating": 80,
     "timestamp": "2023-05-25T13:56:38+00:00",
     "datetime": ["2023-05-25T10:56:38+00:00", "2023-05-25T22:56:38+00:00"],
     "tags": ["economy", "crude oil", "input materials"],
     "status": {
       "code": "active"
+    },
+    "properties": {
+      "started": "2023-05-25T13:56:38+00:00"
     }
   },
   {
@@ -389,11 +517,16 @@
     "year": 1999,
     "likes": 17,
     "years": [1998, 1999],
+    "correlation": -1,
+    "rating": 0,
     "timestamp": "2023-05-24T13:56:38+00:00",
     "datetime": ["2023-05-24T10:56:38+00:00", "2023-05-24T22:56:38+00:00"],
     "tags": ["economy", "cruise ships", "AIS data"],
     "status": {
       "code": "inactive"
+    },
+    "properties": {
+      "started": "2023-05-24T13:56:38+00:00"
     }
   }
 ]

@@ -36,15 +36,15 @@ export class MinMaxEditor extends AbstractEditor {
     if (!options.compact)
       this.header = this.label = theme.getFormInputLabel(
         this.getTitle(),
-        this.isRequired()
+        this.isRequired(),
       );
     if (description)
       this.description = theme.getFormInputDescription(
-        this.translateProperty(description)
+        this.translateProperty(description),
       );
     if (options.infoText)
       this.infoButton = theme.getInfoButton(
-        this.translateProperty(options.infoText)
+        this.translateProperty(options.infoText),
       );
 
     // Create the range slider element
@@ -72,7 +72,7 @@ export class MinMaxEditor extends AbstractEditor {
       this.label,
       this.input,
       this.description,
-      this.infoButton
+      this.infoButton,
     );
 
     if (this.schema.readOnly || this.schema.readonly) {

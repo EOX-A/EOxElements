@@ -22,6 +22,7 @@ export class EOxLayerControlLayerList extends LitElement {
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   constructor() {
@@ -84,6 +85,13 @@ export class EOxLayerControlLayerList extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
   }
 
   /**
@@ -140,6 +148,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
+                            .toolsAsList=${this.toolsAsList}
                             @changed=${() => this.requestUpdate()}
                           >
                           </eox-layercontrol-layer-group>
@@ -153,14 +162,15 @@ export class EOxLayerControlLayerList extends LitElement {
                             .showLayerZoomState=${this.showLayerZoomState}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
+                            .toolsAsList=${this.toolsAsList}
                             @changed=${() => this.requestUpdate()}
                           ></eox-layercontrol-layer>
                         `
                   }
                 </li>
-              `
+              `,
             )}
-          `
+          `,
         )}
       </ul>
     `;
@@ -177,12 +187,10 @@ export class EOxLayerControlLayerList extends LitElement {
     }
     li {
       list-style: none;
+      padding-left: var(--padding);
     }
     li {
       border-bottom: 1px solid #0041703a;
-    }
-    li:first-child {
-      border-top: 1px solid #0041703a;
     }
     li:last-child {
       border: none;

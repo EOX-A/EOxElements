@@ -1,6 +1,7 @@
 import {
   ButtonModeStory,
   CustomAlignmentsStory,
+  CustomLoaderStory,
   PrimaryStory,
 } from "./index.js";
 
@@ -15,3 +16,5 @@ export const Primary = PrimaryStory;
 export const ButtonMode = ButtonModeStory;
 
 export const CustomAlignments = CustomAlignmentsStory;
+
+export const CustomLoader = CustomLoaderStory;

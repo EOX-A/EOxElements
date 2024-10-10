@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.8.1...drawtools-v0.9.0) (2024-08-06)
+
+
+### Features
+
+* Allow passing `eox-map` DOM element to `for` property reactively ([#1152](https://github.com/EOX-A/EOxElements/issues/1152)) ([379d885](https://github.com/EOX-A/EOxElements/commit/379d885ddf14980e6b861172fbd066df36bf152d))
+
 ## [0.8.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.8.0...drawtools-v0.8.1) (2024-06-12)
 
 

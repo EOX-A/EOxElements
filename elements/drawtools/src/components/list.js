@@ -178,7 +178,7 @@ export class EOxDrawToolsList extends LitElement {
                   </button>
                 </div>
               </li>
-            `
+            `,
           );
         })}
       </ul>

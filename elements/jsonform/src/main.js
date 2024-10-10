@@ -32,14 +32,14 @@ export class EOxJSONForm extends LitElement {
      *
      * @type {JsonSchema}
      */
-    this.schema;
+    this.schema = null;
 
     /**
      * Default values for the form editor
      *
      * @type {JsonSchema}
      */
-    this.value;
+    this.value = null;
 
     /**
      * Default values for the form editor
@@ -127,7 +127,7 @@ export class EOxJSONForm extends LitElement {
         detail: this.value,
         bubbles: true,
         composed: true,
-      })
+      }),
     );
   }
 

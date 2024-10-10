@@ -19,12 +19,12 @@ export function aggregateResultsMethod(items, property, EOxItemFilterResults) {
       currentFilter = Object.keys(
         EOxItemFilterResults.filters[
           EOxItemFilterResults.config.aggregateResults
-        ]
+        ],
       ).filter(
         (f) =>
           EOxItemFilterResults.filters[
             EOxItemFilterResults.config.aggregateResults
-          ].state[f]
+          ].state[f],
       );
     }
 

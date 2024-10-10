@@ -1,6 +1,6 @@
 {
   "name": "@eox/geosearch",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "type": "module",
   "main": "./src/main.js",
   "engines": {
@@ -12,12 +12,8 @@
     "test"
   ],
   "scripts": {
-    "build": "",
-    "watch": "vite build --watch",
-    "format": "prettier --write .",
-    "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix",
-    "typecheck": "tsc"
+    "build": "vite build",
+    "watch": "vite build --watch"
   },
   "author": "",
   "license": "MIT",

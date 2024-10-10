@@ -9,7 +9,7 @@ import { html } from "lit";
 function getChipItems(filters) {
   return Object.keys(filters)
     .map((filter) => ({
-      title: html`${filter}:
+      title: html`${filters[filter].title}:
         <strong>${filters[filter].stringifiedState}</strong>`,
       key: filter,
     }))

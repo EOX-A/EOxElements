@@ -1,5 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import Group from "ol/layer/Group";
+import { getElement } from "../../../utils";
 import "toolcool-range-slider";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
@@ -28,9 +29,6 @@ export class EOxTimeControl extends LitElement {
        */
       controlValues: { type: Array, attribute: "control-values" },
 
-      /**
-       * The query selector for the map
-       */
       for: { type: String },
 
       /**
@@ -58,17 +56,43 @@ export class EOxTimeControl extends LitElement {
       _controlSource: { state: true },
       _isAnimationPlaying: { state: true },
       _newStepIndex: { state: true },
+      _eoxMap: { state: true },
+      _width: { state: true },
       unstyled: { type: Boolean },
     };
   }
 
   constructor() {
     super();
-    /**
-     * @type Array<string>
-     */
+    /** @type {string[]} */
     this.controlValues = [];
+    /** @type {number} */
     this._newStepIndex = 0;
+    /** @type {boolean} */
+    this.unstyled = false;
+    /** @type {boolean} */
+    this.disablePlay = false;
+    /** @type {boolean} */
+    this.slider = false;
+    /**
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
+     *
+     * @type {String|HTMLElement}
+     */
+    this.for = "eox-map";
+    /** @type {string} */
+    this.layer = "";
+    /** @type {string | undefined} */
+    this.controlProperty = undefined;
+    /** @type {HTMLElement |undefined} */
+    this._eoxMap = undefined;
+
+    this._width = 300;
+
+    window.addEventListener("resize", () => {
+      this._width = this.clientWidth;
+    });
   }
 
   /**
@@ -132,10 +156,49 @@ export class EOxTimeControl extends LitElement {
   }
 
   /**
+   * initializes the EOxMap instance
+   * And stores it in the private property #eoxMap.
+   */
+  firstUpdated() {
+    this.updateMap();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("for")) {
+      this.updateMap();
+    }
+  }
+
+  updateMap() {
+    const foundElement = getElement(this.for);
+
+    if (foundElement) {
+      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (
+        foundElement
+      );
+      this.eoxMap = EoxMap;
+    }
+  }
+
+  get eoxMap() {
+    return this._eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this._eoxMap;
+    this._eoxMap = value;
+    this.requestUpdate("eoxMap", oldValue);
+  }
+
+  /**
    * @param {number} [step=1]
    * @private
    */
   _updateStep(step = 1) {
+    if (!step) {
+      return;
+    }
+
     this._newStepIndex = this._newStepIndex + step;
     if (this._newStepIndex > this.controlValues.length - 1) {
       this._newStepIndex = 0;
@@ -144,9 +207,11 @@ export class EOxTimeControl extends LitElement {
       this._newStepIndex = this.controlValues.length - 1;
     }
 
-    this._controlSource?.updateParams({
-      [this.controlProperty]: this.controlValues[this._newStepIndex],
-    });
+    if (this.layer && this.for) {
+      this._controlSource?.updateParams({
+        [this.controlProperty]: this.controlValues[this._newStepIndex],
+      });
+    }
     this.requestUpdate();
 
     /**
@@ -158,7 +223,7 @@ export class EOxTimeControl extends LitElement {
         detail: {
           currentStep: this.currentStep,
         },
-      })
+      }),
     );
   }
 
@@ -168,8 +233,8 @@ export class EOxTimeControl extends LitElement {
    * Consider a way to properly export that function and use it here
    * See also:
    * https://github.com/EOX-A/EOxElements/issues/974
-   * @param {Array<import('ol/layer/Layer').default>} layers
-   * @returns {Array<import('ol/layer/Layer').default>}
+   * @param {import('ol/layer/Base').default[]} layers
+   * @returns {import('ol/layer/Base').default[]}
    */
   getFlatLayersArray(layers) {
     const flatLayers = [];
@@ -177,14 +242,13 @@ export class EOxTimeControl extends LitElement {
 
     /** @type {Array<Group>} */
     let groupLayers = flatLayers.filter((l) => l instanceof Group);
-
     while (groupLayers.length) {
       const newGroupLayers = [];
       for (let i = 0, ii = groupLayers.length; i < ii; i++) {
         const layersInsideGroup = groupLayers[i].getLayers().getArray();
         flatLayers.push(...layersInsideGroup);
         newGroupLayers.push(
-          ...layersInsideGroup.filter((l) => l instanceof Group)
+          ...layersInsideGroup.filter((l) => l instanceof Group),
         );
       }
       groupLayers = newGroupLayers;
@@ -193,31 +257,33 @@ export class EOxTimeControl extends LitElement {
   }
 
   render() {
-    const mapQuery = document.querySelector(this.for);
-    /**
-     * @type {import('ol').Map}
-     */
-    const olMap = mapQuery.map || mapQuery;
+    if (this.layer && this.for) {
+      const foundElement = /** @type {import('../../map/main').EOxMap} */ (
+        getElement(this.for)
+      );
 
-    olMap.once("loadend", () => {
-      if (!this._originalParams) {
-        const flatLayers = this.getFlatLayersArray(
-          olMap.getLayers().getArray()
-        );
-        /**
-         * @type {import('ol/layer/Layer').default}
-         */
-        const animationLayer = flatLayers.find(
-          (l) => l.get("id") === this.layer
-        );
-        /**
-         * @type {import('ol/source/UrlTile').default}
-         */
-        this._controlSource = animationLayer.getSource();
+      const olMap = foundElement.map;
 
-        this._originalParams = this._controlSource.getParams();
-      }
-    });
+      olMap.once("loadend", () => {
+        if (!this._originalParams) {
+          const flatLayers = this.getFlatLayersArray(
+            /** @type {import('ol/layer/Base').default[]} */ (
+              olMap.getLayers().getArray()
+            ),
+          );
+          const animationLayer =
+            /** @type {import('ol/layer/Layer').default} */ (
+              flatLayers.find((l) => l.get("id") === this.layer)
+            );
+          this._controlSource =
+            /** @type {import('ol/source/TileWMS').default} */ (
+              animationLayer.getSource()
+            );
+
+          this._originalParams = this._controlSource.getParams();
+        }
+      });
+    }
 
     return html`
       <style>
@@ -233,9 +299,12 @@ export class EOxTimeControl extends LitElement {
           >
             <
           </button>
+          <span part="current">${this.controlValues[this._newStepIndex]}</span>
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
+        </div>
+        <div>
           ${!this.disablePlay
             ? html`
                 <button
@@ -245,7 +314,7 @@ export class EOxTimeControl extends LitElement {
                     : "play"}"
                   @click="${() =>
                     this.playAnimation(
-                      this._isAnimationPlaying ? false : true
+                      this._isAnimationPlaying ? false : true,
                     )}"
                 >
                   ${this._isAnimationPlaying ? "Pause" : "Play"}
@@ -260,23 +329,21 @@ export class EOxTimeControl extends LitElement {
                     part="slider"
                     value="${this.controlValues[this._newStepIndex]}"
                     style="display: inline-block;"
-                    @change="${(evt) =>
+                    @change="${(/** @type {CustomEvent} */ evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(
-                          (v) => v === evt.detail.value
-                        ) - this._newStepIndex
+                          (v) => v === evt.detail.value,
+                        ) - this._newStepIndex,
                       )}"
                   ></tc-range-slider>
 
                   <eox-sliderticks
-                    width="300"
+                    .width="${this._width}"
                     .steps="${this.controlValues}"
                   ></eox-sliderticks>
                 </div>
               `
             : ""}
-
-          <span part="current">${this.controlValues[this._newStepIndex]}</span>
         </div>
       </main>
     `;

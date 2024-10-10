@@ -12,7 +12,7 @@ describe("Layer Switcher", () => {
           .shadow()
           .within(() => {
             cy.get("eox-drawtools-controller").within(() =>
-              cy.get("[data-cy='drawBtn']").click()
+              cy.get("[data-cy='drawBtn']").click(),
             );
           });
         cy.get("eox-map")
@@ -58,7 +58,7 @@ describe("Layer Switcher", () => {
   it("adapts to changed layers property with changed layer id inside group", () => {
     cy.fixture("agri.json").then((layers) => {
       const groupLayerIndex = layers.findIndex(
-        (layer) => layer.type === "Group"
+        (layer) => layer.type === "Group",
       );
       layers[groupLayerIndex].layers[0].properties.id = "changed-nested-Id";
 

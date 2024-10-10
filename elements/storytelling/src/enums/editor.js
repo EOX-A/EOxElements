@@ -36,14 +36,14 @@ export const EDITOR_SCHEMA = {
               null,
               "fa fa-upload",
               "Import Markdown File",
-              importMdFile
+              importMdFile,
             ),
             addCustomTool(
               "export",
               null,
               "fa fa-download",
               "Export Markdown File",
-              exportMdFile
+              exportMdFile,
             ),
             "|",
             addCustomTool(
@@ -60,7 +60,7 @@ export const EDITOR_SCHEMA = {
                   element.addCustomSectionIndex = sectionIndexes.length;
                   element.requestUpdate();
                 }
-              }
+              },
             ),
           ],
           spellChecker: false,

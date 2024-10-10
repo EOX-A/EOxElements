@@ -22,6 +22,7 @@ export class EOxLayerControlLayer extends LitElement {
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   /**
@@ -84,6 +85,13 @@ export class EOxLayerControlLayer extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
   }
 
   /**
@@ -170,7 +178,7 @@ export class EOxLayerControlLayer extends LitElement {
               <span class="title">${this.#getLayer(this.titleProperty)}</span>
               ${when(
                 isToolsAvail,
-                () => html`<span class="tools-placeholder"></span>`
+                () => html`<span class="tools-placeholder"></span>`,
               )}
             </label>
           </div>
@@ -181,8 +189,9 @@ export class EOxLayerControlLayer extends LitElement {
             .layer=${this.layer}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
+            .toolsAsList=${this.toolsAsList}
           ></eox-layercontrol-layer-tools>
-        `
+        `,
       )}
     `;
   }

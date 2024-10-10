@@ -2,16 +2,16 @@ import { setCustomElementsManifest } from "@storybook/web-components";
 import customElements from "../custom-elements.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
-import "../elements/chart/src/main.ts";
+import "../elements/chart/src/main.js";
 import "../elements/drawtools/src/main.js";
 import "../elements/geosearch/src/main.js";
 import "../elements/itemfilter/src/main.js";
 import "../elements/jsonform/src/main.js";
 import "../elements/layercontrol/src/main.js";
 import "../elements/layout/src/main.js";
-import "../elements/map/main.ts";
-import "../elements/map/src/plugins/advancedLayersAndSources/index.ts";
-import "../elements/stacinfo/src/main.ts";
+import "../elements/map/src/main.js";
+import "../elements/map/src/plugins/advancedLayersAndSources/index";
+import "../elements/stacinfo/src/main.js";
 import "../elements/storytelling/src/main.js";
 import "../elements/timecontrol/src/main.js";
 
@@ -22,7 +22,7 @@ import "../elements/timecontrol/src/main.js";
  */
 export const setCustomElementsManifestWithOptions = (
   customElements,
-  options
+  options,
 ) => {
   let { privateFields = true } = options;
   if (!privateFields) {
@@ -89,9 +89,9 @@ const preview = {
                       typeof tags[tag][key] === "string"
                         ? tags[tag][key]
                         : JSON.stringify(tags[tag][key])
-                    }\}'`
+                    }\}'`,
                 )
-                .join("\n  ")}\n  `
+                .join("\n  ")}\n  `,
             );
           });
           return code;

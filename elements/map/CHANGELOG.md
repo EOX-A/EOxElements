@@ -1,5 +1,56 @@
 # Changelog
 
+## [1.15.0](https://github.com/EOX-A/EOxElements/compare/map-v1.14.0...map-v1.15.0) (2024-10-08)
+
+
+### Features
+
+* FlatGeoBuf source ([#1298](https://github.com/EOX-A/EOxElements/issues/1298)) ([3f59636](https://github.com/EOX-A/EOxElements/commit/3f5963675deab91c124b7a6770feaffff83dff6e))
+
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/map-v1.13.1...map-v1.14.0) (2024-10-01)
+
+
+### Features
+
+* Refactor and convert code from `ts` to `js` ([#1206](https://github.com/EOX-A/EOxElements/issues/1206)) ([e417b3f](https://github.com/EOX-A/EOxElements/commit/e417b3f65373824b68d3ece327e2952100dd90e7))
+
+## [1.13.1](https://github.com/EOX-A/EOxElements/compare/map-v1.13.0...map-v1.13.1) (2024-09-23)
+
+
+### Bug Fixes
+
+* Update maps tiles url to public domain ([#1262](https://github.com/EOX-A/EOxElements/issues/1262)) ([3f57038](https://github.com/EOX-A/EOxElements/commit/3f570381472beb3d93656958d818eece4084ef65))
+
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/map-v1.12.0...map-v1.13.0) (2024-08-12)
+
+
+### Features
+
+* Optionally add extent to registerProjection function ([#1205](https://github.com/EOX-A/EOxElements/issues/1205)) ([cbfc366](https://github.com/EOX-A/EOxElements/commit/cbfc366d5c035503098f0e5ddfbd21c1d489933e))
+
+## [1.12.0](https://github.com/EOX-A/EOxElements/compare/map-v1.11.2...map-v1.12.0) (2024-08-06)
+
+
+### Features
+
+* Highlight and animate feature(s) by ID ([#1176](https://github.com/EOX-A/EOxElements/issues/1176)) ([1f95016](https://github.com/EOX-A/EOxElements/commit/1f9501632f00d087473a8deb2435154742f236d2))
+* Loading indicator map control ([#1173](https://github.com/EOX-A/EOxElements/issues/1173)) ([fb727d3](https://github.com/EOX-A/EOxElements/commit/fb727d3fb585216656b9201602fd8de322cc460d))
+* LonLatCenter & lonLatExtent ([#1181](https://github.com/EOX-A/EOxElements/issues/1181)) ([0a154db](https://github.com/EOX-A/EOxElements/commit/0a154db770d262e6ccbb42b786cc2a8d8a5c754f))
+
+## [1.11.2](https://github.com/EOX-A/EOxElements/compare/map-v1.11.1...map-v1.11.2) (2024-07-31)
+
+
+### Bug Fixes
+
+* Issue of layer groups not removing all previous layers ([#1161](https://github.com/EOX-A/EOxElements/issues/1161)) ([e888a61](https://github.com/EOX-A/EOxElements/commit/e888a61c93aafaa73f1130e00b3ab606986407a4))
+
+## [1.11.1](https://github.com/EOX-A/EOxElements/compare/map-v1.11.0...map-v1.11.1) (2024-07-30)
+
+
+### Bug Fixes
+
+* Layer update of group layers ([#1147](https://github.com/EOX-A/EOxElements/issues/1147)) ([5f44bc0](https://github.com/EOX-A/EOxElements/commit/5f44bc0aaaa7b003923f6d51d89ad882bb0fb324))
+
 ## [1.11.0](https://github.com/EOX-A/EOxElements/compare/map-v1.10.1...map-v1.11.0) (2024-07-29)
 
 

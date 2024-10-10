@@ -3,12 +3,16 @@ import {
   ExpandedLayersStory,
   HiddenLayersStory,
   LayerConfigStory,
+  LayerStylesConfigStory,
+  unstyledStory,
   OptionalLayersStory,
   PrimaryStory,
   ToolsStory,
   addExternalLayerStory,
+  layerDatetimeStory,
   layerZoomStateStory,
-  unstyledStory,
+  toolsAsListStory,
+  layerLegendStory,
 } from ".";
 
 export default {
@@ -60,6 +64,25 @@ export const Tools = ToolsStory;
  */
 export const LayerConfig = LayerConfigStory;
 
+export const LayerStylesConfig = LayerStylesConfigStory;
+
+/**
+ * By adding "datetime" as tool, the time for a specific layer can be modified.
+ * The `layerDatetime` property of the layer allows passing the following properties of eox-timecontrol:
+ * `disablePlay`: allows disabling the timecontrol play button.
+ * `slider`: show/hide timecontrol slider.
+ * `currentStep`: current datetime string.
+ * `controlValues`: The list of available values.
+ */
+export const LayerDateTime = layerDatetimeStory;
+
+/**
+ * The "legend" tool reads configurations passed via the "layerLegend" property,
+ * and creates a dynamic color legend based on it. `layerLegend` holds a partial subset of
+ * the attributes and properties of Color Legend Element, read more https://clhenrick.github.io/color-legend-element/
+ */
+export const LayerLegend = layerLegendStory;
+
 /**
  * By adding the `layerControlHide` property to map layers,
  * they aren't displayed in the layer control at all (but may
@@ -82,3 +105,8 @@ export const LayerZoomState = layerZoomStateStory;
  * Unstyled version of the Element
  */
 export const Unstyled = unstyledStory;
+
+/**
+ * Tools rendered as list instead of tabs
+ */
+export const ToolsAsList = toolsAsListStory;

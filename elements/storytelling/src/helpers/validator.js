@@ -49,7 +49,7 @@ const groupLayerSchema = joi.object({
     })
     .unknown()
     .required(),
-  layers: basicLayerSchema,
+  layers: joi.array().items(basicLayerSchema),
 });
 
 // EOxMap validation schema
@@ -71,7 +71,7 @@ const eoxMapSchema = {
 
           if (error) return helpers.message(error.message);
           return value;
-        }, "Custom validator for map schema.")
+        }, "Custom validator for map schema."),
     )
     .optional(),
   center: joi.array().items(joi.number()).min(2).max(2).optional(),
@@ -139,7 +139,7 @@ export function validateMarkdownAttrs(attrs, that) {
   }
 
   const editorDom = (that.shadowRoot || that).querySelector(
-    "eox-storytelling-editor"
+    "eox-storytelling-editor",
   );
 
   setTimeout(() => editorDom?.updateErrors(errors), 300);

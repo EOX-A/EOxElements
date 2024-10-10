@@ -22,7 +22,7 @@ Section 2 Content Here
 `;
 
   cy.mount(`<eox-storytelling markdown="${testText}"></eox-storytelling>`).as(
-    storyTelling
+    storyTelling,
   );
 
   cy.get(storyTelling)

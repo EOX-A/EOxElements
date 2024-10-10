@@ -1,5 +1,66 @@
 # Changelog
 
+## [1.3.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.3.0...itemfilter-v1.3.1) (2024-10-08)
+
+
+### Bug Fixes
+
+* Nested property access for range and spatial filters ([#1299](https://github.com/EOX-A/EOxElements/issues/1299)) ([0501b2e](https://github.com/EOX-A/EOxElements/commit/0501b2e2dca838cd234752ab4d3268ffc944391e))
+
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.2.0...itemfilter-v1.3.0) (2024-10-01)
+
+
+### Features
+
+* Regex text validation ([#1240](https://github.com/EOX-A/EOxElements/issues/1240)) ([c933310](https://github.com/EOX-A/EOxElements/commit/c933310d8a8ce9ec1b2209525dd9485a87bb3fd1))
+
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.2...itemfilter-v1.2.0) (2024-09-26)
+
+
+### Features
+
+* **style:** Add text-transform variable ([#1285](https://github.com/EOX-A/EOxElements/issues/1285)) ([ea4aa65](https://github.com/EOX-A/EOxElements/commit/ea4aa65881cd687c0a959262f6e786ed17667e12))
+
+
+### Bug Fixes
+
+* **style:** Adapt padding for non-aggregated lists ([#1283](https://github.com/EOX-A/EOxElements/issues/1283)) ([253deef](https://github.com/EOX-A/EOxElements/commit/253deeff4c5ed99daeb72e9e50630c2e6cf13c51))
+
+## [1.1.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.1...itemfilter-v1.1.2) (2024-09-26)
+
+
+### Bug Fixes
+
+* **style:** Introduce padding variable and fix slider padding ([#1280](https://github.com/EOX-A/EOxElements/issues/1280)) ([9e80a04](https://github.com/EOX-A/EOxElements/commit/9e80a04dfa370fd57d61a10c7d4e121c8327af5f))
+
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.1.0...itemfilter-v1.1.1) (2024-09-23)
+
+
+### Bug Fixes
+
+* Update maps tiles url to public domain ([#1262](https://github.com/EOX-A/EOxElements/issues/1262)) ([3f57038](https://github.com/EOX-A/EOxElements/commit/3f570381472beb3d93656958d818eece4084ef65))
+
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.3...itemfilter-v1.1.0) (2024-08-19)
+
+
+### Features
+
+* Allow setting step in range filter ([#1202](https://github.com/EOX-A/EOxElements/issues/1202)) ([ec22599](https://github.com/EOX-A/EOxElements/commit/ec225990e2d49bbaccc51a56dd2742c83cdf9151))
+
+## [1.0.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.2...itemfilter-v1.0.3) (2024-08-05)
+
+
+### Bug Fixes
+
+* **style:** Highlight on hover and primary color on select ([#1178](https://github.com/EOX-A/EOxElements/issues/1178)) ([bcd557c](https://github.com/EOX-A/EOxElements/commit/bcd557cae699dba502be4772d40f044db33aa518))
+
+## [1.0.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.1...itemfilter-v1.0.2) (2024-07-31)
+
+
+### Bug Fixes
+
+* Added non date format to chip and use title as chip text not key ([#1171](https://github.com/EOX-A/EOxElements/issues/1171)) ([b1d8115](https://github.com/EOX-A/EOxElements/commit/b1d81157684603029876468d9edd115fdb51b292))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.0.0...itemfilter-v1.0.1) (2024-07-29)
 
 

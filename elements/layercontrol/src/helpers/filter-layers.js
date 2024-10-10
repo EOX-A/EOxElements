@@ -27,14 +27,14 @@ export default function filterLayers(layers, key, value) {
 
     // Check if there are sub-layers (groups)
     const groups = searchLayers.filter(
-      (layer) => /** @type {import("ol/layer").Group} */ (layer).getLayers
+      (layer) => /** @type {import("ol/layer").Group} */ (layer).getLayers,
     );
 
     // If sub-layers are present, recursively search through them
     if (groups.length > 0)
       groups.forEach((group) =>
-        // @ts-ignore
-        search(group.getLayers().getArray(), key, value)
+        // @ts-expect-error TODO
+        search(group.getLayers().getArray(), key, value),
       );
 
     return found;

@@ -31,6 +31,10 @@ function PrimaryStory() {
           type: "text",
           placeholder: "Type Something...",
           expanded: true,
+          validation: {
+            pattern: ".{0,10}",
+            message: "Maximum 10 characters",
+          },
         },
         {
           key: "code",
@@ -58,6 +62,12 @@ function PrimaryStory() {
           format: "date",
         },
         {
+          key: "correlation",
+          title: "Correlation",
+          type: "range",
+          step: 0.1,
+        },
+        {
           key: "geometry",
           type: "spatial",
         },
@@ -80,7 +90,7 @@ function PrimaryStory() {
       // Simulate user interaction: Searching for "Asparagus"
       await step("Searching for Asparagus", async () => {
         const inputElement = shadowRoot.querySelector(
-          'input[placeholder="Type Something..."]'
+          'input[placeholder="Type Something..."]',
         );
         await userEvent.type(inputElement, "Asparagus", { delay: 100 });
       });

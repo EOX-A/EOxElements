@@ -5,10 +5,20 @@ import { html } from "lit";
 /**
  * Resets the range filter to its default state and requests an update.
  *
- * @param {Object} EOxItemFilterRange - The EOxItemFilterRange component instance.
+ * @param {import("../../components/filters/range.js").EOxItemFilterRange} EOxItemFilterRange - The EOxItemFilterRange component instance.
  */
 export function resetRangeMethod(EOxItemFilterRange) {
-  resetFilter(EOxItemFilterRange.filterObject);
+  EOxItemFilterRange.filterObject = resetFilter(
+    EOxItemFilterRange.filterObject,
+  );
+  if (EOxItemFilterRange.filterObject) {
+    const eleTCRangeSlider =
+      EOxItemFilterRange.querySelector("tc-range-slider");
+    const min = EOxItemFilterRange.filterObject.min;
+    const max = EOxItemFilterRange.filterObject.max;
+    if (eleTCRangeSlider.value1 !== min) eleTCRangeSlider.value1 = min;
+    if (eleTCRangeSlider.value2 !== max) eleTCRangeSlider.value2 = max;
+  }
   EOxItemFilterRange.requestUpdate();
 }
 
@@ -34,10 +44,12 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
     EOxItemFilterRange.filterObject.dirty = true;
   }
 
-  if (EOxItemFilterRange.filterObject.dirty)
-    EOxItemFilterRange.filterObject.stringifiedState = `${dayjs(min)} - ${dayjs(
-      max
-    )}`;
+  if (EOxItemFilterRange.filterObject.dirty) {
+    EOxItemFilterRange.filterObject.stringifiedState =
+      EOxItemFilterRange.filterObject.format === "date"
+        ? `${dayjs(min)} - ${dayjs(max)}`
+        : `${min} - ${max}`;
+  }
 
   EOxItemFilterRange.dispatchEvent(new CustomEvent("filter"));
 

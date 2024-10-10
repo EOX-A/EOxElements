@@ -80,7 +80,7 @@ class StoryTellingEditor extends LitElement {
     const resizeHandle = this.querySelector(".resize-handle");
 
     this.editor = this.renderRoot.querySelector(
-      "eox-jsonform#storytelling-editor"
+      "eox-jsonform#storytelling-editor",
     );
 
     if (this.showEditor === "closed") updateEditorInitVisibility(this);
@@ -99,7 +99,7 @@ class StoryTellingEditor extends LitElement {
         errorDom.querySelector("ul").innerHTML = errors
           .map(
             (error) =>
-              `<li><strong>${error.ref}</strong>: ${error.message}</li>`
+              `<li><strong>${error.ref}</strong>: ${error.message}</li>`,
           )
           .join("");
       } else errorDom.style.display = "none";
@@ -120,7 +120,7 @@ class StoryTellingEditor extends LitElement {
     const wrapper = this.renderRoot.querySelector(".editor-wrapper");
     const storyIdSelector = this.storyId ? `#${this.storyId}` : "";
     const storyDOM = document.querySelector(
-      `eox-storytelling${storyIdSelector}`
+      `eox-storytelling${storyIdSelector}`,
     );
     if (!evt.target.checked) {
       wrapper.classList.add("editor-hide");
@@ -136,7 +136,7 @@ class StoryTellingEditor extends LitElement {
   render() {
     if (!customElements.get("eox-jsonform"))
       console.error(
-        "Please import @eox/jsonform in order to use StoryTelling Editor"
+        "Please import @eox/jsonform in order to use StoryTelling Editor",
       );
 
     const navHeight = this.isNavigation ? "partial-height" : "";

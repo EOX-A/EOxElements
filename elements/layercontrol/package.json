@@ -1,18 +1,14 @@
 {
   "name": "@eox/layercontrol",
-  "version": "0.18.0",
+  "version": "0.22.0",
   "type": "module",
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
     "@eox/jsonform": "latest",
     "@eox/map": "latest",
+    "@eox/timecontrol": "latest",
     "@types/sortablejs": "^1.15.1",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
-    "eslint-plugin-typescript": "^0.14.0",
     "ol": "^10.0.0",
     "sortablejs": "^1.15.0",
-    "typescript": "^5.2.2",
     "vite": "^5.0.2"
   },
   "engines": {
@@ -26,16 +22,13 @@
   "main": "./dist/eox-layercontrol.js",
   "scripts": {
     "build": "vite build",
-    "watch": "vite build --watch",
-    "format": "prettier --write .",
-    "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix",
-    "typecheck": "tsc"
+    "watch": "vite build --watch"
   },
   "dependencies": {
+    "color-legend-element": "^1.3.0",
     "dayjs": "^1.11.8",
     "lit": "^3.0.2",
-    "lodash.debounce": "^4.0.8",
+    "lodash.throttle": "^4.1.1",
     "wms-capabilities": "^0.6.0"
   }
 }

@@ -39,6 +39,12 @@ import {
  * #### `layerConfig?: Object`
  * Configuration options for the layer (displayed in the layer tools' "config" tab)
  *
+ * #### `layerDateTime?: Object`
+ * Partial eox-timecontrol config passed to the "datetime" tool
+ *
+ * ### `layerLegend`?: Object
+ * Creates a dynamic color legend based on range & domain of values. Extenteds partial config of `color-legend-element`
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -53,12 +59,13 @@ export class EOxLayerControl extends LitElement {
     addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
+    toolsAsList: { type: Boolean },
   };
 
   /**
    * Instance of `eox-map` which is a wrapper for the OL
    *
-   * @type {import("../../map/main").EOxMap}
+   * @type {import("../../map/src/main").EOxMap}
    */
   #eoxMap;
 
@@ -67,7 +74,8 @@ export class EOxLayerControl extends LitElement {
     super();
 
     /**
-     * Query selector of an eox-map or another DOM element containing an OL map proeprty
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
      * @type {String|HTMLElement}
      */
@@ -107,7 +115,7 @@ export class EOxLayerControl extends LitElement {
      *
      * @type {Array<String>}
      */
-    this.tools = ["info", "opacity", "config", "remove", "sort"];
+    this.tools = ["info", "opacity", "datetime", "config", "remove", "sort"];
 
     /**
      * Enable-disable external layer
@@ -129,6 +137,13 @@ export class EOxLayerControl extends LitElement {
      * @type {String}
      */
     this.styleOverride = "";
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
   }
 
   /**
@@ -136,7 +151,23 @@ export class EOxLayerControl extends LitElement {
    * Updated #eoxMap after first update.
    */
   firstUpdated() {
-    this.#eoxMap = firstUpdatedMethod(this);
+    this.eoxMap = firstUpdatedMethod(this);
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has("for")) {
+      this.eoxMap = firstUpdatedMethod(this);
+    }
+  }
+
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  set eoxMap(value) {
+    const oldValue = this.#eoxMap;
+    this.#eoxMap = value;
+    this.requestUpdate("eoxMap", oldValue);
   }
 
   /**
@@ -151,6 +182,16 @@ export class EOxLayerControl extends LitElement {
      * Passes the changed layer in the `detail`.
      */
     this.dispatchEvent(new CustomEvent("layerchange", { detail: evt.detail }));
+  }
+
+  /**
+   * Dispatches datetime updates from layer datetime to the layercontrol
+   * @param {CustomEvent} evt
+   */
+  #handleDatetimeUpdate(evt) {
+    this.dispatchEvent(
+      new CustomEvent("datetime:updated", { detail: evt.detail }),
+    );
   }
 
   render() {
@@ -174,7 +215,7 @@ export class EOxLayerControl extends LitElement {
             .eoxMap=${this.#eoxMap}
             .unstyled=${this.unstyled}
           ></eox-layercontrol-add-layers>
-        `
+        `,
       )}
 
       <!-- Conditional rendering of layer list component -->
@@ -191,9 +232,11 @@ export class EOxLayerControl extends LitElement {
             .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
+            .toolsAsList=${this.toolsAsList}
             @changed=${this.#handleLayerControlLayerListChange}
+            @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>
-        `
+        `,
       )}
 
       <!-- Conditional rendering of optional list component -->
@@ -207,12 +250,20 @@ export class EOxLayerControl extends LitElement {
             .titleProperty=${this.titleProperty}
             @changed=${() => this.requestUpdate()}
           ></eox-layercontrol-optional-list>
-        `
+        `,
       )}
     `;
   }
 
-  #styleEOX = `* { font-family: Roboto, sans-serif; }`;
+  #styleEOX = `
+    :host, :root {
+      font-family: Roboto, sans-serif;
+      --padding: 0.5rem;
+
+      display: block;
+      padding: var(--padding) 0;
+    }
+  `;
 }
 
 customElements.define("eox-layercontrol", EOxLayerControl);

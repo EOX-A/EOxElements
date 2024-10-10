@@ -23,7 +23,7 @@ describe("Stories test", () => {
     ? Object.values(stories.entries)
     : Object.values(stories.entries).filter((obj) => {
         return uniqueElementFolders.some((folder) =>
-          obj.importPath.includes(folder)
+          obj.importPath.includes(folder),
         );
       });
   filteredStories.forEach((story) => {

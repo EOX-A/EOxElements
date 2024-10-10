@@ -153,7 +153,7 @@ export class EOxDrawToolsController extends LitElement {
             >
               import
             </button>
-          `
+          `,
         )}
       </div>
 
@@ -178,7 +178,7 @@ export class EOxDrawToolsController extends LitElement {
               ${this.unstyled ? "copy" : nothing}
             </button>
           </div>
-        `
+        `,
       )}
     `;
   }

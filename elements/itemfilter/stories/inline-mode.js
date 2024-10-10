@@ -47,8 +47,18 @@ function InlineModeStory() {
         {
           key: "timestamp",
           type: "range",
+          title: "Timestamp",
           format: "date",
           expanded: true,
+        },
+        {
+          key: "rating",
+          title: "Rating",
+          type: "range",
+          expanded: true,
+          min: -100,
+          max: 100,
+          step: 10,
         },
       ],
       items,
