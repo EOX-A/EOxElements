@@ -19,7 +19,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "glob": "^10.4.2",
     "vite": "^5.2.11"
   },
   "dependencies": {
