@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "useDefineForClassFields": true,
+    "useDefineForClassFields": false,
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
@@ -15,8 +15,10 @@
     "noImplicitReturns": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
+    "allowJs": true,
+    "checkJs": true,
     "types": ["cypress"],
-    "allowJs": true
+    "noImplicitAny": false
   },
-  "include": ["**/*.ts", "../../cypress/cypress.d.ts"]
+  "include": ["src/*.js"]
 }
