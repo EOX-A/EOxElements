@@ -5,7 +5,7 @@ import { Vector as VectorLayer } from "ol/layer";
 import { addNewFeature } from "../helpers";
 import { getArea, getLength } from "ol/sphere";
 import Overlay from "ol/Overlay";
-import Polygon from "ol/geom/Polygon";
+import { Polygon, LineString } from "ol/geom";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -74,38 +74,11 @@ export function addDraw(
 
     let listener = sketch.getGeometry().on('change', function (evt) {
       const geom = evt.target;
-      let output;
-      console.log(geom);
-      if (geom instanceof Polygon) {
-        console.log("Polygon");
+      console.log(geom.getCoordinates());
+      console.log("LineString");
 
-        let circumference = 0.0;
-        const coords = geom.getFlatCoordinates();
-
-        for (let i = 0; i < coords.length - 2; i += 2) {
-          // Get current point (x1, y1)
-          const x1 = coords[i];
-          const y1 = coords[i + 1];
-
-          // Get next point (x2, y2)
-          const x2 = coords[i + 2];
-          const y2 = coords[i + 3];
-
-          // Calculate the distance between the two points
-          const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-
-          // Add the distance to the total circumference
-          circumference += distance;
-      }
-        //output = formatArea(geom);
-        output = circumference.toFixed(2) + ' ' + 'm';
-        tooltipCoord = geom.getInteriorPoint().getCoordinates();
-        //tooltipCoord = geom.getLastCoordinate();
-      } else if (geom instanceof LineString) {
-        console.log("LineString");
-        output = formatLength(geom);
-        tooltipCoord = geom.getLastCoordinate();
-      }
+      const output = formatLength(new LineString(geom.getCoordinates()));
+      tooltipCoord = geom.getLastCoordinate();
       measureTooltipElement.innerHTML = output;
 
       measureTooltip.setPosition(tooltipCoord);
