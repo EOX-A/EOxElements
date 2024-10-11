@@ -14,6 +14,7 @@ import "../elements/map/src/plugins/advancedLayersAndSources/index";
 import "../elements/stacinfo/src/main.js";
 import "../elements/storytelling/src/main.js";
 import "../elements/timecontrol/src/main.js";
+import "../elements/globe/src/main.js";
 
 /**
  * A custom wrapper for the default setCustomElementsManifest function.
