@@ -7,7 +7,11 @@ npm install @eox/stacinfo
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/stacinfo"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/stacinfo/dist/eox-stacinfo.js"
 
 <eox-stacinfo></eox-stacinfo>
 ```

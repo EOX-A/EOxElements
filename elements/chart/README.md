@@ -9,7 +9,11 @@ npm install @eox/chart
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/chart"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/chart/dist/eox-chart.js"
 
 <eox-chart></eox-chart>
 ```

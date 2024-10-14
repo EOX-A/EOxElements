@@ -7,7 +7,11 @@ npm install @eox/layercontrol
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/layercontrol"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/layercontrol/dist/eox-layercontrol.js"
 
 <eox-layercontrol for="eox-map"></eox-layercontrol>
 ```
