@@ -5,7 +5,7 @@ import { Vector as VectorLayer } from "ol/layer";
 import { addNewFeature } from "../helpers";
 import { getArea, getLength } from "ol/sphere";
 import Overlay from "ol/Overlay";
-import { Polygon, LineString } from "ol/geom";
+import { LineString } from "ol/geom";
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -74,10 +74,17 @@ export function addDraw(
 
     let listener = sketch.getGeometry().on('change', function (evt) {
       const geom = evt.target;
-      console.log(geom.getCoordinates());
-      console.log("LineString");
+      const coordinates = geom.getCoordinates();
 
-      const output = formatLength(new LineString(geom.getCoordinates()));
+      // The following line removes the last coordinate in the array, which is the
+      // "wrap-around" point of the Polygon geometry. Since we are expecting just a
+      // sequence of lines, this must be removed, or we'll end up with double our
+      // actual distance.
+      coordinates[0].pop();
+
+      // Calculate the actual distance on the planet's surface.
+      const output = formatLength(new LineString(coordinates));
+
       tooltipCoord = geom.getLastCoordinate();
       measureTooltipElement.innerHTML = output;
 
