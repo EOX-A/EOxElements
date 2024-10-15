@@ -11,11 +11,8 @@ const onDrawEndMethod = (EoxDrawTool) => {
     console.log("feature added, drawing ended");
     EoxDrawTool.emitDrawnFeatures(); // Emit drawn features
     if (!EoxDrawTool.multipleFeatures) {
-      // if (!EoxDrawTool.selectionLayer) { 
         EoxDrawTool.draw.setActive(false); // Deactivate drawing
-        EoxDrawTool.eoxMap.selectInteractions["hoverInteraction"].setActive(false)
         EoxDrawTool.selectionEvents.removeSelectionEvent()
-        // }
         EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
     }
   };

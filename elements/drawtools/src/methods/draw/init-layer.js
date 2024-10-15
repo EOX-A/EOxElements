@@ -74,7 +74,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       type: "select",
       active: false,
       options: {
-        id: "hoverInteraction",
+        id: "SelectLayerHoverInteraction",
         condition: "pointermove",
         active: false,
         style: {
@@ -89,7 +89,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       type: "select",
       //@ts-expect-error TODO
       options: {
-        id: "clickInteraction",
+        id: "SelectLayerClickInteraction",
         condition: "click",
         multi: EoxDrawTool.multipleFeatures,
         modify: EoxDrawTool.allowModify,
@@ -112,14 +112,14 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     //@ts-expect-error TODO
     selectionLayer.interactions = [hoverInteraction, clickInteraction]
 
-    // EoxDrawTool.drawLayer = 
     EoxMap.addOrUpdateLayer(selectionLayer);
     //@ts-expect-error TODO
-    EoxDrawTool.draw = EoxMap.selectInteractions["clickInteraction"]
+    EoxDrawTool.draw = EoxMap.selectInteractions["SelectLayerClickInteraction"]
 
+    // TODO
     setTimeout(() => {
-      EoxMap.selectInteractions["clickInteraction"].setActive(false);
-      EoxMap.selectInteractions["hoverInteraction"].setActive(false);
+      EoxMap.selectInteractions["SelectLayerClickInteraction"].setActive(false);
+      EoxMap.selectInteractions["SelectLayerHoverInteraction"].setActive(false);
     }, 200);
   }
 

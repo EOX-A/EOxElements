@@ -9,9 +9,9 @@ const startDrawingMethod = (EoxDrawTool) => {
   // Function to initialize the drawing process
   const initializeDrawing = () => {
     EoxDrawTool.drawLayer.set("isDrawingEnabled", true);
-    
     EoxDrawTool.draw.setActive(true);
-    EoxDrawTool.eoxMap.selectInteractions["hoverInteraction"].setActive(true);
+    // Add selection
+    EoxDrawTool.selectionEvents.addSelectionEvent();
   };
 
   // Function to update the drawing status and request an update
@@ -22,8 +22,6 @@ const startDrawingMethod = (EoxDrawTool) => {
 
   // Initialize the drawing process
   initializeDrawing();
-  // Add selection
-  EoxDrawTool.selectionEvents.addSelectionEvent();
   // Update the drawing status
   updateDrawingStatus();
 };

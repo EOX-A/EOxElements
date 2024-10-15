@@ -15,7 +15,6 @@ import {
   initMapDragDropImport,
   handleFiles,
 } from "./helpers/generate-upload-events.js";
-import { getJsonLayer } from "../../../utils";
 
 /**
  * Manage drawn features on a map
@@ -147,8 +146,10 @@ export class EOxDrawTools extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
-
-    this.selectionEvents = {}
+    /**
+     * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
+     */
+    this.selectionEvents = null;
   }
 
   /**

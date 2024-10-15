@@ -12,7 +12,7 @@ export const Primary = {
     selectionLayer:"regions",
     list:true,
     drawUpdate:(e)=>{
-        console.log("🚀 ~ drawUpdate:", e.details)   
+        console.log("🚀 ~ drawUpdate:", e.detail)   
     }
   },
   render: (args) => html`
