@@ -5,17 +5,23 @@
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
 const onDrawEndMethod = (EoxDrawTool) => {
+  
   // Function to handle actions when drawing ends
   const handleDrawEnd = () => {
+    console.log("feature added, drawing ended");
     EoxDrawTool.emitDrawnFeatures(); // Emit drawn features
     if (!EoxDrawTool.multipleFeatures) {
-      EoxDrawTool.draw.setActive(false); // Deactivate drawing
-      EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
+      // if (!EoxDrawTool.selectionLayer) { 
+        EoxDrawTool.draw.setActive(false); // Deactivate drawing
+        EoxDrawTool.eoxMap.selectInteractions["hoverInteraction"].setActive(false)
+        EoxDrawTool.selectionEvents.removeSelectionEvent()
+        // }
+        EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
     }
   };
 
-  // Execute actions on draw end
-  handleDrawEnd();
+    // Execute actions on draw end
+    handleDrawEnd();
   EoxDrawTool.requestUpdate();
 };
 

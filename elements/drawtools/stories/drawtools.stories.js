@@ -11,6 +11,7 @@ import {
   UnstyledStory,
   CSSVariableOverrideStory,
   ImportFeaturesWithEditorStory,
+  SelectFeatureStory,
 } from "./index";
 
 export default {
@@ -66,3 +67,6 @@ export const CSSVariableOverride = CSSVariableOverrideStory;
  * By setting the `unstyled` attribute or property, the element has no styling applied.
  */
 export const Unstyled = UnstyledStory;
+
+
+export const SelectFeature = SelectFeatureStory

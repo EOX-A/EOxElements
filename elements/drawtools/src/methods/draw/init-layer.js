@@ -1,26 +1,25 @@
 import { onDrawEndMethod } from "./";
-
-import { getElement } from "../../../../../utils";
+import { getElement, getJsonLayer } from "../../../../../utils";
 
 /**
  * Initializes the draw layer, interacts with the map, and returns map instances.
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  * @param {Boolean} multipleFeatures - Allow adding more than one feature at a time
- * @returns {{EoxMap: import("@eox/map/main").EOxMap, OlMap: import("ol").Map}} - The map instances.
+ * @returns {{EoxMap: import("@eox/map/src/main").EOxMap, OlMap: import("ol").Map}} - The map instances.
  */
 const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = getElement(EoxDrawTool.for);
 
-  const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
-  // @ts-expect-error TODO
+  const EoxMap = /** @type {import("@eox/map/src/main").EOxMap} */ (mapQuery);
+
   const OlMap = EoxMap.map;
 
-  // @ts-expect-error TODO
   EoxDrawTool.drawLayer = EoxMap.addOrUpdateLayer({
     type: "Vector",
     properties: {
       id: "drawLayer",
+      // @ts-expect-error TODO
       layerControlHide: true,
       isDrawingEnabled: false,
       multipleFeatures: multipleFeatures,
@@ -29,7 +28,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       type: "Vector",
     },
     interactions: [
-      {
+      (!EoxDrawTool.layerId && {
         type: "draw",
         options: {
           active: false,
@@ -38,9 +37,10 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           modify: EoxDrawTool.allowModify,
           stopClick: true,
         },
-      },
+      }),
       {
         type: "select",
+        //@ts-expect-error TODO
         options: {
           id: "selectHover",
           condition: "pointermove",
@@ -53,6 +53,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       },
       {
         type: "select",
+        //@ts-expect-error TODO
         options: {
           id: "selectClick",
           condition: "click",
@@ -63,18 +64,83 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
             "stroke-width": 2.5,
           },
         },
-      },
+      }
     ],
   });
+
+  const initializeSelection = () => {
+
+    const hoverInteraction = {
+      type: "select",
+      active: false,
+      options: {
+        id: "hoverInteraction",
+        condition: "pointermove",
+        active: false,
+        style: {
+          "fill-color": "rgba(51, 153, 204,0.5)",
+          "stroke-color": "#3399CC",
+          "stroke-width": 2.5,
+        },
+      },
+    }
+    /** @type {import("../../../../map/types").EOxInteraction} */
+    const clickInteraction = {
+      type: "select",
+      //@ts-expect-error TODO
+      options: {
+        id: "clickInteraction",
+        condition: "click",
+        multi: EoxDrawTool.multipleFeatures,
+        modify: EoxDrawTool.allowModify,
+        active: false,
+        // panIn: true,
+        style: {
+          "fill-color": "rgba(51, 153, 204,0.5)",
+          "stroke-color": "#3399CC",
+          "stroke-width": 2.5,
+        },
+      },
+    }
+
+    const selectionLayer = getJsonLayer(EoxMap.layers, EoxDrawTool.layerId) || null
+
+    if (!selectionLayer) {
+      console.error(`Layer with id ${EoxDrawTool.layerId} not found`)
+      return
+    }
+    //@ts-expect-error TODO
+    selectionLayer.interactions = [hoverInteraction, clickInteraction]
+
+    // EoxDrawTool.drawLayer = 
+    EoxMap.addOrUpdateLayer(selectionLayer);
+    //@ts-expect-error TODO
+    EoxDrawTool.draw = EoxMap.selectInteractions["clickInteraction"]
+
+    setTimeout(() => {
+      EoxMap.selectInteractions["clickInteraction"].setActive(false);
+      EoxMap.selectInteractions["hoverInteraction"].setActive(false);
+    }, 200);
+  }
+
+
+
 
   EoxDrawTool.draw = /** @type {import("ol/interaction").Draw} */ (
     /** @type {unknown} */ (EoxMap.interactions["drawInteraction"])
   );
+
   EoxDrawTool.modify = /** @type {import("ol/interaction").Modify} */ (
     /** @type {unknown} */ (EoxMap.interactions["drawInteractionmodify"])
   );
 
+  if (EoxDrawTool.layerId) {
+    initializeSelection()
+  }
+
+
   EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.onModifyEnd());
+
   EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
 
   return { EoxMap, OlMap };
