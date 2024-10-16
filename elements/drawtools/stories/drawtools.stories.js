@@ -12,6 +12,7 @@ import {
   CSSVariableOverrideStory,
   ImportFeaturesWithEditorStory,
   SelectFeatureStory,
+  MultiFeaturesSelectStory,
 } from "./index";
 
 export default {
@@ -70,3 +71,5 @@ export const Unstyled = UnstyledStory;
 
 
 export const SelectFeature = SelectFeatureStory
+
+export const MultiFeaturesSelect = MultiFeaturesSelectStory

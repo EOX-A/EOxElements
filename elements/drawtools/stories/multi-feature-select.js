@@ -7,11 +7,12 @@ import { STORIES_MAP_STYLE, STORIES_VECTOR_LAYERS } from "../src/enums";
 export const Primary = {
   args: {
     allowModify: false,
-    multipleFeatures: false,
-    type: "Polygon",
+    multipleFeatures: true,
+    type: "Box",
     layerId:"regions",
+    showList:true,
     drawUpdate:(e)=>{
-        console.log(" drawUpdate: ", e.detail)   
+        console.log("drawUpdate:", e.detail)   
     }
   },
   render: (args) => html`
@@ -29,6 +30,7 @@ export const Primary = {
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
        layer-id=${args.layerId}
+       ?show-list=${args.showList}
        @drawupdate=${args.drawUpdate}
     />
   `,
