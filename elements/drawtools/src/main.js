@@ -7,6 +7,7 @@ import {
   initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
+  createSelectHandler,
 } from "./methods/draw";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
@@ -29,6 +30,7 @@ export class EOxDrawTools extends LitElement {
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
+      layerId: { attribute: "layer-id", type: String },
       drawnFeatures: { attribute: false, state: true, type: Array },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
@@ -42,7 +44,7 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * @type import("../../map/main").EOxMap
+   * @type import("../../map/src/main").EOxMap
    */
   #eoxMap;
 
@@ -79,16 +81,21 @@ export class EOxDrawTools extends LitElement {
 
     /**
      * The current native OpenLayers `draw` interaction
-     * @type import("ol/interaction").Draw
+     * @type import("ol/interaction").Draw | import("@eox/map/src/helpers").EOxSelectInteraction
      */
     this.draw = null;
 
     /**
      * The current native OpenLayers draw `layer`
-     * @type import("ol/layer/Vector").default<import("ol/Feature").default>
+     * @type import("ol/layer/Vector").default
      */
 
     this.drawLayer = null;
+
+    /**
+     * The ID of the Vector/Vector Tile Layer that contains features to be selected
+     */
+    this.layerId = "";
 
     /**
      * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
@@ -139,6 +146,10 @@ export class EOxDrawTools extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+    /**
+     * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
+     */
+    this.selectionEvents = null;
   }
 
   /**
@@ -164,6 +175,7 @@ export class EOxDrawTools extends LitElement {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
+      this.eoxMap,
       replaceFeatures,
     );
   }
@@ -226,6 +238,7 @@ export class EOxDrawTools extends LitElement {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     this.eoxMap = EoxMap;
     this.#olMap = OlMap;
+    this.selectionEvents = createSelectHandler(this);
 
     if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
 
@@ -270,6 +283,7 @@ export class EOxDrawTools extends LitElement {
           import: (/** @type {DragEvent | Event} */ evt) =>
             this.handleFilesChange(evt),
         }}
+        ?select=${!!this.layerId}
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}
