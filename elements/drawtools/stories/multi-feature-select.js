@@ -4,16 +4,16 @@
 import { html } from "lit";
 import { STORIES_MAP_STYLE, STORIES_VECTOR_LAYERS } from "../src/enums";
 
-export const Primary = {
+export const MuliFeatureSelect = {
   args: {
     allowModify: false,
     multipleFeatures: true,
     type: "Box",
-    layerId:"regions",
-    showList:true,
-    drawUpdate:(e)=>{
-        console.log("drawUpdate:", e.detail)   
-    }
+    layerId: "regions",
+    showList: true,
+    drawUpdate: (e) => {
+      console.log("drawUpdate:", e.detail);
+    },
   },
   render: (args) => html`
     <!-- Render eox-map component with ID "primary" -->
@@ -29,11 +29,11 @@ export const Primary = {
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
-       layer-id=${args.layerId}
-       ?show-list=${args.showList}
-       @drawupdate=${args.drawUpdate}
+      layer-id=${args.layerId}
+      ?show-list=${args.showList}
+      @drawupdate=${args.drawUpdate}
     />
   `,
 };
 
-export default Primary;
+export default MuliFeatureSelect;

@@ -84,9 +84,9 @@ export class EOxDrawToolsController extends LitElement {
     this.unstyled = false;
 
     /**
-     * 
+     *
      */
-    this.select = false
+    this.select = false;
   }
 
   /**
@@ -121,7 +121,7 @@ export class EOxDrawToolsController extends LitElement {
           <!-- Draw Button -->
           <button
             data-cy="drawBtn"
-            class="${this.select ? 'pointer':'polygon'} icon"
+            class="${this.select ? "pointer" : "polygon"} icon"
             ?disabled="${this.#drawDisabled || nothing}"
             @click="${() => this.drawFunc.start()}"
           >

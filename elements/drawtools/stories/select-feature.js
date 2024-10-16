@@ -4,15 +4,14 @@
 import { html } from "lit";
 import { STORIES_MAP_STYLE, STORIES_VECTOR_LAYERS } from "../src/enums";
 
-export const Primary = {
+export const SelectFeature = {
   args: {
-    allowModify: false,
     multipleFeatures: false,
     type: "Polygon",
-    layerId:"regions",
-    drawUpdate:(e)=>{
-        console.log(" drawUpdate: ", e.detail)   
-    }
+    layerId: "regions",
+    drawUpdate: (e) => {
+      console.log(" drawUpdate: ", e.detail);
+    },
   },
   render: (args) => html`
     <!-- Render eox-map component with ID "primary" -->
@@ -25,13 +24,12 @@ export const Primary = {
     <!-- Initialize eox-drawtools for the eox-map with ID "primary" -->
     <eox-drawtools
       for="eox-map#primary"
-      .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
-       layer-id=${args.layerId}
-       @drawupdate=${args.drawUpdate}
+      layer-id=${args.layerId}
+      @drawupdate=${args.drawUpdate}
     />
   `,
 };
 
-export default Primary;
+export default SelectFeature;

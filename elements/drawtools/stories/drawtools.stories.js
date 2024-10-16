@@ -68,8 +68,12 @@ export const CSSVariableOverride = CSSVariableOverrideStory;
  * By setting the `unstyled` attribute or property, the element has no styling applied.
  */
 export const Unstyled = UnstyledStory;
+/**
+ * Setting `layer-id` attribute or `layerId` property enables selection of features on the specified layer.
+ */
+export const SelectFeature = SelectFeatureStory;
 
-
-export const SelectFeature = SelectFeatureStory
-
-export const MultiFeaturesSelect = MultiFeaturesSelectStory
+/**
+ * Showcasing the combination of `multiple-features`, `show-list` and `layer-id` attributes or properties, allowing the selection of multiple features.
+ */
+export const MultiFeaturesSelect = MultiFeaturesSelectStory;

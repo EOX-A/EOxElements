@@ -81,7 +81,7 @@ export class EOxDrawTools extends LitElement {
 
     /**
      * The current native OpenLayers `draw` interaction
-     * @type import("ol/interaction").Draw
+     * @type import("ol/interaction").Draw | import("@eox/map/src/helpers").EOxSelectInteraction
      */
     this.draw = null;
 
@@ -93,9 +93,9 @@ export class EOxDrawTools extends LitElement {
     this.drawLayer = null;
 
     /**
-     * The ID of the Vector Layer that contains features to be selected
+     * The ID of the Vector/Vector Tile Layer that contains features to be selected
      */
-    this.layerId = '';
+    this.layerId = "";
 
     /**
      * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
@@ -238,8 +238,8 @@ export class EOxDrawTools extends LitElement {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
     this.eoxMap = EoxMap;
     this.#olMap = OlMap;
-    this.selectionEvents = createSelectHandler(this)
-    
+    this.selectionEvents = createSelectHandler(this);
+
     if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
 
     this.updateGeoJSON();
@@ -283,6 +283,7 @@ export class EOxDrawTools extends LitElement {
           import: (/** @type {DragEvent | Event} */ evt) =>
             this.handleFilesChange(evt),
         }}
+        ?select=${!!this.layerId}
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}

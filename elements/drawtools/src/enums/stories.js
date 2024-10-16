@@ -25,8 +25,8 @@ export const STORIES_VECTOR_LAYERS = [
       "stroke-width": 1,
       "fill-color": "darkgrey",
     },
-  }
-]
+  },
+];
 
 export const STORIES_MAP_STYLE = "width: 400px; height: 300px;";
 

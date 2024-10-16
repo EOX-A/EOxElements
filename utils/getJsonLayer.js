@@ -6,17 +6,17 @@
  * @returns {import("../elements/map/src/main").EoxLayer | void}
  */
 const getJsonLayer = (layers, id) => {
-    for (const layer of layers) {
-      if (layer.type === "Group") {
-        const found = getJsonLayer(layer.layers, id);
-        if (!found) {
-          continue;
-        }
-        return found;
+  for (const layer of layers) {
+    if (layer.type === "Group") {
+      const found = getJsonLayer(layer.layers, id);
+      if (!found) {
+        continue;
       }
-      if (layer.properties.id === id) {
-        return layer;
-      }
+      return found;
     }
-  };
-export default getJsonLayer
+    if (layer.properties.id === id) {
+      return layer;
+    }
+  }
+};
+export default getJsonLayer;
