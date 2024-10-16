@@ -1,3 +1,4 @@
+
 /**
  * Factory function to create a select event handler
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
@@ -15,15 +16,18 @@ const createSelectHandler = (EoxDrawTool) => {
     EoxDrawTool.eoxMap.dispatchEvent(new CustomEvent("addfeatures", { detail: e.detail }));
   };
 
+  const hoverInteraction =  EoxDrawTool.eoxMap.selectInteractions["SelectLayerHoverInteraction"]
+
   const addSelectionEvent = () => {
     if (EoxDrawTool.layerId) {
-      EoxDrawTool.eoxMap.selectInteractions["SelectLayerHoverInteraction"].setActive(true)
+      hoverInteraction.setActive(true);
       EoxDrawTool.eoxMap.addEventListener("select", selectHandler);
     }
   }
   const removeSelectionEvent = () => {
     if (EoxDrawTool.layerId) {
-      EoxDrawTool.eoxMap.selectInteractions["SelectLayerHoverInteraction"].setActive(false)
+      hoverInteraction.selectedFids = [];
+      hoverInteraction.setActive(false);
       EoxDrawTool.eoxMap.removeEventListener("select", selectHandler);
     }
   };

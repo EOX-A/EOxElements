@@ -78,7 +78,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
         condition: "pointermove",
         active: false,
         style: {
-          "fill-color": "rgba(51, 153, 204,0.5)",
+          "fill-color":"rgba(0, 0, 0,0.0)",
           "stroke-color": "#3399CC",
           "stroke-width": 2.5,
         },
@@ -96,9 +96,8 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
         active: false,
         // panIn: true,
         style: {
-          "fill-color": "rgba(51, 153, 204,0.5)",
-          "stroke-color": "#3399CC",
-          "stroke-width": 2.5,
+          "fill-color":"rgba(0, 0, 0,0.0)",
+          "stroke-color": "rgba(0, 0, 0,0.0)",
         },
       },
     }
