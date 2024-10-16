@@ -1,4 +1,3 @@
-// import endSelection from './end-selection';
 /**
  * Initiates the drawing process by initializing the draw layer,
  * activating drawing, and updating the drawing status.

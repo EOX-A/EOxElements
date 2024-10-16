@@ -1,7 +1,6 @@
 /**
  * Factory function to create a select event handler
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
- * @returns An object containing the selectHandler and a method to remove the event listener
  */
 const createSelectHandler = (EoxDrawTool) => {
   const selectHandler = (e) => {
