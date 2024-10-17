@@ -361,7 +361,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
     // Reorder the layers to match the REVERSE of the new definition
     // (EOx-Layers-JSON is in reverse painters order)
-    const reverseNewLayerIds = [...newLayerIds.reverse()];
+    const reverseNewLayerIds = newLayerIds.toReversed();
     layerCollection
       .getArray()
       .sort(
