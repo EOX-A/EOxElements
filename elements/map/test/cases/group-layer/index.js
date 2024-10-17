@@ -6,3 +6,4 @@ export { default as checkLayerInsideReactive } from "./check-layer-inside-reacti
 export { default as addNewLayersNestedGroup } from "./add-new-layers-nested-group";
 export { default as realisticGroupLayerReactivity } from "./realistic-group-layer-reactivity";
 export { default as reactivelyRemovesLayerFromGroup } from "./reactively-removes-layer-from-group";
+export { default as keepsLayerOrder } from "./keeps-layer-order-inside-group";
