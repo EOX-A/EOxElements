@@ -1,6 +1,6 @@
 {
   "name": "@eox/stacinfo",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "devDependencies": {
     "stac-js": "^0.0.9",
