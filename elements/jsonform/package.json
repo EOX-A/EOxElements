@@ -12,14 +12,15 @@
   },
   "files": [
     "dist",
-    "test"
+    "src"
   ],
-  "main": "./dist/eox-jsonform.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch"
   },
   "dependencies": {
+    "@eox/elements-utils": "^0.0.1",
     "@json-editor/json-editor": "^2.11.0",
     "easymde": "^2.18.0",
     "lodash.isequal": "^4.5.0",

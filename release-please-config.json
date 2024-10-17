@@ -45,7 +45,8 @@
         "elements/storytelling/stories",
         "elements/storytelling/test"
       ]
-    }
+    },
+    "utils": {}
   },
   "plugins": ["sentence-case"],
   "bump-minor-pre-major": true,

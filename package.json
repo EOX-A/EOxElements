@@ -4,7 +4,8 @@
   "private": true,
   "version": "2.0.0",
   "workspaces": [
-    "elements/*"
+    "elements/*",
+    "utils"
   ],
   "scripts": {
     "start": "concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
@@ -15,7 +16,7 @@
     "cypress": "cypress open",
     "test:all": "npm run styles && npm run test:component && npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
-    "test:e2e": "npm run build:all && npm run generate-manifest && npm run build:storybook && cypress run --e2e",
+    "test:e2e": "npm run generate-manifest && npm run build:storybook && cypress run --e2e",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint elements",
@@ -28,10 +29,10 @@
     "nyc:report": "nyc report --reporter=text-summary"
   },
   "devDependencies": {
-    "@eox/eslint-config": "^2.0.0",
     "@custom-elements-manifest/analyzer": "^0.10.2",
     "@cypress/code-coverage": "^3.12.44",
     "@cypress/mount-utils": "^4.0.0",
+    "@eox/eslint-config": "^2.0.0",
     "@storybook/addon-essentials": "^8.0.0",
     "@storybook/addon-interactions": "^8.1.6",
     "@storybook/blocks": "^8.0.0",
