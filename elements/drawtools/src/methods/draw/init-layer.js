@@ -28,7 +28,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       type: "Vector",
     },
     interactions: [
-      !EoxDrawTool.layerId && {
+      {
         type: "draw",
         options: {
           active: false,
@@ -77,7 +77,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   );
 
   // Initialize selection interactions
-  initSelection(EoxDrawTool, EoxMap);
+  initSelection(EoxDrawTool, EoxMap, EoxDrawTool.layerId);
 
   EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.onModifyEnd());
 

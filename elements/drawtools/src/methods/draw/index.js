@@ -7,3 +7,4 @@ export { default as discardDrawingMethod } from "./discard-drawing"; // Handles 
 export { default as emitDrawnFeaturesMethod } from "./emit-drawn-features"; // Emits drawn features
 export { default as createSelectHandler } from "./create-select-handler"; // Factory function to create select event handler
 export { default as initSelection } from "./init-selection"; // Initializes selection interactions
+export { default as handleLayerId } from "./handle-layer-id"; // handle switching between selection and drawing

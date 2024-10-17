@@ -1,19 +1,18 @@
 import { getJsonLayer } from "../../../../../utils";
-
 /**
  * Initializes the selection interactions for the given layer ID to the DrawTool.
  *
  * @param {import('../../main').EOxDrawTools} EoxDrawTool - The drawing tool instance.
  * @param {import("@eox/map/src/main").EOxMap} EoxMap - The map instance.
  */
-const initSelection = (EoxDrawTool, EoxMap) => {
-  if (!EoxDrawTool.layerId) {
+const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
+  if (!updatedLayerId || !EoxMap) {
     return;
   }
 
-  const selectionLayer = getJsonLayer(EoxMap.layers, EoxDrawTool.layerId);
+  const selectionLayer = getJsonLayer(EoxMap.layers, updatedLayerId) || null;
   if (!selectionLayer) {
-    console.error(`Layer with id ${EoxDrawTool.layerId} not found`);
+    console.error(`Layer with id ${updatedLayerId} not found`);
     return;
   }
 
@@ -33,6 +32,7 @@ const initSelection = (EoxDrawTool, EoxMap) => {
       },
     },
   };
+
   /** @type {import("../../../../map/types").EOxInteraction} */
   const clickInteraction = {
     type: "select",
@@ -53,9 +53,12 @@ const initSelection = (EoxDrawTool, EoxMap) => {
   selectionLayer.interactions = [hoverInteraction, clickInteraction];
 
   EoxMap.addOrUpdateLayer(selectionLayer);
+
+  const oldDrawInteraction = EoxDrawTool.draw;
   EoxDrawTool.draw = EoxMap.selectInteractions["SelectLayerClickInteraction"];
 
   setTimeout(() => {
+    oldDrawInteraction.setActive(false);
     EoxMap.selectInteractions["SelectLayerClickInteraction"].setActive(false);
     EoxMap.selectInteractions["SelectLayerHoverInteraction"].setActive(false);
   }, 200);

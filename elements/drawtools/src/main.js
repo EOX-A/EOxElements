@@ -8,6 +8,7 @@ import {
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
   createSelectHandler,
+  handleLayerId,
 } from "./methods/draw";
 import mainStyle from "../../../utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
@@ -57,6 +58,11 @@ export class EOxDrawTools extends LitElement {
    * @type string
    */
   #geoJSON;
+
+  /**
+   * @type string
+   */
+  #layerId;
 
   constructor() {
     super();
@@ -150,6 +156,20 @@ export class EOxDrawTools extends LitElement {
      * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
      */
     this.selectionEvents = null;
+  }
+
+  /**
+   *
+   *
+   * @type {string}
+   */
+  set layerId(value) {
+    handleLayerId(this, this.eoxMap, value, this.#layerId);
+    this.#layerId = value;
+  }
+
+  get layerId() {
+    return this.#layerId;
   }
 
   /**
