@@ -359,7 +359,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       }
     });
 
-    // Reorder the layers to match the new definition
+    // Reorder the layers to match the REVERSE of the new definition
+    // (EOx-Layers-JSON is in reverse painters order)
+    const reverseNewLayerIds = [...newLayerIds.reverse()];
     layerCollection
       .getArray()
       .sort(
@@ -368,8 +370,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
           /** @type {import("ol/layer/Base").default} **/ layerB,
         ) => {
           return (
-            newLayerIds.indexOf(layerA.get("id")) -
-            newLayerIds.indexOf(layerB.get("id"))
+            reverseNewLayerIds.indexOf(layerA.get("id")) -
+            reverseNewLayerIds.indexOf(layerB.get("id"))
           );
         },
       );
