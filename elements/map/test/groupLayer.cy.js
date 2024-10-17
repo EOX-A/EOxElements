@@ -6,6 +6,7 @@ import {
   reactivelyAddsLayerToGroup,
   reactivelyRemovesLayerFromGroup,
   realisticGroupLayerReactivity,
+  keepsLayerOrder,
 } from "./cases/group-layer";
 
 const osmJson = {
@@ -77,6 +78,12 @@ describe("layers", () => {
    */
   it("reactively removes layer from group", () =>
     reactivelyRemovesLayerFromGroup(layersJson));
+
+  /**
+   * Test case to check layer order stability inside group
+   */
+  it("layers inside group keep layer order after updating", () =>
+    keepsLayerOrder(layersJson));
 
   /**
    * Test case to check layer inside the group is reactive
