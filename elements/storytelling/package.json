@@ -30,6 +30,6 @@
     "markdown-it": "^14.0.0"
   },
   "peerDependencies": {
-    "@eox/jsonform": "^0.8.2"
+    "@eox/jsonform": "^0.9.0"
   }
 }
