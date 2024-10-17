@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/EOX-A/EOxElements/compare/map-v1.16.0...map-v1.16.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* Layer order stability insided group layers ([#1321](https://github.com/EOX-A/EOxElements/issues/1321)) ([95fef59](https://github.com/EOX-A/EOxElements/commit/95fef5941fd98fdf4ac82f0cdc6ca674af3389f7))
+
 ## [1.16.0](https://github.com/EOX-A/EOxElements/compare/map-v1.15.0...map-v1.16.0) (2024-10-17)
 
 
