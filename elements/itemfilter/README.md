@@ -7,7 +7,11 @@ npm install @eox/itemfilter
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/itemfilter"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/itemfilter/dist/eox-itemfilter.js"
 
 <eox-itemfilter></eox-itemfilter>
 ```

@@ -1,6 +1,6 @@
 {
   "name": "@eox/timecontrol",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "type": "module",
   "devDependencies": {
     "ol": "^10.0.0",
@@ -12,14 +12,15 @@
   },
   "files": [
     "dist",
-    "test"
+    "src"
   ],
-  "main": "./dist/eox-timecontrol.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch"
   },
   "dependencies": {
+    "@eox/elements-utils": "^0.0.1",
     "dayjs": "^1.11.9",
     "lit": "^3.0.2",
     "toolcool-range-slider": "^4.0.27"

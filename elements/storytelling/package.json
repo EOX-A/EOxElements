@@ -1,6 +1,6 @@
 {
   "name": "@eox/storytelling",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "devDependencies": {
     "vite": "^5.0.2"
@@ -11,14 +11,15 @@
   },
   "files": [
     "dist",
-    "test"
+    "src"
   ],
-  "main": "./dist/eox-storytelling.js",
+  "main": "./src/main.js",
   "scripts": {
     "build": "vite build",
     "watch": "vite build --watch"
   },
   "dependencies": {
+    "@eox/elements-utils": "^0.0.1",
     "@sindresorhus/slugify": "^2.2.1",
     "glightbox": "^3.3.0",
     "isomorphic-dompurify": "^2.4.0",
@@ -27,5 +28,8 @@
     "lit": "^3.0.2",
     "lodash.debounce": "^4.0.8",
     "markdown-it": "^14.0.0"
+  },
+  "peerDependencies": {
+    "@eox/jsonform": "^0.9.0"
   }
 }

@@ -10,7 +10,7 @@ import {
   createSelectHandler,
   handleLayerId,
 } from "./methods/draw";
-import mainStyle from "../../../utils/styles/dist/main.style";
+import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
   initMapDragDropImport,

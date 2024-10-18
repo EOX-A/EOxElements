@@ -6,7 +6,7 @@ import {
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
-import listStyle from "../../../../utils/styles/dist/list.style";
+import listStyle from "@eox/elements-utils/styles/dist/list.style";
 
 /**
  * Display list of features

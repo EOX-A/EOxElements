@@ -4,7 +4,7 @@ import { when } from "lit/directives/when.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
-import allStyle from "../../../utils/styles/dist/all.style";
+import allStyle from "@eox/elements-utils/styles/dist/all.style";
 import "./components/expand-container";
 import "./components/itemfilter-container";
 import "./components/filters/text";

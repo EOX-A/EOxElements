@@ -13,7 +13,7 @@ import {
   addCustomSection,
   initSavedMarkdown,
 } from "./helpers";
-import mainStyle from "../../../utils/styles/dist/main.style";
+import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import {
   markdownItConfig,
