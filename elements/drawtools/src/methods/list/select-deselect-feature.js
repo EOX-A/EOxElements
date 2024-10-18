@@ -7,7 +7,7 @@ import { FIT_OPTIONS } from "../../enums";
  * @param {import("../../components/list").EOxDrawToolsList} EoxDrawToolList - The list of drawn features.
  */
 const selectAndDeselectFeature = (feature, EoxDrawToolList) => {
-  const selectedFeatureId = feature.get("id");
+  const selectedFeatureId = feature.getId()
   const { clickId, drawLayer, olMap, clickInteraction } = EoxDrawToolList;
 
   const isSelectedFeature = clickId === selectedFeatureId;
