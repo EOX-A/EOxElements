@@ -30,12 +30,13 @@ const createSelectHandler = (EoxDrawTool) => {
       EoxDrawTool.eoxMap.addEventListener("select", selectHandler);
     }
   };
+
   /**
    * Removes the selection event from the map and resets the selected features
    **/
   const removeSelectionEvent = () => {
     const hoverInteraction =
-      EoxDrawTool.eoxMap.selectInteractions["SelectLayerHoverInteraction"];
+      EoxDrawTool.eoxMap.selectInteractions?.["SelectLayerHoverInteraction"];
     if (hoverInteraction) {
       hoverInteraction.selectedFids = [];
       hoverInteraction.setActive(false);
