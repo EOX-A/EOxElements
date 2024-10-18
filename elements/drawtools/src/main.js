@@ -175,7 +175,7 @@ export class EOxDrawTools extends LitElement {
   /**
    * @onClick Event handler triggered to start drawing on the map.
    */
-  handleStartDrawing() {
+  startDrawing() {
     startDrawingMethod(this);
   }
 
@@ -183,7 +183,7 @@ export class EOxDrawTools extends LitElement {
    * @onClick Event handler triggered to discard/stop drawing
    * on the map and delete the drawn shapes.
    */
-  handleDiscardDrawing() {
+  discardDrawing() {
     discardDrawingMethod(this);
   }
 
@@ -296,8 +296,8 @@ export class EOxDrawTools extends LitElement {
       <!-- Controller Component -->
       <eox-drawtools-controller
         .drawFunc=${{
-          start: () => this.handleStartDrawing(),
-          discard: () => this.handleDiscardDrawing(),
+          start: () => this.startDrawing(),
+          discard: () => this.discardDrawing(),
           editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
             this.handleFeatureChange(evt.target.value, true),
           import: (/** @type {DragEvent | Event} */ evt) =>

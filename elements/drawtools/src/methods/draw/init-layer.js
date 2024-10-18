@@ -1,4 +1,4 @@
-import { onDrawEndMethod,initSelection } from "./";
+import { onDrawEndMethod, initSelection } from "./";
 
 import { getElement } from "@eox/elements-utils";
 
