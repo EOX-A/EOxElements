@@ -10,6 +10,7 @@ const onDrawEndMethod = (EoxDrawTool) => {
     EoxDrawTool.emitDrawnFeatures(); // Emit drawn features
     if (!EoxDrawTool.multipleFeatures) {
       EoxDrawTool.draw.setActive(false); // Deactivate drawing
+      EoxDrawTool.selectionEvents.removeSelectionEvent();
       EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
     }
   };
