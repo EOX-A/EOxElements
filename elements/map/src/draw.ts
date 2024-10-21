@@ -5,7 +5,8 @@ import { Vector as VectorLayer } from "ol/layer";
 import { addNewFeature } from "../helpers";
 import { getArea, getLength } from "ol/sphere";
 import Overlay from "ol/Overlay";
-import { LineString } from "ol/geom";
+import { LineString, Polygon } from "ol/geom";
+import {unByKey} from 'ol/Observable';
 
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
@@ -56,38 +57,39 @@ export function addDraw(
     drawInteraction.setActive(false);
   }
 
-  drawInteraction.on("drawstart", (evt) => {
-    let sketch = evt.feature;
-    let tooltipCoord = evt.coordinate;
-
-    // Create measure tooltip
-    let measureTooltipElement = document.createElement('div');
-    measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
-    let measureTooltip = new Overlay({
+  // Create measure tooltip
+  let measureTooltipElement = document.createElement('div');
+  measureTooltipElement.className = "ol-tooltip ol-tooltip-measure";
+    measureTooltipElement.style.padding = "4px 2px";
+    measureTooltipElement.style.backdropFilter = "blur(20px)";
+    measureTooltipElement.style.background = "#00418033";
+    const measureTooltip = new Overlay({
       element: measureTooltipElement,
-      offset: [0, -15],
+      offset: [0, 0],
       positioning: 'bottom-center',
       stopEvent: false,
       insertFirst: false,
     });
+  let sketch = null;
+  let listener;
+
+  drawInteraction.on("drawstart", (evt) => {
+    sketch = evt.feature;
+    let tooltipCoord = evt.coordinate;
+
     EOxMap.map.addOverlay(measureTooltip);
 
-    let listener = sketch.getGeometry().on('change', function (evt) {
-      const geom = evt.target;
-      const coordinates = geom.getCoordinates();
+    listener = sketch.getGeometry().on('change', function (evt) {
+      const geometry = evt.target;
+      console.log(geometry);
 
-      // The following line removes the last coordinate in the array, which is the
-      // "wrap-around" point of the Polygon geometry. Since we are expecting just a
-      // sequence of lines, this must be removed, or we'll end up with double our
-      // actual distance.
-      coordinates[0].pop();
+      if (geometry instanceof Polygon) {
+        measureTooltipElement.innerHTML = formatArea(geometry);
+      } else if (geometry instanceof LineString) {
+        measureTooltipElement.innerHTML = formatLength(geometry);
+      }
 
-      // Calculate the actual distance on the planet's surface.
-      const output = formatLength(new LineString(coordinates));
-
-      tooltipCoord = geom.getLastCoordinate();
-      measureTooltipElement.innerHTML = output;
-
+      tooltipCoord = geometry.getLastCoordinate();
       measureTooltip.setPosition(tooltipCoord);
 
     });
@@ -96,6 +98,15 @@ export function addDraw(
   drawInteraction.on("drawend", (e) => {
     if (!drawLayer.get("isDrawingEnabled")) return;
     addNewFeature(e, drawLayer, EOxMap, true);
+
+    measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
+    measureTooltip.setOffset([0, -7]);
+    // unset sketch
+    sketch = null;
+    // unset tooltip so that a new one can be created
+    //measureTooltipElement.remove();
+    //createMeasureTooltip(measureTooltipElement, measureTooltip, EOxMap.map);
+    unByKey(listener);
   });
 
   // identifier to retrieve the interaction
@@ -118,6 +129,35 @@ export function addDraw(
   EOxMap.map.getLayerGroup().on("change", removeLayerListener);
 }
 
+/**
+ * Creates a new measure tooltip
+ */
+function createMeasureTooltip(
+  measureTooltipElement: HTMLElement,
+  measureTooltip: Overlay,
+  map: import("ol/Map").default,
+) {
+  if (measureTooltipElement) {
+    measureTooltipElement.remove();
+  }
+  measureTooltipElement = document.createElement('div');
+  measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
+  measureTooltip = new Overlay({
+    element: measureTooltipElement,
+    offset: [0, -15],
+    positioning: 'bottom-center',
+    stopEvent: false,
+    insertFirst: false,
+  });
+  map.addOverlay(measureTooltip);
+}
+
+
+/**
+ * Calculate real distance on the map and format the output.
+ * @param {Polygon} line The line string to calculate the distance for.
+ * @return {string} Formatted length.
+ */
 const formatLength = function (line) {
   const length = getLength(line);
   let output;
@@ -128,6 +168,7 @@ const formatLength = function (line) {
   }
   return output;
 };
+
 
 /**
  * Format area output.
