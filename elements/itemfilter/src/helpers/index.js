@@ -8,3 +8,4 @@ export { default as getChipItems } from "./chip-items";
 export { default as isFiltersDirty } from "./is-filters-dirty";
 export { default as filterExternal } from "./filter-external";
 export { default as toggleAccordion } from "./toggle-accordion";
+export { default as getValue } from "./get-value";

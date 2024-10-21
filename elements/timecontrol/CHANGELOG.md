@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.9.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.8.0...timecontrol-v0.9.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
+## [0.8.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.7.2...timecontrol-v0.8.0) (2024-09-23)
+
+
+### Features
+
+* Changed selected time label to be between buttons, added centering style ([#1252](https://github.com/EOX-A/EOxElements/issues/1252)) ([02b66a8](https://github.com/EOX-A/EOxElements/commit/02b66a8b8eec6a6b6d51b92d53ba913f85283200))
+* Decade ticks ([#1228](https://github.com/EOX-A/EOxElements/issues/1228)) ([577a1ed](https://github.com/EOX-A/EOxElements/commit/577a1ed3072ded6e25befca3e21955e43da932b9))
+
 ## [0.7.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.7.1...timecontrol-v0.7.2) (2024-08-19)
 
 

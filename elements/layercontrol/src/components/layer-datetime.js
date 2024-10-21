@@ -77,7 +77,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
           datetime: evt.detail.currentStep,
           layer: this.layer,
         },
-      })
+      }),
     );
 
     this.layerDatetime.currentStep = evt.detail.currentStep;
@@ -90,7 +90,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
   render() {
     if (!customElements.get("eox-timecontrol")) {
       console.error(
-        "Please import @eox/timecontrol in order to use layerDatetime"
+        "Please import @eox/timecontrol in order to use layerDatetime",
       );
     }
     return html`
@@ -113,7 +113,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
             current-step=${this.layerDatetime.currentStep}
             @stepchange=${this.#handleStepChange}
           ></eox-timecontrol>
-        `
+        `,
       )}
     `;
   }
@@ -124,5 +124,5 @@ export class EOxLayerControlLayerDatetime extends LitElement {
 
 customElements.define(
   "eox-layercontrol-layer-datetime",
-  EOxLayerControlLayerDatetime
+  EOxLayerControlLayerDatetime,
 );

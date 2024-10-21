@@ -25,7 +25,7 @@ const changeTimeTest = () => {
       @stepchange="${(e) => {
         timeChangeEventValue = e.detail.currentStep;
       }}"
-    ></eox-timecontrol>`
+    ></eox-timecontrol>`,
   ).as(timeControl);
 
   cy.get("mock-map").and(($el) => {
@@ -36,7 +36,7 @@ const changeTimeTest = () => {
   cy.get(timeControl).and(($el) => {
     expect($el[0].currentStep).to.be.eq(testValues[0]);
     expect(testLayer.getSource().getParams()[testProperty]).to.be.eq(
-      testValues[0]
+      testValues[0],
     );
   });
 
@@ -49,7 +49,7 @@ const changeTimeTest = () => {
   cy.get(timeControl).and(($el) => {
     expect($el[0].currentStep).to.be.eq(testValues[1]);
     expect(testLayer.getSource().getParams()[testProperty]).to.be.eq(
-      testValues[1]
+      testValues[1],
     );
   });
 

@@ -1,20 +1,17 @@
 {
   "name": "@eox/map",
-  "version": "1.13.0",
+  "version": "1.16.1",
   "type": "module",
   "dependencies": {
+    "@eox/elements-utils": "^0.0.1",
+    "flatgeobuf": "^3.35.0",
     "lit": "^3.0.2",
-    "ol": "^10.0.0",
+    "ol": "^10.2.0",
     "ol-stac": "^1.0.0-beta.10",
     "proj4": "^2.9.2"
   },
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
     "@types/proj4": "^2.5.4",
-    "@typescript-eslint/eslint-plugin": "^7.0.1",
-    "@typescript-eslint/parser": "^7.0.1",
-    "eslint-plugin-typescript": "^0.14.0",
-    "typescript": "^5.2.2",
     "vite": "^5.0.2"
   },
   "engines": {
@@ -23,14 +20,11 @@
   },
   "files": [
     "dist",
-    "test"
+    "src"
   ],
-  "main": "./dist/eox-map.js",
+  "main": "./src/main.js",
   "scripts": {
-    "build": "tsc && vite build --config vite.config.advancedLayersAndSources.ts && vite build --config vite.config.ts",
-    "watch": "tsc && vite build --config vite.config.advancedLayersAndSources.ts && vite build --config vite.config.ts --watch",
-    "format": "prettier --write .",
-    "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
+    "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
   }
 }

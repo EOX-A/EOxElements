@@ -18,7 +18,7 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     const newLayerVisibilityBasedOnZoom = isLayerVisibleBasedOnZoomState(
       EOxLayerControlLayer.layer,
       EOxLayerControlLayer.map,
-      EOxLayerControlLayer.showLayerZoomState
+      EOxLayerControlLayer.showLayerZoomState,
     );
 
     let visibilityChanged = false;
@@ -27,21 +27,22 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
     if (
       !newLayerVisibilityBasedOnZoom &&
       EOxLayerControlLayer.currLayerVisibilityBasedOnZoom
-    )
-      (EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = false),
-        (visibilityChanged = true);
-    else if (
+    ) {
+      EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = false;
+      visibilityChanged = true;
+    } else if (
       newLayerVisibilityBasedOnZoom &&
       !EOxLayerControlLayer.currLayerVisibilityBasedOnZoom
-    )
-      (EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = true),
-        (visibilityChanged = true);
+    ) {
+      EOxLayerControlLayer.currLayerVisibilityBasedOnZoom = true;
+      visibilityChanged = true;
+    }
 
     // if visibilityChanged trigger UI update
     if (visibilityChanged) {
       EOxLayerControlLayer.requestUpdate();
       EOxLayerControlLayer.dispatchEvent(
-        new CustomEvent("change:resolution", { bubbles: true })
+        new CustomEvent("change:resolution", { bubbles: true }),
       );
     }
   };
@@ -49,7 +50,7 @@ const firstUpdatedMethod = (EOxLayerControlLayer) => {
   if (
     isLayerZoomStateRequired(
       EOxLayerControlLayer.layer,
-      EOxLayerControlLayer.showLayerZoomState
+      EOxLayerControlLayer.showLayerZoomState,
     )
   ) {
     updateLayerZoomVisibility();

@@ -19,7 +19,7 @@ describe("Drawtools", () => {
     // Mounting mock-map and eox-drawtools elements
     cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(
-      `<eox-drawtools show-editor import-features for="mock-map"></eox-drawtools>`
+      `<eox-drawtools show-editor import-features for="mock-map"></eox-drawtools>`,
     ).as(drawTools);
   });
 

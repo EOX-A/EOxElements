@@ -247,7 +247,7 @@ export class EOxItemFilterContainer extends LitElement {
                         @click=${() =>
                           this.dispatchEvent(new CustomEvent("reset"))}
                       ></span>
-                    `
+                    `,
                   )}
                 </div>
                 <div

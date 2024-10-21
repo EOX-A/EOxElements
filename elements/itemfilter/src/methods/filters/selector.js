@@ -83,7 +83,7 @@ export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
       // Navigate down the suggestions list
       EOxItemFilterSelector.highlightedIndex = Math.min(
         EOxItemFilterSelector.highlightedIndex + 1,
-        EOxItemFilterSelector.filteredSuggestions.length - 1
+        EOxItemFilterSelector.filteredSuggestions.length - 1,
       );
       break;
 
@@ -91,7 +91,7 @@ export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
       // Navigate up the suggestions list
       EOxItemFilterSelector.highlightedIndex = Math.max(
         EOxItemFilterSelector.highlightedIndex - 1,
-        0
+        0,
       );
       break;
 
@@ -102,7 +102,7 @@ export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
           EOxItemFilterSelector.filteredSuggestions[
             EOxItemFilterSelector.highlightedIndex
           ],
-          EOxItemFilterSelector
+          EOxItemFilterSelector,
         );
       break;
 
@@ -121,7 +121,7 @@ export function handleKeyDownSelectorMethod(event, EOxItemFilterSelector) {
  */
 export function updatedSelectorMethod(
   changedProperties,
-  EOxItemFilterSelector
+  EOxItemFilterSelector,
 ) {
   if (changedProperties.has("suggestions") || changedProperties.has("query")) {
     updateSuggestions(EOxItemFilterSelector);
@@ -159,7 +159,7 @@ function updateSuggestions(EOxItemFilterSelector) {
   }
   EOxItemFilterSelector.filteredSuggestions = getSortedSuggestions(
     EOxItemFilterSelector,
-    filteredSuggestion || EOxItemFilterSelector.suggestions
+    filteredSuggestion || EOxItemFilterSelector.suggestions,
   );
 
   // if `filterKeys` is defined, force filter keys
@@ -200,7 +200,7 @@ function updateFilterList(EOxItemFilterSelector) {
 
   // Mark the filter as dirty if there are selected items
   EOxItemFilterSelector.filterObject.dirty = Boolean(
-    EOxItemFilterSelector.filterObject.stringifiedState.length > 0
+    EOxItemFilterSelector.filterObject.stringifiedState.length > 0,
   );
 
   // Dispatch a custom event named "filter" and request an update

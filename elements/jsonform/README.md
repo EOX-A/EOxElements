@@ -1,5 +1,7 @@
 # Jsonform
 
+Based on [JSON Editor](https://github.com/json-editor/json-editor).
+
 ## Usage
 
 ```
@@ -7,7 +9,11 @@ npm install @eox/jsonform
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/jsonform"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/jsonform/dist/eox-jsonform.js"
 
 <eox-jsonform></eox-jsonform>
 ```

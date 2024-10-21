@@ -28,7 +28,7 @@ export default function (jsonformOutput, layer, layerConfig) {
     } else if (isVector) {
       const updatedStyles = updateVectorLayerStyle(styles);
       /** @type {import('ol/layer/Vector').default} */ (layer).setStyle(
-        updatedStyles
+        updatedStyles,
       );
     }
   }
@@ -37,7 +37,7 @@ export default function (jsonformOutput, layer, layerConfig) {
 /***
  * @param {Record<string,any>} obj
  **/
-const flattenObject = (obj) => {
+export const flattenObject = (obj) => {
   /**
    * the flattened object to be returned
    *  @type {Record<string,number>} */
@@ -48,7 +48,7 @@ const flattenObject = (obj) => {
     if (typeof obj[key] == "object" && obj[key] !== null) {
       // flatten it recursively
       const flatObject = flattenObject(
-        /** @type {Record<string,any>} */ (obj[key])
+        /** @type {Record<string,any>} */ (obj[key]),
       );
       // assign all of its values to the flat object to be returned
       for (const nestedKey in flatObject) {
@@ -88,7 +88,7 @@ function updateVectorLayerStyle(styles) {
         // replace all styles variables set of the specific key with the variables value
         rawStyle = rawStyle.replaceAll(
           `["var","${key}"]`,
-          `"${variables[key]}"`
+          `"${variables[key]}"`,
         );
       }
     }

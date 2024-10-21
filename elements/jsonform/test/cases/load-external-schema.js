@@ -10,7 +10,7 @@ const loadExternalSchemaTest = () => {
     req.reply(schemaFixture);
   });
   cy.mount(
-    html`<eox-jsonform .schema=${"/catalogSchema.json"}></eox-jsonform>`
+    html`<eox-jsonform .schema=${"/catalogSchema.json"}></eox-jsonform>`,
   ).as(jsonForm);
   cy.get(jsonForm)
     .shadow()

@@ -13,7 +13,7 @@ const loadMarkdownAttrComment = () => {
   const testColor = "rgb(255, 0, 0)";
 
   cy.mount(
-    `<eox-storytelling markdown="# ${testText} <!--{#${testId} .${testClass} style='color:${testColor};'}-->"></eox-storytelling>`
+    `<eox-storytelling markdown="# ${testText} <!--{#${testId} .${testClass} style='color:${testColor};'}-->"></eox-storytelling>`,
   ).as(storyTelling);
 
   cy.get(storyTelling)

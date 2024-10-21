@@ -1,5 +1,6 @@
 export { default as checkLayerSize } from "./check-layer-size";
 export { default as checkPreOpenLayerTools } from "./check-pre-open-layer-tools";
+export { default as checkLayerLegend } from "./check-layer-legend";
 export { default as checkPreOpenSection } from "./check-pre-open-section";
 export { default as disableDrag } from "./disable-drag";
 export { default as exclusiveLayers } from "./exclusive-layers";

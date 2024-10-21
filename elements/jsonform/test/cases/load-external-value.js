@@ -11,19 +11,19 @@ const loadExternalStartValsTest = () => {
     "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogSchema.json",
     (req) => {
       req.reply(schemaFixture);
-    }
+    },
   );
   cy.intercept(
     "https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogValue.json",
     (req) => {
       req.reply(valueFixture);
-    }
+    },
   );
   cy.mount(
     html`<eox-jsonform
       .schema=${"https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogSchema.json"}
       .value=${"https://raw.githubusercontent.com/EOX-A/EOxElements/main/elements/jsonform/examples/catalogValue.json"}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   cy.get(jsonForm)
     .shadow()

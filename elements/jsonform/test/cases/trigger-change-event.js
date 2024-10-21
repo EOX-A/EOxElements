@@ -22,7 +22,7 @@ const triggerChangeEventTest = () => {
           },
         },
       }}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   cy.get(jsonForm)
     .and(($el) => {

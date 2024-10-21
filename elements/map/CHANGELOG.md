@@ -1,5 +1,40 @@
 # Changelog
 
+## [1.16.1](https://github.com/EOX-A/EOxElements/compare/map-v1.16.0...map-v1.16.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* Layer order stability insided group layers ([#1321](https://github.com/EOX-A/EOxElements/issues/1321)) ([95fef59](https://github.com/EOX-A/EOxElements/commit/95fef5941fd98fdf4ac82f0cdc6ca674af3389f7))
+
+## [1.16.0](https://github.com/EOX-A/EOxElements/compare/map-v1.15.0...map-v1.16.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
+## [1.15.0](https://github.com/EOX-A/EOxElements/compare/map-v1.14.0...map-v1.15.0) (2024-10-08)
+
+
+### Features
+
+* FlatGeoBuf source ([#1298](https://github.com/EOX-A/EOxElements/issues/1298)) ([3f59636](https://github.com/EOX-A/EOxElements/commit/3f5963675deab91c124b7a6770feaffff83dff6e))
+
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/map-v1.13.1...map-v1.14.0) (2024-10-01)
+
+
+### Features
+
+* Refactor and convert code from `ts` to `js` ([#1206](https://github.com/EOX-A/EOxElements/issues/1206)) ([e417b3f](https://github.com/EOX-A/EOxElements/commit/e417b3f65373824b68d3ece327e2952100dd90e7))
+
+## [1.13.1](https://github.com/EOX-A/EOxElements/compare/map-v1.13.0...map-v1.13.1) (2024-09-23)
+
+
+### Bug Fixes
+
+* Update maps tiles url to public domain ([#1262](https://github.com/EOX-A/EOxElements/issues/1262)) ([3f57038](https://github.com/EOX-A/EOxElements/commit/3f570381472beb3d93656958d818eece4084ef65))
+
 ## [1.13.0](https://github.com/EOX-A/EOxElements/compare/map-v1.12.0...map-v1.13.0) (2024-08-12)
 
 

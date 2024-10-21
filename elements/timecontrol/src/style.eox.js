@@ -1,8 +1,12 @@
-import { button } from "../../../utils/styles/button";
+import { button } from "@eox/elements-utils/styles/button";
 
 export const styleEOX = `
 * {
   font-family: Roboto, sans-serif;
+}
+
+main {
+  text-align: center;
 }
 
 ${button}

@@ -10,7 +10,7 @@ const loadMarkdownTest = () => {
   const testText = "Hello World!";
 
   cy.mount(`<eox-storytelling markdown="# ${testText}"></eox-storytelling>`).as(
-    storyTelling
+    storyTelling,
   );
 
   cy.get(storyTelling)

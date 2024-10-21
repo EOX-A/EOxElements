@@ -2,18 +2,51 @@
   "bootstrap-sha": "8c7afca91c115c4a2db2054c3b604beb290f0015",
   "packages": {
     "elements/chart": {
-      "release-as": "0.1.0"
+      "exclude-paths": ["elements/drawtools/stories", "elements/drawtools/test"]
     },
-    "elements/drawtools": {},
-    "elements/geosearch": {},
-    "elements/itemfilter": {},
-    "elements/jsonform": {},
-    "elements/layercontrol": {},
-    "elements/layout": {},
-    "elements/map": {},
-    "elements/stacinfo": {},
-    "elements/timecontrol": {},
-    "elements/storytelling": {}
+    "elements/drawtools": {
+      "exclude-paths": ["elements/drawtools/stories", "elements/drawtools/test"]
+    },
+    "elements/geosearch": {
+      "exclude-paths": ["elements/geosearch/stories", "elements/geosearch/test"]
+    },
+    "elements/itemfilter": {
+      "exclude-paths": [
+        "elements/itemfilter/stories",
+        "elements/itemfilter/test"
+      ]
+    },
+    "elements/jsonform": {
+      "exclude-paths": ["elements/jsonform/stories", "elements/jsonform/test"]
+    },
+    "elements/layercontrol": {
+      "exclude-paths": [
+        "elements/layercontrol/stories",
+        "elements/layercontrol/test"
+      ]
+    },
+    "elements/layout": {
+      "exclude-paths": ["elements/layout/stories", "elements/layout/test"]
+    },
+    "elements/map": {
+      "exclude-paths": ["elements/map/stories", "elements/map/test"]
+    },
+    "elements/stacinfo": {
+      "exclude-paths": ["elements/stacinfo/stories", "elements/stacinfo/test"]
+    },
+    "elements/timecontrol": {
+      "exclude-paths": [
+        "elements/timecontrol/stories",
+        "elements/timecontrol/test"
+      ]
+    },
+    "elements/storytelling": {
+      "exclude-paths": [
+        "elements/storytelling/stories",
+        "elements/storytelling/test"
+      ]
+    },
+    "utils": {}
   },
   "plugins": ["sentence-case"],
   "bump-minor-pre-major": true,

@@ -1,6 +1,6 @@
 import { onDrawEndMethod } from "./";
 
-import { getElement } from "../../../../../utils";
+import { getElement } from "@eox/elements-utils";
 
 /**
  * Initializes the draw layer, interacts with the map, and returns map instances.
@@ -13,10 +13,10 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = getElement(EoxDrawTool.for);
 
   const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (mapQuery);
-  // @ts-ignore
+  // @ts-expect-error TODO
   const OlMap = EoxMap.map;
 
-  // @ts-ignore
+  // @ts-expect-error TODO
   EoxDrawTool.drawLayer = EoxMap.addOrUpdateLayer({
     type: "Vector",
     properties: {

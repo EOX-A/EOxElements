@@ -18,7 +18,7 @@ function searchFilterMethod(event, EOxItemFilterContainer) {
   // Update the display of filter elements based on the search results
   Object.keys(EOxItemFilterContainer.filters).forEach((filter) => {
     EOxItemFilterContainer.querySelector(
-      `[data-details="${filter}"]`
+      `[data-details="${filter}"]`,
     ).parentElement.style.display =
       matches.includes(filter) || !inputText ? "" : "none";
   });

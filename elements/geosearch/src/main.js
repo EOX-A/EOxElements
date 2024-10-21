@@ -3,11 +3,11 @@ import { unsafeSVG } from "lit/directives/unsafe-svg.js";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
-import mainStyle from "../../../utils/styles/dist/main.style";
-import buttonStyle from "../../../utils/styles/dist/button.style";
+import mainStyle from "@eox/elements-utils/styles/dist/main.style";
+import buttonStyle from "@eox/elements-utils/styles/dist/button.style";
 import { styleEOX } from "./style.eox";
 
-import { getElement } from "../../../utils/getElement";
+import { getElement } from "@eox/elements-utils";
 
 const loaderSvg = `
   <svg
@@ -175,7 +175,7 @@ class EOxGeoSearch extends LitElement {
         const json = await response.json();
         this._data = json.results;
         this._isLoading = false;
-      } catch (error) {
+      } catch (_) {
         console.log("Error setting up or requesting from geosearch endpoint");
       }
     }, this.interval);
@@ -214,24 +214,24 @@ class EOxGeoSearch extends LitElement {
     return this.direction === "up"
       ? "column-reverse"
       : this.direction === "left"
-      ? "row-reverse"
-      : this.direction === "down"
-      ? "column"
-      : this.direction === "right"
-      ? "row"
-      : "row";
+        ? "row-reverse"
+        : this.direction === "down"
+          ? "column"
+          : this.direction === "right"
+            ? "row"
+            : "row";
   }
 
   getResultsDirection() {
     return this.resultsDirection === "up"
       ? "column-reverse"
       : this.resultsDirection === "left"
-      ? "row-reverse"
-      : this.resultsDirection === "down"
-      ? "column"
-      : this.resultsDirection === "right"
-      ? "row"
-      : "row";
+        ? "row-reverse"
+        : this.resultsDirection === "down"
+          ? "column"
+          : this.resultsDirection === "right"
+            ? "row"
+            : "row";
   }
 
   getVerticalAlign() {
@@ -242,12 +242,12 @@ class EOxGeoSearch extends LitElement {
     return direction === "up"
       ? "top"
       : direction === "left"
-      ? "left"
-      : direction === "down"
-      ? "bottom"
-      : direction === "right"
-      ? "right"
-      : "row";
+        ? "left"
+        : direction === "down"
+          ? "bottom"
+          : direction === "right"
+            ? "right"
+            : "row";
   }
 
   handleSelect(event) {
@@ -373,7 +373,7 @@ class EOxGeoSearch extends LitElement {
             placeholder="Type to search"
             .value="${this._query}"
             style="margin-${this.getMarginDirection(
-              this.resultsDirection
+              this.resultsDirection,
             )}: ${this._isListVisible ? 12 : 0}px"
             @input="${this.onInput}"
           />
@@ -381,20 +381,20 @@ class EOxGeoSearch extends LitElement {
             ${this._isLoading
               ? html`<div class="fill">${unsafeSVG(this.loaderSvg)}</div>`
               : this._query.length < 2
-              ? html`<span class="hint"
-                  >Enter at least two characters to search</span
-                >`
-              : this._data.map(
-                  (item) => html`
-                    <eox-geosearch-item
-                      .item="${item}"
-                      .onClick="${(e) => {
-                        this.handleSelect(e);
-                      }}"
-                      .unstyled=${this.unstyled}
-                    />
-                  `
-                )}
+                ? html`<span class="hint"
+                    >Enter at least two characters to search</span
+                  >`
+                : this._data.map(
+                    (item) => html`
+                      <eox-geosearch-item
+                        .item="${item}"
+                        .onClick="${(e) => {
+                          this.handleSelect(e);
+                        }}"
+                        .unstyled=${this.unstyled}
+                      />
+                    `,
+                  )}
           </ul>
         </div>
       </div>

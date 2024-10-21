@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.23.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.22.0...layercontrol-v0.23.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
+## [0.22.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.21.1...layercontrol-v0.22.0) (2024-10-08)
+
+
+### Features
+
+* Dynamic color legend ([#1297](https://github.com/EOX-A/EOxElements/issues/1297)) ([69c4569](https://github.com/EOX-A/EOxElements/commit/69c45690f6c3d9c80903627ce7677694178929b7))
+
+## [0.21.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.21.0...layercontrol-v0.21.1) (2024-09-26)
+
+
+### Bug Fixes
+
+* **style:** Introduce padding variable ([#1282](https://github.com/EOX-A/EOxElements/issues/1282)) ([3b0cdb8](https://github.com/EOX-A/EOxElements/commit/3b0cdb8e264476cfbb8b6fcf0c468a9ed90dbf8a))
+
+## [0.21.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.20.0...layercontrol-v0.21.0) (2024-09-23)
+
+
+### Features
+
+* Changed update of style to throttle ([#1264](https://github.com/EOX-A/EOxElements/issues/1264)) ([5efa15b](https://github.com/EOX-A/EOxElements/commit/5efa15bc34adf3fc2a2f03e88e5348cb20eaee64))
+* Implementation of list style option for layer tools ([#1250](https://github.com/EOX-A/EOxElements/issues/1250)) ([74241ad](https://github.com/EOX-A/EOxElements/commit/74241ad8bb1b4099e9a67def3dc1e68030939581))
+
+
+### Bug Fixes
+
+* Update maps tiles url to public domain ([#1262](https://github.com/EOX-A/EOxElements/issues/1262)) ([3f57038](https://github.com/EOX-A/EOxElements/commit/3f570381472beb3d93656958d818eece4084ef65))
+
 ## [0.20.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.19.0...layercontrol-v0.20.0) (2024-08-12)
 
 
