@@ -47,6 +47,6 @@ function exitSelection(EoxDrawTool, EoxMap) {
   EoxDrawTool.draw = /** @type {import("ol/interaction").Draw} */ (
     EoxMap.interactions["drawInteraction"]
   );
-    EoxMap.selectInteractions["SelectLayerClickInteraction"].remove();
-    EoxMap.selectInteractions["SelectLayerHoverInteraction"].remove();
+  EoxMap.selectInteractions["SelectLayerClickInteraction"].remove();
+  EoxMap.selectInteractions["SelectLayerHoverInteraction"].remove();
 }
