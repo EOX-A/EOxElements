@@ -102,7 +102,6 @@ export function addDraw(EOxMap, drawLayer, options) {
     sketch = null;
     // unset tooltip so that a new one can be created
     //measureTooltipElement.remove();
-    //createMeasureTooltip(measureTooltipElement, measureTooltip, EOxMap.map);
     unByKey(listener);
   });
 
@@ -128,30 +127,6 @@ export function addDraw(EOxMap, drawLayer, options) {
   // Subscribe to the 'change' event on the layer group to detect when layers are removed
   EOxMap.map.getLayerGroup().on("change", removeLayerListener);
 }
-
-/**
- * Creates a new measure tooltip
- */
-function createMeasureTooltip(
-  measureTooltipElement: HTMLElement,
-  measureTooltip: Overlay,
-  map: import("ol/Map").default,
-) {
-  if (measureTooltipElement) {
-    measureTooltipElement.remove();
-  }
-  measureTooltipElement = document.createElement('div');
-  measureTooltipElement.className = 'ol-tooltip ol-tooltip-measure';
-  measureTooltip = new Overlay({
-    element: measureTooltipElement,
-    offset: [0, -15],
-    positioning: 'bottom-center',
-    stopEvent: false,
-    insertFirst: false,
-  });
-  map.addOverlay(measureTooltip);
-}
-
 
 /**
  * Calculate real distance on the map and format the output.
