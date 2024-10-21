@@ -1,4 +1,3 @@
-import { getJsonLayer } from "../../../../../utils";
 import { initSelection } from ".";
 
 /**
@@ -17,7 +16,7 @@ const handleLayerId = (EoxDrawTool, EoxMap, updatedLayerId, oldLayerId) => {
 
   if (updatedLayerId) {
     if (oldLayerId && updatedLayerId !== oldLayerId) {
-      exitSelection(EoxDrawTool, EoxMap, oldLayerId);
+      exitSelection(EoxDrawTool, EoxMap);
       initSelection(EoxDrawTool, EoxMap, updatedLayerId);
     } else {
       initSelection(EoxDrawTool, EoxMap, updatedLayerId);
@@ -26,7 +25,7 @@ const handleLayerId = (EoxDrawTool, EoxMap, updatedLayerId, oldLayerId) => {
   }
 
   if (!updatedLayerId && oldLayerId) {
-    exitSelection(EoxDrawTool, EoxMap, oldLayerId);
+    exitSelection(EoxDrawTool, EoxMap);
     return;
   }
 };
@@ -38,18 +37,16 @@ export default handleLayerId;
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool
  * @param {import("@eox/map").EOxMap} EoxMap
- * @param {string} oldLayerId
  */
-function exitSelection(EoxDrawTool, EoxMap, oldLayerId) {
+function exitSelection(EoxDrawTool, EoxMap) {
   if (!EoxMap) {
     return;
   }
-  const selectionLayer = getJsonLayer(EoxMap.layers, oldLayerId) || null;
+  EoxDrawTool.discardDrawing();
+  EoxDrawTool.selectionEvents.removeSelectionEvent();
   EoxDrawTool.draw = /** @type {import("ol/interaction").Draw} */ (
     EoxMap.interactions["drawInteraction"]
   );
-  if (selectionLayer) {
-    delete selectionLayer.interactions;
-    EoxMap.addOrUpdateLayer(selectionLayer);
-  }
+    EoxMap.selectInteractions["SelectLayerClickInteraction"].remove();
+    EoxMap.selectInteractions["SelectLayerHoverInteraction"].remove();
 }
