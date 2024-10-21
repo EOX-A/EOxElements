@@ -12,6 +12,12 @@ const discardDrawingMethod = (EoxDrawTool) => {
     EoxDrawTool.draw.setActive(false);
     EoxDrawTool.drawLayer.getSource().clear();
     EoxDrawTool.geoJSON = null;
+
+    // Clear map overlays, if available
+    const map = EoxDrawTool.eoxMap.map;
+    if (map && map.getOverlays !== undefined) {
+      EoxDrawTool.eoxMap.map.getOverlays().clear();
+    }
   };
 
   // Function to trigger updates after discarding drawing

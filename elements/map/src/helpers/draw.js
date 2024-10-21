@@ -1,6 +1,10 @@
 import Modify from "ol/interaction/Modify";
 import Draw, { createBox } from "ol/interaction/Draw";
 import { addNewFeature } from "../helpers";
+import { getArea, getLength } from "ol/sphere";
+import Overlay from "ol/Overlay";
+import { LineString, Polygon } from "ol/geom";
+import { unByKey } from "ol/Observable";
 
 /**
  * @typedef {import("../../types").DrawOptions} DrawOptions
@@ -49,10 +53,55 @@ export function addDraw(EOxMap, drawLayer, options) {
     drawInteraction.setActive(false);
   }
 
+  // Create measure tooltip
+  let measureTooltipElement = document.createElement("div");
+  measureTooltipElement.className = "ol-tooltip ol-tooltip-measure";
+  measureTooltipElement.style.padding = "4px 2px";
+  measureTooltipElement.style.backdropFilter = "blur(20px)";
+  measureTooltipElement.style.background = "#00418033";
+  const measureTooltip = new Overlay({
+    element: measureTooltipElement,
+    offset: [0, 0],
+    positioning: "bottom-center",
+    stopEvent: false,
+    insertFirst: false,
+  });
+  let sketch = null;
+  let listener;
+
+  drawInteraction.on("drawstart", (evt) => {
+    sketch = evt.feature;
+    let tooltipCoord = evt.coordinate;
+
+    EOxMap.map.addOverlay(measureTooltip);
+
+    listener = sketch.getGeometry().on("change", function (evt) {
+      const geometry = evt.target;
+      console.log(geometry);
+
+      if (geometry instanceof Polygon) {
+        measureTooltipElement.innerHTML = formatArea(geometry);
+      } else if (geometry instanceof LineString) {
+        measureTooltipElement.innerHTML = formatLength(geometry);
+      }
+
+      tooltipCoord = geometry.getLastCoordinate();
+      measureTooltip.setPosition(tooltipCoord);
+    });
+  });
+
   // Listen for the 'drawend' event to handle the addition of new features to the layer
   drawInteraction.on("drawend", (e) => {
     if (!drawLayer.get("isDrawingEnabled")) return;
     addNewFeature(e, drawLayer, EOxMap, true);
+
+    measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
+    measureTooltip.setOffset([0, -7]);
+    // unset sketch
+    sketch = null;
+    // unset tooltip so that a new one can be created
+    //measureTooltipElement.remove();
+    unByKey(listener);
   });
 
   // identifier to retrieve the interaction
@@ -77,3 +126,35 @@ export function addDraw(EOxMap, drawLayer, options) {
   // Subscribe to the 'change' event on the layer group to detect when layers are removed
   EOxMap.map.getLayerGroup().on("change", removeLayerListener);
 }
+
+/**
+ * Calculate real distance on the map and format the output.
+ * @param {Polygon} line The line string to calculate the distance for.
+ * @return {string} Formatted length.
+ */
+const formatLength = function (line) {
+  const length = getLength(line);
+  let output;
+  if (length > 100) {
+    output = Math.round((length / 1000) * 100) / 100 + " " + "km";
+  } else {
+    output = Math.round(length * 100) / 100 + " " + "m";
+  }
+  return output;
+};
+
+/**
+ * Format area output.
+ * @param {Polygon} polygon The polygon.
+ * @return {string} Formatted area.
+ */
+const formatArea = function (polygon) {
+  const area = getArea(polygon);
+  let output;
+  if (area > 10000) {
+    output = Math.round((area / 1000000) * 100) / 100 + " " + "km<sup>2</sup>";
+  } else {
+    output = Math.round(area * 100) / 100 + " " + "m<sup>2</sup>";
+  }
+  return output;
+};
