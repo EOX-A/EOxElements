@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.10.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.10.0...drawtools-v0.10.1) (2024-10-22)
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.10.0...drawtools-v0.11.0) (2024-10-22)
 
 
 ### Features
