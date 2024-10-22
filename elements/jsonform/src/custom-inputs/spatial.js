@@ -35,33 +35,33 @@ export class SpatialEditor extends AbstractEditor {
     if (!options.compact)
       this.header = this.label = theme.getFormInputLabel(
         this.getTitle(),
-        this.isRequired()
+        this.isRequired(),
       );
     if (description)
       this.description = theme.getFormInputDescription(
-        this.translateProperty(description)
+        this.translateProperty(description),
       );
     if (options.infoText)
       this.infoButton = theme.getInfoButton(
-        this.translateProperty(options.infoText)
+        this.translateProperty(options.infoText),
       );
 
     const drawtoolsEl = document.createElement("eox-drawtools");
 
     const isSelection = ["feature", "features"].some((f) =>
-      this.schema.format.includes(f)
+      this.schema.format.includes(f),
     );
 
     const isPolygon = ["polygon", "polygons"].some((p) =>
-      this.schema.format.includes(p)
+      this.schema.format.includes(p),
     );
 
     const isBox = ["bounding-boxes", "bounding-box"].some((p) =>
-      this.schema.format.includes(p)
+      this.schema.format.includes(p),
     );
 
     const isMulti = ["bounding-boxes", "polygons", "features"].some((m) =>
-      this.schema.format.includes(m)
+      this.schema.format.includes(m),
     );
     const enableEditor = this.schema.format.includes("editor");
 
@@ -80,7 +80,7 @@ export class SpatialEditor extends AbstractEditor {
       attributes["import-features"] = true;
       attributes["show-editor"] = true;
     }
-    
+
     if (isMulti) {
       attributes["show-list"] = true;
     }
@@ -109,7 +109,7 @@ export class SpatialEditor extends AbstractEditor {
       this.label,
       this.input,
       this.description,
-      this.infoButton
+      this.infoButton,
     );
 
     if (this.schema.readOnly || this.schema.readonly) {
@@ -119,27 +119,27 @@ export class SpatialEditor extends AbstractEditor {
 
     // Add event listener for change events on the draw tools
     //@ts-expect-error
-    this.input.addEventListener("drawupdate",/**
-      * @param {CustomEvent<import("ol/Feature").default|import("ol/Feature").default[]>} e
-      */
+    this.input.addEventListener(
+      "drawupdate" /**
+       * @param {CustomEvent<import("ol/Feature").default|import("ol/Feature").default[]>} e
+       */,
       (e) => {
         e.preventDefault();
         e.stopPropagation();
 
         switch (true) {
-          case (!e.detail || e.detail?.length === 0): {
+          case !e.detail || e.detail?.length === 0: {
             this.value = null;
-            break
+            break;
           }
           case isSelection: {
             /** @param {import("ol/Feature").default} feature */
             const getProperty = (feature) =>
-              feature.get(this.schema.options.featureProperty) ??
-              feature;
+              feature.get(this.schema.options.featureProperty) ?? feature;
             this.value = e.detail.length
               ? e.detail.map(getProperty)
               : getProperty(e.detail);
-            break
+            break;
           }
           case isBox: {
             /** @param {import("ol/Feature").default} feature */
@@ -147,17 +147,18 @@ export class SpatialEditor extends AbstractEditor {
             this.value = e.detail?.length
               ? e.detail.map(getExtent)
               : getExtent(e.detail);
-            break
+            break;
           }
           case isPolygon:
             this.value = e.detail;
-            break
+            break;
           default:
             break;
         }
 
         this.onChange(true);
-      });
+      },
+    );
 
     this.container.appendChild(this.control);
   }

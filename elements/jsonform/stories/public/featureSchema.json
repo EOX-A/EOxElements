@@ -16,7 +16,7 @@
       "type": "object",
       "options": {
         "layerId": "regions-blue",
-        "for":"eox-map#second"
+        "for": "eox-map#second"
       },
       "format": "feature"
     }

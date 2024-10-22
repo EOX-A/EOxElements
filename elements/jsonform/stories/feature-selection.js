@@ -1,5 +1,9 @@
 import { html } from "lit";
-import { STORIES_MAP_STYLE, STORIES_BlUE_VECTOR_LAYERS, STORIES_GREY_VECTOR_LAYERS } from "../src/enums/stories"
+import {
+  STORIES_MAP_STYLE,
+  STORIES_BlUE_VECTOR_LAYERS,
+  STORIES_GREY_VECTOR_LAYERS,
+} from "../src/enums";
 /**
  * Drawtools component demonstrating the configuration options for eox-jsonform
  * Allows user to select a feature from an external eox-map as an input
@@ -21,7 +25,7 @@ const FeatureSelection = {
     <eox-jsonform
     .schema=${args.schema}
     .value=${args.value}
-    .noShadow=${true}
+    .noShadow=${false}
     .unstyled=${args.unstyled}
     @change=${args.onChange}
     ></eox-jsonform>
