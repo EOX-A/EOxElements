@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "features": {
+      "title": "Multi Features",
+      "type": "object",
+      "options": {
+        "layerId": "regions-grey",
+        "featureProperty": "BIOME_NAME",
+        "for": "eox-map#first"
+      },
+      "format": "features"
+    },
+    "feature": {
+      "title": "Feature",
+      "type": "object",
+      "options": {
+        "layerId": "regions-blue",
+        "for":"eox-map#second"
+      },
+      "format": "feature"
+    }
+  }
+}

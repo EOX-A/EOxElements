@@ -7,8 +7,9 @@ import {
   MarkdownStory,
   PrimaryStory,
   UnStyledStory,
-  DrawToolsStory,
+  BoundingBoxStory,
   PolygonStory,
+  FeatureSelectionStory,
 } from "./index.js";
 
 export default {
@@ -51,16 +52,21 @@ export const External = ExternalStory;
 export const Markdown = MarkdownStory;
 
 /**
+ * JSON Form based on drawtools - Box
+ */
+export const BoundigBox = BoundingBoxStory;
+
+/**
+ * JSON Form based on drawtools - Polygon
+ */
+export const Polygons = PolygonStory;
+
+/**
+ * JSON Form based on drawtools - Feature Selection
+ */
+export const FeatureSelection = FeatureSelectionStory;
+/**
  * Unstyled JSON Form
  */
 export const Unstyled = UnStyledStory;
 
-/**
- * Unstyled JSON Form
- */
-export const DrawTools = DrawToolsStory;
-
-/**
- * Unstyled JSON Form
- */
-export const Polygons = PolygonStory;
