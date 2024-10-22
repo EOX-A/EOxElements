@@ -88,12 +88,12 @@ function filterApplyMethod(config, items, EOxItemFilter) {
               format: filterProperty.format,
             }
           : {},
-        filterProperty
+        filterProperty,
       );
       EOxItemFilter.filters[filterKey].state = Object.assign(
         {},
         filterKeys,
-        filterProperty.state
+        filterProperty.state,
       );
     });
   }
@@ -111,9 +111,9 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       new Set(
         items.reduce(
           (store, item) => store.concat(item[config.aggregateResults]),
-          []
-        )
-      )
+          [],
+        ),
+      ),
     ).sort((a, b) => a.localeCompare(b));
   }
 

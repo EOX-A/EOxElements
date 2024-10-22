@@ -9,6 +9,8 @@ const startDrawingMethod = (EoxDrawTool) => {
   const initializeDrawing = () => {
     EoxDrawTool.drawLayer.set("isDrawingEnabled", true);
     EoxDrawTool.draw.setActive(true);
+    // Add selection
+    EoxDrawTool.selectionEvents.addSelectionEvent();
   };
 
   // Function to update the drawing status and request an update
@@ -19,7 +21,6 @@ const startDrawingMethod = (EoxDrawTool) => {
 
   // Initialize the drawing process
   initializeDrawing();
-
   // Update the drawing status
   updateDrawingStatus();
 };

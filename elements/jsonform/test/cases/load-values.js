@@ -22,7 +22,7 @@ const loadValues = () => {
           },
         },
       }}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   // Set value after initialization
   cy.get(jsonForm).and(($jsonForm) => {

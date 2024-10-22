@@ -190,7 +190,7 @@ export class EOxLayerControl extends LitElement {
    */
   #handleDatetimeUpdate(evt) {
     this.dispatchEvent(
-      new CustomEvent("datetime:updated", { detail: evt.detail })
+      new CustomEvent("datetime:updated", { detail: evt.detail }),
     );
   }
 
@@ -215,7 +215,7 @@ export class EOxLayerControl extends LitElement {
             .eoxMap=${this.#eoxMap}
             .unstyled=${this.unstyled}
           ></eox-layercontrol-add-layers>
-        `
+        `,
       )}
 
       <!-- Conditional rendering of layer list component -->
@@ -236,7 +236,7 @@ export class EOxLayerControl extends LitElement {
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>
-        `
+        `,
       )}
 
       <!-- Conditional rendering of optional list component -->
@@ -250,7 +250,7 @@ export class EOxLayerControl extends LitElement {
             .titleProperty=${this.titleProperty}
             @changed=${() => this.requestUpdate()}
           ></eox-layercontrol-optional-list>
-        `
+        `,
       )}
     `;
   }

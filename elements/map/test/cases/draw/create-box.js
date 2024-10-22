@@ -9,7 +9,7 @@ const createBox = () => {
   drawInteractionLayerJson[0].interactions[0].options.type = "Box";
   drawInteractionLayerJson[0].interactions[0].options.modify = false;
   cy.mount(html`<eox-map .layers=${drawInteractionLayerJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
@@ -32,14 +32,14 @@ const createBox = () => {
 
     expect(
       eoxMap.interactions.drawInteraction_modify.getActive(),
-      "consider modify active flag"
+      "consider modify active flag",
     ).to.be.equal(false);
     const newLayerJson = [drawInteractionLayerJson[0]];
     newLayerJson[0].interactions[0].options.modify = true;
     eoxMap.layers = newLayerJson;
     expect(
       eoxMap.interactions.drawInteraction_modify.getActive(),
-      "reactively activate modify"
+      "reactively activate modify",
     ).to.be.equal(true);
   });
 };

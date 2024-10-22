@@ -11,7 +11,7 @@ const highlightByIdVectorLayer = () => {
       "https://openlayers.org/data/vector/ecoregions.json",
       (req) => {
         req.reply(ecoRegionsFixture);
-      }
+      },
     );
     const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
     styleJson[0].interactions = [
@@ -28,7 +28,7 @@ const highlightByIdVectorLayer = () => {
       },
     ];
     cy.mount(
-      html`<eox-map .center=${[0, 0]} .layers=${styleJson}></eox-map>`
+      html`<eox-map .center=${[0, 0]} .layers=${styleJson}></eox-map>`,
     ).as("eox-map");
 
     cy.get("eox-map").and(($el) => {
@@ -40,7 +40,7 @@ const highlightByIdVectorLayer = () => {
           {
             duration: 400,
             padding: [50, 50, 50, 50],
-          }
+          },
         );
         // ..and expect the map to animate to them
         setTimeout(() => {

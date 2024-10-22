@@ -17,7 +17,7 @@ const applyGeojsonFormat = () => {
     const eoxMap = $el[0];
     eoxMap.registerProjection(
       "EPSG:3035",
-      "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs"
+      "+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs",
     );
 
     const layerWithFormats = {
@@ -43,11 +43,11 @@ const applyGeojsonFormat = () => {
     const firstVertex = coordinates[0][0][0];
     expect(
       Math.floor(firstVertex[0]),
-      "correctly transforms coordinates"
+      "correctly transforms coordinates",
     ).to.be.equal(2106704);
     expect(
       Math.floor(firstVertex[1]),
-      "correctly transforms coordinates"
+      "correctly transforms coordinates",
     ).to.be.equal(6027918);
   });
 };

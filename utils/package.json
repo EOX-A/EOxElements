@@ -1,0 +1,11 @@
+{
+  "name": "@eox/elements-utils",
+  "version": "0.0.1",
+  "description": "Utils and common styles used by EOxElements",
+  "main": "./index.js",
+  "files": [
+    "styles",
+    "./"
+  ],
+  "author": "EOX"
+}

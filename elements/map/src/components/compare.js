@@ -1,12 +1,11 @@
-import { html } from "lit";
+import { LitElement, html } from "lit";
 import { choose } from "lit/directives/choose.js";
-import { TemplateElement } from "../../../../utils/templateElement";
 
 /**
  * A custom element for comparing two map layers or images using a slider.
  * This component creates a split-screen view with an adjustable slider to compare two images or layers.
  */
-export class EOxMapCompare extends TemplateElement {
+export class EOxMapCompare extends LitElement {
   static get properties() {
     return {
       value: { attribute: "value", type: Number },
@@ -155,7 +154,7 @@ export class EOxMapCompare extends TemplateElement {
               @input=${this.#handleInput}
             />
           </div>
-        `
+        `,
       )}
     `;
   }

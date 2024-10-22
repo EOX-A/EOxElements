@@ -11,7 +11,11 @@ npm install @eox/map
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/map"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/map/dist/eox-map.js"
 
 <eox-map></eox-map>
 ```

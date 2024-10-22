@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.1.1...layout-v0.2.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
 ## [0.1.1](https://github.com/EOX-A/EOxElements/compare/layout-v0.1.0...layout-v0.1.1) (2024-09-26)
 
 

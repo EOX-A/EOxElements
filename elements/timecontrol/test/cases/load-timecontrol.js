@@ -10,7 +10,7 @@ const { timeControl } = TEST_SELECTORS;
 const loadTimeControlTest = () => {
   cy.mount("<mock-map></mock-map>").as("mock-map");
   cy.mount(
-    `<eox-timecontrol for="mock-map" layer="TEST_ID"></eox-timecontrol>`
+    `<eox-timecontrol for="mock-map" layer="TEST_ID"></eox-timecontrol>`,
   ).as(timeControl);
 
   // Find the layout element and access its shadow DOM

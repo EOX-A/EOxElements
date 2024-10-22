@@ -12,7 +12,7 @@ import { isLayerZoomStateRequired } from ".";
 export default function isLayerVisibleBasedOnZoomState(
   layer,
   map,
-  showLayerZoomState
+  showLayerZoomState,
 ) {
   // If layer or map is unavailable or layer zoom state is not required, return false
   if (!layer || !map) return false;

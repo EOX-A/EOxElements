@@ -2,7 +2,7 @@ import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { fetchSTAC, parseEntries, updateProperties } from "./helpers/index.js";
 import { styleEOX } from "./style.eox.js";
-import allStyle from "../../../utils/styles/dist/all.style";
+import allStyle from "@eox/elements-utils/styles/dist/all.style";
 import { Formatters } from "@radiantearth/stac-fields";
 import parseBody from "./components/body";
 import parseHeader from "./components/header.js";
@@ -164,7 +164,7 @@ export class EOxStacInfo extends LitElement {
           <!-- Footer Component-->
           ${parseFooter(parseEntries(this.footer, this))}
         `,
-        () => html`${nothing}`
+        () => html`${nothing}`,
       )}
     `;
   }

@@ -21,12 +21,12 @@ const initProjection = () => {
         },
       ]}
       .projection=${"EPSG:4326"}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
     expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
-      "EPSG:4326"
+      "EPSG:4326",
     );
   });
 };

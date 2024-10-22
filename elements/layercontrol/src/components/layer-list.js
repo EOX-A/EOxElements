@@ -168,9 +168,9 @@ export class EOxLayerControlLayerList extends LitElement {
                         `
                   }
                 </li>
-              `
+              `,
             )}
-          `
+          `,
         )}
       </ul>
     `;

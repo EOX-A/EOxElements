@@ -16,7 +16,7 @@ const addAndUpdateLayer = () => {
       .layers=${[
         { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
       ]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     const layerDefinition = {
@@ -61,7 +61,7 @@ const addAndUpdateLayer = () => {
     expect(layer.getOpacity(), "update opacity").to.be.equal(1);
     expect(
       layer.get("_jsonDefinition").properties.value,
-      "update json definition object"
+      "update json definition object",
     ).to.be.equal(2);
   });
 };

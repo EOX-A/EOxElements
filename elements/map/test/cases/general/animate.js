@@ -17,7 +17,7 @@ const animateOnZoomCenterChange = () => {
         duration: 1000,
       }}
       .center=${[0, 0]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   return new Cypress.Promise((resolve) => {
     cy.get("eox-map").and(($el) => {
@@ -60,7 +60,7 @@ const animateOnExtent = () => {
         -8172569.397164129, -7410537.976763416, -5969880.614083453,
         -2491403.9138794523,
       ]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   return new Cypress.Promise((resolve) => {
     cy.get("eox-map").and(($el) => {

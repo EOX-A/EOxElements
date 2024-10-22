@@ -11,7 +11,7 @@ const validationTest = () => {
         cy.get("[data-cy='search']").type("abcdefghijk");
         cy.get(".error-validation").should(
           "have.text",
-          el.filterObject.validation.message
+          el.filterObject.validation.message,
         );
         cy.get("[data-cy='search']").clear();
         cy.get(".error-validation").should("not.have.text");

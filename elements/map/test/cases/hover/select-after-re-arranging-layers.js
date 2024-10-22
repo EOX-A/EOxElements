@@ -26,7 +26,7 @@ const selectAfterReArrangingLayers = () => {
   cy.mount(
     html`<eox-map .layers=${vectorLayerStyleJson}>
       <eox-map-tooltip></eox-map-tooltip>
-    </eox-map>`
+    </eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
@@ -34,7 +34,7 @@ const selectAfterReArrangingLayers = () => {
     let featureSelectCounter = 0;
     eoxMap.addEventListener("select", (evt) => {
       selectCounter++;
-      // @ts-ignore
+      // @ts-expect-error TODO
       if (evt.detail.feature) {
         featureSelectCounter++;
       }

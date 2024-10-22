@@ -6,7 +6,7 @@ import {
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
-import listStyle from "../../../../utils/styles/dist/list.style";
+import listStyle from "@eox/elements-utils/styles/dist/list.style";
 
 /**
  * Display list of features
@@ -113,7 +113,7 @@ export class EOxDrawToolsList extends LitElement {
 
   /**
    *
-   * @param {Number} featureId - The ID of the feature to hover.
+   * @param {number | string | undefined} featureId - The ID of the feature to hover.
    * @param {Boolean} mouseOut - Flag indicating mouse out event.
    */
   _handleHoverFeature(featureId, mouseOut = false) {
@@ -147,7 +147,7 @@ export class EOxDrawToolsList extends LitElement {
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
-          const featureId = feature.get("id");
+          const featureId = feature.getId();
 
           // Check if the feature is hovered or clicked
           const isFeatureHovered = this.hoverId === featureId;
@@ -178,7 +178,7 @@ export class EOxDrawToolsList extends LitElement {
                   </button>
                 </div>
               </li>
-            `
+            `,
           );
         })}
       </ul>

@@ -55,7 +55,7 @@ import {
  * ```
  *
  * Some basic layers, sources and formats are included in the default bundle, for advanced usage it is
- * required to import the `advanced-layers-and-sources` plugin.
+ * required to import the `advancedLayersAndSources` plugin.
  *
  * Included in the base bundle:
  * - Formats: `GeoJSON`, `MVT`
@@ -65,8 +65,8 @@ import {
  * In order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:
  *
  * ```
- * import "@eox/map/dist/eox-map-advanced-layers-and-sources.js"
- * import "@eox/map/dist/eox-map.js"
+ * import "@eox/map/src/plugins/advancedLayersAndSources"
+ * import "@eox/map"
  *
  * <eox-map [...]></eox-map>
  * ```

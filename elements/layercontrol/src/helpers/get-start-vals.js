@@ -13,17 +13,17 @@ export function getNestedStartVals(schema, nestedValues) {
 
     // Extract startVal based on type
     if (type && type !== "object") {
-      //@ts-ignore
+      // @ts-expect-error TODO
       startVals[key] =
         type === "number" ? Number(nestedValues[key]) : nestedValues[key];
     } else if (typeof schema[key] === "object" && schema[key]?.properties) {
       // Recursively traverse nested properties
       const nestedStartVals = getNestedStartVals(
         schema[key].properties,
-        nestedValues
+        nestedValues,
       );
       if (Object.keys(nestedStartVals).length > 0) {
-        //@ts-ignore
+        // @ts-expect-error TODO
         startVals[key] = nestedStartVals;
       }
     }
@@ -53,20 +53,20 @@ export function getStartVals(layer, layerConfig) {
   if ((layerConfig.type === "style" || layerConfig.style) && styleVars) {
     nestedValues = styleVars;
 
-    //@ts-expect-error
+    // @ts-expect-error TODO
   } else if (layer.getSource()?.getTileUrlFunction?.()) {
     // Extract query parameters from tile URL
-    //@ts-expect-error
+    // @ts-expect-error TODO
     const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
 
     // Retrieve startVals based on schema and query parameters
-    //@ts-expect-error
+    // @ts-expect-error TODO
     nestedValues = Object.fromEntries(url.searchParams.entries());
   } else return null;
 
   const startVals = getNestedStartVals(
     layerConfig.schema?.properties || layerConfig.schema,
-    nestedValues
+    nestedValues,
   );
 
   return Object.keys(startVals).length ? startVals : null;

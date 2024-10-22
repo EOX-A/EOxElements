@@ -7,7 +7,11 @@ npm install @eox/drawtools
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/drawtools"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/drawtools/dist/eox-drawtools.js"
 
 <eox-drawtools></eox-drawtools>
 ```

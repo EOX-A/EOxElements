@@ -79,9 +79,9 @@ function handleKeyboard(key, textValue, that) {
         highlightedChip.querySelector(".chip-item-close").click();
         that.items.splice(
           Array.from(that.renderRoot.querySelectorAll(".chip")).indexOf(
-            highlightedChip
+            highlightedChip,
           ),
-          1
+          1,
         );
       }
       const lastChip =
@@ -105,7 +105,7 @@ function handleKeyboard(key, textValue, that) {
     const highlightedChip = that.renderRoot.querySelector(".chip.highlighted");
     if (highlightedChip) {
       highlightedChipIndex = Array.from(
-        that.renderRoot.querySelectorAll(".chip")
+        that.renderRoot.querySelectorAll(".chip"),
       ).indexOf(highlightedChip);
       highlightedChip.classList.remove("highlighted");
     }

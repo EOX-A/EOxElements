@@ -11,7 +11,7 @@ const getWgsCoordinates = () => {
       const eoxMap = $el[0];
       eoxMap.registerProjection(
         "EPSG:32633",
-        "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs"
+        "+proj=utm +zone=33 +datum=WGS84 +units=m +no_defs +type=crs",
       );
       eoxMap.setAttribute("projection", "EPSG:32633");
 
@@ -24,7 +24,7 @@ const getWgsCoordinates = () => {
       setTimeout(() => {
         expect(
           eoxMap.lonLatExtent.map((n) => n.toFixed(4)),
-          "getter of lonLatExtent"
+          "getter of lonLatExtent",
         ).to.be.deep.equal(["13.5719", "47.5332", "13.7519", "47.6255"]);
         resolve();
       }, 10);

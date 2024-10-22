@@ -9,7 +9,7 @@ const loadImageWmsLayer = () => {
     fixture: "./map/test/fixtures/tiles/wms/wms0.png",
   });
   cy.mount(html`<eox-map .layers=${imageWmsLayerStyleJson}></eox-map>`).as(
-    "eox-map"
+    "eox-map",
   );
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];

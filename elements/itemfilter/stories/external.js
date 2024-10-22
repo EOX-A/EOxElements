@@ -17,7 +17,7 @@ function ExternalStory() {
       titleProperty: "title",
       externalFilter: (_, filters) => {
         return `https://jsonplaceholder.typicode.com/todos?${Object.keys(
-          filters.completed.state
+          filters.completed.state,
         )
           .filter((k) => !!filters.completed.state[k])
           .map((id) => `completed=${id}`)

@@ -21,14 +21,14 @@ const changeProjection = () => {
           },
         },
       ]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
     eoxMap.map
       .getView()
       .on("change:resolution", (e) =>
-        e.target.set("keepResolutionListener", true)
+        e.target.set("keepResolutionListener", true),
       );
     eoxMap.map
       .getView()
@@ -39,7 +39,7 @@ const changeProjection = () => {
     setTimeout(() => {
       eoxMap.projection = "EPSG:4326";
       expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
-        "EPSG:4326"
+        "EPSG:4326",
       );
       const newView = eoxMap.map.getView();
       newView.setZoom(newView.getZoom() + 1);
@@ -49,15 +49,15 @@ const changeProjection = () => {
       setTimeout(() => {
         expect(
           eoxMap.map.getView().get("keepResolutionListener"),
-          "keeps resolution listener"
+          "keeps resolution listener",
         ).to.be.true;
         expect(
           eoxMap.map.getView().get("keepRotationListener"),
-          "keeps rotation listener"
+          "keeps rotation listener",
         ).to.be.true;
         expect(
           eoxMap.map.getView().get("keepCenterListener"),
-          "keeps center listener"
+          "keeps center listener",
         ).to.be.true;
       }, 100);
     }, 1000);

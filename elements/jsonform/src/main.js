@@ -3,7 +3,7 @@ import { createEditor, parseProperty } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
-import allStyle from "../../../utils/styles/dist/all.style";
+import allStyle from "@eox/elements-utils/styles/dist/all.style";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -32,14 +32,14 @@ export class EOxJSONForm extends LitElement {
      *
      * @type {JsonSchema}
      */
-    this.schema;
+    this.schema = null;
 
     /**
      * Default values for the form editor
      *
      * @type {JsonSchema}
      */
-    this.value;
+    this.value = null;
 
     /**
      * Default values for the form editor
@@ -127,7 +127,7 @@ export class EOxJSONForm extends LitElement {
         detail: this.value,
         bubbles: true,
         composed: true,
-      })
+      }),
     );
   }
 

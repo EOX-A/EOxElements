@@ -54,7 +54,7 @@ function initStyles() {
         // Create individual JavaScript files for each CSS file
         const individualOutputFilePath = path.join(
           folderPath,
-          `${file.replace(".css", "")}.style.js`
+          `${file.replace(".css", "")}.style.js`,
         );
         writeFileWithContent(content, individualOutputFilePath);
       });

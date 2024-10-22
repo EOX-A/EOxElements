@@ -14,7 +14,7 @@ import {
 } from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import View from "ol/View";
-import { getElement } from "../../../../../utils";
+import { getElement } from "@eox/elements-utils";
 
 /**
  * @typedef {import("../../../types").EoxLayer} EoxLayer
@@ -145,7 +145,7 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
       if (
         !l.properties?.id ||
         !newLayers.find(
-          (newLayer) => newLayer.properties.id === l.properties.id
+          (newLayer) => newLayer.properties.id === l.properties.id,
         )
       ) {
         // Retrieve the layer to be removed from the map
@@ -156,14 +156,14 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
         // Remove any interactions associated with the layer
         intersections?.forEach(
           /** @param {{type: string, options: { id: string}}} interaction  **/ (
-            interaction
+            interaction,
           ) => {
             if (interaction.type === "select") {
               EOxMap.removeSelect(interaction.options.id);
             } else {
               EOxMap.removeInteraction(interaction.options.id);
             }
-          }
+          },
         );
 
         // Remove the layer from the map
@@ -268,7 +268,7 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
     const newCenter = olTransform(
       oldView.getCenter(),
       oldView.getProjection().getCode(),
-      projection
+      projection,
     );
 
     // Calculate the new resolution in the new projection
@@ -281,7 +281,7 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
         oldView.getProjection(),
         1 / oldMPU,
         oldView.getCenter(),
-        "m"
+        "m",
       ) * oldMPU;
     const newPointResolution =
       getPointResolution(newProjection, 1 / newMPU, newCenter, "m") * newMPU;
