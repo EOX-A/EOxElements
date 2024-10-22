@@ -118,46 +118,48 @@ export class SpatialEditor extends AbstractEditor {
     }
 
     // Add event listener for change events on the draw tools
-    //@ts-expect-error
     this.input.addEventListener(
-      "drawupdate" /**
-       * @param {CustomEvent<import("ol/Feature").default|import("ol/Feature").default[]>} e
-       */,
-      (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+      "drawupdate",
+      /** @type {EventListener} */ (
+        /**
+         * @param {CustomEvent<import("ol/Feature").default|import("ol/Feature").default[]>} e
+         */
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
 
-        switch (true) {
-          case !e.detail || e.detail?.length === 0: {
-            this.value = null;
-            break;
+          switch (true) {
+            case !e.detail || e.detail?.length === 0: {
+              this.value = null;
+              break;
+            }
+            case isSelection: {
+              /** @param {import("ol/Feature").default} feature */
+              const getProperty = (feature) =>
+                feature.get(this.schema.options.featureProperty) ?? feature;
+              this.value = e.detail.length
+                ? e.detail.map(getProperty)
+                : getProperty(e.detail);
+              break;
+            }
+            case isBox: {
+              /** @param {import("ol/Feature").default} feature */
+              const getExtent = (feature) => feature.getGeometry().getExtent();
+              this.value = e.detail?.length
+                ? e.detail.map(getExtent)
+                : getExtent(e.detail);
+              break;
+            }
+            case isPolygon:
+              this.value = e.detail;
+              break;
+            default:
+              break;
           }
-          case isSelection: {
-            /** @param {import("ol/Feature").default} feature */
-            const getProperty = (feature) =>
-              feature.get(this.schema.options.featureProperty) ?? feature;
-            this.value = e.detail.length
-              ? e.detail.map(getProperty)
-              : getProperty(e.detail);
-            break;
-          }
-          case isBox: {
-            /** @param {import("ol/Feature").default} feature */
-            const getExtent = (feature) => feature.getGeometry().getExtent();
-            this.value = e.detail?.length
-              ? e.detail.map(getExtent)
-              : getExtent(e.detail);
-            break;
-          }
-          case isPolygon:
-            this.value = e.detail;
-            break;
-          default:
-            break;
+
+          this.onChange(true);
         }
-
-        this.onChange(true);
-      },
+      ),
     );
 
     this.container.appendChild(this.control);

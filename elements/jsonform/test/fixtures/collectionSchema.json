@@ -627,14 +627,14 @@
             "spatial": {
               "title": "Spatial Extents",
               "type": "object",
-              "format": "bounding-boxes",
+              "format": "bboxes",
               "required": ["bbox"],
               "properties": {
                 "bbox": {
                   "type": "array",
                   "items": {
                     "type": "array",
-                    "format": "bounding-box",
+                    "format": "bbox",
                     "items": { "type": "number" },
                     "minItems": 4,
                     "maxItems": 4
@@ -724,14 +724,14 @@
             "spatial": {
               "title": "Spatial Extents",
               "type": "object",
-              "format": "bounding-boxes",
+              "format": "bboxes",
               "required": ["bbox"],
               "properties": {
                 "bbox": {
                   "type": "array",
                   "items": {
                     "type": "array",
-                    "format": "bounding-box",
+                    "format": "bbox",
                     "items": { "type": "number" },
                     "minItems": 4,
                     "maxItems": 4
