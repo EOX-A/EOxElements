@@ -48,10 +48,19 @@ export class SpatialEditor extends AbstractEditor {
 
     const drawtoolsEl = document.createElement("eox-drawtools");
 
+    const isSelection = ["feature", "features"].some((f) =>
+      this.schema.format.includes(f)
+    );
+
     const isPolygon = ["polygon", "polygons"].some((p) =>
       this.schema.format.includes(p)
     );
-    const isMulti = ["bounding-boxes", "polygons"].some((m) =>
+
+    const isBox = ["bounding-boxes", "bounding-box"].some((p) =>
+      this.schema.format.includes(p)
+    );
+
+    const isMulti = ["bounding-boxes", "polygons", "features"].some((m) =>
       this.schema.format.includes(m)
     );
     const enableEditor = this.schema.format.includes("editor");
@@ -60,6 +69,9 @@ export class SpatialEditor extends AbstractEditor {
     const attributes = {
       type: drawType,
     };
+    if (isSelection) {
+      attributes["layer-id"] = this.schema.options.layerId;
+    }
     if (isMulti) {
       attributes["multiple-features"] = true;
     }
@@ -67,12 +79,13 @@ export class SpatialEditor extends AbstractEditor {
     if (enableEditor) {
       attributes["import-features"] = true;
       attributes["show-editor"] = true;
-      if (isMulti) {
-        attributes["show-list"] = true;
-      }
+    }
+    
+    if (isMulti) {
+      attributes["show-list"] = true;
     }
 
-    if ("for" in this.options) {
+    if ("for" in (this.schema.options ?? {})) {
       attributes.for = this.options.for;
     } else {
       // We need to create a map
@@ -86,7 +99,7 @@ export class SpatialEditor extends AbstractEditor {
         style: "width: 100%; height: 300px;",
       });
       this.container.appendChild(eoxmapEl);
-      drawtoolsEl.for = "eox-map#" + mapId;
+      attributes.for = "eox-map#" + mapId;
     }
     setAttributes(drawtoolsEl, attributes);
 
@@ -105,18 +118,46 @@ export class SpatialEditor extends AbstractEditor {
     }
 
     // Add event listener for change events on the draw tools
-    this.input.addEventListener("drawupdate", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (this.schema.format === "bounding-boxes") {
-        this.value = e.detail.map((val) => {
-          return val.getGeometry().getExtent();
-        });
-      } else if (e.detail.length > 0) {
-        this.value = e.detail[0].getGeometry().getExtent();
-      }
-      this.onChange(true);
-    });
+    //@ts-expect-error
+    this.input.addEventListener("drawupdate",/**
+      * @param {CustomEvent<import("ol/Feature").default|import("ol/Feature").default[]>} e
+      */
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        switch (true) {
+          case (!e.detail || e.detail?.length === 0): {
+            this.value = null;
+            break
+          }
+          case isSelection: {
+            /** @param {import("ol/Feature").default} feature */
+            const getProperty = (feature) =>
+              feature.get(this.schema.options.featureProperty) ??
+              feature;
+            this.value = e.detail.length
+              ? e.detail.map(getProperty)
+              : getProperty(e.detail);
+            break
+          }
+          case isBox: {
+            /** @param {import("ol/Feature").default} feature */
+            const getExtent = (feature) => feature.getGeometry().getExtent();
+            this.value = e.detail?.length
+              ? e.detail.map(getExtent)
+              : getExtent(e.detail);
+            break
+          }
+          case isPolygon:
+            this.value = e.detail;
+            break
+          default:
+            break;
+        }
+
+        this.onChange(true);
+      });
 
     this.container.appendChild(this.control);
   }
@@ -127,8 +168,10 @@ export class SpatialEditor extends AbstractEditor {
       this.label.parentNode.removeChild(this.label);
     if (this.description && this.description.parentNode)
       this.description.parentNode.removeChild(this.description);
-    if (this.input && this.input.parentNode)
+    if (this.input && this.input.parentNode) {
       this.input.parentNode.removeChild(this.input);
+      this.input.remove();
+    }
     super.destroy();
   }
 }

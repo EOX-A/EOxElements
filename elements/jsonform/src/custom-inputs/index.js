@@ -49,6 +49,16 @@ const inputs = [
     format: "polygon-editor",
     func: SpatialEditor,
   },
+  {
+    type: "object",
+    format: "feature",
+    func: SpatialEditor,
+  },
+  {
+    type: "object",
+    format: "features",
+    func: SpatialEditor,
+  },
 ];
 
 /**
