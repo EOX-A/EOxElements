@@ -1,4 +1,3 @@
-import { getJsonLayer } from "../../../../../utils";
 /**
  * Initializes the selection interactions for the given layer ID to the DrawTool.
  *
@@ -10,7 +9,14 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
     return;
   }
 
-  const selectionLayer = getJsonLayer(EoxMap.layers, updatedLayerId) || null;
+  const selectionLayer =
+    JSON.parse(
+      JSON.stringify(
+        /** @type {import("../../../../map/src/main").EoxLayer} */ (
+          EoxMap.getLayerById(updatedLayerId).get("_jsonDefinition")
+        ),
+      ),
+    ) || null;
   if (!selectionLayer) {
     console.error(`Layer with id ${updatedLayerId} not found`);
     return;
