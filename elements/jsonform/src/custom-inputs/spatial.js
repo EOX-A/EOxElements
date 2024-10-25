@@ -117,6 +117,25 @@ export class SpatialEditor extends AbstractEditor {
       this.input.disabled = true;
     }
 
+    const featureProperty = this.schema?.options?.featureProperty;
+
+    /**
+     * Ensures that features of length 1 are not returned as an array
+     *
+     * @param {import("ol/Feature").default|import("ol/Feature").default[]} features
+     * @param {(feature:import("ol/Feature").default)=>any} callback
+     */
+    const spreadFeatures = (features, callback) => {
+      if (features.length) {
+        if (features.length === 1) {
+          return callback(features[0]);
+        }
+        return features.map(callback);
+      } else {
+        return callback(features);
+      }
+    };
+
     // Add event listener for change events on the draw tools
     this.input.addEventListener(
       "drawupdate",
@@ -136,22 +155,21 @@ export class SpatialEditor extends AbstractEditor {
             case isSelection: {
               /** @param {import("ol/Feature").default} feature */
               const getProperty = (feature) =>
-                feature.get(this.schema.options.featureProperty) ?? feature;
-              this.value = e.detail.length
-                ? e.detail.map(getProperty)
-                : getProperty(e.detail);
+                featureProperty
+                  ? (feature.get(featureProperty) ?? feature)
+                  : feature;
+
+              this.value = spreadFeatures(e.detail, getProperty);
               break;
             }
             case isBox: {
               /** @param {import("ol/Feature").default} feature */
               const getExtent = (feature) => feature.getGeometry().getExtent();
-              this.value = e.detail?.length
-                ? e.detail.map(getExtent)
-                : getExtent(e.detail);
+              this.value = spreadFeatures(e.detail, getExtent);
               break;
             }
             case isPolygon:
-              this.value = e.detail;
+              this.value = spreadFeatures(e.detail, (feature) => feature);
               break;
             default:
               break;
