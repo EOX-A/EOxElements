@@ -202,10 +202,13 @@ export class EOxSelectInteraction {
     // Set up the map event listener for the specified condition (e.g., click, pointermove)
     const changeLayerListener = () => {
       if (eoxMap.getLayerById(selectLayer.get("id"))) {
-        eoxMap.selectInteractions[options.id]?.setActive(true);
+        // If a select layer exists, keep it in current activation state
+        // (active/inactive) and assign it (and the overlay) to the map
         this.selectStyleLayer?.setMap(this.eoxMap.map);
         overlay?.setMap(this.eoxMap.map);
       } else {
+        // If the selection layer does not exist any more,
+        // set it to inactive, and remove layer plus overlay
         eoxMap.selectInteractions[options.id]?.setActive(false);
         this.selectStyleLayer?.setMap(null);
         overlay?.setMap(null);
