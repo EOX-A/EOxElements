@@ -63,11 +63,9 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
   const oldDrawInteraction = EoxDrawTool.draw;
   EoxDrawTool.draw = EoxMap.selectInteractions["SelectLayerClickInteraction"];
 
-  setTimeout(() => {
-    oldDrawInteraction.setActive(false);
-    EoxMap.selectInteractions["SelectLayerClickInteraction"].setActive(false);
-    EoxMap.selectInteractions["SelectLayerHoverInteraction"].setActive(false);
-  }, 200);
+  oldDrawInteraction.setActive(false);
+  EoxMap.selectInteractions["SelectLayerClickInteraction"].setActive(false);
+  EoxMap.selectInteractions["SelectLayerHoverInteraction"].setActive(false);
 };
 
 export default initSelection;

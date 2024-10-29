@@ -6,7 +6,9 @@ import {
   clickDrawBtnTest,
   copyGeoJsonEditorTest,
   loadDrawToolsTest,
+  setLayerId,
 } from "./cases";
+
 import { TEST_SELECTORS } from "../src/enums";
 
 // Destructuring TEST_SELECTORS object
@@ -36,4 +38,6 @@ describe("Drawtools", () => {
   // Test case to check whether a valid geo-json present in the clipboard
   it("check valid geo-json present in the clipboard.", () =>
     copyGeoJsonEditorTest());
+  // Test case to set the layer id and check if the draw button icon changes
+  it("setting layer id changes draw btn icon", () => setLayerId());
 });
