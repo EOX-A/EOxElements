@@ -121,7 +121,7 @@ export class EOxSelectInteraction {
           return initialStyle(feature, resolution); // Apply style only if the feature is selected
         }
         return null;
-      }
+      },
     );
 
     /**
@@ -278,7 +278,7 @@ export class EOxSelectInteraction {
       } else {
         const map = this.eoxMap.map;
         const allRenderedFeatures = this.selectLayer.getFeaturesInExtent(
-          map.getView().calculateExtent(map.getSize())
+          map.getView().calculateExtent(map.getSize()),
         );
         for (let i = 0; i < allRenderedFeatures.length; i++) {
           const renderFeature = allRenderedFeatures[i];
@@ -321,7 +321,7 @@ export class EOxSelectInteraction {
       return feature.get("id");
     }
     throw Error(
-      "No feature id found. Please provide which feature property should be taken instead using idProperty."
+      "No feature id found. Please provide which feature property should be taken instead using idProperty.",
     );
   }
 }
@@ -344,7 +344,7 @@ export function addSelect(EOxMap, selectLayer, options) {
     EOxMap,
     selectLayer,
     // @ts-expect-error - Argument of type 'DrawOptions | SelectOptions' is not assignable to parameter of type 'SelectOptions'
-    options
+    options,
   );
 
   return EOxMap.selectInteractions[options.id];
