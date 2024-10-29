@@ -30,6 +30,16 @@ const addSelectInteraction = () => {
         // moving the cursor to a feature, moving it off the feature, and onto the feature again
         expect(featureSelectCounter).to.be.equal(2);
       }
+      expect(
+        eoxMap.map
+          .getInteractions()
+          .getArray()
+          .find(
+            (i) =>
+              i.cursor_ ===
+              vectorLayerStyleJson[0].interactions[0].options.hover.cursor,
+          ),
+      ).to.exist;
     });
 
     eoxMap.map.on("loadend", () => {
