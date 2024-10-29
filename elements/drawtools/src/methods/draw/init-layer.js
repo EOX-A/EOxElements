@@ -17,6 +17,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const OlMap = EoxMap.map;
 
   EoxDrawTool.drawLayer = EoxMap.addOrUpdateLayer({
+    zIndex: 100,
     type: "Vector",
     properties: {
       id: "drawLayer",

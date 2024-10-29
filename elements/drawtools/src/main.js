@@ -92,7 +92,7 @@ export class EOxDrawTools extends LitElement {
     this.draw = null;
 
     /**
-     * The current native OpenLayers draw `layer`
+     * The current native OpenLayers draw `layer` (initialized with a `zIndex` of 100)
      * @type import("ol/layer/Vector").default
      */
 
