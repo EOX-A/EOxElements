@@ -7,10 +7,12 @@
     "flatgeobuf": "^3.35.0",
     "lit": "^3.0.2",
     "ol": "^10.2.0",
+    "ol-ext": "^4.0.24",
     "ol-stac": "^1.0.0-beta.10",
     "proj4": "^2.9.2"
   },
   "devDependencies": {
+    "@types/ol-ext": "github:siedlerchr/types-ol-ext#a76d90780322f405e6fd4ac1756cb7de89ac387b",
     "@types/proj4": "^2.5.4",
     "vite": "^5.0.2"
   },

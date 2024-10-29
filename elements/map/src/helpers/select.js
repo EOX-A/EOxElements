@@ -5,6 +5,7 @@ import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";
 import VectorLayer from "ol/layer/Vector";
 import { createEmpty, extend, isEmpty } from "ol/extent";
+import Hover from "ol-ext/interaction/Hover";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
@@ -215,6 +216,23 @@ export class EOxSelectInteraction {
       }
     };
     eoxMap.map.getLayerGroup().on("change", changeLayerListener);
+
+    /**
+     * Sets up the ol-ext Hover interaction
+     * for the selection layer
+     * and passes the `options.hover` object
+     */
+    this.hover = new Hover({
+      ...options.hover,
+      layers: [this.selectLayer],
+    });
+    this.hover.setActive(this.active);
+    this.eoxMap.map.addInteraction(this.hover);
+    if (options.condition === "click") {
+      this.hover.on("enter", () => {
+        this.hover.setCursor("pointer");
+      });
+    }
   }
 
   /**
@@ -223,6 +241,7 @@ export class EOxSelectInteraction {
    */
   setActive(active) {
     this.active = active;
+    this.hover?.setActive(active);
   }
 
   /**
