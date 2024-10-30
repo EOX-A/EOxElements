@@ -127,7 +127,7 @@ export class EOxSelectInteraction {
      * Listener to handle selection events
      * @param {import("ol/MapBrowserEvent").default<UIEvent>} event
      * **/
-    const listener = (event) => {
+    this.listener = (event) => {
       if (!this.active) {
         return;
       }
@@ -179,7 +179,7 @@ export class EOxSelectInteraction {
     };
 
     // Set up the map event listener for the specified condition (e.g., click, pointermove)
-    this.eoxMap.map.on(options.condition || "click", listener);
+    this.eoxMap.map.on(options.condition || "click", this.listener);
 
     // Set up the map event listener for the specified condition (e.g., click, pointermove)
     this.selectLayer.on("change:opacity", () => {
@@ -282,6 +282,7 @@ export class EOxSelectInteraction {
     this.selectStyleLayer.setMap(null);
     delete this.eoxMap.selectInteractions[this.options.id];
     this.selectLayer.un("change:source", this.changeSourceListener);
+    this.eoxMap.map.un(this.options.condition || "click", this.listener);
   }
 
   /**
