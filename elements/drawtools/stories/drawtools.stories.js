@@ -11,6 +11,7 @@ import {
   UnstyledStory,
   CSSVariableOverrideStory,
   ImportFeaturesWithEditorStory,
+  DistanceMeasurementStory,
 } from "./index";
 
 export default {
@@ -66,3 +67,8 @@ export const CSSVariableOverride = CSSVariableOverrideStory;
  * By setting the `unstyled` attribute or property, the element has no styling applied.
  */
 export const Unstyled = UnstyledStory;
+
+/**
+ * By setting the `unstyled` attribute or property, the element has no styling applied.
+ */
+export const DistanceMeasurement = DistanceMeasurementStory;
