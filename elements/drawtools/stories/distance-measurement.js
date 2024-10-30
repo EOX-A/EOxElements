@@ -2,8 +2,7 @@ import { html } from "lit";
 import { STORIES_MAP_STYLE, STORIES_LAYERS_ARRAY } from "../src/enums";
 
 /**
- * Component demonstrating how `DrawType` component generates a set of map instances with different drawing capabilities,
- * allowing users to visualize and interact with various drawing tools supported by the eox-drawtools module.
+ * Component demonstrating how EOxMap and the draw tools can be used to measure distances on a map.
  */
 export const DistanceMeasurement = {
   render: () => html`

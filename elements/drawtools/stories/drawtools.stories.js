@@ -80,6 +80,7 @@ export const CSSVariableOverride = CSSVariableOverrideStory;
 export const Unstyled = UnstyledStory;
 
 /**
- * By setting the `unstyled` attribute or property, the element has no styling applied.
+ * Setting the `measure` attribute on the map and drawing with `LineString`s will cause
+ * a tooltip to be displayed showing the distance of the line being drawn.
  */
 export const DistanceMeasurement = DistanceMeasurementStory;
