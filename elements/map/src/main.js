@@ -95,6 +95,7 @@ export class EOxMap extends LitElement {
       intersections: { attribute: false, state: true, type: Object },
       selectInteractions: { attribute: false, state: true, type: Object },
       mapControls: { attribute: false, state: true, type: Object },
+      measure: { attribute: "measure", type: Boolean },
     };
   }
 
