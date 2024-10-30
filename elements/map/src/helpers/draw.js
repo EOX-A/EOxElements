@@ -3,7 +3,7 @@ import Draw, { createBox } from "ol/interaction/Draw";
 import { addNewFeature } from "../helpers";
 import { getArea, getLength } from "ol/sphere";
 import Overlay from "ol/Overlay";
-import { LineString, Polygon } from "ol/geom";
+import { LineString } from "ol/geom";
 import { unByKey } from "ol/Observable";
 
 /**
@@ -162,7 +162,7 @@ const formatLength = function (line) {
  * @param {Polygon} polygon The polygon.
  * @return {string} Formatted area.
  */
-const formatArea = function (polygon) {
+const _formatArea = function (polygon) {
   const area = getArea(polygon);
   let output;
   if (area > 10000) {
