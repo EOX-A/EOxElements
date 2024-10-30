@@ -1,4 +1,5 @@
 import { html } from "lit";
+import vectorLayerJson from "../../fixtures/vectorLayer.json";
 import vectorTileLayerJson from "../../fixtures/vectorTilesLayer.json";
 
 /**
@@ -23,7 +24,7 @@ const removeSelectInteraction = () => {
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
     expect(eoxMap.selectInteractions.selectInteraction).to.exist;
-    eoxMap.layers = JSON.parse(JSON.stringify(vectorTileLayerJson));
+    eoxMap.layers = vectorLayerJson;
     expect(eoxMap.selectInteractions.selectInteraction).to.not.exist;
   });
 };
