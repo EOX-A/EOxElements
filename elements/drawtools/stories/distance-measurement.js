@@ -1,8 +1,5 @@
 import { html } from "lit";
-import {
-  STORIES_MAP_STYLE,
-  STORIES_LAYERS_ARRAY,
-} from "../src/enums";
+import { STORIES_MAP_STYLE, STORIES_LAYERS_ARRAY } from "../src/enums";
 
 /**
  * Component demonstrating how `DrawType` component generates a set of map instances with different drawing capabilities,
