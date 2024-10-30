@@ -55,7 +55,7 @@ describe("select interaction on click", () => {
   /**
    * Test case to highlight by ID (Vector Tile Layer)
    */
-  it.only("programmatically highlight by IDs (VectorTileLayer)", () =>
+  it("programmatically highlight by IDs (VectorTileLayer)", () =>
     highlightByIdVectorTileLayer(vectorTileInteraction));
 
   /**
