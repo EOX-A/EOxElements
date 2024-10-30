@@ -55,39 +55,53 @@ export function addDraw(EOxMap, drawLayer, options) {
 
   // Create measure tooltip
   let measureTooltipElement = document.createElement("div");
-  measureTooltipElement.className = "ol-tooltip ol-tooltip-measure";
-  measureTooltipElement.style.padding = "4px 2px";
-  measureTooltipElement.style.backdropFilter = "blur(20px)";
-  measureTooltipElement.style.background = "#00418033";
+
   const measureTooltip = new Overlay({
     element: measureTooltipElement,
-    offset: [0, 0],
-    positioning: "bottom-center",
+    offset: [16, 0],
+    positioning: "center-left",
     stopEvent: false,
     insertFirst: false,
   });
+
+  measureTooltipElement.className = "ol-tooltip ol-tooltip-measure";
+  measureTooltipElement.style.padding = "3px 7px";
+  measureTooltipElement.style.borderRadius = "4px";
+  measureTooltipElement.style.backdropFilter = "blur(20px)";
+  measureTooltipElement.style.background = "#004180AA";
+  measureTooltipElement.style.fontFamily = "monospace, sans-serif";
+  measureTooltipElement.style.color = "#FFF";
+  measureTooltipElement.style.visibility = "hidden";
+  measureTooltipElement.style.pointerEvents = "none";
+
   let sketch = null;
   let listener;
 
+  // Initialize the measurement tooltip so that it displays the length of the line
+  // as a distance in kilometers while following the last point of the drawn line.
   drawInteraction.on("drawstart", (evt) => {
-    sketch = evt.feature;
-    let tooltipCoord = evt.coordinate;
-
-    EOxMap.map.addOverlay(measureTooltip);
-
-    listener = sketch.getGeometry().on("change", function (evt) {
-      const geometry = evt.target;
-      console.log(geometry);
-
-      if (geometry instanceof Polygon) {
-        measureTooltipElement.innerHTML = formatArea(geometry);
-      } else if (geometry instanceof LineString) {
-        measureTooltipElement.innerHTML = formatLength(geometry);
+    if (EOxMap.measure) {
+      // Ensure the tooltip appears only in `measure` mode when drawing a line string.
+      if (options_.type === "LineString") {
+        measureTooltipElement.style.visibility = "visible";
+        measureTooltipElement.style.pointerEvents = "inherit";
       }
+      sketch = evt.feature;
+      let tooltipCoord = evt.coordinate;
 
-      tooltipCoord = geometry.getLastCoordinate();
-      measureTooltip.setPosition(tooltipCoord);
-    });
+      EOxMap.map.addOverlay(measureTooltip);
+
+      listener = sketch.getGeometry().on("change", function (evt) {
+        const geometry = evt.target;
+
+        if (geometry instanceof LineString) {
+          measureTooltipElement.innerHTML = formatLength(geometry);
+          tooltipCoord = geometry.getLastCoordinate();
+        }
+        tooltipCoord = geometry.getLastCoordinate();
+        measureTooltip.setPosition(tooltipCoord);
+      });
+    }
   });
 
   // Listen for the 'drawend' event to handle the addition of new features to the layer
@@ -95,13 +109,13 @@ export function addDraw(EOxMap, drawLayer, options) {
     if (!drawLayer.get("isDrawingEnabled")) return;
     addNewFeature(e, drawLayer, EOxMap, true);
 
-    measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
-    measureTooltip.setOffset([0, -7]);
-    // unset sketch
-    sketch = null;
-    // unset tooltip so that a new one can be created
-    //measureTooltipElement.remove();
-    unByKey(listener);
+    // Tear down the measurement tooltip when the drawing is complete
+    if (EOxMap.measure) {
+      measureTooltipElement.className = "ol-tooltip ol-tooltip-static";
+      // unset sketch
+      sketch = null;
+      unByKey(listener);
+    }
   });
 
   // identifier to retrieve the interaction
