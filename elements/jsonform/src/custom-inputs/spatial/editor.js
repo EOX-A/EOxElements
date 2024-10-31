@@ -1,17 +1,6 @@
 import { AbstractEditor } from "@json-editor/json-editor/src/editor.js";
+import { isBox, isMulti, isPolygon, isSelection, setAttributes } from "./utils";
 // import "@eox/drawtools";
-
-/**
- * Set multiple attributes to an element
- *
- * @param {Element} element - The DOM element to set attributes on
- * @param {{[key: string]: any}} attributes - The attributes to set on the element
- */
-function setAttributes(element, attributes) {
-  Object.keys(attributes).forEach((attr) => {
-    element.setAttribute(attr, attributes[attr]);
-  });
-}
 
 // Define a custom editor class extending AbstractEditor
 export class SpatialEditor extends AbstractEditor {
@@ -48,31 +37,16 @@ export class SpatialEditor extends AbstractEditor {
 
     const drawtoolsEl = document.createElement("eox-drawtools");
 
-    const isSelection = ["feature", "features"].some((f) =>
-      this.schema.format.includes(f),
-    );
-
-    const isPolygon = ["polygon", "polygons"].some((p) =>
-      this.schema.format.includes(p),
-    );
-
-    const isBox = ["bounding-boxes", "bounding-box"].some((p) =>
-      this.schema.format.includes(p),
-    );
-
-    const isMulti = ["bounding-boxes", "polygons", "features"].some((m) =>
-      this.schema.format.includes(m),
-    );
     const enableEditor = this.schema.format.includes("editor");
 
-    const drawType = isPolygon ? "Polygon" : "Box";
+    const drawType = isPolygon(this.schema) ? "Polygon" : "Box";
     const attributes = {
       type: drawType,
     };
-    if (isSelection) {
+    if (isSelection(this.schema)) {
       attributes["layer-id"] = this.schema.options.layerId;
     }
-    if (isMulti) {
+    if (isMulti(this.schema)) {
       attributes["multiple-features"] = true;
     }
 
@@ -81,7 +55,7 @@ export class SpatialEditor extends AbstractEditor {
       attributes["show-editor"] = true;
     }
 
-    if (isMulti) {
+    if (isMulti(this.schema)) {
       attributes["show-list"] = true;
     }
 
@@ -127,7 +101,7 @@ export class SpatialEditor extends AbstractEditor {
      */
     const spreadFeatures = (features, callback) => {
       if (features.length) {
-        if (features.length === 1) {
+        if (!isMulti(this.schema) && features.length === 1) {
           return callback(features[0]);
         }
         return features.map(callback);
@@ -152,7 +126,7 @@ export class SpatialEditor extends AbstractEditor {
               this.value = null;
               break;
             }
-            case isSelection: {
+            case isSelection(this.schema): {
               /** @param {import("ol/Feature").default} feature */
               const getProperty = (feature) =>
                 featureProperty
@@ -162,13 +136,13 @@ export class SpatialEditor extends AbstractEditor {
               this.value = spreadFeatures(e.detail, getProperty);
               break;
             }
-            case isBox: {
+            case isBox(this.schema): {
               /** @param {import("ol/Feature").default} feature */
               const getExtent = (feature) => feature.getGeometry().getExtent();
               this.value = spreadFeatures(e.detail, getExtent);
               break;
             }
-            case isPolygon:
+            case isPolygon(this.schema):
               this.value = spreadFeatures(e.detail, (feature) => feature);
               break;
             default:

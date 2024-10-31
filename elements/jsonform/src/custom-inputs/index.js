@@ -1,6 +1,6 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { MinMaxEditor } from "./minmax";
-import { SpatialEditor } from "./spatial";
+import { SpatialEditor, spatialValidator } from "./spatial";
 
 // Define custom input types
 const inputs = [
@@ -10,52 +10,52 @@ const inputs = [
     func: MinMaxEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "bounding-boxes",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "bounding-box",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "bounding-boxes-editor",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "bounding-box-editor",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "polygons",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "polygon",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "polygons-editor",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "polygon-editor",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "feature",
     func: SpatialEditor,
   },
   {
-    type: "object",
+    type: "spatial",
     format: "features",
     func: SpatialEditor,
   },
@@ -67,6 +67,9 @@ const inputs = [
  * @param {{[key: string]: any}} startVals - Initial values for the custom inputs
  */
 export const addCustomInputs = (startVals) => {
+  // Add custom validators for spatial inputs
+  JSONEditor.defaults["custom_validators"].push(spatialValidator);
+
   // Iterate over each custom input definition
   inputs.map(({ type, format, func }) => {
     JSONEditor.defaults["startVals"] = startVals;

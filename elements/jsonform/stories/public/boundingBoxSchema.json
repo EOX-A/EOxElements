@@ -3,25 +3,25 @@
   "properties": {
     "bboxes": {
       "title": "Multi bbox example",
-      "type": "object",
+      "type": "spatial",
       "properties": {},
       "format": "bounding-boxes"
     },
     "bbox": {
       "title": "Single bbox example",
-      "type": "object",
+      "type": "spatial",
       "properties": {},
       "format": "bounding-box"
     },
     "bboxes-editor": {
       "title": "Multi bbox example + Editor",
-      "type": "object",
+      "type": "spatial",
       "properties": {},
       "format": "bounding-boxes-editor"
     },
     "bbox-editor": {
       "title": "Single bbox example + Editor",
-      "type": "object",
+      "type": "spatial",
       "properties": {},
       "format": "bounding-box-editor"
     }
