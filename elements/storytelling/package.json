@@ -25,7 +25,7 @@
     "isomorphic-dompurify": "^2.4.0",
     "joi": "^17.12.3",
     "js-yaml": "^4.1.0",
-    "lit": "^3.0.2",
+    "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",
     "markdown-it": "^14.0.0"
   },
