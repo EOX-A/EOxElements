@@ -1,4 +1,4 @@
-import{j as e}from"./jsx-runtime-CJ5R7Kx3.js";import{useMDXComponents as r}from"./index-D--Q2AGP.js";import"./_commonjsHelpers-BosuxZz1.js";function o(n){const t={a:"a",h1:"h1",h2:"h2",p:"p",...r(),...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(t.h1,{id:"eoxelements-beta",children:"EOxElements [beta]"}),`
+import{j as e}from"./jsx-runtime-DDll1Hf8.js";import{useMDXComponents as r}from"./index-BogtSeel.js";import"./_commonjsHelpers-BosuxZz1.js";function o(n){const t={a:"a",h1:"h1",h2:"h2",p:"p",...r(),...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(t.h1,{id:"eoxelements-beta",children:"EOxElements [beta]"}),`
 `,`
 `,e.jsxs("a",{href:"https://github.com/EOX-A/EOxElements",target:"_blank",style:{display:"flex",alignItems:"center",margin:"20px 0"},children:[e.jsx("img",{src:"https://eox-a.github.io/EOxElements/github-mark.svg",alt:"github logo",width:"25",style:{marginRight:"6px"}}),"GitHub repository"]}),`
 `,e.jsx(t.h2,{id:"introduction",children:"Introduction"}),`
