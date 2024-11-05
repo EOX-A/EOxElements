@@ -18,7 +18,10 @@ const addSelectInteractionVectorTile = (vectorTileInteraction) => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = $el[0];
       eoxMap.addEventListener("select", (evt) => {
-        expect(eoxMap.map.getTargetElement().style.cursor, 'changes cursor to pointer').to.be.equal('pointer');
+        expect(
+          eoxMap.map.getTargetElement().style.cursor,
+          "changes cursor to pointer",
+        ).to.be.equal("pointer");
         expect(evt.detail.feature).to.exist;
         resolve();
       });
