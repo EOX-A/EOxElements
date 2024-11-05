@@ -28,9 +28,7 @@ export function transformProperties(properties, type = "property") {
     // Replace all plain text URLs with clickable links, unless already converted.
     property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
-      (
-        url,
-      ) => {
+      (url) => {
         return `<a target="_blank" href="${url}">${url}</a>`;
       },
     );
