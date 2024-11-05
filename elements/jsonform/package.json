@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "prepack": "tsc -p tsconfig.emit.json || true",
+    "prepack": "tsc -p tsconfig.build.json || true",
     "build": "vite build",
     "watch": "vite build --watch"
   },
