@@ -15,7 +15,19 @@
     "src"
   ],
   "main": "./src/main.js",
+  "types":"./types/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc -p tsconfig.emit.json || true",
     "build": "vite build",
     "watch": "vite build --watch"
   },
