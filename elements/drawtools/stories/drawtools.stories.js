@@ -70,7 +70,7 @@ export const SelectFeature = SelectFeatureStory;
  */
 export const MultiFeaturesSelect = MultiFeaturesSelectStory;
 /**
- * Showcasing the combination of `multiple-features`, `show-list` and `layer-id` attributes or properties, allowing the selection of multiple features.
+ * Showcasing the possibilty to emit drawn features in different projections
  */
 export const FeaturesProjection = FeaturesProjectionStory;
 /**
