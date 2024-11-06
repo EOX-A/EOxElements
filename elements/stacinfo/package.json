@@ -3,7 +3,6 @@
   "version": "0.5.0",
   "type": "module",
   "devDependencies": {
-    "stac-js": "^0.0.9",
     "vite": "^5.0.2"
   },
   "engines": {

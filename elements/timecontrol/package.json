@@ -3,7 +3,7 @@
   "version": "0.9.0",
   "type": "module",
   "devDependencies": {
-    "ol": "^10.0.0",
+    "ol": "^10.2.0",
     "vite": "^5.0.2"
   },
   "engines": {
