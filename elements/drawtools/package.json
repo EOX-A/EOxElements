@@ -11,11 +11,24 @@
     "node": ">=18.0.0"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
+  "types": "./types/drawtools/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/drawtools/src/main.d.ts"
+      ],
+      "src/*": [
+        "./types/drawtools/src/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc -p tsconfig.build.json || true",
     "build": "vite build",
     "watch": "vite build --watch"
   },

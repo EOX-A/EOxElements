@@ -115,8 +115,7 @@ export class EOxStacInfo extends LitElement {
   /**
    * Lifecycle method called when the element's properties change.
    * Fetches STAC data and updates properties accordingly.
-   *
-   * @param {{has: function}} _changedProperties - The properties that changed.
+   * @param {Map} _changedProperties
    */
   updated(_changedProperties) {
     if (_changedProperties.has("for")) fetchSTAC(this);

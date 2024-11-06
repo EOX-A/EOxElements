@@ -19,11 +19,24 @@
     "node": ">=18.0.0"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
+  "types": "./types/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/src/main.d.ts"
+      ],
+      "src/*": [
+        "./types/src/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc --project tsconfig.build.json || true",
     "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
     "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
   }
