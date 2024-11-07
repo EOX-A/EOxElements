@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.11.0...drawtools-v0.11.1) (2024-11-04)
+
+
+### Bug Fixes
+
+* Initialize draw layer with `zIndex` 100 ([#1344](https://github.com/EOX-A/EOxElements/issues/1344)) ([e32858c](https://github.com/EOX-A/EOxElements/commit/e32858c6abb724fa4bd0cd66edf5de54956ff96a))
+
 ## [0.11.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.10.0...drawtools-v0.11.0) (2024-10-22)
 
 

@@ -1,11 +1,11 @@
 {
   "name": "@eox/map",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "type": "module",
   "dependencies": {
     "@eox/elements-utils": "^0.0.1",
     "flatgeobuf": "^3.35.0",
-    "lit": "^3.0.2",
+    "lit": "^3.2.0",
     "ol": "^10.2.0",
     "ol-stac": "^1.0.0-beta.10",
     "proj4": "^2.9.2"
@@ -19,11 +19,24 @@
     "node": ">=18.0.0"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
+  "types": "./types/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/src/main.d.ts"
+      ],
+      "src/*": [
+        "./types/src/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc --project tsconfig.build.json || true",
     "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
     "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
   }

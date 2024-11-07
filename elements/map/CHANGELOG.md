@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.2](https://github.com/EOX-A/EOxElements/compare/map-v1.16.1...map-v1.16.2) (2024-11-04)
+
+
+### Bug Fixes
+
+* Keep selectLayer activation state in change listener ([#1334](https://github.com/EOX-A/EOxElements/issues/1334)) ([543282e](https://github.com/EOX-A/EOxElements/commit/543282e1b0af4d40ad12c57bbffaef05a5ea0b47))
+
 ## [1.16.1](https://github.com/EOX-A/EOxElements/compare/map-v1.16.0...map-v1.16.1) (2024-10-17)
 
 

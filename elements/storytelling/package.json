@@ -10,11 +10,24 @@
     "node": ">=18.0.0"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
+  "types": "./types/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/src/main.d.ts"
+      ],
+      "src/*": [
+        "./types/src/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc -p tsconfig.build.json || true",
     "build": "vite build",
     "watch": "vite build --watch"
   },
@@ -25,11 +38,11 @@
     "isomorphic-dompurify": "^2.4.0",
     "joi": "^17.12.3",
     "js-yaml": "^4.1.0",
-    "lit": "^3.0.2",
+    "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",
     "markdown-it": "^14.0.0"
   },
   "peerDependencies": {
-    "@eox/jsonform": "^0.9.0"
+    "@eox/jsonform": "*"
   }
 }
