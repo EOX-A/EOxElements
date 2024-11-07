@@ -631,15 +631,8 @@
               "required": ["bbox"],
               "properties": {
                 "bbox": {
-                  "type": "array",
-                  "items": {
-                    "type": "array",
-                    "format": "bounding-box",
-                    "items": { "type": "number" },
-                    "minItems": 4,
-                    "maxItems": 4
-                  },
-                  "minItems": 1
+                  "type": "spatial",
+                   "format": "bounding-boxes"
                 }
               }
             },
