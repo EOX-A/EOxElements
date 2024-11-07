@@ -24,6 +24,10 @@ const checkDrawtoolsForTypeSpatial = () => {
         );
         // Check if the drawtools have the correct `type` attribute
         expect($el[0].getAttribute("type")).to.equal("Box");
+        // Check if the drawtools have the correct `projection` attribute
+        expect($el[0].getAttribute("projection")).to.equal(
+          schemaFixture.properties.bbox.options.projection,
+        );
       });
 
       cy.get('eox-drawtools[id="root[polygons]"]').then(($el) => {
