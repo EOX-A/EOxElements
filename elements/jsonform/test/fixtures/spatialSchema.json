@@ -1,0 +1,20 @@
+{
+    "type": "object",
+    "properties": {
+      "bbox": {
+        "type": "spatial",
+        "options": {
+          "for": "mocked-map#bbox"
+        },
+        "format": "bounding-box"
+      }, 
+      "polygons": {
+        "type": "spatial",
+        "options": {
+          "for": "mocked-map#polygons"
+        },
+        "format": "polygons"
+      }
+    }
+  }
+  

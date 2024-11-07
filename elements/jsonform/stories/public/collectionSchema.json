@@ -632,7 +632,7 @@
               "properties": {
                 "bbox": {
                   "type": "spatial",
-                   "format": "bounding-boxes"
+                  "format": "bounding-boxes"
                 }
               }
             },
