@@ -1,6 +1,6 @@
 {
   "name": "@eox/map",
-  "version": "1.16.2",
+  "version": "1.17.0",
   "type": "module",
   "dependencies": {
     "@eox/elements-utils": "^0.0.1",
