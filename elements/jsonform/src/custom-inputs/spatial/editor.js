@@ -43,6 +43,11 @@ export class SpatialEditor extends AbstractEditor {
     const attributes = {
       type: drawType,
     };
+
+    if (this.schema?.options?.projection) {
+      attributes.projection = this.schema.options.projection;
+    }
+
     if (isSelection(this.schema)) {
       attributes["layer-id"] = this.schema.options.layerId;
     }

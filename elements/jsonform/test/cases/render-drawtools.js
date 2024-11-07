@@ -10,8 +10,7 @@ const checkDrawtoolsForTypeSpatial = () => {
   });
 
   cy.mount(
-    html`
-      <eox-jsonform .schema=${"/spatialSchema.json"}></eox-jsonform>`,
+    html` <eox-jsonform .schema=${"/spatialSchema.json"}></eox-jsonform>`,
   ).as(jsonForm);
   cy.get(jsonForm)
     .shadow()
