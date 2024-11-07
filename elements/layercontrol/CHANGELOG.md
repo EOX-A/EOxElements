@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.24.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.23.0...layercontrol-v0.24.0) (2024-11-07)
+
+
+### Features
+
+* Build and include element's type declarations ([#1353](https://github.com/EOX-A/EOxElements/issues/1353)) ([f17166e](https://github.com/EOX-A/EOxElements/commit/f17166e292ce546a2ff45433a05248330eb63713))
+
 ## [0.23.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.22.0...layercontrol-v0.23.0) (2024-10-17)
 
 
