@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.10.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.9.1...jsonform-v0.10.0) (2024-11-07)
+
+
+### Features
+
+* Build and include element's type declarations ([#1353](https://github.com/EOX-A/EOxElements/issues/1353)) ([f17166e](https://github.com/EOX-A/EOxElements/commit/f17166e292ce546a2ff45433a05248330eb63713))
+
+## [0.9.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.9.0...jsonform-v0.9.1) (2024-11-04)
+
+
+### Bug Fixes
+
+* **deps:** Move lit to package dependencies ([#1347](https://github.com/EOX-A/EOxElements/issues/1347)) ([e17e89e](https://github.com/EOX-A/EOxElements/commit/e17e89e904f26253b8949fd62d2c9f15cf15137e))
+
 ## [0.9.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.8.2...jsonform-v0.9.0) (2024-10-17)
 
 

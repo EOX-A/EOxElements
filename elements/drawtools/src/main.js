@@ -38,6 +38,7 @@ export class EOxDrawTools extends LitElement {
       importFeatures: { attribute: "import-features", type: Boolean },
       showEditor: { attribute: "show-editor", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
+      projection: { type: String },
       noShadow: { type: Boolean },
       type: { type: String },
       unstyled: { type: Boolean },
@@ -93,7 +94,7 @@ export class EOxDrawTools extends LitElement {
     this.draw = null;
 
     /**
-     * The current native OpenLayers draw `layer`
+     * The current native OpenLayers draw `layer` (initialized with a `zIndex` of 100)
      * @type import("ol/layer/Vector").default
      */
 
@@ -135,6 +136,10 @@ export class EOxDrawTools extends LitElement {
      * Show list of features
      */
     this.showList = false;
+    /**
+     * Projection of the emitted drawn features
+     */
+    this.projection = "EPSG:4326";
 
     /**
      * Type of the drawn feature

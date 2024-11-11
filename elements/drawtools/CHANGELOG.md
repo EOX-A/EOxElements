@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.11.1...drawtools-v0.12.0) (2024-11-07)
+
+
+### Features
+
+* Build and include element's type declarations ([#1353](https://github.com/EOX-A/EOxElements/issues/1353)) ([f17166e](https://github.com/EOX-A/EOxElements/commit/f17166e292ce546a2ff45433a05248330eb63713))
+* Enable configuring the projection of emitted features ([#1356](https://github.com/EOX-A/EOxElements/issues/1356)) ([414e908](https://github.com/EOX-A/EOxElements/commit/414e9087240a2ebb4d6d8347f5f540e0d2c69eac))
+
+## [0.11.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.11.0...drawtools-v0.11.1) (2024-11-04)
+
+
+### Bug Fixes
+
+* Initialize draw layer with `zIndex` 100 ([#1344](https://github.com/EOX-A/EOxElements/issues/1344)) ([e32858c](https://github.com/EOX-A/EOxElements/commit/e32858c6abb724fa4bd0cd66edf5de54956ff96a))
+
 ## [0.11.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.10.0...drawtools-v0.11.0) (2024-10-22)
 
 

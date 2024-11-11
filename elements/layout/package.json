@@ -1,16 +1,29 @@
 {
   "name": "@eox/layout",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "devDependencies": {
     "vite": "^5.0.2"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
+  "types": "./types/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc -p tsconfig.build.json || true",
     "build": "vite build",
     "watch": "vite build --watch"
   }

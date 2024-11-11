@@ -1,9 +1,8 @@
 {
   "name": "@eox/jsonform",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "type": "module",
   "devDependencies": {
-    "lit": "^3.0.2",
     "vite": "^5.0.2"
   },
   "engines": {
@@ -11,11 +10,24 @@
     "node": ">=18.0.0"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
+  "types": "./types/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc -p tsconfig.build.json || true",
     "build": "vite build",
     "watch": "vite build --watch"
   },
@@ -23,6 +35,7 @@
     "@eox/elements-utils": "^0.0.1",
     "@json-editor/json-editor": "^2.11.0",
     "easymde": "^2.18.0",
+    "lit": "^3.2.0",
     "lodash.isequal": "^4.5.0",
     "toolcool-range-slider": "^4.0.28"
   }

@@ -1,6 +1,6 @@
 {
   "name": "@eox/chart",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "devDependencies": {
     "vite": "^5.0.2"
@@ -10,18 +10,31 @@
     "node": ">=18.0.0"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
+  "types": "./types/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc --project tsconfig.build.json || true",
     "build": "vite build",
     "watch": "vite build --watch"
   },
   "dependencies": {
     "@eox/elements-utils": "^0.0.1",
     "deepmerge-ts": "^7.1.3",
-    "lit": "^3.0.2",
+    "lit": "^3.2.0",
     "vega": "^5.30.0",
     "vega-embed": "^6.26.0",
     "vega-lite": "^5.21.0"
