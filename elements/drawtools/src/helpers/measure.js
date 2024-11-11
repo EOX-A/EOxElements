@@ -75,4 +75,4 @@ const formatLength = function (line) {
   return output;
 };
 
-export { measure, teardownMeasurements };
+export default measure;
