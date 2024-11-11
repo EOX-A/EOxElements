@@ -15,6 +15,7 @@ class StoryTellingEditor extends LitElement {
     storyId: { attribute: "story-id", type: String },
     showEditor: { attribute: "show-editor", type: String },
     isNavigation: { attribute: "markdown", type: Boolean },
+    disableAutosave: { attribute: "disable-autosave", type: Boolean },
   };
 
   constructor() {
@@ -51,6 +52,13 @@ class StoryTellingEditor extends LitElement {
      * @type {String}
      */
     this.showEditor = undefined;
+
+    /**
+     * Disable auto save
+     *
+     * @type {Boolean}
+     */
+    this.disableAutosave = false;
 
     // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
