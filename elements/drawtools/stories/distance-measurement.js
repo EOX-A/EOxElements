@@ -10,13 +10,13 @@ export const DistanceMeasurement = {
       id="line-measurement"
       style=${STORIES_MAP_STYLE}
       .layers=${STORIES_LAYERS_ARRAY}
-      measure
     />
     <eox-drawtools
       for="eox-map#line-measurement"
+      type="LineString"
       multiple-features
       allow-modify
-      type="LineString"
+      measure
     />
   `,
 };
