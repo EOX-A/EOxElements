@@ -41,6 +41,7 @@ export class EOxDrawTools extends LitElement {
       noShadow: { type: Boolean },
       type: { type: String },
       unstyled: { type: Boolean },
+      measure: { type: Boolean },
     };
   }
 
