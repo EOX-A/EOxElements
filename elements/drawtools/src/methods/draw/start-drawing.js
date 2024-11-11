@@ -1,4 +1,4 @@
-import measure from '../../helpers/measure.js';
+import measure from "../../helpers/measure.js";
 
 /**
  * Initiates the drawing process by initializing the draw layer,
@@ -16,7 +16,7 @@ const startDrawingMethod = (EoxDrawTool) => {
 
     // Set up measurements, if desired
     if (EoxDrawTool.measure) {
-      EoxDrawTool.draw.on('drawstart', (evt) => {
+      EoxDrawTool.draw.on("drawstart", (evt) => {
         measure(evt, EoxDrawTool);
       });
     }
