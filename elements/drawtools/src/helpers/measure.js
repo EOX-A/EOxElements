@@ -1,12 +1,14 @@
 import { getLength } from "ol/sphere";
 import Overlay from "ol/Overlay";
-import { LineString } from "ol/geom";
-import { unByKey } from "ol/Observable";
 
+/**
+ * Render the tooltip overlay on the map near the last point of the drawn line.
+ *
+ * @param {Object} evt The triggering draw event.
+ * @param {import("../main").EOxDrawTools} EoxDrawTool
+ */
 function measure(evt, EoxDrawTool) {
   let { measureTooltip, measureTooltipElement } = createTooltip();
-  let sketch = evt.feature;
-  let listener;
   let tooltipCoord = evt.coordinate;
 
   let geometry = evt.feature.getGeometry();
@@ -26,14 +28,11 @@ function measure(evt, EoxDrawTool) {
   }
 }
 
-function initializeMeasurements() {
-  console.log("measure");
-}
-
-function teardownMeasurements() {
-  console.log("teardown");
-}
-
+/**
+ * Create an OpenLayers overlay with the measuring tooltip.
+ *
+ * @return {Object} An object with the overlay and its element.
+ */
 function createTooltip() {
   let measureTooltipElement = document.createElement("div");
 
@@ -61,6 +60,7 @@ function createTooltip() {
 
 /**
  * Calculate real distance on the map and format the output.
+ *
  * @param {Polygon} line The line string to calculate the distance for.
  * @return {string} Formatted length.
  */
