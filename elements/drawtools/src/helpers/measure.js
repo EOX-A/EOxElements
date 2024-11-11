@@ -3,7 +3,7 @@ import Overlay from "ol/Overlay";
 import { LineString } from "ol/geom";
 import { unByKey } from "ol/Observable";
 
-function measure (evt, EoxDrawTool) {
+function measure(evt, EoxDrawTool) {
   let { measureTooltip, measureTooltipElement } = createTooltip();
   let sketch = evt.feature;
   let listener;
@@ -17,21 +17,21 @@ function measure (evt, EoxDrawTool) {
     measureTooltipElement.style.visibility = "visible";
     measureTooltipElement.style.pointerEvents = "inherit";
 
-    evt.feature.getGeometry().on('change', function (evt) {
+    evt.feature.getGeometry().on("change", function (evt) {
       console.log(measureTooltipElement);
       tooltipCoord = geometry.getLastCoordinate();
       measureTooltipElement.innerHTML = formatLength(geometry);
       measureTooltip.setPosition(tooltipCoord);
     });
   }
-};
+}
 
 function initializeMeasurements() {
-  console.log('measure');
+  console.log("measure");
 }
 
 function teardownMeasurements() {
-  console.log('teardown');
+  console.log("teardown");
 }
 
 function createTooltip() {
@@ -75,7 +75,4 @@ const formatLength = function (line) {
   return output;
 };
 
-export {
-  measure,
-  teardownMeasurements,
-};
+export { measure, teardownMeasurements };
