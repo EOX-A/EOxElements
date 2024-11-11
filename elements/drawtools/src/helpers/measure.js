@@ -19,8 +19,7 @@ function measure(evt, EoxDrawTool) {
     measureTooltipElement.style.visibility = "visible";
     measureTooltipElement.style.pointerEvents = "inherit";
 
-    evt.feature.getGeometry().on("change", function (evt) {
-      console.log(measureTooltipElement);
+    evt.feature.getGeometry().on("change", function (_evt) {
       tooltipCoord = geometry.getLastCoordinate();
       measureTooltipElement.innerHTML = formatLength(geometry);
       measureTooltip.setPosition(tooltipCoord);
