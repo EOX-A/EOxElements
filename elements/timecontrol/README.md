@@ -7,7 +7,11 @@ npm install @eox/timecontrol
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/timecontrol"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/timecontrol/dist/eox-timecontrol.js"
 
 <eox-timecontrol></eox-timecontrol>
 ```

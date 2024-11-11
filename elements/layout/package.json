@@ -1,20 +1,30 @@
 {
   "name": "@eox/layout",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "type": "module",
   "devDependencies": {
-    "@eox/eslint-config": "^1.0.0",
     "vite": "^5.0.2"
   },
   "files": [
-    "dist"
+    "types",
+    "dist",
+    "src"
   ],
-  "main": "./dist/eox-layout.js",
+  "main": "./src/main.js",
+  "types": "./types/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
   "scripts": {
+    "prepack": "tsc -p tsconfig.build.json || true",
     "build": "vite build",
-    "watch": "vite build --watch",
-    "format": "prettier --write .",
-    "lint": "eslint --ext .js,.ts .",
-    "lint:fix": "eslint --ext .js,.ts . --fix"
+    "watch": "vite build --watch"
   }
 }

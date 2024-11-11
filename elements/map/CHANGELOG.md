@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.17.0](https://github.com/EOX-A/EOxElements/compare/map-v1.16.2...map-v1.17.0) (2024-11-07)
+
+
+### Features
+
+* Build and include element's type declarations ([#1353](https://github.com/EOX-A/EOxElements/issues/1353)) ([f17166e](https://github.com/EOX-A/EOxElements/commit/f17166e292ce546a2ff45433a05248330eb63713))
+
+## [1.16.2](https://github.com/EOX-A/EOxElements/compare/map-v1.16.1...map-v1.16.2) (2024-11-04)
+
+
+### Bug Fixes
+
+* Keep selectLayer activation state in change listener ([#1334](https://github.com/EOX-A/EOxElements/issues/1334)) ([543282e](https://github.com/EOX-A/EOxElements/commit/543282e1b0af4d40ad12c57bbffaef05a5ea0b47))
+
+## [1.16.1](https://github.com/EOX-A/EOxElements/compare/map-v1.16.0...map-v1.16.1) (2024-10-17)
+
+
+### Bug Fixes
+
+* Layer order stability insided group layers ([#1321](https://github.com/EOX-A/EOxElements/issues/1321)) ([95fef59](https://github.com/EOX-A/EOxElements/commit/95fef5941fd98fdf4ac82f0cdc6ca674af3389f7))
+
+## [1.16.0](https://github.com/EOX-A/EOxElements/compare/map-v1.15.0...map-v1.16.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
 ## [1.15.0](https://github.com/EOX-A/EOxElements/compare/map-v1.14.0...map-v1.15.0) (2024-10-08)
 
 

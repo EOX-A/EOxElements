@@ -24,7 +24,7 @@ const loadReRenderFormOnChangeTest = () => {
     html`<eox-jsonform
       .schema=${"/catalogSchema.json"}
       .value=${"/catalogValue.json"}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   cy.get(jsonForm).then(($jsonForm) => {
     $jsonForm[0].schema = "/collectionSchema.json";

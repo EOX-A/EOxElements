@@ -92,35 +92,33 @@ export class EOxLayerControlTabs extends LitElement {
                     <!-- Labels for tabs -->
                     ${map(
                       tabs,
-                      (tab, index) =>
-                        html`
-                          <label
-                            class=${this.#labelHighlightClass(index)}
-                            @click=${() => (this.selectedTab = index)}
-                          >
-                            <!-- Customizable icon for each tab -->
-                            <slot name=${`${tab}-icon`}>${tab}</slot>
-                          </label>
-                        `
+                      (tab, index) => html`
+                        <label
+                          class=${this.#labelHighlightClass(index)}
+                          @click=${() => (this.selectedTab = index)}
+                        >
+                          <!-- Customizable icon for each tab -->
+                          <slot name=${`${tab}-icon`}>${tab}</slot>
+                        </label>
+                      `,
                     )}
                   </div>
                   <div>
                     <!-- Icons for actions -->
                     ${map(
                       actions,
-                      (action) =>
-                        html`
-                          <span>
-                            <!-- Customizable icon for each action -->
-                            <slot name=${`${action}-icon`}>${action}</slot>
-                          </span>
-                        `
+                      (action) => html`
+                        <span>
+                          <!-- Customizable icon for each action -->
+                          <slot name=${`${action}-icon`}>${action}</slot>
+                        </span>
+                      `,
                     )}
                   </div>
-                `
+                `,
               )}
             </nav>
-          `
+          `,
         )}
         <figure>
           <!-- Content for each tab -->
@@ -134,13 +132,13 @@ export class EOxLayerControlTabs extends LitElement {
                     <!-- Customizable icon for each tab -->
                     <slot name=${`${tab}-icon`}>${tab}</slot>
                   </label>
-                `
+                `,
               )}
               <div class="tab ${this.#labelHighlightClass(index)}">
                 <!-- Content slot for each tab -->
                 <slot name=${`${tab}-content`}>${tab}</slot>
               </div>
-            `
+            `,
           )}
         </figure>
       </div>

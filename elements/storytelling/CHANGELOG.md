@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.2.0...storytelling-v1.3.0) (2024-11-07)
+
+
+### Features
+
+* Build and include element's type declarations ([#1353](https://github.com/EOX-A/EOxElements/issues/1353)) ([f17166e](https://github.com/EOX-A/EOxElements/commit/f17166e292ce546a2ff45433a05248330eb63713))
+
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.1.0...storytelling-v1.2.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.0.8...storytelling-v1.1.0) (2024-09-23)
 
 

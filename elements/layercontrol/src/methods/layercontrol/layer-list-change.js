@@ -11,7 +11,7 @@ const layerListChangeMethod = (evt, EOxLayerControl) => {
   // Check if the event target matches the specified element tag
   if (evt.target.tagName === "EOX-LAYERCONTROL-LAYER-TOOLS") {
     const optionalListEl = EOxLayerControl.renderRoot.querySelector(
-      "eox-layercontrol-optional-list"
+      "eox-layercontrol-optional-list",
     );
 
     // Request an update for the optional list element if found

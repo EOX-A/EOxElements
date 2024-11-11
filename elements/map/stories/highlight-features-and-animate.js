@@ -51,7 +51,7 @@ const HighlightFeaturesAndAnimateStory = {
       @loadend=${() => {
         /** @type {import("../src/main").EOxMap} **/ (
           /** @type {any} **/ document.querySelector(
-            "eox-map#highlightAndAnimate"
+            "eox-map#highlightAndAnimate",
           )
         ).selectInteractions.selectInteraction.highlightById([664, 795, 789], {
           duration: 400,

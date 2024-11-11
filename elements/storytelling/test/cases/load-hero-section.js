@@ -17,7 +17,7 @@ Section 1 Content Here
 `;
 
   cy.mount(
-    `<eox-storytelling show-nav markdown='${testText}'></eox-storytelling>`
+    `<eox-storytelling show-nav markdown='${testText}'></eox-storytelling>`,
   ).as(storyTelling);
 
   cy.get(storyTelling)
@@ -30,7 +30,7 @@ Section 1 Content Here
 
       cy.get(".story-telling div > :nth-child(1)").filter('[class*="hero"]');
       cy.get(".story-telling div > :nth-child(2)").filter(
-        '[class*="navigation"]'
+        '[class*="navigation"]',
       );
     });
 };

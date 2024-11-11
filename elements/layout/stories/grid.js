@@ -21,7 +21,7 @@ export const Grid = {
         ([x, y]) =>
           html`<eox-layout-item x="${x}" y="${y}" w="1" h="1"
             >${x}/${y}</eox-layout-item
-          >`
+          >`,
       )}
     </eox-layout>
     <style>

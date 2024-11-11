@@ -15,7 +15,7 @@ const setCustomFullScreenLoadingIndicator = () => {
       </circle><g></g></g></svg>`,
         },
       }}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
   cy.get("eox-map").and(async ($el) => {
     const eoxMap = $el[0];

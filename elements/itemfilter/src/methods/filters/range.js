@@ -9,7 +9,7 @@ import { html } from "lit";
  */
 export function resetRangeMethod(EOxItemFilterRange) {
   EOxItemFilterRange.filterObject = resetFilter(
-    EOxItemFilterRange.filterObject
+    EOxItemFilterRange.filterObject,
   );
   if (EOxItemFilterRange.filterObject) {
     const eleTCRangeSlider =

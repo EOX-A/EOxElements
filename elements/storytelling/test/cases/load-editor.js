@@ -13,7 +13,7 @@ const loadMarkdownEditorTest = () => {
   const jsonFormSelector = `${editorSelector} eox-jsonform`;
 
   cy.mount(
-    `<eox-storytelling show-editor markdown="${testText}"></eox-storytelling>`
+    `<eox-storytelling show-editor markdown="${testText}"></eox-storytelling>`,
   ).as(storyTelling);
 
   cy.get(storyTelling)
@@ -36,7 +36,7 @@ const loadMarkdownEditorTest = () => {
         ].simplemde_instance.codemirror.replaceRange(
           "## Bar",
           startPos,
-          endPos
+          endPos,
         );
 
         expect(formDOM.value.Story).to.eq(newMardown);

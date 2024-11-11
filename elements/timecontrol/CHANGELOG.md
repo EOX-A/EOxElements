@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.10.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.9.0...timecontrol-v0.10.0) (2024-11-07)
+
+
+### Features
+
+* Build and include element's type declarations ([#1353](https://github.com/EOX-A/EOxElements/issues/1353)) ([f17166e](https://github.com/EOX-A/EOxElements/commit/f17166e292ce546a2ff45433a05248330eb63713))
+
+## [0.9.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.8.0...timecontrol-v0.9.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
 ## [0.8.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.7.2...timecontrol-v0.8.0) (2024-09-23)
 
 

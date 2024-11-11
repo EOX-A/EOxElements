@@ -72,7 +72,7 @@ export default class GeolocationControl extends Control {
         new Style({
           fill: new Fill({ color: "rgba(0, 0, 0, 0.2)" }),
           stroke: new Stroke({ width: 2, color: "rgba(0, 0, 0, 0.7)" }),
-        })
+        }),
       );
       //@ts-expect-error options need to be according to the given control.
       this._source.addFeature(this._accuracyFeature);
@@ -137,7 +137,7 @@ export default class GeolocationControl extends Control {
       this._geolocation.on("change:accuracyGeometry", () => {
         if (this._trackAccuracy) {
           this._accuracyFeature.setGeometry(
-            this._geolocation.getAccuracyGeometry()
+            this._geolocation.getAccuracyGeometry(),
           );
         }
       });

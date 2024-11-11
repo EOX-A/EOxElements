@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-tools";
-import { checkbox } from "../../../../utils/styles/checkbox";
+import { checkbox } from "@eox/elements-utils/styles/checkbox";
 import { firstUpdatedMethod, inputClickMethod } from "../methods/layer";
 
 /**
@@ -178,7 +178,7 @@ export class EOxLayerControlLayer extends LitElement {
               <span class="title">${this.#getLayer(this.titleProperty)}</span>
               ${when(
                 isToolsAvail,
-                () => html`<span class="tools-placeholder"></span>`
+                () => html`<span class="tools-placeholder"></span>`,
               )}
             </label>
           </div>
@@ -191,7 +191,7 @@ export class EOxLayerControlLayer extends LitElement {
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
           ></eox-layercontrol-layer-tools>
-        `
+        `,
       )}
     `;
   }

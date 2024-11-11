@@ -7,8 +7,10 @@ import {
   initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
+  createSelectHandler,
+  handleLayerId,
 } from "./methods/draw";
-import mainStyle from "../../../utils/styles/dist/main.style";
+import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
   initMapDragDropImport,
@@ -29,12 +31,14 @@ export class EOxDrawTools extends LitElement {
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
+      layerId: { attribute: "layer-id", type: String },
       drawnFeatures: { attribute: false, state: true, type: Array },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       importFeatures: { attribute: "import-features", type: Boolean },
       showEditor: { attribute: "show-editor", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
+      projection: { type: String },
       noShadow: { type: Boolean },
       type: { type: String },
       unstyled: { type: Boolean },
@@ -42,7 +46,7 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * @type import("../../map/main").EOxMap
+   * @type import("../../map/src/main").EOxMap
    */
   #eoxMap;
 
@@ -55,6 +59,11 @@ export class EOxDrawTools extends LitElement {
    * @type string
    */
   #geoJSON;
+
+  /**
+   * @type string
+   */
+  #layerId;
 
   constructor() {
     super();
@@ -79,16 +88,21 @@ export class EOxDrawTools extends LitElement {
 
     /**
      * The current native OpenLayers `draw` interaction
-     * @type import("ol/interaction").Draw
+     * @type import("ol/interaction").Draw | import("@eox/map/src/helpers").EOxSelectInteraction
      */
     this.draw = null;
 
     /**
-     * The current native OpenLayers draw `layer`
-     * @type import("ol/layer/Vector").default<import("ol/Feature").default>
+     * The current native OpenLayers draw `layer` (initialized with a `zIndex` of 100)
+     * @type import("ol/layer/Vector").default
      */
 
     this.drawLayer = null;
+
+    /**
+     * The ID of the Vector/Vector Tile Layer that contains features to be selected
+     */
+    this.layerId = "";
 
     /**
      * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
@@ -121,6 +135,10 @@ export class EOxDrawTools extends LitElement {
      * Show list of features
      */
     this.showList = false;
+    /**
+     * Projection of the emitted drawn features
+     */
+    this.projection = "EPSG:4326";
 
     /**
      * Type of the drawn feature
@@ -139,12 +157,30 @@ export class EOxDrawTools extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+    /**
+     * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
+     */
+    this.selectionEvents = null;
+  }
+
+  /**
+   *
+   *
+   * @type {string}
+   */
+  set layerId(value) {
+    handleLayerId(this, this.eoxMap, value, this.#layerId);
+    this.#layerId = value;
+  }
+
+  get layerId() {
+    return this.#layerId;
   }
 
   /**
    * @onClick Event handler triggered to start drawing on the map.
    */
-  handleStartDrawing() {
+  startDrawing() {
     startDrawingMethod(this);
   }
 
@@ -152,7 +188,7 @@ export class EOxDrawTools extends LitElement {
    * @onClick Event handler triggered to discard/stop drawing
    * on the map and delete the drawn shapes.
    */
-  handleDiscardDrawing() {
+  discardDrawing() {
     discardDrawingMethod(this);
   }
 
@@ -164,7 +200,8 @@ export class EOxDrawTools extends LitElement {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
-      replaceFeatures
+      this.eoxMap,
+      replaceFeatures,
     );
   }
 
@@ -189,7 +226,7 @@ export class EOxDrawTools extends LitElement {
     this.#geoJSON = JSON.stringify(
       this.eoxMap.parseFeature(this.drawnFeatures) || DUMMY_GEO_JSON,
       undefined,
-      2
+      2,
     );
   }
 
@@ -204,7 +241,7 @@ export class EOxDrawTools extends LitElement {
        * @type Array<import("ol").Feature>
        */
       this.dispatchEvent(
-        new CustomEvent("drawupdate", { detail: this.drawnFeatures })
+        new CustomEvent("drawupdate", { detail: this.drawnFeatures }),
       );
     };
     emitDrawnFeaturesMethod(this, drawUpdateEvent);
@@ -224,7 +261,9 @@ export class EOxDrawTools extends LitElement {
    */
   firstUpdated() {
     const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-    (this.eoxMap = EoxMap), (this.#olMap = OlMap);
+    this.eoxMap = EoxMap;
+    this.#olMap = OlMap;
+    this.selectionEvents = createSelectHandler(this);
 
     if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
 
@@ -235,7 +274,8 @@ export class EOxDrawTools extends LitElement {
   updated(changedProperties) {
     if (changedProperties.has("for")) {
       const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-      (this.eoxMap = EoxMap), (this.#olMap = OlMap);
+      this.eoxMap = EoxMap;
+      this.#olMap = OlMap;
     }
   }
 
@@ -261,13 +301,14 @@ export class EOxDrawTools extends LitElement {
       <!-- Controller Component -->
       <eox-drawtools-controller
         .drawFunc=${{
-          start: () => this.handleStartDrawing(),
-          discard: () => this.handleDiscardDrawing(),
+          start: () => this.startDrawing(),
+          discard: () => this.discardDrawing(),
           editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
             this.handleFeatureChange(evt.target.value, true),
           import: (/** @type {DragEvent | Event} */ evt) =>
             this.handleFilesChange(evt),
         }}
+        ?select=${!!this.layerId}
         .unstyled=${this.unstyled}
         .drawnFeatures=${this.drawnFeatures}
         .currentlyDrawing=${this.currentlyDrawing}

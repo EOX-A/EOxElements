@@ -121,14 +121,14 @@ export class EOxLayerControlLayerConfig extends LitElement {
         console.error(
           `Layer type ${
             this.layer.get("type") ?? ""
-          } does not support styles configuration`
+          } does not support styles configuration`,
         );
       }
     } else {
       this.#originalTileUrlFunction = dataChangeMethod(
         this.#data,
         this.#originalTileUrlFunction,
-        this
+        this,
       );
     }
     this.requestUpdate();
@@ -177,10 +177,10 @@ export class EOxLayerControlLayerConfig extends LitElement {
                 .layer=${this.layer}
                 .layerLegend=${getLegendConfig(
                   this.layerConfig.legend,
-                  this.#data
+                  this.#data,
                 )}
               ></eox-layercontrol-layer-legend>
-            `
+            `,
           )}
           <!-- Render a JSON form for layer configuration -->
           <eox-jsonform
@@ -189,25 +189,24 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .options=${options}
             @change=${this.throttleDataChange}
           ></eox-jsonform>
-        `
+        `,
       )}
     `;
   }
 
   #styleBasic = css`
-  color-legend {
-  --cle-background :transparent;
-  --cle-font-family:inherit;
-  --cle-font-size:inherit;
-  --cle-font-weight :inherit
-  --cle-letter-spacing :inherit;
-  --cle-letter-spacing-title :inherit;
-  }
+    color-legend {
+      --cle-background: transparent;
+      --cle-font-family: inherit;
+      --cle-font-size: inherit;
+      --cle-font-weight: inherit --cle-letter-spacing: inherit;
+      --cle-letter-spacing-title: inherit;
+    }
   `;
   #styleEOX = ``;
 }
 
 customElements.define(
   "eox-layercontrol-layerconfig",
-  EOxLayerControlLayerConfig
+  EOxLayerControlLayerConfig,
 );

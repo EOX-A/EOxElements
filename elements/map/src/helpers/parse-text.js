@@ -18,7 +18,7 @@ export default function parseTextToFeature(
   text,
   vectorLayer,
   EOxMap,
-  replaceFeatures = false
+  replaceFeatures = false,
 ) {
   try {
     // Attempt to parse the input text in various formats
@@ -37,7 +37,7 @@ export default function parseTextToFeature(
       vectorLayer,
       EOxMap,
       false,
-      replaceFeatures
+      replaceFeatures,
     );
   } catch (err) {
     console.error("Error parsing data:", err);
@@ -73,7 +73,7 @@ export function isGeoJSON(text) {
     const obj = JSON.parse(text);
 
     return obj.type === "FeatureCollection" || obj.type === "Feature";
-  } catch (e) {
+  } catch (_) {
     return false;
   }
 }
@@ -101,7 +101,7 @@ export function isTopoJSON(text) {
     const obj = JSON.parse(text);
 
     return obj.type === "Topology" && obj.objects;
-  } catch (e) {
+  } catch (_) {
     return false;
   }
 }

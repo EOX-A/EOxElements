@@ -20,7 +20,7 @@ const loadMapTourTest = () => {
 `;
 
   cy.mount(
-    `<eox-storytelling markdown='${testTextMapTour}'></eox-storytelling>`
+    `<eox-storytelling markdown='${testTextMapTour}'></eox-storytelling>`,
   ).as(storyTelling);
 
   cy.get(storyTelling)
@@ -28,7 +28,7 @@ const loadMapTourTest = () => {
     .within(() => {
       cy.get("eox-map").should("exist");
       heading.forEach((i, key) =>
-        cy.get("section-step h4").eq(key).should("have.text", i)
+        cy.get("section-step h4").eq(key).should("have.text", i),
       );
     });
 };

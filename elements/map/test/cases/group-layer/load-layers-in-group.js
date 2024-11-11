@@ -26,7 +26,7 @@ const loadLayersInGroup = (layersJson) => {
     expect(groupLayerInsideGroup, "find group layer inside group").to.exist;
 
     const layerInsideGroupInsideGroup = eoxMap.getLayerById(
-      "layerInsideGroupInsideGroup"
+      "layerInsideGroupInsideGroup",
     );
     expect(layerInsideGroupInsideGroup, "find layer inside group inside group")
       .to.exist;
@@ -36,7 +36,7 @@ const loadLayersInGroup = (layersJson) => {
       .get("_group");
     expect(
       parentParentGroup.get("id"),
-      "correctly sets reference to parent layers"
+      "correctly sets reference to parent layers",
     ).to.be.equal("group");
   });
 };

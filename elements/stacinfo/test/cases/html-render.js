@@ -14,11 +14,11 @@ const htmlRenderTest = () => {
       <eox-stacinfo
         for="/collection"
         allow-html
-      ></eox-stacinfo>`
+      ></eox-stacinfo>`,
   ).as("eox-stacinfo");
 
   cy.get("eox-stacinfo").then(($el) => {
-    // @ts-ignore
+    // @ts-expect-error TODO
     $el[0].body = ["description"];
   });
 

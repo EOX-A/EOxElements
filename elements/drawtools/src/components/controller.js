@@ -1,7 +1,7 @@
 import { LitElement, html, nothing } from "lit";
 import { updateButtonStatesMethod } from "../methods/controller";
-import buttonStyle from "../../../../utils/styles/dist/button.style";
-import inputStyle from "../../../../utils/styles/dist/input.style";
+import buttonStyle from "@eox/elements-utils/styles/dist/button.style";
+import inputStyle from "@eox/elements-utils/styles/dist/input.style";
 import { copyTextToClipboard } from "../helpers/index.js";
 import { when } from "lit/directives/when.js";
 
@@ -17,6 +17,7 @@ export class EOxDrawToolsController extends LitElement {
     drawnFeatures: { attribute: false, state: true, type: Array },
     currentlyDrawing: { attribute: false, state: true, type: Boolean },
     drawFunc: { attribute: false, type: Object },
+    select: { type: Boolean },
     importFeatures: { attribute: "import-features", type: Boolean },
     showEditor: { attribute: "show-editor", type: Boolean },
     geoJSON: { attribute: "geo-json", type: String },
@@ -81,6 +82,11 @@ export class EOxDrawToolsController extends LitElement {
      * Render the element without additional styles
      */
     this.unstyled = false;
+
+    /**
+     *
+     */
+    this.select = false;
   }
 
   /**
@@ -115,7 +121,7 @@ export class EOxDrawToolsController extends LitElement {
           <!-- Draw Button -->
           <button
             data-cy="drawBtn"
-            class="polygon icon"
+            class="${this.select ? "pointer" : "polygon"} icon"
             ?disabled="${this.#drawDisabled || nothing}"
             @click="${() => this.drawFunc.start()}"
           >
@@ -153,7 +159,7 @@ export class EOxDrawToolsController extends LitElement {
             >
               import
             </button>
-          `
+          `,
         )}
       </div>
 
@@ -178,7 +184,7 @@ export class EOxDrawToolsController extends LitElement {
               ${this.unstyled ? "copy" : nothing}
             </button>
           </div>
-        `
+        `,
       )}
     `;
   }

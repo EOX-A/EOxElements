@@ -150,5 +150,7 @@ export class MockMap extends HTMLElement {
   setLayers = (layers) => {
     this.layers = new MockCollection(layers.reverse());
   };
+  selectInteractions = {};
+  interactions = {};
 }
 customElements.define("mock-map", MockMap);

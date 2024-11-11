@@ -12,7 +12,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
  */
 export function createItemDetailsMethod(
   aggregationProperty,
-  EOxItemFilterResults
+  EOxItemFilterResults,
 ) {
   return html`
     <details
@@ -26,7 +26,7 @@ export function createItemDetailsMethod(
           <span class="count"
             >${EOxItemFilterResults.aggregateResults(
               EOxItemFilterResults.results,
-              aggregationProperty
+              aggregationProperty,
             ).length}</span
           >
         </span>
@@ -47,7 +47,7 @@ export function createItemDetailsMethod(
  */
 export function createItemListMethod(
   aggregationProperty,
-  EOxItemFilterResults
+  EOxItemFilterResults,
 ) {
   const results = EOxItemFilterResults.results;
   const items = aggregationProperty
@@ -80,42 +80,31 @@ export function createItemListMethod(
                 EOxItemFilterResults.dispatchEvent(
                   new CustomEvent("result", {
                     detail: EOxItemFilterResults.selectedResult,
-                  })
+                  }),
                 );
               }}
             >
               ${when(
-                EOxItemFilterResults.hasTemplate("result"),
-                () =>
-                  EOxItemFilterResults.renderTemplate(
-                    "result",
-                    item,
-                    `result-${item.id}`
-                  ),
+                config.subTitleProperty,
                 () => html`
-                  ${when(
-                    config.subTitleProperty,
-                    () => html`
-                      <div class="title-container">
-                        <span class="title"
-                          >${unsafeHTML(item[config.titleProperty])}</span
-                        >
-                        <span class="subtitle"
-                          >${unsafeHTML(item[config.subTitleProperty])}</span
-                        >
-                      </div>
-                    `,
-                    () => html`
-                      <span class="title"
-                        >${unsafeHTML(item[config.titleProperty])}</span
-                      >
-                    `
-                  )}
-                `
+                  <div class="title-container">
+                    <span class="title"
+                      >${unsafeHTML(item[config.titleProperty])}</span
+                    >
+                    <span class="subtitle"
+                      >${unsafeHTML(item[config.subTitleProperty])}</span
+                    >
+                  </div>
+                `,
+                () => html`
+                  <span class="title"
+                    >${unsafeHTML(item[config.titleProperty])}</span
+                  >
+                `,
               )}
             </span>
           </li>
-        `
+        `,
       )}
     </ul>
   `;

@@ -19,11 +19,12 @@ export default function parseTags(tags = []) {
       <ul>
         ${map(
           tags,
-          ([, value]) => html`<slot name=${value.label.toLowerCase()}
-            ><li>
-              <span class="label">${unsafeHTML(value.formatted)}</span>
-            </li></slot
-          >`
+          ([, value]) =>
+            html`<slot name=${value.label.toLowerCase()}
+              ><li>
+                <span class="label">${unsafeHTML(value.formatted)}</span>
+              </li></slot
+            >`,
         )}
       </ul>
     </section>

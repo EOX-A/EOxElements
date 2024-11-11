@@ -35,7 +35,7 @@ const fetchProjectionFromCode = () => {
           },
         },
       ]}
-    ></eox-map>`
+    ></eox-map>`,
   ).as("eox-map");
 
   cy.get("eox-map").and(($el) => {
@@ -43,7 +43,7 @@ const fetchProjectionFromCode = () => {
     eoxMap.registerProjectionFromCode("EPSG:32633").then(() => {
       eoxMap.setAttribute("projection", "EPSG:32633");
       expect(eoxMap.map.getView().getProjection().getCode()).to.be.equal(
-        "EPSG:32633"
+        "EPSG:32633",
       );
     });
   });

@@ -13,7 +13,7 @@ import { register } from "ol/proj/proj4";
 export default function registerProjection(
   name,
   projection,
-  extent = undefined
+  extent = undefined,
 ) {
   // Register the projection with proj4 using the provided name and definition
   proj4.defs(name, projection);

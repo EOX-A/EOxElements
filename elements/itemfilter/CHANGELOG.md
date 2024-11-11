@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.4.1...itemfilter-v1.5.0) (2024-11-07)
+
+
+### Features
+
+* Build and include element's type declarations ([#1353](https://github.com/EOX-A/EOxElements/issues/1353)) ([f17166e](https://github.com/EOX-A/EOxElements/commit/f17166e292ce546a2ff45433a05248330eb63713))
+
+## [1.4.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.4.0...itemfilter-v1.4.1) (2024-11-04)
+
+
+### Bug Fixes
+
+* Fall back to filter key if no title is provided (chip display) ([#1328](https://github.com/EOX-A/EOxElements/issues/1328)) ([d1aaf2d](https://github.com/EOX-A/EOxElements/commit/d1aaf2d4c7cfbf797d57cc70b8c0942379c06b0a))
+
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.3.1...itemfilter-v1.4.0) (2024-10-17)
+
+
+### Features
+
+* **build:** Provide un-bundled element by default (bundled version still available in dist folder) ([#1065](https://github.com/EOX-A/EOxElements/issues/1065)) ([333e324](https://github.com/EOX-A/EOxElements/commit/333e324def0354992fadd4640fc2ee9b72a545b4))
+
 ## [1.3.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.3.0...itemfilter-v1.3.1) (2024-10-08)
 
 

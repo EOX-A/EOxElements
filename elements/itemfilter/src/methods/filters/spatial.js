@@ -9,7 +9,7 @@ export function resetSpatialMethod(EOxItemFilterSpatial) {
   resetFilter(EOxItemFilterSpatial.filterObject);
 
   const spatialFilter = EOxItemFilterSpatial.renderRoot.querySelector(
-    "eox-itemfilter-spatial-filter"
+    "eox-itemfilter-spatial-filter",
   );
   spatialFilter.reset();
   EOxItemFilterSpatial.requestUpdate();
@@ -108,7 +108,7 @@ function createFeatureUrl(geometry) {
           geometry,
         },
       ],
-    })
+    }),
   );
   return `data:text/json,${featureString}`;
 }

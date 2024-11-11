@@ -20,7 +20,7 @@ export default function addNewFeature(
   vectorLayer,
   EOxMap,
   isDraw = false,
-  replaceFeatures = false
+  replaceFeatures = false,
 ) {
   // Determine the source of the features based on the event type and isDraw flag.
   // @ts-expect-error - Property 'feature' does not exist on type 'DrawEvent | DragAndDropEvent
@@ -70,7 +70,7 @@ export default function addNewFeature(
   // Convert features to GeoJSON and dispatch custom events for drawing end or feature addition.
   const format = new GeoJSON();
   const geoJsonObject = JSON.parse(
-    format.writeFeatures(features, READ_FEATURES_OPTIONS)
+    format.writeFeatures(features, READ_FEATURES_OPTIONS),
   );
 
   // Dispatch relevant events based on operation type.

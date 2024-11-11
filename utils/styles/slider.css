@@ -45,7 +45,9 @@ input[type="range"]:active::-moz-range-thumb {
   background: #00416f;
 }
 input[type="range"]:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 3px #fff0, 0 0 0 6px #00416f00;
+  box-shadow:
+    0 0 0 3px #fff0,
+    0 0 0 6px #00416f00;
 }
 .range-slider__value {
   display: inline-block;

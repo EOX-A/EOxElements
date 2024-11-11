@@ -12,7 +12,7 @@ const onStart = (e) => {
   childNodes = childNodes.filter(
     (node) =>
       node.nodeType != Node.ELEMENT_NODE ||
-      !node.classList.contains("sortable-fallback")
+      !node.classList.contains("sortable-fallback"),
   );
 
   return childNodes;
@@ -48,7 +48,7 @@ const onEnd = (e, that, childNodes, collection, idProperty, related) => {
 
   const relatedLayerId = related.dataset.layer;
   const relatedLayer = layers.find(
-    (layer) => layer.get(idProperty) == relatedLayerId
+    (layer) => layer.get(idProperty) == relatedLayerId,
   );
 
   let draggedIndex;

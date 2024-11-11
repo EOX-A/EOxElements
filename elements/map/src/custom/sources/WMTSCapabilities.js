@@ -38,7 +38,7 @@ class WMTSCapabilities extends TileImage {
     fetch(options.url)
       .then((response) => response.text())
       .then((xml) =>
-        new window.DOMParser().parseFromString(xml, "application/xml")
+        new window.DOMParser().parseFromString(xml, "application/xml"),
       )
       .then((xml) => {
         this.handleCapabilitiesResponse(xml, options);
@@ -78,7 +78,7 @@ class WMTSCapabilities extends TileImage {
     if (this.urls && this.urls.length > 0) {
       // Create the tile URL function from the provided URLs and the WMTS template
       this.tileUrlFunction = createFromTileUrlFunctions(
-        this.urls.map(this.createFromWMTSTemplate.bind(this))
+        this.urls.map(this.createFromWMTSTemplate.bind(this)),
       );
     }
     this.setState("ready");
@@ -114,7 +114,7 @@ class WMTSCapabilities extends TileImage {
         ? appendParams(template, context)
         : template.replace(/\{(\w+?)\}/g, (m, p) =>
             // @ts-expect-error - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
-            p.toLowerCase() in context ? context[p.toLowerCase()] : m
+            p.toLowerCase() in context ? context[p.toLowerCase()] : m,
           );
 
     const tileGrid =

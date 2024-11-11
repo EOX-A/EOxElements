@@ -28,12 +28,9 @@ export function transformProperties(properties, type = "property") {
     // Replace all plain text URLs with clickable links, unless already converted.
     property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
-      (
-        // @ts-ignore
-        url
-      ) => {
+      (url) => {
         return `<a target="_blank" href="${url}">${url}</a>`;
-      }
+      },
     );
 
     /**
@@ -61,7 +58,7 @@ export function transformProperties(properties, type = "property") {
                 <a target="_blank" href="${itemValue.href || itemValue.url}"
                   >${itemValue.name || itemValue.title || itemKey}</a
                 >
-              </li>`
+              </li>`,
           )
           .join("")}</ul>`;
       } else if (type === "featured") {
@@ -79,7 +76,7 @@ export function transformProperties(properties, type = "property") {
                 }"
                   >${itemValue.name || itemValue.title || itemKey}
                   </a>
-              </div>`
+              </div>`,
           )
           .join("");
       }
@@ -108,7 +105,7 @@ export function updateProperties(that) {
         ...acc,
         ...curr.properties,
       }),
-      {}
+      {},
     );
 
     that.requestUpdate();

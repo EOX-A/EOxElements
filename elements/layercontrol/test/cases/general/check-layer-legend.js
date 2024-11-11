@@ -38,7 +38,7 @@ export const checkLayerLegend = () => {
           // check if rendered legend title is equal to the configured title
           cy.get("p.legend-title").then(($el) => {
             expect($el[0].textContent).equal(
-              legendLayer.properties.layerLegend.title
+              legendLayer.properties.layerLegend.title,
             );
           });
 
@@ -53,7 +53,7 @@ export const checkLayerLegend = () => {
           // check if the rendered tick values are the same as the values configured
           const stringTickValues =
             legendLayer.properties.layerLegend.tickValues.map((val) =>
-              val.toFixed(1).toString()
+              val.toFixed(1).toString(),
             );
           cy.get("text").then(($el) => {
             $el.each((_idx, el) => {

@@ -30,7 +30,7 @@ export default async function wmsSearchURL(EoxLayerControlAddLayers) {
 
       // Set the fetched WMS capabilities to the instance and request an update
       EoxLayerControlAddLayers.wmsCapabilities = data;
-    } catch (error) {
+    } catch (_) {
       // Error when API Fails
     } finally {
       // Disable loader for search

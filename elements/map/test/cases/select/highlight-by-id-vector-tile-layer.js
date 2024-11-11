@@ -15,7 +15,7 @@ const highlightByIdVectorTileLayer = (vectorTileInteraction) => {
     });
     layerJson[0].interactions = vectorTileInteraction;
     cy.mount(
-      html`<eox-map .center=${[0, 0]} .layers=${layerJson}></eox-map>`
+      html`<eox-map .center=${[0, 0]} .layers=${layerJson}></eox-map>`,
     ).as("eox-map");
 
     cy.get("eox-map").and(($el) => {

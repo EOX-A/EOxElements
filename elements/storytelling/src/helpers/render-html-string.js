@@ -48,7 +48,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
             }
           });
         },
-        { rootMargin: "-50% 0px" }
+        { rootMargin: "-50% 0px" },
       );
 
       setTimeout(() => {
@@ -85,7 +85,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
         if (!contentParent) return;
 
         const contentChildren = parent.querySelectorAll(
-          `#${sectionId} section-step`
+          `#${sectionId} section-step`,
         );
 
         contentChildren.forEach((dom, key) => {
@@ -103,7 +103,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   function generateParallaxEffect() {
     // Find all elements with the specified selector
     const parallaxItems = parent.querySelectorAll(
-      ".story-telling .hero img, .story-telling .hero video"
+      ".story-telling .hero img, .story-telling .hero video",
     );
 
     // Apply the transformation to each element
@@ -124,7 +124,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
   // Process child nodes of the document body
   return Array.from(doc.body.childNodes).map((node) =>
-    processNode(node, initDispatchFunc)
+    processNode(node, initDispatchFunc),
   );
 }
 
@@ -164,8 +164,8 @@ function processNode(node, initDispatchFunc) {
           (attr) =>
             (element[attr.name] = convertAttributeValueBasedOnItsType(
               element,
-              attr.name
-            ))
+              attr.name,
+            )),
         );
       }
       setTimeout(() => initDispatchFunc(element), 100);
@@ -216,7 +216,7 @@ function processNode(node, initDispatchFunc) {
  */
 export function convertAttributeValueBasedOnItsType(
   element,
-  attributeName = undefined
+  attributeName = undefined,
 ) {
   const attributeValue = attributeName
     ? element.getAttribute(attributeName)
@@ -230,7 +230,7 @@ export function convertValueToType(value) {
 
   try {
     convertedValue = JSON.parse(value);
-  } catch (e) {
+  } catch (_) {
     if (!isNaN(value) && value.trim() !== "") convertedValue = Number(value);
     else if (value === "true") convertedValue = true;
     else if (value === "false") convertedValue = false;
@@ -252,7 +252,7 @@ function generateAddSectionClickEvt(
   event,
   isFirstSection,
   that,
-  EOxStoryTelling
+  EOxStoryTelling,
 ) {
   // Positioning click button
   const rect = that.getBoundingClientRect();
@@ -308,7 +308,7 @@ export function parseNavWithAddSection(
   nav,
   showNav,
   showEditor,
-  EOxStoryTelling
+  EOxStoryTelling,
 ) {
   const parser = new DOMParser();
   let navIndex = -1;
@@ -324,7 +324,7 @@ export function parseNavWithAddSection(
             .map(({ id, title, state }) =>
               state
                 ? `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
-                : ""
+                : "",
             )
             .join("")}
         </ul>
@@ -353,7 +353,7 @@ export function parseNavWithAddSection(
             event,
             isFirstSection,
             this,
-            EOxStoryTelling
+            EOxStoryTelling,
           );
         });
       }

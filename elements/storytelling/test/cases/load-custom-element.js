@@ -15,7 +15,7 @@ const LoadCustomElementTest = () => {
   });
 
   cy.mount(`<eox-storytelling markdown='${testText}'></eox-storytelling>`).as(
-    storyTelling
+    storyTelling,
   );
 
   cy.get(storyTelling)

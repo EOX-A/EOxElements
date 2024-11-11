@@ -2,19 +2,18 @@ import { setCustomElementsManifest } from "@storybook/web-components";
 import customElements from "../custom-elements.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
-import "../elements/chart/src/main.ts";
-import "../elements/drawtools/src/main.js";
-import "../elements/geosearch/src/main.js";
-import "../elements/itemfilter/src/main.js";
-import "../elements/jsonform/src/main.js";
-import "../elements/layercontrol/src/main.js";
-import "../elements/layout/src/main.js";
-import "../elements/map/src/main.js";
-import "../elements/map/src/plugins/advancedLayersAndSources/index";
-import "../elements/stacinfo/src/main.js";
-import "../elements/storytelling/src/main.js";
-import "../elements/timecontrol/src/main.js";
-import "../elements/globe/src/main.js";
+import "@eox/chart";
+import "@eox/drawtools";
+import "@eox/geosearch";
+import "@eox/itemfilter";
+import "@eox/jsonform";
+import "@eox/layercontrol";
+import "@eox/layout";
+import "@eox/map";
+import "@eox/map/src/plugins/advancedLayersAndSources";
+import "@eox/stacinfo";
+import "@eox/storytelling";
+import "@eox/timecontrol";
 
 /**
  * A custom wrapper for the default setCustomElementsManifest function.
@@ -23,7 +22,7 @@ import "../elements/globe/src/main.js";
  */
 export const setCustomElementsManifestWithOptions = (
   customElements,
-  options
+  options,
 ) => {
   let { privateFields = true } = options;
   if (!privateFields) {
@@ -90,9 +89,9 @@ const preview = {
                       typeof tags[tag][key] === "string"
                         ? tags[tag][key]
                         : JSON.stringify(tags[tag][key])
-                    }\}'`
+                    }\}'`,
                 )
-                .join("\n  ")}\n  `
+                .join("\n  ")}\n  `,
             );
           });
           return code;

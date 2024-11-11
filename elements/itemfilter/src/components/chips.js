@@ -47,7 +47,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
     super.connectedCallback();
     this.getRootNode().addEventListener(
       "keydown",
-      this.#keyboardEventListener.bind(this)
+      this.#keyboardEventListener.bind(this),
     );
   }
 
@@ -59,7 +59,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
     super.disconnectedCallback();
     this.getRootNode().removeEventListener(
       "keydown",
-      this.#keyboardEventListener.bind(this)
+      this.#keyboardEventListener.bind(this),
     );
   }
 
@@ -72,7 +72,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
     this.dispatchEvent(
       new CustomEvent("items-selected", {
         detail: this.items,
-      })
+      }),
     );
   }
 
@@ -121,7 +121,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
                 ></span>
             </span>
             </span>
-          `
+          `,
         )}
       </span>
     `;

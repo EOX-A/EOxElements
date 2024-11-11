@@ -106,7 +106,7 @@ export class EOxItemFilterText extends LitElement {
             ? this.filterObject.validation.message
             : ""}</small
         >
-      `
+      `,
     );
   }
 }
