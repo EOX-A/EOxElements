@@ -1,10 +1,6 @@
 import Modify from "ol/interaction/Modify";
 import Draw, { createBox } from "ol/interaction/Draw";
 import { addNewFeature } from "../helpers";
-import { getArea, getLength } from "ol/sphere";
-import Overlay from "ol/Overlay";
-import { LineString } from "ol/geom";
-import { unByKey } from "ol/Observable";
 
 /**
  * @typedef {import("../../types").DrawOptions} DrawOptions
