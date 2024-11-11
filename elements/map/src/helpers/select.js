@@ -215,6 +215,28 @@ export class EOxSelectInteraction {
       }
     };
     eoxMap.map.getLayerGroup().on("change", changeLayerListener);
+
+    /**
+     * Adds a listener on pointermove
+     */
+    this.pointerMoveListener = (e) => {
+      if (e.dragging) return;
+      eoxMap.map.getTargetElement().style.cursor = eoxMap.map.hasFeatureAtPixel(
+        e.pixel,
+        {
+          layerFilter: (l) =>
+            l
+              .get("interactions")
+              ?.find(
+                (i) => i.type == "select" && i.options?.condition === "click",
+              ),
+          ...options.atPixelOptions,
+        },
+      )
+        ? options.cursor || "pointer"
+        : "auto";
+    };
+    eoxMap.map.on("pointermove", this.pointerMoveListener);
   }
 
   /**
@@ -283,6 +305,7 @@ export class EOxSelectInteraction {
     delete this.eoxMap.selectInteractions[this.options.id];
     this.selectLayer.un("change:source", this.changeSourceListener);
     this.eoxMap.map.un(this.options.condition || "click", this.listener);
+    this.eoxMap.map.un("pointermove", this.pointerMoveListener);
   }
 
   /**

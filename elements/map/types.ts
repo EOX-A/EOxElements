@@ -113,6 +113,8 @@ export type SelectOptions = Omit<
   modify?: boolean;
   type?: string;
   geometryFunction?: import("ol/interaction/Draw").GeometryFunction;
+  cursor?: "string";
+  atPixelOptions?: import("ol/Map").AtPixelOptions;
 };
 
 export type ControlOptions = import("ol/control/Control").Options;
