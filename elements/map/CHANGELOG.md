@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.18.0](https://github.com/EOX-A/EOxElements/compare/map-v1.17.0...map-v1.18.0) (2024-11-12)
+
+
+### Features
+
+* Add hover interaction pointer cursor (alternative) ([#1348](https://github.com/EOX-A/EOxElements/issues/1348)) ([41ea65a](https://github.com/EOX-A/EOxElements/commit/41ea65a4e53a33dbf8ea016257ef077765798d4e))
+
+
+### Bug Fixes
+
+* Properly remove interaction on layer update ([#1360](https://github.com/EOX-A/EOxElements/issues/1360)) ([eaf9384](https://github.com/EOX-A/EOxElements/commit/eaf9384a244f98e39739f445a57e871335d57676))
+
 ## [1.17.0](https://github.com/EOX-A/EOxElements/compare/map-v1.16.2...map-v1.17.0) (2024-11-07)
 
 

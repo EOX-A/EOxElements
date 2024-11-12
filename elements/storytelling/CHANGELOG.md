@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.3.0...storytelling-v1.4.0) (2024-11-12)
+
+
+### Features
+
+* Added event update for markdown change and disable-autosave ([#1364](https://github.com/EOX-A/EOxElements/issues/1364)) ([7fb0cd7](https://github.com/EOX-A/EOxElements/commit/7fb0cd723ca8ea8824d8faaa66c0b5034d64c1d6))
+
 ## [1.3.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.2.0...storytelling-v1.3.0) (2024-11-07)
 
 
