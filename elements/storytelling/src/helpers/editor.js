@@ -375,11 +375,17 @@ export function runWhenEditorInitialised(StoryTellingEditor) {
   if (StoryTellingEditor.editor.editor?.editors?.["root.Story"]) {
     const easyMDEInstance =
       StoryTellingEditor.editor.editor.editors["root.Story"].simplemde_instance;
-    generateAutoSave(
-      StoryTellingEditor,
-      StoryTellingEditor.storyId,
-      easyMDEInstance,
-    );
+
+    if (!StoryTellingEditor.disableAutosave) {
+      generateAutoSave(
+        StoryTellingEditor,
+        StoryTellingEditor.storyId,
+        easyMDEInstance,
+      );
+    } else {
+      const saveEle = StoryTellingEditor.querySelector(".editor-saver");
+      saveEle.innerText = "";
+    }
     preventEditorOutsideScroll(StoryTellingEditor);
   } else {
     setTimeout(() => runWhenEditorInitialised(StoryTellingEditor), 100);
