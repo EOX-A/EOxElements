@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.0...storytelling-v1.4.1) (2024-11-14)
+
+
+### Bug Fixes
+
+* Add some basic code styling ([#1371](https://github.com/EOX-A/EOxElements/issues/1371)) ([4eb5f3d](https://github.com/EOX-A/EOxElements/commit/4eb5f3d4e6ef69e8c6a1e9c631538eb8f6a8c4de))
+
 ## [1.4.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.3.0...storytelling-v1.4.0) (2024-11-12)
 
 
