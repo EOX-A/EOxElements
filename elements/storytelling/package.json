@@ -1,6 +1,6 @@
 {
   "name": "@eox/storytelling",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "type": "module",
   "devDependencies": {
     "vite": "^5.0.2"
