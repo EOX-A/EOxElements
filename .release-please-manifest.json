@@ -10,5 +10,5 @@
   "elements/storytelling": "1.4.0",
   "elements/geosearch": "0.5.0",
   "elements/chart": "0.3.0",
-  "utils": "0.0.1"
+  "utils": "0.1.0"
 }
