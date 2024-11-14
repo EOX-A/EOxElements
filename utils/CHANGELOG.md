@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.0...elements-utils-v0.1.1) (2024-11-14)
+
+
+### Bug Fixes
+
+* Move font-family ([#1369](https://github.com/EOX-A/EOxElements/issues/1369)) ([301daa9](https://github.com/EOX-A/EOxElements/commit/301daa9ccfaff0599731997568a515aceb2dd1fe))
+
 ## [0.1.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.0.1...elements-utils-v0.1.0) (2024-11-14)
 
 
