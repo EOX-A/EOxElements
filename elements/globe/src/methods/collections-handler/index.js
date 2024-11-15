@@ -16,8 +16,8 @@ const collectionsHandler = (
 ) => {
   if (oldCollections?.length) {
     const updatedIDs = collections?.map((col) => col.id);
-    const removed = oldCollections.filter((col) =>
-      updatedIDs?.includes(col.id),
+    const removed = oldCollections.filter(
+      (col) => !updatedIDs?.includes(col.id),
     );
     removed.forEach((col) => {
       collectionsManager.remove(col.id);
@@ -29,6 +29,9 @@ const collectionsHandler = (
   }
 
   collections.forEach((collection) => {
+    if (collectionsManager.contains(collection.id)) {
+      collectionsManager.remove(collection.id);
+    }
     switch (collection.type) {
       case "Point": {
         handlePointCreation(collection, collectionsManager);

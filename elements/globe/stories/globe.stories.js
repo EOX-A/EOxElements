@@ -23,14 +23,30 @@ export default {
 export const Primary = {
   args: {
     collections: SW_OPER_MAGA_LR_1B,
+    // onClick: () => {
+    //   const globe = document.getElementById("primary");
+    //   const pointCollection = structuredClone(
+    //     globe.collections[0],
+    //   ).points.reduce(
+    //     (acc, point, i) => {
+    //       if (i % 5 == 0) acc.points.push(point);
+    //       return acc;
+    //     },
+    //     { type: "Point", points: [], id: globe.collections[0].id },
+    //   );
+    //   // const vectorCollection = globe.collections[1];
+    //   globe.collections = [pointCollection];
+    // },
   },
   /** @param {Record<string,any>} args */
   render: (args) => {
     return html`
       <eox-globe
+        id="primary"
         style="width: 100%; height: 300px;"
         .collections=${args.collections}
       ></eox-globe>
+      <!-- <button @click=${args.onClick}>update</button> -->
     `;
   },
 };

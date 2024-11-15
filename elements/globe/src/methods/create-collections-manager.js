@@ -114,9 +114,13 @@ const createCollectionsManager = (viewer) => {
    * @param {string|number|symbol} name
    */
   const remove = (name) => {
-    removeVisible_(name);
-    viewer.scene.primitives.remove(get(name));
-    delete hiddenCollections[name];
+    const removed = viewer.scene.primitives.remove(get(name));
+    if (removed) {
+      delete visibleCollections[name];
+      delete hiddenCollections[name];
+    } else {
+      console.error(`[eox-globe] Failed to remove collection ${name.toString()}`);
+    }
   };
 
   /** Removes all feature collections */
