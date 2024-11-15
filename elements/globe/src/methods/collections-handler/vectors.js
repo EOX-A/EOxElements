@@ -42,7 +42,7 @@ function getVectorCreator() {
       vertexFormat: PolylineColorAppearance.VERTEX_FORMAT,
     });
     const color = ColorGeometryInstanceAttribute.fromColor(
-      Color.fromCssColorString(vector.color)
+      Color.fromCssColorString(vector.color),
     );
 
     /** @type {import("cesium").GeometryInstance[]} */
@@ -55,7 +55,7 @@ function getVectorCreator() {
         attributes: {
           color,
         },
-      })
+      }),
     );
   };
 

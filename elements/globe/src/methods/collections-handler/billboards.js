@@ -10,7 +10,7 @@ import { NEAR_FAR_SCALAR } from "../../enums";
  */
 export const handleBillboardsCreation = (
   billboardCollection,
-  collectionsManager
+  collectionsManager,
 ) => {
   const { createBillboard, featureCollection } = getBillboardCreator();
   billboardCollection.billboards.forEach((billboard) => {

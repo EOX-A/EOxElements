@@ -4,7 +4,7 @@ import {
   initializeGlobe,
   createCollectionsManager,
 } from "./methods";
-//@ts-expect-error
+//@ts-expect-error type vite/client
 import cesiumStyles from "cesium/Build/Cesium/Widgets/widgets.css?inline";
 
 export class EOxGlobe extends LitElement {
@@ -25,11 +25,8 @@ export class EOxGlobe extends LitElement {
    * @param {import("./types").Collections3D[]} val
    */
   set collections(val) {
+    collectionsHandler(this.#collections_, val, this.collectionsManager);
     this.#collections_ = val;
-    if (!this.collectionsManager) {
-      return;
-    }
-    collectionsHandler(val, this.collectionsManager);
   }
 
   /**
@@ -79,7 +76,11 @@ export class EOxGlobe extends LitElement {
     this.#viewer = initializeGlobe(this.#cesiumContainer, this.config);
     this.collectionsManager = createCollectionsManager(this.#viewer);
     if (this.collections.length) {
-      collectionsHandler(this.#collections_, this.collectionsManager);
+      collectionsHandler(
+        undefined,
+        this.#collections_,
+        this.collectionsManager,
+      );
     }
   }
 

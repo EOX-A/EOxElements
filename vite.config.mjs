@@ -20,7 +20,7 @@ export default defineConfig({
         { src: `${cesiumSource}/Assets`, dest: cesiumBaseUrl },
         { src: `${cesiumSource}/Widgets`, dest: cesiumBaseUrl },
       ],
-  })
+    }),
   ],
   define: {
     // Define relative base path in cesium for loading assets

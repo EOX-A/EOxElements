@@ -5,11 +5,26 @@ import { handleVectorCreation } from "./vectors";
 /**
  * Description placeholder
  *
- * @param {import("../../types").Collections3D[]} collections
- * @param {import("../../types").CollectionsManager} collectionsManager
+ * @param {import("../../types").Collections3D[]} [oldCollections]
+ * @param {import("../../types").Collections3D[]} [collections]
+ * @param {import("../../types").CollectionsManager} [collectionsManager]
  */
-const collectionsHandler = (collections, collectionsManager) => {
-  if (!collections) {
+const collectionsHandler = (
+  oldCollections,
+  collections,
+  collectionsManager,
+) => {
+  if (oldCollections?.length) {
+    const updatedIDs = collections?.map((col) => col.id);
+    const removed = oldCollections.filter((col) =>
+      updatedIDs?.includes(col.id),
+    );
+    removed.forEach((col) => {
+      collectionsManager.remove(col.id);
+    });
+  }
+
+  if (!collections || !collectionsManager) {
     return;
   }
 
