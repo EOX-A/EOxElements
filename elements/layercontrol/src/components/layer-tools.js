@@ -265,6 +265,7 @@ export class EOxLayerControlLayerTools extends LitElement {
       display: flex;
       border-radius: 4px;
       cursor: pointer;
+      display: var(--layer-visibility);
     }
     .single-action .icon::before,
     details.tools summary .icon::before {
