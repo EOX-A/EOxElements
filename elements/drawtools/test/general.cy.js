@@ -7,9 +7,11 @@ import {
   copyGeoJsonEditorTest,
   loadDrawToolsTest,
   setLayerId,
+  measureTooltipTest,
 } from "./cases";
 
 import { TEST_SELECTORS } from "../src/enums";
+import "../../map/src/main";
 
 // Destructuring TEST_SELECTORS object
 const { drawTools } = TEST_SELECTORS;
@@ -18,10 +20,12 @@ const { drawTools } = TEST_SELECTORS;
 describe("Drawtools", () => {
   // Setting up the environment before each test
   beforeEach(() => {
-    // Mounting mock-map and eox-drawtools elements
-    cy.mount("<mock-map></mock-map>").as("mock-map");
+    cy.mount("<eox-map center=\"[15,48]\" layers=\"[{\"type\":\"Tile\",\"source\":{\"type\":\"OSM\"}}]\" zoom=\"7\" style=\"width: 100%; height: 300px;\"></eox-map>").as("eox-map");
+
+    //cy.mount("<mock-map></mock-map>").as("mock-map");
+
     cy.mount(
-      `<eox-drawtools show-editor import-features for="mock-map"></eox-drawtools>`,
+      `<eox-drawtools show-editor import-features measure type="LineString" for="eox-map"></eox-drawtools>`,
     ).as(drawTools);
   });
 
@@ -40,4 +44,6 @@ describe("Drawtools", () => {
     copyGeoJsonEditorTest());
   // Test case to set the layer id and check if the draw button icon changes
   it("setting layer id changes draw btn icon", () => setLayerId());
+
+  it("renders the measurement tooltip correctly", () => measureTooltipTest());
 });
