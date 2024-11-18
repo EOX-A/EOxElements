@@ -181,6 +181,11 @@ export class EOxLayerControlLayer extends LitElement {
                 () => html`<span class="tools-placeholder"></span>`,
               )}
             </label>
+
+            <span
+              class="color-swatch"
+              style="background-color: ${this.#getLayer("color")}"
+            />
           </div>
 
           <!-- Render layer tools -->
@@ -201,6 +206,7 @@ export class EOxLayerControlLayer extends LitElement {
     ${checkbox}
     eox-layercontrol-layer {
       width: 100%;
+      position: relative;
     }
     .layer.zoom-state-invisible {
       background: #d2e2ee;
@@ -216,6 +222,14 @@ export class EOxLayerControlLayer extends LitElement {
       display: flex;
       align-items: center;
       cursor: pointer;
+    }
+    .layer .color-swatch {
+      position: absolute;
+      top: 12px;
+      right: 2px;
+      width: 8px;
+      height: 8px;
+      border-radius: 3px;
     }
     [data-type] .title::before {
       width: 20px;
