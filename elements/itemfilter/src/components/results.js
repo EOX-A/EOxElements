@@ -7,7 +7,6 @@ import {
   createItemListMethod,
 } from "../methods/results/index.js";
 import { toggleAccordion } from "../helpers";
-import attributes from "../../../storytelling/src/markdown-it-plugin/markdown-it-decorate-improved.js";
 
 /**
  * EOxItemFilterResults is a custom web component that displays the results of item filtering.
