@@ -263,7 +263,7 @@ export class EOxLayerControl extends LitElement {
       --layer-input-visibility: flex;
       --layer-type-visibility: block;
       --layer-title-visibility: flex;
-      --layer-visibility: flex;
+      --layer-visibility: block;
 
       display: block;
       padding: var(--padding) 0;
