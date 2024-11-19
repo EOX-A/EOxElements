@@ -62,10 +62,20 @@ details > summary::-webkit-details-marker {
   align-items: center;
   text-transform: var(--text-transform);
 }
+.cards .title {
+  font-size: 16px;
+  font-weight: 600;
+  text-wrap: auto;
+}
 .subtitle {
   font-size: 11px;
   opacity: .7;
   margin-top: 6px;
+}
+.cards .subtitle {
+  font-size: 14px;
+  color: #757575;
+  text-wrap: auto;
 }
 .title-container {
   display: flex;
@@ -147,6 +157,29 @@ ul:not(#filters) > li {
 }
 ul#results li {
   padding: 5px var(--padding);
+}
+ul#results ul.cards {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 40px;
+  margin: 20px 0;
+}
+ul#results ul.cards li {
+  flex-basis: calc(33.3% - 77px);
+  min-width: 0;
+  border: 1px solid var(--border-color);
+  padding: 12px 24px;
+}
+@media screen and (max-width: 768px) {
+  ul#results ul.cards li {
+    flex-basis: calc(50% - 70px);
+  }
+}
+@media screen and (max-width: 480px) {
+  ul#results ul.cards li {
+    flex-basis: 100%;
+  }
 }
 section {
   position: relative;

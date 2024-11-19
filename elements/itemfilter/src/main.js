@@ -66,6 +66,7 @@ export class EOxItemFilter extends LitElement {
         type: Boolean,
       },
       externalFilter: { attribute: false, type: Function },
+      resultType: { attribute: "result-type", type: String },
       unstyled: { type: Boolean },
     };
   }
@@ -224,6 +225,13 @@ export class EOxItemFilter extends LitElement {
      * @type Boolean
      */
     this.expandMultipleResults = true;
+
+    /**
+     * Rendering type for results (can be `list`or `cards`)
+     *
+     * @type String
+     */
+    this.resultType = "list";
 
     /**
      * Render the element without additional styles
@@ -454,6 +462,7 @@ export class EOxItemFilter extends LitElement {
               .filters=${this.filters}
               .resultAggregation=${this.#resultAggregation}
               .selectedResult=${this.selectedResult}
+              .resultType=${this.resultType}
               @result=${this.updateResult}
             ></eox-itemfilter-results>
           `,

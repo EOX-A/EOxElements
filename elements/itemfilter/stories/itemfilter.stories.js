@@ -2,6 +2,7 @@
 
 import {
   AutoSpreadStory,
+  CardDisplayStory,
   ExternalStory,
   InlineModeStory,
   NestedPropertyStory,
@@ -46,3 +47,9 @@ export const External = ExternalStory();
  * get spread to the root level
  */
 export const AutoSpread = AutoSpreadStory();
+
+/**
+ * When using `result-type` property with value `cards`, the results are not rendered in a list,
+ * but in a responsive card grid
+ */
+export const CardDisplay = CardDisplayStory();

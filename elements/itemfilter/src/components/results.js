@@ -7,6 +7,7 @@ import {
   createItemListMethod,
 } from "../methods/results/index.js";
 import { toggleAccordion } from "../helpers";
+import attributes from "../../../storytelling/src/markdown-it-plugin/markdown-it-decorate-improved.js";
 
 /**
  * EOxItemFilterResults is a custom web component that displays the results of item filtering.
@@ -30,6 +31,7 @@ export class EOxItemFilterResults extends LitElement {
       filters: { state: true, type: Object },
       resultAggregation: { attribute: false, type: Array },
       selectedResult: { state: true, type: Object },
+      resultType: { attribute: "result-type", type: String },
     };
   }
 
@@ -55,6 +57,11 @@ export class EOxItemFilterResults extends LitElement {
      * @type Object
      */
     this.selectedResult = null;
+
+    /**
+     * @type String("list"|"card")
+     */
+    this.resultType = "list";
   }
 
   /**

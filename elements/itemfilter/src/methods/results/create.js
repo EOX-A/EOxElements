@@ -63,7 +63,7 @@ export function createItemListMethod(
       : nothing;
 
   return html`
-    <ul>
+    <ul class=${EOxItemFilterResults.resultType}>
       ${repeat(
         items,
         (item) => item.id,
