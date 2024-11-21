@@ -13,6 +13,7 @@ function CardDisplayStory() {
         .aggregateResults=${args.aggregateResults}
         .items=${args.items}
         .titleProperty=${args.titleProperty}
+        .imageProperty=${args.imageProperty}
         .subTitleProperty=${args.subTitleProperty}
         .filterProperties=${args.filterProperties}
         .resultType=${args.resultType}
@@ -21,6 +22,7 @@ function CardDisplayStory() {
       aggregateResults: "themes",
       titleProperty: "title",
       subTitleProperty: "description",
+      imageProperty: "assets.thumbnail.href",
       resultType: "cards",
       filterProperties: [
         {

@@ -66,6 +66,11 @@ export const ELEMENT_CONFIG = Object.freeze({
   subTitleProperty: undefined,
 
   /**
+   * The property of the result items used for an image
+   */
+  imageProperty: undefined,
+
+  /**
    * Allow opening multiple filter accordions in parallel
    * @default true
    */
@@ -96,6 +101,7 @@ export const ELEMENT_PROPERTIES = [
   "showResults",
   "titleProperty",
   "subTitleProperty",
+  "imageProperty",
   "idProperty",
   "expandMultipleFilters",
   "expandResults",

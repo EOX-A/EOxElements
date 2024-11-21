@@ -43,6 +43,13 @@
           ]
         ]
       }
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://raw.githubusercontent.com/eurodatacube/eodash-assets/main/collections/NASAPopulation/NASAPopulation.png",
+        "type": "image/png",
+        "roles": ["thumbnail"]
+      }
     }
   },
   {
@@ -88,6 +95,13 @@
             [0, 10]
           ]
         ]
+      }
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://raw.githubusercontent.com/eurodatacube/eodash-assets/main/collections/ESDL_Hydrology_Precipitation/image.png",
+        "type": "image/png",
+        "roles": ["thumbnail"]
       }
     }
   },

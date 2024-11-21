@@ -56,6 +56,7 @@ export class EOxItemFilter extends LitElement {
       idProperty: { attribute: "id-property", type: String },
       titleProperty: { attribute: "title-property", type: String },
       subTitleProperty: { attribute: "sub-title-property", type: String },
+      imageProperty: { attribute: "image-property", type: String },
       expandMultipleFilters: {
         attribute: "enable-multiple-filter",
         type: Boolean,
@@ -198,6 +199,13 @@ export class EOxItemFilter extends LitElement {
      * @type String
      */
     this.subTitleProperty = undefined;
+
+    /**
+     * The property of the result items used for an image
+     *
+     * @type String
+     */
+    this.imageProperty = undefined;
 
     /**
      * Unique id property of items
