@@ -120,9 +120,7 @@ export class EOxItemFilterResults extends LitElement {
   render() {
     return html`
       <section id="section-results">
-        <div>
-          <h6 class="main-heading">Results</h6>
-        </div>
+        <div slot="resultstitle"></div>
         <div id="container-results" class="scroll">
           ${when(
             this.results.length < 1,
