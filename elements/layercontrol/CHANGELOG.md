@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.24.0...layercontrol-v0.25.0) (2024-11-21)
+
+
+### Features
+
+* Css variable customization ([425b2bf](https://github.com/EOX-A/EOxElements/commit/425b2bff849cfb15f037d742f2a9e094f23abe98))
+
 ## [0.24.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.23.0...layercontrol-v0.24.0) (2024-11-07)
 
 
