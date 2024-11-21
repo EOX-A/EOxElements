@@ -7,4 +7,5 @@ export { default as AutoSpreadStory } from "./auto-spread"; // Item filter with 
 export { default as PreSetFilterStory } from "./pre-set-filter"; // Item filter with pre-set filter
 export { default as NestedPropertyStory } from "./nested-property"; // Item filter with nested property
 export { default as ExternalStory } from "./external"; // Item filter with external endpoint
+export { default as CardDisplayStory } from "./card-display";
 export { default as CSSVariablesStory } from "./css-variables";

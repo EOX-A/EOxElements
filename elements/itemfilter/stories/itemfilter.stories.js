@@ -2,6 +2,7 @@
 
 import {
   AutoSpreadStory,
+  CardDisplayStory,
   CSSVariablesStory,
   ExternalStory,
   InlineModeStory,
@@ -47,6 +48,12 @@ export const External = ExternalStory();
  * get spread to the root level
  */
 export const AutoSpread = AutoSpreadStory();
+
+/**
+ * When using `result-type` property with value `cards`, the results are not rendered in a list,
+ * but in a responsive card grid
+ */
+export const CardDisplay = CardDisplayStory();
 
 /**
  * CSS variables can be used to modify the styling and layout of itemfilter: e.g. the `--form-flex-direction`
