@@ -12,6 +12,7 @@ import {
   externalFilterTest,
   nestedPropertyTest,
   subtitleTest,
+  imageTest,
   validationTest,
   slotRenderTest,
 } from "./cases/general/";
@@ -37,6 +38,7 @@ describe("Item Filter Config", () => {
         Object.assign(eoxItemFilter, {
           titleProperty: "title",
           subTitleProperty: "description",
+          imageProperty: "assets.thumbnail.href",
           filterProperties: [
             {
               keys: ["title", "themes"],
@@ -110,6 +112,11 @@ describe("Item Filter Config", () => {
   it("should render subtitles", () => subtitleTest());
 
   /**
+   * Test case to check if images are rendered correctly
+   */
+  it("should render images", () => imageTest());
+
+  /**
    * Test case to check if input validation is working
    */
   it("should have working validation", () => validationTest());
@@ -117,7 +124,7 @@ describe("Item Filter Config", () => {
   /**
    * Test case to check slot rendering
    */
-  it.only("renders slots correctly", { skipBeforeEach: true }, () =>
+  it("renders slots correctly", { skipBeforeEach: true }, () =>
     slotRenderTest(),
   );
 });

@@ -30,6 +30,11 @@
     "status": {
       "code": "active"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=1"
+      }
+    },
     "properties": {
       "started": "2023-06-14T13:56:38+00:00",
       "geometry": {
@@ -42,13 +47,6 @@
             [-90.0, 82.0]
           ]
         ]
-      }
-    },
-    "assets": {
-      "thumbnail": {
-        "href": "https://raw.githubusercontent.com/eurodatacube/eodash-assets/main/collections/NASAPopulation/NASAPopulation.png",
-        "type": "image/png",
-        "roles": ["thumbnail"]
       }
     }
   },
@@ -83,6 +81,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=2"
+      }
+    },
     "properties": {
       "started": "2023-06-13T13:56:38+00:00",
       "geometry": {
@@ -95,13 +98,6 @@
             [0, 10]
           ]
         ]
-      }
-    },
-    "assets": {
-      "thumbnail": {
-        "href": "https://raw.githubusercontent.com/eurodatacube/eodash-assets/main/collections/ESDL_Hydrology_Precipitation/image.png",
-        "type": "image/png",
-        "roles": ["thumbnail"]
       }
     }
   },
@@ -135,6 +131,11 @@
     "tags": ["air quality", "sea ice", "freeboard"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=3"
+      }
     },
     "properties": {
       "started": "2023-06-12T13:56:38+00:00",
@@ -170,6 +171,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=4"
+      }
+    },
     "properties": {
       "started": "2023-06-11T13:56:38+00:00"
     }
@@ -192,6 +198,11 @@
     "tags": ["economy", "vessel density", "cargo"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=5"
+      }
     },
     "properties": {
       "started": "2023-06-10T13:56:38+00:00"
@@ -216,6 +227,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=6"
+      }
+    },
     "properties": {
       "started": "2023-06-09T13:56:38+00:00"
     }
@@ -238,6 +254,11 @@
     "tags": ["economy", "vessel density", "others"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=7"
+      }
     },
     "properties": {
       "started": "2023-06-08T13:56:38+00:00"
@@ -263,6 +284,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=8"
+      }
+    },
     "properties": {
       "started": "2023-06-07T13:56:38+00:00"
     }
@@ -285,6 +311,11 @@
     "tags": ["air", "temperature", "C3S Data"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=9"
+      }
     },
     "properties": {
       "started": "2023-06-06T13:56:38+00:00"
@@ -309,6 +340,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=10"
+      }
+    },
     "properties": {
       "started": "2023-06-05T13:56:38+00:00"
     }
@@ -331,6 +367,11 @@
     "tags": ["air", "NO2", "city level"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=11"
+      }
     },
     "properties": {
       "started": "2023-06-04T13:56:38+00:00"
@@ -355,6 +396,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=12"
+      }
+    },
     "properties": {
       "started": "2023-06-03T13:56:38+00:00"
     }
@@ -377,6 +423,11 @@
     "tags": ["air", "O3", "city level"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=13"
+      }
     },
     "properties": {
       "started": "2023-06-02T13:56:38+00:00"
@@ -401,6 +452,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=14"
+      }
+    },
     "properties": {
       "started": "2023-06-01T13:56:38+00:00"
     }
@@ -423,6 +479,11 @@
     "tags": ["economy", "traffic", "mobile data"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=15"
+      }
     },
     "properties": {
       "started": "2023-05-29T13:56:38+00:00"
@@ -447,6 +508,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=16"
+      }
+    },
     "properties": {
       "started": "2023-05-28T13:56:38+00:00"
     }
@@ -469,6 +535,11 @@
     "tags": ["health", "Covid-19", "cases"],
     "status": {
       "code": "active"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=17"
+      }
     },
     "properties": {
       "started": "2023-05-27T13:56:38+00:00"
@@ -493,6 +564,11 @@
     "status": {
       "code": "inactive"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=18"
+      }
+    },
     "properties": {
       "started": "2023-05-26T13:56:38+00:00"
     }
@@ -516,6 +592,11 @@
     "status": {
       "code": "active"
     },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=19"
+      }
+    },
     "properties": {
       "started": "2023-05-25T13:56:38+00:00"
     }
@@ -538,6 +619,11 @@
     "tags": ["economy", "cruise ships", "AIS data"],
     "status": {
       "code": "inactive"
+    },
+    "assets": {
+      "thumbnail": {
+        "href": "https://picsum.photos/800/600?random=20"
+      }
     },
     "properties": {
       "started": "2023-05-24T13:56:38+00:00"
