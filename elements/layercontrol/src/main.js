@@ -264,6 +264,7 @@ export class EOxLayerControl extends LitElement {
       --layer-type-visibility: block;
       --layer-title-visibility: flex;
       --layer-visibility: block;
+      --layer-tools-button-visibility: flex;
 
       display: block;
       padding: var(--padding) 0;
