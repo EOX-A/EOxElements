@@ -455,7 +455,11 @@ export class EOxItemFilter extends LitElement {
               .resultAggregation=${this.#resultAggregation}
               .selectedResult=${this.selectedResult}
               @result=${this.updateResult}
-            ></eox-itemfilter-results>
+            >
+              <slot name="resultstitle"
+                ><h6 class="main-heading">Results</h6></slot
+              >
+            </eox-itemfilter-results>
           `,
         )}
       </form>
