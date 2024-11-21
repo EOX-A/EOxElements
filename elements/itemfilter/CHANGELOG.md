@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.5.0...itemfilter-v1.6.0) (2024-11-21)
+
+
+### Features
+
+* Card result type ([#1381](https://github.com/EOX-A/EOxElements/issues/1381)) ([3516ab2](https://github.com/EOX-A/EOxElements/commit/3516ab2b4469ed33c3099b5f5ca5ac1be40205d9))
+* Css variables for layout and visibility ([#1383](https://github.com/EOX-A/EOxElements/issues/1383)) ([83866d3](https://github.com/EOX-A/EOxElements/commit/83866d3100827b0e92bd3c6ab6086b27292a4f43))
+* Display result image with ` imageProperty` ([#1385](https://github.com/EOX-A/EOxElements/issues/1385)) ([a269eb0](https://github.com/EOX-A/EOxElements/commit/a269eb01426428d2741038c52b924622de98d556))
+
+
+### Bug Fixes
+
+* Re-enable result title slot ([#1384](https://github.com/EOX-A/EOxElements/issues/1384)) ([22d40d6](https://github.com/EOX-A/EOxElements/commit/22d40d6e2c6b98c9216fa1b8e8a2479ecd51f7a2))
+
 ## [1.5.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.4.1...itemfilter-v1.5.0) (2024-11-07)
 
 
