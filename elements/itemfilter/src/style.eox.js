@@ -24,9 +24,21 @@ export const styleEOX = `
   --background-color: #fff;
   --padding: 0.5rem;
   --text-transform: capitalize;
+  --form-flex-direction: column;
+  --filter-display: block;
 }
 * {
   font-family: Roboto, sans-serif;
+}
+form#itemfilter {
+  flex-direction: var(--form-flex-direction);
+}
+eox-itemfilter-container {
+  min-width: 200px;
+  display: var(--filter-display);
+}
+eox-itemfilter-results {
+  flex-grow: 1;
 }
 ul {
   padding-left: 0;
@@ -99,8 +111,7 @@ details.details-results summary::before {
   width: 24px;
 }
 details.details-filter summary::after {
-  position: absolute;
-  right: 8px;
+  margin-left: auto;
   transform: rotate(90deg);
 }
 details[open] summary::before {

@@ -3,6 +3,7 @@
 import {
   AutoSpreadStory,
   CardDisplayStory,
+  CSSVariablesStory,
   ExternalStory,
   InlineModeStory,
   NestedPropertyStory,
@@ -53,3 +54,10 @@ export const AutoSpread = AutoSpreadStory();
  * but in a responsive card grid
  */
 export const CardDisplay = CardDisplayStory();
+
+/**
+ * CSS variables can be used to modify the styling and layout of itemfilter: e.g. the `--form-flex-direction`
+ * variable set to `row` instead of `column` (default)
+ */
+export const CSSVariables = CSSVariablesStory();
+
