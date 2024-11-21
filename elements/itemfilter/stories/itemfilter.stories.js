@@ -2,6 +2,7 @@
 
 import {
   AutoSpreadStory,
+  CSSVariablesStory,
   ExternalStory,
   InlineModeStory,
   NestedPropertyStory,
@@ -46,3 +47,9 @@ export const External = ExternalStory();
  * get spread to the root level
  */
 export const AutoSpread = AutoSpreadStory();
+
+/**
+ * CSS variables can be used to modify the styling and layout of itemfilter: e.g. the `--form-flex-direction`
+ * variable set to `row` instead of `column` (default)
+ */
+export const CSSVariables = CSSVariablesStory();
