@@ -14,11 +14,9 @@ export class SpatialEditor extends AbstractEditor {
 
   // Build the editor UI
   build() {
-    // const properties = this.schema.properties;
     const options = this.options;
     const description = this.schema.description;
     const theme = this.theme;
-    // const startVals = this.defaults.startVals[this.key];
 
     // Create label and description elements if not in compact mode
     if (!options.compact)
@@ -35,7 +33,9 @@ export class SpatialEditor extends AbstractEditor {
         this.translateProperty(options.infoText),
       );
 
-    const drawtoolsEl = document.createElement("eox-drawtools");
+    const drawtoolsEl = /** @type {import("@eox/drawtools").EOxDrawTools} */ (
+      document.createElement("eox-drawtools")
+    );
 
     const enableEditor = this.schema.format.includes("editor");
 
@@ -81,6 +81,12 @@ export class SpatialEditor extends AbstractEditor {
       attributes.for = "eox-map#" + mapId;
     }
     setAttributes(drawtoolsEl, attributes);
+    const autoDraw = !(options.autoStartSelection === false)
+    if (autoDraw) { 
+      drawtoolsEl.updateComplete.then(() => {
+        drawtoolsEl.startDrawing();
+      });
+    }
 
     this.input = drawtoolsEl;
     this.input.id = this.formname;
