@@ -12,18 +12,6 @@
       "type": "spatial",
       "properties": {},
       "format": "polygon"
-    },
-    "polygons-editor": {
-      "title": "Multi polygon + Editor",
-      "type": "spatial",
-      "properties": {},
-      "format": "polygons-editor"
-    },
-    "polygon-editor": {
-      "title": "Single polygon  + Editor",
-      "type": "spatial",
-      "properties": {},
-      "format": "polygon-editor"
     }
   }
 }

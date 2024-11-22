@@ -21,32 +21,12 @@ const inputs = [
   },
   {
     type: "spatial",
-    format: "bounding-boxes-editor",
-    func: SpatialEditor,
-  },
-  {
-    type: "spatial",
-    format: "bounding-box-editor",
-    func: SpatialEditor,
-  },
-  {
-    type: "spatial",
     format: "polygons",
     func: SpatialEditor,
   },
   {
     type: "spatial",
     format: "polygon",
-    func: SpatialEditor,
-  },
-  {
-    type: "spatial",
-    format: "polygons-editor",
-    func: SpatialEditor,
-  },
-  {
-    type: "spatial",
-    format: "polygon-editor",
     func: SpatialEditor,
   },
   {

@@ -14,16 +14,12 @@
       "format": "bounding-box"
     },
     "bboxes-editor": {
-      "title": "Multi bbox example + Editor",
+      "title": "Multi bbox example without auto start drawing",
       "type": "spatial",
-      "properties": {},
-      "format": "bounding-boxes-editor"
-    },
-    "bbox-editor": {
-      "title": "Single bbox example + Editor",
-      "type": "spatial",
-      "properties": {},
-      "format": "bounding-box-editor"
+      "options":{
+        "autoStartSelection":false
+      },
+      "format": "bounding-boxes"
     }
   }
 }

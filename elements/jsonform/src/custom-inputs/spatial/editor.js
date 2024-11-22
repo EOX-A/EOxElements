@@ -37,8 +37,6 @@ export class SpatialEditor extends AbstractEditor {
       document.createElement("eox-drawtools")
     );
 
-    const enableEditor = this.schema.format.includes("editor");
-
     const drawType = isPolygon(this.schema) ? "Polygon" : "Box";
     const attributes = {
       type: drawType,
@@ -53,11 +51,6 @@ export class SpatialEditor extends AbstractEditor {
     }
     if (isMulti(this.schema)) {
       attributes["multiple-features"] = true;
-    }
-
-    if (enableEditor) {
-      attributes["import-features"] = true;
-      attributes["show-editor"] = true;
     }
 
     if (isMulti(this.schema)) {
