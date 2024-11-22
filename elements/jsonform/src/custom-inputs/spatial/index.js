@@ -1,2 +1,2 @@
 export { SpatialEditor } from "./editor";
-export { default as spatialValidator } from "./validator";
+export { default as spatialValidatorCreator } from "./validator";

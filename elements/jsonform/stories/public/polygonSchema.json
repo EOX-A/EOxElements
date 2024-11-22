@@ -3,13 +3,13 @@
   "properties": {
     "polygons": {
       "title": "Multi polygon",
-      "type": "spatial",
+      "type": "array",
       "properties": {},
       "format": "polygons"
     },
     "polygon": {
       "title": "Single polygon",
-      "type": "spatial",
+      "type": "object",
       "properties": {},
       "format": "polygon"
     }

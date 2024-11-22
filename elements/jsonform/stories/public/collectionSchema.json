@@ -631,7 +631,7 @@
               "required": ["bbox"],
               "properties": {
                 "bbox": {
-                  "type": "spatial",
+                  "type": "array",
                   "format": "bounding-boxes"
                 }
               }

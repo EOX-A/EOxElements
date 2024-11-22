@@ -3,21 +3,21 @@
   "properties": {
     "bboxes": {
       "title": "Multi bbox example",
-      "type": "spatial",
+      "type": "array",
       "properties": {},
       "format": "bounding-boxes"
     },
     "bbox": {
       "title": "Single bbox example",
-      "type": "spatial",
+      "type": "array",
       "properties": {},
       "format": "bounding-box"
     },
-    "bboxes-editor": {
+    "bboxes2": {
       "title": "Multi bbox example without auto start drawing",
-      "type": "spatial",
-      "options":{
-        "autoStartSelection":false
+      "type": "array",
+      "options": {
+        "autoStartSelection": false
       },
       "format": "bounding-boxes"
     }

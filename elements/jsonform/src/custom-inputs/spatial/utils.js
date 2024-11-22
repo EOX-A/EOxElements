@@ -2,27 +2,25 @@
  * Whether a schema has feature/feature format or not
  */
 export const isSelection = (schema) =>
-  ["feature", "features"].some((f) => schema?.format?.includes(f));
+  ["feature", "features"].some((f) => schema?.format === f);
 
 /**
  * Whether a schema has ploygon/polygons format or not
  */
 export const isPolygon = (schema) =>
-  ["polygon", "polygons"].some((p) => schema?.format?.includes(p));
+  ["polygon", "polygons"].some((p) => schema?.format === p);
 
 /**
  * Whether a schema has bbox/bboxes format or not
  */
 export const isBox = (schema) =>
-  ["bounding-boxes", "bounding-box"].some((p) => schema?.format?.includes(p));
+  ["bounding-boxes", "bounding-box"].some((p) => schema?.format === p);
 
 /**
  * Whether a schema expects multiple values not
  */
 export const isMulti = (schema) =>
-  ["bounding-boxes", "polygons", "features"].some((m) =>
-    schema?.format?.includes(m),
-  );
+  ["bounding-boxes", "polygons", "features"].some((m) => schema?.format === m);
 
 /**
  * Whether a schema is supported by the spatial editor

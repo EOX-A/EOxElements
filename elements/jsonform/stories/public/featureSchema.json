@@ -3,20 +3,23 @@
   "properties": {
     "features": {
       "title": "Multi Features",
-      "type": "spatial",
+      "type": "array",
       "options": {
         "layerId": "regions-grey",
-        "featureProperty": "BIOME_NAME",
-        "type": "string",
         "for": "eox-map#first"
+      },
+      "items": {
+        "type": "object"
       },
       "format": "features"
     },
     "feature": {
       "title": "Feature",
-      "type": "spatial",
+      "type": "string",
       "options": {
         "layerId": "regions-blue",
+        "featureProperty": "BIOME_NAME",
+        "type": "string",
         "for": "eox-map#second"
       },
       "format": "feature"

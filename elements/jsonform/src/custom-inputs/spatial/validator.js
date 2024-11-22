@@ -8,77 +8,92 @@ import {
 } from "./utils";
 
 /**
- * Validates values of supported spatial types and formats
- *
- * @param {*} schema
- * @param {*} value
- * @param {*} path
- * @returns {{}}
- */
-function spatialValidator(schema, value, path) {
-  let errors = [];
-  if (!schema.properties) {
+ *  @param {{
+ *   type?: string
+ *   format: string
+ *   func: Record<string,any> & { new (): any }
+ * }[]} inputs
+ **/
+function spatialValidatorCreator(inputs) {
+  /**
+   * Validates values of supported spatial types and formats
+   *
+   * @param {*} schema
+   * @param {*} value
+   * @param {*} path
+   * @returns {{}}
+   */
+  return function (schema, value, path) {
+    let errors = [];
+    if (!schema.properties) {
+      return errors;
+    }
+
+    Object.keys(schema.properties).forEach((key) => {
+      const subSchema = schema.properties[key];
+      const toBeValidated =
+        isSupported(subSchema) &&
+        (subSchema.format === "feature" ||
+          inputs.some(
+            (i) => i.format === subSchema.format && i.type === subSchema.type,
+          ));
+
+      if (!toBeValidated) {
+        // only validate defined types and formats using the spatial editor
+        return;
+      }
+
+      const undefinedError = undefinedValidator(key, value[key], path);
+      if (undefinedError.length) {
+        errors.push(...undefinedError);
+        return;
+      }
+
+      switch (true) {
+        case isSelection(subSchema): {
+          errors.push(
+            ...handleMultiValidation({
+              key,
+              subValue: value[key],
+              subSchema,
+              path,
+              validationFn: selectValidator,
+            }),
+          );
+          break;
+        }
+        case isBox(subSchema): {
+          errors.push(
+            ...handleMultiValidation({
+              key,
+              subValue: value[key],
+              subSchema,
+              path,
+              validationFn: bBoxValidator,
+            }),
+          );
+          break;
+        }
+        case isPolygon(subSchema): {
+          errors.push(
+            ...handleMultiValidation({
+              key,
+              subValue: value[key],
+              subSchema,
+              path,
+              validationFn: polygonValidator,
+            }),
+          );
+          break;
+        }
+        default:
+          break;
+      }
+    });
     return errors;
-  }
-
-  Object.keys(schema.properties).forEach((key) => {
-    const subSchema = schema.properties[key];
-    if (subSchema.type !== "spatial" || !isSupported(subSchema)) {
-      // only validate spatial types and defined formats
-      return;
-    }
-
-    const undefinedError = undefinedValidator(key, value[key], path);
-    if (undefinedError.length) {
-      errors.push(...undefinedError);
-      return;
-    }
-
-    switch (true) {
-      case isSelection(subSchema): {
-        errors.push(
-          ...handleMultiValidation({
-            key,
-            subValue: value[key],
-            subSchema,
-            path,
-            validationFn: selectValidator,
-          }),
-        );
-        break;
-      }
-      case isBox(subSchema): {
-        errors.push(
-          ...handleMultiValidation({
-            key,
-            subValue: value[key],
-            subSchema,
-            path,
-            validationFn: bBoxValidator,
-          }),
-        );
-        break;
-      }
-      case isPolygon(subSchema): {
-        errors.push(
-          ...handleMultiValidation({
-            key,
-            subValue: value[key],
-            subSchema,
-            path,
-            validationFn: polygonValidator,
-          }),
-        );
-        break;
-      }
-      default:
-        break;
-    }
-  });
-  return errors;
+  };
 }
-
-export default spatialValidator;
+export default spatialValidatorCreator;
 /**
  * Handles validating array values of type spatial
  */
@@ -98,11 +113,19 @@ function handleMultiValidation({
           property: "format",
         },
       ];
-    } else {
-      return subValue.flatMap((v, i) =>
-        validationFn(`${key}.${i}`, v, path, subSchema),
-      );
+    } else if (!subValue.length) {
+      return [
+        {
+          path: `${path}.${key}`,
+          message: `Value is expected to have at least one value`,
+          property: "format",
+        },
+      ];
     }
+
+    return subValue?.flatMap((v, i) =>
+      validationFn(`${key}.${i}`, v, path, subSchema),
+    );
   } else {
     return validationFn(key, subValue, path, subSchema);
   }
@@ -140,26 +163,29 @@ function bBoxValidator(key, val, path) {
  * Feature selection validator
  */
 function selectValidator(key, val, path, subSchema) {
-  // type can be "string","number","boolean","object","array"
-  const expected = subSchema.options?.type;
+  let expected;
+  if (isMulti(subSchema)) {
+    expected = subSchema?.items?.type;
+  } else {
+    expected = subSchema.type;
+  }
   if (expected) {
+    // type can be "string","number","boolean","object","array"
     if (satisfiesType(val, expected)) {
       return [];
     } else {
       return [
         {
           path: `${path}.${key}`,
-          message: `Value is expected to be of type ${expected} but got typeof ${typeof val}`,
+          message: `Value is expected to be a valid ${expected}`,
           property: "format",
         },
       ];
     }
   }
-  return [];
 }
-
 function polygonValidator(key, val, path) {
-  if (typeof val !== "object" && !Object.keys(val).length) {
+  if (typeof val !== "object" || !Object.keys(val).length) {
     return [
       {
         path: `${path}.${key}`,
@@ -176,7 +202,7 @@ function undefinedValidator(key, val, path) {
     return [
       {
         path: `${path}.${key}`,
-        message: `Value is undefined`,
+        message: `invalid value ${JSON.stringify(val)}`,
         property: "type",
       },
     ];

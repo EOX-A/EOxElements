@@ -74,8 +74,8 @@ export class SpatialEditor extends AbstractEditor {
       attributes.for = "eox-map#" + mapId;
     }
     setAttributes(drawtoolsEl, attributes);
-    const autoDraw = !(options.autoStartSelection === false)
-    if (autoDraw) { 
+    const autoDraw = !(options.autoStartSelection === false);
+    if (autoDraw) {
       drawtoolsEl.updateComplete.then(() => {
         drawtoolsEl.startDrawing();
       });
@@ -101,7 +101,7 @@ export class SpatialEditor extends AbstractEditor {
      * Ensures that features of length 1 are not returned as an array
      *
      * @param {import("ol/Feature").default|import("ol/Feature").default[]} features
-     * @param {(feature:import("ol/Feature").default)=>any} callback
+     * @param {(feature:import("ol/Feature").default) => any} callback
      */
     const spreadFeatures = (features, callback) => {
       if (features.length) {
@@ -126,7 +126,7 @@ export class SpatialEditor extends AbstractEditor {
           e.stopPropagation();
 
           switch (true) {
-            case !e.detail || e.detail?.length === 0: {
+            case !e.detail || !e.detail?.length: {
               this.value = null;
               break;
             }

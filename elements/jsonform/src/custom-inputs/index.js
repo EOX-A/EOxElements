@@ -1,6 +1,6 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { MinMaxEditor } from "./minmax";
-import { SpatialEditor, spatialValidator } from "./spatial";
+import { SpatialEditor, spatialValidatorCreator } from "./spatial";
 
 // Define custom input types
 const inputs = [
@@ -10,32 +10,31 @@ const inputs = [
     func: MinMaxEditor,
   },
   {
-    type: "spatial",
+    type: "array",
     format: "bounding-boxes",
     func: SpatialEditor,
   },
   {
-    type: "spatial",
+    type: "array",
     format: "bounding-box",
     func: SpatialEditor,
   },
   {
-    type: "spatial",
+    type: "array",
     format: "polygons",
     func: SpatialEditor,
   },
   {
-    type: "spatial",
+    type: "object",
     format: "polygon",
     func: SpatialEditor,
   },
   {
-    type: "spatial",
     format: "feature",
     func: SpatialEditor,
   },
   {
-    type: "spatial",
+    type: "array",
     format: "features",
     func: SpatialEditor,
   },
@@ -48,7 +47,9 @@ const inputs = [
  */
 export const addCustomInputs = (startVals) => {
   // Add custom validators for spatial inputs
-  JSONEditor.defaults["custom_validators"].push(spatialValidator);
+  JSONEditor.defaults["custom_validators"].push(
+    spatialValidatorCreator(inputs),
+  );
 
   // Iterate over each custom input definition
   inputs.map(({ type, format, func }) => {
@@ -58,6 +59,8 @@ export const addCustomInputs = (startVals) => {
     // Add a resolver to determine which format to use based on the schema
     JSONEditor.defaults.resolvers.unshift((schema) => {
       if (schema.type === type && schema.format === format) return format;
+      // If the schema format is "feature" use the SpatialEditor for all types
+      if (schema.format === "feature") return format;
     });
   });
 };
