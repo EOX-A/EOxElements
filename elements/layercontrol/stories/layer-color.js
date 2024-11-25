@@ -18,11 +18,19 @@ const COLORED_LAYERS = [
       description: "# Hello world",
     },
     layers: [
-      STORIES_LAYER_SENTINEL_HUB.wind,
-      STORIES_LAYER_SENTINEL_HUB.no2,
-      STORIES_LAYER_REGION,
+      {
+        ...STORIES_LAYER_SENTINEL_HUB.wind,
+        color: "#008955",
+      },
+      {
+        ...STORIES_LAYER_SENTINEL_HUB.no2,
+        color: "#008397",
+      },
+      {
+        ...STORIES_LAYER_REGION,
+        color: "#007bcb",
+      },
     ],
-    color: "red",
   },
   {
     type: "Group",
@@ -31,7 +39,6 @@ const COLORED_LAYERS = [
       title: "Background Layers",
     },
     layers: [STORIES_LAYER_S2, STORIES_LAYER_OSM],
-    color: "blue",
   },
 ];
 
