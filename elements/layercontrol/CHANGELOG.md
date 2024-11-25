@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.25.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.25.0...layercontrol-v0.25.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* **deps:** Include sortablejs in dependencies ([8390657](https://github.com/EOX-A/EOxElements/commit/839065794f13f0ab1d6a8586957a8b21611750ff))
+
 ## [0.25.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.24.0...layercontrol-v0.25.0) (2024-11-21)
 
 
