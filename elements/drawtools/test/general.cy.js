@@ -6,6 +6,7 @@ import {
   clickDrawBtnTest,
   copyGeoJsonEditorTest,
   loadDrawToolsTest,
+  setDifferentFormats,
   setLayerId,
 } from "./cases";
 
@@ -40,4 +41,7 @@ describe("Drawtools", () => {
     copyGeoJsonEditorTest());
   // Test case to set the layer id and check if the draw button icon changes
   it("setting layer id changes draw btn icon", () => setLayerId());
+
+  // Test case to check if the drawn features are emitted in different formats
+  it("emits drawn features in different formats", () => setDifferentFormats());
 });
