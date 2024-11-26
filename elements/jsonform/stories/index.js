@@ -6,4 +6,5 @@ export { default as MarkdownStory } from "./markdown"; // Input form based on Ma
 export { default as UnStyledStory } from "./unstyled"; // Unstyled input form
 export { default as BoundingBoxStory } from "./bounding-box"; // Input form based on drawtools - Box
 export { default as PolygonStory } from "./polygons"; // Input form based on drawtools - Polygon
+export { default as PointStory } from "./points"; // Input form based on drawtools - Point
 export { default as FeatureSelectionStory } from "./feature-selection"; // Input form based on drawtools - Feature Selection

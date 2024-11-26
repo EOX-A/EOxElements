@@ -1,5 +1,12 @@
 import { AbstractEditor } from "@json-editor/json-editor/src/editor.js";
-import { isBox, isMulti, isPolygon, isSelection, setAttributes } from "./utils";
+import {
+  isBox,
+  isMulti,
+  isPoint,
+  isPolygon,
+  isSelection,
+  setAttributes,
+} from "./utils";
 // import "@eox/drawtools";
 
 // Define a custom editor class extending AbstractEditor
@@ -37,7 +44,22 @@ export class SpatialEditor extends AbstractEditor {
       document.createElement("eox-drawtools")
     );
 
-    const drawType = isPolygon(this.schema) ? "Polygon" : "Box";
+    let drawType;
+    switch (true) {
+      case isPolygon(this.schema):
+        drawType = "Polygon";
+        break;
+      case isBox(this.schema):
+        drawType = "Box";
+        break;
+      case isPoint(this.schema):
+        drawType = "Point";
+        break;
+      default:
+        drawType = "Box";
+        break;
+    }
+
     const attributes = {
       type: drawType,
     };
@@ -51,9 +73,6 @@ export class SpatialEditor extends AbstractEditor {
     }
     if (isMulti(this.schema)) {
       attributes["multiple-features"] = true;
-    }
-
-    if (isMulti(this.schema)) {
       attributes["show-list"] = true;
     }
 
@@ -149,6 +168,12 @@ export class SpatialEditor extends AbstractEditor {
             case isPolygon(this.schema):
               this.value = spreadFeatures(e.detail, (feature) => feature);
               break;
+            case isPoint(this.schema):
+              this.value = spreadFeatures(e.detail, (feature) =>
+                //@ts-expect-error  getCoordinates does not exist on Geometry
+                feature.getGeometry()?.getCoordinates(),
+              );
+              break;
             default:
               break;
           }
@@ -157,7 +182,6 @@ export class SpatialEditor extends AbstractEditor {
         }
       ),
     );
-
     this.container.appendChild(this.control);
   }
 

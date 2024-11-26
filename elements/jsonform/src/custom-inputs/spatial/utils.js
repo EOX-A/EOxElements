@@ -11,6 +11,12 @@ export const isPolygon = (schema) =>
   ["polygon", "polygons"].some((p) => schema?.format === p);
 
 /**
+ * Whether a schema has point/points format or not
+ */
+export const isPoint = (schema) =>
+  ["point", "points"].some((p) => schema?.format === p);
+
+/**
  * Whether a schema has bbox/bboxes format or not
  */
 export const isBox = (schema) =>
@@ -20,13 +26,15 @@ export const isBox = (schema) =>
  * Whether a schema expects multiple values not
  */
 export const isMulti = (schema) =>
-  ["bounding-boxes", "polygons", "features"].some((m) => schema?.format === m);
+  ["bounding-boxes", "polygons", "features", "points"].some(
+    (m) => schema?.format === m,
+  );
 
 /**
  * Whether a schema is supported by the spatial editor
  **/
 export const isSupported = (schema) =>
-  isSelection(schema) || isPolygon(schema) || isBox(schema);
+  isSelection(schema) || isPolygon(schema) || isBox(schema) || isPoint(schema);
 
 /**
  * Set multiple attributes to an element

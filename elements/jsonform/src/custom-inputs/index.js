@@ -30,6 +30,16 @@ const inputs = [
     func: SpatialEditor,
   },
   {
+    type: "array",
+    format: "points",
+    func: SpatialEditor,
+  },
+  {
+    type: "array",
+    format: "point",
+    func: SpatialEditor,
+  },
+  {
     format: "feature",
     func: SpatialEditor,
   },

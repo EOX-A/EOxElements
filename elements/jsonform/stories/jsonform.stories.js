@@ -6,10 +6,11 @@ import {
   ExternalStory,
   MarkdownStory,
   PrimaryStory,
-  UnStyledStory,
   BoundingBoxStory,
   PolygonStory,
   FeatureSelectionStory,
+  PointStory,
+  UnStyledStory,
 } from "./index.js";
 
 export default {
@@ -60,6 +61,11 @@ export const BoundigBox = BoundingBoxStory;
  * JSON Form based on drawtools - Polygon
  */
 export const Polygons = PolygonStory;
+
+/**
+ * JSON Form based on drawtools - Point
+ */
+export const Points = PointStory;
 
 /**
  * JSON Form based on drawtools - Feature Selection

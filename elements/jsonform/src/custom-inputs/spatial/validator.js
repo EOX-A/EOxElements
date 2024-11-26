@@ -1,6 +1,7 @@
 import {
   isBox,
   isMulti,
+  isPoint,
   isPolygon,
   isSelection,
   isSupported,
@@ -86,6 +87,18 @@ function spatialValidatorCreator(inputs) {
           );
           break;
         }
+        case isPoint(subSchema): {
+          errors.push(
+            ...handleMultiValidation({
+              key,
+              subValue: value[key],
+              subSchema,
+              path,
+              validationFn: pointValidator,
+            }),
+          );
+          break;
+        }
         default:
           break;
       }
@@ -135,13 +148,13 @@ function handleMultiValidation({
  * Bounding box validator
  */
 function bBoxValidator(key, val, path) {
-  // expect to return the spacial extent
+  // expect to return the spatial extent
   const errors = [];
   if (val.length !== 4) {
     return [
       {
         path: `${path}.${key}`,
-        message: `Value is expected to have 4 values but got ${val.length}`,
+        message: `Value is expected to have 4 items but got ${val.length}`,
         property: "format",
       },
     ];
@@ -183,6 +196,7 @@ function selectValidator(key, val, path, subSchema) {
       ];
     }
   }
+  return [];
 }
 function polygonValidator(key, val, path) {
   if (typeof val !== "object" || !Object.keys(val).length) {
@@ -195,6 +209,31 @@ function polygonValidator(key, val, path) {
     ];
   }
   return [];
+}
+
+function pointValidator(key, val, path) {
+  // expect to return point coordinates
+  const errors = [];
+  if (val.length !== 2) {
+    return [
+      {
+        path: `${path}.${key}`,
+        message: `Value is expected to have 2 items but got ${val.length}`,
+        property: "format",
+      },
+    ];
+  }
+
+  val.forEach((v, i) => {
+    if (typeof v !== "number") {
+      errors.push({
+        path: `${path}.${key}.${i}`,
+        message: `coordinates is expected to be of type number but got ${v}`,
+        property: "format",
+      });
+    }
+  });
+  return errors;
 }
 
 function undefinedValidator(key, val, path) {
