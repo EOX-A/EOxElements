@@ -112,8 +112,7 @@ export const Unstyled = unstyledStory;
  */
 export const ToolsAsList = toolsAsListStory;
 
-
 /**
  * Shows how to define color "swatches" for layers.
  */
-export const LayerColor = layerColorStory;
+export const ColoredLayers = layerColorStory;
