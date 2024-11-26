@@ -176,7 +176,7 @@ export class EOxLayerControlLayer extends LitElement {
 
               <!-- Layer title -->
               <span
-                class="title ${this.#getLayer("color") ? 'color-swatch' : ''}"
+                class="title ${this.#getLayer("color") ? "color-swatch" : ""}"
                 style="--layer-color: ${this.#getLayer("color")}"
               >
                 ${this.#getLayer(this.titleProperty)}
