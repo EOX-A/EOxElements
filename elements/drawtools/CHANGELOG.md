@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.12.0...drawtools-v0.13.0) (2024-11-26)
+
+
+### Features
+
+* Support emitting the drawn features in `WKT` and `GeoJson` formats ([#1395](https://github.com/EOX-A/EOxElements/issues/1395)) ([d86430c](https://github.com/EOX-A/EOxElements/commit/d86430c1560e669227939482cc25b22ca73d30ca))
+
 ## [0.12.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.11.1...drawtools-v0.12.0) (2024-11-07)
 
 
