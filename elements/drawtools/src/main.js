@@ -40,6 +40,7 @@ export class EOxDrawTools extends LitElement {
       showList: { attribute: "show-list", type: Boolean },
       projection: { type: String },
       noShadow: { type: Boolean },
+      format: { type: String },
       type: { type: String },
       unstyled: { type: Boolean },
     };
@@ -147,6 +148,19 @@ export class EOxDrawTools extends LitElement {
     this.type = "Polygon";
 
     /**
+     * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
+     */
+    this.selectionEvents = null;
+
+    /**
+     * The format in which the drawn features should be emitted
+     *
+     * @default "feature"
+     * @type {"feature"| "geojson" | "wkt"}
+     */
+    this.format = "feature";
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
@@ -157,10 +171,6 @@ export class EOxDrawTools extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
-    /**
-     * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
-     */
-    this.selectionEvents = null;
   }
 
   /**
@@ -234,15 +244,16 @@ export class EOxDrawTools extends LitElement {
    * Triggers different events when the drawing of a shape is completed.
    */
   emitDrawnFeatures() {
-    const drawUpdateEvent = () => {
+    /**
+     * @param {import("./methods/draw/emit-drawn-features").EmitFormat} value
+     */
+    const drawUpdateEvent = (value) => {
       /**
        * Fires whenever features are added, modified or discarded, where the event detail
        * is the `drawnFeatures` array
        * @type Array<import("ol").Feature>
        */
-      this.dispatchEvent(
-        new CustomEvent("drawupdate", { detail: this.drawnFeatures }),
-      );
+      this.dispatchEvent(new CustomEvent("drawupdate", { detail: value }));
     };
     emitDrawnFeaturesMethod(this, drawUpdateEvent);
   }
