@@ -1,4 +1,4 @@
-// 
+// Check if the color swatch appears when a `color` property is present
 const colorSwatch = () => {
   // Set up the layers in the mock map
   cy.get("mock-map").then(($el) => {
@@ -16,8 +16,7 @@ const colorSwatch = () => {
     .shadow()
     .within(() => {
       cy.get(".color-swatch").should("exist");
-  });
+    });
 };
-  
+
 export default colorSwatch;
-  
