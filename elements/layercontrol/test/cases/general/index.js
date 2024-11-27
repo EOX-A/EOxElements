@@ -8,3 +8,4 @@ export { default as hideLayers } from "./hide-layers";
 export { default as emptyGroup } from "./empty-groups";
 export { default as renderOptionalLayer } from "./render-optional-layer";
 export { default as showCorrectLayerTitle } from "./show-layer-title";
+export { default as colorSwatch } from "./color-swatch";
