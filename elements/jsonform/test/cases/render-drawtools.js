@@ -4,7 +4,7 @@ import schemaFixture from "../fixtures/spatialSchema.json";
 // Destructure TEST_SELECTORS object
 const { jsonForm } = TEST_SELECTORS;
 
-const checkDrawtoolsForTypeSpatial = () => {
+const checkDrawtoolsForSpatialEditor = () => {
   cy.intercept("**/spatialSchema.json", (req) => {
     req.reply(schemaFixture);
   });
@@ -47,4 +47,4 @@ const checkDrawtoolsForTypeSpatial = () => {
     });
 };
 
-export default checkDrawtoolsForTypeSpatial;
+export default checkDrawtoolsForSpatialEditor;

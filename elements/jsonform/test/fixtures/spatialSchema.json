@@ -2,7 +2,7 @@
     "type": "object",
     "properties": {
       "bbox": {
-        "type": "spatial",
+        "type": "array",
         "options": {
           "for": "mocked-map#bbox",
           "projection": "EPSG:3857"
@@ -10,7 +10,7 @@
         "format": "bounding-box"
       }, 
       "polygons": {
-        "type": "spatial",
+        "type": "array",
         "options": {
           "for": "mocked-map#polygons"
         },

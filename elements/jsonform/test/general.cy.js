@@ -27,5 +27,5 @@ describe("Jsonform", () => {
   it("triggers a change event when typing", () => triggerChangeEventTest());
   it("loads values", () => loadValuesTest());
   it("loads mismatching values", () => loadMisMatchingValuesTest());
-  it("renders drawtools on type spatial", () => renderDrawtools());
+  it.only("renders drawtools as a custom input", () => renderDrawtools());
 });

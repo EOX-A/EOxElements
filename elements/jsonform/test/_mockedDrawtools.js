@@ -17,6 +17,9 @@ class MockedDrawTools extends HTMLElement {
     this["show-list"] = false;
     this.projection = "EPSG:4326";
     this.type = "";
+    this.format = "feature";
+    this.updateComplete = new Promise((resolve) => resolve(true));
+    this.startDrawing = () => {};
   }
 }
 
