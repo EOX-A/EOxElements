@@ -7,7 +7,7 @@
       "format": "point"
     },
     "bounding-boxes": {
-      "title": "Multiple bounding boxes as WKT",
+      "title": "Multiple bounding boxes as WKT in EPSG:3857",
       "type": "wkt",
       "options": {
         "projection": "EPSG:3857"
@@ -15,7 +15,7 @@
       "format": "bounding-boxes"
     },
     "polygon": {
-      "title": "Polygon as WKT",
+      "title": "Polygon as WKT in EPSG:3857",
       "type": "wkt",
       "options": {
         "projection": "EPSG:3857"

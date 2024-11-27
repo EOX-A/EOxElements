@@ -259,7 +259,6 @@ function undefinedValidator(key, val, path) {
 }
 
 function handleWKT(key, val, path) {
-  // cant be empty geometry
   if (typeof val !== "string") {
     return [
       {
@@ -282,7 +281,6 @@ function handleWKT(key, val, path) {
 }
 
 function handleGeoJson(key, val, path) {
-  // cant be empty geometry
   if (typeof val !== "object" || !Object.keys(val).length) {
     return [
       {

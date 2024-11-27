@@ -2,24 +2,23 @@
   "type": "object",
   "properties": {
     "features": {
-      "title": "Multi Features",
+      "title": "Select multipule features from the map, and refer to the console for the returned values",
       "type": "array",
       "options": {
+        "featureProperty": "BIOME_NAME",
         "layerId": "regions-grey",
         "for": "eox-map#first"
       },
       "items": {
-        "type": "object"
+        "type": "string"
       },
       "format": "features"
     },
     "feature": {
-      "title": "Feature",
-      "type": "string",
+      "title": "Select a Feature from the map",
+      "type": "object",
       "options": {
         "layerId": "regions-blue",
-        "featureProperty": "BIOME_NAME",
-        "type": "string",
         "for": "eox-map#second"
       },
       "format": "feature"
