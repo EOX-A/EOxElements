@@ -21,7 +21,7 @@ export function removeInteractionMethod(id, EOxMap) {
 /**
  * Removes a select interaction from the map and deletes it from the select interactions list in EOxMap.
  *
- * @param {string} id - The identifier for the select interaction to be removed.
+ * @param {string | number} id - The identifier for the select interaction to be removed.
  * @param {import("../../main").EOxMap} EOxMap - The map object containing the select interactions list.
  */
 export function removeSelectMethod(id, EOxMap) {

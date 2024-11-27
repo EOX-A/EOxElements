@@ -1,8 +1,16 @@
+import { featuresToGeoJson, featuresToWKT } from "../../helpers";
+
+/***
+ * @typedef {import("ol").Feature[]
+ * | ReturnType<typeof featuresToGeoJson>
+ * | ReturnType<typeof featuresToWKT>} EmitFormat
+ */
+
 /**
  * Emits drawn features after a timeout to allow updating drawn features.
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
- * @param {Function} drawUpdateEvent - event to be triggered after drawFeature is updated
+ * @param {(value:EmitFormat) => void} drawUpdateEvent - event to be triggered after drawFeature is updated
  */
 const emitDrawnFeaturesMethod = (EoxDrawTool, drawUpdateEvent) => {
   // Function to emit features after a timeout (ensures update)
@@ -23,11 +31,28 @@ const emitDrawnFeaturesMethod = (EoxDrawTool, drawUpdateEvent) => {
         })
       : drawnFeatures;
 
+    // Emit features based on the format provided
+    let value;
+    switch (EoxDrawTool.format) {
+      case "geojson":
+        value = featuresToGeoJson(EoxDrawTool.drawnFeatures);
+        break;
+      case "wkt":
+        value = featuresToWKT(EoxDrawTool.drawnFeatures);
+        break;
+      case "feature":
+        value = EoxDrawTool.drawnFeatures;
+        break;
+      default:
+        value = EoxDrawTool.drawnFeatures;
+        break;
+    }
+
     EoxDrawTool.updateGeoJSON();
     EoxDrawTool.requestUpdate();
 
     // Triggering `drawupdate` event after drawFeature is updated
-    drawUpdateEvent();
+    drawUpdateEvent(value);
   };
 
   // Emit features after a timeout (ensures update)

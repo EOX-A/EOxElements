@@ -4,6 +4,7 @@ import {
   addSelectInteractionVectorTile,
   highlightByIdVectorLayer,
   highlightByIdVectorTileLayer,
+  removeSelectInteractionLayer,
   removeSelectInteraction,
 } from "./cases/select/index.js";
 
@@ -55,8 +56,13 @@ describe("select interaction on click", () => {
   /**
    * Test case to highlight by ID (Vector Tile Layer)
    */
-  it.only("programmatically highlight by IDs (VectorTileLayer)", () =>
+  it("programmatically highlight by IDs (VectorTileLayer)", () =>
     highlightByIdVectorTileLayer(vectorTileInteraction));
+
+  /**
+   * Test case to remove interaction by removing the layer
+   */
+  it("remove interaction with the layer", () => removeSelectInteractionLayer());
 
   /**
    * Test case to remove interaction

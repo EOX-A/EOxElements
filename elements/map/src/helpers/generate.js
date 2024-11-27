@@ -273,7 +273,11 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
         if (!correspondingNewInteraction) {
           // Remove interactions that don't exist in the new definition
-          EOxMap.removeInteraction(interactionDefinition.options.id);
+          if (interactionDefinition.type === "select") {
+            EOxMap.removeSelect(interactionDefinition.options.id);
+          } else {
+            EOxMap.removeInteraction(interactionDefinition.options.id);
+          }
         } else {
           // Update existing interaction if it has changed
           if (correspondingNewInteraction.type === "draw") {

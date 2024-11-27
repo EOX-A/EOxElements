@@ -259,6 +259,12 @@ export class EOxLayerControl extends LitElement {
     :host, :root {
       font-family: Roboto, sans-serif;
       --padding: 0.5rem;
+      --list-padding: 48px;
+      --layer-input-visibility: flex;
+      --layer-type-visibility: block;
+      --layer-title-visibility: flex;
+      --layer-visibility: block;
+      --layer-tools-button-visibility: flex;
 
       display: block;
       padding: var(--padding) 0;

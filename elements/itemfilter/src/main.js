@@ -56,6 +56,7 @@ export class EOxItemFilter extends LitElement {
       idProperty: { attribute: "id-property", type: String },
       titleProperty: { attribute: "title-property", type: String },
       subTitleProperty: { attribute: "sub-title-property", type: String },
+      imageProperty: { attribute: "image-property", type: String },
       expandMultipleFilters: {
         attribute: "enable-multiple-filter",
         type: Boolean,
@@ -66,6 +67,7 @@ export class EOxItemFilter extends LitElement {
         type: Boolean,
       },
       externalFilter: { attribute: false, type: Function },
+      resultType: { attribute: "result-type", type: String },
       unstyled: { type: Boolean },
     };
   }
@@ -199,6 +201,13 @@ export class EOxItemFilter extends LitElement {
     this.subTitleProperty = undefined;
 
     /**
+     * The property of the result items used for an image
+     *
+     * @type String
+     */
+    this.imageProperty = undefined;
+
+    /**
      * Unique id property of items
      *
      * @type String
@@ -224,6 +233,13 @@ export class EOxItemFilter extends LitElement {
      * @type Boolean
      */
     this.expandMultipleResults = true;
+
+    /**
+     * Rendering type for results (can be `list`or `cards`)
+     *
+     * @type String
+     */
+    this.resultType = "list";
 
     /**
      * Render the element without additional styles
@@ -454,8 +470,13 @@ export class EOxItemFilter extends LitElement {
               .filters=${this.filters}
               .resultAggregation=${this.#resultAggregation}
               .selectedResult=${this.selectedResult}
+              .resultType=${this.resultType}
               @result=${this.updateResult}
-            ></eox-itemfilter-results>
+            >
+              <slot name="resultstitle"
+                ><h6 class="main-heading">Results</h6></slot
+              >
+            </eox-itemfilter-results>
           `,
         )}
       </form>

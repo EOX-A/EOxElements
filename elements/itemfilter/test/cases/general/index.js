@@ -10,4 +10,6 @@ export { default as spatialFilterTest } from "./spatial-filter";
 export { default as externalFilterTest } from "./external-filter";
 export { default as nestedPropertyTest } from "./nested-property";
 export { default as subtitleTest } from "./subtitle";
+export { default as imageTest } from "./image";
 export { default as validationTest } from "./validation";
+export { default as slotRenderTest } from "./slots";

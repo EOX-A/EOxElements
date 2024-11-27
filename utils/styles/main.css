@@ -168,3 +168,29 @@ h6 {
   font-size: var(--font-size);
   font-family: var(--header-font-family);
 }
+
+pre {
+  position: relative;
+  border-radius: 4px;
+  z-index: 1;
+  margin: 0;
+  padding: 20px 0;
+  background: transparent;
+  background: var(--code-bg-color, #8e96aa24);
+}
+code {
+  display: block;
+  padding: 0 24px;
+  width: fit-content;
+  min-width: 100%;
+  line-height: var(--code-line-height, 1.7);
+  font-family: var(--code-font-family, monospace);
+  font-size: var(--code-font-size, var(--font-size));
+  color: var(--code-color, #004170);
+}
+:not(pre) > code {
+  display: inline;
+  border-radius: 4px;
+  background: var(--code-bg-color, #8e96aa24);
+  padding: var(--code-padding, 3px 6px);
+}

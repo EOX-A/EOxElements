@@ -12,7 +12,9 @@ import {
   externalFilterTest,
   nestedPropertyTest,
   subtitleTest,
+  imageTest,
   validationTest,
+  slotRenderTest,
 } from "./cases/general/";
 
 /**
@@ -23,6 +25,11 @@ describe("Item Filter Config", () => {
    * Runs before each test case to mount the eox-itemfilter component and configure it.
    */
   beforeEach(() => {
+    console.log(Cypress.currentTest);
+    if (["renders slots correctly"].includes(Cypress.currentTest.title)) {
+      cy.log("skipping beforeEach hook");
+      return;
+    }
     cy.mount(`<eox-itemfilter></eox-itemfilter>`)
       .as("eox-itemfilter")
       .then(($el) => {
@@ -31,6 +38,7 @@ describe("Item Filter Config", () => {
         Object.assign(eoxItemFilter, {
           titleProperty: "title",
           subTitleProperty: "description",
+          imageProperty: "assets.thumbnail.href",
           filterProperties: [
             {
               keys: ["title", "themes"],
@@ -104,7 +112,19 @@ describe("Item Filter Config", () => {
   it("should render subtitles", () => subtitleTest());
 
   /**
+   * Test case to check if images are rendered correctly
+   */
+  it("should render images", () => imageTest());
+
+  /**
    * Test case to check if input validation is working
    */
   it("should have working validation", () => validationTest());
+
+  /**
+   * Test case to check slot rendering
+   */
+  it("renders slots correctly", { skipBeforeEach: true }, () =>
+    slotRenderTest(),
+  );
 });
