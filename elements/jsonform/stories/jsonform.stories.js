@@ -11,6 +11,8 @@ import {
   FeatureSelectionStory,
   PointStory,
   UnStyledStory,
+  WKTStory,
+  GeoJSONStory,
 } from "./index.js";
 
 export default {
@@ -71,6 +73,15 @@ export const Points = PointStory;
  * JSON Form based on drawtools - Feature Selection
  */
 export const FeatureSelection = FeatureSelectionStory;
+
+/**
+ * JSON Form based on drawtools - Returns the value as WKT
+ */
+export const WKT = WKTStory;
+/**
+ * JSON Form based on drawtools - Returns the value as GeoJSON
+ */
+export const Geojson = GeoJSONStory;
 /**
  * Unstyled JSON Form
  */

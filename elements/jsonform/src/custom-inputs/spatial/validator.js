@@ -1,10 +1,12 @@
 import {
   isBox,
+  isGeoJSON,
   isMulti,
   isPoint,
   isPolygon,
   isSelection,
   isSupported,
+  isWKT,
   satisfiesType,
 } from "./utils";
 
@@ -22,7 +24,6 @@ function spatialValidatorCreator(inputs) {
    * @param {*} schema
    * @param {*} value
    * @param {*} path
-   * @returns {{}}
    */
   return function (schema, value, path) {
     let errors = [];
@@ -51,6 +52,14 @@ function spatialValidatorCreator(inputs) {
       }
 
       switch (true) {
+        case isWKT(subSchema): {
+          errors.push(...handleWKT(key, value[key], path));
+          break;
+        }
+        case isGeoJSON(subSchema): {
+          errors.push(...handleGeoJson(key, value[key], path));
+          break;
+        }
         case isSelection(subSchema): {
           errors.push(
             ...handleMultiValidation({
@@ -242,6 +251,52 @@ function undefinedValidator(key, val, path) {
       {
         path: `${path}.${key}`,
         message: `invalid value ${JSON.stringify(val)}`,
+        property: "type",
+      },
+    ];
+  }
+  return [];
+}
+
+function handleWKT(key, val, path) {
+  // cant be empty geometry
+  if (typeof val !== "string") {
+    return [
+      {
+        path: `${path}.${key}`,
+        message: `Value is expected to be a valid wkt string`,
+        property: "type",
+      },
+    ];
+  }
+  if (val === "GEOMETRYCOLLECTION EMPTY") {
+    return [
+      {
+        path: `${path}.${key}`,
+        message: `Should have at least 1 Geometry`,
+        property: "type",
+      },
+    ];
+  }
+  return [];
+}
+
+function handleGeoJson(key, val, path) {
+  // cant be empty geometry
+  if (typeof val !== "object" || !Object.keys(val).length) {
+    return [
+      {
+        path: `${path}.${key}`,
+        message: `Value is expected to be a valid geojson object`,
+        property: "type",
+      },
+    ];
+  }
+  if (!val?.features?.length) {
+    return [
+      {
+        path: `${path}.${key}`,
+        message: `Value is expected to have at least one feature`,
         property: "type",
       },
     ];

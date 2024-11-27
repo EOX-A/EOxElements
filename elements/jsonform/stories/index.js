@@ -8,3 +8,5 @@ export { default as BoundingBoxStory } from "./bounding-box"; // Input form base
 export { default as PolygonStory } from "./polygons"; // Input form based on drawtools - Polygon
 export { default as PointStory } from "./points"; // Input form based on drawtools - Point
 export { default as FeatureSelectionStory } from "./feature-selection"; // Input form based on drawtools - Feature Selection
+export { default as WKTStory } from "./wkt"; // Input form based on Drawtools that returns WKT string
+export { default as GeoJSONStory } from "./geojson"; // Input form based on Drawtools that returns GeoJSON

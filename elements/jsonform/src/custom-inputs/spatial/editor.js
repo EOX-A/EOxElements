@@ -5,6 +5,8 @@ import {
   isPoint,
   isPolygon,
   isSelection,
+  isWKT,
+  isGeoJSON,
   setAttributes,
 } from "./utils";
 // import "@eox/drawtools";
@@ -60,8 +62,22 @@ export class SpatialEditor extends AbstractEditor {
         break;
     }
 
+    let format;
+    switch (true) {
+      case isWKT(this.schema):
+        format = "wkt";
+        break;
+      case isGeoJSON(this.schema):
+        format = "geojson";
+        break;
+      default:
+        format = "feature";
+        break;
+    }
+
     const attributes = {
       type: drawType,
+      format,
     };
 
     if (this.schema?.options?.projection) {
@@ -90,7 +106,7 @@ export class SpatialEditor extends AbstractEditor {
         style: "width: 100%; height: 300px;",
       });
       this.container.appendChild(eoxmapEl);
-      attributes.for = "eox-map#" + mapId;
+      drawtoolsEl.for = eoxmapEl;
     }
     setAttributes(drawtoolsEl, attributes);
     const autoDraw = !(options.autoStartSelection === false);
@@ -143,13 +159,26 @@ export class SpatialEditor extends AbstractEditor {
         (e) => {
           e.preventDefault();
           e.stopPropagation();
-
           switch (true) {
-            case !e.detail || !e.detail?.length: {
+            case !e.detail: {
               this.value = null;
               break;
             }
+            case isWKT(this.schema): {
+              // returns the wkt string
+              this.value = e.detail;
+              break;
+            }
+            case isGeoJSON(this.schema): {
+              // returns the geojson object
+              this.value = e.detail;
+              break;
+            }
             case isSelection(this.schema): {
+              if (!e.detail.length) {
+                this.value = null;
+                break;
+              }
               /** @param {import("ol/Feature").default} feature */
               const getProperty = (feature) =>
                 featureProperty
@@ -160,20 +189,34 @@ export class SpatialEditor extends AbstractEditor {
               break;
             }
             case isBox(this.schema): {
+              if (!e.detail.length) {
+                this.value = null;
+                break;
+              }
               /** @param {import("ol/Feature").default} feature */
               const getExtent = (feature) => feature.getGeometry().getExtent();
               this.value = spreadFeatures(e.detail, getExtent);
               break;
             }
-            case isPolygon(this.schema):
+            case isPolygon(this.schema): {
+              if (!e.detail.length) {
+                this.value = null;
+                break;
+              }
               this.value = spreadFeatures(e.detail, (feature) => feature);
               break;
-            case isPoint(this.schema):
+            }
+            case isPoint(this.schema): {
+              if (!e.detail.length) {
+                this.value = null;
+                break;
+              }
               this.value = spreadFeatures(e.detail, (feature) =>
                 //@ts-expect-error  getCoordinates does not exist on Geometry
                 feature.getGeometry()?.getCoordinates(),
               );
               break;
+            }
             default:
               break;
           }

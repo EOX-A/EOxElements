@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "point": {
+      "title": "Point as Geojson",
+      "type": "geojson",
+      "format": "point"
+    },
+    "bounding-boxes": {
+      "title": "Multiple bounding-boxes as Geojson",
+      "type": "geojson",
+      "options": {
+        "projection": "EPSG:3857"
+      },
+      "format": "bounding-boxes"
+    },
+    "polygon": {
+      "title": "Polygon as Geojson",
+      "type": "geojson",
+      "options": {
+        "projection": "EPSG:3857"
+      },
+      "format": "polygon"
+    }
+  }
+}

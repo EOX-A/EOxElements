@@ -15,7 +15,27 @@ const inputs = [
     func: SpatialEditor,
   },
   {
+    type: "wkt",
+    format: "bounding-boxes",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
+    format: "bounding-boxes",
+    func: SpatialEditor,
+  },
+  {
     type: "array",
+    format: "bounding-box",
+    func: SpatialEditor,
+  },
+  {
+    type: "wkt",
+    format: "bounding-box",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
     format: "bounding-box",
     func: SpatialEditor,
   },
@@ -25,7 +45,27 @@ const inputs = [
     func: SpatialEditor,
   },
   {
+    type: "wkt",
+    format: "polygons",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
+    format: "polygons",
+    func: SpatialEditor,
+  },
+  {
     type: "object",
+    format: "polygon",
+    func: SpatialEditor,
+  },
+  {
+    type: "wkt",
+    format: "polygon",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
     format: "polygon",
     func: SpatialEditor,
   },
@@ -35,7 +75,27 @@ const inputs = [
     func: SpatialEditor,
   },
   {
+    type: "wkt",
+    format: "points",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
+    format: "points",
+    func: SpatialEditor,
+  },
+  {
     type: "array",
+    format: "point",
+    func: SpatialEditor,
+  },
+  {
+    type: "wkt",
+    format: "point",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
     format: "point",
     func: SpatialEditor,
   },
@@ -45,6 +105,16 @@ const inputs = [
   },
   {
     type: "array",
+    format: "features",
+    func: SpatialEditor,
+  },
+  {
+    type: "wkt",
+    format: "features",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
     format: "features",
     func: SpatialEditor,
   },

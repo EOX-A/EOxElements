@@ -23,6 +23,16 @@ export const isBox = (schema) =>
   ["bounding-boxes", "bounding-box"].some((p) => schema?.format === p);
 
 /**
+ * Whether a schema has wkt type or not
+ */
+export const isWKT = (schema) => schema?.type === "wkt";
+
+/**
+ * Whether a schema has geojson type or not
+ */
+export const isGeoJSON = (schema) => schema?.type === "geojson";
+
+/**
  * Whether a schema expects multiple values not
  */
 export const isMulti = (schema) =>
