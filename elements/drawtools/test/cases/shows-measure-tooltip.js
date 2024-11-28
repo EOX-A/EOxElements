@@ -17,8 +17,8 @@ const measureTooltipTest = () => {
     });
 
   // Click into the center of the map, move and click again to create a line.
-  cy.get('eox-map').click(15, 40);
-  cy.get('eox-map').click("center");
+  cy.get("eox-map").click(15, 40);
+  cy.get("eox-map").click("center");
 
   cy.get("eox-map")
     .shadow()

@@ -21,7 +21,9 @@ const { drawTools } = TEST_SELECTORS;
 describe("Drawtools", () => {
   // Setting up the environment before each test
   beforeEach(() => {
-    cy.mount("<eox-map center=\"[15,48]\" layers=\"[{\"type\":\"Tile\",\"source\":{\"type\":\"OSM\"}}]\" zoom=\"7\" style=\"width: 100%; height: 300px;\"></eox-map>").as("eox-map");
+    cy.mount(
+      '<eox-map center="[15,48]" layers="[{"type":"Tile","source":{"type":"OSM"}}]" zoom="7" style="width: 100%; height: 300px;"></eox-map>',
+    ).as("eox-map");
 
     //cy.mount("<mock-map></mock-map>").as("mock-map");
 
@@ -48,6 +50,6 @@ describe("Drawtools", () => {
 
   // Test case to check if the drawn features are emitted in different formats
   it("emits drawn features in different formats", () => setDifferentFormats());
-  
+
   it("renders the measurement tooltip correctly", () => measureTooltipTest());
 });
