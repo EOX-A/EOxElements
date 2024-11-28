@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.0...itemfilter-v1.6.1) (2024-11-28)
+
+
+### Bug Fixes
+
+* **deps:** Include missing packages ([68ed71c](https://github.com/EOX-A/EOxElements/commit/68ed71c53f009ac7b0680ead53ffdc18c5bfebc7))
+
 ## [1.6.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.5.0...itemfilter-v1.6.0) (2024-11-21)
 
 
