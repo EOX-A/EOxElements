@@ -38,6 +38,7 @@
     "@floating-ui/dom": "^1.6.8",
     "@turf/boolean-intersects": "^7.0.0",
     "@turf/boolean-within": "^7.0.0",
+    "dayjs": "^1.11.9",
     "fuse.js": "^7.0.0",
     "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",
