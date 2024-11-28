@@ -175,7 +175,12 @@ export class EOxLayerControlLayer extends LitElement {
               />
 
               <!-- Layer title -->
-              <span class="title">${this.#getLayer(this.titleProperty)}</span>
+              <span
+                class="title ${this.#getLayer("color") ? "color-swatch" : ""}"
+                style="--layer-color: ${this.#getLayer("color")}"
+              >
+                ${this.#getLayer(this.titleProperty)}
+              </span>
               ${when(
                 isToolsAvail,
                 () => html`<span class="tools-placeholder"></span>`,
@@ -201,6 +206,7 @@ export class EOxLayerControlLayer extends LitElement {
     ${checkbox}
     eox-layercontrol-layer {
       width: 100%;
+      position: relative;
     }
     .layer input[type=checkbox],
     .layer input[type=radio] {
@@ -231,6 +237,14 @@ export class EOxLayerControlLayer extends LitElement {
       height: 20px;
       margin-right: 6px;
       display: var(--layer-type-visibility);
+    }
+    [data-type] .title.color-swatch::before {
+      background: var(--layer-color);
+      border-radius: 3px;
+      content: "" !important;
+      width: 16px;
+      min-width: 16px;
+      height: 16px;
     }
     [data-type=group] .title::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230041703a' viewBox='0 0 24 24'%3E%3Ctitle%3Efolder-outline%3C/title%3E%3Cpath d='M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z' /%3E%3C/svg%3E");

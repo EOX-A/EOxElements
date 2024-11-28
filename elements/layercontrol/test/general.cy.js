@@ -12,6 +12,7 @@ import {
   renderOptionalLayer,
   showCorrectLayerTitle,
   checkLayerLegend,
+  colorSwatch,
 } from "./cases/general";
 
 describe("LayerControl", () => {
@@ -57,5 +58,9 @@ describe("LayerControl", () => {
     checkPreOpenLayerTools());
   it("renders layer specific legend", () => {
     checkLayerLegend();
+  });
+
+  it("replaces icon with color swatch if color property is present on the layer", () => {
+    colorSwatch();
   });
 });

@@ -13,6 +13,7 @@ import {
   layerZoomStateStory,
   toolsAsListStory,
   layerLegendStory,
+  layerColorStory,
 } from ".";
 
 export default {
@@ -110,3 +111,8 @@ export const Unstyled = unstyledStory;
  * Tools rendered as list instead of tabs
  */
 export const ToolsAsList = toolsAsListStory;
+
+/**
+ * Shows how to define color "swatches" for layers.
+ */
+export const ColoredLayers = layerColorStory;
