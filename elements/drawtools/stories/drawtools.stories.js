@@ -14,6 +14,7 @@ import {
   SelectFeatureStory,
   MultiFeaturesSelectStory,
   FeaturesProjectionStory,
+  FormatStory,
   DistanceMeasurementStory,
 } from "./index";
 
@@ -74,6 +75,12 @@ export const MultiFeaturesSelect = MultiFeaturesSelectStory;
  * Showcasing the possibilty to emit drawn features in different projections
  */
 export const FeaturesProjection = FeaturesProjectionStory;
+
+/**
+ * Showcasing the possibilty to emit drawn features in different formats
+ */
+export const Formats = FormatStory;
+
 /**
  * Override css variable directly using styles.
  */

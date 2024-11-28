@@ -24,9 +24,21 @@ export const styleEOX = `
   --background-color: #fff;
   --padding: 0.5rem;
   --text-transform: capitalize;
+  --form-flex-direction: column;
+  --filter-display: block;
 }
 * {
   font-family: Roboto, sans-serif;
+}
+form#itemfilter {
+  flex-direction: var(--form-flex-direction);
+}
+eox-itemfilter-container {
+  min-width: 200px;
+  display: var(--filter-display);
+}
+eox-itemfilter-results {
+  flex-grow: 1;
 }
 ul {
   padding-left: 0;
@@ -38,6 +50,11 @@ li {
 li span {
   text-overflow: ellipsis;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+.cards li span {
+  display: block;
 }
 li label {
   display: flex;
@@ -62,10 +79,34 @@ details > summary::-webkit-details-marker {
   align-items: center;
   text-transform: var(--text-transform);
 }
+.cards .title {
+  font-size: 16px;
+  font-weight: 600;
+  text-wrap: auto;
+  line-height: 19px;
+}
 .subtitle {
   font-size: 11px;
   opacity: .7;
   margin-top: 6px;
+}
+.cards .subtitle {
+  font-size: 14px;
+  color: #757575;
+  text-wrap: auto;
+  line-height: 19px;
+}
+.image {
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  overflow: hidden;
+  margin-right: 8px;
+}
+.cards .image {
+  width: 100%;
+  height: 190px;
+  margin-bottom: 8px;
 }
 .title-container {
   display: flex;
@@ -89,8 +130,7 @@ details.details-results summary::before {
   width: 24px;
 }
 details.details-filter summary::after {
-  position: absolute;
-  right: 8px;
+  margin-left: auto;
   transform: rotate(90deg);
 }
 details[open] summary::before {
@@ -147,6 +187,29 @@ ul:not(#filters) > li {
 }
 ul#results li {
   padding: 5px var(--padding);
+}
+ul#results ul.cards {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 40px;
+  margin: 20px 0;
+  cursor: initial;
+}
+ul#results ul.cards li {
+  flex-basis: calc(33.3% - 77px);
+  min-width: 0;
+  align-self: flex-start;
+}
+@media screen and (max-width: 768px) {
+  ul#results ul.cards li {
+    flex-basis: calc(50% - 70px);
+  }
+}
+@media screen and (max-width: 480px) {
+  ul#results ul.cards li {
+    flex-basis: 100%;
+  }
 }
 section {
   position: relative;

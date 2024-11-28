@@ -262,9 +262,9 @@ export class EOxLayerControlLayerTools extends LitElement {
       position: absolute;
       right: 0;
       top: -24px;
-      display: flex;
-      border-radius: 4px;
+      height: 24px;
       cursor: pointer;
+      display: var(--layer-tools-button-visibility);
     }
     .single-action .icon::before,
     details.tools summary .icon::before {

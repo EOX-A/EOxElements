@@ -169,7 +169,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
     details summary::-webkit-details-marker { display: none; } /* Chrome */
     details summary::marker { display: none; }
     details summary::before {
-      display: block;
+      display: var(--layer-visibility);
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Echevron-right%3C/title%3E%3Cpath d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z' /%3E%3C/svg%3E");
       font-size: 13px;
       width: 24px;

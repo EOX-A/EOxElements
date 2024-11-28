@@ -30,6 +30,7 @@ export class EOxItemFilterResults extends LitElement {
       filters: { state: true, type: Object },
       resultAggregation: { attribute: false, type: Array },
       selectedResult: { state: true, type: Object },
+      resultType: { attribute: "result-type", type: String },
     };
   }
 
@@ -55,6 +56,11 @@ export class EOxItemFilterResults extends LitElement {
      * @type Object
      */
     this.selectedResult = null;
+
+    /**
+     * @type String("list"|"card")
+     */
+    this.resultType = "list";
   }
 
   /**
@@ -114,9 +120,7 @@ export class EOxItemFilterResults extends LitElement {
   render() {
     return html`
       <section id="section-results">
-        <div>
-          <h6 class="main-heading">Results</h6>
-        </div>
+        <div slot="resultstitle"></div>
         <div id="container-results" class="scroll">
           ${when(
             this.results.length < 1,

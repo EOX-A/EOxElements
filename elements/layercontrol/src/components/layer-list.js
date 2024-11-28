@@ -183,7 +183,7 @@ export class EOxLayerControlLayerList extends LitElement {
       margin: 0;
     }
     ul ul {
-      padding-left: 48px;
+      padding-left: var(--list-padding);
     }
     li {
       list-style: none;
@@ -191,6 +191,7 @@ export class EOxLayerControlLayerList extends LitElement {
     }
     li {
       border-bottom: 1px solid #0041703a;
+      border: var(--layer-visibility);
     }
     li:last-child {
       border: none;

@@ -2,6 +2,7 @@ import { html, nothing } from "lit";
 import { repeat } from "lit/directives/repeat.js";
 import { when } from "lit/directives/when.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { getValue } from "../../helpers";
 
 /**
  * Creates the item details view for the aggregation property in the EOxItemFilterResults component.
@@ -63,7 +64,7 @@ export function createItemListMethod(
       : nothing;
 
   return html`
-    <ul>
+    <ul class=${EOxItemFilterResults.resultType}>
       ${repeat(
         items,
         (item) => item.id,
@@ -87,6 +88,14 @@ export function createItemListMethod(
               ${when(
                 config.subTitleProperty,
                 () => html`
+                  ${getValue(config.imageProperty, item)
+                    ? html`
+                        <img
+                          class="image"
+                          src="${getValue(config.imageProperty, item)}"
+                        />
+                      `
+                    : nothing}
                   <div class="title-container">
                     <span class="title"
                       >${unsafeHTML(item[config.titleProperty])}</span

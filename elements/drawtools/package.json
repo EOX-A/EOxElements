@@ -1,6 +1,6 @@
 {
   "name": "@eox/drawtools",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "type": "module",
   "devDependencies": {
     "vite": "^5.0.2"
@@ -32,7 +32,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^0.0.1",
+    "@eox/elements-utils": "^0.1.1",
     "lit": "^3.2.0",
     "ol": "^10.0.0"
   }

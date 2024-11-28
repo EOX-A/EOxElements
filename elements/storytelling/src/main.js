@@ -41,6 +41,7 @@ export class EOxStoryTelling extends LitElement {
       showNav: { attribute: "show-nav", type: Boolean },
       showEditor: { attribute: "show-editor", type: String },
       noShadow: { attribute: "no-shadow", type: Boolean },
+      disableAutosave: { attribute: "disable-autosave", type: Boolean },
       unstyled: { type: Boolean },
       addCustomSectionIndex: { type: Number, state: true },
       selectedCustomElement: { type: Object, state: true },
@@ -93,6 +94,13 @@ export class EOxStoryTelling extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * Disable auto save
+     *
+     * @type {Boolean}
+     */
+    this.disableAutosave = false;
 
     /**
      * Enable or disable editor
@@ -155,6 +163,14 @@ export class EOxStoryTelling extends LitElement {
 
     // Check if 'markdown' property itself has changed and generate sanitized html
     if (changedProperties.has("markdown")) {
+      if (this.markdown) {
+        this.dispatchEvent(
+          new CustomEvent("changed", {
+            detail: this.markdown,
+          }),
+        );
+      }
+
       const unsafeHTML = md.render(this.markdown);
 
       validateMarkdownAttrs(md.attrs.sections, this);
@@ -230,7 +246,9 @@ export class EOxStoryTelling extends LitElement {
       }
     }, 1000);
 
-    initSavedMarkdown(this);
+    if (!this.disableAutosave) {
+      initSavedMarkdown(this);
+    }
     addLightBoxScript(this);
 
     // Check if this.#html is initialized, if not, wait for it
@@ -276,6 +294,7 @@ export class EOxStoryTelling extends LitElement {
               show-editor=${this.showEditor}
               @change=${this.#debounceUpdateMarkdown}
               .markdown=${this.markdown}
+              .disableAutosave=${this.disableAutosave}
             ></eox-storytelling-editor>
           `,
         )}
