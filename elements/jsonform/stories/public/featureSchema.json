@@ -15,7 +15,7 @@
       "format": "features"
     },
     "feature": {
-      "title": "Select a Feature from the map",
+      "title": "Select a feature from the map",
       "type": "object",
       "options": {
         "layerId": "regions-blue",

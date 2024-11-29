@@ -1,6 +1,7 @@
 import {
   isBox,
   isGeoJSON,
+  isLine,
   isMulti,
   isPoint,
   isPolygon,
@@ -104,6 +105,18 @@ function spatialValidatorCreator(inputs) {
               subSchema,
               path,
               validationFn: pointValidator,
+            }),
+          );
+          break;
+        }
+        case isLine(subSchema): {
+          errors.push(
+            ...handleMultiValidation({
+              key,
+              subValue: value[key],
+              subSchema,
+              path,
+              validationFn: lineValidator,
             }),
           );
           break;
@@ -245,6 +258,32 @@ function pointValidator(key, val, path) {
   return errors;
 }
 
+function lineValidator(key, val, path) {
+  // expect to return line coordinates
+  const errors = [];
+  if (val.length < 2) {
+    return [
+      {
+        path: `${path}.${key}`,
+        message: `Value is expected to have at least 2 points but got ${val.length}`,
+        property: "format",
+      },
+    ];
+  }
+  val.forEach((points, i) => {
+    points.forEach((point, j) => {
+      if (typeof point !== "number") {
+        errors.push({
+          path: `${path}.${key}.${i}.${j}`,
+          message: `coordinates is expected to be of type number but got ${point}`,
+          property: "format",
+        });
+      }
+    });
+  });
+  return errors;
+}
+
 function undefinedValidator(key, val, path) {
   if (!val) {
     return [
@@ -311,15 +350,6 @@ function geoJsonValidator(key, val, path, subSchema) {
       ];
     }
   } else {
-    if (val.type !== "Feature") {
-      return [
-        {
-          path: `${path}.${key}`,
-          message: `Value is expected to be a Feature geojson`,
-          property: "type",
-        },
-      ];
-    }
     if (!val?.geometry.type) {
       return [
         {

@@ -13,6 +13,7 @@ import {
   UnStyledStory,
   WKTStory,
   GeoJSONStory,
+  LineStory,
 } from "./index.js";
 
 export default {
@@ -69,6 +70,11 @@ export const Polygons = PolygonStory;
  */
 export const Points = PointStory;
 
+/**
+ * JSON Form based on drawtools - LineString
+ *
+ */
+export const Line = LineStory;
 /**
  * JSON Form based on drawtools - Feature Selection
  */

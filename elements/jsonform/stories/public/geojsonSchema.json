@@ -6,6 +6,11 @@
       "type": "geojson",
       "format": "point"
     },
+    "line": {
+      "title": "LineString as Geojson",
+      "type": "geojson",
+      "format": "line"
+    },
     "bounding-boxes": {
       "title": "Multiple bounding-boxes as Geojson in EPSG:3857",
       "type": "geojson",

@@ -118,6 +118,36 @@ const inputs = [
     format: "features",
     func: SpatialEditor,
   },
+  {
+    type: "array",
+    format: "line",
+    func: SpatialEditor,
+  },
+  {
+    type: "wkt",
+    format: "line",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
+    format: "line",
+    func: SpatialEditor,
+  },
+  {
+    type: "array",
+    format: "lines",
+    func: SpatialEditor,
+  },
+  {
+    type: "wkt",
+    format: "lines",
+    func: SpatialEditor,
+  },
+  {
+    type: "geojson",
+    format: "lines",
+    func: SpatialEditor,
+  },
 ];
 
 /**

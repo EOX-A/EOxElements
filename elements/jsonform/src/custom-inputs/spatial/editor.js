@@ -8,6 +8,7 @@ import {
   isWKT,
   isGeoJSON,
   setAttributes,
+  isLine,
 } from "./utils";
 // import "@eox/drawtools";
 
@@ -56,6 +57,9 @@ export class SpatialEditor extends AbstractEditor {
         break;
       case isPoint(this.schema):
         drawType = "Point";
+        break;
+      case isLine(this.schema):
+        drawType = "LineString";
         break;
       default:
         drawType = "Box";
@@ -176,6 +180,13 @@ export class SpatialEditor extends AbstractEditor {
                 break;
               }
               this.value = featureCollection.features?.[0] ?? null;
+              break;
+            }
+            case isLine(this.schema): {
+              this.value = spreadFeatures(e.detail, (feature) =>
+                //@ts-expect-error  getCoordinates does not exist on Geometry
+                feature.getGeometry().getCoordinates(),
+              );
               break;
             }
             case isSelection(this.schema): {

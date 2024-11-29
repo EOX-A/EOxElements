@@ -8,19 +8,23 @@ export const isSelection = (schema) =>
  * Whether a schema has ploygon/polygons format or not
  */
 export const isPolygon = (schema) =>
-  ["polygon", "polygons"].some((p) => schema?.format === p);
+  ["polygon", "polygons"].includes(schema?.format);
 
 /**
  * Whether a schema has point/points format or not
  */
-export const isPoint = (schema) =>
-  ["point", "points"].some((p) => schema?.format === p);
+export const isPoint = (schema) => ["point", "points"].includes(schema?.format);
 
 /**
  * Whether a schema has bbox/bboxes format or not
  */
 export const isBox = (schema) =>
-  ["bounding-boxes", "bounding-box"].some((p) => schema?.format === p);
+  ["bounding-boxes", "bounding-box"].includes(schema?.format);
+
+/**
+ * Whether a schema has line/lines format or not
+ */
+export const isLine = (schema) => ["lines", "line"].includes(schema?.format);
 
 /**
  * Whether a schema has wkt type or not
@@ -36,15 +40,19 @@ export const isGeoJSON = (schema) => schema?.type === "geojson";
  * Whether a schema expects multiple values not
  */
 export const isMulti = (schema) =>
-  ["bounding-boxes", "polygons", "features", "points"].some(
-    (m) => schema?.format === m,
+  ["bounding-boxes", "polygons", "features", "points", "lines"].includes(
+    schema?.format,
   );
 
 /**
  * Whether a schema is supported by the spatial editor
  **/
 export const isSupported = (schema) =>
-  isSelection(schema) || isPolygon(schema) || isBox(schema) || isPoint(schema);
+  isSelection(schema) ||
+  isPolygon(schema) ||
+  isBox(schema) ||
+  isPoint(schema) ||
+  isLine(schema);
 
 /**
  * Set multiple attributes to an element
