@@ -53,11 +53,11 @@ function spatialValidatorCreator(inputs) {
 
       switch (true) {
         case isWKT(subSchema): {
-          errors.push(...handleWKT(key, value[key], path));
+          errors.push(...wktValidator(key, value[key], path));
           break;
         }
         case isGeoJSON(subSchema): {
-          errors.push(...handleGeoJson(key, value[key], path));
+          errors.push(...geoJsonValidator(key, value[key], path, subSchema));
           break;
         }
         case isSelection(subSchema): {
@@ -258,7 +258,7 @@ function undefinedValidator(key, val, path) {
   return [];
 }
 
-function handleWKT(key, val, path) {
+function wktValidator(key, val, path) {
   if (typeof val !== "string") {
     return [
       {
@@ -280,7 +280,7 @@ function handleWKT(key, val, path) {
   return [];
 }
 
-function handleGeoJson(key, val, path) {
+function geoJsonValidator(key, val, path, subSchema) {
   if (typeof val !== "object" || !Object.keys(val).length) {
     return [
       {
@@ -290,14 +290,45 @@ function handleGeoJson(key, val, path) {
       },
     ];
   }
-  if (!val?.features?.length) {
-    return [
-      {
-        path: `${path}.${key}`,
-        message: `Value is expected to have at least one feature`,
-        property: "type",
-      },
-    ];
+
+  if (isMulti(subSchema)) {
+    if (val.type !== "FeatureCollection") {
+      return [
+        {
+          path: `${path}.${key}`,
+          message: `Value is expected to be a valid FeaturesCollection geojson`,
+          property: "type",
+        },
+      ];
+    }
+    if (!val?.features?.length) {
+      return [
+        {
+          path: `${path}.${key}`,
+          message: `Value is expected to have at least one feature`,
+          property: "type",
+        },
+      ];
+    }
+  } else {
+    if (val.type !== "Feature") {
+      return [
+        {
+          path: `${path}.${key}`,
+          message: `Value is expected to be a Feature geojson`,
+          property: "type",
+        },
+      ];
+    }
+    if (!val?.geometry.type) {
+      return [
+        {
+          path: `${path}.${key}`,
+          message: `Value is expected to have a valid geometry`,
+          property: "type",
+        },
+      ];
+    }
   }
   return [];
 }

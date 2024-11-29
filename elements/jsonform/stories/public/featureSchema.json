@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "features": {
-      "title": "Select multipule features from the map, and refer to the console for the returned values",
+      "title": "Select multiple features from the map, and refer to the console for the returned values",
       "type": "array",
       "options": {
         "featureProperty": "BIOME_NAME",

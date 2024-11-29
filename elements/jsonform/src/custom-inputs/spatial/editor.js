@@ -170,8 +170,12 @@ export class SpatialEditor extends AbstractEditor {
               break;
             }
             case isGeoJSON(this.schema): {
-              // returns the geojson object
-              this.value = e.detail;
+              const featureCollection = e.detail;
+              if (isMulti(this.schema)) {
+                this.value = featureCollection;
+                break;
+              }
+              this.value = featureCollection.features?.[0] ?? null;
               break;
             }
             case isSelection(this.schema): {
