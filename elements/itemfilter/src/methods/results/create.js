@@ -86,7 +86,7 @@ export function createItemListMethod(
               }}
             >
               ${when(
-                config.subTitleProperty,
+                config.subTitleProperty || config.imageProperty,
                 () => html`
                   ${getValue(config.imageProperty, item)
                     ? html`
