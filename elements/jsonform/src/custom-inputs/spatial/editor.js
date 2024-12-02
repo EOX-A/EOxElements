@@ -251,6 +251,7 @@ export class SpatialEditor extends AbstractEditor {
       this.description.parentNode.removeChild(this.description);
     if (this.input && this.input.parentNode) {
       this.input.parentNode.removeChild(this.input);
+      this.input.discardDrawing()
       this.input.remove();
     }
     super.destroy();
