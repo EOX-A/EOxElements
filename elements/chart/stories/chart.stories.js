@@ -1,6 +1,11 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import { PrimaryStory, DataValuesStory, GeoDBStory } from "./index.js";
+import {
+  PrimaryStory,
+  DataValuesStory,
+  GeoDBStory,
+  ScrollChangeStory,
+} from "./index.js";
 
 export default {
   title: "Elements/eox-chart",
@@ -31,3 +36,5 @@ export const DataValues = DataValuesStory;
  * Retrieve and display data from geoDB endpoint
  */
 export const GeoDB = GeoDBStory;
+
+export const ChangeOnScroll = ScrollChangeStory;
