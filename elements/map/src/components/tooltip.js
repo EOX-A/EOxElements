@@ -8,6 +8,7 @@ export class EOxMapTooltip extends LitElement {
   static get properties() {
     return {
       feature: { attribute: false, property: true, type: Object },
+      for: { attribute: "for", property: true, type: String },
       propertyTransform: { attribute: false, property: true, type: Function },
     };
   }
@@ -21,6 +22,15 @@ export class EOxMapTooltip extends LitElement {
      * @type {import("ol/Feature").default | import("ol/render/Feature").default}
      */
     this.feature = null;
+
+    /**
+     * The id of the layer the tooltip should apply to (optional).
+     * If none provided, the tooltip renders for the topmost interaction
+     * layer by default.
+     *
+     * @type string
+     */
+    this.for = null;
 
     /**
      * A function to transform properties before rendering.
