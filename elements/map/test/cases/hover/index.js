@@ -4,3 +4,4 @@ export { default as addSelectInteraction } from "./add-select-interaction";
 export { default as selectAfterReArrangingLayers } from "./select-after-re-arranging-layers";
 export { default as displayTooltip } from "./display-tooltip";
 export { default as displayTooltipOneLayerVisible } from "./display-tooltip-one-layer-visible";
+export { default as displayTooltipForLayer } from "./display-tooltip-for-layer";
