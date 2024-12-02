@@ -149,6 +149,9 @@ export const ClickSelect = ClickSelectStory;
  * This renders a list of all feature properties of the currently selected feature.
  * Note that if multiple interactions are registered (e.g. `pointermove` and `singleclick`),
  * the `pointermove` interaction will have higher priority for the tooltip.
+ *
+ * By setting the (optional) `for` attribute on `eox-map-tooltip` and passing a layer id, the interaction layer can be specified; if no `for` attribute is set,
+ * the tooltip renders for the topmost interaction layer by default.
  */
 export const Tooltip = TooltipStory;
 
