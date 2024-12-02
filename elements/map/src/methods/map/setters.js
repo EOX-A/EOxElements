@@ -351,7 +351,17 @@ export function setSyncMethod(sync, EOxMap) {
       );
 
       // Set the view of the current map to match the view of the origin map
-      if (originMap) EOxMap.map.setView(originMap.map.getView());
+      if (originMap) {
+        // Check if the current map is hidden and the origin
+        // has no zoom - in this case the current map view
+        // takes over the zoom and resets it; so in this case it is
+        // better to sync the "other way round"
+        if (EOxMap.clientHeight < 1 && !originMap.zoom) {
+          originMap.map.setView(EOxMap.map.getView());
+        } else {
+          EOxMap.map.setView(originMap.map.getView());
+        }
+      }
     });
   }
 
