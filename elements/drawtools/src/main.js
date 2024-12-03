@@ -300,6 +300,10 @@ export class EOxDrawTools extends LitElement {
     this.requestUpdate("eoxMap", oldValue);
   }
 
+  disconnectedCallback() {
+    this.eoxMap?.map.removeLayer(this.drawLayer);
+    super.disconnectedCallback();
+  }
   // Render method for UI display
   render() {
     return html`
