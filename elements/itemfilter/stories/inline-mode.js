@@ -23,43 +23,52 @@ function InlineModeStory() {
       aggregateResults: "themes",
       showResults: false,
       filterProperties: [
-        {
-          keys: ["title", "themes"],
-          title: "Search",
-          type: "text",
-          placeholder: "Type Something...",
-          expanded: true,
-        },
-        {
-          key: "code",
-          title: "Codes",
-          type: "multiselect",
-          placeholder: "Search codes",
-          expanded: true,
-        },
-        {
-          key: "themes",
-          title: "Theme",
-          type: "select",
-          placeholder: "Select a theme",
-          expanded: true,
-        },
+        // {
+        //   keys: ["title", "themes"],
+        //   title: "Search",
+        //   type: "text",
+        //   placeholder: "Type Something...",
+        //   expanded: true,
+        // },
+        // {
+        //   key: "code",
+        //   title: "Codes",
+        //   type: "multiselect",
+        //   placeholder: "Search codes",
+        //   expanded: true,
+        //   state: {
+        //     "C1": true
+        //   },
+        // },
+        // {
+        //   key: "themes",
+        //   title: "Theme",
+        //   type: "select",
+        //   placeholder: "Select a theme",
+        //   expanded: true,
+        //   state: {
+        //     "agriculture": true
+        //   },
+        // },
         {
           key: "timestamp",
           type: "range",
           title: "Timestamp",
           format: "date",
           expanded: true,
+          state: {
+            min: 1685488128,
+          },
         },
-        {
-          key: "rating",
-          title: "Rating",
-          type: "range",
-          expanded: true,
-          min: -100,
-          max: 100,
-          step: 10,
-        },
+        // {
+        //   key: "rating",
+        //   title: "Rating",
+        //   type: "range",
+        //   expanded: true,
+        //   min: -100,
+        //   max: 100,
+        //   step: 10,
+        // },
       ],
       items,
     },

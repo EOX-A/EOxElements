@@ -78,7 +78,9 @@ function filterApplyMethod(config, items, EOxItemFilter) {
       EOxItemFilter.filters[filterKey] = Object.assign(
         {
           type: filterProperty.type || "multiselect",
-          dirty: filterProperty.state ? false : undefined,
+          dirty: filterProperty.state
+            ? Object.values(filterProperty.state).some((value) => value)
+            : undefined,
           key: filterKey,
         },
         filterProperty.type === "range"
