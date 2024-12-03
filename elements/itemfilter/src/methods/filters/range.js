@@ -47,7 +47,7 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
   if (EOxItemFilterRange.filterObject.dirty) {
     EOxItemFilterRange.filterObject.stringifiedState =
       EOxItemFilterRange.filterObject.format === "date"
-        ? `${dayjs(min)} - ${dayjs(max)}`
+        ? `${dayjs.unix(min).format("ddd, D MMM YYYY HH:mm:ss")} - ${dayjs.unix(max).format("ddd, D MMM YYYY HH:mm:ss")}`
         : `${min} - ${max}`;
   }
 
@@ -73,6 +73,8 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
 export function rangeLabelMethod(val, pos, EOxItemFilterRange) {
   const isDate = Boolean(EOxItemFilterRange.filterObject.format === "date");
   const filteredVal = EOxItemFilterRange.filterObject.state[val];
-  const label = isDate ? dayjs.unix(filteredVal) : filteredVal;
+  const label = isDate
+    ? dayjs.unix(filteredVal).format("ddd, D MMM YYYY HH:mm:ss")
+    : filteredVal;
   return html`<div class="range-${pos}">${label}</div>`;
 }

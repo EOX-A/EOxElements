@@ -47,7 +47,7 @@ export class EOxItemFilterRange extends LitElement {
      * @type Function
      */
     this.debouncedInputHandler = _debounce(this.inputHandler, 0, {
-      leading: true,
+      leading: false,
     });
   }
 
