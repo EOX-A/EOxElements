@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "point": {
+      "title": "Single point example",
+      "type": "array",
+      "format": "point"
+    },
+    "points": {
+      "title": "Multiple points example",
+      "type": "array",
+      "options": {
+        "projection": "EPSG:3857"
+      },
+      "format": "points"
+    }
+  }
+}
