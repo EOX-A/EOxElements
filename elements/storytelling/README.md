@@ -11,7 +11,12 @@ npm install @eox/storytelling
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/storytelling"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/storytelling/dist/eox-storytelling.js"
+
 <eox-storytelling></eox-storytelling>
 ```
 

@@ -7,7 +7,11 @@ npm install @eox/layout
 ```
 
 ```
+// for setups with bundlers e.g. Vite
 import "@eox/layout"
+
+// or, for e.g. single HTML files without bundler
+import "@eox/layout/dist/eox-layout.js"
 
 <eox-layout>
   <eox-layout-item></eox-layout-item>

@@ -33,7 +33,7 @@ export default function parseFeatured(featured = []) {
                     ${value.label}
                     ${when(
                       value.length,
-                      () => html` <span class="count">${value.length}</span> `
+                      () => html` <span class="count">${value.length}</span> `,
                     )}
                   </slot>
                 </summary>
@@ -45,15 +45,15 @@ export default function parseFeatured(featured = []) {
                         <eox-stacinfo-shadow .content=${value.formatted}>
                         </eox-stacinfo-shadow>
                       `,
-                      () => html`${unsafeHTML(value.formatted)}`
+                      () => html`${unsafeHTML(value.formatted)}`,
                     )}
                   </slot>
                 </div>
               </details>
-            `
+            `,
           )}
         </section>
-      `
+      `,
     )}
   `;
 }

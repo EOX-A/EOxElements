@@ -8,7 +8,7 @@ import { autoUpdate, computePosition } from "@floating-ui/dom";
  */
 function initPopover(EOxItemFilterContainer) {
   const trigger = EOxItemFilterContainer.renderRoot.querySelector(
-    ".inline-container-wrapper"
+    ".inline-container-wrapper",
   );
   const dropdown = EOxItemFilterContainer.renderRoot.querySelector("[popover]");
   const updatePosition = () => {
@@ -21,7 +21,7 @@ function initPopover(EOxItemFilterContainer) {
             top: `${y}px`,
             width: `${trigger.getBoundingClientRect().width}px`,
           });
-        }
+        },
       );
     }
   };

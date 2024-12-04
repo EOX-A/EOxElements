@@ -1,6 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import Group from "ol/layer/Group";
-import { getElement } from "../../../utils";
+import { getElement } from "@eox/elements-utils";
 import "toolcool-range-slider";
 import { style } from "./style.js";
 import { styleEOX } from "./style.eox.js";
@@ -57,6 +57,7 @@ export class EOxTimeControl extends LitElement {
       _isAnimationPlaying: { state: true },
       _newStepIndex: { state: true },
       _eoxMap: { state: true },
+      _width: { state: true },
       unstyled: { type: Boolean },
     };
   }
@@ -86,6 +87,12 @@ export class EOxTimeControl extends LitElement {
     this.controlProperty = undefined;
     /** @type {HTMLElement |undefined} */
     this._eoxMap = undefined;
+
+    this._width = 300;
+
+    window.addEventListener("resize", () => {
+      this._width = this.clientWidth;
+    });
   }
 
   /**
@@ -216,7 +223,7 @@ export class EOxTimeControl extends LitElement {
         detail: {
           currentStep: this.currentStep,
         },
-      })
+      }),
     );
   }
 
@@ -241,7 +248,7 @@ export class EOxTimeControl extends LitElement {
         const layersInsideGroup = groupLayers[i].getLayers().getArray();
         flatLayers.push(...layersInsideGroup);
         newGroupLayers.push(
-          ...layersInsideGroup.filter((l) => l instanceof Group)
+          ...layersInsideGroup.filter((l) => l instanceof Group),
         );
       }
       groupLayers = newGroupLayers;
@@ -262,7 +269,7 @@ export class EOxTimeControl extends LitElement {
           const flatLayers = this.getFlatLayersArray(
             /** @type {import('ol/layer/Base').default[]} */ (
               olMap.getLayers().getArray()
-            )
+            ),
           );
           const animationLayer =
             /** @type {import('ol/layer/Layer').default} */ (
@@ -292,9 +299,12 @@ export class EOxTimeControl extends LitElement {
           >
             <
           </button>
+          <span part="current">${this.controlValues[this._newStepIndex]}</span>
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
+        </div>
+        <div>
           ${!this.disablePlay
             ? html`
                 <button
@@ -304,7 +314,7 @@ export class EOxTimeControl extends LitElement {
                     : "play"}"
                   @click="${() =>
                     this.playAnimation(
-                      this._isAnimationPlaying ? false : true
+                      this._isAnimationPlaying ? false : true,
                     )}"
                 >
                   ${this._isAnimationPlaying ? "Pause" : "Play"}
@@ -322,20 +332,18 @@ export class EOxTimeControl extends LitElement {
                     @change="${(/** @type {CustomEvent} */ evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(
-                          (v) => v === evt.detail.value
-                        ) - this._newStepIndex
+                          (v) => v === evt.detail.value,
+                        ) - this._newStepIndex,
                       )}"
                   ></tc-range-slider>
 
                   <eox-sliderticks
-                    width="300"
+                    .width="${this._width}"
                     .steps="${this.controlValues}"
                   ></eox-sliderticks>
                 </div>
               `
             : ""}
-
-          <span part="current">${this.controlValues[this._newStepIndex]}</span>
         </div>
       </main>
     `;

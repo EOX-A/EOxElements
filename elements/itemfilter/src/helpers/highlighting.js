@@ -9,7 +9,7 @@
 function highlight(
   fuseSearchResult,
   highlightClassName = "highlight",
-  matchKey = "title"
+  matchKey = "title",
 ) {
   /**
    * Sets a value at a specified path within an object.
@@ -68,7 +68,7 @@ function highlight(
         set(
           highlightedItem,
           match.key,
-          generateHighlightedText(match.value, match.indices) // Highlight the matched text
+          generateHighlightedText(match.value, match.indices), // Highlight the matched text
         );
       });
 

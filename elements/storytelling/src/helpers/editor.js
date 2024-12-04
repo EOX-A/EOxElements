@@ -22,7 +22,7 @@ function enableTextSelection() {
 function handleEditorContainerMouseDown(
   e,
   editorContainer,
-  StoryTellingEditor
+  StoryTellingEditor,
 ) {
   if (e.target === editorContainer) {
     disableTextSelection();
@@ -104,20 +104,20 @@ function handleResizeHandleMouseDown(e, StoryTellingEditor) {
 export default async function initEditorEvents(
   editorContainer,
   resizeHandle,
-  StoryTellingEditor
+  StoryTellingEditor,
 ) {
   editorContainer.addEventListener("mousedown", (e) =>
-    handleEditorContainerMouseDown(e, editorContainer, StoryTellingEditor)
+    handleEditorContainerMouseDown(e, editorContainer, StoryTellingEditor),
   );
 
   window.addEventListener("mousemove", (e) =>
-    handleMouseMove(e, editorContainer, StoryTellingEditor)
+    handleMouseMove(e, editorContainer, StoryTellingEditor),
   );
 
   window.addEventListener("mouseup", () => handleMouseUp(StoryTellingEditor));
 
   resizeHandle.addEventListener("mousedown", (e) =>
-    handleResizeHandleMouseDown(e, StoryTellingEditor)
+    handleResizeHandleMouseDown(e, StoryTellingEditor),
   );
 }
 
@@ -224,7 +224,7 @@ export function addCustomSection(
   newMarkdown,
   fields,
   updatedFieldValues,
-  EOxStoryTelling
+  EOxStoryTelling,
 ) {
   const markdownArr = markdown.split("\n");
 
@@ -241,7 +241,7 @@ export function addCustomSection(
     // Get updated json form field value and replace it with literals
     if (updatedFieldValues) {
       const jsonForm = parent.querySelector(
-        "eox-jsonform#storytelling-editor-fields"
+        "eox-jsonform#storytelling-editor-fields",
       );
       const updatedFields = jsonForm.editor.getValue();
       Object.keys(updatedFields).forEach((key) => {
@@ -264,12 +264,12 @@ export function addCustomSection(
   else markdownArr.push(newMarkdown);
 
   editorDOM.editor.editor.editors["root.Story"].setValue(
-    markdownArr.join("\n")
+    markdownArr.join("\n"),
   );
 
   setTimeout(() => {
     const updatedDom = parent.querySelector(
-      `div[data-section="${customSectionIndex + 1}"]`
+      `div[data-section="${customSectionIndex + 1}"]`,
     );
     if (updatedDom) window.scrollTo(0, updatedDom.offsetTop);
   }, 200);
@@ -296,7 +296,7 @@ export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
     timeOutId = setTimeout(() => {
       saveEle.innerText = "Saved";
       const existingMarkdownObj = JSON.parse(
-        localStorage.getItem("markdown") || "{}"
+        localStorage.getItem("markdown") || "{}",
       );
 
       localStorage.setItem(
@@ -304,7 +304,7 @@ export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
         JSON.stringify({
           ...existingMarkdownObj,
           [storyId || "default"]: easyMDEInstance.value(),
-        })
+        }),
       );
       timeOutId = null;
     }, 2500);
@@ -332,7 +332,7 @@ export function preventEditorOutsideScroll(StoryTellingEditor) {
         )
           event.preventDefault(); // Prevent scrolling
       },
-      { passive: false }
+      { passive: false },
     );
 }
 
@@ -344,7 +344,7 @@ export function preventEditorOutsideScroll(StoryTellingEditor) {
 export function initSavedMarkdown(EOxStoryTelling) {
   if (EOxStoryTelling.showEditor !== undefined) {
     let existingMarkdownObj = JSON.parse(
-      localStorage.getItem("markdown") || "{}"
+      localStorage.getItem("markdown") || "{}",
     );
     const storyId = EOxStoryTelling.id || "default";
     const prevMarkdown = existingMarkdownObj[storyId];
@@ -353,7 +353,7 @@ export function initSavedMarkdown(EOxStoryTelling) {
     if (prevMarkdown && prevMarkdown !== EOxStoryTelling.markdown) {
       // Prompt whether to recover previous markdown
       const updatePrevMarkdown = confirm(
-        "Recover your Story from the last time you edited?"
+        "Recover your Story from the last time you edited?",
       );
 
       // update markdown if previous markdown to be recovered, otherwise just delete the previous one
@@ -375,11 +375,17 @@ export function runWhenEditorInitialised(StoryTellingEditor) {
   if (StoryTellingEditor.editor.editor?.editors?.["root.Story"]) {
     const easyMDEInstance =
       StoryTellingEditor.editor.editor.editors["root.Story"].simplemde_instance;
-    generateAutoSave(
-      StoryTellingEditor,
-      StoryTellingEditor.storyId,
-      easyMDEInstance
-    );
+
+    if (!StoryTellingEditor.disableAutosave) {
+      generateAutoSave(
+        StoryTellingEditor,
+        StoryTellingEditor.storyId,
+        easyMDEInstance,
+      );
+    } else {
+      const saveEle = StoryTellingEditor.querySelector(".editor-saver");
+      saveEle.innerText = "";
+    }
     preventEditorOutsideScroll(StoryTellingEditor);
   } else {
     setTimeout(() => runWhenEditorInitialised(StoryTellingEditor), 100);

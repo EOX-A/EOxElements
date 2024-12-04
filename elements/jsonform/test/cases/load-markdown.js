@@ -31,7 +31,7 @@ const loadMarkdownTest = () => {
       .value=${{
         [testVals.key]: testVals.value,
       }}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
   // Find the jsonForm element and access its shadow DOM
   cy.get(jsonForm)
@@ -46,7 +46,7 @@ const loadMarkdownTest = () => {
     // Check if editor settings were applied
     expect(
       $el[0].editor.editors[`root.${testVals.key}`].options.simplemde
-        .spellChecker
+        .spellChecker,
     ).to.eq(false);
   });
 };

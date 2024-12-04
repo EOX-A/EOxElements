@@ -1,10 +1,10 @@
-import { html, nothing } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { map } from "lit/directives/map.js";
 import { when } from "lit/directives/when.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
-import allStyle from "../../../utils/styles/dist/all.style";
+import allStyle from "@eox/elements-utils/styles/dist/all.style";
 import "./components/expand-container";
 import "./components/itemfilter-container";
 import "./components/filters/text";
@@ -23,7 +23,6 @@ import {
   resetFilterMethod,
 } from "./methods/itemfilter";
 import _debounce from "lodash.debounce";
-import { TemplateElement } from "../../../utils/templateElement";
 import {
   getTabIndex,
   isFiltersDirty,
@@ -36,9 +35,9 @@ import {
  * The component supports both inline and dropdown modes for filter display.
  *
  * @module EOxItemFilter
- * @extends {TemplateElement}
+ * @extends {LitElement}
  */
-export class EOxItemFilter extends TemplateElement {
+export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
   static get properties() {
     return {
@@ -239,7 +238,7 @@ export class EOxItemFilter extends TemplateElement {
     this.#resultAggregation = filterApplyMethod(
       this.#config,
       this.#items,
-      this
+      this,
     );
     this.search();
   }
@@ -261,7 +260,7 @@ export class EOxItemFilter extends TemplateElement {
         },
         bubbles: true,
         composed: true,
-      })
+      }),
     );
     if (this.inlineMode)
       this.renderRoot.querySelector("eox-itemfilter-container").updateInline();
@@ -326,7 +325,7 @@ export class EOxItemFilter extends TemplateElement {
     this.#config = config;
     this.#items =
       this.items?.map((i, index) =>
-        Object.assign({ id: i[this.idProperty] || `item-${index}` }, i)
+        Object.assign({ id: i[this.idProperty] || `item-${index}` }, i),
       ) || [];
     this.apply();
   }
@@ -361,7 +360,7 @@ export class EOxItemFilter extends TemplateElement {
         detail: this.selectedResult,
         bubbles: true,
         composed: true,
-      })
+      }),
     );
     this.requestUpdate();
   }
@@ -399,7 +398,7 @@ export class EOxItemFilter extends TemplateElement {
                     <slot name="filterstitle"
                       ><h6 class="main-heading">Filters</h6></slot
                     >
-                  `
+                  `,
                 )}
                 <ul id="filters">
                   ${map(
@@ -414,14 +413,14 @@ export class EOxItemFilter extends TemplateElement {
                         >
                           ${this.#createReset(
                             filterObject,
-                            getTabIndex(index, 1)
+                            getTabIndex(index, 1),
                           )}
                           ${this.#createFilter(
                             filterObject,
-                            getTabIndex(index, 2)
+                            getTabIndex(index, 2),
                           )}
                         </eox-itemfilter-expandcontainer>
-                      </li>`
+                      </li>`,
                   )}
                 </ul>
                 ${when(
@@ -440,11 +439,11 @@ export class EOxItemFilter extends TemplateElement {
                     >
                       Reset all
                     </a>
-                  `
+                  `,
                 )}
               </section>
             </eox-itemfilter-container>
-          `
+          `,
         )}
         ${when(
           this.#config?.showResults && this.results,
@@ -457,7 +456,7 @@ export class EOxItemFilter extends TemplateElement {
               .selectedResult=${this.selectedResult}
               @result=${this.updateResult}
             ></eox-itemfilter-results>
-          `
+          `,
         )}
       </form>
     `;

@@ -14,7 +14,7 @@ const renderItemsTest = () => {
       <eox-layout-item></eox-layout-item>
       <eox-layout-item></eox-layout-item>
     </eox-layout>
-  `
+  `,
   ).as(layoutElement);
 
   cy.get(layoutItemElement).should("have.length", 3);

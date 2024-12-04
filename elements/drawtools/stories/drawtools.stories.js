@@ -11,6 +11,9 @@ import {
   UnstyledStory,
   CSSVariableOverrideStory,
   ImportFeaturesWithEditorStory,
+  SelectFeatureStory,
+  MultiFeaturesSelectStory,
+  FeaturesProjectionStory,
 } from "./index";
 
 export default {
@@ -57,6 +60,19 @@ export const MultiPolygonWithList = MultiPolygonWithListStory;
  */
 export const ImportFeaturesWithEditor = ImportFeaturesWithEditorStory;
 
+/**
+ * Setting `layer-id` attribute or `layerId` property enables selection of features on the specified layer.
+ */
+export const SelectFeature = SelectFeatureStory;
+
+/**
+ * Showcasing the combination of `multiple-features`, `show-list` and `layer-id` attributes or properties, allowing the selection of multiple features.
+ */
+export const MultiFeaturesSelect = MultiFeaturesSelectStory;
+/**
+ * Showcasing the possibilty to emit drawn features in different projections
+ */
+export const FeaturesProjection = FeaturesProjectionStory;
 /**
  * Override css variable directly using styles.
  */

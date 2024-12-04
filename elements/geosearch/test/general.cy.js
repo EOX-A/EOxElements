@@ -13,7 +13,7 @@ describe("EOxGeoSearch", () => {
             results-direction="down"
             endpoint="./opencage-mock-data.json"
         ></eox-geosearch>
-      `
+      `,
     ).as("eox-geosearch");
   });
 

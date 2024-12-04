@@ -1,3 +1,3 @@
-export { STORIES_LAYOUT_STYLE } from "./stories";
+export { STORIES_LAYOUT_STYLE, STORIES_LAYOUT_ITEM_STYLE } from "./stories";
 
 export { TEST_SELECTORS } from "./test";

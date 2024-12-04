@@ -11,6 +11,8 @@ import {
   addExternalLayerStory,
   layerDatetimeStory,
   layerZoomStateStory,
+  toolsAsListStory,
+  layerLegendStory,
 } from ".";
 
 export default {
@@ -75,6 +77,13 @@ export const LayerStylesConfig = LayerStylesConfigStory;
 export const LayerDateTime = layerDatetimeStory;
 
 /**
+ * The "legend" tool reads configurations passed via the "layerLegend" property,
+ * and creates a dynamic color legend based on it. `layerLegend` holds a partial subset of
+ * the attributes and properties of Color Legend Element, read more https://clhenrick.github.io/color-legend-element/
+ */
+export const LayerLegend = layerLegendStory;
+
+/**
  * By adding the `layerControlHide` property to map layers,
  * they aren't displayed in the layer control at all (but may
  * be still rendered on the map).
@@ -96,3 +105,8 @@ export const LayerZoomState = layerZoomStateStory;
  * Unstyled version of the Element
  */
 export const Unstyled = unstyledStory;
+
+/**
+ * Tools rendered as list instead of tabs
+ */
+export const ToolsAsList = toolsAsListStory;

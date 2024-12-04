@@ -30,3 +30,8 @@ docs
 custom-elements.json
 
 utils/styles/dist/*.style.js
+
+coverage
+.nyc_output
+
+**/types/**

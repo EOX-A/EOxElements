@@ -1,8 +1,10 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, css } from "lit";
+import { getLegendConfig } from "../helpers";
 import { getStartVals } from "../helpers";
 import { dataChangeMethod, applyUpdatedStyles } from "../methods/layer-config";
 import { when } from "lit/directives/when.js";
-import _debounce from "lodash.debounce";
+import _throttle from "lodash.throttle";
+import "./layer-legend";
 /**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
  * It allows users to input data, modify layer settings, and update the UI based on those settings.
@@ -69,18 +71,40 @@ export class EOxLayerControlLayerConfig extends LitElement {
     /**
      * Layer config for eox-jsonform
      *
-     * @type {{ schema: Record<string,any>; element: string; type?:"tileUrl"|"style"; style?:import("ol/layer/WebGLTile").Style}}
+     * @type {{
+     *  schema: Record<string,any>;
+     *  element: string;
+     *  type?:"tileUrl"|"style";
+     *  style?:import("ol/layer/WebGLTile").Style
+     *  legend?: Partial<import("./layer-legend").LegendConfig> & {
+     *     range:string[];
+     *     domainProperties:string[]
+     *    }
+     *  }}
      */
     this.layerConfig = null;
 
     /**
-     * Debounce #handleDataChange() by 1000 milliseconds
+     * Throttle #handleDataChange() by 1000 milliseconds
      */
-    this.debouncedDataChange = _debounce(this.#handleDataChange, 1000, {
-      leading: true,
-    });
+    this.throttleDataChange = _throttle(this.#handleDataChange, 1000);
   }
 
+  /** Decide what type of throttling to do based on layerConfig type
+   *
+   * @param {import("lit").PropertyValues} changedProperties - The changed properties.
+   */
+  updated(changedProperties) {
+    if (changedProperties.has("layerConfig")) {
+      const throttleTime =
+        this.layerConfig.type === "style" || this.layerConfig.style
+          ? 100
+          : 1000;
+
+      this.throttleDataChange = _throttle(this.#handleDataChange, throttleTime);
+      this.requestUpdate();
+    }
+  }
   /**
    * Handles changes in eox-jsonform values.
    *
@@ -97,17 +121,17 @@ export class EOxLayerControlLayerConfig extends LitElement {
         console.error(
           `Layer type ${
             this.layer.get("type") ?? ""
-          } does not support styles configuration`
+          } does not support styles configuration`,
         );
       }
     } else {
       this.#originalTileUrlFunction = dataChangeMethod(
         this.#data,
         this.#originalTileUrlFunction,
-        this
+        this,
       );
-      this.requestUpdate();
     }
+    this.requestUpdate();
   }
 
   /**
@@ -123,16 +147,19 @@ export class EOxLayerControlLayerConfig extends LitElement {
   render() {
     // Fetch initial values for the layer and its configuration
     this.#startVals = getStartVals(this.layer, this.layerConfig);
+    if (Object.keys(this.#data).length !== 0) {
+      this.#startVals = this.#data;
+    }
     if (!customElements.get("eox-jsonform")) {
       console.error("Please import @eox/jsonform in order to use layerconfig");
     }
+
     // Options for the JSON form rendering
     const options = {
       disable_edit_json: true,
       disable_collapse: true,
       disable_properties: true,
     };
-
     return html`
       <style>
         ${this.#styleBasic}
@@ -141,23 +168,45 @@ export class EOxLayerControlLayerConfig extends LitElement {
       ${when(
         this.layerConfig,
         () => html`
+          ${when(
+            this.layerConfig.legend,
+            () => html`
+              <eox-layercontrol-layer-legend
+                .noShadow=${true}
+                .unstyled=${this.unstyled}
+                .layer=${this.layer}
+                .layerLegend=${getLegendConfig(
+                  this.layerConfig.legend,
+                  this.#data,
+                )}
+              ></eox-layercontrol-layer-legend>
+            `,
+          )}
           <!-- Render a JSON form for layer configuration -->
           <eox-jsonform
             .schema=${this.layerConfig.schema}
             .value=${this.#startVals}
             .options=${options}
-            @change=${this.debouncedDataChange}
+            @change=${this.throttleDataChange}
           ></eox-jsonform>
-        `
+        `,
       )}
     `;
   }
 
-  #styleBasic = ``;
+  #styleBasic = css`
+    color-legend {
+      --cle-background: transparent;
+      --cle-font-family: inherit;
+      --cle-font-size: inherit;
+      --cle-font-weight: inherit --cle-letter-spacing: inherit;
+      --cle-letter-spacing-title: inherit;
+    }
+  `;
   #styleEOX = ``;
 }
 
 customElements.define(
   "eox-layercontrol-layerconfig",
-  EOxLayerControlLayerConfig
+  EOxLayerControlLayerConfig,
 );

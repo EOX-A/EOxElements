@@ -5,11 +5,12 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-config";
 import "./layer-datetime";
-import "./tabs";
-import { button } from "../../../../utils/styles/button";
-import { radio } from "../../../../utils/styles/radio";
-import { checkbox } from "../../../../utils/styles/checkbox";
-import { slider } from "../../../../utils/styles/slider";
+import "./layer-legend";
+import "./tools-items";
+import { button } from "@eox/elements-utils/styles/button";
+import { radio } from "@eox/elements-utils/styles/radio";
+import { checkbox } from "@eox/elements-utils/styles/checkbox";
+import { slider } from "@eox/elements-utils/styles/slider";
 import {
   Button,
   _parseActions,
@@ -32,6 +33,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     tools: { attribute: false },
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
+    toolsAsList: { type: Boolean },
   };
 
   constructor() {
@@ -65,6 +67,13 @@ export class EOxLayerControlLayerTools extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
   }
 
   /**
@@ -89,15 +98,85 @@ export class EOxLayerControlLayerTools extends LitElement {
    */
   _button = (tool) => Button(tool, this.unstyled);
 
+  _getDefaultTools = () => {
+    return html`
+      <div slot="info-content">
+        ${unsafeHTML(this.layer.get("description"))}
+      </div>
+      <div slot="opacity-content">
+        <!-- Input for opacity -->
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value=${live(this.layer?.getOpacity())}
+          @input=${(/** @type {{ target: { value: string; }; }} */ evt) =>
+            this.layer.setOpacity(parseFloat(evt.target.value))}
+        />
+      </div>
+      <div slot="config-content">
+        <!-- Layer configuration -->
+        ${when(
+          this.layer.get("layerConfig"),
+          () => html`
+            <eox-layercontrol-layerconfig
+              slot="config-content"
+              .layer=${this.layer}
+              .noShadow=${true}
+              .layerConfig=${this.layer.get("layerConfig")}
+              .unstyled=${this.unstyled}
+              @changed=${() => this.requestUpdate()}
+            ></eox-layercontrol-layerconfig>
+          `,
+        )}
+      </div>
+      <div slot="datetime-content">
+        <!-- Layer datetime -->
+        ${when(
+          this.layer.get("layerDatetime"),
+          () => html`
+            <eox-layercontrol-layer-datetime
+              slot="datetime-content"
+              .noShadow=${true}
+              .layerDatetime=${this.layer.get("layerDatetime")}
+              .layer=${this.layer}
+              .unstyled=${this.unstyled}
+              @changed=${() => this.requestUpdate()}
+            ></eox-layercontrol-layer-datetime>
+          `,
+        )}
+      </div>
+      <div slot="legend-content">
+        <!-- Layer legend -->
+        ${when(
+          this.layer.get("layerLegend"),
+          () => html`
+            <eox-layercontrol-layer-legend
+              slot="legend-content"
+              .noShadow=${true}
+              .layerLegend=${this.layer.get("layerLegend")}
+              .layer=${this.layer}
+              .unstyled=${this.unstyled}
+              @changed=${() => this.requestUpdate()}
+            ></eox-layercontrol-layer-legend>
+          `,
+        )}
+      </div>
+      <div slot="remove-icon">${this._removeButton()}</div>
+      <div slot="sort-icon">${this._sortButton()}</div>
+    `;
+  };
+
   render() {
     // Obtain actions and tools based on this.tools and this.layer
     const actions = _parseActions(this.tools, this.layer);
     const tools = _parseTools(this.tools, this.layer);
 
     // Determine the single action element if only one action is present
-    // @ts-ignore
+    // @ts-expect-error TODO
     const singleActionEle = this[`_${actions?.[0]}Button`]
-      ? // @ts-ignore
+      ? // @ts-expect-error TODO
         this[`_${actions?.[0]}Button`]()
       : nothing;
 
@@ -131,70 +210,23 @@ export class EOxLayerControlLayerTools extends LitElement {
                 <summary>
                   <button class="icon ${iconClass}">Tools</button>
                 </summary>
-                <eox-layercontrol-tabs
+                <eox-layercontrol-tools-items
+                  class="${this.toolsAsList ? "tools-list" : "tools-tab"}"
                   .noShadow=${false}
                   .actions=${actions}
                   .tabs=${tools}
                   .unstyled=${this.unstyled}
+                  .toolsAsList=${this.toolsAsList}
                 >
                   <!-- Rendering tabs and content -->
                   ${map(tools, (tool) => this._button(tool))}
-
-                  <div slot="info-content">
-                    ${unsafeHTML(this.layer.get("description"))}
-                  </div>
-                  <div slot="opacity-content">
-                    <!-- Input for opacity -->
-                    <input
-                      type="range"
-                      min="0"
-                      max="1"
-                      step="0.01"
-                      value=${live(this.layer?.getOpacity())}
-                      @input=${(
-                        /** @type {{ target: { value: string; }; }} */ evt
-                      ) => this.layer.setOpacity(parseFloat(evt.target.value))}
-                    />
-                  </div>
-                  <div slot="config-content">
-                    <!-- Layer configuration -->
-                    ${when(
-                      this.layer.get("layerConfig"),
-                      () => html`
-                        <eox-layercontrol-layerconfig
-                          slot="config-content"
-                          .layer=${this.layer}
-                          .noShadow=${true}
-                          .layerConfig=${this.layer.get("layerConfig")}
-                          .unstyled=${this.unstyled}
-                          @changed=${() => this.requestUpdate()}
-                        ></eox-layercontrol-layerconfig>
-                      `
-                    )}
-                  </div>
-                  <div slot="datetime-content">
-                    <!-- Layer datetime -->
-                    ${when(
-                      this.layer.get("layerDatetime"),
-                      () => html`
-                        <eox-layercontrol-layer-datetime
-                          slot="datetime-content"
-                          .noShadow=${true}
-                          .layerDatetime=${this.layer.get("layerDatetime")}
-                          .layer=${this.layer}
-                          .unstyled=${this.unstyled}
-                          @changed=${() => this.requestUpdate()}
-                        ></eox-layercontrol-layer-datetime>
-                      `
-                    )}
-                  </div>
-                  <div slot="remove-icon">${this._removeButton()}</div>
-                  <div slot="sort-icon">${this._sortButton()}</div>
-                </eox-layercontrol-tabs>
+                  <!-- Including default tools -->
+                  ${this._getDefaultTools()}
+                </eox-layercontrol-tools-items>
               </details>
-            `
+            `,
           )}
-        `
+        `,
       )}
     `;
   }
@@ -240,20 +272,26 @@ export class EOxLayerControlLayerTools extends LitElement {
     }
     .single-action,
     details.tools summary,
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tools-items button.icon {
       transition: opacity .2s;
     }
     .single-action,
     details.tools summary {
       opacity: .5;
     }
-    eox-layercontrol-tabs button.icon {
+    eox-layercontrol-tools-items button.icon {
       opacity: .7;
+    }
+    eox-layercontrol-tools-items.tools-list button.icon {
+      cursor: auto;
     }
     .single-action:hover,
     details.tools summary:hover,
-    eox-layercontrol-tabs button.icon:hover {
+    eox-layercontrol-tools-items button.icon:hover {
       opacity: 1;
+    }
+    eox-layercontrol-tools-items.tools-list button.icon:hover {
+      opacity: .7;
     }
     .tools-placeholder,
     .single-action .icon,
@@ -262,14 +300,15 @@ export class EOxLayerControlLayerTools extends LitElement {
     details.tools summary .icon::before {
       height: 16px;
       width: 16px;
+      margin-right: var(--padding);
     }
-    eox-layercontrol-tabs button.icon,
-    eox-layercontrol-tabs .button.icon {
+    eox-layercontrol-tools-items button.icon,
+    eox-layercontrol-tools-items .button.icon {
       display: flex;
       justify-content: center;
     }
-    eox-layercontrol-tabs button.icon::before,
-    eox-layercontrol-tabs .button.icon::before {
+    eox-layercontrol-tools-items button.icon::before,
+    eox-layercontrol-tools-items .button.icon::before {
       width: 16px;
       height: 16px;
     }
@@ -289,6 +328,10 @@ export class EOxLayerControlLayerTools extends LitElement {
     button.icon[slot=datetime-icon]::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eclock-outline%3C/title%3E%3Cpath d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z' /%3E%3C/svg%3E");
     }
+    details.tools summary .legend-icon,
+    button.icon[slot=legend-icon]::before {
+      content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctitle%3Emap-legend%3C%2Ftitle%3E%3Cpath%20d%3D%22M9%2C3L3.36%2C4.9C3.15%2C4.97%203%2C5.15%203%2C5.38V20.5A0.5%2C0.5%200%200%2C0%203.5%2C21L3.66%2C20.97L9%2C18.9L15%2C21L20.64%2C19.1C20.85%2C19.03%2021%2C18.85%2021%2C18.62V3.5A0.5%2C0.5%200%200%2C0%2020.5%2C3L20.34%2C3.03L15%2C5.1L9%2C3M8%2C5.45V17.15L5%2C18.31V6.46L8%2C5.45M10%2C5.47L14%2C6.87V18.53L10%2C17.13V5.47M19%2C5.7V17.54L16%2C18.55V6.86L19%2C5.7M7.46%2C6.3L5.57%2C6.97V9.12L7.46%2C8.45V6.3M7.46%2C9.05L5.57%2C9.72V11.87L7.46%2C11.2V9.05M7.46%2C11.8L5.57%2C12.47V14.62L7.46%2C13.95V11.8M7.46%2C14.55L5.57%2C15.22V17.37L7.46%2C16.7V14.55Z%22%20%2F%3E%3C%2Fsvg%3E");
+    }
     .single-action .remove-icon::before,
     [slot=remove-icon] button.icon::before {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0000' viewBox='0 0 24 24'%3E%3Ctitle%3Edelete-outline%3C/title%3E%3Cpath d='M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z' /%3E%3C/svg%3E");
@@ -306,5 +349,5 @@ export class EOxLayerControlLayerTools extends LitElement {
 
 customElements.define(
   "eox-layercontrol-layer-tools",
-  EOxLayerControlLayerTools
+  EOxLayerControlLayerTools,
 );

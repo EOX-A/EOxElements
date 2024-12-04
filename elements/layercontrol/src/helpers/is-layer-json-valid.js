@@ -12,7 +12,7 @@ export default function isLayerJSONValid(str) {
 
     // Returning true if 'jsonInput' is not empty
     return !!str;
-  } catch (error) {
+  } catch (_) {
     // Returning false if there's an error parsing or if 'jsonInput' is empty
     return false;
   }

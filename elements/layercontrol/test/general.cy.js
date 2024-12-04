@@ -11,6 +11,7 @@ import {
   emptyGroup,
   renderOptionalLayer,
   showCorrectLayerTitle,
+  checkLayerLegend,
 } from "./cases/general";
 
 describe("LayerControl", () => {
@@ -19,7 +20,7 @@ describe("LayerControl", () => {
     // Mounting mock map and layer control components for testing
     cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(`<eox-layercontrol for="mock-map"></eox-layercontrol>`).as(
-      "eox-layercontrol"
+      "eox-layercontrol",
     );
   });
 
@@ -54,4 +55,7 @@ describe("LayerControl", () => {
   // Test to verify pre-opening of the layer tools section if layerControlToolsExpand is present
   it("pre-opens layer tools section if layerControlToolsExpand is present", () =>
     checkPreOpenLayerTools());
+  it("renders layer specific legend", () => {
+    checkLayerLegend();
+  });
 });

@@ -40,5 +40,5 @@ jobs:
           npm run styles && \
           cd `echo ${ELEMENT_DIR} | tr -d '[]"'` && \
           npm run build && \
-          npm version prerelease --preid ${{ inputs.preid }}.${{ steps.timestamp.outputs.timestamp }} && \
+          npm version prerelease --preid ${{ inputs.preid }}.${{ steps.timestamp.outputs.timestamp }} --legacy-peer-deps && \
           npm publish --access=public --tag ${{ inputs.preid }}

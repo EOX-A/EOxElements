@@ -72,7 +72,7 @@ function curlyAttrs(state) {
         sectionSteps,
         sectionStepsIndex,
         state,
-        stack
+        stack,
       );
       sectionStart = data.sectionStart;
       sectionSteps = data.sectionSteps;
@@ -91,7 +91,7 @@ function curlyAttrs(state) {
         sectionSteps,
         sectionStepsIndex,
         state,
-        stack
+        stack,
       );
       sectionStart = data.sectionStart;
       sectionSteps = data.sectionSteps;
@@ -123,7 +123,7 @@ function curlyAttrs(state) {
         finalTokens,
         sectionStartIndex,
         sectionStepsIndex,
-        sectionSteps
+        sectionSteps,
       );
 
     token.level = token.level + 1;
@@ -235,7 +235,7 @@ function parseInlineContent(
   finalTokens,
   sectionStartIndex,
   sectionStepsIndex,
-  sectionSteps
+  sectionSteps,
 ) {
   let lastText;
   const omissions = [];
@@ -278,7 +278,11 @@ function parseInlineContent(
     const id = attrsId || titleSlug;
     const sectionId = `section-${id}`;
 
-    if (stack.last.tag === "h2" && title) nav.push({ title, id: sectionId });
+    const attrNav = getAttr(stack.last.attrs, "nav");
+    const navState = attrNav !== "false";
+
+    if (stack.last.tag === "h2" && title)
+      nav.push({ title, id: sectionId, state: navState });
 
     const currentSectionToken = finalTokens[sectionStartIndex];
     const currentHeadingSectionToken = finalTokens[finalTokens.length - 1];
@@ -302,7 +306,7 @@ function parseInlineContent(
         currentHeadingSectionToken,
         `${lastText ? `title='${lastText.content}'` : ""}${
           stack.last.attrStr
-        } #${id}`
+        } #${id}`,
       );
 
       currentSectionToken.mode = mode;
@@ -311,7 +315,7 @@ function parseInlineContent(
       // Combining div attribute with h2 attributes
       applyToToken(
         currentSectionToken,
-        `#${sectionId} .${currentSectionToken.attrs[0][1]} .section-custom`
+        `#${sectionId} .${currentSectionToken.attrs[0][1]} .section-custom`,
       );
     }
 
@@ -346,7 +350,7 @@ function parseSection(
   sectionSteps,
   sectionStepsIndex,
   state,
-  stack
+  stack,
 ) {
   const token = tokens[index];
 
@@ -354,7 +358,7 @@ function parseSection(
     token.tag = finalTokens[finalTokens.length - 2].tag;
     token.type = finalTokens[finalTokens.length - 2].type.replace(
       "_open",
-      "_close"
+      "_close",
     );
   }
 
@@ -380,7 +384,7 @@ function parseSection(
       finalTokens.push(
         addNewHTMLSection(state, "div", 0, 1, "html_open", [
           ["class", "section-wrap"],
-        ])
+        ]),
       );
       sectionStart = true;
       sectionStartIndex = finalTokens.length - 1;
@@ -421,7 +425,7 @@ function parseStepSection(
   sectionSteps,
   sectionStepsIndex,
   state,
-  stack
+  stack,
 ) {
   const token = tokens[index];
 
@@ -432,7 +436,7 @@ function parseStepSection(
   ) {
     if (sectionSteps) {
       finalTokens.push(
-        addNewHTMLSection(state, "section-step", -1, -1, "html_close")
+        addNewHTMLSection(state, "section-step", -1, -1, "html_close"),
       );
       sectionSteps = false;
       sectionStepsIndex = -1;
@@ -441,7 +445,7 @@ function parseStepSection(
     // Adding opening section div
     if (!sectionSteps) {
       finalTokens.push(
-        addNewHTMLSection(state, "section-step", 0, 1, "html_open")
+        addNewHTMLSection(state, "section-step", 0, 1, "html_open"),
       );
       sectionSteps = true;
       sectionStepsIndex = finalTokens.length - 1;
@@ -469,7 +473,7 @@ function parseStepSection(
  */
 function parseHeroSection(finalTokens, state, stack) {
   finalTokens.push(
-    addNewHTMLSection(state, stack.last.tag, 1, -1, "html_close", null)
+    addNewHTMLSection(state, stack.last.tag, 1, -1, "html_close", null),
   );
 
   finalTokens.push(addNewHTMLSection(state, "h1", 1, 1, "html_open", null));
@@ -477,7 +481,7 @@ function parseHeroSection(finalTokens, state, stack) {
   finalTokens.push(addNewHTMLSection(state, "h1", 2, 0, "html_inline", null));
   finalTokens[finalTokens.length - 1].content = getAttr(
     stack.last.attrs,
-    "title"
+    "title",
   );
 
   finalTokens.push(addNewHTMLSection(state, "h1", 1, -1, "html_close", null));
@@ -721,7 +725,7 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
 
       const numOfStepSection =
         Object.keys(md.attrs.sections).filter(
-          (item) => !!item.startsWith(sectionKey)
+          (item) => !!item.startsWith(sectionKey),
         ).length + 1;
 
       const numOfStepSectionKey = isStepSection ? numOfStepSection : "";

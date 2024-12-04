@@ -1,7 +1,7 @@
-import { button } from "../../../utils/styles/button";
-import { checkbox } from "../../../utils/styles/checkbox";
-import { radio } from "../../../utils/styles/radio";
-import { slider } from "../../../utils/styles/slider";
+import { button } from "@eox/elements-utils/styles/button";
+import { checkbox } from "@eox/elements-utils/styles/checkbox";
+import { radio } from "@eox/elements-utils/styles/radio";
+import { slider } from "@eox/elements-utils/styles/slider";
 
 const styleEOX = `
 ${button}
@@ -79,9 +79,12 @@ ${slider}
   .section-wrap {
     scroll-margin: 120px;
   }
+  .story-telling p,
+  .story-telling code {
+    --font-size: 1.1rem;
+  }
   .story-telling p {
     display: block;
-    --font-size: 1.1rem;
     font-weight: 400;
     line-height: 170%;
     margin-top: 0.8rem;

@@ -42,6 +42,9 @@ import {
  * #### `layerDateTime?: Object`
  * Partial eox-timecontrol config passed to the "datetime" tool
  *
+ * ### `layerLegend`?: Object
+ * Creates a dynamic color legend based on range & domain of values. Extenteds partial config of `color-legend-element`
+ *
  * @element eox-layercontrol
  */
 export class EOxLayerControl extends LitElement {
@@ -56,13 +59,14 @@ export class EOxLayerControl extends LitElement {
     addExternalLayers: { attribute: false },
     unstyled: { type: Boolean },
     styleOverride: { type: String },
+    toolsAsList: { type: Boolean },
     isGloballyExclusive: { type: Boolean },
   };
 
   /**
    * Instance of `eox-map` which is a wrapper for the OL
    *
-   * @type {import("../../map/main").EOxMap}
+   * @type {import("../../map/src/main").EOxMap}
    */
   #eoxMap;
 
@@ -136,7 +140,14 @@ export class EOxLayerControl extends LitElement {
     this.styleOverride = "";
 
     /**
-     * Enable global exclusivity for layers that is not restricted to a group
+     * If enabled, the tools section will be rendered as list.
+     *
+     * @type {Boolean}
+     */
+    this.toolsAsList = false;
+
+    /**
+     * Enable global exclusivity for layers that are not restricted to a group
      *
      * @type {Boolean}
      */
@@ -187,7 +198,7 @@ export class EOxLayerControl extends LitElement {
    */
   #handleDatetimeUpdate(evt) {
     this.dispatchEvent(
-      new CustomEvent("datetime:updated", { detail: evt.detail })
+      new CustomEvent("datetime:updated", { detail: evt.detail }),
     );
   }
 
@@ -212,7 +223,7 @@ export class EOxLayerControl extends LitElement {
             .eoxMap=${this.#eoxMap}
             .unstyled=${this.unstyled}
           ></eox-layercontrol-add-layers>
-        `
+        `,
       )}
 
       <!-- Conditional rendering of layer list component -->
@@ -229,10 +240,11 @@ export class EOxLayerControl extends LitElement {
             .showLayerZoomState=${this.showLayerZoomState}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
+            .toolsAsList=${this.toolsAsList}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
           ></eox-layercontrol-layer-list>
-        `
+        `,
       )}
 
       <!-- Conditional rendering of optional list component -->
@@ -246,12 +258,20 @@ export class EOxLayerControl extends LitElement {
             .titleProperty=${this.titleProperty}
             @changed=${() => this.requestUpdate()}
           ></eox-layercontrol-optional-list>
-        `
+        `,
       )}
     `;
   }
 
-  #styleEOX = `* { font-family: Roboto, sans-serif; }`;
+  #styleEOX = `
+    :host, :root {
+      font-family: Roboto, sans-serif;
+      --padding: 0.5rem;
+
+      display: block;
+      padding: var(--padding) 0;
+    }
+  `;
 }
 
 customElements.define("eox-layercontrol", EOxLayerControl);
