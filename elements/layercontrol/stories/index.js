@@ -18,3 +18,4 @@ export { default as addExternalLayerStory } from "./add-external-layer";
 export { default as layerZoomStateStory } from "./layer-zoom-state";
 export { default as unstyledStory } from "./unstyled";
 export { default as toolsAsListStory } from "./tools-as-list";
+export { default as globallyExclusiveLayersStory } from "./globally-exclusive-layers";

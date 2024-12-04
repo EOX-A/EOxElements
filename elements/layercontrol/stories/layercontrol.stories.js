@@ -13,6 +13,7 @@ import {
   layerZoomStateStory,
   toolsAsListStory,
   layerLegendStory,
+  globallyExclusiveLayersStory,
 } from ".";
 
 export default {
@@ -110,3 +111,8 @@ export const Unstyled = unstyledStory;
  * Tools rendered as list instead of tabs
  */
 export const ToolsAsList = toolsAsListStory;
+
+/**
+ * Select a single radio button out of all available ones, not just on the same level.
+ */
+export const GloballyExclusiveLayers = globallyExclusiveLayersStory;
