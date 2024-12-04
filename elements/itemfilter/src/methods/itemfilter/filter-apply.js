@@ -59,7 +59,9 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           });
         } else {
           if (filterProperty.type === "spatial") {
-            filterKeys.geometry = undefined;
+            filterKeys.geometry = filterProperty?.state?.geometry || undefined;
+            if (filterKeys.geometry)
+              filterProperty.stringifiedState = filterKeys.geometry.type;
             filterKeys.mode = filterProperty.mode || "intersects";
           } else {
             if (filterProperty.key?.includes(".")) {
