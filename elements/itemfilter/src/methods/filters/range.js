@@ -2,6 +2,8 @@ import { resetFilter } from "../../helpers/index.js";
 import dayjs from "dayjs";
 import { html } from "lit";
 
+const DATE_TIME_FORMAT = "ddd, D MMM YYYY HH:mm:ss";
+
 /**
  * Resets the range filter to its default state and requests an update.
  *
@@ -47,7 +49,7 @@ export function rangeInputHandlerMethod(evt, EOxItemFilterRange) {
   if (EOxItemFilterRange.filterObject.dirty) {
     EOxItemFilterRange.filterObject.stringifiedState =
       EOxItemFilterRange.filterObject.format === "date"
-        ? `${dayjs.unix(min).format("ddd, D MMM YYYY HH:mm:ss")} - ${dayjs.unix(max).format("ddd, D MMM YYYY HH:mm:ss")}`
+        ? `${dayjs.unix(min).format(DATE_TIME_FORMAT)} - ${dayjs.unix(max).format(DATE_TIME_FORMAT)}`
         : `${min} - ${max}`;
   }
 
@@ -74,7 +76,7 @@ export function rangeLabelMethod(val, pos, EOxItemFilterRange) {
   const isDate = Boolean(EOxItemFilterRange.filterObject.format === "date");
   const filteredVal = EOxItemFilterRange.filterObject.state[val];
   const label = isDate
-    ? dayjs.unix(filteredVal).format("ddd, D MMM YYYY HH:mm:ss")
+    ? dayjs.unix(filteredVal).format(DATE_TIME_FORMAT)
     : filteredVal;
   return html`<div class="range-${pos}">${label}</div>`;
 }
