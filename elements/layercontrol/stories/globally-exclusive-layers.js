@@ -19,7 +19,10 @@ const STORIES_MAIN_MAP_LAYERS = [
       description: "# Hello world",
     },
     layers: [
-      { ...STORIES_LAYER_SENTINEL_HUB.wind, layerControlGloballyExclusive: true },
+      {
+        ...STORIES_LAYER_SENTINEL_HUB.wind,
+        layerControlGloballyExclusive: true,
+      },
     ],
   },
   {

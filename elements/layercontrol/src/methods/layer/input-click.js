@@ -38,19 +38,22 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
   // Handle globally exclusive layers
   let layerControl = document.querySelector("eox-layercontrol");
 
-  if (evt.target.checked
-        && layer.get("layerControlExclusive")
-        && layerControl.isGloballyExclusive) {
+  if (
+    evt.target.checked &&
+    layer.get("layerControlExclusive") &&
+    layerControl.isGloballyExclusive
+  ) {
     console.log("Globally exclusive layer");
-    // *:has(> .layers > ul) { /* styles to apply to the tag */ }      
+    // *:has(> .layers > ul) { /* styles to apply to the tag */ }
 
     // Find all exclusive layers across all groups
-    const allLayers = layerControl
-      .shadowRoot
-      .querySelectorAll("eox-layercontrol-layer");
+    const allLayers = layerControl.shadowRoot.querySelectorAll(
+      "eox-layercontrol-layer",
+    );
 
-    const allExclusiveLayers = Array.from(allLayers)
-      .filter((layer) => layer.layer.get("layerControlExclusive"));
+    const allExclusiveLayers = Array.from(allLayers).filter((layer) =>
+      layer.layer.get("layerControlExclusive"),
+    );
 
     console.log("allExclusiveLayers", allExclusiveLayers);
 
@@ -66,7 +69,6 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
       }
     });*/
   }
-
 
   // Dispatch a 'changed' event to signal a change in the layer's state.
   EOxLayerControlLayer.dispatchEvent(
