@@ -31,6 +31,7 @@ export class EOxSelectInteraction {
     this.options = options;
     this.active = options.active || selectLayer.getVisible();
     this.panIn = options.panIn || false;
+    this.tooltip = options.tooltip === false ? false : true;
     /** @type {Array<string|number>} **/
     this.selectedFids = [];
 
@@ -40,26 +41,28 @@ export class EOxSelectInteraction {
     /** @type {import("ol").Overlay} **/
     let overlay;
 
-    if (existingTooltip) {
-      this.tooltip = existingTooltip.getElement();
-      overlay = existingTooltip;
-    } else {
-      this.tooltip =
-        this.eoxMap.querySelector("eox-map-tooltip") ||
-        options.overlay?.element;
+    if (this.tooltip) {
+      if (existingTooltip) {
+        this.tooltipElement = existingTooltip.getElement();
+        overlay = existingTooltip;
+      } else {
+        this.tooltipElement =
+          this.eoxMap.querySelector("eox-map-tooltip") ||
+          options.overlay?.element;
 
-      if (this.tooltip) {
-        overlay = new Overlay({
-          // @ts-expect-error - Type 'Element' is missing the following properties from type 'HTMLElement'
-          element: this.tooltip,
-          position: undefined,
-          offset: [0, 0],
-          positioning: "top-left",
-          className: "eox-map-tooltip",
-          id: "eox-map-tooltip",
-          ...options.overlay,
-        });
-        this.eoxMap.map.addOverlay(overlay);
+        if (this.tooltipElement) {
+          overlay = new Overlay({
+            // @ts-expect-error - Type 'Element' is missing the following properties from type 'HTMLElement'
+            element: this.tooltipElement,
+            position: undefined,
+            offset: [0, 0],
+            positioning: "top-left",
+            className: "eox-map-tooltip",
+            id: "eox-map-tooltip",
+            ...options.overlay,
+          });
+          this.eoxMap.map.addOverlay(overlay);
+        }
       }
     }
 
@@ -161,9 +164,9 @@ export class EOxSelectInteraction {
             event.pixel[1] > this.eoxMap.offsetHeight / 2 ? "bottom" : "top";
           overlay.setPositioning(`${yPosition}-${xPosition}`);
           overlay.setPosition(feature ? event.coordinate : null);
-          if (feature && this.tooltip) {
+          if (feature && this.tooltipElement) {
             // @ts-expect-error TODO
-            this.tooltip.feature = feature;
+            this.tooltipElement.feature = feature;
           }
         }
 
