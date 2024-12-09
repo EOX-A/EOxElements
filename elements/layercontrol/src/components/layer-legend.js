@@ -74,7 +74,11 @@ export class EOxLayerControlLayerLegend extends LitElement {
   }
 
   updated() {
-    if (this.offsetWidth < 325 && this.offsetWidth !== this.layerLegend.width) {
+    if (
+      !this.layerLegend.width &&
+      this.offsetWidth < 325 &&
+      this.offsetWidth !== this.layerLegend.width
+    ) {
       this.layerLegend.width = this.offsetWidth;
       this.requestUpdate();
     }
