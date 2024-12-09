@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.1...itemfilter-v1.6.2) (2024-12-09)
+
+
+### Bug Fixes
+
+* Chips for pre-set filters ([#1407](https://github.com/EOX-A/EOxElements/issues/1407)) ([694b994](https://github.com/EOX-A/EOxElements/commit/694b9949cbb7ead8869e6a9a316c945116c0f39b))
+* Correctly render title-container also if no subtitle present ([#1405](https://github.com/EOX-A/EOxElements/issues/1405)) ([4294e6a](https://github.com/EOX-A/EOxElements/commit/4294e6a805ff34d89f10ec818846850413639fcc))
+
 ## [1.6.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.0...itemfilter-v1.6.1) (2024-11-28)
 
 
