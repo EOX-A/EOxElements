@@ -6,7 +6,14 @@ import {
   ExternalStory,
   MarkdownStory,
   PrimaryStory,
+  BoundingBoxStory,
+  PolygonStory,
+  FeatureSelectionStory,
+  PointStory,
   UnStyledStory,
+  WKTStory,
+  GeoJSONStory,
+  LineStory,
 } from "./index.js";
 
 export default {
@@ -48,6 +55,39 @@ export const External = ExternalStory;
  */
 export const Markdown = MarkdownStory;
 
+/**
+ * JSON Form based on drawtools - Box
+ */
+export const BoundigBox = BoundingBoxStory;
+
+/**
+ * JSON Form based on drawtools - Polygon
+ */
+export const Polygons = PolygonStory;
+
+/**
+ * JSON Form based on drawtools - Point
+ */
+export const Points = PointStory;
+
+/**
+ * JSON Form based on drawtools - LineString
+ *
+ */
+export const Line = LineStory;
+/**
+ * JSON Form based on drawtools - Feature Selection
+ */
+export const FeatureSelection = FeatureSelectionStory;
+
+/**
+ * JSON Form based on drawtools - Returns the value as WKT
+ */
+export const WKT = WKTStory;
+/**
+ * JSON Form based on drawtools - Returns the value as GeoJSON
+ */
+export const Geojson = GeoJSONStory;
 /**
  * Unstyled JSON Form
  */

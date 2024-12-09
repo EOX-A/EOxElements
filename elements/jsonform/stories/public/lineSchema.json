@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "line": {
+      "title": "Single line example",
+      "type": "array",
+      "format": "line"
+    },
+    "lines": {
+      "title": "Multiple lines example",
+      "type": "array",
+      "options": {
+        "projection": "EPSG:3857"
+      },
+      "format": "lines"
+    }
+  }
+}
