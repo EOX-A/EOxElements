@@ -49,6 +49,18 @@ export class EOxSelectInteraction {
         options.overlay?.element;
 
       if (this.tooltip) {
+        if (this.tooltip.getAttribute("for")) {
+          setTimeout(() => {
+            Object.keys(this.eoxMap.selectInteractions).forEach((key) => {
+              if (
+                this.eoxMap.selectInteractions[key].selectLayer.get("id") !==
+                this.tooltip.getAttribute("for")
+              ) {
+                this.eoxMap.selectInteractions[key].setActive(false);
+              }
+            });
+          });
+        }
         overlay = new Overlay({
           // @ts-expect-error - Type 'Element' is missing the following properties from type 'HTMLElement'
           element: this.tooltip,

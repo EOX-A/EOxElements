@@ -1,5 +1,9 @@
 import "../src/main";
-import { displayTooltip, displayTooltipOneLayerVisible } from "./cases/hover";
+import {
+  displayTooltip,
+  displayTooltipOneLayerVisible,
+  displayTooltipForLayer,
+} from "./cases/hover";
 
 /**
  * Test suite for the EOX Map to load Tooltip
@@ -15,4 +19,10 @@ describe("tooltip", () => {
    */
   it("displays a tooltip on hover when multiple layers are initialized and only one visible", () =>
     displayTooltipOneLayerVisible());
+
+  /**
+   * Test case to check if the tooltip is correctly rendered for a specific layer
+   * instead of default (topmost)
+   */
+  it("displays a tooltip for a specific layer", () => displayTooltipForLayer());
 });
