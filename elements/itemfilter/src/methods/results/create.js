@@ -69,22 +69,22 @@ export function createItemListMethod(
         items,
         (item) => item.id,
         (item) => html`
-          <li class=${className(item)}>
-            <span
-              id="${item.id}"
-              @click=${() => {
-                if (EOxItemFilterResults.selectedResult === item) {
-                  EOxItemFilterResults.selectedResult = null;
-                } else {
-                  EOxItemFilterResults.selectedResult = item;
-                }
-                EOxItemFilterResults.dispatchEvent(
-                  new CustomEvent("result", {
-                    detail: EOxItemFilterResults.selectedResult,
-                  }),
-                );
-              }}
-            >
+          <li
+            class=${className(item)}
+            @click=${() => {
+              if (EOxItemFilterResults.selectedResult === item) {
+                EOxItemFilterResults.selectedResult = null;
+              } else {
+                EOxItemFilterResults.selectedResult = item;
+              }
+              EOxItemFilterResults.dispatchEvent(
+                new CustomEvent("result", {
+                  detail: EOxItemFilterResults.selectedResult,
+                }),
+              );
+            }}
+          >
+            <span id="${item.id}">
               ${when(
                 config.subTitleProperty || config.imageProperty,
                 () => html`
