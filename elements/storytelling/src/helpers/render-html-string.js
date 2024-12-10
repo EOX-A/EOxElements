@@ -318,8 +318,14 @@ export function parseNavWithAddSection(
 
     const navHtml = `
     <div class="navigation">
-      <div class="container">
-        <ul>
+      <div class="container nav-container">
+        <button class="hamburger-menu" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-overlay"></div>
+        <ul class="nav-list">
           ${nav
             .map(({ id, title, state }) =>
               state
@@ -332,6 +338,25 @@ export function parseNavWithAddSection(
     </div>
   `;
     const navDOM = parser.parseFromString(navHtml, "text/html").body.firstChild;
+
+    // Add click handler for hamburger menu
+    const hamburgerBtn = navDOM.querySelector(".hamburger-menu");
+    const navList = navDOM.querySelector(".navigation .container ul");
+    const navOverlay = navDOM.querySelector(".nav-overlay");
+    const navListItems = navDOM.querySelectorAll(".nav-list li");
+
+    if (hamburgerBtn && navList) {
+      const navEventHandlers = () => {
+        hamburgerBtn.classList.toggle("active");
+        navList.classList.toggle("show");
+        navOverlay.classList.toggle("show");
+      };
+      hamburgerBtn.addEventListener("click", () => navEventHandlers());
+      navOverlay.addEventListener("click", () => navEventHandlers());
+      navListItems.forEach((item) => {
+        item.addEventListener("click", () => navEventHandlers());
+      });
+    }
 
     if (html[0].classList.contains("hero")) navIndex = 1;
     html.splice(navIndex, 0, navDOM);
