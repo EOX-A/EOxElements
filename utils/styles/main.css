@@ -177,6 +177,7 @@ pre {
   padding: 20px 0;
   background: transparent;
   background: var(--code-bg-color, #8e96aa24);
+  overflow: auto;
 }
 code {
   display: block;
