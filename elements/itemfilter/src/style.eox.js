@@ -197,6 +197,9 @@ ul#results li .result-action {
 ul#results li .result-action:hover {
   opacity: 1;
 }
+ul#results li.highlighted .result-action > * {
+  filter: invert(1);
+}
 ul#results ul.cards {
   display: flex;
   flex-wrap: wrap;
