@@ -16,6 +16,20 @@ const firstUpdatedMethod = (EOxLayerControl) => {
     EOxLayerControl.map = foundElement.map;
   }
 
+  window.setTimeout(() => {
+    const radioButtons = EOxLayerControl.shadowRoot
+      .querySelector("eox-layercontrol-layer-list")
+      .querySelectorAll("input[type='radio']");
+
+    radioButtons.forEach((radioButton, index) => {
+      if (index === 0) {
+        radioButton.checked = true;
+      } else {
+        radioButton.checked = false;
+      }
+    });
+  }, 30);
+
   return foundElement;
 };
 
