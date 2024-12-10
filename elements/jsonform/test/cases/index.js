@@ -9,3 +9,4 @@ export { default as loadMarkdownTest } from "./load-markdown";
 export { default as triggerChangeEventTest } from "./trigger-change-event";
 export { default as loadValuesTest } from "./load-values";
 export { default as loadMisMatchingValuesTest } from "./load-mismatching-values";
+export { default as renderDrawtools } from "./render-drawtools";
