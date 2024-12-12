@@ -78,22 +78,12 @@ ${slider}
   }
   .hamburger-menu {
     display: none;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 25px;
-    background: none;
-    border: none;
     cursor: pointer;
-    padding: 0;
-    margin: 15px;
-    box-shadow: unset !important;
-  }
-  .hamburger-menu span {
-    width: 100%;
-    height: 3px;
-    background-color: #333;
-    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTUsOS41TDcuNSwxNEgyLjVMNSw5LjVNMyw0SDdWOEgzVjRNNSwyMEEyLDIgMCAwLDAgNywxOEEyLDIgMCAwLDAgNSwxNkEyLDIgMCAwLDAgMywxOEEyLDIgMCAwLDAgNSwyME05LDVWN0gyMVY1SDlNOSwxOUgyMVYxN0g5VjE5TTksMTNIMjFWMTFIOVYxM1oiIC8+PC9zdmc+");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
   }
   .nav-list {
     list-style: none;
@@ -104,6 +94,15 @@ ${slider}
     display: none;
   }
   @media (max-width: 768px) {
+    .navigation {
+      padding: 0px;
+      height: 50px;
+    }
+    .navigation .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .hamburger-menu {
       display: flex;
     }

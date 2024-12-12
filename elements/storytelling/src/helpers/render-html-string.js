@@ -319,11 +319,8 @@ export function parseNavWithAddSection(
     const navHtml = `
     <div class="navigation">
       <div class="container nav-container">
-        <button class="hamburger-menu" aria-label="Toggle navigation">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <span class="hamburger-menu" aria-label="Toggle navigation">
+        </span>
         <div class="nav-overlay"></div>
         <ul class="nav-list">
           ${nav
