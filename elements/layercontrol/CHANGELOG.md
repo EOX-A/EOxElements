@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.26.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.25.2...layercontrol-v0.26.0) (2024-12-12)
+
+
+### Features
+
+* Color swatches for layers and layer groups ([#1379](https://github.com/EOX-A/EOxElements/issues/1379)) ([c6bd1ce](https://github.com/EOX-A/EOxElements/commit/c6bd1ce6059d6ab15d34287da9be7ae4201b38a1))
+
 ## [0.25.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.25.1...layercontrol-v0.25.2) (2024-11-28)
 
 
