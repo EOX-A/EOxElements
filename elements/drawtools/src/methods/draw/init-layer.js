@@ -51,6 +51,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
             "stroke-color": "#3399CC",
             "stroke-width": 2.5,
           },
+          tooltip: false,
         },
       },
       {
