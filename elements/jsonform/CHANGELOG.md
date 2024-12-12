@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.10.0...jsonform-v0.11.0) (2024-12-12)
+
+
+### Features
+
+* Format handler for multiple geometry types and formats ([#1276](https://github.com/EOX-A/EOxElements/issues/1276)) ([0285b72](https://github.com/EOX-A/EOxElements/commit/0285b725744d8cd7d57b05f8787ca30c6aa997da))
+
 ## [0.10.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.9.1...jsonform-v0.10.0) (2024-11-07)
 
 
