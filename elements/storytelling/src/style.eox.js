@@ -76,6 +76,78 @@ ${slider}
   .navigation li a:hover {
     --primary-background-hover: transparent;
   }
+  .hamburger-menu {
+    display: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTUsOS41TDcuNSwxNEgyLjVMNSw5LjVNMyw0SDdWOEgzVjRNNSwyMEEyLDIgMCAwLDAgNywxOEEyLDIgMCAwLDAgNSwxNkEyLDIgMCAwLDAgMywxOEEyLDIgMCAwLDAgNSwyME05LDVWN0gyMVY1SDlNOSwxOUgyMVYxN0g5VjE5TTksMTNIMjFWMTFIOVYxM1oiIC8+PC9zdmc+");
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+  }
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .nav-overlay {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .navigation {
+      padding: 0px;
+      height: 50px;
+    }
+    .navigation .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hamburger-menu {
+      display: flex;
+    }
+    .navigation .container ul {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      z-index: 99999999;
+      display: none;
+      flex-direction: column;
+    }
+    .nav-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99999998;
+      cursor: pointer;
+    }
+    .navigation .container ul.show, .nav-overlay.show {
+      display: flex !important;
+    }
+    .nav-list li {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .hamburger-menu.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+    .hamburger-menu.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger-menu.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+    .navigation .container ul li {
+      width: 100%;
+      text-align: center;
+    } 
+  }
   .section-wrap {
     scroll-margin: 120px;
   }
