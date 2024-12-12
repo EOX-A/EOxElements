@@ -627,11 +627,11 @@
             "spatial": {
               "title": "Spatial Extents",
               "type": "object",
-              "format": "bounding-boxes",
               "required": ["bbox"],
               "properties": {
                 "bbox": {
                   "type": "array",
+                  "format": "bounding-boxes",
                   "items": {
                     "type": "array",
                     "format": "bounding-box",
