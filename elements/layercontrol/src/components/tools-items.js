@@ -169,7 +169,7 @@ export class EOxLayerControlTabs extends LitElement {
 
   #styleEOX = `
     .listed {
-      background: #ffffff !important;
+      background: var(--background-color) !important;
       display: flex;
       justify-content: end;
     }
@@ -190,7 +190,7 @@ export class EOxLayerControlTabs extends LitElement {
       cursor: pointer;
     }
     figure {
-      background: #00417011;
+      background: var(--background-color);
       border-top: 1px solid #0041701a;
     }
   `;

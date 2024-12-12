@@ -21,7 +21,7 @@ export const styleEOX = `
     #000000 20%,
     transparent
   );
-  --background-color: #fff;
+  --background-color: var(--background-color);
   --padding: 0.5rem;
   --text-transform: capitalize;
   --form-flex-direction: column;
