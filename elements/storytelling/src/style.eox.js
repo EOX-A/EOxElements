@@ -102,15 +102,16 @@ ${slider}
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
     .hamburger-menu {
       display: flex;
     }
     .navigation .container ul {
-      position: fixed;
-      bottom: 0;
+      position: absolute;
+      top: 50px;
+      width: 95vw;
       left: 0;
-      width: 100%;
       background: white;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       z-index: 99999999;
