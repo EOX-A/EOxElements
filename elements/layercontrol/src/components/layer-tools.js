@@ -341,8 +341,11 @@ export class EOxLayerControlLayerTools extends LitElement {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edrag-horizontal-variant%3C/title%3E%3Cpath d='M21 11H3V9H21V11M21 13H3V15H21V13Z' /%3E%3C/svg%3E");
     }
     [slot=info-content],
-    [slot=opacity-content] {
-      padding: 12px 6px;
+    [slot=opacity-content],
+    [slot=config-content],
+    [slot=datetime-content],
+    [slot=legend-content] {
+      padding: 6px var(--padding);
     }
   `;
 }
