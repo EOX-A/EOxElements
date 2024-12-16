@@ -307,6 +307,10 @@ export class EOxLayerControlLayerTools extends LitElement {
       display: flex;
       justify-content: center;
     }
+    eox-layercontrol-tools-items.tools-list button.icon,
+    eox-layercontrol-tools-items.tools-list .button.icon {
+      margin-left: -6px;
+    }
     eox-layercontrol-tools-items button.icon::before,
     eox-layercontrol-tools-items .button.icon::before {
       width: 16px;
@@ -345,7 +349,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     [slot=config-content],
     [slot=datetime-content],
     [slot=legend-content] {
-      padding: 6px var(--padding);
+      padding: 6px 0;
     }
   `;
 }
