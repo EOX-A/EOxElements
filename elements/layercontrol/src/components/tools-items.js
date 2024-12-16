@@ -176,7 +176,6 @@ export class EOxLayerControlTabs extends LitElement {
 
   #styleEOX = `
     .listed label {
-      /*background: #ffffff !important;*/
       display: flex;
       justify-content: start;
       align-items: center;
