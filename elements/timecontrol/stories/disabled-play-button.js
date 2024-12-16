@@ -22,6 +22,7 @@ export const DisabledPlayButton = {
       .controlValues=${args.controlValues}
       .slider=${args.slider}
       .disablePlay=${args.disablePlay}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `,
 };

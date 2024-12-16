@@ -34,6 +34,7 @@ export const ProgrammaticTimeSelection = {
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
       .slider=${args.slider}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `,
 };
