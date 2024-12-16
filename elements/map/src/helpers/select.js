@@ -221,6 +221,8 @@ export class EOxSelectInteraction {
 
     /**
      * Adds a listener on pointermove
+     * the listener is more complex than `l === selectLayer` to
+     * prevent multiple select-interactions from overriding eachother
      */
     this.pointerMoveListener = (e) => {
       if (e.dragging) return;
@@ -229,8 +231,8 @@ export class EOxSelectInteraction {
         {
           layerFilter: (l) =>
             l
-              .get("interactions")
-              ?.find(
+              .get("_jsonDefinition")
+              ?.interactions?.find(
                 (i) => i.type == "select" && i.options?.condition === "click",
               ),
           ...options.atPixelOptions,
