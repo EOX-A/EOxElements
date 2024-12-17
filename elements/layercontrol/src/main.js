@@ -268,6 +268,11 @@ export class EOxLayerControl extends LitElement {
 
       display: block;
       padding: var(--padding) 0;
+      --background-color: var(--eox-background-color, transparent);
+      background-color: var(--background-color, transparent);
+    }
+    select {
+      background-color: var(--background-color);
     }
   `;
 }

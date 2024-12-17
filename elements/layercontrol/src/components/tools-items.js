@@ -179,6 +179,7 @@ export class EOxLayerControlTabs extends LitElement {
       display: flex;
       justify-content: start;
       align-items: center;
+      background: var(--background-color) !important;
     }
     .listed label:not(:first-of-type) {
       margin-top: 10px;
@@ -204,7 +205,7 @@ export class EOxLayerControlTabs extends LitElement {
       cursor: pointer;
     }
     figure {
-      background: #00417011;
+      background: var(--background-color);
       border-top: 1px solid #0041701a;
       padding: 8px var(--padding);
     }
