@@ -79,7 +79,7 @@ export class EOxLayerControlTabs extends LitElement {
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <div class="tabbed">
+      <div class="${this.toolsAsList ? "listed" : "tabbed"}">
         <!-- Navigation for tabs and actions -->
         ${when(
           isListAvail,
@@ -128,9 +128,10 @@ export class EOxLayerControlTabs extends LitElement {
               ${when(
                 this.toolsAsList,
                 () => html`
-                  <label class="listed">
+                  <label>
                     <!-- Customizable icon for each tab -->
                     <slot name=${`${tab}-icon`}>${tab}</slot>
+                    <span>${tab}</span>
                   </label>
                 `,
               )}
@@ -146,34 +147,47 @@ export class EOxLayerControlTabs extends LitElement {
   }
 
   #styleBasic = `
-    .tabbed figure {
+    .tabbed figure,
+    .listed figure {
       margin: 0;
     }
-    .tabbed nav {
+    .tabbed nav,
+    .listed nav {
       display: flex;
       justify-content: space-between;
     }
-    .tabbed nav div {
+    .tabbed nav div,
+    .listed nav div {
       display: flex;
     }
-    .tabbed .tab {
+    .tabbed .tab,
+    .listed .tab {
       display: none;
     }
-    .tabbed .tab.highlighted {
+    .tabbed .tab.highlighted,
+    .listed .tab.highlighted {
       display: block;
     }
-    .tabbed label.highlighted {
+    .tabbed label.highlighted,
+    .listed label.highlighted {
       background: lightgrey;
     }
   `;
 
   #styleEOX = `
-    .listed {
-      background: #ffffff !important;
+    .listed label {
       display: flex;
-      justify-content: end;
+      justify-content: start;
+      align-items: center;
     }
-    .tabbed {
+    .listed label:not(:first-of-type) {
+      margin-top: 10px;
+    }
+    .listed label span {
+      text-transform: capitalize;
+      font-weight: 300;
+    }
+    .tabbed, .listed {
       font-size: small;
     }
     .tabbed label.highlighted {
@@ -192,6 +206,7 @@ export class EOxLayerControlTabs extends LitElement {
     figure {
       background: #00417011;
       border-top: 1px solid #0041701a;
+      padding: 8px var(--padding);
     }
   `;
 }
