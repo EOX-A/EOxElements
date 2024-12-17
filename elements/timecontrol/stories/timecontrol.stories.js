@@ -5,6 +5,7 @@ import {
   ProgrammaticTimeSelectionStory,
   DisabledPlayButtonStory,
   NoMapStory,
+  FormatStory,
 } from "./index";
 
 export default {
@@ -22,3 +23,5 @@ export const ProgrammaticTimeSelection = ProgrammaticTimeSelectionStory;
 export const DisabledPlayButton = DisabledPlayButtonStory;
 
 export const NoMap = NoMapStory;
+
+export const Format = FormatStory;

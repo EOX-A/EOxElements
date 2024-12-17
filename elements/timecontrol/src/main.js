@@ -51,6 +51,11 @@ export class EOxTimeControl extends LitElement {
        */
       disablePlay: { type: Boolean, attribute: "disable-play" },
 
+      /**
+       * Date format string for displaying the current step
+       */
+      format: { type: String, attribute: "format" },
+
       currentStep: { type: String, attribute: "current-step" },
       _animationInterval: { state: true },
       _controlSource: { state: true },
@@ -93,6 +98,9 @@ export class EOxTimeControl extends LitElement {
     window.addEventListener("resize", () => {
       this._width = this.clientWidth;
     });
+
+    /** @type {string} */
+    this.format = undefined; // Default empty string means no formatting
   }
 
   /**
@@ -299,7 +307,13 @@ export class EOxTimeControl extends LitElement {
           >
             <
           </button>
-          <span part="current">${this.controlValues[this._newStepIndex]}</span>
+          <span part="current">
+            ${this.format
+              ? dayjs(this.controlValues[this._newStepIndex]).format(
+                  this.format,
+                )
+              : this.controlValues[this._newStepIndex]}
+          </span>
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
