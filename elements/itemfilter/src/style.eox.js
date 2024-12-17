@@ -21,7 +21,7 @@ export const styleEOX = `
     #000000 20%,
     transparent
   );
-  --background-color: var(--background-color);
+  --background-color: var(--eox-background-color, transparent);
   --padding: 0.5rem;
   --text-transform: capitalize;
   --form-flex-direction: column;
@@ -516,5 +516,8 @@ eox-itemfilter-results li.highlighted {
   color: red;
   font-size: x-small;
   top: -8px;
+}
+input {
+  background-color: var(--background-color);
 }
 `;
