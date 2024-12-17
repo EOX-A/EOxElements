@@ -26,6 +26,7 @@ export const styleEOX = `
   --text-transform: capitalize;
   --form-flex-direction: column;
   --filter-display: block;
+  background-color: var(--background-color);
 }
 * {
   font-family: Roboto, sans-serif;

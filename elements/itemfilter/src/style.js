@@ -4,7 +4,6 @@ export const style = `
   box-sizing: border-box;
   height: 100%;
   line-height: 1;
-  background-color: var(--background-color)
 }
 *,
 *:before,
