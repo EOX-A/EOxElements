@@ -29,7 +29,3 @@ select {
   border: 1px solid #0004;
   background-color: var(--background-color);
 }
-
-select option {
-  background: var(--background-color, transparent) !important;
-}
