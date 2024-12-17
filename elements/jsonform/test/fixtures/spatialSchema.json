@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "properties": {
+      "bbox": {
+        "type": "array",
+        "options": {
+          "for": "mocked-map#bbox",
+          "projection": "EPSG:3857"
+        },
+        "format": "bounding-box"
+      }, 
+      "polygons": {
+        "type": "array",
+        "options": {
+          "for": "mocked-map#polygons"
+        },
+        "format": "polygons"
+      }
+    }
+  }
+  

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.0...drawtools-v0.13.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* Remove drawLayer when the element is disconnected ([#1408](https://github.com/EOX-A/EOxElements/issues/1408)) ([40f0993](https://github.com/EOX-A/EOxElements/commit/40f09931aa76a9c934ac2abac104de92cd198193))
+
 ## [0.13.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.12.0...drawtools-v0.13.0) (2024-11-26)
 
 

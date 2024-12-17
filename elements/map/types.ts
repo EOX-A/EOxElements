@@ -108,6 +108,10 @@ export type SelectOptions = Omit<
   layer?: EoxLayer;
   style?: import("ol/style/flat.js").FlatStyleLike;
   overlay?: import("ol/Overlay").Options;
+  /**
+   * @property {boolean} [tooltip = true] if true, will display a tooltip when hovering over a feature.
+   */
+  tooltip?: boolean;
   active?: boolean;
   panIn?: boolean;
   modify?: boolean;
