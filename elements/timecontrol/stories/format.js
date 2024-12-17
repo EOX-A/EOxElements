@@ -5,7 +5,7 @@ export const Format = {
   args: {
     ...DEFAULT_ARGS,
     for: "eox-map#primary",
-    format: "MMMM DD, YYYY",
+    displayFormat: "MMMM DD, YYYY",
   },
   render: (args) => html`
     <eox-map
@@ -22,7 +22,7 @@ export const Format = {
       .controlValues=${args.controlValues}
       .slider=${args.slider}
       style="margin-top: 10px;"
-      .format=${args.format}
+      .displayFormat=${args.displayFormat}
     ></eox-timecontrol>
   `,
 };

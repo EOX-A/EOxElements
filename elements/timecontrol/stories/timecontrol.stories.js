@@ -24,4 +24,8 @@ export const DisabledPlayButton = DisabledPlayButtonStory;
 
 export const NoMap = NoMapStory;
 
+/**
+ * Passing the `format` property/attribute, the displayed format can be changed.
+ * Supports [dayjs format token strings](https://day.js.org/docs/en/display/format)
+ */
 export const Format = FormatStory;

@@ -10,7 +10,7 @@ const { timeControl } = TEST_SELECTORS;
 const loadDateFormatTest = () => {
   cy.mount("<mock-map></mock-map>").as("mock-map");
   cy.mount(
-    `<eox-timecontrol for="mock-map" format="DD/MM/YYYY" layer="TEST_ID"></eox-timecontrol>`,
+    `<eox-timecontrol for="mock-map" display-format="DD/MM/YYYY" layer="TEST_ID"></eox-timecontrol>`,
   ).as(timeControl);
 
   cy.get(timeControl).shadow().find("#controls span").contains("17/12/2024");
