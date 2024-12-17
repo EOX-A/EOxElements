@@ -318,13 +318,11 @@ export class EOxTimeControl extends LitElement {
           <button part="next" class="icon next" @click="${() => this.next()}">
             >
           </button>
-        </div>
-        <div>
           ${!this.disablePlay
             ? html`
                 <button
                   part="play"
-                  class="icon-text ${this._isAnimationPlaying
+                  class="small icon-text ${this._isAnimationPlaying
                     ? "pause"
                     : "play"}"
                   @click="${() =>
@@ -336,6 +334,8 @@ export class EOxTimeControl extends LitElement {
                 </button>
               `
             : nothing}
+        </div>
+        <div>
           ${this.slider
             ? html`
                 <div class="slider-col">
