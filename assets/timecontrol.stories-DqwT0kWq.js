@@ -12,6 +12,7 @@ import{x as o}from"./lit-element-Dh4_iwrW.js";const r={layer:"AWS_NO2-VISUALISAT
       .controlProperty=${e.controlProperty}
       .controlValues=${e.controlValues}
       .slider=${e.slider}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `},D={args:{...r,for:"eox-map#slider",slider:!0},render:e=>o`
     <eox-map
@@ -27,6 +28,7 @@ import{x as o}from"./lit-element-Dh4_iwrW.js";const r={layer:"AWS_NO2-VISUALISAT
       .controlProperty=${e.controlProperty}
       .controlValues=${e.controlValues}
       .slider=${e.slider}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `},_={args:{...r,for:"eox-map#programmatic-time-selection",slider:!0},render:e=>o`
     <eox-map
@@ -51,6 +53,7 @@ import{x as o}from"./lit-element-Dh4_iwrW.js";const r={layer:"AWS_NO2-VISUALISAT
       .controlProperty=${e.controlProperty}
       .controlValues=${e.controlValues}
       .slider=${e.slider}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `},w={args:{...r,for:"eox-map#disabled-play",disablePlay:!0},render:e=>o`
     <eox-map
@@ -67,6 +70,7 @@ import{x as o}from"./lit-element-Dh4_iwrW.js";const r={layer:"AWS_NO2-VISUALISAT
       .controlValues=${e.controlValues}
       .slider=${e.slider}
       .disablePlay=${e.disablePlay}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `},B={args:{...r,disablePlay:!0,layer:void 0,for:void 0,controlProperty:void 0,slider:!0,onStepChange:e=>{console.log("stepchange",e.detail)}},render:e=>o`
     <eox-timecontrol
@@ -95,4 +99,4 @@ import{x as o}from"./lit-element-Dh4_iwrW.js";const r={layer:"AWS_NO2-VISUALISAT
       style="margin-top: 10px;"
       .displayFormat=${e.displayFormat}
     ></eox-timecontrol>
-  `},Y={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},l=F,a=D,c=_,i=w,s=B,t=v;var n,m,p;l.parameters={...l.parameters,docs:{...(n=l.parameters)==null?void 0:n.docs,source:{originalSource:"PrimaryStory",...(p=(m=l.parameters)==null?void 0:m.docs)==null?void 0:p.source}}};var d,y,u;a.parameters={...a.parameters,docs:{...(d=a.parameters)==null?void 0:d.docs,source:{originalSource:"SliderStory",...(u=(y=a.parameters)==null?void 0:y.docs)==null?void 0:u.source}}};var $,x,S;c.parameters={...c.parameters,docs:{...($=c.parameters)==null?void 0:$.docs,source:{originalSource:"ProgrammaticTimeSelectionStory",...(S=(x=c.parameters)==null?void 0:x.docs)==null?void 0:S.source}}};var P,f,h;i.parameters={...i.parameters,docs:{...(P=i.parameters)==null?void 0:P.docs,source:{originalSource:"DisabledPlayButtonStory",...(h=(f=i.parameters)==null?void 0:f.docs)==null?void 0:h.source}}};var b,V,I;s.parameters={...s.parameters,docs:{...(b=s.parameters)==null?void 0:b.docs,source:{originalSource:"NoMapStory",...(I=(V=s.parameters)==null?void 0:V.docs)==null?void 0:I.source}}};var M,T,A,z,N;t.parameters={...t.parameters,docs:{...(M=t.parameters)==null?void 0:M.docs,source:{originalSource:"FormatStory",...(A=(T=t.parameters)==null?void 0:T.docs)==null?void 0:A.source},description:{story:"Passing the `format` property/attribute, the displayed format can be changed.\nSupports [dayjs format token strings](https://day.js.org/docs/en/display/format)",...(N=(z=t.parameters)==null?void 0:z.docs)==null?void 0:N.description}}};const U=["Primary","Slider","ProgrammaticTimeSelection","DisabledPlayButton","NoMap","Format"];export{i as DisabledPlayButton,t as Format,s as NoMap,l as Primary,c as ProgrammaticTimeSelection,a as Slider,U as __namedExportsOrder,Y as default};
+  `},Y={title:"Elements/eox-timecontrol",tags:["autodocs"],component:"eox-timecontrol"},l=F,a=D,i=_,c=w,s=B,t=v;var n,m,p;l.parameters={...l.parameters,docs:{...(n=l.parameters)==null?void 0:n.docs,source:{originalSource:"PrimaryStory",...(p=(m=l.parameters)==null?void 0:m.docs)==null?void 0:p.source}}};var d,y,u;a.parameters={...a.parameters,docs:{...(d=a.parameters)==null?void 0:d.docs,source:{originalSource:"SliderStory",...(u=(y=a.parameters)==null?void 0:y.docs)==null?void 0:u.source}}};var $,x,S;i.parameters={...i.parameters,docs:{...($=i.parameters)==null?void 0:$.docs,source:{originalSource:"ProgrammaticTimeSelectionStory",...(S=(x=i.parameters)==null?void 0:x.docs)==null?void 0:S.source}}};var P,f,h;c.parameters={...c.parameters,docs:{...(P=c.parameters)==null?void 0:P.docs,source:{originalSource:"DisabledPlayButtonStory",...(h=(f=c.parameters)==null?void 0:f.docs)==null?void 0:h.source}}};var b,V,I;s.parameters={...s.parameters,docs:{...(b=s.parameters)==null?void 0:b.docs,source:{originalSource:"NoMapStory",...(I=(V=s.parameters)==null?void 0:V.docs)==null?void 0:I.source}}};var M,T,A,z,N;t.parameters={...t.parameters,docs:{...(M=t.parameters)==null?void 0:M.docs,source:{originalSource:"FormatStory",...(A=(T=t.parameters)==null?void 0:T.docs)==null?void 0:A.source},description:{story:"Passing the `format` property/attribute, the displayed format can be changed.\nSupports [dayjs format token strings](https://day.js.org/docs/en/display/format)",...(N=(z=t.parameters)==null?void 0:z.docs)==null?void 0:N.description}}};const U=["Primary","Slider","ProgrammaticTimeSelection","DisabledPlayButton","NoMap","Format"];export{c as DisabledPlayButton,t as Format,s as NoMap,l as Primary,i as ProgrammaticTimeSelection,a as Slider,U as __namedExportsOrder,Y as default};
