@@ -21,11 +21,12 @@ export const styleEOX = `
     #000000 20%,
     transparent
   );
-  --background-color: #fff;
+  --background-color: var(--eox-background-color, transparent);
   --padding: 0.5rem;
   --text-transform: capitalize;
   --form-flex-direction: column;
   --filter-display: block;
+  background-color: var(--background-color);
 }
 * {
   font-family: Roboto, sans-serif;
@@ -516,5 +517,8 @@ eox-itemfilter-results li.highlighted {
   color: red;
   font-size: x-small;
   top: -8px;
+}
+input {
+  background-color: var(--background-color);
 }
 `;

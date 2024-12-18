@@ -1,15 +1,16 @@
 import { html } from "lit";
 import { DEFAULT_ARGS } from "../src/enums/stories";
 
-export const Primary = {
+export const Format = {
   args: {
     ...DEFAULT_ARGS,
     for: "eox-map#primary",
+    displayFormat: "MMMM DD, YYYY",
   },
   render: (args) => html`
     <eox-map
       id="primary"
-      style="width: 400px; height: 300px;"
+      style="width: 1005; height: 300px;"
       .zoom=${args.zoom}
       .center=${args.center}
       .layers=${args.layers}
@@ -20,9 +21,10 @@ export const Primary = {
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
       .slider=${args.slider}
-      style="margin-top: 8px"
+      style="margin-top: 10px;"
+      .displayFormat=${args.displayFormat}
     ></eox-timecontrol>
   `,
 };
 
-export default Primary;
+export default Format;
