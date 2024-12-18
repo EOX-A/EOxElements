@@ -42,7 +42,8 @@ export class EOxLayerControlLayerDatetime extends LitElement {
      *   disablePlay?: boolean;
      *   slider?: boolean;
      *   currentStep: string|number;
-     *   controlValues: (string|number)[]
+     *   controlValues: (string|number)[];
+     *   displayFormat?: string;
      * }}
      */
     this.layerDatetime = null;
@@ -111,6 +112,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
             .controlValues=${this.layerDatetime.controlValues}
             .controlProperty=${undefined}
             current-step=${this.layerDatetime.currentStep}
+            .displayFormat=${this.layerDatetime.displayFormat}
             @stepchange=${this.#handleStepChange}
           ></eox-timecontrol>
         `,
