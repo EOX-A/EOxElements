@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.2...itemfilter-v1.7.0) (2024-12-18)
+
+
+### Features
+
+* Fallback for not-existing result images ([#1442](https://github.com/EOX-A/EOxElements/issues/1442)) ([b7ffa10](https://github.com/EOX-A/EOxElements/commit/b7ffa109956b9e55115b6c59e4e54a37530afb08))
+
+
+### Bug Fixes
+
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
 ## [1.6.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.1...itemfilter-v1.6.2) (2024-12-12)
 
 

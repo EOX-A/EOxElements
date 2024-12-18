@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.27.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.26.0...layercontrol-v0.27.0) (2024-12-18)
+
+
+### Features
+
+* **style:** Improve rendering of layer tools list display ([#1440](https://github.com/EOX-A/EOxElements/issues/1440)) ([e8c16d4](https://github.com/EOX-A/EOxElements/commit/e8c16d4eec3197a48565088e45059603c939c08a))
+
+
+### Bug Fixes
+
+* **style:** Add missing padding to slots ([931908b](https://github.com/EOX-A/EOxElements/commit/931908bd42aa43d3fb3ce04111bbbfdb2bafde77))
+* **style:** Prevent legend and info overflow ([#1413](https://github.com/EOX-A/EOxElements/issues/1413)) ([8291a53](https://github.com/EOX-A/EOxElements/commit/8291a53696a39da6c40776c8e9dd87b85ab5fd94))
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
 ## [0.26.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.25.2...layercontrol-v0.26.0) (2024-12-12)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.2...storytelling-v1.4.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* Changed nav content position from bottom to top  ([#1433](https://github.com/EOX-A/EOxElements/issues/1433)) ([e401a09](https://github.com/EOX-A/EOxElements/commit/e401a09fcaa8da40148948bfc27a41575663ebe4))
+
 ## [1.4.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.1...storytelling-v1.4.2) (2024-12-12)
 
 

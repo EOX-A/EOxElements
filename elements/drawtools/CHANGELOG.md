@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.1...drawtools-v0.13.2) (2024-12-18)
+
+
+### Bug Fixes
+
+* Init draw layer without tooltip ([#1432](https://github.com/EOX-A/EOxElements/issues/1432)) ([60a6034](https://github.com/EOX-A/EOxElements/commit/60a6034539f4653d4fb26b82f2f768dd29a299a7))
+
 ## [0.13.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.0...drawtools-v0.13.1) (2024-12-12)
 
 

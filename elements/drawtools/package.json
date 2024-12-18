@@ -1,6 +1,6 @@
 {
   "name": "@eox/drawtools",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "type": "module",
   "devDependencies": {
     "vite": "^6.0.3"
