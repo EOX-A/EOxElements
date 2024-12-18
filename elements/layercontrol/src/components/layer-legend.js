@@ -116,6 +116,8 @@ export class EOxLayerControlLayerLegend extends LitElement {
               tickFormat="${ifDefined(this.layerLegend.tickFormat)}"
               .ticks=${this.layerLegend.ticks ?? 5}
               .tickValues=${this.layerLegend.tickValues}
+              .marginLeft=${0}
+              .marginRight=${0}
             >
             </color-legend>
           </div>
@@ -125,11 +127,6 @@ export class EOxLayerControlLayerLegend extends LitElement {
   }
 
   #styleBasic = css`
-    .legend-container {
-      display: flex;
-      justify-content: center;
-    }
-
     color-legend {
       --cle-background: transparent;
       --cle-font-family: inherit;
