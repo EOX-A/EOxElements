@@ -73,6 +73,18 @@ export class EOxLayerControlLayerLegend extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  firstUpdated() {
+    // if the width is explicitly set, don't auto-update
+    if (!this.layerLegend.width) {
+      new ResizeObserver(() => {
+        if (this.offsetWidth !== this.layerLegend.width) {
+          this.layerLegend.width = this.offsetWidth;
+          this.requestUpdate();
+        }
+      }).observe(this.renderRoot.querySelector(".legend-container"));
+    }
+  }
+
   /**
    * Renders a Time Control for datetime options of a layer.
    */
@@ -124,6 +136,7 @@ export class EOxLayerControlLayerLegend extends LitElement {
       --cle-font-size: inherit;
       --cle-font-weight: inherit --cle-letter-spacing: inherit;
       --cle-letter-spacing-title: inherit;
+      --cle-padding: 0;
     }
   `;
   #styleEOX = ``;

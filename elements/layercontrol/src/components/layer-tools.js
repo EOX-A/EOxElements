@@ -351,6 +351,9 @@ export class EOxLayerControlLayerTools extends LitElement {
     [slot=legend-content] {
       padding: 6px 0;
     }
+    [slot=info-content] * {
+      max-width: 100%;
+    }
   `;
 }
 
