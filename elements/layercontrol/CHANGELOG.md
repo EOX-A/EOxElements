@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.27.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.27.0...layercontrol-v0.27.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* **style:** Remove added margin of layer legend ([1ee6f96](https://github.com/EOX-A/EOxElements/commit/1ee6f961fabd8a72fb6f006f4d61f7a01d06221c))
+
 ## [0.27.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.26.0...layercontrol-v0.27.0) (2024-12-18)
 
 
