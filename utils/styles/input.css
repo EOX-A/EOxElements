@@ -10,6 +10,7 @@ textarea {
   background: var(--background-color);
 }
 
+input,
 input[type="text"],
 input[type="url"],
 input[type="email"],
@@ -26,4 +27,5 @@ select {
   padding: 5px 7px;
   border-radius: 4px;
   border: 1px solid #0004;
+  background-color: var(--background-color);
 }

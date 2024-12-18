@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.1...storytelling-v1.4.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* Storytelling navigation in mobile view ([#1425](https://github.com/EOX-A/EOxElements/issues/1425)) ([7242b4c](https://github.com/EOX-A/EOxElements/commit/7242b4c1703e516a12379211e829a500e18bc4f5))
+
 ## [1.4.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.0...storytelling-v1.4.1) (2024-11-14)
 
 

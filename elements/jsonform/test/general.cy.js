@@ -1,5 +1,6 @@
 // Importing necessary modules, test cases, and enums
 import "../src/main";
+import "./_mockedDrawtools";
 import {
   loadJsonFormTest,
   loadJsonFormNoShadowTest,
@@ -10,6 +11,7 @@ import {
   triggerChangeEventTest,
   loadValuesTest,
   loadMisMatchingValuesTest,
+  renderDrawtools,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -25,4 +27,5 @@ describe("Jsonform", () => {
   it("triggers a change event when typing", () => triggerChangeEventTest());
   it("loads values", () => loadValuesTest());
   it("loads mismatching values", () => loadMisMatchingValuesTest());
+  it.only("renders drawtools as a custom input", () => renderDrawtools());
 });

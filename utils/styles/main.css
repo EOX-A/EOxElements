@@ -4,7 +4,7 @@
   --block-spacing-vertical: calc(var(--spacing) * 2);
   --block-spacing-horizontal: var(--spacing);
 
-  --background-color: var(--eox-background-color, white);
+  --background-color: var(--eox-background-color, transparent);
   --color: var(--eox-color, #2c3d49);
   --h-color: var(--eox-h-color, var(--color));
 
@@ -177,6 +177,7 @@ pre {
   padding: 20px 0;
   background: transparent;
   background: var(--code-bg-color, #8e96aa24);
+  overflow: auto;
 }
 code {
   display: block;

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.1...elements-utils-v0.1.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* **style:** Use auto overflow for pre/code blocks ([#1426](https://github.com/EOX-A/EOxElements/issues/1426)) ([5ccf22e](https://github.com/EOX-A/EOxElements/commit/5ccf22e2aa148957d3c2ff2c8209d04b42807ddd))
+
 ## [0.1.1](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.0...elements-utils-v0.1.1) (2024-11-14)
 
 
