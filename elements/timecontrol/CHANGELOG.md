@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.10.0...timecontrol-v0.11.0) (2024-12-18)
+
+
+### Features
+
+* Date/time display format ([#1441](https://github.com/EOX-A/EOxElements/issues/1441)) ([49cac47](https://github.com/EOX-A/EOxElements/commit/49cac474a30e271ef28aac63423f5771c7a4c048))
+* **style:** Adjust button styling, paddings, add css variable for hiding buttons ([#1439](https://github.com/EOX-A/EOxElements/issues/1439)) ([1fe0bc7](https://github.com/EOX-A/EOxElements/commit/1fe0bc715942e99ab2f92a54ae8b8452e472bee0))
+
 ## [0.10.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.9.0...timecontrol-v0.10.0) (2024-11-07)
 
 

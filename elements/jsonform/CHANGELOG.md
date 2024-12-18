@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.0...jsonform-v0.11.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
 ## [0.11.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.10.0...jsonform-v0.11.0) (2024-12-12)
 
 

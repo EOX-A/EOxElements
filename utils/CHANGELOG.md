@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.2...elements-utils-v0.1.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
 ## [0.1.2](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.1...elements-utils-v0.1.2) (2024-12-12)
 
 
