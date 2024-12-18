@@ -95,7 +95,20 @@ export function createItemListMethod(
                           src="${getValue(config.imageProperty, item)}"
                         />
                       `
-                    : nothing}
+                    : html`
+                        <svg
+                          class="image"
+                          width="800"
+                          height="600"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            width="800"
+                            height="600"
+                            fill="var(--primary-color)"
+                          />
+                        </svg>
+                      `}
                   <div class="title-container">
                     <span class="title"
                       >${unsafeHTML(item[config.titleProperty])}</span
