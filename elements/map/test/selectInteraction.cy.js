@@ -2,6 +2,7 @@ import "../src/main";
 import {
   addSelectInteractionVector,
   addSelectInteractionVectorTile,
+  addSelectInteractionToExistingLayer,
   highlightByIdVectorLayer,
   highlightByIdVectorTileLayer,
   removeSelectInteractionLayer,
@@ -46,6 +47,12 @@ describe("select interaction on click", () => {
    */
   it("adds a select interaction to Vector layer", () =>
     addSelectInteractionVector());
+
+  /**
+   * Test case to add a selection to a layer that was initially created without a selection
+   */
+  it("adds a select interaction to an existing layer (without interaction)", () =>
+    addSelectInteractionToExistingLayer());
 
   /**
    * Test case to highlight by ID (Vector Layer)
