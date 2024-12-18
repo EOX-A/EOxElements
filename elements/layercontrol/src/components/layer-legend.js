@@ -73,14 +73,15 @@ export class EOxLayerControlLayerLegend extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
-  updated() {
-    if (
-      !this.layerLegend.width &&
-      this.offsetWidth < 325 &&
-      this.offsetWidth !== this.layerLegend.width
-    ) {
-      this.layerLegend.width = this.offsetWidth;
-      this.requestUpdate();
+  firstUpdated() {
+    // if the width is explicitly set, don't auto-update
+    if (!this.layerLegend.width) {
+      new ResizeObserver(() => {
+        if (this.offsetWidth !== this.layerLegend.width) {
+          this.layerLegend.width = this.offsetWidth;
+          this.requestUpdate();
+        }
+      }).observe(this.renderRoot.querySelector(".legend-container"));
     }
   }
 
