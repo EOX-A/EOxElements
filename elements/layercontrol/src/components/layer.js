@@ -220,7 +220,7 @@ export class EOxLayerControlLayer extends LitElement {
       width: 100%;
       align-items: center;
       justify-content: space-between;
-      padding: 4px 0;
+      padding: var(--padding-vertical) 0;
       display: var(--layer-visibility);
     }
     label, span {

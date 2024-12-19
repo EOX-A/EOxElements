@@ -168,10 +168,6 @@ export class EOxLayerControlTabs extends LitElement {
     .listed .tab.highlighted {
       display: block;
     }
-    .tabbed label.highlighted,
-    .listed label.highlighted {
-      background: lightgrey;
-    }
   `;
 
   #styleEOX = `
@@ -192,7 +188,9 @@ export class EOxLayerControlTabs extends LitElement {
       font-size: small;
     }
     .tabbed label.highlighted {
-      background: #00417011;
+      border: 1px solid #0041701a;
+      border-radius: 2px;
+      border-bottom: none;
       pointer-events: none;
     }
     nav div label,
@@ -206,8 +204,9 @@ export class EOxLayerControlTabs extends LitElement {
     }
     figure {
       background: var(--background-color);
-      border-top: 1px solid #0041701a;
-      padding: 8px var(--padding);
+      border: 1px solid #0041701a;
+      border-radius: 2px;
+      padding: var(--padding-vertical) var(--padding);
     }
   `;
 }
