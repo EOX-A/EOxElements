@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.11.0...timecontrol-v0.12.0) (2024-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* align play button property with others (`disablePlay`-> `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450))
+
+### Features
+
+* Time control navigation property ([#1449](https://github.com/EOX-A/EOxElements/issues/1449)) ([143c413](https://github.com/EOX-A/EOxElements/commit/143c413be57cb33ed58ccb5c7d3aaf66fd7d0a43))
+
+
+### Bug Fixes
+
+* Align play button property with others (`disablePlay`-&gt; `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450)) ([73328a1](https://github.com/EOX-A/EOxElements/commit/73328a1d31269d0957e6e4528e41a98d117e3be0))
+
 ## [0.11.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.10.0...timecontrol-v0.11.0) (2024-12-18)
 
 

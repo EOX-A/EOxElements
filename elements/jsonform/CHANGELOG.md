@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.1...jsonform-v0.11.2) (2024-12-19)
+
+
+### Bug Fixes
+
+* **style:** Border and margin overrides ([d248f20](https://github.com/EOX-A/EOxElements/commit/d248f2063a68ee33bef5b72096a7d492b1fb6bf9))
+* **style:** Summary & spacing CSS variables ([#1447](https://github.com/EOX-A/EOxElements/issues/1447)) ([9b09ec9](https://github.com/EOX-A/EOxElements/commit/9b09ec94ff1eb76644f7b45aefe54c4b490c1a49))
+
 ## [0.11.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.0...jsonform-v0.11.1) (2024-12-18)
 
 
