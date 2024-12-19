@@ -42,6 +42,11 @@ export class EOxTimeControl extends LitElement {
       slider: { type: Boolean },
 
       /**
+       * Display left & right navigation buttons for the values
+       */
+      navigation: { type: Boolean },
+
+      /**
        * Original params of layer source
        */
       _originalParams: { type: Object },
@@ -78,6 +83,8 @@ export class EOxTimeControl extends LitElement {
     this.unstyled = false;
     /** @type {boolean} */
     this.disablePlay = false;
+    /** @type {boolean} */
+    this.navigation = true;
     /** @type {boolean} */
     this.slider = false;
     /**
@@ -301,13 +308,17 @@ export class EOxTimeControl extends LitElement {
       </style>
       <main>
         <div id="controls" part="controls">
-          <button
-            part="previous"
-            class="icon previous"
-            @click="${() => this.previous()}"
-          >
-            <
-          </button>
+          ${this.navigation
+            ? html`
+                <button
+                  part="previous"
+                  class="icon previous"
+                  @click="${() => this.previous()}"
+                >
+                  <
+                </button>
+              `
+            : nothing}
           <span part="current">
             ${this.displayFormat
               ? dayjs(this.controlValues[this._newStepIndex]).format(
@@ -315,9 +326,17 @@ export class EOxTimeControl extends LitElement {
                 )
               : this.controlValues[this._newStepIndex]}
           </span>
-          <button part="next" class="icon next" @click="${() => this.next()}">
-            >
-          </button>
+          ${this.navigation
+            ? html`
+                <button
+                  part="next"
+                  class="icon next"
+                  @click="${() => this.next()}"
+                >
+                  >
+                </button>
+              `
+            : nothing}
           ${!this.disablePlay
             ? html`
                 <button
