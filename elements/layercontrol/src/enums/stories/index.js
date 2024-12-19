@@ -445,7 +445,7 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
       range: ["#C3EBDC", "#0ADC00", "#FEF500", "#F29300", "#800303"],
     },
     layerDatetime: {
-      disablePlay: true,
+      play: false,
       slider: true,
       currentStep: "2021-03-01",
       displayFormat: "DD.MM.YYYY",

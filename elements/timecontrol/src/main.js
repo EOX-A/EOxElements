@@ -54,7 +54,7 @@ export class EOxTimeControl extends LitElement {
       /**
        * Hides the play button if set
        */
-      disablePlay: { type: Boolean, attribute: "disable-play" },
+      play: { type: Boolean, attribute: "play" },
 
       /**
        * Date format string for displaying the current step
@@ -82,7 +82,7 @@ export class EOxTimeControl extends LitElement {
     /** @type {boolean} */
     this.unstyled = false;
     /** @type {boolean} */
-    this.disablePlay = false;
+    this.play = false;
     /** @type {boolean} */
     this.navigation = true;
     /** @type {boolean} */
@@ -337,7 +337,7 @@ export class EOxTimeControl extends LitElement {
                 </button>
               `
             : nothing}
-          ${!this.disablePlay
+          ${this.play
             ? html`
                 <button
                   part="play"

@@ -3,7 +3,7 @@ import {
   PrimaryStory,
   SliderStory,
   ProgrammaticTimeSelectionStory,
-  DisabledPlayButtonStory,
+  DisabledButtonsStory,
   NoMapStory,
   FormatStory,
 } from "./index";
@@ -20,7 +20,7 @@ export const Slider = SliderStory;
 
 export const ProgrammaticTimeSelection = ProgrammaticTimeSelectionStory;
 
-export const DisabledPlayButton = DisabledPlayButtonStory;
+export const DisabledButtons = DisabledButtonsStory;
 
 export const NoMap = NoMapStory;
 

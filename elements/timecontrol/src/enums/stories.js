@@ -21,6 +21,8 @@ export const DEFAULT_ARGS = {
     "2023-04-17",
     "2023-04-24",
   ],
+  navigation: true,
+  play: true,
   // map
   layers: [
     {
