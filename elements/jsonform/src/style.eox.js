@@ -41,7 +41,7 @@ export const styleEOX = `
     font-weight: 600;
   }
   form[data-theme="html"] .je-indented-panel {
-    border: none;
+    border: none !important;
     margin: 0.4rem;
   }
   button[class*="json-editor-btntype-"] span {
@@ -100,6 +100,9 @@ export const styleEOX = `
   }
   .je-indented-panel .row {
     margin-top: 10px;
+  }
+  .je-object__controls {
+    margin: 0 !important;
   }
   .EasyMDEContainer span {
     display: unset;
