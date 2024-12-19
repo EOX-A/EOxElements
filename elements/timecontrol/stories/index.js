@@ -4,6 +4,6 @@
 export { default as PrimaryStory } from "./primary"; // Primary story
 export { default as SliderStory } from "./slider"; // Slider story
 export { default as ProgrammaticTimeSelectionStory } from "./programmatic-time-selection"; // Programmatic time selection story
-export { default as DisabledPlayButtonStory } from "./disabled-play-button"; // Disabled play button story
+export { default as DisabledButtonsStory } from "./disabled-buttons"; // Disabled play button story
 export { default as NoMapStory } from "./no-map"; // No map provided story
 export { default as FormatStory } from "./format"; // Date-Time Format story

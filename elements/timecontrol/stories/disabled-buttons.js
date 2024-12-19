@@ -1,11 +1,12 @@
 import { html } from "lit";
 import { DEFAULT_ARGS } from "../src/enums/stories";
 
-export const DisabledPlayButton = {
+export const DisabledButtons = {
   args: {
     ...DEFAULT_ARGS,
     for: "eox-map#disabled-play",
-    disablePlay: true,
+    play: false,
+    navigation: false,
   },
   render: (args) => html`
     <eox-map
@@ -20,11 +21,12 @@ export const DisabledPlayButton = {
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
+      .navigation=${args.navigation}
       .slider=${args.slider}
-      .disablePlay=${args.disablePlay}
+      .play=${args.play}
       style="margin-top: 8px"
     ></eox-timecontrol>
   `,
 };
 
-export default DisabledPlayButton;
+export default DisabledButtons;
