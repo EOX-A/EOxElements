@@ -185,11 +185,11 @@ export class EOxLayerControlLayerList extends LitElement {
     ul ul {
       padding-left: var(--list-padding);
     }
-    li {
-      list-style: none;
+    li:not(li li) {
       padding-left: var(--padding);
     }
     li {
+      list-style: none;
       border-bottom: 1px solid #0041703a;
       border: var(--layer-visibility);
     }

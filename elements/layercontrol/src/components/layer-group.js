@@ -163,7 +163,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
   #styleEOX = `
     details summary {
       cursor: pointer;
-      display: flex;
+      display: var(--layer-summary-visibility);
     }
     details summary { list-style-type: none; } /* Firefox */
     details summary::-webkit-details-marker { display: none; } /* Chrome */
