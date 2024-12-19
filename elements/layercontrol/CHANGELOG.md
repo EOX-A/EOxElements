@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.28.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.27.1...layercontrol-v0.28.0) (2024-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* align play button property with others (`disablePlay`-> `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450))
+
+### Features
+
+* Pass displayFormat property to timecontrol ([#1444](https://github.com/EOX-A/EOxElements/issues/1444)) ([9e6ad8e](https://github.com/EOX-A/EOxElements/commit/9e6ad8ebf08f4a8b0075e4395b1af9d89a65b4a0))
+* Time control navigation property ([#1449](https://github.com/EOX-A/EOxElements/issues/1449)) ([143c413](https://github.com/EOX-A/EOxElements/commit/143c413be57cb33ed58ccb5c7d3aaf66fd7d0a43))
+
+
+### Bug Fixes
+
+* Align play button property with others (`disablePlay`-&gt; `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450)) ([73328a1](https://github.com/EOX-A/EOxElements/commit/73328a1d31269d0957e6e4528e41a98d117e3be0))
+* **style:** Summary & spacing CSS variables ([#1447](https://github.com/EOX-A/EOxElements/issues/1447)) ([9b09ec9](https://github.com/EOX-A/EOxElements/commit/9b09ec94ff1eb76644f7b45aefe54c4b490c1a49))
+
 ## [0.27.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.27.0...layercontrol-v0.27.1) (2024-12-18)
 
 
