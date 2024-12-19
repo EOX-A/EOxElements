@@ -9,6 +9,9 @@ export const styleEOX = `
   .CodeMirror {
     background-color: var(--background-color, transparent);
   }
+  select {
+    background-color: var(--background-color);
+  }
   [data-schemaid=root] > .je-header {
     display: none;
   }
