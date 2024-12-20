@@ -21,6 +21,26 @@ export const styleEOX = `
   tc-range-slider{
     display: block;
     margin: 0.5rem 0;
+
+  --height: 6px;
+  --panel-bg: #d7dcdf;
+  --panel-bg-hover: #d7dcdf;
+  --panel-bg-fill: #2c3e50;
+
+  --pointer-bg: #2c3e50;
+  --pointer-bg-hover: #00416f;
+  --pointer-bg-focus: #00416f;
+
+  --pointer-width: 15px;
+  --pointer-height: 15px;
+
+  --pointer-shadow: none;
+  --pointer-shadow-hover: none;
+  --pointer-shadow-focus: none;
+
+  --pointer-border: none;
+  --pointer-border-hover: 0;
+  --pointer-border-focus: 0;
   }
   .je-header {
     display: flex;
