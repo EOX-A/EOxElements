@@ -154,15 +154,18 @@ const inputs = [
  * Add custom input fields to @json-editor
  *
  * @param {{[key: string]: any}} startVals - Initial values for the custom inputs
+ * @param {Array} customEditorInterfaces - List of custom editor interface
  */
-export const addCustomInputs = (startVals) => {
+export const addCustomInputs = (startVals, customEditorInterfaces) => {
+  const finalInputs = [...inputs, ...customEditorInterfaces];
+
   // Add custom validators for spatial inputs
   JSONEditor.defaults["custom_validators"].push(
-    spatialValidatorCreator(inputs),
+    spatialValidatorCreator(finalInputs),
   );
 
   // Iterate over each custom input definition
-  inputs.map(({ type, format, func }) => {
+  finalInputs.map(({ type, format, func }) => {
     JSONEditor.defaults["startVals"] = startVals;
     JSONEditor.defaults.editors[format] = func;
 

@@ -15,7 +15,7 @@ window.SimpleMDE = EasyMDE;
  */
 export const createEditor = (element) => {
   // Add custom inputs if any
-  addCustomInputs(element.value || {});
+  addCustomInputs(element.value || {}, element.customEditorInterfaces || []);
 
   // Get the form element from the shadow DOM
   const formEle = element.renderRoot.querySelector("form");
