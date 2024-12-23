@@ -14,6 +14,7 @@ export class EOxJSONForm extends LitElement {
     schema: { attribute: false, type: Object },
     value: { attribute: false, type: Object },
     options: { attribute: false, type: Object },
+    customEditorInterfaces: { attribute: false, type: Array },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
   };
@@ -69,6 +70,13 @@ export class EOxJSONForm extends LitElement {
      * @type {Boolean}
      */
     this.unstyled = false;
+
+    /**
+     * List of custom editor interface
+     *
+     * @type {Array}
+     */
+    this.customEditorInterfaces = [];
   }
 
   /**
@@ -157,6 +165,11 @@ export class EOxJSONForm extends LitElement {
       this._schema = await parseProperty(this.schema);
 
       if (!this.#editor || this.#editor.destroyed) {
+        this.#editor = await createEditor(this);
+        this.#dispatchEvent();
+      }
+    } else if (changedProperties.has("customEditorInterfaces")) {
+      if (this.customEditorInterfaces) {
         this.#editor = await createEditor(this);
         this.#dispatchEvent();
       }
