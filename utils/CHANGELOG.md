@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.4...elements-utils-v0.1.5) (2025-01-08)
+
+
+### Bug Fixes
+
+* Use css files instead of js ([aa976bd](https://github.com/EOX-A/EOxElements/commit/aa976bd5eb845b1e2e168e1ab12d548e908a540a))
+
 ## [0.1.4](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.3...elements-utils-v0.1.4) (2025-01-08)
 
 
