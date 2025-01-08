@@ -244,21 +244,6 @@ tc-range-slider {
   margin-left: 8px;
   margin-right: 8px;
   --width: 100%;
-  --height: 6px;
-  --panel-bg: #d7dcdf;
-  --panel-bg-hover: #d7dcdf;
-  --panel-bg-fill: #2c3e50;
-  --pointer-bg: #2c3e50;
-  --pointer-bg-hover: #00416f;
-  --pointer-bg-focus: #00416f;
-  --pointer-width: 15px;
-  --pointer-height: 15px;
-  --pointer-shadow: none;
-  --pointer-shadow-hover: none;
-  --pointer-shadow-focus: none;
-  --pointer-border: none;
-  --pointer-border-hover: 0;
-  --pointer-border-focus: 0;
 }
 .range-before,
 .range-after {
