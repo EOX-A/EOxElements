@@ -73,6 +73,8 @@ export class EOxJSONForm extends LitElement {
 
     /**
      * List of custom editor interface
+     * Read more about the implementation of custom editor interfaces here: 
+     * https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
      *
      * @type {Array}
      */
