@@ -39,7 +39,8 @@ const loadCustomEditorInterfaceTest = () => {
         schema.properties.test.title,
       );
       cy.get("select").should("have.value", "false");
-      cy.get("select").select("true").should("have.value", "true");
+      cy.get("select").select("true");
+      cy.get("select").should("have.value", "true");
     });
 };
 
