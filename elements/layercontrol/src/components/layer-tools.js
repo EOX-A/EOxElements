@@ -7,10 +7,10 @@ import "./layer-config";
 import "./layer-datetime";
 import "./layer-legend";
 import "./tools-items";
-import { button } from "@eox/elements-utils/styles/button";
-import { radio } from "@eox/elements-utils/styles/radio";
-import { checkbox } from "@eox/elements-utils/styles/checkbox";
-import { slider } from "@eox/elements-utils/styles/slider";
+import button from "@eox/elements-utils/styles/dist/button.style";
+import radio from "@eox/elements-utils/styles/dist/radio.style";
+import checkbox from "@eox/elements-utils/styles/dist/checkbox.style";
+import slider from "@eox/elements-utils/styles/dist/slider.style";
 import {
   Button,
   _parseActions,

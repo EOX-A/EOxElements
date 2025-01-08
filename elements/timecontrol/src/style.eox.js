@@ -1,4 +1,4 @@
-import { button } from "@eox/elements-utils/styles/button";
+import button from "@eox/elements-utils/styles/dist/button.style";
 import slider from "@eox/elements-utils/styles/dist/slider.style";
 
 export const styleEOX = `
