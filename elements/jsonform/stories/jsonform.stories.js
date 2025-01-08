@@ -14,6 +14,7 @@ import {
   WKTStory,
   GeoJSONStory,
   LineStory,
+  CustomEditorInterfacesStory,
 } from "./index.js";
 
 export default {
@@ -92,3 +93,8 @@ export const Geojson = GeoJSONStory;
  * Unstyled JSON Form
  */
 export const Unstyled = UnStyledStory;
+
+/**
+ * Custom editor interfaces for eox-jsonform
+ */
+export const CustomEditorInterfaces = CustomEditorInterfacesStory;
