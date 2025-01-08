@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.2...jsonform-v0.12.0) (2025-01-08)
+
+
+### Features
+
+* Pass custom editors on the fly via `customEditorInterfaces` property ([#1454](https://github.com/EOX-A/EOxElements/issues/1454)) ([d68e7e6](https://github.com/EOX-A/EOxElements/commit/d68e7e6c0ad6384d4e63cd71f1c0c8bbbf108e7e))
+
 ## [0.11.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.1...jsonform-v0.11.2) (2024-12-19)
 
 

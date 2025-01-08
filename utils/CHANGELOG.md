@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.3...elements-utils-v0.1.4) (2025-01-08)
+
+
+### Bug Fixes
+
+* **style:** Harmonize slider styles ([#1452](https://github.com/EOX-A/EOxElements/issues/1452)) ([e2311e9](https://github.com/EOX-A/EOxElements/commit/e2311e985fa5999e89c18a54c8a45a5cffaacdec))
+
 ## [0.1.3](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.2...elements-utils-v0.1.3) (2024-12-18)
 
 
