@@ -1,4 +1,5 @@
 import { button } from "@eox/elements-utils/styles/button";
+import slider from "@eox/elements-utils/styles/dist/slider.style";
 
 export const styleEOX = `
 :host, :root {
@@ -10,6 +11,7 @@ export const styleEOX = `
 }
 
 ${button}
+${slider}
 
 [part=controls] {
   display: flex;
