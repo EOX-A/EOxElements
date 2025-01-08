@@ -11,3 +11,4 @@ export { default as FeatureSelectionStory } from "./feature-selection"; // Input
 export { default as LineStory } from "./line"; // Input form based on Drawtools - LineString
 export { default as WKTStory } from "./wkt"; // Input form based on Drawtools that returns WKT string
 export { default as GeoJSONStory } from "./geojson"; // Input form based on Drawtools that returns GeoJSON
+export { default as CustomEditorInterfacesStory } from "./custom-editor-interfaces"; // Custom editor interfaces

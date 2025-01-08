@@ -14,6 +14,7 @@ import {
   WKTStory,
   GeoJSONStory,
   LineStory,
+  CustomEditorInterfacesStory,
 } from "./index.js";
 
 export default {
@@ -88,6 +89,14 @@ export const WKT = WKTStory;
  * JSON Form based on drawtools - Returns the value as GeoJSON
  */
 export const Geojson = GeoJSONStory;
+
+/**
+ * With the `customEditorInterfaces` property it is possible to create
+ * one or more custom form inputs for json-editor (based on its `JSONEditor.AbstractEditor`).
+ * See [json-editor readme](https://github.com/json-editor/json-editor?tab=readme-ov-file#custom-editor-interfaces) for more details.
+ */
+export const CustomEditorInterfaces = CustomEditorInterfacesStory;
+
 /**
  * Unstyled JSON Form
  */
