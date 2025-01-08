@@ -1,4 +1,5 @@
 import { html } from "lit";
+import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { TEST_SELECTORS } from "../../src/enums";
 
 class CustomEditorExample extends JSONEditor.AbstractEditor {
