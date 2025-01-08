@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.2...drawtools-v0.13.3) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
 ## [0.13.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.1...drawtools-v0.13.2) (2024-12-18)
 
 

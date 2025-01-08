@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.3...storytelling-v1.4.4) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
 ## [1.4.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.2...storytelling-v1.4.3) (2024-12-18)
 
 

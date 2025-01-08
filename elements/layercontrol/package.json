@@ -1,6 +1,6 @@
 {
   "name": "@eox/layercontrol",
-  "version": "0.28.0",
+  "version": "0.28.1",
   "type": "module",
   "devDependencies": {
     "@eox/map": "^1.16.0",
