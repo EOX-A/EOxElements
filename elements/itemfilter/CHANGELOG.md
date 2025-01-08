@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.7.0...itemfilter-v1.7.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
 ## [1.7.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.2...itemfilter-v1.7.0) (2024-12-18)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.28.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.28.0...layercontrol-v0.28.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
 ## [0.28.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.27.1...layercontrol-v0.28.0) (2024-12-19)
 
 

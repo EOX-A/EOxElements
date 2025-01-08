@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.12.1...timecontrol-v0.12.2) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
 ## [0.12.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.12.0...timecontrol-v0.12.1) (2025-01-08)
 
 
