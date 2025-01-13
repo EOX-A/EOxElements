@@ -18,6 +18,9 @@ export const styleEOX = `
   .je-range-control {
     padding: 0.5rem 0;
   }
+  .je-range-control output {
+    width: 35px;
+  }
   .errmsg {
     font-size: x-small;
   }
