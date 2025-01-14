@@ -304,6 +304,10 @@ export class EOxSelectInteraction {
     if (feature.get("id") !== undefined) {
       return feature.get("id");
     }
+    // if no id can be found, try to get the ol_uid from openlayers
+    if ((feature as any).ol_uid !== undefined) {
+      return (feature as any).ol_uid;
+    }
     throw Error(
       "No feature id found. Please provide which feature property should be taken instead using idProperty."
     );
