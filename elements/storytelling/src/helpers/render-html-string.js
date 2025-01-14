@@ -359,10 +359,16 @@ export function parseNavWithAddSection(
     html.splice(navIndex, 0, navDOM);
   }
 
+  let containsSectionWrap = false;
+
   if (html.length) {
     const sectionStartIndex = navIndex + 1;
     html[sectionStartIndex].classList.add("section-start");
     html.slice(sectionStartIndex).forEach((section, key) => {
+      if (!section.classList) return;
+      if (section.classList.contains("section-wrap"))
+        containsSectionWrap = true;
+
       section.classList.add("section-item");
       section.setAttribute("data-section", `${key + 1}`);
 
@@ -380,6 +386,18 @@ export function parseNavWithAddSection(
         });
       }
     });
+  }
+
+  if (!containsSectionWrap) {
+    let sectionWrap = document.createElement("div");
+    sectionWrap.className = "section-wrap container section-item";
+    html.forEach((element) => {
+      sectionWrap.appendChild(element);
+    });
+    sectionWrap.addEventListener("click", function (event) {
+      generateAddSectionClickEvt(event, false, this, EOxStoryTelling);
+    });
+    html = [sectionWrap];
   }
 
   return html;
