@@ -5,6 +5,7 @@ import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";
 import VectorLayer from "ol/layer/Vector";
 import { createEmpty, extend, isEmpty } from "ol/extent";
+import { getUid } from "ol/util";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
@@ -328,6 +329,10 @@ export class EOxSelectInteraction {
     }
     if (feature.get("id") !== undefined) {
       return feature.get("id");
+    }
+    // if no id can be found, try to get the ol uid from openlayers
+    if (getUid(feature) !== undefined) {
+      return getUid(feature);
     }
     throw Error(
       "No feature id found. Please provide which feature property should be taken instead using idProperty.",
