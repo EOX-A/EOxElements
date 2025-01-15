@@ -5,6 +5,7 @@ import {
   STORIES_MAP_STYLE,
   STORIES_LAYER_SEE,
   STORIES_LAYER_TERRAIN_LIGHT,
+  STORIES_LAYER_POLARIS,
 } from "../src/enums";
 
 // registering the projection of CROPOMHUSC2_VECTOR_CONFIG_STYLE_LAYER
@@ -26,13 +27,14 @@ export default {
     ></eox-layercontrol>
     <hr />
     <eox-map
-      .center=${[1820000, 5959912]}
-      .zoom=${5.5}
+      .center=${[-1416186, 8184092]}
+      .zoom=${2}
       id="config-styles"
       .style=${STORIES_MAP_STYLE}
       .layers=${[
         STORIES_LAYER_SEE,
         STORIES_LAYER_CROPOMHUSC2,
+        STORIES_LAYER_POLARIS,
         STORIES_LAYER_TERRAIN_LIGHT,
       ]}
     >

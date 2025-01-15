@@ -52,7 +52,7 @@ export class EOxLayerControlLayerLegend extends LitElement {
 
     /**
      * Legend configurations
-     * @type {LegendConfig}
+     * @type {LegendConfig | LegendConfig[]}
      * @see {@link https://clhenrick.github.io/color-legend-element/}
      */
     this.layerLegend = null;
@@ -105,21 +105,47 @@ export class EOxLayerControlLayerLegend extends LitElement {
         () => html`
           <div class="legend-container">
             <!-- Render color-legend-->
-            <color-legend
-              id="${this.layer.get("id")}"
-              width=${this.layerLegend.width ?? 325}
-              scaleType="${ifDefined(this.layerLegend.scaleType)}"
-              markType="${ifDefined(this.layerLegend.markType)}"
-              titleText="${ifDefined(this.layerLegend.title)}"
-              .range=${this.layerLegend.range}
-              .domain=${this.layerLegend.domain}
-              tickFormat="${ifDefined(this.layerLegend.tickFormat)}"
-              .ticks=${this.layerLegend.ticks ?? 5}
-              .tickValues=${this.layerLegend.tickValues}
-              .marginLeft=${0}
-              .marginRight=${0}
-            >
-            </color-legend>
+            ${when(
+              Array.isArray(this.layerLegend),
+              () =>
+                /** @type {LegendConfig[]} */ (this.layerLegend).map(
+                  (legend, idx) => html`
+                    <color-legend
+                      id="${this.layer.get("id") + idx}"
+                      width=${legend.width ?? 325}
+                      scaleType="${ifDefined(legend.scaleType)}"
+                      markType="${ifDefined(legend.markType)}"
+                      titleText="${ifDefined(legend.title)}"
+                      .range=${legend.range}
+                      .domain=${legend.domain}
+                      tickFormat="${ifDefined(legend.tickFormat)}"
+                      .ticks=${legend.ticks ?? 5}
+                      .tickValues=${legend.tickValues}
+                      .marginLeft=${0}
+                      .marginRight=${0}
+                    >
+                    </color-legend>
+                    <div></div>
+                  `,
+                ),
+              () => html`
+                <color-legend
+                  id="${this.layer.get("id")}"
+                  width=${this.layerLegend.width ?? 325}
+                  scaleType="${ifDefined(this.layerLegend.scaleType)}"
+                  markType="${ifDefined(this.layerLegend.markType)}"
+                  titleText="${ifDefined(this.layerLegend.title)}"
+                  .range=${this.layerLegend.range}
+                  .domain=${this.layerLegend.domain}
+                  tickFormat="${ifDefined(this.layerLegend.tickFormat)}"
+                  .ticks=${this.layerLegend.ticks ?? 5}
+                  .tickValues=${this.layerLegend.tickValues}
+                  .marginLeft=${0}
+                  .marginRight=${0}
+                >
+                </color-legend>
+              `,
+            )}
           </div>
         `,
       )}

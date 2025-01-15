@@ -6,6 +6,13 @@ import { when } from "lit/directives/when.js";
 import _throttle from "lodash.throttle";
 import "./layer-legend";
 /**
+ * @typedef {Partial<import("./layer-legend").LegendConfig> & {
+ *     range:string[];
+ *     domainProperties:string[]
+ *    }} layerConfigLegend
+ **/
+
+/**
  * `EOxLayerControlLayerConfig` is a component that handles configuration options for layers using eox-jsonform.
  * It allows users to input data, modify layer settings, and update the UI based on those settings.
  *
@@ -76,10 +83,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
      *  element: string;
      *  type?:"tileUrl"|"style";
      *  style?:import("ol/layer/WebGLTile").Style
-     *  legend?: Partial<import("./layer-legend").LegendConfig> & {
-     *     range:string[];
-     *     domainProperties:string[]
-     *    }
+     *  legend?: layerConfigLegend | (layerConfigLegend & { boundTo:{key:string;value:string|number|boolean} })[]
      *  }}
      */
     this.layerConfig = null;
