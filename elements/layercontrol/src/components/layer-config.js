@@ -135,6 +135,15 @@ export class EOxLayerControlLayerConfig extends LitElement {
         this,
       );
     }
+    this.dispatchEvent(
+      new CustomEvent("layerConfig:change", {
+        bubbles: true,
+        detail: {
+          jsonformValue: e.detail,
+          layer: this.layer,
+        },
+      }),
+    );
     this.requestUpdate();
   }
 
