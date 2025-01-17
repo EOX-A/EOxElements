@@ -197,6 +197,7 @@ function processNode(node, initDispatchFunc) {
           lightboxGallery.open();
         });
 
+        // Handle media loading error by switching to backup URL if available
         media.onerror = () => {
           if (
             document.body.contains(media) &&
@@ -207,6 +208,7 @@ function processNode(node, initDispatchFunc) {
           }
         };
 
+        // Function to clear the backup URL title attribute after successful load
         const loadFunc = () => {
           if (
             document.body.contains(media) &&
