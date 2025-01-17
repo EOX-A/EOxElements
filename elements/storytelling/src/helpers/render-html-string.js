@@ -184,20 +184,41 @@ function processNode(node, initDispatchFunc) {
     const lightboxElements = [];
 
     const images = node.querySelectorAll("img");
-    // Loop over each image
-    images.forEach((img) => {
-      // Check if the image is already inside a link (to avoid double wrapping)
-      const mode = img.getAttribute("mode");
+    const videos = node.querySelectorAll("video");
 
-      if (img.parentNode.tagName !== "A" && mode !== "hero") {
-        img.style.cursor = "zoom-in";
-        img.addEventListener("click", () => {
+    // Loop over each image/video
+    [...images, ...videos].forEach((media) => {
+      // Check if the image is already inside a link (to avoid double wrapping)
+      const mode = media.getAttribute("mode");
+
+      if (media.parentNode.tagName !== "A" && mode !== "hero") {
+        media.style.cursor = "zoom-in";
+        media.addEventListener("click", () => {
           lightboxGallery.open();
         });
 
+        media.onerror = () => {
+          if (
+            document.body.contains(media) &&
+            media.title.includes("temp-backup-url=")
+          ) {
+            media.src = media.title.replace("temp-backup-url=", "");
+            media.title = "";
+          }
+        };
+
+        media.onload = () => {
+          if (
+            document.body.contains(media) &&
+            media.title.includes("temp-backup-url=")
+          ) {
+            media.title = "";
+          }
+        };
+
         lightboxElements.push({
           type: "image",
-          href: img.src,
+          href: media.src,
         });
       }
     });
