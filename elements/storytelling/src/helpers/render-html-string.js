@@ -207,7 +207,7 @@ function processNode(node, initDispatchFunc) {
           }
         };
 
-        media.onload = () => {
+        const loadFunc = () => {
           if (
             document.body.contains(media) &&
             media.title.includes("temp-backup-url=")
@@ -215,6 +215,9 @@ function processNode(node, initDispatchFunc) {
             media.title = "";
           }
         };
+
+        media.onload = loadFunc;
+        media.onloadeddata = loadFunc;
 
         lightboxElements.push({
           type: "image",
