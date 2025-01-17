@@ -7,8 +7,8 @@ import _throttle from "lodash.throttle";
 import "./layer-legend";
 /**
  * @typedef {Partial<import("./layer-legend").LegendConfig> & {
- *     range:string[];
- *     domainProperties:string[]
+ *     boundTo?:{key: string;value: string|number|boolean}
+ *     domainProperties: string[]
  *    }} layerConfigLegend
  **/
 
@@ -81,9 +81,9 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * @type {{
      *  schema: Record<string,any>;
      *  element: string;
-     *  type?:"tileUrl"|"style";
-     *  style?:import("ol/layer/WebGLTile").Style
-     *  legend?: layerConfigLegend | (layerConfigLegend & { boundTo:{key:string;value:string|number|boolean} })[]
+     *  type?: "tileUrl" | "style";
+     *  style?: import("ol/layer/WebGLTile").Style
+     *  legend?: layerConfigLegend | layerConfigLegend[]
      *  }}
      */
     this.layerConfig = null;

@@ -6,38 +6,61 @@ import { flattenObject } from "../methods/layer-config";
  * @param {Record<string,unknown>} data
  */
 const getLegendConfig = (legendConfig, data) => {
-  if (!legendConfig) return undefined;
-  /** @type {import("../components/layer-config").EOxLayerControlLayerConfig["layerConfig"]["legend"]} */
-  let activeLegend;
+  if (!legendConfig) {
+    return undefined;
+  }
+
   const flatData = flattenObject(data);
-  if (Array.isArray(legendConfig) && legendConfig.length) {
-    activeLegend = legendConfig.find((legend) => {
-      const propName = legend.boundTo.key;
-      const expectedToMatch = legend.boundTo.value;
-      return flatData[propName] == expectedToMatch;
-    });
-    if (!activeLegend) {
-      activeLegend = legendConfig;
-    }
+
+  /**
+   * legends config that will be shown
+   * @type {import("../components/layer-config").layerConfigLegend[]} */
+  let activeLegends;
+  /**
+   * legends config that are available
+   * @type {import("../components/layer-config").layerConfigLegend[]} */
+  let availableLegends;
+
+  if (Array.isArray(legendConfig)) {
+    availableLegends = structuredClone(legendConfig);
   } else {
-    activeLegend = legendConfig;
+    availableLegends = [structuredClone(legendConfig)];
   }
-  if (!Array.isArray(activeLegend)) {
-    activeLegend = [activeLegend];
-  }
-  return activeLegend.map((lgnd) => {
-    if (!("domainProperties" in lgnd) || "domain" in lgnd) {
-      return { ...lgnd };
+
+  activeLegends = availableLegends.filter((legend) => {
+    // if the legend is not bound to a property, it will be shown
+    if (!("boundTo" in legend)) {
+      return true;
     }
-    return Object.keys(lgnd)?.reduce((legend, key) => {
-      if (key === "domainProperties") {
-        legend["domain"] = lgnd[key].map((k) => flatData[k]);
-      } else {
-        legend[key] = lgnd[key];
-      }
-      return legend;
-    }, /** @type {import("../components/layer-legend").LegendConfig} */ ({}));
+
+    const propName = legend.boundTo.key;
+    const expectedToMatch = legend.boundTo.value;
+
+    // if the property is not in the data, the legend will be shown
+    return !(propName in flatData) || flatData[propName] == expectedToMatch;
   });
+
+  // if no active legends are found, use all legends
+  if (!activeLegends.length) {
+    activeLegends = availableLegends;
+  }
+
+  return /** @type {import("../components/layer-legend").LegendConfig[]} */ (
+    activeLegends.map((activeLegend) => {
+      delete activeLegend.boundTo;
+      if (!("domainProperties" in activeLegend) || "domain" in activeLegend) {
+        return activeLegend;
+      }
+      return Object.keys(activeLegend)?.reduce((legend, key) => {
+        if (key === "domainProperties") {
+          legend["domain"] = activeLegend[key].map((k) => flatData[k]);
+        } else {
+          legend[key] = activeLegend[key];
+        }
+        return legend;
+      }, /** @type {import("../components/layer-legend").LegendConfig} */ ({}));
+    })
+  );
 };
 
 export default getLegendConfig;
