@@ -1,7 +1,6 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html, css, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { ifDefined } from "lit/directives/if-defined.js";
-
 /**
  * Legend configurations
  *
@@ -51,19 +50,44 @@ export class EOxLayerControlLayerLegend extends LitElement {
     this.noShadow = false;
 
     /**
-     * Legend configurations
-     * @type {LegendConfig | LegendConfig[]}
-     * @see {@link https://clhenrick.github.io/color-legend-element/}
-     */
-    this.layerLegend = null;
-
-    /**
      * The native OL layer
      *
      * @type {import("ol/layer").Layer}
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
     this.layer = null;
+  }
+  /** @type {(LegendConfig & {id:string})[]}} */
+  #layerLegend = [];
+
+  get layerLegend() {
+    if (this.#layerLegend) {
+      return this.#layerLegend.length > 1
+        ? this.#layerLegend
+        : this.#layerLegend[0];
+    } else {
+      return null;
+    }
+  }
+  /**
+   * Legend configurations
+   * @param {LegendConfig | LegendConfig[]} value
+   * @see {@link https://clhenrick.github.io/color-legend-element/}
+   **/
+  set layerLegend(value) {
+    if (Array.isArray(value)) {
+      this.#layerLegend = value.map((config, idx) => ({
+        id: (this.layer?.get("id") ?? "") + idx,
+        ...config,
+      }));
+    } else {
+      this.#layerLegend = [
+        {
+          id: (this.layer?.get("id") ?? "") + 0,
+          ...value,
+        },
+      ];
+    }
   }
 
   /**
@@ -74,24 +98,26 @@ export class EOxLayerControlLayerLegend extends LitElement {
   }
 
   firstUpdated() {
-    // if the width is explicitly set, don't auto-update
-    if (!this.layerLegend.width) {
+    if (this.layerLegend) {
       new ResizeObserver(() => {
-        if (this.offsetWidth !== this.layerLegend.width) {
-          this.layerLegend.width = this.offsetWidth;
-          this.requestUpdate();
-        }
+        this.#layerLegend = this.#layerLegend?.map((config) => {
+          if (this.offsetWidth !== config.width) {
+            config.width = this.offsetWidth;
+          }
+          return { ...config };
+        });
+        this.requestUpdate();
       }).observe(this.renderRoot.querySelector(".legend-container"));
     }
   }
 
   /**
-   * Renders a Time Control for datetime options of a layer.
+   * Renders color legends based on the layerLegend property.
    */
   render() {
     if (!customElements.get("color-legend")) {
       console.error(
-        "Please import `color-legend-element` in order to use layerLegend",
+        "Please import `color-legend` element in order to use layerLegend",
       );
     }
 
@@ -105,45 +131,26 @@ export class EOxLayerControlLayerLegend extends LitElement {
         () => html`
           <div class="legend-container">
             <!-- Render color-legend-->
-            ${when(
-              Array.isArray(this.layerLegend),
-              () =>
-                /** @type {LegendConfig[]} */ (this.layerLegend).map(
-                  (legend, idx) => html`
-                    <color-legend
-                      id="${this.layer.get("id") + idx}"
-                      width=${legend.width ?? 325}
-                      scaleType="${ifDefined(legend.scaleType)}"
-                      markType="${ifDefined(legend.markType)}"
-                      titleText="${ifDefined(legend.title)}"
-                      .range=${legend.range}
-                      .domain=${legend.domain}
-                      tickFormat="${ifDefined(legend.tickFormat)}"
-                      .ticks=${legend.ticks ?? 5}
-                      .tickValues=${legend.tickValues}
-                      .marginLeft=${0}
-                      .marginRight=${0}
-                    >
-                    </color-legend>
-                    <div></div>
-                  `,
-                ),
-              () => html`
+            ${this.#layerLegend.map(
+              (legend, idx, configs) => html`
                 <color-legend
-                  id="${this.layer.get("id")}"
-                  width=${this.layerLegend.width ?? 325}
-                  scaleType="${ifDefined(this.layerLegend.scaleType)}"
-                  markType="${ifDefined(this.layerLegend.markType)}"
-                  titleText="${ifDefined(this.layerLegend.title)}"
-                  .range=${this.layerLegend.range}
-                  .domain=${this.layerLegend.domain}
-                  tickFormat="${ifDefined(this.layerLegend.tickFormat)}"
-                  .ticks=${this.layerLegend.ticks ?? 5}
-                  .tickValues=${this.layerLegend.tickValues}
+                  id="${legend.id}"
+                  width=${legend.width ?? 325}
+                  scaleType="${ifDefined(legend.scaleType)}"
+                  markType="${ifDefined(legend.markType)}"
+                  titleText="${ifDefined(legend.title)}"
+                  .range=${legend.range}
+                  .domain=${legend.domain}
+                  tickFormat="${ifDefined(legend.tickFormat)}"
+                  .ticks=${legend.ticks ?? 5}
+                  .tickValues=${legend.tickValues}
                   .marginLeft=${0}
                   .marginRight=${0}
                 >
                 </color-legend>
+                ${idx !== configs.length - 1
+                  ? html`<div class="separator"></div>`
+                  : nothing}
               `,
             )}
           </div>
@@ -153,6 +160,9 @@ export class EOxLayerControlLayerLegend extends LitElement {
   }
 
   #styleBasic = css`
+    .separator {
+      margin: 0 0 24px 0;
+    }
     color-legend {
       --cle-background: transparent;
       --cle-font-family: inherit;

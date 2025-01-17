@@ -27,8 +27,8 @@ export default {
     ></eox-layercontrol>
     <hr />
     <eox-map
-      .center=${[-1416186, 8184092]}
-      .zoom=${2}
+      .center=${[-1856051, 8501749]}
+      .zoom=${3}
       id="config-styles"
       .style=${STORIES_MAP_STYLE}
       .layers=${[
