@@ -40,7 +40,7 @@ export default function (jsonformOutput, layer, layerConfig) {
 export const flattenObject = (obj) => {
   /**
    * the flattened object to be returned
-   *  @type {Record<string,number>} */
+   *  @type {Record<string,any>} */
   const flat = {};
   // loop through the keys of the object
   for (const key in obj) {
@@ -82,7 +82,6 @@ function updateVectorLayerStyle(styles) {
     for (const key in variables) {
       // ol styles expects numbers to be assigned as typeof number
       if (typeof variables[key] === "number") {
-        //@ts-expect-error ol styles expects number values to be assigned as type number
         rawStyle = rawStyle.replaceAll(`["var","${key}"]`, variables[key]);
       } else {
         // replace all styles variables set of the specific key with the variables value

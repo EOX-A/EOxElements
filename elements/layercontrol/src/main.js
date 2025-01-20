@@ -194,6 +194,16 @@ export class EOxLayerControl extends LitElement {
     );
   }
 
+  /**
+   * Dispatches jsonform updates from layer config to the layercontrol
+   * @param {CustomEvent} evt
+   */
+  #handleLayerConfigChange(evt) {
+    this.dispatchEvent(
+      new CustomEvent("layerConfig:change", { detail: evt.detail }),
+    );
+  }
+
   render() {
     // Checks if there are any layers with the 'layerControlOptional' property set to true
     const layers = this.map?.getLayers().getArray();
@@ -235,6 +245,7 @@ export class EOxLayerControl extends LitElement {
             .toolsAsList=${this.toolsAsList}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
+            @layerConfig:change=${this.#handleLayerConfigChange}
           ></eox-layercontrol-layer-list>
         `,
       )}
