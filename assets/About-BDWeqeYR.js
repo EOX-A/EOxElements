@@ -1,4 +1,4 @@
-import{j as e}from"./index-DjTz9BGS.js";import{useMDXComponents as s}from"./index-Dw69Wm5F.js";function o(n){const t={a:"a",h1:"h1",h2:"h2",p:"p",...s(),...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(t.h1,{id:"eoxelements-beta",children:"EOxElements [beta]"}),`
+import{j as e}from"./index-DuuuSFPv.js";import{useMDXComponents as s}from"./index-Ca-YMdQn.js";function o(n){const t={a:"a",h1:"h1",h2:"h2",p:"p",...s(),...n.components};return e.jsxs(e.Fragment,{children:[e.jsx(t.h1,{id:"eoxelements-beta",children:"EOxElements [beta]"}),`
 `,`
 `,e.jsxs("a",{href:"https://github.com/EOX-A/EOxElements",target:"_blank",style:{display:"flex",alignItems:"center",margin:"20px 0"},children:[e.jsx("img",{src:"https://eox-a.github.io/EOxElements/github-mark.svg",alt:"github logo",width:"25",style:{marginRight:"6px"}}),"GitHub repository"]}),`
 `,e.jsx(t.h2,{id:"introduction",children:"Introduction"}),`
