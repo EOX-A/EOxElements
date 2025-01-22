@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.2](https://github.com/EOX-A/EOxElements/compare/map-v1.19.1...map-v1.19.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* Added fallback to ol uid if no id property is found ([#1488](https://github.com/EOX-A/EOxElements/issues/1488)) ([8e4014d](https://github.com/EOX-A/EOxElements/commit/8e4014da67475f12f01dda44bdb78dba8716dbac))
+
 ## [1.19.1](https://github.com/EOX-A/EOxElements/compare/map-v1.19.0...map-v1.19.1) (2025-01-08)
 
 

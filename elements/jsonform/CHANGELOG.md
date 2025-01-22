@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.1...jsonform-v0.12.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* Range-control output fixed width ([#1482](https://github.com/EOX-A/EOxElements/issues/1482)) ([c9260cb](https://github.com/EOX-A/EOxElements/commit/c9260cba581f671926aff7c8527b3a12ca98ab61))
+
 ## [0.12.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.0...jsonform-v0.12.1) (2025-01-08)
 
 
