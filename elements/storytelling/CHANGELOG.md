@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.4...storytelling-v1.5.0) (2025-01-22)
+
+
+### Features
+
+* Images and videos as tour steps ([#1476](https://github.com/EOX-A/EOxElements/issues/1476)) ([3fc8799](https://github.com/EOX-A/EOxElements/commit/3fc879905f80c82dff9a64bc8aff94db7aaac71e))
+
+
+### Bug Fixes
+
+* Handle storytelling without any content and when content without section tag (##) is added ([#1487](https://github.com/EOX-A/EOxElements/issues/1487)) ([bd3b34d](https://github.com/EOX-A/EOxElements/commit/bd3b34dcb4f990dca0353566accfaf506e787c6c))
+* Support fallback for media src ([#1490](https://github.com/EOX-A/EOxElements/issues/1490)) ([8c40fdd](https://github.com/EOX-A/EOxElements/commit/8c40fdd5b2a55913c0e0b382dbc68fde33189913))
+
 ## [1.4.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.3...storytelling-v1.4.4) (2025-01-08)
 
 

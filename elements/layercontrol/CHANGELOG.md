@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.28.1...layercontrol-v0.29.0) (2025-01-22)
+
+
+### Features
+
+* Introduce multiple and conditional legends ([#1491](https://github.com/EOX-A/EOxElements/issues/1491)) ([919ea60](https://github.com/EOX-A/EOxElements/commit/919ea60df913a5562fb8df226e86b0a4acfe1779))
+
 ## [0.28.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.28.0...layercontrol-v0.28.1) (2025-01-08)
 
 
