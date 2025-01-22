@@ -206,7 +206,7 @@ function processNode(node, initDispatchFunc) {
             media.src = media.getAttribute("data-fallback-src");
             media.removeAttribute("data-fallback-src");
           } else {
-            media.src = "https://placehold.co/600x400?text=Image+not+loaded";
+            media.src = "https://placehold.co/600x400?text=Media+not+found";
           }
         };
 
