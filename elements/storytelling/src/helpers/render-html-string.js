@@ -201,10 +201,12 @@ function processNode(node, initDispatchFunc) {
         media.onerror = () => {
           if (
             document.body.contains(media) &&
-            media.title.includes("temp-backup-url=")
+            media.getAttribute("data-fallback-src")
           ) {
-            media.src = media.title.replace("temp-backup-url=", "");
-            media.title = "";
+            media.src = media.getAttribute("data-fallback-src");
+            media.removeAttribute("data-fallback-src");
+          } else {
+            media.src = "https://placehold.co/600x400?text=Image+not+loaded";
           }
         };
 
@@ -212,9 +214,9 @@ function processNode(node, initDispatchFunc) {
         const loadFunc = () => {
           if (
             document.body.contains(media) &&
-            media.title.includes("temp-backup-url=")
+            media.getAttribute("data-fallback-src")
           ) {
-            media.title = "";
+            media.removeAttribute("data-fallback-src");
           }
         };
 
