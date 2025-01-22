@@ -314,6 +314,7 @@ ${slider}
     position: sticky;
     top:0;
     z-index: 0;
+    object-fit: cover;
   }
   .story-telling .tour section-step {
     background: white;
