@@ -184,20 +184,48 @@ function processNode(node, initDispatchFunc) {
     const lightboxElements = [];
 
     const images = node.querySelectorAll("img");
-    // Loop over each image
-    images.forEach((img) => {
-      // Check if the image is already inside a link (to avoid double wrapping)
-      const mode = img.getAttribute("mode");
+    const videos = node.querySelectorAll("video");
 
-      if (img.parentNode.tagName !== "A" && mode !== "hero") {
-        img.style.cursor = "zoom-in";
-        img.addEventListener("click", () => {
+    // Loop over each image/video
+    [...images, ...videos].forEach((media) => {
+      // Check if the image is already inside a link (to avoid double wrapping)
+      const mode = media.getAttribute("mode");
+
+      if (media.parentNode.tagName !== "A" && mode !== "hero") {
+        media.style.cursor = "zoom-in";
+        media.addEventListener("click", () => {
           lightboxGallery.open();
         });
 
+        // Handle media loading error by switching to backup URL if available
+        media.onerror = () => {
+          if (
+            document.body.contains(media) &&
+            media.getAttribute("data-fallback-src")
+          ) {
+            media.src = media.getAttribute("data-fallback-src");
+            media.removeAttribute("data-fallback-src");
+          } else {
+            media.src = "https://placehold.co/600x400?text=Media+not+found";
+          }
+        };
+
+        // Function to clear the backup URL title attribute after successful load
+        const loadFunc = () => {
+          if (
+            document.body.contains(media) &&
+            media.getAttribute("data-fallback-src")
+          ) {
+            media.removeAttribute("data-fallback-src");
+          }
+        };
+
+        media.onload = loadFunc;
+        media.onloadeddata = loadFunc;
+
         lightboxElements.push({
           type: "image",
-          href: img.src,
+          href: media.src,
         });
       }
     });
