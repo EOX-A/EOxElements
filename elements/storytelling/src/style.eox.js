@@ -306,12 +306,15 @@ ${slider}
   .story-telling .tour.center {
     justify-items: center;
   }
-  .story-telling .tour eox-map {
+  .story-telling .tour eox-map,
+  .story-telling .tour img,
+  .story-telling .tour video {
     width: 100%;
     height: 100vh;
     position: sticky;
     top:0;
     z-index: 0;
+    object-fit: cover;
   }
   .story-telling .tour section-step {
     background: white;
