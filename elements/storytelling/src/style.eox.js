@@ -314,12 +314,6 @@ ${slider}
     position: sticky;
     top:0;
     z-index: 0;
-    opacity: 1;
-    object-fit: cover;
-    transition: all 0.5s linear;
-    -webkit-transition: all 0.5s linear;
-    -moz-transition: all 0.5s linear;
-    -o-transition: all 0.5s linear;
   }
   .story-telling .tour section-step {
     background: white;

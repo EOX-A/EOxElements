@@ -128,8 +128,6 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   );
 }
 
-let currentSrc = "";
-
 /**
  * Assign new value for attribute of element
  *
@@ -144,20 +142,6 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
   Object.keys(section.steps[index]).forEach((attr) => {
     element[attr] = section.steps[index][attr];
   });
-
-  if (
-    ["IMG", "VIDEO"].includes(element.tagName) &&
-    element.src !== currentSrc
-  ) {
-    const newSrc = element.src;
-    element.style.opacity = 0.5;
-    element.src = currentSrc || newSrc;
-    currentSrc = newSrc;
-    setTimeout(() => {
-      element.src = currentSrc;
-      element.style.opacity = 1;
-    }, 500);
-  }
 }
 
 /**
