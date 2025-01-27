@@ -13,6 +13,7 @@ import {
   loadMisMatchingValuesTest,
   renderDrawtools,
   loadCustomEditorInterfaceTest,
+  loadSubmitButtonTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -29,5 +30,6 @@ describe("Jsonform", () => {
   it("loads values", () => loadValuesTest());
   it("loads mismatching values", () => loadMisMatchingValuesTest());
   it("loads custom editor interface", () => loadCustomEditorInterfaceTest());
-  it.only("renders drawtools as a custom input", () => renderDrawtools());
+  it("renders drawtools as a custom input", () => renderDrawtools());
+  it("handles a submit button correctly", () => loadSubmitButtonTest());
 });
