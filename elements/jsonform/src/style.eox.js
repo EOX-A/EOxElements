@@ -149,4 +149,8 @@ export const styleEOX = `
     background: rgba(0, 0, 0, 0.05) !important;
     border-radius: 2px !important;
   }
+  [data-schematype=boolean] label {
+    display: flex;
+    align-items: center;
+  }
 `;
