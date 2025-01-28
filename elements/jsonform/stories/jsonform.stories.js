@@ -15,6 +15,7 @@ import {
   GeoJSONStory,
   LineStory,
   CustomEditorInterfacesStory,
+  ValidationStory,
 } from "./index.js";
 
 export default {
@@ -27,6 +28,7 @@ export default {
       .value=${args.value}
       .noShadow=${true}
       .unstyled=${args.unstyled}
+      @submit=${(e) => alert(JSON.stringify(e.detail))}
     ></eox-jsonform>
   `,
 };
@@ -35,6 +37,11 @@ export default {
  * Basic JSON Form example
  */
 export const Primary = PrimaryStory;
+
+/**
+ * Basic validation example. Includes submit button that is only clickable once validation passes.
+ */
+export const Validation = ValidationStory;
 
 /**
  * JSON Form based on STAC Catalog config

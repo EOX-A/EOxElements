@@ -20,6 +20,22 @@ export const createEditor = (element) => {
   // Get the form element from the shadow DOM
   const formEle = element.renderRoot.querySelector("form");
 
+  // Add default button callback for submit
+  // see https://github.com/json-editor/json-editor?tab=readme-ov-file#button-editor
+  JSONEditor.defaults.callbacks = {
+    button: {
+      onSubmit: function () {
+        element.dispatchEvent(
+          new CustomEvent(`submit`, {
+            detail: element.value,
+            bubbles: true,
+            composed: true,
+          }),
+        );
+      },
+    },
+  };
+
   // Initialize the JSONEditor with the given schema, value, and options
   const initEditor = () =>
     new JSONEditor(formEle, {
