@@ -6,24 +6,22 @@ const Validation = {
   args: {
     schema: {
       type: "object",
-      required: ["eox"],
       properties: {
-        eox: {
-          type: "boolean",
-          format: "checkbox",
-          title: `I agree to the EOX Terms And Conditions`,
-          description: `<a target="_blank" href="https://eox.at/terms-conditions/">https://eox.at/terms-conditions/</a>`,
-          const: true,
-          options: {
-            error_messages: {
-              en: {
-                error_const: "Please accept to continue!",
-              },
+        tos_accepted: {
+          type: "object",
+          title:
+            "In order to be able to click the 'continue' button, check the following checkboxes:",
+          properties: {
+            foo: {
+              title: `<a target="_blank" href="https://foo.com/terms-conditions/">Foo Terms and Conditions v1.0</a>`,
+              $ref: "#/definitions/tos",
+            },
+            bar: {
+              title: `<a target="_blank" href="https://bar.com/terms-conditions/">Bar Terms and Conditions v1.0</a>`,
+              $ref: "#/definitions/tos",
             },
           },
         },
-        // Adds a submit button that is only cliackable
-        // once the validation passes
         button: {
           format: "button",
           options: {
@@ -31,6 +29,41 @@ const Validation = {
               text: "Continue",
               action: "onSubmit",
               validated: true,
+            },
+          },
+        },
+      },
+      definitions: {
+        tos: {
+          type: "object",
+          required: ["accepted"],
+          properties: {
+            accepted: {
+              type: "boolean",
+              format: "checkbox",
+              title: "I accept",
+              const: true,
+              options: {
+                error_messages: {
+                  en: {
+                    error_const: "Please accept to continue!",
+                  },
+                },
+              },
+            },
+            timestamp: {
+              type: "string",
+              default: new Date().toISOString(),
+              options: {
+                hidden: true,
+              },
+            },
+            version: {
+              type: "string",
+              default: "1.0",
+              options: {
+                hidden: true,
+              },
             },
           },
         },

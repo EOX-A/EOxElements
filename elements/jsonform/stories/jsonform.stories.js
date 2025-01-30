@@ -22,6 +22,9 @@ export default {
   title: "Elements/eox-jsonform",
   tags: ["autodocs"],
   component: "eox-jsonform",
+  parameters: {
+    layout: "padded",
+  },
   render: (args) => html`
     <eox-jsonform
       .schema=${args.schema}
