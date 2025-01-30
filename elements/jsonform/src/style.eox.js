@@ -3,7 +3,7 @@ export const styleEOX = `
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
   }
-  form[data-theme="html"] .je-indented-panel {
+  form[data-theme="html"][data-theme-custom="eox"] .je-indented-panel {
     min-height: 20px;
     padding: var(--eox-panel-spacing, 10px);
     margin: var(--eox-panel-spacing, 10px);
@@ -17,7 +17,7 @@ export const styleEOX = `
     -webkit-box-shadow: none;
     box-shadow: none;
   }
-  form[data-theme="html"] .je-child-editor-holder {
+  form[data-theme="html"][data-theme-custom="eox"] .je-child-editor-holder {
     margin-bottom: 0;
   }
   .je-object__container {
@@ -32,7 +32,7 @@ export const styleEOX = `
   .row:not(.row .row) {
     margin-bottom: 8px;
   }
-  form[data-theme="html"] .je-form-input-label:not([data-schematype="boolean"] label) {
+  form[data-theme="html"][data-theme-custom="eox"] .je-form-input-label:not([data-schematype="boolean"] label) {
     display: inline-block;
     max-width: 100%;
     margin-bottom: 5px;
@@ -86,22 +86,22 @@ export const styleEOX = `
   }
 
   /* MD Editor */
-  .editor-toolbar button {
+  [data-theme-custom="eox"] .editor-toolbar button {
     background: none;
     box-shadow: none;
     color: #555;
   }
-  .editor-toolbar button:hover:not([disabled]):not(.icon),
-  .editor-toolbar button:hover:not([disabled]):not(.icon) {
+  [data-theme-custom="eox"] .editor-toolbar button:hover:not([disabled]):not(.icon),
+  [data-theme-custom="eox"] .editor-toolbar button:hover:not([disabled]):not(.icon) {
     box-shadow: none;
     background: #fcfcfc;
     border-color: #95a5a6;
     color: #2c3e50;
   }
-  .editor-toolbar button i {
+  [data-theme-custom="eox"] .editor-toolbar button i {
     font-size: 17px;
   }
-  .editor-statusbar {
+  [data-theme-custom="eox"] .editor-statusbar {
     padding-bottom: 0;
   }
   .cm-header-1 {
@@ -204,13 +204,13 @@ export const styleEOX = `
   }
 
   /* Hide stuff on the root level */
-  form[data-theme="html"] > [data-schemaid="root"] > .je-indented-panel {
+  form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-indented-panel {
     margin: 0;
     padding: 0;
     border: none;
   }
-  form[data-theme="html"] > [data-schemaid="root"] > .je-header,
-  form[data-theme="html"] > [data-schemaid="root"] > .je-object__controls {
+  form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-header,
+  form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-object__controls {
     display: none;
   }
 `;
