@@ -49,7 +49,7 @@ import{x as C}from"./lit-element-Dh4_iwrW.js";import{J as He}from"./core-C4kcdPv
     <eox-jsonform
       .schema=${e.schema}
       .value=${e.value}
-      .noShadow=${!0}
+      .noShadow=${e.noShadow}
       .unstyled=${e.unstyled}
       @submit=${t=>alert(JSON.stringify(t.detail))}
     ></eox-jsonform>
