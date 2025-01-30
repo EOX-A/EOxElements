@@ -87,14 +87,16 @@ export const styleEOX = `
 
   /* MD Editor */
   .editor-toolbar button {
+    background: none;
     box-shadow: none;
-    color: #2c3e50 !important;
+    color: #555;
   }
   .editor-toolbar button:hover:not([disabled]):not(.icon),
   .editor-toolbar button:hover:not([disabled]):not(.icon) {
     box-shadow: none;
     background: #fcfcfc;
     border-color: #95a5a6;
+    color: #2c3e50;
   }
   .editor-toolbar button i {
     font-size: 17px;
