@@ -29,7 +29,7 @@ export default {
     <eox-jsonform
       .schema=${args.schema}
       .value=${args.value}
-      .noShadow=${true}
+      .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
       @submit=${(e) => alert(JSON.stringify(e.detail))}
     ></eox-jsonform>

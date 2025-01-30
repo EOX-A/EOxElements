@@ -52,6 +52,9 @@ export const createEditor = (element) => {
 
   // Event listener for the 'ready' event
   editor.on("ready", () => {
+    //
+    element.renderRoot.querySelector("form").dataset.themeCustom = "eox";
+
     /// Check if any editor requires SimpleMDE and load necessary stylesheets
     if (
       Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
