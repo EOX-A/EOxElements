@@ -3,6 +3,7 @@ import { createEditor, parseProperty } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
+import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
 import allStyle from "@eox/elements-utils/styles/dist/all.style";
 
 /**
