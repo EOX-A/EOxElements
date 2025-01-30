@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.13.0...jsonform-v0.13.1) (2025-01-30)
+
+
+### Bug Fixes
+
+* Ensure custom theme overrides are applied ([#1509](https://github.com/EOX-A/EOxElements/issues/1509)) ([a31141c](https://github.com/EOX-A/EOxElements/commit/a31141ccd967b24570522d64c86b49d90692aecf))
+
 ## [0.13.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.2...jsonform-v0.13.0) (2025-01-30)
 
 
