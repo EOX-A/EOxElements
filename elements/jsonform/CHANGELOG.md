@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.13.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.2...jsonform-v0.13.0) (2025-01-30)
+
+
+### Features
+
+* Allow HTML in titles and descriptions ([#1508](https://github.com/EOX-A/EOxElements/issues/1508)) ([d0ae25b](https://github.com/EOX-A/EOxElements/commit/d0ae25b3c11e77a1905bf1adda1a02b55edecb3e))
+* **style:** Styling overhaul ([#1507](https://github.com/EOX-A/EOxElements/issues/1507)) ([a8d1a09](https://github.com/EOX-A/EOxElements/commit/a8d1a09545a0b01ef7f92c6723f15447dc1c7228))
+* Submit button callback ([#1499](https://github.com/EOX-A/EOxElements/issues/1499)) ([b48d381](https://github.com/EOX-A/EOxElements/commit/b48d381e7fddefacbb13cb2e879eba3b41791447))
+
+
+### Bug Fixes
+
+* **style:** Checkbox label alignment ([#1497](https://github.com/EOX-A/EOxElements/issues/1497)) ([dc40d50](https://github.com/EOX-A/EOxElements/commit/dc40d5048d980b02290c072494f178e9de06e4e9))
+
 ## [0.12.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.1...jsonform-v0.12.2) (2025-01-22)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.3](https://github.com/EOX-A/EOxElements/compare/map-v1.19.2...map-v1.19.3) (2025-01-30)
+
+
+### Bug Fixes
+
+* View sync between a visible and a hidden view ([#1406](https://github.com/EOX-A/EOxElements/issues/1406)) ([bd10af9](https://github.com/EOX-A/EOxElements/commit/bd10af930eb5be753fdb7b5a4bb0b80bb1e8a468))
+
 ## [1.19.2](https://github.com/EOX-A/EOxElements/compare/map-v1.19.1...map-v1.19.2) (2025-01-22)
 
 
