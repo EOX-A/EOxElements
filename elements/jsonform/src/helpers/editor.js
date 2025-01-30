@@ -42,6 +42,7 @@ export const createEditor = (element) => {
       schema: element.schema,
       ...(element.value ? { startval: element.value } : {}),
       theme: "html",
+      iconlib: "fontawesome5", // necessary to get information about expand/collapse state
       ajax: true,
       ...element.options,
     });
