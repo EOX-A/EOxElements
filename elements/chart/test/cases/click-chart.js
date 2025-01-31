@@ -22,7 +22,16 @@ const clickChartTest = () => {
 
   // eslint-disable-next-line cypress/unsafe-to-chain-command
   cy.get(chart)
-    .click()
+    // click on axis title
+    .click(5, 100)
+    .then(() => {
+      expect(clickEventHandlerSpy).to.not.be.called;
+    });
+
+  // eslint-disable-next-line cypress/unsafe-to-chain-command
+  cy.get(chart)
+    // click on bar
+    .click(50, 100)
     .then(() => {
       expect(clickEventHandlerSpy).to.be.calledOnce;
     });
