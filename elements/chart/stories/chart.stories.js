@@ -12,7 +12,7 @@ export default {
       .dataValues=${args.dataValues}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
-      @item.click=${(e) =>
+      @click.item=${(e) =>
         console.log("Chart clicked! Clicked item: ", e.detail.item)}
       style="width:100%; height: 400px;"
     ></eox-chart>

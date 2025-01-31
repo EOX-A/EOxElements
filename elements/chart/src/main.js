@@ -52,7 +52,7 @@ export class EOxChart extends LitElement {
     this.unstyled = false;
   }
 
-  _dispatchClickEvent(detail) {
+  _dispatchItemClickEvent(detail) {
     /**
      * Chart item is clicked. Event detail includes
      * `event` (click event) and `item` (the clicked item on the chart)

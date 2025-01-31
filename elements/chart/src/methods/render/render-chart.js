@@ -23,7 +23,8 @@ const renderChartMethod = (EOxChart, spec, dataValues) => {
       res.view.run();
     }
     res.view.addEventListener("click", (event, item) => {
-      EOxChart._dispatchClickEvent({ event, item });
+      if (!item) return;
+      EOxChart._dispatchItemClickEvent({ event, item });
     });
   });
 };
