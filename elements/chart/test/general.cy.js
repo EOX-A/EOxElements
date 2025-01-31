@@ -1,6 +1,6 @@
 // Importing necessary modules, test cases, and enums
 import "../src/main";
-import { loadChartTest, setDataValuesTest } from "./cases";
+import { loadChartTest, setDataValuesTest, clickChartTest } from "./cases";
 import { TEST_SELECTORS, TEST_VALUES } from "../src/enums";
 
 // Destructuring TEST_SELECTORS object
@@ -23,4 +23,6 @@ describe("Chart", () => {
   it("loads the chart", () => loadChartTest());
 
   it("allows setting data values asynchronously", () => setDataValuesTest());
+
+  it("triggers an click.item event", () => clickChartTest());
 });

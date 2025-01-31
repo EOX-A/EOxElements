@@ -52,6 +52,19 @@ export class EOxChart extends LitElement {
     this.unstyled = false;
   }
 
+  _dispatchClickEvent(detail) {
+    /**
+     * Chart item is clicked. Event detail includes
+     * `event` (click event) and `item` (the clicked item on the chart)
+     *
+     */
+    this.dispatchEvent(
+      new CustomEvent("click.item", {
+        detail,
+      }),
+    );
+  }
+
   /**
    * Lifecycle method called when the element is updated
    *
