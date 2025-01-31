@@ -133,9 +133,6 @@ export const styleEOX = `
   .ace_editor * {
     font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
   }
-  .ace_editor {
-    background: transparent;
-  }
 
   /* Buttons overrides */
   button {
