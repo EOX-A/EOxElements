@@ -8,9 +8,7 @@
       "format": "javascript",
       "options": {
         "ace": {
-          "tabSize": 2,
-          "useSoftTabs": true,
-          "wrap": true
+          "tabSize": 2
         }
       }
     }

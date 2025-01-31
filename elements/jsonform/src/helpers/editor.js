@@ -78,6 +78,12 @@ export const createEditor = (element) => {
     // Check if any editor requires AceEditor
     const aceUsed = Object.values(editor.editors).find((e) => e?.ace_container);
     if (aceUsed && !element.noShadow) {
+      // https://github.com/ajaxorg/ace/wiki/Configuring-Ace
+      aceUsed.ace_editor_instance.setOptions({
+        showPrintMargin: false,
+        useSoftTabs: true,
+        wrap: true,
+      });
       // Attach to shadow root
       aceUsed.ace_editor_instance.renderer.attachToShadowRoot();
       aceUsed.ace_editor_instance.resize();
