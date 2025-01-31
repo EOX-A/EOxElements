@@ -17,7 +17,7 @@ const clickChartTest = () => {
 
   const clickEventHandlerSpy = cy.spy();
   cy.get(chart).and(($chart) => {
-    $chart.get(0).addEventListener("click.item", clickEventHandlerSpy);
+    $chart.get(0).addEventListener("click:item", clickEventHandlerSpy);
   });
 
   // eslint-disable-next-line cypress/unsafe-to-chain-command

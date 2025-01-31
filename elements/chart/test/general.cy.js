@@ -24,5 +24,5 @@ describe("Chart", () => {
 
   it("allows setting data values asynchronously", () => setDataValuesTest());
 
-  it("triggers an click.item event", () => clickChartTest());
+  it("triggers an click:item event", () => clickChartTest());
 });

@@ -59,7 +59,7 @@ export class EOxChart extends LitElement {
      *
      */
     this.dispatchEvent(
-      new CustomEvent("pointermove.item", {
+      new CustomEvent("pointermove:item", {
         detail,
       }),
     );
@@ -72,7 +72,7 @@ export class EOxChart extends LitElement {
      *
      */
     this.dispatchEvent(
-      new CustomEvent("click.item", {
+      new CustomEvent("click:item", {
         detail,
       }),
     );
