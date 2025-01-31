@@ -13,3 +13,4 @@ export { default as WKTStory } from "./wkt"; // Input form based on Drawtools th
 export { default as GeoJSONStory } from "./geojson"; // Input form based on Drawtools that returns GeoJSON
 export { default as CustomEditorInterfacesStory } from "./custom-editor-interfaces"; // Custom editor interfaces
 export { default as ValidationStory } from "./validation";
+export { default as CodeStory } from "./code";

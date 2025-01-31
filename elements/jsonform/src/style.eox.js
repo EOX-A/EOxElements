@@ -128,6 +128,12 @@ export const styleEOX = `
     border-radius: 2px !important;
   }
 
+  /* Ace Editor */
+  .ace_editor,
+  .ace_editor * {
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
+  }
+
   /* Buttons overrides */
   button {
     vertical-align: middle;

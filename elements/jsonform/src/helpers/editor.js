@@ -1,11 +1,18 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { SimplemdeEditor } from "@json-editor/json-editor/src/editors/simplemde.js";
 import EasyMDE from "easymde/dist/easymde.min.js";
+import AceEditor from "ace-builds";
+import "ace-builds/esm-resolver.js";
 import addCustomInputs from "../custom-inputs";
 
 // using a drop-in replacement for EasyMDE,
 // see https://github.com/json-editor/json-editor/issues/1093
 window.SimpleMDE = EasyMDE;
+
+// using Ace editor for code
+// see https://github.com/json-editor/json-editor/tree/master?tab=readme-ov-file#specialized-string-editors
+window.ace = AceEditor;
+window.ace.config.set("useWorker", false);
 
 /**
  * Create the editor instance
@@ -66,6 +73,20 @@ export const createEditor = (element) => {
           @import url("https://unpkg.com/easymde/dist/easymde.min.css");
         `;
       element.renderRoot.insertBefore(style, element.renderRoot.firstChild);
+    }
+
+    // Check if any editor requires AceEditor
+    const aceUsed = Object.values(editor.editors).find((e) => e?.ace_container);
+    if (aceUsed && !element.noShadow) {
+      // https://github.com/ajaxorg/ace/wiki/Configuring-Ace
+      aceUsed.ace_editor_instance.setOptions({
+        showPrintMargin: false,
+        useSoftTabs: true,
+        wrap: true,
+      });
+      // Attach to shadow root
+      aceUsed.ace_editor_instance.renderer.attachToShadowRoot();
+      aceUsed.ace_editor_instance.resize();
     }
   });
   return editor;
