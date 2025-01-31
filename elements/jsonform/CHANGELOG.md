@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.13.1...jsonform-v0.14.0) (2025-01-31)
+
+
+### Features
+
+* Add support for code editor ([#1515](https://github.com/EOX-A/EOxElements/issues/1515)) ([42326dc](https://github.com/EOX-A/EOxElements/commit/42326dcac1ea5cf9be830d23d50afb57419f0675))
+
 ## [0.13.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.13.0...jsonform-v0.13.1) (2025-01-30)
 
 
