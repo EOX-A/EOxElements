@@ -76,7 +76,7 @@ export const createEditor = (element) => {
     }
 
     // Check if any editor requires AceEditor
-    const aceUsed = Object.values(editor.editors).find((e) => e.ace_container);
+    const aceUsed = Object.values(editor.editors).find((e) => e?.ace_container);
     if (aceUsed && !element.noShadow) {
       // Attach to shadow root
       aceUsed.ace_editor_instance.renderer.attachToShadowRoot();
