@@ -14,6 +14,7 @@ import {
   renderDrawtools,
   loadCustomEditorInterfaceTest,
   loadSubmitButtonTest,
+  loadCodeTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -26,6 +27,7 @@ describe("Jsonform", () => {
   it("loads value from url", () => loadExternalValueTest());
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
   it("loads the markdown editor", () => loadMarkdownTest());
+  it("loads the code editor", () => loadCodeTest());
   it("triggers a change event when typing", () => triggerChangeEventTest());
   it("loads values", () => loadValuesTest());
   it("loads mismatching values", () => loadMisMatchingValuesTest());

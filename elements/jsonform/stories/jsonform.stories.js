@@ -16,6 +16,7 @@ import {
   LineStory,
   CustomEditorInterfacesStory,
   ValidationStory,
+  CodeStory,
 } from "./index.js";
 
 export default {
@@ -45,6 +46,11 @@ export const Primary = PrimaryStory;
  * Basic validation example. Includes submit button that is only clickable once validation passes.
  */
 export const Validation = ValidationStory;
+
+/**
+ * Example showing the usage of Ace editor for code editing
+ */
+export const Code = CodeStory;
 
 /**
  * JSON Form based on STAC Catalog config

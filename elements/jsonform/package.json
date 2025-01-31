@@ -34,6 +34,7 @@
   "dependencies": {
     "@eox/elements-utils": "^0.1.5",
     "@json-editor/json-editor": "^2.11.0",
+    "ace-builds": "^1.37.5",
     "easymde": "^2.18.0",
     "isomorphic-dompurify": "^2.4.0",
     "lit": "^3.2.0",
