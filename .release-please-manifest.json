@@ -5,10 +5,10 @@
   "elements/map": "1.19.3",
   "elements/stacinfo": "0.6.1",
   "elements/timecontrol": "0.12.2",
-  "elements/jsonform": "0.13.1",
+  "elements/jsonform": "0.14.0",
   "elements/layout": "0.3.0",
   "elements/storytelling": "1.5.0",
   "elements/geosearch": "0.5.1",
-  "elements/chart": "0.3.1",
+  "elements/chart": "0.4.0",
   "utils": "0.1.5"
 }
