@@ -12,6 +12,10 @@ export default {
       .dataValues=${args.dataValues}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
+      @pointermove:item=${(e) =>
+        console.log("Chart hovered! Hovered item: ", e.detail.item)}
+      @click:item=${(e) =>
+        console.log("Chart clicked! Clicked item: ", e.detail.item)}
       style="width:100%; height: 400px;"
     ></eox-chart>
   `,

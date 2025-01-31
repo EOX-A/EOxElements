@@ -52,6 +52,32 @@ export class EOxChart extends LitElement {
     this.unstyled = false;
   }
 
+  _dispatchItemPointerMoveEvent(detail) {
+    /**
+     * Chart item is hovered. Event detail includes
+     * `event` (pointermove event) and `item` (the hovered item on the chart)
+     *
+     */
+    this.dispatchEvent(
+      new CustomEvent("pointermove:item", {
+        detail,
+      }),
+    );
+  }
+
+  _dispatchItemClickEvent(detail) {
+    /**
+     * Chart item is clicked. Event detail includes
+     * `event` (click event) and `item` (the clicked item on the chart)
+     *
+     */
+    this.dispatchEvent(
+      new CustomEvent("click:item", {
+        detail,
+      }),
+    );
+  }
+
   /**
    * Lifecycle method called when the element is updated
    *
