@@ -63,7 +63,7 @@ export const createEditor = (element) => {
     element.renderRoot.querySelector("form").dataset.themeCustom = "eox";
 
     // Workaround to hide tabs where property has `options.hiden`
-    // See https://github.com/json-editor/json-editor/issues/1577
+    // TEMP - see https://github.com/json-editor/json-editor/issues/1577
     const tabsTitles = Array.from(
       element.renderRoot.querySelectorAll(
         ".tabs.je-tabholder--top > .je-tab--top > span",
