@@ -32,8 +32,8 @@ export default {
       .value=${args.value}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
-      @change=${(e) => console.log("Changed event triggered! New value: " + e.detail)}
-      @submit=${(e) => alert(JSON.stringify(e.detail))}
+      @change=${args.onChange}
+      @submit=${args.onSubmit}
     ></eox-jsonform>
   `,
 };
