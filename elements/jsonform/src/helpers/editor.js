@@ -87,6 +87,19 @@ export const createEditor = (element) => {
         }
       });
 
+    // Workaround to emit "change" event also from text inputs
+    // TEMP - see https://github.com/json-editor/json-editor/issues/1445
+    const inputElements = element.renderRoot.querySelectorAll(
+      "[data-schematype=string] input",
+    );
+    inputElements.forEach((element) => {
+      element.addEventListener("input", () => {
+        element.dispatchEvent(
+          new CustomEvent("change", { detail: element.value }),
+        );
+      });
+    });
+
     /// Check if any editor requires SimpleMDE and load necessary stylesheets
     if (
       Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
