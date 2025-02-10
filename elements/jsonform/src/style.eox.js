@@ -3,6 +3,29 @@ export const styleEOX = `
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
   }
+  form[data-theme="html"][data-theme-custom="eox"] table.je-table {
+    width: 100%;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] table.je-table td {
+    display: grid;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] .je-tabholder.tabs {
+    width: 130px;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] .je-tabholder.tabs+div {
+    margin-left: 130px;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] .tabs.je-tabholder--top {
+    margin-left: 0;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] .je-tabholder--clear > .je-indented-panel {
+    border-top-left-radius: 0;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] .tabs.je-tabholder--top > .je-tab--top {
+    border-radius: 3px 3px 0 0;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
   form[data-theme="html"][data-theme-custom="eox"] .tabs.je-tabholder--top > .je-tab--top[data-hidden] {
     display: none;
   }
