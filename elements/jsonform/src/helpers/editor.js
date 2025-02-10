@@ -44,7 +44,7 @@ export const createEditor = (element) => {
   };
 
   // Allow overriding the resolver
-  // see open issue at https://github.com/json-editor/json-editor/issues/1647
+  // TEMP - see open issue at https://github.com/json-editor/json-editor/issues/1647
   JSONEditor.defaults.resolvers.unshift(
     (schema) => schema.options?.resolver && schema.options.resolver,
   );
