@@ -22,6 +22,9 @@
     "cbar": {
       "type": "string",
       "enum": ["rain", "temperature"]
+    },
+    "foobar": {
+      "type": "string"
     }
   }
 }

@@ -7,6 +7,7 @@ import basicSchema from "./public/basicSchema.json";
 const Primary = {
   args: {
     schema: basicSchema,
+    onChange: (e) => console.info("New value:", e.detail),
   },
 };
 export default Primary;

@@ -13,7 +13,7 @@ import featureSchema from "./public/featureSchema.json";
 const FeatureSelection = {
   args: {
     schema: featureSchema,
-    onChange: (e) => console.log("value:", e.detail),
+    onChange: (e) => console.info("New value:", e.detail),
   },
   render: (args) => html`
     <eox-map 
