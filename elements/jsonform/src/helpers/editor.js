@@ -68,6 +68,25 @@ export const createEditor = (element) => {
     //
     element.renderRoot.querySelector("form").dataset.themeCustom = "eox";
 
+    // Workaround to hide tabs where property has `options.hiden`
+    // TEMP - see https://github.com/json-editor/json-editor/issues/1577
+    const tabsTitles = Array.from(
+      element.renderRoot.querySelectorAll(
+        ".tabs.je-tabholder--top > .je-tab--top > span",
+      ),
+    );
+    Object.entries(editor.expandSchema(editor.schema).properties)
+      .filter(([_, property]) => property.options?.hidden)
+      .map(([key, property]) => property.title || key)
+      .forEach((title) => {
+        const tabTitle = tabsTitles.find(
+          (tabTitle) => tabTitle.textContent === title,
+        );
+        if (tabTitle) {
+          tabTitle.parentElement.dataset.hidden = "";
+        }
+      });
+
     /// Check if any editor requires SimpleMDE and load necessary stylesheets
     if (
       Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)

@@ -3,6 +3,9 @@ export const styleEOX = `
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
   }
+  form[data-theme="html"][data-theme-custom="eox"] .tabs.je-tabholder--top > .je-tab--top[data-hidden] {
+    display: none;
+  }
   form[data-theme="html"][data-theme-custom="eox"] .je-indented-panel {
     min-height: 20px;
     padding: var(--eox-panel-spacing, 10px);
