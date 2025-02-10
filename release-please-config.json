@@ -52,5 +52,6 @@
   "bump-minor-pre-major": true,
   "pull-request-header": "New release prepared:",
   "release-type": "node",
-  "include-component-in-tag": true
+  "include-component-in-tag": true,
+  "changelog-type": "github"
 }
