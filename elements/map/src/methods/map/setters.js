@@ -324,7 +324,9 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
     EOxMap.map.setView(newView);
     EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
       .filter((l) => l instanceof VectorLayer)
-      .forEach((l) => l.getSource().refresh());
+      .forEach((l) =>
+        /** @type {import("ol/layer").Vector} */ (l).getSource().refresh(),
+      );
 
     // Update the projection and center properties
     newProj = projection;
