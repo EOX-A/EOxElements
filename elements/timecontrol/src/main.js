@@ -255,7 +255,8 @@ export class EOxTimeControl extends LitElement {
     flatLayers.push(...layers);
 
     /** @type {Array<Group>} */
-    let groupLayers = /** @type {Array<Group>} */
+    let groupLayers =
+      /** @type {Array<Group>} */
       (flatLayers.filter((l) => l instanceof Group));
     while (groupLayers.length) {
       /** @type {Array<Group>} */
