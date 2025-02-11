@@ -13,7 +13,6 @@ export function getNestedStartVals(schema, nestedValues) {
 
     // Extract startVal based on type
     if (type && type !== "object") {
-      // @ts-expect-error TODO
       startVals[key] =
         type === "number" ? Number(nestedValues[key]) : nestedValues[key];
     } else if (typeof schema[key] === "object" && schema[key]?.properties) {
@@ -23,7 +22,6 @@ export function getNestedStartVals(schema, nestedValues) {
         nestedValues,
       );
       if (Object.keys(nestedStartVals).length > 0) {
-        // @ts-expect-error TODO
         startVals[key] = nestedStartVals;
       }
     }

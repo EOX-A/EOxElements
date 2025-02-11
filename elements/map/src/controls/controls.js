@@ -52,9 +52,7 @@ export function addControl(EOxMap, type, options) {
   const controlOptions = Object.assign({}, options);
 
   // If the control has layers (e.g., for OverviewMap), generate them
-  //@ts-expect-error options need to be according to the given control.
   if (options && options.layers) {
-    //@ts-expect-error layers is not defined for each control
     controlOptions.layers = generateLayers(EOxMap, options.layers); // Parse layers (e.g., for OverviewMap)
   }
 

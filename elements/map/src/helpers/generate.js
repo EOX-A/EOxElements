@@ -21,6 +21,7 @@ import { addDraw, addSelect, generateTileGrid } from "./";
 import { get as getProjection } from "ol/proj";
 
 /**
+ * @typedef {import("../main").EOxMap} EOxMap
  * @typedef {import("../../types").AnyLayer} AnyLayer
  * @typedef {import("../../types").EoxLayer} EoxLayer
  * @typedef {import("../../types").SelectLayer} SelectLayer
@@ -430,7 +431,6 @@ function setSyncListeners(olLayer, eoxLayer) {
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") return;
 
-    // @ts-expect-error TODO
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
 }
