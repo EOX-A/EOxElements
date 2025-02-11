@@ -189,9 +189,7 @@ export class EOxTimeControl extends LitElement {
     const foundElement = getElement(this.for);
 
     if (foundElement) {
-      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (
-        foundElement
-      );
+      const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
       this.eoxMap = EoxMap;
     }
   }
@@ -274,7 +272,7 @@ export class EOxTimeControl extends LitElement {
 
   render() {
     if (this.layer && this.for) {
-      const foundElement = /** @type {import('../../map/main').EOxMap} */ (
+      const foundElement = /** @type {import('@eox/map').EOxMap} */ (
         getElement(this.for)
       );
 
