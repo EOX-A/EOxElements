@@ -20,5 +20,9 @@
     "types": ["cypress"],
     "noImplicitAny": false
   },
-  "include": ["**/src/*.js"]
+  "include": [
+    "elements/jsonform/src/**/*.js",
+    "elements/jsonform/src/**/*.ts",
+    "elements/jsonform/src/**/*.d.ts"
+  ]
 }
