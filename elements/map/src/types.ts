@@ -66,9 +66,9 @@ export type formatWithOptions = {
 };
 
 export type EOxInteraction = {
-  active?: Boolean
+  active?: Boolean;
   type: "draw" | "select";
-  options: DrawOptions | SelectOptions | {[key:string]: any};
+  options: DrawOptions | SelectOptions | { [key: string]: any };
 };
 
 export type EoxLayer = {
