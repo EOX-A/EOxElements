@@ -177,7 +177,10 @@ export class SpatialEditor extends AbstractEditor {
               break;
             }
             case isGeoJSON(this.schema): {
-              const featureCollection = e.detail;
+              const featureCollection =
+                /** @type {import("ol/format/GeoJSON").GeoJSONFeatureCollection}*/ (
+                  /**@type {unknown}*/ (e.detail)
+                );
               if (isMulti(this.schema)) {
                 this.value = featureCollection;
                 break;
