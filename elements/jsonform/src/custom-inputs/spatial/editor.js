@@ -43,9 +43,10 @@ export class SpatialEditor extends AbstractEditor {
         this.translateProperty(options.infoText),
       );
 
-    const drawtoolsEl = /** @type {import("@eox/drawtools").EOxDrawTools} */ (
-      document.createElement("eox-drawtools")
-    );
+    const drawtoolsEl =
+      /** @type {import("@eox/drawtools").EOxDrawTools & {disabled: Boolean}} */ (
+        document.createElement("eox-drawtools")
+      );
 
     let drawType;
     switch (true) {
@@ -100,7 +101,9 @@ export class SpatialEditor extends AbstractEditor {
       attributes.for = this.options.for;
     } else {
       // We need to create a map
-      const eoxmapEl = document.createElement("eox-map");
+      const eoxmapEl = /**
+       * @type import("@eox/map").EOxMap
+       */ (document.createElement("eox-map"));
       eoxmapEl.projection = "EPSG:4326";
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
@@ -143,7 +146,7 @@ export class SpatialEditor extends AbstractEditor {
      * @param {(feature:import("ol/Feature").default) => any} callback
      */
     const spreadFeatures = (features, callback) => {
-      if (features.length) {
+      if (Array.isArray(features)) {
         if (!isMulti(this.schema) && features.length === 1) {
           return callback(features[0]);
         }
@@ -190,7 +193,7 @@ export class SpatialEditor extends AbstractEditor {
               break;
             }
             case isSelection(this.schema): {
-              if (!e.detail.length) {
+              if (!Array.isArray(e.detail)) {
                 this.value = null;
                 break;
               }
@@ -204,7 +207,7 @@ export class SpatialEditor extends AbstractEditor {
               break;
             }
             case isBox(this.schema): {
-              if (!e.detail.length) {
+              if (!Array.isArray(e.detail)) {
                 this.value = null;
                 break;
               }
@@ -214,7 +217,7 @@ export class SpatialEditor extends AbstractEditor {
               break;
             }
             case isPolygon(this.schema): {
-              if (!e.detail.length) {
+              if (!Array.isArray(e.detail)) {
                 this.value = null;
                 break;
               }
@@ -222,7 +225,7 @@ export class SpatialEditor extends AbstractEditor {
               break;
             }
             case isPoint(this.schema): {
-              if (!e.detail.length) {
+              if (!Array.isArray(e.detail)) {
                 this.value = null;
                 break;
               }

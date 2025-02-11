@@ -17,7 +17,7 @@ window.ace.config.set("useWorker", false);
 /**
  * Create the editor instance
  *
- * @param {HTMLElement} element - The eox-jsonform instance
+ * @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
  * @returns {JSONEditor} - The initialized JSONEditor instance
  */
 export const createEditor = (element) => {
