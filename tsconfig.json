@@ -21,8 +21,8 @@
     "noImplicitAny": false
   },
   "include": [
-    "elements/jsonform/src/**/*.js",
-    "elements/jsonform/src/**/*.ts",
-    "elements/jsonform/src/**/*.d.ts"
+    "elements/**/src/**/*.js",
+    "elements/**/src/**/*.ts",
+    "elements/**/src/**/*.d.ts"
   ]
 }
