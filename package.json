@@ -22,6 +22,7 @@
     "lint": "eslint elements",
     "lint:fix": "eslint elements --fix",
     "typecheck": "tsc",
+    "types:generate:all": "npm run types:generate --ws",
     "storybook": "storybook dev -p 6006",
     "build:storybook": "npm run styles && storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
