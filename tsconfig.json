@@ -21,8 +21,8 @@
     "noImplicitAny": false
   },
   "include": [
-    "elements/**/src/**/*.js",
-    "elements/**/src/**/*.ts",
-    "elements/**/src/**/*.d.ts"
+    "elements/*/src/**/*.js",
+    "elements/*/src/**/*.ts",
+    "elements/*/src/**/*.d.ts"
   ]
 }

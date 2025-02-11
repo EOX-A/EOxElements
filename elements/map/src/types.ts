@@ -73,8 +73,9 @@ export type EOxInteraction = {
 
 export type EoxLayer = {
   type: layerType;
-  properties?: object & {
+  properties?: {
     id: string;
+    [key: string]: any;
   };
   minZoom?: number;
   maxZoom?: number;

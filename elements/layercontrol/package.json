@@ -18,14 +18,14 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/layercontrol/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/layercontrol/src/main.d.ts"
+        "./types/main.d.ts"
       ],
       "src/*": [
-        "./types/layercontrol/src/*"
+        "./types/*"
       ]
     }
   },

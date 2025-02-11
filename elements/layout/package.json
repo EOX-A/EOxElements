@@ -11,7 +11,7 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
