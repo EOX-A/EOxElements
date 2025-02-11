@@ -4,8 +4,8 @@ import Geolocation from "./geo-location";
 import LoadingIndicator from "./loading-indicator";
 
 /**
- * @typedef {import("../../types").ControlDictionary} ControlDictionary
- * @typedef {import("../../types").ControlType} ControlType
+ * @typedef {import("../types").ControlDictionary} ControlDictionary
+ * @typedef {import("../types").ControlType} ControlType
  */
 
 const availableControls = {

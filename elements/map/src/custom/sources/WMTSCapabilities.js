@@ -5,7 +5,7 @@ import { createFromTileUrlFunctions } from "ol/tileurlfunction";
 import { appendParams } from "ol/uri";
 
 /**
- * @typedef {import("../../../types").WMTSCapabilitiesOptions} WMTSCapabilitiesOptions
+ * @typedef {import("../../types").WMTSCapabilitiesOptions} WMTSCapabilitiesOptions
  */
 
 class WMTSCapabilities extends TileImage {

@@ -17,12 +17,12 @@ import View from "ol/View";
 import { getElement } from "@eox/elements-utils";
 
 /**
- * @typedef {import("../../../types").EoxLayer} EoxLayer
- * @typedef {import("../../../types").ControlType} ControlType
- * @typedef {import("../../../types").ControlDictionary} ControlDictionary
- * @typedef {import("../../../types").SelectOptions} SelectOptions
- * @typedef {import("../../../types").ConfigObject} ConfigObject
- * @typedef {import("../../../types").ProjectionLike} ProjectionLike
+ * @typedef {import("../../types").EoxLayer} EoxLayer
+ * @typedef {import("../../types").ControlType} ControlType
+ * @typedef {import("../../types").ControlDictionary} ControlDictionary
+ * @typedef {import("../../types").SelectOptions} SelectOptions
+ * @typedef {import("../../types").ConfigObject} ConfigObject
+ * @typedef {import("../../types").ProjectionLike} ProjectionLike
  * */
 
 /**

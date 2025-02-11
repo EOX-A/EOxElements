@@ -9,7 +9,7 @@ const geoJsonFormat = new GeoJSON({
 });
 
 /**
- * @typedef {import("../../../types").FlatGeoBufOptions} FlatGeoBufOptions
+ * @typedef {import("../../types").FlatGeoBufOptions} FlatGeoBufOptions
  */
 class FlatGeoBuf extends Vector {
   /**

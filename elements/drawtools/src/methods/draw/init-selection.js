@@ -22,11 +22,10 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
     return;
   }
 
-  /** @type {import("@eox/map/types").EOxInteraction} */
+  /** @type {import("@eox/map/types/types").EOxInteraction} */
   const hoverInteraction = {
     type: "select",
     active: false,
-    //@ts-expect-error TODO
     options: {
       id: "SelectLayerHoverInteraction",
       condition: "pointermove",
@@ -39,10 +38,9 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
     },
   };
 
-  /** @type {import("../../../../map/types").EOxInteraction} */
+  /** @type {import("@eox/map/types/types").EOxInteraction} */
   const clickInteraction = {
     type: "select",
-    //@ts-expect-error TODO
     options: {
       id: "SelectLayerClickInteraction",
       condition: "click",

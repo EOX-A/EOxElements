@@ -21,7 +21,6 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     type: "Vector",
     properties: {
       id: "drawLayer",
-      // @ts-expect-error TODO
       layerControlHide: true,
       isDrawingEnabled: false,
       multipleFeatures: multipleFeatures,
@@ -42,7 +41,6 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       },
       {
         type: "select",
-        //@ts-expect-error TODO
         options: {
           id: "selectHover",
           condition: "pointermove",
@@ -56,7 +54,6 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       },
       {
         type: "select",
-        //@ts-expect-error TODO
         options: {
           id: "selectClick",
           condition: "click",

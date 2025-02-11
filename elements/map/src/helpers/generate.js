@@ -22,14 +22,14 @@ import { get as getProjection } from "ol/proj";
 
 /**
  * @typedef {import("../main").EOxMap} EOxMap
- * @typedef {import("../../types").AnyLayer} AnyLayer
- * @typedef {import("../../types").EoxLayer} EoxLayer
- * @typedef {import("../../types").SelectLayer} SelectLayer
- * @typedef {import("../../types").EOxInteraction} EOxInteraction
- * @typedef {import("../../types").DrawOptions} DrawOptions
- * @typedef {import("../../types").SelectOptions} SelectOptions
- * @typedef {import("../../types").AnyLayerWithSource} AnyLayerWithSource
- * @typedef {import("../../types").VectorOrVectorTileLayer} VectorOrVectorTileLayer
+ * @typedef {import("../types").AnyLayer} AnyLayer
+ * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../types").SelectLayer} SelectLayer
+ * @typedef {import("../types").EOxInteraction} EOxInteraction
+ * @typedef {import("../types").DrawOptions} DrawOptions
+ * @typedef {import("../types").SelectOptions} SelectOptions
+ * @typedef {import("../types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("../types").VectorOrVectorTileLayer} VectorOrVectorTileLayer
  * */
 
 /**

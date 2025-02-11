@@ -23,7 +23,7 @@ import styleEOX from "./style.eox.js";
 import "./components/editor";
 import { DEFAULT_SENSITIVE_TAGS, SAMPLE_ELEMENTS } from "./enums";
 import _debounce from "lodash.debounce";
-const md = markdownit({ html: true });
+const md = /** @type CustomMarkdownIt */ (markdownit({ html: true }));
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
 /**
@@ -49,7 +49,7 @@ export class EOxStoryTelling extends LitElement {
   }
 
   /**
-   * @type {String} - Generated HTML string using markdown
+   * @type {HTMLElement[]} - Generated HTML Elements using markdown
    */
   #html;
 
@@ -140,7 +140,6 @@ export class EOxStoryTelling extends LitElement {
 
   /**
    * @param {Element} element - Dom element
-   * @private
    */
   #dispatchInitEvent(element) {
     this.dispatchEvent(
@@ -202,9 +201,16 @@ export class EOxStoryTelling extends LitElement {
 
       if (this.showEditor !== undefined) {
         const parent = this.shadowRoot || this;
+        /**
+         * @type {EOxStoryTelling}
+         */
         const editorDOM = parent.querySelector("eox-storytelling-editor");
+        /**
+         * @type {import("@eox/jsonform").EOxJSONForm}
+         */
         const jsonFormDOM = editorDOM.querySelector("eox-jsonform");
 
+        // @ts-expect-error Story is not by default part of value, but only in this case
         if (this.markdown !== jsonFormDOM?.value.Story)
           editorDOM.markdown = this.markdown;
       }
@@ -249,7 +255,7 @@ export class EOxStoryTelling extends LitElement {
     if (!this.disableAutosave) {
       initSavedMarkdown(this);
     }
-    addLightBoxScript(this);
+    addLightBoxScript();
 
     // Check if this.#html is initialized, if not, wait for it
     if (this.#html === undefined) await this.waitForHtmlInitialization();

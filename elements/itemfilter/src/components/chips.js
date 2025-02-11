@@ -68,6 +68,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
    *
    * @private
    */
+  // @ts-expect-error is called from chips method
   _dispatchEvent() {
     this.dispatchEvent(
       new CustomEvent("items-selected", {

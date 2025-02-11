@@ -1,8 +1,8 @@
 import Group from "ol/layer/Group";
 
 /**
- * @typedef {import("../../types").AnyLayerWithSource} AnyLayerWithSource
- * @typedef {import("../../types").AnyLayer} AnyLayer
+ * @typedef {import("../types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("../types").AnyLayer} AnyLayer
  */
 
 /**

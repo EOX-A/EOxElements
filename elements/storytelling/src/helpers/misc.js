@@ -11,7 +11,9 @@ export function scrollAnchorClickEvent(that, selector) {
   (that.shadowRoot || that).querySelectorAll(selector).forEach((doc) => {
     doc.addEventListener("click", (e) => {
       e.preventDefault();
-      window.parent.location.hash = e.target.hash.replace("#", "");
+      window.parent.location.hash = /** @type {HTMLAnchorElement} */ (
+        e.target
+      ).hash.replace("#", "");
       scrollIntoView(that);
     });
   });
@@ -31,8 +33,8 @@ export function scrollIntoView(that) {
 /**
  * Generate custom element handling config.
  *
- * @param {import("markdown-it").default} md - Markdown-It instances
- * @return {{tagNameCheck: String, attributeNameCheck: String, allowCustomizedBuiltInElements: Boolean}}
+ * @param {CustomMarkdownIt} md - Markdown-It instances
+ * @return {{tagNameCheck: RegExp | ((tagName: string) => boolean), attributeNameCheck: RegExp | ((attributeName: string) => boolean), allowCustomizedBuiltInElements: Boolean}}
  */
 export function getCustomEleHandling(md) {
   const tagNameCheck = (tagName) =>

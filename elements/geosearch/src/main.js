@@ -319,9 +319,6 @@ class EOxGeoSearch extends LitElement {
     }
   }
 
-  /**
-   * @private
-   */
   get eoxMap() {
     return this.#eoxMap;
   }
