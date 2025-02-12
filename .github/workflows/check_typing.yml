@@ -41,9 +41,9 @@ jobs:
       - name: Install dependencies 👨🏻‍💻
         run: npm ci --prefer-offline --no-audit
 
-      - name: Generate styles & types 🔧
+      - name: Build packages & generate types 🔧
         run: |
-          npm run styles && \
+          npm run build:all && \
           npm run types:generate:all
 
       - name: Run typing check 👀
