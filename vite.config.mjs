@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import istanbul from "vite-plugin-istanbul";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,7 +7,6 @@ export default defineConfig({
     istanbul({
       cypress: true,
       requireEnv: false,
-    }),
-    tsconfigPaths(),
+    })
   ],
 });

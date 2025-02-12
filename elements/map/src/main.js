@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { LitElement, html } from "lit";
 import Map from "ol/Map";
 import View from "ol/View";
