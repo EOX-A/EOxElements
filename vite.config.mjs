@@ -7,6 +7,6 @@ export default defineConfig({
     istanbul({
       cypress: true,
       requireEnv: false,
-    })
+    }),
   ],
 });

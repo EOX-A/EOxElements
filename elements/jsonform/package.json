@@ -3,6 +3,7 @@
   "version": "0.14.0",
   "type": "module",
   "devDependencies": {
+    "@eox/map": "^1.19.3",
     "vite": "^6.0.3"
   },
   "engines": {
