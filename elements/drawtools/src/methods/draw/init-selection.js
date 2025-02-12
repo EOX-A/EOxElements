@@ -22,7 +22,7 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
     return;
   }
 
-  /** @type {import("@eox/map/types/types").EOxInteraction} */
+  /** @type {import("@eox/map/src/types").EOxInteraction} */
   const hoverInteraction = {
     type: "select",
     active: false,
@@ -38,7 +38,7 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
     },
   };
 
-  /** @type {import("@eox/map/types/types").EOxInteraction} */
+  /** @type {import("@eox/map/src/types").EOxInteraction} */
   const clickInteraction = {
     type: "select",
     options: {
