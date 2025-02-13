@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.0...storytelling-v1.5.1) (2025-02-13)
+
+
+### Bug Fixes
+
+* Lightbox not opening image at correct index ([#1538](https://github.com/EOX-A/EOxElements/issues/1538)) ([71aee89](https://github.com/EOX-A/EOxElements/commit/71aee895b368a9b1a03a43f34dd1f07239144b15))
+
 ## [1.5.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.4...storytelling-v1.5.0) (2025-01-22)
 
 
