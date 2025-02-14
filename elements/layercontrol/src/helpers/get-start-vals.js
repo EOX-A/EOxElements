@@ -58,7 +58,6 @@ export function getStartVals(layer, layerConfig) {
     const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
 
     // Retrieve startVals based on schema and query parameters
-    // @ts-expect-error TODO
     nestedValues = Object.fromEntries(url.searchParams.entries());
   } else return null;
 

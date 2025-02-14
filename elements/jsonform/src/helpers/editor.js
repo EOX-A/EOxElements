@@ -12,6 +12,7 @@ window.SimpleMDE = EasyMDE;
 // using Ace editor for code
 // see https://github.com/json-editor/json-editor/tree/master?tab=readme-ov-file#specialized-string-editors
 window.ace = AceEditor;
+//@ts-expect-error - useWorker is not defined in the ace-builds config keys
 window.ace.config.set("useWorker", false);
 
 /**
@@ -89,6 +90,7 @@ export const createEditor = (element) => {
 
     // Workaround to emit "change" event also from text inputs
     // TEMP - see https://github.com/json-editor/json-editor/issues/1445
+    /** @type {NodeListOf<HTMLInputElement>} */
     const inputElements = element.renderRoot.querySelectorAll(
       "[data-schematype=string] input",
     );
