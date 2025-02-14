@@ -1,12 +1,7 @@
 import Graticule from "ol/layer/Graticule";
-import Group from "ol/layer/Group";
 import Heatmap from "ol/layer/Heatmap";
-import Image from "ol/layer/Image";
 import Layer from "ol/layer/Layer";
-import Tile from "ol/layer/Tile";
-import Vector from "ol/layer/Vector";
 import VectorImage from "ol/layer/VectorImage";
-import VectorTile from "ol/layer/VectorTile";
 import WebGLPoints from "ol/layer/WebGLPoints";
 import WebGLTile from "ol/layer/WebGLTile";
 import WebGLVector from "ol/layer/WebGLVector";
@@ -24,15 +19,11 @@ register(proj4);
 window.eoxMapAdvancedOlLayers = {
   ...{
     Graticule,
-    Group,
     Heatmap,
     Image,
     Layer,
-    Tile,
-    Vector,
     VectorImage,
     WebGLPoints,
-    VectorTile,
     WebGLTile,
     WebGLVector,
   },

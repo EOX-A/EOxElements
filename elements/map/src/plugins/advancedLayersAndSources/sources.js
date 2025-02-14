@@ -11,25 +11,17 @@ import ImageCanvas from "ol/source/ImageCanvas";
 import ImageMapGuide from "ol/source/ImageMapGuide";
 import ImageStatic from "ol/source/ImageStatic";
 import ImageTile from "ol/source/ImageTile";
-import ImageWMS from "ol/source/ImageWMS";
 import OGCMapTile from "ol/source/OGCMapTile";
 import OGCVectorTile from "ol/source/OGCVectorTile";
-import OSM from "ol/source/OSM";
 import Raster from "ol/source/Raster";
 import Source from "ol/source/Source";
 import StadiaMaps from "ol/source/StadiaMaps";
-import Tile from "ol/source/Tile";
 import TileArcGISRest from "ol/source/TileArcGISRest";
 import TileDebug from "ol/source/TileDebug";
 import TileImage from "ol/source/TileImage";
 import TileJSON from "ol/source/TileJSON";
-import TileWMS from "ol/source/TileWMS";
 import UrlTile from "ol/source/UrlTile";
 import UTFGrid from "ol/source/UTFGrid";
-import Vector from "ol/source/Vector";
-import VectorTile from "ol/source/VectorTile";
-import WMTS from "ol/source/WMTS";
-import XYZ from "ol/source/XYZ";
 import Zoomify from "ol/source/Zoomify";
 
 import WMTSCapabilities from "../../custom/sources/WMTSCapabilities";
@@ -53,25 +45,17 @@ window.eoxMapAdvancedOlSources = {
     ImageMapGuide,
     ImageStatic,
     ImageTile,
-    ImageWMS,
     OGCMapTile,
     OGCVectorTile,
-    OSM,
     Raster,
     Source,
     StadiaMaps,
-    Tile,
     TileArcGISRest,
     TileDebug,
     TileImage,
     TileJSON,
-    TileWMS,
     UrlTile,
     UTFGrid,
-    Vector,
-    VectorTile,
-    WMTS,
-    XYZ,
     Zoomify,
   },
   WMTSCapabilities,
