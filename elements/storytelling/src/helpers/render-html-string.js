@@ -1,6 +1,10 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
 import GLightbox from "glightbox";
 
+// Set up empty Lightbox
+let lightboxGallery = null;
+let lightboxElements = [];
+
 let sectionObservers = [];
 let stepSectionObservers = [];
 
@@ -123,10 +127,32 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   window.removeEventListener("scroll", generateParallaxEffect);
   window.addEventListener("scroll", generateParallaxEffect);
 
+  // Initialize lightbox
+  lightboxGallery = GLightbox({
+    autoplayVideos: true,
+  });
+
+  // Initialize lightbox elements
+  lightboxElements = [];
+
+  /** type Element[] */
+  const elements = [];
+  const nodes = Array.from(doc.body.childNodes);
+
   // Process child nodes of the document body
-  return Array.from(doc.body.childNodes).map((node) =>
-    processNode(/** @type {HTMLElement} */ (node), initDispatchFunc),
-  );
+  for (const node of nodes) {
+    if (node instanceof Element) {
+      elements.push(
+        processNode(/** @type {HTMLElement} */ (node), initDispatchFunc),
+      );
+    }
+  }
+
+  // Set lightbox elements
+  lightboxGallery.setElements(lightboxElements);
+
+  // Return processed elements
+  return elements;
 }
 
 /**
@@ -178,28 +204,26 @@ function processNode(node, initDispatchFunc) {
    * See https://github.com/biati-digital/glightbox?tab=readme-ov-file#lightbox-options
    */
   if (node.querySelectorAll) {
-    // Set up empty Lightbox
-    const lightboxGallery = GLightbox({
-      autoplayVideos: true,
-    });
-    const lightboxElements = [];
-
-    const images = Array.from(node.querySelectorAll("img"));
-    const videos = Array.from(node.querySelectorAll("video"));
+    const images = node.querySelectorAll("img");
+    const videos = node.querySelectorAll("video");
 
     // Loop over each image/video
     [...images, ...videos].forEach((media) => {
       // Check if the image is already inside a link (to avoid double wrapping)
       const mode = media.getAttribute("mode");
 
-      if (
-        /** @type {HTMLElement} */ (media.parentNode).tagName !== "A" &&
-        mode !== "hero"
-      ) {
-        media.style.cursor = "zoom-in";
-        media.addEventListener("click", () => {
-          lightboxGallery.open();
-        });
+      if (media.parentNode.tagName !== "A" && mode !== "hero") {
+        if (media.getAttribute("mode") !== "tour") {
+          media.style.cursor = "zoom-in";
+          const index = lightboxElements.length;
+          media.addEventListener("click", () => {
+            lightboxGallery.openAt(index);
+          });
+          lightboxElements.push({
+            type: "image",
+            href: media.src,
+          });
+        }
 
         // Handle media loading error by switching to backup URL if available
         media.onerror = () => {
@@ -226,14 +250,8 @@ function processNode(node, initDispatchFunc) {
 
         media.onload = loadFunc;
         media.onloadeddata = loadFunc;
-
-        lightboxElements.push({
-          type: "image",
-          href: media.src,
-        });
       }
     });
-    lightboxGallery.setElements(lightboxElements);
   }
 
   return node;

@@ -8,9 +8,7 @@ import wktSchema from "./public/wktSchema.json";
 const wkt = {
   args: {
     schema: wktSchema,
-    onChange: (e) => {
-      console.log("value:", e.detail);
-    },
+    onChange: (e) => console.info("New value:", e.detail),
   },
   render: (args) => html`
     <p>Refer to the console for the returned values</p>

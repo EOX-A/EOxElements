@@ -69,6 +69,7 @@ const Validation = {
         },
       },
     },
+    onSubmit: (e) => alert(JSON.stringify(e.detail)),
   },
 };
 export default Validation;

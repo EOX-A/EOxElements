@@ -43,6 +43,12 @@ export const createEditor = (element) => {
     },
   };
 
+  // Allow overriding the resolver
+  // TEMP - see open issue at https://github.com/json-editor/json-editor/issues/1647
+  JSONEditor.defaults.resolvers.unshift(
+    (schema) => schema.options?.resolver && schema.options.resolver,
+  );
+
   // Initialize the JSONEditor with the given schema, value, and options
   const initEditor = () =>
     new JSONEditor(formEle, {
@@ -61,6 +67,38 @@ export const createEditor = (element) => {
   editor.on("ready", () => {
     //
     element.renderRoot.querySelector("form").dataset.themeCustom = "eox";
+
+    // Workaround to hide tabs where property has `options.hiden`
+    // TEMP - see https://github.com/json-editor/json-editor/issues/1577
+    const tabsTitles = Array.from(
+      element.renderRoot.querySelectorAll(
+        ".tabs.je-tabholder--top > .je-tab--top > span",
+      ),
+    );
+    Object.entries(editor.expandSchema(editor.schema).properties)
+      .filter(([_, property]) => property.options?.hidden)
+      .map(([key, property]) => property.title || key)
+      .forEach((title) => {
+        const tabTitle = tabsTitles.find(
+          (tabTitle) => tabTitle.textContent === title,
+        );
+        if (tabTitle) {
+          tabTitle.parentElement.dataset.hidden = "";
+        }
+      });
+
+    // Workaround to emit "change" event also from text inputs
+    // TEMP - see https://github.com/json-editor/json-editor/issues/1445
+    const inputElements = element.renderRoot.querySelectorAll(
+      "[data-schematype=string] input",
+    );
+    inputElements.forEach((element) => {
+      element.addEventListener("input", () => {
+        element.dispatchEvent(
+          new CustomEvent("change", { detail: element.value }),
+        );
+      });
+    });
 
     /// Check if any editor requires SimpleMDE and load necessary stylesheets
     if (

@@ -8,9 +8,7 @@ import geojsonSchema from "./public/geojsonSchema.json";
 const geoJson = {
   args: {
     schema: geojsonSchema,
-    onChange: (e) => {
-      console.log("value:", e.detail);
-    },
+    onChange: (e) => console.info("New value:", e.detail),
   },
   render: (args) => html`
     <p>Refer to the console for the returned values</p>

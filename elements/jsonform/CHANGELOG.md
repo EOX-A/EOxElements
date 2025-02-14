@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.15.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.14.0...jsonform-v0.15.0) (2025-02-10)
+
+
+### Features
+
+* Support overriding the default schema resolver ([#1516](https://github.com/EOX-A/EOxElements/issues/1516)) ([b310053](https://github.com/EOX-A/EOxElements/commit/b3100535b1e1f0825e3f488de91161bf2d32925c))
+
+
+### Bug Fixes
+
+* Hide category tabs where property has `options.hidden` ([#1531](https://github.com/EOX-A/EOxElements/issues/1531)) ([7ffe60f](https://github.com/EOX-A/EOxElements/commit/7ffe60f9b2e86d673b93ac88d3501eb490597e5d))
+* **style:** Add support for tabs ([#1532](https://github.com/EOX-A/EOxElements/issues/1532)) ([e5f3de6](https://github.com/EOX-A/EOxElements/commit/e5f3de6e9b848d55b1f6d95f8d9e1a04c0232eeb))
+* Trigger `change` event on text inputs ([#1535](https://github.com/EOX-A/EOxElements/issues/1535)) ([44eadb4](https://github.com/EOX-A/EOxElements/commit/44eadb4f04e1694642f462f120cf513c9ded08ba))
+
 ## [0.14.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.13.1...jsonform-v0.14.0) (2025-01-31)
 
 

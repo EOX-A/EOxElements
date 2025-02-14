@@ -32,7 +32,8 @@ export default {
       .value=${args.value}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
-      @submit=${(e) => alert(JSON.stringify(e.detail))}
+      @change=${args.onChange}
+      @submit=${args.onSubmit}
     ></eox-jsonform>
   `,
 };
