@@ -1,11 +1,9 @@
 import EsriJSON from "ol/format/EsriJSON";
-import GeoJSON from "ol/format/GeoJSON";
 import GML from "ol/format/GML";
 import GPX from "ol/format/GPX";
 import IGC from "ol/format/IGC";
 import IIIFInfo from "ol/format/IIIFInfo";
 import KML from "ol/format/KML";
-import MVT from "ol/format/MVT";
 import OWS from "ol/format/OWS";
 import Polyline from "ol/format/Polyline";
 import TopoJSON from "ol/format/TopoJSON";
@@ -21,13 +19,11 @@ import WMTSCapabilities from "ol/format/WMTSCapabilities";
 window.eoxMapAdvancedOlFormats = {
   ...{
     EsriJSON,
-    GeoJSON,
     GML,
     GPX,
     IGC,
     IIIFInfo,
     KML,
-    MVT,
     OWS,
     Polyline,
     TopoJSON,
