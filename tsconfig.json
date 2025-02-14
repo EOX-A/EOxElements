@@ -18,7 +18,8 @@
     "allowJs": true,
     "checkJs": true,
     "types": ["cypress"],
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "composite": true
   },
   "include": [
     "elements/*/src/**/*.js",
