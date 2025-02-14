@@ -89,7 +89,7 @@ export class EOxDrawTools extends LitElement {
 
     /**
      * The current native OpenLayers `draw` interaction
-     * @type import("ol/interaction").Draw | import("@eox/map/src/helpers").EOxSelectInteraction
+     * @type import("ol/interaction").Draw | import("@eox/map").EOxMap["selectInteractions"][string]
      */
     this.draw = null;
 

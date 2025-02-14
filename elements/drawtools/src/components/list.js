@@ -25,12 +25,12 @@ export class EOxDrawToolsList extends LitElement {
   };
 
   /**
-   * @type import("@eox/map/src/helpers/select").EOxSelectInteraction
+   * @type {import("@eox/map").EOxMap["selectInteractions"][string]}
    */
   hoverInteraction;
 
   /**
-   * @type import("@eox/map/src/helpers/select").EOxSelectInteraction
+   * @type {import("@eox/map").EOxMap["selectInteractions"][string]}
    */
   clickInteraction;
 
