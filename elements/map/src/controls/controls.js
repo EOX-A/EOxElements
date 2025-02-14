@@ -1,4 +1,12 @@
-import * as olControls from "ol/control";
+import Zoom from "ol/control/Zoom";
+import Rotate from "ol/control/Rotate";
+import ScaleLine from "ol/control/ScaleLine";
+import FullScreen from "ol/control/FullScreen";
+import ZoomSlider from "ol/control/ZoomSlider";
+import Attribution from "ol/control/Attribution";
+import OverviewMap from "ol/control/OverviewMap";
+import ZoomToExtent from "ol/control/ZoomToExtent";
+import MousePosition from "ol/control/MousePosition";
 import { generateLayers } from "../helpers/generate";
 import Geolocation from "./geo-location";
 import LoadingIndicator from "./loading-indicator";
@@ -9,7 +17,17 @@ import LoadingIndicator from "./loading-indicator";
  */
 
 const availableControls = {
-  ...olControls,
+  ...{
+    Zoom,
+    Rotate,
+    ScaleLine,
+    FullScreen,
+    ZoomSlider,
+    Attribution,
+    OverviewMap,
+    ZoomToExtent,
+    MousePosition,
+  },
   Geolocation,
   LoadingIndicator,
 };
