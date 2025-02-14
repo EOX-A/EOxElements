@@ -23,7 +23,9 @@ import styleEOX from "./style.eox.js";
 import "./components/editor";
 import { DEFAULT_SENSITIVE_TAGS, SAMPLE_ELEMENTS } from "./enums";
 import _debounce from "lodash.debounce";
-const md = /** @type CustomMarkdownIt */ (markdownit({ html: true }));
+const md = /** @type {import("./types").CustomMarkdownIt} */ (
+  markdownit({ html: true })
+);
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
 /**

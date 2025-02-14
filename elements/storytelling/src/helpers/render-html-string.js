@@ -212,7 +212,10 @@ function processNode(node, initDispatchFunc) {
       // Check if the image is already inside a link (to avoid double wrapping)
       const mode = media.getAttribute("mode");
 
-      if (media.parentNode.tagName !== "A" && mode !== "hero") {
+      if (
+        /** @type {Element} **/ (media.parentNode).tagName !== "A" &&
+        mode !== "hero"
+      ) {
         if (media.getAttribute("mode") !== "tour") {
           media.style.cursor = "zoom-in";
           const index = lightboxElements.length;

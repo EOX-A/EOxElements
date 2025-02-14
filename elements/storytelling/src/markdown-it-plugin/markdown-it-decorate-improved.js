@@ -17,7 +17,7 @@ import {
  * Ref - https://github.com/rstacruz/markdown-it-decorate
  *
  * @type {import("markdown-it").PluginSimple}
- * @param {CustomMarkdownIt} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 export default function attributes(md) {
   md.core.ruler.push("curly_attributes", curlyAttrs);
@@ -27,7 +27,7 @@ export default function attributes(md) {
  * Main function to process tokens and apply attributes
  *
  * @type {import("markdown-it").Core.RuleCore}
- * @param {CustomMarkdownItState} state - Token state
+ * @param {import("../types").CustomMarkdownItState} state - Token state
  */
 function curlyAttrs(state) {
   state.md.nav = [];
@@ -692,7 +692,7 @@ function trimRight(obj, attr) {
  * Generate list of custom attributes for DOM sanitize whitelist.
  *
  * @param {Array<Object>} tokens - List of markdown tokens
- * @param {CustomMarkdownIt} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function generateCustomAttrsAndSectionMetaList(tokens, md) {
   tokens.forEach((token) => {
@@ -755,7 +755,7 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
  * Initialize sections meta list
  *
  * @param {Object} token - Markdown token
- * @param {CustomMarkdownIt} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function initializeSectionsMeta(token, md) {
   if (token.section) {
@@ -775,7 +775,7 @@ function initializeSectionsMeta(token, md) {
  *
  * @param {Object} token - Markdown token
  * @param {Array} attr - Attribute key & value
- * @param {CustomMarkdownIt} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function updateSectionMetaBasedOnMarkup(token, attr, md) {
   if (token.markup === "##") {
@@ -791,7 +791,7 @@ function updateSectionMetaBasedOnMarkup(token, attr, md) {
  *
  * @param {Object} token - Markdown token
  * @param {Array} attr - Attribute key & value
- * @param {CustomMarkdownIt} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function updateStepBasedOnStepSection(token, attr, md) {
   if (token.tag === "section-step") {

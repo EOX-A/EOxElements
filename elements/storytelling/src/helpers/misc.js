@@ -33,7 +33,7 @@ export function scrollIntoView(that) {
 /**
  * Generate custom element handling config.
  *
- * @param {CustomMarkdownIt} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  * @return {{tagNameCheck: RegExp | ((tagName: string) => boolean), attributeNameCheck: RegExp | ((attributeName: string) => boolean), allowCustomizedBuiltInElements: Boolean}}
  */
 export function getCustomEleHandling(md) {
