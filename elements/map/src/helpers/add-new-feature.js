@@ -1,8 +1,9 @@
 // Import necessary OpenLayers formats
 import GeoJSON from "ol/format/GeoJSON";
-import { LineString, Polygon } from "ol/geom";
+import LineString from "ol/geom/LineString.js";
+import Polygon from "ol/geom/Polygon.js";
 import { getArea, getLength } from "ol/sphere";
-import { getUid } from "ol";
+import { getUid } from "ol/util.js";
 import { READ_FEATURES_OPTIONS } from "../enums";
 
 /**

@@ -1,4 +1,4 @@
-import { Control } from "ol/control.js";
+import Control from "ol/control/Control.js";
 
 /**
  * @typedef {import("../types").LoadingIndicatorOptions} LoadingIndicatorOptions

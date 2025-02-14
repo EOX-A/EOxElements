@@ -1,4 +1,4 @@
-import { Overlay } from "ol";
+import Overlay from "ol/Overlay.js";
 import "../components/tooltip";
 import { createLayer } from "./generate";
 import Feature from "ol/Feature";
