@@ -4,7 +4,7 @@ import { getTopLeft, getWidth } from "ol/extent";
 import { get as getProjection } from "ol/proj";
 
 /**
- * @typedef {import("../../types").EoxLayer} EoxLayer
+ * @typedef {import("../types").EoxLayer} EoxLayer
  * */
 
 /**

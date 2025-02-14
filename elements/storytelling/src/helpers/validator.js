@@ -69,7 +69,12 @@ const eoxMapSchema = {
               ? groupLayerSchema.validate(value)
               : basicLayerSchema.validate(value);
 
-          if (error) return helpers.message(error.message);
+          if (error)
+            return helpers.message(
+              /** @type {joi.LanguageMessages} */ (
+                /** @type {unknown} */ (error.message)
+              ),
+            );
           return value;
         }, "Custom validator for map schema."),
     )
@@ -138,6 +143,9 @@ export function validateMarkdownAttrs(attrs, that) {
     }
   }
 
+  /**
+   * @type {import("./editor").StoryTellingEditor}
+   */
   const editorDom = (that.shadowRoot || that).querySelector(
     "eox-storytelling-editor",
   );

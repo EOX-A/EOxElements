@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 /**
  * @typedef {Object} YearGroup
  * @property {number} year
- * @property {string[]} dates
+ * @property {Object[]} dates
  */
 
 /**
@@ -38,7 +38,7 @@ export class SliderTicks extends LitElement {
     this._yearMarks = [];
     /** @type {YearGroup[]} */
     this._years = [];
-    /** @type {SVGElement[]} */
+    /** @type {import("lit").TemplateResult<2>[] | import("lit").TemplateResult<2>[][]} */
     this._sliderTicks = [];
   }
 
@@ -255,6 +255,7 @@ export class SliderTicks extends LitElement {
     } else if (this.density >= 10.0) {
       return this.calculateDecadeBars();
     }
+    return undefined;
   }
 
   calculateDecadeBars() {
@@ -363,7 +364,7 @@ export class SliderTicks extends LitElement {
 
   // TODO: Can this be fully removed yet (as the year marks are generated alongside ticks)?
   /**
-   * @returns {YearMark[]}
+   * @returns {YearMark[]} yearmarks
    */
   calculateYearMarks() {
     this._years = this.preprocessDates();
@@ -387,6 +388,7 @@ export class SliderTicks extends LitElement {
       // Update previousYear for the next iteration
       previousYear = currentYear;
     });
+    return yearMarks;
   }
 
   /**

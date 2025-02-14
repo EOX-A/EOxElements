@@ -16,7 +16,8 @@ import {
  * This plugin is improved ES6 version of `markdown-it-decorate`
  * Ref - https://github.com/rstacruz/markdown-it-decorate
  *
- * @param {import("markdown-it").default} md - Markdown-It instances
+ * @type {import("markdown-it").PluginSimple}
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 export default function attributes(md) {
   md.core.ruler.push("curly_attributes", curlyAttrs);
@@ -25,7 +26,8 @@ export default function attributes(md) {
 /**
  * Main function to process tokens and apply attributes
  *
- * @param {{tokens: Array<Object>}} state - Token state
+ * @type {import("markdown-it").Core.RuleCore}
+ * @param {import("../types").CustomMarkdownItState} state - Token state
  */
 function curlyAttrs(state) {
   state.md.nav = [];
@@ -49,7 +51,7 @@ function curlyAttrs(state) {
 
     // Parse fallback mode
     if (token.tag === "p") {
-      const { shouldContinue } = parseFallBack(tokens, tokens[i + 1]);
+      const { shouldContinue } = parseFallBack(tokens[i + 1]);
       if (shouldContinue) {
         i = i + 2;
         continue; // continuing with the next opening token if just fallback mode is present
@@ -155,7 +157,7 @@ function curlyAttrs(state) {
 /**
  * Add new html section token
  *
- * @param {{tokens: Array<Object>}} state - Token state
+ * @param {{Token?: any, tokens: Array<Object>}} state - Token state
  * @param {String} tag
  * @param {Number} level
  * @param {Number} nesting
@@ -184,11 +186,10 @@ function isOpener(type) {
 /**
  * Process fallback mode
  *
- * @param {Array<Object>} tokens - List of markdown tokens
  * @param {Object} nextInlineToken - Next inline token
  * @return {{ shouldContinue: Boolean }} - Status to continue to next opening token or not
  */
-function parseFallBack(tokens, nextInlineToken) {
+function parseFallBack(nextInlineToken) {
   const newLineRegex = /\r\n|\r|\n/;
   const fallBackModeRegex = /mode\s*=\s*(['"])fallback\1/g;
   let shouldContinue = false;
@@ -237,6 +238,9 @@ function parseInlineContent(
   sectionStepsIndex,
   sectionSteps,
 ) {
+  /**
+   * @type {import("markdown-it").Token}
+   */
   let lastText;
   const omissions = [];
 
@@ -688,7 +692,7 @@ function trimRight(obj, attr) {
  * Generate list of custom attributes for DOM sanitize whitelist.
  *
  * @param {Array<Object>} tokens - List of markdown tokens
- * @param {import("markdown-it").default} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function generateCustomAttrsAndSectionMetaList(tokens, md) {
   tokens.forEach((token) => {
@@ -751,7 +755,7 @@ function generateCustomAttrsAndSectionMetaList(tokens, md) {
  * Initialize sections meta list
  *
  * @param {Object} token - Markdown token
- * @param {import("markdown-it").default} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function initializeSectionsMeta(token, md) {
   if (token.section) {
@@ -771,7 +775,7 @@ function initializeSectionsMeta(token, md) {
  *
  * @param {Object} token - Markdown token
  * @param {Array} attr - Attribute key & value
- * @param {import("markdown-it").default} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function updateSectionMetaBasedOnMarkup(token, attr, md) {
   if (token.markup === "##") {
@@ -787,7 +791,7 @@ function updateSectionMetaBasedOnMarkup(token, attr, md) {
  *
  * @param {Object} token - Markdown token
  * @param {Array} attr - Attribute key & value
- * @param {import("markdown-it").default} md - Markdown-It instances
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function updateStepBasedOnStepSection(token, attr, md) {
   if (token.tag === "section-step") {

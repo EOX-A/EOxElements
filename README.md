@@ -233,6 +233,20 @@ npm run lint:all
 npm run lint:fix:all
 ```
 
+Type checking:
+
+```
+npm run types:generate:all
+npm run typecheck
+```
+
+If you are using VS Code and the intellisense feature shows different errors than the CLI typecheck, you can set the following settings:
+
+```
+"typescript.tsdk": "./node_modules/typescript/lib",
+"typescript.enablePromptUseWorkspaceTsdk": true,
+```
+
 If something does not work properly, sometimes it helps to clean the entire setup and delete all node modules to start fresh:
 
 ```

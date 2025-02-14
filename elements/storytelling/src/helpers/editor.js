@@ -1,4 +1,8 @@
 /**
+ * @typedef {import("../components/editor").StoryTellingEditor} StoryTellingEditor
+ */
+
+/**
  * Function to disable text selection
  */
 function disableTextSelection() {
@@ -17,7 +21,7 @@ function enableTextSelection() {
  *
  * @param {{target: Object, clientX: Number, clientY: Number}} e - Event for handle mouse move.
  * @param {Object} editorContainer - editor container dom
- * @param {Element} StoryTellingEditor - Dom element
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleEditorContainerMouseDown(
   e,
@@ -37,7 +41,7 @@ function handleEditorContainerMouseDown(
  *
  * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
  * @param {Object} editorContainer - editor container dom
- * @param {Element} StoryTellingEditor - Dom element
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleMouseMove(e, editorContainer, StoryTellingEditor) {
   if (StoryTellingEditor.dragging) {
@@ -72,7 +76,7 @@ function handleMouseMove(e, editorContainer, StoryTellingEditor) {
 /**
  * Function to handle mouse up and enable text selection
  *
- * @param {Element} StoryTellingEditor - Dom element
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleMouseUp(StoryTellingEditor) {
   enableTextSelection();
@@ -83,8 +87,8 @@ function handleMouseUp(StoryTellingEditor) {
 /**
  * Function to handle resize handle mouse down
  *
- * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
- * @param {Element} StoryTellingEditor - Dom element
+ * @param {Event & {clientX: Number, clientY: Number}} e - Event for handle mouse move.
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleResizeHandleMouseDown(e, StoryTellingEditor) {
   e.stopPropagation();
@@ -99,7 +103,7 @@ function handleResizeHandleMouseDown(e, StoryTellingEditor) {
  *
  * @param {Object} editorContainer - editor container dom
  * @param {Object} resizeHandle - Dom element
- * @param {Element} StoryTellingEditor - Dom element
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 export default async function initEditorEvents(
   editorContainer,
@@ -124,11 +128,14 @@ export default async function initEditorEvents(
 /**
  * Function to position editor based on parent height
  *
- * @param {Element} StoryTellingEditor - Dom element
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 export function positionEditor(StoryTellingEditor) {
   const storyTellingContainer = document.querySelector("eox-storytelling");
   const { y } = storyTellingContainer.getBoundingClientRect();
+  /**
+   * @type {HTMLElement}
+   */
   const editorWrapper = StoryTellingEditor.querySelector(".editor-wrapper");
 
   const pxToValue = (prop) => Number(prop.replace("px", ""));
@@ -154,7 +161,7 @@ export function importMdFile(editor) {
   fileInput.type = "file";
   fileInput.accept = ".md";
   fileInput.onchange = (e) => {
-    const file = e.target.files[0];
+    const file = /** @type {HTMLInputElement} */ (e.target).files[0];
     if (!file) return;
 
     const reader = new FileReader();
@@ -212,7 +219,7 @@ export function getSectionIndexes(markdownArr) {
  * Add custom section markdown based on insert position and updated field value
  *
  * @param {String} markdown - Current markdown
- * @param {Boolean} customSectionIndex - Section index where new section markdown will go
+ * @param {Number} customSectionIndex - Section index where new section markdown will go
  * @param {String} newMarkdown - Custom section markdown which is to be inserted
  * @param {Object} fields - json-form fields which is used to insert custom value to markdown
  * @param {Boolean} updatedFieldValues - State whether there is updated field values or not
@@ -229,6 +236,9 @@ export function addCustomSection(
   const markdownArr = markdown.split("\n");
 
   const parent = EOxStoryTelling.shadowRoot || EOxStoryTelling;
+  /**
+   * @type {StoryTellingEditor}
+   */
   const editorDOM = parent.querySelector("eox-storytelling-editor");
 
   // Check and get current section index from markdown array
@@ -240,6 +250,9 @@ export function addCustomSection(
   if (fields) {
     // Get updated json form field value and replace it with literals
     if (updatedFieldValues) {
+      /**
+       * @type import("@eox/jsonform").EOxJSONForm
+       */
       const jsonForm = parent.querySelector(
         "eox-jsonform#storytelling-editor-fields",
       );
@@ -268,6 +281,9 @@ export function addCustomSection(
   );
 
   setTimeout(() => {
+    /**
+     * @type {HTMLElement}
+     */
     const updatedDom = parent.querySelector(
       `div[data-section="${customSectionIndex + 1}"]`,
     );
@@ -289,6 +305,9 @@ export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
   let timeOutId = null;
 
   easyMDEInstance?.codemirror.on("change", function () {
+    /**
+     * @type {HTMLElement}
+     */
     const saveEle = StoryTellingEditor.querySelector(".editor-saver");
     saveEle.innerText = "Auto Saving...";
     if (timeOutId) clearTimeout(timeOutId);
@@ -314,7 +333,7 @@ export function generateAutoSave(StoryTellingEditor, storyId, easyMDEInstance) {
 /**
  * Prevent editor outside scrolling
  *
- * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 export function preventEditorOutsideScroll(StoryTellingEditor) {
   (StoryTellingEditor.shadowRoot || StoryTellingEditor)
@@ -322,13 +341,14 @@ export function preventEditorOutsideScroll(StoryTellingEditor) {
     ?.addEventListener(
       "wheel",
       function (event) {
-        const deltaY = event.deltaY;
-        const contentHeight = this.scrollHeight; // Total scrollable content height
-        const visibleHeight = this.clientHeight; // Visible portion of the textarea
+        const deltaY = /**@type {WheelEvent}*/ (event).deltaY;
+        const contentHeight = StoryTellingEditor.scrollHeight; // Total scrollable content height
+        const visibleHeight = StoryTellingEditor.clientHeight; // Visible portion of the textarea
 
         if (
-          (this.scrollTop === 0 && deltaY < 0) ||
-          (this.scrollTop + visibleHeight >= contentHeight && deltaY > 0)
+          (StoryTellingEditor.scrollTop === 0 && deltaY < 0) ||
+          (StoryTellingEditor.scrollTop + visibleHeight >= contentHeight &&
+            deltaY > 0)
         )
           event.preventDefault(); // Prevent scrolling
       },
@@ -369,7 +389,7 @@ export function initSavedMarkdown(EOxStoryTelling) {
 /**
  * Run when editor is initialised with all it's instance values
  *
- * @param {import("../components/editor.js").StoryTellingEditor} StoryTellingEditor - Dom element
+ * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 export function runWhenEditorInitialised(StoryTellingEditor) {
   if (StoryTellingEditor.editor.editor?.editors?.["root.Story"]) {
@@ -383,6 +403,9 @@ export function runWhenEditorInitialised(StoryTellingEditor) {
         easyMDEInstance,
       );
     } else {
+      /**
+       * @type {HTMLElement}
+       */
       const saveEle = StoryTellingEditor.querySelector(".editor-saver");
       saveEle.innerText = "";
     }
@@ -408,6 +431,8 @@ export function updateEditorInitVisibility(StoryTellingEditor) {
     StoryTellingEditor.editor.editor.ready &&
     StoryTellingEditor.editor.editor?.editors["root.Story"].simplemde_instance
   )
-    StoryTellingEditor.querySelector(".switch-input").click();
+    /** @type {HTMLElement}*/ (
+      StoryTellingEditor.querySelector(".switch-input")
+    ).click();
   else setTimeout(() => updateEditorInitVisibility(StoryTellingEditor), 100);
 }

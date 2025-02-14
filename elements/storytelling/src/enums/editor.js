@@ -52,6 +52,9 @@ export const EDITOR_SCHEMA = {
               "fa fa-plus",
               "Add custom section",
               () => {
+                /**
+                 * @type import("../main.js").EOxStoryTelling
+                 */
                 const element = document.querySelector("eox-storytelling");
                 const markdownArr = element.markdown.split("\n");
                 const sectionIndexes = getSectionIndexes(markdownArr);

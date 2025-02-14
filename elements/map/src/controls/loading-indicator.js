@@ -1,7 +1,7 @@
 import { Control } from "ol/control.js";
 
 /**
- * @typedef {import("../../types").LoadingIndicatorOptions} LoadingIndicatorOptions
+ * @typedef {import("../types").LoadingIndicatorOptions} LoadingIndicatorOptions
  */
 
 export default class LoadingIndicatorControl extends Control {

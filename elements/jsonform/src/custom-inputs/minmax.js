@@ -48,7 +48,9 @@ export class MinMaxEditor extends AbstractEditor {
       );
 
     // Create the range slider element
-    const range = document.createElement("tc-range-slider");
+    const range = /** @type {HTMLInputElement}*/ (
+      document.createElement("tc-range-slider")
+    );
     // TODO - better logic to find min & max properties?
     const minKey = Object.keys(properties).find((k) => k.includes("min"));
     const maxKey = Object.keys(properties).find((k) => k.includes("max"));
@@ -81,15 +83,23 @@ export class MinMaxEditor extends AbstractEditor {
     }
 
     // Add event listener for change events on the range slider
-    this.input.addEventListener("change", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      this.value = {
-        [minKey]: e.detail.value1,
-        [maxKey]: e.detail.value2,
-      };
-      this.onChange(true);
-    });
+    this.input.addEventListener(
+      "change",
+      /** @type {EventListener} */ (
+        /**
+         * @param {CustomEvent} e
+         */
+        (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.value = {
+            [minKey]: e.detail.value1,
+            [maxKey]: e.detail.value2,
+          };
+          this.onChange(true);
+        }
+      ),
+    );
 
     this.container.appendChild(this.control);
   }

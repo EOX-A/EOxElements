@@ -3,9 +3,9 @@ import Draw, { createBox } from "ol/interaction/Draw";
 import { addNewFeature } from "../helpers";
 
 /**
- * @typedef {import("../../types").DrawOptions} DrawOptions
- * @typedef {import("../../types").SelectOptions} SelectOptions
- * @typedef {import("../../types").SelectLayer} SelectLayer
+ * @typedef {import("../types").DrawOptions} DrawOptions
+ * @typedef {import("../types").SelectOptions} SelectOptions
+ * @typedef {import("../types").SelectLayer} SelectLayer
  * @typedef {import("ol/layer").Vector} VectorLayer
  * */
 

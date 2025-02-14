@@ -8,7 +8,7 @@ import {
 import { EDITOR_SCHEMA } from "../enums";
 
 // Define LitElement for the editor
-class StoryTellingEditor extends LitElement {
+export class StoryTellingEditor extends LitElement {
   // Define static properties for LitElement
   static properties = {
     markdown: { attribute: "markdown", type: String },
@@ -60,6 +60,21 @@ class StoryTellingEditor extends LitElement {
      */
     this.disableAutosave = false;
 
+    /**
+     * @type Number
+     */
+    this.lastX = undefined;
+
+    /**
+     * @type Number
+     */
+    this.lastY = undefined;
+
+    /**
+     * @type {import("@eox/jsonform").EOxJSONForm}
+     */
+    this.editor = undefined;
+
     // Bind methods to the instance
     this.disableTextSelection = this.disableTextSelection.bind(this);
     this.enableTextSelection = this.enableTextSelection.bind(this);
@@ -99,6 +114,9 @@ class StoryTellingEditor extends LitElement {
   }
 
   updateErrors(errors) {
+    /**
+     * @type HTMLElement
+     */
     const errorDom = this.renderRoot.querySelector(".editor-error");
 
     if (errorDom) {

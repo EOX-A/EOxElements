@@ -189,9 +189,7 @@ export class EOxTimeControl extends LitElement {
     const foundElement = getElement(this.for);
 
     if (foundElement) {
-      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (
-        foundElement
-      );
+      const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
       this.eoxMap = EoxMap;
     }
   }
@@ -257,15 +255,20 @@ export class EOxTimeControl extends LitElement {
     flatLayers.push(...layers);
 
     /** @type {Array<Group>} */
-    let groupLayers = flatLayers.filter((l) => l instanceof Group);
+    let groupLayers =
+      /** @type {Array<Group>} */
+      (flatLayers.filter((l) => l instanceof Group));
     while (groupLayers.length) {
+      /** @type {Array<Group>} */
       const newGroupLayers = [];
       for (let i = 0, ii = groupLayers.length; i < ii; i++) {
         const layersInsideGroup = groupLayers[i].getLayers().getArray();
         flatLayers.push(...layersInsideGroup);
-        newGroupLayers.push(
-          ...layersInsideGroup.filter((l) => l instanceof Group),
+        /** @type {Array<Group>} */
+        const filteredGroups = /** @type {Array<Group>} */ (
+          layersInsideGroup.filter((l) => l instanceof Group)
         );
+        newGroupLayers.push(...filteredGroups);
       }
       groupLayers = newGroupLayers;
     }
@@ -274,7 +277,7 @@ export class EOxTimeControl extends LitElement {
 
   render() {
     if (this.layer && this.for) {
-      const foundElement = /** @type {import('../../map/main').EOxMap} */ (
+      const foundElement = /** @type {import('@eox/map').EOxMap} */ (
         getElement(this.for)
       );
 

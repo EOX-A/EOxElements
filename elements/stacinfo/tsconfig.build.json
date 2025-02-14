@@ -7,5 +7,5 @@
     "declarationMap": true,
     "emitDeclarationOnly": true
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.d.ts", "global.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.d.ts"]
 }

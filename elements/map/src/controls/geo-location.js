@@ -7,7 +7,7 @@ import { Vector as VectorLayer } from "ol/layer";
 import { Fill, Stroke, Style } from "ol/style";
 
 /**
- * @typedef {import("../../types").GeolocationOptions} GeolocationOptions
+ * @typedef {import("../types").GeolocationOptions} GeolocationOptions
  */
 
 export default class GeolocationControl extends Control {

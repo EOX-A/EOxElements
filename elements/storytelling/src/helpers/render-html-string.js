@@ -14,14 +14,14 @@ let stepSectionObservers = [];
  * @param {string} htmlString - The HTML string to be rendered.
  * @param {Object} sections - List of sections meta
  * @param {Function} initDispatchFunc - Init dispatch event
- * @param {import("lit").LitElement} that - The LitElement instance.
- * @returns {Element[]} An array of processed DOM nodes.
+ * @param {import("../main.js").EOxStoryTelling} that - The EOxStoryTelling instance.
+ * @returns {HTMLElement[]} An array of processed DOM nodes.
  */
 export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   // Parse the HTML string into a document
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlString, "text/html");
-  const parent = that.shadowRoot || that;
+  const parent = /** @type {HTMLElement} */ (that.shadowRoot || that);
 
   const isNavigation = !!(that.showNav && that.nav.length);
 
@@ -112,6 +112,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
     // Apply the transformation to each element
     parallaxItems.forEach(function (parallaxItem) {
+      if (!(parallaxItem instanceof HTMLElement)) return;
       const parallaxEnabled =
         parallaxItem.getAttribute("data-parallax") === "true";
       if (parallaxEnabled)
@@ -141,7 +142,9 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   // Process child nodes of the document body
   for (const node of nodes) {
     if (node instanceof Element) {
-      elements.push(processNode(node, initDispatchFunc));
+      elements.push(
+        processNode(/** @type {HTMLElement} */ (node), initDispatchFunc),
+      );
     }
   }
 
@@ -158,7 +161,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
  * @param {Object} section - section meta
  * @param {Number} index - current section index
  * @param {String} elementSelector - sector string for element
- * @param {import("lit").LitElement} parent - The LitElement instance.
+ * @param {HTMLElement} parent - The EOxStoryTelling instance.
  */
 function assignNewAttrValue(section, index, elementSelector, parent) {
   const element = parent.querySelector(elementSelector);
@@ -171,9 +174,9 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
 /**
  * Processes a DOM node by potentially modifying its attributes value based on it's datatype
  *
- * @param {Element} node - The DOM node to process.
+ * @param {HTMLElement} node - The DOM node to process.
  * @param {Function} initDispatchFunc - Init dispatch event
- * @returns {Element} The processed DOM node.
+ * @returns {HTMLElement} The processed DOM node.
  */
 function processNode(node, initDispatchFunc) {
   if (node.nodeType === Node.ELEMENT_NODE) {
@@ -187,7 +190,7 @@ function processNode(node, initDispatchFunc) {
           // Update the attribute with its converted value
           (attr) =>
             (element[attr.name] = convertAttributeValueBasedOnItsType(
-              element,
+              /** @type {HTMLElement} */ (element),
               attr.name,
             )),
         );
@@ -209,7 +212,10 @@ function processNode(node, initDispatchFunc) {
       // Check if the image is already inside a link (to avoid double wrapping)
       const mode = media.getAttribute("mode");
 
-      if (media.parentNode.tagName !== "A" && mode !== "hero") {
+      if (
+        /** @type {Element} **/ (media.parentNode).tagName !== "A" &&
+        mode !== "hero"
+      ) {
         if (media.getAttribute("mode") !== "tour") {
           media.style.cursor = "zoom-in";
           const index = lightboxElements.length;
@@ -257,7 +263,7 @@ function processNode(node, initDispatchFunc) {
 /**
  * Converts an attribute value of a DOM element into its detected type and returns the converted value.
  *
- * @param {Element|String} element - The DOM element containing the attribute or element with actual value.
+ * @param {HTMLElement} element - The DOM element containing the attribute or element with actual value.
  * @param {string} attributeName - The name of the attribute to convert.
  * @returns {string|number|boolean|array|object} The attribute value converted to its detected type.
  */
@@ -290,9 +296,9 @@ export function convertValueToType(value) {
 /**
  * Click event for add section button in ::after and ::before
  *
- * @param {Event} event - Click event
+ * @param {MouseEvent} event - Click event
  * @param {Boolean} isFirstSection - Whether the clicked section is first section or not
- * @param {Element} that - DOM Element
+ * @param {HTMLElement} that - DOM Element
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  */
 function generateAddSectionClickEvt(
@@ -343,12 +349,12 @@ function generateAddSectionClickEvt(
 /**
  * Parse Nav and generate a new Element Node with add section button
  *
- * @param {Array<Element>} html - List of html elements
+ * @param {Array<HTMLElement>} html - List of html elements
  * @param {Array} nav - List of nav elements
  * @param {Boolean} showNav - Whether to show nav or not
  * @param {String | "closed" | undefined} showEditor - Whether to show editor or not
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
- * @returns {Element[]} An array of processed DOM nodes after adding navigation.
+ * @returns {HTMLElement[]} An array of processed DOM nodes after adding navigation.
  */
 export function parseNavWithAddSection(
   html,
@@ -381,7 +387,9 @@ export function parseNavWithAddSection(
       </div>
     </div>
   `;
-    const navDOM = parser.parseFromString(navHtml, "text/html").body.firstChild;
+    const navDOM = /** @type {HTMLElement} */ (
+      parser.parseFromString(navHtml, "text/html").body.firstChild
+    );
 
     // Add click handler for hamburger menu
     const hamburgerBtn = navDOM.querySelector(".hamburger-menu");
@@ -425,9 +433,9 @@ export function parseNavWithAddSection(
 
         section.addEventListener("click", function (event) {
           generateAddSectionClickEvt(
-            event,
+            /** @type {MouseEvent} */ (event),
             isFirstSection,
-            this,
+            /** @type {HTMLElement} */ (section),
             EOxStoryTelling,
           );
         });

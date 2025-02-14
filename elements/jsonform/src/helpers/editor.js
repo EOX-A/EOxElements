@@ -12,12 +12,13 @@ window.SimpleMDE = EasyMDE;
 // using Ace editor for code
 // see https://github.com/json-editor/json-editor/tree/master?tab=readme-ov-file#specialized-string-editors
 window.ace = AceEditor;
+//@ts-expect-error - useWorker is not defined in the ace-builds config keys
 window.ace.config.set("useWorker", false);
 
 /**
  * Create the editor instance
  *
- * @param {HTMLElement} element - The eox-jsonform instance
+ * @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
  * @returns {JSONEditor} - The initialized JSONEditor instance
  */
 export const createEditor = (element) => {
@@ -89,6 +90,7 @@ export const createEditor = (element) => {
 
     // Workaround to emit "change" event also from text inputs
     // TEMP - see https://github.com/json-editor/json-editor/issues/1445
+    /** @type {NodeListOf<HTMLInputElement>} */
     const inputElements = element.renderRoot.querySelectorAll(
       "[data-schematype=string] input",
     );

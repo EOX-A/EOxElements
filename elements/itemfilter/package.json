@@ -29,7 +29,8 @@
     }
   },
   "scripts": {
-    "prepack": "tsc -p tsconfig.build.json || true",
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
   },

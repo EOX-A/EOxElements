@@ -6,7 +6,6 @@
  */
 export default function cleanJSONInput(json) {
   // Extracts the value entered in the input field
-  // @ts-expect-error TODO
   const inputValue = json;
 
   // Replace single quotes with double quotes, ensuring keys are in double quotes for valid JSON

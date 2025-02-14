@@ -4,6 +4,7 @@
   "type": "module",
   "devDependencies": {
     "@eox/map": "^1.16.0",
+    "@types/lodash.throttle": "^4.1.9",
     "@types/sortablejs": "^1.15.1",
     "ol": "^10.4.0",
     "vite": "^6.0.3"
@@ -18,19 +19,20 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/layercontrol/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/layercontrol/src/main.d.ts"
+        "./types/main.d.ts"
       ],
       "src/*": [
-        "./types/layercontrol/src/*"
+        "./types/*"
       ]
     }
   },
   "scripts": {
-    "prepack": "tsc -p tsconfig.build.json || true",
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
   },

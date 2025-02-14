@@ -66,14 +66,16 @@ export type formatWithOptions = {
 };
 
 export type EOxInteraction = {
+  active?: boolean;
   type: "draw" | "select";
-  options: DrawOptions | SelectOptions;
+  options: DrawOptions | SelectOptions | { [key: string]: any };
 };
 
 export type EoxLayer = {
   type: layerType;
-  properties?: object & {
+  properties?: {
     id: string;
+    [key: string]: any;
   };
   minZoom?: number;
   maxZoom?: number;
@@ -234,3 +236,11 @@ export type ConfigObject = {
   preventScroll: boolean;
   animationOptions?: EOxAnimationOptions;
 };
+
+declare global {
+  interface Window {
+    eoxMapAdvancedOlFormats: object;
+    eoxMapAdvancedOlLayers: object;
+    eoxMapAdvancedOlSources: object;
+  }
+}

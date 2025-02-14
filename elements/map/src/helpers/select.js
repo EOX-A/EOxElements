@@ -9,10 +9,10 @@ import { getUid } from "ol/util";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
- * @typedef {import("../../types").EoxLayer} EoxLayer
- * @typedef {import("../../types").SelectLayer} SelectLayer
- * @typedef {import("../../types").SelectOptions} SelectOptions
- * @typedef {import("../../types").DrawOptions} DrawOptions
+ * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../types").SelectLayer} SelectLayer
+ * @typedef {import("../types").SelectOptions} SelectOptions
+ * @typedef {import("../types").DrawOptions} DrawOptions
  */
 
 /**

@@ -65,7 +65,7 @@ export class EOxLayerControl extends LitElement {
   /**
    * Instance of `eox-map` which is a wrapper for the OL
    *
-   * @type {import("../../map/src/main").EOxMap}
+   * @type {import("@eox/map").EOxMap}
    */
   #eoxMap;
 

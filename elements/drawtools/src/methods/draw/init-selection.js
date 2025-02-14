@@ -2,7 +2,7 @@
  * Initializes the selection interactions for the given layer ID to the DrawTool.
  *
  * @param {import('../../main').EOxDrawTools} EoxDrawTool - The drawing tool instance.
- * @param {import("@eox/map/src/main").EOxMap} EoxMap - The map instance.
+ * @param {import("@eox/map").EOxMap} EoxMap - The map instance.
  */
 const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
   if (!updatedLayerId || !EoxMap) {
@@ -12,7 +12,7 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
   const selectionLayer =
     JSON.parse(
       JSON.stringify(
-        /** @type {import("../../../../map/src/main").EoxLayer} */ (
+        /** @type {import("@eox/map").EoxLayer} */ (
           EoxMap.getLayerById(updatedLayerId).get("_jsonDefinition")
         ),
       ),
@@ -22,11 +22,10 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
     return;
   }
 
-  /** @type {import("../../../../map/types").EOxInteraction} */
+  /** @type {import("@eox/map/src/types").EOxInteraction} */
   const hoverInteraction = {
     type: "select",
     active: false,
-    //@ts-expect-error TODO
     options: {
       id: "SelectLayerHoverInteraction",
       condition: "pointermove",
@@ -39,10 +38,9 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
     },
   };
 
-  /** @type {import("../../../../map/types").EOxInteraction} */
+  /** @type {import("@eox/map/src/types").EOxInteraction} */
   const clickInteraction = {
     type: "select",
-    //@ts-expect-error TODO
     options: {
       id: "SelectLayerClickInteraction",
       condition: "click",
