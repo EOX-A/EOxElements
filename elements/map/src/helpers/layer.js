@@ -1,8 +1,8 @@
 import Group from "ol/layer/Group";
 
 /**
- * @typedef {import("../../types").AnyLayerWithSource} AnyLayerWithSource
- * @typedef {import("../../types").AnyLayer} AnyLayer
+ * @typedef {import("../types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("../types").AnyLayer} AnyLayer
  */
 
 /**
@@ -42,7 +42,11 @@ export function getFlatLayersArray(layers) {
     const newGroupLayers = [];
     for (let i = 0; i < groupLayers.length; i++) {
       // Filter the initial layers to find group layers that may contain nested layers
-      const layersInsideGroup = groupLayers[i].getLayers().getArray();
+      const layersInsideGroup = /** @type {import("ol/layer").Group} */ (
+        /**@type {unknown}*/ (groupLayers[i])
+      )
+        .getLayers()
+        .getArray();
 
       // Add these nested layers to the flatLayers array
       flatLayers.push(...layersInsideGroup);

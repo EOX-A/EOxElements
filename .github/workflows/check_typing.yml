@@ -1,0 +1,50 @@
+name: Check typing
+
+on:
+  pull_request:
+    branches:
+      - "main"
+      - "**/main"
+      - "!release-please*"
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  check-typing:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [20]
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
+
+      - name: Cache node_modules 📦
+        uses: actions/cache@v4.2.0
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies 👨🏻‍💻
+        run: npm ci --prefer-offline --no-audit
+
+      - name: Generate styles & types 🔧
+        run: |
+          npm run styles && \
+          npm run types:generate:all
+
+      - name: Run typing check 👀
+        run: npm run typecheck

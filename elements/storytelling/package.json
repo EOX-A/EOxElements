@@ -3,6 +3,7 @@
   "version": "1.5.1",
   "type": "module",
   "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
     "vite": "^6.0.3"
   },
   "engines": {
@@ -27,7 +28,8 @@
     }
   },
   "scripts": {
-    "prepack": "tsc -p tsconfig.build.json || true",
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
   },

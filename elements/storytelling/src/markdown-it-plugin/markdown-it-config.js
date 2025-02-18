@@ -4,7 +4,8 @@ import { checkMarkdownVersion } from "../helpers";
 /**
  * Extends markdown-it instance with a custom plugin to extract basic config for StoryTelling
  *
- * @param {import("markdown-it").default} md - Markdown-It instances
+ * @type {import("markdown-it").PluginSimple}
+ * @param {import("../types").CustomMarkdownIt} md - Markdown-It instances
  */
 function markdownItConfig(md) {
   md.core.ruler.before("normalize", "extract-config", (state) => {

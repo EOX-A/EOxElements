@@ -17,12 +17,12 @@ import View from "ol/View";
 import { getElement } from "@eox/elements-utils";
 
 /**
- * @typedef {import("../../../types").EoxLayer} EoxLayer
- * @typedef {import("../../../types").ControlType} ControlType
- * @typedef {import("../../../types").ControlDictionary} ControlDictionary
- * @typedef {import("../../../types").SelectOptions} SelectOptions
- * @typedef {import("../../../types").ConfigObject} ConfigObject
- * @typedef {import("../../../types").ProjectionLike} ProjectionLike
+ * @typedef {import("../../types").EoxLayer} EoxLayer
+ * @typedef {import("../../types").ControlType} ControlType
+ * @typedef {import("../../types").ControlDictionary} ControlDictionary
+ * @typedef {import("../../types").SelectOptions} SelectOptions
+ * @typedef {import("../../types").ConfigObject} ConfigObject
+ * @typedef {import("../../types").ProjectionLike} ProjectionLike
  * */
 
 /**
@@ -324,7 +324,9 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
     EOxMap.map.setView(newView);
     EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
       .filter((l) => l instanceof VectorLayer)
-      .forEach((l) => l.getSource().refresh());
+      .forEach((l) =>
+        /** @type {import("ol/layer").Vector} */ (l).getSource().refresh(),
+      );
 
     // Update the projection and center properties
     newProj = projection;

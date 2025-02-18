@@ -70,7 +70,7 @@ export class EOxLayerControlAddLayers extends LitElement {
     /**
      * Instance of `eox-map` which is a wrapper for the OL
      *
-     * @type {import("@eox/map/main").EOxMap}
+     * @type {import("@eox/map").EOxMap}
      */
     this.eoxMap = null;
 

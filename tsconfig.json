@@ -3,7 +3,7 @@
     "target": "ESNext",
     "useDefineForClassFields": false,
     "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "moduleResolution": "Node",
     "strict": true,
     "strictNullChecks": false,
@@ -18,7 +18,36 @@
     "allowJs": true,
     "checkJs": true,
     "types": ["cypress"],
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "paths": {
+      "@eox/chart": ["./elements/chart/src/main.js"],
+      "@eox/chart/src/*": ["./elements/chart/src/*"],
+      "@eox/drawtools": ["./elements/drawtools/src/main.js"],
+      "@eox/drawtools/src/*": ["./elements/drawtools/src/*"],
+      "@eox/geosearch": ["./elements/geosearch/src/main.js"],
+      "@eox/geosearch/src/*": ["./elements/geosearch/src/*"],
+      "@eox/itemfilter": ["./elements/itemfilter/src/main.js"],
+      "@eox/itemfilter/src/*": ["./elements/itemfilter/src/*"],
+      "@eox/jsonform": ["./elements/jsonform/src/main.js"],
+      "@eox/jsonform/src/*": ["./elements/jsonform/src/*"],
+      "@eox/layercontrol": ["./elements/layercontrol/src/main.js"],
+      "@eox/layercontrol/src/*": ["./elements/layercontrol/src/*"],
+      "@eox/layout": ["./elements/layout/src/main.js"],
+      "@eox/layout/src/*": ["./elements/layout/src/*"],
+      "@eox/map": ["./elements/map/src/main.js"],
+      "@eox/map/src/*": ["./elements/map/src/*"],
+      "@eox/stacinfo": ["./elements/stacinfo/src/main.js"],
+      "@eox/stacinfo/src/*": ["./elements/stacinfo/src/*"],
+      "@eox/storytelling": ["./elements/storytelling/src/main.js"],
+      "@eox/storytelling/src/*": ["./elements/storytelling/src/*"],
+      "@eox/timecontrol": ["./elements/timecontrol/src/main.js"],
+      "@eox/timecontrol/src/*": ["./elements/timecontrol/src/*"]
+    }
   },
-  "include": ["**/src/*.js"]
+  "include": [
+    "elements/*/src/**/*.js",
+    "elements/*/src/**/*.ts",
+    "elements/*/src/**/*.d.ts"
+  ],
+  "exclude": ["node_modules", "elements/*/dist"]
 }
