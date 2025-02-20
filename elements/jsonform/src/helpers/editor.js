@@ -27,6 +27,7 @@ export const createEditor = (element) => {
 
   // Get the form element from the shadow DOM
   const formEle = element.renderRoot.querySelector("form");
+  while (formEle.firstChild) formEle.removeChild(formEle.firstChild);
 
   // Add default button callback for submit
   // see https://github.com/json-editor/json-editor?tab=readme-ov-file#button-editor
