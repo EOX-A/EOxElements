@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.0...jsonform-v0.15.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* Repeated form child element creation when value update ([#1546](https://github.com/EOX-A/EOxElements/issues/1546)) ([a3effe6](https://github.com/EOX-A/EOxElements/commit/a3effe6641d8c83bb835434b398057f3a8c8ac83))
+
 ## [0.15.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.14.0...jsonform-v0.15.0) (2025-02-10)
 
 
