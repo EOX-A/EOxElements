@@ -30,7 +30,7 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
       id: "SelectLayerHoverInteraction",
       condition: "pointermove",
       active: false,
-      style: {
+      style: EoxDrawTool.featureStyles?.["selectLayerHover"] || {
         "fill-color": "rgba(0, 0, 0,0.0)",
         "stroke-color": "#3399CC",
         "stroke-width": 2.5,
@@ -47,7 +47,7 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
       multi: EoxDrawTool.multipleFeatures,
       modify: EoxDrawTool.allowModify,
       active: false,
-      style: {
+      style: EoxDrawTool.featureStyles?.["selectLayerClick"] || {
         "fill-color": "rgba(0, 0, 0,0.0)",
         "stroke-color": "rgba(0, 0, 0,0.0)",
       },
