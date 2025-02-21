@@ -28,7 +28,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     source: {
       type: "Vector",
     },
-    style: EoxDrawTool.featureStyles?.["draw"],
+    style: EoxDrawTool.featureStyles?.["layer"],
     interactions: [
       {
         type: "draw",
@@ -38,7 +38,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           type: EoxDrawTool.type,
           modify: EoxDrawTool.allowModify,
           stopClick: true,
-          style: EoxDrawTool.featureStyles?.["draw"],
+          style: EoxDrawTool.featureStyles?.["layer"],
         },
       },
       {
@@ -46,7 +46,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
         options: {
           id: "selectHover",
           condition: "pointermove",
-          style: EoxDrawTool.featureStyles?.["drawHover"] || {
+          style: EoxDrawTool.featureStyles?.["hover"] || {
             "fill-color": "rgba(51, 153, 204,0.5)",
             "stroke-color": "#3399CC",
             "stroke-width": 2.5,
@@ -60,7 +60,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           id: "selectClick",
           condition: "click",
           panIn: true,
-          style: EoxDrawTool.featureStyles?.["drawClick"] || {
+          style: EoxDrawTool.featureStyles?.["click"] || {
             "fill-color": "rgba(51, 153, 204,0.5)",
             "stroke-color": "#3399CC",
             "stroke-width": 2.5,

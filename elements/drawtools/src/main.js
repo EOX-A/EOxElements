@@ -115,11 +115,9 @@ export class EOxDrawTools extends LitElement {
     /**
      * Flat styles for the drawn/selected features
      * @type {{
-     * draw?: import("ol/style/flat").FlatStyleLike
-     * drawHover?: import("ol/style/flat").FlatStyleLike
-     * drawClick?: import("ol/style/flat").FlatStyleLike
-     * selectLayerHover?:import("ol/style/flat").FlatStyleLike
-     * selectLayerClick?:  import("ol/style/flat").FlatStyleLike
+     * layer?: import("ol/style/flat").FlatStyleLike
+     * hover?: import("ol/style/flat").FlatStyleLike
+     * click?: import("ol/style/flat").FlatStyleLike
      * } | null}
      */
     this.featureStyles = null;
