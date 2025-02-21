@@ -31,8 +31,9 @@ export class EOxDrawTools extends LitElement {
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
-      layerId: { attribute: "layer-id", type: String },
       drawnFeatures: { attribute: false, state: true, type: Array },
+      layerId: { attribute: "layer-id", type: String },
+      featureStyles: { attribute: false },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       importFeatures: { attribute: "import-features", type: Boolean },
@@ -110,6 +111,18 @@ export class EOxDrawTools extends LitElement {
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
+
+    /**
+     * Flat styles for the drawn/selected features
+     * @type {{
+     * draw?: import("ol/style/flat").FlatStyleLike
+     * drawHover?: import("ol/style/flat").FlatStyleLike
+     * drawClick?: import("ol/style/flat").FlatStyleLike
+     * selectLayerHover?:import("ol/style/flat").FlatStyleLike
+     * selectLayerClick?:  import("ol/style/flat").FlatStyleLike
+     * } | null}
+     */
+    this.featureStyles = null;
 
     /**
      * The current native OpenLayers `modify` interaction
