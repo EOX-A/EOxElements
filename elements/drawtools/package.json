@@ -1,6 +1,6 @@
 {
   "name": "@eox/drawtools",
-  "version": "0.13.3",
+  "version": "0.13.4",
   "type": "module",
   "devDependencies": {
     "@eox/map": "^1.19.3",
