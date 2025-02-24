@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.15.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.1...jsonform-v0.15.2) (2025-02-24)
+
+
+### Bug Fixes
+
+* Always show optional values ([#1553](https://github.com/EOX-A/EOxElements/issues/1553)) ([4ed8e1c](https://github.com/EOX-A/EOxElements/commit/4ed8e1cd14b1ce8ad751184d2bd9b982c73c03d7))
+* **style:** Remove last row margin and prevent form overflow ([#1550](https://github.com/EOX-A/EOxElements/issues/1550)) ([1f4d875](https://github.com/EOX-A/EOxElements/commit/1f4d875cefdd825a23425a7cf2f88e321fb393e2))
+
 ## [0.15.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.0...jsonform-v0.15.1) (2025-02-20)
 
 

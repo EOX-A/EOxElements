@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.4](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.3...drawtools-v0.13.4) (2025-02-24)
+
+
+### Features
+
+* Enable styling draw layer & hover and click interactions ([#1548](https://github.com/EOX-A/EOxElements/issues/1548)) ([dcbb5af](https://github.com/EOX-A/EOxElements/commit/dcbb5afd2477536d91b8b6e60305114bb4588ac9))
+
 ## [0.13.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.2...drawtools-v0.13.3) (2025-01-08)
 
 
