@@ -29,6 +29,7 @@ export class EOxDrawTools extends LitElement {
       allowModify: { attribute: "allow-modify", type: Boolean },
       for: { type: String },
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
+      continuous: { type: Boolean },
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
       layerId: { attribute: "layer-id", type: String },
@@ -146,6 +147,11 @@ export class EOxDrawTools extends LitElement {
      * @type {"Polygon" | "Point" | "LineString" | "Circle" | "Box"}
      */
     this.type = "Polygon";
+
+    /**
+     * Allow continuous drawing when `multipleFeatures` is `true`
+     */
+    this.continuous = false;
 
     /**
      * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
