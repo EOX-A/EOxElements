@@ -139,7 +139,7 @@ export const createEditor = (element) => {
           return;
         }
         if (!checkbox.checked) checkbox.click();
-        checkbox.parentElement.style.display = "none";
+        checkbox.parentElement.remove();
       });
   });
   return editor;
