@@ -129,6 +129,18 @@ export const createEditor = (element) => {
       aceUsed.ace_editor_instance.renderer.attachToShadowRoot();
       aceUsed.ace_editor_instance.resize();
     }
+
+    // Workaround to show all fields (including optinal) even though a value is passed
+    // see discussion at https://github.com/json-editor/json-editor/issues/1632#issuecomment-2678397314
+    element.renderRoot
+      .querySelectorAll(".json-editor-opt-in")
+      .forEach((checkbox) => {
+        if (!(checkbox instanceof HTMLInputElement)) {
+          return;
+        }
+        if (!checkbox.checked) checkbox.click();
+        checkbox.parentElement.style.display = "none";
+      });
   });
   return editor;
 };

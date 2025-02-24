@@ -49,7 +49,7 @@ export class EOxJSONForm extends LitElement {
      * @type {object}
      */
     this.options = {
-      show_opt_in: false,
+      show_opt_in: true,
       disable_collapse: true,
       disable_edit_json: true,
       disable_properties: true,
