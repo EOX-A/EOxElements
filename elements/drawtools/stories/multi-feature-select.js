@@ -11,6 +11,23 @@ export const MuliFeatureSelect = {
     type: "Box",
     layerId: "regions",
     showList: true,
+    featureStyles: {
+      layer: {
+        "fill-color": "#16A105A0",
+        "stroke-color": "#16A105",
+        "stroke-width": 2.5,
+      },
+      hover: {
+        "fill-color": "#19B806A0",
+        "stroke-color": "#19B806",
+        "stroke-width": 2.5,
+      },
+      click: {
+        "fill-color": "#1FD609A0",
+        "stroke-color": "#1FD609",
+        "stroke-width": 2.5,
+      },
+    },
     drawUpdate: (e) => {
       console.log("drawUpdate:", e.detail);
     },
@@ -31,6 +48,7 @@ export const MuliFeatureSelect = {
       .type=${args.type}
       layer-id=${args.layerId}
       ?show-list=${args.showList}
+      .featureStyles=${args.featureStyles}
       @drawupdate=${args.drawUpdate}
     />
   `,
