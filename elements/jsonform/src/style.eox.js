@@ -1,4 +1,8 @@
 export const styleEOX = `
+  :host, :root {
+    display: block;
+    overflow: hidden;
+  }
   :host, :root, form, .CodeMirror {
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
@@ -55,7 +59,7 @@ export const styleEOX = `
   .je-header {
     margin-top: var(--eox-panel-spacing, 10px);
   }
-  .row:not(.row .row) {
+  .row:not(.row .row):not(.row:last-child) {
     margin-bottom: 8px;
   }
   form[data-theme="html"][data-theme-custom="eox"] .je-form-input-label:not([data-schematype="boolean"] label) {
@@ -69,7 +73,7 @@ export const styleEOX = `
     padding-top: var(--eox-panel-spacing, 10px);
     padding-bottom: var(--eox-panel-spacing, 10px);
   }
-  .form-control:not([data-schematype="boolean"] .form-control) {
+  .form-control:not([data-schematype="boolean"] .form-control):not(.row:last-child .form-control) {
     margin-bottom: 15px;
   }
   .form-control input:not([data-schematype="boolean"] input),
