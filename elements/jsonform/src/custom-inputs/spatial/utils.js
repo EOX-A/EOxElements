@@ -60,9 +60,13 @@ export const isSupported = (schema) =>
  * @param {Element} element - The DOM element to set attributes on
  * @param {{[key: string]: any}} attributes - The attributes to set on the element
  */
-export function setAttributes(element, attributes) {
+export function setAttributesAndProperties(element, attributes) {
   Object.keys(attributes).forEach((attr) => {
-    element.setAttribute(attr, attributes[attr]);
+    if (attr.includes("-")) {
+      element.setAttribute(attr, attributes[attr]);
+    } else {
+      element[attr] = attributes[attr];
+    }
   });
 }
 
