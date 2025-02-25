@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.4](https://github.com/EOX-A/EOxElements/compare/map-v1.19.3...map-v1.19.4) (2025-02-25)
+
+
+### Bug Fixes
+
+* Check interactions identifiers when updating a layer ([#1563](https://github.com/EOX-A/EOxElements/issues/1563)) ([95856b6](https://github.com/EOX-A/EOxElements/commit/95856b688eca8157a6d8ae159e478a2f76cc8c9f))
+
 ## [1.19.3](https://github.com/EOX-A/EOxElements/compare/map-v1.19.2...map-v1.19.3) (2025-01-30)
 
 
