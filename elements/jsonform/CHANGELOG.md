@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.2...jsonform-v0.15.3) (2025-02-25)
+
+
+### Bug Fixes
+
+* Enable passing attributes and properties to the drawtools and generated map ([#1562](https://github.com/EOX-A/EOxElements/issues/1562)) ([a47a665](https://github.com/EOX-A/EOxElements/commit/a47a665dde49729e7f26a09bfead00b42dd89bd9))
+
 ## [0.15.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.1...jsonform-v0.15.2) (2025-02-24)
 
 

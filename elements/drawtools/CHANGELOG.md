@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.5](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.4...drawtools-v0.13.5) (2025-02-25)
+
+
+### Features
+
+* Introduce continuous drawing ([#1549](https://github.com/EOX-A/EOxElements/issues/1549)) ([46f69c6](https://github.com/EOX-A/EOxElements/commit/46f69c6c77feb9a295ddb8dfab1849b4acf13a4e))
+
 ## [0.13.4](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.3...drawtools-v0.13.4) (2025-02-24)
 
 
