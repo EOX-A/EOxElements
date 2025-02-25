@@ -16,11 +16,7 @@ export const ContinuousDrawing = {
     ></eox-map>
 
     <!-- Initialize eox-drawtools for the eox-map with ID "continuous" -->
-    <eox-drawtools
-      for="eox-map#continuous"
-      multiple-features
-      continuous
-    ></eox-drawtools>
+    <eox-drawtools for="eox-map#continuous" continuous></eox-drawtools>
   `,
 };
 

@@ -66,6 +66,10 @@ export class EOxDrawTools extends LitElement {
    * @type string
    */
   #layerId;
+  /**
+   * @type boolean
+   */
+  #continuous;
 
   constructor() {
     super();
@@ -149,11 +153,6 @@ export class EOxDrawTools extends LitElement {
     this.type = "Polygon";
 
     /**
-     * Allow continuous drawing when `multipleFeatures` is `true`
-     */
-    this.continuous = false;
-
-    /**
      * @type {ReturnType<typeof import("./methods/draw/create-select-handler").default>}
      */
     this.selectionEvents = null;
@@ -180,8 +179,21 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
+   * Enables continuous drawing
    *
-   *
+   * @type {boolean}
+   */
+  set continuous(value) {
+    this.#continuous = value;
+    if (value) this.multipleFeatures = true;
+  }
+
+  get continuous() {
+    return this.#continuous;
+  }
+
+  /**
+   * Enables selection mode for the passed layer
    * @type {string}
    */
   set layerId(value) {
