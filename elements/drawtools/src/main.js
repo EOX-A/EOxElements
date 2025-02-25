@@ -179,8 +179,8 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * Enables the user to draw continuously one feature at a time
-   * without removing the last feature manually
+   * Enables the user to draw continuously one feature after another
+   * without having to discard previous ones manually
    * @type {boolean}
    */
   set continuous(value) {
