@@ -4,13 +4,11 @@
     "bboxes": {
       "title": "Multi bbox example",
       "type": "array",
-      "properties": {},
       "format": "bounding-boxes"
     },
     "bbox": {
       "title": "Single bbox example",
       "type": "array",
-      "properties": {},
       "format": "bounding-box"
     },
     "bboxes2": {

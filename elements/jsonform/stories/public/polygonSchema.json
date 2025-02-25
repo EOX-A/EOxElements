@@ -4,7 +4,6 @@
     "polygons": {
       "title": "Multi polygon",
       "type": "array",
-      "properties": {},
       "format": "polygons"
     },
     "polygon": {

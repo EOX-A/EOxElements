@@ -6,8 +6,10 @@
       "type": "array",
       "options": {
         "featureProperty": "BIOME_NAME",
-        "layerId": "regions-grey",
-        "for": "eox-map#first"
+        "drawtools": {
+          "layerId": "regions-grey",
+          "for": "eox-map#first"
+        }
       },
       "items": {
         "type": "string"
@@ -18,8 +20,10 @@
       "title": "Select a feature from the map",
       "type": "object",
       "options": {
-        "layerId": "regions-blue",
-        "for": "eox-map#second"
+        "drawtools": {
+          "layerId": "regions-blue",
+          "for": "eox-map#second"
+        }
       },
       "format": "feature"
     }

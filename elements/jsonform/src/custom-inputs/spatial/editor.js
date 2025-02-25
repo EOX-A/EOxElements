@@ -7,7 +7,7 @@ import {
   isSelection,
   isWKT,
   isGeoJSON,
-  setAttributes,
+  setAttributesAndProperties,
   isLine,
 } from "./utils";
 // import "@eox/drawtools";
@@ -27,6 +27,8 @@ export class SpatialEditor extends AbstractEditor {
     const options = this.options;
     const description = this.schema.description;
     const theme = this.theme;
+    const drawToolsOptions = this.schema?.options?.drawtools ?? {};
+    const mapOptions = this.schema?.options?.map ?? {};
 
     // Create label and description elements if not in compact mode
     if (!options.compact)
@@ -80,42 +82,42 @@ export class SpatialEditor extends AbstractEditor {
         break;
     }
 
-    const attributes = {
+    const drawtoolsAttributes = {
       type: drawType,
       format,
     };
 
-    if (this.schema?.options?.projection) {
-      attributes.projection = this.schema.options.projection;
-    }
-
-    if (isSelection(this.schema)) {
-      attributes["layer-id"] = this.schema.options.layerId;
+    if (!isSelection(this.schema)) {
+      delete drawToolsOptions.layerId;
+      delete drawToolsOptions["layer-id"];
     }
     if (isMulti(this.schema)) {
-      attributes["multiple-features"] = true;
-      attributes["show-list"] = true;
+      drawtoolsAttributes["multiple-features"] = true;
+      drawtoolsAttributes["showList"] =
+        drawToolsOptions["show-list"] ?? drawToolsOptions["showList"] ?? true;
     }
 
-    if ("for" in (this.schema.options ?? {})) {
-      attributes.for = this.options.for;
-    } else {
+    if (!("for" in drawToolsOptions) || !drawToolsOptions.for) {
       // We need to create a map
       const eoxmapEl = /**
        * @type import("@eox/map").EOxMap
        */ (document.createElement("eox-map"));
-      eoxmapEl.projection = "EPSG:4326";
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
 
-      setAttributes(eoxmapEl, {
+      setAttributesAndProperties(eoxmapEl, {
         id: mapId,
         style: "width: 100%; height: 300px;",
+        projection: "EPSG:4326",
+        ...mapOptions,
       });
       this.container.appendChild(eoxmapEl);
       drawtoolsEl.for = eoxmapEl;
     }
-    setAttributes(drawtoolsEl, attributes);
+    setAttributesAndProperties(drawtoolsEl, {
+      ...drawToolsOptions,
+      ...drawtoolsAttributes,
+    });
     const autoDraw = !(options.autoStartSelection === false);
     if (autoDraw) {
       drawtoolsEl.updateComplete.then(() => {

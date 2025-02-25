@@ -20,13 +20,13 @@ const checkDrawtoolsForSpatialEditor = () => {
         expect($el[0]).to.exist;
         // Check if the drawtools have the correct `for` attribute
         expect($el[0].getAttribute("for")).to.equal(
-          schemaFixture.properties.bbox.options.for,
+          schemaFixture.properties.bbox.options.drawtools.for,
         );
         // Check if the drawtools have the correct `type` attribute
         expect($el[0].getAttribute("type")).to.equal("Box");
         // Check if the drawtools have the correct `projection` attribute
         expect($el[0].getAttribute("projection")).to.equal(
-          schemaFixture.properties.bbox.options.projection,
+          schemaFixture.properties.bbox.options.drawtools.projection,
         );
       });
 
@@ -37,7 +37,7 @@ const checkDrawtoolsForSpatialEditor = () => {
         expect($el[0].getAttribute("type")).to.equal("Polygon");
         // check if the drawtools have the correct `for` attribute
         expect($el[0].getAttribute("for")).to.equal(
-          schemaFixture.properties.polygons.options.for,
+          schemaFixture.properties.polygons.options.drawtools.for,
         );
         // check if the drawtools `multiple-features`
         // and `show-list` attributes are set in case of a plural format

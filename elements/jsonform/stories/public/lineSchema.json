@@ -9,9 +9,6 @@
     "lines": {
       "title": "Multiple lines example",
       "type": "array",
-      "options": {
-        "projection": "EPSG:3857"
-      },
       "format": "lines"
     }
   }
