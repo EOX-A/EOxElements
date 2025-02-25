@@ -9,9 +9,6 @@
     "points": {
       "title": "Multiple points example",
       "type": "array",
-      "options": {
-        "projection": "EPSG:3857"
-      },
       "format": "points"
     }
   }

@@ -15,7 +15,9 @@
       "title": "Multiple bounding-boxes as Geojson in EPSG:3857",
       "type": "geojson",
       "options": {
-        "projection": "EPSG:3857"
+        "drawtools": {
+          "projection": "EPSG:3857"
+        }
       },
       "format": "bounding-boxes"
     },
@@ -23,7 +25,12 @@
       "title": "Polygon as Geojson in EPSG:3857",
       "type": "geojson",
       "options": {
-        "projection": "EPSG:3857"
+        "drawtools": {
+          "projection": "EPSG:3857"
+        },
+        "map": {
+          "projection": "EPSG:3857"
+        }
       },
       "format": "polygon"
     }
