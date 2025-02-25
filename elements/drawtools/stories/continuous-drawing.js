@@ -1,6 +1,6 @@
 /**
  * Component demonstrating drawing polygons continuously.
- * This component showcases the usage of eox-drawtools with the `multiple-features` and `continuous` attribute/property set
+ * This component showcases the usage of eox-drawtools with the `continuous` attribute/property set
  * to be able to draw multiple polygons one at a time continuously on the map.
  */
 import { html } from "lit";

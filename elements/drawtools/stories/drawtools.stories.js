@@ -56,7 +56,7 @@ export const DrawType = DrawTypeStory;
 export const MultiPolygonWithList = MultiPolygonWithListStory;
 
 /**
- * By setting the `continuous` and  `multiple-features` attribute/property to `true`,
+ * By setting the `continuous` attribute/property to `true`,
  * the user can draw continuously one polygon at a time without removing the last polygon manually.
  */
 export const ContinuousDrawing = ContinuousDrawingStory;
