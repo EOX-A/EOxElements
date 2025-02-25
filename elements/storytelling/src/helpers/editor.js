@@ -342,12 +342,17 @@ export function preventEditorOutsideScroll(StoryTellingEditor) {
       "wheel",
       function (event) {
         const deltaY = /**@type {WheelEvent}*/ (event).deltaY;
-        const contentHeight = StoryTellingEditor.scrollHeight; // Total scrollable content height
-        const visibleHeight = StoryTellingEditor.clientHeight; // Visible portion of the textarea
-
+        const contentHeight =
+          StoryTellingEditor.querySelector(".CodeMirror-sizer").scrollHeight; // Total scrollable content height
+        const visibleHeight =
+          StoryTellingEditor.querySelector(".CodeMirror-scroll").clientHeight; // Visible portion of the textarea
         if (
-          (StoryTellingEditor.scrollTop === 0 && deltaY < 0) ||
-          (StoryTellingEditor.scrollTop + visibleHeight >= contentHeight &&
+          (StoryTellingEditor.querySelector(".CodeMirror-scroll").scrollTop <=
+            0 &&
+            deltaY < 0) ||
+          (StoryTellingEditor.querySelector(".CodeMirror-scroll").scrollTop +
+            visibleHeight >=
+            contentHeight &&
             deltaY > 0)
         )
           event.preventDefault(); // Prevent scrolling
