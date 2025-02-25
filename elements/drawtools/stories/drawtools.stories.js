@@ -15,6 +15,7 @@ import {
   MultiFeaturesSelectStory,
   FeaturesProjectionStory,
   FormatStory,
+  ContinuousDrawingStory,
 } from "./index";
 
 export default {
@@ -54,6 +55,11 @@ export const DrawType = DrawTypeStory;
  */
 export const MultiPolygonWithList = MultiPolygonWithListStory;
 
+/**
+ * By setting the `continuous` attribute/property to `true`,
+ * the user can draw continuously one polygon at a time without removing the last polygon manually.
+ */
+export const ContinuousDrawing = ContinuousDrawingStory;
 /**
  * By setting the `show-editor` attribute or `import-features` property to `true`,
  * generates an editor to edit features and allow users to drag-drop/upload/paste shape files in

@@ -29,6 +29,7 @@ export class EOxDrawTools extends LitElement {
       allowModify: { attribute: "allow-modify", type: Boolean },
       for: { type: String },
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
+      continuous: { type: Boolean },
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
       drawnFeatures: { attribute: false, state: true, type: Array },
@@ -66,6 +67,10 @@ export class EOxDrawTools extends LitElement {
    * @type string
    */
   #layerId;
+  /**
+   * @type boolean
+   */
+  #continuous;
 
   constructor() {
     super();
@@ -185,8 +190,21 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   *
-   *
+   * Enables the user to draw continuously one feature after another
+   * without having to discard previous ones manually
+   * @type {boolean}
+   */
+  set continuous(value) {
+    this.#continuous = value;
+    if (value) this.multipleFeatures = true;
+  }
+
+  get continuous() {
+    return this.#continuous;
+  }
+
+  /**
+   * Enables selection mode for the passed layer
    * @type {string}
    */
   set layerId(value) {
