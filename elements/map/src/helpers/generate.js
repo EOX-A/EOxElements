@@ -269,7 +269,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       ) => {
         const correspondingNewInteraction =
           newLayerDefinition.interactions.find(
-            (i) => i.type === interactionDefinition.type,
+            (i) =>
+              i.type === interactionDefinition.type &&
+              i.options?.id === interactionDefinition.options?.id,
           );
 
         if (!correspondingNewInteraction) {
@@ -311,7 +313,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       const correspondingExistingInteraction =
         existingJsonDefinition.interactions.find(
           /** @param {EOxInteraction} i **/
-          (i) => i.type === interactionDefinition.type,
+          (i) =>
+            i.type === interactionDefinition.type &&
+            i.options?.id === interactionDefinition.options?.id,
         );
 
       if (!correspondingExistingInteraction) {
