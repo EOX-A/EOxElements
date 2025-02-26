@@ -1,3 +1,5 @@
+import { bboxPolygon } from "@turf/bbox-polygon";
+
 /**
  * Whether a schema has feature/feature format or not
  */
@@ -100,4 +102,9 @@ export const satisfiesType = (val, type) => {
       return typeof val === "object" && !!Object.keys(val).length;
   }
   return false;
+};
+
+export const bboxesToFeatures = (bboxes) => {
+  if (bboxes.length < 1) return [];
+  return bboxes.map((bbox) => bboxPolygon(bbox));
 };

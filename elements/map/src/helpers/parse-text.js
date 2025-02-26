@@ -19,6 +19,7 @@ export default function parseTextToFeature(
   vectorLayer,
   EOxMap,
   replaceFeatures = false,
+  parseOptions,
 ) {
   try {
     // Attempt to parse the input text in various formats
@@ -29,7 +30,10 @@ export default function parseTextToFeature(
     }
 
     // Parse features with the detected format
-    const features = formatReader.readFeatures(text, READ_FEATURES_OPTIONS);
+    const features = formatReader.readFeatures(
+      text,
+      parseOptions || READ_FEATURES_OPTIONS,
+    );
 
     // Utilize the previously defined function to add these features to the vector layer
     addNewFeature(

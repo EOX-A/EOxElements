@@ -9,6 +9,7 @@ import {
   isGeoJSON,
   setAttributesAndProperties,
   isLine,
+  bboxesToFeatures,
 } from "./utils";
 // import "@eox/drawtools";
 
@@ -29,6 +30,7 @@ export class SpatialEditor extends AbstractEditor {
     const theme = this.theme;
     const drawToolsOptions = this.schema?.options?.drawtools ?? {};
     const mapOptions = this.schema?.options?.map ?? {};
+    const startVals = this.defaults.startVals[this.key];
 
     // Create label and description elements if not in compact mode
     if (!options.compact)
@@ -103,6 +105,16 @@ export class SpatialEditor extends AbstractEditor {
        * @type import("@eox/map").EOxMap
        */ (document.createElement("eox-map"));
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
+      eoxmapEl.addEventListener("loadend", () => {
+        const existingBboxes = bboxesToFeatures(startVals);
+        drawtoolsEl.handleFeatureChange(
+          JSON.stringify({
+            type: "FeatureCollection",
+            features: existingBboxes,
+          }),
+          true,
+        );
+      });
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
 
       setAttributesAndProperties(eoxmapEl, {

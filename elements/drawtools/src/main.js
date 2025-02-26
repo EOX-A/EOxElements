@@ -247,6 +247,10 @@ export class EOxDrawTools extends LitElement {
       this.drawLayer,
       this.eoxMap,
       replaceFeatures,
+      {
+        dataProjection: this.eoxMap.projection,
+        featureProjection: this.projection,
+      },
     );
   }
 
@@ -322,6 +326,9 @@ export class EOxDrawTools extends LitElement {
       const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
       this.eoxMap = EoxMap;
       this.#olMap = OlMap;
+    }
+    if (changedProperties.has("drawnFeatres")) {
+      console.log("TODO");
     }
   }
 
