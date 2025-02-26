@@ -364,6 +364,7 @@ export class EOxDrawTools extends LitElement {
       <!-- List Component -->
       ${this.showList && this.drawnFeatures?.length
         ? html`<eox-drawtools-list
+            .eoxDrawTools=${this}
             .eoxMap=${this.eoxMap}
             .olMap=${this.#olMap}
             .draw=${this.draw}

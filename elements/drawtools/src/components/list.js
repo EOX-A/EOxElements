@@ -15,6 +15,7 @@ import listStyle from "@eox/elements-utils/styles/dist/list.style";
  */
 export class EOxDrawToolsList extends LitElement {
   static properties = {
+    eoxDrawTools: { attribute: false, state: true },
     eoxMap: { attribute: false, state: true },
     olMap: { attribute: false, state: true },
     draw: { attribute: false, state: true },
@@ -46,6 +47,11 @@ export class EOxDrawToolsList extends LitElement {
 
   constructor() {
     super();
+
+    /**
+     * @type import("../main").EOxDrawTools;
+     */
+    this.eoxDrawTools = null;
 
     /**
      * @type import("@eox/map").EOxMap
@@ -147,7 +153,9 @@ export class EOxDrawToolsList extends LitElement {
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
-          const featureId = feature.getId() || feature.get("id");
+          const featureId = Object.values(
+            this.eoxMap.selectInteractions,
+          )[0].getId(feature);
 
           // Check if the feature is hovered or clicked
           const isFeatureHovered = this.hoverId === featureId;
