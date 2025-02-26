@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.1...storytelling-v1.5.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* **style:** Overflow on storytelling and editor ([#1565](https://github.com/EOX-A/EOxElements/issues/1565)) ([a02e2cb](https://github.com/EOX-A/EOxElements/commit/a02e2cbddfac8b565e53c683761f924fa347d023))
+
 ## [1.5.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.0...storytelling-v1.5.1) (2025-02-13)
 
 
