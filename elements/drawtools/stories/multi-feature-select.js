@@ -11,6 +11,7 @@ export const MuliFeatureSelect = {
     type: "Box",
     layerId: "regions",
     showList: true,
+    featureName: "Selection",
     featureStyles: {
       layer: {
         "fill-color": "#16A105A0",
@@ -49,6 +50,7 @@ export const MuliFeatureSelect = {
       layer-id=${args.layerId}
       ?show-list=${args.showList}
       .featureStyles=${args.featureStyles}
+      .featureName=${args.featureName}
       @drawupdate=${args.drawUpdate}
     />
   `,
