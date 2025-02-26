@@ -16,14 +16,14 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/src/main.d.ts",
+  "types": "./types/storytelling/src/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/src/main.d.ts"
+        "./types/storytelling/src/main.d.ts"
       ],
       "src/*": [
-        "./types/src/*"
+        "./types/storytelling/src/*"
       ]
     }
   },
