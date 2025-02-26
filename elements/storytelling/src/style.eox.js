@@ -8,6 +8,9 @@ ${button}
 ${checkbox}
 ${radio}
 ${slider}
+  :host {
+    overflow: unset !important;
+  }
 
   iframe,
   img,
