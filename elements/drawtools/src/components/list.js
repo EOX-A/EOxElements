@@ -147,7 +147,7 @@ export class EOxDrawToolsList extends LitElement {
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
-          const featureId = feature.getId();
+          const featureId = feature.getId() || feature.get("id");
 
           // Check if the feature is hovered or clicked
           const isFeatureHovered = this.hoverId === featureId;
