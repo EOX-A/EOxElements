@@ -174,7 +174,9 @@ export class EOxDrawToolsList extends LitElement {
                   @click="${() =>
                     this._handleFeatureSelectAndDeselect(feature)}"
                 >
-                  <span class="title">${this.featureName} ${featureNumber}</span>
+                  <span class="title"
+                    >${this.featureName} ${featureNumber}</span
+                  >
                   <button
                     index=${i}
                     class="icon smallest discard"
