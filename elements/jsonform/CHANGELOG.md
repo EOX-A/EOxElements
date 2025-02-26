@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.3...jsonform-v0.15.4) (2025-02-26)
+
+
+### Bug Fixes
+
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
 ## [0.15.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.2...jsonform-v0.15.3) (2025-02-25)
 
 

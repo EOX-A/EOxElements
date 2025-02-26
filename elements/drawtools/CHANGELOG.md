@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.14.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.5...drawtools-v0.14.0) (2025-02-26)
+
+
+### Features
+
+* Allow setting feature name for rendered list ([#1569](https://github.com/EOX-A/EOxElements/issues/1569)) ([dedf539](https://github.com/EOX-A/EOxElements/commit/dedf53956e12954c2fa73a10d53e42831ae2b7b1))
+
+
+### Bug Fixes
+
+* Fallback for getting feature id ([#1566](https://github.com/EOX-A/EOxElements/issues/1566)) ([76f9445](https://github.com/EOX-A/EOxElements/commit/76f9445900a50e48c445849c284d8abdc135cb10))
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
 ## [0.13.5](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.4...drawtools-v0.13.5) (2025-02-25)
 
 
