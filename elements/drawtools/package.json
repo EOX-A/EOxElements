@@ -16,14 +16,14 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/main.d.ts",
+  "types": "./types/drawtools/src/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/main.d.ts"
+        "./types/drawtools/src/main.d.ts"
       ],
       "src/*": [
-        "./types/*"
+        "./types/drawtools/src/*"
       ]
     }
   },

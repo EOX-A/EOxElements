@@ -15,14 +15,14 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/main.d.ts",
+  "types": "./types/timecontrol/src/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/main.d.ts"
+        "./types/timecontrol/src/main.d.ts"
       ],
       "src/*": [
-        "./types/*"
+        "./types/timecontrol/src/*"
       ]
     }
   },
