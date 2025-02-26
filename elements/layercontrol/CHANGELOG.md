@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.29.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.29.0...layercontrol-v0.29.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
 ## [0.29.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.28.1...layercontrol-v0.29.0) (2025-01-22)
 
 

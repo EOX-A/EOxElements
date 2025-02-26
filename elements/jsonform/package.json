@@ -1,6 +1,6 @@
 {
   "name": "@eox/jsonform",
-  "version": "0.15.3",
+  "version": "0.15.4",
   "type": "module",
   "devDependencies": {
     "@eox/map": "^1.19.3",
