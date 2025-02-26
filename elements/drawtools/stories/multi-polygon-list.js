@@ -20,6 +20,7 @@ export const MultiPolygonWithList = {
       for="eox-map#list"
       multiple-features
       show-list
+      feature-name="Polygon"
     ></eox-drawtools>
   `,
 };
