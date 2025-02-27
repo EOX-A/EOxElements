@@ -9,6 +9,7 @@ import {
   isGeoJSON,
   setAttributesAndProperties,
   isLine,
+  bboxesToFeatures,
 } from "./utils";
 // import "@eox/drawtools";
 
@@ -103,6 +104,26 @@ export class SpatialEditor extends AbstractEditor {
        * @type import("@eox/map").EOxMap
        */ (document.createElement("eox-map"));
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
+      let firstLoad = false;
+      eoxmapEl.addEventListener("loadend", () => {
+        const pathParts = this.path.split(".").slice(1);
+        const startVals =
+          this.defaults.startVals[this.key] ||
+          pathParts.reduce((obj, part) => obj?.[part], this.defaults.startVals);
+
+        if (!firstLoad && startVals && isBox(this.schema)) {
+          firstLoad = true;
+          const existingBboxes = bboxesToFeatures(startVals);
+          drawtoolsEl.handleFeatureChange(
+            JSON.stringify({
+              type: "FeatureCollection",
+              features: existingBboxes,
+            }),
+            true,
+            false,
+          );
+        }
+      });
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
 
       setAttributesAndProperties(eoxmapEl, {

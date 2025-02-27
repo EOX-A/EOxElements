@@ -14,6 +14,7 @@ import { READ_FEATURES_OPTIONS } from "../enums";
  * @param {import("../main").EOxMap} EOxMap - The EOxMap instance for dispatching custom events and adjusting the view.
  * @param {boolean} isDraw - Optional. If true, indicates the features come from a drawing event.
  * @param {boolean} replaceFeatures - Optional. If true, existing features in the layer are cleared before adding new ones.
+ * @param {boolean} animate - Optional. If true, the map will animate to the new features.
  */
 export default function addNewFeature(
   e,
@@ -21,6 +22,7 @@ export default function addNewFeature(
   EOxMap,
   isDraw = false,
   replaceFeatures = false,
+  animate = true,
 ) {
   // Determine the source of the features based on the event type and isDraw flag.
   // @ts-expect-error - Property 'feature' does not exist on type 'DrawEvent | DragAndDropEvent
@@ -62,9 +64,9 @@ export default function addNewFeature(
   if (!isDraw && features.length) {
     vectorLayer.getSource().addFeatures(features);
 
-    EOxMap.map
-      .getView()
-      .fit(vectorLayer.getSource().getExtent(), { duration: 750 });
+    EOxMap.map.getView().fit(vectorLayer.getSource().getExtent(), {
+      duration: animate ? 750 : 0,
+    });
   }
 
   // Convert features to GeoJSON and dispatch custom events for drawing end or feature addition.
