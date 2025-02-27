@@ -12,6 +12,8 @@ import { READ_FEATURES_OPTIONS } from "../enums";
  * @param {import("ol/layer").Vector} vectorLayer - The vector layer to which the parsed features will be added.
  * @param {import("../main").EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
  * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
+ * @param {Object} parseOptions - Optional object containing options for the parser.
+ * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
  * @return {void}
  */
 export default function parseTextToFeature(
@@ -19,7 +21,8 @@ export default function parseTextToFeature(
   vectorLayer,
   EOxMap,
   replaceFeatures = false,
-  parseOptions,
+  parseOptions = READ_FEATURES_OPTIONS,
+  animate = true,
 ) {
   try {
     // Attempt to parse the input text in various formats
@@ -30,10 +33,7 @@ export default function parseTextToFeature(
     }
 
     // Parse features with the detected format
-    const features = formatReader.readFeatures(
-      text,
-      parseOptions || READ_FEATURES_OPTIONS,
-    );
+    const features = formatReader.readFeatures(text, parseOptions);
 
     // Utilize the previously defined function to add these features to the vector layer
     addNewFeature(
@@ -42,6 +42,7 @@ export default function parseTextToFeature(
       EOxMap,
       false,
       replaceFeatures,
+      animate,
     );
   } catch (err) {
     console.error("Error parsing data:", err);

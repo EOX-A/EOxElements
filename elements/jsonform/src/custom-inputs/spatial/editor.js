@@ -30,7 +30,6 @@ export class SpatialEditor extends AbstractEditor {
     const theme = this.theme;
     const drawToolsOptions = this.schema?.options?.drawtools ?? {};
     const mapOptions = this.schema?.options?.map ?? {};
-    const startVals = this.defaults.startVals[this.key];
 
     // Create label and description elements if not in compact mode
     if (!options.compact)
@@ -105,15 +104,25 @@ export class SpatialEditor extends AbstractEditor {
        * @type import("@eox/map").EOxMap
        */ (document.createElement("eox-map"));
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
+      let firstLoad = false;
       eoxmapEl.addEventListener("loadend", () => {
-        const existingBboxes = bboxesToFeatures(startVals);
-        drawtoolsEl.handleFeatureChange(
-          JSON.stringify({
-            type: "FeatureCollection",
-            features: existingBboxes,
-          }),
-          true,
-        );
+        const pathParts = this.path.split(".").slice(1);
+        const startVals =
+          this.defaults.startVals[this.key] ||
+          pathParts.reduce((obj, part) => obj?.[part], this.defaults.startVals);
+
+        if (!firstLoad && startVals && isBox(this.schema)) {
+          firstLoad = true;
+          const existingBboxes = bboxesToFeatures(startVals);
+          drawtoolsEl.handleFeatureChange(
+            JSON.stringify({
+              type: "FeatureCollection",
+              features: existingBboxes,
+            }),
+            true,
+            false,
+          );
+        }
       });
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
 
