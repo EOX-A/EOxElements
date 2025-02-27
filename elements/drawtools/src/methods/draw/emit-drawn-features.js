@@ -11,12 +11,19 @@ import { featuresToGeoJson, featuresToWKT } from "../../helpers";
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  * @param {(value:EmitFormat) => void} drawUpdateEvent - event to be triggered after drawFeature is updated
+ * @param {import("ol").Feature} [selectedFeature] - The feature that was selected by the user.
  */
-const emitDrawnFeaturesMethod = (EoxDrawTool, drawUpdateEvent) => {
+const emitDrawnFeaturesMethod = (
+  EoxDrawTool,
+  drawUpdateEvent,
+  selectedFeature,
+) => {
   // Function to emit features after a timeout (ensures update)
   const emitFeatures = () => {
     // Update drawnFeatures with features from drawLayer's source
-    const drawnFeatures = EoxDrawTool.drawLayer.getSource().getFeatures();
+    const drawnFeatures = selectedFeature
+      ? EoxDrawTool.drawnFeatures
+      : EoxDrawTool.drawLayer.getSource().getFeatures();
     // Transform drawn features to the desired projection
     const source = EoxDrawTool.eoxMap.projection || "EPSG:3857";
     // has a default value of EPSG:4326

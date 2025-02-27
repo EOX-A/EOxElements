@@ -277,8 +277,9 @@ export class EOxDrawTools extends LitElement {
 
   /**
    * Triggers different events when the drawing of a shape is completed.
+   * @param {import("ol/Feature").default} [selectedFeature] - The feature that was selected by the user.
    */
-  emitDrawnFeatures() {
+  emitDrawnFeatures(selectedFeature) {
     /**
      * @param {import("./methods/draw/emit-drawn-features").EmitFormat} value
      */
@@ -290,7 +291,7 @@ export class EOxDrawTools extends LitElement {
        */
       this.dispatchEvent(new CustomEvent("drawupdate", { detail: value }));
     };
-    emitDrawnFeaturesMethod(this, drawUpdateEvent);
+    emitDrawnFeaturesMethod(this, drawUpdateEvent, selectedFeature);
   }
 
   /**

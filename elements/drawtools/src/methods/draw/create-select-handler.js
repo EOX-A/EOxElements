@@ -1,3 +1,5 @@
+import { onDrawEndMethod } from "./";
+
 /**
  * Factory function to create a select event handler
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
@@ -13,10 +15,8 @@ const createSelectHandler = (EoxDrawTool) => {
     if (e?.detail.id !== "SelectLayerClickInteraction" || !e.detail.feature) {
       return;
     }
-    EoxDrawTool.drawLayer.getSource().addFeature(e.detail.feature);
-    EoxDrawTool.eoxMap.dispatchEvent(
-      new CustomEvent("addfeatures", { detail: e.detail }),
-    );
+    EoxDrawTool.drawnFeatures.push(e.detail.feature);
+    onDrawEndMethod(EoxDrawTool, e.detail.feature);
   };
 
   /**
