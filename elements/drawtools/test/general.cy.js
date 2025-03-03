@@ -47,5 +47,5 @@ describe("Drawtools", () => {
   it("emits drawn features in different formats", () => setDifferentFormats());
 
   // Test case to render a list of features
-  it.only("renders a list of features", () => featureListTest());
+  it("renders a list of features", () => featureListTest());
 });
