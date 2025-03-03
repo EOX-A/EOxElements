@@ -187,6 +187,7 @@ export class EOxDrawToolsList extends LitElement {
                   >
                   <button
                     index=${i}
+                    data-cy="deleteFeatureBtn"
                     class="icon smallest discard"
                     @click="${this._handleDelete}"
                   >

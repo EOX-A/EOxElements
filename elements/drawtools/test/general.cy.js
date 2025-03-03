@@ -8,6 +8,7 @@ import {
   loadDrawToolsTest,
   setDifferentFormats,
   setLayerId,
+  featureListTest,
 } from "./cases";
 
 import { TEST_SELECTORS } from "../src/enums";
@@ -22,7 +23,7 @@ describe("Drawtools", () => {
     // Mounting mock-map and eox-drawtools elements
     cy.mount("<mock-map></mock-map>").as("mock-map");
     cy.mount(
-      `<eox-drawtools show-editor import-features for="mock-map"></eox-drawtools>`,
+      `<eox-drawtools show-editor import-features show-list for="mock-map"></eox-drawtools>`,
     ).as(drawTools);
   });
 
@@ -44,4 +45,7 @@ describe("Drawtools", () => {
 
   // Test case to check if the drawn features are emitted in different formats
   it("emits drawn features in different formats", () => setDifferentFormats());
+
+  // Test case to render a list of features
+  it("renders a list of features", () => featureListTest());
 });
