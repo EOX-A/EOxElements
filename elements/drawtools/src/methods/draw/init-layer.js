@@ -44,7 +44,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       {
         type: "select",
         options: {
-          id: "selectHover",
+          id: "SelectLayerHoverInteraction",
           condition: "pointermove",
           style: EoxDrawTool.featureStyles?.["hover"] || {
             "fill-color": "rgba(51, 153, 204,0.5)",
@@ -57,7 +57,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       {
         type: "select",
         options: {
-          id: "selectClick",
+          id: "SelectLayerClickInteraction",
           condition: "click",
           panIn: true,
           style: EoxDrawTool.featureStyles?.["click"] || {
