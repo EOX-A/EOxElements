@@ -240,13 +240,19 @@ export class EOxDrawTools extends LitElement {
   /**
    * @param {string} text - The string representation of the features to be parsed.
    * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
+   * @param {boolean} animate - A boolean flag indicating whether to animate the map on feature change.
    */
-  handleFeatureChange(text, replaceFeatures = false) {
+  handleFeatureChange(text, replaceFeatures = false, animate = true) {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
       this.eoxMap,
       replaceFeatures,
+      {
+        dataProjection: this.eoxMap.projection,
+        featureProjection: this.projection,
+      },
+      animate,
     );
   }
 
