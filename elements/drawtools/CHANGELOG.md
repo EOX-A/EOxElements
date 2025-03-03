@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.14.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.0...drawtools-v0.14.1) (2025-03-03)
+
+
+### Features
+
+* Added new prop to `handleFeatureChange` func ([#1575](https://github.com/EOX-A/EOxElements/issues/1575)) ([04e6833](https://github.com/EOX-A/EOxElements/commit/04e6833720ec789be731879303d05cbbb188c20a))
+
+
+### Bug Fixes
+
+* Feature deletion by index ([#1582](https://github.com/EOX-A/EOxElements/issues/1582)) ([b724d13](https://github.com/EOX-A/EOxElements/commit/b724d13c381c9ecb08123e967de4d1cb79a74ca4))
+
 ## [0.14.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.5...drawtools-v0.14.0) (2025-02-26)
 
 

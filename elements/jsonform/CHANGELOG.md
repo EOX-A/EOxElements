@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.4...jsonform-v0.15.5) (2025-03-03)
+
+
+### Bug Fixes
+
+* Initialize bboxes with value ([#1571](https://github.com/EOX-A/EOxElements/issues/1571)) ([55e3649](https://github.com/EOX-A/EOxElements/commit/55e3649cd8cb2b4f72e9810cc3368bb19ba83108))
+
 ## [0.15.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.3...jsonform-v0.15.4) (2025-02-26)
 
 
