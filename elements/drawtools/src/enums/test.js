@@ -4,4 +4,6 @@ export const TEST_SELECTORS = {
   drawBtn: "[data-cy='drawBtn']",
   copyBtn: "[data-cy='copyBtn']",
   discardBtn: "[data-cy='discardBtn']",
+  list: "eox-drawtools-list",
+  deleteFeatureBtn: "[data-cy='deleteFeatureBtn']",
 };
