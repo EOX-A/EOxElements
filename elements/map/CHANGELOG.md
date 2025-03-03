@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/EOX-A/EOxElements/compare/map-v1.19.4...map-v1.20.0) (2025-03-03)
+
+
+### Features
+
+* Added new prop to  and ([#1574](https://github.com/EOX-A/EOxElements/issues/1574)) ([dce69d5](https://github.com/EOX-A/EOxElements/commit/dce69d5506a46e430c22c80fbc1a03d0ff2bd541))
+
 ## [1.19.4](https://github.com/EOX-A/EOxElements/compare/map-v1.19.3...map-v1.19.4) (2025-02-25)
 
 
