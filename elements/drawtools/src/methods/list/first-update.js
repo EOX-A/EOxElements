@@ -7,9 +7,9 @@ const firstUpdatedMethod = (EoxDrawToolList) => {
   // Set hover and click interactions
   // Assign the hover and click interactions from eoxMap to respective variables in EoxDrawToolList
   EoxDrawToolList.hoverInteraction =
-    EoxDrawToolList.eoxMap.selectInteractions["selectHover"];
+    EoxDrawToolList.eoxMap.selectInteractions["SelectLayerHoverInteraction"];
   EoxDrawToolList.clickInteraction =
-    EoxDrawToolList.eoxMap.selectInteractions["selectClick"];
+    EoxDrawToolList.eoxMap.selectInteractions["SelectLayerClickInteraction"];
 
   // Function to trigger an update when the style changes due to interaction
   const handleInteractionStyleChange = () => {

@@ -1,9 +1,19 @@
+import { Polygon } from "ol/geom";
+import Feature from "ol/Feature";
+
 // Defining a MockMap class extending HTMLElement
 export class MockMap extends HTMLElement {
   constructor() {
     super();
     // Initializing features array
-    this.features = [{}, {}];
+    this.features = [
+      new Feature({
+        geometry: new Polygon([]),
+      }),
+      new Feature({
+        geometry: new Polygon([]),
+      }),
+    ];
     // Simulating a map object with necessary methods
     this.map = {
       // Simulating getLayers method
@@ -49,7 +59,7 @@ export class MockMap extends HTMLElement {
     // Simulate parse features
     this.parseFeature = () => {};
     this.selectInteractions = {
-      selectClick: {
+      SelectLayerClickInteraction: {
         setActive() {},
         remove() {},
         getId() {},
@@ -58,7 +68,7 @@ export class MockMap extends HTMLElement {
         },
         selectedFids: [],
       },
-      selectHover: {
+      SelectLayerHoverInteraction: {
         setActive() {},
         remove() {},
         selectStyleLayer: {
