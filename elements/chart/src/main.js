@@ -1,7 +1,6 @@
 import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import allStyle from "@eox/elements-utils/styles/dist/all.style";
 import { renderChartMethod } from "./methods/render";
 
 /**
@@ -103,7 +102,6 @@ export class EOxChart extends LitElement {
     return html`
       <style>
         ${style}
-        ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
       </style>
       <div id="vis"></div>
