@@ -3,7 +3,7 @@ export class MockMap extends HTMLElement {
   constructor() {
     super();
     // Initializing features array
-    this.features = [];
+    this.features = [{}, {}];
     // Simulating a map object with necessary methods
     this.map = {
       // Simulating getLayers method
@@ -21,6 +21,7 @@ export class MockMap extends HTMLElement {
               },
               // Simulating getFeatures method
               getFeatures: () => this.features,
+              removeFeature: () => this.features.splice(0, 1),
             }),
           },
         ],
@@ -48,13 +49,22 @@ export class MockMap extends HTMLElement {
     // Simulate parse features
     this.parseFeature = () => {};
     this.selectInteractions = {
-      SelectLayerClickInteraction: {
+      selectClick: {
         setActive() {},
         remove() {},
+        getId() {},
+        selectStyleLayer: {
+          on() {},
+        },
+        selectedFids: [],
       },
-      SelectLayerHoverInteraction: {
+      selectHover: {
         setActive() {},
         remove() {},
+        selectStyleLayer: {
+          on() {},
+        },
+        selectedFids: [],
       },
     };
 
