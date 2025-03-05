@@ -33,6 +33,7 @@ export default {
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
       @change=${args.onChange}
+      @ready=${args.onReady}
       @submit=${args.onSubmit}
     ></eox-jsonform>
   `,
