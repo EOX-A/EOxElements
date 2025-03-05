@@ -130,6 +130,13 @@ export class EOxJSONForm extends LitElement {
   }
 
   /**
+   * Editor has loaded schema and API is ready to be used
+   */
+  #emitReady() {
+    this.dispatchEvent(new Event("ready"));
+  }
+
+  /**
    * Value object has been changed
    */
   #emitValue() {
@@ -150,6 +157,9 @@ export class EOxJSONForm extends LitElement {
 
     events.map((evt) => {
       this.#editor.on(evt, () => {
+        if (evt === "ready") {
+          this.#emitReady();
+        }
         this._value = this.#editor.getValue();
         this.#emitValue();
       });
