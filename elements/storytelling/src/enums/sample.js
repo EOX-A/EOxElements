@@ -154,7 +154,7 @@ const HERO_IMG_FIELDS = {
       type: "string",
       default: "https://www.gstatic.com/prettyearth/assets/full/14617.jpg",
       format: "upload",
-      accept: "image/*,video/*",
+      accept: "image/*",
     },
     description: {
       type: "string",
