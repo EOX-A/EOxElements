@@ -1,0 +1,74 @@
+[
+  {
+    "type": "Vector",
+    "properties": {
+      "id": "clusterLayer"
+    },
+    "interactions": [
+      {
+        "type": "select",
+        "options": {
+          "id": "ClusterSelectInteraction",
+          "condition": "click",
+          "layer": {
+            "type": "Vector",
+            "properties": {
+              "id": "clusterLayer"
+            },
+            "source": {
+              "type": "Vector"
+            },
+            "style": {
+              "stroke-color": "chartreuse",
+              "stroke-width": 5
+            }
+          }
+        }
+      }
+    ],
+    "style": [{
+        "filter": [">", ["get", "features", "length"], 1],
+        "style": {
+          "text-value": ["to-string", ["get", "features", "length"]],
+          "circle-radius": 12,             
+          "circle-fill-color": "#FFD700",  
+          "circle-stroke-color": "rgba(255, 255, 255, 0.7)",
+          "circle-stroke-width": 2,     
+          "text-font": "normal 16px",         
+          "text-fill-color": "#000",         
+          "text-offset-y": 1
+        }
+      },
+      {
+        "else": true,
+        "style": {
+          "circle-radius": 12,             
+          "circle-fill-color": "#FFD700",  
+          "circle-stroke-color": "rgba(255, 255, 255, 0.7)",
+          "circle-stroke-width": 2,     
+          "text-font": "normal 16px",
+          "text-value": "🗻",            
+          "text-fill-color": "#000",         
+          "text-offset-y": 1       
+        }
+      }],
+    "source": {
+      "type": "Cluster",
+      "distance": 45,
+      "source": {
+        "type": "Vector",
+        "url": "https://github.com/openlayers/openlayers/blob/main/examples/data/geojson/point-samples.geojson",
+        "format": "GeoJSON"
+      }
+    }
+  },
+  {
+    "type": "Tile",
+    "properties": {
+      "id": "osm",
+      "title": "Background"
+    },
+    "source": { "type": "OSM" }
+  }
+]
+

@@ -128,6 +128,10 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
         ...(layer.source.projection && {
           projection: getProjection(layer.source.projection),
         }),
+        // special treatment for cluster source, set the base source for clusters independently
+        ...(layer.source.type === "Cluster" && {
+          source: null,
+        }),
       }),
     }),
     ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
@@ -146,6 +150,25 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
     /** @type {import("ol/layer/Group").default} **/ olLayer.setLayers(
       new Collection(groupLayers),
     );
+  }
+
+  if (layer.source?.type === "Cluster" && layer.source?.source) {
+    const clusterBaseSourceDefinition = layer.source.source;
+    const clusterBaseSource = new VectorSource({
+      ...clusterBaseSourceDefinition,
+      ...(clusterBaseSourceDefinition.format && {
+        format: new availableFormats[
+          typeof clusterBaseSourceDefinition.format === "object"
+            ? clusterBaseSourceDefinition.format.type
+            : clusterBaseSourceDefinition.format
+        ]({
+          ...(typeof clusterBaseSourceDefinition.format === "object" && {
+            ...clusterBaseSourceDefinition.format,
+          }),
+        }),
+      }),
+    });
+    olLayer.getSource().setSource(clusterBaseSource);
   }
 
   if (layer.style) {

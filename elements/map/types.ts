@@ -215,6 +215,13 @@ export type WMTSCapabilitiesOptions = {
   version: string;
 };
 
+export type ClusterLayerOptions = import("ol/layer/Vector").Options & {
+  /**
+   * object literal with mdi-icon-codes as values, e.g. {"agriculture": "mdi-barley"}
+   */
+  clusterStyle: import("ol/style/flat").FlatStyleLike;
+};
+
 export type HTMLElementEvent<T extends HTMLElement> = Event & {
   target: T;
 };

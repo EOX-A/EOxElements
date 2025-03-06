@@ -1,0 +1,138 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "indicatorObject": {
+          "aoiID": "IT_22",
+          "city": "Apulia",
+          "country": "IT",
+          "name": "testName",
+          "indicator": "E10a9"
+        }
+      },
+      "geometry": {
+        "coordinates": [
+          12.693854445792994,
+          47.0745246844823
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "indicatorObject": {
+          "aoiID": "IT_23",
+          "city": "Apulia",
+          "country": "IT",
+          "name": "testName",
+          "indicator": "E10a9"
+        }
+      },
+      "geometry": {
+        "coordinates": [
+          12.694779709674577,
+          47.07416382942776
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "indicatorObject": {
+          "aoiID": "IT_24",
+          "city": "Apulia",
+          "country": "IT",
+          "name": "testName",
+          "indicator": "E10a9"
+        }
+      },
+      "geometry": {
+        "coordinates": [
+          12.69651161386193,
+          47.07391069084164
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "indicatorObject": {
+          "aoiID": "IT_25",
+          "city": "Apulia",
+          "country": "IT",
+          "name": "testName",
+          "indicator": "E10a9"
+        }
+      },
+      "geometry": {
+        "coordinates": [
+          12.691616414354968,
+          47.076630521210035
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "indicatorObject": {
+          "aoiID": "IT_26",
+          "city": "Apulia",
+          "country": "IT",
+          "name": "testName",
+          "indicator": "E10a9"
+        }
+      },
+      "geometry": {
+        "coordinates": [
+          12.348628376633286,
+          47.108717765317635
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "indicatorObject": {
+          "aoiID": "IT_27",
+          "city": "Apulia",
+          "country": "IT",
+          "name": "testName",
+          "indicator": "E10a9"
+        }
+      },
+      "geometry": {
+        "coordinates": [
+          12.368049493978333,
+          47.10140351309241
+        ],
+        "type": "Point"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "indicatorObject": {
+          "aoiID": "IT_28",
+          "city": "Apulia",
+          "country": "IT",
+          "name": "testName",
+          "indicator": "E10a9"
+        }
+      },
+      "geometry": {
+        "coordinates": [
+          12.886099152456126,
+          47.51157832617804
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}

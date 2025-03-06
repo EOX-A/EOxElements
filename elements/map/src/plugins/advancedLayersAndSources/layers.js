@@ -2,6 +2,7 @@ import * as olLayers from "ol/layer";
 import STAC from "ol-stac";
 import { register } from "ol/proj/proj4";
 import proj4 from "proj4";
+import Cluster from "../../custom/layers/Cluster";
 
 // Register proj4 with OpenLayers to support reprojection of map sources.
 // This is necessary for supporting coordinate systems other than the default.
@@ -13,4 +14,5 @@ register(proj4);
 window.eoxMapAdvancedOlLayers = {
   ...olLayers,
   STAC,
+  Cluster,
 };
