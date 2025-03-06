@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.5...jsonform-v0.16.0) (2025-03-06)
+
+
+### Features
+
+* Forward editor ready event ([#1586](https://github.com/EOX-A/EOxElements/issues/1586)) ([a70790b](https://github.com/EOX-A/EOxElements/commit/a70790be6dc893b9aa3a1ac5ca08ecdef5889287))
+
 ## [0.15.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.4...jsonform-v0.15.5) (2025-03-03)
 
 

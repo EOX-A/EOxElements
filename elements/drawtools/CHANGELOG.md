@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.14.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.1...drawtools-v0.14.2) (2025-03-06)
+
+
+### Bug Fixes
+
+* Remove features cleanly on continuous drawing ([#1590](https://github.com/EOX-A/EOxElements/issues/1590)) ([58a0bb5](https://github.com/EOX-A/EOxElements/commit/58a0bb5325364d4492858d4ee91f6cfd79f4faa9))
+
 ## [0.14.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.0...drawtools-v0.14.1) (2025-03-03)
 
 
