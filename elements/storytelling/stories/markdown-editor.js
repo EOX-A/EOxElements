@@ -121,6 +121,23 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       show-nav
       show-editor="closed"
       markdown=${args.markdown}
+      @upload:file=${(e) => {
+        const detail = e.detail;
+        const { file, update } = detail;
+
+        // Check if file is larger than 1MB
+        if (file.size > 1024 * 1024) {
+          update(null, new Error("File size must be less than 1MB"));
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64Url = reader.result;
+          update(base64Url);
+        };
+        reader.readAsDataURL(file);
+      }}
     ></eox-storytelling>
   `,
 };

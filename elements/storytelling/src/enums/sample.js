@@ -131,7 +131,8 @@ const SIMPLE_IMG_FIELDS = {
       type: "string",
       default:
         "https://images.unsplash.com/photo-1461880234904-751a2f54f1c7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      format: "text",
+      format: "upload",
+      accept: "image/*",
     },
   },
 };
@@ -152,7 +153,8 @@ const HERO_IMG_FIELDS = {
     src: {
       type: "string",
       default: "https://www.gstatic.com/prettyearth/assets/full/14617.jpg",
-      format: "text",
+      format: "upload",
+      accept: "image/*",
     },
     description: {
       type: "string",
@@ -179,7 +181,8 @@ const HERO_VIDEO_FIELDS = {
       type: "string",
       default:
         "https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4",
-      format: "text",
+      format: "upload",
+      accept: "video/*",
     },
     description: {
       type: "string",
