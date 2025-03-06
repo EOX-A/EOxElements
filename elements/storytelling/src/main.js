@@ -21,7 +21,11 @@ import {
 } from "./markdown-it-plugin";
 import styleEOX from "./style.eox.js";
 import "./components/editor";
-import { DEFAULT_SENSITIVE_TAGS, SAMPLE_ELEMENTS } from "./enums";
+import {
+  DEFAULT_SENSITIVE_TAGS,
+  SAMPLE_ELEMENTS,
+  CUSTOM_EDITOR_INTERFACES,
+} from "./enums";
 import _debounce from "lodash.debounce";
 const md = /** @type {import("./types").CustomMarkdownIt} */ (
   markdownit({ html: true })
@@ -338,6 +342,7 @@ export class EOxStoryTelling extends LitElement {
                           id="storytelling-editor-fields"
                           no-shadow
                           .schema=${this.selectedCustomElement.fields}
+                          .customEditorInterfaces=${CUSTOM_EDITOR_INTERFACES}
                         ></eox-jsonform>
                       </div>
                       <div class="story-telling-section-submit-wrapper">
