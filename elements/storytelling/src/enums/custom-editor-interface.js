@@ -58,7 +58,7 @@ class UploadEditor extends AbstractEditor {
       fileInput.style.display = "none";
 
       fileInput.addEventListener("change", (e) => {
-        // @ts-expect-error
+        // @ts-expect-error - Event target type is not properly inferred for file input
         const file = e.target.files[0];
         if (file) {
           const loader = document.createElement("div");
