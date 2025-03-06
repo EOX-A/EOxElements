@@ -1,6 +1,6 @@
 {
   "name": "@eox/storytelling",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "type": "module",
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",

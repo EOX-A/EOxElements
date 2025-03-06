@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.3...storytelling-v1.5.4) (2025-03-06)
+
+
+### Features
+
+* Upload media through add section modal ([#1592](https://github.com/EOX-A/EOxElements/issues/1592)) ([63273f3](https://github.com/EOX-A/EOxElements/commit/63273f3a8e407e07cfda67c0f3f019e77cb9838e))
+
 ## [1.5.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.2...storytelling-v1.5.3) (2025-02-26)
 
 
