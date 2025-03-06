@@ -1,6 +1,6 @@
-import { JSONEditor } from "@json-editor/json-editor/src/core.js";
+import { AbstractEditor } from "@json-editor/json-editor/src/editor.js";
 
-class UploadEditor extends JSONEditor.AbstractEditor {
+class UploadEditor extends AbstractEditor {
   register() {
     super.register();
   }
@@ -56,6 +56,7 @@ class UploadEditor extends JSONEditor.AbstractEditor {
       fileInput.style.display = "none";
 
       fileInput.addEventListener("change", (e) => {
+        // @ts-ignore
         const file = e.target.files[0];
         if (file) {
           const loader = document.createElement("div");
@@ -96,8 +97,8 @@ class UploadEditor extends JSONEditor.AbstractEditor {
 
     this.input = uploadEle;
     this.input.id = this.formname;
-    this.input.name = this.formname;
-    this.input.value = startVals;
+    this.input.setAttribute("name", this.formname);
+    this.input.setAttribute("value", startVals);
 
     this.control = theme.getFormControl(
       this.label,
