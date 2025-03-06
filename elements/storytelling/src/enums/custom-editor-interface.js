@@ -58,7 +58,7 @@ class UploadEditor extends AbstractEditor {
       fileInput.style.display = "none";
 
       fileInput.addEventListener("change", (e) => {
-        // @ts-ignore
+        // @ts-expect-error
         const file = e.target.files[0];
         if (file) {
           const loader = document.createElement("div");
