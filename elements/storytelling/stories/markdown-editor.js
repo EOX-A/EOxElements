@@ -127,7 +127,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
 
         // Check if file is larger than 1MB
         if (file.size > 1024 * 1024) {
-          update(null, new Error("File size must be less than 1MB"));
+          update(null, null, new Error("File size must be less than 1MB"));
           return;
         }
 
