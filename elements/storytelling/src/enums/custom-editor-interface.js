@@ -39,6 +39,10 @@ class UploadEditor extends AbstractEditor {
     const input = document.createElement("input");
     input.type = "text";
     input.value = schema.default;
+    input.addEventListener("change", (e) => {
+      this.value = input.value;
+      this.onChange(true);
+    });
 
     const verticleDivider = document.createElement("div");
     verticleDivider.style.cssText =
@@ -68,16 +72,25 @@ class UploadEditor extends AbstractEditor {
             "display: flex; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 39, 66, 0.6); z-index: 99999999;font-weight: 500; color: white;";
           document.body.appendChild(loader);
 
-          const update = (url, error) => {
+          const update = /**
+           * @param {string} url
+           * @param {string} fallbackUrl
+           * @param {Error} error
+           */ (url, fallbackUrl, error) => {
             if (error) {
               alert(error.message);
               loader.remove();
               return;
             }
+
+            let content = this.jsoneditor.getValue();
+            content[this.key] = url;
             input.value = url;
-            input.focus();
-            this.value = url;
-            this.onChange(true);
+            if (fallbackUrl) {
+              content["data-fallback-src"] = fallbackUrl;
+            }
+
+            this.jsoneditor.setValue(content);
             loader.remove();
           };
           const event = new CustomEvent("upload:file", {
