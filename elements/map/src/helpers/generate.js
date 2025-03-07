@@ -1,22 +1,19 @@
-import { GeoJSON, MVT } from "ol/format";
-import {
-  Group,
-  Image,
-  Tile as TileLayer,
-  Vector as VectorLayer,
-  VectorTile as VectorTileLayer,
-} from "ol/layer";
-import {
-  ImageWMS,
-  OSM,
-  Tile as TileSource,
-  TileWMS,
-  Vector as VectorSource,
-  VectorTile as VectorTileSource,
-  WMTS,
-  XYZ,
-} from "ol/source";
-import { Collection } from "ol";
+import GeoJSON from "ol/format/GeoJSON.js";
+import MVT from "ol/format/MVT.js";
+import Group from "ol/layer/Group.js";
+import Image from "ol/layer/Image.js";
+import TileLayer from "ol/layer/Tile.js";
+import VectorLayer from "ol/layer/Vector.js";
+import VectorTileLayer from "ol/layer/VectorTile.js";
+import ImageWMS from "ol/source/ImageWMS.js";
+import OSM from "ol/source/OSM.js";
+import TileSource from "ol/source/Tile.js";
+import TileWMS from "ol/source/TileWMS.js";
+import VectorSource from "ol/source/Vector.js";
+import VectorTileSource from "ol/source/VectorTile.js";
+import WMTS from "ol/source/WMTS.js";
+import XYZ from "ol/source/XYZ.js";
+import Collection from "ol/Collection.js";
 import { addDraw, addSelect, generateTileGrid } from "./";
 import { get as getProjection } from "ol/proj";
 

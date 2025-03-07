@@ -1,4 +1,4 @@
-import { MapBrowserEvent } from "ol";
+import MapBrowserEvent from "ol/MapBrowserEvent.js";
 
 const width = 400;
 const height = 400;
