@@ -39,7 +39,7 @@ class UploadEditor extends AbstractEditor {
     const input = document.createElement("input");
     input.type = "text";
     input.value = schema.default;
-    input.addEventListener("change", (e) => {
+    input.addEventListener("change", () => {
       this.value = input.value;
       this.onChange(true);
     });
