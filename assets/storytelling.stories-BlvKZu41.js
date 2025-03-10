@@ -127,7 +127,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       show-nav
       show-editor="closed"
       markdown=${e.markdown}
-      @upload:file=${t=>{const $=t.detail,{file:l,update:c}=$;if(l.size>1024*1024){c(null,new Error("File size must be less than 1MB"));return}const d=new FileReader;d.onload=()=>{const j=d.result;c(j)},d.readAsDataURL(l)}}
+      @upload:file=${t=>{const $=t.detail,{file:l,update:c}=$;if(l.size>1024*1024){c(null,null,new Error("File size must be less than 1MB"));return}const d=new FileReader;d.onload=()=>{const j=d.result;c(j)},d.readAsDataURL(l)}}
     ></eox-storytelling>
   `};function C(e){if((e==null?void 0:e.tagName)==="EOX-MAP"){e.registerProjection("ESRI:53009","+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs");const t=e.getAttribute("projection");t&&e.setAttribute("projection",t)}}const Y={args:{markdown:`## Map section <!--{as="eox-map" projection="ESRI:53009" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
 
