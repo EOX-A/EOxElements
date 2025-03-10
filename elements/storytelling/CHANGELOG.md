@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.4...storytelling-v1.5.5) (2025-03-10)
+
+
+### Bug Fixes
+
+* Changes related to upload editor  ([#1595](https://github.com/EOX-A/EOxElements/issues/1595)) ([48a1338](https://github.com/EOX-A/EOxElements/commit/48a133861074830a972e047615b8a65356f23a6f))
+
 ## [1.5.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.3...storytelling-v1.5.4) (2025-03-06)
 
 
