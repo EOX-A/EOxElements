@@ -115,7 +115,7 @@ const MAP_TOUR_FIELDS = {
   },
 };
 
-const SIMPLE_IMG = `## {title} <!--{as="img" src="{src}" style="width: 100%; height: 600px;"}-->
+const SIMPLE_IMG = `## {title} <!--{as="img" data-fallback-src="{data-fallback-src}" src="{src}" style="width: 100%; height: 600px;"}-->
 `;
 const SIMPLE_IMG_FIELDS = {
   title: "Simple Image",
@@ -128,16 +128,23 @@ const SIMPLE_IMG_FIELDS = {
       format: "text",
     },
     src: {
+      title: "Image Source",
       type: "string",
       default:
         "https://images.unsplash.com/photo-1461880234904-751a2f54f1c7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       format: "upload",
       accept: "image/*",
     },
+    "data-fallback-src": {
+      title: "Fallback Source",
+      type: "string",
+      default: "",
+      format: "text",
+    },
   },
 };
 
-const HERO_IMG = `# {title} <!--{ as="img" mode="hero" src="{src}" }-->
+const HERO_IMG = `# {title} <!--{ as="img" data-fallback-src="{data-fallback-src}" mode="hero" src="{src}" }-->
 ### {description} <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 `;
 const HERO_IMG_FIELDS = {
@@ -151,10 +158,17 @@ const HERO_IMG_FIELDS = {
       format: "text",
     },
     src: {
+      title: "Image Source",
       type: "string",
       default: "https://www.gstatic.com/prettyearth/assets/full/14617.jpg",
       format: "upload",
       accept: "image/*",
+    },
+    "data-fallback-src": {
+      title: "Fallback Source",
+      type: "string",
+      default: "",
+      format: "text",
     },
     description: {
       type: "string",
@@ -164,7 +178,7 @@ const HERO_IMG_FIELDS = {
   },
 };
 
-const HERO_VIDEO = `# {title} <!--{ as="video" mode="hero" src="{src}" }-->
+const HERO_VIDEO = `# {title} <!--{ as="video" data-fallback-src="{data-fallback-src}" mode="hero" src="{src}" }-->
 #### {description} <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 `;
 const HERO_VIDEO_FIELDS = {
@@ -178,11 +192,18 @@ const HERO_VIDEO_FIELDS = {
       format: "text",
     },
     src: {
+      title: "Image Source",
       type: "string",
       default:
         "https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4",
       format: "upload",
       accept: "video/*",
+    },
+    "data-fallback-src": {
+      title: "Fallback Source",
+      type: "string",
+      default: "",
+      format: "text",
     },
     description: {
       type: "string",
