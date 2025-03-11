@@ -2,7 +2,6 @@ import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { SimplemdeEditor } from "@json-editor/json-editor/src/editors/simplemde.js";
 import EasyMDE from "easymde/dist/easymde.min.js";
 import AceEditor from "ace-builds";
-import "ace-builds/esm-resolver.js";
 import addCustomInputs from "../custom-inputs";
 
 // using a drop-in replacement for EasyMDE,
@@ -14,6 +13,10 @@ window.SimpleMDE = EasyMDE;
 window.ace = AceEditor;
 //@ts-expect-error - useWorker is not defined in the ace-builds config keys
 window.ace.config.set("useWorker", false);
+window.ace.config.set(
+  "basePath",
+  "https://cdn.jsdelivr.net/npm/ace-builds/src-min-noconflict/",
+);
 
 /**
  * Create the editor instance
