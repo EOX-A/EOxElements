@@ -121,25 +121,7 @@ export const createEditor = (element) => {
 
     // Check if any editor requires AceEditor
     const aceUsed = Object.values(editor.editors).find((e) => e?.ace_container);
-    // // console.log(editor.editors["root.code"].schema)
-    // // console.log(Object.values(editor.editors).forEach(e => console.log(e.constructor.name)))
-    // let classname
-    // JSONEditor.defaults.resolvers.find(r => {
-    //   classname = r(editor.editors["root.code"].schema) && r(editor.editors["root.code"].schema)
-    //   return classname && JSONEditor.defaults.editors[classname]
-    // })
-    // // console.log(classname)
-    // const aceUsed = classname === "ace" && JSONEditor.defaults.editors[classname]
-    // const script = document.createElement("script")
-    // script.setAttribute("src", "https://cdn.jsdelivr.net/npm/ace@1.3.0/+esm")
-    // script.setAttribute("type", "module")
-    // script.addEventListener("load", () => [
-    //   console.log("loaded!")
-    // ])
-    // document.head.appendChild(script)
     if (aceUsed && !element.noShadow) {
-      // window.ace.config.setModuleLoader('ace/mode/javascript', () => import('https://cdn.jsdelivr.net/npm/ace-builds/src-min-noconflict/mode-javascript.js'));
-
       // https://github.com/ajaxorg/ace/wiki/Configuring-Ace
       aceUsed.ace_editor_instance.setOptions({
         showPrintMargin: false,
