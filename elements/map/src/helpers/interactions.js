@@ -1,4 +1,5 @@
-import { DragPan, MouseWheelZoom } from "ol/interaction";
+import DragPan from "ol/interaction/DragPan.js";
+import MouseWheelZoom from "ol/interaction/MouseWheelZoom.js";
 import { platformModifierKeyOnly } from "ol/events/condition";
 
 /**

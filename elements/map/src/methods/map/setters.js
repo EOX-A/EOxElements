@@ -349,7 +349,7 @@ export function setSyncMethod(sync, EOxMap) {
     // Use a timeout to ensure the target map is ready before syncing views
     setTimeout(() => {
       const originMap = /** @type {import("../../main").EOxMap} **/ (
-        /** @type {any} **/ getElement(sync)
+        /** @type {any} **/ (getElement(sync))
       );
 
       // Set the view of the current map to match the view of the origin map
