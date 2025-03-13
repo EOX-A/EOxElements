@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.0...jsonform-v0.16.1) (2025-03-13)
+
+
+### Bug Fixes
+
+* Use dynamic imports to reduce bundle ([#1601](https://github.com/EOX-A/EOxElements/issues/1601)) ([e0218bd](https://github.com/EOX-A/EOxElements/commit/e0218bd0ff651d0433babe8a1818ed73eb366e3b))
+
 ## [0.16.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.5...jsonform-v0.16.0) (2025-03-06)
 
 
