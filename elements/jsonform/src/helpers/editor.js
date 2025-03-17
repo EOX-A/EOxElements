@@ -81,17 +81,29 @@ export const createEditor = (element) => {
         ".tabs.je-tabholder--top > .je-tab--top > span",
       ),
     );
-    Object.entries(editor.expandSchema(editor.schema).properties)
-      .filter(([_, property]) => property.options?.hidden)
-      .map(([key, property]) => property.title || key)
-      .forEach((title) => {
-        const tabTitle = tabsTitles.find(
-          (tabTitle) => tabTitle.textContent === title,
-        );
-        if (tabTitle) {
-          tabTitle.parentElement.dataset.hidden = "";
+    const hideTabsIfPropertiesHidden = (properties) => {
+      // Find tabs for hidden properties and set data-hidden
+      // in order to hide them with CSS
+      Object.entries(properties)
+        .filter(([_, property]) => property.options?.hidden)
+        .map(([key, property]) => property.title || key)
+        .forEach((title) => {
+          const tabTitle = tabsTitles.find(
+            (tabTitle) => tabTitle.textContent === title,
+          );
+          if (tabTitle) {
+            tabTitle.parentElement.dataset.hidden = "";
+          }
+        });
+
+      // Recursively go through nested child objects with properties
+      Object.values(properties).forEach((property) => {
+        if (property.properties) {
+          hideTabsIfPropertiesHidden(property.properties);
         }
       });
+    };
+    hideTabsIfPropertiesHidden(editor.expandSchema(editor.schema).properties);
 
     // Workaround to emit "change" event also from text inputs
     // TEMP - see https://github.com/json-editor/json-editor/issues/1445
