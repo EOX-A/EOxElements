@@ -1,10 +1,12 @@
-import { Control } from "ol/control";
+import Control from "ol/control/Control.js";
 import Feature from "ol/Feature";
 import Geolocation from "ol/Geolocation";
 import Point from "ol/geom/Point";
-import { Vector as VectorSource } from "ol/source";
-import { Vector as VectorLayer } from "ol/layer";
-import { Fill, Stroke, Style } from "ol/style";
+import VectorSource from "ol/source/Vector.js";
+import VectorLayer from "ol/layer/Vector.js";
+import Fill from "ol/style/Fill.js";
+import Stroke from "ol/style/Stroke.js";
+import Style from "ol/style/Style.js";
 
 /**
  * @typedef {import("../types").GeolocationOptions} GeolocationOptions

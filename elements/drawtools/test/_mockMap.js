@@ -1,4 +1,4 @@
-import { Polygon } from "ol/geom";
+import Polygon from "ol/geom/Polygon.js";
 import Feature from "ol/Feature";
 
 // Defining a MockMap class extending HTMLElement
