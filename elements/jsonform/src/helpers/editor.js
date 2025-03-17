@@ -3,6 +3,7 @@ import { SimplemdeEditor } from "@json-editor/json-editor/src/editors/simplemde.
 import EasyMDE from "easymde/dist/easymde.min.js";
 import AceEditor from "ace-builds";
 import addCustomInputs from "../custom-inputs";
+import { FALLBACK_SCHEMA } from "../enums";
 
 // using a drop-in replacement for EasyMDE,
 // see https://github.com/json-editor/json-editor/issues/1093
@@ -57,7 +58,7 @@ export const createEditor = (element) => {
   // Initialize the JSONEditor with the given schema, value, and options
   const initEditor = () =>
     new JSONEditor(formEle, {
-      schema: element.schema,
+      schema: element.schema || FALLBACK_SCHEMA,
       ...(element.value ? { startval: element.value } : {}),
       theme: "html",
       iconlib: "fontawesome5", // necessary to get information about expand/collapse state
