@@ -133,5 +133,5 @@ describe("Item Filter Config", () => {
     slotRenderTest(),
   );
 
-  it.only("emits event on results click", () => resultsActionTest());
+  it("emits event on results click", () => resultsActionTest());
 });

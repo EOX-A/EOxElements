@@ -63,7 +63,7 @@ export const CardDisplay = CardDisplayStory();
 export const CSSVariables = CSSVariablesStory();
 
 /**
- * The `click:result-action` event is triggered when a result action is clicked. The icon can be configered with the
+ * The `click:result-action` event is triggered when a result action is clicked. You can enable this event with `enableResultAction`. The icon can be configered with the
  * `resultActionIcon` property.
  */
 export const ResultAction = ResultActionStory();
