@@ -24,8 +24,7 @@ const config = {
   ],
   framework: getAbsolutePath("@storybook/web-components-vite"),
   docs: {
-    autodocs: "tag",
-    toc: true,
+    toc: true
   },
   staticDirs: [
     "./public",
