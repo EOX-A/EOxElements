@@ -210,8 +210,7 @@ export class EOxSelectInteraction {
         overlay?.setMap(this.eoxMap.map);
       } else {
         // If the selection layer does not exist any more,
-        // set it to inactive, and remove layer plus overlay
-        eoxMap.selectInteractions[options.id]?.setActive(false);
+        // remove layer association and remove the overlay from the map
         this.selectStyleLayer?.setMap(null);
         overlay?.setMap(null);
       }
