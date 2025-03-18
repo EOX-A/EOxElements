@@ -69,7 +69,16 @@ export function createItemListMethod(
         items,
         (item) => item.id,
         (item) => html`
-          <li class=${className(item)}>
+          <li
+            class=${className(item)}
+            @click=${() => {
+              EOxItemFilterResults.dispatchEvent(
+                new CustomEvent("click:result-action", {
+                  detail: item,
+                }),
+              )
+            }}
+          >
             <span
               id="${item.id}"
               @click=${() => {
@@ -113,7 +122,8 @@ export function createItemListMethod(
               )}
             </span>
             ${when(
-              EOxItemFilterResults.resultActionIcon,
+              EOxItemFilterResults.resultActionIcon
+              && EOxItemFilterResults.resultType !== "cards",
               () => html`
                 <span
                   class="result-action"
