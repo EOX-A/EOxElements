@@ -132,13 +132,11 @@ export class EOxSelectInteraction {
      * @param {import("ol/MapBrowserEvent").default<UIEvent>} event
      * **/
     this.listener = (event) => {
-      if (!this.active) {
+      if (!this.active || event.dragging) {
         return;
       }
       const currentZoom = this.eoxMap.map.getView().getZoom();
       if (
-        event.dragging ||
-        !this.active ||
         currentZoom < this.selectLayer.getMinZoom() ||
         currentZoom > this.selectLayer.getMaxZoom()
       ) {
