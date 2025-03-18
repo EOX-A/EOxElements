@@ -15,29 +15,13 @@ const STORIES_MAIN_MAP_LAYERS = [
       id: "group3",
       title: "Wind Layers",
       layerControlExpand: true,
-      layerControlExclusive: true,
       description: "# Hello world",
     },
     layers: [
       {
         ...STORIES_LAYER_SENTINEL_HUB.wind,
-        layerControlGloballyExclusive: true,
+        layerControlExclusive: true,
       },
-    ],
-  },
-  {
-    type: "Group",
-    properties: {
-      id: "group2",
-      title: "Data Layers",
-      layerControlExpand: true,
-      layerControlExclusive: true,
-      description: "# Hello world",
-    },
-    layers: [
-      //{ ...STORIES_LAYER_SENTINEL_HUB.wind, layerControlExclusive: true },
-      { ...STORIES_LAYER_SENTINEL_HUB.no2, layerControlExclusive: true },
-      STORIES_LAYER_REGION,
     ],
   },
   {
@@ -46,6 +30,7 @@ const STORIES_MAIN_MAP_LAYERS = [
       id: "group1",
       title: "Background Layers",
       //layerControlExclusive: true,
+      layerControlExpand: true,
     },
     layers: [
       { ...STORIES_LAYER_S2, layerControlExclusive: true },

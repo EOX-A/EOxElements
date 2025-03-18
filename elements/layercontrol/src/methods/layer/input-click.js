@@ -7,8 +7,6 @@
 const inputClickMethod = (evt, EOxLayerControlLayer) => {
   const layer = EOxLayerControlLayer.layer; // The layer instance associated with the control.
 
-  console.log(layer);
-
   // Set the visibility of the layer based on the input's checked state.
   layer.setVisible(evt.target.checked);
 
@@ -20,6 +18,8 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
     const siblings = EOxLayerControlLayer.closest(
       ".layers > ul",
     ).querySelectorAll("eox-layercontrol-layer");
+
+    console.log(siblings);
 
     // Loop through the sibling layers to handle exclusive visibility.
     siblings.forEach((sibling) => {
@@ -43,31 +43,28 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
     layer.get("layerControlExclusive") &&
     layerControl.isGloballyExclusive
   ) {
-    console.log("Globally exclusive layer");
-    // *:has(> .layers > ul) { /* styles to apply to the tag */ }
+    // eox-layercontrol-layer-group
+    const parent = EOxLayerControlLayer.closest("eox-layercontrol-layer-group");
+    const layerList = parent.closest("eox-layercontrol-layer-list");
 
-    // Find all exclusive layers across all groups
-    const allLayers = layerControl.shadowRoot.querySelectorAll(
-      "eox-layercontrol-layer",
-    );
+    console.log(parent.group.get("title"));
+    parent.group.setVisible(false);
+    parent.requestUpdate();
 
-    const allExclusiveLayers = Array.from(allLayers).filter((layer) =>
-      layer.layer.get("layerControlExclusive"),
-    );
+    const groupSiblings = parent.closest(
+      ".layers > ul",
+    ).querySelectorAll("eox-layercontrol-layer");
+    console.log(`groupSiblings`);
+    console.log(groupSiblings);
+    console.log(layerList);
 
-    console.log("allExclusiveLayers", allExclusiveLayers);
+    groupSiblings.forEach((sibling) => {
+      console.log(`hiding layer "${sibling.layer.get("title")}"`)
+      sibling.layer.setVisible(false)
+    });
+    parent.group.setVisible(false);
 
-    /*allExclusiveLayers.forEach((exclusiveLayerElement) => {
-      const exclusiveLayer = exclusiveLayerElement.layer;
-
-      console.log("exclusiveLayer", exclusiveLayer);
-
-      // Ensure we don't hide the currently checked layer
-      if (exclusiveLayer !== layer) {
-        exclusiveLayer.setVisible(false);
-        exclusiveLayerElement.closest("eox-layercontrol-layer").requestUpdate();
-      }
-    });*/
+    console.log(parent.group);
   }
 
   // Dispatch a 'changed' event to signal a change in the layer's state.
