@@ -390,16 +390,16 @@ export class EOxItemFilter extends LitElement {
   }
 
   /**
-   * Emits "result-action" event.
+   * Emits "click:result-action" event.
    *
-   * @param {{detail: Object}} evt - "result-action" event triggered by result component
+   * @param {{detail: Object}} evt - "click:result-action" event triggered by result component
    */
   emitResultAction(evt) {
     /**
-     * Fires when a result-action is clicked; event detail is `result`
+     * Fires when a click:result-action is clicked; event detail is `result`
      */
     this.dispatchEvent(
-      new CustomEvent("result-action", {
+      new CustomEvent("click:result-action", {
         detail: evt.detail,
         bubbles: true,
         composed: true,
@@ -499,7 +499,7 @@ export class EOxItemFilter extends LitElement {
               .resultType=${this.resultType}
               .resultActionIcon=${this.resultActionIcon}
               @result=${this.updateResult}
-              @result-action=${this.emitResultAction}
+              @click:result-action=${this.emitResultAction}
             >
               <slot name="resultstitle"
                 ><h6 class="main-heading">Results</h6></slot

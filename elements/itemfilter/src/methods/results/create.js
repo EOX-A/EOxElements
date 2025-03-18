@@ -119,7 +119,7 @@ export function createItemListMethod(
                   class="result-action"
                   @click=${() =>
                     EOxItemFilterResults.dispatchEvent(
-                      new CustomEvent("result-action", {
+                      new CustomEvent("click:result-action", {
                         detail: item,
                       }),
                     )}

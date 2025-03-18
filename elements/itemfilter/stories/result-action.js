@@ -16,7 +16,7 @@ function ResultAction() {
         .aggregateResults=${args.aggregateResults}
         .filterProperties=${args.filterProperties}
         .resultActionIcon=${args.resultActionIcon}
-        @result-action=${(evt) => alert(`${evt.detail.title} clicked!`)}
+        @click:result-action=${(evt) => alert(`${evt.detail.title} clicked!`)}
       ></eox-itemfilter>`,
     args: {
       inlineMode: false,
