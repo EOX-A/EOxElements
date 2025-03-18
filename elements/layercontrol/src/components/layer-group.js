@@ -109,7 +109,9 @@ export class EOxLayerControlLayerGroup extends LitElement {
     // Check if the group should be open based on a specific control property
     const groupOpen = Boolean(this.group?.get("layerControlExpand"));
     const numberOfChildLayers = hideLayersBasedOnProperties(
-      this.group.getLayers(),
+      /** @type import("ol").Collection<import("ol/layer").Layer> */ (
+        this.group.getLayers()
+      ),
     )?.length;
 
     return html`
@@ -163,7 +165,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
   #styleEOX = `
     details summary {
       cursor: pointer;
-      display: flex;
+      display: var(--layer-summary-visibility);
     }
     details summary { list-style-type: none; } /* Firefox */
     details summary::-webkit-details-marker { display: none; } /* Chrome */

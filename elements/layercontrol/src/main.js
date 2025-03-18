@@ -65,7 +65,7 @@ export class EOxLayerControl extends LitElement {
   /**
    * Instance of `eox-map` which is a wrapper for the OL
    *
-   * @type {import("../../map/src/main").EOxMap}
+   * @type {import("@eox/map").EOxMap}
    */
   #eoxMap;
 
@@ -194,6 +194,16 @@ export class EOxLayerControl extends LitElement {
     );
   }
 
+  /**
+   * Dispatches jsonform updates from layer config to the layercontrol
+   * @param {CustomEvent} evt
+   */
+  #handleLayerConfigChange(evt) {
+    this.dispatchEvent(
+      new CustomEvent("layerConfig:change", { detail: evt.detail }),
+    );
+  }
+
   render() {
     // Checks if there are any layers with the 'layerControlOptional' property set to true
     const layers = this.map?.getLayers().getArray();
@@ -235,6 +245,7 @@ export class EOxLayerControl extends LitElement {
             .toolsAsList=${this.toolsAsList}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
+            @layerConfig:change=${this.#handleLayerConfigChange}
           ></eox-layercontrol-layer-list>
         `,
       )}
@@ -259,8 +270,10 @@ export class EOxLayerControl extends LitElement {
     :host, :root {
       font-family: Roboto, sans-serif;
       --padding: 0.5rem;
+      --padding-vertical: .2rem;
       --list-padding: 48px;
       --layer-input-visibility: flex;
+      --layer-summary-visibility: flex;
       --layer-type-visibility: block;
       --layer-title-visibility: flex;
       --layer-visibility: block;
@@ -268,6 +281,11 @@ export class EOxLayerControl extends LitElement {
 
       display: block;
       padding: var(--padding) 0;
+      --background-color: var(--eox-background-color, transparent);
+      background-color: var(--background-color, transparent);
+    }
+    select {
+      background-color: var(--background-color);
     }
   `;
 }

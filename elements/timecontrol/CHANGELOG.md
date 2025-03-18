@@ -1,5 +1,50 @@
 # Changelog
 
+## [0.12.3](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.12.2...timecontrol-v0.12.3) (2025-02-26)
+
+
+### Bug Fixes
+
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
+## [0.12.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.12.1...timecontrol-v0.12.2) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
+## [0.12.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.12.0...timecontrol-v0.12.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **style:** Harmonize slider styles ([#1452](https://github.com/EOX-A/EOxElements/issues/1452)) ([e2311e9](https://github.com/EOX-A/EOxElements/commit/e2311e985fa5999e89c18a54c8a45a5cffaacdec))
+
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.11.0...timecontrol-v0.12.0) (2024-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* align play button property with others (`disablePlay`-> `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450))
+
+### Features
+
+* Time control navigation property ([#1449](https://github.com/EOX-A/EOxElements/issues/1449)) ([143c413](https://github.com/EOX-A/EOxElements/commit/143c413be57cb33ed58ccb5c7d3aaf66fd7d0a43))
+
+
+### Bug Fixes
+
+* Align play button property with others (`disablePlay`-&gt; `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450)) ([73328a1](https://github.com/EOX-A/EOxElements/commit/73328a1d31269d0957e6e4528e41a98d117e3be0))
+
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.10.0...timecontrol-v0.11.0) (2024-12-18)
+
+
+### Features
+
+* Date/time display format ([#1441](https://github.com/EOX-A/EOxElements/issues/1441)) ([49cac47](https://github.com/EOX-A/EOxElements/commit/49cac474a30e271ef28aac63423f5771c7a4c048))
+* **style:** Adjust button styling, paddings, add css variable for hiding buttons ([#1439](https://github.com/EOX-A/EOxElements/issues/1439)) ([1fe0bc7](https://github.com/EOX-A/EOxElements/commit/1fe0bc715942e99ab2f92a54ae8b8452e472bee0))
+
 ## [0.10.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.9.0...timecontrol-v0.10.0) (2024-11-07)
 
 

@@ -7,12 +7,12 @@ import { getElement } from "@eox/elements-utils";
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  * @param {Boolean} multipleFeatures - Allow adding more than one feature at a time
- * @returns {{EoxMap: import("@eox/map/src/main").EOxMap, OlMap: import("ol").Map}} - The map instances.
+ * @returns {{EoxMap: import("@eox/map").EOxMap, OlMap: import("ol").Map}} - The map instances.
  */
 const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = getElement(EoxDrawTool.for);
 
-  const EoxMap = /** @type {import("@eox/map/src/main").EOxMap} */ (mapQuery);
+  const EoxMap = /** @type {import("@eox/map").EOxMap} */ (mapQuery);
 
   const OlMap = EoxMap.map;
 
@@ -21,7 +21,6 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     type: "Vector",
     properties: {
       id: "drawLayer",
-      // @ts-expect-error TODO
       layerControlHide: true,
       isDrawingEnabled: false,
       multipleFeatures: multipleFeatures,
@@ -29,6 +28,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     source: {
       type: "Vector",
     },
+    style: EoxDrawTool.featureStyles?.["layer"],
     interactions: [
       {
         type: "draw",
@@ -38,29 +38,29 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           type: EoxDrawTool.type,
           modify: EoxDrawTool.allowModify,
           stopClick: true,
+          style: EoxDrawTool.featureStyles?.["layer"],
         },
       },
       {
         type: "select",
-        //@ts-expect-error TODO
         options: {
-          id: "selectHover",
+          id: "SelectLayerHoverInteraction",
           condition: "pointermove",
-          style: {
+          style: EoxDrawTool.featureStyles?.["hover"] || {
             "fill-color": "rgba(51, 153, 204,0.5)",
             "stroke-color": "#3399CC",
             "stroke-width": 2.5,
           },
+          tooltip: false,
         },
       },
       {
         type: "select",
-        //@ts-expect-error TODO
         options: {
-          id: "selectClick",
+          id: "SelectLayerClickInteraction",
           condition: "click",
           panIn: true,
-          style: {
+          style: EoxDrawTool.featureStyles?.["click"] || {
             "fill-color": "rgba(51, 153, 204,0.5)",
             "stroke-color": "#3399CC",
             "stroke-width": 2.5,

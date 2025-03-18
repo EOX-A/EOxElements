@@ -1,4 +1,5 @@
 import FEATURE_COLLECTION_LAYER_CROPOMHUSC from "./assets/cropomhusc-feature-collection.json";
+import POLARIS_STYLE from "./assets/polaris-style.json";
 
 const SENTINEL_HUB_URL =
   "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54";
@@ -410,6 +411,164 @@ const STYLES_LAYER_SEE = {
   ],
 };
 
+export const STORIES_LAYER_POLARIS = {
+  type: "Vector",
+  source: {
+    type: "FlatGeoBuf",
+    url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/EOX/polaris/202408131425_CapeFarewell_RIC-processed.fgb",
+    format: "GeoJSON",
+  },
+  properties: {
+    id: "Polaris_algorithm_dmi_demo;:;2024-08-13T00:00:00Z;:;0",
+    title: "Polaris Results demo",
+    layerConfig: {
+      schema: {
+        type: "object",
+        title: "Data configuration",
+        properties: {
+          type_of_visualisation: {
+            title: "Type of Visualisation",
+            type: "string",
+            enum: [
+              "polaris",
+              "WMO Concentration",
+              "WMO Stage of Development",
+              "AIRSS Ice Numeral Go/No Go",
+            ],
+            options: {
+              enum_titles: [
+                "POLARIS",
+                "WMO Concentration",
+                "WMO Stage of Development",
+                "AIRSS Ice Numeral Go/No Go",
+              ],
+            },
+            default: "polaris",
+          },
+          ship_class: {
+            title: "Ship Class",
+            type: "string",
+            enum: [
+              "pc_1",
+              "pc_2",
+              "pc_3",
+              "pc_4",
+              "pc_5",
+              "pc_6",
+              "pc_7",
+              "pc_ias",
+              "pc_ia",
+              "pc_ib",
+              "pc_ic",
+              "pc_nis",
+            ],
+            options: {
+              enum_titles: [
+                "PC1",
+                "PC2",
+                "PC3",
+                "PC4",
+                "PC5",
+                "PC6",
+                "PC7",
+                "PC IA Super",
+                "PC IA",
+                "PC IB",
+                "PC IC",
+                "PC NIS",
+              ],
+            },
+            default: "pc_nis",
+          },
+          type_of_ice: {
+            title: "Type of Ice (decayed/standard)",
+            type: "string",
+            enum: ["standard", "decayed"],
+            default: "standard",
+          },
+          combined_prop: {
+            type: "string",
+            template: "{{vis}}_{{ice}}_{{ship}}_rio",
+            options: {
+              hidden: true,
+            },
+            watch: {
+              vis: "type_of_visualisation",
+              ice: "type_of_ice",
+              ship: "ship_class",
+            },
+          },
+        },
+      },
+      type: "style",
+      legend: [
+        {
+          title: "Total concentration colour code standard",
+          range: [
+            "#367a4a",
+            "#3e9655",
+            "#66bc76",
+            "#fcfb01",
+            "#e36c09",
+            "#bc0106",
+            "#fcfb01",
+          ],
+          domain: [
+            "RIO > 20: Normal Operation",
+            ">= 10 RIO < 20: Normal Operation",
+            ">= 0 RIO < 10: Normal Operation",
+            ">= -10 RIO < 0: Operation subject to special consideration",
+            ">= -20 RIO < -10: Operation subject to special consideration",
+            "RIO < -20: Operation subject to special consideration",
+            "<= -10 RIO < 0: Elevated operational risk",
+          ],
+          scaleType: "categorical",
+          markType: "circle",
+          boundTo: {
+            key: "type_of_visualisation",
+            value: "polaris",
+          },
+        },
+        {
+          title: "WMO Concentration",
+          range: ["#8cff9f", "#ffff00", "#ff7d07", "#ff0000"],
+          domain: ["1 - 3", "4 - 6", "7 - 9", "10"],
+          scaleType: "categorical",
+          markType: "circle",
+          boundTo: {
+            key: "type_of_visualisation",
+            value: "WMO Concentration",
+          },
+        },
+      ],
+      style: POLARIS_STYLE,
+      layerLegend: {
+        title: "Total concentration colour code standard",
+        range: [
+          "#367a4a",
+          "#3e9655",
+          "#66bc76",
+          "#fcfb01",
+          "#e36c09",
+          "#bc0106",
+          "#fcfb01",
+        ],
+        domain: [
+          "RIO > 20: Normal Operation",
+          ">= 10 RIO < 20: Normal Operation",
+          ">= 0 RIO < 10: Normal Operation",
+          ">= -10 RIO < 0: Operation subject to special consideration",
+          ">= -20 RIO < -10: Operation subject to special consideration",
+          "RIO < -20: Operation subject to special consideration",
+          "<= -10 RIO < 0: Elevated operational risk",
+        ],
+        scaleType: "categorical",
+        markType: "circle",
+      },
+    },
+  },
+};
+
 export const STORIES_LAYER_SEE = {
   type: "WebGLTile",
   style: STYLES_LAYER_SEE,
@@ -445,9 +604,10 @@ export const STORIES_LAYER_VESSEL_DENSITY_CARGO = {
       range: ["#C3EBDC", "#0ADC00", "#FEF500", "#F29300", "#800303"],
     },
     layerDatetime: {
-      disablePlay: true,
+      play: false,
       slider: true,
       currentStep: "2021-03-01",
+      displayFormat: "DD.MM.YYYY",
       controlValues: [
         "2022-12-01",
         "2022-11-01",

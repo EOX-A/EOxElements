@@ -42,6 +42,11 @@ export class EOxTimeControl extends LitElement {
       slider: { type: Boolean },
 
       /**
+       * Display left & right navigation buttons for the values
+       */
+      navigation: { type: Boolean },
+
+      /**
        * Original params of layer source
        */
       _originalParams: { type: Object },
@@ -49,7 +54,13 @@ export class EOxTimeControl extends LitElement {
       /**
        * Hides the play button if set
        */
-      disablePlay: { type: Boolean, attribute: "disable-play" },
+      play: { type: Boolean, attribute: "play" },
+
+      /**
+       * Date format string for displaying the current step
+       * using [dayjs format token strings](https://day.js.org/docs/en/display/format)
+       */
+      displayFormat: { type: String, attribute: "display-format" },
 
       currentStep: { type: String, attribute: "current-step" },
       _animationInterval: { state: true },
@@ -71,7 +82,9 @@ export class EOxTimeControl extends LitElement {
     /** @type {boolean} */
     this.unstyled = false;
     /** @type {boolean} */
-    this.disablePlay = false;
+    this.play = false;
+    /** @type {boolean} */
+    this.navigation = true;
     /** @type {boolean} */
     this.slider = false;
     /**
@@ -93,6 +106,9 @@ export class EOxTimeControl extends LitElement {
     window.addEventListener("resize", () => {
       this._width = this.clientWidth;
     });
+
+    /** @type {string} */
+    this.displayFormat = undefined;
   }
 
   /**
@@ -173,9 +189,7 @@ export class EOxTimeControl extends LitElement {
     const foundElement = getElement(this.for);
 
     if (foundElement) {
-      const EoxMap = /** @type {import("@eox/map/main").EOxMap} */ (
-        foundElement
-      );
+      const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
       this.eoxMap = EoxMap;
     }
   }
@@ -241,15 +255,20 @@ export class EOxTimeControl extends LitElement {
     flatLayers.push(...layers);
 
     /** @type {Array<Group>} */
-    let groupLayers = flatLayers.filter((l) => l instanceof Group);
+    let groupLayers =
+      /** @type {Array<Group>} */
+      (flatLayers.filter((l) => l instanceof Group));
     while (groupLayers.length) {
+      /** @type {Array<Group>} */
       const newGroupLayers = [];
       for (let i = 0, ii = groupLayers.length; i < ii; i++) {
         const layersInsideGroup = groupLayers[i].getLayers().getArray();
         flatLayers.push(...layersInsideGroup);
-        newGroupLayers.push(
-          ...layersInsideGroup.filter((l) => l instanceof Group),
+        /** @type {Array<Group>} */
+        const filteredGroups = /** @type {Array<Group>} */ (
+          layersInsideGroup.filter((l) => l instanceof Group)
         );
+        newGroupLayers.push(...filteredGroups);
       }
       groupLayers = newGroupLayers;
     }
@@ -258,7 +277,7 @@ export class EOxTimeControl extends LitElement {
 
   render() {
     if (this.layer && this.for) {
-      const foundElement = /** @type {import('../../map/main').EOxMap} */ (
+      const foundElement = /** @type {import('@eox/map').EOxMap} */ (
         getElement(this.for)
       );
 
@@ -292,24 +311,40 @@ export class EOxTimeControl extends LitElement {
       </style>
       <main>
         <div id="controls" part="controls">
-          <button
-            part="previous"
-            class="icon previous"
-            @click="${() => this.previous()}"
-          >
-            <
-          </button>
-          <span part="current">${this.controlValues[this._newStepIndex]}</span>
-          <button part="next" class="icon next" @click="${() => this.next()}">
-            >
-          </button>
-        </div>
-        <div>
-          ${!this.disablePlay
+          ${this.navigation
+            ? html`
+                <button
+                  part="previous"
+                  class="icon previous"
+                  @click="${() => this.previous()}"
+                >
+                  <
+                </button>
+              `
+            : nothing}
+          <span part="current">
+            ${this.displayFormat
+              ? dayjs(this.controlValues[this._newStepIndex]).format(
+                  this.displayFormat,
+                )
+              : this.controlValues[this._newStepIndex]}
+          </span>
+          ${this.navigation
+            ? html`
+                <button
+                  part="next"
+                  class="icon next"
+                  @click="${() => this.next()}"
+                >
+                  >
+                </button>
+              `
+            : nothing}
+          ${this.play
             ? html`
                 <button
                   part="play"
-                  class="icon-text ${this._isAnimationPlaying
+                  class="small icon-text ${this._isAnimationPlaying
                     ? "pause"
                     : "play"}"
                   @click="${() =>
@@ -321,6 +356,8 @@ export class EOxTimeControl extends LitElement {
                 </button>
               `
             : nothing}
+        </div>
+        <div>
           ${this.slider
             ? html`
                 <div class="slider-col">

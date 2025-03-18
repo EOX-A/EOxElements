@@ -4,7 +4,7 @@ import { DEFAULT_ARGS } from "../src/enums/stories";
 const NoMap = {
   args: {
     ...DEFAULT_ARGS,
-    disablePlay: true,
+    play: true,
     layer: undefined,
     for: undefined,
     controlProperty: undefined,
@@ -19,8 +19,9 @@ const NoMap = {
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
+      .navigation=${args.navigation}
       .slider=${args.slider}
-      .disablePlay=${args.disablePlay}
+      .play=${args.play}
       @stepchange=${args.onStepChange}
     ></eox-timecontrol>
   `,

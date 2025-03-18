@@ -1,15 +1,33 @@
-import * as olControls from "ol/control";
+import Zoom from "ol/control/Zoom";
+import Rotate from "ol/control/Rotate";
+import ScaleLine from "ol/control/ScaleLine";
+import FullScreen from "ol/control/FullScreen";
+import ZoomSlider from "ol/control/ZoomSlider";
+import Attribution from "ol/control/Attribution";
+import OverviewMap from "ol/control/OverviewMap";
+import ZoomToExtent from "ol/control/ZoomToExtent";
+import MousePosition from "ol/control/MousePosition";
 import { generateLayers } from "../helpers/generate";
 import Geolocation from "./geo-location";
 import LoadingIndicator from "./loading-indicator";
 
 /**
- * @typedef {import("../../types").ControlDictionary} ControlDictionary
- * @typedef {import("../../types").ControlType} ControlType
+ * @typedef {import("../types").ControlDictionary} ControlDictionary
+ * @typedef {import("../types").ControlType} ControlType
  */
 
 const availableControls = {
-  ...olControls,
+  ...{
+    Zoom,
+    Rotate,
+    ScaleLine,
+    FullScreen,
+    ZoomSlider,
+    Attribution,
+    OverviewMap,
+    ZoomToExtent,
+    MousePosition,
+  },
   Geolocation,
   LoadingIndicator,
 };
@@ -52,9 +70,7 @@ export function addControl(EOxMap, type, options) {
   const controlOptions = Object.assign({}, options);
 
   // If the control has layers (e.g., for OverviewMap), generate them
-  //@ts-expect-error options need to be according to the given control.
   if (options && options.layers) {
-    //@ts-expect-error layers is not defined for each control
     controlOptions.layers = generateLayers(EOxMap, options.layers); // Parse layers (e.g., for OverviewMap)
   }
 

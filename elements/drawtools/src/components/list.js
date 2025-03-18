@@ -15,22 +15,24 @@ import listStyle from "@eox/elements-utils/styles/dist/list.style";
  */
 export class EOxDrawToolsList extends LitElement {
   static properties = {
+    eoxDrawTools: { attribute: false, state: true },
     eoxMap: { attribute: false, state: true },
     olMap: { attribute: false, state: true },
     draw: { attribute: false, state: true },
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
+    featureName: { attribute: false, state: true, type: String },
     modify: { attribute: false, state: true },
     unstyled: { type: Boolean },
   };
 
   /**
-   * @type import("../../../map/src/select").EOxSelectInteraction
+   * @type {import("@eox/map").EOxMap["selectInteractions"][string]}
    */
   hoverInteraction;
 
   /**
-   * @type import("../../../map/src/select").EOxSelectInteraction
+   * @type {import("@eox/map").EOxMap["selectInteractions"][string]}
    */
   clickInteraction;
 
@@ -48,7 +50,12 @@ export class EOxDrawToolsList extends LitElement {
     super();
 
     /**
-     * @type import("../../../map/main").EOxMap
+     * @type import("../main").EOxDrawTools;
+     */
+    this.eoxDrawTools = null;
+
+    /**
+     * @type import("@eox/map").EOxMap
      */
     this.eoxMap = null;
 
@@ -78,6 +85,11 @@ export class EOxDrawToolsList extends LitElement {
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
+
+    /**
+     * Default display name for features
+     */
+    this.featureName = "Feature";
 
     /**
      * The current native OpenLayers `modify` interaction
@@ -147,7 +159,9 @@ export class EOxDrawToolsList extends LitElement {
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
-          const featureId = feature.getId();
+          const featureId = Object.values(
+            this.eoxMap.selectInteractions,
+          )[0].getId(feature);
 
           // Check if the feature is hovered or clicked
           const isFeatureHovered = this.hoverId === featureId;
@@ -168,9 +182,12 @@ export class EOxDrawToolsList extends LitElement {
                   @click="${() =>
                     this._handleFeatureSelectAndDeselect(feature)}"
                 >
-                  <span class="title">Feature #${featureNumber}</span>
+                  <span class="title"
+                    >${this.featureName} ${featureNumber}</span
+                  >
                   <button
                     index=${i}
+                    data-cy="deleteFeatureBtn"
                     class="icon smallest discard"
                     @click="${this._handleDelete}"
                   >

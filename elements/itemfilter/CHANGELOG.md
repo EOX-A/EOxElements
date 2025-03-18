@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.7.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.7.0...itemfilter-v1.7.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.2...itemfilter-v1.7.0) (2024-12-18)
+
+
+### Features
+
+* Fallback for not-existing result images ([#1442](https://github.com/EOX-A/EOxElements/issues/1442)) ([b7ffa10](https://github.com/EOX-A/EOxElements/commit/b7ffa109956b9e55115b6c59e4e54a37530afb08))
+
+
+### Bug Fixes
+
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
+## [1.6.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.1...itemfilter-v1.6.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* Chips for pre-set filters ([#1407](https://github.com/EOX-A/EOxElements/issues/1407)) ([694b994](https://github.com/EOX-A/EOxElements/commit/694b9949cbb7ead8869e6a9a316c945116c0f39b))
+* Correctly render title-container also if no subtitle present ([#1405](https://github.com/EOX-A/EOxElements/issues/1405)) ([4294e6a](https://github.com/EOX-A/EOxElements/commit/4294e6a805ff34d89f10ec818846850413639fcc))
+* Listen for click on entire result instead of just title ([#1422](https://github.com/EOX-A/EOxElements/issues/1422)) ([3699228](https://github.com/EOX-A/EOxElements/commit/36992283f7af3b2a57ecd50e4a4e52469c6845fe))
+
 ## [1.6.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.6.0...itemfilter-v1.6.1) (2024-11-28)
 
 

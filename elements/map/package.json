@@ -1,18 +1,18 @@
 {
   "name": "@eox/map",
-  "version": "1.18.0",
+  "version": "1.20.0",
   "type": "module",
   "dependencies": {
-    "@eox/elements-utils": "^0.1.1",
+    "@eox/elements-utils": "^0.1.5",
     "flatgeobuf": "^3.35.0",
     "lit": "^3.2.0",
-    "ol": "^10.2.0",
+    "ol": "^10.4.0",
     "ol-stac": "^1.0.0-beta.10",
     "proj4": "^2.9.2"
   },
   "devDependencies": {
     "@types/proj4": "^2.5.4",
-    "vite": "^5.0.2"
+    "vite": "^6.0.3"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -24,19 +24,20 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/src/main.d.ts"
+        "./types/main.d.ts"
       ],
       "src/*": [
-        "./types/src/*"
+        "./types/*"
       ]
     }
   },
   "scripts": {
-    "prepack": "tsc --project tsconfig.build.json || true",
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
     "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
     "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
   }

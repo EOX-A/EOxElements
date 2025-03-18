@@ -9,3 +9,4 @@ export {
 export { EVENT_REQ_MODES, DEFAULT_SENSITIVE_TAGS } from "./render";
 export { EDITOR_SCHEMA } from "./editor";
 export { SAMPLE_ELEMENTS } from "./sample";
+export { default as CUSTOM_EDITOR_INTERFACES } from "./custom-editor-interface";

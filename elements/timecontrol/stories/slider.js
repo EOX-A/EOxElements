@@ -6,6 +6,8 @@ export const Slider = {
     ...DEFAULT_ARGS,
     for: "eox-map#slider",
     slider: true,
+    navigation: false,
+    play: false,
   },
   render: (args) => html`
     <eox-map
@@ -20,7 +22,10 @@ export const Slider = {
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
+      .navigation=${args.navigation}
+      .play=${args.play}
       .slider=${args.slider}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `,
 };

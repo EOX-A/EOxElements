@@ -1,34 +1,32 @@
-import { GeoJSON, MVT } from "ol/format";
-import {
-  Group,
-  Image,
-  Tile as TileLayer,
-  Vector as VectorLayer,
-  VectorTile as VectorTileLayer,
-} from "ol/layer";
-import {
-  ImageWMS,
-  OSM,
-  Tile as TileSource,
-  TileWMS,
-  Vector as VectorSource,
-  VectorTile as VectorTileSource,
-  WMTS,
-  XYZ,
-} from "ol/source";
-import { Collection } from "ol";
+import GeoJSON from "ol/format/GeoJSON.js";
+import MVT from "ol/format/MVT.js";
+import Group from "ol/layer/Group.js";
+import Image from "ol/layer/Image.js";
+import TileLayer from "ol/layer/Tile.js";
+import VectorLayer from "ol/layer/Vector.js";
+import VectorTileLayer from "ol/layer/VectorTile.js";
+import ImageWMS from "ol/source/ImageWMS.js";
+import OSM from "ol/source/OSM.js";
+import TileSource from "ol/source/Tile.js";
+import TileWMS from "ol/source/TileWMS.js";
+import VectorSource from "ol/source/Vector.js";
+import VectorTileSource from "ol/source/VectorTile.js";
+import WMTS from "ol/source/WMTS.js";
+import XYZ from "ol/source/XYZ.js";
+import Collection from "ol/Collection.js";
 import { addDraw, addSelect, generateTileGrid } from "./";
 import { get as getProjection } from "ol/proj";
 
 /**
- * @typedef {import("../../types").AnyLayer} AnyLayer
- * @typedef {import("../../types").EoxLayer} EoxLayer
- * @typedef {import("../../types").SelectLayer} SelectLayer
- * @typedef {import("../../types").EOxInteraction} EOxInteraction
- * @typedef {import("../../types").DrawOptions} DrawOptions
- * @typedef {import("../../types").SelectOptions} SelectOptions
- * @typedef {import("../../types").AnyLayerWithSource} AnyLayerWithSource
- * @typedef {import("../../types").VectorOrVectorTileLayer} VectorOrVectorTileLayer
+ * @typedef {import("../main").EOxMap} EOxMap
+ * @typedef {import("../types").AnyLayer} AnyLayer
+ * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../types").SelectLayer} SelectLayer
+ * @typedef {import("../types").EOxInteraction} EOxInteraction
+ * @typedef {import("../types").DrawOptions} DrawOptions
+ * @typedef {import("../types").SelectOptions} SelectOptions
+ * @typedef {import("../types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("../types").VectorOrVectorTileLayer} VectorOrVectorTileLayer
  * */
 
 /**
@@ -268,7 +266,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       ) => {
         const correspondingNewInteraction =
           newLayerDefinition.interactions.find(
-            (i) => i.type === interactionDefinition.type,
+            (i) =>
+              i.type === interactionDefinition.type &&
+              i.options?.id === interactionDefinition.options?.id,
           );
 
         if (!correspondingNewInteraction) {
@@ -310,7 +310,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       const correspondingExistingInteraction =
         existingJsonDefinition.interactions.find(
           /** @param {EOxInteraction} i **/
-          (i) => i.type === interactionDefinition.type,
+          (i) =>
+            i.type === interactionDefinition.type &&
+            i.options?.id === interactionDefinition.options?.id,
         );
 
       if (!correspondingExistingInteraction) {
@@ -430,7 +432,6 @@ function setSyncListeners(olLayer, eoxLayer) {
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") return;
 
-    // @ts-expect-error TODO
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
 }

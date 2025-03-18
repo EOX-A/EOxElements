@@ -12,6 +12,20 @@ const onDrawEndMethod = (EoxDrawTool) => {
       EoxDrawTool.draw.setActive(false); // Deactivate drawing
       EoxDrawTool.selectionEvents.removeSelectionEvent();
       EoxDrawTool.currentlyDrawing = false; // Update drawing status flag
+    } else {
+      if (EoxDrawTool.continuous) {
+        // the selection event selects the feature after draw ends
+        if (!EoxDrawTool.layerId) {
+          EoxDrawTool.drawLayer.getSource().clear();
+          EoxDrawTool.drawnFeatures = [];
+        } else {
+          const features = EoxDrawTool.drawLayer.getSource().getFeatures();
+          const latest = features.at(-1);
+          EoxDrawTool.drawLayer.getSource().clear();
+          EoxDrawTool.drawLayer.getSource().addFeature(latest);
+          EoxDrawTool.drawnFeatures = [latest];
+        }
+      }
     }
   };
 

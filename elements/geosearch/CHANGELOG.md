@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.2](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.5.1...geosearch-v0.5.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
+## [0.5.1](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.5.0...geosearch-v0.5.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
 ## [0.5.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.4.0...geosearch-v0.5.0) (2024-11-07)
 
 

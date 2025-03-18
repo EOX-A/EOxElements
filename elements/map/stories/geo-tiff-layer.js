@@ -5,7 +5,7 @@
  */
 const GeoTIFFLayerStory = {
   args: {
-    center: [5, 16.3],
+    center: [3737055, 1886786],
     layers: [
       {
         type: "WebGLTile",

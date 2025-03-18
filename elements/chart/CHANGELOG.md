@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.4.0](https://github.com/EOX-A/EOxElements/compare/chart-v0.3.1...chart-v0.4.0) (2025-01-31)
+
+
+### Features
+
+* Propagate item `pointermove` and `click` events ([#1511](https://github.com/EOX-A/EOxElements/issues/1511)) ([7e686b0](https://github.com/EOX-A/EOxElements/commit/7e686b08c7bab2fc4ed24f5909d2b36e49d501e0))
+
+## [0.3.1](https://github.com/EOX-A/EOxElements/compare/chart-v0.3.0...chart-v0.3.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
 ## [0.3.0](https://github.com/EOX-A/EOxElements/compare/chart-v0.2.0...chart-v0.3.0) (2024-11-07)
 
 

@@ -3,6 +3,7 @@ import { createEditor, parseProperty } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
+import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
 import allStyle from "@eox/elements-utils/styles/dist/all.style";
 
 /**
@@ -14,6 +15,7 @@ export class EOxJSONForm extends LitElement {
     schema: { attribute: false, type: Object },
     value: { attribute: false, type: Object },
     options: { attribute: false, type: Object },
+    customEditorInterfaces: { attribute: false, type: Array },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
   };
@@ -47,7 +49,7 @@ export class EOxJSONForm extends LitElement {
      * @type {object}
      */
     this.options = {
-      show_opt_in: false,
+      show_opt_in: true,
       disable_collapse: true,
       disable_edit_json: true,
       disable_properties: true,
@@ -69,6 +71,15 @@ export class EOxJSONForm extends LitElement {
      * @type {Boolean}
      */
     this.unstyled = false;
+
+    /**
+     * List of custom editor interface
+     * Read more about the implementation of custom editor interfaces here:
+     * https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
+     *
+     * @type {Array}
+     */
+    this.customEditorInterfaces = [];
   }
 
   /**
@@ -119,6 +130,13 @@ export class EOxJSONForm extends LitElement {
   }
 
   /**
+   * Editor has loaded schema and API is ready to be used
+   */
+  #emitReady() {
+    this.dispatchEvent(new Event("ready"));
+  }
+
+  /**
    * Value object has been changed
    */
   #emitValue() {
@@ -139,6 +157,9 @@ export class EOxJSONForm extends LitElement {
 
     events.map((evt) => {
       this.#editor.on(evt, () => {
+        if (evt === "ready") {
+          this.#emitReady();
+        }
         this._value = this.#editor.getValue();
         this.#emitValue();
       });
@@ -157,6 +178,11 @@ export class EOxJSONForm extends LitElement {
       this._schema = await parseProperty(this.schema);
 
       if (!this.#editor || this.#editor.destroyed) {
+        this.#editor = await createEditor(this);
+        this.#dispatchEvent();
+      }
+    } else if (changedProperties.has("customEditorInterfaces")) {
+      if (this.customEditorInterfaces) {
         this.#editor = await createEditor(this);
         this.#dispatchEvent();
       }

@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.5](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.4...elements-utils-v0.1.5) (2025-01-08)
+
+
+### Bug Fixes
+
+* Use css files instead of js ([aa976bd](https://github.com/EOX-A/EOxElements/commit/aa976bd5eb845b1e2e168e1ab12d548e908a540a))
+
+## [0.1.4](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.3...elements-utils-v0.1.4) (2025-01-08)
+
+
+### Bug Fixes
+
+* **style:** Harmonize slider styles ([#1452](https://github.com/EOX-A/EOxElements/issues/1452)) ([e2311e9](https://github.com/EOX-A/EOxElements/commit/e2311e985fa5999e89c18a54c8a45a5cffaacdec))
+
+## [0.1.3](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.2...elements-utils-v0.1.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
+## [0.1.2](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.1...elements-utils-v0.1.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* **style:** Use auto overflow for pre/code blocks ([#1426](https://github.com/EOX-A/EOxElements/issues/1426)) ([5ccf22e](https://github.com/EOX-A/EOxElements/commit/5ccf22e2aa148957d3c2ff2c8209d04b42807ddd))
+
 ## [0.1.1](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.0...elements-utils-v0.1.1) (2024-11-14)
 
 

@@ -1,5 +1,52 @@
 # Changelog
 
+## [1.20.0](https://github.com/EOX-A/EOxElements/compare/map-v1.19.4...map-v1.20.0) (2025-03-03)
+
+
+### Features
+
+* Added new prop to  and ([#1574](https://github.com/EOX-A/EOxElements/issues/1574)) ([dce69d5](https://github.com/EOX-A/EOxElements/commit/dce69d5506a46e430c22c80fbc1a03d0ff2bd541))
+
+## [1.19.4](https://github.com/EOX-A/EOxElements/compare/map-v1.19.3...map-v1.19.4) (2025-02-25)
+
+
+### Bug Fixes
+
+* Check interactions identifiers when updating a layer ([#1563](https://github.com/EOX-A/EOxElements/issues/1563)) ([95856b6](https://github.com/EOX-A/EOxElements/commit/95856b688eca8157a6d8ae159e478a2f76cc8c9f))
+
+## [1.19.3](https://github.com/EOX-A/EOxElements/compare/map-v1.19.2...map-v1.19.3) (2025-01-30)
+
+
+### Bug Fixes
+
+* View sync between a visible and a hidden view ([#1406](https://github.com/EOX-A/EOxElements/issues/1406)) ([bd10af9](https://github.com/EOX-A/EOxElements/commit/bd10af930eb5be753fdb7b5a4bb0b80bb1e8a468))
+
+## [1.19.2](https://github.com/EOX-A/EOxElements/compare/map-v1.19.1...map-v1.19.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* Added fallback to ol uid if no id property is found ([#1488](https://github.com/EOX-A/EOxElements/issues/1488)) ([8e4014d](https://github.com/EOX-A/EOxElements/commit/8e4014da67475f12f01dda44bdb78dba8716dbac))
+
+## [1.19.1](https://github.com/EOX-A/EOxElements/compare/map-v1.19.0...map-v1.19.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
+## [1.19.0](https://github.com/EOX-A/EOxElements/compare/map-v1.18.0...map-v1.19.0) (2024-12-18)
+
+
+### Features
+
+* Disable tooltip of select interaction ([#1409](https://github.com/EOX-A/EOxElements/issues/1409)) ([23e5297](https://github.com/EOX-A/EOxElements/commit/23e529768f1e04a662f009ade1f5967918514d2a))
+
+
+### Bug Fixes
+
+* Cursor-change after layer-interaction update ([#1434](https://github.com/EOX-A/EOxElements/issues/1434)) ([3bc9d95](https://github.com/EOX-A/EOxElements/commit/3bc9d959d6dd156355cca3903e7023182ba78828))
+
 ## [1.18.0](https://github.com/EOX-A/EOxElements/compare/map-v1.17.0...map-v1.18.0) (2024-11-12)
 
 

@@ -100,6 +100,16 @@ Each tour step is described as an *h3* (*###*) heading.
 #### Third tour step.
 To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map
 
+## Image Tour section <!--{ as="img" mode="tour" }-->
+
+### <!--{ src="https://picsum.photos/800/600" }-->
+#### This is an image tour.
+It allows you to have different sources for each tour "step".
+
+### <!--{ src="https://picsum.photos/900/700" }-->
+#### Second tour step.
+Each tour step is described as an *h3* (*###*) heading.
+
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
@@ -111,6 +121,23 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       show-nav
       show-editor="closed"
       markdown=${args.markdown}
+      @upload:file=${(e) => {
+        const detail = e.detail;
+        const { file, update } = detail;
+
+        // Check if file is larger than 1MB
+        if (file.size > 1024 * 1024) {
+          update(null, null, new Error("File size must be less than 1MB"));
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64Url = reader.result;
+          update(base64Url);
+        };
+        reader.readAsDataURL(file);
+      }}
     ></eox-storytelling>
   `,
 };

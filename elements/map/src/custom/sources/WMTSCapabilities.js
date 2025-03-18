@@ -1,11 +1,11 @@
-import { TileImage } from "ol/source";
+import TileImage from "ol/source/TileImage.js";
 import { optionsFromCapabilities } from "ol/source/WMTS";
 import WMTSCapabilitiesFormat from "ol/format/WMTSCapabilities";
 import { createFromTileUrlFunctions } from "ol/tileurlfunction";
 import { appendParams } from "ol/uri";
 
 /**
- * @typedef {import("../../../types").WMTSCapabilitiesOptions} WMTSCapabilitiesOptions
+ * @typedef {import("../../types").WMTSCapabilitiesOptions} WMTSCapabilitiesOptions
  */
 
 class WMTSCapabilities extends TileImage {
@@ -113,7 +113,6 @@ class WMTSCapabilities extends TileImage {
       requestEncoding === "KVP"
         ? appendParams(template, context)
         : template.replace(/\{(\w+?)\}/g, (m, p) =>
-            // @ts-expect-error - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
             p.toLowerCase() in context ? context[p.toLowerCase()] : m,
           );
 
@@ -148,7 +147,6 @@ class WMTSCapabilities extends TileImage {
         if (requestEncoding === "KVP") {
           url = appendParams(url, localContext);
         } else {
-          // @ts-expect-error - Element implicitly has an 'any' type because expression of type 'any' can't be used to index type
           url = url.replace(/\{(\w+?)\}/g, (_, p) => localContext[p]);
         }
         return url;

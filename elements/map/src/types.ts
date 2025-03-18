@@ -66,14 +66,16 @@ export type formatWithOptions = {
 };
 
 export type EOxInteraction = {
+  active?: boolean;
   type: "draw" | "select";
-  options: DrawOptions | SelectOptions;
+  options: DrawOptions | SelectOptions | { [key: string]: any };
 };
 
 export type EoxLayer = {
   type: layerType;
-  properties?: object & {
+  properties?: {
     id: string;
+    [key: string]: any;
   };
   minZoom?: number;
   maxZoom?: number;
@@ -108,6 +110,10 @@ export type SelectOptions = Omit<
   layer?: EoxLayer;
   style?: import("ol/style/flat.js").FlatStyleLike;
   overlay?: import("ol/Overlay").Options;
+  /**
+   * @property {boolean} [tooltip = true] if true, will display a tooltip when hovering over a feature.
+   */
+  tooltip?: boolean;
   active?: boolean;
   panIn?: boolean;
   modify?: boolean;
@@ -230,3 +236,11 @@ export type ConfigObject = {
   preventScroll: boolean;
   animationOptions?: EOxAnimationOptions;
 };
+
+declare global {
+  interface Window {
+    eoxMapAdvancedOlFormats: object;
+    eoxMapAdvancedOlLayers: object;
+    eoxMapAdvancedOlSources: object;
+  }
+}

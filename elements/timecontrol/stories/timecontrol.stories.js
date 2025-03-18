@@ -3,8 +3,9 @@ import {
   PrimaryStory,
   SliderStory,
   ProgrammaticTimeSelectionStory,
-  DisabledPlayButtonStory,
+  DisabledButtonsStory,
   NoMapStory,
+  FormatStory,
 } from "./index";
 
 export default {
@@ -19,6 +20,12 @@ export const Slider = SliderStory;
 
 export const ProgrammaticTimeSelection = ProgrammaticTimeSelectionStory;
 
-export const DisabledPlayButton = DisabledPlayButtonStory;
+export const DisabledButtons = DisabledButtonsStory;
 
 export const NoMap = NoMapStory;
+
+/**
+ * Passing the `format` property/attribute, the displayed format can be changed.
+ * Supports [dayjs format token strings](https://day.js.org/docs/en/display/format)
+ */
+export const Format = FormatStory;

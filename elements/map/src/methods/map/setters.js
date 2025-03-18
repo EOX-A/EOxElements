@@ -17,12 +17,12 @@ import View from "ol/View";
 import { getElement } from "@eox/elements-utils";
 
 /**
- * @typedef {import("../../../types").EoxLayer} EoxLayer
- * @typedef {import("../../../types").ControlType} ControlType
- * @typedef {import("../../../types").ControlDictionary} ControlDictionary
- * @typedef {import("../../../types").SelectOptions} SelectOptions
- * @typedef {import("../../../types").ConfigObject} ConfigObject
- * @typedef {import("../../../types").ProjectionLike} ProjectionLike
+ * @typedef {import("../../types").EoxLayer} EoxLayer
+ * @typedef {import("../../types").ControlType} ControlType
+ * @typedef {import("../../types").ControlDictionary} ControlDictionary
+ * @typedef {import("../../types").SelectOptions} SelectOptions
+ * @typedef {import("../../types").ConfigObject} ConfigObject
+ * @typedef {import("../../types").ProjectionLike} ProjectionLike
  * */
 
 /**
@@ -324,7 +324,9 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
     EOxMap.map.setView(newView);
     EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
       .filter((l) => l instanceof VectorLayer)
-      .forEach((l) => l.getSource().refresh());
+      .forEach((l) =>
+        /** @type {import("ol/layer").Vector} */ (l).getSource().refresh(),
+      );
 
     // Update the projection and center properties
     newProj = projection;
@@ -347,11 +349,21 @@ export function setSyncMethod(sync, EOxMap) {
     // Use a timeout to ensure the target map is ready before syncing views
     setTimeout(() => {
       const originMap = /** @type {import("../../main").EOxMap} **/ (
-        /** @type {any} **/ getElement(sync)
+        /** @type {any} **/ (getElement(sync))
       );
 
       // Set the view of the current map to match the view of the origin map
-      if (originMap) EOxMap.map.setView(originMap.map.getView());
+      if (originMap) {
+        // Check if the current map is hidden and the origin
+        // has no zoom - in this case the current map view
+        // takes over the zoom and resets it; so in this case it is
+        // better to sync the "other way round"
+        if (EOxMap.clientHeight < 1 && !originMap.zoom) {
+          originMap.map.setView(EOxMap.map.getView());
+        } else {
+          EOxMap.map.setView(originMap.map.getView());
+        }
+      }
     });
   }
 

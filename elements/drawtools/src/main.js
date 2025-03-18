@@ -29,10 +29,13 @@ export class EOxDrawTools extends LitElement {
       allowModify: { attribute: "allow-modify", type: Boolean },
       for: { type: String },
       currentlyDrawing: { attribute: false, state: true, type: Boolean },
+      continuous: { type: Boolean },
       draw: { attribute: false, state: true },
       drawLayer: { attribute: false, state: true },
-      layerId: { attribute: "layer-id", type: String },
       drawnFeatures: { attribute: false, state: true, type: Array },
+      featureName: { attribute: "feature-name", type: String },
+      layerId: { attribute: "layer-id", type: String },
+      featureStyles: { attribute: false },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
       importFeatures: { attribute: "import-features", type: Boolean },
@@ -47,7 +50,7 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * @type import("../../map/src/main").EOxMap
+   * @type import("@eox/map").EOxMap
    */
   #eoxMap;
 
@@ -65,6 +68,10 @@ export class EOxDrawTools extends LitElement {
    * @type string
    */
   #layerId;
+  /**
+   * @type boolean
+   */
+  #continuous;
 
   constructor() {
     super();
@@ -89,7 +96,7 @@ export class EOxDrawTools extends LitElement {
 
     /**
      * The current native OpenLayers `draw` interaction
-     * @type import("ol/interaction").Draw | import("@eox/map/src/helpers").EOxSelectInteraction
+     * @type import("ol/interaction").Draw | import("@eox/map").EOxMap["selectInteractions"][string]
      */
     this.draw = null;
 
@@ -110,6 +117,21 @@ export class EOxDrawTools extends LitElement {
      * @type Array<import("ol").Feature>
      */
     this.drawnFeatures = [];
+
+    /**
+     * The display name of drawn features, shown e.g. in the feature list.
+     */
+    this.featureName = "Feature";
+
+    /**
+     * Flat styles for the drawn/selected features
+     * @type {{
+     * layer?: import("ol/style/flat").FlatStyleLike
+     * hover?: import("ol/style/flat").FlatStyleLike
+     * click?: import("ol/style/flat").FlatStyleLike
+     * } | null}
+     */
+    this.featureStyles = null;
 
     /**
      * The current native OpenLayers `modify` interaction
@@ -174,8 +196,21 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   *
-   *
+   * Enables the user to draw continuously one feature after another
+   * without having to discard previous ones manually
+   * @type {boolean}
+   */
+  set continuous(value) {
+    this.#continuous = value;
+    if (value) this.multipleFeatures = true;
+  }
+
+  get continuous() {
+    return this.#continuous;
+  }
+
+  /**
+   * Enables selection mode for the passed layer
    * @type {string}
    */
   set layerId(value) {
@@ -205,18 +240,24 @@ export class EOxDrawTools extends LitElement {
   /**
    * @param {string} text - The string representation of the features to be parsed.
    * @param {boolean} replaceFeatures - A boolean flag indicating whether to replace the existing features.
+   * @param {boolean} animate - A boolean flag indicating whether to animate the map on feature change.
    */
-  handleFeatureChange(text, replaceFeatures = false) {
+  handleFeatureChange(text, replaceFeatures = false, animate = true) {
     this.eoxMap.parseTextToFeature(
       text || JSON.stringify(DUMMY_GEO_JSON),
       this.drawLayer,
       this.eoxMap,
       replaceFeatures,
+      {
+        dataProjection: this.eoxMap.projection,
+        featureProjection: this.projection,
+      },
+      animate,
     );
   }
 
   /**
-   * @param {DragEvent | Event} evt - The event object from the file input interaction.
+   * @param {DragEvent} evt - The event object from the file input interaction.
    */
   handleFilesChange(evt) {
     handleFiles(evt, this);
@@ -320,8 +361,7 @@ export class EOxDrawTools extends LitElement {
           discard: () => this.discardDrawing(),
           editor: (/** @type {{ target: { value: string; }; }} */ evt) =>
             this.handleFeatureChange(evt.target.value, true),
-          import: (/** @type {DragEvent | Event} */ evt) =>
-            this.handleFilesChange(evt),
+          import: (/** @type {DragEvent} */ evt) => this.handleFilesChange(evt),
         }}
         ?select=${!!this.layerId}
         .unstyled=${this.unstyled}
@@ -336,11 +376,13 @@ export class EOxDrawTools extends LitElement {
       <!-- List Component -->
       ${this.showList && this.drawnFeatures?.length
         ? html`<eox-drawtools-list
+            .eoxDrawTools=${this}
             .eoxMap=${this.eoxMap}
             .olMap=${this.#olMap}
             .draw=${this.draw}
             .drawLayer=${this.drawLayer}
             .drawnFeatures=${this.drawnFeatures}
+            .featureName=${this.featureName}
             .modify=${this.modify}
             .unstyled=${this.unstyled}
             @changed=${() => {

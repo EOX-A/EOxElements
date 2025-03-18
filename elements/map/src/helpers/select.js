@@ -1,17 +1,18 @@
-import { Overlay } from "ol";
+import Overlay from "ol/Overlay.js";
 import "../components/tooltip";
 import { createLayer } from "./generate";
 import Feature from "ol/Feature";
 import RenderFeature from "ol/render/Feature";
 import VectorLayer from "ol/layer/Vector";
 import { createEmpty, extend, isEmpty } from "ol/extent";
+import { getUid } from "ol/util";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
- * @typedef {import("../../types").EoxLayer} EoxLayer
- * @typedef {import("../../types").SelectLayer} SelectLayer
- * @typedef {import("../../types").SelectOptions} SelectOptions
- * @typedef {import("../../types").DrawOptions} DrawOptions
+ * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../types").SelectLayer} SelectLayer
+ * @typedef {import("../types").SelectOptions} SelectOptions
+ * @typedef {import("../types").DrawOptions} DrawOptions
  */
 
 /**
@@ -31,6 +32,7 @@ export class EOxSelectInteraction {
     this.options = options;
     this.active = options.active || selectLayer.getVisible();
     this.panIn = options.panIn || false;
+    this.tooltip = options.tooltip === false ? false : true;
     /** @type {Array<string|number>} **/
     this.selectedFids = [];
 
@@ -40,26 +42,28 @@ export class EOxSelectInteraction {
     /** @type {import("ol").Overlay} **/
     let overlay;
 
-    if (existingTooltip) {
-      this.tooltip = existingTooltip.getElement();
-      overlay = existingTooltip;
-    } else {
-      this.tooltip =
-        this.eoxMap.querySelector("eox-map-tooltip") ||
-        options.overlay?.element;
+    if (this.tooltip) {
+      if (existingTooltip) {
+        this.tooltipElement = existingTooltip.getElement();
+        overlay = existingTooltip;
+      } else {
+        this.tooltipElement =
+          this.eoxMap.querySelector("eox-map-tooltip") ||
+          options.overlay?.element;
 
-      if (this.tooltip) {
-        overlay = new Overlay({
-          // @ts-expect-error - Type 'Element' is missing the following properties from type 'HTMLElement'
-          element: this.tooltip,
-          position: undefined,
-          offset: [0, 0],
-          positioning: "top-left",
-          className: "eox-map-tooltip",
-          id: "eox-map-tooltip",
-          ...options.overlay,
-        });
-        this.eoxMap.map.addOverlay(overlay);
+        if (this.tooltipElement) {
+          overlay = new Overlay({
+            // @ts-expect-error - Type 'Element' is missing the following properties from type 'HTMLElement'
+            element: this.tooltipElement,
+            position: undefined,
+            offset: [0, 0],
+            positioning: "top-left",
+            className: "eox-map-tooltip",
+            id: "eox-map-tooltip",
+            ...options.overlay,
+          });
+          this.eoxMap.map.addOverlay(overlay);
+        }
       }
     }
 
@@ -161,9 +165,9 @@ export class EOxSelectInteraction {
             event.pixel[1] > this.eoxMap.offsetHeight / 2 ? "bottom" : "top";
           overlay.setPositioning(`${yPosition}-${xPosition}`);
           overlay.setPosition(feature ? event.coordinate : null);
-          if (feature && this.tooltip) {
+          if (feature && this.tooltipElement) {
             // @ts-expect-error TODO
-            this.tooltip.feature = feature;
+            this.tooltipElement.feature = feature;
           }
         }
 
@@ -218,6 +222,8 @@ export class EOxSelectInteraction {
 
     /**
      * Adds a listener on pointermove
+     * the listener is more complex than `l === selectLayer` to
+     * prevent multiple select-interactions from overriding eachother
      */
     this.pointerMoveListener = (e) => {
       if (e.dragging) return;
@@ -226,8 +232,8 @@ export class EOxSelectInteraction {
         {
           layerFilter: (l) =>
             l
-              .get("interactions")
-              ?.find(
+              .get("_jsonDefinition")
+              ?.interactions?.find(
                 (i) => i.type == "select" && i.options?.condition === "click",
               ),
           ...options.atPixelOptions,
@@ -323,6 +329,10 @@ export class EOxSelectInteraction {
     }
     if (feature.get("id") !== undefined) {
       return feature.get("id");
+    }
+    // if no id can be found, try to get the ol uid from openlayers
+    if (getUid(feature) !== undefined) {
+      return getUid(feature);
     }
     throw Error(
       "No feature id found. Please provide which feature property should be taken instead using idProperty.",

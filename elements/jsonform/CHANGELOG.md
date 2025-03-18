@@ -1,5 +1,142 @@
 # Changelog
 
+## [0.16.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.0...jsonform-v0.16.1) (2025-03-17)
+
+
+### Bug Fixes
+
+* Provide fallback schema if no schema provided ([#1608](https://github.com/EOX-A/EOxElements/issues/1608)) ([b37972d](https://github.com/EOX-A/EOxElements/commit/b37972d7db8b542c31410a3fafcfdb79a60fe3c0))
+* Recursively hide hidden property tabs ([#1609](https://github.com/EOX-A/EOxElements/issues/1609)) ([0f25247](https://github.com/EOX-A/EOxElements/commit/0f25247ef603f30f0cb72510acc57026f7e28ee0))
+* Use dynamic imports to reduce bundle ([#1601](https://github.com/EOX-A/EOxElements/issues/1601)) ([e0218bd](https://github.com/EOX-A/EOxElements/commit/e0218bd0ff651d0433babe8a1818ed73eb366e3b))
+
+## [0.16.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.5...jsonform-v0.16.0) (2025-03-06)
+
+
+### Features
+
+* Forward editor ready event ([#1586](https://github.com/EOX-A/EOxElements/issues/1586)) ([a70790b](https://github.com/EOX-A/EOxElements/commit/a70790be6dc893b9aa3a1ac5ca08ecdef5889287))
+
+## [0.15.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.4...jsonform-v0.15.5) (2025-03-03)
+
+
+### Bug Fixes
+
+* Initialize bboxes with value ([#1571](https://github.com/EOX-A/EOxElements/issues/1571)) ([55e3649](https://github.com/EOX-A/EOxElements/commit/55e3649cd8cb2b4f72e9810cc3368bb19ba83108))
+
+## [0.15.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.3...jsonform-v0.15.4) (2025-02-26)
+
+
+### Bug Fixes
+
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
+## [0.15.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.2...jsonform-v0.15.3) (2025-02-25)
+
+
+### Bug Fixes
+
+* Enable passing attributes and properties to the drawtools and generated map ([#1562](https://github.com/EOX-A/EOxElements/issues/1562)) ([a47a665](https://github.com/EOX-A/EOxElements/commit/a47a665dde49729e7f26a09bfead00b42dd89bd9))
+
+## [0.15.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.1...jsonform-v0.15.2) (2025-02-24)
+
+
+### Bug Fixes
+
+* Always show optional values ([#1553](https://github.com/EOX-A/EOxElements/issues/1553)) ([4ed8e1c](https://github.com/EOX-A/EOxElements/commit/4ed8e1cd14b1ce8ad751184d2bd9b982c73c03d7))
+* **style:** Remove last row margin and prevent form overflow ([#1550](https://github.com/EOX-A/EOxElements/issues/1550)) ([1f4d875](https://github.com/EOX-A/EOxElements/commit/1f4d875cefdd825a23425a7cf2f88e321fb393e2))
+
+## [0.15.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.15.0...jsonform-v0.15.1) (2025-02-20)
+
+
+### Bug Fixes
+
+* Repeated form child element creation when value update ([#1546](https://github.com/EOX-A/EOxElements/issues/1546)) ([a3effe6](https://github.com/EOX-A/EOxElements/commit/a3effe6641d8c83bb835434b398057f3a8c8ac83))
+
+## [0.15.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.14.0...jsonform-v0.15.0) (2025-02-10)
+
+
+### Features
+
+* Support overriding the default schema resolver ([#1516](https://github.com/EOX-A/EOxElements/issues/1516)) ([b310053](https://github.com/EOX-A/EOxElements/commit/b3100535b1e1f0825e3f488de91161bf2d32925c))
+
+
+### Bug Fixes
+
+* Hide category tabs where property has `options.hidden` ([#1531](https://github.com/EOX-A/EOxElements/issues/1531)) ([7ffe60f](https://github.com/EOX-A/EOxElements/commit/7ffe60f9b2e86d673b93ac88d3501eb490597e5d))
+* **style:** Add support for tabs ([#1532](https://github.com/EOX-A/EOxElements/issues/1532)) ([e5f3de6](https://github.com/EOX-A/EOxElements/commit/e5f3de6e9b848d55b1f6d95f8d9e1a04c0232eeb))
+* Trigger `change` event on text inputs ([#1535](https://github.com/EOX-A/EOxElements/issues/1535)) ([44eadb4](https://github.com/EOX-A/EOxElements/commit/44eadb4f04e1694642f462f120cf513c9ded08ba))
+
+## [0.14.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.13.1...jsonform-v0.14.0) (2025-01-31)
+
+
+### Features
+
+* Add support for code editor ([#1515](https://github.com/EOX-A/EOxElements/issues/1515)) ([42326dc](https://github.com/EOX-A/EOxElements/commit/42326dcac1ea5cf9be830d23d50afb57419f0675))
+
+## [0.13.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.13.0...jsonform-v0.13.1) (2025-01-30)
+
+
+### Bug Fixes
+
+* Ensure custom theme overrides are applied ([#1509](https://github.com/EOX-A/EOxElements/issues/1509)) ([a31141c](https://github.com/EOX-A/EOxElements/commit/a31141ccd967b24570522d64c86b49d90692aecf))
+
+## [0.13.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.2...jsonform-v0.13.0) (2025-01-30)
+
+
+### Features
+
+* Allow HTML in titles and descriptions ([#1508](https://github.com/EOX-A/EOxElements/issues/1508)) ([d0ae25b](https://github.com/EOX-A/EOxElements/commit/d0ae25b3c11e77a1905bf1adda1a02b55edecb3e))
+* **style:** Styling overhaul ([#1507](https://github.com/EOX-A/EOxElements/issues/1507)) ([a8d1a09](https://github.com/EOX-A/EOxElements/commit/a8d1a09545a0b01ef7f92c6723f15447dc1c7228))
+* Submit button callback ([#1499](https://github.com/EOX-A/EOxElements/issues/1499)) ([b48d381](https://github.com/EOX-A/EOxElements/commit/b48d381e7fddefacbb13cb2e879eba3b41791447))
+
+
+### Bug Fixes
+
+* **style:** Checkbox label alignment ([#1497](https://github.com/EOX-A/EOxElements/issues/1497)) ([dc40d50](https://github.com/EOX-A/EOxElements/commit/dc40d5048d980b02290c072494f178e9de06e4e9))
+
+## [0.12.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.1...jsonform-v0.12.2) (2025-01-22)
+
+
+### Bug Fixes
+
+* Range-control output fixed width ([#1482](https://github.com/EOX-A/EOxElements/issues/1482)) ([c9260cb](https://github.com/EOX-A/EOxElements/commit/c9260cba581f671926aff7c8527b3a12ca98ab61))
+
+## [0.12.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.12.0...jsonform-v0.12.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
+## [0.12.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.2...jsonform-v0.12.0) (2025-01-08)
+
+
+### Features
+
+* Pass custom editors on the fly via `customEditorInterfaces` property ([#1454](https://github.com/EOX-A/EOxElements/issues/1454)) ([d68e7e6](https://github.com/EOX-A/EOxElements/commit/d68e7e6c0ad6384d4e63cd71f1c0c8bbbf108e7e))
+
+## [0.11.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.1...jsonform-v0.11.2) (2024-12-19)
+
+
+### Bug Fixes
+
+* **style:** Border and margin overrides ([d248f20](https://github.com/EOX-A/EOxElements/commit/d248f2063a68ee33bef5b72096a7d492b1fb6bf9))
+* **style:** Summary & spacing CSS variables ([#1447](https://github.com/EOX-A/EOxElements/issues/1447)) ([9b09ec9](https://github.com/EOX-A/EOxElements/commit/9b09ec94ff1eb76644f7b45aefe54c4b490c1a49))
+
+## [0.11.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.11.0...jsonform-v0.11.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
+## [0.11.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.10.0...jsonform-v0.11.0) (2024-12-12)
+
+
+### Features
+
+* Format handler for multiple geometry types and formats ([#1276](https://github.com/EOX-A/EOxElements/issues/1276)) ([0285b72](https://github.com/EOX-A/EOxElements/commit/0285b725744d8cd7d57b05f8787ca30c6aa997da))
+
 ## [0.10.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.9.1...jsonform-v0.10.0) (2024-11-07)
 
 

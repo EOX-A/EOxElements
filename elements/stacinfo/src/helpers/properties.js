@@ -42,7 +42,8 @@ export function transformProperties(properties, type = "property") {
     const filterLinks = (links) => {
       return Object.entries(links).filter(([_, itemValue]) => {
         let pass = true;
-        if (itemValue.roles) pass = itemValue.roles.includes("metadata");
+        if (itemValue.roles && key !== "providers")
+          pass = itemValue.roles.includes("metadata");
         if (itemValue.rel) pass = itemValue.rel === "example";
         return pass;
       });

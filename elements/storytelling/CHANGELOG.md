@@ -1,5 +1,74 @@
 # Changelog
 
+## [1.5.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.4...storytelling-v1.5.5) (2025-03-10)
+
+
+### Bug Fixes
+
+* Changes related to upload editor  ([#1595](https://github.com/EOX-A/EOxElements/issues/1595)) ([48a1338](https://github.com/EOX-A/EOxElements/commit/48a133861074830a972e047615b8a65356f23a6f))
+
+## [1.5.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.3...storytelling-v1.5.4) (2025-03-06)
+
+
+### Features
+
+* Upload media through add section modal ([#1592](https://github.com/EOX-A/EOxElements/issues/1592)) ([63273f3](https://github.com/EOX-A/EOxElements/commit/63273f3a8e407e07cfda67c0f3f019e77cb9838e))
+
+## [1.5.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.2...storytelling-v1.5.3) (2025-02-26)
+
+
+### Bug Fixes
+
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
+## [1.5.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.1...storytelling-v1.5.2) (2025-02-26)
+
+
+### Bug Fixes
+
+* **style:** Overflow on storytelling and editor ([#1565](https://github.com/EOX-A/EOxElements/issues/1565)) ([a02e2cb](https://github.com/EOX-A/EOxElements/commit/a02e2cbddfac8b565e53c683761f924fa347d023))
+
+## [1.5.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.0...storytelling-v1.5.1) (2025-02-13)
+
+
+### Bug Fixes
+
+* Lightbox not opening image at correct index ([#1538](https://github.com/EOX-A/EOxElements/issues/1538)) ([71aee89](https://github.com/EOX-A/EOxElements/commit/71aee895b368a9b1a03a43f34dd1f07239144b15))
+
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.4...storytelling-v1.5.0) (2025-01-22)
+
+
+### Features
+
+* Images and videos as tour steps ([#1476](https://github.com/EOX-A/EOxElements/issues/1476)) ([3fc8799](https://github.com/EOX-A/EOxElements/commit/3fc879905f80c82dff9a64bc8aff94db7aaac71e))
+
+
+### Bug Fixes
+
+* Handle storytelling without any content and when content without section tag (##) is added ([#1487](https://github.com/EOX-A/EOxElements/issues/1487)) ([bd3b34d](https://github.com/EOX-A/EOxElements/commit/bd3b34dcb4f990dca0353566accfaf506e787c6c))
+* Support fallback for media src ([#1490](https://github.com/EOX-A/EOxElements/issues/1490)) ([8c40fdd](https://github.com/EOX-A/EOxElements/commit/8c40fdd5b2a55913c0e0b382dbc68fde33189913))
+
+## [1.4.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.3...storytelling-v1.4.4) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
+## [1.4.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.2...storytelling-v1.4.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* Changed nav content position from bottom to top  ([#1433](https://github.com/EOX-A/EOxElements/issues/1433)) ([e401a09](https://github.com/EOX-A/EOxElements/commit/e401a09fcaa8da40148948bfc27a41575663ebe4))
+
+## [1.4.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.1...storytelling-v1.4.2) (2024-12-12)
+
+
+### Bug Fixes
+
+* Storytelling navigation in mobile view ([#1425](https://github.com/EOX-A/EOxElements/issues/1425)) ([7242b4c](https://github.com/EOX-A/EOxElements/commit/7242b4c1703e516a12379211e829a500e18bc4f5))
+
 ## [1.4.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.4.0...storytelling-v1.4.1) (2024-11-14)
 
 

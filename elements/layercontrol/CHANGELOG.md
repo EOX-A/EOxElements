@@ -1,5 +1,72 @@
 # Changelog
 
+## [0.29.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.29.0...layercontrol-v0.29.1) (2025-02-26)
+
+
+### Bug Fixes
+
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
+## [0.29.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.28.1...layercontrol-v0.29.0) (2025-01-22)
+
+
+### Features
+
+* Introduce multiple and conditional legends ([#1491](https://github.com/EOX-A/EOxElements/issues/1491)) ([919ea60](https://github.com/EOX-A/EOxElements/commit/919ea60df913a5562fb8df226e86b0a4acfe1779))
+
+## [0.28.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.28.0...layercontrol-v0.28.1) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
+## [0.28.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.27.1...layercontrol-v0.28.0) (2024-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* align play button property with others (`disablePlay`-> `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450))
+
+### Features
+
+* Pass displayFormat property to timecontrol ([#1444](https://github.com/EOX-A/EOxElements/issues/1444)) ([9e6ad8e](https://github.com/EOX-A/EOxElements/commit/9e6ad8ebf08f4a8b0075e4395b1af9d89a65b4a0))
+* Time control navigation property ([#1449](https://github.com/EOX-A/EOxElements/issues/1449)) ([143c413](https://github.com/EOX-A/EOxElements/commit/143c413be57cb33ed58ccb5c7d3aaf66fd7d0a43))
+
+
+### Bug Fixes
+
+* Align play button property with others (`disablePlay`-&gt; `play`) ([#1450](https://github.com/EOX-A/EOxElements/issues/1450)) ([73328a1](https://github.com/EOX-A/EOxElements/commit/73328a1d31269d0957e6e4528e41a98d117e3be0))
+* **style:** Summary & spacing CSS variables ([#1447](https://github.com/EOX-A/EOxElements/issues/1447)) ([9b09ec9](https://github.com/EOX-A/EOxElements/commit/9b09ec94ff1eb76644f7b45aefe54c4b490c1a49))
+
+## [0.27.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.27.0...layercontrol-v0.27.1) (2024-12-18)
+
+
+### Bug Fixes
+
+* **style:** Remove added margin of layer legend ([1ee6f96](https://github.com/EOX-A/EOxElements/commit/1ee6f961fabd8a72fb6f006f4d61f7a01d06221c))
+
+## [0.27.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.26.0...layercontrol-v0.27.0) (2024-12-18)
+
+
+### Features
+
+* **style:** Improve rendering of layer tools list display ([#1440](https://github.com/EOX-A/EOxElements/issues/1440)) ([e8c16d4](https://github.com/EOX-A/EOxElements/commit/e8c16d4eec3197a48565088e45059603c939c08a))
+
+
+### Bug Fixes
+
+* **style:** Add missing padding to slots ([931908b](https://github.com/EOX-A/EOxElements/commit/931908bd42aa43d3fb3ce04111bbbfdb2bafde77))
+* **style:** Prevent legend and info overflow ([#1413](https://github.com/EOX-A/EOxElements/issues/1413)) ([8291a53](https://github.com/EOX-A/EOxElements/commit/8291a53696a39da6c40776c8e9dd87b85ab5fd94))
+* **style:** Replace bg colors with css variables ([#1430](https://github.com/EOX-A/EOxElements/issues/1430)) ([23c74dd](https://github.com/EOX-A/EOxElements/commit/23c74ddf58af3f148f475070dbe8eb000068ac79))
+
+## [0.26.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.25.2...layercontrol-v0.26.0) (2024-12-12)
+
+
+### Features
+
+* Color swatches for layers and layer groups ([#1379](https://github.com/EOX-A/EOxElements/issues/1379)) ([c6bd1ce](https://github.com/EOX-A/EOxElements/commit/c6bd1ce6059d6ab15d34287da9be7ae4201b38a1))
+
 ## [0.25.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.25.1...layercontrol-v0.25.2) (2024-11-28)
 
 

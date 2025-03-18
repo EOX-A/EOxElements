@@ -19,7 +19,10 @@ export const Primary = {
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
+      .navigation=${args.navigation}
+      .play=${args.play}
       .slider=${args.slider}
+      style="margin-top: 8px"
     ></eox-timecontrol>
   `,
 };

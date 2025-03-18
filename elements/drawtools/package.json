@@ -1,9 +1,10 @@
 {
   "name": "@eox/drawtools",
-  "version": "0.13.0",
+  "version": "0.14.2",
   "type": "module",
   "devDependencies": {
-    "vite": "^5.0.2"
+    "@eox/map": "^1.19.3",
+    "vite": "^6.0.3"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -27,13 +28,14 @@
     }
   },
   "scripts": {
-    "prepack": "tsc -p tsconfig.build.json || true",
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^0.1.1",
+    "@eox/elements-utils": "^0.1.5",
     "lit": "^3.2.0",
-    "ol": "^10.0.0"
+    "ol": "^10.4.0"
   }
 }

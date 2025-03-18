@@ -68,6 +68,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
    *
    * @private
    */
+  // @ts-expect-error is called from chips method
   _dispatchEvent() {
     this.dispatchEvent(
       new CustomEvent("items-selected", {
@@ -79,8 +80,8 @@ export class EOxItemFilterChipsV2 extends LitElement {
   /**
    * Handles keyboard events for the component.
    *
-   * @param {Event} event - The keyboard event.
-   * @private
+   * @type {EventListener}
+   * @param {KeyboardEvent} event - The keyboard event.
    */
   #keyboardEventListener(event) {
     keyboardEventListenerMethod(event, this);
@@ -90,7 +91,6 @@ export class EOxItemFilterChipsV2 extends LitElement {
    * Handles click events for the chips.
    *
    * @param {Event} evt - The click event.
-   * @private
    */
   #handleChipClick(evt) {
     handleChipClickMethod(evt, this);

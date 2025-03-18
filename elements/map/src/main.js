@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import { LitElement, html } from "lit";
 import Map from "ol/Map";
 import View from "ol/View";
@@ -35,12 +37,12 @@ import {
 } from "./methods/map/";
 
 /**
- * @typedef {import("../types").EoxLayer} EoxLayer
- * @typedef {import("../types").EOxAnimationOptions} EOxAnimationOptions
- * @typedef {import("../types").ControlDictionary} ControlDictionary
- * @typedef {import("../types").ConfigObject} ConfigObject
- * @typedef {import("../types").ProjectionLike} ProjectionLike
- * @typedef {import("../types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("./types").EoxLayer} EoxLayer
+ * @typedef {import("./types").EOxAnimationOptions} EOxAnimationOptions
+ * @typedef {import("./types").ControlDictionary} ControlDictionary
+ * @typedef {import("./types").ConfigObject} ConfigObject
+ * @typedef {import("./types").ProjectionLike} ProjectionLike
+ * @typedef {import("./types").AnyLayerWithSource} AnyLayerWithSource
  * */
 
 /**

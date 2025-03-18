@@ -9,7 +9,7 @@ import { getValue } from "../../helpers";
  *
  * @param {string} aggregationProperty - The property used for aggregation.
  * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
- * @returns {TemplateResult} The HTML template for the item details view.
+ * @returns {import("lit").HTMLTemplateResult} The HTML template for the item details view.
  */
 export function createItemDetailsMethod(
   aggregationProperty,
@@ -33,7 +33,7 @@ export function createItemDetailsMethod(
         </span>
       </summary>
       <div>
-        ${createItemListMethod(aggregationProperty, EOxItemFilterResults)}
+        ${createItemListMethod(EOxItemFilterResults, aggregationProperty)}
       </div>
     </details>
   `;
@@ -42,13 +42,13 @@ export function createItemDetailsMethod(
 /**
  * Creates the item list view for the aggregation property in the EOxItemFilterResults component.
  *
- * @param {string} aggregationProperty - The property used for aggregation.
  * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
- * @returns {TemplateResult} The HTML template for the item list view.
+ * @param {string} [aggregationProperty] - The property used for aggregation.
+ * @returns {import("lit").HTMLTemplateResult} The HTML template for the item list view.
  */
 export function createItemListMethod(
-  aggregationProperty,
   EOxItemFilterResults,
+  aggregationProperty,
 ) {
   const results = EOxItemFilterResults.results;
   const items = aggregationProperty
@@ -69,22 +69,22 @@ export function createItemListMethod(
         items,
         (item) => item.id,
         (item) => html`
-          <li class=${className(item)}>
-            <span
-              id="${item.id}"
-              @click=${() => {
-                if (EOxItemFilterResults.selectedResult === item) {
-                  EOxItemFilterResults.selectedResult = null;
-                } else {
-                  EOxItemFilterResults.selectedResult = item;
-                }
-                EOxItemFilterResults.dispatchEvent(
-                  new CustomEvent("result", {
-                    detail: EOxItemFilterResults.selectedResult,
-                  }),
-                );
-              }}
-            >
+          <li
+            class=${className(item)}
+            @click=${() => {
+              if (EOxItemFilterResults.selectedResult === item) {
+                EOxItemFilterResults.selectedResult = null;
+              } else {
+                EOxItemFilterResults.selectedResult = item;
+              }
+              EOxItemFilterResults.dispatchEvent(
+                new CustomEvent("result", {
+                  detail: EOxItemFilterResults.selectedResult,
+                }),
+              );
+            }}
+          >
+            <span id="${item.id}">
               ${when(
                 config.subTitleProperty || config.imageProperty,
                 () => html`
@@ -95,7 +95,20 @@ export function createItemListMethod(
                           src="${getValue(config.imageProperty, item)}"
                         />
                       `
-                    : nothing}
+                    : html`
+                        <svg
+                          class="image"
+                          width="800"
+                          height="600"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            width="800"
+                            height="600"
+                            fill="var(--primary-color)"
+                          />
+                        </svg>
+                      `}
                   <div class="title-container">
                     <span class="title"
                       >${unsafeHTML(item[config.titleProperty])}</span

@@ -1,5 +1,72 @@
 # Changelog
 
+## [0.14.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.1...drawtools-v0.14.2) (2025-03-06)
+
+
+### Bug Fixes
+
+* Remove features cleanly on continuous drawing ([#1590](https://github.com/EOX-A/EOxElements/issues/1590)) ([58a0bb5](https://github.com/EOX-A/EOxElements/commit/58a0bb5325364d4492858d4ee91f6cfd79f4faa9))
+
+## [0.14.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.0...drawtools-v0.14.1) (2025-03-03)
+
+
+### Features
+
+* Added new prop to `handleFeatureChange` func ([#1575](https://github.com/EOX-A/EOxElements/issues/1575)) ([04e6833](https://github.com/EOX-A/EOxElements/commit/04e6833720ec789be731879303d05cbbb188c20a))
+
+
+### Bug Fixes
+
+* Feature deletion by index ([#1582](https://github.com/EOX-A/EOxElements/issues/1582)) ([b724d13](https://github.com/EOX-A/EOxElements/commit/b724d13c381c9ecb08123e967de4d1cb79a74ca4))
+
+## [0.14.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.5...drawtools-v0.14.0) (2025-02-26)
+
+
+### Features
+
+* Allow setting feature name for rendered list ([#1569](https://github.com/EOX-A/EOxElements/issues/1569)) ([dedf539](https://github.com/EOX-A/EOxElements/commit/dedf53956e12954c2fa73a10d53e42831ae2b7b1))
+
+
+### Bug Fixes
+
+* Fallback for getting feature id ([#1566](https://github.com/EOX-A/EOxElements/issues/1566)) ([76f9445](https://github.com/EOX-A/EOxElements/commit/76f9445900a50e48c445849c284d8abdc135cb10))
+* Typescript exports ([#1568](https://github.com/EOX-A/EOxElements/issues/1568)) ([6ee10d0](https://github.com/EOX-A/EOxElements/commit/6ee10d0c3898ca1afaeb3c2adc9581b39f897f2c))
+
+## [0.13.5](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.4...drawtools-v0.13.5) (2025-02-25)
+
+
+### Features
+
+* Introduce continuous drawing ([#1549](https://github.com/EOX-A/EOxElements/issues/1549)) ([46f69c6](https://github.com/EOX-A/EOxElements/commit/46f69c6c77feb9a295ddb8dfab1849b4acf13a4e))
+
+## [0.13.4](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.3...drawtools-v0.13.4) (2025-02-24)
+
+
+### Features
+
+* Enable styling draw layer & hover and click interactions ([#1548](https://github.com/EOX-A/EOxElements/issues/1548)) ([dcbb5af](https://github.com/EOX-A/EOxElements/commit/dcbb5afd2477536d91b8b6e60305114bb4588ac9))
+
+## [0.13.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.2...drawtools-v0.13.3) (2025-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1471](https://github.com/EOX-A/EOxElements/issues/1471)) ([5b56ed5](https://github.com/EOX-A/EOxElements/commit/5b56ed50aeda0f0ad7044d3b26d0bcca568dcce4))
+
+## [0.13.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.1...drawtools-v0.13.2) (2024-12-18)
+
+
+### Bug Fixes
+
+* Init draw layer without tooltip ([#1432](https://github.com/EOX-A/EOxElements/issues/1432)) ([60a6034](https://github.com/EOX-A/EOxElements/commit/60a6034539f4653d4fb26b82f2f768dd29a299a7))
+
+## [0.13.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.0...drawtools-v0.13.1) (2024-12-12)
+
+
+### Bug Fixes
+
+* Remove drawLayer when the element is disconnected ([#1408](https://github.com/EOX-A/EOxElements/issues/1408)) ([40f0993](https://github.com/EOX-A/EOxElements/commit/40f09931aa76a9c934ac2abac104de92cd198193))
+
 ## [0.13.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.12.0...drawtools-v0.13.0) (2024-11-26)
 
 

@@ -7,10 +7,10 @@ import "./layer-config";
 import "./layer-datetime";
 import "./layer-legend";
 import "./tools-items";
-import { button } from "@eox/elements-utils/styles/button";
-import { radio } from "@eox/elements-utils/styles/radio";
-import { checkbox } from "@eox/elements-utils/styles/checkbox";
-import { slider } from "@eox/elements-utils/styles/slider";
+import button from "@eox/elements-utils/styles/dist/button.style";
+import radio from "@eox/elements-utils/styles/dist/radio.style";
+import checkbox from "@eox/elements-utils/styles/dist/checkbox.style";
+import slider from "@eox/elements-utils/styles/dist/slider.style";
 import {
   Button,
   _parseActions,
@@ -174,10 +174,8 @@ export class EOxLayerControlLayerTools extends LitElement {
     const tools = _parseTools(this.tools, this.layer);
 
     // Determine the single action element if only one action is present
-    // @ts-expect-error TODO
     const singleActionEle = this[`_${actions?.[0]}Button`]
-      ? // @ts-expect-error TODO
-        this[`_${actions?.[0]}Button`]()
+      ? this[`_${actions?.[0]}Button`]()
       : nothing;
 
     // Determine icon class based on the number of tools
@@ -307,6 +305,10 @@ export class EOxLayerControlLayerTools extends LitElement {
       display: flex;
       justify-content: center;
     }
+    eox-layercontrol-tools-items.tools-list button.icon,
+    eox-layercontrol-tools-items.tools-list .button.icon {
+      margin-left: -6px;
+    }
     eox-layercontrol-tools-items button.icon::before,
     eox-layercontrol-tools-items .button.icon::before {
       width: 16px;
@@ -341,8 +343,14 @@ export class EOxLayerControlLayerTools extends LitElement {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edrag-horizontal-variant%3C/title%3E%3Cpath d='M21 11H3V9H21V11M21 13H3V15H21V13Z' /%3E%3C/svg%3E");
     }
     [slot=info-content],
-    [slot=opacity-content] {
-      padding: 12px 6px;
+    [slot=opacity-content],
+    [slot=config-content],
+    [slot=datetime-content],
+    [slot=legend-content] {
+      padding: 6px 0;
+    }
+    [slot=info-content] * {
+      max-width: 100%;
     }
   `;
 }

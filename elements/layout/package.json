@@ -3,7 +3,7 @@
   "version": "0.3.0",
   "type": "module",
   "devDependencies": {
-    "vite": "^5.0.2"
+    "vite": "^6.0.3"
   },
   "files": [
     "types",
@@ -11,7 +11,7 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
@@ -23,7 +23,8 @@
     }
   },
   "scripts": {
-    "prepack": "tsc -p tsconfig.build.json || true",
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
   }
