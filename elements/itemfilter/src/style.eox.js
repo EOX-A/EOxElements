@@ -192,6 +192,10 @@ ul#results li {
   justify-content: space-between;
 }
 ul#results li .result-action {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  line-height: 1;
   opacity: .5;
   transition: opacity .3s ease-in-out;
 }
