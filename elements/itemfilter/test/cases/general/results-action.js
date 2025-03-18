@@ -5,10 +5,12 @@ const resultsActionTest = () => {
   cy.get("eox-itemfilter")
     .shadow()
     .within(() => {
-      cy.get(".result-action").first().click()
+      cy.get(".result-action").first().click();
     });
-  cy.get("@alertSpy").should("have.been.calledWith", "White Asparagus area [%] clicked!");
-
+  cy.get("@alertSpy").should(
+    "have.been.calledWith",
+    "White Asparagus area [%] clicked!",
+  );
 };
 
 export default resultsActionTest;
