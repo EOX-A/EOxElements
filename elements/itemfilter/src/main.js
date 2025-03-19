@@ -245,14 +245,14 @@ export class EOxItemFilter extends LitElement {
     this.resultType = "list";
 
     /**
-     * Enable result action button
+     * Enable result action button (a secondary action besides the normal result selection)
      *
      * @type Boolean
      */
     this.enableResultAction = false;
 
     /**
-     * Icon for result action. Supports html.
+     * Icon for result action. Supports html
      *
      * @type String
      */
@@ -413,7 +413,7 @@ export class EOxItemFilter extends LitElement {
    */
   emitResultAction(evt) {
     /**
-     * Fires when a click:result-action is clicked; event detail is `result`
+     * Fires when a result-action is clicked; event detail is `result`
      */
     this.dispatchEvent(
       new CustomEvent("click:result-action", {
