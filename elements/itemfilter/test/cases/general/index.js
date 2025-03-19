@@ -13,3 +13,4 @@ export { default as subtitleTest } from "./subtitle";
 export { default as imageTest } from "./image";
 export { default as validationTest } from "./validation";
 export { default as slotRenderTest } from "./slots";
+export { default as resultsActionTest } from "./results-action";

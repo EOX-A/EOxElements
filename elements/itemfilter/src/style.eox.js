@@ -56,6 +56,7 @@ li span {
 }
 .cards li span {
   display: block;
+  flex-basis: 100%;
 }
 li label {
   display: flex;
@@ -108,6 +109,15 @@ details > summary::-webkit-details-marker {
   width: 100%;
   height: 190px;
   margin-bottom: 8px;
+}
+.cards .result-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px 12px;
+  padding: 6px;
+  background: white;
+  border-radius: 50%;
 }
 .title-container {
   display: flex;
@@ -188,6 +198,22 @@ ul:not(#filters) > li {
 }
 ul#results li {
   padding: 5px var(--padding);
+  display: flex;
+  justify-content: space-between;
+}
+ul#results li .result-action {
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  line-height: 1;
+  opacity: .5;
+  transition: opacity .3s ease-in-out;
+}
+ul#results li .result-action:hover {
+  opacity: 1;
+}
+ul#results li.highlighted .result-action > * {
+  filter: invert(1);
 }
 ul#results ul.cards {
   display: flex;
@@ -201,6 +227,7 @@ ul#results ul.cards li {
   flex-basis: calc(33.3% - 77px);
   min-width: 0;
   align-self: flex-start;
+  position: relative;
 }
 @media screen and (max-width: 768px) {
   ul#results ul.cards li {
