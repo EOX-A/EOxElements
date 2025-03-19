@@ -56,6 +56,7 @@ li span {
 }
 .cards li span {
   display: block;
+  flex-basis: 100%;
 }
 li label {
   display: flex;
@@ -108,6 +109,15 @@ details > summary::-webkit-details-marker {
   width: 100%;
   height: 190px;
   margin-bottom: 8px;
+}
+.cards .result-action {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px 12px;
+  padding: 6px;
+  background: white;
+  border-radius: 50%;
 }
 .title-container {
   display: flex;
@@ -217,6 +227,7 @@ ul#results ul.cards li {
   flex-basis: calc(33.3% - 77px);
   min-width: 0;
   align-self: flex-start;
+  position: relative;
 }
 @media screen and (max-width: 768px) {
   ul#results ul.cards li {
