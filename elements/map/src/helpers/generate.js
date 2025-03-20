@@ -89,7 +89,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   };
 
   // Get the layer and source constructors based on the provided layer definition
+  /** @type {new (options?: any) => AnyLayer} */
   const newLayer = availableLayers[layer.type];
+  /** @type {new (options?: any) => InstanceType<typeof availableSources[keyof typeof availableSources]>} */
   const newSource = availableSources[layer.source?.type];
 
   // Throw an error if the specified layer type or source type is not supported
@@ -103,11 +105,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   const tileGrid = generateTileGrid(layer);
 
   // Create the OpenLayers layer with the specified options
-  //@ts-expect-error todo
-  const olLayer = /** @type {AnyLayer} **/ new newLayer({
+  const olLayer = new newLayer({
     ...layer,
     ...(layer.source && {
-      //@ts-expect-error todo
       source: new newSource({
         ...layer.source,
         ...("format" in layer.source &&
@@ -144,13 +144,17 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
       .reverse()
       .map((l) => createLayer(EOxMap, l));
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
-    /** @type {import("ol/layer/Group").default} **/ olLayer.setLayers(
+    /** @type {import("ol/layer/Group").default} **/ (olLayer).setLayers(
       new Collection(groupLayers),
     );
   }
 
   if ("style" in layer) {
-    /** @type {VectorOrVectorTileLayer} **/ olLayer.setStyle(layer.style);
+    /** @type {VectorOrVectorTileLayer} **/ (olLayer).setStyle(
+      /** @type {import("../layers").EOxLayerType<"Vector","Vector">} **/ (
+        layer
+      ).style,
+    );
   }
 
   // Add interactions (e.g., draw, select) to the layer if requested
@@ -159,7 +163,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
       const interactionDefinition = layer.interactions[i];
       addInteraction(
         EOxMap,
-        /** @type {SelectLayer} **/ olLayer,
+        /** @type {SelectLayer} **/ (olLayer),
         interactionDefinition,
       );
     }

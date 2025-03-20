@@ -19,7 +19,7 @@ export function generateTileGrid(layer) {
   let tileGrid;
 
   // Return undefined if no tile grid is defined in the layer's source
-  if (!("tileGrid" in layer.source)) {
+  if (!layer || !layer.source || !("tileGrid" in layer.source)) {
     return undefined;
   }
 
