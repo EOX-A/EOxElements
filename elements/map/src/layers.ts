@@ -17,33 +17,36 @@ export type EOxFormat<F extends keyof OLFormats> =
     } & ConstructorParameters<OLFormats[F]>[0])
   | F;
 
-type OlLayerOption<T extends keyof OLLayers> = T extends "Group"
-  ? Omit<ConstructorParameters<OLLayers[T]>[0], "source" | "layers" | "properties"> & {
-      layers: import("./types").EOxLayers;
-    }
-  : Omit<ConstructorParameters<OLLayers[T]>[0], "source">;
-
 type OlSourceOption<S extends keyof OLSources> = ConstructorParameters<
   OLSources[S]
 >[0];
+type EoxSource<
+  S extends keyof OLSources,
+  F extends keyof OLFormats = keyof OLFormats,
+> = (S extends "WMTS"
+  ? OlSourceOption<S>
+  : OlSourceOption<S> extends { format?: any }
+    ? Omit<OlSourceOption<S>, "format"> & { format?: EOxFormat<F> }
+    : OlSourceOption<S>) & { type: S };
 
 export type EOxLayerType<
   T extends keyof OLLayers,
   S extends keyof OLSources,
   F extends keyof OLFormats = keyof OLFormats,
-> = OlLayerOption<T> & {
+> = (T extends "Group"
+  ? Omit<
+      ConstructorParameters<OLLayers[T]>[0],
+      "source" | "layers" | "properties"
+    > & {
+      layers: import("./types").EoxLayers;
+    }
+  : Omit<ConstructorParameters<OLLayers[T]>[0], "source">) & {
   type: T;
   properties?: {
-    id: string | number;
+    id: string;
     [key: string]: any;
   };
-  source?: {
-    type: S;
-  } & S extends "WMTS"
-    ? OlSourceOption<S>
-    : OlSourceOption<S> extends { format?: any }
-      ? Omit<OlSourceOption<S>, "format"> & { format?: EOxFormat<F> }
-      : OlSourceOption<S>;
+  source?: EoxSource<S, F>;
 
   interactions?: T extends "Vector" | "VectorTile"
     ? Array<import("./types").EOxInteraction>

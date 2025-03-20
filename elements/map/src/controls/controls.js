@@ -107,16 +107,22 @@ export function addInitialControls(EOxMap) {
       const keys = Object.keys(controls);
       for (let i = 0; i < keys.length; i++) {
         const controlName = /** @type {ControlType} */ (keys[i]);
+
         const controlOptions = controls[controlName];
 
         // If the control has layers (e.g., for OverviewMap), generate them
-        //@ts-expect-error layers is not defined for each control
-        if (controlOptions && controlOptions.layers) {
-          //@ts-expect-error layers is not defined for each control
-          controlOptions.layers = generateLayers(EOxMap, controlOptions.layers); // Parse layers (e.g., for OverviewMap)
+
+        if (controlOptions && "layers" in controlOptions) {
+          controlOptions.layers = generateLayers(
+            EOxMap,
+            /** @type {import("../layers.ts").EoxLayer[]} */ (
+              controlOptions.layers
+            ),
+          ); // Parse layers (e.g., for OverviewMap)
         }
 
         // Create a new control instance using the control name and options
+        //@ts-expect-error todo
         const control = new availableControls[controlName](controlOptions);
         EOxMap.map.addControl(control);
         EOxMap.mapControls[controlName] = control;

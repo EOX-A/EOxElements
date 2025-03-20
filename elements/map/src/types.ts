@@ -120,8 +120,8 @@ export type EoxLayer = import("./layers").EoxLayer;
 export type EoxLayers = import("./layers").EoxLayer[];
 
 export type SelectLayer =
-  | import("ol/layer/VectorTile").default
-  | import("ol/layer/Vector").default;
+  | InstanceType<typeof import("ol/layer/VectorTile").default>
+  | InstanceType<typeof import("ol/layer/Vector").default>;
 
 export type SelectOptions = Omit<
   import("ol/interaction/Select").Options,
@@ -193,21 +193,41 @@ export type LoadingIndicatorOptions = import("ol/control/Control").Options & {
   type?: LoadingIndicatorType;
 };
 
-export type ControlType =
-  | "Attribution"
-  | "FullScreen"
-  | "MousePosition"
-  | "OverviewMap"
-  | "Rotate"
-  | "ScaleLine"
-  | "ZoomSlider"
-  | "ZoomToExtent"
-  | "Zoom"
-  | "Geolocation"
-  | "LoadingIndicator";
+export type ControlType = keyof ControlDictionary;
+
+type Override<T, V> = Omit<T, keyof V> & V;
 
 export type ControlDictionary = {
-  [key in ControlType]?: object;
+  Zoom?: ConstructorParameters<typeof import("ol/control/Zoom").default>[0];
+  ScaleLine?: ConstructorParameters<
+    typeof import("ol/control/ScaleLine").default
+  >[0];
+  Rotate?: ConstructorParameters<typeof import("ol/control/Rotate").default>[0];
+  FullScreen?: ConstructorParameters<
+    typeof import("ol/control/FullScreen").default
+  >[0];
+  ZoomSlider?: ConstructorParameters<
+    typeof import("ol/control/ZoomSlider").default
+  >[0];
+  Attribution?: ConstructorParameters<
+    typeof import("ol/control/Attribution").default
+  >[0];
+  OverviewMap?: Override<
+    ConstructorParameters<typeof import("ol/control/OverviewMap").default>[0],
+    { layers?: EoxLayer[] | AnyLayer[] }
+  >;
+  ZoomToExtent?: ConstructorParameters<
+    typeof import("ol/control/ZoomToExtent").default
+  >[0];
+  MousePosition?: ConstructorParameters<
+    typeof import("ol/control/MousePosition").default
+  >[0];
+  Geolocation?: ConstructorParameters<
+    typeof import("./controls/geo-location").default
+  >[0];
+  LoadingIndicator?: ConstructorParameters<
+    typeof import("./controls/loading-indicator").default
+  >[0];
 };
 
 export type AttributionLike =
@@ -248,7 +268,7 @@ export type EOxAnimationOptions = import("ol/View").AnimationOptions &
   import("ol/View").FitOptions;
 export type ConfigObject = {
   controls: ControlDictionary;
-  layers: EoxLayers
+  layers: EoxLayers;
   view: {
     center: Array<number>;
     zoom: number;

@@ -1,7 +1,7 @@
 import { createLayer, updateLayer, getLayerById } from "../../helpers";
 
 /**
- * @typedef {import("../../types").EoxLayer} EoxLayer
+ * @typedef {import("../../layers").EoxLayer} EoxLayer
  * */
 
 /**
