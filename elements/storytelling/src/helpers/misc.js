@@ -30,7 +30,12 @@ export function scrollIntoView(that) {
     ? /**@type{HTMLElement}*/ (that.shadowRoot.querySelector(hash))
     : null;
   if (element) {
-    element.style.scrollMarginTop = `calc(${that.shadowRoot.querySelector(".navigation")?.clientHeight || 0}px + 1rem)`;
+    const navBar = that.shadowRoot.querySelector(".navigation");
+    element.style.scrollMarginTop = `calc(${
+      navBar?.getBoundingClientRect().top +
+        navBar?.getBoundingClientRect().height ||
+      that.getBoundingClientRect().top
+    }px + 1rem)`;
     element.style.scrollMarginBottom = "1rem";
     element.scrollIntoView({ behavior: "smooth" });
   }
