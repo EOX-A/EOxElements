@@ -176,6 +176,13 @@ ${slider}
     text-underline-offset: 4px;
     font-size: var(--font-size)
   }
+  .story-telling sup a {
+    font-size: smaller;
+  }
+  .story-telling sup a,
+  .story-telling a.footnote-backref {
+    text-decoration: none;
+  }
   .story-telling a:hover {
     --bg-hover-transparency: 10%;
     background-color: color-mix(

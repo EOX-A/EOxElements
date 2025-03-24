@@ -1,6 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import markdownit from "markdown-it";
+import markdownitFootnote from "markdown-it-footnote";
 import {
   getCustomEleHandling,
   loadMarkdownURL,
@@ -32,6 +33,7 @@ const md = /** @type {import("./types").CustomMarkdownIt} */ (
 );
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
+md.use(markdownitFootnote);
 /**
  * Manage drawn features on a map
  *
