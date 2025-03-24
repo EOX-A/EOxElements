@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.6.1...storytelling-v1.7.0) (2025-03-24)
+
+
+### Features
+
+* Auto-parse & create links ([#1621](https://github.com/EOX-A/EOxElements/issues/1621)) ([284f0d9](https://github.com/EOX-A/EOxElements/commit/284f0d98703670fd34dd5b7cfa4b3fa920a2d8a5))
+
 ## [1.6.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.6.0...storytelling-v1.6.1) (2025-03-24)
 
 
