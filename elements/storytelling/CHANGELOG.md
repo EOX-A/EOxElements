@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.5...storytelling-v1.6.0) (2025-03-24)
+
+
+### Features
+
+* Add md footnote support ([#1617](https://github.com/EOX-A/EOxElements/issues/1617)) ([89bf40f](https://github.com/EOX-A/EOxElements/commit/89bf40f2c9c78dfaa9d7ac73de07b288daf53d6b))
+
+
+### Bug Fixes
+
+* Add top and bottom scroll margins ([#1618](https://github.com/EOX-A/EOxElements/issues/1618)) ([bde2d43](https://github.com/EOX-A/EOxElements/commit/bde2d4340e5893272e453b8976e3bc717c9daa5c))
+
 ## [1.5.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.4...storytelling-v1.5.5) (2025-03-10)
 
 
