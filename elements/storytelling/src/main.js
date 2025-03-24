@@ -29,7 +29,7 @@ import {
 } from "./enums";
 import _debounce from "lodash.debounce";
 const md = /** @type {import("./types").CustomMarkdownIt} */ (
-  markdownit({ html: true })
+  markdownit({ html: true, linkify: true })
 );
 
 md.use(markdownItDecorateImproved).use(markdownItConfig);
