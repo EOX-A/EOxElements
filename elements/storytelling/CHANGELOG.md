@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.6.0...storytelling-v1.6.1) (2025-03-24)
+
+
+### Bug Fixes
+
+* More robust scrollMargin calculation with boundlingClientRect ([#1619](https://github.com/EOX-A/EOxElements/issues/1619)) ([a250dc9](https://github.com/EOX-A/EOxElements/commit/a250dc90d4509bdb2cd1c6a28a5fe00918e9197a))
+
 ## [1.6.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.5...storytelling-v1.6.0) (2025-03-24)
 
 
