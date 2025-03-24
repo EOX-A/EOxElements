@@ -42,7 +42,8 @@
     "js-yaml": "^4.1.0",
     "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",
-    "markdown-it": "^14.0.0"
+    "markdown-it": "^14.0.0",
+    "markdown-it-footnote": "^4.0.0"
   },
   "peerDependencies": {
     "@eox/jsonform": "*"

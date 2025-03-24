@@ -1,4 +1,5 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
+import { scrollIntoView } from "./misc.js";
 import GLightbox from "glightbox";
 
 // Set up empty Lightbox
@@ -27,7 +28,17 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
   // Open all links inside story in a new tab
   const anchorTagsArr = doc.querySelectorAll("a");
-  anchorTagsArr.forEach((anchor) => (anchor.target = "_blank"));
+  anchorTagsArr.forEach((anchor) => {
+    if (!anchor.getAttribute("href")?.startsWith("#")) {
+      anchor.target = "_blank";
+    } else {
+      anchor.addEventListener("click", () => {
+        setTimeout(() => {
+          scrollIntoView(that);
+        });
+      });
+    }
+  });
 
   // Disconnecting old observers to create new empty Observers
   sectionObservers.forEach((observer) => observer?.disconnect());
