@@ -25,7 +25,6 @@ export class EOxMapTooltip extends LitElement {
     /**
      * A function to transform properties before rendering.
      *
-     * @type {Function}
      * @param {{ key: string; value: unknown }} property
      * @param {import("ol/Feature").default | import("ol/render/Feature").default} _feature
      */

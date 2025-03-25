@@ -4,7 +4,7 @@ import { getTopLeft, getWidth } from "ol/extent";
 import { get as getProjection } from "ol/proj";
 
 /**
- * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../layers").EoxLayer} EoxLayer
  * */
 
 /**
@@ -19,7 +19,7 @@ export function generateTileGrid(layer) {
   let tileGrid;
 
   // Return undefined if no tile grid is defined in the layer's source
-  if (!layer.source?.tileGrid) {
+  if (!layer || !layer.source || !("tileGrid" in layer.source)) {
     return undefined;
   }
 
