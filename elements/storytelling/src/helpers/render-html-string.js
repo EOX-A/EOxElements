@@ -239,9 +239,8 @@ function processNode(node, initDispatchFunc, that) {
 
         // Handle media loading error by switching to backup URL if available
         media.onerror = () => {
-          const eoxStorytellingEle = that.shadowRoot || that;
           if (
-            eoxStorytellingEle.contains(media) &&
+            that.renderRoot.contains(media) &&
             media.getAttribute("data-fallback-src")
           ) {
             media.src = media.getAttribute("data-fallback-src");
