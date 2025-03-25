@@ -120,9 +120,7 @@ export const createEditor = (element) => {
     });
 
     /// Check if any editor requires SimpleMDE and load necessary stylesheets
-    if (
-      requiresSimpleMDE(editor)
-    ) {
+    if (requiresSimpleMDE(editor)) {
       // Add SimpleMDE styles
       const style = document.createElement("style");
       style.innerHTML = `
@@ -188,36 +186,36 @@ export async function parseProperty(property) {
 // Check if any editor requires SimpleMDE by examining both current editors and schema
 function requiresSimpleMDE(editor) {
   // Check current editors first
-  if (Object.values(editor.editors).some(e => e instanceof SimplemdeEditor)) {
+  if (Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)) {
     return true;
   }
-  
+
   // Recursively check schema for potential markdown fields
   function checkSchemaForMarkdown(schema) {
     if (!schema) return false;
-    
+
     // Check for direct markdown format indication
-    if (schema.format === 'markdown') return true;
-    
+    if (schema.format === "markdown") return true;
+
     // Check properties recursively
     if (schema.properties) {
       return Object.values(schema.properties).some(checkSchemaForMarkdown);
     }
-    
+
     // Check items in arrays
     if (schema.items) {
       return checkSchemaForMarkdown(schema.items);
     }
-    
+
     // Check anyOf, oneOf, allOf branches
-    for (const key of ['anyOf', 'oneOf', 'allOf']) {
+    for (const key of ["anyOf", "oneOf", "allOf"]) {
       if (schema[key] && Array.isArray(schema[key])) {
         if (schema[key].some(checkSchemaForMarkdown)) return true;
       }
     }
-    
+
     return false;
   }
-  
+
   return checkSchemaForMarkdown(editor.schema);
 }
