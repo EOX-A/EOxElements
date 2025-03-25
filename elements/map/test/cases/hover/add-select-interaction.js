@@ -15,29 +15,34 @@ const addSelectInteraction = () => {
       <eox-map-tooltip></eox-map-tooltip>
     </eox-map>`,
   ).as("eox-map");
-  cy.get("eox-map").and(($el) => {
-    const eoxMap = $el[0];
 
-    let selectCounter = 0;
-    let featureSelectCounter = 0;
-    eoxMap.addEventListener("select", (evt) => {
-      selectCounter++;
-      // @ts-expect-error TODO
-      if (evt.detail.feature) {
-        featureSelectCounter++;
-      }
-      if (selectCounter === 3) {
-        // moving the cursor to a feature, moving it off the feature, and onto the feature again
-        expect(featureSelectCounter).to.be.equal(2);
-      }
-    });
+  const featureSelectPromise = new Promise((resolve) => {
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = $el[0];
 
-    eoxMap.map.on("loadend", () => {
-      simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
-      simulateEvent(eoxMap.map, "pointermove", 0, -140); // no feature here
-      simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
+      let selectCounter = 0;
+      let featureSelectCounter = 0;
+      eoxMap.addEventListener("select", (evt) => {
+        selectCounter++;
+        // @ts-expect-error TODO
+        if (evt.detail.feature) {
+          featureSelectCounter++;
+        }
+        if (selectCounter === 3) {
+          // moving the cursor to a feature, moving it off the feature, and onto the feature again
+          resolve(featureSelectCounter);
+        }
+      });
+
+      eoxMap.map.on("loadend", () => {
+        simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
+        simulateEvent(eoxMap.map, "pointermove", 0, -140); // no feature here
+        simulateEvent(eoxMap.map, "pointermove", 120, -140); // a feature here
+      });
     });
   });
+
+  cy.wrap(featureSelectPromise).should("equal", 2);
 };
 
 export default addSelectInteraction;

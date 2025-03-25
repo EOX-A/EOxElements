@@ -6,31 +6,28 @@ import vectorLayerJson from "../../fixtures/vectorLayer.json";
  * Tests to highlight by ID (Vector Layer)
  */
 const highlightByIdVectorLayer = () => {
-  return new Cypress.Promise((resolve) => {
-    cy.intercept(
-      "https://openlayers.org/data/vector/ecoregions.json",
-      (req) => {
-        req.reply(ecoRegionsFixture);
-      },
-    );
-    const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
-    styleJson[0].interactions = [
-      {
-        type: "select",
-        options: {
-          id: "selectInteraction",
-          condition: "click",
-          style: {
-            "stroke-color": "white",
-            "stroke-width": 3,
-          },
+  cy.intercept("https://openlayers.org/data/vector/ecoregions.json", (req) => {
+    req.reply(ecoRegionsFixture);
+  });
+  const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
+  styleJson[0].interactions = [
+    {
+      type: "select",
+      options: {
+        id: "selectInteraction",
+        condition: "click",
+        style: {
+          "stroke-color": "white",
+          "stroke-width": 3,
         },
       },
-    ];
-    cy.mount(
-      html`<eox-map .center=${[0, 0]} .layers=${styleJson}></eox-map>`,
-    ).as("eox-map");
+    },
+  ];
+  cy.mount(html`<eox-map .center=${[0, 0]} .layers=${styleJson}></eox-map>`).as(
+    "eox-map",
+  );
 
+  const highlightPromise = new Promise((resolve) => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = $el[0];
       eoxMap.map.on("loadend", () => {
@@ -45,13 +42,13 @@ const highlightByIdVectorLayer = () => {
         // ..and expect the map to animate to them
         setTimeout(() => {
           const center = eoxMap.map.getView().getCenter();
-          expect(center, "animates to selected features").to.not.deep.equal([
-            0, 0,
-          ]);
-          resolve();
+          resolve(center);
         }, 200);
       });
     });
+  });
+  cy.wrap(highlightPromise).then((center) => {
+    expect(center, "animates to selected features").to.not.deep.equal([0, 0]);
   });
 };
 
