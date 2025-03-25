@@ -19,7 +19,7 @@ const loadVectorTileLayer = () => {
   cy.mount(
     html`<eox-map .zoom=${1} .layers=${vectorTileLayerStyleJson}></eox-map>`,
   ).as("eox-map");
-  return new Cypress.Promise((resolve) => {
+  const featuresPromise = new Promise((resolve) => {
     cy.get("eox-map").should(($el) => {
       const eoxMap = $el[0];
       const layer = eoxMap.getLayerById("countries");
@@ -28,10 +28,12 @@ const loadVectorTileLayer = () => {
         const features = layer.getFeaturesInExtent(
           eoxMap.map.getView().calculateExtent(),
         );
-        expect(features.length).to.be.greaterThan(10);
-        resolve();
+        resolve(features);
       }, 1000);
     });
+  });
+  cy.wrap(featuresPromise).then((features) => {
+    expect(features.length).to.be.greaterThan(10);
   });
 };
 

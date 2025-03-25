@@ -11,7 +11,6 @@ const addSelectInteractionVector = () => {
     req.reply(ecoRegionsFixture);
   });
   const styleJson = JSON.parse(JSON.stringify(vectorLayerJson));
-  styleJson[0].minZoom = 3;
   styleJson[0].interactions = [
     {
       type: "select",
@@ -26,16 +25,19 @@ const addSelectInteractionVector = () => {
     },
   ];
   cy.mount(html`<eox-map .layers=${styleJson}></eox-map>`).as("eox-map");
-  cy.get("eox-map").and(($el) => {
-    const eoxMap = $el[0];
 
-    eoxMap.addEventListener("select", (evt) => {
-      expect(evt.detail.feature).to.exist;
-    });
-    eoxMap.map.on("loadend", () => {
-      simulateEvent(eoxMap.map, "click", 120, -140);
+  const selectInteractionPromise = new Promise((resolve) => {
+    cy.get("eox-map").and(($el) => {
+      const eoxMap = $el[0];
+      eoxMap.addEventListener("select", (evt) => {
+        resolve(evt.detail.feature);
+      });
+      eoxMap.map.on("loadend", () => {
+        simulateEvent(eoxMap.map, "click", 120, -140);
+      });
     });
   });
+  cy.wrap(selectInteractionPromise).should("exist");
 };
 
 export default addSelectInteractionVector;

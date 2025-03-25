@@ -11,25 +11,27 @@ const addSelectInteractionVectorTile = (vectorTileInteraction) => {
       "./map/test/fixtures/tiles/mapbox-streets-v6/14/8937/5679.vector.pbf,null",
     encoding: "binary",
   });
-  return new Cypress.Promise((resolve) => {
+  const selectInteractionPromise = new Promise((resolve) => {
     const layerJson = JSON.parse(JSON.stringify(vectorTileLayerJson));
     layerJson[0].interactions = vectorTileInteraction;
     cy.mount(html`<eox-map .layers=${layerJson}></eox-map>`).as("eox-map");
     cy.get("eox-map").and(($el) => {
       const eoxMap = $el[0];
       eoxMap.addEventListener("select", (evt) => {
-        expect(
-          eoxMap.map.getTargetElement().style.cursor,
-          "changes cursor to pointer",
-        ).to.be.equal("pointer");
-        expect(evt.detail.feature).to.exist;
-        resolve();
+        resolve({
+          feature: evt.detail.feature,
+          cursor: eoxMap.map.getTargetElement().style.cursor,
+        });
       });
       eoxMap.map.on("loadend", () => {
         simulateEvent(eoxMap.map, "pointermove", 65, 13); // a feature here
         simulateEvent(eoxMap.map, "click", 65, 13);
       });
     });
+  });
+  cy.wrap(selectInteractionPromise).then(({ feature, cursor }) => {
+    expect(cursor, "changes cursor to pointer").to.be.equal("pointer");
+    expect(feature).to.exist;
   });
 };
 

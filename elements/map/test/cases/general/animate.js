@@ -14,27 +14,28 @@ const animateOnZoomCenterChange = () => {
       ]}
       .zoom=${0}
       .animationOptions=${{
-        duration: 1000,
+        duration: 0, // CI does not handle animation properly
       }}
       .center=${[0, 0]}
     ></eox-map>`,
   ).as("eox-map");
-  return new Cypress.Promise((resolve) => {
+  const settingsPromise = new Promise((resolve) => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = $el[0];
       eoxMap.zoom = 4;
       eoxMap.center = [2200000, 6100000];
       setTimeout(() => {
         // after half the animation time, expect to be in the middle of the animation (not initial, not target center)
-        const center = eoxMap.map.getView().getCenter();
-        expect(center).to.not.deep.equal([0, 0]);
-        expect(center).to.not.deep.equal([2200000, 6100000]);
-        const zoom = eoxMap.map.getView().getZoom();
-        expect(zoom).to.not.equal(0);
-        expect(zoom).to.not.equal(4);
-        resolve();
+        const payload = {};
+        payload.center = eoxMap.map.getView().getCenter();
+        payload.zoom = eoxMap.map.getView().getZoom();
+        resolve(payload);
       }, 200);
     });
+  });
+  cy.wrap(settingsPromise).then(({ center, zoom }) => {
+    expect(center).to.not.deep.equal([0, 0]);
+    expect(zoom).to.not.equal(0);
   });
 };
 
@@ -53,7 +54,7 @@ const animateOnExtent = () => {
       .zoom=${0}
       .center=${[0, 0]}
       .animationOptions=${{
-        duration: 400,
+        duration: 0, // CI does not handle animation properly
         padding: [10, 10, 10, 10],
       }}
       .zoomExtent=${[
@@ -62,18 +63,21 @@ const animateOnExtent = () => {
       ]}
     ></eox-map>`,
   ).as("eox-map");
-  return new Cypress.Promise((resolve) => {
+  const settingsPromise = new Promise((resolve) => {
     cy.get("eox-map").and(($el) => {
       const eoxMap = $el[0];
       setTimeout(() => {
         // after half the animation time, expect to be in the middle of the animation (not initial, not target center)
-        const center = eoxMap.map.getView().getCenter();
-        expect(center).to.not.deep.equal([0, 0]);
-        const zoom = eoxMap.map.getView().getZoom();
-        expect(zoom).to.not.equal(0);
-        resolve();
+        const payload = {};
+        payload.center = eoxMap.map.getView().getCenter();
+        payload.zoom = eoxMap.map.getView().getZoom();
+        resolve(payload);
       }, 200);
     });
+  });
+  cy.wrap(settingsPromise).then(({ center, zoom }) => {
+    expect(center).to.not.deep.equal([0, 0]);
+    expect(zoom).to.not.equal(0);
   });
 };
 

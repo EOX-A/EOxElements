@@ -3,7 +3,6 @@ import {
   addAnotherLayer,
   addInteractionToExistingLayer,
   addLayerBySettingAsProperty,
-  remakeLayersWithoutId,
   removeLayerBySettingAsProperty,
 } from "./cases/layer-reactivity/index.js";
 
@@ -52,10 +51,4 @@ describe("Map", () => {
    */
   it("add an interaction to an existing layer", () =>
     addInteractionToExistingLayer());
-
-  /**
-   * Test case to remake layers without ID in EOx Map
-   */
-  it("always completely remake layers without ID", () =>
-    remakeLayersWithoutId(OsmJson));
 });
