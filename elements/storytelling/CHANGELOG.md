@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.0...storytelling-v1.7.1) (2025-03-25)
+
+
+### Bug Fixes
+
+* `fallback-src` not working due to `no-shadow` check skip ([#1629](https://github.com/EOX-A/EOxElements/issues/1629)) ([d89ccf5](https://github.com/EOX-A/EOxElements/commit/d89ccf5e97268124166663e917affa536840ab9d))
+
 ## [1.7.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.6.1...storytelling-v1.7.0) (2025-03-24)
 
 
