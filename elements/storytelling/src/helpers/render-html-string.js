@@ -154,7 +154,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   for (const node of nodes) {
     if (node instanceof Element) {
       elements.push(
-        processNode(/** @type {HTMLElement} */ (node), initDispatchFunc),
+        processNode(/** @type {HTMLElement} */ (node), initDispatchFunc, that),
       );
     }
   }
@@ -187,9 +187,10 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
  *
  * @param {HTMLElement} node - The DOM node to process.
  * @param {Function} initDispatchFunc - Init dispatch event
+ * @param {import("../main.js").EOxStoryTelling} that - The EOxStoryTelling instance.
  * @returns {HTMLElement} The processed DOM node.
  */
-function processNode(node, initDispatchFunc) {
+function processNode(node, initDispatchFunc, that) {
   if (node.nodeType === Node.ELEMENT_NODE) {
     const childElements = node.querySelectorAll("*");
     childElements.forEach((element) => {
@@ -239,7 +240,7 @@ function processNode(node, initDispatchFunc) {
         // Handle media loading error by switching to backup URL if available
         media.onerror = () => {
           if (
-            document.body.contains(media) &&
+            that.renderRoot.contains(media) &&
             media.getAttribute("data-fallback-src")
           ) {
             media.src = media.getAttribute("data-fallback-src");
