@@ -35,7 +35,7 @@ const highlightByIdVectorLayer = () => {
         eoxMap.selectInteractions.selectInteraction.highlightById(
           [710, 717, 828],
           {
-            duration: 400,
+            duration: 0, // CI does not handle animation properly
             padding: [50, 50, 50, 50],
           },
         );

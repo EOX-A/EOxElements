@@ -22,7 +22,7 @@ const highlightByIdVectorTileLayer = (vectorTileInteraction) => {
       eoxMap.map.on("loadend", () => {
         //on loadend, programmatically select a few features...
         eoxMap.selectInteractions.selectInteraction.highlightById([889], {
-          duration: 400,
+          duration: 0, // CI does not handle animation properly
           padding: [50, 50, 50, 50],
         });
         // ..and expect the map to animate to them
