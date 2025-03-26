@@ -14,3 +14,4 @@ export { default as GeoJSONStory } from "./geojson"; // Input form based on Draw
 export { default as CustomEditorInterfacesStory } from "./custom-editor-interfaces"; // Custom editor interfaces
 export { default as ValidationStory } from "./validation";
 export { default as CodeStory } from "./code";
+export { default as OptionalPropertiesStory } from "./optional-properties";
