@@ -16,11 +16,16 @@ const OptionalProperties = {
         },
         bar: {
           type: "string",
-          default: "I am optional!",
+        },
+        baz: {
+          type: "string",
+          default: "I am optional and are hidden at startup!",
         },
       },
     },
-    value: {},
+    value: {
+      bar: "I am optional and shown via the starting value!",
+    },
     options: {
       disable_properties: false,
     },
