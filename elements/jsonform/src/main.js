@@ -197,7 +197,7 @@ export class EOxJSONForm extends LitElement {
         ${style}
         ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
-        ${this.options.disable_properties === false
+        ${this.options?.disable_properties === false
           ? ``
           : `
           form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-header,
