@@ -221,7 +221,7 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
             : acc.minZoom;
         return acc;
       },
-      { minZoom: undefined, maxZoom: undefined }
+      { minZoom: undefined, maxZoom: undefined },
     );
 
   // set the min/max zoom of the scene accordingly
