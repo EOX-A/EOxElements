@@ -11,9 +11,10 @@ const externalValue = `${
 
 const External = {
   args: {
-    schema: externalSchema,
-    value: externalValue,
-    onReady: () => console.log("Schema loading finished, editor ready!"),
+    schema: "https://esa-earthcode.github.io/open-science-catalog-validation/schemas/projects/children.json",
+    // value: externalValue,
+    value: "https://esa-earthcode.github.io/open-science-catalog-metadata/projects/arcticsummit-arctic-summer-ice-thickness/collection.json",
+    onReady: () => setTimeout(() => {console.log(document.querySelector("eox-jsonform").value)}),
   },
 };
 export default External;

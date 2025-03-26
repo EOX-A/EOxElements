@@ -63,7 +63,8 @@ export const styleEOX = `
     margin-bottom: 8px;
   }
   form[data-theme="html"][data-theme-custom="eox"] .je-form-input-label:not([data-schematype="boolean"] label) {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     max-width: 100%;
     margin-bottom: 5px;
     margin-top: var(--eox-panel-spacing, 10px);
@@ -94,6 +95,15 @@ export const styleEOX = `
     transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  }
+  input[type="checkbox"] {
+    border: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    width: auto !important;
+  }
+  .form-control input[disabled] {
+    opacity: .5;
   }
   [data-schematype=boolean] label {
     display: flex;
