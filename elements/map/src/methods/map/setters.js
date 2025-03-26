@@ -189,6 +189,72 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
       );
     });
 
+  // set min/max zoom behavior
+  // get the min/max zoom value of all the layers
+  /**
+   * @typedef {Object} MinMaxZoom
+   * @property {number|undefined} minZoom
+   * @property {number|undefined} maxZoom
+   */
+
+  /** @type {MinMaxZoom} */
+
+  let minMax = EOxMap.map
+    .getLayers()
+    .getArray()
+    .reduce(
+      /**
+       * @param {MinMaxZoom} acc
+       * @param {EoxLayer} val
+       * @returns {MinMaxZoom}
+       */
+
+      /** @type {EoxLayer[]} */
+      (acc, val) => {
+        acc.maxZoom =
+          acc.maxZoom === undefined || val.get("maxZoom") < acc.maxZoom
+            ? val.get("maxZoom")
+            : acc.maxZoom;
+        acc.minZoom =
+          acc.minZoom === undefined || val.get("minZoom") > acc.minZoom
+            ? val.get("minZoom")
+            : acc.minZoom;
+        return acc;
+      },
+      { minZoom: undefined, maxZoom: undefined }
+    );
+
+  // set the min/max zoom of the scene accordingly
+  EOxMap.map.getView().setMaxZoom(minMax.maxZoom);
+  EOxMap.map.getView().setMinZoom(minMax.minZoom >= 0 ? minMax.minZoom : 0);
+
+  // disable zoom in/out when the max/min zoom level is reached
+  EOxMap.map.on("moveend", () => {
+    console.log(EOxMap.map.getView().getZoom());
+    if (EOxMap.map.getView().getZoom() >= minMax.maxZoom) {
+      document
+        .querySelector("eox-map")
+        .shadowRoot.querySelector("button.ol-zoom-in")
+        .classList.add("disaibled-button");
+    } else {
+      document
+        .querySelector("eox-map")
+        .shadowRoot.querySelector("button.ol-zoom-in")
+        .classList.remove("disaibled-button");
+    }
+    if (EOxMap.map.getView().getZoom() <= minMax.minZoom) {
+      document
+        .querySelector("eox-map")
+        .shadowRoot.querySelector("button.ol-zoom-out")
+        .classList.add("disaibled-button");
+    } else {
+      document
+        .querySelector("eox-map")
+        .shadowRoot.querySelector("button.ol-zoom-out")
+        .classList.remove("disaibled-button");
+    }
+  });
+
   // Return the new layers object
   return newLayers;
 }
