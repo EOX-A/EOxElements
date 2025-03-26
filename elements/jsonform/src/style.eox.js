@@ -74,13 +74,17 @@ export const styleEOX = `
   .row:not(.row .row):not(.row:last-child) {
     margin-bottom: 8px;
   }
-  form[data-theme="html"][data-theme-custom="eox"] .je-form-input-label:not([data-schematype="boolean"] label) {
-    display: inline-block;
+  form[data-theme="html"][data-theme-custom="eox"] label.je-form-input-label:not([data-schematype="boolean"]),
+  form[data-theme="html"][data-theme-custom="eox"] p.je-form-input-label:not([data-schematype="boolean"]) {
+    display: inline-flex;
     align-items: center;
     max-width: 100%;
     margin-bottom: 5px;
     margin-top: var(--eox-panel-spacing, 10px);
     font-weight: 400;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] p.je-form-input-label:not([data-schematype="boolean"]) {
+    display: inline-block;
   }
   form[data-theme="html"][data-theme-custom="eox"] label {
     display: flex;
