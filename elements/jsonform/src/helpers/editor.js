@@ -63,6 +63,12 @@ export const createEditor = (element) => {
       theme: "html",
       iconlib: "fontawesome5", // necessary to get information about expand/collapse state
       ajax: true,
+      disable_collapse: true,
+      disable_edit_json: true,
+      disable_properties: true,
+      disable_array_delete_all_rows: true,
+      disable_array_delete_last_row: true,
+      array_controls_top: true,
       ...element.options,
     });
 
