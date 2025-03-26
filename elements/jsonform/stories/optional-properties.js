@@ -19,7 +19,7 @@ const OptionalProperties = {
         },
         baz: {
           type: "string",
-          default: "I am optional and are hidden at startup!",
+          default: "I am optional and hidden at startup!",
         },
       },
     },
