@@ -230,7 +230,6 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
 
   // disable zoom in/out when the max/min zoom level is reached
   EOxMap.map.on("moveend", () => {
-    console.log(EOxMap.map.getView().getZoom());
     if (EOxMap.map.getView().getZoom() >= minMax.maxZoom) {
       document
         .querySelector("eox-map")
