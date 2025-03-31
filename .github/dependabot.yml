@@ -10,7 +10,7 @@ updates:
       cypress:
         patterns:
           - "cypress"
-          - "@cypress"
+          - "@cypress*"
       storybook:
         patterns:
           - "storybook"
