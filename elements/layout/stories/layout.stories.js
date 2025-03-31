@@ -2,7 +2,7 @@
  * Stories for eox-layout component showcasing various configurations.
  * These stories provide visual representations and usage examples for different scenarios.
  */
-import { PrimaryStory, GridStory, GapStory } from "./index";
+import { PrimaryStory, GridStory, GapStory, ScrollStory } from "./index";
 
 export default {
   title: "Elements/eox-layout",
@@ -27,3 +27,9 @@ export const Grid = GridStory;
  * created between the individual items. A 1px border was added to demonstrate the padding.
  */
 export const Gap = GapStory;
+
+/**
+ * By using `row-height` or `column-width` attributes, the total width and/or height can be larger than the grid.
+ * In this case, the items will overflow the grid.
+ */
+export const Scroll = ScrollStory;

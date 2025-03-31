@@ -5,7 +5,7 @@
  */
 export class EOxLayout extends HTMLElement {
   static get observedAttributes() {
-    return ["gap"];
+    return ["column-width", "gap", "row-height"];
   }
   constructor() {
     super();
@@ -16,13 +16,16 @@ export class EOxLayout extends HTMLElement {
     this.shadowRoot.innerHTML = `
     <style>
       :host {
+        --row-height: ${this.getAttribute("row-height")};
+        --column-width: ${this.getAttribute("column-width")};
         display: grid;
         padding: ${this.getAttribute("gap") || 0}px;
         height: 100%;
         box-sizing: border-box;
         gap: ${this.getAttribute("gap") || "0"}px;
-        grid-template-columns: repeat(12, 1fr);
-        grid-template-rows: repeat(12, 1fr);
+        grid-template-columns: repeat(12, var(--column-width, 1fr));
+        grid-template-rows: repeat(12, var(--row-height, 1fr));
+        overflow: auto;
       }
     </style>
     <slot></slot>
