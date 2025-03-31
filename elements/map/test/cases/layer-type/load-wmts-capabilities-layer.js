@@ -4,7 +4,7 @@ import { html } from "lit";
  * Tests to load WMTS Layer with Capabilities
  */
 const loadWmtsCapabilitiesLayer = () => {
-  return new Cypress.Promise((resolve) => {
+  const tileloadPromise = new Promise((resolve) => {
     cy.fixture("./map/test/fixtures/eoxCapabilities.xml").then(
       (eoxCapabilitiesXML) => {
         cy.intercept(
@@ -38,12 +38,14 @@ const loadWmtsCapabilitiesLayer = () => {
           const eoxMap = $el[0];
           const source = eoxMap.getLayerById("wmtsLayer").getSource();
           source.once("tileloadend", (e) => {
-            expect(e.tile.getState()).to.be.equal(2);
-            resolve();
+            resolve(e.tile);
           });
         });
       },
     );
+  });
+  cy.wrap(tileloadPromise).then((tile) => {
+    expect(tile.getState()).to.be.equal(2);
   });
 };
 
