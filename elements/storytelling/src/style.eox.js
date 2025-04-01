@@ -472,8 +472,8 @@ ${slider}
   }
   .switch .switch-input { 
     opacity: 0;
-    width: 0;
-    height: 0;
+    width: 0 !important;
+    height: 0 !important;
   }
   .switch .icon {
     z-index: 2;

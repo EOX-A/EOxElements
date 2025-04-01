@@ -7,6 +7,7 @@ let lightboxGallery = null;
 let lightboxElements = [];
 
 let sectionObservers = [];
+let sectionNavObservers = [];
 let stepSectionObservers = [];
 
 /**
@@ -43,13 +44,15 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   // Disconnecting old observers to create new empty Observers
   sectionObservers.forEach((observer) => observer?.disconnect());
   sectionObservers = [];
+  sectionNavObservers.forEach((observer) => observer?.disconnect());
+  sectionNavObservers = [];
   stepSectionObservers.forEach((observer) => observer?.disconnect());
   stepSectionObservers = [];
 
   // Creating new Section Observer for navigation and section intersection
   if (isNavigation) {
     that.nav.forEach((section) => {
-      const sectionObserver = new IntersectionObserver(
+      const sectionNavObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             const intersecting = entry.isIntersecting;
@@ -69,8 +72,8 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       setTimeout(() => {
         const sectionDom = parent.querySelector(`#${section.id}`);
         if (sectionDom) {
-          sectionObserver.observe(sectionDom);
-          sectionObservers.push(sectionObserver);
+          sectionNavObserver.observe(sectionDom);
+          sectionNavObservers.push(sectionNavObserver);
         }
       }, 200);
     });
@@ -82,6 +85,19 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
     if (EVENT_REQ_MODES.includes(section.mode) && section.steps) {
       const elementSelector = `${section.as}#${section.id}`;
+      let sectionLoadedOnce = false;
+
+      // Creating new scroll Section Observer
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const intersecting = entry.isIntersecting;
+
+          if (intersecting && !sectionLoadedOnce) {
+            assignNewAttrValue(section, 0, elementSelector, parent);
+            sectionLoadedOnce = true;
+          }
+        });
+      });
 
       // Creating new scroll Step Section Observer and assign new value for attribute of element
       const stepSectionObserver = new IntersectionObserver((entries) => {
@@ -111,7 +127,9 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
         stepSectionObservers.push(stepSectionObserver);
 
         assignNewAttrValue(section, 0, elementSelector, parent);
-      }, 100);
+        sectionObserver.observe(contentParent);
+        sectionObservers.push(sectionObserver);
+      }, 500);
     }
   });
 
