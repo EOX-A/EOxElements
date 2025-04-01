@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.3.0...layout-v0.4.0) (2025-04-01)
+
+
+### Features
+
+* Support fixed row height/column widths ([#1636](https://github.com/EOX-A/EOxElements/issues/1636)) ([d0c6f25](https://github.com/EOX-A/EOxElements/commit/d0c6f253d9d39633cb4297f935b8fb28af94f152))
+
 ## [0.3.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.2.0...layout-v0.3.0) (2024-11-07)
 
 
