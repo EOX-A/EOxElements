@@ -37,8 +37,9 @@
   },
   "scripts": {
     "types:generate": "tsc --project tsconfig.build.json || true",
-    "prepack": "npm run types:generate",
+    "prepack": "npm run schema:generate && npm run types:generate",
     "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
-    "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch"
+    "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch",
+    "schema:generate": "typescript-json-schema ./src/layers.ts EoxLayer  -o ./src/eoxlayer-schema.json  --skipLibCheck"
   }
 }

@@ -18,14 +18,14 @@ export class EOxMapCompare extends LitElement {
 
     /**
      * The current position of the comparison slider (0 to 100).
-     * @type {Number}
+     * @type {number}
      */
     this.value = 50;
 
     /**
      * Whether the comparison is enabled and which part is visible.
      * Accepts values: "first", "second", or "true" (default).
-     * @type {String}
+     * @type {string}
      */
     this.enabled = "true";
   }
