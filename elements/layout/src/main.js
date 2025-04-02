@@ -5,7 +5,7 @@
  */
 export class EOxLayout extends HTMLElement {
   static get observedAttributes() {
-    return ["column-width", "gap", "row-height"];
+    return ["column-width", "fill-grid", "gap", "row-height"];
   }
   constructor() {
     super();
@@ -23,8 +23,17 @@ export class EOxLayout extends HTMLElement {
         height: 100%;
         box-sizing: border-box;
         gap: ${this.getAttribute("gap") || "0"}px;
-        grid-template-columns: repeat(12, var(--column-width, 1fr));
-        grid-template-rows: repeat(12, var(--row-height, 1fr));
+        ${
+          this.getAttribute("fill-grid") !== null
+            ? `
+          grid-template-columns: repeat(auto-fill, minmax(var(--column-width, 300px), 1fr));
+          grid-template-rows: repeat(auto-fill, minmax(var(--row-height, 300px), 1fr));
+          `
+            : `
+          grid-template-columns: repeat(12, var(--column-width, 1fr));
+          grid-template-rows: repeat(12, var(--row-height, 1fr));
+          `
+        }
         overflow: auto;
       }
     </style>
@@ -54,12 +63,22 @@ export class EOxLayoutItem extends HTMLElement {
         :host {
           overflow: hidden;
 
-          grid-column: ${
-            parseInt(this.getAttribute("x")) + 1
-          } / span ${this.getAttribute("w")};
-          grid-row: ${
-            parseInt(this.getAttribute("y")) + 1
-          } / span ${this.getAttribute("h")};
+          ${
+            this.parentElement &&
+            this.parentElement.getAttribute("fill-grid") !== null
+              ? `
+            grid-column: span ${this.getAttribute("w")};
+            grid-row: span ${this.getAttribute("h")};
+            `
+              : `
+            grid-column: ${
+              parseInt(this.getAttribute("x")) + 1
+            } / span ${this.getAttribute("w")};
+            grid-row: ${
+              parseInt(this.getAttribute("y")) + 1
+            } / span ${this.getAttribute("h")};
+          `
+          }
         }
       </style>
       <slot></slot>
