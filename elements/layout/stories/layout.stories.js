@@ -2,7 +2,13 @@
  * Stories for eox-layout component showcasing various configurations.
  * These stories provide visual representations and usage examples for different scenarios.
  */
-import { PrimaryStory, GridStory, GapStory, ScrollStory } from "./index";
+import {
+  PrimaryStory,
+  GridStory,
+  GapStory,
+  ScrollStory,
+  FillGridStory,
+} from "./index";
 
 export default {
   title: "Elements/eox-layout",
@@ -33,3 +39,9 @@ export const Gap = GapStory;
  * In this case, the items will overflow the grid.
  */
 export const Scroll = ScrollStory;
+
+/**
+ * By using the `fill-grid` attribute on `eox-layout`, the grid will automatically fill the available space.
+ * The `row-height` and `column-width` attributes define the minimum size of the grid slots.
+ */
+export const FillGrid = FillGridStory;
