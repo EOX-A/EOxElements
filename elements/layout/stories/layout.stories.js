@@ -8,6 +8,7 @@ import {
   GapStory,
   ScrollStory,
   FillGridStory,
+  ResponsiveStory,
 } from "./index";
 
 export default {
@@ -45,3 +46,8 @@ export const Scroll = ScrollStory;
  * The `row-height` and `column-width` attributes define the minimum size of the grid slots.
  */
 export const FillGrid = FillGridStory;
+
+/**
+ * By providing three values instead of one for `x`, `y`, `w` or `h`, items can be rendered differently on different screen sizes (small/medium/large).
+ */
+export const Responsive = ResponsiveStory;
