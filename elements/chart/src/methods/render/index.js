@@ -1,1 +1,1 @@
-export { default as renderChartMethod } from "./render-chart";
+export { renderChartMethod, updateChartMethod } from "./render-chart";

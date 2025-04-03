@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import allStyle from "@eox/elements-utils/styles/dist/all.style";
-import { renderChartMethod } from "./methods/render";
+import { renderChartMethod, updateChartMethod } from "./methods/render";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
@@ -84,7 +84,12 @@ export class EOxChart extends LitElement {
    * @param {import("lit").PropertyValues} changedProperties
    */
   async updated(changedProperties) {
-    if (changedProperties.has("spec") || changedProperties.has("dataValues")) {
+    if (changedProperties.get("dataValues") !== undefined) {
+      updateChartMethod(this.dataValues);
+    } else if (
+      changedProperties.has("spec") ||
+      changedProperties.has("dataValues")
+    ) {
       renderChartMethod(this, this.spec, this.dataValues);
     }
   }
