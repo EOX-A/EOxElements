@@ -79,7 +79,7 @@ export class EOxItemFilterResults extends LitElement {
    * Creates a list of items based on the aggregation property.
    *
    * @param {string} [aggregationProperty] - The property used for aggregation.
-   * @returns {import("lit").HTMLTemplateResult} - The template result for the item list.
+   * @returns {import("lit").TemplateResult} - The template result for the item list.
    */
   #createItemList(aggregationProperty) {
     return createItemListMethod(this, aggregationProperty);
