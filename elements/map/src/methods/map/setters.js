@@ -223,13 +223,11 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
       },
       { minZoom: undefined, maxZoom: undefined },
     );
-    // re-set each layer minZoom as a workaround to ol inclusiveness behavior
-    EOxMap.map
+  // re-set each layer minZoom as a workaround to ol inclusiveness behavior
+  EOxMap.map
     .getLayers()
     .getArray()
-    .map(
-      (layer) => layer.setMinZoom(layer.get("minZoom") - 1e-12)
-    )
+    .map((layer) => layer.setMinZoom(layer.get("minZoom") - 1e-12));
   // set the min/max zoom of the scene accordingly
   EOxMap.map.getView().setMaxZoom(minMax.maxZoom);
   EOxMap.map.getView().setMinZoom(minMax.minZoom >= 0 ? minMax.minZoom : 0);
