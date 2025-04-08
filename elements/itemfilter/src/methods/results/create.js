@@ -65,7 +65,7 @@ export function createItemListMethod(
       : nothing;
 
   return staticHtml`
-    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout gap="16" row-height="200px" column-width="300px" fill-grid>`) : unsafeStatic(`<ul>`)}
+    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul>`)}
       ${repeat(
         items,
         (item) => item.id,

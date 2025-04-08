@@ -185,9 +185,15 @@ ul#results .result-action:hover {
 ul#results .highlighted .result-action > * {
   filter: invert(1);
 }
+eox-layout {
+  padding: .5rem var(--padding);
+  gap: var(--card-gap, 16px);
+  --column-width: var(--card-width, 300px);
+  --row-height: var(--card-height, 200px);
+}
 eox-layout-item {
   position: relative;
-  border-radius: 8px;
+  border-radius: var(--card-border-radius, 16px);
 }
 eox-layout-item .image {
   width: 100%;
