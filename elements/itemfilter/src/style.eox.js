@@ -193,7 +193,7 @@ eox-layout {
 }
 eox-layout-item {
   position: relative;
-  border-radius: var(--card-border-radius, 16px);
+  border-radius: var(--card-border-radius, 8px);
 }
 eox-layout-item .image {
   width: 100%;
