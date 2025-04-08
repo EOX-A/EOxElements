@@ -6,8 +6,17 @@
 const PrimaryStory = {
   args: {
     center: [15, 48],
-    layers: [{ type: "Tile", source: { type: "OSM" } }],
+    layers: [
+      {
+        type: "Tile",
+        source: { type: "OSM" },
+        properties: { maxZoom: 8, minZoom: 5 },
+      },
+    ],
     zoom: 7,
+    controls: {
+      Zoom: {},
+    },
   },
 };
 

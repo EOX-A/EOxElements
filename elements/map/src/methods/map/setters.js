@@ -234,27 +234,24 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
 
   // disable zoom in/out when the max/min zoom level is reached
   EOxMap.map.on("moveend", () => {
+    if (!EOxMap?.controls?.Zoom) return;
     if (EOxMap.map.getView().getZoom() >= minMax.maxZoom) {
-      document
-        .querySelector("eox-map")
-        .shadowRoot.querySelector("button.ol-zoom-in")
-        .classList.add("disaibled-button");
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-in")
+        ?.classList.add("disaibled-button");
     } else {
-      document
-        .querySelector("eox-map")
-        .shadowRoot.querySelector("button.ol-zoom-in")
-        .classList.remove("disaibled-button");
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-in")
+        ?.classList.remove("disaibled-button");
     }
     if (EOxMap.map.getView().getZoom() <= minMax.minZoom) {
-      document
-        .querySelector("eox-map")
-        .shadowRoot.querySelector("button.ol-zoom-out")
-        .classList.add("disaibled-button");
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-out")
+        ?.classList.add("disaibled-button");
     } else {
-      document
-        .querySelector("eox-map")
-        .shadowRoot.querySelector("button.ol-zoom-out")
-        .classList.remove("disaibled-button");
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-out")
+        ?.classList.remove("disaibled-button");
     }
   });
 
