@@ -39,6 +39,7 @@ import{w as ne,e as h,u as ce}from"./index-poyNEFC1.js";import{x as t}from"./lit
         .subTitleProperty=${e.subTitleProperty}
         .filterProperties=${e.filterProperties}
         .resultType=${e.resultType}
+        style="--card-gap: 16px; --card-width: 300px; --card-height: 200px; --card-border-radius: 8px;"
       ></eox-itemfilter>`,args:{aggregateResults:"themes",titleProperty:"title",subTitleProperty:"description",imageProperty:"assets.thumbnail.href",resultType:"cards",filterProperties:[{key:"themes",title:"Theme",type:"multiselect"}],items:a}}}function fe(){return{render:e=>t`<eox-itemfilter
         .aggregateResults=${e.aggregateResults}
         .items=${e.items}
