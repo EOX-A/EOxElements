@@ -1,4 +1,5 @@
 import { html, nothing } from "lit";
+import { html as staticHtml, unsafeStatic } from "lit/static-html.js";
 import { repeat } from "lit/directives/repeat.js";
 import { when } from "lit/directives/when.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
@@ -44,7 +45,7 @@ export function createItemDetailsMethod(
  *
  * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
  * @param {string} [aggregationProperty] - The property used for aggregation.
- * @returns {import("lit").HTMLTemplateResult} The HTML template for the item list view.
+ * @returns {import("lit").TemplateResult} The HTML template for the item list view.
  */
 export function createItemListMethod(
   EOxItemFilterResults,
@@ -63,13 +64,13 @@ export function createItemListMethod(
       ? "highlighted"
       : nothing;
 
-  return html`
-    <ul class=${EOxItemFilterResults.resultType}>
+  return staticHtml`
+    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout gap="16" row-height="200px" column-width="300px" fill-grid>`) : unsafeStatic(`<ul>`)}
       ${repeat(
         items,
         (item) => item.id,
-        (item) => html`
-          <li
+        (item) => staticHtml`
+        ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout-item`) : unsafeStatic(`<li`)}
             class=${className(item)}
             @click=${() => {
               if (EOxItemFilterResults.selectedResult === item) {
@@ -145,6 +146,6 @@ export function createItemListMethod(
           </li>
         `,
       )}
-    </ul>
+    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`</eox-layout>`) : unsafeStatic(`</ul>`)}
   `;
 }
