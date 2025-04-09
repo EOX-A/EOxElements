@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.5.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.4.0...layout-v0.5.0) (2025-04-08)
+
+
+### Features
+
+* Fill-grid mode ([#1652](https://github.com/EOX-A/EOxElements/issues/1652)) ([f6e266c](https://github.com/EOX-A/EOxElements/commit/f6e266cf73ac771895e03d02c995e06747e73614))
+* Responsive layout (s/m/l) ([#1654](https://github.com/EOX-A/EOxElements/issues/1654)) ([474f828](https://github.com/EOX-A/EOxElements/commit/474f8285a5e27df65ba598f57a86219f642809d8))
+
 ## [0.4.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.3.0...layout-v0.4.0) (2025-04-01)
 
 

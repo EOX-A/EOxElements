@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.8.0...itemfilter-v1.9.0) (2025-04-08)
+
+
+### Features
+
+* **style:** Replace result cards with eox-layout ([#1660](https://github.com/EOX-A/EOxElements/issues/1660)) ([255c454](https://github.com/EOX-A/EOxElements/commit/255c4540a6f5ec194462c6d11616d748f69132e8))
+
 ## [1.8.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.7.1...itemfilter-v1.8.0) (2025-03-24)
 
 
