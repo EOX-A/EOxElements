@@ -1,7 +1,6 @@
 import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
-import "@eox/layout";
 import {
   aggregateResultsMethod,
   createItemDetailsMethod,

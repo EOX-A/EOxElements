@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^0.1.5",
-    "@eox/layout": "^0.4.0",
     "@floating-ui/dom": "^1.6.8",
     "@turf/boolean-intersects": "^7.0.0",
     "@turf/boolean-within": "^7.0.0",
@@ -49,6 +48,7 @@
     "toolcool-range-slider": "^4.0.27"
   },
   "peerDependencies": {
+    "@eox/layout": "*",
     "@eox/map": "*"
   }
 }
