@@ -12,7 +12,7 @@ export class EOxFeedbackButton extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    this.modal;
+    this.modal = null;
 
     this.position = "top-right";
   }

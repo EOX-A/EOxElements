@@ -1,7 +1,7 @@
 import RegionScreenshot from "region-screenshot-js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import { EOxFeedbackButton } from "./feedback-button.js";
+import "./feedback-button.js";
 
 /**
  * @attr {string} endpoint - The endpoint to send the feedback to as POST message.
@@ -17,12 +17,12 @@ export class EOxFeedback extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
-    this.includeScreenshot;
-    this.areaSelection;
+    this.includeScreenshot = null;
+    this.areaSelection = null;
 
-    this.regionScreenshot;
+    this.regionScreenshot = null;
 
-    this.screenShotFile;
+    this.screenShotFile = null;
 
     this.endpoint =
       this.getAttribute("endpoint") ||
@@ -180,7 +180,7 @@ export class EOxFeedback extends HTMLElement {
       message.innerHTML = `
         <p class="green-text middle-align center-align">Thank you for submitting your feedback!</p>
         `;
-    } catch (error) {
+    } catch (_) {
       message.innerHTML = `
         <p class="red-text middle-align center-align">Oh no - something went wrong! Apologies, we'll try to find out what happened.</p>
         `;
@@ -207,7 +207,7 @@ export class EOxFeedback extends HTMLElement {
 
   render() {
     /**
-     * @type {EOxFeedbackButton}
+     * @type {import("./feedback-button").EOxFeedbackButton}
      */
     const feedbackButton = document.querySelector("eox-feedback-button");
     this.shadowRoot.innerHTML = `
