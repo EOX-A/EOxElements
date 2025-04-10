@@ -24,6 +24,7 @@
       "@eox/chart/src/*": ["./elements/chart/src/*"],
       "@eox/drawtools": ["./elements/drawtools/src/main.js"],
       "@eox/drawtools/src/*": ["./elements/drawtools/src/*"],
+      "@eox/feedback/src/*": ["./elements/feedback/src/*"],
       "@eox/geosearch": ["./elements/geosearch/src/main.js"],
       "@eox/geosearch/src/*": ["./elements/geosearch/src/*"],
       "@eox/itemfilter": ["./elements/itemfilter/src/main.js"],
