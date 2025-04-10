@@ -4,6 +4,7 @@ import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
 import "@eox/chart";
 import "@eox/drawtools";
+import "@eox/feedback";
 import "@eox/geosearch";
 import "@eox/itemfilter";
 import "@eox/jsonform";
@@ -14,6 +15,8 @@ import "@eox/map/src/plugins/advancedLayersAndSources";
 import "@eox/stacinfo";
 import "@eox/storytelling";
 import "@eox/timecontrol";
+import "@eox/ui";
+import "@eox/ui/style.css";
 
 /**
  * A custom wrapper for the default setCustomElementsManifest function.
