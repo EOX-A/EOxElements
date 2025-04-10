@@ -129,7 +129,7 @@ export class EOxSelectInteraction {
 
     /**
      * Listener to handle selection events
-     * @param {import("ol/MapBrowserEvent").default<UIEvent>} event
+     * @param {import("ol/MapBrowserEvent").default} event
      * **/
     this.listener = (event) => {
       if (!this.active || event.dragging) {
