@@ -189,6 +189,72 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
       );
     });
 
+  // set min/max zoom behavior
+  // get the min/max zoom value of all the layers
+  /**
+   * @typedef {Object} MinMaxZoom
+   * @property {number|undefined} minZoom
+   * @property {number|undefined} maxZoom
+   */
+
+  /** @type {MinMaxZoom} */
+
+  let minMax = EOxMap.map
+    .getLayers()
+    .getArray()
+    .reduce(
+      /**
+       * @param {MinMaxZoom} acc
+       * @param {EoxLayer} val
+       * @returns {MinMaxZoom}
+       */
+
+      /** @type {EoxLayer[]} */
+      (acc, val) => {
+        acc.maxZoom =
+          acc.maxZoom === undefined || val.get("maxZoom") < acc.maxZoom
+            ? val.get("maxZoom")
+            : acc.maxZoom;
+        acc.minZoom =
+          acc.minZoom === undefined || val.get("minZoom") > acc.minZoom
+            ? val.get("minZoom")
+            : acc.minZoom;
+        return acc;
+      },
+      { minZoom: undefined, maxZoom: undefined },
+    );
+  // re-set each layer minZoom as a workaround to ol inclusiveness behavior
+  EOxMap.map
+    .getLayers()
+    .getArray()
+    .map((layer) => layer.setMinZoom(layer.get("minZoom") - 1e-12));
+  // set the min/max zoom of the scene accordingly
+  EOxMap.map.getView().setMaxZoom(minMax.maxZoom);
+  EOxMap.map.getView().setMinZoom(minMax.minZoom >= 0 ? minMax.minZoom : 0);
+
+  // disable zoom in/out when the max/min zoom level is reached
+  EOxMap.map.on("moveend", () => {
+    if (!EOxMap?.controls?.Zoom) return;
+    if (EOxMap.map.getView().getZoom() >= minMax.maxZoom) {
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-in")
+        ?.classList.add("disaibled-button");
+    } else {
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-in")
+        ?.classList.remove("disaibled-button");
+    }
+    if (EOxMap.map.getView().getZoom() <= minMax.minZoom) {
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-out")
+        ?.classList.add("disaibled-button");
+    } else {
+      EOxMap.renderRoot
+        .querySelector("button.ol-zoom-out")
+        ?.classList.remove("disaibled-button");
+    }
+  });
+
   // Return the new layers object
   return newLayers;
 }
