@@ -194,6 +194,7 @@ eox-layout {
 eox-layout-item {
   position: relative;
   border-radius: var(--card-border-radius, 8px);
+  cursor: pointer;
 }
 eox-layout-item .image {
   width: 100%;
