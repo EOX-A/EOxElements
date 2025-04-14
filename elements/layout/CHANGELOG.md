@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/EOX-A/EOxElements/compare/layout-v0.5.0...layout-v0.5.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* Set height for implicit rows/columns ([#1663](https://github.com/EOX-A/EOxElements/issues/1663)) ([a0eddf7](https://github.com/EOX-A/EOxElements/commit/a0eddf76fc308f1ed46eb665eabf1faf28f7079e))
+
 ## [0.5.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.4.0...layout-v0.5.0) (2025-04-08)
 
 

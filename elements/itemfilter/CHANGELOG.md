@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.9.0...itemfilter-v1.9.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* Card cursor & placeholder ([#1664](https://github.com/EOX-A/EOxElements/issues/1664)) ([397e39c](https://github.com/EOX-A/EOxElements/commit/397e39c888fbe678eab77f2ba2129b1a547923d6))
+
 ## [1.9.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.8.0...itemfilter-v1.9.0) (2025-04-08)
 
 
