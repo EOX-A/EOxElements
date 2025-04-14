@@ -104,8 +104,8 @@ export function createItemListMethod(
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <rect
-                            width="800"
-                            height="600"
+                            width="100%"
+                            height="100%"
                             fill="var(--primary-color)"
                           />
                         </svg>
