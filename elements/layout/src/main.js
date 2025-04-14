@@ -32,7 +32,7 @@ export class EOxLayout extends HTMLElement {
         ${
           this.getAttribute("fill-grid") !== null
             ? `
-          grid-template-columns: repeat(auto-fill, minmax(0, var(--column-width, 300px)));
+          grid-template-columns: repeat(auto-fill, minmax(var(--column-width, 300px), 1fr));
           grid-template-rows: repeat(auto-fill, minmax(0, var(--row-height, 300px)));
           grid-auto-columns: var(--column-width, 300px);
           grid-auto-rows: var(--row-height, 300px);
