@@ -96,10 +96,3 @@ export type EoxLayer =
   | EOxLayerType<"Image", "Raster">
   | EOxLayerType<"Image", "IIIF">
   | EOxLayerType<"Group", keyof OLSources>;
-
-export const layer = {
-  type: "Vector",
-  source: {
-    type: "Cluster",
-  },
-} as EoxLayer;
