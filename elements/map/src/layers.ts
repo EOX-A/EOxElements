@@ -5,6 +5,7 @@ import type {
   OLBasicFormats,
   OLBasicLayers,
   OLBasicSources,
+  DeepOmit,
 } from "./types";
 
 export type OLSources = OLBasicSources & OLAdvancedSources;
@@ -17,9 +18,16 @@ export type EOxFormat<F extends keyof OLFormats> =
     } & ConstructorParameters<OLFormats[F]>[0])
   | F;
 
-type OlSourceOption<S extends keyof OLSources> = ConstructorParameters<
-  OLSources[S]
->[0];
+type OlSourceOption<S extends keyof OLSources> = DeepOmit<
+  ConstructorParameters<OLSources[S]>[0],
+  "map"
+>;
+
+type OlLayerOption<T extends keyof OLLayers> = DeepOmit<
+  Omit<ConstructorParameters<OLLayers[T]>[0], "properties">,
+  "source" | "layers" | "map"
+>;
+
 type EoxSource<
   S extends keyof OLSources,
   F extends keyof OLFormats = keyof OLFormats,
@@ -27,39 +35,47 @@ type EoxSource<
   ? OlSourceOption<S>
   : OlSourceOption<S> extends { format?: any }
     ? Omit<OlSourceOption<S>, "format"> & { format?: EOxFormat<F> }
-    : OlSourceOption<S>) & { type: S };
+    : OlSourceOption<S> extends { source?: any }
+      ? Omit<OlSourceOption<S>, "source"> & {
+          source?: EoxSource<keyof OLSources, keyof OLFormats>;
+        }
+      : OlSourceOption<S>) & { type: S };
 
 export type EOxLayerType<
   T extends keyof OLLayers,
   S extends keyof OLSources,
   F extends keyof OLFormats = keyof OLFormats,
-> = (T extends "Group"
-  ? Omit<
-      ConstructorParameters<OLLayers[T]>[0],
-      "source" | "layers" | "properties"
-    > & {
-      layers: import("./types").EoxLayers;
-    }
-  : Omit<ConstructorParameters<OLLayers[T]>[0], "source">) & {
-  type: T;
-  properties?: {
-    id: string;
-    [key: string]: any;
-  };
-  source?: EoxSource<S, F>;
-
-  interactions?: T extends "Vector" | "VectorTile"
-    ? Array<import("./types").EOxInteraction>
-    : never;
-};
-// Removed individual layer type definitions
+> = DeepOmit<
+  (T extends "Group"
+    ? OlLayerOption<T> & {
+        layers: import("./types").EoxLayers;
+      }
+    : OlLayerOption<T> extends { sources?: any }
+      ? Omit<OlLayerOption<T>, "sources"> & { sources?: EoxSource<S, F>[] }
+      : OlLayerOption<T>) & {
+    type: T;
+    properties?: {
+      id: string;
+      [key: string]: any;
+    };
+    source?: EoxSource<S, F>;
+    interactions?: T extends "Vector" | "VectorTile"
+      ? Array<import("./types").EOxInteraction>
+      : never;
+  },
+  `${string}_`
+>;
 
 export type EoxLayer =
+  // | EOxLayerType<"Vector", keyof OLSources>
   | EOxLayerType<"Vector", "Vector">
   | EOxLayerType<"Vector", "FlatGeoBuf">
   | EOxLayerType<"Vector", "Cluster">
+  // | EOxLayerType<"VectorTile", keyof OLSources>
   | EOxLayerType<"VectorTile", "VectorTile">
+  // | EOxLayerType<"WebGLTile", keyof OLSources>
   | EOxLayerType<"WebGLTile", "GeoTIFF">
+  // | EOxLayerType<"Tile", keyof OLSources>
   | EOxLayerType<"Tile", "OSM">
   | EOxLayerType<"Tile", "WMTSCapabilities">
   | EOxLayerType<"Tile", "StadiaMaps">
@@ -72,6 +88,7 @@ export type EoxLayer =
   | EOxLayerType<"Tile", "TileWMS">
   | EOxLayerType<"Tile", "UrlTile">
   | EOxLayerType<"Tile", "BingMaps">
+  // | EOxLayerType<"Image", keyof OLSources>
   | EOxLayerType<"Image", "Image">
   | EOxLayerType<"Image", "ImageCanvas">
   | EOxLayerType<"Image", "ImageStatic">
@@ -79,3 +96,10 @@ export type EoxLayer =
   | EOxLayerType<"Image", "Raster">
   | EOxLayerType<"Image", "IIIF">
   | EOxLayerType<"Group", keyof OLSources>;
+
+export const layer = {
+  type: "Vector",
+  source: {
+    type: "Cluster",
+  },
+} as EoxLayer;
