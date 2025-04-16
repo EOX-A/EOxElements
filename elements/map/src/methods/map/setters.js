@@ -17,7 +17,7 @@ import View from "ol/View";
 import { getElement } from "@eox/elements-utils";
 
 /**
- * @typedef {import("../../types").EoxLayer} EoxLayer
+ * @typedef {import("../../layers").EoxLayer} EoxLayer
  * @typedef {import("../../types").ControlType} ControlType
  * @typedef {import("../../types").ControlDictionary} ControlDictionary
  * @typedef {import("../../types").SelectOptions} SelectOptions

@@ -9,7 +9,7 @@ import { getUid } from "ol/util";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
- * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../layers").EoxLayer} EoxLayer
  * @typedef {import("../types").SelectLayer} SelectLayer
  * @typedef {import("../types").SelectOptions} SelectOptions
  * @typedef {import("../types").DrawOptions} DrawOptions
@@ -104,8 +104,11 @@ export class EOxSelectInteraction {
     delete layerDefinition.interactions;
 
     // Create a new layer for the selection styling
-    this.selectStyleLayer = createLayer(eoxMap, layerDefinition);
+    this.selectStyleLayer = /** @type {import("../types").SelectLayer} */ (
+      createLayer(eoxMap, layerDefinition)
+    );
 
+    //@ts-expect-error - TODO
     this.selectStyleLayer.setSource(this.selectLayer.getSource());
     this.selectStyleLayer.setMap(this.eoxMap.map);
 
@@ -196,6 +199,7 @@ export class EOxSelectInteraction {
 
     // Set up the map event listener for the specified condition (e.g., click, pointermove)
     this.changeSourceListener = () => {
+      //@ts-expect-error - TODO
       this.selectStyleLayer.setSource(this.selectLayer.getSource());
     };
 
@@ -276,7 +280,9 @@ export class EOxSelectInteraction {
       if (this.selectLayer instanceof VectorLayer) {
         for (let i = 0; i < this.selectedFids.length; i++) {
           const id = this.selectedFids[i];
-          const feature = this.selectLayer.getSource().getFeatureById(id);
+          const feature = /** @type {Feature} */ (
+            this.selectLayer.getSource().getFeatureById(id)
+          );
           if (feature && feature.getGeometry()) {
             extend(extent, feature.getGeometry().getExtent());
           }

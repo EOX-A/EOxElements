@@ -37,7 +37,7 @@ import {
 } from "./methods/map/";
 
 /**
- * @typedef {import("./types").EoxLayer} EoxLayer
+ * @typedef {import("./layers").EoxLayer} EoxLayer
  * @typedef {import("./types").EOxAnimationOptions} EOxAnimationOptions
  * @typedef {import("./types").ControlDictionary} ControlDictionary
  * @typedef {import("./types").ConfigObject} ConfigObject
@@ -125,7 +125,7 @@ export class EOxMap extends LitElement {
   /**
    * Indicates whether the map's scroll interactions (zooming, panning) are prevented.
    *
-   * @type {Boolean}
+   * @type {boolean}
    */
   #preventScroll;
 
@@ -146,7 +146,7 @@ export class EOxMap extends LitElement {
   /**
    * Represents the sync state of the map with another map instance.
    *
-   * @type {String}
+   * @type {string}
    */
   #sync;
 
@@ -294,7 +294,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current map controls.
    *
-   * @returns {Object} The current controls applied to the map.
+   * @returns {ControlDictionary} The current controls applied to the map.
    */
   get controls() {
     return this.#controls;
@@ -321,7 +321,7 @@ export class EOxMap extends LitElement {
   /**
    * Enables or disables scroll interactions on the map.
    *
-   * @param {Boolean} preventScroll - Whether to prevent scroll interactions.
+   * @param {boolean} preventScroll - Whether to prevent scroll interactions.
    */
   set preventScroll(preventScroll) {
     this.#preventScroll = setPreventScrollMethod(preventScroll, this);
@@ -330,7 +330,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current scroll interaction state.
    *
-   * @returns {Boolean} `true` if scroll interactions are prevented, `false` otherwise.
+   * @returns {boolean} `true` if scroll interactions are prevented, `false` otherwise.
    */
   get preventScroll() {
     return this.#preventScroll;
