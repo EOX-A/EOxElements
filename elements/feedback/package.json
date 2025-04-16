@@ -6,7 +6,7 @@
     "vite": "^6.0.3"
   },
   "dependencies": {
-    "@eox/ui": "^0.1.11",
+    "@eox/ui": "^0.2.1",
     "region-screenshot-js": "^1.1.0"
   },
   "files": [
