@@ -49,6 +49,9 @@
         "elements/storytelling/test"
       ]
     },
+    "elements/tour": {
+      "exclude-paths": ["elements/tour/stories", "elements/tour/test"]
+    },
     "utils": {}
   },
   "plugins": ["sentence-case"],

@@ -42,7 +42,8 @@
       "@eox/storytelling": ["./elements/storytelling/src/main.js"],
       "@eox/storytelling/src/*": ["./elements/storytelling/src/*"],
       "@eox/timecontrol": ["./elements/timecontrol/src/main.js"],
-      "@eox/timecontrol/src/*": ["./elements/timecontrol/src/*"]
+      "@eox/timecontrol/src/*": ["./elements/timecontrol/src/*"],
+      "@eox/tour/src/*": ["./elements/tour/src/*"]
     }
   },
   "include": [

@@ -15,6 +15,7 @@ import "@eox/map/src/plugins/advancedLayersAndSources";
 import "@eox/stacinfo";
 import "@eox/storytelling";
 import "@eox/timecontrol";
+import "@eox/tour";
 import "@eox/ui";
 import "@eox/ui/style.css";
 
