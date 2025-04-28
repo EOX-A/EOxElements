@@ -178,3 +178,21 @@ export async function parseProperty(property) {
   }
   return property;
 }
+
+/**
+ * Check all links in the form and set target="_blank" and rel="noopener noreferrer"
+ * for external ones
+ * 
+ @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
+ */
+export const transformLinks = (element) => {
+  setTimeout(() => {
+    element.renderRoot.querySelectorAll("a").forEach((a) => {
+      if (a.getAttribute("href") === null) return;
+      if (a.getAttribute("href").startsWith("http")) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      }
+    });
+  });
+};
