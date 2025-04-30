@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.1](https://github.com/EOX-A/EOxElements/compare/layout-v0.5.0...layout-v0.5.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* Set height for implicit rows/columns ([#1663](https://github.com/EOX-A/EOxElements/issues/1663)) ([a0eddf7](https://github.com/EOX-A/EOxElements/commit/a0eddf76fc308f1ed46eb665eabf1faf28f7079e))
+
+## [0.5.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.4.0...layout-v0.5.0) (2025-04-08)
+
+
+### Features
+
+* Fill-grid mode ([#1652](https://github.com/EOX-A/EOxElements/issues/1652)) ([f6e266c](https://github.com/EOX-A/EOxElements/commit/f6e266cf73ac771895e03d02c995e06747e73614))
+* Responsive layout (s/m/l) ([#1654](https://github.com/EOX-A/EOxElements/issues/1654)) ([474f828](https://github.com/EOX-A/EOxElements/commit/474f8285a5e27df65ba598f57a86219f642809d8))
+
+## [0.4.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.3.0...layout-v0.4.0) (2025-04-01)
+
+
+### Features
+
+* Support fixed row height/column widths ([#1636](https://github.com/EOX-A/EOxElements/issues/1636)) ([d0c6f25](https://github.com/EOX-A/EOxElements/commit/d0c6f253d9d39633cb4297f935b8fb28af94f152))
+
 ## [0.3.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.2.0...layout-v0.3.0) (2024-11-07)
 
 

@@ -132,16 +132,14 @@ export class EOxSelectInteraction {
 
     /**
      * Listener to handle selection events
-     * @param {import("ol/MapBrowserEvent").default<UIEvent>} event
+     * @param {import("ol/MapBrowserEvent").default} event
      * **/
     this.listener = (event) => {
-      if (!this.active) {
+      if (!this.active || event.dragging) {
         return;
       }
       const currentZoom = this.eoxMap.map.getView().getZoom();
       if (
-        event.dragging ||
-        !this.active ||
         currentZoom < this.selectLayer.getMinZoom() ||
         currentZoom > this.selectLayer.getMaxZoom()
       ) {
@@ -216,8 +214,7 @@ export class EOxSelectInteraction {
         overlay?.setMap(this.eoxMap.map);
       } else {
         // If the selection layer does not exist any more,
-        // set it to inactive, and remove layer plus overlay
-        eoxMap.selectInteractions[options.id]?.setActive(false);
+        // remove layer association and remove the overlay from the map
         this.selectStyleLayer?.setMap(null);
         overlay?.setMap(null);
       }

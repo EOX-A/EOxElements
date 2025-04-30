@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.16.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.2...jsonform-v0.16.3) (2025-04-28)
+
+
+### Bug Fixes
+
+* Transform external links to target "blank" ([#1676](https://github.com/EOX-A/EOxElements/issues/1676)) ([2bc4f98](https://github.com/EOX-A/EOxElements/commit/2bc4f98c82821bb253ca5fced4b12b0ad39ef739))
+
+## [0.16.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.1...jsonform-v0.16.2) (2025-04-01)
+
+
+### Bug Fixes
+
+* Optional properties ([#1632](https://github.com/EOX-A/EOxElements/issues/1632)) ([e66b5de](https://github.com/EOX-A/EOxElements/commit/e66b5de07b1e39aa696ad12dbc9732f4eb7dc81d))
+
 ## [0.16.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.0...jsonform-v0.16.1) (2025-03-17)
 
 

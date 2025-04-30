@@ -4,7 +4,7 @@ import { html } from "lit";
  * Tests to load WMTS Layer with Capabilities
  */
 const loadFlatGeoBufLayer = () => {
-  return new Cypress.Promise((resolve) => {
+  const featureLoadPromise = new Promise((resolve) => {
     const layersJson = [
       {
         type: "Vector",
@@ -39,13 +39,15 @@ const loadFlatGeoBufLayer = () => {
       const eoxMap = $el[0];
       const source = eoxMap.getLayerById("FlatGeoBufLayer").getSource();
       source.once("featuresloadend", (e) => {
-        expect(
-          e.features.length,
-          "loads features from FlatGeoBuf-source",
-        ).to.be.greaterThan(20);
-        resolve();
+        resolve(e.features);
       });
     });
+  });
+  cy.wrap(featureLoadPromise).then((features) => {
+    expect(
+      features.length,
+      "loads features from FlatGeoBuf-source",
+    ).to.be.greaterThan(20);
   });
 };
 

@@ -7,6 +7,9 @@
     "elements/drawtools": {
       "exclude-paths": ["elements/drawtools/stories", "elements/drawtools/test"]
     },
+    "elements/feedback": {
+      "exclude-paths": ["elements/feedback/stories", "elements/feedback/test"]
+    },
     "elements/geosearch": {
       "exclude-paths": ["elements/geosearch/stories", "elements/geosearch/test"]
     },

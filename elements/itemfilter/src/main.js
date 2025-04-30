@@ -238,7 +238,7 @@ export class EOxItemFilter extends LitElement {
     this.expandMultipleResults = true;
 
     /**
-     * Rendering type for results (can be `list`or `cards`)
+     * Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element)
      *
      * @type String
      */
