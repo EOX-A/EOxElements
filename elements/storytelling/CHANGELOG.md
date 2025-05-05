@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.1...storytelling-v1.7.2) (2025-04-01)
+
+
+### Bug Fixes
+
+* Initialize tour elements after section loaded ([#1651](https://github.com/EOX-A/EOxElements/issues/1651)) ([2fe528d](https://github.com/EOX-A/EOxElements/commit/2fe528d7ce654ce21e7598563926a26a7f362f20))
+* Prevent applying section styling to steps ([#1637](https://github.com/EOX-A/EOxElements/issues/1637)) ([78f2c0a](https://github.com/EOX-A/EOxElements/commit/78f2c0af42ef3f4bfd21ae9b4ddb7c4b8e9a3991))
+
 ## [1.7.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.0...storytelling-v1.7.1) (2025-03-25)
 
 

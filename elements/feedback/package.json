@@ -1,0 +1,35 @@
+{
+  "name": "@eox/feedback",
+  "version": "0.1.0",
+  "type": "module",
+  "devDependencies": {
+    "vite": "^6.0.3"
+  },
+  "dependencies": {
+    "@eox/ui": "^0.2.1",
+    "region-screenshot-js": "^1.1.0"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
+  "main": "./src/main.js",
+  "types": "./types/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
+  "scripts": {
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  }
+}

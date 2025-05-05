@@ -10,7 +10,7 @@ updates:
       cypress:
         patterns:
           - "cypress"
-          - "@cypress"
+          - "@cypress*"
       storybook:
         patterns:
           - "storybook"
@@ -19,6 +19,10 @@ updates:
         patterns:
           - "typescript"
           - "@types*"
+      vega:
+        patterns:
+          - "vega"
+          - "vega-*"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:

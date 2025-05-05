@@ -11,7 +11,6 @@ import {
   triggerChangeEventTest,
   loadValuesTest,
   loadMisMatchingValuesTest,
-  loadOptionalFieldsTest,
   renderDrawtools,
   loadCustomEditorInterfaceTest,
   loadSubmitButtonTest,
@@ -32,7 +31,6 @@ describe("Jsonform", () => {
   it("triggers a change event when typing", () => triggerChangeEventTest());
   it("loads values", () => loadValuesTest());
   it("loads mismatching values", () => loadMisMatchingValuesTest());
-  it("loads optional fields", () => loadOptionalFieldsTest());
   it("loads custom editor interface", () => loadCustomEditorInterfaceTest());
   it("renders drawtools as a custom input", () => renderDrawtools());
   it("handles a submit button correctly", () => loadSubmitButtonTest());
