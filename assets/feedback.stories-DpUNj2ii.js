@@ -1,4 +1,4 @@
-import{x as b}from"./lit-element-L04JKUcP.js";const u={args:{},render:()=>b`
+import{x as b}from"./lit-element-CIht5NN8.js";const u={args:{},render:()=>b`
     <div style="height: 250px;">
       <eox-feedback
         endpoint="/fake/endpoint"

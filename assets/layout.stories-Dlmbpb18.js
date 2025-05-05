@@ -1,4 +1,4 @@
-import{x as e}from"./lit-element-L04JKUcP.js";const t="width: 100%; height: 400px;",r="background: lightgrey; border: 1px solid darkgrey; border-radius: 4px; padding: 4px 8px;",j={args:{},render:()=>e`
+import{x as e}from"./lit-element-CIht5NN8.js";const t="width: 100%; height: 400px;",r="background: lightgrey; border: 1px solid darkgrey; border-radius: 4px; padding: 4px 8px;",j={args:{},render:()=>e`
     <!-- Render eox-layout component -->
     <eox-layout style="${t}">
       <eox-layout-item x="0" y="0" w="3" h="2">
