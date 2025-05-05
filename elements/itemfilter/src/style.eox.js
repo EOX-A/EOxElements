@@ -144,6 +144,8 @@ input[type="radio"] {
 input[type="checkbox"],
 input[type="radio"] {
   margin: 0;
+  padding: 0;
+  border: none;
 }
 input[type="text"] {
   box-sizing: border-box;
