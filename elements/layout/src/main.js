@@ -63,7 +63,17 @@ export class EOxLayoutItem extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
-    this.render();
+
+    // Check if the parent element is already defined
+    // since in Vue.js the parent element is not defined initially
+    // and the render function is called before the parent element is ready
+    if (!this.parentElement) {
+      setTimeout(() => {
+        this.render();
+      });
+    } else {
+      this.render();
+    }
   }
   render() {
     // Check if attribute includes "/" for "s/m/l", if not return original
