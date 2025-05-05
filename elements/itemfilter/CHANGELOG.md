@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.9.1...itemfilter-v1.9.2) (2025-05-05)
+
+
+### Bug Fixes
+
+* **style:** Radio button display ([#1684](https://github.com/EOX-A/EOxElements/issues/1684)) ([44048c7](https://github.com/EOX-A/EOxElements/commit/44048c78c8170be3c0fdcea6cab16001662cc19d))
+
 ## [1.9.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.9.0...itemfilter-v1.9.1) (2025-04-14)
 
 
