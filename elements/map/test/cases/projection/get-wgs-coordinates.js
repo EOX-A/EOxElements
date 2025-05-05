@@ -6,8 +6,8 @@ import { html } from "lit";
 const getWgsCoordinates = () => {
   cy.mount(html`<eox-map .layers=${[]}></eox-map>`).as("eox-map");
 
-  cy.get("eox-map").then(($el) => {
-    return new Cypress.Promise((resolve) => {
+  const lonLatPromise = new Promise((resolve) => {
+    cy.get("eox-map").then(($el) => {
       const eoxMap = $el[0];
       eoxMap.registerProjection(
         "EPSG:32633",
@@ -22,13 +22,15 @@ const getWgsCoordinates = () => {
 
       // timeout because setting zoomExtent causes debounced animation
       setTimeout(() => {
-        expect(
-          eoxMap.lonLatExtent.map((n) => n.toFixed(4)),
-          "getter of lonLatExtent",
-        ).to.be.deep.equal(["13.5719", "47.5332", "13.7519", "47.6255"]);
-        resolve();
+        resolve(eoxMap.lonLatExtent);
       }, 10);
     });
+  });
+  cy.wrap(lonLatPromise).then((lonLatExtent) => {
+    expect(
+      lonLatExtent.map((n) => n.toFixed(4)),
+      "getter of lonLatExtent",
+    ).to.be.deep.equal(["13.5719", "47.5332", "13.7519", "47.6255"]);
   });
 };
 

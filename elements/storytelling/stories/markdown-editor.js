@@ -114,6 +114,10 @@ It allows you to have different sources for each tour "step".
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
+### <!--{ src="https://picsum.photos/900/800" }-->
+#### Third tour step.
+![](https://placehold.co/200x100)
+
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).

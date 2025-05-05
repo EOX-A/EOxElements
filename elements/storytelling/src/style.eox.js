@@ -316,9 +316,9 @@ ${slider}
   .story-telling .tour.center {
     justify-items: center;
   }
-  .story-telling .tour eox-map,
-  .story-telling .tour img,
-  .story-telling .tour video {
+  .story-telling .tour eox-map:not(section-step eox-map),
+  .story-telling .tour img:not(section-step img),
+  .story-telling .tour video:not(section-step video) {
     width: 100%;
     height: 100vh;
     position: sticky;
@@ -472,8 +472,8 @@ ${slider}
   }
   .switch .switch-input { 
     opacity: 0;
-    width: 0;
-    height: 0;
+    width: 0 !important;
+    height: 0 !important;
   }
   .switch .icon {
     z-index: 2;

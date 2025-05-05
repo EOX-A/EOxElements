@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/EOX-A/EOxElements/compare/map-v1.20.0...map-v1.21.0) (2025-04-10)
+
+
+### Features
+
+* Updated ol package to `10.5.0` ([#1645](https://github.com/EOX-A/EOxElements/issues/1645)) ([76ebcc9](https://github.com/EOX-A/EOxElements/commit/76ebcc94724a4a7a9e695f8885a20eaf307691b6))
+
 ## [1.20.0](https://github.com/EOX-A/EOxElements/compare/map-v1.19.4...map-v1.20.0) (2025-03-03)
 
 

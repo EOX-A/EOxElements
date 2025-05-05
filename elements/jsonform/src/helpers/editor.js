@@ -63,6 +63,12 @@ export const createEditor = (element) => {
       theme: "html",
       iconlib: "fontawesome5", // necessary to get information about expand/collapse state
       ajax: true,
+      disable_collapse: true,
+      disable_edit_json: true,
+      disable_properties: true,
+      disable_array_delete_all_rows: true,
+      disable_array_delete_last_row: true,
+      array_controls_top: true,
       ...element.options,
     });
 
@@ -143,18 +149,6 @@ export const createEditor = (element) => {
       aceUsed.ace_editor_instance.renderer.attachToShadowRoot();
       aceUsed.ace_editor_instance.resize();
     }
-
-    // Workaround to show all fields (including optinal) even though a value is passed
-    // see discussion at https://github.com/json-editor/json-editor/issues/1632#issuecomment-2678397314
-    element.renderRoot
-      .querySelectorAll(".json-editor-opt-in")
-      .forEach((checkbox) => {
-        if (!(checkbox instanceof HTMLInputElement)) {
-          return;
-        }
-        if (!checkbox.checked) checkbox.click();
-        checkbox.parentElement.remove();
-      });
   });
   return editor;
 };
@@ -219,3 +213,21 @@ function requiresSimpleMDE(editor) {
 
   return checkSchemaForMarkdown(editor.schema);
 }
+
+/**
+ * Check all links in the form and set target="_blank" and rel="noopener noreferrer"
+ * for external ones
+ * 
+ @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
+ */
+export const transformLinks = (element) => {
+  setTimeout(() => {
+    element.renderRoot.querySelectorAll("a").forEach((a) => {
+      if (a.getAttribute("href") === null) return;
+      if (a.getAttribute("href").startsWith("http")) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      }
+    });
+  });
+};
