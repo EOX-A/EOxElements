@@ -7,10 +7,15 @@ const DataValues = {
       data: {
         name: "myData",
       },
-      mark: { type: "bar", tooltip: true, fill: "#004170" },
+      mark: { type: "bar", tooltip: true },
       encoding: {
         x: { field: "a", type: "ordinal" },
         y: { field: "b", type: "quantitative" },
+        // color: { field: "b", type: "quantitative" },
+        color: {
+          condition: { test: "datum[b] > 40", value: "red" },
+          value: "black",
+        },
       },
     },
     dataValues: {
