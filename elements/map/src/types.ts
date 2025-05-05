@@ -1,3 +1,10 @@
+import type {
+  OLBasicLayers,
+  OLAdvancedLayers,
+  OLBasicSources,
+  OLAdvancedSources,
+  OLAdvancedFormats,
+} from "./layers";
 export type DrawOptions = Omit<
   import("ol/interaction/Draw").Options,
   "type"
@@ -9,40 +16,8 @@ export type DrawOptions = Omit<
   geometryFunction?: import("ol/interaction/Draw").GeometryFunction;
 };
 
-export type layerType =
-  | "Group"
-  | "Heatmap"
-  | "Image"
-  | "Layer"
-  | "Tile"
-  | "Vector"
-  | "VectorImage"
-  | "VectorTile";
-
-export type sourceType =
-  | "BingMaps"
-  | "Cluster"
-  | "GeoTIFF"
-  | "IIIF"
-  | "Image"
-  | "ImageCanvas"
-  | "ImageStatic"
-  | "ImageWMS"
-  | "OSM"
-  | "Raster"
-  | "StadiaMaps"
-  | "Tile"
-  | "TileArcGISRest"
-  | "TileDebug"
-  | "TileImage"
-  | "TileJSON"
-  | "TileWMS"
-  | "UrlTile"
-  | "Vector"
-  | "VectorTile"
-  | "WMTS"
-  | "XYZ"
-  | "WMTSCapabilities";
+export type layerType = keyof OLBasicLayers | keyof OLAdvancedLayers;
+export type sourceType = keyof OLBasicSources | keyof OLAdvancedSources;
 
 export type VectorOrVectorTileLayer =
   | import("ol/layer").Vector
@@ -59,46 +34,18 @@ export type AnyLayerWithSource =
 
 export type AnyLayer = AnyLayerWithSource | import("ol/layer/Group").default;
 
-export type formatWithOptions = {
-  type: string;
-  dataProjection?: string;
-  featureProjection?: string;
-};
-
 export type EOxInteraction = {
   active?: boolean;
   type: "draw" | "select";
   options: DrawOptions | SelectOptions | { [key: string]: any };
 };
 
-export type EoxLayer = {
-  type: layerType;
-  properties?: {
-    id: string;
-    [key: string]: any;
-  };
-  minZoom?: number;
-  maxZoom?: number;
-  minResolution?: number;
-  maxResolution?: number;
-  opacity?: number;
-  visible?: boolean;
-  source?: {
-    type: sourceType;
-    format?: string | formatWithOptions;
-    tileGrid?: object;
-    projection?: import("ol/proj").ProjectionLike;
-  };
-  layers?: Array<EoxLayer>;
-  style?: import("ol/style/flat").FlatStyleLike;
-  interactions?: Array<EOxInteraction>;
-  zIndex?: number;
-  renderMode?: "vector" | "vectorImage";
-};
+export type EoxLayer = import("./layers").EoxLayer;
+export type EoxLayers = import("./layers").EoxLayer[];
 
 export type SelectLayer =
-  | import("ol/layer/VectorTile").default
-  | import("ol/layer/Vector").default;
+  | InstanceType<typeof import("ol/layer/VectorTile").default>
+  | InstanceType<typeof import("ol/layer/Vector").default>;
 
 export type SelectOptions = Omit<
   import("ol/interaction/Select").Options,
@@ -170,21 +117,41 @@ export type LoadingIndicatorOptions = import("ol/control/Control").Options & {
   type?: LoadingIndicatorType;
 };
 
-export type ControlType =
-  | "Attribution"
-  | "FullScreen"
-  | "MousePosition"
-  | "OverviewMap"
-  | "Rotate"
-  | "ScaleLine"
-  | "ZoomSlider"
-  | "ZoomToExtent"
-  | "Zoom"
-  | "Geolocation"
-  | "LoadingIndicator";
+export type ControlType = keyof ControlDictionary;
+
+type Override<T, V> = Omit<T, keyof V> & V;
 
 export type ControlDictionary = {
-  [key in ControlType]?: object;
+  Zoom?: ConstructorParameters<typeof import("ol/control/Zoom").default>[0];
+  ScaleLine?: ConstructorParameters<
+    typeof import("ol/control/ScaleLine").default
+  >[0];
+  Rotate?: ConstructorParameters<typeof import("ol/control/Rotate").default>[0];
+  FullScreen?: ConstructorParameters<
+    typeof import("ol/control/FullScreen").default
+  >[0];
+  ZoomSlider?: ConstructorParameters<
+    typeof import("ol/control/ZoomSlider").default
+  >[0];
+  Attribution?: ConstructorParameters<
+    typeof import("ol/control/Attribution").default
+  >[0];
+  OverviewMap?: Override<
+    ConstructorParameters<typeof import("ol/control/OverviewMap").default>[0],
+    { layers?: EoxLayer[] | AnyLayer[] }
+  >;
+  ZoomToExtent?: ConstructorParameters<
+    typeof import("ol/control/ZoomToExtent").default
+  >[0];
+  MousePosition?: ConstructorParameters<
+    typeof import("ol/control/MousePosition").default
+  >[0];
+  Geolocation?: ConstructorParameters<
+    typeof import("./controls/geo-location").default
+  >[0];
+  LoadingIndicator?: ConstructorParameters<
+    typeof import("./controls/loading-indicator").default
+  >[0];
 };
 
 export type AttributionLike =
@@ -223,10 +190,9 @@ export type HTMLElementEvent<T extends HTMLElement> = Event & {
 
 export type EOxAnimationOptions = import("ol/View").AnimationOptions &
   import("ol/View").FitOptions;
-
 export type ConfigObject = {
   controls: ControlDictionary;
-  layers: Array<EoxLayer>;
+  layers: EoxLayers;
   view: {
     center: Array<number>;
     zoom: number;
@@ -241,8 +207,8 @@ export type ConfigObject = {
 
 declare global {
   interface Window {
-    eoxMapAdvancedOlFormats: object;
-    eoxMapAdvancedOlLayers: object;
-    eoxMapAdvancedOlSources: object;
+    eoxMapAdvancedOlFormats: OLAdvancedFormats;
+    eoxMapAdvancedOlLayers: OLAdvancedLayers;
+    eoxMapAdvancedOlSources: OLAdvancedSources;
   }
 }
