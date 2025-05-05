@@ -211,17 +211,19 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
 
       /** @type {EoxLayer[]} */
       (acc, val) => {
-        acc.maxZoom =
-          acc.maxZoom === undefined || val.get("maxZoom") < acc.maxZoom
+        acc.maxZoom = EOxMap.config?.view?.maxZoom
+          ? EOxMap.config?.view?.maxZoom
+          : acc.maxZoom === undefined || val.get("maxZoom") < acc.maxZoom
             ? val.get("maxZoom")
             : acc.maxZoom;
-        acc.minZoom =
-          acc.minZoom === undefined || val.get("minZoom") > acc.minZoom
+        acc.minZoom = EOxMap.config?.view?.minZoom
+          ? EOxMap.config?.view?.minZoom
+          : acc.minZoom === undefined || val.get("minZoom") > acc.minZoom
             ? val.get("minZoom")
             : acc.minZoom;
         return acc;
       },
-      { minZoom: undefined, maxZoom: undefined },
+      { minZoom: 0, maxZoom: Infinity },
     );
   // re-set each layer minZoom as a workaround to ol inclusiveness behavior
   EOxMap.map
@@ -235,23 +237,17 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
   // disable zoom in/out when the max/min zoom level is reached
   EOxMap.map.on("moveend", () => {
     if (!EOxMap?.controls?.Zoom) return;
+    const zoomOutButton = EOxMap.renderRoot.querySelector("button.ol-zoom-out");
+    const zoomInButton = EOxMap.renderRoot.querySelector("button.ol-zoom-in");
     if (EOxMap.map.getView().getZoom() >= minMax.maxZoom) {
-      EOxMap.renderRoot
-        .querySelector("button.ol-zoom-in")
-        ?.classList.add("disaibled-button");
+      zoomInButton?.classList.add("disaibled");
     } else {
-      EOxMap.renderRoot
-        .querySelector("button.ol-zoom-in")
-        ?.classList.remove("disaibled-button");
+      zoomInButton?.classList.remove("disaibled");
     }
-    if (EOxMap.map.getView().getZoom() <= minMax.minZoom) {
-      EOxMap.renderRoot
-        .querySelector("button.ol-zoom-out")
-        ?.classList.add("disaibled-button");
+    if (EOxMap.map.getView().getZoom() - 1e-12 <= minMax.minZoom) {
+      zoomOutButton?.classList.add("disaibled");
     } else {
-      EOxMap.renderRoot
-        .querySelector("button.ol-zoom-out")
-        ?.classList.remove("disaibled-button");
+      zoomOutButton?.classList.remove("disaibled");
     }
   });
 
@@ -302,10 +298,14 @@ export function setConfigMethod(config, EOxMap) {
   if (EOxMap.preventScroll === undefined)
     EOxMap.preventScroll = config?.preventScroll;
 
-  // Set the zoom, center, and zoom extent of the map view
+  // Set the zoom, center, minZoom, maxZoom and zoom extent of the map view
   EOxMap.zoom = config?.view?.zoom || 0;
   EOxMap.center = config?.view?.center || [0, 0];
   EOxMap.zoomExtent = config?.view?.zoomExtent;
+  if (config?.view?.minZoom)
+    EOxMap.map.getView().setMinZoom(config?.view?.minZoom);
+  if (config?.view?.maxZoom)
+    EOxMap.map.getView().setMaxZoom(config?.view?.maxZoom);
 
   // Return the applied configuration
   return config;
