@@ -27,7 +27,7 @@
   height: 100%;
 }
 
-.disaibled {
+.disabled {
   filter: brightness(1.7);
   pointer-events: none;
 }

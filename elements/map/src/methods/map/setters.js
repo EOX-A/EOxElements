@@ -240,14 +240,14 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
     const zoomOutButton = EOxMap.renderRoot.querySelector("button.ol-zoom-out");
     const zoomInButton = EOxMap.renderRoot.querySelector("button.ol-zoom-in");
     if (EOxMap.map.getView().getZoom() >= minMax.maxZoom) {
-      zoomInButton?.classList.add("disaibled");
+      zoomInButton?.classList.add("disabled");
     } else {
-      zoomInButton?.classList.remove("disaibled");
+      zoomInButton?.classList.remove("disabled");
     }
     if (EOxMap.map.getView().getZoom() - 1e-12 <= minMax.minZoom) {
-      zoomOutButton?.classList.add("disaibled");
+      zoomOutButton?.classList.add("disabled");
     } else {
-      zoomOutButton?.classList.remove("disaibled");
+      zoomOutButton?.classList.remove("disabled");
     }
   });
 
