@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.3...jsonform-v0.16.4) (2025-05-08)
+
+
+### Bug Fixes
+
+* Markdown Editor Styling using `anyOf`,`allOf`, & `oneOf` ([#1631](https://github.com/EOX-A/EOxElements/issues/1631)) ([d925b91](https://github.com/EOX-A/EOxElements/commit/d925b9187429d6c0b3988ff1f5afd1f7231f13c6))
+
 ## [0.16.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.2...jsonform-v0.16.3) (2025-04-28)
 
 

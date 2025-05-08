@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/EOX-A/EOxElements/compare/layout-v0.5.2...layout-v0.5.3) (2025-05-08)
+
+
+### Bug Fixes
+
+* Render element when it's connected ([#1690](https://github.com/EOX-A/EOxElements/issues/1690)) ([1769fe8](https://github.com/EOX-A/EOxElements/commit/1769fe8478272cdac20d1cacbbae32f33460090a))
+
 ## [0.5.2](https://github.com/EOX-A/EOxElements/compare/layout-v0.5.1...layout-v0.5.2) (2025-05-05)
 
 
