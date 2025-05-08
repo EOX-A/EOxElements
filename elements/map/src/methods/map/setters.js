@@ -189,6 +189,68 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
       );
     });
 
+  // set min/max zoom behavior
+  // get the min/max zoom value of all the layers
+  /**
+   * @typedef {Object} MinMaxZoom
+   * @property {number|undefined} minZoom
+   * @property {number|undefined} maxZoom
+   */
+
+  /** @type {MinMaxZoom} */
+
+  let minMax = EOxMap.map
+    .getLayers()
+    .getArray()
+    .reduce(
+      /**
+       * @param {MinMaxZoom} acc
+       * @param {EoxLayer} val
+       * @returns {MinMaxZoom}
+       */
+
+      /** @type {EoxLayer[]} */
+      (acc, val) => {
+        acc.maxZoom = EOxMap.config?.view?.maxZoom
+          ? EOxMap.config?.view?.maxZoom
+          : acc.maxZoom === undefined || val.get("maxZoom") < acc.maxZoom
+            ? val.get("maxZoom")
+            : acc.maxZoom;
+        acc.minZoom = EOxMap.config?.view?.minZoom
+          ? EOxMap.config?.view?.minZoom
+          : acc.minZoom === undefined || val.get("minZoom") > acc.minZoom
+            ? val.get("minZoom")
+            : acc.minZoom;
+        return acc;
+      },
+      { minZoom: 0, maxZoom: Infinity },
+    );
+  // re-set each layer minZoom as a workaround to ol inclusiveness behavior
+  EOxMap.map
+    .getLayers()
+    .getArray()
+    .map((layer) => layer.setMinZoom(layer.get("minZoom") - 1e-12));
+  // set the min/max zoom of the scene accordingly
+  EOxMap.map.getView().setMaxZoom(minMax.maxZoom);
+  EOxMap.map.getView().setMinZoom(minMax.minZoom >= 0 ? minMax.minZoom : 0);
+
+  // disable zoom in/out when the max/min zoom level is reached
+  EOxMap.map.on("moveend", () => {
+    if (!EOxMap?.controls?.Zoom) return;
+    const zoomOutButton = EOxMap.renderRoot.querySelector("button.ol-zoom-out");
+    const zoomInButton = EOxMap.renderRoot.querySelector("button.ol-zoom-in");
+    if (EOxMap.map.getView().getZoom() >= minMax.maxZoom) {
+      zoomInButton?.classList.add("disabled");
+    } else {
+      zoomInButton?.classList.remove("disabled");
+    }
+    if (EOxMap.map.getView().getZoom() - 1e-12 <= minMax.minZoom) {
+      zoomOutButton?.classList.add("disabled");
+    } else {
+      zoomOutButton?.classList.remove("disabled");
+    }
+  });
+
   // Return the new layers object
   return newLayers;
 }
@@ -236,10 +298,14 @@ export function setConfigMethod(config, EOxMap) {
   if (EOxMap.preventScroll === undefined)
     EOxMap.preventScroll = config?.preventScroll;
 
-  // Set the zoom, center, and zoom extent of the map view
+  // Set the zoom, center, minZoom, maxZoom and zoom extent of the map view
   EOxMap.zoom = config?.view?.zoom || 0;
   EOxMap.center = config?.view?.center || [0, 0];
   EOxMap.zoomExtent = config?.view?.zoomExtent;
+  if (config?.view?.minZoom)
+    EOxMap.map.getView().setMinZoom(config?.view?.minZoom);
+  if (config?.view?.maxZoom)
+    EOxMap.map.getView().setMaxZoom(config?.view?.maxZoom);
 
   // Return the applied configuration
   return config;

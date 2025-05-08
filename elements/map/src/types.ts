@@ -198,6 +198,8 @@ export type ConfigObject = {
     zoom: number;
     zoomExtent?: import("ol/extent").Extent;
     projection?: ProjectionLike;
+    minZoom: number;
+    maxZoom: number;
   };
   preventScroll: boolean;
   animationOptions?: EOxAnimationOptions;
