@@ -16,6 +16,9 @@ export class EOxLayout extends HTMLElement {
     this.mediaBreakpoints = [0, 600, 1280];
 
     this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
     this.render();
   }
   render() {
@@ -63,17 +66,10 @@ export class EOxLayoutItem extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+  }
 
-    // Check if the parent element is already defined
-    // since in Vue.js the parent element is not defined initially
-    // and the render function is called before the parent element is ready
-    if (!this.parentElement) {
-      setTimeout(() => {
-        this.render();
-      });
-    } else {
-      this.render();
-    }
+  connectedCallback() {
+    this.render();
   }
   render() {
     // Check if attribute includes "/" for "s/m/l", if not return original
@@ -93,7 +89,7 @@ export class EOxLayoutItem extends HTMLElement {
         }
           ${
             /**@type EOxLayout */ (this.parentElement)?.mediaBreakpoints
-              .map(
+              ?.map(
                 (bp, index) => `
               @media (min-width: ${bp}px) {
                 :host {
