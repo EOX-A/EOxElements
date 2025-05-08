@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.1](https://github.com/EOX-A/EOxElements/compare/map-v1.21.0...map-v1.21.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* Refactor type `EoxLayer` & Generate Layer JSON Schema ([#1615](https://github.com/EOX-A/EOxElements/issues/1615)) ([34dfb3e](https://github.com/EOX-A/EOxElements/commit/34dfb3e717adcb889612712aebf03a94b17e0d67))
+
 ## [1.21.0](https://github.com/EOX-A/EOxElements/compare/map-v1.20.0...map-v1.21.0) (2025-04-10)
 
 
