@@ -5,7 +5,8 @@
     "noEmit": false,
     "declaration": true,
     "declarationMap": true,
-    "emitDeclarationOnly": true
+    "emitDeclarationOnly": true,
+    "moduleResolution": "nodenext",
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.d.ts"]
 }
