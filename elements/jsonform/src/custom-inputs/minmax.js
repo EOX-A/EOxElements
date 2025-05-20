@@ -59,6 +59,8 @@ export class MinMaxEditor extends AbstractEditor {
     const attributes = {
       min: properties[minKey].minimum,
       max: properties[maxKey].maximum,
+      // only positive integer supported
+      step: properties[minKey].step || properties[maxKey].step,
       value1: startVals?.[minKey] || properties[minKey].default,
       value2: startVals?.[maxKey] || properties[maxKey].default,
       "slider-bg-fill": "#004170",
