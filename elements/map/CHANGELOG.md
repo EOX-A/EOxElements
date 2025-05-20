@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.2](https://github.com/EOX-A/EOxElements/compare/map-v1.21.1...map-v1.21.2) (2025-05-20)
+
+
+### Bug Fixes
+
+* Disable zoom in/out buttons when reaching limits ([#1633](https://github.com/EOX-A/EOxElements/issues/1633)) ([0ddca87](https://github.com/EOX-A/EOxElements/commit/0ddca87306d076f038a2f7b4978ccde00ea6dbe8))
+
 ## [1.21.1](https://github.com/EOX-A/EOxElements/compare/map-v1.21.0...map-v1.21.1) (2025-05-08)
 
 
