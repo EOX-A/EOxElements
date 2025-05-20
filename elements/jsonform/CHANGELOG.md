@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.16.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.4...jsonform-v0.16.5) (2025-05-20)
+
+
+### Bug Fixes
+
+* Add possibility to pass step to minmax custom filter ([#1693](https://github.com/EOX-A/EOxElements/issues/1693)) ([c503755](https://github.com/EOX-A/EOxElements/commit/c503755374ef3a0ff5be370d73df917a7d3fada9))
+
 ## [0.16.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.3...jsonform-v0.16.4) (2025-05-08)
 
 
