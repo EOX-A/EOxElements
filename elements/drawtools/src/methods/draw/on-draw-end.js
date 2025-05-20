@@ -22,6 +22,9 @@ const onDrawEndMethod = (EoxDrawTool) => {
           const features = EoxDrawTool.drawLayer.getSource().getFeatures();
           const latest = features.at(-1);
           EoxDrawTool.drawLayer.getSource().clear();
+          if (!latest) {
+            return;
+          }
           EoxDrawTool.drawLayer.getSource().addFeature(latest);
           EoxDrawTool.drawnFeatures = [latest];
         }

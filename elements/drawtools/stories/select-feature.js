@@ -14,16 +14,16 @@ export const SelectFeature = {
     },
   },
   render: (args) => html`
-    <!-- Render eox-map component with ID "primary" -->
+    <!-- Render eox-map component with ID "select" -->
     <eox-map
-      id="primary"
+      id="select"
       style=${STORIES_MAP_STYLE}
       .layers=${STORIES_VECTOR_LAYERS}
     ></eox-map>
 
-    <!-- Initialize eox-drawtools for the eox-map with ID "primary" -->
+    <!-- Initialize eox-drawtools for the eox-map with ID "select" -->
     <eox-drawtools
-      for="eox-map#primary"
+      for="eox-map#select"
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
       layer-id=${args.layerId}
