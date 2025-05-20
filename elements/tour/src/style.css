@@ -70,9 +70,18 @@
 .driver-popover footer > .driver-popover-progress-text {
   white-space: nowrap;
   align-items: center;
-  margin-top: 16px;
-  margin-right: 4px;
+  margin-top: 0px !important;
+  margin-right: 0px !important;
   font-size: small;
+}
+
+.driver-popover nav {
+  margin-block-start: 0px !important;
+}
+
+.driver-popover footer {
+  margin-top: 16px;
+  gap: 4px;
 }
 
 .driver-popover footer > nav {

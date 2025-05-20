@@ -12,8 +12,8 @@ export class EOxTour extends HTMLElement {
     onPopoverRender: (popover, { config }) => {
       // Replace button icons
       popover.previousButton.innerHTML = `
-      <i class="mdi mdi-arrow-left small responsive"></i>
-      <span>${config.prevBtnText || "Previous"}</span>
+      <i style="pointer-events: none" class="mdi mdi-arrow-left small responsive"></i>
+      <span style="pointer-events: none">${config.prevBtnText || "Previous"}</span>
       `;
       popover.previousButton.style = config.showButtons.includes("previous")
         ? "display: flex"
@@ -21,8 +21,8 @@ export class EOxTour extends HTMLElement {
       popover.previousButton.classList.add("small");
 
       popover.nextButton.innerHTML = `
-        <span>${config.nextBtnText || "Next"}</span>
-        <i class="mdi mdi-arrow-right small responsive"></i>
+        <span style="pointer-events: none">${config.nextBtnText || "Next"}</span>
+        <i style="pointer-events: none" class="mdi mdi-arrow-right small responsive"></i>
       `;
       popover.nextButton.style = config.showButtons.includes("next")
         ? "display: flex"
@@ -30,7 +30,7 @@ export class EOxTour extends HTMLElement {
       popover.nextButton.classList.add("small");
 
       popover.closeButton.innerHTML = `
-        <i class="mdi mdi-close small"></i>
+        <i style="pointer-events: none" class="mdi mdi-close small"></i>
       `;
       popover.closeButton.style = config.showButtons.includes("close")
         ? "display: flex"
@@ -42,11 +42,12 @@ export class EOxTour extends HTMLElement {
       popover.progress.style =
         config.showButtons.showProgress === undefined ||
         !config.showButtons.showProgress
-          ? "display: flex"
+          ? "display: flex; align-items: center;"
           : "display: none;";
 
       // Replace footerButton with <nav> tag
       const nav = document.createElement("nav");
+      nav.style = "display: flex; align-items: center;";
       nav.innerHTML = popover.footerButtons.innerHTML;
       popover.footerButtons.parentElement.replaceChild(
         nav,
