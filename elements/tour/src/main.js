@@ -1,12 +1,14 @@
 import { driver } from "driver.js";
+import { TOUR_KEY } from "./enums";
 import "./style.css";
 
 /**
  * @property {Object} config - Configuration object for the driver.js tour.
+ * @attr {boolean} show-every-time=false - If true, the tour will be shown every time the page is loaded.
  * @attr {string|null} [unstyled=undefined] - If provided, the element will not be styled with EOX styles.
  */
 export class EOxTour extends HTMLElement {
-  static observedAttributes = ["unstyled"];
+  static observedAttributes = ["unstyled", "show-every-time"];
 
   defaultConfig = {
     onPopoverRender: (popover, { config }) => {
@@ -69,13 +71,65 @@ export class EOxTour extends HTMLElement {
     this.driver = undefined;
   }
 
+  // Show tour or not
+  showTourOrNot() {
+    // If show-every-time is not set, show tour only if it's not in localStorage
+    if (this.getAttribute("show-every-time") === null) {
+      if (!this._config) return;
+
+      const stored = localStorage.getItem(TOUR_KEY);
+      let parsed;
+
+      try {
+        parsed = stored ? JSON.parse(stored) : null;
+      } catch {
+        parsed = null;
+      }
+
+      // If tour has been shown before but the new config have id, then reset the tour for the tour localstorage
+      if (typeof parsed === "boolean" && parsed === true && this._config.id) {
+        localStorage.removeItem(TOUR_KEY);
+        this.showTourOrNot();
+        return;
+      }
+
+      // Decision logic if tour should be shown or not
+      // If tour has been shown before or if it is an object and id is matched to the tour, skip tour
+      // `id` based based match helps to control multiple tours on the same page or different pages
+      const shouldSkip =
+        parsed === true ||
+        (typeof parsed === "object" &&
+          parsed !== null &&
+          this._config.id &&
+          parsed[this._config.id]);
+
+      if (shouldSkip) return;
+      this.driver.drive();
+
+      // Update localStorage
+      if (this._config.id) {
+        const updated =
+          typeof parsed === "object" && parsed !== null ? parsed : {};
+        updated[this._config.id] = true;
+        localStorage.setItem(TOUR_KEY, JSON.stringify(updated));
+      } else {
+        localStorage.setItem(TOUR_KEY, "true");
+      }
+    } else {
+      // If show-every-time is set, show tour every time the page is loaded
+      this.driver.drive();
+    }
+  }
+
   set config(val) {
     this._config = {
       ...this.defaultConfig,
       ...val,
     };
-    this.driver?.setConfig(this._config);
-    this.driver?.drive();
+    if (this.driver) {
+      this.driver.setConfig(this._config);
+      this.showTourOrNot();
+    }
   }
 
   get config() {
@@ -84,8 +138,7 @@ export class EOxTour extends HTMLElement {
 
   connectedCallback() {
     this.driver = driver(this._config);
-    // this.render();
-    this.driver.drive();
+    this.showTourOrNot();
   }
 
   // render() {
