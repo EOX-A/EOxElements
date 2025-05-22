@@ -13,6 +13,7 @@ export const Primary = {
       application.
     </p>
     <eox-tour
+      show-every-time
       .config=${{
         showProgress: true,
         steps: [
