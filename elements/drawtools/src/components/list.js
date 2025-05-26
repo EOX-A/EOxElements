@@ -191,6 +191,7 @@ export class EOxDrawToolsList extends LitElement {
                 </div>
                 <button
                   index=${i}
+                    data-cy="deleteFeatureBtn"
                   data-cy="deleteFeatureBtn"
                   class="transparent circle small error-text front"
                   @click="${this._handleDelete}"

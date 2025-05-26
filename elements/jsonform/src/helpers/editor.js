@@ -2,8 +2,8 @@ import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { SimplemdeEditor } from "@json-editor/json-editor/src/editors/simplemde.js";
 import EasyMDE from "easymde/dist/easymde.min.js";
 import AceEditor from "ace-builds";
-import "ace-builds/esm-resolver.js";
 import addCustomInputs from "../custom-inputs";
+import { FALLBACK_SCHEMA } from "../enums";
 
 // using a drop-in replacement for EasyMDE,
 // see https://github.com/json-editor/json-editor/issues/1093
@@ -14,6 +14,10 @@ window.SimpleMDE = EasyMDE;
 window.ace = AceEditor;
 //@ts-expect-error - useWorker is not defined in the ace-builds config keys
 window.ace.config.set("useWorker", false);
+window.ace.config.set(
+  "basePath",
+  "https://cdn.jsdelivr.net/npm/ace-builds/src-min-noconflict/",
+);
 
 /**
  * Create the editor instance
@@ -54,11 +58,17 @@ export const createEditor = (element) => {
   // Initialize the JSONEditor with the given schema, value, and options
   const initEditor = () =>
     new JSONEditor(formEle, {
-      schema: element.schema,
+      schema: element.schema || FALLBACK_SCHEMA,
       ...(element.value ? { startval: element.value } : {}),
       theme: "html",
       iconlib: "fontawesome5", // necessary to get information about expand/collapse state
       ajax: true,
+      disable_collapse: true,
+      disable_edit_json: true,
+      disable_properties: true,
+      disable_array_delete_all_rows: true,
+      disable_array_delete_last_row: true,
+      array_controls_top: true,
       ...element.options,
     });
 
@@ -77,17 +87,29 @@ export const createEditor = (element) => {
         ".tabs.je-tabholder--top > .je-tab--top > span",
       ),
     );
-    Object.entries(editor.expandSchema(editor.schema).properties)
-      .filter(([_, property]) => property.options?.hidden)
-      .map(([key, property]) => property.title || key)
-      .forEach((title) => {
-        const tabTitle = tabsTitles.find(
-          (tabTitle) => tabTitle.textContent === title,
-        );
-        if (tabTitle) {
-          tabTitle.parentElement.dataset.hidden = "";
+    const hideTabsIfPropertiesHidden = (properties) => {
+      // Find tabs for hidden properties and set data-hidden
+      // in order to hide them with CSS
+      Object.entries(properties)
+        .filter(([_, property]) => property.options?.hidden)
+        .map(([key, property]) => property.title || key)
+        .forEach((title) => {
+          const tabTitle = tabsTitles.find(
+            (tabTitle) => tabTitle.textContent === title,
+          );
+          if (tabTitle) {
+            tabTitle.parentElement.dataset.hidden = "";
+          }
+        });
+
+      // Recursively go through nested child objects with properties
+      Object.values(properties).forEach((property) => {
+        if (property.properties) {
+          hideTabsIfPropertiesHidden(property.properties);
         }
       });
+    };
+    hideTabsIfPropertiesHidden(editor.expandSchema(editor.schema).properties);
 
     // Workaround to emit "change" event also from text inputs
     // TEMP - see https://github.com/json-editor/json-editor/issues/1445
@@ -104,9 +126,7 @@ export const createEditor = (element) => {
     });
 
     /// Check if any editor requires SimpleMDE and load necessary stylesheets
-    if (
-      Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
-    ) {
+    if (requiresSimpleMDE(editor)) {
       // Add SimpleMDE styles
       const style = document.createElement("style");
       style.innerHTML = `
@@ -129,18 +149,6 @@ export const createEditor = (element) => {
       aceUsed.ace_editor_instance.renderer.attachToShadowRoot();
       aceUsed.ace_editor_instance.resize();
     }
-
-    // Workaround to show all fields (including optinal) even though a value is passed
-    // see discussion at https://github.com/json-editor/json-editor/issues/1632#issuecomment-2678397314
-    element.renderRoot
-      .querySelectorAll(".json-editor-opt-in")
-      .forEach((checkbox) => {
-        if (!(checkbox instanceof HTMLInputElement)) {
-          return;
-        }
-        if (!checkbox.checked) checkbox.click();
-        checkbox.parentElement.remove();
-      });
   });
   return editor;
 };
@@ -168,3 +176,58 @@ export async function parseProperty(property) {
   }
   return property;
 }
+
+// Check if any editor requires SimpleMDE by examining both current editors and schema
+function requiresSimpleMDE(editor) {
+  // Check current editors first
+  if (Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)) {
+    return true;
+  }
+
+  // Recursively check schema for potential markdown fields
+  function checkSchemaForMarkdown(schema) {
+    if (!schema) return false;
+
+    // Check for direct markdown format indication
+    if (schema.format === "markdown") return true;
+
+    // Check properties recursively
+    if (schema.properties) {
+      return Object.values(schema.properties).some(checkSchemaForMarkdown);
+    }
+
+    // Check items in arrays
+    if (schema.items) {
+      return checkSchemaForMarkdown(schema.items);
+    }
+
+    // Check anyOf, oneOf, allOf branches
+    for (const key of ["anyOf", "oneOf", "allOf"]) {
+      if (schema[key] && Array.isArray(schema[key])) {
+        if (schema[key].some(checkSchemaForMarkdown)) return true;
+      }
+    }
+
+    return false;
+  }
+
+  return checkSchemaForMarkdown(editor.schema);
+}
+
+/**
+ * Check all links in the form and set target="_blank" and rel="noopener noreferrer"
+ * for external ones
+ * 
+ @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
+ */
+export const transformLinks = (element) => {
+  setTimeout(() => {
+    element.renderRoot.querySelectorAll("a").forEach((a) => {
+      if (a.getAttribute("href") === null) return;
+      if (a.getAttribute("href").startsWith("http")) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      }
+    });
+  });
+};

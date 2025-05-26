@@ -3,22 +3,22 @@
  *
  * @param {import('../../main').EOxDrawTools} EoxDrawTool - The drawing tool instance.
  * @param {import("@eox/map").EOxMap} EoxMap - The map instance.
+ * @param {string} layerId - The ID of the layer to initialize selection for.
  */
-const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
-  if (!updatedLayerId || !EoxMap) {
+const initSelection = (EoxDrawTool, EoxMap, layerId) => {
+  if (!layerId || !EoxMap) {
     return;
   }
 
-  const selectionLayer =
-    JSON.parse(
-      JSON.stringify(
-        /** @type {import("@eox/map").EoxLayer} */ (
-          EoxMap.getLayerById(updatedLayerId).get("_jsonDefinition")
-        ),
-      ),
-    ) || null;
+  const olLayer = EoxMap.getLayerById(layerId);
+  const selectionLayer = olLayer
+    ? /** @type {import("@eox/map").EoxLayer} */ (
+        JSON.parse(JSON.stringify(olLayer.get("_jsonDefinition")))
+      )
+    : null;
+
   if (!selectionLayer) {
-    console.error(`Layer with id ${updatedLayerId} not found`);
+    console.error(`Layer with id ${layerId} not found`);
     return;
   }
 
@@ -57,6 +57,8 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
   selectionLayer.interactions = [hoverInteraction, clickInteraction];
 
   EoxMap.addOrUpdateLayer(selectionLayer);
+  // replace the layer with the new interactions without triggering the map to update
+  replaceLayer(EoxMap.layers, layerId, [selectionLayer]);
 
   const oldDrawInteraction = EoxDrawTool.draw;
   EoxDrawTool.draw = EoxMap.selectInteractions["SelectLayerClickInteraction"];
@@ -67,3 +69,30 @@ const initSelection = (EoxDrawTool, EoxMap, updatedLayerId) => {
 };
 
 export default initSelection;
+
+/**
+ * Removes the layer with the id provided and injects an array of layers in its position
+ * @param {import('@eox/map').EoxLayer[]} currentLayers
+ * @param {string} oldLayer - id of the layer to be replaced
+ * @param {import('@eox/map').EoxLayer[]} newLayers - array of layers to replace the old layer
+ */
+function replaceLayer(currentLayers, oldLayer, newLayers) {
+  const oldLayerIdx = currentLayers.findIndex(
+    (l) => l.properties.id === oldLayer,
+  );
+
+  if (oldLayerIdx !== -1) {
+    currentLayers.splice(oldLayerIdx, 1, ...newLayers);
+    return currentLayers;
+  }
+
+  for (const l of currentLayers) {
+    if (l.type === "Group") {
+      const updatedGroupLyrs = replaceLayer(l.layers, oldLayer, newLayers);
+      if (updatedGroupLyrs?.length) {
+        l.layers = updatedGroupLyrs;
+      }
+    }
+  }
+  return currentLayers;
+}

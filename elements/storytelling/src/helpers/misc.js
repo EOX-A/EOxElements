@@ -26,8 +26,19 @@ export function scrollAnchorClickEvent(that, selector) {
  */
 export function scrollIntoView(that) {
   const hash = window.parent.location.hash;
-  const element = hash ? that.shadowRoot.querySelector(hash) : null;
-  if (element) element.scrollIntoView({ behavior: "smooth" });
+  const element = hash
+    ? /**@type{HTMLElement}*/ (that.shadowRoot.querySelector(hash))
+    : null;
+  if (element) {
+    const navBar = that.shadowRoot.querySelector(".navigation");
+    element.style.scrollMarginTop = `calc(${
+      navBar?.getBoundingClientRect().top +
+        navBar?.getBoundingClientRect().height ||
+      that.getBoundingClientRect().top
+    }px + 1rem)`;
+    element.style.scrollMarginBottom = "1rem";
+    element.scrollIntoView({ behavior: "smooth" });
+  }
 }
 
 /**

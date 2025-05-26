@@ -37,6 +37,13 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>🟡</td>
   </tr>
   <tr>
+    <td><a href="./elements/feedback/">eox-feedback</a></td>
+    <td>Quick and easy feedback widget</td>
+    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-feedback--docs">Docs & Examples</a></td>
+    <td><a href="elements/feedback/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/feedback.svg?label=%20" /></a></td>
+    <td>🟡</td>
+  </tr>
+  <tr>
     <td><a href="./elements/geosearch/">eox-geosearch</a></td>
     <td>An autocompleted search input for geographic locations</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-geosearch--docs">Docs & Examples</a></td>

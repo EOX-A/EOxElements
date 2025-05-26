@@ -17,8 +17,8 @@ const updateStyleExpressionVectorLayer = () => {
   cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
     "eox-map",
   );
-  cy.get("eox-map").and(($el) => {
-    return new Cypress.Promise((resolve) => {
+  const stylesPromise = new Promise((resolve) => {
+    cy.get("eox-map").and(($el) => {
       // wait for features to load
       const eoxMap = $el[0];
       const layer = eoxMap.getLayerById("regions");
@@ -26,10 +26,12 @@ const updateStyleExpressionVectorLayer = () => {
       source.on("featuresloadend", () => {
         const feature = source.getFeatures()[0];
         const styles = layer.getStyleFunction()(feature, 100);
-        expect(styles).to.have.length(1);
-        resolve();
+        resolve(styles);
       });
     });
+  });
+  cy.wrap(stylesPromise).then((styles) => {
+    expect(styles).to.have.length(1);
   });
 };
 

@@ -16,12 +16,15 @@ const onDrawEndMethod = (EoxDrawTool) => {
       if (EoxDrawTool.continuous) {
         // the selection event selects the feature after draw ends
         if (!EoxDrawTool.layerId) {
-          EoxDrawTool.drawLayer.getSource().clear(true);
+          EoxDrawTool.drawLayer.getSource().clear();
           EoxDrawTool.drawnFeatures = [];
         } else {
           const features = EoxDrawTool.drawLayer.getSource().getFeatures();
           const latest = features.at(-1);
-          EoxDrawTool.drawLayer.getSource().clear(true);
+          EoxDrawTool.drawLayer.getSource().clear();
+          if (!latest) {
+            return;
+          }
           EoxDrawTool.drawLayer.getSource().addFeature(latest);
           EoxDrawTool.drawnFeatures = [latest];
         }

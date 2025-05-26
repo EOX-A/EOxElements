@@ -176,6 +176,13 @@ ${slider}
     text-underline-offset: 4px;
     font-size: var(--font-size)
   }
+  .story-telling sup a {
+    font-size: smaller;
+  }
+  .story-telling sup a,
+  .story-telling a.footnote-backref {
+    text-decoration: none;
+  }
   .story-telling a:hover {
     --bg-hover-transparency: 10%;
     background-color: color-mix(
@@ -309,9 +316,9 @@ ${slider}
   .story-telling .tour.center {
     justify-items: center;
   }
-  .story-telling .tour eox-map,
-  .story-telling .tour img,
-  .story-telling .tour video {
+  .story-telling .tour eox-map:not(section-step eox-map),
+  .story-telling .tour img:not(section-step img),
+  .story-telling .tour video:not(section-step video) {
     width: 100%;
     height: 100vh;
     position: sticky;
@@ -465,8 +472,8 @@ ${slider}
   }
   .switch .switch-input { 
     opacity: 0;
-    width: 0;
-    height: 0;
+    width: 0 !important;
+    height: 0 !important;
   }
   .switch .icon {
     z-index: 2;

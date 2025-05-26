@@ -16,6 +16,18 @@ const loadMarkdownEditorTest = () => {
     `<eox-storytelling show-editor markdown="${testText}"></eox-storytelling>`,
   ).as(storyTelling);
 
+  cy.get(storyTelling).and(($el) => {
+    $el[0].addEventListener("upload:file", (e) => {
+      const { file, update } = e.detail;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Url = reader.result;
+        update(base64Url);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
   cy.get(storyTelling)
     .shadow()
     .within(() => {
@@ -46,6 +58,17 @@ const loadMarkdownEditorTest = () => {
       cy.get(".grid-item").eq(3).click();
       cy.get(".story-telling-section-submit-wrapper button").click();
       cy.get(".section-wrap").eq(1).should("have.id", "section-map-example");
+      cy.get("button[title='Add custom section']").click();
+      cy.get(".grid-item").eq(5).click();
+      cy.get("eox-jsonform#storytelling-editor-fields").within(() => {
+        cy.get("button.upload-button").click();
+        cy.get('input[type="file"]#upload-file-input').as("fileInput");
+        cy.get("input#upload-file-input").attachFile(
+          "storytelling/test/fixtures/eox.png",
+        );
+      });
+      cy.get(".story-telling-section-submit-wrapper button").click();
+      cy.get("img#simple-image-example").should("exist");
     });
 };
 

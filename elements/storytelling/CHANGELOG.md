@@ -1,5 +1,60 @@
 # Changelog
 
+## [1.7.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.1...storytelling-v1.7.2) (2025-04-01)
+
+
+### Bug Fixes
+
+* Initialize tour elements after section loaded ([#1651](https://github.com/EOX-A/EOxElements/issues/1651)) ([2fe528d](https://github.com/EOX-A/EOxElements/commit/2fe528d7ce654ce21e7598563926a26a7f362f20))
+* Prevent applying section styling to steps ([#1637](https://github.com/EOX-A/EOxElements/issues/1637)) ([78f2c0a](https://github.com/EOX-A/EOxElements/commit/78f2c0af42ef3f4bfd21ae9b4ddb7c4b8e9a3991))
+
+## [1.7.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.0...storytelling-v1.7.1) (2025-03-25)
+
+
+### Bug Fixes
+
+* `fallback-src` not working due to `no-shadow` check skip ([#1629](https://github.com/EOX-A/EOxElements/issues/1629)) ([d89ccf5](https://github.com/EOX-A/EOxElements/commit/d89ccf5e97268124166663e917affa536840ab9d))
+
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.6.1...storytelling-v1.7.0) (2025-03-24)
+
+
+### Features
+
+* Auto-parse & create links ([#1621](https://github.com/EOX-A/EOxElements/issues/1621)) ([284f0d9](https://github.com/EOX-A/EOxElements/commit/284f0d98703670fd34dd5b7cfa4b3fa920a2d8a5))
+
+## [1.6.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.6.0...storytelling-v1.6.1) (2025-03-24)
+
+
+### Bug Fixes
+
+* More robust scrollMargin calculation with boundlingClientRect ([#1619](https://github.com/EOX-A/EOxElements/issues/1619)) ([a250dc9](https://github.com/EOX-A/EOxElements/commit/a250dc90d4509bdb2cd1c6a28a5fe00918e9197a))
+
+## [1.6.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.5...storytelling-v1.6.0) (2025-03-24)
+
+
+### Features
+
+* Add md footnote support ([#1617](https://github.com/EOX-A/EOxElements/issues/1617)) ([89bf40f](https://github.com/EOX-A/EOxElements/commit/89bf40f2c9c78dfaa9d7ac73de07b288daf53d6b))
+
+
+### Bug Fixes
+
+* Add top and bottom scroll margins ([#1618](https://github.com/EOX-A/EOxElements/issues/1618)) ([bde2d43](https://github.com/EOX-A/EOxElements/commit/bde2d4340e5893272e453b8976e3bc717c9daa5c))
+
+## [1.5.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.4...storytelling-v1.5.5) (2025-03-10)
+
+
+### Bug Fixes
+
+* Changes related to upload editor  ([#1595](https://github.com/EOX-A/EOxElements/issues/1595)) ([48a1338](https://github.com/EOX-A/EOxElements/commit/48a133861074830a972e047615b8a65356f23a6f))
+
+## [1.5.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.3...storytelling-v1.5.4) (2025-03-06)
+
+
+### Features
+
+* Upload media through add section modal ([#1592](https://github.com/EOX-A/EOxElements/issues/1592)) ([63273f3](https://github.com/EOX-A/EOxElements/commit/63273f3a8e407e07cfda67c0f3f019e77cb9838e))
+
 ## [1.5.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.5.2...storytelling-v1.5.3) (2025-02-26)
 
 

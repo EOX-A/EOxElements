@@ -17,6 +17,7 @@ import {
   CustomEditorInterfacesStory,
   ValidationStory,
   CodeStory,
+  OptionalPropertiesStory,
 } from "./index.js";
 
 export default {
@@ -30,9 +31,11 @@ export default {
     <eox-jsonform
       .schema=${args.schema}
       .value=${args.value}
+      .options=${args.options}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
       @change=${args.onChange}
+      @ready=${args.onReady}
       @submit=${args.onSubmit}
     ></eox-jsonform>
   `,
@@ -52,6 +55,8 @@ export const Validation = ValidationStory;
  * Example showing the usage of Ace editor for code editing
  */
 export const Code = CodeStory;
+
+export const OptionalProperties = OptionalPropertiesStory;
 
 /**
  * JSON Form based on STAC Catalog config

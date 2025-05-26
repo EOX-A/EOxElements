@@ -17,17 +17,20 @@ const updateFlatStyleVectorLayer = () => {
   cy.mount(html`<eox-map .layers=${vectorLayerStyleJson}></eox-map>`).as(
     "eox-map",
   );
-  cy.get("eox-map").and(($el) => {
-    return new Cypress.Promise((resolve) => {
+
+  const stylePromise = new Promise((resolve) => {
+    cy.get("eox-map").and(($el) => {
       const layer = $el[0].map.getLayers().getArray()[0];
       // wait for features to load
       layer.getSource().on("featuresloadend", () => {
         const feature = layer.getSource().getFeatures()[0];
         const styles = layer.getStyleFunction()(feature, 1);
-        expect(styles).to.have.length(1);
-        resolve();
+        resolve(styles);
       });
     });
+  });
+  cy.wrap(stylePromise).then((styles) => {
+    expect(styles).to.have.length(1);
   });
 };
 

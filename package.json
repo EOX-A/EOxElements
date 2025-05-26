@@ -34,27 +34,33 @@
     "@cypress/code-coverage": "^3.12.44",
     "@cypress/mount-utils": "^4.0.0",
     "@eox/eslint-config": "^2.0.0",
-    "@storybook/addon-essentials": "^8.0.0",
-    "@storybook/addon-interactions": "^8.1.6",
-    "@storybook/blocks": "^8.0.0",
-    "@storybook/csf-tools": "^8.2.5",
-    "@storybook/test": "^8.1.6",
-    "@storybook/theming": "^8.0.0",
-    "@storybook/web-components": "^8.0.0",
-    "@storybook/web-components-vite": "^8.0.0",
+    "@storybook/addon-essentials": "^8.6.7",
+    "@storybook/addon-interactions": "^8.6.7",
+    "@storybook/blocks": "^8.6.7",
+    "@storybook/csf-tools": "^8.6.7",
+    "@storybook/manager-api": "^8.6.7",
+    "@storybook/test": "^8.6.7",
+    "@storybook/theming": "^8.6.7",
+    "@storybook/web-components": "^8.6.7",
+    "@storybook/web-components-vite": "^8.6.7",
     "concurrently": "^9.0.0",
     "custom-elements-manifest": "^2.0.0",
-    "cypress": "^13.3.0",
+    "cypress": "^14.2.0",
     "cypress-fail-on-console-error": "^5.1.1",
+    "cypress-file-upload": "^5.0.8",
     "cypress-lit": "^0.0.8",
     "cypress-network-idle": "^1.14.2",
     "nodemon": "^3.0.3",
     "nyc": "^17.0.0",
     "rimraf": "^6.0.1",
-    "storybook": "^8.0.0",
+    "storybook": "^8.6.7",
+    "typescript-json-schema": "^0.65.1",
     "vite-plugin-istanbul": "^7.0.0"
   },
   "engines": {
     "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@eox/ui": "^0.2.1"
   }
 }

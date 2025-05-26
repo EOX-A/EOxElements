@@ -14,6 +14,10 @@ export const MarkdownEditor = {
 
 Storytelling is crucial in the realm of science because scientific data, while rich in information, can often be complex and challenging to communicate. By framing data within narratives, storytelling makes scientific concepts accessible, engaging, and memorable to a wider audience. It bridges the gap between the technical details of research and the public's understanding, fostering appreciation, curiosity, and ultimately, a deeper connection to the wonders of science.
 
+Specifically, **scrolly**telling[^1] adds another layer of engagement, which allows the user to interact with the website by simply scrolling through it.
+
+[^1]: Blend of *scroll* + *storytelling*. [Storytelling enriched with multimedial elements triggered while scrolling down a webpage](https://en.wiktionary.org/wiki/scrollytelling).
+
 ## How do I get started?
 ### Story editor and live preview
 The main view of this page shows the live preview of the finished story. Floating above that you can see the story editor, which you can show and hide using the toggle:
@@ -110,6 +114,10 @@ It allows you to have different sources for each tour "step".
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
+### <!--{ src="https://picsum.photos/900/800" }-->
+#### Third tour step.
+![](https://placehold.co/200x100)
+
 ## Final Words
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
@@ -121,6 +129,23 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       show-nav
       show-editor="closed"
       markdown=${args.markdown}
+      @upload:file=${(e) => {
+        const detail = e.detail;
+        const { file, update } = detail;
+
+        // Check if file is larger than 1MB
+        if (file.size > 1024 * 1024) {
+          update(null, null, new Error("File size must be less than 1MB"));
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64Url = reader.result;
+          update(base64Url);
+        };
+        reader.readAsDataURL(file);
+      }}
     ></eox-storytelling>
   `,
 };

@@ -1,4 +1,5 @@
 import { html, nothing } from "lit";
+import { html as staticHtml, unsafeStatic } from "lit/static-html.js";
 import { repeat } from "lit/directives/repeat.js";
 import { when } from "lit/directives/when.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
@@ -44,7 +45,7 @@ export function createItemDetailsMethod(
  *
  * @param {Object} EOxItemFilterResults - The EOxItemFilterResults component instance.
  * @param {string} [aggregationProperty] - The property used for aggregation.
- * @returns {import("lit").HTMLTemplateResult} The HTML template for the item list view.
+ * @returns {import("lit").TemplateResult} The HTML template for the item list view.
  */
 export function createItemListMethod(
   EOxItemFilterResults,
@@ -63,13 +64,13 @@ export function createItemListMethod(
       ? "highlighted"
       : nothing;
 
-  return html`
-    <ul class=${EOxItemFilterResults.resultType}>
+  return staticHtml`
+    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul>`)}
       ${repeat(
         items,
         (item) => item.id,
-        (item) => html`
-          <li
+        (item) => staticHtml`
+        ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout-item`) : unsafeStatic(`<li`)}
             class=${className(item)}
             @click=${() => {
               if (EOxItemFilterResults.selectedResult === item) {
@@ -98,13 +99,13 @@ export function createItemListMethod(
                     : html`
                         <svg
                           class="image"
-                          width="800"
-                          height="600"
+                          width="100%"
+                          height="100%"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <rect
-                            width="800"
-                            height="600"
+                            width="100%"
+                            height="100%"
                             fill="var(--primary-color)"
                           />
                         </svg>
@@ -125,9 +126,26 @@ export function createItemListMethod(
                 `,
               )}
             </span>
+            ${when(
+              EOxItemFilterResults.enableResultAction,
+              () => html`
+                <span
+                  class="result-action"
+                  @click=${(event) => {
+                    event.stopPropagation(); // prevents emitting the `li` event above
+                    EOxItemFilterResults.dispatchEvent(
+                      new CustomEvent("click:result-action", {
+                        detail: item,
+                      }),
+                    );
+                  }}
+                  >${unsafeHTML(EOxItemFilterResults.resultActionIcon)}</span
+                >
+              `,
+            )}
           </li>
         `,
       )}
-    </ul>
+    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`</eox-layout>`) : unsafeStatic(`</ul>`)}
   `;
 }

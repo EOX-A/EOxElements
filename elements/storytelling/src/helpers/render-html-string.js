@@ -1,4 +1,5 @@
 import { EVENT_REQ_MODES } from "../enums/index.js";
+import { scrollIntoView } from "./misc.js";
 import GLightbox from "glightbox";
 
 // Set up empty Lightbox
@@ -6,6 +7,7 @@ let lightboxGallery = null;
 let lightboxElements = [];
 
 let sectionObservers = [];
+let sectionNavObservers = [];
 let stepSectionObservers = [];
 
 /**
@@ -27,18 +29,30 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
   // Open all links inside story in a new tab
   const anchorTagsArr = doc.querySelectorAll("a");
-  anchorTagsArr.forEach((anchor) => (anchor.target = "_blank"));
+  anchorTagsArr.forEach((anchor) => {
+    if (!anchor.getAttribute("href")?.startsWith("#")) {
+      anchor.target = "_blank";
+    } else {
+      anchor.addEventListener("click", () => {
+        setTimeout(() => {
+          scrollIntoView(that);
+        });
+      });
+    }
+  });
 
   // Disconnecting old observers to create new empty Observers
   sectionObservers.forEach((observer) => observer?.disconnect());
   sectionObservers = [];
+  sectionNavObservers.forEach((observer) => observer?.disconnect());
+  sectionNavObservers = [];
   stepSectionObservers.forEach((observer) => observer?.disconnect());
   stepSectionObservers = [];
 
   // Creating new Section Observer for navigation and section intersection
   if (isNavigation) {
     that.nav.forEach((section) => {
-      const sectionObserver = new IntersectionObserver(
+      const sectionNavObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             const intersecting = entry.isIntersecting;
@@ -58,8 +72,8 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       setTimeout(() => {
         const sectionDom = parent.querySelector(`#${section.id}`);
         if (sectionDom) {
-          sectionObserver.observe(sectionDom);
-          sectionObservers.push(sectionObserver);
+          sectionNavObserver.observe(sectionDom);
+          sectionNavObservers.push(sectionNavObserver);
         }
       }, 200);
     });
@@ -71,6 +85,19 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
     if (EVENT_REQ_MODES.includes(section.mode) && section.steps) {
       const elementSelector = `${section.as}#${section.id}`;
+      let sectionLoadedOnce = false;
+
+      // Creating new scroll Section Observer
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const intersecting = entry.isIntersecting;
+
+          if (intersecting && !sectionLoadedOnce) {
+            assignNewAttrValue(section, 0, elementSelector, parent);
+            sectionLoadedOnce = true;
+          }
+        });
+      });
 
       // Creating new scroll Step Section Observer and assign new value for attribute of element
       const stepSectionObserver = new IntersectionObserver((entries) => {
@@ -100,7 +127,9 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
         stepSectionObservers.push(stepSectionObserver);
 
         assignNewAttrValue(section, 0, elementSelector, parent);
-      }, 100);
+        sectionObserver.observe(contentParent);
+        sectionObservers.push(sectionObserver);
+      }, 500);
     }
   });
 
@@ -143,7 +172,7 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
   for (const node of nodes) {
     if (node instanceof Element) {
       elements.push(
-        processNode(/** @type {HTMLElement} */ (node), initDispatchFunc),
+        processNode(/** @type {HTMLElement} */ (node), initDispatchFunc, that),
       );
     }
   }
@@ -176,9 +205,10 @@ function assignNewAttrValue(section, index, elementSelector, parent) {
  *
  * @param {HTMLElement} node - The DOM node to process.
  * @param {Function} initDispatchFunc - Init dispatch event
+ * @param {import("../main.js").EOxStoryTelling} that - The EOxStoryTelling instance.
  * @returns {HTMLElement} The processed DOM node.
  */
-function processNode(node, initDispatchFunc) {
+function processNode(node, initDispatchFunc, that) {
   if (node.nodeType === Node.ELEMENT_NODE) {
     const childElements = node.querySelectorAll("*");
     childElements.forEach((element) => {
@@ -212,11 +242,8 @@ function processNode(node, initDispatchFunc) {
       // Check if the image is already inside a link (to avoid double wrapping)
       const mode = media.getAttribute("mode");
 
-      if (
-        /** @type {Element} **/ (media.parentNode).tagName !== "A" &&
-        mode !== "hero"
-      ) {
-        if (media.getAttribute("mode") !== "tour") {
+      if (/** @type {Element} **/ (media.parentNode).tagName !== "A") {
+        if (mode !== "hero" && media.getAttribute("mode") !== "tour") {
           media.style.cursor = "zoom-in";
           const index = lightboxElements.length;
           media.addEventListener("click", () => {
@@ -231,7 +258,7 @@ function processNode(node, initDispatchFunc) {
         // Handle media loading error by switching to backup URL if available
         media.onerror = () => {
           if (
-            document.body.contains(media) &&
+            that.renderRoot.contains(media) &&
             media.getAttribute("data-fallback-src")
           ) {
             media.src = media.getAttribute("data-fallback-src");

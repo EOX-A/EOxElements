@@ -31,6 +31,7 @@ export class EOxItemFilterResults extends LitElement {
       resultAggregation: { attribute: false, type: Array },
       selectedResult: { state: true, type: Object },
       resultType: { attribute: "result-type", type: String },
+      resultActionIcon: { attribute: false, type: String },
     };
   }
 
@@ -66,13 +67,18 @@ export class EOxItemFilterResults extends LitElement {
      * @type String("list"|"card")
      */
     this.resultType = "list";
+
+    /**
+     * @type String
+     */
+    this.resultActionIcon = undefined;
   }
 
   /**
    * Creates a list of items based on the aggregation property.
    *
    * @param {string} [aggregationProperty] - The property used for aggregation.
-   * @returns {import("lit").HTMLTemplateResult} - The template result for the item list.
+   * @returns {import("lit").TemplateResult} - The template result for the item list.
    */
   #createItemList(aggregationProperty) {
     return createItemListMethod(this, aggregationProperty);

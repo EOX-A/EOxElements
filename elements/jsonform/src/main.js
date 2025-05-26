@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { createEditor, parseProperty } from "./helpers";
+import { createEditor, parseProperty, transformLinks } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
@@ -48,15 +48,7 @@ export class EOxJSONForm extends LitElement {
      *
      * @type {object}
      */
-    this.options = {
-      show_opt_in: true,
-      disable_collapse: true,
-      disable_edit_json: true,
-      disable_properties: true,
-      disable_array_delete_all_rows: true,
-      disable_array_delete_last_row: true,
-      array_controls_top: true,
-    };
+    this.options = {};
 
     /**
      * Renders the element without a shadow root
@@ -130,6 +122,13 @@ export class EOxJSONForm extends LitElement {
   }
 
   /**
+   * Editor has loaded schema and API is ready to be used
+   */
+  #emitReady() {
+    this.dispatchEvent(new Event("ready"));
+  }
+
+  /**
    * Value object has been changed
    */
   #emitValue() {
@@ -150,6 +149,9 @@ export class EOxJSONForm extends LitElement {
 
     events.map((evt) => {
       this.#editor.on(evt, () => {
+        if (evt === "ready") {
+          this.#emitReady();
+        }
         this._value = this.#editor.getValue();
         this.#emitValue();
       });
@@ -177,6 +179,7 @@ export class EOxJSONForm extends LitElement {
         this.#dispatchEvent();
       }
     }
+    transformLinks(this);
   }
 
   /**
@@ -195,6 +198,14 @@ export class EOxJSONForm extends LitElement {
         ${style}
         ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
+        ${this.options?.disable_properties === false
+          ? ``
+          : `
+          form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-header,
+          form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-object__controls {
+            display: none;
+          }
+        `}
       </style>
       <form></form>
     `;

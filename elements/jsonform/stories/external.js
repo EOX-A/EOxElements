@@ -13,6 +13,7 @@ const External = {
   args: {
     schema: externalSchema,
     value: externalValue,
+    onReady: () => console.log("Schema loading finished, editor ready!"),
   },
 };
 export default External;

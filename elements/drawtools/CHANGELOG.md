@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.14.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.2...drawtools-v0.14.3) (2025-05-20)
+
+
+### Bug Fixes
+
+* Mirror changes to json + error handing ([#1698](https://github.com/EOX-A/EOxElements/issues/1698)) ([0bf6c80](https://github.com/EOX-A/EOxElements/commit/0bf6c80f0a41420f7cb952d3b55c40071bcca46e))
+
+## [0.14.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.1...drawtools-v0.14.2) (2025-03-06)
+
+
+### Bug Fixes
+
+* Remove features cleanly on continuous drawing ([#1590](https://github.com/EOX-A/EOxElements/issues/1590)) ([58a0bb5](https://github.com/EOX-A/EOxElements/commit/58a0bb5325364d4492858d4ee91f6cfd79f4faa9))
+
+## [0.14.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.0...drawtools-v0.14.1) (2025-03-03)
+
+
+### Features
+
+* Added new prop to `handleFeatureChange` func ([#1575](https://github.com/EOX-A/EOxElements/issues/1575)) ([04e6833](https://github.com/EOX-A/EOxElements/commit/04e6833720ec789be731879303d05cbbb188c20a))
+
+
+### Bug Fixes
+
+* Feature deletion by index ([#1582](https://github.com/EOX-A/EOxElements/issues/1582)) ([b724d13](https://github.com/EOX-A/EOxElements/commit/b724d13c381c9ecb08123e967de4d1cb79a74ca4))
+
 ## [0.14.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.13.5...drawtools-v0.14.0) (2025-02-26)
 
 

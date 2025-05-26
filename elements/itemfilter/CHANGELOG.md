@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.9.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.9.1...itemfilter-v1.9.2) (2025-05-05)
+
+
+### Bug Fixes
+
+* **style:** Radio button display ([#1684](https://github.com/EOX-A/EOxElements/issues/1684)) ([44048c7](https://github.com/EOX-A/EOxElements/commit/44048c78c8170be3c0fdcea6cab16001662cc19d))
+
+## [1.9.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.9.0...itemfilter-v1.9.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* Card cursor & placeholder ([#1664](https://github.com/EOX-A/EOxElements/issues/1664)) ([397e39c](https://github.com/EOX-A/EOxElements/commit/397e39c888fbe678eab77f2ba2129b1a547923d6))
+
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.8.0...itemfilter-v1.9.0) (2025-04-08)
+
+
+### Features
+
+* **style:** Replace result cards with eox-layout ([#1660](https://github.com/EOX-A/EOxElements/issues/1660)) ([255c454](https://github.com/EOX-A/EOxElements/commit/255c4540a6f5ec194462c6d11616d748f69132e8))
+
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.7.1...itemfilter-v1.8.0) (2025-03-24)
+
+
+### Features
+
+* Result action ([#1424](https://github.com/EOX-A/EOxElements/issues/1424)) ([3486a4e](https://github.com/EOX-A/EOxElements/commit/3486a4e609e22ca4f3eec0e0b52b6b6db4ce8d2a))
+
 ## [1.7.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.7.0...itemfilter-v1.7.1) (2025-01-08)
 
 

@@ -1,4 +1,4 @@
-import { TileImage } from "ol/source";
+import TileImage from "ol/source/TileImage.js";
 import { optionsFromCapabilities } from "ol/source/WMTS";
 import WMTSCapabilitiesFormat from "ol/format/WMTSCapabilities";
 import { createFromTileUrlFunctions } from "ol/tileurlfunction";

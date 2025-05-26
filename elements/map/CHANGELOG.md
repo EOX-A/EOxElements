@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.21.2](https://github.com/EOX-A/EOxElements/compare/map-v1.21.1...map-v1.21.2) (2025-05-20)
+
+
+### Bug Fixes
+
+* Disable zoom in/out buttons when reaching limits ([#1633](https://github.com/EOX-A/EOxElements/issues/1633)) ([0ddca87](https://github.com/EOX-A/EOxElements/commit/0ddca87306d076f038a2f7b4978ccde00ea6dbe8))
+
+## [1.21.1](https://github.com/EOX-A/EOxElements/compare/map-v1.21.0...map-v1.21.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* Refactor type `EoxLayer` & Generate Layer JSON Schema ([#1615](https://github.com/EOX-A/EOxElements/issues/1615)) ([34dfb3e](https://github.com/EOX-A/EOxElements/commit/34dfb3e717adcb889612712aebf03a94b17e0d67))
+
+## [1.21.0](https://github.com/EOX-A/EOxElements/compare/map-v1.20.0...map-v1.21.0) (2025-04-10)
+
+
+### Features
+
+* Updated ol package to `10.5.0` ([#1645](https://github.com/EOX-A/EOxElements/issues/1645)) ([76ebcc9](https://github.com/EOX-A/EOxElements/commit/76ebcc94724a4a7a9e695f8885a20eaf307691b6))
+
+## [1.20.0](https://github.com/EOX-A/EOxElements/compare/map-v1.19.4...map-v1.20.0) (2025-03-03)
+
+
+### Features
+
+* Added new prop to  and ([#1574](https://github.com/EOX-A/EOxElements/issues/1574)) ([dce69d5](https://github.com/EOX-A/EOxElements/commit/dce69d5506a46e430c22c80fbc1a03d0ff2bd541))
+
 ## [1.19.4](https://github.com/EOX-A/EOxElements/compare/map-v1.19.3...map-v1.19.4) (2025-02-25)
 
 

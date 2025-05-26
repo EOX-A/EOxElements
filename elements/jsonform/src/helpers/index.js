@@ -1,1 +1,1 @@
-export { createEditor, parseProperty } from "./editor";
+export { createEditor, parseProperty, transformLinks } from "./editor";

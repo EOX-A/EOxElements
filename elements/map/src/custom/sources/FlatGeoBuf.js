@@ -1,6 +1,6 @@
 import { transformExtent } from "ol/proj";
 import { deserialize } from "flatgeobuf/lib/mjs/geojson";
-import { Vector } from "ol/source";
+import Vector from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON";
 import { bbox } from "ol/loadingstrategy";
 
