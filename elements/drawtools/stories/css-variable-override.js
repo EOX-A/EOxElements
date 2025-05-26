@@ -20,7 +20,7 @@ export const CSSVariableOverride = {
 
     <!-- Style overrides -->
     <style>
-      eox-drawtools {
+      eox-drawtools[for="eox-map#css-var-override"] {
         --primary: #ffa55c;
         --error: #00ff00;
       }
