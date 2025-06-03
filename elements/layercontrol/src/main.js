@@ -270,7 +270,6 @@ export class EOxLayerControl extends LitElement {
   #styleEOX = `
     ${eoxStyle}
     :host, :root {
-      font-family: Roboto, sans-serif;
       --padding: 0.5rem;
       --padding-vertical: .2rem;
       --list-padding: 48px;
