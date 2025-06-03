@@ -161,7 +161,7 @@ export class EOxDrawToolsController extends LitElement {
           <!-- Draw Button -->
           <button
             data-cy="drawBtn"
-            class="transparent circle primary-text no-margin"
+            class="transparent circle primary-text no-margin small"
             title="${this.unstyled ? (this.select ? "Select" : "Draw") : ""}"
             ?disabled="${this.#drawDisabled || nothing}"
             @click="${() => this.drawFunc.start()}"
@@ -169,7 +169,9 @@ export class EOxDrawToolsController extends LitElement {
             ${this.unstyled
               ? drawLabel
               : html`
-                  <i>${this.select ? pointerIcon : polygonIcon}</i>
+                  <i class="small"
+                    >${this.select ? pointerIcon : polygonIcon}</i
+                  >
                   <div class="tooltip right">
                     ${this.select ? "Select" : "Draw"}
                   </div>
@@ -179,7 +181,7 @@ export class EOxDrawToolsController extends LitElement {
           <!-- Discard Button -->
           <button
             data-cy="discardBtn"
-            class="transparent circle error-text no-margin"
+            class="transparent circle error-text no-margin small"
             title="${this.unstyled ? "Discard" : ""}"
             ?disabled="${this.#discardDisabled || nothing}"
             @click="${() => this.drawFunc.discard()}"
@@ -187,7 +189,7 @@ export class EOxDrawToolsController extends LitElement {
             ${this.unstyled
               ? "discard"
               : html`
-                  <i>${discardIcon}</i>
+                  <i class="small">${discardIcon}</i>
                   <div class="tooltip right">Discard</div>
                 `}
           </button>
@@ -208,7 +210,7 @@ export class EOxDrawToolsController extends LitElement {
             <!-- Main Import Button -->
             <button
               data-cy="importBtn"
-              class="transparent circle primary-text no-margin"
+              class="transparent circle primary-text no-margin small"
               title="${this.unstyled ? "Import features" : ""}"
               @click=${() =>
                 /**@type {HTMLElement}*/ (
@@ -218,7 +220,7 @@ export class EOxDrawToolsController extends LitElement {
               ${this.unstyled
                 ? "import"
                 : html`
-                    <i>${importIcon}</i>
+                    <i class="small">${importIcon}</i>
                     <div class="tooltip left">Import features</div>
                   `}
             </button>

@@ -43,7 +43,7 @@ const submitButtonTest = () => {
     .shadow()
     .within(() => {
       cy.get(".json-editor-btn-").should("be.disabled");
-      cy.get("input[type=checkbox]").click();
+      cy.get("input[type=checkbox]").click({ force: true });
       cy.get(".json-editor-btn-").should("be.enabled");
       // eslint-disable-next-line cypress/unsafe-to-chain-command
       cy.get(".json-editor-btn-")
