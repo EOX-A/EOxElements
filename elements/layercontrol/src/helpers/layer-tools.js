@@ -1,4 +1,4 @@
-import { html, nothing } from "lit";
+import { html } from "lit";
 
 /**
  * Filters actions based on provided tools and layer properties.
