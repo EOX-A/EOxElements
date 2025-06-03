@@ -7,10 +7,6 @@ import "./layer-config";
 import "./layer-datetime";
 import "./layer-legend";
 import "./tools-items";
-import button from "@eox/elements-utils/styles/dist/button.style";
-import radio from "@eox/elements-utils/styles/dist/radio.style";
-import checkbox from "@eox/elements-utils/styles/dist/checkbox.style";
-import slider from "@eox/elements-utils/styles/dist/slider.style";
 import {
   Button,
   _parseActions,
@@ -84,10 +80,10 @@ export class EOxLayerControlLayerTools extends LitElement {
   }
 
   // Initializes '_removeButton' invoking 'removeButton' function with 'this' context.
-  _removeButton = () => removeButton(this);
+  _removeButton = (icon) => removeButton(this, icon);
 
   // Initializes '_sortButton' invoking 'sortButton' function with 'unstyled' property as a parameter.
-  _sortButton = () => sortButton(this.unstyled);
+  _sortButton = (icon) => sortButton(this.unstyled, icon);
 
   /**
    * Initializes '_button' as a function accepting 'tool' parameter to generate a Button.
@@ -96,9 +92,9 @@ export class EOxLayerControlLayerTools extends LitElement {
    * @param {string} tool - Tool parameter for Button generation.
    * @returns {import("lit").HTMLTemplateResult} - The generated Button element.
    */
-  _button = (tool) => Button(tool, this.unstyled);
+  _button = (tool, icon) => Button(tool, icon, this.unstyled);
 
-  _getDefaultTools = () => {
+  _getDefaultTools = (icons) => {
     return html`
       <div slot="info-content">
         ${unsafeHTML(this.layer.get("description"))}
@@ -163,19 +159,71 @@ export class EOxLayerControlLayerTools extends LitElement {
           `,
         )}
       </div>
-      <div slot="remove-icon">${this._removeButton()}</div>
-      <div slot="sort-icon">${this._sortButton()}</div>
+      <div slot="remove-icon">${this._removeButton(icons.remove)}</div>
+      <div slot="sort-icon">${this._sortButton(icons.sort)}</div>
     `;
   };
 
   render() {
+    const icons = {
+      dots: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>dots-vertical</title>
+        <path
+          d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
+        />
+      </svg>`,
+      info: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>information-outline</title>
+        <path
+          d="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"
+        />
+      </svg>`,
+      opacity: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>circle-opacity</title>
+        <path
+          d="M18 10V8H20V10H18M18 12V10H16V12H18M18 8V6H16V8H18M16 2.84V4H18C17.37 3.54 16.71 3.15 16 2.84M18 4V6H20C19.42 5.25 18.75 4.58 18 4M20 6V8H21.16C20.85 7.29 20.46 6.63 20 6M22 12C22 11.32 21.93 10.65 21.8 10H20V12H22M16 6V4H14V6H16M16 16H18V14H16V16M18 18H20L20 18V16H18V18M16 20H18L18 20V18H16V20M14 21.8C14.7 21.66 15.36 21.44 16 21.16V20H14V21.8M18 14H20V12H18V14M16 8H14V10H16V8M20 16H21.16C21.44 15.36 21.66 14.7 21.8 14H20V16M16 12H14V14H16V12M12 18V16H14V14H12V12H14V10H12V8H14V6H12V4H14V2.2C13.35 2.07 12.69 2 12 2C6.5 2 2 6.5 2 12S6.5 22 12 22V20H14V18H12M14 18H16V16H14V18Z"
+        />
+      </svg>`,
+      config: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>tune</title>
+        <path
+          d="M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z"
+        />
+      </svg>`,
+      datetime: html`<svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <title>calendar-clock-outline</title>
+        <path
+          d="M6 1V3H5C3.89 3 3 3.89 3 5V19C3 20.1 3.89 21 5 21H11.1C12.36 22.24 14.09 23 16 23C19.87 23 23 19.87 23 16C23 14.09 22.24 12.36 21 11.1V5C21 3.9 20.11 3 19 3H18V1H16V3H8V1M5 5H19V7H5M5 9H19V9.67C18.09 9.24 17.07 9 16 9C12.13 9 9 12.13 9 16C9 17.07 9.24 18.09 9.67 19H5M16 11.15C18.68 11.15 20.85 13.32 20.85 16C20.85 18.68 18.68 20.85 16 20.85C13.32 20.85 11.15 18.68 11.15 16C11.15 13.32 13.32 11.15 16 11.15M15 13V16.69L18.19 18.53L18.94 17.23L16.5 15.82V13Z"
+        />
+      </svg>`,
+      legend: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>map-legend</title>
+        <path
+          d="M9,3L3.36,4.9C3.15,4.97 3,5.15 3,5.38V20.5A0.5,0.5 0 0,0 3.5,21L3.66,20.97L9,18.9L15,21L20.64,19.1C20.85,19.03 21,18.85 21,18.62V3.5A0.5,0.5 0 0,0 20.5,3L20.34,3.03L15,5.1L9,3M8,5.45V17.15L5,18.31V6.46L8,5.45M10,5.47L14,6.87V18.53L10,17.13V5.47M19,5.7V17.54L16,18.55V6.86L19,5.7M7.46,6.3L5.57,6.97V9.12L7.46,8.45V6.3M7.46,9.05L5.57,9.72V11.87L7.46,11.2V9.05M7.46,11.8L5.57,12.47V14.62L7.46,13.95V11.8M7.46,14.55L5.57,15.22V17.37L7.46,16.7V14.55Z"
+        />
+      </svg>`,
+      remove: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>delete-outline</title>
+        <path
+          d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z"
+        />
+      </svg>`,
+      sort: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>drag-horizontal-variant</title>
+        <path d="M21 11H3V9H21V11M21 13H3V15H21V13Z" />
+      </svg>`,
+    };
+
     // Obtain actions and tools based on this.tools and this.layer
     const actions = _parseActions(this.tools, this.layer);
     const tools = _parseTools(this.tools, this.layer);
 
     // Determine the single action element if only one action is present
     const singleActionEle = this[`_${actions?.[0]}Button`]
-      ? this[`_${actions?.[0]}Button`]()
+      ? this[`_${actions?.[0]}Button`](icons[actions?.[0]])
       : nothing;
 
     // Determine icon class based on the number of tools
@@ -206,7 +254,17 @@ export class EOxLayerControlLayerTools extends LitElement {
                 open=${this.layer.get("layerControlToolsExpand") || nothing}
               >
                 <summary>
-                  <button class="icon ${iconClass}">Tools</button>
+                  <button
+                    class="small no-margin transparent square ${iconClass}"
+                  >
+                    ${this.unstyled
+                      ? "Tools"
+                      : html`<i class="small"
+                          >${icons[
+                            this.tools?.length === 1 ? this.tools[0] : "dots"
+                          ]}</i
+                        >`}
+                  </button>
                 </summary>
                 <eox-layercontrol-tools-items
                   class="${this.toolsAsList ? "tools-list" : "tools-tab"}"
@@ -217,9 +275,9 @@ export class EOxLayerControlLayerTools extends LitElement {
                   .toolsAsList=${this.toolsAsList}
                 >
                   <!-- Rendering tabs and content -->
-                  ${map(tools, (tool) => this._button(tool))}
+                  ${map(tools, (tool) => this._button(tool, icons[tool]))}
                   <!-- Including default tools -->
-                  ${this._getDefaultTools()}
+                  ${this._getDefaultTools(icons)}
                 </eox-layercontrol-tools-items>
               </details>
             `,
@@ -232,12 +290,10 @@ export class EOxLayerControlLayerTools extends LitElement {
   #styleBasic = ``;
 
   #styleEOX = `
-    ${button}  
-    ${radio}
-    ${checkbox}
-    ${slider}
     .drag-handle {
-      cursor: n-resize;
+      cursor: ns-resize;
+      -webkit-user-drag: element;
+      user-select: none;
     }
     .single-action-container,
     details.tools {
@@ -252,21 +308,17 @@ export class EOxLayerControlLayerTools extends LitElement {
     .single-action {
       position: relative;
     }
-    details.tools summary .icon {
+    details.tools summary button {
       pointer-events: none;
     }
     .single-action,
     details.tools summary {
       position: absolute;
       right: 0;
-      top: -24px;
+      top: -32px;
       height: 24px;
       cursor: pointer;
       display: var(--layer-tools-button-visibility);
-    }
-    .single-action .icon::before,
-    details.tools summary .icon::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edots-vertical%3C/title%3E%3Cpath d='M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z' /%3E%3C/svg%3E");
     }
     .single-action,
     details.tools summary,
@@ -313,34 +365,6 @@ export class EOxLayerControlLayerTools extends LitElement {
     eox-layercontrol-tools-items .button.icon::before {
       width: 16px;
       height: 16px;
-    }
-    details.tools summary .info-icon,
-    button.icon[slot=info-icon]::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Einformation-outline%3C/title%3E%3Cpath d='M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z' /%3E%3C/svg%3E");
-    }
-    details.tools summary .opacity-icon,
-    button.icon[slot=opacity-icon]::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Eopacity%3C/title%3E%3Cpath d='M17.66,8L12,2.35L6.34,8C4.78,9.56 4,11.64 4,13.64C4,15.64 4.78,17.75 6.34,19.31C7.9,20.87 9.95,21.66 12,21.66C14.05,21.66 16.1,20.87 17.66,19.31C19.22,17.75 20,15.64 20,13.64C20,11.64 19.22,9.56 17.66,8M6,14C6,12 6.62,10.73 7.76,9.6L12,5.27L16.24,9.65C17.38,10.77 18,12 18,14H6Z' /%3E%3C/svg%3E");
-    }
-    details.tools summary .config-icon,
-    button.icon[slot=config-icon]::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Etune%3C/title%3E%3Cpath d='M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z' /%3E%3C/svg%3E");
-    }
-    details.tools summary .datetime-icon,
-    button.icon[slot=datetime-icon]::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctitle%3Eclock-outline%3C/title%3E%3Cpath d='M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z' /%3E%3C/svg%3E");
-    }
-    details.tools summary .legend-icon,
-    button.icon[slot=legend-icon]::before {
-      content: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ctitle%3Emap-legend%3C%2Ftitle%3E%3Cpath%20d%3D%22M9%2C3L3.36%2C4.9C3.15%2C4.97%203%2C5.15%203%2C5.38V20.5A0.5%2C0.5%200%200%2C0%203.5%2C21L3.66%2C20.97L9%2C18.9L15%2C21L20.64%2C19.1C20.85%2C19.03%2021%2C18.85%2021%2C18.62V3.5A0.5%2C0.5%200%200%2C0%2020.5%2C3L20.34%2C3.03L15%2C5.1L9%2C3M8%2C5.45V17.15L5%2C18.31V6.46L8%2C5.45M10%2C5.47L14%2C6.87V18.53L10%2C17.13V5.47M19%2C5.7V17.54L16%2C18.55V6.86L19%2C5.7M7.46%2C6.3L5.57%2C6.97V9.12L7.46%2C8.45V6.3M7.46%2C9.05L5.57%2C9.72V11.87L7.46%2C11.2V9.05M7.46%2C11.8L5.57%2C12.47V14.62L7.46%2C13.95V11.8M7.46%2C14.55L5.57%2C15.22V17.37L7.46%2C16.7V14.55Z%22%20%2F%3E%3C%2Fsvg%3E");
-    }
-    .single-action .remove-icon::before,
-    [slot=remove-icon] button.icon::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff0000' viewBox='0 0 24 24'%3E%3Ctitle%3Edelete-outline%3C/title%3E%3Cpath d='M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z' /%3E%3C/svg%3E");
-    }
-    .single-action .sort-icon::before,
-    [slot=sort-icon] .button.icon::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Edrag-horizontal-variant%3C/title%3E%3Cpath d='M21 11H3V9H21V11M21 13H3V15H21V13Z' /%3E%3C/svg%3E");
     }
     [slot=info-content],
     [slot=opacity-content],

@@ -89,31 +89,35 @@ export class EOxLayerControlOptionalList extends LitElement {
     );
 
     return html`
-      <!-- Label for the dropdown -->
-      <label for="optional">Optional layers</label>
+      <nav>
+        <div class="field suffix border">
+          <!-- Dropdown select element -->
+          <select name="optional" data-cy="optionalLayers">
+            <!-- Default placeholder option -->
+            <option disabled selected value>
+              -- select an optional layer to add --
+            </option>
 
-      <!-- Dropdown select element -->
-      <select name="optional" data-cy="optionalLayers">
-        <!-- Default placeholder option -->
-        <option disabled selected value>
-          -- select an optional layer to add --
-        </option>
+            <!-- Mapping through filtered layers list to generate dropdown options -->
+            ${filteredLayersList.map((layer) => {
+              // @ts-expect-error TODO
+              const value = layer.get(this.idProperty) || layer.ol_uid;
+              const title = layer.get(this.titleProperty);
+              const id = `layer ${layer.get(this.idProperty)}`;
+              const label = title || id;
 
-        <!-- Mapping through filtered layers list to generate dropdown options -->
-        ${filteredLayersList.map((layer) => {
-          // @ts-expect-error TODO
-          const value = layer.get(this.idProperty) || layer.ol_uid;
-          const title = layer.get(this.titleProperty);
-          const id = `layer ${layer.get(this.idProperty)}`;
-          const label = title || id;
+              // Generating options for the dropdown
+              return html` <option value="${value}">${label}</option> `;
+            })}
+          </select>
 
-          // Generating options for the dropdown
-          return html` <option value="${value}">${label}</option> `;
-        })}
-      </select>
+          <!-- Label for the dropdown -->
+          <label for="optional">Optional layers</label>
+        </div>
 
-      <!-- Button to handle adding layers -->
-      <button @click="${this.#handleAddToList}">add</button>
+        <!-- Button to handle adding layers -->
+        <button @click="${this.#handleAddToList}">Add</button>
+      </nav>
     `;
   }
 }

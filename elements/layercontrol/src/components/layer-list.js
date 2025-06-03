@@ -123,7 +123,7 @@ export class EOxLayerControlLayerList extends LitElement {
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <ul>
+      <ul class="list no-space">
         ${when(
           this.layers,
           () => html`
@@ -132,6 +132,7 @@ export class EOxLayerControlLayerList extends LitElement {
               (layer) => layer,
               (layer) => html`
                 <li
+                  class="no-padding"
                   data-layer="${layer.get(this.idProperty)}"
                   data-type="${getLayerType(layer, this.map)}"
                 >
@@ -178,31 +179,26 @@ export class EOxLayerControlLayerList extends LitElement {
 
   #styleBasic = ``;
   #styleEOX = `
-    ul {
-      padding: 0;
-      margin: 0;
+    eox-layercontrol-layer-group {
+      box-sizing: border-box;
+      width: 100%;
     }
     ul ul {
-      padding-left: var(--list-padding);
+      padding-left: var(--list-padding) !important;
     }
     li:not(li li) {
-      padding-left: var(--padding);
-    }
-    li {
-      list-style: none;
-      border-bottom: 1px solid #0041703a;
-      border: var(--layer-visibility);
-    }
-    li:last-child {
-      border: none;
+      padding-left: var(--padding) !important;
     }
     li.sortable-chosen {
-      background: #eeea;
+      background: #eeea !important;
     }
     li.sortable-drag {
       opacity: 0;
     }
     li.sortable-ghost {
+    }
+    .list.no-space>li, .list.no-space>li>details>summary {
+      min-block-size: 0 !important;
     }
   `;
 }

@@ -40,8 +40,10 @@ export const _parseTools = (tools, layer) =>
  * @param {boolean} unstyled - Style preference for the button.
  * @returns {import("lit").HTMLTemplateResult} - Button element.
  */
-export const Button = (tool, unstyled) => html`
-  <button slot="${tool}-icon" class="icon">${unstyled ? tool : nothing}</button>
+export const Button = (tool, icon, unstyled) => html`
+  <button slot="${tool}-icon" class="transparent square small">
+    ${unstyled ? tool : html`<i class="small primary-text">${icon}</i>`}
+  </button>
 `;
 
 /**
@@ -50,9 +52,9 @@ export const Button = (tool, unstyled) => html`
  * @param {import("../components/layer-tools").EOxLayerControlLayerTools} EOxLayerControlLayerTools - Instance of EOxLayerControlLayerTools
  * @returns {import("lit").HTMLTemplateResult} - Remove button element.
  */
-export const removeButton = (EOxLayerControlLayerTools) => html`
+export const removeButton = (EOxLayerControlLayerTools, icon) => html`
   <button
-    class="remove-icon icon"
+    class="remove-icon transparent square small"
     @click=${() => {
       const { layer } = EOxLayerControlLayerTools;
       layer?.set("layerControlOptional", true);
@@ -65,7 +67,9 @@ export const removeButton = (EOxLayerControlLayerTools) => html`
       );
     }}
   >
-    ${EOxLayerControlLayerTools.unstyled ? "x" : nothing}
+    ${EOxLayerControlLayerTools.unstyled
+      ? "x"
+      : html`<i class="small red-text">${icon}</i>`}
   </button>
 `;
 
@@ -75,8 +79,8 @@ export const removeButton = (EOxLayerControlLayerTools) => html`
  * @param {boolean} unstyled - Style preference for the button.
  * @returns {import("lit").HTMLTemplateResult} - Sort button element.
  */
-export const sortButton = (unstyled) => html`
-  <span class="button sort-icon icon drag-handle">
-    ${unstyled ? "═" : nothing}
+export const sortButton = (unstyled, icon) => html`
+  <span class="sort-icon transparent square drag-handle small">
+    ${unstyled ? "═" : html`<i class="small primary-text">${icon}</i>`}
   </span>
 `;

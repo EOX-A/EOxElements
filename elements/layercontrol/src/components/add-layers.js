@@ -156,6 +156,25 @@ export class EOxLayerControlAddLayers extends LitElement {
    * Handles input fields, search, and addition of layers.
    */
   render() {
+    const icons = {
+      add: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>layers-plus</title>
+        <path
+          d="M17,14H19V17H22V19H19V22H17V19H14V17H17V14M11,16L2,9L11,2L20,9L11,16M11,18.54L12,17.75V18C12,18.71 12.12,19.39 12.35,20L11,21.07L2,14.07L3.62,12.81L11,18.54Z"
+        />
+      </svg>`,
+      plus: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>plus</title>
+        <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+      </svg>`,
+      search: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <title>magnify</title>
+        <path
+          d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"
+        />
+      </svg>`,
+    };
+
     // Determine classes and tab states based on 'open' property
     const openCloseClassName = this.open ? "open" : "close";
     const isUrlTabOpen = this.open === "url";
@@ -166,60 +185,67 @@ export class EOxLayerControlAddLayers extends LitElement {
     return html`
       <style>
         ${this.#styleBasic}
-        ${!this.unstyled && this.#styleEOX}
       </style>
       <div class="eox-add-layer-main">
-        <div class="eox-add-layer-col">
+        <nav class="eox-add-layer-col">
           <!-- Tabbed interface for URL and JSON -->
-          <ul class="eox-add-layer-tab ${openCloseClassName}">
-            <li
+          <div
+            class="eox-add-layer-tab tabs min left-align ${openCloseClassName}"
+          >
+            <a
               @click=${() => this.#handleOpenCloseTab("url")}
               class="${isUrlTabOpen ? "active" : ""}"
             >
               URL
-            </li>
-            <li
+            </a>
+            <a
               @click=${() => this.#handleOpenCloseTab("json")}
               class="${isJsonTabOpen ? "active" : ""}"
             >
               JSON
-            </li>
-          </ul>
+            </a>
+          </div>
+
+          <div class="max"></div>
 
           <!-- Button to toggle tabs -->
           <button
-            class="add-icon icon"
+            class="add-icon transparent square small"
             @click=${() => this.#handleOpenCloseTab(!this.open ? "url" : null)}
           >
-            ${this.unstyled ? "Add Layer" : ""}
+            ${this.unstyled
+              ? "Add Layer"
+              : html`<i class="small primary-text">${icons.add}</i>`}
           </button>
-        </div>
-        <div class="eox-add ${openCloseClassName}">
+        </nav>
+        <div class="eox-add ${openCloseClassName}" style="padding: 15px 0">
           ${isUrlTabOpen
             ? html`
-              <!-- Input field for URL -->
-              <div class="eox-add-layer-col">
-                <input 
-                  type="text" 
-                  class="add-url" 
-                  placeholder="Add URL (WMS/XYZ)" 
-                  .value="${this.urlInput}" 
-                  @input=${this.#handleURLChange}
-                >
-                </input>
-                <!-- Search button for URL -->
-                <button 
-                  class="search-icon" 
-                  disabled=${disableSearchBtn} 
-                  @click=${this.#handleWMSSearchURL}
-                >
-                  ${this.unstyled ? "Search" : ""}
-                </button>
-              </div>
+                <nav>
+                  <!-- Input field for URL -->
+                  <div class="eox-add-layer-col field border small">
+                    <input
+                      type="text"
+                      class="add-url"
+                      placeholder="Add URL (WMS/XYZ)"
+                      .value="${this.urlInput}"
+                      @input=${this.#handleURLChange}
+                    />
+                  </div>
+                  <!-- Search button for URL -->
+                  <button
+                    class="search-icon"
+                    disabled=${disableSearchBtn}
+                    @click=${this.#handleWMSSearchURL}
+                  >
+                    ${this.unstyled
+                      ? "Search"
+                      : html`<i class="small">${icons.search}</i>`}
+                  </button>
+                </nav>
 
-              <!-- Display layers for WMS capabilities -->
-              ${
-                this.wmsCapabilities
+                <!-- Display layers for WMS capabilities -->
+                ${this.wmsCapabilities
                   ? html`<ul class="search-lists">
                       ${this.wmsCapabilities.Capability.Layer.Layer.map(
                         (layer) => {
@@ -243,25 +269,30 @@ export class EOxLayerControlAddLayers extends LitElement {
                         },
                       )}
                     </ul>`
-                  : nothing
-              }
-            `
+                  : nothing}
+              `
             : html`
                 <!-- Textarea for JSON input -->
-                <textarea
-                  class="add-layer-input"
-                  placeholder="Please put a valid eox-map layer JSON."
-                  @input=${this.#handleInputChange}
-                  .value=${this.jsonInput}
-                ></textarea>
+                <div class="field textarea border no-margin">
+                  <textarea
+                    class="add-layer-input small"
+                    style="overflow-wrap: break-word; font-family: monospace;"
+                    placeholder="Please input a valid eox-map layer JSON."
+                    @input=${this.#handleInputChange}
+                    .value=${this.jsonInput}
+                  ></textarea>
+                </div>
 
                 <!-- Button to add JSON layer -->
                 <button
-                  class="add-layer-icon json-add-layer"
+                  class="add-layer-icon json-add-layer small square small-margin"
+                  style="position: absolute; bottom: 15px; right: 0;"
                   disabled=${isLayerJSONValid(this.jsonInput) ? nothing : true}
                   @click=${this.#handleAddLayer}
                 >
-                  ${this.unstyled ? "Add JSON" : ""}
+                  ${this.unstyled
+                    ? "Add JSON"
+                    : html`<i class="small">${icons.plus}</i>`}
                 </button>
               `}
         </div>

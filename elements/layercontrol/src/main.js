@@ -1,5 +1,6 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
+import eoxStyle from "@eox/ui/style.css?inline";
 import "./components/layer-list";
 import "./components/optional-list";
 import "./components/add-layers";
@@ -267,6 +268,7 @@ export class EOxLayerControl extends LitElement {
   }
 
   #styleEOX = `
+    ${eoxStyle}
     :host, :root {
       font-family: Roboto, sans-serif;
       --padding: 0.5rem;
