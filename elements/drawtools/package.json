@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^0.1.5",
-    "@eox/ui": "^0.2.3",
+    "@eox/ui": "^0.3.2",
     "lit": "^3.2.0",
     "ol": "^10.4.0"
   }
