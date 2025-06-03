@@ -8,8 +8,10 @@
 }
 .geolocation button > svg {
   fill: var(--on-primary);
-  width: 20px;
-  height: 20px;
+  min-inline-size: 1.25rem !important;
+  max-inline-size: 1.25rem !important;
+  min-block-size: 1.25rem !important;
+  max-block-size: 1.25rem !important;
 }
 .ol-touch.geolocation {
   top: 100px;
