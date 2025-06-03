@@ -14,7 +14,6 @@ import {
   addCustomSection,
   initSavedMarkdown,
 } from "./helpers";
-import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import {
   markdownItConfig,
@@ -294,7 +293,6 @@ export class EOxStoryTelling extends LitElement {
         :host { display: block; }
         .slot-hide { display: none; }
         ${!this.unstyled && styleEOX}
-        ${!this.unstyled && mainStyle}
       </style>
 
       <div class="story-telling ${editorClass}">

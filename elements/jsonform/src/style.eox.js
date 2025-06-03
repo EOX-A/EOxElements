@@ -17,6 +17,9 @@ export const styleEOX = `
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
   }
+  form[data-theme="html"][data-theme-custom="eox"] {
+    margin-block-start: 0;
+  }
   form[data-theme="html"][data-theme-custom="eox"] .je-modal {
     z-index: 30;
     border-radius: 4px;
@@ -168,6 +171,12 @@ export const styleEOX = `
   }
   [data-theme-custom="eox"] .editor-toolbar button i {
     font-size: 17px;
+  }
+  [data-theme-custom="eox"] .editor-toolbar i.separator {
+    block-size: 25px;
+    inline-size: 0;
+    min-block-size: 24px;
+    min-inline-size: 0;
   }
   [data-theme-custom="eox"] .editor-statusbar {
     padding-bottom: 0;
