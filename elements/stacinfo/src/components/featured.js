@@ -33,7 +33,14 @@ export default function parseFeatured(featured = []) {
                     ${value.label}
                     ${when(
                       value.length,
-                      () => html` <span class="count">${value.length}</span> `,
+                      () => html`
+                        <button
+                          class="chip fill"
+                          style="--_size: 1.5rem; --_padding: 1.25rem"
+                        >
+                          ${value.length}
+                        </button>
+                      `,
                     )}
                   </slot>
                 </summary>

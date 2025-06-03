@@ -20,15 +20,15 @@ export default function parseFooter(footer = []) {
     ${when(
       footer.length > 0,
       () => html`
-        <footer part="footer">
+        <footer class="primary" part="footer">
           <slot name="footer">
             ${map(
               footer,
               ([key, value], index) => staticHTML`
                   <div class="footer-container">
-                    <h${unsafeStatic((index + 1).toString())}>
+                    <h${unsafeStatic((index + 5).toString())} class="small">
                       ${unsafeHTML(value.label)}
-                    </h${unsafeStatic((index + 1).toString())}>
+                    </h${unsafeStatic((index + 5).toString())}>
                     <small>${unsafeHTML(value.formatted)}</small>
                   </div>
                   ${when(
@@ -36,11 +36,21 @@ export default function parseFooter(footer = []) {
                     key === "sci:citation",
                     () => html`
                       <button
-                        class="copy icon"
+                        class="copy circle transparent"
                         @click=${() =>
                           navigator.clipboard.writeText(value.formatted)}
                       >
-                        copy
+                        <i class="small">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <title>content-copy</title>
+                            <path
+                              d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"
+                            />
+                          </svg>
+                        </i>
                       </button>
                     `,
                   )}

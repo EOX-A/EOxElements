@@ -22,9 +22,9 @@ export default function parseHeader(header = []) {
               ${map(
                 header,
                 ([, value], index) => staticHTML`
-              <h${unsafeStatic((index + 1).toString())}>${unsafeHTML(
+              <h${unsafeStatic((index + 3).toString())} class="small bold">${unsafeHTML(
                 value.formatted,
-              )}</h${unsafeStatic((index + 1).toString())}>
+              )}</h${unsafeStatic((index + 3).toString())}>
               `,
               )}
             </slot>

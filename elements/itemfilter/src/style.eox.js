@@ -233,16 +233,6 @@ button#filter-reset {
   right: var(--padding);
   padding: 2px 10px;
 }
-.count {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 12px;
-  height: 20px;
-  border-radius: 10px;
-  font-weight: 500;
-  margin-left: 9px;
-}
 eox-itemfilter-range,
 tc-range-slider {
   align-items: center;

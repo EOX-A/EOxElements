@@ -25,12 +25,15 @@ export function createItemDetailsMethod(
       <summary>
         <span class="title">
           ${aggregationProperty}
-          <span class="count primary-container"
-            >${EOxItemFilterResults.aggregateResults(
+          <button
+            class="chip fill"
+            style="--_size: 1.5rem; --_padding: 1.25rem"
+          >
+            ${EOxItemFilterResults.aggregateResults(
               EOxItemFilterResults.results,
               aggregationProperty,
-            ).length}</span
-          >
+            ).length}
+          </button>
         </span>
       </summary>
       <div>
