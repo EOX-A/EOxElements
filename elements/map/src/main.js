@@ -4,6 +4,7 @@ import { LitElement, html } from "lit";
 import Map from "ol/Map";
 import View from "ol/View";
 import olCss from "ol/ol.css?inline";
+import eoxStyle from "@eox/ui/style.css?inline";
 import controlCss from "./controls/controls.css?inline";
 import { buffer } from "ol/extent";
 import "./components/compare";
@@ -516,6 +517,7 @@ export class EOxMap extends LitElement {
           pointer-events: none !important;
         }
         ${olCss}
+        ${eoxStyle}
         ${controlCss}
       </style>
       <div style="width: 100%; height: 100%"></div>
