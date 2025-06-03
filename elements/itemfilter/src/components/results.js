@@ -136,7 +136,7 @@ export class EOxItemFilterResults extends LitElement {
             () => html`<small class="no-results">No matching items</small>`,
             () => nothing,
           )}
-          <ul id="results" part="results">
+          <ul id="results" class="list no-space" part="results">
             ${when(
               this.config.aggregateResults,
               () =>

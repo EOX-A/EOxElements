@@ -35,7 +35,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^0.1.5",
+    "@eox/ui": "^0.2.3",
     "@floating-ui/dom": "^1.6.8",
     "@turf/boolean-intersects": "^7.0.0",
     "@turf/boolean-within": "^7.0.0",

@@ -4,7 +4,6 @@ import { when } from "lit/directives/when.js";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
-import allStyle from "@eox/elements-utils/styles/dist/all.style";
 import "./components/expand-container";
 import "./components/itemfilter-container";
 import "./components/filters/text";
@@ -432,7 +431,6 @@ export class EOxItemFilter extends LitElement {
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
-        ${!this.unstyled && allStyle}
         ${this.styleOverride}
       </style>
       <form
@@ -459,7 +457,7 @@ export class EOxItemFilter extends LitElement {
                     >
                   `,
                 )}
-                <ul id="filters">
+                <ul id="filters" class="list no-space">
                   ${map(
                     Object.values(this.filters),
                     (filterObject, index) =>
@@ -492,12 +490,27 @@ export class EOxItemFilter extends LitElement {
                     <button
                       type="button"
                       id="filter-reset"
-                      class="outline small icon-text reset-icon"
+                      class="reset-icon border"
                       data-cy="filter-reset"
                       @click=${() => this.resetFilters()}
                     >
-                      Reset all
-                    </a>
+                      ${this.unstyled
+                        ? nothing
+                        : html`
+                            <i class="small">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <title>close</title>
+                                <path
+                                  d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                />
+                              </svg>
+                            </i>
+                          `}
+                      <span>Reset all</span>
+                    </button>
                   `,
                 )}
               </section>

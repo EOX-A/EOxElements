@@ -91,7 +91,7 @@ class EOxItemFilterSpatial extends LitElement {
           ${map(
             ["intersects", "within"],
             (mode) => html`
-              <label>
+              <label class="radio">
                 <input
                   tabindex=${this.tabIndex}
                   type="radio"
@@ -101,7 +101,7 @@ class EOxItemFilterSpatial extends LitElement {
                   value="${mode}"
                   @click=${() => this.#handleClick(mode)}
                 />
-                <small>${mode} filter geometry</small>
+                <span>${mode} filter geometry</span>
               </label>
             `,
           )}

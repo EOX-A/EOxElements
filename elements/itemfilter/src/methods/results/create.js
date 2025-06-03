@@ -25,7 +25,7 @@ export function createItemDetailsMethod(
       <summary>
         <span class="title">
           ${aggregationProperty}
-          <span class="count"
+          <span class="count primary-container"
             >${EOxItemFilterResults.aggregateResults(
               EOxItemFilterResults.results,
               aggregationProperty,
@@ -65,13 +65,13 @@ export function createItemListMethod(
       : nothing;
 
   return staticHtml`
-    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul>`)}
+    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul class="list no-space">`)}
       ${repeat(
         items,
         (item) => item.id,
         (item) => staticHtml`
         ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout-item`) : unsafeStatic(`<li`)}
-            class=${className(item)}
+            class="${className(item)}"
             @click=${() => {
               if (EOxItemFilterResults.selectedResult === item) {
                 EOxItemFilterResults.selectedResult = null;

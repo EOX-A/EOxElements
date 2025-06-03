@@ -1,5 +1,18 @@
+import eoxStyle from "@eox/ui/style.css?inline";
+
 export const styleEOX = `
+${eoxStyle}
+
+ul.list>li {
+  padding-left: 0;
+}
+.field {
+  margin-block-end: 0;
+}
+
 :host, :root {
+  --primary-color: var(--primary);
+  --secondary-color: var(--secondary);
   --item-color: color-mix(
     in srgb,
     var(--primary-color) 10%,
@@ -28,9 +41,6 @@ export const styleEOX = `
   --filter-display: block;
   background-color: var(--background-color);
 }
-* {
-  font-family: Roboto, sans-serif;
-}
 form#itemfilter {
   flex-direction: var(--form-flex-direction);
 }
@@ -40,13 +50,6 @@ eox-itemfilter-container {
 }
 eox-itemfilter-results {
   flex-grow: 1;
-}
-ul {
-  padding-left: 0;
-  margin-top: 0;
-}
-li {
-  list-style: none;
 }
 li span {
   text-overflow: ellipsis;
@@ -121,7 +124,8 @@ details[open] summary::after {
   transform: rotate(270deg);
 }
 eox-itemfilter-expandcontainer {
-  max-height: 200px;
+  max-height: 300px;
+  width: 100%;
 }
 eox-itemfilter-expandcontainer > [data-type=filter] {
   display: block;
@@ -133,28 +137,6 @@ eox-itemfilter-expandcontainer > [data-type=filter] {
 [data-type=filter] .title,
 details summary {
   text-transform: var(--text-transform);
-}
-li,
-label,
-details,
-input[type="checkbox"],
-input[type="radio"] {
-  cursor: pointer;
-}
-input[type="checkbox"],
-input[type="radio"] {
-  margin: 0;
-  padding: 0;
-  border: none;
-}
-input[type="text"] {
-  box-sizing: border-box;
-  width: 100%;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding: 5px 7px;
-  border-radius: 4px;
-  border: 1px solid var(--border-color);
 }
 section:not(section:last-of-type) {
   margin-bottom: 1rem;
@@ -197,6 +179,10 @@ eox-layout-item {
   position: relative;
   border-radius: var(--card-border-radius, 8px);
   cursor: pointer;
+}
+eox-layout-item > span {
+  display: block;
+  height: 100%;
 }
 eox-layout-item .image {
   width: 100%;
@@ -251,11 +237,9 @@ button#filter-reset {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--secondary-color);
   padding: 0 12px;
   height: 20px;
   border-radius: 10px;
-  color: var(--primary-color);
   font-weight: 500;
   margin-left: 9px;
 }
@@ -279,25 +263,9 @@ tc-range-slider {
   margin: 1rem 0px;
 }
 
-button.reset-icon:before {
-  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Eclose%3C/title%3E%3Cpath d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z' /%3E%3C/svg%3E");
-}
-eox-itemfilter-expandcontainer button.reset-icon {
-  margin-left: 4px;
-  margin-top: -5px;
-  height: 14px;
-  width: 14px;
-}
-eox-itemfilter-expandcontainer button.reset-icon:before {
-  height: 14px;
-  width: 14px;
-}
 .inline-content {
-  border: 1.5px solid var(--secondary-color);
-  border-radius: 4px;
   max-height: 300px;
   overflow-y: auto;
-  background: var(--inline-bg-color);
   margin-top: 4px;
   padding: 8px;
 }
@@ -313,16 +281,13 @@ eox-itemfilter-expandcontainer button.reset-icon:before {
   position: relative;
   border: 1px solid var(--border-color);
   border-radius: 4px;
-  height: 24px;
-  padding: 8px;
   flex: 1;
   justify-content: space-between;
   cursor: text;
   transition: all 0.2s ease-in-out;
   display: flex;
-}
-.inline-container:hover {
-  border: 1px solid var(--primary-color);
+  inline-size: 100%;
+  block-size: 100%;
 }
 [popover] {
   position: fixed;
@@ -383,44 +348,12 @@ button.icon {
   text-transform: var(--text-transform);
 }
 .chip {
-  display: flex;
-  align-items: center;
   background: var(--item-color);
-  border-radius: 30px;
-  margin-right: 4px;
-  padding: 5px 10px;
-  font-size: small;
-  cursor: default;
   white-space: nowrap;
 }
 .chip.highlighted {
   background: var(--primary-color);
   color: white;
-}
-.chip-close {
-  cursor: pointer;
-  font-weight: 600;
-  position: absolute;
-  right: -25px;
-  background: white;
-  top: 0;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  height: 24px;
-  width: 24px;
-}
-.chip-close:before {
-  position: absolute;
-  text-indent: 0;
-  line-height: initial;
-  height: 24px;
-  width: 24px;
-  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23004170' viewBox='0 0 24 24'%3E%3Ctitle%3Eclose%3C/title%3E%3Cpath d='M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z' /%3E%3C/svg%3E");
-}
-.chip-container {
-  position: relative;
-  max-width: 75%;
 }
 .autocomplete-container,
 .text-container {
@@ -432,7 +365,6 @@ button.icon {
   cursor: text;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  background: white;
 }
 .autocomplete-container-wrapper,
 .text-container-wrapper {
@@ -470,10 +402,6 @@ input[type="text"].text-input,
 input[type="text"].autocomplete-input {
   padding: 9px 6px !important;
   border-radius: 4px;
-}
-.text-input:hover,
-.autocomplete-input:hover {
-  border: 1px solid var(--primary-color);
 }
 .text-input:invalid {
   border: 1px solid red;
@@ -533,6 +461,7 @@ eox-itemfilter-results li.highlighted {
 .chip-container {
   display: flex;
   flex: 0;
+  align-items: center;
 }
 .input-container.dirty-filter-input {
   margin-left: 25px;

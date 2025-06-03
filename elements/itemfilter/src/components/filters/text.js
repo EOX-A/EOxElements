@@ -84,7 +84,7 @@ export class EOxItemFilterText extends LitElement {
       () => html`
         <style></style>
         <div class="text-container">
-          <div class="text-container-wrapper">
+          <div class="text-container-wrapper field border">
             <input
               type="text"
               placeholder=${this.filterObject.placeholder}

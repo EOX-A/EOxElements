@@ -9,11 +9,11 @@ const spatialFilterTest = () => {
       cy.get("eox-itemfilter-select")
         .shadow()
         .within(() => {
-          cy.get('[type="checkbox"]').first().check();
-          cy.get('[type="checkbox"]').eq(1).check();
-          cy.get('[type="checkbox"]').first().check();
+          cy.get('[type="checkbox"]').first().check({ force: true });
+          cy.get('[type="checkbox"]').eq(1).check({ force: true });
+          cy.get('[type="checkbox"]').first().check({ force: true });
           cy.get('[type="checkbox"]').first().should("be.checked");
-          cy.get('[type="checkbox"]').eq(1).check();
+          cy.get('[type="checkbox"]').eq(1).check({ force: true });
           cy.get('[type="checkbox"]').eq(1).should("be.checked");
         });
     });

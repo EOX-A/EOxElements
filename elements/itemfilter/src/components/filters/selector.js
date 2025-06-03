@@ -2,8 +2,6 @@ import { LitElement, html, nothing } from "lit";
 import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
-import checkboxStyle from "@eox/elements-utils/styles/dist/checkbox.style.js";
-import radioStyle from "@eox/elements-utils/styles/dist/radio.style.js";
 import {
   resetSelectorMethod,
   toggleItemSelectorMethod,
@@ -185,14 +183,12 @@ export class EOxSelector extends LitElement {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
-        ${!this.unstyled && checkboxStyle}
-        ${!this.unstyled && radioStyle}
       </style>
       ${when(
         this.suggestions.length > 10,
         () =>
           html`<div class="autocomplete-container">
-            <div class="autocomplete-container-wrapper">
+            <div class="autocomplete-container-wrapper field border">
               <input
                 autocomplete="off"
                 tabindex=${this.tabIndex}
@@ -209,14 +205,14 @@ export class EOxSelector extends LitElement {
           </div>`,
       )}
       <div class="select-container ${selectOverflowClass}">
-        <ul class="${this.type}">
+        <ul class="${this.type} list no-space">
           ${this.filteredSuggestions.map(
             (suggestion) => html`
               <li
                 data-identifier="${suggestion.toString().toLowerCase()}"
                 data-title="${suggestion}"
               >
-                <label>
+                <label class="${type}">
                   <input
                     type="${type}"
                     name=${suggestion}
