@@ -679,6 +679,13 @@ const styleEOX = `
   eox-jsonform#storytelling-editor-fields div {
     height: auto;
   }
+  .story-telling-section-fields {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
   .story-telling-section-fields-overflow {
     overflow-y: auto;
     height: calc(100% - 60px);
