@@ -22,19 +22,27 @@ export function createItemDetailsMethod(
       @toggle=${EOxItemFilterResults.handleAccordion}
       ?open=${EOxItemFilterResults.config.expandResults || nothing}
     >
-      <summary>
-        <span class="title">
-          ${aggregationProperty}
+      <summary class="square">
+        <nav class="responsive tiny-space">
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <title>chevron-right</title>
+              <path
+                d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+              />
+            </svg>
+          </i>
+          <span class="title"> ${aggregationProperty} </span>
           <button
-            class="chip fill"
-            style="--_size: 1.5rem; --_padding: 1.25rem"
+            class="chip"
+            style="--_size: 1rem; padding: 0.7rem; font-size: small"
           >
             ${EOxItemFilterResults.aggregateResults(
               EOxItemFilterResults.results,
               aggregationProperty,
             ).length}
           </button>
-        </span>
+        </nav>
       </summary>
       <div>
         ${createItemListMethod(EOxItemFilterResults, aggregationProperty)}
@@ -68,7 +76,7 @@ export function createItemListMethod(
       : nothing;
 
   return staticHtml`
-    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul class="list no-space">`)}
+    ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul id="results" class="list no-space" part="results">`)}
       ${repeat(
         items,
         (item) => item.id,
@@ -88,64 +96,90 @@ export function createItemListMethod(
               );
             }}
           >
-            <span id="${item.id}">
+            <nav id="${item.id}" class="responsive tiny-space">
               ${when(
                 config.subTitleProperty || config.imageProperty,
                 () => html`
-                  ${getValue(config.imageProperty, item)
-                    ? html`
-                        <img
-                          class="image"
-                          src="${getValue(config.imageProperty, item)}"
-                        />
-                      `
-                    : html`
-                        <svg
-                          class="image"
-                          width="100%"
-                          height="100%"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <rect
-                            width="100%"
-                            height="100%"
-                            fill="var(--primary-color)"
-                          />
-                        </svg>
-                      `}
-                  <div class="title-container">
-                    <span class="title"
+                  ${when(
+                    EOxItemFilterResults.resultType === "cards",
+                    () => html`
+                      <img
+                        class="image"
+                        src="${getValue(config.imageProperty, item)}"
+                      />
+                    `,
+                    () => html`
+                      <i class="small">
+                        ${getValue(config.imageProperty, item)
+                          ? html`
+                              <img
+                                class="image"
+                                src="${getValue(config.imageProperty, item)}"
+                              />
+                            `
+                          : html`
+                              <svg
+                                class="image"
+                                width="100%"
+                                height="100%"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <rect
+                                  width="100%"
+                                  height="100%"
+                                  fill="var(--primary-color)"
+                                />
+                              </svg>
+                            `}
+                      </i>
+                    `,
+                  )}
+                  <div class="title-container small-line max truncate">
+                    <span class="title truncate"
                       >${unsafeHTML(item[config.titleProperty])}</span
                     >
-                    <span class="subtitle"
-                      >${unsafeHTML(item[config.subTitleProperty])}</span
-                    >
+                    ${when(
+                      !!item[config.subTitleProperty],
+                      () => html`
+                        <small class="subtitle no-line truncate"
+                          >${unsafeHTML(
+                            item[config.subTitleProperty].toString(),
+                          )}</small
+                        >
+                      `,
+                    )}
                   </div>
                 `,
                 () => html`
-                  <span class="title"
-                    >${unsafeHTML(item[config.titleProperty])}</span
-                  >
+                  <div class="small-line max truncate">
+                    <span class="title truncate"
+                      >${unsafeHTML(item[config.titleProperty])}</span
+                    >
+                  </div>
                 `,
               )}
-            </span>
-            ${when(
-              EOxItemFilterResults.enableResultAction,
-              () => html`
-                <span
-                  class="result-action"
-                  @click=${(event) => {
-                    event.stopPropagation(); // prevents emitting the `li` event above
-                    EOxItemFilterResults.dispatchEvent(
-                      new CustomEvent("click:result-action", {
-                        detail: item,
-                      }),
-                    );
-                  }}
-                  >${unsafeHTML(EOxItemFilterResults.resultActionIcon)}</span
-                >
-              `,
-            )}
+              ${when(
+                EOxItemFilterResults.enableResultAction,
+                () => html`
+                  <button class="result-action square transparent small">
+                    <icon
+                      class="small"
+                      @click=${(event) => {
+                        event.stopPropagation(); // prevents emitting the `li` event above
+                        EOxItemFilterResults.dispatchEvent(
+                          new CustomEvent("click:result-action", {
+                            detail: item,
+                          }),
+                        );
+                      }}
+                      >${unsafeHTML(
+                        EOxItemFilterResults.resultActionIcon,
+                      )}</icon
+                    >
+                  </button>
+                `,
+              )}
+            </nav>
           </li>
         `,
       )}

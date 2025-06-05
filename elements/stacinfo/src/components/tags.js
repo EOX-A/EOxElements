@@ -25,7 +25,14 @@ export default function parseTags(tags = []) {
                 <nav class="wrap" style="gap: 0.5rem">
                   ${map(
                     value.value,
-                    (tag) => html` <button class="chip fill">${tag}</button> `,
+                    (tag) => html`
+                      <button
+                        class="chip fill"
+                        style="--_size: 1rem; padding: 0.7rem; font-size: small"
+                      >
+                        ${tag}
+                      </button>
+                    `,
                   )}
                 </nav>
               </li></slot

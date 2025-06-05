@@ -302,9 +302,6 @@ export class EOxLayerControlLayerTools extends LitElement {
     eox-layercontrol-layer details summary::before {
       content: "";
     }
-    details.tools[open] {
-      /*border-top: 1px solid #0041703a;*/
-    }
     .single-action {
       position: relative;
     }
@@ -315,7 +312,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     details.tools summary {
       position: absolute;
       right: 0;
-      top: -32px;
+      top: -28px;
       height: 24px;
       cursor: pointer;
       display: var(--layer-tools-button-visibility);

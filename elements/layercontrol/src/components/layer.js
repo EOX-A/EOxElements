@@ -15,6 +15,7 @@ export class EOxLayerControlLayer extends LitElement {
   // Define static properties for the component
   static properties = {
     layer: { attribute: false },
+    layerType: { attribute: false },
     map: { attribute: false, state: true },
     titleProperty: { attribute: "title-property", type: String },
     showLayerZoomState: { attribute: "show-layer-zoom-state", type: Boolean },
@@ -41,6 +42,13 @@ export class EOxLayerControlLayer extends LitElement {
      * @see {@link https://openlayers.org/en/latest/apidoc/module-ol_layer_Layer-Layer.html}
      */
     this.layer = null;
+
+    /**
+     * The type of the layer, which can be a string representing the layer type.
+     *
+     * @type {string|undefined} - The inferred layer type: "group", "draw", "vector", "raster", or undefined if not determinable.
+     */
+    this.layerType = undefined;
 
     /**
      * The native OL map
@@ -164,19 +172,113 @@ export class EOxLayerControlLayer extends LitElement {
         this.layer,
         () => html`
           <!-- Render the layer -->
-          <div
+          <nav
+            class="layer ${visibilityClass} ${layerZoomStateClass} drag-handle responsive tiny-space"
+          >
+            ${when(!this.unstyled, () => {
+              if (this.#getLayer("color")) {
+                return html`
+                  <i class="small" style="color: ${this.#getLayer("color")}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                      <title>square-rounded</title>
+                      <path
+                        d="M8 3H16C18.76 3 21 5.24 21 8V16C21 18.76 18.76 21 16 21H8C5.24 21 3 18.76 3 16V8C3 5.24 5.24 3 8 3Z"
+                      />
+                    </svg>
+                  </i>
+                `;
+              }
+              switch (this.layerType) {
+                case "group":
+                  // handled in layer group component
+                  return html` <i class="small"> </i> `;
+                case "draw":
+                  return html`
+                    <i class="small grey-text">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <title>vector-square-edit</title>
+                        <path
+                          d="M22.7 14.4L21.7 15.4L19.6 13.3L20.6 12.3C20.8 12.1 21.2 12.1 21.4 12.3L22.7 13.6C22.9 13.8 22.9 14.1 22.7 14.4M13 19.9L19.1 13.8L21.2 15.9L15.1 22H13V19.9M11 19.9V19.1L11.6 18.5L12.1 18H8V16H6V8H8V6H16V8H18V12.1L19.1 11L19.3 10.8C19.5 10.6 19.8 10.4 20.1 10.3V8H22.1V2H16.1V4H8V2H2V8H4V16H2V22H8V20L11 19.9M18 4H20V6H18V4M4 4H6V6H4V4M6 20H4V18H6V20Z"
+                        />
+                      </svg>
+                    </i>
+                  `;
+                case "vector":
+                  return html`
+                    <i class="small grey-text">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <title>vector-polygon</title>
+                        <path
+                          d="M2,2V8H4.28L5.57,16H4V22H10V20.06L15,20.05V22H21V16H19.17L20,9H22V3H16V6.53L14.8,8H9.59L8,5.82V2M4,4H6V6H4M18,5H20V7H18M6.31,8H7.11L9,10.59V14H15V10.91L16.57,9H18L17.16,16H15V18.06H10V16H7.6M11,10H13V12H11M6,18H8V20H6M17,18H19V20H17"
+                        />
+                      </svg>
+                    </i>
+                  `;
+                case "raster":
+                  return html`
+                    <i class="small grey-text">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <title>checkerboard</title>
+                        <path
+                          d="M2 2V22H22V2H2M20 12H16V16H20V20H16V16H12V20H8V16H4V12H8V8H4V4H8V8H12V4H16V8H20V12M16 8V12H12V8H16M12 12V16H8V12H12Z"
+                        />
+                      </svg>
+                    </i>
+                  `;
+                default:
+                  return html` <i class="small grey-text"> </i> `;
+              }
+            })}
+
+            <!-- Layer title -->
+            <div class="max truncate">
+              <span class="layertitle truncate"
+                >${this.#getLayer(this.titleProperty)}</span
+              >
+            </div>
+
+            <!-- Actions -->
+            <button class="square transparent small action">
+              <i class="mdi mdi-dots-vertical small"></i>
+            </button>
+
+            <!-- Input element for layer visibility -->
+            <label
+              class="${disableClass} ${inputType} icon square action small"
+            >
+              <input
+                type=${inputType}
+                .checked=${live(visibility)}
+                @click=${this.#handleInputClick}
+              />
+              <span>
+                <i class="mdi mdi-eye-off-outline"></i>
+                <i class="mdi mdi-eye"></i>
+              </span>
+            </label>
+          </nav>
+          <!--<nav
             class="layer ${visibilityClass} ${layerZoomStateClass}"
             style="display: flex;"
           >
-            <label class="drag-handle ${disableClass} ${inputType}">
-              <!-- Input element for layer visibility -->
+            <label class="drag-handle ${disableClass} ${inputType} small">
+              
               <input
                 type=${inputType}
                 .checked=${live(visibility)}
                 @click=${this.#handleInputClick}
               />
 
-              <!-- Layer title -->
+              
               <span
                 class="${this.#getLayer("color") ? "color-swatch" : ""}"
                 style="--layer-color: ${this.#getLayer("color")}"
@@ -186,20 +288,20 @@ export class EOxLayerControlLayer extends LitElement {
                 </span>
               </span>
               ${when(
-                isToolsAvail,
-                () => html`<div class="tools-placeholder"></div>`,
-              )}
+            isToolsAvail,
+            () => html`<div class="tools-placeholder"></div>`,
+          )}
             </label>
-          </div>
+          </nav>-->
 
           <!-- Render layer tools -->
-          <eox-layercontrol-layer-tools
+          <!--<eox-layercontrol-layer-tools
             .noShadow=${true}
             .layer=${this.layer}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
-          ></eox-layercontrol-layer-tools>
+          ></eox-layercontrol-layer-tools>-->
         `,
       )}
     `;
@@ -211,58 +313,35 @@ export class EOxLayerControlLayer extends LitElement {
       width: 100%;
       position: relative;
     }
+    eox-layercontrol-layer nav {
+      height: 32px;
+      margin-block-start: 0 !important;
+    }
+    eox-layercontrol-layer:not(:hover) > nav > .action {
+      display: none;
+    }
+    eox-layercontrol-layer nav:has(.action input[type=checkbox]:not(:checked)),
+    eox-layercontrol-layer nav:has(.action input[type=radio]:not(:checked)) {
+      opacity: .5;
+    }
     .layer input[type=checkbox],
     .layer input[type=radio] {
       display: var(--layer-input-visibility);
     }
     .layer.zoom-state-invisible {
-      background: #d2e2ee;
-      opacity: 0.3;
+      opacity: 0.5;
     }
     .layer {
-      width: 100%;
-      align-items: center;
-      justify-content: space-between;
       padding: var(--padding-vertical) 0;
       display: var(--layer-visibility);
-    }
-    label, span {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+      user-select: none;
     }
     .layertitle {
       display: var(--layer-title-visibility);
     }
-    [data-type] .layertitle::before {
-      width: 20px;
-      min-width: 20px;
-      height: 20px;
-      margin-right: 6px;
-      display: var(--layer-type-visibility);
-    }
-    [data-type] .color-swatch .layertitle::before {
-      background: var(--layer-color);
-      border-radius: 3px;
-      content: "" !important;
-      width: 16px;
-      min-width: 16px;
-      height: 16px;
-    }
-    [data-type=group] .layertitle::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230041703a' viewBox='0 0 24 24'%3E%3Ctitle%3Efolder-outline%3C/title%3E%3Cpath d='M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z' /%3E%3C/svg%3E");
-    }
-    [data-type=group] > eox-layercontrol-layer-group > details[open] > summary > eox-layercontrol-layer > .layer > label > .layertitle::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230041703a' viewBox='0 0 24 24'%3E%3Ctitle%3Efolder-open-outline%3C/title%3E%3Cpath d='M6.1,10L4,18V8H21A2,2 0 0,0 19,6H12L10,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H19C19.9,20 20.7,19.4 20.9,18.5L23.2,10H6.1M19,18H6L7.6,12H20.6L19,18Z' /%3E%3C/svg%3E");
-    }
-    [data-type=raster] .layertitle::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230041703a' viewBox='0 0 24 24'%3E%3Ctitle%3Echeckerboard%3C/title%3E%3Cpath d='M2 2V22H22V2H2M20 12H16V16H20V20H16V16H12V20H8V16H4V12H8V8H4V4H8V8H12V4H16V8H20V12M16 8V12H12V8H16M12 12V16H8V12H12Z' /%3E%3C/svg%3E");
-    }
-    [data-type=vector] .layertitle::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230041703a' viewBox='0 0 24 24'%3E%3Ctitle%3Eshape-outline%3C/title%3E%3Cpath d='M11,13.5V21.5H3V13.5H11M9,15.5H5V19.5H9V15.5M12,2L17.5,11H6.5L12,2M12,5.86L10.08,9H13.92L12,5.86M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13M17.5,15A2.5,2.5 0 0,0 15,17.5A2.5,2.5 0 0,0 17.5,20A2.5,2.5 0 0,0 20,17.5A2.5,2.5 0 0,0 17.5,15Z' /%3E%3C/svg%3E");
-    }
-    [data-type=draw] .layertitle::before {
-      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230041703a' viewBox='0 0 24 24'%3E%3Ctitle%3Evector-square-edit%3C/title%3E%3Cpath d='M22.7 14.4L21.7 15.4L19.6 13.3L20.6 12.3C20.8 12.1 21.2 12.1 21.4 12.3L22.7 13.6C22.9 13.8 22.9 14.1 22.7 14.4M13 19.9L19.1 13.8L21.2 15.9L15.1 22H13V19.9M11 19.9V19.1L11.6 18.5L12.1 18H8V16H6V8H8V6H16V8H18V12.1L19.1 11L19.3 10.8C19.5 10.6 19.8 10.4 20.1 10.3V8H22.1V2H16.1V4H8V2H2V8H4V16H2V22H8V20L11 19.9M18 4H20V6H18V4M4 4H6V6H4V4M6 20H4V18H6V20Z' /%3E%3C/svg%3E");
+    .drag-handle {
+      -webkit-user-drag: element;
+      user-select: none;
     }
   `;
 }

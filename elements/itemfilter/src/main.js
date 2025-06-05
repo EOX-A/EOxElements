@@ -452,16 +452,53 @@ export class EOxItemFilter extends LitElement {
                 ${when(
                   !this.inlineMode,
                   () => html`
-                    <slot name="filterstitle"
-                      ><h6 class="main-heading">Filters</h6></slot
-                    >
+                    <nav class="title-nav">
+                      <div class="max">
+                        <slot name="filterstitle"
+                          ><p><strong>Filters</strong></p></slot
+                        >
+                      </div>
+                      ${when(
+                        !this.inlineMode &&
+                          this.#config.filterProperties &&
+                          !this.inlineMode &&
+                          this.#config.filterProperties &&
+                          isFiltersDirty(this.filters),
+                        () => html`
+                          <button
+                            type="button"
+                            id="filter-reset"
+                            class="reset-icon border small"
+                            data-cy="filter-reset"
+                            @click=${() => this.resetFilters()}
+                          >
+                            ${this.unstyled
+                              ? nothing
+                              : html`
+                                  <i class="small">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <title>close</title>
+                                      <path
+                                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                      />
+                                    </svg>
+                                  </i>
+                                `}
+                            <span class="small-text">Reset all</span>
+                          </button>
+                        `,
+                      )}
+                    </nav>
                   `,
                 )}
                 <ul id="filters" class="list no-space">
                   ${map(
                     Object.values(this.filters),
                     (filterObject, index) =>
-                      html` <li>
+                      html` <li class="no-padding">
                         <eox-itemfilter-expandcontainer
                           .filterObject=${filterObject}
                           @details-toggled=${(e) =>
@@ -480,39 +517,6 @@ export class EOxItemFilter extends LitElement {
                       </li>`,
                   )}
                 </ul>
-                ${when(
-                  !this.inlineMode &&
-                    this.#config.filterProperties &&
-                    !this.inlineMode &&
-                    this.#config.filterProperties &&
-                    isFiltersDirty(this.filters),
-                  () => html`
-                    <button
-                      type="button"
-                      id="filter-reset"
-                      class="reset-icon border"
-                      data-cy="filter-reset"
-                      @click=${() => this.resetFilters()}
-                    >
-                      ${this.unstyled
-                        ? nothing
-                        : html`
-                            <i class="small">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                              >
-                                <title>close</title>
-                                <path
-                                  d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
-                                />
-                              </svg>
-                            </i>
-                          `}
-                      <span>Reset all</span>
-                    </button>
-                  `,
-                )}
               </section>
             </eox-itemfilter-container>
           `,
@@ -520,6 +524,7 @@ export class EOxItemFilter extends LitElement {
         ${when(
           this.#config?.showResults && this.results,
           () => html`
+            <div class="small-space"></div>
             <eox-itemfilter-results
               .config=${this.#config}
               .results=${this.results}
@@ -532,9 +537,11 @@ export class EOxItemFilter extends LitElement {
               @result=${this.updateResult}
               @click:result-action=${this.emitResultAction}
             >
-              <slot name="resultstitle"
-                ><h6 class="main-heading">Results</h6></slot
-              >
+              <nav class="title-nav">
+                <slot name="resultstitle"
+                  ><p><strong>Results</strong></p></slot
+                >
+              </nav>
             </eox-itemfilter-results>
           `,
         )}

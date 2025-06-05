@@ -104,7 +104,7 @@ export class EOxChart extends LitElement {
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
-      <div id="vis"></div>
+      <div id="vis" class="no-round"></div>
     `;
   }
 }

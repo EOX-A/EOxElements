@@ -179,7 +179,7 @@ export class EOxSelector extends LitElement {
   render() {
     const type = this.type.includes("multi") ? "checkbox" : "radio";
     const selectOverflowClass =
-      this.filteredSuggestions.length > 5 ? "select-overflow" : nothing;
+      this.filteredSuggestions.length > 5 ? "select-overflow scroll" : nothing;
     return html`
       <style>
         ${!this.unstyled && styleEOX}
@@ -188,7 +188,9 @@ export class EOxSelector extends LitElement {
         this.suggestions.length > 10,
         () =>
           html`<div class="autocomplete-container">
-            <div class="autocomplete-container-wrapper field border">
+            <div
+              class="autocomplete-container-wrapper field small large-margin left-margin"
+            >
               <input
                 autocomplete="off"
                 tabindex=${this.tabIndex}
@@ -212,7 +214,7 @@ export class EOxSelector extends LitElement {
                 data-identifier="${suggestion.toString().toLowerCase()}"
                 data-title="${suggestion}"
               >
-                <label class="${type}">
+                <label class="${type} small max">
                   <input
                     type="${type}"
                     name=${suggestion}
@@ -224,7 +226,7 @@ export class EOxSelector extends LitElement {
                     }}
                     tabindex=${this.tabIndex + 1}
                   />
-                  <span class="title">${suggestion}</span>
+                  <span class="title small-line">${suggestion}</span>
                 </label>
               </li>
             `,

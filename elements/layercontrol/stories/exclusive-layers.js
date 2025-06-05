@@ -2,6 +2,7 @@ import { html } from "lit";
 import {
   STORIES_LAYER_EOX_CLOUDLESS_2021,
   STORIES_LAYER_TERRAIN_LIGHT,
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
 } from "../src/enums/stories";
 
@@ -18,7 +19,10 @@ export const ExclusiveLayers = {
   args: {},
   render: () => html`
     <div style="display: flex">
-      <eox-layercontrol for="eox-map#exclusive"></eox-layercontrol>
+      <eox-layercontrol
+        for="eox-map#exclusive"
+        .style=${STORIES_LAYERCONTROL_STYLE}
+      ></eox-layercontrol>
       <eox-map
         id="exclusive"
         .style=${STORIES_MAP_STYLE}

@@ -5,6 +5,7 @@ ${eoxStyle}
 :host {
   --primary-color: var(--primary);
   --color-primary-lighter: color-mix(in srgb, var(--primary-color), #fff 95%);
+  --padding: 0.5rem;
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -16,14 +17,6 @@ img,
 video,
 iframe {
   max-width: 100%;
-}
-header,
-main,
-footer {
-  padding: 30px;
-}
-header {
-  background: var(--color-primary-lighter);
 }
 section#tags li {
   list-style: none;
@@ -84,11 +77,6 @@ section#featured .button-container > div {
 section#featured .button-container > div > p {
   margin-bottom: 0;
 }
-footer .copy {
-  position: absolute;
-  top: 15px;
-  right: 30px;
-}
 dt {
   font-weight: bold;
   text-transform: uppercase;
@@ -105,37 +93,26 @@ dt {
 dd dt {
   margin-top: 8px;
 }
-
-/* from eox-itemfilter
-TODO harmonize/refactor */
-details summary > * {
-  display: inline;
+header, footer {
+  background: none;
+  margin: 0;
+  padding: 0 var(--padding);
+  min-block-size: 0;
 }
 details summary {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #0002;
-  padding: .5rem 0;
+  padding: 0 var(--padding);
+  user-select: none;
 }
-
-details > summary::-webkit-details-marker {
-  display: none;
+details summary i {
+  transition: transform .1s ease-in-out;
 }
-
-.title {
-  font-size: small;
-  align-items: center;
-}
-details summary .title {
-  display: flex;
-  font-weight: 500;
-}
-details summary::before {
-  content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%230009' viewBox='0 0 24 24'%3E%3Ctitle%3Echevron-right%3C/title%3E%3Cpath d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z' /%3E%3C/svg%3E");
-  height: 24px;
-  width: 24px;
-}
-details[open] summary::before {
+details[open] summary i {
   transform: rotate(90deg);
+}
+details > summary > nav {
+  min-height: 32px;
+}
+details > summary:hover {
+  background-color: var(--surface-container);
 }
 `;

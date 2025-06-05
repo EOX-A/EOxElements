@@ -1,6 +1,7 @@
 import { html } from "lit";
 import {
   STORIES_LAYER_VESSEL_DENSITY_CARGO,
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
   STORIES_LAYER_TERRAIN_LIGHT,
 } from "../src/enums";
@@ -16,6 +17,7 @@ export const LayerDateTime = {
     <eox-layercontrol
       .tools=${["datetime"]}
       for="eox-map#datetime"
+      .style=${STORIES_LAYERCONTROL_STYLE}
       @datetime:updated=${args.onDatetimeUpdated}
     ></eox-layercontrol>
     <hr />

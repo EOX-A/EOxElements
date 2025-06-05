@@ -217,6 +217,12 @@ export class EOxLayerControl extends LitElement {
         ${this.styleOverride}
       </style>
 
+      <span class="layerstitle">
+        <slot name="layerstitle"
+          ><p><strong>Layers</strong></p></slot
+        >
+      </span>
+
       <!-- Conditional rendering of add layers component -->
       ${when(
         this.addExternalLayers && this.#eoxMap?.addOrUpdateLayer,
@@ -272,18 +278,36 @@ export class EOxLayerControl extends LitElement {
     :host, :root {
       --padding: 0.5rem;
       --padding-vertical: .2rem;
-      --list-padding: 48px;
+      --list-padding: 12px;
       --layer-input-visibility: flex;
       --layer-summary-visibility: flex;
       --layer-type-visibility: block;
-      --layer-title-visibility: flex;
-      --layer-visibility: block;
+      --layer-title-visibility: inline;
+      --layer-visibility: flex;
       --layer-tools-button-visibility: flex;
 
-      display: block;
-      padding: var(--padding) 0;
+      --primary-color: var(--primary);
+      --secondary-color: var(--secondary);
+      --item-color: color-mix(
+        in srgb,
+        var(--primary-color) 10%,
+        transparent
+      );
+      --item-hover-color: color-mix(
+        in srgb,
+        var(--secondary-color) 10%,
+        transparent
+      );
+
+      display: flex;
+      flex-direction: column;
       --background-color: var(--eox-background-color, transparent);
       background-color: var(--background-color, transparent);
+    }
+    
+    .layerstitle {
+      padding-left: var(--padding);
+      padding-right: var(--padding);
     }
     select {
       background-color: var(--background-color);
