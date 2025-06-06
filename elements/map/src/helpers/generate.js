@@ -261,7 +261,10 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   if (newLayerDefinition.visible !== existingJsonDefinition.visible) {
     existingLayer.setVisible(newLayerDefinition.visible);
   }
-  if (newLayerDefinition.opacity !== existingJsonDefinition.opacity) {
+  if (
+    newLayerDefinition.opacity &&
+    newLayerDefinition.opacity !== existingJsonDefinition.opacity
+  ) {
     existingLayer.setOpacity(newLayerDefinition.opacity);
   }
 
