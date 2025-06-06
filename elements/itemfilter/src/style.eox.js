@@ -2,15 +2,6 @@ import eoxStyle from "@eox/ui/style.css?inline";
 
 export const styleEOX = `
 ${eoxStyle}
-    /*TODO TEMP GLOBAL*/
-    :is(.checkbox,.radio,.switch).small {
-        --_size: 1.2rem;
-    }
-        .list.no-space>li, .list.no-space>li>details>summary {
-  min-block-size: 0rem;
-  padding: 0 1rem;
-}
-
 .field {
   margin-block-end: 0;
 }
@@ -27,7 +18,7 @@ ${eoxStyle}
     transparent
   );
   --item-hover-color: var(--surface-container);
-  --item-select-color: var(--primary-color);
+  --item-select-color: var(--surface-variant);
   --inline-bg-color: color-mix(
     in srgb,
     var(--secondary-color) 10%,
@@ -133,31 +124,8 @@ section:not(section:last-of-type) {
   padding-left: var(--padding);
   padding-right: var(--padding);
 }
-/* TEMP TODO GLOBAL*/
-.scroll::-webkit-scrollbar,
-.scroll::-webkit-scrollbar-thumb,
-.scroll::-webkit-scrollbar-button {
-  background: none;
-  inline-size: 0.4rem;
-  block-size: 0.4rem;
-}
-
-.scroll:is(:hover,:focus)::-webkit-scrollbar-thumb {
-  background: var(--outline);
-  border-radius: 1rem;
-}
-ul#results .result-action {
-  opacity: .5;
-  transition: opacity .3s ease-in-out;
-}
 ul#results li:not(:hover) .result-action {
   display: none;
-}
-ul#results .result-action:hover {
-  opacity: 1;
-}
-ul#results .highlighted .result-action > * {
-  filter: invert(1);
 }
 eox-layout {
   padding: .5rem var(--padding);
@@ -452,8 +420,13 @@ mark.highlight {
 }
 .error-validation {
   position: relative;
-  color: red;
+  color: #ba1a1a !important;
   font-size: x-small;
+}
+@media (prefers-color-scheme: dark) {
+  .error-validation {
+    color: #ffb4ab !important;
+  }
 }
 input {
   background-color: var(--background-color);

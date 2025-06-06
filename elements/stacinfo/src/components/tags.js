@@ -27,7 +27,7 @@ export default function parseTags(tags = []) {
                     value.value,
                     (tag) => html`
                       <button
-                        class="chip fill"
+                        class="chip primary"
                         style="--_size: 1rem; padding: 0.7rem; font-size: small"
                       >
                         ${tag}

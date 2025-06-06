@@ -297,7 +297,7 @@ class EOxGeoSearch extends LitElement {
 
     const menuInput = html`
       <li>
-        <div class="field large prefix surface border">
+        <div class="field small prefix surface border">
           ${!this.unstyled
             ? this._isLoading
               ? this.loaderSvg
@@ -322,7 +322,7 @@ class EOxGeoSearch extends LitElement {
         class="geosearch"
       >
       
-        <div class="${this.button ? (this.small ? "button small surface square small-elevate" : "button extra circle") : "field large prefix round surface border active"}" data-ui="#search"
+        <div class="${this.button ? (this.small ? "button small circle small-elevate" : "button extra circle") : "field small prefix round surface border active"}" data-ui="#search"
         @click=${() => {
           this._isListVisible = true;
           setTimeout(() => {
@@ -332,7 +332,7 @@ class EOxGeoSearch extends LitElement {
           }, 500);
         }}
         >
-        ${!this.unstyled ? html`<i class="front">${searchIcon}</i>` : ""}
+        ${!this.unstyled ? html`<i class="front small">${searchIcon}</i>` : ""}
 
   ${this.button || this.unstyled ? "" : html`<input placeholder="Type to search" />`}
   <menu id="search" class="surface ${this.button ? `no-wrap ${this.direction} ${this.resultsDirection === "up" ? "top" : "bottom"}` : ""} min${this._isListVisible ? " active" : ""}">

@@ -229,8 +229,8 @@ export class SliderTicks extends LitElement {
                     key=${`label-${yearIndex}`}
                     x=${position + 16}
                     y="30"
-                    fill="#555"
-                    font-size="14"
+                    fill="currentColor"
+                    font-size="smaller"
                     text-anchor="middle"
                   >
                     ${year.year}

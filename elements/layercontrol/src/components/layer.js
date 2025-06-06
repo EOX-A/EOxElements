@@ -254,6 +254,7 @@ export class EOxLayerControlLayer extends LitElement {
             <!-- Input element for layer visibility -->
             <label
               class="${disableClass} ${inputType} icon square action small"
+              style="--primary: currentColor"
             >
               <input
                 type=${inputType}
