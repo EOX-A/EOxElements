@@ -230,9 +230,17 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
     .getLayers()
     .getArray()
     .map((layer) => layer.setMinZoom(layer.get("minZoom") - 1e-12));
-  // set the min/max zoom of the scene accordingly
-  EOxMap.map.getView().setMaxZoom(minMax.maxZoom);
-  EOxMap.map.getView().setMinZoom(minMax.minZoom >= 0 ? minMax.minZoom : 0);
+
+  const currentMinZoom = EOxMap.map.getView().getMinZoom();
+  const currentMaxZoom = EOxMap.map.getView().getMaxZoom();
+
+  // set the min zoom of the scene accordingly
+  if (currentMinZoom !== minMax.minZoom)
+    EOxMap.map.getView().setMinZoom(minMax.minZoom >= 0 ? minMax.minZoom : 0);
+
+  // set the max zoom of the scene accordingly
+  if (currentMaxZoom !== minMax.maxZoom)
+    EOxMap.map.getView().setMaxZoom(minMax.maxZoom);
 
   // disable zoom in/out when the max/min zoom level is reached
   EOxMap.map.on("moveend", () => {
