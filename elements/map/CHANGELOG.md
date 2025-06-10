@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.3](https://github.com/EOX-A/EOxElements/compare/map-v1.21.2...map-v1.21.3) (2025-06-10)
+
+
+### Bug Fixes
+
+* Min/max zoom was setting the zoom level even when the current min and max level same, which was causing some weird zoom level issue ([#1714](https://github.com/EOX-A/EOxElements/issues/1714)) ([f8cd03d](https://github.com/EOX-A/EOxElements/commit/f8cd03dc61cb9a050e95b0a40d2172dd3ce0e5ef))
+
 ## [1.21.2](https://github.com/EOX-A/EOxElements/compare/map-v1.21.1...map-v1.21.2) (2025-05-20)
 
 
