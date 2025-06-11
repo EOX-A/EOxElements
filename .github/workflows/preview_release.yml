@@ -43,7 +43,7 @@ jobs:
 
       - name: Install dependencies 👨🏻‍💻
         run: npm ci --prefer-offline --no-audit
-      
+
       - name: Build packages 🔧
         run: npm run build:all
 
