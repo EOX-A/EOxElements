@@ -48,4 +48,4 @@ jobs:
         run: npm run build:all
 
       - name: Release preview 🚀
-        run: npx pkg-pr-new publish './elements/*' './utils/'
+        run: npx pkg-pr-new publish './elements/*' './utils/' --compact --comment=off
