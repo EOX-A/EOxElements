@@ -111,7 +111,7 @@ export const styleEOX = `
   .form-control:not([data-schematype="boolean"] .form-control) {
     margin-bottom: 15px;
   }
-  .form-control input:not([data-schematype="boolean"] input),
+  .form-control input:not([data-schematype="boolean"] input):not([type="range"]),
   .form-control select {
     display: block;
     width: 100%;
@@ -134,8 +134,8 @@ export const styleEOX = `
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
   }
-  .form-control input:not([data-schematype="boolean"] input):focus,
-  .form-control input:not([data-schematype="boolean"] input):focus-visible {
+  .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus,
+  .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible {
     border: .125rem solid transparent;
     border-color: var(--primary);
   }
