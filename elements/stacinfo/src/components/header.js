@@ -22,7 +22,7 @@ export default function parseHeader(header = []) {
               ${map(
                 header,
                 ([, value]) => staticHTML`
-              <p><strong>${unsafeHTML(value.formatted)}</strong></p>
+              <h6 class="small-margin vertical-margin"><strong>${unsafeHTML(value.formatted)}</strong></h6>
               `,
               )}
             </slot>
