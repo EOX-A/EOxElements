@@ -6,6 +6,24 @@ export const Primary = {
   render: () => html`
     <!-- Render eox-layout component -->
     <eox-map
+      .controls=${{
+        Zoom: {},
+        Attribution: {},
+        FullScreen: {},
+        OverviewMap: {
+          layers: [
+            {
+              type: "Tile",
+              properties: {
+                id: "overviewMap",
+              },
+              source: {
+                type: "OSM",
+              },
+            },
+          ],
+        },
+      }}
       .layers=${[
         {
           type: "Tile",
@@ -162,7 +180,7 @@ export const Primary = {
       style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;"
     ></eox-map>
     <eox-layout gap="8">
-      <eox-layout-item x="0" y="0" w="2" h="12">
+      <eox-layout-item x="1" y="0" w="2" h="12">
         <div class="item-container">
           <eox-itemfilter
             style="height: auto; max-height: 500px; overflow: hidden;"
@@ -203,7 +221,7 @@ export const Primary = {
           ></eox-stacinfo>
           <hr class="medium" />
           <p class="small-padding left-padding"><strong>Draw</strong></p>
-          <eox-drawtools></eox-drawtools>
+          <eox-drawtools multiple-features show-list></eox-drawtools>
           <hr class="medium" />
           <eox-chart
             style="height: 150px"
@@ -269,14 +287,8 @@ export const Primary = {
           ></eox-chart>
         </div>
       </eox-layout-item>
-      <eox-layout-item
-        x="5"
-        y="11"
-        w="3"
-        h="1"
-        style="display: grid; place-items: center;"
-      >
-        <div class="item-container">
+      <eox-layout-item x="5" y="10" w="3" h="2">
+        <div class="item-container" style="overflow: hidden">
           <eox-timecontrol
             .layer=${"AWS_NO2-VISUALISATION"}
             .controlProperty=${"TIME"}
@@ -301,9 +313,18 @@ export const Primary = {
               "2023-04-24",
             ]}
             .play=${true}
+            .slider=${true}
           ></eox-timecontrol>
         </div>
       </eox-layout-item>
+      <eox-geosearch
+        style="grid-column: 6 / span 3; pointer-events: all"
+      ></eox-geosearch>
+      <eox-geosearch
+        small
+        button
+        style="grid-column: 6 / span 3; pointer-events: all"
+      ></eox-geosearch>
     </eox-layout>
     <style>
       html,
@@ -334,6 +355,11 @@ export const Primary = {
         overflow-x: hidden;
         overflow-y: auto;
         max-height: 100%;
+      }
+      @media (prefers-color-scheme: dark) {
+        .item-container {
+          background-color: rgba(0, 0, 0, 0.8);
+        }
       }
     </style>
   `,
