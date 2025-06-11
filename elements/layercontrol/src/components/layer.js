@@ -3,6 +3,7 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-tools";
 import { firstUpdatedMethod, inputClickMethod } from "../methods/layer";
+import { getToolsIcon, _parseTools } from "../helpers/layer-tools";
 
 /**
  * `EOxLayerControlLayer` represents a custom web component managing individual layers within the EOxLayerControl system.
@@ -161,7 +162,20 @@ export class EOxLayerControlLayer extends LitElement {
       : "checkbox";
 
     // Check if tools are available for the layer
-    const isToolsAvail = this.tools?.length > 0;
+    const isToolsAvail = _parseTools(this.tools, this.layer)?.length > 0;
+
+    // Check if eox-layercontrol-layer-tools is available in the DOM elsewhere for external tools,
+    // otherwise render inside layercontrol
+    const externalTools = document.querySelector(
+      "eox-layercontrol-layer-tools",
+    );
+    if (externalTools) {
+      Object.assign(externalTools, {
+        layer: this.layer,
+        tools: this.tools,
+        toolsAsList: this.toolsAsList,
+      });
+    }
 
     return html`
       <style>
@@ -246,10 +260,27 @@ export class EOxLayerControlLayer extends LitElement {
               >
             </div>
 
-            <!-- Actions -->
-            <button class="square transparent small action">
-              <i class="mdi mdi-dots-vertical small"></i>
-            </button>
+            ${when(
+              isToolsAvail,
+              () => html`
+                <button
+                  class="transparent square small action"
+                  @click=${() => {
+                    const toolsDetails = this.renderRoot
+                      .querySelector("eox-layercontrol-layer-tools")
+                      ?.querySelector("details");
+                    // Toggle tools details open/close
+                    toolsDetails.open = !toolsDetails.open;
+                  }}
+                >
+                  <i class="small">
+                    ${getToolsIcon()[
+                      this.tools.length > 1 ? "dots" : this.tools[0]
+                    ]}
+                  </i>
+                </button>
+              `,
+            )}
 
             <!-- Input element for layer visibility -->
             <label
@@ -267,42 +298,20 @@ export class EOxLayerControlLayer extends LitElement {
               </span>
             </label>
           </nav>
-          <!--<nav
-            class="layer ${visibilityClass} ${layerZoomStateClass}"
-            style="display: flex;"
-          >
-            <label class="drag-handle ${disableClass} ${inputType} small">
-              
-              <input
-                type=${inputType}
-                .checked=${live(visibility)}
-                @click=${this.#handleInputClick}
-              />
+        `,
+      )}
 
-              
-              <span
-                class="${this.#getLayer("color") ? "color-swatch" : ""}"
-                style="--layer-color: ${this.#getLayer("color")}"
-              >
-                <span class="layertitle">
-                  ${this.#getLayer(this.titleProperty)}
-                </span>
-              </span>
-              ${when(
-            isToolsAvail,
-            () => html`<div class="tools-placeholder"></div>`,
-          )}
-            </label>
-          </nav>-->
-
-          <!-- Render layer tools -->
-          <!--<eox-layercontrol-layer-tools
+      <!-- Render layer tools -->
+      ${when(
+        isToolsAvail && !externalTools,
+        () => html`
+          <eox-layercontrol-layer-tools
             .noShadow=${true}
             .layer=${this.layer}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
-          ></eox-layercontrol-layer-tools>-->
+          ></eox-layercontrol-layer-tools>
         `,
       )}
     `;

@@ -192,16 +192,22 @@ export class EOxLayerControlLayerList extends LitElement {
     }
     eox-layercontrol-layer.sortable-ghost {
     }
-    li:not(li:has(eox-layercontrol-layer-group)):hover {
+    li:not(li:has(eox-layercontrol-layer-group)):not(:has(details[open])):hover {
       background-color: var(--surface-container);
     }
     .list li ul.list > li {
       margin-left: 1.5rem;
     }
+    .list li ul.list > li:has(details[open]) eox-layercontrol-tools-items {
+      display: block;
+      margin-left: -1.5rem;
+    }
     /*TEMP*/
-    .list.no-space>li, .list.no-space>li>details>summary {
+    .list.no-space>li,
+    .list.no-space>li>details>summary,
+    .list>li:has(ul,ol,details[open],a:only-child) {
       min-block-size: 0rem;
-      padding: 0 var(--padding);
+      padding: 0 var(--padding) !important;
     }
   `;
 }
