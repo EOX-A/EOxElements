@@ -38,14 +38,6 @@ export default {
       @ready=${args.onReady}
       @submit=${args.onSubmit}
     ></eox-jsonform>
-    <style>
-      .field.small > :is(input, textarea, select) {
-        font-size: 0.75rem;
-      }
-    </style>
-    <div class="field border small">
-      <input type="text" placeholder="type here" />
-    </div>
   `,
 };
 
