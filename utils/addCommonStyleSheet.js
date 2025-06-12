@@ -5,12 +5,8 @@ import eoxStyle from "@eox/ui/style.css?inline";
  * defined both inside the shadow DOM as well as outside
  */
 export const addCommonStylesheet = () => {
-  const commentFlag = "/* EOxElements shared stylesheet */";
-  if (
-    !Array.from(document.head.querySelectorAll("style")).some((s) =>
-      s.innerHTML.includes(commentFlag),
-    )
-  ) {
+  const id = "eox-elements";
+  if (!document.head.querySelector(`style#${id}`)) {
     const eoxUiStyleSheet = new CSSStyleSheet();
     eoxUiStyleSheet.replaceSync(eoxStyle);
 
@@ -19,8 +15,8 @@ export const addCommonStylesheet = () => {
       .map((r) => r.cssText)
       .join(" ");
     const style = document.createElement("style");
+    style.setAttribute("id", id);
     style.innerHTML = `
-    ${commentFlag}
     @import url("https://eox.at/fonts/inter/inter.css");
   
     eox-chart,
@@ -34,7 +30,10 @@ export const addCommonStylesheet = () => {
     eox-stacinfo,
     eox-storytelling,
     eox-timecontrol {
-      font-family: Inter;
+      font-family: var(--font);
+      font-size: .875rem;
+      line-height: 1.5rem;
+      letter-spacing: .0313rem;
     }
     ${rootStyles}
   `;
