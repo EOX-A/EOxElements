@@ -129,17 +129,25 @@ export class EOxLayerControlLayerGroup extends LitElement {
             data-children-length=${numberOfChildLayers}
           >
             <summary class="square">
-              <!-- Open/close arrow -->
-              <div class="arrow-container">
-                <i class="small">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <title>chevron-right</title>
-                    <path
-                      d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
-                    />
-                  </svg>
-                </i>
-              </div>
+              ${when(
+                numberOfChildLayers > 0,
+                () => html`
+                  <!-- Open/close arrow -->
+                  <div class="arrow-container">
+                    <i class="small">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                      >
+                        <title>chevron-right</title>
+                        <path
+                          d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+                        />
+                      </svg>
+                    </i>
+                  </div>
+                `,
+              )}
 
               <!-- Render the layer control within the summary -->
               <eox-layercontrol-layer

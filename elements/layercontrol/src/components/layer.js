@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, nothing } from "lit";
 import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-tools";
@@ -187,7 +187,7 @@ export class EOxLayerControlLayer extends LitElement {
         () => html`
           <!-- Render the layer -->
           <nav
-            class="layer ${visibilityClass} ${layerZoomStateClass} drag-handle responsive tiny-space"
+            class="layer ${disableClass} ${visibilityClass} ${layerZoomStateClass} drag-handle responsive tiny-space"
           >
             ${when(!this.unstyled, () => {
               if (this.#getLayer("color")) {
@@ -291,6 +291,7 @@ export class EOxLayerControlLayer extends LitElement {
                 type=${inputType}
                 .checked=${live(visibility)}
                 @click=${this.#handleInputClick}
+                disabled=${disableClass || nothing}
               />
               <span>
                 <i class="mdi mdi-eye-off-outline"></i>
