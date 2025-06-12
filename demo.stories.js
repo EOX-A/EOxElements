@@ -1,7 +1,7 @@
 import { html } from "lit";
 import eoxStyle from "@eox/ui/style.css?inline";
 import "@eox/ui";
-import items from "../elements/itemfilter/test/testItems.json";
+import items from "./elements/itemfilter/test/testItems.json";
 
 export default {
   title: "Demo",
