@@ -194,7 +194,6 @@ section {
 nav.title-nav {
   padding-left: var(--padding);
   padding-right: var(--padding);
-  height: 34px;
 }
 eox-itemfilter-range,
 tc-range-slider {
