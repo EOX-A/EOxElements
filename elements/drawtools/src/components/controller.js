@@ -161,7 +161,7 @@ export class EOxDrawToolsController extends LitElement {
           <!-- Draw Button -->
           <button
             data-cy="drawBtn"
-            class="transparent circle primary-text no-margin small"
+            class="transparent square primary-text no-margin small"
             title="${this.unstyled ? (this.select ? "Select" : "Draw") : ""}"
             ?disabled="${this.#drawDisabled || nothing}"
             @click="${() => this.drawFunc.start()}"
@@ -172,7 +172,7 @@ export class EOxDrawToolsController extends LitElement {
                   <i class="small"
                     >${this.select ? pointerIcon : polygonIcon}</i
                   >
-                  <div class="tooltip right">
+                  <div class="tooltip bottom">
                     ${this.select ? "Select" : "Draw"}
                   </div>
                 `}
@@ -181,7 +181,7 @@ export class EOxDrawToolsController extends LitElement {
           <!-- Discard Button -->
           <button
             data-cy="discardBtn"
-            class="transparent circle error-text no-margin small"
+            class="transparent square error-text no-margin small"
             title="${this.unstyled ? "Discard" : ""}"
             ?disabled="${this.#discardDisabled || nothing}"
             @click="${() => this.drawFunc.discard()}"
@@ -190,7 +190,7 @@ export class EOxDrawToolsController extends LitElement {
               ? "discard"
               : html`
                   <i class="small">${discardIcon}</i>
-                  <div class="tooltip right">Discard</div>
+                  <div class="tooltip bottom">Discard</div>
                 `}
           </button>
         </div>
