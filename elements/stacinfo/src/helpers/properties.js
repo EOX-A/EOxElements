@@ -73,7 +73,7 @@ export function transformProperties(properties, element, type = "property") {
                     ? `<div><p>${itemValue.description}</p></div>`
                     : ``
                 }
-                <a class="button small responsive" target="_blank" href="${
+                <a class="button small responsive border" target="_blank" href="${
                   itemValue.href || itemValue.url
                 }"
                   >
