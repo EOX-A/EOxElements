@@ -241,7 +241,7 @@ export class EOxSelectInteraction {
         },
       )
         ? options.cursor || "pointer"
-        : this.eoxMap.interactions.drawInteraction.getActive()
+        : this.eoxMap.interactions.drawInteraction?.getActive()
           ? "crosshair"
           : "auto";
     };
