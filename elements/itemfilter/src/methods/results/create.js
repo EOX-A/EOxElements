@@ -161,17 +161,18 @@ export function createItemListMethod(
               ${when(
                 EOxItemFilterResults.enableResultAction,
                 () => html`
-                  <button class="result-action square transparent small">
-                    <icon
-                      class="small"
-                      @click=${(event) => {
-                        event.stopPropagation(); // prevents emitting the `li` event above
-                        EOxItemFilterResults.dispatchEvent(
-                          new CustomEvent("click:result-action", {
-                            detail: item,
-                          }),
-                        );
-                      }}
+                  <button
+                    class="result-action square transparent small"
+                    @click=${(event) => {
+                      event.stopPropagation(); // prevents emitting the `li` event above
+                      EOxItemFilterResults.dispatchEvent(
+                        new CustomEvent("click:result-action", {
+                          detail: item,
+                        }),
+                      );
+                    }}
+                  >
+                    <icon class="small"
                       >${unsafeHTML(
                         EOxItemFilterResults.resultActionIcon,
                       )}</icon
