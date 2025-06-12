@@ -61,6 +61,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
+    "@eox/elements-utils": "^0.1.5",
     "@eox/ui": "^0.3.4"
   }
 }

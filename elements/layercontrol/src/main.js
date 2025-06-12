@@ -1,6 +1,5 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
-import eoxStyle from "@eox/ui/style.css?inline";
 import "./components/layer-list";
 import "./components/optional-list";
 import "./components/add-layers";
@@ -9,6 +8,10 @@ import {
   firstUpdatedMethod,
   layerListChangeMethod,
 } from "./methods/layercontrol";
+import eoxStyle from "@eox/ui/style.css?inline";
+import { addCommonStylesheet } from "@eox/elements-utils";
+
+addCommonStylesheet();
 
 /**
  * Display layers and groups of a connected OpenLayers map
