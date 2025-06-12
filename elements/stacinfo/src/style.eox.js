@@ -118,4 +118,7 @@ details > summary > nav {
 details > summary:hover {
   background-color: var(--surface-container-low);
 }
+button.chip:hover {
+  cursor: auto;
+}
 `;
