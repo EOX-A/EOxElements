@@ -178,7 +178,7 @@ export function createItemListMethod(
                 EOxItemFilterResults.enableResultAction,
                 () => html`
                   <button
-                    class="result-action square transparent small"
+                    class="result-action square transparent primary-text small"
                     @click=${(event) => {
                       event.stopPropagation(); // prevents emitting the `li` event above
                       EOxItemFilterResults.dispatchEvent(

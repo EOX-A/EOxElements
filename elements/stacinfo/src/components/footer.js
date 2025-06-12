@@ -35,7 +35,7 @@ export default function parseFooter(footer = []) {
                       key === "sci:citation",
                       () => html`
                         <button
-                          class="copy square transparent small"
+                          class="copy square primary-text transparent small"
                           @click=${() =>
                             navigator.clipboard.writeText(value.formatted)}
                         >

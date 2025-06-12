@@ -210,7 +210,7 @@ export class EOxLayerControlAddLayers extends LitElement {
 
           <!-- Button to toggle tabs -->
           <button
-            class="add-icon transparent square small"
+            class="add-icon transparent square primary-text small"
             @click=${() => this.#handleOpenCloseTab(!this.open ? "url" : null)}
           >
             ${this.unstyled

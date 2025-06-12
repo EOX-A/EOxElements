@@ -264,7 +264,7 @@ export class EOxLayerControlLayer extends LitElement {
               isToolsAvail,
               () => html`
                 <button
-                  class="transparent square small action"
+                  class="transparent square primary-text small action"
                   @click=${() => {
                     const toolsDetails = this.renderRoot
                       .querySelector("eox-layercontrol-layer-tools")
@@ -284,8 +284,7 @@ export class EOxLayerControlLayer extends LitElement {
 
             <!-- Input element for layer visibility -->
             <label
-              class="${disableClass} ${inputType} icon square action small"
-              style="--primary: currentColor"
+              class="${disableClass} ${inputType} icon square primary-text action small"
             >
               <input
                 type=${inputType}

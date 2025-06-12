@@ -41,7 +41,10 @@ export const _parseTools = (tools, layer) =>
  * @returns {import("lit").HTMLTemplateResult} - Button element.
  */
 export const Button = (tool, icon, unstyled) => html`
-  <button slot="${tool}-icon" class="no-margin transparent square small">
+  <button
+    slot="${tool}-icon"
+    class="no-margin transparent square primary-text small"
+  >
     ${unstyled ? tool : html`<i class="small primary-text">${icon}</i>`}
   </button>
 `;
@@ -81,7 +84,7 @@ export const removeButton = (EOxLayerControlLayerTools, icon) => html`
  */
 export const sortButton = (unstyled, icon) => html`
   <button
-    class="sort-icon no-margin transparent square drag-handle small"
+    class="sort-icon no-margin transparent square primary-text drag-handle small"
     style="cursor: ns-resize;"
   >
     ${unstyled ? "═" : html`<i class="small primary-text">${icon}</i>`}
