@@ -17,7 +17,7 @@ function CardDisplayStory() {
         .subTitleProperty=${args.subTitleProperty}
         .filterProperties=${args.filterProperties}
         .resultType=${args.resultType}
-        style="--card-gap: 16px; --card-width: 300px; --card-height: 200px; --card-border-radius: 8px;"
+        style="height: 500px; --card-gap: 16px; --card-width: 300px; --card-height: 200px; --card-border-radius: 8px; --form-flex-direction: row"
       ></eox-itemfilter>`,
     args: {
       aggregateResults: "themes",

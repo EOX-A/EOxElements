@@ -46,14 +46,14 @@ form#itemfilter {
 eox-itemfilter-container {
   min-width: 200px;
   display: var(--filter-display);
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 0;
   overflow: hidden;
 }
 eox-itemfilter-results {
-  flex-grow: 0;
+  flex-grow: 1;
   overflow: hidden;
-  max-height: 50%;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
 }

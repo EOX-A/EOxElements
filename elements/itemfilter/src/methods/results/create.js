@@ -102,12 +102,28 @@ export function createItemListMethod(
                 () => html`
                   ${when(
                     EOxItemFilterResults.resultType === "cards",
-                    () => html`
-                      <img
-                        class="image"
-                        src="${getValue(config.imageProperty, item)}"
-                      />
-                    `,
+                    () =>
+                      getValue(config.imageProperty, item)
+                        ? html`
+                            <img
+                              class="image"
+                              src="${getValue(config.imageProperty, item)}"
+                            />
+                          `
+                        : html`
+                            <svg
+                              class="image"
+                              width="100%"
+                              height="100%"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <rect
+                                width="100%"
+                                height="100%"
+                                fill="var(--primary-color)"
+                              />
+                            </svg>
+                          `,
                     () => html`
                       <i class="small">
                         ${getValue(config.imageProperty, item)
