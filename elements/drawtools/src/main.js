@@ -352,6 +352,12 @@ export class EOxDrawTools extends LitElement {
         ${!this.unstyled && styleEOX}
       </style>
 
+      <div class="drawtitle">
+        <slot name="drawtitle"
+          ><p><strong>Draw</strong></p></slot
+        >
+      </div>
+
       <!-- Controller Component -->
       <eox-drawtools-controller
         .drawFunc=${{
