@@ -20,9 +20,9 @@ export const KitchenSink = {
       <label class="switch icon small">
         <input
           type="checkbox"
-          .checked=${ui("mode") === "dark"}
+          .checked=${window.ui("mode") === "dark"}
           @input=${(e) => {
-            ui("mode", e.target.checked ? "dark" : "light");
+            window.ui("mode", e.target.checked ? "dark" : "light");
           }}
         />
         <span>
