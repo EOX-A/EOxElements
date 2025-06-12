@@ -114,6 +114,8 @@ export const styleEOX = `
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]),
   .form-control select {
     display: block;
+    opacity: 1;
+    position: relative;
     width: 100%;
     padding: 6px 12px;
     font-size: 0.75rem;
