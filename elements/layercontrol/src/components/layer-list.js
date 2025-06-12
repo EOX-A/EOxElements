@@ -132,9 +132,9 @@ export class EOxLayerControlLayerList extends LitElement {
               (layer) => layer,
               (layer) => html`
                 <li
-                  class="no-padding"
                   data-layer="${layer.get(this.idProperty)}"
                   data-type="${getLayerType(layer, this.map)}"
+                  class="square"
                 >
                   ${
                     /** Checks if the layer is a group or individual layer and renders accordingly */
@@ -161,6 +161,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .map=${this.map}
                             .titleProperty=${this.titleProperty}
                             .showLayerZoomState=${this.showLayerZoomState}
+                            .layerType=${getLayerType(layer, this.map)}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
                             .toolsAsList=${this.toolsAsList}
@@ -183,22 +184,30 @@ export class EOxLayerControlLayerList extends LitElement {
       box-sizing: border-box;
       width: 100%;
     }
-    ul ul {
-      padding-left: var(--list-padding) !important;
-    }
-    li:not(li li) {
-      padding-left: var(--padding) !important;
-    }
-    li.sortable-chosen {
+    eox-layercontrol-layer.sortable-chosen {
       background: #eeea !important;
     }
-    li.sortable-drag {
+    eox-layercontrol-layer.sortable-drag {
       opacity: 0;
     }
-    li.sortable-ghost {
+    eox-layercontrol-layer.sortable-ghost {
     }
-    .list.no-space>li, .list.no-space>li>details>summary {
-      min-block-size: 0 !important;
+    li:not(li:has(eox-layercontrol-layer-group)):not(:has(details[open])):hover {
+      background-color: var(--surface-container-low);
+    }
+    .list li ul.list > li {
+      margin-left: 1.5rem;
+    }
+    .list li ul.list > li:has(details[open]) eox-layercontrol-tools-items {
+      display: block;
+      margin-left: -1.5rem;
+    }
+    /*TEMP*/
+    .list.no-space>li,
+    .list.no-space>li>details>summary,
+    .list>li:has(ul,ol,details[open],a:only-child) {
+      min-block-size: 0rem;
+      padding: 0 var(--padding) !important;
     }
   `;
 }

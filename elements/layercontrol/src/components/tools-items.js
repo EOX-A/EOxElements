@@ -1,6 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
+import eoxStyle from "@eox/ui/style.css?inline";
 
 export class EOxLayerControlTabs extends LitElement {
   // Define static properties for the component
@@ -120,7 +121,10 @@ export class EOxLayerControlTabs extends LitElement {
             </nav>
           `,
         )}
-        <figure>
+        <figure
+          class="border grey-border no-round small-padding vertical-padding"
+          style="overflow: hidden; white-space: normal"
+        >
           <!-- Content for each tab -->
           ${map(
             tabs,
@@ -171,41 +175,8 @@ export class EOxLayerControlTabs extends LitElement {
   `;
 
   #styleEOX = `
-    .listed label {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      background: var(--background-color) !important;
-    }
-    .listed label:not(:first-of-type) {
-      margin-top: 10px;
-    }
-    .listed label span {
-      text-transform: capitalize;
-      font-weight: 300;
-    }
-    .tabbed, .listed {
-      font-size: small;
-    }
-    .tabbed label.highlighted {
-      border: 1px solid #0041701a;
-      border-radius: 2px;
-      border-bottom: none;
-      pointer-events: none;
-    }
-    nav div label,
-    nav div span {
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
+    ${eoxStyle}
     figure {
-      background: var(--background-color);
-      border: 1px solid #0041701a;
-      border-radius: 2px;
       padding: var(--padding-vertical) var(--padding);
     }
   `;

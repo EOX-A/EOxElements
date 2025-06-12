@@ -161,7 +161,7 @@ export class EOxDrawToolsList extends LitElement {
     </svg>`;
 
     return html`
-      <ul class="list border no-space">
+      <ul class="list no-space">
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
@@ -172,14 +172,17 @@ export class EOxDrawToolsList extends LitElement {
           // Check if the feature is hovered or clicked
           const isFeatureHovered = this.hoverId === featureId;
           const isFeatureClicked = this.clickId === featureId;
-          const isSelected = isFeatureHovered || isFeatureClicked;
-          const selectionClass = isSelected ? "fill" : nothing;
+          const selectionClass = isFeatureHovered
+            ? "surface-container-low"
+            : isFeatureClicked
+              ? "fill"
+              : nothing;
 
           return keyed(
             featureNumber,
             html`
               <li
-                class="${selectionClass} wave"
+                class="${selectionClass} no-round"
                 @mouseover=${() => this._handleHoverFeature(featureId)}
                 @mouseout=${() => this._handleHoverFeature(featureId, true)}
                 @click="${() => this._handleFeatureSelectAndDeselect(feature)}"
@@ -193,7 +196,7 @@ export class EOxDrawToolsList extends LitElement {
                   index=${i}
                   data-cy="deleteFeatureBtn"
                   data-cy="deleteFeatureBtn"
-                  class="transparent circle small error-text front"
+                  class="transparent square small error-text front"
                   @click="${this._handleDelete}"
                 >
                   ${this.unstyled

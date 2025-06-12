@@ -1,7 +1,7 @@
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { html, nothing } from "lit";
 import { map } from "lit/directives/map.js";
-import { html as staticHTML, unsafeStatic } from "lit/static-html.js";
+import { html as staticHTML } from "lit/static-html.js";
 
 /**
  * This parser displays STAC properties in the header.
@@ -21,10 +21,8 @@ export default function parseHeader(header = []) {
             <slot name="header">
               ${map(
                 header,
-                ([, value], index) => staticHTML`
-              <h${unsafeStatic((index + 3).toString())} class="small bold">${unsafeHTML(
-                value.formatted,
-              )}</h${unsafeStatic((index + 3).toString())}>
+                ([, value]) => staticHTML`
+              <h6 class="small-margin vertical-margin"><strong>${unsafeHTML(value.formatted)}</strong></h6>
               `,
               )}
             </slot>

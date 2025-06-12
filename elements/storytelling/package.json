@@ -34,7 +34,8 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/ui": "^0.3.2",
+    "@eox/elements-utils": "^0.1.5",
+    "@eox/ui": "^0.3.4",
     "@sindresorhus/slugify": "^2.2.1",
     "glightbox": "^3.3.0",
     "isomorphic-dompurify": "^2.4.0",

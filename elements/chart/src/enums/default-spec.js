@@ -8,4 +8,5 @@ export const DEFAULT_SPEC = {
   height: "container",
   autosize: "fit",
   resize: true,
+  padding: 16,
 };

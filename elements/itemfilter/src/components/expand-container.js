@@ -65,18 +65,30 @@ export class EOxItemFilterExpandContainer extends LitElement {
         () =>
           html`<details
             @toggle="${this.#handleDetailsToggle}"
-            class="details-filter"
+            class="details-filter max-width"
             ?open=${this.filterObject.expanded || nothing}
           >
-            <summary>
-              <span
-                class="title"
-                style="${!this.filterObject.title &&
-                "text-transform: var(--text-transform)"}"
-              >
-                ${this.filterObject.title || this.filterObject.key || "Filter"}
+            <summary class="square">
+              <nav class="responsive tiny-space">
+                <i class="small">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <title>chevron-right</title>
+                    <path
+                      d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+                    />
+                  </svg>
+                </i>
+                <span
+                  class="title max"
+                  style="${!this.filterObject.title &&
+                  "text-transform: var(--text-transform)"}"
+                >
+                  ${this.filterObject.title ||
+                  this.filterObject.key ||
+                  "Filter"}
+                </span>
                 <slot name="reset-button"></slot>
-              </span>
+              </nav>
             </summary>
             <div>
               <slot name="filter"></slot>

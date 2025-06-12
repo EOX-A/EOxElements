@@ -210,7 +210,7 @@ export class EOxLayerControlAddLayers extends LitElement {
 
           <!-- Button to toggle tabs -->
           <button
-            class="add-icon transparent square small"
+            class="add-icon transparent square primary-text small"
             @click=${() => this.#handleOpenCloseTab(!this.open ? "url" : null)}
           >
             ${this.unstyled
@@ -223,7 +223,7 @@ export class EOxLayerControlAddLayers extends LitElement {
             ? html`
                 <nav>
                   <!-- Input field for URL -->
-                  <div class="eox-add-layer-col field border small">
+                  <div class="eox-add-layer-col field border small responsive">
                     <input
                       type="text"
                       class="add-url"
@@ -273,7 +273,7 @@ export class EOxLayerControlAddLayers extends LitElement {
               `
             : html`
                 <!-- Textarea for JSON input -->
-                <div class="field textarea border no-margin">
+                <div class="field textarea small border no-margin">
                   <textarea
                     class="add-layer-input small"
                     style="overflow-wrap: break-word; font-family: monospace;"
@@ -306,6 +306,9 @@ export class EOxLayerControlAddLayers extends LitElement {
     }
     .eox-add-layer-main .close {
       display: none;
+    }
+    .field.small > :is(input, textarea, select) {
+      font-size: 0.75rem;
     }
   `;
 }

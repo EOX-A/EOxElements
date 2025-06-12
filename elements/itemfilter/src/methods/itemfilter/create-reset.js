@@ -18,7 +18,7 @@ function createResetMethod(filterObject, tabIndex, EOxItemFilter) {
           type="button"
           tabindex=${tabIndex}
           slot="reset-button"
-          class="reset-icon icon circle transparent small no-margin"
+          class="reset-icon icon square primary-text transparent small no-margin"
           @click=${(e) => {
             const filterElement =
               e.target.parentElement.querySelector("[slot=filter]");
@@ -40,6 +40,7 @@ function createResetMethod(filterObject, tabIndex, EOxItemFilter) {
                     />
                   </svg>
                 </i>
+                <div class="tooltip left">Reset filter</div>
               `}
         </button>
       `,

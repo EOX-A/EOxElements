@@ -20,29 +20,42 @@ export default function parseFeatured(featured = []) {
     ${when(
       featured.length > 0,
       () => html`
-        <section id="featured" part="featured">
+        <section id="featured" class="small-margin top-margin" part="featured">
           ${map(
             featured,
             ([, value]) => html`
-              <details>
-                <summary>
-                  <slot
-                    name="featured-${value.label.toLowerCase()}-summary"
-                    class="title"
-                  >
-                    ${value.label}
-                    ${when(
-                      value.length,
-                      () => html`
-                        <button
-                          class="chip fill"
-                          style="--_size: 1.5rem; --_padding: 1.25rem"
+              <details class="max-width">
+                <summary class="square">
+                  <nav class="responsive tiny-space">
+                    <slot
+                      name="featured-${value.label.toLowerCase()}-summary"
+                      class="title"
+                    >
+                      <i class="small">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
                         >
-                          ${value.length}
-                        </button>
-                      `,
-                    )}
-                  </slot>
+                          <title>chevron-right</title>
+                          <path
+                            d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+                          />
+                        </svg>
+                      </i>
+                      ${value.label}
+                      ${when(
+                        value.length,
+                        () => html`
+                          <button
+                            class="chip"
+                            style="--_size: 1rem; padding: 0.7rem; font-size: small"
+                          >
+                            ${value.length}
+                          </button>
+                        `,
+                      )}
+                    </slot>
+                  </nav>
                 </summary>
                 <div class="featured-container">
                   <slot name="featured-${value.label.toLowerCase()}">

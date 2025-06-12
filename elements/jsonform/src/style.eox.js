@@ -1,4 +1,7 @@
 import eoxStyle from "@eox/ui/style.css?inline";
+import { addCommonStylesheet } from "@eox/elements-utils";
+
+addCommonStylesheet();
 
 export const styleEOX = `
   ${eoxStyle}
@@ -16,6 +19,9 @@ export const styleEOX = `
   :host, :root, form, .CodeMirror {
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
+  }
+  .editor-toolbar, .CodeMirror {
+    border-color: var(--outline) !important;
   }
   form[data-theme="html"][data-theme-custom="eox"] {
     margin-block-start: 0;
@@ -62,7 +68,7 @@ export const styleEOX = `
     padding-top: 0;
     padding-bottom: 0;
     background-color: var(--eox-background-color, transparent);
-    border: var(--eox-panel-border, 1px solid #ced4da);
+    border: var(--eox-panel-border, 1px solid var(--outline));
     border-radius: 3px;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -108,24 +114,35 @@ export const styleEOX = `
   .form-control:not([data-schematype="boolean"] .form-control) {
     margin-bottom: 15px;
   }
-  .form-control input:not([data-schematype="boolean"] input),
+  .form-control input:not([data-schematype="boolean"] input):not([type="range"]),
   .form-control select {
     display: block;
+    opacity: 1;
+    position: relative;
     width: 100%;
     padding: 6px 12px;
-    font-size: 14px;
+    font-size: 0.75rem;
     line-height: 1.42857143;
-    color: #555;
+    color: inherit;
     background-color: var(--eox-background-color, transparent);
     background-image: none;
-    border: 1px solid #ccc;
+    border: .0625rem solid transparent;
+    border-color: var(--outline);
     border-radius: 4px;
+    block-size: 40px;
+    outline: none;
+    font-family: Inter, sans-serif;
     -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  }
+  .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus,
+  .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible {
+    border: .125rem solid transparent;
+    border-color: var(--primary);
   }
   input[type="checkbox"] {
     border: none !important;
@@ -154,7 +171,14 @@ export const styleEOX = `
   }
   .errmsg {
     font-size: x-small;
+    color: #ba1a1a !important;
   }
+  @media (prefers-color-scheme: dark) {
+    .errmsg {
+      color: #ffb4ab !important;
+    }
+  }
+
 
   /* MD Editor */
   [data-theme-custom="eox"] .editor-toolbar button {

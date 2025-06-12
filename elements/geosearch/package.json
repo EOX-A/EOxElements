@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^0.1.5",
-    "@eox/ui": "^0.3.2",
+    "@eox/ui": "^0.3.4",
     "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",
     "proj4": "^2.11.0"

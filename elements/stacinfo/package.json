@@ -33,7 +33,8 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/ui": "^0.3.2",
+    "@eox/elements-utils": "^0.1.5",
+    "@eox/ui": "^0.3.4",
     "@radiantearth/stac-fields": "^1.5.4",
     "lit": "^3.2.0"
   }

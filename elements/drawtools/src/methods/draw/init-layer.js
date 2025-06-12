@@ -16,6 +16,8 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
 
   const OlMap = EoxMap.map;
 
+  const primaryColor = "0, 65, 112";
+
   EoxDrawTool.drawLayer = EoxMap.addOrUpdateLayer({
     zIndex: 100,
     type: "Vector",
@@ -28,7 +30,11 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     source: {
       type: "Vector",
     },
-    style: EoxDrawTool.featureStyles?.["layer"],
+    style: EoxDrawTool.featureStyles?.["layer"] || {
+      "fill-color": `rgba(${primaryColor}, 0.1)`,
+      "stroke-color": `rgba(${primaryColor}, 1)`,
+      "stroke-width": 2,
+    },
     interactions: [
       {
         type: "draw",
@@ -38,7 +44,14 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           type: EoxDrawTool.type,
           modify: EoxDrawTool.allowModify,
           stopClick: true,
-          style: EoxDrawTool.featureStyles?.["layer"],
+          style: EoxDrawTool.featureStyles?.["layer"] || {
+            "fill-color": `rgba(${primaryColor}, 0.1)`,
+            "stroke-color": `rgba(${primaryColor}, 1)`,
+            "stroke-width": 1,
+            "stroke-line-dash": [7, 3],
+            "circle-radius": 5,
+            "circle-fill-color": `rgba(${primaryColor}, 1)`,
+          },
         },
       },
       {
@@ -47,9 +60,9 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           id: "SelectLayerHoverInteraction",
           condition: "pointermove",
           style: EoxDrawTool.featureStyles?.["hover"] || {
-            "fill-color": "rgba(51, 153, 204,0.5)",
-            "stroke-color": "#3399CC",
-            "stroke-width": 2.5,
+            "fill-color": `rgba(${primaryColor}, 0.2)`,
+            "stroke-color": `rgba(${primaryColor}, 1)`,
+            "stroke-width": 2,
           },
           tooltip: false,
         },
@@ -61,9 +74,9 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           condition: "click",
           panIn: true,
           style: EoxDrawTool.featureStyles?.["click"] || {
-            "fill-color": "rgba(51, 153, 204,0.5)",
-            "stroke-color": "#3399CC",
-            "stroke-width": 2.5,
+            "fill-color": `rgba(${primaryColor}, 0.2)`,
+            "stroke-color": `rgba(${primaryColor}, 1)`,
+            "stroke-width": 2,
           },
         },
       },

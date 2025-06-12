@@ -87,35 +87,37 @@ class EOxItemFilterSpatial extends LitElement {
     return when(
       this.filterObject,
       () => html`
-        <form style="display: inline">
-          ${map(
-            ["intersects", "within"],
-            (mode) => html`
-              <label class="radio">
-                <input
-                  tabindex=${this.tabIndex}
-                  type="radio"
-                  name="mode"
-                  .checked="${(this.filterObject.state.mode || "") === mode ||
-                  nothing}"
-                  value="${mode}"
-                  @click=${() => this.#handleClick(mode)}
-                />
-                <span>${mode} filter geometry</span>
-              </label>
-            `,
-          )}
-        </form>
-        <eox-itemfilter-spatial-filter
-          exportparts="map: spatial-filter-map"
-          .geometry="${this.filterObject.state?.geometry}"
-          @filter="${(e) => {
-            this.filterObject.state.geometry = e.detail.geometry;
-            this.filterObject.dirty = true;
-            this.filterObject.stringifiedState = "Polygon";
-            this.dispatchEvent(new CustomEvent("filter"));
-          }}"
-        ></eox-itemfilter-spatial>
+        <div class="large-margin left-margin">
+          <form style="display: inline">
+            ${map(
+              ["intersects", "within"],
+              (mode) => html`
+                <label class="radio">
+                  <input
+                    tabindex=${this.tabIndex}
+                    type="radio"
+                    name="mode"
+                    .checked="${(this.filterObject.state.mode || "") === mode ||
+                    nothing}"
+                    value="${mode}"
+                    @click=${() => this.#handleClick(mode)}
+                  />
+                  <span>${mode} filter geometry</span>
+                </label>
+              `,
+            )}
+          </form>
+          <eox-itemfilter-spatial-filter
+            exportparts="map: spatial-filter-map"
+            .geometry="${this.filterObject.state?.geometry}"
+            @filter="${(e) => {
+              this.filterObject.state.geometry = e.detail.geometry;
+              this.filterObject.dirty = true;
+              this.filterObject.stringifiedState = "Polygon";
+              this.dispatchEvent(new CustomEvent("filter"));
+            }}"
+          ></eox-itemfilter-spatial>
+        </div>
       `,
     );
   }

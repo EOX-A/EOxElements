@@ -84,7 +84,9 @@ export class EOxItemFilterText extends LitElement {
       () => html`
         <style></style>
         <div class="text-container">
-          <div class="text-container-wrapper field border">
+          <div
+            class="text-container-wrapper field small large-margin left-margin"
+          >
             <input
               type="text"
               placeholder=${this.filterObject.placeholder}
@@ -99,7 +101,7 @@ export class EOxItemFilterText extends LitElement {
             />
           </div>
         </div>
-        <small class="error-validation"
+        <small class="error-validation large-margin left-margin"
           >${this.filterObject.validation && this.isValid === false
             ? this.filterObject.validation.message
             : ""}</small
