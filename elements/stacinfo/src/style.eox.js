@@ -116,6 +116,6 @@ details > summary > nav {
   min-height: 32px;
 }
 details > summary:hover {
-  background-color: var(--surface-container);
+  background-color: var(--surface-container-low);
 }
 `;

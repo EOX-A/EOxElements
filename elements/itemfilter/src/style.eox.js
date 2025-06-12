@@ -20,7 +20,7 @@ ${eoxStyle}
     var(--primary-color) 10%,
     transparent
   );
-  --item-hover-color: var(--surface-container);
+  --item-hover-color: var(--surface-container-low);
   --item-select-color: var(--surface-variant);
   --inline-bg-color: color-mix(
     in srgb,
