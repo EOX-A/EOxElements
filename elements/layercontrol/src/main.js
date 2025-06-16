@@ -309,6 +309,7 @@ export class EOxLayerControl extends LitElement {
     }
     
     .layerstitle {
+      display: block;
       padding-left: var(--padding);
       padding-right: var(--padding);
     }

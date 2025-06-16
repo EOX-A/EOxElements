@@ -144,8 +144,8 @@ export class EOxLayerControlLayerLegend extends LitElement {
                   tickFormat="${ifDefined(legend.tickFormat)}"
                   .ticks=${legend.ticks ?? 5}
                   .tickValues=${legend.tickValues}
-                  .marginLeft=${0}
-                  .marginRight=${0}
+                  .marginLeft=${8}
+                  .marginRight=${8}
                 >
                 </color-legend>
                 ${idx !== configs.length - 1
@@ -167,6 +167,7 @@ export class EOxLayerControlLayerLegend extends LitElement {
       --cle-background: transparent;
       --cle-font-family: inherit;
       --cle-font-size: inherit;
+      --cle-font-size-title: inherit;
       --cle-font-weight: inherit --cle-letter-spacing: inherit;
       --cle-letter-spacing-title: inherit;
       --cle-padding: 0;

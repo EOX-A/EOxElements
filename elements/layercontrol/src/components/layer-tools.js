@@ -112,16 +112,22 @@ export class EOxLayerControlLayerTools extends LitElement {
         ${unsafeHTML(this.layer.get("description"))}
       </div>
       <div slot="opacity-content">
-        <!-- Input for opacity -->
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value=${live(this.layer?.getOpacity())}
-          @input=${(/** @type {{ target: { value: string; }; }} */ evt) =>
-            this.layer.setOpacity(parseFloat(evt.target.value))}
-        />
+        <div class="row">
+          <!-- Input for opacity -->
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value=${live(this.layer?.getOpacity())}
+            class="tiny max"
+            @input=${(/** @type {{ target: { value: string; }; }} */ evt) => {
+              this.layer.setOpacity(parseFloat(evt.target.value));
+              this.requestUpdate();
+            }}
+          />
+          <span class="small-text" style="width: 30px; text-align: right">${Math.round(this.layer?.getOpacity() * 100)}%</span>
+        </div class="row">
       </div>
       <div slot="config-content">
         <!-- Layer configuration -->

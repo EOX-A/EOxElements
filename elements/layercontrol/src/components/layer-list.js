@@ -200,7 +200,7 @@ export class EOxLayerControlLayerList extends LitElement {
     }
     .list li ul.list > li:has(details[open]) eox-layercontrol-tools-items {
       display: block;
-      margin-left: -1.5rem;
+      /*margin-left: -1.5rem;*/
     }
     /*TEMP*/
     .list.no-space>li,

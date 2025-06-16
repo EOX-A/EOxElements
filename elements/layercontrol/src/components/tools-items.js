@@ -122,7 +122,7 @@ export class EOxLayerControlTabs extends LitElement {
           `,
         )}
         <figure
-          class="border grey-border no-round small-padding vertical-padding"
+          class="surface no-round small-padding vertical-padding"
           style="overflow: hidden; white-space: normal"
         >
           <!-- Content for each tab -->
@@ -172,12 +172,38 @@ export class EOxLayerControlTabs extends LitElement {
     .listed .tab.highlighted {
       display: block;
     }
+    .listed .tab {
+      margin-bottom: 1rem;
+    }
   `;
 
   #styleEOX = `
     ${eoxStyle}
     figure {
       padding: var(--padding-vertical) var(--padding);
+    }
+    .listed [name*=-icon] {
+      display: none;
+    }
+    .listed [name*=-icon]+span {
+      text-transform: capitalize;
+      font-weight: bold;
+    }
+    .tabbed > nav > div > label,
+    .tabbed > nav > div > span {
+      border-bottom: 1px solid var(--surface);
+    }
+    .tabbed > nav > div > label.highlighted,
+    .tabbed > nav > div > span.highlighted {
+      border-bottom: 2px solid var(--outline-variant);
+    }
+    :host {
+      --eox-slider-thumb-height: 10px !important;
+      --eox-slider-thumb-width: 10px !important;
+      --eox-slider-track-height: 4px !important;
+      --eox-panel-spacing: 0 !important;
+      --eox-slider-margin: 0 !important;
+      font-size: small;
     }
   `;
 }
