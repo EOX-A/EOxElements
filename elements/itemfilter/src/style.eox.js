@@ -371,8 +371,9 @@ eox-itemfilter-results li.highlighted {
 }
 mark.highlight {
   all: inherit;
+  display: inline;
   background: yellow;
-  color: var(--on-surface);
+  color: black;
 }
 .selected-item span {
   margin-right: 8px;

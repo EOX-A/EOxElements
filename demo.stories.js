@@ -117,7 +117,19 @@ export const KitchenSink = {
           .items=${items}
           .enableResultAction=${true}
           .imageProperty=${"img"}
+          .enableHighlighting=${true}
           .filterProperties=${[
+            {
+              keys: ["title", "themes"],
+              title: "Search",
+              type: "text",
+              placeholder: "Type Something...",
+              expanded: true,
+              validation: {
+                pattern: ".{0,10}",
+                message: "Maximum 10 characters",
+              },
+            },
             {
               key: "completed",
               title: "Completed",
