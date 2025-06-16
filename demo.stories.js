@@ -145,8 +145,8 @@ export const KitchenSink = {
           ]}
         ></eox-itemfilter>
       </eox-layout-item>
-      <eox-layout-item>
-        <eox-layercontrol></eox-layercontrol>
+      <eox-layout-item h="2">
+        <eox-layercontrol .toolsAsList=${true}></eox-layercontrol>
       </eox-layout-item>
       <eox-layout-item w="2" h="2">
         <eox-map
