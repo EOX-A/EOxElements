@@ -22,6 +22,7 @@ export class EOxDrawToolsList extends LitElement {
     drawLayer: { attribute: false, state: true },
     drawnFeatures: { attribute: false, state: true, type: Array },
     featureName: { attribute: false, state: true, type: String },
+    featureNameKey: { attribute: false, state: true, type: String },
     modify: { attribute: false, state: true },
     unstyled: { type: Boolean },
   };
@@ -90,6 +91,11 @@ export class EOxDrawToolsList extends LitElement {
      * Default display name for features
      */
     this.featureName = "Feature";
+
+    /**
+     * The key of the property to display in the feature list.
+     */
+    this.featureNameKey = null;
 
     /**
      * The current native OpenLayers `modify` interaction
@@ -168,6 +174,10 @@ export class EOxDrawToolsList extends LitElement {
           const isFeatureClicked = this.clickId === featureId;
           const isSelected = isFeatureHovered || isFeatureClicked;
           const selectionClass = isSelected ? "selected" : nothing;
+          const propertyName = feature.get(this.featureNameKey);
+          const title = propertyName
+            ? propertyName
+            : `${this.featureName || "Feature"} ${featureNumber}`;
 
           return keyed(
             featureNumber,
@@ -182,9 +192,7 @@ export class EOxDrawToolsList extends LitElement {
                   @click="${() =>
                     this._handleFeatureSelectAndDeselect(feature)}"
                 >
-                  <span class="title"
-                    >${this.featureName} ${featureNumber}</span
-                  >
+                  <span class="title">${title}</span>
                   <button
                     index=${i}
                     data-cy="deleteFeatureBtn"

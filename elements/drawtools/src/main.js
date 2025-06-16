@@ -34,6 +34,7 @@ export class EOxDrawTools extends LitElement {
       drawLayer: { attribute: false, state: true },
       drawnFeatures: { attribute: false, state: true, type: Array },
       featureName: { attribute: "feature-name", type: String },
+      featureNameKey: { attribute: "feature-name-key", type: String },
       layerId: { attribute: "layer-id", type: String },
       featureStyles: { attribute: false },
       modify: { attribute: false, state: true },
@@ -122,6 +123,11 @@ export class EOxDrawTools extends LitElement {
      * The display name of drawn features, shown e.g. in the feature list.
      */
     this.featureName = "Feature";
+
+    /**
+     * The key of the property to display in the feature list.
+     */
+    this.featureNameKey = null;
 
     /**
      * Flat styles for the drawn/selected features
@@ -383,6 +389,7 @@ export class EOxDrawTools extends LitElement {
             .drawLayer=${this.drawLayer}
             .drawnFeatures=${this.drawnFeatures}
             .featureName=${this.featureName}
+            .featureNameKey=${this.featureNameKey}
             .modify=${this.modify}
             .unstyled=${this.unstyled}
             @changed=${() => {
