@@ -18,6 +18,14 @@ export const addCommonStylesheet = () => {
     style.setAttribute("id", id);
     style.innerHTML = `
     @import url("https://eox.at/fonts/inter/inter.css");
+
+    @font-face {
+      font-family: "Material Symbols Subset";
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: url(https://cdn.jsdelivr.net/npm/@eox/ui@0.3.4/dist/material-symbols-subset.woff2) format("woff2");
+    }
   
     eox-chart,
     eox-drawtools,
