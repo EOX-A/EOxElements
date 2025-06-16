@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^0.1.5",
-    "@eox/ui": "^0.3.5",
+    "@eox/ui": "^0.3.6",
     "@json-editor/json-editor": "^2.11.0",
     "@turf/bbox-polygon": "^7.2.0",
     "ace-builds": "^1.37.5",
