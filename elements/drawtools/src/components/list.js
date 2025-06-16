@@ -177,7 +177,7 @@ export class EOxDrawToolsList extends LitElement {
           const propertyName = feature.get(this.featureNameKey);
           const title = propertyName
             ? propertyName
-            : `${this.featureName || "Feature"} ${featureNumber}`;
+            : `${this.featureName} ${featureNumber}`;
 
           return keyed(
             featureNumber,
