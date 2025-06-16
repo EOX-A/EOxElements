@@ -14,7 +14,7 @@ export const styleEOX = `
   :host, :root {
     display: block;
     overflow: hidden;
-    min-height: 250px;
+    min-height: 0;
   }
   :host, :root, form, .CodeMirror {
     --background-color: var(--eox-background-color, transparent);
@@ -162,6 +162,19 @@ export const styleEOX = `
   [data-schematype=boolean] label input {
     border: none;
     padding: 0;
+  }
+  .je-range-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .je-range-control > input {
+    order: 1;
+  }
+  .je-range-control > output {
+    order: 2;
+    width: 34px;
+    text-align: right;
   }
   /* description */
   [data-schematype] p {
