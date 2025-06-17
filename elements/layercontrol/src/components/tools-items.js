@@ -143,6 +143,10 @@ export class EOxLayerControlTabs extends LitElement {
                 <!-- Content slot for each tab -->
                 <slot name=${`${tab}-content`}>${tab}</slot>
               </div>
+              ${when(
+                this.toolsAsList && index < tabs.length - 1,
+                () => html`<hr class="small" />`,
+              )}
             `,
           )}
         </figure>
@@ -173,7 +177,7 @@ export class EOxLayerControlTabs extends LitElement {
       display: block;
     }
     .listed .tab {
-      margin-bottom: 1rem;
+      margin-bottom: .5rem;
     }
   `;
 

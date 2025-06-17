@@ -111,9 +111,6 @@ export const styleEOX = `
     padding-top: var(--eox-panel-spacing, 10px);
     padding-bottom: var(--eox-panel-spacing, 10px);
   }
-  .form-control:not([data-schematype="boolean"] .form-control) {
-    margin-bottom: 15px;
-  }
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]),
   .form-control select {
     display: block;

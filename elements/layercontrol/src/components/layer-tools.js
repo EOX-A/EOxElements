@@ -289,6 +289,11 @@ export class EOxLayerControlLayerTools extends LitElement {
     [slot=info-content] * {
       max-width: 100%;
     }
+    /*eox-layercontrol-layerconfig {
+      border: 1px solid var(--outline-variant);
+      padding: .5rem !important;
+      display: block;
+    }*/
   `;
 }
 

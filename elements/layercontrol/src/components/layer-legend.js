@@ -166,9 +166,11 @@ export class EOxLayerControlLayerLegend extends LitElement {
     color-legend {
       --cle-background: transparent;
       --cle-font-family: inherit;
-      --cle-font-size: inherit;
-      --cle-font-size-title: inherit;
-      --cle-font-weight: inherit --cle-letter-spacing: inherit;
+      --cle-font-size: 12px;
+      --cle-font-size-title: 12px;
+      --cle-font-weight: 400;
+      --cle-font-weight-title: 400;
+      --cle-letter-spacing: inherit;
       --cle-letter-spacing-title: inherit;
       --cle-padding: 0;
     }
