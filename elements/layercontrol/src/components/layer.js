@@ -264,7 +264,7 @@ export class EOxLayerControlLayer extends LitElement {
               isToolsAvail,
               () => html`
                 <button
-                  class="transparent square primary-text small action"
+                  class="transparent square primary-text small action tools"
                   @click=${() => {
                     const toolsDetails = this.renderRoot
                       .querySelector("eox-layercontrol-layer-tools")
@@ -340,6 +340,9 @@ export class EOxLayerControlLayer extends LitElement {
     eox-layercontrol-layer nav {
       height: 32px;
       margin-block-start: 0 !important;
+    }
+    eox-layercontrol-layer > nav > .action.tools {
+      display: var(--layer-tools-button-visibility);
     }
     eox-layercontrol-layer:not(:hover) > nav > .action {
       display: none;
