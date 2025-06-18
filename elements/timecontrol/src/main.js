@@ -315,19 +315,19 @@ export class EOxTimeControl extends LitElement {
             ? html`
                 <button
                   part="previous"
-                  class="icon previous small circle no-margin"
+                  class="icon previous small circle transparent no-margin"
                   @click="${() => this.previous()}"
                 >
                   ${!this.unstyled
                     ? html`
-                        <i class="small">
+                        <i class="primary-text small">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                           >
-                            <title>chevron-left</title>
+                            <title>chevron-left-circle</title>
                             <path
-                              d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"
+                              d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M15.4,16.6L10.8,12L15.4,7.4L14,6L8,12L14,18L15.4,16.6Z"
                             />
                           </svg>
                         </i>
@@ -347,19 +347,19 @@ export class EOxTimeControl extends LitElement {
             ? html`
                 <button
                   part="next"
-                  class="icon next small circle no-margin"
+                  class="icon next small circle transparent no-margin"
                   @click="${() => this.next()}"
                 >
                   ${!this.unstyled
                     ? html`
-                        <i class="small">
+                        <i class="primary-text small">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                           >
-                            <title>chevron-right</title>
+                            <title>chevron-right-circle</title>
                             <path
-                              d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+                              d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M10,18L16,12L10,6L8.6,7.4L13.2,12L8.6,16.6L10,18Z"
                             />
                           </svg>
                         </i>
