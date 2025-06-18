@@ -192,7 +192,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
       user-select: none;
     }
     details > summary:hover {
-      background-color: var(--surface-container-low);
+      background-color: var(--item-hover-color);
     }
     details .arrow-container > i {
       transition: transform 0.1s ease-in-out;

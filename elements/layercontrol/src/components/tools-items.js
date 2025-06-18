@@ -122,7 +122,7 @@ export class EOxLayerControlTabs extends LitElement {
           `,
         )}
         <figure
-          class="surface no-round small-padding vertical-padding"
+          class="no-round small-padding vertical-padding"
           style="overflow: hidden; white-space: normal"
         >
           <!-- Content for each tab -->
@@ -185,6 +185,8 @@ export class EOxLayerControlTabs extends LitElement {
     ${eoxStyle}
     figure {
       padding: var(--padding-vertical) var(--padding);
+      background-color: var(--surface); /* fallback */
+      background-color: var(--item-hover-color);
     }
     .listed [name*=-icon] {
       display: none;

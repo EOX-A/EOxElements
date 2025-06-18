@@ -193,10 +193,10 @@ export class EOxLayerControlLayerList extends LitElement {
     eox-layercontrol-layer.sortable-ghost {
     }
     li:not(li:has(eox-layercontrol-layer-group)):not(:has(details[open])):hover {
-      background-color: var(--surface-container-low);
+      background-color: var(--item-hover-color);
     }
     .list li ul.list > li {
-      margin-left: 1.5rem;
+      margin-left: var(--list-padding);
     }
     .list li ul.list > li:has(details[open]) eox-layercontrol-tools-items {
       display: block;

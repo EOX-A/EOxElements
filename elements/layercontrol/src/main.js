@@ -298,7 +298,7 @@ export class EOxLayerControl extends LitElement {
       );
       --item-hover-color: color-mix(
         in srgb,
-        var(--secondary-color) 10%,
+        var(--surface) 70%,
         transparent
       );
 
