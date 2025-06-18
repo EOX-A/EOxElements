@@ -189,7 +189,7 @@ export class EOxSelector extends LitElement {
         () =>
           html`<div class="autocomplete-container">
             <div
-              class="autocomplete-container-wrapper field small large-margin left-margin"
+              class="autocomplete-container-wrapper field small large-margin left-margin no-round"
             >
               <input
                 autocomplete="off"
@@ -197,7 +197,7 @@ export class EOxSelector extends LitElement {
                 class="autocomplete-input"
                 type="text"
                 .value=${this.query}
-                placeholder="${this.filterObject.placeholder || ""}"
+                placeholder="${this.filterObject.placeholder || "Find..."}"
                 @input=${this.#handleInput}
                 @keydown=${this.#handleKeyDown}
                 @blur=${() => (this.showSuggestions = false)}

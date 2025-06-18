@@ -38,6 +38,7 @@ ${eoxStyle}
   --text-transform: capitalize;
   --form-flex-direction: column;
   --filter-display: block;
+  --select-filter-max-items: 5;
   background-color: var(--background-color);
   display: flex;
   flex-direction: column;
@@ -403,7 +404,7 @@ mark.highlight {
   margin-right: 8px;
 }
 .select-overflow {
-  max-height: 185px;
+  max-height: calc(32px * var(--select-filter-max-items));
   overflow-y: auto;
 }
 .chip-title strong {
