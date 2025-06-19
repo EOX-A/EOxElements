@@ -99,8 +99,9 @@ export class EOxMapCompare extends LitElement {
           height: 100%;
           width: var(--thumb-w);
           pointer-events: all;
-          box-shadow: 0 0 5px black;
+          box-shadow: 0 0 5px #0007;
           clip-path: inset(0 -5px 0 -5px);
+          transition: all 0.3s ease-in-out;
         }
         .eox-map-compare__range::-webkit-slider-thumb {
           background-color: var(--thumb-bgc);
@@ -109,9 +110,18 @@ export class EOxMapCompare extends LitElement {
           width: var(--thumb-w);
           pointer-events: all;
           position: relative;
-          box-shadow: 0 0 5px black;
+          box-shadow: 0 0 5px #0007;
           -webkit-clip-path: inset(0 -5px 0 -5px);
           clip-path: inset(0 -5px 0 -5px);
+          transition: all 0.3s ease-in-out;
+        }
+        .eox-map-compare__range::-moz-range-thumb:hover {
+          box-shadow: 0 0 5px #000;
+          width: calc(var(--thumb-w) * 1.25);
+        }
+        .eox-map-compare__range::-webkit-slider-thumb:hover {
+          box-shadow: 0 0 5px #000;
+          width: calc(var(--thumb-w) * 1.25);
         }
         .eox-map-compare__range::-moz-range-track {
           background: transparent;

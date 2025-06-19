@@ -1,5 +1,9 @@
 import { html } from "lit";
-import { STORIES_LAYER_TERRAIN_LIGHT, STORIES_MAP_STYLE } from "../src/enums";
+import {
+  STORIES_LAYER_TERRAIN_LIGHT,
+  STORIES_LAYERCONTROL_STYLE,
+  STORIES_MAP_STYLE,
+} from "../src/enums";
 
 export const SingleLayer = {
   args: {
@@ -15,6 +19,7 @@ export const SingleLayer = {
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
+        .style=${STORIES_LAYERCONTROL_STYLE}
       ></eox-layercontrol>
       <eox-map
         id="single"

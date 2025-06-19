@@ -26,7 +26,7 @@ const checkLayerRemovedFromGroup = () => {
   cy.get("eox-layercontrol")
     .shadow()
     .within(() => {
-      cy.get(".layer").find(".title").contains("baz").should("not.exist"); // Check if the removed layer is not present
+      cy.get(".layer").find(".layertitle").contains("baz").should("not.exist"); // Check if the removed layer is not present
     });
 };
 

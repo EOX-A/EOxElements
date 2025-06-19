@@ -26,7 +26,7 @@ const checkLayerPushedToGroup = () => {
   cy.get("eox-layercontrol")
     .shadow()
     .within(() => {
-      cy.get(".layer").find(".title").contains("baz"); // Checking if the title of the added layer is displayed
+      cy.get(".layer").find(".layertitle").contains("baz"); // Checking if the title of the added layer is displayed
     });
 };
 

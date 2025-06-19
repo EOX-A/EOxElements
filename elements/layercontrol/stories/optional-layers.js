@@ -4,6 +4,7 @@ import {
   STORIES_LAYER_EOX_CLOUDLESS_2020,
   STORIES_LAYER_EOX_CLOUDLESS_2021,
   STORIES_LAYER_TERRAIN_LIGHT,
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
 } from "../src/enums";
 
@@ -20,7 +21,10 @@ export const OptionalLayers = {
   args: {},
   render: () => html`
     <div style="display: flex">
-      <eox-layercontrol for="eox-map#optional"></eox-layercontrol>
+      <eox-layercontrol
+        for="eox-map#optional"
+        .style=${STORIES_LAYERCONTROL_STYLE}
+      ></eox-layercontrol>
       <eox-map
         id="optional"
         .style=${STORIES_MAP_STYLE}

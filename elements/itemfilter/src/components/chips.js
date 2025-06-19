@@ -108,7 +108,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
         ${map(
           this.items,
           (item) => html`
-            <span class="chip" @click=${this.#handleChipClick.bind(this)}>
+            <span class="chip tiny-margin" @click=${this.#handleChipClick.bind(this)}>
               <span class="chip-title">${item.title}</span>
                 <span
                   class="chip-item-close hidden"

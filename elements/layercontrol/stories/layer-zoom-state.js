@@ -2,6 +2,7 @@ import { html } from "lit";
 import {
   STORIES_LAYER_REGION,
   STORIES_LAYER_SENTINEL_HUB,
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
 } from "../src/enums";
 
@@ -23,6 +24,7 @@ export const layerZoomState = {
       <eox-layercontrol
         .showLayerZoomState=${args.showLayerZoomState}
         for="eox-map#zoomstate"
+        .style=${STORIES_LAYERCONTROL_STYLE}
       ></eox-layercontrol>
       <eox-map
         id="zoomstate"

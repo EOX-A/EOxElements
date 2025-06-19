@@ -71,7 +71,7 @@ const addExternalLayers = () => {
     .then(($el) => {
       cy.wrap($el).within(() => {
         // Switch to the JSON tab and input the layer configuration
-        cy.get(".eox-add-layer-tab li").last().click();
+        cy.get(".eox-add-layer-tab a").last().click();
         cy.get("textarea").type(DUMMY_JSON, {
           parseSpecialCharSequences: false,
           force: true,

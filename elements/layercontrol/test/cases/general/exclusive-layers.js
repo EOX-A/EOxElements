@@ -27,7 +27,10 @@ const exclusiveLayers = () => {
     .within(() => {
       // Checking the number of checked radio inputs in the LayerControl
       cy.get("ul").find("input[type=radio]:checked").should("have.length", 1);
-      cy.get("ul").find("input[type=radio]:not(:checked)").last().click();
+      cy.get("ul")
+        .find("input[type=radio]:not(:checked)")
+        .last()
+        .click({ force: true });
       cy.get("ul").find("input[type=radio]:checked").should("have.length", 1);
     });
 };

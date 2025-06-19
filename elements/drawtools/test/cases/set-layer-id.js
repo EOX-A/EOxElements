@@ -21,7 +21,8 @@ const setLayerId = () => {
   cy.get(drawTools)
     .shadow()
     .within(() => {
-      cy.get(drawBtn).should("have.class", "pointer");
+      cy.get(drawBtn).trigger("mouseover");
+      cy.get(drawBtn).should("have.css", "cursor", "pointer");
     });
 };
 

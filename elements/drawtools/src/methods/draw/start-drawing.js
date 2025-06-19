@@ -23,6 +23,15 @@ const startDrawingMethod = (EoxDrawTool) => {
   initializeDrawing();
   // Update the drawing status
   updateDrawingStatus();
+
+  // Abort drawing on Esc key
+  document.addEventListener("keydown", ({ key }) => {
+    if (key === "Escape" && EoxDrawTool.currentlyDrawing) {
+      EoxDrawTool.draw.setActive(false);
+      EoxDrawTool.currentlyDrawing = false;
+      EoxDrawTool.requestUpdate();
+    }
+  });
 };
 
 export default startDrawingMethod;

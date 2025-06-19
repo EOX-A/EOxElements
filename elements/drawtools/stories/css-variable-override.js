@@ -20,13 +20,9 @@ export const CSSVariableOverride = {
 
     <!-- Style overrides -->
     <style>
-      html,
-      :host,
-      :root {
-        --eox-secondary-color: #ffa55c;
-        --eox-bg-hover-transparency: 20%;
-        --eox-color: #ffa55c;
-        --eox-body-font-family: "Comic Sans MS", cursive;
+      eox-drawtools[for="eox-map#css-var-override"] {
+        --primary: #ffa55c;
+        --error: #00ff00;
       }
     </style>
   `,

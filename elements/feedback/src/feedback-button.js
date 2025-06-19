@@ -1,5 +1,8 @@
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
+import { addCommonStylesheet } from "@eox/elements-utils";
+
+addCommonStylesheet();
 
 /**
  * @attr {string} [position=top-right] - The position of the button. Can be "top-left", "top-right", "bottom-left", or "bottom-right".

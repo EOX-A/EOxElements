@@ -229,8 +229,8 @@ export class SliderTicks extends LitElement {
                     key=${`label-${yearIndex}`}
                     x=${position + 16}
                     y="30"
-                    fill="#555"
-                    font-size="14"
+                    fill="currentColor"
+                    font-size="smaller"
                     text-anchor="middle"
                   >
                     ${year.year}
@@ -408,7 +408,7 @@ export class SliderTicks extends LitElement {
     return html`
       <div class="fill-width" style="margin-top: 3px;">
         <svg
-          style="width: ${this.width}px; height: 30px;"
+          style="width: ${this.width}px; max-width: 100%; height: 30px;"
           viewBox="-1 0 ${this.width + 2} ${this.height}"
         >
           ${this.sliderTicks}

@@ -35,6 +35,10 @@ import {
   removeControlMethod,
   firstUpdatedMethod,
 } from "./methods/map/";
+import eoxStyle from "@eox/ui/style.css?inline";
+import { addCommonStylesheet } from "@eox/elements-utils";
+
+addCommonStylesheet();
 
 /**
  * @typedef {import("./layers").EoxLayer} EoxLayer
@@ -516,6 +520,7 @@ export class EOxMap extends LitElement {
           pointer-events: none !important;
         }
         ${olCss}
+        ${eoxStyle}
         ${controlCss}
       </style>
       <div style="width: 100%; height: 100%"></div>

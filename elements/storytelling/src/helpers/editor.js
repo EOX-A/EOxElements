@@ -437,7 +437,7 @@ export function updateEditorInitVisibility(StoryTellingEditor) {
     StoryTellingEditor.editor.editor?.editors["root.Story"].simplemde_instance
   )
     /** @type {HTMLElement}*/ (
-      StoryTellingEditor.querySelector(".switch-input")
+      StoryTellingEditor.querySelector(".switch input")
     ).click();
   else setTimeout(() => updateEditorInitVisibility(StoryTellingEditor), 100);
 }

@@ -150,6 +150,91 @@ export const createEditor = (element) => {
       aceUsed.ace_editor_instance.resize();
     }
   });
+
+  editor.on("change", () => {
+    // Adaptations to DOM in order to fit EOxUI
+    // Checkboxes are wrapped in a label with a span
+    element.renderRoot
+      .querySelectorAll("input[type='checkbox']")
+      .forEach((input) => {
+        const parent = input.parentElement;
+        if (
+          parent.tagName === "LABEL" &&
+          !parent.classList.contains("checkbox")
+        ) {
+          input.parentElement.classList.add("checkbox");
+          const span = document.createElement("span");
+          if (
+            input.nextSibling &&
+            input.nextSibling.nodeType === Node.TEXT_NODE
+          ) {
+            // If the next sibling is a text node, move it inside the span
+            span.appendChild(input.nextSibling);
+          }
+          input.parentElement.appendChild(span);
+        }
+      });
+
+    // Apply "link" class to all anchor elements
+    element.renderRoot.querySelectorAll("a").forEach((anchor) => {
+      anchor.classList.add("link");
+    });
+
+    // Button elements
+    element.renderRoot.querySelectorAll("button").forEach((button) => {
+      if (button.classList.contains("json-editor-btn-")) {
+        button.querySelector("i")?.remove();
+      } else {
+        ["circle", "small", "transparent", "primary-text", "no-margin"].forEach(
+          (c) => button.classList.add(c),
+        );
+        if (button.classList.contains("json-editor-btntype-add")) {
+          button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>plus</title><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" /></svg>
+          </i>`;
+        }
+        if (button.classList.contains("json-editor-btntype-delete")) {
+          button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>delete-outline</title><path d="M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19M8,9H16V19H8V9M15.5,4L14.5,3H9.5L8.5,4H5V6H19V4H15.5Z" /></svg>
+          </i>`;
+          button.classList.add("red-text");
+        }
+        if (button.classList.contains("json-editor-btntype-toggle")) {
+          const toggleButton = (state) => {
+            button.innerHTML =
+              state === "Collapse"
+                ? `
+            <i class="small">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>chevron-down</title><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" /></svg>
+            </i>`
+                : `
+            <i>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>chevron-right</title><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" /></svg>
+            </i>
+            `;
+          };
+          button.addEventListener("click", () => {
+            toggleButton(button.title);
+          });
+          toggleButton(button.title);
+        }
+        if (button.classList.contains("json-editor-btn-moveup")) {
+          button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>triangle-small-up</title><path d="M8 15H16L12 8" /></svg>
+          </i>`;
+        }
+        if (button.classList.contains("json-editor-btn-movedown")) {
+          button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>triangle-small-down</title><path d="M8 9H16L12 16" /></svg>
+          </i>`;
+        }
+      }
+    });
+  });
   return editor;
 };
 
