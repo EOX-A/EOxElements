@@ -13,7 +13,6 @@ const nestedPropertyTest = () => {
     .shadow()
     .within(() => {
       cy.get("[id='filter-status.code']")
-        .shadow()
         .within(() => {
           cy.get('[type="checkbox"]').first().check({ force: true });
           cy.get(".title").first().contains("active");

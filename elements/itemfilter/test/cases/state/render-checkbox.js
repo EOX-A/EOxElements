@@ -7,7 +7,6 @@ const renderCheckboxTest = () => {
     .shadow()
     .within(() => {
       cy.get("eox-itemfilter-select")
-        .shadow()
         .within(() => {
           cy.get('[type="checkbox"]:checked').should("have.length", 2);
         });

@@ -9,7 +9,6 @@ const customOrderTest = (customOrder) => {
     .shadow()
     .within(() => {
       cy.get("eox-itemfilter-select")
-        .shadow()
         .within(() => {
           Object.keys(customOrder).forEach((state) => {
             cy.get("ul [data-identifier]")

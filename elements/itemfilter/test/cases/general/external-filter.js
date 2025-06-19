@@ -18,7 +18,6 @@ const externalFilterTest = () => {
     .within(() => {
       cy.get("[data-details=themes]").within(() => {
         cy.get("eox-itemfilter-select")
-          .shadow()
           .within(() => {
             cy.get("[data-title=agriculture]").click();
           });

@@ -7,7 +7,6 @@ const spatialFilterTest = () => {
     .shadow()
     .within(() => {
       cy.get("eox-itemfilter-select")
-        .shadow()
         .within(() => {
           cy.get('[type="checkbox"]').first().check({ force: true });
           cy.get('[type="checkbox"]').eq(1).check({ force: true });
