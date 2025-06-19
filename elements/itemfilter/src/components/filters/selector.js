@@ -174,6 +174,15 @@ export class EOxSelector extends LitElement {
   }
 
   /**
+   * Overrides the default createRenderRoot method to render in the light DOM.
+   *
+   * @returns {this} - The current instance to render in the light DOM.
+   */
+  createRenderRoot() {
+    return this;
+  }
+
+  /**
    * Renders the HTML template for the component.
    */
   render() {
@@ -182,7 +191,10 @@ export class EOxSelector extends LitElement {
       this.filteredSuggestions.length > 5 ? "select-overflow scroll" : nothing;
     return html`
       <style>
-        ${!this.unstyled && styleEOX}
+        ${!this.unstyled && styleEOX} :host,
+        :root {
+          --select-filter-max-items: 5;
+        }
       </style>
       ${when(
         this.suggestions.length > 10,

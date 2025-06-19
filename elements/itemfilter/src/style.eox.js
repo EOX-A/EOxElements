@@ -38,7 +38,6 @@ ${eoxStyle}
   --text-transform: capitalize;
   --form-flex-direction: column;
   --filter-display: block;
-  --select-filter-max-items: 5;
   background-color: var(--background-color);
   display: flex;
   flex-direction: column;
