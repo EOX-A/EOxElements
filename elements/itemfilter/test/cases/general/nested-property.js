@@ -12,12 +12,11 @@ const nestedPropertyTest = () => {
   cy.get("eox-itemfilter")
     .shadow()
     .within(() => {
-      cy.get("[id='filter-status.code']")
-        .within(() => {
-          cy.get('[type="checkbox"]').first().check({ force: true });
-          cy.get(".title").first().contains("active");
-          cy.get(".title").last().contains("inactive");
-        });
+      cy.get("[id='filter-status.code']").within(() => {
+        cy.get('[type="checkbox"]').first().check({ force: true });
+        cy.get(".title").first().contains("active");
+        cy.get(".title").last().contains("inactive");
+      });
     });
 };
 

@@ -5,15 +5,14 @@ const disableHighlightTest = () => {
   cy.get("eox-itemfilter")
     .shadow()
     .within(() => {
-      cy.get("eox-itemfilter-select")
-        .within(() => {
-          cy.get('[type="checkbox"]').first().check({ force: true });
-          cy.get('[type="checkbox"]').eq(1).check({ force: true });
-          cy.get('[type="checkbox"]').first().check({ force: true });
-          cy.get('[type="checkbox"]').first().should("be.checked");
-          cy.get('[type="checkbox"]').eq(1).check({ force: true });
-          cy.get('[type="checkbox"]').eq(1).should("be.checked");
-        });
+      cy.get("eox-itemfilter-select").within(() => {
+        cy.get('[type="checkbox"]').first().check({ force: true });
+        cy.get('[type="checkbox"]').eq(1).check({ force: true });
+        cy.get('[type="checkbox"]').first().check({ force: true });
+        cy.get('[type="checkbox"]').first().should("be.checked");
+        cy.get('[type="checkbox"]').eq(1).check({ force: true });
+        cy.get('[type="checkbox"]').eq(1).should("be.checked");
+      });
     });
 };
 
