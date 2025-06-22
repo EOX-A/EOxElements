@@ -448,7 +448,10 @@ export class EOxItemFilter extends LitElement {
               @reset=${() => this.resetFilters()}
               @filter=${() => this.search()}
             >
-              <section slot="section">
+              <section
+                slot="section"
+                style="height: 100%; overflow: hidden; display: flex; flex-direction: column;"
+              >
                 ${when(
                   !this.inlineMode,
                   () => html`
@@ -494,29 +497,31 @@ export class EOxItemFilter extends LitElement {
                     </nav>
                   `,
                 )}
-                <ul id="filters" class="list no-space">
-                  ${map(
-                    Object.values(this.filters),
-                    (filterObject, index) =>
-                      html` <li class="no-padding">
-                        <eox-itemfilter-expandcontainer
-                          .filterObject=${filterObject}
-                          @details-toggled=${(e) =>
-                            toggleAccordion(e, this.#config, this)}
-                          data-details="${filterObject.key}"
-                        >
-                          ${this.#createReset(
-                            filterObject,
-                            getTabIndex(index, 1),
-                          )}
-                          ${this.#createFilter(
-                            filterObject,
-                            getTabIndex(index, 2),
-                          )}
-                        </eox-itemfilter-expandcontainer>
-                      </li>`,
-                  )}
-                </ul>
+                <div class="scroll" style="flex: 1;">
+                  <ul id="filters" class="list no-space">
+                    ${map(
+                      Object.values(this.filters),
+                      (filterObject, index) =>
+                        html` <li class="no-padding">
+                          <eox-itemfilter-expandcontainer
+                            .filterObject=${filterObject}
+                            @details-toggled=${(e) =>
+                              toggleAccordion(e, this.#config, this)}
+                            data-details="${filterObject.key}"
+                          >
+                            ${this.#createReset(
+                              filterObject,
+                              getTabIndex(index, 1),
+                            )}
+                            ${this.#createFilter(
+                              filterObject,
+                              getTabIndex(index, 2),
+                            )}
+                          </eox-itemfilter-expandcontainer>
+                        </li>`,
+                    )}
+                  </ul>
+                </div>
               </section>
             </eox-itemfilter-container>
           `,

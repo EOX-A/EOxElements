@@ -88,11 +88,11 @@ class EOxItemFilterSpatial extends LitElement {
       this.filterObject,
       () => html`
         <div class="large-margin left-margin">
-          <form style="display: inline">
+          <nav class="vertical-margin small-margin wrap">
             ${map(
               ["intersects", "within"],
               (mode) => html`
-                <label class="radio">
+                <label class="radio small small-text">
                   <input
                     tabindex=${this.tabIndex}
                     type="radio"
@@ -106,7 +106,7 @@ class EOxItemFilterSpatial extends LitElement {
                 </label>
               `,
             )}
-          </form>
+          </nav>
           <eox-itemfilter-spatial-filter
             exportparts="map: spatial-filter-map"
             .geometry="${this.filterObject.state?.geometry}"

@@ -87,6 +87,7 @@ eox-itemfilter-expandcontainer > [data-type=filter] {
   height: calc(100% - 32px);
   overflow-y: auto;
   overflow-x: hidden;
+  max-width: 100%;
 }
 [data-type=filter] .title,
 details summary {
@@ -280,9 +281,11 @@ button.icon {
   font-size: large;
   width: unset;
 }
+-container-results::-webkit-scrollbar,
 .inline-container::-webkit-scrollbar {
   height: 2px;
 }
+-container-results::-webkit-scrollbar-thumb,
 .inline-container::-webkit-scrollbar-thumb {
   background: lightgrey;
   border-radius: 2px;
@@ -401,6 +404,7 @@ mark.highlight {
 .multiselect-container input,
 .select-container input {
   margin-right: 8px;
+  max-width: 170px;
 }
 .select-overflow {
   max-height: calc(32px * var(--select-filter-max-items));
