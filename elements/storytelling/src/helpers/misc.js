@@ -12,7 +12,7 @@ export function scrollAnchorClickEvent(that, selector) {
     doc.addEventListener("click", (e) => {
       e.preventDefault();
       window.parent.location.hash = /** @type {HTMLAnchorElement} */ (
-        e.target
+        e.currentTarget
       ).hash.replace("#", "");
       scrollIntoView(that);
     });
@@ -98,14 +98,14 @@ export function versionToInteger(version) {
 export function checkMarkdownVersion(version) {
   const latestMarkdownVersion = Number(
     Object.keys(MARKDOWN_VERSION_MAP).find(
-      (key) => MARKDOWN_VERSION_MAP[key].length === 1
-    )
+      (key) => MARKDOWN_VERSION_MAP[key].length === 1,
+    ),
   );
   const currenMarkdownVersion = MARKDOWN_VERSION_MAP[version];
 
   if (!version || !currenMarkdownVersion) {
     console.warn(
-      `Version not (or wrongly) specified in markdown frontmatter. Assuming latest markdown syntax version (v${latestMarkdownVersion}).`
+      `Version not (or wrongly) specified in markdown frontmatter. Assuming latest markdown syntax version (v${latestMarkdownVersion}).`,
     );
     return latestMarkdownVersion;
   } else if (latestMarkdownVersion === version) return version;
@@ -122,7 +122,7 @@ export function checkMarkdownVersion(version) {
       return version;
     } else {
       console.error(
-        `You are using an older or newer version of ${packageInfo.name} package, which is not compatible with the version defined in the markdown frontmatter. Please update the ${packageInfo.name} package to (>=${currenMarkdownVersion[0]} and <=${currenMarkdownVersion[1]}) or change the markdown syntax version to ${packageInfo.version}`
+        `You are using an older or newer version of ${packageInfo.name} package, which is not compatible with the version defined in the markdown frontmatter. Please update the ${packageInfo.name} package to (>=${currenMarkdownVersion[0]} and <=${currenMarkdownVersion[1]}) or change the markdown syntax version to ${packageInfo.version}`,
       );
       return version;
     }
