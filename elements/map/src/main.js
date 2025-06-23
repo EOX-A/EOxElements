@@ -4,6 +4,7 @@ import { LitElement, html } from "lit";
 import Map from "ol/Map";
 import View from "ol/View";
 import olCss from "ol/ol.css?inline";
+import { defaults as interactionDefaults } from "ol/interaction";
 import controlCss from "./controls/controls.css?inline";
 import { buffer } from "ol/extent";
 import "./components/compare";
@@ -187,6 +188,10 @@ export class EOxMap extends LitElement {
      */
     this.map = new Map({
       controls: [],
+      interactions: interactionDefaults({
+        altShiftDragRotate: false,
+        pinchRotate: false,
+      }),
       layers: [],
       view: new View({
         center: [0, 0],
