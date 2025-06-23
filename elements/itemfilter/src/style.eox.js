@@ -48,7 +48,6 @@ form#itemfilter {
 }
 eox-itemfilter-container {
   min-width: 200px;
-  display: var(--filter-display);
   flex-grow: 0;
   flex-shrink: 0;
   overflow: hidden;

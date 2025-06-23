@@ -441,89 +441,91 @@ export class EOxItemFilter extends LitElement {
         ${when(
           this.filterProperties,
           () => html`
-            <eox-itemfilter-container
-              .filters=${this.filters}
-              .filterProperties=${this.filterProperties}
-              .inlineMode=${this.inlineMode || false}
-              @reset=${() => this.resetFilters()}
-              @filter=${() => this.search()}
-            >
-              <section
-                slot="section"
-                style="height: 100%; overflow: hidden; display: flex; flex-direction: column;"
+            <div style="display: var(--filter-display);">
+              <eox-itemfilter-container
+                .filters=${this.filters}
+                .filterProperties=${this.filterProperties}
+                .inlineMode=${this.inlineMode || false}
+                @reset=${() => this.resetFilters()}
+                @filter=${() => this.search()}
               >
-                ${when(
-                  !this.inlineMode,
-                  () => html`
-                    <nav class="title-nav">
-                      <div class="max">
-                        <slot name="filterstitle"
-                          ><p><strong>Filters</strong></p></slot
-                        >
-                      </div>
-                      ${when(
-                        !this.inlineMode &&
-                          this.#config.filterProperties &&
+                <section
+                  slot="section"
+                  style="height: 100%; overflow: hidden; display: flex; flex-direction: column;"
+                >
+                  ${when(
+                    !this.inlineMode,
+                    () => html`
+                      <nav class="title-nav">
+                        <div class="max">
+                          <slot name="filterstitle"
+                            ><p><strong>Filters</strong></p></slot
+                          >
+                        </div>
+                        ${when(
                           !this.inlineMode &&
-                          this.#config.filterProperties &&
-                          isFiltersDirty(this.filters),
-                        () => html`
-                          <button
-                            type="button"
-                            id="filter-reset"
-                            class="reset-icon border small"
-                            data-cy="filter-reset"
-                            @click=${() => this.resetFilters()}
-                          >
-                            ${this.unstyled
-                              ? nothing
-                              : html`
-                                  <i class="small">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                    >
-                                      <title>close</title>
-                                      <path
-                                        d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
-                                      />
-                                    </svg>
-                                  </i>
-                                `}
-                            <span class="small-text">Reset all</span>
-                          </button>
-                        `,
+                            this.#config.filterProperties &&
+                            !this.inlineMode &&
+                            this.#config.filterProperties &&
+                            isFiltersDirty(this.filters),
+                          () => html`
+                            <button
+                              type="button"
+                              id="filter-reset"
+                              class="reset-icon border small"
+                              data-cy="filter-reset"
+                              @click=${() => this.resetFilters()}
+                            >
+                              ${this.unstyled
+                                ? nothing
+                                : html`
+                                    <i class="small">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <title>close</title>
+                                        <path
+                                          d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                        />
+                                      </svg>
+                                    </i>
+                                  `}
+                              <span class="small-text">Reset all</span>
+                            </button>
+                          `,
+                        )}
+                      </nav>
+                    `,
+                  )}
+                  <div class="scroll" style="flex: 1;">
+                    <ul id="filters" class="list no-space">
+                      ${map(
+                        Object.values(this.filters),
+                        (filterObject, index) =>
+                          html` <li class="no-padding">
+                            <eox-itemfilter-expandcontainer
+                              .filterObject=${filterObject}
+                              @details-toggled=${(e) =>
+                                toggleAccordion(e, this.#config, this)}
+                              data-details="${filterObject.key}"
+                            >
+                              ${this.#createReset(
+                                filterObject,
+                                getTabIndex(index, 1),
+                              )}
+                              ${this.#createFilter(
+                                filterObject,
+                                getTabIndex(index, 2),
+                              )}
+                            </eox-itemfilter-expandcontainer>
+                          </li>`,
                       )}
-                    </nav>
-                  `,
-                )}
-                <div class="scroll" style="flex: 1;">
-                  <ul id="filters" class="list no-space">
-                    ${map(
-                      Object.values(this.filters),
-                      (filterObject, index) =>
-                        html` <li class="no-padding">
-                          <eox-itemfilter-expandcontainer
-                            .filterObject=${filterObject}
-                            @details-toggled=${(e) =>
-                              toggleAccordion(e, this.#config, this)}
-                            data-details="${filterObject.key}"
-                          >
-                            ${this.#createReset(
-                              filterObject,
-                              getTabIndex(index, 1),
-                            )}
-                            ${this.#createFilter(
-                              filterObject,
-                              getTabIndex(index, 2),
-                            )}
-                          </eox-itemfilter-expandcontainer>
-                        </li>`,
-                    )}
-                  </ul>
-                </div>
-              </section>
-            </eox-itemfilter-container>
+                    </ul>
+                  </div>
+                </section>
+              </eox-itemfilter-container>
+            </div>
           `,
         )}
         ${when(
