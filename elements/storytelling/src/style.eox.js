@@ -328,6 +328,10 @@ const styleEOX = `
     }
   }
 
+  .story-telling .section-wrap.section-item * {
+    overflow-x: hidden;
+  }
+
   .story-telling.editor-enabled .section-wrap.section-item {
     position: relative;
     border-bottom: 1px solid #efefef;
@@ -435,19 +439,21 @@ const styleEOX = `
     object-fit: cover;
   }
   .story-telling .tour section-step {
-    background: white;
-    padding: 0.75rem;
+    background: rgb(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    box-shadow: var(--elevate2);
     border-radius: 0.5rem;
     min-height: 8vh;
-    margin: 1rem;
-    margin-bottom: calc(120vh);
+    margin: 1rem 10% 120vh 10%;
     display: block;
     z-index: 1;
-    max-width: 40%;
+    max-width: 25%;
   }
   @media screen and (max-width: 1024px) {
     .story-telling .tour section-step {
       max-width: 100%;
+      margin: 1rem 1rem 120vh 1rem;
     }
   }
   .editor-wrapper {
