@@ -19,6 +19,7 @@ export class EOxDrawToolsController extends LitElement {
     importFeatures: { attribute: "import-features", type: Boolean },
     showEditor: { attribute: "show-editor", type: Boolean },
     geoJSON: { attribute: "geo-json", type: String },
+    type: { attribute: "type", type: String },
     unstyled: { type: Boolean },
   };
 
@@ -77,6 +78,12 @@ export class EOxDrawToolsController extends LitElement {
     this.geoJSON = "";
 
     /**
+     * Type of the drawn feature
+     * @type {"Polygon" | "Point" | "LineString" | "Circle" | "Box"}
+     */
+    this.type = "Polygon";
+
+    /**
      * Render the element without additional styles
      */
     this.unstyled = false;
@@ -108,7 +115,7 @@ export class EOxDrawToolsController extends LitElement {
     this.updateButtonStates();
     const drawLabel = this.currentlyDrawing ? "drawing" : "draw";
 
-    const polygonIcon = html`<svg
+    const PolygonIcon = html`<svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
     >
@@ -117,6 +124,40 @@ export class EOxDrawToolsController extends LitElement {
         d="M17,15.7V13H19V17L10,21L3,14L7,5H11V7H8.3L5.4,13.6L10.4,18.6L17,15.7M22,5V7H19V10H17V7H14V5H17V2H19V5H22Z"
       />
     </svg>`;
+    const shapeIcons = {
+      Point: html`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>vector-point-plus</title>
+          <path
+            d="M9 9V15H15V9H9M11 11H13V13H11V11M18 15V18H15V20H18V23H20V20H23V18H20V15H18Z"
+          />
+        </svg>
+      `,
+      Circle: html`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>shape-circle-plus</title>
+          <path
+            d="M11,19A6,6 0 0,0 17,13H19A8,8 0 0,1 11,21A8,8 0 0,1 3,13A8,8 0 0,1 11,5V7A6,6 0 0,0 5,13A6,6 0 0,0 11,19M19,5H22V7H19V10H17V7H14V5H17V2H19V5Z"
+          />
+        </svg>
+      `,
+      LineString: html`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>vector-polyline-plus</title>
+          <path
+            d="M2 3V9H4.95L6.95 15H6V21H12V16.41L17.41 11H22V5H16V9.57L10.59 15H9.06L7.06 9H8V3H2M4 5H6V7H4V5M18 7H20V9H18V7M18 15V18H15V20H18V23H20V20H23V18H20V15H18M8 17H10V19H8V17Z"
+          />
+        </svg>
+      `,
+      Box: html`
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <title>shape-rectangle-plus</title>
+          <path
+            d="M19,6H22V8H19V11H17V8H14V6H17V3H19V6M17,17V14H19V19H3V6H11V8H5V17H17Z"
+          />
+        </svg>
+      `,
+    };
     const pointerIcon = html`<svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -170,7 +211,7 @@ export class EOxDrawToolsController extends LitElement {
               ? drawLabel
               : html`
                   <i class="small"
-                    >${this.select ? pointerIcon : polygonIcon}</i
+                    >${this.select ? pointerIcon : shapeIcons[this.type]}</i
                   >
                   <div class="tooltip bottom">
                     ${this.select ? "Select" : "Draw"}

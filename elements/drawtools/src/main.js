@@ -381,6 +381,7 @@ export class EOxDrawTools extends LitElement {
         .importFeatures=${this.importFeatures}
         .showEditor=${this.showEditor}
         .geoJSON=${this.#geoJSON}
+        .type=${this.type}
       ></eox-drawtools-controller>
 
       <!-- List Component -->

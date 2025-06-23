@@ -34,6 +34,8 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       "fill-color": `rgba(${primaryColor}, 0.1)`,
       "stroke-color": `rgba(${primaryColor}, 1)`,
       "stroke-width": 2,
+      "circle-radius": 5,
+      "circle-fill-color": `rgba(${primaryColor}, 1)`,
     },
     interactions: [
       {
