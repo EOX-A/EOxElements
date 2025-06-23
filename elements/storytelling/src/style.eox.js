@@ -119,6 +119,7 @@ const styleEOX = `
   .navigation .container ul li {
     list-style: none;
     margin: 0px 10px;
+    flex: 1;
   }
   .navigation li a {
     color: black;
