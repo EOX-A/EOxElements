@@ -1,5 +1,4 @@
 import { LitElement, html, nothing } from "lit";
-import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
 import {
@@ -191,7 +190,7 @@ export class EOxSelector extends LitElement {
       this.filteredSuggestions.length > 5 ? "select-overflow scroll" : nothing;
     return html`
       <style>
-        ${!this.unstyled && styleEOX} :host,
+        :host,
         :root {
           --select-filter-max-items: 5;
         }

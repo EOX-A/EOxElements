@@ -1,6 +1,5 @@
 import { LitElement, html } from "lit";
 import { map } from "lit/directives/map.js";
-import { styleEOX } from "../style.eox";
 import {
   handleChipClickMethod,
   keyboardEventListenerMethod,
@@ -101,9 +100,6 @@ export class EOxItemFilterChipsV2 extends LitElement {
    */
   render() {
     return html`
-      <style>
-        ${styleEOX}
-      </style>
       <span class="chip-container">
         ${map(
           this.items,
