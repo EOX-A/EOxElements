@@ -288,6 +288,7 @@ export class EOxLayerControl extends LitElement {
       --layer-title-visibility: inline;
       --layer-visibility: flex;
       --layer-tools-button-visibility: flex;
+      --layer-toggle-button-visibility: none;
 
       --primary-color: var(--primary);
       --secondary-color: var(--secondary);
