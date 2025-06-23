@@ -344,8 +344,10 @@ export class EOxLayerControlLayer extends LitElement {
     eox-layercontrol-layer > nav > .action.tools {
       display: var(--layer-tools-button-visibility);
     }
-    eox-layercontrol-layer:not(:hover) > nav > .action {
-      display: none;
+    @media (pointer:fine) {
+      eox-layercontrol-layer:not(:hover) > nav > .action {
+        display: none;
+      }
     }
     eox-layercontrol-layer nav:has(.action input[type=checkbox]:not(:checked)),
     eox-layercontrol-layer nav:has(.action input[type=radio]:not(:checked)) {
