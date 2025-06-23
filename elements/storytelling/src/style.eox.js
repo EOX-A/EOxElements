@@ -146,6 +146,16 @@ const styleEOX = `
   .navigation li a:hover {
     --primary-background-hover: transparent;
   }
+  .navigation li a small.truncate {
+    @supports (-webkit-line-clamp: 2) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: initial !important;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
   .hamburger-menu {
     display: none;
     cursor: pointer;
