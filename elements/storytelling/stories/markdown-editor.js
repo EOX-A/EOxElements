@@ -129,7 +129,6 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       show-nav
       show-editor="closed"
       markdown=${args.markdown}
-      style="--surface: red"
       @upload:file=${(e) => {
         const detail = e.detail;
         const { file, update } = detail;
