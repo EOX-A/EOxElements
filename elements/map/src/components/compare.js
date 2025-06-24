@@ -98,6 +98,8 @@ export class EOxMapCompare extends LitElement {
           height: 100%;
           width: var(--thumb-w);
           pointer-events: all;
+          background: transparent;
+          border: none;
         }
         .eox-map-compare__range::-webkit-slider-thumb {
           cursor: ew-resize;
@@ -105,6 +107,8 @@ export class EOxMapCompare extends LitElement {
           width: var(--thumb-w);
           pointer-events: all;
           position: relative;
+          background: transparent;
+          border: none;
         }
         .eox-map-compare__range::-moz-range-track {
           background: transparent;
