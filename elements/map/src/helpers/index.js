@@ -16,3 +16,4 @@ export { EOxSelectInteraction, addSelect } from "./select";
 export { generateTileGrid } from "./tile-grid";
 export { getLayerById, getFlatLayersArray } from "./layer";
 export { createLayer, updateLayer } from "./generate";
+export { fadeLayer } from "./animation";

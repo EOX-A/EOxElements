@@ -102,6 +102,7 @@ export class EOxMap extends LitElement {
       intersections: { attribute: false, state: true, type: Object },
       selectInteractions: { attribute: false, state: true, type: Object },
       mapControls: { attribute: false, state: true, type: Object },
+      fadeLayers: { attribute: "fade-layers", type: Boolean },
     };
   }
 
@@ -220,6 +221,13 @@ export class EOxMap extends LitElement {
      * @type {Object.<string, import("ol/control/Control").default>}
      */
     this.mapControls = {};
+
+    /**
+     * Add a fade transition to the layers when they are added or removed.
+     *
+     *  @type {boolean}
+     */
+    this.fadeLayers = true;
   }
 
   /**

@@ -1,4 +1,9 @@
-import { createLayer, updateLayer, getLayerById } from "../../helpers";
+import {
+  createLayer,
+  updateLayer,
+  getLayerById,
+  fadeLayer,
+} from "../../helpers";
 
 /**
  * @typedef {import("../../layers").EoxLayer} EoxLayer
@@ -29,6 +34,16 @@ export default function addOrUpdateLayerMethod(json, EOxMap) {
   } else {
     // If the layer does not exist, create a new layer and add it to the map
     layer = createLayer(EOxMap, json);
+    if (EOxMap.fadeLayers) {
+      layer.setOpacity(0);
+      EOxMap.map.once("loadend", () => {
+        fadeLayer(layer, 1);
+        EOxMap._layersToBeRemoved.forEach(async (l) => {
+          await fadeLayer(l, 0);
+          EOxMap.map.removeLayer(l);
+        });
+      });
+    }
     EOxMap.map.addLayer(layer);
   }
 

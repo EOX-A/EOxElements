@@ -5,6 +5,7 @@ import {
   coordinatesRoughlyEquals,
   removeDefaultScrollInteractions,
   getLayerById,
+  fadeLayer,
 } from "../../helpers";
 import { addOrUpdateControl } from "../../controls/controls";
 import {
@@ -140,7 +141,7 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
 
   // Remove old layers not present in the new layers
   if (oldLayers) {
-    oldLayers.forEach((l) => {
+    oldLayers.forEach(async (l) => {
       // Check if the current old layer is not in the new layers list by its ID
       if (
         !l.properties?.id ||
@@ -166,8 +167,16 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
           },
         );
 
-        // Remove the layer from the map
-        EOxMap.map.removeLayer(layerToBeRemoved);
+        if (EOxMap.fadeLayers) {
+          if (!EOxMap._layersToBeRemoved) {
+            EOxMap._layersToBeRemoved = [];
+          }
+          layerToBeRemoved.setZIndex(1);
+          EOxMap._layersToBeRemoved.push(layerToBeRemoved);
+        } else {
+          // Remove the layer from the map
+          EOxMap.map.removeLayer(layerToBeRemoved);
+        }
       }
     });
   }
