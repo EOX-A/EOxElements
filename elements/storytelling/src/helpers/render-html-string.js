@@ -437,7 +437,23 @@ export function parseNavWithAddSection(
       });
     }
 
-    if (html[0].classList.contains("hero")) navIndex = 1;
+    if (html[0].classList.contains("hero")) {
+      navIndex = 1;
+      const sectionWraps =
+        html.filter((el) => el.classList?.contains("section-wrap")) || [];
+      if (sectionWraps.length > 1) {
+        const scrollAnchor = document.createElement("a");
+        scrollAnchor.classList.add("hero-scroll-indicator");
+        scrollAnchor.addEventListener("click", (e) => {
+          e.preventDefault();
+          sectionWraps[1].scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        });
+        html[0].appendChild(scrollAnchor);
+      }
+    }
     html.splice(navIndex, 0, navDOM);
   }
 
