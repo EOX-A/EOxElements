@@ -270,7 +270,7 @@ ${slider}
   .story-telling .hero {
     position: relative;      
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -351,7 +351,7 @@ ${slider}
   .story-telling .tour img:not(section-step img),
   .story-telling .tour video:not(section-step video) {
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     position: sticky;
     top:0;
     z-index: 0;
@@ -573,7 +573,7 @@ ${slider}
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background: #000000b5;
     z-index: 6;
     display: flex;
@@ -585,7 +585,7 @@ ${slider}
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     z-index: -1;
     cursor: pointer;
   }
