@@ -153,7 +153,7 @@ ${slider}
     } 
   }
   .section-wrap {
-    scroll-margin: 120px;
+    scroll-margin: 0px;
   }
   .story-telling p,
   .story-telling code {
@@ -246,8 +246,8 @@ ${slider}
     font-size: larger;
     cursor: pointer;
   }
-  .story-telling.editor-enabled.editor-close .section-wrap.section-item::after, 
-  .story-telling.editor-enabled.editor-close .section-wrap.section-item.section-start::before {
+  .story-telling.editor-enabled.editor-closed .section-wrap.section-item::after, 
+  .story-telling.editor-enabled.editor-closed .section-wrap.section-item.section-start::before {
     display: none;
   }
   .story-telling.editor-enabled .section-wrap.section-item.section-start::before {
