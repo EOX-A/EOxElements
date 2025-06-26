@@ -1,5 +1,6 @@
 import DragPan from "ol/interaction/DragPan.js";
 import MouseWheelZoom from "ol/interaction/MouseWheelZoom.js";
+import PinchZoom from "ol/interaction/PinchZoom.js";
 import { platformModifierKeyOnly } from "ol/events/condition";
 
 /**
@@ -34,10 +35,17 @@ export function addScrollInteractions(map, customInteraction = false) {
         }),
       );
     } else map.addInteraction(new DragPan()); // On non-touch devices, add the default DragPan interaction
+
+    // Disable default PinchZoom interaction
+    // This is to prevent pinch zooming on touch devices when the custom interaction is active
+    const pinchZoom = new PinchZoom();
+    pinchZoom.setActive(false);
+    map.addInteraction(pinchZoom);
   } else {
-    // Add default MouseWheelZoom and DragPan interactions
+    // Add default MouseWheelZoom, DragPan and PinchZoom interactions
     map.addInteraction(new MouseWheelZoom());
     map.addInteraction(new DragPan());
+    map.addInteraction(new PinchZoom());
   }
 }
 
