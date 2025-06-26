@@ -187,7 +187,7 @@ export class EOxLayerControlLayer extends LitElement {
         () => html`
           <!-- Render the layer -->
           <nav
-            class="layer ${disableClass} ${visibilityClass} ${layerZoomStateClass} drag-handle responsive tiny-space"
+            class="layer ${disableClass} ${visibilityClass} ${layerZoomStateClass} responsive tiny-space"
           >
             ${when(!this.unstyled, () => {
               if (this.#getLayer("color")) {
@@ -254,7 +254,7 @@ export class EOxLayerControlLayer extends LitElement {
             })}
 
             <!-- Layer title -->
-            <div class="max truncate">
+            <div class="max truncate drag-handle">
               <span class="layertitle truncate"
                 >${this.#getLayer(this.titleProperty)}</span
               >
