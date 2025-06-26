@@ -284,7 +284,7 @@ export class EOxLayerControlLayer extends LitElement {
 
             <!-- Input element for layer visibility -->
             <label
-              class="${disableClass} ${inputType} icon square primary-text action small"
+              class="${disableClass} ${inputType} icon square primary-text action visibility small"
             >
               <input
                 type=${inputType}
@@ -343,6 +343,11 @@ export class EOxLayerControlLayer extends LitElement {
     }
     eox-layercontrol-layer > nav > .action.tools {
       display: var(--layer-tools-button-visibility);
+      transform: translateX(.6rem);
+    }
+    eox-layercontrol-layer > nav > .action.visibility {
+      padding: .3rem;  
+      transform: translateX(.3rem);
     }
     @media (pointer:fine) {
       eox-layercontrol-layer:not(:hover) > nav > .action {
