@@ -191,8 +191,10 @@ export class EOxLayerControlLayerGroup extends LitElement {
       display: var(--layer-summary-visibility);
       user-select: none;
     }
-    details > summary:hover {
-      background-color: var(--item-hover-color);
+    @media (pointer:fine) {
+      details > summary:hover {
+        background-color: var(--item-hover-color);
+      }
     }
     details .arrow-container > i {
       transition: transform 0.1s ease-in-out;
