@@ -150,7 +150,7 @@ export class StoryTellingEditor extends LitElement {
     );
     if (!evt.target.checked) {
       wrapper.classList.add("editor-hide");
-      storyDOM.setAttribute("show-editor", "close");
+      storyDOM.setAttribute("show-editor", "closed");
     } else {
       wrapper.classList.remove("editor-opacity-none");
       wrapper.classList.remove("editor-hide");
