@@ -16,6 +16,8 @@ const LAYER_EOX_CLOUDLESS = (year) => ({
   },
 });
 
+export const STORIES_LAYERCONTROL_STYLE = "width: 240px;";
+
 export const STORIES_MAP_STYLE =
   "width: 400px; height: 300px; margin-left: 7px;";
 

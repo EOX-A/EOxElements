@@ -17,11 +17,9 @@ const externalFilterTest = () => {
     .shadow()
     .within(() => {
       cy.get("[data-details=themes]").within(() => {
-        cy.get("eox-itemfilter-select")
-          .shadow()
-          .within(() => {
-            cy.get("[data-title=agriculture]").click();
-          });
+        cy.get("eox-itemfilter-select").within(() => {
+          cy.get("[data-title=agriculture]").click();
+        });
       });
       cy.get("eox-itemfilter-results summary .title")
         .first()

@@ -21,7 +21,7 @@ const loadDateFormatTest = () => {
     ></eox-timecontrol>`,
   ).as(timeControl);
 
-  cy.get(timeControl).shadow().find("#controls span").contains("17/12/2024");
+  cy.get(timeControl).shadow().find("#controls small").contains("17/12/2024");
 };
 
 export default loadDateFormatTest;

@@ -200,6 +200,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .schema=${this.layerConfig.schema}
             .value=${this.#startVals}
             .options=${options}
+            .noShadow=${true}
             @change=${this.throttleDataChange}
           ></eox-jsonform>
         `,
@@ -211,12 +212,30 @@ export class EOxLayerControlLayerConfig extends LitElement {
     color-legend {
       --cle-background: transparent;
       --cle-font-family: inherit;
-      --cle-font-size: inherit;
-      --cle-font-weight: inherit --cle-letter-spacing: inherit;
+      --cle-font-size: 12px;
+      --cle-font-size-title: 12px;
+      --cle-font-weight: 400;
+      --cle-font-weight-title: 400;
+      --cle-letter-spacing: inherit;
       --cle-letter-spacing-title: inherit;
+      font-size: small;
     }
   `;
-  #styleEOX = ``;
+  #styleEOX = css`
+    input[type="range"],
+    eox-jsonform {
+      --eox-slider-thumb-height: 10px !important;
+      --eox-slider-thumb-width: 10px !important;
+      --eox-slider-track-height: 4px !important;
+      --eox-panel-spacing: 0 !important;
+      --eox-slider-margin: 0 !important;
+      font-size: small;
+    }
+    eox-layercontrol-layer-legend {
+      display: block;
+      margin-bottom: 1rem;
+    }
+  `;
 }
 
 customElements.define(

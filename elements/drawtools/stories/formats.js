@@ -23,13 +23,29 @@ export const Formats = {
       style=${STORIES_MAP_STYLE}
       .layers=${STORIES_LAYERS_ARRAY}
     ></eox-map>
-    <button id="formats" @click=${() => args.changeFormat("geojson")}>
-      geoJson
-    </button>
-    <button id="formats" @click=${() => args.changeFormat("wkt")}>WKT</button>
-    <button id="formats" @click=${() => args.changeFormat("feature")}>
-      feature
-    </button>
+    <nav>
+      <button
+        id="formats"
+        class="small"
+        @click=${() => args.changeFormat("geojson")}
+      >
+        GeoJSON
+      </button>
+      <button
+        id="formats"
+        class="small"
+        @click=${() => args.changeFormat("wkt")}
+      >
+        WKT
+      </button>
+      <button
+        id="formats"
+        class="small"
+        @click=${() => args.changeFormat("feature")}
+      >
+        Feature
+      </button>
+    </nav>
     <p>Refer to the console for the emitted values</p>
 
     <!-- Initialize eox-drawtools for the eox-map with ID "formats" -->

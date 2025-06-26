@@ -95,7 +95,10 @@ export default function createSortable(element, collection, idProperty, that) {
     swapThreshold: 0.5,
     animation: 150,
     easing: "cubic-bezier(1, 0, 0, 1)",
-    onStart: (e) => (childNodes = onStart(e)),
+    onStart: (e) => {
+      console.log(e);
+      childNodes = onStart(e);
+    },
     onMove: (e) => {
       related = e.related;
     },

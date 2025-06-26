@@ -107,6 +107,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   // Create the OpenLayers layer with the specified options
   const olLayer = new newLayer({
     ...layer,
+    preload: Infinity,
     ...(layer.source && {
       source: new newSource({
         ...layer.source,

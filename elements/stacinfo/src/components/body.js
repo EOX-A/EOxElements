@@ -16,13 +16,17 @@ import { when } from "lit/directives/when.js";
  */
 export default function parseBody(body = []) {
   return html`
-    <section id="body" part="body">
+    <section
+      id="body"
+      class="small-padding small-margin top-margin"
+      part="body"
+    >
       <ul class=${body.length === 1 ? "single-property" : nothing}>
         ${map(
           body,
           ([, value]) => html`
             <slot name=${value.label.toLowerCase()}>
-              <li>
+              <li class="small-text">
                 ${when(
                   body.length > 1,
                   () =>

@@ -1,6 +1,7 @@
 import { html } from "lit";
 import {
   STORIES_LAYER_DEFORESTED_BIOMASS,
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
   STORIES_LAYER_TERRAIN_LIGHT,
 } from "../src/enums";
@@ -11,6 +12,7 @@ export const LayerConfig = {
     <eox-layercontrol
       .tools=${["config"]}
       for="eox-map#config"
+      .style=${STORIES_LAYERCONTROL_STYLE}
     ></eox-layercontrol>
     <hr />
     <eox-map

@@ -94,16 +94,18 @@ export class EOxItemFilterRange extends LitElement {
     return when(
       this.filterObject,
       () => html`
-        ${this.#label("min", "before")}
-        <tc-range-slider
-          min="${this.filterObject.min}"
-          max="${this.filterObject.max}"
-          value1="${this.filterObject.state.min || this.filterObject.min}"
-          value2="${this.filterObject.state.max || this.filterObject.max}"
-          step="${this.filterObject.step || 1}"
-          @change=${this.debouncedInputHandler}
-        ></tc-range-slider>
-        ${this.#label("max", "after")}
+        <div class="large-margin left-margin">
+          ${this.#label("min", "before")}
+          <tc-range-slider
+            min="${this.filterObject.min}"
+            max="${this.filterObject.max}"
+            value1="${this.filterObject.state.min || this.filterObject.min}"
+            value2="${this.filterObject.state.max || this.filterObject.max}"
+            step="${this.filterObject.step || 1}"
+            @change=${this.debouncedInputHandler}
+          ></tc-range-slider>
+          ${this.#label("max", "after")}
+        </div>
       `,
     );
   }

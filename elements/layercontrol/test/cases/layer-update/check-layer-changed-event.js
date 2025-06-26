@@ -22,7 +22,7 @@ const checkLayerChangedEvent = () => {
   cy.get("eox-layercontrol")
     .shadow()
     .within(() => {
-      cy.get(".layer").find("input").click();
+      cy.get(".layer").find("input").click({ force: true });
     });
 };
 

@@ -34,7 +34,7 @@ const setDataValuesTest = () => {
         setTimeout(() => {
           const canvas = eoxChart.shadowRoot.querySelector("canvas");
           const context = canvas.getContext("2d");
-          const pixel = context.getImageData(150, 150, 1, 1).data;
+          const pixel = context.getImageData(155, 150, 1, 1).data;
           const red = pixel[0];
           const green = pixel[1];
           const blue = pixel[2];

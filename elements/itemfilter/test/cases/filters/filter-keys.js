@@ -10,7 +10,6 @@ const filterKeysTest = (filterKeys) => {
     .within(() => {
       cy.get("eox-itemfilter-select")
         .should("be.visible")
-        .shadow()
         .within(($el) => {
           const identifiers = $el[0].querySelectorAll("li[data-identifier");
           expect(identifiers.length).to.eq(filterKeys.length);

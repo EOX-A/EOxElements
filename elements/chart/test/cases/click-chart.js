@@ -31,7 +31,7 @@ const clickChartTest = () => {
   // eslint-disable-next-line cypress/unsafe-to-chain-command
   cy.get(chart)
     // click on bar
-    .click(50, 100)
+    .click(100, 100)
     .then(() => {
       expect(clickEventHandlerSpy).to.be.calledOnce;
     });
