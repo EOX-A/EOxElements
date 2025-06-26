@@ -153,7 +153,7 @@ ${slider}
     } 
   }
   .section-wrap {
-    scroll-margin: 120px;
+    scroll-margin: 0px;
   }
   .story-telling p,
   .story-telling code {
@@ -246,8 +246,8 @@ ${slider}
     font-size: larger;
     cursor: pointer;
   }
-  .story-telling.editor-enabled.editor-close .section-wrap.section-item::after, 
-  .story-telling.editor-enabled.editor-close .section-wrap.section-item.section-start::before {
+  .story-telling.editor-enabled.editor-closed .section-wrap.section-item::after, 
+  .story-telling.editor-enabled.editor-closed .section-wrap.section-item.section-start::before {
     display: none;
   }
   .story-telling.editor-enabled .section-wrap.section-item.section-start::before {
@@ -270,12 +270,43 @@ ${slider}
   .story-telling .hero {
     position: relative;      
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .story-telling .hero .hero-scroll-indicator {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    border-left: 3px solid white;
+    border-bottom: 3px solid white;
+    transform: rotate(-45deg);
+    animation: bounce 2s infinite;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  @keyframes bounce {
+    0% {
+      transform: translateY(0) rotate(-45deg);
+    }
+    25% {
+      transform: translateY(-15px) rotate(-45deg);
+    }
+    50% {
+      transform: translateY(0) rotate(-45deg);
+    }
+    75% {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+    100% {
+      transform: translateY(0) rotate(-45deg);
+    }
   }
   .story-telling .hero * {
     color: white;
@@ -320,7 +351,7 @@ ${slider}
   .story-telling .tour img:not(section-step img),
   .story-telling .tour video:not(section-step video) {
     width: 100%;
-    height: 100vh;
+    height: 100dvh;
     position: sticky;
     top:0;
     z-index: 0;
@@ -542,7 +573,7 @@ ${slider}
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background: #000000b5;
     z-index: 6;
     display: flex;
@@ -554,7 +585,7 @@ ${slider}
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     z-index: -1;
     cursor: pointer;
   }
