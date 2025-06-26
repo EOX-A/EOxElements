@@ -38,8 +38,10 @@ export function addScrollInteractions(map, customInteraction = false) {
 
     // Disable default PinchZoom interaction
     // This is to prevent pinch zooming on touch devices when the custom interaction is active
-    const pinchZoom = new PinchZoom();
-    map.addInteraction(pinchZoom);
+    const pinchZoom = map
+      .getInteractions()
+      .getArray()
+      .find((i) => i instanceof PinchZoom);
     pinchZoom.setActive(false);
   } else {
     // Add default MouseWheelZoom, DragPan and PinchZoom interactions
