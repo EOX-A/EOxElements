@@ -10,7 +10,7 @@ function getChipItems(filters) {
   return Object.keys(filters)
     .map((filter) => ({
       title: html`${filters[filter].title || filters[filter].key}:
-        <strong>${filters[filter].stringifiedState}</strong>`,
+      ${filters[filter].stringifiedState}`,
       key: filter,
     }))
     .filter((item) => filters[item.key].dirty);

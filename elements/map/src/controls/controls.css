@@ -1,9 +1,20 @@
 .geolocation {
-  top: 65px;
+  top: 85px;
   left: 0.5em;
 }
+.geolocation button {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.geolocation button > svg {
+  fill: var(--on-primary);
+  min-inline-size: 1.25rem !important;
+  max-inline-size: 1.25rem !important;
+  min-block-size: 1.25rem !important;
+  max-block-size: 1.25rem !important;
+}
 .ol-touch.geolocation {
-  top: 80px;
+  top: 100px;
 }
 
 .loading-indicator {
@@ -30,4 +41,59 @@
 .disabled {
   filter: brightness(1.7);
   pointer-events: none;
+}
+
+.ol-unselectable {
+  pointer-events: none;
+}
+.ol-control {
+  background: none;
+}
+.ol-control button,
+.ol-control button:hover,
+.ol-control button:focus {
+  --_round: 32px;
+  border-radius: var(--_round);
+  background: var(--primary);
+  color: var(--on-primary);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  pointer-events: all;
+  position: relative;
+  font-size: 1rem;
+}
+.ol-control button:hover:after {
+  background-size: 15000%;
+  opacity: 0.1;
+  transition: background-size var(--speed2) linear;
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  border-radius: inherit;
+  inline-size: 100%;
+  block-size: 100%;
+  background-position: center;
+  background-image: radial-gradient(circle, currentColor 1%, transparent 1%);
+}
+.ol-control button.ol-zoom-in,
+.ol-control button.ol-zoom-in:hover {
+  border-top-left-radius: var(--_round);
+  border-top-right-radius: var(--_round);
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  margin-bottom: 0.125rem;
+}
+.ol-control button.ol-zoom-out,
+.ol-control button.ol-zoom-out:hover {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  border-bottom-left-radius: var(--_round);
+  border-bottom-right-radius: var(--_round);
 }

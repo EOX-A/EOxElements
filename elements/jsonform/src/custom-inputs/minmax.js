@@ -63,8 +63,8 @@ export class MinMaxEditor extends AbstractEditor {
       step: properties[minKey].step || properties[maxKey].step,
       value1: startVals?.[minKey] || properties[minKey].default,
       value2: startVals?.[maxKey] || properties[maxKey].default,
-      "slider-bg-fill": "#004170",
       "generate-labels": "true",
+      "generate-labels-text-color": "currentColor",
       "slider-width": "100%",
       "range-dragging": "false",
     };

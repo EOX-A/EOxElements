@@ -2,10 +2,11 @@
  * Transforms and formats a list of STAC properties.
  *
  * @param {Array<any>} properties - The list of properties to transform.
+ * @param {import("../main.js").EOxStacInfo} element - The component instance containing STAC properties.
  * @param {string} [type="property"] - The type of transformation to apply.
  * @returns {Array<any>} The transformed and formatted properties.
  */
-export function transformProperties(properties, type = "property") {
+export function transformProperties(properties, element, type = "property") {
   // Transform extent to only show temporal information.
   return properties.map(([key, property]) => {
     // Transform extent to only show temporal
@@ -72,10 +73,18 @@ export function transformProperties(properties, type = "property") {
                     ? `<div><p>${itemValue.description}</p></div>`
                     : ``
                 }
-                <a class="button icon-text small block" target="_blank" href="${
+                <a class="button small responsive border" target="_blank" href="${
                   itemValue.href || itemValue.url
                 }"
-                  >${itemValue.name || itemValue.title || itemKey}
+                  >
+                    ${
+                      !element.unstyled
+                        ? `<i class="small">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>open-in-new</title><path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" /></svg>
+                    </i>`
+                        : ""
+                    }
+                    <span>${itemValue.name || itemValue.title || itemKey}</span>
                   </a>
               </div>`,
           )

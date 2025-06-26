@@ -1,5 +1,6 @@
 import { html } from "lit";
 import {
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
   STORIES_LAYER_SENTINEL_HUB,
   STORIES_LAYER_REGION,
@@ -54,6 +55,7 @@ export const LayerColor = {
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
         for="eox-map"
+        .style=${STORIES_LAYERCONTROL_STYLE}
       ></eox-layercontrol>
       <eox-map
         .style=${STORIES_MAP_STYLE}

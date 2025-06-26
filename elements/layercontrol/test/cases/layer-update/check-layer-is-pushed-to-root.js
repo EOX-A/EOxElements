@@ -15,7 +15,7 @@ const checkLayerIsPushedToRoot = () => {
   cy.get("eox-layercontrol")
     .shadow()
     .within(() => {
-      cy.get(".layer").find(".title").contains("bar"); // Checking if the title of the added layer is displayed
+      cy.get(".layer").find(".layertitle").contains("bar"); // Checking if the title of the added layer is displayed
     });
 };
 

@@ -10,6 +10,7 @@ class CustomEditorExample extends JSONEditor.AbstractEditor {
 
     // control
     this.control = document.createElement("div");
+    this.control.classList.add("form-control");
 
     // Create a select element
     this.input = document.createElement("select");

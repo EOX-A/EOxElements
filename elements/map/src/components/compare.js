@@ -44,11 +44,11 @@ export class EOxMapCompare extends LitElement {
       <style>
         :host {
           display: block;
+          --thumb-size: 3rem;
         }
-        /* Inspired by https://www.codehim.com/html5-css3/html-css-image-comparison-slider/ */
         .eox-map-compare {
           --thumb-bgc: #fff;
-          --thumb-w: 0.2rem;
+          --thumb-w: var(--thumb-size);
 
           position: relative;
           height: 100%;
@@ -94,24 +94,21 @@ export class EOxMapCompare extends LitElement {
           pointer-events: none;
         }
         .eox-map-compare__range::-moz-range-thumb {
-          background-color: var(--thumb-bgc);
           cursor: ew-resize;
           height: 100%;
           width: var(--thumb-w);
           pointer-events: all;
-          box-shadow: 0 0 5px black;
-          clip-path: inset(0 -5px 0 -5px);
+          background: transparent;
+          border: none;
         }
         .eox-map-compare__range::-webkit-slider-thumb {
-          background-color: var(--thumb-bgc);
           cursor: ew-resize;
           height: 100%;
           width: var(--thumb-w);
           pointer-events: all;
           position: relative;
-          box-shadow: 0 0 5px black;
-          -webkit-clip-path: inset(0 -5px 0 -5px);
-          clip-path: inset(0 -5px 0 -5px);
+          background: transparent;
+          border: none;
         }
         .eox-map-compare__range::-moz-range-track {
           background: transparent;
@@ -129,6 +126,41 @@ export class EOxMapCompare extends LitElement {
         .eox-map-compare__range::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
+        }
+        .slider-bar,
+        .slider-thumb {
+          position: absolute;
+          box-shadow: 0 0.125rem 0.125rem 0 rgb(0 0 0 / 0.32);
+        }
+        .slider-bar {
+          pointer-events: none;
+          top: 0;
+          width: 0.3rem;
+          height: 100%;
+          background-color: var(--thumb-bgc);
+          z-index: 2;
+          left: calc(${this.value}% - 0.15rem);
+          -webkit-clip-path: inset(0 -5px 0 -5px);
+          clip-path: inset(0 -5px 0 -5px);
+        }
+        .slider-thumb {
+          pointer-events: none;
+          top: calc(50% - var(--thumb-size) / 2);
+          background: var(--primary);
+          z-index: 3;
+          width: var(--thumb-size);
+          aspect-ratio: 1;
+          left: calc(${this.value}% - var(--thumb-size) / 2);
+          border-radius: 50%;
+          padding: 0.7rem;
+          color: var(--on-primary);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+        }
+        .slider-thumb svg {
+          fill: currentColor;
         }
       </style>
       ${choose(
@@ -153,6 +185,15 @@ export class EOxMapCompare extends LitElement {
               value=${this.value}
               @input=${this.#handleInput}
             />
+            <div class="slider-bar"></div>
+            <div class="slider-thumb">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <title>arrow-left-right</title>
+                <path
+                  d="M6.45,17.45L1,12L6.45,6.55L7.86,7.96L4.83,11H19.17L16.14,7.96L17.55,6.55L23,12L17.55,17.45L16.14,16.04L19.17,13H4.83L7.86,16.04L6.45,17.45Z"
+                />
+              </svg>
+            </div>
           </div>
         `,
       )}

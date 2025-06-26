@@ -25,16 +25,8 @@ const emptyGroup = () => {
   cy.get("eox-layercontrol")
     .shadow()
     .within(() => {
-      cy.get("summary").then(($els) => {
-        const control = $els[0];
-        const test = $els[6];
-        const checkDisplay = (el) =>
-          el.ownerDocument.defaultView
-            .getComputedStyle(el, "before")
-            .getPropertyValue("display");
-        expect(checkDisplay(control)).to.eq("block");
-        expect(checkDisplay(test)).to.eq("none");
-      });
+      cy.get("summary .arrow-container").eq(0).should("exist");
+      cy.get("summary .arrow-container").eq(1).should("not.exist");
     });
 };
 

@@ -37,10 +37,14 @@ export const FeaturesProjection = {
       style=${STORIES_MAP_STYLE}
       .layers=${STORIES_LAYERS_ARRAY}
     ></eox-map>
-    <p>Refer to the console for the emitted extent</p>
-    <button id="feature-projection" @click=${() => args.changeProjection(args)}>
-      change projection
+    <button
+      id="feature-projection"
+      class="small no-margin"
+      @click=${() => args.changeProjection(args)}
+    >
+      Change projection
     </button>
+    <p>Refer to the console for the emitted extent</p>
 
     <!-- Initialize eox-drawtools for the eox-map with ID "feature-projection" -->
     <eox-drawtools

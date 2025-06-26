@@ -136,30 +136,28 @@ export class EOxItemFilterResults extends LitElement {
             () => html`<small class="no-results">No matching items</small>`,
             () => nothing,
           )}
-          <ul id="results" part="results">
-            ${when(
-              this.config.aggregateResults,
-              () =>
-                map(
-                  this.resultAggregation.filter(
-                    (aggregationProperty) =>
-                      this.aggregateResults(this.results, aggregationProperty)
-                        .length,
-                  ),
+          ${when(
+            this.config.aggregateResults,
+            () =>
+              map(
+                this.resultAggregation.filter(
                   (aggregationProperty) =>
-                    html`${when(
-                      this.aggregateResults(this.results, aggregationProperty)
-                        .length === 1 && this.config.autoSpreadSingle,
-                      () =>
-                        html`<div style="margin-left: -8px">
-                          ${this.#createItemList(aggregationProperty)}
-                        </div>`,
-                      () => this.#createItemDetails(aggregationProperty),
-                    )}`,
+                    this.aggregateResults(this.results, aggregationProperty)
+                      .length,
                 ),
-              () => this.#createItemList(),
-            )}
-          </ul>
+                (aggregationProperty) =>
+                  html`${when(
+                    this.aggregateResults(this.results, aggregationProperty)
+                      .length === 1 && this.config.autoSpreadSingle,
+                    () =>
+                      html`<div style="margin-left: -8px">
+                        ${this.#createItemList(aggregationProperty)}
+                      </div>`,
+                    () => this.#createItemDetails(aggregationProperty),
+                  )}`,
+              ),
+            () => this.#createItemList(),
+          )}
         </div>
       </section>
     `;
