@@ -270,12 +270,16 @@ ${slider}
   .story-telling .hero {
     position: relative;      
     width: 100%;
-    height: 100dvh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 15rem 0;
+  }
+  .story-telling .section-fullscreen {
+    height: 100dvh;
+    padding: 0;
   }
   .story-telling .hero .hero-scroll-indicator {
     position: absolute;
