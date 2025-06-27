@@ -451,6 +451,37 @@ export function parseNavWithAddSection(
       if (section.classList.contains("section-wrap"))
         containsSectionWrap = true;
 
+      const eoxMap = section.querySelector("eox-map");
+      if (eoxMap) {
+        const sectionChildren = Array.from(section.children).filter((child) => {
+          return (
+            child.tagName.toLowerCase() !== "section-step" &&
+            child.getAttribute("as") !== "eox-map"
+          );
+        });
+        const eoxMapChildren = Array.from(eoxMap.children);
+        const children = [...sectionChildren, ...eoxMapChildren];
+        if (children.length) {
+          const hasOverlayClass = Array.from(eoxMap.classList).filter(
+            (className) => className.startsWith("overlay-"),
+          );
+
+          const overlayMap = document.createElement("div");
+          overlayMap.className = "eox-map-overlay";
+          overlayMap.classList.add(
+            hasOverlayClass.length ? hasOverlayClass[0] : "overlay-br",
+          );
+
+          const overlayMapContent = document.createElement("div");
+          overlayMapContent.className = "eox-map-overlay-content";
+
+          children.forEach((child) => overlayMapContent.appendChild(child));
+          overlayMap.appendChild(overlayMapContent);
+          eoxMap.innerHTML = "";
+          section.insertBefore(overlayMap, eoxMap.nextSibling);
+        }
+      }
+
       section.classList.add("section-item");
       section.setAttribute("data-section", `${key + 1}`);
 

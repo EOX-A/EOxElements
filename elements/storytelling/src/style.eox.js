@@ -705,5 +705,50 @@ ${slider}
   .margin-view-overlays {
     background: #e6e6e6;
   }
+  .eox-map-overlay {
+    position: absolute;
+    color: white;
+    display: flex
+;
+  }
+  .eox-map-overlay-content {
+    padding: 1.5rem;
+    width: 400px;
+    height: fit-content;
+    border-radius: 10px;
+    background: #00000075;
+  }
+  .eox-map-overlay.overlay-bl {
+    align-items: end;
+    justify-content: flex-start;
+    bottom: 3rem;
+    left: 2rem;
+  }
+  .eox-map-overlay.overlay-br {
+    align-items: end;
+    justify-content: flex-end;    
+    bottom: 3rem;
+    right: 2rem;
+  }
+  .eox-map-overlay.overlay-tl {
+    align-items: start;
+    justify-content: flex-start;
+    top: 5rem;
+    left: 2rem;
+  }
+  .eox-map-overlay.overlay-tr {
+    align-items: start;
+    justify-content: flex-end;
+    top: 5rem;
+    right: 2rem;
+  }
+  .tour .eox-map-overlay {
+    position: sticky !important;
+    width: calc(100% - 2rem);
+    padding: 2rem 2rem 0px 0px;
+    top: 5rem !important;
+    right: 0px !important;
+    justify-content: flex-end;
+  }
 `;
 export default styleEOX;
