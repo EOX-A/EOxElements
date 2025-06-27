@@ -5,7 +5,7 @@ import { html } from "lit";
 
 export const MarkdownEditor = {
   args: {
-    markdown: `# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+    markdown: `# Welcome to Storytelling <!--{ as="video" fullscreen="true" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 

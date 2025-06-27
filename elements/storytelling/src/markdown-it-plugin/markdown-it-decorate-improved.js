@@ -285,6 +285,20 @@ function parseInlineContent(
     const attrNav = getAttr(stack.last.attrs, "nav");
     const navState = attrNav !== "false";
 
+    if (stack.last.tag === "h1" && mode === "hero") {
+      const fullscreen = getAttr(stack.last.attrs, "fullscreen");
+      if (fullscreen && finalTokens[sectionStartIndex]) {
+        const sectionClass = getAttr(
+          finalTokens[sectionStartIndex].attrs,
+          "class",
+        );
+        finalTokens[sectionStartIndex].attrSet(
+          "class",
+          `${sectionClass} section-fullscreen`,
+        );
+      }
+    }
+
     if (stack.last.tag === "h2" && title)
       nav.push({ title, id: sectionId, state: navState });
 
