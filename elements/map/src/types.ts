@@ -43,9 +43,10 @@ export type EOxInteraction = {
 export type EoxLayer = import("./layers").EoxLayer;
 export type EoxLayers = import("./layers").EoxLayer[];
 
-export type SelectLayer =
-  | InstanceType<typeof import("ol/layer/VectorTile").default>
-  | InstanceType<typeof import("ol/layer/Vector").default>;
+export type SelectLayer = AnyLayerWithSource | import("ol/layer/Group").default;
+export type SelectLayerWithFeatures =
+| InstanceType<typeof import("ol/layer/VectorTile").default>
+| InstanceType<typeof import("ol/layer/Vector").default>;
 
 export type SelectOptions = Omit<
   import("ol/interaction/Select").Options,
@@ -198,8 +199,6 @@ export type ConfigObject = {
     zoom: number;
     zoomExtent?: import("ol/extent").Extent;
     projection?: ProjectionLike;
-    minZoom: number;
-    maxZoom: number;
   };
   preventScroll: boolean;
   animationOptions?: EOxAnimationOptions;
