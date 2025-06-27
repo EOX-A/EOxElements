@@ -749,6 +749,7 @@ ${slider}
     top: 5rem !important;
     right: 0px !important;
     justify-content: flex-end;
+    bottom: 3rem;
   }
 `;
 export default styleEOX;
