@@ -277,6 +277,11 @@ ${slider}
     align-items: center;
     padding: 15rem 0;
   }
+  @media screen and (max-width: 768px) {
+    .story-telling .hero {
+      padding: 10rem 0;
+    }
+  }
   .story-telling .section-fullscreen {
     height: 100dvh;
     padding: 0;
