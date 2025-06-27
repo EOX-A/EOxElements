@@ -340,16 +340,23 @@ function generateAddSectionClickEvt(
   const center = (rect.right + rect.left) / 2;
   const halfSizeBtn = 25 / 2;
 
-  const addBeforeBtnTop = isFirstSection ? rect.top - halfSizeBtn : undefined;
-  const addBeforeBtnBottom = isFirstSection
-    ? rect.top + halfSizeBtn
-    : undefined;
+  let addBeforeBtnTop = isFirstSection ? rect.top - halfSizeBtn : undefined;
+  let addBeforeBtnBottom = isFirstSection ? rect.top + halfSizeBtn : undefined;
   const addAfterBtnTop = rect.bottom - halfSizeBtn;
   const addAfterBtnBottom = rect.bottom + halfSizeBtn;
   const addBtnLeft = center - halfSizeBtn;
   const addBtnRight = center + halfSizeBtn;
 
   const { clientX, clientY } = event;
+
+  const isBeforeBtnTriggered = isFirstSection
+    ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
+    : false;
+
+  if (!isBeforeBtnTriggered) {
+    addBeforeBtnTop = undefined;
+    addBeforeBtnBottom = undefined;
+  }
 
   // Check click happen or not
   const isClicked =
@@ -360,9 +367,6 @@ function generateAddSectionClickEvt(
 
   // If click happened enable custom section selection popup
   if (isClicked && EOxStoryTelling.showEditor !== "closed") {
-    const isBeforeBtnTriggered = isFirstSection
-      ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
-      : false;
     const sectionIndex = Number(that.getAttribute("data-section"));
 
     EOxStoryTelling.addCustomSectionIndex = isBeforeBtnTriggered
@@ -511,6 +515,27 @@ export function parseNavWithAddSection(
       generateAddSectionClickEvt(event, false, this, EOxStoryTelling);
     });
     html = [sectionWrap];
+  }
+
+  if (html[0].classList.contains("hero")) {
+    const sectionWraps =
+      html.filter((el) => el.classList?.contains("section-wrap")) || [];
+
+    if (sectionWraps.length > 1) {
+      const isNavigation = html[1].classList.contains("navigation");
+      const scrollAnchor = document.createElement("a");
+      scrollAnchor.classList.add("hero-scroll-indicator");
+
+      scrollAnchor.addEventListener("click", (e) => {
+        e.preventDefault();
+        (isNavigation ? html : sectionWraps)[1].scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+
+      html[0].appendChild(scrollAnchor);
+    }
   }
 
   return html;
