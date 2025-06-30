@@ -456,7 +456,8 @@ export function parseNavWithAddSection(
         containsSectionWrap = true;
 
       const eoxMap = section.querySelector("eox-map");
-      if (eoxMap) {
+      const isTour = section.classList.contains("tour");
+      if (eoxMap && !isTour) {
         const sectionChildren = Array.from(section.children).filter((child) => {
           return (
             child.tagName.toLowerCase() !== "section-step" &&
