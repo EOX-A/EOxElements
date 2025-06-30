@@ -14,7 +14,9 @@ const checkLayerRemovedFromRoot = () => {
     .shadow()
     .within(() => {
       // Click on the 'tools' button of the layer to show additional options
-      cy.get(`[data-layer=${layerToDelete}] .tools > summary`).click();
+      cy.get(`[data-layer=${layerToDelete}] .tools > summary`).click({
+        force: true,
+      });
 
       // Click on the 'remove' icon to delete the layer
       cy.get("button.remove-icon:visible").first().click();

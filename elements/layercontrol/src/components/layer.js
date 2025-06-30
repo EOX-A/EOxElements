@@ -263,7 +263,7 @@ export class EOxLayerControlLayer extends LitElement {
             })}
 
             <!-- Layer title -->
-            <div class="max truncate drag-handle">
+            <div class="max truncate drag-handle ${disableClass}">
               <span class="layertitle truncate"
                 >${this.#getLayer(this.titleProperty)}</span
               >
@@ -297,7 +297,7 @@ export class EOxLayerControlLayer extends LitElement {
             ${when(!isToolsAvail && isActionAvail, () =>
               this.tools[0] === "remove"
                 ? removeButton(this, getToolsIcon()[this.tools[0]])
-                : sortButton(false, getToolsIcon()[this.tools[0]]),
+                : sortButton(this, getToolsIcon()[this.tools[0]], false),
             )}
 
             <!-- Input element for layer visibility -->

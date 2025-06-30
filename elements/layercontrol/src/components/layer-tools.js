@@ -95,7 +95,7 @@ export class EOxLayerControlLayerTools extends LitElement {
   _removeButton = (icon) => removeButton(this, icon);
 
   // Initializes '_sortButton' invoking 'sortButton' function with 'unstyled' property as a parameter.
-  _sortButton = (icon) => sortButton(this.unstyled, icon);
+  _sortButton = (icon) => sortButton(this, icon, this.unstyled);
 
   /**
    * Initializes '_button' as a function accepting 'tool' parameter to generate a Button.

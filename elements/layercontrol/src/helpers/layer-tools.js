@@ -77,12 +77,17 @@ export const removeButton = (Component, icon) => html`
 /**
  * Generates a sort button element based on the style preference.
  *
+ * @param {import("../components/layer-tools").EOxLayerControlLayerTools | import("../components/layer").EOxLayerControlLayer} Component - Instance of EOxLayerControlLayerTools
  * @param {boolean} unstyled - Style preference for the button.
  * @returns {import("lit").HTMLTemplateResult} - Sort button element.
  */
-export const sortButton = (unstyled, icon) => html`
+export const sortButton = (Component, icon, unstyled) => html`
   <button
-    class="sort-icon no-margin transparent square primary-text drag-handle small action"
+    class="sort-icon no-margin transparent square primary-text drag-handle small action ${Component.layer.get(
+      "layerControlDisable",
+    )
+      ? "disabled"
+      : ""}"
     style="cursor: ns-resize;"
   >
     ${unstyled ? "═" : html`<i class="small primary-text">${icon}</i>`}
