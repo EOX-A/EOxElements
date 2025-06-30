@@ -89,14 +89,17 @@ export class EOxLayerControlOptionalList extends LitElement {
     );
 
     return html`
-      <nav>
-        <div class="field suffix border">
+      <nav class="bottom-padding large-padding">
+        <div class="field suffix border small max">
           <!-- Dropdown select element -->
-          <select name="optional" data-cy="optionalLayers">
+          <select
+            name="optional"
+            data-cy="optionalLayers"
+            class="small-padding"
+            style="font-size: small"
+          >
             <!-- Default placeholder option -->
-            <option disabled selected value>
-              -- select an optional layer to add --
-            </option>
+            <option disabled selected value>-- select --</option>
 
             <!-- Mapping through filtered layers list to generate dropdown options -->
             ${filteredLayersList.map((layer) => {
@@ -116,7 +119,7 @@ export class EOxLayerControlOptionalList extends LitElement {
         </div>
 
         <!-- Button to handle adding layers -->
-        <button @click="${this.#handleAddToList}">Add</button>
+        <button class="small" @click="${this.#handleAddToList}">Add</button>
       </nav>
     `;
   }

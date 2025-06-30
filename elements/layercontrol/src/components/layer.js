@@ -3,7 +3,13 @@ import { when } from "lit/directives/when.js";
 import { live } from "lit/directives/live.js";
 import "./layer-tools";
 import { firstUpdatedMethod, inputClickMethod } from "../methods/layer";
-import { getToolsIcon, _parseTools } from "../helpers/layer-tools";
+import {
+  getToolsIcon,
+  _parseActions,
+  _parseTools,
+  removeButton,
+  sortButton,
+} from "../helpers/layer-tools";
 
 /**
  * `EOxLayerControlLayer` represents a custom web component managing individual layers within the EOxLayerControl system.
@@ -162,6 +168,9 @@ export class EOxLayerControlLayer extends LitElement {
       : "checkbox";
 
     // Check if tools are available for the layer
+    const isActionAvail = _parseActions(this.tools, this.layer)?.length > 0;
+
+    // Check if tools are available for the layer
     const isToolsAvail = _parseTools(this.tools, this.layer)?.length > 0;
 
     // Check if eox-layercontrol-layer-tools is available in the DOM elsewhere for external tools,
@@ -264,7 +273,10 @@ export class EOxLayerControlLayer extends LitElement {
               isToolsAvail,
               () => html`
                 <button
-                  class="transparent square primary-text small action tools"
+                  class="transparent square primary-text small action tools ${this
+                    .tools.length === 1
+                    ? this.tools[0]
+                    : "dots"}"
                   @click=${() => {
                     const toolsDetails = this.renderRoot
                       .querySelector("eox-layercontrol-layer-tools")
@@ -278,8 +290,14 @@ export class EOxLayerControlLayer extends LitElement {
                       this.tools.length > 1 ? "dots" : this.tools[0]
                     ]}
                   </i>
+                  <!--<div class="tooltip top" style="pointer-events: none">Tools</div>-->
                 </button>
               `,
+            )}
+            ${when(!isToolsAvail && isActionAvail, () =>
+              this.tools[0] === "remove"
+                ? removeButton(this, getToolsIcon()[this.tools[0]])
+                : sortButton(false, getToolsIcon()[this.tools[0]]),
             )}
 
             <!-- Input element for layer visibility -->
@@ -310,6 +328,9 @@ export class EOxLayerControlLayer extends LitElement {
                   </svg>
                 </i>
               </span>
+              <!--<div class="tooltip top" style="pointer-events: none">${visibility
+                ? "Hide"
+                : "Show"}</div>-->
             </label>
           </nav>
         `,
@@ -343,7 +364,9 @@ export class EOxLayerControlLayer extends LitElement {
     }
     eox-layercontrol-layer > nav > .action.tools {
       display: var(--layer-tools-button-visibility);
-      transform: translateX(.6rem);
+    }
+    eox-layercontrol-layer:has(eox-layercontrol-layer-tools > details[open]) .action.tools.dots {
+      transform: rotate(180deg);
     }
     eox-layercontrol-layer > nav > .action.visibility {
       padding: .3rem;  
@@ -355,8 +378,19 @@ export class EOxLayerControlLayer extends LitElement {
       }
     }
     eox-layercontrol-layer nav:has(.action input[type=checkbox]:not(:checked)),
-    eox-layercontrol-layer nav:has(.action input[type=radio]:not(:checked)) {
+    eox-layercontrol-layer nav:has(.action input[type=radio]:not(:checked)),
+    eox-layercontrol-layer:has(.action input[type=checkbox]:not(:checked)) eox-layercontrol-layer-tools,
+    eox-layercontrol-layer:has(.action input[type=radio]:not(:checked)) eox-layercontrol-layer-tools,
+    eox-layercontrol-layer-group:has(summary .action input[type=checkbox]:not(:checked)) eox-layercontrol-layer-list,
+    eox-layercontrol-layer-group:has(summary .action input[type=radio]:not(:checked)) eox-layercontrol-layer-list,
+    eox-layercontrol-layer-group:has(summary .action input[type=checkbox]:not(:checked)) .arrow-container,
+    eox-layercontrol-layer-group:has(summary .action input[type=radio]:not(:checked)) .arrow-container,
+    eox-layercontrol-layer-group:has(summary .action input[type=checkbox]:not(:checked)) eox-layercontrol-layer-tools,
+    eox-layercontrol-layer-group:has(summary .action input[type=radio]:not(:checked)) eox-layercontrol-layer-tools {
       opacity: .5;
+    }
+    .tooltip {
+      opacity: 1;
     }
     .layer input[type=checkbox],
     .layer input[type=radio] {
@@ -376,6 +410,9 @@ export class EOxLayerControlLayer extends LitElement {
     .drag-handle {
       -webkit-user-drag: element;
       user-select: none;
+    }
+    :is(.checkbox,.radio)>span:after {
+      transition: none !important;
     }
   `;
 }

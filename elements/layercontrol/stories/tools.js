@@ -29,6 +29,13 @@ export const Tools = {
       .style=${STORIES_LAYERCONTROL_STYLE}
     ></eox-layercontrol>
     <hr />
+    <p>Only one tool: remove</p>
+    <eox-layercontrol
+      .tools=${["remove"]}
+      for="eox-map#tools"
+      .style=${STORIES_LAYERCONTROL_STYLE}
+    ></eox-layercontrol>
+    <hr />
     <p>No tools</p>
     <eox-layercontrol
       .tools=${[]}

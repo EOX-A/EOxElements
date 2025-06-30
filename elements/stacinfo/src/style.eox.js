@@ -16,6 +16,9 @@ ${eoxStyle}
   line-height: 1.5;
   box-sizing: border-box;
 }
+main {
+  padding: 0;
+}
 img,
 video,
 iframe {
@@ -116,9 +119,13 @@ details > summary > nav {
   min-height: 32px;
 }
 details > summary:hover {
-  background-color: var(--surface-container-low);
+  background-color: color-mix(
+    in srgb,
+    var(--surface) 80%,
+    transparent
+  );
 }
-button.chip:hover {
-  cursor: auto;
+button.chip {
+  pointer-events: none;
 }
 `;

@@ -87,7 +87,7 @@ class EOxItemFilterSpatial extends LitElement {
     return when(
       this.filterObject,
       () => html`
-        <div class="large-margin left-margin">
+        <div style="margin-left: var(--list-padding)">
           <nav class="vertical-margin small-margin wrap">
             ${map(
               ["intersects", "within"],

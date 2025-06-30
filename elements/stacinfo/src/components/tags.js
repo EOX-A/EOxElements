@@ -21,7 +21,7 @@ export default function parseTags(tags = []) {
           tags,
           ([, value]) =>
             html`<slot name=${value.label.toLowerCase()}
-              ><li>
+              ><li class="horizontal-padding small-padding">
                 <nav class="wrap" style="gap: 0.5rem">
                   ${map(
                     value.value,

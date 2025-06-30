@@ -20,7 +20,11 @@ ${eoxStyle}
     var(--primary-color) 10%,
     transparent
   );
-  --item-hover-color: var(--surface-container-low);
+  --item-hover-color: color-mix(
+    in srgb,
+    var(--surface) 80%,
+    transparent
+  );
   --item-select-color: var(--surface-variant);
   --inline-bg-color: color-mix(
     in srgb,
@@ -35,6 +39,7 @@ ${eoxStyle}
   --background-color: var(--eox-background-color, transparent);
   --padding: 0.5rem;
   --padding-vertical: 0.25rem;
+  --list-padding: 2rem;
   --text-transform: capitalize;
   --form-flex-direction: column;
   --filter-display: block;
@@ -58,6 +63,15 @@ eox-itemfilter-results {
   max-height: 100%;
   display: flex;
   flex-direction: column;
+}
+eox-itemfilter-results button.chip {
+  pointer-events: none;
+}
+.list li {
+  padding: 0 var(--padding) !important;
+}
+.list.no-padding > li {
+  padding: 0 !important;
 }
 li label {
   display: flex;
@@ -107,8 +121,9 @@ details[open] > summary i {
   transform: rotate(90deg);
 }
 ul.multiselect.list > li,
-ul#results.list > li {
-  /*margin-left: 1.5rem;*/
+ul.select.list > li,
+details > div > ul#results.list > li {
+  padding-left: var(--list-padding) !important;
 }
 section:not(section:last-of-type) {
   margin-bottom: 1rem;
@@ -357,8 +372,6 @@ eox-itemfilter-results li {
   border-radius: .5rem !important;
   display: flex;
   justify-content: space-between;
-  padding-left: calc(var(--padding) + 0.5rem) !important;
-  padding-right: calc(var(--padding) + 0.5rem) !important;
   min-block-size: 32px !important;
 }
 .select li:hover,

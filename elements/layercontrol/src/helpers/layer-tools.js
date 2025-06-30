@@ -52,17 +52,17 @@ export const Button = (tool, icon, unstyled) => html`
 /**
  * Generates a remove button element with event handling and layer control logic.
  *
- * @param {import("../components/layer-tools").EOxLayerControlLayerTools} EOxLayerControlLayerTools - Instance of EOxLayerControlLayerTools
+ * @param {import("../components/layer-tools").EOxLayerControlLayerTools | import("../components/layer").EOxLayerControlLayer} Component - Instance of EOxLayerControlLayerTools
  * @returns {import("lit").HTMLTemplateResult} - Remove button element.
  */
-export const removeButton = (EOxLayerControlLayerTools, icon) => html`
+export const removeButton = (Component, icon) => html`
   <button
-    class="remove-icon no-margin transparent square small"
+    class="remove-icon no-margin transparent square small action"
     @click=${() => {
-      const { layer } = EOxLayerControlLayerTools;
+      const { layer } = Component;
       layer?.set("layerControlOptional", true);
       layer?.setVisible(false);
-      EOxLayerControlLayerTools.dispatchEvent(
+      Component.dispatchEvent(
         new CustomEvent("changed", {
           detail: layer,
           bubbles: true,
@@ -70,9 +70,7 @@ export const removeButton = (EOxLayerControlLayerTools, icon) => html`
       );
     }}
   >
-    ${EOxLayerControlLayerTools.unstyled
-      ? "x"
-      : html`<i class="small red-text">${icon}</i>`}
+    ${Component.unstyled ? "x" : html`<i class="small red-text">${icon}</i>`}
   </button>
 `;
 
@@ -84,7 +82,7 @@ export const removeButton = (EOxLayerControlLayerTools, icon) => html`
  */
 export const sortButton = (unstyled, icon) => html`
   <button
-    class="sort-icon no-margin transparent square primary-text drag-handle small"
+    class="sort-icon no-margin transparent square primary-text drag-handle small action"
     style="cursor: ns-resize;"
   >
     ${unstyled ? "═" : html`<i class="small primary-text">${icon}</i>`}
@@ -94,10 +92,8 @@ export const sortButton = (unstyled, icon) => html`
 export function getToolsIcon() {
   return {
     dots: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <title>dots-vertical</title>
-      <path
-        d="M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z"
-      />
+      <title>menu-down</title>
+      <path d="M7,10L12,15L17,10H7Z" />
     </svg>`,
     info: html`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
       <title>information-outline</title>

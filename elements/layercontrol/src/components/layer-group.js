@@ -187,14 +187,8 @@ export class EOxLayerControlLayerGroup extends LitElement {
   #styleEOX = `
     details > summary {
       min-block-size: 0rem;
-      padding: 0 var(--padding);
       display: var(--layer-summary-visibility);
       user-select: none;
-    }
-    @media (pointer:fine) {
-      details > summary:hover {
-        background-color: var(--item-hover-color);
-      }
     }
     details .arrow-container > i {
       transition: transform 0.1s ease-in-out;
@@ -207,6 +201,8 @@ export class EOxLayerControlLayerGroup extends LitElement {
       height: 32px;
       display: flex;
       align-items: center;
+      left: calc(var(--padding) / 2);
+      z-index: 1;
     }
   `;
 }

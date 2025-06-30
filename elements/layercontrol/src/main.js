@@ -281,7 +281,7 @@ export class EOxLayerControl extends LitElement {
     :host, :root {
       --padding: 0.5rem;
       --padding-vertical: .2rem;
-      --list-padding: 12px;
+      --list-padding: 2rem;
       --layer-input-visibility: flex;
       --layer-summary-visibility: flex;
       --layer-type-visibility: block;
@@ -299,7 +299,7 @@ export class EOxLayerControl extends LitElement {
       );
       --item-hover-color: color-mix(
         in srgb,
-        var(--surface) 70%,
+        var(--surface) 80%,
         transparent
       );
 
