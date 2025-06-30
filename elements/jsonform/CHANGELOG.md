@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.5...jsonform-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [0.16.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.4...jsonform-v0.16.5) (2025-05-20)
 
 

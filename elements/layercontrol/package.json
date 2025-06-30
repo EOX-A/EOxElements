@@ -1,9 +1,9 @@
 {
   "name": "@eox/layercontrol",
-  "version": "0.29.1",
+  "version": "1.0.0",
   "type": "module",
   "devDependencies": {
-    "@eox/map": "^1.16.0",
+    "@eox/map": "*",
     "@types/lodash.throttle": "^4.1.9",
     "@types/sortablejs": "^1.15.1",
     "ol": "^10.4.0",
@@ -37,7 +37,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^0.1.5",
+    "@eox/elements-utils": "^1.0.0",
     "@eox/ui": "^0.3.6",
     "color-legend-element": "^1.3.0",
     "lit": "^3.2.0",
