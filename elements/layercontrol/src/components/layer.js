@@ -365,6 +365,9 @@ export class EOxLayerControlLayer extends LitElement {
     eox-layercontrol-layer > nav > .action.tools {
       display: var(--layer-tools-button-visibility);
     }
+    eox-layercontrol-layer .action.tools.dots {
+      transition: rotate 0s;
+    }
     eox-layercontrol-layer:has(eox-layercontrol-layer-tools > details[open]) .action.tools.dots {
       transform: rotate(180deg);
     }
