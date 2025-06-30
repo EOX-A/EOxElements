@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.5.0](https://github.com/EOX-A/EOxElements/compare/chart-v0.4.0...chart-v0.5.0) (2025-06-30)
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/chart-v0.4.0...chart-v1.0.0) (2025-06-30)
 
 
 ### ⚠ BREAKING CHANGES

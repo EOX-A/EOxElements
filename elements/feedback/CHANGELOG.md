@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.0](https://github.com/EOX-A/EOxElements/compare/feedback-v0.1.0...feedback-v0.2.0) (2025-06-30)
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/feedback-v0.1.0...feedback-v1.0.0) (2025-06-30)
 
 
 ### Features

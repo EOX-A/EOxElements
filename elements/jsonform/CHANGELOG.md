@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.17.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.5...jsonform-v0.17.0) (2025-06-30)
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.5...jsonform-v1.0.0) (2025-06-30)
 
 
 ### Features

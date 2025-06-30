@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.7.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.6.2...stacinfo-v0.7.0) (2025-06-30)
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v0.6.2...stacinfo-v1.0.0) (2025-06-30)
 
 
 ### Features

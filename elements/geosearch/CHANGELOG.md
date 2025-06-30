@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.6.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.5.2...geosearch-v0.6.0) (2025-06-30)
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v0.5.2...geosearch-v1.0.0) (2025-06-30)
 
 
 ### Features

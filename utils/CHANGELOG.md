@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.2.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.5...elements-utils-v0.2.0) (2025-06-30)
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.5...elements-utils-v1.0.0) (2025-06-30)
 
 
 ### Features
