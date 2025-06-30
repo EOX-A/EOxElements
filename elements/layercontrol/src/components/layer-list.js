@@ -203,6 +203,9 @@ export class EOxLayerControlLayerList extends LitElement {
     .list li ul.list > li eox-layercontrol-layer {
       padding-left: var(--list-padding);
     }
+    .list li ul.list li ul.list > li eox-layercontrol-layer {
+      padding-left: calc(var(--list-padding) * 2 - .5rem);
+    }
     .list li ul.list > li:has(details[open]) eox-layercontrol-tools-items {
       display: block;
     }

@@ -193,7 +193,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
     details .arrow-container > i {
       transition: transform 0.1s ease-in-out;
     }
-    details[open] .arrow-container > i {
+    details[open] > summary > .arrow-container > i {
       transform: rotate(90deg);
     }
     .arrow-container {
@@ -203,6 +203,9 @@ export class EOxLayerControlLayerGroup extends LitElement {
       align-items: center;
       left: calc(var(--padding) / 2);
       z-index: 1;
+    }
+    .list li ul.list > li .arrow-container {
+      left: calc(var(--padding) / 2 + var(--list-padding) - .5rem);
     }
   `;
 }
