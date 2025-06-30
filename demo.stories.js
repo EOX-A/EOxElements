@@ -371,7 +371,7 @@ export const KitchenSink = {
         border-radius: 8px;
         background: var(--surface-container-lowest);
         overflow-y: auto;
-        padding: .5rem;
+        padding: 0.5rem;
       }
     </style>
   `,

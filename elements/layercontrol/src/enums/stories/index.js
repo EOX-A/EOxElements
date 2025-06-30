@@ -130,9 +130,9 @@ export const STORIES_MAIN_MAP_LAYERS = [
       description: "# Hello world",
     },
     layers: [
-      STORIES_LAYER_SENTINEL_HUB.wind,
-      STORIES_LAYER_SENTINEL_HUB.no2,
       STORIES_LAYER_REGION,
+      STORIES_LAYER_SENTINEL_HUB.no2,
+      STORIES_LAYER_SENTINEL_HUB.wind,
     ],
   },
   {

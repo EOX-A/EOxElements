@@ -30,6 +30,7 @@ export default function getLayerType(layer, map) {
 
   if (isDrawing) return "draw";
   // @ts-expect-error TODO
-  else if (layer.declutter_ !== undefined) return "vector";
+  else if (layer.declutter_ !== undefined || layer.get("type") === "Vector")
+    return "vector";
   else return "raster";
 }
