@@ -111,7 +111,6 @@ export const KitchenSink = {
       </eox-layout-item>
       <eox-layout-item h="2">
         <eox-itemfilter
-          style="height: 100%; width: 100%; overflow: hidden;"
           .titleProperty=${"title"}
           .aggregateResults=${"themes"}
           .items=${items}
@@ -372,6 +371,7 @@ export const KitchenSink = {
         border-radius: 8px;
         background: var(--surface-container-lowest);
         overflow-y: auto;
+        padding: .5rem;
       }
     </style>
   `,
