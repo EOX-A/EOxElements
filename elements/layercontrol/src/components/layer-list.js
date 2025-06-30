@@ -196,7 +196,7 @@ export class EOxLayerControlLayerList extends LitElement {
       padding: 0 var(--padding);
     }
     @media (pointer:fine) {
-      eox-layercontrol-layer:hover {
+      eox-layercontrol-layer:not(:has(details[open])):hover {
         background-color: var(--item-hover-color);
       }
     }
