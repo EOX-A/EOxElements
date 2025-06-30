@@ -21,7 +21,7 @@ export const styleEOX = `
     background-color: var(--background-color, transparent);
   }
   .editor-toolbar, .CodeMirror {
-    border-color: var(--outline) !important;
+    border-color: var(--outline-variant) !important;
   }
   form[data-theme="html"][data-theme-custom="eox"] {
     margin-block-start: 0;
@@ -68,7 +68,7 @@ export const styleEOX = `
     padding-top: 0;
     padding-bottom: 0;
     background-color: var(--eox-background-color, transparent);
-    border: var(--eox-panel-border, 1px solid var(--outline));
+    border: var(--eox-panel-border, 1px solid var(--outline-variant));
     border-radius: 3px;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -124,7 +124,7 @@ export const styleEOX = `
     background-color: var(--eox-background-color, transparent);
     background-image: none;
     border: .0625rem solid transparent;
-    border-color: var(--outline);
+    border-color: var(--outline-variant);
     border-radius: 4px;
     block-size: 40px;
     outline: none;
@@ -149,6 +149,9 @@ export const styleEOX = `
   }
   .form-control input[disabled] {
     opacity: .5;
+  }
+  .form-control label {
+    align-items: center;
   }
   [data-schematype=boolean] label {
     display: flex;
@@ -187,6 +190,10 @@ export const styleEOX = `
     .errmsg {
       color: #ffb4ab !important;
     }
+  }
+  .je-edit-json--textarea {
+    font-family: monospace;
+    font-size: small;
   }
 
 
