@@ -1,6 +1,6 @@
 {
   "name": "@eox/chart",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "type": "module",
   "devDependencies": {
     "vite": "^6.0.3"

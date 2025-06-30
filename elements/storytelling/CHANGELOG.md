@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.2...storytelling-v1.8.0) (2025-06-30)
+
+
+### Features
+
+* Added hero scroll down indicator ([#1730](https://github.com/EOX-A/EOxElements/issues/1730)) ([b6112fb](https://github.com/EOX-A/EOxElements/commit/b6112fbd9b3369c18ef3672830c965f86586875e))
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
+
+### Bug Fixes
+
+* Nav click issue in tour with scroll not at right place ([#1726](https://github.com/EOX-A/EOxElements/issues/1726)) ([07d7c7c](https://github.com/EOX-A/EOxElements/commit/07d7c7c1fd07a0455aa098f952198c68668ad8d4))
+
 ## [1.7.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.1...storytelling-v1.7.2) (2025-04-01)
 
 

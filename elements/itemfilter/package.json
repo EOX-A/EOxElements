@@ -1,6 +1,6 @@
 {
   "name": "@eox/itemfilter",
-  "version": "1.9.2",
+  "version": "1.10.0",
   "type": "module",
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
