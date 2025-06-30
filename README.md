@@ -105,6 +105,13 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td><a href="elements/timecontrol/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/timecontrol.svg?label=%20" /></a></td>
     <td>⭕️</td>
   </tr>
+  <tr>
+    <td><a href="./elements/tour/">eox-tour</a></td>
+    <td>Guided tour for apps and websites</td>
+    <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-tour--docs">Docs & Examples</a></td>
+    <td><a href="elements/tour/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/tour.svg?label=%20" /></a></td>
+    <td>⭕️</td>
+  </tr>
 </table>
 
 ## Usage
