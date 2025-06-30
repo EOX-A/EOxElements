@@ -9,6 +9,7 @@ let lightboxElements = [];
 let sectionObservers = [];
 let sectionNavObservers = [];
 let stepSectionObservers = [];
+let sectionOverlayObservers = [];
 
 /**
  * Converts an HTML string into DOM nodes and processes each node.
@@ -450,6 +451,19 @@ export function parseNavWithAddSection(
   if (html.length) {
     const sectionStartIndex = navIndex + 1;
     html[sectionStartIndex].classList.add("section-start");
+
+    const sectionOverlayObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const intersecting = entry.isIntersecting;
+
+        if (intersecting && entry.boundingClientRect.top <= 1) {
+          entry.target.classList.add("show-overlay");
+        } else {
+          entry.target.classList.remove("show-overlay");
+        }
+      });
+    });
+
     html.slice(sectionStartIndex).forEach((section, key) => {
       if (!section.classList) return;
       if (section.classList.contains("section-wrap"))
@@ -457,7 +471,7 @@ export function parseNavWithAddSection(
 
       const eoxMap = section.querySelector("eox-map");
       const isTour = section.classList.contains("tour");
-      if (eoxMap && !isTour) {
+      if (eoxMap) {
         const sectionChildren = Array.from(section.children).filter((child) => {
           return (
             child.tagName.toLowerCase() !== "section-step" &&
@@ -484,6 +498,11 @@ export function parseNavWithAddSection(
           overlayMap.appendChild(overlayMapContent);
           eoxMap.innerHTML = "";
           section.insertBefore(overlayMap, eoxMap.nextSibling);
+
+          if (isTour) {
+            sectionOverlayObserver.observe(section);
+            sectionOverlayObservers.push(sectionOverlayObserver);
+          }
         }
       }
 

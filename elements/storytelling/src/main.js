@@ -288,6 +288,8 @@ export class EOxStoryTelling extends LitElement {
       this.showEditor !== undefined ? "editor-enabled" : ""
     } editor-${this.showEditor}`;
 
+    const navClass = `${this.showNav && this.nav.length ? "nav-enabled" : ""}`;
+
     return html`
       <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
       <style>
@@ -297,7 +299,7 @@ export class EOxStoryTelling extends LitElement {
         ${!this.unstyled && mainStyle}
       </style>
 
-      <div class="story-telling ${editorClass}">
+      <div class="story-telling ${editorClass} ${navClass}">
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
           this.showEditor !== undefined,
