@@ -201,11 +201,11 @@ export class EOxLayerControlLayerGroup extends LitElement {
       height: 32px;
       display: flex;
       align-items: center;
-      left: calc(var(--padding) / 2);
+      left: calc(var(--padding));
       z-index: 1;
     }
     .list li ul.list > li .arrow-container {
-      left: calc(var(--padding) / 2 + var(--list-padding) - .5rem);
+      left: calc(var(--padding) + var(--list-padding) - .5rem);
     }
   `;
 }
