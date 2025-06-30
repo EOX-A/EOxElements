@@ -169,9 +169,24 @@ export const KitchenSink = {
           }}
           .layers=${[
             {
+              type: "Vector",
+              properties: {
+                title: "Regions",
+                id: "regions",
+                description: "Ecological regions of the earth.",
+              },
+              source: {
+                type: "Vector",
+                url: "https://openlayers.org/data/vector/ecoregions.json",
+                format: "GeoJSON",
+                attributions: "Regions: @ openlayers.org",
+              },
+            },
+            {
               type: "Tile",
               properties: {
                 id: "AWS_NO2-VISUALISATION",
+                title: "AWS NO2 Visualisation",
               },
               source: {
                 type: "TileWMS",
@@ -319,6 +334,10 @@ export const KitchenSink = {
                 },
               ],
             },
+          ]}
+          .zoomExtent=${[
+            -133286.98347565567, 5318575.418328699, 2215737.538674842,
+            7354396.67085913,
           ]}
           style="width: 100%; height: 100%;"
         ></eox-map>
