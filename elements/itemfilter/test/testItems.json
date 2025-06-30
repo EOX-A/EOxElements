@@ -81,11 +81,6 @@
     "status": {
       "code": "inactive"
     },
-    "assets": {
-      "thumbnail": {
-        "href": "https://picsum.photos/800/600?random=2"
-      }
-    },
     "properties": {
       "started": "2023-06-13T13:56:38+00:00",
       "geometry": {

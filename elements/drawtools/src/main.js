@@ -10,7 +10,6 @@ import {
   createSelectHandler,
   handleLayerId,
 } from "./methods/draw";
-import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
   initMapDragDropImport,
@@ -356,9 +355,14 @@ export class EOxDrawTools extends LitElement {
     return html`
       <style>
         :host { display: block; }
-        ${!this.unstyled && mainStyle}
         ${!this.unstyled && styleEOX}
       </style>
+
+      <div class="drawtitle">
+        <slot name="drawtitle"
+          ><p><strong>Draw</strong></p></slot
+        >
+      </div>
 
       <!-- Controller Component -->
       <eox-drawtools-controller
@@ -377,6 +381,7 @@ export class EOxDrawTools extends LitElement {
         .importFeatures=${this.importFeatures}
         .showEditor=${this.showEditor}
         .geoJSON=${this.#geoJSON}
+        .type=${this.type}
       ></eox-drawtools-controller>
 
       <!-- List Component -->

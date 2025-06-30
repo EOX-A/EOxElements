@@ -1,7 +1,6 @@
 import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
-import allStyle from "@eox/elements-utils/styles/dist/all.style";
 import { renderChartMethod } from "./methods/render";
 
 /**
@@ -98,6 +97,40 @@ export class EOxChart extends LitElement {
   }
 
   /**
+   * Append custom styling for vega tooltip
+   */
+  firstUpdated() {
+    if (!this.unstyled) {
+      const style = document.createElement("style");
+      style.innerHTML = `
+        #vg-tooltip-element {
+          margin: 0;
+          padding: 1rem 1rem 1rem 2rem;
+          border-radius: 0.5rem;
+          background-color: var(--inverse-surface);
+          box-shadow: 0 0.25rem 0.5rem 0 rgb(0 0 0 / 0.4);
+          line-height: normal;
+          white-space: normal;
+          border: none;
+        }
+        #vg-tooltip-element,
+        #vg-tooltip-element table {
+          font-size: small;
+        }
+        #vg-tooltip-element,
+        #vg-tooltip-element table tr td.key,
+        #vg-tooltip-element table tr td.value {
+          color: var(--inverse-on-surface);
+        }
+        #vg-tooltip-element table tr td.key {
+          font-weight: bold;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  /**
    * Overrides createRenderRoot to handle shadow DOM creation based on the noShadow property.
    */
   createRenderRoot() {
@@ -111,10 +144,9 @@ export class EOxChart extends LitElement {
     return html`
       <style>
         ${style}
-        ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
       </style>
-      <div id="vis"></div>
+      <div id="vis" class="no-round"></div>
     `;
   }
 }

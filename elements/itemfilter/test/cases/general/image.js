@@ -7,7 +7,7 @@ const imageTest = () => {
     .shadow()
     .within(() => {
       cy.get("eox-itemfilter-results").within(() => {
-        cy.get(".title").parent().siblings("img").should("exist");
+        cy.get(".title").parent().siblings("i").find("img").should("exist");
       });
     });
 };

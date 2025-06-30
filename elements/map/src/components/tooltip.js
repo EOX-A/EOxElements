@@ -36,12 +36,15 @@ export class EOxMapTooltip extends LitElement {
       ? html` <style>
             ul {
               margin: 0;
-              padding: 15px 15px 15px 30px;
-              background: #0008;
-              border-radius: 15px;
-              color: white;
+              padding: 1rem 1rem 1rem 2rem;
+              border-radius: 0.5rem;
               max-width: 250px;
               font-size: small;
+              background-color: var(--inverse-surface);
+              color: var(--inverse-on-surface);
+              box-shadow: 0 0.25rem 0.5rem 0 rgb(0 0 0 / 0.4);
+              line-height: normal;
+              white-space: normal;
             }
             span {
               font-weight: bold;

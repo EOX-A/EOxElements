@@ -315,28 +315,56 @@ export class EOxTimeControl extends LitElement {
             ? html`
                 <button
                   part="previous"
-                  class="icon previous"
+                  class="icon previous small circle transparent no-margin"
                   @click="${() => this.previous()}"
                 >
-                  <
+                  ${!this.unstyled
+                    ? html`
+                        <i class="primary-text small">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <title>chevron-left-circle</title>
+                            <path
+                              d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M15.4,16.6L10.8,12L15.4,7.4L14,6L8,12L14,18L15.4,16.6Z"
+                            />
+                          </svg>
+                        </i>
+                      `
+                    : "<"}
                 </button>
               `
             : nothing}
-          <span part="current">
+          <small part="current">
             ${this.displayFormat
               ? dayjs(this.controlValues[this._newStepIndex]).format(
                   this.displayFormat,
                 )
               : this.controlValues[this._newStepIndex]}
-          </span>
+          </small>
           ${this.navigation
             ? html`
                 <button
                   part="next"
-                  class="icon next"
+                  class="icon next small circle transparent no-margin"
                   @click="${() => this.next()}"
                 >
-                  >
+                  ${!this.unstyled
+                    ? html`
+                        <i class="primary-text small">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                          >
+                            <title>chevron-right-circle</title>
+                            <path
+                              d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M10,18L16,12L10,6L8.6,7.4L13.2,12L8.6,16.6L10,18Z"
+                            />
+                          </svg>
+                        </i>
+                      `
+                    : "<"}
                 </button>
               `
             : nothing}
@@ -344,7 +372,7 @@ export class EOxTimeControl extends LitElement {
             ? html`
                 <button
                   part="play"
-                  class="small icon-text ${this._isAnimationPlaying
+                  class="icon-text small ${this._isAnimationPlaying
                     ? "pause"
                     : "play"}"
                   @click="${() =>
@@ -352,12 +380,33 @@ export class EOxTimeControl extends LitElement {
                       this._isAnimationPlaying ? false : true,
                     )}"
                 >
-                  ${this._isAnimationPlaying ? "Pause" : "Play"}
+                  ${!this.unstyled
+                    ? html`
+                        <i class="small">
+                          ${this._isAnimationPlaying
+                            ? html`<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <title>pause</title>
+                                <path d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+                              </svg>`
+                            : html`<svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                              >
+                                <title>play</title>
+                                <path d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                              </svg>`}
+                        </i>
+                      `
+                    : nothing}
+                  <span>${this._isAnimationPlaying ? "Pause" : "Play"}</span>
                 </button>
               `
             : nothing}
         </div>
-        <div>
+        <div class="small-padding">
           ${this.slider
             ? html`
                 <div class="slider-col">
@@ -365,7 +414,6 @@ export class EOxTimeControl extends LitElement {
                     data="${this.controlValues}"
                     part="slider"
                     value="${this.controlValues[this._newStepIndex]}"
-                    style="display: inline-block;"
                     @change="${(/** @type {CustomEvent} */ evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(

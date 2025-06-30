@@ -21,28 +21,25 @@ const accordionTest = () => {
         cy.get(selector).then((accordions) => {
           for (let i = 0; i < accordions.length; i++) {
             const accordionToClick = isSubcomponent
-              ? cy
-                  .get(selector)
-                  .eq(i)
-                  .find("eox-itemfilter-expandcontainer")
-                  .shadow()
-                  .find("details")
-              : cy.get(selector).eq(i).find("details");
+              ? cy.get(selector).eq(i).shadow().find("details")
+              : cy.get(selector).eq(i);
 
-            accordionToClick.click({ multiple: true, force: true });
-            accordionToClick.should("have.attr", "open");
+            // Reset first accordeon
+            if (i === 0) {
+              accordionToClick.find("summary").click({ force: true }).parent();
+            }
+            accordionToClick
+              .find("summary")
+              .click({ force: true })
+              .parent()
+              .should("have.attr", "open");
 
             // Check that all other accordions are closed
             for (let j = 0; j < accordions.length; j++) {
               if (i !== j) {
                 const accordionToCheck = isSubcomponent
-                  ? cy
-                      .get(selector)
-                      .eq(j)
-                      .find("eox-itemfilter-expandcontainer")
-                      .shadow()
-                      .find("details")
-                  : cy.get(selector).eq(j).find("details");
+                  ? cy.get(selector).eq(j).shadow().find("details")
+                  : cy.get(selector).eq(j);
 
                 accordionToCheck.should("not.have.attr", "open");
               }
@@ -53,8 +50,8 @@ const accordionTest = () => {
   };
 
   // Check exclusive open behavior for filters and results
-  checkExclusiveOpen("ul#filters", true);
-  checkExclusiveOpen("ul#results");
+  checkExclusiveOpen("ul#filters eox-itemfilter-expandcontainer", true);
+  checkExclusiveOpen("#section-results details");
 };
 
 export default accordionTest;

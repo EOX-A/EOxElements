@@ -4,7 +4,6 @@ import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
 import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
-import allStyle from "@eox/elements-utils/styles/dist/all.style";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -196,7 +195,6 @@ export class EOxJSONForm extends LitElement {
     return html`
       <style>
         ${style}
-        ${!this.unstyled && allStyle}
         ${!this.unstyled && styleEOX}
         ${this.options?.disable_properties === false
           ? ``

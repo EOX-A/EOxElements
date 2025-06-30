@@ -24,7 +24,10 @@ const renderOptionalLayer = () => {
         .should("have.length", 1);
 
       // Checking for the existence of a button related to the optional layers
-      cy.get("[data-cy='optionalLayers']").siblings("button").should("exist");
+      cy.get("[data-cy='optionalLayers']")
+        .parent()
+        .siblings("button")
+        .should("exist");
     });
 };
 

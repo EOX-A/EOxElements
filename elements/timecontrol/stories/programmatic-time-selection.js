@@ -18,16 +18,20 @@ export const ProgrammaticTimeSelection = {
       .layers=${args.layers}
     ></eox-map>
     <div>
-      <input type="text" id="time" value="2022-12-26" />
-      <button
-        @click="${() => {
-          const time = document.getElementById("time").value;
-          const timeControl = document.getElementById("programmatic");
-          timeControl.currentStep = time;
-        }}"
-      >
-        Go
-      </button>
+      <nav>
+        <div class="field border">
+          <input type="text" id="time" value="2022-12-26" />
+        </div>
+        <button
+          @click="${() => {
+            const time = document.getElementById("time").value;
+            const timeControl = document.getElementById("programmatic");
+            timeControl.currentStep = time;
+          }}"
+        >
+          Go
+        </button>
+      </nav>
     </div>
     <eox-timecontrol
       id="programmatic"

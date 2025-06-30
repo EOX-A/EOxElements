@@ -15,7 +15,7 @@ const colorSwatch = () => {
   cy.get("eox-layercontrol")
     .shadow()
     .within(() => {
-      cy.get(".color-swatch").should("exist");
+      cy.get("i[style='color: green']").should("exist");
     });
 };
 

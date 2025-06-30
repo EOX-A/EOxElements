@@ -15,8 +15,8 @@ const showCorrectLayerTitle = () => {
     .shadow()
     .within(() => {
       // Check for the presence of titles within layers
-      cy.get(".layer").find(".title").contains("foo");
-      cy.get(".layer").find(".title").contains("bar");
+      cy.get(".layer").find(".layertitle").contains("foo");
+      cy.get(".layer").find(".layertitle").contains("bar");
     });
 };
 

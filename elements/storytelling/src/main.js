@@ -14,7 +14,6 @@ import {
   addCustomSection,
   initSavedMarkdown,
 } from "./helpers";
-import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import {
   markdownItConfig,
@@ -294,7 +293,6 @@ export class EOxStoryTelling extends LitElement {
         :host { display: block; }
         .slot-hide { display: none; }
         ${!this.unstyled && styleEOX}
-        ${!this.unstyled && mainStyle}
       </style>
 
       <div class="story-telling ${editorClass}">
@@ -327,6 +325,42 @@ export class EOxStoryTelling extends LitElement {
               }}
             ></div>
             <div class="story-telling-popup">
+              <div class="story-telling-popup-wrapper">
+                ${SAMPLE_ELEMENTS.map(
+                  (category) => html`
+                    <div class="header">
+                      <h4>${category.name}</h4>
+                      <p>${category.elements.length}</p>
+                    </div>
+                    <hr />
+                    <div class="grid-container">
+                      ${category.elements.map(
+                        (element) =>
+                          html`<div
+                            @click=${() =>
+                              addCustomSection(
+                                this.markdown,
+                                this.addCustomSectionIndex,
+                                element.markdown,
+                                element.fields,
+                                false,
+                                this,
+                              )}
+                            class="grid-item"
+                          >
+                            <icon id="${element.id}"></icon>
+                            <p>${element.name}</p>
+                            <style>
+                              icon#${element.id}::before {
+                                content: url("${element.icon}");
+                              }
+                            </style>
+                          </div>`,
+                      )}
+                    </div>
+                  `,
+                )}
+              </div>
               ${when(
                 this.selectedCustomElement,
                 () => html`
@@ -366,42 +400,6 @@ export class EOxStoryTelling extends LitElement {
                   </div>
                 `,
               )}
-              <div class="story-telling-popup-wrapper">
-                ${SAMPLE_ELEMENTS.map(
-                  (category) => html`
-                    <div class="header">
-                      <h4>${category.name}</h4>
-                      <p>${category.elements.length}</p>
-                    </div>
-                    <hr />
-                    <div class="grid-container">
-                      ${category.elements.map(
-                        (element) =>
-                          html`<div
-                            @click=${() =>
-                              addCustomSection(
-                                this.markdown,
-                                this.addCustomSectionIndex,
-                                element.markdown,
-                                element.fields,
-                                false,
-                                this,
-                              )}
-                            class="grid-item"
-                          >
-                            <icon id="${element.id}"></icon>
-                            <p>${element.name}</p>
-                            <style>
-                              icon#${element.id}::before {
-                                content: url("${element.icon}");
-                              }
-                            </style>
-                          </div>`,
-                      )}
-                    </div>
-                  `,
-                )}
-              </div>
             </div>
           </div>
         `,

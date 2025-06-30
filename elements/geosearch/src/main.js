@@ -3,8 +3,7 @@ import { unsafeSVG } from "lit/directives/unsafe-svg.js";
 import proj4 from "proj4";
 import _debounce from "lodash.debounce";
 
-import mainStyle from "@eox/elements-utils/styles/dist/main.style";
-import buttonStyle from "@eox/elements-utils/styles/dist/button.style";
+import { style } from "./style";
 import { styleEOX } from "./style.eox";
 
 import { getElement } from "@eox/elements-utils";
@@ -215,59 +214,6 @@ class EOxGeoSearch extends LitElement {
     this._query = "";
   }
 
-  onButtonClick() {
-    this._isInputVisible = !this._isInputVisible;
-
-    // Auto-focus the input field when it becomes visible
-    if (this._isInputVisible) {
-      setTimeout(() =>
-        /** @type {HTMLElement} **/ (
-          this.renderRoot.querySelector("#gazetteer")
-        ).focus(),
-      );
-    }
-  }
-
-  getFlexDirection() {
-    return this.direction === "up"
-      ? "column-reverse"
-      : this.direction === "left"
-        ? "row-reverse"
-        : this.direction === "down"
-          ? "column"
-          : this.direction === "right"
-            ? "row"
-            : "row";
-  }
-
-  getResultsDirection() {
-    return this.resultsDirection === "up"
-      ? "column-reverse"
-      : this.resultsDirection === "left"
-        ? "row-reverse"
-        : this.resultsDirection === "down"
-          ? "column"
-          : this.resultsDirection === "right"
-            ? "row"
-            : "row";
-  }
-
-  getVerticalAlign() {
-    return this.resultsDirection === "up" ? "end" : "start";
-  }
-
-  getMarginDirection(direction) {
-    return direction === "up"
-      ? "top"
-      : direction === "left"
-        ? "left"
-        : direction === "down"
-          ? "bottom"
-          : direction === "right"
-            ? "right"
-            : "row";
-  }
-
   handleSelect(event) {
     this._isInputVisible = false;
     this._isListVisible = false;
@@ -330,89 +276,83 @@ class EOxGeoSearch extends LitElement {
   }
 
   render() {
+    const searchIcon = html`<svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <title>magnify</title>
+      <path
+        d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"
+      />
+    </svg>`;
+    const backIcon = html`<svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <title>arrow-left</title>
+      <path
+        d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+      />
+    </svg>`;
+
+    const menuInput = html`
+      <li>
+        <div class="field small prefix surface border">
+          ${!this.unstyled
+            ? this._isLoading
+              ? this.loaderSvg
+                ? html`<i>${unsafeSVG(this.loaderSvg)}</i>`
+                : html`<progress class="circle"></progress>`
+              : html`<i class="front">${backIcon}</i>`
+            : ""}
+          <input
+            placeholder="Type to search"
+            @input="${this.onInput}"
+            @blur="${this.onInputBlur}"
+          />
+        </div>
+      </li>
+    `;
     return html`
       <style>
-        .hidden {
-          display: none;
-        }
-        ${!this.unstyled && mainStyle}
-          ${!this.unstyled && buttonStyle}
-          ${!this.unstyled && styleEOX}
-          .fill {
-          width: 100%;
-          height: 100%;
-          min-height: 100px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
+        ${style}
+        ${!this.unstyled && styleEOX}
       </style>
       <div
-        class="geosearch ${this.small ? "small" : ""}"
-        style="
-            flex-direction: ${this.getFlexDirection()};
-            align-items: ${this.getVerticalAlign()};
-        "
+        class="geosearch"
       >
-        <button
-          class="${this.button ? "" : "hidden"} ${this._isInputVisible
-            ? "active"
-            : ""}"
-          style="
-            margin-${this.getMarginDirection(this.direction)}: 12px;
-            flex-direction: ${this.getFlexDirection()};
-          "
-          @click="${this.onButtonClick}"
+      
+        <div class="${this.button ? (this.small ? "button small circle small-elevate" : "button extra circle") : "field small prefix round surface border active"}" data-ui="#search"
+        @click=${() => {
+          this._isListVisible = true;
+          setTimeout(() => {
+            /** @type HTMLInputElement */ (
+              this.renderRoot.querySelector("menu#search input")
+            ).focus();
+          }, 500);
+        }}
         >
-          <span class="icon"></span>
-          <span
-            class="chevron ${this.direction ?? "right"} ${this._isInputVisible
-              ? "active"
-              : ""}"
-          ></span>
-          <span
-            style="display: ${this.small && !this.unstyled ? "none" : "flex"}"
-            >${(this.label || this.unstyled) ?? "Search"}</span
-          >
-        </button>
-        <div
-          class="search-container ${this.button
-            ? this._isInputVisible
-              ? ""
-              : "hidden"
-            : ""}"
-          style="flex-direction: ${this.getResultsDirection()};"
-        >
-          <input
-            id="gazetteer"
-            type="text"
-            placeholder="Type to search"
-            .value="${this._query}"
-            style="margin-${this.getMarginDirection(
-              this.resultsDirection,
-            )}: ${this._isListVisible ? 12 : 0}px"
-            @input="${this.onInput}"
-          />
-          <ul class="results-container ${this._isListVisible ? "" : "hidden"}">
-            ${this._isLoading
-              ? html`<div class="fill">${unsafeSVG(this.loaderSvg)}</div>`
-              : this._query.length < 2
-                ? html`<span class="hint"
-                    >Enter at least two characters to search</span
-                  >`
-                : this._data.map(
-                    (item) => html`
-                      <eox-geosearch-item
-                        .item="${item}"
-                        .onClick="${(e) => {
-                          this.handleSelect(e);
-                        }}"
-                        .unstyled=${this.unstyled}
-                      />
-                    `,
-                  )}
-          </ul>
-        </div>
+        ${!this.unstyled ? html`<i class="front small">${searchIcon}</i>` : ""}
+
+  ${this.button || this.unstyled ? "" : html`<input placeholder="Type to search" />`}
+  <menu id="search" class="surface ${this.button ? `no-wrap ${this.direction} ${this.resultsDirection === "up" ? "top" : "bottom"}` : ""} min${this._isListVisible ? " active" : ""}">
+${this.resultsDirection === "up" ? "" : menuInput}
+    ${this._query && this._query.length < 2 ? html`<li class="surface"><small>Enter at least two characters to search</small></li>` : ""}
+${this._data.map(
+  (item) => html`
+    <li
+      data-ui="#search"
+      class="surface"
+      @click="${() => {
+        this.handleSelect(item);
+      }}"
+    >
+      ${item.formatted}
+    </li>
+  `,
+)}
+          ${this.resultsDirection === "up" ? menuInput : ""}
+</div>
       </div>
     `;
   }
@@ -432,37 +372,6 @@ class EOxGeoSearch extends LitElement {
   }
 }
 
-class EOxGeoSearchItem extends LitElement {
-  static get properties() {
-    return {
-      item: { type: Object },
-      onClick: { type: Function },
-      unstyled: { type: Boolean },
-    };
-  }
-
-  constructor() {
-    super();
-
-    this.item = undefined;
-    this.onClick = undefined;
-    this.unstyled = false;
-  }
-
-  render() {
-    return html`
-      <style>
-        ${!this.unstyled && mainStyle}
-        ${!this.unstyled && styleEOX}
-      </style>
-      <li class="search-result" @click="${() => this.onClick(this.item)}">
-        <span class="name">${this.item.formatted}</span>
-      </li>
-    `;
-  }
-}
-
 customElements.define("eox-geosearch", EOxGeoSearch);
-customElements.define("eox-geosearch-item", EOxGeoSearchItem);
 
 export { EOxGeoSearch };

@@ -223,7 +223,7 @@ export class EOxItemFilterContainer extends LitElement {
               class="inline-container-wrapper"
               @click="${this.#handleToggleDropdown}"
             >
-              <div class="inline-container" part="container">
+              <div class="inline-container square border" part="container">
                 <div class="chip-container">
                   <div class="chip-wrapper">
                     <eox-itemfilter-chips
@@ -238,16 +238,34 @@ export class EOxItemFilterContainer extends LitElement {
                   ${when(
                     isFiltersDirty(this.filters),
                     () => html`
-                      <span
-                        class="chip-close"
+                      <button
+                        class="chip-close circle transparent small no-margin"
                         @click=${() =>
                           this.dispatchEvent(new CustomEvent("reset"))}
-                      ></span>
+                      >
+                        ${this.unstyled
+                          ? "x"
+                          : html`
+                              <i class="small">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <title>close</title>
+                                  <path
+                                    d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"
+                                  />
+                                </svg>
+                              </i>
+                            `}
+                      </button>
                     `,
                   )}
                 </div>
                 <div
-                  class="input-container ${isFiltersDirty(this.filters)
+                  class="input-container field no-margin ${isFiltersDirty(
+                    this.filters,
+                  )
                     ? "dirty-filter-input"
                     : ""}"
                 >
@@ -266,7 +284,7 @@ export class EOxItemFilterContainer extends LitElement {
               </div>
               <div popover="manual">
                 <div
-                  class="inline-content"
+                  class="inline-content square border"
                   slot="content"
                   @keydown="${this.#handleKeyDown}"
                   @click="${this.#handleFormClick}"

@@ -51,6 +51,9 @@ export class SpatialEditor extends AbstractEditor {
         document.createElement("eox-drawtools")
       );
 
+    // Remove title slot when embedded in jsonform
+    drawtoolsEl.innerHTML = `<div slot="drawtitle"></div>`;
+
     let drawType;
     switch (true) {
       case isPolygon(this.schema):

@@ -123,7 +123,7 @@ export class EOxLayerControlLayerList extends LitElement {
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <ul>
+      <ul class="list no-space">
         ${when(
           this.layers,
           () => html`
@@ -134,6 +134,7 @@ export class EOxLayerControlLayerList extends LitElement {
                 <li
                   data-layer="${layer.get(this.idProperty)}"
                   data-type="${getLayerType(layer, this.map)}"
+                  class="square"
                 >
                   ${
                     /** Checks if the layer is a group or individual layer and renders accordingly */
@@ -160,6 +161,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .map=${this.map}
                             .titleProperty=${this.titleProperty}
                             .showLayerZoomState=${this.showLayerZoomState}
+                            .layerType=${getLayerType(layer, this.map)}
                             .tools=${this.tools}
                             .unstyled=${this.unstyled}
                             .toolsAsList=${this.toolsAsList}
@@ -178,31 +180,37 @@ export class EOxLayerControlLayerList extends LitElement {
 
   #styleBasic = ``;
   #styleEOX = `
-    ul {
-      padding: 0;
-      margin: 0;
+    eox-layercontrol-layer-group {
+      box-sizing: border-box;
+      width: 100%;
     }
-    ul ul {
-      padding-left: var(--list-padding);
+    eox-layercontrol-layer.sortable-chosen {
+      background: #eeea !important;
     }
-    li:not(li li) {
-      padding-left: var(--padding);
-    }
-    li {
-      list-style: none;
-      border-bottom: 1px solid #0041703a;
-      border: var(--layer-visibility);
-    }
-    li:last-child {
-      border: none;
-    }
-    li.sortable-chosen {
-      background: #eeea;
-    }
-    li.sortable-drag {
+    eox-layercontrol-layer.sortable-drag {
       opacity: 0;
     }
-    li.sortable-ghost {
+    eox-layercontrol-layer.sortable-ghost {
+    }
+    eox-layercontrol-layer {
+      padding: 0 var(--padding);
+    }
+    @media (pointer:fine) {
+      eox-layercontrol-layer:not(:has(details[open])):hover {
+        background-color: var(--item-hover-color);
+      }
+    }
+    .list li ul.list > li eox-layercontrol-layer {
+      padding-left: var(--list-padding);
+    }
+    .list li ul.list li ul.list > li eox-layercontrol-layer {
+      padding-left: calc(var(--list-padding) * 2 - .5rem);
+    }
+    .list li ul.list > li:has(details[open]) eox-layercontrol-tools-items {
+      display: block;
+    }
+    .list.no-space li.square {
+      padding: 0;
     }
   `;
 }
