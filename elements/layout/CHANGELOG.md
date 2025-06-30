@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/layout-v0.5.3...layout-v1.0.0) (2025-06-30)
+
+
+### Miscellaneous Chores
+* v1.0.0 release
+
+
 ## [0.5.3](https://github.com/EOX-A/EOxElements/compare/layout-v0.5.2...layout-v0.5.3) (2025-05-08)
 
 
