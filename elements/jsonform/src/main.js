@@ -1,5 +1,5 @@
 import { LitElement, html } from "lit";
-import { createEditor, parseProperty } from "./helpers";
+import { createEditor, parseProperty, transformLinks } from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
@@ -179,6 +179,7 @@ export class EOxJSONForm extends LitElement {
         this.#dispatchEvent();
       }
     }
+    transformLinks(this);
   }
 
   /**

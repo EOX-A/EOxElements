@@ -126,9 +126,7 @@ export const createEditor = (element) => {
     });
 
     /// Check if any editor requires SimpleMDE and load necessary stylesheets
-    if (
-      Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)
-    ) {
+    if (requiresSimpleMDE(editor)) {
       // Add SimpleMDE styles
       const style = document.createElement("style");
       style.innerHTML = `
@@ -178,3 +176,58 @@ export async function parseProperty(property) {
   }
   return property;
 }
+
+// Check if any editor requires SimpleMDE by examining both current editors and schema
+function requiresSimpleMDE(editor) {
+  // Check current editors first
+  if (Object.values(editor.editors).some((e) => e instanceof SimplemdeEditor)) {
+    return true;
+  }
+
+  // Recursively check schema for potential markdown fields
+  function checkSchemaForMarkdown(schema) {
+    if (!schema) return false;
+
+    // Check for direct markdown format indication
+    if (schema.format === "markdown") return true;
+
+    // Check properties recursively
+    if (schema.properties) {
+      return Object.values(schema.properties).some(checkSchemaForMarkdown);
+    }
+
+    // Check items in arrays
+    if (schema.items) {
+      return checkSchemaForMarkdown(schema.items);
+    }
+
+    // Check anyOf, oneOf, allOf branches
+    for (const key of ["anyOf", "oneOf", "allOf"]) {
+      if (schema[key] && Array.isArray(schema[key])) {
+        if (schema[key].some(checkSchemaForMarkdown)) return true;
+      }
+    }
+
+    return false;
+  }
+
+  return checkSchemaForMarkdown(editor.schema);
+}
+
+/**
+ * Check all links in the form and set target="_blank" and rel="noopener noreferrer"
+ * for external ones
+ * 
+ @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
+ */
+export const transformLinks = (element) => {
+  setTimeout(() => {
+    element.renderRoot.querySelectorAll("a").forEach((a) => {
+      if (a.getAttribute("href") === null) return;
+      if (a.getAttribute("href").startsWith("http")) {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      }
+    });
+  });
+};

@@ -16,6 +16,9 @@ export class EOxLayout extends HTMLElement {
     this.mediaBreakpoints = [0, 600, 1280];
 
     this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
     this.render();
   }
   render() {
@@ -63,6 +66,9 @@ export class EOxLayoutItem extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+  }
+
+  connectedCallback() {
     this.render();
   }
   render() {
@@ -83,7 +89,7 @@ export class EOxLayoutItem extends HTMLElement {
         }
           ${
             /**@type EOxLayout */ (this.parentElement)?.mediaBreakpoints
-              .map(
+              ?.map(
                 (bp, index) => `
               @media (min-width: ${bp}px) {
                 :host {

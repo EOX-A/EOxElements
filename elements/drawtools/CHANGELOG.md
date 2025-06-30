@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.15.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.3...drawtools-v0.15.0) (2025-06-16)
+
+
+### Features
+
+* Show selected feature title from some property value  ([#1719](https://github.com/EOX-A/EOxElements/issues/1719)) ([c939258](https://github.com/EOX-A/EOxElements/commit/c939258ac62cac68610f4bb8b7dbe4178b9f99ad))
+
+## [0.14.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.2...drawtools-v0.14.3) (2025-05-20)
+
+
+### Bug Fixes
+
+* Mirror changes to json + error handing ([#1698](https://github.com/EOX-A/EOxElements/issues/1698)) ([0bf6c80](https://github.com/EOX-A/EOxElements/commit/0bf6c80f0a41420f7cb952d3b55c40071bcca46e))
+
 ## [0.14.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.1...drawtools-v0.14.2) (2025-03-06)
 
 

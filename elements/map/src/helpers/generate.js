@@ -20,7 +20,7 @@ import { get as getProjection } from "ol/proj";
 /**
  * @typedef {import("../main").EOxMap} EOxMap
  * @typedef {import("../types").AnyLayer} AnyLayer
- * @typedef {import("../types").EoxLayer} EoxLayer
+ * @typedef {import("../layers").EoxLayer} EoxLayer
  * @typedef {import("../types").SelectLayer} SelectLayer
  * @typedef {import("../types").EOxInteraction} EOxInteraction
  * @typedef {import("../types").DrawOptions} DrawOptions
@@ -67,7 +67,8 @@ const basicOlSources = {
  *
  * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {EoxLayer} layer - The layer definition.
- * @param {boolean=} createInteractions - Whether to create interactions for the layer (default: true).
+ * @param {boolean} [createInteractions=true] - Whether to create interactions for the layer (default: true).
+ * @returns {AnyLayer} - The created OpenLayers layer.
  * @throws Will throw an error if the specified layer or source type is not supported.
  */
 export function createLayer(EOxMap, layer, createInteractions = true) {
@@ -88,7 +89,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   };
 
   // Get the layer and source constructors based on the provided layer definition
+  /** @type {new (options?: any) => AnyLayer} */
   const newLayer = availableLayers[layer.type];
+  /** @type {new (options?: any) => InstanceType<typeof availableSources[keyof typeof availableSources]>} */
   const newSource = availableSources[layer.source?.type];
 
   // Throw an error if the specified layer type or source type is not supported
@@ -102,12 +105,12 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   const tileGrid = generateTileGrid(layer);
 
   // Create the OpenLayers layer with the specified options
-  const olLayer = /** @type {AnyLayer} **/ new newLayer({
+  const olLayer = new newLayer({
     ...layer,
     ...(layer.source && {
       source: new newSource({
         ...layer.source,
-        ...(layer.source.format &&
+        ...("format" in layer.source &&
           layer.source.type !== "WMTS" && {
             // Set the format (e.g., GeoJSON, MVT) for the source
             format: new availableFormats[
@@ -121,9 +124,9 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
             }),
           }),
         // Set the format (e.g., GeoJSON, MVT) for the source
-        ...(layer.source.tileGrid && { tileGrid }),
+        ...("tileGrid" in layer.source && { tileGrid }),
         // Set the projection, converting it using OpenLayers' `getProjection` method
-        ...(layer.source.projection && {
+        ...("projection" in layer.source && {
           projection: getProjection(layer.source.projection),
         }),
       }),
@@ -141,13 +144,17 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
       .reverse()
       .map((l) => createLayer(EOxMap, l));
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
-    /** @type {import("ol/layer/Group").default} **/ olLayer.setLayers(
+    /** @type {import("ol/layer/Group").default} **/ (olLayer).setLayers(
       new Collection(groupLayers),
     );
   }
 
-  if (layer.style) {
-    /** @type {VectorOrVectorTileLayer} **/ olLayer.setStyle(layer.style);
+  if ("style" in layer) {
+    /** @type {VectorOrVectorTileLayer} **/ (olLayer).setStyle(
+      /** @type {import("../layers").EOxLayerType<"Vector","Vector">} **/ (
+        layer
+      ).style,
+    );
   }
 
   // Add interactions (e.g., draw, select) to the layer if requested
@@ -156,7 +163,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
       const interactionDefinition = layer.interactions[i];
       addInteraction(
         EOxMap,
-        /** @type {SelectLayer} **/ olLayer,
+        /** @type {SelectLayer} **/ (olLayer),
         interactionDefinition,
       );
     }
@@ -179,7 +186,7 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
   if (interactionDefinition.type === "draw")
     addDraw(
       EOxMap,
-      /** @type {import("ol/layer").Vector} **/ (olLayer),
+      /** @type {import("ol/layer/Vector").default} **/ (olLayer),
       /** @type {DrawOptions} **/ (interactionDefinition.options),
     );
   else if (interactionDefinition.type === "select")
@@ -232,8 +239,11 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Update style if different
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
-    JSON.stringify(newLayerDefinition.style) !==
-      JSON.stringify(existingJsonDefinition.style)
+    JSON.stringify(
+      /** @type {import("../layers.ts").EOxLayerType<"Vector"|"VectorTile",any>} */ (
+        newLayerDefinition
+      ).style,
+    ) !== JSON.stringify(existingJsonDefinition.style)
   ) {
     // @ts-expect-error TODO
     existingLayer.setStyle(newLayer.getStyle());
@@ -251,7 +261,10 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   if (newLayerDefinition.visible !== existingJsonDefinition.visible) {
     existingLayer.setVisible(newLayerDefinition.visible);
   }
-  if (newLayerDefinition.opacity !== existingJsonDefinition.opacity) {
+  if (
+    newLayerDefinition.opacity &&
+    newLayerDefinition.opacity !== existingJsonDefinition.opacity
+  ) {
     existingLayer.setOpacity(newLayerDefinition.opacity);
   }
 
@@ -397,7 +410,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
  *
  * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {Array<EoxLayer>} layerArray - Array of layer definitions.
- * @returns {Array<EoxLayer>} - An array of created layers.
+ * @returns {Array<AnyLayer>} - An array of created layers.
  */
 export const generateLayers = (EOxMap, layerArray) => {
   if (!layerArray) return [];

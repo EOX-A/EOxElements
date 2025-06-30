@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.16.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.4...jsonform-v0.16.5) (2025-05-20)
+
+
+### Bug Fixes
+
+* Add possibility to pass step to minmax custom filter ([#1693](https://github.com/EOX-A/EOxElements/issues/1693)) ([c503755](https://github.com/EOX-A/EOxElements/commit/c503755374ef3a0ff5be370d73df917a7d3fada9))
+
+## [0.16.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.3...jsonform-v0.16.4) (2025-05-08)
+
+
+### Bug Fixes
+
+* Markdown Editor Styling using `anyOf`,`allOf`, & `oneOf` ([#1631](https://github.com/EOX-A/EOxElements/issues/1631)) ([d925b91](https://github.com/EOX-A/EOxElements/commit/d925b9187429d6c0b3988ff1f5afd1f7231f13c6))
+
+## [0.16.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.2...jsonform-v0.16.3) (2025-04-28)
+
+
+### Bug Fixes
+
+* Transform external links to target "blank" ([#1676](https://github.com/EOX-A/EOxElements/issues/1676)) ([2bc4f98](https://github.com/EOX-A/EOxElements/commit/2bc4f98c82821bb253ca5fced4b12b0ad39ef739))
+
 ## [0.16.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.1...jsonform-v0.16.2) (2025-04-01)
 
 

@@ -6,9 +6,11 @@ const { drawTools, list, deleteFeatureBtn } = TEST_SELECTORS;
 const testFeatures = [
   {
     getId: () => "0",
+    get: () => null,
   },
   {
     getId: () => "1",
+    get: () => null,
   },
 ];
 
