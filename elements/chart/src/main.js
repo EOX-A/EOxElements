@@ -16,6 +16,7 @@ export class EOxChart extends LitElement {
   static properties = {
     dataValues: { attribute: false, type: Object },
     spec: { attribute: false, type: Object },
+    opt: { attribute: false, type: Object },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
   };
@@ -29,6 +30,13 @@ export class EOxChart extends LitElement {
      * @type {import("vega-embed").VisualizationSpec}
      */
     this.spec = undefined;
+
+    /**
+     * [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)
+     *
+     * @type {import("vega-embed").EmbedOptions}
+     */
+    this.opt = undefined;
 
     /**
      * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`
@@ -85,7 +93,7 @@ export class EOxChart extends LitElement {
    */
   async updated(changedProperties) {
     if (changedProperties.has("spec") || changedProperties.has("dataValues")) {
-      renderChartMethod(this, this.spec, this.dataValues);
+      renderChartMethod(this, this.spec, this.opt, this.dataValues);
     }
   }
 
