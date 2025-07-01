@@ -282,9 +282,12 @@ export class EOxItemFilterContainer extends LitElement {
                   />
                 </div>
               </div>
-              <div popover="manual">
+              <div
+                popover="manual"
+                class="square surface-container-lowest small-elevate"
+              >
                 <div
-                  class="inline-content square border"
+                  class="inline-content"
                   slot="content"
                   @keydown="${this.#handleKeyDown}"
                   @click="${this.#handleFormClick}"

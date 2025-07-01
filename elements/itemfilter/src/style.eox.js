@@ -236,16 +236,13 @@ tc-range-slider {
   margin-top: 4px;
   padding: 8px;
 }
-.inline-container {
-  position: relative;
-  align-items: center;
-}
 .inline-container-wrapper {
   width: 100%;
   position: relative;
 }
 .inline-container {
   position: relative;
+  align-items: center;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   flex: 1;
@@ -255,6 +252,7 @@ tc-range-slider {
   display: flex;
   inline-size: 100%;
   block-size: 100%;
+  overflow-x: auto;
 }
 [popover] {
   position: fixed;
@@ -262,7 +260,6 @@ tc-range-slider {
   left: 0;
   margin: 0;
   padding: 0;
-  background-color: var(--background-color);
   border: none;
 }
 .input-container {
@@ -296,13 +293,21 @@ button.icon {
   width: unset;
 }
 -container-results::-webkit-scrollbar,
-.inline-container::-webkit-scrollbar {
-  height: 2px;
+.inline-container::-webkit-scrollbar,
+.inline-content::-webkit-scrollbar {
+  inline-size: 0.4rem;
+  block-size: 0.4rem;
 }
 -container-results::-webkit-scrollbar-thumb,
-.inline-container::-webkit-scrollbar-thumb {
+.inline-container::-webkit-scrollbar-thumb,
+.inline-content::-webkit-scrollbar-thumb {
   background: lightgrey;
-  border-radius: 2px;
+  border-radius: 1rem;
+  cursor: default;
+}
+.inline-container:is(:hover,:focus)::-webkit-scrollbar-thumb,
+.inline-content:is(:hover,:focus)::-webkit-scrollbar-thumb {
+  background: var(--outline);
 }
 .hidden {
   height: 0;
@@ -433,6 +438,12 @@ mark.highlight {
   display: flex;
   flex: 0;
   align-items: center;
+}
+.chip {
+  white-space: nowrap;
+}
+.input-container.field {
+  min-width: 10rem;
 }
 .input-container.dirty-filter-input {
   margin-left: 25px;

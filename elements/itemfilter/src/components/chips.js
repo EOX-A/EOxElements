@@ -39,6 +39,15 @@ export class EOxItemFilterChipsV2 extends LitElement {
   }
 
   /**
+   * Overrides the default createRenderRoot method to render in the light DOM.
+   *
+   * @returns {this} - The current instance to render in the light DOM.
+   */
+  createRenderRoot() {
+    return this;
+  }
+
+  /**
    * Lifecycle method called when the element is connected to the DOM.
    * Adds a keyboard event listener.
    */
@@ -115,7 +124,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
                     this.requestUpdate();
                   }}
                 ></span>
-            </span>
+              </span>
             </span>
           `,
         )}
