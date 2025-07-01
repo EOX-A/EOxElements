@@ -452,17 +452,20 @@ export function parseNavWithAddSection(
     const sectionStartIndex = navIndex + 1;
     html[sectionStartIndex].classList.add("section-start");
 
-    const sectionOverlayObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const intersecting = entry.isIntersecting;
+    const sectionOverlayObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const intersecting = entry.isIntersecting;
 
-        if (intersecting && entry.boundingClientRect.top <= 1) {
-          entry.target.classList.add("show-overlay");
-        } else {
-          entry.target.classList.remove("show-overlay");
-        }
-      });
-    });
+          if (intersecting) {
+            entry.target.classList.add("show-overlay");
+          } else {
+            entry.target.classList.remove("show-overlay");
+          }
+        });
+      },
+      { rootMargin: "-50% 0px" },
+    );
 
     html.slice(sectionStartIndex).forEach((section, key) => {
       if (!section.classList) return;
