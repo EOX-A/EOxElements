@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.0...itemfilter-v1.10.1) (2025-07-01)
+
+
+### Bug Fixes
+
+* **style:** Inline mode container and popover ([#1739](https://github.com/EOX-A/EOxElements/issues/1739)) ([7c3d687](https://github.com/EOX-A/EOxElements/commit/7c3d687aad43c860b111281a96895b1182520988))
+
 ## [1.10.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.9.2...itemfilter-v1.10.0) (2025-06-30)
 
 
