@@ -48,6 +48,10 @@ const styleEOX = `
     font-family: var(--header-font-family);
   }
 
+  .story-telling .hero h1 {
+    font-size:clamp(2rem, 5vw, 3rem);
+  }
+
   pre {
     position: relative;
     border-radius: 4px;
