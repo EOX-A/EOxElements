@@ -10,10 +10,10 @@ import{x as o}from"./lit-element-L04JKUcP.js";const _={args:{markdown:"## Hello 
       id="markdown-url"
       markdown-url=${e.markdownURL}
     ></eox-storytelling>
-  `},F={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>o`
+  `},q={args:{markdown:"## Hello World, Markdown Inside Slot."},render:e=>o`
     <!-- Render eox-storytelling from markdown inside the slot. -->
     <eox-storytelling id="markdown-slot">${e.markdown}</eox-storytelling>
-  `},G={args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+  `},F={args:{markdown:`# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
 
 
@@ -96,9 +96,12 @@ To start a new section, use the Markdown syntax for *h2* (Header 2), so starting
 Additionally to the hero section, there are other special sections (like media, map), and the most convenient way to add them is via the "plus" icon. They use the "as" attribute, which replaces the entire section with the corresponding element. So, for example, *as="div"* will replace the entire sectioni (including the title) with a *div*.
 We will now have a more in-depth look about the map section. The map section shows a single map, with optional text underneath. It is powered by [EOxMap](https://eox-a.github.io/EOxElements/?path=/docs/elements-eox-map--docs), so you can use the same syntax as with any EOxMap.
 
-## Map section <!--{as="eox-map" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+## Map section <!--{as="eox-map" class="overlay-br" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+### Some title for map <!--{ style="color: white; font-size: 1.25rem;" }-->
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
-## Map Tour section <!--{ as="eox-map" mode="tour" }-->
+## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
 ### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
 #### This is a map tour.
@@ -137,7 +140,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       markdown=${e.markdown}
       @upload:file=${t=>{const $=t.detail,{file:l,update:c}=$;if(l.size>1024*1024){c(null,null,new Error("File size must be less than 1MB"));return}const d=new FileReader;d.onload=()=>{const j=d.result;c(j)},d.readAsDataURL(l)}}
     ></eox-storytelling>
-  `};function C(e){if((e==null?void 0:e.tagName)==="EOX-MAP"){e.registerProjection("ESRI:53009","+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs");const t=e.getAttribute("projection");t&&e.setAttribute("projection",t)}}const Y={args:{markdown:`## Map section <!--{as="eox-map" projection="ESRI:53009" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+  `};function G(e){if((e==null?void 0:e.tagName)==="EOX-MAP"){e.registerProjection("ESRI:53009","+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs");const t=e.getAttribute("projection");t&&e.setAttribute("projection",t)}}const C={args:{markdown:`## Map section <!--{as="eox-map" projection="ESRI:53009" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
 
 ## Map Tour section <!--{ projection="ESRI:53009" as="eox-map" zoom="9" center=[12.46,41.89] mode="tour" layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' }-->
 
@@ -153,11 +156,11 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
     <eox-storytelling
       id="markdown-editor"
       markdown=${e.markdown}
-      @init=${({detail:t})=>C(t)}
+      @init=${({detail:t})=>G(t)}
     ></eox-storytelling>
-  `},N={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>o`${e()}
+  `},Y={title:"Elements/eox-storytelling",tags:["autodocs"],component:"eox-storytelling",decorators:[e=>o`${e()}
         <style>
           .sb-show-main.sb-main-padded {
             padding: 0;
           }
-        </style>`]},i=_,r=U,s=F,a=G,n=Y;var h,p,m,u,g;i.parameters={...i.parameters,docs:{...(h=i.parameters)==null?void 0:h.docs,source:{originalSource:"PrimaryStory",...(m=(p=i.parameters)==null?void 0:p.docs)==null?void 0:m.source},description:{story:"StoryTelling using basic markdownL.",...(g=(u=i.parameters)==null?void 0:u.docs)==null?void 0:g.description}}};var w,y,f,k,S;r.parameters={...r.parameters,docs:{...(w=r.parameters)==null?void 0:w.docs,source:{originalSource:"MarkdownAsURLStory",...(f=(y=r.parameters)==null?void 0:y.docs)==null?void 0:f.source},description:{story:"StoryTelling using markdown URL.",...(S=(k=r.parameters)==null?void 0:k.docs)==null?void 0:S.description}}};var v,M,x,b,T;s.parameters={...s.parameters,docs:{...(v=s.parameters)==null?void 0:v.docs,source:{originalSource:"MarkdownSlotStory",...(x=(M=s.parameters)==null?void 0:M.docs)==null?void 0:x.source},description:{story:"StoryTelling using markdown from the slot.",...(T=(b=s.parameters)==null?void 0:b.docs)==null?void 0:T.description}}};var E,I,O,R,A;a.parameters={...a.parameters,docs:{...(E=a.parameters)==null?void 0:E.docs,source:{originalSource:"MarkdownEditorStory",...(O=(I=a.parameters)==null?void 0:I.docs)==null?void 0:O.source},description:{story:"StoryTelling with editor",...(A=(R=a.parameters)==null?void 0:R.docs)==null?void 0:A.description}}};var L,W,z,H,P;n.parameters={...n.parameters,docs:{...(L=n.parameters)==null?void 0:L.docs,source:{originalSource:"MarkdownInitEventStory",...(z=(W=n.parameters)==null?void 0:W.docs)==null?void 0:z.source},description:{story:"StoryTelling with @init event",...(P=(H=n.parameters)==null?void 0:H.docs)==null?void 0:P.description}}};const X=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor","MarkdownInitEvent"];export{r as MarkdownAsURL,n as MarkdownInitEvent,s as MarkdownInsideSlot,a as MarkdownWithEditor,i as Primary,X as __namedExportsOrder,N as default};
+        </style>`]},i=_,r=U,s=q,a=F,n=C;var h,p,m,u,g;i.parameters={...i.parameters,docs:{...(h=i.parameters)==null?void 0:h.docs,source:{originalSource:"PrimaryStory",...(m=(p=i.parameters)==null?void 0:p.docs)==null?void 0:m.source},description:{story:"StoryTelling using basic markdownL.",...(g=(u=i.parameters)==null?void 0:u.docs)==null?void 0:g.description}}};var w,y,f,k,S;r.parameters={...r.parameters,docs:{...(w=r.parameters)==null?void 0:w.docs,source:{originalSource:"MarkdownAsURLStory",...(f=(y=r.parameters)==null?void 0:y.docs)==null?void 0:f.source},description:{story:"StoryTelling using markdown URL.",...(S=(k=r.parameters)==null?void 0:k.docs)==null?void 0:S.description}}};var v,M,b,x,T;s.parameters={...s.parameters,docs:{...(v=s.parameters)==null?void 0:v.docs,source:{originalSource:"MarkdownSlotStory",...(b=(M=s.parameters)==null?void 0:M.docs)==null?void 0:b.source},description:{story:"StoryTelling using markdown from the slot.",...(T=(x=s.parameters)==null?void 0:x.docs)==null?void 0:T.description}}};var E,I,O,L,R;a.parameters={...a.parameters,docs:{...(E=a.parameters)==null?void 0:E.docs,source:{originalSource:"MarkdownEditorStory",...(O=(I=a.parameters)==null?void 0:I.docs)==null?void 0:O.source},description:{story:"StoryTelling with editor",...(R=(L=a.parameters)==null?void 0:L.docs)==null?void 0:R.description}}};var z,A,W,H,P;n.parameters={...n.parameters,docs:{...(z=n.parameters)==null?void 0:z.docs,source:{originalSource:"MarkdownInitEventStory",...(W=(A=n.parameters)==null?void 0:A.docs)==null?void 0:W.source},description:{story:"StoryTelling with @init event",...(P=(H=n.parameters)==null?void 0:H.docs)==null?void 0:P.description}}};const B=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor","MarkdownInitEvent"];export{r as MarkdownAsURL,n as MarkdownInitEvent,s as MarkdownInsideSlot,a as MarkdownWithEditor,i as Primary,B as __namedExportsOrder,Y as default};
