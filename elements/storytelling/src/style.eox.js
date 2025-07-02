@@ -77,6 +77,7 @@ const styleEOX = `
 
   :host {
     overflow: unset !important;
+    --eox-storytelling-hero-height: 76dvh;
   }
 
   iframe,
@@ -382,7 +383,8 @@ const styleEOX = `
   .story-telling .hero {
     position: relative;      
     width: 100%;
-    height: 100dvh;
+    height: var(--eox-storytelling-hero-height);
+    padding: 10rem 2rem;
     overflow: hidden;
     display: flex;
     flex-direction: column;
