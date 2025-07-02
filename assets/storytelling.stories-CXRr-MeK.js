@@ -137,6 +137,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       id="markdown-editor"
       show-nav
       show-editor="closed"
+      show-hero-scroll-indicator
       markdown=${e.markdown}
       @upload:file=${t=>{const $=t.detail,{file:l,update:c}=$;if(l.size>1024*1024){c(null,null,new Error("File size must be less than 1MB"));return}const d=new FileReader;d.onload=()=>{const j=d.result;c(j)},d.readAsDataURL(l)}}
     ></eox-storytelling>
