@@ -47,6 +47,10 @@ export class EOxStoryTelling extends LitElement {
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
       showEditor: { attribute: "show-editor", type: String },
+      showHeroScrollIndicator: {
+        attribute: "show-hero-scroll-indicator",
+        type: Boolean,
+      },
       noShadow: { attribute: "no-shadow", type: Boolean },
       disableAutosave: { attribute: "disable-autosave", type: Boolean },
       unstyled: { type: Boolean },
@@ -122,6 +126,13 @@ export class EOxStoryTelling extends LitElement {
      * @type {Boolean}
      */
     this.showNav = false;
+
+    /**
+     * Enable or disable hero scroll indicator
+     *
+     * @type {Boolean}
+     */
+    this.showHeroScrollIndicator = false;
 
     /**
      * List of items in navigation

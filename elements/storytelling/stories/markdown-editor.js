@@ -131,6 +131,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       id="markdown-editor"
       show-nav
       show-editor="closed"
+      show-hero-scroll-indicator
       markdown=${args.markdown}
       @upload:file=${(e) => {
         const detail = e.detail;
