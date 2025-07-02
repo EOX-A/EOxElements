@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.8.0...storytelling-v1.9.0) (2025-07-02)
+
+
+### Features
+
+* Change default hero height, allow CSS override ([#1743](https://github.com/EOX-A/EOxElements/issues/1743)) ([d3fa89f](https://github.com/EOX-A/EOxElements/commit/d3fa89f5d8850bcfc7a11fb3691f55fa154acfa7))
+* Overlay content on top of map ([#1732](https://github.com/EOX-A/EOxElements/issues/1732)) ([f29527b](https://github.com/EOX-A/EOxElements/commit/f29527b81c5f0369b3a86e71bb9654964479bedc))
+* Support enabling/disabling scroll indicator ([#1744](https://github.com/EOX-A/EOxElements/issues/1744)) ([c8a6280](https://github.com/EOX-A/EOxElements/commit/c8a6280b1ee8eb56a48c9be4e6e1bb41614a26b0))
+
+
+### Bug Fixes
+
+* **style:** Clamp hero h1 font-size ([8000803](https://github.com/EOX-A/EOxElements/commit/8000803397e6298fec231c9fed13d21f182f1a4e))
+
 ## [1.8.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.2...storytelling-v1.8.0) (2025-06-30)
 
 
