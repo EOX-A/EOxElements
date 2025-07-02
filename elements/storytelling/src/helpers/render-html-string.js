@@ -540,7 +540,10 @@ export function parseNavWithAddSection(
     html = [sectionWrap];
   }
 
-  if (html[0].classList.contains("hero")) {
+  if (
+    html[0].classList.contains("hero") &&
+    EOxStoryTelling.showHeroScrollIndicator
+  ) {
     const sectionWraps =
       html.filter((el) => el.classList?.contains("section-wrap")) || [];
 
