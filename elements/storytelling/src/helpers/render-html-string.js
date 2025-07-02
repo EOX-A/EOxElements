@@ -9,6 +9,7 @@ let lightboxElements = [];
 let sectionObservers = [];
 let sectionNavObservers = [];
 let stepSectionObservers = [];
+let sectionOverlayObservers = [];
 
 /**
  * Converts an HTML string into DOM nodes and processes each node.
@@ -450,10 +451,63 @@ export function parseNavWithAddSection(
   if (html.length) {
     const sectionStartIndex = navIndex + 1;
     html[sectionStartIndex].classList.add("section-start");
+
+    const sectionOverlayObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const intersecting = entry.isIntersecting;
+
+          if (intersecting) {
+            entry.target.classList.add("show-overlay");
+          } else {
+            entry.target.classList.remove("show-overlay");
+          }
+        });
+      },
+      { rootMargin: "-50% 0px" },
+    );
+
     html.slice(sectionStartIndex).forEach((section, key) => {
       if (!section.classList) return;
       if (section.classList.contains("section-wrap"))
         containsSectionWrap = true;
+
+      const eoxMap = section.querySelector("eox-map");
+      const isTour = section.classList.contains("tour");
+      if (eoxMap) {
+        const sectionChildren = Array.from(section.children).filter((child) => {
+          return (
+            child.tagName.toLowerCase() !== "section-step" &&
+            child.getAttribute("as") !== "eox-map"
+          );
+        });
+        const eoxMapChildren = Array.from(eoxMap.children);
+        const children = [...sectionChildren, ...eoxMapChildren];
+        if (children.length) {
+          const hasOverlayClass = Array.from(eoxMap.classList).filter(
+            (className) => className.startsWith("overlay-"),
+          );
+
+          const overlayMap = document.createElement("div");
+          overlayMap.className = "eox-map-overlay";
+          overlayMap.classList.add(
+            hasOverlayClass.length ? hasOverlayClass[0] : "overlay-br",
+          );
+
+          const overlayMapContent = document.createElement("div");
+          overlayMapContent.className = "eox-map-overlay-content";
+
+          children.forEach((child) => overlayMapContent.appendChild(child));
+          overlayMap.appendChild(overlayMapContent);
+          eoxMap.innerHTML = "";
+          section.insertBefore(overlayMap, eoxMap.nextSibling);
+
+          if (isTour) {
+            sectionOverlayObserver.observe(section);
+            sectionOverlayObservers.push(sectionOverlayObserver);
+          }
+        }
+      }
 
       section.classList.add("section-item");
       section.setAttribute("data-section", `${key + 1}`);

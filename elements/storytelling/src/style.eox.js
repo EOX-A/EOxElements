@@ -781,5 +781,99 @@ const styleEOX = `
   .margin-view-overlays {
     background: #e6e6e6;
   }
+  .story-telling .eox-map-overlay {
+    position: absolute;
+    color: white;
+    display: flex;
+  }
+  .story-telling .eox-map-overlay-content {
+    padding: 1.5rem;
+    width: 400px;
+    height: fit-content;
+    border-radius: 10px;
+    background: #00000075;
+  }
+  .story-telling .eox-map-overlay.overlay-bl {
+    align-items: end;
+    justify-content: flex-start;
+    bottom: 3rem;
+    left: 2rem;
+  }
+  .story-telling .eox-map-overlay.overlay-br {
+    align-items: end;
+    justify-content: flex-end;    
+    bottom: 3rem;
+    right: 2rem;
+  }
+  .story-telling .eox-map-overlay.overlay-tl {
+    align-items: start;
+    justify-content: flex-start;
+    top: 5rem;
+    left: 2rem;
+  }
+  .story-telling .eox-map-overlay.overlay-tr {
+    align-items: start;
+    justify-content: flex-end;
+    top: 5rem;
+    right: 2rem;
+  }
+  .story-telling .tour .eox-map-overlay {
+    position: fixed;
+    width: auto;
+    justify-content: center;
+    display: none;
+  }
+  .story-telling .tour.show-overlay .eox-map-overlay {
+    display: flex;
+  }
+  .story-telling .tour .eox-map-overlay.overlay-tl {
+    top: 2rem;
+    left: 2rem;
+  }
+  .story-telling .tour .eox-map-overlay.overlay-tr {
+    top: 2rem;
+    right: 2rem;
+  }
+  .story-telling.nav-enabled .tour .eox-map-overlay.overlay-tl,
+  .story-telling.nav-enabled .tour .eox-map-overlay.overlay-tr {
+    top: 7rem;
+  }
+  .story-telling .tour .eox-map-overlay.overlay-bl {
+    bottom: 2rem;
+    left: 2rem;
+  }
+  .story-telling .tour .eox-map-overlay.overlay-br {
+    bottom: 2rem;
+    right: 2rem;
+  }
+  @media screen and (max-width: 768px) {
+    .story-telling .eox-map-overlay.overlay-tl,
+    .story-telling .eox-map-overlay.overlay-tr,
+    .story-telling .eox-map-overlay.overlay-bl,
+    .story-telling .eox-map-overlay.overlay-br {
+      width: calc(100% - 2rem);
+      right: unset;
+      left: unset;
+      justify-content: center;
+      align-items: end;
+    }
+    .story-telling .eox-map-overlay-content {
+      width: 80%;
+      padding: 1rem;
+    }
+    .story-telling .tour .eox-map-overlay.overlay-tr,
+    .story-telling .tour .eox-map-overlay.overlay-tl,
+    .story-telling .tour .eox-map-overlay.overlay-bl,
+    .story-telling .tour .eox-map-overlay.overlay-br {
+      top: 2rem;
+      width: 100dvw;
+      right: unset;
+      left: unset;
+    }
+    .story-telling.nav-enabled .tour .eox-map-overlay.overlay-tr,
+    .story-telling.nav-enabled .tour .eox-map-overlay.overlay-tl {
+      top: 5rem;
+    }
+  }
 `;
 export default styleEOX;
