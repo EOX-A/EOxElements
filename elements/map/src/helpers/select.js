@@ -341,7 +341,10 @@ export class EOxSelectInteraction {
                     this.tooltipElement.innerHTML = `<pre>${responseFeature}</pre>`;
                   }
                   // add the picked coordinates to the html
-                  Object.assign(html?.properties, pickedCoordinate(event));
+                  if (options?.coordinates){
+                    Object.assign(html?.properties, pickedCoordinate(event));
+                  }
+
                   // create a new ol feature from the response
                   const featureData = new Feature({
                     ...html?.properties,
@@ -387,7 +390,10 @@ export class EOxSelectInteraction {
             }
             if (this.tooltipElement) {
               // add the picked coordinates to the html
-              Object.assign(html, pickedCoordinate(event));
+              if (options?.coordinates){
+                Object.assign(html, pickedCoordinate(event));
+              }
+
               // create a new ol feature from the response
               const featureData = new Feature({
                 ...html,

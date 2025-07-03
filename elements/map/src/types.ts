@@ -69,6 +69,7 @@ export type SelectOptions = Omit<
   geometryFunction?: import("ol/interaction/Draw").GeometryFunction;
   cursor?: "string";
   atPixelOptions?: import("ol/Map").AtPixelOptions;
+  coordinates?: boolean;
   projection?: {
     name: string;
     proj4_string: string;
