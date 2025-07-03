@@ -341,7 +341,7 @@ export class EOxSelectInteraction {
                     this.tooltipElement.innerHTML = `<pre>${responseFeature}</pre>`;
                   }
                   // add the picked coordinates to the html
-                  if (options?.coordinates){
+                  if (options?.coordinates) {
                     Object.assign(html?.properties, pickedCoordinate(event));
                   }
 
@@ -390,7 +390,7 @@ export class EOxSelectInteraction {
             }
             if (this.tooltipElement) {
               // add the picked coordinates to the html
-              if (options?.coordinates){
+              if (options?.coordinates) {
                 Object.assign(html, pickedCoordinate(event));
               }
 
