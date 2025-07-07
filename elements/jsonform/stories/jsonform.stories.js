@@ -15,6 +15,7 @@ import {
   GeoJSONStory,
   LineStory,
   CustomEditorInterfacesStory,
+  ShowOptInPropertiesStory,
   ValidationStory,
   CodeStory,
   OptionalPropertiesStory,
@@ -56,6 +57,14 @@ export const Validation = ValidationStory;
  */
 export const Code = CodeStory;
 
+/**
+ * Example showing the usage of opt-in properties
+ */
+export const ShowOptInProperties = ShowOptInPropertiesStory;
+
+/**
+ * Example showing the usage of optional properties
+ */
 export const OptionalProperties = OptionalPropertiesStory;
 
 /**
@@ -98,6 +107,7 @@ export const Points = PointStory;
  *
  */
 export const Line = LineStory;
+
 /**
  * JSON Form based on drawtools - Feature Selection
  */
@@ -107,6 +117,7 @@ export const FeatureSelection = FeatureSelectionStory;
  * JSON Form based on drawtools - Returns the value as WKT
  */
 export const WKT = WKTStory;
+
 /**
  * JSON Form based on drawtools - Returns the value as GeoJSON
  */

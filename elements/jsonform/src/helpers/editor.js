@@ -346,3 +346,29 @@ export const transformLinks = (element) => {
     });
   });
 };
+
+/**
+ * Initialize the opt-in properties element
+ * disabled inputs are enabled and
+ * change event is added to toggle the opt-in checkbox
+ *
+ * @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
+ */
+export const initShowOptInElement = (element) => {
+  element.renderRoot
+    .querySelectorAll(".je-indented-panel .row input:disabled")
+    .forEach((input) => {
+      input.disabled = false;
+      input.addEventListener("change", () => {
+        const optInEle = input.parentElement.querySelector(
+          ".json-editor-opt-in",
+        );
+        if (optInEle) {
+          if (input.value && !optInEle.checked) optInEle.click();
+          else if (!input.value && optInEle.checked) optInEle.click();
+        }
+        input.disabled = false;
+        input.focus();
+      });
+    });
+};

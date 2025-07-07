@@ -1,1 +1,6 @@
-export { createEditor, parseProperty, transformLinks } from "./editor";
+export {
+  createEditor,
+  parseProperty,
+  transformLinks,
+  initShowOptInElement,
+} from "./editor";
