@@ -42,7 +42,7 @@ const loadShowOptInPropertiesTest = () => {
   });
   cy.get(jsonForm)
     .shadow()
-    .within(($el) => {
+    .within(() => {
       cy.get(`input[id="root[baz]"]`).type("Hello World");
     });
   cy.get(jsonForm).and(($el) => {
@@ -50,7 +50,7 @@ const loadShowOptInPropertiesTest = () => {
   });
   cy.get(jsonForm)
     .shadow()
-    .within(($el) => {
+    .within(() => {
       cy.get(`input[id="root[baz]"]`).clear();
     });
   cy.get(jsonForm).and(($el) => {

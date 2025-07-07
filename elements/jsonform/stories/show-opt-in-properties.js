@@ -44,8 +44,8 @@ const ShowOptInProperties = {
     ></eox-jsonform>
     <div id="jsonform-data" style="margin-top: 20px;"></div>
   `,
-  play: async ({ args, canvasElement }) => {
-    canvasElement.querySelector("eox-jsonform").editor.on("change", (e) => {
+  play: async ({ canvasElement }) => {
+    canvasElement.querySelector("eox-jsonform").editor.on("change", () => {
       document.querySelector("#jsonform-data").innerHTML = JSON.stringify(
         canvasElement.querySelector("eox-jsonform").value,
         null,

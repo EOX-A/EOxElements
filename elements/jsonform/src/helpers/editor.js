@@ -355,20 +355,21 @@ export const transformLinks = (element) => {
  * @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
  */
 export const initShowOptInElement = (element) => {
-  element.renderRoot
-    .querySelectorAll(".je-indented-panel .row input:disabled")
-    .forEach((input) => {
+  /** @type {NodeListOf<HTMLInputElement>} */
+  const inputs = element.renderRoot.querySelectorAll(
+    ".je-indented-panel .row input:disabled",
+  );
+  inputs.forEach((input) => {
+    input.disabled = false;
+    input.addEventListener("change", () => {
+      /** @type {HTMLInputElement} */
+      const optInEle = input.parentElement.querySelector(".json-editor-opt-in");
+      if (optInEle) {
+        if (input.value && !optInEle.checked) optInEle.click();
+        else if (!input.value && optInEle.checked) optInEle.click();
+      }
       input.disabled = false;
-      input.addEventListener("change", () => {
-        const optInEle = input.parentElement.querySelector(
-          ".json-editor-opt-in",
-        );
-        if (optInEle) {
-          if (input.value && !optInEle.checked) optInEle.click();
-          else if (!input.value && optInEle.checked) optInEle.click();
-        }
-        input.disabled = false;
-        input.focus();
-      });
+      input.focus();
     });
+  });
 };
