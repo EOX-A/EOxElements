@@ -361,6 +361,8 @@ export const initShowOptInElement = (element) => {
   const buttons = element.renderRoot.querySelectorAll(
     ".je-indented-panel .row button.json-editor-btn-add:disabled",
   );
+
+  // Enable all add buttons in the opt-in properties
   buttons.forEach((button) => {
     button.disabled = false;
   });
@@ -370,6 +372,7 @@ export const initShowOptInElement = (element) => {
     ".json-editor-opt-in",
   );
 
+  // Enable all opt-in checkboxes
   optInElements.forEach((optInEle) => {
     /** @type {NodeListOf<HTMLInputElement>} */
     const inputs = optInEle
@@ -381,9 +384,11 @@ export const initShowOptInElement = (element) => {
     inputs.forEach((input) => {
       const oldHandler = inputHandlerMap.get(input);
       if (oldHandler) {
+        // Remove old handler if it exists
         input.removeEventListener("change", oldHandler);
       }
 
+      // Create a new handler for the input change event
       const newHandler = (e) => {
         let isEveryInputNull = true;
 
@@ -391,10 +396,13 @@ export const initShowOptInElement = (element) => {
           if (inputEle.value) isEveryInputNull = false;
         });
 
+        // If all inputs are null and opt-in is checked, click the opt-in checkbox
         if (isEveryInputNull && optInEle.checked) {
           optInEle.click();
           inputs.forEach((inputEle) => (inputEle.disabled = false));
-        } else if (!isEveryInputNull && !optInEle.checked) {
+        }
+        // If not all inputs are null and opt-in is unchecked, click the opt-in checkbox
+        else if (!isEveryInputNull && !optInEle.checked) {
           optInEle.click();
         }
         e.target.focus();
@@ -403,8 +411,10 @@ export const initShowOptInElement = (element) => {
       const deleteBtn = input
         .closest(".je-indented-panel")
         .querySelector(".json-editor-btn-delete:not([style*='display: none'])");
+
+      // Add the new handler to the input
       if (deleteBtn) {
-        const deleteHandler = (e) => {
+        const deleteHandler = () => {
           let isEveryInputNull = true;
 
           inputs.forEach((inputEle) => {
@@ -412,6 +422,7 @@ export const initShowOptInElement = (element) => {
               isEveryInputNull = false;
           });
 
+          // If all inputs are null and opt-in is checked, click the opt-in checkbox
           if (isEveryInputNull && optInEle.checked) {
             optInEle.click();
             inputs.forEach((inputEle) => (inputEle.disabled = false));
@@ -420,8 +431,9 @@ export const initShowOptInElement = (element) => {
         deleteBtn.addEventListener("click", deleteHandler);
       }
 
+      // Store the new handler in the map
       inputHandlerMap.set(input, newHandler);
-      input.removeEventListener("change", newHandler); // Safe double-check
+      input.removeEventListener("change", newHandler);
       input.addEventListener("change", newHandler);
       input.disabled = false;
     });
