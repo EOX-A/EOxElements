@@ -6,6 +6,13 @@ import addCustomInputs from "../custom-inputs";
 import { FALLBACK_SCHEMA } from "../enums";
 
 const inputHandlerMap = new WeakMap();
+let deleteFunc = null;
+document.body.addEventListener("focusout", () => {
+  if (deleteFunc) {
+    deleteFunc();
+    deleteFunc = null;
+  }
+});
 
 // using a drop-in replacement for EasyMDE,
 // see https://github.com/json-editor/json-editor/issues/1093
@@ -350,6 +357,19 @@ export const transformLinks = (element) => {
 };
 
 /**
+ *
+ * @param {HTMLInputElement} optInEle
+ * @returns {NodeListOf<HTMLInputElement>}
+ */
+function getOptInElementInputs(optInEle) {
+  return optInEle
+    .closest(".row")
+    .querySelectorAll(
+      ".form-control input[name^='root']:not(.json-editor-opt-in)",
+    );
+}
+
+/**
  * Initialize the opt-in properties element
  * disabled inputs are enabled and
  * change event is added to toggle the opt-in checkbox
@@ -375,11 +395,7 @@ export const initShowOptInElement = (element) => {
   // Enable all opt-in checkboxes
   optInElements.forEach((optInEle) => {
     /** @type {NodeListOf<HTMLInputElement>} */
-    const inputs = optInEle
-      .closest(".row")
-      .querySelectorAll(
-        ".form-control input[name^='root']:not(.json-editor-opt-in)",
-      );
+    const inputs = getOptInElementInputs(optInEle);
 
     inputs.forEach((input) => {
       const oldHandler = inputHandlerMap.get(input);
@@ -409,24 +425,20 @@ export const initShowOptInElement = (element) => {
       };
 
       const deleteBtn = input
-        .closest(".je-indented-panel")
-        .querySelector(".json-editor-btn-delete:not([style*='display: none'])");
+        .closest(".form-control")
+        .parentElement.querySelector(
+          ".json-editor-btn-delete:not([style*='display: none'])",
+        );
 
       // Add the new handler to the input
       if (deleteBtn) {
         const deleteHandler = () => {
-          let isEveryInputNull = true;
-
-          inputs.forEach((inputEle) => {
-            if (inputEle.id !== input.id && inputEle.value)
-              isEveryInputNull = false;
-          });
-
-          // If all inputs are null and opt-in is checked, click the opt-in checkbox
-          if (isEveryInputNull && optInEle.checked) {
-            optInEle.click();
-            inputs.forEach((inputEle) => (inputEle.disabled = false));
-          }
+          deleteFunc = () => {
+            const currInputs = getOptInElementInputs(optInEle);
+            if (!currInputs.length && optInEle.checked) {
+              optInEle.click();
+            }
+          };
         };
         deleteBtn.addEventListener("click", deleteHandler);
       }

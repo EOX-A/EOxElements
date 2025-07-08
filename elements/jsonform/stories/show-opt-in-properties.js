@@ -22,6 +22,10 @@ const ShowOptInProperties = {
         baz: {
           type: "string",
         },
+        qux: {
+          type: "array",
+          items: { type: "string" },
+        },
       },
     },
     value: {
