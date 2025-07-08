@@ -278,9 +278,13 @@ export class EOxLayerControlLayer extends LitElement {
                     ? this.tools[0]
                     : "dots"}"
                   @click=${() => {
-                    const toolsDetails = this.renderRoot
-                      .querySelector("eox-layercontrol-layer-tools")
-                      ?.querySelector("details");
+                    const toolsDetails =
+                      this.renderRoot
+                        .querySelector("eox-layercontrol-layer-tools")
+                        ?.shadowRoot?.querySelector("details") ||
+                      this.renderRoot
+                        .querySelector("eox-layercontrol-layer-tools")
+                        ?.querySelector("details");
                     // Toggle tools details open/close
                     toolsDetails.open = !toolsDetails.open;
                   }}
@@ -341,7 +345,7 @@ export class EOxLayerControlLayer extends LitElement {
         isToolsAvail && !externalTools,
         () => html`
           <eox-layercontrol-layer-tools
-            .noShadow=${true}
+            .noShadow=${false}
             .layer=${this.layer}
             .tools=${this.tools}
             .unstyled=${this.unstyled}
