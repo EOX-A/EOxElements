@@ -433,7 +433,6 @@ export const initShowOptInElement = (element) => {
 
       // Store the new handler in the map
       inputHandlerMap.set(input, newHandler);
-      input.removeEventListener("change", newHandler);
       input.addEventListener("change", newHandler);
       input.disabled = false;
     });
