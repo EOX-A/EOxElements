@@ -5,6 +5,8 @@ import AceEditor from "ace-builds";
 import addCustomInputs from "../custom-inputs";
 import { FALLBACK_SCHEMA } from "../enums";
 
+const inputHandlerMap = new WeakMap();
+
 // using a drop-in replacement for EasyMDE,
 // see https://github.com/json-editor/json-editor/issues/1093
 window.SimpleMDE = EasyMDE;
@@ -355,21 +357,73 @@ export const transformLinks = (element) => {
  * @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
  */
 export const initShowOptInElement = (element) => {
-  /** @type {NodeListOf<HTMLInputElement>} */
-  const inputs = element.renderRoot.querySelectorAll(
-    ".je-indented-panel .row input:disabled",
+  /** @type {NodeListOf<HTMLButtonElement>} */
+  const buttons = element.renderRoot.querySelectorAll(
+    ".je-indented-panel .row button.json-editor-btn-add:disabled",
   );
-  inputs.forEach((input) => {
-    input.disabled = false;
-    input.addEventListener("change", () => {
-      /** @type {HTMLInputElement} */
-      const optInEle = input.parentElement.querySelector(".json-editor-opt-in");
-      if (optInEle) {
-        if (input.value && !optInEle.checked) optInEle.click();
-        else if (!input.value && optInEle.checked) optInEle.click();
+  buttons.forEach((button) => {
+    button.disabled = false;
+  });
+
+  /** @type {NodeListOf<HTMLInputElement>} */
+  const optInElements = element.renderRoot.querySelectorAll(
+    ".json-editor-opt-in",
+  );
+
+  optInElements.forEach((optInEle) => {
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const inputs = optInEle
+      .closest(".row")
+      .querySelectorAll(
+        ".form-control input[name^='root']:not(.json-editor-opt-in)",
+      );
+
+    inputs.forEach((input) => {
+      const oldHandler = inputHandlerMap.get(input);
+      if (oldHandler) {
+        input.removeEventListener("change", oldHandler);
       }
+
+      const newHandler = (e) => {
+        let isEveryInputNull = true;
+
+        inputs.forEach((inputEle) => {
+          if (inputEle.value) isEveryInputNull = false;
+        });
+
+        if (isEveryInputNull && optInEle.checked) {
+          optInEle.click();
+          inputs.forEach((inputEle) => (inputEle.disabled = false));
+        } else if (!isEveryInputNull && !optInEle.checked) {
+          optInEle.click();
+        }
+        e.target.focus();
+      };
+
+      const deleteBtn = input
+        .closest(".je-indented-panel")
+        .querySelector(".json-editor-btn-delete:not([style*='display: none'])");
+      if (deleteBtn) {
+        const deleteHandler = (e) => {
+          let isEveryInputNull = true;
+
+          inputs.forEach((inputEle) => {
+            if (inputEle.id !== input.id && inputEle.value)
+              isEveryInputNull = false;
+          });
+
+          if (isEveryInputNull && optInEle.checked) {
+            optInEle.click();
+            inputs.forEach((inputEle) => (inputEle.disabled = false));
+          }
+        };
+        deleteBtn.addEventListener("click", deleteHandler);
+      }
+
+      inputHandlerMap.set(input, newHandler);
+      input.removeEventListener("change", newHandler); // Safe double-check
+      input.addEventListener("change", newHandler);
       input.disabled = false;
-      input.focus();
     });
   });
 };
