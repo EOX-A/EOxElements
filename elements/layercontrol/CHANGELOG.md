@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.0.0...layercontrol-v1.0.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* Missing shadowroot on layer-tools causing CSS duplication ([#1749](https://github.com/EOX-A/EOxElements/issues/1749)) ([97444b5](https://github.com/EOX-A/EOxElements/commit/97444b5ca4d008c734e522e89792eefae70fa4ae))
+
 ## [1.0.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.29.1...layercontrol-v1.0.0) (2025-06-30)
 
 
