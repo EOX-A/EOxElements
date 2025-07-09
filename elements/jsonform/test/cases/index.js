@@ -13,3 +13,4 @@ export { default as loadMisMatchingValuesTest } from "./load-mismatching-values"
 export { default as renderDrawtools } from "./render-drawtools";
 export { default as loadCustomEditorInterfaceTest } from "./load-custom-editor-interface";
 export { default as loadSubmitButtonTest } from "./submit-button";
+export { default as loadShowOptInPropertiesTest } from "./load-show-opt-in-properties";

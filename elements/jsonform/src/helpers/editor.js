@@ -5,6 +5,15 @@ import AceEditor from "ace-builds";
 import addCustomInputs from "../custom-inputs";
 import { FALLBACK_SCHEMA } from "../enums";
 
+const inputHandlerMap = new WeakMap();
+let deleteFunc = null;
+document.body.addEventListener("focusout", () => {
+  if (deleteFunc) {
+    deleteFunc();
+    deleteFunc = null;
+  }
+});
+
 // using a drop-in replacement for EasyMDE,
 // see https://github.com/json-editor/json-editor/issues/1093
 window.SimpleMDE = EasyMDE;
@@ -343,6 +352,123 @@ export const transformLinks = (element) => {
         a.setAttribute("target", "_blank");
         a.setAttribute("rel", "noopener noreferrer");
       }
+    });
+  });
+};
+
+/**
+ *
+ * @param {HTMLInputElement} optInEle
+ * @returns {NodeListOf<HTMLInputElement>}
+ */
+function getOptInElementInputs(optInEle) {
+  return optInEle
+    .closest(".row")
+    .querySelectorAll(
+      ".form-control input[name^='root']:not(.json-editor-opt-in), .form-control select[name^='root']:not(.json-editor-opt-in)",
+    );
+}
+
+/**
+ * Initialize the opt-in properties element
+ * disabled inputs are enabled and
+ * change event is added to toggle the opt-in checkbox
+ *
+ * @param {import("../main").EOxJSONForm} element - The eox-jsonform instance
+ */
+export const initShowOptInElement = (element) => {
+  /** @type {NodeListOf<HTMLButtonElement>} */
+  const buttons = element.renderRoot.querySelectorAll(
+    ".je-indented-panel .row button.json-editor-btn-add:disabled",
+  );
+
+  // Enable all add buttons in the opt-in properties
+  buttons.forEach((button) => {
+    button.disabled = false;
+
+    // Add a click event listener to the button
+    button.addEventListener("click", () => {
+      // Set a timeout to ensure the DOM is updated and the opt-in checkbox is available
+      setTimeout(() => {
+        const isSelectOptionAvailable = button
+          .closest(".row")
+          .querySelectorAll(
+            ".form-control select[name^='root']:not(.json-editor-opt-in)",
+          );
+
+        /** @type {HTMLInputElement} */
+        const optInEle = button
+          .closest(".row")
+          .querySelector(".json-editor-opt-in");
+
+        // If there are select options available and the opt-in checkbox is not checked, click the opt-in checkbox
+        if (isSelectOptionAvailable.length && optInEle && !optInEle.checked) {
+          optInEle.click();
+        }
+      });
+    });
+  });
+
+  /** @type {NodeListOf<HTMLInputElement>} */
+  const optInElements = element.renderRoot.querySelectorAll(
+    ".json-editor-opt-in",
+  );
+
+  // Enable all opt-in checkboxes
+  optInElements.forEach((optInEle) => {
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const inputs = getOptInElementInputs(optInEle);
+
+    inputs.forEach((input) => {
+      const oldHandler = inputHandlerMap.get(input);
+      if (oldHandler) {
+        // Remove old handler if it exists
+        input.removeEventListener("change", oldHandler);
+      }
+
+      // Create a new handler for the input change event
+      const newHandler = (e) => {
+        let isEveryInputNull = true;
+
+        inputs.forEach((inputEle) => {
+          if (inputEle.value) isEveryInputNull = false;
+        });
+
+        // If all inputs are null and opt-in is checked, click the opt-in checkbox
+        if (isEveryInputNull && optInEle.checked) {
+          optInEle.click();
+          inputs.forEach((inputEle) => (inputEle.disabled = false));
+        }
+        // If not all inputs are null and opt-in is unchecked, click the opt-in checkbox
+        else if (!isEveryInputNull && !optInEle.checked) {
+          optInEle.click();
+        }
+        e.target.focus();
+      };
+
+      const deleteBtn = input
+        .closest(".form-control")
+        .parentElement.querySelector(
+          ".json-editor-btn-delete:not([style*='display: none'])",
+        );
+
+      // Add the new handler to the input
+      if (deleteBtn) {
+        const deleteHandler = () => {
+          deleteFunc = () => {
+            const currInputs = getOptInElementInputs(optInEle);
+            if (!currInputs.length && optInEle.checked) {
+              optInEle.click();
+            }
+          };
+        };
+        deleteBtn.addEventListener("click", deleteHandler);
+      }
+
+      // Store the new handler in the map
+      inputHandlerMap.set(input, newHandler);
+      input.addEventListener("change", newHandler);
+      input.disabled = false;
     });
   });
 };
