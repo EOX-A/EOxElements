@@ -365,7 +365,7 @@ function getOptInElementInputs(optInEle) {
   return optInEle
     .closest(".row")
     .querySelectorAll(
-      ".form-control input[name^='root']:not(.json-editor-opt-in)",
+      ".form-control input[name^='root']:not(.json-editor-opt-in), .form-control select[name^='root']:not(.json-editor-opt-in)",
     );
 }
 
@@ -385,6 +385,28 @@ export const initShowOptInElement = (element) => {
   // Enable all add buttons in the opt-in properties
   buttons.forEach((button) => {
     button.disabled = false;
+
+    // Add a click event listener to the button
+    button.addEventListener("click", () => {
+      // Set a timeout to ensure the DOM is updated and the opt-in checkbox is available
+      setTimeout(() => {
+        const isSelectOptionAvailable = button
+          .closest(".row")
+          .querySelectorAll(
+            ".form-control select[name^='root']:not(.json-editor-opt-in)",
+          );
+
+        /** @type {HTMLInputElement} */
+        const optInEle = button
+          .closest(".row")
+          .querySelector(".json-editor-opt-in");
+
+        // If there are select options available and the opt-in checkbox is not checked, click the opt-in checkbox
+        if (isSelectOptionAvailable.length && optInEle && !optInEle.checked) {
+          optInEle.click();
+        }
+      });
+    });
   });
 
   /** @type {NodeListOf<HTMLInputElement>} */
