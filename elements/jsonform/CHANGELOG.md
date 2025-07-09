@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.0.0...jsonform-v1.1.0) (2025-07-09)
+
+
+### Features
+
+* More user friendly show_opt_in properties ([#1747](https://github.com/EOX-A/EOxElements/issues/1747)) ([04e8107](https://github.com/EOX-A/EOxElements/commit/04e810723fae46b1b7c8cd307d228bb119073ad6))
+
 ## [1.0.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.5...jsonform-v1.0.0) (2025-06-30)
 
 
