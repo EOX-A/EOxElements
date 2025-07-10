@@ -30,6 +30,7 @@ export class EOxLayerControlLayer extends LitElement {
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
+    globallyExclusiveLayers: { type: Boolean },
   };
 
   /**
@@ -106,6 +107,13 @@ export class EOxLayerControlLayer extends LitElement {
      * @type {Boolean}
      */
     this.toolsAsList = false;
+
+    /**
+     * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
+     *
+     * @type {Boolean}
+     */
+    this.globallyExclusiveLayers = false;
   }
 
   /**

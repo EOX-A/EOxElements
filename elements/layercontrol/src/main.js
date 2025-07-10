@@ -64,6 +64,10 @@ export class EOxLayerControl extends LitElement {
     unstyled: { type: Boolean },
     styleOverride: { type: String },
     toolsAsList: { type: Boolean },
+    globallyExclusiveLayers: {
+      attribute: "globally-exclusive-layers",
+      type: Boolean,
+    },
   };
 
   /**
@@ -148,6 +152,13 @@ export class EOxLayerControl extends LitElement {
      * @type {Boolean}
      */
     this.toolsAsList = false;
+
+    /**
+     * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
+     *
+     * @type {Boolean}
+     */
+    this.globallyExclusiveLayers = false;
   }
 
   /**
@@ -253,6 +264,7 @@ export class EOxLayerControl extends LitElement {
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
+            .globallyExclusiveLayers=${this.globallyExclusiveLayers}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
             @layerConfig:change=${this.#handleLayerConfigChange}
