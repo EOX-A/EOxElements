@@ -172,6 +172,7 @@ export const createEditor = (element) => {
           !parent.classList.contains("checkbox")
         ) {
           input.parentElement.classList.add("checkbox");
+          input.parentElement.classList.add("small");
           const span = document.createElement("span");
           if (
             input.nextSibling &&
