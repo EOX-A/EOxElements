@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.1.0...jsonform-v1.1.1) (2025-07-10)
+
+
+### Bug Fixes
+
+* **style:** Small checkboxes by default ([#1755](https://github.com/EOX-A/EOxElements/issues/1755)) ([87f0150](https://github.com/EOX-A/EOxElements/commit/87f01509aef8b6f026e7a8536ffbe255b5e50b24))
+* **style:** Tabs and table layout ([#1756](https://github.com/EOX-A/EOxElements/issues/1756)) ([91947b3](https://github.com/EOX-A/EOxElements/commit/91947b3f2f36adb4ed2a72043a7518bc4151a42b))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.0.0...jsonform-v1.1.0) (2025-07-09)
 
 
