@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.0.1...layercontrol-v1.1.0) (2025-07-10)
+
+
+### Features
+
+* Add support for globall exclusive layers ([#1753](https://github.com/EOX-A/EOxElements/issues/1753)) ([4f22e1e](https://github.com/EOX-A/EOxElements/commit/4f22e1e6e92abf77f4eae06b54bad4d4ddc4b3c8))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.0.0...layercontrol-v1.0.1) (2025-07-08)
 
 
