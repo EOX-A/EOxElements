@@ -38,15 +38,21 @@ export const styleEOX = `
   }
   form[data-theme="html"][data-theme-custom="eox"] table.je-table td {
     display: grid;
+    align-items: center;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] table.je-table tr {
+    display: flex;
   }
   form[data-theme="html"][data-theme-custom="eox"] .je-tabholder.tabs {
     width: 130px;
+    flex-direction: column;
   }
   form[data-theme="html"][data-theme-custom="eox"] .je-tabholder.tabs+div {
     margin-left: 130px;
   }
   form[data-theme="html"][data-theme-custom="eox"] .tabs.je-tabholder--top {
     margin-left: 0;
+    justify-content: start;
   }
   form[data-theme="html"][data-theme-custom="eox"] .je-tabholder--clear > .je-indented-panel {
     border-top-left-radius: 0;
@@ -140,6 +146,9 @@ export const styleEOX = `
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible {
     border: .125rem solid transparent;
     border-color: var(--primary);
+  }
+  .form-control select {
+    min-height: 4rem;  
   }
   input[type="checkbox"] {
     border: none !important;

@@ -242,6 +242,18 @@ export const createEditor = (element) => {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>triangle-small-down</title><path d="M8 9H16L12 16" /></svg>
           </i>`;
         }
+        if (button.classList.contains("json-editor-btn-moveleft")) {
+          button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>menu-left</title><path d="M14,7L9,12L14,17V7Z" /></svg>
+          </i>`;
+        }
+        if (button.classList.contains("json-editor-btn-moveright")) {
+          button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>menu-right</title><path d="M10,17L15,12L10,7V17Z" /></svg>
+          </i>`;
+        }
         if (button.classList.contains("json-editor-btn-edit")) {
           button.innerHTML = `
           <i class="small">
