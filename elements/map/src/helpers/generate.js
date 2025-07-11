@@ -94,30 +94,6 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
     ...(layer.source && {
       source: createOlSourceFromDefinition(layer.source),
     }),
-    /*...(layer.source && {
-      source: new newSource({
-        ...layer.source,
-        ...("format" in layer.source &&
-          layer.source.type !== "WMTS" && {
-            // Set the format (e.g., GeoJSON, MVT) for the source
-            format: new availableFormats[
-              typeof layer.source.format === "object"
-                ? layer.source.format.type
-                : layer.source.format
-            ]({
-              ...(typeof layer.source.format === "object" && {
-                ...layer.source.format,
-              }),
-            }),
-          }),
-        // Set the format (e.g., GeoJSON, MVT) for the source
-        ...("tileGrid" in layer.source && { tileGrid }),
-        // Set the projection, converting it using OpenLayers' `getProjection` method
-        ...("projection" in layer.source && {
-          projection: getProjection(layer.source.projection),
-        }),
-      }),
-    }),*/
     ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
     ...layer.properties,
     style: undefined, // Reset the style; it will be applied later if specified
@@ -202,7 +178,7 @@ function createOlSourceFromDefinition(eoxSource) {
       }),
     // cluster layers can have their own (sub) source
     ...("source" in eoxSource && {
-      source: createOlSourceFromDefinition(eoxSource.source),
+      source: createOlSourceFromDefinition(/** @type {import("../layers").EoxSource<any>} */ (eoxSource.source)),
     }),
     // Set the format (e.g., GeoJSON, MVT) for the source
     ...("tileGrid" in eoxSource && { tileGrid }),
@@ -235,7 +211,11 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
       /** @type {SelectOptions} **/ (interactionDefinition.options),
     );
   else if (interactionDefinition.type === "clusterExplode")
-    addClusterExplode(EOxMap, olLayer, interactionDefinition.options);
+    addClusterExplode(
+      EOxMap,
+      /** @type {import("ol/layer/Vector").default<import("ol/source/Cluster").default>} */ (olLayer),
+      interactionDefinition.options
+    );
 }
 
 /**

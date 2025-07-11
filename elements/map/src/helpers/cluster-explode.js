@@ -112,7 +112,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
 
       if (this.#explodedFeature && this.#explodedFeature === clusterFeature) {
         const clusterMember = this.getClusterMemberForCoordinate(
-          clusterFeature,
+          /** @type {import("ol/Feature").default<import("ol/geom/Point").default>} */ (clusterFeature),
           evt.coordinate,
         );
         console.log("clusterMember", clusterMember);

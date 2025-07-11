@@ -43,11 +43,13 @@ export function generateTileGrid(source) {
       // @ts-expect-error - 'projection' not specified inside WMTS.d.ts types
       projection: source.tileGrid.projection || "EPSG:3857",
       matrixIds: matrixIds,
+      // @ts-expect-error source.tilegrid needs to be defined and spreadable
       ...source.tileGrid,
     });
   } else {
     // For non-WMTS sources, generate an XYZ tile grid
     tileGrid = createXYZ({
+      // @ts-expect-error source.tilegrid needs to be defined and spreadable
       ...source.tileGrid,
     });
   }

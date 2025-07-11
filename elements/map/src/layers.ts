@@ -120,15 +120,21 @@ type OlLayerOption<T extends keyof OLLayers> = Omit<
   "source" | "layers" | "map"
 >;
 
-export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
-  ? OlSourceOption<S>
-  : OlSourceOption<S> extends { format?: any }
-    ? Omit<OlSourceOption<S>, "format"> & { format?: EOxFormat }
-    : OlSourceOption<S> extends { source?: any }
-      ? Omit<OlSourceOption<S>, "source"> & {
-          source?: EoxSource<keyof OLSources>;
-        }
-      : OlSourceOption<S>) & { type: S };
+export type EoxSource<S extends keyof OLSources> =
+  (
+    S extends "WMTS"
+      ? OlSourceOption<S>
+      : OlSourceOption<S> extends { format?: any }
+        ? Omit<OlSourceOption<S>, "format"> & { format?: EOxFormat }
+        : OlSourceOption<S> extends { source?: any }
+          ? Omit<OlSourceOption<S>, "source"> & {
+              source?: EoxSource<keyof OLSources>;
+            }
+          : OlSourceOption<S>
+  ) & {
+    type: S;
+    projection?: import("ol/proj").ProjectionLike;
+  };
 
 export type EOxLayerType<
   T extends keyof OLLayers,
