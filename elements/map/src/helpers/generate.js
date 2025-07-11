@@ -178,7 +178,9 @@ function createOlSourceFromDefinition(eoxSource) {
       }),
     // cluster layers can have their own (sub) source
     ...("source" in eoxSource && {
-      source: createOlSourceFromDefinition(/** @type {import("../layers").EoxSource<any>} */ (eoxSource.source)),
+      source: createOlSourceFromDefinition(
+        /** @type {import("../layers").EoxSource<any>} */ (eoxSource.source),
+      ),
     }),
     // Set the format (e.g., GeoJSON, MVT) for the source
     ...("tileGrid" in eoxSource && { tileGrid }),
@@ -213,8 +215,10 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
   else if (interactionDefinition.type === "clusterExplode")
     addClusterExplode(
       EOxMap,
-      /** @type {import("ol/layer/Vector").default<import("ol/source/Cluster").default>} */ (olLayer),
-      interactionDefinition.options
+      /** @type {import("ol/layer/Vector").default<import("ol/source/Cluster").default>} */ (
+        olLayer
+      ),
+      interactionDefinition.options,
     );
 }
 
