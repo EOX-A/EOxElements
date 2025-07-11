@@ -18,6 +18,7 @@ import {
   CustomFullScreenLoadingIndicatorStory,
   HoverSelectStory,
   ClickSelectStory,
+  ClusterExplodeStory,
   TooltipStory,
   TooltipWithPropertyTransformStory,
   HighlightFeaturesAndAnimateStory,
@@ -131,6 +132,11 @@ export const HoverSelect = HoverSelectStory;
  * Renders `eox-map` with `Click` interaction
  */
 export const ClickSelect = ClickSelectStory;
+
+/**
+ * Renders `eox-map` with `Cluster-Explode` interaction
+ */
+export const ClusterExplode = ClusterExplodeStory;
 
 /**
  * `eox-map` offers a built-in tooltip, which needs to be placed inside the default slot:

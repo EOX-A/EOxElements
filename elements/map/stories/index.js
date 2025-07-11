@@ -14,6 +14,7 @@ export { default as StandardLoadingIndicatorStory } from "./standard-loading-ind
 export { default as CustomFullScreenLoadingIndicatorStory } from "./custom-full-screen-loading-indicator";
 export { default as HoverSelectStory } from "./hover-select";
 export { default as ClickSelectStory } from "./click-select";
+export { default as ClusterExplodeStory } from "./cluster-explode";
 export { default as TooltipStory } from "./tooltip";
 export { default as TooltipWithPropertyTransformStory } from "./tooltip-with-property-transform";
 export { default as HighlightFeaturesAndAnimateStory } from "./highlight-features-and-animate";

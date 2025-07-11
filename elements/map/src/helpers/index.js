@@ -13,6 +13,7 @@ export { default as coordinatesRoughlyEquals } from "./coordinates-roughly-equal
 export { getCenterFromProperty } from "./center";
 export { addDraw } from "./draw";
 export { EOxSelectInteraction, addSelect } from "./select";
+export { addClusterExplode } from "./cluster-explode";
 export { generateTileGrid } from "./tile-grid";
 export { getLayerById, getFlatLayersArray } from "./layer";
 export { createLayer, updateLayer } from "./generate";

@@ -1,6 +1,5 @@
 import BingMaps from "ol/source/BingMaps";
 import CartoDB from "ol/source/CartoDB";
-import Cluster from "ol/source/Cluster";
 import DataTile from "ol/source/DataTile";
 import GeoTIFF from "ol/source/GeoTIFF";
 import Google from "ol/source/Google";
@@ -24,6 +23,7 @@ import UrlTile from "ol/source/UrlTile";
 import UTFGrid from "ol/source/UTFGrid";
 import Zoomify from "ol/source/Zoomify";
 
+import Cluster from "../../custom/sources/Cluster";
 import WMTSCapabilities from "../../custom/sources/WMTSCapabilities";
 import FlatGeoBuf from "../../custom/sources/FlatGeoBuf";
 
