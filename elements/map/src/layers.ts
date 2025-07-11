@@ -54,7 +54,6 @@ export type OLBasicSources = {
 export type OLAdvancedSources = {
   BingMaps: typeof import("ol/source/BingMaps").default;
   CartoDB: typeof import("ol/source/CartoDB").default;
-  Cluster: typeof import("ol/source/Cluster").default;
   DataTile: typeof import("ol/source/DataTile").default;
   GeoTIFF: typeof import("ol/source/GeoTIFF").default;
   Google: typeof import("ol/source/Google").default;
@@ -79,6 +78,7 @@ export type OLAdvancedSources = {
   Zoomify: typeof import("ol/source/Zoomify").default;
   WMTSCapabilities: typeof import("./custom/sources/WMTSCapabilities").default;
   FlatGeoBuf: typeof import("./custom/sources/FlatGeoBuf").default;
+  Cluster: typeof import("./custom/sources/Cluster").default;
 };
 
 export type OLSources = OLBasicSources & OLAdvancedSources;
@@ -120,7 +120,7 @@ type OlLayerOption<T extends keyof OLLayers> = Omit<
   "source" | "layers" | "map"
 >;
 
-type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
+export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
   ? OlSourceOption<S>
   : OlSourceOption<S> extends { format?: any }
     ? Omit<OlSourceOption<S>, "format"> & { format?: EOxFormat }
