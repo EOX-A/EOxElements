@@ -66,7 +66,17 @@ export class EOxClusterExplodeInteraction extends Interaction {
   #explodedFeatureStyleFunction = null;
   #explodedFeature = null;
 
-  closeCluster() {
+  #fireSelectEvent(event, feature) {
+    const selectdEvt = new CustomEvent("clusterSelect", {
+      detail: {
+        originalEvent: event,
+        feature: feature,
+      },
+    });
+    this.eoxMap.dispatchEvent(selectdEvt);
+  }
+
+  #closeCluster() {
     if (this.#explodedFeature) {
       this.#explodedFeature.setStyle(undefined);
       this.#explodedFeature = null;
@@ -99,31 +109,31 @@ export class EOxClusterExplodeInteraction extends Interaction {
         ...this.#options.atPixelOptions,
       });
       if (features.length === 0) {
-        this.closeCluster();
+        this.#closeCluster();
         return true; // No features found, let other interactions handle the event
       }
 
       const clusterFeature = features[0];
       const clusterMembers = clusterFeature.get("features");
-      if (clusterMembers.length <= 1) {
-        this.closeCluster();
+      if (clusterMembers.length === 1) {
+        this.#fireSelectEvent(evt, clusterMembers[0]);
+        this.#closeCluster();
         return true;
       }
 
       if (this.#explodedFeature && this.#explodedFeature === clusterFeature) {
-        const clusterMember = this.getClusterMemberForCoordinate(
+        const clusterMember = this.#getClusterMemberForCoordinate(
           /** @type {import("ol/Feature").default<import("ol/geom/Point").default>} */ (
             clusterFeature
           ),
           evt.coordinate,
         );
-        console.log("clusterMember", clusterMember);
-        // to do: fire event
+        this.#fireSelectEvent(evt, clusterMember.feature);
       }
 
       // If the zoom level is at the maximum, explode the cluster
       if (this.eoxMap.map.getView().getZoom() > this.#options.maxZoom - 1) {
-        this.explodeCluster(clusterFeature);
+        this.#explodeCluster(clusterFeature);
         return false;
       }
       // If the zoom level is not at the maximum, pan to the extent of the cluster members
@@ -135,11 +145,11 @@ export class EOxClusterExplodeInteraction extends Interaction {
       // if the features are really close together, explode the cluster
       if (getArea(extent) < 100) {
         console.log("explode because area is too small");
-        this.explodeCluster(clusterFeature);
+        this.#explodeCluster(clusterFeature);
         return false;
       }
 
-      this.panTo(extent);
+      this.#panTo(extent);
       return false;
     }
 
@@ -152,7 +162,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
    */
   setActive(active) {
     if (!active) {
-      this.closeCluster();
+      this.#closeCluster();
       this.eoxMap.map.getTargetElement().style.cursor = "default";
     }
     super.setActive(active);
@@ -160,7 +170,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
 
   setMap(map) {
     if (!map) {
-      this.closeCluster();
+      this.#closeCluster();
       this.eoxMap.map.getTargetElement().style.cursor = "default";
     }
     super.setMap(map);
@@ -170,17 +180,17 @@ export class EOxClusterExplodeInteraction extends Interaction {
    * Pans the map to the specified extent.
    * @param {import("ol/extent").Extent} extent - The feature or extent to pan to.
    */
-  panTo = (extent) => {
+  #panTo = (extent) => {
     this.eoxMap.map.getView().fit(extent, this.#options.fitOptions);
   };
 
-  explodeCluster(clusterFeature) {
+  #explodeCluster(clusterFeature) {
     if (this.#explodedFeature) {
-      this.closeCluster();
+      this.#closeCluster();
     }
     const centerCoordinates = clusterFeature.getGeometry().getCoordinates();
     const clusterMembers = clusterFeature.get("features");
-    const pointsCircle = this.generatePointsCircle(
+    const pointsCircle = this.#generatePointsCircle(
       clusterMembers.length,
       centerCoordinates,
       this.eoxMap.map.getView().getResolution(),
@@ -234,9 +244,9 @@ export class EOxClusterExplodeInteraction extends Interaction {
    * @param {Array} coordinate coordinate
    * @returns {*} Object with feature and calculated coords
    */
-  getClusterMemberForCoordinate(openClusterFeature, coordinate) {
+  #getClusterMemberForCoordinate(openClusterFeature, coordinate) {
     const members = openClusterFeature.get("features");
-    const coords = this.generatePointsCircle(
+    const coords = this.#generatePointsCircle(
       members.length,
       openClusterFeature.getGeometry().getCoordinates(),
       this.eoxMap.map.getView().getResolution(),
@@ -265,7 +275,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
    * @param {number} resolution Current view resolution.
    * @return {Array<Array<number>>} An array of coordinates representing the cluster members.
    */
-  generatePointsCircle(count, clusterCenter, resolution) {
+  #generatePointsCircle(count, clusterCenter, resolution) {
     const circumference =
       circleDistanceMultiplier * circleFootSeparation * (2 + count);
     let legLength = circumference / (Math.PI * 2); // radius from circumference
@@ -288,11 +298,9 @@ export class EOxClusterExplodeInteraction extends Interaction {
   /**
    * Removes the selection interaction and associated layers from the map.
    */
-  /*remove() {
-    delete this.eoxMap.selectInteractions[this.options.id];
-    this.eoxMap.map.un(this.options.condition || "click", this.listener);
-    this.eoxMap.map.un("pointermove", this.pointerMoveListener);
-  }*/
+  remove() {
+    this.setMap(null);
+  }
 }
 
 /**
