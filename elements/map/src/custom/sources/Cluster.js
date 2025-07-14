@@ -23,10 +23,22 @@ class EOxCluster extends Cluster {
       features.length === 1 && features[0].getGeometry() instanceof Polygon
         ? features[0].getGeometry()
         : point;
-    return new Feature({
+    const feature = new Feature({
       geometry,
       features: features,
     });
+
+    if (features.length === 1) {
+      // If there is only one feature, write the properties onto the cluster feature,
+      // so they can be used with flat styles
+      const singleFeature = features[0];
+      for (const key in singleFeature.getProperties()) {
+        if (key !== "geometry") {
+          feature.set(key, singleFeature.get(key));
+        }
+      }
+    }
+    return feature;
   }
 
   /**

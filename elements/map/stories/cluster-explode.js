@@ -16,9 +16,9 @@ const ClusterExplodeStory = {
             type: "clusterExplode",
             options: {
               id: "clusterExplodeInteraction",
-              maxZoom: 12,
+              maxZoom: 9,
               fitOptions: {
-                duration: 0,
+                duration: 300,
               },
               style: {
                 "circle-radius": 12,
@@ -55,15 +55,19 @@ const ClusterExplodeStory = {
               "circle-stroke-color": "rgba(255, 255, 255, 0.7)",
               "circle-stroke-width": 2,
               "text-font": "normal 16px",
-              "text-value": "🗻",
+              "text-value": ["get", "NAME"],
               "text-fill-color": "#000",
               "text-offset-y": 1,
+              "fill-color": "#FFD700",
+              "fill-opacity": 0.5,
+              "stroke-color": "#eeeeee",
+              "stroke-width": 2,
             },
           },
         ],
         source: {
           type: "Cluster",
-          distance: 45,
+          distance: 55,
           source: {
             type: "Vector",
             url: "https://raw.githubusercontent.com/drei01/geojson-world-cities/refs/heads/master/cities.geojson",
