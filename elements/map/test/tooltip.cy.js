@@ -3,6 +3,7 @@ import {
   displayTooltip,
   disableTooltip,
   displayTooltipOneLayerVisible,
+  displayCustomTooltip,
 } from "./cases/hover";
 
 /**
@@ -13,6 +14,11 @@ describe("tooltip", () => {
    * Test case to display tooltip on hover
    */
   it("displays a tooltip on hover", () => displayTooltip());
+
+  /**
+   * Test case to display a custom tooltip on hover
+   */
+  it("displays a custom tooltip on hover", () => displayCustomTooltip());
 
   /**
    * Test case to disable the default tooltip
