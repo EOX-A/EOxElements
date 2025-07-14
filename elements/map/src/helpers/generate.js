@@ -333,11 +333,11 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
               correspondingNewInteraction.options.modify,
             );
           } else {
-            const olSelectInteraction =
-              EOxMap.selectInteractions[correspondingNewInteraction.options.id];
-            olSelectInteraction.setActive(
-              correspondingNewInteraction.options.active,
-            );
+            const interaction =
+              EOxMap.selectInteractions[
+                correspondingNewInteraction.options.id
+              ] || EOxMap.interactions[correspondingNewInteraction.options.id];
+            interaction.setActive(correspondingNewInteraction.options.active);
           }
         }
       },
