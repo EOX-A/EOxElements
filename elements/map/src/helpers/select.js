@@ -49,6 +49,7 @@ export class EOxSelectInteraction {
       } else {
         this.tooltipElement =
           this.eoxMap.querySelector("eox-map-tooltip") ||
+          this.eoxMap.querySelector("[is=eox-map-tooltip]") ||
           options.overlay?.element;
 
         if (this.tooltipElement) {
