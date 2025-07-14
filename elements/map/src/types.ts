@@ -115,7 +115,7 @@ export type GeolocationOptions = import("ol/control/Control").Options & {
 
 export type EOxClusterOptions = Omit<
   import("ol/source/Cluster").Options,
-  "geometryFunction"
+  "geometryFunction" | "createCluster"
 >;
 
 export type LoadingIndicatorType = "small" | "fullscreen";

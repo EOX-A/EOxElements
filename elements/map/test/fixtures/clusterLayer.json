@@ -43,7 +43,11 @@
           "text-font": "normal 16px",
           "text-value": "🗻",
           "text-fill-color": "#000",
-          "text-offset-y": 1
+          "text-offset-y": 1,
+          "fill-color": "#FFD700",
+          "fill-opacity": 0.5,
+          "stroke-color": "#eeeeee",
+          "stroke-width": 2
         }
       }
     ],

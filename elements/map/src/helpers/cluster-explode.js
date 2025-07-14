@@ -59,7 +59,6 @@ export class EOxClusterExplodeInteraction extends Interaction {
     temporaryVectorLayer.setStyle(options.style);
     this.#explodedFeatureStyleFunction =
       temporaryVectorLayer.getStyleFunction();
-    console.log(this.#explodedFeatureStyleFunction);
   }
 
   #options = null;
@@ -144,7 +143,6 @@ export class EOxClusterExplodeInteraction extends Interaction {
 
       // if the features are really close together, explode the cluster
       if (getArea(extent) < 100) {
-        console.log("explode because area is too small");
         this.#explodeCluster(clusterFeature);
         return false;
       }
@@ -224,7 +222,6 @@ export class EOxClusterExplodeInteraction extends Interaction {
         );
         if (temporaryFeatureStyle?.length) {
           temporaryFeatureStyle.forEach((s) => {
-            //console.log(s.getProperties(temporaryFeature.getProperties()))
             const style = s.clone();
             style.setGeometry(point);
             styles.unshift(style);
