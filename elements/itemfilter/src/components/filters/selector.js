@@ -196,7 +196,7 @@ export class EOxSelector extends LitElement {
         }
       </style>
       ${when(
-        this.suggestions.length > 10,
+        (this.filterObject.filterKeys || this.suggestions).length >= 10,
         () =>
           html`<div class="autocomplete-container">
             <div
