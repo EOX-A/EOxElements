@@ -5,6 +5,9 @@
  */
 const ClusterExplodeStory = {
   args: {
+    controls: {
+      Attribution: {},
+    },
     layers: [
       {
         type: "Vector",
@@ -68,11 +71,11 @@ const ClusterExplodeStory = {
         source: {
           type: "Cluster",
           distance: 55,
+          attributions: `Map data © <a href="https://www.naturalearthdata.com">Natural Earth</a> | City points via <a href="https://github.com/drei01/geojson-world-cities">geojson-world-cities</a>`,
           source: {
             type: "Vector",
             url: "https://raw.githubusercontent.com/drei01/geojson-world-cities/refs/heads/master/cities.geojson",
             format: "GeoJSON",
-            attributions: `Map data © <a href="https://www.naturalearthdata.com">Natural Earth</a> | City points via <a href="https://github.com/drei01/geojson-world-cities">geojson-world-cities</a>`,
           },
         },
       },
