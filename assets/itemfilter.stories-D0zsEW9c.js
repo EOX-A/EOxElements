@@ -31,7 +31,7 @@ import{i as s}from"./testItems-BFT0QiSi.js";import{w as pe,e as g,u as ne}from".
         .titleProperty=${e.titleProperty}
         .externalFilter=${e.externalFilter}
         .filterProperties=${e.filterProperties}
-      ></eox-itemfilter>`,args:{titleProperty:"title",externalFilter:(e,r)=>`https://jsonplaceholder.typicode.com/todos?${Object.keys(r.completed.state).filter(i=>!!r.completed.state[i]).map(i=>`completed=${i}`).join("&")}&${Object.keys(r.userId.state).filter(i=>!!r.userId.state[i]).map(i=>`userId=${i}`).join("&")}`,filterProperties:[{key:"completed",title:"Completed",type:"multiselect",expanded:!0,filterKeys:[!0,!1],state:{true:!0}},{key:"userId",title:"User ID",type:"multiselect",expanded:!0,filterKeys:[1,2,3]}]}}}function he(){return{render:e=>t`<eox-itemfilter
+      ></eox-itemfilter>`,args:{titleProperty:"title",externalFilter:(e,r)=>`https://jsonplaceholder.typicode.com/todos?${Object.keys(r.completed.state).filter(i=>!!r.completed.state[i]).map(i=>`completed=${i}`).join("&")}&${Object.keys(r.userId.state).filter(i=>!!r.userId.state[i]).map(i=>`userId=${i}`).join("&")}`,filterProperties:[{key:"completed",title:"Completed",type:"multiselect",expanded:!0,filterKeys:[!0,!1],state:{true:!0}},{key:"userId",title:"User ID",type:"multiselect",expanded:!0,filterKeys:[1,2,3,4,5,6,7,8,9,10]}]}}}function he(){return{render:e=>t`<eox-itemfilter
         .aggregateResults=${e.aggregateResults}
         .items=${e.items}
         .titleProperty=${e.titleProperty}
