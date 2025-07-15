@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.1...itemfilter-v1.10.2) (2025-07-15)
+
+
+### Bug Fixes
+
+* Suggestion filter if passed via filterKeys ([#1759](https://github.com/EOX-A/EOxElements/issues/1759)) ([d62b8ca](https://github.com/EOX-A/EOxElements/commit/d62b8ca3866d0068893910812608463e0b4dc67e))
+
 ## [1.10.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.0...itemfilter-v1.10.1) (2025-07-01)
 
 
