@@ -15,6 +15,7 @@ import {
   removeButton,
   sortButton,
   getToolsIcon,
+  handleDatetimeUpdate,
 } from "../helpers";
 
 /**
@@ -157,6 +158,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .layer=${this.layer}
               .unstyled=${this.unstyled}
               @changed=${() => this.requestUpdate()}
+              @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this)}
             ></eox-layercontrol-layer-datetime>
           `,
         )}

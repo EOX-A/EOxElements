@@ -3,7 +3,7 @@ import { when } from "lit/directives/when.js";
 import "./components/layer-list";
 import "./components/optional-list";
 import "./components/add-layers";
-import { filterLayers } from "./helpers";
+import { filterLayers, handleDatetimeUpdate } from "./helpers";
 import {
   firstUpdatedMethod,
   layerListChangeMethod,
@@ -200,16 +200,6 @@ export class EOxLayerControl extends LitElement {
   }
 
   /**
-   * Dispatches datetime updates from layer datetime to the layercontrol
-   * @param {CustomEvent} evt
-   */
-  #handleDatetimeUpdate(evt) {
-    this.dispatchEvent(
-      new CustomEvent("datetime:updated", { detail: evt.detail }),
-    );
-  }
-
-  /**
    * Dispatches jsonform updates from layer config to the layercontrol
    * @param {CustomEvent} evt
    */
@@ -266,7 +256,7 @@ export class EOxLayerControl extends LitElement {
             .toolsAsList=${this.toolsAsList}
             .globallyExclusiveLayers=${this.globallyExclusiveLayers}
             @changed=${this.#handleLayerControlLayerListChange}
-            @datetime:updated=${this.#handleDatetimeUpdate}
+            @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this)}
             @layerConfig:change=${this.#handleLayerConfigChange}
           ></eox-layercontrol-layer-list>
         `,

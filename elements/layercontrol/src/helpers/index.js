@@ -21,3 +21,4 @@ export {
   getToolsIcon,
 } from "./layer-tools";
 export { hideLayersBasedOnProperties } from "./hide-layers-based-on-property";
+export { handleDatetimeUpdate } from "./handle-datetime-update";
