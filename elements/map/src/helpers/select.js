@@ -148,8 +148,11 @@ export class EOxSelectInteraction {
       }
 
       // Fetch features at the clicked pixel
-      this.selectLayer.getFeatures(event.pixel).then((features) => {
-        const feature = features.length ? features[0] : null;
+      const feature = this.eoxMap.map.forEachFeatureAtPixel(
+        event.pixel,
+        (feature) => feature,
+        { layerFilter: (candidate) => candidate === this.selectLayer },
+      );
 
         const newSelectFids = feature ? [this.getId(feature)] : [];
         const idChanged = this.selectedFids[0] !== newSelectFids[0];
@@ -181,7 +184,6 @@ export class EOxSelectInteraction {
           },
         });
         this.eoxMap.dispatchEvent(selectdEvt);
-      });
     };
 
     // Set up the map event listener for the specified condition (e.g., click, pointermove)
