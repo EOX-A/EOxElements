@@ -43,7 +43,8 @@ export type EOxInteraction = {
 export type EoxLayer = import("./layers").EoxLayer;
 export type EoxLayers = import("./layers").EoxLayer[];
 
-export type SelectLayer =
+export type SelectLayer = AnyLayerWithSource | import("ol/layer/Group").default;
+export type SelectLayerWithFeatures =
   | InstanceType<typeof import("ol/layer/VectorTile").default>
   | InstanceType<typeof import("ol/layer/Vector").default>;
 
@@ -68,6 +69,12 @@ export type SelectOptions = Omit<
   geometryFunction?: import("ol/interaction/Draw").GeometryFunction;
   cursor?: "string";
   atPixelOptions?: import("ol/Map").AtPixelOptions;
+  coordinates?: boolean;
+  projection?: {
+    name: string;
+    proj4_string: string;
+  };
+  precision?: number;
 };
 
 export type ControlOptions = import("ol/control/Control").Options;
@@ -198,8 +205,8 @@ export type ConfigObject = {
     zoom: number;
     zoomExtent?: import("ol/extent").Extent;
     projection?: ProjectionLike;
-    minZoom: number;
-    maxZoom: number;
+    minZoom?: number;
+    maxZoom?: number;
   };
   preventScroll: boolean;
   animationOptions?: EOxAnimationOptions;
