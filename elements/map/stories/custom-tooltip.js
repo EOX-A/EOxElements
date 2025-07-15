@@ -66,12 +66,6 @@ const CustomTooltipStory = {
       .controls=${args.controls}
       .layers=${args.layers}
       .zoom=${args.zoom}
-      @select=${(e) => {
-        document
-          .querySelector("eox-map#customTooltip")
-          .shadowRoot.querySelector("custom-tooltip").feature =
-          e.detail.feature;
-      }}
     >
       <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
     </eox-map>

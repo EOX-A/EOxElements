@@ -172,7 +172,7 @@ export const TooltipWithPropertyTransform = TooltipWithPropertyTransformStory;
  * </eox-map>
  * ```
  *
- * This custom tooltip can be updated each time a feature is selected by hooking into the `@select` event.
+ * This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
  */
 export const CustomTooltip = CustomTooltipStory;
 

@@ -24,15 +24,7 @@ const displayCustomTooltip = () => {
     req.reply(ecoRegionsFixture);
   });
   cy.mount(
-    html`<eox-map
-      .layers=${vectorLayerStyleJson}
-      @select=${(e) => {
-        document
-          .querySelector("eox-map")
-          .shadowRoot.querySelector("custom-tooltip").feature =
-          e.detail.feature;
-      }}
-    >
+    html`<eox-map .layers=${vectorLayerStyleJson}>
       <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
     </eox-map>`,
   ).as("eox-map");
