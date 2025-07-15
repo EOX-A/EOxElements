@@ -43,7 +43,12 @@ export type EOxInteraction = {
 export type EoxLayer = import("./layers").EoxLayer;
 export type EoxLayers = import("./layers").EoxLayer[];
 
-export type SelectLayer = AnyLayerWithSource | import("ol/layer/Group").default;
+export type SelectLayer =
+  | import("ol/layer/Vector").default
+  | import("ol/layer/VectorTile").default
+  | import("ol/layer/Tile").default
+  | import("ol/layer/WebGLTile").default;
+
 export type SelectLayerWithFeatures =
   | InstanceType<typeof import("ol/layer/VectorTile").default>
   | InstanceType<typeof import("ol/layer/Vector").default>;

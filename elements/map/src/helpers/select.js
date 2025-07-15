@@ -31,7 +31,7 @@ import proj4 from "proj4";
 export class EOxSelectInteraction {
   /**
    * @param {EOxMap} eoxMap - Instance of the EOxMap class.
-   * @param {AnyLayer} anyLayer - Layer for selection.
+   * @param {import("../types").SelectLayer} anyLayer - Layer for selection.
    * @param {SelectOptions} options - Options for the selection interaction.
    */
   constructor(eoxMap, anyLayer, options) {
@@ -148,10 +148,10 @@ export class EOxSelectInteraction {
       delete layerDefinition.interactions;
 
       // Create a new layer for the selection styling
-      this.selectStyleLayer = /** @type {import("../types").SelectLayer} */ (
-        createLayer(eoxMap, layerDefinition)
-      );
-
+      this.selectStyleLayer =
+        /** @type {VectorLayer<import("ol/source").Vector>|VectorTile<import("ol/source").VectorTile>} */ (
+          createLayer(eoxMap, layerDefinition)
+        );
       //@ts-expect-error - TODO
       this.selectStyleLayer.setSource(this.selectLayer.getSource());
       this.selectStyleLayer.setMap(this.eoxMap.map);
@@ -304,14 +304,14 @@ export class EOxSelectInteraction {
         }
 
         const viewResolution = eoxMap.map.getView().getResolution();
-        const url = this.selectLayer
-          .getSource()
-          .getFeatureInfoUrl(
-            event.coordinate,
-            viewResolution,
-            eoxMap.map.getView().getProjection(),
-            { INFO_FORMAT: "application/json" },
-          );
+        const url = /** @type {ImageWMS | TileWMS} */ (
+          this.selectLayer.getSource()
+        ).getFeatureInfoUrl(
+          event.coordinate,
+          viewResolution,
+          eoxMap.map.getView().getProjection(),
+          { INFO_FORMAT: "application/json" },
+        );
         if (url) {
           fetch(url)
             .then((response) => response.text())
@@ -352,6 +352,7 @@ export class EOxSelectInteraction {
                   const featureData = new Feature({
                     ...html?.properties,
                   });
+                  // @ts-expect-error TODO
                   this.tooltipElement.feature = featureData;
                   overlay.setPosition(html ? event.coordinate : null);
                 }
@@ -387,6 +388,7 @@ export class EOxSelectInteraction {
             overlay.setPositioning(`${yPosition}-${xPosition}`);
             overlay.setPosition(event.coordinate);
             let html = {};
+            //@ts-expect-error we do not expect type DataView
             for (const [i, value] of data.entries()) {
               const key = (i + 1).toString();
               html[`band${key}`] = value; // Log each key-value pair in the data object
@@ -401,6 +403,7 @@ export class EOxSelectInteraction {
               const featureData = new Feature({
                 ...html,
               });
+              // @ts-expect-error TODO
               this.tooltipElement.feature = featureData;
               overlay.setPosition(
                 Object.keys(html).length > 0 ? event.coordinate : null,
@@ -455,7 +458,7 @@ export class EOxSelectInteraction {
             extend(extent, feature.getGeometry().getExtent());
           }
         }
-      } else {
+      } else if (this.selectLayer instanceof VectorTile) {
         const map = this.eoxMap.map;
         const allRenderedFeatures = this.selectLayer.getFeaturesInExtent(
           map.getView().calculateExtent(map.getSize()),
