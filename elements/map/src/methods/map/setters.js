@@ -291,25 +291,31 @@ export function setPreventScrollMethod(preventScroll, EOxMap) {
  * @returns {ConfigObject} - The applied configuration.
  */
 export function setConfigMethod(config, EOxMap) {
-  // Update animation options if provided in the configuration
-  if (config?.animationOptions !== undefined)
-    EOxMap.animationOptions = config.animationOptions;
+  Object.assign(EOxMap, {
+    // Update animation options if provided in the configuration
+    ...(config?.animationOptions !== undefined
+      ? { animationOptions: config.animationOptions }
+      : {}),
 
-  // Set the map's projection, defaulting to 'EPSG:3857' if not specified
-  EOxMap.projection = config?.view?.projection || "EPSG:3857";
+    // Set the map's projection, defaulting to 'EPSG:3857' if not specified
+    projection: config?.view?.projection || "EPSG:3857",
 
-  // Set the layers, controls, and other map properties from the configuration
-  EOxMap.layers = config?.layers || [];
-  EOxMap.controls = config?.controls || {};
+    // Set the layers, controls, and other map properties from the configuration
+    layers: config?.layers || [],
+    controls: config?.controls || {},
 
-  // Set the scroll prevention option if it has not been defined yet
-  if (config?.preventScroll !== undefined && EOxMap.preventScroll === undefined)
-    EOxMap.preventScroll = config?.preventScroll;
+    // Set the scroll prevention option if it has not been defined yet
+    ...(config?.preventScroll !== undefined &&
+    EOxMap.preventScroll === undefined
+      ? { preventScroll: config?.preventScroll }
+      : {}),
 
-  // Set the zoom, center, minZoom, maxZoom and zoom extent of the map view
-  EOxMap.zoom = config?.view?.zoom || 0;
-  EOxMap.center = config?.view?.center || [0, 0];
-  EOxMap.zoomExtent = config?.view?.zoomExtent;
+    // Set the zoom, center, minZoom, maxZoom and zoom extent of the map view
+    zoom: config?.view?.zoom || 0,
+    center: config?.view?.center || [0, 0],
+    zoomExtent: config?.view?.zoomExtent,
+  });
+
   if (config?.view?.minZoom)
     EOxMap.map.getView().setMinZoom(config?.view?.minZoom);
   if (config?.view?.maxZoom)
