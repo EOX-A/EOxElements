@@ -303,7 +303,7 @@ export function setConfigMethod(config, EOxMap) {
   EOxMap.controls = config?.controls || {};
 
   // Set the scroll prevention option if it has not been defined yet
-  if (EOxMap.preventScroll === undefined)
+  if (config?.preventScroll !== undefined && EOxMap.preventScroll === undefined)
     EOxMap.preventScroll = config?.preventScroll;
 
   // Set the zoom, center, minZoom, maxZoom and zoom extent of the map view
