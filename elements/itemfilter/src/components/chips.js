@@ -1,6 +1,5 @@
 import { LitElement, html } from "lit";
 import { map } from "lit/directives/map.js";
-import { styleEOX } from "../style.eox";
 import {
   handleChipClickMethod,
   keyboardEventListenerMethod,
@@ -37,6 +36,15 @@ export class EOxItemFilterChipsV2 extends LitElement {
      * @type Object
      */
     this.controller = {};
+  }
+
+  /**
+   * Overrides the default createRenderRoot method to render in the light DOM.
+   *
+   * @returns {this} - The current instance to render in the light DOM.
+   */
+  createRenderRoot() {
+    return this;
   }
 
   /**
@@ -101,14 +109,11 @@ export class EOxItemFilterChipsV2 extends LitElement {
    */
   render() {
     return html`
-      <style>
-        ${styleEOX}
-      </style>
       <span class="chip-container">
         ${map(
           this.items,
           (item) => html`
-            <span class="chip" @click=${this.#handleChipClick.bind(this)}>
+            <span class="chip tiny-margin" @click=${this.#handleChipClick.bind(this)}>
               <span class="chip-title">${item.title}</span>
                 <span
                   class="chip-item-close hidden"
@@ -119,7 +124,7 @@ export class EOxItemFilterChipsV2 extends LitElement {
                     this.requestUpdate();
                   }}
                 ></span>
-            </span>
+              </span>
             </span>
           `,
         )}

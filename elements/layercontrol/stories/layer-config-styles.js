@@ -2,6 +2,7 @@ import { html } from "lit";
 import "color-legend-element";
 import {
   STORIES_LAYER_CROPOMHUSC2,
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
   STORIES_LAYER_SEE,
   STORIES_LAYER_TERRAIN_LIGHT,
@@ -24,6 +25,7 @@ export default {
     <eox-layercontrol
       .tools=${["config"]}
       for="eox-map#config-styles"
+      .style=${STORIES_LAYERCONTROL_STYLE}
     ></eox-layercontrol>
     <hr />
     <eox-map

@@ -29,6 +29,7 @@ import {
   AnimationsStory,
   PreventScrollStory,
   FlatGeoBufStory,
+  CustomTooltipStory,
 } from "./index.js";
 
 export default {
@@ -162,6 +163,18 @@ export const Tooltip = TooltipStory;
  * transformation in which needs access to the entire feature.
  */
 export const TooltipWithPropertyTransform = TooltipWithPropertyTransformStory;
+
+/**
+ * Instead of the built-in `eox-map-tooltip`, it is possible to use any other (custom) element as tooltip by setting the `is` attribute:
+ * ```
+ * <eox-map [...]>
+ *   <custom-element is="eox-map-tooltip"></custom-element>
+ * </eox-map>
+ * ```
+ *
+ * This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
+ */
+export const CustomTooltip = CustomTooltipStory;
 
 /**
  * Select interactions offer a `highlightById` method, with which vector features can be programmatically selected via their id property.

@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.15.0...drawtools-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
+## [0.15.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.3...drawtools-v0.15.0) (2025-06-16)
+
+
+### Features
+
+* Show selected feature title from some property value  ([#1719](https://github.com/EOX-A/EOxElements/issues/1719)) ([c939258](https://github.com/EOX-A/EOxElements/commit/c939258ac62cac68610f4bb8b7dbe4178b9f99ad))
+
 ## [0.14.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.2...drawtools-v0.14.3) (2025-05-20)
 
 

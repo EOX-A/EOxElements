@@ -1,10 +1,14 @@
 import { LitElement, html } from "lit";
-import { createEditor, parseProperty, transformLinks } from "./helpers";
+import {
+  createEditor,
+  parseProperty,
+  transformLinks,
+  initShowOptInElement,
+} from "./helpers";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
 import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
-import allStyle from "@eox/elements-utils/styles/dist/all.style";
 
 /**
  * @typedef {JSON & {properties: object}} JsonSchema
@@ -132,6 +136,8 @@ export class EOxJSONForm extends LitElement {
    * Value object has been changed
    */
   #emitValue() {
+    if (this.options?.show_opt_in) setTimeout(() => initShowOptInElement(this));
+
     this.dispatchEvent(
       new CustomEvent(`change`, {
         detail: this.value,
@@ -196,16 +202,18 @@ export class EOxJSONForm extends LitElement {
     return html`
       <style>
         ${style}
-        ${!this.unstyled && allStyle}
-        ${!this.unstyled && styleEOX}
-        ${this.options?.disable_properties === false
-          ? ``
-          : `
+          ${!this.unstyled && styleEOX}
+          ${this.options?.disable_properties === false
+            ? ``
+            : `
           form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-header,
           form[data-theme="html"][data-theme-custom="eox"] > [data-schemaid="root"] > .je-object__controls {
             display: none;
           }
         `}
+          input[type="checkbox"].json-editor-opt-in {
+          display: none !important;
+        }
       </style>
       <form></form>
     `;

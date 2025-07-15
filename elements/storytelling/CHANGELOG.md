@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.8.0...storytelling-v1.9.0) (2025-07-02)
+
+
+### Features
+
+* Change default hero height, allow CSS override ([#1743](https://github.com/EOX-A/EOxElements/issues/1743)) ([d3fa89f](https://github.com/EOX-A/EOxElements/commit/d3fa89f5d8850bcfc7a11fb3691f55fa154acfa7))
+* Overlay content on top of map ([#1732](https://github.com/EOX-A/EOxElements/issues/1732)) ([f29527b](https://github.com/EOX-A/EOxElements/commit/f29527b81c5f0369b3a86e71bb9654964479bedc))
+* Support enabling/disabling scroll indicator ([#1744](https://github.com/EOX-A/EOxElements/issues/1744)) ([c8a6280](https://github.com/EOX-A/EOxElements/commit/c8a6280b1ee8eb56a48c9be4e6e1bb41614a26b0))
+
+
+### Bug Fixes
+
+* **style:** Clamp hero h1 font-size ([8000803](https://github.com/EOX-A/EOxElements/commit/8000803397e6298fec231c9fed13d21f182f1a4e))
+
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.2...storytelling-v1.8.0) (2025-06-30)
+
+
+### Features
+
+* Added hero scroll down indicator ([#1730](https://github.com/EOX-A/EOxElements/issues/1730)) ([b6112fb](https://github.com/EOX-A/EOxElements/commit/b6112fbd9b3369c18ef3672830c965f86586875e))
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
+
+### Bug Fixes
+
+* Nav click issue in tour with scroll not at right place ([#1726](https://github.com/EOX-A/EOxElements/issues/1726)) ([07d7c7c](https://github.com/EOX-A/EOxElements/commit/07d7c7c1fd07a0455aa098f952198c68668ad8d4))
+
 ## [1.7.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.7.1...storytelling-v1.7.2) (2025-04-01)
 
 

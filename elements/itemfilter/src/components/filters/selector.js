@@ -1,9 +1,6 @@
 import { LitElement, html, nothing } from "lit";
-import { styleEOX } from "../../style.eox.js";
 import { when } from "lit/directives/when.js";
 import _debounce from "lodash.debounce";
-import checkboxStyle from "@eox/elements-utils/styles/dist/checkbox.style.js";
-import radioStyle from "@eox/elements-utils/styles/dist/radio.style.js";
 import {
   resetSelectorMethod,
   toggleItemSelectorMethod,
@@ -176,30 +173,43 @@ export class EOxSelector extends LitElement {
   }
 
   /**
+   * Overrides the default createRenderRoot method to render in the light DOM.
+   *
+   * @returns {this} - The current instance to render in the light DOM.
+   */
+  createRenderRoot() {
+    return this;
+  }
+
+  /**
    * Renders the HTML template for the component.
    */
   render() {
     const type = this.type.includes("multi") ? "checkbox" : "radio";
     const selectOverflowClass =
-      this.filteredSuggestions.length > 5 ? "select-overflow" : nothing;
+      this.filteredSuggestions.length > 5 ? "select-overflow scroll" : nothing;
     return html`
       <style>
-        ${!this.unstyled && styleEOX}
-        ${!this.unstyled && checkboxStyle}
-        ${!this.unstyled && radioStyle}
+        :host,
+        :root {
+          --select-filter-max-items: 5;
+        }
       </style>
       ${when(
-        this.suggestions.length > 10,
+        (this.filterObject.filterKeys || this.suggestions).length >= 10,
         () =>
           html`<div class="autocomplete-container">
-            <div class="autocomplete-container-wrapper">
+            <div
+              class="autocomplete-container-wrapper field small no-round"
+              style="margin-left: var(--list-padding)"
+            >
               <input
                 autocomplete="off"
                 tabindex=${this.tabIndex}
                 class="autocomplete-input"
                 type="text"
                 .value=${this.query}
-                placeholder="${this.filterObject.placeholder || ""}"
+                placeholder="${this.filterObject.placeholder || "Find..."}"
                 @input=${this.#handleInput}
                 @keydown=${this.#handleKeyDown}
                 @blur=${() => (this.showSuggestions = false)}
@@ -209,14 +219,14 @@ export class EOxSelector extends LitElement {
           </div>`,
       )}
       <div class="select-container ${selectOverflowClass}">
-        <ul class="${this.type}">
+        <ul class="${this.type} list no-space">
           ${this.filteredSuggestions.map(
             (suggestion) => html`
               <li
                 data-identifier="${suggestion.toString().toLowerCase()}"
                 data-title="${suggestion}"
               >
-                <label>
+                <label class="${type} small max">
                   <input
                     type="${type}"
                     name=${suggestion}
@@ -228,7 +238,7 @@ export class EOxSelector extends LitElement {
                     }}
                     tabindex=${this.tabIndex + 1}
                   />
-                  <span class="title">${suggestion}</span>
+                  <span class="title small-line">${suggestion}</span>
                 </label>
               </li>
             `,

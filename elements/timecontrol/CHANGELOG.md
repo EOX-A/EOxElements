@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.12.3...timecontrol-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [0.12.3](https://github.com/EOX-A/EOxElements/compare/timecontrol-v0.12.2...timecontrol-v0.12.3) (2025-02-26)
 
 

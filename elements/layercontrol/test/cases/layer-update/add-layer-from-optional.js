@@ -34,7 +34,7 @@ const addLayerFromOptional = () => {
     .shadow()
     .within(() => {
       cy.get("[data-cy='optionalLayers']").select("title2"); // Selecting the optional layer
-      cy.get("[data-cy='optionalLayers']").siblings("button").click(); // Clicking the add button
+      cy.get("[data-cy='optionalLayers']").parent().siblings("button").click(); // Clicking the add button
     });
 
   // Verifying if the added optional layer is displayed in the layer control
@@ -42,7 +42,7 @@ const addLayerFromOptional = () => {
     .shadow()
     .within(() => {
       cy.get(".layer")
-        .find(".title")
+        .find(".layertitle")
         .contains("title2")
         .should("have.length", 1); // Checking if the added optional layer's title is displayed
     });

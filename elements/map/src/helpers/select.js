@@ -55,6 +55,7 @@ export class EOxSelectInteraction {
       } else {
         this.tooltipElement =
           this.eoxMap.querySelector("eox-map-tooltip") ||
+          this.eoxMap.querySelector("[is=eox-map-tooltip]") ||
           options.overlay?.element;
 
         if (this.tooltipElement) {
@@ -282,7 +283,9 @@ export class EOxSelectInteraction {
             ...options.atPixelOptions,
           })
             ? options.cursor || "pointer"
-            : "auto";
+            : this.eoxMap.interactions.drawInteraction?.getActive()
+              ? "crosshair"
+              : "auto";
       };
       eoxMap.map.on("pointermove", this.pointerMoveListener);
     }

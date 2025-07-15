@@ -14,7 +14,6 @@ import {
   addCustomSection,
   initSavedMarkdown,
 } from "./helpers";
-import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import DOMPurify from "isomorphic-dompurify";
 import {
   markdownItConfig,
@@ -48,6 +47,10 @@ export class EOxStoryTelling extends LitElement {
       nav: { state: true, attribute: false, type: Array },
       showNav: { attribute: "show-nav", type: Boolean },
       showEditor: { attribute: "show-editor", type: String },
+      showHeroScrollIndicator: {
+        attribute: "show-hero-scroll-indicator",
+        type: Boolean,
+      },
       noShadow: { attribute: "no-shadow", type: Boolean },
       disableAutosave: { attribute: "disable-autosave", type: Boolean },
       unstyled: { type: Boolean },
@@ -123,6 +126,13 @@ export class EOxStoryTelling extends LitElement {
      * @type {Boolean}
      */
     this.showNav = false;
+
+    /**
+     * Enable or disable hero scroll indicator
+     *
+     * @type {Boolean}
+     */
+    this.showHeroScrollIndicator = false;
 
     /**
      * List of items in navigation
@@ -288,16 +298,17 @@ export class EOxStoryTelling extends LitElement {
       this.showEditor !== undefined ? "editor-enabled" : ""
     } editor-${this.showEditor}`;
 
+    const navClass = `${this.showNav && this.nav.length ? "nav-enabled" : ""}`;
+
     return html`
       <slot class="slot-hide" @slotchange=${this.handleSlotChange}></slot>
       <style>
         :host { display: block; }
         .slot-hide { display: none; }
         ${!this.unstyled && styleEOX}
-        ${!this.unstyled && mainStyle}
       </style>
 
-      <div class="story-telling ${editorClass}">
+      <div class="story-telling ${editorClass} ${navClass}">
         <div>${when(this.#html, () => html`${this.#html}`)}</div>
         ${when(
           this.showEditor !== undefined,
@@ -327,6 +338,42 @@ export class EOxStoryTelling extends LitElement {
               }}
             ></div>
             <div class="story-telling-popup">
+              <div class="story-telling-popup-wrapper">
+                ${SAMPLE_ELEMENTS.map(
+                  (category) => html`
+                    <div class="header">
+                      <h4>${category.name}</h4>
+                      <p>${category.elements.length}</p>
+                    </div>
+                    <hr />
+                    <div class="grid-container">
+                      ${category.elements.map(
+                        (element) =>
+                          html`<div
+                            @click=${() =>
+                              addCustomSection(
+                                this.markdown,
+                                this.addCustomSectionIndex,
+                                element.markdown,
+                                element.fields,
+                                false,
+                                this,
+                              )}
+                            class="grid-item"
+                          >
+                            <icon id="${element.id}"></icon>
+                            <p>${element.name}</p>
+                            <style>
+                              icon#${element.id}::before {
+                                content: url("${element.icon}");
+                              }
+                            </style>
+                          </div>`,
+                      )}
+                    </div>
+                  `,
+                )}
+              </div>
               ${when(
                 this.selectedCustomElement,
                 () => html`
@@ -366,42 +413,6 @@ export class EOxStoryTelling extends LitElement {
                   </div>
                 `,
               )}
-              <div class="story-telling-popup-wrapper">
-                ${SAMPLE_ELEMENTS.map(
-                  (category) => html`
-                    <div class="header">
-                      <h4>${category.name}</h4>
-                      <p>${category.elements.length}</p>
-                    </div>
-                    <hr />
-                    <div class="grid-container">
-                      ${category.elements.map(
-                        (element) =>
-                          html`<div
-                            @click=${() =>
-                              addCustomSection(
-                                this.markdown,
-                                this.addCustomSectionIndex,
-                                element.markdown,
-                                element.fields,
-                                false,
-                                this,
-                              )}
-                            class="grid-item"
-                          >
-                            <icon id="${element.id}"></icon>
-                            <p>${element.name}</p>
-                            <style>
-                              icon#${element.id}::before {
-                                content: url("${element.icon}");
-                              }
-                            </style>
-                          </div>`,
-                      )}
-                    </div>
-                  `,
-                )}
-              </div>
             </div>
           </div>
         `,

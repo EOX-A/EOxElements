@@ -9,6 +9,7 @@ let lightboxElements = [];
 let sectionObservers = [];
 let sectionNavObservers = [];
 let stepSectionObservers = [];
+let sectionOverlayObservers = [];
 
 /**
  * Converts an HTML string into DOM nodes and processes each node.
@@ -340,16 +341,23 @@ function generateAddSectionClickEvt(
   const center = (rect.right + rect.left) / 2;
   const halfSizeBtn = 25 / 2;
 
-  const addBeforeBtnTop = isFirstSection ? rect.top - halfSizeBtn : undefined;
-  const addBeforeBtnBottom = isFirstSection
-    ? rect.top + halfSizeBtn
-    : undefined;
+  let addBeforeBtnTop = isFirstSection ? rect.top - halfSizeBtn : undefined;
+  let addBeforeBtnBottom = isFirstSection ? rect.top + halfSizeBtn : undefined;
   const addAfterBtnTop = rect.bottom - halfSizeBtn;
   const addAfterBtnBottom = rect.bottom + halfSizeBtn;
   const addBtnLeft = center - halfSizeBtn;
   const addBtnRight = center + halfSizeBtn;
 
   const { clientX, clientY } = event;
+
+  const isBeforeBtnTriggered = isFirstSection
+    ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
+    : false;
+
+  if (!isBeforeBtnTriggered) {
+    addBeforeBtnTop = undefined;
+    addBeforeBtnBottom = undefined;
+  }
 
   // Check click happen or not
   const isClicked =
@@ -360,9 +368,6 @@ function generateAddSectionClickEvt(
 
   // If click happened enable custom section selection popup
   if (isClicked && EOxStoryTelling.showEditor !== "closed") {
-    const isBeforeBtnTriggered = isFirstSection
-      ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
-      : false;
     const sectionIndex = Number(that.getAttribute("data-section"));
 
     EOxStoryTelling.addCustomSectionIndex = isBeforeBtnTriggered
@@ -406,7 +411,7 @@ export function parseNavWithAddSection(
           ${nav
             .map(({ id, title, state }) =>
               state
-                ? `<li class="nav-${id}"><a href="#${id}">${title}</a></li>`
+                ? `<li class="nav-${id}"><a href="#${id}"><small class="truncate">${title}</small></a></li>`
                 : "",
             )
             .join("")}
@@ -446,10 +451,63 @@ export function parseNavWithAddSection(
   if (html.length) {
     const sectionStartIndex = navIndex + 1;
     html[sectionStartIndex].classList.add("section-start");
+
+    const sectionOverlayObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const intersecting = entry.isIntersecting;
+
+          if (intersecting) {
+            entry.target.classList.add("show-overlay");
+          } else {
+            entry.target.classList.remove("show-overlay");
+          }
+        });
+      },
+      { rootMargin: "-50% 0px" },
+    );
+
     html.slice(sectionStartIndex).forEach((section, key) => {
       if (!section.classList) return;
       if (section.classList.contains("section-wrap"))
         containsSectionWrap = true;
+
+      const eoxMap = section.querySelector("eox-map");
+      const isTour = section.classList.contains("tour");
+      if (eoxMap) {
+        const sectionChildren = Array.from(section.children).filter((child) => {
+          return (
+            child.tagName.toLowerCase() !== "section-step" &&
+            child.getAttribute("as") !== "eox-map"
+          );
+        });
+        const eoxMapChildren = Array.from(eoxMap.children);
+        const children = [...sectionChildren, ...eoxMapChildren];
+        if (children.length) {
+          const hasOverlayClass = Array.from(eoxMap.classList).filter(
+            (className) => className.startsWith("overlay-"),
+          );
+
+          const overlayMap = document.createElement("div");
+          overlayMap.className = "eox-map-overlay";
+          overlayMap.classList.add(
+            hasOverlayClass.length ? hasOverlayClass[0] : "overlay-br",
+          );
+
+          const overlayMapContent = document.createElement("div");
+          overlayMapContent.className = "eox-map-overlay-content";
+
+          children.forEach((child) => overlayMapContent.appendChild(child));
+          overlayMap.appendChild(overlayMapContent);
+          eoxMap.innerHTML = "";
+          section.insertBefore(overlayMap, eoxMap.nextSibling);
+
+          if (isTour) {
+            sectionOverlayObserver.observe(section);
+            sectionOverlayObservers.push(sectionOverlayObserver);
+          }
+        }
+      }
 
       section.classList.add("section-item");
       section.setAttribute("data-section", `${key + 1}`);
@@ -480,6 +538,30 @@ export function parseNavWithAddSection(
       generateAddSectionClickEvt(event, false, this, EOxStoryTelling);
     });
     html = [sectionWrap];
+  }
+
+  if (
+    html[0].classList.contains("hero") &&
+    EOxStoryTelling.showHeroScrollIndicator
+  ) {
+    const sectionWraps =
+      html.filter((el) => el.classList?.contains("section-wrap")) || [];
+
+    if (sectionWraps.length > 1) {
+      const isNavigation = html[1].classList.contains("navigation");
+      const scrollAnchor = document.createElement("a");
+      scrollAnchor.classList.add("hero-scroll-indicator");
+
+      scrollAnchor.addEventListener("click", (e) => {
+        e.preventDefault();
+        (isNavigation ? html : sectionWraps)[1].scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+
+      html[0].appendChild(scrollAnchor);
+    }
   }
 
   return html;

@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.1.0...jsonform-v1.1.1) (2025-07-10)
+
+
+### Bug Fixes
+
+* **style:** Small checkboxes by default ([#1755](https://github.com/EOX-A/EOxElements/issues/1755)) ([87f0150](https://github.com/EOX-A/EOxElements/commit/87f01509aef8b6f026e7a8536ffbe255b5e50b24))
+* **style:** Tabs and table layout ([#1756](https://github.com/EOX-A/EOxElements/issues/1756)) ([91947b3](https://github.com/EOX-A/EOxElements/commit/91947b3f2f36adb4ed2a72043a7518bc4151a42b))
+
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.0.0...jsonform-v1.1.0) (2025-07-09)
+
+
+### Features
+
+* More user friendly show_opt_in properties ([#1747](https://github.com/EOX-A/EOxElements/issues/1747)) ([04e8107](https://github.com/EOX-A/EOxElements/commit/04e810723fae46b1b7c8cd307d228bb119073ad6))
+
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.5...jsonform-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [0.16.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.4...jsonform-v0.16.5) (2025-05-20)
 
 

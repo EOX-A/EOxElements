@@ -140,7 +140,9 @@ export function updatedSelectorMethod(
  */
 function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
   const sortCallback =
-    EOxItemFilterSelector.filterObject?.sort || ((a, b) => a.localeCompare(b));
+    EOxItemFilterSelector.filterObject?.sort ||
+    ((a, b) =>
+      a.toString().localeCompare(b.toString(), undefined, { numeric: true }));
 
   return suggestion.sort(sortCallback).map((i) => i);
 }
@@ -151,33 +153,34 @@ function getSortedSuggestions(EOxItemFilterSelector, suggestion) {
  * @param {Object} EOxItemFilterSelector - The EOxItemFilterSelector component instance.
  */
 function updateSuggestions(EOxItemFilterSelector) {
-  let filteredSuggestion;
+  const items = (
+    EOxItemFilterSelector.filterObject?.filterKeys ||
+    EOxItemFilterSelector.suggestions
+  ).map((i) => `${i}`);
+  let filteredSuggestion = items;
+
   if (EOxItemFilterSelector.query) {
-    const fuse = new Fuse(EOxItemFilterSelector.suggestions, {
+    const fuse = new Fuse(items, {
       threshold: 0.4,
     });
     filteredSuggestion = fuse
       .search(EOxItemFilterSelector.query)
       .map((result) => result.item);
   }
-  EOxItemFilterSelector.filteredSuggestions = getSortedSuggestions(
-    EOxItemFilterSelector,
-    filteredSuggestion || EOxItemFilterSelector.suggestions,
-  );
+
+  EOxItemFilterSelector.filteredSuggestions = EOxItemFilterSelector.filterObject
+    ?.filterKeys
+    ? filteredSuggestion
+    : getSortedSuggestions(EOxItemFilterSelector, filteredSuggestion);
 
   // if `filterKeys` is defined, force filter keys
   if (EOxItemFilterSelector.filterObject?.filterKeys) {
-    EOxItemFilterSelector.filteredSuggestions =
-      EOxItemFilterSelector.filterObject?.filterKeys.map((k) => `${k}`);
-    EOxItemFilterSelector.filterObject.state =
-      EOxItemFilterSelector.filterObject?.filterKeys
-        .map((k) => `${k}`)
-        .reduce((acc, curr) => {
-          if (!(curr in acc)) {
-            acc[curr] = undefined;
-          }
-          return acc;
-        }, EOxItemFilterSelector.filterObject.state);
+    EOxItemFilterSelector.filterObject.state = items.reduce((acc, curr) => {
+      if (!(curr in acc)) {
+        acc[curr] = undefined;
+      }
+      return acc;
+    }, EOxItemFilterSelector.filterObject.state);
   }
 
   EOxItemFilterSelector.highlightedIndex = -1;

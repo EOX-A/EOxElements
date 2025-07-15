@@ -15,6 +15,7 @@ import {
   loadCustomEditorInterfaceTest,
   loadSubmitButtonTest,
   loadCodeTest,
+  loadShowOptInPropertiesTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -34,4 +35,6 @@ describe("Jsonform", () => {
   it("loads custom editor interface", () => loadCustomEditorInterfaceTest());
   it("renders drawtools as a custom input", () => renderDrawtools());
   it("handles a submit button correctly", () => loadSubmitButtonTest());
+  it("loads the jsonform with show opt in properties", () =>
+    loadShowOptInPropertiesTest());
 });

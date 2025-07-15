@@ -16,6 +16,8 @@ const LAYER_EOX_CLOUDLESS = (year) => ({
   },
 });
 
+export const STORIES_LAYERCONTROL_STYLE = "width: 240px;";
+
 export const STORIES_MAP_STYLE =
   "width: 400px; height: 300px; margin-left: 7px;";
 
@@ -128,9 +130,9 @@ export const STORIES_MAIN_MAP_LAYERS = [
       description: "# Hello world",
     },
     layers: [
-      STORIES_LAYER_SENTINEL_HUB.wind,
-      STORIES_LAYER_SENTINEL_HUB.no2,
       STORIES_LAYER_REGION,
+      STORIES_LAYER_SENTINEL_HUB.no2,
+      STORIES_LAYER_SENTINEL_HUB.wind,
     ],
   },
   {

@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.0.1...layercontrol-v1.1.0) (2025-07-10)
+
+
+### Features
+
+* Add support for globall exclusive layers ([#1753](https://github.com/EOX-A/EOxElements/issues/1753)) ([4f22e1e](https://github.com/EOX-A/EOxElements/commit/4f22e1e6e92abf77f4eae06b54bad4d4ddc4b3c8))
+
+## [1.0.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.0.0...layercontrol-v1.0.1) (2025-07-08)
+
+
+### Bug Fixes
+
+* Missing shadowroot on layer-tools causing CSS duplication ([#1749](https://github.com/EOX-A/EOxElements/issues/1749)) ([97444b5](https://github.com/EOX-A/EOxElements/commit/97444b5ca4d008c734e522e89792eefae70fa4ae))
+
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.29.1...layercontrol-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [0.29.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v0.29.0...layercontrol-v0.29.1) (2025-02-26)
 
 

@@ -16,7 +16,7 @@ const inputClickMethod = (evt, EOxLayerControlLayer) => {
      * @type NodeListOf<Element & {layer: any, requestUpdate: function}>
      */
     const siblings = EOxLayerControlLayer.closest(
-      ".layers > ul",
+      `${EOxLayerControlLayer.globallyExclusiveLayers ? ".layers" : "eox-layercontrol-layer-list"} > ul`,
     ).querySelectorAll("eox-layercontrol-layer");
 
     // Loop through the sibling layers to handle exclusive visibility.

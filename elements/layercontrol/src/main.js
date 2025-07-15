@@ -8,6 +8,10 @@ import {
   firstUpdatedMethod,
   layerListChangeMethod,
 } from "./methods/layercontrol";
+import eoxStyle from "@eox/ui/style.css?inline";
+import { addCommonStylesheet } from "@eox/elements-utils";
+
+addCommonStylesheet();
 
 /**
  * Display layers and groups of a connected OpenLayers map
@@ -60,6 +64,10 @@ export class EOxLayerControl extends LitElement {
     unstyled: { type: Boolean },
     styleOverride: { type: String },
     toolsAsList: { type: Boolean },
+    globallyExclusiveLayers: {
+      attribute: "globally-exclusive-layers",
+      type: Boolean,
+    },
   };
 
   /**
@@ -144,6 +152,13 @@ export class EOxLayerControl extends LitElement {
      * @type {Boolean}
      */
     this.toolsAsList = false;
+
+    /**
+     * If enabled, exclusive layers (marked with the property `layerControlExclusive`) will be globally exclusive (default: exclusive within their layer group).
+     *
+     * @type {Boolean}
+     */
+    this.globallyExclusiveLayers = false;
   }
 
   /**
@@ -216,6 +231,12 @@ export class EOxLayerControl extends LitElement {
         ${this.styleOverride}
       </style>
 
+      <span class="layerstitle">
+        <slot name="layerstitle"
+          ><p><strong>Layers</strong></p></slot
+        >
+      </span>
+
       <!-- Conditional rendering of add layers component -->
       ${when(
         this.addExternalLayers && this.#eoxMap?.addOrUpdateLayer,
@@ -243,6 +264,7 @@ export class EOxLayerControl extends LitElement {
             .tools=${this.tools}
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
+            .globallyExclusiveLayers=${this.globallyExclusiveLayers}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${this.#handleDatetimeUpdate}
             @layerConfig:change=${this.#handleLayerConfigChange}
@@ -267,22 +289,42 @@ export class EOxLayerControl extends LitElement {
   }
 
   #styleEOX = `
+    ${eoxStyle}
     :host, :root {
-      font-family: Roboto, sans-serif;
       --padding: 0.5rem;
       --padding-vertical: .2rem;
-      --list-padding: 48px;
+      --list-padding: 2rem;
       --layer-input-visibility: flex;
       --layer-summary-visibility: flex;
       --layer-type-visibility: block;
-      --layer-title-visibility: flex;
-      --layer-visibility: block;
+      --layer-title-visibility: inline;
+      --layer-visibility: flex;
       --layer-tools-button-visibility: flex;
+      --layer-toggle-button-visibility: none;
 
-      display: block;
-      padding: var(--padding) 0;
+      --primary-color: var(--primary);
+      --secondary-color: var(--secondary);
+      --item-color: color-mix(
+        in srgb,
+        var(--primary-color) 10%,
+        transparent
+      );
+      --item-hover-color: color-mix(
+        in srgb,
+        var(--surface) 80%,
+        transparent
+      );
+
+      display: flex;
+      flex-direction: column;
       --background-color: var(--eox-background-color, transparent);
       background-color: var(--background-color, transparent);
+    }
+    
+    .layerstitle {
+      display: block;
+      padding-left: var(--padding);
+      padding-right: var(--padding);
     }
     select {
       background-color: var(--background-color);

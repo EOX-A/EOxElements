@@ -1,9 +1,10 @@
 {
   "name": "@eox/map",
-  "version": "1.21.3",
+  "version": "1.22.0",
   "type": "module",
   "dependencies": {
-    "@eox/elements-utils": "^0.1.5",
+    "@eox/elements-utils": "^1.0.0",
+    "@eox/ui": "^0.3.6",
     "flatgeobuf": "^4.0.1",
     "lit": "^3.2.0",
     "ol": "^10.4.0",

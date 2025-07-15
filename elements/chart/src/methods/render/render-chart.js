@@ -1,6 +1,6 @@
 import { default as vegaEmbed } from "vega-embed";
 import { deepmerge } from "deepmerge-ts";
-import { DEFAULT_SPEC } from "../../enums";
+import { DEFAULT_SPEC, DEFAULT_OPT } from "../../enums";
 
 /**
  * Render the Vega-Lite chart using vega-embed with a spec and (optionally) dataValues
@@ -10,11 +10,13 @@ import { DEFAULT_SPEC } from "../../enums";
  * @param {Object=} dataValues
  *
  */
-const renderChartMethod = (EOxChart, spec, dataValues) => {
+const renderChartMethod = (EOxChart, spec, opt, dataValues) => {
   const mergedSpec = deepmerge(DEFAULT_SPEC, spec);
+  const mergedOpt = deepmerge(DEFAULT_OPT, opt);
   vegaEmbed(
     /** @type {HTMLElement} */ (EOxChart.renderRoot.querySelector("#vis")),
     mergedSpec,
+    mergedOpt,
   ).then((res) => {
     if (dataValues) {
       Object.keys(dataValues).forEach((dataSourceName) => {

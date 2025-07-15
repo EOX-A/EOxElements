@@ -9,6 +9,10 @@ const Collection = {
   args: {
     schema: collectionSchema,
     value: collectionValue,
+    options: {
+      disable_edit_json: false,
+      disable_properties: false,
+    },
   },
 };
 export default Collection;

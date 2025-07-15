@@ -18,6 +18,7 @@ export default function parseEntries(list, that, type) {
       .sort(([keyA], [keyB]) =>
         list?.indexOf(keyA) > list?.indexOf(keyB) ? 1 : -1,
       ),
+    that,
     type,
   );
 }

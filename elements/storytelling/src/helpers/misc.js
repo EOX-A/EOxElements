@@ -12,7 +12,7 @@ export function scrollAnchorClickEvent(that, selector) {
     doc.addEventListener("click", (e) => {
       e.preventDefault();
       window.parent.location.hash = /** @type {HTMLAnchorElement} */ (
-        e.target
+        e.currentTarget
       ).hash.replace("#", "");
       scrollIntoView(that);
     });
@@ -37,7 +37,10 @@ export function scrollIntoView(that) {
       that.getBoundingClientRect().top
     }px + 1rem)`;
     element.style.scrollMarginBottom = "1rem";
-    element.scrollIntoView({ behavior: "smooth" });
+    const firstStepSection = element.querySelector("section-step");
+    if (firstStepSection)
+      firstStepSection.scrollIntoView({ behavior: "smooth", block: "center" });
+    else element.scrollIntoView({ behavior: "smooth" });
   }
 }
 

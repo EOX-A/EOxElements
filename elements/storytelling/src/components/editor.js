@@ -150,7 +150,7 @@ export class StoryTellingEditor extends LitElement {
     );
     if (!evt.target.checked) {
       wrapper.classList.add("editor-hide");
-      storyDOM.setAttribute("show-editor", "close");
+      storyDOM.setAttribute("show-editor", "closed");
     } else {
       wrapper.classList.remove("editor-opacity-none");
       wrapper.classList.remove("editor-hide");
@@ -187,16 +187,18 @@ export class StoryTellingEditor extends LitElement {
         </div>
       </div>
       <div class="switch-button">
-        <label class="switch">
-          <i class="icon view-icon"></i>
-          <input
-            class="switch-input"
-            type="checkbox"
-            @change=${this.#switchEditorView}
-            checked
-          />
-          <span class="switch-slider round"></span>
-          <i class="icon editor-icon"></i>
+        <label class="switch icon">
+          <input type="checkbox" @change=${this.#switchEditorView} />
+          <span>
+            <i class="small">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <title>pencil</title>
+                <path
+                  d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z"
+                />
+              </svg>
+            </i>
+          </span>
         </label>
       </div>
       <style>
