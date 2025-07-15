@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.23.0](https://github.com/EOX-A/EOxElements/compare/map-v1.22.0...map-v1.23.0) (2025-07-15)
+
+
+### Features
+
+* Support custom tooltips ([#1761](https://github.com/EOX-A/EOxElements/issues/1761)) ([1d06aa7](https://github.com/EOX-A/EOxElements/commit/1d06aa75ab52e69fab0d33381a5ac566eaad41c3))
+
+
+### Bug Fixes
+
+* Config with preventScroll causing unwanted dragging ([#1766](https://github.com/EOX-A/EOxElements/issues/1766)) ([5f0a880](https://github.com/EOX-A/EOxElements/commit/5f0a88091ee898458363486f0914089c4c954a0c))
+* Optimize config setter to not cause triggers for each property ([#1767](https://github.com/EOX-A/EOxElements/issues/1767)) ([0acba08](https://github.com/EOX-A/EOxElements/commit/0acba0803557e6821c3d4f0b3c54da7899b6554e))
+* Show select overlay also on feature borders ([#1763](https://github.com/EOX-A/EOxElements/issues/1763)) ([f766b3d](https://github.com/EOX-A/EOxElements/commit/f766b3d3f29ba293e7dd31946f0d02d1d42b9a3b))
+
 ## [1.22.0](https://github.com/EOX-A/EOxElements/compare/map-v1.21.3...map-v1.22.0) (2025-06-30)
 
 
