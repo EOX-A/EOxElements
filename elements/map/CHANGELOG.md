@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/EOX-A/EOxElements/compare/map-v1.23.0...map-v1.24.0) (2025-07-16)
+
+
+### Features
+
+* Cluster source and cluster-explode interaction ([#1758](https://github.com/EOX-A/EOxElements/issues/1758)) ([4349a95](https://github.com/EOX-A/EOxElements/commit/4349a95db07fd6ea603826241c159fe52afcbd78))
+
 ## [1.23.0](https://github.com/EOX-A/EOxElements/compare/map-v1.22.0...map-v1.23.0) (2025-07-15)
 
 
