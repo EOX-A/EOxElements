@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.0...layercontrol-v1.1.1) (2025-07-15)
+
+
+### Bug Fixes
+
+* Emit datetime update ([#1769](https://github.com/EOX-A/EOxElements/issues/1769)) ([f054b19](https://github.com/EOX-A/EOxElements/commit/f054b199d689b7dd1df03c2b2530b5f2eb8c6bb2))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.0.1...layercontrol-v1.1.0) (2025-07-10)
 
 
