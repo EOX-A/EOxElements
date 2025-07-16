@@ -36,7 +36,7 @@ export type AnyLayer = AnyLayerWithSource | import("ol/layer/Group").default;
 
 export type EOxInteraction = {
   active?: boolean;
-  type: "draw" | "select";
+  type: "draw" | "select" | "clusterExplode";
   options: DrawOptions | SelectOptions | { [key: string]: any };
 };
 
@@ -70,6 +70,20 @@ export type SelectOptions = Omit<
   atPixelOptions?: import("ol/Map").AtPixelOptions;
 };
 
+export type ClusterExplodeOptions =
+  import("ol/interaction/Interaction").InteractionOptions & {
+    id: string | number;
+    layer?: EoxLayer;
+    style?: import("ol/style/flat.js").FlatStyleLike;
+    active?: boolean;
+    /**
+     * @property {number} [maxZoom=20] maximum zoom level after which the cluster will always be exploded.
+     */
+    maxZoom?: number;
+    atPixelOptions?: import("ol/Map").AtPixelOptions;
+    fitOptions?: import("ol/View").FitOptions;
+  };
+
 export type ControlOptions = import("ol/control/Control").Options;
 
 export type GeolocationOptions = import("ol/control/Control").Options & {
@@ -99,6 +113,11 @@ export type GeolocationOptions = import("ol/control/Control").Options & {
    */
   buttonIcon?: string;
 };
+
+export type EOxClusterOptions = Omit<
+  import("ol/source/Cluster").Options,
+  "geometryFunction" | "createCluster"
+>;
 
 export type LoadingIndicatorType = "small" | "fullscreen";
 
