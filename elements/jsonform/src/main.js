@@ -41,14 +41,14 @@ export class EOxJSONForm extends LitElement {
     this.schema = null;
 
     /**
-     * Default values for the form editor
+     * JSON value of the form editor
      *
      * @type {JsonSchema}
      */
     this.value = null;
 
     /**
-     * Default values for the form editor
+     * Options for the form editor
      *
      * @type {object}
      */
@@ -107,14 +107,14 @@ export class EOxJSONForm extends LitElement {
   }
 
   /**
-   * Getter for the default values to fill the form
+   * Getter for the JSON value of the form
    */
   get value() {
     return this._value;
   }
 
   /**
-   *  Setter for the default values to fill the form
+   *  Setter for the JSON value of the form
    *
    * @param {JsonSchema} newVal
    */
