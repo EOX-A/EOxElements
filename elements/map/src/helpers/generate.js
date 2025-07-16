@@ -218,7 +218,9 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
       /** @type {import("ol/layer/Vector").default<import("ol/source/Cluster").default>} */ (
         olLayer
       ),
-      interactionDefinition.options,
+      /** @type {import("../types").ClusterExplodeOptions} */ (
+        interactionDefinition.options
+      ),
     );
 }
 

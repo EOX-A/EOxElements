@@ -19,7 +19,7 @@ const ClusterExplodeStory = {
             type: "clusterExplode",
             options: {
               id: "clusterExplodeInteraction",
-              maxZoom: 9,
+              maxZoom: 10,
               fitOptions: {
                 duration: 300,
               },

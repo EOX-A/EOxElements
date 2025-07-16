@@ -77,8 +77,9 @@ export type ClusterExplodeOptions =
     style?: import("ol/style/flat.js").FlatStyleLike;
     active?: boolean;
     /**
-     * @property {number} [maxZoom = 250] duration of the explode animation in milliseconds.
+     * @property {number} [maxZoom=20] maximum zoom level after which the cluster will always be exploded.
      */
+    maxZoom?: number;
     atPixelOptions?: import("ol/Map").AtPixelOptions;
     fitOptions?: import("ol/View").FitOptions;
   };

@@ -8,10 +8,7 @@ import VectorLayer from "ol/layer/Vector";
 
 /**
  * @typedef {import('../main').EOxMap} EOxMap
- * @typedef {import("../layers").EoxLayer} EoxLayer
- * @typedef {import("../types").SelectLayer} SelectLayer
  * @typedef {import("../types").ClusterExplodeOptions} ClusterExplodeOptions
- * @typedef {import("../types").DrawOptions} DrawOptions
  */
 
 const circleDistanceMultiplier = 1;
@@ -137,9 +134,9 @@ export class EOxClusterExplodeInteraction extends Interaction {
       }
       // If the zoom level is not at the maximum, pan to the extent of the cluster members
       const extent = createEmpty();
-      clusterMembers.forEach((feature) =>
-        extend(extent, feature.getGeometry().getExtent()),
-      );
+      clusterMembers.forEach((feature) => {
+        extend(extent, feature.getGeometry().getExtent());
+      });
 
       // if the features are really close together, explode the cluster
       if (getArea(extent) < 100) {
@@ -147,7 +144,13 @@ export class EOxClusterExplodeInteraction extends Interaction {
         return false;
       }
 
-      this.#panTo(extent);
+      // if maxzoom is not reached, but the cluster did not explode because the area is too large,
+      // explode anyways.
+      this.#panTo(extent).then((didMove) => {
+        if (!didMove) {
+          this.#explodeCluster(clusterFeature);
+        }
+      });
       return false;
     }
 
@@ -177,9 +180,18 @@ export class EOxClusterExplodeInteraction extends Interaction {
   /**
    * Pans the map to the specified extent.
    * @param {import("ol/extent").Extent} extent - The feature or extent to pan to.
+   * @returns {Promise<boolean>} Resolves to true if the map was zoomed, false otherwise.
    */
   #panTo = (extent) => {
-    this.eoxMap.map.getView().fit(extent, this.#options.fitOptions);
+    return new Promise((resolve) => {
+      const startingZoom = this.eoxMap.map.getView().getZoom();
+      const _fitOptions = { ...this.#options.fitOptions };
+      _fitOptions.callback = (e) => {
+        resolve(this.eoxMap.map.getView().getZoom() !== startingZoom);
+        this.#options.fitOptions.callback?.(e);
+      };
+      this.eoxMap.map.getView().fit(extent, _fitOptions);
+    });
   };
 
   #explodeCluster(clusterFeature) {
@@ -197,7 +209,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
        * @param {Array<import("ol/style/Style").default>} styles
        * @param {Array<number>} coordinates
        * @param {number} i
-       * @returns
+       * @returns {Array<import("ol/style/Style").default>} styles
        */
       (styles, coordinates, i) => {
         const point = new Point(coordinates);
@@ -293,7 +305,7 @@ export class EOxClusterExplodeInteraction extends Interaction {
   }
 
   /**
-   * Removes the selection interaction and associated layers from the map.
+   * Removes the cluster interaction from the map.
    */
   remove() {
     this.setMap(null);
@@ -301,11 +313,11 @@ export class EOxClusterExplodeInteraction extends Interaction {
 }
 
 /**
- * Adds a `select` interaction to the map.
+ * Adds a `cluster-explode` interaction to the map.
  *
  * @param {EOxMap} EOxMap - Instance of EOxMap class.
- * @param {import("ol/layer/Vector").default<import("ol/source/Cluster").default>} clusterLayer - Layer to be selected.
- * @param {*} options - Options for the select interaction.
+ * @param {import("ol/layer/Vector").default<import("ol/source/Cluster").default>} clusterLayer - Layer to be clustered. Point or Polygon features.
+ * @param {ClusterExplodeOptions} options - Options for the interaction.
  *
  * @throws Will throw an error if an interaction with the specified ID already exists.
  */
@@ -322,7 +334,4 @@ export function addClusterExplode(EOxMap, clusterLayer, options) {
 
   EOxMap.interactions[options.id] = clusterExplodeInteraction;
   EOxMap.map.addInteraction(clusterExplodeInteraction);
-  setTimeout(() => {
-    EOxMap.map.getInteractions().getArray();
-  }, 2000);
 }
