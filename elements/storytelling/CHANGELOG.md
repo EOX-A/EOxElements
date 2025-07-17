@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.0...storytelling-v1.9.1) (2025-07-17)
+
+
+### Bug Fixes
+
+* Add section button logic issue and styling ([#1772](https://github.com/EOX-A/EOxElements/issues/1772)) ([f01b0af](https://github.com/EOX-A/EOxElements/commit/f01b0af826478207de3191d2066164964add4454))
+
 ## [1.9.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.8.0...storytelling-v1.9.0) (2025-07-02)
 
 
