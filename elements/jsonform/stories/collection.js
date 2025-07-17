@@ -13,6 +13,7 @@ const Collection = {
       disable_edit_json: false,
       disable_properties: false,
     },
+    propertiesToggle: true,
   },
 };
 export default Collection;
