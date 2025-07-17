@@ -12,4 +12,7 @@ export const styleEOX = `
     padding-left: var(--padding);
     padding-right: var(--padding);
   }
+  .hidden {
+    display: none;
+  }
 `;

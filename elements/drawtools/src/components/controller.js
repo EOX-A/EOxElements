@@ -173,6 +173,15 @@ export class EOxDrawToolsController extends LitElement {
         d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"
       />
     </svg>`;
+    const editIcon = html`<svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <title>pencil-outline</title>
+      <path
+        d="M14.06,9L15,9.94L5.92,19H5V18.08L14.06,9M17.66,3C17.41,3 17.15,3.1 16.96,3.29L15.13,5.12L18.88,8.87L20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18.17,3.09 17.92,3 17.66,3M14.06,6.19L3,17.25V21H6.75L17.81,9.94L14.06,6.19Z"
+      />
+    </svg>`;
     const importIcon = html`<svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
@@ -233,6 +242,29 @@ export class EOxDrawToolsController extends LitElement {
           </button>
         </div>
 
+        <!-- Editor Button -->
+        ${when(
+          this.showEditor,
+          () => html`
+            <button
+              data-cy="editorBtn"
+              class="transparent circle primary-text no-margin small"
+              title="${this.unstyled ? "Edit features" : ""}"
+              @click=${() =>
+                this.renderRoot
+                  .querySelector("#editor")
+                  .classList.toggle("hidden")}
+            >
+              ${this.unstyled
+                ? "import"
+                : html`
+                    <i class="small">${editIcon}</i>
+                    <div class="tooltip bottom">Edit features</div>
+                  `}
+            </button>
+          `,
+        )}
+
         <!-- Import Button -->
         ${when(
           this.importFeatures,
@@ -259,7 +291,7 @@ export class EOxDrawToolsController extends LitElement {
                 ? "import"
                 : html`
                     <i class="small">${importIcon}</i>
-                    <div class="tooltip left">Import features</div>
+                    <div class="tooltip bottom">Import features</div>
                   `}
             </button>
           `,
@@ -270,7 +302,7 @@ export class EOxDrawToolsController extends LitElement {
       ${when(
         this.showEditor,
         () => html`
-          <div class="field textarea border extra">
+          <div id="editor" class="field textarea border extra hidden">
             <!-- Geo JSON Editor -->
             <textarea
               style="font-family: monospace; font-size: small; line-height: 1.4; padding: 0.4rem;"
