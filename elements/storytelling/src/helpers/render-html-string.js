@@ -463,6 +463,8 @@ export function parseNavWithAddSection(
 
   if (html.length) {
     const sectionStartIndex = navIndex + 1;
+    if (sectionStartIndex)
+      html[sectionStartIndex].classList.add("section-after-nav");
     html[navIndex === 0 ? 1 : 0].classList.add("section-start");
     html[html.length - 1].classList.add("section-end");
 
