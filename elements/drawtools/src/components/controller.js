@@ -273,7 +273,7 @@ export class EOxDrawToolsController extends LitElement {
           <div class="field textarea border extra">
             <!-- Geo JSON Editor -->
             <textarea
-              style="font-family: monospace"
+              style="font-family: monospace; font-size: small; line-height: 1.4; padding: 0.4rem;"
               @drop=${this.drawFunc.import}
               @input=${this.drawFunc.editor}
               .value=${this.geoJSON}
