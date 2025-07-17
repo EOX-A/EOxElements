@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.1.1...jsonform-v1.2.0) (2025-07-17)
+
+
+### Features
+
+* On/off toggle for object property editing ([#1777](https://github.com/EOX-A/EOxElements/issues/1777)) ([5ba17aa](https://github.com/EOX-A/EOxElements/commit/5ba17aa809ac26054c916681c32ec7e45c1f562f))
+
+
+### Bug Fixes
+
+* **style:** Spacing adjustments ([612936d](https://github.com/EOX-A/EOxElements/commit/612936da4ef008fa79dbb7b70736a12a1b40a33a))
+
 ## [1.1.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.1.0...jsonform-v1.1.1) (2025-07-10)
 
 

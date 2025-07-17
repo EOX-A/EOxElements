@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.0.0...drawtools-v1.1.0) (2025-07-17)
+
+
+### Features
+
+* Support nested properties for featureNameKey ([#1773](https://github.com/EOX-A/EOxElements/issues/1773)) ([c3b7bda](https://github.com/EOX-A/EOxElements/commit/c3b7bdaaf85fbe5a9c1960e8de953c12d8be0b57))
+* Toggle editor on/off ([#1775](https://github.com/EOX-A/EOxElements/issues/1775)) ([b4a4a16](https://github.com/EOX-A/EOxElements/commit/b4a4a162b3eb120aba63915fc9f48bd82720a3cc))
+
+
+### Bug Fixes
+
+* Emit drawupdate event when deleting single feature ([#1778](https://github.com/EOX-A/EOxElements/issues/1778)) ([57713e3](https://github.com/EOX-A/EOxElements/commit/57713e3357462196ca0f80aea2e51b2f36b13c80))
+* **style:** Sizing of editor text-area ([56389c9](https://github.com/EOX-A/EOxElements/commit/56389c9410e0e20dcd49d99efb19367765144c19))
+
 ## [1.0.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.15.0...drawtools-v1.0.0) (2025-06-30)
 
 
