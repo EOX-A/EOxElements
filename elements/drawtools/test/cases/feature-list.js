@@ -19,6 +19,7 @@ const testFeatures = [
  */
 const featureListTest = () => {
   cy.get(drawTools).and(($el) => {
+    $el[0].addEventListener("drawupdate", cy.stub().as("drawUpdateStub"));
     $el[0].drawnFeatures = testFeatures;
   });
 
@@ -29,9 +30,19 @@ const featureListTest = () => {
         // Verify the list renders to features
         cy.get("li").should("have.length", testFeatures.length);
 
+        const oneLess = testFeatures.length - 1;
+
         // Click the delete feature button and verify the list only shows one feature
         cy.get(deleteFeatureBtn).first().click();
-        cy.get("li").should("have.length", testFeatures.length - 1);
+        cy.get("li").should("have.length", oneLess);
+
+        cy.get("@drawUpdateStub")
+          .should("be.called")
+          .its("lastCall.args.0.detail")
+          .should("be.an", "array")
+          .and((val) => {
+            expect(val).to.have.length(oneLess);
+          });
       });
     });
 };
