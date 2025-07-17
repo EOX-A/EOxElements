@@ -21,6 +21,7 @@ export class EOxJSONForm extends LitElement {
     options: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
     noShadow: { attribute: "no-shadow", type: Boolean },
+    propertiesToggle: { attribute: "properties-toggle", type: Boolean },
     unstyled: { type: Boolean },
   };
 
@@ -60,6 +61,14 @@ export class EOxJSONForm extends LitElement {
      * @type {Boolean}
      */
     this.noShadow = false;
+
+    /**
+     * Shows a toggle for showing/hiding object properties editing buttons
+     * To be used in combination with `options.disable_properties = false`
+     *
+     * @type {Boolean}
+     */
+    this.propertiesToggle = false;
 
     /**
      * Render the element without additional styles

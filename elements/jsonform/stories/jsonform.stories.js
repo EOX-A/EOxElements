@@ -33,6 +33,7 @@ export default {
       .schema=${args.schema}
       .value=${args.value}
       .options=${args.options}
+      .propertiesToggle=${args.propertiesToggle}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
       @change=${args.onChange}

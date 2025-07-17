@@ -20,6 +20,9 @@ export const styleEOX = `
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
   }
+  .hidden {
+    visibility: hidden;
+  }
   .editor-toolbar, .CodeMirror {
     border-color: var(--outline-variant) !important;
   }
