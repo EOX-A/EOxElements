@@ -115,7 +115,7 @@ export class EOxDrawToolsList extends LitElement {
    * @param {Event & { target: HTMLButtonElement }} evt - Event object containing button target.
    */
   _handleDelete(evt) {
-    deleteFeatureMethod(evt, this);
+    deleteFeatureMethod(evt, this, this.eoxDrawTools);
     this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
   }
 
