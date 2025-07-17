@@ -7,7 +7,7 @@ Cypress.Commands.add("getClipboardText", () => {
 });
 
 // Destructure TEST_SELECTORS object
-const { drawTools, controller, copyBtn } = TEST_SELECTORS;
+const { drawTools, controller, editorBtn, copyBtn } = TEST_SELECTORS;
 
 /**
  * Check valid geo-json present in the clipboard after copying
@@ -22,6 +22,7 @@ const copyGeoJsonEditorTest = () => {
         });
 
         // Click copy button in geo json editor
+        cy.get(editorBtn).click();
         cy.get(copyBtn).click();
 
         // Check whether the copied json matches with `DUMMY_GEO_JSON`
