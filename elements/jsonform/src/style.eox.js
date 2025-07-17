@@ -74,13 +74,14 @@ export const styleEOX = `
     margin: var(--eox-panel-spacing, 10px);
     margin-left: 0;
     margin-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
     background-color: var(--eox-background-color, transparent);
-    border: var(--eox-panel-border, 1px solid var(--outline-variant));
+    border: var(--eox-panel-border, 1px solid var(--surface-variant));
     border-radius: 3px;
     -webkit-box-shadow: none;
     box-shadow: none;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] .je-tabholder--clear > .je-indented-panel {
+    margin: 0;
   }
   form[data-theme="html"][data-theme-custom="eox"] .je-child-editor-holder {
     margin-bottom: 0;
@@ -92,11 +93,15 @@ export const styleEOX = `
     display: flex;
     align-items: center;
   }
-  .je-object__controls {
-    margin: 0px 0px 0px 10px;
+  form[data-theme="html"][data-theme-custom="eox"] .je-object__controls {
+    margin: 0;
   }
-  .je-header {
-    margin-top: var(--eox-panel-spacing, 10px);
+  form[data-theme="html"][data-theme-custom="eox"] .je-switcher {
+    margin-left: 10px;
+    margin-bottom: 4px;
+  }
+  form[data-theme="html"][data-theme-custom="eox"] .je-header.je-object__title:has(button[style="display: none;"]) {
+    display: none;
   }
   .row:not(.row .row):not(.row:last-child) {
     margin-bottom: 8px;
@@ -145,19 +150,16 @@ export const styleEOX = `
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
   }
+  .form-control select[multiple] {
+    min-block-size: 6rem;
+  }
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus,
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible {
     border: .125rem solid transparent;
     border-color: var(--primary);
   }
-  .form-control select {
-    min-height: 4rem;  
-  }
-  input[type="checkbox"] {
-    border: none !important;
-    padding: 0 !important;
-    display: flex !important;
-    width: auto !important;
+  input[type="checkbox"]:not(.je-modal input) {
+    visibility: hidden;
   }
   .form-control input[disabled] {
     opacity: .5;
