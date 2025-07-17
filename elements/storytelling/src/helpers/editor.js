@@ -204,10 +204,7 @@ export function getSectionIndexes(markdownArr) {
 
   // Check and get current section index from markdown array
   markdownArr.forEach((line, index) => {
-    if (
-      line.startsWith("## ") ||
-      (line.startsWith("# ") && sectionIndexes.length)
-    ) {
+    if (line.startsWith("# ") || line.startsWith("## ")) {
       sectionIndexes.push(index);
     }
   });

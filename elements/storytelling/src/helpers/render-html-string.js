@@ -325,13 +325,17 @@ export function convertValueToType(value) {
  * Click event for add section button in ::after and ::before
  *
  * @param {MouseEvent} event - Click event
- * @param {Boolean} isFirstSection - Whether the clicked section is first section or not
+ * @param {Boolean} isStartSection - Whether the clicked section is start section or not
+ * @param {Boolean} isEndSection - Whether the clicked section is end section or not
+ * @param {Boolean} isDirectClick - Whether the click is direct or not
  * @param {HTMLElement} that - DOM Element
  * @param {import("../main.js").EOxStoryTelling} EOxStoryTelling - EOxStoryTelling instance.
  */
 function generateAddSectionClickEvt(
   event,
-  isFirstSection,
+  isStartSection,
+  isEndSection,
+  isDirectClick,
   that,
   EOxStoryTelling,
 ) {
@@ -341,22 +345,26 @@ function generateAddSectionClickEvt(
   const center = (rect.right + rect.left) / 2;
   const halfSizeBtn = 25 / 2;
 
-  let addBeforeBtnTop = isFirstSection ? rect.top - halfSizeBtn : undefined;
-  let addBeforeBtnBottom = isFirstSection ? rect.top + halfSizeBtn : undefined;
-  const addAfterBtnTop = rect.bottom - halfSizeBtn;
-  const addAfterBtnBottom = rect.bottom + halfSizeBtn;
+  const addBeforeBtnTop = rect.top - halfSizeBtn;
+  const addBeforeBtnBottom = rect.top + halfSizeBtn;
+  let addAfterBtnTop = isEndSection ? rect.bottom - halfSizeBtn : undefined;
+  let addAfterBtnBottom = isEndSection ? rect.bottom + halfSizeBtn : undefined;
   const addBtnLeft = center - halfSizeBtn;
   const addBtnRight = center + halfSizeBtn;
 
   const { clientX, clientY } = event;
 
-  const isBeforeBtnTriggered = isFirstSection
+  const isBeforeBtnTriggered = isStartSection
     ? clientY >= addBeforeBtnTop && clientY <= addBeforeBtnBottom
     : false;
 
-  if (!isBeforeBtnTriggered) {
-    addBeforeBtnTop = undefined;
-    addBeforeBtnBottom = undefined;
+  const isAfterBtnTriggered = isEndSection
+    ? clientY >= addAfterBtnTop && clientY <= addAfterBtnBottom
+    : false;
+
+  if (!isAfterBtnTriggered) {
+    addAfterBtnTop = undefined;
+    addAfterBtnBottom = undefined;
   }
 
   // Check click happen or not
@@ -367,12 +375,17 @@ function generateAddSectionClickEvt(
     (clientY <= addAfterBtnBottom || clientY <= addBeforeBtnBottom);
 
   // If click happened enable custom section selection popup
-  if (isClicked && EOxStoryTelling.showEditor !== "closed") {
+  if ((isClicked || isDirectClick) && EOxStoryTelling.showEditor !== "closed") {
     const sectionIndex = Number(that.getAttribute("data-section"));
+    const isHeroSection = that.classList.contains("hero");
 
-    EOxStoryTelling.addCustomSectionIndex = isBeforeBtnTriggered
-      ? sectionIndex - 1
-      : sectionIndex;
+    if (isHeroSection && isBeforeBtnTriggered) return;
+
+    EOxStoryTelling.addCustomSectionIndex = isDirectClick
+      ? 0
+      : isAfterBtnTriggered
+        ? sectionIndex
+        : sectionIndex - 1;
 
     EOxStoryTelling.requestUpdate();
   }
@@ -450,7 +463,10 @@ export function parseNavWithAddSection(
 
   if (html.length) {
     const sectionStartIndex = navIndex + 1;
-    html[sectionStartIndex].classList.add("section-start");
+    if (sectionStartIndex)
+      html[sectionStartIndex].classList.add("section-after-nav");
+    html[navIndex === 0 ? 1 : 0].classList.add("section-start");
+    html[html.length - 1].classList.add("section-end");
 
     const sectionOverlayObserver = new IntersectionObserver(
       (entries) => {
@@ -467,75 +483,90 @@ export function parseNavWithAddSection(
       { rootMargin: "-50% 0px" },
     );
 
-    html.slice(sectionStartIndex).forEach((section, key) => {
-      if (!section.classList) return;
-      if (section.classList.contains("section-wrap"))
-        containsSectionWrap = true;
+    html
+      .slice(0, navIndex === -1 ? 0 : navIndex)
+      .concat(html.slice(sectionStartIndex))
+      .forEach((section, key) => {
+        if (!section.classList) return;
+        if (section.classList.contains("section-wrap"))
+          containsSectionWrap = true;
 
-      const eoxMap = section.querySelector("eox-map");
-      const isTour = section.classList.contains("tour");
-      if (eoxMap) {
-        const sectionChildren = Array.from(section.children).filter((child) => {
-          return (
-            child.tagName.toLowerCase() !== "section-step" &&
-            child.getAttribute("as") !== "eox-map"
+        const eoxMap = section.querySelector("eox-map");
+        const isTour = section.classList.contains("tour");
+        if (eoxMap) {
+          const sectionChildren = Array.from(section.children).filter(
+            (child) => {
+              return (
+                child.tagName.toLowerCase() !== "section-step" &&
+                child.getAttribute("as") !== "eox-map"
+              );
+            },
           );
-        });
-        const eoxMapChildren = Array.from(eoxMap.children);
-        const children = [...sectionChildren, ...eoxMapChildren];
-        if (children.length) {
-          const hasOverlayClass = Array.from(eoxMap.classList).filter(
-            (className) => className.startsWith("overlay-"),
-          );
+          const eoxMapChildren = Array.from(eoxMap.children);
+          const children = [...sectionChildren, ...eoxMapChildren];
+          if (children.length) {
+            const hasOverlayClass = Array.from(eoxMap.classList).filter(
+              (className) => className.startsWith("overlay-"),
+            );
 
-          const overlayMap = document.createElement("div");
-          overlayMap.className = "eox-map-overlay";
-          overlayMap.classList.add(
-            hasOverlayClass.length ? hasOverlayClass[0] : "overlay-br",
-          );
+            const overlayMap = document.createElement("div");
+            overlayMap.className = "eox-map-overlay";
+            overlayMap.classList.add(
+              hasOverlayClass.length ? hasOverlayClass[0] : "overlay-br",
+            );
 
-          const overlayMapContent = document.createElement("div");
-          overlayMapContent.className = "eox-map-overlay-content";
+            const overlayMapContent = document.createElement("div");
+            overlayMapContent.className = "eox-map-overlay-content";
 
-          children.forEach((child) => overlayMapContent.appendChild(child));
-          overlayMap.appendChild(overlayMapContent);
-          eoxMap.innerHTML = "";
-          section.insertBefore(overlayMap, eoxMap.nextSibling);
+            children.forEach((child) => overlayMapContent.appendChild(child));
+            overlayMap.appendChild(overlayMapContent);
+            eoxMap.innerHTML = "";
+            section.insertBefore(overlayMap, eoxMap.nextSibling);
 
-          if (isTour) {
-            sectionOverlayObserver.observe(section);
-            sectionOverlayObservers.push(sectionOverlayObserver);
+            if (isTour) {
+              sectionOverlayObserver.observe(section);
+              sectionOverlayObservers.push(sectionOverlayObserver);
+            }
           }
         }
-      }
 
-      section.classList.add("section-item");
-      section.setAttribute("data-section", `${key + 1}`);
+        section.classList.add("section-item");
+        section.setAttribute("data-section", `${key + 1}`);
 
-      // Add click event function to identify add button click
-      if (showEditor !== undefined) {
-        const isFirstSection = section.classList.contains("section-start");
+        // Add click event function to identify add button click
+        if (showEditor !== undefined) {
+          const isStartSection = section.classList.contains("section-start");
+          const isEndSection = section.classList.contains("section-end");
 
-        section.addEventListener("click", function (event) {
-          generateAddSectionClickEvt(
-            /** @type {MouseEvent} */ (event),
-            isFirstSection,
-            /** @type {HTMLElement} */ (section),
-            EOxStoryTelling,
-          );
-        });
-      }
-    });
+          section.addEventListener("click", function (event) {
+            generateAddSectionClickEvt(
+              /** @type {MouseEvent} */ (event),
+              isStartSection,
+              isEndSection,
+              false,
+              /** @type {HTMLElement} */ (section),
+              EOxStoryTelling,
+            );
+          });
+        }
+      });
   }
 
   if (!containsSectionWrap) {
     let sectionWrap = document.createElement("div");
-    sectionWrap.className = "section-wrap container section-item";
+    sectionWrap.className = "section-wrap container section-item section-start";
     html.forEach((element) => {
       sectionWrap.appendChild(element);
     });
     sectionWrap.addEventListener("click", function (event) {
-      generateAddSectionClickEvt(event, false, this, EOxStoryTelling);
+      generateAddSectionClickEvt(
+        event,
+        false,
+        false,
+        true,
+        this,
+        EOxStoryTelling,
+      );
     });
     html = [sectionWrap];
   }
