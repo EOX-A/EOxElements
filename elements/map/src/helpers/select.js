@@ -119,6 +119,12 @@ export class EOxSelectInteraction {
         lat: coordinates[1].toFixed(options?.precision || 2),
       };
     };
+
+    const hasNoZeros = (obj) => {
+      // Check if the object has no zero values
+      return Object.values(obj).every((value) => value !== 0);
+    };
+
     // If the selectLayer is a VectorLayer or VectorTile, set up the selection styling layer
     if (
       this.selectLayer instanceof VectorLayer ||
@@ -393,7 +399,12 @@ export class EOxSelectInteraction {
               const key = (i + 1).toString();
               html[`band${key}`] = value; // Log each key-value pair in the data object
             }
-            if (this.tooltipElement) {
+            if (!hasNoZeros(html)) {
+              // If the html object has zero values, do not render the tooltip
+              overlay.setPosition(null); // Hide the tooltip if there are zero values
+            }
+            // If the html object has no zero values, add the picked coordinates
+            else if (this.tooltipElement) {
               // add the picked coordinates to the html
               if (options?.coordinates) {
                 Object.assign(html, pickedCoordinate(event));
