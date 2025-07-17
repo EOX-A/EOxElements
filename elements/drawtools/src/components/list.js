@@ -183,7 +183,14 @@ export class EOxDrawToolsList extends LitElement {
             : isFeatureClicked
               ? "fill"
               : nothing;
-          const propertyName = feature.get(this.featureNameKey);
+
+          const pathParts = this.featureNameKey?.split(".");
+          const propertyName =
+            feature.get(this.featureNameKey) ||
+            pathParts?.reduce((obj, part) => obj?.[part], {
+              ...feature.getProperties(),
+            });
+
           const title = propertyName
             ? propertyName
             : `${this.featureName} ${featureNumber}`;
