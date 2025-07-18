@@ -1,13 +1,13 @@
 import { onDrawEndMethod, initSelection } from "./";
 
 import { getElement } from "@eox/elements-utils";
+import { exitSelection } from "./handle-layer-id";
 
 /**
  * Initializes the draw layer, interacts with the map, and returns map instances.
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  * @param {Boolean} multipleFeatures - Allow adding more than one feature at a time
- * @returns {{EoxMap: import("@eox/map").EOxMap, OlMap: import("ol").Map}} - The map instances.
  */
 const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = getElement(EoxDrawTool.for);
@@ -95,12 +95,38 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
 
   // Initialize selection interactions
   initSelection(EoxDrawTool, EoxMap, EoxDrawTool.layerId);
+  const onModifyEnd = () => EoxDrawTool.onModifyEnd()
+  const onAddFeatures =  () => onDrawEndMethod(EoxDrawTool)
 
-  EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.onModifyEnd());
+  EoxDrawTool.modify?.on("modifyend", onModifyEnd);
 
-  EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
+  EoxMap.addEventListener("addfeatures", onAddFeatures);
 
-  return { EoxMap, OlMap };
-};
+  
+  /**
+   * Resets the draw layer, cleaning up interactions and listeners.
+  *
+  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
+  */
+ const reset = (EoxDrawTool) => {
+   if (!EoxDrawTool.eoxMap || !EoxDrawTool.drawLayer) {
+     return;
+    }
+    
+    // Remove the layer from the map
+    EoxDrawTool.eoxMap.map.removeLayer(EoxDrawTool.drawLayer);
+    EoxDrawTool.modify.un("modifyend", onModifyEnd);
+    EoxDrawTool.eoxMap.removeEventListener("addfeatures", onAddFeatures);
 
+    // Clean up references
+    // EoxDrawTool.drawLayer = null;
+    EoxDrawTool.draw = null;
+    EoxDrawTool.modify = null;
+    if (EoxDrawTool.layerId) {
+      exitSelection(EoxDrawTool, EoxDrawTool.eoxMap);
+    }
+  }
+
+    return { EoxMap, OlMap, reset };
+  };
 export default initLayerMethod;

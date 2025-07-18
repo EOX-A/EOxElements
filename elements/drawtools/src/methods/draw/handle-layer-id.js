@@ -38,7 +38,7 @@ export default handleLayerId;
  * @param {import("../../main").EOxDrawTools} EoxDrawTool
  * @param {import("@eox/map").EOxMap} EoxMap
  */
-function exitSelection(EoxDrawTool, EoxMap) {
+export function exitSelection(EoxDrawTool, EoxMap) {
   if (!EoxMap) {
     return;
   }
