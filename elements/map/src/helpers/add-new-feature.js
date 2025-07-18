@@ -47,11 +47,14 @@ export default function addNewFeature(
     if (geom instanceof LineString) {
       const length = getLength(geom, {
         radius: 6378137,
-        projection: "EPSG:3857",
+        projection: EOxMap.projection,
       });
       feature.set("measure", length);
     } else if (geom instanceof Polygon) {
-      const area = getArea(geom, { radius: 6378137, projection: "EPSG:3857" });
+      const area = getArea(geom, {
+        radius: 6378137,
+        projection: EOxMap.projection,
+      });
       feature.set("measure", area);
     }
 
