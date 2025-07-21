@@ -67,7 +67,9 @@ export function handleFiles(e, EOxDrawTool) {
   if (e.target && "value" in e.target) {
     try {
       e.target.value = "";
-    } catch (_) {}
+    } catch (error) {
+      throw error;
+    }
   }
 }
 
