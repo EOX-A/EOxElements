@@ -30,6 +30,8 @@ import {
   PreventScrollStory,
   FlatGeoBufStory,
   CustomTooltipStory,
+  GetFeatureInfoTooltipStory,
+  CoordinatesCustomTooltipsStory,
 } from "./index.js";
 
 export default {
@@ -140,11 +142,17 @@ export const ClickSelect = ClickSelectStory;
  *   <eox-map-tooltip></eox-map-tooltip>
  * </eox-map>
  * ```
+ * The tooltip feature supports Vector, VectorTile, WebGLTile, and (wms) Tile layers.
+ * when hovering or clicking a feature, the tooltip will be updated with the feature properties.
  * This renders a list of all feature properties of the currently selected feature.
  * Note that if multiple interactions are registered (e.g. `pointermove` and `singleclick`),
  * the `pointermove` interaction will have higher priority for the tooltip.
  */
 export const Tooltip = TooltipStory;
+
+/** * The `eox-map` tooltip can also be used to display information about a feature in a (wms) Tile layers on click
+ */
+export const GetFeatureInfoTooltip = GetFeatureInfoTooltipStory;
 
 /**
  * The rendering of feature properties inside the tooltip can be transformed
@@ -175,6 +183,14 @@ export const TooltipWithPropertyTransform = TooltipWithPropertyTransformStory;
  * This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
  */
 export const CustomTooltip = CustomTooltipStory;
+
+/** * The `eox-map` tooltip can also be used to display information about a COG's pixel.
+ * The tooltip will then display the bands values of the hovered/clicked feature.
+ * The tooltip can also provide coordinates of the clicked/selected pixel, it will show it in WGS84 by default.
+ * The coordinates can be transformed to any other projection by setting the `projection` property of the tooltip.
+ * The displayed coordinates decimal places can be set via the `precision` property.
+ */
+export const CoordinatesCustomTooltips = CoordinatesCustomTooltipsStory;
 
 /**
  * Select interactions offer a `highlightById` method, with which vector features can be programmatically selected via their id property.
