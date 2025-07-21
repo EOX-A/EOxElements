@@ -49,19 +49,26 @@ function preventDefaults(e) {
  * Handles file input from drag-and-drop or file selection events,
  * forwarding each file to a specified processing function.
  *
- * @param {InputEvent & { target: HTMLInputElement }} e - The event object from the file input interaction.
+ * @param {DragEvent | InputEvent & { target: HTMLInputElement }} e - The event object from the file input interaction.
  * @param {import("../main.js").EOxDrawTools} EOxDrawTool - The drawing tool instance.
  */
 export function handleFiles(e, EOxDrawTool) {
   preventDefaults(e);
 
-  // Extract files from the event, supporting both drag-and-drop and file input sources
-  const files = e.dataTransfer
-    ? e.dataTransfer.files
-    : /**@type {HTMLInputElement}*/ (e.target).files;
+  let files;
+  if ("dataTransfer" in e && e.dataTransfer) files = e.dataTransfer.files;
+  else if (e.target && "files" in e.target)
+    files = /**@type {HTMLInputElement}*/ (e.target).files;
+  else files = [];
 
   Array.from(files).forEach((file) => importFile(file, EOxDrawTool));
-  e.target.value = "";
+
+  // Only try to clear the value if the target is an HTMLInputElement
+  if (e.target && "value" in e.target) {
+    try {
+      e.target.value = "";
+    } catch (_) {}
+  }
 }
 
 /**
