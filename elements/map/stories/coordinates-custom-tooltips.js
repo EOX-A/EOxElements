@@ -1,7 +1,7 @@
 import { html } from "lit";
 
 customElements.define(
-  "custom-tooltip",
+  "custom-coordinates-tooltip",
   class extends HTMLElement {
     constructor() {
       super();
@@ -144,7 +144,7 @@ const CoordinatesCustomTooltipsStory = {
       .layers=${args.layers}
       .zoom=${args.zoom}
     >
-      <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
+      <custom-coordinates-tooltip is="eox-map-tooltip"></custom-coordinates-tooltip>
     </eox-map>
   `,
 };
