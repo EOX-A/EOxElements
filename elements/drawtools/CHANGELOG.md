@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.0...drawtools-v1.1.1) (2025-07-21)
+
+
+### Bug Fixes
+
+* Disconnect/connect drawtools ([#1780](https://github.com/EOX-A/EOxElements/issues/1780)) ([5b89b87](https://github.com/EOX-A/EOxElements/commit/5b89b87021e45f307b2b67bb115358c5a4989640))
+* Feature import working only once ([#1784](https://github.com/EOX-A/EOxElements/issues/1784)) ([fa193dc](https://github.com/EOX-A/EOxElements/commit/fa193dc12e8ac722f1bd463bd20c499d9db0ac90))
+* Hard-coded projection for features ([#1781](https://github.com/EOX-A/EOxElements/issues/1781)) ([58d8214](https://github.com/EOX-A/EOxElements/commit/58d82145e704b3b7163bf28b7e2553fd0ba1c1fe))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.0.0...drawtools-v1.1.0) (2025-07-17)
 
 
