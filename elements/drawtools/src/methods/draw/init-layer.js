@@ -102,6 +102,9 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
 
   EoxMap.addEventListener("addfeatures", onAddFeatures);
 
+  if (EoxDrawTool.drawnFeatures) {
+    EoxDrawTool.drawLayer.getSource().addFeatures(EoxDrawTool.drawnFeatures);
+  }
   
   /**
    * Resets the draw layer, cleaning up interactions and listeners.
@@ -115,7 +118,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     
     // Remove the layer from the map
     EoxDrawTool.eoxMap.map.removeLayer(EoxDrawTool.drawLayer);
-    EoxDrawTool.modify.un("modifyend", onModifyEnd);
+    EoxDrawTool.modify?.un("modifyend", onModifyEnd);
     EoxDrawTool.eoxMap.removeEventListener("addfeatures", onAddFeatures);
 
     // Clean up references

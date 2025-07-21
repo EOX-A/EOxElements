@@ -357,7 +357,7 @@ export class EOxDrawTools extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.eoxMap?.map.removeLayer(this.drawLayer);
+    this.resetLayer?.(this);
   }
   // Render method for UI display
   render() {
