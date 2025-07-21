@@ -347,10 +347,10 @@ export class EOxSelectInteraction {
 
                     this.tooltipElement.innerHTML = `<pre>${JSON.stringify(html.properties, null, 2)}</pre>`;
                   } else {
-                    this.tooltipElement.innerHTML = `<pre>${responseFeature}</pre>`;
+                    overlay?.setPosition(null); // Hide the tooltip if no responseFeature
                   }
                   // add the picked coordinates to the html
-                  if (options?.coordinates) {
+                  if (options?.coordinates && html) {
                     Object.assign(html?.properties, pickedCoordinate(event));
                   }
 
@@ -401,7 +401,7 @@ export class EOxSelectInteraction {
             }
             if (!hasNoZeros(html)) {
               // If the html object has zero values, do not render the tooltip
-              overlay.setPosition(null); // Hide the tooltip if there are zero values
+              overlay?.setPosition(null); // Hide the tooltip if there are zero values
             }
             // If the html object has no zero values, add the picked coordinates
             else if (this.tooltipElement) {
