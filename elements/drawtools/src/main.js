@@ -313,7 +313,11 @@ export class EOxDrawTools extends LitElement {
    * It then calls requestUpdate to trigger a re-render.
    */
   firstUpdated() {
-    const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
+    const { EoxMap, OlMap, reset } = initLayerMethod(
+      this,
+      this.multipleFeatures,
+    );
+    this.resetLayer = reset;
     this.eoxMap = EoxMap;
     this.#olMap = OlMap;
     this.selectionEvents = createSelectHandler(this);
@@ -342,9 +346,17 @@ export class EOxDrawTools extends LitElement {
     this.requestUpdate("eoxMap", oldValue);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.drawLayer && this.eoxMap) {
+      const { reset } = initLayerMethod(this, this.multipleFeatures);
+      this.resetLayer = reset;
+    }
+  }
+
   disconnectedCallback() {
-    this.eoxMap?.map.removeLayer(this.drawLayer);
     super.disconnectedCallback();
+    this.resetLayer?.(this);
   }
   // Render method for UI display
   render() {

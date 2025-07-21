@@ -26,7 +26,7 @@ const createSelectHandler = (EoxDrawTool) => {
     if (EoxDrawTool.layerId) {
       const hoverInteraction =
         EoxDrawTool.eoxMap.selectInteractions["SelectLayerHoverInteraction"];
-      hoverInteraction.setActive(true);
+      hoverInteraction?.setActive(true);
       EoxDrawTool.eoxMap.addEventListener("select", selectHandler);
     }
   };
@@ -39,7 +39,7 @@ const createSelectHandler = (EoxDrawTool) => {
       EoxDrawTool.eoxMap.selectInteractions?.["SelectLayerHoverInteraction"];
     if (hoverInteraction) {
       hoverInteraction.selectedFids = [];
-      hoverInteraction.setActive(false);
+      hoverInteraction?.setActive(false);
     }
     EoxDrawTool.eoxMap.removeEventListener("select", selectHandler);
   };

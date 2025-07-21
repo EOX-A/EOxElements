@@ -9,7 +9,7 @@ const discardDrawingMethod = (EoxDrawTool) => {
   const discardDrawingActions = () => {
     // Reset drawnFeatures, deactivate drawing, and clear drawLayer's source
     EoxDrawTool.drawnFeatures = [];
-    EoxDrawTool.draw.setActive(false);
+    EoxDrawTool.draw?.setActive(false);
     EoxDrawTool.selectionEvents.removeSelectionEvent();
     EoxDrawTool.drawLayer.getSource().clear();
     //@ts-expect-error TODO
