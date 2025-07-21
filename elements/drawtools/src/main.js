@@ -258,7 +258,7 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
-   * @param {DragEvent} evt - The event object from the file input interaction.
+   * @param {DragEvent | InputEvent & { target: HTMLInputElement }} evt - The event object from the file input interaction.
    */
   handleFilesChange(evt) {
     handleFiles(evt, this);
