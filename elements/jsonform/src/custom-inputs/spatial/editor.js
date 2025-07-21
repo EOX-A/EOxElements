@@ -286,8 +286,7 @@ export class SpatialEditor extends AbstractEditor {
   }
 
   showValidationErrors(errors) {
-    if (this.jsoneditor.options.show_errors === "always") {
-    } else if (
+    if (
       !this.is_dirty &&
       this.previous_error_setting === this.jsoneditor.options.show_errors
     )
