@@ -1,7 +1,6 @@
 import { onDrawEndMethod, initSelection } from "./";
 
 import { getElement } from "@eox/elements-utils";
-import { exitSelection } from "./handle-layer-id";
 
 /**
  * Initializes the draw layer, interacts with the map, and returns map instances.
@@ -123,12 +122,10 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     EoxDrawTool.eoxMap.removeEventListener("addfeatures", onAddFeatures);
 
     // Clean up references
-    // EoxDrawTool.drawLayer = null;
-    EoxDrawTool.draw = null;
-    EoxDrawTool.modify = null;
-    if (EoxDrawTool.layerId) {
-      exitSelection(EoxDrawTool, EoxDrawTool.eoxMap);
+    if (!EoxDrawTool.layerId) {
+      EoxDrawTool.draw = null;
     }
+    EoxDrawTool.modify = null;
   };
 
   return { EoxMap, OlMap, reset };
