@@ -190,6 +190,47 @@ export const createEditor = (element) => {
   });
 
   editor.on("change", () => {
+    // If "categories" is enabled, add error badges to tabs containing
+    // the number of validation errors per tab
+    const errorBadgesStore = {};
+    const tabs = element.renderRoot.querySelector(".je-tabholder--clear");
+    if (tabs) {
+      element.renderRoot.querySelectorAll(".je-tab--top").forEach((t) => {
+        if (t.querySelector(".badge")) {
+          t.removeChild(t.querySelector(".badge"));
+        }
+      });
+      editor.validation_results.forEach((error) => {
+        const currentTabContent = tabs
+          .querySelector(`[data-schemapath='${error.path}']`)
+          .closest(".je-tabholder--clear > .je-indented-panel");
+        const currentTab = element.renderRoot.querySelector(
+          `.je-tab--top#${currentTabContent.id}`,
+        );
+
+        if (errorBadgesStore[currentTabContent.id] === undefined) {
+          errorBadgesStore[currentTabContent.id] = 0;
+        }
+        errorBadgesStore[currentTabContent.id] =
+          errorBadgesStore[currentTabContent.id] + 1;
+
+        const currentBadge = currentTab.querySelector(".badge");
+        if (!currentBadge) {
+          const errorBadge = document.createElement("div");
+          errorBadge.classList.add("badge");
+          Object.assign(errorBadge.style, {
+            top: "0",
+            left: "calc(100% - .7rem)",
+            transform: "unset",
+          });
+          errorBadge.textContent = errorBadgesStore[currentTabContent.id];
+          currentTab.appendChild(errorBadge);
+        } else {
+          currentBadge.textContent = errorBadgesStore[currentTabContent.id];
+        }
+      });
+    }
+
     // Adaptations to DOM in order to fit EOxUI
     // Checkboxes are wrapped in a label with a span
     element.renderRoot
