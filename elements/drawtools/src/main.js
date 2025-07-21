@@ -253,10 +253,6 @@ export class EOxDrawTools extends LitElement {
       this.drawLayer,
       this.eoxMap,
       replaceFeatures,
-      {
-        dataProjection: this.eoxMap.projection,
-        featureProjection: this.projection,
-      },
       animate,
     );
   }
