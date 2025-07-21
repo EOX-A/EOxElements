@@ -269,6 +269,7 @@ export class SpatialEditor extends AbstractEditor {
           }
 
           this.onChange(true);
+          this.jsoneditor.showValidationErrors();
         }
       ),
     );
@@ -282,6 +283,30 @@ export class SpatialEditor extends AbstractEditor {
       });
     }
     super.refreshValue();
+  }
+
+  showValidationErrors(errors) {
+    if (
+      !this.is_dirty &&
+      this.previous_error_setting === this.jsoneditor.options.show_errors
+    )
+      return;
+
+    this.previous_error_setting = this.jsoneditor.options.show_errors;
+
+    const addMessage = (messages, error) => {
+      if (error.path === this.path) {
+        messages.push(error.message);
+      }
+      return messages;
+    };
+    const messages = errors.reduce(addMessage, []);
+
+    if (messages.length) {
+      this.theme.addInputError(this.input, `${messages.join(". ")}.`);
+    } else {
+      this.theme.removeInputError(this.input);
+    }
   }
 
   // Destroy the editor and remove all associated elements
