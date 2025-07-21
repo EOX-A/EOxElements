@@ -275,6 +275,15 @@ export class SpatialEditor extends AbstractEditor {
     this.container.appendChild(this.control);
   }
 
+  refreshValue() {
+    if (this.input.currentlyDrawing) {
+      this.input.updateComplete.then(() => {
+        this.input.startDrawing();
+      });
+    }
+    super.refreshValue();
+  }
+
   // Destroy the editor and remove all associated elements
   destroy() {
     if (this.label && this.label.parentNode)
