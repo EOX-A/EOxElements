@@ -117,6 +117,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     }
     
     // Remove the layer from the map
+    EoxDrawTool.drawLayer.getSource().clear();
     EoxDrawTool.eoxMap.map.removeLayer(EoxDrawTool.drawLayer);
     EoxDrawTool.modify?.un("modifyend", onModifyEnd);
     EoxDrawTool.eoxMap.removeEventListener("addfeatures", onAddFeatures);
