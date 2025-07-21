@@ -91,7 +91,7 @@ export const Markdown = MarkdownStory;
 /**
  * JSON Form based on drawtools - Box
  */
-export const BoundigBox = BoundingBoxStory;
+export const BoundingBox = BoundingBoxStory;
 
 /**
  * JSON Form based on drawtools - Polygon
