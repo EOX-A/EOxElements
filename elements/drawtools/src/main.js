@@ -317,7 +317,10 @@ export class EOxDrawTools extends LitElement {
    * It then calls requestUpdate to trigger a re-render.
    */
   firstUpdated() {
-    const { EoxMap, OlMap, reset } = initLayerMethod(this, this.multipleFeatures);
+    const { EoxMap, OlMap, reset } = initLayerMethod(
+      this,
+      this.multipleFeatures,
+    );
     this.resetLayer = reset;
     this.eoxMap = EoxMap;
     this.#olMap = OlMap;

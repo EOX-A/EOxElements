@@ -95,8 +95,8 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
 
   // Initialize selection interactions
   initSelection(EoxDrawTool, EoxMap, EoxDrawTool.layerId);
-  const onModifyEnd = () => EoxDrawTool.onModifyEnd()
-  const onAddFeatures =  () => onDrawEndMethod(EoxDrawTool)
+  const onModifyEnd = () => EoxDrawTool.onModifyEnd();
+  const onAddFeatures = () => onDrawEndMethod(EoxDrawTool);
 
   EoxDrawTool.modify?.on("modifyend", onModifyEnd);
 
@@ -105,17 +105,17 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   if (EoxDrawTool.drawnFeatures) {
     EoxDrawTool.drawLayer.getSource().addFeatures(EoxDrawTool.drawnFeatures);
   }
-  
+
   /**
    * Resets the draw layer, cleaning up interactions and listeners.
-  *
-  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
-  */
- const reset = (EoxDrawTool) => {
-   if (!EoxDrawTool.eoxMap || !EoxDrawTool.drawLayer) {
-     return;
+   *
+   * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
+   */
+  const reset = (EoxDrawTool) => {
+    if (!EoxDrawTool.eoxMap || !EoxDrawTool.drawLayer) {
+      return;
     }
-    
+
     // Remove the layer from the map
     EoxDrawTool.drawLayer.getSource().clear();
     EoxDrawTool.eoxMap.map.removeLayer(EoxDrawTool.drawLayer);
@@ -129,8 +129,8 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     if (EoxDrawTool.layerId) {
       exitSelection(EoxDrawTool, EoxDrawTool.eoxMap);
     }
-  }
-
-    return { EoxMap, OlMap, reset };
   };
+
+  return { EoxMap, OlMap, reset };
+};
 export default initLayerMethod;
