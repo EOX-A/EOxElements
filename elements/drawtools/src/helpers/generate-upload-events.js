@@ -65,11 +65,7 @@ export function handleFiles(e, EOxDrawTool) {
 
   // Only try to clear the value if the target is an HTMLInputElement
   if (e.target && "value" in e.target) {
-    try {
-      e.target.value = "";
-    } catch (error) {
-      throw error;
-    }
+    e.target.value = "";
   }
 }
 
