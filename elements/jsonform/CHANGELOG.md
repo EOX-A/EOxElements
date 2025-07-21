@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.2.0...jsonform-v1.3.0) (2025-07-21)
+
+
+### Features
+
+* Show number of validation errors per tab ([#1787](https://github.com/EOX-A/EOxElements/issues/1787)) ([c7a371f](https://github.com/EOX-A/EOxElements/commit/c7a371ff1a714553c8c90104eaea40c0916929ad))
+
+
+### Bug Fixes
+
+* Disconnect/connect drawtools ([#1780](https://github.com/EOX-A/EOxElements/issues/1780)) ([5b89b87](https://github.com/EOX-A/EOxElements/commit/5b89b87021e45f307b2b67bb115358c5a4989640))
+* Show validation errors for spatial editor ([#1786](https://github.com/EOX-A/EOxElements/issues/1786)) ([2bd9a09](https://github.com/EOX-A/EOxElements/commit/2bd9a0999bbf3ba26233e6ac185d55fd9b1e912b))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.1.1...jsonform-v1.2.0) (2025-07-17)
 
 

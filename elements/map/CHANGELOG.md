@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.1](https://github.com/EOX-A/EOxElements/compare/map-v1.24.0...map-v1.24.1) (2025-07-21)
+
+
+### Bug Fixes
+
+* Hard-coded projection for features ([#1781](https://github.com/EOX-A/EOxElements/issues/1781)) ([58d8214](https://github.com/EOX-A/EOxElements/commit/58d82145e704b3b7163bf28b7e2553fd0ba1c1fe))
+
 ## [1.24.0](https://github.com/EOX-A/EOxElements/compare/map-v1.23.0...map-v1.24.0) (2025-07-16)
 
 
