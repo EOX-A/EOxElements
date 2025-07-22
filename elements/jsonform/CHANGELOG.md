@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.0...jsonform-v1.3.1) (2025-07-22)
+
+
+### Bug Fixes
+
+* Handle not existing tabs ([#1791](https://github.com/EOX-A/EOxElements/issues/1791)) ([706cd79](https://github.com/EOX-A/EOxElements/commit/706cd799699fa9219f16c491ba998acafd5ea727))
+
 ## [1.3.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.2.0...jsonform-v1.3.0) (2025-07-21)
 
 
