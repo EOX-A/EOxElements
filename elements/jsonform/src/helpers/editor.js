@@ -203,7 +203,10 @@ export const createEditor = (element) => {
       editor.validation_results.forEach((error) => {
         const currentTabContent = tabs
           .querySelector(`[data-schemapath='${error.path}']`)
-          .closest(".je-tabholder--clear > .je-indented-panel");
+          ?.closest(".je-tabholder--clear > .je-indented-panel");
+        if (!currentTabContent) {
+          return;
+        }
         const currentTab = element.renderRoot.querySelector(
           `.je-tab--top#${currentTabContent.id}`,
         );
