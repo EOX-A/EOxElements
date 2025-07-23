@@ -407,7 +407,7 @@ export class EOxDrawTools extends LitElement {
             .unstyled=${this.unstyled}
             @changed=${() => {
               this.updateGeoJSON();
-              this.requestUpdate();
+              this.emitDrawnFeatures();
             }}
           ></eox-drawtools-list>`
         : nothing}
