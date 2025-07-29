@@ -100,9 +100,6 @@ export const styleEOX = `
     margin-left: 10px;
     margin-bottom: 4px;
   }
-  form[data-theme="html"][data-theme-custom="eox"] .je-header.je-object__title:has(button[style="display: none;"]) {
-    display: none;
-  }
   .row:not(.row .row):not(.row:last-child) {
     margin-bottom: 8px;
   }
