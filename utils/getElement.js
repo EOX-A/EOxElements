@@ -29,7 +29,9 @@ export const getElement = (stringOrElement) => {
       for (let i = 0; i < allElements.length; i++) {
         if (allElements[i].shadowRoot) {
           domElement = getElementViaQuerySelector(allElements[i].shadowRoot);
-          break;
+          if (domElement) {
+            break;
+          }
         }
       }
     }
