@@ -25,11 +25,13 @@ export const getElement = (stringOrElement) => {
     // This is useful for elements that are inside shadow DOMs
     // and not directly accessible via document.querySelector
     if (!domElement) {
-      document.querySelectorAll("html *").forEach((el) => {
-        if (el.shadowRoot) {
-          domElement = getElementViaQuerySelector(el.shadowRoot);
+      const allElements = document.querySelectorAll("html *");
+      for (let i = 0; i < allElements.length; i++) {
+        if (allElements[i].shadowRoot) {
+          domElement = getElementViaQuerySelector(allElements[i].shadowRoot);
+          break;
         }
-      });
+      }
     }
   } else {
     domElement = stringOrElement;
