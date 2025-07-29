@@ -11,5 +11,5 @@
   "elements/geosearch": "1.0.0",
   "elements/chart": "1.0.0",
   "elements/feedback": "1.0.0",
-  "utils": "1.0.0"
+  "utils": "1.1.0"
 }
