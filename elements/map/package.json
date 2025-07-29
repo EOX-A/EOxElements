@@ -3,7 +3,7 @@
   "version": "1.24.1",
   "type": "module",
   "dependencies": {
-    "@eox/elements-utils": "^1.0.0",
+    "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6",
     "flatgeobuf": "^4.0.1",
     "lit": "^3.2.0",
