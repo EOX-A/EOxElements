@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.2...jsonform-v1.3.3) (2025-07-29)
+
+
+### Bug Fixes
+
+* **style:** Show object editor titles ([d2ddbdd](https://github.com/EOX-A/EOxElements/commit/d2ddbddd571770304635e17e48005f9a46c9fcbb))
+
 ## [1.3.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.1...jsonform-v1.3.2) (2025-07-29)
 
 
