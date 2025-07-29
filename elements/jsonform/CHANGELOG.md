@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.1...jsonform-v1.3.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+
 ## [1.3.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.0...jsonform-v1.3.1) (2025-07-22)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/EOX-A/EOxElements/compare/chart-v1.0.0...chart-v1.0.1) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+
 ## [1.0.0](https://github.com/EOX-A/EOxElements/compare/chart-v0.4.0...chart-v1.0.0) (2025-06-30)
 
 
