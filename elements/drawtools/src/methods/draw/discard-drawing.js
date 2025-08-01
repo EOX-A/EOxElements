@@ -10,7 +10,8 @@ const discardDrawingMethod = (EoxDrawTool) => {
     // Reset drawnFeatures, deactivate drawing, and clear drawLayer's source
     EoxDrawTool.drawnFeatures = [];
     EoxDrawTool.draw.setActive(false);
-    EoxDrawTool.selectionEvents.removeSelectionEvent();
+    const isSelectBased = !!EoxDrawTool.layerId;
+    if (isSelectBased) EoxDrawTool.selectionEvents.removeSelectionEvent();
     EoxDrawTool.drawLayer.getSource().clear();
     //@ts-expect-error TODO
     EoxDrawTool.geoJSON = null;
