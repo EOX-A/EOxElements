@@ -1,0 +1,45 @@
+[{
+  "type": "MapboxStyle",
+  "properties": {
+    "id": "mapboxStyleGroup",
+    "title": "mapboxStyleGroup",
+    "mapboxStyle": {
+      "version": 8,
+      "name": "Simple Style",
+      "sources": {
+        "points": {
+          "type": "geojson",
+          "data": {
+            "type": "FeatureCollection",
+            "features": [
+              {
+                "type": "Feature",
+                "properties": {
+                  "name": "My Point"
+                },
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    0,
+                    0
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      },
+      "layers": [
+        {
+          "id": "point-layer",
+          "type": "circle",
+          "source": "points",
+          "paint": {
+            "circle-radius": 8,
+            "circle-color": "#007cbf"
+          }
+        }
+      ]
+    }
+  }
+}]
