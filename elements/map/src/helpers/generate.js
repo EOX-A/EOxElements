@@ -263,6 +263,24 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     );
   }
 
+  // update entire layer if MapboxStyle has changed
+  if (
+    newLayerDefinition.type === "MapboxStyle" &&
+    JSON.stringify(newLayerDefinition.properties.mapboxStyle) !==
+      JSON.stringify(existingJsonDefinition.properties.mapboxStyle)
+  ) {
+    /** @type {import("../custom/layers/MapboxStyle").default} */ (
+      existingLayer
+    )
+      .getLayers()
+      .clear();
+    //@ts-expect-error MapboxStyle-Layers can update via `applyMapboxStyle`
+    existingLayer.applyMapboxStyle(
+      newLayerDefinition.properties.mapboxStyle,
+      newLayerDefinition.properties.applyOptions,
+    );
+  }
+
   // Update style if different
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&

@@ -10,6 +10,7 @@ import {
   WMTSTileGridStory,
   StaticImageLayerStory,
   STACLayerStory,
+  MapboxStyleLayerStory,
   GeoTIFFLayerStory,
   GroupLayerStory,
   ControlsStory,
@@ -92,6 +93,11 @@ export const StaticImage = StaticImageLayerStory;
  * Renders STAC Layer using STAC url json.
  */
 export const STACLayer = STACLayerStory;
+
+/**
+ * Renders a Layer Composition using Mapbox Styles
+ */
+export const MapboxStyleLayer = MapboxStyleLayerStory;
 
 /**
  * Renders `GeoTIFF` layer as `WebGLTile`

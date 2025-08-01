@@ -38,6 +38,7 @@ export type OLAdvancedLayers = {
   WebGLTile: typeof import("ol/layer/WebGLTile").default;
   WebGLVector: typeof import("ol/layer/WebGLVector").default;
   STAC: typeof import("ol-stac").default;
+  MapboxStyle: typeof import("./custom/layers/MapboxStyle.js").default;
 };
 
 export type OLBasicSources = {
@@ -140,6 +141,9 @@ export type EOxLayerType<
   ? Omit<OlLayerOption<T>, "sources"> & { sources?: EoxSource<S>[] }
   : OlLayerOption<T>) & {
   type: T;
+  zIndex?: number;
+  visible?: boolean;
+  opacity?: number;
   properties?: {
     id: string;
     [key: string]: any;
@@ -181,4 +185,6 @@ export type EoxLayer =
   | EOxLayerType<"Image", "ImageWMS">
   | EOxLayerType<"Image", "Raster">
   | EOxLayerType<"Image", "IIIF">
+  | EOxLayerType<"STAC", never>
+  | EOxLayerType<"MapboxStyle", never>
   | EOxLayerTypeGroup;

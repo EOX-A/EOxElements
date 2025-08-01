@@ -1,0 +1,72 @@
+[
+      {
+        "type": "MapboxStyle",
+        "properties": {
+          "id": "mapboxStyleGroup",
+          "title": "mapboxStyleGroup",
+          "mapboxStyle": {
+            "version": 8,
+            "sources": {
+              "osm": {
+                "type": "raster",
+                "tiles": ["https://a.tile.openstreetmap.org/{z}/{x}/{y}.png"],
+                "tileSize": 256,
+                "attribution": "© OpenStreetMap contributors"
+              },
+              "pointSource": {
+                "type": "geojson",
+                "data": {
+                  "type": "FeatureCollection",
+                  "features": [
+                    {
+                      "type": "Feature",
+                      "geometry": {
+                        "type": "Point",
+                        "coordinates": [0, 0]
+                      },
+                      "properties": {}
+                    },
+                    {
+                      "type": "Feature",
+                      "geometry": {
+                        "type": "Point",
+                        "coordinates": [10, 10]
+                      },
+                      "properties": {}
+                    }
+                  ]
+                }
+              }
+            },
+            "layers": [
+              {
+                "id": "osm-base",
+                "type": "raster",
+                "source": "osm",
+                "minzoom": 0,
+                "maxzoom": 19
+              },
+              {
+                "id": "point-halo",
+                "type": "circle",
+                "source": "pointSource",
+                "paint": {
+                  "circle-radius": 10,
+                  "circle-color": "#0000ff",
+                  "circle-opacity": 0.5
+                }
+              },
+              {
+                "id": "point-main",
+                "type": "circle",
+                "source": "pointSource",
+                "paint": {
+                  "circle-radius": 5,
+                  "circle-color": "#ff0000"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]

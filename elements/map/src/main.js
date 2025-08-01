@@ -315,6 +315,9 @@ export class EOxMap extends LitElement {
    * @param {Array<EoxLayer>} layers - An array of layer configurations.
    */
   set layers(layers) {
+    console.log("set layers");
+    console.log(layers);
+
     this.#layers = setLayersMethod(layers, this.#layers, this);
   }
 

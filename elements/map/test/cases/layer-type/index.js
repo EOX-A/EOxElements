@@ -2,6 +2,7 @@
 
 export { default as loadImageWmsLayer } from "./load-image-wms-layer";
 export { default as loadStacLayer } from "./load-stac-layer";
+export { default as loadMapboxStyleLayer } from "./load-mapbox-style-layer";
 export { default as loadTileWmsLayer } from "./load-tile-wms-layer";
 export { default as loadVectorTileLayer } from "./load-vector-tile-layer";
 export { default as loadWmtsWithTileGrid } from "./load-wmts-with-tile-grid";
