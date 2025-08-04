@@ -153,7 +153,6 @@ export type EOxLayerType<
     id: string;
     [key: string]: any;
   };
-  source?: EoxSource<S>;
   interactions?: T extends "Vector" | "VectorTile"
     ? Array<import("./types").EOxInteraction>
     : never;
@@ -165,6 +164,11 @@ export type EOxLayerTypeGroup = Omit<
 > & {
   layers: EoxLayer[];
 };
+
+export type EOxLayerTypeMapboxStyle = Omit<
+  EOxLayerType<"MapboxStyle", keyof OLSources>,
+  "source" | "sources"
+>;
 
 export type EoxLayer =
   | EOxLayerType<"Vector", "Vector">
@@ -191,5 +195,5 @@ export type EoxLayer =
   | EOxLayerType<"Image", "Raster">
   | EOxLayerType<"Image", "IIIF">
   | EOxLayerType<"STAC">
-  | EOxLayerType<"MapboxStyle">
+  | EOxLayerTypeMapboxStyle
   | EOxLayerTypeGroup;

@@ -91,9 +91,10 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   // Create the OpenLayers layer with the specified options
   const olLayer = new newLayer({
     ...layer,
-    ...(layer.source && {
-      source: createOlSourceFromDefinition(layer.source),
-    }),
+    ...(layer.type !== "MapboxStyle" &&
+      layer.source && {
+        source: createOlSourceFromDefinition(layer.source),
+      }),
     ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
     ...layer.properties,
     style: undefined, // Reset the style; it will be applied later if specified
@@ -241,7 +242,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Check if the new layer is compatible with the existing one
   if (
     newLayerDefinition.type !== existingJsonDefinition.type ||
-    newLayerDefinition.source?.type !== existingJsonDefinition.source?.type
+    (newLayerDefinition.type !== "MapboxStyle" &&
+      newLayerDefinition.source?.type !== existingJsonDefinition.source?.type)
   ) {
     throw new Error(`Layers are not compatible to be updated`);
   }
@@ -251,8 +253,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update source if different
   if (
+    newLayerDefinition.type !== "MapboxStyle" &&
     JSON.stringify(newLayerDefinition.source) !==
-    JSON.stringify(existingJsonDefinition.source)
+      JSON.stringify(existingJsonDefinition.source)
   ) {
     /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
       /** @type {any} **/ existingLayer
