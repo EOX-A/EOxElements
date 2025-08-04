@@ -341,7 +341,7 @@ const styleEOX = `
     position: relative;
     border-bottom: 1px solid #efefef;
   }
-  .story-telling .section-wrap.section-item.section-after-nav{
+  .story-telling .section-wrap.section-item.section-after-nav:not(.tour) {
     margin-top: 2rem;
   }
   .story-telling.editor-enabled .section-wrap.section-item.section-end::after, 

@@ -92,7 +92,7 @@ We will now have a more in-depth look about the map section. The map section sho
 ### Some title for map <!--{ style="color: white; font-size: 1.25rem;" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
-## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
+## Map Tour section <!--{ as="eox-map" prevent-scroll="true" class="overlay-br" mode="tour" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
 ### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
@@ -109,15 +109,15 @@ To change individual parameters like zoom or center, or to change the map layers
 
 ## Image Tour section <!--{ as="img" mode="tour" }-->
 
-### <!--{ src="https://picsum.photos/800/600" }-->
+### <!--{ src="https://picsum.photos/800/600" style="background: #fff0c4;" }-->
 #### This is an image tour.
 It allows you to have different sources for each tour "step".
 
-### <!--{ src="https://picsum.photos/900/700" }-->
+### <!--{ src="https://picsum.photos/900/700" style="background: #ffe7ef;" }-->
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ src="https://picsum.photos/900/800" }-->
+### <!--{ src="https://picsum.photos/900/800" style="background: #e2fffc;" }-->
 #### Third tour step.
 ![](https://placehold.co/200x100)
 
