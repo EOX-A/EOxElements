@@ -195,10 +195,13 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
  */
 function assignNewAttrValue(section, index, elementSelector, parent) {
   const element = parent.querySelector(elementSelector);
+  const attrs = section.steps[index];
 
-  Object.keys(section.steps[index]).forEach((attr) => {
-    element[attr] = section.steps[index][attr];
+  Object.keys(attrs).forEach((attr) => {
+    element[attr] = attrs[attr];
   });
+
+  if (element["mode"] === "tour") element["style"] = "";
 }
 
 /**
