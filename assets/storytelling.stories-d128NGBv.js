@@ -100,7 +100,7 @@ We will now have a more in-depth look about the map section. The map section sho
 ### Some title for map <!--{ style="color: white; font-size: 1.25rem;" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
-## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
+## Map Tour section <!--{ as="eox-map" prevent-scroll="true" class="overlay-br" mode="tour" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
 ### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
@@ -117,15 +117,15 @@ To change individual parameters like zoom or center, or to change the map layers
 
 ## Image Tour section <!--{ as="img" mode="tour" }-->
 
-### <!--{ src="https://picsum.photos/800/600" }-->
+### <!--{ src="https://picsum.photos/800/600" style="background: #fff0c4;" }-->
 #### This is an image tour.
 It allows you to have different sources for each tour "step".
 
-### <!--{ src="https://picsum.photos/900/700" }-->
+### <!--{ src="https://picsum.photos/900/700" style="background: #ffe7ef;" }-->
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ src="https://picsum.photos/900/800" }-->
+### <!--{ src="https://picsum.photos/900/800" style="background: #e2fffc;" }-->
 #### Third tour step.
 ![](https://placehold.co/200x100)
 
@@ -164,4 +164,4 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
           .sb-show-main.sb-main-padded {
             padding: 0;
           }
-        </style>`]},i=_,r=U,s=q,a=F,n=C;var h,p,m,u,g;i.parameters={...i.parameters,docs:{...(h=i.parameters)==null?void 0:h.docs,source:{originalSource:"PrimaryStory",...(m=(p=i.parameters)==null?void 0:p.docs)==null?void 0:m.source},description:{story:"StoryTelling using basic markdownL.",...(g=(u=i.parameters)==null?void 0:u.docs)==null?void 0:g.description}}};var w,y,f,k,S;r.parameters={...r.parameters,docs:{...(w=r.parameters)==null?void 0:w.docs,source:{originalSource:"MarkdownAsURLStory",...(f=(y=r.parameters)==null?void 0:y.docs)==null?void 0:f.source},description:{story:"StoryTelling using markdown URL.",...(S=(k=r.parameters)==null?void 0:k.docs)==null?void 0:S.description}}};var v,M,b,x,T;s.parameters={...s.parameters,docs:{...(v=s.parameters)==null?void 0:v.docs,source:{originalSource:"MarkdownSlotStory",...(b=(M=s.parameters)==null?void 0:M.docs)==null?void 0:b.source},description:{story:"StoryTelling using markdown from the slot.",...(T=(x=s.parameters)==null?void 0:x.docs)==null?void 0:T.description}}};var E,I,O,L,R;a.parameters={...a.parameters,docs:{...(E=a.parameters)==null?void 0:E.docs,source:{originalSource:"MarkdownEditorStory",...(O=(I=a.parameters)==null?void 0:I.docs)==null?void 0:O.source},description:{story:"StoryTelling with editor",...(R=(L=a.parameters)==null?void 0:L.docs)==null?void 0:R.description}}};var z,A,W,H,P;n.parameters={...n.parameters,docs:{...(z=n.parameters)==null?void 0:z.docs,source:{originalSource:"MarkdownInitEventStory",...(W=(A=n.parameters)==null?void 0:A.docs)==null?void 0:W.source},description:{story:"StoryTelling with @init event",...(P=(H=n.parameters)==null?void 0:H.docs)==null?void 0:P.description}}};const B=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor","MarkdownInitEvent"];export{r as MarkdownAsURL,n as MarkdownInitEvent,s as MarkdownInsideSlot,a as MarkdownWithEditor,i as Primary,B as __namedExportsOrder,Y as default};
+        </style>`]},i=_,r=U,s=q,a=F,n=C;var h,p,m,u,g;i.parameters={...i.parameters,docs:{...(h=i.parameters)==null?void 0:h.docs,source:{originalSource:"PrimaryStory",...(m=(p=i.parameters)==null?void 0:p.docs)==null?void 0:m.source},description:{story:"StoryTelling using basic markdownL.",...(g=(u=i.parameters)==null?void 0:u.docs)==null?void 0:g.description}}};var w,y,f,k,v;r.parameters={...r.parameters,docs:{...(w=r.parameters)==null?void 0:w.docs,source:{originalSource:"MarkdownAsURLStory",...(f=(y=r.parameters)==null?void 0:y.docs)==null?void 0:f.source},description:{story:"StoryTelling using markdown URL.",...(v=(k=r.parameters)==null?void 0:k.docs)==null?void 0:v.description}}};var S,b,M,x,T;s.parameters={...s.parameters,docs:{...(S=s.parameters)==null?void 0:S.docs,source:{originalSource:"MarkdownSlotStory",...(M=(b=s.parameters)==null?void 0:b.docs)==null?void 0:M.source},description:{story:"StoryTelling using markdown from the slot.",...(T=(x=s.parameters)==null?void 0:x.docs)==null?void 0:T.description}}};var E,I,O,L,R;a.parameters={...a.parameters,docs:{...(E=a.parameters)==null?void 0:E.docs,source:{originalSource:"MarkdownEditorStory",...(O=(I=a.parameters)==null?void 0:I.docs)==null?void 0:O.source},description:{story:"StoryTelling with editor",...(R=(L=a.parameters)==null?void 0:L.docs)==null?void 0:R.description}}};var z,A,W,H,P;n.parameters={...n.parameters,docs:{...(z=n.parameters)==null?void 0:z.docs,source:{originalSource:"MarkdownInitEventStory",...(W=(A=n.parameters)==null?void 0:A.docs)==null?void 0:W.source},description:{story:"StoryTelling with @init event",...(P=(H=n.parameters)==null?void 0:H.docs)==null?void 0:P.description}}};const B=["Primary","MarkdownAsURL","MarkdownInsideSlot","MarkdownWithEditor","MarkdownInitEvent"];export{r as MarkdownAsURL,n as MarkdownInitEvent,s as MarkdownInsideSlot,a as MarkdownWithEditor,i as Primary,B as __namedExportsOrder,Y as default};
