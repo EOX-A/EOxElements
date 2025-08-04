@@ -136,7 +136,7 @@ export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
 
 export type EOxLayerType<
   T extends keyof OLLayers,
-  S extends keyof OLSources,
+  S extends keyof OLSources | undefined = undefined,
 > = (OlLayerOption<T> extends { sources?: any }
   ? Omit<OlLayerOption<T>, "sources"> & { sources?: EoxSource<S>[] }
   : OlLayerOption<T>) & {
@@ -148,7 +148,7 @@ export type EOxLayerType<
     id: string;
     [key: string]: any;
   };
-  source?: EoxSource<S>;
+  source?: EoxSource<S> | undefined;
   interactions?: T extends "Vector" | "VectorTile"
     ? Array<import("./types").EOxInteraction>
     : never;
@@ -185,6 +185,6 @@ export type EoxLayer =
   | EOxLayerType<"Image", "ImageWMS">
   | EOxLayerType<"Image", "Raster">
   | EOxLayerType<"Image", "IIIF">
-  | EOxLayerType<"STAC", never>
-  | EOxLayerType<"MapboxStyle", never>
+  | EOxLayerType<"STAC">
+  | EOxLayerType<"MapboxStyle">
   | EOxLayerTypeGroup;
