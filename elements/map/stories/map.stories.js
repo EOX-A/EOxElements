@@ -10,6 +10,7 @@ import {
   WMTSTileGridStory,
   StaticImageLayerStory,
   STACLayerStory,
+  MapboxStyleLayerStory,
   GeoTIFFLayerStory,
   GroupLayerStory,
   ControlsStory,
@@ -92,6 +93,15 @@ export const StaticImage = StaticImageLayerStory;
  * Renders STAC Layer using STAC url json.
  */
 export const STACLayer = STACLayerStory;
+
+/**
+ * Renders a Layer Composition using Mapbox Styles.
+ *
+ * A layer of type `MapboxStyle` can take any Mapbox-Style object or URL to an Mapbox-Style document.
+ * The `mapboxStyle` property and the `applyOptions` property of the EOxLayer are mapped to `style`- and `options`-property of `apply` of `ol-mapbox-style` respectively.
+ * (compare https://openlayers.org/ol-mapbox-style/functions/apply.html)
+ */
+export const MapboxStyleLayer = MapboxStyleLayerStory;
 
 /**
  * Renders `GeoTIFF` layer as `WebGLTile`

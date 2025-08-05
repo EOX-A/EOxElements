@@ -6,6 +6,7 @@ export { default as WMTSCapabilitiesLayerStory } from "./wmts-capabilities-layer
 export { default as WMTSTileGridStory } from "./wmts-tile-grid";
 export { default as StaticImageLayerStory } from "./static-image";
 export { default as STACLayerStory } from "./stac-layer";
+export { default as MapboxStyleLayerStory } from "./mapbox-style-layer";
 export { default as GeoTIFFLayerStory } from "./geo-tiff-layer";
 export { default as GroupLayerStory } from "./group-layer";
 export { default as ControlsStory } from "./controls";

@@ -6,6 +6,7 @@ import WebGLPoints from "ol/layer/WebGLPoints";
 import WebGLTile from "ol/layer/WebGLTile";
 import WebGLVector from "ol/layer/WebGLVector";
 import STAC from "ol-stac";
+import MapboxStyle from "../../custom/layers/MapboxStyle.js";
 import { register } from "ol/proj/proj4";
 import proj4 from "proj4";
 
@@ -17,15 +18,13 @@ register(proj4);
 // This includes all standard OpenLayers layers (imported as `olLayers`) and the custom `STAC` layer.
 // This setup allows for dynamic use of these layers across the application.
 window.eoxMapAdvancedOlLayers = {
-  ...{
-    Graticule,
-    Heatmap,
-    Image,
-    Layer,
-    VectorImage,
-    WebGLPoints,
-    WebGLTile,
-    WebGLVector,
-  },
+  Graticule,
+  Heatmap,
+  Layer,
+  VectorImage,
+  WebGLPoints,
+  WebGLTile,
+  WebGLVector,
   STAC,
+  MapboxStyle,
 };

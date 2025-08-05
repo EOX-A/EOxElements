@@ -38,6 +38,7 @@ export type OLAdvancedLayers = {
   WebGLTile: typeof import("ol/layer/WebGLTile").default;
   WebGLVector: typeof import("ol/layer/WebGLVector").default;
   STAC: typeof import("ol-stac").default;
+  MapboxStyle: typeof import("./custom/layers/MapboxStyle.js").default;
 };
 
 export type OLBasicSources = {
@@ -133,22 +134,29 @@ export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
   projection?: import("ol/proj").ProjectionLike;
 };
 
+type SourceProperties<S extends keyof OLSources> = {
+  source?: EoxSource<S>;
+  sources?: EoxSource<S>[];
+};
+
 export type EOxLayerType<
   T extends keyof OLLayers,
-  S extends keyof OLSources,
+  S extends keyof OLSources = never,
 > = (OlLayerOption<T> extends { sources?: any }
   ? Omit<OlLayerOption<T>, "sources"> & { sources?: EoxSource<S>[] }
   : OlLayerOption<T>) & {
   type: T;
+  zIndex?: number;
+  visible?: boolean;
+  opacity?: number;
   properties?: {
     id: string;
     [key: string]: any;
   };
-  source?: EoxSource<S>;
   interactions?: T extends "Vector" | "VectorTile"
     ? Array<import("./types").EOxInteraction>
     : never;
-};
+} & (S extends keyof OLSources ? SourceProperties<S> : {});
 
 export type EOxLayerTypeGroup = Omit<
   EOxLayerType<"Group", keyof OLSources>,
@@ -156,6 +164,11 @@ export type EOxLayerTypeGroup = Omit<
 > & {
   layers: EoxLayer[];
 };
+
+export type EOxLayerTypeMapboxStyle = Omit<
+  EOxLayerType<"MapboxStyle", keyof OLSources>,
+  "source" | "sources"
+>;
 
 export type EoxLayer =
   | EOxLayerType<"Vector", "Vector">
@@ -181,4 +194,6 @@ export type EoxLayer =
   | EOxLayerType<"Image", "ImageWMS">
   | EOxLayerType<"Image", "Raster">
   | EOxLayerType<"Image", "IIIF">
+  | EOxLayerType<"STAC">
+  | EOxLayerTypeMapboxStyle
   | EOxLayerTypeGroup;
