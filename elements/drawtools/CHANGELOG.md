@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.2...drawtools-v1.1.3) (2025-08-05)
+
+
+### Bug Fixes
+
+* List highlighting when discarding drawn features ([#1802](https://github.com/EOX-A/EOxElements/issues/1802)) ([6f3a897](https://github.com/EOX-A/EOxElements/commit/6f3a8979f7d57694a2cf42df41122e5c96cb967c))
+
 ## [1.1.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.1...drawtools-v1.1.2) (2025-07-29)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/EOX-A/EOxElements/compare/map-v1.24.2...map-v1.25.0) (2025-08-05)
+
+
+### Features
+
+* Mapbox style layers ([#1803](https://github.com/EOX-A/EOxElements/issues/1803)) ([2dda494](https://github.com/EOX-A/EOxElements/commit/2dda494592a00158b24983f63c35bf0267509560))
+
 ## [1.24.2](https://github.com/EOX-A/EOxElements/compare/map-v1.24.1...map-v1.24.2) (2025-07-29)
 
 
