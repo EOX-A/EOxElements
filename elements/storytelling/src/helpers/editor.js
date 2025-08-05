@@ -194,6 +194,25 @@ export function exportMdFile(editor) {
 }
 
 /**
+ * Function to toggle property comments
+ *
+ * @param {Object} editor - The SimpleMDE instance
+ */
+export function togglePropertyComments(editor) {
+  const commentBtn = editor.toolbarElements["comment"];
+  const isActive = commentBtn.classList.contains("active");
+  const editorWrapper = editor.element.closest(".editor-wrapper");
+
+  if (isActive) {
+    commentBtn.classList.remove("active");
+    editorWrapper.classList.remove("comment-active");
+  } else {
+    commentBtn.classList.add("active");
+    editorWrapper.classList.add("comment-active");
+  }
+}
+
+/**
  * Get indexes of sections with help of markdown array
  *
  * @param {Array} markdownArr - Current markdown array

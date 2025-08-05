@@ -860,6 +860,12 @@ const styleEOX = `
     bottom: 2rem;
     right: 2rem;
   }
+  .cm-comment {
+    display: none;
+  }
+  .comment-active .cm-comment {
+    display: inline;
+  }
   @media screen and (max-width: 768px) {
     .story-telling .eox-map-overlay.overlay-tl,
     .story-telling .eox-map-overlay.overlay-tr,

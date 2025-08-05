@@ -168,7 +168,7 @@ export class StoryTellingEditor extends LitElement {
     const navHeight = this.isNavigation ? "partial-height" : "";
 
     return html`
-      <div class="editor-wrapper ${navHeight}">
+      <div class="editor-wrapper ${navHeight} comment-active">
         <eox-jsonform
           id="storytelling-editor"
           no-shadow
