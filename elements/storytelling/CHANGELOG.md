@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.2...storytelling-v1.9.3) (2025-08-05)
+
+
+### Bug Fixes
+
+* Tour step CSS isolation, margins ([#1805](https://github.com/EOX-A/EOxElements/issues/1805)) ([4866e2a](https://github.com/EOX-A/EOxElements/commit/4866e2a96d673136c685b3ab2a31cbb25e95adbf))
+
 ## [1.9.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.1...storytelling-v1.9.2) (2025-07-29)
 
 
