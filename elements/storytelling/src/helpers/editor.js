@@ -37,6 +37,121 @@ function handleEditorContainerMouseDown(
 }
 
 /**
+ * Function to check if drag or resize is required
+ *
+ * @param {Object} editorRect - Bounding rectangle of editor
+ * @param {Object} mainRect - Bounding rectangle of main container
+ * @return {{visibilityPercentage: Number, visibleSides: Array}}
+ */
+function calculateVisibilityPercentage(editorRect, mainRect) {
+  const visibleMainTop = Math.max(mainRect.top, 0);
+  const visibleMainLeft = Math.max(mainRect.left, 0);
+  const visibleMainRight = Math.min(
+    mainRect.left + mainRect.width,
+    window.innerWidth,
+  );
+  const visibleMainBottom = Math.min(
+    mainRect.top + mainRect.height,
+    window.innerHeight,
+  );
+
+  const visibleMainWidth = Math.max(0, visibleMainRight - visibleMainLeft);
+  const visibleMainHeight = Math.max(0, visibleMainBottom - visibleMainTop);
+
+  if (visibleMainWidth <= 0 || visibleMainHeight <= 0) {
+    return { visibilityPercentage: 0, visibleSides: [] };
+  }
+
+  const editorLeft = editorRect.left;
+  const editorTop = editorRect.top;
+  const editorRight = editorRect.left + editorRect.width;
+  const editorBottom = editorRect.top + editorRect.height;
+
+  const intersectionLeft = Math.max(editorLeft, visibleMainLeft);
+  const intersectionTop = Math.max(editorTop, visibleMainTop);
+  const intersectionRight = Math.min(editorRight, visibleMainRight);
+  const intersectionBottom = Math.min(editorBottom, visibleMainBottom);
+
+  if (
+    intersectionLeft >= intersectionRight ||
+    intersectionTop >= intersectionBottom
+  ) {
+    return { visibilityPercentage: 0, visibleSides: [] };
+  }
+
+  const intersectionWidth = intersectionRight - intersectionLeft;
+  const intersectionHeight = intersectionBottom - intersectionTop;
+  const intersectionArea = intersectionWidth * intersectionHeight;
+
+  const editorArea = editorRect.width * editorRect.height;
+
+  if (editorArea <= 0) {
+    return { visibilityPercentage: 0, visibleSides: [] };
+  }
+
+  const visibilityPercentage = (intersectionArea / editorArea) * 100;
+
+  const visibleSides = ["top", "bottom", "left", "right"];
+
+  if (visibilityPercentage <= 10) {
+    if (!(editorTop >= visibleMainTop && editorTop <= visibleMainBottom)) {
+      visibleSides.splice(visibleSides.indexOf("top"), 1);
+    }
+    if (
+      !(editorBottom >= visibleMainTop && editorBottom <= visibleMainBottom)
+    ) {
+      visibleSides.splice(visibleSides.indexOf("bottom"), 1);
+    }
+    if (!(editorLeft >= visibleMainLeft && editorLeft <= visibleMainRight)) {
+      visibleSides.splice(visibleSides.indexOf("left"), 1);
+    }
+    if (!(editorRight >= visibleMainLeft && editorRight <= visibleMainRight)) {
+      visibleSides.splice(visibleSides.indexOf("right"), 1);
+    }
+  }
+
+  return { visibilityPercentage: visibilityPercentage, visibleSides };
+}
+
+/**
+ * Function to check if drag or resize is required
+ *
+ * @param {Number} visibilityPercentage - Visibility percentage of editor within main container
+ * @param {Array} visibleSides - Sides of editor that are visible
+ * @param {Number} dy - Difference in y-coordinate
+ * @param {Number} dx - Difference in x-coordinate
+ * @return {{dragDY: Boolean, dragDX: Boolean, resizeDY: Boolean, resizeDX: Boolean}}
+ */
+function dragResizeRequired(visibilityPercentage, visibleSides, dy, dx) {
+  let dragDY = false;
+  let dragDX = false;
+  let resizeDY = false;
+  let resizeDX = false;
+
+  if (visibilityPercentage <= 10) {
+    if (visibleSides.includes("top") && dy < 0) dragDY = true;
+    if (visibleSides.includes("bottom") && dy > 0) dragDY = true;
+    if (visibleSides.includes("left") && dx < 0) dragDX = true;
+    if (visibleSides.includes("right") && dx > 0) dragDX = true;
+  } else {
+    dragDY = true;
+    dragDX = true;
+  }
+
+  if (visibilityPercentage <= 15) {
+    if (visibleSides.includes("top") && dy > 0) resizeDY = true;
+    if (visibleSides.includes("bottom") && dy < 0) resizeDY = true;
+    if (visibleSides.includes("left") && dx > 0) resizeDX = true;
+    if (visibleSides.includes("right") && dx < 0) resizeDX = true;
+  } else {
+    resizeDY = true;
+    resizeDX = true;
+  }
+
+  return { dragDY, dragDX, resizeDY, resizeDX };
+}
+
+/**
  * Function to handle mouse move for dragging and resizing
  *
  * @param {{clientX: Number, clientY: Number}} e - Event for handle mouse move.
@@ -44,32 +159,56 @@ function handleEditorContainerMouseDown(
  * @param {StoryTellingEditor} StoryTellingEditor - Dom element
  */
 function handleMouseMove(e, editorContainer, StoryTellingEditor) {
+  const storyTellingDivEle = StoryTellingEditor.closest(".story-telling");
+  const storyTellingEle = storyTellingDivEle.getRootNode().host;
+  const mainElement = storyTellingEle;
+  const mainRect = mainElement.getBoundingClientRect();
+  const editorRect = editorContainer.getBoundingClientRect();
+
+  const { visibilityPercentage, visibleSides } = calculateVisibilityPercentage(
+    editorRect,
+    mainRect,
+  );
+
   if (StoryTellingEditor.dragging) {
     let dx = e.clientX - StoryTellingEditor.lastX;
     let dy = e.clientY - StoryTellingEditor.lastY;
-    let { top, left } = editorContainer.getBoundingClientRect();
 
-    editorContainer.style.top = `${top + dy}px`;
-    editorContainer.style.left = `${left + dx}px`;
+    let { top, left } = editorRect;
 
-    StoryTellingEditor.lastX = e.clientX;
-    StoryTellingEditor.lastY = e.clientY;
+    const { dragDY, dragDX } = dragResizeRequired(
+      visibilityPercentage,
+      visibleSides,
+      dy,
+      dx,
+    );
+
+    if (dragDY) editorContainer.style.top = `${top + dy}px`;
+    if (dragDX) editorContainer.style.left = `${left + dx}px`;
+    if (dragDY) StoryTellingEditor.lastY = e.clientY;
+    if (dragDX) StoryTellingEditor.lastX = e.clientX;
   }
 
-  if (StoryTellingEditor.dragging || StoryTellingEditor.resizing) {
+  if (StoryTellingEditor.resizing) {
     let dx = StoryTellingEditor.lastX - e.clientX;
     let dy = e.clientY - StoryTellingEditor.lastY;
     let { width, height, left, top } = editorContainer.getBoundingClientRect();
 
+    const { resizeDY, resizeDX } = dragResizeRequired(
+      visibilityPercentage,
+      visibleSides,
+      dy,
+      dx,
+    );
+
     if (StoryTellingEditor.resizing) {
-      editorContainer.style.width = `${width + dx}px`;
-      editorContainer.style.height = `${height + dy}px`;
+      if (resizeDX) editorContainer.style.width = `${width + dx}px`;
+      if (resizeDY) editorContainer.style.height = `${height + dy}px`;
       editorContainer.style.top = `${top}px`;
     }
-    editorContainer.style.left = `${left - dx}px`;
-
-    StoryTellingEditor.lastX = e.clientX;
-    StoryTellingEditor.lastY = e.clientY;
+    if (resizeDX) editorContainer.style.left = `${left - dx}px`;
+    if (resizeDX) StoryTellingEditor.lastX = e.clientX;
+    if (resizeDY) StoryTellingEditor.lastY = e.clientY;
   }
 }
 
