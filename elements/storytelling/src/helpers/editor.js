@@ -160,7 +160,11 @@ function dragResizeRequired(visibilityPercentage, visibleSides, dy, dx) {
  */
 function handleMouseMove(e, editorContainer, StoryTellingEditor) {
   const storyTellingDivEle = StoryTellingEditor.closest(".story-telling");
-  const storyTellingEle = storyTellingDivEle.getRootNode().host;
+  const storyTellingEleNode = /** @type {ShadowRoot} */ (
+    storyTellingDivEle.getRootNode()
+  );
+  const storyTellingEle = storyTellingEleNode.host;
+
   const mainElement = storyTellingEle;
   const mainRect = mainElement.getBoundingClientRect();
   const editorRect = editorContainer.getBoundingClientRect();
