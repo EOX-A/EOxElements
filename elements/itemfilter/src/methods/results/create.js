@@ -16,6 +16,11 @@ export function createItemDetailsMethod(
   aggregationProperty,
   EOxItemFilterResults,
 ) {
+  const highlightedItems = EOxItemFilterResults.results.filter(
+    (item) => item.highlightedText,
+  );
+  const isHighlightedItems = highlightedItems.length > 0;
+
   return html`
     <details
       class="details-results"
@@ -38,7 +43,9 @@ export function createItemDetailsMethod(
             style="--_size: 1rem; padding: 0.7rem; font-size: small"
           >
             ${EOxItemFilterResults.aggregateResults(
-              EOxItemFilterResults.results,
+              isHighlightedItems
+                ? highlightedItems
+                : EOxItemFilterResults.results,
               aggregationProperty,
             ).length}
           </button>
@@ -68,6 +75,8 @@ export function createItemListMethod(
     : results;
 
   const config = EOxItemFilterResults.config;
+  const highlightedItems = items.filter((item) => item.highlightedText);
+  const isHighlightedItems = highlightedItems.length > 0;
 
   const className = (item) =>
     EOxItemFilterResults.selectedResult?.[config.idProperty] ===
@@ -78,7 +87,7 @@ export function createItemListMethod(
   return staticHtml`
     ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul id="results" class="list no-space" part="results">`)}
       ${repeat(
-        items,
+        highlightedItems.length ? highlightedItems : items,
         (item) => item.id,
         (item) => staticHtml`
         ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout-item`) : unsafeStatic(`<li`)}
@@ -168,8 +177,13 @@ export function createItemListMethod(
                 `,
                 () => html`
                   <div class="small-line max truncate">
-                    <span class="title truncate"
-                      >${unsafeHTML(item[config.titleProperty])}</span
+                    <span
+                      class="title truncate ${isHighlightedItems
+                        ? "highlight-enabled"
+                        : ""}"
+                      >${isHighlightedItems
+                        ? unsafeHTML(item.highlightedText)
+                        : unsafeHTML(item[config.titleProperty])}</span
                     >
                   </div>
                 `,

@@ -1,3 +1,5 @@
+import { capitalize } from "./";
+
 /**
  * Highlights matched text in the Fuse.js search results.
  *
@@ -65,11 +67,11 @@ function highlight(
 
       matches.forEach((match) => {
         if (match.key !== matchKey) return; // Skip if the match key does not match
-        set(
-          highlightedItem,
-          match.key,
-          generateHighlightedText(match.value, match.indices), // Highlight the matched text
-        );
+        const value = generateHighlightedText(
+          capitalize(match.value),
+          match.indices,
+        ); // Highlight the matched text
+        highlightedItem["highlightedText"] = value;
       });
 
       return highlightedItem;
