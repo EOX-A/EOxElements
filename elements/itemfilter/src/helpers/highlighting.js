@@ -41,9 +41,12 @@ function highlight(
   const generateHighlightedText = (inputText, regions = []) => {
     let content = "";
     let nextUnhighlightedRegionStartingIndex = 0;
+    let longestIndexValue = 0;
 
-    regions.forEach((region) => {
+    regions.forEach((region, index) => {
       const lastRegionNextIndex = region[1] + 1;
+      if (index && longestIndexValue > region[0]) return;
+      longestIndexValue = region[1];
 
       content += [
         inputText.substring(nextUnhighlightedRegionStartingIndex, region[0]),

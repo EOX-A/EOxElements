@@ -16,11 +16,6 @@ export function createItemDetailsMethod(
   aggregationProperty,
   EOxItemFilterResults,
 ) {
-  const highlightedItems = EOxItemFilterResults.results.filter(
-    (item) => item.highlightedText,
-  );
-  const isHighlightedItems = highlightedItems.length > 0;
-
   return html`
     <details
       class="details-results"
@@ -43,9 +38,7 @@ export function createItemDetailsMethod(
             style="--_size: 1rem; padding: 0.7rem; font-size: small"
           >
             ${EOxItemFilterResults.aggregateResults(
-              isHighlightedItems
-                ? highlightedItems
-                : EOxItemFilterResults.results,
+              EOxItemFilterResults.results,
               aggregationProperty,
             ).length}
           </button>
@@ -87,7 +80,7 @@ export function createItemListMethod(
   return staticHtml`
     ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout fill-grid>`) : unsafeStatic(`<ul id="results" class="list no-space" part="results">`)}
       ${repeat(
-        highlightedItems.length ? highlightedItems : items,
+        items,
         (item) => item.id,
         (item) => staticHtml`
         ${EOxItemFilterResults.resultType === "cards" ? unsafeStatic(`<eox-layout-item`) : unsafeStatic(`<li`)}
@@ -178,12 +171,12 @@ export function createItemListMethod(
                 () => html`
                   <div class="small-line max truncate">
                     <span
-                      class="title truncate ${isHighlightedItems
+                      class="title truncate ${item.highlightedText
                         ? "highlight-enabled"
                         : ""}"
-                      >${isHighlightedItems
-                        ? unsafeHTML(item.highlightedText)
-                        : unsafeHTML(item[config.titleProperty])}</span
+                      >${unsafeHTML(
+                        item.highlightedText || item[config.titleProperty],
+                      )}</span
                     >
                   </div>
                 `,
