@@ -151,8 +151,13 @@ export function createItemListMethod(
                     `,
                   )}
                   <div class="title-container small-line max truncate">
-                    <span class="title truncate"
-                      >${unsafeHTML(item[config.titleProperty])}</span
+                    <span
+                      class="title truncate ${item.highlightedText
+                        ? "highlight-enabled"
+                        : ""}"
+                      >${unsafeHTML(
+                        item.highlightedText || item[config.titleProperty],
+                      )}</span
                     >
                     ${when(
                       !!item[config.subTitleProperty],
