@@ -1,4 +1,4 @@
-import { capitalize } from "./";
+import { capitalize, mergeHighlightIndices } from "./";
 
 /**
  * Highlights matched text in the Fuse.js search results.
@@ -72,7 +72,7 @@ function highlight(
         if (match.key !== matchKey) return; // Skip if the match key does not match
         const value = generateHighlightedText(
           capitalize(match.value),
-          match.indices,
+          mergeHighlightIndices(match.indices),
         ); // Highlight the matched text
         highlightedItem["highlightedText"] = value;
       });

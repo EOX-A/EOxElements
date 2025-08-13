@@ -12,7 +12,7 @@ let _fuse;
  */
 export const indexItems = (items, fuseConfig) => {
   _fuse = new Fuse(items, {
-    threshold: 0.1,
+    threshold: 0.4,
     distance: 50,
     ignoreLocation: true,
     includeMatches: true,
