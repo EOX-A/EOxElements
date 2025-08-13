@@ -14,24 +14,6 @@ function highlight(
   matchKey = "title",
 ) {
   /**
-   * Sets a value at a specified path within an object.
-   *
-   * @param {Object} obj - The object to modify.
-   * @param {string} path - The dot-separated path specifying the location within the object.
-   * @param {*} value - The value to set at the specified path.
-   */
-  const set = (obj, path, value) => {
-    const pathValue = path.split(".");
-    let i;
-
-    for (i = 0; i < pathValue.length - 1; i++) {
-      obj = obj[pathValue[i]];
-    }
-
-    obj[pathValue[i]] = value;
-  };
-
-  /**
    * Generates HTML string with highlighted regions.
    *
    * @param {string} inputText - The text to be highlighted.

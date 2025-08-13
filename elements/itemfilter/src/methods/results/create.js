@@ -68,8 +68,6 @@ export function createItemListMethod(
     : results;
 
   const config = EOxItemFilterResults.config;
-  const highlightedItems = items.filter((item) => item.highlightedText);
-  const isHighlightedItems = highlightedItems.length > 0;
 
   const className = (item) =>
     EOxItemFilterResults.selectedResult?.[config.idProperty] ===
