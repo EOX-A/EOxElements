@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.3...jsonform-v1.4.0) (2025-08-14)
+
+
+### Features
+
+* **style:** More visible editing buttons, floating properties toggle ([#1814](https://github.com/EOX-A/EOxElements/issues/1814)) ([80bcc0d](https://github.com/EOX-A/EOxElements/commit/80bcc0d695baa3159994101e608834ae173bc2fb))
+
 ## [1.3.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.2...jsonform-v1.3.3) (2025-07-29)
 
 
