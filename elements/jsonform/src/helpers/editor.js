@@ -320,7 +320,11 @@ export const createEditor = (element) => {
         if (button.classList.contains("json-editor-btn-edit_properties")) {
           if (
             element.propertiesToggle &&
-            !element.renderRoot.querySelector(".switch-button input").checked
+            !(
+              /**@type {HTMLInputElement}*/ (
+                element.renderRoot.querySelector(".switch-button input")
+              ).checked
+            )
           ) {
             button.classList.add("hidden");
           }
