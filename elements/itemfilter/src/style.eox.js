@@ -80,6 +80,9 @@ li label {
 .title {
   text-transform: var(--text-transform);
 }
+.title.highlight-enabled {
+  text-transform: inherit;
+}
 .subtitle {
   opacity: .7;
 }

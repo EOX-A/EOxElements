@@ -25,7 +25,9 @@ function createFilterMethod(filterObject, tabIndex, EOxItemFilter) {
         id="${filterId}"
         .tabIndex=${tabIndex}
         .filterObject=${filterObject}
+        .results=${EOxItemFilter.results}
         .unstyled=${EOxItemFilter.unstyled}
+        @result=${EOxItemFilter.updateResult}
         @filter=${() => EOxItemFilter.search()}
       ></eox-itemfilter-text>`;
 

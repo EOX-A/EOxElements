@@ -1,3 +1,5 @@
+import { capitalize, mergeHighlightIndices } from "./";
+
 /**
  * Highlights matched text in the Fuse.js search results.
  *
@@ -12,24 +14,6 @@ function highlight(
   matchKey = "title",
 ) {
   /**
-   * Sets a value at a specified path within an object.
-   *
-   * @param {Object} obj - The object to modify.
-   * @param {string} path - The dot-separated path specifying the location within the object.
-   * @param {*} value - The value to set at the specified path.
-   */
-  const set = (obj, path, value) => {
-    const pathValue = path.split(".");
-    let i;
-
-    for (i = 0; i < pathValue.length - 1; i++) {
-      obj = obj[pathValue[i]];
-    }
-
-    obj[pathValue[i]] = value;
-  };
-
-  /**
    * Generates HTML string with highlighted regions.
    *
    * @param {string} inputText - The text to be highlighted.
@@ -39,9 +23,12 @@ function highlight(
   const generateHighlightedText = (inputText, regions = []) => {
     let content = "";
     let nextUnhighlightedRegionStartingIndex = 0;
+    let longestIndexValue = 0;
 
-    regions.forEach((region) => {
+    regions.forEach((region, index) => {
       const lastRegionNextIndex = region[1] + 1;
+      if (index && longestIndexValue > region[0]) return;
+      longestIndexValue = region[1];
 
       content += [
         inputText.substring(nextUnhighlightedRegionStartingIndex, region[0]),
@@ -65,11 +52,11 @@ function highlight(
 
       matches.forEach((match) => {
         if (match.key !== matchKey) return; // Skip if the match key does not match
-        set(
-          highlightedItem,
-          match.key,
-          generateHighlightedText(match.value, match.indices), // Highlight the matched text
-        );
+        const value = generateHighlightedText(
+          capitalize(match.value),
+          mergeHighlightIndices(match.indices),
+        ); // Highlight the matched text
+        highlightedItem["highlightedText"] = value;
       });
 
       return highlightedItem;
