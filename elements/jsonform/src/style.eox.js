@@ -106,7 +106,8 @@ export const styleEOX = `
   }
   form[data-theme="html"][data-theme-custom="eox"] label.je-form-input-label:not([data-schematype="boolean"]),
   form[data-theme="html"][data-theme-custom="eox"] p.je-form-input-label:not([data-schematype="boolean"]),
-  form[data-theme="html"][data-theme-custom="eox"] .row .je-object__title {
+  form[data-theme="html"][data-theme-custom="eox"] .row .je-object__title,
+  form[data-theme="html"][data-theme-custom="eox"] .row .je-header {
     display: inline-flex;
     align-items: center;
     max-width: 100%;
