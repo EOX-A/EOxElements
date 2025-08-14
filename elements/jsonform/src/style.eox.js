@@ -56,6 +56,7 @@ export const styleEOX = `
   form[data-theme="html"][data-theme-custom="eox"] .tabs.je-tabholder--top {
     margin-left: 0;
     justify-content: start;
+    overflow-x: auto;
   }
   form[data-theme="html"][data-theme-custom="eox"] .je-tabholder--clear > .je-indented-panel {
     border-top-left-radius: 0;
@@ -104,7 +105,9 @@ export const styleEOX = `
     margin-bottom: 8px;
   }
   form[data-theme="html"][data-theme-custom="eox"] label.je-form-input-label:not([data-schematype="boolean"]),
-  form[data-theme="html"][data-theme-custom="eox"] p.je-form-input-label:not([data-schematype="boolean"]) {
+  form[data-theme="html"][data-theme-custom="eox"] p.je-form-input-label:not([data-schematype="boolean"]),
+  form[data-theme="html"][data-theme-custom="eox"] .row .je-object__title,
+  form[data-theme="html"][data-theme-custom="eox"] .row .je-header {
     display: inline-flex;
     align-items: center;
     max-width: 100%;
