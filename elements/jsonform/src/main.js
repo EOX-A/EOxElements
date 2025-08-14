@@ -1,4 +1,5 @@
 import { LitElement, html } from "lit";
+import { when } from "lit/directives/when.js";
 import {
   createEditor,
   parseProperty,
@@ -223,8 +224,55 @@ export class EOxJSONForm extends LitElement {
           input[type="checkbox"].json-editor-opt-in {
           display: none !important;
         }
+        .switch-button {
+          position: fixed;
+          top: calc(100dvh - 4rem);
+          right: 60px;
+          z-index: 5;
+          transform: scale(1.25);
+        }
+        .switch-button i > svg {
+          padding: 0.3rem;
+        }
+        @media screen and (max-width: 1024px) {
+          .switch-button {
+            right: 20px;
+          }
+        }
       </style>
       <form></form>
+      <!-- Shows a switch/toggle for all the object editing buttons
+      If unchecked, the editing buttons are not shown, if checked, they are shown -->
+      ${when(
+        this.options?.disable_properties === false && this.propertiesToggle,
+        () => html`
+          <label class="switch icon switch-button">
+            <input
+              type="checkbox"
+              @input=${(e) => {
+                this.renderRoot
+                  .querySelectorAll(".json-editor-btn-edit_properties")
+                  .forEach((b) =>
+                    e.target.checked
+                      ? b.classList.remove("hidden")
+                      : b.classList.add("hidden"),
+                  );
+              }}
+            />
+            <span>
+              <i class="small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <title>Show/hide properties editor</title>
+                  <path
+                    d="M20.7,7C21.1,6.6 21.1,6 20.7,5.6L18.4,3.3C18,2.9 17.4,2.9 17,3.3L15.2,5.1L19,8.9M3,17.2V21H6.8L17.8,9.9L14.1,6.1L3,17.2M7,2V5H10V7H7V10H5V7H2V5H5V2H7Z"
+                  />
+                </svg>
+              </i>
+            </span>
+            <div class="tooltip left">More properties</div>
+          </label>
+        `,
+      )}
     `;
   }
 }

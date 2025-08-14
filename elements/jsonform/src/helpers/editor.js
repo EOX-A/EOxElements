@@ -158,35 +158,6 @@ export const createEditor = (element) => {
       aceUsed.ace_editor_instance.renderer.attachToShadowRoot();
       aceUsed.ace_editor_instance.resize();
     }
-
-    // Shows a switch/toggle for all the object editing buttons
-    // If unchecked, the editing buttons are not shown, if checked, they are shown
-    if (
-      element.options?.disable_properties === false &&
-      element.propertiesToggle
-    ) {
-      const propertiesToggle = document.createElement("label");
-      propertiesToggle.classList.add("switch");
-      Object.assign(propertiesToggle.style, {
-        position: "absolute",
-        top: 0,
-        right: 0,
-        marginTop: "var(--eox-panel-spacing, 10px)",
-      });
-      propertiesToggle.innerHTML = `
-        <input type="checkbox">
-        <span class="left-padding small-padding">Object properties editing</span>
-      `;
-      const checkBox = propertiesToggle.querySelector("input");
-      checkBox.addEventListener("change", () => {
-        element.renderRoot
-          .querySelectorAll(".json-editor-btn-edit_properties")
-          .forEach((b) => b.classList.toggle("hidden"));
-      });
-      element.renderRoot
-        .querySelector(".je-object__container")
-        .appendChild(propertiesToggle);
-    }
   });
 
   editor.on("change", () => {
@@ -269,9 +240,18 @@ export const createEditor = (element) => {
       if (button.classList.contains("json-editor-btn-")) {
         button.querySelector("i")?.remove();
       } else {
-        ["circle", "small", "transparent", "primary-text", "no-margin"].forEach(
-          (c) => button.classList.add(c),
-        );
+        if (
+          !button.classList.contains("json-editor-btn-edit") &&
+          !button.classList.contains("json-editor-btn-edit_properties")
+        ) {
+          [
+            "circle",
+            "small",
+            "transparent",
+            "primary-text",
+            "no-margin",
+          ].forEach((c) => button.classList.add(c));
+        }
         if (button.classList.contains("json-editor-btntype-add")) {
           button.innerHTML = `
           <i class="small">
@@ -329,19 +309,30 @@ export const createEditor = (element) => {
           </i>`;
         }
         if (button.classList.contains("json-editor-btn-edit")) {
+          button.classList.add("small");
+          button.classList.add("small-margin");
           button.innerHTML = `
           <i class="small">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>square-edit-outline</title><path d="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z" /></svg>
-          </i>`;
+          </i>
+          <span>JSON</span>`;
         }
         if (button.classList.contains("json-editor-btn-edit_properties")) {
-          if (element.propertiesToggle) {
+          if (
+            element.propertiesToggle &&
+            !element.renderRoot.querySelector(".switch-button input").checked
+          ) {
             button.classList.add("hidden");
           }
+          button.classList.add("small");
+          button.classList.add("small-margin");
           button.innerHTML = `
           <i class="small">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>format-list-bulleted</title><path d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z" /></svg>
-          </i>`;
+          </i>
+          <span>
+            properties
+          </span>`;
         }
         if (button.classList.contains("json-editor-btn-save")) {
           button.innerHTML = `
