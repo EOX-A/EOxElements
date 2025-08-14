@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.4](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.3...itemfilter-v1.10.4) (2025-08-14)
+
+
+### Bug Fixes
+
+* Fuzzy search matching and highlighting ([#1810](https://github.com/EOX-A/EOxElements/issues/1810)) ([e5c89ea](https://github.com/EOX-A/EOxElements/commit/e5c89ea1ee80f0c593447928d2b179a4390d1c03))
+
 ## [1.10.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.2...itemfilter-v1.10.3) (2025-07-29)
 
 
