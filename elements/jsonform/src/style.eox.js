@@ -20,6 +20,13 @@ export const styleEOX = `
     --background-color: var(--eox-background-color, transparent);
     background-color: var(--background-color, transparent);
   }
+  :host {
+    position: relative;
+  }
+  .form-container {
+    overflow: auto;
+    height: 100%;
+  }
   .hidden {
     visibility: hidden;
   }
