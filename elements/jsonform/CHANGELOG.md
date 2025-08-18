@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.0...jsonform-v1.4.1) (2025-08-18)
+
+
+### Bug Fixes
+
+* **style:** Positioning of floating properties toggle inside containers ([#1816](https://github.com/EOX-A/EOxElements/issues/1816)) ([4f95d44](https://github.com/EOX-A/EOxElements/commit/4f95d44c5ec8dd7ed02618da56314b8320555f3a))
+
 ## [1.4.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.3...jsonform-v1.4.0) (2025-08-14)
 
 
