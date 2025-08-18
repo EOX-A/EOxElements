@@ -225,9 +225,9 @@ export class EOxJSONForm extends LitElement {
           display: none !important;
         }
         .switch-button {
-          position: fixed;
-          top: calc(100dvh - 4rem);
-          right: 60px;
+          position: absolute;
+          bottom: 2rem;
+          right: 3rem;
           z-index: 5;
           transform: scale(1.25);
         }
@@ -241,7 +241,9 @@ export class EOxJSONForm extends LitElement {
           }
         }
       </style>
-      <form></form>
+      <div class="form-container">
+        <form></form>
+      </div>
       <!-- Shows a switch/toggle for all the object editing buttons
       If unchecked, the editing buttons are not shown, if checked, they are shown -->
       ${when(
