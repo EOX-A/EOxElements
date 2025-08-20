@@ -234,146 +234,144 @@ export class EOxSelectInteraction {
         this.eoxMap.dispatchEvent(selectdEvt);
       };
 
-        // Set up the map event listener for the specified condition (e.g., click, pointermove)
-        this.eoxMap.map.on(options.condition || "click", this.listener);
+      // Set up the map event listener for the specified condition (e.g., click, pointermove)
+      this.eoxMap.map.on(options.condition || "click", this.listener);
 
-        // Set up the map event listener for the specified condition (e.g., click, pointermove)
-        this.selectLayer.on("change:opacity", () => {
-          this.selectStyleLayer.setOpacity(this.selectLayer.getOpacity());
-        });
+      // Set up the map event listener for the specified condition (e.g., click, pointermove)
+      this.selectLayer.on("change:opacity", () => {
+        this.selectStyleLayer.setOpacity(this.selectLayer.getOpacity());
+      });
 
-        this.selectLayer.on("change:visible", () => {
-          const visible = this.selectLayer.getVisible();
-          this.selectStyleLayer.setVisible(visible);
-          this.setActive(visible);
-        });
+      this.selectLayer.on("change:visible", () => {
+        const visible = this.selectLayer.getVisible();
+        this.selectStyleLayer.setVisible(visible);
+        this.setActive(visible);
+      });
 
-        // Set up the map event listener for the specified condition (e.g., click, pointermove)
-        this.changeSourceListener = () => {
-          //@ts-expect-error - TODO
-          this.selectStyleLayer.setSource(this.selectLayer.getSource());
-        };
+      // Set up the map event listener for the specified condition (e.g., click, pointermove)
+      this.changeSourceListener = () => {
+        //@ts-expect-error - TODO
+        this.selectStyleLayer.setSource(this.selectLayer.getSource());
+      };
 
-        this.selectLayer.on("change:source", this.changeSourceListener);
+      this.selectLayer.on("change:source", this.changeSourceListener);
 
-        // Set up the map event listener for the specified condition (e.g., click, pointermove)
-        const changeLayerListener = () => {
-          if (eoxMap.getLayerById(anyLayer.get("id"))) {
-            // If a select layer exists, keep it in current activation state
-            // (active/inactive) and assign it (and the overlay) to the map
-            this.selectStyleLayer?.setMap(this.eoxMap.map);
-            overlay?.setMap(this.eoxMap.map);
-          } else {
-            // If the selection layer does not exist any more,
-            // remove layer association and remove the overlay from the map
-            this.selectStyleLayer?.setMap(null);
-            overlay?.setMap(null);
-          }
-        };
-        eoxMap.map.getLayerGroup().on("change", changeLayerListener);
+      // Set up the map event listener for the specified condition (e.g., click, pointermove)
+      const changeLayerListener = () => {
+        if (eoxMap.getLayerById(anyLayer.get("id"))) {
+          // If a select layer exists, keep it in current activation state
+          // (active/inactive) and assign it (and the overlay) to the map
+          this.selectStyleLayer?.setMap(this.eoxMap.map);
+          overlay?.setMap(this.eoxMap.map);
+        } else {
+          // If the selection layer does not exist any more,
+          // remove layer association and remove the overlay from the map
+          this.selectStyleLayer?.setMap(null);
+          overlay?.setMap(null);
+        }
+      };
+      eoxMap.map.getLayerGroup().on("change", changeLayerListener);
 
-        /**
-         * Adds a listener on pointermove
-         * the listener is more complex than `l === selectLayer` to
-         * prevent multiple select-interactions from overriding eachother
-         */
-        this.pointerMoveListener = (e) => {
-          if (e.dragging) return;
-          eoxMap.map.getTargetElement().style.cursor =
-            eoxMap.map.hasFeatureAtPixel(e.pixel, {
-              layerFilter: (l) =>
-                l
-                  .get("_jsonDefinition")
-                  ?.interactions?.find(
-                    (i) =>
-                      i.type == "select" && i.options?.condition === "click",
-                  ),
-              ...options.atPixelOptions,
-            })
-              ? options.cursor || "pointer"
-              : this.eoxMap.interactions.drawInteraction?.getActive()
-                ? "crosshair"
-                : "auto";
-        };
-        eoxMap.map.on("pointermove", this.pointerMoveListener);
-
+      /**
+       * Adds a listener on pointermove
+       * the listener is more complex than `l === selectLayer` to
+       * prevent multiple select-interactions from overriding eachother
+       */
+      this.pointerMoveListener = (e) => {
+        if (e.dragging) return;
+        eoxMap.map.getTargetElement().style.cursor =
+          eoxMap.map.hasFeatureAtPixel(e.pixel, {
+            layerFilter: (l) =>
+              l
+                .get("_jsonDefinition")
+                ?.interactions?.find(
+                  (i) => i.type == "select" && i.options?.condition === "click",
+                ),
+            ...options.atPixelOptions,
+          })
+            ? options.cursor || "pointer"
+            : this.eoxMap.interactions.drawInteraction?.getActive()
+              ? "crosshair"
+              : "auto";
+      };
+      eoxMap.map.on("pointermove", this.pointerMoveListener);
     }
     if (
-        this.selectLayer.getSource() instanceof ImageWMS ||
-        this.selectLayer.getSource() instanceof TileWMS
-      ) {
-        // If the selectLayer is an ImageWMS or TileWMS, set up the selection if there is a tooltip
-        /**
-         * Listener to handle selection events
-         * @param {import("ol/MapBrowserEvent").default} event
-         * **/
-        this.listener = (event) => {
-          if (!this.active || event.dragging) {
-            return;
-          }
+      this.selectLayer.getSource() instanceof ImageWMS ||
+      this.selectLayer.getSource() instanceof TileWMS
+    ) {
+      // If the selectLayer is an ImageWMS or TileWMS, set up the selection if there is a tooltip
+      /**
+       * Listener to handle selection events
+       * @param {import("ol/MapBrowserEvent").default} event
+       * **/
+      this.listener = (event) => {
+        if (!this.active || event.dragging) {
+          return;
+        }
 
-          const viewResolution = eoxMap.map.getView().getResolution();
-          const url = /** @type {ImageWMS | TileWMS} */ (
-            this.selectLayer.getSource()
-          ).getFeatureInfoUrl(
-            event.coordinate,
-            viewResolution,
-            eoxMap.map.getView().getProjection(),
-            { INFO_FORMAT: "application/json" },
-          );
-          if (url) {
-            fetch(url)
-              .then((response) => response.text())
-              .then((responseFeature) => {
-                // Fetch features at the clicked pixel
-                if (overlay) {
-                  const xPosition =
-                    event.pixel[0] > this.eoxMap.offsetWidth / 2
-                      ? "right"
-                      : "left";
-                  const yPosition =
-                    event.pixel[1] > this.eoxMap.offsetHeight / 2
-                      ? "bottom"
-                      : "top";
-                  overlay.setPositioning(`${yPosition}-${xPosition}`);
+        const viewResolution = eoxMap.map.getView().getResolution();
+        const url = /** @type {ImageWMS | TileWMS} */ (
+          this.selectLayer.getSource()
+        ).getFeatureInfoUrl(
+          event.coordinate,
+          viewResolution,
+          eoxMap.map.getView().getProjection(),
+          { INFO_FORMAT: "application/json" },
+        );
+        if (url) {
+          fetch(url)
+            .then((response) => response.text())
+            .then((responseFeature) => {
+              // Fetch features at the clicked pixel
+              if (overlay) {
+                const xPosition =
+                  event.pixel[0] > this.eoxMap.offsetWidth / 2
+                    ? "right"
+                    : "left";
+                const yPosition =
+                  event.pixel[1] > this.eoxMap.offsetHeight / 2
+                    ? "bottom"
+                    : "top";
+                overlay.setPositioning(`${yPosition}-${xPosition}`);
+              }
+
+              if (responseFeature && this.tooltipElement) {
+                const responseJson = JSON.parse(responseFeature);
+                let html;
+                if (
+                  responseJson.type === "FeatureCollection" &&
+                  responseJson.features.length > 0
+                ) {
+                  html = responseJson.features[0];
+                } else if (responseJson.type === "Feature") {
+                  html = responseJson;
+
+                  this.tooltipElement.innerHTML = `<pre>${JSON.stringify(html.properties, null, 2)}</pre>`;
+                } else {
+                  overlay?.setPosition(null); // Hide the tooltip if no responseFeature
+                }
+                // add the picked coordinates to the html
+                if (options?.coordinates && html) {
+                  Object.assign(html?.properties, pickedCoordinate(event));
                 }
 
-                if (responseFeature && this.tooltipElement) {
-                  const responseJson = JSON.parse(responseFeature);
-                  let html;
-                  if (
-                    responseJson.type === "FeatureCollection" &&
-                    responseJson.features.length > 0
-                  ) {
-                    html = responseJson.features[0];
-                  } else if (responseJson.type === "Feature") {
-                    html = responseJson;
-
-                    this.tooltipElement.innerHTML = `<pre>${JSON.stringify(html.properties, null, 2)}</pre>`;
-                  } else {
-                    overlay?.setPosition(null); // Hide the tooltip if no responseFeature
-                  }
-                  // add the picked coordinates to the html
-                  if (options?.coordinates && html) {
-                    Object.assign(html?.properties, pickedCoordinate(event));
-                  }
-
-                  // create a new ol feature from the response
-                  const featureData = new Feature({
-                    ...html?.properties,
-                  });
-                  // @ts-expect-error TODO
-                  this.tooltipElement.feature = featureData;
-                  overlay.setPosition(html ? event.coordinate : null);
-                }
-              });
-          }
-        };
-        // Set up the map event to click when the layer is wms or wms-tile
+                // create a new ol feature from the response
+                const featureData = new Feature({
+                  ...html?.properties,
+                });
+                // @ts-expect-error TODO
+                this.tooltipElement.feature = featureData;
+                overlay.setPosition(html ? event.coordinate : null);
+              }
+            });
+        }
+      };
+      // Set up the map event to click when the layer is wms or wms-tile
       if (options.condition == "click") {
         this.eoxMap.map.on(options.condition, this.listener);
       }
-      }
+    }
 
     if (this.selectLayer.getProperties()?.type === "WebGLTile") {
       // If the selectLayer is a WebGLTile, set up the selection if there is a tooltip
