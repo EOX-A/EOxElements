@@ -232,6 +232,7 @@ export class EOxSelectInteraction {
           },
         });
         this.eoxMap.dispatchEvent(selectdEvt);
+      };
 
         // Set up the map event listener for the specified condition (e.g., click, pointermove)
         this.eoxMap.map.on(options.condition || "click", this.listener);
@@ -295,7 +296,6 @@ export class EOxSelectInteraction {
                 : "auto";
         };
         eoxMap.map.on("pointermove", this.pointerMoveListener);
-      };
 
     }
     if (
