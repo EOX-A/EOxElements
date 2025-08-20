@@ -5,8 +5,11 @@ describe("Stories test", () => {
   const pathsChanged = Cypress.env("CI_PATHS_CHANGED");
   let uniqueElementFolders = [];
   let cypressChanged = false;
-  // only run stories from files that have been changed
-  if (pathsChanged) {
+  // only run stories from files that have been changed (on CI)
+  // locally we run all tests
+  if (!pathsChanged) {
+    cypressChanged = true;
+  } else {
     const changed = pathsChanged.split("\n");
     // if cypress folder changed => run all tests
     if (!changed.some((item) => item.startsWith("cypress"))) {

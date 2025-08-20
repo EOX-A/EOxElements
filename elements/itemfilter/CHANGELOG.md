@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.10.4](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.3...itemfilter-v1.10.4) (2025-08-14)
+
+
+### Bug Fixes
+
+* Fuzzy search matching and highlighting ([#1810](https://github.com/EOX-A/EOxElements/issues/1810)) ([e5c89ea](https://github.com/EOX-A/EOxElements/commit/e5c89ea1ee80f0c593447928d2b179a4390d1c03))
+
+## [1.10.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.2...itemfilter-v1.10.3) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+
+## [1.10.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.1...itemfilter-v1.10.2) (2025-07-15)
+
+
+### Bug Fixes
+
+* Suggestion filter if passed via filterKeys ([#1759](https://github.com/EOX-A/EOxElements/issues/1759)) ([d62b8ca](https://github.com/EOX-A/EOxElements/commit/d62b8ca3866d0068893910812608463e0b4dc67e))
+
 ## [1.10.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.0...itemfilter-v1.10.1) (2025-07-01)
 
 

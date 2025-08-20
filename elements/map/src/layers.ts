@@ -38,6 +38,7 @@ export type OLAdvancedLayers = {
   WebGLTile: typeof import("ol/layer/WebGLTile").default;
   WebGLVector: typeof import("ol/layer/WebGLVector").default;
   STAC: typeof import("ol-stac").default;
+  MapboxStyle: typeof import("./custom/layers/MapboxStyle.js").default;
 };
 
 export type OLBasicSources = {
@@ -54,7 +55,6 @@ export type OLBasicSources = {
 export type OLAdvancedSources = {
   BingMaps: typeof import("ol/source/BingMaps").default;
   CartoDB: typeof import("ol/source/CartoDB").default;
-  Cluster: typeof import("ol/source/Cluster").default;
   DataTile: typeof import("ol/source/DataTile").default;
   GeoTIFF: typeof import("ol/source/GeoTIFF").default;
   Google: typeof import("ol/source/Google").default;
@@ -79,6 +79,7 @@ export type OLAdvancedSources = {
   Zoomify: typeof import("ol/source/Zoomify").default;
   WMTSCapabilities: typeof import("./custom/sources/WMTSCapabilities").default;
   FlatGeoBuf: typeof import("./custom/sources/FlatGeoBuf").default;
+  Cluster: typeof import("./custom/sources/Cluster").default;
 };
 
 export type OLSources = OLBasicSources & OLAdvancedSources;
@@ -120,7 +121,7 @@ type OlLayerOption<T extends keyof OLLayers> = Omit<
   "source" | "layers" | "map"
 >;
 
-type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
+export type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
   ? OlSourceOption<S>
   : OlSourceOption<S> extends { format?: any }
     ? Omit<OlSourceOption<S>, "format"> & { format?: EOxFormat }
@@ -128,24 +129,34 @@ type EoxSource<S extends keyof OLSources> = (S extends "WMTS"
       ? Omit<OlSourceOption<S>, "source"> & {
           source?: EoxSource<keyof OLSources>;
         }
-      : OlSourceOption<S>) & { type: S };
+      : OlSourceOption<S>) & {
+  type: S;
+  projection?: import("ol/proj").ProjectionLike;
+};
+
+type SourceProperties<S extends keyof OLSources> = {
+  source?: EoxSource<S>;
+  sources?: EoxSource<S>[];
+};
 
 export type EOxLayerType<
   T extends keyof OLLayers,
-  S extends keyof OLSources,
+  S extends keyof OLSources = never,
 > = (OlLayerOption<T> extends { sources?: any }
   ? Omit<OlLayerOption<T>, "sources"> & { sources?: EoxSource<S>[] }
   : OlLayerOption<T>) & {
   type: T;
+  zIndex?: number;
+  visible?: boolean;
+  opacity?: number;
   properties?: {
     id: string;
     [key: string]: any;
   };
-  source?: EoxSource<S>;
   interactions?: T extends "Vector" | "VectorTile"
     ? Array<import("./types").EOxInteraction>
     : never;
-};
+} & (S extends keyof OLSources ? SourceProperties<S> : {});
 
 export type EOxLayerTypeGroup = Omit<
   EOxLayerType<"Group", keyof OLSources>,
@@ -153,6 +164,11 @@ export type EOxLayerTypeGroup = Omit<
 > & {
   layers: EoxLayer[];
 };
+
+export type EOxLayerTypeMapboxStyle = Omit<
+  EOxLayerType<"MapboxStyle", keyof OLSources>,
+  "source" | "sources"
+>;
 
 export type EoxLayer =
   | EOxLayerType<"Vector", "Vector">
@@ -178,4 +194,6 @@ export type EoxLayer =
   | EOxLayerType<"Image", "ImageWMS">
   | EOxLayerType<"Image", "Raster">
   | EOxLayerType<"Image", "IIIF">
+  | EOxLayerType<"STAC">
+  | EOxLayerTypeMapboxStyle
   | EOxLayerTypeGroup;

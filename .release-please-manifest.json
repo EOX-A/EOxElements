@@ -1,15 +1,15 @@
 {
-  "elements/drawtools": "1.0.0",
-  "elements/itemfilter": "1.10.1",
-  "elements/layercontrol": "1.1.0",
-  "elements/map": "1.22.0",
-  "elements/stacinfo": "1.0.0",
-  "elements/timecontrol": "1.0.0",
-  "elements/jsonform": "1.1.1",
+  "elements/drawtools": "1.1.3",
+  "elements/itemfilter": "1.10.4",
+  "elements/layercontrol": "1.1.2",
+  "elements/map": "1.25.0",
+  "elements/stacinfo": "1.0.1",
+  "elements/timecontrol": "1.0.1",
+  "elements/jsonform": "1.4.1",
   "elements/layout": "1.0.0",
-  "elements/storytelling": "1.9.0",
-  "elements/geosearch": "1.0.0",
-  "elements/chart": "1.0.0",
-  "elements/feedback": "1.0.0",
-  "utils": "1.0.0"
+  "elements/storytelling": "1.9.3",
+  "elements/geosearch": "1.0.1",
+  "elements/chart": "1.0.1",
+  "elements/feedback": "1.0.1",
+  "utils": "1.1.0"
 }

@@ -18,11 +18,8 @@ const config = {
   },
   experimental_indexers: (existingIndexers) =>
     [csfIndexer].concat(existingIndexers || []),
-  addons: [
-    getAbsolutePath("@storybook/addon-essentials"),
-    getAbsolutePath("@storybook/addon-interactions"),
-  ],
-  framework: getAbsolutePath("@storybook/web-components-vite"),
+  addons: ["@storybook/addon-essentials", "@storybook/addon-interactions"],
+  framework: "@storybook/web-components-vite",
   docs: {
     toc: true,
   },
@@ -35,7 +32,3 @@ const config = {
   ],
 };
 export default config;
-
-function getAbsolutePath(value) {
-  return dirname(require.resolve(join(value, "package.json")));
-}

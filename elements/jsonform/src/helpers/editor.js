@@ -161,6 +161,50 @@ export const createEditor = (element) => {
   });
 
   editor.on("change", () => {
+    // If "categories" is enabled, add error badges to tabs containing
+    // the number of validation errors per tab
+    const errorBadgesStore = {};
+    const tabs = element.renderRoot.querySelector(".je-tabholder--clear");
+    if (tabs) {
+      element.renderRoot.querySelectorAll(".je-tab--top").forEach((t) => {
+        if (t.querySelector(".badge")) {
+          t.removeChild(t.querySelector(".badge"));
+        }
+      });
+      editor.validation_results.forEach((error) => {
+        const currentTabContent = tabs
+          .querySelector(`[data-schemapath='${error.path}']`)
+          ?.closest(".je-tabholder--clear > .je-indented-panel");
+        if (!currentTabContent) {
+          return;
+        }
+        const currentTab = element.renderRoot.querySelector(
+          `.je-tab--top#${currentTabContent.id}`,
+        );
+
+        if (errorBadgesStore[currentTabContent.id] === undefined) {
+          errorBadgesStore[currentTabContent.id] = 0;
+        }
+        errorBadgesStore[currentTabContent.id] =
+          errorBadgesStore[currentTabContent.id] + 1;
+
+        const currentBadge = currentTab.querySelector(".badge");
+        if (!currentBadge) {
+          const errorBadge = document.createElement("div");
+          errorBadge.classList.add("badge");
+          Object.assign(errorBadge.style, {
+            top: "0",
+            left: "calc(100% - .7rem)",
+            transform: "unset",
+          });
+          errorBadge.textContent = errorBadgesStore[currentTabContent.id];
+          currentTab.appendChild(errorBadge);
+        } else {
+          currentBadge.textContent = errorBadgesStore[currentTabContent.id];
+        }
+      });
+    }
+
     // Adaptations to DOM in order to fit EOxUI
     // Checkboxes are wrapped in a label with a span
     element.renderRoot
@@ -169,7 +213,8 @@ export const createEditor = (element) => {
         const parent = input.parentElement;
         if (
           parent.tagName === "LABEL" &&
-          !parent.classList.contains("checkbox")
+          !parent.classList.contains("checkbox") &&
+          !parent.classList.contains("switch")
         ) {
           input.parentElement.classList.add("checkbox");
           input.parentElement.classList.add("small");
@@ -195,9 +240,18 @@ export const createEditor = (element) => {
       if (button.classList.contains("json-editor-btn-")) {
         button.querySelector("i")?.remove();
       } else {
-        ["circle", "small", "transparent", "primary-text", "no-margin"].forEach(
-          (c) => button.classList.add(c),
-        );
+        if (
+          !button.classList.contains("json-editor-btn-edit") &&
+          !button.classList.contains("json-editor-btn-edit_properties")
+        ) {
+          [
+            "circle",
+            "small",
+            "transparent",
+            "primary-text",
+            "no-margin",
+          ].forEach((c) => button.classList.add(c));
+        }
         if (button.classList.contains("json-editor-btntype-add")) {
           button.innerHTML = `
           <i class="small">
@@ -255,16 +309,36 @@ export const createEditor = (element) => {
           </i>`;
         }
         if (button.classList.contains("json-editor-btn-edit")) {
+          button.classList.add("small");
+          button.classList.add("small-margin");
+          button.classList.add("border");
           button.innerHTML = `
           <i class="small">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>square-edit-outline</title><path d="M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19H5V5H12V3H5M17.78,4C17.61,4 17.43,4.07 17.3,4.2L16.08,5.41L18.58,7.91L19.8,6.7C20.06,6.44 20.06,6 19.8,5.75L18.25,4.2C18.12,4.07 17.95,4 17.78,4M15.37,6.12L8,13.5V16H10.5L17.87,8.62L15.37,6.12Z" /></svg>
-          </i>`;
+          </i>
+          <span>edit JSON</span>`;
         }
         if (button.classList.contains("json-editor-btn-edit_properties")) {
+          if (
+            element.propertiesToggle &&
+            !(
+              /**@type {HTMLInputElement}*/ (
+                element.renderRoot.querySelector(".switch-button input")
+              ).checked
+            )
+          ) {
+            button.classList.add("hidden");
+          }
+          button.classList.add("small");
+          button.classList.add("small-margin");
+          button.classList.add("border");
           button.innerHTML = `
           <i class="small">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>format-list-bulleted</title><path d="M7,5H21V7H7V5M7,13V11H21V13H7M4,4.5A1.5,1.5 0 0,1 5.5,6A1.5,1.5 0 0,1 4,7.5A1.5,1.5 0 0,1 2.5,6A1.5,1.5 0 0,1 4,4.5M4,10.5A1.5,1.5 0 0,1 5.5,12A1.5,1.5 0 0,1 4,13.5A1.5,1.5 0 0,1 2.5,12A1.5,1.5 0 0,1 4,10.5M7,19V17H21V19H7M4,16.5A1.5,1.5 0 0,1 5.5,18A1.5,1.5 0 0,1 4,19.5A1.5,1.5 0 0,1 2.5,18A1.5,1.5 0 0,1 4,16.5Z" /></svg>
-          </i>`;
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>table-cog</title><path d="M3 3H17C18.11 3 19 3.9 19 5V12.08C17.45 11.82 15.92 12.18 14.68 13H11V17H12.08C11.97 17.68 11.97 18.35 12.08 19H3C1.9 19 1 18.11 1 17V5C1 3.9 1.9 3 3 3M3 7V11H9V7H3M11 7V11H17V7H11M3 13V17H9V13H3M22.78 19.32L21.71 18.5C21.73 18.33 21.75 18.17 21.75 18S21.74 17.67 21.71 17.5L22.77 16.68C22.86 16.6 22.89 16.47 22.83 16.36L21.83 14.63C21.77 14.5 21.64 14.5 21.5 14.5L20.28 15C20 14.82 19.74 14.65 19.43 14.53L19.24 13.21C19.23 13.09 19.12 13 19 13H17C16.88 13 16.77 13.09 16.75 13.21L16.56 14.53C16.26 14.66 15.97 14.82 15.71 15L14.47 14.5C14.36 14.5 14.23 14.5 14.16 14.63L13.16 16.36C13.1 16.47 13.12 16.6 13.22 16.68L14.28 17.5C14.26 17.67 14.25 17.83 14.25 18S14.26 18.33 14.28 18.5L13.22 19.32C13.13 19.4 13.1 19.53 13.16 19.64L14.16 21.37C14.22 21.5 14.35 21.5 14.47 21.5L15.71 21C15.97 21.18 16.25 21.35 16.56 21.47L16.75 22.79C16.77 22.91 16.87 23 17 23H19C19.12 23 19.23 22.91 19.25 22.79L19.44 21.47C19.74 21.34 20 21.18 20.28 21L21.5 21.5C21.64 21.5 21.77 21.5 21.84 21.37L22.84 19.64C22.9 19.53 22.87 19.4 22.78 19.32M18 19.5C17.17 19.5 16.5 18.83 16.5 18S17.18 16.5 18 16.5 19.5 17.17 19.5 18 18.84 19.5 18 19.5Z" /></svg>
+          </i>
+          <span>
+            edit properties
+          </span>`;
         }
         if (button.classList.contains("json-editor-btn-save")) {
           button.innerHTML = `

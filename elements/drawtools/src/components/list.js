@@ -115,7 +115,7 @@ export class EOxDrawToolsList extends LitElement {
    * @param {Event & { target: HTMLButtonElement }} evt - Event object containing button target.
    */
   _handleDelete(evt) {
-    deleteFeatureMethod(evt, this);
+    deleteFeatureMethod(evt, this, this.eoxDrawTools);
     this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
   }
 
@@ -183,7 +183,14 @@ export class EOxDrawToolsList extends LitElement {
             : isFeatureClicked
               ? "fill"
               : nothing;
-          const propertyName = feature.get(this.featureNameKey);
+
+          const pathParts = this.featureNameKey?.split(".");
+          const propertyName =
+            feature.get(this.featureNameKey) ||
+            pathParts?.reduce((obj, part) => obj?.[part], {
+              ...feature.getProperties(),
+            });
+
           const title = propertyName
             ? propertyName
             : `${this.featureName} ${featureNumber}`;

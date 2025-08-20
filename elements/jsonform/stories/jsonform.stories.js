@@ -33,6 +33,7 @@ export default {
       .schema=${args.schema}
       .value=${args.value}
       .options=${args.options}
+      .propertiesToggle=${args.propertiesToggle}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
       @change=${args.onChange}
@@ -90,7 +91,7 @@ export const Markdown = MarkdownStory;
 /**
  * JSON Form based on drawtools - Box
  */
-export const BoundigBox = BoundingBoxStory;
+export const BoundingBox = BoundingBoxStory;
 
 /**
  * JSON Form based on drawtools - Polygon

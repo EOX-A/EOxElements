@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.9.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.2...storytelling-v1.9.3) (2025-08-05)
+
+
+### Bug Fixes
+
+* Tour step CSS isolation, margins ([#1805](https://github.com/EOX-A/EOxElements/issues/1805)) ([4866e2a](https://github.com/EOX-A/EOxElements/commit/4866e2a96d673136c685b3ab2a31cbb25e95adbf))
+
+## [1.9.2](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.1...storytelling-v1.9.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+
+## [1.9.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.0...storytelling-v1.9.1) (2025-07-17)
+
+
+### Bug Fixes
+
+* Add section button logic issue and styling ([#1772](https://github.com/EOX-A/EOxElements/issues/1772)) ([f01b0af](https://github.com/EOX-A/EOxElements/commit/f01b0af826478207de3191d2066164964add4454))
+
 ## [1.9.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.8.0...storytelling-v1.9.0) (2025-07-02)
 
 

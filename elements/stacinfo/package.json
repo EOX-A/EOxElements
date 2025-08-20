@@ -1,6 +1,6 @@
 {
   "name": "@eox/stacinfo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "devDependencies": {
     "vite": "^6.0.3"
@@ -33,7 +33,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^1.0.0",
+    "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6",
     "@radiantearth/stac-fields": "^1.5.4",
     "lit": "^3.2.0"

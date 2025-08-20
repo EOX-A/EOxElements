@@ -1,6 +1,6 @@
 {
   "name": "@eox/itemfilter",
-  "version": "1.10.1",
+  "version": "1.10.4",
   "type": "module",
   "devDependencies": {
     "@types/geojson": "^7946.0.14",
@@ -35,7 +35,7 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^1.0.0",
+    "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6",
     "@floating-ui/dom": "^1.6.8",
     "@turf/boolean-intersects": "^7.0.0",
