@@ -6,9 +6,6 @@ import { simulateEvent } from "../../utils/events";
  * Tests to display tooltip on hover
  */
 const displayTooltipOnWMS = () => {
-  // cy.intercept("https://gs-stable.geo-solutions.it/geoserver/wms", (req) => {
-  //   req.reply(countriesWms);
-  // });
   cy.mount(
     html`<eox-map
       .layers=${wmsLayer}
