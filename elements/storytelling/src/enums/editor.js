@@ -1,4 +1,8 @@
-import { importMdFile, exportMdFile } from "../helpers/editor.js";
+import {
+  importMdFile,
+  exportMdFile,
+  togglePropertyComments,
+} from "../helpers/editor.js";
 import { getSectionIndexes } from "../helpers";
 
 const addCustomTool = (name, output, className, title, action) => ({
@@ -64,6 +68,13 @@ export const EDITOR_SCHEMA = {
                   element.requestUpdate();
                 }
               },
+            ),
+            addCustomTool(
+              "comment",
+              null,
+              "fa fa-code active",
+              "Toggle property comments",
+              togglePropertyComments,
             ),
           ],
           spellChecker: false,
