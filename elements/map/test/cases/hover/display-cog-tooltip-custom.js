@@ -1,5 +1,5 @@
 import { html } from "lit";
-import TooltipCogLayer from "../../fixtures/TooltipCogLayer.json";
+import tooltipCogLayer from "../../fixtures/tooltipCogLayer.json";
 import { simulateEvent } from "../../utils/events";
 
 /**
@@ -21,7 +21,7 @@ customElements.define(
 const displayTooltipCogWithCustomTooltip = () => {
   cy.mount(
     html`<eox-map
-      .layers=${TooltipCogLayer}
+      .layers=${tooltipCogLayer}
       .center=${[3737055, 1886786]}
       .zoom=${10}
     >

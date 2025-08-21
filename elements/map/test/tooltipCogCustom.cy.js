@@ -7,7 +7,7 @@ import { displayTooltipCogWithCustomTooltip } from "./cases/hover";
  */
 describe("tooltip", () => {
   /**
-   * Test case to display a WMS tooltip on a WMS layer
+   * Test case to display a custom tooltip on a COG layer
    */
   it("displays a custom tooltip on a COG layer", () =>
     displayTooltipCogWithCustomTooltip());
