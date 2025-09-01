@@ -14,7 +14,7 @@ import VectorTileSource from "ol/source/VectorTile.js";
 import WMTS from "ol/source/WMTS.js";
 import XYZ from "ol/source/XYZ.js";
 import Collection from "ol/Collection.js";
-import { addDraw, addSelect, generateTileGrid } from "./";
+import { addDraw, addSelect, addClusterExplode, generateTileGrid } from "./";
 import { get as getProjection } from "ol/proj";
 
 /**
@@ -74,70 +74,33 @@ const basicOlSources = {
 export function createLayer(EOxMap, layer, createInteractions = true) {
   layer = JSON.parse(JSON.stringify(layer));
 
-  // Merge available formats, layers, and sources from global scope (if any) with basic ones
-  const availableFormats = {
-    ...window.eoxMapAdvancedOlFormats,
-    ...basicOlFormats,
-  };
   const availableLayers = {
     ...window.eoxMapAdvancedOlLayers,
     ...basicOlLayers,
-  };
-  const availableSources = {
-    ...window.eoxMapAdvancedOlSources,
-    ...basicOlSources,
   };
 
   // Get the layer and source constructors based on the provided layer definition
   /** @type {new (options?: any) => AnyLayer} */
   const newLayer = availableLayers[layer.type];
-  /** @type {new (options?: any) => InstanceType<typeof availableSources[keyof typeof availableSources]>} */
-  const newSource = availableSources[layer.source?.type];
 
   // Throw an error if the specified layer type or source type is not supported
   if (!newLayer) {
     throw new Error(`Layer type ${layer.type} not supported!`);
   }
-  if (layer.source && !newSource) {
-    throw new Error(`Source type ${layer.source.type} not supported!`);
-  }
-
-  const tileGrid = generateTileGrid(layer);
 
   // Create the OpenLayers layer with the specified options
   const olLayer = new newLayer({
     ...layer,
-    ...(layer.source && {
-      source: new newSource({
-        ...layer.source,
-        ...("format" in layer.source &&
-          layer.source.type !== "WMTS" && {
-            // Set the format (e.g., GeoJSON, MVT) for the source
-            format: new availableFormats[
-              typeof layer.source.format === "object"
-                ? layer.source.format.type
-                : layer.source.format
-            ]({
-              ...(typeof layer.source.format === "object" && {
-                ...layer.source.format,
-              }),
-            }),
-          }),
-        // Set the format (e.g., GeoJSON, MVT) for the source
-        ...("tileGrid" in layer.source && { tileGrid }),
-        // Set the projection, converting it using OpenLayers' `getProjection` method
-        ...("projection" in layer.source && {
-          projection: getProjection(layer.source.projection),
-        }),
+    ...(layer.type !== "MapboxStyle" &&
+      layer.source && {
+        source: createOlSourceFromDefinition(layer.source),
       }),
-    }),
     ...(layer.type === "Group" && { layers: [] }), // Initialize an empty layer collection for group layers
     ...layer.properties,
     style: undefined, // Reset the style; it will be applied later if specified
   });
 
   olLayer.set("_jsonDefinition", layer, true);
-
   // Handle group layers by recursively creating their sublayers
   if (layer.type === "Group") {
     const groupLayers = layer.layers
@@ -175,6 +138,61 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
 }
 
 /**
+ *
+ * @param {import("../layers").EoxSource<any>} eoxSource
+ */
+function createOlSourceFromDefinition(eoxSource) {
+  const availableSources = {
+    ...window.eoxMapAdvancedOlSources,
+    ...basicOlSources,
+  };
+
+  /** @type {new (options?: any) => InstanceType<typeof availableSources[keyof typeof availableSources]>} */
+
+  const NewSource = availableSources[eoxSource.type];
+  if (eoxSource && !NewSource) {
+    throw new Error(`Source type ${eoxSource.type} not supported!`);
+  }
+
+  // Merge available formats, layers, and sources from global scope (if any) with basic ones
+  const availableFormats = {
+    ...window.eoxMapAdvancedOlFormats,
+    ...basicOlFormats,
+  };
+
+  const tileGrid = generateTileGrid(eoxSource);
+
+  return new NewSource({
+    ...eoxSource,
+    ...("format" in eoxSource &&
+      eoxSource.type !== "WMTS" && {
+        // Set the format (e.g., GeoJSON, MVT) for the source
+        format: new availableFormats[
+          typeof eoxSource.format === "object"
+            ? eoxSource.format.type
+            : eoxSource.format
+        ]({
+          ...(typeof eoxSource.format === "object" && {
+            ...eoxSource.format,
+          }),
+        }),
+      }),
+    // cluster layers can have their own (sub) source
+    ...("source" in eoxSource && {
+      source: createOlSourceFromDefinition(
+        /** @type {import("../layers").EoxSource<any>} */ (eoxSource.source),
+      ),
+    }),
+    // Set the format (e.g., GeoJSON, MVT) for the source
+    ...("tileGrid" in eoxSource && { tileGrid }),
+    // Set the projection, converting it using OpenLayers' `getProjection` method
+    ...("projection" in eoxSource && {
+      projection: getProjection(eoxSource.projection),
+    }),
+  });
+}
+
+/**
  * Adds an interaction (e.g., draw, select) to a given layer.
  *
  * @param {import("../main").EOxMap} EOxMap - The map instance.
@@ -195,6 +213,16 @@ function addInteraction(EOxMap, olLayer, interactionDefinition) {
       olLayer,
       /** @type {SelectOptions} **/ (interactionDefinition.options),
     );
+  else if (interactionDefinition.type === "clusterExplode")
+    addClusterExplode(
+      EOxMap,
+      /** @type {import("ol/layer/Vector").default<import("ol/source/Cluster").default>} */ (
+        olLayer
+      ),
+      /** @type {import("../types").ClusterExplodeOptions} */ (
+        interactionDefinition.options
+      ),
+    );
 }
 
 /**
@@ -214,7 +242,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Check if the new layer is compatible with the existing one
   if (
     newLayerDefinition.type !== existingJsonDefinition.type ||
-    newLayerDefinition.source?.type !== existingJsonDefinition.source?.type
+    (newLayerDefinition.type !== "MapboxStyle" &&
+      newLayerDefinition.source?.type !== existingJsonDefinition.source?.type)
   ) {
     throw new Error(`Layers are not compatible to be updated`);
   }
@@ -224,8 +253,9 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update source if different
   if (
+    newLayerDefinition.type !== "MapboxStyle" &&
     JSON.stringify(newLayerDefinition.source) !==
-    JSON.stringify(existingJsonDefinition.source)
+      JSON.stringify(existingJsonDefinition.source)
   ) {
     /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
       /** @type {any} **/ existingLayer
@@ -233,6 +263,24 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
         /** @type {any} **/ newLayer
       ).getSource(),
+    );
+  }
+
+  // update entire layer if MapboxStyle has changed
+  if (
+    newLayerDefinition.type === "MapboxStyle" &&
+    JSON.stringify(newLayerDefinition.properties.mapboxStyle) !==
+      JSON.stringify(existingJsonDefinition.properties.mapboxStyle)
+  ) {
+    /** @type {import("../custom/layers/MapboxStyle").default} */ (
+      existingLayer
+    )
+      .getLayers()
+      .clear();
+    //@ts-expect-error MapboxStyle-Layers can update via `applyMapboxStyle`
+    existingLayer.applyMapboxStyle(
+      newLayerDefinition.properties.mapboxStyle,
+      newLayerDefinition.properties.applyOptions,
     );
   }
 
@@ -308,11 +356,11 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
               correspondingNewInteraction.options.modify,
             );
           } else {
-            const olSelectInteraction =
-              EOxMap.selectInteractions[correspondingNewInteraction.options.id];
-            olSelectInteraction.setActive(
-              correspondingNewInteraction.options.active,
-            );
+            const interaction =
+              EOxMap.selectInteractions[
+                correspondingNewInteraction.options.id
+              ] || EOxMap.interactions[correspondingNewInteraction.options.id];
+            interaction.setActive(correspondingNewInteraction.options.active);
           }
         }
       },

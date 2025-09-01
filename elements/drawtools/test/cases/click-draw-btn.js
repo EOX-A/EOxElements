@@ -12,12 +12,11 @@ const clickDrawBtnTest = () => {
     .within(() => {
       cy.get(controller).within(() => {
         // Verify the initial state of the draw button
-        cy.get(drawBtn).contains("draw");
-        cy.get(drawBtn).should("not.contain", "drawing");
+        cy.get(drawBtn).should("not.have.attr", "disabled");
 
         // Click the draw button and verify the 'drawing' state
         cy.get(drawBtn).click();
-        cy.get(drawBtn).contains("drawing");
+        cy.get(drawBtn).should("have.attr", "disabled", "disabled");
       });
     });
 

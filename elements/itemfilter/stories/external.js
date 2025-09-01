@@ -42,7 +42,7 @@ function ExternalStory() {
           title: "User ID",
           type: "multiselect",
           expanded: true,
-          filterKeys: [1, 2, 3],
+          filterKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
       ],
     },

@@ -1,5 +1,54 @@
 # Changelog
 
+## [1.25.0](https://github.com/EOX-A/EOxElements/compare/map-v1.24.2...map-v1.25.0) (2025-08-05)
+
+
+### Features
+
+* Mapbox style layers ([#1803](https://github.com/EOX-A/EOxElements/issues/1803)) ([2dda494](https://github.com/EOX-A/EOxElements/commit/2dda494592a00158b24983f63c35bf0267509560))
+
+## [1.24.2](https://github.com/EOX-A/EOxElements/compare/map-v1.24.1...map-v1.24.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+
+## [1.24.1](https://github.com/EOX-A/EOxElements/compare/map-v1.24.0...map-v1.24.1) (2025-07-21)
+
+
+### Bug Fixes
+
+* Hard-coded projection for features ([#1781](https://github.com/EOX-A/EOxElements/issues/1781)) ([58d8214](https://github.com/EOX-A/EOxElements/commit/58d82145e704b3b7163bf28b7e2553fd0ba1c1fe))
+
+## [1.24.0](https://github.com/EOX-A/EOxElements/compare/map-v1.23.0...map-v1.24.0) (2025-07-16)
+
+
+### Features
+
+* Cluster source and cluster-explode interaction ([#1758](https://github.com/EOX-A/EOxElements/issues/1758)) ([4349a95](https://github.com/EOX-A/EOxElements/commit/4349a95db07fd6ea603826241c159fe52afcbd78))
+
+## [1.23.0](https://github.com/EOX-A/EOxElements/compare/map-v1.22.0...map-v1.23.0) (2025-07-15)
+
+
+### Features
+
+* Support custom tooltips ([#1761](https://github.com/EOX-A/EOxElements/issues/1761)) ([1d06aa7](https://github.com/EOX-A/EOxElements/commit/1d06aa75ab52e69fab0d33381a5ac566eaad41c3))
+
+
+### Bug Fixes
+
+* Config with preventScroll causing unwanted dragging ([#1766](https://github.com/EOX-A/EOxElements/issues/1766)) ([5f0a880](https://github.com/EOX-A/EOxElements/commit/5f0a88091ee898458363486f0914089c4c954a0c))
+* Optimize config setter to not cause triggers for each property ([#1767](https://github.com/EOX-A/EOxElements/issues/1767)) ([0acba08](https://github.com/EOX-A/EOxElements/commit/0acba0803557e6821c3d4f0b3c54da7899b6554e))
+* Show select overlay also on feature borders ([#1763](https://github.com/EOX-A/EOxElements/issues/1763)) ([f766b3d](https://github.com/EOX-A/EOxElements/commit/f766b3d3f29ba293e7dd31946f0d02d1d42b9a3b))
+
+## [1.22.0](https://github.com/EOX-A/EOxElements/compare/map-v1.21.3...map-v1.22.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [1.21.3](https://github.com/EOX-A/EOxElements/compare/map-v1.21.2...map-v1.21.3) (2025-06-10)
 
 

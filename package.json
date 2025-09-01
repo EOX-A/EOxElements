@@ -14,7 +14,7 @@
     "build:all": "npm run styles && npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
     "cypress": "cypress open",
-    "test:all": "npm run styles && npm run test:component && npm run test:e2e",
+    "test:all": "npm run styles && npm run test:component; npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
     "test:e2e": "npm run generate-manifest && npm run build:storybook && cypress run --e2e",
     "format": "prettier --write .",
@@ -61,6 +61,7 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "@eox/ui": "^0.2.1"
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.3.6"
   }
 }

@@ -4,7 +4,7 @@
  * @param {Event & { target: HTMLButtonElement }} evt - Event object containing button target.
  * @param {import("../../components/list").EOxDrawToolsList} EoxDrawToolList - The list of drawn features.
  */
-const deleteFeatureMethod = (evt, EoxDrawToolList) => {
+const deleteFeatureMethod = (evt, EoxDrawToolList, EoxDrawTool) => {
   evt.stopPropagation();
 
   // Extract the index of the feature to delete from the button's attribute
@@ -16,6 +16,7 @@ const deleteFeatureMethod = (evt, EoxDrawToolList) => {
   // Remove the feature from the draw layer and update the drawnFeatures array
   EoxDrawToolList.drawLayer.getSource().removeFeature(feature);
   EoxDrawToolList.drawnFeatures.splice(index, 1);
+  EoxDrawTool.emitDrawnFeatures();
 
   // Request an update to reflect the changes
   EoxDrawToolList.requestUpdate();

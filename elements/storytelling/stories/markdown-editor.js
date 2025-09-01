@@ -82,15 +82,18 @@ The hero is the initial section of a story. It can be either a full-screen image
 In each story, only one hero should be added at the very beginning. After the hero, you will see the nav menu, and after that, the story content. The hero uses the Markdown syntax for *h1* (Header 1), so it starts with one *#*.
 
 ### Story sections
-To start a new section, use the Markdown syntax for *h2* (Header 2), so starting with *##*. Eeach section is automatically added to the nav menu. 
+To start a new section, use the Markdown syntax for *h2* (Header 2), so starting with *##*. Eeach section is automatically added to the nav menu (unless explicitly hidden by having added the ![](./img/editor-hide-nav.png) comment to it). 
 
 ### Special sections
 Additionally to the hero section, there are other special sections (like media, map), and the most convenient way to add them is via the "plus" icon. They use the "as" attribute, which replaces the entire section with the corresponding element. So, for example, *as="div"* will replace the entire sectioni (including the title) with a *div*.
 We will now have a more in-depth look about the map section. The map section shows a single map, with optional text underneath. It is powered by [EOxMap](https://eox-a.github.io/EOxElements/?path=/docs/elements-eox-map--docs), so you can use the same syntax as with any EOxMap.
 
-## Map section <!--{as="eox-map" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+## Map section <!--{as="eox-map" class="overlay-br" style="width: 100%; height: 500px;" config='{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }'}-->
+### Some title for map <!--{ style="color: white; font-size: 1.25rem;" }-->
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
-## Map Tour section <!--{ as="eox-map" mode="tour" }-->
+## Map Tour section <!--{ as="eox-map" prevent-scroll="true" class="overlay-br" mode="tour" }-->
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
 ### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
 #### This is a map tour.
@@ -106,15 +109,15 @@ To change individual parameters like zoom or center, or to change the map layers
 
 ## Image Tour section <!--{ as="img" mode="tour" }-->
 
-### <!--{ src="https://picsum.photos/800/600" }-->
+### <!--{ src="https://picsum.photos/800/600" style="background: #fff0c4;" }-->
 #### This is an image tour.
 It allows you to have different sources for each tour "step".
 
-### <!--{ src="https://picsum.photos/900/700" }-->
+### <!--{ src="https://picsum.photos/900/700" style="background: #ffe7ef;" }-->
 #### Second tour step.
 Each tour step is described as an *h3* (*###*) heading.
 
-### <!--{ src="https://picsum.photos/900/800" }-->
+### <!--{ src="https://picsum.photos/900/800" style="background: #e2fffc;" }-->
 #### Third tour step.
 ![](https://placehold.co/200x100)
 
@@ -128,6 +131,7 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
       id="markdown-editor"
       show-nav
       show-editor="closed"
+      show-hero-scroll-indicator
       markdown=${args.markdown}
       @upload:file=${(e) => {
         const detail = e.detail;

@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         # necessary for git diff of changed files in the PR
         with:
           fetch-depth: 2
@@ -34,7 +34,7 @@ jobs:
           check-latest: true
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v4.2.3
+        uses: actions/cache@v4.2.4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}

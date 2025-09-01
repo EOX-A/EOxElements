@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.0.0...elements-utils-v1.1.0) (2025-07-29)
+
+
+### Features
+
+* Support shadow roots for getElement ([#1795](https://github.com/EOX-A/EOxElements/issues/1795)) ([25acd59](https://github.com/EOX-A/EOxElements/commit/25acd59b1c231f37e86a9fa463fd842377f24b55))
+
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.5...elements-utils-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [0.1.5](https://github.com/EOX-A/EOxElements/compare/elements-utils-v0.1.4...elements-utils-v0.1.5) (2025-01-08)
 
 

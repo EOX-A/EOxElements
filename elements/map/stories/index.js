@@ -6,6 +6,7 @@ export { default as WMTSCapabilitiesLayerStory } from "./wmts-capabilities-layer
 export { default as WMTSTileGridStory } from "./wmts-tile-grid";
 export { default as StaticImageLayerStory } from "./static-image";
 export { default as STACLayerStory } from "./stac-layer";
+export { default as MapboxStyleLayerStory } from "./mapbox-style-layer";
 export { default as GeoTIFFLayerStory } from "./geo-tiff-layer";
 export { default as GroupLayerStory } from "./group-layer";
 export { default as ControlsStory } from "./controls";
@@ -14,6 +15,7 @@ export { default as StandardLoadingIndicatorStory } from "./standard-loading-ind
 export { default as CustomFullScreenLoadingIndicatorStory } from "./custom-full-screen-loading-indicator";
 export { default as HoverSelectStory } from "./hover-select";
 export { default as ClickSelectStory } from "./click-select";
+export { default as ClusterExplodeStory } from "./cluster-explode";
 export { default as TooltipStory } from "./tooltip";
 export { default as TooltipWithPropertyTransformStory } from "./tooltip-with-property-transform";
 export { default as HighlightFeaturesAndAnimateStory } from "./highlight-features-and-animate";
@@ -25,3 +27,4 @@ export { default as ProjectionTransformStory } from "./projection-transform";
 export { default as AnimationsStory } from "./animations";
 export { default as PreventScrollStory } from "./prevent-scroll";
 export { default as FlatGeoBufStory } from "./flatGeoBuf-layer";
+export { default as CustomTooltipStory } from "./custom-tooltip";

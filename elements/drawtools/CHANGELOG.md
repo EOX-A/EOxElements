@@ -1,5 +1,49 @@
 # Changelog
 
+## [1.1.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.2...drawtools-v1.1.3) (2025-08-05)
+
+
+### Bug Fixes
+
+* List highlighting when discarding drawn features ([#1802](https://github.com/EOX-A/EOxElements/issues/1802)) ([6f3a897](https://github.com/EOX-A/EOxElements/commit/6f3a8979f7d57694a2cf42df41122e5c96cb967c))
+
+## [1.1.2](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.1...drawtools-v1.1.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.0...drawtools-v1.1.1) (2025-07-21)
+
+
+### Bug Fixes
+
+* Disconnect/connect drawtools ([#1780](https://github.com/EOX-A/EOxElements/issues/1780)) ([5b89b87](https://github.com/EOX-A/EOxElements/commit/5b89b87021e45f307b2b67bb115358c5a4989640))
+* Feature import working only once ([#1784](https://github.com/EOX-A/EOxElements/issues/1784)) ([fa193dc](https://github.com/EOX-A/EOxElements/commit/fa193dc12e8ac722f1bd463bd20c499d9db0ac90))
+* Hard-coded projection for features ([#1781](https://github.com/EOX-A/EOxElements/issues/1781)) ([58d8214](https://github.com/EOX-A/EOxElements/commit/58d82145e704b3b7163bf28b7e2553fd0ba1c1fe))
+
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.0.0...drawtools-v1.1.0) (2025-07-17)
+
+
+### Features
+
+* Support nested properties for featureNameKey ([#1773](https://github.com/EOX-A/EOxElements/issues/1773)) ([c3b7bda](https://github.com/EOX-A/EOxElements/commit/c3b7bdaaf85fbe5a9c1960e8de953c12d8be0b57))
+* Toggle editor on/off ([#1775](https://github.com/EOX-A/EOxElements/issues/1775)) ([b4a4a16](https://github.com/EOX-A/EOxElements/commit/b4a4a162b3eb120aba63915fc9f48bd82720a3cc))
+
+
+### Bug Fixes
+
+* Emit drawupdate event when deleting single feature ([#1778](https://github.com/EOX-A/EOxElements/issues/1778)) ([57713e3](https://github.com/EOX-A/EOxElements/commit/57713e3357462196ca0f80aea2e51b2f36b13c80))
+* **style:** Sizing of editor text-area ([56389c9](https://github.com/EOX-A/EOxElements/commit/56389c9410e0e20dcd49d99efb19367765144c19))
+
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.15.0...drawtools-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [0.15.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v0.14.3...drawtools-v0.15.0) (2025-06-16)
 
 

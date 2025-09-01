@@ -1,12 +1,13 @@
 {
   "name": "@eox/feedback",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "type": "module",
   "devDependencies": {
     "vite": "^6.0.3"
   },
   "dependencies": {
-    "@eox/ui": "^0.2.1",
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.3.6",
     "region-screenshot-js": "^1.1.0"
   },
   "files": [

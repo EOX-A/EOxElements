@@ -12,7 +12,7 @@ export function scrollAnchorClickEvent(that, selector) {
     doc.addEventListener("click", (e) => {
       e.preventDefault();
       window.parent.location.hash = /** @type {HTMLAnchorElement} */ (
-        e.target
+        e.currentTarget
       ).hash.replace("#", "");
       scrollIntoView(that);
     });

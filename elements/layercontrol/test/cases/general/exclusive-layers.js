@@ -15,7 +15,16 @@ const exclusiveLayers = () => {
           layerControlExclusive: true,
           layerControlExpand: true,
         },
-        layers: [{ properties: { id: "d", visible: true } }],
+        layers: [
+          {
+            properties: { id: "d", layerControlExclusive: true },
+            visible: false,
+          },
+          {
+            properties: { id: "e", layerControlExclusive: true },
+            visible: true,
+          },
+        ],
         visible: false,
       },
     ]);
@@ -26,9 +35,31 @@ const exclusiveLayers = () => {
     .shadow()
     .within(() => {
       // Checking the number of checked radio inputs in the LayerControl
+      cy.get("ul").find("input[type=radio]:checked").should("have.length", 2);
+      cy.get("ul").find("input[type=radio]").last().should("not.be.checked");
+      cy.get("ul")
+        .find("input[type=radio]:not(:checked)")
+        .last()
+        .click({ force: true });
+      cy.get("ul").find("input[type=radio]").last().should("be.checked");
+      cy.get("ul").find("input[type=radio]:checked").should("have.length", 2);
+    });
+
+  // Verify the effect on the LayerControl for globallyExclusiveLayers property
+  cy.get("eox-layercontrol")
+    .and(($el) => {
+      const layerControl = $el[0];
+      layerControl.globallyExclusiveLayers = true;
+    })
+    .shadow()
+    .within(() => {
+      // Checking the number of checked radio inputs in the LayerControl
+      cy.get("ul")
+        .find("input[type=radio]:not(:checked)")
+        .first()
+        .click({ force: true });
       cy.get("ul").find("input[type=radio]:checked").should("have.length", 1);
-      cy.get("ul").find("input[type=radio]:not(:checked)").last().click();
-      cy.get("ul").find("input[type=radio]:checked").should("have.length", 1);
+      cy.get("ul").find("input[type=radio]").last().should("not.be.checked");
     });
 };
 

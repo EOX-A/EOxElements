@@ -10,6 +10,7 @@ import {
   WMTSTileGridStory,
   StaticImageLayerStory,
   STACLayerStory,
+  MapboxStyleLayerStory,
   GeoTIFFLayerStory,
   GroupLayerStory,
   ControlsStory,
@@ -18,6 +19,7 @@ import {
   CustomFullScreenLoadingIndicatorStory,
   HoverSelectStory,
   ClickSelectStory,
+  ClusterExplodeStory,
   TooltipStory,
   TooltipWithPropertyTransformStory,
   HighlightFeaturesAndAnimateStory,
@@ -29,6 +31,7 @@ import {
   AnimationsStory,
   PreventScrollStory,
   FlatGeoBufStory,
+  CustomTooltipStory,
 } from "./index.js";
 
 export default {
@@ -92,6 +95,15 @@ export const StaticImage = StaticImageLayerStory;
 export const STACLayer = STACLayerStory;
 
 /**
+ * Renders a Layer Composition using Mapbox Styles.
+ *
+ * A layer of type `MapboxStyle` can take any Mapbox-Style object or URL to an Mapbox-Style document.
+ * The `mapboxStyle` property and the `applyOptions` property of the EOxLayer are mapped to `style`- and `options`-property of `apply` of `ol-mapbox-style` respectively.
+ * (compare https://openlayers.org/ol-mapbox-style/functions/apply.html)
+ */
+export const MapboxStyleLayer = MapboxStyleLayerStory;
+
+/**
  * Renders `GeoTIFF` layer as `WebGLTile`
  */
 export const GeoTIFFLayer = GeoTIFFLayerStory;
@@ -133,6 +145,11 @@ export const HoverSelect = HoverSelectStory;
 export const ClickSelect = ClickSelectStory;
 
 /**
+ * Renders `eox-map` with `Cluster-Explode` interaction
+ */
+export const ClusterExplode = ClusterExplodeStory;
+
+/**
  * `eox-map` offers a built-in tooltip, which needs to be placed inside the default slot:
  * ```
  * <eox-map [...]>
@@ -162,6 +179,18 @@ export const Tooltip = TooltipStory;
  * transformation in which needs access to the entire feature.
  */
 export const TooltipWithPropertyTransform = TooltipWithPropertyTransformStory;
+
+/**
+ * Instead of the built-in `eox-map-tooltip`, it is possible to use any other (custom) element as tooltip by setting the `is` attribute:
+ * ```
+ * <eox-map [...]>
+ *   <custom-element is="eox-map-tooltip"></custom-element>
+ * </eox-map>
+ * ```
+ *
+ * This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
+ */
+export const CustomTooltip = CustomTooltipStory;
 
 /**
  * Select interactions offer a `highlightById` method, with which vector features can be programmatically selected via their id property.

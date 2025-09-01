@@ -2,6 +2,7 @@ import { html } from "lit";
 import "color-legend-element";
 import {
   STORIES_LAYER_VESSEL_DENSITY_CARGO,
+  STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
   STORIES_LAYER_TERRAIN_LIGHT,
 } from "../src/enums";
@@ -12,6 +13,7 @@ export const LayerLegend = {
     <eox-layercontrol
       .tools=${["legend"]}
       for="eox-map#legend"
+      .style=${STORIES_LAYERCONTROL_STYLE}
     ></eox-layercontrol>
     <hr />
     <eox-map

@@ -10,7 +10,6 @@ import {
   createSelectHandler,
   handleLayerId,
 } from "./methods/draw";
-import mainStyle from "@eox/elements-utils/styles/dist/main.style";
 import { DUMMY_GEO_JSON } from "./enums/index.js";
 import {
   initMapDragDropImport,
@@ -254,16 +253,12 @@ export class EOxDrawTools extends LitElement {
       this.drawLayer,
       this.eoxMap,
       replaceFeatures,
-      {
-        dataProjection: this.eoxMap.projection,
-        featureProjection: this.projection,
-      },
       animate,
     );
   }
 
   /**
-   * @param {DragEvent} evt - The event object from the file input interaction.
+   * @param {DragEvent | InputEvent & { target: HTMLInputElement }} evt - The event object from the file input interaction.
    */
   handleFilesChange(evt) {
     handleFiles(evt, this);
@@ -318,7 +313,11 @@ export class EOxDrawTools extends LitElement {
    * It then calls requestUpdate to trigger a re-render.
    */
   firstUpdated() {
-    const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
+    const { EoxMap, OlMap, reset } = initLayerMethod(
+      this,
+      this.multipleFeatures,
+    );
+    this.resetLayer = reset;
     this.eoxMap = EoxMap;
     this.#olMap = OlMap;
     this.selectionEvents = createSelectHandler(this);
@@ -347,18 +346,31 @@ export class EOxDrawTools extends LitElement {
     this.requestUpdate("eoxMap", oldValue);
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    if (this.drawLayer && this.eoxMap) {
+      const { reset } = initLayerMethod(this, this.multipleFeatures);
+      this.resetLayer = reset;
+    }
+  }
+
   disconnectedCallback() {
-    this.eoxMap?.map.removeLayer(this.drawLayer);
     super.disconnectedCallback();
+    this.resetLayer?.(this);
   }
   // Render method for UI display
   render() {
     return html`
       <style>
         :host { display: block; }
-        ${!this.unstyled && mainStyle}
         ${!this.unstyled && styleEOX}
       </style>
+
+      <div class="drawtitle">
+        <slot name="drawtitle"
+          ><p><strong>Draw</strong></p></slot
+        >
+      </div>
 
       <!-- Controller Component -->
       <eox-drawtools-controller
@@ -377,6 +389,7 @@ export class EOxDrawTools extends LitElement {
         .importFeatures=${this.importFeatures}
         .showEditor=${this.showEditor}
         .geoJSON=${this.#geoJSON}
+        .type=${this.type}
       ></eox-drawtools-controller>
 
       <!-- List Component -->

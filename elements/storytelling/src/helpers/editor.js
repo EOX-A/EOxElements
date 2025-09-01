@@ -204,10 +204,7 @@ export function getSectionIndexes(markdownArr) {
 
   // Check and get current section index from markdown array
   markdownArr.forEach((line, index) => {
-    if (
-      line.startsWith("## ") ||
-      (line.startsWith("# ") && sectionIndexes.length)
-    ) {
+    if (line.startsWith("# ") || line.startsWith("## ")) {
       sectionIndexes.push(index);
     }
   });
@@ -437,7 +434,7 @@ export function updateEditorInitVisibility(StoryTellingEditor) {
     StoryTellingEditor.editor.editor?.editors["root.Story"].simplemde_instance
   )
     /** @type {HTMLElement}*/ (
-      StoryTellingEditor.querySelector(".switch-input")
+      StoryTellingEditor.querySelector(".switch input")
     ).click();
   else setTimeout(() => updateEditorInitVisibility(StoryTellingEditor), 100);
 }

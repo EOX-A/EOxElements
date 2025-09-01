@@ -1,6 +1,6 @@
 {
   "name": "@eox/storytelling",
-  "version": "1.7.2",
+  "version": "1.9.3",
   "type": "module",
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
@@ -34,7 +34,8 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^0.1.5",
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.3.6",
     "@sindresorhus/slugify": "^2.2.1",
     "glightbox": "^3.3.0",
     "isomorphic-dompurify": "^2.4.0",

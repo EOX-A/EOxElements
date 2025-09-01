@@ -1,6 +1,6 @@
 {
   "name": "@eox/timecontrol",
-  "version": "0.12.3",
+  "version": "1.0.1",
   "type": "module",
   "devDependencies": {
     "ol": "^10.4.0",
@@ -33,7 +33,8 @@
     "watch": "vite build --watch"
   },
   "dependencies": {
-    "@eox/elements-utils": "^0.1.5",
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.3.6",
     "dayjs": "^1.11.9",
     "lit": "^3.2.0",
     "toolcool-range-slider": "^4.0.27"

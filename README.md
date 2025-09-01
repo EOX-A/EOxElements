@@ -27,28 +27,28 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>Dynamic chart with built-in data fetching</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-chart--docs">Docs & Examples</a></td>
     <td><a href="elements/chart/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/chart.svg?label=%20" /></a></td>
-    <td>⭕️</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/drawtools/">eox-drawtools</a></td>
     <td>Draw and manage features on a map</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-drawtools--docs">Docs & Examples</a></td>
     <td><a href="elements/drawtools/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/drawtools.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/feedback/">eox-feedback</a></td>
     <td>Quick and easy feedback widget</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-feedback--docs">Docs & Examples</a></td>
     <td><a href="elements/feedback/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/feedback.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/geosearch/">eox-geosearch</a></td>
     <td>An autocompleted search input for geographic locations</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-geosearch--docs">Docs & Examples</a></td>
     <td><a href="elements/geosearch/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/geosearch.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/itemfilter/">eox-itemfilter</a></td>
@@ -62,21 +62,21 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>Render a form from a JSON schema</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-jsonform--docs">Docs & Examples</a></td>
     <td><a href="elements/jsonform/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/jsonform.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/layercontrol/">eox-layercontrol</a></td>
     <td>Manage and modify map layers</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-layercontrol--docs">Docs & Examples</a></td>
     <td><a href="elements/layercontrol/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/layercontrol.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
     <tr>
     <td><a href="./elements/layout/">eox-layout</a></td>
     <td>Easily create a UI layout</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-layout--docs">Docs & Examples</a></td>
     <td><a href="elements/layout/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/layout.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/map/">eox-map</a></td>
@@ -90,7 +90,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>Display properties of STAC files</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-stacinfo--docs">Docs & Examples</a></td>
     <td><a href="elements/stacinfo/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/stacinfo.svg?label=%20" /></a></td>
-    <td>🟡</td>
+    <td>✅</td>
   </tr>
     <td><a href="./elements/storytelling/">eox-storytelling</a></td>
     <td>StoryTelling tools based on markdown</td>
@@ -103,7 +103,7 @@ Please find [descriptions, API docs and interactive examples here](https://eox-a
     <td>Time control and playback for map layers</td>
     <td><a href="https://eox-a.github.io/EOxElements/index.html?path=/docs/elements-eox-timecontrol--docs">Docs & Examples</a></td>
     <td><a href="elements/timecontrol/CHANGELOG.md"><img src="https://img.shields.io/npm/v/@eox/timecontrol.svg?label=%20" /></a></td>
-    <td>⭕️</td>
+    <td>✅</td>
   </tr>
   <tr>
     <td><a href="./elements/tour/">eox-tour</a></td>

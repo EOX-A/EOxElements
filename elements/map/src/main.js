@@ -4,6 +4,7 @@ import { LitElement, html } from "lit";
 import Map from "ol/Map";
 import View from "ol/View";
 import olCss from "ol/ol.css?inline";
+import { defaults as interactionDefaults } from "ol/interaction";
 import controlCss from "./controls/controls.css?inline";
 import { buffer } from "ol/extent";
 import "./components/compare";
@@ -35,6 +36,10 @@ import {
   removeControlMethod,
   firstUpdatedMethod,
 } from "./methods/map/";
+import eoxStyle from "@eox/ui/style.css?inline";
+import { addCommonStylesheet } from "@eox/elements-utils";
+
+addCommonStylesheet();
 
 /**
  * @typedef {import("./layers").EoxLayer} EoxLayer
@@ -183,6 +188,10 @@ export class EOxMap extends LitElement {
      */
     this.map = new Map({
       controls: [],
+      interactions: interactionDefaults({
+        altShiftDragRotate: false,
+        pinchRotate: false,
+      }),
       layers: [],
       view: new View({
         center: [0, 0],
@@ -516,6 +525,7 @@ export class EOxMap extends LitElement {
           pointer-events: none !important;
         }
         ${olCss}
+        ${eoxStyle}
         ${controlCss}
       </style>
       <div style="width: 100%; height: 100%"></div>

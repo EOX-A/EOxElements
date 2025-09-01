@@ -1,6 +1,7 @@
 import { LitElement, html } from "lit";
 import { when } from "lit/directives/when.js";
 import { map } from "lit/directives/map.js";
+import eoxStyle from "@eox/ui/style.css?inline";
 
 export class EOxLayerControlTabs extends LitElement {
   // Define static properties for the component
@@ -120,7 +121,10 @@ export class EOxLayerControlTabs extends LitElement {
             </nav>
           `,
         )}
-        <figure>
+        <figure
+          class="no-round small-padding vertical-padding"
+          style="overflow: hidden; white-space: normal"
+        >
           <!-- Content for each tab -->
           ${map(
             tabs,
@@ -139,6 +143,10 @@ export class EOxLayerControlTabs extends LitElement {
                 <!-- Content slot for each tab -->
                 <slot name=${`${tab}-content`}>${tab}</slot>
               </div>
+              ${when(
+                this.toolsAsList && index < tabs.length - 1,
+                () => html`<hr class="small" />`,
+              )}
             `,
           )}
         </figure>
@@ -168,45 +176,40 @@ export class EOxLayerControlTabs extends LitElement {
     .listed .tab.highlighted {
       display: block;
     }
+    .listed .tab {
+      margin-bottom: .5rem;
+    }
   `;
 
   #styleEOX = `
-    .listed label {
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      background: var(--background-color) !important;
-    }
-    .listed label:not(:first-of-type) {
-      margin-top: 10px;
-    }
-    .listed label span {
-      text-transform: capitalize;
-      font-weight: 300;
-    }
-    .tabbed, .listed {
-      font-size: small;
-    }
-    .tabbed label.highlighted {
-      border: 1px solid #0041701a;
-      border-radius: 2px;
-      border-bottom: none;
-      pointer-events: none;
-    }
-    nav div label,
-    nav div span {
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
+    ${eoxStyle}
     figure {
-      background: var(--background-color);
-      border: 1px solid #0041701a;
-      border-radius: 2px;
       padding: var(--padding-vertical) var(--padding);
+      background-color: var(--surface); /* fallback */
+      background-color: var(--item-hover-color);
+    }
+    .listed [name*=-icon] {
+      display: none;
+    }
+    .listed [name*=-icon]+span {
+      text-transform: capitalize;
+      font-weight: bold;
+    }
+    .tabbed > nav > div > label,
+    .tabbed > nav > div > span {
+      border-bottom: 1px solid var(--surface);
+    }
+    .tabbed > nav > div > label.highlighted,
+    .tabbed > nav > div > span.highlighted {
+      border-bottom: 2px solid var(--outline-variant);
+    }
+    :host {
+      --eox-slider-thumb-height: 10px !important;
+      --eox-slider-thumb-width: 10px !important;
+      --eox-slider-track-height: 4px !important;
+      --eox-panel-spacing: 0 !important;
+      --eox-slider-margin: 0 !important;
+      font-size: small;
     }
   `;
 }

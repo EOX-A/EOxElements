@@ -6,7 +6,6 @@ import {
   hoverFeatureMethod,
   selectAndDeselectFeatureMethod,
 } from "../methods/list";
-import listStyle from "@eox/elements-utils/styles/dist/list.style";
 
 /**
  * Display list of features
@@ -116,7 +115,7 @@ export class EOxDrawToolsList extends LitElement {
    * @param {Event & { target: HTMLButtonElement }} evt - Event object containing button target.
    */
   _handleDelete(evt) {
-    deleteFeatureMethod(evt, this);
+    deleteFeatureMethod(evt, this, this.eoxDrawTools);
     this.dispatchEvent(new CustomEvent("changed", { bubbles: true }));
   }
 
@@ -157,11 +156,18 @@ export class EOxDrawToolsList extends LitElement {
     this.hoverId = this.hoverInteraction?.selectedFids[0];
     this.clickId = this.clickInteraction?.selectedFids[0];
 
+    const discardIcon = html`<svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+    >
+      <title>trash-can-outline</title>
+      <path
+        d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M7,6H17V19H7V6M9,8V17H11V8H9M13,8V17H15V8H13Z"
+      />
+    </svg>`;
+
     return html`
-      <style>
-        ${!this.unstyled && listStyle}
-      </style>
-      <ul class="list-wrap">
+      <ul class="list no-space">
         ${this.drawnFeatures.map((feature, i) => {
           // Determine feature number and ID
           const featureNumber = i + 1;
@@ -172,9 +178,19 @@ export class EOxDrawToolsList extends LitElement {
           // Check if the feature is hovered or clicked
           const isFeatureHovered = this.hoverId === featureId;
           const isFeatureClicked = this.clickId === featureId;
-          const isSelected = isFeatureHovered || isFeatureClicked;
-          const selectionClass = isSelected ? "selected" : nothing;
-          const propertyName = feature.get(this.featureNameKey);
+          const selectionClass = isFeatureHovered
+            ? "surface-container-low"
+            : isFeatureClicked
+              ? "fill"
+              : nothing;
+
+          const pathParts = this.featureNameKey?.split(".");
+          const propertyName =
+            feature.get(this.featureNameKey) ||
+            pathParts?.reduce((obj, part) => obj?.[part], {
+              ...feature.getProperties(),
+            });
+
           const title = propertyName
             ? propertyName
             : `${this.featureName} ${featureNumber}`;
@@ -183,25 +199,24 @@ export class EOxDrawToolsList extends LitElement {
             featureNumber,
             html`
               <li
-                class="${selectionClass}"
+                class="${selectionClass} no-round"
                 @mouseover=${() => this._handleHoverFeature(featureId)}
                 @mouseout=${() => this._handleHoverFeature(featureId, true)}
+                @click="${() => this._handleFeatureSelectAndDeselect(feature)}"
               >
-                <div
-                  class="list"
-                  @click="${() =>
-                    this._handleFeatureSelectAndDeselect(feature)}"
-                >
+                <div class="max">
                   <span class="title">${title}</span>
-                  <button
-                    index=${i}
-                    data-cy="deleteFeatureBtn"
-                    class="icon smallest discard"
-                    @click="${this._handleDelete}"
-                  >
-                    x
-                  </button>
                 </div>
+                <button
+                  index=${i}
+                  data-cy="deleteFeatureBtn"
+                  class="transparent square small error-text front"
+                  @click="${this._handleDelete}"
+                >
+                  ${this.unstyled
+                    ? "x"
+                    : html`<i class="small">${discardIcon}</i>`}
+                </button>
               </li>
             `,
           );

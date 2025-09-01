@@ -1,5 +1,87 @@
 # Changelog
 
+## [1.4.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.0...jsonform-v1.4.1) (2025-08-18)
+
+
+### Bug Fixes
+
+* **style:** Positioning of floating properties toggle inside containers ([#1816](https://github.com/EOX-A/EOxElements/issues/1816)) ([4f95d44](https://github.com/EOX-A/EOxElements/commit/4f95d44c5ec8dd7ed02618da56314b8320555f3a))
+
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.3...jsonform-v1.4.0) (2025-08-14)
+
+
+### Features
+
+* **style:** More visible editing buttons, floating properties toggle ([#1814](https://github.com/EOX-A/EOxElements/issues/1814)) ([80bcc0d](https://github.com/EOX-A/EOxElements/commit/80bcc0d695baa3159994101e608834ae173bc2fb))
+
+## [1.3.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.2...jsonform-v1.3.3) (2025-07-29)
+
+
+### Bug Fixes
+
+* **style:** Show object editor titles ([d2ddbdd](https://github.com/EOX-A/EOxElements/commit/d2ddbddd571770304635e17e48005f9a46c9fcbb))
+
+## [1.3.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.1...jsonform-v1.3.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+
+## [1.3.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.3.0...jsonform-v1.3.1) (2025-07-22)
+
+
+### Bug Fixes
+
+* Handle not existing tabs ([#1791](https://github.com/EOX-A/EOxElements/issues/1791)) ([706cd79](https://github.com/EOX-A/EOxElements/commit/706cd799699fa9219f16c491ba998acafd5ea727))
+
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.2.0...jsonform-v1.3.0) (2025-07-21)
+
+
+### Features
+
+* Show number of validation errors per tab ([#1787](https://github.com/EOX-A/EOxElements/issues/1787)) ([c7a371f](https://github.com/EOX-A/EOxElements/commit/c7a371ff1a714553c8c90104eaea40c0916929ad))
+
+
+### Bug Fixes
+
+* Disconnect/connect drawtools ([#1780](https://github.com/EOX-A/EOxElements/issues/1780)) ([5b89b87](https://github.com/EOX-A/EOxElements/commit/5b89b87021e45f307b2b67bb115358c5a4989640))
+* Show validation errors for spatial editor ([#1786](https://github.com/EOX-A/EOxElements/issues/1786)) ([2bd9a09](https://github.com/EOX-A/EOxElements/commit/2bd9a0999bbf3ba26233e6ac185d55fd9b1e912b))
+
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.1.1...jsonform-v1.2.0) (2025-07-17)
+
+
+### Features
+
+* On/off toggle for object property editing ([#1777](https://github.com/EOX-A/EOxElements/issues/1777)) ([5ba17aa](https://github.com/EOX-A/EOxElements/commit/5ba17aa809ac26054c916681c32ec7e45c1f562f))
+
+
+### Bug Fixes
+
+* **style:** Spacing adjustments ([612936d](https://github.com/EOX-A/EOxElements/commit/612936da4ef008fa79dbb7b70736a12a1b40a33a))
+
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.1.0...jsonform-v1.1.1) (2025-07-10)
+
+
+### Bug Fixes
+
+* **style:** Small checkboxes by default ([#1755](https://github.com/EOX-A/EOxElements/issues/1755)) ([87f0150](https://github.com/EOX-A/EOxElements/commit/87f01509aef8b6f026e7a8536ffbe255b5e50b24))
+* **style:** Tabs and table layout ([#1756](https://github.com/EOX-A/EOxElements/issues/1756)) ([91947b3](https://github.com/EOX-A/EOxElements/commit/91947b3f2f36adb4ed2a72043a7518bc4151a42b))
+
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.0.0...jsonform-v1.1.0) (2025-07-09)
+
+
+### Features
+
+* More user friendly show_opt_in properties ([#1747](https://github.com/EOX-A/EOxElements/issues/1747)) ([04e8107](https://github.com/EOX-A/EOxElements/commit/04e810723fae46b1b7c8cd307d228bb119073ad6))
+
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.5...jsonform-v1.0.0) (2025-06-30)
+
+
+### Features
+
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
 ## [0.16.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v0.16.4...jsonform-v0.16.5) (2025-05-20)
 
 

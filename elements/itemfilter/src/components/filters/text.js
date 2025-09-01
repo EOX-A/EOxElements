@@ -17,6 +17,7 @@ export class EOxItemFilterText extends LitElement {
   static get properties() {
     return {
       filterObject: { attribute: false, type: Object },
+      results: { state: true, type: Array },
       tabIndex: { attribute: false, type: Number },
       unstyled: { type: Boolean },
       isValid: { state: true, type: Boolean },
@@ -30,6 +31,11 @@ export class EOxItemFilterText extends LitElement {
      * @type Object
      */
     this.filterObject = {};
+
+    /**
+     * @type Array
+     */
+    this.results = null;
 
     /**
      * @type Boolean
@@ -52,6 +58,28 @@ export class EOxItemFilterText extends LitElement {
    */
   #inputHandler = () => {
     textInputHandlerMethod(this);
+  };
+
+  /**
+   * Handles the keydown event when enter is pressed and result is just one item
+   * then add the item to selected result by triggering the result event
+   */
+  #keydownHandler = (e) => {
+    if (
+      e.key === "Enter" &&
+      !!e.target.value &&
+      this.results &&
+      this.results.length === 1
+    ) {
+      this.dispatchEvent(
+        new CustomEvent("result", {
+          detail: this.results[0],
+        }),
+      );
+
+      e.target.value = "";
+      this.#inputHandler();
+    }
   };
 
   /**
@@ -84,7 +112,10 @@ export class EOxItemFilterText extends LitElement {
       () => html`
         <style></style>
         <div class="text-container">
-          <div class="text-container-wrapper">
+          <div
+            class="text-container-wrapper field small"
+            style="margin-left: var(--list-padding)"
+          >
             <input
               type="text"
               placeholder=${this.filterObject.placeholder}
@@ -96,10 +127,11 @@ export class EOxItemFilterText extends LitElement {
               pattern="${this.filterObject.validation?.pattern || ".*"}"
               @input="${this.debouncedInputHandler}"
               @click=${(evt) => evt.stopPropagation()}
+              @keydown=${this.#keydownHandler}
             />
           </div>
         </div>
-        <small class="error-validation"
+        <small class="error-validation" style="margin-left: var(--list-padding)"
           >${this.filterObject.validation && this.isValid === false
             ? this.filterObject.validation.message
             : ""}</small

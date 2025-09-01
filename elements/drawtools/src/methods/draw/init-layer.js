@@ -7,7 +7,6 @@ import { getElement } from "@eox/elements-utils";
  *
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  * @param {Boolean} multipleFeatures - Allow adding more than one feature at a time
- * @returns {{EoxMap: import("@eox/map").EOxMap, OlMap: import("ol").Map}} - The map instances.
  */
 const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const mapQuery = getElement(EoxDrawTool.for);
@@ -15,6 +14,8 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   const EoxMap = /** @type {import("@eox/map").EOxMap} */ (mapQuery);
 
   const OlMap = EoxMap.map;
+
+  const primaryColor = "0, 65, 112";
 
   EoxDrawTool.drawLayer = EoxMap.addOrUpdateLayer({
     zIndex: 100,
@@ -28,7 +29,13 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
     source: {
       type: "Vector",
     },
-    style: EoxDrawTool.featureStyles?.["layer"],
+    style: EoxDrawTool.featureStyles?.["layer"] || {
+      "fill-color": `rgba(${primaryColor}, 0.1)`,
+      "stroke-color": `rgba(${primaryColor}, 1)`,
+      "stroke-width": 2,
+      "circle-radius": 5,
+      "circle-fill-color": `rgba(${primaryColor}, 1)`,
+    },
     interactions: [
       {
         type: "draw",
@@ -38,7 +45,14 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           type: EoxDrawTool.type,
           modify: EoxDrawTool.allowModify,
           stopClick: true,
-          style: EoxDrawTool.featureStyles?.["layer"],
+          style: EoxDrawTool.featureStyles?.["layer"] || {
+            "fill-color": `rgba(${primaryColor}, 0.1)`,
+            "stroke-color": `rgba(${primaryColor}, 1)`,
+            "stroke-width": 1,
+            "stroke-line-dash": [7, 3],
+            "circle-radius": 5,
+            "circle-fill-color": `rgba(${primaryColor}, 1)`,
+          },
         },
       },
       {
@@ -47,9 +61,9 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           id: "SelectLayerHoverInteraction",
           condition: "pointermove",
           style: EoxDrawTool.featureStyles?.["hover"] || {
-            "fill-color": "rgba(51, 153, 204,0.5)",
-            "stroke-color": "#3399CC",
-            "stroke-width": 2.5,
+            "fill-color": `rgba(${primaryColor}, 0.2)`,
+            "stroke-color": `rgba(${primaryColor}, 1)`,
+            "stroke-width": 2,
           },
           tooltip: false,
         },
@@ -61,9 +75,9 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           condition: "click",
           panIn: true,
           style: EoxDrawTool.featureStyles?.["click"] || {
-            "fill-color": "rgba(51, 153, 204,0.5)",
-            "stroke-color": "#3399CC",
-            "stroke-width": 2.5,
+            "fill-color": `rgba(${primaryColor}, 0.2)`,
+            "stroke-color": `rgba(${primaryColor}, 1)`,
+            "stroke-width": 2,
           },
         },
       },
@@ -80,12 +94,40 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
 
   // Initialize selection interactions
   initSelection(EoxDrawTool, EoxMap, EoxDrawTool.layerId);
+  const onModifyEnd = () => EoxDrawTool.onModifyEnd();
+  const onAddFeatures = () => onDrawEndMethod(EoxDrawTool);
 
-  EoxDrawTool.modify?.on("modifyend", () => EoxDrawTool.onModifyEnd());
+  EoxDrawTool.modify?.on("modifyend", onModifyEnd);
 
-  EoxMap.addEventListener("addfeatures", () => onDrawEndMethod(EoxDrawTool));
+  EoxMap.addEventListener("addfeatures", onAddFeatures);
 
-  return { EoxMap, OlMap };
+  if (EoxDrawTool.drawnFeatures) {
+    EoxDrawTool.drawLayer.getSource().addFeatures(EoxDrawTool.drawnFeatures);
+  }
+
+  /**
+   * Resets the draw layer, cleaning up interactions and listeners.
+   *
+   * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
+   */
+  const reset = (EoxDrawTool) => {
+    if (!EoxDrawTool.eoxMap || !EoxDrawTool.drawLayer) {
+      return;
+    }
+
+    // Remove the layer from the map
+    EoxDrawTool.drawLayer.getSource().clear();
+    EoxDrawTool.eoxMap.map.removeLayer(EoxDrawTool.drawLayer);
+    EoxDrawTool.modify?.un("modifyend", onModifyEnd);
+    EoxDrawTool.eoxMap.removeEventListener("addfeatures", onAddFeatures);
+
+    // Clean up references
+    if (!EoxDrawTool.layerId) {
+      EoxDrawTool.draw = null;
+    }
+    EoxDrawTool.modify = null;
+  };
+
+  return { EoxMap, OlMap, reset };
 };
-
 export default initLayerMethod;

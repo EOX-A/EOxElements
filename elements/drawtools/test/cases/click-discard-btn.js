@@ -13,11 +13,11 @@ const clickDiscardBtnTest = () => {
       cy.get(controller).within(() => {
         // Click the draw button and verify if it is in the 'drawing' state
         cy.get(drawBtn).click();
-        cy.get(drawBtn).contains("drawing");
+        cy.get(drawBtn).should("have.attr", "disabled", "disabled");
 
         // Click the discard button and verify if the 'drawing' state is removed
         cy.get(discardBtn).click();
-        cy.get(drawBtn).should("not.contain", "drawing");
+        cy.get(drawBtn).should("not.have.attr", "disabled");
       });
     });
 

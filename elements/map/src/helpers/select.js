@@ -49,6 +49,7 @@ export class EOxSelectInteraction {
       } else {
         this.tooltipElement =
           this.eoxMap.querySelector("eox-map-tooltip") ||
+          this.eoxMap.querySelector("[is=eox-map-tooltip]") ||
           options.overlay?.element;
 
         if (this.tooltipElement) {
@@ -147,40 +148,42 @@ export class EOxSelectInteraction {
       }
 
       // Fetch features at the clicked pixel
-      this.selectLayer.getFeatures(event.pixel).then((features) => {
-        const feature = features.length ? features[0] : null;
+      const feature = this.eoxMap.map.forEachFeatureAtPixel(
+        event.pixel,
+        (feature) => feature,
+        { layerFilter: (candidate) => candidate === this.selectLayer },
+      );
 
-        const newSelectFids = feature ? [this.getId(feature)] : [];
-        const idChanged = this.selectedFids[0] !== newSelectFids[0];
-        this.selectedFids = newSelectFids;
-        if (idChanged) {
-          this.selectStyleLayer.changed();
-          if (feature && this.panIn) this.panIntoFeature(feature);
+      const newSelectFids = feature ? [this.getId(feature)] : [];
+      const idChanged = this.selectedFids[0] !== newSelectFids[0];
+      this.selectedFids = newSelectFids;
+      if (idChanged) {
+        this.selectStyleLayer.changed();
+        if (feature && this.panIn) this.panIntoFeature(feature);
+      }
+
+      // Fetch features at the clicked pixel
+      if (overlay) {
+        const xPosition =
+          event.pixel[0] > this.eoxMap.offsetWidth / 2 ? "right" : "left";
+        const yPosition =
+          event.pixel[1] > this.eoxMap.offsetHeight / 2 ? "bottom" : "top";
+        overlay.setPositioning(`${yPosition}-${xPosition}`);
+        overlay.setPosition(feature ? event.coordinate : null);
+        if (feature && this.tooltipElement) {
+          // @ts-expect-error TODO
+          this.tooltipElement.feature = feature;
         }
+      }
 
-        // Fetch features at the clicked pixel
-        if (overlay) {
-          const xPosition =
-            event.pixel[0] > this.eoxMap.offsetWidth / 2 ? "right" : "left";
-          const yPosition =
-            event.pixel[1] > this.eoxMap.offsetHeight / 2 ? "bottom" : "top";
-          overlay.setPositioning(`${yPosition}-${xPosition}`);
-          overlay.setPosition(feature ? event.coordinate : null);
-          if (feature && this.tooltipElement) {
-            // @ts-expect-error TODO
-            this.tooltipElement.feature = feature;
-          }
-        }
-
-        const selectdEvt = new CustomEvent("select", {
-          detail: {
-            id: options.id,
-            originalEvent: event,
-            feature: feature,
-          },
-        });
-        this.eoxMap.dispatchEvent(selectdEvt);
+      const selectdEvt = new CustomEvent("select", {
+        detail: {
+          id: options.id,
+          originalEvent: event,
+          feature: feature,
+        },
       });
+      this.eoxMap.dispatchEvent(selectdEvt);
     };
 
     // Set up the map event listener for the specified condition (e.g., click, pointermove)
@@ -241,7 +244,9 @@ export class EOxSelectInteraction {
         },
       )
         ? options.cursor || "pointer"
-        : "auto";
+        : this.eoxMap.interactions.drawInteraction?.getActive()
+          ? "crosshair"
+          : "auto";
     };
     eoxMap.map.on("pointermove", this.pointerMoveListener);
   }
