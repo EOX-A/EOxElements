@@ -14,12 +14,12 @@ export const Primary = {
   render: (args) => html`
     <eox-map
       id="primary"
-      style="width: 400px; height: 300px;"
+      style="width: 100%; height: 300px;"
       .zoom=${args.zoom}
       .center=${args.center}
       .layers=${args.layers}
     ></eox-map>
-    <eox-timeslider .for=${args.for} style="margin-top: 8px"></eox-timeslider>
+    <eox-timeslider .for=${args.for}></eox-timeslider>
   `,
 };
 
