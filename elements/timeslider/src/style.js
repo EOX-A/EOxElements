@@ -5,6 +5,9 @@ export const style = `
 :host {
   display: block;
 }
+.vis-timeline * {
+  border-radius: 0px;
+}
 .timeslider-header {
   padding: 8px;
   background: var(--inverse-on-surface);
@@ -57,15 +60,39 @@ export const style = `
 .vis-item.task:hover {
   background: var(--primary-container);
 }
-.vis-item.milestone {
+.vis-item.milestone.vis-dot {
+  display: none;
+}
+.vis-item.milestone.vis-point {
   background: var(--primary) !important;
   border: none;
   width: 14px;
   height: 14px;
   border-radius: 0px !important;
 }
-.vis-item.milestone:hover {
-  background: #0069b5 !important;
+.vis-item.milestone.vis-point.vis-selected-item {
+  background: #ffc200 !important;
+}
+.vis-item.milestone.vis-point.vis-not-filtered {
+  background: var(--primary) !important;
+  opacity: 0.4;
+}
+.vis-item.milestone.vis-point:hover {
+  background: #ffc200 !important;
+  cursor: pointer;
+}
+.vis-text {
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.vis-text.vis-major {
+  color: #96938A !important;
+  margin-left: -8px;
+  background: white;
+}
+.vis-text.vis-minor {
+  margin-left: -8px;
+  background: white;
 }
 .vis-item .vis-item-content {
   display: none;
@@ -81,5 +108,10 @@ export const style = `
 .vis-custom-time-selected {
   background: #111 !important;
   width: 2px;
+}
+eox-itemfilter {
+  width: 450px;
+  background: white;
+  border-radius: 6px;
 }
 `;

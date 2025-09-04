@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 import minMax from "dayjs/plugin/minMax";
+import { v4 as uuidv4 } from "uuid";
+import { when } from "lit/directives/when.js";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -23,11 +25,12 @@ export class EOxTimeSlider extends LitElement {
       for: { type: String },
       unstyled: { type: Boolean },
       sliderValues: { type: Array, attribute: "slider-values" },
+      filters: { type: Array, attribute: "filter" },
+      selectedDate: { type: String, attribute: "selected-date" },
     };
   }
 
   #visTimeline = null;
-  #layerSources = null;
   #eoxMap = null;
 
   constructor() {
@@ -44,6 +47,78 @@ export class EOxTimeSlider extends LitElement {
     this.for = "eox-map";
 
     this.sliderValues = [];
+
+    this.filters = [];
+
+    this.selectedDate = null;
+  }
+
+  getContainer() {
+    return this.renderRoot.querySelector("#timeslider");
+  }
+
+  setSelectedDate(date, visTimeline, eoxMap, EOxTimeSlide) {
+    this.selectedDate = dayjs(date);
+    if (Number.isNaN(this.selectedDate.unix())) return;
+    try {
+      visTimeline.addCustomTime(this.selectedDate.toDate(), "selected");
+    } catch (_) {
+      /* exists */
+    }
+
+    const container = this.getContainer();
+
+    visTimeline.setCustomTime(this.selectedDate.toDate(), "selected");
+    visTimeline.setCustomTimeTitle(
+      this.selectedDate.format("MMM DD' YYYY"),
+      "selected",
+    );
+    const el = container.querySelector('.vis-custom-time[data-id="selected"]');
+    if (el) el.classList.add("vis-custom-time-selected");
+
+    const prevSelectionCell = container.querySelectorAll(
+      ".vis-item.milestone.vis-point.vis-selected-item",
+    );
+    prevSelectionCell.forEach((cell) => {
+      cell.classList.remove("vis-selected-item");
+    });
+
+    const selectedEle = container.querySelector(".vis-custom-time");
+    if (selectedEle) {
+      const labelEle = selectedEle.children[0];
+      labelEle.classList.add("vis-custom-time-selected-label");
+      labelEle.innerText = dayjs(date).format("MMM DD' YYYY");
+    }
+
+    const flatLayers = EOxTimeSlide.getFlatLayersArray(
+      /** @type {import('ol/layer/Base').default[]} */ (
+        eoxMap.map.getLayers().getArray()
+      ),
+    );
+
+    const selectedItems = this.#visTimeline.itemsData
+      .get()
+      .filter(
+        (item) =>
+          dayjs(item.start).format("YYYY-MM-DD") ==
+          dayjs(date).format("YYYY-MM-DD"),
+      );
+
+    selectedItems.forEach((item) => {
+      if (item.group && eoxMap) {
+        const layer = flatLayers.find((l) => l.get("id") === item.group);
+        const source = layer.getSource();
+
+        const newSelectionCell = container.querySelector(
+          `.vis-item.milestone.vis-point.item-${item.id}`,
+        );
+        newSelectionCell.classList.add("vis-selected-item");
+        source.updateParams({
+          [item.property]: item.start,
+        });
+      }
+    });
+    EOxTimeSlide.requestUpdate();
   }
 
   initVisTimeline() {
@@ -58,9 +133,12 @@ export class EOxTimeSlider extends LitElement {
         content: slider.name,
       });
       for (const value of slider.values) {
+        const id = uuidv4(slider.layer + value.date);
         items.add({
+          ...value,
+          id: id,
           group: slider.layer,
-          className: "milestone",
+          className: `milestone item-${id}`,
           start: value.date,
           type: "point",
           property: slider.property,
@@ -71,7 +149,7 @@ export class EOxTimeSlider extends LitElement {
     const dates = items.map((item) => dayjs(item.start));
     const min = dayjs.min(dates).subtract(30, "day").format("YYYY-MM-DD");
     const max = dayjs.max(dates).add(30, "day").format("YYYY-MM-DD");
-    const container = this.renderRoot.querySelector("#timeslider");
+    const container = this.getContainer();
 
     const options = {
       // groupOrder: (a, b) => a.id - b.id,
@@ -97,7 +175,7 @@ export class EOxTimeSlider extends LitElement {
           minute: "HH:mm",
           hour: "HH:mm",
           weekday: "ddd D",
-          day: "D",
+          day: "DD",
           week: "w",
           month: "MMM",
           year: "YYYY",
@@ -119,105 +197,31 @@ export class EOxTimeSlider extends LitElement {
     if (!this.#visTimeline) {
       this.#visTimeline = new Timeline(container, items, groups, options);
 
-      function formatDate(d) {
-        return d.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "short",
-          day: "2-digit",
-        });
-      }
-
-      function setSelected(
-        date,
-        layerSources,
-        visTimeline,
-        eoxMap,
-        EOxTimeSlide,
-      ) {
-        const d = new Date(date);
-        if (Number.isNaN(d.getTime())) return;
-        try {
-          visTimeline.addCustomTime(d, "selected");
-        } catch (_) {
-          /* exists */
-        }
-
-        visTimeline.setCustomTime(d, "selected");
-        visTimeline.setCustomTimeTitle(formatDate(d), "selected");
-        const el = container.querySelector(
-          '.vis-custom-time[data-id="selected"]',
-        );
-        if (el) el.classList.add("vis-custom-time-selected");
-
-        const selectedEle = container.querySelector(".vis-custom-time");
-        if (selectedEle) {
-          const labelEle = selectedEle.children[0];
-          labelEle.classList.add("vis-custom-time-selected-label");
-          labelEle.innerText = dayjs(date).format("MMM DD' YYYY");
-        }
-
-        const flatLayers = EOxTimeSlide.getFlatLayersArray(
-          /** @type {import('ol/layer/Base').default[]} */ (
-            eoxMap.map.getLayers().getArray()
-          ),
-        );
-
-        const selectedItems = items.get({
-          filter: function (item) {
-            return item.start == dayjs(date).format("YYYY-MM-DD");
-          },
-        });
-
-        selectedItems.forEach((item) => {
-          if (item.group && eoxMap) {
-            const layer = flatLayers.find((l) => l.get("id") === item.group);
-            const source = layer.getSource();
-            source.updateParams({
-              [item.property]: item.start,
-            });
-          }
-        });
-        EOxTimeSlide.requestUpdate();
-      }
-
-      this.#visTimeline.on("rangechange", (props) => {
-        const range = this.#visTimeline.getWindow();
-        const rangeWidth = range.end - range.start; // milliseconds
-        const containerWidth = container.offsetWidth;
-
-        // Calculate width per millisecond
-        const msPerPixel = rangeWidth / containerWidth;
-
-        // Set milestone width based on visible date range
-        // Adjust the multiplier as needed for desired milestone size
-        const milestoneWidth = Math.max(
-          2,
-          Math.min(
-            20,
-            containerWidth / (rangeWidth / (1000 * 60 * 60 * 24 * 7)),
-          ),
-        ); // 1 week base
+      this.#visTimeline.on("changed", () => {
+        const width = container
+          .querySelector(".vis-text.vis-minor.vis-even")
+          .style.width.replace("px", "");
+        const cellWidth = width / options.timeAxis.step + 0.1;
 
         const milestoneElements = container.querySelectorAll(
           ".vis-item.milestone",
         );
         milestoneElements.forEach((milestone) => {
-          milestone.style.width = `${milestoneWidth}px`;
+          milestone.style.width = `${cellWidth}px`;
         });
       });
 
       this.#visTimeline.on("click", (props) => {
         if (props && props.time)
-          setSelected(
+          this.setSelectedDate(
             props.time,
-            this.#layerSources,
             this.#visTimeline,
             this.#eoxMap,
             this,
           );
       });
 
-      this.#visTimeline.addCustomTime(new Date(), "selected");
+      this.requestUpdate();
     }
   }
 
@@ -269,6 +273,36 @@ export class EOxTimeSlider extends LitElement {
     }
   }
 
+  filterHandler(e) {
+    const filterItems = this.renderRoot.querySelectorAll(
+      ".vis-item.milestone.vis-point",
+    );
+    filterItems.forEach((item) => {
+      item.classList.remove("vis-filtered");
+      item.classList.remove("vis-not-filtered");
+    });
+    if (this.#visTimeline.itemsData.get().length != e.detail.results.length) {
+      for (const result of e.detail.results) {
+        const item = this.renderRoot.querySelector(
+          `.vis-item.milestone.vis-point.item-${result.id}`,
+        );
+        if (item) {
+          item.classList.add("vis-filtered");
+        }
+      }
+      const notFilteredItem = this.renderRoot.querySelectorAll(
+        `.vis-item.milestone.vis-point:not(.vis-filtered)`,
+      );
+      notFilteredItem.forEach((item) => {
+        item.classList.add("vis-not-filtered");
+      });
+    }
+  }
+
+  dateChangeHandler(e) {
+    this.setSelectedDate(e.target.value, this.#visTimeline, this.#eoxMap, this);
+  }
+
   render() {
     return html`
       <style>
@@ -279,8 +313,24 @@ export class EOxTimeSlider extends LitElement {
       <div class="timeslider-container">
         <div class="timeslider-header">
           <div class="field fill border small">
-            <input type="date" placeholder=" " />
+            <input
+              type="date"
+              @change=${this.dateChangeHandler}
+              value=${this.selectedDate?.format("YYYY-MM-DD") || ""}
+            />
           </div>
+          ${when(
+            this.filters && this.#visTimeline,
+            () =>
+              html` <eox-itemfilter
+                .items=${this.#visTimeline.itemsData.get()}
+                .inlineMode=${true}
+                .titleProperty=${"id"}
+                .showResults=${false}
+                @filter=${this.filterHandler}
+                .filterProperties=${this.filters}
+              ></eox-itemfilter>`,
+          )}
         </div>
         <div id="timeslider"></div>
       </div>
