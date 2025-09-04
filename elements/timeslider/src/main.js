@@ -32,6 +32,8 @@ export class EOxTimeSlider extends LitElement {
 
   #visTimeline = null;
   #eoxMap = null;
+  #groups = new DataSet([]);
+  #items = new DataSet([]);
 
   constructor() {
     super();
@@ -124,17 +126,17 @@ export class EOxTimeSlider extends LitElement {
   initVisTimeline() {
     if (this.sliderValues.length === 0) return;
 
-    const groups = new DataSet([]);
-    const items = new DataSet([]);
+    this.#groups = new DataSet([]);
+    this.#items = new DataSet([]);
 
     for (const slider of this.sliderValues) {
-      groups.add({
+      this.#groups.add({
         id: slider.layer,
         content: slider.name,
       });
       for (const value of slider.values) {
         const id = uuidv4(slider.layer + value.date);
-        items.add({
+        this.#items.add({
           ...value,
           id: id,
           group: slider.layer,
@@ -146,7 +148,7 @@ export class EOxTimeSlider extends LitElement {
       }
     }
 
-    const dates = items.map((item) => dayjs(item.start));
+    const dates = this.#items.map((item) => dayjs(item.start));
     const min = dayjs.min(dates).subtract(30, "day").format("YYYY-MM-DD");
     const max = dayjs.max(dates).add(30, "day").format("YYYY-MM-DD");
     const container = this.getContainer();
@@ -195,7 +197,12 @@ export class EOxTimeSlider extends LitElement {
     };
 
     if (!this.#visTimeline) {
-      this.#visTimeline = new Timeline(container, items, groups, options);
+      this.#visTimeline = new Timeline(
+        container,
+        this.#items,
+        this.#groups,
+        options,
+      );
 
       this.#visTimeline.on("changed", () => {
         const width = container
@@ -323,7 +330,7 @@ export class EOxTimeSlider extends LitElement {
             this.filters && this.#visTimeline,
             () =>
               html` <eox-itemfilter
-                .items=${this.#visTimeline.itemsData.get()}
+                .items=${this.#items}
                 .inlineMode=${true}
                 .titleProperty=${"id"}
                 .showResults=${false}
