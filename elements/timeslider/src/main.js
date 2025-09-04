@@ -117,7 +117,7 @@ export class EOxTimeSlider extends LitElement {
         );
         newSelectionCell.classList.add("vis-selected-item");
         source.updateParams({
-          [item.property]: item.start,
+          [item.property]: dayjs(date).format("YYYY-MM-DD"),
         });
       }
     });
@@ -167,7 +167,6 @@ export class EOxTimeSlider extends LitElement {
     const container = this.getContainer();
 
     const options = {
-      // groupOrder: (a, b) => a.id - b.id,
       stack: false,
       selectable: true,
       zoomable: true,

@@ -1,5 +1,5 @@
 export const DEFAULT_ARGS = {
-  layer: "AWS_VIS_WIND_V_10M",
+  layer: "AWS_NO2-VISUALISATION",
   controlProperty: "TIME",
   controlValues: [
     "2022-12-05",
@@ -28,13 +28,13 @@ export const DEFAULT_ARGS = {
     {
       type: "Tile",
       properties: {
-        id: "AWS_VIS_WIND_V_10M",
+        id: "AWS_NO2-VISUALISATION",
       },
       source: {
         type: "TileWMS",
         url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
         params: {
-          LAYERS: "AWS_VIS_WIND_V_10M",
+          LAYERS: "AWS_NO2-VISUALISATION",
           TIME: "2022-12-05",
         },
       },
