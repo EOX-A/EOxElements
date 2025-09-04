@@ -63,6 +63,7 @@
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6",
+    "lodash.groupby": "^4.6.0",
     "uuid": "^11.1.0"
   }
 }

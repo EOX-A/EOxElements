@@ -462,6 +462,9 @@ export const Primary = {
         },
       },
     ],
+    update: (e) => {
+      console.log(e.detail);
+    },
   },
   render: (args) => html`
     <eox-map
@@ -475,6 +478,7 @@ export const Primary = {
       .sliderValues=${args.sliderValues}
       .for=${args.for}
       .filters=${args.filters}
+      @update=${args.update}
     ></eox-timeslider>
   `,
 };

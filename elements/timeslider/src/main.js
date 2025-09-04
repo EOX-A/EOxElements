@@ -11,6 +11,7 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import minMax from "dayjs/plugin/minMax";
 import { v4 as uuidv4 } from "uuid";
 import { when } from "lit/directives/when.js";
+import groupBy from "lodash.groupby";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -120,6 +121,18 @@ export class EOxTimeSlider extends LitElement {
         });
       }
     });
+
+    const itemsFilter = this.renderRoot.querySelector("#timeslider-filter");
+
+    this.dispatchEvent(
+      new CustomEvent("update", {
+        detail: {
+          selectedItems: groupBy(selectedItems, "group"),
+          date: dayjs(this.selectedDate).toDate(),
+          filters: itemsFilter?.filters || [],
+        },
+      }),
+    );
     EOxTimeSlide.requestUpdate();
   }
 
@@ -327,9 +340,10 @@ export class EOxTimeSlider extends LitElement {
             />
           </div>
           ${when(
-            this.filters && this.#visTimeline,
+            this.filters.length && this.#visTimeline,
             () =>
-              html` <eox-itemfilter
+              html`<eox-itemfilter
+                id="timeslider-filter"
                 .items=${this.#items}
                 .inlineMode=${true}
                 .titleProperty=${"id"}
