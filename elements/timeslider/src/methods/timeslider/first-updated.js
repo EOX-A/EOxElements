@@ -1,8 +1,9 @@
-import initVisTimeline from "../../helpers/init-vis-timeline";
+import { initVisTimeline, getFlatLayersArray } from "../../helpers";
 import { getElement } from "@eox/elements-utils";
 
 /**
  * First updated lifecycle method for timeslider
+ *
  * @param {Object} EOxTimeSlider - The timeslider EOxTimeSlider instance
  */
 export default function firstUpdatedMethod(EOxTimeSlider) {
@@ -12,26 +13,49 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
     const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
     EOxTimeSlider.eoxMap = EoxMap;
 
-    if (EoxMap.layers?.length > 0) {
+    const flatLayers = getFlatLayersArray(
+      /** @type {import('ol/layer/Base').default[]} */ (
+        EoxMap.map.getLayers().getArray()
+      ),
+    );
+
+    const init = () => {
+      const flatLayers = getFlatLayersArray(
+        /** @type {import('ol/layer/Base').default[]} */ (
+          EoxMap.map.getLayers().getArray()
+        ),
+      );
+
       const sliderValues = [];
-      EoxMap.layers.forEach((layer) => {
-        if (
-          layer.properties?.timeControlValues &&
-          Array.isArray(layer.properties.timeControlValues)
-        ) {
-          sliderValues.push({
-            layer: layer.properties[EOxTimeSlider.layerIdKey],
-            name: layer.properties[EOxTimeSlider.titleKey],
-            property: EOxTimeSlider.timeControlKey,
-            values: layer.properties.timeControlValues,
-          });
+
+      if (flatLayers.length) {
+        for (const layer of flatLayers) {
+          const properties = layer.getProperties();
+          if (
+            properties &&
+            properties.timeControlValues &&
+            Array.isArray(properties.timeControlValues)
+          ) {
+            sliderValues.push({
+              layer: properties[EOxTimeSlider.layerIdKey],
+              name: properties[EOxTimeSlider.titleKey],
+              property: EOxTimeSlider.timeControlKey,
+              values: properties.timeControlValues,
+            });
+          }
         }
-      });
+      }
 
       EOxTimeSlider.sliderValues = sliderValues;
 
       initVisTimeline(EOxTimeSlider);
       EOxTimeSlider.requestUpdate();
+    };
+
+    if (flatLayers.length > 0) init();
+    else {
+      EoxMap.map.getLayers().on("add", () => init());
+      EoxMap.map.getLayers().on("remove", () => init());
     }
   }
 }
