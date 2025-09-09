@@ -26,7 +26,9 @@ export class EOxTimeSlider extends LitElement {
     return {
       for: { type: String },
       unstyled: { type: Boolean },
-      sliderValues: { type: Array, attribute: "slider-values" },
+      titleKey: { type: String, attribute: "title-key" },
+      layerIdKey: { type: String, attribute: "layer-id-key" },
+      timeControlKey: { type: String, attribute: "property-key" },
       filters: { type: Array, attribute: "filter" },
       selectedDate: { type: String, attribute: "selected-date" },
     };
@@ -36,6 +38,7 @@ export class EOxTimeSlider extends LitElement {
   #eoxMap = null;
   #groups = new DataSet([]);
   #items = new DataSet([]);
+  #sliderValues = [];
 
   constructor() {
     super();
@@ -50,11 +53,15 @@ export class EOxTimeSlider extends LitElement {
      */
     this.for = "eox-map";
 
-    this.sliderValues = [];
-
     this.filters = [];
 
     this.selectedDate = null;
+
+    this.titleKey = "name";
+
+    this.layerIdKey = "id";
+
+    this.timeControlKey = "TIME";
   }
 
   getContainer() {
@@ -67,6 +74,14 @@ export class EOxTimeSlider extends LitElement {
 
   set visTimeline(value) {
     this.#visTimeline = value;
+  }
+
+  get sliderValues() {
+    return this.#sliderValues;
+  }
+
+  set sliderValues(value) {
+    this.#sliderValues = value;
   }
 
   get eoxMap() {

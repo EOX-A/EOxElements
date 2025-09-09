@@ -10,6 +10,9 @@ import setSelectedDate from "./set-selected-date";
  * @param {Object} EOxTimeSlider - The timeslider EOxTimeSlider instance
  */
 export default function initVisTimeline(EOxTimeSlider) {
+  const container = /** @type {HTMLElement} */ (EOxTimeSlider.getContainer());
+  container.innerHTML = "";
+
   if (EOxTimeSlider.sliderValues.length === 0) return null;
 
   const groups = new DataSet([]);
@@ -20,7 +23,6 @@ export default function initVisTimeline(EOxTimeSlider) {
   const dates = items.map((item) => dayjs(item.start));
   const min = dayjs.min(dates).subtract(30, "day").format("YYYY-MM-DD");
   const max = dayjs.max(dates).add(30, "day").format("YYYY-MM-DD");
-  const container = /** @type {HTMLElement} */ (EOxTimeSlider.getContainer());
 
   const options = createTimelineOptions(min, max);
 
