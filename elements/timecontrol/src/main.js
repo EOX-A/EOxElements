@@ -7,11 +7,13 @@ import { styleEOX } from "./style.eox.js";
 import "./sliderticks.js";
 
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
+dayjs.extend(utc);
 
 /**
  * @element eox-timecontrol
@@ -338,7 +340,7 @@ export class EOxTimeControl extends LitElement {
             : nothing}
           <small part="current">
             ${this.displayFormat
-              ? dayjs(this.controlValues[this._newStepIndex]).format(
+              ? dayjs(this.controlValues[this._newStepIndex]).utc().format(
                   this.displayFormat,
                 )
               : this.controlValues[this._newStepIndex]}
