@@ -340,9 +340,9 @@ export class EOxTimeControl extends LitElement {
             : nothing}
           <small part="current">
             ${this.displayFormat
-              ? dayjs(this.controlValues[this._newStepIndex]).utc().format(
-                  this.displayFormat,
-                )
+              ? dayjs(this.controlValues[this._newStepIndex])
+                  .utc()
+                  .format(this.displayFormat)
               : this.controlValues[this._newStepIndex]}
           </small>
           ${this.navigation
