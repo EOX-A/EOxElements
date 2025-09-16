@@ -35,7 +35,11 @@ describe("EOxGeoSearch", () => {
         ></eox-geosearch>
       `,
     );
-    cy.get("eox-geosearch").should("have.attr", "extent", "-125.0,24.0,-66.0,49.0");
+    cy.get("eox-geosearch").should(
+      "have.attr",
+      "extent",
+      "-125.0,24.0,-66.0,49.0",
+    );
   });
 
   it("should support tooltip parameter", () => {
@@ -51,7 +55,11 @@ describe("EOxGeoSearch", () => {
         ></eox-geosearch>
       `,
     );
-    cy.get("eox-geosearch").should("have.attr", "tooltip", "Search for locations");
+    cy.get("eox-geosearch").should(
+      "have.attr",
+      "tooltip",
+      "Search for locations",
+    );
     cy.get("eox-geosearch").should("have.attr", "tooltip-direction", "bottom");
   });
 });
