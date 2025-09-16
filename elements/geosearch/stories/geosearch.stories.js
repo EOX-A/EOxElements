@@ -2,7 +2,9 @@ import {
   ButtonModeStory,
   CustomAlignmentsStory,
   CustomLoaderStory,
+  ExtentLimitStory,
   PrimaryStory,
+  RealAPIStory,
 } from "./index.js";
 
 export default {
@@ -18,3 +20,7 @@ export const ButtonMode = ButtonModeStory;
 export const CustomAlignments = CustomAlignmentsStory;
 
 export const CustomLoader = CustomLoaderStory;
+
+export const ExtentLimit = ExtentLimitStory;
+
+export const RealAPI = RealAPIStory;
