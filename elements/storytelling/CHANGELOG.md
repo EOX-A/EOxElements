@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.3...storytelling-v1.9.4) (2025-09-16)
+
+
+### Bug Fixes
+
+* Set prevent-scroll true as default for map tours ([#1824](https://github.com/EOX-A/EOxElements/issues/1824)) ([b1b3b34](https://github.com/EOX-A/EOxElements/commit/b1b3b34febde32bf6f21bd7e4c3b2dcbeaa815c1))
+
 ## [1.9.3](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.2...storytelling-v1.9.3) (2025-08-05)
 
 

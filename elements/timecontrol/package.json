@@ -1,6 +1,6 @@
 {
   "name": "@eox/timecontrol",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "devDependencies": {
     "ol": "^10.4.0",
