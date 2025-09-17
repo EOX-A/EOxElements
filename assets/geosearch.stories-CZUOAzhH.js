@@ -1,4 +1,4 @@
-import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage-mock-data.json"},render:e=>n`
+import{x as o}from"./lit-element-L04JKUcP.js";const p={args:{endpoint:"/opencage-mock-data.json"},render:e=>o`
       <eox-geosearch
         label="Search"
         style="position: absolute; top: 36px; left: 32px; z-index: 12;"
@@ -12,7 +12,7 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
         style="width: 100%; height: 500px;"
       >
       </eox-map>
-    `},f={args:{endpoint:"/opencage-mock-data.json"},render:e=>n`
+    `},k={args:{endpoint:"/opencage-mock-data.json"},render:e=>o`
       <eox-geosearch
         label="Search"
         style="position: absolute; top: 36px; right: 32px; z-index: 12;"
@@ -30,7 +30,7 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
         style="width: 100%; height: 500px;"
       >
       </eox-map>
-    `},v={args:{endpoint:"/opencage-mock-data.json"},render:e=>n`
+    `},C={args:{endpoint:"/opencage-mock-data.json"},render:e=>o`
       <!-- Top Right -->
       <eox-geosearch
         label="Search"
@@ -50,7 +50,7 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
         button
         list-direction="right"
         results-direction="down"
-        .onSelect="${o=>document.querySelector("eox-map#geosearch-map-primary").zoomExtent=o.zoomExtent}"
+        .onSelect="${t=>document.querySelector("eox-map#geosearch-map-primary").zoomExtent=t.zoomExtent}"
         .endpoint="${e.endpoint}"
       ></eox-geosearch>
 
@@ -62,7 +62,7 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
         button
         list-direction="left"
         results-direction="up"
-        .onSelect="${o=>document.querySelector("eox-map#geosearch-map-primary").zoomExtent=o.zoomExtent}"
+        .onSelect="${t=>document.querySelector("eox-map#geosearch-map-primary").zoomExtent=t.zoomExtent}"
         .endpoint="${e.endpoint}"
       ></eox-geosearch>
 
@@ -74,7 +74,7 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
         button
         list-direction="right"
         results-direction="up"
-        .onSelect="${o=>document.querySelector("eox-map#geosearch-map-primary").zoomExtent=o.zoomExtent}"
+        .onSelect="${t=>document.querySelector("eox-map#geosearch-map-primary").zoomExtent=t.zoomExtent}"
         .endpoint="${e.endpoint}"
       ></eox-geosearch>
 
@@ -85,7 +85,7 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
         style="width: 100%; height: 600px;"
       >
       </eox-map>
-    `},z={args:{endpoint:"/opencage-mock-data.json",loaderSvg:`
+    `},O={args:{endpoint:"/opencage-mock-data.json",loaderSvg:`
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="48px"
@@ -156,7 +156,7 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
           />
         </circle>
       </svg>
-    `},render:e=>n`
+    `},render:e=>o`
       <eox-geosearch
         label="Search"
         style="position: absolute; top: 36px; left: 32px; z-index: 12;"
@@ -171,4 +171,23 @@ import{x as n}from"./lit-element-L04JKUcP.js";const b={args:{endpoint:"/opencage
         style="width: 100%; height: 500px;"
       >
       </eox-map>
-    `},$={title:"Elements/eox-geosearch",tags:["autodocs"],component:"eox-geosearch"},t=b,r=f,i=v,s=z;var a,l,p;t.parameters={...t.parameters,docs:{...(a=t.parameters)==null?void 0:a.docs,source:{originalSource:"PrimaryStory",...(p=(l=t.parameters)==null?void 0:l.docs)==null?void 0:p.source}}};var c,d,m;r.parameters={...r.parameters,docs:{...(c=r.parameters)==null?void 0:c.docs,source:{originalSource:"ButtonModeStory",...(m=(d=r.parameters)==null?void 0:d.docs)==null?void 0:m.source}}};var u,g,x;i.parameters={...i.parameters,docs:{...(u=i.parameters)==null?void 0:u.docs,source:{originalSource:"CustomAlignmentsStory",...(x=(g=i.parameters)==null?void 0:g.docs)==null?void 0:x.source}}};var h,y,S;s.parameters={...s.parameters,docs:{...(h=s.parameters)==null?void 0:h.docs,source:{originalSource:"CustomLoaderStory",...(S=(y=s.parameters)==null?void 0:y.docs)==null?void 0:S.source}}};const w=["Primary","ButtonMode","CustomAlignments","CustomLoader"];export{r as ButtonMode,i as CustomAlignments,s as CustomLoader,t as Primary,w as __namedExportsOrder,$ as default};
+    `},L={args:{endpoint:"/opencage-mock-data.json",extent:"-125.0,24.0,-66.0,49.0",tooltip:"Search within North America",tooltipDirection:"right"},render:e=>o`
+      <eox-geosearch
+        label="Search"
+        button
+        small
+        style="position: absolute; top: 36px; left: 32px; z-index: 12;"
+        .endpoint="${e.endpoint}"
+        .extent="${e.extent}"
+        .tooltip="${e.tooltip}"
+        .tooltipDirection="${e.tooltipDirection}"
+      ></eox-geosearch>
+
+      <eox-map
+        id="geosearch-map-extent"
+        .animationOptions=${{duration:400,padding:[10,10,10,10]}}
+        .config=${{layers:[{type:"Tile",source:{type:"OSM"}}],view:{center:[-95,38],zoom:4}}}
+        style="width: 100%; height: 500px;"
+      >
+      </eox-map>
+    `},A={...p,args:{...p.args,params:{language:"en",limit:5,countrycode:"us"}}},T=A,N={title:"Elements/eox-geosearch",tags:["autodocs"],component:"eox-geosearch"},r=p,i=k,a=C,n=O,s=L,l=T;var c,d,m;r.parameters={...r.parameters,docs:{...(c=r.parameters)==null?void 0:c.docs,source:{originalSource:"PrimaryStory",...(m=(d=r.parameters)==null?void 0:d.docs)==null?void 0:m.source}}};var u,g,x;i.parameters={...i.parameters,docs:{...(u=i.parameters)==null?void 0:u.docs,source:{originalSource:"ButtonModeStory",...(x=(g=i.parameters)==null?void 0:g.docs)==null?void 0:x.source}}};var h,y,S;a.parameters={...a.parameters,docs:{...(h=a.parameters)==null?void 0:h.docs,source:{originalSource:"CustomAlignmentsStory",...(S=(y=a.parameters)==null?void 0:y.docs)==null?void 0:S.source}}};var b,f,$;n.parameters={...n.parameters,docs:{...(b=n.parameters)==null?void 0:b.docs,source:{originalSource:"CustomLoaderStory",...($=(f=n.parameters)==null?void 0:f.docs)==null?void 0:$.source}}};var v,z,M;s.parameters={...s.parameters,docs:{...(v=s.parameters)==null?void 0:v.docs,source:{originalSource:"ExtentLimitStory",...(M=(z=s.parameters)==null?void 0:z.docs)==null?void 0:M.source}}};var w,P,E;l.parameters={...l.parameters,docs:{...(w=l.parameters)==null?void 0:w.docs,source:{originalSource:"AdditionalParametersStory",...(E=(P=l.parameters)==null?void 0:P.docs)==null?void 0:E.source}}};const j=["Primary","ButtonMode","CustomAlignments","CustomLoader","ExtentLimit","AdditionalParameters"];export{l as AdditionalParameters,i as ButtonMode,a as CustomAlignments,n as CustomLoader,s as ExtentLimit,r as Primary,j as __namedExportsOrder,N as default};
