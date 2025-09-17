@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v1.0.1...geosearch-v1.1.0) (2025-09-17)
+
+
+### Features
+
+* Implement tooltips, extent limit and configuration object ([#1826](https://github.com/EOX-A/EOxElements/issues/1826)) ([9e6171b](https://github.com/EOX-A/EOxElements/commit/9e6171b309a5e5bb236ee52cb0006417d9404a96))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/geosearch-v1.0.0...geosearch-v1.0.1) (2025-07-29)
 
 

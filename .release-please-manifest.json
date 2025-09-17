@@ -8,7 +8,7 @@
   "elements/jsonform": "1.4.1",
   "elements/layout": "1.0.0",
   "elements/storytelling": "1.9.4",
-  "elements/geosearch": "1.0.1",
+  "elements/geosearch": "1.1.0",
   "elements/chart": "1.0.1",
   "elements/feedback": "1.0.1",
   "utils": "1.1.0"
