@@ -16,7 +16,15 @@ export default function updateUrl(url, values) {
       Object.keys(value).forEach((k) => {
         searchParams.set(k, value[k]);
       });
-    } else searchParams.set(key, value); // Set the key-value pair as a search parameter
+    } else if (Array.isArray(value)) {
+      searchParams.delete(key);
+      value.forEach((v) => {
+        searchParams.append(key, v);
+      });
+    } else {
+      // Set the key-value pair as a search parameter
+      searchParams.set(key, value);
+    }
   });
 
   // Extract the URL without query parameters
