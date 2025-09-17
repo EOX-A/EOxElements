@@ -1,4 +1,5 @@
 import {
+  AdditionalParametersStory,
   ButtonModeStory,
   CustomAlignmentsStory,
   CustomLoaderStory,
@@ -21,3 +22,5 @@ export const CustomAlignments = CustomAlignmentsStory;
 export const CustomLoader = CustomLoaderStory;
 
 export const ExtentLimit = ExtentLimitStory;
+
+export const AdditionalParameters = AdditionalParametersStory;

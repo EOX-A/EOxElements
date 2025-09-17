@@ -160,6 +160,13 @@ class EOxGeoSearch extends LitElement {
         type: String,
         attribute: "tooltip-direction",
       },
+      /**
+       * Additional parameters to add to the query string as key-value pairs.
+       * Example: { language: "en", limit: 10, countrycode: "us" }
+       */
+      params: {
+        type: Object,
+      },
     };
   }
 
@@ -199,6 +206,7 @@ class EOxGeoSearch extends LitElement {
     this.extent = undefined;
     this.tooltip = undefined;
     this.tooltipDirection = "left";
+    this.params = undefined;
 
     /**
      * @private
@@ -214,6 +222,13 @@ class EOxGeoSearch extends LitElement {
         // Add bounds parameter if extent is defined
         if (this.extent) {
           uri += `&bounds=${this.extent}`;
+        }
+
+        // Add additional parameters from params object
+        if (this.params && typeof this.params === "object") {
+          Object.entries(this.params).forEach(([key, value]) => {
+            uri += `&${key}=${value}`;
+          });
         }
 
         const response = await fetch(encodeURI(uri));
