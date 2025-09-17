@@ -1,7 +1,9 @@
 import {
+  AdditionalParametersStory,
   ButtonModeStory,
   CustomAlignmentsStory,
   CustomLoaderStory,
+  ExtentLimitStory,
   PrimaryStory,
 } from "./index.js";
 
@@ -18,3 +20,7 @@ export const ButtonMode = ButtonModeStory;
 export const CustomAlignments = CustomAlignmentsStory;
 
 export const CustomLoader = CustomLoaderStory;
+
+export const ExtentLimit = ExtentLimitStory;
+
+export const AdditionalParameters = AdditionalParametersStory;

@@ -137,6 +137,36 @@ class EOxGeoSearch extends LitElement {
         type: String,
         attribute: "loader-svg",
       },
+      /**
+       * Geographic extent to limit search results in the format "minLon,minLat,maxLon,maxLat".
+       * This corresponds to OpenCage API's bounds parameter.
+       * Example: "-0.563160,51.280430,0.278970,51.683979"
+       */
+      extent: {
+        type: String,
+      },
+      /**
+       * Tooltip text to display on the search button/input (uses BeerCSS tooltip).
+       */
+      tooltip: {
+        type: String,
+      },
+      /**
+       * Direction of the tooltip relative to the button.
+       * Options: "top", "bottom", "left", "right"
+       * Default: "left"
+       */
+      tooltipDirection: {
+        type: String,
+        attribute: "tooltip-direction",
+      },
+      /**
+       * Additional parameters to add to the query string as key-value pairs.
+       * Example: { language: "en", limit: 10, countrycode: "us" }
+       */
+      params: {
+        type: Object,
+      },
     };
   }
 
@@ -173,6 +203,10 @@ class EOxGeoSearch extends LitElement {
      */
     this.unstyled = false;
     this.loaderSvg = loaderSvg;
+    this.extent = undefined;
+    this.tooltip = undefined;
+    this.tooltipDirection = "left";
+    this.params = undefined;
 
     /**
      * @private
@@ -181,9 +215,22 @@ class EOxGeoSearch extends LitElement {
       if (this._query.length < 2) return;
       this._isLoading = true;
       try {
-        const uri = `${this.endpoint}${
+        let uri = `${this.endpoint}${
           this.endpoint.includes("?") ? "&" : "?"
         }${this.queryParameter ?? "q"}=${this._query}`;
+
+        // Add bounds parameter if extent is defined
+        if (this.extent) {
+          uri += `&bounds=${this.extent}`;
+        }
+
+        // Add additional parameters from params object
+        if (this.params && typeof this.params === "object") {
+          Object.entries(this.params).forEach(([key, value]) => {
+            uri += `&${key}=${value}`;
+          });
+        }
+
         const response = await fetch(encodeURI(uri));
         const json = await response.json();
         this._data = json.results;
@@ -333,6 +380,7 @@ class EOxGeoSearch extends LitElement {
         }}
         >
         ${!this.unstyled ? html`<i class="front small">${searchIcon}</i>` : ""}
+        ${this.tooltip && this.button && !this._isListVisible ? html`<div class="tooltip ${this.tooltipDirection}">${this.tooltip}</div>` : ""}
 
   ${this.button || this.unstyled ? "" : html`<input placeholder="Type to search" />`}
   <menu id="search" class="surface ${this.button ? `no-wrap ${this.direction} ${this.resultsDirection === "up" ? "top" : "bottom"}` : ""} min${this._isListVisible ? " active" : ""}">
