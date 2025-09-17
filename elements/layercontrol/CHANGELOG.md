@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.2...layercontrol-v1.1.3) (2025-09-17)
+
+
+### Bug Fixes
+
+* Handle array values in update-url helper ([#1828](https://github.com/EOX-A/EOxElements/issues/1828)) ([5a4b61e](https://github.com/EOX-A/EOxElements/commit/5a4b61e78d81a8790d67b57118660baacd51dd39))
+
 ## [1.1.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.1...layercontrol-v1.1.2) (2025-07-29)
 
 
