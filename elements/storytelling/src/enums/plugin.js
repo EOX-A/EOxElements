@@ -27,7 +27,10 @@ export const TAGS_SELF_CLOSING = {
 
 export const DEFAULT_MODE_ATTRS = {
   "eox-map": {
-    tour: [["style", "pointer-events: none"]],
+    tour: [
+      ["style", "pointer-events: none"],
+      ["prevent-scroll", "true"],
+    ],
   },
   img: {
     hero: [

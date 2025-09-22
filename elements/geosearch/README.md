@@ -24,6 +24,33 @@ import "@eox/geosearch/dist/eox-geosearch.js"
 
 ## Configuration
 
+### Geographic Extent
+
+You can limit search results to a specific geographic area using the `extent` attribute. This is particularly useful when your application only supports specific regions. The format is `minLon,minLat,maxLon,maxLat`:
+
+```html
+<eox-geosearch extent="-125.0,24.0,-66.0,49.0"></eox-geosearch>
+```
+
+This example would limit results to approximately North America.
+
+### Tooltip
+
+Add a BeerCSS tooltip to the search button using the `tooltip` attribute (only works in button mode). You can also control the tooltip direction with `tooltip-direction`:
+
+```html
+<eox-geosearch
+  tooltip="Search for locations"
+  tooltip-direction="bottom"
+  button
+  small
+></eox-geosearch>
+```
+
+Supported tooltip directions: `left` (default), `top`, `bottom`, `right`
+
+### Alignment
+
 Furthermore, the alignment of the input and search results can be configured to align straight or in a 90-degree angle in any direction with the `input-direction` and `results-direction` attributes and the following directions:
 
 - `left`
