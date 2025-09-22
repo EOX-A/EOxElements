@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.0](https://github.com/EOX-A/EOxElements/compare/map-v1.25.0...map-v1.26.0) (2025-09-22)
+
+
+### Features
+
+* Coordinates, feature info (WMS) and data extraction (WebGL) for tooltips ([#1718](https://github.com/EOX-A/EOxElements/issues/1718)) ([e2bb103](https://github.com/EOX-A/EOxElements/commit/e2bb10328e606e76acae70f33e8bccac7d36f3aa))
+
 ## [1.25.0](https://github.com/EOX-A/EOxElements/compare/map-v1.24.2...map-v1.25.0) (2025-08-05)
 
 
