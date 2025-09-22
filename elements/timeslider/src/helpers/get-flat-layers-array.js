@@ -16,7 +16,11 @@ export default function getFlatLayersArray(layers) {
   /** @type {Array<Group>} */
   let groupLayers =
     /** @type {Array<Group>} */
-    (flatLayers.filter((l) => l instanceof Group));
+    (
+      flatLayers.filter(
+        (l) => l instanceof Group || l.constructor.name === "_LayerGroup",
+      )
+    );
   while (groupLayers.length) {
     /** @type {Array<Group>} */
     const newGroupLayers = [];

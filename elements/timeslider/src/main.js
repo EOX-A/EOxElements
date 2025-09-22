@@ -21,16 +21,19 @@ dayjs.extend(minMax);
 /**
  * @element eox-timeslider
  */
-export class EOxTimeSlider extends LitElement {
+export default class EOxTimeSlider extends LitElement {
   static get properties() {
     return {
       for: { type: String },
       unstyled: { type: Boolean },
       titleKey: { type: String, attribute: "title-key" },
       layerIdKey: { type: String, attribute: "layer-id-key" },
-      timeControlKey: { type: String, attribute: "property-key" },
       filters: { type: Array, attribute: "filter" },
       selectedDate: { type: String, attribute: "selected-date" },
+      externalMapRendering: {
+        type: Boolean,
+        attribute: "external-map-rendering",
+      },
     };
   }
 
@@ -61,7 +64,7 @@ export class EOxTimeSlider extends LitElement {
 
     this.layerIdKey = "id";
 
-    this.timeControlKey = "TIME";
+    this.externalMapRendering = false;
   }
 
   getContainer() {

@@ -1,7 +1,7 @@
 import { Timeline, DataSet } from "vis-timeline/standalone";
 import dayjs from "dayjs";
 import createTimelineOptions from "./create-timeline-options";
-import updateTimelineItems from "./update-timeline-items";
+import updateTimelineItems, { updateVisibility } from "./update-timeline-items";
 import setSelectedDate from "./set-selected-date";
 
 /**
@@ -18,7 +18,7 @@ export default function initVisTimeline(EOxTimeSlider) {
   const groups = new DataSet([]);
   const items = new DataSet([]);
 
-  updateTimelineItems(EOxTimeSlider.sliderValues, groups, items);
+  updateTimelineItems(EOxTimeSlider.sliderValues, groups, items, EOxTimeSlider);
 
   const dates = items.map((item) => dayjs(item.start));
   const min = dayjs.min(dates).subtract(30, "day").format("YYYY-MM-DD");
@@ -39,16 +39,38 @@ export default function initVisTimeline(EOxTimeSlider) {
     milestoneElements.forEach((milestone) => {
       /** @type {HTMLElement} */ (milestone).style.width = `${cellWidth}px`;
     });
+    for (let i = 0; i < EOxTimeSlider.sliderValues.length; i++) {
+      updateVisibility(
+        EOxTimeSlider,
+        EOxTimeSlider.sliderValues[i].layerInstance.getVisible(),
+        i,
+      );
+    }
   });
 
+  let drag = false;
+
   visTimeline.on("click", (props) => {
-    if (props && props.time)
+    if (
+      props &&
+      props.time &&
+      props.what &&
+      props.what !== "group-label" &&
+      !drag
+    )
       setSelectedDate(
         props.time,
         visTimeline,
         EOxTimeSlider.eoxMap,
         EOxTimeSlider,
       );
+  });
+
+  visTimeline.on("rangechanged", (props) => {
+    if (props.byUser) {
+      drag = true;
+      setTimeout(() => (drag = false));
+    }
   });
 
   EOxTimeSlider.visTimeline = visTimeline;

@@ -64,6 +64,8 @@ export default function setSelectedDate(
         dayjs(date).format("YYYY-MM-DD"),
     );
 
+  let instances = {};
+
   selectedItems.forEach((item) => {
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
@@ -73,9 +75,17 @@ export default function setSelectedDate(
         `.vis-item.milestone.vis-point.item-${item.id}`,
       );
       newSelectionCell.classList.add("vis-selected-item");
-      source.updateParams({
-        [item.property]: dayjs(date).format("YYYY-MM-DD"),
-      });
+
+      instances = {
+        ...instances,
+        [item.group]: { layer, source },
+      };
+
+      if (!EOxTimeSlider.externalMapRendering) {
+        source.updateParams({
+          [item.property]: dayjs(date).format("YYYY-MM-DD"),
+        });
+      }
     }
   });
 
@@ -89,6 +99,7 @@ export default function setSelectedDate(
         selectedItems: groupBy(selectedItems, "group"),
         date: dayjs(EOxTimeSlider.selectedDate).toDate(),
         filters: itemsFilter?.filters || [],
+        instances: instances,
       },
     }),
   );

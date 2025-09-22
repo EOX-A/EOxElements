@@ -261,6 +261,7 @@ export const Primary = {
               cloudCoverage: 29,
             },
           ],
+          timeControlProperty: "TIME",
         },
         source: {
           type: "TileWMS",
@@ -416,6 +417,7 @@ export const Primary = {
               cloudCoverage: 74,
             },
           ],
+          timeControlProperty: "TIME",
         },
         source: {
           type: "TileWMS",
@@ -437,405 +439,6 @@ export const Primary = {
       },
     ],
     for: "eox-map",
-    sliderValues: [
-      {
-        layer: "AWS_VIS_WIND_V_10M",
-        name: "Wind Visualisation 10M",
-        property: "TIME",
-        values: [
-          {
-            date: "2022-12-05",
-            cloudCoverage: 20,
-          },
-          {
-            date: "2022-12-06",
-            cloudCoverage: 18,
-          },
-          {
-            date: "2022-12-07",
-            cloudCoverage: 22,
-          },
-          {
-            date: "2022-12-08",
-            cloudCoverage: 25,
-          },
-          {
-            date: "2022-12-09",
-            cloudCoverage: 19,
-          },
-          {
-            date: "2022-12-10",
-            cloudCoverage: 16,
-          },
-          {
-            date: "2022-12-11",
-            cloudCoverage: 21,
-          },
-          {
-            date: "2022-12-12",
-            cloudCoverage: 15,
-          },
-          {
-            date: "2022-12-19",
-            cloudCoverage: 35,
-          },
-          {
-            date: "2022-12-26",
-            cloudCoverage: 8,
-          },
-          {
-            date: "2023-01-16",
-            cloudCoverage: 42,
-          },
-          {
-            date: "2023-01-17",
-            cloudCoverage: 38,
-          },
-          {
-            date: "2023-01-18",
-            cloudCoverage: 45,
-          },
-          {
-            date: "2023-01-19",
-            cloudCoverage: 41,
-          },
-          {
-            date: "2023-01-20",
-            cloudCoverage: 39,
-          },
-          {
-            date: "2023-01-21",
-            cloudCoverage: 43,
-          },
-          {
-            date: "2023-01-22",
-            cloudCoverage: 37,
-          },
-          {
-            date: "2023-01-23",
-            cloudCoverage: 28,
-          },
-          {
-            date: "2023-01-24",
-            cloudCoverage: 31,
-          },
-          {
-            date: "2023-01-25",
-            cloudCoverage: 26,
-          },
-          {
-            date: "2023-01-26",
-            cloudCoverage: 29,
-          },
-          {
-            date: "2023-01-27",
-            cloudCoverage: 24,
-          },
-          {
-            date: "2023-01-28",
-            cloudCoverage: 32,
-          },
-          {
-            date: "2023-01-29",
-            cloudCoverage: 27,
-          },
-          {
-            date: "2023-01-30",
-            cloudCoverage: 12,
-          },
-          {
-            date: "2023-01-31",
-            cloudCoverage: 14,
-          },
-          {
-            date: "2023-02-01",
-            cloudCoverage: 11,
-          },
-          {
-            date: "2023-02-02",
-            cloudCoverage: 16,
-          },
-          {
-            date: "2023-02-03",
-            cloudCoverage: 13,
-          },
-          {
-            date: "2023-02-04",
-            cloudCoverage: 18,
-          },
-          {
-            date: "2023-02-05",
-            cloudCoverage: 15,
-          },
-          {
-            date: "2023-02-06",
-            cloudCoverage: 55,
-          },
-          {
-            date: "2023-02-13",
-            cloudCoverage: 33,
-          },
-          {
-            date: "2023-02-14",
-            cloudCoverage: 36,
-          },
-          {
-            date: "2023-02-15",
-            cloudCoverage: 30,
-          },
-          {
-            date: "2023-02-16",
-            cloudCoverage: 38,
-          },
-          {
-            date: "2023-02-17",
-            cloudCoverage: 34,
-          },
-          {
-            date: "2023-02-18",
-            cloudCoverage: 31,
-          },
-          {
-            date: "2023-02-19",
-            cloudCoverage: 35,
-          },
-          {
-            date: "2023-02-20",
-            cloudCoverage: 29,
-          },
-          {
-            date: "2023-02-21",
-            cloudCoverage: 32,
-          },
-          {
-            date: "2023-02-22",
-            cloudCoverage: 27,
-          },
-          {
-            date: "2023-02-23",
-            cloudCoverage: 33,
-          },
-          {
-            date: "2023-02-24",
-            cloudCoverage: 25,
-          },
-          {
-            date: "2023-02-25",
-            cloudCoverage: 28,
-          },
-          {
-            date: "2023-02-26",
-            cloudCoverage: 22,
-          },
-          {
-            date: "2023-02-27",
-            cloudCoverage: 18,
-          },
-          {
-            date: "2023-03-06",
-            cloudCoverage: 47,
-          },
-          {
-            date: "2023-03-13",
-            cloudCoverage: 25,
-          },
-          {
-            date: "2023-03-14",
-            cloudCoverage: 28,
-          },
-          {
-            date: "2023-03-15",
-            cloudCoverage: 23,
-          },
-          {
-            date: "2023-03-16",
-            cloudCoverage: 26,
-          },
-          {
-            date: "2023-03-17",
-            cloudCoverage: 21,
-          },
-          {
-            date: "2023-03-18",
-            cloudCoverage: 24,
-          },
-          {
-            date: "2023-03-19",
-            cloudCoverage: 19,
-          },
-          {
-            date: "2023-03-20",
-            cloudCoverage: 9,
-          },
-          {
-            date: "2023-03-27",
-            cloudCoverage: 38,
-          },
-          {
-            date: "2023-04-03",
-            cloudCoverage: 22,
-          },
-          {
-            date: "2023-04-10",
-            cloudCoverage: 51,
-          },
-          {
-            date: "2023-04-17",
-            cloudCoverage: 14,
-          },
-          {
-            date: "2023-04-24",
-            cloudCoverage: 29,
-          },
-        ],
-      },
-      {
-        layer: "AWS_NO2-VISUALISATION",
-        name: "NO2 Visualisation",
-        property: "TIME",
-        values: [
-          {
-            date: "2022-12-07",
-            cloudCoverage: 68,
-          },
-          {
-            date: "2022-12-08",
-            cloudCoverage: 72,
-          },
-          {
-            date: "2022-12-09",
-            cloudCoverage: 65,
-          },
-          {
-            date: "2022-12-10",
-            cloudCoverage: 58,
-          },
-          {
-            date: "2022-12-11",
-            cloudCoverage: 61,
-          },
-          {
-            date: "2022-12-12",
-            cloudCoverage: 55,
-          },
-          {
-            date: "2022-12-13",
-            cloudCoverage: 63,
-          },
-          // Second continuous range: 10 days starting from 2023-02-01
-          {
-            date: "2023-02-01",
-            cloudCoverage: 33,
-          },
-          {
-            date: "2023-02-02",
-            cloudCoverage: 28,
-          },
-          {
-            date: "2023-02-03",
-            cloudCoverage: 31,
-          },
-          {
-            date: "2023-02-04",
-            cloudCoverage: 36,
-          },
-          {
-            date: "2023-02-05",
-            cloudCoverage: 42,
-          },
-          {
-            date: "2023-02-06",
-            cloudCoverage: 38,
-          },
-          {
-            date: "2023-02-07",
-            cloudCoverage: 34,
-          },
-          {
-            date: "2023-02-08",
-            cloudCoverage: 40,
-          },
-          {
-            date: "2023-02-09",
-            cloudCoverage: 45,
-          },
-          {
-            date: "2023-02-10",
-            cloudCoverage: 39,
-          },
-          // Third continuous range: 17 days starting from 2023-04-01
-          {
-            date: "2023-04-01",
-            cloudCoverage: 52,
-          },
-          {
-            date: "2023-04-02",
-            cloudCoverage: 48,
-          },
-          {
-            date: "2023-04-03",
-            cloudCoverage: 55,
-          },
-          {
-            date: "2023-04-04",
-            cloudCoverage: 61,
-          },
-          {
-            date: "2023-04-05",
-            cloudCoverage: 58,
-          },
-          {
-            date: "2023-04-06",
-            cloudCoverage: 64,
-          },
-          {
-            date: "2023-04-07",
-            cloudCoverage: 59,
-          },
-          {
-            date: "2023-04-08",
-            cloudCoverage: 67,
-          },
-          {
-            date: "2023-04-09",
-            cloudCoverage: 71,
-          },
-          {
-            date: "2023-04-10",
-            cloudCoverage: 68,
-          },
-          {
-            date: "2023-04-11",
-            cloudCoverage: 73,
-          },
-          {
-            date: "2023-04-12",
-            cloudCoverage: 69,
-          },
-          {
-            date: "2023-04-13",
-            cloudCoverage: 75,
-          },
-          {
-            date: "2023-04-14",
-            cloudCoverage: 72,
-          },
-          {
-            date: "2023-04-15",
-            cloudCoverage: 66,
-          },
-          {
-            date: "2023-04-16",
-            cloudCoverage: 70,
-          },
-          {
-            date: "2023-04-17",
-            cloudCoverage: 74,
-          },
-        ],
-      },
-    ],
-    timeControlKey: "TIME",
     layerIdKey: "id",
     titleKey: "name",
     filters: [
@@ -853,6 +456,7 @@ export const Primary = {
         },
       },
     ],
+    externalMapRendering: false,
     update: (e) => {
       console.log(e.detail);
     },
@@ -867,12 +471,23 @@ export const Primary = {
     ></eox-map>
     <eox-timeslider
       .for=${args.for}
-      .timeControlKey=${args.timeControlKey}
       .layerIdKey=${args.layerIdKey}
       .titleKey=${args.titleKey}
       .filters=${args.filters}
+      .externalMapRendering=${args.externalMapRendering}
       @update=${args.update}
     ></eox-timeslider>
+    <button
+      @click=${() => {
+        const eoxMap = document.querySelector("eox-map");
+        eoxMap.map
+          .getLayers()
+          .item(2)
+          .setVisible(!eoxMap.map.getLayers().item(2).getVisible());
+      }}
+    >
+      Hide
+    </button>
   `,
 };
 

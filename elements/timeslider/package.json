@@ -37,6 +37,9 @@
     "@eox/ui": "^0.3.6",
     "dayjs": "^1.11.9",
     "lit": "^3.2.0",
+    "lodash.groupby": "^4.6.0",
+    "lodash.isequal": "^4.5.0",
+    "uuid": "^13.0.0",
     "vis-timeline": "^8.3.0"
   }
 }

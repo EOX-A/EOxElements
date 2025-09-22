@@ -24,6 +24,12 @@ export const style = `
   border-color: var(--outline-variant);
   border-width: 2px;
 }
+.vis-labelset .vis-label .vis-inner {
+  font-size: 12px;
+}
+.vis-label-hide {
+  opacity: 0.4;
+}
 .vis-item.task {
   background: var(--primary);
   border: none;
@@ -80,6 +86,11 @@ export const style = `
 .vis-item.milestone.vis-point:hover {
   background: #ffc200 !important;
   cursor: pointer;
+}
+.vis-group.vis-group-hide .vis-item.milestone.vis-point,
+.vis-group.vis-group-hide .vis-item.milestone.vis-point:hover {
+  background: var(--primary) !important;
+  opacity: 0.4 !important;
 }
 .vis-text {
   font-size: 13px;
