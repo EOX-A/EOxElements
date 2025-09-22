@@ -90,7 +90,7 @@ export class EOxSelectInteraction {
       ?.addEventListener("pointerleave", pointerLeaveListener);
 
     const pickedCoordinate = (
-      /** @type {import("ol/MapBrowserEvent").default} */ event
+      /** @type {import("ol/MapBrowserEvent").default} */ event,
     ) => {
       // If a projection is specified, use it to transform the coordinates
       // Otherwise, default to EPSG:4326
@@ -99,19 +99,19 @@ export class EOxSelectInteraction {
         if (!proj4.defs(options.projection?.name)) {
           proj4.defs(
             options.projection?.name,
-            options?.projection?.proj4_string
+            options?.projection?.proj4_string,
           );
           register(proj4);
         }
       }
       const outProjection = getProjection(
-        options?.projection?.name || "EPSG:4326"
+        options?.projection?.name || "EPSG:4326",
       );
       const mapProjection = eoxMap.map.getView().getProjection().getCode();
       const coordinates = transform(
         event.coordinate,
         mapProjection,
-        outProjection
+        outProjection,
       );
 
       return {
@@ -177,7 +177,7 @@ export class EOxSelectInteraction {
             return initialStyle(feature, resolution); // Apply style only if the feature is selected
           }
           return null;
-        }
+        },
       );
 
       /**
@@ -200,7 +200,7 @@ export class EOxSelectInteraction {
         const feature = this.eoxMap.map.forEachFeatureAtPixel(
           event.pixel,
           (feature) => feature,
-          { layerFilter: (candidate) => candidate === this.selectLayer }
+          { layerFilter: (candidate) => candidate === this.selectLayer },
         );
 
         const newSelectFids = feature ? [this.getId(feature)] : [];
@@ -285,7 +285,7 @@ export class EOxSelectInteraction {
               l
                 .get("_jsonDefinition")
                 ?.interactions?.find(
-                  (i) => i.type == "select" && i.options?.condition === "click"
+                  (i) => i.type == "select" && i.options?.condition === "click",
                 ),
             ...options.atPixelOptions,
           })
@@ -317,7 +317,7 @@ export class EOxSelectInteraction {
           event.coordinate,
           viewResolution,
           eoxMap.map.getView().getProjection(),
-          { INFO_FORMAT: "application/json" }
+          { INFO_FORMAT: "application/json" },
         );
         if (url) {
           fetch(url)
@@ -419,7 +419,7 @@ export class EOxSelectInteraction {
               // @ts-expect-error TODO
               this.tooltipElement.feature = featureData;
               overlay.setPosition(
-                Object.keys(html).length > 0 ? event.coordinate : null
+                Object.keys(html).length > 0 ? event.coordinate : null,
               );
             }
           }
@@ -476,7 +476,7 @@ export class EOxSelectInteraction {
       } else if (this.selectLayer instanceof VectorTile) {
         const map = this.eoxMap.map;
         const allRenderedFeatures = this.selectLayer.getFeaturesInExtent(
-          map.getView().calculateExtent(map.getSize())
+          map.getView().calculateExtent(map.getSize()),
         );
         for (let i = 0; i < allRenderedFeatures.length; i++) {
           const renderFeature = allRenderedFeatures[i];
@@ -529,7 +529,7 @@ export class EOxSelectInteraction {
       return getUid(feature);
     }
     throw Error(
-      "No feature id found. Please provide which feature property should be taken instead using idProperty."
+      "No feature id found. Please provide which feature property should be taken instead using idProperty.",
     );
   }
 }
@@ -552,7 +552,7 @@ export function addSelect(EOxMap, selectLayer, options) {
     EOxMap,
     selectLayer,
     // @ts-expect-error - Argument of type 'DrawOptions | SelectOptions' is not assignable to parameter of type 'SelectOptions'
-    options
+    options,
   );
 
   return EOxMap.selectInteractions[options.id];
