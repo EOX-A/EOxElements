@@ -224,19 +224,19 @@ export class EOxJSONForm extends LitElement {
           input[type="checkbox"].json-editor-opt-in {
           display: none !important;
         }
-        .switch-button {
+        #properties-editing-switch {
           position: absolute;
           bottom: 2rem;
           right: 3rem;
           z-index: 5;
           transform: scale(1.25);
         }
-        .switch-button i > svg {
+        #properties-editing-switch i > svg {
           padding: 0.3rem;
           border-radius: 0;
         }
         @media screen and (max-width: 1024px) {
-          .switch-button {
+          #properties-editing-switch {
             right: 20px;
           }
         }
@@ -249,7 +249,7 @@ export class EOxJSONForm extends LitElement {
       ${when(
         this.options?.disable_properties === false && this.propertiesToggle,
         () => html`
-          <label class="switch icon switch-button">
+          <label class="switch icon" id="properties-editing-switch">
             <input
               type="checkbox"
               @input=${(e) => {
