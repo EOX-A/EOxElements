@@ -323,7 +323,9 @@ export const createEditor = (element) => {
             element.propertiesToggle &&
             !(
               /**@type {HTMLInputElement}*/ (
-                element.renderRoot.querySelector(".switch-button input")
+                element.renderRoot.querySelector(
+                  "#properties-editing-switch input",
+                )
               ).checked
             )
           ) {
