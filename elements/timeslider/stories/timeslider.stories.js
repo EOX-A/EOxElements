@@ -1,5 +1,5 @@
 // Global import of eox-elements in .storybook/preview.js!
-import { PrimaryStory } from "./index";
+import { PrimaryStory, TestStory } from "./index";
 
 export default {
   title: "Elements/eox-timeslider",
@@ -8,3 +8,4 @@ export default {
 };
 
 export const Primary = PrimaryStory;
+export const Test = TestStory;

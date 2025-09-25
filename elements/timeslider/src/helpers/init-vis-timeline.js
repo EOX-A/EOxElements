@@ -1,8 +1,17 @@
 import { Timeline, DataSet } from "vis-timeline/standalone";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import createTimelineOptions from "./create-timeline-options";
 import updateTimelineItems, { updateVisibility } from "./update-timeline-items";
 import setSelectedDate from "./set-selected-date";
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+let drag = false;
+let multiSelect = false;
+let multiSelectStartDate = null;
+let multiSelectEndDate = null;
 
 /**
  * Initializes the vis-timeline instance
@@ -48,7 +57,28 @@ export default function initVisTimeline(EOxTimeSlider) {
     }
   });
 
-  let drag = false;
+  function selectRange(props) {
+    if (multiSelect) {
+      const timeSliderContainer = EOxTimeSlider.getContainer();
+      const startEle = timeSliderContainer.querySelector(
+        ".vis-custom-time.multi-select-start",
+      );
+      const endEle = timeSliderContainer.querySelector(
+        ".vis-custom-time.multi-select-end",
+      );
+      if (props.event.shiftKey && startEle) {
+        const width = props.pageX - startEle.getBoundingClientRect().x;
+        startEle.style.width = `${width}px`;
+      } else {
+        if (endEle) endEle.remove();
+        if (startEle) startEle.remove();
+        multiSelect = false;
+        multiSelectStartDate = null;
+        multiSelectEndDate = null;
+      }
+    }
+  }
+  visTimeline.on("mouseMove", selectRange);
 
   visTimeline.on("click", (props) => {
     if (
@@ -56,7 +86,8 @@ export default function initVisTimeline(EOxTimeSlider) {
       props.time &&
       props.what &&
       props.what !== "group-label" &&
-      !drag
+      !drag &&
+      !props.event.shiftKey
     )
       setSelectedDate(
         props.time,
@@ -64,6 +95,55 @@ export default function initVisTimeline(EOxTimeSlider) {
         EOxTimeSlider.eoxMap,
         EOxTimeSlider,
       );
+    else if (
+      props &&
+      props.time &&
+      props.what &&
+      props.what !== "group-label" &&
+      props.event.shiftKey
+    ) {
+      if (!multiSelect) {
+        multiSelectStartDate = props.time;
+        try {
+          visTimeline.addCustomTime(
+            dayjs(multiSelectStartDate).toDate(),
+            "multi-select-start",
+          );
+        } catch (_) {
+          /* exists */
+        }
+        visTimeline.setCustomTime(
+          dayjs(multiSelectStartDate).toDate(),
+          "multi-select-start",
+        );
+        multiSelect = true;
+        multiSelectEndDate = null;
+      } else {
+        multiSelect = false;
+        multiSelectEndDate = props.time;
+        try {
+          visTimeline.addCustomTime(
+            dayjs(multiSelectEndDate).toDate(),
+            "multi-select-end",
+          );
+        } catch (_) {
+          /* exists */
+        }
+        visTimeline.setCustomTime(
+          dayjs(multiSelectEndDate).toDate(),
+          "multi-select-end",
+        );
+        const timeSliderContainer = EOxTimeSlider.getContainer();
+        const startEle = timeSliderContainer.querySelector(
+          ".vis-custom-time.multi-select-start",
+        );
+        const endEle = timeSliderContainer.querySelector(
+          ".vis-custom-time.multi-select-end",
+        );
+
+        startEle.style.width = `${endEle.left - startEle.left}px`;
+      }
+    }
   });
 
   visTimeline.on("rangechanged", (props) => {

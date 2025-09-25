@@ -1,6 +1,11 @@
 import { initVisTimeline, getFlatLayersArray } from "../../helpers";
 import { getElement } from "@eox/elements-utils";
+import dayjs from "dayjs";
 import isequal from "lodash.isequal";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 /**
  * First updated lifecycle method for timeslider
@@ -45,7 +50,13 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
               layer: properties[EOxTimeSlider.layerIdKey],
               name: properties[EOxTimeSlider.titleKey],
               property: properties.timeControlProperty,
-              values: properties.timeControlValues,
+              values: properties.timeControlValues.map((value) => ({
+                ...value,
+                date: dayjs(value.date).utc().local().format().split("T")[0],
+                utc: dayjs(value.date).utc().format(),
+                local: dayjs(value.date).utc().local().format(),
+                originalDate: value.date,
+              })),
               layerInstance: layer,
             });
             layer.on("change:timeControlValues", () => init());

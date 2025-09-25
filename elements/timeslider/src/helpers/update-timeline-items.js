@@ -61,6 +61,7 @@ export default function updateTimelineItems(
         group: slider.layer,
         className: `milestone item-${id}`,
         start: value.date,
+        originalDate: value.originalDate,
         type: "point",
         property: slider.property,
       });

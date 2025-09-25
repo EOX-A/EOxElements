@@ -462,6 +462,10 @@ export const Primary = {
     },
   },
   render: (args) => html`
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vanilla-calendar-pro@3.0.5/styles/index.min.css"
+    />
     <eox-map
       id="primary"
       style="width: 100%; height: 500px;"

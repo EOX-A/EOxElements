@@ -40,6 +40,7 @@
     "lodash.groupby": "^4.6.0",
     "lodash.isequal": "^4.5.0",
     "uuid": "^13.0.0",
+    "vanilla-calendar-pro": "^3.0.5",
     "vis-timeline": "^8.3.0"
   }
 }

@@ -13,6 +13,9 @@ import {
   filterHandler as handleFilter,
   dateChangeHandler as handleDateChange,
 } from "./methods/timeslider";
+import { Calendar } from "vanilla-calendar-pro";
+import vanillaCalendarCSS from "vanilla-calendar-pro/styles/index.css?inline";
+import vanillaCalendarThemeCSS from "vanilla-calendar-pro/styles/themes/light.css?inline";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -113,6 +116,19 @@ export default class EOxTimeSlider extends LitElement {
 
   firstUpdated() {
     firstUpdatedMethod(this);
+    const calendarInput = this.renderRoot.querySelector("#cal");
+    const cal = new Calendar(calendarInput, {
+      selectedTheme: "light",
+      type: "multiple",
+      displayMonthsCount: 2,
+      monthsToSwitch: 2,
+      displayDatesOutside: false,
+      disableDatesPast: true,
+      enableEdgeDatesOnly: true,
+      selectionDatesMode: "multiple-ranged",
+      inputMode: true,
+    });
+    cal.init();
   }
 
   filterHandler(e) {
@@ -127,6 +143,8 @@ export default class EOxTimeSlider extends LitElement {
     return html`
       <style>
         ${visTimelineCSS}
+        ${vanillaCalendarCSS}
+        ${vanillaCalendarThemeCSS}
         ${!this.unstyled && styleEOX}
         ${style}
       </style>
@@ -155,6 +173,7 @@ export default class EOxTimeSlider extends LitElement {
         </div>
         <div id="timeslider"></div>
       </div>
+      <input type="text" id="cal" />
     `;
   }
 }

@@ -1,6 +1,11 @@
 import dayjs from "dayjs";
 import groupBy from "lodash.groupby";
 import getFlatLayersArray from "./get-flat-layers-array";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 /**
  * Sets the selected date on the timeline and updates map layers accordingly
@@ -56,14 +61,9 @@ export default function setSelectedDate(
     ),
   );
 
-  const selectedItems = visTimeline.itemsData
-    .get()
-    .filter(
-      (item) =>
-        dayjs(item.start).format("YYYY-MM-DD") ==
-        dayjs(date).format("YYYY-MM-DD"),
-    );
-
+  const selectedItems = visTimeline.itemsData.get().filter((item) => {
+    return EOxTimeSlider.selectedDate.format().includes(item.date);
+  });
   let instances = {};
 
   selectedItems.forEach((item) => {
@@ -83,7 +83,7 @@ export default function setSelectedDate(
 
       if (!EOxTimeSlider.externalMapRendering) {
         source.updateParams({
-          [item.property]: dayjs(date).format("YYYY-MM-DD"),
+          [item.property]: dayjs(date).utc().format("YYYY-MM-DD"),
         });
       }
     }
@@ -97,7 +97,7 @@ export default function setSelectedDate(
     new CustomEvent("update", {
       detail: {
         selectedItems: groupBy(selectedItems, "group"),
-        date: dayjs(EOxTimeSlider.selectedDate).toDate(),
+        date: dayjs(EOxTimeSlider.selectedDate).utc().toDate(),
         filters: itemsFilter?.filters || [],
         instances: instances,
       },

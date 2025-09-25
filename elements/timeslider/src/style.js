@@ -92,6 +92,15 @@ export const style = `
   background: var(--primary) !important;
   opacity: 0.4 !important;
 }
+.vis-custom-time.multi-select-start {
+  background: var(--primary) !important;
+  opacity: 0.4 !important;
+  border-left: 2px solid var(--primary) !important;
+  border-right: 2px solid var(--primary) !important;
+}
+.vis-custom-time.multi-select-end {
+  display: none;
+}
 .vis-text {
   font-size: 13px;
   text-transform: uppercase;
