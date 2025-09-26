@@ -136,6 +136,30 @@ export default class EOxTimeSlider extends LitElement {
       .vc * {
         font-family: var(--eox-body-font-family);
       }
+      .vc-day__dots {
+        display: flex;
+        gap: 4px;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 4px;
+        pointer-events: none;
+      }
+      .vc-day__dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 9999px;
+        background: var(--primary);
+        opacity: 0.9;
+      }
+      .vc-date[data-vc-date-selected] .vc-date__btn {
+        background-color: var(--primary) !important;
+      }
+      .vc-date[data-vc-date-selected] .vc-day__dot {
+        background: var(--on-primary) !important;
+      }
     `;
 
     // Inject into document head
@@ -170,14 +194,15 @@ export default class EOxTimeSlider extends LitElement {
         ${style}
       </style>
       <div class="timeslider-container">
-        <div class="timeslider-header">
-          <div class="field border small">
+        <div class="timeslider-header flex-center">
+          <i class="icon calendar-icon"></i>
+          <div class="timeslider-calendar field border small">
             <input
-              type="date"
+              type="text"
               id="cal"
               class="timeslider-calendar-input"
               readonly
-              value=${this.selectedDate?.format("YYYY-MM-DD") || ""}
+              value=${this.selectedDate?.format("MMM DD, 'YY") || ""}
             />
           </div>
           ${when(
@@ -194,6 +219,12 @@ export default class EOxTimeSlider extends LitElement {
                 styleOverride=".inline-container-wrapper { height: 40px; } .inline-container { overflow-y: hidden; }"
               ></eox-itemfilter>`,
           )}
+          <button class="setting-btn border small flex-center">
+            <i class="icon setting-icon"></i><span>Settings</span>
+          </button>
+          <button class="export-btn border small flex-center">
+            <i class="icon export-icon"></i><span>Export</span>
+          </button>
         </div>
         <div id="timeslider"></div>
       </div>

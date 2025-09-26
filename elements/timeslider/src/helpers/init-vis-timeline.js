@@ -7,8 +7,21 @@ import updateTimelineItems, { updateVisibility } from "./update-timeline-items";
 import setSelectedDate from "./set-selected-date";
 import { dateChangeHandler } from "../methods/timeslider";
 import { Calendar } from "vanilla-calendar-pro";
+import groupBy from "lodash.groupby";
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
+function extractISO(dateEl) {
+  // Try common attribute keys then fall back by scanning dataset values.
+  return (
+    dateEl.getAttribute("data-calendar-date") ||
+    dateEl.dataset?.calendarDate ||
+    Object.values(dateEl.dataset || {}).find((v) =>
+      /^\d{4}-\d{2}-\d{2}$/.test(v),
+    ) ||
+    null
+  );
+}
 
 let drag = false;
 let multiSelect = false;
@@ -177,13 +190,33 @@ export default function initVisTimeline(EOxTimeSlider) {
         displayDateMax: options.max,
         displayDatesOutside: false,
         selectedDates: [itemValues[0].start],
+        enableEdgeDatesOnly: false,
         // disableDatesPast: true,
         // enableEdgeDatesOnly: true,
         inputMode: true,
-        positionToInput: ["top", "center"],
+        positionToInput: ["top", "left"],
+        selectedWeekends: [],
         onClickDate: (self) => {
           if (self.context.selectedDates[0])
             dateChangeHandler(self.context.selectedDates[0], EOxTimeSlider);
+        },
+        onCreateDateEls: (self, dateEl) => {
+          const date = extractISO(dateEl);
+          const dateDots = groupBy(itemValues, "start");
+          const oldDots = dateEl.querySelector(".vc-day__dots");
+          if (oldDots) oldDots.remove();
+
+          if (dateDots[date] && dateEl.children.length) {
+            const host = document.createElement("div");
+            host.className = "vc-day__dots";
+
+            for (let i = 0; i < dateDots[date].length; i++) {
+              const dot = document.createElement("div");
+              dot.className = "vc-day__dot";
+              host.appendChild(dot);
+            }
+            dateEl.appendChild(host);
+          }
         },
       });
       cal.init();
