@@ -14,7 +14,7 @@ export const Primary = {
         type: "Tile",
         properties: {
           id: "AWS_NO2-VISUALISATION",
-          name: "Wind Visualisation 10M",
+          name: "NO2 Visualisation",
           timeControlValues: [
             {
               date: "2022-12-05",
@@ -276,8 +276,12 @@ export const Primary = {
         type: "Tile",
         properties: {
           id: "AWS_VIS_WIND_V_10M",
-          name: "NO2 Visualisation",
+          name: "Wind Visualisation 10M",
           timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
             {
               date: "2022-12-07",
               cloudCoverage: 68,

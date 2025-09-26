@@ -2,12 +2,12 @@ import setSelectedDate from "../../helpers/set-selected-date";
 
 /**
  * Handles date input changes
- * @param {Event} e - Input change event
+ * @param {string} value - Input change value
  * @param {Object} EOxTimeSlider - The timeslider component instance
  */
-export default function dateChangeHandler(e, EOxTimeSlider) {
+export default function dateChangeHandler(value, EOxTimeSlider) {
   setSelectedDate(
-    e.target.value,
+    value,
     EOxTimeSlider.visTimeline,
     EOxTimeSlider.eoxMap,
     EOxTimeSlider,

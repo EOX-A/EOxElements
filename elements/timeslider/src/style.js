@@ -21,8 +21,9 @@ export const style = `
 }
 .timeslider-header .field.border input {
   background: white;
-  border-color: var(--outline-variant);
-  border-width: 2px;
+  border: .0625rem solid var(--outline) !important;
+  padding: 0 1.2rem;
+  width: 90%;
 }
 .vis-labelset .vis-label .vis-inner {
   font-size: 12px;

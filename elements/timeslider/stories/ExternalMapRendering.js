@@ -4,10 +4,10 @@ import { html } from "lit";
  *
  * @returns {Object} The story configuration with arguments for the component and a play function for interaction testing.
  */
-export const TestStory = {
+export const ExternalMapRendering = {
   args: {
-    center: [10000, 5500000],
-    zoom: 5,
+    center: [269335.4, 5288649.6],
+    zoom: 9,
     for: "eox-map",
     layerIdKey: "id",
     titleKey: "name",
@@ -86,7 +86,7 @@ export const TestStory = {
                     e.detail.selectedItems[collectionData.title]?.[0].itemId,
                 ),
               ),
-              document.querySelector("eox-map").layers[1],
+              document.querySelector("eox-map").layers[0],
             ];
           });
         // Initial rendering
@@ -107,4 +107,4 @@ export const TestStory = {
     </script>
   `,
 };
-export default TestStory;
+export default ExternalMapRendering;

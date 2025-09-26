@@ -13,9 +13,7 @@ import {
   filterHandler as handleFilter,
   dateChangeHandler as handleDateChange,
 } from "./methods/timeslider";
-import { Calendar } from "vanilla-calendar-pro";
 import vanillaCalendarCSS from "vanilla-calendar-pro/styles/index.css?inline";
-import vanillaCalendarThemeCSS from "vanilla-calendar-pro/styles/themes/light.css?inline";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -116,19 +114,44 @@ export default class EOxTimeSlider extends LitElement {
 
   firstUpdated() {
     firstUpdatedMethod(this);
-    const calendarInput = this.renderRoot.querySelector("#cal");
-    const cal = new Calendar(calendarInput, {
-      selectedTheme: "light",
-      type: "multiple",
-      displayMonthsCount: 2,
-      monthsToSwitch: 2,
-      displayDatesOutside: false,
-      disableDatesPast: true,
-      enableEdgeDatesOnly: true,
-      selectionDatesMode: "multiple-ranged",
-      inputMode: true,
-    });
-    cal.init();
+
+    // Inject vanilla-calendar CSS into document head for inputMode popup
+    this.injectCalendarStyles();
+  }
+
+  injectCalendarStyles() {
+    // Check if styles are already injected
+    if (document.querySelector("#vanilla-calendar-styles")) {
+      return;
+    }
+
+    // Create style element for vanilla-calendar CSS
+    const styleElement = document.createElement("style");
+    styleElement.id = "vanilla-calendar-styles";
+    styleElement.textContent = `
+      ${vanillaCalendarCSS}
+      .vc {
+        z-index: 9999;
+      }
+      .vc * {
+        font-family: var(--eox-body-font-family);
+      }
+    `;
+
+    // Inject into document head
+    document.head.appendChild(styleElement);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    // Clean up calendar styles if this is the last timeslider component
+    const timesliderElements = document.querySelectorAll("eox-timeslider");
+    if (timesliderElements.length <= 1) {
+      const styleElement = document.querySelector("#vanilla-calendar-styles");
+      if (styleElement) {
+        styleElement.remove();
+      }
+    }
   }
 
   filterHandler(e) {
@@ -136,24 +159,24 @@ export default class EOxTimeSlider extends LitElement {
   }
 
   dateChangeHandler(e) {
-    handleDateChange(e, this);
+    handleDateChange(e.target.value, this);
   }
 
   render() {
     return html`
       <style>
         ${visTimelineCSS}
-        ${vanillaCalendarCSS}
-        ${vanillaCalendarThemeCSS}
         ${!this.unstyled && styleEOX}
         ${style}
       </style>
       <div class="timeslider-container">
         <div class="timeslider-header">
-          <div class="field fill border small">
+          <div class="field border small">
             <input
               type="date"
-              @change=${this.dateChangeHandler}
+              id="cal"
+              class="timeslider-calendar-input"
+              readonly
               value=${this.selectedDate?.format("YYYY-MM-DD") || ""}
             />
           </div>
@@ -168,12 +191,12 @@ export default class EOxTimeSlider extends LitElement {
                 .showResults=${false}
                 @filter=${this.filterHandler}
                 .filterProperties=${this.filters}
+                styleOverride=".inline-container-wrapper { height: 40px; } .inline-container { overflow-y: hidden; }"
               ></eox-itemfilter>`,
           )}
         </div>
         <div id="timeslider"></div>
       </div>
-      <input type="text" id="cal" />
     `;
   }
 }

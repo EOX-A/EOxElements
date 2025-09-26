@@ -446,6 +446,7 @@ export class EOxItemFilter extends LitElement {
                 .filters=${this.filters}
                 .filterProperties=${this.filterProperties}
                 .inlineMode=${this.inlineMode || false}
+                .styleOverride=${this.styleOverride}
                 @reset=${() => this.resetFilters()}
                 @filter=${() => this.search()}
               >
@@ -506,6 +507,7 @@ export class EOxItemFilter extends LitElement {
                           html` <li class="no-padding">
                             <eox-itemfilter-expandcontainer
                               .filterObject=${filterObject}
+                              .styleOverride=${this.styleOverride}
                               @details-toggled=${(e) =>
                                 toggleAccordion(e, this.#config, this)}
                               data-details="${filterObject.key}"
@@ -533,6 +535,7 @@ export class EOxItemFilter extends LitElement {
           () => html`
             <div class="small-space"></div>
             <eox-itemfilter-results
+              .styleOverride=${this.styleOverride}
               .config=${this.#config}
               .results=${this.results}
               .filters=${this.filters}

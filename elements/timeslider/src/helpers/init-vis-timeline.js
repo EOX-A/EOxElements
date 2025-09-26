@@ -5,6 +5,8 @@ import timezone from "dayjs/plugin/timezone";
 import createTimelineOptions from "./create-timeline-options";
 import updateTimelineItems, { updateVisibility } from "./update-timeline-items";
 import setSelectedDate from "./set-selected-date";
+import { dateChangeHandler } from "../methods/timeslider";
+import { Calendar } from "vanilla-calendar-pro";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -156,4 +158,37 @@ export default function initVisTimeline(EOxTimeSlider) {
   EOxTimeSlider.visTimeline = visTimeline;
   EOxTimeSlider.groups = groups;
   EOxTimeSlider.items = items;
+  const itemValues = EOxTimeSlider.items.get();
+
+  if (itemValues && itemValues.length) {
+    dateChangeHandler(itemValues[0].start, EOxTimeSlider);
+    const calendarInput = EOxTimeSlider.renderRoot.querySelector("#cal");
+    if (calendarInput) {
+      calendarInput.innerHTML = "";
+      const cal = new Calendar(calendarInput, {
+        selectedTheme: "light",
+        // type: "month",
+        // selectionDatesMode: "multiple-ranged",
+        // displayMonthsCount: 2,
+        // monthsToSwitch: 2,
+        dateMin: options.min,
+        dateMax: options.max,
+        displayDateMin: options.min,
+        displayDateMax: options.max,
+        displayDatesOutside: false,
+        selectedDates: [itemValues[0].start],
+        // disableDatesPast: true,
+        // enableEdgeDatesOnly: true,
+        inputMode: true,
+        positionToInput: ["top", "center"],
+        onClickDate: (self) => {
+          if (self.context.selectedDates[0])
+            dateChangeHandler(self.context.selectedDates[0], EOxTimeSlider);
+        },
+      });
+      cal.init();
+    }
+  } else {
+    EOxTimeSlider.selectedDate = null;
+  }
 }
