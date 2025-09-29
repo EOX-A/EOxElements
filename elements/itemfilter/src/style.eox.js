@@ -242,6 +242,7 @@ tc-range-slider {
 .inline-container-wrapper {
   width: 100%;
   position: relative;
+  height: var(--inline-container-height, auto);
 }
 .inline-container {
   position: relative;
@@ -256,6 +257,7 @@ tc-range-slider {
   inline-size: 100%;
   block-size: 100%;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 [popover] {
   position: fixed;
