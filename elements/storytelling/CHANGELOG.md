@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.4...storytelling-v1.9.5) (2025-09-29)
+
+
+### Bug Fixes
+
+* **style:** Section spacing with/without editing mode ([#1835](https://github.com/EOX-A/EOxElements/issues/1835)) ([55f8431](https://github.com/EOX-A/EOxElements/commit/55f84310dbe9723e58edd3194ffe41b44ffc854b))
+
 ## [1.9.4](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.3...storytelling-v1.9.4) (2025-09-16)
 
 
