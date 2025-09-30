@@ -443,9 +443,11 @@ mark.highlight {
   display: flex;
   flex: 0;
   align-items: center;
+  height: var(--inline-container-height, auto);
 }
 .chip {
   white-space: nowrap;
+  max-height: calc(var(--inline-container-height, auto) - .5rem);
 }
 .input-container.field {
   min-width: 10rem;
