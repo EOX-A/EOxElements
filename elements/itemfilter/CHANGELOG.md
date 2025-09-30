@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.4...itemfilter-v1.11.0) (2025-09-30)
+
+
+### Features
+
+* **style:** Support setting a specific height for inline-mode container ([#1837](https://github.com/EOX-A/EOxElements/issues/1837)) ([f1482e4](https://github.com/EOX-A/EOxElements/commit/f1482e4185c90941fef09de64871143a6b7035a6))
+
 ## [1.10.4](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.3...itemfilter-v1.10.4) (2025-08-14)
 
 
