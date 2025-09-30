@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v1.0.1...timecontrol-v1.0.2) (2025-09-16)
+
+
+### Bug Fixes
+
+* Making sure time string is returned as UTC and not localized ([#1823](https://github.com/EOX-A/EOxElements/issues/1823)) ([bd99c91](https://github.com/EOX-A/EOxElements/commit/bd99c91ebcaaa3000e0cd9b2f72f973668796583))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v1.0.0...timecontrol-v1.0.1) (2025-07-29)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.1...jsonform-v1.4.2) (2025-09-24)
+
+
+### Bug Fixes
+
+* Rename switch class/id to prevent conflicts with other elements ([#1833](https://github.com/EOX-A/EOxElements/issues/1833)) ([7031bd8](https://github.com/EOX-A/EOxElements/commit/7031bd8d1513ef9ba34fc8a8f47ad6422948481c))
+
 ## [1.4.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.0...jsonform-v1.4.1) (2025-08-18)
 
 

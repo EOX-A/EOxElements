@@ -92,7 +92,7 @@ We will now have a more in-depth look about the map section. The map section sho
 ### Some title for map <!--{ style="color: white; font-size: 1.25rem;" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
-## Map Tour section <!--{ as="eox-map" prevent-scroll="true" class="overlay-br" mode="tour" }-->
+## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
 
 ### <!--{ layers='[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]' center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
