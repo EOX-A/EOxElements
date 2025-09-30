@@ -174,7 +174,9 @@ export default function initVisTimeline(EOxTimeSlider) {
   const itemValues = EOxTimeSlider.items.get();
 
   if (itemValues && itemValues.length) {
-    dateChangeHandler(itemValues[0].start, EOxTimeSlider);
+    setTimeout(() => {
+      dateChangeHandler(itemValues[0].start, EOxTimeSlider);
+    }, 100);
     const calendarInput = EOxTimeSlider.renderRoot.querySelector("#cal");
     if (calendarInput) {
       calendarInput.innerHTML = "";

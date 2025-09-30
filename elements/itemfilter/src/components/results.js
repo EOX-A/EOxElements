@@ -32,7 +32,6 @@ export class EOxItemFilterResults extends LitElement {
       selectedResult: { state: true, type: Object },
       resultType: { attribute: "result-type", type: String },
       resultActionIcon: { attribute: false, type: String },
-      styleOverride: { type: String },
     };
   }
 
@@ -73,11 +72,6 @@ export class EOxItemFilterResults extends LitElement {
      * @type String
      */
     this.resultActionIcon = undefined;
-
-    /**
-     * @type String
-     */
-    this.styleOverride = "";
   }
 
   /**
@@ -136,7 +130,6 @@ export class EOxItemFilterResults extends LitElement {
     return html`
       <section id="section-results">
         <div slot="resultstitle"></div>
-        ${this.styleOverride}
         <div id="container-results" class="scroll">
           ${when(
             this.results.length < 1,

@@ -166,4 +166,40 @@ eox-itemfilter {
   background: white;
   border-radius: 6px;
 }
+.setting-menu-header {
+  padding: 10px 0px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.setting-menu {
+  position: absolute;
+  top: -200px;
+  right: 0;
+  width: 300px;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+}
+.setting-btn-container {
+  position: relative;
+}
+.setting-menu-content {
+  display: flex;
+  padding: 0.5rem 0px;
+}
+.setting-menu-content-value {
+  flex-grow: 1;
+  justify-content: end;
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+.setting-menu-content-value input {
+  width: 30px;
+  text-align: center;
+}
+.setting-menu-content span {
+  font-weight: 300;
+}
 `;

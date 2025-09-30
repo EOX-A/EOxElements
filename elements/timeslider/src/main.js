@@ -43,6 +43,12 @@ export default class EOxTimeSlider extends LitElement {
   #groups = new DataSet([]);
   #items = new DataSet([]);
   #sliderValues = [];
+  #isSettingsEnabled = false;
+  #settings = {
+    speed: 5,
+    dateRange: [],
+    format: "GIF",
+  };
 
   constructor() {
     super();
@@ -186,6 +192,19 @@ export default class EOxTimeSlider extends LitElement {
     handleDateChange(e.target.value, this);
   }
 
+  handleSettingsToggle() {
+    this.#isSettingsEnabled = !this.#isSettingsEnabled;
+    this.requestUpdate();
+  }
+
+  handleSettingsChange(value, key) {
+    this.#settings = {
+      ...this.#settings,
+      [key]: value,
+    };
+    this.requestUpdate();
+  }
+
   render() {
     return html`
       <style>
@@ -216,12 +235,67 @@ export default class EOxTimeSlider extends LitElement {
                 .showResults=${false}
                 @filter=${this.filterHandler}
                 .filterProperties=${this.filters}
-                styleOverride=".inline-container-wrapper { height: 40px; } .inline-container { overflow-y: hidden; }"
+                style="--inline-container-height: 40px"
               ></eox-itemfilter>`,
           )}
-          <button class="setting-btn border small flex-center">
-            <i class="icon setting-icon"></i><span>Settings</span>
-          </button>
+          <div class="setting-btn-container">
+            <button
+              class="setting-btn border small flex-center"
+              @click=${() => this.handleSettingsToggle()}
+            >
+              <i class="icon setting-icon"></i><span>Settings</span>
+            </button>
+            ${when(
+              this.#isSettingsEnabled,
+              () => html`
+                <div class="setting-menu">
+                  <div class="setting-menu-header">
+                    <i class="icon setting-icon"></i><span>Settings</span>
+                  </div>
+                  <div class="setting-menu-content">
+                    <span>Speed</span>
+                    <div class="setting-menu-content-value">
+                      <span>frame/sec</span>
+                      <input
+                        type="number"
+                        value=${this.#settings.speed}
+                        @change=${(e) =>
+                          this.handleSettingsChange(e.target.value, "speed")}
+                      />
+                    </div>
+                  </div>
+                  <div class="setting-menu-content">
+                    <span>Daterange</span>
+                    <div class="setting-menu-content-value">
+                      <input
+                        type="text"
+                        readonly
+                        value=${this.#settings.dateRange.join(" - ")}
+                        @change=${(e) =>
+                          this.handleSettingsChange(
+                            e.target.value,
+                            "dateRange",
+                          )}
+                      />
+                    </div>
+                  </div>
+                  <div class="setting-menu-content">
+                    <span>Format</span>
+                    <div class="setting-menu-content-value">
+                      <select
+                        value=${this.#settings.format}
+                        @change=${(e) =>
+                          this.handleSettingsChange(e.target.value, "format")}
+                      >
+                        <option value="gif">GIF</option>
+                        <option value="mp4">MP4</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              `,
+            )}
+          </div>
           <button class="export-btn border small flex-center">
             <i class="icon export-icon"></i><span>Export</span>
           </button>

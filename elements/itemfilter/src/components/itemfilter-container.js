@@ -31,7 +31,6 @@ export class EOxItemFilterContainer extends LitElement {
       inlineMode: { attribute: "inline-mode", type: Boolean },
       unstyled: { type: Boolean },
       filters: { state: true, type: Object },
-      styleOverride: { type: String },
     };
   }
 
@@ -67,11 +66,6 @@ export class EOxItemFilterContainer extends LitElement {
      * @type {(this: Document, ev: KeyboardEvent) => any}
      */
     this._handleKeyDown = this.#handleKeyDown.bind(this);
-
-    /**
-     * @type String
-     */
-    this.styleOverride = "";
   }
 
   /**
@@ -222,7 +216,6 @@ export class EOxItemFilterContainer extends LitElement {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
-        ${this.styleOverride}
       </style>
       ${this.inlineMode
         ? html`

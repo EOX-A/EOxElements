@@ -78,16 +78,16 @@ export const ExternalMapRendering = {
         document
           .querySelector("eox-timeslider")
           .addEventListener("update", (e) => {
-            document.querySelector("eox-map").layers = [
-              createXyzLayer(
-                items.find(
-                  (item) =>
-                    item.id ===
-                    e.detail.selectedItems[collectionData.title]?.[0].itemId,
-                ),
-              ),
-              document.querySelector("eox-map").layers[0],
-            ];
+            console.log("lol");
+            const eoxMap = document.querySelector("eox-map");
+            const item = items.find(
+              (item) =>
+                item.id ===
+                e.detail.selectedItems[collectionData.title]?.[0].itemId,
+            );
+            const center = item.properties["proj:centroid"];
+            eoxMap.layers = [createXyzLayer(item), eoxMap.layers[0]];
+            eoxMap.center = [center.lon, center.lat];
           });
         // Initial rendering
         document.querySelector("eox-map").layers = [

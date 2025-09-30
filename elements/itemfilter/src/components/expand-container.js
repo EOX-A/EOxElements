@@ -17,7 +17,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
     return {
       filterObject: { attribute: false, type: Object },
       unstyled: { type: Boolean },
-      styleOverride: { type: String },
     };
   }
 
@@ -33,11 +32,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
      * @type Boolean
      */
     this.unstyled = false;
-
-    /**
-     * @type String
-     */
-    this.styleOverride = "";
   }
 
   /**
@@ -63,7 +57,6 @@ export class EOxItemFilterExpandContainer extends LitElement {
     return html`
       <style>
         ${!this.unstyled && styleEOX}
-        ${this.styleOverride}
       </style>
 
       ${when(
