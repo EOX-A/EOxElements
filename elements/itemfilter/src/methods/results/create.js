@@ -95,6 +95,20 @@ export function createItemListMethod(
                 }),
               );
             }}
+            @mouseenter=${() => {
+              EOxItemFilterResults.dispatchEvent(
+                new CustomEvent("mouseenter:result", {
+                  detail: item,
+                }),
+              );
+            }}
+            @mouseleave=${() => {
+              EOxItemFilterResults.dispatchEvent(
+                new CustomEvent("mouseleave:result", {
+                  detail: item,
+                }),
+              );
+            }}
           >
             <nav id="${item.id}" class="responsive tiny-space">
               ${when(
