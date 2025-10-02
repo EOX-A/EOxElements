@@ -156,15 +156,16 @@ export function createItemListMethod(
                         ? "highlight-enabled"
                         : ""}"
                       >${unsafeHTML(
-                        item.highlightedText || item[config.titleProperty],
+                        item.highlightedText ||
+                          getValue(config.titleProperty, item).toString(),
                       )}</span
                     >
                     ${when(
-                      !!item[config.subTitleProperty],
+                      !!getValue(config.subTitleProperty, item),
                       () => html`
                         <small class="subtitle no-line truncate"
                           >${unsafeHTML(
-                            item[config.subTitleProperty].toString(),
+                            getValue(config.subTitleProperty, item).toString(),
                           )}</small
                         >
                       `,
