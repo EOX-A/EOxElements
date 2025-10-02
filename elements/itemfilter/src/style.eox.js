@@ -25,7 +25,7 @@ ${eoxStyle}
     var(--surface) 80%,
     transparent
   );
-  --item-select-color: var(--surface-variant);
+  --item-select-color: var(--primary);
   --inline-bg-color: color-mix(
     in srgb,
     var(--secondary-color) 10%,
