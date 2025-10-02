@@ -190,22 +190,25 @@ export class EOxItemFilter extends LitElement {
 
     /**
      * The property of the result items used for display
+     * Supports passing a function which recieves the current item as parameter and is expected to return a string
      *
-     * @type String
+     * @type String|Function
      */
     this.titleProperty = "title";
 
     /**
      * The property of the result items used for a subtitle
+     * Supports passing a function which recieves the current item as parameter and is expected to return a string
      *
-     * @type String
+     * @type String|Function
      */
     this.subTitleProperty = undefined;
 
     /**
      * The property of the result items used for an image
+     * Supports passing a function which recieves the current item as parameter and is expected to return a string
      *
-     * @type String
+     * @type String|Function
      */
     this.imageProperty = undefined;
 
