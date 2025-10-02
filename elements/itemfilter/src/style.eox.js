@@ -25,7 +25,7 @@ ${eoxStyle}
     var(--surface) 80%,
     transparent
   );
-  --item-select-color: var(--primary);
+  --item-select-color: var(--surface-variant);
   --inline-bg-color: color-mix(
     in srgb,
     var(--secondary-color) 10%,
@@ -391,7 +391,6 @@ details summary:hover {
   background: var(--item-hover-color);
 }
 eox-itemfilter-results li.highlighted {
-  color: white;
   background: var(--item-select-color);
 }
 mark.highlight {
