@@ -34,6 +34,7 @@ export class EOxLayerControlLayerTools extends LitElement {
     noShadow: { type: Boolean },
     toolsAsList: { type: Boolean },
     embedded: { state: true },
+    customEditorInterfaces: { attribute: false, type: Array },
   };
 
   constructor() {
@@ -83,6 +84,15 @@ export class EOxLayerControlLayerTools extends LitElement {
     setTimeout(() => {
       this.embedded = this.parentElement?.tagName === "EOX-LAYERCONTROL-LAYER";
     });
+
+    /**
+     * List of custom editor interfaces for layer config eox-jsonform
+     * Read more about the implementation of custom editor interfaces here:
+     * https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
+     *
+     * @type {Array}
+     */
+    this.customEditorInterfaces = [];
   }
 
   /**
@@ -141,6 +151,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .noShadow=${true}
               .layerConfig=${this.layer.get("layerConfig")}
               .unstyled=${this.unstyled}
+              .customEditorInterfaces=${this.customEditorInterfaces}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-layerconfig>
           `,
