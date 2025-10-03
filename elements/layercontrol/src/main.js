@@ -68,6 +68,7 @@ export class EOxLayerControl extends LitElement {
       attribute: "globally-exclusive-layers",
       type: Boolean,
     },
+    customEditorInterfaces: { attribute: false, type: Array },
   };
 
   /**
@@ -159,6 +160,15 @@ export class EOxLayerControl extends LitElement {
      * @type {Boolean}
      */
     this.globallyExclusiveLayers = false;
+
+    /**
+     * List of custom editor interfaces for layer config eox-jsonforms
+     * Read more about the implementation of custom editor interfaces here:
+     * https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
+     *
+     * @type {Array}
+     */
+    this.customEditorInterfaces = [];
   }
 
   /**
@@ -255,6 +265,7 @@ export class EOxLayerControl extends LitElement {
             .unstyled=${this.unstyled}
             .toolsAsList=${this.toolsAsList}
             .globallyExclusiveLayers=${this.globallyExclusiveLayers}
+            .customEditorInterfaces=${this.customEditorInterfaces}
             @changed=${this.#handleLayerControlLayerListChange}
             @datetime:updated=${(evt) => handleDatetimeUpdate(evt, this)}
             @layerConfig:change=${this.#handleLayerConfigChange}
