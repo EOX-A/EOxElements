@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.2.0...layercontrol-v1.2.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* Missing passing of `customEditorInterfaces` ([#1850](https://github.com/EOX-A/EOxElements/issues/1850)) ([62a38a8](https://github.com/EOX-A/EOxElements/commit/62a38a8a3b155759dafa7b4b1d3b44a312268416))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.3...layercontrol-v1.2.0) (2025-10-03)
 
 
