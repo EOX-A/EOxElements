@@ -10,9 +10,8 @@ export function getNestedStartVals(schema, nestedValues) {
 
   for (const key in schema) {
     const type = schema[key].type;
-
     // Extract startVal based on type
-    if (type && type !== "object") {
+    if (type && type !== "object" && nestedValues[key] !== undefined) {
       startVals[key] =
         type === "number" ? Number(nestedValues[key]) : nestedValues[key];
     } else if (typeof schema[key] === "object" && schema[key]?.properties) {
