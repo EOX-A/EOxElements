@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.3...layercontrol-v1.2.0) (2025-10-03)
+
+
+### Features
+
+* Support custom editor interfaces ([#1849](https://github.com/EOX-A/EOxElements/issues/1849)) ([802597e](https://github.com/EOX-A/EOxElements/commit/802597e80067bcfa19cdbe4cb59f08887774e163))
+
+
+### Bug Fixes
+
+* If startvalue not available an object full of undefineds and NaN values was created that blocked rendering the field in the form ([#1847](https://github.com/EOX-A/EOxElements/issues/1847)) ([13e5635](https://github.com/EOX-A/EOxElements/commit/13e5635560fd8bc38fe4d822bb79331403673fb6))
+
 ## [1.1.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.2...layercontrol-v1.1.3) (2025-09-17)
 
 
