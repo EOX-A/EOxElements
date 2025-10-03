@@ -196,6 +196,7 @@ export class EOxLayerControlLayerGroup extends LitElement {
               .unstyled=${this.unstyled}
               .toolsAsList=${this.toolsAsList}
               .globallyExclusiveLayers=${this.globallyExclusiveLayers}
+              .customEditorInterfaces=${this.customEditorInterfaces}
               @changed=${() => this.requestUpdate()}
             ></eox-layercontrol-layer-list>
           </details>
