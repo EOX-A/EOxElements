@@ -148,15 +148,6 @@ export default function initVisTimeline(EOxTimeSlider) {
           dayjs(multiSelectEndDate).toDate(),
           "multi-select-end",
         );
-        const timeSliderContainer = EOxTimeSlider.getContainer();
-        const startEle = timeSliderContainer.querySelector(
-          ".vis-custom-time.multi-select-start",
-        );
-        const endEle = timeSliderContainer.querySelector(
-          ".vis-custom-time.multi-select-end",
-        );
-
-        startEle.style.width = `${endEle.left - startEle.left}px`;
       }
     }
   });
@@ -165,6 +156,20 @@ export default function initVisTimeline(EOxTimeSlider) {
     if (props.byUser) {
       drag = true;
       setTimeout(() => (drag = false));
+      const timeSliderContainer = EOxTimeSlider.getContainer();
+
+      const startEle = timeSliderContainer.querySelector(
+        ".vis-custom-time.multi-select-start",
+      );
+      const endEle = timeSliderContainer.querySelector(
+        ".vis-custom-time.multi-select-end",
+      );
+
+      if (startEle && endEle) {
+        const endLeft = Number(endEle.style.left.replace("px", ""));
+        const startLeft = Number(startEle.style.left.replace("px", ""));
+        startEle.style.width = `${endLeft - startLeft}px`;
+      }
     }
   });
 
@@ -175,8 +180,14 @@ export default function initVisTimeline(EOxTimeSlider) {
 
   if (itemValues && itemValues.length) {
     setTimeout(() => {
-      dateChangeHandler(itemValues[0].start, EOxTimeSlider);
-    }, 100);
+      const initDate = itemValues[itemValues.length - 1].start;
+      dateChangeHandler(initDate, EOxTimeSlider);
+      visTimeline.setOptions({
+        ...visTimeline.setOptions,
+        start: dayjs(initDate).subtract(20, "day").format("YYYY-MM-DD"),
+        end: dayjs(initDate).add(20, "day").format("YYYY-MM-DD"),
+      });
+    }, 1000);
     const calendarInput = EOxTimeSlider.renderRoot.querySelector("#cal");
     if (calendarInput) {
       calendarInput.innerHTML = "";
