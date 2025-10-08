@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.2.1...layercontrol-v1.3.0) (2025-10-08)
+
+
+### Features
+
+* Introduce `options.removeProperties` to tileURL layerConfig ([#1852](https://github.com/EOX-A/EOxElements/issues/1852)) ([e6b24c5](https://github.com/EOX-A/EOxElements/commit/e6b24c51610199c27de2e3481ae32df20450448b))
+
+
+### Bug Fixes
+
+* LayerConfig showing the legend when it matches `boundTo` ([#1854](https://github.com/EOX-A/EOxElements/issues/1854)) ([8e7bb7d](https://github.com/EOX-A/EOxElements/commit/8e7bb7d05228cc30fe527d12efd95ccf6f41f22a))
+
 ## [1.2.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.2.0...layercontrol-v1.2.1) (2025-10-03)
 
 
