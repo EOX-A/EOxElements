@@ -36,17 +36,17 @@ const getLegendConfig = (legendConfig, data) => {
     const propName = legend.boundTo.key;
     const expectedToMatch = legend.boundTo.value;
 
-    // if the property is not in the data, the legend will be shown
-    return !(propName in flatData) || flatData[propName] == expectedToMatch;
+    // only show the legend if the property exists and matches the expected value
+    return propName in flatData && flatData[propName] == expectedToMatch;
   });
 
-  // if no active legends are found, use all legends
+  // If no legends are active, return null
   if (!activeLegends.length) {
-    activeLegends = availableLegends;
+    activeLegends = null;
   }
 
-  return /** @type {import("../components/layer-legend").LegendConfig[]} */ (
-    activeLegends.map((activeLegend) => {
+  return /** @type {import("../components/layer-legend").LegendConfig[] | null} */ (
+    activeLegends?.map((activeLegend) => {
       delete activeLegend.boundTo;
       if (!("domainProperties" in activeLegend) || "domain" in activeLegend) {
         return activeLegend;
