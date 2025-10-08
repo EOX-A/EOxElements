@@ -20,6 +20,7 @@ import {
   cleanCalendarStyles,
   snapshotGenerator,
 } from "./helpers";
+import { createGIF } from "gifshot";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -237,6 +238,43 @@ export default class EOxTimeSlider extends LitElement {
     this.requestUpdate();
   }
 
+  handleExportGIF() {
+    const images = this.#exportConfig.mapLayers.map((layer) => layer.img);
+    const map = this.renderRoot.querySelector(".map-view-item");
+    const mapBounding = map.getBoundingClientRect();
+    const mapWidth = mapBounding.width;
+    const mapHeight = mapBounding.height;
+    createGIF(
+      {
+        gifWidth: mapWidth,
+        gifHeight: mapHeight,
+        images: [...images],
+        interval: 1,
+        numFrames: 100,
+        frameDuration: 1,
+        fontWeight: "normal",
+        fontSize: "16px",
+        fontFamily: "sans-serif",
+        fontColor: "#ffffff",
+        textAlign: "center",
+        textBaseline: "bottom",
+        sampleInterval: 10,
+        numWorkers: 2,
+      },
+      function (obj) {
+        if (!obj.error) {
+          // Download the generated GIF image
+          const link = document.createElement("a");
+          link.href = obj.image;
+          link.download = "timeslider.gif";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      },
+    );
+  }
+
   render() {
     return html`
       <style>
@@ -411,7 +449,10 @@ export default class EOxTimeSlider extends LitElement {
                 `,
               )}
               <div class="timeslider-export-footer flex-center">
-                <button class="export-btn border small flex-center">
+                <button
+                  @click=${() => this.handleExportGIF()}
+                  class="export-btn border small flex-center"
+                >
                   <i class="icon export-icon"></i><span>Export</span>
                 </button>
               </div>

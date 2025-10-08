@@ -271,6 +271,8 @@ eox-itemfilter {
   color: white;
   font-size: 3rem;
   font-weight: 800;
+  cursor: pointer;
+  background: #00000017;
 }
 .export-images div.selected-preview img {
   border: 3px solid var(--primary);
