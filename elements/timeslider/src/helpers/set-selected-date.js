@@ -21,6 +21,7 @@ export default function setSelectedDate(
   eoxMap,
   EOxTimeSlider,
 ) {
+  const now = Date.now();
   EOxTimeSlider.selectedDate = dayjs(date);
   if (Number.isNaN(EOxTimeSlider.selectedDate.unix())) return;
 

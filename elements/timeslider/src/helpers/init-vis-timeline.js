@@ -39,18 +39,22 @@ export default function initVisTimeline(EOxTimeSlider) {
 
   if (EOxTimeSlider.sliderValues.length === 0) return null;
 
+  EOxTimeSlider.setLoading(true);
+
   const groups = new DataSet([]);
   const items = new DataSet([]);
 
   updateTimelineItems(EOxTimeSlider.sliderValues, groups, items, EOxTimeSlider);
 
   const dates = items.map((item) => dayjs(item.start));
-  const min = dayjs.min(dates).subtract(30, "day").format("YYYY-MM-DD");
-  const max = dayjs.max(dates).add(30, "day").format("YYYY-MM-DD");
+  const min = dayjs.min(dates).subtract(50, "day").format("YYYY-MM-DD");
+  const max = dayjs.max(dates).add(50, "day").format("YYYY-MM-DD");
 
   const options = createTimelineOptions(min, max);
 
   const visTimeline = new Timeline(container, items, groups, options);
+
+  EOxTimeSlider.setLoading(false);
 
   visTimeline.on("changed", () => {
     const textElement = /** @type {HTMLElement} */ (
@@ -133,6 +137,10 @@ export default function initVisTimeline(EOxTimeSlider) {
         );
         multiSelect = true;
         multiSelectEndDate = null;
+        const selectedRange = [];
+        selectedRange.push(dayjs(multiSelectStartDate));
+        EOxTimeSlider.selectedRange = selectedRange;
+        EOxTimeSlider.requestUpdate();
       } else {
         multiSelect = false;
         multiSelectEndDate = props.time;
@@ -148,6 +156,11 @@ export default function initVisTimeline(EOxTimeSlider) {
           dayjs(multiSelectEndDate).toDate(),
           "multi-select-end",
         );
+        const selectedRange = [];
+        selectedRange.push(dayjs(multiSelectStartDate));
+        selectedRange.push(dayjs(multiSelectEndDate));
+        EOxTimeSlider.selectedRange = selectedRange;
+        EOxTimeSlider.requestUpdate();
       }
     }
   });
@@ -184,8 +197,8 @@ export default function initVisTimeline(EOxTimeSlider) {
       dateChangeHandler(initDate, EOxTimeSlider);
       visTimeline.setOptions({
         ...visTimeline.setOptions,
-        start: dayjs(initDate).subtract(20, "day").format("YYYY-MM-DD"),
-        end: dayjs(initDate).add(20, "day").format("YYYY-MM-DD"),
+        start: dayjs(initDate).subtract(40, "day").format("YYYY-MM-DD"),
+        end: dayjs(initDate).add(40, "day").format("YYYY-MM-DD"),
       });
     }, 1000);
     const calendarInput = EOxTimeSlider.renderRoot.querySelector("#cal");

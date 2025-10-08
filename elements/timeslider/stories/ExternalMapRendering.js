@@ -55,7 +55,9 @@ export const ExternalMapRendering = {
           collectionData.links.find((l) => l.rel === "items").href,
         );
         const { features } = await itemsResponse.json();
-        const items = features;
+        // Exclude the first four items (indices 0, 1, 2, 4) from features
+        const excludeIndices = new Set([0, 1, 2, 4]);
+        const items = features.filter((_, i) => !excludeIndices.has(i));
         // Layer creation function
         const createXyzLayer = (item) => ({
           type: "Tile",
@@ -78,16 +80,43 @@ export const ExternalMapRendering = {
         document
           .querySelector("eox-timeslider")
           .addEventListener("update", (e) => {
-            console.log("lol");
             const eoxMap = document.querySelector("eox-map");
             const item = items.find(
               (item) =>
                 item.id ===
                 e.detail.selectedItems[collectionData.title]?.[0].itemId,
             );
+            createXyzLayer(item);
             const center = item.properties["proj:centroid"];
             eoxMap.layers = [createXyzLayer(item), eoxMap.layers[0]];
             eoxMap.center = [center.lon, center.lat];
+          });
+        document
+          .querySelector("eox-timeslider")
+          .addEventListener("export", (e) => {
+            const eoxMap = document.querySelector("eox-map");
+            const mapLayers = [];
+            for (const dateKey in e.detail.selectedRangeItems) {
+              const date = e.detail.selectedRangeItems[dateKey];
+              const layers = [];
+              let center = null;
+              for (const itemKey in date) {
+                const item = items.find(
+                  (item) => item.id === date[itemKey].itemId,
+                );
+                center = item.properties["proj:centroid"];
+                layers.push(createXyzLayer(item));
+              }
+              layers.push(eoxMap.layers[0]);
+              mapLayers.push({
+                layers,
+                center: [center.lon, center.lat],
+                zoom: 9,
+              });
+            }
+            e.detail.generate({
+              mapLayers,
+            });
           });
         // Initial rendering
         document.querySelector("eox-map").layers = [

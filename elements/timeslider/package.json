@@ -42,5 +42,8 @@
     "uuid": "^13.0.0",
     "vanilla-calendar-pro": "^3.0.5",
     "vis-timeline": "^8.3.0"
+  },
+  "peerDependencies": {
+    "@eox/map": "*"
   }
 }

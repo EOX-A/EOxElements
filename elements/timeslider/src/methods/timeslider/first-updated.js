@@ -46,17 +46,20 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
             Array.isArray(properties.timeControlValues) &&
             properties.timeControlProperty
           ) {
-            sliderValues.push({
-              layer: properties[EOxTimeSlider.layerIdKey],
-              name: properties[EOxTimeSlider.titleKey],
-              property: properties.timeControlProperty,
-              values: properties.timeControlValues.map((value) => ({
+            const values = properties.timeControlValues
+              .map((value) => ({
                 ...value,
                 date: dayjs(value.date).utc().local().format().split("T")[0],
                 utc: dayjs(value.date).utc().format(),
                 local: dayjs(value.date).utc().local().format(),
                 originalDate: value.date,
-              })),
+              }))
+              .sort((a, b) => new Date(a.date) - new Date(b.date));
+            sliderValues.push({
+              layer: properties[EOxTimeSlider.layerIdKey],
+              name: properties[EOxTimeSlider.titleKey],
+              property: properties.timeControlProperty,
+              values: values,
               layerInstance: layer,
             });
             layer.on("change:timeControlValues", () => init());

@@ -6,3 +6,8 @@ export {
   updateVisibility,
 } from "./update-timeline-items";
 export { default as createTimelineOptions } from "./create-timeline-options";
+export {
+  injectCalendarStyles,
+  cleanCalendarStyles,
+} from "./inject-calendar-style";
+export { default as snapshotGenerator } from "./snapshot-generator";

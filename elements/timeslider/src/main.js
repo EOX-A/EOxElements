@@ -8,12 +8,18 @@ import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 import minMax from "dayjs/plugin/minMax";
 import { when } from "lit/directives/when.js";
+import { map } from "lit/directives/map.js";
 import {
   firstUpdatedMethod,
   filterHandler as handleFilter,
   dateChangeHandler as handleDateChange,
+  exportHandler,
 } from "./methods/timeslider";
-import vanillaCalendarCSS from "vanilla-calendar-pro/styles/index.css?inline";
+import {
+  injectCalendarStyles,
+  cleanCalendarStyles,
+  snapshotGenerator,
+} from "./helpers";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -45,10 +51,13 @@ export default class EOxTimeSlider extends LitElement {
   #sliderValues = [];
   #isSettingsEnabled = false;
   #settings = {
-    speed: 5,
+    speed: 1,
     dateRange: [],
     format: "GIF",
   };
+  #isExport = false;
+  #loading = false;
+  #exportConfig = null;
 
   constructor() {
     super();
@@ -72,6 +81,8 @@ export default class EOxTimeSlider extends LitElement {
     this.layerIdKey = "id";
 
     this.externalMapRendering = false;
+
+    this.selectedRange = [];
   }
 
   getContainer() {
@@ -118,70 +129,27 @@ export default class EOxTimeSlider extends LitElement {
     this.#items = value;
   }
 
-  firstUpdated() {
-    firstUpdatedMethod(this);
-
-    // Inject vanilla-calendar CSS into document head for inputMode popup
-    this.injectCalendarStyles();
+  get exportConfig() {
+    return this.#exportConfig;
   }
 
-  injectCalendarStyles() {
-    // Check if styles are already injected
-    if (document.querySelector("#vanilla-calendar-styles")) {
-      return;
-    }
+  set exportConfig(value) {
+    this.#exportConfig = value;
+  }
 
-    // Create style element for vanilla-calendar CSS
-    const styleElement = document.createElement("style");
-    styleElement.id = "vanilla-calendar-styles";
-    styleElement.textContent = `
-      ${vanillaCalendarCSS}
-      .vc {
-        z-index: 9999;
-      }
-      .vc * {
-        font-family: var(--eox-body-font-family);
-      }
-      .vc-day__dots {
-        display: flex;
-        gap: 4px;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 4px;
-        pointer-events: none;
-      }
-      .vc-day__dot {
-        width: 4px;
-        height: 4px;
-        border-radius: 9999px;
-        background: var(--primary);
-        opacity: 0.9;
-      }
-      .vc-date[data-vc-date-selected] .vc-date__btn {
-        background-color: var(--primary) !important;
-      }
-      .vc-date[data-vc-date-selected] .vc-day__dot {
-        background: var(--on-primary) !important;
-      }
-    `;
+  setLoading(value) {
+    this.#loading = value;
+    this.requestUpdate();
+  }
 
-    // Inject into document head
-    document.head.appendChild(styleElement);
+  firstUpdated() {
+    firstUpdatedMethod(this);
+    injectCalendarStyles();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    // Clean up calendar styles if this is the last timeslider component
-    const timesliderElements = document.querySelectorAll("eox-timeslider");
-    if (timesliderElements.length <= 1) {
-      const styleElement = document.querySelector("#vanilla-calendar-styles");
-      if (styleElement) {
-        styleElement.remove();
-      }
-    }
+    cleanCalendarStyles();
   }
 
   filterHandler(e) {
@@ -202,6 +170,70 @@ export default class EOxTimeSlider extends LitElement {
       ...this.#settings,
       [key]: value,
     };
+    this.requestUpdate();
+  }
+
+  async generateExport(config) {
+    this.exportConfig = {
+      ...config,
+      selectedPreview: 0,
+    };
+    setTimeout(() => {
+      snapshotGenerator(this);
+    }, 1000);
+    this.requestUpdate();
+  }
+
+  handleExport() {
+    this.#isExport = true;
+    const detail = exportHandler(this);
+
+    if (detail) {
+      this.dispatchEvent(
+        new CustomEvent("export", {
+          detail: {
+            ...detail,
+            generate: async (config) => await this.generateExport(config),
+          },
+        }),
+      );
+      this.requestUpdate();
+    }
+  }
+
+  handleSelectedPreview(index) {
+    this.#exportConfig.selectedPreview = index;
+    this.requestUpdate();
+  }
+
+  handleExportClose() {
+    this.#isExport = false;
+    this.exportConfig = null;
+    this.requestUpdate();
+  }
+
+  handlePlayPause() {
+    if (!this.#exportConfig.play) {
+      this.#exportConfig.play = true;
+      const playNext = (init) => {
+        if (this.#exportConfig.play) {
+          if (!init) {
+            if (
+              this.#exportConfig.selectedPreview + 1 !==
+              this.#exportConfig.mapLayers?.length
+            )
+              this.handleSelectedPreview(
+                this.#exportConfig.selectedPreview + 1,
+              );
+            else this.handleSelectedPreview(0);
+          }
+          setTimeout(playNext, 1000 / this.#settings.speed);
+        }
+      };
+      playNext(true);
+    } else {
+      this.#exportConfig.play = false;
+    }
     this.requestUpdate();
   }
 
@@ -296,12 +328,97 @@ export default class EOxTimeSlider extends LitElement {
               `,
             )}
           </div>
-          <button class="export-btn border small flex-center">
+          <button @click=${() => this.handleExport()} class="export-btn border small flex-center">
             <i class="icon export-icon"></i><span>Export</span>
           </button>
         </div>
-        <div id="timeslider"></div>
+        <div class="timeslider-wrapper">
+          <div id="timeslider"></div>
+          ${when(
+            this.#loading,
+            () => html`
+              <div class="load-wrapper-container">
+                <div class="load-wrapper">
+                  <div class="shimmer"></div>
+                </div>
+              </div>
+            `,
+          )}
+          </div>
+        </div>
       </div>
+      ${when(
+        this.#isExport,
+        () => html`
+          <div class="timeslider-export">
+            <div
+              @click=${() => this.handleExportClose()}
+              class="timeslider-export-overlay"
+            ></div>
+            <div class="timeslider-export-container">
+              <div class="map-view">
+                <div
+                  @click=${() => this.handlePlayPause()}
+                  class="timeslider-export-play-pause"
+                >
+                  ${this.#exportConfig.play ? "Pause" : "Play"}
+                </div>
+                ${when(
+                  this.#exportConfig && this.#exportConfig.mapLayers?.length,
+                  () => html`
+                    ${map(
+                      this.#exportConfig.mapLayers,
+                      (layer, index) => html`
+                        <eox-map
+                          class="map-view-item ${this.#exportConfig
+                            .selectedPreview === index
+                            ? "selected-map"
+                            : ""}"
+                          data-index="${index}"
+                          .layers=${layer.layers}
+                          .center=${layer.center}
+                          .zoom=${layer.zoom}
+                          prevent-scroll
+                        ></eox-map>
+                      `,
+                    )}
+                  `,
+                )}
+              </div>
+              ${when(
+                this.#exportConfig && this.#exportConfig.mapLayers?.length,
+                () => html`
+                  <div class="export-images">
+                    ${map(this.#exportConfig.mapLayers, (layer, index) =>
+                      layer.img
+                        ? html`<div
+                            @click=${() => this.handleSelectedPreview(index)}
+                            class="${this.#exportConfig.selectedPreview ===
+                            index
+                              ? "selected-preview"
+                              : ""}"
+                          >
+                            <img
+                              src="${layer.img}"
+                              alt="Exported map ${index + 1}"
+                            />
+                          </div>`
+                        : html`<div class="loader-image">
+                            <div class="shimmer-image"></div>
+                          </div>`,
+                    )}
+                  </div>
+                `,
+              )}
+              <div class="timeslider-export-footer flex-center">
+                <button class="export-btn border small flex-center">
+                  <i class="icon export-icon"></i><span>Export</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `,
+      )}
     `;
   }
 }
