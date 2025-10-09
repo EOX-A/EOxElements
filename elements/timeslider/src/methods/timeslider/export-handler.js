@@ -40,7 +40,7 @@ export default function exportHandler(EOxTimeSlider) {
       .getLayers()
       .getArray()
       .find((l) => l.get("id") === group);
-    const source = layer.getSource();
+    const source = layer?.getSource();
     instances = {
       ...instances,
       [group]: { layer, source },
@@ -57,6 +57,11 @@ export default function exportHandler(EOxTimeSlider) {
         range: EOxTimeSlider.selectedRange,
         filters: itemsFilter?.filters || [],
         instances,
+        eoxMapConfig: {
+          layers: EOxTimeSlider.eoxMap.layers,
+          center: EOxTimeSlider.eoxMap.map.getView().getCenter(),
+          zoom: EOxTimeSlider.eoxMap.map.getView().getZoom(),
+        },
       }
     : null;
 }

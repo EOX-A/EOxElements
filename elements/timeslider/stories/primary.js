@@ -270,6 +270,7 @@ export const Primary = {
             LAYERS: "AWS_NO2-VISUALISATION",
             TIME: "2022-12-05",
           },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -430,6 +431,7 @@ export const Primary = {
             LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
+          crossOrigin: "anonymous",
         },
       },
       {

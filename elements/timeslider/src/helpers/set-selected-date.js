@@ -70,7 +70,7 @@ export default function setSelectedDate(
   selectedItems.forEach((item) => {
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
-      const source = layer.getSource();
+      const source = layer?.getSource();
 
       const newSelectionCell = container.querySelector(
         `.vis-item.milestone.vis-point.item-${item.id}`,

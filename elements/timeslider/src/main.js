@@ -38,6 +38,7 @@ export default class EOxTimeSlider extends LitElement {
       layerIdKey: { type: String, attribute: "layer-id-key" },
       filters: { type: Array, attribute: "filter" },
       selectedDate: { type: String, attribute: "selected-date" },
+      animate: { type: Boolean, attribute: "animate" },
       externalMapRendering: {
         type: Boolean,
         attribute: "external-map-rendering",
@@ -84,6 +85,8 @@ export default class EOxTimeSlider extends LitElement {
     this.externalMapRendering = false;
 
     this.selectedRange = [];
+
+    this.animate = false;
   }
 
   getContainer() {
@@ -188,16 +191,39 @@ export default class EOxTimeSlider extends LitElement {
   handleExport() {
     this.#isExport = true;
     const detail = exportHandler(this);
-
     if (detail) {
-      this.dispatchEvent(
-        new CustomEvent("export", {
-          detail: {
-            ...detail,
-            generate: async (config) => await this.generateExport(config),
-          },
-        }),
-      );
+      if (this.externalMapRendering) {
+        this.dispatchEvent(
+          new CustomEvent("export", {
+            detail: {
+              ...detail,
+              generate: async (config) => await this.generateExport(config),
+            },
+          }),
+        );
+      } else {
+        const mapLayers = [];
+        for (const dateKey in detail.selectedRangeItems) {
+          const date = detail.selectedRangeItems[dateKey];
+          const layers = [];
+          for (const itemKey in date) {
+            let layer = detail.eoxMapConfig.layers.find(
+              (item) => item.properties.id === date[itemKey].group,
+            );
+            layer.source.params[date[itemKey].property] = date[itemKey].date;
+            layers.push(layer);
+          }
+          layers.push(detail.eoxMapConfig.layers[0]);
+          mapLayers.push({
+            layers,
+            center: detail.eoxMapConfig.center,
+            zoom: detail.eoxMapConfig.zoom,
+          });
+        }
+        this.generateExport({
+          mapLayers,
+        });
+      }
       this.requestUpdate();
     }
   }
@@ -308,67 +334,82 @@ export default class EOxTimeSlider extends LitElement {
                 style="--inline-container-height: 40px"
               ></eox-itemfilter>`,
           )}
-          <div class="setting-btn-container">
-            <button
-              class="setting-btn border small flex-center"
-              @click=${() => this.handleSettingsToggle()}
-            >
-              <i class="icon setting-icon"></i><span>Settings</span>
-            </button>
-            ${when(
-              this.#isSettingsEnabled,
-              () => html`
-                <div class="setting-menu">
-                  <div class="setting-menu-header">
-                    <i class="icon setting-icon"></i><span>Settings</span>
-                  </div>
-                  <div class="setting-menu-content">
-                    <span>Speed</span>
-                    <div class="setting-menu-content-value">
-                      <span>frame/sec</span>
-                      <input
-                        type="number"
-                        value=${this.#settings.speed}
-                        @change=${(e) =>
-                          this.handleSettingsChange(e.target.value, "speed")}
-                      />
+          ${when(
+            this.animate,
+            () => html`
+              <div class="setting-btn-container">
+                <button
+                  class="setting-btn border small flex-center"
+                  @click=${() => this.handleSettingsToggle()}
+                >
+                  <i class="icon setting-icon"></i><span>Settings</span>
+                </button>
+                ${when(
+                  this.#isSettingsEnabled,
+                  () => html`
+                    <div class="setting-menu">
+                      <div class="setting-menu-header">
+                        <i class="icon setting-icon"></i><span>Settings</span>
+                      </div>
+                      <div class="setting-menu-content">
+                        <span>Speed</span>
+                        <div class="setting-menu-content-value">
+                          <span>frame/sec</span>
+                          <input
+                            type="number"
+                            value=${this.#settings.speed}
+                            @change=${(e) =>
+                              this.handleSettingsChange(
+                                e.target.value,
+                                "speed",
+                              )}
+                          />
+                        </div>
+                      </div>
+                      <div class="setting-menu-content">
+                        <span>Daterange</span>
+                        <div class="setting-menu-content-value">
+                          <input
+                            type="text"
+                            readonly
+                            value=${this.#settings.dateRange.join(" - ")}
+                            @change=${(e) =>
+                              this.handleSettingsChange(
+                                e.target.value,
+                                "dateRange",
+                              )}
+                          />
+                        </div>
+                      </div>
+                      <div class="setting-menu-content">
+                        <span>Format</span>
+                        <div class="setting-menu-content-value">
+                          <select
+                            value=${this.#settings.format}
+                            @change=${(e) =>
+                              this.handleSettingsChange(
+                                e.target.value,
+                                "format",
+                              )}
+                          >
+                            <option value="gif">GIF</option>
+                            <option value="mp4">MP4</option>
+                          </select>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="setting-menu-content">
-                    <span>Daterange</span>
-                    <div class="setting-menu-content-value">
-                      <input
-                        type="text"
-                        readonly
-                        value=${this.#settings.dateRange.join(" - ")}
-                        @change=${(e) =>
-                          this.handleSettingsChange(
-                            e.target.value,
-                            "dateRange",
-                          )}
-                      />
-                    </div>
-                  </div>
-                  <div class="setting-menu-content">
-                    <span>Format</span>
-                    <div class="setting-menu-content-value">
-                      <select
-                        value=${this.#settings.format}
-                        @change=${(e) =>
-                          this.handleSettingsChange(e.target.value, "format")}
-                      >
-                        <option value="gif">GIF</option>
-                        <option value="mp4">MP4</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              `,
-            )}
-          </div>
-          <button @click=${() => this.handleExport()} class="export-btn border small flex-center">
-            <i class="icon export-icon"></i><span>Export</span>
-          </button>
+                  `,
+                )}
+              </div>
+              <button
+                ?disabled=${this.selectedRange.length === 2 ? false : true}
+                @click=${() => this.handleExport()}
+                class="export-btn border small flex-center"
+              >
+                <i class="icon export-icon"></i><span>Export</span>
+              </button>
+            `,
+          )}
         </div>
         <div class="timeslider-wrapper">
           <div id="timeslider"></div>

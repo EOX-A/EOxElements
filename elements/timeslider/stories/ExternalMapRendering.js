@@ -27,6 +27,7 @@ export const ExternalMapRendering = {
       },
     ],
     externalMapRendering: true,
+    animate: true,
   },
   render: (args) => html`
     <eox-map
@@ -41,6 +42,7 @@ export const ExternalMapRendering = {
       .titleKey=${args.titleKey}
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
+      .animate=${args.animate}
       @update=${args.update}
     ></eox-timeslider>
     <script>
