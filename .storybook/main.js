@@ -10,7 +10,11 @@ const csfIndexer = {
 
 const config = {
   stories: () => {
-    let list = ["./About.mdx", "../**/*.stories.@(js|jsx|mjs|ts|tsx)"];
+    let list = [
+      "./About.mdx",
+      "./Usage.mdx",
+      "../**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    ];
     if (process.env.NODE_ENV === "development")
       list.push("../**/*.stories.dev.@(js|jsx|mjs|ts|tsx)");
 
