@@ -128,9 +128,17 @@ export default function initVisTimeline(EOxTimeSlider) {
             dayjs(multiSelectStartDate).toDate(),
             "multi-select-start",
           );
-        } catch (_) {
+        } catch (e) {
           /* exists */
         }
+        try {
+          visTimeline.removeCustomTime("multi-select-end");
+          const timeSliderContainer = EOxTimeSlider.getContainer();
+          const startEle = timeSliderContainer.querySelector(
+            ".vis-custom-time.multi-select-start",
+          );
+          startEle.style.width = `0px`;
+        } catch (e) {}
         visTimeline.setCustomTime(
           dayjs(multiSelectStartDate).toDate(),
           "multi-select-start",

@@ -455,8 +455,10 @@ export default class EOxTimeSlider extends LitElement {
                             : ""}"
                           data-index="${index}"
                           .layers=${layer.layers}
-                          .center=${layer.center}
-                          .zoom=${layer.zoom}
+                          .center=${layer.center ||
+                          this.eoxMap.map.getView().getCenter()}
+                          .zoom=${layer.zoom ||
+                          this.eoxMap.map.getView().getZoom()}
                           prevent-scroll
                         ></eox-map>
                       `,

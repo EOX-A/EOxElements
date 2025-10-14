@@ -57,9 +57,18 @@ export const ExternalMapRendering = {
           collectionData.links.find((l) => l.rel === "items").href,
         );
         const { features } = await itemsResponse.json();
-        // Exclude the first four items (indices 0, 1, 2, 4) from features
-        const excludeIndices = new Set([0, 1, 2, 4]);
-        const items = features.filter((_, i) => !excludeIndices.has(i));
+        const items = [];
+        const itemsByDate = features.reduce((acc, item, index) => {
+          if (index) {
+            const date = item.properties.datetime.split("T")[0];
+            if (!acc[date]) {
+              acc[date] = [];
+              acc[date].push(item);
+              items.push(item);
+            }
+          }
+          return acc;
+        }, {});
         // Layer creation function
         const createXyzLayer = (item) => ({
           type: "Tile",
@@ -112,8 +121,6 @@ export const ExternalMapRendering = {
               layers.push(eoxMap.layers[0]);
               mapLayers.push({
                 layers,
-                center: [center.lon, center.lat],
-                zoom: 9,
               });
             }
             e.detail.generate({

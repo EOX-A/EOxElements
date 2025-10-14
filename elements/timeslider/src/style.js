@@ -128,10 +128,9 @@ i.icon {
   opacity: 0.4 !important;
 }
 .vis-custom-time.multi-select-start {
-  background: var(--primary) !important;
-  opacity: 0.4 !important;
-  border-left: 2px solid var(--primary) !important;
-  border-right: 2px solid var(--primary) !important;
+  background: rgb(var(--eox-theme-light-primary), 0.4) !important;
+  border-left: 3px solid var(--primary) !important;
+  border-right: 3px solid var(--primary) !important;
 }
 .vis-custom-time.multi-select-end {
   display: none;
@@ -157,9 +156,10 @@ i.icon {
   background-color: var(--now) !important;
   width: 2px;
 }
-.vis-custom-time {
+.vis-custom-time.selected {
   background-color: #202427 !important;
   width: 2px;
+  z-index: 9;
 }
 .vis-custom-time-selected {
   background: #111 !important;
@@ -248,11 +248,10 @@ eox-itemfilter {
 }
 .export-images {
   display: flex;
-  flex-wrap: wrap;
+  overflow-x: auto;
   gap: 10px;
   padding: 1rem;
   align-items: center;
-  justify-content: center;
 }
 .export-images img {
   width: 200px;
@@ -272,7 +271,7 @@ eox-itemfilter {
   font-size: 3rem;
   font-weight: 800;
   cursor: pointer;
-  background: #00000017;
+  background: #0000001a;
 }
 .export-images div.selected-preview img {
   border: 3px solid var(--primary);
