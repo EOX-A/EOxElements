@@ -1,0 +1,510 @@
+import { LitElement, html } from "lit";
+import { style } from "./style.js";
+import { styleEOX } from "./style.eox.js";
+import { DataSet } from "vis-timeline/standalone";
+import visTimelineCSS from "vis-timeline/styles/vis-timeline-graph2d.css?inline";
+import dayjs from "dayjs";
+import dayOfYear from "dayjs/plugin/dayOfYear";
+import isoWeek from "dayjs/plugin/isoWeek";
+import minMax from "dayjs/plugin/minMax";
+import { when } from "lit/directives/when.js";
+import { map } from "lit/directives/map.js";
+import {
+  firstUpdatedMethod,
+  filterHandler as handleFilter,
+  dateChangeHandler as handleDateChange,
+  exportHandler,
+} from "./methods/timeslider";
+import {
+  injectCalendarStyles,
+  cleanCalendarStyles,
+  snapshotGenerator,
+} from "./helpers";
+import { createGIF } from "gifshot";
+
+dayjs.extend(dayOfYear);
+dayjs.extend(isoWeek);
+dayjs.extend(minMax);
+
+/**
+ * @element eox-timeslider
+ */
+export default class EOxTimeSlider extends LitElement {
+  static get properties() {
+    return {
+      for: { type: String },
+      unstyled: { type: Boolean },
+      titleKey: { type: String, attribute: "title-key" },
+      layerIdKey: { type: String, attribute: "layer-id-key" },
+      filters: { type: Array, attribute: "filter" },
+      selectedDate: { type: String, attribute: "selected-date" },
+      animate: { type: Boolean, attribute: "animate" },
+      externalMapRendering: {
+        type: Boolean,
+        attribute: "external-map-rendering",
+      },
+    };
+  }
+
+  #visTimeline = null;
+  #eoxMap = null;
+  #groups = new DataSet([]);
+  #items = new DataSet([]);
+  #sliderValues = [];
+  #isSettingsEnabled = false;
+  #settings = {
+    speed: 1,
+    dateRange: [],
+    format: "GIF",
+  };
+  #isExport = false;
+  #loading = false;
+  #exportConfig = null;
+
+  constructor() {
+    super();
+    /** @type {boolean} */
+    this.unstyled = false;
+
+    /**
+     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
+     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
+     *
+     * @type {String|HTMLElement}
+     */
+    this.for = "eox-map";
+
+    this.filters = [];
+
+    this.selectedDate = null;
+
+    this.titleKey = "name";
+
+    this.layerIdKey = "id";
+
+    this.externalMapRendering = false;
+
+    this.selectedRange = [];
+
+    this.animate = false;
+  }
+
+  getContainer() {
+    return this.renderRoot.querySelector("#timeslider");
+  }
+
+  get visTimeline() {
+    return this.#visTimeline;
+  }
+
+  set visTimeline(value) {
+    this.#visTimeline = value;
+  }
+
+  get sliderValues() {
+    return this.#sliderValues;
+  }
+
+  set sliderValues(value) {
+    this.#sliderValues = value;
+  }
+
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  set eoxMap(value) {
+    this.#eoxMap = value;
+  }
+
+  get groups() {
+    return this.#groups;
+  }
+
+  set groups(value) {
+    this.#groups = value;
+  }
+
+  get items() {
+    return this.#items;
+  }
+
+  set items(value) {
+    this.#items = value;
+  }
+
+  get exportConfig() {
+    return this.#exportConfig;
+  }
+
+  set exportConfig(value) {
+    this.#exportConfig = value;
+  }
+
+  setLoading(value) {
+    this.#loading = value;
+    this.requestUpdate();
+  }
+
+  firstUpdated() {
+    firstUpdatedMethod(this);
+    injectCalendarStyles();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    cleanCalendarStyles();
+  }
+
+  filterHandler(e) {
+    handleFilter(e, this);
+  }
+
+  dateChangeHandler(e) {
+    handleDateChange(e.target.value, this);
+  }
+
+  handleSettingsToggle() {
+    this.#isSettingsEnabled = !this.#isSettingsEnabled;
+    this.requestUpdate();
+  }
+
+  handleSettingsChange(value, key) {
+    this.#settings = {
+      ...this.#settings,
+      [key]: value,
+    };
+    this.requestUpdate();
+  }
+
+  async generateExport(config) {
+    this.exportConfig = {
+      ...config,
+      selectedPreview: 0,
+    };
+    setTimeout(() => {
+      snapshotGenerator(this);
+    }, 1000);
+    this.requestUpdate();
+  }
+
+  handleExport() {
+    this.#isExport = true;
+    const detail = exportHandler(this);
+    if (detail) {
+      if (this.externalMapRendering) {
+        this.dispatchEvent(
+          new CustomEvent("export", {
+            detail: {
+              ...detail,
+              generate: async (config) => await this.generateExport(config),
+            },
+          }),
+        );
+      } else {
+        const mapLayers = [];
+        for (const dateKey in detail.selectedRangeItems) {
+          const date = detail.selectedRangeItems[dateKey];
+          const layers = [];
+          for (const itemKey in date) {
+            let layer = detail.eoxMapConfig.layers.find(
+              (item) => item.properties.id === date[itemKey].group,
+            );
+            layer.source.params[date[itemKey].property] = date[itemKey].date;
+            layers.push(layer);
+          }
+          layers.push(detail.eoxMapConfig.layers[0]);
+          mapLayers.push({
+            layers,
+            center: detail.eoxMapConfig.center,
+            zoom: detail.eoxMapConfig.zoom,
+          });
+        }
+        this.generateExport({
+          mapLayers,
+        });
+      }
+      this.requestUpdate();
+    }
+  }
+
+  handleSelectedPreview(index) {
+    this.#exportConfig.selectedPreview = index;
+    this.requestUpdate();
+  }
+
+  handleExportClose() {
+    this.#isExport = false;
+    this.exportConfig = null;
+    this.requestUpdate();
+  }
+
+  handlePlayPause() {
+    if (!this.#exportConfig.play) {
+      this.#exportConfig.play = true;
+      const playNext = (init) => {
+        if (this.#exportConfig.play) {
+          if (!init) {
+            if (
+              this.#exportConfig.selectedPreview + 1 !==
+              this.#exportConfig.mapLayers?.length
+            )
+              this.handleSelectedPreview(
+                this.#exportConfig.selectedPreview + 1,
+              );
+            else this.handleSelectedPreview(0);
+          }
+          setTimeout(playNext, 1000 / this.#settings.speed);
+        }
+      };
+      playNext(true);
+    } else {
+      this.#exportConfig.play = false;
+    }
+    this.requestUpdate();
+  }
+
+  handleExportGIF() {
+    const images = this.#exportConfig.mapLayers.map((layer) => layer.img);
+    const map = this.renderRoot.querySelector(".map-view-item");
+    const mapBounding = map.getBoundingClientRect();
+    const mapWidth = mapBounding.width;
+    const mapHeight = mapBounding.height;
+    createGIF(
+      {
+        gifWidth: mapWidth,
+        gifHeight: mapHeight,
+        images: [...images],
+        interval: 1,
+        numFrames: 100,
+        frameDuration: 1,
+        fontWeight: "normal",
+        fontSize: "16px",
+        fontFamily: "sans-serif",
+        fontColor: "#ffffff",
+        textAlign: "center",
+        textBaseline: "bottom",
+        sampleInterval: 10,
+        numWorkers: 2,
+      },
+      function (obj) {
+        if (!obj.error) {
+          // Download the generated GIF image
+          const link = document.createElement("a");
+          link.href = obj.image;
+          link.download = "timeslider.gif";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      },
+    );
+  }
+
+  render() {
+    return html`
+      <style>
+        ${visTimelineCSS}
+        ${!this.unstyled && styleEOX}
+        ${style}
+      </style>
+      <div class="timeslider-container">
+        <div class="timeslider-header flex-center">
+          <i class="icon calendar-icon"></i>
+          <div class="timeslider-calendar field border small">
+            <input
+              type="text"
+              id="cal"
+              class="timeslider-calendar-input"
+              readonly
+              value=${this.selectedDate?.format("MMM DD, 'YY") || ""}
+            />
+          </div>
+          ${when(
+            this.filters.length && this.#visTimeline,
+            () =>
+              html`<eox-itemfilter
+                id="timeslider-filter"
+                .items=${this.#items}
+                .inlineMode=${true}
+                .titleProperty=${"id"}
+                .showResults=${false}
+                @filter=${this.filterHandler}
+                .filterProperties=${this.filters}
+                style="--inline-container-height: 40px"
+              ></eox-itemfilter>`,
+          )}
+          ${when(
+            this.animate,
+            () => html`
+              <div class="setting-btn-container">
+                <button
+                  class="setting-btn border small flex-center"
+                  @click=${() => this.handleSettingsToggle()}
+                >
+                  <i class="icon setting-icon"></i><span>Settings</span>
+                </button>
+                ${when(
+                  this.#isSettingsEnabled,
+                  () => html`
+                    <div class="setting-menu">
+                      <div class="setting-menu-header">
+                        <i class="icon setting-icon"></i><span>Settings</span>
+                      </div>
+                      <div class="setting-menu-content">
+                        <span>Speed</span>
+                        <div class="setting-menu-content-value">
+                          <span>frame/sec</span>
+                          <input
+                            type="number"
+                            value=${this.#settings.speed}
+                            @change=${(e) =>
+                              this.handleSettingsChange(
+                                e.target.value,
+                                "speed",
+                              )}
+                          />
+                        </div>
+                      </div>
+                      <div class="setting-menu-content">
+                        <span>Daterange</span>
+                        <div class="setting-menu-content-value">
+                          <input
+                            type="text"
+                            readonly
+                            value=${this.#settings.dateRange.join(" - ")}
+                            @change=${(e) =>
+                              this.handleSettingsChange(
+                                e.target.value,
+                                "dateRange",
+                              )}
+                          />
+                        </div>
+                      </div>
+                      <div class="setting-menu-content">
+                        <span>Format</span>
+                        <div class="setting-menu-content-value">
+                          <select
+                            value=${this.#settings.format}
+                            @change=${(e) =>
+                              this.handleSettingsChange(
+                                e.target.value,
+                                "format",
+                              )}
+                          >
+                            <option value="gif">GIF</option>
+                            <option value="mp4">MP4</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  `,
+                )}
+              </div>
+              <button
+                ?disabled=${this.selectedRange.length === 2 ? false : true}
+                @click=${() => this.handleExport()}
+                class="export-btn border small flex-center"
+              >
+                <i class="icon export-icon"></i><span>Export</span>
+              </button>
+            `,
+          )}
+        </div>
+        <div class="timeslider-wrapper">
+          <div id="timeslider"></div>
+          ${when(
+            this.#loading,
+            () => html`
+              <div class="load-wrapper-container">
+                <div class="load-wrapper">
+                  <div class="shimmer"></div>
+                </div>
+              </div>
+            `,
+          )}
+          </div>
+        </div>
+      </div>
+      ${when(
+        this.#isExport,
+        () => html`
+          <div class="timeslider-export">
+            <div
+              @click=${() => this.handleExportClose()}
+              class="timeslider-export-overlay"
+            ></div>
+            <div class="timeslider-export-container">
+              <div class="map-view">
+                <div
+                  @click=${() => this.handlePlayPause()}
+                  class="timeslider-export-play-pause"
+                >
+                  ${this.#exportConfig.play ? "Pause" : "Play"}
+                </div>
+                ${when(
+                  this.#exportConfig && this.#exportConfig.mapLayers?.length,
+                  () => html`
+                    ${map(
+                      this.#exportConfig.mapLayers,
+                      (layer, index) => html`
+                        <eox-map
+                          class="map-view-item ${this.#exportConfig
+                            .selectedPreview === index
+                            ? "selected-map"
+                            : ""}"
+                          data-index="${index}"
+                          .layers=${layer.layers}
+                          .center=${layer.center ||
+                          this.eoxMap.map.getView().getCenter()}
+                          .zoom=${layer.zoom ||
+                          this.eoxMap.map.getView().getZoom()}
+                          prevent-scroll
+                        ></eox-map>
+                      `,
+                    )}
+                  `,
+                )}
+              </div>
+              ${when(
+                this.#exportConfig && this.#exportConfig.mapLayers?.length,
+                () => html`
+                  <div class="export-images">
+                    ${map(this.#exportConfig.mapLayers, (layer, index) =>
+                      layer.img
+                        ? html`<div
+                            @click=${() => this.handleSelectedPreview(index)}
+                            class="${this.#exportConfig.selectedPreview ===
+                            index
+                              ? "selected-preview"
+                              : ""}"
+                          >
+                            <img
+                              src="${layer.img}"
+                              alt="Exported map ${index + 1}"
+                            />
+                          </div>`
+                        : html`<div class="loader-image">
+                            <div class="shimmer-image"></div>
+                          </div>`,
+                    )}
+                  </div>
+                `,
+              )}
+              <div class="timeslider-export-footer flex-center">
+                <button
+                  @click=${() => this.handleExportGIF()}
+                  class="export-btn border small flex-center"
+                >
+                  <i class="icon export-icon"></i><span>Export</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `,
+      )}
+    `;
+  }
+}
+
+customElements.define("eox-timeslider", EOxTimeSlider);
