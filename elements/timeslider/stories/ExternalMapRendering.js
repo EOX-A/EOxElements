@@ -121,6 +121,8 @@ export const ExternalMapRendering = {
               layers.push(eoxMap.layers[0]);
               mapLayers.push({
                 layers,
+                center: [center.lon, center.lat],
+                zoom: 9,
               });
             }
             e.detail.generate({

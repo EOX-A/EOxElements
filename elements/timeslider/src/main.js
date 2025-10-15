@@ -225,6 +225,36 @@ export default class EOxTimeSlider extends LitElement {
         });
       }
       this.requestUpdate();
+      // Add ResizeObserver to .map-view-item and sync height to .export-images
+      if (this.#isExport) {
+        // Wait a tick for render
+        setTimeout(() => {
+          const mapViewItem = this.renderRoot.querySelector(".map-view-item");
+          const exportImages = this.renderRoot.querySelector(".export-images");
+          if (mapViewItem && exportImages) {
+            // Clean up any previous observer
+            if (this._exportMapResizeObserver) {
+              this._exportMapResizeObserver.disconnect();
+              this._exportMapResizeObserver = null;
+            }
+            // Observer callback
+            const resizeHandler = (entries) => {
+              for (const entry of entries) {
+                if (entry.target === mapViewItem) {
+                  const height = mapViewItem.offsetHeight;
+                  exportImages.style.height = `${height}px`;
+                }
+              }
+            };
+            // Create and attach observer
+            this._exportMapResizeObserver = new ResizeObserver(resizeHandler);
+            this._exportMapResizeObserver.observe(mapViewItem);
+
+            // Set initial height
+            exportImages.style.height = `${mapViewItem.offsetHeight}px`;
+          }
+        }, 0);
+      }
     }
   }
 
@@ -435,63 +465,113 @@ export default class EOxTimeSlider extends LitElement {
               class="timeslider-export-overlay"
             ></div>
             <div class="timeslider-export-container">
-              <div class="map-view">
-                <div
-                  @click=${() => this.handlePlayPause()}
-                  class="timeslider-export-play-pause"
-                >
-                  ${this.#exportConfig.play ? "Pause" : "Play"}
-                </div>
+              <div class="timeslider-export-content">
                 ${when(
                   this.#exportConfig && this.#exportConfig.mapLayers?.length,
                   () => html`
-                    ${map(
-                      this.#exportConfig.mapLayers,
-                      (layer, index) => html`
-                        <eox-map
-                          class="map-view-item ${this.#exportConfig
-                            .selectedPreview === index
-                            ? "selected-map"
-                            : ""}"
-                          data-index="${index}"
-                          .layers=${layer.layers}
-                          .center=${layer.center ||
-                          this.eoxMap.map.getView().getCenter()}
-                          .zoom=${layer.zoom ||
-                          this.eoxMap.map.getView().getZoom()}
-                          prevent-scroll
-                        ></eox-map>
-                      `,
-                    )}
+                    <div class="export-images">
+                      ${map(this.#exportConfig.mapLayers, (layer, index) =>
+                        layer.img
+                          ? html`<div
+                              @click=${() => this.handleSelectedPreview(index)}
+                              class="${this.#exportConfig.selectedPreview ===
+                              index
+                                ? "selected-preview"
+                                : ""}"
+                            >
+                              <img
+                                src="${layer.img}"
+                                alt="Exported map ${index + 1}"
+                              />
+                            </div>`
+                          : html`<div class="loader-image">
+                              <div class="shimmer-image"></div>
+                            </div>`,
+                      )}
+                    </div>
                   `,
                 )}
-              </div>
-              ${when(
-                this.#exportConfig && this.#exportConfig.mapLayers?.length,
-                () => html`
-                  <div class="export-images">
-                    ${map(this.#exportConfig.mapLayers, (layer, index) =>
-                      layer.img
-                        ? html`<div
-                            @click=${() => this.handleSelectedPreview(index)}
-                            class="${this.#exportConfig.selectedPreview ===
-                            index
-                              ? "selected-preview"
-                              : ""}"
-                          >
-                            <img
-                              src="${layer.img}"
-                              alt="Exported map ${index + 1}"
-                            />
-                          </div>`
-                        : html`<div class="loader-image">
-                            <div class="shimmer-image"></div>
-                          </div>`,
-                    )}
+                <div class="map-view">
+                  <div
+                    @click=${() => this.handlePlayPause()}
+                    class="timeslider-export-play-pause"
+                  >
+                    <span>
+                      <i
+                        class="icon ${this.#exportConfig.play
+                          ? "pause"
+                          : "play"}-icon"
+                      ></i>
+                    </span>
                   </div>
-                `,
-              )}
+                  ${when(
+                    this.#exportConfig && this.#exportConfig.mapLayers?.length,
+                    () => html`
+                      ${map(
+                        this.#exportConfig.mapLayers,
+                        (layer, index) => html`
+                          <eox-map
+                            class="map-view-item ${this.#exportConfig
+                              .selectedPreview === index
+                              ? "selected-map"
+                              : ""}"
+                            data-index="${index}"
+                            .layers=${layer.layers}
+                            .center=${layer.center ||
+                            this.eoxMap.map.getView().getCenter()}
+                            .zoom=${layer.zoom ||
+                            this.eoxMap.map.getView().getZoom()}
+                            prevent-scroll
+                          ></eox-map>
+                        `,
+                      )}
+                    `,
+                  )}
+                </div>
+              </div>
               <div class="timeslider-export-footer flex-center">
+                <div class="setting-menu">
+                  <div class="setting-menu-content">
+                    <span>Speed</span>
+                    <div class="setting-menu-content-value">
+                      <span>frame/sec</span>
+                      <input
+                        type="number"
+                        value=${this.#settings.speed}
+                        @change=${(e) =>
+                          this.handleSettingsChange(e.target.value, "speed")}
+                      />
+                    </div>
+                  </div>
+                  <div class="setting-menu-content">
+                    <span>Daterange</span>
+                    <div class="setting-menu-content-value">
+                      <input
+                        type="text"
+                        readonly
+                        value=${this.#settings.dateRange.join(" - ")}
+                        @change=${(e) =>
+                          this.handleSettingsChange(
+                            e.target.value,
+                            "dateRange",
+                          )}
+                      />
+                    </div>
+                  </div>
+                  <div class="setting-menu-content">
+                    <span>Format</span>
+                    <div class="setting-menu-content-value">
+                      <select
+                        value=${this.#settings.format}
+                        @change=${(e) =>
+                          this.handleSettingsChange(e.target.value, "format")}
+                      >
+                        <option value="gif">GIF</option>
+                        <option value="mp4">MP4</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <button
                   @click=${() => this.handleExportGIF()}
                   class="export-btn border small flex-center"

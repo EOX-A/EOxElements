@@ -54,6 +54,12 @@ eox-itemfilter {
   background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjMzMzMgMi4wMDAwOEgxMi42NjY2VjAuNjY2NzQ4SDExLjMzMzNWMi4wMDAwOEg0LjY2NjU5VjAuNjY2NzQ4SDMuMzMzMjVWMi4wMDAwOEgyLjY2NjU5QzEuOTMzMjUgMi4wMDAwOCAxLjMzMzI1IDIuNjAwMDggMS4zMzMyNSAzLjMzMzQxVjE0LjAwMDFDMS4zMzMyNSAxNC43MzM0IDEuOTMzMjUgMTUuMzMzNCAyLjY2NjU5IDE1LjMzMzRIMTMuMzMzM0MxNC4wNjY2IDE1LjMzMzQgMTQuNjY2NiAxNC43MzM0IDE0LjY2NjYgMTQuMDAwMVYzLjMzMzQxQzE0LjY2NjYgMi42MDAwOCAxNC4wNjY2IDIuMDAwMDggMTMuMzMzMyAyLjAwMDA4Wk0xMy4zMzMzIDE0LjAwMDFIMi42NjY1OVY2LjY2Njc1SDEzLjMzMzNWMTQuMDAwMVpNMTMuMzMzMyA1LjMzMzQxSDIuNjY2NTlWMy4zMzM0MUgxMy4zMzMzVjUuMzMzNDFaIiBmaWxsPSJibGFjayIvPgo8L3N2Zz4K);
   padding-right: 10px;
 }
+.play-icon {
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBMaWNlbnNlOiBNSVQuIE1hZGUgYnkgdm13YXJlOiBodHRwczovL2dpdGh1Yi5jb20vdm13YXJlL2NsYXJpdHktYXNzZXRzIC0tPgo8c3ZnIGZpbGw9IiNmZmZmIiB2aWV3Qm94PSIwIDAgMzYgMzYiIHZlcnNpb249IjEuMSIgIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPgogICAgPHRpdGxlPnBsYXktc29saWQ8L3RpdGxlPgogICAgPHBhdGggY2xhc3M9ImNsci1pLXNvbGlkIGNsci1pLXNvbGlkLXBhdGgtMSIgZD0iTTMyLjE2LDE2LjA4LDguOTQsNC40N0EyLjA3LDIuMDcsMCwwLDAsNiw2LjMyVjI5LjUzYTIuMDYsMi4wNiwwLDAsMCwzLDEuODVMMzIuMTYsMTkuNzdhMi4wNywyLjA3LDAsMCwwLDAtMy43WiI+PC9wYXRoPgogICAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiBmaWxsLW9wYWNpdHk9IjAiLz4KPC9zdmc+)
+}
+.pause-icon {
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBMaWNlbnNlOiBQRC4gTWFkZSBieSBNYXJ5IEFrdmVvOiBodHRwczovL21hcnlha3Zlby5jb20vIC0tPgo8c3ZnIGZpbGw9IiNmZmZmZmYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgaWQ9InBhdXNlIiBkYXRhLW5hbWU9IkZsYXQgQ29sb3IiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgY2xhc3M9Imljb24gZmxhdC1jb2xvciI+PHBhdGggaWQ9InByaW1hcnkiIGQ9Ik0xOSw0VjIwYTIsMiwwLDAsMS0yLDJIMTVhMiwyLDAsMCwxLTItMlY0YTIsMiwwLDAsMSwyLTJoMkEyLDIsMCwwLDEsMTksNFpNOSwySDdBMiwyLDAsMCwwLDUsNFYyMGEyLDIsMCwwLDAsMiwySDlhMiwyLDAsMCwwLDItMlY0QTIsMiwwLDAsMCw5LDJaIj48L3BhdGg+PC9zdmc+)
+}
 i.icon {
   background-repeat: no-repeat;
   background-size: contain;
@@ -177,13 +183,10 @@ eox-itemfilter {
   gap: 10px;
 }
 .setting-menu {
-  position: absolute;
-  top: -200px;
-  right: 0;
-  width: 300px;
-  padding: 1rem;
-  background: white;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-grow: 1;
 }
 .setting-btn-container {
   position: relative;
@@ -213,6 +216,7 @@ eox-itemfilter {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 99;
@@ -226,32 +230,58 @@ eox-itemfilter {
 }
 .timeslider-export-container {
   width: 90%;
-  height: 90%;
   background: white;
   margin: 0 auto;
   border-radius: 6px;
+}
+
+@media (min-width: 1300px) and (max-width: 1440px) {
+  .timeslider-export-container {
+    width: 1280px;
+  }
+}
+@media (min-width: 1441px) and (max-width: 1600px) {
+  .timeslider-export-container {
+    width: 1350px;
+  }
+}
+@media (min-width: 1601px) and (max-width: 1900px) {
+  .timeslider-export-container {
+    width: 1500px;
+  }
+}
+@media (min-width: 1901px) {
+  .timeslider-export-container {
+    width: 1650px;
+  }
+}
+.timeslider-export-content {
   padding: 1rem;
+  display: flex;
+  gap: 1rem;
 }
 .map-view {
   position: relative;
   width: 100%;
-  height: calc(100% - 200px);
   border-radius: 6px;
+  flex-grow: 1;
 }
 .map-view-item {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
   border-radius: 0px;
+  aspect-ratio: 16 / 9;
 }
 .export-images {
   display: flex;
-  overflow-x: auto;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
   gap: 10px;
-  padding: 1rem;
   align-items: center;
+  padding: 0px 2rem;
 }
 .export-images img {
   width: 200px;
@@ -266,12 +296,23 @@ eox-itemfilter {
   align-items: center;
   justify-content: center;
   z-index: 2;
-  height: 100%;
   color: white;
   font-size: 3rem;
   font-weight: 800;
+  width: 100%;
   cursor: pointer;
   background: #0000001a;
+  aspect-ratio: 16 / 9;
+}
+.timeslider-export-play-pause span {
+  padding: 1.5rem;
+  background: #02020287;
+  border-radius: 50%;
+  font-size: 0px;
+}
+.timeslider-export-play-pause span  i {
+  width: 2.5rem;
+  height: 2.5rem;  
 }
 .export-images div.selected-preview img {
   border: 3px solid var(--primary);
@@ -301,11 +342,7 @@ eox-itemfilter {
   background: var(--inverse-on-surface);
   display: flex;
   align-items: center;
-  justify-content: end;
-  position: absolute;
   width: 100%;
-  left: 0;
-  bottom: 0;
 }
 .load-wrapper-container {
   position: absolute;
