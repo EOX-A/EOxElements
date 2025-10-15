@@ -1,5 +1,4 @@
 import items from "../test/testItems.json";
-import { expect, userEvent, waitFor } from "@storybook/test";
 import { html } from "lit";
 
 /**
@@ -74,7 +73,7 @@ function PrimaryStory() {
       ],
       items,
     },
-    play: async ({ canvasElement, step }) => {
+    play: async ({ canvasElement, step, expect, userEvent, waitFor }) => {
       // Wait for the item filter component to be rendered and available in the DOM
       await waitFor(() => {
         const itemFilterComponent =
