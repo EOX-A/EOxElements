@@ -1,3 +1,3 @@
 export default {
-  globs: ["**/main.js", "**/main.ts"],
+  globs: ["elements/**/main.js", "elements/**/main.ts"],
 };
