@@ -339,14 +339,6 @@ export default class EOxTimeSlider extends LitElement {
           ${when(
             this.animate,
             () => html`
-              <div class="setting-btn-container">
-                <button
-                  class="setting-btn border small flex-center"
-                  @click=${() => this.handleSettingsToggle()}
-                >
-                  <i class="icon setting-icon"></i><span>Settings</span>
-                </button>
-              </div>
               <button
                 ?disabled=${this.selectedRange.length === 2 ? false : true}
                 @click=${() => this.handleExport()}
