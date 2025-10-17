@@ -19,8 +19,8 @@ import {
   injectCalendarStyles,
   cleanCalendarStyles,
   snapshotGenerator,
+  exportAnimation,
 } from "./helpers";
-import { createGIF } from "gifshot";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -55,7 +55,7 @@ export default class EOxTimeSlider extends LitElement {
   #settings = {
     speed: 1,
     dateRange: [],
-    format: "GIF",
+    format: "gif",
   };
   #isExport = false;
   #loading = false;
@@ -294,40 +294,12 @@ export default class EOxTimeSlider extends LitElement {
     this.requestUpdate();
   }
 
-  handleExportGIF() {
-    const images = this.#exportConfig.mapLayers.map((layer) => layer.img);
-    const map = this.renderRoot.querySelector(".map-view-item");
-    const mapBounding = map.getBoundingClientRect();
-    const mapWidth = mapBounding.width;
-    const mapHeight = mapBounding.height;
-    createGIF(
-      {
-        gifWidth: mapWidth,
-        gifHeight: mapHeight,
-        images: [...images],
-        interval: 1,
-        numFrames: 100,
-        frameDuration: 1,
-        fontWeight: "normal",
-        fontSize: "16px",
-        fontFamily: "sans-serif",
-        fontColor: "#ffffff",
-        textAlign: "center",
-        textBaseline: "bottom",
-        sampleInterval: 10,
-        numWorkers: 2,
-      },
-      function (obj) {
-        if (!obj.error) {
-          // Download the generated GIF image
-          const link = document.createElement("a");
-          link.href = obj.image;
-          link.download = "timeslider.gif";
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
-      },
+  export() {
+    exportAnimation(
+      this.#exportConfig.mapLayers,
+      this.#settings.format,
+      this.#settings.speed,
+      this,
     );
   }
 
@@ -374,62 +346,6 @@ export default class EOxTimeSlider extends LitElement {
                 >
                   <i class="icon setting-icon"></i><span>Settings</span>
                 </button>
-                ${when(
-                  this.#isSettingsEnabled,
-                  () => html`
-                    <div class="setting-menu">
-                      <div class="setting-menu-header">
-                        <i class="icon setting-icon"></i><span>Settings</span>
-                      </div>
-                      <div class="setting-menu-content">
-                        <span>Speed</span>
-                        <div class="setting-menu-content-value">
-                          <span>frame/sec</span>
-                          <input
-                            type="number"
-                            value=${this.#settings.speed}
-                            @change=${(e) =>
-                              this.handleSettingsChange(
-                                e.target.value,
-                                "speed",
-                              )}
-                          />
-                        </div>
-                      </div>
-                      <div class="setting-menu-content">
-                        <span>Daterange</span>
-                        <div class="setting-menu-content-value">
-                          <input
-                            type="text"
-                            readonly
-                            value=${this.#settings.dateRange.join(" - ")}
-                            @change=${(e) =>
-                              this.handleSettingsChange(
-                                e.target.value,
-                                "dateRange",
-                              )}
-                          />
-                        </div>
-                      </div>
-                      <div class="setting-menu-content">
-                        <span>Format</span>
-                        <div class="setting-menu-content-value">
-                          <select
-                            value=${this.#settings.format}
-                            @change=${(e) =>
-                              this.handleSettingsChange(
-                                e.target.value,
-                                "format",
-                              )}
-                          >
-                            <option value="gif">GIF</option>
-                            <option value="mp4">MP4</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  `,
-                )}
               </div>
               <button
                 ?disabled=${this.selectedRange.length === 2 ? false : true}
@@ -483,6 +399,15 @@ export default class EOxTimeSlider extends LitElement {
                                 src="${layer.img}"
                                 alt="Exported map ${index + 1}"
                               />
+                              ${when(
+                                layer.date,
+                                () =>
+                                  html`<span
+                                    >${dayjs(layer.date).format(
+                                      "MMM DD, 'YY",
+                                    )}</span
+                                  >`,
+                              )}
                             </div>`
                           : html`<div class="loader-image">
                               <div class="shimmer-image"></div>
@@ -534,46 +459,58 @@ export default class EOxTimeSlider extends LitElement {
                   <div class="setting-menu-content">
                     <span>Speed</span>
                     <div class="setting-menu-content-value">
-                      <span>frame/sec</span>
-                      <input
-                        type="number"
-                        value=${this.#settings.speed}
-                        @change=${(e) =>
-                          this.handleSettingsChange(e.target.value, "speed")}
-                      />
+                      <span>(frames/sec)</span>
+                      <div class="field border small fill">
+                        <input
+                          value=${this.#settings.speed}
+                          min="1"
+                          max="5"
+                          @change=${(e) =>
+                            this.handleSettingsChange(e.target.value, "speed")}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div class="setting-menu-content">
                     <span>Daterange</span>
                     <div class="setting-menu-content-value">
-                      <input
-                        type="text"
-                        readonly
-                        value=${this.#settings.dateRange.join(" - ")}
-                        @change=${(e) =>
-                          this.handleSettingsChange(
-                            e.target.value,
-                            "dateRange",
-                          )}
-                      />
+                      <div class="field border small fill">
+                        <input
+                          id="setting-date-range"
+                          type="text"
+                          readonly
+                          value=${Array.isArray(this.selectedRange) &&
+                          this.selectedRange.length === 2
+                            ? `${this.selectedRange[0].format("MMM DD, 'YY")} - ${this.selectedRange[1].format("MMM DD, 'YY")}`
+                            : "Select daterange"}
+                          value="Sep 22, 2025 - Oct 16, 2025"
+                          @change=${(e) =>
+                            this.handleSettingsChange(
+                              e.target.value,
+                              "dateRange",
+                            )}
+                        />
+                      </div>
                     </div>
                   </div>
                   <div class="setting-menu-content">
                     <span>Format</span>
                     <div class="setting-menu-content-value">
-                      <select
-                        value=${this.#settings.format}
-                        @change=${(e) =>
-                          this.handleSettingsChange(e.target.value, "format")}
-                      >
-                        <option value="gif">GIF</option>
-                        <option value="mp4">MP4</option>
-                      </select>
+                      <div class="field border fill small">
+                        <select
+                          value=${this.#settings.format}
+                          @change=${(e) =>
+                            this.handleSettingsChange(e.target.value, "format")}
+                        >
+                          <option value="gif">GIF</option>
+                          <option value="mp4">MP4</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
                 <button
-                  @click=${() => this.handleExportGIF()}
+                  @click=${() => this.export()}
                   class="export-btn border small flex-center"
                 >
                   <i class="icon export-icon"></i><span>Export</span>

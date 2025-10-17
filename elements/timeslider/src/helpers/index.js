@@ -11,3 +11,4 @@ export {
   cleanCalendarStyles,
 } from "./inject-calendar-style";
 export { default as snapshotGenerator } from "./snapshot-generator";
+export { default as exportAnimation } from "./export-animation";

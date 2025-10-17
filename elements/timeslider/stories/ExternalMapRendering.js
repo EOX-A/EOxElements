@@ -123,6 +123,7 @@ export const ExternalMapRendering = {
                 layers,
                 center: [center.lon, center.lat],
                 zoom: 9,
+                date: dateKey,
               });
             }
             e.detail.generate({

@@ -193,7 +193,8 @@ eox-itemfilter {
 }
 .setting-menu-content {
   display: flex;
-  padding: 0.5rem 0px;
+  gap: 0.5rem;
+  align-items: center;
 }
 .setting-menu-content-value {
   flex-grow: 1;
@@ -202,9 +203,17 @@ eox-itemfilter {
   display: flex;
   gap: 10px;
 }
+.setting-menu-content-value .field.border {
+  margin: 0;
+  padding: 0;
+}
 .setting-menu-content-value input {
-  width: 30px;
+  width: 50px;
   text-align: center;
+  padding: 0 5px !important;
+}
+.setting-menu-content-value input#setting-date-range {
+  width: 210px;
 }
 .setting-menu-content span {
   font-weight: 300;
@@ -220,6 +229,7 @@ eox-itemfilter {
   align-items: center;
   justify-content: center;
   z-index: 99;
+  border-radius: 6px;
 }
 .timeslider-export-overlay {
   background: #00000091;
@@ -271,7 +281,7 @@ eox-itemfilter {
   top: 0;
   left: 0;
   width: 100%;
-  border-radius: 0px;
+  border-radius: 6px;
   aspect-ratio: 16 / 9;
 }
 .export-images {
@@ -290,6 +300,17 @@ eox-itemfilter {
 }
 .export-images div {
   cursor: pointer;
+}
+.export-images span {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 4px;
+  background: white;
+  font-weight: 500;
+  font-size: 0.8rem;
+  z-index: 9;
+  border-radius: 2px;
 }
 .timeslider-export-play-pause {
   display: flex;

@@ -35,6 +35,9 @@
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6",
+    "@ffmpeg/ffmpeg": "^0.12.15",
+    "@ffmpeg/util": "^0.12.2",
+    "@ffmpeg/core": "^0.12.6",
     "dayjs": "^1.11.9",
     "gifshot": "^0.4.5",
     "lit": "^3.2.0",
