@@ -50,5 +50,14 @@
     "elements/*/src/**/*.ts",
     "elements/*/src/**/*.d.ts"
   ],
-  "exclude": ["node_modules", "elements/*/dist"]
+  "exclude": ["node_modules", "elements/*/dist"],
+  "typedocOptions": {
+    "entryPoints": ["./elements/**/*.ts"],
+    "outputs": [
+      {
+        "name": "json",
+        "path": "./typedoc.json"
+      }
+    ]
+  }
 }
