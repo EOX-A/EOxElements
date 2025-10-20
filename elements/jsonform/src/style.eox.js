@@ -122,6 +122,10 @@ export const styleEOX = `
     margin-top: var(--eox-panel-spacing, 10px);
     font-weight: 400;
   }
+  form[data-theme="html"][data-theme-custom="eox"] .je-infobutton-tooltip {
+    z-index: 1;
+    top: -6px;
+  }
   form[data-theme="html"][data-theme-custom="eox"] p.je-form-input-label:not([data-schematype="boolean"]) {
     display: inline-block;
   }
