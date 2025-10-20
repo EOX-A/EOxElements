@@ -2,6 +2,10 @@
   "name": "@eox/jsonform",
   "version": "1.4.3",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "devDependencies": {
     "@eox/map": "*",
     "vite": "^6.0.3"
