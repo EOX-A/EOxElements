@@ -24,7 +24,7 @@
     "typecheck": "tsc",
     "types:generate:all": "npm run types:generate --ws",
     "storybook": "storybook dev -p 6006",
-    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && build:storybook",
+    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && npm run build:storybook",
     "build:storybook": "storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
