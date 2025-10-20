@@ -34,8 +34,6 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm install
-          npm run generate-typedoc
-          npm run generate-manifest
           npm run build:storybook
 
       - name: Deploy 🚀
