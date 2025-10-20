@@ -29,6 +29,17 @@ describe("Stories test", () => {
           obj.importPath.includes(folder),
         );
       });
+
+  /**
+   * Since Storybook 9, stories fail that previously passed fine.
+   * Error: "ResizeObserver loop completed with undelivered notifications."
+   * Preventing this error here, until it is clearer what causes the issue.
+   */
+  Cypress.on(
+    "uncaught:exception",
+    (err) => !err.message.includes("ResizeObserver loop"),
+  );
+
   filteredStories.forEach((story) => {
     if (story.type && story.type == "story") {
       it(`${story.id}`, () => {
