@@ -52,7 +52,7 @@
     "@storybook/addon-docs": "^9.1.10"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.19.0"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
