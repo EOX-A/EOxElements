@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.2...jsonform-v1.4.3) (2025-10-20)
+
+
+### Bug Fixes
+
+* **style:** Rendering of infoText tooltip ([#1862](https://github.com/EOX-A/EOxElements/issues/1862)) ([464df18](https://github.com/EOX-A/EOxElements/commit/464df181d1fb11bb97415ce993e0abf6c27d8250))
+
 ## [1.4.2](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.1...jsonform-v1.4.2) (2025-09-24)
 
 

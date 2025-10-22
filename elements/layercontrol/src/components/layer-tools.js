@@ -102,6 +102,22 @@ export class EOxLayerControlLayerTools extends LitElement {
     return this.noShadow ? this : super.createRenderRoot();
   }
 
+  /**
+   * Bubbles up the layerConfig:change event with the updated jsonform value and layer reference.
+   * @param {CustomEvent} evt
+   */
+  #handleLayerConfigChange(evt) {
+    this.dispatchEvent(
+      new CustomEvent("layerConfig:change", {
+        bubbles: true,
+        detail: {
+          jsonformValue: evt.detail.jsonformValue,
+          layer: evt.detail.layer,
+        },
+      }),
+    );
+  }
+
   // Initializes '_removeButton' invoking 'removeButton' function with 'this' context.
   _removeButton = (icon) => removeButton(this, icon);
 
@@ -153,6 +169,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               .unstyled=${this.unstyled}
               .customEditorInterfaces=${this.customEditorInterfaces}
               @changed=${() => this.requestUpdate()}
+              @layerConfig:change=${this.#handleLayerConfigChange}
             ></eox-layercontrol-layerconfig>
           `,
         )}

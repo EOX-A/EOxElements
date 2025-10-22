@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.6](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.5...storytelling-v1.9.6) (2025-10-20)
+
+
+### Bug Fixes
+
+* Extend storytelling schema for layer interactions ([#1858](https://github.com/EOX-A/EOxElements/issues/1858)) ([28a7924](https://github.com/EOX-A/EOxElements/commit/28a7924e558d192a0a3581f9d53ab1dc8ca3e920))
+
 ## [1.9.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.4...storytelling-v1.9.5) (2025-09-29)
 
 
