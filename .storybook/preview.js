@@ -59,12 +59,16 @@ const preview = {
           (m) => m.declarations[0].tagName === component,
         ).declarations[0];
         return [
-          ...properties.map((m) => ({
-            category: m.kind === "method" ? "methods" : "properties",
-            ...m,
-          })),
-          ...attributes.map((a) => ({ category: "attributes", ...a })),
-          ...events.map((a) => ({ category: "events", ...a })),
+          ...(properties
+            ? properties.map((m) => ({
+                category: m.kind === "method" ? "methods" : "properties",
+                ...m,
+              }))
+            : []),
+          ...(attributes
+            ? attributes.map((a) => ({ category: "attributes", ...a }))
+            : []),
+          ...(events ? events.map((a) => ({ category: "events", ...a })) : []),
         ].reduce((acc, curr) => {
           const {
             category,
