@@ -1,5 +1,5 @@
 /**
- * @type {import("vega-embed/build/embed").EmbedOptions}
+ * @type {import("vega-embed").EmbedOptions}
  */
 export const DEFAULT_OPT = {
   actions: false,

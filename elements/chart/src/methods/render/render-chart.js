@@ -1,4 +1,4 @@
-import { default as vegaEmbed } from "vega-embed/build";
+import { default as vegaEmbed } from "vega-embed";
 import { deepmerge } from "deepmerge-ts";
 import { DEFAULT_SPEC, DEFAULT_OPT } from "../../enums";
 
@@ -6,7 +6,7 @@ import { DEFAULT_SPEC, DEFAULT_OPT } from "../../enums";
  * Render the Vega-Lite chart using vega-embed with a spec and (optionally) dataValues
  *
  * @param {import("../../main").EOxChart} EOxChart The eox-chart instance
- * @param {import("vega-embed/build/embed").VisualizationSpec} spec
+ * @param {import("vega-embed").VisualizationSpec} spec
  * @param {Object=} dataValues
  *
  */
