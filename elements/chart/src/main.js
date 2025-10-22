@@ -40,7 +40,7 @@ export class EOxChart extends LitElement {
     /**
      * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`
      *
-     * @type {{[dataSourceName: string]: import("vega-lite").InlineData}}
+     * @type {{[dataSourceName: string]: import("vega-lite/build/src/data").InlineData}}
      */
     this.dataValues = undefined;
 
