@@ -26,21 +26,21 @@ export class EOxChart extends LitElement {
     /**
      * [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html)
      *
-     * @type {import("vega-embed").VisualizationSpec}
+     * @type {import("vega-embed/build/embed").VisualizationSpec}
      */
     this.spec = undefined;
 
     /**
      * [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)
      *
-     * @type {import("vega-embed").EmbedOptions}
+     * @type {import("vega-embed/build/embed").EmbedOptions}
      */
     this.opt = undefined;
 
     /**
      * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`
      *
-     * @type {{[dataSourceName: string]: import("vega-lite/build/src/data").InlineData}}
+     * @type {{[dataSourceName: string]: import("vega-lite/build/data").InlineData}}
      */
     this.dataValues = undefined;
 
