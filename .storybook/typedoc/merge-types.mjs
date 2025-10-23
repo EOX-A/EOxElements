@@ -1,5 +1,3 @@
-// typedoc-plugin-merge-packages.mjs
-
 import * as TypeDoc from "typedoc";
 
 /**
@@ -134,10 +132,8 @@ export function load(app) {
     // 2. Post-process new packages: sort children and create groups
     for (const packageReflection of newPackageMap.values()) {
       if (packageReflection.children) {
-        // --- THIS IS THE FIX ---
         // Sort the entire list of children alphabetically by name
         packageReflection.children.sort((a, b) => a.name.localeCompare(b.name));
-        // --- END FIX ---
 
         // Now that the list is sorted, create the groups
         packageReflection.groups = createReflectionGroups(
