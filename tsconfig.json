@@ -52,12 +52,25 @@
   ],
   "exclude": ["node_modules", "elements/*/dist"],
   "typedocOptions": {
-    "entryPoints": ["./elements/**/*.ts"],
+    "entryPoints": ["./elements/*/src/*.ts"],
     "outputs": [
       {
+        "name": "markdown",
+        "path": "./.storybook/public/typedoc_markdown"
+      },
+      {
+        "name": "html",
+        "path": "./.storybook/public/typedoc_html"
+      },
+      {
         "name": "json",
-        "path": "./typedoc.json"
+        "path": "./types.json"
       }
-    ]
+    ],
+    "plugin": [
+      "./.storybook/typedoc/merge-types.mjs",
+      "typedoc-plugin-markdown"
+    ],
+    "customCss": "./.storybook/typedoc/custom.css"
   }
 }

@@ -1,6 +1,6 @@
 import { setCustomElementsManifest } from "@storybook/web-components-vite";
 import customElements from "../custom-elements.json";
-import typedocJson from "../typedoc.json";
+import typedocJson from "../types.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
 
 import "@eox/chart";
