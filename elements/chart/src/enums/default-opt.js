@@ -3,4 +3,5 @@
  */
 export const DEFAULT_OPT = {
   actions: false,
+  renderer: "canvas",
 };
