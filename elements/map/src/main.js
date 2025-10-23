@@ -356,7 +356,6 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current layers of the map
    *
-   * @type {Array<EoxLayer>} Some [Test](test)
    * @returns {Array<EoxLayer>} The current layers applied to the map.
    */
   get layers() {
