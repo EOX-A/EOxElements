@@ -22,7 +22,7 @@ export default function firstUpdatedMethod(zoomExtent, EOxMap) {
   });
 
   // Set the target element for the map rendering
-  EOxMap.map.setTarget(EOxMap.renderRoot.querySelector("div:not(#globe)"));
+  EOxMap.map.setTarget(EOxMap.renderRoot.querySelector("div#map"));
 
   // Fit the map view to the specified extent if provided; otherwise, animate to the default state
   if (zoomExtent) EOxMap.map.getView().fit(zoomExtent, EOxMap.animationOptions);

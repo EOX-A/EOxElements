@@ -1,5 +1,5 @@
 /**
- * Basic Globe rendered using `eox-map` configuration
+ * Basic Globe rendered using `projection: "globe"`
  *
  * @returns {Object} The story configuration with arguments for the component.
  */

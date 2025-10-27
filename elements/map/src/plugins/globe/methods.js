@@ -17,7 +17,7 @@ const tileGrid = createXYZ({
  * @returns A map pool ready to accept jobs
  */
 export const createMapPool = (maxMaps, EOxMap, target) =>
-  Array.from({ length: maxMaps }, (_, i) => {
+  Array.from({ length: maxMaps }, () => {
     EOxMap.addEventListener("mapmounted", () => {
       EOxMap.map.getTargetElement().style.display = "none";
     });
