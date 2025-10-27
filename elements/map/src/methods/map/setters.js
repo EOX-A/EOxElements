@@ -334,6 +334,10 @@ export function setConfigMethod(config, EOxMap) {
  * @returns {ProjectionLike} - The new projection code.
  */
 export function setProjectionMethod(projection, oldProjection, EOxMap) {
+
+  if (projection === "globe") {
+    return projection;
+  }
   let newProj = oldProjection;
 
   const oldView = EOxMap.map.getView();
