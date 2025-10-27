@@ -267,8 +267,6 @@ export const Animations = AnimationsStory;
  */
 export const PreventScroll = PreventScrollStory;
 
-
-
 /** * Basic Globe rendered using `eox-map` configuration
  *
  * @returns {Object} The story configuration with arguments for the component.

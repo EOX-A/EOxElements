@@ -11,10 +11,21 @@ export default function firstUpdatedMethod(zoomExtent, EOxMap) {
   if (EOxMap.projection === "globe") {
     const globeDiv = document.createElement("div");
     globeDiv.id = "globe";
-    // globeDiv.style.width = "100%";
-    // globeDiv.style.height = "100%";
+    globeDiv.style.width = "100%";
+    globeDiv.style.height = "100%";
+    const style = document.createElement("style");
+    // TODO move to plugin 
+    style.textContent = `
+      .og-inner {
+        height: 100%;
+      }
+      .og-inner *:not(canvas) {
+        display: none !important;
+      }
+    `;
+    globeDiv.appendChild(style);
     EOxMap.renderRoot.appendChild(globeDiv);
-    window.eoxMapGlobe.create({target: globeDiv});
+    window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
   }
   // Set the center of the map once the target changes
   EOxMap.map.once("change:target", (e) => {
