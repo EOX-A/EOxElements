@@ -56,8 +56,8 @@ const GlobeStory = {
                 id: "osm-base",
                 type: "raster",
                 source: "osm",
-                minzoom: 0,
-                maxzoom: 19,
+                // minzoom: 0,
+                // maxzoom: 19,
               },
               {
                 id: "point-halo",
