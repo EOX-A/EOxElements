@@ -13,17 +13,6 @@ export default function firstUpdatedMethod(zoomExtent, EOxMap) {
     globeDiv.id = "globe";
     globeDiv.style.width = "100%";
     globeDiv.style.height = "100%";
-    const style = document.createElement("style");
-    // TODO move to plugin 
-    style.textContent = `
-      .og-inner {
-        height: 100%;
-      }
-      .og-inner *:not(canvas) {
-        display: none !important;
-      }
-    `;
-    globeDiv.appendChild(style);
     EOxMap.renderRoot.appendChild(globeDiv);
     window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
   }
