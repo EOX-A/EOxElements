@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6",
+    "@eox/ui": "^0.4.1",
     "@floating-ui/dom": "^1.6.8",
     "@turf/boolean-intersects": "^7.0.0",
     "@turf/boolean-within": "^7.0.0",

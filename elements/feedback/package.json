@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6",
+    "@eox/ui": "^0.4.1",
     "region-screenshot-js": "^1.1.0"
   },
   "files": [
