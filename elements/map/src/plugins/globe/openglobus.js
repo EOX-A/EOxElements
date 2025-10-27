@@ -1,9 +1,4 @@
-import {
-  Globe,
-  CanvasTiles,
-  quadTreeStrategyType,
-  // GlobusRgbTerrain
-} from "@openglobus/og";
+import { Globe, CanvasTiles, quadTreeStrategyType } from "@openglobus/og";
 
 export const createGlobe = ({ target, renderTile }) => {
   const canvasTilesLayer = new CanvasTiles("mainThreadCanvasTilesLayer", {
@@ -25,14 +20,11 @@ export const createGlobe = ({ target, renderTile }) => {
     },
   });
   const globus = new Globe({
-    // name: 'Globe',
     target,
     layers: [canvasTilesLayer],
     quadTreeStrategyPrototype: quadTreeStrategyType.epsg4326,
-    // controls: [],
     sun: { active: false },
     atmosphereEnabled: false,
-    // terrain: new GlobusRgbTerrain(),
   });
   const style = document.createElement("style");
   style.textContent = `
