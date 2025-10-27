@@ -119,7 +119,7 @@ const create = ({ EOxMap, target }) => {
       });
     },
   });
-  return new Globe({
+  const globus = new Globe({
     // name: 'Globe',
 
     target,
@@ -130,6 +130,9 @@ const create = ({ EOxMap, target }) => {
     atmosphereEnabled: false,
     // terrain: new GlobusRgbTerrain(),
   });
+  globus.planet.renderer.controls.SimpleSkyBackground.colorOne = "rgba(255,255,255)";
+  globus.planet.renderer.controls.SimpleSkyBackground.colorTwo = "rgba(255,255,255)";
+  return globus
 };
 
 window.eoxMapGlobe = {
