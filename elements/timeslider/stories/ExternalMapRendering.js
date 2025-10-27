@@ -6,7 +6,7 @@ import { html } from "lit";
  */
 export const ExternalMapRendering = {
   args: {
-    center: [269335.4, 5288649.6],
+    center: [12.5, 42],
     zoom: 9,
     for: "eox-map",
     layerIdKey: "id",
@@ -47,60 +47,72 @@ export const ExternalMapRendering = {
     ></eox-timeslider>
     <script>
       const init = async () => {
+        const eoxMap = document.querySelector("eox-map");
         // Fetch collection
-        const collectionResponse = await fetch(
-          "https://api.explorer.eopf.copernicus.eu/stac/collections/sentinel-2-l2a",
-        );
-        const collectionData = await collectionResponse.json();
-        // Fetch items (stored as features)
-        const itemsResponse = await fetch(
-          collectionData.links.find((l) => l.rel === "items").href,
-        );
-        const { features } = await itemsResponse.json();
-        const items = [];
+        const url =
+          "https://planetarycomputer.microsoft.com/api/stac/v1/search?collections=sentinel-2-l2a&bbox=" +
+          eoxMap.lonLatExtent +
+          "&limit=200&datetime=2025-01-01T00:00:00Z/2026-01-01T00:00:00Z&sortby=+datetime";
+        const searchResponse = await fetch(url);
+        const { features } = await searchResponse.json();
+        const items = features;
         const itemsByDate = features.reduce((acc, item, index) => {
-          if (index) {
-            const date = item.properties.datetime.split("T")[0];
-            if (!acc[date]) {
-              acc[date] = [];
-              acc[date].push(item);
-              items.push(item);
-            }
+          //if (index) {
+          const date = item.properties.datetime.split("T")[0];
+          if (!acc[date]) {
+            acc[date] = [];
+            acc[date].push(item);
+            items.push(item);
           }
+          //}
           return acc;
         }, {});
         // Layer creation function
-        const createXyzLayer = (item) => ({
-          type: "Tile",
-          source: {
-            type: "ImageTile",
-            url: item?.links.find((l) => l.rel === "xyz").href,
-          },
-          properties: {
-            id: collectionData.title,
-            title: collectionData.title,
-            timeControlValues: items.map((f) => ({
-              date: f.properties.datetime,
-              itemId: f.id,
-              cloudCoverage: f.properties["eo:cloud_cover"],
-            })),
-            timeControlProperty: "dummy",
-          },
-        });
+        const createXyzLayer = (item) => {
+          return {
+            type: "Tile",
+            source: {
+              type: "TileJSON",
+              url: item?.assets.tilejson.href,
+              crossOrigin: "anonymous",
+            },
+            properties: {
+              id: item.id,
+              title: "test",
+            },
+          };
+        };
         // Listen for timeslider updates and update map layers accordingly
         document
           .querySelector("eox-timeslider")
           .addEventListener("update", (e) => {
             const eoxMap = document.querySelector("eox-map");
-            const item = items.find(
-              (item) =>
-                item.id ===
-                e.detail.selectedItems[collectionData.title]?.[0].itemId,
-            );
-            createXyzLayer(item);
-            const center = item.properties["proj:centroid"];
-            eoxMap.layers = [createXyzLayer(item), eoxMap.layers[0]];
-            eoxMap.center = [center.lon, center.lat];
+
+            eoxMap.layers = [
+              {
+                type: "Group",
+                layers: [
+                  ...items
+                    .filter(
+                      (i) =>
+                        i.properties.datetime ===
+                        e.detail.selectedItems["sentinel-2"][0].originalDate,
+                    )
+                    .map((i) => createXyzLayer(i)),
+                ],
+                properties: {
+                  id: "sentinel-2",
+                  title: items[0].properties.datetime,
+                  timeControlValues: items.map((f, index) => ({
+                    date: f.properties.datetime,
+                    itemId: f.id,
+                    cloudCoverage: f.properties["eo:cloud_cover"],
+                  })),
+                  timeControlProperty: "dummy",
+                },
+              },
+              eoxMap.layers[0],
+            ];
           });
         document
           .querySelector("eox-timeslider")
@@ -132,7 +144,20 @@ export const ExternalMapRendering = {
           });
         // Initial rendering
         document.querySelector("eox-map").layers = [
-          createXyzLayer(),
+          {
+            type: "Group",
+            layers: [...items.map((i) => createXyzLayer(i))],
+            properties: {
+              id: "sentinel-2",
+              title: items[0].properties.datetime,
+              timeControlValues: items.map((f, index) => ({
+                date: f.properties.datetime,
+                itemId: f.id,
+                cloudCoverage: f.properties["eo:cloud_cover"],
+              })),
+              timeControlProperty: "dummy",
+            },
+          },
           {
             type: "Tile",
             properties: {

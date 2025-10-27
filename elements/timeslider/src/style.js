@@ -121,8 +121,8 @@ i.icon {
   background: #ffc200 !important;
 }
 .vis-item.milestone.vis-point.vis-not-filtered {
-  background: var(--primary) !important;
-  opacity: 0.4;
+  background: var(--primary-container) !important;
+  /*opacity: 0.4;*/
 }
 .vis-item.milestone.vis-point:hover {
   background: #ffc200 !important;
