@@ -40,7 +40,10 @@ export default function exportHandler(EOxTimeSlider) {
       .getLayers()
       .getArray()
       .find((l) => l.get("id") === group);
-    const source = layer?.getSource();
+
+    // Get the source if it is not a group layer
+    const source = layer?.getLayers ? null : layer.getSource();
+
     instances = {
       ...instances,
       [group]: { layer, source },

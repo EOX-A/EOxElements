@@ -51,7 +51,7 @@ export const ExternalMapRendering = {
       const createLayerGroup = (
         items,
         displayFilter = (i) =>
-          i.properties.datetime === items[items.length - 1].properties.datetime
+          i.properties.datetime === items[items.length - 1].properties.datetime,
       ) => ({
         type: "Group",
         layers: [
@@ -94,41 +94,46 @@ export const ExternalMapRendering = {
       };
 
       // Listen for timeslider updates and update map layers accordingly
-      document.querySelector("eox-timeslider").addEventListener("update", (e) => {
-        if (!items.length) return;
-        eoxMap.layers = [
-          createLayerGroup(
-            items,
-            (i) =>
-              i.properties.datetime ===
-              e.detail.selectedItems["sentinel-2"]?.[0].originalDate
-          ),
-          eoxMap.layers[0],
-        ];
-      });
-      document.querySelector("eox-timeslider").addEventListener("export", (e) => {
-        const mapLayers = [];
-        for (const dateKey in e.detail.selectedRangeItems) {
-          const date = e.detail.selectedRangeItems[dateKey];
-          const layers = [];
-          let center = null;
-          for (const itemKey in date) {
-            const item = items.find((item) => item.id === date[itemKey].itemId);
-            center = item.properties["proj:centroid"];
-            layers.push(createXyzLayer(item));
-          }
-          layers.push(eoxMap.layers[0]);
-          mapLayers.push({
-            layers,
-            center: [center.lon, center.lat],
-            zoom: 9,
-            date: dateKey,
-          });
-        }
-        e.detail.generate({
-          mapLayers,
+      document
+        .querySelector("eox-timeslider")
+        .addEventListener("update", (e) => {
+          if (!items.length) return;
+          eoxMap.layers = [
+            createLayerGroup(
+              items,
+              (i) =>
+                i.properties.datetime ===
+                e.detail.selectedItems["sentinel-2"]?.[0].originalDate,
+            ),
+            eoxMap.layers[0],
+          ];
         });
-      });
+      document
+        .querySelector("eox-timeslider")
+        .addEventListener("export", (e) => {
+          const mapLayers = [];
+          for (const dateKey in e.detail.selectedRangeItems) {
+            const date = e.detail.selectedRangeItems[dateKey];
+            if (date && date.length) {
+              const layers = [];
+              let center = null;
+              layers.push(
+                createLayerGroup(
+                  items,
+                  (i) => i.properties.datetime === date[0].originalDate,
+                ),
+              );
+              layers.push(eoxMap.layers[0]);
+              mapLayers.push({
+                layers,
+                date: dateKey,
+              });
+            }
+          }
+          e.detail.generate({
+            mapLayers,
+          });
+        });
 
       // Initial rendering
       document.querySelector("eox-map").layers = [
