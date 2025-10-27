@@ -1,7 +1,11 @@
 {
   "name": "@eox/storytelling",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
     "vite": "^6.0.3"

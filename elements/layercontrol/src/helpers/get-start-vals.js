@@ -10,9 +10,8 @@ export function getNestedStartVals(schema, nestedValues) {
 
   for (const key in schema) {
     const type = schema[key].type;
-
     // Extract startVal based on type
-    if (type && type !== "object") {
+    if (type && type !== "object" && nestedValues[key] !== undefined) {
       startVals[key] =
         type === "number" ? Number(nestedValues[key]) : nestedValues[key];
     } else if (typeof schema[key] === "object" && schema[key]?.properties) {
@@ -56,9 +55,17 @@ export function getStartVals(layer, layerConfig) {
     // Extract query parameters from tile URL
     // @ts-expect-error TODO
     const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
+    const removeProperties =
+      layerConfig.schema?.options?.removeProperties ?? [];
+    // Remove unwanted properties from query parameters
+    removeProperties.forEach((prop) => url.searchParams.delete(prop));
 
     // Retrieve startVals based on schema and query parameters
-    nestedValues = Object.fromEntries(url.searchParams.entries());
+    nestedValues = {};
+    for (const [key, value] of url.searchParams.entries()) {
+      const allValues = url.searchParams.getAll(key);
+      nestedValues[key] = allValues.length > 1 ? allValues : value;
+    }
   } else return null;
 
   const startVals = getNestedStartVals(

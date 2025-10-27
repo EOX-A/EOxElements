@@ -27,6 +27,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
     unstyled: { type: Boolean },
     noShadow: { type: Boolean },
     layerConfig: { attribute: false },
+    customEditorInterfaces: { attribute: false, type: Array },
   };
 
   /**
@@ -92,6 +93,15 @@ export class EOxLayerControlLayerConfig extends LitElement {
      * Throttle #handleDataChange() by 1000 milliseconds
      */
     this.throttleDataChange = _throttle(this.#handleDataChange, 1000);
+
+    /**
+     * List of custom editor interfaces for layer config eox-jsonform
+     * Read more about the implementation of custom editor interfaces here:
+     * https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
+     *
+     * @type {Array}
+     */
+    this.customEditorInterfaces = [];
   }
 
   /** Decide what type of throttling to do based on layerConfig type
@@ -201,6 +211,7 @@ export class EOxLayerControlLayerConfig extends LitElement {
             .value=${this.#startVals}
             .options=${options}
             .noShadow=${true}
+            .customEditorInterfaces=${this.customEditorInterfaces}
             @change=${this.throttleDataChange}
           ></eox-jsonform>
         `,

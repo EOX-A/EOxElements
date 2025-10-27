@@ -1,5 +1,43 @@
 # Changelog
 
+## [1.3.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.3.0...layercontrol-v1.3.1) (2025-10-22)
+
+
+### Bug Fixes
+
+* Bubble up `layerConfig:change` event ([#1877](https://github.com/EOX-A/EOxElements/issues/1877)) ([a095afb](https://github.com/EOX-A/EOxElements/commit/a095afbba4113bd1ed57dc234af4e59d8e76c8c7))
+
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.2.1...layercontrol-v1.3.0) (2025-10-08)
+
+
+### Features
+
+* Introduce `options.removeProperties` to tileURL layerConfig ([#1852](https://github.com/EOX-A/EOxElements/issues/1852)) ([e6b24c5](https://github.com/EOX-A/EOxElements/commit/e6b24c51610199c27de2e3481ae32df20450448b))
+
+
+### Bug Fixes
+
+* LayerConfig showing the legend when it matches `boundTo` ([#1854](https://github.com/EOX-A/EOxElements/issues/1854)) ([8e7bb7d](https://github.com/EOX-A/EOxElements/commit/8e7bb7d05228cc30fe527d12efd95ccf6f41f22a))
+
+## [1.2.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.2.0...layercontrol-v1.2.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* Missing passing of `customEditorInterfaces` ([#1850](https://github.com/EOX-A/EOxElements/issues/1850)) ([62a38a8](https://github.com/EOX-A/EOxElements/commit/62a38a8a3b155759dafa7b4b1d3b44a312268416))
+
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.3...layercontrol-v1.2.0) (2025-10-03)
+
+
+### Features
+
+* Support custom editor interfaces ([#1849](https://github.com/EOX-A/EOxElements/issues/1849)) ([802597e](https://github.com/EOX-A/EOxElements/commit/802597e80067bcfa19cdbe4cb59f08887774e163))
+
+
+### Bug Fixes
+
+* If startvalue not available an object full of undefineds and NaN values was created that blocked rendering the field in the form ([#1847](https://github.com/EOX-A/EOxElements/issues/1847)) ([13e5635](https://github.com/EOX-A/EOxElements/commit/13e5635560fd8bc38fe4d822bb79331403673fb6))
+
 ## [1.1.3](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.1.2...layercontrol-v1.1.3) (2025-09-17)
 
 

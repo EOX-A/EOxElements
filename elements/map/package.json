@@ -2,6 +2,10 @@
   "name": "@eox/map",
   "version": "1.26.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6",

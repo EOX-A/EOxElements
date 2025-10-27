@@ -75,7 +75,9 @@ export class EOxLayerControlLayerLegend extends LitElement {
    * @see {@link https://clhenrick.github.io/color-legend-element/}
    **/
   set layerLegend(value) {
-    if (Array.isArray(value)) {
+    if (!value) {
+      this.#layerLegend = null;
+    } else if (Array.isArray(value)) {
       this.#layerLegend = value.map((config, idx) => ({
         id: (this.layer?.get("id") ?? "") + idx,
         ...config,

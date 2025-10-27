@@ -87,21 +87,32 @@ addCommonStylesheet();
  * - Reprojection through [proj4](https://github.com/proj4js/proj4js)
  *
  * @element eox-map
+ *
+ * @fires {CustomEvent} clusterSelect - A cluster is selected
+ * @fires {CustomEvent} loadend - The map has finished loading
+ * @fires {CustomEvent} mapmounted - The map has been successfully mounted
+ * @fires {CustomEvent} select - A feature is selected
  */
 export class EOxMap extends LitElement {
   // Define static properties for the component
   static get properties() {
     return {
+      map: { attribute: false, state: true },
+      config: { attribute: false, type: Object },
       center: { attribute: false, type: Array },
       layers: { attribute: false, type: Array },
-      preventScroll: { attribute: "prevent-scroll", type: Boolean },
-      config: { attribute: false, type: Object },
-      sync: { attribute: "sync", type: String },
-      projection: { attribute: "projection", type: String },
-      map: { attribute: false, state: true },
-      intersections: { attribute: false, state: true, type: Object },
-      selectInteractions: { attribute: false, state: true, type: Object },
+      zoom: { attribute: false, type: Number },
+      animationOptions: { attribute: false, type: Object },
+      controls: { attribute: false, type: Object },
+      interactions: { attribute: false, type: Object },
+      lonLatCenter: { attribute: false, type: Array },
+      lonLatExtent: { attribute: false, type: Array },
       mapControls: { attribute: false, state: true, type: Object },
+      preventScroll: { attribute: "prevent-scroll", type: Boolean },
+      projection: { attribute: "projection", type: String },
+      selectInteractions: { attribute: false, state: true, type: Object },
+      sync: { attribute: "sync", type: String },
+      zoomExtent: { attribute: false, type: Array },
     };
   }
 
@@ -238,6 +249,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current center coordinates of the map.
    *
+   * @type {Array<number>}
    * @returns {Array<number>} The current center of the map.
    */
   get center() {
@@ -245,8 +257,28 @@ export class EOxMap extends LitElement {
   }
 
   /**
+   * Sets the configuration for the map.
+   *
+   * @param {ConfigObject} config - The configuration object.
+   */
+  set config(config) {
+    this.#config = setConfigMethod(config, this);
+  }
+
+  /**
+   * Gets the current configuration of the map.
+   *
+   * @type {ConfigObject}
+   * @returns {ConfigObject} The map's configuration object.
+   */
+  get config() {
+    return this.#config;
+  }
+
+  /**
    * Gets the current center of the map in longitude and latitude.
    *
+   * @type {Array<number>}
    * @returns {Array<number>} The geographic center [longitude, latitude].
    */
   get lonLatCenter() {
@@ -256,6 +288,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current extent of the map in longitude and latitude.
    *
+   * @type {Array<number>}
    * @returns {Array<number>} The geographic extent [minLon, minLat, maxLon, maxLat].
    */
   get lonLatExtent() {
@@ -276,6 +309,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current zoom level of the map.
    *
+   * @type {number}
    * @returns {number} The current zoom level.
    */
   get zoom() {
@@ -303,6 +337,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current map controls.
    *
+   * @type {ControlDictionary}
    * @returns {ControlDictionary} The current controls applied to the map.
    */
   get controls() {
@@ -322,8 +357,9 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Gets the current layers of the map.
+   * Gets the current layers of the map
    *
+   * @type {Array<EoxLayer>} Some [Test](test)
    * @returns {Array<EoxLayer>} The current layers applied to the map.
    */
   get layers() {
@@ -342,28 +378,11 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current scroll interaction state.
    *
+   * @type {boolean}
    * @returns {boolean} `true` if scroll interactions are prevented, `false` otherwise.
    */
   get preventScroll() {
     return this.#preventScroll;
-  }
-
-  /**
-   * Sets the configuration for the map.
-   *
-   * @param {ConfigObject} config - The configuration object.
-   */
-  set config(config) {
-    this.#config = setConfigMethod(config, this);
-  }
-
-  /**
-   * Gets the current configuration of the map.
-   *
-   * @returns {ConfigObject} The map's configuration object.
-   */
-  get config() {
-    return this.#config;
   }
 
   /**
@@ -378,6 +397,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current animation options.
    *
+   * @type {EOxAnimationOptions}
    * @returns {EOxAnimationOptions} The current animation options for the map.
    */
   get animationOptions() {
@@ -396,6 +416,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current map projection.
    *
+   * @type {ProjectionLike}
    * @returns {ProjectionLike} The map's projection code.
    */
   get projection() {
@@ -414,6 +435,7 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current sync state of the map.
    *
+   * @type {string}
    * @returns {string} The ID of the map that this map is synced with.
    */
   get sync() {

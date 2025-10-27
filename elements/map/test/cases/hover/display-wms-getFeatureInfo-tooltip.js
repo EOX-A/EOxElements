@@ -6,6 +6,22 @@ import { simulateEvent } from "../../utils/events";
  * Tests to display tooltip on hover
  */
 const displayTooltipOnWMS = () => {
+  cy.intercept(/^.*REQUEST=GetMap.*$/, {
+    fixture: "./map/test/fixtures/tiles/wms/wms0.png",
+  });
+  cy.intercept(/^.*REQUEST=GetFeatureInfo.*$/, {
+    type: "FeatureCollection",
+    features: [
+      {
+        type: "Feature",
+        id: "states.25",
+        properties: {
+          foo: "bar",
+          baz: "boo",
+        },
+      },
+    ],
+  });
   cy.mount(
     html`<eox-map
       .layers=${wmsLayer}
@@ -30,7 +46,7 @@ const displayTooltipOnWMS = () => {
         .shadow()
         .within(() => {
           cy.get("ul").should("exist");
-          cy.get("ul").children().should("have.length", 24);
+          cy.get("ul").children().should("have.length", 4);
         });
     });
 };

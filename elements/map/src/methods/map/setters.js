@@ -151,10 +151,10 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
         // Retrieve the layer to be removed from the map
         const layerToBeRemoved = getLayerById(EOxMap, l.properties?.id);
         const jsonDefinition = layerToBeRemoved.get("_jsonDefinition");
-        const intersections = jsonDefinition.interactions;
+        const interactions = jsonDefinition.interactions;
 
         // Remove any interactions associated with the layer
-        intersections?.forEach(
+        interactions?.forEach(
           /** @param {{type: string, options: { id: string}}} interaction  **/ (
             interaction,
           ) => {

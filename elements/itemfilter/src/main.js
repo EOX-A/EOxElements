@@ -190,22 +190,25 @@ export class EOxItemFilter extends LitElement {
 
     /**
      * The property of the result items used for display
+     * Supports passing a function which recieves the current item as parameter and is expected to return a string
      *
-     * @type String
+     * @type String|Function
      */
     this.titleProperty = "title";
 
     /**
      * The property of the result items used for a subtitle
+     * Supports passing a function which recieves the current item as parameter and is expected to return a string
      *
-     * @type String
+     * @type String|Function
      */
     this.subTitleProperty = undefined;
 
     /**
      * The property of the result items used for an image
+     * Supports passing a function which recieves the current item as parameter and is expected to return a string
      *
-     * @type String
+     * @type String|Function
      */
     this.imageProperty = undefined;
 
@@ -406,6 +409,42 @@ export class EOxItemFilter extends LitElement {
   }
 
   /**
+   * Dispatches an event when result component triggers the "mouseenter:result" event.
+   *
+   * @param {{detail: Object}} evt - "mouseenter:result" event triggered by result component
+   */
+  mouseEnterResult(evt) {
+    /**
+     * Fires when a result is hovered; event detail is `result`
+     */
+    this.dispatchEvent(
+      new CustomEvent("mouseenter:result", {
+        detail: evt.detail,
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  /**
+   * Dispatches an event when result component triggers the "mouseleave:result" event.
+   *
+   * @param {{detail: Object}} evt - "mouseleave:result" event triggered by result component
+   */
+  mouseLeaveResult(evt) {
+    /**
+     * Fires when a result is hovered; event detail is `result`
+     */
+    this.dispatchEvent(
+      new CustomEvent("mouseleave:result", {
+        detail: evt.detail,
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  /**
    * Emits "click:result-action" event.
    *
    * @param {{detail: Object}} evt - "click:result-action" event triggered by result component
@@ -542,6 +581,8 @@ export class EOxItemFilter extends LitElement {
               .enableResultAction=${this.enableResultAction}
               .resultActionIcon=${this.resultActionIcon}
               @result=${this.updateResult}
+              @mouseenter:result=${this.mouseEnterResult}
+              @mouseleave:result=${this.mouseLeaveResult}
               @click:result-action=${this.emitResultAction}
             >
               <nav class="title-nav">

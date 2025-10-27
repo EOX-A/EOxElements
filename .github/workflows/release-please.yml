@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write # Required for OIDC
 
 jobs:
   release-please:
@@ -22,17 +23,20 @@ jobs:
         # a new release is created:
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Set up NPM 🔧
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           registry-url: "https://registry.npmjs.org"
+        if: ${{ fromJSON(steps.release.outputs.releases_created) }}
+      # Ensure npm 11.5.1 or later is installed
+      - name: Update npm
+        run: npm install -g npm@latest
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Install dependencies 🔧
         run: npm ci
         if: ${{ fromJSON(steps.release.outputs.releases_created) }}
       - name: Build and publish package 🚀
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           ELEMENT_PATHS: ${{ steps.release.outputs.paths_released }}
         run: |
           npm run styles && \

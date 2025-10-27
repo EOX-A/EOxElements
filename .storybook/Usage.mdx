@@ -1,0 +1,203 @@
+# Usage of EOxElements
+
+## Introduction
+
+Web components are a set of browser-native technologies that allow you to create reusable, encapsulated HTML tags. Think of them like custom-built LEGO bricks for your website. You define a component once—with its own HTML structure, CSS styles, and JavaScript logic—and then you can use it anywhere on the web, just like a standard `<div>` or `<button>` tag.
+
+Source: [web.dev](https://web.dev/articles/web-components-io-2019)
+
+## Basic usage with Vanilla JavaScript
+
+```html
+<div style="display: flex">
+  <eox-map style="flex-basis: 70%; height: 300px"></eox-map>
+  <eox-layercontrol for="eox-map" style="flex-basis: 30%"></eox-layercontrol>
+</div>
+
+<script type="module">
+  import "@eox/map";
+  import "@eox/layercontrol";
+
+  document.querySelector("eox-map").layers = [
+    {
+      type: "Tile",
+      properties: { id: "NO2", title: "NO2" },
+      source: {
+        type: "TileWMS",
+        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+        params: { LAYERS: "AWS_NO2-VISUALISATION" },
+      },
+    },
+    {
+      type: "Tile",
+      properties: { id: "osm", title: "OSM" },
+      source: { type: "OSM" },
+    },
+  ];
+</script>
+```
+
+## Using Web Components with Frameworks
+
+Frameworks like React and Vue can easily incorporate web components because, from their perspective, a web component is just another HTML element.
+
+### In React
+
+React can render any HTML tag, including custom ones. To use a web component, you simply include it in your JSX. Complex data, like the `layers` array, can be passed directly as props.
+
+```js
+import "@eox/map";
+import "@eox/layercontrol";
+import { createRoot } from "react-dom/client";
+
+const App = () => {
+  const mapLayers = [
+    {
+      type: "Tile",
+      properties: { id: "NO2", title: "NO2" },
+      source: {
+        type: "TileWMS",
+        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+        params: { LAYERS: "AWS_NO2-VISUALISATION" },
+      },
+    },
+    {
+      type: "Tile",
+      properties: { id: "osm", title: "OSM" },
+      source: { type: "OSM" },
+    },
+  ];
+
+  return (
+    <div className="App" style={{ display: "flex" }}>
+      <eox-map
+        style={{ flexBasis: "70%", height: "300px" }}
+        layers={mapLayers}
+      ></eox-map>
+      <eox-layercontrol
+        for="eox-map"
+        style={{ flexBasis: "30%" }}
+      ></eox-layercontrol>
+    </div>
+  );
+};
+
+const root = createRoot(document.querySelector("#root"));
+root.render(<App />);
+```
+
+### In Vue
+
+In Vue, you can use web components directly in your templates. To pass complex data, like the `layers` array, use Vue's `:` binding syntax.
+
+```html
+<script setup>
+  import "@eox/map";
+  import "@eox/layercontrol";
+  import { ref } from "vue";
+
+  const mapLayers = ref([
+    {
+      type: "Tile",
+      properties: { id: "NO2", title: "NO2" },
+      source: {
+        type: "TileWMS",
+        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+        params: { LAYERS: "AWS_NO2-VISUALISATION" },
+      },
+    },
+    {
+      type: "Tile",
+      properties: { id: "osm", title: "OSM" },
+      source: { type: "OSM" },
+    },
+  ]);
+</script>
+
+<template>
+  <div style="display: flex">
+    <eox-map
+      style="flex-basis: 70%; height: 300px"
+      :layers="mapLayers"
+    ></eox-map>
+    <eox-layercontrol for="eox-map" style="flex-basis: 30%"></eox-layercontrol>
+  </div>
+</template>
+```
+
+### In Svelte
+
+Svelte treats custom elements as first-class citizens. You can import and use them just like regular Svelte components, passing props directly.
+
+```html
+<script>
+  import "@eox/map";
+  import "@eox/layercontrol";
+
+  const mapLayers = [
+    {
+      type: "Tile",
+      properties: { id: "NO2", title: "NO2" },
+      source: {
+        type: "TileWMS",
+        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+        params: { LAYERS: "AWS_NO2-VISUALISATION" },
+      },
+    },
+    {
+      type: "Tile",
+      properties: { id: "osm", title: "OSM" },
+      source: { type: "OSM" },
+    },
+  ];
+</script>
+
+<div style="display: flex;">
+  <eox-map
+    style="flex-basis: 70%; height: 300px;"
+    layers="{mapLayers}"
+  ></eox-map>
+  <eox-layercontrol for="eox-map" style="flex-basis: 30%;"></eox-layercontrol>
+</div>
+```
+
+### In Angular
+
+To use web components in Angular, you must add `CUSTOM_ELEMENTS_SCHEMA` to your `app.module.ts`. Afterwards, you can use the custom elements in your component templates and use property binding `[prop]="data"` to pass complex data.
+
+```js
+import { Component } from "@angular/core";
+
+@Component({
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+})
+export class AppComponent {
+  mapLayers = [
+    {
+      type: "Tile",
+      properties: { id: "NO2", title: "NO2" },
+      source: {
+        type: "TileWMS",
+        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+        params: { LAYERS: "AWS_NO2-VISUALISATION" },
+      },
+    },
+    {
+      type: "Tile",
+      properties: { id: "osm", title: "OSM" },
+      source: { type: "OSM" },
+    },
+  ];
+}
+```
+
+```html
+<div style="display: flex;">
+  <eox-map
+    style="flex-basis: 70%; height: 300px;"
+    [layers]="mapLayers"
+  ></eox-map>
+  <eox-layercontrol for="eox-map" style="flex-basis: 30%;"></eox-layercontrol>
+</div>
+```

@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.12.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.11.0...itemfilter-v1.12.0) (2025-10-02)
+
+
+### Features
+
+* Emit mouseenter and mouseleave events on results ([#1846](https://github.com/EOX-A/EOxElements/issues/1846)) ([9c208af](https://github.com/EOX-A/EOxElements/commit/9c208af4be3ad28656ab3b8fdec051b52ab49b00))
+* Support callback functions for title, subTitle and image properties ([#1845](https://github.com/EOX-A/EOxElements/issues/1845)) ([5fd2cc5](https://github.com/EOX-A/EOxElements/commit/5fd2cc5e36c198d4d452bad716dbc1fd92808160))
+* Support external filter result items inside property ([#1842](https://github.com/EOX-A/EOxElements/issues/1842)) ([642db99](https://github.com/EOX-A/EOxElements/commit/642db990547d12da8c1f22cbadbe88fa822a8100))
+* Support nested properties for titleProperty and subTitleProperty ([#1844](https://github.com/EOX-A/EOxElements/issues/1844)) ([1f2345f](https://github.com/EOX-A/EOxElements/commit/1f2345f3e7bec196577ad271f3750b98cff990e1))
+
+
+### Bug Fixes
+
+* **style:** Ajust contrast for selected result ([a9fb86e](https://github.com/EOX-A/EOxElements/commit/a9fb86ee566bb052a299559f05c7193574224f8e))
+* **style:** Alignment of range slider ([df02ec7](https://github.com/EOX-A/EOxElements/commit/df02ec7346543f01a0a8fc96dd8b5e565ebf1d7d))
+* **style:** Use primary as background for selected item in order to increase contrast ([643ac3e](https://github.com/EOX-A/EOxElements/commit/643ac3ebf5d4d65af3ab6f63a8c3b9b0c37dab48))
+
 ## [1.11.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.10.4...itemfilter-v1.11.0) (2025-09-30)
 
 

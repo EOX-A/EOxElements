@@ -95,6 +95,20 @@ export function createItemListMethod(
                 }),
               );
             }}
+            @mouseenter=${() => {
+              EOxItemFilterResults.dispatchEvent(
+                new CustomEvent("mouseenter:result", {
+                  detail: item,
+                }),
+              );
+            }}
+            @mouseleave=${() => {
+              EOxItemFilterResults.dispatchEvent(
+                new CustomEvent("mouseleave:result", {
+                  detail: item,
+                }),
+              );
+            }}
           >
             <nav id="${item.id}" class="responsive tiny-space">
               ${when(
@@ -156,15 +170,16 @@ export function createItemListMethod(
                         ? "highlight-enabled"
                         : ""}"
                       >${unsafeHTML(
-                        item.highlightedText || item[config.titleProperty],
+                        item.highlightedText ||
+                          getValue(config.titleProperty, item).toString(),
                       )}</span
                     >
                     ${when(
-                      !!item[config.subTitleProperty],
+                      !!getValue(config.subTitleProperty, item),
                       () => html`
                         <small class="subtitle no-line truncate"
                           >${unsafeHTML(
-                            item[config.subTitleProperty].toString(),
+                            getValue(config.subTitleProperty, item).toString(),
                           )}</small
                         >
                       `,

@@ -391,7 +391,6 @@ details summary:hover {
   background: var(--item-hover-color);
 }
 eox-itemfilter-results li.highlighted {
-  color: white;
   background: var(--item-select-color);
 }
 mark.highlight {

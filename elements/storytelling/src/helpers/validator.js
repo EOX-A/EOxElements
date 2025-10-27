@@ -14,6 +14,12 @@ const basicHeroSchema = {
   "data-parallax": joi.boolean().required(),
 };
 
+const interactionsSchema = joi.array().items(
+  joi.object({
+    type: joi.string().required(),
+  }),
+);
+
 const basicLayerSchema = joi
   .object({
     type: joi.string().required(),
@@ -38,6 +44,7 @@ const basicLayerSchema = joi
         then: joi.optional(),
         otherwise: joi.required(),
       }),
+    interactions: interactionsSchema,
   })
   .pattern(joi.string(), joi.any());
 
@@ -50,6 +57,7 @@ const groupLayerSchema = joi.object({
     .unknown()
     .required(),
   layers: joi.array().items(basicLayerSchema),
+  interactions: interactionsSchema,
 });
 
 // EOxMap validation schema

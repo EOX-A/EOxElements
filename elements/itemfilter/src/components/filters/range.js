@@ -94,7 +94,9 @@ export class EOxItemFilterRange extends LitElement {
     return when(
       this.filterObject,
       () => html`
-        <div style="margin-left: var(--list-padding)">
+        <div
+          style="margin-left: var(--list-padding); display: flex; gap: .5rem; align-items: center;"
+        >
           ${this.#label("min", "before")}
           <tc-range-slider
             min="${this.filterObject.min}"

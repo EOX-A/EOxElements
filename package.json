@@ -24,7 +24,8 @@
     "typecheck": "tsc",
     "types:generate:all": "npm run types:generate --ws",
     "storybook": "storybook dev -p 6006",
-    "build:storybook": "npm run styles && storybook build -o docs",
+    "build:docs": "npm run styles && npm run generate-manifest && npm run build:storybook",
+    "build:storybook": "storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
     "nyc:report": "nyc report --reporter=text-summary"
@@ -34,15 +35,7 @@
     "@cypress/code-coverage": "^3.12.44",
     "@cypress/mount-utils": "^4.0.0",
     "@eox/eslint-config": "^2.0.0",
-    "@storybook/addon-essentials": "^8.6.7",
-    "@storybook/addon-interactions": "^8.6.7",
-    "@storybook/blocks": "^8.6.7",
-    "@storybook/csf-tools": "^8.6.7",
-    "@storybook/manager-api": "^8.6.7",
-    "@storybook/test": "^8.6.7",
-    "@storybook/theming": "^8.6.7",
-    "@storybook/web-components": "^8.6.7",
-    "@storybook/web-components-vite": "^8.6.7",
+    "@storybook/web-components-vite": "^9.1.10",
     "concurrently": "^9.0.0",
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^15.0.0",
@@ -53,12 +46,14 @@
     "nodemon": "^3.0.3",
     "nyc": "^17.0.0",
     "rimraf": "^6.0.1",
-    "storybook": "^8.6.7",
+    "storybook": "^9.1.10",
     "typescript-json-schema": "^0.65.1",
-    "vite-plugin-istanbul": "^7.0.0"
+    "vite-plugin-istanbul": "^7.0.0",
+    "eslint-plugin-storybook": "9.1.10",
+    "@storybook/addon-docs": "^9.1.10"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.19.0"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
