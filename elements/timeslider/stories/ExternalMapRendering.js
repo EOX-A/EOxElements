@@ -22,7 +22,7 @@ export const ExternalMapRendering = {
         step: 5,
         state: {
           min: 0,
-          max: 100,
+          max: 40,
         },
       },
     ],
@@ -87,7 +87,7 @@ export const ExternalMapRendering = {
         const url =
           "https://planetarycomputer.microsoft.com/api/stac/v1/search?collections=sentinel-2-l2a&bbox=" +
           eoxMap.lonLatExtent +
-          "&limit=200&datetime=2025-01-01T00:00:00Z/2026-01-01T00:00:00Z&sortby=+datetime";
+          "&limit=200&datetime=2025-01-01T00:00:00Z/2026-01-01T00:00:00Z&sortby=-datetime";
         const searchResponse = await fetch(url);
         const { features } = await searchResponse.json();
         return features;
