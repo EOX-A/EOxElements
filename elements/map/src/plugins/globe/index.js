@@ -1,4 +1,5 @@
 import { createGlobe } from "./openglobus.js";
+import { createGlobe as createGlobeCesium } from "./cesium.js";
 import { createMapPool, distributeTileToIdealMap } from "./methods.js";
 
 const create = ({ EOxMap, target }) => {
@@ -17,6 +18,28 @@ const create = ({ EOxMap, target }) => {
    * for each once done
    */
   const globe = createGlobe({
+    target,
+    renderTile: (tile, callback) => {
+      /**
+       * For each tile, distribute to ideal map
+       */
+      const mapPoolCandidate = distributeTileToIdealMap(
+        mapPool,
+        tile,
+        (renderedMapCanvas) => {
+          callback(renderedMapCanvas);
+        },
+      );
+
+      /**
+       * Start loading immediately if the map was idle
+       */
+      if (mapPoolCandidate.tileQueue.length === 1) {
+        mapPoolCandidate.loadNextTile();
+      }
+    },
+  });
+  const globeCesium = createGlobeCesium({
     target,
     renderTile: (tile, callback) => {
       /**
