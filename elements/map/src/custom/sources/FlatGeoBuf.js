@@ -13,18 +13,12 @@ class FlatGeoBuf extends Vector {
    * @param {FlatGeoBufOptions} options
    */
   constructor(options) {
-    const geoJsonFormat = new GeoJSON({
-      featureProjection: READ_FEATURES_OPTIONS.featureProjection,
-      dataProjection: options.projection || READ_FEATURES_OPTIONS.dataProjection,
-    });
     super({
-      url: options.url,
       attributions: options.attributions,
       wrapX: options.wrapX,
-      format: geoJsonFormat,
       strategy: bbox,
     });
-    this.geoJsonFormat = geoJsonFormat;
+    this.dataProjection = options.projection || READ_FEATURES_OPTIONS.dataProjection;
     this.resourceURL = options.url;
     super.setLoader(this.loader);
   }
@@ -40,8 +34,7 @@ class FlatGeoBuf extends Vector {
     const transformedExtent = transformExtent(
       extent,
       projection.getCode(),
-      //@ts-expect-error accessing private property
-      this.geoJsonFormat.dataProjection,
+      this.dataProjection,
     );
     return {
       minX: transformedExtent[0],
@@ -67,8 +60,12 @@ class FlatGeoBuf extends Vector {
          */
         const features = [];
         const iter = deserialize(this.resourceURL, rect);
+        const geoJsonFormat = new GeoJSON({
+            featureProjection: projection,
+            dataProjection: this.dataProjection,
+          });
         for await (const feature of iter) {
-          const olFeature = this.geoJsonFormat.readFeature(feature);
+          const olFeature = geoJsonFormat.readFeature(feature);
           //@ts-expect-error for GeoJSON-Format this should always be a single feature.
           features.push(olFeature);
         }
