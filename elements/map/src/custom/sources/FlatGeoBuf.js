@@ -18,7 +18,8 @@ class FlatGeoBuf extends Vector {
       wrapX: options.wrapX,
       strategy: bbox,
     });
-    this.dataProjection = options.projection || READ_FEATURES_OPTIONS.dataProjection;
+    this.dataProjection =
+      options.projection || READ_FEATURES_OPTIONS.dataProjection;
     this.resourceURL = options.url;
     super.setLoader(this.loader);
   }
@@ -61,9 +62,9 @@ class FlatGeoBuf extends Vector {
         const features = [];
         const iter = deserialize(this.resourceURL, rect);
         const geoJsonFormat = new GeoJSON({
-            featureProjection: projection,
-            dataProjection: this.dataProjection,
-          });
+          featureProjection: projection,
+          dataProjection: this.dataProjection,
+        });
         for await (const feature of iter) {
           const olFeature = geoJsonFormat.readFeature(feature);
           //@ts-expect-error for GeoJSON-Format this should always be a single feature.
