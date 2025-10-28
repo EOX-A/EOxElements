@@ -286,7 +286,7 @@ export class EOxLayerControlAddLayers extends LitElement {
                 <!-- Button to add JSON layer -->
                 <button
                   class="add-layer-icon json-add-layer small square small-margin"
-                  style="position: absolute; bottom: 15px; right: 0;"
+                  style="position: absolute; bottom: 15px; right: 0; z-index: 1;"
                   disabled=${isLayerJSONValid(this.jsonInput) ? nothing : true}
                   @click=${this.#handleAddLayer}
                 >
