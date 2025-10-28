@@ -9,6 +9,7 @@
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6",
+    "@openglobus/og": "^0.27.19",
     "flatgeobuf": "^4.0.1",
     "lit": "^3.2.0",
     "ol": "^10.6.1",

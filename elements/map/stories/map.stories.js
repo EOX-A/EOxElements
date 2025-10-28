@@ -34,6 +34,7 @@ import {
   CustomTooltipStory,
   GetFeatureInfoTooltipStory,
   CoordinatesCustomTooltipsStory,
+  GlobeStory,
 } from "./index.js";
 
 export default {
@@ -46,6 +47,7 @@ export default {
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
+      .projection=${args.projection}
       .zoom=${args.zoom}
     ></eox-map>
   `,
@@ -264,3 +266,8 @@ export const Animations = AnimationsStory;
  * Useful for maps embedded in scrollable websites.
  */
 export const PreventScroll = PreventScrollStory;
+
+/**
+ * Basic Globe rendered using `projection: "globe"`
+ */
+export const Globe = GlobeStory;
