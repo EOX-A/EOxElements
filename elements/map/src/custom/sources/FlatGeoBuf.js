@@ -4,10 +4,6 @@ import Vector from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON";
 import { bbox } from "ol/loadingstrategy";
 
-const geoJsonFormat = new GeoJSON({
-  featureProjection: "EPSG:3857",
-});
-
 /**
  * @typedef {import("../../types").FlatGeoBufOptions} FlatGeoBufOptions
  */
@@ -16,6 +12,10 @@ class FlatGeoBuf extends Vector {
    * @param {FlatGeoBufOptions} options
    */
   constructor(options) {
+    const geoJsonFormat = new GeoJSON({
+      featureProjection: "EPSG:3857",
+      dataProjection: options.projection || "EPSG:4326",
+    });
     super({
       url: options.url,
       attributions: options.attributions,
@@ -23,8 +23,8 @@ class FlatGeoBuf extends Vector {
       format: geoJsonFormat,
       strategy: bbox,
     });
-
-    this.ressourceURL = options.url;
+    this.geoJsonFormat = geoJsonFormat;
+    this.resourceURL = options.url;
     super.setLoader(this.loader);
   }
 
@@ -39,7 +39,8 @@ class FlatGeoBuf extends Vector {
     const transformedExtent = transformExtent(
       extent,
       projection.getCode(),
-      "EPSG:4326",
+      //@ts-expect-error accessing private property
+      this.geoJsonFormat.dataProjection,
     );
     return {
       minX: transformedExtent[0],
@@ -64,9 +65,9 @@ class FlatGeoBuf extends Vector {
          * @type {Array<import("ol/Feature").default>}
          */
         const features = [];
-        const iter = deserialize(this.ressourceURL, rect);
+        const iter = deserialize(this.resourceURL, rect);
         for await (const feature of iter) {
-          const olFeature = geoJsonFormat.readFeature(feature);
+          const olFeature = this.geoJsonFormat.readFeature(feature);
           //@ts-expect-error for GeoJSON-Format this should always be a single feature.
           features.push(olFeature);
         }
