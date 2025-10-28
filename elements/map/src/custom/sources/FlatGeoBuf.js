@@ -3,6 +3,7 @@ import { deserialize } from "flatgeobuf/lib/mjs/geojson";
 import Vector from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON";
 import { bbox } from "ol/loadingstrategy";
+import { READ_FEATURES_OPTIONS } from "../../enums";
 
 /**
  * @typedef {import("../../types").FlatGeoBufOptions} FlatGeoBufOptions
@@ -13,8 +14,8 @@ class FlatGeoBuf extends Vector {
    */
   constructor(options) {
     const geoJsonFormat = new GeoJSON({
-      featureProjection: "EPSG:3857",
-      dataProjection: options.projection || "EPSG:4326",
+      featureProjection: READ_FEATURES_OPTIONS.featureProjection,
+      dataProjection: options.projection || READ_FEATURES_OPTIONS.dataProjection,
     });
     super({
       url: options.url,
