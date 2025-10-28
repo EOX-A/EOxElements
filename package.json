@@ -58,5 +58,6 @@
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.3.6"
-  }
+  },
+  "customElements": "custom-elements.json"
 }
