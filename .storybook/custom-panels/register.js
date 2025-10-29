@@ -3,7 +3,6 @@ import { addons, types } from "storybook/manager-api";
 import { DescriptionPanel } from "./DescriptionPanel.js";
 
 addons.register("eox/storybook-custom-panels", () => {
-  // Register the tool
   addons.add("eox/storybook-custom-panels/description", {
     type: types.PANEL,
     title: "Description",
