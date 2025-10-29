@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6",
+    "@eox/ui": "^0.4.1",
     "flatgeobuf": "^4.0.1",
     "lit": "^3.2.0",
     "ol": "^10.6.1",
@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@types/proj4": "^2.5.4",
-    "vite": "^6.0.3"
+    "vite": "^7.1.12"
   },
   "engines": {
     "npm": ">=8.0.0",

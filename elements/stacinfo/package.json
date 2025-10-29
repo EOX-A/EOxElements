@@ -7,7 +7,7 @@
     "url": "git@github.com:EOX-A/EOxElements.git"
   },
   "devDependencies": {
-    "vite": "^6.0.3"
+    "vite": "^7.1.12"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6",
+    "@eox/ui": "^0.4.1",
     "@radiantearth/stac-fields": "^1.5.4",
     "lit": "^3.2.0"
   }
