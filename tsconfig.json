@@ -55,10 +55,6 @@
     "entryPoints": ["./elements/*/src/*.ts"],
     "outputs": [
       {
-        "name": "markdown",
-        "path": "./.storybook/public/typedoc_markdown"
-      },
-      {
         "name": "html",
         "path": "./.storybook/public/typedoc_html"
       },
@@ -67,10 +63,7 @@
         "path": "./types.json"
       }
     ],
-    "plugin": [
-      "./.storybook/typedoc/merge-types.mjs",
-      "typedoc-plugin-markdown"
-    ],
+    "plugin": ["./.storybook/typedoc/merge-types.mjs"],
     "customCss": "./.storybook/typedoc/custom.css"
   }
 }

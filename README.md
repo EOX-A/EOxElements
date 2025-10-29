@@ -177,6 +177,14 @@ npm start
 
 This opens the storybook server on localhost (port 6006), where multiple element states can be used for development. Edit the corresponding element `*.stories.js` files to create and work on multiple states of an element.
 
+### Types
+
+In order to generate all types output, use:
+
+```
+npm run types:generate:all
+```
+
 ### Test server
 
 You can run individual tests by using the Cypress testing GUI. It offers access to a suite of configurations for each element via component tests, and E2E tests combining multiple elements.

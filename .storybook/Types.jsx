@@ -9,8 +9,11 @@ export const Types = ({ of }) => {
   );
   if (hasTypes) {
     return [
-      <h3 id="types">Types</h3>,
+      <h3 id="types" key="title">
+        Types
+      </h3>,
       <iframe
+        key="types-frame"
         src={`${window.location.origin}${window.location.pathname
           .split("/")
           .splice(0, window.location.pathname.split("/").length - 1)
