@@ -480,7 +480,14 @@ export class EOxItemFilter extends LitElement {
         ${when(
           this.filterProperties,
           () => html`
-            <div style="display: var(--filter-display);">
+            <div
+              style="display: var(--filter-display); min-height: ${this
+                .inlineMode
+                ? "100%"
+                : this.filterProperties.length > 2
+                  ? "50%"
+                  : this.filterProperties.length * 32 + 105 + "px"}"
+            >
               <eox-itemfilter-container
                 .filters=${this.filters}
                 .filterProperties=${this.filterProperties}
@@ -537,7 +544,7 @@ export class EOxItemFilter extends LitElement {
                       </nav>
                     `,
                   )}
-                  <div class="scroll" style="flex: 1;">
+                  <div class="scroll" style="flex: 1; max-height: 100%">
                     <ul id="filters" class="list no-space">
                       ${map(
                         Object.values(this.filters),
