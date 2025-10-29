@@ -1,0 +1,56 @@
+{
+  "name": "@eox/storytelling",
+  "version": "1.9.6",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "vite": "^7.1.12"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
+  "main": "./src/main.js",
+  "types": "./types/storytelling/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/storytelling/src/main.d.ts"
+      ],
+      "src/*": [
+        "./types/storytelling/src/*"
+      ]
+    }
+  },
+  "scripts": {
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "dependencies": {
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.4.1",
+    "@sindresorhus/slugify": "^2.2.1",
+    "glightbox": "^3.3.0",
+    "isomorphic-dompurify": "^2.4.0",
+    "joi": "^17.12.3",
+    "js-yaml": "^4.1.0",
+    "lit": "^3.2.0",
+    "lodash.debounce": "^4.0.8",
+    "markdown-it": "^14.0.0",
+    "markdown-it-footnote": "^4.0.0"
+  },
+  "peerDependencies": {
+    "@eox/jsonform": "*"
+  }
+}

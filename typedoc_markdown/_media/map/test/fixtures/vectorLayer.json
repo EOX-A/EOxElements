@@ -1,0 +1,25 @@
+[
+  {
+    "type": "Vector",
+    "background": "#1366dd",
+    "properties": {
+      "id": "regions"
+    },
+    "visible": true,
+    "source": {
+      "type": "Vector",
+      "url": "https://openlayers.org/data/vector/ecoregions.json",
+      "format": "GeoJSON",
+      "attributions": "Regions: @ openlayers.org"
+    },
+    "style": {
+      "circle-radius": 10,
+      "circle-fill-color": "red",
+      "circle-stroke-color": "black",
+      "circle-stroke-width": 2,
+      "stroke-color": "black",
+      "stroke-width": 5,
+      "fill-color": "red"
+    }
+  }
+]

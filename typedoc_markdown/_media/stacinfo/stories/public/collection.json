@@ -1,0 +1,106 @@
+{
+  "type": "Collection",
+  "id": "ports_cars_aq",
+  "stac_version": "1.0.0",
+  "description": "## Ports and cars - impact on air quality \n\nThis indicator aims at assessing ports pollution levels over the time interval 2019-2020 by correlating:\n- normalized NO2 data from the TROPOMI sensor onboard Sentinel-5P satellite (daily observations)\n- Automatic Identification Systems (AIS) data from all the boats coming to the ports\n- GNSS data (TomTom) quantifying the mean daily number of cars accessing the main street to the ports\n- Anonymised cellular data (Vodafone) providing the total number of people present in the port area (2020 observations)   \n\nThis integrated analysis shows:\n- **high correlation** between NO2 levels and boat traffic\n- **low correlation** between NO2 levels and car traffic\n\nOn the indicator chart, for each day, the light/dark red-colored background indicates whether there were \nCOVID-19 restrictions or lockdown measure in place in the country where the city is located.\n",
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../catalog.json",
+      "type": "application/json",
+      "title": "RACE"
+    },
+    {
+      "rel": "item",
+      "href": "./ports_cars_aq/2020/Gioia Tauro.json",
+      "type": "application/json",
+      "id": "IT16",
+      "latlng": "38.45339,15.9024",
+      "country": "IT",
+      "city": "Gioia Tauro"
+    },
+    {
+      "rel": "item",
+      "href": "./ports_cars_aq/2020/Genoa.json",
+      "type": "application/json",
+      "id": "IT3",
+      "latlng": "44.40572,8.93364",
+      "country": "IT",
+      "city": "Genoa"
+    },
+    {
+      "rel": "parent",
+      "href": "../collection.json",
+      "type": "application/json",
+      "title": "Air quality in ports"
+    }
+  ],
+  "stac_extensions": [
+    "https://stac-extensions.github.io/web-map-links/v1.1.0/schema.json",
+    "https://stac-extensions.github.io/example-links/v0.0.1/schema.json",
+    "https://stac-extensions.github.io/scientific/v1.0.0/schema.json"
+  ],
+  "subtitle": "Port Activities, sources of pollution and NO2 levels",
+  "yAxis": "Normalized NO2 concentration & Mean number of people",
+  "themes": ["economy", "air"],
+  "subcode": "C2",
+  "tags": ["Air quality", "NO2", "Ports", "Multi-sensors"],
+  "agency": ["ESA"],
+  "sensor": ["TROPOMI-Very long sensor name with a lot of width"],
+  "satellite": ["Sentinel-5P", "GNSS"],
+  "insituSources": ["AIS", "Mobile"],
+  "geoDBID": "C2",
+  "endpointtype": "GeoDB",
+  "title": "Car sources",
+  "extent": {
+    "spatial": {
+      "bbox": [[8.92364, 38.44339, 15.9124, 44.41572]]
+    },
+    "temporal": {
+      "interval": [["2020-02-01T00:00:00Z", "2020-05-01T00:00:00Z"]]
+    }
+  },
+  "license": "proprietary",
+  "providers": [
+    {
+      "name": "e-GEOS",
+      "description": "e-GEOS is a leading international player in the Earth Observation (EO) and Geo-Spatial Information business.",
+      "url": "https://www.e-geos.it/#/"
+    },
+    {
+      "name": "ExpertLab",
+      "description": "ExpertLab - Information and Communication Systems",
+      "url": "http://www.expertlab.it/"
+    },
+    {
+      "name": "CherryData",
+      "url": "https://www.cherry-data.com/"
+    }
+  ],
+  "summaries": {
+    "cities": ["Gioia Tauro", "Genoa"],
+    "countries": ["IT"]
+  },
+  "assets": {
+    "reference_1": {
+      "href": "https://www.imo.org/en/OurWork/Safety/Pages/AIS.aspx",
+      "type": "text/html",
+      "title": "AIS data",
+      "description": "Asset description",
+      "roles": ["metadata"]
+    },
+    "reference_2": {
+      "href": "https://www.tomtom.com/products/traffic-and-travel-information/",
+      "type": "text/html",
+      "title": "TomTom data",
+      "roles": ["metadata"]
+    },
+    "reference_3": {
+      "href": "https://covidtracker.bsg.ox.ac.uk/",
+      "type": "text/html",
+      "title": "Oxford University\u2019s coronavirus government response tracker",
+      "roles": ["metadata"]
+    }
+  },
+  "sci:citation": "This is a very long citation citing a lot of long text. The lenght is purely for style-adaptation purposes. EOX et al 2024, powered by stac-fields and other libraries, all subject to different licenses."
+}

@@ -1,0 +1,52 @@
+{
+  "name": "@eox/jsonform",
+  "version": "1.4.3",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "devDependencies": {
+    "@eox/map": "*",
+    "vite": "^7.1.12"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
+  "main": "./src/main.js",
+  "types": "./types/jsonform/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/jsonform/src/main.d.ts"
+      ],
+      "src/*": [
+        "./types/jsonform/src/*"
+      ]
+    }
+  },
+  "scripts": {
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "dependencies": {
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.4.1",
+    "@json-editor/json-editor": "^2.11.0",
+    "@turf/bbox-polygon": "^7.2.0",
+    "ace-builds": "^1.37.5",
+    "easymde": "^2.18.0",
+    "isomorphic-dompurify": "^2.4.0",
+    "lit": "^3.2.0",
+    "lodash.isequal": "^4.5.0",
+    "toolcool-range-slider": "^4.0.28"
+  }
+}

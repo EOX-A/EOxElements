@@ -1,0 +1,48 @@
+{
+  "name": "@eox/geosearch",
+  "version": "1.1.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
+  "main": "./src/main.js",
+  "types": "./types/geosearch/src/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/geosearch/src/main.d.ts"
+      ],
+      "src/*": [
+        "./types/geosearch/src/*"
+      ]
+    }
+  },
+  "scripts": {
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^7.1.12"
+  },
+  "dependencies": {
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.4.1",
+    "lit": "^3.2.0",
+    "lodash.debounce": "^4.0.8",
+    "proj4": "^2.11.0"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "type": "object",
+  "properties": {
+    "features": {
+      "title": "Select multiple features from the map, and refer to the console for the returned values",
+      "type": "array",
+      "options": {
+        "featureProperty": "BIOME_NAME",
+        "drawtools": {
+          "layerId": "regions-grey",
+          "for": "eox-map#first"
+        }
+      },
+      "items": {
+        "type": "string"
+      },
+      "format": "features"
+    },
+    "feature": {
+      "title": "Select a feature from the map",
+      "type": "object",
+      "options": {
+        "drawtools": {
+          "layerId": "regions-blue",
+          "for": "eox-map#second"
+        }
+      },
+      "format": "feature"
+    }
+  }
+}

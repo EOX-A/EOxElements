@@ -1,0 +1,51 @@
+{
+  "name": "@eox/map",
+  "version": "1.26.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "dependencies": {
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^0.4.1",
+    "flatgeobuf": "^4.0.1",
+    "lit": "^3.2.0",
+    "ol": "^10.6.1",
+    "ol-mapbox-style": "^13.0.1",
+    "ol-stac": "^1.0.0-beta.10",
+    "proj4": "^2.9.2"
+  },
+  "devDependencies": {
+    "@types/proj4": "^2.5.4",
+    "vite": "^7.1.12"
+  },
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
+  "main": "./src/main.js",
+  "types": "./types/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
+  "scripts": {
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run schema:generate && npm run types:generate",
+    "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
+    "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch",
+    "schema:generate": "typescript-json-schema ./src/layers.ts EoxLayer  -o ./src/eoxlayer-schema.json  --skipLibCheck --titles --required --excludePrivate --constAsEnum"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "polygons": {
+      "title": "Multi polygon",
+      "type": "array",
+      "format": "polygons"
+    },
+    "polygon": {
+      "title": "Single polygon",
+      "type": "object",
+      "properties": {},
+      "format": "polygon"
+    }
+  }
+}

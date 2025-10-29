@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "vminmax": {
+      "type": "object",
+      "properties": {
+        "vmin": {
+          "type": "number",
+          "minimum": 0,
+          "step": 2,
+          "maximum": 10,
+          "format": "range"
+        },
+        "vmax": {
+          "type": "number",
+          "minimum": 0,
+          "step": 2,
+          "maximum": 10,
+          "format": "range"
+        }
+      },
+      "format": "minmax"
+    },
+    "cbar": {
+      "type": "string",
+      "enum": ["rain", "temperature"]
+    },
+    "foobar": {
+      "type": "string"
+    }
+  }
+}

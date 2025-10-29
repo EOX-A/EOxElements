@@ -1,0 +1,35 @@
+{
+  "name": "@eox/layout",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "devDependencies": {
+    "vite": "^7.1.12"
+  },
+  "files": [
+    "types",
+    "dist",
+    "src"
+  ],
+  "main": "./src/main.js",
+  "types": "./types/main.d.ts",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./types/main.d.ts"
+      ],
+      "src/*": [
+        "./types/*"
+      ]
+    }
+  },
+  "scripts": {
+    "types:generate": "tsc --project tsconfig.build.json || true",
+    "prepack": "npm run types:generate",
+    "build": "vite build",
+    "watch": "vite build --watch"
+  }
+}

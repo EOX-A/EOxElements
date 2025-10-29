@@ -1,0 +1,26 @@
+[
+  {
+    "type": "Tile",
+    "properties": {
+      "id": "customId"
+    },
+    "source": {
+      "type": "TileWMS",
+      "url": "https://ahocevar.com/geoserver/wms",
+      "params": { "LAYERS": "topp:states" },
+      "ratio": 1,
+      "serverType": "geoserver"
+    },
+    "interactions": [
+          {
+            "type": "select",
+            "options": {
+              "id": "selectInteraction",
+              "condition": "click",
+              "coordinates": true,
+              "precision": 3
+            }
+          }
+        ]
+  }
+]
