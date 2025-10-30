@@ -16,10 +16,10 @@ export const render = async (data) => {
   const properties = Object.entries(data.args).filter(
     ([key, value]) => data.argTypes[key].table?.category === "properties",
   );
+  const combinedProps = attributes.concat(properties);
   const events = Object.entries(data.args).filter(
     ([key, value]) => data.argTypes[key].table?.category === "events",
   );
-  const elementName = camelize(element);
   const formatted = await prettier.format(
     `import "@eox/${element.replace("eox-", "")}";
     import React, { useState } from "react";
@@ -27,9 +27,9 @@ export const render = async (data) => {
     export default function MyApp() {
 
       ${
-        properties.length
+        combinedProps.length
           ? `// Set up properties
-      ${properties
+      ${combinedProps
         .map(
           ([key, value]) =>
             `const [${key}, ${camelize(`set-${key}`)}] = useState(${serialize(
@@ -45,7 +45,7 @@ export const render = async (data) => {
       }
 
       return (
-      <${element}${properties.length ? "\n{...{" : ""}${properties
+      <${element}${combinedProps.length ? "\n{...{" : ""}${combinedProps
         .map(([key, value]) => key)
         .join(",")}}}\n${
         events.length > 0
