@@ -56,6 +56,7 @@ eox-itemfilter-container {
   flex-grow: 0;
   flex-shrink: 0;
   overflow: hidden;
+  height: 100%;
 }
 eox-itemfilter-results {
   flex-grow: 1;
@@ -299,20 +300,26 @@ button.icon {
 }
 -container-results::-webkit-scrollbar,
 .inline-container::-webkit-scrollbar,
-.inline-content::-webkit-scrollbar {
+.inline-content::-webkit-scrollbar,
+form#itemfilter > div::-webkit-scrollbar {
   inline-size: 0.4rem;
   block-size: 0.4rem;
 }
 -container-results::-webkit-scrollbar-thumb,
 .inline-container::-webkit-scrollbar-thumb,
-.inline-content::-webkit-scrollbar-thumb {
+.inline-content::-webkit-scrollbar-thumb,
+form#itemfilter > div::-webkit-scrollbar-thumb {
   background: lightgrey;
   border-radius: 1rem;
   cursor: default;
 }
 .inline-container:is(:hover,:focus)::-webkit-scrollbar-thumb,
-.inline-content:is(:hover,:focus)::-webkit-scrollbar-thumb {
+.inline-content:is(:hover,:focus)::-webkit-scrollbar-thumb,
+form#itemfilter > div:is(:hover,:focus)::-webkit-scrollbar-thumb {
   background: var(--outline);
+}
+form#itemfilter > div::-webkit-scrollbar-thumb {
+  background: transparent; 
 }
 .hidden {
   height: 0;
