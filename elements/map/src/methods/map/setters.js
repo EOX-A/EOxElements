@@ -335,7 +335,27 @@ export function setConfigMethod(config, EOxMap) {
  */
 export function setProjectionMethod(projection, oldProjection, EOxMap) {
   if (projection === "globe") {
+    if (EOxMap.shadowRoot) {
+      let globeDiv;
+    if (EOxMap.shadowRoot?.querySelector("#globe")) {
+      globeDiv = EOxMap.renderRoot.querySelector("#globe");
+      globeDiv.style.display = "block";
+    } else {
+      globeDiv = document.createElement("div");
+      globeDiv.id = "globe";
+      globeDiv.style.width = "100%";
+      globeDiv.style.height = "100%";
+      EOxMap.renderRoot?.appendChild(globeDiv);
+      window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
+    }
+    EOxMap.shadowRoot.querySelector("#map").style.display = "none";
+    }
+
     return projection;
+  }
+  if (oldProjection === "globe") {
+    EOxMap.shadowRoot.querySelector("#globe").style.display = "none";
+    EOxMap.shadowRoot.querySelector("#map").style.display = "block";
   }
   let newProj = oldProjection;
 
