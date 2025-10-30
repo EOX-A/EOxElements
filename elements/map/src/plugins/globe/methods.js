@@ -2,7 +2,7 @@ import { createXYZ } from "ol/tilegrid";
 
 const tileGrid = createXYZ({
   extent: [-180, -90, 180, 90],
-  tileSize: 256,
+  tileSize: 300,
   maxResolution: 0.6,
   maxZoom: 22,
 });
