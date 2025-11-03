@@ -7,6 +7,7 @@ export const styleEOX = `
   ${eoxStyle}
   :host {
     --padding: 0.5rem;
+    height: 100%;
   }
   .vega-embed details {
     position: absolute;
