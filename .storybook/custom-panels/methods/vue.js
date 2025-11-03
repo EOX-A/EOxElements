@@ -15,7 +15,6 @@ export const render = async (data) => {
   const properties = Object.entries(data.args).filter(
     ([key, value]) => data.argTypes[key].table?.category === "properties",
   );
-  const combinedProps = attributes.concat(properties);
   const events = Object.entries(data.args).filter(
     ([key, value]) => data.argTypes[key].table?.category === "events",
   );
@@ -23,25 +22,18 @@ export const render = async (data) => {
     `<script setup>
     import "@eox/${element.replace("eox-", "")}";
     import { ref } from 'vue';
-    
-    ${
-      combinedProps.length > 0
-        ? `// Set up properties
-        ${combinedProps
-          .map(
-            ([key, value]) =>
-              `const ${key} = ref(${serialize(value, {
-                unsafe: true,
-              })})`,
-          )
-          .join("\n")}`
-        : ""
-    }
     </script>
 
     <template>
-<${element}${combinedProps.length ? "\n" : ""}${combinedProps
-      .map(([key, value]) => `:${key}`)
+<${element}${attributes.length ? "\n" : ""}${attributes
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n")}${properties.length ? "\n" : ""}${properties
+      .map(
+        ([key, value]) =>
+          `:${key}='${serialize(value, {
+            unsafe: true,
+          })}'`,
+      )
       .join("\n")}\n${
       events.length > 0
         ? events.map(([key, value]) => `@${key}="${value}"`).join("")

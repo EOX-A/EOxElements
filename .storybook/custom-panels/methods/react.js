@@ -16,7 +16,6 @@ export const render = async (data) => {
   const properties = Object.entries(data.args).filter(
     ([key, value]) => data.argTypes[key].table?.category === "properties",
   );
-  const combinedProps = attributes.concat(properties);
   const events = Object.entries(data.args).filter(
     ([key, value]) => data.argTypes[key].table?.category === "events",
   );
@@ -26,28 +25,17 @@ export const render = async (data) => {
     
     export default function MyApp() {
 
-      ${
-        combinedProps.length
-          ? `// Set up properties
-      ${combinedProps
+      return (
+      <${element}${attributes.length ? "\n" : ""}${attributes
+        .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+        .join("\n")}${properties.length ? "\n" : ""}${properties
         .map(
           ([key, value]) =>
-            `const [${key}, ${camelize(`set-${key}`)}] = useState(${serialize(
-              value,
-              {
-                unsafe: true,
-              },
-            )});`,
+            `${key}={${serialize(value, {
+              unsafe: true,
+            })}}`,
         )
-        .join("")}
-        `
-          : ""
-      }
-
-      return (
-      <${element}${combinedProps.length ? "\n{...{" : ""}${combinedProps
-        .map(([key, value]) => key)
-        .join(",")}}}\n${
+        .join("\n")}\n${
         events.length > 0
           ? events.map(([key, value]) => `on${key}={${value}}`).join("")
           : ""
