@@ -326,6 +326,16 @@ export class EOxMap extends LitElement {
   }
 
   /**
+   * Gets the zoom extent of the map.
+   *
+   * @type {import("ol/extent").Extent} extent - The set zoom extent.
+   * @returns {import("ol/extent").Extent} extent - The set zoom extent.
+   */
+  get zoomExtent() {
+    return this.#zoomExtent;
+  }
+
+  /**
    * Sets the controls for the map.
    *
    * @param {ControlDictionary} controls - An array of control configurations.
