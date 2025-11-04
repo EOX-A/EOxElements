@@ -111,6 +111,11 @@ const preview = {
       },
     },
   },
+  globalTypes: {
+    "code-language": {
+      description: "Language for code snippets",
+    },
+  },
 };
 
 export default preview;

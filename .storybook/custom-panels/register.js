@@ -12,7 +12,7 @@ addons.register("eox/storybook-custom-panels", () => {
   });
   addons.add("eox/storybook-custom-panels/code", {
     type: types.PANEL,
-    title: "Code",
+    title: "View Code </>",
     match: ({ tabId, viewMode }) => !tabId && viewMode === "story",
     render: ({ active }) => <CodePanel active={active} />,
   });

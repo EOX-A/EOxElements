@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useStorybookApi } from "storybook/manager-api";
-import { AddonPanel } from "storybook/internal/components";
-import { Markdown } from "@storybook/addon-docs/blocks";
+import React, { useCallback, useEffect, useState } from "react";
+import { useGlobals, useStorybookApi } from "storybook/manager-api";
+import { AddonPanel, Tabs } from "storybook/internal/components";
+import { Source } from "@storybook/addon-docs/blocks";
 import { renderReact, renderSvelte, renderVanilla, renderVue } from "./methods";
 
 export const CodePanel = (props) => {
   const api = useStorybookApi();
+  const [globals, updateGlobals] = useGlobals();
 
   const storyData = api.getCurrentStoryData();
-  if (!storyData?.prepared) {
-    return;
+
+  if (!props.active || !storyData?.prepared) {
+    return <AddonPanel {...props}>Loading...</AddonPanel>;
   }
-  // const [args, updateArgs, resetArgs] = useArgs();
-  // console.log(args)
-  console.log(storyData);
-  // console.log(api)
-  // debugger
 
   const [react, updateReact] = useState();
   const [svelte, updateSvelte] = useState();
@@ -31,18 +28,38 @@ export const CodePanel = (props) => {
     renderCode();
   });
 
+  const selectedCodeLanguage = globals["code-language"];
+
+  const onSelectTab = (id) => {
+    updateGlobals({
+      ["code-language"]: id,
+    });
+  };
+
   return (
     <AddonPanel {...props}>
-      <div style={{ padding: "10px 20px" }}>
-        <h3>Vanilla JS</h3>
-        <Markdown>{vanilla}</Markdown>
-        <h3>React</h3>
-        <Markdown>{react}</Markdown>
-        <h3>Vue</h3>
-        <Markdown>{vue}</Markdown>
-        <h3>Svelte</h3>
-        <Markdown>{svelte}</Markdown>
-      </div>
+      <Tabs actions={{ onSelect: onSelectTab }} selected={selectedCodeLanguage}>
+        <div id="vanilla" title="Vanilla JS">
+          <div style={{ margin: "0 20px" }}>
+            <Source language="html" code={vanilla} />
+          </div>
+        </div>
+        <div id="react" title="React">
+          <div style={{ margin: "0 20px" }}>
+            <Source language="jsx" code={react} />
+          </div>
+        </div>
+        <div id="vue" title="Vue">
+          <div style={{ margin: "0 20px" }}>
+            <Source language="html" code={vue} />
+          </div>
+        </div>
+        <div id="svelte" title="Svelte">
+          <div style={{ margin: "0 20px" }}>
+            <Source language="html" code={svelte} />
+          </div>
+        </div>
+      </Tabs>
     </AddonPanel>
   );
 };

@@ -4,58 +4,122 @@ import * as parserBabel from "prettier/parser-babel";
 import * as parserHtml from "prettier/parser-html";
 import * as parserPostCSS from "prettier/parser-postcss";
 import * as prettier from "prettier/standalone";
-import { camelize } from "../helpers";
+import { camelize, parseElements } from "../helpers";
 
 export const render = async (data) => {
-  const element = data.parent.replace("elements-", "");
-  const attributes = Object.entries(data.args).filter(
-    ([key, value]) =>
-      key === "style" ||
-      (data.argTypes[key].table?.category === "attributes" && !!value),
-  );
-  const properties = Object.entries(data.args).filter(
-    ([key, value]) => data.argTypes[key].table?.category === "properties",
-  );
-  const events = Object.entries(data.args).filter(
-    ([key, value]) => data.argTypes[key].table?.category === "events",
+  const elements = parseElements(data);
+
+  // 1. Find which tag names are duplicated
+  const tagCounts = new Map();
+  elements.forEach((el) =>
+    tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
   );
 
-  const elementName = camelize(element);
-  const formatted = await prettier.format(
+  // Keep track of counts *as we map* to create unique var names (e.g., eoxMap1, eoxMap2)
+  const varNameCounts = new Map();
+
+  // 2. Map elements to include their varName and selector strategy
+  const elementData = elements.map((element, index) => {
+    const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
+    const baseVarName = camelize(element.tagName);
+
+    let varName;
+    let elId = null;
+    let selector;
+
+    if (isDuplicatedTag) {
+      // This tag appears more than once, so we MUST use IDs
+      const count = (varNameCounts.get(baseVarName) || 0) + 1;
+      varNameCounts.set(baseVarName, count);
+
+      varName = `${baseVarName}${count}`; // e.g., eoxMap1, eoxMap2
+      elId = `${element.tagName}-snippet-${index}`; // Unique ID
+      selector = `document.getElementById("${elId}")`;
+    } else {
+      // This tag is unique, so we can use querySelector
+      varName = baseVarName; // e.g., eoxChart
+      selector = `document.querySelector("${element.tagName}")`;
+    }
+
+    return { ...element, varName, elId, selector };
+  });
+
+  // Get unique lists for imports and whenDefined
+  const uniqueImports = [
+    ...new Set(
+      elements.map(
+        (element) =>
+          `import "@eox/${element.tagName.replace("eox-", "")}/dist/${
+            element.tagName
+          }.js";`,
+      ),
+    ),
+  ];
+  const uniqueWhenDefined = [
+    ...new Set(
+      elements.map(
+        (element) => `customElements.whenDefined("${element.tagName}")`,
+      ),
+    ),
+  ];
+
+  return await prettier.format(
     `
-<${element}${attributes.length ? "\n" : ""}${attributes
-      .map(([key, value]) => `  ${key}${value === true ? "" : `="${value}"`}`)
-      .join("\n")}\n></${element}>
-<script>import "@eox/${element.replace("eox-", "")}/dist/${element}.js";
+${elementData
+  .map(
+    (element) => `
+  <${element.tagName}
+    ${element.elId ? `id="${element.elId}"` : ""}
+    ${element.attributes
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n    ")}
+  ></${element.tagName}>`,
+  )
+  .join("")}
 
-const ${elementName} = document.querySelector("${element}");
+<script type="module">
+${uniqueImports.join("\n")}
 
-${
-  properties.length > 0
-    ? `// Assign properties
-Object.assign(${elementName}, {${properties
-        .map(
-          ([key, value]) =>
-            `${key}: ${serialize(value, {
-              unsafe: true,
-            })}`,
-        )
-        .join(",")}})`
-    : ""
-}
+${elementData
+  .map((element) => `const ${element.varName} = ${element.selector};`)
+  .join("\n")}
 
-  ${
-    events.length > 0
-      ? `// Listen for events
-  ${events.map(([key, value]) => `${elementName}.addEventListener("${key}", ${value})`)}`
-      : ""
-  }
+  // Assign properties${elementData
+    .map((element) =>
+      element.properties.length > 0
+        ? `
+Object.assign(${element.varName}, {
+  ${element.properties
+    .map(
+      ([key, value]) =>
+        `${key}: ${serialize(value, {
+          unsafe: true,
+          space: "  ",
+        })}`,
+    )
+    .join(",\n    ")}
+});`
+        : "",
+    )
+    .join("\n")}
+
+  // Listen for events${elementData
+    .map((element) =>
+      element.events.length > 0
+        ? `
+  ${element.events
+    .map(
+      ([key, value]) =>
+        `${element.varName}.addEventListener("${key}", ${value});`,
+    )
+    .join("\n  ")}`
+        : "",
+    )
+    .join("\n")}
 </script>`,
     {
       parser: "html",
       plugins: [prettierPluginESTree, parserBabel, parserHtml, parserPostCSS],
     },
   );
-  return `\`\`\`html\n${formatted}\`\`\`
-`;
 };
