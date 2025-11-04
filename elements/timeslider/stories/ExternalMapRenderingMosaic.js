@@ -49,8 +49,8 @@ export const ExternalMapRenderingMosaic = {
       const eoxMap = document.querySelector("eox-map");
       let items = [];
       let tileJson = "";
-      let startDate = "2023-01-01T00:00:00Z"
-      let endDate = "2023-02-01T00:00:00Z"
+      let startDate = "2025-09-01T00:00:00Z";
+      let endDate = new Date().toISOString();
 
       const osmLayer = {
           type: "Tile",

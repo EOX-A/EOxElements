@@ -48,28 +48,29 @@ export const ExternalMapRendering = {
     <script>
       const eoxMap = document.querySelector("eox-map");
       let items = [];
-      const createLayerGroup = (
-        items,
-        displayFilter = (i) =>
-          i.properties.datetime === items[items.length - 1].properties.datetime,
-      ) => ({
-        type: "Group",
-        layers: [
-          ...items
-            .filter((i) => displayFilter(i))
-            .map((i) => ({
-              type: "Tile",
-              source: {
-                type: "TileJSON",
-                url: i.assets.tilejson.href,
-                crossOrigin: "anonymous",
-              },
-              properties: {
-                id: i.id,
-                title: "test",
-              },
-            })),
-        ],
+      let tileJson = "";
+      let startDate = "2023-01-01T00:00:00Z";
+      let endDate = new Date().toISOString();
+
+      const osmLayer = {
+        type: "Tile",
+        properties: {
+          id: "OSM",
+        },
+        source: {
+          type: "OSM",
+        },
+      };
+
+      const createMosaicLayer = (items, tileJson) => ({
+        type: "Tile",
+        source: {
+          type: "TileJSON",
+          url:
+            tileJson +
+            "?&tile_scale=2&assets=B04&assets=B03&assets=B02&color_formula=Gamma%20RGB%203.2%20Saturation%200.8%20Sigmoidal%20RGB%2025%200.35&nodata=0&minzoom=9&collection=sentinel-2-l2a&format=png",
+          crossOrigin: "anonymous",
+        },
         properties: {
           id: "sentinel-2",
           title: items.length ? items[0].properties.datetime : "dummy title",
@@ -83,49 +84,84 @@ export const ExternalMapRendering = {
         },
       });
 
-      const fetchItems = async (extent = eoxMap.lonLatExtent) => {
+      const fetchItems = async (extent, dateStart, dateEnd) => {
         const url =
           "https://planetarycomputer.microsoft.com/api/stac/v1/search?collections=sentinel-2-l2a&bbox=" +
           eoxMap.lonLatExtent +
-          "&limit=200&datetime=2025-01-01T00:00:00Z/2026-01-01T00:00:00Z&sortby=-datetime";
+          "&limit=200&datetime=" +
+          dateStart +
+          "/" +
+          dateEnd +
+          "&sortby=-datetime";
         const searchResponse = await fetch(url);
         const { features } = await searchResponse.json();
         return features;
       };
 
+      const registerMosaic = async (dateStart, dateEnd) => {
+        const registerResponse = await fetch(
+          "https://planetarycomputer.microsoft.com/api/data/v1/mosaic/register",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              "filter-lang": "cql2-json",
+              filter: {
+                op: "and",
+                args: [
+                  {
+                    op: "=",
+                    args: [{ property: "collection" }, "sentinel-2-l2a"],
+                  },
+                  {
+                    op: "anyinteracts",
+                    args: [
+                      { property: "datetime" },
+                      { interval: [dateStart, dateEnd] },
+                    ],
+                  },
+                ],
+              },
+              sortby: [{ field: "datetime", direction: "desc" }],
+            }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+        const { links } = await registerResponse.json();
+        return links.find((l) => l.rel === "tilejson").href;
+      };
+
       // Listen for timeslider updates and update map layers accordingly
       document
         .querySelector("eox-timeslider")
-        .addEventListener("update", (e) => {
+        .addEventListener("update", async (e) => {
           if (!items.length) return;
-          eoxMap.layers = [
-            createLayerGroup(
-              items,
-              (i) =>
-                i.properties.datetime ===
-                e.detail.selectedItems["sentinel-2"]?.[0].originalDate,
-            ),
-            eoxMap.layers[0],
-          ];
+          const start = new Date(e.detail.date);
+          const end = new Date(new Date(start).setDate(start.getDate() + 1));
+          tileJson = await registerMosaic(
+            start.toISOString(),
+            end.toISOString(),
+          );
+          eoxMap.layers = [createMosaicLayer(items, tileJson), osmLayer];
         });
       document
         .querySelector("eox-timeslider")
-        .addEventListener("export", (e) => {
+        .addEventListener("export", async (e) => {
           const mapLayers = [];
           for (const dateKey in e.detail.selectedRangeItems) {
-            const date = e.detail.selectedRangeItems[dateKey];
+            const date = e.detail.selectedRangeItems[dateKey][0].originalDate;
+            const start = new Date(date);
+            const end = new Date(
+              new Date(start).setDate(new Date(start).getDate() + 1),
+            );
             if (date && date.length) {
-              const layers = [];
-              let center = null;
-              layers.push(
-                createLayerGroup(
-                  items,
-                  (i) => i.properties.datetime === date[0].originalDate,
-                ),
+              const currentTileJson = await registerMosaic(
+                start.toISOString(),
+                end.toISOString(),
               );
-              layers.push(eoxMap.layers[0]);
               mapLayers.push({
-                layers,
+                layers: [createMosaicLayer([], currentTileJson), osmLayer],
                 date: dateKey,
               });
             }
@@ -136,21 +172,11 @@ export const ExternalMapRendering = {
         });
 
       // Initial rendering
-      document.querySelector("eox-map").layers = [
-        {
-          type: "Tile",
-          properties: {
-            id: "OSM",
-          },
-          source: {
-            type: "OSM",
-          },
-        },
-      ];
+      eoxMap.layers = [osmLayer];
 
-      document.querySelector("eox-map").map.on("moveend", async () => {
-        items = await fetchItems(eoxMap.currentLonLatExtent);
-        eoxMap.layers = [createLayerGroup(items), eoxMap.layers[0]];
+      eoxMap.map.on("moveend", async () => {
+        items = await fetchItems(eoxMap.lonLatExtent, startDate, endDate);
+        eoxMap.layers = [createMosaicLayer(items, tileJson), osmLayer];
       });
     </script>
   `,
