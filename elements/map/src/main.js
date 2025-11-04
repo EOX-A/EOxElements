@@ -24,6 +24,7 @@ import {
   getLonLatCenterMethod,
   getLonLatExtentMethod,
   setZoomExtentMethod,
+  getZoomExtentMethod,
   setControlsMethod,
   setLayersMethod,
   setPreventScrollMethod,
@@ -326,13 +327,13 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Gets the zoom extent of the map.
+   * Gets the current extent of the map.
    *
-   * @type {import("ol/extent").Extent} extent - The set zoom extent.
-   * @returns {import("ol/extent").Extent} extent - The set zoom extent.
+   * @type {Array<number>}
+   * @returns {Array<number>} The extent in current map projection.
    */
   get zoomExtent() {
-    return this.#zoomExtent;
+    return getZoomExtentMethod(this);
   }
 
   /**

@@ -9,7 +9,11 @@ export {
   setProjectionMethod,
   setSyncMethod,
 } from "./setters";
-export { getLonLatCenterMethod, getLonLatExtentMethod } from "./getters";
+export {
+  getLonLatCenterMethod,
+  getLonLatExtentMethod,
+  getZoomExtentMethod,
+} from "./getters";
 export { default as addOrUpdateLayerMethod } from "./add-update-layer";
 export {
   removeInteractionMethod,
