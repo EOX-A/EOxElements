@@ -336,26 +336,69 @@ export function setConfigMethod(config, EOxMap) {
 export function setProjectionMethod(projection, oldProjection, EOxMap) {
   if (projection === "globe") {
     if (EOxMap.shadowRoot) {
-      let globeDiv;
-    if (EOxMap.shadowRoot?.querySelector("#globe")) {
-      globeDiv = EOxMap.renderRoot.querySelector("#globe");
-      globeDiv.style.display = "block";
-    } else {
-      globeDiv = document.createElement("div");
-      globeDiv.id = "globe";
-      globeDiv.style.width = "100%";
-      globeDiv.style.height = "100%";
-      EOxMap.renderRoot?.appendChild(globeDiv);
+      let globeDiv = EOxMap.shadowRoot.querySelector("#globe");
+      if (!globeDiv) {
+        globeDiv = document.createElement("div");
+        globeDiv.id = "globe";
+        globeDiv.style.width = "100%";
+        globeDiv.style.height = "100%";
+        EOxMap.renderRoot?.appendChild(globeDiv);
+      }
       window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
-    }
-    EOxMap.shadowRoot.querySelector("#map").style.display = "none";
+      EOxMap.shadowRoot.querySelector("#map").style.display = "none";
     }
 
     return projection;
   }
   if (oldProjection === "globe") {
-    EOxMap.shadowRoot.querySelector("#globe").style.display = "none";
-    EOxMap.shadowRoot.querySelector("#map").style.display = "block";
+    const globe = EOxMap.globe;
+    const planet = globe.planet;
+
+    // 1. Determine the target point on the terrain at the center of the viewport
+    let c = planet.getCartesianFromPixelTerrain(
+      globe.renderer.handler.getCenter(),
+    );
+
+    // Fallback: If no terrain is found at the center, just use the current camera eye position
+    const targetCartesian = c
+      ? c.normal().scaleTo(c.length() + c.distance(planet.camera.eye))
+      : planet.camera.eye;
+
+    planet.flyCartesian(targetCartesian, {
+      amplitude: 0,
+      // The critical part: all final calculations and view settings
+      // MUST happen inside the completeCallback.
+      completeCallback: () => {
+        // If a target (c) was found, make the camera look at it (straight down)
+        if (c) {
+          planet.camera.look(c);
+        }
+
+        // Recalculate the camera position AFTER the flight and 'look' adjustments are complete
+        const finalCameraPosition = globe.planet.camera.getLonLat();
+
+        // Calculate the OpenLayers zoom level using the camera's final height
+        // The factor (27050000) is a known conversion constant for this library setup.
+        const zoomFromGlobe =
+          Math.log2(27050000 / finalCameraPosition.height) + 1;
+
+        // Calculate the OpenLayers center coordinates
+        const centerFromGlobe = [
+          finalCameraPosition.lon,
+          finalCameraPosition.lat,
+        ];
+        const newCenter = olTransform(centerFromGlobe, "EPSG:4326", projection);
+
+        // Apply the calculated center and zoom to the OpenLayers map view
+        EOxMap.map.getView().setCenter(newCenter);
+        EOxMap.map.getView().setZoom(zoomFromGlobe);
+
+        // Finally, switch the display from 3D to 2D
+        EOxMap.shadowRoot.querySelector("#globe").style.display = "none";
+        EOxMap.shadowRoot.querySelector("#map").style.display = "";
+      },
+    });
+    oldProjection = "EPSG:4326"; // reset oldProjection to a WGS84 projection
   }
   let newProj = oldProjection;
 

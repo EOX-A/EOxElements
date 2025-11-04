@@ -17,6 +17,7 @@ const create = ({ EOxMap, target }) => {
    * for each once done
    */
   const globe = createGlobe({
+    map: EOxMap,
     target,
     renderTile: (tile, callback) => {
       /**
@@ -38,7 +39,7 @@ const create = ({ EOxMap, target }) => {
       }
     },
   });
-  window.eoxMapGlobe.globe = globe;
+  EOxMap.globe = globe;
 };
 
 window.eoxMapGlobe = {
