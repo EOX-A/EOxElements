@@ -28,6 +28,7 @@ import {
   ConfigObjectStory,
   ProjectionStory,
   ProjectionTransformStory,
+  DimensionChangeStory,
   AnimationsStory,
   PreventScrollStory,
   FlatGeoBufStory,
@@ -251,6 +252,13 @@ export const Projection = ProjectionStory;
  * with the small adaptation that the destination defaults to EPSG:4326 if not defined.
  */
 export const ProjectionTransform = ProjectionTransformStory;
+
+/**
+ * The dimension of the view can be changed via the `dimension`-attribute.
+ * 2D map in EPSG:4326 (geographic coordinates) and Globe view
+ * are included.
+ */
+export const DimensionChange = DimensionChangeStory;
 
 /**
  * changing the properties `zoom`, `center` or `zoomExtent` will trigger animations, if the
