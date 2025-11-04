@@ -17,7 +17,10 @@ function CardDisplayStory() {
         .subTitleProperty=${args.subTitleProperty}
         .filterProperties=${args.filterProperties}
         .resultType=${args.resultType}
-        style="height: 500px; --card-gap: 16px; --card-width: 300px; --card-height: 200px; --card-border-radius: 8px; --form-flex-direction: row"
+        style="height: 500px; --card-gap: 16px; --card-width: 300px; --card-height: 200px; --card-border-radius: 8px; --form-flex-direction: row;
+        --card-title-font: Arial, sans-serif; --card-transition: all 0.35s ease; --card-hover-transform: translateY(-10px); --card-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        --padding: 40px; --padding-vertical: 40px;
+      "
       ></eox-itemfilter>`,
     args: {
       aggregateResults: "themes",

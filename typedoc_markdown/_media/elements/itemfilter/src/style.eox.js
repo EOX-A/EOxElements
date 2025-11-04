@@ -150,7 +150,7 @@ ul#results li:not(:hover) .result-action {
   display: none;
 }
 eox-layout {
-  padding: .5rem var(--padding);
+  padding: var(--padding-vertical) var(--padding);
   gap: var(--card-gap, 16px);
   --column-width: var(--card-width, 300px);
   --row-height: var(--card-height, 200px);
@@ -159,6 +159,11 @@ eox-layout-item {
   position: relative;
   border-radius: var(--card-border-radius, 8px);
   cursor: pointer;
+  transition: var(--card-transition);
+  box-shadow: var(--card-box-shadow);
+}
+eox-layout-item:hover {
+  transform: var(--card-hover-transform);
 }
 eox-layout-item > span {
   display: block;
@@ -192,6 +197,7 @@ eox-layout-item .title-container {
 }
 eox-layout-item .title {
   font-weight: bold;
+  font-family: var(--card-title-font);
 }
 eox-layout-item .result-action {
   position: absolute;
