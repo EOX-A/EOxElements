@@ -35,12 +35,9 @@ ${elements
   .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
   .join("\n")}
 
-${elements
-  .map((element) => `let ${camelize(element.tagName)}Ref; // Element reference`)
-  .join("\n")}
+${elements.map((element) => `let ${camelize(element.tagName)}Ref;`).join("\n")}
 
 ${
-  // NEW: Only define handlers in script if using imperative mode
   useImperativeEvents
     ? elements
         .map((element) =>
@@ -144,7 +141,6 @@ ${elements
     .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
     .join("\n    ")}
   ${
-    // NEW: Inline event handlers directly if not in imperative mode
     !useImperativeEvents
       ? element.events
           .map(([key, value]) => {
@@ -154,12 +150,11 @@ ${elements
           .join("\n    ")
       : ""
   }
-></${element.tagName}>`,
+>${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
   )
   .join("\n")}
 
 ${
-  // Style block remains unchanged
   elements.find((element) =>
     element.attributes.find(([key, value]) => key === "style"),
   )

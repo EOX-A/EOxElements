@@ -9,7 +9,7 @@ import {
   parseElements,
   capitalize,
   camelCaseEventName,
-} from "../helpers"; // Assuming helpers are imported
+} from "../helpers";
 
 // --- React-specific style helpers ---
 
@@ -74,11 +74,10 @@ export const render = async (data) => {
         ref={${camelize(element.tagName)}Ref}
         ${otherAttributes}
         ${stylePropString}
-      ></${element.tagName}>`;
+      >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`;
     })
     .join("\n");
 
-  // NEW: Conditionally create the return block
   const returnBlock =
     elements.length > 1
       ? `
@@ -96,7 +95,7 @@ ${elementsJsx}
 
   return await prettier.format(
     `
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 ${elements
   .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
@@ -134,6 +133,7 @@ export default function StorySnippet() {
           : "",
       )
       .join("\n")}
+      ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
   }, []);
 
   // Add event listeners${elements

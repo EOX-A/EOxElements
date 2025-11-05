@@ -153,7 +153,7 @@ ${elements
             .join("\n      ")
         : ""
     }
-  ></${element.tagName}>`,
+  >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
   )
   .join("\n")}
 </template>

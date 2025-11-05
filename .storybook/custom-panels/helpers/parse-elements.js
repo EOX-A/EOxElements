@@ -1,7 +1,6 @@
 // Parses the elements from the storyData
 // is always one main elment, but could also contain additional components
 export const parseElements = (storyData) => {
-  console.log(storyData);
   const primaryElement = (storyData.component || storyData.parent).replace(
     "elements-",
     "",
@@ -32,6 +31,7 @@ export const parseElements = (storyData) => {
           "storyAdditionalComponents",
           "storyCodeBefore",
           "storyCodeAfter",
+          "storySlotContent",
         ].includes(key) &&
           !attributes.find(([aKey, aValue]) => aKey === key) &&
           !events.find(([eKey, eValue]) => eKey === key)),

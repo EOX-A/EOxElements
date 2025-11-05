@@ -55,13 +55,6 @@ export const render = async (data) => {
       ),
     ),
   ];
-  const uniqueWhenDefined = [
-    ...new Set(
-      elements.map(
-        (element) => `customElements.whenDefined("${element.tagName}")`,
-      ),
-    ),
-  ];
 
   return await prettier.format(
     `
@@ -73,7 +66,7 @@ ${elementData
     ${element.attributes
       .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
       .join("\n    ")}
-  ></${element.tagName}>`,
+  >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
   )
   .join("")}
 
