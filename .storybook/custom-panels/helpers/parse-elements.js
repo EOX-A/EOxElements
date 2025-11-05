@@ -1,7 +1,10 @@
 // Parses the elements from the storyData
 // is always one main elment, but could also contain additional components
 export const parseElements = (storyData) => {
-  const primaryElement = storyData.parent.replace("elements-", "");
+  const primaryElement = (storyData.component || storyData.parent).replace(
+    "elements-",
+    "",
+  );
   const additionalElements = storyData.args.additionalComponents
     ? Object.keys(storyData.args.additionalComponents)
     : [];

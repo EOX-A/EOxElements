@@ -2,6 +2,7 @@ import { setCustomElementsManifest } from "@storybook/web-components-vite";
 import customElements from "../custom-elements.json";
 import typedocJson from "../types.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
+import { renderVanilla } from "./custom-panels/methods";
 
 import "@eox/chart";
 import "@eox/drawtools";
@@ -48,7 +49,6 @@ setCustomElementsManifestWithOptions(customElements, { privateFields: false });
 const preview = {
   parameters: {
     docs: {
-      canvas: { sourceState: "none" },
       toc: true,
       page: DocumentationTemplate,
       extractArgTypes: (component) => {
@@ -108,6 +108,10 @@ const preview = {
           };
           return acc;
         }, {});
+      },
+      source: {
+        transform: async (code, storyContext) =>
+          await renderVanilla(storyContext),
       },
     },
   },
