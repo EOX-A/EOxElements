@@ -30,7 +30,7 @@ export const render = async (data) => {
     `
 <script>
 import { ${svelteImports.join(", ")} } from "svelte";
-
+${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
 ${elements
   .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
   .join("\n")}
@@ -103,6 +103,7 @@ onMount(() => {
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}
+  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 });
 
 ${

@@ -103,6 +103,7 @@ ${elements
   .join("\n")}
 
 export default function StorySnippet() {
+  ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
   ${elements
     .map((element) => `const ${camelize(element.tagName)}Ref = useRef(null);`)
     .join("\n")}

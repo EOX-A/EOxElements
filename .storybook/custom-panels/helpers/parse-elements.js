@@ -1,19 +1,20 @@
 // Parses the elements from the storyData
 // is always one main elment, but could also contain additional components
 export const parseElements = (storyData) => {
+  console.log(storyData);
   const primaryElement = (storyData.component || storyData.parent).replace(
     "elements-",
     "",
   );
-  const additionalElements = storyData.args.additionalComponents
-    ? Object.keys(storyData.args.additionalComponents)
+  const additionalElements = storyData.args.storyAdditionalComponents
+    ? Object.keys(storyData.args.storyAdditionalComponents)
     : [];
 
   let elements = [];
 
   [primaryElement, ...additionalElements].forEach((e) => {
     const elementArgs =
-      storyData.args.additionalComponents?.[e] || storyData.args;
+      storyData.args.storyAdditionalComponents?.[e] || storyData.args;
 
     const attributes = Object.entries(elementArgs).filter(
       ([key, value]) =>
@@ -26,7 +27,12 @@ export const parseElements = (storyData) => {
     const properties = Object.entries(elementArgs).filter(
       ([key, value]) =>
         storyData.argTypes[key]?.table?.category === "properties" ||
-        (!["style", "additionalComponents"].includes(key) &&
+        (![
+          "style",
+          "storyAdditionalComponents",
+          "storyCodeBefore",
+          "storyCodeAfter",
+        ].includes(key) &&
           !attributes.find(([aKey, aValue]) => aKey === key) &&
           !events.find(([eKey, eValue]) => eKey === key)),
     );

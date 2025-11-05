@@ -29,7 +29,7 @@ export const render = async (data) => {
     `
 <script setup>
 import { ${vueImports.join(", ")} } from "vue";
-
+${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
 ${elements
   .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
   .join("\n")}
@@ -101,6 +101,7 @@ onMounted(() => {
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}
+  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 });
 
 ${
