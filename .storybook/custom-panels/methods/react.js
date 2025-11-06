@@ -15,6 +15,7 @@ import {
 
 // Helper for CSS property names (e.g., "margin-left" -> "marginLeft")
 const cssToCamelCase = (s) => {
+  if (s.startsWith("--")) return `"${s}"`; // Don't camelCase CSS variables
   return s.replace(/-(\w)/g, (all, letter) => letter.toUpperCase());
 };
 
