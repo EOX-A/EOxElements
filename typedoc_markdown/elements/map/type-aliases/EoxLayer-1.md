@@ -8,4 +8,4 @@
 
 > **EoxLayer** = [`EoxLayer`](EoxLayer.md)
 
-Defined in: [elements/map/src/types.ts:43](https://github.com/EOX-A/EOxElements/blob/087ca2ebf7372614d92ecb0501beb14e7be050ec/elements/map/src/types.ts#L43)
+Defined in: [elements/map/src/types.ts:43](https://github.com/EOX-A/EOxElements/blob/496182dc3165fd7c22716cfeea1a76c35252b4a0/elements/map/src/types.ts#L43)

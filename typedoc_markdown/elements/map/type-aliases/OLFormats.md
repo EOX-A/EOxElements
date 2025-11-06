@@ -8,4 +8,4 @@
 
 > **OLFormats** = [`OLBasicFormats`](OLBasicFormats.md) & [`OLAdvancedFormats`](OLAdvancedFormats.md)
 
-Defined in: [elements/map/src/layers.ts:87](https://github.com/EOX-A/EOxElements/blob/087ca2ebf7372614d92ecb0501beb14e7be050ec/elements/map/src/layers.ts#L87)
+Defined in: [elements/map/src/layers.ts:87](https://github.com/EOX-A/EOxElements/blob/496182dc3165fd7c22716cfeea1a76c35252b4a0/elements/map/src/layers.ts#L87)
