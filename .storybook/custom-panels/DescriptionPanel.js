@@ -7,10 +7,11 @@ export const DescriptionPanel = (props) => {
   const api = useStorybookApi();
 
   const storyData = api.getCurrentStoryData();
-  if (!storyData?.prepared) {
+
+  if (!props.active || !storyData?.prepared) {
     return;
   }
-  // console.log(storyData)
+
   return (
     <AddonPanel {...props}>
       <div style={{ padding: "10px 20px" }}>

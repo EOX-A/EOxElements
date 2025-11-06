@@ -2,6 +2,7 @@ import { setCustomElementsManifest } from "@storybook/web-components-vite";
 import customElements from "../custom-elements.json";
 import typedocJson from "../types.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
+import { renderVanilla } from "./custom-panels/methods";
 
 import "@eox/chart";
 import "@eox/drawtools";
@@ -109,54 +110,14 @@ const preview = {
         }, {});
       },
       source: {
-        transform: (code, storyContext) => {
-          /**
-           * Check which props belong to which tag
-           * and create object
-           */
-          const undecorated = storyContext.undecoratedStoryFn(storyContext);
-          let currentTag = undefined;
-          const tags = {};
-          undecorated.strings
-            .map((string, index) => {
-              const startOfTag = string.match(/(?<=<eox-).*?((?=>| )|$)/gim);
-              if (startOfTag) {
-                currentTag = `eox-${startOfTag}`;
-              }
-              const property = string
-                .match(/(?<=\.).*?(?==)/gim)?.[0]
-                ?.replaceAll(" ", "");
-              const value = undecorated.values[index];
-              if (property && value) {
-                if (!tags[currentTag]) {
-                  tags[currentTag] = {};
-                }
-                tags[currentTag][property] = value;
-              }
-            })
-            .filter((l) => l);
-
-          /**
-           * Inject prop for each tag in the rendered code
-           */
-          Object.keys(tags).forEach((tag) => {
-            code = code.replace(
-              `<${tag}`,
-              `<${tag}\n  ${Object.keys(tags[tag])
-                .map(
-                  (key, index) =>
-                    `.${key}='\$\{${
-                      typeof tags[tag][key] === "string"
-                        ? tags[tag][key]
-                        : JSON.stringify(tags[tag][key])
-                    }\}'`,
-                )
-                .join("\n  ")}\n  `,
-            );
-          });
-          return code;
-        },
+        transform: async (code, storyContext) =>
+          await renderVanilla(storyContext),
       },
+    },
+  },
+  globalTypes: {
+    "code-language": {
+      description: "Language for code snippets",
     },
   },
 };
