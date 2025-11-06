@@ -17,7 +17,7 @@ export const parseElements = (storyData) => {
 
     const attributes = Object.entries(elementArgs).filter(
       ([key, value]) =>
-        key === "style" ||
+        ["id", "style", "class"].includes(key) ||
         (storyData.argTypes[key]?.table?.category === "attributes" && !!value),
     );
     const events = Object.entries(elementArgs).filter(
@@ -27,7 +27,9 @@ export const parseElements = (storyData) => {
       ([key, value]) =>
         storyData.argTypes[key]?.table?.category === "properties" ||
         (![
+          "id",
           "style",
+          "class",
           "storyAdditionalComponents",
           "storyCodeBefore",
           "storyCodeAfter",
