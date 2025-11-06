@@ -33,3 +33,15 @@ export function getLonLatExtentMethod(EOxMap) {
   // Otherwise, transform the extent to longitude/latitude
   return transformExtent(currentExtent, EOxMap.projection);
 }
+
+/**
+ * Get the current map view extent.
+ *
+ * @param {import("../../main").EOxMap} EOxMap - The map object containing the map instance, projection information, and size.
+ * @returns {import("ol/extent").Extent} - The extent of the map in map projection.
+ */
+export function getZoomExtentMethod(EOxMap) {
+  // Calculate the current extent of the map based on its view and size
+  const extent = EOxMap.map.getView().calculateExtent(EOxMap.map.getSize());
+  return extent;
+}
