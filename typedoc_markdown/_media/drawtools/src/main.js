@@ -334,6 +334,14 @@ export class EOxDrawTools extends LitElement {
       this.eoxMap = EoxMap;
       this.#olMap = OlMap;
     }
+    if (
+      changedProperties.get("type") &&
+      changedProperties.get("type") !== this.type
+    ) {
+      this.resetLayer(this);
+      this.firstUpdated();
+      this.currentlyDrawing = false;
+    }
   }
 
   get eoxMap() {
