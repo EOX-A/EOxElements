@@ -93,7 +93,7 @@ const preview = {
           acc[name] = {
             description: matchingType
               ? `${description} <br /> <code>${typeText.replace(matchingType.name, `<a target="_blank" href="${matchingType?.sources?.[0]?.url}">${matchingType.name}</a>`)}</code>`
-              : ``,
+              : description,
             table: {
               defaultValue: { summary: defaultValue },
               category,
