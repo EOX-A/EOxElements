@@ -29,10 +29,3 @@ export const STORIES_VECTOR_LAYERS = [
 ];
 
 export const STORIES_MAP_STYLE = "width: 400px; height: 300px;";
-
-export const STORIES_DRAW_TYPES = [
-  { id: "box", type: "Box" },
-  { id: "point", type: "Point" },
-  { id: "circle", type: "Circle" },
-  { id: "linestring", type: "LineString" },
-];

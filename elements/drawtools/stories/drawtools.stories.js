@@ -22,6 +22,12 @@ export default {
   title: "Elements/eox-drawtools",
   tags: ["autodocs"],
   component: "eox-drawtools",
+  argTypes: {
+    type: {
+      control: { type: "select" },
+      options: ["Polygon", "Box", "Point", "Circle", "LineString"],
+    },
+  },
 };
 
 // Exporting each individual story for the eox-drawtools component.
@@ -45,7 +51,9 @@ export const ModifyFeatures = ModifyFeaturesStory;
 
 /**
  * The `type` attribute/property controls which drawing type is enabled
- * (defaults to "Polygon").
+ * (defaults to `Polygon`). It supports `Polygon`, `Box`, `Point`, `Circle` and `LineString`.
+ * Inside the Storybook Controls panel, you can try changing the type and see that the draw button
+ * changes its shape and a different draw type is enabled.
  */
 export const DrawType = DrawTypeStory;
 
@@ -87,7 +95,9 @@ export const FeaturesProjection = FeaturesProjectionStory;
 export const Formats = FormatStory;
 
 /**
- * Override css variable directly using styles.
+ * Override css variable directly using styles. This example demonstrates how applying the style
+ * `"--primary: #ffa55c; --error: #00ff00;"` to the `eox-drawtools` element changes the color of the
+ * draw button (which uses `--primary`) and the delete/discard button (which uses `--error`).
  */
 export const CSSVariableOverride = CSSVariableOverrideStory;
 
