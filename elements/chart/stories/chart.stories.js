@@ -6,17 +6,21 @@ export default {
   title: "Elements/eox-chart",
   tags: ["autodocs"],
   component: "eox-chart",
+  args: {
+    "pointermove:item": `(e) => console.log("Chart hovered! Hovered item: ", e.detail.item)`,
+    "click:item": `(e) => console.log("Chart clicked! Clicked item: ", e.detail.item)`,
+    style: "width:100%; height: 400px;",
+  },
+
   render: (args) => html`
     <eox-chart
       .spec=${args.spec}
       .dataValues=${args.dataValues}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
-      @pointermove:item=${(e) =>
-        console.log("Chart hovered! Hovered item: ", e.detail.item)}
-      @click:item=${(e) =>
-        console.log("Chart clicked! Clicked item: ", e.detail.item)}
-      style="width:100%; height: 400px;"
+      .style=${args.style}
+      @pointermove:item=${eval(args["pointermove:item"])}
+      @click:item=${eval(args["click:item"])}
     ></eox-chart>
   `,
 };
