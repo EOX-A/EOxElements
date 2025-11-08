@@ -23,6 +23,10 @@ export default {
   tags: ["autodocs"],
   component: "eox-drawtools",
   argTypes: {
+    format: {
+      control: { type: "select" },
+      options: ["geojson", "wkt", "feature"],
+    },
     type: {
       control: { type: "select" },
       options: ["Polygon", "Box", "Point", "Circle", "LineString"],
@@ -68,10 +72,13 @@ export const MultiPolygonWithList = MultiPolygonWithListStory;
  * the user can draw continuously one polygon at a time without removing the last polygon manually.
  */
 export const ContinuousDrawing = ContinuousDrawingStory;
+
 /**
- * By setting the `show-editor` attribute or `import-features` property to `true`,
- * generates an editor to edit features and allow users to drag-drop/upload/paste shape files in
- * - GeoJSON, TopoJSON and KML format.
+ * By setting the `show-editor` attribute/property to `true`, `eox-drawtools` displays a text editor to
+ * manually edit drawn features (displayed in `GeoJSON` format) or paste features in `GeoJSON` format;
+ * by setting the `import-features` attribute/property, it allows users to
+ * drag-and-drop features in `GeoJSON` format (onto the text editor) or upload (via the upload button)
+ * feature files in `GeoJSON`, `TopoJSON` and `KML` format.
  */
 export const ImportFeaturesWithEditor = ImportFeaturesWithEditorStory;
 
@@ -84,13 +91,24 @@ export const SelectFeature = SelectFeatureStory;
  * Showcasing the combination of `multiple-features`, `show-list` and `layer-id` attributes or properties, allowing the selection of multiple features.
  */
 export const MultiFeaturesSelect = MultiFeaturesSelectStory;
+
 /**
- * Showcasing the possibilty to emit drawn features in different projections
+ * The `projection` attribute/property controls in which projection the drawn features are emitted
+ * (defaults to `EPSG:3857`). It supports any projections that is registered for `eox-map`(by default `EPSG:3857`
+ * and `EPSG:4326`, but other projections can be registered - see the corresponding stories of `eox-map`).
+ * It does not necessarily need to match the map's view projection.
+ * Inside the Storybook Controls panel, you can try changing the projection from `EPSG:3857` to `EPSG:4326` and see
+ * that the `console.log` writes the emitted feature in `EPSG:4326`.
  */
 export const FeaturesProjection = FeaturesProjectionStory;
 
 /**
- * Showcasing the possibilty to emit drawn features in different formats
+ * The `format` attribute/property controls in which format the drawn features are emitted
+ * (defaults to `feature`). It supports `feature` (feature as emitted by OpenLayers), `geojson` (GeoJSON representation)
+ * and `wkt` (Well-Known Text / WKT representation).
+ * Inside the Storybook Controls panel, you can try changing the projection from `feature` to something else and see
+ * that the `console.log` writes the emitted feature in a different format.
+
  */
 export const Formats = FormatStory;
 

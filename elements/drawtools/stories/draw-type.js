@@ -25,12 +25,12 @@ export const DrawType = {
       ?multiple-features=${args["multiple-features"]}
       ?allow-modify=${args["allow-modify"]}
       type="${args.type}"
-    />
+    ></eox-drawtools>
     <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}
       style=${args.storyAdditionalComponents["eox-map"].style}
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
-    />
+    ></eox-map>
   `,
 };
 
