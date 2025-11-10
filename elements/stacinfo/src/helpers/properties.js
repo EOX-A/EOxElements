@@ -7,6 +7,11 @@
  * @returns {Array<any>} The transformed and formatted properties.
  */
 export function transformProperties(properties, element, type = "property") {
+  // Helper to render anchor tags with class="link"
+  function renderLink(url, text) {
+    return `<a class="link" target="_blank" href="${url}">${text}</a>`;
+  }
+
   // Transform extent to only show temporal information.
   return properties.map(([key, property]) => {
     // Transform extent to only show temporal
@@ -26,11 +31,21 @@ export function transformProperties(properties, element, type = "property") {
       }
     }
 
+    // Replace markdown links [text](url) with clickable HTML links.
+    property.formatted = property.formatted.replace(
+      /\[([^\]]+)\]\((http[s]?|ftp):\/\/[^)]+\)/gi,
+      (match, text) => {
+        const urlMatch = match.match(/\((http[s]?|ftp):\/\/[^)]+\)/);
+        const url = urlMatch ? urlMatch[0].slice(1, -1) : "";
+        return renderLink(url, text);
+      },
+    );
+
     // Replace all plain text URLs with clickable links, unless already converted.
     property.formatted = property.formatted.replace(
       /(?<!href="|src=")(http|https|ftp):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/gi,
       (url) => {
-        return `<a target="_blank" href="${url}">${url}</a>`;
+        return renderLink(url, url);
       },
     );
 
