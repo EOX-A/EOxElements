@@ -21,56 +21,58 @@ export default function parseFeatured(featured = []) {
       featured.length > 0,
       () => html`
         <section id="featured" class="small-margin top-margin" part="featured">
-          ${map(
-            featured,
-            ([, value]) => html`
-              <details class="max-width">
-                <summary class="square">
-                  <nav class="responsive tiny-space">
-                    <slot
-                      name="featured-${value.label.toLowerCase()}-summary"
-                      class="title"
-                    >
-                      <i class="small">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                        >
-                          <title>chevron-right</title>
-                          <path
-                            d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
-                          />
-                        </svg>
-                      </i>
-                      ${value.label}
-                      ${when(
-                        value.length,
-                        () => html`
-                          <button
-                            class="chip"
-                            style="--_size: 1rem; padding: 0.7rem; font-size: small"
+          ${map(featured, ([, value]) =>
+            when(
+              value.length !== 0,
+              () => html`
+                <details class="max-width">
+                  <summary class="square">
+                    <nav class="responsive tiny-space">
+                      <slot
+                        name="featured-${value.label.toLowerCase()}-summary"
+                        class="title"
+                      >
+                        <i class="small">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
                           >
-                            ${value.length}
-                          </button>
+                            <title>chevron-right</title>
+                            <path
+                              d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
+                            />
+                          </svg>
+                        </i>
+                        ${value.label}
+                        ${when(
+                          value.length,
+                          () => html`
+                            <button
+                              class="chip"
+                              style="--_size: 1rem; padding: 0.7rem; font-size: small"
+                            >
+                              ${value.length}
+                            </button>
+                          `,
+                        )}
+                      </slot>
+                    </nav>
+                  </summary>
+                  <div class="featured-container">
+                    <slot name="featured-${value.label.toLowerCase()}">
+                      ${when(
+                        value.label.toLowerCase() === "description",
+                        () => html`
+                          <eox-stacinfo-shadow .content=${value.formatted}>
+                          </eox-stacinfo-shadow>
                         `,
+                        () => html`${unsafeHTML(value.formatted)}`,
                       )}
                     </slot>
-                  </nav>
-                </summary>
-                <div class="featured-container">
-                  <slot name="featured-${value.label.toLowerCase()}">
-                    ${when(
-                      value.label.toLowerCase() === "description",
-                      () => html`
-                        <eox-stacinfo-shadow .content=${value.formatted}>
-                        </eox-stacinfo-shadow>
-                      `,
-                      () => html`${unsafeHTML(value.formatted)}`,
-                    )}
-                  </slot>
-                </div>
-              </details>
-            `,
+                  </div>
+                </details>
+              `,
+            ),
           )}
         </section>
       `,
