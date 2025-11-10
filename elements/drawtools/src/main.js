@@ -58,7 +58,7 @@ export class EOxDrawTools extends LitElement {
       showEditor: { attribute: "show-editor", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
       projection: { type: String },
-      noShadow: { type: Boolean },
+      noShadow: { attribute: "no-shadow", type: Boolean },
       format: { type: String },
       type: { type: String },
       unstyled: { type: Boolean },
@@ -360,6 +360,10 @@ export class EOxDrawTools extends LitElement {
     }
   }
 
+  /**
+   * The eox-map instance associated with the draw tools
+   * @type {import("@eox/map").EOxMap}
+   */
   get eoxMap() {
     return this.#eoxMap;
   }
