@@ -2,7 +2,12 @@ import { setCustomElementsManifest } from "@storybook/web-components-vite";
 import customElements from "../custom-elements.json";
 import typedocJson from "../types.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
-import { renderVanilla } from "./custom-panels/methods";
+import {
+  renderVanilla,
+  renderVue,
+  renderReact,
+  renderSvelte,
+} from "./custom-panels/methods";
 
 import "@eox/chart";
 import "@eox/drawtools";
@@ -110,8 +115,17 @@ const preview = {
         }, {});
       },
       source: {
-        transform: async (code, storyContext) =>
-          await renderVanilla(storyContext),
+        transform: async (_, storyContext) => {
+          const language = storyContext.globals["code-language"];
+          const renderers = {
+            react: renderReact,
+            svelte: renderSvelte,
+            vue: renderVue,
+            vanilla: renderVanilla,
+          };
+          const renderer = renderers[language] || renderVanilla;
+          return await renderer(storyContext);
+        },
       },
     },
   },
