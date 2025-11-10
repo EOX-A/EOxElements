@@ -49,6 +49,23 @@ export function transformProperties(properties, element, type = "property") {
       },
     );
 
+    // Ensure all rendered <a> tags have target="_blank" and class="link"
+    property.formatted = property.formatted.replace(
+      /<a(?![^>]*class=["']?link["']?)([^>]*)>/gi,
+      (_, attrs) => {
+        // Add class="link" if not present
+        let newAttrs = attrs;
+        if (!/class=["']?link["']?/i.test(attrs)) {
+          newAttrs += ' class="link"';
+        }
+        // Add target="_blank" if not present
+        if (!/target=["']?_blank["']?/i.test(attrs)) {
+          newAttrs += ' target="_blank"';
+        }
+        return `<a${newAttrs}>`;
+      },
+    );
+
     /**
      * Filters links based on their roles and relationships.
      *
