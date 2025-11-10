@@ -12,6 +12,6 @@
   },
   "author": "EOX",
   "dependencies": {
-    "@eox/ui": "^0.4.1"
+    "@eox/ui": "^0.5.0"
   }
 }
