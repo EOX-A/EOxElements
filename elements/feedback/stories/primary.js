@@ -9,7 +9,7 @@ export default {
     submit: "(e) => console.log('Feedback submitted', e.detail)",
     close: "(e) => console.log('Feedback closed')",
   },
-  render: (args, storyAdditionalComponents = {}) => html`
+  render: (args) => html`
     <div style="${args.style}">
       <eox-feedback
         endpoint="${args.endpoint}"
