@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.0.1...stacinfo-v1.0.2) (2025-11-10)
+
+
+### Bug Fixes
+
+* Only render individual featured sections if value length &gt; 0 ([#1930](https://github.com/EOX-A/EOxElements/issues/1930)) ([04ac6e6](https://github.com/EOX-A/EOxElements/commit/04ac6e6d5ced147e48abf484766b73f23bd0493a))
+* Render markdown links with target blank, add link class ([#1929](https://github.com/EOX-A/EOxElements/issues/1929)) ([85e24d6](https://github.com/EOX-A/EOxElements/commit/85e24d62d2dd99839ac9080eac88b6100a16e10c))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.0.0...stacinfo-v1.0.1) (2025-07-29)
 
 
