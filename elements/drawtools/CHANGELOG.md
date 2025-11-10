@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.3...drawtools-v1.1.4) (2025-11-10)
+
+
+### Bug Fixes
+
+* Reset map when changing drawing type ([#1927](https://github.com/EOX-A/EOxElements/issues/1927)) ([b236053](https://github.com/EOX-A/EOxElements/commit/b2360537a9ffa59c24a582244bab6e4e0082fa96))
+
 ## [1.1.3](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.2...drawtools-v1.1.3) (2025-08-05)
 
 
