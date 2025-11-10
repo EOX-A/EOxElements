@@ -1,6 +1,7 @@
 import "../src/main.js";
 import {
   CreateListTest,
+  CreateFeaturedTest,
   LoadStacinfoTest,
   NoHtmlRenderTest,
   htmlRenderTest,
@@ -24,6 +25,11 @@ describe("Stacinfo", () => {
    * Test case to check whether list item for all the properties created or not
    */
   it("creates list items for all properties", () => CreateListTest());
+
+  /**
+   * Test case to check whether featured section is created for properties
+   */
+  it("creates featured sections for properties", () => CreateFeaturedTest());
 
   /**
    * Test case to check whether single property is whitelisted or not.
