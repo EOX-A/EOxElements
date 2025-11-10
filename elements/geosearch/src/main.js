@@ -42,6 +42,20 @@ const loaderSvg = `
   </svg>
 `;
 
+/**
+ * `eox-geosearch` provides a flexible geocoding and location search interface using the OpenCage API.
+ * It can be used standalone or integrated with `eox-map` for interactive map zooming and result visualization.
+ *
+ * Main features:
+ * - Search for locations using OpenCage API
+ * - Integrate with `eox-map` for zooming to results
+ * - Customizable loader SVG
+ * - Geographic extent limiting
+ * - Tooltip support
+ * - Additional OpenCage API parameters via args
+ * - Button mode for compact UI
+ * - Flexible alignment and direction options
+ */
 class EOxGeoSearch extends LitElement {
   static get properties() {
     return {
@@ -81,7 +95,11 @@ class EOxGeoSearch extends LitElement {
        * The name of the query parameter to use for the search query in the endpoint URI.
        *
        */
-      queryParameter: { type: String, default: "q" },
+      queryParameter: {
+        attribute: "query-parameter",
+        type: String,
+        default: "q",
+      },
       /**
        * Whether or not to enable button mode, which hides and shows the input field
        * similar to how a modal works.
@@ -166,6 +184,7 @@ class EOxGeoSearch extends LitElement {
        */
       params: {
         type: Object,
+        attribute: "false",
       },
     };
   }
