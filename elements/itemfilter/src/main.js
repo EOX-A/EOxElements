@@ -29,12 +29,29 @@ import {
 } from "./helpers/index.js";
 
 /**
- * EOxItemFilter is a custom web component that provides a comprehensive item filtering system.
- * It includes methods for applying filters, searching, sorting results, and resetting filters.
- * The component supports both inline and dropdown modes for filter display.
+ * The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.
  *
- * @module EOxItemFilter
- * @extends {LitElement}
+ * Features:
+ * - Supports `text`, `select`, `multiselect`, `range` (including date), and `spatial` filters
+ * - Aggregates results by a property key (e.g. themes)
+ * - Inline mode for compact UI
+ * - Pre-set filter state via `state` in `filterProperties`
+ * - Nested property filtering using dot notation
+ * - External search API endpoint support via `externalFilter`
+ * - Auto-spreading of single-item aggregations to root level
+ * - Card display mode for results (`result-type="cards"`)
+ * - Secondary result action button with custom icon and event handler (`click:result-action`)
+ * - Customizable layout and styling via CSS variables
+ *
+ * Usage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.
+ *
+ * @element eox-itemfilter
+ * 
+ * @fires filter - When filters are applied, with `results` and `filters` in event detail
+ * @fires select - When a result is selected, with `selectedResult` in event detail
+ * @fires mouseenter:result - When a result is hovered
+ * @fires mouseleave:result - When a result is un-hovered
+ * @fires click:result-action - When a result action button is clicked
  */
 export class EOxItemFilter extends LitElement {
   // Define properties with defaults and types
