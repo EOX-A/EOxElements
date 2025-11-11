@@ -25,6 +25,7 @@ const STACLayerStory = {
       },
     ],
     zoom: 7,
+    storyCodeBefore: `import "@eox/map/src/plugins/advancedLayersAndSources"`,
   },
 };
 

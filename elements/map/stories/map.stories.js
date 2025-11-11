@@ -53,11 +53,89 @@ export default {
 
 /**
  * Basic map rendered using `eox-map` configuration
+ *
+ * This renders a map centered on Austria (`lon` of `15`, and `lat` of `48`), with a `zoom` of `7`. The `layers` property allows creating one or multiple layers, in this case it is creating one layer of type `Tile` (analog to OpenLayers `Tile` layer), with a source of type `OSM`(analog to Openlayers `OSM` source).
+ *
+ * Note that `properties.id` has been set. It is strongly recommended to always set a `properties.id` so that `eox-map` can perform smart layer updates (in essence, checking if the layer type is compatible, then keep it and switch out the source, or replacing the entire layer if the id is the same, or discarding the layer if the id is not present any longer after a property update).
+ *
+ * The `properties` passed in this object are passed along to the OpenLayers layer, so they are available there via the `get("<property>")` syntax, e.g. `eoxMap.map.getLayers().getArray()[0].get("id")`. `eox-map` also offers a helper function to get a layer by id: `eoxMap.getLayerById("<id>")`; this helper function also works recursively, so it finds layers inside groups as well.
+ *
+ * Notice that the `eox-map` DOM element has a property `map` which stores a reference to the actual OpenLayers map instance, so one could do e.g. `eoxMap.map.getView().getCenter()`, and other native OpenLayers things.
  */
 export const Primary = PrimaryStory;
 
 /**
+ * Instead of passing each property individually, one can also pass a `config` property:
+ * Note two things here: when using the `config` property, then `center` and `zoom` are nested inside the `view` property. Secondly, this example includes `controls`: by passing `Zoom: {}` this enables the OpenLayers `Zoom` control, without any options (which could be passed inside the object).
+* `config` supports the following properties:
+* 
+* ```ts
+* export type ConfigObject = {
+*   controls: ControlDictionary;
+*   layers: EoxLayers;
+*   view: {
+*     center: Array<number>;
+*     zoom: number;
+*     zoomExtent?: import("ol/extent").Extent;
+*     projection?: ProjectionLike;
+*     minZoom?: number;
+*     maxZoom?: number;
+*   };
+*   preventScroll: boolean;
+*   animationOptions?: EOxAnimationOptions;
+* };
+* ```
+* 
+* ```ts
+* export type ControlDictionary = {
+*   Zoom?: ConstructorParameters<typeof import("ol/control/Zoom").default>[0];
+*   ScaleLine?: ConstructorParameters<
+*     typeof import("ol/control/ScaleLine").default
+*   >[0];
+*   Rotate?: ConstructorParameters<typeof import("ol/control/Rotate").default>[0];
+*   FullScreen?: ConstructorParameters<
+*     typeof import("ol/control/FullScreen").default
+*   >[0];
+*   ZoomSlider?: ConstructorParameters<
+*     typeof import("ol/control/ZoomSlider").default
+*   >[0];
+*   Attribution?: ConstructorParameters<
+*     typeof import("ol/control/Attribution").default
+*   >[0];
+*   OverviewMap?: Override<
+*     ConstructorParameters<typeof import("ol/control/OverviewMap").default>[0],
+*     { layers?: EoxLayer[] | AnyLayer[] }
+*   >;
+*   ZoomToExtent?: ConstructorParameters<
+*     typeof import("ol/control/ZoomToExtent").default
+*   >[0];
+*   MousePosition?: ConstructorParameters<
+*     typeof import("ol/control/MousePosition").default
+*   >[0];
+*   Geolocation?: ConstructorParameters<
+*     typeof import("./controls/geo-location").default
+*   >[0];
+*   LoadingIndicator?: ConstructorParameters<
+*     typeof import("./controls/loading-indicator").default
+*   >[0];
+* };
+```
+
+```ts
+export type ProjectionLike = import("ol/proj").ProjectionLike;
+```
+
+```ts
+export type EOxAnimationOptions = import("ol/View").AnimationOptions &
+  import("ol/View").FitOptions;
+```
+ */
+export const ConfigObject = ConfigObjectStory;
+
+/**
  * Basic vector layer map rendered using `GeoJSON`
+ * This example also shows how to pass multiple layers (two objects in the layers array).
+ * Notice that no zoom or center are set; they default to center `[0, 0]` and `zoom`of `0`. Also notice, that as of version `v1.x.x` of `eox-map` the layer ordering is reversed in comparison to OpenLayers: the later in the `layers` array, the sooner the layer is rendered in OpenLayers; this is done to have a visual "feel" when looking at the layers array, that the visually (as in the code) "topmost" is actually the "topmost" layer on the map. The layers array is reversed before rendering in OpenLayers. With version `v2.x.x` this will likely be changed to match OpenLayers' (and other map frameworks) common practice of creating layers from an array.
  */
 export const VectorLayer = VectorLayerStory;
 
@@ -230,8 +308,6 @@ export const MapSync = MapSyncStory;
  * or `undefined` (default, both visible).
  */
 export const ABCompare = ABCompareStory;
-
-export const ConfigObject = ConfigObjectStory;
 
 /**
  * The projection of the view can be changed via the `projection`-attribute.
