@@ -16,8 +16,8 @@ export default {
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
       .style=${args.style}
-      @pointermove:item=${eval(args["pointermove:item"])}
-      @click:item=${eval(args["click:item"])}
+      @pointermove:item=${args["pointermove:item"]}
+      @click:item=${args["click:item"]}
     ></eox-chart>
   `,
 };

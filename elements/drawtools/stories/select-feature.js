@@ -10,7 +10,9 @@ export const SelectFeature = {
     multipleFeatures: false,
     type: "Polygon",
     layerId: "regions",
-    drawupdate: `(e) => { console.log('drawUpdate:', e.detail); }`,
+    drawupdate: (e) => {
+      console.log("drawUpdate:", e.detail);
+    },
     storyAdditionalComponents: {
       "eox-map": {
         id: "select",
@@ -25,7 +27,7 @@ export const SelectFeature = {
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
       layer-id="${args.layerId}"
-      @drawupdate=${eval(args.drawupdate)}
+      @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
       id="${args.storyAdditionalComponents["eox-map"].id}"

@@ -11,9 +11,9 @@ export const Formats = {
     type: "Box",
     format: "feature",
     multipleFeatures: true,
-    drawupdate: `(e) => {
-      console.log(\`returned values in \${e.target?.format} format \`, e.detail);
-    }`,
+    drawupdate: (e) => {
+      console.log(`returned values in ${e.target?.format} format `, e.detail);
+    },
     storyAdditionalComponents: {
       "eox-map": {
         id: "formats",
@@ -29,7 +29,7 @@ export const Formats = {
       ?multiple-features=${args.multipleFeatures}
       type=${args.type}
       format=${args.format}
-      @drawupdate=${eval(args.drawupdate)}
+      @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}

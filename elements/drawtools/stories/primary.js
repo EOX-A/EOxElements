@@ -26,7 +26,7 @@ export const Primary = {
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
-      @drawupdate=${eval(args["drawupdate"])}
+      @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}

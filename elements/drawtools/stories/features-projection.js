@@ -10,12 +10,12 @@ export const FeaturesProjection = {
     for: "eox-map#feature-projection-map",
     projection: "EPSG:3857",
     type: "Box",
-    drawupdate: `(e) => {
+    drawupdate: (e) => {
       console.log(
-        \`extent of the created feature in \${e.target?.projection}\`,
+        `extent of the created feature in ${e.target?.projection}`,
         e.detail?.[0]?.getGeometry().getExtent(),
       );
-    }`,
+    },
     storyAdditionalComponents: {
       "eox-map": {
         id: "feature-projection-map",
@@ -30,7 +30,7 @@ export const FeaturesProjection = {
       for=${args.for}
       projection=${args.projection}
       type=${args.type}
-      @drawupdate=${eval(args.drawupdate)}
+      @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}

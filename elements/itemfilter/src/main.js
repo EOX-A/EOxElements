@@ -46,7 +46,7 @@ import {
  * Usage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.
  *
  * @element eox-itemfilter
- * 
+ *
  * @fires filter - When filters are applied, with `results` and `filters` in event detail
  * @fires select - When a result is selected, with `selectedResult` in event detail
  * @fires mouseenter:result - When a result is hovered

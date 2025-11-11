@@ -18,14 +18,16 @@ export const ModifyFeatures = {
         layers: STORIES_LAYERS_ARRAY,
       },
     },
-    drawupdate: `(e) => { console.log('drawupdate', e.detail); }`,
+    drawupdate: (e) => {
+      console.log("drawupdate", e.detail);
+    },
   },
   render: (args) => html`
     <eox-drawtools
       for="${args.for}"
       ?multiple-features="${args.multipleFeatures}"
       ?allow-modify="${args.allowModify}"
-      @drawupdate=${eval(args.drawupdate)}
+      @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
       id="${args.storyAdditionalComponents["eox-map"].id}"

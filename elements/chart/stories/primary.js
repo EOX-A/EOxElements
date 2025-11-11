@@ -22,8 +22,10 @@ const Primary = {
         y: { field: "b", type: "quantitative" },
       },
     },
-    "pointermove:item": `(e) => console.log("Chart hovered! Hovered item: ", e.detail.item)`,
-    "click:item": `(e) => console.log("Chart clicked! Clicked item: ", e.detail.item)`,
+    "pointermove:item": (e) =>
+      console.log("Chart hovered! Hovered item: ", e.detail.item),
+    "click:item": (e) =>
+      console.log("Chart clicked! Clicked item: ", e.detail.item),
   },
 };
 export default Primary;

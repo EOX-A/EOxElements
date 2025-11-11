@@ -26,7 +26,9 @@ export const MultiFeatureSelect = {
         "stroke-width": 2.5,
       },
     },
-    drawupdate: `(e) => { console.log('drawUpdate:', e.detail); }`,
+    drawupdate: (e) => {
+      console.log("drawUpdate:", e.detail);
+    },
     storyAdditionalComponents: {
       "eox-map": {
         id: "multi-select",
@@ -46,7 +48,7 @@ export const MultiFeatureSelect = {
       .featureStyles=${args.featureStyles}
       .featureName=${args.featureName}
       .featureNameKey=${args.featureNameKey}
-      @drawupdate=${eval(args.drawupdate)}
+      @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
       id="${args.storyAdditionalComponents["eox-map"].id}"
