@@ -12,6 +12,23 @@ import {
   hasColon,
 } from "../helpers";
 
+// Helper to choose correct quoting for event handler
+function quoteEventHandler(value) {
+  const serialized = serialize(value, { unsafe: true });
+  const hasDouble = serialized.includes('"');
+  const hasSingle = serialized.includes("'");
+  if (hasDouble && !hasSingle) {
+    return `'${serialized}'`;
+  } else if (!hasDouble && hasSingle) {
+    return `\"${serialized}\"`;
+  } else if (hasDouble && hasSingle) {
+    // Escape double quotes and use double quotes
+    return `\"${serialized.replace(/\"/g, '\\"')}\"`;
+  } else {
+    return `\"${serialized}\"`;
+  }
+}
+
 export const render = async (data) => {
   const elements = parseElements(data);
 
@@ -145,11 +162,7 @@ ${elements
     ${
       !useImperativeEvents
         ? element.events
-            .map(([key, value]) => {
-              // Escape quotes for HTML attribute
-              const escapedValue = value.replace(/"/g, "&quot;");
-              return `@${key}="${escapedValue}"`;
-            })
+            .map(([key, value]) => `@${key}=${quoteEventHandler(value)}`)
             .join("\n      ")
         : ""
     }
