@@ -34,6 +34,7 @@ export const parseElements = (storyData) => {
           "storyCodeBefore",
           "storyCodeAfter",
           "storySlotContent",
+          "storyStyle",
         ].includes(key) &&
           !attributes.find(([aKey, aValue]) => aKey === key) &&
           !events.find(([eKey, eValue]) => eKey === key)),

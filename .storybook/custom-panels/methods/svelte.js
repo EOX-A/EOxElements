@@ -57,7 +57,9 @@ ${element.events
     : ""
 }
 
-onMount(() => {
+${
+  elements.some((e) => e.properties.length > 0)
+    ? `onMount(() => {
   ${elements
     .map((element) => {
       const elRef = `${camelize(element.tagName)}Ref`;
@@ -101,7 +103,9 @@ onMount(() => {
     })
     .join("\n")}
   ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
-});
+});`
+    : ""
+}
 
 ${
   useImperativeEvents
@@ -175,6 +179,7 @@ ${element.tagName} {
       : "";
   })
   .join("")}
+  ${data.args.storyStyle}
 </style>
   `
     : ""

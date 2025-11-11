@@ -71,6 +71,7 @@ export const render = async (data) => {
         .join("\n        ");
 
       return `
+      ${data.args.storyStyle ? `\n<style>{\`${data.args.storyStyle}\`}</style>\n` : ""}
       <${element.tagName}
         ref={${camelize(element.tagName)}Ref}
         ${otherAttributes}
@@ -80,7 +81,7 @@ export const render = async (data) => {
     .join("\n");
 
   const returnBlock =
-    elements.length > 1
+    elements.length > 1 || data.args.storyStyle
       ? `
   return (
     <>
@@ -108,7 +109,9 @@ export default function StorySnippet() {
     .map((element) => `const ${camelize(element.tagName)}Ref = useRef(null);`)
     .join("\n")}
 
-  // Assign properties
+  ${
+    elements.some((e) => e.properties.length > 0)
+      ? `// Assign properties
   useEffect(() => {
     ${elements
       .map((element) =>
@@ -135,12 +138,16 @@ export default function StorySnippet() {
       )
       .join("\n")}
       ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
-  }, []);
+  }, []);`
+      : ""
+  }
 
-  // Add event listeners${elements
-    .map((element) =>
-      element.events.length > 0
-        ? `
+  ${
+    elements.some((e) => e.properties.length > 0)
+      ? `// Add event listeners${elements
+          .map((element) =>
+            element.events.length > 0
+              ? `
   useEffect(() => {
     const el = ${camelize(element.tagName)}Ref.current;
     if (!el) return;
@@ -162,9 +169,11 @@ export default function StorySnippet() {
     };
   }, []);
   `
-        : "",
-    )
-    .join("\n")}
+              : "",
+          )
+          .join("\n")}`
+      : ""
+  }
 
   ${returnBlock}
 }

@@ -58,6 +58,7 @@ export const render = async (data) => {
 
   return await prettier.format(
     `
+${data.args.storyStyle ? `<style>\n${data.args.storyStyle}\n</style>` : ""}
 ${elementData
   .map(
     (element) => `

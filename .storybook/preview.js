@@ -63,7 +63,7 @@ const preview = {
           members: properties,
         } = customElements.modules.find(
           (m) => m.declarations[0].tagName === component,
-        ).declarations[0];
+        )?.declarations[0] || {};
         return [
           ...(properties
             ? properties.map((m) => ({
@@ -137,6 +137,7 @@ const preview = {
         "storyCodeBefore",
         "storyCodeAfter",
         "storySlotContent",
+        "storyStyle",
       ],
     },
   },
