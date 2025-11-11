@@ -137,10 +137,10 @@ export default function StorySnippet() {
           : "",
       )
       .join("\n")}
-      ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
-  }, []);`
+      }, []);`
       : ""
   }
+    ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 
   ${
     elements.some((e) => e.properties.length > 0)

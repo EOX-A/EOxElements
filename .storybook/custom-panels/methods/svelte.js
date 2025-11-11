@@ -102,10 +102,10 @@ ${
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}
-  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
-});`
+    });`
     : ""
 }
+  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 
 ${
   useImperativeEvents
