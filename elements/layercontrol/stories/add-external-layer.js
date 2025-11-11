@@ -4,6 +4,7 @@ import {
   STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
 } from "../src/enums";
+import { useArgs } from "storybook/internal/preview-api";
 
 export const addExternalLayerStory = {
   args: {
@@ -29,7 +30,7 @@ export const addExternalLayerStory = {
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
         .addExternalLayers=${args.addExternalLayers}
-        for=${arg.id}
+        for=${useArgs.id}
         .style=${args.style}
       ></eox-layercontrol>
       <eox-map

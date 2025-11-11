@@ -197,7 +197,8 @@ export class EOxJSONForm extends LitElement {
    * Dummy placeholder for submit event dispatching
    * as it is actually displatched from ./helpers/editor.js
    */
-  // @ts-expect-error no-unused-private-class-members Not used, since it is a dummy
+  // @ts-expect-error Not used, since it is a dummy placeholder
+  // eslint-disable-next-line
   #dispatchSubmit() {
     /**
      * Form has been submitted (if a submit button is present). Event detail includes the current value
