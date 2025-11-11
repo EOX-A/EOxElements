@@ -5,12 +5,22 @@ import {
   STORIES_MAP_STYLE,
 } from "../src/enums";
 
-export const addExternalLayer = {
+export const addExternalLayerStory = {
   args: {
     idProperty: "id",
     titleProperty: "title",
     unstyled: false,
     addExternalLayers: true,
+    for: "eox-map#external",
+    additionalComponents: {
+      "eox-map": {
+        style: STORIES_MAP_STYLE,
+        zoom: 3,
+        layers: STORIES_MAIN_MAP_LAYERS,
+        id: "external",
+      },
+    },
+    style: STORIES_LAYERCONTROL_STYLE,
   },
   render: (args) => html`
     <div style="display: flex">
@@ -19,16 +29,17 @@ export const addExternalLayer = {
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
         .addExternalLayers=${args.addExternalLayers}
-        for="eox-map"
-        .style=${STORIES_LAYERCONTROL_STYLE}
+        for=${arg.id}
+        .style=${args.style}
       ></eox-layercontrol>
       <eox-map
-        .style=${STORIES_MAP_STYLE}
-        .zoom=${3}
-        .layers=${STORIES_MAIN_MAP_LAYERS}
+        .id=${args.additionalComponents["eox-map"].id}
+        .style=${args.additionalComponents["eox-map"].style}
+        .zoom=${args.additionalComponents["eox-map"].zoom}
+        .layers=${args.additionalComponents["eox-map"].layers}
       ></eox-map>
     </div>
   `,
 };
 
-export default addExternalLayer;
+export default addExternalLayerStory;

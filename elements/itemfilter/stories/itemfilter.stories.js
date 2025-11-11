@@ -51,6 +51,7 @@ export const AutoSpread = AutoSpreadStory();
 
 /**
  * Render results in a responsive card grid using the `result-type` property set to `cards`. Ideal for visual browsing and highlighting item images and details.
+ * Requires to also import `@eox/layout` for card styling.
  */
 export const CardDisplay = CardDisplayStory();
 

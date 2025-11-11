@@ -128,6 +128,17 @@ const preview = {
         },
       },
     },
+    controls: {
+      exclude: [
+        "id",
+        "style",
+        "class",
+        "storyAdditionalComponents",
+        "storyCodeBefore",
+        "storyCodeAfter",
+        "storySlotContent",
+      ],
+    },
   },
   globalTypes: {
     "code-language": {
