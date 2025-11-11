@@ -6,7 +6,7 @@ export default {
     style: "position: relative !important; height: 250px;",
     unstyled: undefined,
     submit: (e) => console.log("Feedback submitted", e.detail),
-    close: (e) => console.log("Feedback closed"),
+    close: () => console.log("Feedback closed"),
   },
   render: (args) => html`
     <div style="${args.style}">
