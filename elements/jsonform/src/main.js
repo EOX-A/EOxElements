@@ -12,6 +12,22 @@ import isEqual from "lodash.isequal";
 import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
 
 /**
+ * `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.
+ * It is based on [JSON Editor](https://github.com/json-editor/json-editor) and extends its functionality to support various advanced features.
+ * Also check out the [JSON Editor documentation](https://github.com/json-editor/json-editor?tab=readme-ov-file#options) for more details on the available options and configurations.
+ *
+ * Features:
+ * - Renders forms from JSON schema, supporting complex nested structures and custom validation.
+ * - All properties and event handlers are passed via args, enabling dynamic configuration and integration.
+ * - Supports custom editor interfaces for advanced input types and external editor integration (e.g., Ace, Markdown, spatial drawtools).
+ * - Handles spatial inputs (bounding box, polygons, points, lines) and outputs in various formats (GeoJSON, WKT).
+ * - Allows toggling and opt-in/optional properties, with dynamic visibility and value updates.
+ * - Can load schema and values from external URLs, supporting async loading and ready events.
+ * - Integrates with `eox-map` for spatial feature selection when required.
+ * - Supports unstyled rendering for custom design integration.
+ *
+ * See the stories for usage examples covering validation, custom editors, spatial inputs, opt-in/optional properties, external loading, and more.
+ *
  * @typedef {JSON & {properties: object}} JsonSchema
  * @element eox-jsonform
  */
@@ -135,10 +151,10 @@ export class EOxJSONForm extends LitElement {
     this._value = newVal;
   }
 
-  /**
-   * Editor has loaded schema and API is ready to be used
-   */
   #emitReady() {
+    /**
+     * Editor has loaded schema and API is ready to be used
+     */
     this.dispatchEvent(new Event("ready"));
   }
 
@@ -148,6 +164,9 @@ export class EOxJSONForm extends LitElement {
   #emitValue() {
     if (this.options?.show_opt_in) setTimeout(() => initShowOptInElement(this));
 
+    /**
+     * The value of the form has changed. Event detail includes the new value
+     */
     this.dispatchEvent(
       new CustomEvent(`change`, {
         detail: this.value,
@@ -172,6 +191,23 @@ export class EOxJSONForm extends LitElement {
         this.#emitValue();
       });
     });
+  }
+
+  /**
+   * Dummy placeholder for submit event dispatching
+   * as it is actually displatched from ./helpers/editor.js
+   */
+  #dispatchSubmit() {
+    /**
+     * Form has been submitted (if a submit button is present). Event detail includes the current value
+     */
+    this.dispatchEvent(
+      new CustomEvent("submit", {
+        detail: "dummy",
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   /**

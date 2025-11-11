@@ -9,7 +9,16 @@ export const Primary = {
   args: {
     idProperty: "id",
     titleProperty: "title",
+    for: "eox-map",
     unstyled: false,
+    style: STORIES_LAYERCONTROL_STYLE,
+    additionalComponents: {
+      "eox-map": {
+        style: STORIES_MAP_STYLE,
+        zoom: 3,
+        layers: STORIES_MAIN_MAP_LAYERS,
+      },
+    },
   },
   render: (args) => html`
     <div style="display: flex">
@@ -17,13 +26,13 @@ export const Primary = {
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
-        for="eox-map"
-        .style=${STORIES_LAYERCONTROL_STYLE}
+        for=${args.for}
+        .style=${args.style}
       ></eox-layercontrol>
       <eox-map
-        .style=${STORIES_MAP_STYLE}
-        .zoom=${3}
-        .layers=${STORIES_MAIN_MAP_LAYERS}
+        .style=${args.additionalComponents["eox-map"].style}
+        .zoom=${args.additionalComponents["eox-map"].zoom}
+        .layers=${args.additionalComponents["eox-map"].layers}
       ></eox-map>
     </div>
   `,

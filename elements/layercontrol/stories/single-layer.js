@@ -11,6 +11,7 @@ export const SingleLayer = {
     titleProperty: "title",
     unstyled: false,
     noShadow: false,
+    style: STORIES_LAYERCONTROL_STYLE,
   },
   render: (args) => html`
     <div style="display: flex">
@@ -19,7 +20,7 @@ export const SingleLayer = {
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
-        .style=${STORIES_LAYERCONTROL_STYLE}
+        .style=${args.style}
       ></eox-layercontrol>
       <eox-map
         id="single"
