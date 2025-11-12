@@ -4,7 +4,6 @@ import {
   STORIES_LAYERCONTROL_STYLE,
   STORIES_MAP_STYLE,
 } from "../src/enums";
-import { useArgs } from "storybook/internal/preview-api";
 
 export const addExternalLayerStory = {
   args: {
