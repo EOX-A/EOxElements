@@ -32,7 +32,6 @@ const CustomTooltipStory = {
         }
       },
     )`,
-    storyCodeAfter: `document.querySelector("eox-map").addEventListener("mounted", e => console.log("map mounted!"))`,
     layers: [
       {
         type: "Vector",
@@ -58,18 +57,18 @@ const CustomTooltipStory = {
     ],
     center: [15, 48],
     zoom: 4,
+    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <script>
       ${args.storyCodeBefore};
     </script>
     <eox-map
-      id="customTooltip"
-      style="width: 100%; height: 300px;"
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
       .zoom=${args.zoom}
+      style=${args.style}
     >
       <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
     </eox-map>
