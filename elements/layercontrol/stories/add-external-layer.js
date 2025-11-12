@@ -30,7 +30,7 @@ export const addExternalLayerStory = {
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
         .addExternalLayers=${args.addExternalLayers}
-        for=${useArgs.id}
+        for=${args.for}
         .style=${args.style}
       ></eox-layercontrol>
       <eox-map

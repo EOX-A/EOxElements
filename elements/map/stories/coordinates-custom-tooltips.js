@@ -192,9 +192,6 @@ const falseColor = {
 };`,
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
-    <script>
-      ${args.storyCodeBefore};
-    </script>
     <eox-map
       .center=${args.center}
       .controls=${args.controls}

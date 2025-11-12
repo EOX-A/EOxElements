@@ -97,9 +97,6 @@ export default {
     storyCodeBefore: `import { JSONEditor } from "@json-editor/json-editor/src/core.js";`,
   },
   render: (args) => html`
-    <script type="module">
-      ${args.storyCodeBefore};
-    </script>
     <eox-jsonform
       .schema=${args.schema}
       .value=${args.value}
