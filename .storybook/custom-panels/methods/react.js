@@ -82,7 +82,6 @@ export const render = async (data) => {
       .join("\n        ");
 
     let children = "";
-    // If I am the main element, my children are slotted elements
     if (element.isPrimary) {
       const slottedElementsJSX = slottedElements
         .map(renderElementJSX)
@@ -91,12 +90,11 @@ export const render = async (data) => {
         children += `\n${data.args.storySlotContent}\n`;
       if (slottedElementsJSX) children += `\n${slottedElementsJSX}\n`;
     }
-    // If I am the wrapper element, my children are the main element AND sibling elements
     if (element.storyWrap) {
       const mainElementJSX = mainElement ? renderElementJSX(mainElement) : "";
       const siblingElementsJSX = siblingElements.map(renderElementJSX).join("");
-      if (mainElementJSX) children += `${mainElementJSX}\n`;
-      if (siblingElementsJSX) children += `${siblingElementsJSX}\n`;
+      if (mainElementJSX) children += `\n${mainElementJSX}\n`;
+      if (siblingElementsJSX) children += `\n${siblingElementsJSX}\n`;
     }
 
     if (children.trim() === "") {
@@ -126,17 +124,14 @@ export const render = async (data) => {
     `;
   }
 
-  const elementsJsx = `
-    ${data.args.storyStyle ? `\n<style>{\`${data.args.storyStyle}\`}</style>\n` : ""}
-    ${rootElementsJsx}
-  `;
+  const elementsJsx = rootElementsJsx;
 
   const finalRootCount = wrapperElement
     ? 1
     : siblingElements.length + (mainElement ? 1 : 0);
 
   const returnBlock =
-    finalRootCount > 1 || data.args.storyStyle
+    finalRootCount > 1
       ? `
   return (
     <>
@@ -172,6 +167,24 @@ export default function StorySnippet() {
   ${elementData
     .map((element) => `const ${element.varName} = useRef(null);`)
     .join("\n")}
+
+  ${
+    data.args.storyStyle
+      ? `
+  // Inject component-specific styles
+  useEffect(() => {
+    const styleEl = document.createElement('style');
+    styleEl.innerHTML = \`${data.args.storyStyle}\`;
+    document.head.appendChild(styleEl);
+
+    // Cleanup: remove the style tag when the component unmounts
+    return () => {
+      document.head.removeChild(styleEl);
+    };
+  }, []); // Run only once on mount
+  `
+      : ""
+  }
 
   ${
     elementData.some((e) => e.properties.length > 0)
