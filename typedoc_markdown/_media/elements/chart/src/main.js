@@ -9,6 +9,20 @@ import { renderChartMethod } from "./methods/render";
  *
  * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
  *
+ * Default `spec` settings (see the file `src/enums/default-spec.js`):
+ * - `width`: "container" (make the chart width responsive to the parent)
+ * - `height`: "container" (make the chart height responsive to the parent)
+ * - `autosize`: "fit" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)
+ * - `resize`: true (autosize layout is re-calculated on every view update)
+ * - `padding`: 16 (the padding in pixels to add around the visualization)
+ *
+ * These default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default
+ * Vega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.
+ *
+ * Helper functionalities:
+ *
+ * The `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.
+ *
  * @element eox-chart
  */
 export class EOxChart extends LitElement {
@@ -59,10 +73,12 @@ export class EOxChart extends LitElement {
     this.unstyled = false;
   }
 
+  /**
+   * @private
+   */
   _dispatchItemPointerMoveEvent(detail) {
     /**
-     * Chart item is hovered. Event detail includes
-     * `event` (pointermove event) and `item` (the hovered item on the chart)
+     * Chart item is hovered. Event detail includes `event` (pointermove event) and `item` (the hovered item on the chart)
      *
      */
     this.dispatchEvent(
@@ -72,10 +88,12 @@ export class EOxChart extends LitElement {
     );
   }
 
+  /**
+   * @private
+   */
   _dispatchItemClickEvent(detail) {
     /**
-     * Chart item is clicked. Event detail includes
-     * `event` (click event) and `item` (the clicked item on the chart)
+     * Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)
      *
      */
     this.dispatchEvent(

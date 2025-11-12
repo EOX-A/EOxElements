@@ -35,42 +35,42 @@ export default {
 };
 
 /**
- * In its most basic form, the element fetches a STAC file and displays its properties.
+ * Basic usage of eox-stacinfo. Automatically fetches a STAC file and displays its properties in configurable sections (header, tags, body, featured, footer).
+ * The `for` attribute/property should point to a valid STAC resource URL.
  */
 export const Primary = PrimaryStory;
 
 /**
- * If only one body property is whitelisted, then it renders the content full-width and without the key.
+ * Renders only a single body property. When only one property is whitelisted in the body, the content is shown full-width and without a key label, for a cleaner look.
  */
 export const SingleProperty = SinglePropertyStory;
 
 /**
- * Individual STAC properties can be rendered in the header by using the `header` property.
+ * Displays selected STAC properties in the header section using the `header` attribute/property. Useful for highlighting key metadata at the top of the info panel.
  */
 export const Header = HeaderPropertiesStory;
 
 /**
- * Individual STAC properties can be rendered as tags by using the `tags` property.
+ * Renders selected STAC properties as tags using the `tags` attribute/property. This is useful for visualizing categorical or thematic metadata as compact tags.
  */
 export const Tags = TagsStory;
 
 /**
- * Individual STAC properties can be rendered in a more prominent way by using the `featured` property.
+ * Highlights important STAC properties in a prominent featured section using the `featured` attribute/property. This section is ideal for drawing attention to key dataset attributes.
  */
 export const FeaturedProperties = FeaturedPropertiesStory;
 
 /**
- * The `footer` allows to highlight one or more properties in a dedicated section.
+ * Displays one or more STAC properties in a dedicated footer section using the `footer` attribute/property. Useful for citations or additional metadata at the bottom of the info panel.
  */
 export const Footer = FooterStory;
 
 /**
- * Custom rendering of properties can be achieved using `slots`.
- * Automatically generated slots are provided for body properties, featured properties, featured summaries, header and footer.
+ * Demonstrates custom slot rendering for properties. Slots can be used to override the default rendering of any property, enabling advanced customization and integration with application-specific UI.
  */
 export const CustomSlotContent = CustomSlotContentStory;
 
 /**
- * By using the `unstyled` attribute, only the bare minimum styles are applied to the element.
+ * Shows the unstyled version of the element. By setting the `unstyled` attribute/property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
  */
 export const Unstyled = UnstyledStory;

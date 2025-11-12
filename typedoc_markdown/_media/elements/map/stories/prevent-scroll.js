@@ -18,12 +18,10 @@ const PreventScrollStory = {
       },
       preventScroll: true,
     },
+    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
-    <eox-map
-      style="width: 100%; height: 300px;"
-      .config=${args.config}
-    ></eox-map>
+    <eox-map .config=${args.config} style=${args.style}></eox-map>
   `,
 };
 

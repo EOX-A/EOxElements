@@ -6,24 +6,36 @@ import {
   STORIES_LAYER_TERRAIN_LIGHT,
 } from "../src/enums";
 
-export const LayerConfig = {
-  args: {},
-  render: () => html`
+export const LayerConfigStory = {
+  args: {
+    tools: ["config"],
+    for: "eox-map#config",
+    storyAdditionalComponents: {
+      "eox-map": {
+        center: [-7000000, -500000],
+        zoom: 4,
+        style: STORIES_MAP_STYLE,
+        layers: [STORIES_LAYER_DEFORESTED_BIOMASS, STORIES_LAYER_TERRAIN_LIGHT],
+        id: "config",
+      },
+    },
+    storyCodeBefore: 'import "@eox/jsonform"',
+    style: STORIES_LAYERCONTROL_STYLE,
+  },
+  render: (args) => html`
     <eox-layercontrol
-      .tools=${["config"]}
-      for="eox-map#config"
-      .style=${STORIES_LAYERCONTROL_STYLE}
+      .tools=${args.tools}
+      .for=${args.for}
+      .style=${args.style}
     ></eox-layercontrol>
-    <hr />
     <eox-map
-      .center=${[-7000000, -500000]}
-      .zoom=${4}
-      id="config"
-      .style=${STORIES_MAP_STYLE}
-      .layers=${[STORIES_LAYER_DEFORESTED_BIOMASS, STORIES_LAYER_TERRAIN_LIGHT]}
-    >
-    </eox-map>
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .style=${args.storyAdditionalComponents["eox-map"].style}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
   `,
 };
 
-export default LayerConfig;
+export default LayerConfigStory;

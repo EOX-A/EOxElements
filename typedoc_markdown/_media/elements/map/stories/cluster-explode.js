@@ -89,6 +89,7 @@ const ClusterExplodeStory = {
         },
       },
     ],
+    storyCodeBefore: `import "@eox/map/src/plugins/advancedLayersAndSources"`,
   },
 };
 

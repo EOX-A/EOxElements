@@ -1,3 +1,5 @@
+import { html } from "lit";
+
 /**
  * External URL component demonstrating the configuration options for eox-jsonform
  * It renders json-form based on external url
@@ -9,11 +11,17 @@ const externalValue = `${
   window.location.href.split("iframe.html")[0]
 }/catalogValue.json`;
 
-const External = {
+export default {
   args: {
     schema: externalSchema,
     value: externalValue,
-    onReady: () => console.log("Schema loading finished, editor ready!"),
+    ready: () => console.log("Schema loading finished, editor ready!"),
   },
+  render: (args) => html`
+    <eox-jsonform
+      .schema=${args.schema}
+      .value=${args.value}
+      @ready=${args.ready}
+    ></eox-jsonform>
+  `,
 };
-export default External;

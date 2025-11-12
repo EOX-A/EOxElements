@@ -2,10 +2,11 @@
  * Collection component demonstrating the configuration options for eox-jsonform
  * It renders input form based on json-form config and STAC collection config
  */
+import { html } from "lit";
 import collectionSchema from "./public/collectionSchema.json";
 import collectionValue from "./public/collectionValue.json";
 
-const Collection = {
+export default {
   args: {
     schema: collectionSchema,
     value: collectionValue,
@@ -15,5 +16,12 @@ const Collection = {
     },
     propertiesToggle: true,
   },
+  render: (args) => html`
+    <eox-jsonform
+      .schema=${args.schema}
+      .value=${args.value}
+      .options=${args.options}
+      .propertiesToggle=${args.propertiesToggle}
+    ></eox-jsonform>
+  `,
 };
-export default Collection;

@@ -5,21 +5,13 @@
 import { html } from "lit";
 import geojsonSchema from "./public/geojsonSchema.json";
 
-const geoJson = {
+export default {
   args: {
     schema: geojsonSchema,
-    onChange: (e) => console.info("New value:", e.detail),
+    change: (e) => console.info("New value:", e.detail),
   },
   render: (args) => html`
     <p>Refer to the console for the returned values</p>
-    <eox-jsonform
-      .schema=${args.schema}
-      .value=${args.value}
-      .noShadow=${false}
-      .unstyled=${args.unstyled}
-      @change=${args.onChange}
-    ></eox-jsonform>
+    <eox-jsonform .schema=${args.schema} @change=${args.change}></eox-jsonform>
   `,
 };
-
-export default geoJson;

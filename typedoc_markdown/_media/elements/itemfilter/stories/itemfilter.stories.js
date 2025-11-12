@@ -19,51 +19,50 @@ export default {
 };
 
 /**
- * A basic example for an item filter configuration.
+ * A basic example for an item filter configuration, demonstrating all major filter types (`text`, `select`, `multiselect`, `range`, `spatial`) and result aggregation by property.
  */
 export const Primary = PrimaryStory();
 
 /**
- * Using `inlineMode`, the itemfilter is rendered in a single input field.
+ * Using `inlineMode`, the itemfilter is rendered in a single input field, ideal for compact UIs or toolbars. Results are hidden until a filter is applied.
  */
 export const InlineMode = InlineModeStory();
 
 /**
  * By using `state` inside the `filterProperties', it is possible to start the itemfilter.
- * with a pre-defined state.
+ * with a pre-defined state. Useful for initializing with default selections.
  */
 export const PreSetFilter = PreSetFilterStory();
 
 /**
- * By using dots (`.`) a nested property can be used as key.
+ * A nested property can be used as key using a dot notation in the filter key (e.g. `status.code`). This enables advanced filtering for deeply structured data.
  */
 export const NestedProperty = NestedPropertyStory();
 
 /**
- * Example showcasing how to use an external API endpoint
+ * Example of using an external API endpoint for filtering, with a custom `externalFilter` function. Allows integration with remote data sources and custom search logic.
  */
 export const External = ExternalStory();
 
 /**
- * When using the config option `autoSpreadSingle`, then result aggregations that have only one item.
- * get spread to the root level
+ * Use `autoSpreadSingle` to automatically spread single-item aggregations to the root level, simplifying the result view when only one item matches a filter.
  */
 export const AutoSpread = AutoSpreadStory();
 
 /**
- * When using `result-type` property with value `cards`, the results are not rendered in a list,
- * but in a responsive card grid
+ * Render results in a responsive card grid using the `result-type` property set to `cards`. Ideal for visual browsing and highlighting item images and details.
+ * Requires to also import `@eox/layout` for card styling.
  */
 export const CardDisplay = CardDisplayStory();
 
 /**
  * CSS variables can be used to modify the styling and layout of itemfilter: e.g. the `--form-flex-direction`
- * variable set to `row` instead of `column` (default)
+ * variable set to `row` instead of `column` (default) for a horizontal layout.
  */
 export const CSSVariables = CSSVariablesStory();
 
 /**
- * The `click:result-action` event is triggered when a result action is clicked. You can enable this event with `enableResultAction`. The icon can be configered with the
- * `resultActionIcon` property.
+ * The `click:result-action` event is triggered when a result action is clicked. You can enable  the secondary button and this event with `enableResultAction`.
+ * The icon can be configered with the `resultActionIcon` property. Useful for additional actions on results, such as opening details or triggering workflows.
  */
 export const ResultAction = ResultActionStory();

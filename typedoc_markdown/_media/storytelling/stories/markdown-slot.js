@@ -6,11 +6,13 @@ import { html } from "lit";
 
 export const MarkdownSlot = {
   args: {
-    markdown: "## Hello World, Markdown Inside Slot.",
+    id: "markdown-slot",
+    storySlotContent: "## Hello World, this is some Markdown Inside the slot.",
   },
   render: (args) => html`
-    <!-- Render eox-storytelling from markdown inside the slot. -->
-    <eox-storytelling id="markdown-slot">${args.markdown}</eox-storytelling>
+    <eox-storytelling id=${args.id}
+      >## Hello World, this is some Markdown Inside the slot.</eox-storytelling
+    >
   `,
 };
 

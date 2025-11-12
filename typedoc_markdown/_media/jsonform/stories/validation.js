@@ -1,8 +1,10 @@
+import { html } from "lit";
+
 /**
  * Demonstration of validation and button callback
  */
 
-const Validation = {
+export default {
   args: {
     schema: {
       type: "object",
@@ -69,7 +71,9 @@ const Validation = {
         },
       },
     },
-    onSubmit: (e) => alert(JSON.stringify(e.detail)),
+    submit: (e) => alert(JSON.stringify(e.detail)),
   },
+  render: (args) => html`
+    <eox-jsonform .schema=${args.schema} @submit=${args.submit}></eox-jsonform>
+  `,
 };
-export default Validation;

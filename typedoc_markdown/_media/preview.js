@@ -2,7 +2,12 @@ import { setCustomElementsManifest } from "@storybook/web-components-vite";
 import customElements from "../custom-elements.json";
 import typedocJson from "../types.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
-import { renderVanilla } from "./custom-panels/methods";
+import {
+  renderVanilla,
+  renderVue,
+  renderReact,
+  renderSvelte,
+} from "./custom-panels/methods";
 
 import "@eox/chart";
 import "@eox/drawtools";
@@ -58,7 +63,7 @@ const preview = {
           members: properties,
         } = customElements.modules.find(
           (m) => m.declarations[0].tagName === component,
-        ).declarations[0];
+        )?.declarations[0] || {};
         return [
           ...(properties
             ? properties.map((m) => ({
@@ -93,7 +98,7 @@ const preview = {
           acc[name] = {
             description: matchingType
               ? `${description} <br /> <code>${typeText.replace(matchingType.name, `<a target="_blank" href="${matchingType?.sources?.[0]?.url}">${matchingType.name}</a>`)}</code>`
-              : ``,
+              : description,
             table: {
               defaultValue: { summary: defaultValue },
               category,
@@ -110,9 +115,30 @@ const preview = {
         }, {});
       },
       source: {
-        transform: async (code, storyContext) =>
-          await renderVanilla(storyContext),
+        transform: async (_, storyContext) => {
+          const language = storyContext.globals["code-language"];
+          const renderers = {
+            react: renderReact,
+            svelte: renderSvelte,
+            vue: renderVue,
+            vanilla: renderVanilla,
+          };
+          const renderer = renderers[language] || renderVanilla;
+          return await renderer(storyContext);
+        },
       },
+    },
+    controls: {
+      exclude: [
+        "id",
+        "style",
+        "class",
+        "storyAdditionalComponents",
+        "storyCodeBefore",
+        "storyCodeAfter",
+        "storySlotContent",
+        "storyStyle",
+      ],
     },
   },
   globalTypes: {

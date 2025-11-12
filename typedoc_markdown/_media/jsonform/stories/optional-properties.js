@@ -1,9 +1,11 @@
+import { html } from "lit";
+
 /**
  * Demonstrating the configuration options for eox-jsonform
  * Shows optional properties editor
  */
 
-const OptionalProperties = {
+export default {
   args: {
     schema: {
       title: "Optional Properties Demo",
@@ -30,5 +32,11 @@ const OptionalProperties = {
       disable_properties: false,
     },
   },
+  render: (args) => html`
+    <eox-jsonform
+      .schema=${args.schema}
+      .value=${args.value}
+      .options=${args.options}
+    ></eox-jsonform>
+  `,
 };
-export default OptionalProperties;

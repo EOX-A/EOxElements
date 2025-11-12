@@ -109,7 +109,7 @@ export const STORIES_LAYER_OSM = {
 
 export const STORIES_LAYER_TERRAIN_LIGHT = {
   type: "Tile",
-  properties: { title: "Terrain Light" },
+  properties: { id: "terrain-light", title: "Terrain Light" },
   source: {
     type: "XYZ",
     url: S2MAP_URL("terrain-light_3857"),
