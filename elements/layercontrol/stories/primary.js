@@ -5,28 +5,27 @@ import {
   STORIES_MAP_STYLE,
 } from "../src/enums";
 
-export const Primary = {
+const PrimaryStory = {
   args: {
-    idProperty: "id",
-    titleProperty: "title",
-    unstyled: false,
+    style: STORIES_LAYERCONTROL_STYLE,
+    storyAdditionalComponents: {
+      "eox-map": {
+        style: STORIES_MAP_STYLE,
+        zoom: 3,
+        layers: STORIES_MAIN_MAP_LAYERS,
+      },
+    },
   },
   render: (args) => html`
     <div style="display: flex">
-      <eox-layercontrol
-        .idProperty=${args.idProperty}
-        .titleProperty=${args.titleProperty}
-        .unstyled=${args.unstyled}
-        for="eox-map"
-        .style=${STORIES_LAYERCONTROL_STYLE}
-      ></eox-layercontrol>
+      <eox-layercontrol .style=${args.style}></eox-layercontrol>
       <eox-map
-        .style=${STORIES_MAP_STYLE}
-        .zoom=${3}
-        .layers=${STORIES_MAIN_MAP_LAYERS}
+        .style=${args.storyAdditionalComponents["eox-map"].style}
+        .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+        .layers=${args.storyAdditionalComponents["eox-map"].layers}
       ></eox-map>
     </div>
   `,
 };
 
-export default Primary;
+export default PrimaryStory;

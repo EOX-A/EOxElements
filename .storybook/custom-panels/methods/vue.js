@@ -12,35 +12,158 @@ import {
   hasColon,
 } from "../helpers";
 
+// Helper to choose correct quoting for event handler
+function quoteEventHandler(value) {
+  const serialized = serialize(value, { unsafe: true });
+  const hasDouble = serialized.includes('"');
+  const hasSingle = serialized.includes("'");
+  if (hasDouble && !hasSingle) {
+    return `'${serialized}'`;
+  } else if (!hasDouble && hasSingle) {
+    return `"${serialized}"`;
+  } else if (hasDouble && hasSingle) {
+    // Escape double quotes and use double quotes
+    return `"${serialized.replace(/"/g, '\\"')}"`;
+  } else {
+    return `"${serialized}"`;
+  }
+}
+
 export const render = async (data) => {
   const elements = parseElements(data);
 
-  const hasEvents = elements.some((element) => element.events.length > 0);
+  const tagCounts = new Map();
+  elements.forEach((el) =>
+    tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
+  );
+  const varNameCounts = new Map();
+
+  const elementData = elements.map((element) => {
+    const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
+    const baseVarName = `${camelize(element.tagName)}Ref`;
+    let varName;
+    if (isDuplicatedTag) {
+      const count = (varNameCounts.get(baseVarName) || 0) + 1;
+      varNameCounts.set(baseVarName, count);
+      varName = `${baseVarName}${count}`;
+    } else {
+      varName = baseVarName;
+    }
+    return { ...element, varName };
+  });
+
+  const hasEvents = elementData.some((element) => element.events.length > 0);
   const useImperativeEvents =
     hasEvents &&
-    elements.some((el) => el.events.some(([key]) => hasColon(key)));
+    elementData.some((el) => el.events.some(([key]) => hasColon(key)));
 
   const vueImports = ["ref", "onMounted"];
   if (useImperativeEvents) {
     vueImports.push("onUnmounted");
   }
 
+  const wrapperElement = elementData.find((el) => el.storyWrap);
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const slottedElements = elementData.filter((el) => el.storySlot);
+  const siblingElements = elementData.filter(
+    (el) => !el.isPrimary && !el.storySlot && !el.storyWrap,
+  );
+
+  // Helper to render a single element's template
+  const renderElementTemplate = (element) => {
+    const eventHandlers = !useImperativeEvents
+      ? element.events
+          .map(([key, value]) => {
+            return `@${key}=${quoteEventHandler(value)}`;
+          })
+          .join("\n      ")
+      : "";
+
+    const attributesTemplate = element.attributes
+      .filter(([key, value]) => key !== "style")
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n      ");
+
+    let children = "";
+    // If I am the main element, my children are slotted elements
+    if (element.isPrimary) {
+      const slottedElementsTemplate = slottedElements
+        .map(renderElementTemplate)
+        .join("\n");
+      if (data.args.storySlotContent)
+        children += `\n${data.args.storySlotContent}\n`;
+      if (slottedElementsTemplate) children += `\n${slottedElementsTemplate}\n`;
+    }
+    // If I am the wrapper element, my children are the main element AND sibling elements
+    if (element.storyWrap) {
+      const mainElementTemplate = mainElement
+        ? renderElementTemplate(mainElement)
+        : "";
+      const siblingElementsTemplate = siblingElements
+        .map(renderElementTemplate)
+        .join("");
+      if (mainElementTemplate) children += `${mainElementTemplate}\n`;
+      if (siblingElementsTemplate) children += `${siblingElementsTemplate}\n`;
+    }
+
+    if (children.trim() === "") {
+      return `<${element.tagName}
+    ref="${element.varName}"
+    ${attributesTemplate}
+    ${eventHandlers}
+  ></${element.tagName}>`;
+    } else {
+      return `<${element.tagName}
+    ref="${element.varName}"
+    ${attributesTemplate}
+    ${eventHandlers}
+  >
+    ${children}
+  </${element.tagName}>`;
+    }
+  };
+
+  let templateOutput;
+  if (wrapperElement) {
+    templateOutput = renderElementTemplate(wrapperElement);
+  } else {
+    templateOutput = `
+      ${mainElement ? renderElementTemplate(mainElement) : ""}
+      ${siblingElements.map(renderElementTemplate).join("")}
+    `;
+  }
+
+  // Check if onMounted is needed at all
+  const needsOnMounted =
+    elementData.some((e) => e.properties.length > 0) ||
+    useImperativeEvents ||
+    data.args.storyCodeAfter;
+
+  const uniqueImports = [
+    ...new Set(
+      elementData
+        .filter((el) => el.storyImport)
+        .map(
+          (element) => `import "@eox/${element.tagName.replace("eox-", "")}";`,
+        ),
+    ),
+  ];
+
   return await prettier.format(
     `
 <script setup>
 import { ${vueImports.join(", ")} } from "vue";
 ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
-${elements
-  .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
-  .join("\n")}
 
-${elements
-  .map((element) => `const ${camelize(element.tagName)}Ref = ref(null);`)
+${uniqueImports.join("\n")}
+
+${elementData
+  .map((element) => `const ${element.varName} = ref(null);`)
   .join("\n")}
 
 ${
   useImperativeEvents
-    ? elements
+    ? elementData
         .map((element) =>
           element.events.length > 0
             ? `
@@ -58,11 +181,12 @@ ${element.events
     : ""
 }
 
-onMounted(() => {
-  ${elements
+${
+  needsOnMounted
+    ? `onMounted(() => {
+  ${elementData
     .map((element) => {
-      const elRef = `${camelize(element.tagName)}Ref.value`;
-
+      const elRef = `${element.varName}.value`;
       const propertiesBlock =
         element.properties.length > 0
           ? `
@@ -82,7 +206,6 @@ onMounted(() => {
   }
   `
           : "";
-
       const eventsBlock =
         useImperativeEvents && element.events.length > 0
           ? `
@@ -97,22 +220,23 @@ onMounted(() => {
   }
   `
           : "";
-
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}
-  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
-});
+    ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
+    });`
+    : ""
+}
 
 ${
   useImperativeEvents
     ? `
 onUnmounted(() => {
-  ${elements
+  ${elementData
     .map((element) =>
       element.events.length > 0
         ? `
-  const ${camelize(element.tagName)}El = ${camelize(element.tagName)}Ref.value;
+  const ${camelize(element.tagName)}El = ${element.varName}.value;
   if (${camelize(element.tagName)}El) {
     ${element.events
       .map(([key, value]) => {
@@ -133,38 +257,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-${elements
-  .map(
-    (element) => `
-  <${element.tagName}
-    ref="${camelize(element.tagName)}Ref"
-    ${element.attributes
-      .filter(([key, value]) => key !== "style")
-      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-      .join("\n      ")}
-    ${
-      !useImperativeEvents
-        ? element.events
-            .map(([key, value]) => {
-              // Escape quotes for HTML attribute
-              const escapedValue = value.replace(/"/g, "&quot;");
-              return `@${key}="${escapedValue}"`;
-            })
-            .join("\n      ")
-        : ""
-    }
-  >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
-  )
-  .join("\n")}
+${templateOutput}
 </template>
 
 ${
-  elements.find((element) =>
+  elementData.find((element) =>
     element.attributes.find(([key, value]) => key === "style"),
-  )
+  ) || data.args.storyStyle
     ? `
 <style scoped>
-${elements
+${elementData
   .map((element) => {
     const styleValue = element.attributes
       .filter(([key, value]) => key === "style")
@@ -179,6 +281,7 @@ ${element.tagName} {
       : "";
   })
   .join("")}
+  ${data.args.storyStyle ? `\n${data.args.storyStyle}` : ""}
 </style>
   `
     : ""

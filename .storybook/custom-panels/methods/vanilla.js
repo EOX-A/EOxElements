@@ -14,65 +14,122 @@ export const render = async (data) => {
   elements.forEach((el) =>
     tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
   );
-
-  // Keep track of counts *as we map* to create unique var names (e.g., eoxMap1, eoxMap2)
   const varNameCounts = new Map();
 
   // 2. Map elements to include their varName and selector strategy
   const elementData = elements.map((element, index) => {
     const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
     const baseVarName = camelize(element.tagName);
-
+    const existingId = element.attributes.find(([key]) => key === "id")?.[1];
     let varName;
-    let elId = null;
+    let elIdToRender = null;
     let selector;
-
+    let selectorId = existingId;
     if (isDuplicatedTag) {
-      // This tag appears more than once, so we MUST use IDs
       const count = (varNameCounts.get(baseVarName) || 0) + 1;
       varNameCounts.set(baseVarName, count);
-
-      varName = `${baseVarName}${count}`; // e.g., eoxMap1, eoxMap2
-      elId = `${element.tagName}-snippet-${index}`; // Unique ID
-      selector = `document.getElementById("${elId}")`;
+      varName = `${baseVarName}${count}`;
+      if (!existingId) {
+        elIdToRender = `${element.tagName}-snippet-${index}`;
+        selectorId = elIdToRender;
+      }
+      selector = `document.getElementById("${selectorId}")`;
     } else {
-      // This tag is unique, so we can use querySelector
-      varName = baseVarName; // e.g., eoxChart
+      varName = baseVarName;
       selector = `document.querySelector("${element.tagName}")`;
     }
-
-    return { ...element, varName, elId, selector };
+    return { ...element, varName, elIdToRender, selector };
   });
 
-  // Get unique lists for imports and whenDefined
+  // Get unique lists for imports (filtered)
   const uniqueImports = [
     ...new Set(
-      elements.map(
-        (element) =>
-          `import "@eox/${element.tagName.replace("eox-", "")}/dist/${
-            element.tagName
-          }.js";`,
-      ),
+      elementData
+        .filter((element) => element.storyImport)
+        .map(
+          (element) =>
+            `import "@eox/${element.tagName.replace("eox-", "")}/dist/${
+              element.tagName
+            }.js";`,
+        ),
     ),
   ];
 
+  // 3. Hierarchical Rendering Logic
+  const wrapperElement = elementData.find((el) => el.storyWrap);
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const slottedElements = elementData.filter((el) => el.storySlot);
+  const siblingElements = elementData.filter(
+    (el) => !el.isPrimary && !el.storySlot && !el.storyWrap,
+  );
+
+  // Helper to render a single element's HTML
+  const renderElementHTML = (element) => {
+    const attributesHTML = [
+      element.elIdToRender ? `id="${element.elIdToRender}"` : null,
+      ...element.attributes.map(
+        ([key, value]) => `${key}${value === true ? "" : `="${value}"`}`,
+      ),
+    ]
+      .filter(Boolean)
+      .join("\n        ");
+
+    let childrenHTML = "";
+
+    // If I am the main element, my children are slotted elements
+    if (element.isPrimary) {
+      const slottedElementsHTML = slottedElements
+        .map(renderElementHTML)
+        .join("\n");
+      if (data.args.storySlotContent)
+        childrenHTML += `\n${data.args.storySlotContent}\n`;
+      if (slottedElementsHTML) childrenHTML += `\n${slottedElementsHTML}\n`;
+    }
+
+    // If I am the wrapper element, my children are the main element AND sibling elements
+    if (element.storyWrap) {
+      const mainElementHTML = mainElement ? renderElementHTML(mainElement) : "";
+      const siblingElementsHTML = siblingElements
+        .map(renderElementHTML)
+        .join("");
+      if (mainElementHTML) childrenHTML += `${mainElementHTML}\n`;
+      if (siblingElementsHTML) childrenHTML += `${siblingElementsHTML}\n`;
+    }
+
+    if (childrenHTML.trim() === "") {
+      return `<${element.tagName}
+        ${attributesHTML}
+      ></${element.tagName}>`;
+    } else {
+      return `<${element.tagName}
+        ${attributesHTML}
+      >
+        ${childrenHTML}
+      </${element.tagName}>`;
+    }
+  };
+
+  let htmlOutput;
+  if (wrapperElement) {
+    // We have a wrapper, it's the only top-level element
+    htmlOutput = renderElementHTML(wrapperElement);
+  } else {
+    // No wrapper, render main and siblings at top level
+    htmlOutput = `
+      ${mainElement ? renderElementHTML(mainElement) : ""}
+      ${siblingElements.map(renderElementHTML).join("")}
+    `;
+  }
+
   return await prettier.format(
     `
-${elementData
-  .map(
-    (element) => `
-  <${element.tagName}
-    ${element.elId ? `id="${element.elId}"` : ""}
-    ${element.attributes
-      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-      .join("\n    ")}
-  >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
-  )
-  .join("")}
+${data.args.storyStyle ? `<style>\n${data.args.storyStyle}\n</style>\n` : ""}
+${htmlOutput}
 
 <script type="module">
 ${uniqueImports.join("\n")}
 ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
+
 ${elementData
   .map((element) => `const ${element.varName} = ${element.selector};`)
   .join("\n")}

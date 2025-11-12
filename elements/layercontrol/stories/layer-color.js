@@ -42,11 +42,21 @@ const COLORED_LAYERS = [
   },
 ];
 
-export const LayerColor = {
+export const layerColorStory = {
   args: {
     idProperty: "id",
     titleProperty: "title",
     unstyled: false,
+    for: "epxmap#color",
+    additionalComponents: {
+      "eox-map": {
+        style: STORIES_MAP_STYLE,
+        zoom: 3,
+        layers: COLORED_LAYERS,
+        id: "color",
+      },
+    },
+    style: STORIES_LAYERCONTROL_STYLE,
   },
   render: (args) => html`
     <div style="display: flex">
@@ -54,16 +64,17 @@ export const LayerColor = {
         .idProperty=${args.idProperty}
         .titleProperty=${args.titleProperty}
         .unstyled=${args.unstyled}
-        for="eox-map"
-        .style=${STORIES_LAYERCONTROL_STYLE}
+        for=${args.for}
+        .style=${args.style}
       ></eox-layercontrol>
       <eox-map
-        .style=${STORIES_MAP_STYLE}
-        .zoom=${3}
-        .layers=${COLORED_LAYERS}
+        id=${args.additionalComponents["eox-map"].id}
+        .style=${args.additionalComponents["eox-map"].style}
+        .zoom=${args.additionalComponents["eox-map"].zoom}
+        .layers=${args.additionalComponents["eox-map"].layers}
       ></eox-map>
     </div>
   `,
 };
 
-export default LayerColor;
+export default layerColorStory;

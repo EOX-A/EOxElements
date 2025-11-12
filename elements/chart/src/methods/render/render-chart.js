@@ -26,10 +26,12 @@ const renderChartMethod = (EOxChart, spec, opt, dataValues) => {
     }
     res.view.addEventListener("pointermove", (event, item) => {
       if (!item) return;
+      // @ts-expect-error using private method defined on EOxChart
       EOxChart._dispatchItemPointerMoveEvent({ event, item });
     });
     res.view.addEventListener("click", (event, item) => {
       if (!item) return;
+      // @ts-expect-error using private method defined on EOxChart
       EOxChart._dispatchItemClickEvent({ event, item });
     });
   });

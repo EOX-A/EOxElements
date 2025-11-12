@@ -12,20 +12,13 @@ import {
 } from "../helpers";
 
 // --- React-specific style helpers ---
-
-// Helper for CSS property names (e.g., "margin-left" -> "marginLeft")
 const cssToCamelCase = (s) => {
+  if (s.startsWith("--")) return `"${s}"`; // Don't camelCase CSS variables
   return s.replace(/-(\w)/g, (all, letter) => letter.toUpperCase());
 };
 
-/**
- * Converts a CSS style string into a React style object.
- * @param {string} styleStr - e.g., "width: 400px; height: 300px; margin-left: 7px"
- * @returns {object} - e.g., { width: "400px", height: "300px", marginLeft: "7px" }
- */
 const styleStringToObject = (styleStr) => {
   if (!styleStr || typeof styleStr !== "string") return null;
-
   return Object.fromEntries(
     styleStr
       .split(";")
@@ -40,46 +33,105 @@ const styleStringToObject = (styleStr) => {
       .filter(Boolean),
   );
 };
-
 // --- End of style helpers ---
 
 export const render = async (data) => {
   const elements = parseElements(data);
 
-  // Generate the JSX for all elements first
-  const elementsJsx = elements
-    .map((element) => {
-      // Find and process the style attribute separately
-      const styleAttr = element.attributes.find(([key]) => key === "style");
-      const styleObject = styleAttr ? styleStringToObject(styleAttr[1]) : null;
+  const tagCounts = new Map();
+  elements.forEach((el) =>
+    tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
+  );
+  const varNameCounts = new Map();
 
-      // Build the style object string for JSX
-      const stylePropString = styleObject
-        ? `style={{ ${Object.entries(styleObject)
-            .map(
-              ([key, value]) =>
-                `${key}: "${String(value).replace(/"/g, '\\"')}"`,
-            )
-            .join(", ")} }}`
-        : "";
+  const elementData = elements.map((element) => {
+    const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
+    const baseVarName = `${camelize(element.tagName)}Ref`;
+    let varName;
+    if (isDuplicatedTag) {
+      const count = (varNameCounts.get(baseVarName) || 0) + 1;
+      varNameCounts.set(baseVarName, count);
+      varName = `${baseVarName}${count}`;
+    } else {
+      varName = baseVarName;
+    }
+    return { ...element, varName };
+  });
 
-      // Render all other attributes normally
-      const otherAttributes = element.attributes
-        .filter(([key, value]) => key !== "style")
-        .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-        .join("\n        ");
+  const wrapperElement = elementData.find((el) => el.storyWrap);
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const slottedElements = elementData.filter((el) => el.storySlot);
+  const siblingElements = elementData.filter(
+    (el) => !el.isPrimary && !el.storySlot && !el.storyWrap,
+  );
 
-      return `
-      <${element.tagName}
-        ref={${camelize(element.tagName)}Ref}
+  // Helper to render JSX for a single element
+  const renderElementJSX = (element) => {
+    const styleAttr = element.attributes.find(([key]) => key === "style");
+    const styleObject = styleAttr ? styleStringToObject(styleAttr[1]) : null;
+    const stylePropString = styleObject
+      ? `style={{ ${Object.entries(styleObject)
+          .map(
+            ([key, value]) => `${key}: "${String(value).replace(/"/g, '\\"')}"`,
+          )
+          .join(", ")} }}`
+      : "";
+    const otherAttributes = element.attributes
+      .filter(([key, value]) => key !== "style")
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n        ");
+
+    let children = "";
+    if (element.isPrimary) {
+      const slottedElementsJSX = slottedElements
+        .map(renderElementJSX)
+        .join("\n");
+      if (data.args.storySlotContent)
+        children += `\n${data.args.storySlotContent}\n`;
+      if (slottedElementsJSX) children += `\n${slottedElementsJSX}\n`;
+    }
+    if (element.storyWrap) {
+      const mainElementJSX = mainElement ? renderElementJSX(mainElement) : "";
+      const siblingElementsJSX = siblingElements.map(renderElementJSX).join("");
+      if (mainElementJSX) children += `\n${mainElementJSX}\n`;
+      if (siblingElementsJSX) children += `\n${siblingElementsJSX}\n`;
+    }
+
+    if (children.trim() === "") {
+      return `<${element.tagName}
+        ref={${element.varName}}
         ${otherAttributes}
         ${stylePropString}
-      >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`;
-    })
-    .join("\n");
+      ></${element.tagName}>`;
+    } else {
+      return `<${element.tagName}
+        ref={${element.varName}}
+        ${otherAttributes}
+        ${stylePropString}
+      >
+        ${children}
+      </${element.tagName}>`;
+    }
+  };
+
+  let rootElementsJsx;
+  if (wrapperElement) {
+    rootElementsJsx = renderElementJSX(wrapperElement);
+  } else {
+    rootElementsJsx = `
+      ${mainElement ? renderElementJSX(mainElement) : ""}
+      ${siblingElements.map(renderElementJSX).join("")}
+    `;
+  }
+
+  const elementsJsx = rootElementsJsx;
+
+  const finalRootCount = wrapperElement
+    ? 1
+    : siblingElements.length + (mainElement ? 1 : 0);
 
   const returnBlock =
-    elements.length > 1
+    finalRootCount > 1
       ? `
   return (
     <>
@@ -93,29 +145,56 @@ ${elementsJsx}
   );
 `;
 
+  const uniqueImports = [
+    ...new Set(
+      elementData
+        .filter((el) => el.storyImport)
+        .map(
+          (element) => `import "@eox/${element.tagName.replace("eox-", "")}";`,
+        ),
+    ),
+  ];
+
   return await prettier.format(
     `
 import React, { useEffect, useRef } from "react";
 
-${elements
-  .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
-  .join("\n")}
+${uniqueImports.join("\n")}
 
 export default function StorySnippet() {
   ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
-  ${elements
-    .map((element) => `const ${camelize(element.tagName)}Ref = useRef(null);`)
+  
+  ${elementData
+    .map((element) => `const ${element.varName} = useRef(null);`)
     .join("\n")}
 
-  // Assign properties
+  ${
+    data.args.storyStyle
+      ? `
+  // Inject component-specific styles
   useEffect(() => {
-    ${elements
+    const styleEl = document.createElement('style');
+    styleEl.innerHTML = \`${data.args.storyStyle}\`;
+    document.head.appendChild(styleEl);
+
+    // Cleanup: remove the style tag when the component unmounts
+    return () => {
+      document.head.removeChild(styleEl);
+    };
+  }, []); // Run only once on mount
+  `
+      : ""
+  }
+
+  ${
+    elementData.some((e) => e.properties.length > 0)
+      ? `// Assign properties
+  useEffect(() => {
+    ${elementData
       .map((element) =>
         element.properties.length > 0
           ? `
-    const ${camelize(element.tagName)}El = ${camelize(
-      element.tagName,
-    )}Ref.current;
+    const ${camelize(element.tagName)}El = ${element.varName}.current;
     if (${camelize(element.tagName)}El) {
       Object.assign(${camelize(element.tagName)}El, {
         ${element.properties
@@ -133,15 +212,19 @@ export default function StorySnippet() {
           : "",
       )
       .join("\n")}
-      ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
-  }, []);
+      }, []);`
+      : ""
+  }
+    ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 
-  // Add event listeners${elements
-    .map((element) =>
-      element.events.length > 0
-        ? `
+  ${
+    elementData.some((e) => e.events.length > 0)
+      ? `// Add event listeners${elementData
+          .map((element) =>
+            element.events.length > 0
+              ? `
   useEffect(() => {
-    const el = ${camelize(element.tagName)}Ref.current;
+    const el = ${element.varName}.current;
     if (!el) return;
 
     ${element.events
@@ -161,9 +244,11 @@ export default function StorySnippet() {
     };
   }, []);
   `
-        : "",
-    )
-    .join("\n")}
+              : "",
+          )
+          .join("\n")}`
+      : ""
+  }
 
   ${returnBlock}
 }

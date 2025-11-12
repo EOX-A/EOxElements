@@ -10,31 +10,47 @@ export const parseElements = (storyData) => {
     : [];
 
   let elements = [];
+  const primaryArgs = storyData.args;
 
-  [primaryElement, ...additionalElements].forEach((e) => {
-    const elementArgs =
-      storyData.args.storyAdditionalComponents?.[e] || storyData.args;
+  [primaryElement, ...additionalElements].forEach((e, index) => {
+    const isPrimary = index === 0;
+    const elementArgs = isPrimary
+      ? primaryArgs
+      : storyData.args.storyAdditionalComponents?.[e] || {};
+
+    const storyImport = elementArgs.storyImport !== false;
+    const storySlot = !!elementArgs.storySlot;
+    const storyWrap = !!elementArgs.storyWrap;
 
     const attributes = Object.entries(elementArgs).filter(
       ([key, value]) =>
-        key === "style" ||
+        ["id", "style", "class"].includes(key) ||
         (storyData.argTypes[key]?.table?.category === "attributes" && !!value),
     );
     const events = Object.entries(elementArgs).filter(
       ([key, value]) => storyData.argTypes[key]?.table?.category === "events",
     );
+
+    // List of internal args to filter out from properties
+    const internalArgs = [
+      "id",
+      "style",
+      "class",
+      "storyAdditionalComponents",
+      "storyCodeBefore",
+      "storyCodeAfter",
+      "storySlotContent",
+      "storyStyle",
+      "storyImport",
+      "storySlot",
+      "storyWrap",
+    ];
+
     const properties = Object.entries(elementArgs).filter(
       ([key, value]) =>
-        storyData.argTypes[key]?.table?.category === "properties" ||
-        (![
-          "style",
-          "storyAdditionalComponents",
-          "storyCodeBefore",
-          "storyCodeAfter",
-          "storySlotContent",
-        ].includes(key) &&
-          !attributes.find(([aKey, aValue]) => aKey === key) &&
-          !events.find(([eKey, eValue]) => eKey === key)),
+        !internalArgs.includes(key) &&
+        !attributes.find(([aKey, aValue]) => aKey === key) &&
+        !events.find(([eKey, eValue]) => eKey === key),
     );
 
     elements.push({
@@ -42,6 +58,10 @@ export const parseElements = (storyData) => {
       attributes,
       properties,
       events,
+      storyImport,
+      storySlot,
+      storyWrap,
+      isPrimary,
     });
   });
   return elements;

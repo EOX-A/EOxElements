@@ -16,30 +16,136 @@ import {
 export const render = async (data) => {
   const elements = parseElements(data);
 
-  const hasEvents = elements.some((element) => element.events.length > 0);
+  const tagCounts = new Map();
+  elements.forEach((el) =>
+    tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
+  );
+  const varNameCounts = new Map();
+
+  const elementData = elements.map((element) => {
+    const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
+    const baseVarName = `${camelize(element.tagName)}Ref`;
+    let varName;
+    if (isDuplicatedTag) {
+      const count = (varNameCounts.get(baseVarName) || 0) + 1;
+      varNameCounts.set(baseVarName, count);
+      varName = `${baseVarName}${count}`;
+    } else {
+      varName = baseVarName;
+    }
+    return { ...element, varName };
+  });
+
+  const hasEvents = elementData.some((element) => element.events.length > 0);
   const useImperativeEvents =
     hasEvents &&
-    elements.some((el) => el.events.some(([key]) => hasColon(key)));
+    elementData.some((el) => el.events.some(([key]) => hasColon(key)));
 
   const svelteImports = ["onMount"];
   if (useImperativeEvents) {
     svelteImports.push("onDestroy");
   }
 
+  const wrapperElement = elementData.find((el) => el.storyWrap);
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const slottedElements = elementData.filter((el) => el.storySlot);
+  const siblingElements = elementData.filter(
+    (el) => !el.isPrimary && !el.storySlot && !el.storyWrap,
+  );
+
+  // Helper to render a single element's template
+  const renderElementTemplate = (element) => {
+    const eventHandlers = !useImperativeEvents
+      ? element.events
+          .map(([key, value]) => {
+            return `on:${key}={${value}}`;
+          })
+          .join("\n    ")
+      : "";
+
+    const attributesTemplate = element.attributes
+      .filter(([key, value]) => key !== "style")
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n    ");
+
+    let children = "";
+    // If I am the main element, my children are slotted elements
+    if (element.isPrimary) {
+      const slottedElementsTemplate = slottedElements
+        .map(renderElementTemplate)
+        .join("\n");
+      if (data.args.storySlotContent)
+        children += `\n${data.args.storySlotContent}\n`;
+      if (slottedElementsTemplate) children += `\n${slottedElementsTemplate}\n`;
+    }
+    // If I am the wrapper element, my children are the main element AND sibling elements
+    if (element.storyWrap) {
+      const mainElementTemplate = mainElement
+        ? renderElementTemplate(mainElement)
+        : "";
+      const siblingElementsTemplate = siblingElements
+        .map(renderElementTemplate)
+        .join("");
+      if (mainElementTemplate) children += `${mainElementTemplate}\n`;
+      if (siblingElementsTemplate) children += `${siblingElementsTemplate}\n`;
+    }
+
+    if (children.trim() === "") {
+      return `<${element.tagName}
+  bind:this={${element.varName}}
+  ${attributesTemplate}
+  ${eventHandlers}
+></${element.tagName}>`;
+    } else {
+      return `<${element.tagName}
+  bind:this={${element.varName}}
+  ${attributesTemplate}
+  ${eventHandlers}
+>
+  ${children}
+</${element.tagName}>`;
+    }
+  };
+
+  let templateOutput;
+  if (wrapperElement) {
+    templateOutput = renderElementTemplate(wrapperElement);
+  } else {
+    templateOutput = `
+      ${mainElement ? renderElementTemplate(mainElement) : ""}
+      ${siblingElements.map(renderElementTemplate).join("")}
+    `;
+  }
+
+  // Check if onMount is needed at all
+  const needsOnMount =
+    elementData.some((e) => e.properties.length > 0) ||
+    useImperativeEvents ||
+    data.args.storyCodeAfter;
+
+  const uniqueImports = [
+    ...new Set(
+      elementData
+        .filter((el) => el.storyImport)
+        .map(
+          (element) => `import "@eox/${element.tagName.replace("eox-", "")}";`,
+        ),
+    ),
+  ];
+
   return await prettier.format(
     `
 <script>
 import { ${svelteImports.join(", ")} } from "svelte";
 ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
-${elements
-  .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
-  .join("\n")}
 
-${elements.map((element) => `let ${camelize(element.tagName)}Ref;`).join("\n")}
+${uniqueImports.join("\n")}
+
+${elementData.map((element) => `let ${element.varName};`).join("\n")}
 
 ${
   useImperativeEvents
-    ? elements
+    ? elementData
         .map((element) =>
           element.events.length > 0
             ? `
@@ -57,11 +163,12 @@ ${element.events
     : ""
 }
 
-onMount(() => {
-  ${elements
+${
+  needsOnMount
+    ? `onMount(() => {
+  ${elementData
     .map((element) => {
-      const elRef = `${camelize(element.tagName)}Ref`;
-
+      const elRef = `${element.varName}`;
       const propertiesBlock =
         element.properties.length > 0
           ? `
@@ -81,7 +188,6 @@ onMount(() => {
   }
   `
           : "";
-
       const eventsBlock =
         useImperativeEvents && element.events.length > 0
           ? `
@@ -96,22 +202,23 @@ onMount(() => {
   }
   `
           : "";
-
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}
-  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
-});
+    ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
+    });`
+    : ""
+}
 
 ${
   useImperativeEvents
     ? `
 onDestroy(() => {
-  ${elements
+  ${elementData
     .map((element) =>
       element.events.length > 0
         ? `
-  const ${camelize(element.tagName)}El = ${camelize(element.tagName)}Ref;
+  const ${camelize(element.tagName)}El = ${element.varName};
   if (${camelize(element.tagName)}El) {
     ${element.events
       .map(([key, value]) => {
@@ -131,36 +238,15 @@ onDestroy(() => {
 }
 </script>
 
-${elements
-  .map(
-    (element) => `
-<${element.tagName}
-  bind:this={${camelize(element.tagName)}Ref}
-  ${element.attributes
-    .filter(([key, value]) => key !== "style")
-    .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-    .join("\n    ")}
-  ${
-    !useImperativeEvents
-      ? element.events
-          .map(([key, value]) => {
-            // Svelte can just wrap the value in {}
-            return `on:${key}={${value}}`;
-          })
-          .join("\n    ")
-      : ""
-  }
->${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
-  )
-  .join("\n")}
+${templateOutput}
 
 ${
-  elements.find((element) =>
+  elementData.find((element) =>
     element.attributes.find(([key, value]) => key === "style"),
-  )
+  ) || data.args.storyStyle
     ? `
 <style>
-${elements
+${elementData
   .map((element) => {
     const styleValue = element.attributes
       .filter(([key, value]) => key === "style")
@@ -175,6 +261,7 @@ ${element.tagName} {
       : "";
   })
   .join("")}
+  ${data.args.storyStyle ? `\n${data.args.storyStyle}` : ""}
 </style>
   `
     : ""

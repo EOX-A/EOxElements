@@ -2,8 +2,9 @@
  * Story demonstrating the Ace editor
  */
 import codeSchema from "./public/codeSchema.json";
+import { html } from "lit";
 
-const Code = {
+export default {
   args: {
     schema: codeSchema,
     value: {
@@ -15,5 +16,7 @@ function sayHello() {
 sayHello();`,
     },
   },
+  render: (args) => html`
+    <eox-jsonform .schema=${args.schema} .value=${args.value}></eox-jsonform>
+  `,
 };
-export default Code;

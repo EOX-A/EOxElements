@@ -29,26 +29,28 @@ export default {
 // Exporting each individual story for the eox-storytelling component.
 
 /**
- * StoryTelling using basic markdownL.
+ * Basic usage of eox-storytelling. Renders a simple Markdown string as a story.
  */
 export const Primary = PrimaryStory;
 
 /**
- * StoryTelling using markdown URL.
+ * Loads Markdown content from a remote URL and displays it in the storytelling component.
+ * Useful for dynamic or externally managed story content.
  */
 export const MarkdownAsURL = MarkdownAsURLStory;
 
 /**
- * StoryTelling using markdown from the slot.
+ * Renders Markdown content provided via the slot, demonstrating slot-based story input.
  */
 export const MarkdownInsideSlot = MarkdownSlotStory;
 
 /**
- * StoryTelling with editor
+ * Shows the built-in Markdown editor, allowing live editing and preview of the story.
+ * Demonstrates advanced features like image upload, section creation, and live preview.
  */
 export const MarkdownWithEditor = MarkdownEditorStory;
 
 /**
- * StoryTelling with @init event
+ * Demonstrates the @init event, allowing custom initialization logic (e.g., map projection setup) when the story or embedded elements are initialized.
  */
 export const MarkdownInitEvent = MarkdownInitEventStory;

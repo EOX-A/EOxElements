@@ -7,27 +7,39 @@ import {
   STORIES_LAYER_TERRAIN_LIGHT,
 } from "../src/enums";
 
-export const LayerLegend = {
-  args: {},
-  render: () => html`
+export const layerLegendStory = {
+  args: {
+    additionalComponents: {
+      "eox-map": {
+        center: [2000000, 8000000],
+        zoom: 4,
+        style: STORIES_MAP_STYLE,
+        layers: [
+          STORIES_LAYER_VESSEL_DENSITY_CARGO,
+          STORIES_LAYER_TERRAIN_LIGHT,
+        ],
+        id: "legend",
+      },
+    },
+    style: STORIES_LAYERCONTROL_STYLE,
+    tools: ["legend"],
+    for: "eox-map#legend",
+  },
+  render: (args) => html`
     <eox-layercontrol
-      .tools=${["legend"]}
-      for="eox-map#legend"
-      .style=${STORIES_LAYERCONTROL_STYLE}
+      .tools=${args.tools}
+      for=${args.for}
+      .style=${args.style}
     ></eox-layercontrol>
     <hr />
     <eox-map
-      .center=${[2000000, 8000000]}
-      .zoom=${4}
-      id="legend"
-      .style=${STORIES_MAP_STYLE}
-      .layers=${[
-        STORIES_LAYER_VESSEL_DENSITY_CARGO,
-        STORIES_LAYER_TERRAIN_LIGHT,
-      ]}
-    >
-    </eox-map>
+      id=${args.additionalComponents["eox-map"].id}
+      .center=${args.additionalComponents["eox-map"].center}
+      .zoom=${args.additionalComponents["eox-map"].zoom}
+      .style=${args.additionalComponents["eox-map"].style}
+      .layers=${args.additionalComponents["eox-map"].layers}
+    ></eox-map>
   `,
 };
 
-export default LayerLegend;
+export default layerLegendStory;
