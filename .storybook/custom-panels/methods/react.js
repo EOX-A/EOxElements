@@ -48,7 +48,6 @@ export const render = async (data) => {
     const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
     const baseVarName = `${camelize(element.tagName)}Ref`;
     let varName;
-
     if (isDuplicatedTag) {
       const count = (varNameCounts.get(baseVarName) || 0) + 1;
       varNameCounts.set(baseVarName, count);
@@ -58,6 +57,13 @@ export const render = async (data) => {
     }
     return { ...element, varName };
   });
+
+  const wrapperElement = elementData.find((el) => el.storyWrap);
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const slottedElements = elementData.filter((el) => el.storySlot);
+  const siblingElements = elementData.filter(
+    (el) => !el.isPrimary && !el.storySlot && !el.storyWrap,
+  );
 
   // Helper to render JSX for a single element
   const renderElementJSX = (element) => {
@@ -76,30 +82,31 @@ export const render = async (data) => {
       .join("\n        ");
 
     let children = "";
+    // If I am the main element, my children are slotted elements
     if (element.isPrimary) {
-      const slottedElements = elementData.filter((el) => el.storySlot);
       const slottedElementsJSX = slottedElements
         .map(renderElementJSX)
         .join("\n");
-      if (data.args.storySlotContent) {
+      if (data.args.storySlotContent)
         children += `\n${data.args.storySlotContent}\n`;
-      }
-      if (slottedElementsJSX) {
-        children += `\n${slottedElementsJSX}\n`;
-      }
+      if (slottedElementsJSX) children += `\n${slottedElementsJSX}\n`;
+    }
+    // If I am the wrapper element, my children are the main element AND sibling elements
+    if (element.storyWrap) {
+      const mainElementJSX = mainElement ? renderElementJSX(mainElement) : "";
+      const siblingElementsJSX = siblingElements.map(renderElementJSX).join("");
+      if (mainElementJSX) children += `${mainElementJSX}\n`;
+      if (siblingElementsJSX) children += `${siblingElementsJSX}\n`;
     }
 
     if (children.trim() === "") {
-      // No children
       return `<${element.tagName}
         ref={${element.varName}}
         ${otherAttributes}
         ${stylePropString}
       ></${element.tagName}>`;
     } else {
-      // Has children
-      return `
-      <${element.tagName}
+      return `<${element.tagName}
         ref={${element.varName}}
         ${otherAttributes}
         ${stylePropString}
@@ -109,20 +116,27 @@ export const render = async (data) => {
     }
   };
 
-  const mainElement = elementData.find((el) => el.isPrimary);
-  const siblingElements = elementData.filter(
-    (el) => !el.isPrimary && !el.storySlot,
-  );
+  let rootElementsJsx;
+  if (wrapperElement) {
+    rootElementsJsx = renderElementJSX(wrapperElement);
+  } else {
+    rootElementsJsx = `
+      ${mainElement ? renderElementJSX(mainElement) : ""}
+      ${siblingElements.map(renderElementJSX).join("")}
+    `;
+  }
 
   const elementsJsx = `
     ${data.args.storyStyle ? `\n<style>{\`${data.args.storyStyle}\`}</style>\n` : ""}
-    ${mainElement ? renderElementJSX(mainElement) : ""}
-    ${siblingElements.map(renderElementJSX).join("\n")}
+    ${rootElementsJsx}
   `;
 
-  const rootElementsCount = siblingElements.length + (mainElement ? 1 : 0);
+  const finalRootCount = wrapperElement
+    ? 1
+    : siblingElements.length + (mainElement ? 1 : 0);
+
   const returnBlock =
-    rootElementsCount > 1 || data.args.storyStyle
+    finalRootCount > 1 || data.args.storyStyle
       ? `
   return (
     <>

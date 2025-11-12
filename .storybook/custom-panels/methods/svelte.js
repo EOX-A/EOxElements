@@ -26,7 +26,6 @@ export const render = async (data) => {
     const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
     const baseVarName = `${camelize(element.tagName)}Ref`;
     let varName;
-
     if (isDuplicatedTag) {
       const count = (varNameCounts.get(baseVarName) || 0) + 1;
       varNameCounts.set(baseVarName, count);
@@ -47,10 +46,11 @@ export const render = async (data) => {
     svelteImports.push("onDestroy");
   }
 
+  const wrapperElement = elementData.find((el) => el.storyWrap);
   const mainElement = elementData.find((el) => el.isPrimary);
   const slottedElements = elementData.filter((el) => el.storySlot);
   const siblingElements = elementData.filter(
-    (el) => !el.isPrimary && !el.storySlot,
+    (el) => !el.isPrimary && !el.storySlot && !el.storyWrap,
   );
 
   // Helper to render a single element's template
@@ -69,29 +69,35 @@ export const render = async (data) => {
       .join("\n    ");
 
     let children = "";
+    // If I am the main element, my children are slotted elements
     if (element.isPrimary) {
       const slottedElementsTemplate = slottedElements
         .map(renderElementTemplate)
         .join("\n");
-      if (data.args.storySlotContent) {
+      if (data.args.storySlotContent)
         children += `\n${data.args.storySlotContent}\n`;
-      }
-      if (slottedElementsTemplate) {
-        children += `\n${slottedElementsTemplate}\n`;
-      }
+      if (slottedElementsTemplate) children += `\n${slottedElementsTemplate}\n`;
+    }
+    // If I am the wrapper element, my children are the main element AND sibling elements
+    if (element.storyWrap) {
+      const mainElementTemplate = mainElement
+        ? renderElementTemplate(mainElement)
+        : "";
+      const siblingElementsTemplate = siblingElements
+        .map(renderElementTemplate)
+        .join("");
+      if (mainElementTemplate) children += `${mainElementTemplate}\n`;
+      if (siblingElementsTemplate) children += `${siblingElementsTemplate}\n`;
     }
 
     if (children.trim() === "") {
-      // No children
       return `<${element.tagName}
   bind:this={${element.varName}}
   ${attributesTemplate}
   ${eventHandlers}
 ></${element.tagName}>`;
     } else {
-      // Has children
-      return `
-<${element.tagName}
+      return `<${element.tagName}
   bind:this={${element.varName}}
   ${attributesTemplate}
   ${eventHandlers}
@@ -101,11 +107,17 @@ export const render = async (data) => {
     }
   };
 
-  const templateOutput = `
-    ${mainElement ? renderElementTemplate(mainElement) : ""}
-    ${siblingElements.map(renderElementTemplate).join("\n")}
-  `;
+  let templateOutput;
+  if (wrapperElement) {
+    templateOutput = renderElementTemplate(wrapperElement);
+  } else {
+    templateOutput = `
+      ${mainElement ? renderElementTemplate(mainElement) : ""}
+      ${siblingElements.map(renderElementTemplate).join("")}
+    `;
+  }
 
+  // Check if onMount is needed at all
   const needsOnMount =
     elementData.some((e) => e.properties.length > 0) ||
     useImperativeEvents ||
@@ -157,7 +169,6 @@ ${
   ${elementData
     .map((element) => {
       const elRef = `${element.varName}`;
-
       const propertiesBlock =
         element.properties.length > 0
           ? `
@@ -177,7 +188,6 @@ ${
   }
   `
           : "";
-
       const eventsBlock =
         useImperativeEvents && element.events.length > 0
           ? `
@@ -192,7 +202,6 @@ ${
   }
   `
           : "";
-
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}

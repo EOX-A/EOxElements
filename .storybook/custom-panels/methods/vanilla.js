@@ -55,11 +55,12 @@ export const render = async (data) => {
     ),
   ];
 
-  // 3. Update HTML Rendering Logic
+  // 3. Hierarchical Rendering Logic
+  const wrapperElement = elementData.find((el) => el.storyWrap);
   const mainElement = elementData.find((el) => el.isPrimary);
   const slottedElements = elementData.filter((el) => el.storySlot);
   const siblingElements = elementData.filter(
-    (el) => !el.isPrimary && !el.storySlot,
+    (el) => !el.isPrimary && !el.storySlot && !el.storyWrap,
   );
 
   // Helper to render a single element's HTML
@@ -71,20 +72,28 @@ export const render = async (data) => {
       ),
     ]
       .filter(Boolean)
-      .join("");
+      .join("\n        ");
 
     let childrenHTML = "";
+
+    // If I am the main element, my children are slotted elements
     if (element.isPrimary) {
       const slottedElementsHTML = slottedElements
-        .map((slotEl) => renderElementHTML(slotEl))
-        .join("");
-
-      if (data.args.storySlotContent) {
+        .map(renderElementHTML)
+        .join("\n");
+      if (data.args.storySlotContent)
         childrenHTML += `\n${data.args.storySlotContent}\n`;
-      }
-      if (slottedElementsHTML) {
-        childrenHTML += `\n${slottedElementsHTML}\n`;
-      }
+      if (slottedElementsHTML) childrenHTML += `\n${slottedElementsHTML}\n`;
+    }
+
+    // If I am the wrapper element, my children are the main element AND sibling elements
+    if (element.storyWrap) {
+      const mainElementHTML = mainElement ? renderElementHTML(mainElement) : "";
+      const siblingElementsHTML = siblingElements
+        .map(renderElementHTML)
+        .join("");
+      if (mainElementHTML) childrenHTML += `${mainElementHTML}\n`;
+      if (siblingElementsHTML) childrenHTML += `${siblingElementsHTML}\n`;
     }
 
     if (childrenHTML.trim() === "") {
@@ -92,8 +101,7 @@ export const render = async (data) => {
         ${attributesHTML}
       ></${element.tagName}>`;
     } else {
-      return `
-      <${element.tagName}
+      return `<${element.tagName}
         ${attributesHTML}
       >
         ${childrenHTML}
@@ -101,14 +109,21 @@ export const render = async (data) => {
     }
   };
 
-  const htmlOutput = `
-    ${mainElement ? renderElementHTML(mainElement) : ""}
-    ${siblingElements.map(renderElementHTML).join("")}
-  `;
+  let htmlOutput;
+  if (wrapperElement) {
+    // We have a wrapper, it's the only top-level element
+    htmlOutput = renderElementHTML(wrapperElement);
+  } else {
+    // No wrapper, render main and siblings at top level
+    htmlOutput = `
+      ${mainElement ? renderElementHTML(mainElement) : ""}
+      ${siblingElements.map(renderElementHTML).join("")}
+    `;
+  }
 
   return await prettier.format(
     `
-${data.args.storyStyle ? `<style>\n${data.args.storyStyle}\n</style>` : ""}
+${data.args.storyStyle ? `<style>\n${data.args.storyStyle}\n</style>\n` : ""}
 ${htmlOutput}
 
 <script type="module">
