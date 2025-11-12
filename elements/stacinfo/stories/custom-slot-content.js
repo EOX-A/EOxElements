@@ -10,6 +10,7 @@ import { PrimaryStory } from "./";
 const CustomSlotContentStory = {
   args: {
     ...PrimaryStory.args,
+    id: "slot",
     storySlotContent: `
       <div
         slot="agency"
@@ -30,7 +31,7 @@ const CustomSlotContentStory = {
   },
   render: (args) => html`
     <eox-stacinfo
-      id="slot"
+      id=${args.id}
       for=${args.for}
       .header=${args.header}
       .body=${args.body}
