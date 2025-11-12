@@ -38,6 +38,27 @@ const styleStringToObject = (styleStr) => {
 export const render = async (data) => {
   const elements = parseElements(data);
 
+  const tagCounts = new Map();
+  elements.forEach((el) =>
+    tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
+  );
+  const varNameCounts = new Map();
+
+  const elementData = elements.map((element) => {
+    const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
+    const baseVarName = `${camelize(element.tagName)}Ref`;
+    let varName;
+
+    if (isDuplicatedTag) {
+      const count = (varNameCounts.get(baseVarName) || 0) + 1;
+      varNameCounts.set(baseVarName, count);
+      varName = `${baseVarName}${count}`;
+    } else {
+      varName = baseVarName;
+    }
+    return { ...element, varName };
+  });
+
   // Helper to render JSX for a single element
   const renderElementJSX = (element) => {
     const styleAttr = element.attributes.find(([key]) => key === "style");
@@ -56,25 +77,40 @@ export const render = async (data) => {
 
     let children = "";
     if (element.isPrimary) {
-      const slottedElements = elements.filter((el) => el.storySlot);
-      children = `
-        ${data.args.storySlotContent ? data.args.storySlotContent : ""}
-        ${slottedElements.map(renderElementJSX).join("\n")}
-      `;
+      const slottedElements = elementData.filter((el) => el.storySlot);
+      const slottedElementsJSX = slottedElements
+        .map(renderElementJSX)
+        .join("\n");
+      if (data.args.storySlotContent) {
+        children += `\n${data.args.storySlotContent}\n`;
+      }
+      if (slottedElementsJSX) {
+        children += `\n${slottedElementsJSX}\n`;
+      }
     }
 
-    return `
+    if (children.trim() === "") {
+      // No children
+      return `<${element.tagName}
+        ref={${element.varName}}
+        ${otherAttributes}
+        ${stylePropString}
+      ></${element.tagName}>`;
+    } else {
+      // Has children
+      return `
       <${element.tagName}
-        ref={${camelize(element.tagName)}Ref}
+        ref={${element.varName}}
         ${otherAttributes}
         ${stylePropString}
       >
         ${children}
       </${element.tagName}>`;
+    }
   };
 
-  const mainElement = elements.find((el) => el.isPrimary);
-  const siblingElements = elements.filter(
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const siblingElements = elementData.filter(
     (el) => !el.isPrimary && !el.storySlot,
   );
 
@@ -100,33 +136,38 @@ ${elementsJsx}
   );
 `;
 
+  const uniqueImports = [
+    ...new Set(
+      elementData
+        .filter((el) => el.storyImport)
+        .map(
+          (element) => `import "@eox/${element.tagName.replace("eox-", "")}";`,
+        ),
+    ),
+  ];
+
   return await prettier.format(
     `
 import React, { useEffect, useRef } from "react";
 
-${elements
-  .filter((el) => el.storyImport)
-  .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
-  .join("\n")}
+${uniqueImports.join("\n")}
 
 export default function StorySnippet() {
   ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
   
-  ${elements
-    .map((element) => `const ${camelize(element.tagName)}Ref = useRef(null);`)
+  ${elementData
+    .map((element) => `const ${element.varName} = useRef(null);`)
     .join("\n")}
 
   ${
-    elements.some((e) => e.properties.length > 0)
+    elementData.some((e) => e.properties.length > 0)
       ? `// Assign properties
   useEffect(() => {
-    ${elements
+    ${elementData
       .map((element) =>
         element.properties.length > 0
           ? `
-    const ${camelize(element.tagName)}El = ${camelize(
-      element.tagName,
-    )}Ref.current;
+    const ${camelize(element.tagName)}El = ${element.varName}.current;
     if (${camelize(element.tagName)}El) {
       Object.assign(${camelize(element.tagName)}El, {
         ${element.properties
@@ -150,13 +191,13 @@ export default function StorySnippet() {
     ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 
   ${
-    elements.some((e) => e.events.length > 0)
-      ? `// Add event listeners${elements
+    elementData.some((e) => e.events.length > 0)
+      ? `// Add event listeners${elementData
           .map((element) =>
             element.events.length > 0
               ? `
   useEffect(() => {
-    const el = ${camelize(element.tagName)}Ref.current;
+    const el = ${element.varName}.current;
     if (!el) return;
 
     ${element.events

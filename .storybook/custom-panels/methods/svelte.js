@@ -16,19 +16,40 @@ import {
 export const render = async (data) => {
   const elements = parseElements(data);
 
-  const hasEvents = elements.some((element) => element.events.length > 0);
+  const tagCounts = new Map();
+  elements.forEach((el) =>
+    tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
+  );
+  const varNameCounts = new Map();
+
+  const elementData = elements.map((element) => {
+    const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
+    const baseVarName = `${camelize(element.tagName)}Ref`;
+    let varName;
+
+    if (isDuplicatedTag) {
+      const count = (varNameCounts.get(baseVarName) || 0) + 1;
+      varNameCounts.set(baseVarName, count);
+      varName = `${baseVarName}${count}`;
+    } else {
+      varName = baseVarName;
+    }
+    return { ...element, varName };
+  });
+
+  const hasEvents = elementData.some((element) => element.events.length > 0);
   const useImperativeEvents =
     hasEvents &&
-    elements.some((el) => el.events.some(([key]) => hasColon(key)));
+    elementData.some((el) => el.events.some(([key]) => hasColon(key)));
 
   const svelteImports = ["onMount"];
   if (useImperativeEvents) {
     svelteImports.push("onDestroy");
   }
 
-  const mainElement = elements.find((el) => el.isPrimary);
-  const slottedElements = elements.filter((el) => el.storySlot);
-  const siblingElements = elements.filter(
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const slottedElements = elementData.filter((el) => el.storySlot);
+  const siblingElements = elementData.filter(
     (el) => !el.isPrimary && !el.storySlot,
   );
 
@@ -42,25 +63,42 @@ export const render = async (data) => {
           .join("\n    ")
       : "";
 
+    const attributesTemplate = element.attributes
+      .filter(([key, value]) => key !== "style")
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n    ");
+
     let children = "";
     if (element.isPrimary) {
-      children = `
-        ${data.args.storySlotContent ? data.args.storySlotContent : ""}
-        ${slottedElements.map(renderElementTemplate).join("\n")}
-      `;
+      const slottedElementsTemplate = slottedElements
+        .map(renderElementTemplate)
+        .join("\n");
+      if (data.args.storySlotContent) {
+        children += `\n${data.args.storySlotContent}\n`;
+      }
+      if (slottedElementsTemplate) {
+        children += `\n${slottedElementsTemplate}\n`;
+      }
     }
 
-    return `
+    if (children.trim() === "") {
+      // No children
+      return `<${element.tagName}
+  bind:this={${element.varName}}
+  ${attributesTemplate}
+  ${eventHandlers}
+></${element.tagName}>`;
+    } else {
+      // Has children
+      return `
 <${element.tagName}
-  bind:this={${camelize(element.tagName)}Ref}
-  ${element.attributes
-    .filter(([key, value]) => key !== "style")
-    .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-    .join("\n    ")}
+  bind:this={${element.varName}}
+  ${attributesTemplate}
   ${eventHandlers}
 >
   ${children}
 </${element.tagName}>`;
+    }
   };
 
   const templateOutput = `
@@ -69,9 +107,19 @@ export const render = async (data) => {
   `;
 
   const needsOnMount =
-    elements.some((e) => e.properties.length > 0) ||
+    elementData.some((e) => e.properties.length > 0) ||
     useImperativeEvents ||
     data.args.storyCodeAfter;
+
+  const uniqueImports = [
+    ...new Set(
+      elementData
+        .filter((el) => el.storyImport)
+        .map(
+          (element) => `import "@eox/${element.tagName.replace("eox-", "")}";`,
+        ),
+    ),
+  ];
 
   return await prettier.format(
     `
@@ -79,16 +127,13 @@ export const render = async (data) => {
 import { ${svelteImports.join(", ")} } from "svelte";
 ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
 
-${elements
-  .filter((el) => el.storyImport)
-  .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
-  .join("\n")}
+${uniqueImports.join("\n")}
 
-${elements.map((element) => `let ${camelize(element.tagName)}Ref;`).join("\n")}
+${elementData.map((element) => `let ${element.varName};`).join("\n")}
 
 ${
   useImperativeEvents
-    ? elements
+    ? elementData
         .map((element) =>
           element.events.length > 0
             ? `
@@ -109,9 +154,9 @@ ${element.events
 ${
   needsOnMount
     ? `onMount(() => {
-  ${elements
+  ${elementData
     .map((element) => {
-      const elRef = `${camelize(element.tagName)}Ref`;
+      const elRef = `${element.varName}`;
 
       const propertiesBlock =
         element.properties.length > 0
@@ -160,11 +205,11 @@ ${
   useImperativeEvents
     ? `
 onDestroy(() => {
-  ${elements
+  ${elementData
     .map((element) =>
       element.events.length > 0
         ? `
-  const ${camelize(element.tagName)}El = ${camelize(element.tagName)}Ref;
+  const ${camelize(element.tagName)}El = ${element.varName};
   if (${camelize(element.tagName)}El) {
     ${element.events
       .map(([key, value]) => {
@@ -187,12 +232,12 @@ onDestroy(() => {
 ${templateOutput}
 
 ${
-  elements.find((element) =>
+  elementData.find((element) =>
     element.attributes.find(([key, value]) => key === "style"),
   ) || data.args.storyStyle
     ? `
 <style>
-${elements
+${elementData
   .map((element) => {
     const styleValue = element.attributes
       .filter(([key, value]) => key === "style")

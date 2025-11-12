@@ -20,21 +20,25 @@ export const render = async (data) => {
   const elementData = elements.map((element, index) => {
     const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
     const baseVarName = camelize(element.tagName);
+    const existingId = element.attributes.find(([key]) => key === "id")?.[1];
     let varName;
-    let elId = null;
+    let elIdToRender = null;
     let selector;
+    let selectorId = existingId;
     if (isDuplicatedTag) {
       const count = (varNameCounts.get(baseVarName) || 0) + 1;
       varNameCounts.set(baseVarName, count);
       varName = `${baseVarName}${count}`;
-      elId = `${element.tagName}-snippet-${index}`;
-      selector = `document.getElementById("${elId}")`;
+      if (!existingId) {
+        elIdToRender = `${element.tagName}-snippet-${index}`;
+        selectorId = elIdToRender;
+      }
+      selector = `document.getElementById("${selectorId}")`;
     } else {
       varName = baseVarName;
       selector = `document.querySelector("${element.tagName}")`;
     }
-    // Pass all properties from 'element' through
-    return { ...element, varName, elId, selector };
+    return { ...element, varName, elIdToRender, selector };
   });
 
   // Get unique lists for imports (filtered)
@@ -60,31 +64,46 @@ export const render = async (data) => {
 
   // Helper to render a single element's HTML
   const renderElementHTML = (element) => {
-    return `
+    const attributesHTML = [
+      element.elIdToRender ? `id="${element.elIdToRender}"` : null,
+      ...element.attributes.map(
+        ([key, value]) => `${key}${value === true ? "" : `="${value}"`}`,
+      ),
+    ]
+      .filter(Boolean)
+      .join("");
+
+    let childrenHTML = "";
+    if (element.isPrimary) {
+      const slottedElementsHTML = slottedElements
+        .map((slotEl) => renderElementHTML(slotEl))
+        .join("");
+
+      if (data.args.storySlotContent) {
+        childrenHTML += `\n${data.args.storySlotContent}\n`;
+      }
+      if (slottedElementsHTML) {
+        childrenHTML += `\n${slottedElementsHTML}\n`;
+      }
+    }
+
+    if (childrenHTML.trim() === "") {
+      return `<${element.tagName}
+        ${attributesHTML}
+      ></${element.tagName}>`;
+    } else {
+      return `
       <${element.tagName}
-        ${element.elId ? `id="${element.elId}"` : ""}
-        ${element.attributes
-          .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-          .join("\n        ")}
+        ${attributesHTML}
       >
-        ${
-          // Handle slotted elements *inside* the main element
-          element.isPrimary
-            ? `
-          ${data.args.storySlotContent ? data.args.storySlotContent : ""}
-          ${slottedElements
-            .map((slotEl) => renderElementHTML(slotEl))
-            .join("\n")}
-        `
-            : ""
-        }
-      </${element.tagName}>
-    `;
+        ${childrenHTML}
+      </${element.tagName}>`;
+    }
   };
 
   const htmlOutput = `
     ${mainElement ? renderElementHTML(mainElement) : ""}
-    ${siblingElements.map(renderElementHTML).join("\n")}
+    ${siblingElements.map(renderElementHTML).join("")}
   `;
 
   return await prettier.format(
