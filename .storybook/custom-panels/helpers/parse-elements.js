@@ -10,10 +10,19 @@ export const parseElements = (storyData) => {
     : [];
 
   let elements = [];
+  const primaryArgs = storyData.args;
 
-  [primaryElement, ...additionalElements].forEach((e) => {
-    const elementArgs =
-      storyData.args.storyAdditionalComponents?.[e] || storyData.args;
+  [primaryElement, ...additionalElements].forEach((e, index) => {
+    const isPrimary = index === 0;
+    // Get args for the specific element, or fall back to main story args
+    const elementArgs = isPrimary
+      ? primaryArgs
+      : storyData.args.storyAdditionalComponents?.[e] || {};
+
+    // storyImport: Defaults to true. Can be set to false.
+    const storyImport = elementArgs.storyImport !== false; // Check for explicit false
+    // storySlot: Defaults to false. Can be set to true for nesting.
+    const storySlot = !!elementArgs.storySlot; // Check for truthy value
 
     const attributes = Object.entries(elementArgs).filter(
       ([key, value]) =>
@@ -23,21 +32,26 @@ export const parseElements = (storyData) => {
     const events = Object.entries(elementArgs).filter(
       ([key, value]) => storyData.argTypes[key]?.table?.category === "events",
     );
+
+    // List of internal args to filter out from properties
+    const internalArgs = [
+      "id",
+      "style",
+      "class",
+      "storyAdditionalComponents",
+      "storyCodeBefore",
+      "storyCodeAfter",
+      "storySlotContent",
+      "storyStyle",
+      "storyImport",
+      "storySlot",
+    ];
+
     const properties = Object.entries(elementArgs).filter(
       ([key, value]) =>
-        storyData.argTypes[key]?.table?.category === "properties" ||
-        (![
-          "id",
-          "style",
-          "class",
-          "storyAdditionalComponents",
-          "storyCodeBefore",
-          "storyCodeAfter",
-          "storySlotContent",
-          "storyStyle",
-        ].includes(key) &&
-          !attributes.find(([aKey, aValue]) => aKey === key) &&
-          !events.find(([eKey, eValue]) => eKey === key)),
+        !internalArgs.includes(key) &&
+        !attributes.find(([aKey, aValue]) => aKey === key) &&
+        !events.find(([eKey, eValue]) => eKey === key),
     );
 
     elements.push({
@@ -45,6 +59,9 @@ export const parseElements = (storyData) => {
       attributes,
       properties,
       events,
+      storyImport,
+      storySlot,
+      isPrimary,
     });
   });
   return elements;

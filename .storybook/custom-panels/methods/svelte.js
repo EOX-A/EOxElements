@@ -26,12 +26,61 @@ export const render = async (data) => {
     svelteImports.push("onDestroy");
   }
 
+  const mainElement = elements.find((el) => el.isPrimary);
+  const slottedElements = elements.filter((el) => el.storySlot);
+  const siblingElements = elements.filter(
+    (el) => !el.isPrimary && !el.storySlot,
+  );
+
+  // Helper to render a single element's template
+  const renderElementTemplate = (element) => {
+    const eventHandlers = !useImperativeEvents
+      ? element.events
+          .map(([key, value]) => {
+            return `on:${key}={${value}}`;
+          })
+          .join("\n    ")
+      : "";
+
+    let children = "";
+    if (element.isPrimary) {
+      children = `
+        ${data.args.storySlotContent ? data.args.storySlotContent : ""}
+        ${slottedElements.map(renderElementTemplate).join("\n")}
+      `;
+    }
+
+    return `
+<${element.tagName}
+  bind:this={${camelize(element.tagName)}Ref}
+  ${element.attributes
+    .filter(([key, value]) => key !== "style")
+    .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+    .join("\n    ")}
+  ${eventHandlers}
+>
+  ${children}
+</${element.tagName}>`;
+  };
+
+  const templateOutput = `
+    ${mainElement ? renderElementTemplate(mainElement) : ""}
+    ${siblingElements.map(renderElementTemplate).join("\n")}
+  `;
+
+  const needsOnMount =
+    elements.some((e) => e.properties.length > 0) ||
+    useImperativeEvents ||
+    data.args.storyCodeAfter;
+
   return await prettier.format(
     `
 <script>
 import { ${svelteImports.join(", ")} } from "svelte";
 ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
+
 ${elements
+  .filter((el) => el.storyImport)
   .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
   .join("\n")}
 
@@ -58,7 +107,7 @@ ${element.events
 }
 
 ${
-  elements.some((e) => e.properties.length > 0)
+  needsOnMount
     ? `onMount(() => {
   ${elements
     .map((element) => {
@@ -102,10 +151,10 @@ ${
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}
+    ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
     });`
     : ""
 }
-  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 
 ${
   useImperativeEvents
@@ -135,33 +184,12 @@ onDestroy(() => {
 }
 </script>
 
-${elements
-  .map(
-    (element) => `
-<${element.tagName}
-  bind:this={${camelize(element.tagName)}Ref}
-  ${element.attributes
-    .filter(([key, value]) => key !== "style")
-    .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-    .join("\n    ")}
-  ${
-    !useImperativeEvents
-      ? element.events
-          .map(([key, value]) => {
-            // Svelte can just wrap the value in {}
-            return `on:${key}={${value}}`;
-          })
-          .join("\n    ")
-      : ""
-  }
->${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
-  )
-  .join("\n")}
+${templateOutput}
 
 ${
   elements.find((element) =>
     element.attributes.find(([key, value]) => key === "style"),
-  )
+  ) || data.args.storyStyle
     ? `
 <style>
 ${elements
@@ -179,7 +207,7 @@ ${element.tagName} {
       : "";
   })
   .join("")}
-  ${data.args.storyStyle}
+  ${data.args.storyStyle ? `\n${data.args.storyStyle}` : ""}
 </style>
   `
     : ""

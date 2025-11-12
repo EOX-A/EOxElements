@@ -12,21 +12,13 @@ import {
 } from "../helpers";
 
 // --- React-specific style helpers ---
-
-// Helper for CSS property names (e.g., "margin-left" -> "marginLeft")
 const cssToCamelCase = (s) => {
   if (s.startsWith("--")) return `"${s}"`; // Don't camelCase CSS variables
   return s.replace(/-(\w)/g, (all, letter) => letter.toUpperCase());
 };
 
-/**
- * Converts a CSS style string into a React style object.
- * @param {string} styleStr - e.g., "width: 400px; height: 300px; margin-left: 7px"
- * @returns {object} - e.g., { width: "400px", height: "300px", marginLeft: "7px" }
- */
 const styleStringToObject = (styleStr) => {
   if (!styleStr || typeof styleStr !== "string") return null;
-
   return Object.fromEntries(
     styleStr
       .split(";")
@@ -41,47 +33,60 @@ const styleStringToObject = (styleStr) => {
       .filter(Boolean),
   );
 };
-
 // --- End of style helpers ---
 
 export const render = async (data) => {
   const elements = parseElements(data);
 
-  // Generate the JSX for all elements first
-  const elementsJsx = elements
-    .map((element) => {
-      // Find and process the style attribute separately
-      const styleAttr = element.attributes.find(([key]) => key === "style");
-      const styleObject = styleAttr ? styleStringToObject(styleAttr[1]) : null;
+  // Helper to render JSX for a single element
+  const renderElementJSX = (element) => {
+    const styleAttr = element.attributes.find(([key]) => key === "style");
+    const styleObject = styleAttr ? styleStringToObject(styleAttr[1]) : null;
+    const stylePropString = styleObject
+      ? `style={{ ${Object.entries(styleObject)
+          .map(
+            ([key, value]) => `${key}: "${String(value).replace(/"/g, '\\"')}"`,
+          )
+          .join(", ")} }}`
+      : "";
+    const otherAttributes = element.attributes
+      .filter(([key, value]) => key !== "style")
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n        ");
 
-      // Build the style object string for JSX
-      const stylePropString = styleObject
-        ? `style={{ ${Object.entries(styleObject)
-            .map(
-              ([key, value]) =>
-                `${key}: "${String(value).replace(/"/g, '\\"')}"`,
-            )
-            .join(", ")} }}`
-        : "";
+    let children = "";
+    if (element.isPrimary) {
+      const slottedElements = elements.filter((el) => el.storySlot);
+      children = `
+        ${data.args.storySlotContent ? data.args.storySlotContent : ""}
+        ${slottedElements.map(renderElementJSX).join("\n")}
+      `;
+    }
 
-      // Render all other attributes normally
-      const otherAttributes = element.attributes
-        .filter(([key, value]) => key !== "style")
-        .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-        .join("\n        ");
-
-      return `
-      ${data.args.storyStyle ? `\n<style>{\`${data.args.storyStyle}\`}</style>\n` : ""}
+    return `
       <${element.tagName}
         ref={${camelize(element.tagName)}Ref}
         ${otherAttributes}
         ${stylePropString}
-      >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`;
-    })
-    .join("\n");
+      >
+        ${children}
+      </${element.tagName}>`;
+  };
 
+  const mainElement = elements.find((el) => el.isPrimary);
+  const siblingElements = elements.filter(
+    (el) => !el.isPrimary && !el.storySlot,
+  );
+
+  const elementsJsx = `
+    ${data.args.storyStyle ? `\n<style>{\`${data.args.storyStyle}\`}</style>\n` : ""}
+    ${mainElement ? renderElementJSX(mainElement) : ""}
+    ${siblingElements.map(renderElementJSX).join("\n")}
+  `;
+
+  const rootElementsCount = siblingElements.length + (mainElement ? 1 : 0);
   const returnBlock =
-    elements.length > 1 || data.args.storyStyle
+    rootElementsCount > 1 || data.args.storyStyle
       ? `
   return (
     <>
@@ -100,11 +105,13 @@ ${elementsJsx}
 import React, { useEffect, useRef } from "react";
 
 ${elements
+  .filter((el) => el.storyImport)
   .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
   .join("\n")}
 
 export default function StorySnippet() {
   ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
+  
   ${elements
     .map((element) => `const ${camelize(element.tagName)}Ref = useRef(null);`)
     .join("\n")}
@@ -143,7 +150,7 @@ export default function StorySnippet() {
     ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 
   ${
-    elements.some((e) => e.properties.length > 0)
+    elements.some((e) => e.events.length > 0)
       ? `// Add event listeners${elements
           .map((element) =>
             element.events.length > 0

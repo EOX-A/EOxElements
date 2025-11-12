@@ -20,12 +20,12 @@ function quoteEventHandler(value) {
   if (hasDouble && !hasSingle) {
     return `'${serialized}'`;
   } else if (!hasDouble && hasSingle) {
-    return `\"${serialized}\"`;
+    return `"${serialized}"`;
   } else if (hasDouble && hasSingle) {
     // Escape double quotes and use double quotes
-    return `\"${serialized.replace(/\"/g, '\\"')}\"`;
+    return `"${serialized.replace(/"/g, '\\"')}"`;
   } else {
-    return `\"${serialized}\"`;
+    return `"${serialized}"`;
   }
 }
 
@@ -42,12 +42,63 @@ export const render = async (data) => {
     vueImports.push("onUnmounted");
   }
 
+  const mainElement = elements.find((el) => el.isPrimary);
+  const slottedElements = elements.filter((el) => el.storySlot);
+  const siblingElements = elements.filter(
+    (el) => !el.isPrimary && !el.storySlot,
+  );
+
+  // Helper to render a single element's template
+  const renderElementTemplate = (element) => {
+    const eventHandlers = !useImperativeEvents
+      ? element.events
+          .map(([key, value]) => {
+            // FIXED: Use your quoteEventHandler
+            return `@${key}=${quoteEventHandler(value)}`;
+          })
+          .join("\n      ")
+      : "";
+
+    let children = "";
+    if (element.isPrimary) {
+      children = `
+        ${data.args.storySlotContent ? data.args.storySlotContent : ""}
+        ${slottedElements.map(renderElementTemplate).join("\n")}
+      `;
+    }
+
+    return `
+  <${element.tagName}
+    ref="${camelize(element.tagName)}Ref"
+    ${element.attributes
+      .filter(([key, value]) => key !== "style")
+      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+      .join("\n      ")}
+    ${eventHandlers}
+  >
+    ${children}
+  </${element.tagName}>`;
+  };
+
+  const templateOutput = `
+    ${mainElement ? renderElementTemplate(mainElement) : ""}
+    ${siblingElements.map(renderElementTemplate).join("\n")}
+  `;
+
+  // Check if onMounted is needed at all
+  const needsOnMounted =
+    elements.some((e) => e.properties.length > 0) ||
+    useImperativeEvents ||
+    data.args.storyCodeAfter;
+
   return await prettier.format(
     `
 <script setup>
 import { ${vueImports.join(", ")} } from "vue";
 ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
+
 ${elements
+  .filter((el) => el.storyImport)
   .map((element) => `import "@eox/${element.tagName.replace("eox-", "")}";`)
   .join("\n")}
 
@@ -76,7 +127,7 @@ ${element.events
 }
 
 ${
-  elements.some((e) => e.properties.length > 0)
+  needsOnMounted
     ? `onMounted(() => {
   ${elements
     .map((element) => {
@@ -120,10 +171,10 @@ ${
       return propertiesBlock + eventsBlock;
     })
     .join("\n")}
+    ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
     });`
     : ""
 }
-  ${data.args.storyCodeAfter ? `\n${data.args.storyCodeAfter}\n` : ""}
 
 ${
   useImperativeEvents
@@ -154,31 +205,13 @@ onUnmounted(() => {
 </script>
 
 <template>
-${elements
-  .map(
-    (element) => `
-  <${element.tagName}
-    ref="${camelize(element.tagName)}Ref"
-    ${element.attributes
-      .filter(([key, value]) => key !== "style")
-      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-      .join("\n      ")}
-    ${
-      !useImperativeEvents
-        ? element.events
-            .map(([key, value]) => `@${key}=${quoteEventHandler(value)}`)
-            .join("\n      ")
-        : ""
-    }
-  >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
-  )
-  .join("\n")}
+${templateOutput}
 </template>
 
 ${
   elements.find((element) =>
     element.attributes.find(([key, value]) => key === "style"),
-  )
+  ) || data.args.storyStyle
     ? `
 <style scoped>
 ${elements
@@ -196,7 +229,7 @@ ${element.tagName} {
       : "";
   })
   .join("")}
-  ${data.args.storyStyle}
+  ${data.args.storyStyle ? `\n${data.args.storyStyle}` : ""}
 </style>
   `
     : ""

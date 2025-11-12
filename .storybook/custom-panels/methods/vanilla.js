@@ -14,66 +14,88 @@ export const render = async (data) => {
   elements.forEach((el) =>
     tagCounts.set(el.tagName, (tagCounts.get(el.tagName) || 0) + 1),
   );
-
-  // Keep track of counts *as we map* to create unique var names (e.g., eoxMap1, eoxMap2)
   const varNameCounts = new Map();
 
   // 2. Map elements to include their varName and selector strategy
   const elementData = elements.map((element, index) => {
     const isDuplicatedTag = (tagCounts.get(element.tagName) || 0) > 1;
     const baseVarName = camelize(element.tagName);
-
     let varName;
     let elId = null;
     let selector;
-
     if (isDuplicatedTag) {
-      // This tag appears more than once, so we MUST use IDs
       const count = (varNameCounts.get(baseVarName) || 0) + 1;
       varNameCounts.set(baseVarName, count);
-
-      varName = `${baseVarName}${count}`; // e.g., eoxMap1, eoxMap2
-      elId = `${element.tagName}-snippet-${index}`; // Unique ID
+      varName = `${baseVarName}${count}`;
+      elId = `${element.tagName}-snippet-${index}`;
       selector = `document.getElementById("${elId}")`;
     } else {
-      // This tag is unique, so we can use querySelector
-      varName = baseVarName; // e.g., eoxChart
+      varName = baseVarName;
       selector = `document.querySelector("${element.tagName}")`;
     }
-
+    // Pass all properties from 'element' through
     return { ...element, varName, elId, selector };
   });
 
-  // Get unique lists for imports and whenDefined
+  // Get unique lists for imports (filtered)
   const uniqueImports = [
     ...new Set(
-      elements.map(
-        (element) =>
-          `import "@eox/${element.tagName.replace("eox-", "")}/dist/${
-            element.tagName
-          }.js";`,
-      ),
+      elementData
+        .filter((element) => element.storyImport)
+        .map(
+          (element) =>
+            `import "@eox/${element.tagName.replace("eox-", "")}/dist/${
+              element.tagName
+            }.js";`,
+        ),
     ),
   ];
+
+  // 3. Update HTML Rendering Logic
+  const mainElement = elementData.find((el) => el.isPrimary);
+  const slottedElements = elementData.filter((el) => el.storySlot);
+  const siblingElements = elementData.filter(
+    (el) => !el.isPrimary && !el.storySlot,
+  );
+
+  // Helper to render a single element's HTML
+  const renderElementHTML = (element) => {
+    return `
+      <${element.tagName}
+        ${element.elId ? `id="${element.elId}"` : ""}
+        ${element.attributes
+          .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
+          .join("\n        ")}
+      >
+        ${
+          // Handle slotted elements *inside* the main element
+          element.isPrimary
+            ? `
+          ${data.args.storySlotContent ? data.args.storySlotContent : ""}
+          ${slottedElements
+            .map((slotEl) => renderElementHTML(slotEl))
+            .join("\n")}
+        `
+            : ""
+        }
+      </${element.tagName}>
+    `;
+  };
+
+  const htmlOutput = `
+    ${mainElement ? renderElementHTML(mainElement) : ""}
+    ${siblingElements.map(renderElementHTML).join("\n")}
+  `;
 
   return await prettier.format(
     `
 ${data.args.storyStyle ? `<style>\n${data.args.storyStyle}\n</style>` : ""}
-${elementData
-  .map(
-    (element) => `
-  <${element.tagName}
-    ${element.elId ? `id="${element.elId}"` : ""}
-    ${element.attributes
-      .map(([key, value]) => `${key}${value === true ? "" : `="${value}"`}`)
-      .join("\n    ")}
-  >${data.args.storySlotContent ? `\n${data.args.storySlotContent}\n` : ""}</${element.tagName}>`,
-  )
-  .join("")}
+${htmlOutput}
 
 <script type="module">
 ${uniqueImports.join("\n")}
 ${data.args.storyCodeBefore ? `\n${data.args.storyCodeBefore}\n` : ""}
+
 ${elementData
   .map((element) => `const ${element.varName} = ${element.selector};`)
   .join("\n")}
