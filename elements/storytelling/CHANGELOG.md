@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.9.7](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.6...storytelling-v1.9.7) (2025-10-30)
+
+
+### Bug Fixes
+
+* **style:** Center nav-list items ([#1902](https://github.com/EOX-A/EOxElements/issues/1902)) ([06d2a3f](https://github.com/EOX-A/EOxElements/commit/06d2a3f117adcd4ad69f31388ca5094d06b1baf6))
+* **style:** Link rendering ([#1900](https://github.com/EOX-A/EOxElements/issues/1900)) ([5d4782d](https://github.com/EOX-A/EOxElements/commit/5d4782d76b3266ef2f7fa7ee0e0a2da1bec46c6f))
+
+## [1.9.6](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.5...storytelling-v1.9.6) (2025-10-20)
+
+
+### Bug Fixes
+
+* Extend storytelling schema for layer interactions ([#1858](https://github.com/EOX-A/EOxElements/issues/1858)) ([28a7924](https://github.com/EOX-A/EOxElements/commit/28a7924e558d192a0a3581f9d53ab1dc8ca3e920))
+
 ## [1.9.5](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.4...storytelling-v1.9.5) (2025-09-29)
 
 

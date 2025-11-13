@@ -2,8 +2,12 @@
   "name": "@eox/layout",
   "version": "1.0.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "devDependencies": {
-    "vite": "^6.0.3"
+    "vite": "^7.1.12"
   },
   "files": [
     "types",

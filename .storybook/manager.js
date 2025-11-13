@@ -1,5 +1,5 @@
-import { addons } from "@storybook/manager-api";
-import { create as createTheme } from "@storybook/theming/create";
+import { addons } from "storybook/manager-api";
+import { create as createTheme } from "storybook/theming/create";
 
 addons.setConfig({
   enableShortcuts: false,
@@ -10,4 +10,5 @@ addons.setConfig({
     brandImage: "https://eox.at/EOX_Logo.svg",
     brandTarget: "_self",
   }),
+  selectedPanel: "eox/storybook-custom-panels/description",
 });

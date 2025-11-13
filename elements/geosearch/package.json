@@ -2,6 +2,10 @@
   "name": "@eox/geosearch",
   "version": "1.1.0",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "engines": {
     "npm": ">=8.0.0",
     "node": ">=18.0.0"
@@ -32,11 +36,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "vite": "^6.0.3"
+    "vite": "^7.1.12"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6",
+    "@eox/ui": "^0.5.0",
     "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",
     "proj4": "^2.11.0"

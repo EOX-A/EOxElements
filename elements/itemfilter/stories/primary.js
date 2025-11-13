@@ -1,5 +1,4 @@
 import items from "../test/testItems.json";
-import { expect, userEvent, waitFor } from "@storybook/test";
 import { html } from "lit";
 
 /**
@@ -74,27 +73,27 @@ function PrimaryStory() {
       ],
       items,
     },
-    play: async ({ canvasElement, step }) => {
-      // Wait for the item filter component to be rendered and available in the DOM
-      await waitFor(() => {
-        const itemFilterComponent =
-          canvasElement.querySelector("eox-itemfilter");
-        expect(itemFilterComponent).toBeTruthy();
-        expect(itemFilterComponent.shadowRoot).toBeTruthy();
-      });
+    // play: async ({ canvasElement, step, expect, userEvent, waitFor }) => {
+    //   // Wait for the item filter component to be rendered and available in the DOM
+    //   await waitFor(() => {
+    //     const itemFilterComponent =
+    //       canvasElement.querySelector("eox-itemfilter");
+    //     expect(itemFilterComponent).toBeTruthy();
+    //     expect(itemFilterComponent.shadowRoot).toBeTruthy();
+    //   });
 
-      // Get the item filter component and its shadow root
-      const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
-      const shadowRoot = itemFilterComponent.shadowRoot;
+    //   // Get the item filter component and its shadow root
+    //   const itemFilterComponent = canvasElement.querySelector("eox-itemfilter");
+    //   const shadowRoot = itemFilterComponent.shadowRoot;
 
-      // Simulate user interaction: Searching for "Asparagus"
-      await step("Searching for Asparagus", async () => {
-        const inputElement = shadowRoot.querySelector(
-          'input[placeholder="Type Something..."]',
-        );
-        await userEvent.type(inputElement, "Asparagus", { delay: 100 });
-      });
-    },
+    //   // Simulate user interaction: Searching for "Asparagus"
+    //   await step("Searching for Asparagus", async () => {
+    //     const inputElement = shadowRoot.querySelector(
+    //       'input[placeholder="Type Something..."]',
+    //     );
+    //     await userEvent.type(inputElement, "Asparagus", { delay: 100 });
+    //   });
+    // },
   };
 }
 

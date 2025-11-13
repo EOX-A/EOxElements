@@ -4,6 +4,11 @@ import { styleEOX } from "./style.eox";
 import "./feedback-button.js";
 
 /**
+ * The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.
+ * The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.
+ *
+ * @element eox-feedback
+ *
  * @attr {string} endpoint - The endpoint to send the feedback to as POST message.
  * @attr {string|null} [unstyled=undefined] - If provided, the element will not be styled with EOX styles.
  *
@@ -24,12 +29,14 @@ export class EOxFeedback extends HTMLElement {
 
     this.screenShotFile = null;
 
-    this.endpoint =
-      this.getAttribute("endpoint") ||
-      document.querySelector("eox-feedback-button")?.getAttribute("endpoint");
+    this.endpoint = null;
   }
 
   connectedCallback() {
+    this.endpoint =
+      this.getAttribute("endpoint") ||
+      document.querySelector("eox-feedback-button")?.getAttribute("endpoint");
+
     this.render();
     this.shadowRoot
       .querySelector("input[type=checkbox]")

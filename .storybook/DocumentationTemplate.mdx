@@ -7,8 +7,8 @@ import {
   Description,
   Primary,
   Controls,
-  Stories,
-} from "@storybook/blocks";
+} from "@storybook/addon-docs/blocks";
+import { Types } from "./Types.jsx";
 
 <Meta isTemplate />
 
@@ -21,6 +21,18 @@ import {
 
 ### API
 
-<Controls />
+<Controls
+  sort={"alpha"}
+  exclude={[
+    "id",
+    "style",
+    "class",
+    "storyAdditionalComponents",
+    "storyCodeBefore",
+    "storyCodeAfter",
+    "storySlotContent",
+    "storyStyle",
+  ]}
+/>
 
-<Stories includePrimary={false} />
+<Types />

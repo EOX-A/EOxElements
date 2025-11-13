@@ -195,6 +195,7 @@ export type FlatGeoBufOptions = {
   url: string;
   attributions?: import("ol/source/Source").AttributionLike;
   wrapX?: boolean;
+  projection?: ProjectionLike;
 };
 
 export type WMTSCapabilitiesOptions = {
@@ -205,7 +206,7 @@ export type WMTSCapabilitiesOptions = {
   cacheSize?: number;
   crossOrigin?: null | string;
   interpolate?: boolean;
-  projection?: import("ol/proj").ProjectionLike;
+  projection?: ProjectionLike;
   transition?: number;
   key?: string;
   tilePixelRatio?: number;

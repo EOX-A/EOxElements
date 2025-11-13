@@ -9,7 +9,7 @@ const NoMap = {
     for: undefined,
     controlProperty: undefined,
     slider: true,
-    onStepChange: (evt) => {
+    stepchange: (evt) => {
       console.log("stepchange", evt.detail);
     },
   },
@@ -22,7 +22,7 @@ const NoMap = {
       .navigation=${args.navigation}
       .slider=${args.slider}
       .play=${args.play}
-      @stepchange=${args.onStepChange}
+      @stepchange=${args.stepchange}
     ></eox-timecontrol>
   `,
 };

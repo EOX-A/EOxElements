@@ -7,25 +7,32 @@ import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const Primary = {
   args: {
+    for: "eox-map#primary",
     allowModify: false,
     multipleFeatures: false,
     type: "Polygon",
+    drawupdate: (e) => console.log(e),
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "primary",
+        style: STORIES_MAP_STYLE,
+        layers: STORIES_LAYERS_ARRAY,
+      },
+    },
   },
   render: (args) => html`
-    <!-- Render eox-map component with ID "primary" -->
-    <eox-map
-      id="primary"
-      style=${STORIES_MAP_STYLE}
-      .layers=${STORIES_LAYERS_ARRAY}
-    ></eox-map>
-
-    <!-- Initialize eox-drawtools for the eox-map with ID "primary" -->
     <eox-drawtools
-      for="eox-map#primary"
+      for=${args.for}
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
-    />
+      @drawupdate=${args.drawupdate}
+    ></eox-drawtools>
+    <eox-map
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      style=${args.storyAdditionalComponents["eox-map"].style}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
   `,
 };
 

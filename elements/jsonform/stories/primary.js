@@ -3,11 +3,14 @@
  * It renders basic input form based on json-form config
  */
 import basicSchema from "./public/basicSchema.json";
+import { html } from "lit";
 
-const Primary = {
+export default {
   args: {
     schema: basicSchema,
-    onChange: (e) => console.info("New value:", e.detail),
+    change: (e) => console.info("New value:", e.detail),
   },
+  render: (args) => html`
+    <eox-jsonform .schema=${args.schema} @change=${args.change}></eox-jsonform>
+  `,
 };
-export default Primary;

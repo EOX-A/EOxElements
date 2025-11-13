@@ -1,10 +1,14 @@
 {
   "name": "@eox/jsonform",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "devDependencies": {
     "@eox/map": "*",
-    "vite": "^6.0.3"
+    "vite": "^7.1.12"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -35,7 +39,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6",
+    "@eox/ui": "^0.5.0",
     "@json-editor/json-editor": "^2.11.0",
     "@turf/bbox-polygon": "^7.2.0",
     "ace-builds": "^1.37.5",

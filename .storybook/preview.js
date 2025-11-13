@@ -1,6 +1,13 @@
-import { setCustomElementsManifest } from "@storybook/web-components";
+import { setCustomElementsManifest } from "@storybook/web-components-vite";
 import customElements from "../custom-elements.json";
+import typedocJson from "../types.json";
 import DocumentationTemplate from "./DocumentationTemplate.mdx";
+import {
+  renderVanilla,
+  renderVue,
+  renderReact,
+  renderSvelte,
+} from "./custom-panels/methods";
 
 import "@eox/chart";
 import "@eox/drawtools";
@@ -49,55 +56,94 @@ const preview = {
     docs: {
       toc: true,
       page: DocumentationTemplate,
-      source: {
-        transform: (code, storyContext) => {
-          /**
-           * Check which props belong to which tag
-           * and create object
-           */
-          const undecorated = storyContext.undecoratedStoryFn(storyContext);
-          let currentTag = undefined;
-          const tags = {};
-          undecorated.strings
-            .map((string, index) => {
-              const startOfTag = string.match(/(?<=<eox-).*?((?=>| )|$)/gim);
-              if (startOfTag) {
-                currentTag = `eox-${startOfTag}`;
-              }
-              const property = string
-                .match(/(?<=\.).*?(?==)/gim)?.[0]
-                ?.replaceAll(" ", "");
-              const value = undecorated.values[index];
-              if (property && value) {
-                if (!tags[currentTag]) {
-                  tags[currentTag] = {};
-                }
-                tags[currentTag][property] = value;
-              }
-            })
-            .filter((l) => l);
+      extractArgTypes: (component) => {
+        const {
+          attributes,
+          events,
+          members: properties,
+        } = customElements.modules.find(
+          (m) => m.declarations[0].tagName === component,
+        )?.declarations[0] || {};
+        return [
+          ...(properties
+            ? properties.map((m) => ({
+                category: m.kind === "method" ? "methods" : "properties",
+                ...m,
+              }))
+            : []),
+          ...(attributes
+            ? attributes.map((a) => ({ category: "attributes", ...a }))
+            : []),
+          ...(events ? events.map((a) => ({ category: "events", ...a })) : []),
+        ].reduce((acc, curr) => {
+          const {
+            category,
+            default: defaultValue,
+            description,
+            name,
+            parameters,
+            type,
+          } = curr;
+          const typeText =
+            parameters?.[0].type?.text ||
+            parameters?.[0].type ||
+            type?.text ||
+            type;
+          let matchingType;
 
-          /**
-           * Inject prop for each tag in the rendered code
-           */
-          Object.keys(tags).forEach((tag) => {
-            code = code.replace(
-              `<${tag}`,
-              `<${tag}\n  ${Object.keys(tags[tag])
-                .map(
-                  (key, index) =>
-                    `.${key}='\$\{${
-                      typeof tags[tag][key] === "string"
-                        ? tags[tag][key]
-                        : JSON.stringify(tags[tag][key])
-                    }\}'`,
-                )
-                .join("\n  ")}\n  `,
-            );
+          typedocJson.children.forEach((c) => {
+            const child = c.children?.find((cc) => typeText?.includes(cc.name));
+            if (child) matchingType = child;
           });
-          return code;
+          acc[name] = {
+            description: matchingType
+              ? `${description} <br /> <code>${typeText.replace(matchingType.name, `<a target="_blank" href="${matchingType?.sources?.[0]?.url}">${matchingType.name}</a>`)}</code>`
+              : description,
+            table: {
+              defaultValue: { summary: defaultValue },
+              category,
+              type: {
+                ...(!matchingType
+                  ? {
+                      summary: typeText,
+                    }
+                  : {}),
+              },
+            },
+          };
+          return acc;
+        }, {});
+      },
+      source: {
+        transform: async (_, storyContext) => {
+          const language = storyContext.globals["code-language"];
+          const renderers = {
+            react: renderReact,
+            svelte: renderSvelte,
+            vue: renderVue,
+            vanilla: renderVanilla,
+          };
+          const renderer = renderers[language] || renderVanilla;
+          return await renderer(storyContext);
         },
       },
+    },
+    controls: {
+      exclude: [
+        "id",
+        "style",
+        "class",
+        "storyAdditionalComponents",
+        "storyCodeBefore",
+        "storyCodeAfter",
+        "storySlotContent",
+        "storyStyle",
+      ],
+    },
+  },
+  globalTypes: {
+    "code-language": {
+      description: "Language for code snippets",
     },
   },
 };

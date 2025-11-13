@@ -14,25 +14,34 @@ const customizeLayer = (layer) => ({
   },
 });
 
-export const HiddenLayers = {
-  args: {},
-  render: () => html`
-    <div style="display: flex">
-      <eox-layercontrol
-        for="eox-map#hidden"
-        .style=${STORIES_LAYERCONTROL_STYLE}
-      ></eox-layercontrol>
-      <eox-map
-        id="hidden"
-        .style=${STORIES_MAP_STYLE}
-        .layers=${[
+export const HiddenLayersStory = {
+  args: {
+    for: "eox-map#hidden",
+    storyAdditionalComponents: {
+      "eox-map": {
+        style: STORIES_MAP_STYLE,
+        layers: [
           customizeLayer(STORIES_LAYER_REGION),
           STORIES_LAYER_TERRAIN_LIGHT,
-        ]}
-      >
-      </eox-map>
+        ],
+        id: "hidden",
+      },
+    },
+    style: STORIES_LAYERCONTROL_STYLE,
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .for=${args.for}
+        .style=${args.style}
+      ></eox-layercontrol>
+      <eox-map
+        id=${args.storyAdditionalComponents["eox-map"].id}
+        .style=${args.storyAdditionalComponents["eox-map"].style}
+        .layers=${args.storyAdditionalComponents["eox-map"].layers}
+      ></eox-map>
     </div>
   `,
 };
 
-export default HiddenLayers;
+export default HiddenLayersStory;

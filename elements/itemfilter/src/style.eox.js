@@ -56,6 +56,7 @@ eox-itemfilter-container {
   flex-grow: 0;
   flex-shrink: 0;
   overflow: hidden;
+  height: 100%;
 }
 eox-itemfilter-results {
   flex-grow: 1;
@@ -149,7 +150,7 @@ ul#results li:not(:hover) .result-action {
   display: none;
 }
 eox-layout {
-  padding: .5rem var(--padding);
+  padding: var(--padding-vertical) var(--padding);
   gap: var(--card-gap, 16px);
   --column-width: var(--card-width, 300px);
   --row-height: var(--card-height, 200px);
@@ -158,6 +159,11 @@ eox-layout-item {
   position: relative;
   border-radius: var(--card-border-radius, 8px);
   cursor: pointer;
+  transition: var(--card-transition);
+  box-shadow: var(--card-box-shadow);
+}
+eox-layout-item:hover {
+  transform: var(--card-hover-transform);
 }
 eox-layout-item > span {
   display: block;
@@ -191,6 +197,7 @@ eox-layout-item .title-container {
 }
 eox-layout-item .title {
   font-weight: bold;
+  font-family: var(--card-title-font);
 }
 eox-layout-item .result-action {
   position: absolute;
@@ -299,20 +306,26 @@ button.icon {
 }
 -container-results::-webkit-scrollbar,
 .inline-container::-webkit-scrollbar,
-.inline-content::-webkit-scrollbar {
+.inline-content::-webkit-scrollbar,
+form#itemfilter > div::-webkit-scrollbar {
   inline-size: 0.4rem;
   block-size: 0.4rem;
 }
 -container-results::-webkit-scrollbar-thumb,
 .inline-container::-webkit-scrollbar-thumb,
-.inline-content::-webkit-scrollbar-thumb {
+.inline-content::-webkit-scrollbar-thumb,
+form#itemfilter > div::-webkit-scrollbar-thumb {
   background: lightgrey;
   border-radius: 1rem;
   cursor: default;
 }
 .inline-container:is(:hover,:focus)::-webkit-scrollbar-thumb,
-.inline-content:is(:hover,:focus)::-webkit-scrollbar-thumb {
+.inline-content:is(:hover,:focus)::-webkit-scrollbar-thumb,
+form#itemfilter > div:is(:hover,:focus)::-webkit-scrollbar-thumb {
   background: var(--outline);
+}
+form#itemfilter > div::-webkit-scrollbar-thumb {
+  background: transparent; 
 }
 .hidden {
   height: 0;

@@ -27,32 +27,19 @@ const ProjectionStory = {
     ],
     center: [16.8, 48.2],
     zoom: 7,
+    projection: "EPSG:3857",
+    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      id="projectionMap"
-      style="width: 100%; height: 300px;"
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
       .zoom=${args.zoom}
+      .projection=${args.projection}
+      style=${args.style}
     >
     </eox-map>
-    <button
-      @click=${() => {
-        const eoxMap = /** @type {import("../src/main").EOxMap} **/ (
-          /** @type {any} **/ document.querySelector("#projectionMap")
-        );
-        eoxMap.setAttribute(
-          "projection",
-          eoxMap.map.getView().getProjection().getCode() === "EPSG:4326"
-            ? "EPSG:3857"
-            : "EPSG:4326",
-        );
-      }}
-    >
-      change projection
-    </button>
   `,
 };
 

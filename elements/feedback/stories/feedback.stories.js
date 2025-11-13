@@ -10,15 +10,13 @@ export default {
   component: "eox-feedback",
 };
 
-// Exporting each individual story for the eox-feedback component.
-
 /**
- * Primary story showcasing basic usage.
+ * Primary story showcasing basic usage. The `endpoint` is set to a fake URL for demonstration purposes.
  */
 export const Primary = PrimaryStory;
 
 /**
- * Triggering of eox-feeback modal via button. The button can be positioned using the `position` attribute.
+ * Triggering of eox-feeback modal via button. The button can be positioned on the page using the `position` attribute.
  * Can be `top-left`, `top-right`, `bottom-left`, or `bottom-right`.
  */
 export const Button = ButtonStory;

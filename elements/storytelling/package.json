@@ -1,10 +1,14 @@
 {
   "name": "@eox/storytelling",
-  "version": "1.9.5",
+  "version": "1.9.7",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "devDependencies": {
     "@types/markdown-it": "^14.1.2",
-    "vite": "^6.0.3"
+    "vite": "^7.1.12"
   },
   "engines": {
     "npm": ">=8.0.0",
@@ -35,11 +39,11 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6",
-    "@sindresorhus/slugify": "^2.2.1",
+    "@eox/ui": "^0.5.0",
+    "@sindresorhus/slugify": "^3.0.0",
     "glightbox": "^3.3.0",
     "isomorphic-dompurify": "^2.4.0",
-    "joi": "^17.12.3",
+    "joi": "^18.0.1",
     "js-yaml": "^4.1.0",
     "lit": "^3.2.0",
     "lodash.debounce": "^4.0.8",

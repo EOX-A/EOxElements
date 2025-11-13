@@ -3,10 +3,7 @@ import { deserialize } from "flatgeobuf/lib/mjs/geojson";
 import Vector from "ol/source/Vector.js";
 import GeoJSON from "ol/format/GeoJSON";
 import { bbox } from "ol/loadingstrategy";
-
-const geoJsonFormat = new GeoJSON({
-  featureProjection: "EPSG:3857",
-});
+import { READ_FEATURES_OPTIONS } from "../../enums";
 
 /**
  * @typedef {import("../../types").FlatGeoBufOptions} FlatGeoBufOptions
@@ -17,14 +14,13 @@ class FlatGeoBuf extends Vector {
    */
   constructor(options) {
     super({
-      url: options.url,
       attributions: options.attributions,
       wrapX: options.wrapX,
-      format: geoJsonFormat,
       strategy: bbox,
     });
-
-    this.ressourceURL = options.url;
+    this.dataProjection =
+      options.projection || READ_FEATURES_OPTIONS.dataProjection;
+    this.resourceURL = options.url;
     super.setLoader(this.loader);
   }
 
@@ -39,7 +35,7 @@ class FlatGeoBuf extends Vector {
     const transformedExtent = transformExtent(
       extent,
       projection.getCode(),
-      "EPSG:4326",
+      this.dataProjection,
     );
     return {
       minX: transformedExtent[0],
@@ -64,7 +60,11 @@ class FlatGeoBuf extends Vector {
          * @type {Array<import("ol/Feature").default>}
          */
         const features = [];
-        const iter = deserialize(this.ressourceURL, rect);
+        const iter = deserialize(this.resourceURL, rect);
+        const geoJsonFormat = new GeoJSON({
+          featureProjection: projection,
+          dataProjection: this.dataProjection,
+        });
         for await (const feature of iter) {
           const olFeature = geoJsonFormat.readFeature(feature);
           //@ts-expect-error for GeoJSON-Format this should always be a single feature.
