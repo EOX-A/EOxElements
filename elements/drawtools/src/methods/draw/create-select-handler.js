@@ -2,8 +2,7 @@
  * Factory function to create a select event handler
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
-import {toFeature} from 'ol/render/Feature';
-
+import { toFeature } from "ol/render/Feature";
 
 const createSelectHandler = (EoxDrawTool) => {
   /**
@@ -20,7 +19,7 @@ const createSelectHandler = (EoxDrawTool) => {
     // only dispatch event if the feature has the getCoordinates method
     if (typeof e.detail.feature.getGeometry().getCoordinates !== "function") {
       e.detail.feature = toFeature(e.detail.feature);
-    }    
+    }
     EoxDrawTool.drawLayer.getSource().addFeature(e.detail.feature);
     EoxDrawTool.eoxMap.dispatchEvent(
       new CustomEvent("addfeatures", { detail: e.detail }),
