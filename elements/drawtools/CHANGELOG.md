@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.4...drawtools-v1.1.5) (2025-11-14)
+
+
+### Bug Fixes
+
+* Drawtool support for vectortiles ([#1936](https://github.com/EOX-A/EOxElements/issues/1936)) ([ad7d82f](https://github.com/EOX-A/EOxElements/commit/ad7d82fa05aacecfb206bb40fe63ef98b78576c2))
+
 ## [1.1.4](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.3...drawtools-v1.1.4) (2025-11-10)
 
 
