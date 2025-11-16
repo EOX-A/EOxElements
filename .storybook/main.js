@@ -27,8 +27,8 @@ const config = {
     [csfIndexer].concat(existingIndexers || []),
   addons: [
     getAbsolutePath("@storybook/addon-docs"),
+    "./custom-panels/manager.js",
   ],
-  managerEntries: [join(import.meta.dirname, "./custom-panels/manager.js")],
   framework: getAbsolutePath("@storybook/web-components-vite"),
   docs: {
     toc: true,
