@@ -27,7 +27,7 @@ const config = {
     [csfIndexer].concat(existingIndexers || []),
   addons: [
     getAbsolutePath("@storybook/addon-docs"),
-    "./custom-panels/register.js",
+    import.meta.resolve("./custom-panels"),
   ],
   framework: getAbsolutePath("@storybook/web-components-vite"),
   docs: {
