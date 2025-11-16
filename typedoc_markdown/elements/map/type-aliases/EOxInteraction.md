@@ -8,7 +8,7 @@
 
 > **EOxInteraction** = `object`
 
-Defined in: [elements/map/src/types.ts:37](https://github.com/EOX-A/EOxElements/blob/ca5114cad1f14f18fcb435956c881a085192b312/elements/map/src/types.ts#L37)
+Defined in: [elements/map/src/types.ts:37](https://github.com/EOX-A/EOxElements/blob/19b4db78c450ad6b073ce057fd6dc61327fb63dc/elements/map/src/types.ts#L37)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/types.ts:37](https://github.com/EOX-A/EOxElements/
 
 > `optional` **active**: `boolean`
 
-Defined in: [elements/map/src/types.ts:38](https://github.com/EOX-A/EOxElements/blob/ca5114cad1f14f18fcb435956c881a085192b312/elements/map/src/types.ts#L38)
+Defined in: [elements/map/src/types.ts:38](https://github.com/EOX-A/EOxElements/blob/19b4db78c450ad6b073ce057fd6dc61327fb63dc/elements/map/src/types.ts#L38)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/types.ts:38](https://github.com/EOX-A/EOxElements/
 
 > **options**: [`DrawOptions`](DrawOptions.md) \| [`SelectOptions`](SelectOptions.md) \| \{\[`key`: `string`\]: `any`; \}
 
-Defined in: [elements/map/src/types.ts:40](https://github.com/EOX-A/EOxElements/blob/ca5114cad1f14f18fcb435956c881a085192b312/elements/map/src/types.ts#L40)
+Defined in: [elements/map/src/types.ts:40](https://github.com/EOX-A/EOxElements/blob/19b4db78c450ad6b073ce057fd6dc61327fb63dc/elements/map/src/types.ts#L40)
 
 ***
 
@@ -32,4 +32,4 @@ Defined in: [elements/map/src/types.ts:40](https://github.com/EOX-A/EOxElements/
 
 > **type**: `"draw"` \| `"select"` \| `"clusterExplode"`
 
-Defined in: [elements/map/src/types.ts:39](https://github.com/EOX-A/EOxElements/blob/ca5114cad1f14f18fcb435956c881a085192b312/elements/map/src/types.ts#L39)
+Defined in: [elements/map/src/types.ts:39](https://github.com/EOX-A/EOxElements/blob/19b4db78c450ad6b073ce057fd6dc61327fb63dc/elements/map/src/types.ts#L39)
