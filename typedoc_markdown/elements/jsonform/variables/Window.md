@@ -8,7 +8,7 @@
 
 > **Window**: \{(): [`Window`](../interfaces/Window.md); `prototype`: [`Window`](../interfaces/Window.md); \}
 
-Defined in: node\_modules/typescript/lib/lib.dom.d.ts:25746
+Defined in: node\_modules/typescript/lib/lib.dom.d.ts:26280
 
 ## Type Declaration
 
