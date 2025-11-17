@@ -1,3 +1,4 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
 import { createRequire } from "node:module";
 import { dirname, join } from "path";
 /** @type { import('@storybook/web-components-vite').StorybookConfig } */
@@ -27,8 +28,8 @@ const config = {
     [csfIndexer].concat(existingIndexers || []),
   addons: [
     getAbsolutePath("@storybook/addon-docs"),
-    "./custom-panels/manager.js",
   ],
+  managerEntries: [join(import.meta.dirname, "./custom-panels/manager.js")],
   framework: getAbsolutePath("@storybook/web-components-vite"),
   docs: {
     toc: true,
