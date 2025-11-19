@@ -6,7 +6,9 @@ export interface CustomMarkdownIt extends MarkdownIt {
   nav: Array<string>;
   sections: object;
 }
-export type CustomMarkdownItState = InstanceType<MarkdownIt["core"]["State"]> & {
+export type CustomMarkdownItState = InstanceType<
+  MarkdownIt["core"]["State"]
+> & {
   md: CustomMarkdownIt;
 };
 
