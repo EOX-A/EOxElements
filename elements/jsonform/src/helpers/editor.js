@@ -218,6 +218,15 @@ export const createEditor = (element) => {
         ) {
           input.parentElement.classList.add("checkbox");
           input.parentElement.classList.add("small");
+          // Generate unique random id and for attributes
+          // since there might be multiple checkboxes with the same name
+          // hidden (when using if-then-else) causing issues with clicking labels
+          input.setAttribute(
+            "name",
+            input.getAttribute("name") + Math.round(Math.random() * 1000),
+          );
+          input.id = input.getAttribute("name");
+          parent.setAttribute("for", input.getAttribute("name"));
           const span = document.createElement("span");
           if (
             input.nextSibling &&
