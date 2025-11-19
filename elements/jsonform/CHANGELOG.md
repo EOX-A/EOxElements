@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.3...jsonform-v1.4.4) (2025-11-19)
+
+
+### Bug Fixes
+
+* Ensure uniqueness of labels and checkboxes ([#1950](https://github.com/EOX-A/EOxElements/issues/1950)) ([6c78afe](https://github.com/EOX-A/EOxElements/commit/6c78afefd90296aed3646f6f5dca4cdedd1976b5))
+
 ## [1.4.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.2...jsonform-v1.4.3) (2025-10-20)
 
 
