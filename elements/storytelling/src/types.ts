@@ -1,4 +1,4 @@
-import MarkdownIt from "markdown-it";
+import type MarkdownIt from "markdown-it";
 
 export interface CustomMarkdownIt extends MarkdownIt {
   attrs: { keys: Array<number>; sections: object };
@@ -6,9 +6,9 @@ export interface CustomMarkdownIt extends MarkdownIt {
   nav: Array<string>;
   sections: object;
 }
-export interface CustomMarkdownItState extends MarkdownIt.StateBlock {
+export type CustomMarkdownItState = InstanceType<MarkdownIt["core"]["State"]> & {
   md: CustomMarkdownIt;
-}
+};
 
 declare global {
   interface Window {
