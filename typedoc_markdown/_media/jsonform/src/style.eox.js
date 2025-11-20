@@ -137,6 +137,7 @@ export const styleEOX = `
     padding-bottom: var(--eox-panel-spacing, 10px);
   }
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]),
+  .form-control textarea,
   .form-control select {
     display: block;
     opacity: 1;
@@ -161,18 +162,22 @@ export const styleEOX = `
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
   }
-  .form-control select[multiple] {
+  .form-control select[multiple],
+  .form-control textarea {
     min-block-size: 6rem;
   }
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus,
-  .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible {
+  .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible,
+    .form-control textarea:focus,
+  .form-control textarea:focus-visible {
     border: .125rem solid transparent;
     border-color: var(--primary);
   }
   input[type="checkbox"]:not(.je-modal input) {
     visibility: hidden;
   }
-  .form-control input[disabled] {
+  .form-control input[disabled],
+  .form-control textarea[disabled], {
     opacity: .5;
   }
   .form-control label {
