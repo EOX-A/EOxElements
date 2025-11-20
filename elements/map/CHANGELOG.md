@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.3](https://github.com/EOX-A/EOxElements/compare/map-v1.26.2...map-v1.26.3) (2025-11-20)
+
+
+### Bug Fixes
+
+* Determine correct projection from features at getProj ([#1959](https://github.com/EOX-A/EOxElements/issues/1959)) ([9cfc412](https://github.com/EOX-A/EOxElements/commit/9cfc4126b90f4d707f04242942c17159a848b399))
+
 ## [1.26.2](https://github.com/EOX-A/EOxElements/compare/map-v1.26.1...map-v1.26.2) (2025-11-10)
 
 

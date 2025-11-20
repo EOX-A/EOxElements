@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.4...jsonform-v1.4.5) (2025-11-20)
+
+
+### Bug Fixes
+
+* **style:** Support for textarea ([be87886](https://github.com/EOX-A/EOxElements/commit/be8788602f74d69d9cd92c646ffebe6dab5f4bdd))
+
 ## [1.4.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.3...jsonform-v1.4.4) (2025-11-19)
 
 
