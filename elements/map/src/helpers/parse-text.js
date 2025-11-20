@@ -20,9 +20,9 @@ function getProj(formatReader, text) {
   if (coordinates && coordinates.length > 0) {
     const coord = coordinates[0][0][0];
     if (coord >= -180 && coord <= 180) {
-      return "EPSG:4326";
-    } else {
       return "EPSG:3857";
+    } else {
+      return "EPSG:4326";
     }
   }
 
