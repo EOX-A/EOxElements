@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.3.0...layercontrol-v1.3.1) (2025-10-22)
+
+
+### Bug Fixes
+
+* Bubble up `layerConfig:change` event ([#1877](https://github.com/EOX-A/EOxElements/issues/1877)) ([a095afb](https://github.com/EOX-A/EOxElements/commit/a095afbba4113bd1ed57dc234af4e59d8e76c8c7))
+
 ## [1.3.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.2.1...layercontrol-v1.3.0) (2025-10-08)
 
 

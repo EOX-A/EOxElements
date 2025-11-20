@@ -24,6 +24,7 @@ import {
   getLonLatCenterMethod,
   getLonLatExtentMethod,
   setZoomExtentMethod,
+  getZoomExtentMethod,
   setControlsMethod,
   setLayersMethod,
   setPreventScrollMethod,
@@ -51,9 +52,9 @@ addCommonStylesheet();
  * */
 
 /**
- * The `eox-map` is a wrapper for the library [OpenLayers](https://openlayers.org/) with additional features and helper functions.
+ * The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.
  *
- * Basic usage:
+ * ## Basic usage:
  *
  * ```
  * import "@eox/map"
@@ -86,8 +87,37 @@ addCommonStylesheet();
  *   - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)
  * - Reprojection through [proj4](https://github.com/proj4js/proj4js)
  *
- * @element eox-map
+ * For usage and story examples, see the Storybook stories in `/elements/map/stories`.
  *
+ * ## Features
+ *
+ * - **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.
+ * - **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.
+ * - **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured and styled for various use cases.
+ * - **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.
+ * - **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.
+ * - **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.
+ * - **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.
+ * - **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.
+ * - **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.
+ * - **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.
+ * - **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.
+ *
+ * ## Events
+ *
+ * - `clusterSelect`: Fired when a cluster is selected.
+ * - `loadend`: Fired when the map has finished loading.
+ * - `mapmounted`: Fired when the map is successfully mounted.
+ * - `select`: Fired when a feature is selected.
+ *
+ * ## Helper Methods
+ *
+ * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
+ * - `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.
+ * - `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.
+ * - `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.
+ *
+ * @element eox-map
  * @fires {CustomEvent} clusterSelect - A cluster is selected
  * @fires {CustomEvent} loadend - The map has finished loading
  * @fires {CustomEvent} mapmounted - The map has been successfully mounted
@@ -326,6 +356,16 @@ export class EOxMap extends LitElement {
   }
 
   /**
+   * Gets the current extent of the map.
+   *
+   * @type {Array<number>}
+   * @returns {Array<number>} The extent in current map projection.
+   */
+  get zoomExtent() {
+    return getZoomExtentMethod(this);
+  }
+
+  /**
    * Sets the controls for the map.
    *
    * @param {ControlDictionary} controls - An array of control configurations.
@@ -356,7 +396,6 @@ export class EOxMap extends LitElement {
   /**
    * Gets the current layers of the map
    *
-   * @type {Array<EoxLayer>} Some [Test](test)
    * @returns {Array<EoxLayer>} The current layers applied to the map.
    */
   get layers() {

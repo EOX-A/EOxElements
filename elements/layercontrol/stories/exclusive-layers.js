@@ -15,25 +15,34 @@ const customizeLayer = (layer, visible = true) => ({
   visible: visible,
 });
 
-export const ExclusiveLayers = {
-  args: {},
-  render: () => html`
-    <div style="display: flex">
-      <eox-layercontrol
-        for="eox-map#exclusive"
-        .style=${STORIES_LAYERCONTROL_STYLE}
-      ></eox-layercontrol>
-      <eox-map
-        id="exclusive"
-        .style=${STORIES_MAP_STYLE}
-        .layers=${[
+export const ExclusiveLayersStory = {
+  args: {
+    style: STORIES_LAYERCONTROL_STYLE,
+    for: "eox-map#exclusive",
+    storyAdditionalComponents: {
+      "eox-map": {
+        style: STORIES_MAP_STYLE,
+        layers: [
           customizeLayer(STORIES_LAYER_TERRAIN_LIGHT),
           customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2021, false),
-        ]}
-      >
-      </eox-map>
+        ],
+        id: "exclusive",
+      },
+    },
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .for=${args.for}
+        .style=${args.style}
+      ></eox-layercontrol>
+      <eox-map
+        id=${args.storyAdditionalComponents["eox-map"].id}
+        .style=${args.storyAdditionalComponents["eox-map"].style}
+        .layers=${args.storyAdditionalComponents["eox-map"].layers}
+      ></eox-map>
     </div>
   `,
 };
 
-export default ExclusiveLayers;
+export default ExclusiveLayersStory;

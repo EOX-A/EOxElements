@@ -17,27 +17,36 @@ const customizeLayer = (layer) => ({
   visible: false,
 });
 
-export const OptionalLayers = {
-  args: {},
-  render: () => html`
-    <div style="display: flex">
-      <eox-layercontrol
-        for="eox-map#optional"
-        .style=${STORIES_LAYERCONTROL_STYLE}
-      ></eox-layercontrol>
-      <eox-map
-        id="optional"
-        .style=${STORIES_MAP_STYLE}
-        .layers=${[
+export const OptionalLayersStory = {
+  args: {
+    style: STORIES_LAYERCONTROL_STYLE,
+    for: "eox-map#optional",
+    storyAdditionalComponents: {
+      "eox-map": {
+        style: STORIES_MAP_STYLE,
+        layers: [
           customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2021),
           customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2020),
           customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2019),
           STORIES_LAYER_TERRAIN_LIGHT,
-        ]}
-      >
-      </eox-map>
+        ],
+        id: "optional",
+      },
+    },
+  },
+  render: (args) => html`
+    <div style="display: flex">
+      <eox-layercontrol
+        .for=${args.for}
+        .style=${args.style}
+      ></eox-layercontrol>
+      <eox-map
+        id=${args.storyAdditionalComponents["eox-map"].id}
+        .style=${args.storyAdditionalComponents["eox-map"].style}
+        .layers=${args.storyAdditionalComponents["eox-map"].layers}
+      ></eox-map>
     </div>
   `,
 };
 
-export default OptionalLayers;
+export default OptionalLayersStory;

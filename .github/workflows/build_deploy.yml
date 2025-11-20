@@ -34,8 +34,7 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm install
-          npm run generate-manifest
-          npm run build:storybook
+          npm run build:docs
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4

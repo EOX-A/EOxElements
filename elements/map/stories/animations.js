@@ -22,37 +22,17 @@ const AnimationsStory = {
     },
     center: [16.8, 48.2],
     zoom: 7,
+    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      id="animationMap"
-      style="width: 100%; height: 300px;"
       .center=${args.center}
       .layers=${args.layers}
       .zoom=${args.zoom}
       .animationOptions=${args.animationOptions}
+      style=${args.style}
     >
     </eox-map>
-    <button
-      @click=${() => {
-        const eoxMap = /** @type {import("../src/main").EOxMap} **/ (
-          /** @type {any} **/ document.querySelector("#animationMap")
-        );
-        eoxMap.zoom = eoxMap.zoom + 1;
-      }}
-    >
-      zoom in animation
-    </button>
-    <button
-      @click=${() => {
-        const eoxMap = /** @type {import("../src/main").EOxMap} **/ (
-          /** @type {any} **/ document.querySelector("#animationMap")
-        );
-        eoxMap.zoom = eoxMap.zoom - 1;
-      }}
-    >
-      zoom out animation
-    </button>
   `,
 };
 

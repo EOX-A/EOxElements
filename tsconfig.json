@@ -4,7 +4,7 @@
     "useDefineForClassFields": false,
     "module": "ESNext",
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "strict": true,
     "strictNullChecks": false,
     "resolveJsonModule": true,
@@ -50,5 +50,27 @@
     "elements/*/src/**/*.ts",
     "elements/*/src/**/*.d.ts"
   ],
-  "exclude": ["node_modules", "elements/*/dist"]
+  "exclude": ["node_modules", "elements/*/dist"],
+  "typedocOptions": {
+    "entryPoints": ["./elements/*/src/*.ts"],
+    "outputs": [
+      {
+        "name": "json",
+        "path": "./types.json"
+      },
+      {
+        "name": "html",
+        "path": "./.storybook/public/typedoc_html"
+      },
+      {
+        "name": "markdown",
+        "path": "./.storybook/public/typedoc_markdown"
+      }
+    ],
+    "plugin": [
+      "./.storybook/typedoc/merge-types.mjs",
+      "typedoc-plugin-markdown"
+    ],
+    "customCss": "./.storybook/typedoc/custom.css"
+  }
 }

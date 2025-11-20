@@ -17,7 +17,23 @@ import {
 } from "./helpers/generate-upload-events.js";
 
 /**
- * Manage drawn features on a map
+ * The `eox-drawtools` element provides a comprehensive set of drawing, editing, selection, and import tools for vector features on an `eox-map`. It supports drawing multiple feature types (Polygon, Box, Point, Circle, LineString), continuous drawing, feature modification, selection from existing layers, and import/export in various formats (GeoJSON, WKT, native OL feature).
+ *
+ * Key features:
+ * - Draw polygons, boxes, points, circles, and lines on the map
+ * - Draw multiple features at once (set `multiple-features`)
+ * - Continuous drawing mode (set `continuous`)
+ * - Modify drawn features (set `allow-modify`)
+ * - Select features from a specified layer (`layer-id`)
+ * - Display a list of drawn/selected features (`show-list`)
+ * - Edit features as GeoJSON in a text editor (`show-editor`)
+ * - Import features via drag-and-drop or file upload (`import-features`)
+ * - Emit drawn features in different formats (`format`: `feature`, `geojson`, `wkt`)
+ * - Emit features in a specified projection (`projection`)
+ * - Customizable feature styles (`featureStyles`)
+ * - Unstyled and no-shadow variants for easy integration
+ *
+ * Usage examples and visual demos are available in Storybook stories, including scenarios for multi-feature drawing, feature modification, selection, import/export, continuous drawing, format and projection control, and style customization.
  *
  * @element eox-drawtools
  */
@@ -42,7 +58,7 @@ export class EOxDrawTools extends LitElement {
       showEditor: { attribute: "show-editor", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
       projection: { type: String },
-      noShadow: { type: Boolean },
+      noShadow: { attribute: "no-shadow", type: Boolean },
       format: { type: String },
       type: { type: String },
       unstyled: { type: Boolean },
@@ -334,8 +350,20 @@ export class EOxDrawTools extends LitElement {
       this.eoxMap = EoxMap;
       this.#olMap = OlMap;
     }
+    if (
+      changedProperties.get("type") &&
+      changedProperties.get("type") !== this.type
+    ) {
+      this.resetLayer(this);
+      this.firstUpdated();
+      this.currentlyDrawing = false;
+    }
   }
 
+  /**
+   * The eox-map instance associated with the draw tools
+   * @type {import("@eox/map").EOxMap}
+   */
   get eoxMap() {
     return this.#eoxMap;
   }

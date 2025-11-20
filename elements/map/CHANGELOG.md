@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.26.2](https://github.com/EOX-A/EOxElements/compare/map-v1.26.1...map-v1.26.2) (2025-11-10)
+
+
+### Bug Fixes
+
+* Add getter for EOxMap zoomExtent ([#1915](https://github.com/EOX-A/EOxElements/issues/1915)) ([496182d](https://github.com/EOX-A/EOxElements/commit/496182dc3165fd7c22716cfeea1a76c35252b4a0))
+
+## [1.26.1](https://github.com/EOX-A/EOxElements/compare/map-v1.26.0...map-v1.26.1) (2025-10-30)
+
+
+### Bug Fixes
+
+* Support FlatGeoBuf layers with different projection of map view and data itself ([#1895](https://github.com/EOX-A/EOxElements/issues/1895)) ([23d32bd](https://github.com/EOX-A/EOxElements/commit/23d32bddb284c10c9b98d3c667a53ca72ccbeba3))
+
 ## [1.26.0](https://github.com/EOX-A/EOxElements/compare/map-v1.25.0...map-v1.26.0) (2025-09-22)
 
 

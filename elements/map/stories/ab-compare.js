@@ -6,20 +6,48 @@ import { html } from "lit";
  * @returns {Object} The story configuration with arguments for the component.
  */
 const ABCompareStory = {
+  argTypes: {
+    enabled: {
+      control: { type: "select" },
+      options: [undefined, "first", "second"],
+    },
+  },
   args: {
-    layersA: [{ type: "Tile", source: { type: "OSM" } }],
-    layersB: [
-      {
-        type: "Tile",
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
+    layers: [{ type: "Tile", source: { type: "OSM" } }],
+    slot: "first",
+    id: "compareA",
+    storyAdditionalComponents: {
+      "eox-map": {
+        layers: [
+          {
+            type: "Tile",
+            source: {
+              type: "TileWMS",
+              url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+              params: {
+                LAYERS: "AWS_VIS_WIND_V_10M",
+              },
+            },
           },
-        },
+        ],
+        id: "compareB",
+        slot: "second",
+        sync: "eox-map#compareA",
       },
-    ],
+      "eox-map-compare": {
+        enabled: undefined,
+        storyImport: false,
+        storyWrap: true,
+      },
+    },
+    storyTemplateWrap: `<eox-map-compare>{{content}}</eox-map-compare>`,
+    storyStyle: `
+      eox-map-compare,
+      eox-map {
+        width: 100%;
+        height: 300px;
+      }
+    `,
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <style>
@@ -29,36 +57,17 @@ const ABCompareStory = {
         height: 300px;
       }
     </style>
-    <eox-map-compare>
-      <eox-map slot="first" id="compareA" .layers=${args.layersA}></eox-map>
+    <eox-map-compare
+      enabled=${args.storyAdditionalComponents["eox-map-compare"].enabled}
+    >
+      <eox-map slot=${args.slot} id=${args.id} .layers=${args.layers}></eox-map>
       <eox-map
-        slot="second"
-        sync="eox-map#compareA"
-        .layers=${args.layersB}
+        id=${args.storyAdditionalComponents["eox-map"].id}
+        slot=${args.storyAdditionalComponents["eox-map"].slot}
+        sync=${args.storyAdditionalComponents["eox-map"].sync}
+        .layers=${args.storyAdditionalComponents["eox-map"].layers}
       ></eox-map>
     </eox-map-compare>
-    <button
-      @click=${() =>
-        document
-          .querySelector("eox-map-compare")
-          .setAttribute("enabled", "first")}
-    >
-      First
-    </button>
-    <button
-      @click=${() =>
-        document
-          .querySelector("eox-map-compare")
-          .setAttribute("enabled", "second")}
-    >
-      Second
-    </button>
-    <button
-      @click=${() =>
-        document.querySelector("eox-map-compare").removeAttribute("enabled")}
-    >
-      Both (default)
-    </button>
   `,
 };
 

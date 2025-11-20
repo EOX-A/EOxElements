@@ -1,7 +1,34 @@
 /**
- * This element allows to quickly set up an app layout using a 12x12 grid. It consists of two elements:
- * - `eox-layout`: the container holding all the items
- * - `eox-layout-item`: the individual items placed on the grid, with a defined x/y coordinate, and a w(idth) and h(eight), which can be single values or three vlaues for small/medium/large
+ * The `eox-layout` element provides a flexible grid-based layout system for web applications, based on a 12x12 grid. It consists of two elements:
+ * - `eox-layout`: the container holding all layout items
+ * - `eox-layout-item`: the individual items placed on the grid, with defined x/y coordinates and w(idth)/h(eight) dimensions
+ *
+ * ## Usage
+ * Place `<eox-layout></eox-layout>` in your application and add `<eox-layout-item></eox-layout-item>` children to define grid items.
+ *
+ * - `x`, `y`: zero-indexed coordinates for grid placement
+ * - `w`, `h`: width and height (can be single value or three values for small/medium/large screens, separated by `/`)
+ * - `gap`: spacing between items
+ * - `row-height`, `column-width`: control grid slot size
+ * - `fill-grid`: automatically fills available space
+ *
+ * ## Responsive Layout
+ * By providing three values for `x`, `y`, `w`, or `h`, items can be rendered differently on small, medium, and large screens.
+ *
+ * ## Story Examples
+ * - Basic grid usage with positioned items
+ * - Full 12x12 grid visualization
+ * - Gap and padding demonstration
+ * - Overflow and scroll behavior
+ * - Fill-grid for auto layout
+ * - Responsive layouts for different screen sizes
+ *
+ * @attribute {string} column-width - Width of each grid column (e.g., "200px", "1fr").
+ * @attribute {boolean} fill-grid - If present, the layout will automatically fill available space.
+ * @attribute {string} gap - Gap between layout items in pixels.
+ * @attribute {string} row-height - Height of each grid row (e.g., "100px", "1fr").
+ *
+ * @element eox-layout
  */
 export class EOxLayout extends HTMLElement {
   static get observedAttributes() {
@@ -59,6 +86,14 @@ export class EOxLayout extends HTMLElement {
   }
 }
 
+/**
+ * @element eox-layout-item
+ *
+ * @attribute {string} x - The x coordinate (zero-indexed) of the layout item.
+ * @attribute {string} y - The y coordinate (zero-indexed) of the layout item.
+ * @attribute {string} w - The width (in grid slots) of the layout item.
+ * @attribute {string} h - The height (in grid slots) of the layout item.
+ */
 export class EOxLayoutItem extends HTMLElement {
   static get observedAttributes() {
     return ["x", "y", "w", "h"];
