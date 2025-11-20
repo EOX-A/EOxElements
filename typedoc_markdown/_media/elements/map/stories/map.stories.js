@@ -1,6 +1,5 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import "../src/main.js";
 import {
   PrimaryStory,
   VectorLayerStory,
