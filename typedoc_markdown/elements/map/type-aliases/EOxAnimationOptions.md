@@ -8,4 +8,4 @@
 
 > **EOxAnimationOptions** = `AnimationOptions` & `FitOptions`
 
-Defined in: [elements/map/src/types.ts:223](https://github.com/EOX-A/EOxElements/blob/56b12441c01419bcdcb96a329332a7fd6fb3ea09/elements/map/src/types.ts#L223)
+Defined in: [elements/map/src/types.ts:223](https://github.com/EOX-A/EOxElements/blob/287ead74d92f9f5503782442f4a71242245f2f8d/elements/map/src/types.ts#L223)
