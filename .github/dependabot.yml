@@ -16,6 +16,9 @@ updates:
           - "storybook"
           - "@storybook*"
           - "*storybook"
+      turf:
+        patterns:
+          - "@turf*"
       typescript:
         patterns:
           - "typescript"
