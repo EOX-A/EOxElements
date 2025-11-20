@@ -18,7 +18,7 @@ export function getProj(formatReader, text) {
   // @ts-expect-error - Property 'getCoordinates' does not exist on type 'Geometry' but it does not showing
   const coordinates = geometry.getCoordinates();
   if (coordinates && coordinates.length > 0) {
-    const coord = coordinates[0][0][0];
+    const coord = coordinates[0][0][0][0];
     if (coord >= -180 && coord <= 180) {
       return "EPSG:4326";
     } else {
