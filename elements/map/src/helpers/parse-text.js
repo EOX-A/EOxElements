@@ -18,14 +18,32 @@ export function getProj(formatReader, text) {
   // @ts-expect-error - Property 'getCoordinates' does not exist on type 'Geometry' but it does not showing
   const coordinates = geometry.getCoordinates();
   if (coordinates && coordinates.length > 0) {
-    const coord = coordinates[0][0][0][0];
-    if (coord >= -180 && coord <= 180) {
-      return "EPSG:4326";
-    } else {
-      return "EPSG:3857";
+    const coord = findFirstCoordinateValue(coordinates);
+    if (typeof coord === "number") {
+      if (coord >= -180 && coord <= 180) {
+        return "EPSG:4326"; // WGS 84 (Lon/Lat)
+      } else {
+        return "EPSG:3857"; // Web Mercator (X/Y)
+      }
     }
   }
 
+  return undefined;
+}
+
+/**
+ * Recursively finds the first numerical coordinate value in a nested array.
+ *
+ * @param {any} coordinates - The coordinates array returned by geometry.getCoordinates().
+ * @returns {number | undefined} - The first numerical coordinate (longitude/x), or undefined.
+ */
+function findFirstCoordinateValue(coordinates) {
+  if (typeof coordinates === "number") {
+    return coordinates;
+  }
+  if (Array.isArray(coordinates) && coordinates.length > 0) {
+    return findFirstCoordinateValue(coordinates[0]);
+  }
   return undefined;
 }
 
