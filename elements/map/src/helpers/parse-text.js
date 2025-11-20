@@ -11,7 +11,7 @@ import { READ_FEATURES_OPTIONS } from "../enums";
  * @param {string} text
  * @returns {string | undefined} - Returns the projection string if determined, otherwise undefined.
  */
-function getProj(formatReader, text) {
+export function getProj(formatReader, text) {
   const features = formatReader.readFeatures(text);
   const feature = features[0];
   const geometry = feature.getGeometry();
@@ -20,9 +20,9 @@ function getProj(formatReader, text) {
   if (coordinates && coordinates.length > 0) {
     const coord = coordinates[0][0][0];
     if (coord >= -180 && coord <= 180) {
-      return "EPSG:3857";
-    } else {
       return "EPSG:4326";
+    } else {
+      return "EPSG:3857";
     }
   }
 
