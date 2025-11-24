@@ -6,7 +6,7 @@
 
 # Interface: CustomMarkdownItState
 
-Defined in: [elements/storytelling/src/types.ts:9](https://github.com/EOX-A/EOxElements/blob/b491628d36d17a05e27949d1bcb82f130b58e0ea/elements/storytelling/src/types.ts#L9)
+Defined in: [elements/storytelling/src/types.ts:9](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/storytelling/src/types.ts#L9)
 
 ## Extends
 
@@ -163,7 +163,7 @@ indent of the current list block (-1 if there isn't any)
 
 > **md**: [`CustomMarkdownIt`](CustomMarkdownIt.md)
 
-Defined in: [elements/storytelling/src/types.ts:10](https://github.com/EOX-A/EOxElements/blob/b491628d36d17a05e27949d1bcb82f130b58e0ea/elements/storytelling/src/types.ts#L10)
+Defined in: [elements/storytelling/src/types.ts:10](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/storytelling/src/types.ts#L10)
 
 link to parser instance
 
