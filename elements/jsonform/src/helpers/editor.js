@@ -291,9 +291,9 @@ export const createEditor = (element) => {
             `;
             };
             button.addEventListener("click", () => {
-              toggleButton(button.title);
+              toggleButton(/** @type {HTMLButtonElement} */ (button).title);
             });
-            toggleButton(button.title);
+            toggleButton(/** @type {HTMLButtonElement} */ (button).title);
           }
           if (button.classList.contains("json-editor-btn-moveup")) {
             button.innerHTML = `
