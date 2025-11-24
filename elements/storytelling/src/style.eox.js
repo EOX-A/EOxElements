@@ -329,7 +329,7 @@ const styleEOX = `
       }
   }
 
-  .story-telling .section-wrap.section-item * {
+  .story-telling .section-wrap.section-item *:not(li) {
     overflow-x: hidden;
   }
 
