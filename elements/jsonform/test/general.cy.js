@@ -16,6 +16,7 @@ import {
   loadSubmitButtonTest,
   loadCodeTest,
   loadShowOptInPropertiesTest,
+  loadButtonsEditorTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -37,4 +38,5 @@ describe("Jsonform", () => {
   it("handles a submit button correctly", () => loadSubmitButtonTest());
   it("loads the jsonform with show opt in properties", () =>
     loadShowOptInPropertiesTest());
+  it("loads the buttons editor", () => loadButtonsEditorTest());
 });
