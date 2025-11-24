@@ -1,5 +1,6 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { MinMaxEditor } from "./minmax";
+import { ButtonsEditor } from "./buttons";
 import { SpatialEditor, spatialValidatorCreator } from "./spatial";
 
 // Define custom input types
@@ -8,6 +9,11 @@ const inputs = [
     type: "object",
     format: "minmax",
     func: MinMaxEditor,
+  },
+  {
+    type: "string",
+    format: "buttons",
+    func: ButtonsEditor,
   },
   {
     type: "array",
