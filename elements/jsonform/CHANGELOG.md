@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.5...jsonform-v1.5.0) (2025-11-24)
+
+
+### Features
+
+* Buttons editor ([#1960](https://github.com/EOX-A/EOxElements/issues/1960)) ([4584998](https://github.com/EOX-A/EOxElements/commit/4584998ca5921116b4f6da7e42722aee636d89a9))
+
 ## [1.4.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.4...jsonform-v1.4.5) (2025-11-20)
 
 
