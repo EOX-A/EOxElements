@@ -88,7 +88,7 @@ export class ButtonsEditor extends AbstractEditor {
     }
   }
 
-  setValue(value, initial) {
+  setValue(value) {
     if (this.schema.type === "integer" || this.schema.type === "number") {
       value = Number(value);
     }
