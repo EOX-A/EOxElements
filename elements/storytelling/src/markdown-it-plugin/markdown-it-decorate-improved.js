@@ -25,8 +25,7 @@ export default function attributes(md) {
 
 /**
  * Main function to process tokens and apply attributes
- *
- * @type {import("markdown-it").Core.RuleCore}
+ * @type {Parameters<import("markdown-it").default["core"]["ruler"]["push"]>[1]}
  * @param {import("../types").CustomMarkdownItState} state - Token state
  */
 function curlyAttrs(state) {
@@ -239,7 +238,7 @@ function parseInlineContent(
   sectionSteps,
 ) {
   /**
-   * @type {import("markdown-it").Token}
+   * @type {InstanceType<InstanceType<import("markdown-it").default["core"]["State"]>["Token"]>}
    */
   let lastText;
   const omissions = [];
