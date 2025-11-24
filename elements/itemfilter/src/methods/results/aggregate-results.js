@@ -7,25 +7,28 @@
  * @returns {Array<Object>} The filtered and aggregated items.
  */
 export function aggregateResultsMethod(items, property, EOxItemFilterResults) {
-  return items.filter((item) => {
-    // Get the aggregation property from the item
-    const aggregation = item[EOxItemFilterResults.config.aggregateResults];
+  // If the category itself is an empty string, return nothing immediately.
+  // This prevents the "Duplicate results" list under the "" header.
+  if (!property || (typeof property === "string" && property.trim() === "")) {
+    return [];
+  }
 
-    // Get the current filter state for the aggregation property
+  return items.filter((item) => {
+    const configKey = EOxItemFilterResults.config.aggregateResults;
+    // Get the aggregation property from the item
+    const aggregation = item[configKey];
+
+    // If the item does NOT have the selected property (it is undefined or null),
+    // we immediately exclude it from this specific category list.
+    if (aggregation === undefined || aggregation === null) {
+      return false;
+    }
+
     let currentFilter;
-    if (
-      EOxItemFilterResults.filters[EOxItemFilterResults.config.aggregateResults]
-    ) {
+    if (EOxItemFilterResults.filters[configKey]) {
       currentFilter = Object.keys(
-        EOxItemFilterResults.filters[
-          EOxItemFilterResults.config.aggregateResults
-        ],
-      ).filter(
-        (f) =>
-          EOxItemFilterResults.filters[
-            EOxItemFilterResults.config.aggregateResults
-          ].state[f],
-      );
+        EOxItemFilterResults.filters[configKey],
+      ).filter((f) => EOxItemFilterResults.filters[configKey].state[f]);
     }
 
     // Determine if the property is included in the current filter
