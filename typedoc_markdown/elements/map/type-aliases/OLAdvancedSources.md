@@ -8,7 +8,7 @@
 
 > **OLAdvancedSources** = `object`
 
-Defined in: [elements/map/src/layers.ts:55](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L55)
+Defined in: [elements/map/src/layers.ts:55](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L55)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/layers.ts:55](https://github.com/EOX-A/EOxElements
 
 > **BingMaps**: `default`
 
-Defined in: [elements/map/src/layers.ts:56](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L56)
+Defined in: [elements/map/src/layers.ts:56](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L56)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/layers.ts:56](https://github.com/EOX-A/EOxElements
 
 > **CartoDB**: `default`
 
-Defined in: [elements/map/src/layers.ts:57](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L57)
+Defined in: [elements/map/src/layers.ts:57](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L57)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/layers.ts:57](https://github.com/EOX-A/EOxElements
 
 > **Cluster**: `default`
 
-Defined in: [elements/map/src/layers.ts:82](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L82)
+Defined in: [elements/map/src/layers.ts:82](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L82)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/layers.ts:82](https://github.com/EOX-A/EOxElements
 
 > **DataTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:58](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L58)
+Defined in: [elements/map/src/layers.ts:58](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L58)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [elements/map/src/layers.ts:58](https://github.com/EOX-A/EOxElements
 
 > **FlatGeoBuf**: `default`
 
-Defined in: [elements/map/src/layers.ts:81](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L81)
+Defined in: [elements/map/src/layers.ts:81](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L81)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [elements/map/src/layers.ts:81](https://github.com/EOX-A/EOxElements
 
 > **GeoTIFF**: `default`
 
-Defined in: [elements/map/src/layers.ts:59](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L59)
+Defined in: [elements/map/src/layers.ts:59](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L59)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [elements/map/src/layers.ts:59](https://github.com/EOX-A/EOxElements
 
 > **Google**: `default`
 
-Defined in: [elements/map/src/layers.ts:60](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L60)
+Defined in: [elements/map/src/layers.ts:60](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L60)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [elements/map/src/layers.ts:60](https://github.com/EOX-A/EOxElements
 
 > **IIIF**: `default`
 
-Defined in: [elements/map/src/layers.ts:61](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L61)
+Defined in: [elements/map/src/layers.ts:61](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L61)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [elements/map/src/layers.ts:61](https://github.com/EOX-A/EOxElements
 
 > **Image**: `default`
 
-Defined in: [elements/map/src/layers.ts:62](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L62)
+Defined in: [elements/map/src/layers.ts:62](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L62)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [elements/map/src/layers.ts:62](https://github.com/EOX-A/EOxElements
 
 > **ImageArcGISRest**: `default`
 
-Defined in: [elements/map/src/layers.ts:63](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L63)
+Defined in: [elements/map/src/layers.ts:63](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L63)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [elements/map/src/layers.ts:63](https://github.com/EOX-A/EOxElements
 
 > **ImageCanvas**: `default`
 
-Defined in: [elements/map/src/layers.ts:64](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L64)
+Defined in: [elements/map/src/layers.ts:64](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L64)
 
 ***
 
@@ -104,7 +104,7 @@ Defined in: [elements/map/src/layers.ts:64](https://github.com/EOX-A/EOxElements
 
 > **ImageMapGuide**: `default`
 
-Defined in: [elements/map/src/layers.ts:65](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L65)
+Defined in: [elements/map/src/layers.ts:65](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L65)
 
 ***
 
@@ -112,7 +112,7 @@ Defined in: [elements/map/src/layers.ts:65](https://github.com/EOX-A/EOxElements
 
 > **ImageStatic**: `default`
 
-Defined in: [elements/map/src/layers.ts:66](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L66)
+Defined in: [elements/map/src/layers.ts:66](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L66)
 
 ***
 
@@ -120,7 +120,7 @@ Defined in: [elements/map/src/layers.ts:66](https://github.com/EOX-A/EOxElements
 
 > **ImageTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:67](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L67)
+Defined in: [elements/map/src/layers.ts:67](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L67)
 
 ***
 
@@ -128,7 +128,7 @@ Defined in: [elements/map/src/layers.ts:67](https://github.com/EOX-A/EOxElements
 
 > **OGCMapTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:68](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L68)
+Defined in: [elements/map/src/layers.ts:68](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L68)
 
 ***
 
@@ -136,7 +136,7 @@ Defined in: [elements/map/src/layers.ts:68](https://github.com/EOX-A/EOxElements
 
 > **OGCVectorTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:69](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L69)
+Defined in: [elements/map/src/layers.ts:69](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L69)
 
 ***
 
@@ -144,7 +144,7 @@ Defined in: [elements/map/src/layers.ts:69](https://github.com/EOX-A/EOxElements
 
 > **Raster**: `default`
 
-Defined in: [elements/map/src/layers.ts:70](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L70)
+Defined in: [elements/map/src/layers.ts:70](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L70)
 
 ***
 
@@ -152,7 +152,7 @@ Defined in: [elements/map/src/layers.ts:70](https://github.com/EOX-A/EOxElements
 
 > **Source**: `default`
 
-Defined in: [elements/map/src/layers.ts:71](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L71)
+Defined in: [elements/map/src/layers.ts:71](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L71)
 
 ***
 
@@ -160,7 +160,7 @@ Defined in: [elements/map/src/layers.ts:71](https://github.com/EOX-A/EOxElements
 
 > **StadiaMaps**: `default`
 
-Defined in: [elements/map/src/layers.ts:72](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L72)
+Defined in: [elements/map/src/layers.ts:72](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L72)
 
 ***
 
@@ -168,7 +168,7 @@ Defined in: [elements/map/src/layers.ts:72](https://github.com/EOX-A/EOxElements
 
 > **TileArcGISRest**: `default`
 
-Defined in: [elements/map/src/layers.ts:73](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L73)
+Defined in: [elements/map/src/layers.ts:73](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L73)
 
 ***
 
@@ -176,7 +176,7 @@ Defined in: [elements/map/src/layers.ts:73](https://github.com/EOX-A/EOxElements
 
 > **TileDebug**: `default`
 
-Defined in: [elements/map/src/layers.ts:74](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L74)
+Defined in: [elements/map/src/layers.ts:74](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L74)
 
 ***
 
@@ -184,7 +184,7 @@ Defined in: [elements/map/src/layers.ts:74](https://github.com/EOX-A/EOxElements
 
 > **TileImage**: `default`
 
-Defined in: [elements/map/src/layers.ts:75](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L75)
+Defined in: [elements/map/src/layers.ts:75](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L75)
 
 ***
 
@@ -192,7 +192,7 @@ Defined in: [elements/map/src/layers.ts:75](https://github.com/EOX-A/EOxElements
 
 > **TileJSON**: `default`
 
-Defined in: [elements/map/src/layers.ts:76](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L76)
+Defined in: [elements/map/src/layers.ts:76](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L76)
 
 ***
 
@@ -200,7 +200,7 @@ Defined in: [elements/map/src/layers.ts:76](https://github.com/EOX-A/EOxElements
 
 > **UrlTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:77](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L77)
+Defined in: [elements/map/src/layers.ts:77](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L77)
 
 ***
 
@@ -208,7 +208,7 @@ Defined in: [elements/map/src/layers.ts:77](https://github.com/EOX-A/EOxElements
 
 > **UTFGrid**: `default`
 
-Defined in: [elements/map/src/layers.ts:78](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L78)
+Defined in: [elements/map/src/layers.ts:78](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L78)
 
 ***
 
@@ -216,7 +216,7 @@ Defined in: [elements/map/src/layers.ts:78](https://github.com/EOX-A/EOxElements
 
 > **WMTSCapabilities**: `default`
 
-Defined in: [elements/map/src/layers.ts:80](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L80)
+Defined in: [elements/map/src/layers.ts:80](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L80)
 
 ***
 
@@ -224,4 +224,4 @@ Defined in: [elements/map/src/layers.ts:80](https://github.com/EOX-A/EOxElements
 
 > **Zoomify**: `default`
 
-Defined in: [elements/map/src/layers.ts:79](https://github.com/EOX-A/EOxElements/blob/789f2f5df039f44a474f43007ce4acee0739ce9f/elements/map/src/layers.ts#L79)
+Defined in: [elements/map/src/layers.ts:79](https://github.com/EOX-A/EOxElements/blob/918f7d14a9a09c5542d1f885f324eb19452ba9af/elements/map/src/layers.ts#L79)
