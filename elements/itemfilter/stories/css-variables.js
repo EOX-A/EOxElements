@@ -15,7 +15,7 @@ function CSSVariablesStory() {
         .titleProperty=${args.titleProperty}
         .subTitleProperty=${args.subTitleProperty}
         .filterProperties=${args.filterProperties}
-        style="--form-flex-direction: row"
+        style=${args.style}
       ></eox-itemfilter>`,
     args: {
       aggregateResults: "themes",
@@ -29,6 +29,7 @@ function CSSVariablesStory() {
         },
       ],
       items,
+      style: "--form-flex-direction: row",
     },
   };
 }

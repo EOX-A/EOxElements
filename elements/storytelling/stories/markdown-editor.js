@@ -4,6 +4,13 @@
 import { html } from "lit";
 
 export const MarkdownEditor = {
+  argTypes: {
+    markdown: {
+      table: {
+        category: "properties",
+      },
+    },
+  },
   args: {
     markdown: `# Welcome to Storytelling <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
 #### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
@@ -125,31 +132,33 @@ Each tour step is described as an *h3* (*###*) heading.
 Hopefully, this was a good introduction to the story writing possibilities using EOxStorytelling - get started writing your own story!
 More features will be added soon, so feel free to follow progress at the [EOxElements GitHub repository](https://github.com/EOX-A/EOxElements).
     `,
+    id: "markdown-editor",
+    showNav: true,
+    showEditor: "closed",
+    showHeroScrollIndicator: true,
+    "upload:file": (e) => {
+      const detail = e.detail;
+      const { file, update } = detail;
+      if (file.size > 1024 * 1024) {
+        update(null, null, new Error("File size must be less than 1MB"));
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Url = reader.result;
+        update(base64Url);
+      };
+      reader.readAsDataURL(file);
+    },
   },
   render: (args) => html`
     <eox-storytelling
-      id="markdown-editor"
-      show-nav
-      show-editor="closed"
-      show-hero-scroll-indicator
+      id=${args.id}
+      ?show-nav=${args.showNav}
+      show-editor=${args.showEditor}
+      ?show-hero-scroll-indicator=${args.showHeroScrollIndicator}
       markdown=${args.markdown}
-      @upload:file=${(e) => {
-        const detail = e.detail;
-        const { file, update } = detail;
-
-        // Check if file is larger than 1MB
-        if (file.size > 1024 * 1024) {
-          update(null, null, new Error("File size must be less than 1MB"));
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64Url = reader.result;
-          update(base64Url);
-        };
-        reader.readAsDataURL(file);
-      }}
+      @upload:file=${args["upload:file"]}
     ></eox-storytelling>
   `,
 };

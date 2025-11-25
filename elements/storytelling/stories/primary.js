@@ -7,11 +7,12 @@ import { html } from "lit";
 export const Primary = {
   args: {
     markdown: "## Hello World, Welcome to EOxStoryTelling.",
+    id: "markdown-str",
   },
   render: (args) => html`
     <!-- Render eox-storytelling with basic markdown. -->
     <eox-storytelling
-      id="markdown-str"
+      id=${args.id}
       markdown=${args.markdown}
     ></eox-storytelling>
   `,

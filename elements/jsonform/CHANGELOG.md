@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.5...jsonform-v1.5.0) (2025-11-24)
+
+
+### Features
+
+* Buttons editor ([#1960](https://github.com/EOX-A/EOxElements/issues/1960)) ([4584998](https://github.com/EOX-A/EOxElements/commit/4584998ca5921116b4f6da7e42722aee636d89a9))
+
+## [1.4.5](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.4...jsonform-v1.4.5) (2025-11-20)
+
+
+### Bug Fixes
+
+* **style:** Support for textarea ([be87886](https://github.com/EOX-A/EOxElements/commit/be8788602f74d69d9cd92c646ffebe6dab5f4bdd))
+
+## [1.4.4](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.3...jsonform-v1.4.4) (2025-11-19)
+
+
+### Bug Fixes
+
+* Ensure uniqueness of labels and checkboxes ([#1950](https://github.com/EOX-A/EOxElements/issues/1950)) ([6c78afe](https://github.com/EOX-A/EOxElements/commit/6c78afefd90296aed3646f6f5dca4cdedd1976b5))
+
 ## [1.4.3](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.2...jsonform-v1.4.3) (2025-10-20)
 
 

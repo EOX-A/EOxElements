@@ -14,40 +14,27 @@ import { addCommonStylesheet } from "@eox/elements-utils";
 addCommonStylesheet();
 
 /**
- * Display layers and groups of a connected OpenLayers map
+ * The `eox-layercontrol` element provides a user interface for managing and configuring layers of an `eox-map`. It connects to the underlying OpenLayers map instance and displays a list of layers, supporting advanced features such as optional layers, exclusive layers, layer tools, dynamic legends, time controls, and external layer addition.
  *
- * ## Layer properties
- * In order to be displayed correctly, the OpenLayers map layers need some custom properties (using e.g. `layer.set(property, value)`).
+ * ## Usage
+ * Place `<eox-layercontrol></eox-layercontrol>` next to an `<eox-map></eox-map>` element. If there is only one `eox-map` present, `eox-layercontrol` will automatically connect to it. This can be configured
+ * via the `for` attribute/property in order to support connecting to a specific map.
  *
- * #### `id?: string`
- * The layer id. Not required but recommended. Can also be any other layer property (defined via the `idProperty` property or `id-property`attribute - see API).
+ * ## Layer Properties
+ * To be displayed and managed correctly, the map layers should have custom properties set (e.g. using `properties.<property>` inside the `eox-map` layer json, or by doing `layer.set(property, value)` on the native OpenLayers layers).
  *
- * #### `title?: string`
- * The title of the layer displayed in the layer control. Not required, but recommended in order to display human-readable layer titles. Can be any other layer property (defined via the `titleProperty` property or `title-property`attribute - see API).
+ * - `id?: string` — Unique identifier for the layer. Recommended for referencing and managing layers; also used for `eox-map` smart layer updating.
+ * - `title?: string` — Human-readable title for the layer, displayed in the control. Recommended for usability.
+ * - `layerControlHide?: boolean` — If true, hides the layer from the control UI.
+ * - `layerControlOptional?: boolean` — If true, the layer is initially hidden and can be added from the optional list.
+ * - `layerControlExclusive?: boolean` — If true, only one exclusive layer can be visualized at a time (taking into account all other layers on the same level with this property).
+ * - `layerControlExpand?: boolean` — If true, the layer is "expanded" by default, showing description, tools etc. (if available).
+ * - `layerControlToolsExpand?: boolean` — If true, the layer tools section is expanded by default.
+ * - `layerConfig?: object` — Configuration for the "config" tool, consisting of a JSON schema (rendered by `eox-jsonform`) for editable settings.
+ * - `layerDatetime?: object` — Configuration for the "datetime" tool, supporting time-based controls and playback.
+ * - `layerLegend?: object` — Configuration for the "legend" tool, supporting dynamic color legends.
  *
- * #### `layerControlHide?: Boolean`
- * Completely hide a layer from the layer control.
- *
- * #### `layerControlOptional?: Boolean`
- * Initially hide a layer from the layer control, but make it available as an optional layer. If the layer is selected and added, it will be set to visible and pushed to the top of the layer list or (if originally configured within a layer group) to the top of the layer group.
- *
- * #### `layerControlExclusive?: Boolean`
- * Make layers mutually exclusive. If two or more layers (on the same level, i.e. at root or inside a layer group) have this property, then only one of them can be visualized at a time.
- *
- * #### `layerControlExpand?: Boolean`
- * Pre-expand a layer dropdown so that it is always open when the component initializes.
- *
- * #### `layerControlToolsExpand?: Boolean`
- * Pre-expand the layer tools so they are visible when the component initializes.
- *
- * #### `layerConfig?: Object`
- * Configuration options for the layer (displayed in the layer tools' "config" tab)
- *
- * #### `layerDateTime?: Object`
- * Partial eox-timecontrol config passed to the "datetime" tool
- *
- * ### `layerLegend`?: Object
- * Creates a dynamic color legend based on range & domain of values. Extenteds partial config of `color-legend-element`
+ * For `eox-map` attributes/properties and emitted events, see below.
  *
  * @element eox-layercontrol
  */

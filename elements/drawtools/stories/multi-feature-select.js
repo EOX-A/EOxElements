@@ -1,11 +1,12 @@
 /**
- * Component demonstrating the ability to select a feature on an eox-map.
+ * Component demonstrating the ability to select multiple features on an eox-map with a list.
  */
 import { html } from "lit";
 import { STORIES_MAP_STYLE, STORIES_VECTOR_LAYERS } from "../src/enums";
 
-export const MuliFeatureSelect = {
+export const MultiFeatureSelect = {
   args: {
+    for: "eox-map#multi-select",
     allowModify: false,
     multipleFeatures: true,
     type: "Box",
@@ -25,32 +26,36 @@ export const MuliFeatureSelect = {
         "stroke-width": 2.5,
       },
     },
-    drawUpdate: (e) => {
+    drawupdate: (e) => {
       console.log("drawUpdate:", e.detail);
+    },
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "multi-select",
+        style: STORIES_MAP_STYLE,
+        layers: STORIES_VECTOR_LAYERS,
+      },
     },
   },
   render: (args) => html`
-    <!-- Render eox-map component with ID "multi-select" -->
-    <eox-map
-      id="multi-select"
-      style=${STORIES_MAP_STYLE}
-      .layers=${STORIES_VECTOR_LAYERS}
-    ></eox-map>
-
-    <!-- Initialize eox-drawtools for the eox-map with ID "multi-select" -->
     <eox-drawtools
-      for="eox-map#multi-select"
+      for="${args.for}"
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
-      layer-id=${args.layerId}
+      layer-id="${args.layerId}"
       ?show-list=${args.showList}
       .featureStyles=${args.featureStyles}
       .featureName=${args.featureName}
       .featureNameKey=${args.featureNameKey}
-      @drawupdate=${args.drawUpdate}
-    />
+      @drawupdate=${args.drawupdate}
+    ></eox-drawtools>
+    <eox-map
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
   `,
 };
 
-export default MuliFeatureSelect;
+export default MultiFeatureSelect;

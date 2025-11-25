@@ -4,7 +4,7 @@
  */
 import { html } from "lit";
 
-const ShowOptInProperties = {
+export default {
   args: {
     schema: {
       title: "Optional Properties Demo",
@@ -34,28 +34,15 @@ const ShowOptInProperties = {
     options: {
       show_opt_in: true,
     },
+    change: (e) => console.info("New value:", e.detail),
   },
   render: (args) => html`
     <eox-jsonform
       .schema=${args.schema}
       .value=${args.value}
       .options=${args.options}
-      .noShadow=${args.noShadow}
-      .unstyled=${args.unstyled}
-      @change=${args.onChange}
-      @ready=${args.onReady}
-      @submit=${args.onSubmit}
+      @change=${args.change}
     ></eox-jsonform>
     <div id="jsonform-data" style="margin-top: 20px;"></div>
   `,
-  play: async ({ canvasElement }) => {
-    canvasElement.querySelector("eox-jsonform").editor.on("change", () => {
-      document.querySelector("#jsonform-data").innerHTML = JSON.stringify(
-        canvasElement.querySelector("eox-jsonform").value,
-        null,
-        2,
-      );
-    });
-  },
 };
-export default ShowOptInProperties;

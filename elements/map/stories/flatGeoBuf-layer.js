@@ -29,6 +29,7 @@ const FlatGeoBufStory = {
         },
       },
     ],
+    storyCodeBefore: `import "@eox/map/src/plugins/advancedLayersAndSources"`,
   },
 };
 

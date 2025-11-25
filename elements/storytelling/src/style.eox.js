@@ -250,14 +250,12 @@ const styleEOX = `
     margin-bottom: 1.6rem;
   }
   .story-telling a {
-    --font-size: 1.1rem;
-    --color: var(--primary-color);
+    --color: var(--primary) !important;
     --background-color: transparent;
     outline: 0;
     background-color: var(--background-color);
     color: var(--color);
     text-underline-offset: 4px;
-    font-size: var(--font-size)
   }
   .story-telling sup a {
     font-size: smaller;
@@ -331,7 +329,7 @@ const styleEOX = `
       }
   }
 
-  .story-telling .section-wrap.section-item * {
+  .story-telling .section-wrap.section-item *:not(li) {
     overflow-x: hidden;
   }
 

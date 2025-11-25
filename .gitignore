@@ -28,6 +28,7 @@ cypress/videos
 
 docs
 custom-elements.json
+types.json
 
 utils/styles/dist/*.style.js
 
@@ -38,3 +39,5 @@ coverage
 
 # maps layers schema
 elements/map/src/eoxlayer-schema.json
+.storybook/public/typedoc_html
+.storybook/public/typedoc_markdown

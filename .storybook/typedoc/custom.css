@@ -1,0 +1,67 @@
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://eox-a.github.io/EOxElements/sb-common-assets/nunito-sans-regular.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://eox-a.github.io/EOxElements/sb-common-assets/nunito-sans-italic.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://eox-a.github.io/EOxElements/sb-common-assets/nunito-sans-bold.woff2")
+    format("woff2");
+}
+@font-face {
+  font-family: "Nunito Sans";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://eox-a.github.io/EOxElements/sb-common-assets/nunito-sans-bold-italic.woff2")
+    format("woff2");
+}
+body {
+  overflow-x: hidden;
+  background: transparent;
+  color: rgb(46, 52, 56);
+  font-family:
+    "Nunito Sans",
+    -apple-system,
+    ".SFNSText-Regular",
+    "San Francisco",
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Helvetica Neue",
+    Helvetica,
+    Arial,
+    sans-serif;
+}
+header,
+footer,
+.col-sidebar {
+  display: none;
+}
+.col-content {
+  padding: 0;
+}
+.container-main {
+  margin: 0;
+  padding: 0;
+  grid-template-areas: "content content";
+}
+h1 {
+  font-size: 16px;
+}
+h2 {
+  font-size: 14px;
+}

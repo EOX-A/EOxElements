@@ -22,6 +22,7 @@ const WMTSCapabilitiesLayerStory = {
       },
     ],
     zoom: 5,
+    storyCodeBefore: `import "@eox/map/src/plugins/advancedLayersAndSources"`,
   },
 };
 

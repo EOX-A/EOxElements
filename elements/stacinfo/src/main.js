@@ -28,8 +28,19 @@ import "./components/shadow";
  * #### Technology
  * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
  *
- * @module EOxStacInfo
- * @extends {LitElement}
+ * #### Usage
+ * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections:
+ * - `header`: Array of property keys to display at the top
+ * - `tags`: Array of property keys to display as tags
+ * - `body`: Array of property keys for the main content
+ * - `featured`: Array of property keys for prominent display
+ * - `footer`: Array of property keys for the bottom section
+ *
+ * #### Customization
+ * - **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.
+ * - **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
+ *
+ * @element eox-stacinfo
  */
 export class EOxStacInfo extends LitElement {
   static get properties() {

@@ -314,7 +314,8 @@ export class EOxDrawToolsController extends LitElement {
             <!-- Geo JSON Copy Button -->
             <button
               data-cy="copyBtn"
-              class="circle absolute bottom right medium-margin"
+              class="circle absolute bottom right medium-margin aloha"
+              style="z-index: 1"
               @click=${() => copyTextToClipboard(this.geoJSON)}
             >
               ${this.unstyled
