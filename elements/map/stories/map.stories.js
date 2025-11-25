@@ -26,7 +26,6 @@ import {
   ABCompareStory,
   ConfigObjectStory,
   ProjectionStory,
-  ProjectionTransformStory,
   DimensionChangeStory,
   AnimationsStory,
   PreventScrollStory,
@@ -322,15 +321,6 @@ export const ABCompare = ABCompareStory;
  * how the map instantly updates.
  */
 export const Projection = ProjectionStory;
-
-/**
- * With the convenience functions `transform` and `transformExtent` it is possible to transform coordinates
- * and extents from any projection to EPSG.4326 (default) or any other projection.
- * Basically, these methods are the `ol/proj` [transform](https://openlayers.org/en/latest/apidoc/module-ol_proj.html#.transform)
- * and [transformExtent](https://openlayers.org/en/latest/apidoc/module-ol_proj.html#.transformExtent) functions,
- * with the small adaptation that the destination defaults to EPSG:4326 if not defined.
- */
-export const ProjectionTransform = ProjectionTransformStory;
 
 /**
  * The dimension of the view can be changed via the `dimension`-attribute.

@@ -336,6 +336,7 @@ export function setConfigMethod(config, EOxMap) {
 export function setProjectionMethod(projection, oldProjection, EOxMap) {
   if (projection === "globe") {
     if (EOxMap.shadowRoot) {
+      /** @type {HTMLElement} */
       let globeDiv = EOxMap.shadowRoot.querySelector("#globe");
       if (!globeDiv) {
         globeDiv = document.createElement("div");
@@ -345,12 +346,13 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
         EOxMap.renderRoot?.appendChild(globeDiv);
       }
       window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
-      EOxMap.shadowRoot.querySelector("#map").style.display = "none";
+      /** @type {HTMLElement} */
+      (EOxMap.shadowRoot.querySelector("#map")).style.display = "none";
     }
 
     return projection;
   }
-  if (oldProjection === "globe") {
+  if (oldProjection === "globe" && EOxMap.globe) {
     const globe = EOxMap.globe;
     const planet = globe.planet;
 
@@ -394,8 +396,10 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
         EOxMap.map.getView().setZoom(zoomFromGlobe);
 
         // Finally, switch the display from 3D to 2D
-        EOxMap.shadowRoot.querySelector("#globe").style.display = "none";
-        EOxMap.shadowRoot.querySelector("#map").style.display = "";
+        /** @type {HTMLElement} */
+        (EOxMap.shadowRoot.querySelector("#globe")).style.display = "none";
+        /** @type {HTMLElement} */
+        (EOxMap.shadowRoot.querySelector("#map")).style.display = "";
       },
     });
     oldProjection = "EPSG:4326"; // reset oldProjection to a WGS84 projection

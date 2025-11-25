@@ -1,7 +1,7 @@
 import { createGlobe } from "./openglobus.js";
 import { createMapPool, distributeTileToIdealMap } from "./methods.js";
 
-const create = ({ EOxMap, target }) => {
+export const create = ({ EOxMap, target }) => {
   /**
    * The maximum amount of maps to be spawned for rendering
    */

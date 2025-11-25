@@ -242,5 +242,8 @@ declare global {
     eoxMapAdvancedOlFormats: OLAdvancedFormats;
     eoxMapAdvancedOlLayers: OLAdvancedLayers;
     eoxMapAdvancedOlSources: OLAdvancedSources;
+    eoxMapGlobe: {
+      create: typeof import("./plugins/globe/index").create;
+    };
   }
 }

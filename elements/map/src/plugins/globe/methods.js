@@ -21,10 +21,9 @@ export const createMapPool = (maxMaps, EOxMap, target) =>
     EOxMap.addEventListener("mapmounted", () => {
       EOxMap.map.getTargetElement().style.display = "none";
     });
-    const tileMap =
-      /** @type {import("../../main").EOxMap} **/ document.createElement(
-        "eox-map",
-      );
+    const tileMap = /** @type {import("../../main").EOxMap} **/ (
+      document.createElement("eox-map")
+    );
     Object.assign(tileMap.style, {
       width: `256px`,
       height: `256px`,
@@ -53,11 +52,12 @@ export const createMapPool = (maxMaps, EOxMap, target) =>
  * @param {import("../../main").EOxMap} tileMap - The map element currently rendering the tile
  * @param {{
  *  tile: {
- *   x: import("ol/coordinate").Coordinate,
- *    y: import("ol/coordinate").Coordinate,
- *    z: import("ol/coordinate").Coordinate,
+ *    x: number
+ *    y: number
+ *    z: number
+ * }
  *  callback: Function
- * }}} job - The job for one single tile to be rendered
+ * }} job - The job for one single tile to be rendered
  * @param {*} mapPoolMap - The map pool object
  */
 async function requestTileFromMap(tileMap, job, mapPoolMap) {
