@@ -1,33 +1,32 @@
 import { html } from "lit";
 import { DEFAULT_ARGS } from "../src/enums/stories";
 
-export const Format = {
+export const DisabledButtons = {
   args: {
     ...DEFAULT_ARGS,
-    for: "eox-map#format",
-    displayFormat: "MMMM DD, YYYY",
+    for: "eox-map#disabled-play",
     play: false,
+    navigation: false,
   },
   render: (args) => html`
     <eox-map
-      id="format"
-      style="width: 1005; height: 300px;"
+      id="disabled-play"
+      style="width: 400px; height: 300px;"
       .zoom=${args.zoom}
       .center=${args.center}
       .layers=${args.layers}
     ></eox-map>
-    <eox-timecontrol
+    <eox-timecontrol-2
       .for=${args.for}
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
       .navigation=${args.navigation}
-      .play=${args.play}
       .slider=${args.slider}
-      style="margin-top: 10px;"
-      .displayFormat=${args.displayFormat}
-    ></eox-timecontrol>
+      .play=${args.play}
+      style="margin-top: 8px"
+    ></eox-timecontrol-2>
   `,
 };
 
-export default Format;
+export default DisabledButtons;

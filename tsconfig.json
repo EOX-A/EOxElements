@@ -41,6 +41,8 @@
       "@eox/stacinfo/src/*": ["./elements/stacinfo/src/*"],
       "@eox/storytelling": ["./elements/storytelling/src/main.js"],
       "@eox/storytelling/src/*": ["./elements/storytelling/src/*"],
+      "@eox/timecontrol-2": ["./elements/timecontrol-2/src/main.js"],
+      "@eox/timecontrol-2/src/*": ["./elements/timecontrol-2/src/*"],
       "@eox/timecontrol": ["./elements/timecontrol/src/main.js"],
       "@eox/timecontrol/src/*": ["./elements/timecontrol/src/*"],
       "@eox/timeslider": ["./elements/timeslider/src/main.js"],

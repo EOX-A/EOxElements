@@ -1,30 +1,30 @@
 import { html } from "lit";
 import { DEFAULT_ARGS } from "../src/enums/stories";
 
-export const Primary = {
+const NoMap = {
   args: {
     ...DEFAULT_ARGS,
-    for: "eox-map#primary",
+    play: true,
+    layer: undefined,
+    for: undefined,
+    controlProperty: undefined,
+    slider: true,
+    onStepChange: (evt) => {
+      console.log("stepchange", evt.detail);
+    },
   },
   render: (args) => html`
-    <eox-map
-      id="primary"
-      style="width: 400px; height: 300px;"
-      .zoom=${args.zoom}
-      .center=${args.center}
-      .layers=${args.layers}
-    ></eox-map>
-    <eox-timecontrol
+    <eox-timecontrol-2
       .for=${args.for}
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
       .navigation=${args.navigation}
-      .play=${args.play}
       .slider=${args.slider}
-      style="margin-top: 8px"
-    ></eox-timecontrol>
+      .play=${args.play}
+      @stepchange=${args.onStepChange}
+    ></eox-timecontrol-2>
   `,
 };
 
-export default Primary;
+export default NoMap;

@@ -17,7 +17,7 @@ export const Slider = {
       .center=${args.center}
       .layers=${args.layers}
     ></eox-map>
-    <eox-timecontrol
+    <eox-timecontrol-2
       .for=${args.for}
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
@@ -26,7 +26,7 @@ export const Slider = {
       .play=${args.play}
       .slider=${args.slider}
       style="margin-top: 8px"
-    ></eox-timecontrol>
+    ></eox-timecontrol-2>
   `,
 };
 

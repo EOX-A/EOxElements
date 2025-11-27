@@ -33,7 +33,7 @@ export const ProgrammaticTimeSelection = {
         </button>
       </nav>
     </div>
-    <eox-timecontrol
+    <eox-timecontrol-2
       id="programmatic"
       .for=${args.for}
       .layer=${args.layer}
@@ -43,7 +43,7 @@ export const ProgrammaticTimeSelection = {
       .play=${args.play}
       .slider=${args.slider}
       style="margin-top: 8px"
-    ></eox-timecontrol>
+    ></eox-timecontrol-2>
   `,
 };
 
