@@ -21,31 +21,32 @@ export const createGlobe = ({ map, target, renderTile }) => {
   if (globus) {
     const globeDiv = map.renderRoot.querySelector("#globe");
     globeDiv.style.display = "";
-    // set up the zoom level
-    globus.planet.camera.setLonLat(
-      new LonLat(newCenter[0], newCenter[1], height),
-      new LonLat(newCenter[0], newCenter[1], 0),
-      Vec3.NORTH,
-    );
-  } else {
-    const canvasTilesLayer = new CanvasTiles("mainThreadCanvasTilesLayer", {
-      visibility: true,
-      isBaseLayer: false,
-      async drawTile(material, applyCanvas) {
-        if (!material.segment) {
-          return;
-        }
-        const tile = {
-          x: material.segment.tileX,
-          y: material.segment.tileY,
-          z: material.segment.tileZoom,
-        };
+  }
+  const canvasTilesLayer = new CanvasTiles("mainThreadCanvasTilesLayer", {
+    visibility: true,
+    isBaseLayer: false,
+    async drawTile(material, applyCanvas) {
+      if (!material.segment) {
+        return;
+      }
+      const tile = {
+        x: material.segment.tileX,
+        y: material.segment.tileY,
+        z: material.segment.tileZoom,
+      };
 
-        renderTile(tile, (renderedMapCanvas) => {
-          applyCanvas(renderedMapCanvas);
-        });
-      },
-    });
+      renderTile(tile, (renderedMapCanvas) => {
+        applyCanvas(renderedMapCanvas);
+      });
+    },
+  });
+  if (globus) {
+    const oldLayer = globus.planet.layers[0];
+    globus.planet.addLayer(canvasTilesLayer);
+    setTimeout(() => {
+      globus.planet.removeLayer(oldLayer);
+    }, 1000);
+  } else {
     globus = new Globe({
       target,
       layers: [canvasTilesLayer],

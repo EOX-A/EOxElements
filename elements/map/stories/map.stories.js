@@ -36,19 +36,59 @@ import {
   GlobeStory,
 } from "./index.js";
 
+let cloudless = false;
+
 export default {
   title: "Elements/eox-map",
   tags: ["autodocs"],
   component: "eox-map",
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      style="width: 100%; height: 300px;"
+      style="width: 100%; height: 500px;"
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
       .projection=${args.projection}
       .zoom=${args.zoom}
     ></eox-map>
+    <button
+      @click=${() => {
+        cloudless = !cloudless;
+
+        document.querySelector("eox-map").layers = cloudless
+          ? [
+              {
+                type: "Tile",
+                properties: {
+                  id: "cloudless",
+                  title: "Sentinel-2 cloudless 2020",
+                  layerControlExclusive: true,
+                  description:
+                    "Global prerendered Sentinel-2 cloudless mosaics with 10m/pixel resolution.",
+                },
+                visible: true,
+                source: {
+                  type: "XYZ",
+                  url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+                  crossOrigin: "anonymous",
+                },
+              },
+            ]
+          : [
+              {
+                type: "Tile",
+                properties: {
+                  id: "osm",
+                },
+                source: {
+                  type: "OSM",
+                },
+              },
+            ];
+      }}
+    >
+      toggle layers
+    </button>
   `,
 };
 

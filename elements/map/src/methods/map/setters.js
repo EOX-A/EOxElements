@@ -259,6 +259,12 @@ export function setLayersMethod(layers, oldLayers, EOxMap) {
     }
   });
 
+  const globeDiv = EOxMap.renderRoot?.querySelector("div#globe");
+  if (EOxMap.projection === "globe" && globeDiv) {
+    setTimeout(() => {
+      window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
+    });
+  }
   // Return the new layers object
   return newLayers;
 }
