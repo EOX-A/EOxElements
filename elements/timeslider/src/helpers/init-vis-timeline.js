@@ -228,13 +228,14 @@ export default function initVisTimeline(EOxTimeSlider) {
         // disableDatesPast: true,
         // enableEdgeDatesOnly: true,
         inputMode: true,
+        //@ts-expect-error error from vanilla-calendar-pro types
         positionToInput: ["top", "left"],
         selectedWeekends: [],
         onClickDate: (self) => {
           if (self.context.selectedDates[0])
             dateChangeHandler(self.context.selectedDates[0], EOxTimeSlider);
         },
-        onCreateDateEls: (self, dateEl) => {
+        onCreateDateEls: (_self, dateEl) => {
           const date = extractISO(dateEl);
           const dateDots = groupBy(itemValues, "start");
           const oldDots = dateEl.querySelector(".vc-day__dots");

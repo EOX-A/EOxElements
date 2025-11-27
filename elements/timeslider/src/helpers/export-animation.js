@@ -160,8 +160,8 @@ async function imagesToMp4(
       String(fps),
       outputFile,
     ]);
-
-    const data = await ffmpeg.readFile(outputFile);
+    
+    const data = /** @type {Uint8Array} */(await ffmpeg.readFile(outputFile));
 
     if (!data || data.length === 0) {
       throw new Error("FFmpeg produced no output");
@@ -186,7 +186,7 @@ async function imagesToMp4(
         await ffmpeg.deleteFile(nameFor(i));
       }
       await ffmpeg.deleteFile(outputFile);
-    } catch (cleanupError) {
+    } catch {
       // Ignore cleanup errors
     }
     throw new Error(

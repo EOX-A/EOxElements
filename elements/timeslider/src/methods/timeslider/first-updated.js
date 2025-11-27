@@ -39,6 +39,12 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
 
       if (flatLayers.length) {
         for (const layer of flatLayers) {
+          /** 
+           * @type {{
+           * timeControlValues?: Array<{date: string, [key: string]: any}>
+           * [key: string]: any
+           * }}
+           * */
           const properties = layer.getProperties();
           if (
             properties &&
@@ -54,7 +60,7 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
                 local: dayjs(value.date).utc().local().format(),
                 originalDate: value.date,
               }))
-              .sort((a, b) => new Date(a.date) - new Date(b.date));
+              .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
             sliderValues.push({
               layer: properties[EOxTimeSlider.layerIdKey],
               name: properties[EOxTimeSlider.titleKey],
@@ -62,6 +68,7 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
               values: values,
               layerInstance: layer,
             });
+            //@ts-expect-error TODO: Fix typing
             layer.on("change:timeControlValues", () => init());
           }
         }
