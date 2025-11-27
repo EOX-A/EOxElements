@@ -24,95 +24,87 @@ export default {
     componentSubtitle: "Manage and configure OpenLayers map layers",
     layout: "centered",
   },
+  argTypes: {
+    tools: {
+      control: { type: "multi-select" },
+      options: ["info", "opacity", "datetime", "config", "remove", "sort"],
+    },
+  },
 };
 
 /**
- * Basic layercontrol setup.
+ * Basic usage of eox-layercontrol. It shows that also with a `for` attribute,
+ * it automatically connects to the first `eox-map` it finds in the DOM.
  */
 export const Primary = PrimaryStory;
 
 /**
- * By adding the `layerControlExclusive` property to map layers,
- * only one of them at a time can be visualized.
+ * Demonstrates mutually exclusive layers. By setting the `layerControlExclusive` property on map layers, only one layer can be visualized at a time. Useful for toggling between base layers or other exclusive datasets. The example shows two layers, only one of which can be active at a time.
  */
 export const ExclusiveLayers = ExclusiveLayersStory;
 
 /**
- * By adding the `layerControlOptional` property to map layers,
- * they are not initially rendered in the layer list, but in a
- * selection interface. They can be added to the layer list manually.
- * Removing a layer puts it back into the optional list.
+ * Demonstrates optional layers. By setting the `layerControlOptional` property, layers are initially hidden from the main layer list and appear in a selection interface. Users can add optional layers to the list manually, and removing a layer returns it to the optional pool. This is useful for large datasets or overlays that should not clutter the main view.
  */
 export const OptionalLayers = OptionalLayersStory;
 
 /**
- * By adding the `layerControlExpand` property to map layers,
- * they render in the layer control as opened.
+ * Shows how to pre-expand layers in the control. By setting the `layerControlExpand` property, the corresponding layer dropdown is opened by default, making its details and tools immediately visible. This is useful for highlighting important layers or groups.
  */
 export const ExpandedLayers = ExpandedLayersStory;
 
 /**
- * The layer control accepts a "tools" array, which enable
- * extra functionalities for layers
+ * Demonstrates the use of layer tools. The layer control accepts a `tools` array, enabling extra functionalities such as info, opacity, datetime, config, remove, and sort. This example shows how to configure and display these tools for each layer.
+ * In the Controls panel, try toggling different combinations of tools to see how the layer control adapts.
  */
 export const Tools = ToolsStory;
 
 /**
- * The "config" tool reads settings passed via the "layerConfig" property,
- * e.g. rendering a from from a provided JSON schema that allows updating the
- * source url parameters.
- * Needs import of `@eox/jsonform` in order to work.
+ * Shows the config tool in action. The "config" tool reads settings from the `layerConfig` property and renders a form based on a provided JSON schema, allowing users to update source URL parameters and other settings. Requires the `@eox/jsonform` package for form rendering.
  */
 export const LayerConfig = LayerConfigStory;
 
+/**
+ * Demonstrates layer style configuration. The "styles" tool allows users to modify layer appearance, such as color and opacity, using a dedicated interface. Useful for customizing the look and feel of map layers interactively.
+ */
 export const LayerStylesConfig = LayerStylesConfigStory;
 
 /**
- * By adding "datetime" as tool, the time for a specific layer can be modified.
- * The `layerDatetime` property of the layer allows passing the following properties of eox-timecontrol:
- * `play`: allows disabling the timecontrol play button.
- * `slider`: show/hide timecontrol slider.
- * `currentStep`: current datetime string.
- * `controlValues`: The list of available values.
+ * Shows how to modify layer time properties. By adding the "datetime" tool, users can interact with time-based layers, adjusting the current step, available values, and playback controls. The `layerDatetime` property passes configuration options to the time control.
  */
 export const LayerDateTime = layerDatetimeStory;
 
 /**
- * The "legend" tool reads configurations passed via the "layerLegend" property,
- * and creates a dynamic color legend based on it. `layerLegend` holds a partial subset of
- * the attributes and properties of Color Legend Element, read more https://clhenrick.github.io/color-legend-element/
+ * Demonstrates dynamic color legends for layers. The "legend" tool reads configuration from the `layerLegend` property and creates a color legend based on value ranges and domains. Supports partial configuration of the color-legend-element. Useful for visualizing data ranges and categories.
  */
 export const LayerLegend = layerLegendStory;
 
 /**
- * By adding the `layerControlHide` property to map layers,
- * they aren't displayed in the layer control at all (but may
- * be still rendered on the map).
+ * Shows how to hide layers from the control. By setting the `layerControlHide` property, layers are excluded from the layer control UI but may still be rendered on the map. Useful for background or technical layers that should not be user-managed.
  */
 export const HiddenLayers = HiddenLayersStory;
 
 /**
- * Defining the configuration for adding an external layer like WMS/XYZ or import JSON.
+ * Demonstrates adding external layers. The control can be configured to allow users to add WMS, XYZ, or import JSON layers dynamically. This example shows the interface for external layer addition and integration.
  */
 export const AddExternalLayer = addExternalLayerStory;
 
 /**
- * Zoom layer state based on `minZoom` and `maxZoom`.
- * The color change state only visible when `showLayerZoomState` is set inside layer properties.
+ * Shows zoom-based layer state. Layers can be configured with `minZoom` and `maxZoom` properties, and the control will indicate their visibility state based on the current map zoom. The color change state is visible when `showLayerZoomState` is enabled.
  */
 export const LayerZoomState = layerZoomStateStory;
 
 /**
- * Unstyled version of the Element
- */
-export const Unstyled = unstyledStory;
-
-/**
- * Tools rendered as list instead of tabs
+ * Shows tools rendered as a list instead of tabs. By enabling the `toolsAsList` property, the tools section is displayed as a vertical list, which can be useful for compact or mobile layouts.
  */
 export const ToolsAsList = toolsAsListStory;
 
 /**
- * Shows how to define color "swatches" for layers.
+ * Demonstrates color swatches for layers. Shows how to define and display custom colors for layers, useful for thematic mapping and visual differentiation of datasets.
  */
 export const ColoredLayers = layerColorStory;
+
+/**
+ * Demonstrates the unstyled version of the element. By setting the `unstyled` property, the layer control is rendered without default styles, allowing for custom styling and integration into different design systems.
+ */
+export const Unstyled = unstyledStory;

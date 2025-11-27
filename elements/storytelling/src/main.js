@@ -34,7 +34,27 @@ const md = /** @type {import("./types").CustomMarkdownIt} */ (
 md.use(markdownItDecorateImproved).use(markdownItConfig);
 md.use(markdownitFootnote);
 /**
- * Manage drawn features on a map
+ * The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, live editing with a built-in editor, and custom initialization logic via events.
+ *
+ * ## Usage
+ * Place `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.
+ *
+ * ## Features
+ * - **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.
+ * - **Slot Content:** Accepts Markdown via slot for flexible content injection.
+ * - **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.
+ * - **Live Editor:** Built-in editor for live editing and preview, including image upload and section creation.
+ * - **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.
+ * - **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup), and `upload:file` for handling file uploads.
+ *
+ * ## Custom Markdown Extensions
+ * In order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key="value" }-->`. Here are some of the supported extensions:
+ * - **Section Configuration:** Define sections with attributes like `as`, `id`, `class`, `style`, and more.
+ * - **Hero Section:** Create a full-screen hero section using `#` (Header 1) with additional attributes for images or videos.
+ * - **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.
+ * - **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.
+ *
+ * Read the [Markdown with Editor story](./?path=/story/elements-eox-storytelling--markdown-with-editor) for a comprehensive guide on using the editor and Markdown extensions.
  *
  * @element eox-storytelling
  */
@@ -160,9 +180,33 @@ export class EOxStoryTelling extends LitElement {
    * @param {Element} element - Dom element
    */
   #dispatchInitEvent(element) {
+    /**
+     * Fires when `eox-storytelling` has initialized; allowing to add custom logic
+     * regarding the integrated `eox-maps` etc. The event detail contains the initialized element.
+     */
     this.dispatchEvent(
       new CustomEvent("init", {
         detail: element,
+      }),
+    );
+  }
+
+  /**
+   * Dummy placeholder for file upload event dispatching
+   * as it is actually displatched from ./enums/custom-editor-interface.js
+   */
+  // @ts-expect-error Not used, since it is a dummy placeholder
+  // eslint-disable-next-line
+  #dispatchUploaded() {
+    /**
+     * Fires when a file is uploaded via the built-in editor. The event detail contains the uploaded file as well
+     * as a callback function that can be used to update the file url end handle errors.
+     */
+    this.dispatchEvent(
+      new CustomEvent("upload:file", {
+        detail: "dummy",
+        bubbles: true,
+        composed: true,
       }),
     );
   }
@@ -182,6 +226,9 @@ export class EOxStoryTelling extends LitElement {
     if (changedProperties.has("markdown")) {
       if (this.markdown) {
         this.dispatchEvent(
+          /**
+           * Fires when the markdown content has changed. The event detail contains the updated markdown string.
+           */
           new CustomEvent("changed", {
             detail: this.markdown,
           }),

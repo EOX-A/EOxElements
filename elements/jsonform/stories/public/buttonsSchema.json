@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "product_type": {
+      "type": "string",
+      "title": "Product Type",
+      "enum": ["viewing", "analysis"],
+      "options": {
+        "enum_titles": ["Viewing Products", "Analysis Products"]
+      },
+      "format": "buttons"
+    },
+    "year": {
+      "type": "string",
+      "title": "Select Year",
+      "enum": ["2024", "2023", "2022", "2021", "2020", "2019", "2018", "2016"],
+      "format": "buttons"
+    },
+    "projection": {
+      "type": "string",
+      "title": "Select Projection",
+      "enum": ["EPSG:4326", "EPSG:3857"],
+      "format": "buttons",
+      "options": {
+        "enum_titles": [
+          "WGS 84 lat/lon (EPSG:4326)",
+          "Web Mercator (EPSG:3857)"
+        ]
+      }
+    }
+  }
+}

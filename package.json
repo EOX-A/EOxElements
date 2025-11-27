@@ -8,15 +8,15 @@
     "utils"
   ],
   "scripts": {
-    "start": "concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
+    "start": "npm run generate-typedoc && concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
     "watch:styles": "nodemon --watch ./utils/styles --ext css --exec 'npm run styles'",
     "styles": "node ./tasks/init-style.js",
     "build:all": "npm run styles && npm run build --ws",
-    "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
+    "clean": "npm exec --workspaces -- npx rimraf node_modules && npm exec --workspaces -- npx rimraf types && npx rimraf node_modules",
     "cypress": "cypress open",
     "test:all": "npm run styles && npm run test:component; npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
-    "test:e2e": "npm run generate-manifest && npm run build:storybook && cypress run --e2e",
+    "test:e2e": "npm run generate-manifest && npm run generate-typedoc && npm run build:storybook && cypress run --e2e",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint elements",
@@ -24,18 +24,20 @@
     "typecheck": "tsc",
     "types:generate:all": "npm run types:generate --ws",
     "storybook": "storybook dev -p 6006",
-    "build:docs": "npm run styles && npm run generate-manifest && npm run build:storybook",
+    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && npm run build:storybook && cp custom-elements.json docs/custom-elements.json",
     "build:storybook": "storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
+    "generate-typedoc": "rm -f ./types.json && npx typedoc",
     "nyc:report": "nyc report --reporter=text-summary"
   },
   "devDependencies": {
-    "@custom-elements-manifest/analyzer": "^0.10.2",
+    "@custom-elements-manifest/analyzer": "^0.11.0",
     "@cypress/code-coverage": "^3.12.44",
     "@cypress/mount-utils": "^4.0.0",
     "@eox/eslint-config": "^2.0.0",
-    "@storybook/web-components-vite": "^9.1.10",
+    "@storybook/addon-docs": "^10.0.8",
+    "@storybook/web-components-vite": "^10.0.8",
     "concurrently": "^9.0.0",
     "custom-elements-manifest": "^2.0.0",
     "cypress": "^15.0.0",
@@ -43,21 +45,25 @@
     "cypress-file-upload": "^5.0.8",
     "cypress-lit": "^0.0.8",
     "cypress-network-idle": "^1.14.2",
+    "eslint-plugin-storybook": "^10.0.8",
     "nodemon": "^3.0.3",
     "nyc": "^17.0.0",
+    "prettier-plugin-svelte": "^3.4.0",
     "rimraf": "^6.0.1",
-    "storybook": "^9.1.10",
-    "typescript-json-schema": "^0.65.1",
-    "vite-plugin-istanbul": "^7.0.0",
-    "eslint-plugin-storybook": "9.1.10",
-    "@storybook/addon-docs": "^9.1.10"
+    "serialize-javascript": "^7.0.0",
+    "storybook": "^10.0.8",
+    "typedoc": "^0.28.14",
+    "typedoc-plugin-markdown": "^4.9.0",
+    "typedoc-plugin-merge-modules": "^7.0.0",
+    "typescript-json-schema": "^0.66.0",
+    "vite-plugin-istanbul": "^7.0.0"
   },
   "engines": {
     "node": ">=20.19.0"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.3.6"
+    "@eox/ui": "^0.5.0"
   },
   "customElements": "custom-elements.json"
 }

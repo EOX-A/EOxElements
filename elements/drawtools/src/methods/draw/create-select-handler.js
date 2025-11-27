@@ -2,6 +2,8 @@
  * Factory function to create a select event handler
  * @param {import("../../main").EOxDrawTools} EoxDrawTool - The drawing tool instance.
  */
+import { toFeature } from "ol/render/Feature";
+
 const createSelectHandler = (EoxDrawTool) => {
   /**
    * Copy the selected feature to the draw layer
@@ -12,6 +14,11 @@ const createSelectHandler = (EoxDrawTool) => {
   const selectHandler = (e) => {
     if (e?.detail.id !== "SelectLayerClickInteraction" || !e.detail.feature) {
       return;
+    }
+    // Vector tiles geometries do not have the getCoordinates method
+    // only dispatch event if the feature has the getCoordinates method
+    if (typeof e.detail.feature.getGeometry().getCoordinates !== "function") {
+      e.detail.feature = toFeature(e.detail.feature);
     }
     EoxDrawTool.drawLayer.getSource().addFeature(e.detail.feature);
     EoxDrawTool.eoxMap.dispatchEvent(

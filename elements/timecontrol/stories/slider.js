@@ -8,15 +8,17 @@ export const Slider = {
     slider: true,
     navigation: false,
     play: false,
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "slider",
+        style: "width: 400px; height: 300px;",
+        zoom: DEFAULT_ARGS.zoom,
+        center: DEFAULT_ARGS.center,
+        layers: DEFAULT_ARGS.layers,
+      },
+    },
   },
   render: (args) => html`
-    <eox-map
-      id="slider"
-      style="width: 400px; height: 300px;"
-      .zoom=${args.zoom}
-      .center=${args.center}
-      .layers=${args.layers}
-    ></eox-map>
     <eox-timecontrol
       .for=${args.for}
       .layer=${args.layer}
@@ -25,8 +27,14 @@ export const Slider = {
       .navigation=${args.navigation}
       .play=${args.play}
       .slider=${args.slider}
-      style="margin-top: 8px"
     ></eox-timecontrol>
+    <eox-map
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
   `,
 };
 

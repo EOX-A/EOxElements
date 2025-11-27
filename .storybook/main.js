@@ -26,6 +26,7 @@ const config = {
   experimental_indexers: (existingIndexers) =>
     [csfIndexer].concat(existingIndexers || []),
   addons: [getAbsolutePath("@storybook/addon-docs")],
+  managerEntries: [join(import.meta.dirname, "./custom-panels/manager.js")],
   framework: getAbsolutePath("@storybook/web-components-vite"),
   docs: {
     toc: true,

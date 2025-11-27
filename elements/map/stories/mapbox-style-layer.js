@@ -71,6 +71,7 @@ const MapboxStyleStory = {
       },
     ],
     zoom: 0,
+    storyCodeBefore: `import "@eox/map/src/plugins/advancedLayersAndSources"`,
   },
 };
 

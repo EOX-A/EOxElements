@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.13.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.12.1...itemfilter-v1.13.0) (2025-11-10)
+
+
+### Features
+
+* **style:** Add more css variables for card display ([#1920](https://github.com/EOX-A/EOxElements/issues/1920)) ([8ae6cab](https://github.com/EOX-A/EOxElements/commit/8ae6cabd473bf1b23d1ccd5f2848fa67dc7a9d14))
+
+## [1.12.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.12.0...itemfilter-v1.12.1) (2025-10-30)
+
+
+### Bug Fixes
+
+* **style:** Limit filter container height and make it scrollable ([#1903](https://github.com/EOX-A/EOxElements/issues/1903)) ([2959304](https://github.com/EOX-A/EOxElements/commit/2959304700f39ffdecbdb918952cf7500528a204))
+
 ## [1.12.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.11.0...itemfilter-v1.12.0) (2025-10-02)
 
 

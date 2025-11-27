@@ -7,16 +7,31 @@ import { html } from "lit";
 import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const MultiPolygon = {
-  render: () => html`
-    <!-- Render eox-map component with ID "multi" -->
+  args: {
+    for: "eox-map#multi",
+    multipleFeatures: true,
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "multi",
+        style: STORIES_MAP_STYLE,
+        layers: STORIES_LAYERS_ARRAY,
+      },
+    },
+    drawupdate: (e) => {
+      console.log("drawupdate", e.detail);
+    },
+  },
+  render: (args) => html`
+    <eox-drawtools
+      for="${args.for}"
+      ?multiple-features="${args.multipleFeatures}"
+      @drawupdate=${args.drawupdate}
+    ></eox-drawtools>
     <eox-map
-      id="multi"
-      style=${STORIES_MAP_STYLE}
-      .layers=${STORIES_LAYERS_ARRAY}
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
-
-    <!-- Initialize eox-drawtools for the eox-map with ID "multi" -->
-    <eox-drawtools for="eox-map#multi" multiple-features />
   `,
 };
 

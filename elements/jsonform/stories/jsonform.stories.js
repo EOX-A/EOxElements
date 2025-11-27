@@ -6,6 +6,8 @@ import {
   ExternalStory,
   MarkdownStory,
   PrimaryStory,
+  ButtonsEditorStory,
+  MinMaxEditorStory,
   BoundingBoxStory,
   PolygonStory,
   FeatureSelectionStory,
@@ -36,102 +38,134 @@ export default {
       .propertiesToggle=${args.propertiesToggle}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
-      @change=${args.onChange}
-      @ready=${args.onReady}
-      @submit=${args.onSubmit}
+      @change=${args.change}
+      @ready=${args.ready}
+      @submit=${args.submit}
     ></eox-jsonform>
   `,
 };
 
 /**
- * Basic JSON Form example
+ * Basic JSON Form example. Renders a form based on a provided JSON schema.
  */
 export const Primary = PrimaryStory;
 
 /**
- * Basic validation example. Includes submit button that is only clickable once validation passes.
+ * Validation example. Includes a submit button that is only enabled when validation passes.
+ * Shows how to handle form validation and submit events.
  */
 export const Validation = ValidationStory;
 
 /**
- * Example showing the usage of Ace editor for code editing
+ * Ace editor example. Shows how to use a code editor as a form input.
+ * Demonstrates integration of external editors via schema configuration.
  */
 export const Code = CodeStory;
 
 /**
- * Example showing the usage of opt-in properties
+ * Opt-in properties example. Shows how to display and interact with opt-in properties in the form.
+ * Demonstrates dynamic property visibility and value updates.
+ * Required values are always displayed, whereas optional properties are only shown
+ * when they have a value or have been opted-in by the user.
  */
 export const ShowOptInProperties = ShowOptInPropertiesStory;
 
 /**
- * Example showing the usage of optional properties
+ * Optional properties example. Shows how to handle optional properties in the form schema.
+ * Demonstrates hiding and showing optional fields based on schema and value. Also shows
+ * the "edit properties" button to toggle inclusion or addition of optional properties.
  */
 export const OptionalProperties = OptionalPropertiesStory;
 
 /**
- * JSON Form based on STAC Catalog config
+ * STAC Catalog example. Renders a form based on a STAC Catalog schema and value.
+ * Demonstrates complex schema usage and initial value population.
  */
 export const Catalog = CatalogStory;
 
 /**
- * JSON Form based on STAC collection config
+ * STAC Collection example. Renders a form based on a STAC Collection schema and value.
+ * Demonstrates advanced schema features and toggling properties.
  */
 export const Collection = CollectionStory;
 
 /**
- * JSON Form based on External URL
+ * External URL example. Loads schema and value from external URLs.
+ * Demonstrates async loading and ready event handling. Once the `eox-jsonform` has loaded,
+ * it logs to the console that it is ready ("Schema loading finished, editor ready!").
  */
 export const External = ExternalStory;
 
 /**
- * JSON Form based on Markdown Editor config
+ * Markdown Editor example. Renders a markdown editor input based on schema configuration.
+ * Demonstrates integration of markdown editing in forms.
  */
 export const Markdown = MarkdownStory;
 
 /**
- * JSON Form based on drawtools - Box
+ * Buttons Editor example. Renders a custom button group input based on enum values.
+ * Demonstrates custom input integration and enum handling.
+ */
+export const ButtonsEditor = ButtonsEditorStory;
+
+/**
+ * MinMax Editor example. Renders a custom min-max range input.
+ * Demonstrates custom input integration for range selection.
+ */
+export const MinMaxEditor = MinMaxEditorStory;
+
+/**
+ * Bounding Box example. Allows users to select a bounding box as a form input.
+ * Demonstrates spatial input integration with drawtools.
  */
 export const BoundingBox = BoundingBoxStory;
 
 /**
- * JSON Form based on drawtools - Polygon
+ * Polygon example. Allows users to draw polygons as a form input.
+ * Demonstrates spatial input integration with drawtools.
  */
 export const Polygons = PolygonStory;
 
 /**
- * JSON Form based on drawtools - Point
+ * Point example. Allows users to select points as a form input.
+ * Demonstrates spatial input integration with drawtools.
  */
 export const Points = PointStory;
 
 /**
- * JSON Form based on drawtools - LineString
- *
+ * LineString example. Allows users to draw lines as a form input.
+ * Demonstrates spatial input integration with drawtools.
  */
 export const Line = LineStory;
 
 /**
- * JSON Form based on drawtools - Feature Selection
+ * Feature Selection example. Allows users to select features from a map as a form input.
+ * Demonstrates integration with eox-map and spatial feature selection.
+ * Using the format `features` in the schema allows multiple features to be selected and returns values
+ * in an array if features, whereas the format `feature` allows a single feature to be selected and returned.
  */
 export const FeatureSelection = FeatureSelectionStory;
 
 /**
- * JSON Form based on drawtools - Returns the value as WKT
+ * WKT example. Returns drawn features as WKT strings.
+ * Demonstrates output format customization for spatial inputs.
  */
 export const WKT = WKTStory;
 
 /**
- * JSON Form based on drawtools - Returns the value as GeoJSON
+ * GeoJSON example. Returns drawn features as GeoJSON.
+ * Demonstrates output format customization for spatial inputs.
  */
 export const Geojson = GeoJSONStory;
 
 /**
- * With the `customEditorInterfaces` property it is possible to create
- * one or more custom form inputs for json-editor (based on its `JSONEditor.AbstractEditor`).
- * See [json-editor readme](https://github.com/json-editor/json-editor?tab=readme-ov-file#custom-editor-interfaces) for more details.
+ * Custom Editor Interfaces example. Shows how to create custom form inputs for json-editor.
+ * Demonstrates extensibility via custom editor interfaces based on the JSONEditor.AbstractEditor.
  */
 export const CustomEditorInterfaces = CustomEditorInterfacesStory;
 
 /**
- * Unstyled JSON Form
+ * Unstyled example. Renders the form without default styles.
+ * Demonstrates style customization and unstyled rendering.
  */
 export const Unstyled = UnStyledStory;

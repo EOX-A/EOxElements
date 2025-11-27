@@ -15,6 +15,7 @@ function AutoSpreadStory() {
         .aggregateResults=${args.aggregateResults}
         .autoSpreadSingle=${args.autoSpreadSingle}
         .filterProperties=${args.filterProperties}
+        style=${args.style}
       ></eox-itemfilter>`,
     args: {
       titleProperty: "title",
@@ -34,6 +35,7 @@ function AutoSpreadStory() {
         },
       ],
       items,
+      style: "",
     },
   };
 }

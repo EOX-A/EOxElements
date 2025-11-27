@@ -7,16 +7,33 @@ import { html } from "lit";
 import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const ModifyFeatures = {
-  render: () => html`
-    <!-- Render eox-map component with ID "modify" -->
+  args: {
+    for: "eox-map#modify",
+    multipleFeatures: true,
+    allowModify: true,
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "modify",
+        style: STORIES_MAP_STYLE,
+        layers: STORIES_LAYERS_ARRAY,
+      },
+    },
+    drawupdate: (e) => {
+      console.log("drawupdate", e.detail);
+    },
+  },
+  render: (args) => html`
+    <eox-drawtools
+      for="${args.for}"
+      ?multiple-features="${args.multipleFeatures}"
+      ?allow-modify="${args.allowModify}"
+      @drawupdate=${args.drawupdate}
+    ></eox-drawtools>
     <eox-map
-      id="modify"
-      style=${STORIES_MAP_STYLE}
-      .layers=${STORIES_LAYERS_ARRAY}
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
-
-    <!-- Initialize eox-drawtools for the eox-map with ID "modify" -->
-    <eox-drawtools for="eox-map#modify" multiple-features allow-modify />
   `,
 };
 
