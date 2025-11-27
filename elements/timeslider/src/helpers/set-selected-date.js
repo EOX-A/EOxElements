@@ -55,10 +55,8 @@ export default function setSelectedDate(
     labelEle.classList.add("vis-custom-time-selected-label");
     labelEle.innerText = dayjs(date).format("MMM DD' YYYY");
   }
-   /** @type {import("@eox/map/src/types").AnyLayerWithSource[]} */
-  const flatLayers = getFlatLayersArray(
-      eoxMap.map.getLayers().getArray()
-  );
+  /** @type {import("@eox/map/src/types").AnyLayerWithSource[]} */
+  const flatLayers = getFlatLayersArray(eoxMap.map.getLayers().getArray());
   //@ts-expect-error TODO: Fix typing
   const selectedItems = visTimeline.itemsData.get().filter((item) => {
     return EOxTimeSlider.selectedDate.format().includes(item.date);
@@ -84,10 +82,12 @@ export default function setSelectedDate(
       };
 
       if (!EOxTimeSlider.externalMapRendering) {
-        if (!source ||
-           !("updateParams" in source) ||
-            typeof source.updateParams !== "function"
-          ) return;
+        if (
+          !source ||
+          !("updateParams" in source) ||
+          typeof source.updateParams !== "function"
+        )
+          return;
         source.updateParams({
           [item.property]: dayjs(date).utc().format("YYYY-MM-DD"),
         });

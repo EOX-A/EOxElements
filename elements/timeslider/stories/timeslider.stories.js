@@ -1,5 +1,9 @@
 // Global import of eox-elements in .storybook/preview.js!
-import { PrimaryStory, ExternalMapRenderingStory, ExternalMapRenderingMosaicStory } from "./index";
+import {
+  PrimaryStory,
+  ExternalMapRenderingStory,
+  ExternalMapRenderingMosaicStory,
+} from "./index";
 
 export default {
   title: "Elements/eox-timeslider",

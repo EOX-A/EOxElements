@@ -27,7 +27,6 @@ export default async function exportAnimation(mapLayers, type, fps, that) {
         "Failed to convert to MP4: " +
           (error instanceof Error ? error.message : String(error)),
       );
-    } finally {
     }
   } else {
     imagesToGIF(images, that, fps);
@@ -160,8 +159,8 @@ async function imagesToMp4(
       String(fps),
       outputFile,
     ]);
-    
-    const data = /** @type {Uint8Array} */(await ffmpeg.readFile(outputFile));
+
+    const data = /** @type {Uint8Array} */ (await ffmpeg.readFile(outputFile));
 
     if (!data || data.length === 0) {
       throw new Error("FFmpeg produced no output");

@@ -128,7 +128,7 @@ export default function initVisTimeline(EOxTimeSlider) {
             dayjs(multiSelectStartDate).toDate(),
             "multi-select-start",
           );
-        } catch (e) {
+        } catch {
           /* exists */
         }
         try {
@@ -138,7 +138,9 @@ export default function initVisTimeline(EOxTimeSlider) {
             ".vis-custom-time.multi-select-start",
           );
           startEle.style.width = `0px`;
-        } catch (e) {}
+        } catch {
+          // ignore errors
+        }
         visTimeline.setCustomTime(
           dayjs(multiSelectStartDate).toDate(),
           "multi-select-start",
