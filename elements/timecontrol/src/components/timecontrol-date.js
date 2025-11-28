@@ -28,6 +28,7 @@ export class EOxTimeControlDate extends LitElement {
 
   updateStep(step = 1) {
     const EOxTimeControl = this.closest("eox-timecontrol");
+    // @ts-expect-error TODO: Fix typing
     EOxTimeControl.updateStep(step);
   }
 
@@ -42,7 +43,7 @@ export class EOxTimeControlDate extends LitElement {
           <button
             part="previous"
             class="icon previous small circle transparent no-margin"
-            @click="${() => this.updateStep(-1)}"
+            @click=${() => this.updateStep(-1)}
           >
             ${!this.unstyled
               ? html`
@@ -73,7 +74,7 @@ export class EOxTimeControlDate extends LitElement {
           <button
             part="next"
             class="icon next small circle transparent no-margin"
-            @click="${() => this.updateStep(1)}"
+            @click=${() => this.updateStep(1)}
           >
             ${!this.unstyled
               ? html`

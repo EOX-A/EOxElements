@@ -56,6 +56,7 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
                 local: dayjs(value.date).utc().local().format(),
                 originalDate: value.date,
               }))
+              // @ts-expect-error TODO: Fix typing
               .sort((a, b) => new Date(a.date) - new Date(b.date));
             sliderValues.push({
               layer: properties[EOxTimeSlider.layerIdKey],
@@ -64,6 +65,7 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
               values: values,
               layerInstance: layer,
             });
+            // @ts-expect-error TODO: Fix typing
             layer.on("change:timeControlValues", () => init());
           }
         }

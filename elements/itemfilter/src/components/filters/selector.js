@@ -209,7 +209,7 @@ export class EOxSelector extends LitElement {
                 class="autocomplete-input"
                 type="text"
                 .value=${this.query}
-                placeholder="${this.filterObject.placeholder || "Find..."}"
+                placeholder=${this.filterObject.placeholder || "Find..."}
                 @input=${this.#handleInput}
                 @keydown=${this.#handleKeyDown}
                 @blur=${() => (this.showSuggestions = false)}
@@ -223,12 +223,12 @@ export class EOxSelector extends LitElement {
           ${this.filteredSuggestions.map(
             (suggestion) => html`
               <li
-                data-identifier="${suggestion.toString().toLowerCase()}"
-                data-title="${suggestion}"
+                data-identifier=${suggestion.toString().toLowerCase()}
+                data-title=${suggestion}
               >
                 <label class="${type} small max">
                   <input
-                    type="${type}"
+                    type=${type}
                     name=${suggestion}
                     .checked=${this.selectedItems.includes(suggestion)}
                     @change=${() => this.debouncedInputHandler(suggestion)}

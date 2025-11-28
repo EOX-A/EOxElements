@@ -6,29 +6,34 @@ import { STORIES_MAP_STYLE, STORIES_VECTOR_LAYERS } from "../src/enums";
 
 export const SelectFeature = {
   args: {
+    for: "eox-map#select",
     multipleFeatures: false,
     type: "Polygon",
     layerId: "regions",
-    drawUpdate: (e) => {
-      console.log(" drawUpdate: ", e.detail);
+    drawupdate: (e) => {
+      console.log("drawUpdate:", e.detail);
+    },
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "select",
+        style: STORIES_MAP_STYLE,
+        layers: STORIES_VECTOR_LAYERS,
+      },
     },
   },
   render: (args) => html`
-    <!-- Render eox-map component with ID "select" -->
-    <eox-map
-      id="select"
-      style=${STORIES_MAP_STYLE}
-      .layers=${STORIES_VECTOR_LAYERS}
-    ></eox-map>
-
-    <!-- Initialize eox-drawtools for the eox-map with ID "select" -->
     <eox-drawtools
-      for="eox-map#select"
+      for=${args.for}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
       layer-id=${args.layerId}
-      @drawupdate=${args.drawUpdate}
-    />
+      @drawupdate=${args.drawupdate}
+    ></eox-drawtools>
+    <eox-map
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      style=${args.storyAdditionalComponents["eox-map"].style}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
   `,
 };
 

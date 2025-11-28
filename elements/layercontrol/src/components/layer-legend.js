@@ -136,14 +136,14 @@ export class EOxLayerControlLayerLegend extends LitElement {
             ${this.#layerLegend.map(
               (legend, idx, configs) => html`
                 <color-legend
-                  id="${legend.id}"
+                  id=${legend.id}
                   width=${legend.width ?? 325}
-                  scaleType="${ifDefined(legend.scaleType)}"
-                  markType="${ifDefined(legend.markType)}"
-                  titleText="${ifDefined(legend.title)}"
+                  scaleType=${ifDefined(legend.scaleType)}
+                  markType=${ifDefined(legend.markType)}
+                  titleText=${ifDefined(legend.title)}
                   .range=${legend.range}
                   .domain=${legend.domain}
-                  tickFormat="${ifDefined(legend.tickFormat)}"
+                  tickFormat=${ifDefined(legend.tickFormat)}
                   .ticks=${legend.ticks ?? 5}
                   .tickValues=${legend.tickValues}
                   .marginLeft=${8}

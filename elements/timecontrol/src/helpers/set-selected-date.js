@@ -26,9 +26,9 @@ export default function setSelectedDate(
   const selectedDate = dayjs(date);
   if (Number.isNaN(selectedDate.unix())) return;
 
-  const container = EOxTimeSlider.getContainer();
-
   // TODO: RE-INIT
+  console.log(visTimeline);
+  // const container = EOxTimeSlider.getContainer();
   // try {
   //   visTimeline.addCustomTime(selectedDate.toDate(), "selected");
   // } catch (_) {
@@ -73,6 +73,7 @@ export default function setSelectedDate(
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
       // Get the source if it is not a group layer
+      // @ts-expect-error Property 'getSource' does not exist on type 'BaseLayer'.
       const source = layer?.getLayers ? null : layer.getSource();
 
       // TODO: RE-INIT

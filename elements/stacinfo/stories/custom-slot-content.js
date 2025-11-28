@@ -10,36 +10,52 @@ import { PrimaryStory } from "./";
 const CustomSlotContentStory = {
   args: {
     ...PrimaryStory.args,
-  },
-  render:
-    // @ts-expect-error TODO
-    (args) => html`
-      <eox-stacinfo
-        id="slot"
-        for=${args.for}
-        .header=${args.header}
-        .body="${args.body}"
-        .featured=${args.featured}
-        .footer=${args.footer}
-        ?unstyled=${args.unstyled}
+    id: "slot",
+    storySlotContent: `
+      <div
+        slot="agency"
+        style="background: lightgrey; width: 100%; padding: 10px 20px; border-radius: 4px;"
       >
-        <div
-          slot="agency"
-          style="background: lightgrey; width: 100%; padding: 10px 20px; border-radius: 4px;"
-        >
-          <p><strong>Agency:</strong> <span class="content"></span>!</p>
-        </div>
-      </eox-stacinfo>
-      <script>
-        globalThis.stacInfo = document.querySelector("eox-stacinfo#slot");
-        stacInfo.addEventListener("loaded", () => {
-          setTimeout(() => {
-            const value = stacInfo.stacProperties["agency"];
-            document.querySelector(".content").innerHTML = value.formatted;
-          });
-        });
-      </script>
+        <p><strong>Agency:</strong> <span class="content"></span>!</p>
+      </div>
     `,
+    storyCodeAfter: `
+      globalThis.stacInfo = document.querySelector("eox-stacinfo#slot");
+      stacInfo.addEventListener("loaded", () => {
+        setTimeout(() => {
+          const value = stacInfo.stacProperties["agency"];
+          document.querySelector(".content").innerHTML = value.formatted;
+        });
+      });
+    `,
+  },
+  render: (args) => html`
+    <eox-stacinfo
+      id=${args.id}
+      for=${args.for}
+      .header=${args.header}
+      .body=${args.body}
+      .featured=${args.featured}
+      .footer=${args.footer}
+      ?unstyled=${args.unstyled}
+    >
+      <div
+        slot="agency"
+        style="background: lightgrey; width: 100%; padding: 10px 20px; border-radius: 4px;"
+      >
+        <p><strong>Agency:</strong> <span class="content"></span>!</p>
+      </div>
+    </eox-stacinfo>
+    <script>
+      globalThis.stacInfo = document.querySelector("eox-stacinfo#slot");
+      stacInfo.addEventListener("loaded", () => {
+        setTimeout(() => {
+          const value = stacInfo.stacProperties["agency"];
+          document.querySelector(".content").innerHTML = value.formatted;
+        });
+      });
+    </script>
+  `,
 };
 
 export default CustomSlotContentStory;

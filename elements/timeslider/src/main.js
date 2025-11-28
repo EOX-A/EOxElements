@@ -29,6 +29,7 @@ dayjs.extend(minMax);
 /**
  * @element eox-timeslider
  */
+//@ts-expect-error property animate is conflicting with HTMLElement animate https://developer.mozilla.org/en-US/docs/Web/API/Element/animate
 export default class EOxTimeSlider extends LitElement {
   static get properties() {
     return {
@@ -229,7 +230,9 @@ export default class EOxTimeSlider extends LitElement {
       if (this.#isExport) {
         // Wait a tick for render
         setTimeout(() => {
+          /** @type {HTMLElement} */
           const mapViewItem = this.renderRoot.querySelector(".map-view-item");
+          /** @type {HTMLElement} */
           const exportImages = this.renderRoot.querySelector(".export-images");
           if (mapViewItem && exportImages) {
             // Clean up any previous observer
@@ -382,13 +385,13 @@ export default class EOxTimeSlider extends LitElement {
                         layer.img
                           ? html`<div
                               @click=${() => this.handleSelectedPreview(index)}
-                              class="${this.#exportConfig.selectedPreview ===
+                              class=${this.#exportConfig.selectedPreview ===
                               index
                                 ? "selected-preview"
-                                : ""}"
+                                : ""}
                             >
                               <img
-                                src="${layer.img}"
+                                src=${layer.img}
                                 alt="Exported map ${index + 1}"
                               />
                               ${when(
@@ -432,7 +435,7 @@ export default class EOxTimeSlider extends LitElement {
                               .selectedPreview === index
                               ? "selected-map"
                               : ""}"
-                            data-index="${index}"
+                            data-index=${index}
                             .layers=${layer.layers}
                             .center=${layer.center ||
                             this.eoxMap.map.getView().getCenter()}
@@ -515,5 +518,5 @@ export default class EOxTimeSlider extends LitElement {
     `;
   }
 }
-
+//@ts-expect-error property animate is conflicting with HTMLElement animate https://developer.mozilla.org/en-US/docs/Web/API/Element/animate
 customElements.define("eox-timeslider", EOxTimeSlider);

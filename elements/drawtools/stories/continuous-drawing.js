@@ -7,16 +7,30 @@ import { html } from "lit";
 import { STORIES_LAYERS_ARRAY, STORIES_MAP_STYLE } from "../src/enums";
 
 export const ContinuousDrawing = {
-  render: () => html`
+  args: {
+    continuous: true,
+    for: "eox-map#continuous",
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "continuous",
+        layers: STORIES_LAYERS_ARRAY,
+        style: STORIES_MAP_STYLE,
+      },
+    },
+  },
+  render: (args) => html`
     <!-- Render eox-map component with ID "continuous" -->
     <eox-map
-      id="continuous"
-      style=${STORIES_MAP_STYLE}
-      .layers=${STORIES_LAYERS_ARRAY}
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      style=${args.storyAdditionalComponents["eox-map"].style}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
 
     <!-- Initialize eox-drawtools for the eox-map with ID "continuous" -->
-    <eox-drawtools for="eox-map#continuous" continuous></eox-drawtools>
+    <eox-drawtools
+      for=${args.for}
+      continuous=${args.continuous}
+    ></eox-drawtools>
   `,
 };
 

@@ -122,10 +122,10 @@ export class EOxItemFilterText extends LitElement {
               data-cy="search"
               class="text-input"
               part="input-search"
-              value="${Object.values(this.filterObject.state)[0]}"
+              value=${Object.values(this.filterObject.state)[0]}
               tabindex=${this.tabIndex}
-              pattern="${this.filterObject.validation?.pattern || ".*"}"
-              @input="${this.debouncedInputHandler}"
+              pattern=${this.filterObject.validation?.pattern || ".*"}
+              @input=${this.debouncedInputHandler}
               @click=${(evt) => evt.stopPropagation()}
               @keydown=${this.#keydownHandler}
             />

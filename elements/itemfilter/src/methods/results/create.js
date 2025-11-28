@@ -121,7 +121,7 @@ export function createItemListMethod(
                         ? html`
                             <img
                               class="image"
-                              src="${getValue(config.imageProperty, item)}"
+                              src=${getValue(config.imageProperty, item)}
                             />
                           `
                         : html`
@@ -144,7 +144,7 @@ export function createItemListMethod(
                           ? html`
                               <img
                                 class="image"
-                                src="${getValue(config.imageProperty, item)}"
+                                src=${getValue(config.imageProperty, item)}
                               />
                             `
                           : html`

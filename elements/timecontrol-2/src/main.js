@@ -318,7 +318,7 @@ export class EOxTimeControl extends LitElement {
                 <button
                   part="previous"
                   class="icon previous small circle transparent no-margin"
-                  @click="${() => this.previous()}"
+                  @click=${() => this.previous()}
                 >
                   ${!this.unstyled
                     ? html`
@@ -350,7 +350,7 @@ export class EOxTimeControl extends LitElement {
                 <button
                   part="next"
                   class="icon next small circle transparent no-margin"
-                  @click="${() => this.next()}"
+                  @click=${() => this.next()}
                 >
                   ${!this.unstyled
                     ? html`
@@ -377,10 +377,8 @@ export class EOxTimeControl extends LitElement {
                   class="icon-text small ${this._isAnimationPlaying
                     ? "pause"
                     : "play"}"
-                  @click="${() =>
-                    this.playAnimation(
-                      this._isAnimationPlaying ? false : true,
-                    )}"
+                  @click=${() =>
+                    this.playAnimation(this._isAnimationPlaying ? false : true)}
                 >
                   ${!this.unstyled
                     ? html`
@@ -413,20 +411,20 @@ export class EOxTimeControl extends LitElement {
             ? html`
                 <div class="slider-col">
                   <tc-range-slider
-                    data="${this.controlValues}"
+                    data=${this.controlValues}
                     part="slider"
-                    value="${this.controlValues[this._newStepIndex]}"
-                    @change="${(/** @type {CustomEvent} */ evt) =>
+                    value=${this.controlValues[this._newStepIndex]}
+                    @change=${(/** @type {CustomEvent} */ evt) =>
                       this._updateStep(
                         this.controlValues.findIndex(
                           (v) => v === evt.detail.value,
                         ) - this._newStepIndex,
-                      )}"
+                      )}
                   ></tc-range-slider>
 
                   <eox-sliderticks
-                    .width="${this._width}"
-                    .steps="${this.controlValues}"
+                    .width=${this._width}
+                    .steps=${this.controlValues}
                   ></eox-sliderticks>
                 </div>
               `

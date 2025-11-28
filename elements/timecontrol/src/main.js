@@ -22,6 +22,18 @@ dayjs.extend(utc);
 
 /**
  * @element eox-timecontrol
+ *
+ * The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, and custom date formatting.
+ *
+ * Features:
+ * - Link to an <eox-map> instance for time-based WMS layer control
+ * - Navigation buttons and play/pause animation
+ * - Slider for direct time selection
+ * - Programmatic control of time step
+ * - Customizable display format using dayjs tokens
+ * - Emits 'stepchange' event when the current time step changes
+ * - Can be used standalone without a map
+ *
  */
 export class EOxTimeControl extends LitElement {
   static get properties() {
@@ -31,6 +43,7 @@ export class EOxTimeControl extends LitElement {
   }
 
   #eoxMap = null;
+  // @ts-expect-error TODO: Fix typing
   #loading = false;
   #groups = new DataSet([]);
   #items = new DataSet([]);

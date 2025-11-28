@@ -5,6 +5,7 @@ import {
   getWgsCoordinates,
   initProjection,
   specialProjection,
+  checkGetProj,
 } from "./cases/projection";
 
 /**
@@ -36,4 +37,9 @@ describe("view projections", () => {
    */
   it("lonLatExtent delivering correct WGS coordinates", () =>
     getWgsCoordinates());
+
+  /**
+   * Test case to check getProj projection guessing logic
+   */
+  it("correctly guesses projection from coordinates", () => checkGetProj());
 });

@@ -2,9 +2,10 @@
  * Drawtools component demonstrating the configuration options for eox-jsonform
  * Allows users to select a bounding box on a map as a form input
  */
+import { html } from "lit";
 import boundingBoxSchema from "./public/boundingBoxSchema.json";
 
-const BoundingBox = {
+export default {
   args: {
     schema: boundingBoxSchema,
     value: {
@@ -22,5 +23,7 @@ const BoundingBox = {
       bboxes2: [],
     },
   },
+  render: (args) => html`
+    <eox-jsonform .schema=${args.schema} .value=${args.value}></eox-jsonform>
+  `,
 };
-export default BoundingBox;

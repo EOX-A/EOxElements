@@ -20,6 +20,7 @@ export default function snapshotGenerator(EOxTimeSlider) {
             const transform = canvas.style.transform;
             if (transform) {
               matrix = transform
+                // eslint-disable-next-line no-useless-escape
                 .match(/^matrix\(([^\(]*)\)$/)[1]
                 .split(",")
                 .map(Number);

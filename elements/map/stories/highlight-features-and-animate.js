@@ -7,6 +7,7 @@ import { html } from "lit";
  */
 const HighlightFeaturesAndAnimateStory = {
   args: {
+    id: "highlightAndAnimate",
     config: {
       layers: [
         {
@@ -42,22 +43,22 @@ const HighlightFeaturesAndAnimateStory = {
         },
       ],
     },
-  },
-  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
-    <eox-map
-      id="highlightAndAnimate"
-      style="width: 100%; height: 300px;"
-      .config=${args.config}
-      @loadend=${() => {
-        /** @type {import("../src/main").EOxMap} **/ (
-          /** @type {any} **/ document.querySelector(
-            "eox-map#highlightAndAnimate",
-          )
-        ).selectInteractions.selectInteraction.highlightById([664, 795, 789], {
+    loadend: () => {
+      document
+        .querySelector("eox-map#highlightAndAnimate")
+        .selectInteractions.selectInteraction.highlightById([664, 795, 789], {
           duration: 400,
           padding: [50, 50, 50, 50],
         });
-      }}
+    },
+    style: "width: 100%; height: 300px;",
+  },
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
+    <eox-map
+      id=${args.id}
+      .config=${args.config}
+      @loadend=${args.loadend}
+      style=${args.style}
     ></eox-map>
   `,
 };

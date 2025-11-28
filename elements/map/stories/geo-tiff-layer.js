@@ -32,6 +32,7 @@ const GeoTIFFLayerStory = {
       },
     ],
     zoom: 8,
+    storyCodeBefore: `import "@eox/map/src/plugins/advancedLayersAndSources"`,
   },
 };
 

@@ -21,7 +21,8 @@ export default function setSelectedDate(
   eoxMap,
   EOxTimeSlider,
 ) {
-  const now = Date.now();
+  // const now = Date.now();
+  EOxTimeSlider.selectedDate = dayjs(date);
   if (Number.isNaN(EOxTimeSlider.selectedDate.unix())) return;
 
   try {
@@ -54,13 +55,8 @@ export default function setSelectedDate(
     labelEle.classList.add("vis-custom-time-selected-label");
     labelEle.innerText = dayjs(date).format("MMM DD' YYYY");
   }
-
-  const flatLayers = getFlatLayersArray(
-    /** @type {import('ol/layer/Base').default[]} */ (
-      eoxMap.map.getLayers().getArray()
-    ),
-  );
-
+  /** @type {import("@eox/map/src/types").AnyLayerWithSource[]} */
+  const flatLayers = getFlatLayersArray(eoxMap.map.getLayers().getArray());
   const selectedItems = EOxTimeSlider.items.get().filter((item) => {
     return EOxTimeSlider.selectedDate.format().includes(item.date);
   });
@@ -69,8 +65,10 @@ export default function setSelectedDate(
   selectedItems.forEach((item) => {
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
+      if (!layer) return;
+      if (!("getLayers" in layer) && !("getSource" in layer)) return;
       // Get the source if it is not a group layer
-      const source = layer?.getLayers ? null : layer.getSource();
+      const source = "getLayers" in layer ? null : layer.getSource();
 
       const newSelectionCell = container.querySelector(
         `.vis-item.milestone.vis-point.item-${item.id}`,
@@ -83,6 +81,12 @@ export default function setSelectedDate(
       };
 
       if (!EOxTimeSlider.externalMapRendering) {
+        if (
+          !source ||
+          !("updateParams" in source) ||
+          typeof source.updateParams !== "function"
+        )
+          return;
         source.updateParams({
           [item.property]: dayjs(date).utc().format("YYYY-MM-DD"),
         });

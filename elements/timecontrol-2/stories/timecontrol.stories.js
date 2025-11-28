@@ -1,8 +1,6 @@
-// Global import of eox-elements in .storybook/preview.js!
 import {
   PrimaryStory,
   SliderStory,
-  ProgrammaticTimeSelectionStory,
   DisabledButtonsStory,
   NoMapStory,
   FormatStory,
@@ -14,14 +12,24 @@ export default {
   component: "eox-timecontrol-2",
 };
 
+/**
+ * Basic usage of eox-timecontrol with navigation and play buttons, linked to an eox-map instance.
+ */
 export const Primary = PrimaryStory;
 
+/**
+ * Shows only the slider for time selection, without navigation or play buttons, linked to an eox-map.
+ */
 export const Slider = SliderStory;
 
-export const ProgrammaticTimeSelection = ProgrammaticTimeSelectionStory;
-
+/**
+ * Disables navigation and play buttons, only time selection via eox-map.
+ */
 export const DisabledButtons = DisabledButtonsStory;
 
+/**
+ * Standalone timecontrol without a map, demonstrates event handling for stepchange.
+ */
 export const NoMap = NoMapStory;
 
 /**

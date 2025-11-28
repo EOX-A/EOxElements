@@ -7,15 +7,17 @@ export const Format = {
     for: "eox-map#format",
     displayFormat: "MMMM DD, YYYY",
     play: false,
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "format",
+        style: "width: 1005; height: 300px;",
+        zoom: DEFAULT_ARGS.zoom,
+        center: DEFAULT_ARGS.center,
+        layers: DEFAULT_ARGS.layers,
+      },
+    },
   },
   render: (args) => html`
-    <eox-map
-      id="format"
-      style="width: 1005; height: 300px;"
-      .zoom=${args.zoom}
-      .center=${args.center}
-      .layers=${args.layers}
-    ></eox-map>
     <eox-timecontrol-2
       .for=${args.for}
       .layer=${args.layer}
@@ -24,9 +26,15 @@ export const Format = {
       .navigation=${args.navigation}
       .play=${args.play}
       .slider=${args.slider}
-      style="margin-top: 10px;"
       .displayFormat=${args.displayFormat}
     ></eox-timecontrol-2>
+    <eox-map
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      style=${args.storyAdditionalComponents["eox-map"].style}
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
   `,
 };
 

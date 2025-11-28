@@ -248,7 +248,7 @@ export class EOxLayerControlLayerTools extends LitElement {
               >
                 <summary></summary>
                 <eox-layercontrol-tools-items
-                  class="${this.toolsAsList ? "tools-list" : "tools-tab"}"
+                  class=${this.toolsAsList ? "tools-list" : "tools-tab"}
                   .noShadow=${false}
                   .actions=${actions}
                   .tabs=${tools}

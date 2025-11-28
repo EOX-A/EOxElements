@@ -27,7 +27,6 @@ export default async function exportAnimation(mapLayers, type, fps, that) {
         "Failed to convert to MP4: " +
           (error instanceof Error ? error.message : String(error)),
       );
-    } finally {
     }
   } else {
     imagesToGIF(images, that, fps);
@@ -161,7 +160,7 @@ async function imagesToMp4(
       outputFile,
     ]);
 
-    const data = await ffmpeg.readFile(outputFile);
+    const data = /** @type {Uint8Array} */ (await ffmpeg.readFile(outputFile));
 
     if (!data || data.length === 0) {
       throw new Error("FFmpeg produced no output");
@@ -178,6 +177,7 @@ async function imagesToMp4(
     }
 
     // data is a Uint8Array, convert to ArrayBuffer for Blob
+    // @ts-expect-error TODO: Fix typing
     return new Blob([data.buffer], { type: "video/mp4" });
   } catch (error) {
     // Clean up on error
@@ -186,7 +186,7 @@ async function imagesToMp4(
         await ffmpeg.deleteFile(nameFor(i));
       }
       await ffmpeg.deleteFile(outputFile);
-    } catch (cleanupError) {
+    } catch {
       // Ignore cleanup errors
     }
     throw new Error(

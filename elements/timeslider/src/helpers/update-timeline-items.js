@@ -1,4 +1,3 @@
-import { DataSet } from "vis-timeline/standalone";
 import { v4 as uuidv4 } from "uuid";
 
 /**
@@ -28,8 +27,8 @@ export function updateVisibility(EOxTimeSlider, visibility, i) {
 /**
  * Updates timeline groups and items based on slider values
  * @param {Array} sliderValues - Array of slider configuration objects
- * @param {DataSet} groups - Timeline groups dataset
- * @param {DataSet} items - Timeline items dataset
+ * @param {import("vis-timeline/standalone").DataSet} groups - Timeline groups dataset
+ * @param {import("vis-timeline/standalone").DataSet} items - Timeline items dataset
  * @param {Object} EOxTimeSlider - The timeslider EOxTimeSlider instance
  */
 export default function updateTimelineItems(

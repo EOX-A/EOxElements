@@ -22,9 +22,9 @@ const changeTimeTest = () => {
       layer="TEST_ID"
       .controlProperty=${testProperty}
       .controlValues=${testValues}
-      @stepchange="${(e) => {
+      @stepchange=${(e) => {
         timeChangeEventValue = e.detail.currentStep;
-      }}"
+      }}
     ></eox-timecontrol>`,
   ).as(timeControl);
 

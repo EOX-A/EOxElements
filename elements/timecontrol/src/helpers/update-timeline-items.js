@@ -19,9 +19,11 @@ export default function updateTimelineItems(
 
   for (let i = 0; i < sliderValues.length; i++) {
     const slider = sliderValues[i];
-    const visibilityFunc = (props) => {
-      const visibility = props.target.getVisible();
-      // updateVisibility(EOxTimeSlider, visibility, i);
+    const visibilityFunc = () => {
+      if (EOxTimeSlider) {
+        // const visibility = props.target.getVisible();
+        // updateVisibility(EOxTimeSlider, visibility, i);
+      }
     };
     slider.layerInstance.un("change:visible", visibilityFunc);
     slider.layerInstance.on("change:visible", visibilityFunc);

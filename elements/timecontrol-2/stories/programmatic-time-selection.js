@@ -23,11 +23,11 @@ export const ProgrammaticTimeSelection = {
           <input type="text" id="time" value="2022-12-26" />
         </div>
         <button
-          @click="${() => {
+          @click=${() => {
             const time = document.getElementById("time").value;
             const timeControl = document.getElementById("programmatic");
             timeControl.currentStep = time;
-          }}"
+          }}
         >
           Go
         </button>
