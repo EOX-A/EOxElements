@@ -7,5 +7,5 @@ export { default as checkParsedLonLatCenter } from "./check-parsed-lon-lat-cente
 export { default as initDefaultCenter } from "./init-default-center";
 export { default as getLayerById } from "./get-layer-by-id";
 export { default as getFlatLayersArr } from "./get-flat-layers-arr";
-export { default as generateLayersInReversePointOrder } from "./generate-layers-in-reverse-point-order";
+export { default as generateLayersInCorrectPointOrder } from "./generate-layers-in-correct-point-order";
 export { animateOnZoomCenterChange, animateOnExtent } from "./animate";
