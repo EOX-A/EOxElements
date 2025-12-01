@@ -27,17 +27,6 @@ const layersJson = [
     },
     layers: [
       {
-        type: "Vector",
-        properties: {
-          id: "regions",
-        },
-        source: {
-          type: "Vector",
-          url: "https://openlayers.org/data/vector/ecoregions.json",
-          format: "GeoJSON",
-        },
-      },
-      {
         type: "Group",
         properties: {
           id: "groupLayerInsideGroup",
@@ -53,6 +42,17 @@ const layersJson = [
             },
           },
         ],
+      },
+      {
+        type: "Vector",
+        properties: {
+          id: "regions",
+        },
+        source: {
+          type: "Vector",
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: "GeoJSON",
+        },
       },
     ],
   },
