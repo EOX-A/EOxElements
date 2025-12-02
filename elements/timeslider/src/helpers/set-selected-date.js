@@ -73,6 +73,7 @@ export default function setSelectedDate(
       const newSelectionCell = container.querySelector(
         `.vis-item.milestone.vis-point.item-${item.id}`,
       );
+      console.log(newSelectionCell);
       newSelectionCell.classList.add("vis-selected-item");
 
       instances = {

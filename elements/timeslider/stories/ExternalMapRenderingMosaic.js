@@ -136,6 +136,7 @@ export const ExternalMapRenderingMosaic = {
       document
         .querySelector("eox-timeslider")
         .addEventListener("update", async (e) => {
+          console.log(e.detail);
           if (!items.length) return;
           const start = new Date(e.detail.date);
           const end = new Date(new Date(start).setDate(start.getDate() + 1));

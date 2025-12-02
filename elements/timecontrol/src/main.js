@@ -10,6 +10,7 @@ import findIndex from "lodash.findindex";
 import { DataSet } from "vis-timeline/standalone";
 
 import "./components/timecontrol-date";
+import "./components/timecontrol-picker";
 
 import {
   firstUpdatedMethod,
@@ -52,14 +53,6 @@ export class EOxTimeControl extends LitElement {
     super();
     /** @type {boolean} */
     this.unstyled = false;
-
-    /**
-     * Query selector of an `eox-map` (`String`, passed as an attribute or property)
-     * or an `eox-map` DOM element (`HTMLElement`, passed as property)
-     *
-     * @type {String|HTMLElement}
-     */
-    this.for = "eox-map";
 
     this.selectedDate = null;
 
@@ -125,6 +118,8 @@ export class EOxTimeControl extends LitElement {
     const nextDate = itemValues[newIndex].start;
     dateChangeHandlerMethod(nextDate, this);
   }
+
+  dateChange = dateChangeHandlerMethod;
 
   firstUpdated() {
     firstUpdatedMethod(this);

@@ -1,5 +1,9 @@
 // Global import of eox-elements in .storybook/preview.js!
-import { OnlyDateStory, DateWithNavigationStory } from "./index";
+import {
+  OnlyDateStory,
+  DateWithNavigationStory,
+  DatePickerStory,
+} from "./index";
 
 export default {
   title: "Elements/eox-timecontrol",
@@ -10,3 +14,5 @@ export default {
 export const OnlyDate = OnlyDateStory;
 
 export const DateWithNavigation = DateWithNavigationStory;
+
+export const DatePicker = DatePickerStory;

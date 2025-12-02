@@ -60,15 +60,17 @@ export class EOxTimeControlDate extends LitElement {
           </button>
         `;
       })}
-      ${when(this.selectedDate, () => {
-        return html`
-          <small part="current">
-            ${this.format
-              ? dayjs(this.selectedDate).utc().format(this.format)
-              : this.selectedDate}
-          </small>
-        `;
-      })}
+      <span id="date-container">
+        ${when(this.selectedDate, () => {
+          return html`
+            <small part="current">
+              ${this.format
+                ? dayjs(this.selectedDate).utc().format(this.format)
+                : this.selectedDate}
+            </small>
+          `;
+        })}
+      </span>
       ${when(this.navigation, () => {
         return html`
           <button

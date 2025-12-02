@@ -93,6 +93,14 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
           if (itemValues && itemValues.length) {
             const initDate = itemValues[itemValues.length - 1].start;
             dateChangeHandlerMethod(initDate, EOxTimeSlider);
+            const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
+              EOxTimeSlider.querySelector("eox-timecontrol-picker")
+            );
+            if (EOxTimeControlPicker) {
+              EOxTimeControlPicker.initCalendar({
+                selectedDate: initDate,
+              });
+            }
           }
         }
         // initVisTimeline(EOxTimeSlider);
