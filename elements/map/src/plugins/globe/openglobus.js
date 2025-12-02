@@ -8,6 +8,9 @@ import {
 
 import { transform as olTransform } from "ol/proj";
 
+// The central canvas tile layer
+let canvasTilesLayer;
+
 export const createGlobe = ({ map, target, renderTile }) => {
   const height = 27050000 / Math.pow(2, map.map.getView().getZoom() - 1);
   const mapExtent = map.map.getView().calculateExtent();
@@ -27,25 +30,36 @@ export const createGlobe = ({ map, target, renderTile }) => {
       new LonLat(newCenter[0], newCenter[1], 0),
       Vec3.NORTH,
     );
-  } else {
-    const canvasTilesLayer = new CanvasTiles("mainThreadCanvasTilesLayer", {
-      visibility: true,
-      isBaseLayer: false,
-      async drawTile(material, applyCanvas) {
-        if (!material.segment) {
+  }
+  canvasTilesLayer = new CanvasTiles("mainThreadCanvasTilesLayer", {
+    visibility: true,
+    isBaseLayer: false,
+    async drawTile(material, applyCanvas) {
+      if (!material.segment) {
+        return;
+      }
+      const tile = {
+        x: material.segment.tileX,
+        y: material.segment.tileY,
+        z: material.segment.tileZoom,
+      };
+
+      renderTile(tile, (renderedMapCanvas) => {
+        // og could dismiss the canvas in the meantime because of user interactions
+        if (!material.segment?.initialized) {
           return;
         }
-        const tile = {
-          x: material.segment.tileX,
-          y: material.segment.tileY,
-          z: material.segment.tileZoom,
-        };
-
-        renderTile(tile, (renderedMapCanvas) => {
-          applyCanvas(renderedMapCanvas);
-        });
-      },
-    });
+        applyCanvas(renderedMapCanvas);
+      });
+    },
+  });
+  if (globus) {
+    const oldLayer = globus.planet.layers[0];
+    globus.planet.addLayer(canvasTilesLayer);
+    setTimeout(() => {
+      globus.planet.removeLayer(oldLayer);
+    }, 1000);
+  } else {
     globus = new Globe({
       target,
       layers: [canvasTilesLayer],
@@ -77,4 +91,15 @@ export const createGlobe = ({ map, target, renderTile }) => {
     );
   }
   return globus;
+};
+
+let timer;
+export const refreshGlobe = () => {
+  canvasTilesLayer.abortLoading();
+  // globus.planet.quadTreeStrategy.clearLayerMaterial(tg, true);
+  canvasTilesLayer.animated = true; // temporarily mark as animated to force redraw without dismissing existing tiles
+  timer = window.setTimeout(() => {
+    timer = undefined;
+    canvasTilesLayer.animated = false;
+  }, 500); // wait for a timeout then remove the "animated" flag, because it makes user interactions laggy.
 };

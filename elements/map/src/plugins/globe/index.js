@@ -1,5 +1,7 @@
-import { createGlobe } from "./openglobus.js";
+import { createGlobe, refreshGlobe } from "./openglobus.js";
 import { createMapPool, distributeTileToIdealMap } from "./methods.js";
+
+let mapPool;
 
 export const create = ({ EOxMap, target }) => {
   /**
@@ -10,7 +12,7 @@ export const create = ({ EOxMap, target }) => {
   /**
    * Create map pool of eox-maps for rendering in parallel
    */
-  const mapPool = createMapPool(maxMaps, EOxMap, target);
+  mapPool = createMapPool(maxMaps, EOxMap, target);
 
   /**
    * Create the globe and render tiles, calling a callback
@@ -40,8 +42,46 @@ export const create = ({ EOxMap, target }) => {
     },
   });
   EOxMap.globe = globe;
+  const doForEachLayer = (originalLayer, changeFunction) => {
+    for (let i = 0; i < mapPool.length; i++) {
+      const mapObj = mapPool[i];
+      changeFunction(mapObj.tileMap.getLayerById(originalLayer.get("id")));
+    }
+    refreshGlobe();
+  };
+  EOxMap.map
+    .getLayers()
+    .getArray()
+    .forEach((layer) => {
+      layer.on("change", () => {
+        // Assuming styleVariables update for Webgl layer
+        doForEachLayer(layer, (targetLayer) => {
+          targetLayer.updateStyleVariables(layer.styleVariables_);
+        });
+      });
+      layer.on("propertychange", ({ key }) => {
+        switch (key) {
+          case "visible":
+            doForEachLayer(layer, (targetLayer) => {
+              targetLayer.setVisible(layer.getVisible());
+            });
+            break;
+          case "opacity":
+            doForEachLayer(layer, (targetLayer) => {
+              targetLayer.setOpacity(layer.getOpacity());
+            });
+            break;
+        }
+      });
+    });
+};
+
+export const refresh = (mapPoolCallback) => {
+  mapPoolCallback(mapPool);
+  refreshGlobe();
 };
 
 window.eoxMapGlobe = {
   create,
+  refresh,
 };

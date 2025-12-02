@@ -244,6 +244,7 @@ declare global {
     eoxMapAdvancedOlSources: OLAdvancedSources;
     eoxMapGlobe: {
       create: typeof import("./plugins/globe/index").create;
+      refresh: typeof import("./plugins/globe/index").refresh;
     };
   }
 }
