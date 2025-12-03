@@ -9,6 +9,39 @@ export const create = ({ EOxMap, target }) => {
    */
   const maxMaps = navigator.hardwareConcurrency || 4;
 
+  const setLayers = (layers) => {
+    layers.forEach((layer) => {
+      if (layer.getProperties().type === "Group") {
+        setLayers(layer.getLayers().getArray());
+        return
+      }
+      layers.forEach((layer) => {
+      layer.on("change", () => {
+        // Assuming styleVariables update for Webgl layer
+        doForEachLayer(layer, (targetLayer) => {
+          if (targetLayer.getProperties().type === "WebGL") {
+            targetLayer.updateStyleVariables(layer.styleVariables_);
+          }
+        });
+      });
+      layer.on("propertychange", ({ key }) => {
+        switch (key) {
+          case "visible":
+            doForEachLayer(layer, (targetLayer) => {
+              targetLayer.setVisible(layer.getVisible());
+            });
+            break;
+          case "opacity":
+            doForEachLayer(layer, (targetLayer) => {
+              targetLayer.setOpacity(layer.getOpacity());
+            });
+            break;
+        }
+      });
+    });
+    });
+  };
+
   /**
    * Create map pool of eox-maps for rendering in parallel
    */
@@ -49,34 +82,11 @@ export const create = ({ EOxMap, target }) => {
     }
     refreshGlobe();
   };
-  EOxMap.map
-    .getLayers()
-    .getArray()
-    .forEach((layer) => {
-      layer.on("change", () => {
-        // Assuming styleVariables update for Webgl layer
-        doForEachLayer(layer, (targetLayer) => {
-          targetLayer.updateStyleVariables(layer.styleVariables_);
-        });
-      });
-      layer.on("propertychange", ({ key }) => {
-        switch (key) {
-          case "visible":
-            doForEachLayer(layer, (targetLayer) => {
-              targetLayer.setVisible(layer.getVisible());
-            });
-            break;
-          case "opacity":
-            doForEachLayer(layer, (targetLayer) => {
-              targetLayer.setOpacity(layer.getOpacity());
-            });
-            break;
-        }
-      });
-    });
+  const layers = EOxMap.map.getLayers().getArray()
+  setLayers(layers);
 };
 
-export const refresh = (mapPoolCallback) => {
+export const refresh = (mapPoolCallback, EOxMap) => {
   mapPoolCallback(mapPool);
   refreshGlobe();
 };
