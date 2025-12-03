@@ -19,7 +19,11 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
   EOxTimeSlider.selectedDateRange = dateRange;
   updateChildrenDateRange(
     EOxTimeSlider,
-    ["eox-timecontrol-date", "eox-timecontrol-picker"],
+    [
+      "eox-timecontrol-date",
+      "eox-timecontrol-picker",
+      "eox-timecontrol-timeline",
+    ],
     dateRange,
   );
   const selectedDateRange = dayjs(dateRange[0]);

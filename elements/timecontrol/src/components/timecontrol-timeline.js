@@ -17,9 +17,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 let drag = false;
-let multiSelect = false;
-let multiSelectStartDate = null;
-let multiSelectEndDate = null;
 
 export class EOxTimeControlTimeline extends LitElement {
   static get properties() {
@@ -34,13 +31,14 @@ export class EOxTimeControlTimeline extends LitElement {
     this.visTimeline = null;
   }
 
+  #selectedDateRange = null;
   getContainer() {
     return /** @type {HTMLElement} */ (
       this.renderRoot.querySelector("#timeline")
     );
   }
 
-  #rangeSizeFix() {
+  #updateRangeElements() {
     const timeSliderContainer = this.getContainer();
 
     const startEle = /** @type {HTMLElement} */ (
@@ -50,11 +48,63 @@ export class EOxTimeControlTimeline extends LitElement {
       timeSliderContainer.querySelector(".vis-custom-time.multi-select-end")
     );
 
+    const startTitle = dayjs(
+      this.visTimeline.getCustomTime("multi-select-start"),
+    ).format("DD MMM YYYY HH:mm:ss");
+    const endTitle = dayjs(
+      this.visTimeline.getCustomTime("multi-select-end"),
+    ).format("DD MMM YYYY HH:mm:ss");
+
+    if (startEle) {
+      startEle.title = "";
+      const existingTag = startEle.querySelector("tag");
+      const tagEle = existingTag || document.createElement("tag");
+      tagEle.textContent = startTitle;
+      if (!existingTag) {
+        startEle.appendChild(tagEle);
+      }
+    }
+
+    if (endEle) {
+      endEle.title = "";
+      const existingTag = endEle.querySelector("tag");
+      const tagEle = existingTag || document.createElement("tag");
+      tagEle.textContent = endTitle;
+      if (!existingTag) {
+        endEle.appendChild(tagEle);
+      }
+    }
+
     if (startEle && endEle) {
       const endLeft = Number(endEle.style.left.replace("px", ""));
       const startLeft = Number(startEle.style.left.replace("px", ""));
       startEle.style.width = `${endLeft - startLeft}px`;
     }
+  }
+
+  setDateRange(dateRange) {
+    this.#selectedDateRange = dateRange;
+    try {
+      this.visTimeline.removeCustomTime("multi-select-start");
+    } catch {}
+    try {
+      this.visTimeline.removeCustomTime("multi-select-end");
+    } catch {}
+    try {
+      this.visTimeline.addCustomTime(
+        dayjs(dateRange[0]).toDate(),
+        "multi-select-start",
+      );
+    } catch {}
+    try {
+      this.visTimeline.addCustomTime(
+        dayjs(dateRange[1]).toDate(),
+        "multi-select-end",
+      );
+    } catch {}
+    setTimeout(() => {
+      this.#updateRangeElements();
+    });
   }
 
   initTimeline() {
@@ -93,7 +143,7 @@ export class EOxTimeControlTimeline extends LitElement {
         this.visTimeline = visTimeline;
 
         visTimeline.on("changed", () => {
-          this.#rangeSizeFix();
+          this.#updateRangeElements();
           const textElement = /** @type {HTMLElement} */ (
             container.querySelector(".vis-text.vis-minor.vis-even")
           );
@@ -114,39 +164,23 @@ export class EOxTimeControlTimeline extends LitElement {
             );
           }
         });
-
-        const selectRange = (props) => {
-          if (multiSelect) {
-            const timeSliderContainer = this.getContainer();
-            const startEle = /** @type {HTMLElement} */ (
-              timeSliderContainer.querySelector(
-                ".vis-custom-time.multi-select-start",
-              )
-            );
-            const endEle = /** @type {HTMLElement} */ (
-              timeSliderContainer.querySelector(
-                ".vis-custom-time.multi-select-end",
-              )
-            );
-            if (props.event.shiftKey && startEle) {
-              const width = props.pageX - startEle.getBoundingClientRect().x;
-              startEle.style.width = `${width}px`;
-            } else {
-              if (endEle) endEle.remove();
-              if (startEle) startEle.remove();
-              multiSelect = false;
-              multiSelectStartDate = null;
-              multiSelectEndDate = null;
-            }
-          }
-        };
-        visTimeline.on("mouseMove", selectRange);
         visTimeline.on("timechange", () => {
-          drag = true;
-          this.#rangeSizeFix();
+          this.#updateRangeElements();
         });
 
-        visTimeline.on("timechanged", (props) => {});
+        visTimeline.on("timechanged", (props) => {
+          if (
+            props.id == "multi-select-start" ||
+            props.id == "multi-select-end"
+          ) {
+            const isStart = props.id.includes("start");
+            const newDate = dayjs(props.time).utc().format();
+            const newDateRange = isStart
+              ? [newDate, this.#selectedDateRange[1]]
+              : [this.#selectedDateRange[0], newDate];
+            EOxTimeControl.dateChange(newDateRange, EOxTimeControl);
+          }
+        });
 
         visTimeline.on("click", (props) => {
           if (
@@ -157,102 +191,15 @@ export class EOxTimeControlTimeline extends LitElement {
             !drag &&
             !props.event.shiftKey
           ) {
-            const date = dayjs(props.time).format(TIME_CONTROL_DATE_FORMAT);
-            const startDate = dayjs(date).utc().format();
-            const endDate = dayjs(date + "T23:59:59")
-              .utc()
-              .format();
+            const startDate = dayjs(props.time).startOf("day").utc().format();
+            const endDate = dayjs(props.time).endOf("day").utc().format();
             EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
-
-            try {
-              visTimeline.removeCustomTime("multi-select-start");
-            } catch {}
-            try {
-              visTimeline.removeCustomTime("multi-select-end");
-            } catch {}
-            try {
-              visTimeline.addCustomTime(
-                dayjs(startDate).toDate(),
-                "multi-select-start",
-              );
-            } catch {}
-            try {
-              visTimeline.addCustomTime(
-                dayjs(startDate).add(1, "day").toDate(),
-                "multi-select-end",
-              );
-            } catch {}
-
-            // drag = true;
-            // setTimeout(() => (drag = false));
-            setTimeout(() => {
-              this.#rangeSizeFix();
-            });
           }
-          // else if (
-          //   props &&
-          //   props.time &&
-          //   props.what &&
-          //   props.what !== "group-label" &&
-          //   props.event.shiftKey
-          // ) {
-          //   if (!multiSelect) {
-          //     multiSelectStartDate = props.time;
-          //     try {
-          //       visTimeline.addCustomTime(
-          //         dayjs(multiSelectStartDate).toDate(),
-          //         "multi-select-start",
-          //       );
-          //     } catch {
-          //       /* exists */
-          //     }
-          //     try {
-          //       visTimeline.removeCustomTime("multi-select-end");
-          //       const timeSliderContainer = this.getContainer();
-          //       const startEle = /** @type {HTMLElement} */ (timeSliderContainer.querySelector(
-          //         ".vis-custom-time.multi-select-start",
-          //       ));
-          //       (startEle).style.width = `0px`;
-          //     } catch {
-          //       // ignore errors
-          //     }
-          //     visTimeline.setCustomTime(
-          //       dayjs(multiSelectStartDate).toDate(),
-          //       "multi-select-start",
-          //     );
-          //     multiSelect = true;
-          //     multiSelectEndDate = null;
-          //     const selectedRange = [];
-          //     selectedRange.push(dayjs(multiSelectStartDate));
-          //     EOxTimeControl.selectedRange = selectedRange;
-          //     EOxTimeControl.requestUpdate();
-          //   } else {
-          //     multiSelect = false;
-          //     multiSelectEndDate = props.time;
-          //     try {
-          //       visTimeline.addCustomTime(
-          //         dayjs(multiSelectEndDate).toDate(),
-          //         "multi-select-end",
-          //       );
-          //     } catch (_) {
-          //       /* exists */
-          //     }
-          //     visTimeline.setCustomTime(
-          //       dayjs(multiSelectEndDate).toDate(),
-          //       "multi-select-end",
-          //     );
-          //     const selectedRange = [];
-          //     selectedRange.push(dayjs(multiSelectStartDate));
-          //     selectedRange.push(dayjs(multiSelectEndDate));
-          //     EOxTimeControl.selectedRange = selectedRange;
-          //     EOxTimeControl.requestUpdate();
-          //   }
-          // }
         });
 
         visTimeline.on("rangechange", (props) => {
           if (props.byUser) {
-            this.#rangeSizeFix();
+            this.#updateRangeElements();
           }
         });
 
@@ -260,7 +207,7 @@ export class EOxTimeControlTimeline extends LitElement {
           if (props.byUser) {
             drag = true;
             setTimeout(() => (drag = false));
-            this.#rangeSizeFix();
+            this.#updateRangeElements();
           }
         });
       }

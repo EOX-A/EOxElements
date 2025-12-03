@@ -51,9 +51,9 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
             const values = properties.timeControlValues
               .map((value) => ({
                 ...value,
-                date: dayjs(value.date).utc().local().format().split("T")[0],
+                date: dayjs(value.date).format().split("T")[0],
                 utc: dayjs(value.date).utc().format(),
-                local: dayjs(value.date).utc().local().format(),
+                local: dayjs(value.date).format(),
                 originalDate: value.date,
               }))
               // @ts-expect-error TODO: Fix typing
@@ -99,15 +99,18 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
 
           const itemValues = EOxTimeSlider.items.get();
           if (itemValues && itemValues.length) {
-            const utc = itemValues[itemValues.length - 1].utc;
-            const initDate = [utc, utc];
+            const utc = dayjs(itemValues[itemValues.length - 1].utc);
+            const initDate = [
+              utc.startOf("day").utc().format(),
+              utc.endOf("day").utc().format(),
+            ];
 
-            EOxTimeSlider.dateChange(initDate, EOxTimeSlider);
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
               EOxTimeSlider.querySelector("eox-timecontrol-picker")
             );
-            if (EOxTimeControlTimeline) {
-              setTimeout(() => {
+
+            setTimeout(() => {
+              if (EOxTimeControlTimeline) {
                 EOxTimeControlTimeline.visTimeline.setOptions({
                   ...EOxTimeControlTimeline.visTimeline.setOptions,
                   start: dayjs(initDate[0])
@@ -117,8 +120,9 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
                     .add(40, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                 });
-              }, 1000);
-            }
+              }
+              EOxTimeSlider.dateChange(initDate, EOxTimeSlider);
+            });
             if (EOxTimeControlPicker) {
               EOxTimeControlPicker.initCalendar({
                 selectedDateRange: initDate,

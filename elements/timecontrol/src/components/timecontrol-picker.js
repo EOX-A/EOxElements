@@ -112,15 +112,14 @@ export class EOxTimeControlPicker extends LitElement {
           selectedWeekends: [],
           onClickDate: (self) => {
             if (self.context.selectedDates[0]) {
-              const startDate = dayjs(
-                self.context.selectedDates[0] + "T00:00:00",
-              )
+              const startDate = dayjs(self.context.selectedDates[0])
+                .startOf("day")
                 .utc()
                 .format();
               const endDate = dayjs(
-                (self.context.selectedDates[1] ||
-                  self.context.selectedDates[0]) + "T23:59:59",
+                self.context.selectedDates[1] || self.context.selectedDates[0],
               )
+                .endOf("day")
                 .utc()
                 .format();
               EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);

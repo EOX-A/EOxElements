@@ -102,6 +102,34 @@ export const styleTimeline = `
 .vis-custom-time.multi-select-end div {
   cursor: e-resize;
 }
+.vis-custom-time.multi-select-start tag, 
+.vis-custom-time.multi-select-end tag {
+  position: absolute;
+  top: 0;
+  font-size: 10px;
+  width: 140px;
+  text-align: center;
+  background: rgba(0, 12, 20, 0.8);
+  color: white;
+  padding: 0 10px;
+  display: none;
+}
+.vis-custom-time.multi-select-start tag {
+  left: -140px;
+} 
+.vis-custom-time.multi-select-end tag {
+  left: 0;
+}
+.vis-custom-time.multi-select-end div:hover + tag,
+.vis-custom-time.multi-select-start div:hover + tag {
+  display: block;
+}
+.vis-custom-time.multi-select-start:hover tag,
+.vis-custom-time.multi-select-end:hover tag, 
+.vis-custom-time.multi-select-start:hover + .vis-custom-time.multi-select-end tag,
+.vis-custom-time.multi-select-end:hover + .vis-custom-time.multi-select-start tag {
+  display: block;
+}
 .vis-text {
   font-size: 13px;
   text-transform: uppercase;

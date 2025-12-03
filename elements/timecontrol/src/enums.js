@@ -14,6 +14,7 @@ export const DEFAULT_VIS_TIMELINE_OPTIONS = {
     scale: "day",
     step: 5,
   },
+  showTooltips: true,
   orientation: { axis: "top" },
 };
 
