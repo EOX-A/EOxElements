@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { style } from "../style.js";
+import { style } from "../styles/style.js";
 import { firstUpdatedMethod, getSelectedDatesMethod } from "../methods/picker";
 import {
   cleanCalendarStyles,

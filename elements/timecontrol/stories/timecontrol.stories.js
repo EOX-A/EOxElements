@@ -4,6 +4,7 @@ import {
   DateWithNavigationStory,
   DatePickerPopupStory,
   DatePickerStandaloneStory,
+  TimelineStory,
 } from "./index";
 
 export default {
@@ -19,3 +20,5 @@ export const DateWithNavigation = DateWithNavigationStory;
 export const DatePickerPopup = DatePickerPopupStory;
 
 export const DatePickerStandalone = DatePickerStandaloneStory;
+
+export const Timeline = TimelineStory;

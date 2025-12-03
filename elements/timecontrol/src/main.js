@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
-import { style } from "./style.js";
-import { styleEOX } from "./style.eox.js";
+import { style } from "./styles/style.js";
+import { styleEOX } from "./styles/style.eox.js";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -13,6 +13,7 @@ import { TIME_CONTROL_DATE_FORMAT } from "./enums.js";
 
 import "./components/timecontrol-date";
 import "./components/timecontrol-picker";
+import "./components/timecontrol-timeline";
 
 import {
   firstUpdatedMethod,
@@ -57,6 +58,8 @@ export class EOxTimeControl extends LitElement {
     this.unstyled = false;
 
     this.selectedDateRange = null;
+
+    this.selectedRange = [];
 
     this.titleKey = "name";
 
@@ -129,7 +132,7 @@ export class EOxTimeControl extends LitElement {
       dayjs(nextDate).utc().format(),
       dayjs(nextDate).utc().format(),
     ];
-    dateChangeHandlerMethod(nextDateRange, this);
+    this.dateChange(nextDateRange, this);
   }
 
   dateChange = dateChangeHandlerMethod;

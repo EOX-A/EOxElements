@@ -12,16 +12,10 @@ dayjs.extend(timezone);
  * Sets the selected date on the timeline and updates map layers accordingly
  *
  * @param {Array<string>} dateRange - The selected date range
- * @param {import("vis-timeline/standalone").Timeline} visTimeline - The vis-timeline instance
  * @param {Object} eoxMap - The EOx map instance
  * @param {Object} EOxTimeSlider - The timeslider EOxTimeSlider component
  */
-export default function setSelectedDate(
-  dateRange,
-  visTimeline,
-  eoxMap,
-  EOxTimeSlider,
-) {
+export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
   EOxTimeSlider.selectedDateRange = dateRange;
   updateChildrenDateRange(
     EOxTimeSlider,
@@ -32,7 +26,6 @@ export default function setSelectedDate(
   if (Number.isNaN(selectedDateRange.unix())) return;
 
   // TODO: RE-INIT
-  console.log(visTimeline);
   // const container = EOxTimeSlider.getContainer();
   // try {
   //   visTimeline.addCustomTime(selectedDate.toDate(), "selected");
@@ -121,7 +114,7 @@ export default function setSelectedDate(
   );
 
   EOxTimeSlider.dispatchEvent(
-    new CustomEvent("update", {
+    new CustomEvent("select", {
       detail: {
         selectedItems: groupBy(selectedRangeItems, "group"),
         date: [

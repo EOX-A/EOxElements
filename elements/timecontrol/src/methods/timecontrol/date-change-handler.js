@@ -6,10 +6,5 @@ import { setSelectedDate } from "../../helpers/";
  * @param {Object} EOxTimeSlider - The timeslider component instance
  */
 export default function dateChangeHandler(value, EOxTimeSlider) {
-  setSelectedDate(
-    value,
-    EOxTimeSlider.visTimeline,
-    EOxTimeSlider.eoxMap,
-    EOxTimeSlider,
-  );
+  setSelectedDate(value, EOxTimeSlider.eoxMap, EOxTimeSlider);
 }

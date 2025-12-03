@@ -98,6 +98,9 @@ export default function initVisTimeline(EOxTimeSlider) {
     }
   }
   visTimeline.on("mouseMove", selectRange);
+  visTimeline.on("timechange", (props) => {
+    console.log("timechange");
+  });
 
   visTimeline.on("click", (props) => {
     if (

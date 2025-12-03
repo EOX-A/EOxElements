@@ -6,7 +6,7 @@ export const DatePickerStandalone = {
     ...STORY_ARGS,
     for: "eox-map#date-picker-standalone",
     popup: true,
-    update: (e) => {
+    select: (e) => {
       console.log(e.detail);
     },
   },
@@ -24,7 +24,7 @@ export const DatePickerStandalone = {
       .titleKey=${args.titleKey}
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
-      @update=${args.update}
+      @select=${args.select}
     >
       <eox-timecontrol-picker
         style="width: fit-content; border: 1.5px solid #80808026; border-radius: 6px;"

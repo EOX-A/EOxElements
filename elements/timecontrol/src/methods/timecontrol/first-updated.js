@@ -1,11 +1,11 @@
 import { getFlatLayersArray, updateTimelineItems } from "../../helpers";
-import { DataSet } from "vis-data/peer";
+import { DataSet } from "vis-timeline/standalone";
 import { getElement } from "@eox/elements-utils";
 import dayjs from "dayjs";
 import isequal from "lodash.isequal";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { dateChangeHandlerMethod } from "../../methods/timecontrol";
+import { TIME_CONTROL_DATE_FORMAT } from "../../enums";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -78,26 +78,47 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
           const groups = new DataSet([]);
           const items = new DataSet([]);
 
+          const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
+            EOxTimeSlider.querySelector("eox-timecontrol-timeline")
+          );
+
           updateTimelineItems(
             EOxTimeSlider.sliderValues,
             groups,
             items,
-            EOxTimeSlider,
+            EOxTimeControlTimeline,
           );
 
           EOxTimeSlider.groups = groups;
           EOxTimeSlider.items = items;
           EOxTimeSlider.setLoading(false);
 
+          if (EOxTimeControlTimeline) {
+            EOxTimeControlTimeline.initTimeline();
+          }
+
           const itemValues = EOxTimeSlider.items.get();
           if (itemValues && itemValues.length) {
             const utc = itemValues[itemValues.length - 1].utc;
             const initDate = [utc, utc];
 
-            dateChangeHandlerMethod(initDate, EOxTimeSlider);
+            EOxTimeSlider.dateChange(initDate, EOxTimeSlider);
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
               EOxTimeSlider.querySelector("eox-timecontrol-picker")
             );
+            if (EOxTimeControlTimeline) {
+              setTimeout(() => {
+                EOxTimeControlTimeline.visTimeline.setOptions({
+                  ...EOxTimeControlTimeline.visTimeline.setOptions,
+                  start: dayjs(initDate[0])
+                    .subtract(40, "day")
+                    .format(TIME_CONTROL_DATE_FORMAT),
+                  end: dayjs(initDate[0])
+                    .add(40, "day")
+                    .format(TIME_CONTROL_DATE_FORMAT),
+                });
+              }, 1000);
+            }
             if (EOxTimeControlPicker) {
               EOxTimeControlPicker.initCalendar({
                 selectedDateRange: initDate,
