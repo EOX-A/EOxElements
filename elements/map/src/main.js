@@ -261,6 +261,12 @@ export class EOxMap extends LitElement {
      * @type {Object.<string, import("ol/control/Control").default>}
      */
     this.mapControls = {};
+    /**
+     * The globe instance when using globe projection.
+     * todo: define proper type
+     * @type {any|null}
+     */
+    this.globe = null;
   }
 
   /**
@@ -589,7 +595,7 @@ export class EOxMap extends LitElement {
         ${eoxStyle}
         ${controlCss}
       </style>
-      <div style="width: 100%; height: 100%"></div>
+      <div id="map" style="width: 100%; height: 100%"></div>
       <slot></slot>
     `;
   }

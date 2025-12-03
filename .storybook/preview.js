@@ -19,6 +19,7 @@ import "@eox/layercontrol";
 import "@eox/layout";
 import "@eox/map";
 import "@eox/map/src/plugins/advancedLayersAndSources";
+import "@eox/map/src/plugins/globe";
 import "@eox/stacinfo";
 import "@eox/storytelling";
 import "@eox/timecontrol";

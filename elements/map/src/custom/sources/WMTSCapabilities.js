@@ -81,7 +81,9 @@ class WMTSCapabilities extends TileImage {
         this.urls.map(this.createFromWMTSTemplate.bind(this)),
       );
     }
-    this.setState("ready");
+    if (this.getState() !== "ready") {
+      this.setState("ready");
+    }
   }
 
   /**

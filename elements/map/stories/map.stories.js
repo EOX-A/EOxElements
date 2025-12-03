@@ -26,12 +26,14 @@ import {
   ABCompareStory,
   ConfigObjectStory,
   ProjectionStory,
+  DimensionChangeStory,
   AnimationsStory,
   PreventScrollStory,
   FlatGeoBufStory,
   CustomTooltipStory,
   GetFeatureInfoTooltipStory,
   CoordinatesCustomTooltipsStory,
+  GlobeStory,
 } from "./index.js";
 
 export default {
@@ -44,6 +46,7 @@ export default {
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
+      .projection=${args.projection}
       .zoom=${args.zoom}
     ></eox-map>
   `,
@@ -320,6 +323,13 @@ export const ABCompare = ABCompareStory;
 export const Projection = ProjectionStory;
 
 /**
+ * The dimension of the view can be changed via the `dimension`-attribute.
+ * 2D map in EPSG:4326 (geographic coordinates) and Globe view
+ * are included.
+ */
+export const DimensionChange = DimensionChangeStory;
+
+/**
  * changing the properties `zoom`, `center` or `zoomExtent` will trigger animations, if the
  * `animationOptions`-property is set.
  * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
@@ -334,3 +344,8 @@ export const Animations = AnimationsStory;
  * Useful for maps embedded in scrollable websites.
  */
 export const PreventScroll = PreventScrollStory;
+
+/**
+ * Basic Globe rendered using `projection: "globe"`
+ */
+export const Globe = GlobeStory;
