@@ -21,7 +21,7 @@ export const OnlyDate = {
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
     >
-      <eox-timecontrol-date format="YYYY-MM-DD" />
+      <eox-timecontrol-date format=${args.format} />
     </eox-timecontrol>
   `,
 };

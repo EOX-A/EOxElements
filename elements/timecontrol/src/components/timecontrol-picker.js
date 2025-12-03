@@ -3,12 +3,14 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { style } from "../style.js";
-import { styleEOX } from "../style.eox.js";
-import { firstUpdatedMethod } from "../methods/picker";
-import { cleanCalendarStyles, extractISOFromCalendar } from "../helpers";
+import { firstUpdatedMethod, getSelectedDatesMethod } from "../methods/picker";
+import {
+  cleanCalendarStyles,
+  extractISOFromCalendar,
+  calendarStyle,
+} from "../helpers";
 import { Calendar } from "vanilla-calendar-pro";
 import groupBy from "lodash.groupby";
-import vanillaCalendarCSS from "vanilla-calendar-pro/styles/index.css?inline";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -19,7 +21,7 @@ export class EOxTimeControlPicker extends LitElement {
   static get properties() {
     return {
       cal: { attribute: false, state: true },
-      temporary: { type: Boolean, attribute: "temporary" },
+      popup: { type: Boolean, attribute: "popup" },
       unstyled: { type: Boolean, attribute: "unstyled" },
       range: { type: Boolean, attribute: "range" },
       showDots: { type: Boolean, attribute: "show-dots" },
@@ -27,17 +29,18 @@ export class EOxTimeControlPicker extends LitElement {
   }
 
   #init = false;
+  #selectedDateRange = null;
   constructor() {
     super();
     this.cal = null;
-    this.temporary = false;
+    this.popup = false;
     this.unstyled = false;
     this.range = false;
     this.showDots = false;
   }
 
   firstUpdated() {
-    firstUpdatedMethod(this);
+    firstUpdatedMethod();
     if (!this.#init) this.initCalendar();
   }
 
@@ -46,21 +49,47 @@ export class EOxTimeControlPicker extends LitElement {
     cleanCalendarStyles();
   }
 
+  setDateRange(dateRange) {
+    this.#selectedDateRange = dateRange;
+    if (this.cal) {
+      const selectedDates = getSelectedDatesMethod(
+        this.#selectedDateRange,
+        this.range,
+      );
+      this.cal.set({
+        selectedDates: selectedDates.dates,
+        selectedYear: selectedDates.year,
+        selectedMonth: selectedDates.month,
+      });
+    }
+  }
+
   initCalendar(options = {}) {
     this.#init = true;
     const EOxTimeControl = /** @type {EOxTimeControl} */ (
       this.closest("eox-timecontrol")
     );
     setTimeout(() => {
-      const calendarInput =
-        /** @type {HTMLElement} */ (
+      const defaultCalendarSelector = /** @type {HTMLElement} */ (
+        this.renderRoot.querySelector("#cal")
+      );
+      const externalCalendarSelector =
+        /** @type {import("../main.js").EOxTimeControl} */ (
           EOxTimeControl.querySelector(
             "eox-timecontrol-date",
-          )?.renderRoot?.querySelector("span")
-        ) || /** @type {HTMLElement} */ (this.renderRoot.querySelector("#cal"));
-      if (calendarInput) {
-        if (!this.temporary) calendarInput.innerHTML = "";
-        this.cal = new Calendar(calendarInput || "#cal", {
+          )?.shadowRoot?.querySelector("span")
+        );
+      const calendarSelector = !this.popup
+        ? defaultCalendarSelector
+        : externalCalendarSelector || defaultCalendarSelector;
+      if (calendarSelector) {
+        defaultCalendarSelector.innerHTML = "";
+        this.#selectedDateRange = options.selectedDateRange;
+        const selectedDates = getSelectedDatesMethod(
+          this.#selectedDateRange,
+          this.range,
+        );
+        this.cal = new Calendar(calendarSelector || "#cal", {
           selectedTheme: "light",
           dateMin: options.min,
           dateMax: options.max,
@@ -69,20 +98,33 @@ export class EOxTimeControlPicker extends LitElement {
           displayDatesOutside: false,
           type: this.range ? "multiple" : "default",
           selectionDatesMode: this.range ? "multiple-ranged" : "single",
-          ...(options.selectedDate
-            ? { selectedDates: [options.selectedDate] }
+          ...(selectedDates
+            ? {
+                selectedDates: selectedDates.dates,
+                selectedYear: selectedDates.year,
+                selectedMonth: selectedDates.month,
+              }
             : {}),
           enableEdgeDatesOnly: false,
-          inputMode: this.temporary ? true : false,
+          inputMode: this.popup ? true : false,
           //@ts-expect-error error from vanilla-calendar-pro types
           positionToInput: ["top", "left"],
           selectedWeekends: [],
           onClickDate: (self) => {
-            if (self.context.selectedDates[0])
-              EOxTimeControl.dateChange(
-                self.context.selectedDates[0],
-                EOxTimeControl,
-              );
+            if (self.context.selectedDates[0]) {
+              const startDate = dayjs(
+                self.context.selectedDates[0] + "T00:00:00",
+              )
+                .utc()
+                .format();
+              const endDate = dayjs(
+                (self.context.selectedDates[1] ||
+                  self.context.selectedDates[0]) + "T23:59:59",
+              )
+                .utc()
+                .format();
+              EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+            }
           },
           onCreateDateEls: (_self, dateEl) => {
             if (this.showDots) {
@@ -114,8 +156,7 @@ export class EOxTimeControlPicker extends LitElement {
     return html`
       <style>
         ${style}
-        ${!this.unstyled && styleEOX}
-        ${vanillaCalendarCSS}
+        ${calendarStyle}
       </style>
       <div id="cal" class="timecontrol-calendar-input" readonly />
     `;

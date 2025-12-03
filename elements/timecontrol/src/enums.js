@@ -1,3 +1,4 @@
+export const TIME_CONTROL_DATE_FORMAT = "YYYY-MM-DD";
 export const STORY_ARGS = {
   center: [1000000, 6000000],
   zoom: 5,
@@ -454,4 +455,5 @@ export const STORY_ARGS = {
     },
   ],
   externalMapRendering: false,
+  format: TIME_CONTROL_DATE_FORMAT,
 };

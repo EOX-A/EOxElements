@@ -1,16 +1,18 @@
 import { html } from "lit";
 import { STORY_ARGS } from "../src/enums";
 
-export const DatePicker = {
+export const DatePickerStandalone = {
   args: {
     ...STORY_ARGS,
-    for: "eox-map#date-picker",
-    navigation: true,
-    temporary: true,
+    for: "eox-map#date-picker-standalone",
+    popup: true,
+    update: (e) => {
+      console.log(e.detail);
+    },
   },
   render: (args) => html`
     <eox-map
-      id="date-picker"
+      id="date-picker-standalone"
       style="width: 100%; height: 500px;"
       .zoom=${args.zoom}
       .center=${args.center}
@@ -22,14 +24,15 @@ export const DatePicker = {
       .titleKey=${args.titleKey}
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
+      @update=${args.update}
     >
-      <eox-timecontrol-date
-        format="YYYY-MM-DD"
-        .navigation=${args.navigation}
-      />
-      <eox-timecontrol-picker .temporary=${args.temporary} />
+      <eox-timecontrol-picker
+        style="width: fit-content; border: 1.5px solid #80808026; border-radius: 6px;"
+        .format=${args.format}
+        .showDots=${true}
+      ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
 };
 
-export default DatePicker;
+export default DatePickerStandalone;

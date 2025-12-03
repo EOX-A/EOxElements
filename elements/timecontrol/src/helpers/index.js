@@ -5,5 +5,7 @@ export { default as updateProps } from "./update-props";
 export {
   injectCalendarStyles,
   cleanCalendarStyles,
+  calendarStyle,
 } from "./inject-calendar-styles";
 export { default as extractISOFromCalendar } from "./extract-iso-from-calendar";
+export { default as updateChildrenDateRange } from "./update-children-date-range";

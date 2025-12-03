@@ -5,23 +5,24 @@ import timezone from "dayjs/plugin/timezone";
 import { when } from "lit/directives/when.js";
 import { style } from "../style.js";
 import { styleEOX } from "../style.eox.js";
+import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export class EOxTimeControlDate extends LitElement {
   static get properties() {
     return {
-      selectedDate: { type: String, attribute: "selected-date" },
       format: { type: String, attribute: "format" },
       navigation: { type: Boolean, attribute: "navigation" },
       unstyled: { type: Boolean, attribute: "unstyled" },
     };
   }
 
+  #selectedDateRange = null;
   constructor() {
     super();
-    this.selectedDate = null;
-    this.format = null;
+    this.selectedDateRange = null;
+    this.format = TIME_CONTROL_DATE_FORMAT;
     this.navigation = false;
     this.unstyled = false;
   }
@@ -30,6 +31,11 @@ export class EOxTimeControlDate extends LitElement {
     const EOxTimeControl = this.closest("eox-timecontrol");
     // @ts-expect-error TODO: Fix typing
     EOxTimeControl.updateStep(step);
+  }
+
+  setDateRange(dateRange) {
+    this.#selectedDateRange = dateRange;
+    this.requestUpdate();
   }
 
   render() {
@@ -61,12 +67,12 @@ export class EOxTimeControlDate extends LitElement {
         `;
       })}
       <span id="date-container">
-        ${when(this.selectedDate, () => {
+        ${when(this.#selectedDateRange, () => {
           return html`
             <small part="current">
               ${this.format
-                ? dayjs(this.selectedDate).utc().format(this.format)
-                : this.selectedDate}
+                ? dayjs(this.#selectedDateRange[0]).format(this.format)
+                : this.#selectedDateRange[0]}
             </small>
           `;
         })}

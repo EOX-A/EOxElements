@@ -91,14 +91,16 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
 
           const itemValues = EOxTimeSlider.items.get();
           if (itemValues && itemValues.length) {
-            const initDate = itemValues[itemValues.length - 1].start;
+            const utc = itemValues[itemValues.length - 1].utc;
+            const initDate = [utc, utc];
+
             dateChangeHandlerMethod(initDate, EOxTimeSlider);
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
               EOxTimeSlider.querySelector("eox-timecontrol-picker")
             );
             if (EOxTimeControlPicker) {
               EOxTimeControlPicker.initCalendar({
-                selectedDate: initDate,
+                selectedDateRange: initDate,
               });
             }
           }

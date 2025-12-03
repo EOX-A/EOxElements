@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 import groupBy from "lodash.groupby";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { updateProps, getFlatLayersArray } from "./";
+import { updateChildrenDateRange, getFlatLayersArray } from "./";
+import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -10,21 +11,25 @@ dayjs.extend(timezone);
 /**
  * Sets the selected date on the timeline and updates map layers accordingly
  *
- * @param {string|Date} date - The selected date
+ * @param {Array<string>} dateRange - The selected date range
  * @param {import("vis-timeline/standalone").Timeline} visTimeline - The vis-timeline instance
  * @param {Object} eoxMap - The EOx map instance
  * @param {Object} EOxTimeSlider - The timeslider EOxTimeSlider component
  */
 export default function setSelectedDate(
-  date,
+  dateRange,
   visTimeline,
   eoxMap,
   EOxTimeSlider,
 ) {
-  EOxTimeSlider.selectedDate = date;
-  updateProps(EOxTimeSlider, "eox-timecontrol-date", { selectedDate: date });
-  const selectedDate = dayjs(date);
-  if (Number.isNaN(selectedDate.unix())) return;
+  EOxTimeSlider.selectedDateRange = dateRange;
+  updateChildrenDateRange(
+    EOxTimeSlider,
+    ["eox-timecontrol-date", "eox-timecontrol-picker"],
+    dateRange,
+  );
+  const selectedDateRange = dayjs(dateRange[0]);
+  if (Number.isNaN(selectedDateRange.unix())) return;
 
   // TODO: RE-INIT
   console.log(visTimeline);
@@ -64,12 +69,26 @@ export default function setSelectedDate(
     ),
   );
 
-  const selectedItems = EOxTimeSlider.items.get().filter((item) => {
-    return selectedDate.format().includes(item.date);
+  let selectedRangeItems = [];
+  const dayjsDateRange = [dayjs(dateRange[0]), dayjs(dateRange[1])];
+
+  const [start, end] = dayjsDateRange[0].isBefore(dayjsDateRange[1])
+    ? [dayjsDateRange[0], dayjsDateRange[1]]
+    : [dayjsDateRange[1], dayjsDateRange[0]];
+
+  selectedRangeItems = EOxTimeSlider.items.get().filter((item) => {
+    const itemDate = item.utc;
+    if (!itemDate) return false;
+    const d = dayjs(itemDate);
+    return (
+      (d.isSame(start, "day") || d.isAfter(start, "day")) &&
+      (d.isSame(end, "day") || d.isBefore(end, "day"))
+    );
   });
+
   let instances = {};
 
-  selectedItems.forEach((item) => {
+  selectedRangeItems.forEach((item) => {
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
       // Get the source if it is not a group layer
@@ -89,7 +108,9 @@ export default function setSelectedDate(
 
       if (!EOxTimeSlider.externalMapRendering) {
         source.updateParams({
-          [item.property]: dayjs(date).utc().format("YYYY-MM-DD"),
+          [item.property]: dayjs(dateRange[0])
+            .utc()
+            .format(TIME_CONTROL_DATE_FORMAT),
         });
       }
     }
@@ -102,8 +123,11 @@ export default function setSelectedDate(
   EOxTimeSlider.dispatchEvent(
     new CustomEvent("update", {
       detail: {
-        selectedItems: groupBy(selectedItems, "group"),
-        date: dayjs(selectedDate).utc().toDate(),
+        selectedItems: groupBy(selectedRangeItems, "group"),
+        date: [
+          dayjs(dateRange[0]).utc().toDate(),
+          dayjs(dateRange[1]).utc().toDate(),
+        ],
         filters: itemsFilter?.filters || [],
         instances: instances,
       },

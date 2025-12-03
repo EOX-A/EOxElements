@@ -8,6 +8,8 @@ import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
 import findIndex from "lodash.findindex";
 import { DataSet } from "vis-timeline/standalone";
+import groupBy from "lodash.groupby";
+import { TIME_CONTROL_DATE_FORMAT } from "./enums.js";
 
 import "./components/timecontrol-date";
 import "./components/timecontrol-picker";
@@ -54,7 +56,7 @@ export class EOxTimeControl extends LitElement {
     /** @type {boolean} */
     this.unstyled = false;
 
-    this.selectedDate = null;
+    this.selectedDateRange = null;
 
     this.titleKey = "name";
 
@@ -105,8 +107,15 @@ export class EOxTimeControl extends LitElement {
   }
 
   updateStep(step = 1) {
-    const itemValues = this.items.get();
-    const index = findIndex(this.items.get(), { start: this.selectedDate });
+    const itemValues = Object.keys(groupBy(this.items.get(), "date")).sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+    );
+    const index = findIndex(itemValues, (date) => {
+      return (
+        date ===
+        dayjs(this.selectedDateRange[0]).format(TIME_CONTROL_DATE_FORMAT)
+      );
+    });
     let newIndex = index + step;
     if (newIndex > itemValues.length - 1) {
       newIndex = 0;
@@ -115,8 +124,12 @@ export class EOxTimeControl extends LitElement {
       newIndex = itemValues.length - 1;
     }
 
-    const nextDate = itemValues[newIndex].start;
-    dateChangeHandlerMethod(nextDate, this);
+    const nextDate = itemValues[newIndex];
+    const nextDateRange = [
+      dayjs(nextDate).utc().format(),
+      dayjs(nextDate).utc().format(),
+    ];
+    dateChangeHandlerMethod(nextDateRange, this);
   }
 
   dateChange = dateChangeHandlerMethod;
