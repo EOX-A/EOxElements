@@ -1,15 +1,16 @@
 import { html } from "lit";
 import { DEFAULT_ARGS } from "../src/enums/stories";
 
-export const DisabledButtons = {
+export const Slider = {
   args: {
     ...DEFAULT_ARGS,
-    for: "eox-map#disabled-play",
-    play: false,
+    for: "eox-map#slider",
+    slider: true,
     navigation: false,
+    play: false,
     storyAdditionalComponents: {
       "eox-map": {
-        id: "disabled-play",
+        id: "slider",
         style: "width: 400px; height: 300px;",
         zoom: DEFAULT_ARGS.zoom,
         center: DEFAULT_ARGS.center,
@@ -18,18 +19,18 @@ export const DisabledButtons = {
     },
   },
   render: (args) => html`
-    <eox-timecontrol
+    <eox-timecontrol-2
       .for=${args.for}
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
       .controlValues=${args.controlValues}
       .navigation=${args.navigation}
-      .slider=${args.slider}
       .play=${args.play}
-    ></eox-timecontrol>
+      .slider=${args.slider}
+    ></eox-timecontrol-2>
     <eox-map
-      id="${args.storyAdditionalComponents["eox-map"].id}"
-      style="${args.storyAdditionalComponents["eox-map"].style}"
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      style=${args.storyAdditionalComponents["eox-map"].style}
       .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
       .center=${args.storyAdditionalComponents["eox-map"].center}
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
@@ -37,4 +38,4 @@ export const DisabledButtons = {
   `,
 };
 
-export default DisabledButtons;
+export default Slider;

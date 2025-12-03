@@ -97,9 +97,9 @@ class EOxItemFilterSpatial extends LitElement {
                     tabindex=${this.tabIndex}
                     type="radio"
                     name="mode"
-                    .checked="${(this.filterObject.state.mode || "") === mode ||
-                    nothing}"
-                    value="${mode}"
+                    .checked=${(this.filterObject.state.mode || "") === mode ||
+                    nothing}
+                    value=${mode}
                     @click=${() => this.#handleClick(mode)}
                   />
                   <span>${mode} filter geometry</span>

@@ -14,7 +14,7 @@ const NoMap = {
     },
   },
   render: (args) => html`
-    <eox-timecontrol
+    <eox-timecontrol-2
       .for=${args.for}
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
@@ -23,7 +23,7 @@ const NoMap = {
       .slider=${args.slider}
       .play=${args.play}
       @stepchange=${args.stepchange}
-    ></eox-timecontrol>
+    ></eox-timecontrol-2>
   `,
 };
 

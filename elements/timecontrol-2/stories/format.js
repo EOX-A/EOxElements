@@ -1,17 +1,16 @@
 import { html } from "lit";
 import { DEFAULT_ARGS } from "../src/enums/stories";
 
-export const Slider = {
+export const Format = {
   args: {
     ...DEFAULT_ARGS,
-    for: "eox-map#slider",
-    slider: true,
-    navigation: false,
+    for: "eox-map#format",
+    displayFormat: "MMMM DD, YYYY",
     play: false,
     storyAdditionalComponents: {
       "eox-map": {
-        id: "slider",
-        style: "width: 400px; height: 300px;",
+        id: "format",
+        style: "width: 1005; height: 300px;",
         zoom: DEFAULT_ARGS.zoom,
         center: DEFAULT_ARGS.center,
         layers: DEFAULT_ARGS.layers,
@@ -19,7 +18,7 @@ export const Slider = {
     },
   },
   render: (args) => html`
-    <eox-timecontrol
+    <eox-timecontrol-2
       .for=${args.for}
       .layer=${args.layer}
       .controlProperty=${args.controlProperty}
@@ -27,10 +26,11 @@ export const Slider = {
       .navigation=${args.navigation}
       .play=${args.play}
       .slider=${args.slider}
-    ></eox-timecontrol>
+      .displayFormat=${args.displayFormat}
+    ></eox-timecontrol-2>
     <eox-map
-      id="${args.storyAdditionalComponents["eox-map"].id}"
-      style="${args.storyAdditionalComponents["eox-map"].style}"
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      style=${args.storyAdditionalComponents["eox-map"].style}
       .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
       .center=${args.storyAdditionalComponents["eox-map"].center}
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
@@ -38,4 +38,4 @@ export const Slider = {
   `,
 };
 
-export default Slider;
+export default Format;

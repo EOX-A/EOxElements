@@ -1,10 +1,10 @@
 // Global import of eox-elements in .storybook/preview.js!
 import {
-  PrimaryStory,
-  SliderStory,
-  DisabledButtonsStory,
-  NoMapStory,
-  FormatStory,
+  OnlyDateStory,
+  DateWithNavigationStory,
+  DatePickerPopupStory,
+  DatePickerStandaloneStory,
+  TimelineStory,
 } from "./index";
 
 export default {
@@ -13,28 +13,12 @@ export default {
   component: "eox-timecontrol",
 };
 
-/**
- * Basic usage of eox-timecontrol with navigation and play buttons, linked to an eox-map instance.
- */
-export const Primary = PrimaryStory;
+export const OnlyDate = OnlyDateStory;
 
-/**
- * Shows only the slider for time selection, without navigation or play buttons, linked to an eox-map.
- */
-export const Slider = SliderStory;
+export const DateWithNavigation = DateWithNavigationStory;
 
-/**
- * Disables navigation and play buttons, only time selection via eox-map.
- */
-export const DisabledButtons = DisabledButtonsStory;
+export const DatePickerPopup = DatePickerPopupStory;
 
-/**
- * Standalone timecontrol without a map, demonstrates event handling for stepchange.
- */
-export const NoMap = NoMapStory;
+export const DatePickerStandalone = DatePickerStandaloneStory;
 
-/**
- * Passing the `format` property/attribute, the displayed format can be changed.
- * Supports [dayjs format token strings](https://day.js.org/docs/en/display/format)
- */
-export const Format = FormatStory;
+export const Timeline = TimelineStory;

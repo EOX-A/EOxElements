@@ -1,8 +1,8 @@
 // Global import of eox-elements in .storybook/preview.js!
 // Export different stories
 
-export { default as PrimaryStory } from "./primary"; // Primary story
-export { default as SliderStory } from "./slider"; // Slider story
-export { default as DisabledButtonsStory } from "./disabled-buttons"; // Disabled play button story
-export { default as NoMapStory } from "./no-map"; // No map provided story
-export { default as FormatStory } from "./format"; // Date-Time Format story
+export { default as OnlyDateStory } from "./only-date"; // Only date story
+export { default as DateWithNavigationStory } from "./date-with-navigation"; // Date with navigation story
+export { default as DatePickerPopupStory } from "./date-picker-popup"; // Date picker story
+export { default as DatePickerStandaloneStory } from "./date-picker-standalone"; // Date picker story
+export { default as TimelineStory } from "./timeline"; // Timeline story
