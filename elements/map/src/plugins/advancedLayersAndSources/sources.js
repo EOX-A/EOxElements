@@ -22,6 +22,7 @@ import TileJSON from "ol/source/TileJSON";
 import UrlTile from "ol/source/UrlTile";
 import UTFGrid from "ol/source/UTFGrid";
 import Zoomify from "ol/source/Zoomify";
+import GeoZarr from "ol/source/GeoZarr";
 
 import Cluster from "../../custom/sources/Cluster";
 import WMTSCapabilities from "../../custom/sources/WMTSCapabilities";
@@ -57,6 +58,7 @@ window.eoxMapAdvancedOlSources = {
     UrlTile,
     UTFGrid,
     Zoomify,
+    GeoZarr,
   },
   WMTSCapabilities,
   FlatGeoBuf,

@@ -77,6 +77,7 @@ export type OLAdvancedSources = {
   UrlTile: typeof import("ol/source/UrlTile").default;
   UTFGrid: typeof import("ol/source/UTFGrid").default;
   Zoomify: typeof import("ol/source/Zoomify").default;
+  GeoZarr: typeof import("ol/source/GeoZarr").default;
   WMTSCapabilities: typeof import("./custom/sources/WMTSCapabilities").default;
   FlatGeoBuf: typeof import("./custom/sources/FlatGeoBuf").default;
   Cluster: typeof import("./custom/sources/Cluster").default;
@@ -176,6 +177,7 @@ export type EoxLayer =
   | EOxLayerType<"Vector", "Cluster">
   | EOxLayerType<"VectorTile", "VectorTile">
   | EOxLayerType<"WebGLTile", "GeoTIFF">
+  | EOxLayerType<"WebGLTile", "GeoZarr">
   | EOxLayerType<"Tile", "OSM">
   | EOxLayerType<"Tile", "WMTSCapabilities">
   | EOxLayerType<"Tile", "StadiaMaps">
