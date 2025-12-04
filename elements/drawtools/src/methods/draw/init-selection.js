@@ -10,7 +10,7 @@ const initSelection = (EoxDrawTool, EoxMap, layerId) => {
     return;
   }
 
-  const olLayer = EoxMap.getLayerById(layerId);
+  const olLayer = EoxMap.map.getAllLayers().find((lyr) => lyr.get("id")?.startsWith(layerId));
   const selectionLayer = olLayer
     ? /** @type {import("@eox/map").EoxLayer} */ (
         JSON.parse(JSON.stringify(olLayer.get("_jsonDefinition")))
