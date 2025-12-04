@@ -49,6 +49,45 @@ export default {
       .projection=${args.projection}
       .zoom=${args.zoom}
     ></eox-map>
+    <eox-layercontrol></eox-layercontrol>
+    <button
+      @click=${() => {
+        cloudless = !cloudless;
+
+        document.querySelector("eox-map").layers = cloudless
+          ? [
+              {
+                type: "Tile",
+                properties: {
+                  id: "cloudless",
+                  title: "Sentinel-2 cloudless 2020",
+                  layerControlExclusive: true,
+                  description:
+                    "Global prerendered Sentinel-2 cloudless mosaics with 10m/pixel resolution.",
+                },
+                visible: true,
+                source: {
+                  type: "XYZ",
+                  url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+                  crossOrigin: "anonymous",
+                },
+              },
+            ]
+          : [
+              {
+                type: "Tile",
+                properties: {
+                  id: "osm",
+                },
+                source: {
+                  type: "OSM",
+                },
+              },
+            ];
+      }}
+    >
+      toggle layers
+    </button>
   `,
 };
 

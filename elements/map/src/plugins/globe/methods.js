@@ -33,15 +33,14 @@ export const createMapPool = (maxMaps, EOxMap, target) =>
     });
     Object.assign(tileMap, {
       projection: "EPSG:4326",
-      layers: EOxMap.layers.reverse(),
+      layers: [],
     });
     target.appendChild(tileMap);
-
     return {
       tileMap,
       tileQueue: [],
       loadNextTile() {
-        requestTileFromMap(tileMap, this.tileQueue[0], this);
+        requestTileFromMap(tileMap, EOxMap.layers[1], this.tileQueue[0], this);
       },
     };
   });
@@ -60,12 +59,13 @@ export const createMapPool = (maxMaps, EOxMap, target) =>
  * }} job - The job for one single tile to be rendered
  * @param {*} mapPoolMap - The map pool object
  */
-async function requestTileFromMap(tileMap, job, mapPoolMap) {
+async function requestTileFromMap(tileMap, layer, job, mapPoolMap) {
   const extent = tileGrid.getTileCoordExtent([
     job.tile.z,
     job.tile.x,
     job.tile.y,
   ]);
+  tileMap.layers = [layer];
   const map = tileMap.map;
   map.getView().fit(extent, {
     callback: () => {

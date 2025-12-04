@@ -16,14 +16,14 @@ export const create = ({ EOxMap, target }) => {
         return
       }
       layers.forEach((layer) => {
-      layer.on("change", () => {
-        // Assuming styleVariables update for Webgl layer
-        doForEachLayer(layer, (targetLayer) => {
-          if (targetLayer.getProperties().type === "WebGL") {
-            targetLayer.updateStyleVariables(layer.styleVariables_);
-          }
-        });
-      });
+      // layer.on("change", () => {
+      //   // Assuming styleVariables update for Webgl layer
+      //   doForEachLayer(layer, (targetLayer) => {
+      //     if (targetLayer.getProperties().type === "WebGL") {
+      //       targetLayer.updateStyleVariables(layer.styleVariables_);
+      //     }
+      //   });
+      // });
       layer.on("propertychange", ({ key }) => {
         switch (key) {
           case "visible":
@@ -86,7 +86,7 @@ export const create = ({ EOxMap, target }) => {
   setLayers(layers);
 };
 
-export const refresh = (mapPoolCallback, EOxMap) => {
+export const refresh = (mapPoolCallback) => {
   mapPoolCallback(mapPool);
   refreshGlobe();
 };
