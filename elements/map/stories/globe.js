@@ -139,7 +139,7 @@ const GlobeStory = {
         },
         source: {
           type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless/default/g/{z}/{y}/{x}.jpg",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024/default/WGS84/{z}/{y}/{x}.jpg",
           crossOrigin: "anonymous",
         }
       }
