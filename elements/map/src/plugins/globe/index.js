@@ -1,97 +1,108 @@
 import { createGlobe, refreshGlobe } from "./openglobus.js";
-import { createMapPool, distributeTileToIdealMap } from "./methods.js";
+import { createMapPool } from "./methods.js";
 
-let mapPool;
-
-export const create = ({ EOxMap, target }) => {
-  /**
-   * The maximum amount of maps to be spawned for rendering
-   */
-  const maxMaps = navigator.hardwareConcurrency || 4;
-
-  const setLayers = (layers) => {
-    layers.forEach((layer) => {
-      if (layer.getProperties().type === "Group") {
-        setLayers(layer.getLayers().getArray());
-        return
-      }
-      layers.forEach((layer) => {
-      // layer.on("change", () => {
-      //   // Assuming styleVariables update for Webgl layer
-      //   doForEachLayer(layer, (targetLayer) => {
-      //     if (targetLayer.getProperties().type === "WebGL") {
-      //       targetLayer.updateStyleVariables(layer.styleVariables_);
-      //     }
-      //   });
-      // });
-      layer.on("propertychange", ({ key }) => {
-        switch (key) {
-          case "visible":
-            doForEachLayer(layer, (targetLayer) => {
-              targetLayer.setVisible(layer.getVisible());
-            });
-            break;
-          case "opacity":
-            doForEachLayer(layer, (targetLayer) => {
-              targetLayer.setOpacity(layer.getOpacity());
-            });
-            break;
-        }
-      });
-    });
-    });
+/**
+ * Creates a debounced function that delays invoking func until after wait milliseconds have elapsed
+ * since the last time the debounced function was invoked.
+ * @param {Function} func The function to debounce.
+ * @param {number} wait The number of milliseconds to delay.
+ * @returns {Function} Returns the new debounced function.
+ */
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
   };
+}
 
-  /**
-   * Create map pool of eox-maps for rendering in parallel
-   */
-  mapPool = createMapPool(maxMaps, EOxMap, target);
-
-  /**
-   * Create the globe and render tiles, calling a callback
-   * for each once done
-   */
-  const globe = createGlobe({
-    map: EOxMap,
-    target,
-    renderTile: (tile, callback) => {
-      /**
-       * For each tile, distribute to ideal map
-       */
-      const mapPoolCandidate = distributeTileToIdealMap(
-        mapPool,
-        tile,
-        (renderedMapCanvas) => {
-          callback(renderedMapCanvas);
-        },
-      );
-
-      /**
-       * Start loading immediately if the map was idle
-       */
-      if (mapPoolCandidate.tileQueue.length === 1) {
-        mapPoolCandidate.loadNextTile();
-      }
-    },
-  });
-  EOxMap.globe = globe;
-  const doForEachLayer = (originalLayer, changeFunction) => {
-    for (let i = 0; i < mapPool.length; i++) {
-      const mapObj = mapPool[i];
-      changeFunction(mapObj.tileMap.getLayerById(originalLayer.get("id")));
-    }
-    refreshGlobe();
-  };
-  const layers = EOxMap.map.getLayers().getArray()
-  setLayers(layers);
+/**
+ * Finds a layer within an EOxMap instance by its ID.
+ * @param {import("../../main").EOxMap} eoxMap
+ * @param {string} id
+ * @returns {import("ol/layer/Layer").default | undefined}
+ */
+const getOLLayerById = (eoxMap, id) => {
+  if (!eoxMap.map) return undefined;
+  return eoxMap.map.getLayers().getArray().find((l) => l.get("id") === id);
 };
 
-export const refresh = (mapPoolCallback) => {
-  mapPoolCallback(mapPool);
-  refreshGlobe();
+export const create = ({ EOxMap, target }) => {
+  const mapPool = createMapPool(navigator.hardwareConcurrency || 4, EOxMap, target);
+  const globe = createGlobe({ EOxMap, target, mapPool });
+  EOxMap.globe = globe;
+
+  /**
+   * Propagates style changes from a main OL layer to all corresponding
+   * layers within the tile rendering pool.
+   * @param {import("ol/layer/Layer").default} changedOlLayer
+   */
+  const updateStyleInPool = (changedOlLayer) => {
+    const layerId = changedOlLayer.get("id");
+    const newStyleVariables = changedOlLayer.styleVariables_;
+    if (!layerId || !newStyleVariables) return;
+
+    mapPool.forEach((poolItem) => {
+      poolItem.tileQueue.length = 0;
+      const layerInTileMap = getOLLayerById(poolItem.tileMap, layerId);
+      if (layerInTileMap && layerInTileMap.updateStyleVariables) {
+        layerInTileMap.updateStyleVariables(newStyleVariables);
+      }
+    });
+  };
+
+  const getGlobusLayer = (olLayer) => {
+    const id = olLayer.get("id");
+    return globe.planet.getLayerByName(id);
+  };
+
+  const setupLayerListeners = (olLayer) => {
+    // Create a debounced function specifically for refreshing the globe
+    const debouncedRefresh = debounce(() => {
+      refreshGlobe();
+    }, 500);
+
+    olLayer.on("change", () => {
+      if (olLayer.styleVariables_) {
+        // Update the internal state of the render pool immediately
+        updateStyleInPool(olLayer);
+        // Debounce the expensive globe refresh call
+        debouncedRefresh();
+      }
+    });
+
+    olLayer.on("propertychange", ({ key }) => {
+      const globusLayer = getGlobusLayer(olLayer);
+      if (!globusLayer) return;
+      switch (key) {
+        case "visible":
+          globusLayer.setVisibility(olLayer.getVisible());
+          break;
+        case "opacity":
+          globusLayer.opacity = olLayer.getOpacity();
+          break;
+      }
+    });
+  };
+
+  const processLayers = (layers) => {
+    layers.forEach((olLayer) => {
+      if (olLayer.get("id")) {
+        setupLayerListeners(olLayer);
+      }
+      if (olLayer.getLayers) {
+        processLayers(olLayer.getLayers().getArray());
+      }
+    });
+  };
+
+  processLayers(EOxMap.map.getLayers().getArray());
 };
 
 window.eoxMapGlobe = {
   create,
-  refresh,
 };

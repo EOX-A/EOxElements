@@ -1,26 +1,35 @@
 import { createXYZ } from "ol/tilegrid";
 
-const tileGrid = createXYZ({
-  extent: [-180, -90, 180, 90],
-  tileSize: 300,
-  maxResolution: 0.6,
-  maxZoom: 22,
-});
-
 /**
- * Creates a map pool with a maximum number of maps,
- * each map accepting a tile queue to render
- *
- * @param {Number} maxMaps - The maximum number of parallel rendering maps to be spawned
- * @param {import("../../main").EOxMap} EOxMap - The map element containing the map instance, center, animation options, and other properties.
- * @param {HTMLElement} target - The target to attach the rendering maps to
- * @returns A map pool ready to accept jobs
+ * Iterates through a layer collection, including groups, and returns a flat array.
+ * @param {import("ol/Collection").default<import("ol/layer/Base").default>} layers
+ * @returns {Array<import("ol/layer/Base").default>}
  */
-export const createMapPool = (maxMaps, EOxMap, target) =>
-  Array.from({ length: maxMaps }, () => {
-    EOxMap.addEventListener("mapmounted", () => {
-      EOxMap.map.getTargetElement().style.display = "none";
-    });
+const getFlatLayersArray = (layers) => {
+  let flatLayers = [];
+  layers.forEach((layer) => {
+    if (layer.getLayers) {
+      flatLayers = flatLayers.concat(getFlatLayersArray(layer.getLayers()));
+    } else {
+      flatLayers.push(layer);
+    }
+  });
+  return flatLayers;
+};
+
+export const createMapPool = (maxMaps, EOxMap, target) => {
+  // Get the serializable definitions of all layers on the main map.
+  const allMainLayers = getFlatLayersArray(EOxMap.map.getLayers());
+  const layerDefs = allMainLayers
+    .map((l) => l.get("_jsonDefinition"))
+    .filter(Boolean);
+
+  // Hide the main 2D map when the globe is active
+  EOxMap.addEventListener("mapmounted", () => {
+    EOxMap.map.getTargetElement().style.display = "none";
+  });
+
+  return Array.from({ length: maxMaps }, () => {
     const tileMap = /** @type {import("../../main").EOxMap} **/ (
       document.createElement("eox-map")
     );
@@ -31,46 +40,53 @@ export const createMapPool = (maxMaps, EOxMap, target) =>
       top: `-9999px`,
       left: `-9999px`,
     });
+
+    // Initialize the tileMap with its own instances of all layers
     Object.assign(tileMap, {
-      projection: "EPSG:4326",
-      layers: [],
+      projection: "EPSG:3857",
+      layers: layerDefs,
     });
+
     target.appendChild(tileMap);
     return {
       tileMap,
       tileQueue: [],
       loadNextTile() {
-        requestTileFromMap(tileMap, EOxMap.layers[1], this.tileQueue[0], this);
+        const job = this.tileQueue[0];
+        requestTileFromMap(tileMap, job.layerId, job, this);
       },
     };
   });
+};
 
-/**
- * Request a single tile from a render map
- *
- * @param {import("../../main").EOxMap} tileMap - The map element currently rendering the tile
- * @param {{
- *  tile: {
- *    x: number
- *    y: number
- *    z: number
- * }
- *  callback: Function
- * }} job - The job for one single tile to be rendered
- * @param {*} mapPoolMap - The map pool object
- */
-async function requestTileFromMap(tileMap, layer, job, mapPoolMap) {
+async function requestTileFromMap(tileMap, layerId, job, mapPoolMap) {
+  const map = tileMap.map;
+
+  // Wait for the map to be mounted before proceeding
+  if (!map) {
+    tileMap.addEventListener(
+      "mapmounted",
+      () => requestTileFromMap(tileMap, layerId, job, mapPoolMap),
+      { once: true }
+    );
+    return;
+  }
+
+  // Instead of re-creating the layer, make sure only the target layer is visible
+  map.getLayers().forEach((l) => {
+    l.setVisible(l.get("id") === layerId);
+  });
+
+  const tileGrid = createXYZ();
   const extent = tileGrid.getTileCoordExtent([
     job.tile.z,
     job.tile.x,
     job.tile.y,
   ]);
-  tileMap.layers = [layer];
-  const map = tileMap.map;
+
   map.getView().fit(extent, {
     callback: () => {
       map.once("rendercomplete", function () {
-        // debugger
         const mapCanvas = document.createElement("canvas");
         const size = map.getSize();
         mapCanvas.width = size[0];
@@ -88,7 +104,6 @@ async function requestTileFromMap(tileMap, layer, job, mapPoolMap) {
               let matrix;
               const transform = canvas.style.transform;
               if (transform) {
-                // Get the transform parameters from the style's transform matrix
                 matrix = transform
                   .match(/^matrix\(([^\(]*)\)$/)[1]
                   .split(",")
@@ -103,10 +118,9 @@ async function requestTileFromMap(tileMap, layer, job, mapPoolMap) {
                   0,
                 ];
               }
-              // Apply the transform to the export map context
               CanvasRenderingContext2D.prototype.setTransform.apply(
                 mapContext,
-                matrix,
+                matrix
               );
               const backgroundColor = canvas.parentNode.style.backgroundColor;
               if (backgroundColor) {
@@ -115,14 +129,13 @@ async function requestTileFromMap(tileMap, layer, job, mapPoolMap) {
               }
               mapContext.drawImage(canvas, 0, 0);
             }
-          },
+          }
         );
         mapContext.globalAlpha = 1;
         mapContext.setTransform(1, 0, 0, 1, 0, 0);
         job.callback(mapCanvas);
         mapPoolMap.tileQueue.shift();
         if (mapPoolMap.tileQueue.length) {
-          // load next tile in queuedTile
           mapPoolMap.loadNextTile();
         }
       });
@@ -131,17 +144,10 @@ async function requestTileFromMap(tileMap, layer, job, mapPoolMap) {
   });
 }
 
-/**
- * Distributor function to get an ideal worker from the pool
- * based on distance of queued tiles
- *
- * @param {*} mapPool - TODO
- * @param {*} tile - TODO
- * @param {*} callback - TODO
- */
-export function distributeTileToIdealMap(mapPool, tile, callback) {
+export function distributeTileToIdealMap(mapPool, layerId, tile, callback) {
   const { x, y, z } = tile;
   const job = {
+    layerId, // The ID of the layer to render
     tile,
     callback,
   };
@@ -151,25 +157,18 @@ export function distributeTileToIdealMap(mapPool, tile, callback) {
   for (let i = 0; i < mapPool.length; i++) {
     const mapObj = mapPool[i];
     if (!mapObj.tileQueue.length) {
-      // if the worker is idle, use it
       idealMapObj = mapObj;
       break;
     }
 
-    for (let j = 0; j < mapObj.tileQueue.length; j++) {
-      const queuedJob = mapObj.tileQueue[j];
-      const distance =
-        Math.abs(queuedJob.tile.x - x) +
-        Math.abs(queuedJob.tile.y - y) +
-        Math.abs(queuedJob.tile.z - z);
-      if (minDistance === 0 || distance < minDistance) {
-        minDistance = distance;
-        idealMapObj = mapObj;
-        if (i === mapPool.length - 1) {
-          // if we are at the last worker, no need to look further
-          break;
-        }
-      }
+    const lastQueuedJob = mapObj.tileQueue[mapObj.tileQueue.length - 1];
+    const distance =
+      Math.abs(lastQueuedJob.tile.x - x) +
+      Math.abs(lastQueuedJob.tile.y - y) +
+      Math.abs(lastQueuedJob.tile.z - z);
+    if (minDistance === 0 || distance < minDistance) {
+      minDistance = distance;
+      idealMapObj = mapObj;
     }
   }
   idealMapObj.tileQueue.push(job);

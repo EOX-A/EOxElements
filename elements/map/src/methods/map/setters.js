@@ -402,7 +402,7 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
         (EOxMap.shadowRoot.querySelector("#map")).style.display = "";
       },
     });
-    oldProjection = "EPSG:4326"; // reset oldProjection to a WGS84 projection
+    oldProjection = "EPSG:3857"; // reset oldProjection to a WGS84 projection
   }
   let newProj = oldProjection;
 
@@ -445,7 +445,7 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
       center: newCenter,
       resolution: newResolution,
       rotation: oldView.getRotation(),
-      projection,
+      projection: "EPSG:3857",
     });
 
     // Transfer existing event listeners from the old view to the new view
