@@ -37,6 +37,7 @@ export class MockMap extends HTMLElement {
           },
         ],
       }),
+      getAllLayers(){ return this.getLayers().getArray()},
       // Simulating removeLayer method
       removeLayer() {},
     };
