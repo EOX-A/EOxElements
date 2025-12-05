@@ -64,7 +64,7 @@ export const create = ({ EOxMap, target }) => {
     // Create a debounced function specifically for refreshing the globe
     const debouncedRefresh = debounce(() => {
       refreshGlobe();
-    }, 500);
+    }, 200);
 
     olLayer.on("change", () => {
       if (olLayer.styleVariables_) {

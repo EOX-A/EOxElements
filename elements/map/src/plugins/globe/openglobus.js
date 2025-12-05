@@ -42,7 +42,7 @@ export const refreshGlobe = () => {
         l.abortLoading();
         // Force redraw of all tiles by temporarily setting animated flag
         l.animated = true;
-        setTimeout(() => (l.animated = false), 500);
+        setTimeout(() => (l.animated = false), 200);
       }
     });
   }
