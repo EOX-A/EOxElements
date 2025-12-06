@@ -8,13 +8,6 @@ const STACLayerStory = {
     center: [-122.38, 46.1],
     layers: [
       {
-        type: "STAC",
-        properties: {
-          id: "stacLayer",
-        },
-        url: "https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json",
-      },
-      {
         type: "Tile",
         properties: {
           id: "customId",
@@ -22,6 +15,13 @@ const STACLayerStory = {
         source: {
           type: "OSM",
         },
+      },
+      {
+        type: "STAC",
+        properties: {
+          id: "stacLayer",
+        },
+        url: "https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json",
       },
     ],
     zoom: 7,

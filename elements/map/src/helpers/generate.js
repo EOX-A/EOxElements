@@ -103,9 +103,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   olLayer.set("_jsonDefinition", layer, true);
   // Handle group layers by recursively creating their sublayers
   if (layer.type === "Group") {
-    const groupLayers = layer.layers
-      .reverse()
-      .map((l) => createLayer(EOxMap, l));
+    const groupLayers = layer.layers.map((l) => createLayer(EOxMap, l));
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
     /** @type {import("ol/layer/Group").default} **/ (olLayer).setLayers(
       new Collection(groupLayers),
@@ -463,8 +461,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 export const generateLayers = (EOxMap, layerArray) => {
   if (!layerArray) return [];
 
-  // Reverse the layer array to maintain the stacking order
-  return [...layerArray].reverse().map((l) => createLayer(EOxMap, l));
+  return [...layerArray].map((l) => createLayer(EOxMap, l));
 };
 
 /**
