@@ -21,8 +21,8 @@ export const HiddenLayersStory = {
       "eox-map": {
         style: STORIES_MAP_STYLE,
         layers: [
-          customizeLayer(STORIES_LAYER_REGION),
           STORIES_LAYER_TERRAIN_LIGHT,
+          customizeLayer(STORIES_LAYER_REGION),
         ],
         id: "hidden",
       },

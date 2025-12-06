@@ -19,7 +19,7 @@ const checkPreOpenLayerTools = () => {
     .shadow()
     .within(() => {
       cy.get("eox-layercontrol-layer-tools")
-        .eq(1)
+        .eq(0)
         .shadow()
         .within(() => {
           // Checking if the details tag with class 'tools' is visible (open)

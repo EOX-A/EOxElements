@@ -6,8 +6,8 @@ const disableDrag = () => {
 
     // Setting layers: one visible and another with layerControlDisable: true
     mockMap.setLayers([
-      { visible: true },
       { properties: { layerControlDisable: true } },
+      { visible: true },
     ]);
   });
 

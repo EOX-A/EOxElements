@@ -13,7 +13,6 @@ export const ExpandedLayersStory = {
       "eox-map": {
         style: STORIES_MAP_STYLE,
         layers: [
-          STORIES_LAYER_TERRAIN_LIGHT,
           {
             type: "Group",
             properties: {
@@ -22,6 +21,7 @@ export const ExpandedLayersStory = {
             },
             layers: [{ ...STORIES_LAYER_EOX_CLOUDLESS_2021, visible: false }],
           },
+          STORIES_LAYER_TERRAIN_LIGHT,
         ],
         id: "expanded",
       },

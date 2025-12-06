@@ -57,6 +57,7 @@ describe("LayerControl", () => {
   // Test to verify pre-opening of the layer tools section if layerControlToolsExpand is present
   it("pre-opens layer tools section if layerControlToolsExpand is present", () =>
     checkPreOpenLayerTools());
+
   it("renders layer specific legend", () => {
     checkLayerLegend();
   });

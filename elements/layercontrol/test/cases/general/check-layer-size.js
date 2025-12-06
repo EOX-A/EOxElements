@@ -5,7 +5,7 @@ const checkLayerSize = () => {
     const mockMap = $el[0]; // Accessing the mock map element
 
     // Setting layers, one visible and one hidden
-    mockMap.setLayers([{ visible: true }, { visible: false }]);
+    mockMap.setLayers([{ visible: false }, { visible: true }]);
   });
 
   // Verifying layer rendering in the LayerControl component

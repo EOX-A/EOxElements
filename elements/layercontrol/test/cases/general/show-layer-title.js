@@ -5,8 +5,8 @@ const showCorrectLayerTitle = () => {
 
     // Setting titles for two layers
     mockMap.setLayers([
-      { properties: { title: "foo" } },
       { properties: { title: "bar" } },
+      { properties: { title: "foo" } },
     ]);
   });
 

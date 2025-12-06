@@ -16,10 +16,10 @@ export const ToolsStory = {
       "eox-map": {
         style: STORIES_MAP_STYLE,
         layers: [
-          STORIES_LAYER_VESSEL_DENSITY_CARGO,
-          STORIES_LAYER_REGION,
-          STORIES_LAYER_DEFORESTED_BIOMASS,
           STORIES_LAYER_TERRAIN_LIGHT,
+          STORIES_LAYER_DEFORESTED_BIOMASS,
+          STORIES_LAYER_REGION,
+          STORIES_LAYER_VESSEL_DENSITY_CARGO,
         ],
         id: "tools",
       },

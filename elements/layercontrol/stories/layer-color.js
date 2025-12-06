@@ -12,6 +12,14 @@ const COLORED_LAYERS = [
   {
     type: "Group",
     properties: {
+      id: "group1",
+      title: "Background Layers",
+    },
+    layers: [STORIES_LAYER_OSM, STORIES_LAYER_S2],
+  },
+  {
+    type: "Group",
+    properties: {
       id: "group2",
       title: "Data Layers",
       layerControlExpand: true,
@@ -19,26 +27,18 @@ const COLORED_LAYERS = [
     },
     layers: [
       {
-        ...STORIES_LAYER_SENTINEL_HUB.wind,
-        color: "#008955",
+        ...STORIES_LAYER_REGION,
+        color: "#007bcb",
       },
       {
         ...STORIES_LAYER_SENTINEL_HUB.no2,
         color: "#008397",
       },
       {
-        ...STORIES_LAYER_REGION,
-        color: "#007bcb",
+        ...STORIES_LAYER_SENTINEL_HUB.wind,
+        color: "#008955",
       },
     ],
-  },
-  {
-    type: "Group",
-    properties: {
-      id: "group1",
-      title: "Background Layers",
-    },
-    layers: [STORIES_LAYER_S2, STORIES_LAYER_OSM],
   },
 ];
 

@@ -6,8 +6,8 @@ const renderOptionalLayer = () => {
 
     // Setting layers: one visible and another marked with layerControlOptional: true
     mockMap.setLayers([
-      { visible: true },
       { properties: { layerControlOptional: true } },
+      { visible: true },
     ]);
   });
 

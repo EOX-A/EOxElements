@@ -6,8 +6,8 @@ const colorSwatch = () => {
 
     // Setting layers: one visible and another with layerControlDisable: true
     mockMap.setLayers([
-      { visible: true, color: "green" },
       { properties: { layerControlDisable: true } },
+      { visible: true, color: "green" },
     ]);
   });
 

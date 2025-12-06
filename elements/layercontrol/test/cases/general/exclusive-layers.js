@@ -6,8 +6,6 @@ const exclusiveLayers = () => {
 
     // Setting layers and a group with layerControlExclusive
     mockMap.setLayers([
-      { properties: { id: "a", layerControlExclusive: true }, visible: true },
-      { properties: { id: "b", layerControlExclusive: true }, visible: false },
       {
         type: "Group",
         properties: {
@@ -17,16 +15,18 @@ const exclusiveLayers = () => {
         },
         layers: [
           {
-            properties: { id: "d", layerControlExclusive: true },
-            visible: false,
-          },
-          {
             properties: { id: "e", layerControlExclusive: true },
             visible: true,
+          },
+          {
+            properties: { id: "d", layerControlExclusive: true },
+            visible: false,
           },
         ],
         visible: false,
       },
+      { properties: { id: "b", layerControlExclusive: true }, visible: false },
+      { properties: { id: "a", layerControlExclusive: true }, visible: true },
     ]);
   });
 
@@ -36,12 +36,12 @@ const exclusiveLayers = () => {
     .within(() => {
       // Checking the number of checked radio inputs in the LayerControl
       cy.get("ul").find("input[type=radio]:checked").should("have.length", 2);
-      cy.get("ul").find("input[type=radio]").last().should("not.be.checked");
+      cy.get("ul").find("input[type=radio]").eq(3).should("not.be.checked");
       cy.get("ul")
         .find("input[type=radio]:not(:checked)")
         .last()
         .click({ force: true });
-      cy.get("ul").find("input[type=radio]").last().should("be.checked");
+      cy.get("ul").find("input[type=radio]").eq(3).should("be.checked");
       cy.get("ul").find("input[type=radio]:checked").should("have.length", 2);
     });
 
