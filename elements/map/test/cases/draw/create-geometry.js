@@ -1,6 +1,7 @@
 import { html } from "lit";
 import drawInteractionLayerJson from "../../fixtures/drawInteraction.json";
 import { simulateEvent } from "../../utils/events";
+import { buffer as eoxMapBuffer } from "../../../src/main";
 
 /**
  * Tests to create correct geometry with draw interaction in EOx Map
@@ -18,7 +19,7 @@ const createGeometry = () => {
     const geometry = features[0].getGeometry();
     expect(features).to.have.length(1);
     expect(geometry.getCoordinates().length).to.be.equal(2);
-    const buffer = eoxMap.buffer(geometry.getExtent(), 100);
+    const buffer = eoxMapBuffer(geometry.getExtent(), 100);
     expect(Array.isArray(buffer), "create buffer from point extent").to.be.true;
   });
 };
