@@ -123,7 +123,7 @@ export function setControlsMethod(controls, oldControls, EOxMap) {
  * @return {Array<EoxLayer>}
  * */
 function parseLayer(layers) {
-  return JSON.parse(JSON.stringify(layers)).reverse();
+  return JSON.parse(JSON.stringify(layers));
 }
 
 /**

@@ -15,7 +15,7 @@ const checkLayerInsideReactive = (layersJson) => {
   cy.get("eox-map").and(($el) => {
     const eoxMap = $el[0];
 
-    layersJson[0].layers[1].layers[0].opacity = 0.2;
+    layersJson[0].layers[0].layers[0].opacity = 0.2;
     eoxMap.layers = layersJson;
 
     expect(

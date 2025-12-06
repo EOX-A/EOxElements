@@ -13,17 +13,6 @@ const GroupLayerStory = {
         },
         layers: [
           {
-            type: "Vector",
-            properties: {
-              id: "regions",
-            },
-            source: {
-              type: "Vector",
-              url: "https://openlayers.org/data/vector/ecoregions.json",
-              format: "GeoJSON",
-            },
-          },
-          {
             type: "Group",
             properties: {
               id: "groupLayerInsideGroup",
@@ -39,6 +28,17 @@ const GroupLayerStory = {
                 },
               },
             ],
+          },
+          {
+            type: "Vector",
+            properties: {
+              id: "regions",
+            },
+            source: {
+              type: "Vector",
+              url: "https://openlayers.org/data/vector/ecoregions.json",
+              format: "GeoJSON",
+            },
           },
         ],
       },
