@@ -124,24 +124,24 @@ export const STORIES_MAIN_MAP_LAYERS = [
   {
     type: "Group",
     properties: {
+      id: "group1",
+      title: "Background Layers",
+    },
+    layers: [STORIES_LAYER_OSM, STORIES_LAYER_S2],
+  },
+  {
+    type: "Group",
+    properties: {
       id: "group2",
       title: "Data Layers",
       layerControlExpand: true,
       description: "# Hello world",
     },
     layers: [
-      STORIES_LAYER_REGION,
-      STORIES_LAYER_SENTINEL_HUB.no2,
       STORIES_LAYER_SENTINEL_HUB.wind,
+      STORIES_LAYER_SENTINEL_HUB.no2,
+      STORIES_LAYER_REGION,
     ],
-  },
-  {
-    type: "Group",
-    properties: {
-      id: "group1",
-      title: "Background Layers",
-    },
-    layers: [STORIES_LAYER_S2, STORIES_LAYER_OSM],
   },
 ];
 

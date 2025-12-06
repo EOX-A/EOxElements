@@ -25,10 +25,10 @@ export const OptionalLayersStory = {
       "eox-map": {
         style: STORIES_MAP_STYLE,
         layers: [
-          customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2021),
-          customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2020),
-          customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2019),
           STORIES_LAYER_TERRAIN_LIGHT,
+          customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2019),
+          customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2020),
+          customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2021),
         ],
         id: "optional",
       },
