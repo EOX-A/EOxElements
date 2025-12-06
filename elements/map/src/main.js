@@ -115,14 +115,18 @@ addCommonStylesheet();
  * - `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.
  * - `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.
  * - `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.
+ * - `parseFeature`: Parses a feature from the input data.
+ * - `parseTextToFeature`: Parses text into a feature.
+ *
+ * Usage: `document.querySelector("eox-map").registerProjection([...]);`
  *
  * ## Additional Helper Methods
  *
  * - `buffer`: Applies a buffer around an extent
- * - `parseFeature`: Parses a feature from the input data.
- * - `parseTextToFeature`: Parses text into a feature.
  * - `transform`
  * - `transformExtent`: Transform coordinates and extents between projections.
+ *
+ * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
  *
  * @element eox-map
  * @fires {CustomEvent} clusterSelect - A cluster is selected
@@ -541,6 +545,18 @@ export class EOxMap extends LitElement {
   }
 
   /**
+   * Parses a feature from the input data.
+   *
+   * @type {Function}
+   */
+  parseFeature = parseFeature;
+
+  /**
+   * Parses text into a feature.
+   */
+  parseTextToFeature = parseTextToFeature;
+
+  /**
    * Registers a projection from an EPSG code.
    */
   registerProjectionFromCode = registerProjectionFromCode;
@@ -576,6 +592,6 @@ export class EOxMap extends LitElement {
 }
 
 // Export Additional Helper Methods
-export { buffer, parseFeature, parseTextToFeature, transform, transformExtent };
+export { buffer, transform, transformExtent };
 
 customElements.define("eox-map", EOxMap);
