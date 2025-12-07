@@ -1,8 +1,9 @@
 import { html } from "lit";
 import { buffer, transform, transformExtent } from "@eox/map";
-globalThis.buffer = buffer;
-globalThis.transform = transform;
-globalThis.transformExtent = transformExtent;
+
+window.buffer = buffer;
+window.transform = transform;
+window.transformExtent = transformExtent;
 
 const HelperMethodsStory = {
   args: {
