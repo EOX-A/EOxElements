@@ -13,14 +13,28 @@ export function aggregateResultsMethod(items, property, EOxItemFilterResults) {
     return [];
   }
 
+  const configKey = EOxItemFilterResults.config.aggregateResults;
+
+  if (property === "No category") {
+    return items.filter((item) => {
+      const aggregation = item[configKey];
+      if (Array.isArray(aggregation)) {
+        // True if array is empty or only contains falsy values
+        return aggregation.filter(Boolean).length === 0;
+      }
+      return !aggregation;
+    });
+  }
+
   return items.filter((item) => {
-    const configKey = EOxItemFilterResults.config.aggregateResults;
-    // Get the aggregation property from the item
     const aggregation = item[configKey];
 
-    // If the item does NOT have the selected property (it is undefined or null),
-    // we immediately exclude it from this specific category list.
-    if (aggregation === undefined || aggregation === null) {
+    // Exclude items that should be in "No category"
+    if (Array.isArray(aggregation)) {
+      if (aggregation.filter(Boolean).length === 0) {
+        return false;
+      }
+    } else if (!aggregation) {
       return false;
     }
 
