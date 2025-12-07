@@ -11,6 +11,17 @@ const GetFeatureInfoTooltipStory = {
       {
         type: "Tile",
         properties: {
+          title: "Terrain Light",
+          id: "terrain-light",
+        },
+        source: {
+          type: "XYZ",
+          url: "//tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
           id: "wmsLayer",
         },
         source: {
@@ -29,17 +40,6 @@ const GetFeatureInfoTooltipStory = {
             },
           },
         ],
-      },
-      {
-        type: "Tile",
-        properties: {
-          title: "Terrain Light",
-          id: "terrain-light",
-        },
-        source: {
-          type: "XYZ",
-          url: "//tiles.maps.eox.at/wmts/1.0.0/terrain-light_3857/default/g/{z}/{y}/{x}.jpg",
-        },
       },
     ],
     center: [-10997148, 4569099],
