@@ -123,8 +123,7 @@ addCommonStylesheet();
  * ## Additional Helper Methods
  *
  * - `buffer`: Applies a buffer around an extent
- * - `transform`
- * - `transformExtent`: Transform coordinates and extents between projections.
+ * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
  *
  * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
  *
