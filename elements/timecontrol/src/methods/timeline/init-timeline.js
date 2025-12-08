@@ -12,6 +12,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 let drag = false;
+let drawInterval = null;
 
 export function updateRangeElements(EOxTimeControlTimeline) {
   const timeSliderContainer = EOxTimeControlTimeline.getContainer();
@@ -23,12 +24,15 @@ export function updateRangeElements(EOxTimeControlTimeline) {
     timeSliderContainer.querySelector(".vis-custom-time.multi-select-end")
   );
 
-  const startTitle = dayjs(
+  const startDate = dayjs(
     EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-start"),
-  ).format("DD MMM YYYY HH:mm:ss");
-  const endTitle = dayjs(
+  );
+  const startTitle = startDate.format("DD MMM YYYY HH:mm:ss");
+
+  const endDate = dayjs(
     EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-end"),
-  ).format("DD MMM YYYY HH:mm:ss");
+  );
+  const endTitle = endDate.format("DD MMM YYYY HH:mm:ss");
 
   if (startEle) {
     startEle.title = "";
@@ -53,7 +57,13 @@ export function updateRangeElements(EOxTimeControlTimeline) {
   if (startEle && endEle) {
     const endLeft = Number(endEle.style.left.replace("px", ""));
     const startLeft = Number(startEle.style.left.replace("px", ""));
-    startEle.style.width = `${endLeft - startLeft}px`;
+
+    startEle.style.width = startDate.isAfter(endDate)
+      ? `${startLeft - endLeft}px`
+      : `${endLeft - startLeft}px`;
+    if (startDate.isAfter(endDate)) {
+      startEle.style.left = `${endLeft}px`;
+    }
   }
 }
 
@@ -94,7 +104,34 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
     );
     EOxTimeControlTimeline.visTimeline = visTimeline;
 
+    if (drawInterval) {
+      clearInterval(drawInterval);
+      drawInterval = null;
+    }
+
+    if (drawInterval === null)
+      drawInterval = setInterval(() => {
+        const vt = EOxTimeControlTimeline.visTimeline;
+        if (
+          vt &&
+          vt.initialRangeChangeDone &&
+          vt.initialFitDone &&
+          !vt.initialDrawDone
+        ) {
+          vt.redraw();
+          clearInterval(drawInterval);
+        } else if (
+          vt &&
+          vt.initialRangeChangeDone &&
+          vt.initialFitDone &&
+          vt.initialDrawDone
+        ) {
+          clearInterval(drawInterval);
+        }
+      }, 50);
+
     visTimeline.on("changed", () => {
+      const EOxItemFilter = EOxTimeControl.querySelector("eox-itemfilter");
       updateRangeElements(EOxTimeControlTimeline);
       const textElement = /** @type {HTMLElement} */ (
         container.querySelector(".vis-text.vis-minor.vis-even")
@@ -115,6 +152,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
           i,
         );
       }
+      if (EOxItemFilter) EOxTimeControl.filter(undefined, EOxTimeControl);
     });
     visTimeline.on("timechange", () => {
       updateRangeElements(EOxTimeControlTimeline);
@@ -127,7 +165,11 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         const newDateRange = isStart
           ? [newDate, EOxTimeControl.selectedDateRange[1]]
           : [EOxTimeControl.selectedDateRange[0], newDate];
-        EOxTimeControl.dateChange(newDateRange, EOxTimeControl);
+
+        const sortedDateRange = [...newDateRange].sort((a, b) =>
+          dayjs(a).isAfter(dayjs(b)) ? 1 : -1,
+        );
+        EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl);
       }
     });
 

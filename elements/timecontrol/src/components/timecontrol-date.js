@@ -6,6 +6,8 @@ import { when } from "lit/directives/when.js";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
+import findIndex from "lodash.findindex";
+import groupBy from "lodash.groupby";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -18,6 +20,7 @@ export class EOxTimeControlDate extends LitElement {
     };
   }
 
+  #isInput = false;
   #selectedDateRange = null;
   constructor() {
     super();
@@ -27,15 +30,66 @@ export class EOxTimeControlDate extends LitElement {
     this.unstyled = false;
   }
 
+  getEOxTimeControl() {
+    return /** @type {import("../main.js").EOxTimeControl} */ (
+      this.closest("eox-timecontrol")
+    );
+  }
+
   updateStep(step = 1) {
-    const EOxTimeControl = this.closest("eox-timecontrol");
-    // @ts-expect-error TODO: Fix typing
-    EOxTimeControl.updateStep(step);
+    const EOxTimeControl = this.getEOxTimeControl();
+    const itemValues = Object.keys(
+      groupBy(EOxTimeControl.items.get(), "date"),
+    ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    const index = findIndex(itemValues, (date) => {
+      return (
+        date ===
+        dayjs(EOxTimeControl.selectedDateRange[0]).format(
+          TIME_CONTROL_DATE_FORMAT,
+        )
+      );
+    });
+    let newIndex = index + step;
+    if (newIndex > itemValues.length - 1) {
+      newIndex = 0;
+    }
+    if (newIndex < 0) {
+      newIndex = itemValues.length - 1;
+    }
+
+    const nextDate = itemValues[newIndex];
+    const nextDateRange = [
+      dayjs(nextDate).startOf("day").utc().format(),
+      dayjs(nextDate).endOf("day").utc().format(),
+    ];
+    EOxTimeControl.dateChange(nextDateRange, EOxTimeControl);
   }
 
   setDateRange(dateRange) {
     this.#selectedDateRange = dateRange;
     this.requestUpdate();
+  }
+
+  firstUpdated() {
+    const EOxTimeControl = this.getEOxTimeControl();
+    const EOxTimeControlPicker =
+      /** @type {import("./timecontrol-picker.js").EOxTimeControlPicker} */ (
+        EOxTimeControl.querySelector("eox-timecontrol-picker")
+      );
+    if (EOxTimeControlPicker && EOxTimeControlPicker.popup) {
+      this.#isInput = true;
+      this.requestUpdate();
+    }
+  }
+
+  #getFormattedDate(selectedDateRange, format) {
+    const start = dayjs(selectedDateRange[0]);
+    const end = dayjs(selectedDateRange[1]);
+    const dayDifference = end.diff(start, "day");
+
+    return dayDifference === 0
+      ? start.format(format)
+      : start.format(format) + " - " + end.format(format);
   }
 
   render() {
@@ -44,7 +98,7 @@ export class EOxTimeControlDate extends LitElement {
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
-      ${when(this.navigation, () => {
+      ${when(this.navigation && this.#selectedDateRange, () => {
         return html`
           <button
             part="previous"
@@ -69,15 +123,23 @@ export class EOxTimeControlDate extends LitElement {
       <span id="date-container">
         ${when(this.#selectedDateRange, () => {
           return html`
-            <small part="current">
-              ${this.format
-                ? dayjs(this.#selectedDateRange[0]).format(this.format)
-                : this.#selectedDateRange[0]}
-            </small>
+            <input
+              readonly
+              class=${this.#isInput ? "input-field" : ""}
+              value=${this.#getFormattedDate(
+                this.#selectedDateRange,
+                this.format,
+              )}
+              type="text"
+              style="width: ${this.#getFormattedDate(
+                this.#selectedDateRange,
+                this.format,
+              ).length + 1}ch"
+            />
           `;
         })}
       </span>
-      ${when(this.navigation, () => {
+      ${when(this.navigation && this.#selectedDateRange, () => {
         return html`
           <button
             part="next"

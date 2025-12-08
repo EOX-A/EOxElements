@@ -6,3 +6,5 @@ export { default as DateWithNavigationStory } from "./date-with-navigation"; // 
 export { default as DatePickerPopupStory } from "./date-picker-popup"; // Date picker story
 export { default as DatePickerStandaloneStory } from "./date-picker-standalone"; // Date picker story
 export { default as TimelineStory } from "./timeline"; // Timeline story
+export { default as ExternalMapRenderingStory } from "./external-map-rendering"; // External map rendering mosaic story
+export { default as DateFilterStory } from "./date-filter"; // Date filter story

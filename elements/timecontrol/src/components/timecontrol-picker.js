@@ -14,6 +14,8 @@ import groupBy from "lodash.groupby";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+let lastClickDate = null;
+
 /**
  * @typedef {import("../main.js").EOxTimeControl} EOxTimeControl
  */
@@ -111,18 +113,27 @@ export class EOxTimeControlPicker extends LitElement {
           positionToInput: ["top", "left"],
           selectedWeekends: [],
           onClickDate: (self) => {
-            if (self.context.selectedDates[0]) {
-              const startDate = dayjs(self.context.selectedDates[0])
-                .startOf("day")
-                .utc()
-                .format();
-              const endDate = dayjs(
-                self.context.selectedDates[1] || self.context.selectedDates[0],
-              )
+            const lengthOfDates = self.context.selectedDates.length - 1;
+            const start = self.context.selectedDates[0] || lastClickDate;
+            const end = this.range && self.context.selectedDates[lengthOfDates];
+            if (start) {
+              const startDate = dayjs(start).startOf("day").utc().format();
+              const endDate = dayjs(end || start)
                 .endOf("day")
                 .utc()
                 .format();
-              EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+
+              if (this.range) {
+                if (lengthOfDates || lastClickDate === start) {
+                  EOxTimeControl.dateChange(
+                    [startDate, endDate],
+                    EOxTimeControl,
+                  );
+                  lastClickDate = null;
+                } else lastClickDate = start;
+              } else {
+                EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+              }
             }
           },
           onCreateDateEls: (_self, dateEl) => {
@@ -136,10 +147,18 @@ export class EOxTimeControlPicker extends LitElement {
                 const host = document.createElement("div");
                 host.className = "vc-day__dots";
 
-                for (let i = 0; i < dateDots[date].length; i++) {
-                  const dot = document.createElement("div");
-                  dot.className = "vc-day__dot";
-                  host.appendChild(dot);
+                const totalDots = dateDots[date].length;
+                const dotsRequired = totalDots <= 3 ? totalDots : 3;
+                for (let i = 0; i < dotsRequired; i++) {
+                  if (i < 2 || (i === 2 && totalDots === 3)) {
+                    const dot = document.createElement("div");
+                    dot.className = "vc-day__dot";
+                    host.appendChild(dot);
+                  } else {
+                    const plus = document.createElement("div");
+                    plus.className = "vc-day__plus";
+                    host.appendChild(plus);
+                  }
                 }
                 dateEl.appendChild(host);
               }

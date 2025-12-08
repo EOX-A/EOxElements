@@ -26,10 +26,47 @@ export const calendarStyle = `
     background: var(--primary);
     opacity: 0.9;
   }
+  .vc-day__dot:nth-child(2) {
+    background: #F5365C;
+  }
+  .vc-day__dot:nth-child(3) {
+    background: #43CC8B;
+  }
+  .vc-day__plus {
+    width: 6px;
+    height: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .vc-day__plus::before, .vc-day__plus::after {
+    content: "";
+    position: absolute;
+    background: var(--primary);
+    border-radius: 1px;
+  }
+  .vc-day__plus::before {
+    width: 1.5px;
+    height: 6px;
+    background: var(--primary);
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+  }
+  .vc-day__plus::after {
+    height: 1.5px;
+    width: 6px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
   .vc-date[data-vc-date-selected] .vc-date__btn {
     background-color: var(--primary) !important;
   }
-  .vc-date[data-vc-date-selected] .vc-day__dot {
+  .vc-date[data-vc-date-selected] .vc-day__dot,
+  .vc-date[data-vc-date-selected] .vc-day__plus::after,
+  .vc-date[data-vc-date-selected] .vc-day__plus::before {
     background: var(--on-primary) !important;
   }
 `;

@@ -25,7 +25,12 @@ export const Timeline = {
       .externalMapRendering=${args.externalMapRendering}
       @select=${args.select}
     >
-      <eox-timecontrol-timeline />
+      <eox-timecontrol-timeline></eox-timecontrol-timeline>
+      <eox-timecontrol-date .navigation=${true}></eox-timecontrol-date>
+      <eox-timecontrol-picker
+        .showDots=${true}
+        .popup=${true}
+      ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
 };

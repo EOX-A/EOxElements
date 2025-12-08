@@ -9,6 +9,8 @@ import { TIME_CONTROL_DATE_FORMAT } from "../../enums";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+let itemFilterAdded = false;
+
 /**
  * First updated lifecycle method for timeslider
  *
@@ -122,6 +124,20 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
                 });
               }
               EOxTimeSlider.dateChange(initDate, EOxTimeSlider);
+
+              const EOxItemFilter = /** @type {EOxItemFilter} */ (
+                EOxTimeSlider.querySelector("eox-itemfilter")
+              );
+              if (EOxItemFilter) {
+                EOxItemFilter.items = EOxTimeSlider.items.get();
+                const filterHandler = (e) => {
+                  EOxTimeSlider.filter(e, EOxTimeSlider);
+                };
+                if (!itemFilterAdded) {
+                  EOxItemFilter.addEventListener("filter", filterHandler);
+                  itemFilterAdded = true;
+                }
+              }
             });
             if (EOxTimeControlPicker) {
               EOxTimeControlPicker.initCalendar({
