@@ -135,7 +135,7 @@ function parseLayer(layers) {
  * @returns {Array<EoxLayer>} - The new layers.
  */
 export function setLayersMethod(layers, oldLayers, EOxMap) {
-  // Deep copy the new layers array and reverse it to maintain correct layer stacking order
+  // Deep copy the new layers array
   const newLayers = parseLayer(layers);
 
   // Remove old layers not present in the new layers
