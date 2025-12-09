@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.8](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.7...storytelling-v1.9.8) (2025-11-24)
+
+
+### Bug Fixes
+
+* **style:** Render bullet points correctly ([#1963](https://github.com/EOX-A/EOxElements/issues/1963)) ([d80abac](https://github.com/EOX-A/EOxElements/commit/d80abacb5a917f36fd2110c2ae91f69adf8db6f0))
+
 ## [1.9.7](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.6...storytelling-v1.9.7) (2025-10-30)
 
 

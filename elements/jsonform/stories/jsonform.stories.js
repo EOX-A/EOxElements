@@ -6,6 +6,8 @@ import {
   ExternalStory,
   MarkdownStory,
   PrimaryStory,
+  ButtonsEditorStory,
+  MinMaxEditorStory,
   BoundingBoxStory,
   PolygonStory,
   FeatureSelectionStory,
@@ -45,8 +47,6 @@ export default {
 
 /**
  * Basic JSON Form example. Renders a form based on a provided JSON schema.
- * In this case, it renders a custom minmax slider input (custom input provided by default
- * by `eox-jsonform`), a select dropdown, and a text input.
  */
 export const Primary = PrimaryStory;
 
@@ -101,6 +101,18 @@ export const External = ExternalStory;
  * Demonstrates integration of markdown editing in forms.
  */
 export const Markdown = MarkdownStory;
+
+/**
+ * Buttons Editor example. Renders a custom button group input based on enum values.
+ * Demonstrates custom input integration and enum handling.
+ */
+export const ButtonsEditor = ButtonsEditorStory;
+
+/**
+ * MinMax Editor example. Renders a custom min-max range input.
+ * Demonstrates custom input integration for range selection.
+ */
+export const MinMaxEditor = MinMaxEditorStory;
 
 /**
  * Bounding Box example. Allows users to select a bounding box as a form input.

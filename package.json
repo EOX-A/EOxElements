@@ -24,7 +24,7 @@
     "typecheck": "tsc",
     "types:generate:all": "npm run types:generate --ws",
     "storybook": "storybook dev -p 6006",
-    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && npm run build:storybook",
+    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && npm run build:storybook && cp custom-elements.json docs/custom-elements.json",
     "build:storybook": "storybook build -o docs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
@@ -55,7 +55,7 @@
     "typedoc": "^0.28.14",
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-plugin-merge-modules": "^7.0.0",
-    "typescript-json-schema": "^0.65.1",
+    "typescript-json-schema": "^0.67.0",
     "vite-plugin-istanbul": "^7.0.0"
   },
   "engines": {
