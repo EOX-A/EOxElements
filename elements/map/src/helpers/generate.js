@@ -487,7 +487,7 @@ function setSyncListeners(olLayer, eoxLayer) {
 
   // Sync other property changes to the layer definition
   olLayer.on("propertychange", (e) => {
-    if (e.key === "map") return;
+    if (e.key === "map" || e.key === "source") return;
 
     eoxLayer.properties[e.key] = e.target.get(e.key);
   });
