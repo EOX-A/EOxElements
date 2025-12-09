@@ -7,4 +7,4 @@
 # elements/storytelling
 
 - [CustomMarkdownIt](interfaces/CustomMarkdownIt.md)
-- [CustomMarkdownItState](interfaces/CustomMarkdownItState.md)
+- [CustomMarkdownItState](type-aliases/CustomMarkdownItState.md)

@@ -15,7 +15,7 @@ class MapboxStyle extends LayerGroup {
   /**
    *
    * @param {*} mapboxStyle mapbox style definition
-   * @param {import("ol-mapbox-style/dist/apply").Options} applyOptions ol-mapbox-style apply options
+   * @param {Parameters<typeof import("ol-mapbox-style").apply>[2]} applyOptions ol-mapbox-style apply options
    * @returns
    */
   applyMapboxStyle(mapboxStyle, applyOptions) {

@@ -9,4 +9,7 @@
 ## Interfaces
 
 - [CustomMarkdownIt](../../../elements/storytelling/interfaces/CustomMarkdownIt.md)
-- [CustomMarkdownItState](../../../elements/storytelling/interfaces/CustomMarkdownItState.md)
+
+## Type Aliases
+
+- [CustomMarkdownItState](../../../elements/storytelling/type-aliases/CustomMarkdownItState.md)
