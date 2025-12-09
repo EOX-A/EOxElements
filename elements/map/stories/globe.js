@@ -8,6 +8,13 @@ const GlobeStory = {
     center: [15, 48],
     projection: "globe",
     layers: [
+      // {
+      //   type: "STAC",
+      //   properties: {
+      //     id: "stacLayer",
+      //   },
+      //   url: "https://s3.us-west-2.amazonaws.com/sentinel-cogs/sentinel-s2-l2a-cogs/10/T/ES/2022/7/S2A_10TES_20220726_0_L2A/S2A_10TES_20220726_0_L2A.json",
+      // },
       {
         type: "WebGLTile",
         style: {
@@ -141,8 +148,8 @@ const GlobeStory = {
           type: "XYZ",
           url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
           crossOrigin: "anonymous",
-        }
-      }
+        },
+      },
       // {
       //   type: "Tile",
       //   properties: {
@@ -217,7 +224,7 @@ const GlobeStory = {
       //     },
       //   },
       // },
-      // { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+      // { type: "Tile", properties: { id: "osm", title: "OSM" }, source: { type: "OSM" } },
     ],
     zoom: 7,
   },

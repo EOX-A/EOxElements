@@ -26,9 +26,9 @@ const ProjectionStory = {
           type: "XYZ",
           url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024/default/WGS84/{z}/{y}/{x}.jpg",
           crossOrigin: "anonymous",
-          projection: "EPSG:4326"
-        }
-      }
+          projection: "EPSG:4326",
+        },
+      },
     ],
     center: [16.8, 48.2],
     zoom: 7,

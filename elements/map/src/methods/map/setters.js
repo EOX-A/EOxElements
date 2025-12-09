@@ -334,76 +334,6 @@ export function setConfigMethod(config, EOxMap) {
  * @returns {ProjectionLike} - The new projection code.
  */
 export function setProjectionMethod(projection, oldProjection, EOxMap) {
-  if (projection === "globe") {
-    if (EOxMap.shadowRoot) {
-      /** @type {HTMLElement} */
-      let globeDiv = EOxMap.shadowRoot.querySelector("#globe");
-      if (!globeDiv) {
-        globeDiv = document.createElement("div");
-        globeDiv.id = "globe";
-        globeDiv.style.width = "100%";
-        globeDiv.style.height = "100%";
-        EOxMap.renderRoot?.appendChild(globeDiv);
-      }
-      window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
-      /** @type {HTMLElement} */
-      (EOxMap.shadowRoot.querySelector("#map")).style.display = "none";
-    }
-
-    return projection;
-  }
-  if (oldProjection === "globe" && EOxMap.globe) {
-    const globe = EOxMap.globe;
-    const planet = globe.planet;
-
-    // 1. Determine the target point on the terrain at the center of the viewport
-    let c = planet.getCartesianFromPixelTerrain(
-      globe.renderer.handler.getCenter(),
-    );
-
-    // Fallback: If no terrain is found at the center, just use the current camera eye position
-    const targetCartesian = c
-      ? c.normal().scaleTo(c.length() + c.distance(planet.camera.eye))
-      : planet.camera.eye;
-
-    planet.flyCartesian(targetCartesian, {
-      amplitude: 0,
-      // The critical part: all final calculations and view settings
-      // MUST happen inside the completeCallback.
-      completeCallback: () => {
-        // If a target (c) was found, make the camera look at it (straight down)
-        if (c) {
-          planet.camera.look(c);
-        }
-
-        // Recalculate the camera position AFTER the flight and 'look' adjustments are complete
-        const finalCameraPosition = globe.planet.camera.getLonLat();
-
-        // Calculate the OpenLayers zoom level using the camera's final height
-        // The factor (27050000) is a known conversion constant for this library setup.
-        const zoomFromGlobe =
-          Math.log2(27050000 / finalCameraPosition.height) + 1;
-
-        // Calculate the OpenLayers center coordinates
-        const centerFromGlobe = [
-          finalCameraPosition.lon,
-          finalCameraPosition.lat,
-        ];
-        const newCenter = olTransform(centerFromGlobe, "EPSG:4326", projection);
-
-        // Apply the calculated center and zoom to the OpenLayers map view
-        EOxMap.map.getView().setCenter(newCenter);
-        EOxMap.map.getView().setZoom(zoomFromGlobe);
-
-        // Finally, switch the display from 3D to 2D
-        /** @type {HTMLElement} */
-        (EOxMap.shadowRoot.querySelector("#globe")).style.display = "none";
-        /** @type {HTMLElement} */
-        (EOxMap.shadowRoot.querySelector("#map")).style.display = "";
-      },
-    });
-    oldProjection = "EPSG:3857"; // reset oldProjection to a WGS84 projection
-  }
   let newProj = oldProjection;
 
   const oldView = EOxMap.map.getView();
@@ -445,7 +375,7 @@ export function setProjectionMethod(projection, oldProjection, EOxMap) {
       center: newCenter,
       resolution: newResolution,
       rotation: oldView.getRotation(),
-      projection: "EPSG:3857",
+      projection,
     });
 
     // Transfer existing event listeners from the old view to the new view
