@@ -7,6 +7,7 @@ import {
   highlightByIdVectorTileLayer,
   removeSelectInteractionLayer,
   removeSelectInteraction,
+  addMultipleSelectInteractions,
 } from "./cases/select/index.js";
 
 const vectorTileInteraction = [
@@ -37,16 +38,22 @@ const vectorTileInteraction = [
  */
 describe("select interaction on click", () => {
   /**
-   * Test case to adds a select interaction to VectorTile layer
+   * Test case to add a select interaction to VectorTile layer
    */
   it("adds a select interaction to VectorTile layer", () =>
     addSelectInteractionVectorTile(vectorTileInteraction));
 
   /**
-   * Test case to adds a select interaction to Vector layer
+   * Test case to add a select interaction to Vector layer
    */
   it("adds a select interaction to Vector layer", () =>
     addSelectInteractionVector());
+
+  /**
+   * Test case to add a multiple interactions to Vector layer and a Vectortile layer
+   */
+  it.only("adds multiple select interactions", () =>
+    addMultipleSelectInteractions());
 
   /**
    * Test case to add a selection to a layer that was initially created without a selection
