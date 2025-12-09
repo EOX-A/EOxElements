@@ -8,7 +8,7 @@
 
 > **LoadingIndicatorOptions** = `Options` & `object`
 
-Defined in: [elements/map/src/types.ts:136](https://github.com/EOX-A/EOxElements/blob/34d0ce41906b3777b2124a94c4e7e509dceca820/elements/map/src/types.ts#L136)
+Defined in: [elements/map/src/types.ts:136](https://github.com/EOX-A/EOxElements/blob/1ffbeebee6e78545918d4fc967cae44fa8c8566e/elements/map/src/types.ts#L136)
 
 ## Type Declaration
 
