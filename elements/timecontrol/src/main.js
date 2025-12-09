@@ -11,6 +11,7 @@ import { DataSet } from "vis-timeline/standalone";
 import "./components/timecontrol-date";
 import "./components/timecontrol-picker";
 import "./components/timecontrol-timeline";
+import "./components/timecontrol-timelapse";
 import "@eox/itemfilter";
 
 import {

@@ -7,6 +7,7 @@ import {
   TimelineStory,
   ExternalMapRenderingStory,
   DateFilterStory,
+  ExpertStory,
 } from "./index";
 
 export default {
@@ -28,3 +29,5 @@ export const Timeline = TimelineStory;
 export const ExternalMapRendering = ExternalMapRenderingStory;
 
 export const DateFilter = DateFilterStory;
+
+export const Expert = ExpertStory;

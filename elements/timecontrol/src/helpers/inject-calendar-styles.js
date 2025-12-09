@@ -69,6 +69,14 @@ export const calendarStyle = `
   .vc-date[data-vc-date-selected] .vc-day__plus::before {
     background: var(--on-primary) !important;
   }
+  [data-vc-theme=light] .vc-date.vc-data-available .vc-date__btn {
+    --tw-bg-opacity: 1;
+    background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+  }
+  [data-vc-theme=dark] .vc-date.vc-data-available .vc-date__btn {
+    --tw-bg-opacity: 1;
+    background-color: rgb(30 41 59 / var(--tw-bg-opacity));
+  }
 `;
 
 export function injectCalendarStyles() {

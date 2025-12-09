@@ -8,3 +8,4 @@ export { default as DatePickerStandaloneStory } from "./date-picker-standalone";
 export { default as TimelineStory } from "./timeline"; // Timeline story
 export { default as ExternalMapRenderingStory } from "./external-map-rendering"; // External map rendering mosaic story
 export { default as DateFilterStory } from "./date-filter"; // Date filter story
+export { default as ExpertStory } from "./expert"; // Expert story

@@ -11,6 +11,7 @@ import {
 } from "../helpers";
 import { Calendar } from "vanilla-calendar-pro";
 import groupBy from "lodash.groupby";
+import find from "lodash.find";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -96,6 +97,7 @@ export class EOxTimeControlPicker extends LitElement {
           dateMin: options.min,
           dateMax: options.max,
           displayDateMin: options.min,
+          disableToday: true,
           displayDateMax: options.max,
           displayDatesOutside: false,
           type: this.range ? "multiple" : "default",
@@ -137,19 +139,38 @@ export class EOxTimeControlPicker extends LitElement {
             }
           },
           onCreateDateEls: (_self, dateEl) => {
-            if (this.showDots) {
-              const date = extractISOFromCalendar(dateEl);
-              const dateDots = groupBy(EOxTimeControl.items.get(), "start");
-              const oldDots = dateEl.querySelector(".vc-day__dots");
-              if (oldDots) oldDots.remove();
+            const date = extractISOFromCalendar(dateEl);
+            const dateDots = groupBy(EOxTimeControl.items.get(), "start");
+            const oldDots = dateEl.querySelector(".vc-day__dots");
+            if (oldDots) oldDots.remove();
 
-              if (dateDots[date] && dateEl.children.length) {
-                const host = document.createElement("div");
-                host.className = "vc-day__dots";
+            if (dateDots[date] && dateEl.children.length) {
+              const host = document.createElement("div");
+              host.className = "vc-day__dots";
 
-                const totalDots = dateDots[date].length;
-                const dotsRequired = totalDots <= 3 ? totalDots : 3;
-                for (let i = 0; i < dotsRequired; i++) {
+              const totalDots = dateDots[date].length;
+              const dotsRequired = totalDots <= 3 ? totalDots : 3;
+              for (let i = 0; i < dotsRequired; i++) {
+                const EOxItemFilter = /** @type {EOxItemFilter} */ (
+                  EOxTimeControl.querySelector("eox-itemfilter")
+                );
+                if (EOxItemFilter) {
+                  const results = EOxItemFilter.results;
+                  const dataAvaiableAfterFilter = find(
+                    results,
+                    (result) => result.start === date,
+                  );
+                  if (!dataAvaiableAfterFilter) {
+                    dateEl.style.opacity = "0.5";
+                  }
+                }
+
+                dateEl.classList.add("vc-data-available");
+                if (dateEl.hasAttribute("data-vc-date-today")) {
+                  dateEl.removeAttribute("data-vc-date-today");
+                }
+
+                if (this.showDots) {
                   if (i < 2 || (i === 2 && totalDots === 3)) {
                     const dot = document.createElement("div");
                     dot.className = "vc-day__dot";
@@ -160,8 +181,8 @@ export class EOxTimeControlPicker extends LitElement {
                     host.appendChild(plus);
                   }
                 }
-                dateEl.appendChild(host);
               }
+              dateEl.appendChild(host);
             }
           },
         });

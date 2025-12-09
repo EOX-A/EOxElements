@@ -23,6 +23,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
       "eox-timecontrol-date",
       "eox-timecontrol-picker",
       "eox-timecontrol-timeline",
+      "eox-timecontrol-timelapse",
     ],
     dateRange,
   );
