@@ -424,9 +424,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       }
     });
 
-    // Reorder the layers to match the REVERSE of the new definition
-    // (EOx-Layers-JSON is in reverse painters order)
-    const reverseNewLayerIds = newLayerIds.toReversed();
+    const sortNewLayerIds = newLayerIds;
     layerCollection
       .getArray()
       .sort(
@@ -435,8 +433,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
           /** @type {import("ol/layer/Base").default} **/ layerB,
         ) => {
           return (
-            reverseNewLayerIds.indexOf(layerA.get("id")) -
-            reverseNewLayerIds.indexOf(layerB.get("id"))
+            sortNewLayerIds.indexOf(layerA.get("id")) -
+            sortNewLayerIds.indexOf(layerB.get("id"))
           );
         },
       );
