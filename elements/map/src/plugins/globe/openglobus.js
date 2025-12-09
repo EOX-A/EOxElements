@@ -94,9 +94,12 @@ export const createGlobe = ({ map, target, renderTile }) => {
 };
 
 let timer;
-export const refreshGlobe = () => {
+export const refreshGlobe = (map) => {
+  if (timer) {
+    window.clearTimeout(timer);
+  }
   canvasTilesLayer.abortLoading();
-  // globus.planet.quadTreeStrategy.clearLayerMaterial(tg, true);
+  map.globe.planet.quadTreeStrategy.clearLayerMaterial(canvasTilesLayer, true);
   canvasTilesLayer.animated = true; // temporarily mark as animated to force redraw without dismissing existing tiles
   timer = window.setTimeout(() => {
     timer = undefined;

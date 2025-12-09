@@ -9,17 +9,20 @@ export const create = ({ EOxMap, target }) => {
    */
   const maxMaps = navigator.hardwareConcurrency || 4;
 
-  const setLayers = (layers) => {
-    layers.forEach((layer) => {
+  const setLayers = (layers, {EOxMap, target}) => {
+    layers.on("change:length", () => {
+      create({EOxMap, target});
+    });
+    layers.getArray().forEach((layer) => {
       if (layer.getProperties().type === "Group") {
-        setLayers(layer.getLayers().getArray());
+        setLayers(layer.getLayers(), {EOxMap, target});
         return
       }
       layers.forEach((layer) => {
       layer.on("change", () => {
         // Assuming styleVariables update for Webgl layer
         doForEachLayer(layer, (targetLayer) => {
-          if (targetLayer.getProperties().type === "WebGL") {
+          if (targetLayer?.getProperties().type === "WebGLTile") {
             targetLayer.updateStyleVariables(layer.styleVariables_);
           }
         });
@@ -80,15 +83,15 @@ export const create = ({ EOxMap, target }) => {
       const mapObj = mapPool[i];
       changeFunction(mapObj.tileMap.getLayerById(originalLayer.get("id")));
     }
-    refreshGlobe();
+    refreshGlobe(EOxMap);
   };
-  const layers = EOxMap.map.getLayers().getArray()
-  setLayers(layers);
+  const layers = EOxMap.map.getLayers()
+  setLayers(layers, {EOxMap, target});
 };
 
 export const refresh = (mapPoolCallback, EOxMap) => {
   mapPoolCallback(mapPool);
-  refreshGlobe();
+  refreshGlobe(EOxMap);
 };
 
 window.eoxMapGlobe = {
