@@ -545,10 +545,9 @@ export class EOxSelectInteraction {
  * @throws Will throw an error if an interaction with the specified ID already exists.
  */
 export function addSelect(EOxMap, selectLayer, options) {
-  console.log(options);
-  // if (EOxMap.selectInteractions[options.id]) {
-  //   throw Error(`Interaction with id: ${options.id} already exists.`);
-  // }
+  if (EOxMap.interactions[options.id]) {
+    throw Error(`Interaction with id: ${options.id} already exists.`);
+  }
   EOxMap.selectInteractions[options.id] = new EOxSelectInteraction(
     EOxMap,
     selectLayer,
