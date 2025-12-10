@@ -12,6 +12,7 @@ import "./components/timecontrol-date";
 import "./components/timecontrol-picker";
 import "./components/timecontrol-timeline";
 import "./components/timecontrol-timelapse";
+import "./components/timecontrol-slider";
 import "@eox/itemfilter";
 
 import {

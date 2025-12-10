@@ -24,7 +24,6 @@ export class EOxTimeControlDate extends LitElement {
   #selectedDateRange = null;
   constructor() {
     super();
-    this.selectedDateRange = null;
     this.format = TIME_CONTROL_DATE_FORMAT;
     this.navigation = false;
     this.unstyled = false;

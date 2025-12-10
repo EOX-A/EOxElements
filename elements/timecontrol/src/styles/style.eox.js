@@ -46,7 +46,6 @@ button.icon.next {
 
 tc-range-slider {
   display: inline-block;
-  width: 300px;
   margin: 0;
 }
 `;

@@ -24,43 +24,13 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
       "eox-timecontrol-picker",
       "eox-timecontrol-timeline",
       "eox-timecontrol-timelapse",
+      "eox-timecontrol-slider",
     ],
     dateRange,
+    EOxTimeControl.items.get(),
   );
   const selectedDateRange = dayjs(dateRange[0]);
   if (Number.isNaN(selectedDateRange.unix())) return;
-
-  // TODO: RE-INIT
-  // const container = EOxTimeControl.getContainer();
-  // try {
-  //   visTimeline.addCustomTime(selectedDate.toDate(), "selected");
-  // } catch (_) {
-  //   /* exists */
-  // }
-
-  // visTimeline.setCustomTime(selectedDate.toDate(), "selected");
-  // visTimeline.setCustomTimeTitle(
-  //   selectedDate.format("MMM DD' YYYY"),
-  //   "selected",
-  // );
-
-  // const el = container.querySelector('.vis-custom-time[data-id="selected"]');
-  // if (el) el.classList.add("vis-custom-time-selected");
-
-  // const prevSelectionCell = container.querySelectorAll(
-  //   ".vis-item.milestone.vis-point.vis-selected-item",
-  // );
-  // prevSelectionCell.forEach((cell) => {
-  //   cell.classList.remove("vis-selected-item");
-  // });
-
-  // const selectedEle = container.querySelector(".vis-custom-time");
-  // if (selectedEle) {
-  //   const labelEle = /** @type {HTMLElement} */ (selectedEle.children[0]);
-  //   labelEle.classList.add("vis-custom-time-selected-label");
-  //   labelEle.innerText = dayjs(date).format("MMM DD' YYYY");
-  // }
-
   const flatLayers = getFlatLayersArray(
     /** @type {import('ol/layer/Base').default[]} */ (
       eoxMap.map.getLayers().getArray()
@@ -89,16 +59,8 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   selectedRangeItems.forEach((item) => {
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
-      // Get the source if it is not a group layer
       // @ts-expect-error Property 'getSource' does not exist on type 'BaseLayer'.
       const source = layer?.getLayers ? null : layer.getSource();
-
-      // TODO: RE-INIT
-      // const newSelectionCell = container.querySelector(
-      //   `.vis-item.milestone.vis-point.item-${item.id}`,
-      // );
-      // newSelectionCell.classList.add("vis-selected-item");
-
       instances = {
         ...instances,
         [item.group]: { layer, source },

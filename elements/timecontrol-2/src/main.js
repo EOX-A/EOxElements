@@ -410,6 +410,7 @@ export class EOxTimeControl extends LitElement {
           ${this.slider
             ? html`
                 <div class="slider-col">
+                  ${this.controlValues[this._newStepIndex]}
                   <tc-range-slider
                     data=${this.controlValues}
                     part="slider"

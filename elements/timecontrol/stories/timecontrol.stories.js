@@ -8,6 +8,7 @@ import {
   ExternalMapRenderingStory,
   DateFilterStory,
   ExpertStory,
+  SliderStory,
 } from "./index";
 
 export default {
@@ -23,6 +24,8 @@ export const DateWithNavigation = DateWithNavigationStory;
 export const DatePickerPopup = DatePickerPopupStory;
 
 export const DatePickerStandalone = DatePickerStandaloneStory;
+
+export const Slider = SliderStory;
 
 export const Timeline = TimelineStory;
 
