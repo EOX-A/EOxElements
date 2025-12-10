@@ -23,15 +23,15 @@ export const SelectFeature = {
   },
   render: (args) => html`
     <eox-drawtools
-      for=${args.for}
+      for="${args.for}"
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
-      layer-id=${args.layerId}
+      layer-id="${args.layerId}"
       @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      style=${args.storyAdditionalComponents["eox-map"].style}
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
   `,

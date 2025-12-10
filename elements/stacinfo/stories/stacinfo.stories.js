@@ -25,8 +25,8 @@ export default {
       <eox-stacinfo
         for=${args.for}
         .header=${args.header}
-        .tags=${args.tags}
-        .body=${args.body}
+        .tags="${args.tags}"
+        .body="${args.body}"
         .featured=${args.featured}
         .footer=${args.footer}
         ?unstyled=${args.unstyled}

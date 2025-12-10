@@ -25,15 +25,15 @@ export const MultiPolygonWithList = {
   },
   render: (args) => html`
     <eox-drawtools
-      for=${args.for}
-      ?multiple-features=${args.multipleFeatures}
-      ?show-list=${args.showList}
-      feature-name=${args.featureName}
+      for="${args.for}"
+      ?multiple-features="${args.multipleFeatures}"
+      ?show-list="${args.showList}"
+      feature-name="${args.featureName}"
       @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      style=${args.storyAdditionalComponents["eox-map"].style}
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
   `,

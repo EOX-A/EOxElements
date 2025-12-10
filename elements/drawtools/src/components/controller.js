@@ -209,9 +209,9 @@ export class EOxDrawToolsController extends LitElement {
           <button
             data-cy="drawBtn"
             class="transparent square primary-text no-margin small"
-            title=${this.unstyled ? (this.select ? "Select" : "Draw") : ""}
-            ?disabled=${this.#drawDisabled || nothing}
-            @click=${() => this.drawFunc.start()}
+            title="${this.unstyled ? (this.select ? "Select" : "Draw") : ""}"
+            ?disabled="${this.#drawDisabled || nothing}"
+            @click="${() => this.drawFunc.start()}"
           >
             ${this.unstyled
               ? drawLabel
@@ -229,9 +229,9 @@ export class EOxDrawToolsController extends LitElement {
           <button
             data-cy="discardBtn"
             class="transparent square error-text no-margin small"
-            title=${this.unstyled ? "Discard" : ""}
-            ?disabled=${this.#discardDisabled || nothing}
-            @click=${() => this.drawFunc.discard()}
+            title="${this.unstyled ? "Discard" : ""}"
+            ?disabled="${this.#discardDisabled || nothing}"
+            @click="${() => this.drawFunc.discard()}"
           >
             ${this.unstyled
               ? "discard"
@@ -249,7 +249,7 @@ export class EOxDrawToolsController extends LitElement {
             <button
               data-cy="editorBtn"
               class="transparent circle primary-text no-margin small"
-              title=${this.unstyled ? "Edit features" : ""}
+              title="${this.unstyled ? "Edit features" : ""}"
               @click=${() =>
                 this.renderRoot
                   .querySelector("#editor")
@@ -281,7 +281,7 @@ export class EOxDrawToolsController extends LitElement {
             <button
               data-cy="importBtn"
               class="transparent circle primary-text no-margin small"
-              title=${this.unstyled ? "Import features" : ""}
+              title="${this.unstyled ? "Import features" : ""}"
               @click=${() =>
                 /**@type {HTMLElement}*/ (
                   this.querySelector("#import-file")

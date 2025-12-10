@@ -150,8 +150,8 @@ export class EOxLayerControlLayerList extends LitElement {
               (layer) => layer,
               (layer) => html`
                 <li
-                  data-layer=${layer.get(this.idProperty)}
-                  data-type=${getLayerType(layer, this.map)}
+                  data-layer="${layer.get(this.idProperty)}"
+                  data-type="${getLayerType(layer, this.map)}"
                   class="square"
                 >
                   ${

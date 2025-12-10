@@ -25,21 +25,21 @@ const ExtentLimit = {
   render: (args) => {
     return html`
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
-        style=${args.style}
-        ?button=${args.button}
-        ?small=${args.small}
-        .extent=${args.extent}
-        .tooltip=${args.tooltip}
-        .tooltipDirection=${args.tooltipDirection}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
+        style="${args.style}"
+        ?button="${args.button}"
+        ?small="${args.small}"
+        .extent="${args.extent}"
+        .tooltip="${args.tooltip}"
+        .tooltipDirection="${args.tooltipDirection}"
       ></eox-geosearch>
       <eox-map
-        id=${args.storyAdditionalComponents["eox-map"].id}
-        .animationOptions=${args.storyAdditionalComponents["eox-map"]
-          .animationOptions}
-        .config=${args.storyAdditionalComponents["eox-map"].config}
-        style=${args.storyAdditionalComponents["eox-map"].style}
+        id="${args.storyAdditionalComponents["eox-map"].id}"
+        .animationOptions="${args.storyAdditionalComponents["eox-map"]
+          .animationOptions}"
+        .config="${args.storyAdditionalComponents["eox-map"].config}"
+        style="${args.storyAdditionalComponents["eox-map"].style}"
       ></eox-map>
     `;
   },

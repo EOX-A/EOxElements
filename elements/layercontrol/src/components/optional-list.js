@@ -110,7 +110,7 @@ export class EOxLayerControlOptionalList extends LitElement {
               const label = title || id;
 
               // Generating options for the dropdown
-              return html` <option value=${value}>${label}</option> `;
+              return html` <option value="${value}">${label}</option> `;
             })}
           </select>
 
@@ -119,7 +119,7 @@ export class EOxLayerControlOptionalList extends LitElement {
         </div>
 
         <!-- Button to handle adding layers -->
-        <button class="small" @click=${this.#handleAddToList}>Add</button>
+        <button class="small" @click="${this.#handleAddToList}">Add</button>
       </nav>
     `;
   }

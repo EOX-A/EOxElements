@@ -24,7 +24,7 @@ export const GapStory = {
       }`,
   },
   render: (args) => html`
-    <eox-layout gap=${args.gap} style=${args.style}>
+    <eox-layout gap="${args.gap}" style="${args.style}">
       <eox-layout-item x="0" y="0" w="3" h="2">
         x="0" y="0" w="3" h="2"
       </eox-layout-item>

@@ -408,7 +408,7 @@ export class EOxStoryTelling extends LitElement {
                               )}
                             class="grid-item"
                           >
-                            <icon id=${element.id}></icon>
+                            <icon id="${element.id}"></icon>
                             <p>${element.name}</p>
                             <style>
                               icon#${element.id}::before {

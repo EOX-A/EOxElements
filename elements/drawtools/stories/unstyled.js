@@ -23,15 +23,15 @@ export const Unstyled = {
   },
   render: (args) => html`
     <eox-drawtools
-      for=${args.for}
-      ?multiple-features=${args.multipleFeatures}
-      ?show-list=${args.showList}
+      for="${args.for}"
+      ?multiple-features="${args.multipleFeatures}"
+      ?show-list="${args.showList}"
       .unstyled=${args.unstyled}
       @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      style=${args.storyAdditionalComponents["eox-map"].style}
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
   `,

@@ -194,13 +194,13 @@ export class EOxLayerControlAddLayers extends LitElement {
           >
             <a
               @click=${() => this.#handleOpenCloseTab("url")}
-              class=${isUrlTabOpen ? "active" : ""}
+              class="${isUrlTabOpen ? "active" : ""}"
             >
               URL
             </a>
             <a
               @click=${() => this.#handleOpenCloseTab("json")}
-              class=${isJsonTabOpen ? "active" : ""}
+              class="${isJsonTabOpen ? "active" : ""}"
             >
               JSON
             </a>
@@ -228,7 +228,7 @@ export class EOxLayerControlAddLayers extends LitElement {
                       type="text"
                       class="add-url"
                       placeholder="Add URL (WMS/XYZ)"
-                      .value=${this.urlInput}
+                      .value="${this.urlInput}"
                       @input=${this.#handleURLChange}
                     />
                   </div>

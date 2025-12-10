@@ -373,8 +373,8 @@ class EOxGeoSearch extends LitElement {
             : ""}
           <input
             placeholder="Type to search"
-            @input=${this.onInput}
-            @blur=${this.onInputBlur}
+            @input="${this.onInput}"
+            @blur="${this.onInputBlur}"
           />
         </div>
       </li>
@@ -410,9 +410,9 @@ ${this._data.map(
     <li
       data-ui="#search"
       class="surface"
-      @click=${() => {
+      @click="${() => {
         this.handleSelect(item);
-      }}
+      }}"
     >
       ${item.formatted}
     </li>

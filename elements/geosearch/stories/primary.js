@@ -20,16 +20,16 @@ const Primary = {
   render: (args) => {
     return html`
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
-        style=${args.style}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
+        style="${args.style}"
       ></eox-geosearch>
       <eox-map
-        id=${args.storyAdditionalComponents["eox-map"].id}
-        .animationOptions=${args.storyAdditionalComponents["eox-map"]
-          .animationOptions}
-        .config=${args.storyAdditionalComponents["eox-map"].config}
-        style=${args.storyAdditionalComponents["eox-map"].style}
+        id="${args.storyAdditionalComponents["eox-map"].id}"
+        .animationOptions="${args.storyAdditionalComponents["eox-map"]
+          .animationOptions}"
+        .config="${args.storyAdditionalComponents["eox-map"].config}"
+        style="${args.storyAdditionalComponents["eox-map"].style}"
       ></eox-map>
     `;
   },

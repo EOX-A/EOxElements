@@ -221,7 +221,7 @@ export class EOxItemFilterContainer extends LitElement {
         ? html`
             <div
               class="inline-container-wrapper"
-              @click=${this.#handleToggleDropdown}
+              @click="${this.#handleToggleDropdown}"
             >
               <div class="inline-container square border" part="container">
                 <div class="chip-container">
@@ -273,12 +273,12 @@ export class EOxItemFilterContainer extends LitElement {
                     autocomplete="off"
                     id="eox-itemfilter-input-search"
                     type="text"
-                    @click=${this.#handleToggleDropdown}
-                    @focus=${this.#handleShowDropdownOnFocus}
-                    @input=${this.#searchFilter}
+                    @click="${this.#handleToggleDropdown}"
+                    @focus="${this.#handleShowDropdownOnFocus}"
+                    @input="${this.#searchFilter}"
                     placeholder="Search and add filter"
                     aria-haspopup="true"
-                    aria-expanded=${this.showDropdown}
+                    aria-expanded="${this.showDropdown}"
                   />
                 </div>
               </div>
@@ -289,9 +289,9 @@ export class EOxItemFilterContainer extends LitElement {
                 <div
                   class="inline-content"
                   slot="content"
-                  @keydown=${this.#handleKeyDown}
-                  @click=${this.#handleFormClick}
-                  @focus=${this.#handleFormClick}
+                  @keydown="${this.#handleKeyDown}"
+                  @click="${this.#handleFormClick}"
+                  @focus="${this.#handleFormClick}"
                 >
                   <slot name="section"></slot>
                 </div>

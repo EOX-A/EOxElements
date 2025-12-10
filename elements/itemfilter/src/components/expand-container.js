@@ -64,7 +64,7 @@ export class EOxItemFilterExpandContainer extends LitElement {
         () => html`<slot name="filter"></slot>`,
         () =>
           html`<details
-            @toggle=${this.#handleDetailsToggle}
+            @toggle="${this.#handleDetailsToggle}"
             class="details-filter max-width"
             ?open=${this.filterObject.expanded || nothing}
           >
@@ -80,8 +80,8 @@ export class EOxItemFilterExpandContainer extends LitElement {
                 </i>
                 <span
                   class="title max"
-                  style=${!this.filterObject.title &&
-                  "text-transform: var(--text-transform)"}
+                  style="${!this.filterObject.title &&
+                  "text-transform: var(--text-transform)"}"
                 >
                   ${this.filterObject.title ||
                   this.filterObject.key ||

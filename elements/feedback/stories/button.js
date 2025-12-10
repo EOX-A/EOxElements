@@ -8,9 +8,9 @@ export default {
   },
   render: (args) => html`
     <eox-feedback-button
-      endpoint=${args.endpoint}
-      position=${args.position}
-      @click=${args.click}
+      endpoint="${args.endpoint}"
+      position="${args.position}"
+      @click="${args.click}"
     ></eox-feedback-button>
   `,
 };

@@ -27,53 +27,53 @@ const CustomAlignments = {
     return html`
       <!-- Top Right -->
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
         style="top: 36px; right: 32px; ${args.style}"
-        ?small=${args.small}
-        ?button=${args.button}
+        ?small="${args.small}"
+        ?button="${args.button}"
         list-direction="left"
         results-direction="down"
       ></eox-geosearch>
       <!-- Top Left -->
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
         style="top: 36px; left: 32px; ${args.style}"
-        ?small=${args.small}
-        ?button=${args.button}
+        ?small="${args.small}"
+        ?button="${args.button}"
         list-direction="right"
         results-direction="down"
-        .onSelect=${onSelectHandler}
+        .onSelect="${onSelectHandler}"
       ></eox-geosearch>
       <!-- Bottom Right -->
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
         style="top: 296px; right: 32px; ${args.style}"
-        ?small=${args.small}
-        ?button=${args.button}
+        ?small="${args.small}"
+        ?button="${args.button}"
         list-direction="left"
         results-direction="up"
-        .onSelect=${onSelectHandler}
+        .onSelect="${onSelectHandler}"
       ></eox-geosearch>
       <!-- Bottom Left -->
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
         style="top: 296px; left: 32px; ${args.style}"
-        ?small=${args.small}
-        ?button=${args.button}
+        ?small="${args.small}"
+        ?button="${args.button}"
         list-direction="right"
         results-direction="up"
-        .onSelect=${onSelectHandler}
+        .onSelect="${onSelectHandler}"
       ></eox-geosearch>
       <eox-map
-        id=${args.storyAdditionalComponents["eox-map"].id}
-        .animationOptions=${args.storyAdditionalComponents["eox-map"]
-          .animationOptions}
-        .config=${args.storyAdditionalComponents["eox-map"].config}
-        style=${args.storyAdditionalComponents["eox-map"].style}
+        id="${args.storyAdditionalComponents["eox-map"].id}"
+        .animationOptions="${args.storyAdditionalComponents["eox-map"]
+          .animationOptions}"
+        .config="${args.storyAdditionalComponents["eox-map"].config}"
+        style="${args.storyAdditionalComponents["eox-map"].style}"
       ></eox-map>
     `;
   },

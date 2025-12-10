@@ -28,7 +28,7 @@ export const ContinuousDrawing = {
 
     <!-- Initialize eox-drawtools for the eox-map with ID "continuous" -->
     <eox-drawtools
-      for=${args.for}
+      for="${args.for}"
       continuous=${args.continuous}
     ></eox-drawtools>
   `,

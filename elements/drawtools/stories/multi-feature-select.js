@@ -39,11 +39,11 @@ export const MultiFeatureSelect = {
   },
   render: (args) => html`
     <eox-drawtools
-      for=${args.for}
+      for="${args.for}"
       .allowModify=${args.allowModify}
       .multipleFeatures=${args.multipleFeatures}
       .type=${args.type}
-      layer-id=${args.layerId}
+      layer-id="${args.layerId}"
       ?show-list=${args.showList}
       .featureStyles=${args.featureStyles}
       .featureName=${args.featureName}
@@ -51,8 +51,8 @@ export const MultiFeatureSelect = {
       @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      style=${args.storyAdditionalComponents["eox-map"].style}
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
   `,

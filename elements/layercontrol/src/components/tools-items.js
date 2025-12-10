@@ -80,7 +80,7 @@ export class EOxLayerControlTabs extends LitElement {
         ${this.#styleBasic}
         ${!this.unstyled && this.#styleEOX}
       </style>
-      <div class=${this.toolsAsList ? "listed" : "tabbed"}>
+      <div class="${this.toolsAsList ? "listed" : "tabbed"}">
         <!-- Navigation for tabs and actions -->
         ${when(
           isListAvail,

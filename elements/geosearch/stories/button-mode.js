@@ -24,20 +24,20 @@ const ButtonMode = {
   render: (args) => {
     return html`
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
-        style=${args.style}
-        ?small=${args.small}
-        ?button=${args.button}
-        list-direction=${args.listDirection}
-        results-direction=${args.resultsDirection}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
+        style="${args.style}"
+        ?small="${args.small}"
+        ?button="${args.button}"
+        list-direction="${args.listDirection}"
+        results-direction="${args.resultsDirection}"
       ></eox-geosearch>
       <eox-map
-        id=${args.storyAdditionalComponents["eox-map"].id}
-        .animationOptions=${args.storyAdditionalComponents["eox-map"]
-          .animationOptions}
-        .config=${args.storyAdditionalComponents["eox-map"].config}
-        style=${args.storyAdditionalComponents["eox-map"].style}
+        id="${args.storyAdditionalComponents["eox-map"].id}"
+        .animationOptions="${args.storyAdditionalComponents["eox-map"]
+          .animationOptions}"
+        .config="${args.storyAdditionalComponents["eox-map"].config}"
+        style="${args.storyAdditionalComponents["eox-map"].style}"
       ></eox-map>
     `;
   },

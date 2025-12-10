@@ -24,14 +24,14 @@ export const ModifyFeatures = {
   },
   render: (args) => html`
     <eox-drawtools
-      for=${args.for}
-      ?multiple-features=${args.multipleFeatures}
-      ?allow-modify=${args.allowModify}
+      for="${args.for}"
+      ?multiple-features="${args.multipleFeatures}"
+      ?allow-modify="${args.allowModify}"
       @drawupdate=${args.drawupdate}
     ></eox-drawtools>
     <eox-map
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      style=${args.storyAdditionalComponents["eox-map"].style}
+      id="${args.storyAdditionalComponents["eox-map"].id}"
+      style="${args.storyAdditionalComponents["eox-map"].style}"
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
   `,

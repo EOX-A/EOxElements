@@ -24,7 +24,7 @@ export const DrawType = {
       for=${args.for}
       ?multiple-features=${args["multiple-features"]}
       ?allow-modify=${args["allow-modify"]}
-      type=${args.type}
+      type="${args.type}"
     ></eox-drawtools>
     <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}

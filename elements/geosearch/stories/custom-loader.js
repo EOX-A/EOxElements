@@ -92,17 +92,17 @@ const CustomLoader = {
   render: (args) => {
     return html`
       <eox-geosearch
-        .endpoint=${args.endpoint}
-        .label=${args.label}
-        style=${args.style}
-        .loaderSvg=${args.loaderSvg}
+        .endpoint="${args.endpoint}"
+        .label="${args.label}"
+        style="${args.style}"
+        .loaderSvg="${args.loaderSvg}"
       ></eox-geosearch>
       <eox-map
-        id=${args.storyAdditionalComponents["eox-map"].id}
-        .animationOptions=${args.storyAdditionalComponents["eox-map"]
-          .animationOptions}
-        .config=${args.storyAdditionalComponents["eox-map"].config}
-        style=${args.storyAdditionalComponents["eox-map"].style}
+        id="${args.storyAdditionalComponents["eox-map"].id}"
+        .animationOptions="${args.storyAdditionalComponents["eox-map"]
+          .animationOptions}"
+        .config="${args.storyAdditionalComponents["eox-map"].config}"
+        style="${args.storyAdditionalComponents["eox-map"].style}"
       ></eox-map>
     `;
   },

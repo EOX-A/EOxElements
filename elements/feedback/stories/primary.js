@@ -9,12 +9,12 @@ export default {
     close: () => console.log("Feedback closed"),
   },
   render: (args) => html`
-    <div style=${args.style}>
+    <div style="${args.style}">
       <eox-feedback
-        endpoint=${args.endpoint}
-        ?unstyled=${args.unstyled}
-        @submit=${args.submit}
-        @close=${args.close}
+        endpoint="${args.endpoint}"
+        ?unstyled="${args.unstyled}"
+        @submit="${args.submit}"
+        @close="${args.close}"
       ></eox-feedback>
     </div>
   `,

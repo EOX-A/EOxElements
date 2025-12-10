@@ -42,7 +42,7 @@ export const Grid = {
     <eox-layout style=${args.style}>
       ${renderItems().map(
         ([x, y]) =>
-          html`<eox-layout-item x=${x} y=${y} w="1" h="1"
+          html`<eox-layout-item x="${x}" y="${y}" w="1" h="1"
             >${x}/${y}</eox-layout-item
           >`,
       )}

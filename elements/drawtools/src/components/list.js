@@ -202,7 +202,7 @@ export class EOxDrawToolsList extends LitElement {
                 class="${selectionClass} no-round"
                 @mouseover=${() => this._handleHoverFeature(featureId)}
                 @mouseout=${() => this._handleHoverFeature(featureId, true)}
-                @click=${() => this._handleFeatureSelectAndDeselect(feature)}
+                @click="${() => this._handleFeatureSelectAndDeselect(feature)}"
               >
                 <div class="max">
                   <span class="title">${title}</span>
@@ -211,7 +211,7 @@ export class EOxDrawToolsList extends LitElement {
                   index=${i}
                   data-cy="deleteFeatureBtn"
                   class="transparent square small error-text front"
-                  @click=${this._handleDelete}
+                  @click="${this._handleDelete}"
                 >
                   ${this.unstyled
                     ? "x"

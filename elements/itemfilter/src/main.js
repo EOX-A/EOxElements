@@ -492,7 +492,7 @@ export class EOxItemFilter extends LitElement {
       <form
         id="itemfilter"
         class=${this.inlineMode ? "inline" : nothing}
-        @submit=${(evt) => evt.preventDefault()}
+        @submit="${(evt) => evt.preventDefault()}"
       >
         ${when(
           this.filterProperties,
@@ -571,7 +571,7 @@ export class EOxItemFilter extends LitElement {
                               .filterObject=${filterObject}
                               @details-toggled=${(e) =>
                                 toggleAccordion(e, this.#config, this)}
-                              data-details=${filterObject.key}
+                              data-details="${filterObject.key}"
                             >
                               ${this.#createReset(
                                 filterObject,

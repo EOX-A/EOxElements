@@ -25,7 +25,7 @@ export const FillGrid = {
       ?fill-grid=${args["fill-grid"]}
       row-height=${args["row-height"]}
       column-width=${args["column-width"]}
-      style=${args.style}
+      style="${args.style}"
     >
       <eox-layout-item w="2" h="2"> w="2" h="2" </eox-layout-item>
       <eox-layout-item w="1"> w="1" </eox-layout-item>
