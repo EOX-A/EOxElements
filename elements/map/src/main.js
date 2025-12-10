@@ -364,14 +364,12 @@ export class EOxMap extends LitElement {
           // Hide the globe and show the map immediately after initiating the fly animation
           const globeElement = this.shadowRoot.querySelector("#globe");
           if (globeElement) {
-            // @ts-ignore
-            globeElement.style.display = "none";
+            /** @type {HTMLElement} */ (globeElement).style.display = "none";
             globeElement.remove(); // Remove the element from the DOM
           }
           const mapElement = this.shadowRoot.querySelector("#map");
           if (mapElement) {
-            // @ts-ignore
-            mapElement.style.display = ""; // Show the map
+            /** @type {HTMLElement} */ (mapElement).style.display = ""; // Show the map
           }
           this.#isGlobeEnabled = false;
         },

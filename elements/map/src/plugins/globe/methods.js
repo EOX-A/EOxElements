@@ -176,7 +176,7 @@ async function requestTileFromMap(tileMap, layerId, job, mapPoolMap) {
               const transform = canvas.style.transform;
               if (transform) {
                 matrix = transform
-                  .match(/^matrix\(([^\(]*)\)$/)[1]
+                  .match(/^matrix\(([^(]*)\)$/)[1]
                   .split(",")
                   .map(Number);
               } else {
