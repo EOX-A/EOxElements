@@ -14,14 +14,18 @@ import { v4 as uuidv4 } from "uuid";
  * @param {number} i - The index of the layer/group to update.
  */
 export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
-  const labelEle =
-    EOxTimeControlTimeline.visTimeline.dom.leftContainer.querySelectorAll(
-      ".vis-label",
-    )[i];
-  const dataEle =
-    EOxTimeControlTimeline.visTimeline.dom.centerContainer.querySelectorAll(
+  const visTimeline =
+    /** @type {import("vis-timeline/standalone").Timeline | any} */ (
+      EOxTimeControlTimeline.visTimeline
+    );
+  const labelEle = /** @type {any} */ (
+    visTimeline.dom.leftContainer.querySelectorAll(".vis-label")[i]
+  );
+  const dataEle = /** @type {any} */ (
+    visTimeline.dom.centerContainer.querySelectorAll(
       ".vis-foreground .vis-group",
-    )[i];
+    )[i]
+  );
   if (visibility) {
     labelEle.classList.remove("vis-label-hide");
     dataEle.classList.remove("vis-group-hide");
@@ -64,7 +68,10 @@ export default function updateTimelineItems(
       content: slider.name,
     });
     for (const value of slider.values) {
-      const id = uuidv4(slider.layer + value.date);
+      const options = /** @type {import("uuid").Version4Options} */ ({
+        data: slider.layer + value.date,
+      });
+      const id = /** @type {string} */ (uuidv4(options));
       items.add({
         ...value,
         id: id,

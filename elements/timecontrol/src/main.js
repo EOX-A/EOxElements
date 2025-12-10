@@ -15,7 +15,6 @@ import "./components/timecontrol-picker";
 import "./components/timecontrol-timeline";
 import "./components/timecontrol-timelapse";
 import "./components/timecontrol-slider";
-import "@eox/itemfilter";
 
 import {
   firstUpdatedMethod,
@@ -112,13 +111,6 @@ export class EOxTimeControl extends LitElement {
    * @type {EOxMap | null}
    */
   #eoxMap = null;
-
-  /**
-   * Loading state indicator for async operations.
-   *
-   * @type {boolean}
-   */
-  #loading = false;
 
   /**
    * DataSet containing timeline groups for vis-timeline.
@@ -278,11 +270,8 @@ export class EOxTimeControl extends LitElement {
 
   /**
    * Sets the loading state and triggers a re-render.
-   *
-   * @param {boolean} value - Whether the component is in a loading state.
    */
-  setLoading(value) {
-    this.#loading = value;
+  setLoading() {
     this.requestUpdate();
   }
 

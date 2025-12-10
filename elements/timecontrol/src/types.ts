@@ -2,6 +2,7 @@ import type { DataSet } from "vis-timeline/standalone";
 import type { Timeline } from "vis-timeline/standalone";
 import type { Calendar, DateAny } from "vanilla-calendar-pro";
 import type { EOxMap } from "@eox/map";
+import type { EOxItemFilter as EOxItemFilterType } from "@eox/itemfilter";
 
 /**
  * Represents a single time control value entry with date and optional metadata.
@@ -346,6 +347,10 @@ export type SelectedDates = {
  */
 export type ExportHandlerDetail = {
   /**
+   * Array of filter configurations.
+   */
+  filters: Array<FilterConfig>;
+  /**
    * Selected range items organized by date.
    */
   selectedRangeItems: {
@@ -357,6 +362,10 @@ export type ExportHandlerDetail = {
       };
     };
   };
+  /**
+   * Array of instances.
+   */
+  instances: Record<string, { layer: any; source: any }>;
   /**
    * EOxMap configuration object.
    */
@@ -563,11 +572,11 @@ declare global {
   /**
    * Custom element type for EOxItemFilter.
    */
-  interface EOxItemFilter extends HTMLElement {
+  interface EOxItemFilter extends EOxItemFilterType {
     /**
      * Array of items to filter.
      */
-    items: Array<any>;
+    items: Array<FilterConfig>;
     /**
      * Filtered results.
      */

@@ -93,7 +93,7 @@ export default function firstUpdatedMethod(EOxTimeControl) {
       if (!isequal(EOxTimeControl.sliderValues, sliderValues)) {
         EOxTimeControl.sliderValues = sliderValues;
         if (EOxTimeControl.sliderValues.length) {
-          EOxTimeControl.setLoading(true);
+          EOxTimeControl.setLoading();
           const groups = new DataSet([]);
           const items = new DataSet([]);
 
@@ -110,7 +110,7 @@ export default function firstUpdatedMethod(EOxTimeControl) {
 
           EOxTimeControl.groups = groups;
           EOxTimeControl.items = items;
-          EOxTimeControl.setLoading(false);
+          EOxTimeControl.setLoading();
 
           if (EOxTimeControlTimeline) {
             EOxTimeControlTimeline.initTimeline();
@@ -146,7 +146,14 @@ export default function firstUpdatedMethod(EOxTimeControl) {
                 EOxTimeControl.querySelector("eox-itemfilter")
               );
               if (EOxItemFilter) {
-                EOxItemFilter.items = EOxTimeControl.items.get();
+                // Convert items to FilterConfig[] before assigning
+                EOxItemFilter.items = EOxTimeControl.items
+                  .get()
+                  .map((item) => ({
+                    key: item.id,
+                    title: item.name || item.title || String(item.id),
+                    ...item,
+                  }));
                 const filterHandler = (e) => {
                   EOxTimeControl.filter(e, EOxTimeControl);
                 };

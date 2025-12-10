@@ -109,14 +109,17 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       format: VIS_TIMELINE_DATE_FORMATS,
     };
 
-    const visTimeline = new Timeline(
-      container,
-      items,
-      groups,
-      /** @type {import("vis-timeline/standalone").TimelineOptions} */ (
-        options
-      ),
-    );
+    const visTimeline =
+      /** @type {import("vis-timeline/standalone").Timeline} */ (
+        new Timeline(
+          container,
+          items,
+          groups,
+          /** @type {import("vis-timeline/standalone").TimelineOptions} */ (
+            options
+          ),
+        )
+      );
     EOxTimeControlTimeline.visTimeline = visTimeline;
 
     if (drawInterval) {
@@ -126,9 +129,10 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
 
     if (drawInterval === null)
       drawInterval = setInterval(() => {
-        const vt = /** @type {import("vis-timeline/standalone").Timeline} */ (
-          EOxTimeControlTimeline.visTimeline
-        );
+        const vt =
+          /** @type {import("vis-timeline/standalone").Timeline | any} */ (
+            EOxTimeControlTimeline.visTimeline
+          );
         if (
           vt &&
           vt.initialRangeChangeDone &&

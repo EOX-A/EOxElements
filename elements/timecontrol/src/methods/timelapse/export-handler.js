@@ -8,7 +8,45 @@ dayjs.extend(timezone);
 
 /**
  * @typedef {import("../../types").ExportHandlerDetail} ExportHandlerDetail
+ * @typedef {import("@eox/itemfilter").EOxItemFilter} EOxItemFilter
  */
+
+/**
+ * Utility function to normalize a date range so [start, end] are in chronological order.
+ * @param {any} selectedDateRange
+ * @returns {[import("dayjs").Dayjs, import("dayjs").Dayjs]}
+ */
+function getNormalizedRange(selectedDateRange) {
+  const dateA = dayjs(selectedDateRange[0]);
+  const dateB = dayjs(selectedDateRange[1]);
+  return dateA.isBefore(dateB) ? [dateA, dateB] : [dateB, dateA];
+}
+
+/**
+ * Utility to get datetime or fallback to null.
+ * @param {any} item
+ * @returns {string|null}
+ */
+function getItemDate(item) {
+  return item.date || item.start || null;
+}
+
+/**
+ * Utility to get layer and its source (or null if a group layer).
+ * @param {any} map - OpenLayers map
+ * @param {string} groupId - Layer group ID
+ * @returns {{ layer: any, source: any }}
+ */
+function getLayerInstanceAndSource(map, groupId) {
+  const layersArray = map.getLayers().getArray();
+  const layer = layersArray.find((l) => l.get("id") === groupId);
+  // If layer has getLayers (layer group), do not call getSource
+  const source =
+    layer && typeof layer.getLayers === "function"
+      ? null
+      : layer?.getSource?.();
+  return { layer, source };
+}
 
 /**
  * Handles the export process by collecting selected timeline items within the current date range
@@ -19,62 +57,47 @@ dayjs.extend(timezone);
  */
 export default function exportHandlerMethod(EOxTimelapse) {
   const EOxTimeControl = EOxTimelapse.getEOxTimeControl();
-  let selectedRangeItems = [];
   const selectedDateRange = EOxTimeControl.selectedDateRange;
-  if (selectedDateRange && selectedDateRange.length) {
-    const dateRange = [
-      dayjs(selectedDateRange[0]),
-      dayjs(selectedDateRange[1]),
-    ];
-    const [start, end] = dateRange[0].isBefore(dateRange[1])
-      ? [dateRange[0], dateRange[1]]
-      : [dateRange[1], dateRange[0]];
-
-    const allItems = EOxTimeControl.items.get();
-
-    selectedRangeItems = allItems.filter((item) => {
-      const itemDate = item.date || item.start;
-      if (!itemDate) return false;
-      const d = dayjs(itemDate);
-      return (
-        (d.isSame(start, "day") || d.isAfter(start, "day")) &&
-        (d.isSame(end, "day") || d.isBefore(end, "day"))
-      );
-    });
+  if (!selectedDateRange || selectedDateRange.length < 2) {
+    return null;
   }
 
-  const selectedItemsGroup = groupBy(selectedRangeItems, "group");
-  let instances = {};
+  const [start, end] = getNormalizedRange(selectedDateRange);
 
-  Object.keys(selectedItemsGroup).forEach((group) => {
-    const layer = /** @type {import("ol/layer/Group").default } */ (
-      EOxTimeControl.eoxMap.map
-        .getLayers()
-        .getArray()
-        .find((l) => l.get("id") === group)
+  const allItems = EOxTimeControl.items.get();
+  const selectedRangeItems = allItems.filter((item) => {
+    const itemDateRaw = getItemDate(item);
+    if (!itemDateRaw) return false;
+    const d = dayjs(itemDateRaw);
+    return (
+      (d.isSame(start, "day") || d.isAfter(start, "day")) &&
+      (d.isSame(end, "day") || d.isBefore(end, "day"))
     );
-
-    // Get the source if it is not a group layer
-    const source = layer?.getLayers ? null : layer.getSource();
-
-    instances = {
-      ...instances,
-      [group]: { layer, source },
-    };
   });
 
-  const itemsFilter = /** @type {any} */ (
-    EOxTimeControl.querySelector("eox-itemfilter")
-  );
+  const selectedItemsGroup = groupBy(selectedRangeItems, "group");
+  /** @type {Record<string, { layer: any, source: any }>} */
+  const instances = Object.keys(selectedItemsGroup).reduce((acc, groupId) => {
+    const { layer, source } = getLayerInstanceAndSource(
+      EOxTimeControl.eoxMap.map,
+      groupId,
+    );
+    return {
+      ...acc,
+      [groupId]: { layer, source },
+    };
+  }, {});
 
-  return selectedRangeItems
+  /** @type {EOxItemFilter | null} */
+  const itemsFilter = EOxTimeControl.querySelector("eox-itemfilter");
+
+  // Conform strictly to the ExportHandlerDetail type (removing "range" prop),
+  // only include known properties.
+
+  return selectedRangeItems.length > 0
     ? {
         selectedRangeItems: groupBy(selectedRangeItems, "date"),
-        range: [
-          dayjs(EOxTimeControl.selectedDateRange[0]).utc().toDate(),
-          dayjs(EOxTimeControl.selectedDateRange[1]).utc().toDate(),
-        ],
-        filters: itemsFilter?.filters || [],
+        filters: itemsFilter?.filters ?? [],
         instances,
         eoxMapConfig: {
           layers: EOxTimeControl.eoxMap.layers,

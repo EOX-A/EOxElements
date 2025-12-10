@@ -47,7 +47,7 @@ export class EOxTimeControlTimeline extends LitElement {
     /**
      * Reference to the vis-timeline Timeline instance.
      *
-     * @type {import("vis-timeline/standalone").Timeline | null}
+     * @type {import("vis-timeline/standalone").Timeline}
      */
     this.visTimeline = null;
   }

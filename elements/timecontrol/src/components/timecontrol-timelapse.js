@@ -43,13 +43,6 @@ export class EOxTimeControlTimelapse extends LitElement {
   }
 
   /**
-   * Whether the export dialog is currently open.
-   *
-   * @type {boolean}
-   */
-  #isExport = false;
-
-  /**
    * Configuration object for the export process.
    *
    * @type {ExportConfig | null}
@@ -166,7 +159,6 @@ export class EOxTimeControlTimelapse extends LitElement {
    * Closes the export dialog and cleans up resources.
    */
   handleExportClose() {
-    this.#isExport = false;
     this.exportConfig = null;
     this.#loading = false;
     if (this.#timelapseComponent) {
@@ -440,7 +432,6 @@ export class EOxTimeControlTimelapse extends LitElement {
    * or generates the export directly using the associated map.
    */
   handleExport() {
-    this.#isExport = true;
     const detail = exportHandlerMethod(this);
     if (detail) {
       if (this.getEOxTimeControl().externalMapRendering) {

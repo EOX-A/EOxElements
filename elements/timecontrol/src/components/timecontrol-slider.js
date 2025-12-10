@@ -17,6 +17,7 @@ dayjs.extend(timezone);
 /**
  * @typedef {import("../types").DateRange} DateRange
  * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("../types").SelectedDateRange} SelectedDateRange
  */
 
 /**
@@ -69,9 +70,9 @@ export class EOxTimeControlSlider extends LitElement {
   /**
    * The currently selected date range.
    *
-   * @type {DateRange}
+   * @type {SelectedDateRange}
    */
-  #selectedDateRange = [];
+  #selectedDateRange = null;
 
   /**
    * Creates a new EOxTimeControlSlider instance.
@@ -180,8 +181,9 @@ export class EOxTimeControlSlider extends LitElement {
       this.closest("eox-timecontrol")
     );
     const format =
-      EOxTimeControl.querySelector("eox-timecontrol-date")?.format ||
-      TIME_CONTROL_DATE_FORMAT;
+      /** @type {EOxTimeControlDate} */ (
+        EOxTimeControl.querySelector("eox-timecontrol-date")
+      )?.format || TIME_CONTROL_DATE_FORMAT;
 
     this.#sliderInstance = noUiSlider.create(this.#slider, {
       start: [startSel, endSel],
@@ -192,8 +194,8 @@ export class EOxTimeControlSlider extends LitElement {
       },
       step: DAY_MS,
       pips: {
-        mode: "values",
-        values: tickValues,
+        mode: /** @type {import("nouislider").PipsMode} */ ("values"),
+        values: /** @type {any} */ (tickValues),
         density: 5,
         format: {
           to: (value) => {
@@ -236,8 +238,12 @@ export class EOxTimeControlSlider extends LitElement {
     if (!this.#slider) return;
     // Wait until sliderInstance is created & handles exist
     setTimeout(() => {
-      const handles = this.#slider.querySelectorAll(".noUi-handle");
-      const tooltips = this.#slider.querySelectorAll(".noUi-tooltip");
+      const handles = /** @type {NodeListOf<HTMLElement>} */ (
+        this.#slider.querySelectorAll(".noUi-handle")
+      );
+      const tooltips = /** @type {NodeListOf<HTMLElement>} */ (
+        this.#slider.querySelectorAll(".noUi-tooltip")
+      );
       // Hide tooltips by default (if not focused or active drag)
       tooltips.forEach((tooltip) => {
         tooltip.style.opacity = "0";

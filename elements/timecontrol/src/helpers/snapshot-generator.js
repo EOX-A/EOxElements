@@ -1,6 +1,5 @@
 import { html, render } from "lit";
 import { when } from "lit/directives/when.js";
-import { map } from "lit/directives/map.js";
 import dayjs from "dayjs";
 import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
