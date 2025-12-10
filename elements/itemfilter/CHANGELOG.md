@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.0...itemfilter-v1.13.1) (2025-12-09)
+
+
+### Bug Fixes
+
+* Aggregate falsy result values ([#1962](https://github.com/EOX-A/EOxElements/issues/1962)) ([8b8e4d3](https://github.com/EOX-A/EOxElements/commit/8b8e4d3ad1b705acc352073f793c0b55c8c028f4))
+
 ## [1.13.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.12.1...itemfilter-v1.13.0) (2025-11-10)
 
 
