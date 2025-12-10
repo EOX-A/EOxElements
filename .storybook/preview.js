@@ -21,8 +21,6 @@ import "@eox/map";
 import "@eox/map/src/plugins/advancedLayersAndSources";
 import "@eox/stacinfo";
 import "@eox/storytelling";
-import "@eox/timecontrol-2";
-import "@eox/timeslider";
 import "@eox/timecontrol";
 
 /**
