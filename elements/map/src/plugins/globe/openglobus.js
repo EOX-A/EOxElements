@@ -147,8 +147,8 @@ export const createGlobusLayer = (olLayer, mapPool) => {
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
       extra: {
-            transparent: wmsParams.TRANSPARENT || wmsParams.transparent|| "true"
-        }
+        transparent: wmsParams.TRANSPARENT || wmsParams.transparent || "true",
+      },
     });
   }
 
