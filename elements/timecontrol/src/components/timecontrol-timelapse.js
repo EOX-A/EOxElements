@@ -1,4 +1,4 @@
-import { LitElement, html } from "lit";
+import { LitElement, html, render } from "lit";
 import { style } from "../styles/style.js";
 import { styleEOX } from "../styles/style.eox.js";
 import { styleTimelapse } from "../styles/style.timelapse.js";
@@ -27,6 +27,8 @@ export class EOxTimeControlTimelapse extends LitElement {
   #isExport = false;
   #exportConfig = null;
   #selectedDateRange = null;
+  #timelapseComponent = null;
+  #loading = false;
   constructor() {
     super();
     this.unstyled = false;
@@ -43,6 +45,10 @@ export class EOxTimeControlTimelapse extends LitElement {
     this.#exportConfig = value;
   }
 
+  get timelapseComponent() {
+    return this.#timelapseComponent;
+  }
+
   setDateRange(dateRange) {
     this.#selectedDateRange = dateRange;
     this.requestUpdate();
@@ -57,15 +63,55 @@ export class EOxTimeControlTimelapse extends LitElement {
   handleExportClose() {
     this.#isExport = false;
     this.exportConfig = null;
+    this.#loading = false;
+    if (this.#timelapseComponent) {
+      this.#timelapseComponent.remove();
+      this.#timelapseComponent = null;
+    }
     this.requestUpdate();
   }
 
   export() {
-    exportAnimation(this.exportConfig.mapLayers, this.format, this.speed, this);
+    this.#loading = true;
+    this.timelapseComponent
+      .querySelector(".export-btn i")
+      .classList.remove("export-icon");
+    this.timelapseComponent
+      .querySelector(".export-btn i")
+      .classList.add("export-icon-loading");
+    const setLoading = () => {
+      this.#loading = false;
+      this.timelapseComponent
+        .querySelector(".export-btn i")
+        .classList.add("export-icon");
+      this.timelapseComponent
+        .querySelector(".export-btn i")
+        .classList.remove("export-icon-loading");
+      this.requestUpdate();
+    };
+    exportAnimation(
+      this.exportConfig.mapLayers,
+      this.format,
+      this.speed,
+      setLoading,
+      this,
+    );
   }
 
   handleSelectedPreview(index) {
     this.exportConfig.selectedPreview = index;
+    const eoxMaps = this.timelapseComponent.querySelectorAll(".map-view-item");
+    eoxMaps.forEach((eoxMap) => {
+      eoxMap.classList.remove("selected-map");
+    });
+    eoxMaps[index]?.classList.add("selected-map");
+
+    const previewImg =
+      this.timelapseComponent.querySelector(".export-images").children;
+    Array.from(previewImg).forEach((img) => {
+      img.classList.remove("selected-preview");
+    });
+    previewImg[index]?.classList.add("selected-preview");
     this.requestUpdate();
   }
 
@@ -76,128 +122,22 @@ export class EOxTimeControlTimelapse extends LitElement {
   }
 
   async generateExport(config) {
-    this.exportConfig = {
-      ...config,
-      selectedPreview: 0,
-    };
-    setTimeout(() => {
-      snapshotGenerator(this);
-    }, 1000);
-    this.requestUpdate();
-  }
-
-  handlePlayPause() {
-    if (!this.exportConfig.play) {
-      this.exportConfig.play = true;
-      const playNext = (init) => {
-        if (this.exportConfig.play) {
-          if (!init) {
-            if (
-              this.exportConfig.selectedPreview + 1 !==
-              this.exportConfig.mapLayers?.length
-            )
-              this.handleSelectedPreview(this.exportConfig.selectedPreview + 1);
-            else this.handleSelectedPreview(0);
-          }
-          setTimeout(playNext, 1000 / this.speed);
-        }
+    if (config && config.mapLayers && config.mapLayers.length) {
+      this.exportConfig = {
+        ...config,
+        selectedPreview: 0,
       };
-      playNext(true);
-    } else {
-      this.exportConfig.play = false;
-    }
-    this.requestUpdate();
-  }
 
-  handleExport() {
-    this.#isExport = true;
-    const detail = exportHandlerMethod(this);
-    if (detail) {
-      if (this.getEOxTimeControl().externalMapRendering) {
-        this.dispatchEvent(
-          new CustomEvent("export", {
-            detail: {
-              ...detail,
-              generate: async (config) => await this.generateExport(config),
-            },
-          }),
-        );
-      } else {
-        const mapLayers = [];
-        for (const dateKey in detail.selectedRangeItems) {
-          const date = detail.selectedRangeItems[dateKey];
-          const layers = [];
-          for (const itemKey in date) {
-            let layer = detail.eoxMapConfig.layers.find(
-              (item) => item.properties.id === date[itemKey].group,
-            );
-            layer.source.params[date[itemKey].property] = date[itemKey].date;
-            layers.push(layer);
-          }
-          layers.push(detail.eoxMapConfig.layers[0]);
-          mapLayers.push({
-            layers,
-            center: detail.eoxMapConfig.center,
-            zoom: detail.eoxMapConfig.zoom,
-          });
-        }
-        this.generateExport({
-          mapLayers,
-        });
-      }
-      this.requestUpdate();
-      // Add ResizeObserver to .map-view-item and sync height to .export-images
-      if (this.#isExport) {
-        // Wait a tick for render
-        setTimeout(() => {
-          /** @type {HTMLElement} */
-          const mapViewItem = this.renderRoot.querySelector(".map-view-item");
-          /** @type {HTMLElement} */
-          const exportImages = this.renderRoot.querySelector(".export-images");
-          if (mapViewItem && exportImages) {
-            // Clean up any previous observer
-            if (this._exportMapResizeObserver) {
-              this._exportMapResizeObserver.disconnect();
-              this._exportMapResizeObserver = null;
-            }
-            // Observer callback
-            const resizeHandler = (entries) => {
-              for (const entry of entries) {
-                if (entry.target === mapViewItem) {
-                  const height = mapViewItem.offsetHeight;
-                  exportImages.style.height = `${height}px`;
-                }
-              }
-            };
-            // Create and attach observer
-            this._exportMapResizeObserver = new ResizeObserver(resizeHandler);
-            this._exportMapResizeObserver.observe(mapViewItem);
+      this.#timelapseComponent = document.createElement("div");
+      this.#timelapseComponent.classList.add("timelapse-component");
 
-            // Set initial height
-            exportImages.style.height = `${mapViewItem.offsetHeight}px`;
-          }
-        }, 0);
-      }
-    }
-  }
-
-  render() {
-    return html`
-      <style>
-        ${style}
-        ${!this.unstyled && styleEOX}
-        ${styleTimelapse}
-      </style>
-      <button
-        ?disabled=${this.#selectedDateRange?.length === 2 ? false : true}
-        @click=${() => this.handleExport()}
-        class="export-btn border small flex-center"
-      >
-        <i class="icon export-icon"></i><span>Export</span>
-      </button>
-      ${when(
-        this.#isExport && this.exportConfig,
-        () => html`
+      render(
+        html`
+          <style>
+            ${style}
+            ${!this.unstyled && styleEOX}
+            ${styleTimelapse}
+          </style>
           <div class="timeslider-export">
             <div
               @click=${() => this.handleExportClose()}
@@ -298,23 +238,6 @@ export class EOxTimeControlTimelapse extends LitElement {
                     </div>
                   </div>
                   <div class="setting-menu-content">
-                    <span>Daterange</span>
-                    <div class="setting-menu-content-value">
-                      <div class="field border small fill">
-                        <input
-                          id="setting-date-range"
-                          type="text"
-                          readonly
-                          value=${Array.isArray(this.#selectedDateRange) &&
-                          this.#selectedDateRange.length === 2
-                            ? `${dayjs(this.#selectedDateRange[0]).format("MMM DD, 'YY")} - ${dayjs(this.#selectedDateRange[1]).format("MMM DD, 'YY")}`
-                            : "Select daterange"}
-                          @change=${(e) => (this.dateRange = e.target.value)}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="setting-menu-content">
                     <span>Format</span>
                     <div class="setting-menu-content-value">
                       <div class="field border fill small">
@@ -339,7 +262,117 @@ export class EOxTimeControlTimelapse extends LitElement {
             </div>
           </div>
         `,
-      )}
+        this.#timelapseComponent,
+      );
+
+      this.getEOxTimeControl().parentElement.appendChild(
+        this.#timelapseComponent,
+      );
+
+      setTimeout(() => {
+        snapshotGenerator(this);
+      });
+    }
+    this.#loading = false;
+    this.requestUpdate();
+  }
+
+  handlePlayPause() {
+    const element = this.timelapseComponent.querySelector(
+      ".timeslider-export-play-pause span i",
+    );
+    if (!this.exportConfig.play) {
+      element.classList.add("pause-icon");
+      element.classList.remove("play-icon");
+      this.exportConfig.play = true;
+      const playNext = (init) => {
+        if (this.exportConfig.play) {
+          if (!init) {
+            if (
+              this.exportConfig.selectedPreview + 1 !==
+              this.exportConfig.mapLayers?.length
+            )
+              this.handleSelectedPreview(this.exportConfig.selectedPreview + 1);
+            else this.handleSelectedPreview(0);
+          }
+          setTimeout(playNext, 1000 / this.speed);
+        }
+      };
+      playNext(true);
+    } else {
+      element.classList.add("play-icon");
+      element.classList.remove("pause-icon");
+      this.exportConfig.play = false;
+    }
+    this.requestUpdate();
+  }
+
+  handleExport() {
+    this.#isExport = true;
+    const detail = exportHandlerMethod(this);
+    if (detail) {
+      if (this.getEOxTimeControl().externalMapRendering) {
+        this.dispatchEvent(
+          new CustomEvent("export", {
+            detail: {
+              ...detail,
+              generate: async (config) => await this.generateExport(config),
+            },
+          }),
+        );
+      } else {
+        const mapLayers = [];
+        for (const dateKey in detail.selectedRangeItems) {
+          const date = detail.selectedRangeItems[dateKey];
+          const layers = [];
+          for (const itemKey in date) {
+            let layer = detail.eoxMapConfig.layers.find(
+              (item) => item.properties.id === date[itemKey].group,
+            );
+            layer.source.params[date[itemKey].property] = date[itemKey].date;
+            layers.push(layer);
+          }
+          layers.push(detail.eoxMapConfig.layers[0]);
+          mapLayers.push({
+            layers,
+            center: detail.eoxMapConfig.center,
+            zoom: detail.eoxMapConfig.zoom,
+          });
+        }
+        this.generateExport({
+          mapLayers,
+        });
+      }
+      this.#loading = true;
+      this.requestUpdate();
+    }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.#timelapseComponent) {
+      this.#timelapseComponent.remove();
+      this.#timelapseComponent = null;
+    }
+  }
+
+  render() {
+    return html`
+      <style>
+        ${style}
+        ${!this.unstyled && styleEOX}
+        ${styleTimelapse}
+      </style>
+      <button
+        ?disabled=${this.#selectedDateRange?.length === 2 ? false : true}
+        @click=${() => this.handleExport()}
+        class="export-btn border small flex-center"
+      >
+        <i
+          class="icon ${this.#loading ? "export-icon-loading" : "export-icon"}"
+        ></i
+        ><span>Timelapse</span>
+      </button>
     `;
   }
 }

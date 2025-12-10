@@ -2,7 +2,13 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL } from "@ffmpeg/util";
 import { createGIF } from "gifshot";
 
-export default async function exportAnimation(mapLayers, type, fps, that) {
+export default async function exportAnimation(
+  mapLayers,
+  type,
+  fps,
+  setLoading,
+  that,
+) {
   const images = mapLayers.map((layer) => layer.img).filter((img) => img);
 
   if (images.length === 0) {
@@ -21,7 +27,9 @@ export default async function exportAnimation(mapLayers, type, fps, that) {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+      setLoading();
     } catch (error) {
+      setLoading();
       console.error("MP4 conversion error:", error);
       alert(
         "Failed to convert to MP4: " +
@@ -29,12 +37,12 @@ export default async function exportAnimation(mapLayers, type, fps, that) {
       );
     }
   } else {
-    imagesToGIF(images, that, fps);
+    imagesToGIF(images, that, fps, setLoading);
   }
 }
 
-function imagesToGIF(dataUrls, that, fps) {
-  const map = that.renderRoot.querySelector(".map-view-item");
+function imagesToGIF(dataUrls, that, fps, setLoading) {
+  const map = that.timelapseComponent.querySelector(".map-view-item");
   const mapBounding = map.getBoundingClientRect();
   const mapWidth = mapBounding.width;
   const mapHeight = mapBounding.height;
@@ -65,8 +73,10 @@ function imagesToGIF(dataUrls, that, fps) {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        setLoading();
       } else {
         console.error("GIF generation error:", obj.error);
+        setLoading();
       }
     },
   );

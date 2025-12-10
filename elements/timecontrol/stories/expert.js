@@ -53,7 +53,7 @@ export const Expert = {
           .showDots=${true}
           .popup=${true}
         ></eox-timecontrol-picker>
-        <div>
+        <div style="display: flex;align-items: center;">
           <eox-itemfilter
             id="timeslider-filter"
             .inlineMode=${true}

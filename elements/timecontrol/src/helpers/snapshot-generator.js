@@ -1,5 +1,27 @@
-export default function snapshotGenerator(EOxTimeControl) {
-  const EoxMaps = EOxTimeControl.renderRoot.querySelectorAll(".map-view-item");
+import { html, render } from "lit";
+import { when } from "lit/directives/when.js";
+import { map } from "lit/directives/map.js";
+import dayjs from "dayjs";
+import dayOfYear from "dayjs/plugin/dayOfYear";
+import isoWeek from "dayjs/plugin/isoWeek";
+import minMax from "dayjs/plugin/minMax";
+import { TIME_CONTROL_DATE_FORMAT } from "../enums";
+
+dayjs.extend(dayOfYear);
+dayjs.extend(isoWeek);
+dayjs.extend(minMax);
+
+export default function snapshotGenerator(EOxTimeControlTimelapse) {
+  const EOxTimeControlDate =
+    EOxTimeControlTimelapse.getEOxTimeControl().querySelector(
+      ".eox-timecontrol-date",
+    );
+  const EoxMaps =
+    EOxTimeControlTimelapse.timelapseComponent.querySelectorAll(
+      ".map-view-item",
+    );
+  const exportImgsComponent =
+    EOxTimeControlTimelapse.timelapseComponent.querySelector(".export-images");
   EoxMaps.forEach((EoxMap) => {
     const map = EoxMap.map;
     const index = EoxMap.getAttribute("data-index");
@@ -50,16 +72,45 @@ export default function snapshotGenerator(EOxTimeControl) {
       mapContext.globalAlpha = 1;
       mapContext.setTransform(1, 0, 0, 1, 0, 0);
       if (
-        EOxTimeControl &&
-        EOxTimeControl.exportConfig &&
-        Array.isArray(EOxTimeControl.exportConfig.mapLayers) &&
+        EOxTimeControlTimelapse &&
+        EOxTimeControlTimelapse.exportConfig &&
+        Array.isArray(EOxTimeControlTimelapse.exportConfig.mapLayers) &&
         typeof index !== "undefined"
       ) {
         const idx = Number(index);
-        if (!isNaN(idx) && EOxTimeControl.exportConfig.mapLayers[idx]) {
-          EOxTimeControl.exportConfig.mapLayers[idx].img =
+        if (
+          !isNaN(idx) &&
+          EOxTimeControlTimelapse.exportConfig.mapLayers[idx]
+        ) {
+          const layer = EOxTimeControlTimelapse.exportConfig.mapLayers[idx];
+          EOxTimeControlTimelapse.exportConfig.mapLayers[idx].img =
             mapCanvas.toDataURL();
-          EOxTimeControl.requestUpdate();
+
+          const imgComponent = exportImgsComponent.children[idx];
+          imgComponent.classList.remove("loader-image");
+          if (EOxTimeControlTimelapse.exportConfig.selectedPreview === idx)
+            imgComponent.classList.add("selected-preview");
+          imgComponent.addEventListener("click", () =>
+            EOxTimeControlTimelapse.handleSelectedPreview(idx),
+          );
+          while (imgComponent.firstChild) {
+            imgComponent.removeChild(imgComponent.firstChild);
+          }
+
+          render(
+            html`<img src=${layer.img} alt="Exported map ${index + 1}" />
+              ${when(
+                layer.date,
+                () =>
+                  html`<span
+                    >${dayjs(layer.date).format(
+                      EOxTimeControlDate?.format || TIME_CONTROL_DATE_FORMAT,
+                    )}</span
+                  >`,
+              )}`,
+            imgComponent,
+          );
+          EOxTimeControlTimelapse.requestUpdate();
         }
       }
     };
