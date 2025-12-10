@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 
 /**
  *
- * @param {Object} EOxTimeControlTimeline - The timeslider EOxTimeSlider instance
+ * @param {Object} EOxTimeControlTimeline - The timeslider EOxTimeControl instance
  * @param {boolean} visibility - The visibility of the layer
  * @param {number} i - The index of the layer
  */
@@ -29,7 +29,7 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
  * @param {Array} sliderValues - Array of slider configuration objects
  * @param {import("vis-timeline/standalone").DataSet} groups - Timeline groups dataset
  * @param {import("vis-timeline/standalone").DataSet} items - Timeline items dataset
- * @param {Object} EOxTimeControlTimeline - The timeslider EOxTimeSlider instance
+ * @param {Object} EOxTimeControlTimeline - The timeslider EOxTimeControl instance
  */
 export default function updateTimelineItems(
   sliderValues,

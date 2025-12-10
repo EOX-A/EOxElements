@@ -138,13 +138,13 @@ export class EOxTimeControlTimelapse extends LitElement {
             ${!this.unstyled && styleEOX}
             ${styleTimelapse}
           </style>
-          <div class="timeslider-export">
+          <div class="timecontrol-export">
             <div
               @click=${() => this.handleExportClose()}
-              class="timeslider-export-overlay"
+              class="timecontrol-export-overlay"
             ></div>
-            <div class="timeslider-export-container">
-              <div class="timeslider-export-content">
+            <div class="timecontrol-export-container">
+              <div class="timecontrol-export-content">
                 ${when(
                   this.exportConfig && this.exportConfig.mapLayers?.length,
                   () => html`
@@ -182,7 +182,7 @@ export class EOxTimeControlTimelapse extends LitElement {
                 <div class="map-view">
                   <div
                     @click=${() => this.handlePlayPause()}
-                    class="timeslider-export-play-pause"
+                    class="timecontrol-export-play-pause"
                   >
                     <span>
                       <i
@@ -221,7 +221,7 @@ export class EOxTimeControlTimelapse extends LitElement {
                   )}
                 </div>
               </div>
-              <div class="timeslider-export-footer flex-center">
+              <div class="timecontrol-export-footer flex-center">
                 <div class="setting-menu">
                   <div class="setting-menu-content">
                     <span>Speed</span>
@@ -279,7 +279,7 @@ export class EOxTimeControlTimelapse extends LitElement {
 
   handlePlayPause() {
     const element = this.timelapseComponent.querySelector(
-      ".timeslider-export-play-pause span i",
+      ".timecontrol-export-play-pause span i",
     );
     if (!this.exportConfig.play) {
       element.classList.add("pause-icon");

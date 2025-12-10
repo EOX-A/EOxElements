@@ -54,7 +54,7 @@ export const DateFilter = {
           .popup=${true}
         ></eox-timecontrol-picker>
         <eox-itemfilter
-          id="timeslider-filter"
+          id="timecontrol-filter"
           .inlineMode=${true}
           .titleProperty=${"id"}
           .showResults=${false}

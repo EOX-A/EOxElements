@@ -55,7 +55,7 @@ export const Expert = {
         ></eox-timecontrol-picker>
         <div style="display: flex;align-items: center;">
           <eox-itemfilter
-            id="timeslider-filter"
+            id="timecontrol-filter"
             .inlineMode=${true}
             .titleProperty=${"id"}
             .showResults=${false}

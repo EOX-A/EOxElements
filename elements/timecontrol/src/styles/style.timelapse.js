@@ -60,7 +60,7 @@ export const styleTimelapse = `
 .setting-menu-content span {
   font-weight: 300;
 }
-.timeslider-export {
+.timecontrol-export {
   position: absolute;
   top: 0;
   left: 0;
@@ -73,14 +73,14 @@ export const styleTimelapse = `
   z-index: 99;
   border-radius: 6px;
 }
-.timeslider-export-overlay {
+.timecontrol-export-overlay {
   background: #00000091;
   width: 100%;
   height: 100%;
   cursor: pointer;
   position: absolute;
 }
-.timeslider-export-container {
+.timecontrol-export-container {
   width: 90%;
   background: white;
   margin: 0 auto;
@@ -88,26 +88,26 @@ export const styleTimelapse = `
 }
 
 @media (min-width: 1300px) and (max-width: 1440px) {
-  .timeslider-export-container {
+  .timecontrol-export-container {
     width: 1280px;
   }
 }
 @media (min-width: 1441px) and (max-width: 1600px) {
-  .timeslider-export-container {
+  .timecontrol-export-container {
     width: 1350px;
   }
 }
 @media (min-width: 1601px) and (max-width: 1900px) {
-  .timeslider-export-container {
+  .timecontrol-export-container {
     width: 1500px;
   }
 }
 @media (min-width: 1901px) {
-  .timeslider-export-container {
+  .timecontrol-export-container {
     width: 1650px;
   }
 }
-.timeslider-export-content {
+.timecontrol-export-content {
   padding: 1rem;
   display: flex;
   gap: 1rem;
@@ -155,7 +155,7 @@ export const styleTimelapse = `
   z-index: 9;
   border-radius: 2px;
 }
-.timeslider-export-play-pause {
+.timecontrol-export-play-pause {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,13 +168,13 @@ export const styleTimelapse = `
   background: #0000001a;
   aspect-ratio: 16 / 9;
 }
-.timeslider-export-play-pause span {
+.timecontrol-export-play-pause span {
   padding: 1.5rem;
   background: #02020287;
   border-radius: 50%;
   font-size: 0px;
 }
-.timeslider-export-play-pause span  i {
+.timecontrol-export-play-pause span  i {
   width: 2.5rem !important;
   height: 2.5rem !important;  
 }
@@ -195,13 +195,13 @@ export const styleTimelapse = `
   opacity: 0.5;
   border-radius: 6px;
 }
-.timeslider-wrapper {
+.timecontrol-wrapper {
   position: relative;
 }
 .selected-map {
   z-index: 1;
 }
-.timeslider-export-footer {
+.timecontrol-export-footer {
   padding: 1rem;
   background: var(--inverse-on-surface);
   display: flex;

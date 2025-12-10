@@ -13,12 +13,12 @@ dayjs.extend(timezone);
  *
  * @param {Array<string>} dateRange - The selected date range
  * @param {Object} eoxMap - The EOx map instance
- * @param {Object} EOxTimeSlider - The timeslider EOxTimeSlider component
+ * @param {Object} EOxTimeControl - The timeslider EOxTimeControl component
  */
-export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
-  EOxTimeSlider.selectedDateRange = dateRange;
+export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
+  EOxTimeControl.selectedDateRange = dateRange;
   updateChildrenDateRange(
-    EOxTimeSlider,
+    EOxTimeControl,
     [
       "eox-timecontrol-date",
       "eox-timecontrol-picker",
@@ -31,7 +31,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
   if (Number.isNaN(selectedDateRange.unix())) return;
 
   // TODO: RE-INIT
-  // const container = EOxTimeSlider.getContainer();
+  // const container = EOxTimeControl.getContainer();
   // try {
   //   visTimeline.addCustomTime(selectedDate.toDate(), "selected");
   // } catch (_) {
@@ -74,7 +74,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
     ? [dayjsDateRange[0], dayjsDateRange[1]]
     : [dayjsDateRange[1], dayjsDateRange[0]];
 
-  selectedRangeItems = EOxTimeSlider.items.get().filter((item) => {
+  selectedRangeItems = EOxTimeControl.items.get().filter((item) => {
     const itemDate = item.utc;
     if (!itemDate) return false;
     const d = dayjs(itemDate);
@@ -104,7 +104,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
         [item.group]: { layer, source },
       };
 
-      if (!EOxTimeSlider.externalMapRendering) {
+      if (!EOxTimeControl.externalMapRendering) {
         source.updateParams({
           [item.property]: dayjs(dateRange[0])
             .utc()
@@ -115,10 +115,10 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
   });
 
   const itemsFilter = /** @type {any} */ (
-    EOxTimeSlider.renderRoot.querySelector("#timeslider-filter")
+    EOxTimeControl.renderRoot.querySelector("#timecontrol-filter")
   );
 
-  EOxTimeSlider.dispatchEvent(
+  EOxTimeControl.dispatchEvent(
     new CustomEvent("select", {
       detail: {
         selectedItems: groupBy(selectedRangeItems, "group"),
@@ -131,5 +131,5 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeSlider) {
       },
     }),
   );
-  EOxTimeSlider.requestUpdate();
+  EOxTimeControl.requestUpdate();
 }

@@ -14,17 +14,17 @@ let itemFilterAdded = false;
 /**
  * First updated lifecycle method for timeslider
  *
- * @param {Object} EOxTimeSlider - The timeslider EOxTimeSlider instance
+ * @param {Object} EOxTimeControl - The timeslider EOxTimeControl instance
  */
-export default function firstUpdatedMethod(EOxTimeSlider) {
+export default function firstUpdatedMethod(EOxTimeControl) {
   // Update map reference
   const foundElement =
-    typeof EOxTimeSlider.for === "object"
-      ? EOxTimeSlider.for
-      : getElement(EOxTimeSlider.for);
+    typeof EOxTimeControl.for === "object"
+      ? EOxTimeControl.for
+      : getElement(EOxTimeControl.for);
   if (foundElement) {
     const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
-    EOxTimeSlider.eoxMap = EoxMap;
+    EOxTimeControl.eoxMap = EoxMap;
 
     const flatLayers = getFlatLayersArray(
       /** @type {import('ol/layer/Base').default[]} */ (
@@ -61,8 +61,8 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
               // @ts-expect-error TODO: Fix typing
               .sort((a, b) => new Date(a.date) - new Date(b.date));
             sliderValues.push({
-              layer: properties[EOxTimeSlider.layerIdKey],
-              name: properties[EOxTimeSlider.titleKey],
+              layer: properties[EOxTimeControl.layerIdKey],
+              name: properties[EOxTimeControl.titleKey],
               property: properties.timeControlProperty,
               values: values,
               layerInstance: layer,
@@ -73,33 +73,33 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
         }
       }
 
-      if (!isequal(EOxTimeSlider.sliderValues, sliderValues)) {
-        EOxTimeSlider.sliderValues = sliderValues;
-        if (EOxTimeSlider.sliderValues.length) {
-          EOxTimeSlider.setLoading(true);
+      if (!isequal(EOxTimeControl.sliderValues, sliderValues)) {
+        EOxTimeControl.sliderValues = sliderValues;
+        if (EOxTimeControl.sliderValues.length) {
+          EOxTimeControl.setLoading(true);
           const groups = new DataSet([]);
           const items = new DataSet([]);
 
           const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
-            EOxTimeSlider.querySelector("eox-timecontrol-timeline")
+            EOxTimeControl.querySelector("eox-timecontrol-timeline")
           );
 
           updateTimelineItems(
-            EOxTimeSlider.sliderValues,
+            EOxTimeControl.sliderValues,
             groups,
             items,
             EOxTimeControlTimeline,
           );
 
-          EOxTimeSlider.groups = groups;
-          EOxTimeSlider.items = items;
-          EOxTimeSlider.setLoading(false);
+          EOxTimeControl.groups = groups;
+          EOxTimeControl.items = items;
+          EOxTimeControl.setLoading(false);
 
           if (EOxTimeControlTimeline) {
             EOxTimeControlTimeline.initTimeline();
           }
 
-          const itemValues = EOxTimeSlider.items.get();
+          const itemValues = EOxTimeControl.items.get();
           if (itemValues && itemValues.length) {
             const utc = dayjs(itemValues[itemValues.length - 1].utc);
             const initDate = [
@@ -108,7 +108,7 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
             ];
 
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
-              EOxTimeSlider.querySelector("eox-timecontrol-picker")
+              EOxTimeControl.querySelector("eox-timecontrol-picker")
             );
 
             setTimeout(() => {
@@ -123,15 +123,15 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
                     .format(TIME_CONTROL_DATE_FORMAT),
                 });
               }
-              EOxTimeSlider.dateChange(initDate, EOxTimeSlider);
+              EOxTimeControl.dateChange(initDate, EOxTimeControl);
 
               const EOxItemFilter = /** @type {EOxItemFilter} */ (
-                EOxTimeSlider.querySelector("eox-itemfilter")
+                EOxTimeControl.querySelector("eox-itemfilter")
               );
               if (EOxItemFilter) {
-                EOxItemFilter.items = EOxTimeSlider.items.get();
+                EOxItemFilter.items = EOxTimeControl.items.get();
                 const filterHandler = (e) => {
-                  EOxTimeSlider.filter(e, EOxTimeSlider);
+                  EOxTimeControl.filter(e, EOxTimeControl);
                 };
                 if (!itemFilterAdded) {
                   EOxItemFilter.addEventListener("filter", filterHandler);
@@ -146,9 +146,9 @@ export default function firstUpdatedMethod(EOxTimeSlider) {
             }
           }
         }
-        // initVisTimeline(EOxTimeSlider);
+        // initVisTimeline(EOxTimeControl);
       }
-      EOxTimeSlider.requestUpdate();
+      EOxTimeControl.requestUpdate();
     };
 
     if (flatLayers.length > 0) init();
