@@ -1,10 +1,17 @@
 import { v4 as uuidv4 } from "uuid";
 
 /**
+ * @typedef {import("../types").SliderValue} SliderValue
+ * @typedef {import("../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline
+ */
+
+/**
+ * Updates the visibility of a timeline group and its associated items.
+ * Shows or hides the group label and data elements based on the visibility parameter.
  *
- * @param {Object} EOxTimeControlTimeline - The timeslider EOxTimeControl instance
- * @param {boolean} visibility - The visibility of the layer
- * @param {number} i - The index of the layer
+ * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
+ * @param {boolean} visibility - Whether the layer should be visible.
+ * @param {number} i - The index of the layer/group to update.
  */
 export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
   const labelEle =
@@ -25,11 +32,13 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
 }
 
 /**
- * Updates timeline groups and items based on slider values
- * @param {Array} sliderValues - Array of slider configuration objects
- * @param {import("vis-timeline/standalone").DataSet} groups - Timeline groups dataset
- * @param {import("vis-timeline/standalone").DataSet} items - Timeline items dataset
- * @param {Object} EOxTimeControlTimeline - The timeslider EOxTimeControl instance
+ * Updates timeline groups and items based on slider values extracted from map layers.
+ * Creates groups for each layer and items for each time value, setting up visibility change listeners.
+ *
+ * @param {Array<SliderValue>} sliderValues - Array of slider configuration objects with layer information and time values.
+ * @param {import("vis-timeline/standalone").DataSet} groups - Timeline groups DataSet to populate.
+ * @param {import("vis-timeline/standalone").DataSet} items - Timeline items DataSet to populate.
+ * @param {EOxTimeControlTimeline | null} EOxTimeControlTimeline - The timeline component instance, or null if not present.
  */
 export default function updateTimelineItems(
   sliderValues,

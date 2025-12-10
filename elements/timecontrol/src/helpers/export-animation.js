@@ -2,6 +2,22 @@ import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { toBlobURL } from "@ffmpeg/util";
 import { createGIF } from "gifshot";
 
+/**
+ * @typedef {import("../types").ExportConfig} ExportConfig
+ * @typedef {import("../components/timecontrol-timelapse").EOxTimeControlTimelapse} EOxTimeControlTimelapse
+ */
+
+/**
+ * Exports an animation from map layer snapshots in either GIF or MP4 format.
+ * For MP4, uses FFmpeg to convert images to video. For GIF, uses gifshot library.
+ *
+ * @param {Array<{img?: string}>} mapLayers - Array of map layer objects with optional img property containing image data URLs.
+ * @param {"gif" | "mp4"} type - Export format type.
+ * @param {number} fps - Frames per second for the animation.
+ * @param {Function} setLoading - Callback function to update loading state.
+ * @param {EOxTimeControlTimelapse} that - The timelapse component instance.
+ * @returns {Promise<void>} Promise that resolves when the export is complete.
+ */
 export default async function exportAnimation(
   mapLayers,
   type,

@@ -1,13 +1,15 @@
 import Group from "ol/layer/Group";
 
 /**
- * TEMP / TO-DO, this is a copy of the function defined in the eox-map:
- * https://github.com/EOX-A/EOxElements/blob/main/elements/map/src/layer.ts#L25
- * Consider a way to properly export that function and use it here
- * See also:
- * https://github.com/EOX-A/EOxElements/issues/974
- * @param {import('ol/layer/Base').default[]} layers
- * @returns {import('ol/layer/Base').default[]}
+ * Flattens a nested array of OpenLayers layers, including layers within group layers.
+ * Recursively extracts all layers from group layers and returns a flat array.
+ *
+ * **Note:** This is a temporary copy of the function defined in eox-map.
+ * See: https://github.com/EOX-A/EOxElements/issues/974
+ * Consider exporting that function and using it here instead.
+ *
+ * @param {Array<import('ol/layer/Base').default>} layers - Array of OpenLayers layers, which may include Group layers.
+ * @returns {Array<import('ol/layer/Base').default>} Flat array of all layers, including those nested in groups.
  */
 export default function getFlatLayersArray(layers) {
   const flatLayers = [];

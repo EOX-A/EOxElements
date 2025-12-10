@@ -6,6 +6,17 @@ import groupBy from "lodash.groupby";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * @typedef {import("../../types").ExportHandlerDetail} ExportHandlerDetail
+ */
+
+/**
+ * Handles the export process by collecting selected timeline items within the current date range
+ * and preparing export configuration data including map layers, filters, and instances.
+ *
+ * @param {import("../../components/timecontrol-timelapse").EOxTimeControlTimelapse} EOxTimelapse - The timelapse component instance.
+ * @returns {ExportHandlerDetail | null} Export handler detail object containing selected range items, filters, instances, and map configuration, or null if no date range is selected.
+ */
 export default function exportHandlerMethod(EOxTimelapse) {
   const EOxTimeControl = EOxTimelapse.getEOxTimeControl();
   let selectedRangeItems = [];
@@ -36,10 +47,12 @@ export default function exportHandlerMethod(EOxTimelapse) {
   let instances = {};
 
   Object.keys(selectedItemsGroup).forEach((group) => {
-    const layer = EOxTimeControl.eoxMap.map
-      .getLayers()
-      .getArray()
-      .find((l) => l.get("id") === group);
+    const layer = /** @type {import("ol/layer/Group").default } */ (
+      EOxTimeControl.eoxMap.map
+        .getLayers()
+        .getArray()
+        .find((l) => l.get("id") === group)
+    );
 
     // Get the source if it is not a group layer
     const source = layer?.getLayers ? null : layer.getSource();

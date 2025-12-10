@@ -9,12 +9,29 @@ import { TIME_CONTROL_DATE_FORMAT } from "../../enums";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * @typedef {import("../../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("../../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline
+ * @typedef {import("../../types").DateRange} DateRange
+ * @typedef {import("../../components/timecontrol-picker").EOxTimeControlPicker} EOxTimeControlPicker
+ */
+
 let itemFilterAdded = false;
 
 /**
- * First updated lifecycle method for timeslider
+ * First updated lifecycle method for the timecontrol component.
+ * Initializes the timecontrol by finding the associated eox-map element, extracting time control values
+ * from map layers, setting up timeline items and groups, and initializing child components.
  *
- * @param {Object} EOxTimeControl - The timeslider EOxTimeControl instance
+ * This method:
+ * - Finds and associates the eox-map element using the `for` attribute
+ * - Extracts time control values from layers with `timeControlValues` and `timeControlProperty` properties
+ * - Creates timeline groups and items from the extracted values
+ * - Initializes the timeline component if present
+ * - Sets up the initial date range and calendar picker
+ * - Registers listeners for layer changes and filter events
+ *
+ * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  */
 export default function firstUpdatedMethod(EOxTimeControl) {
   // Update map reference
@@ -102,10 +119,10 @@ export default function firstUpdatedMethod(EOxTimeControl) {
           const itemValues = EOxTimeControl.items.get();
           if (itemValues && itemValues.length) {
             const utc = dayjs(itemValues[itemValues.length - 1].utc);
-            const initDate = [
+            const initDate = /** @type {DateRange} */ ([
               utc.startOf("day").utc().format(),
               utc.endOf("day").utc().format(),
-            ];
+            ]);
 
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
               EOxTimeControl.querySelector("eox-timecontrol-picker")

@@ -79,6 +79,11 @@ export const calendarStyle = `
   }
 `;
 
+/**
+ * Injects calendar styles into the document head if they haven't been injected already.
+ * The styles include vanilla-calendar-pro base styles and custom styling for dots, selection, and themes.
+ * Uses an ID check to prevent duplicate style injection.
+ */
 export function injectCalendarStyles() {
   // Check if styles are already injected
   if (document.querySelector("#vanilla-calendar-styles")) {
@@ -94,6 +99,11 @@ export function injectCalendarStyles() {
   document.head.appendChild(styleElement);
 }
 
+/**
+ * Cleans up calendar styles and DOM elements when the last timecontrol component is removed.
+ * Removes the style element and all calendar-related DOM elements with class 'vc'.
+ * Note: Currently checks for 'eox-timeslider' elements, but should check for 'eox-timecontrol'.
+ */
 export function cleanCalendarStyles() {
   // Clean up calendar styles if this is the last timeslider component
   const timesliderElements = document.querySelectorAll("eox-timeslider");

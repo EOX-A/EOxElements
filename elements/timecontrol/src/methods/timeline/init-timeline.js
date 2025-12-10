@@ -11,9 +11,20 @@ import timezone from "dayjs/plugin/timezone.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * @typedef {import("../../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline
+ * @typedef {import("../../main").EOxTimeControl} EOxTimeControl
+ */
+
 let drag = false;
 let drawInterval = null;
 
+/**
+ * Updates the visual representation of the range elements (start and end custom time markers) on the timeline.
+ * Sets the title text and adjusts the width and position of the range selection indicators.
+ *
+ * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
+ */
 export function updateRangeElements(EOxTimeControlTimeline) {
   const timeSliderContainer = EOxTimeControlTimeline.getContainer();
 
@@ -68,7 +79,11 @@ export function updateRangeElements(EOxTimeControlTimeline) {
 }
 
 /**
- * Initializes the timeline
+ * Initializes the vis-timeline instance with items, groups, and event handlers.
+ * Sets up the timeline visualization, custom time markers for range selection, and various event listeners
+ * for user interactions such as clicking, dragging, and time changes.
+ *
+ * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 export default function initTimelineMethod(EOxTimeControlTimeline) {
   const EOxTimeControl = /** @type {EOxTimeControl} */ (
@@ -76,7 +91,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
   );
 
   if (EOxTimeControl) {
-    const items = EOxTimeControl.items.get();
+    const items = /** @type {Array<any>} */ (EOxTimeControl.items.get());
     const groups = EOxTimeControl.groups.get();
     const dates = items.map((item) => dayjs(item.start));
     const min = dayjs.min(dates).subtract(50, "day").format("YYYY-MM-DD");
@@ -111,7 +126,9 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
 
     if (drawInterval === null)
       drawInterval = setInterval(() => {
-        const vt = EOxTimeControlTimeline.visTimeline;
+        const vt = /** @type {import("vis-timeline/standalone").Timeline} */ (
+          EOxTimeControlTimeline.visTimeline
+        );
         if (
           vt &&
           vt.initialRangeChangeDone &&

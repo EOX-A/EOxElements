@@ -6,6 +6,17 @@ import { updateRangeElements } from "./index.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * @typedef {import("../../types").DateRange} DateRange
+ */
+
+/**
+ * Sets the date range on the timeline by adding or updating custom time markers for the start and end dates.
+ * Updates the range elements display after setting the dates.
+ *
+ * @param {DateRange} dateRange - The date range as [startDate, endDate] in ISO format.
+ * @param {import("../../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
+ */
 export default function setDateRangeMethod(dateRange, EOxTimeControlTimeline) {
   try {
     EOxTimeControlTimeline.visTimeline.removeCustomTime("multi-select-start");

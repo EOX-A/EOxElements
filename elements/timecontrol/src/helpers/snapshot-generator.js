@@ -11,15 +11,29 @@ dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
 dayjs.extend(minMax);
 
+/**
+ * @typedef {import("../components/timecontrol-timelapse").EOxTimeControlTimelapse} EOxTimeControlTimelapse
+ * @typedef {import("@eox/map").EOxMap} EOxMap
+ */
+
+/**
+ * Generates snapshots (canvas images) from map layers for each time step in the export configuration.
+ * Renders each map layer to a canvas, converts it to a data URL, and updates the export configuration
+ * with the image URLs. Also updates the preview images in the export dialog.
+ *
+ * @param {EOxTimeControlTimelapse} EOxTimeControlTimelapse - The timelapse component instance.
+ */
 export default function snapshotGenerator(EOxTimeControlTimelapse) {
-  const EOxTimeControlDate =
+  const EOxTimeControlDate = /** @type {EOxTimeControlDate} */ (
     EOxTimeControlTimelapse.getEOxTimeControl().querySelector(
       ".eox-timecontrol-date",
-    );
-  const EoxMaps =
+    )
+  );
+  const EoxMaps = /** @type {Array<HTMLElement>} */ Array.from(
     EOxTimeControlTimelapse.timelapseComponent.querySelectorAll(
       ".map-view-item",
-    );
+    ),
+  ).map((element) => /** @type {EOxMap} */ (element));
   const exportImgsComponent =
     EOxTimeControlTimelapse.timelapseComponent.querySelector(".export-images");
   EoxMaps.forEach((EoxMap) => {
@@ -86,7 +100,9 @@ export default function snapshotGenerator(EOxTimeControlTimelapse) {
           EOxTimeControlTimelapse.exportConfig.mapLayers[idx].img =
             mapCanvas.toDataURL();
 
-          const imgComponent = exportImgsComponent.children[idx];
+          const imgComponent = /** @type {HTMLElement} */ (
+            exportImgsComponent.children[idx]
+          );
           imgComponent.classList.remove("loader-image");
           if (EOxTimeControlTimelapse.exportConfig.selectedPreview === idx)
             imgComponent.classList.add("selected-preview");

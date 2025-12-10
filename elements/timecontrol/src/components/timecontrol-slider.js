@@ -14,9 +14,29 @@ import groupBy from "lodash.groupby";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * @typedef {import("../types").DateRange} DateRange
+ * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ */
+
+/**
+ * Milliseconds in a day, used for slider step calculation.
+ */
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * The `eox-timecontrol-slider` component provides a range slider for selecting date ranges.
+ * It displays available dates from timeline items and allows users to select a start and end date
+ * by dragging handles on the slider. The slider includes visual indicators for years and months.
+ *
+ * @element eox-timecontrol-slider
+ */
 export class EOxTimeControlSlider extends LitElement {
+  /**
+   * Defines the component's reactive properties.
+   *
+   * @returns {Object} Property definitions.
+   */
   static get properties() {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
@@ -25,21 +45,66 @@ export class EOxTimeControlSlider extends LitElement {
     };
   }
 
+  /**
+   * Reference to the slider DOM element.
+   *
+   * @type {HTMLElement | null}
+   */
   #slider;
+
+  /**
+   * Reference to the noUiSlider instance.
+   *
+   * @type {import("nouislider").API | null}
+   */
   #sliderInstance;
+
+  /**
+   * Array of unique date strings extracted from data items.
+   *
+   * @type {Array<string> | null}
+   */
   #items = null;
+
+  /**
+   * The currently selected date range.
+   *
+   * @type {DateRange}
+   */
   #selectedDateRange = [];
+
+  /**
+   * Creates a new EOxTimeControlSlider instance.
+   */
   constructor() {
     super();
+
+    /**
+     * Whether default styling is disabled.
+     *
+     * @type {boolean}
+     */
     this.unstyled = false;
     this.#slider = null;
     this.#sliderInstance = null;
   }
 
+  /**
+   * Gets the noUiSlider instance.
+   *
+   * @type {import("nouislider").API | null}
+   * @returns {import("nouislider").API | null} The slider instance.
+   */
   get sliderInstance() {
     return this.#sliderInstance;
   }
 
+  /**
+   * Sets the date range and updates the slider with new data.
+   *
+   * @param {DateRange} dateRange - The date range as [startDate, endDate] in ISO format.
+   * @param {Array<any>} [data] - Optional array of data items to extract dates from.
+   */
   setDateRange(dateRange, data) {
     this.#selectedDateRange = dateRange;
     if (data && data.length) {
@@ -51,6 +116,10 @@ export class EOxTimeControlSlider extends LitElement {
     this.#setupFromProps(true);
   }
 
+  /**
+   * Lifecycle method called after the component's first update.
+   * Initializes the slider element and sets up the slider instance.
+   */
   firstUpdated() {
     this.#slider = /** @type {HTMLElement} */ (
       this.renderRoot.querySelector("#slider")
@@ -59,6 +128,12 @@ export class EOxTimeControlSlider extends LitElement {
     this.#setupTooltipHover();
   }
 
+  /**
+   * Lifecycle method called when component properties are updated.
+   * Recreates the slider if data or selectedDateRange properties change.
+   *
+   * @param {Map<string, any>} changedProps - Map of changed properties.
+   */
   updated(changedProps) {
     if (changedProps.has("data") || changedProps.has("selectedDateRange")) {
       this.#setupFromProps(true);
@@ -66,6 +141,12 @@ export class EOxTimeControlSlider extends LitElement {
     }
   }
 
+  /**
+   * Sets up the slider instance from component properties.
+   * Creates or recreates the noUiSlider with appropriate configuration based on available dates.
+   *
+   * @param {boolean} [recreate=false] - Whether to recreate the slider instance.
+   */
   #setupFromProps(recreate = false) {
     if (!this.#slider || !this.#items || !this.#items.length) return;
 
@@ -90,8 +171,6 @@ export class EOxTimeControlSlider extends LitElement {
       maxTs,
       this.#selectedDateRange,
     );
-    console.log(startSel, endSel);
-
     const { tickValues, monthTickSet, yearTickSet } =
       this.#buildTicksFromDates(dateTs);
 
@@ -148,7 +227,11 @@ export class EOxTimeControlSlider extends LitElement {
     this.#setupTooltipHover();
   }
 
-  // Show tooltip on hover handler
+  /**
+   * Sets up tooltip hover behavior for the slider handles.
+   * Tooltips are hidden by default and shown on hover, focus, or during drag operations.
+   *
+   */
   #setupTooltipHover() {
     if (!this.#slider) return;
     // Wait until sliderInstance is created & handles exist
@@ -208,10 +291,24 @@ export class EOxTimeControlSlider extends LitElement {
     }, 0);
   }
 
+  /**
+   * Converts a date string to UTC milliseconds timestamp.
+   *
+   * @param {string} dateStr - Date string in YYYY-MM-DD format.
+   * @returns {number} UTC milliseconds timestamp.
+   */
   #dateStringToUtcMs(dateStr) {
     return dayjs.utc(dateStr, "YYYY-MM-DD").startOf("day").valueOf();
   }
 
+  /**
+   * Determines the selected range from dates or defaults to min/max if no range is provided.
+   *
+   * @param {number} minTs - Minimum timestamp in milliseconds.
+   * @param {number} maxTs - Maximum timestamp in milliseconds.
+   * @param {DateRange | undefined} selectedDateRange - The selected date range, if any.
+   * @returns {[number, number]} Start and end timestamps [startTs, endTs].
+   */
   #selectedRangeOrDefaultFromDates(minTs, maxTs, selectedDateRange) {
     if (selectedDateRange && selectedDateRange.length === 2) {
       const start = dayjs(selectedDateRange[0]).utc().startOf("day");
@@ -225,6 +322,13 @@ export class EOxTimeControlSlider extends LitElement {
     return [minTs, maxTs];
   }
 
+  /**
+   * Builds tick values for the slider from an array of date timestamps.
+   * Creates separate sets for year and month ticks to enable different formatting.
+   *
+   * @param {Array<number>} dateTs - Array of date timestamps in milliseconds.
+   * @returns {{tickValues: Array<number>, monthTickSet: Set<number>, yearTickSet: Set<number>}} Object containing tick values and sets.
+   */
   #buildTicksFromDates(dateTs) {
     const tickValues = [];
     const monthTickSet = new Set();
@@ -273,6 +377,14 @@ export class EOxTimeControlSlider extends LitElement {
     return { tickValues, monthTickSet, yearTickSet };
   }
 
+  /**
+   * Converts timestamp range to selected dates in ISO format.
+   * Converts UTC timestamps to local timezone and formats as ISO strings.
+   *
+   * @param {number} startTs - Start timestamp in milliseconds.
+   * @param {number} endTs - End timestamp in milliseconds.
+   * @returns {DateRange} Date range as [startDate, endDate] in ISO format.
+   */
   #tsRangeToSelectedDates(startTs, endTs) {
     const tz = dayjs.tz.guess();
 

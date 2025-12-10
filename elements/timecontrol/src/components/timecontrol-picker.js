@@ -15,12 +15,27 @@ import find from "lodash.find";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * @typedef {import("../types").DateRange} DateRange
+ * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("vanilla-calendar-pro").DateAny} DateAny
+ */
+
 let lastClickDate = null;
 
 /**
- * @typedef {import("../main.js").EOxTimeControl} EOxTimeControl
+ * The `eox-timecontrol-picker` component provides a calendar-based date picker for selecting single dates or date ranges.
+ * It uses vanilla-calendar-pro and can be displayed inline or as a popup. The calendar can show dots indicating
+ * available data on specific dates and supports both single and range selection modes.
+ *
+ * @element eox-timecontrol-picker
  */
 export class EOxTimeControlPicker extends LitElement {
+  /**
+   * Defines the component's reactive properties.
+   *
+   * @returns {Object} Property definitions.
+   */
   static get properties() {
     return {
       cal: { attribute: false, state: true },
@@ -31,27 +46,85 @@ export class EOxTimeControlPicker extends LitElement {
     };
   }
 
+  /**
+   * Whether the calendar has been initialized.
+   *
+   * @type {boolean}
+   */
   #init = false;
+
+  /**
+   * The currently selected date range.
+   *
+   * @type {DateRange | null}
+   */
   #selectedDateRange = null;
+
+  /**
+   * Creates a new EOxTimeControlPicker instance.
+   */
   constructor() {
     super();
+
+    /**
+     * Reference to the vanilla-calendar-pro Calendar instance.
+     *
+     * @type {Calendar | null}
+     */
     this.cal = null;
+
+    /**
+     * Whether the calendar is displayed in popup mode.
+     *
+     * @type {boolean}
+     */
     this.popup = false;
+
+    /**
+     * Whether default styling is disabled.
+     *
+     * @type {boolean}
+     */
     this.unstyled = false;
+
+    /**
+     * Whether range selection is enabled.
+     *
+     * @type {boolean}
+     */
     this.range = false;
+
+    /**
+     * Whether to show dots indicating available data on calendar dates.
+     *
+     * @type {boolean}
+     */
     this.showDots = false;
   }
 
+  /**
+   * Lifecycle method called after the component's first update.
+   * Injects calendar styles and initializes the calendar if not already initialized.
+   */
   firstUpdated() {
     firstUpdatedMethod();
     if (!this.#init) this.initCalendar();
   }
 
+  /**
+   * Lifecycle method called when the component is disconnected from the DOM.
+   * Cleans up calendar styles to prevent memory leaks.
+   */
   disconnectedCallback() {
     super.disconnectedCallback();
     cleanCalendarStyles();
   }
 
+  /**
+   * Sets the date range and updates the calendar selection.
+   *
+   * @param {DateRange} dateRange - The date range as [startDate, endDate] in ISO format.
+   */
   setDateRange(dateRange) {
     this.#selectedDateRange = dateRange;
     if (this.cal) {
@@ -67,6 +140,15 @@ export class EOxTimeControlPicker extends LitElement {
     }
   }
 
+  /**
+   * Initializes the calendar picker with the given options.
+   * Creates a new vanilla-calendar-pro Calendar instance and sets up event handlers for date selection.
+   *
+   * @param {Object} [options={}] - Calendar initialization options.
+   * @param {DateRange} [options.selectedDateRange] - Initial selected date range.
+   * @param {DateAny} [options.min] - Minimum selectable date.
+   * @param {DateAny} [options.max] - Maximum selectable date.
+   */
   initCalendar(options = {}) {
     this.#init = true;
     const EOxTimeControl = /** @type {EOxTimeControl} */ (

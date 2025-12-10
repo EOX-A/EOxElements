@@ -9,11 +9,23 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 /**
- * Sets the selected date on the timeline and updates map layers accordingly
+ * @typedef {import("../types").DateRange} DateRange
+ * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("@eox/map").EOxMap} EOxMap
+ */
+
+/**
+ * Sets the selected date range on the timecontrol component and updates map layers accordingly.
+ * This function:
+ * - Updates the selectedDateRange property on the timecontrol component
+ * - Updates all child components (date, picker, timeline, timelapse, slider) with the new date range
+ * - Filters timeline items to find those within the selected date range
+ * - Updates WMS layer source parameters with the selected date (if not using external map rendering)
+ * - Dispatches a 'select' event with details about selected items, date range, filters, and layer instances
  *
- * @param {Array<string>} dateRange - The selected date range
- * @param {Object} eoxMap - The EOx map instance
- * @param {Object} EOxTimeControl - The timeslider EOxTimeControl component
+ * @param {DateRange} dateRange - The selected date range as [startDate, endDate] in ISO format.
+ * @param {EOxMap | null} eoxMap - The EOx map instance, or null if no map is associated.
+ * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  */
 export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   EOxTimeControl.selectedDateRange = dateRange;

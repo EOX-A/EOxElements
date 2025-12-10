@@ -1,7 +1,14 @@
 /**
- * Handles filtering of timeline items
- * @param {CustomEvent} e - Filter event
- * @param {Object} EOxTimeControl - The timecontrol component instance
+ * @typedef {import("../../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("../../components/timecontrol-timeline").EOxTimeControlTimeline} EOxTimeControlTimeline
+ */
+
+/**
+ * Handles filtering of timeline items based on filter events from the eox-itemfilter component.
+ * Updates the visual state of timeline items to show which items are filtered, not filtered, or visible.
+ *
+ * @param {CustomEvent | undefined} e - The filter event containing results, or undefined to use current filter results.
+ * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
  */
 export default function filterHandlerMethod(e, EOxTimeControl) {
   const EOxItemFilter = /** @type {EOxItemFilter} */ (
@@ -23,10 +30,7 @@ export default function filterHandlerMethod(e, EOxTimeControl) {
 
     const results = e?.detail?.results || EOxItemFilter.results;
 
-    if (
-      EOxTimeControlTimeline.visTimeline.itemsData.get().length !=
-      results.length
-    ) {
+    if (EOxTimeControl.items.get().length != results.length) {
       for (const result of results) {
         const item = EOxTimeControlTimeline.renderRoot.querySelector(
           `.vis-item.milestone.vis-point.item-${result.id}`,

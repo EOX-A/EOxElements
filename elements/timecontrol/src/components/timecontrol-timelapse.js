@@ -15,7 +15,25 @@ dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
 dayjs.extend(minMax);
 
+/**
+ * @typedef {import("../types").DateRange} DateRange
+ * @typedef {import("../types").ExportConfig} ExportConfig
+ * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ */
+
+/**
+ * The `eox-timecontrol-timelapse` component provides functionality to export time series data as animated GIFs or MP4s.
+ * It allows users to preview map layers at different time steps and export them as animations with configurable speed.
+ * The component generates snapshots of map layers for each selected time step and combines them into an animation.
+ *
+ * @element eox-timecontrol-timelapse
+ */
 export class EOxTimeControlTimelapse extends LitElement {
+  /**
+   * Defines the component's reactive properties.
+   *
+   * @returns {Object} Property definitions.
+   */
   static get properties() {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
@@ -24,42 +42,129 @@ export class EOxTimeControlTimelapse extends LitElement {
     };
   }
 
+  /**
+   * Whether the export dialog is currently open.
+   *
+   * @type {boolean}
+   */
   #isExport = false;
+
+  /**
+   * Configuration object for the export process.
+   *
+   * @type {ExportConfig | null}
+   */
   #exportConfig = null;
+
+  /**
+   * The currently selected date range.
+   *
+   * @type {DateRange | null}
+   */
   #selectedDateRange = null;
+
+  /**
+   * Reference to the timelapse component DOM element (export dialog).
+   *
+   * @type {HTMLElement | null}
+   */
   #timelapseComponent = null;
+
+  /**
+   * Loading state indicator for export operations.
+   *
+   * @type {boolean}
+   */
   #loading = false;
+
+  /**
+   * Creates a new EOxTimeControlTimelapse instance.
+   */
   constructor() {
     super();
+
+    /**
+     * Whether default styling is disabled.
+     *
+     * @type {boolean}
+     */
     this.unstyled = false;
+
+    /**
+     * Legacy property (not used).
+     *
+     * @type {null}
+     */
     this.visTimeline = null;
+
+    /**
+     * Animation speed in frames per second (default: 1).
+     *
+     * @type {number}
+     */
     this.speed = 1;
+
+    /**
+     * Export format: "gif" or "mp4" (default: "gif").
+     *
+     * @type {"gif" | "mp4"}
+     */
     this.format = "gif";
   }
 
+  /**
+   * Gets the export configuration object.
+   *
+   * @type {ExportConfig | null}
+   * @returns {ExportConfig | null} The export configuration.
+   */
   get exportConfig() {
     return this.#exportConfig;
   }
 
+  /**
+   * Sets the export configuration object.
+   *
+   * @param {ExportConfig | null} value - The export configuration.
+   */
   set exportConfig(value) {
     this.#exportConfig = value;
   }
 
+  /**
+   * Gets the timelapse component DOM element.
+   *
+   * @type {HTMLElement | null}
+   * @returns {HTMLElement | null} The timelapse component element.
+   */
   get timelapseComponent() {
     return this.#timelapseComponent;
   }
 
+  /**
+   * Sets the date range and triggers a re-render.
+   *
+   * @param {DateRange} dateRange - The date range as [startDate, endDate] in ISO format.
+   */
   setDateRange(dateRange) {
     this.#selectedDateRange = dateRange;
     this.requestUpdate();
   }
 
+  /**
+   * Gets the container element (legacy method, not used).
+   *
+   * @returns {HTMLElement | null} The container element.
+   */
   getContainer() {
     return /** @type {HTMLElement} */ (
       this.renderRoot.querySelector("#timeline")
     );
   }
 
+  /**
+   * Closes the export dialog and cleans up resources.
+   */
   handleExportClose() {
     this.#isExport = false;
     this.exportConfig = null;
@@ -71,6 +176,10 @@ export class EOxTimeControlTimelapse extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * Exports the animation using the current export configuration.
+   * Calls the exportAnimation helper function to generate the GIF or MP4 file.
+   */
   export() {
     this.#loading = true;
     this.timelapseComponent
@@ -98,6 +207,11 @@ export class EOxTimeControlTimelapse extends LitElement {
     );
   }
 
+  /**
+   * Handles selection of a preview image/map in the export dialog.
+   *
+   * @param {number} index - Index of the selected preview.
+   */
   handleSelectedPreview(index) {
     this.exportConfig.selectedPreview = index;
     const eoxMaps = this.timelapseComponent.querySelectorAll(".map-view-item");
@@ -115,12 +229,21 @@ export class EOxTimeControlTimelapse extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * Gets the parent EOxTimeControl component instance.
+   *
+   * @returns {EOxTimeControl | null} The parent timecontrol instance or null if not found.
+   */
   getEOxTimeControl() {
-    return /** @type {import("../main.js").EOxTimeControl} */ (
-      this.closest("eox-timecontrol")
-    );
+    return /** @type {EOxTimeControl} */ (this.closest("eox-timecontrol"));
   }
 
+  /**
+   * Generates the export dialog and starts the snapshot generation process.
+   *
+   * @param {ExportConfig} config - Export configuration containing map layers and settings.
+   * @returns {Promise<void>} Promise that resolves when the export dialog is generated.
+   */
   async generateExport(config) {
     if (config && config.mapLayers && config.mapLayers.length) {
       this.exportConfig = {
@@ -277,6 +400,10 @@ export class EOxTimeControlTimelapse extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * Handles play/pause functionality for previewing the animation.
+   * Cycles through preview images at the configured speed.
+   */
   handlePlayPause() {
     const element = this.timelapseComponent.querySelector(
       ".timecontrol-export-play-pause span i",
@@ -307,6 +434,11 @@ export class EOxTimeControlTimelapse extends LitElement {
     this.requestUpdate();
   }
 
+  /**
+   * Handles the export button click event.
+   * Collects selected timeline items and either dispatches an export event (for external rendering)
+   * or generates the export directly using the associated map.
+   */
   handleExport() {
     this.#isExport = true;
     const detail = exportHandlerMethod(this);
@@ -348,6 +480,10 @@ export class EOxTimeControlTimelapse extends LitElement {
     }
   }
 
+  /**
+   * Lifecycle method called when the component is disconnected from the DOM.
+   * Cleans up the timelapse component element to prevent memory leaks.
+   */
   disconnectedCallback() {
     super.disconnectedCallback();
     if (this.#timelapseComponent) {

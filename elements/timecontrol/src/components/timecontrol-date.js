@@ -11,7 +11,24 @@ import groupBy from "lodash.groupby";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * @typedef {import("../types").DateRange} DateRange
+ * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ */
+
+/**
+ * The `eox-timecontrol-date` component displays the currently selected date(s) with optional navigation buttons.
+ * It formats the date according to the specified format string and can display single dates or date ranges.
+ * When navigation is enabled, it provides previous/next buttons to step through available dates.
+ *
+ * @element eox-timecontrol-date
+ */
 export class EOxTimeControlDate extends LitElement {
+  /**
+   * Defines the component's reactive properties.
+   *
+   * @returns {Object} Property definitions.
+   */
   static get properties() {
     return {
       format: { type: String, attribute: "format" },
@@ -20,21 +37,62 @@ export class EOxTimeControlDate extends LitElement {
     };
   }
 
+  /**
+   * Whether the component is rendered as an input field (when used with popup picker).
+   *
+   * @type {boolean}
+   */
   #isInput = false;
+
+  /**
+   * The currently selected date range.
+   *
+   * @type {DateRange | null}
+   */
   #selectedDateRange = null;
+
+  /**
+   * Creates a new EOxTimeControlDate instance.
+   */
   constructor() {
     super();
+
+    /**
+     * Date format string using dayjs tokens (default: "YYYY-MM-DD").
+     *
+     * @type {string}
+     */
     this.format = TIME_CONTROL_DATE_FORMAT;
+
+    /**
+     * Whether navigation buttons (previous/next) are shown.
+     *
+     * @type {boolean}
+     */
     this.navigation = false;
+
+    /**
+     * Whether default styling is disabled.
+     *
+     * @type {boolean}
+     */
     this.unstyled = false;
   }
 
+  /**
+   * Gets the parent EOxTimeControl component instance.
+   *
+   * @returns {EOxTimeControl | null} The parent timecontrol instance or null if not found.
+   */
   getEOxTimeControl() {
-    return /** @type {import("../main.js").EOxTimeControl} */ (
-      this.closest("eox-timecontrol")
-    );
+    return /** @type {EOxTimeControl} */ (this.closest("eox-timecontrol"));
   }
 
+  /**
+   * Updates the selected date by stepping forward or backward through available dates.
+   *
+   * @param {number} [step=1] - Number of steps to move (positive for forward, negative for backward).
+   */
   updateStep(step = 1) {
     const EOxTimeControl = this.getEOxTimeControl();
     const itemValues = Object.keys(
@@ -64,11 +122,20 @@ export class EOxTimeControlDate extends LitElement {
     EOxTimeControl.dateChange(nextDateRange, EOxTimeControl);
   }
 
+  /**
+   * Sets the date range and triggers a re-render.
+   *
+   * @param {DateRange} dateRange - The date range as [startDate, endDate] in ISO format.
+   */
   setDateRange(dateRange) {
     this.#selectedDateRange = dateRange;
     this.requestUpdate();
   }
 
+  /**
+   * Lifecycle method called after the component's first update.
+   * Checks if a popup picker is present and sets the input mode accordingly.
+   */
   firstUpdated() {
     const EOxTimeControl = this.getEOxTimeControl();
     const EOxTimeControlPicker =
@@ -81,6 +148,15 @@ export class EOxTimeControlDate extends LitElement {
     }
   }
 
+  /**
+   * Formats the selected date range according to the specified format string.
+   * If the start and end dates are the same day, returns a single formatted date.
+   * Otherwise, returns a formatted date range string.
+   *
+   * @param {DateRange} selectedDateRange - The date range to format.
+   * @param {string} format - Date format string using dayjs tokens.
+   * @returns {string} Formatted date or date range string.
+   */
   #getFormattedDate(selectedDateRange, format) {
     const start = dayjs(selectedDateRange[0]);
     const end = dayjs(selectedDateRange[1]);
