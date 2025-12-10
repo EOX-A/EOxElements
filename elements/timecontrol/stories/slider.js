@@ -33,7 +33,7 @@ export const Slider = {
           .popup=${true}
         ></eox-timecontrol-picker>
       </div>
-      <eox-timecontrol-slider style="width: 400px;"></eox-timecontrol-slider>
+      <eox-timecontrol-slider style="width: 600px;"></eox-timecontrol-slider>
     </eox-timecontrol>
   `,
 };

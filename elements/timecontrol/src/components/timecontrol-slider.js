@@ -4,6 +4,7 @@ import { styleEOX } from "../styles/style.eox.js";
 import noUiSliderCSS from "nouislider/dist/nouislider.css?inline";
 import noUiSlider from "nouislider";
 import { sliderStyle } from "../styles/style.slider.js";
+import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
 
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -42,8 +43,8 @@ export class EOxTimeControlSlider extends LitElement {
   setDateRange(dateRange, data) {
     this.#selectedDateRange = dateRange;
     if (data && data.length) {
-      this.#items = Object.keys(groupBy(data, "date")).sort(
-        (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+      this.#items = Object.keys(groupBy(data, "utc")).sort((a, b) =>
+        dayjs(a).diff(dayjs(b), "day"),
       );
     }
     this.requestUpdate();
@@ -55,11 +56,13 @@ export class EOxTimeControlSlider extends LitElement {
       this.renderRoot.querySelector("#slider")
     );
     this.#setupFromProps();
+    this.#setupTooltipHover();
   }
 
   updated(changedProps) {
     if (changedProps.has("data") || changedProps.has("selectedDateRange")) {
       this.#setupFromProps(true);
+      this.#setupTooltipHover();
     }
   }
 
@@ -87,12 +90,19 @@ export class EOxTimeControlSlider extends LitElement {
       maxTs,
       this.#selectedDateRange,
     );
+    console.log(startSel, endSel);
 
     const { tickValues, monthTickSet, yearTickSet } =
       this.#buildTicksFromDates(dateTs);
 
     const yearKeys = new Set([...yearTickSet].map(Number));
     const monthKeys = new Set([...monthTickSet].map(Number));
+    const EOxTimeControl = /** @type {EOxTimeControl} */ (
+      this.closest("eox-timecontrol")
+    );
+    const format =
+      EOxTimeControl.querySelector("eox-timecontrol-date")?.format ||
+      TIME_CONTROL_DATE_FORMAT;
 
     this.#sliderInstance = noUiSlider.create(this.#slider, {
       start: [startSel, endSel],
@@ -105,34 +115,97 @@ export class EOxTimeControlSlider extends LitElement {
       pips: {
         mode: "values",
         values: tickValues,
-        density: 4,
-        filter: (value) => {
-          const num = Number(value);
-          if (yearKeys.has(num)) return 1;
-          if (monthKeys.has(num)) return 0;
-          return -1;
-        },
+        density: 5,
         format: {
           to: (value) => {
             const num = Number(value);
-            if (!yearKeys.has(num)) return "";
-            return dayjs.utc(num).year().toString();
+            if (yearKeys.has(num)) return dayjs.utc(num).year().toString();
+            if (monthKeys.has(num)) return dayjs.utc(num).format("MMM");
+            return "";
           },
           from: (value) => Number(value),
         },
       },
+      tooltips: [
+        {
+          to: (value) => dayjs(value).format(format),
+        },
+        {
+          to: (value) => dayjs(value).format(format),
+        },
+      ],
     });
 
     this.#sliderInstance.on("change", (values) => {
       const [v1, v2] = values.map(Number);
       const rangeDates = this.#tsRangeToSelectedDates(v1, v2);
-      const EOxTimeControl = /** @type {EOxTimeControl} */ (
-        this.closest("eox-timecontrol")
-      );
       if (EOxTimeControl) {
         EOxTimeControl.dateChange(rangeDates, EOxTimeControl);
       }
     });
+
+    // Re-setup tooltip hover logic after sliderInstance is created
+    this.#setupTooltipHover();
+  }
+
+  // Show tooltip on hover handler
+  #setupTooltipHover() {
+    if (!this.#slider) return;
+    // Wait until sliderInstance is created & handles exist
+    setTimeout(() => {
+      const handles = this.#slider.querySelectorAll(".noUi-handle");
+      const tooltips = this.#slider.querySelectorAll(".noUi-tooltip");
+      // Hide tooltips by default (if not focused or active drag)
+      tooltips.forEach((tooltip) => {
+        tooltip.style.opacity = "0";
+        tooltip.style.pointerEvents = "none";
+      });
+      handles.forEach((handle, i) => {
+        // Remove any previous listeners (by setting anew)
+        handle.onmouseenter = () => {
+          if (tooltips[i]) {
+            tooltips[i].style.opacity = "1";
+            tooltips[i].style.pointerEvents = "";
+          }
+        };
+        handle.onmouseleave = () => {
+          if (tooltips[i]) {
+            tooltips[i].style.opacity = "0";
+            tooltips[i].style.pointerEvents = "none";
+          }
+        };
+        // Also show tooltip on keyboard focus
+        handle.onfocus = () => {
+          if (tooltips[i]) {
+            tooltips[i].style.opacity = "1";
+            tooltips[i].style.pointerEvents = "";
+          }
+        };
+        handle.onblur = () => {
+          if (tooltips[i]) {
+            tooltips[i].style.opacity = "0";
+            tooltips[i].style.pointerEvents = "none";
+          }
+        };
+      });
+      // Show tooltips while dragging
+      if (this.#sliderInstance) {
+        this.#sliderInstance.off?.("start.showTooltip");
+        this.#sliderInstance.off?.("end.hideTooltip");
+        this.#sliderInstance.on("start.showTooltip", () => {
+          tooltips.forEach((tooltip) => {
+            tooltip.style.opacity = "1";
+            tooltip.style.pointerEvents = "";
+          });
+        });
+        this.#sliderInstance.on("end.hideTooltip", () => {
+          tooltips.forEach((tooltip) => {
+            tooltip.style.opacity = "0";
+            tooltip.style.pointerEvents = "none";
+          });
+        });
+      }
+    }, 0);
   }
 
   #dateStringToUtcMs(dateStr) {

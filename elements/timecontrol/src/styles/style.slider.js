@@ -1,6 +1,6 @@
 export const sliderStyle = `
   .date-range-slider-wrapper {
-    margin: 16px 0 8px;
+    margin: 16px 0 40px;
   }
 
   :host {
