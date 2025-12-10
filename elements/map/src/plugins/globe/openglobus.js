@@ -4,12 +4,14 @@ import {
   Vec3,
   CanvasTiles,
   XYZ,
+  WMS,
   OpenStreetMap,
 } from "@openglobus/og";
 import { distributeTileToIdealMap } from "./methods.js";
 import { transform } from "../../helpers/index.js";
 import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
+import WMS_ol from "ol/source/TileWMS.js";
 
 class Globe {
   /**
@@ -114,6 +116,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
   if (source instanceof OSM) {
     return new OpenStreetMap(id, {
       isBaseLayer: olLayer.get("base"),
+      zIndex: olLayer.get("base") ? 0 : 1,
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
     });
@@ -122,9 +125,30 @@ export const createGlobusLayer = (olLayer, mapPool) => {
   if (source instanceof XYZ_ol) {
     return new XYZ(id, {
       isBaseLayer: olLayer.get("base"),
+      zIndex: olLayer.get("base") ? 0 : 1,
       url: source.getUrls()[0],
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
+    });
+  }
+  if (source instanceof WMS_ol) {
+    // Construct WMS URL with parameters
+    const wmsParams = source.getParams();
+    const baseUrl = source.getUrls()[0];
+    const urlParams = new URLSearchParams(wmsParams).toString();
+    const wmsUrl = `${baseUrl}?${urlParams}`;
+    const wmsLayerNames = wmsParams.LAYERS || wmsParams.layers || "default";
+
+    return new WMS(id, {
+      isBaseLayer: olLayer.get("base"),
+      zIndex: olLayer.get("base") ? 0 : 1,
+      layers: wmsLayerNames,
+      url: wmsUrl,
+      visibility: olLayer.getVisible(),
+      opacity: olLayer.getOpacity(),
+      extra: {
+            transparent: wmsParams.TRANSPARENT || wmsParams.transparent|| "true"
+        }
     });
   }
 
@@ -132,6 +156,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
   return new CanvasTiles(id, {
     opacity: olLayer.getOpacity(),
     visibility: olLayer.getVisible(),
+    zIndex: olLayer.get("base") ? 0 : 1,
     async drawTile(material, applyCanvas) {
       if (!material.segment) {
         return;
