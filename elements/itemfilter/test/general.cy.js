@@ -16,6 +16,7 @@ import {
   validationTest,
   slotRenderTest,
   resultsActionTest,
+  resultAggregationTest,
 } from "./cases/general/";
 
 /**
@@ -136,4 +137,10 @@ describe("Item Filter Config", () => {
   );
 
   it("emits event on results click", () => resultsActionTest());
+
+  /**
+   * Test case to verify that aggregation handles edge cases correctly.
+   */
+  it("should aggregate results correctly, handling edge cases", () =>
+    resultAggregationTest());
 });

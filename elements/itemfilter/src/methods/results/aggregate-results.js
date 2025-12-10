@@ -7,25 +7,42 @@
  * @returns {Array<Object>} The filtered and aggregated items.
  */
 export function aggregateResultsMethod(items, property, EOxItemFilterResults) {
-  return items.filter((item) => {
-    // Get the aggregation property from the item
-    const aggregation = item[EOxItemFilterResults.config.aggregateResults];
+  // If the category itself is an empty string, return nothing immediately.
+  // This prevents the "Duplicate results" list under the "" header.
+  if (!property || (typeof property === "string" && property.trim() === "")) {
+    return [];
+  }
 
-    // Get the current filter state for the aggregation property
+  const configKey = EOxItemFilterResults.config.aggregateResults;
+
+  if (property === "No category") {
+    return items.filter((item) => {
+      const aggregation = item[configKey];
+      if (Array.isArray(aggregation)) {
+        // True if array is empty or only contains falsy values
+        return aggregation.filter(Boolean).length === 0;
+      }
+      return !aggregation;
+    });
+  }
+
+  return items.filter((item) => {
+    const aggregation = item[configKey];
+
+    // Exclude items that should be in "No category"
+    if (Array.isArray(aggregation)) {
+      if (aggregation.filter(Boolean).length === 0) {
+        return false;
+      }
+    } else if (!aggregation) {
+      return false;
+    }
+
     let currentFilter;
-    if (
-      EOxItemFilterResults.filters[EOxItemFilterResults.config.aggregateResults]
-    ) {
+    if (EOxItemFilterResults.filters[configKey]) {
       currentFilter = Object.keys(
-        EOxItemFilterResults.filters[
-          EOxItemFilterResults.config.aggregateResults
-        ],
-      ).filter(
-        (f) =>
-          EOxItemFilterResults.filters[
-            EOxItemFilterResults.config.aggregateResults
-          ].state[f],
-      );
+        EOxItemFilterResults.filters[configKey],
+      ).filter((f) => EOxItemFilterResults.filters[configKey].state[f]);
     }
 
     // Determine if the property is included in the current filter
