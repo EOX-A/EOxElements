@@ -1,4 +1,5 @@
 import { transform, transformExtent } from "../../helpers";
+import View from "ol/View";
 
 /**
  * Retrieves the current center of the map in longitude and latitude coordinates.
@@ -26,14 +27,32 @@ export function getLonLatCenterMethod(EOxMap) {
  * @returns {Array<number>} - The extent of the map in longitude and latitude.
  */
 export function getLonLatExtentMethod(EOxMap) {
+  if (EOxMap.projection === "globe") {
+    const cameraPos = EOxMap.globe?.planet.camera.getLonLat();
+    if (!cameraPos || typeof cameraPos.height === "undefined") {
+      // Fallback to a default global extent if camera position or height is unavailable
+      return [-180, -90, 180, 90];
+    }
+    const zoom = Math.log2(27050000 / cameraPos.height) + 1;
+    const center = [cameraPos.lon, cameraPos.lat];
+    const newView = new View({
+      zoom,
+      center: transform(center, "EPSG:4326", EOxMap.projection),
+      projection: EOxMap.projection,
+    });
+    newView.setCenter(transform(center, "EPSG:4326", EOxMap.projection));
+    return transformExtent(
+      newView.calculateExtent(EOxMap.map.getSize()),
+      EOxMap.projection,
+    );
+  }
   // Calculate the current extent of the map based on its view and size
   const currentExtent = EOxMap.map
     .getView()
     .calculateExtent(EOxMap.map.getSize());
 
   // If the map's projection is EPSG:4326, return the extent directly
-  if (EOxMap.projection === "EPSG:4326" || EOxMap.projection === "globe")
-    return currentExtent;
+  if (EOxMap.projection === "EPSG:4326") return currentExtent;
 
   // Otherwise, transform the extent to longitude/latitude
   return transformExtent(currentExtent, EOxMap.projection);

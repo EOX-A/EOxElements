@@ -49,6 +49,7 @@ export default {
       .projection=${args.projection}
       .zoom=${args.zoom}
     ></eox-map>
+    <eox-layercontrol></eox-layercontrol>
   `,
 };
 

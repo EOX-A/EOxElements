@@ -212,12 +212,17 @@ export class EOxMap extends LitElement {
   #zoom = 0;
 
   /**
-   * The map's projection system, specifying how coordinates are mapped on the globe.
-   * Defaults to "EPSG:3857".
-   *
+   * Internal flag to track if globe mode is enabled.
+   * @type {boolean}
+   */
+  #isGlobeEnabled = false;
+
+  /**
+   * Internal property to store the actual OpenLayers map projection.
+   * Always an EPSG code (e.g., "EPSG:3857").
    * @type {ProjectionLike}
    */
-  #projection = "EPSG:3857";
+  #_olProjection = "EPSG:3857";
 
   constructor() {
     super();
@@ -237,7 +242,7 @@ export class EOxMap extends LitElement {
       view: new View({
         center: [0, 0],
         zoom: 0,
-        projection: this.projection,
+        projection: this.#_olProjection,
       }),
     });
 
@@ -267,6 +272,111 @@ export class EOxMap extends LitElement {
      * @type {any|null}
      */
     this.globe = null;
+  }
+
+  enableGlobe() {
+    if (this.shadowRoot) {
+      /** @type {HTMLElement} */
+      let globeDiv = this.shadowRoot.querySelector("#globe");
+      if (!globeDiv) {
+        globeDiv = document.createElement("div");
+        globeDiv.id = "globe";
+        globeDiv.style.width = "100%";
+        globeDiv.style.height = "100%";
+        globeDiv.style.display = "block"; // Ensure the globe div is visible
+        this.renderRoot?.appendChild(globeDiv);
+      }
+
+      // Get current OL map center and transform it to EPSG:4326 for the globe
+      const currentOlCenter = this.map.getView().getCenter();
+      // Only transform if currentOlCenter is not null/undefined
+      const currentGlobeCenter = currentOlCenter
+        ? this.transform(currentOlCenter, this.#_olProjection, "EPSG:4326")
+        : [0, 0]; // Default if center is not available
+      const currentZoom = this.map.getView().getZoom();
+
+      this.registerProjectionFromCode("EPSG:3857"); // Ensure projection is registered for OL, globe uses its own.
+
+      // Store the globe instance returned by create, if any.
+      this.globe = window.eoxMapGlobe.create({
+        EOxMap: this,
+        target: globeDiv,
+        center: currentGlobeCenter, // Pass the transformed center to the globe
+        zoom: currentZoom,
+      });
+
+      /** @type {HTMLElement} */
+      (this.shadowRoot.querySelector("#map")).style.display = "none";
+      this.#isGlobeEnabled = true;
+    }
+  }
+
+  disableGlobe() {
+    if (this.globe) {
+      const globe = this.globe;
+      const planet = globe.planet;
+
+      // 1. Determine the target point on the terrain at the center of the viewport
+      let c = planet.getCartesianFromPixelTerrain(
+        globe.renderer.handler.getCenter(),
+      );
+
+      // Fallback: If no terrain is found at the center, just use the current camera eye position
+      const targetCartesian = c
+        ? c.normal().scaleTo(c.length() + c.distance(planet.camera.eye))
+        : planet.camera.eye;
+
+      planet.flyCartesian(targetCartesian, {
+        amplitude: 0,
+        // The critical part: all final calculations and view settings
+        // MUST happen inside the completeCallback.
+        completeCallback: () => {
+          // If a target (c) was found, make the camera look at it (straight down)
+          if (c) {
+            planet.camera.look(c);
+          }
+
+          // Recalculate the camera position AFTER the flight and 'look' adjustments are complete
+          const finalCameraPosition = globe.planet.camera.getLonLat();
+
+          // Calculate the OpenLayers zoom level using the camera's final height
+          const zoomFromGlobe =
+            Math.log2(21050000 / finalCameraPosition.height) + 1;
+
+          // Calculate the OpenLayers center coordinates
+          const centerFromGlobe = [
+            finalCameraPosition.lon,
+            finalCameraPosition.lat,
+          ];
+          // Transform from EPSG:4326 (globe's projection) to the OL map's current projection
+          const newCenter = this.transform(
+            centerFromGlobe,
+            "EPSG:4326",
+            this.#_olProjection, // Use the internal OL projection here
+          );
+
+          // Apply the calculated center and zoom to the OpenLayers map view
+          this.map.getView().setCenter(newCenter);
+          this.map.getView().setZoom(zoomFromGlobe);
+
+          this.globe = null;
+
+          // Hide the globe and show the map immediately after initiating the fly animation
+          const globeElement = this.shadowRoot.querySelector("#globe");
+          if (globeElement) {
+            // @ts-ignore
+            globeElement.style.display = "none";
+            globeElement.remove(); // Remove the element from the DOM
+          }
+          const mapElement = this.shadowRoot.querySelector("#map");
+          if (mapElement) {
+            // @ts-ignore
+            mapElement.style.display = ""; // Show the map
+          }
+          this.#isGlobeEnabled = false;
+        },
+      });
+    }
   }
 
   /**
@@ -449,20 +559,43 @@ export class EOxMap extends LitElement {
   /**
    * Sets the map's projection.
    *
-   * @param {ProjectionLike} projection - The projection code (e.g., "EPSG:3857").
+   * @param {ProjectionLike} projection - The projection code (e.g., "EPSG:3857") or "globe".
    */
   set projection(projection) {
-    this.#projection = setProjectionMethod(projection, this.#projection, this);
+    if (projection === "globe") {
+      // Ensure OL map is set to EPSG:3857 when globe is active
+      // The globe itself handles its own projection internally.
+      if (this.#_olProjection !== "EPSG:3857") {
+        this.#_olProjection = setProjectionMethod(
+          "EPSG:3857",
+          this.#_olProjection,
+          this,
+        );
+      }
+      setTimeout(() => {
+        this.enableGlobe();
+      });
+    } else {
+      if (this.#isGlobeEnabled) {
+        this.disableGlobe();
+      }
+      // Update the internal OL projection via setProjectionMethod
+      this.#_olProjection = setProjectionMethod(
+        projection,
+        this.#_olProjection,
+        this,
+      );
+    }
   }
 
   /**
    * Gets the current map projection.
    *
    * @type {ProjectionLike}
-   * @returns {ProjectionLike} The map's projection code.
+   * @returns {ProjectionLike} The map's projection code or "globe" if globe is enabled.
    */
   get projection() {
-    return this.#projection || "EPSG:3857";
+    return this.#isGlobeEnabled ? "globe" : this.#_olProjection;
   }
 
   /**

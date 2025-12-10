@@ -8,14 +8,6 @@ import { animateToStateMethod } from "./";
  * @param {import("../../main").EOxMap} EOxMap - The map object containing the map instance, center, animation options, and other properties.
  */
 export default function firstUpdatedMethod(zoomExtent, EOxMap) {
-  if (EOxMap.projection === "globe") {
-    const globeDiv = document.createElement("div");
-    globeDiv.id = "globe";
-    globeDiv.style.width = "100%";
-    globeDiv.style.height = "100%";
-    EOxMap.renderRoot.appendChild(globeDiv);
-    window.eoxMapGlobe.create({ EOxMap, target: globeDiv });
-  }
   // Set the center of the map once the target changes
   EOxMap.map.once("change:target", (e) => {
     e.target.getView().setCenter(EOxMap.center);
