@@ -40,8 +40,8 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
  * Creates groups for each layer and items for each time value, setting up visibility change listeners.
  *
  * @param {Array<SliderValue>} sliderValues - Array of slider configuration objects with layer information and time values.
- * @param {import("vis-timeline/standalone").DataSet} groups - Timeline groups DataSet to populate.
- * @param {import("vis-timeline/standalone").DataSet} items - Timeline items DataSet to populate.
+ * @param {import("vis-data/standalone").DataSet} groups - Timeline groups DataSet to populate.
+ * @param {import("vis-data/standalone").DataSet} items - Timeline items DataSet to populate.
  * @param {EOxTimeControlTimeline | null} EOxTimeControlTimeline - The timeline component instance, or null if not present.
  */
 export default function updateTimelineItems(

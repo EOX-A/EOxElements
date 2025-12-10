@@ -51,7 +51,7 @@
     "lodash.groupby": "^4.6.0",
     "nouislider": "^15.8.1",
     "toolcool-range-slider": "^4.0.28",
-    "uuidv4": "^6.2.13",
+    "uuid": "^13.0.0",
     "vanilla-calendar-pro": "^3.0.5",
     "vis-data": "^8.0.3",
     "vis-timeline": "^8.4.0"

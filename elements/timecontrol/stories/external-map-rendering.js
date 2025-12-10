@@ -4,7 +4,6 @@ export const ExternalMapRendering = {
   args: {
     center: [12, 42],
     zoom: 10,
-    for: "eox-map",
     layerIdKey: "id",
     titleKey: "name",
     filters: [

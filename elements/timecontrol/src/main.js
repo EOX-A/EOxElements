@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import dayOfYear from "dayjs/plugin/dayOfYear";
 import isoWeek from "dayjs/plugin/isoWeek";
-import { DataSet } from "vis-timeline/standalone";
+import { DataSet } from "vis-data/standalone";
 
 import "./components/timecontrol-date";
 import "./components/timecontrol-picker";
@@ -115,14 +115,14 @@ export class EOxTimeControl extends LitElement {
   /**
    * DataSet containing timeline groups for vis-timeline.
    *
-   * @type {import("vis-timeline/standalone").DataSet<TimelineGroup>}
+   * @type {import("vis-data/standalone").DataSet}
    */
   #groups = new DataSet([]);
 
   /**
    * DataSet containing timeline items for vis-timeline.
    *
-   * @type {import("vis-timeline/standalone").DataSet<TimelineItem>}
+   * @type {import("vis-data/standalone").DataSet<TimelineItem>}
    */
   #items = new DataSet([]);
 
@@ -224,8 +224,8 @@ export class EOxTimeControl extends LitElement {
   /**
    * Gets the DataSet containing timeline groups.
    *
-   * @type {import("vis-timeline/standalone").DataSet<TimelineGroup>}
-   * @returns {import("vis-timeline/standalone").DataSet<TimelineGroup>} The groups DataSet.
+   * @type {import("vis-data/standalone").DataSet<TimelineGroup>}
+   * @returns {import("vis-data/standalone").DataSet<TimelineGroup>} The groups DataSet.
    */
   get groups() {
     return this.#groups;
@@ -234,7 +234,7 @@ export class EOxTimeControl extends LitElement {
   /**
    * Sets the DataSet containing timeline groups.
    *
-   * @param {import("vis-timeline/standalone").DataSet<TimelineGroup>} value - The groups DataSet.
+   * @param {import("vis-data/standalone").DataSet<TimelineGroup>} value - The groups DataSet.
    */
   set groups(value) {
     this.#groups = value;
@@ -243,8 +243,8 @@ export class EOxTimeControl extends LitElement {
   /**
    * Gets the DataSet containing timeline items.
    *
-   * @type {import("vis-timeline/standalone").DataSet<TimelineItem>}
-   * @returns {import("vis-timeline/standalone").DataSet<TimelineItem>} The items DataSet.
+   * @type {import("vis-data/standalone").DataSet<TimelineItem>}
+   * @returns {import("vis-data/standalone").DataSet<TimelineItem>} The items DataSet.
    */
   get items() {
     return this.#items;
@@ -253,7 +253,7 @@ export class EOxTimeControl extends LitElement {
   /**
    * Sets the DataSet containing timeline items.
    *
-   * @param {import("vis-timeline/standalone").DataSet<TimelineItem>} value - The items DataSet.
+   * @param {import("vis-data/standalone").DataSet<TimelineItem>} value - The items DataSet.
    */
   set items(value) {
     this.#items = value;

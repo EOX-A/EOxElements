@@ -1,5 +1,5 @@
 import { getFlatLayersArray, updateTimelineItems } from "../../helpers";
-import { DataSet } from "vis-timeline/standalone";
+import { DataSet } from "vis-data/standalone";
 import { getElement } from "@eox/elements-utils";
 import dayjs from "dayjs";
 import isequal from "lodash.isequal";

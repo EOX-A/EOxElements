@@ -1,4 +1,4 @@
-import type { DataSet } from "vis-timeline/standalone";
+import type { DataSet } from "vis-data/standalone";
 import type { Timeline } from "vis-timeline/standalone";
 import type { Calendar, DateAny } from "vanilla-calendar-pro";
 import type { EOxMap } from "@eox/map";
