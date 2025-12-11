@@ -1,26 +1,13 @@
 import { html } from "lit";
+import { STORY_ARGS } from "../src/enums";
 
 export const Expert = {
   args: {
+    ...STORY_ARGS,
     center: [12, 42],
     zoom: 10,
     layerIdKey: "id",
     titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
     externalMapRendering: true,
     animate: true,
     for: "eox-map#external-map-rendering-mosaic",
@@ -161,6 +148,7 @@ export const Expert = {
       document
         .querySelector("eox-timecontrol")
         .addEventListener("select", async (e) => {
+          console.log(e.detail);
           const now = Date.now();
           if (!items.length) return;
           const start = new Date(e.detail.date[0]);

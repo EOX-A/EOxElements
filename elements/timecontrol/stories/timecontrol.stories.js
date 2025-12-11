@@ -11,6 +11,7 @@ import {
   SliderStory,
   UpdateViewStory,
   DatePickerPopupItemsStory,
+  NoMapStory,
 } from "./index";
 
 export default {
@@ -127,6 +128,21 @@ export const ExternalMapRendering = ExternalMapRenderingStory;
 export const DateFilter = DateFilterStory;
 
 /**
+ * Update view event story.
+ *
+ * This example demonstrates the `update:view` event, which is dispatched when the view range of the timeline changes.
+ * The event is dispatched with the start and end dates of the view range.
+ */
+export const UpdateView = UpdateViewStory;
+
+/**
+ * No map story.
+ *
+ * This example demonstrates the timecontrol component without a map.
+ */
+export const NoMap = NoMapStory;
+
+/**
  * Expert example showcasing all timecontrol features together.
  *
  * This comprehensive example demonstrates all available timecontrol components and features:
@@ -141,11 +157,3 @@ export const DateFilter = DateFilterStory;
  * multiple interaction methods and visualization options.
  */
 export const Expert = ExpertStory;
-
-/**
- * Update view event story.
- *
- * This example demonstrates the `update:view` event, which is dispatched when the view range of the timeline changes.
- * The event is dispatched with the start and end dates of the view range.
- */
-export const UpdateView = UpdateViewStory;

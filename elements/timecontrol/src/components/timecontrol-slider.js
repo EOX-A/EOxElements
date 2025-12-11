@@ -259,10 +259,9 @@ export class EOxTimeControlSlider extends LitElement {
 
   handleChange(evt) {
     const EOxTimeControl = this.getEOxTimeControl();
-    EOxTimeControl.dateChange(
-      [evt.detail.value1, evt.detail.value1],
-      EOxTimeControl,
-    );
+    const start = dayjs(evt.detail.value1).format();
+    const end = dayjs(evt.detail.value1).endOf("day").format();
+    EOxTimeControl.dateChange([start, end], EOxTimeControl);
   }
 
   /**

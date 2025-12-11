@@ -61,8 +61,8 @@ export default function updateTimelineItems(
         updateVisibility(EOxTimeControlTimeline, visibility, i);
       }
     };
-    slider.layerInstance.un("change:visible", visibilityFunc);
-    slider.layerInstance.on("change:visible", visibilityFunc);
+    slider.layerInstance?.un("change:visible", visibilityFunc);
+    slider.layerInstance?.on("change:visible", visibilityFunc);
     groups.add({
       id: slider.layer,
       content: slider.name,

@@ -103,7 +103,8 @@ export class EOxTimeControl extends LitElement {
         type: Boolean,
         attribute: "external-map-rendering",
       },
-      selectedDateRange: { type: Array, attribute: "selected-date-range" },
+      selectedDateRange: { type: Array, attribute: undefined },
+      controlValues: { type: Array, attribute: false },
     };
   }
 
@@ -183,6 +184,13 @@ export class EOxTimeControl extends LitElement {
      * @type {String|HTMLElement}
      */
     this.for = "eox-map";
+
+    /**
+     * Array of control values.
+     *
+     * @type {Array<Object>}
+     */
+    this.controlValues = [];
   }
 
   /**

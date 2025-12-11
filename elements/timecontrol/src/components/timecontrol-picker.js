@@ -44,6 +44,7 @@ export class EOxTimeControlPicker extends LitElement {
       range: { type: Boolean, attribute: "range" },
       showItems: { type: Boolean, attribute: "show-items" },
       showDots: { type: Boolean, attribute: "show-dots" },
+      position: { type: Array, attribute: false },
     };
   }
 
@@ -108,6 +109,13 @@ export class EOxTimeControlPicker extends LitElement {
      * @type {boolean}
      */
     this.showItems = false;
+
+    /**
+     * Position of the calendar picker.
+     *
+     * @type {Array<string>}
+     */
+    this.position = ["top", "left"];
   }
 
   /**
@@ -305,7 +313,7 @@ export class EOxTimeControlPicker extends LitElement {
           enableEdgeDatesOnly: false,
           inputMode: this.popup ? true : false,
           //@ts-expect-error error from vanilla-calendar-pro types
-          positionToInput: ["top", "left"],
+          positionToInput: this.position,
           selectedWeekends: [],
           popups: popups,
           onClickArrow: () => this.#emitUpdateEvent(),

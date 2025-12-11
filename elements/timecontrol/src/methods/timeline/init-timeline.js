@@ -170,7 +170,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       for (let i = 0; i < EOxTimeControl.sliderValues.length; i++) {
         updateVisibility(
           EOxTimeControlTimeline,
-          EOxTimeControl.sliderValues[i].layerInstance.getVisible(),
+          EOxTimeControl.sliderValues[i].layerInstance?.getVisible() || true,
           i,
         );
       }

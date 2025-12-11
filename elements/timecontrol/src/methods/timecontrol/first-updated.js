@@ -52,33 +52,43 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
       emitUpdateEvent(EOxTimeControl),
     );
 
-  if (foundElement) {
+  if (!foundElement) EOxTimeControl.externalMapRendering = true;
+
+  if (foundElement || EOxTimeControl.controlValues.length) {
     const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
     EOxTimeControl.eoxMap = EoxMap;
 
-    const flatLayers = getFlatLayersArray(
-      /** @type {import('ol/layer/Base').default[]} */ (
-        EoxMap.map.getLayers().getArray()
-      ),
-    );
+    const flatLayers = EoxMap
+      ? getFlatLayersArray(
+          /** @type {import('ol/layer/Base').default[]} */ (
+            EoxMap.map.getLayers().getArray()
+          ),
+        )
+      : [];
 
     const init = () => {
-      const flatLayers = getFlatLayersArray(
-        /** @type {import('ol/layer/Base').default[]} */ (
-          EoxMap.map.getLayers().getArray()
-        ),
-      );
+      const flatLayers = EoxMap
+        ? getFlatLayersArray(
+            /** @type {import('ol/layer/Base').default[]} */ (
+              EoxMap.map.getLayers().getArray()
+            ),
+          )
+        : [];
 
       const sliderValues = [];
 
-      if (flatLayers.length) {
-        for (const layer of flatLayers) {
-          const properties = layer.getProperties();
+      if (flatLayers.length || EOxTimeControl.controlValues.length) {
+        const layers = EOxTimeControl.controlValues.length
+          ? EOxTimeControl.controlValues
+          : flatLayers;
+        for (const layer of layers) {
+          const properties = EOxTimeControl.controlValues.length
+            ? layer
+            : layer.getProperties();
           if (
             properties &&
             properties.timeControlValues &&
-            Array.isArray(properties.timeControlValues) &&
-            properties.timeControlProperty
+            Array.isArray(properties.timeControlValues)
           ) {
             const values = properties.timeControlValues
               .map((value) => ({
@@ -93,12 +103,12 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             sliderValues.push({
               layer: properties[EOxTimeControl.layerIdKey],
               name: properties[EOxTimeControl.titleKey],
-              property: properties.timeControlProperty,
+              property: properties.timeControlProperty || "dummy",
               values: values,
-              layerInstance: layer,
+              layerInstance: EOxTimeControl.eoxMap ? layer : null,
             });
-            // @ts-expect-error TODO: Fix typing
-            layer.on("change:timeControlValues", () => init());
+            if (EOxTimeControl.eoxMap)
+              layer.on("change:timeControlValues", () => init());
           }
         }
       }
@@ -183,16 +193,17 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             }
           }
         }
-        // initVisTimeline(EOxTimeControl);
       }
       EOxTimeControl.requestUpdate();
     };
 
-    if (flatLayers.length > 0) init();
-    EoxMap.map.getLayers().on("add", () => init());
-    EoxMap.map.getLayers().on("remove", () => init());
-    EoxMap.map.on("change", () => {
-      init();
-    });
+    if (flatLayers.length > 0 || EOxTimeControl.controlValues.length) init();
+    if (EoxMap) {
+      EoxMap.map.getLayers().on("add", () => init());
+      EoxMap.map.getLayers().on("remove", () => init());
+      EoxMap.map.on("change", () => {
+        init();
+      });
+    }
   }
 }

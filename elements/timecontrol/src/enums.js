@@ -497,7 +497,7 @@ export const STORY_ARGS = {
       step: 5,
       state: {
         min: 0,
-        max: 100,
+        max: 40,
       },
     },
   ],

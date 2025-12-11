@@ -437,6 +437,10 @@ declare global {
      */
     externalMapRendering: boolean;
     /**
+     * Array of control values.
+     */
+    controlValues: Array<any>;
+    /**
      * Handler for date changes.
      */
     dateChange: (dateRange: DateRange, instance: EOxTimeControl) => void;
@@ -492,6 +496,10 @@ declare global {
      * Whether to show dots on calendar.
      */
     showDots: boolean;
+    /**
+     * Position of the calendar picker.
+     */
+    position: Array<string>;
     /**
      * Gets the view range.
      */

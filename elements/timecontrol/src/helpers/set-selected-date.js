@@ -43,11 +43,13 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   );
   const selectedDateRange = dayjs(dateRange[0]);
   if (Number.isNaN(selectedDateRange.unix())) return;
-  const flatLayers = getFlatLayersArray(
-    /** @type {import('ol/layer/Base').default[]} */ (
-      eoxMap.map.getLayers().getArray()
-    ),
-  );
+  const flatLayers = eoxMap
+    ? getFlatLayersArray(
+        /** @type {import('ol/layer/Base').default[]} */ (
+          eoxMap.map.getLayers().getArray()
+        ),
+      )
+    : [];
 
   let selectedRangeItems = [];
   const dayjsDateRange = [dayjs(dateRange[0]), dayjs(dateRange[1])];
