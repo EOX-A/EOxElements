@@ -115,10 +115,9 @@ export const refreshGlobe = () => {
 export const createGlobusLayer = (olLayer, mapPool) => {
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
-if( olLayer.get("type") === "Group") {
-
-  return undefined;
-}
+  if (olLayer.get("type") === "Group") {
+    return undefined;
+  }
   if (source instanceof OSM) {
     return new OpenStreetMap(id, {
       isBaseLayer: olLayer.get("base"),
@@ -139,7 +138,7 @@ if( olLayer.get("type") === "Group") {
     // Construct WMS URL with parameters
     const wmsParams = source.getParams();
     const baseUrl = source.getUrls()[0];
-    const wmsUrl = baseUrl
+    const wmsUrl = baseUrl;
     const wmsLayerNames = wmsParams.LAYERS || wmsParams.layers || "default";
 
     return new WMS(id, {
@@ -150,37 +149,38 @@ if( olLayer.get("type") === "Group") {
       opacity: olLayer.getOpacity(),
       version: wmsParams.VERSION || wmsParams.Version || "1.1.1",
       extra: {
-        ...wmsParams
+        ...wmsParams,
       },
     });
   }
   if (source instanceof Vector_ol) {
-      fetch(source.getUrl().toString())
-        .then(r => {
-            return r.json();
-        }).then(data => {
-
+    fetch(source.getUrl().toString())
+      .then((r) => {
+        return r.json();
+      })
+      .then((data) => {
         const vectorLayer = new Vector(id, {
-             visibility: olLayer.getVisible(),
-             opacity: olLayer.getOpacity(),
-             isBaseLayer: olLayer.get("base"),
-
+          visibility: olLayer.getVisible(),
+          opacity: olLayer.getOpacity(),
+          isBaseLayer: olLayer.get("base"),
         });
 
         vectorLayer.addTo(globus.planet);
 
         var f = data.features;
         for (let i = 0; i < f.length; i++) {
-            var fi = f[i];
-            vectorLayer.add(new Entity({
-                'geometry': {
-                    'type': fi.geometry.type,
-                    'coordinates': fi.geometry.coordinates,
-                }
-            }));
+          var fi = f[i];
+          vectorLayer.add(
+            new Entity({
+              geometry: {
+                type: fi.geometry.type,
+                coordinates: fi.geometry.coordinates,
+              },
+            }),
+          );
         }
         return vectorLayer;
-    });
+      });
 
     return undefined;
   }
