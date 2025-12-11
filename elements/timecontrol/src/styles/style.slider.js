@@ -64,6 +64,24 @@ export const sliderStyle = `
     pointer-events: none;
     left: 50%;
     transform: translateX(-50%);
+    /* Prevent text cut off at edges */
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Show full first/last label within slider bounds */
+  .custom-mark:first-child .custom-mark-label {
+    left: 0;
+    transform: translateX(0);
+    text-align: left;
+    max-width: 70px;
+  }
+  .custom-mark:last-child .custom-mark-label {
+    left: 100%;
+    transform: translateX(-100%);
+    text-align: right;
+    max-width: 70px;
   }
 
   .custom-mark-year-label {
