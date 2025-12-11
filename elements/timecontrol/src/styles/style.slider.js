@@ -40,34 +40,35 @@ export const sliderStyle = `
   .custom-mark {
     position: absolute;
     pointer-events: none;
+    transform: translateX(-50%);
   }
 
   .custom-mark-year {
     height: 12px;
     width: 2px;
     background-color: var(--mark-color, #666);
+    top: 0;
   }
 
-  .custom-mark-month {
-    height: 6px;
+  .custom-mark-empty {
+    height: 4px;
     width: 1px;
-    background-color: var(--mark-color, #999);
+    background-color: var(--mark-color, #ccc);
+    top: 10px;
   }
 
   .custom-mark-label {
+    position: absolute;
     font-size: 11px;
     white-space: nowrap;
     pointer-events: none;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .custom-mark-year-label {
     color: var(--mark-text-color, #666);
-    margin-top: 4px;
-  }
-
-  .custom-mark-month-label {
-    color: var(--mark-text-color, #999);
-    margin-top: 4px;
+    top: 16px;
   }
 
   /* Custom tooltips */

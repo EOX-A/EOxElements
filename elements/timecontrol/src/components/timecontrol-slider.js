@@ -61,6 +61,20 @@ export class EOxTimeControlSlider extends LitElement {
   #filteredItems = null;
 
   /**
+   * Generated ticks for the slider.
+   *
+   * @type {Array<{type: 'year' | 'empty', position: number, label?: string, date?: string}>}
+   */
+  #ticks = [];
+
+  /**
+   * ResizeObserver to regenerate ticks when slider width changes.
+   *
+   * @type {ResizeObserver | null}
+   */
+  #resizeObserver = null;
+
+  /**
    * Creates a new EOxTimeControlSlider instance.
    */
   constructor() {
@@ -93,6 +107,92 @@ export class EOxTimeControlSlider extends LitElement {
   }
 
   /**
+   * Generates ticks based on #items for year markers and empty ticks for gaps.
+   *
+   * @returns {Array<{type: 'year' | 'empty', position: number, label?: string, date?: string}>}
+   */
+  #generateTicks() {
+    if (!this.#items || this.#items.length === 0) {
+      return [];
+    }
+
+    const ticks = [];
+    const yearSet = new Set();
+    const yearTicks = [];
+
+    // First pass: collect year ticks
+    this.#items.forEach((dateStr, index) => {
+      const date = dayjs(dateStr);
+      const year = date.year();
+
+      // Calculate position as percentage (0-100)
+      const position =
+        this.#items.length === 1 ? 0 : (index / (this.#items.length - 1)) * 100;
+
+      // Add year tick (first occurrence of each year)
+      if (!yearSet.has(year)) {
+        yearSet.add(year);
+        yearTicks.push({
+          type: "year",
+          position,
+          label: year.toString(),
+          date: dateStr,
+        });
+      }
+    });
+
+    // Sort year ticks by position
+    yearTicks.sort((a, b) => a.position - b.position);
+
+    // Second pass: add empty ticks between year ticks
+    for (let i = 0; i < yearTicks.length; i++) {
+      ticks.push(yearTicks[i]);
+
+      let isLast = i === yearTicks.length - 1;
+      let currentTick = yearTicks[i];
+      let nextPosition = 100,
+        nextTick = null;
+      if (!isLast) {
+        nextTick = yearTicks[i + 1];
+        nextPosition = nextTick.position;
+      }
+
+      const gap = nextPosition - currentTick.position;
+
+      // Only add empty ticks for gaps > 4%
+      if (gap > 4) {
+        // Calculate number of empty ticks (one every ~2-3% of the gap)
+        // Ensure at least 1 empty tick for any gap > 4%
+        const numEmptyTicks = Math.max(1, Math.floor(gap / 3));
+        const minDistance = 0.8; // Minimum distance from year/edge ticks
+
+        // Divide gap into (numEmptyTicks + 1) parts
+        const emptyTickSpacing = gap / (numEmptyTicks + 1);
+
+        for (let j = 1; j <= numEmptyTicks; j++) {
+          const emptyPosition = currentTick.position + emptyTickSpacing * j;
+          const distanceFromCurrent = emptyPosition - currentTick.position;
+          const distanceFromNext = nextPosition - emptyPosition;
+
+          // If last tick, distanceFromNext is just to edge of slider (100)
+          // Only add if not too close to current year tick or edge/next year tick
+          if (
+            distanceFromCurrent > minDistance &&
+            distanceFromNext > minDistance
+          ) {
+            ticks.push({
+              type: "empty",
+              position: emptyPosition,
+            });
+          }
+        }
+      }
+    }
+
+    return ticks.sort((a, b) => a.position - b.position);
+  }
+
+  /**
    * Sets the date range and updates the slider with new data.
    *
    * @param {DateRange} dateRange - The date range as [startDate, endDate] in ISO format.
@@ -118,10 +218,43 @@ export class EOxTimeControlSlider extends LitElement {
       });
       this.#filteredItems = filteredItems;
     }
-    slider.setAttribute("data", this.#items.join(","));
-    slider.setAttribute("value1", this.#filteredItems[0]);
+    if (slider) {
+      slider.setAttribute("data", this.#items.join(","));
+      slider.setAttribute("value1", this.#filteredItems[0]);
+    }
+
+    // Generate ticks after items are set
+    this.#ticks = this.#generateTicks();
 
     this.requestUpdate();
+  }
+
+  /**
+   * Lifecycle method called after the first update.
+   */
+  firstUpdated() {
+    // Set up ResizeObserver to regenerate ticks when slider width changes
+    const slider = this.getSliderInstance();
+    if (slider && window.ResizeObserver) {
+      this.#resizeObserver = new ResizeObserver(() => {
+        if (this.#items && this.#items.length > 0) {
+          this.#ticks = this.#generateTicks();
+          this.requestUpdate();
+        }
+      });
+      this.#resizeObserver.observe(slider);
+    }
+  }
+
+  /**
+   * Lifecycle method called when the component is disconnected.
+   */
+  disconnectedCallback() {
+    if (this.#resizeObserver) {
+      this.#resizeObserver.disconnect();
+      this.#resizeObserver = null;
+    }
+    super.disconnectedCallback();
   }
 
   handleChange(evt) {
@@ -130,6 +263,40 @@ export class EOxTimeControlSlider extends LitElement {
       [evt.detail.value1, evt.detail.value1],
       EOxTimeControl,
     );
+  }
+
+  /**
+   * Renders tick marks for the slider.
+   *
+   * @returns {import("lit").TemplateResult}
+   */
+  #renderTicks() {
+    if (!this.#ticks || this.#ticks.length === 0) {
+      return html``;
+    }
+
+    return html`
+      <div class="custom-marks-container">
+        ${this.#ticks.map(
+          (tick) => html`
+            <div
+              class="custom-mark custom-mark-${tick.type}"
+              style="left: ${tick.position}%"
+            >
+              ${tick.type === "year" && tick.label
+                ? html`
+                    <div
+                      class="custom-mark-label custom-mark-${tick.type}-label"
+                    >
+                      ${tick.label}
+                    </div>
+                  `
+                : ""}
+            </div>
+          `,
+        )}
+      </div>
+    `;
   }
 
   render() {
@@ -144,6 +311,7 @@ export class EOxTimeControlSlider extends LitElement {
           @change="${(/** @type {CustomEvent} */ evt) =>
             this.handleChange(evt)}"
         ></tc-range-slider>
+        ${this.#renderTicks()}
       </div>
     `;
   }
