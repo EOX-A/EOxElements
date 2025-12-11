@@ -28,7 +28,6 @@ export const Slider = {
           .navigation=${args.navigation}
         ></eox-timecontrol-date>
         <eox-timecontrol-picker
-          .range=${true}
           .showDots=${true}
           .popup=${true}
         ></eox-timecontrol-picker>
