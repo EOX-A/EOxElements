@@ -48,6 +48,7 @@ export const ExternalMapRendering = {
       <eox-timecontrol-picker
         .range=${true}
         .showDots=${true}
+        .showItems=${true}
         .popup=${true}
       ></eox-timecontrol-picker>
     </eox-timecontrol>

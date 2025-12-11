@@ -11,3 +11,4 @@ export { default as DateFilterStory } from "./date-filter"; // Date filter story
 export { default as ExpertStory } from "./expert"; // Expert story
 export { default as SliderStory } from "./slider"; // Slider story
 export { default as UpdateViewStory } from "./update-view"; // Update view event story
+export { default as DatePickerPopupItemsStory } from "./date-picker-popup-items"; // Date picker popup items story

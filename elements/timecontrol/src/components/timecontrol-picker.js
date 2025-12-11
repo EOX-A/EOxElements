@@ -42,6 +42,7 @@ export class EOxTimeControlPicker extends LitElement {
       popup: { type: Boolean, attribute: "popup" },
       unstyled: { type: Boolean, attribute: "unstyled" },
       range: { type: Boolean, attribute: "range" },
+      showItems: { type: Boolean, attribute: "show-items" },
       showDots: { type: Boolean, attribute: "show-dots" },
     };
   }
@@ -100,6 +101,13 @@ export class EOxTimeControlPicker extends LitElement {
      * @type {boolean}
      */
     this.showDots = false;
+
+    /**
+     * Whether to show items in the calendar popup.
+     *
+     * @type {boolean}
+     */
+    this.showItems = false;
   }
 
   /**
@@ -216,6 +224,67 @@ export class EOxTimeControlPicker extends LitElement {
           this.#selectedDateRange,
           this.range,
         );
+        const data = EOxTimeControl.items.get();
+        const itemGroups = groupBy(data, "date");
+        let popups = {};
+
+        if (this.showItems) {
+          for (const date of Object.keys(itemGroups)) {
+            const items = itemGroups[date];
+
+            // Get top 5 items
+            const topItems = items.slice(0, 3);
+            const remainingCount = items.length - 3;
+
+            // Build HTML for the list
+            let listHTML = "";
+
+            topItems.forEach((item) => {
+              const id = item.id || "";
+              const utcTime = item.utc ? dayjs(item.utc).format("HH:mm") : "";
+              const group = item.group || "";
+              const groupsList = Object.keys(groupBy(data, "group"));
+
+              // Truncate ID if too long
+              const truncatedId =
+                id.length > 30 ? id.substring(0, 30) + "..." : id;
+
+              listHTML += `
+                <div class="vc-item-popup__item">
+                  <div class="vc-item-popup__item-content">
+                    <div class="vc-item-popup__dot" style="background-color: var(--dot-color-${groupsList.indexOf(group) + 1}, var(--primary))"></div>
+                    <div class="vc-item-popup__text-container">
+                      <div class="vc-item-popup__id">
+                        ID: ${truncatedId}
+                      </div>
+                      <div class="vc-item-popup__meta">
+                        ${utcTime} ${group}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+
+            // Add "more" indicator if there are remaining items
+            if (remainingCount > 0) {
+              listHTML += `
+                <div class="vc-item-popup__more">
+                  + ${remainingCount} more
+                </div>
+              `;
+            }
+
+            popups = {
+              ...popups,
+              [date]: {
+                modifier: "vc-item-popup",
+                html: listHTML,
+              },
+            };
+          }
+        }
+
         this.cal = new Calendar(calendarSelector || "#cal", {
           selectedTheme: "light",
           dateMin: options.min,
@@ -238,6 +307,7 @@ export class EOxTimeControlPicker extends LitElement {
           //@ts-expect-error error from vanilla-calendar-pro types
           positionToInput: ["top", "left"],
           selectedWeekends: [],
+          popups: popups,
           onClickArrow: () => this.#emitUpdateEvent(),
           onClickMonth: () => this.#emitUpdateEvent(),
           onClickYear: () => this.#emitUpdateEvent(),
@@ -267,31 +337,33 @@ export class EOxTimeControlPicker extends LitElement {
           },
           onCreateDateEls: (_self, dateEl) => {
             const date = extractISOFromCalendar(dateEl);
-            const dateDots = groupBy(EOxTimeControl.items.get(), "start");
+            const data = EOxTimeControl.items.get();
+            const itemsGroupedByDate = groupBy(data, "date");
             const oldDots = dateEl.querySelector(".vc-day__dots");
             if (oldDots) oldDots.remove();
+            const items = itemsGroupedByDate[date];
+            const groupList = Object.keys(groupBy(data, "group"));
 
-            if (dateDots[date] && dateEl.children.length) {
+            if (items && dateEl.children.length) {
               const host = document.createElement("div");
               host.className = "vc-day__dots";
+              const EOxItemFilter = /** @type {EOxItemFilter} */ (
+                EOxTimeControl.querySelector("eox-itemfilter")
+              );
+              if (EOxItemFilter) {
+                const results = EOxItemFilter.results;
+                const dataAvaiableAfterFilter = find(
+                  results,
+                  (result) => result.start === date,
+                );
+                if (!dataAvaiableAfterFilter) {
+                  dateEl.classList.add("vc-data-unavailable");
+                }
+              }
 
-              const totalDots = dateDots[date].length;
+              const totalDots = items.length;
               const dotsRequired = totalDots <= 3 ? totalDots : 3;
               for (let i = 0; i < dotsRequired; i++) {
-                const EOxItemFilter = /** @type {EOxItemFilter} */ (
-                  EOxTimeControl.querySelector("eox-itemfilter")
-                );
-                if (EOxItemFilter) {
-                  const results = EOxItemFilter.results;
-                  const dataAvaiableAfterFilter = find(
-                    results,
-                    (result) => result.start === date,
-                  );
-                  if (!dataAvaiableAfterFilter) {
-                    dateEl.style.opacity = "0.5";
-                  }
-                }
-
                 dateEl.classList.add("vc-data-available");
                 if (dateEl.hasAttribute("data-vc-date-today")) {
                   dateEl.removeAttribute("data-vc-date-today");
@@ -301,6 +373,7 @@ export class EOxTimeControlPicker extends LitElement {
                   if (i < 2 || (i === 2 && totalDots === 3)) {
                     const dot = document.createElement("div");
                     dot.className = "vc-day__dot";
+                    dot.style.backgroundColor = `var(--dot-color-${groupList.indexOf(items[i].group) + 1}, var(--primary))`;
                     host.appendChild(dot);
                   } else {
                     const plus = document.createElement("div");

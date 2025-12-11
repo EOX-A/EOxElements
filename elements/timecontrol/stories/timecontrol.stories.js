@@ -10,6 +10,7 @@ import {
   ExpertStory,
   SliderStory,
   UpdateViewStory,
+  DatePickerPopupItemsStory,
 } from "./index";
 
 export default {
@@ -47,6 +48,16 @@ export const DateWithNavigation = DateWithNavigationStory;
  * `<eox-timecontrol-date>`). The picker supports both single date and range selection modes.
  */
 export const DatePickerPopup = DatePickerPopupStory;
+
+/**
+ * Calendar date picker displayed in popup mode and shows items in the popup.
+ *
+ * This example demonstrates the `<eox-timecontrol-picker>` component with `showItems` enabled.
+ * The calendar appears as a popup overlay when clicking on the date input field (provided by
+ * `<eox-timecontrol-date>`). The picker supports both single date and range selection modes.
+ * The picker shows items in the popup.
+ */
+export const DatePickerPopupItems = DatePickerPopupItemsStory;
 
 /**
  * Calendar date picker displayed inline (not in popup mode).
