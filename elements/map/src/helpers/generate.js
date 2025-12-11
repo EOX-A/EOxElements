@@ -493,6 +493,6 @@ function setSyncListeners(olLayer, eoxLayer) {
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") return;
 
-    eoxLayer.properties[e.key] = e.target.get(e.key);
+    eoxLayer.properties && (eoxLayer.properties[e.key] = e.target.get(e.key));
   });
 }
