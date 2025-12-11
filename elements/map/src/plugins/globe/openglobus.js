@@ -6,12 +6,15 @@ import {
   XYZ,
   WMS,
   OpenStreetMap,
+  Vector,
+  Entity,
 } from "@openglobus/og";
 import { distributeTileToIdealMap } from "./methods.js";
 import { transform } from "../../helpers/index.js";
 import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
+import Vector_ol from "ol/source/Vector.js";
 
 class Globe {
   /**
@@ -112,11 +115,13 @@ export const refreshGlobe = () => {
 export const createGlobusLayer = (olLayer, mapPool) => {
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
+if( olLayer.get("type") === "Group") {
 
+  return undefined;
+}
   if (source instanceof OSM) {
     return new OpenStreetMap(id, {
       isBaseLayer: olLayer.get("base"),
-      zIndex: olLayer.get("base") ? 0 : 1,
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
     });
@@ -125,7 +130,6 @@ export const createGlobusLayer = (olLayer, mapPool) => {
   if (source instanceof XYZ_ol) {
     return new XYZ(id, {
       isBaseLayer: olLayer.get("base"),
-      zIndex: olLayer.get("base") ? 0 : 1,
       url: source.getUrls()[0],
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
@@ -135,28 +139,56 @@ export const createGlobusLayer = (olLayer, mapPool) => {
     // Construct WMS URL with parameters
     const wmsParams = source.getParams();
     const baseUrl = source.getUrls()[0];
-    const urlParams = new URLSearchParams(wmsParams).toString();
-    const wmsUrl = `${baseUrl}?${urlParams}`;
+    const wmsUrl = baseUrl
     const wmsLayerNames = wmsParams.LAYERS || wmsParams.layers || "default";
 
     return new WMS(id, {
       isBaseLayer: olLayer.get("base"),
-      zIndex: olLayer.get("base") ? 0 : 1,
       layers: wmsLayerNames,
       url: wmsUrl,
       visibility: olLayer.getVisible(),
       opacity: olLayer.getOpacity(),
+      version: wmsParams.VERSION || wmsParams.Version || "1.1.1",
       extra: {
-        transparent: wmsParams.TRANSPARENT || wmsParams.transparent || "true",
+        ...wmsParams
       },
     });
+  }
+  if (source instanceof Vector_ol) {
+      fetch(source.getUrl().toString())
+        .then(r => {
+            return r.json();
+        }).then(data => {
+
+        const vectorLayer = new Vector(id, {
+             visibility: olLayer.getVisible(),
+             opacity: olLayer.getOpacity(),
+             isBaseLayer: olLayer.get("base"),
+
+        });
+
+        vectorLayer.addTo(globus.planet);
+
+        var f = data.features;
+        for (let i = 0; i < f.length; i++) {
+            var fi = f[i];
+            vectorLayer.add(new Entity({
+                'geometry': {
+                    'type': fi.geometry.type,
+                    'coordinates': fi.geometry.coordinates,
+                }
+            }));
+        }
+        return vectorLayer;
+    });
+
+    return undefined;
   }
 
   // Fallback to CanvasTiles for other layer types
   return new CanvasTiles(id, {
     opacity: olLayer.getOpacity(),
     visibility: olLayer.getVisible(),
-    zIndex: olLayer.get("base") ? 0 : 1,
     async drawTile(material, applyCanvas) {
       if (!material.segment) {
         return;
