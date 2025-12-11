@@ -13,7 +13,7 @@ import {
   showCorrectLayerTitle,
   checkLayerLegend,
   colorSwatch,
-  checkLayerDatetime,
+  // checkLayerDatetime,
 } from "./cases/general";
 
 describe("LayerControl", () => {
