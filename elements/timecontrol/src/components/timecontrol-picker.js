@@ -141,6 +141,48 @@ export class EOxTimeControlPicker extends LitElement {
   }
 
   /**
+   * Emits the update:view event for the calendar picker.
+   */
+  #emitUpdateEvent() {
+    const viewRange = this.getViewRange();
+    setTimeout(() => {
+      this.dispatchEvent(
+        new CustomEvent("update:view", {
+          detail: {
+            start: viewRange.start,
+            end: viewRange.end,
+          },
+          composed: true,
+        }),
+      );
+    });
+  }
+
+  /**
+   * Gets the view range of the calendar picker.
+   *
+   * @returns {Object} The view range of the calendar picker.
+   */
+  getViewRange() {
+    const monthEle = this.cal.context.mainElement.querySelector(".vc-month");
+    const yearEle = this.cal.context.mainElement.querySelector(".vc-year");
+    const selectedMonth = monthEle
+      ? Number(monthEle.getAttribute("data-vc-month"))
+      : this.cal.selectedMonth;
+    const selectedYear = yearEle
+      ? Number(yearEle.getAttribute("data-vc-year"))
+      : this.cal.selectedYear;
+    const startDate = dayjs(
+      `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-01`,
+    ).startOf("month");
+    const endDate = dayjs(startDate).endOf("month");
+    return {
+      start: startDate.toDate(),
+      end: endDate.toDate(),
+    };
+  }
+
+  /**
    * Initializes the calendar picker with the given options.
    * Creates a new vanilla-calendar-pro Calendar instance and sets up event handlers for date selection.
    *
@@ -182,7 +224,7 @@ export class EOxTimeControlPicker extends LitElement {
           disableToday: true,
           displayDateMax: options.max,
           displayDatesOutside: false,
-          type: this.range ? "multiple" : "default",
+          type: "default",
           selectionDatesMode: this.range ? "multiple-ranged" : "single",
           ...(selectedDates
             ? {
@@ -196,6 +238,9 @@ export class EOxTimeControlPicker extends LitElement {
           //@ts-expect-error error from vanilla-calendar-pro types
           positionToInput: ["top", "left"],
           selectedWeekends: [],
+          onClickArrow: () => this.#emitUpdateEvent(),
+          onClickMonth: () => this.#emitUpdateEvent(),
+          onClickYear: () => this.#emitUpdateEvent(),
           onClickDate: (self) => {
             const lengthOfDates = self.context.selectedDates.length - 1;
             const start = self.context.selectedDates[0] || lastClickDate;

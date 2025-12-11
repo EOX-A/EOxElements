@@ -4,6 +4,21 @@ import type { Calendar, DateAny } from "vanilla-calendar-pro";
 import type { EOxMap } from "@eox/map";
 import type { EOxItemFilter as EOxItemFilterType } from "@eox/itemfilter";
 
+export type { EOxTimeControl as EOxTimeControlType } from "./main";
+export type { EOxTimeControlDate as EOxTimeControlDateType } from "./components/timecontrol-date";
+export type { EOxTimeControlSlider as EOxTimeControlSliderType } from "./components/timecontrol-slider";
+export type { EOxTimeControlTimeline as EOxTimeControlTimelineType } from "./components/timecontrol-timeline";
+export type { EOxTimeControlTimelapse as EOxTimeControlTimelapseType } from "./components/timecontrol-timelapse";
+export type { EOxTimeControlPicker as EOxTimeControlPickerType } from "./components/timecontrol-picker";
+export type { EOxItemFilter as EOxItemFilterType } from "@eox/itemfilter";
+export type { EOxMap as EOxMapType } from "@eox/map";
+export type EOxTimeControlChild =
+  | EOxTimeControlDate
+  | EOxTimeControlSlider
+  | EOxTimeControlTimeline
+  | EOxTimeControlTimelapse
+  | EOxTimeControlPicker;
+
 /**
  * Represents a single time control value entry with date and optional metadata.
  */
@@ -478,6 +493,10 @@ declare global {
      */
     showDots: boolean;
     /**
+     * Gets the view range.
+     */
+    getViewRange(): { start: string; end: string };
+    /**
      * Sets the date range.
      */
     setDateRange(dateRange: DateRange): void;
@@ -537,6 +556,11 @@ declare global {
      * Initializes the timeline.
      */
     initTimeline(): void;
+
+    /**
+     * Gets the window of the vis-timeline Timeline instance.
+     */
+    getViewRange(): { start: string; end: string };
   }
 
   /**

@@ -21,6 +21,7 @@ import {
   dateChangeHandlerMethod,
   filterHandlerMethod,
 } from "./methods/timecontrol";
+import getChildElement from "./helpers/get-child-element.js";
 
 dayjs.extend(dayOfYear);
 dayjs.extend(isoWeek);
@@ -33,6 +34,7 @@ dayjs.extend(utc);
  * @typedef {import("./types").TimelineItem} TimelineItem
  * @typedef {import("./types").TimelineGroup} TimelineGroup
  * @typedef {import("@eox/map").EOxMap} EOxMap
+ * @typedef {import("./types").EOxTimeControlChild} EOxTimeControlChild
  */
 
 /**
@@ -285,11 +287,89 @@ export class EOxTimeControl extends LitElement {
   dateChange = dateChangeHandlerMethod;
 
   /**
+   * Gets the EOxTimeControlDate instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlDate instance or null if not found.
+   */
+  getTimeControlDate() {
+    return getChildElement(this, "eox-timecontrol-date");
+  }
+
+  /**
+   * Gets the EOxTimeControlSlider instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlSlider() {
+    return getChildElement(this, "eox-timecontrol-slider");
+  }
+
+  /**
+   * Gets the EOxTimeControlTimeline instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlTimeline() {
+    return getChildElement(this, "eox-timecontrol-timeline");
+  }
+
+  /**
+   * Gets the EOxTimeControlTimelapse instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlTimelapse() {
+    return getChildElement(this, "eox-timecontrol-timelapse");
+  }
+
+  /**
+   * Gets the EOxTimeControlPicker instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlPicker() {
+    return getChildElement(this, "eox-timecontrol-picker");
+  }
+
+  #emitUpdateEvent(EOxTimeControl) {
+    const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
+      EOxTimeControl.getTimeControlTimeline()
+    );
+    const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
+      EOxTimeControl.getTimeControlPicker()
+    );
+    EOxTimeControl.dispatchEvent(
+      new CustomEvent("update:view", {
+        detail: {
+          ...(EOxTimeControlTimeline
+            ? {
+                timeline: [
+                  EOxTimeControlTimeline.getViewRange().start,
+                  EOxTimeControlTimeline.getViewRange().end,
+                ],
+              }
+            : {}),
+          ...(EOxTimeControlPicker
+            ? {
+                picker: [
+                  EOxTimeControlPicker.getViewRange().start,
+                  EOxTimeControlPicker.getViewRange().end,
+                ],
+              }
+            : {}),
+        },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  /**
    * Lifecycle method called after the component's first update.
    * Initializes the timecontrol by finding the associated map and setting up layer listeners.
    */
   firstUpdated() {
-    firstUpdatedMethod(this);
+    firstUpdatedMethod(this, this.#emitUpdateEvent);
     this.requestUpdate();
   }
 

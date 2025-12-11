@@ -32,13 +32,26 @@ let itemFilterAdded = false;
  * - Registers listeners for layer changes and filter events
  *
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
+ * @param {Function} emitUpdateEvent - The function to emit the update event.
  */
-export default function firstUpdatedMethod(EOxTimeControl) {
+export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
   // Update map reference
   const foundElement =
     typeof EOxTimeControl.for === "object"
       ? EOxTimeControl.for
       : getElement(EOxTimeControl.for);
+  const EOxTimeControlTimeline = EOxTimeControl.getTimeControlTimeline();
+  const EOxTimeControlPicker = EOxTimeControl.getTimeControlPicker();
+
+  if (EOxTimeControlTimeline)
+    EOxTimeControlTimeline.addEventListener("update:view", () =>
+      emitUpdateEvent(EOxTimeControl),
+    );
+  if (EOxTimeControlPicker)
+    EOxTimeControlPicker.addEventListener("update:view", () =>
+      emitUpdateEvent(EOxTimeControl),
+    );
+
   if (foundElement) {
     const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
     EOxTimeControl.eoxMap = EoxMap;

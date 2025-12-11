@@ -32,6 +32,13 @@ export class EOxTimeControlTimeline extends LitElement {
   }
 
   /**
+   * Reference to the vis-timeline Timeline instance.
+   *
+   * @type {import("vis-timeline/standalone").Timeline}
+   */
+  #visTimeline = null;
+
+  /**
    * Creates a new EOxTimeControlTimeline instance.
    */
   constructor() {
@@ -43,13 +50,24 @@ export class EOxTimeControlTimeline extends LitElement {
      * @type {boolean}
      */
     this.unstyled = false;
+  }
 
-    /**
-     * Reference to the vis-timeline Timeline instance.
-     *
-     * @type {import("vis-timeline/standalone").Timeline}
-     */
-    this.visTimeline = null;
+  /**
+   * Gets the vis-timeline Timeline instance.
+   *
+   * @returns {import("vis-timeline/standalone").Timeline}
+   */
+  get visTimeline() {
+    return this.#visTimeline;
+  }
+
+  /**
+   * Sets the vis-timeline Timeline instance.
+   *
+   * @param {import("vis-timeline/standalone").Timeline} visTimeline - The vis-timeline Timeline instance.
+   */
+  set visTimeline(visTimeline) {
+    this.#visTimeline = visTimeline;
   }
 
   /**
@@ -61,6 +79,15 @@ export class EOxTimeControlTimeline extends LitElement {
     return /** @type {HTMLElement} */ (
       this.renderRoot.querySelector("#timeline")
     );
+  }
+
+  /**
+   * Gets the window of the vis-timeline Timeline instance.
+   *
+   * @returns {Object} The window of the vis-timeline Timeline instance.
+   */
+  getViewRange() {
+    return this.#visTimeline.getWindow();
   }
 
   /**

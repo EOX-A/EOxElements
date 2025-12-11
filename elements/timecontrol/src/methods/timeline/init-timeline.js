@@ -121,6 +121,7 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         )
       );
     EOxTimeControlTimeline.visTimeline = visTimeline;
+    EOxTimeControlTimeline.requestUpdate();
 
     if (drawInterval) {
       clearInterval(drawInterval);
@@ -221,6 +222,16 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
         setTimeout(() => (drag = false));
         updateRangeElements(EOxTimeControlTimeline);
       }
+      const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
+      EOxTimeControlTimeline.dispatchEvent(
+        new CustomEvent("update:view", {
+          detail: {
+            start: viewRange.start,
+            end: viewRange.end,
+          },
+          composed: true,
+        }),
+      );
     });
   }
 }

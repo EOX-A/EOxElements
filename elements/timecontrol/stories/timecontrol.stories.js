@@ -9,6 +9,7 @@ import {
   DateFilterStory,
   ExpertStory,
   SliderStory,
+  UpdateViewStory,
 } from "./index";
 
 export default {
@@ -129,3 +130,11 @@ export const DateFilter = DateFilterStory;
  * multiple interaction methods and visualization options.
  */
 export const Expert = ExpertStory;
+
+/**
+ * Update view event story.
+ *
+ * This example demonstrates the `update:view` event, which is dispatched when the view range of the timeline changes.
+ * The event is dispatched with the start and end dates of the view range.
+ */
+export const UpdateView = UpdateViewStory;
