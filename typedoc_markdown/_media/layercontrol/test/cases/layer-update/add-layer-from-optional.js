@@ -4,18 +4,10 @@ const addLayerFromOptional = () => {
     $el[0].setLayers([
       {
         properties: {
-          title: "group1",
-          layerControlExpand: true,
-        },
-        layers: [{ properties: { title: "title1" } }],
-      },
-      {
-        properties: {
           title: "group2",
           layerControlExpand: true,
         },
         layers: [
-          { properties: { title: "foo" } },
           {
             properties: {
               id: "title2",
@@ -24,7 +16,15 @@ const addLayerFromOptional = () => {
             },
             visible: false,
           },
+          { properties: { title: "foo" } },
         ],
+      },
+      {
+        properties: {
+          title: "group1",
+          layerControlExpand: true,
+        },
+        layers: [{ properties: { title: "title1" } }],
       },
     ]);
   });
