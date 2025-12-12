@@ -6,6 +6,7 @@ import isequal from "lodash.isequal";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { TIME_CONTROL_DATE_FORMAT } from "../../enums";
+import { updateChildrenProp } from "../../helpers";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -116,7 +117,9 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
       if (!isequal(EOxTimeControl.sliderValues, sliderValues)) {
         EOxTimeControl.sliderValues = sliderValues;
         if (EOxTimeControl.sliderValues.length) {
-          EOxTimeControl.setLoading();
+          updateChildrenProp(EOxTimeControl, ["eox-timecontrol-timeline"], {
+            loading: true,
+          });
           const groups = new DataSet([]);
           const items = new DataSet([]);
 
@@ -133,11 +136,13 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
 
           EOxTimeControl.groups = groups;
           EOxTimeControl.items = items;
-          EOxTimeControl.setLoading();
 
           if (EOxTimeControlTimeline) {
             EOxTimeControlTimeline.initTimeline();
           }
+          updateChildrenProp(EOxTimeControl, ["eox-timecontrol-timeline"], {
+            loading: false,
+          });
 
           const itemValues = EOxTimeControl.items.get();
           if (itemValues && itemValues.length) {
@@ -156,10 +161,10 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
                 EOxTimeControlTimeline.visTimeline.setOptions({
                   ...EOxTimeControlTimeline.visTimeline.setOptions,
                   start: dayjs(initDate[0])
-                    .subtract(40, "day")
+                    .subtract(30, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                   end: dayjs(initDate[0])
-                    .add(40, "day")
+                    .add(30, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                 });
               }

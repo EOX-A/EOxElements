@@ -14,3 +14,4 @@ export { default as extractISOFromCalendar } from "./extract-iso-from-calendar";
 export { default as updateChildrenDateRange } from "./update-children-date-range";
 export { default as exportAnimation } from "./export-animation";
 export { default as snapshotGenerator } from "./snapshot-generator";
+export { default as updateChildrenProp } from "./update-children-prop";

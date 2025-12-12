@@ -279,13 +279,6 @@ export class EOxTimeControl extends LitElement {
   }
 
   /**
-   * Sets the loading state and triggers a re-render.
-   */
-  setLoading() {
-    this.requestUpdate();
-  }
-
-  /**
    * Handler for date change events. Updates the selected date range and applies it to map layers.
    *
    * @type {Function}

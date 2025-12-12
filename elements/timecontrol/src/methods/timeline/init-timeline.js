@@ -79,6 +79,113 @@ export function updateRangeElements(EOxTimeControlTimeline) {
 }
 
 /**
+ * Handles the timeline changed event.
+ * Updates the bin cell width and visibility of the timeline items.
+ *
+ * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
+ * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
+ * @param {Object} options - The timeline options.
+ */
+function handleTimelineChanged(
+  EOxTimeControlTimeline,
+  EOxTimeControl,
+  options,
+) {
+  const container = EOxTimeControlTimeline.getContainer();
+  const EOxItemFilter = EOxTimeControl.querySelector("eox-itemfilter");
+
+  const textElement = /** @type {HTMLElement} */ (
+    container.querySelector(".vis-text.vis-minor.vis-even")
+  );
+  const width = Number(textElement.style.width.replace("px", ""));
+  const cellWidth = width / options.timeAxis.step + 0.1;
+
+  const milestoneElements = /** @type {NodeListOf<HTMLElement>} */ (
+    container.querySelectorAll(".vis-item.milestone")
+  );
+  milestoneElements.forEach((milestone) => {
+    milestone.style.width = `${cellWidth}px`;
+  });
+  for (let i = 0; i < EOxTimeControl.sliderValues.length; i++) {
+    updateVisibility(
+      EOxTimeControlTimeline,
+      EOxTimeControl.sliderValues[i].layerInstance?.getVisible() || true,
+      i,
+    );
+  }
+  if (EOxItemFilter) EOxTimeControl.filter(undefined, EOxTimeControl);
+}
+
+/**
+ * Handles the time changed event.
+ * Updates the date range on the timecontrol component.
+ *
+ * @param {Object} props - The event properties.
+ * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
+ */
+function handleTimeChanged(props, EOxTimeControl) {
+  if (props.id == "multi-select-start" || props.id == "multi-select-end") {
+    const isStart = props.id.includes("start");
+    const newDate = dayjs(props.time).utc().format();
+    const newDateRange = isStart
+      ? [newDate, EOxTimeControl.selectedDateRange[1]]
+      : [EOxTimeControl.selectedDateRange[0], newDate];
+
+    const sortedDateRange = [...newDateRange].sort((a, b) =>
+      dayjs(a).isAfter(dayjs(b)) ? 1 : -1,
+    );
+    EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl);
+  }
+}
+
+/**
+ * Handles the click event.
+ * Updates the date range on the timecontrol component.
+ *
+ * @param {Object} props - The event properties.
+ * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
+ */
+function handleClick(props, EOxTimeControl) {
+  if (
+    props &&
+    props.time &&
+    props.what &&
+    props.what !== "group-label" &&
+    !drag &&
+    !props.event.shiftKey
+  ) {
+    const startDate = dayjs(props.time).startOf("day").utc().format();
+    const endDate = dayjs(props.time).endOf("day").utc().format();
+    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
+  }
+}
+
+/**
+ * Handles the range changed event.
+ * Updates the date range on the timecontrol component.
+ *
+ * @param {Object} props - The event properties.
+ * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
+ */
+function handleRangeChanged(props, EOxTimeControlTimeline) {
+  if (props.byUser) {
+    drag = true;
+    setTimeout(() => (drag = false));
+    updateRangeElements(EOxTimeControlTimeline);
+  }
+  const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
+  EOxTimeControlTimeline.dispatchEvent(
+    new CustomEvent("update:view", {
+      detail: {
+        start: viewRange.start,
+        end: viewRange.end,
+      },
+      composed: true,
+    }),
+  );
+}
+
+/**
  * Initializes the vis-timeline instance with items, groups, and event handlers.
  * Sets up the timeline visualization, custom time markers for range selection, and various event listeners
  * for user interactions such as clicking, dragging, and time changes.
@@ -153,85 +260,26 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       }, 50);
 
     visTimeline.on("changed", () => {
-      const EOxItemFilter = EOxTimeControl.querySelector("eox-itemfilter");
       updateRangeElements(EOxTimeControlTimeline);
-      const textElement = /** @type {HTMLElement} */ (
-        container.querySelector(".vis-text.vis-minor.vis-even")
-      );
-      const width = Number(textElement.style.width.replace("px", ""));
-      const cellWidth = width / options.timeAxis.step + 0.1;
-
-      const milestoneElements = /** @type {NodeListOf<HTMLElement>} */ (
-        container.querySelectorAll(".vis-item.milestone")
-      );
-      milestoneElements.forEach((milestone) => {
-        milestone.style.width = `${cellWidth}px`;
-      });
-      for (let i = 0; i < EOxTimeControl.sliderValues.length; i++) {
-        updateVisibility(
-          EOxTimeControlTimeline,
-          EOxTimeControl.sliderValues[i].layerInstance?.getVisible() || true,
-          i,
-        );
-      }
-      if (EOxItemFilter) EOxTimeControl.filter(undefined, EOxTimeControl);
+      handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl, options);
     });
-    visTimeline.on("timechange", () => {
-      updateRangeElements(EOxTimeControlTimeline);
-    });
+    visTimeline.on("timechange", () =>
+      updateRangeElements(EOxTimeControlTimeline),
+    );
 
-    visTimeline.on("timechanged", (props) => {
-      if (props.id == "multi-select-start" || props.id == "multi-select-end") {
-        const isStart = props.id.includes("start");
-        const newDate = dayjs(props.time).utc().format();
-        const newDateRange = isStart
-          ? [newDate, EOxTimeControl.selectedDateRange[1]]
-          : [EOxTimeControl.selectedDateRange[0], newDate];
+    visTimeline.on("timechanged", (props) =>
+      handleTimeChanged(props, EOxTimeControl),
+    );
 
-        const sortedDateRange = [...newDateRange].sort((a, b) =>
-          dayjs(a).isAfter(dayjs(b)) ? 1 : -1,
-        );
-        EOxTimeControl.dateChange(sortedDateRange, EOxTimeControl);
-      }
-    });
+    visTimeline.on("click", (props) => handleClick(props, EOxTimeControl));
 
-    visTimeline.on("click", (props) => {
-      if (
-        props &&
-        props.time &&
-        props.what &&
-        props.what !== "group-label" &&
-        !drag &&
-        !props.event.shiftKey
-      ) {
-        const startDate = dayjs(props.time).startOf("day").utc().format();
-        const endDate = dayjs(props.time).endOf("day").utc().format();
-        EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
-      }
-    });
+    visTimeline.on(
+      "rangechange",
+      (props) => props.byUser && updateRangeElements(EOxTimeControlTimeline),
+    );
 
-    visTimeline.on("rangechange", (props) => {
-      if (props.byUser) {
-        updateRangeElements(EOxTimeControlTimeline);
-      }
-    });
-
-    visTimeline.on("rangechanged", (props) => {
-      if (props.byUser) {
-        drag = true;
-        setTimeout(() => (drag = false));
-        updateRangeElements(EOxTimeControlTimeline);
-      }
-      const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
-      EOxTimeControlTimeline.dispatchEvent(
-        new CustomEvent("update:view", {
-          detail: {
-            start: viewRange.start,
-            end: viewRange.end,
-          },
-          composed: true,
-        }),
-      );
-    });
+    visTimeline.on("rangechanged", (props) =>
+      handleRangeChanged(props, EOxTimeControlTimeline),
+    );
   }
 }

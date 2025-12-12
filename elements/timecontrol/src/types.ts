@@ -401,10 +401,6 @@ declare global {
      */
     eoxMap: EOxMap | null;
     /**
-     * Loading state indicator.
-     */
-    setLoading(value: boolean): void;
-    /**
      * Array of slider values.
      */
     sliderValues: Array<SliderValue>;
@@ -552,6 +548,10 @@ declare global {
      * Vis-timeline instance.
      */
     visTimeline: Timeline | null;
+    /**
+     * Loading state indicator.
+     */
+    loading: boolean;
     /**
      * Gets the container element.
      */

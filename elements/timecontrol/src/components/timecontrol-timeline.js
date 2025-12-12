@@ -7,6 +7,7 @@ import {
   initTimelineMethod,
   setDateRangeMethod,
 } from "../methods/timeline/index.js";
+import { when } from "lit/directives/when.js";
 
 /**
  * @typedef {import("../types").DateRange} DateRange
@@ -39,6 +40,13 @@ export class EOxTimeControlTimeline extends LitElement {
   #visTimeline = null;
 
   /**
+   * Whether the timecontrol is loading.
+   *
+   * @type {boolean}
+   */
+  #loading = false;
+
+  /**
    * Creates a new EOxTimeControlTimeline instance.
    */
   constructor() {
@@ -68,6 +76,25 @@ export class EOxTimeControlTimeline extends LitElement {
    */
   set visTimeline(visTimeline) {
     this.#visTimeline = visTimeline;
+  }
+
+  /**
+   * Sets the loading state of the timeline.
+   *
+   * @param {boolean} value - The loading state.
+   */
+  set loading(value) {
+    this.#loading = value;
+    this.requestUpdate();
+  }
+
+  /**
+   * Gets the loading state of the timeline.
+   *
+   * @returns {boolean} The loading state.
+   */
+  get loading() {
+    return this.#loading;
   }
 
   /**
@@ -117,6 +144,16 @@ export class EOxTimeControlTimeline extends LitElement {
       </style>
       <div class="timeline-wrapper">
         <div id="timeline"></div>
+        ${when(
+          this.loading,
+          () => html`
+            <div class="load-wrapper-container">
+              <div class="load-wrapper">
+                <div class="shimmer"></div>
+              </div>
+            </div>
+          `,
+        )}
       </div>
     `;
   }

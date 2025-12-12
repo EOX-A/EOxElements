@@ -160,5 +160,44 @@ export const styleTimeline = `
   background: #111 !important;
   width: 2px;
 }
-
+.load-wrapper-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.load-wrapper,
+.loader-image {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(211,211,211);
+  z-index: 44;
+  overflow: hidden;
+}
+.shimmer,
+.shimmer-image {
+  position: absolute;
+  left: -45%;
+  height: 100%;
+  width: 45%;
+  background-image: linear-gradient(to left, rgba(251,251,251, .05), rgba(251,251,251, .3), rgba(251,251,251, .6), rgba(251,251,251, .3), rgba(251,251,251, .05));
+  background-image: -moz-linear-gradient(to left, rgba(251,251,251, .05), rgba(251,251,251, .3), rgba(251,251,251, .6), rgba(251,251,251, .3), rgba(251,251,251, .05));
+  background-image: -webkit-linear-gradient(to left, rgba(251,251,251, .05), rgba(251,251,251, .3), rgba(251,251,251, .6), rgba(251,251,251, .3), rgba(251,251,251, .05));
+  animation: loading 1s infinite;
+  z-index: 45;
+}
+.loader-image {
+  width: 200px;
+  height: 100px;
+}
+@keyframes loading {
+  0%{
+    left: -45%;
+  }
+  100%{
+    left: 100%;
+  }
+}
 `;
