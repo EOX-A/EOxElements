@@ -437,6 +437,10 @@ declare global {
      */
     controlValues: Array<any>;
     /**
+     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     */
+    initDate: DateRange | null;
+    /**
      * Handler for date changes.
      */
     dateChange: (dateRange: DateRange, instance: EOxTimeControl) => void;

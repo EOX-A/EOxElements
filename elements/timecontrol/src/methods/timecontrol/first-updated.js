@@ -6,7 +6,7 @@ import isequal from "lodash.isequal";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { TIME_CONTROL_DATE_FORMAT } from "../../enums";
-import { updateChildrenProp } from "../../helpers";
+import { updateChildrenProp, getInitDate } from "../../helpers";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -66,6 +66,8 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
           ),
         )
       : [];
+
+    let usedInitDate = EOxTimeControl.initDate ? false : true;
 
     const init = () => {
       const flatLayers = EoxMap
@@ -144,13 +146,17 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             loading: false,
           });
 
+          const initDateRange = getInitDate(EOxTimeControl.initDate);
+
           const itemValues = EOxTimeControl.items.get();
           if (itemValues && itemValues.length) {
             const utc = dayjs(itemValues[itemValues.length - 1].utc);
-            const initDate = /** @type {DateRange} */ ([
-              utc.startOf("day").utc().format(),
-              utc.endOf("day").utc().format(),
-            ]);
+            const dateRange =
+              initDateRange ||
+              /** @type {DateRange} */ ([
+                utc.startOf("day").utc().format(),
+                utc.endOf("day").utc().format(),
+              ]);
 
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
               EOxTimeControl.querySelector("eox-timecontrol-picker")
@@ -160,15 +166,15 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
               if (EOxTimeControlTimeline) {
                 EOxTimeControlTimeline.visTimeline.setOptions({
                   ...EOxTimeControlTimeline.visTimeline.setOptions,
-                  start: dayjs(initDate[0])
+                  start: dayjs(dateRange[0])
                     .subtract(30, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
-                  end: dayjs(initDate[0])
+                  end: dayjs(dateRange[0])
                     .add(30, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                 });
               }
-              EOxTimeControl.dateChange(initDate, EOxTimeControl);
+              EOxTimeControl.dateChange(dateRange, EOxTimeControl);
 
               const EOxItemFilter = /** @type {EOxItemFilter} */ (
                 EOxTimeControl.querySelector("eox-itemfilter")
@@ -193,10 +199,13 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             });
             if (EOxTimeControlPicker) {
               EOxTimeControlPicker.initCalendar({
-                selectedDateRange: initDate,
+                selectedDateRange: dateRange,
               });
             }
+          } else if (!usedInitDate) {
+            EOxTimeControl.dateChange(initDateRange, EOxTimeControl);
           }
+          usedInitDate = true;
         }
       }
       EOxTimeControl.requestUpdate();

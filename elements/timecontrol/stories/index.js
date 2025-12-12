@@ -13,3 +13,4 @@ export { default as SliderStory } from "./slider"; // Slider story
 export { default as UpdateViewStory } from "./update-view"; // Update view event story
 export { default as DatePickerPopupItemsStory } from "./date-picker-popup-items"; // Date picker popup items story
 export { default as NoMapStory } from "./no-map"; // No map story
+export { default as DateWithInitDateStory } from "./date-with-init-date"; // Date with init date story

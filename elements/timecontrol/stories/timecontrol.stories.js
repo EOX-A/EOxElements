@@ -13,6 +13,7 @@ import {
   UpdateViewStory,
   DatePickerPopupItemsStory,
   NoMapStory,
+  DateWithInitDateStory,
 } from "./index";
 
 export default {
@@ -40,6 +41,14 @@ export default {
  * selector string (e.g., `"eox-map#primary"`) or a direct reference to the map element.
  */
 export const OnlyDate = OnlyDateStory;
+
+/**
+ * Date display component with init date
+ *
+ * This example shows the `<eox-timecontrol-date>` component with the `initDate` attribute enabled,
+ * which sets the initial date range.
+ */
+export const DateWithInitDate = DateWithInitDateStory;
 
 /**
  * Date display component with navigation buttons for stepping through available dates

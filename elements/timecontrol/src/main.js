@@ -3,11 +3,6 @@
 import { LitElement, html } from "lit";
 import { style } from "./styles/style.js";
 import { styleEOX } from "./styles/style.eox.js";
-
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import dayOfYear from "dayjs/plugin/dayOfYear";
-import isoWeek from "dayjs/plugin/isoWeek";
 import { DataSet } from "vis-data/standalone";
 
 import "./components/timecontrol-date";
@@ -22,10 +17,6 @@ import {
   filterHandlerMethod,
 } from "./methods/timecontrol";
 import getChildElement from "./helpers/get-child-element.js";
-
-dayjs.extend(dayOfYear);
-dayjs.extend(isoWeek);
-dayjs.extend(utc);
 
 /**
  * @typedef {import("./types").SliderValue} SliderValue
@@ -105,6 +96,7 @@ export class EOxTimeControl extends LitElement {
       },
       selectedDateRange: { type: Array, attribute: undefined },
       controlValues: { type: Array, attribute: false },
+      initDate: { type: Array, attribute: false },
     };
   }
 
@@ -191,6 +183,13 @@ export class EOxTimeControl extends LitElement {
      * @type {Array<Object>}
      */
     this.controlValues = [];
+
+    /**
+     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     *
+     * @type {DateRange}
+     */
+    this.initDate = null;
   }
 
   /**

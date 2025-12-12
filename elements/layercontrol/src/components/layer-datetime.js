@@ -72,9 +72,9 @@ export class EOxLayerControlLayerDatetime extends LitElement {
    * @param {CustomEvent<{date:string[]}>} evt
    **/
   #handleStepChange(evt) {
-    const utcDate = (d) =>
-      `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
-    const currentStep = utcDate(new Date(evt.detail.date[0]));
+    const formatDate = (d) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const currentStep = formatDate(new Date(evt.detail.date[0]));
 
     this.dispatchEvent(
       new CustomEvent("datetime:updated", {
@@ -108,6 +108,9 @@ export class EOxLayerControlLayerDatetime extends LitElement {
         this.layerDatetime,
         () => html`
           <eox-timecontrol
+            .initDate=${this.layerDatetime.currentStep
+              ? [this.layerDatetime.currentStep]
+              : undefined}
             .controlValues=${[
               {
                 id: this.layer.get("id"),

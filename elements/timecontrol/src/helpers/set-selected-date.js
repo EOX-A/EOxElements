@@ -34,9 +34,9 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
     [
       "eox-timecontrol-date",
       "eox-timecontrol-picker",
+      "eox-timecontrol-slider",
       "eox-timecontrol-timeline",
       "eox-timecontrol-timelapse",
-      "eox-timecontrol-slider",
     ],
     dateRange,
     EOxTimeControl.items.get(),
@@ -82,9 +82,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
 
       if (!EOxTimeControl.externalMapRendering) {
         source.updateParams({
-          [item.property]: dayjs(dateRange[0])
-            .utc()
-            .format(TIME_CONTROL_DATE_FORMAT),
+          [item.property]: item.originalDate,
         });
       }
     }
