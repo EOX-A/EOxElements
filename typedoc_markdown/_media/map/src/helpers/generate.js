@@ -16,6 +16,7 @@ import XYZ from "ol/source/XYZ.js";
 import Collection from "ol/Collection.js";
 import { addDraw, addSelect, addClusterExplode, generateTileGrid } from "./";
 import { get as getProjection } from "ol/proj";
+import serialize from "serialize-javascript";
 
 /**
  * @typedef {import("../main").EOxMap} EOxMap
@@ -72,8 +73,6 @@ const basicOlSources = {
  * @throws Will throw an error if the specified layer or source type is not supported.
  */
 export function createLayer(EOxMap, layer, createInteractions = true) {
-  layer = JSON.parse(JSON.stringify(layer));
-
   const availableLayers = {
     ...window.eoxMapAdvancedOlLayers,
     ...basicOlLayers,
@@ -252,8 +251,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Update source if different
   if (
     newLayerDefinition.type !== "MapboxStyle" &&
-    JSON.stringify(newLayerDefinition.source) !==
-      JSON.stringify(existingJsonDefinition.source)
+    serialize(newLayerDefinition.source) !==
+      serialize(existingJsonDefinition.source)
   ) {
     /** @type {import("ol/layer").Vector<import("ol/source").Vector>} **/ (
       /** @type {any} **/ existingLayer
@@ -267,8 +266,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // update entire layer if MapboxStyle has changed
   if (
     newLayerDefinition.type === "MapboxStyle" &&
-    JSON.stringify(newLayerDefinition.properties.mapboxStyle) !==
-      JSON.stringify(existingJsonDefinition.properties.mapboxStyle)
+    serialize(newLayerDefinition.properties.mapboxStyle) !==
+      serialize(existingJsonDefinition.properties.mapboxStyle)
   ) {
     /** @type {import("../custom/layers/MapboxStyle").default} */ (
       existingLayer
@@ -285,11 +284,11 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
   // Update style if different
   if (
     ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
-    JSON.stringify(
+    serialize(
       /** @type {import("../layers.ts").EOxLayerType<"Vector"|"VectorTile",any>} */ (
         newLayerDefinition
       ).style,
-    ) !== JSON.stringify(existingJsonDefinition.style)
+    ) !== serialize(existingJsonDefinition.style)
   ) {
     // @ts-expect-error TODO
     existingLayer.setStyle(newLayer.getStyle());
@@ -297,8 +296,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update properties if different
   if (
-    JSON.stringify(newLayerDefinition.properties) !==
-    JSON.stringify(existingJsonDefinition.properties)
+    serialize(newLayerDefinition.properties) !==
+    serialize(existingJsonDefinition.properties)
   ) {
     existingLayer.setProperties(newLayerDefinition.properties);
   }
@@ -316,8 +315,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update interactions if different
   if (
-    JSON.stringify(newLayerDefinition.interactions) !==
-    JSON.stringify(existingJsonDefinition.interactions)
+    serialize(newLayerDefinition.interactions) !==
+    serialize(existingJsonDefinition.interactions)
   ) {
     existingJsonDefinition.interactions?.forEach(
       /** @param {EOxInteraction} interactionDefinition **/ (
@@ -486,7 +485,7 @@ function setSyncListeners(olLayer, eoxLayer) {
 
   // Sync other property changes to the layer definition
   olLayer.on("propertychange", (e) => {
-    if (e.key === "map") return;
+    if (e.key === "map" || e.key === "source") return;
 
     if (eoxLayer.properties) {
       eoxLayer.properties[e.key] = e.target.get(e.key);

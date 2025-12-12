@@ -15,6 +15,7 @@ import {
 import VectorLayer from "ol/layer/Vector";
 import View from "ol/View";
 import { getElement } from "@eox/elements-utils";
+import serialize from "serialize-javascript";
 
 /**
  * @typedef {import("../../layers").EoxLayer} EoxLayer
@@ -117,16 +118,6 @@ export function setControlsMethod(controls, oldControls, EOxMap) {
 }
 
 /**
- * Parse and reverse the layers array
- *
- * @param {Array<EoxLayer>} layers
- * @return {Array<EoxLayer>}
- * */
-function parseLayer(layers) {
-  return JSON.parse(JSON.stringify(layers));
-}
-
-/**
  * Adds or updates layers on the map, removing any outdated layers.
  *
  * @param {Array<EoxLayer>} layers - New layers to set on the map.
@@ -136,7 +127,8 @@ function parseLayer(layers) {
  */
 export function setLayersMethod(layers, oldLayers, EOxMap) {
   // Deep copy the new layers array
-  const newLayers = parseLayer(layers);
+  // Deserialization see: https://github.com/yahoo/serialize-javascript?tab=readme-ov-file#deserializing
+  const newLayers = eval("(" + serialize(layers) + ")");
 
   // Remove old layers not present in the new layers
   if (oldLayers) {
