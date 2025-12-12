@@ -19,20 +19,15 @@ const ProjectionStory = {
       {
         type: "Tile",
         properties: {
-          id: "cloudless",
-          title: "Sentinel-2 Cloudless 2024",
+          id: "osm",
+          title: "Background",
         },
-        source: {
-          type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024/default/WGS84/{z}/{y}/{x}.jpg",
-          crossOrigin: "anonymous",
-          projection: "EPSG:4326",
-        },
+        source: { type: "OSM" },
       },
     ],
     center: [16.8, 48.2],
     zoom: 7,
-    projection: "EPSG:4326",
+    projection: "EPSG:3857",
     style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
