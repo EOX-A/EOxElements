@@ -6,8 +6,8 @@ const hideLayers = () => {
 
     // Setting layers: one visible and another marked with layerControlHide: true
     mockMap.setLayers([
-      { visible: true },
       { properties: { layerControlHide: true } },
+      { visible: true },
     ]);
   });
 
