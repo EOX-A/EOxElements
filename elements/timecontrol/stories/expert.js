@@ -194,7 +194,7 @@ const ExpertStory = {
             start.toISOString(),
             end.toISOString(),
           );
-          eoxMap.layers = [createMosaicLayer(items, tileJson), osmLayer];
+          eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
         });
       document
         .querySelector("eox-timecontrol-timelapse")
@@ -212,7 +212,7 @@ const ExpertStory = {
                 end.toISOString(),
               );
               mapLayers.push({
-                layers: [createMosaicLayer([], currentTileJson), osmLayer],
+                layers: [osmLayer, createMosaicLayer([], currentTileJson)],
                 date: dateKey,
               });
             }
@@ -227,7 +227,7 @@ const ExpertStory = {
 
       eoxMap.map.on("moveend", async () => {
         items = await fetchItems(eoxMap.lonLatExtent, startDate, endDate);
-        eoxMap.layers = [createMosaicLayer(items, tileJson), osmLayer];
+        eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
       });
     </script>
   `,

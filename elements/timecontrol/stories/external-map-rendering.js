@@ -172,7 +172,7 @@ const ExternalMapRenderingStory = {
             start.toISOString(),
             end.toISOString(),
           );
-          eoxMap.layers = [createMosaicLayer(items, tileJson), osmLayer];
+          eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
         });
       document
         .querySelector("eox-timecontrol")
@@ -190,7 +190,7 @@ const ExternalMapRenderingStory = {
                 end.toISOString(),
               );
               mapLayers.push({
-                layers: [createMosaicLayer([], currentTileJson), osmLayer],
+                layers: [osmLayer, createMosaicLayer([], currentTileJson)],
                 date: dateKey,
               });
             }
@@ -205,7 +205,7 @@ const ExternalMapRenderingStory = {
 
       eoxMap.map.on("moveend", async () => {
         items = await fetchItems(eoxMap.lonLatExtent, startDate, endDate);
-        eoxMap.layers = [createMosaicLayer(items, tileJson), osmLayer];
+        eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
       });
     </script>
   `,

@@ -53,6 +53,15 @@ export const STORY_ARGS = {
     {
       type: "Tile",
       properties: {
+        id: "OSM",
+      },
+      source: {
+        type: "OSM",
+      },
+    },
+    {
+      type: "Tile",
+      properties: {
         id: "AWS_NO2-VISUALISATION",
         name: "NO2 Visualisation",
         timeControlValues: [
@@ -472,15 +481,6 @@ export const STORY_ARGS = {
           TIME: "2022-12-05",
         },
         crossOrigin: "anonymous",
-      },
-    },
-    {
-      type: "Tile",
-      properties: {
-        id: "OSM",
-      },
-      source: {
-        type: "OSM",
       },
     },
   ],

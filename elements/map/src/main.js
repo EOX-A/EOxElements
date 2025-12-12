@@ -39,6 +39,7 @@ import {
 } from "./methods/map/";
 import eoxStyle from "@eox/ui/style.css?inline";
 import { addCommonStylesheet } from "@eox/elements-utils";
+import { enableGlobe, disableGlobe } from "./plugins/globe/openglobus";
 
 addCommonStylesheet();
 
@@ -102,6 +103,7 @@ addCommonStylesheet();
  * - **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.
  * - **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.
  * - **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.
+ * - **Globe View:** Interactive 3D globe by using "globe" projection property.
  *
  * ## Events
  *
@@ -110,12 +112,22 @@ addCommonStylesheet();
  * - `mapmounted`: Fired when the map is successfully mounted.
  * - `select`: Fired when a feature is selected.
  *
- * ## Helper Methods
+ * ## Methods
  *
- * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
  * - `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.
  * - `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.
  * - `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.
+ * - `parseFeature`: Parses a feature from the input data.
+ * - `parseTextToFeature`: Parses text into a feature.
+ *
+ * Usage: `document.querySelector("eox-map").registerProjection([...]);`
+ *
+ * ## Additional Helper Methods
+ *
+ * - `buffer`: Applies a buffer around an extent
+ * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
+ *
+ * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
  *
  * @element eox-map
  * @fires {CustomEvent} clusterSelect - A cluster is selected
@@ -212,12 +224,17 @@ export class EOxMap extends LitElement {
   #zoom = 0;
 
   /**
-   * The map's projection system, specifying how coordinates are mapped on the globe.
-   * Defaults to "EPSG:3857".
-   *
+   * Internal flag to track if globe mode is enabled.
+   * @type {boolean}
+   */
+  #isGlobeEnabled = false;
+
+  /**
+   * Internal property to store the actual OpenLayers map projection.
+   * Always an EPSG code (e.g., "EPSG:3857").
    * @type {ProjectionLike}
    */
-  #projection = "EPSG:3857";
+  #_olProjection = "EPSG:3857";
 
   constructor() {
     super();
@@ -237,7 +254,7 @@ export class EOxMap extends LitElement {
       view: new View({
         center: [0, 0],
         zoom: 0,
-        projection: this.projection,
+        projection: this.#_olProjection,
       }),
     });
 
@@ -261,6 +278,12 @@ export class EOxMap extends LitElement {
      * @type {Object.<string, import("ol/control/Control").default>}
      */
     this.mapControls = {};
+    /**
+     * The globe instance when using globe projection.
+     * todo: define proper type
+     * @type {any|null}
+     */
+    this.globe = null;
   }
 
   /**
@@ -446,20 +469,76 @@ export class EOxMap extends LitElement {
   /**
    * Sets the map's projection.
    *
-   * @param {ProjectionLike} projection - The projection code (e.g., "EPSG:3857").
+   * @param {ProjectionLike} projection - The projection code (e.g., "EPSG:3857") or "globe".
    */
   set projection(projection) {
-    this.#projection = setProjectionMethod(projection, this.#projection, this);
+    if (projection === "globe") {
+      // Ensure OL map is set to EPSG:3857 when globe is active
+      // The globe itself handles its own projection internally.
+      if (this.#_olProjection !== "EPSG:3857") {
+        this.#_olProjection = setProjectionMethod(
+          "EPSG:3857",
+          this.#_olProjection,
+          this,
+        );
+      }
+      setTimeout(() => {
+        enableGlobe(this);
+      });
+    } else {
+      if (this.#isGlobeEnabled) {
+        setTimeout(() => {
+          disableGlobe(this);
+        });
+      }
+
+      // Update the internal OL projection via setProjectionMethod
+      this.#_olProjection = setProjectionMethod(
+        projection,
+        this.#_olProjection,
+        this,
+      );
+    }
   }
 
   /**
    * Gets the current map projection.
    *
    * @type {ProjectionLike}
-   * @returns {ProjectionLike} The map's projection code.
+   * @returns {ProjectionLike} The map's projection code or "globe" if globe is enabled.
    */
   get projection() {
-    return this.#projection || "EPSG:3857";
+    return this.#isGlobeEnabled ? "globe" : this.#_olProjection;
+  }
+
+  /**
+   * Gets the openlayer map projection.
+   *
+   * @type {ProjectionLike}
+   * @returns {ProjectionLike} The map's openlayer code
+   */
+  get OLprojection() {
+    return this.#_olProjection;
+  }
+
+  /**
+   * Gets the  Whether the globe is enabled.
+   *
+   * @type {boolean}
+   * @returns {boolean} Whether the globe is enabled.
+   */
+  get globeEnabled() {
+    return this.#isGlobeEnabled;
+  }
+
+  /**
+   * Sets the  Whether the globe is enabled.
+   *
+   * @type {boolean}
+   * @returns {boolean} Whether the globe is enabled.
+   */
+  set globeEnabled(globeEnabled) {
+    this.#isGlobeEnabled = globeEnabled;
   }
 
   /**
@@ -563,21 +642,6 @@ export class EOxMap extends LitElement {
    */
   getFlatLayersArray = getFlatLayersArray;
 
-  /**
-   * Transforms coordinates between different projections.
-   */
-  transform = transform;
-
-  /**
-   * Transforms the extent between different projections.
-   */
-  transformExtent = transformExtent;
-
-  /**
-   * Applies a buffer around an extent.
-   */
-  buffer = buffer;
-
   // Renders the component's HTML template
   render() {
     return html`
@@ -592,10 +656,13 @@ export class EOxMap extends LitElement {
         ${eoxStyle}
         ${controlCss}
       </style>
-      <div style="width: 100%; height: 100%"></div>
+      <div id="map" style="width: 100%; height: 100%"></div>
       <slot></slot>
     `;
   }
 }
+
+// Export Additional Helper Methods
+export { buffer, transform, transformExtent };
 
 customElements.define("eox-map", EOxMap);

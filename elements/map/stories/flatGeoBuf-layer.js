@@ -9,6 +9,15 @@ const FlatGeoBufStory = {
     zoom: 12.5,
     layers: [
       {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
         type: "Vector",
         properties: {
           id: "FlatGeoBufLayer",
@@ -17,15 +26,6 @@ const FlatGeoBufStory = {
         source: {
           type: "FlatGeoBuf",
           url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/admin_borders/STATISTIK_AUSTRIA_GEM_20220101.fgb",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "customId",
-        },
-        source: {
-          type: "OSM",
         },
       },
     ],

@@ -14,7 +14,9 @@ export default function firstUpdatedMethod(zoomExtent, EOxMap) {
   });
 
   // Set the target element for the map rendering
-  EOxMap.map.setTarget(EOxMap.renderRoot.querySelector("div"));
+  /** @type {HTMLElement} */
+  const renderRoot = EOxMap.renderRoot.querySelector("div#map");
+  EOxMap.map.setTarget(renderRoot);
 
   // Fit the map view to the specified extent if provided; otherwise, animate to the default state
   if (zoomExtent) EOxMap.map.getView().fit(zoomExtent, EOxMap.animationOptions);
