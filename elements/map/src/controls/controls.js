@@ -10,6 +10,7 @@ import MousePosition from "ol/control/MousePosition";
 import { generateLayers } from "../helpers/generate";
 import Geolocation from "./geo-location";
 import LoadingIndicator from "./loading-indicator";
+import serialize from "serialize-javascript";
 
 /**
  * @typedef {import("../types").ControlDictionary} ControlDictionary
@@ -45,7 +46,7 @@ export function addOrUpdateControl(EOxMap, existingControls, type, options) {
   if (existingControls && existingControls[type]) {
     // Check if the current control options differ from the new ones
     const controlHasChanged =
-      JSON.stringify(existingControls[type]) !== JSON.stringify(options);
+      serialize(existingControls[type]) !== serialize(options);
 
     if (controlHasChanged) {
       // Remove the old control and add the updated one
