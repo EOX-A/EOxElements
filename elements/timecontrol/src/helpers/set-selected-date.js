@@ -3,7 +3,6 @@ import groupBy from "lodash.groupby";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { updateChildrenDateRange, getFlatLayersArray } from "./";
-import { TIME_CONTROL_DATE_FORMAT } from "../enums.js";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
