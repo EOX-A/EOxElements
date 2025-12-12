@@ -1,22 +1,50 @@
 import { html } from "lit";
 import { STORY_ARGS } from "../src/enums";
 
-export const DatePickerStandalone = {
+/**
+ * Calendar date picker displayed inline (not in popup mode)
+ *
+ * @returns {Object} The story configuration with arguments for the component.
+ */
+const DatePickerStandaloneStory = {
   args: {
-    ...STORY_ARGS,
-    for: "eox-map#date-picker-standalone",
+    layerIdKey: STORY_ARGS.layerIdKey,
+    titleKey: STORY_ARGS.titleKey,
+    filters: STORY_ARGS.filters,
+    externalMapRendering: STORY_ARGS.externalMapRendering,
     popup: true,
+    for: "eox-map#date-picker-standalone",
     select: (e) => {
       console.log(e.detail);
     },
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "date-picker-standalone",
+        zoom: STORY_ARGS.zoom,
+        center: STORY_ARGS.center,
+        layers: STORY_ARGS.layers,
+      },
+      "eox-timecontrol-picker": {
+        storyImport: false,
+        storySlot: true,
+        format: STORY_ARGS.format,
+        showDots: true,
+      },
+    },
   },
-  render: (args) => html`
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      id="date-picker-standalone"
       style="width: 100%; height: 500px;"
-      .zoom=${args.zoom}
-      .center=${args.center}
-      .layers=${args.layers}
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
+    <eox-map
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
     <eox-timecontrol
       .for=${args.for}
@@ -28,11 +56,13 @@ export const DatePickerStandalone = {
     >
       <eox-timecontrol-picker
         style="width: fit-content; border: 1.5px solid #80808026; border-radius: 6px;"
-        .format=${args.format}
-        .showDots=${true}
+        .format=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .format}
+        .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .showDots}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
 };
 
-export default DatePickerStandalone;
+export default DatePickerStandaloneStory;

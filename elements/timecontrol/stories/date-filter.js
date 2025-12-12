@@ -1,39 +1,55 @@
 import { html } from "lit";
+import { STORY_ARGS } from "../src/enums";
 
-export const DateFilter = {
+/**
+ * Date filtering using eox-itemfilter for filtering timeline items by metadata properties
+ *
+ * @returns {Object} The story configuration with arguments for the component.
+ */
+const DateFilterStory = {
   args: {
-    center: [12, 42],
-    zoom: 10,
-    layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
+    layerIdKey: STORY_ARGS.layerIdKey,
+    titleKey: STORY_ARGS.titleKey,
+    filters: STORY_ARGS.filters,
     externalMapRendering: true,
     animate: true,
     for: "eox-map#external-map-rendering-mosaic",
     select: (e) => {
       console.log(e.detail);
     },
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "external-map-rendering-mosaic",
+        zoom: 10,
+        center: [12, 42],
+      },
+      "eox-timecontrol-date": {
+        storyImport: false,
+        storySlot: true,
+        navigation: true,
+      },
+      "eox-timecontrol-picker": {
+        storyImport: false,
+        storySlot: true,
+        range: true,
+        showDots: true,
+        popup: true,
+      },
+      "eox-timecontrol-timeline": {
+        storyImport: false,
+        storySlot: true,
+      },
+      "eox-itemfilter": {
+        storySlot: true,
+      },
+    },
   },
-  render: (args) => html`
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      id="external-map-rendering-mosaic"
       style="width: 100%; height: 500px;"
-      .zoom=${args.zoom}
-      .center=${args.center}
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
     ></eox-map>
     <eox-timecontrol
       .for=${args.for}
@@ -45,12 +61,16 @@ export const DateFilter = {
       <div style="display: flex; gap: 10px;align-items: center;">
         <eox-timecontrol-date
           style="flex-grow: 1;"
-          .navigation=${true}
+          .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
+            .navigation}
         ></eox-timecontrol-date>
         <eox-timecontrol-picker
-          .range=${true}
-          .showDots=${true}
-          .popup=${true}
+          .range=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+            .range}
+          .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+            .showDots}
+          .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+            .popup}
         ></eox-timecontrol-picker>
         <eox-itemfilter
           id="timecontrol-filter"
@@ -205,4 +225,4 @@ export const DateFilter = {
   `,
 };
 
-export default DateFilter;
+export default DateFilterStory;

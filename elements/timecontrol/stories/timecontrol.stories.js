@@ -1,4 +1,5 @@
 // Global import of eox-elements in .storybook/preview.js!
+import { html } from "lit";
 import {
   OnlyDateStory,
   DateWithNavigationStory,
@@ -18,10 +19,18 @@ export default {
   title: "Elements/eox-timecontrol",
   tags: ["autodocs"],
   component: "eox-timecontrol",
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
+    <eox-timecontrol
+      .for=${args.for}
+      .layerIdKey=${args.layerIdKey}
+      .titleKey=${args.titleKey}
+      .externalMapRendering=${args.externalMapRendering}
+    ></eox-timecontrol>
+  `,
 };
 
 /**
- * Basic timecontrol rendered using only the date display component.
+ * Basic timecontrol rendered using only the date display component
  *
  * This renders a timecontrol element with just the `<eox-timecontrol-date>` component, which displays
  * the currently selected date(s) from the associated map layers. The date is automatically extracted
@@ -33,7 +42,7 @@ export default {
 export const OnlyDate = OnlyDateStory;
 
 /**
- * Date display component with navigation buttons for stepping through available dates.
+ * Date display component with navigation buttons for stepping through available dates
  *
  * This example shows the `<eox-timecontrol-date>` component with the `navigation` attribute enabled,
  * which adds previous/next buttons to step through available dates. Clicking these buttons will
@@ -42,7 +51,7 @@ export const OnlyDate = OnlyDateStory;
 export const DateWithNavigation = DateWithNavigationStory;
 
 /**
- * Calendar date picker displayed in popup mode, triggered by clicking the date input field.
+ * Calendar date picker displayed in popup mode, triggered by clicking the date input field
  *
  * This example demonstrates the `<eox-timecontrol-picker>` component with `popup` enabled.
  * The calendar appears as a popup overlay when clicking on the date input field (provided by
@@ -51,17 +60,16 @@ export const DateWithNavigation = DateWithNavigationStory;
 export const DatePickerPopup = DatePickerPopupStory;
 
 /**
- * Calendar date picker displayed in popup mode and shows items in the popup.
+ * Calendar date picker displayed in popup mode and shows items in the popup
  *
  * This example demonstrates the `<eox-timecontrol-picker>` component with `showItems` enabled.
  * The calendar appears as a popup overlay when clicking on the date input field (provided by
- * `<eox-timecontrol-date>`). The picker supports both single date and range selection modes.
- * The picker shows items in the popup.
+ * `<eox-timecontrol-date>`). The picker shows items in the popup.
  */
 export const DatePickerPopupItems = DatePickerPopupItemsStory;
 
 /**
- * Calendar date picker displayed inline (not in popup mode).
+ * Calendar date picker displayed inline (not in popup mode)
  *
  * This example shows the `<eox-timecontrol-picker>` component without the `popup` attribute,
  * displaying the calendar inline within the component. Useful for always-visible date selection
@@ -70,12 +78,11 @@ export const DatePickerPopupItems = DatePickerPopupItemsStory;
 export const DatePickerStandalone = DatePickerStandaloneStory;
 
 /**
- * Range slider for selecting date ranges with visual indicators for years and months.
+ * Range slider for selecting date ranges with visual indicators for years and months
  *
  * This example demonstrates the `<eox-timecontrol-slider>` component, which provides a visual
  * range slider for selecting start and end dates. The slider displays tick marks for years and
  * months, and tooltips show the formatted dates when hovering over or dragging the handles.
- *
  * The slider automatically extracts available dates from timeline items and allows users to
  * select a date range by dragging the handles. The selected range is immediately applied to
  * the map layers.
@@ -83,7 +90,7 @@ export const DatePickerStandalone = DatePickerStandaloneStory;
 export const Slider = SliderStory;
 
 /**
- * Timeline visualization using vis-timeline with date picker and calendar integration.
+ * Timeline visualization using vis-timeline with date picker and calendar integration
  *
  * This example shows the full power of the timecontrol component with the `<eox-timecontrol-timeline>`
  * component. The timeline displays timeline items as milestones grouped by layer, allowing users
@@ -102,7 +109,7 @@ export const Slider = SliderStory;
 export const Timeline = TimelineStory;
 
 /**
- * External map rendering mode for timelapse export with custom map rendering logic.
+ * External map rendering mode for timelapse export with custom map rendering logic
  *
  * This example demonstrates the `externalMapRendering` feature, which allows custom handling
  * of map layer updates for timelapse export. When enabled, the timecontrol dispatches an
@@ -115,7 +122,7 @@ export const Timeline = TimelineStory;
 export const ExternalMapRendering = ExternalMapRenderingStory;
 
 /**
- * Date filtering using eox-itemfilter for filtering timeline items by metadata properties.
+ * Date filtering using eox-itemfilter for filtering timeline items by metadata properties
  *
  * This example shows how to use the `<eox-itemfilter>` component in conjunction with timecontrol
  * to filter timeline items based on metadata properties (e.g., cloud coverage). The filter
@@ -128,7 +135,7 @@ export const ExternalMapRendering = ExternalMapRenderingStory;
 export const DateFilter = DateFilterStory;
 
 /**
- * Update view event story.
+ * Update view event story
  *
  * This example demonstrates the `update:view` event, which is dispatched when the view range of the timeline changes.
  * The event is dispatched with the start and end dates of the view range.
@@ -136,14 +143,16 @@ export const DateFilter = DateFilterStory;
 export const UpdateView = UpdateViewStory;
 
 /**
- * No map story.
+ * No map story
  *
- * This example demonstrates the timecontrol component without a map.
+ * This example demonstrates the timecontrol component without a map. The component can be used
+ * standalone by providing `controlValues` directly instead of linking to a map via the `for` attribute.
+ * This is useful when you want to use timecontrol for date selection without map integration.
  */
 export const NoMap = NoMapStory;
 
 /**
- * Expert example showcasing all timecontrol features together.
+ * Expert example showcasing all timecontrol features together
  *
  * This comprehensive example demonstrates all available timecontrol components and features:
  * - Date display with navigation

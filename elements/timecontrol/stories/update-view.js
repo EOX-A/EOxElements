@@ -1,21 +1,52 @@
 import { html } from "lit";
 import { STORY_ARGS } from "../src/enums";
 
-export const UpdateView = {
+/**
+ * Update view event story
+ *
+ * @returns {Object} The story configuration with arguments for the component.
+ */
+const UpdateViewStory = {
   args: {
-    ...STORY_ARGS,
+    layerIdKey: STORY_ARGS.layerIdKey,
+    titleKey: STORY_ARGS.titleKey,
+    filters: STORY_ARGS.filters,
+    externalMapRendering: STORY_ARGS.externalMapRendering,
     for: "eox-map#timeline",
     updateView: (e) => {
       console.log(e.detail);
     },
+    storyAdditionalComponents: {
+      "eox-map": {
+        id: "timeline",
+        zoom: STORY_ARGS.zoom,
+        center: STORY_ARGS.center,
+        layers: STORY_ARGS.layers,
+      },
+      "eox-timecontrol-timeline": {
+        storyImport: false,
+        storySlot: true,
+      },
+      "eox-timecontrol-date": {
+        storyImport: false,
+        storySlot: true,
+        navigation: true,
+      },
+      "eox-timecontrol-picker": {
+        storyImport: false,
+        storySlot: true,
+        showDots: true,
+        popup: true,
+      },
+    },
   },
-  render: (args) => html`
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      id="timeline"
       style="width: 100%; height: 500px;"
-      .zoom=${args.zoom}
-      .center=${args.center}
-      .layers=${args.layers}
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
     <eox-timecontrol
       .for=${args.for}
@@ -23,17 +54,20 @@ export const UpdateView = {
       .titleKey=${args.titleKey}
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
-      @select=${args.select}
       @update:view=${args.updateView}
     >
       <eox-timecontrol-timeline></eox-timecontrol-timeline>
-      <eox-timecontrol-date .navigation=${true}></eox-timecontrol-date>
+      <eox-timecontrol-date
+        .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
+          .navigation}
+      ></eox-timecontrol-date>
       <eox-timecontrol-picker
-        .showDots=${true}
-        .popup=${true}
+        .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .showDots}
+        .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"].popup}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
 };
 
-export default UpdateView;
+export default UpdateViewStory;
