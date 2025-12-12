@@ -8,6 +8,15 @@ const GeoTIFFLayerStory = {
     center: [3737055, 1886786],
     layers: [
       {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
         type: "WebGLTile",
         properties: {
           id: "geotiffLayer",
@@ -19,15 +28,6 @@ const GeoTIFFLayerStory = {
               url: "https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif",
             },
           ],
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "customId",
-        },
-        source: {
-          type: "OSM",
         },
       },
     ],
