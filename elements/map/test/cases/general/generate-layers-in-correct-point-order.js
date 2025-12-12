@@ -1,9 +1,9 @@
 import { html } from "lit";
 
 /**
- * Tests to check whether layers is generated in reverse point order
+ * Tests to check whether layers is generated in correct point order
  */
-const generateLayersInReversePointOrder = () => {
+const generateLayersInCorrectPointOrder = () => {
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
@@ -24,9 +24,9 @@ const generateLayersInReversePointOrder = () => {
         .getArray()
         .map((l) => l.get("id"))
         .join(""),
-      "generate layers in reverse painters order",
-    ).to.eq("321");
+      "generate layers in correct painters order",
+    ).to.eq("123");
   });
 };
 
-export default generateLayersInReversePointOrder;
+export default generateLayersInCorrectPointOrder;

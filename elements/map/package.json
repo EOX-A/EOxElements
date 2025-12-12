@@ -9,12 +9,14 @@
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.5.0",
+    "@openglobus/og": "^0.27.19",
     "flatgeobuf": "^4.0.1",
     "lit": "^3.2.0",
-    "ol": "^10.6.1",
+    "ol": "^10.7.0",
     "ol-mapbox-style": "^13.0.1",
     "ol-stac": "^1.0.0-beta.10",
-    "proj4": "^2.9.2"
+    "proj4": "^2.9.2",
+    "serialize-javascript": "^7.0.1"
   },
   "devDependencies": {
     "@types/proj4": "^2.5.4",
@@ -44,8 +46,8 @@
   "scripts": {
     "types:generate": "tsc --project tsconfig.build.json || true",
     "prepack": "npm run schema:generate && npm run types:generate",
-    "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js",
-    "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.js --watch",
+    "build": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.globe.js && vite build --config vite.config.js",
+    "watch": "vite build --config vite.config.advancedLayersAndSources.js && vite build --config vite.config.globe.js && vite build --config vite.config.js --watch",
     "schema:generate": "typescript-json-schema ./src/layers.ts EoxLayer  -o ./src/eoxlayer-schema.json  --skipLibCheck --titles --required --excludePrivate --constAsEnum"
   }
 }

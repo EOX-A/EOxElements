@@ -30,3 +30,4 @@ export { default as CustomTooltipStory } from "./custom-tooltip";
 export { default as GetFeatureInfoTooltipStory } from "./getFeature-tooltip";
 export { default as CoordinatesCustomTooltipsStory } from "./coordinates-custom-tooltips";
 export { default as HelperMethodsStory } from "./helper-methods";
+export { default as GlobeStory } from "./globe";

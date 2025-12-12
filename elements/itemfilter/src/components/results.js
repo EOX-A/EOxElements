@@ -123,6 +123,21 @@ export class EOxItemFilterResults extends LitElement {
     toggleAccordion(event, this.config, this);
   }
 
+  #getAggregationProperties() {
+    const aggregationProperties = this.resultAggregation.filter(
+      (aggregationProperty) =>
+        this.aggregateResults(this.results, aggregationProperty).length,
+    );
+    const noCategoryResults = this.aggregateResults(
+      this.results,
+      "No category",
+    );
+    if (noCategoryResults.length > 0) {
+      aggregationProperties.push("No category");
+    }
+    return aggregationProperties;
+  }
+
   /**
    * Renders the HTML template for the component.
    */
@@ -140,11 +155,7 @@ export class EOxItemFilterResults extends LitElement {
             this.config.aggregateResults,
             () =>
               map(
-                this.resultAggregation.filter(
-                  (aggregationProperty) =>
-                    this.aggregateResults(this.results, aggregationProperty)
-                      .length,
-                ),
+                this.#getAggregationProperties(),
                 (aggregationProperty) =>
                   html`${when(
                     this.aggregateResults(this.results, aggregationProperty)
