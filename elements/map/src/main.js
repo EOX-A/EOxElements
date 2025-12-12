@@ -103,6 +103,7 @@ addCommonStylesheet();
  * - **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.
  * - **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.
  * - **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.
+ * - **Globe View:** Interactive 3D globe by using "globe" projection property.
  *
  * ## Events
  *
