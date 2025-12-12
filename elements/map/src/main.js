@@ -414,9 +414,6 @@ export class EOxMap extends LitElement {
    */
   set layers(layers) {
     this.#layers = setLayersMethod(layers, this.#layers, this);
-    this.dispatchEvent(
-      new CustomEvent("layerschanged", { detail: { layers: this.#layers } }),
-    );
   }
 
   /**
