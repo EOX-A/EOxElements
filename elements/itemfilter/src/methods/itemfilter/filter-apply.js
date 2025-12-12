@@ -118,7 +118,9 @@ function filterApplyMethod(config, items, EOxItemFilter) {
           [],
         ),
       ),
-    ).sort((a, b) => a.localeCompare(b));
+    )
+      .filter((i) => i)
+      .sort((a, b) => a.localeCompare(b));
   }
 
   // Build Fuse.js search keys

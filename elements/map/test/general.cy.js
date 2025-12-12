@@ -9,7 +9,7 @@ import {
   initDefaultCenter,
   getLayerById,
   getFlatLayersArr,
-  generateLayersInReversePointOrder,
+  generateLayersInCorrectPointOrder,
 } from "./cases/general";
 
 /**
@@ -64,9 +64,9 @@ describe("Map", () => {
   it("should return flat layers array", () => getFlatLayersArr());
 
   /**
-   * Test case to check whether layers is generated in reverse point order
+   * Test case to check whether layers is generated in correct point order
    */
   it("doesn't reverse the input layer array", { retries: 0 }, () =>
-    generateLayersInReversePointOrder(),
+    generateLayersInCorrectPointOrder(),
   );
 });

@@ -10,6 +10,15 @@ const ClusterExplodeStory = {
     },
     layers: [
       {
+        type: "Tile",
+        properties: {
+          id: "OSM",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
         type: "Vector",
         properties: {
           id: "clusterLayer",
@@ -77,15 +86,6 @@ const ClusterExplodeStory = {
             url: "https://raw.githubusercontent.com/drei01/geojson-world-cities/refs/heads/master/cities.geojson",
             format: "GeoJSON",
           },
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "OSM",
-        },
-        source: {
-          type: "OSM",
         },
       },
     ],

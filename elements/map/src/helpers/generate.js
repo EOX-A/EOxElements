@@ -103,9 +103,7 @@ export function createLayer(EOxMap, layer, createInteractions = true) {
   olLayer.set("_jsonDefinition", layer, true);
   // Handle group layers by recursively creating their sublayers
   if (layer.type === "Group") {
-    const groupLayers = layer.layers
-      .reverse()
-      .map((l) => createLayer(EOxMap, l));
+    const groupLayers = layer.layers.map((l) => createLayer(EOxMap, l));
     groupLayers.forEach((l) => l.set("_group", olLayer, true));
     /** @type {import("ol/layer/Group").default} **/ (olLayer).setLayers(
       new Collection(groupLayers),
@@ -426,9 +424,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
       }
     });
 
-    // Reorder the layers to match the REVERSE of the new definition
-    // (EOx-Layers-JSON is in reverse painters order)
-    const reverseNewLayerIds = newLayerIds.toReversed();
+    const sortNewLayerIds = newLayerIds;
     layerCollection
       .getArray()
       .sort(
@@ -437,8 +433,8 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
           /** @type {import("ol/layer/Base").default} **/ layerB,
         ) => {
           return (
-            reverseNewLayerIds.indexOf(layerA.get("id")) -
-            reverseNewLayerIds.indexOf(layerB.get("id"))
+            sortNewLayerIds.indexOf(layerA.get("id")) -
+            sortNewLayerIds.indexOf(layerB.get("id"))
           );
         },
       );
@@ -463,8 +459,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 export const generateLayers = (EOxMap, layerArray) => {
   if (!layerArray) return [];
 
-  // Reverse the layer array to maintain the stacking order
-  return [...layerArray].reverse().map((l) => createLayer(EOxMap, l));
+  return [...layerArray].map((l) => createLayer(EOxMap, l));
 };
 
 /**
@@ -493,6 +488,8 @@ function setSyncListeners(olLayer, eoxLayer) {
   olLayer.on("propertychange", (e) => {
     if (e.key === "map") return;
 
-    eoxLayer.properties[e.key] = e.target.get(e.key);
+    if (eoxLayer.properties) {
+      eoxLayer.properties[e.key] = e.target.get(e.key);
+    }
   });
 }

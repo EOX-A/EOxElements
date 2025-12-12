@@ -1,6 +1,8 @@
 // Parses the elements from the storyData
 // is always one main elment, but could also contain additional components
 export const parseElements = (storyData) => {
+  const storyComponent = storyData.component || storyData.parent;
+  if (!storyComponent) return [];
   const primaryElement = (storyData.component || storyData.parent).replace(
     "elements-",
     "",

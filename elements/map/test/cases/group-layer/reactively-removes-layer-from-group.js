@@ -18,10 +18,8 @@ const reactivelyRemovesLayerFromGroup = (layersJson) => {
     const jsonCopy = JSON.parse(JSON.stringify(layersJson));
     jsonCopy[0].layers.length = 1;
     eoxMap.layers = jsonCopy;
-    expect(
-      eoxMap.getLayerById("groupLayerInsideGroup"),
-      "reactively remove layer from group",
-    ).to.not.exist;
+    expect(eoxMap.getLayerById("regions"), "reactively remove layer from group")
+      .to.not.exist;
   });
 };
 

@@ -28,10 +28,10 @@ export const LayerStylesConfigStory = {
         zoom: 3,
         style: STORIES_MAP_STYLE,
         layers: [
-          STORIES_LAYER_SEE,
-          STORIES_LAYER_CROPOMHUSC2,
-          STORIES_LAYER_POLARIS,
           STORIES_LAYER_TERRAIN_LIGHT,
+          STORIES_LAYER_POLARIS,
+          STORIES_LAYER_CROPOMHUSC2,
+          STORIES_LAYER_SEE,
         ],
         id: "config-styles",
       },

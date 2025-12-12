@@ -33,6 +33,7 @@ import {
   GetFeatureInfoTooltipStory,
   CoordinatesCustomTooltipsStory,
   HelperMethodsStory,
+  GlobeStory,
 } from "./index.js";
 
 export default {
@@ -45,6 +46,7 @@ export default {
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
+      .projection=${args.projection}
       .zoom=${args.zoom}
     ></eox-map>
   `,
@@ -134,7 +136,7 @@ export const ConfigObject = ConfigObjectStory;
 /**
  * Basic vector layer map rendered using `GeoJSON`
  * This example also shows how to pass multiple layers (two objects in the layers array).
- * Notice that no zoom or center are set; they default to center `[0, 0]` and `zoom`of `0`. Also notice, that as of version `v1.x.x` of `eox-map` the layer ordering is reversed in comparison to OpenLayers: the later in the `layers` array, the sooner the layer is rendered in OpenLayers; this is done to have a visual "feel" when looking at the layers array, that the visually (as in the code) "topmost" is actually the "topmost" layer on the map. The layers array is reversed before rendering in OpenLayers. With version `v2.x.x` this will likely be changed to match OpenLayers' (and other map frameworks) common practice of creating layers from an array.
+ * Notice that no zoom or center are set; they default to center `[0, 0]` and `zoom`of `0`.
  */
 export const VectorLayer = VectorLayerStory;
 
@@ -343,3 +345,11 @@ export const PreventScroll = PreventScrollStory;
  * In this story, an example for each helper method is shown - please refer to the console to read the outputs.
  */
 export const HelperMethods = HelperMethodsStory;
+
+/**
+ * Basic Globe rendered using `projection: "globe"`, and OpenGlobus as globe renderer.
+ * When the projection of the view can is set to "globe", the map will render as a 3D globe.
+ * This example renders a globe centered on Austria, with 2 layers: an XYZ tile layer as base layer, and a GeoTiff layer on top.
+ * The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
+ */
+export const Globe = GlobeStory;

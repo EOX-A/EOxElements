@@ -9,20 +9,20 @@ const ProjectionStory = {
   args: {
     layers: [
       {
-        type: "Vector",
-        source: {
-          type: "Vector",
-          url: "https://openlayers.org/data/vector/ecoregions.json",
-          format: "GeoJSON",
-        },
-      },
-      {
         type: "Tile",
         properties: {
           id: "osm",
           title: "Background",
         },
         source: { type: "OSM" },
+      },
+      {
+        type: "Vector",
+        source: {
+          type: "Vector",
+          url: "https://openlayers.org/data/vector/ecoregions.json",
+          format: "GeoJSON",
+        },
       },
     ],
     center: [16.8, 48.2],

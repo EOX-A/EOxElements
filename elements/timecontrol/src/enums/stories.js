@@ -28,6 +28,15 @@ export const DEFAULT_ARGS = {
     {
       type: "Tile",
       properties: {
+        id: "OSM",
+      },
+      source: {
+        type: "OSM",
+      },
+    },
+    {
+      type: "Tile",
+      properties: {
         id: "AWS_NO2-VISUALISATION",
       },
       source: {
@@ -37,15 +46,6 @@ export const DEFAULT_ARGS = {
           LAYERS: "AWS_NO2-VISUALISATION",
           TIME: "2022-12-05",
         },
-      },
-    },
-    {
-      type: "Tile",
-      properties: {
-        id: "OSM",
-      },
-      source: {
-        type: "OSM",
       },
     },
   ],
