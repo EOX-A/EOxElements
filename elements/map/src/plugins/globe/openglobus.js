@@ -29,6 +29,9 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
       .filter((l) => l !== undefined),
     sun: { active: false },
     atmosphereEnabled: false,
+    transparentBackground: true,
+    resourcesSrc: "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res",
+    fontsSrc: "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res/fonts"
   });
 
   const height = 21050000 / Math.pow(2, EOxMap.map.getView().getZoom() - 1);
