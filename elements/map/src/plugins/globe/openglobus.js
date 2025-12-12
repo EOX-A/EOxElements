@@ -231,22 +231,12 @@ export const enableGlobe = (map) => {
       map.renderRoot?.appendChild(globeDiv);
     }
 
-    // Get current OL map center and transform it to EPSG:4326 for the globe
-    const currentOlCenter = map.map.getView().getCenter();
-    // Only transform if currentOlCenter is not null/undefined
-    const currentGlobeCenter = currentOlCenter
-      ? map.transform(currentOlCenter, map.projection, "EPSG:4326")
-      : [0, 0]; // Default if center is not available
-    const currentZoom = map.map.getView().getZoom();
-
     map.registerProjectionFromCode("EPSG:3857"); // Ensure projection is registered for OL, globe uses its own.
 
     // Store the globe instance returned by create, if any.
     map.globe = window.eoxMapGlobe.create({
       EOxMap: map,
       target: globeDiv,
-      center: currentGlobeCenter, // Pass the transformed center to the globe
-      zoom: currentZoom,
     });
 
     /** @type {HTMLElement} */
