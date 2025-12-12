@@ -12,9 +12,8 @@ const isGlobeExist = () => {
           properties: {
             id: "osm",
             title: "Open Street Map",
-            layerControlExclusive: true,
           },
-          visible: false,
+          visible: true,
           opacity: 0.5,
           source: {
             type: "OSM",
@@ -27,6 +26,14 @@ const isGlobeExist = () => {
   ).as("eox-map");
   cy.get("eox-map").and(($el) => {
     expect($el[0].map).to.exist;
+    // Check if globe is enabled
+    expect($el[0].globeEnabled).to.be.true;
+    // Check if globe instance exists
+    expect($el[0].globe).to.exist;
+    // Check if the layer is added to the globe
+    const globeLayers = $el[0].globe.planet.layers;
+    const osmLayer = globeLayers.filter((l) => l.name === "osm");
+    expect(osmLayer).to.exist;
   });
 };
 
