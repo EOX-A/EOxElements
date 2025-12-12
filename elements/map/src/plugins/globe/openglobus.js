@@ -15,51 +15,9 @@ import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
+import { getLayerById } from "../../helpers/layer.js";
 
-class Globe {
-  /**
-   * @type {OgGlobe}
-   */
-  #globe;
-
-  /**
-   * @param {HTMLElement} target
-   */
-  constructor(target) {
-    this.#globe = new OgGlobe({
-      target,
-      sun: { active: false },
-      atmosphereEnabled: false,
-    });
-
-    const style = document.createElement("style");
-    style.textContent = `
-      .og-inner {
-        height: 100%;
-      }
-      .og-inner *:not(canvas) {
-        display: none !important;
-      }
-    `;
-    target.appendChild(style);
-  }
-
-  /**
-   *
-   */
-  addLayer(layer) {
-    this.#globe.planet.addLayer(layer);
-  }
-
-  /**
-   * @returns {OgGlobe}
-   */
-  get globe() {
-    return this.#globe;
-  }
-}
-
-export default Globe;
+/** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
 let globus;
 
@@ -309,4 +267,93 @@ export const disableGlobe = (map) => {
       },
     });
   }
+};
+
+/**
+ * Creates a debounced function that delays invoking func until after wait milliseconds have elapsed
+ * since the last time the debounced function was invoked.
+ * @param {Function} func The function to debounce.
+ * @param {number} wait The number of milliseconds to delay.
+ * @returns {Function} Returns the new debounced function.
+ */
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+/**
+ * @param {ExtendedOLLayer} olLayer
+ * @param {import("@openglobus/og").Globe} globe
+ * @param {Array<any>} mapPool
+ */
+export const setupLayerListeners = (olLayer, globe, mapPool) => {
+  const debouncedRefresh = debounce(() => {
+    refreshGlobe();
+  }, 200);
+
+  olLayer.on("change", () => {
+    if (olLayer.styleVariables_) {
+      const layerId = olLayer.get("id");
+      const newStyleVariables = /** @type {Record<string, number>} */ (
+        olLayer.styleVariables_
+      );
+      if (!layerId || !newStyleVariables) return;
+
+      mapPool.forEach((poolItem) => {
+        poolItem.tileQueue.length = 0;
+        const layerInTileMap =
+          /** @type {import("ol/layer/WebGLTile.js").default} */ (
+            /** @type {unknown} */ (getLayerById(poolItem.tileMap, layerId))
+          );
+        if (layerInTileMap && layerInTileMap.updateStyleVariables) {
+          layerInTileMap.updateStyleVariables(newStyleVariables);
+        }
+      });
+      debouncedRefresh();
+    }
+  });
+
+  olLayer.on("propertychange", ({ key }) => {
+    const globusLayer = globe.planet.getLayerByName(olLayer.get("id"));
+    if (!globusLayer) return;
+    switch (key) {
+      case "visible":
+        globusLayer.setVisibility(olLayer.getVisible());
+        break;
+      case "opacity":
+        globusLayer.opacity = olLayer.getOpacity();
+        break;
+    }
+  });
+};
+
+/**
+ * @param {import("ol/Collection").default<import("ol/layer/Base").default>} layers
+ * @param {import("@openglobus/og").Globe} globe
+ * @param {Array<any>} mapPool
+ */
+export const processLayers = (layers, globe, mapPool) => {
+  layers.forEach((olLayer) => {
+    if (olLayer.get("id")) {
+      setupLayerListeners(
+        /** @type {ExtendedOLLayer} */ (olLayer),
+        globe,
+        mapPool,
+      );
+    }
+    if (/** @type {any} */ (olLayer).getLayers) {
+      processLayers(
+        /** @type {any} */ (olLayer).getLayers().getArray(),
+        globe,
+        mapPool,
+      );
+    }
+  });
 };

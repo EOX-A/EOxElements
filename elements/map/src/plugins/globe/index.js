@@ -1,5 +1,5 @@
-import { createGlobe, refreshGlobe } from "./openglobus.js";
-import { createMapPool, processLayers } from "./methods.js"; // Updated import
+import { createGlobe, refreshGlobe, processLayers } from "./openglobus.js";
+import { createMapPool } from "./methods.js"; // Updated import
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
