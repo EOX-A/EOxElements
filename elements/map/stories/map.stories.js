@@ -69,7 +69,7 @@ export const Primary = PrimaryStory;
  * Instead of passing each property individually, one can also pass a `config` property:
  * Note two things here: when using the `config` property, then `center` and `zoom` are nested inside the `view` property. Secondly, this example includes `controls`: by passing `Zoom: {}` this enables the OpenLayers `Zoom` control, without any options (which could be passed inside the object).
 * `config` supports the following properties:
-*
+* 
 * ```ts
 * export type ConfigObject = {
 *   controls: ControlDictionary;
@@ -86,7 +86,7 @@ export const Primary = PrimaryStory;
 *   animationOptions?: EOxAnimationOptions;
 * };
 * ```
-*
+* 
 * ```ts
 * export type ControlDictionary = {
 *   Zoom?: ConstructorParameters<typeof import("ol/control/Zoom").default>[0];
@@ -323,13 +323,6 @@ export const ABCompare = ABCompareStory;
 export const Projection = ProjectionStory;
 
 /**
- * The dimension of the view can be changed via the `dimension`-attribute.
- * 2D map in EPSG:4326 (geographic coordinates) and Globe view
- * are included.
- */
-export const DimensionChange = DimensionChangeStory;
-
-/**
  * changing the properties `zoom`, `center` or `zoomExtent` will trigger animations, if the
  * `animationOptions`-property is set.
  * animation options for `zoom` or `center`: https://openlayers.org/en/latest/apidoc/module-ol_View.html#~AnimationOptions
@@ -346,6 +339,9 @@ export const Animations = AnimationsStory;
 export const PreventScroll = PreventScrollStory;
 
 /**
- * Basic Globe rendered using `projection: "globe"`
+ * Basic Globe rendered using `projection: "globe"`, and OpenGlobus as globe renderer.
+ * When the projection of the view can is set to "globe", the map will render as a 3D globe.
+ * This example renders a globe centered on Austria, with 2 layers: an XYZ tile layer as base layer, and a GeoTiff layer on top.
+ * The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
  */
 export const Globe = GlobeStory;
