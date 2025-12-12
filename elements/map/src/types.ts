@@ -243,8 +243,8 @@ declare global {
     eoxMapAdvancedOlLayers: OLAdvancedLayers;
     eoxMapAdvancedOlSources: OLAdvancedSources;
     eoxMapGlobe: {
-      create: typeof import("./plugins/globe/index").create,
-      refresh: typeof import("./plugins/globe/openglobus").refreshGlobe,
+      create: typeof import("./plugins/globe/index").create;
+      refresh: typeof import("./plugins/globe/openglobus").refreshGlobe;
     };
   }
 }
