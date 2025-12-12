@@ -149,6 +149,159 @@
     },
     {
       "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onOverlayDraw",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onTextInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string|null"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "default": "undefined"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -669,159 +822,6 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onOverlayDraw",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onTextInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string|null"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "default": "undefined"
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -2681,13 +2681,23 @@
             },
             {
               "kind": "field",
-              "name": "#projection",
+              "name": "#isGlobeEnabled",
+              "privacy": "private",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Internal flag to track if globe mode is enabled."
+            },
+            {
+              "kind": "field",
+              "name": "#_olProjection",
               "privacy": "private",
               "type": {
                 "text": "ProjectionLike"
               },
               "default": "\"EPSG:3857\"",
-              "description": "The map's projection system, specifying how coordinates are mapped on the globe.\nDefaults to \"EPSG:3857\"."
+              "description": "Internal property to store the actual OpenLayers map projection.\nAlways an EPSG code (e.g., \"EPSG:3857\")."
             },
             {
               "kind": "field",
@@ -2914,7 +2924,7 @@
               "description": "Gets the current map projection.",
               "parameters": [
                 {
-                  "description": "The projection code (e.g., \"EPSG:3857\").",
+                  "description": "The projection code (e.g., \"EPSG:3857\") or \"globe\".",
                   "name": "projection",
                   "type": {
                     "text": "ProjectionLike"
@@ -2927,6 +2937,33 @@
                 }
               },
               "attribute": "projection"
+            },
+            {
+              "kind": "field",
+              "name": "OLprojection",
+              "description": "Gets the openlayer map projection.",
+              "type": {
+                "text": "ProjectionLike"
+              },
+              "return": {
+                "type": {
+                  "text": "ProjectionLike"
+                }
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "globeEnabled",
+              "description": "Sets the  Whether the globe is enabled.",
+              "type": {
+                "text": "boolean"
+              },
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              }
             },
             {
               "kind": "field",
@@ -3091,7 +3128,7 @@
               "type": {
                 "text": "default"
               },
-              "default": "new Map({ controls: [], interactions: interactionDefaults({ altShiftDragRotate: false, pinchRotate: false, }), layers: [], view: new View({ center: [0, 0], zoom: 0, projection: this.projection, }), })"
+              "default": "new Map({ controls: [], interactions: interactionDefaults({ altShiftDragRotate: false, pinchRotate: false, }), layers: [], view: new View({ center: [0, 0], zoom: 0, projection: this.#_olProjection, }), })"
             },
             {
               "kind": "field",
@@ -3122,6 +3159,15 @@
               },
               "description": "Object to store map controls (e.g., custom buttons, geolocation).",
               "default": "{}"
+            },
+            {
+              "kind": "field",
+              "name": "globe",
+              "type": {
+                "text": "any|null"
+              },
+              "description": "The globe instance when using globe projection.\ntodo: define proper type",
+              "default": "null"
             }
           ],
           "events": [
@@ -3185,7 +3231,7 @@
               "description": "Gets the current map projection.",
               "parameters": [
                 {
-                  "description": "The projection code (e.g., \"EPSG:3857\").",
+                  "description": "The projection code (e.g., \"EPSG:3857\") or \"globe\".",
                   "name": "projection",
                   "type": {
                     "text": "ProjectionLike"

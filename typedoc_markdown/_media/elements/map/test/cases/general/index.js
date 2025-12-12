@@ -9,3 +9,4 @@ export { default as getLayerById } from "./get-layer-by-id";
 export { default as getFlatLayersArr } from "./get-flat-layers-arr";
 export { default as generateLayersInReversePointOrder } from "./generate-layers-in-reverse-point-order";
 export { animateOnZoomCenterChange, animateOnExtent } from "./animate";
+export { default as isGlobeExist } from "./globe-exist";
