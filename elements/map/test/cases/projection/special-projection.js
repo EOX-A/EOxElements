@@ -1,6 +1,8 @@
 import { html } from "lit";
 import ecoRegionsFixture from "../../fixtures/ecoregions.json";
 import vectorLayerStyleJson from "../../fixtures/vectorLayer.json";
+import { transform } from "../../../src/main";
+import { transformExtent } from "../../../src/main";
 
 /**
  * Tests to use special projection
@@ -34,7 +36,7 @@ const specialProjection = () => {
     ).to.be.deep.equal(testExtent);
 
     eoxMap.getLayerById("regions").getSource().refresh();
-    const transformedCoordinateFromWgs = eoxMap.transform(
+    const transformedCoordinateFromWgs = transform(
       [10, 10],
       "EPSG:4326",
       "ESRI:53009",
@@ -43,7 +45,7 @@ const specialProjection = () => {
       transformedCoordinateFromWgs.map(Math.round),
       "can transform coordinate to custom system",
     ).to.be.deep.equal([991693, 1232660]);
-    const transformedCoordinateToWgs = eoxMap.transform(
+    const transformedCoordinateToWgs = transform(
       [991693, 1232660],
       "ESRI:53009",
     );
@@ -52,7 +54,7 @@ const specialProjection = () => {
       "can transform coordinate from custom system",
     ).to.be.deep.equal([10, 10]);
 
-    const transformedExtentFromWgs = eoxMap.transformExtent(
+    const transformedExtentFromWgs = transformExtent(
       [10, 10, 11, 11],
       "EPSG:4326",
       "ESRI:53009",
@@ -62,7 +64,7 @@ const specialProjection = () => {
       "can transform extent to custom system",
     ).to.be.deep.equal([989714, 1232660, 1090862, 1355370]);
 
-    const transformedExtentToWgs = eoxMap.transformExtent(
+    const transformedExtentToWgs = transformExtent(
       [
         989714.093446643, 1232660.4789432778, 1090862.1263438729,
         1355370.4556459172,
@@ -74,7 +76,7 @@ const specialProjection = () => {
       "can transform extent from custom system",
     ).to.be.deep.equal([10, 10, 11, 11]);
 
-    const transformedCoordinateOutsideExtent = eoxMap.transform(
+    const transformedCoordinateOutsideExtent = transform(
       [20, 20],
       "EPSG:4326",
       "ESRI:53009",

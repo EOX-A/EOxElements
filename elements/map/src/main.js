@@ -111,12 +111,22 @@ addCommonStylesheet();
  * - `mapmounted`: Fired when the map is successfully mounted.
  * - `select`: Fired when a feature is selected.
  *
- * ## Helper Methods
+ * ## Methods
  *
- * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
  * - `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.
  * - `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.
  * - `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.
+ * - `parseFeature`: Parses a feature from the input data.
+ * - `parseTextToFeature`: Parses text into a feature.
+ *
+ * Usage: `document.querySelector("eox-map").registerProjection([...]);`
+ *
+ * ## Additional Helper Methods
+ *
+ * - `buffer`: Applies a buffer around an extent
+ * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
+ *
+ * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
  *
  * @element eox-map
  * @fires {CustomEvent} clusterSelect - A cluster is selected
@@ -628,21 +638,6 @@ export class EOxMap extends LitElement {
    */
   getFlatLayersArray = getFlatLayersArray;
 
-  /**
-   * Transforms coordinates between different projections.
-   */
-  transform = transform;
-
-  /**
-   * Transforms the extent between different projections.
-   */
-  transformExtent = transformExtent;
-
-  /**
-   * Applies a buffer around an extent.
-   */
-  buffer = buffer;
-
   // Renders the component's HTML template
   render() {
     return html`
@@ -662,5 +657,8 @@ export class EOxMap extends LitElement {
     `;
   }
 }
+
+// Export Additional Helper Methods
+export { buffer, transform, transformExtent };
 
 customElements.define("eox-map", EOxMap);
