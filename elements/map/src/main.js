@@ -109,6 +109,7 @@ addCommonStylesheet();
  * - `loadend`: Fired when the map has finished loading.
  * - `mapmounted`: Fired when the map is successfully mounted.
  * - `select`: Fired when a feature is selected.
+ * - `layerschanged`: Fired when the layers have been changed.
  *
  * ## Helper Methods
  *
@@ -122,6 +123,7 @@ addCommonStylesheet();
  * @fires {CustomEvent} loadend - The map has finished loading
  * @fires {CustomEvent} mapmounted - The map has been successfully mounted
  * @fires {CustomEvent} select - A feature is selected
+ * @fires {CustomEvent} layerschanged - The layers have been changed
  */
 export class EOxMap extends LitElement {
   // Define static properties for the component
