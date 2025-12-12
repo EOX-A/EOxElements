@@ -90,18 +90,6 @@ export class EOxLayerControlLayerDatetime extends LitElement {
     this.requestUpdate();
   }
 
-  firstUpdated() {
-    const EOxTimeControl =
-      /** @type {import("@eox/timecontrol").EOxTimeControl} */ (
-        this.renderRoot.querySelector("eox-timecontrol")
-      );
-    if (EOxTimeControl && EOxTimeControl["dateChange"] === undefined) {
-      console.error(
-        "eox/timecontrol@2.0.0 or higher is required to use layerDatetime. Please update @eox/timecontrol to the latest version.",
-      );
-    }
-  }
-
   /**
    * Renders a Time Control for datetime options of a layer.
    */
