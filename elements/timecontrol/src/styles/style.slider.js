@@ -1,8 +1,7 @@
 export const sliderStyle = `
   .date-range-slider-wrapper {
-    margin: 16px 0 40px;
+    margin: 16px 0px 0px 0px;
     position: relative;
-    padding-bottom: 40px;
   }
 
   .custom-marks-container {

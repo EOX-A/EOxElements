@@ -69,20 +69,24 @@ export class EOxLayerControlLayerDatetime extends LitElement {
    * Handles timecontrol Stepchange &
    * triggers `datetime:updated` event on step change
    *
-   * @param {CustomEvent<{currentStep:string|number}>} evt
+   * @param {CustomEvent<{date:string[]}>} evt
    **/
   #handleStepChange(evt) {
+    const utcDate = (d) =>
+      `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}-${String(d.getUTCDate()).padStart(2, "0")}`;
+    const currentStep = utcDate(new Date(evt.detail.date[0]));
+
     this.dispatchEvent(
       new CustomEvent("datetime:updated", {
         bubbles: true,
         detail: {
-          datetime: evt.detail.currentStep,
+          datetime: currentStep,
           layer: this.layer,
         },
       }),
     );
 
-    this.layerDatetime.currentStep = evt.detail.currentStep;
+    this.layerDatetime.currentStep = currentStep;
     this.requestUpdate();
   }
 
@@ -103,20 +107,24 @@ export class EOxLayerControlLayerDatetime extends LitElement {
       ${when(
         this.layerDatetime,
         () => html`
-          <!-- Render a Timecontrol for layer date time -->
           <eox-timecontrol
-            ?unstyled=${this.unstyled}
-            .for=${undefined}
-            .layer=${undefined}
-            .navigation=${this.layerDatetime.navigation ?? false}
-            .slider=${this.layerDatetime.slider ?? false}
-            .play=${this.layerDatetime.play ?? false}
-            .controlValues=${this.layerDatetime.controlValues}
-            .controlProperty=${undefined}
-            current-step=${this.layerDatetime.currentStep}
-            .displayFormat=${this.layerDatetime.displayFormat}
-            @stepchange=${this.#handleStepChange}
-          ></eox-timecontrol>
+            .controlValues=${[
+              {
+                id: this.layer.get("id"),
+                name: this.layer.get("name") || this.layer.get("title"),
+                timeControlValues: this.layerDatetime.controlValues.map(
+                  (value) => ({ date: value }),
+                ),
+              },
+            ]}
+            @select=${this.#handleStepChange}
+          >
+            <eox-timecontrol-date
+              .navigation=${this.layerDatetime.navigation ?? false}
+              .format=${this.layerDatetime.displayFormat}
+            ></eox-timecontrol-date>
+            <eox-timecontrol-slider></eox-timecontrol-slider>
+          </eox-timecontrol>
         `,
       )}
     `;

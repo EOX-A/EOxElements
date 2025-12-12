@@ -183,7 +183,7 @@ export class EOxTimeControl extends LitElement {
      *
      * @type {String|HTMLElement}
      */
-    this.for = "eox-map";
+    this.for = undefined;
 
     /**
      * Array of control values.
