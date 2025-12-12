@@ -23,7 +23,6 @@ export { default as MapSyncStory } from "./map-sync";
 export { default as ABCompareStory } from "./ab-compare";
 export { default as ConfigObjectStory } from "./config-object";
 export { default as ProjectionStory } from "./projection";
-export { default as DimensionChangeStory } from "./switch-dimentions";
 export { default as AnimationsStory } from "./animations";
 export { default as PreventScrollStory } from "./prevent-scroll";
 export { default as FlatGeoBufStory } from "./flatGeoBuf-layer";

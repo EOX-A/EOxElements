@@ -26,7 +26,6 @@ import {
   ABCompareStory,
   ConfigObjectStory,
   ProjectionStory,
-  DimensionChangeStory,
   AnimationsStory,
   PreventScrollStory,
   FlatGeoBufStory,
