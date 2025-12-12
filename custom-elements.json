@@ -149,6 +149,159 @@
     },
     {
       "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onOverlayDraw",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onTextInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string|null"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "default": "undefined"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -669,159 +822,6 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onOverlayDraw",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onTextInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string|null"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "default": "undefined"
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -2593,7 +2593,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.\n\n## Basic usage:\n\n```\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\n\nSome basic layers, sources and formats are included in the default bundle, for advanced usage it is\nrequired to import the `advancedLayersAndSources` plugin.\n\nIncluded in the base bundle:\n- Formats: `GeoJSON`, `MVT`\n- Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`\n- Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`\n\nIn order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:\n\n```\nimport \"@eox/map/src/plugins/advancedLayersAndSources\"\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\nIncluded in the advanced plugin bundle:\n- Layers:\n  - All OpenLayers layer types\n  - [`STAC`](https://github.com/m-mohr/ol-stac)\n- Sources:\n  - All OpenLayers source types\n  - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)\n- Reprojection through [proj4](https://github.com/proj4js/proj4js)\n\nFor usage and story examples, see the Storybook stories in `/elements/map/stories`.\n\n## Features\n\n- **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.\n- **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.\n- **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured and styled for various use cases.\n- **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.\n- **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.\n- **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.\n- **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.\n- **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.\n- **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.\n- **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.\n- **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.\n\n## Events\n\n- `clusterSelect`: Fired when a cluster is selected.\n- `loadend`: Fired when the map has finished loading.\n- `mapmounted`: Fired when the map is successfully mounted.\n- `select`: Fired when a feature is selected.\n\n## Helper Methods\n\n- `transform`, `transformExtent`: Transform coordinates and extents between projections.\n- `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.\n- `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.\n- `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.",
+          "description": "The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.\n\n## Basic usage:\n\n```\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\n\nSome basic layers, sources and formats are included in the default bundle, for advanced usage it is\nrequired to import the `advancedLayersAndSources` plugin.\n\nIncluded in the base bundle:\n- Formats: `GeoJSON`, `MVT`\n- Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`\n- Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`\n\nIn order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:\n\n```\nimport \"@eox/map/src/plugins/advancedLayersAndSources\"\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\nIncluded in the advanced plugin bundle:\n- Layers:\n  - All OpenLayers layer types\n  - [`STAC`](https://github.com/m-mohr/ol-stac)\n- Sources:\n  - All OpenLayers source types\n  - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)\n- Reprojection through [proj4](https://github.com/proj4js/proj4js)\n\nFor usage and story examples, see the Storybook stories in `/elements/map/stories`.\n\n## Features\n\n- **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.\n- **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.\n- **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured and styled for various use cases.\n- **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.\n- **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.\n- **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.\n- **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.\n- **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.\n- **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.\n- **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.\n- **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.\n\n## Events\n\n- `clusterSelect`: Fired when a cluster is selected.\n- `loadend`: Fired when the map has finished loading.\n- `mapmounted`: Fired when the map is successfully mounted.\n- `select`: Fired when a feature is selected.\n\n## Methods\n\n- `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.\n- `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.\n- `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.\n- `parseFeature`: Parses a feature from the input data.\n- `parseTextToFeature`: Parses text into a feature.\n\nUsage: `document.querySelector(\"eox-map\").registerProjection([...]);`\n\n## Additional Helper Methods\n\n- `buffer`: Applies a buffer around an extent\n- `transform`, `transformExtent`: Transform coordinates and extents between projections.\n\nUsage: `import { buffer, transform, transformExtent } from \"@eox/map\";`",
           "name": "EOxMap",
           "members": [
             {
@@ -3104,24 +3104,6 @@
             },
             {
               "kind": "field",
-              "name": "transform",
-              "default": "transform",
-              "description": "Transforms coordinates between different projections."
-            },
-            {
-              "kind": "field",
-              "name": "transformExtent",
-              "default": "transformExtent",
-              "description": "Transforms the extent between different projections."
-            },
-            {
-              "kind": "field",
-              "name": "buffer",
-              "default": "buffer",
-              "description": "Applies a buffer around an extent."
-            },
-            {
-              "kind": "field",
               "name": "map",
               "privacy": "public",
               "description": "The OpenLayers map instance.",
@@ -3282,6 +3264,30 @@
           "name": "EOxMap",
           "declaration": {
             "name": "EOxMap",
+            "module": "elements/map/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "buffer",
+          "declaration": {
+            "name": "buffer",
+            "module": "elements/map/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "transform",
+          "declaration": {
+            "name": "transform",
+            "module": "elements/map/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "transformExtent",
+          "declaration": {
+            "name": "transformExtent",
             "module": "elements/map/src/main.js"
           }
         },

@@ -32,6 +32,7 @@ import {
   CustomTooltipStory,
   GetFeatureInfoTooltipStory,
   CoordinatesCustomTooltipsStory,
+  HelperMethodsStory,
   GlobeStory,
 } from "./index.js";
 
@@ -336,6 +337,14 @@ export const Animations = AnimationsStory;
  * Useful for maps embedded in scrollable websites.
  */
 export const PreventScroll = PreventScrollStory;
+
+/**
+ * The `eox-map` offers a number of maprelated and map-unrelated helper methods. The map-related ones directly affect (or read from) the
+ * map state, whereas the unrelated ones are general helper methods.
+ *
+ * In this story, an example for each helper method is shown - please refer to the console to read the outputs.
+ */
+export const HelperMethods = HelperMethodsStory;
 
 /**
  * Basic Globe rendered using `projection: "globe"`, and OpenGlobus as globe renderer.
