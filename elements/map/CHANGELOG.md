@@ -1,5 +1,32 @@
 # Changelog
 
+## [2.0.0](https://github.com/EOX-A/EOxElements/compare/map-v1.26.3...map-v2.0.0) (2025-12-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* export helper methods separately ([#1987](https://github.com/EOX-A/EOxElements/issues/1987))
+* reverse layer order ([#1977](https://github.com/EOX-A/EOxElements/issues/1977))
+
+### Features
+
+* Globe view ([#1881](https://github.com/EOX-A/EOxElements/issues/1881)) ([476e64e](https://github.com/EOX-A/EOxElements/commit/476e64e197e69998c3091be4a95865384e93be98))
+* New `layerschanged` event ([#2001](https://github.com/EOX-A/EOxElements/issues/2001)) ([00390f0](https://github.com/EOX-A/EOxElements/commit/00390f08e8da58a54e35a220c476c1c9523cc2bb))
+* Reverse layer order ([#1977](https://github.com/EOX-A/EOxElements/issues/1977)) ([9cc494d](https://github.com/EOX-A/EOxElements/commit/9cc494dd7740f78b303d842472fb2b86fb89632a))
+* Serialize layers allowing objects, functions, dates etc. ([#1988](https://github.com/EOX-A/EOxElements/issues/1988)) ([e37db3d](https://github.com/EOX-A/EOxElements/commit/e37db3d792120f2f2d7942aa3496a0a3a2908eb7))
+
+
+### Bug Fixes
+
+* Check if tooltip element is already defined ([#2003](https://github.com/EOX-A/EOxElements/issues/2003)) ([3d8ffea](https://github.com/EOX-A/EOxElements/commit/3d8ffea4fd9f3aa894dd7ca6fcd53136f431e16d))
+* Properly define helper functions as methods ([#1996](https://github.com/EOX-A/EOxElements/issues/1996)) ([5d123f9](https://github.com/EOX-A/EOxElements/commit/5d123f931291f5ae68a8e5d6cb8eccce71001c46))
+* **style:** Set default map container height to 100% ([20b5d41](https://github.com/EOX-A/EOxElements/commit/20b5d417f822184bb002b81a5b02cf38cb584151))
+
+
+### Miscellaneous Chores
+
+* Export helper methods separately ([#1987](https://github.com/EOX-A/EOxElements/issues/1987)) ([376d77d](https://github.com/EOX-A/EOxElements/commit/376d77de149b971ba8168d3b7a5de0ca26710caa))
+
 ## [1.26.3](https://github.com/EOX-A/EOxElements/compare/map-v1.26.2...map-v1.26.3) (2025-11-20)
 
 
