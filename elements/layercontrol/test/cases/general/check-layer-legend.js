@@ -46,7 +46,7 @@ export const checkLayerLegend = () => {
     // Accessing the mock map element
     const mockMap = $el[0];
     // Setting layers
-    mockMap.setLayers([legendLayer, multiLegendsLayer]);
+    mockMap.setLayers([multiLegendsLayer, legendLayer]);
   });
   const legendConfigs = [
     [legendLayer.properties.layerLegend],

@@ -21,8 +21,7 @@ const keepsLayerOrder = (layersJson) => {
     const reversedLayerOrderInOl = groupLayer
       .getLayers()
       .getArray()
-      .map((l) => l.get("id"))
-      .toReversed();
+      .map((l) => l.get("id"));
 
     expect(
       layerOrderInJSON,
