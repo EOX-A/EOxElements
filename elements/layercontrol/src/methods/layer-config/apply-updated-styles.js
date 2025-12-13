@@ -82,7 +82,10 @@ function updateVectorLayerStyle(styles) {
     for (const key in variables) {
       // ol styles expects numbers to be assigned as typeof number
       if (typeof variables[key] === "number") {
-        rawStyle = rawStyle.replaceAll(`["var","${key}"]`, variables[key]);
+        rawStyle = rawStyle.replaceAll(
+          `"var","${key}"]`,
+          String(variables[key]),
+        );
       } else {
         // replace all styles variables set of the specific key with the variables value
         rawStyle = rawStyle.replaceAll(
