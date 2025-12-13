@@ -170,33 +170,18 @@ export const KitchenSink = {
           }}
           .layers=${[
             {
-              type: "Vector",
+              type: "Group",
               properties: {
-                title: "Regions",
-                id: "regions",
-                description: "Ecological regions of the earth.",
+                id: "group1",
+                title: "Background Layers",
               },
-              source: {
-                type: "Vector",
-                url: "https://openlayers.org/data/vector/ecoregions.json",
-                format: "GeoJSON",
-                attributions: "Regions: @ openlayers.org",
-              },
-            },
-            {
-              type: "Tile",
-              properties: {
-                id: "AWS_NO2-VISUALISATION",
-                title: "AWS NO2 Visualisation",
-              },
-              source: {
-                type: "TileWMS",
-                url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-                params: {
-                  LAYERS: "AWS_NO2-VISUALISATION",
-                  TIME: "2022-12-05",
+              layers: [
+                {
+                  type: "Tile",
+                  source: { type: "OSM" },
+                  properties: { title: "OSM" },
                 },
-              },
+              ],
             },
             {
               type: "WebGLTile",
@@ -322,18 +307,33 @@ export const KitchenSink = {
               },
             },
             {
-              type: "Group",
+              type: "Tile",
               properties: {
-                id: "group1",
-                title: "Background Layers",
+                id: "AWS_NO2-VISUALISATION",
+                title: "AWS NO2 Visualisation",
               },
-              layers: [
-                {
-                  type: "Tile",
-                  source: { type: "OSM" },
-                  properties: { title: "OSM" },
+              source: {
+                type: "TileWMS",
+                url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+                params: {
+                  LAYERS: "AWS_NO2-VISUALISATION",
+                  TIME: "2022-12-05",
                 },
-              ],
+              },
+            },
+            {
+              type: "Vector",
+              properties: {
+                title: "Regions",
+                id: "regions",
+                description: "Ecological regions of the earth.",
+              },
+              source: {
+                type: "Vector",
+                url: "https://openlayers.org/data/vector/ecoregions.json",
+                format: "GeoJSON",
+                attributions: "Regions: @ openlayers.org",
+              },
             },
           ]}
           .zoomExtent=${[
