@@ -15,7 +15,7 @@ export const LayerConfigStory = {
         center: [-7000000, -500000],
         zoom: 4,
         style: STORIES_MAP_STYLE,
-        layers: [STORIES_LAYER_DEFORESTED_BIOMASS, STORIES_LAYER_TERRAIN_LIGHT],
+        layers: [STORIES_LAYER_TERRAIN_LIGHT, STORIES_LAYER_DEFORESTED_BIOMASS],
         id: "config",
       },
     },

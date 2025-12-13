@@ -45,6 +45,11 @@ export default defineConfig({
     },
     devServer: {
       bundler: "vite",
+      viteConfig: {
+        optimizeDeps: {
+          exclude: ["@openglobus/og"],
+        },
+      },
     },
     fixturesFolder: "./elements", // changes fixture folder location from ./cypress/fixtures for component tests
     specPattern: specPatternComponentTests,

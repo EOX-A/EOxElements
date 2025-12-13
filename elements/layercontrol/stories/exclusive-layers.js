@@ -23,8 +23,8 @@ export const ExclusiveLayersStory = {
       "eox-map": {
         style: STORIES_MAP_STYLE,
         layers: [
-          customizeLayer(STORIES_LAYER_TERRAIN_LIGHT),
           customizeLayer(STORIES_LAYER_EOX_CLOUDLESS_2021, false),
+          customizeLayer(STORIES_LAYER_TERRAIN_LIGHT),
         ],
         id: "exclusive",
       },

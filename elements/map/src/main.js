@@ -39,6 +39,7 @@ import {
 } from "./methods/map/";
 import eoxStyle from "@eox/ui/style.css?inline";
 import { addCommonStylesheet } from "@eox/elements-utils";
+import { enableGlobe, disableGlobe } from "./plugins/globe/openglobus";
 
 addCommonStylesheet();
 
@@ -102,6 +103,7 @@ addCommonStylesheet();
  * - **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.
  * - **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.
  * - **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.
+ * - **Globe View:** Interactive 3D globe by using "globe" projection property.
  *
  * ## Events
  *
@@ -109,19 +111,31 @@ addCommonStylesheet();
  * - `loadend`: Fired when the map has finished loading.
  * - `mapmounted`: Fired when the map is successfully mounted.
  * - `select`: Fired when a feature is selected.
+ * - `layerschanged`: Fired when the layers have been changed.
  *
- * ## Helper Methods
+ * ## Methods
  *
- * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
  * - `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.
  * - `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.
  * - `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.
+ * - `parseFeature`: Parses a feature from the input data.
+ * - `parseTextToFeature`: Parses text into a feature.
+ *
+ * Usage: `document.querySelector("eox-map").registerProjection([...]);`
+ *
+ * ## Additional Helper Methods
+ *
+ * - `buffer`: Applies a buffer around an extent
+ * - `transform`, `transformExtent`: Transform coordinates and extents between projections.
+ *
+ * Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
  *
  * @element eox-map
  * @fires {CustomEvent} clusterSelect - A cluster is selected
  * @fires {CustomEvent} loadend - The map has finished loading
  * @fires {CustomEvent} mapmounted - The map has been successfully mounted
  * @fires {CustomEvent} select - A feature is selected
+ * @fires {CustomEvent} layerschanged - The layers have been changed
  */
 export class EOxMap extends LitElement {
   // Define static properties for the component
@@ -212,12 +226,17 @@ export class EOxMap extends LitElement {
   #zoom = 0;
 
   /**
-   * The map's projection system, specifying how coordinates are mapped on the globe.
-   * Defaults to "EPSG:3857".
-   *
+   * Internal flag to track if globe mode is enabled.
+   * @type {boolean}
+   */
+  #isGlobeEnabled = false;
+
+  /**
+   * Internal property to store the actual OpenLayers map projection.
+   * Always an EPSG code (e.g., "EPSG:3857").
    * @type {ProjectionLike}
    */
-  #projection = "EPSG:3857";
+  #_olProjection = "EPSG:3857";
 
   constructor() {
     super();
@@ -237,7 +256,7 @@ export class EOxMap extends LitElement {
       view: new View({
         center: [0, 0],
         zoom: 0,
-        projection: this.projection,
+        projection: this.#_olProjection,
       }),
     });
 
@@ -261,6 +280,12 @@ export class EOxMap extends LitElement {
      * @type {Object.<string, import("ol/control/Control").default>}
      */
     this.mapControls = {};
+    /**
+     * The globe instance when using globe projection.
+     * todo: define proper type
+     * @type {any|null}
+     */
+    this.globe = null;
   }
 
   /**
@@ -391,6 +416,9 @@ export class EOxMap extends LitElement {
    */
   set layers(layers) {
     this.#layers = setLayersMethod(layers, this.#layers, this);
+    this.dispatchEvent(
+      new CustomEvent("layerschanged", { detail: { layers: this.#layers } }),
+    );
   }
 
   /**
@@ -443,20 +471,76 @@ export class EOxMap extends LitElement {
   /**
    * Sets the map's projection.
    *
-   * @param {ProjectionLike} projection - The projection code (e.g., "EPSG:3857").
+   * @param {ProjectionLike} projection - The projection code (e.g., "EPSG:3857") or "globe".
    */
   set projection(projection) {
-    this.#projection = setProjectionMethod(projection, this.#projection, this);
+    if (projection === "globe") {
+      // Ensure OL map is set to EPSG:3857 when globe is active
+      // The globe itself handles its own projection internally.
+      if (this.#_olProjection !== "EPSG:3857") {
+        this.#_olProjection = setProjectionMethod(
+          "EPSG:3857",
+          this.#_olProjection,
+          this,
+        );
+      }
+      setTimeout(() => {
+        enableGlobe(this);
+      });
+    } else {
+      if (this.#isGlobeEnabled) {
+        setTimeout(() => {
+          disableGlobe(this);
+        });
+      }
+
+      // Update the internal OL projection via setProjectionMethod
+      this.#_olProjection = setProjectionMethod(
+        projection,
+        this.#_olProjection,
+        this,
+      );
+    }
   }
 
   /**
    * Gets the current map projection.
    *
    * @type {ProjectionLike}
-   * @returns {ProjectionLike} The map's projection code.
+   * @returns {ProjectionLike} The map's projection code or "globe" if globe is enabled.
    */
   get projection() {
-    return this.#projection || "EPSG:3857";
+    return this.#isGlobeEnabled ? "globe" : this.#_olProjection;
+  }
+
+  /**
+   * Gets the openlayer map projection.
+   *
+   * @type {ProjectionLike}
+   * @returns {ProjectionLike} The map's openlayer code
+   */
+  get OLprojection() {
+    return this.#_olProjection;
+  }
+
+  /**
+   * Gets the  Whether the globe is enabled.
+   *
+   * @type {boolean}
+   * @returns {boolean} Whether the globe is enabled.
+   */
+  get globeEnabled() {
+    return this.#isGlobeEnabled;
+  }
+
+  /**
+   * Sets the  Whether the globe is enabled.
+   *
+   * @type {boolean}
+   * @returns {boolean} Whether the globe is enabled.
+   */
+  set globeEnabled(globeEnabled) {
+    this.#isGlobeEnabled = globeEnabled;
   }
 
   /**
@@ -519,7 +603,7 @@ export class EOxMap extends LitElement {
    * Retrieves a layer from the map by its ID.
    *
    * @param {string} layerId - The ID of the layer to retrieve.
-   * @returns {AnyLayerWithSource} The layer object.
+   * @returns {import("./types").AnyLayerWithSource} The layer object.
    */
   getLayerById(layerId) {
     return getLayerById(this, layerId);
@@ -534,46 +618,64 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Parses a feature from the input data.
+   * Converts an array of OpenLayers features into a GeoJSON object.
    *
-   * @type {Function}
+   * @param {Array<import("ol/Feature").default>} features - An array of OpenLayers features to be converted.
+   * @returns {Object} - A GeoJSON object representing the provided features.
    */
-  parseFeature = parseFeature;
+  parseFeature(features) {
+    return parseFeature(features);
+  }
 
   /**
-   * Parses text into a feature.
+   * This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
+   * If successful, it adds the parsed features to the map.
+   *
+   * @param {string} text - The string containing the geographic data to be parsed.
+   * @param {import("ol/layer").Vector} vectorLayer - The vector layer to which the parsed features will be added.
+   * @param {EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
+   * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
+   * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
+   * @return {void}
    */
-  parseTextToFeature = parseTextToFeature;
+  parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate) {
+    parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate);
+  }
 
   /**
-   * Registers a projection from an EPSG code.
+   * Fetches the projection definition for a given EPSG code from epsg.io and registers the projection using proj4.
+   *
+   * @param {string | number} code - The EPSG code (e.g., 4326 or 'EPSG:4326').
+   * @returns {Promise<import("ol/proj/Projection").default>} - A promise that resolves to the registered projection.
    */
-  registerProjectionFromCode = registerProjectionFromCode;
+  registerProjectionFromCode(code) {
+    return registerProjectionFromCode(code);
+  }
 
   /**
-   * Registers a custom projection.
+   * Registers a projection under a given name using a proj4 definition.
+   * This allows OpenLayers to recognize and work with custom or predefined projections.
+   *
+   * @param {string} name - The name of the projection (e.g., "EPSG:4326").
+   * @param {string | proj4.ProjectionDefinition} projection - The proj4 projection definition string or object.
+   * @param {import("ol/extent").Extent} [extent=undefined] - Optional extent for the projection. Defines the coordinate system's valid area.
    */
-  registerProjection = registerProjection;
+  registerProjection(name, projection, extent = undefined) {
+    registerProjection(name, projection, extent);
+  }
 
   /**
-   * Retrieves all layers in a flat array.
+   * Returns a flat array of all map layers, including nested layers within groups.
+   *
+   * Note: If you want to get all layers without groups, use the native OpenLayers `getAllLayers` method:
+   * https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers
+   *
+   * @param {Array<import("./types").AnyLayer>} layers - Array of OpenLayers layers, possibly containing groups.
+   * @returns {Array<import("./types").AnyLayer>} layers - Flattened array of input layers
    */
-  getFlatLayersArray = getFlatLayersArray;
-
-  /**
-   * Transforms coordinates between different projections.
-   */
-  transform = transform;
-
-  /**
-   * Transforms the extent between different projections.
-   */
-  transformExtent = transformExtent;
-
-  /**
-   * Applies a buffer around an extent.
-   */
-  buffer = buffer;
+  getFlatLayersArray(layers) {
+    return getFlatLayersArray(layers);
+  }
 
   // Renders the component's HTML template
   render() {
@@ -581,6 +683,7 @@ export class EOxMap extends LitElement {
       <style>
         :host {
           display: block;
+          height: 100%;
         }
         .eox-map-tooltip {
           pointer-events: none !important;
@@ -589,10 +692,13 @@ export class EOxMap extends LitElement {
         ${eoxStyle}
         ${controlCss}
       </style>
-      <div style="width: 100%; height: 100%"></div>
+      <div id="map" style="width: 100%; height: 100%"></div>
       <slot></slot>
     `;
   }
 }
+
+// Export Additional Helper Methods
+export { buffer, transform, transformExtent };
 
 customElements.define("eox-map", EOxMap);

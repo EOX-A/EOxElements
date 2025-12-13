@@ -1,41 +1,76 @@
 import { html } from "lit";
-import { DEFAULT_ARGS } from "../src/enums/stories";
+import { STORY_ARGS } from "../src/enums";
 
-export const Slider = {
+/**
+ * Range slider for selecting date ranges with visual indicators for years and months
+ *
+ * @returns {Object} The story configuration with arguments for the component.
+ */
+const SliderStory = {
   args: {
-    ...DEFAULT_ARGS,
+    layerIdKey: STORY_ARGS.layerIdKey,
+    titleKey: STORY_ARGS.titleKey,
+    filters: STORY_ARGS.filters,
+    externalMapRendering: STORY_ARGS.externalMapRendering,
+    navigation: true,
     for: "eox-map#slider",
-    slider: true,
-    navigation: false,
-    play: false,
     storyAdditionalComponents: {
       "eox-map": {
         id: "slider",
-        style: "width: 400px; height: 300px;",
-        zoom: DEFAULT_ARGS.zoom,
-        center: DEFAULT_ARGS.center,
-        layers: DEFAULT_ARGS.layers,
+        zoom: STORY_ARGS.zoom,
+        center: STORY_ARGS.center,
+        layers: STORY_ARGS.layers,
+      },
+      "eox-timecontrol-date": {
+        storyImport: false,
+        storySlot: true,
+        format: STORY_ARGS.format,
+        navigation: true,
+      },
+      "eox-timecontrol-picker": {
+        storyImport: false,
+        storySlot: true,
+        showDots: true,
+        popup: true,
+      },
+      "eox-timecontrol-slider": {
+        storyImport: false,
+        storySlot: true,
       },
     },
   },
-  render: (args) => html`
-    <eox-timecontrol
-      .for=${args.for}
-      .layer=${args.layer}
-      .controlProperty=${args.controlProperty}
-      .controlValues=${args.controlValues}
-      .navigation=${args.navigation}
-      .play=${args.play}
-      .slider=${args.slider}
-    ></eox-timecontrol>
+  render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      id="${args.storyAdditionalComponents["eox-map"].id}"
-      style="${args.storyAdditionalComponents["eox-map"].style}"
+      style="width: 100%; height: 500px;"
+      id=${args.storyAdditionalComponents["eox-map"].id}
       .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
       .center=${args.storyAdditionalComponents["eox-map"].center}
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
+    <eox-timecontrol
+      .for=${args.for}
+      .layerIdKey=${args.layerIdKey}
+      .titleKey=${args.titleKey}
+      .filters=${args.filters}
+      .externalMapRendering=${args.externalMapRendering}
+    >
+      <div style="display: flex; gap: 10px;align-items: center;">
+        <eox-timecontrol-date
+          .format=${args.storyAdditionalComponents["eox-timecontrol-date"]
+            .format}
+          .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
+            .navigation}
+        ></eox-timecontrol-date>
+        <eox-timecontrol-picker
+          .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+            .showDots}
+          .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+            .popup}
+        ></eox-timecontrol-picker>
+      </div>
+      <eox-timecontrol-slider style="width: 600px;"></eox-timecontrol-slider>
+    </eox-timecontrol>
   `,
 };
 
-export default Slider;
+export default SliderStory;

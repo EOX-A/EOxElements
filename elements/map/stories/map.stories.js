@@ -32,6 +32,8 @@ import {
   CustomTooltipStory,
   GetFeatureInfoTooltipStory,
   CoordinatesCustomTooltipsStory,
+  HelperMethodsStory,
+  GlobeStory,
 } from "./index.js";
 
 export default {
@@ -44,6 +46,7 @@ export default {
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
+      .projection=${args.projection}
       .zoom=${args.zoom}
     ></eox-map>
   `,
@@ -334,3 +337,19 @@ export const Animations = AnimationsStory;
  * Useful for maps embedded in scrollable websites.
  */
 export const PreventScroll = PreventScrollStory;
+
+/**
+ * The `eox-map` offers a number of maprelated and map-unrelated helper methods. The map-related ones directly affect (or read from) the
+ * map state, whereas the unrelated ones are general helper methods.
+ *
+ * In this story, an example for each helper method is shown - please refer to the console to read the outputs.
+ */
+export const HelperMethods = HelperMethodsStory;
+
+/**
+ * Basic Globe rendered using `projection: "globe"`, and OpenGlobus as globe renderer.
+ * When the projection of the view can is set to "globe", the map will render as a 3D globe.
+ * This example renders a globe centered on Austria, with 2 layers: an XYZ tile layer as base layer, and a GeoTiff layer on top.
+ * The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
+ */
+export const Globe = GlobeStory;

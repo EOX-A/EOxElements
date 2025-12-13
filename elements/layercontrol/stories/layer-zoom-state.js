@@ -24,8 +24,8 @@ export const layerZoomStateStory = {
         style: STORIES_MAP_STYLE,
         zoom: 1,
         layers: [
-          customizeLayer(STORIES_LAYER_REGION, { minZoom: 2 }),
           customizeLayer(STORIES_LAYER_SENTINEL_HUB.wind, { maxZoom: 9 }),
+          customizeLayer(STORIES_LAYER_REGION, { minZoom: 2 }),
         ],
         id: "zoomstate",
       },
