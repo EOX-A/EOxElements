@@ -8,7 +8,7 @@
 
 > **OLBasicLayers** = `object`
 
-Defined in: [elements/map/src/layers.ts:24](https://github.com/EOX-A/EOxElements/blob/f58b78a03ef82ec4afa51094d2c284f6174fda58/elements/map/src/layers.ts#L24)
+Defined in: [elements/map/src/layers.ts:24](https://github.com/EOX-A/EOxElements/blob/2b8a4434719a79558c9f705c9e578145c271ebf8/elements/map/src/layers.ts#L24)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/layers.ts:24](https://github.com/EOX-A/EOxElements
 
 > **Group**: `default`
 
-Defined in: [elements/map/src/layers.ts:25](https://github.com/EOX-A/EOxElements/blob/f58b78a03ef82ec4afa51094d2c284f6174fda58/elements/map/src/layers.ts#L25)
+Defined in: [elements/map/src/layers.ts:25](https://github.com/EOX-A/EOxElements/blob/2b8a4434719a79558c9f705c9e578145c271ebf8/elements/map/src/layers.ts#L25)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/layers.ts:25](https://github.com/EOX-A/EOxElements
 
 > **Image**: `default`
 
-Defined in: [elements/map/src/layers.ts:26](https://github.com/EOX-A/EOxElements/blob/f58b78a03ef82ec4afa51094d2c284f6174fda58/elements/map/src/layers.ts#L26)
+Defined in: [elements/map/src/layers.ts:26](https://github.com/EOX-A/EOxElements/blob/2b8a4434719a79558c9f705c9e578145c271ebf8/elements/map/src/layers.ts#L26)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/layers.ts:26](https://github.com/EOX-A/EOxElements
 
 > **Tile**: `default`
 
-Defined in: [elements/map/src/layers.ts:27](https://github.com/EOX-A/EOxElements/blob/f58b78a03ef82ec4afa51094d2c284f6174fda58/elements/map/src/layers.ts#L27)
+Defined in: [elements/map/src/layers.ts:27](https://github.com/EOX-A/EOxElements/blob/2b8a4434719a79558c9f705c9e578145c271ebf8/elements/map/src/layers.ts#L27)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/layers.ts:27](https://github.com/EOX-A/EOxElements
 
 > **Vector**: `default`
 
-Defined in: [elements/map/src/layers.ts:28](https://github.com/EOX-A/EOxElements/blob/f58b78a03ef82ec4afa51094d2c284f6174fda58/elements/map/src/layers.ts#L28)
+Defined in: [elements/map/src/layers.ts:28](https://github.com/EOX-A/EOxElements/blob/2b8a4434719a79558c9f705c9e578145c271ebf8/elements/map/src/layers.ts#L28)
 
 ***
 
@@ -48,4 +48,4 @@ Defined in: [elements/map/src/layers.ts:28](https://github.com/EOX-A/EOxElements
 
 > **VectorTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:29](https://github.com/EOX-A/EOxElements/blob/f58b78a03ef82ec4afa51094d2c284f6174fda58/elements/map/src/layers.ts#L29)
+Defined in: [elements/map/src/layers.ts:29](https://github.com/EOX-A/EOxElements/blob/2b8a4434719a79558c9f705c9e578145c271ebf8/elements/map/src/layers.ts#L29)

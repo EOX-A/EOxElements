@@ -52,6 +52,6 @@
   },
   "peerDependencies": {
     "@eox/jsonform": "*",
-    "@eox/timecontrol": "*"
+    "@eox/timecontrol": ">=2.0.0"
   }
 }
