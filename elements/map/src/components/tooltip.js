@@ -66,4 +66,8 @@ export class EOxMapTooltip extends LitElement {
 }
 
 // Define the custom element
-customElements.define("eox-map-tooltip", EOxMapTooltip);
+// We first check if it has already been defined in order to prevent errors
+// as the tooltip is imported in helpers.js and thus multiple times
+if (!customElements.get("eox-map-tooltip")) {
+  customElements.define("eox-map-tooltip", EOxMapTooltip);
+}
