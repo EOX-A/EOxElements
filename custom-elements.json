@@ -4334,6 +4334,668 @@
           }
         }
       ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/timecontrol/node_modules/@eox/map/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.\n\n## Basic usage:\n\n```\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\n\nSome basic layers, sources and formats are included in the default bundle, for advanced usage it is\nrequired to import the `advancedLayersAndSources` plugin.\n\nIncluded in the base bundle:\n- Formats: `GeoJSON`, `MVT`\n- Layers: `Group`, `Image`, `Tile`, `Vector`, `VectorTile`\n- Sources: `ImageWMS`, `OSM`, `Tile`, `TileWMS`, `Vector`, `VectorTile`, `WMTS`, `XYZ`\n\nIn order to use the rest of the layers and sources provided by OpenLayers, import the plugin as well:\n\n```\nimport \"@eox/map/src/plugins/advancedLayersAndSources\"\nimport \"@eox/map\"\n\n<eox-map [...]></eox-map>\n```\nIncluded in the advanced plugin bundle:\n- Layers:\n  - All OpenLayers layer types\n  - [`STAC`](https://github.com/m-mohr/ol-stac)\n- Sources:\n  - All OpenLayers source types\n  - [`WMTSCapabilities`](https://github.com/EOX-A/EOxElements/tree/main/elements/map/src/custom/sources/WMTSCapabilities.ts)\n- Reprojection through [proj4](https://github.com/proj4js/proj4js)\n\nFor usage and story examples, see the Storybook stories in `/elements/map/stories`.\n\n## Features\n\n- **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.\n- **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.\n- **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured and styled for various use cases.\n- **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.\n- **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.\n- **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.\n- **Animations:** Animate view changes (zoom, center, extent) using the `animationOptions` property.\n- **Projection & Transformation:** Change map projection, register custom projections, and transform coordinates/extents using helper methods.\n- **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.\n- **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.\n- **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.\n\n## Events\n\n- `clusterSelect`: Fired when a cluster is selected.\n- `loadend`: Fired when the map has finished loading.\n- `mapmounted`: Fired when the map is successfully mounted.\n- `select`: Fired when a feature is selected.\n\n## Helper Methods\n\n- `transform`, `transformExtent`: Transform coordinates and extents between projections.\n- `registerProjection`, `registerProjectionFromCode`: Register custom or EPSG projections.\n- `getLayerById`, `getFlatLayersArray`: Retrieve layers by ID or as a flat array.\n- `addOrUpdateLayer`, `removeInteraction`, `removeSelect`, `removeControl`: Manage layers and interactions programmatically.",
+          "name": "EOxMap",
+          "members": [
+            {
+              "kind": "field",
+              "name": "#zoomExtent",
+              "privacy": "private",
+              "description": "The current zoom extent of the map.\nThis is used to define the maximum and minimum zoom levels.",
+              "type": {
+                "text": "Extent"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#controls",
+              "privacy": "private",
+              "description": "Stores the controls applied to the map, such as zoom and navigation tools.",
+              "type": {
+                "text": "ControlDictionary"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#layers",
+              "privacy": "private",
+              "description": "The array of layers currently added to the map.",
+              "type": {
+                "text": "Array<EoxLayer>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#preventScroll",
+              "privacy": "private",
+              "description": "Indicates whether the map's scroll interactions (zooming, panning) are prevented.",
+              "type": {
+                "text": "boolean"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#config",
+              "privacy": "private",
+              "description": "Holds the configuration object for initializing and managing the map's settings.",
+              "type": {
+                "text": "ConfigObject"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#animationOptions",
+              "privacy": "private",
+              "description": "Options for animating changes to the map's view, such as panning or zooming.",
+              "type": {
+                "text": "EOxAnimationOptions"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#sync",
+              "privacy": "private",
+              "description": "Represents the sync state of the map with another map instance.",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#center",
+              "privacy": "private",
+              "type": {
+                "text": "Array<number>"
+              },
+              "default": "[0, 0]",
+              "description": "The current center coordinates of the map.\nStored as an array of two numbers representing the x and y coordinates."
+            },
+            {
+              "kind": "field",
+              "name": "#zoom",
+              "privacy": "private",
+              "type": {
+                "text": "number"
+              },
+              "default": "0",
+              "description": "The current zoom level of the map."
+            },
+            {
+              "kind": "field",
+              "name": "#projection",
+              "privacy": "private",
+              "type": {
+                "text": "ProjectionLike"
+              },
+              "default": "\"EPSG:3857\"",
+              "description": "The map's projection system, specifying how coordinates are mapped on the globe.\nDefaults to \"EPSG:3857\"."
+            },
+            {
+              "kind": "field",
+              "name": "center",
+              "privacy": "public",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current center coordinates of the map.",
+              "parameters": [
+                {
+                  "description": "The new center coordinates [x, y].",
+                  "name": "center",
+                  "type": {
+                    "text": "Array<number>"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "config",
+              "privacy": "public",
+              "type": {
+                "text": "ConfigObject"
+              },
+              "description": "Gets the current configuration of the map.",
+              "parameters": [
+                {
+                  "description": "The configuration object.",
+                  "name": "config",
+                  "type": {
+                    "text": "ConfigObject"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "ConfigObject"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "lonLatCenter",
+              "privacy": "public",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current center of the map in longitude and latitude.",
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "lonLatExtent",
+              "privacy": "public",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current extent of the map in longitude and latitude.",
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              },
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "privacy": "public",
+              "type": {
+                "text": "number"
+              },
+              "description": "Gets the current zoom level of the map.",
+              "parameters": [
+                {
+                  "description": "The new zoom level.",
+                  "name": "zoom",
+                  "type": {
+                    "text": "number"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "number"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "zoomExtent",
+              "privacy": "public",
+              "type": {
+                "text": "Array<number>"
+              },
+              "description": "Gets the current extent of the map.",
+              "parameters": [
+                {
+                  "description": "The new zoom extent.",
+                  "name": "extent",
+                  "type": {
+                    "text": "Extent"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "Array<number>"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "controls",
+              "privacy": "public",
+              "type": {
+                "text": "ControlDictionary"
+              },
+              "description": "Gets the current map controls.",
+              "parameters": [
+                {
+                  "description": "An array of control configurations.",
+                  "name": "controls",
+                  "type": {
+                    "text": "ControlDictionary"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "ControlDictionary"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "layers",
+              "privacy": "public",
+              "type": {
+                "text": "array"
+              },
+              "description": "Gets the current layers of the map",
+              "parameters": [
+                {
+                  "description": "An array of layer configurations.",
+                  "name": "layers",
+                  "type": {
+                    "text": "Array<EoxLayer>"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "Array<EoxLayer>"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "preventScroll",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Gets the current scroll interaction state.",
+              "parameters": [
+                {
+                  "description": "Whether to prevent scroll interactions.",
+                  "name": "preventScroll",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "attribute": "prevent-scroll"
+            },
+            {
+              "kind": "field",
+              "name": "animationOptions",
+              "privacy": "public",
+              "type": {
+                "text": "EOxAnimationOptions"
+              },
+              "description": "Gets the current animation options.",
+              "parameters": [
+                {
+                  "description": "The animation options.",
+                  "name": "animationOptions",
+                  "type": {
+                    "text": "EOxAnimationOptions"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "EOxAnimationOptions"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "projection",
+              "privacy": "public",
+              "type": {
+                "text": "ProjectionLike"
+              },
+              "description": "Gets the current map projection.",
+              "parameters": [
+                {
+                  "description": "The projection code (e.g., \"EPSG:3857\").",
+                  "name": "projection",
+                  "type": {
+                    "text": "ProjectionLike"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "ProjectionLike"
+                }
+              },
+              "attribute": "projection"
+            },
+            {
+              "kind": "field",
+              "name": "sync",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Gets the current sync state of the map.",
+              "parameters": [
+                {
+                  "description": "The ID of the map to sync with.",
+                  "name": "sync",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "attribute": "sync"
+            },
+            {
+              "kind": "method",
+              "name": "addOrUpdateLayer",
+              "parameters": [
+                {
+                  "name": "json",
+                  "description": "The layer configuration in JSON format.",
+                  "type": {
+                    "text": "EoxLayer"
+                  }
+                }
+              ],
+              "description": "Adds or updates a layer on the map.",
+              "return": {
+                "type": {
+                  "text": "Object"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "removeInteraction",
+              "parameters": [
+                {
+                  "name": "id",
+                  "description": "The ID of the interaction to remove.",
+                  "type": {
+                    "text": "string | number"
+                  }
+                }
+              ],
+              "description": "Removes an interaction from the map by its ID."
+            },
+            {
+              "kind": "method",
+              "name": "removeSelect",
+              "parameters": [
+                {
+                  "name": "id",
+                  "description": "The ID of the select interaction to remove.",
+                  "type": {
+                    "text": "string | number"
+                  }
+                }
+              ],
+              "description": "Removes a select interaction from the map by its ID."
+            },
+            {
+              "kind": "method",
+              "name": "removeControl",
+              "parameters": [
+                {
+                  "name": "id",
+                  "description": "The ID of the control to remove.",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Removes a control from the map by its ID."
+            },
+            {
+              "kind": "method",
+              "name": "getLayerById",
+              "parameters": [
+                {
+                  "name": "layerId",
+                  "description": "The ID of the layer to retrieve.",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "description": "Retrieves a layer from the map by its ID.",
+              "return": {
+                "type": {
+                  "text": "AnyLayerWithSource"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "parseFeature",
+              "default": "parseFeature",
+              "description": "Parses a feature from the input data.",
+              "type": {
+                "text": "Function"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "parseTextToFeature",
+              "default": "parseTextToFeature",
+              "description": "Parses text into a feature."
+            },
+            {
+              "kind": "field",
+              "name": "registerProjectionFromCode",
+              "default": "registerProjectionFromCode",
+              "description": "Registers a projection from an EPSG code."
+            },
+            {
+              "kind": "field",
+              "name": "registerProjection",
+              "default": "registerProjection",
+              "description": "Registers a custom projection."
+            },
+            {
+              "kind": "field",
+              "name": "getFlatLayersArray",
+              "default": "getFlatLayersArray",
+              "description": "Retrieves all layers in a flat array."
+            },
+            {
+              "kind": "field",
+              "name": "transform",
+              "default": "transform",
+              "description": "Transforms coordinates between different projections."
+            },
+            {
+              "kind": "field",
+              "name": "transformExtent",
+              "default": "transformExtent",
+              "description": "Transforms the extent between different projections."
+            },
+            {
+              "kind": "field",
+              "name": "buffer",
+              "default": "buffer",
+              "description": "Applies a buffer around an extent."
+            },
+            {
+              "kind": "field",
+              "name": "map",
+              "privacy": "public",
+              "description": "The OpenLayers map instance.",
+              "type": {
+                "text": "default"
+              },
+              "default": "new Map({ controls: [], interactions: interactionDefaults({ altShiftDragRotate: false, pinchRotate: false, }), layers: [], view: new View({ center: [0, 0], zoom: 0, projection: this.projection, }), })"
+            },
+            {
+              "kind": "field",
+              "name": "interactions",
+              "privacy": "public",
+              "type": {
+                "text": "Object.<string, default>"
+              },
+              "description": "Object to store various map interactions (e.g., drag, zoom).",
+              "default": "{}"
+            },
+            {
+              "kind": "field",
+              "name": "selectInteractions",
+              "privacy": "public",
+              "type": {
+                "text": "Object.<string, EOxSelectInteraction>"
+              },
+              "description": "Object to store selection interactions for the map.",
+              "default": "{}"
+            },
+            {
+              "kind": "field",
+              "name": "mapControls",
+              "privacy": "public",
+              "type": {
+                "text": "Object.<string, default>"
+              },
+              "description": "Object to store map controls (e.g., custom buttons, geolocation).",
+              "default": "{}"
+            }
+          ],
+          "events": [
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "A cluster is selected",
+              "name": "clusterSelect"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The map has finished loading",
+              "name": "loadend"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The map has been successfully mounted",
+              "name": "mapmounted"
+            },
+            {
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "A feature is selected",
+              "name": "select"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "prevent-scroll",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Gets the current scroll interaction state.",
+              "parameters": [
+                {
+                  "description": "Whether to prevent scroll interactions.",
+                  "name": "preventScroll",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "boolean"
+                }
+              },
+              "fieldName": "preventScroll"
+            },
+            {
+              "name": "projection",
+              "type": {
+                "text": "ProjectionLike"
+              },
+              "description": "Gets the current map projection.",
+              "parameters": [
+                {
+                  "description": "The projection code (e.g., \"EPSG:3857\").",
+                  "name": "projection",
+                  "type": {
+                    "text": "ProjectionLike"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "ProjectionLike"
+                }
+              },
+              "fieldName": "projection"
+            },
+            {
+              "name": "sync",
+              "type": {
+                "text": "string"
+              },
+              "description": "Gets the current sync state of the map.",
+              "parameters": [
+                {
+                  "description": "The ID of the map to sync with.",
+                  "name": "sync",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "fieldName": "sync"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "eox-map",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxMap",
+          "declaration": {
+            "name": "EOxMap",
+            "module": "elements/timecontrol/node_modules/@eox/map/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-map",
+          "declaration": {
+            "name": "EOxMap",
+            "module": "elements/timecontrol/node_modules/@eox/map/src/main.js"
+          }
+        }
+      ]
     }
   ]
 }
