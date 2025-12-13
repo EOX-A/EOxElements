@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.3.1...layercontrol-v1.3.2) (2025-12-13)
+
+
+### Bug Fixes
+
+* Changes related to new timecontrol version  ([#2002](https://github.com/EOX-A/EOxElements/issues/2002)) ([2b8a443](https://github.com/EOX-A/EOxElements/commit/2b8a4434719a79558c9f705c9e578145c271ebf8))
+
 ## [1.3.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.3.0...layercontrol-v1.3.1) (2025-10-22)
 
 

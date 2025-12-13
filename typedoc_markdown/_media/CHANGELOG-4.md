@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.1...itemfilter-v1.13.2) (2025-12-13)
+
+
+### Bug Fixes
+
+* Reverse layers order for geometry filter map ([#1986](https://github.com/EOX-A/EOxElements/issues/1986)) ([f58b78a](https://github.com/EOX-A/EOxElements/commit/f58b78a03ef82ec4afa51094d2c284f6174fda58))
+
 ## [1.13.1](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.0...itemfilter-v1.13.1) (2025-12-09)
 
 
