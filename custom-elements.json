@@ -149,6 +149,159 @@
     },
     {
       "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onOverlayDraw",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onTextInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string|null"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "default": "undefined"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -669,159 +822,6 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onOverlayDraw",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onTextInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string|null"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "default": "undefined"
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -3914,395 +3914,398 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "",
+          "description": "The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.\n\n## Basic usage:\n\n```\nimport \"@eox/timecontrol\"\n\n<eox-timecontrol for=\"eox-map#my-map\">\n  <eox-timecontrol-date></eox-timecontrol-date>\n  <eox-timecontrol-slider></eox-timecontrol-slider>\n  <eox-timecontrol-timeline></eox-timecontrol-timeline>\n  <eox-timecontrol-timelapse></eox-timecontrol-timelapse>\n  <eox-timecontrol-picker></eox-timecontrol-picker>\n</eox-timecontrol>\n```\n\n## Features\n\n- **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.\n- **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.\n- **Navigation Controls:** Previous/next buttons for stepping through time periods.\n- **Date Formatting:** Customizable display format using dayjs tokens (default: \"YYYY-MM-DD\").\n- **Filtering:** Integration with `<eox-itemfilter>` for filtering timeline items by metadata properties.\n- **Timelapse Export:** Export animated GIFs or MP4s from time series data.\n- **Standalone Mode:** Can be used without a map for time selection purposes.\n\n## Component Structure\n\nThe timecontrol element acts as a container for child components:\n- `<eox-timecontrol-date>`: Displays the current selected date(s) with optional navigation buttons.\n- `<eox-timecontrol-picker>`: Calendar-based date picker (popup or inline, single or range selection).\n- `<eox-timecontrol-slider>`: Range slider for selecting date ranges.\n- `<eox-timecontrol-timeline>`: Timeline visualization using vis-timeline.\n- `<eox-timecontrol-timelapse>`: Timelapse export functionality.\n\n## Layer Configuration\n\nLayers must have the following properties to work with timecontrol:\n- `properties.timeControlValues`: Array of objects with `date` and optional metadata.\n- `properties.timeControlProperty`: Property name used in WMS requests (e.g., \"TIME\").\n- `properties.id`: Layer identifier (used for grouping in timeline).\n- `properties.name`: Display name (used in timeline groups).\n\n## Events\n\n- `stepchange`: Fired when the current time step changes (not currently implemented).",
           "name": "EOxTimeControl",
           "members": [
             {
-              "kind": "method",
-              "name": "next",
-              "description": "Go to next step"
-            },
-            {
-              "kind": "method",
-              "name": "previous",
-              "description": "Go to previous step"
-            },
-            {
-              "kind": "method",
-              "name": "playAnimation",
-              "parameters": [
-                {
-                  "name": "on",
-                  "description": "animation on/off",
-                  "type": {
-                    "text": "boolean"
-                  }
-                }
-              ],
-              "description": "Toggle play animation"
-            },
-            {
-              "kind": "method",
-              "name": "setConfig",
-              "parameters": [
-                {
-                  "name": "config",
-                  "type": {
-                    "text": "@param {string} [config.layer]\n   * @param {string} [config.controlProperty]\n   * @param {Array<string>} [config.controlValues]"
-                  }
-                }
-              ],
-              "description": "Set the config at a later point"
+              "kind": "field",
+              "name": "#eoxMap",
+              "privacy": "private",
+              "type": {
+                "text": "EOxMap | null"
+              },
+              "default": "null",
+              "description": "Reference to the associated eox-map element instance."
             },
             {
               "kind": "field",
-              "name": "currentStep",
+              "name": "#groups",
+              "privacy": "private",
+              "default": "new DataSet([])",
+              "description": "DataSet containing timeline groups for vis-timeline.",
+              "type": {
+                "text": "DataSet"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#items",
+              "privacy": "private",
+              "default": "new DataSet([])",
+              "description": "DataSet containing timeline items for vis-timeline.",
+              "type": {
+                "text": "DataSet<TimelineItem>"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "#sliderValues",
+              "privacy": "private",
+              "type": {
+                "text": "Array<SliderValue>"
+              },
+              "default": "[]",
+              "description": "Array of slider value configurations extracted from map layers."
+            },
+            {
+              "kind": "field",
+              "name": "sliderValues",
+              "description": "Sets the array of slider values.",
+              "type": {
+                "text": "Array<SliderValue>"
+              },
+              "return": {
+                "type": {
+                  "text": "Array<SliderValue>"
+                }
+              },
+              "parameters": [
+                {
+                  "description": "The new slider values array.",
+                  "name": "value",
+                  "type": {
+                    "text": "Array<SliderValue>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "eoxMap",
+              "description": "Sets the reference to the associated eox-map element.",
+              "type": {
+                "text": "EOxMap | null"
+              },
+              "return": {
+                "type": {
+                  "text": "EOxMap | null"
+                }
+              },
+              "parameters": [
+                {
+                  "description": "The eox-map instance to associate.",
+                  "name": "value",
+                  "type": {
+                    "text": "EOxMap | null"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "groups",
+              "description": "Sets the DataSet containing timeline groups.",
+              "type": {
+                "text": "DataSet<TimelineGroup>"
+              },
+              "return": {
+                "type": {
+                  "text": "DataSet<TimelineGroup>"
+                }
+              },
+              "parameters": [
+                {
+                  "description": "The groups DataSet.",
+                  "name": "value",
+                  "type": {
+                    "text": "DataSet<TimelineGroup>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "description": "Sets the DataSet containing timeline items.",
+              "type": {
+                "text": "DataSet<TimelineItem>"
+              },
+              "return": {
+                "type": {
+                  "text": "DataSet<TimelineItem>"
+                }
+              },
+              "parameters": [
+                {
+                  "description": "The items DataSet.",
+                  "name": "value",
+                  "type": {
+                    "text": "DataSet<TimelineItem>"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getContainer",
+              "description": "Gets the container element for the timeslider (legacy method).",
+              "return": {
+                "type": {
+                  "text": "Element | null"
+                }
+              }
+            },
+            {
+              "kind": "field",
+              "name": "dateChange",
+              "default": "dateChangeHandlerMethod",
+              "description": "Handler for date change events. Updates the selected date range and applies it to map layers.",
+              "type": {
+                "text": "Function"
+              },
+              "parameters": [
+                {
+                  "description": "The new date range [startDate, endDate] in ISO format.",
+                  "name": "dateRange",
+                  "type": {
+                    "text": "DateRange"
+                  }
+                },
+                {
+                  "description": "The EOxTimeControl instance.",
+                  "name": "instance",
+                  "type": {
+                    "text": "EOxTimeControl"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "getTimeControlDate",
+              "description": "Gets the EOxTimeControlDate instance.",
+              "return": {
+                "type": {
+                  "text": "EOxTimeControlChild | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getTimeControlSlider",
+              "description": "Gets the EOxTimeControlSlider instance.",
+              "return": {
+                "type": {
+                  "text": "EOxTimeControlChild | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getTimeControlTimeline",
+              "description": "Gets the EOxTimeControlTimeline instance.",
+              "return": {
+                "type": {
+                  "text": "EOxTimeControlChild | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getTimeControlTimelapse",
+              "description": "Gets the EOxTimeControlTimelapse instance.",
+              "return": {
+                "type": {
+                  "text": "EOxTimeControlChild | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "getTimeControlPicker",
+              "description": "Gets the EOxTimeControlPicker instance.",
+              "return": {
+                "type": {
+                  "text": "EOxTimeControlChild | null"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "#emitUpdateEvent",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "EOxTimeControl"
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "filter",
+              "default": "filterHandlerMethod",
+              "description": "Handler for filter events from eox-itemfilter. Updates timeline item visibility based on filter results.",
+              "type": {
+                "text": "Function"
+              },
+              "parameters": [
+                {
+                  "description": "The filter event (optional).",
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent | undefined"
+                  }
+                },
+                {
+                  "description": "The EOxTimeControl instance.",
+                  "name": "instance",
+                  "type": {
+                    "text": "EOxTimeControl"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "field",
+              "name": "unstyled",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether default styling is disabled.",
+              "default": "false",
+              "attribute": "unstyled"
+            },
+            {
+              "kind": "field",
+              "name": "selectedDateRange",
+              "privacy": "public",
+              "type": {
+                "text": "SelectedDateRange"
+              },
+              "description": "The currently selected date range as [startDate, endDate] in ISO format.",
+              "default": "null",
+              "attribute": "selectedDateRange"
+            },
+            {
+              "kind": "field",
+              "name": "titleKey",
               "privacy": "public",
               "type": {
                 "text": "string"
               },
-              "description": "The currently selected step",
-              "attribute": "current-step"
-            },
-            {
-              "kind": "method",
-              "name": "updateMap"
+              "description": "Property key used to retrieve layer titles (default: \"name\").",
+              "default": "\"name\"",
+              "attribute": "title-key"
             },
             {
               "kind": "field",
-              "name": "eoxMap"
+              "name": "layerIdKey",
+              "privacy": "public",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property key used to identify layers (default: \"id\").",
+              "default": "\"id\"",
+              "attribute": "layer-id-key"
             },
             {
-              "kind": "method",
-              "name": "_updateStep",
-              "parameters": [
-                {
-                  "name": "step",
-                  "default": "1",
-                  "optional": true,
-                  "type": {
-                    "text": "number"
-                  }
-                }
-              ],
-              "privacy": "private"
+              "kind": "field",
+              "name": "externalMapRendering",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether external map rendering is enabled for timelapse export.",
+              "default": "false",
+              "attribute": "external-map-rendering"
             },
             {
-              "kind": "method",
-              "name": "getFlatLayersArray",
-              "parameters": [
-                {
-                  "name": "layers",
-                  "type": {
-                    "text": "default[]"
-                  }
-                }
-              ],
-              "description": "TEMP / TO-DO, this is a copy of the function defined in the eox-map:\nhttps://github.com/EOX-A/EOxElements/blob/main/elements/map/src/layer.ts#L25\nConsider a way to properly export that function and use it here\nSee also:\nhttps://github.com/EOX-A/EOxElements/issues/974",
-              "return": {
-                "type": {
-                  "text": "default[]"
-                }
-              }
+              "kind": "field",
+              "name": "for",
+              "privacy": "public",
+              "type": {
+                "text": "String|HTMLElement"
+              },
+              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
+              "default": "undefined",
+              "attribute": "for"
             },
             {
               "kind": "field",
               "name": "controlValues",
               "privacy": "public",
               "type": {
-                "text": "string[]"
+                "text": "Array<Object>"
               },
-              "description": "The list of available values for the animation property",
-              "default": "[]",
-              "attribute": "control-values"
+              "description": "Array of control values.",
+              "default": "[]"
             },
             {
               "kind": "field",
-              "name": "_newStepIndex",
+              "name": "initDate",
               "privacy": "public",
               "type": {
-                "text": "number"
+                "text": "DateRange"
               },
-              "default": "0",
-              "attribute": "_newStepIndex"
-            },
-            {
-              "kind": "field",
-              "name": "unstyled",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "default": "false",
-              "attribute": "unstyled"
-            },
-            {
-              "kind": "field",
-              "name": "play",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Hides the play button if set",
-              "default": "false",
-              "attribute": "play"
-            },
-            {
-              "kind": "field",
-              "name": "navigation",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Display left & right navigation buttons for the values",
-              "default": "true",
-              "attribute": "navigation"
-            },
-            {
-              "kind": "field",
-              "name": "slider",
-              "privacy": "public",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Display a slider for the values",
-              "default": "false",
-              "attribute": "slider"
-            },
-            {
-              "kind": "field",
-              "name": "for",
-              "privacy": "public",
-              "type": {
-                "text": "String|HTMLElement"
-              },
-              "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
-              "default": "\"eox-map\"",
-              "attribute": "for"
-            },
-            {
-              "kind": "field",
-              "name": "layer",
-              "privacy": "public",
-              "type": {
-                "text": "string"
-              },
-              "description": "The layerid of the animated layer",
-              "default": "\"\"",
-              "attribute": "layer"
-            },
-            {
-              "kind": "field",
-              "name": "controlProperty",
-              "privacy": "public",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "The WMS parameter to update",
-              "default": "undefined",
-              "attribute": "control-property"
-            },
-            {
-              "kind": "field",
-              "name": "_eoxMap",
-              "privacy": "public",
-              "type": {
-                "text": "HTMLElement |undefined"
-              },
-              "default": "undefined",
-              "attribute": "_eoxMap"
-            },
-            {
-              "kind": "field",
-              "name": "_width",
-              "privacy": "public",
-              "type": {
-                "text": "number"
-              },
-              "default": "300",
-              "attribute": "_width"
-            },
-            {
-              "kind": "field",
-              "name": "displayFormat",
-              "privacy": "public",
-              "type": {
-                "text": "string"
-              },
-              "description": "Date format string for displaying the current step\nusing [dayjs format token strings](https://day.js.org/docs/en/display/format)",
-              "default": "undefined",
-              "attribute": "display-format"
-            },
-            {
-              "kind": "field",
-              "name": "_originalParams",
-              "privacy": "public",
-              "type": {
-                "text": "object"
-              },
-              "description": "Original params of layer source",
-              "attribute": "_originalParams"
-            },
-            {
-              "kind": "field",
-              "name": "_animationInterval",
-              "privacy": "public",
-              "attribute": "_animationInterval"
-            },
-            {
-              "kind": "field",
-              "name": "_controlSource",
-              "privacy": "public",
-              "attribute": "_controlSource"
-            },
-            {
-              "kind": "field",
-              "name": "_isAnimationPlaying",
-              "privacy": "public",
-              "attribute": "_isAnimationPlaying"
-            }
-          ],
-          "events": [
-            {
-              "name": "stepchange",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Triggers when *currentStep* is updated.\n`event.detail.currentStep` returns the new *currentStep* value."
+              "description": "The initial date range as [startDate, endDate] in ISO/UTC format.",
+              "default": "null"
             }
           ],
           "attributes": [
             {
-              "name": "control-property",
-              "type": {
-                "text": "string | undefined"
-              },
-              "description": "The WMS parameter to update",
-              "default": "undefined",
-              "fieldName": "controlProperty"
-            },
-            {
-              "name": "control-values",
-              "type": {
-                "text": "string[]"
-              },
-              "description": "The list of available values for the animation property",
-              "default": "[]",
-              "fieldName": "controlValues"
-            },
-            {
               "name": "for",
               "type": {
                 "text": "String|HTMLElement"
               },
               "description": "Query selector of an `eox-map` (`String`, passed as an attribute or property)\nor an `eox-map` DOM element (`HTMLElement`, passed as property)",
-              "default": "\"eox-map\"",
+              "default": "undefined",
               "fieldName": "for"
-            },
-            {
-              "name": "layer",
-              "type": {
-                "text": "string"
-              },
-              "description": "The layerid of the animated layer",
-              "default": "\"\"",
-              "fieldName": "layer"
-            },
-            {
-              "name": "slider",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Display a slider for the values",
-              "default": "false",
-              "fieldName": "slider"
-            },
-            {
-              "name": "navigation",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Display left & right navigation buttons for the values",
-              "default": "true",
-              "fieldName": "navigation"
-            },
-            {
-              "name": "_originalParams",
-              "type": {
-                "text": "object"
-              },
-              "description": "Original params of layer source",
-              "fieldName": "_originalParams"
-            },
-            {
-              "name": "play",
-              "type": {
-                "text": "boolean"
-              },
-              "description": "Hides the play button if set",
-              "default": "false",
-              "fieldName": "play"
-            },
-            {
-              "name": "display-format",
-              "type": {
-                "text": "string"
-              },
-              "description": "Date format string for displaying the current step\nusing [dayjs format token strings](https://day.js.org/docs/en/display/format)",
-              "default": "undefined",
-              "fieldName": "displayFormat"
-            },
-            {
-              "name": "current-step",
-              "type": {
-                "text": "string"
-              },
-              "description": "The currently selected step",
-              "fieldName": "currentStep"
-            },
-            {
-              "name": "_animationInterval",
-              "fieldName": "_animationInterval"
-            },
-            {
-              "name": "_controlSource",
-              "fieldName": "_controlSource"
-            },
-            {
-              "name": "_isAnimationPlaying",
-              "fieldName": "_isAnimationPlaying"
-            },
-            {
-              "name": "_newStepIndex",
-              "type": {
-                "text": "number"
-              },
-              "default": "0",
-              "fieldName": "_newStepIndex"
-            },
-            {
-              "name": "_eoxMap",
-              "type": {
-                "text": "HTMLElement |undefined"
-              },
-              "default": "undefined",
-              "fieldName": "_eoxMap"
-            },
-            {
-              "name": "_width",
-              "type": {
-                "text": "number"
-              },
-              "default": "300",
-              "fieldName": "_width"
             },
             {
               "name": "unstyled",
               "type": {
                 "text": "boolean"
               },
+              "description": "Whether default styling is disabled.",
               "default": "false",
               "fieldName": "unstyled"
+            },
+            {
+              "name": "title-key",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property key used to retrieve layer titles (default: \"name\").",
+              "default": "\"name\"",
+              "fieldName": "titleKey"
+            },
+            {
+              "name": "layer-id-key",
+              "type": {
+                "text": "string"
+              },
+              "description": "Property key used to identify layers (default: \"id\").",
+              "default": "\"id\"",
+              "fieldName": "layerIdKey"
+            },
+            {
+              "name": "external-map-rendering",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether external map rendering is enabled for timelapse export.",
+              "default": "false",
+              "fieldName": "externalMapRendering"
+            },
+            {
+              "name": "selectedDateRange",
+              "type": {
+                "text": "SelectedDateRange"
+              },
+              "description": "The currently selected date range as [startDate, endDate] in ISO format.",
+              "default": "null",
+              "fieldName": "selectedDateRange"
             }
           ],
           "superclass": {

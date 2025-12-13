@@ -683,6 +683,7 @@ export class EOxMap extends LitElement {
       <style>
         :host {
           display: block;
+          height: 100%;
         }
         .eox-map-tooltip {
           pointer-events: none !important;

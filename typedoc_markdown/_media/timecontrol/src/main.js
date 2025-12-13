@@ -1,449 +1,395 @@
-import { LitElement, html, nothing } from "lit";
-import Group from "ol/layer/Group";
-import { getElement } from "@eox/elements-utils";
-import "toolcool-range-slider";
-import { style } from "./style.js";
-import { styleEOX } from "./style.eox.js";
-import "./sliderticks.js";
+/// <reference types="vite/client" />
 
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import dayOfYear from "dayjs/plugin/dayOfYear";
-import isoWeek from "dayjs/plugin/isoWeek";
+import { LitElement, html } from "lit";
+import { style } from "./styles/style.js";
+import { styleEOX } from "./styles/style.eox.js";
+import { DataSet } from "vis-data/standalone";
 
-dayjs.extend(dayOfYear);
-dayjs.extend(isoWeek);
-dayjs.extend(utc);
+import "./components/timecontrol-date";
+import "./components/timecontrol-picker";
+import "./components/timecontrol-timeline";
+import "./components/timecontrol-timelapse";
+import "./components/timecontrol-slider";
+
+import {
+  firstUpdatedMethod,
+  dateChangeHandlerMethod,
+  filterHandlerMethod,
+} from "./methods/timecontrol";
+import getChildElement from "./helpers/get-child-element.js";
 
 /**
+ * @typedef {import("./types").SliderValue} SliderValue
+ * @typedef {import("./types").DateRange} DateRange
+ * @typedef {import("./types").SelectedDateRange} SelectedDateRange
+ * @typedef {import("./types").TimelineItem} TimelineItem
+ * @typedef {import("./types").TimelineGroup} TimelineGroup
+ * @typedef {import("@eox/map").EOxMap} EOxMap
+ * @typedef {import("./types").EOxTimeControlChild} EOxTimeControlChild
+ */
+
+/**
+ * The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.
+ *
+ * ## Basic usage:
+ *
+ * ```
+ * import "@eox/timecontrol"
+ *
+ * <eox-timecontrol for="eox-map#my-map">
+ *   <eox-timecontrol-date></eox-timecontrol-date>
+ *   <eox-timecontrol-slider></eox-timecontrol-slider>
+ *   <eox-timecontrol-timeline></eox-timecontrol-timeline>
+ *   <eox-timecontrol-timelapse></eox-timecontrol-timelapse>
+ *   <eox-timecontrol-picker></eox-timecontrol-picker>
+ * </eox-timecontrol>
+ * ```
+ *
+ * ## Features
+ *
+ * - **Time-based Layer Control:** Link to an `<eox-map>` instance for time-based WMS layer control. Automatically detects layers with `timeControlValues` and `timeControlProperty` properties.
+ * - **Multiple UI Components:** Supports date display, date picker (popup or inline), timeline visualization, slider, and timelapse export.
+ * - **Navigation Controls:** Previous/next buttons for stepping through time periods.
+ * - **Date Formatting:** Customizable display format using dayjs tokens (default: "YYYY-MM-DD").
+ * - **Filtering:** Integration with `<eox-itemfilter>` for filtering timeline items by metadata properties.
+ * - **Timelapse Export:** Export animated GIFs or MP4s from time series data.
+ * - **Standalone Mode:** Can be used without a map for time selection purposes.
+ *
+ * ## Component Structure
+ *
+ * The timecontrol element acts as a container for child components:
+ * - `<eox-timecontrol-date>`: Displays the current selected date(s) with optional navigation buttons.
+ * - `<eox-timecontrol-picker>`: Calendar-based date picker (popup or inline, single or range selection).
+ * - `<eox-timecontrol-slider>`: Range slider for selecting date ranges.
+ * - `<eox-timecontrol-timeline>`: Timeline visualization using vis-timeline.
+ * - `<eox-timecontrol-timelapse>`: Timelapse export functionality.
+ *
+ * ## Layer Configuration
+ *
+ * Layers must have the following properties to work with timecontrol:
+ * - `properties.timeControlValues`: Array of objects with `date` and optional metadata.
+ * - `properties.timeControlProperty`: Property name used in WMS requests (e.g., "TIME").
+ * - `properties.id`: Layer identifier (used for grouping in timeline).
+ * - `properties.name`: Display name (used in timeline groups).
+ *
+ * ## Events
+ *
+ * - `stepchange`: Fired when the current time step changes (not currently implemented).
+ *
  * @element eox-timecontrol
- *
- * The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, and custom date formatting.
- *
- * Features:
- * - Link to an <eox-map> instance for time-based WMS layer control
- * - Navigation buttons and play/pause animation
- * - Slider for direct time selection
- * - Programmatic control of time step
- * - Customizable display format using dayjs tokens
- * - Emits 'stepchange' event when the current time step changes
- * - Can be used standalone without a map
- *
  */
 export class EOxTimeControl extends LitElement {
+  /**
+   * Defines the component's reactive properties.
+   *
+   * @returns {Object} Property definitions.
+   */
   static get properties() {
     return {
-      /**
-       * The WMS parameter to update
-       */
-      controlProperty: { type: String, attribute: "control-property" },
-
-      /**
-       * The list of available values for the animation property
-       */
-      controlValues: { type: Array, attribute: "control-values" },
-
       for: { type: String },
-
-      /**
-       * The layerid of the animated layer
-       */
-      layer: { type: String },
-
-      /**
-       * Display a slider for the values
-       */
-      slider: { type: Boolean },
-
-      /**
-       * Display left & right navigation buttons for the values
-       */
-      navigation: { type: Boolean },
-
-      /**
-       * Original params of layer source
-       */
-      _originalParams: { type: Object },
-
-      /**
-       * Hides the play button if set
-       */
-      play: { type: Boolean, attribute: "play" },
-
-      /**
-       * Date format string for displaying the current step
-       * using [dayjs format token strings](https://day.js.org/docs/en/display/format)
-       */
-      displayFormat: { type: String, attribute: "display-format" },
-
-      currentStep: { type: String, attribute: "current-step" },
-      _animationInterval: { state: true },
-      _controlSource: { state: true },
-      _isAnimationPlaying: { state: true },
-      _newStepIndex: { state: true },
-      _eoxMap: { state: true },
-      _width: { state: true },
       unstyled: { type: Boolean },
+      titleKey: { type: String, attribute: "title-key" },
+      layerIdKey: { type: String, attribute: "layer-id-key" },
+      externalMapRendering: {
+        type: Boolean,
+        attribute: "external-map-rendering",
+      },
+      selectedDateRange: { type: Array, attribute: undefined },
+      controlValues: { type: Array, attribute: false },
+      initDate: { type: Array, attribute: false },
     };
   }
 
+  /**
+   * Reference to the associated eox-map element instance.
+   *
+   * @type {EOxMap | null}
+   */
+  #eoxMap = null;
+
+  /**
+   * DataSet containing timeline groups for vis-timeline.
+   *
+   * @type {import("vis-data/standalone").DataSet}
+   */
+  #groups = new DataSet([]);
+
+  /**
+   * DataSet containing timeline items for vis-timeline.
+   *
+   * @type {import("vis-data/standalone").DataSet<TimelineItem>}
+   */
+  #items = new DataSet([]);
+
+  /**
+   * Array of slider value configurations extracted from map layers.
+   *
+   * @type {Array<SliderValue>}
+   */
+  #sliderValues = [];
+
+  /**
+   * Creates a new EOxTimeControl instance.
+   */
   constructor() {
     super();
-    /** @type {string[]} */
-    this.controlValues = [];
-    /** @type {number} */
-    this._newStepIndex = 0;
-    /** @type {boolean} */
+
+    /**
+     * Whether default styling is disabled.
+     *
+     * @type {boolean}
+     */
     this.unstyled = false;
-    /** @type {boolean} */
-    this.play = false;
-    /** @type {boolean} */
-    this.navigation = true;
-    /** @type {boolean} */
-    this.slider = false;
+
+    /**
+     * The currently selected date range as [startDate, endDate] in ISO format.
+     *
+     * @type {SelectedDateRange}
+     */
+    this.selectedDateRange = null;
+
+    /**
+     * Property key used to retrieve layer titles (default: "name").
+     *
+     * @type {string}
+     */
+    this.titleKey = "name";
+
+    /**
+     * Property key used to identify layers (default: "id").
+     *
+     * @type {string}
+     */
+    this.layerIdKey = "id";
+
+    /**
+     * Whether external map rendering is enabled for timelapse export.
+     *
+     * @type {boolean}
+     */
+    this.externalMapRendering = false;
+
     /**
      * Query selector of an `eox-map` (`String`, passed as an attribute or property)
      * or an `eox-map` DOM element (`HTMLElement`, passed as property)
      *
      * @type {String|HTMLElement}
      */
-    this.for = "eox-map";
-    /** @type {string} */
-    this.layer = "";
-    /** @type {string | undefined} */
-    this.controlProperty = undefined;
-    /** @type {HTMLElement |undefined} */
-    this._eoxMap = undefined;
-
-    this._width = 300;
-
-    window.addEventListener("resize", () => {
-      this._width = this.clientWidth;
-    });
-
-    /** @type {string} */
-    this.displayFormat = undefined;
-  }
-
-  /**
-   * Go to next step
-   */
-  next() {
-    this._updateStep(+1);
-  }
-
-  /**
-   * Go to previous step
-   */
-  previous() {
-    this._updateStep(-1);
-  }
-
-  /**
-   * Toggle play animation
-   * @param {boolean} on animation on/off
-   */
-  playAnimation(on) {
-    if (on) {
-      this._animationInterval = setInterval(() => this._updateStep(1), 500);
-    } else {
-      clearInterval(this._animationInterval);
-    }
-    this._isAnimationPlaying = on;
-    this.requestUpdate();
-  }
-
-  /**
-   * Set the config at a later point
-   * @param {Object} config
-   * @param {string} [config.layer]
-   * @param {string} [config.controlProperty]
-   * @param {Array<string>} [config.controlValues]
-   */
-  setConfig(config) {
-    this.layer = config.layer ?? this.layer;
-    this.controlProperty = config.controlProperty ?? this.controlProperty;
-    this.controlValues = config.controlValues ?? this.controlValues;
-    this.requestUpdate();
-    this._updateStep(0);
-  }
-
-  /**
-   * The currently selected step
-   * @type {string}
-   */
-  get currentStep() {
-    return this.controlValues[this._newStepIndex];
-  }
-
-  set currentStep(step) {
-    const idx = this.controlValues.findIndex((v) => v === step);
-    if (idx > -1) {
-      this._newStepIndex = idx;
-    } else {
-      console.error(`Unable to find step "${step}" in available times!`);
-    }
-  }
-
-  /**
-   * initializes the EOxMap instance
-   * And stores it in the private property #eoxMap.
-   */
-  firstUpdated() {
-    this.updateMap();
-  }
-
-  updated(changedProperties) {
-    if (changedProperties.has("for")) {
-      this.updateMap();
-    }
-  }
-
-  updateMap() {
-    const foundElement = getElement(this.for);
-
-    if (foundElement) {
-      const EoxMap = /** @type {import("@eox/map").EOxMap} */ (foundElement);
-      this.eoxMap = EoxMap;
-    }
-  }
-
-  get eoxMap() {
-    return this._eoxMap;
-  }
-
-  set eoxMap(value) {
-    const oldValue = this._eoxMap;
-    this._eoxMap = value;
-    this.requestUpdate("eoxMap", oldValue);
-  }
-
-  /**
-   * @param {number} [step=1]
-   * @private
-   */
-  _updateStep(step = 1) {
-    if (!step) {
-      return;
-    }
-
-    this._newStepIndex = this._newStepIndex + step;
-    if (this._newStepIndex > this.controlValues.length - 1) {
-      this._newStepIndex = 0;
-    }
-    if (this._newStepIndex < 0) {
-      this._newStepIndex = this.controlValues.length - 1;
-    }
-
-    if (this.layer && this.for) {
-      this._controlSource?.updateParams({
-        [this.controlProperty]: this.controlValues[this._newStepIndex],
-      });
-    }
-    this.requestUpdate();
+    this.for = undefined;
 
     /**
-     * Triggers when *currentStep* is updated.
-     * `event.detail.currentStep` returns the new *currentStep* value.
+     * Array of control values.
+     *
+     * @type {Array<Object>}
      */
-    this.dispatchEvent(
-      new CustomEvent("stepchange", {
+    this.controlValues = [];
+
+    /**
+     * The initial date range as [startDate, endDate] in ISO/UTC format.
+     *
+     * @type {DateRange}
+     */
+    this.initDate = null;
+  }
+
+  /**
+   * Gets the array of slider values extracted from map layers.
+   *
+   * @type {Array<SliderValue>}
+   * @returns {Array<SliderValue>} The slider values array.
+   */
+  get sliderValues() {
+    return this.#sliderValues;
+  }
+
+  /**
+   * Sets the array of slider values.
+   *
+   * @param {Array<SliderValue>} value - The new slider values array.
+   */
+  set sliderValues(value) {
+    this.#sliderValues = value;
+  }
+
+  /**
+   * Gets the reference to the associated eox-map element.
+   *
+   * @type {EOxMap | null}
+   * @returns {EOxMap | null} The eox-map instance or null if not found.
+   */
+  get eoxMap() {
+    return this.#eoxMap;
+  }
+
+  /**
+   * Sets the reference to the associated eox-map element.
+   *
+   * @param {EOxMap | null} value - The eox-map instance to associate.
+   */
+  set eoxMap(value) {
+    this.#eoxMap = value;
+  }
+
+  /**
+   * Gets the DataSet containing timeline groups.
+   *
+   * @type {import("vis-data/standalone").DataSet<TimelineGroup>}
+   * @returns {import("vis-data/standalone").DataSet<TimelineGroup>} The groups DataSet.
+   */
+  get groups() {
+    return this.#groups;
+  }
+
+  /**
+   * Sets the DataSet containing timeline groups.
+   *
+   * @param {import("vis-data/standalone").DataSet<TimelineGroup>} value - The groups DataSet.
+   */
+  set groups(value) {
+    this.#groups = value;
+  }
+
+  /**
+   * Gets the DataSet containing timeline items.
+   *
+   * @type {import("vis-data/standalone").DataSet<TimelineItem>}
+   * @returns {import("vis-data/standalone").DataSet<TimelineItem>} The items DataSet.
+   */
+  get items() {
+    return this.#items;
+  }
+
+  /**
+   * Sets the DataSet containing timeline items.
+   *
+   * @param {import("vis-data/standalone").DataSet<TimelineItem>} value - The items DataSet.
+   */
+  set items(value) {
+    this.#items = value;
+  }
+
+  /**
+   * Gets the container element for the timeslider (legacy method).
+   *
+   * @returns {Element | null} The container element or null if not found.
+   */
+  getContainer() {
+    return this.renderRoot.querySelector("#timeslider");
+  }
+
+  /**
+   * Handler for date change events. Updates the selected date range and applies it to map layers.
+   *
+   * @type {Function}
+   * @param {DateRange} dateRange - The new date range [startDate, endDate] in ISO format.
+   * @param {EOxTimeControl} instance - The EOxTimeControl instance.
+   */
+  dateChange = dateChangeHandlerMethod;
+
+  /**
+   * Gets the EOxTimeControlDate instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlDate instance or null if not found.
+   */
+  getTimeControlDate() {
+    return getChildElement(this, "eox-timecontrol-date");
+  }
+
+  /**
+   * Gets the EOxTimeControlSlider instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlSlider() {
+    return getChildElement(this, "eox-timecontrol-slider");
+  }
+
+  /**
+   * Gets the EOxTimeControlTimeline instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlTimeline() {
+    return getChildElement(this, "eox-timecontrol-timeline");
+  }
+
+  /**
+   * Gets the EOxTimeControlTimelapse instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlTimelapse() {
+    return getChildElement(this, "eox-timecontrol-timelapse");
+  }
+
+  /**
+   * Gets the EOxTimeControlPicker instance.
+   *
+   * @returns {EOxTimeControlChild | null} The EOxTimeControlChild instance or null if not found.
+   */
+  getTimeControlPicker() {
+    return getChildElement(this, "eox-timecontrol-picker");
+  }
+
+  #emitUpdateEvent(EOxTimeControl) {
+    const EOxTimeControlTimeline = /** @type {EOxTimeControlTimeline} */ (
+      EOxTimeControl.getTimeControlTimeline()
+    );
+    const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
+      EOxTimeControl.getTimeControlPicker()
+    );
+    EOxTimeControl.dispatchEvent(
+      new CustomEvent("update:view", {
         detail: {
-          currentStep: this.currentStep,
+          ...(EOxTimeControlTimeline
+            ? {
+                timeline: [
+                  EOxTimeControlTimeline.getViewRange().start,
+                  EOxTimeControlTimeline.getViewRange().end,
+                ],
+              }
+            : {}),
+          ...(EOxTimeControlPicker
+            ? {
+                picker: [
+                  EOxTimeControlPicker.getViewRange().start,
+                  EOxTimeControlPicker.getViewRange().end,
+                ],
+              }
+            : {}),
         },
+        bubbles: true,
+        composed: true,
       }),
     );
   }
 
   /**
-   * TEMP / TO-DO, this is a copy of the function defined in the eox-map:
-   * https://github.com/EOX-A/EOxElements/blob/main/elements/map/src/layer.ts#L25
-   * Consider a way to properly export that function and use it here
-   * See also:
-   * https://github.com/EOX-A/EOxElements/issues/974
-   * @param {import('ol/layer/Base').default[]} layers
-   * @returns {import('ol/layer/Base').default[]}
+   * Lifecycle method called after the component's first update.
+   * Initializes the timecontrol by finding the associated map and setting up layer listeners.
    */
-  getFlatLayersArray(layers) {
-    const flatLayers = [];
-    flatLayers.push(...layers);
-
-    /** @type {Array<Group>} */
-    let groupLayers =
-      /** @type {Array<Group>} */
-      (flatLayers.filter((l) => l instanceof Group));
-    while (groupLayers.length) {
-      /** @type {Array<Group>} */
-      const newGroupLayers = [];
-      for (let i = 0, ii = groupLayers.length; i < ii; i++) {
-        const layersInsideGroup = groupLayers[i].getLayers().getArray();
-        flatLayers.push(...layersInsideGroup);
-        /** @type {Array<Group>} */
-        const filteredGroups = /** @type {Array<Group>} */ (
-          layersInsideGroup.filter((l) => l instanceof Group)
-        );
-        newGroupLayers.push(...filteredGroups);
-      }
-      groupLayers = newGroupLayers;
-    }
-    return flatLayers;
+  firstUpdated() {
+    firstUpdatedMethod(this, this.#emitUpdateEvent);
+    this.requestUpdate();
   }
 
+  /**
+   * Handler for filter events from eox-itemfilter. Updates timeline item visibility based on filter results.
+   *
+   * @type {Function}
+   * @param {CustomEvent | undefined} event - The filter event (optional).
+   * @param {EOxTimeControl} instance - The EOxTimeControl instance.
+   */
+  filter = filterHandlerMethod;
+
   render() {
-    if (this.layer && this.for) {
-      const foundElement = /** @type {import('@eox/map').EOxMap} */ (
-        getElement(this.for)
-      );
-
-      const olMap = foundElement.map;
-
-      olMap.once("loadend", () => {
-        if (!this._originalParams) {
-          const flatLayers = this.getFlatLayersArray(
-            /** @type {import('ol/layer/Base').default[]} */ (
-              olMap.getLayers().getArray()
-            ),
-          );
-          const animationLayer =
-            /** @type {import('ol/layer/Layer').default} */ (
-              flatLayers.find((l) => l.get("id") === this.layer)
-            );
-          this._controlSource =
-            /** @type {import('ol/source/TileWMS').default} */ (
-              animationLayer.getSource()
-            );
-
-          this._originalParams = this._controlSource.getParams();
-        }
-      });
-    }
-
     return html`
       <style>
         ${style}
         ${!this.unstyled && styleEOX}
       </style>
       <main>
-        <div id="controls" part="controls">
-          ${this.navigation
-            ? html`
-                <button
-                  part="previous"
-                  class="icon previous small circle transparent no-margin"
-                  @click="${() => this.previous()}"
-                >
-                  ${!this.unstyled
-                    ? html`
-                        <i class="primary-text small">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                          >
-                            <title>chevron-left-circle</title>
-                            <path
-                              d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M15.4,16.6L10.8,12L15.4,7.4L14,6L8,12L14,18L15.4,16.6Z"
-                            />
-                          </svg>
-                        </i>
-                      `
-                    : "<"}
-                </button>
-              `
-            : nothing}
-          <small part="current">
-            ${this.displayFormat
-              ? dayjs(this.controlValues[this._newStepIndex])
-                  .utc()
-                  .format(this.displayFormat)
-              : this.controlValues[this._newStepIndex]}
-          </small>
-          ${this.navigation
-            ? html`
-                <button
-                  part="next"
-                  class="icon next small circle transparent no-margin"
-                  @click="${() => this.next()}"
-                >
-                  ${!this.unstyled
-                    ? html`
-                        <i class="primary-text small">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                          >
-                            <title>chevron-right-circle</title>
-                            <path
-                              d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M10,18L16,12L10,6L8.6,7.4L13.2,12L8.6,16.6L10,18Z"
-                            />
-                          </svg>
-                        </i>
-                      `
-                    : "<"}
-                </button>
-              `
-            : nothing}
-          ${this.play
-            ? html`
-                <button
-                  part="play"
-                  class="icon-text small ${this._isAnimationPlaying
-                    ? "pause"
-                    : "play"}"
-                  @click="${() =>
-                    this.playAnimation(
-                      this._isAnimationPlaying ? false : true,
-                    )}"
-                >
-                  ${!this.unstyled
-                    ? html`
-                        <i class="small">
-                          ${this._isAnimationPlaying
-                            ? html`<svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                              >
-                                <title>pause</title>
-                                <path d="M14,19H18V5H14M6,19H10V5H6V19Z" />
-                              </svg>`
-                            : html`<svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                              >
-                                <title>play</title>
-                                <path d="M8,5.14V19.14L19,12.14L8,5.14Z" />
-                              </svg>`}
-                        </i>
-                      `
-                    : nothing}
-                  <span>${this._isAnimationPlaying ? "Pause" : "Play"}</span>
-                </button>
-              `
-            : nothing}
-        </div>
-        <div class="small-padding">
-          ${this.slider
-            ? html`
-                <div class="slider-col">
-                  <tc-range-slider
-                    data="${this.controlValues}"
-                    part="slider"
-                    value="${this.controlValues[this._newStepIndex]}"
-                    @change="${(/** @type {CustomEvent} */ evt) =>
-                      this._updateStep(
-                        this.controlValues.findIndex(
-                          (v) => v === evt.detail.value,
-                        ) - this._newStepIndex,
-                      )}"
-                  ></tc-range-slider>
-
-                  <eox-sliderticks
-                    .width="${this._width}"
-                    .steps="${this.controlValues}"
-                  ></eox-sliderticks>
-                </div>
-              `
-            : ""}
-        </div>
+        <slot></slot>
       </main>
     `;
   }
