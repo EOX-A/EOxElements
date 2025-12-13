@@ -2,21 +2,25 @@ import { html } from "lit";
 import { STORY_ARGS } from "../src/enums";
 
 /**
- * Range slider for selecting date ranges with visual indicators for years and months
+ * Calendar date picker displayed in popup mode and shows items in the popup
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-const SliderStory = {
+const DatePickerPopupItemsStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
     titleKey: STORY_ARGS.titleKey,
     filters: STORY_ARGS.filters,
     externalMapRendering: STORY_ARGS.externalMapRendering,
     navigation: true,
-    for: "eox-map#slider",
+    popup: true,
+    for: "eox-map#date-picker-popup",
+    select: (e) => {
+      console.log(e.detail);
+    },
     storyAdditionalComponents: {
       "eox-map": {
-        id: "slider",
+        id: "date-picker-popup",
         zoom: STORY_ARGS.zoom,
         center: STORY_ARGS.center,
         layers: STORY_ARGS.layers,
@@ -30,12 +34,10 @@ const SliderStory = {
       "eox-timecontrol-picker": {
         storyImport: false,
         storySlot: true,
+        format: STORY_ARGS.format,
         showDots: true,
         popup: true,
-      },
-      "eox-timecontrol-slider": {
-        storyImport: false,
-        storySlot: true,
+        showItems: true,
       },
     },
   },
@@ -53,24 +55,24 @@ const SliderStory = {
       .titleKey=${args.titleKey}
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
+      @select=${args.select}
     >
-      <div style="display: flex; gap: 10px;align-items: center;">
-        <eox-timecontrol-date
-          .format=${args.storyAdditionalComponents["eox-timecontrol-date"]
-            .format}
-          .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
-            .navigation}
-        ></eox-timecontrol-date>
-        <eox-timecontrol-picker
-          .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-            .showDots}
-          .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-            .popup}
-        ></eox-timecontrol-picker>
-      </div>
-      <eox-timecontrol-slider style="width: 600px;"></eox-timecontrol-slider>
+      <eox-timecontrol-date
+        .format=${args.storyAdditionalComponents["eox-timecontrol-date"].format}
+        .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
+          .navigation}
+      ></eox-timecontrol-date>
+      <eox-timecontrol-picker
+        .format=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .format}
+        .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .showDots}
+        .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"].popup}
+        .showItems=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .showItems}
+      ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
 };
 
-export default SliderStory;
+export default DatePickerPopupItemsStory;

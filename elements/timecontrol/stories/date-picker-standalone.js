@@ -2,40 +2,33 @@ import { html } from "lit";
 import { STORY_ARGS } from "../src/enums";
 
 /**
- * Range slider for selecting date ranges with visual indicators for years and months
+ * Calendar date picker displayed inline (not in popup mode)
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-const SliderStory = {
+const DatePickerStandaloneStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
     titleKey: STORY_ARGS.titleKey,
     filters: STORY_ARGS.filters,
     externalMapRendering: STORY_ARGS.externalMapRendering,
-    navigation: true,
-    for: "eox-map#slider",
+    popup: true,
+    for: "eox-map#date-picker-standalone",
+    select: (e) => {
+      console.log(e.detail);
+    },
     storyAdditionalComponents: {
       "eox-map": {
-        id: "slider",
+        id: "date-picker-standalone",
         zoom: STORY_ARGS.zoom,
         center: STORY_ARGS.center,
         layers: STORY_ARGS.layers,
       },
-      "eox-timecontrol-date": {
-        storyImport: false,
-        storySlot: true,
-        format: STORY_ARGS.format,
-        navigation: true,
-      },
       "eox-timecontrol-picker": {
         storyImport: false,
         storySlot: true,
+        format: STORY_ARGS.format,
         showDots: true,
-        popup: true,
-      },
-      "eox-timecontrol-slider": {
-        storyImport: false,
-        storySlot: true,
       },
     },
   },
@@ -47,30 +40,29 @@ const SliderStory = {
       .center=${args.storyAdditionalComponents["eox-map"].center}
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
+    <eox-map
+      id=${args.storyAdditionalComponents["eox-map"].id}
+      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
+      .center=${args.storyAdditionalComponents["eox-map"].center}
+      .layers=${args.storyAdditionalComponents["eox-map"].layers}
+    ></eox-map>
     <eox-timecontrol
       .for=${args.for}
       .layerIdKey=${args.layerIdKey}
       .titleKey=${args.titleKey}
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
+      @select=${args.select}
     >
-      <div style="display: flex; gap: 10px;align-items: center;">
-        <eox-timecontrol-date
-          .format=${args.storyAdditionalComponents["eox-timecontrol-date"]
-            .format}
-          .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
-            .navigation}
-        ></eox-timecontrol-date>
-        <eox-timecontrol-picker
-          .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-            .showDots}
-          .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-            .popup}
-        ></eox-timecontrol-picker>
-      </div>
-      <eox-timecontrol-slider style="width: 600px;"></eox-timecontrol-slider>
+      <eox-timecontrol-picker
+        style="width: fit-content; border: 1.5px solid #80808026; border-radius: 6px;"
+        .format=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .format}
+        .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .showDots}
+      ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
 };
 
-export default SliderStory;
+export default DatePickerStandaloneStory;
