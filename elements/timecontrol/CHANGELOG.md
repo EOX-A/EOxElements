@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v1.0.2...timecontrol-v2.0.0) (2025-12-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* new and improved `timecontrol` ([#1820](https://github.com/EOX-A/EOxElements/issues/1820))
+
+### Features
+
+* New and improved `timecontrol` ([#1820](https://github.com/EOX-A/EOxElements/issues/1820)) ([97f4283](https://github.com/EOX-A/EOxElements/commit/97f42835979a66169bc935064dd6ab22617a0946))
+
 ## [1.0.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v1.0.1...timecontrol-v1.0.2) (2025-09-16)
 
 
