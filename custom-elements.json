@@ -149,6 +149,159 @@
     },
     {
       "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onOverlayDraw",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onTextInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "type": {
+                "text": "null"
+              },
+              "default": "null"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string|null"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "default": "undefined"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -669,159 +822,6 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onOverlayDraw",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onTextInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "type": {
-                "text": "null"
-              },
-              "default": "null"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string|null"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "default": "undefined"
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -3070,37 +3070,138 @@
               }
             },
             {
-              "kind": "field",
+              "kind": "method",
               "name": "parseFeature",
-              "default": "parseFeature",
-              "description": "Parses a feature from the input data.",
-              "type": {
-                "text": "Function"
+              "parameters": [
+                {
+                  "name": "features",
+                  "description": "An array of OpenLayers features to be converted.",
+                  "type": {
+                    "text": "Array<default>"
+                  }
+                }
+              ],
+              "description": "Converts an array of OpenLayers features into a GeoJSON object.",
+              "return": {
+                "type": {
+                  "text": "Object"
+                }
               }
             },
             {
-              "kind": "field",
+              "kind": "method",
               "name": "parseTextToFeature",
-              "default": "parseTextToFeature",
-              "description": "Parses text into a feature."
+              "parameters": [
+                {
+                  "name": "text",
+                  "description": "The string containing the geographic data to be parsed.",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "vectorLayer",
+                  "description": "The vector layer to which the parsed features will be added.",
+                  "type": {
+                    "text": "Vector"
+                  }
+                },
+                {
+                  "name": "EOxMap",
+                  "description": "An instance of EOxMap, used here for context and potentially for further operations like event dispatching.",
+                  "type": {
+                    "text": "EOxMap"
+                  }
+                },
+                {
+                  "name": "replaceFeatures",
+                  "description": "Optional boolean flag indicating whether to replace the existing features with the new ones.",
+                  "type": {
+                    "text": "boolean"
+                  }
+                },
+                {
+                  "name": "animate",
+                  "description": "Optional boolean flag indicating whether to animate the map on feature change.",
+                  "type": {
+                    "text": "boolean"
+                  }
+                }
+              ],
+              "description": "This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.\nIf successful, it adds the parsed features to the map.",
+              "return": {
+                "type": {
+                  "text": "void"
+                }
+              }
             },
             {
-              "kind": "field",
+              "kind": "method",
               "name": "registerProjectionFromCode",
-              "default": "registerProjectionFromCode",
-              "description": "Registers a projection from an EPSG code."
+              "parameters": [
+                {
+                  "name": "code",
+                  "description": "The EPSG code (e.g., 4326 or 'EPSG:4326').",
+                  "type": {
+                    "text": "string | number"
+                  }
+                }
+              ],
+              "description": "Fetches the projection definition for a given EPSG code from epsg.io and registers the projection using proj4.",
+              "return": {
+                "type": {
+                  "text": "Promise<default>"
+                }
+              }
             },
             {
-              "kind": "field",
+              "kind": "method",
               "name": "registerProjection",
-              "default": "registerProjection",
-              "description": "Registers a custom projection."
+              "parameters": [
+                {
+                  "name": "name",
+                  "description": "The name of the projection (e.g., \"EPSG:4326\").",
+                  "type": {
+                    "text": "string"
+                  }
+                },
+                {
+                  "name": "projection",
+                  "description": "The proj4 projection definition string or object.",
+                  "type": {
+                    "text": "string | proj4.ProjectionDefinition"
+                  }
+                },
+                {
+                  "name": "extent",
+                  "default": "undefined",
+                  "description": "Optional extent for the projection. Defines the coordinate system's valid area.",
+                  "optional": true,
+                  "type": {
+                    "text": "Extent"
+                  }
+                }
+              ],
+              "description": "Registers a projection under a given name using a proj4 definition.\nThis allows OpenLayers to recognize and work with custom or predefined projections."
             },
             {
-              "kind": "field",
+              "kind": "method",
               "name": "getFlatLayersArray",
-              "default": "getFlatLayersArray",
-              "description": "Retrieves all layers in a flat array."
+              "parameters": [
+                {
+                  "name": "layers",
+                  "description": "Array of OpenLayers layers, possibly containing groups.",
+                  "type": {
+                    "text": "Array<AnyLayer>"
+                  }
+                }
+              ],
+              "description": "Returns a flat array of all map layers, including nested layers within groups.\n\nNote: If you want to get all layers without groups, use the native OpenLayers `getAllLayers` method:\nhttps://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers",
+              "return": {
+                "type": {
+                  "text": "Array<AnyLayer>"
+                }
+              }
             },
             {
               "kind": "field",

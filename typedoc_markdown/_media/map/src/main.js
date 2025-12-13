@@ -598,7 +598,7 @@ export class EOxMap extends LitElement {
    * Retrieves a layer from the map by its ID.
    *
    * @param {string} layerId - The ID of the layer to retrieve.
-   * @returns {AnyLayerWithSource} The layer object.
+   * @returns {import("./types").AnyLayerWithSource} The layer object.
    */
   getLayerById(layerId) {
     return getLayerById(this, layerId);
@@ -613,31 +613,64 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Parses a feature from the input data.
+   * Converts an array of OpenLayers features into a GeoJSON object.
    *
-   * @type {Function}
+   * @param {Array<import("ol/Feature").default>} features - An array of OpenLayers features to be converted.
+   * @returns {Object} - A GeoJSON object representing the provided features.
    */
-  parseFeature = parseFeature;
+  parseFeature(features) {
+    return parseFeature(features);
+  }
 
   /**
-   * Parses text into a feature.
+   * This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
+   * If successful, it adds the parsed features to the map.
+   *
+   * @param {string} text - The string containing the geographic data to be parsed.
+   * @param {import("ol/layer").Vector} vectorLayer - The vector layer to which the parsed features will be added.
+   * @param {EOxMap} EOxMap - An instance of EOxMap, used here for context and potentially for further operations like event dispatching.
+   * @param {boolean} replaceFeatures - Optional boolean flag indicating whether to replace the existing features with the new ones.
+   * @param {boolean} animate - Optional boolean flag indicating whether to animate the map on feature change.
+   * @return {void}
    */
-  parseTextToFeature = parseTextToFeature;
+  parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate) {
+    parseTextToFeature(text, vectorLayer, EOxMap, replaceFeatures, animate);
+  }
 
   /**
-   * Registers a projection from an EPSG code.
+   * Fetches the projection definition for a given EPSG code from epsg.io and registers the projection using proj4.
+   *
+   * @param {string | number} code - The EPSG code (e.g., 4326 or 'EPSG:4326').
+   * @returns {Promise<import("ol/proj/Projection").default>} - A promise that resolves to the registered projection.
    */
-  registerProjectionFromCode = registerProjectionFromCode;
+  registerProjectionFromCode(code) {
+    return registerProjectionFromCode(code);
+  }
 
   /**
-   * Registers a custom projection.
+   * Registers a projection under a given name using a proj4 definition.
+   * This allows OpenLayers to recognize and work with custom or predefined projections.
+   *
+   * @param {string} name - The name of the projection (e.g., "EPSG:4326").
+   * @param {string | proj4.ProjectionDefinition} projection - The proj4 projection definition string or object.
+   * @param {import("ol/extent").Extent} [extent=undefined] - Optional extent for the projection. Defines the coordinate system's valid area.
    */
-  registerProjection = registerProjection;
+  registerProjection(name, projection, extent = undefined) {
+    registerProjection(name, projection, extent);
+  }
 
   /**
-   * Retrieves all layers in a flat array.
+   * Returns a flat array of all map layers, including nested layers within groups.
+   *
+   * Note: If you want to get all layers without groups, use the native OpenLayers `getAllLayers` method:
+   * https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#getAllLayers
+   *
+   * @param {Array<import("./types").AnyLayer>} layers - Array of OpenLayers layers, possibly containing groups.
+   * @returns {Array<import("./types").AnyLayer>} layers - Flattened array of input layers
    */
-  getFlatLayersArray = getFlatLayersArray;
+  getFlatLayersArray(layers) {
+    return getFlatLayersArray(layers);
+  }
 
   // Renders the component's HTML template
   render() {
