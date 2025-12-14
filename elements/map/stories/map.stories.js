@@ -11,6 +11,7 @@ import {
   STACLayerStory,
   MapboxStyleLayerStory,
   GeoTIFFLayerStory,
+  GeoZarrLayerStory,
   GroupLayerStory,
   ControlsStory,
   GeolocationStory,
@@ -188,6 +189,11 @@ export const MapboxStyleLayer = MapboxStyleLayerStory;
  * Renders `GeoTIFF` layer as `WebGLTile`
  */
 export const GeoTIFFLayer = GeoTIFFLayerStory;
+
+/**
+ * Renders `GeoZarr` layer as `WebGLTile`
+ */
+export const GeoZarrLayer = GeoZarrLayerStory;
 
 /**
  * Renders `Group` layer which contains multiple layers in a group

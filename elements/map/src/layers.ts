@@ -57,6 +57,7 @@ export type OLAdvancedSources = {
   CartoDB: typeof import("ol/source/CartoDB").default;
   DataTile: typeof import("ol/source/DataTile").default;
   GeoTIFF: typeof import("ol/source/GeoTIFF").default;
+  GeoZarr: typeof import("ol/source/GeoZarr").default;
   Google: typeof import("ol/source/Google").default;
   IIIF: typeof import("ol/source/IIIF").default;
   Image: typeof import("ol/source/Image").default;
@@ -176,6 +177,7 @@ export type EoxLayer =
   | EOxLayerType<"Vector", "Cluster">
   | EOxLayerType<"VectorTile", "VectorTile">
   | EOxLayerType<"WebGLTile", "GeoTIFF">
+  | EOxLayerType<"WebGLTile", "GeoZarr">
   | EOxLayerType<"Tile", "OSM">
   | EOxLayerType<"Tile", "WMTSCapabilities">
   | EOxLayerType<"Tile", "StadiaMaps">
