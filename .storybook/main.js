@@ -16,7 +16,7 @@ const config = {
     let list = [
       "./About.mdx",
       "./Usage.mdx",
-      "./MCP.mdx",
+      "./CodingAgents.mdx",
       "../**/*.stories.@(js|jsx|mjs|ts|tsx)",
     ];
     if (process.env.NODE_ENV === "development")
