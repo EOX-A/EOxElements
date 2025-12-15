@@ -1,11 +1,11 @@
 # Changelog
 
-## [1.2.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.1.0...elements-utils-v1.2.0) (2025-12-15)
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.1.0...elements-utils-v1.1.1) (2025-12-15)
 
 
-### Features
+### Fixes
 
-* Add MCP server and llms.txt ([#2015](https://github.com/EOX-A/EOxElements/issues/2015)) ([715eb73](https://github.com/EOX-A/EOxElements/commit/715eb73fae3a454116114eeecd0ef08e21321f75))
+* Adaptations for MCP server and llms.txt ([#2015](https://github.com/EOX-A/EOxElements/issues/2015)) ([715eb73](https://github.com/EOX-A/EOxElements/commit/715eb73fae3a454116114eeecd0ef08e21321f75))
 
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-utils-v1.0.0...elements-utils-v1.1.0) (2025-07-29)
 

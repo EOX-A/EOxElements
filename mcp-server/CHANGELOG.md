@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.0.0...elements-mcp-server-v1.1.0) (2025-12-15)
+## [1.0.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v0.0.0...elements-mcp-server-v1.0.0) (2025-12-15)
 
 
 ### Features
