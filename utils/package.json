@@ -2,6 +2,10 @@
   "name": "@eox/elements-utils",
   "version": "1.1.1",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
   "description": "Utils and common styles used by EOxElements",
   "main": "./index.js",
   "files": [
