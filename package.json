@@ -5,7 +5,8 @@
   "version": "2.0.0",
   "workspaces": [
     "elements/*",
-    "utils"
+    "utils",
+    "mcp-server"
   ],
   "scripts": {
     "start": "npm run generate-typedoc && concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",

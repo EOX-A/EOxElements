@@ -1,0 +1,53 @@
+# EOxElements MCP Server
+
+This server provides a set of tools for a coding agent to get information about the EOxElements custom elements. It uses the [@modelcontextprotocol/sdk](https://github.com/modelcontextprotocol/typescript-sdk) to expose the tools.
+
+## Getting Started
+
+### For Users
+
+Install the package globally from npm:
+
+```bash
+npm install -g @eox/elements-mcp-server
+```
+
+Then, run the server:
+
+```bash
+eox-elements-mcp-server
+```
+
+The server will fetch the latest `custom-elements.json` from the EOxElements GitHub repository and start on `http://localhost:3000`.
+
+### For Developers
+
+If you are working on the EOxElements project itself, you will want to run the server with a local `custom-elements.json` file.
+
+1.  **Installation:**
+    From the root of the `EOxElements` project, install all dependencies:
+
+        ```bash
+
+    npm install
+
+````
+
+2.  **Generate the manifest:**
+    Make sure the `custom-elements.json` file is up-to-date:
+
+    ```bash
+npm run generate-manifest
+````
+
+3.  **Run the server:**
+    Run the server with the `--manifest` flag, pointing to the generated `custom-elements.json` file:
+
+        ```bash
+
+    node mcp-server/index.js --manifest ./custom-elements.json
+
+```
+
+The server will start on `http://localhost:3000`.
+```
