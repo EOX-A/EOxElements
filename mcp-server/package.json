@@ -8,7 +8,8 @@
     "eox-elements-mcp-server": "./index.js"
   },
   "scripts": {
-    "types:generate": "echo 'No types to generate for mcp-server'"
+    "types:generate": "echo 'No types to generate for mcp-server'",
+    "build": "echo 'No build needed for mcp-server'"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.24.3",
