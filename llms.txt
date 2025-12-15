@@ -1,0 +1,28 @@
+# EOxElements Documentation Overview
+
+> This file is intended for AI agents. For full documentation, visit https://eox-a.github.io/EOxElements
+
+## Introduction
+EOxElements is a collection of web components for Earth Observation data visualization and interaction.
+
+## Available Elements
+
+- [eox-chart](https://eox-a.github.io/EOxElements/?path=/docs/elements-chart--docs): Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
+- [eox-drawtools](https://eox-a.github.io/EOxElements/?path=/docs/elements-drawtools--docs): The `eox-drawtools` element provides a comprehensive set of drawing, editing, selection, and import tools for vector features on an `eox-map`. It supports drawing multiple feature types (Polygon, Box, Point, Circle, LineString), continuous drawing, feature modification, selection from existing layers, and import/export in various formats (GeoJSON, WKT, native OL feature).
+- [eox-feedback](https://eox-a.github.io/EOxElements/?path=/docs/elements-feedback--docs): The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.
+- [eox-geosearch](https://eox-a.github.io/EOxElements/?path=/docs/elements-geosearch--docs): `eox-geosearch` provides a flexible geocoding and location search interface using the OpenCage API.
+- [eox-itemfilter](https://eox-a.github.io/EOxElements/?path=/docs/elements-itemfilter--docs): The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.
+- [eox-jsonform](https://eox-a.github.io/EOxElements/?path=/docs/elements-jsonform--docs): `eox-jsonform` is a flexible and extensible web component for rendering dynamic forms based on JSON schema definitions.
+- [eox-layercontrol](https://eox-a.github.io/EOxElements/?path=/docs/elements-layercontrol--docs): The `eox-layercontrol` element provides a user interface for managing and configuring layers of an `eox-map`. It connects to the underlying OpenLayers map instance and displays a list of layers, supporting advanced features such as optional layers, exclusive layers, layer tools, dynamic legends, time controls, and external layer addition.
+- [eox-layout](https://eox-a.github.io/EOxElements/?path=/docs/elements-layout--docs): The `eox-layout` element provides a flexible grid-based layout system for web applications, based on a 12x12 grid. It consists of two elements:
+- [eox-layout-item](https://eox-a.github.io/EOxElements/?path=/docs/elements-layout-item--docs): 
+- [eox-map](https://eox-a.github.io/EOxElements/?path=/docs/elements-map--docs): The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.
+- [eox-map](https://eox-a.github.io/EOxElements/?path=/docs/elements-map--docs): The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.
+- [eox-stacinfo](https://eox-a.github.io/EOxElements/?path=/docs/elements-stacinfo--docs): ### Introduction
+- [eox-storytelling](https://eox-a.github.io/EOxElements/?path=/docs/elements-storytelling--docs): The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, live editing with a built-in editor, and custom initialization logic via events.
+- [eox-timecontrol](https://eox-a.github.io/EOxElements/?path=/docs/elements-timecontrol--docs): The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.
+
+## Resources
+- [Full Documentation (LLMs)](llms-full.txt)
+- [GitHub Repository](https://github.com/EOX-A/EOxElements)
+- [NPM Package](https://www.npmjs.com/package/@eox/elements)
