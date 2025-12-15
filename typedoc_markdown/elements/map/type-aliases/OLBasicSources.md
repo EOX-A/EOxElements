@@ -8,7 +8,7 @@
 
 > **OLBasicSources** = `object`
 
-Defined in: [elements/map/src/layers.ts:44](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L44)
+Defined in: [elements/map/src/layers.ts:44](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L44)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/layers.ts:44](https://github.com/EOX-A/EOxElements
 
 > **ImageWMS**: `default`
 
-Defined in: [elements/map/src/layers.ts:45](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L45)
+Defined in: [elements/map/src/layers.ts:45](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L45)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/layers.ts:45](https://github.com/EOX-A/EOxElements
 
 > **OSM**: `default`
 
-Defined in: [elements/map/src/layers.ts:46](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L46)
+Defined in: [elements/map/src/layers.ts:46](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L46)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/layers.ts:46](https://github.com/EOX-A/EOxElements
 
 > **Tile**: `default`
 
-Defined in: [elements/map/src/layers.ts:47](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L47)
+Defined in: [elements/map/src/layers.ts:47](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L47)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/layers.ts:47](https://github.com/EOX-A/EOxElements
 
 > **TileWMS**: `default`
 
-Defined in: [elements/map/src/layers.ts:48](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L48)
+Defined in: [elements/map/src/layers.ts:48](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L48)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [elements/map/src/layers.ts:48](https://github.com/EOX-A/EOxElements
 
 > **Vector**: `default`
 
-Defined in: [elements/map/src/layers.ts:49](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L49)
+Defined in: [elements/map/src/layers.ts:49](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L49)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [elements/map/src/layers.ts:49](https://github.com/EOX-A/EOxElements
 
 > **VectorTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:50](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L50)
+Defined in: [elements/map/src/layers.ts:50](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L50)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [elements/map/src/layers.ts:50](https://github.com/EOX-A/EOxElements
 
 > **WMTS**: `default`
 
-Defined in: [elements/map/src/layers.ts:51](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L51)
+Defined in: [elements/map/src/layers.ts:51](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L51)
 
 ***
 
@@ -72,4 +72,4 @@ Defined in: [elements/map/src/layers.ts:51](https://github.com/EOX-A/EOxElements
 
 > **XYZ**: `default`
 
-Defined in: [elements/map/src/layers.ts:52](https://github.com/EOX-A/EOxElements/blob/b4ff09f54dd32ac1d84bb68ac5bc68ad250e6a72/elements/map/src/layers.ts#L52)
+Defined in: [elements/map/src/layers.ts:52](https://github.com/EOX-A/EOxElements/blob/cdfb86501f6376181f72a36914fd2614adb702cd/elements/map/src/layers.ts#L52)
