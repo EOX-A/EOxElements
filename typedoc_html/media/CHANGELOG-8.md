@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/EOX-A/EOxElements/compare/map-v2.0.0...map-v2.0.1) (2025-12-15)
+
+
+### Bug Fixes
+
+* **deps:** Don't overwrite plugin bundle ([#2005](https://github.com/EOX-A/EOxElements/issues/2005)) ([c0e5e35](https://github.com/EOX-A/EOxElements/commit/c0e5e35f8ae7d9a1d6f3bd708e848ae77847f746))
+
 ## [2.0.0](https://github.com/EOX-A/EOxElements/compare/map-v1.26.3...map-v2.0.0) (2025-12-13)
 
 

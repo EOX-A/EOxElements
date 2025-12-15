@@ -8,4 +8,4 @@
 
 > **ControlType** = keyof [`ControlDictionary`](ControlDictionary.md)
 
-Defined in: [elements/map/src/types.ts:151](https://github.com/EOX-A/EOxElements/blob/c0e5e35f8ae7d9a1d6f3bd708e848ae77847f746/elements/map/src/types.ts#L151)
+Defined in: [elements/map/src/types.ts:151](https://github.com/EOX-A/EOxElements/blob/761fcecbece8b929981d8e24389b0e8587ab3bd9/elements/map/src/types.ts#L151)
