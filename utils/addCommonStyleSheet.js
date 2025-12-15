@@ -1,3 +1,4 @@
+/// <reference path="./types.d.ts" />
 import eoxStyle from "@eox/ui/style.css?inline";
 /**
  * Adds the common CSS vars and font settings required

@@ -18,4 +18,4 @@ export const camelCaseEventName = (s) => {
 // Checks for colons in event names, which break template syntax
 export const hasColon = (s) => s.includes(":");
 
-export { parseElements } from "./parse-elements";
+export { parseElements } from "./parse-elements.js";

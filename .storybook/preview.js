@@ -7,7 +7,7 @@ import {
   renderVue,
   renderReact,
   renderSvelte,
-} from "./custom-panels/methods";
+} from "./custom-panels/methods/index.js";
 
 import "@eox/chart";
 import "@eox/drawtools";
@@ -23,6 +23,8 @@ import "@eox/map/src/plugins/globe";
 import "@eox/stacinfo";
 import "@eox/storytelling";
 import "@eox/timecontrol";
+
+import { extractArgTypes } from "./utils.js";
 
 /**
  * A custom wrapper for the default setCustomElementsManifest function.
@@ -57,64 +59,8 @@ const preview = {
     docs: {
       toc: true,
       page: DocumentationTemplate,
-      extractArgTypes: (component) => {
-        const {
-          attributes,
-          events,
-          members: properties,
-        } = customElements.modules.find(
-          (m) => m.declarations[0].tagName === component,
-        )?.declarations[0] || {};
-        return [
-          ...(properties
-            ? properties.map((m) => ({
-                category: m.kind === "method" ? "methods" : "properties",
-                ...m,
-              }))
-            : []),
-          ...(attributes
-            ? attributes.map((a) => ({ category: "attributes", ...a }))
-            : []),
-          ...(events ? events.map((a) => ({ category: "events", ...a })) : []),
-        ].reduce((acc, curr) => {
-          const {
-            category,
-            default: defaultValue,
-            description,
-            name,
-            parameters,
-            type,
-          } = curr;
-          const typeText =
-            parameters?.[0].type?.text ||
-            parameters?.[0].type ||
-            type?.text ||
-            type;
-          let matchingType;
-
-          typedocJson.children.forEach((c) => {
-            const child = c.children?.find((cc) => typeText?.includes(cc.name));
-            if (child) matchingType = child;
-          });
-          acc[name] = {
-            description: matchingType
-              ? `${description} <br /> <code>${typeText.replace(matchingType.name, `<a target="_blank" href="${matchingType?.sources?.[0]?.url}">${matchingType.name}</a>`)}</code>`
-              : description,
-            table: {
-              defaultValue: { summary: defaultValue },
-              category,
-              type: {
-                ...(!matchingType
-                  ? {
-                      summary: typeText,
-                    }
-                  : {}),
-              },
-            },
-          };
-          return acc;
-        }, {});
-      },
+      extractArgTypes: (component) =>
+        extractArgTypes(component, customElements, typedocJson),
       source: {
         transform: async (_, storyContext) => {
           const language = storyContext.globals["code-language"];

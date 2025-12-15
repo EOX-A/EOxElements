@@ -28,6 +28,9 @@ cypress/videos
 
 docs
 custom-elements.json
+story-snippets.json
+llms.txt
+llms-full.txt
 types.json
 
 utils/styles/dist/*.style.js
