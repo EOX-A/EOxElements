@@ -43,11 +43,18 @@ npm run generate-manifest
 3.  **Run the server:**
     Run the server with the `--manifest` flag, pointing to the generated `custom-elements.json` file:
 
-        ```bash
-
+    ```bash
     node mcp-server/index.js --manifest ./custom-elements.json
+    ```
+
+    You can also provide a local path to the story snippets file using the `--snippets` flag:
+
+    ```bash
+    node mcp-server/index.js --manifest ./custom-elements.json --snippets ./story-snippets.json
+    ```
+
+The server will start on `http://localhost:3000`.
 
 ```
 
-The server will start on `http://localhost:3000`.
 ```

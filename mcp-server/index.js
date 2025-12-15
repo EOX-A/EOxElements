@@ -40,6 +40,54 @@ async function main() {
     }
   }
 
+  // Load snippets data
+  let snippetsData;
+  const snippetsArgIndex = process.argv.indexOf("--snippets");
+  let snippetsPath;
+
+  if (snippetsArgIndex > -1) {
+    snippetsPath = process.argv[snippetsArgIndex + 1];
+  }
+
+  if (snippetsPath) {
+    try {
+      const data = fs.readFileSync(snippetsPath, "utf8");
+      snippetsData = JSON.parse(data);
+    } catch (err) {
+      console.log(`Error reading or parsing ${snippetsPath}:`, err);
+      snippetsData = [];
+    }
+  } else {
+    // Try to find story-snippets.json in the current working directory
+    const localSnippetsPath = "story-snippets.json";
+    if (fs.existsSync(localSnippetsPath)) {
+      try {
+        const data = fs.readFileSync(localSnippetsPath, "utf8");
+        snippetsData = JSON.parse(data);
+        console.log(`Loaded snippets from local ${localSnippetsPath}`);
+      } catch (err) {
+        console.log(
+          `Error reading or parsing local ${localSnippetsPath}:`,
+          err,
+        );
+        snippetsData = [];
+      }
+    } else {
+      try {
+        const response = await fetch(
+          "https://eox-a.github.io/EOxElements/story-snippets.json",
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        snippetsData = await response.json();
+      } catch (err) {
+        console.log("Error fetching or parsing story-snippets.json:", err);
+        snippetsData = [];
+      }
+    }
+  }
+
   const getElementData = (tagName) => {
     if (!elementsData || !elementsData.modules) {
       return null;
@@ -108,6 +156,28 @@ async function main() {
         },
       ],
     }),
+  );
+
+  server.registerTool(
+    "get_element_stories",
+    {
+      description:
+        "Get the stories (examples/snippets) for a specific EOxElements custom element. This includes descriptions and vanilla JS code snippets.",
+      inputSchema: z.object({
+        tagName: z.string().describe("The tag name of the element."),
+      }),
+    },
+    async ({ tagName }) => {
+      const stories = snippetsData.filter((s) => s.element === tagName);
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(stories, null, 2),
+          },
+        ],
+      };
+    },
   );
 
   server.registerTool(

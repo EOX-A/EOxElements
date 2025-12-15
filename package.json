@@ -2,6 +2,7 @@
   "name": "@eox/elements",
   "homepage": "https://eox-a.github.io/EOxElements",
   "private": true,
+  "type": "module",
   "version": "2.0.0",
   "workspaces": [
     "elements/*",
@@ -9,7 +10,7 @@
     "mcp-server"
   ],
   "scripts": {
-    "start": "npm run generate-typedoc && concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
+    "start": "npm run generate-typedoc && npm run generate-snippets && concurrently \"npm:watch:styles\" \"npm:watch:generate-manifest\" \"npm:storybook\"",
     "watch:styles": "nodemon --watch ./utils/styles --ext css --exec 'npm run styles'",
     "styles": "node ./tasks/init-style.js",
     "build:all": "npm run styles && npm run build --ws",
@@ -25,8 +26,9 @@
     "typecheck": "tsc",
     "types:generate:all": "npm run types:generate --ws",
     "storybook": "storybook dev -p 6006",
-    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && npm run build:storybook && cp custom-elements.json docs/custom-elements.json",
+    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && npm run generate-snippets && npm run build:storybook && cp custom-elements.json docs/custom-elements.json && cp story-snippets.json docs/story-snippets.json",
     "build:storybook": "storybook build -o docs",
+    "generate-snippets": "node --loader ./scripts/loader.mjs scripts/generate-snippets.mjs",
     "generate-manifest": "npx custom-elements-manifest analyze --litelement",
     "watch:generate-manifest": "npx custom-elements-manifest analyze --litelement --watch",
     "generate-typedoc": "rm -f ./types.json && npx typedoc",

@@ -4,7 +4,7 @@ import * as parserBabel from "prettier/parser-babel";
 import * as parserHtml from "prettier/parser-html";
 import * as parserPostCSS from "prettier/parser-postcss";
 import * as prettier from "prettier/standalone";
-import { camelize, parseElements } from "../helpers";
+import { camelize, parseElements } from "../helpers/index.js";
 
 export const render = async (data) => {
   const elements = parseElements(data);
@@ -68,7 +68,10 @@ export const render = async (data) => {
     const attributesHTML = [
       element.elIdToRender ? `id="${element.elIdToRender}"` : null,
       ...element.attributes.map(
-        ([key, value]) => `${key}${value === true ? "" : `="${value}"`}`,
+        ([key, value]) =>
+          `${key}${
+            value === true ? "" : `="${String(value).replace(/"/g, "&quot;")}"`
+          }`,
       ),
     ]
       .filter(Boolean)
@@ -170,7 +173,12 @@ ${elementData
 </script>`,
     {
       parser: "html",
-      plugins: [prettierPluginESTree, parserBabel, parserHtml, parserPostCSS],
+      plugins: [
+        prettierPluginESTree,
+        parserBabel,
+        parserHtml,
+        parserPostCSS,
+      ].map((p) => p.default || p),
     },
   );
 };
