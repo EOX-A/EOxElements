@@ -11147,7 +11147,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-16T08:54:48.738Z",
+              default: "2025-12-16T09:57:01.680Z",
               options: {
                 hidden: true,
               },
@@ -18923,25 +18923,6 @@ The calendar appears as a popup overlay when clicking on the date input field (p
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
-    navigation: true,
-    popup: true,
     select: (e) => {
       console.log(e.detail);
     },
@@ -18958,6 +18939,165 @@ The calendar appears as a popup overlay when clicking on the date input field (p
         },
         source: {
           type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -19218,165 +19358,6 @@ The calendar appears as a popup overlay when clicking on the date input field (p
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
           crossOrigin: "anonymous",
@@ -19425,23 +19406,6 @@ The calendar appears as a popup overlay when clicking on the date input field (p
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
     navigation: true,
     popup: true,
     select: (e) => {
@@ -19460,6 +19424,165 @@ The calendar appears as a popup overlay when clicking on the date input field (p
         },
         source: {
           type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -19720,165 +19843,6 @@ The calendar appears as a popup overlay when clicking on the date input field (p
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
           crossOrigin: "anonymous",
@@ -19926,24 +19890,6 @@ interfaces.
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
-    popup: true,
     select: (e) => {
       console.log(e.detail);
     },
@@ -19960,6 +19906,165 @@ interfaces.
         },
         source: {
           type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -20225,165 +20330,6 @@ interfaces.
           crossOrigin: "anonymous",
         },
       },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
     ],
   });
 
@@ -20398,8 +20344,8 @@ interfaces.
 #### DateWithInitDate
 
 Date display component with init date
-This example shows the `<eox-timecontrol-date>` component with the `initDate` attribute enabled,
-which sets the initial date range.
+This example shows the `<eox-timecontrol-date>` component with the `initDate` property added,
+which sets the initial date range. Also, it uses the date `format` of `D. MMMM YYYY`.
 
 ```html
 <eox-timecontrol for="eox-map#date-with-init-date">
@@ -20417,24 +20363,6 @@ which sets the initial date range.
 
   // Assign properties
   Object.assign(eoxTimecontrol, {
-    layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
     initDate: ["2021-02-28"],
     select: (e) => {
       console.log(e.detail);
@@ -20457,6 +20385,165 @@ which sets the initial date range.
       {
         type: "Tile",
         properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
           id: "AWS_NO2-VISUALISATION",
           name: "NO2 Visualisation",
           timeControlValues: [
@@ -20717,170 +20804,11 @@ which sets the initial date range.
           crossOrigin: "anonymous",
         },
       },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
     ],
   });
 
   Object.assign(eoxTimecontrolDate, {
-    format: "YYYY-MM-DD",
+    format: "D. MMMM YYYY",
   });
 </script>
 
@@ -20889,7 +20817,7 @@ which sets the initial date range.
 #### DateWithNavigation
 
 Date display component with navigation buttons for stepping through available dates
-This example shows the `<eox-timecontrol-date>` component with the `navigation` attribute enabled,
+This example shows the `<eox-timecontrol-date>` component with the `navigation` property enabled,
 which adds previous/next buttons to step through available dates. Clicking these buttons will
 automatically update the selected date range and apply it to the map layers.
 
@@ -20910,24 +20838,6 @@ automatically update the selected date range and apply it to the map layers.
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
-    navigation: true,
   });
 
   Object.assign(eoxMap, {
@@ -20941,6 +20851,165 @@ automatically update the selected date range and apply it to the map layers.
         },
         source: {
           type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -21201,165 +21270,6 @@ automatically update the selected date range and apply it to the map layers.
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
           crossOrigin: "anonymous",
@@ -21494,21 +21404,6 @@ time step, or when using map rendering services that require special handling.
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
     titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
     externalMapRendering: true,
     animate: true,
     select: (e) => {
@@ -21638,28 +21533,6 @@ selector string (e.g., `"eox-map#primary"`) or a direct reference to the map ele
   const eoxMap = document.querySelector("eox-map");
   const eoxTimecontrolDate = document.querySelector("eox-timecontrol-date");
 
-  // Assign properties
-  Object.assign(eoxTimecontrol, {
-    layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
-  });
-
   Object.assign(eoxMap, {
     zoom: 5,
     center: [1000000, 6000000],
@@ -21671,6 +21544,165 @@ selector string (e.g., `"eox-map#primary"`) or a direct reference to the map ele
         },
         source: {
           type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -21931,165 +21963,6 @@ selector string (e.g., `"eox-map#primary"`) or a direct reference to the map ele
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
           crossOrigin: "anonymous",
@@ -22136,24 +22009,6 @@ the map layers.
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
-    navigation: true,
   });
 
   Object.assign(eoxMap, {
@@ -22167,6 +22022,165 @@ the map layers.
         },
         source: {
           type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -22427,165 +22441,6 @@ the map layers.
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
           crossOrigin: "anonymous",
@@ -22645,23 +22500,6 @@ comprehensive time navigation interface.
   // Assign properties
   Object.assign(eoxTimecontrol, {
     layerIdKey: "id",
-    titleKey: "name",
-    filters: [
-      {
-        key: "cloudCoverage",
-        title: "Cloud Coverage",
-        type: "range",
-        expanded: true,
-        min: 0,
-        max: 100,
-        step: 5,
-        state: {
-          min: 0,
-          max: 40,
-        },
-      },
-    ],
-    externalMapRendering: false,
     select: (e) => {
       console.log(e.detail);
     },
@@ -22678,6 +22516,165 @@ comprehensive time navigation interface.
         },
         source: {
           type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
         },
       },
       {
@@ -22938,165 +22935,6 @@ comprehensive time navigation interface.
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
           crossOrigin: "anonymous",
@@ -23184,6 +23022,165 @@ The event is dispatched with the start and end dates of the view range.
       {
         type: "Tile",
         properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
           id: "AWS_NO2-VISUALISATION",
           name: "NO2 Visualisation",
           timeControlValues: [
@@ -23439,165 +23436,6 @@ The event is dispatched with the start and end dates of the view range.
           url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
           params: {
             LAYERS: "AWS_NO2-VISUALISATION",
-            TIME: "2022-12-05",
-          },
-          crossOrigin: "anonymous",
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "AWS_VIS_WIND_V_10M",
-          name: "Wind Visualisation 10M",
-          timeControlValues: [
-            {
-              date: "2022-12-05",
-              cloudCoverage: 20,
-            },
-            {
-              date: "2022-12-07",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2022-12-08",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2022-12-09",
-              cloudCoverage: 65,
-            },
-            {
-              date: "2022-12-10",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2022-12-11",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2022-12-12",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2022-12-13",
-              cloudCoverage: 63,
-            },
-            {
-              date: "2023-02-01",
-              cloudCoverage: 33,
-            },
-            {
-              date: "2023-02-02",
-              cloudCoverage: 28,
-            },
-            {
-              date: "2023-02-03",
-              cloudCoverage: 31,
-            },
-            {
-              date: "2023-02-04",
-              cloudCoverage: 36,
-            },
-            {
-              date: "2023-02-05",
-              cloudCoverage: 42,
-            },
-            {
-              date: "2023-02-06",
-              cloudCoverage: 38,
-            },
-            {
-              date: "2023-02-07",
-              cloudCoverage: 34,
-            },
-            {
-              date: "2023-02-08",
-              cloudCoverage: 40,
-            },
-            {
-              date: "2023-02-09",
-              cloudCoverage: 45,
-            },
-            {
-              date: "2023-02-10",
-              cloudCoverage: 39,
-            },
-            {
-              date: "2023-04-01",
-              cloudCoverage: 52,
-            },
-            {
-              date: "2023-04-02",
-              cloudCoverage: 48,
-            },
-            {
-              date: "2023-04-03",
-              cloudCoverage: 55,
-            },
-            {
-              date: "2023-04-04",
-              cloudCoverage: 61,
-            },
-            {
-              date: "2023-04-05",
-              cloudCoverage: 58,
-            },
-            {
-              date: "2023-04-06",
-              cloudCoverage: 64,
-            },
-            {
-              date: "2023-04-07",
-              cloudCoverage: 59,
-            },
-            {
-              date: "2023-04-08",
-              cloudCoverage: 67,
-            },
-            {
-              date: "2023-04-09",
-              cloudCoverage: 71,
-            },
-            {
-              date: "2023-04-10",
-              cloudCoverage: 68,
-            },
-            {
-              date: "2023-04-11",
-              cloudCoverage: 73,
-            },
-            {
-              date: "2023-04-12",
-              cloudCoverage: 69,
-            },
-            {
-              date: "2023-04-13",
-              cloudCoverage: 75,
-            },
-            {
-              date: "2023-04-14",
-              cloudCoverage: 72,
-            },
-            {
-              date: "2023-04-15",
-              cloudCoverage: 66,
-            },
-            {
-              date: "2023-04-16",
-              cloudCoverage: 70,
-            },
-            {
-              date: "2023-04-17",
-              cloudCoverage: 74,
-            },
-          ],
-          timeControlProperty: "TIME",
-        },
-        source: {
-          type: "TileWMS",
-          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-          params: {
-            LAYERS: "AWS_VIS_WIND_V_10M",
             TIME: "2022-12-05",
           },
           crossOrigin: "anonymous",

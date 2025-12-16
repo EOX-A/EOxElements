@@ -8,10 +8,6 @@ import { STORY_ARGS } from "../src/enums";
  */
 const DateWithInitDateStory = {
   args: {
-    layerIdKey: STORY_ARGS.layerIdKey,
-    titleKey: STORY_ARGS.titleKey,
-    filters: STORY_ARGS.filters,
-    externalMapRendering: STORY_ARGS.externalMapRendering,
     for: "eox-map#date-with-init-date",
     initDate: ["2021-02-28"],
     storyAdditionalComponents: {
@@ -24,7 +20,7 @@ const DateWithInitDateStory = {
       "eox-timecontrol-date": {
         storyImport: false,
         storySlot: true,
-        format: STORY_ARGS.format,
+        format: "D. MMMM YYYY",
       },
     },
     select: (e) => {

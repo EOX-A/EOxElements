@@ -62,6 +62,167 @@ export const STORY_ARGS = {
     {
       type: "Tile",
       properties: {
+        id: "AWS_VIS_WIND_V_10M",
+        name: "Wind Visualisation 10M",
+        timeControlValues: [
+          {
+            date: "2022-12-05",
+            cloudCoverage: 20,
+          },
+          {
+            date: "2022-12-07",
+            cloudCoverage: 68,
+          },
+          {
+            date: "2022-12-08",
+            cloudCoverage: 72,
+          },
+          {
+            date: "2022-12-09",
+            cloudCoverage: 65,
+          },
+          {
+            date: "2022-12-10",
+            cloudCoverage: 58,
+          },
+          {
+            date: "2022-12-11",
+            cloudCoverage: 61,
+          },
+          {
+            date: "2022-12-12",
+            cloudCoverage: 55,
+          },
+          {
+            date: "2022-12-13",
+            cloudCoverage: 63,
+          },
+          // Second continuous range: 10 days starting from 2023-02-01
+          {
+            date: "2023-02-01",
+            cloudCoverage: 33,
+          },
+          {
+            date: "2023-02-02",
+            cloudCoverage: 28,
+          },
+          {
+            date: "2023-02-03",
+            cloudCoverage: 31,
+          },
+          {
+            date: "2023-02-04",
+            cloudCoverage: 36,
+          },
+          {
+            date: "2023-02-05",
+            cloudCoverage: 42,
+          },
+          {
+            date: "2023-02-06",
+            cloudCoverage: 38,
+          },
+          {
+            date: "2023-02-07",
+            cloudCoverage: 34,
+          },
+          {
+            date: "2023-02-08",
+            cloudCoverage: 40,
+          },
+          {
+            date: "2023-02-09",
+            cloudCoverage: 45,
+          },
+          {
+            date: "2023-02-10",
+            cloudCoverage: 39,
+          },
+          // Third continuous range: 17 days starting from 2023-04-01
+          {
+            date: "2023-04-01",
+            cloudCoverage: 52,
+          },
+          {
+            date: "2023-04-02",
+            cloudCoverage: 48,
+          },
+          {
+            date: "2023-04-03",
+            cloudCoverage: 55,
+          },
+          {
+            date: "2023-04-04",
+            cloudCoverage: 61,
+          },
+          {
+            date: "2023-04-05",
+            cloudCoverage: 58,
+          },
+          {
+            date: "2023-04-06",
+            cloudCoverage: 64,
+          },
+          {
+            date: "2023-04-07",
+            cloudCoverage: 59,
+          },
+          {
+            date: "2023-04-08",
+            cloudCoverage: 67,
+          },
+          {
+            date: "2023-04-09",
+            cloudCoverage: 71,
+          },
+          {
+            date: "2023-04-10",
+            cloudCoverage: 68,
+          },
+          {
+            date: "2023-04-11",
+            cloudCoverage: 73,
+          },
+          {
+            date: "2023-04-12",
+            cloudCoverage: 69,
+          },
+          {
+            date: "2023-04-13",
+            cloudCoverage: 75,
+          },
+          {
+            date: "2023-04-14",
+            cloudCoverage: 72,
+          },
+          {
+            date: "2023-04-15",
+            cloudCoverage: 66,
+          },
+          {
+            date: "2023-04-16",
+            cloudCoverage: 70,
+          },
+          {
+            date: "2023-04-17",
+            cloudCoverage: 74,
+          },
+        ],
+        timeControlProperty: "TIME",
+      },
+      source: {
+        type: "TileWMS",
+        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+        params: {
+          LAYERS: "AWS_VIS_WIND_V_10M",
+          TIME: "2022-12-05",
+        },
+        crossOrigin: "anonymous",
+      },
+    },
+    {
+      type: "Tile",
+      properties: {
         id: "AWS_NO2-VISUALISATION",
         name: "NO2 Visualisation",
         timeControlValues: [
@@ -317,167 +478,6 @@ export const STORY_ARGS = {
         url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
         params: {
           LAYERS: "AWS_NO2-VISUALISATION",
-          TIME: "2022-12-05",
-        },
-        crossOrigin: "anonymous",
-      },
-    },
-    {
-      type: "Tile",
-      properties: {
-        id: "AWS_VIS_WIND_V_10M",
-        name: "Wind Visualisation 10M",
-        timeControlValues: [
-          {
-            date: "2022-12-05",
-            cloudCoverage: 20,
-          },
-          {
-            date: "2022-12-07",
-            cloudCoverage: 68,
-          },
-          {
-            date: "2022-12-08",
-            cloudCoverage: 72,
-          },
-          {
-            date: "2022-12-09",
-            cloudCoverage: 65,
-          },
-          {
-            date: "2022-12-10",
-            cloudCoverage: 58,
-          },
-          {
-            date: "2022-12-11",
-            cloudCoverage: 61,
-          },
-          {
-            date: "2022-12-12",
-            cloudCoverage: 55,
-          },
-          {
-            date: "2022-12-13",
-            cloudCoverage: 63,
-          },
-          // Second continuous range: 10 days starting from 2023-02-01
-          {
-            date: "2023-02-01",
-            cloudCoverage: 33,
-          },
-          {
-            date: "2023-02-02",
-            cloudCoverage: 28,
-          },
-          {
-            date: "2023-02-03",
-            cloudCoverage: 31,
-          },
-          {
-            date: "2023-02-04",
-            cloudCoverage: 36,
-          },
-          {
-            date: "2023-02-05",
-            cloudCoverage: 42,
-          },
-          {
-            date: "2023-02-06",
-            cloudCoverage: 38,
-          },
-          {
-            date: "2023-02-07",
-            cloudCoverage: 34,
-          },
-          {
-            date: "2023-02-08",
-            cloudCoverage: 40,
-          },
-          {
-            date: "2023-02-09",
-            cloudCoverage: 45,
-          },
-          {
-            date: "2023-02-10",
-            cloudCoverage: 39,
-          },
-          // Third continuous range: 17 days starting from 2023-04-01
-          {
-            date: "2023-04-01",
-            cloudCoverage: 52,
-          },
-          {
-            date: "2023-04-02",
-            cloudCoverage: 48,
-          },
-          {
-            date: "2023-04-03",
-            cloudCoverage: 55,
-          },
-          {
-            date: "2023-04-04",
-            cloudCoverage: 61,
-          },
-          {
-            date: "2023-04-05",
-            cloudCoverage: 58,
-          },
-          {
-            date: "2023-04-06",
-            cloudCoverage: 64,
-          },
-          {
-            date: "2023-04-07",
-            cloudCoverage: 59,
-          },
-          {
-            date: "2023-04-08",
-            cloudCoverage: 67,
-          },
-          {
-            date: "2023-04-09",
-            cloudCoverage: 71,
-          },
-          {
-            date: "2023-04-10",
-            cloudCoverage: 68,
-          },
-          {
-            date: "2023-04-11",
-            cloudCoverage: 73,
-          },
-          {
-            date: "2023-04-12",
-            cloudCoverage: 69,
-          },
-          {
-            date: "2023-04-13",
-            cloudCoverage: 75,
-          },
-          {
-            date: "2023-04-14",
-            cloudCoverage: 72,
-          },
-          {
-            date: "2023-04-15",
-            cloudCoverage: 66,
-          },
-          {
-            date: "2023-04-16",
-            cloudCoverage: 70,
-          },
-          {
-            date: "2023-04-17",
-            cloudCoverage: 74,
-          },
-        ],
-        timeControlProperty: "TIME",
-      },
-      source: {
-        type: "TileWMS",
-        url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
-        params: {
-          LAYERS: "AWS_VIS_WIND_V_10M",
           TIME: "2022-12-05",
         },
         crossOrigin: "anonymous",

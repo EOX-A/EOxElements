@@ -9,11 +9,6 @@ import { STORY_ARGS } from "../src/enums";
 const DatePickerPopupStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
-    titleKey: STORY_ARGS.titleKey,
-    filters: STORY_ARGS.filters,
-    externalMapRendering: STORY_ARGS.externalMapRendering,
-    navigation: true,
-    popup: true,
     for: "eox-map#date-picker-popup",
     select: (e) => {
       console.log(e.detail);
