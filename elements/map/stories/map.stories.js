@@ -42,7 +42,6 @@ export default {
   component: "eox-map",
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
-      style="width: 100%; height: 300px;"
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}
