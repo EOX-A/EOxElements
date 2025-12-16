@@ -11147,7 +11147,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-16T08:22:02.237Z",
+              default: "2025-12-16T08:35:55.670Z",
               options: {
                 hidden: true,
               },
@@ -14984,7 +14984,7 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
         },
       },
     ],
-    zoom: 7,
+    zoom: 3,
   });
 </script>
 
@@ -15465,13 +15465,17 @@ Useful for maps embedded in scrollable websites.
 #### Primary
 
 @param {Object.<string, unknown>} args **/ (args) => html`
+<style>
+#story--elements-eox-map--primary--primary-inner eox-map {
+height: 300px;
+}
+</style>
 <eox-map
 .center=${args.center}
 .controls=${args.controls}
 .layers=${args.layers}
 .projection=${args.projection}
 .zoom=${args.zoom}
-style="min-height: 300px";
 ></eox-map>
 `,
 };
@@ -17137,7 +17141,7 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
         },
       },
     ],
-    zoom: 7,
+    zoom: 3,
   });
 </script>
 
@@ -17618,13 +17622,17 @@ Useful for maps embedded in scrollable websites.
 #### Primary
 
 @param {Object.<string, unknown>} args **/ (args) => html`
+<style>
+#story--elements-eox-map--primary--primary-inner eox-map {
+height: 300px;
+}
+</style>
 <eox-map
 .center=${args.center}
 .controls=${args.controls}
 .layers=${args.layers}
 .projection=${args.projection}
 .zoom=${args.zoom}
-style="min-height: 300px";
 ></eox-map>
 `,
 };

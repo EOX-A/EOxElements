@@ -8,7 +8,7 @@
 
 > **TimeControlDateOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:96](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/timecontrol/src/types.ts#L96)
+Defined in: [elements/timecontrol/src/types.ts:96](https://github.com/EOX-A/EOxElements/blob/4316322ee2b00d6685b39fbf6ecfde373281a0de/elements/timecontrol/src/types.ts#L96)
 
 Configuration options for the time control date component.
 
@@ -18,7 +18,7 @@ Configuration options for the time control date component.
 
 > `optional` **format**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:100](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/timecontrol/src/types.ts#L100)
+Defined in: [elements/timecontrol/src/types.ts:100](https://github.com/EOX-A/EOxElements/blob/4316322ee2b00d6685b39fbf6ecfde373281a0de/elements/timecontrol/src/types.ts#L100)
 
 Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
@@ -28,7 +28,7 @@ Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
 > `optional` **navigation**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:104](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/timecontrol/src/types.ts#L104)
+Defined in: [elements/timecontrol/src/types.ts:104](https://github.com/EOX-A/EOxElements/blob/4316322ee2b00d6685b39fbf6ecfde373281a0de/elements/timecontrol/src/types.ts#L104)
 
 Whether to show navigation buttons (previous/next).
 
@@ -38,6 +38,6 @@ Whether to show navigation buttons (previous/next).
 
 > `optional` **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:108](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/timecontrol/src/types.ts#L108)
+Defined in: [elements/timecontrol/src/types.ts:108](https://github.com/EOX-A/EOxElements/blob/4316322ee2b00d6685b39fbf6ecfde373281a0de/elements/timecontrol/src/types.ts#L108)
 
 Whether to disable default styling.

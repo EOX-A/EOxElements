@@ -42,6 +42,7 @@ const MapSyncStory = {
       }
       .container {
         display: flex;
+        height: 100%;
       }
     </style>
     <div class="container">
