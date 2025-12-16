@@ -21,6 +21,9 @@ class MockedDrawTools extends HTMLElement {
     this._format = "feature";
     this.updateComplete = new Promise((resolve) => resolve(true));
     this.startDrawing = () => {};
+    this.handleFeatureChange = (features) => {
+      this._features = features;
+    };
   }
 
   // Getters and setters for properties

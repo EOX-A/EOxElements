@@ -9,7 +9,7 @@ import {
   isGeoJSON,
   setAttributesAndProperties,
   isLine,
-  bboxesToFeatures,
+  valueToFeatureCollection,
 } from "./utils";
 // import "@eox/drawtools";
 
@@ -114,22 +114,21 @@ export class SpatialEditor extends AbstractEditor {
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
       let firstLoad = false;
       eoxmapEl.addEventListener("loadend", () => {
-        const pathParts = this.path.split(".").slice(1);
-        const startVals =
-          this.defaults.startVals[this.key] ||
-          pathParts.reduce((obj, part) => obj?.[part], this.defaults.startVals);
+        const currentVal = this.value;
 
-        if (!firstLoad && startVals && isBox(this.schema)) {
+        if (!firstLoad && currentVal) {
           firstLoad = true;
-          const existingBboxes = bboxesToFeatures(startVals);
-          drawtoolsEl.handleFeatureChange(
-            JSON.stringify({
-              type: "FeatureCollection",
-              features: existingBboxes,
-            }),
-            true,
-            false,
+          const featureCollection = valueToFeatureCollection(
+            currentVal,
+            this.schema,
           );
+          if (featureCollection.features.length > 0) {
+            drawtoolsEl.handleFeatureChange(
+              JSON.stringify(featureCollection),
+              true,
+              false,
+            );
+          }
         }
       });
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
