@@ -40,12 +40,6 @@ const DatePickerStandaloneStory = {
       .center=${args.storyAdditionalComponents["eox-map"].center}
       .layers=${args.storyAdditionalComponents["eox-map"].layers}
     ></eox-map>
-    <eox-map
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
-      .center=${args.storyAdditionalComponents["eox-map"].center}
-      .layers=${args.storyAdditionalComponents["eox-map"].layers}
-    ></eox-map>
     <eox-timecontrol
       .for=${args.for}
       .layerIdKey=${args.layerIdKey}
