@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.5.0...jsonform-v1.6.0) (2025-12-16)
+
+
+### Features
+
+* **style:** Flex layout ([#2031](https://github.com/EOX-A/EOxElements/issues/2031)) ([ab3a665](https://github.com/EOX-A/EOxElements/commit/ab3a66580050c95c249dfd7e61e102ab02853280))
+
+
+### Bug Fixes
+
+* Spatial startval loading ([#2033](https://github.com/EOX-A/EOxElements/issues/2033)) ([388739f](https://github.com/EOX-A/EOxElements/commit/388739fd2b9b5ac7d9f95d73ac6f337af135b774))
+
 ## [1.5.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.4.5...jsonform-v1.5.0) (2025-11-24)
 
 
