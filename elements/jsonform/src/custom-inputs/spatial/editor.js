@@ -269,7 +269,7 @@ export class SpatialEditor extends AbstractEditor {
           }
 
           this.onChange(true);
-          this.jsoneditor.showValidationErrors();
+          this.jsoneditor?.showValidationErrors();
         }
       ),
     );
