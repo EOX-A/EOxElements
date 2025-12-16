@@ -10,15 +10,22 @@
   "version": "1.0.0",
   "packages": [
     {
-      "registry_type": "npm",
-      "registry_base_url": "https://registry.npmjs.org",
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@eox/elements-mcp-server",
       "version": "1.0.0",
       "transport": {
         "type": "streamable-http",
-        "url": "http://localhost:3000"
+        "url": "http://localhost:{--port}/mcp"
       },
-      "environment_variables": []
+      "packageArguments": [
+        {
+          "type": "named",
+          "name": "--port",
+          "description": "Port for the server to listen on",
+          "default": "3000"
+        }
+      ]
     }
   ]
 }
