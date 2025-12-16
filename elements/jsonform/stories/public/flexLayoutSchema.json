@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "properties": {
+    "polygons": {
+      "title": "Multi polygon",
+      "type": "array",
+      "format": "polygons",
+      "options": {
+        "layout": "flex",
+        "map": {
+          "style": "width: 400px; height: 300px;"
+        }
+      }
+    }
+  }
+}
