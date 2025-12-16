@@ -1,5 +1,6 @@
 {
   "name": "@eox/elements-mcp-server",
+  "mcpName": "io.github.EOX-A/EOxElements",
   "version": "1.0.0",
   "type": "module",
   "repository": {

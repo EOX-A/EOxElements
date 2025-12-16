@@ -44,3 +44,6 @@ coverage
 elements/map/src/eoxlayer-schema.json
 .storybook/public/typedoc_html
 .storybook/public/typedoc_markdown
+
+.mcpregistry_github_token
+.mcpregistry_registry_token

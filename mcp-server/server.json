@@ -1,0 +1,24 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.EOX-A/EOxElements",
+  "description": "A server to provide information about EOxElements custom elements for coding agents.",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/EOX-A/EOxElements",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registry_type": "npm",
+      "registry_base_url": "https://registry.npmjs.org",
+      "identifier": "@eox/elements-mcp-server",
+      "version": "1.0.0",
+      "transport": {
+        "type": "streamable-http",
+        "url": "http://localhost:3000"
+      },
+      "environment_variables": []
+    }
+  ]
+}
