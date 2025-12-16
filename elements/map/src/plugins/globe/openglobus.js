@@ -245,7 +245,7 @@ export const disableGlobe = (map) => {
           finalCameraPosition.lat,
         ];
         // Transform from EPSG:4326 (globe's projection) to the OL map's current projection
-        const newCenter = map.transform(
+        const newCenter = transform(
           centerFromGlobe,
           "EPSG:4326",
           map.OLprojection, // Use the internal OL projection here
