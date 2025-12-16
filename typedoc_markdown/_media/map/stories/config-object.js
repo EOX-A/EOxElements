@@ -17,10 +17,9 @@ const ConfigObjectStory = {
         zoom: 9,
       },
     },
-    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
-    <eox-map .config=${args.config} style=${args.style}></eox-map>
+    <eox-map .config=${args.config}></eox-map>
   `,
 };
 

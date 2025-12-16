@@ -11147,7 +11147,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-16T08:09:27.297Z",
+              default: "2025-12-16T08:18:12.705Z",
               options: {
                 hidden: true,
               },
@@ -14012,7 +14012,7 @@ animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/modu
 In the Controls panel, try changing the `zoom` or `center` properties and see how the map animates to the new view.
 
 ```html
-<eox-map style="width: 100%; height: 300px"></eox-map>
+<eox-map></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -14265,7 +14265,7 @@ import("ol/View").FitOptions;
 ```
 
 ```html
-<eox-map style="width: 100%; height: 300px"></eox-map>
+<eox-map></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -14353,7 +14353,7 @@ The coordinates can be transformed to any other projection by setting the `proje
 The displayed coordinates decimal places can be set via the `precision` property.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <custom-coordinates-tooltip is="eox-map-tooltip"></custom-coordinates-tooltip>
 </eox-map>
 
@@ -14561,7 +14561,7 @@ Instead of the built-in `eox-map-tooltip`, it is possible to use any other (cust
 This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
 </eox-map>
 
@@ -14773,7 +14773,7 @@ Renders Geolocation Control in `eox-map`
 The `eox-map` tooltip can also be used to display information about a feature in a (wms) Tile layers on click
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -15175,7 +15175,7 @@ Optionally, passing a second argument allows to set the [`fitOptions`](https://o
 adding view animation to the selection.
 
 ```html
-<eox-map id="highlightAndAnimate" style="width: 100%; height: 300px"></eox-map>
+<eox-map id="highlightAndAnimate"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -15430,7 +15430,7 @@ the map doesnt mouse-scroll (on desktop) or drag-touch (on tab/mobile). Pressing
 Useful for maps embedded in scrollable websites.
 
 ```html
-<eox-map style="width: 100%; height: 300px"></eox-map>
+<eox-map></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -15516,7 +15516,7 @@ In the Controls panel, try changing the projection from the default `EPSG:3857` 
 how the map instantly updates.
 
 ```html
-<eox-map projection="EPSG:3857" style="width: 100%; height: 300px"></eox-map>
+<eox-map projection="EPSG:3857"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -15681,7 +15681,7 @@ Note that if multiple interactions are registered (e.g. `pointermove` and `singl
 the `pointermove` interaction will have higher priority for the tooltip.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -15739,7 +15739,7 @@ Additionally, the entire feature is passed as a second argument, for cases of mo
 transformation in which needs access to the entire feature.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -16164,7 +16164,7 @@ animation options for `zoomExtent`: https://openlayers.org/en/latest/apidoc/modu
 In the Controls panel, try changing the `zoom` or `center` properties and see how the map animates to the new view.
 
 ```html
-<eox-map style="width: 100%; height: 300px"></eox-map>
+<eox-map></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16417,7 +16417,7 @@ import("ol/View").FitOptions;
 ```
 
 ```html
-<eox-map style="width: 100%; height: 300px"></eox-map>
+<eox-map></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -16505,7 +16505,7 @@ The coordinates can be transformed to any other projection by setting the `proje
 The displayed coordinates decimal places can be set via the `precision` property.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <custom-coordinates-tooltip is="eox-map-tooltip"></custom-coordinates-tooltip>
 </eox-map>
 
@@ -16713,7 +16713,7 @@ Instead of the built-in `eox-map-tooltip`, it is possible to use any other (cust
 This custom tooltip is updated each time a feature is selected by setting its `feature` property; it can also be updated manually by e.g. hooking into the `@select` event.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
 </eox-map>
 
@@ -16925,7 +16925,7 @@ Renders Geolocation Control in `eox-map`
 The `eox-map` tooltip can also be used to display information about a feature in a (wms) Tile layers on click
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -17327,7 +17327,7 @@ Optionally, passing a second argument allows to set the [`fitOptions`](https://o
 adding view animation to the selection.
 
 ```html
-<eox-map id="highlightAndAnimate" style="width: 100%; height: 300px"></eox-map>
+<eox-map id="highlightAndAnimate"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17582,7 +17582,7 @@ the map doesnt mouse-scroll (on desktop) or drag-touch (on tab/mobile). Pressing
 Useful for maps embedded in scrollable websites.
 
 ```html
-<eox-map style="width: 100%; height: 300px"></eox-map>
+<eox-map></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17668,7 +17668,7 @@ In the Controls panel, try changing the projection from the default `EPSG:3857` 
 how the map instantly updates.
 
 ```html
-<eox-map projection="EPSG:3857" style="width: 100%; height: 300px"></eox-map>
+<eox-map projection="EPSG:3857"></eox-map>
 
 <script type="module">
   import "@eox/map/dist/eox-map.js";
@@ -17833,7 +17833,7 @@ Note that if multiple interactions are registered (e.g. `pointermove` and `singl
 the `pointermove` interaction will have higher priority for the tooltip.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 
@@ -17891,7 +17891,7 @@ Additionally, the entire feature is passed as a second argument, for cases of mo
 transformation in which needs access to the entire feature.
 
 ```html
-<eox-map style="width: 100%; height: 300px">
+<eox-map>
   <eox-map-tooltip></eox-map-tooltip>
 </eox-map>
 

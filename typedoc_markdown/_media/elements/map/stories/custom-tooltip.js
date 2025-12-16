@@ -57,7 +57,6 @@ const CustomTooltipStory = {
     ],
     center: [15, 48],
     zoom: 4,
-    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <script>
@@ -68,7 +67,6 @@ const CustomTooltipStory = {
       .controls=${args.controls}
       .layers=${args.layers}
       .zoom=${args.zoom}
-      style=${args.style}
     >
       <custom-tooltip is="eox-map-tooltip"></custom-tooltip>
     </eox-map>

@@ -128,7 +128,6 @@ const CoordinatesCustomTooltipsStory = {
     ],
     center: [3735055, 1886786],
     zoom: 8,
-    style: "width: 100%; height: 300px;",
     storySlotContent: `<custom-coordinates-tooltip is="eox-map-tooltip"></custom-coordinates-tooltip>`,
     storyCodeBefore: `customElements.define(
   "custom-coordinates-tooltip",
@@ -197,7 +196,6 @@ const falseColor = {
       .controls=${args.controls}
       .layers=${args.layers}
       .zoom=${args.zoom}
-      style=${args.style}
     >
       <custom-coordinates-tooltip
         is="eox-map-tooltip"
