@@ -9970,6 +9970,42 @@ in an array if features, whereas the format `feature` allows a single feature to
 
 ```
 
+#### FlexLayout
+
+Flex Layout example. Demonstrates how to use flex layout for arranging form elements side-by-side.
+Shows how to configure the layout of the form using schema options.
+
+```html
+<eox-jsonform></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      properties: {
+        polygons: {
+          title: "Multi polygon",
+          type: "array",
+          format: "polygons",
+          options: {
+            layout: "flex",
+            map: {
+              style: "width: 400px; height: 300px;",
+            },
+          },
+        },
+      },
+    },
+  });
+</script>
+
+```
+
 #### Geojson
 
 GeoJSON example. Returns drawn features as GeoJSON.
@@ -11147,7 +11183,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-16T12:43:38.038Z",
+              default: "2025-12-16T20:15:28.704Z",
               options: {
                 hidden: true,
               },
