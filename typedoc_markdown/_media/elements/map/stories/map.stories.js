@@ -47,6 +47,7 @@ export default {
       .layers=${args.layers}
       .projection=${args.projection}
       .zoom=${args.zoom}
+      style="min-height: 300px";
     ></eox-map>
   `,
 };

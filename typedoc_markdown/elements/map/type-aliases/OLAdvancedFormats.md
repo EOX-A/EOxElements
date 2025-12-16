@@ -8,7 +8,7 @@
 
 > **OLAdvancedFormats** = `object`
 
-Defined in: [elements/map/src/layers.ts:6](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L6)
+Defined in: [elements/map/src/layers.ts:6](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L6)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/layers.ts:6](https://github.com/EOX-A/EOxElements/
 
 > **EsriJSON**: `default`
 
-Defined in: [elements/map/src/layers.ts:7](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L7)
+Defined in: [elements/map/src/layers.ts:7](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L7)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/layers.ts:7](https://github.com/EOX-A/EOxElements/
 
 > **GML**: `default`
 
-Defined in: [elements/map/src/layers.ts:8](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L8)
+Defined in: [elements/map/src/layers.ts:8](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L8)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/layers.ts:8](https://github.com/EOX-A/EOxElements/
 
 > **GPX**: `default`
 
-Defined in: [elements/map/src/layers.ts:9](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L9)
+Defined in: [elements/map/src/layers.ts:9](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L9)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/layers.ts:9](https://github.com/EOX-A/EOxElements/
 
 > **IGC**: `default`
 
-Defined in: [elements/map/src/layers.ts:10](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L10)
+Defined in: [elements/map/src/layers.ts:10](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L10)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [elements/map/src/layers.ts:10](https://github.com/EOX-A/EOxElements
 
 > **IIIFInfo**: `default`
 
-Defined in: [elements/map/src/layers.ts:11](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L11)
+Defined in: [elements/map/src/layers.ts:11](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L11)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [elements/map/src/layers.ts:11](https://github.com/EOX-A/EOxElements
 
 > **KML**: `default`
 
-Defined in: [elements/map/src/layers.ts:12](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L12)
+Defined in: [elements/map/src/layers.ts:12](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L12)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [elements/map/src/layers.ts:12](https://github.com/EOX-A/EOxElements
 
 > **OWS**: `default`
 
-Defined in: [elements/map/src/layers.ts:13](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L13)
+Defined in: [elements/map/src/layers.ts:13](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L13)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [elements/map/src/layers.ts:13](https://github.com/EOX-A/EOxElements
 
 > **Polyline**: `default`
 
-Defined in: [elements/map/src/layers.ts:14](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L14)
+Defined in: [elements/map/src/layers.ts:14](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L14)
 
 ***
 
@@ -80,7 +80,7 @@ Defined in: [elements/map/src/layers.ts:14](https://github.com/EOX-A/EOxElements
 
 > **TopoJSON**: `default`
 
-Defined in: [elements/map/src/layers.ts:15](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L15)
+Defined in: [elements/map/src/layers.ts:15](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L15)
 
 ***
 
@@ -88,7 +88,7 @@ Defined in: [elements/map/src/layers.ts:15](https://github.com/EOX-A/EOxElements
 
 > **WFS**: `default`
 
-Defined in: [elements/map/src/layers.ts:16](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L16)
+Defined in: [elements/map/src/layers.ts:16](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L16)
 
 ***
 
@@ -96,7 +96,7 @@ Defined in: [elements/map/src/layers.ts:16](https://github.com/EOX-A/EOxElements
 
 > **WKB**: `default`
 
-Defined in: [elements/map/src/layers.ts:17](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L17)
+Defined in: [elements/map/src/layers.ts:17](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L17)
 
 ***
 
@@ -104,7 +104,7 @@ Defined in: [elements/map/src/layers.ts:17](https://github.com/EOX-A/EOxElements
 
 > **WKT**: `default`
 
-Defined in: [elements/map/src/layers.ts:18](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L18)
+Defined in: [elements/map/src/layers.ts:18](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L18)
 
 ***
 
@@ -112,7 +112,7 @@ Defined in: [elements/map/src/layers.ts:18](https://github.com/EOX-A/EOxElements
 
 > **WMSCapabilities**: `default`
 
-Defined in: [elements/map/src/layers.ts:19](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L19)
+Defined in: [elements/map/src/layers.ts:19](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L19)
 
 ***
 
@@ -120,7 +120,7 @@ Defined in: [elements/map/src/layers.ts:19](https://github.com/EOX-A/EOxElements
 
 > **WMSGetFeatureInfo**: `default`
 
-Defined in: [elements/map/src/layers.ts:20](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L20)
+Defined in: [elements/map/src/layers.ts:20](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L20)
 
 ***
 
@@ -128,4 +128,4 @@ Defined in: [elements/map/src/layers.ts:20](https://github.com/EOX-A/EOxElements
 
 > **WMTSCapabilities**: `default`
 
-Defined in: [elements/map/src/layers.ts:21](https://github.com/EOX-A/EOxElements/blob/bc8f7d810783dc1dc81766d29876c16cc515a3f6/elements/map/src/layers.ts#L21)
+Defined in: [elements/map/src/layers.ts:21](https://github.com/EOX-A/EOxElements/blob/0ea23ee03887b141768da9844b8e373f767fd82a/elements/map/src/layers.ts#L21)
