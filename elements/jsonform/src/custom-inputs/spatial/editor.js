@@ -31,6 +31,11 @@ export class SpatialEditor extends AbstractEditor {
     const drawToolsOptions = this.schema?.options?.drawtools ?? {};
     const mapOptions = this.schema?.options?.map ?? {};
 
+    if (this.schema?.options?.layout === "flex") {
+      this.container.style.display = "flex";
+      this.container.style.gap = "10px";
+    }
+
     // Create label and description elements if not in compact mode
     if (!options.compact)
       this.header = this.label = theme.getFormInputLabel(
