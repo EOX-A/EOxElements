@@ -15,3 +15,4 @@ export { default as loadCustomEditorInterfaceTest } from "./load-custom-editor-i
 export { default as loadSubmitButtonTest } from "./submit-button";
 export { default as loadShowOptInPropertiesTest } from "./load-show-opt-in-properties";
 export { default as loadButtonsEditorTest } from "./load-buttons-editor";
+export { default as loadSpatialValuesTest } from "./load-spatial-values";
