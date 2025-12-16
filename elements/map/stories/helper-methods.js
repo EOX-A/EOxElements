@@ -63,10 +63,7 @@ eoxMap.addEventListener("loadend", () => {
     `,
   },
   render: (args) => html`
-    <eox-map
-      .layers=${args.layers}
-      style="width: 100%; height: 300px;"
-    ></eox-map>
+    <eox-map .layers=${args.layers}></eox-map>
     <script type="module">
       const eoxMap = document.querySelector("eox-map");
       ${args.storyCodeAfter};

@@ -22,7 +22,6 @@ const AnimationsStory = {
     },
     center: [16.8, 48.2],
     zoom: 7,
-    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
@@ -30,7 +29,6 @@ const AnimationsStory = {
       .layers=${args.layers}
       .zoom=${args.zoom}
       .animationOptions=${args.animationOptions}
-      style=${args.style}
     >
     </eox-map>
   `,
