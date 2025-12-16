@@ -10,7 +10,6 @@ const ExternalMapRenderingStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
     titleKey: STORY_ARGS.titleKey,
-    filters: STORY_ARGS.filters,
     externalMapRendering: true,
     animate: true,
     for: "eox-map#external-map-rendering-mosaic",

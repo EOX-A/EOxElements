@@ -8,10 +8,6 @@ import { STORY_ARGS } from "../src/enums";
  */
 const OnlyDateStory = {
   args: {
-    layerIdKey: STORY_ARGS.layerIdKey,
-    titleKey: STORY_ARGS.titleKey,
-    filters: STORY_ARGS.filters,
-    externalMapRendering: STORY_ARGS.externalMapRendering,
     for: "eox-map#only-date",
     storyAdditionalComponents: {
       "eox-map": {

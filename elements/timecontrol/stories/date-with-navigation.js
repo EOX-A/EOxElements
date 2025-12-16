@@ -9,10 +9,6 @@ import { STORY_ARGS } from "../src/enums";
 const DateWithNavigationStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
-    titleKey: STORY_ARGS.titleKey,
-    filters: STORY_ARGS.filters,
-    externalMapRendering: STORY_ARGS.externalMapRendering,
-    navigation: true,
     for: "eox-map#date-with-navigation",
     storyAdditionalComponents: {
       "eox-map": {
