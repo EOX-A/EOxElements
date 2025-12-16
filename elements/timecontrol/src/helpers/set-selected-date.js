@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import groupBy from "lodash.groupby";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { updateChildrenDateRange, getFlatLayersArray } from "./";
+import { updateChildrenDateRange } from "./";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -43,7 +43,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   const selectedDateRange = dayjs(dateRange[0]);
   if (Number.isNaN(selectedDateRange.unix())) return;
   const flatLayers = eoxMap
-    ? getFlatLayersArray(
+    ? eoxMap.getFlatLayersArray(
         /** @type {import('ol/layer/Base').default[]} */ (
           eoxMap.map.getLayers().getArray()
         ),
