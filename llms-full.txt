@@ -11147,7 +11147,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-16T07:21:15.062Z",
+              default: "2025-12-16T08:09:27.297Z",
               options: {
                 hidden: true,
               },
@@ -13950,7 +13950,7 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
   eox-map-compare,
   eox-map {
     width: 100%;
-    height: 300px;
+    height: 100%;
   }
 </style>
 
@@ -15466,7 +15466,6 @@ Useful for maps embedded in scrollable websites.
 
 @param {Object.<string, unknown>} args **/ (args) => html`
 <eox-map
-style="width: 100%; height: 300px;"
 .center=${args.center}
 .controls=${args.controls}
 .layers=${args.layers}
@@ -16103,7 +16102,7 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
   eox-map-compare,
   eox-map {
     width: 100%;
-    height: 300px;
+    height: 100%;
   }
 </style>
 
@@ -17619,7 +17618,6 @@ Useful for maps embedded in scrollable websites.
 
 @param {Object.<string, unknown>} args **/ (args) => html`
 <eox-map
-style="width: 100%; height: 300px;"
 .center=${args.center}
 .controls=${args.controls}
 .layers=${args.layers}
