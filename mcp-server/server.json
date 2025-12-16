@@ -6,13 +6,13 @@
     "url": "https://github.com/EOX-A/EOxElements",
     "source": "github"
   },
-  "version": "1.0.0",
+  "version": "1.0.1",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "@eox/elements-mcp-server",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "transport": {
         "type": "streamable-http",
         "url": "http://localhost:{port}/mcp"
