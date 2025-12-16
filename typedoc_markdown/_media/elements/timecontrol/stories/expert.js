@@ -200,13 +200,25 @@ const ExpertStory = {
         .querySelector("eox-timecontrol-timelapse")
         .addEventListener("export", async (e) => {
           const mapLayers = [];
+
+          const minCloudCover = e.detail.filters.cloudCoverage?.state.min;
+          const maxCloudCover = e.detail.filters.cloudCoverage?.state.max;
+
           for (const dateKey in e.detail.selectedRangeItems) {
             const date = e.detail.selectedRangeItems[dateKey][0].originalDate;
             const start = new Date(date);
             const end = new Date(
               new Date(start).setDate(new Date(start).getDate() + 1),
             );
-            if (date && date.length) {
+            if (
+              date &&
+              date.length &&
+              !e.detail.selectedRangeItems[dateKey].some(
+                (o) =>
+                  o.cloudCoverage > maxCloudCover ||
+                  o.cloudCoverage < minCloudCover,
+              )
+            ) {
               const currentTileJson = await registerMosaic(
                 start.toISOString(),
                 end.toISOString(),
