@@ -8,7 +8,7 @@
 
 > **SliderValue** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:39](https://github.com/EOX-A/EOxElements/blob/cde4952e7a789adca4fb8172e09ae3f83dbe4526/elements/timecontrol/src/types.ts#L39)
+Defined in: [elements/timecontrol/src/types.ts:39](https://github.com/EOX-A/EOxElements/blob/663bf9726ff0c221a1808bcd0c9231bb7d05c1c1/elements/timecontrol/src/types.ts#L39)
 
 Represents the configuration for a slider layer with time control values.
 
@@ -18,7 +18,7 @@ Represents the configuration for a slider layer with time control values.
 
 > **layer**: `string` \| `number`
 
-Defined in: [elements/timecontrol/src/types.ts:43](https://github.com/EOX-A/EOxElements/blob/cde4952e7a789adca4fb8172e09ae3f83dbe4526/elements/timecontrol/src/types.ts#L43)
+Defined in: [elements/timecontrol/src/types.ts:43](https://github.com/EOX-A/EOxElements/blob/663bf9726ff0c221a1808bcd0c9231bb7d05c1c1/elements/timecontrol/src/types.ts#L43)
 
 The layer identifier.
 
@@ -28,7 +28,7 @@ The layer identifier.
 
 > **layerInstance**: `default`
 
-Defined in: [elements/timecontrol/src/types.ts:80](https://github.com/EOX-A/EOxElements/blob/cde4952e7a789adca4fb8172e09ae3f83dbe4526/elements/timecontrol/src/types.ts#L80)
+Defined in: [elements/timecontrol/src/types.ts:80](https://github.com/EOX-A/EOxElements/blob/663bf9726ff0c221a1808bcd0c9231bb7d05c1c1/elements/timecontrol/src/types.ts#L80)
 
 Reference to the OpenLayers layer instance.
 
@@ -38,7 +38,7 @@ Reference to the OpenLayers layer instance.
 
 > **name**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:47](https://github.com/EOX-A/EOxElements/blob/cde4952e7a789adca4fb8172e09ae3f83dbe4526/elements/timecontrol/src/types.ts#L47)
+Defined in: [elements/timecontrol/src/types.ts:47](https://github.com/EOX-A/EOxElements/blob/663bf9726ff0c221a1808bcd0c9231bb7d05c1c1/elements/timecontrol/src/types.ts#L47)
 
 The display name of the layer.
 
@@ -48,7 +48,7 @@ The display name of the layer.
 
 > **property**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:51](https://github.com/EOX-A/EOxElements/blob/cde4952e7a789adca4fb8172e09ae3f83dbe4526/elements/timecontrol/src/types.ts#L51)
+Defined in: [elements/timecontrol/src/types.ts:51](https://github.com/EOX-A/EOxElements/blob/663bf9726ff0c221a1808bcd0c9231bb7d05c1c1/elements/timecontrol/src/types.ts#L51)
 
 The property name used for time control (e.g., "TIME").
 
@@ -58,7 +58,7 @@ The property name used for time control (e.g., "TIME").
 
 > **values**: `object`[]
 
-Defined in: [elements/timecontrol/src/types.ts:55](https://github.com/EOX-A/EOxElements/blob/cde4952e7a789adca4fb8172e09ae3f83dbe4526/elements/timecontrol/src/types.ts#L55)
+Defined in: [elements/timecontrol/src/types.ts:55](https://github.com/EOX-A/EOxElements/blob/663bf9726ff0c221a1808bcd0c9231bb7d05c1c1/elements/timecontrol/src/types.ts#L55)
 
 Array of time control values with dates and metadata.
 
