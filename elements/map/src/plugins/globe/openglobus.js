@@ -115,7 +115,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
       },
     });
   }
-  if (source instanceof Vector_ol) {
+  if (source instanceof Vector_ol && source.getUrl()) {
     fetch(source.getUrl().toString())
       .then((r) => {
         return r.json();
