@@ -392,7 +392,7 @@ const styleEOX = `
     position: relative;      
     width: 100%;
     height: var(--eox-storytelling-hero-height);
-    padding: 10rem 2rem;
+    padding: 1rem 2rem;
     overflow: hidden;
     display: flex;
     flex-direction: column;
