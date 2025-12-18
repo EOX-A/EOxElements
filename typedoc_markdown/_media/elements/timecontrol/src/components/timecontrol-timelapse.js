@@ -380,9 +380,7 @@ export class EOxTimeControlTimelapse extends LitElement {
         this.#timelapseComponent,
       );
 
-      this.getEOxTimeControl().parentElement.appendChild(
-        this.#timelapseComponent,
-      );
+      document.body.appendChild(this.#timelapseComponent);
 
       setTimeout(() => {
         snapshotGenerator(this);
