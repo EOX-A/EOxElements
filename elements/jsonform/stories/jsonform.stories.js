@@ -21,6 +21,7 @@ import {
   ValidationStory,
   CodeStory,
   OptionalPropertiesStory,
+  FlexLayoutStory,
 } from "./index.js";
 
 export default {
@@ -157,6 +158,12 @@ export const WKT = WKTStory;
  * Demonstrates output format customization for spatial inputs.
  */
 export const Geojson = GeoJSONStory;
+
+/**
+ * Flex Layout example. Demonstrates how to use flex layout for arranging form elements side-by-side.
+ * Shows how to configure the layout of the form using schema options.
+ */
+export const FlexLayout = FlexLayoutStory;
 
 /**
  * Custom Editor Interfaces example. Shows how to create custom form inputs for json-editor.

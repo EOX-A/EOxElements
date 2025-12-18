@@ -111,3 +111,51 @@ export const bboxesToFeatures = (bboxes) => {
   if (bboxes.length < 1) return [];
   return bboxes.map((bbox) => bboxPolygon(bbox));
 };
+
+/**
+ * Converts a value to a FeatureCollection based on the schema
+ */
+export const valueToFeatureCollection = (value, schema) => {
+  if (!value) return { type: "FeatureCollection", features: [] };
+
+  let features = [];
+
+  if (isBox(schema)) {
+    const bboxes = isMulti(schema) ? value : [value];
+    features = bboxesToFeatures(bboxes);
+  } else if (isPolygon(schema)) {
+    const coords = isMulti(schema) ? value : [value];
+    features = coords.map((c) => ({
+      type: "Feature",
+      properties: {},
+      geometry: { type: "Polygon", coordinates: c },
+    }));
+  } else if (isPoint(schema)) {
+    const coords = isMulti(schema) ? value : [value];
+    features = coords.map((c) => ({
+      type: "Feature",
+      properties: {},
+      geometry: { type: "Point", coordinates: c },
+    }));
+  } else if (isLine(schema)) {
+    const coords = isMulti(schema) ? value : [value];
+    features = coords.map((c) => ({
+      type: "Feature",
+      properties: {},
+      geometry: { type: "LineString", coordinates: c },
+    }));
+  } else if (isGeoJSON(schema)) {
+    if (value.type === "FeatureCollection") {
+      return value;
+    } else if (value.type === "Feature") {
+      features = [value];
+    } else if (value.type === "Geometry" || value.coordinates) {
+      features = [{ type: "Feature", properties: {}, geometry: value }];
+    }
+  }
+
+  return {
+    type: "FeatureCollection",
+    features: features,
+  };
+};
