@@ -14,6 +14,7 @@
     "build:all": "npm run styles && npm run build --ws",
     "clean": "npm exec --workspaces -- npx rimraf node_modules && npm exec --workspaces -- npx rimraf types && npx rimraf node_modules",
     "cypress": "cypress open",
+    "cypress:install": "cypress install",
     "test:all": "npm run styles && npm run test:component; npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
     "test:e2e": "npm run generate-manifest && npm run generate-typedoc && npm run build:storybook && cypress run --e2e",
