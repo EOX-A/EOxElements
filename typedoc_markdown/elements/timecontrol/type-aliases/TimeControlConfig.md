@@ -8,7 +8,7 @@
 
 > **TimeControlConfig** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:263](https://github.com/EOX-A/EOxElements/blob/d49931308ef022ba86d6ba1cab4e7bfc5e05529f/elements/timecontrol/src/types.ts#L263)
+Defined in: [elements/timecontrol/src/types.ts:263](https://github.com/EOX-A/EOxElements/blob/6e7adfb35496b62c5ff5d0165091319fb838b6f0/elements/timecontrol/src/types.ts#L263)
 
 Main time control component properties and configuration.
 
@@ -18,7 +18,7 @@ Main time control component properties and configuration.
 
 > `optional` **externalMapRendering**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:283](https://github.com/EOX-A/EOxElements/blob/d49931308ef022ba86d6ba1cab4e7bfc5e05529f/elements/timecontrol/src/types.ts#L283)
+Defined in: [elements/timecontrol/src/types.ts:283](https://github.com/EOX-A/EOxElements/blob/6e7adfb35496b62c5ff5d0165091319fb838b6f0/elements/timecontrol/src/types.ts#L283)
 
 Whether external map rendering is enabled.
 
@@ -28,7 +28,7 @@ Whether external map rendering is enabled.
 
 > `optional` **filters**: [`FilterConfig`](FilterConfig.md)[]
 
-Defined in: [elements/timecontrol/src/types.ts:279](https://github.com/EOX-A/EOxElements/blob/d49931308ef022ba86d6ba1cab4e7bfc5e05529f/elements/timecontrol/src/types.ts#L279)
+Defined in: [elements/timecontrol/src/types.ts:279](https://github.com/EOX-A/EOxElements/blob/6e7adfb35496b62c5ff5d0165091319fb838b6f0/elements/timecontrol/src/types.ts#L279)
 
 Array of filter configurations.
 
@@ -38,7 +38,7 @@ Array of filter configurations.
 
 > `optional` **for**: `string` \| [`EOxMapType`](../interfaces/EOxMapType.md)
 
-Defined in: [elements/timecontrol/src/types.ts:267](https://github.com/EOX-A/EOxElements/blob/d49931308ef022ba86d6ba1cab4e7bfc5e05529f/elements/timecontrol/src/types.ts#L267)
+Defined in: [elements/timecontrol/src/types.ts:267](https://github.com/EOX-A/EOxElements/blob/6e7adfb35496b62c5ff5d0165091319fb838b6f0/elements/timecontrol/src/types.ts#L267)
 
 Reference to the eox-map element (can be a selector string or element instance).
 
@@ -48,7 +48,7 @@ Reference to the eox-map element (can be a selector string or element instance).
 
 > `optional` **layerIdKey**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:271](https://github.com/EOX-A/EOxElements/blob/d49931308ef022ba86d6ba1cab4e7bfc5e05529f/elements/timecontrol/src/types.ts#L271)
+Defined in: [elements/timecontrol/src/types.ts:271](https://github.com/EOX-A/EOxElements/blob/6e7adfb35496b62c5ff5d0165091319fb838b6f0/elements/timecontrol/src/types.ts#L271)
 
 Property key used to identify layers (default: "id").
 
@@ -58,7 +58,7 @@ Property key used to identify layers (default: "id").
 
 > `optional` **titleKey**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:275](https://github.com/EOX-A/EOxElements/blob/d49931308ef022ba86d6ba1cab4e7bfc5e05529f/elements/timecontrol/src/types.ts#L275)
+Defined in: [elements/timecontrol/src/types.ts:275](https://github.com/EOX-A/EOxElements/blob/6e7adfb35496b62c5ff5d0165091319fb838b6f0/elements/timecontrol/src/types.ts#L275)
 
 Property key used for layer titles (default: "name").
 
@@ -68,6 +68,6 @@ Property key used for layer titles (default: "name").
 
 > `optional` **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:287](https://github.com/EOX-A/EOxElements/blob/d49931308ef022ba86d6ba1cab4e7bfc5e05529f/elements/timecontrol/src/types.ts#L287)
+Defined in: [elements/timecontrol/src/types.ts:287](https://github.com/EOX-A/EOxElements/blob/6e7adfb35496b62c5ff5d0165091319fb838b6f0/elements/timecontrol/src/types.ts#L287)
 
 Whether to disable default styling.
