@@ -1,4 +1,4 @@
-import { getFlatLayersArray, updateTimelineItems } from "../../helpers";
+import { updateTimelineItems } from "../../helpers";
 import { DataSet } from "vis-data/standalone";
 import { getElement } from "@eox/elements-utils";
 import dayjs from "dayjs";
@@ -60,7 +60,7 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
     EOxTimeControl.eoxMap = EoxMap;
 
     const flatLayers = EoxMap
-      ? getFlatLayersArray(
+      ? EoxMap.getFlatLayersArray(
           /** @type {import('ol/layer/Base').default[]} */ (
             EoxMap.map.getLayers().getArray()
           ),
@@ -71,7 +71,7 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
 
     const init = () => {
       const flatLayers = EoxMap
-        ? getFlatLayersArray(
+        ? EoxMap.getFlatLayersArray(
             /** @type {import('ol/layer/Base').default[]} */ (
               EoxMap.map.getLayers().getArray()
             ),
