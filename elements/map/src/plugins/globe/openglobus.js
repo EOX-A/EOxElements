@@ -157,6 +157,8 @@ export const createGlobusLayer = (olLayer, mapPool) => {
             );
           }
           return vectorLayer;
+        } else {
+          return undefined;
         }
       });
     if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
