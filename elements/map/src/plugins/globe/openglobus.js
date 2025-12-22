@@ -130,7 +130,10 @@ export const createGlobusLayer = (olLayer, mapPool) => {
             projection = getProjection("EPSG:" + crs["properties"]["code"]);
           }
         }
-        if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
+        if (
+          (projection && equivalent(projection, getProjection("EPSG:4326"))) ||
+          !crs
+        ) {
           // remmove existing layer with same id if any
           const existingLayer = globus.planet.getLayerByName(id);
           if (existingLayer) {
