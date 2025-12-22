@@ -1,6 +1,6 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import { PrimaryStory, DataValuesStory, GeoDBStory } from "./index.js";
+import { PrimaryStory, DataValuesStory, GeoDBStory, Base64EncodedStory } from "./index.js";
 
 export default {
   title: "Elements/eox-chart",
@@ -12,6 +12,7 @@ export default {
   render: (args) => html`
     <eox-chart
       .spec=${args.spec}
+      .specbase64=${args.specbase64}
       .dataValues=${args.dataValues}
       .noShadow=${args.noShadow}
       .unstyled=${args.unstyled}
@@ -44,3 +45,10 @@ export const DataValues = DataValuesStory;
  * that fetches data from a live endpoint and renders it as a line chart.
  */
 export const GeoDB = GeoDBStory;
+
+/**
+ * Passing Vega specification as base64 encoded string. This example shows use case where spec
+ * contains both single quote and double quote which can not be passed as HTML attribute.
+ * EOxChart exports util function `base64EncodeSpec` so that parent application can create the base64 encoded spec.
+ */
+export const Base64EncodedSpec = Base64EncodedStory;

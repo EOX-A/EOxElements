@@ -8,7 +8,7 @@ import { base64EncodeSpec }from "./methods/encode";
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
  * Pass a valid Vega spec as `spec` property in order to render a chart.
- * Optionally for transfer of complicated charts as attribute, use the specBase64 string to pass the encoded spec.
+ * Optionally for transfer of complicated charts as attribute, use the specbase64 string to pass the encoded spec.
  *
  * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
  *
@@ -32,7 +32,7 @@ export class EOxChart extends LitElement {
   static properties = {
     dataValues: { attribute: false, type: Object },
     spec: { attribute: false, type: Object },
-    specBase64: { attribute: false, type: String },
+    specbase64: {attribute: false, type: String },
     opt: { attribute: false, type: Object },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
@@ -53,7 +53,7 @@ export class EOxChart extends LitElement {
      *
      * @type {string}
      */
-    this.specBase64 = undefined;
+    this.specbase64 = undefined;
 
     /**
      * [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)
@@ -120,10 +120,10 @@ export class EOxChart extends LitElement {
    * @param {import("lit").PropertyValues} changedProperties
    */
   async updated(changedProperties) {
-    if (changedProperties.has("spec") || changedProperties.has("dataValues") || changedProperties.has("specBase64")) {
+    if (changedProperties.has("spec") || changedProperties.has("dataValues") || changedProperties.has("specbase64")) {
       let spec = this.spec;
-      if (changedProperties.has("specBase64")) {
-        spec = base64DecodeSpec(this.specBase64);
+      if (changedProperties.has("specbase64")) {
+        spec = base64DecodeSpec(this.specbase64);
       }
       renderChartMethod(this, spec, this.opt, this.dataValues);
     }
