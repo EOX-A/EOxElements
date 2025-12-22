@@ -11,12 +11,14 @@ import "./feedback-button.js";
  *
  * @attr {string} endpoint - The endpoint to send the feedback to as POST message.
  * @attr {string|null} [unstyled=undefined] - If provided, the element will not be styled with EOX styles.
+ * @attr {string|null} [email=undefined] - If provided, an email will be sent in the post.
  *
  * @fires close - The modal was closed.
  * @fires submit - The feedback was submitted. The `CustomEvent.detail` contains the FormData object.
  */
 export class EOxFeedback extends HTMLElement {
-  static observedAttributes = ["endpoint", "unstyled"];
+  static observedAttributes = ["endpoint", "unstyled", "email"];
+
 
   constructor() {
     super();
@@ -28,6 +30,7 @@ export class EOxFeedback extends HTMLElement {
     this.regionScreenshot = null;
 
     this.screenShotFile = null;
+    this.email = null;
 
     this.endpoint = null;
   }
@@ -36,6 +39,8 @@ export class EOxFeedback extends HTMLElement {
     this.endpoint =
       this.getAttribute("endpoint") ||
       document.querySelector("eox-feedback-button")?.getAttribute("endpoint");
+    this.email = this.getAttribute("email") ||
+      document.querySelector("eox-feedback-button")?.getAttribute("email");
 
     this.render();
     this.shadowRoot
@@ -169,6 +174,10 @@ export class EOxFeedback extends HTMLElement {
       "message",
       this.shadowRoot.querySelector("textarea").value,
     );
+
+    if (this.email) {
+      requestBody.append("email", this.email);
+    }
 
     requestBody.append("userAgent", window.navigator.userAgent);
 
