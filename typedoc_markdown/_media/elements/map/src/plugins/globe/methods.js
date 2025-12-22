@@ -7,6 +7,7 @@ export const createMapPool = (maxMaps, EOxMap, target) => {
   // Get the serializable definitions of all layers on the main map.
   const allMainLayers = getFlatLayersArray(EOxMap.map.getLayers().getArray());
   const layerDefs = allMainLayers
+    .filter((l) => l.get("type") !== "Group")
     .map((l) => l.get("_jsonDefinition"))
     .filter(Boolean);
 
