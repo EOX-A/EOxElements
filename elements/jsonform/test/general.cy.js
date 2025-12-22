@@ -17,6 +17,7 @@ import {
   loadCodeTest,
   loadShowOptInPropertiesTest,
   loadButtonsEditorTest,
+  loadSpatialValuesTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -39,4 +40,5 @@ describe("Jsonform", () => {
   it("loads the jsonform with show opt in properties", () =>
     loadShowOptInPropertiesTest());
   it("loads the buttons editor", () => loadButtonsEditorTest());
+  it("loads spatial values correctly", () => loadSpatialValuesTest());
 });

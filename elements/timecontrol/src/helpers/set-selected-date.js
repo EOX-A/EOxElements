@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import groupBy from "lodash.groupby";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { updateChildrenDateRange, getFlatLayersArray } from "./";
+import { updateChildrenDateRange } from "./";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -43,7 +43,7 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   const selectedDateRange = dayjs(dateRange[0]);
   if (Number.isNaN(selectedDateRange.unix())) return;
   const flatLayers = eoxMap
-    ? getFlatLayersArray(
+    ? eoxMap.getFlatLayersArray(
         /** @type {import('ol/layer/Base').default[]} */ (
           eoxMap.map.getLayers().getArray()
         ),
@@ -74,10 +74,10 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
       console.log(layer);
       // @ts-expect-error Property 'getSource' does not exist on type 'BaseLayer'.
-      const source = layer?.getLayers ? null : layer.getSource();
+      const source = layer?.getLayers ? null : layer?.getSource();
       instances = {
         ...instances,
-        [item.group]: { layer, source },
+        [item.group]: { layer, source: source || null },
       };
 
       if (!EOxTimeControl.externalMapRendering) {
