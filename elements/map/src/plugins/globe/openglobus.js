@@ -25,6 +25,7 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
     target,
     layers: EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
+      .filter((l) => l.get("type") !== "Group")
       .map((l) => createGlobusLayer(l, mapPool))
       .filter((l) => l !== undefined),
     sun: { active: false },
@@ -77,9 +78,7 @@ export const refreshGlobe = () => {
 export const createGlobusLayer = (olLayer, mapPool) => {
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
-  if (olLayer.get("type") === "Group") {
-    return undefined;
-  }
+
   if (source instanceof OSM) {
     return new OpenStreetMap(id, {
       isBaseLayer: olLayer.get("base"),
