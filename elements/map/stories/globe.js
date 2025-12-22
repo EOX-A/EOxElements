@@ -144,7 +144,7 @@ const GlobeStory = {
         },
       },
     ],
-    zoom: 7,
+    zoom: 3,
   },
 };
 

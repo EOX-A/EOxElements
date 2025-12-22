@@ -1,6 +1,10 @@
 // Import required modules
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Set the directory path for the distribution of styles
 const DIST_PATH = "../utils/styles/dist";

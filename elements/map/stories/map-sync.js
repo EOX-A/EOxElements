@@ -39,10 +39,10 @@ const MapSyncStory = {
     <style>
       eox-map {
         width: 50%;
-        height: 300px;
       }
       .container {
         display: flex;
+        height: 100%;
       }
     </style>
     <div class="container">

@@ -32,7 +32,6 @@ const TooltipWithPropertyTransformStory = {
     ],
     center: [15, 48],
     zoom: 4,
-    style: "width: 100%; height: 300px;",
     storyAdditionalComponents: {
       "eox-map-tooltip": {
         storyImport: false,
@@ -52,7 +51,6 @@ const TooltipWithPropertyTransformStory = {
       .controls=${args.controls}
       .layers=${args.layers}
       .zoom=${args.zoom}
-      style=${args.style}
     >
       <eox-map-tooltip
         .propertyTransform=${args.storyAdditionalComponents["eox-map-tooltip"]

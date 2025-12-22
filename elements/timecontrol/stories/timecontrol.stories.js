@@ -45,15 +45,15 @@ export const OnlyDate = OnlyDateStory;
 /**
  * Date display component with init date
  *
- * This example shows the `<eox-timecontrol-date>` component with the `initDate` attribute enabled,
- * which sets the initial date range.
+ * This example shows the `<eox-timecontrol-date>` component with the `initDate` property added,
+ * which sets the initial date range. Also, it uses the date `format` of `D. MMMM YYYY`.
  */
 export const DateWithInitDate = DateWithInitDateStory;
 
 /**
  * Date display component with navigation buttons for stepping through available dates
  *
- * This example shows the `<eox-timecontrol-date>` component with the `navigation` attribute enabled,
+ * This example shows the `<eox-timecontrol-date>` component with the `navigation` property enabled,
  * which adds previous/next buttons to step through available dates. Clicking these buttons will
  * automatically update the selected date range and apply it to the map layers.
  */

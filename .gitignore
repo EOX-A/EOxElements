@@ -28,6 +28,9 @@ cypress/videos
 
 docs
 custom-elements.json
+story-snippets.json
+llms.txt
+llms-full.txt
 types.json
 
 utils/styles/dist/*.style.js
@@ -41,3 +44,6 @@ coverage
 elements/map/src/eoxlayer-schema.json
 .storybook/public/typedoc_html
 .storybook/public/typedoc_markdown
+
+.mcpregistry_github_token
+.mcpregistry_registry_token

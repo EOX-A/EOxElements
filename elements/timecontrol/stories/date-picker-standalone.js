@@ -9,10 +9,6 @@ import { STORY_ARGS } from "../src/enums";
 const DatePickerStandaloneStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
-    titleKey: STORY_ARGS.titleKey,
-    filters: STORY_ARGS.filters,
-    externalMapRendering: STORY_ARGS.externalMapRendering,
-    popup: true,
     for: "eox-map#date-picker-standalone",
     select: (e) => {
       console.log(e.detail);
@@ -35,12 +31,6 @@ const DatePickerStandaloneStory = {
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
       style="width: 100%; height: 500px;"
-      id=${args.storyAdditionalComponents["eox-map"].id}
-      .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
-      .center=${args.storyAdditionalComponents["eox-map"].center}
-      .layers=${args.storyAdditionalComponents["eox-map"].layers}
-    ></eox-map>
-    <eox-map
       id=${args.storyAdditionalComponents["eox-map"].id}
       .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
       .center=${args.storyAdditionalComponents["eox-map"].center}

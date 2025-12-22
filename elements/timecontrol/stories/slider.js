@@ -9,10 +9,6 @@ import { STORY_ARGS } from "../src/enums";
 const SliderStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
-    titleKey: STORY_ARGS.titleKey,
-    filters: STORY_ARGS.filters,
-    externalMapRendering: STORY_ARGS.externalMapRendering,
-    navigation: true,
     for: "eox-map#slider",
     storyAdditionalComponents: {
       "eox-map": {

@@ -51,14 +51,12 @@ const HighlightFeaturesAndAnimateStory = {
           padding: [50, 50, 50, 50],
         });
     },
-    style: "width: 100%; height: 300px;",
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
     <eox-map
       id=${args.id}
       .config=${args.config}
       @loadend=${args.loadend}
-      style=${args.style}
     ></eox-map>
   `,
 };

@@ -42,8 +42,12 @@ export default {
   tags: ["autodocs"],
   component: "eox-map",
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
+    <style>
+      #story--elements-eox-map--primary--primary-inner eox-map {
+        height: 300px;
+      }
+    </style>
     <eox-map
-      style="width: 100%; height: 300px;"
       .center=${args.center}
       .controls=${args.controls}
       .layers=${args.layers}

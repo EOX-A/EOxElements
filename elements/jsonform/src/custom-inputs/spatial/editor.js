@@ -9,7 +9,7 @@ import {
   isGeoJSON,
   setAttributesAndProperties,
   isLine,
-  bboxesToFeatures,
+  valueToFeatureCollection,
 } from "./utils";
 // import "@eox/drawtools";
 
@@ -30,6 +30,11 @@ export class SpatialEditor extends AbstractEditor {
     const theme = this.theme;
     const drawToolsOptions = this.schema?.options?.drawtools ?? {};
     const mapOptions = this.schema?.options?.map ?? {};
+
+    if (this.schema?.options?.layout === "flex") {
+      this.container.style.display = "flex";
+      this.container.style.gap = "10px";
+    }
 
     // Create label and description elements if not in compact mode
     if (!options.compact)
@@ -109,22 +114,21 @@ export class SpatialEditor extends AbstractEditor {
       const mapId = "map-" + this.formname.replace(/[^\w\s]/gi, "");
       let firstLoad = false;
       eoxmapEl.addEventListener("loadend", () => {
-        const pathParts = this.path.split(".").slice(1);
-        const startVals =
-          this.defaults.startVals[this.key] ||
-          pathParts.reduce((obj, part) => obj?.[part], this.defaults.startVals);
+        const currentVal = this.value;
 
-        if (!firstLoad && startVals && isBox(this.schema)) {
+        if (!firstLoad && currentVal) {
           firstLoad = true;
-          const existingBboxes = bboxesToFeatures(startVals);
-          drawtoolsEl.handleFeatureChange(
-            JSON.stringify({
-              type: "FeatureCollection",
-              features: existingBboxes,
-            }),
-            true,
-            false,
+          const featureCollection = valueToFeatureCollection(
+            currentVal,
+            this.schema,
           );
+          if (featureCollection.features.length > 0) {
+            drawtoolsEl.handleFeatureChange(
+              JSON.stringify(featureCollection),
+              true,
+              false,
+            );
+          }
         }
       });
       eoxmapEl.layers = [{ type: "Tile", source: { type: "OSM" } }];
@@ -269,7 +273,7 @@ export class SpatialEditor extends AbstractEditor {
           }
 
           this.onChange(true);
-          this.jsoneditor.showValidationErrors();
+          this.jsoneditor?.showValidationErrors();
         }
       ),
     );

@@ -1,0 +1,25 @@
+{
+  "name": "@eox/elements-mcp-server",
+  "mcpName": "io.github.EOX-A/EOxElements",
+  "version": "1.0.1",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EOX-A/EOxElements.git"
+  },
+  "description": "A server to provide information about EOxElements custom elements for coding agents.",
+  "main": "index.js",
+  "bin": {
+    "eox-elements-mcp-server": "./index.js"
+  },
+  "scripts": {
+    "types:generate": "echo 'No types to generate for mcp-server'",
+    "build": "echo 'No build needed for mcp-server'"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.24.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "zod": "^4.2.0"
+  }
+}
