@@ -2,13 +2,13 @@ import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { renderChartMethod } from "./methods/render";
-import { base64DecodeSpec } from "./methods/decode";
+import { parseSpec } from "./methods/decode";
 import { base64EncodeSpec } from "./methods/encode";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
  * Pass a valid Vega spec as `spec` property in order to render a chart.
- * Optionally for transfer of complicated charts as attribute, use the specbase64 string to pass the encoded spec.
+ * Optionally for transfer of charts with both single and double quote as attribute, use the spec as base64 encoded string.
  *
  * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
  *
@@ -30,9 +30,8 @@ import { base64EncodeSpec } from "./methods/encode";
  */
 export class EOxChart extends LitElement {
   static properties = {
-    dataValues: { attribute: false, type: Object },
-    spec: { attribute: false, type: Object },
-    specbase64: { attribute: false, type: String },
+    dataValues: { attribute: false },
+    spec: { attribute: false },
     opt: { attribute: false, type: Object },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
@@ -42,18 +41,11 @@ export class EOxChart extends LitElement {
     super();
 
     /**
-     * [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html)
+     * [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.
      *
-     * @type {import("vega-embed").VisualizationSpec}
+     * @type {import("vega-embed").VisualizationSpec | string}
      */
     this.spec = undefined;
-
-    /**
-     * base64 encoded version of [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) for transport in component attributes
-     *
-     * @type {string}
-     */
-    this.specbase64 = undefined;
 
     /**
      * [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)
@@ -63,9 +55,9 @@ export class EOxChart extends LitElement {
     this.opt = undefined;
 
     /**
-     * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`
+     * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.
      *
-     * @type {{[dataSourceName: string]: import("vega-lite/types_unstable/data.js").InlineData}}
+     * @type {{[dataSourceName: string]: import("vega-lite/types_unstable/data.js").InlineData} | string}
      */
     this.dataValues = undefined;
 
@@ -120,16 +112,10 @@ export class EOxChart extends LitElement {
    * @param {import("lit").PropertyValues} changedProperties
    */
   async updated(changedProperties) {
-    if (
-      changedProperties.has("spec") ||
-      changedProperties.has("dataValues") ||
-      changedProperties.has("specbase64")
-    ) {
-      let spec = this.spec;
-      if (changedProperties.has("specbase64")) {
-        spec = base64DecodeSpec(this.specbase64);
-      }
-      renderChartMethod(this, spec, this.opt, this.dataValues);
+    if (changedProperties.has("spec") || changedProperties.has("dataValues")) {
+      const spec = parseSpec(this.spec);
+      const dataValues = parseSpec(this.dataValues);
+      renderChartMethod(this, spec, this.opt, dataValues);
     }
   }
 
