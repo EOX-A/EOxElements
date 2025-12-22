@@ -15,6 +15,7 @@ import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
+import { get as getProjection, equivalent } from "ol/proj";
 import { getLayerById } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
@@ -115,35 +116,52 @@ export const createGlobusLayer = (olLayer, mapPool) => {
     });
   }
   if (source instanceof Vector_ol && source.getUrl()) {
+    let projection;
     fetch(source.getUrl().toString())
       .then((r) => {
         return r.json();
       })
       .then((data) => {
-        const vectorLayer = new Vector(id, {
-          visibility: olLayer.getVisible(),
-          opacity: olLayer.getOpacity(),
-          isBaseLayer: olLayer.get("base"),
-        });
-
-        vectorLayer.addTo(globus.planet);
-
-        var f = data.features;
-        for (let i = 0; i < f.length; i++) {
-          var fi = f[i];
-          vectorLayer.add(
-            new Entity({
-              geometry: {
-                type: fi.geometry.type,
-                coordinates: fi.geometry.coordinates,
-              },
-            }),
-          );
+        const crs = data["crs"];
+        if (crs) {
+          if (crs["type"] == "name") {
+            projection = getProjection(crs["properties"]["name"]);
+          } else if (crs["type"] === "EPSG") {
+            projection = getProjection("EPSG:" + crs["properties"]["code"]);
+          }
         }
-        return vectorLayer;
-      });
+        if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
+          // remmove existing layer with same id if any
+          const existingLayer = globus.planet.getLayerByName(id);
+          if (existingLayer) {
+            globus.planet.removeLayer(existingLayer);
+          }
+          const vectorLayer = new Vector(id, {
+            visibility: olLayer.getVisible(),
+            opacity: olLayer.getOpacity(),
+            isBaseLayer: olLayer.get("base"),
+          });
 
-    return undefined;
+          vectorLayer.addTo(globus.planet);
+
+          var f = data.features;
+          for (let i = 0; i < f.length; i++) {
+            var fi = f[i];
+            vectorLayer.add(
+              new Entity({
+                geometry: {
+                  type: fi.geometry.type,
+                  coordinates: fi.geometry.coordinates,
+                },
+              }),
+            );
+          }
+          return vectorLayer;
+        }
+      });
+    if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
+      return undefined;
+    }
   }
 
   // Fallback to CanvasTiles for other layer types
