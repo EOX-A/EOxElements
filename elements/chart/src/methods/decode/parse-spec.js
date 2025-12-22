@@ -50,7 +50,9 @@ function parseSpec(specInput) {
     try {
       const decoded = base64DecodeSpec(spec);
       if (typeof decoded === "object") return decoded;
-    } catch {}
+    } catch (err) {
+      console.warn("Failed to decode Base64 spec, trying JSON fallback", err);
+    }
   }
 
   try {
