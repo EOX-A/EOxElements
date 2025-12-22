@@ -4,14 +4,15 @@
  * @returns {import("vega-embed").VisualizationSpec} spec
  */
 const base64DecodeSpec = (base64Spec) => {
-  const base64 = base64Spec
-    .replace(/-/g, "+")
-    .replace(/_/g, "/")
-    .padEnd(base64Spec.length + (4 - base64Spec.length % 4) % 4, "=");
-
-  const binary = atob(base64);
-  const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-  return JSON.parse(new TextDecoder().decode(bytes));
+  const binaryString = atob(base64Spec);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+  }
+  const decoder = new TextDecoder();
+  const decoded = decoder.decode(bytes);
+  const vegaSpec = JSON.parse(decoded);
+  return vegaSpec;
 };
 
 export default base64DecodeSpec;
