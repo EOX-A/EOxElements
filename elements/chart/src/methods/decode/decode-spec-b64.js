@@ -7,7 +7,7 @@ const base64DecodeSpec = (base64Spec) => {
   const binaryString = atob(base64Spec);
   const bytes = new Uint8Array(binaryString.length);
   for (let i = 0; i < binaryString.length; i++) {
-      bytes[i] = binaryString.charCodeAt(i);
+    bytes[i] = binaryString.charCodeAt(i);
   }
   const decoder = new TextDecoder();
   const decoded = decoder.decode(bytes);

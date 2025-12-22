@@ -2,8 +2,8 @@ import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { renderChartMethod } from "./methods/render";
-import { base64DecodeSpec }from "./methods/decode";
-import { base64EncodeSpec }from "./methods/encode";
+import { base64DecodeSpec } from "./methods/decode";
+import { base64EncodeSpec } from "./methods/encode";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
@@ -32,7 +32,7 @@ export class EOxChart extends LitElement {
   static properties = {
     dataValues: { attribute: false, type: Object },
     spec: { attribute: false, type: Object },
-    specbase64: {attribute: false, type: String },
+    specbase64: { attribute: false, type: String },
     opt: { attribute: false, type: Object },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
@@ -48,7 +48,7 @@ export class EOxChart extends LitElement {
      */
     this.spec = undefined;
 
-      /**
+    /**
      * base64 encoded version of [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) for transport in component attributes
      *
      * @type {string}
@@ -120,7 +120,11 @@ export class EOxChart extends LitElement {
    * @param {import("lit").PropertyValues} changedProperties
    */
   async updated(changedProperties) {
-    if (changedProperties.has("spec") || changedProperties.has("dataValues") || changedProperties.has("specbase64")) {
+    if (
+      changedProperties.has("spec") ||
+      changedProperties.has("dataValues") ||
+      changedProperties.has("specbase64")
+    ) {
       let spec = this.spec;
       if (changedProperties.has("specbase64")) {
         spec = base64DecodeSpec(this.specbase64);
@@ -183,5 +187,5 @@ export class EOxChart extends LitElement {
     `;
   }
 }
-export { base64EncodeSpec }
+export { base64EncodeSpec };
 customElements.define("eox-chart", EOxChart);

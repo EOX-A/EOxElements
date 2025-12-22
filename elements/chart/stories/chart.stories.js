@@ -1,6 +1,11 @@
 // Global import of eox-elements in .storybook/preview.js!
 import { html } from "lit";
-import { PrimaryStory, DataValuesStory, GeoDBStory, Base64EncodedStory } from "./index.js";
+import {
+  PrimaryStory,
+  DataValuesStory,
+  GeoDBStory,
+  Base64EncodedStory,
+} from "./index.js";
 
 export default {
   title: "Elements/eox-chart",
