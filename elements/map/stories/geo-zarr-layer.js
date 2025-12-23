@@ -23,9 +23,24 @@ const GeoZarrLayerStory = {
         },
         source: {
           type: "GeoZarr",
-          url: 'https://storage.googleapis.com/open-cogs/geozarr/S2A_MSIL2A_20250922T112131_N0511_R037_T29SMD_20250922T160420.zarr',
-          group: 'measurements/reflectance',
-          bands: ['b04', 'b03', 'b02', 'b05'],
+          url: "https://s3.explorer.eopf.copernicus.eu/esa-zarr-sentinel-explorer-fra/tests-output/sentinel-2-l2a/S2A_MSIL2A_20251107T100231_N0511_R122_T32TQR_20251107T115310.zarr",
+          group: "measurements/reflectance",
+          bands: ["b04", "b03", "b02", "b05"],
+        },
+        style: {
+          gamma: 1.5,
+          color: [
+            "color",
+            ["interpolate", ["linear"], ["band", 1], 0, 0, 0.5, 255],
+            ["interpolate", ["linear"], ["band", 2], 0, 0, 0.5, 255],
+            ["interpolate", ["linear"], ["band", 3], 0, 0, 0.5, 255],
+            [
+              "case",
+              ["==", ["+", ["band", 1], ["band", 2], ["band", 3]], 0],
+              0,
+              1,
+            ],
+          ],
         },
       },
     ],
