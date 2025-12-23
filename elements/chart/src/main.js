@@ -8,7 +8,7 @@ import { base64EncodeSpec } from "./methods/encode";
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
  * Pass a valid Vega spec as `spec` property in order to render a chart.
- * Optionally for transfer of charts with both single and double quote as attribute, use the spec as base64 encoded string.
+ * Optionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.
  *
  * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
  *
@@ -25,6 +25,7 @@ import { base64EncodeSpec } from "./methods/encode";
  * Helper functionalities:
  *
  * The `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.
+ * For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).
  *
  * @element eox-chart
  */
@@ -173,5 +174,5 @@ export class EOxChart extends LitElement {
     `;
   }
 }
-export { base64EncodeSpec };
+export { base64EncodeSpec, parseSpec };
 customElements.define("eox-chart", EOxChart);
