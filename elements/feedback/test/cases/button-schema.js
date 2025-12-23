@@ -20,7 +20,7 @@ const buttonSchemaTest = () => {
 
   // Mounting eox-feedback-button element with schema
   cy.mount(
-    html`<eox-feedback-button .schema=${schema}></eox-feedback-button>`
+    html`<eox-feedback-button .schema=${schema}></eox-feedback-button>`,
   ).as(feedbackButtonElement);
 
   // Click the button to open the modal
@@ -36,7 +36,7 @@ const buttonSchemaTest = () => {
       const jsonForm = $el[0];
       expect(jsonForm.schema).to.deep.equal(schema);
     });
-    
+
   // Check if the field is rendered
   cy.get(feedbackElement)
     .shadow()
