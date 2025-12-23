@@ -302,6 +302,7 @@ The main branch of this project contains the v2 version of EOxElements. For the 
 
 Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
 Pass a valid Vega spec as `spec` property in order to render a chart.
+Optionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.
 
 The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
 
@@ -318,6 +319,7 @@ Vega-Embed options (see the file `src/enums/default-opt.js`), which can also be 
 Helper functionalities:
 
 The `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.
+For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).
 
 ### Attributes
 
@@ -326,9 +328,9 @@ The `eox-chart` automatically emits mouse/pointer events from the Vega-Lite char
 
 ### Properties
 
-- `spec` (VisualizationSpec): [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) (Default: `undefined`)
+- `spec` (VisualizationSpec | string): [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string. (Default: `undefined`)
 - `opt` (EmbedOptions): [Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options) (Default: `undefined`)
-- `dataValues` ({[dataSourceName: string]: InlineData}): Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec` (Default: `undefined`)
+- `dataValues` ({[dataSourceName: string]: InlineData} | string): Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object. (Default: `undefined`)
 - `noShadow` (Boolean): Renders the element without a shadow root (Default: `false`)
 - `unstyled` (Boolean): Render the element without additional styles (Default: `false`)
 
@@ -338,6 +340,28 @@ The `eox-chart` automatically emits mouse/pointer events from the Vega-Lite char
 - `click:item`: Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)
 
 ### Examples
+
+#### Base64EncodedSpec
+
+Passing Vega specification as base64 encoded string. This example shows use case where spec
+contains both single quote and double quote which can not be passed as HTML attribute.
+EOxChart exports util function `base64EncodeSpec` so that parent application can create the base64 encoded spec.
+
+```html
+<eox-chart style="width: 100%; height: 400px"></eox-chart>
+
+<script type="module">
+  import "@eox/chart/dist/eox-chart.js";
+
+  const eoxChart = document.querySelector("eox-chart");
+
+  // Assign properties
+  Object.assign(eoxChart, {
+    spec: "eyIkc2NoZW1hIjoiaHR0cHM6Ly92ZWdhLmdpdGh1Yi5pby9zY2hlbWEvdmVnYS1saXRlL3Y1Lmpzb24iLCJkZXNjcmlwdGlvbiI6IlZlcnRpY2FsIGRlZmxlY3Rpb24gb3ZlciB0aW1lIiwiZGF0YSI6eyJuYW1lIjoidGltZXNlcmllcyIsInVybCI6Imh0dHBzOi8vd29ya3NwYWNlLXVpLXB1YmxpYy5ndGlmLWF1c3RyaWEuaHViLW90Yy5lb3guYXQvYXBpL3B1YmxpYy9zaGFyZS9wdWJsaWMtNHdhemVpM3ktMDIvV1ItMTAtVHJhbnNwb3J0LUluZnJhc3RydWN0dXJlLVByZWRpY3RpdmUtTWFpbnRlbmFuY2UvdjIvY3N2X3NpbmdsZS96b25lXzc1NDsga20gMjMuNTUuY3N2In0sInRyYW5zZm9ybSI6W3siY2FsY3VsYXRlIjoieWVhcihkYXR1bS5kYXRlKSIsImFzIjoieWVhciJ9XSwibGF5ZXIiOlt7Im1hcmsiOnsidHlwZSI6ImxpbmUiLCJzdHJva2UiOiIjMWY3N2I0In0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIiwiYXhpcyI6eyJ0aXRsZSI6IlllYXIiLCJmb3JtYXQiOiIlWSIsInRpY2tDb3VudCI6eyJpbnRlcnZhbCI6InllYXIiLCJzdGVwIjoxfX19LCJ5Ijp7InRpdGxlIjoiVmVydGljYWwgZGVmbGVjdGlvbiBbbW1dIiwiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9fX0seyJtYXJrIjp7InR5cGUiOiJsaW5lIiwic3Ryb2tlIjoiI2U3NGMzYyIsInN0cm9rZURhc2giOls1LDVdLCJzdHJva2VXaWR0aCI6Mn0sInRyYW5zZm9ybSI6W3sicmVncmVzc2lvbiI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJvbiI6ImRhdGUiLCJtZXRob2QiOiJsaW5lYXIifV0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIn0sInkiOnsiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9fX0seyJ0cmFuc2Zvcm0iOlt7InJlZ3Jlc3Npb24iOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwib24iOiJkYXRlIiwibWV0aG9kIjoibGluZWFyIiwicGFyYW1zIjp0cnVlfSx7ImNhbGN1bGF0ZSI6IidUcmVuZDogJyArIGZvcm1hdChkYXR1bS5jb2VmWzFdICogMzY1LjI1ICogMjQgKiA2MCAqIDYwICogMTAwMCwgJy4zZicpICsgJyBtbS95ZWFyJyIsImFzIjoiZXF1YXRpb24ifSx7ImNhbGN1bGF0ZSI6IidSwrIgPSAnICsgZm9ybWF0KGRhdHVtLnJTcXVhcmVkLCAnLjRmJykiLCJhcyI6InIyIn1dLCJtYXJrIjp7InR5cGUiOiJ0ZXh0IiwiYWxpZ24iOiJyaWdodCIsImJhc2VsaW5lIjoidG9wIiwiZHgiOi01LCJkeSI6NSwiZm9udFNpemUiOjExLCJmb250V2VpZ2h0Ijoibm9ybWFsIn0sImVuY29kaW5nIjp7IngiOnsidmFsdWUiOiJ3aWR0aCJ9LCJ5Ijp7InZhbHVlIjoxMH0sInRleHQiOnsiZmllbGQiOiJlcXVhdGlvbiIsInR5cGUiOiJub21pbmFsIn19fSx7InRyYW5zZm9ybSI6W3sicmVncmVzc2lvbiI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJvbiI6ImRhdGUiLCJtZXRob2QiOiJsaW5lYXIiLCJwYXJhbXMiOnRydWV9LHsiY2FsY3VsYXRlIjoiJ1LCsiA9ICcgKyBmb3JtYXQoZGF0dW0uclNxdWFyZWQsICcuNGYnKSIsImFzIjoicjIifV0sIm1hcmsiOnsidHlwZSI6InRleHQiLCJhbGlnbiI6InJpZ2h0IiwiYmFzZWxpbmUiOiJ0b3AiLCJkeCI6LTUsImR5IjoyMCwiZm9udFNpemUiOjExLCJmb250V2VpZ2h0Ijoibm9ybWFsIn0sImVuY29kaW5nIjp7IngiOnsidmFsdWUiOiJ3aWR0aCJ9LCJ5Ijp7InZhbHVlIjoxMH0sInRleHQiOnsiZmllbGQiOiJyMiIsInR5cGUiOiJub21pbmFsIn19fSx7InBhcmFtcyI6W3sibmFtZSI6ImhvdmVyIiwic2VsZWN0Ijp7InR5cGUiOiJwb2ludCIsImZpZWxkcyI6WyJkYXRlIl0sIm5lYXJlc3QiOnRydWUsIm9uIjoibW91c2VvdmVyIiwiY2xlYXIiOiJtb3VzZW91dCJ9fV0sInRyYW5zZm9ybSI6W10sIm1hcmsiOnsidHlwZSI6InJ1bGUiLCJjb2xvciI6ImdyZXkifSwiZW5jb2RpbmciOnsieCI6eyJmaWVsZCI6ImRhdGUiLCJ0eXBlIjoidGVtcG9yYWwifSwib3BhY2l0eSI6eyJjb25kaXRpb24iOnsicGFyYW0iOiJob3ZlciIsInZhbHVlIjowLjUsImVtcHR5IjpmYWxzZX0sInZhbHVlIjowfSwidG9vbHRpcCI6W3siZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIiwidGl0bGUiOiJEYXRlIn0seyJmaWVsZCI6InZlcnRpY2FsIGRlZmxlY3Rpb24gaW4gbW0iLCJ0eXBlIjoicXVhbnRpdGF0aXZlIiwidGl0bGUiOiJWYWx1ZSIsImZvcm1hdCI6IiJ9XX19LHsidHJhbnNmb3JtIjpbeyJmaWx0ZXIiOnsicGFyYW0iOiJob3ZlciJ9fV0sIm1hcmsiOnsidHlwZSI6InBvaW50IiwiZmlsbGVkIjp0cnVlLCJzaXplIjo5MH0sImVuY29kaW5nIjp7IngiOnsiZmllbGQiOiJkYXRlIiwidHlwZSI6InRlbXBvcmFsIn0sInkiOnsiZmllbGQiOiJ2ZXJ0aWNhbCBkZWZsZWN0aW9uIGluIG1tIiwidHlwZSI6InF1YW50aXRhdGl2ZSJ9LCJvcGFjaXR5Ijp7ImNvbmRpdGlvbiI6eyJwYXJhbSI6ImhvdmVyIiwidmFsdWUiOjAuNSwiZW1wdHkiOmZhbHNlfSwidmFsdWUiOjB9fX1dLCJiYWNrZ3JvdW5kIjoidHJhbnNwYXJlbnQifQ==",
+  });
+</script>
+
+```
 
 #### DataValues
 
@@ -11183,7 +11207,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-23T07:55:12.365Z",
+              default: "2025-12-23T08:08:24.610Z",
               options: {
                 hidden: true,
               },

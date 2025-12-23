@@ -8,7 +8,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property in order to render a chart.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.",
+          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
           "name": "EOxChart",
           "members": [
             {
@@ -35,10 +35,10 @@
               "kind": "field",
               "name": "spec",
               "privacy": "public",
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
               "type": {
-                "text": "VisualizationSpec"
+                "text": "VisualizationSpec | string"
               },
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html)",
               "default": "undefined"
             },
             {
@@ -55,10 +55,10 @@
               "kind": "field",
               "name": "dataValues",
               "privacy": "public",
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
               "type": {
-                "text": "{[dataSourceName: string]: InlineData}"
+                "text": "{[dataSourceName: string]: InlineData} | string"
               },
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`",
               "default": "undefined"
             },
             {
@@ -134,6 +134,22 @@
           "name": "EOxChart",
           "declaration": {
             "name": "EOxChart",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "base64EncodeSpec",
+          "declaration": {
+            "name": "base64EncodeSpec",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseSpec",
+          "declaration": {
+            "name": "parseSpec",
             "module": "elements/chart/src/main.js"
           }
         },
