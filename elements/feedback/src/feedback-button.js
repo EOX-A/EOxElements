@@ -15,6 +15,9 @@ export class EOxFeedbackButton extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
+    /**
+     * @type {import("./main").EOxFeedback}
+     */
     this.modal = null;
 
     this.position = "top-right";
@@ -57,7 +60,9 @@ export class EOxFeedbackButton extends HTMLElement {
 
   onButtonClick() {
     if (!this.modal) {
-      this.modal = document.createElement("eox-feedback");
+      this.modal = /** @type {import("./main").EOxFeedback} */ (
+        document.createElement("eox-feedback")
+      );
       if (this.getAttribute("unstyled") !== null) {
         this.modal.setAttribute("unstyled", this.getAttribute("unstyled"));
       }
