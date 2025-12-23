@@ -35,6 +35,7 @@ export class EOxJSONForm extends LitElement {
   static properties = {
     schema: { attribute: false, type: Object },
     value: { attribute: false, type: Object },
+    defaults: { attribute: false, type: Object },
     options: { attribute: false, type: Object },
     customEditorInterfaces: { attribute: false, type: Array },
     noShadow: { attribute: "no-shadow", type: Boolean },
@@ -64,6 +65,13 @@ export class EOxJSONForm extends LitElement {
      * @type {JsonSchema}
      */
     this.value = null;
+
+    /**
+     * Default values for the JSONEditor instance
+     *
+     * @type {object}
+     */
+    this.defaults = {};
 
     /**
      * Options for the form editor
@@ -227,8 +235,11 @@ export class EOxJSONForm extends LitElement {
         this.#editor = await createEditor(this);
         this.#dispatchEvent();
       }
-    } else if (changedProperties.has("customEditorInterfaces")) {
-      if (this.customEditorInterfaces) {
+    } else if (
+      changedProperties.has("customEditorInterfaces") ||
+      changedProperties.has("defaults")
+    ) {
+      if (this.customEditorInterfaces || this.defaults) {
         this.#editor = await createEditor(this);
         this.#dispatchEvent();
       }

@@ -17,3 +17,4 @@ export { default as loadShowOptInPropertiesTest } from "./load-show-opt-in-prope
 export { default as loadButtonsEditorTest } from "./load-buttons-editor";
 export { default as loadSpatialValuesTest } from "./load-spatial-values";
 export { default as validationBehaviorTest } from "./validation-behavior";
+export { default as defaultsTest } from "./defaults";
