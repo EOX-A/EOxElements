@@ -299,7 +299,8 @@ export const createEditor = (element) => {
         } else {
           if (
             !button.classList.contains("json-editor-btn-edit") &&
-            !button.classList.contains("json-editor-btn-edit_properties")
+            !button.classList.contains("json-editor-btn-edit_properties") &&
+            !button.classList.contains("json-editor-btn-upload")
           ) {
             [
               "circle",
@@ -416,6 +417,17 @@ export const createEditor = (element) => {
           <i class="small">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>cancel</title><path d="M12 2C17.5 2 22 6.5 22 12S17.5 22 12 22 2 17.5 2 12 6.5 2 12 2M12 4C10.1 4 8.4 4.6 7.1 5.7L18.3 16.9C19.3 15.5 20 13.8 20 12C20 7.6 16.4 4 12 4M16.9 18.3L5.7 7.1C4.6 8.4 4 10.1 4 12C4 16.4 7.6 20 12 20C13.9 20 15.6 19.4 16.9 18.3Z" /></svg>
           </i>`;
+          }
+          if (button.classList.contains("json-editor-btn-upload")) {
+            button.classList.add("small");
+            button.classList.add("no-margin");
+            button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>upload-circle-outline</title><path d="M8 17V15H16V17H8M16 10L12 6L8 10H10.5V14H13.5V10H16M12 2C17.5 2 22 6.5 22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2M12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4Z" /></svg>
+          </i>
+          <span>
+            Upload
+          </span>`;
           }
         }
       });

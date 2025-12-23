@@ -179,6 +179,21 @@ export const styleEOX = `
   input[type="checkbox"]:not(.je-modal input) {
     visibility: hidden;
   }
+  .form-control input[type="file"]+div > div {
+    display: flex;
+    gap: 0;
+  }
+  .form-control input[type="file"]+div > div > input  {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  .form-control input[type="file"]+div > div > button {
+    margin-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
   .form-control input[disabled],
   .form-control textarea[disabled], {
     opacity: .5;
