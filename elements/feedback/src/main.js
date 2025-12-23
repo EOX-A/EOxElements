@@ -10,7 +10,11 @@ import "./feedback-button.js";
  * @element eox-feedback
  *
  * @attr {string} endpoint - The endpoint to send the feedback to as POST message.
- * @attr {string|null} [unstyled=undefined] - If provided, the element will not be styled with EOX styles.
+ * @attr {string} unstyled - If provided, the element will not be styled with EOX styles.
+ *
+ * @property {string} endpoint - The endpoint to send the feedback to as POST message.
+ * @property {string} unstyled - If provided, the element will not be styled with EOX styles.
+ * @property {import("@eox/jsonform").JsonSchema} schema - The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported.
  *
  * @fires close - The modal was closed.
  * @fires submit - The feedback was submitted. The `CustomEvent.detail` contains the FormData object.
@@ -22,38 +26,63 @@ export class EOxFeedback extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
 
+    /** @private */
     this.includeScreenshot = null;
+    /** @private */
     this.areaSelection = null;
 
+    /** @private */
     this.regionScreenshot = null;
 
+    /** @private */
     this.screenShotFile = null;
 
-    this.endpoint = null;
+    /** @private */
+    this._endpoint = null;
 
+    /** @private */
     this._schema = null;
 
+    /** @private */
     this._submitted = false;
+  }
+
+  get endpoint() {
+    return this._endpoint;
+  }
+
+  set endpoint(val) {
+    this._endpoint = val;
+    if (val && this.getAttribute("endpoint") !== val) {
+      this.setAttribute("endpoint", val);
+    }
+    this.render();
   }
 
   get schema() {
     return this._schema;
   }
 
+  /**
+   * @type {import("@eox/jsonform").JsonSchema|null}
+   */
   set schema(newSchema) {
     this._schema = newSchema;
     this.render();
   }
 
-  /**
-   * @returns {import("@eox/jsonform").EOxJSONForm}
-   */
-  get jsonForm() {
-    return this.shadowRoot.querySelector("eox-jsonform");
+  attributeChangedCallback(name, oldVal, newVal) {
+    if (oldVal === newVal) return;
+    if (name === "endpoint" && this.endpoint !== newVal) {
+      this.endpoint = newVal;
+    } else if (name === "unstyled") {
+      this.render();
+    }
   }
 
   connectedCallback() {
     this.endpoint =
+      this.endpoint ||
       this.getAttribute("endpoint") ||
       document.querySelector("eox-feedback-button")?.getAttribute("endpoint");
 
@@ -105,6 +134,7 @@ export class EOxFeedback extends HTMLElement {
     document.removeEventListener("keyup", (e) => this.onKeyboardInput(e));
   }
 
+  /** @private */
   onKeyboardInput(e) {
     if (e.keyCode === 27) {
       this.onCancel();
@@ -117,6 +147,7 @@ export class EOxFeedback extends HTMLElement {
     }
   }
 
+  /** @private */
   onTextareaInput() {
     const submitButton = this.shadowRoot.querySelector("button#submit");
     const textarea = this.shadowRoot.querySelector("textarea#message");
@@ -127,10 +158,7 @@ export class EOxFeedback extends HTMLElement {
     }
   }
 
-  onOverlayDraw(e) {
-    this.areaSelection = e.detail;
-  }
-
+  /** @private */
   onJsonFormChange() {
     /** @type {import("@eox/jsonform").EOxJSONForm} */
     const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
@@ -145,6 +173,7 @@ export class EOxFeedback extends HTMLElement {
     }
   }
 
+  /** @private */
   async onToggleScreenshot(e) {
     this.includeScreenshot = e.target.checked;
 
@@ -212,6 +241,7 @@ export class EOxFeedback extends HTMLElement {
     });
   }
 
+  /** @private */
   async onSubmit() {
     const container = this.shadowRoot.querySelector("article > div");
     const form = this.shadowRoot.querySelector("#form");
@@ -293,6 +323,7 @@ export class EOxFeedback extends HTMLElement {
     }, 4000);
   }
 
+  /** @private */
   onCancel() {
     if (this.regionScreenshot) {
       this.regionScreenshot.close();
@@ -301,6 +332,7 @@ export class EOxFeedback extends HTMLElement {
     this.dispatchEvent(new Event("close"));
   }
 
+  /** @private */
   render() {
     /**
      * @type {import("./feedback-button").EOxFeedbackButton}
