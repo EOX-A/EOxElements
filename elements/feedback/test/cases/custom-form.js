@@ -36,8 +36,15 @@ const customFormTest = () => {
     .shadow()
     .find("eox-jsonform")
     .shadow()
-    .find("textarea")
-    .type("Hello World");
+    .find('textarea[name="root[message]"]')
+    .type("Hello World")
+    .trigger("change");
+
+  cy.get("eox-feedback")
+    .shadow()
+    .find("eox-jsonform")
+    .invoke("prop", "value")
+    .should("deep.include", { message: "Hello World" });
 
   // Submit button should be enabled
   cy.get("eox-feedback")

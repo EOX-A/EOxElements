@@ -18,6 +18,19 @@ export class EOxFeedbackButton extends HTMLElement {
     this.modal = null;
 
     this.position = "top-right";
+
+    this._schema = null;
+  }
+
+  get schema() {
+    return this._schema;
+  }
+
+  set schema(newSchema) {
+    this._schema = newSchema;
+    if (this.modal) {
+      this.modal.schema = this._schema;
+    }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -47,6 +60,9 @@ export class EOxFeedbackButton extends HTMLElement {
       this.modal = document.createElement("eox-feedback");
       if (this.getAttribute("unstyled") !== null) {
         this.modal.setAttribute("unstyled", this.getAttribute("unstyled"));
+      }
+      if (this.schema) {
+        this.modal.schema = this.schema;
       }
       document.body.appendChild(this.modal);
       this.modal.addEventListener("close", () => (this.modal = null));
