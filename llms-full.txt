@@ -7742,6 +7742,7 @@ To be used in combination with `options.disable_properties = false`
 
 - `schema` (JsonSchema): Schema for the form editor (Default: `null`)
 - `value` (JsonSchema): JSON value of the form editor (Default: `null`)
+- `defaults` (object): Default values for the JSONEditor instance (Default: `{}`)
 - `options` (object): Options for the form editor (Default: `{}`)
 - `noShadow` (Boolean): Renders the element without a shadow root (Default: `false`)
 - `propertiesToggle` (Boolean): Shows a toggle for showing/hiding object properties editing buttons
@@ -9878,6 +9879,122 @@ Demonstrates extensibility via custom editor interfaces based on the JSONEditor.
 
 ```
 
+#### Defaults
+
+Defaults example. Demonstrates how to configure JSONEditor defaults.
+Shows how to implement a custom upload handler using the `defaults` property.
+
+```html
+<eox-jsonform></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      title: "Upload Example",
+      properties: {
+        upload_default: {
+          type: "string",
+          format: "url",
+          options: {
+            upload: {
+              upload_handler: "testUploadHandler",
+            },
+          },
+          links: [
+            {
+              href: "{{self}}",
+            },
+          ],
+        },
+        upload_custom_link: {
+          type: "string",
+          format: "url",
+          options: {
+            upload: {
+              upload_handler: "testUploadHandler",
+            },
+          },
+          links: [
+            {
+              href: "{{self}}",
+              rel: "view",
+            },
+          ],
+        },
+        upload_readonly: {
+          readonly: true,
+          type: "string",
+          format: "url",
+          options: {
+            upload: {
+              upload_handler: "testUploadHandler",
+            },
+          },
+          links: [
+            {
+              href: "{{self}}",
+            },
+          ],
+        },
+        upload_fail: {
+          type: "string",
+          format: "url",
+          options: {
+            upload: {
+              upload_handler: "testUploadHandler",
+            },
+          },
+          links: [
+            {
+              href: "{{self}}",
+            },
+          ],
+        },
+      },
+    },
+    defaults: {
+      callbacks: {
+        upload: {
+          testUploadHandler: function (jseditor, type, file, cbs) {
+            if (type === "root.upload_fail") cbs.failure("Upload failed");
+            else {
+              var tick = 0;
+
+              var tickFunction = function () {
+                tick += 1;
+                console.log("progress: " + tick);
+
+                if (tick < 100) {
+                  cbs.updateProgress(tick);
+                  window.setTimeout(tickFunction, 50);
+                } else if (tick == 100) {
+                  cbs.updateProgress();
+                  window.setTimeout(tickFunction, 500);
+                } else {
+                  cbs.success("http://www.example.com/images/" + file.name);
+                }
+              };
+
+              window.setTimeout(tickFunction);
+            }
+          },
+        },
+      },
+    },
+  });
+
+  // Listen for events
+  eoxJsonform.addEventListener("submit", (e) => console.log(e.detail));
+</script>
+
+```
+
 #### External
 
 External URL example. Loads schema and value from external URLs.
@@ -11207,7 +11324,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-23T09:21:30.658Z",
+              default: "2025-12-23T10:23:10.617Z",
               options: {
                 hidden: true,
               },
