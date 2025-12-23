@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.0...timecontrol-v2.0.1) (2025-12-23)
+
+
+### Bug Fixes
+
+* Timelapse positioning and `getSource` `null` check ([d499313](https://github.com/EOX-A/EOxElements/commit/d49931308ef022ba86d6ba1cab4e7bfc5e05529f))
+
 ## [2.0.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v1.0.2...timecontrol-v2.0.0) (2025-12-13)
 
 

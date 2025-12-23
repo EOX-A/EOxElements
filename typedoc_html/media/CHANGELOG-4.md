@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.2...itemfilter-v1.13.3) (2025-12-23)
+
+
+### Bug Fixes
+
+* Loading images lazily with low fetch priority ([#2051](https://github.com/EOX-A/EOxElements/issues/2051)) ([3378ef6](https://github.com/EOX-A/EOxElements/commit/3378ef67bc5be6245dd34b760092ad1771e5f7b3))
+
 ## [1.13.2](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.1...itemfilter-v1.13.2) (2025-12-13)
 
 

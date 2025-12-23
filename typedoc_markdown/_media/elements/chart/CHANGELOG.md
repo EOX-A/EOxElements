@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/chart-v1.0.1...chart-v1.1.0) (2025-12-23)
+
+
+### Features
+
+* Support base64encoded version of spec and encoding/decoding helper utils in chart ([#2042](https://github.com/EOX-A/EOxElements/issues/2042)) ([2912c56](https://github.com/EOX-A/EOxElements/commit/2912c56ba72b5745f0b13182f62018452c9dbbf3))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/chart-v1.0.0...chart-v1.0.1) (2025-07-29)
 
 
