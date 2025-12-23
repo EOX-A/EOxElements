@@ -48,9 +48,15 @@ export const createEditor = (element) => {
   formEle.addEventListener("input", removeHideErrors);
   formEle.addEventListener("change", removeHideErrors);
 
-  // Force validation on input for textareas
+  // Force validation on input for textareas and inputs
   formEle.addEventListener("input", (e) => {
-    if (/** @type {HTMLElement} */ (e.target).tagName === "TEXTAREA") {
+    const target = /** @type {HTMLElement} */ (e.target);
+    if (
+      target.tagName === "TEXTAREA" ||
+      (target.tagName === "INPUT" &&
+        target.getAttribute("type") !== "checkbox" &&
+        target.getAttribute("type") !== "radio")
+    ) {
       e.target.dispatchEvent(new Event("change", { bubbles: true }));
     }
   });
