@@ -30,6 +30,26 @@ export class EOxFeedback extends HTMLElement {
     this.screenShotFile = null;
 
     this.endpoint = null;
+
+    this._schema = null;
+
+    this._submitted = false;
+  }
+
+  get schema() {
+    return this._schema;
+  }
+
+  set schema(newSchema) {
+    this._schema = newSchema;
+    this.render();
+  }
+
+  /**
+   * @returns {import("@eox/jsonform").EOxJSONForm}
+   */
+  get jsonForm() {
+    return this.shadowRoot.querySelector("eox-jsonform");
   }
 
   connectedCallback() {
@@ -47,9 +67,17 @@ export class EOxFeedback extends HTMLElement {
     this.shadowRoot
       .querySelector("button#cancel")
       .addEventListener("click", () => this.onCancel());
-    this.shadowRoot
-      .querySelector("textarea")
-      .addEventListener("input", (e) => this.onTextInput(e));
+
+    const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
+    if (jsonForm) {
+      jsonForm.addEventListener("change", () => this.onJsonFormChange());
+    }
+
+    const textarea = this.shadowRoot.querySelector("textarea#message");
+    if (textarea) {
+      textarea.addEventListener("input", () => this.onTextareaInput());
+    }
+
     document.addEventListener("keyup", (e) => this.onKeyboardInput(e));
   }
 
@@ -63,9 +91,17 @@ export class EOxFeedback extends HTMLElement {
     this.shadowRoot
       .querySelector("button#cancel")
       .removeEventListener("click", () => this.onCancel());
-    this.shadowRoot
-      .querySelector("textarea")
-      .removeEventListener("input", (e) => this.onTextInput(e));
+
+    const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
+    if (jsonForm) {
+      jsonForm.removeEventListener("change", () => this.onJsonFormChange());
+    }
+
+    const textarea = this.shadowRoot.querySelector("textarea#message");
+    if (textarea) {
+      textarea.removeEventListener("input", () => this.onTextareaInput());
+    }
+
     document.removeEventListener("keyup", (e) => this.onKeyboardInput(e));
   }
 
@@ -74,9 +110,20 @@ export class EOxFeedback extends HTMLElement {
       this.onCancel();
     }
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-      if (this.shadowRoot.querySelector("textarea").value.length > 0) {
+      const submitButton = this.shadowRoot.querySelector("button#submit");
+      if (!submitButton.classList.contains("disabled")) {
         this.onSubmit();
       }
+    }
+  }
+
+  onTextareaInput() {
+    const submitButton = this.shadowRoot.querySelector("button#submit");
+    const textarea = this.shadowRoot.querySelector("textarea#message");
+    if (/** @type {HTMLTextAreaElement} */ (textarea).value.length >= 10) {
+      submitButton.classList.remove("disabled");
+    } else {
+      submitButton.classList.add("disabled");
     }
   }
 
@@ -84,12 +131,17 @@ export class EOxFeedback extends HTMLElement {
     this.areaSelection = e.detail;
   }
 
-  onTextInput(e) {
+  onJsonFormChange() {
+    /** @type {import("@eox/jsonform").EOxJSONForm} */
+    const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
     const submitButton = this.shadowRoot.querySelector("button#submit");
-    if (e.target.value.length > 0) {
-      submitButton.classList.remove("disabled");
-    } else {
-      submitButton.classList.add("disabled");
+    if (jsonForm.editor) {
+      const errors = jsonForm.editor.validate();
+      if (errors.length === 0) {
+        submitButton.classList.remove("disabled");
+      } else {
+        submitButton.classList.add("disabled");
+      }
     }
   }
 
@@ -112,7 +164,6 @@ export class EOxFeedback extends HTMLElement {
       return;
     }
 
-    const inputField = this.shadowRoot.querySelector("textarea");
     const submitButton = this.shadowRoot.querySelector("button#submit");
     submitButton.classList.add("disabled");
 
@@ -124,7 +175,16 @@ export class EOxFeedback extends HTMLElement {
         if (!(checkbox instanceof HTMLInputElement)) return;
         checkbox.checked = false;
         this.includeScreenshot = false;
-        if (inputField.value.length > 0) {
+
+        const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
+        const textarea = this.shadowRoot.querySelector("textarea#message");
+
+        if (jsonForm) {
+          submitButton.classList.remove("disabled");
+        } else if (
+          textarea &&
+          /** @type {HTMLTextAreaElement} */ (textarea).value.length >= 10
+        ) {
           submitButton.classList.remove("disabled");
         }
       });
@@ -165,10 +225,39 @@ export class EOxFeedback extends HTMLElement {
       requestBody.append("file", this.screenShotFile);
     }
 
-    requestBody.append(
-      "message",
-      this.shadowRoot.querySelector("textarea").value,
-    );
+    /** @type {import("@eox/jsonform").EOxJSONForm} */
+    const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
+    const textarea = this.shadowRoot.querySelector("textarea#message");
+
+    if (jsonForm) {
+      this._submitted = true;
+      if (jsonForm.editor) {
+        jsonForm.editor.options.show_errors = "always";
+
+        // Remove the style that hides errors
+        if (jsonForm.shadowRoot) {
+          const style = jsonForm.shadowRoot.querySelector("#hide-errors");
+          if (style) {
+            style.remove();
+          }
+        }
+
+        const errors = jsonForm.editor.validate();
+        if (errors.length > 0) {
+          jsonForm.editor.showValidationErrors(errors);
+          return;
+        }
+      }
+      const value = jsonForm.value;
+      Object.keys(value).forEach((key) => {
+        requestBody.append(key, value[key]);
+      });
+    } else if (textarea) {
+      requestBody.append(
+        "message",
+        /** @type {HTMLTextAreaElement} */ (textarea).value,
+      );
+    }
 
     requestBody.append("userAgent", window.navigator.userAgent);
 
@@ -217,6 +306,33 @@ export class EOxFeedback extends HTMLElement {
      * @type {import("./feedback-button").EOxFeedbackButton}
      */
     const feedbackButton = document.querySelector("eox-feedback-button");
+
+    const hasSchema = !!this.schema;
+    const hasJsonForm = !!customElements.get("eox-jsonform");
+
+    let formContent = "";
+
+    if (hasSchema) {
+      if (hasJsonForm) {
+        formContent = `<eox-jsonform></eox-jsonform>`;
+      } else {
+        console.error(
+          "eox-feedback: Schema provided but eox-jsonform not registered. Please import @eox/jsonform.",
+        );
+        formContent = `<p style="color: red; padding: 1rem;">Error: Schema provided but eox-jsonform not available.</p>`;
+      }
+    } else {
+      formContent = `
+        <div class="field textarea border">
+          <textarea id="message" placeholder="${
+            !this.endpoint
+              ? "Missing endpoint attribute!"
+              : "Type your feedback here! Also include some contact info if you'd like us to reach out to you."
+          }"></textarea>
+        </div>
+      `;
+    }
+
     this.shadowRoot.innerHTML = `
       <style>
         ${style}
@@ -270,19 +386,25 @@ export class EOxFeedback extends HTMLElement {
               </div>
             </nav>
             <div id="screenshot" class="middle-align center-align"></div>
-            <div class="field textarea border">
-              <textarea placeholder="${!this.endpoint ? "Missing endpoint attribute!" : "Type your feedback here! Also include some contact info if you'd like us to reach out to you."}"></textarea>
-            </div>
+            ${formContent}
             <nav>
               <progress class="circle small hidden"></progress>
               <div class="max"></div>
               <button id="cancel" class="border">Cancel</button>
-              <button id="submit" class="disabled">Submit</button>
+              <button id="submit" class="${
+                hasSchema && hasJsonForm ? "" : "disabled"
+              }">Submit</button>
             </nav>
           </div>
         </div>
       </article>
     `;
+
+    if (hasSchema && hasJsonForm) {
+      /** @type {import("@eox/jsonform").EOxJSONForm} */
+      const jsonForm = this.shadowRoot.querySelector("eox-jsonform");
+      jsonForm.schema = this.schema;
+    }
   }
 }
 

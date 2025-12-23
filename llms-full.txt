@@ -1348,12 +1348,82 @@ Can be `top-left`, `top-right`, `bottom-left`, or `bottom-right`.
 
 ```
 
+#### CustomForm
+
+Custom form schema for eox-feedback.
+By passing a JSON schema to the `schema` property, the form can be fully customized.
+This functionality is powered by [eox-jsonform](https://github.com/EOX-A/EOxElements/tree/main/elements/jsonform).
+Fields can be hidden by setting `options: { hidden: true }` in the schema property.
+Values can be passed programmatically by setting the `default` property in the schema.
+
+```html
+<eox-feedback
+  endpoint="https://jsonplaceholder.typicode.com/posts"
+  style="position: relative !important; height: 400px"
+></eox-feedback>
+
+<script type="module">
+  import "@eox/feedback/dist/eox-feedback.js";
+
+  import "@eox/jsonform";
+
+  const eoxFeedback = document.querySelector("eox-feedback");
+
+  // Assign properties
+  Object.assign(eoxFeedback, {
+    schema: {
+      type: "object",
+      properties: {
+        email: {
+          type: "string",
+          format: "email",
+          title: "Email",
+          description: "Your email address",
+          options: {
+            inputAttributes: {
+              placeholder: "Include your email address (optional).",
+            },
+          },
+        },
+        message: {
+          type: "string",
+          format: "textarea",
+          title: "Message",
+          description: "Your feedback",
+          options: {
+            inputAttributes: {
+              placeholder: "Type your feedback here!",
+            },
+          },
+          minLength: 1,
+        },
+        hidden_field: {
+          type: "string",
+          options: {
+            hidden: true,
+          },
+          default: "some-hidden-value",
+        },
+      },
+      required: ["message"],
+    },
+  });
+
+  // Listen for events
+  eoxFeedback.addEventListener("submit", (e) =>
+    console.log("Feedback submitted", e.detail),
+  );
+  eoxFeedback.addEventListener("close", () => console.log("Feedback closed"));
+</script>
+
+```
+
 #### Primary
 
 Stories for eox-feedback component showcasing various configurations.
 These stories provide visual representations and usage examples for different scenarios.
 /
-import { PrimaryStory, ButtonStory } from "./index";
+import { PrimaryStory, ButtonStory, CustomFormStory } from "./index";
 export default {
 title: "Elements/eox-feedback",
 tags: ["autodocs"],
@@ -11324,7 +11394,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-23T11:28:37.460Z",
+              default: "2025-12-23T11:30:05.033Z",
               options: {
                 hidden: true,
               },
