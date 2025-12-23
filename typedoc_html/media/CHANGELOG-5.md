@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.6.0...jsonform-v1.7.0) (2025-12-23)
+
+
+### Features
+
+* Support custom editor `defaults` ([#2055](https://github.com/EOX-A/EOxElements/issues/2055)) ([1c9b1e4](https://github.com/EOX-A/EOxElements/commit/1c9b1e49c9408951d7802ef9bb3dfa1676f56c57))
+
+
+### Bug Fixes
+
+* Hide initial validation errors and improve textarea validation ([#2052](https://github.com/EOX-A/EOxElements/issues/2052)) ([5762e56](https://github.com/EOX-A/EOxElements/commit/5762e5650cea278d3c33e6bcefe80570277227b7))
+* **style:** Disabled select ([#2054](https://github.com/EOX-A/EOxElements/issues/2054)) ([daa128b](https://github.com/EOX-A/EOxElements/commit/daa128bbb6257f0ce574977bce11a30fb791cd8f))
+* **style:** Upload editor layout and styling ([#2056](https://github.com/EOX-A/EOxElements/issues/2056)) ([46aa016](https://github.com/EOX-A/EOxElements/commit/46aa016cdcdc0da9844762f3573a168516c69467))
+
 ## [1.6.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.5.0...jsonform-v1.6.0) (2025-12-16)
 
 
