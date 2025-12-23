@@ -166,6 +166,9 @@ export const styleEOX = `
   .form-control textarea {
     min-block-size: 6rem;
   }
+  .form-control select:disabled {
+    opacity: 0.6;
+  }
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus,
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible,
     .form-control textarea:focus,
