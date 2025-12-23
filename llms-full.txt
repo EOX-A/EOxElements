@@ -1317,7 +1317,7 @@ The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM 
 ### Attributes
 
 - `endpoint` (string): The endpoint to send the feedback to as POST message.
-- `unstyled` (string|null): If provided, the element will not be styled with EOX styles.
+- `unstyled` (string): If provided, the element will not be styled with EOX styles.
 
 ### Events
 
@@ -11394,7 +11394,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2025-12-23T14:56:23.400Z",
+              default: "2025-12-23T16:42:15.307Z",
               options: {
                 hidden: true,
               },

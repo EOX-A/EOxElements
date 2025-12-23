@@ -25,10 +25,16 @@ export class EOxFeedbackButton extends HTMLElement {
     this._schema = null;
   }
 
+  /**
+   * @returns {import("@eox/jsonform").JsonSchema|null}
+   */
   get schema() {
     return this._schema;
   }
 
+  /**
+   * @param {import("@eox/jsonform").JsonSchema|null} newSchema
+   */
   set schema(newSchema) {
     this._schema = newSchema;
     if (this.modal) {

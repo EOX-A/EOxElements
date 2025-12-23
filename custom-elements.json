@@ -174,17 +174,45 @@
           "members": [
             {
               "kind": "field",
-              "name": "schema"
+              "name": "endpoint",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
             },
             {
               "kind": "field",
-              "name": "jsonForm",
+              "name": "schema",
               "return": {
                 "type": {
-                  "text": "EOxJSONForm"
+                  "text": "JsonSchema|null"
                 }
               },
-              "readonly": true
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema|null"
+                  }
+                }
+              ],
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
             },
             {
               "kind": "method",
@@ -193,24 +221,18 @@
                 {
                   "name": "e"
                 }
-              ]
+              ],
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "onTextareaInput"
+              "name": "onTextareaInput",
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "onOverlayDraw",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ]
-            },
-            {
-              "kind": "method",
-              "name": "onJsonFormChange"
+              "name": "onJsonFormChange",
+              "privacy": "private"
             },
             {
               "kind": "method",
@@ -219,15 +241,18 @@
                 {
                   "name": "e"
                 }
-              ]
+              ],
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "onSubmit"
+              "name": "onSubmit",
+              "privacy": "private"
             },
             {
               "kind": "method",
-              "name": "onCancel"
+              "name": "onCancel",
+              "privacy": "private"
             },
             {
               "kind": "field",
@@ -235,6 +260,7 @@
               "type": {
                 "text": "null"
               },
+              "privacy": "private",
               "default": "null"
             },
             {
@@ -243,6 +269,7 @@
               "type": {
                 "text": "null"
               },
+              "privacy": "private",
               "default": "null"
             },
             {
@@ -251,6 +278,7 @@
               "type": {
                 "text": "null"
               },
+              "privacy": "private",
               "default": "null"
             },
             {
@@ -259,14 +287,16 @@
               "type": {
                 "text": "null"
               },
+              "privacy": "private",
               "default": "null"
             },
             {
               "kind": "field",
-              "name": "endpoint",
+              "name": "_endpoint",
               "type": {
                 "text": "null"
               },
+              "privacy": "private",
               "default": "null"
             },
             {
@@ -275,6 +305,7 @@
               "type": {
                 "text": "null"
               },
+              "privacy": "private",
               "default": "null"
             },
             {
@@ -283,7 +314,16 @@
               "type": {
                 "text": "boolean"
               },
+              "privacy": "private",
               "default": "false"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "name": "unstyled",
+              "kind": "field"
             }
           ],
           "events": [
@@ -313,10 +353,9 @@
             {
               "name": "unstyled",
               "type": {
-                "text": "string|null"
+                "text": "string"
               },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "default": "undefined"
+              "description": "If provided, the element will not be styled with EOX styles."
             }
           ],
           "superclass": {
