@@ -37,8 +37,10 @@ const customFormTest = () => {
     .find("eox-jsonform")
     .shadow()
     .find('textarea[name="root[message]"]')
-    .type("Hello World")
-    .trigger("change");
+    .as("textarea");
+
+  cy.get("@textarea").type("Hello World");
+  cy.get("@textarea").trigger("change");
 
   cy.get("eox-feedback")
     .shadow()
