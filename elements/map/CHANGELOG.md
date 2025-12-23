@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.2](https://github.com/EOX-A/EOxElements/compare/map-v2.0.1...map-v2.0.2) (2025-12-23)
+
+
+### Bug Fixes
+
+* Filter out group layers in globe initialization ([#2041](https://github.com/EOX-A/EOxElements/issues/2041)) ([e20a822](https://github.com/EOX-A/EOxElements/commit/e20a82212eb0de10870ffb2d2cd97b57a819d5b7))
+* Vector layer projection handling ([#2028](https://github.com/EOX-A/EOxElements/issues/2028)) ([0245b52](https://github.com/EOX-A/EOxElements/commit/0245b52bce213212d6c66b429464ca984c188123))
+
 ## [2.0.1](https://github.com/EOX-A/EOxElements/compare/map-v2.0.0...map-v2.0.1) (2025-12-15)
 
 

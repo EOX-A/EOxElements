@@ -166,6 +166,9 @@ export const styleEOX = `
   .form-control textarea {
     min-block-size: 6rem;
   }
+  .form-control select:disabled {
+    opacity: 0.6;
+  }
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus,
   .form-control input:not([data-schematype="boolean"] input):not([type="range"]):focus-visible,
     .form-control textarea:focus,
@@ -175,6 +178,21 @@ export const styleEOX = `
   }
   input[type="checkbox"]:not(.je-modal input) {
     visibility: hidden;
+  }
+  .form-control input[type="file"]+div > div {
+    display: flex;
+    gap: 0;
+  }
+  .form-control input[type="file"]+div > div > input  {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
+  .form-control input[type="file"]+div > div > button {
+    margin-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
   }
   .form-control input[disabled],
   .form-control textarea[disabled], {

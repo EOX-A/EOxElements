@@ -15,6 +15,7 @@ import OSM from "ol/source/OSM.js";
 import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
+import { get as getProjection, equivalent } from "ol/proj";
 import { getLayerById } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
@@ -25,6 +26,7 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
     target,
     layers: EOxMap.getFlatLayersArray(EOxMap.map.getLayers().getArray())
+      .filter((l) => l.get("type") !== "Group")
       .map((l) => createGlobusLayer(l, mapPool))
       .filter((l) => l !== undefined),
     sun: { active: false },
@@ -77,9 +79,7 @@ export const refreshGlobe = () => {
 export const createGlobusLayer = (olLayer, mapPool) => {
   const source = olLayer.getSource && olLayer.getSource();
   const id = olLayer.get("id");
-  if (olLayer.get("type") === "Group") {
-    return undefined;
-  }
+
   if (source instanceof OSM) {
     return new OpenStreetMap(id, {
       isBaseLayer: olLayer.get("base"),
@@ -115,36 +115,58 @@ export const createGlobusLayer = (olLayer, mapPool) => {
       },
     });
   }
-  if (source instanceof Vector_ol) {
+  if (source instanceof Vector_ol && source.getUrl()) {
+    let projection;
     fetch(source.getUrl().toString())
       .then((r) => {
         return r.json();
       })
       .then((data) => {
-        const vectorLayer = new Vector(id, {
-          visibility: olLayer.getVisible(),
-          opacity: olLayer.getOpacity(),
-          isBaseLayer: olLayer.get("base"),
-        });
-
-        vectorLayer.addTo(globus.planet);
-
-        var f = data.features;
-        for (let i = 0; i < f.length; i++) {
-          var fi = f[i];
-          vectorLayer.add(
-            new Entity({
-              geometry: {
-                type: fi.geometry.type,
-                coordinates: fi.geometry.coordinates,
-              },
-            }),
-          );
+        const crs = data["crs"];
+        if (crs) {
+          if (crs["type"] == "name") {
+            projection = getProjection(crs["properties"]["name"]);
+          } else if (crs["type"] === "EPSG") {
+            projection = getProjection("EPSG:" + crs["properties"]["code"]);
+          }
         }
-        return vectorLayer;
-      });
+        if (
+          (projection && equivalent(projection, getProjection("EPSG:4326"))) ||
+          !crs
+        ) {
+          // remmove existing layer with same id if any
+          const existingLayer = globus.planet.getLayerByName(id);
+          if (existingLayer) {
+            globus.planet.removeLayer(existingLayer);
+          }
+          const vectorLayer = new Vector(id, {
+            visibility: olLayer.getVisible(),
+            opacity: olLayer.getOpacity(),
+            isBaseLayer: olLayer.get("base"),
+          });
 
-    return undefined;
+          vectorLayer.addTo(globus.planet);
+
+          var f = data.features;
+          for (let i = 0; i < f.length; i++) {
+            var fi = f[i];
+            vectorLayer.add(
+              new Entity({
+                geometry: {
+                  type: fi.geometry.type,
+                  coordinates: fi.geometry.coordinates,
+                },
+              }),
+            );
+          }
+          return vectorLayer;
+        } else {
+          return undefined;
+        }
+      });
+    if (projection && equivalent(projection, getProjection("EPSG:4326"))) {
+      return undefined;
+    }
   }
 
   // Fallback to CanvasTiles for other layer types
@@ -245,7 +267,7 @@ export const disableGlobe = (map) => {
           finalCameraPosition.lat,
         ];
         // Transform from EPSG:4326 (globe's projection) to the OL map's current projection
-        const newCenter = map.transform(
+        const newCenter = transform(
           centerFromGlobe,
           "EPSG:4326",
           map.OLprojection, // Use the internal OL projection here

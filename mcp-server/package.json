@@ -19,7 +19,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.24.3",
     "cors": "^2.8.5",
-    "express": "^4.18.2",
+    "express": "^5.2.1",
     "zod": "^4.2.0"
   }
 }

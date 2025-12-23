@@ -42,19 +42,38 @@ export const createEditor = (element) => {
   const formEle = element.renderRoot.querySelector("form");
   while (formEle.firstChild) formEle.removeChild(formEle.firstChild);
 
+  // Workaround for https://github.com/json-editor/json-editor/issues/856
+  formEle.classList.add("hide-errors");
+  const removeHideErrors = () => formEle.classList.remove("hide-errors");
+  formEle.addEventListener("input", removeHideErrors);
+  formEle.addEventListener("change", removeHideErrors);
+
+  // Force validation on input for textareas and inputs
+  formEle.addEventListener("input", (e) => {
+    const target = /** @type {HTMLElement} */ (e.target);
+    if (
+      target.tagName === "TEXTAREA" ||
+      (target.tagName === "INPUT" &&
+        target.getAttribute("type") !== "checkbox" &&
+        target.getAttribute("type") !== "radio")
+    ) {
+      e.target.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  });
+
   // Add default button callback for submit
   // see https://github.com/json-editor/json-editor?tab=readme-ov-file#button-editor
-  JSONEditor.defaults.callbacks = {
-    button: {
-      onSubmit: function () {
-        element.dispatchEvent(
-          new CustomEvent(`submit`, {
-            detail: element.value,
-            bubbles: true,
-            composed: true,
-          }),
-        );
-      },
+  JSONEditor.defaults.callbacks = JSONEditor.defaults.callbacks || {};
+  JSONEditor.defaults.callbacks.button = {
+    ...(JSONEditor.defaults.callbacks.button || {}),
+    onSubmit: function () {
+      element.dispatchEvent(
+        new CustomEvent(`submit`, {
+          detail: element.value,
+          bubbles: true,
+          composed: true,
+        }),
+      );
     },
   };
 
@@ -63,6 +82,33 @@ export const createEditor = (element) => {
   JSONEditor.defaults.resolvers.unshift(
     (schema) => schema.options?.resolver && schema.options.resolver,
   );
+
+  // Merge user-defined defaults
+  if (element.defaults) {
+    Object.keys(element.defaults).forEach((key) => {
+      const value = element.defaults[key];
+      if (key === "callbacks") {
+        Object.keys(value).forEach((callbackType) => {
+          JSONEditor.defaults.callbacks[callbackType] = {
+            ...(JSONEditor.defaults.callbacks[callbackType] || {}),
+            ...value[callbackType],
+          };
+        });
+      } else if (key === "editors" || key === "languages") {
+        JSONEditor.defaults[key] = {
+          ...JSONEditor.defaults[key],
+          ...value,
+        };
+      } else if (key === "resolvers" || key === "custom_validators") {
+        JSONEditor.defaults[key] = [
+          ...(JSONEditor.defaults[key] || []),
+          ...value,
+        ];
+      } else {
+        JSONEditor.defaults[key] = value;
+      }
+    });
+  }
 
   // Initialize the JSONEditor with the given schema, value, and options
   const initEditor = () =>
@@ -253,7 +299,8 @@ export const createEditor = (element) => {
         } else {
           if (
             !button.classList.contains("json-editor-btn-edit") &&
-            !button.classList.contains("json-editor-btn-edit_properties")
+            !button.classList.contains("json-editor-btn-edit_properties") &&
+            !button.classList.contains("json-editor-btn-upload")
           ) {
             [
               "circle",
@@ -370,6 +417,17 @@ export const createEditor = (element) => {
           <i class="small">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>cancel</title><path d="M12 2C17.5 2 22 6.5 22 12S17.5 22 12 22 2 17.5 2 12 6.5 2 12 2M12 4C10.1 4 8.4 4.6 7.1 5.7L18.3 16.9C19.3 15.5 20 13.8 20 12C20 7.6 16.4 4 12 4M16.9 18.3L5.7 7.1C4.6 8.4 4 10.1 4 12C4 16.4 7.6 20 12 20C13.9 20 15.6 19.4 16.9 18.3Z" /></svg>
           </i>`;
+          }
+          if (button.classList.contains("json-editor-btn-upload")) {
+            button.classList.add("small");
+            button.classList.add("no-margin");
+            button.innerHTML = `
+          <i class="small">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>upload-circle-outline</title><path d="M8 17V15H16V17H8M16 10L12 6L8 10H10.5V14H13.5V10H16M12 2C17.5 2 22 6.5 22 12C22 17.5 17.5 22 12 22C6.5 22 2 17.5 2 12C2 6.5 6.5 2 12 2M12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4Z" /></svg>
+          </i>
+          <span>
+            Upload
+          </span>`;
           }
         }
       });

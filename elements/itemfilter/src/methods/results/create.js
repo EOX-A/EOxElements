@@ -120,6 +120,8 @@ export function createItemListMethod(
                       getValue(config.imageProperty, item)
                         ? html`
                             <img
+                              loading="lazy"
+                              fetchpriority="low"
                               class="image"
                               src="${getValue(config.imageProperty, item)}"
                             />
@@ -143,6 +145,8 @@ export function createItemListMethod(
                         ${getValue(config.imageProperty, item)
                           ? html`
                               <img
+                                loading="lazy"
+                                fetchpriority="low"
                                 class="image"
                                 src="${getValue(config.imageProperty, item)}"
                               />

@@ -18,6 +18,8 @@ import {
   loadShowOptInPropertiesTest,
   loadButtonsEditorTest,
   loadSpatialValuesTest,
+  validationBehaviorTest,
+  defaultsTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -41,4 +43,6 @@ describe("Jsonform", () => {
     loadShowOptInPropertiesTest());
   it("loads the buttons editor", () => loadButtonsEditorTest());
   it("loads spatial values correctly", () => loadSpatialValuesTest());
+  it("handles validation behavior correctly", () => validationBehaviorTest());
+  it("handles defaults correctly", () => defaultsTest());
 });
