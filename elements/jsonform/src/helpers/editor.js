@@ -63,17 +63,17 @@ export const createEditor = (element) => {
 
   // Add default button callback for submit
   // see https://github.com/json-editor/json-editor?tab=readme-ov-file#button-editor
-  JSONEditor.defaults.callbacks = {
-    button: {
-      onSubmit: function () {
-        element.dispatchEvent(
-          new CustomEvent(`submit`, {
-            detail: element.value,
-            bubbles: true,
-            composed: true,
-          }),
-        );
-      },
+  JSONEditor.defaults.callbacks = JSONEditor.defaults.callbacks || {};
+  JSONEditor.defaults.callbacks.button = {
+    ...(JSONEditor.defaults.callbacks.button || {}),
+    onSubmit: function () {
+      element.dispatchEvent(
+        new CustomEvent(`submit`, {
+          detail: element.value,
+          bubbles: true,
+          composed: true,
+        }),
+      );
     },
   };
 
@@ -82,6 +82,33 @@ export const createEditor = (element) => {
   JSONEditor.defaults.resolvers.unshift(
     (schema) => schema.options?.resolver && schema.options.resolver,
   );
+
+  // Merge user-defined defaults
+  if (element.defaults) {
+    Object.keys(element.defaults).forEach((key) => {
+      const value = element.defaults[key];
+      if (key === "callbacks") {
+        Object.keys(value).forEach((callbackType) => {
+          JSONEditor.defaults.callbacks[callbackType] = {
+            ...(JSONEditor.defaults.callbacks[callbackType] || {}),
+            ...value[callbackType],
+          };
+        });
+      } else if (key === "editors" || key === "languages") {
+        JSONEditor.defaults[key] = {
+          ...JSONEditor.defaults[key],
+          ...value,
+        };
+      } else if (key === "resolvers" || key === "custom_validators") {
+        JSONEditor.defaults[key] = [
+          ...(JSONEditor.defaults[key] || []),
+          ...value,
+        ];
+      } else {
+        JSONEditor.defaults[key] = value;
+      }
+    });
+  }
 
   // Initialize the JSONEditor with the given schema, value, and options
   const initEditor = () =>

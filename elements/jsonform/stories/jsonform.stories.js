@@ -22,6 +22,7 @@ import {
   CodeStory,
   OptionalPropertiesStory,
   FlexLayoutStory,
+  DefaultsStory,
 } from "./index.js";
 
 export default {
@@ -170,6 +171,12 @@ export const FlexLayout = FlexLayoutStory;
  * Demonstrates extensibility via custom editor interfaces based on the JSONEditor.AbstractEditor.
  */
 export const CustomEditorInterfaces = CustomEditorInterfacesStory;
+
+/**
+ * Defaults example. Demonstrates how to configure JSONEditor defaults.
+ * Shows how to implement a custom upload handler using the `defaults` property.
+ */
+export const Defaults = DefaultsStory;
 
 /**
  * Unstyled example. Renders the form without default styles.
