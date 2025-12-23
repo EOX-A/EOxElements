@@ -2,10 +2,13 @@ import { LitElement, html } from "lit";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import { renderChartMethod } from "./methods/render";
+import { parseSpec } from "./methods/decode";
+import { base64EncodeSpec } from "./methods/encode";
 
 /**
  * Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).
  * Pass a valid Vega spec as `spec` property in order to render a chart.
+ * Optionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.
  *
  * The `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.
  *
@@ -22,13 +25,14 @@ import { renderChartMethod } from "./methods/render";
  * Helper functionalities:
  *
  * The `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.
+ * For working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).
  *
  * @element eox-chart
  */
 export class EOxChart extends LitElement {
   static properties = {
-    dataValues: { attribute: false, type: Object },
-    spec: { attribute: false, type: Object },
+    dataValues: { attribute: false },
+    spec: { attribute: false },
     opt: { attribute: false, type: Object },
     noShadow: { attribute: "no-shadow", type: Boolean },
     unstyled: { type: Boolean },
@@ -38,9 +42,9 @@ export class EOxChart extends LitElement {
     super();
 
     /**
-     * [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html)
+     * [Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.
      *
-     * @type {import("vega-embed").VisualizationSpec}
+     * @type {import("vega-embed").VisualizationSpec | string}
      */
     this.spec = undefined;
 
@@ -52,9 +56,9 @@ export class EOxChart extends LitElement {
     this.opt = undefined;
 
     /**
-     * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`
+     * Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.
      *
-     * @type {{[dataSourceName: string]: import("vega-lite/types_unstable/data.js").InlineData}}
+     * @type {{[dataSourceName: string]: import("vega-lite/types_unstable/data.js").InlineData} | string}
      */
     this.dataValues = undefined;
 
@@ -110,7 +114,9 @@ export class EOxChart extends LitElement {
    */
   async updated(changedProperties) {
     if (changedProperties.has("spec") || changedProperties.has("dataValues")) {
-      renderChartMethod(this, this.spec, this.opt, this.dataValues);
+      const spec = parseSpec(this.spec);
+      const dataValues = parseSpec(this.dataValues);
+      renderChartMethod(this, spec, this.opt, dataValues);
     }
   }
 
@@ -168,5 +174,5 @@ export class EOxChart extends LitElement {
     `;
   }
 }
-
+export { base64EncodeSpec, parseSpec };
 customElements.define("eox-chart", EOxChart);
