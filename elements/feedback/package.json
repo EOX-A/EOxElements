@@ -36,5 +36,8 @@
     "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
+  },
+  "peerDependencies": {
+    "@eox/jsonform": "*"
   }
 }
