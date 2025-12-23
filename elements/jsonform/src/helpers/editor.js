@@ -42,6 +42,19 @@ export const createEditor = (element) => {
   const formEle = element.renderRoot.querySelector("form");
   while (formEle.firstChild) formEle.removeChild(formEle.firstChild);
 
+  // Workaround for https://github.com/json-editor/json-editor/issues/856
+  formEle.classList.add("hide-errors");
+  const removeHideErrors = () => formEle.classList.remove("hide-errors");
+  formEle.addEventListener("input", removeHideErrors);
+  formEle.addEventListener("change", removeHideErrors);
+
+  // Force validation on input for textareas
+  formEle.addEventListener("input", (e) => {
+    if (/** @type {HTMLElement} */ (e.target).tagName === "TEXTAREA") {
+      e.target.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+  });
+
   // Add default button callback for submit
   // see https://github.com/json-editor/json-editor?tab=readme-ov-file#button-editor
   JSONEditor.defaults.callbacks = {
