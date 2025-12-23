@@ -8,4 +8,4 @@
 
 > `const` **default**: `string`
 
-Defined in: [utils/types.d.ts:2](https://github.com/EOX-A/EOxElements/blob/5762e5650cea278d3c33e6bcefe80570277227b7/utils/types.d.ts#L2)
+Defined in: [utils/types.d.ts:2](https://github.com/EOX-A/EOxElements/blob/daa128bbb6257f0ce574977bce11a30fb791cd8f/utils/types.d.ts#L2)
