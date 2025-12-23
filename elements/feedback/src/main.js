@@ -47,10 +47,16 @@ export class EOxFeedback extends HTMLElement {
     this._submitted = false;
   }
 
+  /**
+   * @returns {string}
+   */
   get endpoint() {
     return this._endpoint;
   }
 
+  /**
+   * @param {string} val
+   */
   set endpoint(val) {
     this._endpoint = val;
     if (val && this.getAttribute("endpoint") !== val) {
@@ -59,12 +65,15 @@ export class EOxFeedback extends HTMLElement {
     this.render();
   }
 
+  /**
+   * @returns {import("@eox/jsonform").JsonSchema|null}
+   */
   get schema() {
     return this._schema;
   }
 
   /**
-   * @type {import("@eox/jsonform").JsonSchema|null}
+   * @param {import("@eox/jsonform").JsonSchema|null} newSchema
    */
   set schema(newSchema) {
     this._schema = newSchema;
