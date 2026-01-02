@@ -5,6 +5,7 @@ import {
   loadOnlyDates,
   loadDateWithInitDate,
   loadDateWithFormat,
+  loadDateWithNavigation,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -17,4 +18,7 @@ describe("TimeControl", () => {
 
   // Test to verify that timecontrol-date correctly formats dates using custom format strings
   it("loads date with custom format", () => loadDateWithFormat());
+
+  // Test to verify that navigation buttons work correctly and update dates
+  it("loads date with navigation", () => loadDateWithNavigation());
 });
