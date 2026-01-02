@@ -23,7 +23,7 @@ const loadBinaryCheckboxTest = () => {
       .value=${{
         [testVals.key]: testVals.value,
       }}
-    ></eox-jsonform>`
+    ></eox-jsonform>`,
   ).as(jsonForm);
 
   cy.get(jsonForm)

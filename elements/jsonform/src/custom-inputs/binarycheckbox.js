@@ -17,15 +17,15 @@ export class BinaryCheckboxEditor extends AbstractEditor {
     if (!options.compact)
       this.header = this.label = theme.getFormInputLabel(
         this.getTitle(),
-        this.isRequired()
+        this.isRequired(),
       );
     if (description)
       this.description = theme.getFormInputDescription(
-        this.translateProperty(description)
+        this.translateProperty(description),
       );
     if (options.infoText)
       this.infoButton = theme.getInfoButton(
-        this.translateProperty(options.infoText)
+        this.translateProperty(options.infoText),
       );
 
     this.input = document.createElement("input");
@@ -39,7 +39,7 @@ export class BinaryCheckboxEditor extends AbstractEditor {
       this.label,
       this.input,
       this.description,
-      this.infoButton
+      this.infoButton,
     );
 
     if (this.schema.readOnly || this.schema.readonly) {
@@ -50,7 +50,7 @@ export class BinaryCheckboxEditor extends AbstractEditor {
     this.input.addEventListener("change", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      this.value = (/** @type {HTMLInputElement} */(e.target)).checked ? 1 : 0;
+      this.value = /** @type {HTMLInputElement} */ (e.target).checked ? 1 : 0;
       this.onChange(true);
     });
 
