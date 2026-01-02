@@ -18,6 +18,10 @@ const config = {
       "./Usage.mdx",
       "./Coding Agents.mdx",
       "../**/*.stories.@(js|jsx|mjs|ts|tsx)",
+      // Exclude typedoc generated duplicates
+      "!../docs/typedoc_markdown/**",
+      "!../.storybook/public/typedoc_markdown/**",
+      "!../.storybook/public/typedoc_html/**",
     ];
     if (process.env.NODE_ENV === "development")
       list.push("../**/*.stories.dev.@(js|jsx|mjs|ts|tsx)");

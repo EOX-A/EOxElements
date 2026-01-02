@@ -1,14 +1,13 @@
 // Importing necessary modules, test cases, and enums
 import "../src/main";
+import "../../map/src/main";
+import { loadOnlyDates, loadDateWithInitDate } from "./cases";
 
 // Test suite for TimeControl
 describe("TimeControl", () => {
-  // Set up before each test
-  beforeEach(() => {
-    cy.mount(`<eox-timecontrol></eox-timecontrol>`).as("eox-timecontrol");
-  });
+  // Test to verify that timecontrol loads with only date component and displays date correctly
+  it("loads only dates", () => loadOnlyDates());
 
-  // TODO: More test need to be added
-  // Sample test added so that test pipeline doesn't break due to no tests in timecontrol
-  it("loads the timecontrol", () => cy.get("eox-timecontrol").shadow());
+  // Test to verify that timecontrol initializes with a specific date when initDate is provided
+  it("loads date with init date", () => loadDateWithInitDate());
 });
