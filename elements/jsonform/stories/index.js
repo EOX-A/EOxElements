@@ -1,6 +1,7 @@
 export { default as PrimaryStory } from "./primary"; // Basic primary json form
 export { default as ButtonsEditorStory } from "./buttons-editor"; // Story for ButtonsEditor custom input
 export { default as MinMaxEditorStory } from "./minmax-editor"; // Story for MinMaxEditor custom input
+export { default as BinaryCheckboxEditorStory } from "./binary-checkbox-editor"; // Story for BinaryCheckboxEditor custom input
 export { default as CatalogStory } from "./catalog"; // Input form based on STAC catalog config
 export { default as CollectionStory } from "./collection"; // Input form based on STAC collection config
 export { default as ExternalStory } from "./external"; // Input form based on External URL

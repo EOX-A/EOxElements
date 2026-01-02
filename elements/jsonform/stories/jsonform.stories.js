@@ -7,6 +7,7 @@ import {
   MarkdownStory,
   PrimaryStory,
   ButtonsEditorStory,
+  BinaryCheckboxEditorStory,
   MinMaxEditorStory,
   BoundingBoxStory,
   PolygonStory,
@@ -115,6 +116,12 @@ export const ButtonsEditor = ButtonsEditorStory;
  * Demonstrates custom input integration for range selection.
  */
 export const MinMaxEditor = MinMaxEditorStory;
+
+/**
+ * Binary Checkbox Editor example. Renders a custom checkbox that returns 0 or 1.
+ * Demonstrates custom input integration for binary values.
+ */
+export const BinaryCheckboxEditor = BinaryCheckboxEditorStory;
 
 /**
  * Bounding Box example. Allows users to select a bounding box as a form input.

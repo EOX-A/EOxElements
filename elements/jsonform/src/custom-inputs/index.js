@@ -1,6 +1,7 @@
 import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import { MinMaxEditor } from "./minmax";
 import { ButtonsEditor } from "./buttons";
+import { BinaryCheckboxEditor } from "./binarycheckbox";
 import { SpatialEditor, spatialValidatorCreator } from "./spatial";
 
 // Define custom input types
@@ -14,6 +15,11 @@ const inputs = [
     type: "string",
     format: "buttons",
     func: ButtonsEditor,
+  },
+  {
+    type: "number",
+    format: "binarycheckbox",
+    func: BinaryCheckboxEditor,
   },
   {
     type: "array",
