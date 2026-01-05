@@ -7,6 +7,13 @@ import {
   loadDateWithFormat,
   loadDateWithNavigation,
   loadDatePickerPopup,
+  loadDatePickerPopupItems,
+  loadDatePickerStandalone,
+  loadSlider,
+  loadTimeline,
+  loadDateFormatInitDate,
+  loadDateFormatNavigation,
+  loadDateWithSlider,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -25,4 +32,27 @@ describe("TimeControl", () => {
 
   // Test to verify that date picker popup opens and date selection works
   it("loads date picker popup", () => loadDatePickerPopup());
+
+  // Test to verify that date picker shows item popups on hover and correct number of dots
+  it("loads date picker popup items", () => loadDatePickerPopupItems());
+
+  // Test to verify that standalone calendar displays inline and date selection updates date component
+  it("loads date picker standalone", () => loadDatePickerStandalone());
+
+  // Test to verify that slider component loads with year ticks and custom marks
+  it("loads slider", () => loadSlider());
+
+  // Test to verify that timeline component loads with vis-timeline visualization
+  it("loads timeline", () => loadTimeline());
+
+  // Test to verify that custom format and init date work together
+  it("loads date with format and init date combined", () =>
+    loadDateFormatInitDate());
+
+  // Test to verify that custom format and navigation work together
+  it("loads date with format and navigation combined", () =>
+    loadDateFormatNavigation());
+
+  // Test to verify that date and slider work together - slider selection updates date display
+  it("loads date with slider", () => loadDateWithSlider());
 });
