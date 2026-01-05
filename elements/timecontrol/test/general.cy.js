@@ -14,6 +14,7 @@ import {
   loadDateFormatInitDate,
   loadDateFormatNavigation,
   loadDateWithSlider,
+  loadDateWithTimeline,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -55,4 +56,7 @@ describe("TimeControl", () => {
 
   // Test to verify that date and slider work together - slider selection updates date display
   it("loads date with slider", () => loadDateWithSlider());
+
+  // Test to verify that date and timeline work together - timeline bin clicks update date display
+  it("loads date with timeline", () => loadDateWithTimeline());
 });

@@ -10,3 +10,4 @@ export { default as loadTimeline } from "./load-timeline.js";
 export { default as loadDateFormatInitDate } from "./load-date-format-init-date.js";
 export { default as loadDateFormatNavigation } from "./load-date-format-navigation.js";
 export { default as loadDateWithSlider } from "./load-date-with-slider.js";
+export { default as loadDateWithTimeline } from "./load-date-with-timeline.js";
