@@ -11,3 +11,4 @@ export { default as loadDateFormatInitDate } from "./load-date-format-init-date.
 export { default as loadDateFormatNavigation } from "./load-date-format-navigation.js";
 export { default as loadDateWithSlider } from "./load-date-with-slider.js";
 export { default as loadDateWithTimeline } from "./load-date-with-timeline.js";
+export { default as loadDatePickerSelectEvent } from "./load-date-picker-select-event.js";

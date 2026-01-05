@@ -9,6 +9,7 @@ import {
   loadDatePickerPopup,
   loadDatePickerPopupItems,
   loadDatePickerStandalone,
+  loadDatePickerSelectEvent,
   loadSlider,
   loadTimeline,
   loadDateFormatInitDate,
@@ -59,4 +60,7 @@ describe("TimeControl", () => {
 
   // Test to verify that date and timeline work together - timeline bin clicks update date display
   it("loads date with timeline", () => loadDateWithTimeline());
+
+  // Test to verify that date picker triggers select event when date changes
+  it("loads date picker select event", () => loadDatePickerSelectEvent());
 });
