@@ -7,12 +7,12 @@ import { STORY_ARGS } from "../../src/enums.js";
  * in the eox-timecontrol-date component and both values match.
  */
 const loadDateWithTimeline = () => {
-  // 1. SETUP - Intercept network requests
+  // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
 
-  // 2. MOUNT - Mount components with both date and timeline
+  // mount - mount components with both date and timeline
   cy.mount(html`
     <eox-map
       id="date-timeline"
@@ -27,12 +27,12 @@ const loadDateWithTimeline = () => {
     </eox-timecontrol>
   `);
 
-  // 3. DATA PREPARATION - Get expected values from STORY_ARGS
+  // data preparation - get expected values from STORY_ARGS
   const timeControlValues = STORY_ARGS.layers[2].properties.timeControlValues;
   const lastDateEntry = timeControlValues[timeControlValues.length - 1];
   const initialDate = lastDateEntry.date;
 
-  // 4. ASSERTIONS - Verify component hierarchy
+  // assertions - verify component hierarchy
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
   cy.get("eox-timecontrol-date").should("exist");

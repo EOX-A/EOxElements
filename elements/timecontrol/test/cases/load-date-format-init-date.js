@@ -7,17 +7,17 @@ import { STORY_ARGS } from "../../src/enums.js";
  * in the custom format AND uses the init date rather than the default last date.
  */
 const loadDateFormatInitDate = () => {
-  // SETUP - Intercept network requests
+  // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
 
-  // DATA PREPARATION - Define test data
+  // data preparation - define test data
   const customFormat = "D. MMMM YYYY";
   const initDate = ["2023-02-05"]; // Middle of the date range
-  const expectedFormattedDate = "5. February 2023"; // Expected output with custom format
+  const expectedFormattedDate = "5. February 2023"; // expected output with custom format
 
-  // MOUNT - Mount components with both format and initDate
+  // mount - mount components with both format and initDate
   cy.mount(html`
     <eox-map
       id="format-init-date"
@@ -31,35 +31,35 @@ const loadDateFormatInitDate = () => {
     </eox-timecontrol>
   `);
 
-  // ASSERTIONS - Verify component hierarchy
+  // assertions - verify component hierarchy
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
   cy.get("eox-timecontrol-date").should("exist");
 
-  // Verify format attribute is set correctly
+  // verify format attribute is set correctly
   cy.get("eox-timecontrol-date")
     .invoke("attr", "format")
     .should("equal", customFormat);
 
-  // Verify shadow DOM rendering and date display
+  // verify shadow DOM rendering and date display
   cy.get("eox-timecontrol-date")
     .shadow()
     .within(() => {
-      // Verify date container exists
+      // verify date container exists
       cy.get("#date-container").should("exist");
 
-      // Verify date input field exists and has the formatted init date
+      // verify date input field exists and has the formatted init date
       cy.get("#date-container input[type='text']")
         .should("exist")
         .invoke("val")
         .should("equal", expectedFormattedDate);
 
-      // Verify it's NOT the default last date (which would be "24. April 2023")
+      // verify it's NOT the default last date (which would be "24. April 2023")
       cy.get("#date-container input[type='text']")
         .invoke("val")
         .should("not.equal", "24. April 2023");
 
-      // Verify it's NOT using ISO format (would be "2023-02-05")
+      // verify it's NOT using ISO format (would be "2023-02-05")
       cy.get("#date-container input[type='text']")
         .invoke("val")
         .should("not.equal", "2023-02-05");

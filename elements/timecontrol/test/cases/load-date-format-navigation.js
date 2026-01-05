@@ -7,27 +7,27 @@ import { STORY_ARGS } from "../../src/enums.js";
  * in the custom format AND the navigation buttons update the date correctly.
  */
 const loadDateFormatNavigation = () => {
-  // SETUP - Intercept network requests
+  // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
 
-  // DATA PREPARATION - Define test data
+  // data preparation - define test data
   const customFormat = "D. MMMM YYYY";
   const navigation = true;
 
-  // Get dates from timeControlValues (last 3 dates)
+  // get dates from timeControlValues (last 3 dates)
   const dates = STORY_ARGS.layers[2].properties.timeControlValues.map(
     (item) => item.date,
   );
   const lastDate = dates[dates.length - 1]; // "2023-04-24"
   const secondLastDate = dates[dates.length - 2]; // "2023-04-17"
 
-  // Expected formatted dates
+  // expected formatted dates
   const expectedLastDate = "24. April 2023";
   const expectedSecondLastDate = "17. April 2023";
 
-  // MOUNT - Mount components with both format and navigation
+  // mount - mount components with both format and navigation
   cy.mount(html`
     <eox-map
       id="format-navigation"
@@ -44,7 +44,7 @@ const loadDateFormatNavigation = () => {
     </eox-timecontrol>
   `);
 
-  // ASSERTIONS - Verify component hierarchy
+  // assertions - verify component hierarchy
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
   cy.get("eox-timecontrol-date").should("exist");

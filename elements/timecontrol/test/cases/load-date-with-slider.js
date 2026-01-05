@@ -8,12 +8,12 @@ import dayjs from "dayjs";
  * the date display component and both values match.
  */
 const loadDateWithSlider = () => {
-  // SETUP - Intercept network requests
+  // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
 
-  // MOUNT - Mount components with both date and slider
+  // mount - mount components with both date and slider
   cy.mount(html`
     <eox-map
       id="date-slider"
@@ -31,20 +31,20 @@ const loadDateWithSlider = () => {
     </eox-timecontrol>
   `);
 
-  // ASSERTIONS - Verify component hierarchy
+  // assertions - verify component hierarchy
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
   cy.get("eox-timecontrol-date").should("exist");
   cy.get("eox-timecontrol-slider").should("exist");
 
-  // Get the last date from timeControlValues (initial/default date)
+  // get the last date from timeControlValues (initial/default date)
   const lastDateEntry =
     STORY_ARGS.layers[2].properties.timeControlValues[
       STORY_ARGS.layers[2].properties.timeControlValues.length - 1
     ];
   const initialDate = lastDateEntry.date;
 
-  // Verify initial date in date component
+  // verify initial date in date component
   cy.get("eox-timecontrol-date")
     .shadow()
     .within(() => {
@@ -53,16 +53,16 @@ const loadDateWithSlider = () => {
         .should("equal", initialDate);
     });
 
-  // Now test slider interaction
+  // now test slider interaction
   cy.get("eox-timecontrol-slider")
     .shadow()
     .within(() => {
-      // Verify slider elements exist
+      // verify slider elements exist
       cy.get(".date-range-slider-wrapper").should("exist");
       cy.get("tc-range-slider").should("exist");
 
-      // Get the slider element and trigger a change event to select a specific date
-      // We'll select a date from the middle of the date range
+      // get the slider element and trigger a change event to select a specific date
+      // we'll select a date from the middle of the date range
       const targetDateIndex = Math.floor(
         STORY_ARGS.layers[2].properties.timeControlValues.length / 2,
       );
@@ -70,8 +70,8 @@ const loadDateWithSlider = () => {
         STORY_ARGS.layers[2].properties.timeControlValues[targetDateIndex];
       const targetDate = targetDateEntry.date;
 
-      // Trigger slider change by dispatching a custom event
-      // The slider uses the 'change' event with detail.value1
+      // trigger slider change by dispatching a custom event
+      // the slider uses the 'change' event with detail.value1
       cy.get("tc-range-slider").then(($slider) => {
         const changeEvent = new CustomEvent("change", {
           detail: {
@@ -84,10 +84,10 @@ const loadDateWithSlider = () => {
       });
     });
 
-  // Wait for the date component to update
+  // wait for the date component to update
   cy.wait(300);
 
-  // Verify that the date component now shows the selected date from slider
+  // verify that the date component now shows the selected date from slider
   const targetDateIndex = Math.floor(
     STORY_ARGS.layers[2].properties.timeControlValues.length / 2,
   );
@@ -103,11 +103,11 @@ const loadDateWithSlider = () => {
         .should("equal", targetDate);
     });
 
-  // Test another slider change - select a different date
+  // test another slider change - select a different date
   cy.get("eox-timecontrol-slider")
     .shadow()
     .within(() => {
-      // Select a date near the beginning of the range
+      // select a date near the beginning of the range
       const anotherTargetDateIndex = 5; // 6th date in the array
       const anotherTargetDateEntry =
         STORY_ARGS.layers[2].properties.timeControlValues[
@@ -127,10 +127,10 @@ const loadDateWithSlider = () => {
       });
     });
 
-  // Wait for update
+  // wait for update
   cy.wait(300);
 
-  // Verify the date component updated to the new slider selection
+  // verify the date component updated to the new slider selection
   const anotherTargetDateIndex = 5;
   const anotherTargetDateEntry =
     STORY_ARGS.layers[2].properties.timeControlValues[anotherTargetDateIndex];
@@ -144,17 +144,17 @@ const loadDateWithSlider = () => {
         .should("equal", anotherTargetDate);
     });
 
-  // Verify year ticks are displayed correctly on slider
+  // verify year ticks are displayed correctly on slider
   cy.get("eox-timecontrol-slider")
     .shadow()
     .within(() => {
-      // Verify custom marks container exists
+      // verify custom marks container exists
       cy.get(".custom-marks-container").should("exist");
 
-      // Verify year ticks exist
+      // verify year ticks exist
       cy.get(".custom-mark-year").should("have.length.greaterThan", 0);
 
-      // Verify year labels exist and show correct years
+      // verify year labels exist and show correct years
       cy.get(".custom-mark-year-label")
         .should("have.length.greaterThan", 0)
         .first()

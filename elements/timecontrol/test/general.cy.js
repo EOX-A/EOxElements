@@ -1,6 +1,7 @@
 // Importing necessary modules, test cases, and enums
 import "../src/main";
 import "../../map/src/main";
+import "../../itemfilter/src/main";
 import {
   loadOnlyDates,
   loadDateWithInitDate,
@@ -16,6 +17,8 @@ import {
   loadDateFormatNavigation,
   loadDateWithSlider,
   loadDateWithTimeline,
+  loadDateWithFilter,
+  loadNoMapSynchronization,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -63,4 +66,10 @@ describe("TimeControl", () => {
 
   // Test to verify that date picker triggers select event when date changes
   it("loads date picker select event", () => loadDatePickerSelectEvent());
+
+  // Test to verify that timecontrol works correctly with eox-itemfilter for filtering timeline items
+  it("loads date with filter", () => loadDateWithFilter());
+
+  // Test to verify that timecontrol works without map and all components synchronize date values
+  it("loads no map synchronization", () => loadNoMapSynchronization());
 });

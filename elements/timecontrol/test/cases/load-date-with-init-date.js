@@ -13,16 +13,16 @@ dayjs.extend(utc);
  * layers and is different from the default last date "2023-04-24".
  */
 const loadDateWithInitDate = () => {
-  // 1. SETUP - Intercept network requests
+  // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
 
-  // 2. DATA PREPARATION - Define init date and expected values
+  // data preparation - define init date and expected values
   const initDate = ["2023-02-05"];
   const expectedDisplayDate = "2023-02-05";
 
-  // 3. MOUNT - Mount components with initDate property
+  // mount - mount components with initDate property
   cy.mount(html`
     <eox-map
       id="init-date-test"
@@ -38,14 +38,14 @@ const loadDateWithInitDate = () => {
     </eox-timecontrol>
   `);
 
-  // 4. ASSERTIONS - Verify component behavior
+  // assertions - verify component behavior
 
-  // A. Component existence
+  // component existence
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
   cy.get("eox-timecontrol").find("eox-timecontrol-date").should("exist");
 
-  // B. Shadow DOM and date container
+  // shadow DOM and date container
   cy.get("eox-timecontrol")
     .find("eox-timecontrol-date")
     .shadow()
@@ -56,17 +56,17 @@ const loadDateWithInitDate = () => {
         .invoke("val")
         .should("not.be.empty");
 
-      // C. Date format validation
+      // date format validation
       cy.get("#date-container input[type='text']")
         .invoke("val")
         .should("match", /^\d{4}-\d{2}-\d{2}$/);
 
-      // D. CRITICAL: Init date value validation
+      // critical: init date value validation
       cy.get("#date-container input[type='text']")
         .invoke("val")
         .should("equal", expectedDisplayDate);
 
-      // Additional assertion: NOT the default last date
+      // additional assertion: NOT the default last date
       cy.get("#date-container input[type='text']")
         .invoke("val")
         .should("not.equal", "2023-04-24");

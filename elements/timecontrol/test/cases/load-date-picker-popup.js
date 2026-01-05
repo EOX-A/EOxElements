@@ -4,31 +4,23 @@ import { STORY_ARGS } from "../../src/enums.js";
 /**
  * Test to verify that timecontrol-picker component displays a popup calendar
  * when the date input is clicked, and that selecting a date updates the input field.
- *
- * This test verifies:
- * 1. Date picker component exists with popup mode enabled
- * 2. Clicking the date input field opens the calendar popup
- * 3. Calendar popup is visible in the DOM
- * 4. Available dates are marked with the appropriate class
- * 5. Clicking an available date updates the date input field
- * 6. The new date value matches the selected date
  */
 const loadDatePickerPopup = () => {
-  // 1. SETUP - Intercept network requests
+  // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
 
-  // 2. DATA PREPARATION - Get expected dates from STORY_ARGS
+  // data preparation - get expected dates from STORY_ARGS
   const layer2Values = STORY_ARGS.layers[2].properties.timeControlValues;
 
-  // Initial date is the last date in the array
+  // initial date is the last date in the array
   const initialDate = layer2Values[layer2Values.length - 1].date; // "2023-04-24"
 
-  // Select a different date from the same month (April 2023) for testing
+  // select a different date from the same month (April 2023) for testing
   const testDate = layer2Values[layer2Values.length - 2].date; // "2023-04-17"
 
-  // 3. MOUNT - Mount components with date picker in popup mode
+  // mount - mount components with date picker in popup mode
   cy.mount(html`
     <eox-map
       id="picker-popup-test"
@@ -50,21 +42,21 @@ const loadDatePickerPopup = () => {
     </eox-timecontrol>
   `);
 
-  // 4. ASSERTIONS - Verify component behavior
+  // assertions - verify component behavior
 
-  // A. Component existence
+  // component existence
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
   cy.get("eox-timecontrol").find("eox-timecontrol-date").should("exist");
   cy.get("eox-timecontrol").find("eox-timecontrol-picker").should("exist");
 
-  // B. Verify picker has popup property set
+  // verify picker has popup property set
   cy.get("eox-timecontrol")
     .find("eox-timecontrol-picker")
     .should("have.prop", "popup", true);
 
-  // C. Verify initial date is displayed in the date component
-  // D. Click on the date input field to open the calendar popup
+  // verify initial date is displayed in the date component
+  // click on the date input field to open the calendar popup
   cy.get("eox-timecontrol")
     .find("eox-timecontrol-date")
     .shadow()
@@ -75,21 +67,21 @@ const loadDatePickerPopup = () => {
       cy.get("#date-container input[type='text']").click();
     });
 
-  // E. Wait for calendar to initialize and verify it appears in the DOM
-  // The vanilla-calendar creates a .vc element
+  // wait for calendar to initialize and verify it appears in the DOM
+  // the vanilla-calendar creates a .vc element
   cy.get(".vc", { timeout: 10000 }).should("exist").and("be.visible");
 
-  // F. Verify calendar has dates rendered
+  // verify calendar has dates rendered
   cy.get(".vc").within(() => {
-    // Check that dates are rendered
+    // check that dates are rendered
     cy.get(".vc-date").should("have.length.gt", 0);
 
-    // Check that some dates have the data-available class
+    // check that some dates have the data-available class
     cy.get(".vc-date.vc-data-available").should("have.length.gt", 0);
   });
 
-  // G. Click on a specific available date (2023-02-05)
-  // Format: data-vc-date="YYYY-MM-DD"
+  // click on a specific available date (2023-02-05)
+  // format: data-vc-date="YYYY-MM-DD"
   cy.get(".vc").within(() => {
     cy.get(`[data-vc-date="${testDate}"]`)
       .should("exist")
@@ -98,7 +90,7 @@ const loadDatePickerPopup = () => {
       .click();
   });
 
-  // H. Verify the date input field updated to the selected date
+  // verify the date input field updated to the selected date
   cy.get("eox-timecontrol")
     .find("eox-timecontrol-date")
     .shadow()
@@ -108,7 +100,7 @@ const loadDatePickerPopup = () => {
         .should("equal", testDate); // "2023-04-17"
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("not.equal", initialDate); // Should NOT be "2023-04-24"
+        .should("not.equal", initialDate); // should NOT be "2023-04-24"
     });
 };
 

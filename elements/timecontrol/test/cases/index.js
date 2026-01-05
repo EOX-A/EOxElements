@@ -12,3 +12,5 @@ export { default as loadDateFormatNavigation } from "./load-date-format-navigati
 export { default as loadDateWithSlider } from "./load-date-with-slider.js";
 export { default as loadDateWithTimeline } from "./load-date-with-timeline.js";
 export { default as loadDatePickerSelectEvent } from "./load-date-picker-select-event.js";
+export { default as loadDateWithFilter } from "./load-date-with-filter.js";
+export { default as loadNoMapSynchronization } from "./load-no-map-synchronization.js";

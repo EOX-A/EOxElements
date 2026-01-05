@@ -6,12 +6,12 @@ import { STORY_ARGS } from "../../src/enums.js";
  * and displays the range slider with year ticks and custom marks.
  */
 const loadSlider = () => {
-  // SETUP - Intercept network requests
+  // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
   });
 
-  // MOUNT - Mount components with slider
+  // mount - mount components with slider
   cy.mount(html`
     <eox-map
       id="slider"
@@ -25,34 +25,34 @@ const loadSlider = () => {
     </eox-timecontrol>
   `);
 
-  // ASSERTIONS - Verify component hierarchy
+  // assertions - verify component hierarchy
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
   cy.get("eox-timecontrol-slider").should("exist");
 
-  // Verify slider shadow DOM structure
+  // verify slider shadow DOM structure
   cy.get("eox-timecontrol-slider")
     .shadow()
     .within(() => {
-      // Verify slider wrapper exists
+      // verify slider wrapper exists
       cy.get(".date-range-slider-wrapper").should("exist");
 
-      // Verify toolcool-range-slider component exists
+      // verify toolcool-range-slider component exists
       cy.get("tc-range-slider").should("exist");
 
-      // Verify custom marks container exists
+      // verify custom marks container exists
       cy.get(".custom-marks-container").should("exist");
 
-      // Verify year ticks exist (should have at least one)
+      // verify year ticks exist (should have at least one)
       cy.get(".custom-mark-year").should("have.length.greaterThan", 0);
 
-      // Verify year labels exist
+      // verify year labels exist
       cy.get(".custom-mark-year-label").should("have.length.greaterThan", 0);
 
-      // Verify empty ticks exist (for spacing between years)
+      // verify empty ticks exist (for spacing between years)
       cy.get(".custom-mark-empty").should("exist");
 
-      // Verify first year label is "2022" or "2023" (from test data)
+      // verify first year label is "2022" or "2023" (from test data)
       cy.get(".custom-mark-year-label")
         .first()
         .invoke("text")
