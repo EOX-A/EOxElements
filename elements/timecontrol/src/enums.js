@@ -97,7 +97,6 @@ export const STORY_ARGS = {
             date: "2022-12-13",
             cloudCoverage: 63,
           },
-          // Second continuous range: 10 days starting from 2023-02-01
           {
             date: "2023-02-01",
             cloudCoverage: 33,
@@ -138,7 +137,6 @@ export const STORY_ARGS = {
             date: "2023-02-10",
             cloudCoverage: 39,
           },
-          // Third continuous range: 17 days starting from 2023-04-01
           {
             date: "2023-04-01",
             cloudCoverage: 52,
