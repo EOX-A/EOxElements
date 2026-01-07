@@ -35,45 +35,60 @@ export function updateRangeElements(EOxTimeControlTimeline) {
     timeSliderContainer.querySelector(".vis-custom-time.multi-select-end")
   );
 
-  const startDate = dayjs(
-    EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-start"),
-  );
-  const startTitle = startDate.format("DD MMM YYYY HH:mm:ss");
+  let startTitle,
+    endTitle = null;
+  let startDate,
+    endDate = null;
 
-  const endDate = dayjs(
-    EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-end"),
-  );
-  const endTitle = endDate.format("DD MMM YYYY HH:mm:ss");
-
-  if (startEle) {
-    startEle.title = "";
-    const existingTag = startEle.querySelector("tag");
-    const tagEle = existingTag || document.createElement("tag");
-    tagEle.textContent = startTitle;
-    if (!existingTag) {
-      startEle.appendChild(tagEle);
-    }
+  try {
+    startDate = dayjs(
+      EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-start"),
+    );
+    startTitle = startDate.format("DD MMM YYYY HH:mm:ss");
+  } catch {
+    /** catch */
   }
 
-  if (endEle) {
-    endEle.title = "";
-    const existingTag = endEle.querySelector("tag");
-    const tagEle = existingTag || document.createElement("tag");
-    tagEle.textContent = endTitle;
-    if (!existingTag) {
-      endEle.appendChild(tagEle);
-    }
+  try {
+    endDate = dayjs(
+      EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-end"),
+    );
+    endTitle = endDate.format("DD MMM YYYY HH:mm:ss");
+  } catch {
+    /** catch */
   }
 
-  if (startEle && endEle) {
-    const endLeft = Number(endEle.style.left.replace("px", ""));
-    const startLeft = Number(startEle.style.left.replace("px", ""));
+  if ((startTitle && startDate) || (endTitle && endDate)) {
+    if (startEle) {
+      startEle.title = "";
+      const existingTag = startEle.querySelector("tag");
+      const tagEle = existingTag || document.createElement("tag");
+      tagEle.textContent = startTitle;
+      if (!existingTag) {
+        startEle.appendChild(tagEle);
+      }
+    }
 
-    startEle.style.width = startDate.isAfter(endDate)
-      ? `${startLeft - endLeft}px`
-      : `${endLeft - startLeft}px`;
-    if (startDate.isAfter(endDate)) {
-      startEle.style.left = `${endLeft}px`;
+    if (endEle) {
+      endEle.title = "";
+      const existingTag = endEle.querySelector("tag");
+      const tagEle = existingTag || document.createElement("tag");
+      tagEle.textContent = endTitle;
+      if (!existingTag) {
+        endEle.appendChild(tagEle);
+      }
+    }
+
+    if (startEle && endEle) {
+      const endLeft = Number(endEle.style.left.replace("px", ""));
+      const startLeft = Number(startEle.style.left.replace("px", ""));
+
+      startEle.style.width = startDate.isAfter(endDate)
+        ? `${startLeft - endLeft}px`
+        : `${endLeft - startLeft}px`;
+      if (startDate.isAfter(endDate)) {
+        startEle.style.left = `${endLeft}px`;
+      }
     }
   }
 }
