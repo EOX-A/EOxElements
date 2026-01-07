@@ -184,7 +184,6 @@ const loadExpertModeExport = () => {
     exportMode
       .querySelector("eox-timecontrol-timelapse")
       .addEventListener("export", async (e) => {
-        console.log("ksdjkjsd");
         const mapLayers = [];
 
         // extract cloud coverage filter values from event detail
@@ -223,7 +222,6 @@ const loadExpertModeExport = () => {
             });
           }
         }
-        console.log(mapLayers);
         // trigger timelapse generation with configured map layers
         e.detail.generate({
           mapLayers,
