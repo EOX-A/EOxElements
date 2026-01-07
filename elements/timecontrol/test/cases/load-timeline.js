@@ -40,9 +40,6 @@ const loadTimeline = () => {
       // verify timeline container exists
       cy.get("#timeline").should("exist");
 
-      // wait for timeline to initialize and render
-      cy.wait(500);
-
       // verify vis-timeline elements are rendered
       cy.get("#timeline")
         .should("exist")

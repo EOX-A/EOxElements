@@ -7,7 +7,7 @@ import { STORY_ARGS } from "../../src/enums.js";
  */
 const loadDateWithFilter = () => {
   // handle ResizeObserver errors that can occur with complex components
-  cy.on("uncaught:exception", (err, runnable) => {
+  cy.on("uncaught:exception", (err) => {
     if (
       err.message.includes(
         "ResizeObserver loop completed with undelivered notifications",
@@ -59,11 +59,6 @@ const loadDateWithFilter = () => {
     </eox-timecontrol>
   `);
 
-  // data preparation - get expected values from STORY_ARGS
-  const timeControlValues = STORY_ARGS.layers[1].properties.timeControlValues;
-  const filterConfig = STORY_ARGS.filters[0]; // Cloud coverage filter
-  const initialMaxCloudCoverage = filterConfig.state.max; // 40%
-
   // assertions - verify component hierarchy
   cy.get("eox-map").should("exist");
   cy.get("eox-timecontrol").should("exist");
@@ -83,9 +78,6 @@ const loadDateWithFilter = () => {
       cy.get("eox-itemfilter-container").should("exist");
     });
 
-  // Wait for components to initialize
-  cy.wait(1000);
-
   // Verify timeline shadow DOM structure and initialization
   cy.get("eox-timecontrol-timeline")
     .shadow()
@@ -96,9 +88,6 @@ const loadDateWithFilter = () => {
       // Verify timeline container exists
       cy.get("#timeline").should("exist");
     });
-
-  // Wait for timeline to initialize and render vis-timeline
-  cy.wait(1000);
 
   // Verify vis-timeline elements are rendered
   cy.get("eox-timecontrol-timeline")

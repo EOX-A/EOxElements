@@ -49,9 +49,6 @@ const loadDateWithTimeline = () => {
       cy.get("#timeline").should("exist");
     });
 
-  // Wait for timeline to initialize and render vis-timeline
-  cy.wait(500);
-
   // Verify vis-timeline elements are rendered
   cy.get("eox-timecontrol-timeline")
     .shadow()
@@ -93,9 +90,6 @@ const loadDateWithTimeline = () => {
     visTimeline.emit("click", clickEvent);
   });
 
-  // Wait for the date component to update
-  cy.wait(300);
-
   // Verify that the date component now shows the selected date from timeline
   cy.get("eox-timecontrol-date")
     .shadow()
@@ -125,9 +119,6 @@ const loadDateWithTimeline = () => {
     // Trigger the click handler directly
     visTimeline.emit("click", clickEvent);
   });
-
-  // Wait for update
-  cy.wait(300);
 
   // Verify the date component updated to the new timeline selection
   cy.get("eox-timecontrol-date")

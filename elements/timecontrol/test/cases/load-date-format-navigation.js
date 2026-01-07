@@ -20,7 +20,6 @@ const loadDateFormatNavigation = () => {
   const dates = STORY_ARGS.layers[2].properties.timeControlValues.map(
     (item) => item.date,
   );
-  const lastDate = dates[dates.length - 1]; // "2023-04-24"
   const secondLastDate = dates[dates.length - 2]; // "2023-04-17"
 
   // expected formatted dates

@@ -168,7 +168,6 @@ const loadExpertModeExport = () => {
       .querySelector("eox-timecontrol")
       .addEventListener("select", async (e) => {
         console.log(e.detail);
-        const now = Date.now();
         // skip if no items loaded yet
         if (!items.length) return;
 

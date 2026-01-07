@@ -12,21 +12,10 @@ const loadDatePickerPopupItems = () => {
   });
 
   // data preparation
-  const layer1 = STORY_ARGS.layers[1].properties;
-  const layer2 = STORY_ARGS.layers[2].properties;
-
   // use a date that exists in BOTH layers from April 2023
   // (calendar opens to April 2023 by default - the month of the last date)
   // check which April dates exist in both layers
   const testDate = "2023-04-10"; // this date exists in both layers
-
-  // verify this date exists in both layers
-  const layer1HasDate = layer1.timeControlValues.some(
-    (v) => v.date === testDate,
-  );
-  const layer2HasDate = layer2.timeControlValues.some(
-    (v) => v.date === testDate,
-  );
 
   // this date should have 2 items (one from each layer)
   const expectedDotCount = 2;

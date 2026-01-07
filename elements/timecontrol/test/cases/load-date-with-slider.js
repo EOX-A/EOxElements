@@ -1,6 +1,5 @@
 import { html } from "lit";
 import { STORY_ARGS } from "../../src/enums.js";
-import dayjs from "dayjs";
 
 /**
  * Test case to verify that the date component and slider work together correctly.
@@ -84,9 +83,6 @@ const loadDateWithSlider = () => {
       });
     });
 
-  // wait for the date component to update
-  cy.wait(300);
-
   // verify that the date component now shows the selected date from slider
   const targetDateIndex = Math.floor(
     STORY_ARGS.layers[2].properties.timeControlValues.length / 2,
@@ -126,9 +122,6 @@ const loadDateWithSlider = () => {
         $slider[0].dispatchEvent(changeEvent);
       });
     });
-
-  // wait for update
-  cy.wait(300);
 
   // verify the date component updated to the new slider selection
   const anotherTargetDateIndex = 5;

@@ -55,7 +55,6 @@ const loadNoMapSynchronization = () => {
   const initialDate = timeControlValues[timeControlValues.length - 1].date; // last date: "2023-04-24"
   const timelineTestDate =
     timeControlValues[Math.floor(timeControlValues.length / 2)].date; // middle date
-  const calendarTestDate = timeControlValues[timeControlValues.length - 3].date; // use a date from April 2023 (same month as initial date)
   const sliderTestDate = timeControlValues[10].date; // 11th date in array
 
   // assertions - verify component hierarchy and initial state
@@ -77,9 +76,6 @@ const loadNoMapSynchronization = () => {
 
   // note: we verify synchronization by checking the date input value in eox-timecontrol-date
   // rather than a direct property on eox-timecontrol, as that's how the component works
-
-  // wait for timeline to initialize
-  cy.wait(500);
 
   // === test 1: timeline interaction ===
   cy.log("Testing timeline interaction");
@@ -109,9 +105,6 @@ const loadNoMapSynchronization = () => {
     visTimeline.emit("click", clickEvent);
   });
 
-  // wait for update
-  cy.wait(300);
-
   // verify timeline interaction updated the date component
   cy.get("eox-timecontrol-date")
     .shadow()
@@ -133,9 +126,6 @@ const loadNoMapSynchronization = () => {
       cy.get("#date-container input[type='text']").click();
     });
 
-  // wait for calendar to appear
-  cy.wait(300);
-
   // verify calendar appears and click on any available date
   cy.get("body").within(() => {
     cy.get(".vc").should("exist").and("be.visible");
@@ -144,7 +134,6 @@ const loadNoMapSynchronization = () => {
     cy.get(".vc .vc-date.vc-data-available")
       .first()
       .find(".vc-date__btn")
-      .click()
       .then(($btn) => {
         // get the clicked date from the button's parent element
         const clickedDateElement = $btn.closest("[data-vc-date]");
@@ -155,8 +144,11 @@ const loadNoMapSynchronization = () => {
       });
   });
 
-  // Wait for update
-  cy.wait(300);
+  // Click the date button
+  cy.get(".vc .vc-date.vc-data-available")
+    .first()
+    .find(".vc-date__btn")
+    .click();
 
   // verify calendar interaction updated the date component
   cy.get("@clickedDate").then((clickedDate) => {
@@ -198,9 +190,6 @@ const loadNoMapSynchronization = () => {
       });
     });
 
-  // Wait for update
-  cy.wait(300);
-
   // verify slider interaction updated the date component
   cy.get("eox-timecontrol-date")
     .shadow()
@@ -230,8 +219,6 @@ const loadNoMapSynchronization = () => {
 
     visTimeline.emit("click", clickEvent);
   });
-
-  cy.wait(300);
 
   // verify all components show the same final date
   cy.get("eox-timecontrol-date")
