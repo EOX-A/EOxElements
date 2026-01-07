@@ -7,6 +7,11 @@
     },
     "bar": {
       "type": "string"
+    },
+    "checkbox": {
+      "type": "boolean",
+      "title": "Checkbox Title",
+      "format": "checkbox"
     }
   }
 }

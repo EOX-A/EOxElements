@@ -7830,6 +7830,36 @@ https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html (
 
 ### Examples
 
+#### BinaryCheckboxEditor
+
+Binary Checkbox Editor example. Renders a custom checkbox that returns 0 or 1.
+Demonstrates custom input integration for binary values.
+
+```html
+<eox-jsonform></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      properties: {
+        binary_prop: {
+          type: "number",
+          format: "binarycheckbox",
+          title: "Binary Checkbox",
+        },
+      },
+    },
+  });
+</script>
+
+```
+
 #### BoundingBox
 
 Bounding Box example. Allows users to select a bounding box as a form input.
@@ -10538,6 +10568,11 @@ Basic JSON Form example. Renders a form based on a provided JSON schema.
         bar: {
           type: "string",
         },
+        checkbox: {
+          type: "boolean",
+          title: "Checkbox Title",
+          format: "checkbox",
+        },
       },
     },
   });
@@ -11394,7 +11429,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-01-07T07:56:08.751Z",
+              default: "2026-01-07T08:00:47.661Z",
               options: {
                 hidden: true,
               },
