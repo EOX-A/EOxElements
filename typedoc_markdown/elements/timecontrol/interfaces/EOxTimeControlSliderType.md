@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlSliderType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:30](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L30)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:30](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L30)
 
 The `eox-timecontrol-slider` component provides a range slider for selecting date ranges.
 It displays available dates from timeline items and allows users to select a start and end date
@@ -4940,7 +4940,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:88](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L88)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:88](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L88)
 
 Whether default styling is disabled.
 
@@ -5648,7 +5648,7 @@ The **`contains()`** method of the Node interface returns a boolean value indica
 
 > **disconnectedCallback**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:252](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L252)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:252](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L252)
 
 Lifecycle method called when the component is disconnected.
 
@@ -5692,7 +5692,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:235](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L235)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:235](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L235)
 
 Lifecycle method called after the first update.
 
@@ -6194,7 +6194,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getEOxTimeControl**(): [`EOxTimeControlType`](EOxTimeControlType.md)
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:105](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L105)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:105](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L105)
 
 Gets the EOxTimeControl instance.
 
@@ -6262,7 +6262,7 @@ The **`getRootNode()`** method of the Node interface returns the context object'
 
 > **getSliderInstance**(): `HTMLElement`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:96](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L96)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:96](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L96)
 
 Gets the toolcool-range-slider instance.
 
@@ -6278,7 +6278,7 @@ The slider element.
 
 > **handleChange**(`evt`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:260](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L260)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:260](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L260)
 
 #### Parameters
 
@@ -7716,7 +7716,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`, `data?`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:201](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L201)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:201](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L201)
 
 Sets the date range and updates the slider with new data.
 
@@ -8069,7 +8069,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:301](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/timecontrol/src/components/timecontrol-slider.js#L301)
+Defined in: [elements/timecontrol/src/components/timecontrol-slider.js:301](https://github.com/EOX-A/EOxElements/blob/8c06809861c749eb658235ee7527419737159795/elements/timecontrol/src/components/timecontrol-slider.js#L301)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a
