@@ -15,7 +15,17 @@ Available routes:
 
 The EOxElements MCP Server provides a set of tools for a coding agent to get information about the EOxElements custom elements. It uses the [@modelcontextprotocol/sdk](https://github.com/modelcontextprotocol/typescript-sdk) to expose the tools.
 
-### Getting Started
+### Install
+
+#### NPX
+
+You can use npx to run the mcp-server:
+
+```bash
+npx @eox/elements-mcp-server
+```
+
+#### Global Install
 
 Install the package globally from npm:
 
@@ -29,7 +39,10 @@ Then, run the server:
 eox-elements-mcp-server
 ```
 
-The server will fetch the latest `custom-elements.json` from the EOxElements GitHub repository and start on `http://localhost:3000`. A compatible coding agent will be able to discover and use the tools.
+### Getting Started
+
+Every agentic AI software is different, but usually some config file needs to be set up to define the available MCP servers.
+The `@eox/elements-mcp-server` will start on `http://localhost:3000/mcp` and a compatible coding agent will be able to discover and use the tools from that endpoint.
 
 ### Available Tools
 

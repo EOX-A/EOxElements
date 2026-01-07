@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.7.0...jsonform-v1.8.0) (2026-01-07)
+
+
+### Features
+
+* Custom binary checkbox editor ([#2064](https://github.com/EOX-A/EOxElements/issues/2064)) ([b992392](https://github.com/EOX-A/EOxElements/commit/b99239201911056b32c50b0ef4a685c81aff76a9))
+
 ## [1.7.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.6.0...jsonform-v1.7.0) (2025-12-23)
 
 

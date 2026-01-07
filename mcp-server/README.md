@@ -27,34 +27,28 @@ If you are working on the EOxElements project itself, you will want to run the s
 1.  **Installation:**
     From the root of the `EOxElements` project, install all dependencies:
 
-        ```bash
-
-    npm install
-
-````
+```bash
+npm install
+```
 
 2.  **Generate the manifest:**
     Make sure the `custom-elements.json` file is up-to-date:
 
-    ```bash
+```bash
 npm run generate-manifest
-````
+```
 
 3.  **Run the server:**
     Run the server with the `--manifest` flag, pointing to the generated `custom-elements.json` file:
 
-    ```bash
-    node mcp-server/index.js --manifest ./custom-elements.json
-    ```
-
-    You can also provide a local path to the story snippets file using the `--snippets` flag:
-
-    ```bash
-    node mcp-server/index.js --manifest ./custom-elements.json --snippets ./story-snippets.json
-    ```
-
-The server will start on `http://localhost:3000`.
-
+```bash
+node mcp-server/index.js --manifest ./custom-elements.json
 ```
 
+You can also provide a local path to the story snippets file using the `--snippets` flag:
+
+```bash
+node mcp-server/index.js --manifest ./custom-elements.json --snippets ./story-snippets.json
 ```
+
+The server will start on `http://localhost:3000` and can be consumed by pointing a coding agent to `http://localhost:3000/mcp`.

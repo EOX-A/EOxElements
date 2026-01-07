@@ -1,0 +1,10 @@
+{
+  "type": "object",
+  "properties": {
+    "binary_prop": {
+      "type": "number",
+      "format": "binarycheckbox",
+      "title": "Binary Checkbox"
+    }
+  }
+}
