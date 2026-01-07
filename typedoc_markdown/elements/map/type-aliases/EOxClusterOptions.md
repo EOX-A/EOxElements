@@ -8,4 +8,4 @@
 
 > **EOxClusterOptions** = `Omit`\<`Options`, `"geometryFunction"` \| `"createCluster"`\>
 
-Defined in: [elements/map/src/types.ts:129](https://github.com/EOX-A/EOxElements/blob/8b510756058772a01820f7f14ba1780f76070f24/elements/map/src/types.ts#L129)
+Defined in: [elements/map/src/types.ts:129](https://github.com/EOX-A/EOxElements/blob/30af6b3938e24f3130fe2529f0f5118f6e323103/elements/map/src/types.ts#L129)
