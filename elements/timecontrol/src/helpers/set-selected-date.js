@@ -68,11 +68,9 @@ export default function setSelectedDate(dateRange, eoxMap, EOxTimeControl) {
   });
 
   let instances = {};
-  console.log(selectedRangeItems);
   selectedRangeItems.forEach((item) => {
     if (item.group && eoxMap) {
       const layer = flatLayers.find((l) => l.get("id") === item.group);
-      console.log(layer);
       // @ts-expect-error Property 'getSource' does not exist on type 'BaseLayer'.
       const source = layer?.getLayers ? null : layer?.getSource();
       instances = {
