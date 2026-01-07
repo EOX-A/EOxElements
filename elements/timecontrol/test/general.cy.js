@@ -2,6 +2,8 @@
 import "../src/main";
 import "../../map/src/main";
 import "../../itemfilter/src/main";
+import "../../map/src/plugins/advancedLayersAndSources";
+import "../../map/src/plugins/globe";
 import {
   loadOnlyDates,
   loadDateWithInitDate,
@@ -19,6 +21,7 @@ import {
   loadDateWithTimeline,
   loadDateWithFilter,
   loadNoMapSynchronization,
+  loadExpertModeExport,
 } from "./cases";
 
 // Test suite for TimeControl
@@ -72,4 +75,7 @@ describe("TimeControl", () => {
 
   // Test to verify that timecontrol works without map and all components synchronize date values
   it("loads no map synchronization", () => loadNoMapSynchronization());
+
+  // Test to verify that expert mode with timelapse export functionality works correctly
+  it("loads expert mode export", () => loadExpertModeExport());
 });

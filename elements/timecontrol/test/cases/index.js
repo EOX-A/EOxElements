@@ -14,3 +14,4 @@ export { default as loadDateWithTimeline } from "./load-date-with-timeline.js";
 export { default as loadDatePickerSelectEvent } from "./load-date-picker-select-event.js";
 export { default as loadDateWithFilter } from "./load-date-with-filter.js";
 export { default as loadNoMapSynchronization } from "./load-no-map-synchronization.js";
+export { default as loadExpertModeExport } from "./load-expert-mode-export.js";
