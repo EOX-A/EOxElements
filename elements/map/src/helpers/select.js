@@ -227,7 +227,6 @@ export class EOxSelectInteraction {
               // @ts-expect-error TODO
               Object.assign(feature?.values_, pickedCoordinate(event));
             }
-
           }
         }
         const selectdEvt = new CustomEvent("select", {
