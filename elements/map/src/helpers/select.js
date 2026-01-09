@@ -222,6 +222,12 @@ export class EOxSelectInteraction {
           if (feature && this.tooltipElement) {
             // @ts-expect-error TODO
             this.tooltipElement.feature = feature;
+            if (options?.coordinates) {
+              // add the picked coordinates to the html
+              // @ts-expect-error TODO
+              Object.assign(feature?.values_, pickedCoordinate(event));
+            }
+
           }
         }
         const selectdEvt = new CustomEvent("select", {
