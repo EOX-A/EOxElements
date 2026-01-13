@@ -236,9 +236,9 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       // Explicit Preloader: Forces loading of tiles for future steps (different zoom/center)
       // This complements the "Hidden Layer" strategy which only handles the current view.
       setTimeout(() => {
-        const eoxMap = /** @type {any} */ (parent.querySelector(
-          elementSelector,
-        ));
+        const eoxMap = /** @type {any} */ (
+          parent.querySelector(elementSelector)
+        );
         if (eoxMap && eoxMap.preloadTiles) {
           section.steps.forEach((step, stepIndex) => {
             // Stagger requests to prevent freezing the main thread & network congestion
