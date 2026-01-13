@@ -88,13 +88,81 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
       const elementSelector = `${section.as}#${section.id}`;
       let sectionLoadedOnce = false;
 
+      // Deduplicate layers: If the same ID is used with different sources, split them into unique IDs
+      // This ensures eox-map creates separate layers (allowing simultaneous preloading) instead of updating one layer.
+      const layerRegistry = new Map(); // Key: ID+SourceHash, Value: AssignedUniqueID
+      const idCounters = new Map(); // Key: OriginalID, Value: Counter
+
+      section.steps.forEach((step) => {
+        if (step.layers) {
+          step.layers.forEach((layer) => {
+            if (layer.properties && layer.properties.id) {
+              const originalId = layer.properties.id;
+              // Create a clear fingerprint of the source configuration
+              const sourceFingerprint = layer.source
+                ? JSON.stringify(layer.source)
+                : "null";
+              const registryKey = `${originalId}::${sourceFingerprint}`;
+
+              if (!layerRegistry.has(registryKey)) {
+                // This is a new configuration for this ID.
+                let newId = originalId;
+                if (idCounters.has(originalId)) {
+                  // ID already encountered with different source, append index
+                  const count = idCounters.get(originalId) + 1;
+                  idCounters.set(originalId, count);
+                  newId = `${originalId}_${count}`;
+                } else {
+                  // First time seeing this ID
+                  idCounters.set(originalId, 0);
+                }
+                layerRegistry.set(registryKey, newId);
+              }
+
+              // Update the layer ID in the step definition to the unique one
+              const assignedId = layerRegistry.get(registryKey);
+              layer.properties.id = assignedId;
+            }
+          });
+        }
+      });
+
+      // Collect all unique layers from all steps to enable preloading
+      const layerMap = new Map();
+      section.steps.forEach((step) => {
+        if (step.layers) {
+          step.layers.forEach((layer) => {
+            if (layer.properties && layer.properties.id) {
+              layerMap.set(layer.properties.id, layer);
+            }
+          });
+        }
+      });
+      const allLayers = Array.from(layerMap.values());
+
+      // OPTIMIZATION: Prioritize first step layers to avoid network contention on load
+      const step0Ids = new Set(
+        (section.steps[0].layers || []).map((l) => l.properties?.id),
+      );
+      const initialLayers = allLayers.filter((l) =>
+        step0Ids.has(l.properties?.id),
+      );
+      let layersLoaded = false;
+      let currentIndex = 0;
+
       // Creating new scroll Section Observer
       const sectionObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           const intersecting = entry.isIntersecting;
 
           if (intersecting && !sectionLoadedOnce) {
-            assignNewAttrValue(section, 0, elementSelector, parent);
+            assignNewAttrValue(
+              section,
+              0,
+              elementSelector,
+              parent,
+              layersLoaded ? allLayers : initialLayers,
+            );
             sectionLoadedOnce = true;
           }
         });
@@ -106,8 +174,19 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
           const intersecting = entry.isIntersecting;
           const index = Number(entry.target.getAttribute("key"));
 
-          if (intersecting)
-            assignNewAttrValue(section, index, elementSelector, parent);
+          if (intersecting) {
+            currentIndex = index;
+            // If user moves beyond first step, force all layers to load
+            if (index > 0) layersLoaded = true;
+
+            assignNewAttrValue(
+              section,
+              index,
+              elementSelector,
+              parent,
+              layersLoaded ? allLayers : initialLayers,
+            );
+          }
         });
       });
 
@@ -127,10 +206,58 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
 
         stepSectionObservers.push(stepSectionObserver);
 
-        assignNewAttrValue(section, 0, elementSelector, parent);
+        assignNewAttrValue(
+          section,
+          0,
+          elementSelector,
+          parent,
+          layersLoaded ? allLayers : initialLayers,
+        );
+
+        // Deferred load of remaining hidden layers
+        // This ensures the initial view loads fast, then we inject the rest for caching/preloading
+        setTimeout(() => {
+          if (!layersLoaded) {
+            layersLoaded = true;
+            assignNewAttrValue(
+              section,
+              currentIndex,
+              elementSelector,
+              parent,
+              allLayers,
+            );
+          }
+        }, 2500);
+
         sectionObserver.observe(contentParent);
         sectionObservers.push(sectionObserver);
       }, 500);
+
+      // Explicit Preloader: Forces loading of tiles for future steps (different zoom/center)
+      // This complements the "Hidden Layer" strategy which only handles the current view.
+      setTimeout(() => {
+        const eoxMap = parent.querySelector(elementSelector);
+        if (eoxMap && eoxMap.preloadTiles) {
+          section.steps.forEach((step, stepIndex) => {
+            // Stagger requests to prevent freezing the main thread & network congestion
+            setTimeout(() => {
+              const stepLayers = step.layers || [];
+              // Collect IDs - these are already deduplicated in the previous block
+              const layerIds = stepLayers
+                .map((l) => l.properties?.id)
+                .filter(Boolean);
+
+              const zoom = step.zoom;
+              const center = step.center;
+
+              if (layerIds.length && zoom !== undefined && center) {
+                // Buffer 0.5 for safety margin
+                eoxMap.preloadTiles(layerIds, zoom, center, 0.5);
+              }
+            }, stepIndex * 1000); // 1-second delay between preloading each step
+          });
+        }
+      }, 3000); // Start preloading 3s after init
     }
   });
 
@@ -192,16 +319,122 @@ export function renderHtmlString(htmlString, sections, initDispatchFunc, that) {
  * @param {Number} index - current section index
  * @param {String} elementSelector - sector string for element
  * @param {HTMLElement} parent - The EOxStoryTelling instance.
+ * @param {Array} allLayers - List of all layers in the section
  */
-function assignNewAttrValue(section, index, elementSelector, parent) {
+function assignNewAttrValue(
+  section,
+  index,
+  elementSelector,
+  parent,
+  allLayers = [],
+) {
   const element = parent.querySelector(elementSelector);
   const attrs = section.steps[index];
 
   Object.keys(attrs).forEach((attr) => {
-    element[attr] = attrs[attr];
+    if (attr === "layers" && allLayers.length && Array.isArray(attrs[attr])) {
+      const stepLayers = attrs[attr];
+      const mergedLayers = allLayers.map((layer) => {
+        const stepLayer = stepLayers.find(
+          (l) => l.properties?.id === layer.properties?.id,
+        );
+        if (stepLayer) {
+          return {
+            ...layer,
+            ...stepLayer,
+            visible: true,
+            opacity: stepLayer.opacity ?? 1,
+          };
+        } else {
+          // Keep inactive layers visible but fully transparent (for preloading)
+          return { ...layer, visible: true, opacity: 0 };
+        }
+      });
+
+      // --- Fade Effect Logic ---
+      // Capture current opacities before the update snaps them
+      const startOpacities = new Map();
+      if (element.getLayerById) {
+        mergedLayers.forEach((l) => {
+          const existingLayer = element.getLayerById(l.properties.id);
+          if (existingLayer) {
+            startOpacities.set(l.properties.id, existingLayer.getOpacity());
+          }
+        });
+      }
+
+      // Apply the update (this snaps opacity to the target value immediately)
+      element[attr] = mergedLayers;
+
+      // Animate from start opacity to target opacity
+      if (element.getLayerById) {
+        mergedLayers.forEach((l) => {
+          const layerId = l.properties.id;
+          const targetOpacity = l.opacity; // detailed in mergedLayers
+          const startOpacity = startOpacities.get(layerId);
+
+          // If we have a start opacity, and it differs from target, we animate
+          if (
+            startOpacity !== undefined &&
+            Math.abs(startOpacity - targetOpacity) > 0.01
+          ) {
+            fadeLayer(element, layerId, startOpacity, targetOpacity, 800);
+          }
+        });
+      }
+    } else {
+      element[attr] = attrs[attr];
+    }
   });
 
   if (element["mode"] === "tour") element["style"] = "";
+}
+
+/**
+ * Linearly fades a layer's opacity.
+ */
+function fadeLayer(element, layerId, start, end, duration) {
+  const layer = element.getLayerById(layerId);
+  if (!layer) return;
+
+  // Reset to start to avoid jump
+  layer.setOpacity(start);
+
+  // Cancel previous animation
+  if (layer._fadeFrame) cancelAnimationFrame(layer._fadeFrame);
+
+  const startTime = performance.now();
+
+  function animate(currentTime) {
+    const elapsed = currentTime - startTime;
+    let progress = elapsed / duration;
+    if (progress > 1) progress = 1;
+
+    // Use easing to prevent seeing background during cross-fades
+    // Fade In: Start fast (EaseOut) -> opacity rises quickly
+    // Fade Out: Start slow (EaseIn) -> opacity stays high longer
+    let easedProgress = progress;
+    if (end > start) {
+      // EaseOutQuad: 1 - (1-t)^2
+      easedProgress = 1 - (1 - progress) * (1 - progress);
+    } else if (end < start) {
+      // EaseInQuad: t^2
+      easedProgress = progress * progress;
+    }
+
+    const currentOpacity = start + (end - start) * easedProgress;
+    layer.setOpacity(currentOpacity);
+
+    if (progress < 1) {
+      layer._fadeFrame = requestAnimationFrame(animate);
+    } else {
+      layer._fadeFrame = null;
+      // Ensure final value is set exactly
+      layer.setOpacity(end);
+    }
+  }
+
+  layer._fadeFrame = requestAnimationFrame(animate);
 }
 
 /**
