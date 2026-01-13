@@ -8,7 +8,7 @@
 
 > **TimeControlValue** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:25](https://github.com/EOX-A/EOxElements/blob/d10152a35452cca8159985896a1ed7c6b77f08cd/elements/timecontrol/src/types.ts#L25)
+Defined in: [elements/timecontrol/src/types.ts:25](https://github.com/EOX-A/EOxElements/blob/bbd92e70d98155efa8e8d8c80d542b8039064df4/elements/timecontrol/src/types.ts#L25)
 
 Represents a single time control value entry with date and optional metadata.
 
@@ -24,6 +24,6 @@ Optional metadata associated with this time value (e.g., cloudCoverage).
 
 > **date**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:29](https://github.com/EOX-A/EOxElements/blob/d10152a35452cca8159985896a1ed7c6b77f08cd/elements/timecontrol/src/types.ts#L29)
+Defined in: [elements/timecontrol/src/types.ts:29](https://github.com/EOX-A/EOxElements/blob/bbd92e70d98155efa8e8d8c80d542b8039064df4/elements/timecontrol/src/types.ts#L29)
 
 The date string in ISO format (YYYY-MM-DD).
