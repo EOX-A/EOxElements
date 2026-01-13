@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.10.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.8...storytelling-v1.10.0) (2026-01-13)
+
+
+### Features
+
+* Map tour step layer fading ([#2080](https://github.com/EOX-A/EOxElements/issues/2080)) ([bbd92e7](https://github.com/EOX-A/EOxElements/commit/bbd92e70d98155efa8e8d8c80d542b8039064df4))
+
+
+### Bug Fixes
+
+* **style:** Start tour section content 20vh sooner ([#2082](https://github.com/EOX-A/EOxElements/issues/2082)) ([84417f4](https://github.com/EOX-A/EOxElements/commit/84417f4083ae5786ba8076e97f6e58ec1b5efd0d))
+* **style:** Styling of inline code and code blocks ([#2081](https://github.com/EOX-A/EOxElements/issues/2081)) ([ae00416](https://github.com/EOX-A/EOxElements/commit/ae004169046b7937a871a4fa508fbe0ed12a7960))
+
 ## [1.9.8](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.7...storytelling-v1.9.8) (2025-11-24)
 
 

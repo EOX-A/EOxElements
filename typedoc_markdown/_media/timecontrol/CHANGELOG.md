@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.1...timecontrol-v2.0.2) (2026-01-13)
+
+
+### Bug Fixes
+
+* Custom component check, removals of unwanted comments and console.log ([#2072](https://github.com/EOX-A/EOxElements/issues/2072)) ([34dd43c](https://github.com/EOX-A/EOxElements/commit/34dd43ceb3821449916d05ba036a12aa18d7218a))
+
 ## [2.0.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.0...timecontrol-v2.0.1) (2025-12-23)
 
 
