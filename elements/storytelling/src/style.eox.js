@@ -490,6 +490,7 @@ const styleEOX = `
     display: block;
     z-index: 1;
     max-width: 25%;
+    transform: translateY(-20dvh);
   }
   @media screen and (max-width: 1024px) {
     .story-telling .tour section-step {
