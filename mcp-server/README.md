@@ -4,7 +4,15 @@ This server provides a set of tools for a coding agent to get information about 
 
 ## Getting Started
 
+### Hosted Endpoint
+
+To use the MCP server without installing anything locally, you can point your coding agent to our hosted endpoint:
+
+`https://elements.mcp.eox.at`
+
 ### For Users
+
+Alternatively, you can run the server locally.
 
 Install the package globally from npm:
 
@@ -51,4 +59,4 @@ You can also provide a local path to the story snippets file using the `--snippe
 node mcp-server/index.js --manifest ./custom-elements.json --snippets ./story-snippets.json
 ```
 
-The server will start on `http://localhost:3000` and can be consumed by pointing a coding agent to `http://localhost:3000/mcp`.
+The server will start on `http://localhost:3000` and can be consumed by pointing a coding agent to it (or `http://localhost:3000/` with a slash at the end if a path is required).
