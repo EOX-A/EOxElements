@@ -12,11 +12,12 @@
     "@openglobus/og": "^0.28.0",
     "flatgeobuf": "^4.0.1",
     "lit": "^3.2.0",
-    "ol": "^10.7.0",
+    "ol": "10.7.1-dev.1766181275580",
     "ol-mapbox-style": "^13.0.1",
     "ol-stac": "^1.0.0-beta.10",
     "proj4": "^2.9.2",
-    "serialize-javascript": "^7.0.1"
+    "serialize-javascript": "^7.0.1",
+    "zarrita": "^0.5.4"
   },
   "devDependencies": {
     "@types/proj4": "^2.5.4",
