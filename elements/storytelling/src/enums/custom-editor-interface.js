@@ -56,7 +56,6 @@ class UploadEditor extends AbstractEditor {
       e.preventDefault(); // Prevent default button behavior
 
       const fileInput = document.createElement("input");
-      fileInput.id = "upload-file-input";
       fileInput.type = "file";
       fileInput.accept = schema.accept || "image/*,video/*";
       fileInput.style.display = "none";
@@ -102,7 +101,7 @@ class UploadEditor extends AbstractEditor {
         }
         fileInput.remove();
       });
-      uploadEle.appendChild(fileInput);
+      document.body.appendChild(fileInput);
 
       fileInput.click();
       return false; // Prevent form submission
