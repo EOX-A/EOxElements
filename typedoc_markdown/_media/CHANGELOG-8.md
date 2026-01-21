@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/EOX-A/EOxElements/compare/map-v2.0.2...map-v2.0.3) (2026-01-21)
+
+
+### Bug Fixes
+
+* Support tooltip mouse event coordinates for vector layers  ([#2074](https://github.com/EOX-A/EOxElements/issues/2074)) ([0c1ce04](https://github.com/EOX-A/EOxElements/commit/0c1ce04cb0a281cd53a31ce52b281f510d2c43db))
+
 ## [2.0.2](https://github.com/EOX-A/EOxElements/compare/map-v2.0.1...map-v2.0.2) (2025-12-23)
 
 

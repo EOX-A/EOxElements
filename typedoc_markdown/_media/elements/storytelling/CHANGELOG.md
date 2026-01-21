@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.10.0...storytelling-v1.10.1) (2026-01-21)
+
+
+### Bug Fixes
+
+* Prevent event bubble and double upload ([#2099](https://github.com/EOX-A/EOxElements/issues/2099)) ([9964030](https://github.com/EOX-A/EOxElements/commit/996403089fb0a1f5c9c8bb931aeac67a05d75837))
+
 ## [1.10.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.9.8...storytelling-v1.10.0) (2026-01-13)
 
 
