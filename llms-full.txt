@@ -1923,8 +1923,11 @@ Supports passing a function which recieves the current item as parameter and is 
 - `autoSpreadSingle` (Boolean): Automatically spread single item summaries
 removing the summary header (Default: `false`)
 - `enableHighlighting` (Boolean): Highlighting of search result character matches (Default: `false`)
-- `externalFilter` (Function): Use an external search endpoint instead of fuse search.
-Passed properties: input string, filters object (Default: `null`)
+- `externalFilter` (() => string| (() => {url:string;key?:string;fetchFn?:string})): Use an external search endpoint instead of fuse search.
+Passed properties: input string, filters object.
+The function can return a URL string, or an object containing a `url,
+an optional `fetchFn` to handle the request, or/and an optional `key` to
+return a specific property from the fetched data. (Default: `null`)
 - `filterProperties` (Array<{key?: String, keys?: Array<String>, title: String, type: String, placeholder?: String, format?: String, state?: Object}>): The filter properties. (Default: `[]`)
 - `fuseConfig` (Object): Native fuse.js config override (Default: `{}`)
 - `inlineMode` (Boolean): Inline mode, for rendering the itemfilter in a very condensed space.
@@ -4315,6 +4318,65 @@ Example of using an external API endpoint for filtering, with a custom `external
         .filter((k) => !!filters.userId.state[k])
         .map((id) => `userId=${id}`)
         .join("&")}`;
+    },
+    filterProperties: [
+      {
+        key: "completed",
+        title: "Completed",
+        type: "multiselect",
+        expanded: true,
+        filterKeys: [true, false],
+        state: {
+          true: true,
+        },
+      },
+      {
+        key: "userId",
+        title: "User ID",
+        type: "multiselect",
+        expanded: true,
+        filterKeys: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      },
+    ],
+  });
+</script>
+
+```
+
+#### ExternalFetchFn
+
+Advanced usage of `externalFilter` where the function returns an object containing both a `url` and a `fetchFn`. This allows for complex custom fetching logic, such as response transformation or additional side effects.
+
+```html
+<eox-itemfilter></eox-itemfilter>
+
+<script type="module">
+  import "@eox/itemfilter/dist/eox-itemfilter.js";
+
+  const eoxItemfilter = document.querySelector("eox-itemfilter");
+
+  // Assign properties
+  Object.assign(eoxItemfilter, {
+    titleProperty: "title",
+    externalFilter: (_, filters) => {
+      const url = `https://jsonplaceholder.typicode.com/todos?${Object.keys(
+        filters.completed.state,
+      )
+        .filter((k) => !!filters.completed.state[k])
+        .map((id) => `completed=${id}`)
+        .join("&")}&${Object.keys(filters.userId.state)
+        .filter((k) => !!filters.userId.state[k])
+        .map((id) => `userId=${id}`)
+        .join("&")}`;
+      return {
+        url,
+        fetchFn: async (url) => {
+          const response = await fetch(url);
+          const data = await response.json();
+          // Custom logic: only return the first 5 results
+          return data.slice(0, 5);
+        },
+      };
     },
     filterProperties: [
       {
@@ -11429,7 +11491,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-01-21T12:19:47.106Z",
+              default: "2026-01-21T13:58:38.957Z",
               options: {
                 hidden: true,
               },

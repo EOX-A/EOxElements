@@ -10,6 +10,7 @@ import {
   accordionTest,
   spatialFilterTest,
   externalFilterTest,
+  externalFetchFnTest,
   nestedPropertyTest,
   subtitleTest,
   imageTest,
@@ -108,6 +109,11 @@ describe("Item Filter Config", () => {
    * Test case to check whether itemfilter is using external filter correctly or not.
    */
   it("should run external filter", () => externalFilterTest());
+
+  /**
+   * Test case to check whether external filter with custom fetchFn works or not.
+   */
+  it("should run external filter with fetchFn", () => externalFetchFnTest());
 
   /**
    * Test case to check whether nested properties work or not
