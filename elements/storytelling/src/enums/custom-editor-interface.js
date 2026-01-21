@@ -56,6 +56,7 @@ class UploadEditor extends AbstractEditor {
       e.preventDefault(); // Prevent default button behavior
 
       const fileInput = document.createElement("input");
+      fileInput.id = "upload-file-input";
       fileInput.type = "file";
       fileInput.accept = schema.accept || "image/*,video/*";
       fileInput.style.display = "none";
