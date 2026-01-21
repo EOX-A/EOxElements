@@ -8,7 +8,7 @@
 
 > **SelectOptions** = `Omit`\<`Options`, `"condition"`\> & `object`
 
-Defined in: [elements/map/src/types.ts:56](https://github.com/EOX-A/EOxElements/blob/aed77312c79fcba7f4187cf867177e8374ee1210/elements/map/src/types.ts#L56)
+Defined in: [elements/map/src/types.ts:56](https://github.com/EOX-A/EOxElements/blob/c8150231433e6c733f78a378776cf76ecc9d47d8/elements/map/src/types.ts#L56)
 
 ## Type Declaration
 
