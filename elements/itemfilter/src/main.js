@@ -164,7 +164,9 @@ export class EOxItemFilter extends LitElement {
 
     /**
      * Use an external search endpoint instead of fuse search.
-     * Passed properties: input string, filters object
+     * Passed properties: input string, filters object.
+     * The function can return a URL string, or an object containing a `url`
+     * and an optional `fetchFn` to handle the request.
      *
      * @type Function
      */
