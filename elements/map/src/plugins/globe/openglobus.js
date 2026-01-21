@@ -227,6 +227,62 @@ export const enableGlobe = (map) => {
     (map.shadowRoot.querySelector("#map")).style.display = "none";
     map.globeEnabled = true;
   }
+
+  // Move OL controls to the globe container
+  const olControls = map.shadowRoot.querySelectorAll(".ol-control");
+  olControls.forEach((control) => {
+    map.shadowRoot.querySelector("#globe").appendChild(control);
+  });
+
+  // Override OL controls for globe functionality
+  if (map.controls.Zoom) {
+    const zoomIn = (e) => {
+      e.stopImmediatePropagation();
+      const c = map.globe.planet.camera;
+      const pos = c.getLonLat();
+      pos.height /= 1.5;
+      c.flyLonLat(pos);
+    };
+    const zoomOut = (e) => {
+      e.stopImmediatePropagation();
+      const c = map.globe.planet.camera;
+      const pos = c.getLonLat();
+      if (pos.height < 21000000) {
+        pos.height *= 1.5;
+        c.flyLonLat(pos);
+      }
+    };
+    const zoomInButton = map.shadowRoot.querySelector(".ol-zoom-in");
+    const zoomOutButton = map.shadowRoot.querySelector(".ol-zoom-out");
+
+    zoomInButton.addEventListener("click", zoomIn);
+    zoomOutButton.addEventListener("click", zoomOut);
+
+    // Store handlers for later removal
+    map.globe.zoomInHandler = zoomIn;
+    map.globe.zoomOutHandler = zoomOut;
+  }
+
+  if (map.controls.Rotate) {
+    const rotate = () => {
+      const c = map.globe.planet.getCartesianFromPixelTerrain(
+        map.globe.renderer.handler.getCenter(),
+      );
+      if (c) {
+        map.globe.planet.flyCartesian(
+          c.normal().scaleTo(map.globe.planet.camera.eye.length()),
+          { completeCallback: () => map.globe.planet.camera.look(c) },
+        );
+      }
+    };
+
+    const rotateButton = map.shadowRoot.querySelector(".ol-rotate");
+    rotateButton.addEventListener("click", rotate);
+    rotateButton.classList.remove("ol-hidden");
+
+    // Store handler for later removal
+    map.globe.rotateHandler = rotate;
+  }
 };
 
 export const disableGlobe = (map) => {
@@ -277,6 +333,24 @@ export const disableGlobe = (map) => {
         map.map.getView().setCenter(newCenter);
         map.map.getView().setZoom(zoomFromGlobe);
 
+        // Move OL controls back to the OL container
+        const olControls = map.shadowRoot.querySelectorAll(".ol-control");
+        olControls.forEach((control) => {
+          map.shadowRoot.querySelector(".ol-viewport").appendChild(control);
+        });
+
+        // Restore OL control functionality
+        if (map.controls.Zoom && map.globe.zoomInHandler) {
+          const zoomInButton = map.shadowRoot.querySelector(".ol-zoom-in");
+          const zoomOutButton = map.shadowRoot.querySelector(".ol-zoom-out");
+          zoomInButton.removeEventListener("click", map.globe.zoomInHandler);
+          zoomOutButton.removeEventListener("click", map.globe.zoomOutHandler);
+        }
+        if (map.controls.Rotate && map.globe.rotateHandler) {
+          const rotateButton = map.shadowRoot.querySelector(".ol-rotate");
+          rotateButton.removeEventListener("click", map.globe.rotateHandler);
+          rotateButton.classList.add("ol-hidden");
+        }
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation
