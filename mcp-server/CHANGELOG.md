@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.0.1...elements-mcp-server-v1.1.0) (2026-01-21)
+
+
+### Features
+
+* Use hosted endpoint by default ([#2097](https://github.com/EOX-A/EOxElements/issues/2097)) ([96cce5c](https://github.com/EOX-A/EOxElements/commit/96cce5c93f5da4aa2f387f2964d5c37c3ef7bcf9))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/elements-mcp-server-v1.0.0...elements-mcp-server-v1.0.1) (2025-12-16)
 
 

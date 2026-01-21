@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.3...itemfilter-v1.14.0) (2026-01-21)
+
+
+### Features
+
+* Introduce `fetchFn` for external filter ([#2098](https://github.com/EOX-A/EOxElements/issues/2098)) ([a496c54](https://github.com/EOX-A/EOxElements/commit/a496c5404c93cece08bc709ebbcfb737470448ba))
+
 ## [1.13.3](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.2...itemfilter-v1.13.3) (2025-12-23)
 
 
