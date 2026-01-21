@@ -16,9 +16,11 @@ async function filterExternal(items, filters, config) {
     typeof functionResult === "string" || functionResult instanceof String
       ? functionResult
       : functionResult.url;
-  // Generate the URL for the external API based on the provided items and filters
-  const response = await fetch(url);
-  const jsonData = await response.json();
+
+  const jsonData =
+    typeof functionResult === "object" && "fetchFn" in functionResult
+      ? await functionResult.fetchFn(url)
+      : await fetch(url).then(async (response) => await response.json());
 
   // Return the array from the parsed JSON data
   return functionResult.key ? getValue(functionResult.key, jsonData) : jsonData;
