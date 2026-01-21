@@ -102,7 +102,7 @@ class UploadEditor extends AbstractEditor {
         }
         fileInput.remove();
       });
-      uploadEle.appendChild(fileInput);
+      document.body.appendChild(fileInput);
 
       fileInput.click();
       return false; // Prevent form submission
