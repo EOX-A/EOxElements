@@ -219,7 +219,8 @@ const loadExpertModeExport = () => {
           date.length &&
           !e.detail.selectedRangeItems[dateKey].some(
             (o) =>
-              o.cloudCoverage > maxCloudCover || o.cloudCoverage < minCloudCover,
+              o.cloudCoverage > maxCloudCover ||
+              o.cloudCoverage < minCloudCover,
           )
         ) {
           // register mosaic for this specific date
