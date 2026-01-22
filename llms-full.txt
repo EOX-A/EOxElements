@@ -11491,7 +11491,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-01-22T10:42:57.221Z",
+              default: "2026-01-22T16:00:03.865Z",
               options: {
                 hidden: true,
               },
@@ -22801,6 +22801,10 @@ the map layers.
   Object.assign(eoxTimecontrolPicker, {
     showDots: true,
     popup: true,
+  });
+
+  Object.assign(eoxTimecontrolSlider, {
+    animateOnClickInterval: "0.3s",
   });
 </script>
 
