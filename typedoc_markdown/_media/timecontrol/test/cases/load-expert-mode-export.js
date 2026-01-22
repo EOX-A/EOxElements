@@ -8,6 +8,18 @@ import dayjs from "dayjs";
  * STAC data fetching, mosaic layer creation, date range selection, and timelapse export.
  */
 const loadExpertModeExport = () => {
+  // handle ResizeObserver errors that can occur with complex components
+  cy.on("uncaught:exception", (err) => {
+    if (
+      err.message.includes(
+        "ResizeObserver loop completed with undelivered notifications",
+      )
+    ) {
+      return false; // ignore ResizeObserver errors
+    }
+    return true;
+  });
+
   // data preparation - calculate date range for calendar navigation
   const currentDate = dayjs().format("YYYY-MM-DD");
   const weekAgoDate = dayjs().subtract(30, "day").format("YYYY-MM-DD");
@@ -65,12 +77,17 @@ const loadExpertModeExport = () => {
     </div>
   `);
 
-  // expert mode setup - configure external map rendering and data fetching
-  cy.get("div.expert-mode").then(($el) => {
-    const exportMode = $el[0];
-    const eoxMap = exportMode.querySelector(
-      "eox-map#external-map-rendering-mosaic",
-    );
+  // ensure components are ready before proceeding with setup
+  cy.get("eox-map#external-map-rendering-mosaic", { timeout: 10000 }).should(
+    (el) => {
+      expect(el[0].map).to.exist;
+    },
+  );
+
+  // setup logic after mount to ensure DOM and map are ready
+  cy.get("eox-map#external-map-rendering-mosaic").then(($eoxMap) => {
+    const eoxMap = $eoxMap[0];
+    const exportMode = eoxMap.parentElement;
 
     // initialize data variables for STAC items and mosaic layers
     let items = [];
@@ -164,78 +181,76 @@ const loadExpertModeExport = () => {
     };
 
     // event listener - handle date range selection from timecontrol
-    exportMode
-      .querySelector("eox-timecontrol")
-      .addEventListener("select", async (e) => {
-        console.log(e.detail);
-        // skip if no items loaded yet
-        if (!items.length) return;
+    const timeControl = exportMode.querySelector("eox-timecontrol");
+    timeControl.addEventListener("select", async (e) => {
+      // skip if no items loaded yet
+      if (!items.length) return;
 
-        // extract date range from event detail
-        const start = new Date(e.detail.date[0]);
-        const end = new Date(e.detail.date[1]);
+      // extract date range from event detail
+      const start = new Date(e.detail.date[0]);
+      const end = new Date(e.detail.date[1]);
 
-        // register mosaic for selected date range and update map layers
-        tileJson = await registerMosaic(start.toISOString(), end.toISOString());
-        eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
-      });
+      // register mosaic for selected date range and update map layers
+      tileJson = await registerMosaic(start.toISOString(), end.toISOString());
+      eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
+    });
 
     // event listener - handle timelapse export functionality
-    exportMode
-      .querySelector("eox-timecontrol-timelapse")
-      .addEventListener("export", async (e) => {
-        const mapLayers = [];
+    const timelapse = exportMode.querySelector("eox-timecontrol-timelapse");
+    timelapse.addEventListener("export", async (e) => {
+      const mapLayers = [];
 
-        // extract cloud coverage filter values from event detail
-        const minCloudCover = e.detail.filters.cloudCoverage?.state.min;
-        const maxCloudCover = e.detail.filters.cloudCoverage?.state.max;
-        console.log(e.detail);
+      // extract cloud coverage filter values from event detail
+      const minCloudCover = e.detail.filters.cloudCoverage?.state.min;
+      const maxCloudCover = e.detail.filters.cloudCoverage?.state.max;
 
-        // iterate through selected date range items for export
-        for (const dateKey in e.detail.selectedRangeItems) {
-          const date = e.detail.selectedRangeItems[dateKey][0].originalDate;
-          const start = new Date(date);
-          // create end date as next day for single-day mosaic
-          const end = new Date(
-            new Date(start).setDate(new Date(start).getDate() + 1),
+      // iterate through selected date range items for export
+      for (const dateKey in e.detail.selectedRangeItems) {
+        const date = e.detail.selectedRangeItems[dateKey][0].originalDate;
+        const start = new Date(date);
+        // create end date as next day for single-day mosaic
+        const end = new Date(
+          new Date(start).setDate(new Date(start).getDate() + 1),
+        );
+
+        // filter items by cloud coverage and create mosaic layers
+        if (
+          date &&
+          date.length &&
+          !e.detail.selectedRangeItems[dateKey].some(
+            (o) =>
+              o.cloudCoverage > maxCloudCover ||
+              o.cloudCoverage < minCloudCover,
+          )
+        ) {
+          // register mosaic for this specific date
+          const currentTileJson = await registerMosaic(
+            start.toISOString(),
+            end.toISOString(),
           );
-
-          // filter items by cloud coverage and create mosaic layers
-          if (
-            date &&
-            date.length &&
-            !e.detail.selectedRangeItems[dateKey].some(
-              (o) =>
-                o.cloudCoverage > maxCloudCover ||
-                o.cloudCoverage < minCloudCover,
-            )
-          ) {
-            // register mosaic for this specific date
-            const currentTileJson = await registerMosaic(
-              start.toISOString(),
-              end.toISOString(),
-            );
-            // add layer configuration for this date to export
-            mapLayers.push({
-              layers: [osmLayer, createMosaicLayer([], currentTileJson)],
-              date: dateKey,
-            });
-          }
+          // add layer configuration for this date to export
+          mapLayers.push({
+            layers: [osmLayer, createMosaicLayer([], currentTileJson)],
+            date: dateKey,
+          });
         }
-        // trigger timelapse generation with configured map layers
-        e.detail.generate({
-          mapLayers,
-        });
+      }
+      // trigger timelapse generation with configured map layers
+      e.detail.generate({
+        mapLayers,
       });
+    });
 
     // initialize map with base OSM layer
     eoxMap.layers = [osmLayer];
 
     // map event listener - fetch new items when map extent changes
-    eoxMap.map.on("moveend", async () => {
-      items = await fetchItems(eoxMap.lonLatExtent, startDate, endDate);
-      eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
-    });
+    if (eoxMap.map) {
+      eoxMap.map.on("moveend", async () => {
+        items = await fetchItems(eoxMap.lonLatExtent, startDate, endDate);
+        eoxMap.layers = [osmLayer, createMosaicLayer(items, tileJson)];
+      });
+    }
   });
 
   // setup - stub window functions for download testing
@@ -243,18 +258,6 @@ const loadExpertModeExport = () => {
     // stub URL methods for blob handling
     win.URL.createObjectURL = cy.stub().returns("blob:mock-url");
     win.URL.revokeObjectURL = cy.stub();
-
-    // stub document.createElement to mock download link creation
-    const originalCreateElement = win.document.createElement.bind(win.document);
-    win.document.createElement = cy.stub().callsFake((tagName) => {
-      if (tagName === "a") {
-        const mockLink = originalCreateElement("a");
-        // stub click method for download testing
-        mockLink.click = cy.stub().as("downloadClick");
-        return mockLink;
-      }
-      return originalCreateElement(tagName);
-    });
   });
 
   // assertions - verify component existence and structure
@@ -290,7 +293,7 @@ const loadExpertModeExport = () => {
   cy.get(`[data-vc-date="${currentDate}"]`).last().click();
 
   // close calendar by clicking outside
-  cy.get("body").click();
+  cy.get("body").click(0, 0, { force: true });
 
   // trigger timelapse export functionality
   cy.get("eox-timecontrol-timelapse").click();

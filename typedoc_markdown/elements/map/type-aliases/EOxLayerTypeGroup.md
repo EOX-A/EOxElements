@@ -8,7 +8,7 @@
 
 > **EOxLayerTypeGroup** = `Omit`\<[`EOxLayerType`](EOxLayerType.md)\<`"Group"`, keyof [`OLSources`](OLSources.md)\>, `"layers"`\> & `object`
 
-Defined in: [elements/map/src/layers.ts:161](https://github.com/EOX-A/EOxElements/blob/424e04944b09ea58793314e77e1ad73186284dcf/elements/map/src/layers.ts#L161)
+Defined in: [elements/map/src/layers.ts:161](https://github.com/EOX-A/EOxElements/blob/3dd22812b6c5d2062b0152693a1dbeb85d8e7e96/elements/map/src/layers.ts#L161)
 
 ## Type Declaration
 
