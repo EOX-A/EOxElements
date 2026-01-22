@@ -235,7 +235,7 @@ export const enableGlobe = (map) => {
   });
 
   // Override OL controls for globe functionality
-  if (map.controls.Zoom) {
+  if (map.controls?.Zoom) {
     const zoomIn = (e) => {
       e.stopImmediatePropagation();
       const c = map.globe.planet.camera;
@@ -263,7 +263,7 @@ export const enableGlobe = (map) => {
     map.globe.zoomOutHandler = zoomOut;
   }
 
-  if (map.controls.Rotate) {
+  if (map.controls?.Rotate) {
     const rotate = () => {
       const c = map.globe.planet.getCartesianFromPixelTerrain(
         map.globe.renderer.handler.getCenter(),
@@ -340,13 +340,13 @@ export const disableGlobe = (map) => {
         });
 
         // Restore OL control functionality
-        if (map.controls.Zoom && map.globe.zoomInHandler) {
+        if (map.controls?.Zoom && map.globe.zoomInHandler) {
           const zoomInButton = map.shadowRoot.querySelector(".ol-zoom-in");
           const zoomOutButton = map.shadowRoot.querySelector(".ol-zoom-out");
           zoomInButton.removeEventListener("click", map.globe.zoomInHandler);
           zoomOutButton.removeEventListener("click", map.globe.zoomOutHandler);
         }
-        if (map.controls.Rotate && map.globe.rotateHandler) {
+        if (map.controls?.Rotate && map.globe.rotateHandler) {
           const rotateButton = map.shadowRoot.querySelector(".ol-rotate");
           rotateButton.removeEventListener("click", map.globe.rotateHandler);
           rotateButton.classList.add("ol-hidden");
