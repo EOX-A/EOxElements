@@ -229,7 +229,7 @@ export const enableGlobe = (map) => {
   }
 
   // Move OL controls to the globe container
-  const olControls = map.shadowRoot.querySelectorAll(".ol-control");
+  const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
   olControls.forEach((control) => {
     map.shadowRoot.querySelector("#globe").appendChild(control);
   });
@@ -334,7 +334,7 @@ export const disableGlobe = (map) => {
         map.map.getView().setZoom(zoomFromGlobe);
 
         // Move OL controls back to the OL container
-        const olControls = map.shadowRoot.querySelectorAll(".ol-control");
+        const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
         olControls.forEach((control) => {
           map.shadowRoot.querySelector(".ol-viewport").appendChild(control);
         });
