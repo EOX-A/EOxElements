@@ -36,7 +36,10 @@ export class EOxTimeControlSlider extends LitElement {
   static get properties() {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
-      animateOnClickInterval: { type: String, attribute: "animate-onclick-interval" }
+      animateOnClickInterval: {
+        type: String,
+        attribute: "animate-onclick-interval",
+      },
     };
   }
 
@@ -92,7 +95,7 @@ export class EOxTimeControlSlider extends LitElement {
      *
      * @type {string}
      */
-    this.animateOnClickInterval = "0.3s"
+    this.animateOnClickInterval = "0.3s";
   }
 
   /**

@@ -65,8 +65,12 @@ const SliderStory = {
             .popup}
         ></eox-timecontrol-picker>
       </div>
-      <eox-timecontrol-slider style="width: 600px;" .animateOnClickInterval=${args.storyAdditionalComponents["eox-timecontrol-slider"]
-            .animateOnClickInterval}></eox-timecontrol-slider>
+      <eox-timecontrol-slider
+        style="width: 600px;"
+        .animateOnClickInterval=${args.storyAdditionalComponents[
+          "eox-timecontrol-slider"
+        ].animateOnClickInterval}
+      ></eox-timecontrol-slider>
     </eox-timecontrol>
   `,
 };

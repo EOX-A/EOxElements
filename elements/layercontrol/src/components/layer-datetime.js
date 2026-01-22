@@ -127,7 +127,10 @@ export class EOxLayerControlLayerDatetime extends LitElement {
               .navigation=${this.layerDatetime.navigation ?? false}
               .format=${this.layerDatetime.displayFormat}
             ></eox-timecontrol-date>
-            <eox-timecontrol-slider animate-onclick-interval="${this.layerDatetime.animateOnClickInterval ?? "0.3s"}"></eox-timecontrol-slider>
+            <eox-timecontrol-slider
+              animate-onclick-interval="${this.layerDatetime
+                .animateOnClickInterval ?? "0.3s"}"
+            ></eox-timecontrol-slider>
           </eox-timecontrol>
         `,
       )}
