@@ -36,6 +36,7 @@ export class EOxTimeControlSlider extends LitElement {
   static get properties() {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
+      animateOnClickInterval: { type: String, attribute: "animate-onclick-interval" }
     };
   }
 
@@ -86,6 +87,12 @@ export class EOxTimeControlSlider extends LitElement {
      * @type {boolean}
      */
     this.unstyled = false;
+    /**
+     * Animation duration of range slider click/init. To disable completely, set to "false". See https://toolcool-range-slider.mzsoft.org/pages/animation.html#animation-on-panel-click for more information.
+     *
+     * @type {string}
+     */
+    this.animateOnClickInterval = "0.3s"
   }
 
   /**
@@ -307,6 +314,7 @@ export class EOxTimeControlSlider extends LitElement {
       </style>
       <div class="date-range-slider-wrapper">
         <tc-range-slider
+          animate-onclick="${this.animateOnClickInterval}"
           @change="${(/** @type {CustomEvent} */ evt) =>
             this.handleChange(evt)}"
         ></tc-range-slider>
