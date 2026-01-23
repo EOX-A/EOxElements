@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.2...timecontrol-v2.1.0) (2026-01-23)
+
+
+### Features
+
+* Configurable animate on timecontrol slider ([#2104](https://github.com/EOX-A/EOxElements/issues/2104)) ([85e6272](https://github.com/EOX-A/EOxElements/commit/85e62726c6e88bf087464334bba4f1bbee826b17))
+
 ## [2.0.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.1...timecontrol-v2.0.2) (2026-01-13)
 
 

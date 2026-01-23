@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.3.2...layercontrol-v1.4.0) (2026-01-23)
+
+
+### Features
+
+* Configurable animate on timecontrol slider ([#2104](https://github.com/EOX-A/EOxElements/issues/2104)) ([85e6272](https://github.com/EOX-A/EOxElements/commit/85e62726c6e88bf087464334bba4f1bbee826b17))
+
+
+### Bug Fixes
+
+* Layer datetime emission ([#2092](https://github.com/EOX-A/EOxElements/issues/2092)) ([a65da8b](https://github.com/EOX-A/EOxElements/commit/a65da8babca7f94be358183c34af80880b8217c6))
+
 ## [1.3.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.3.1...layercontrol-v1.3.2) (2025-12-13)
 
 
