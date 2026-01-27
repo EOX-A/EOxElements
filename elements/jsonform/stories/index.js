@@ -20,5 +20,7 @@ export { default as CodeStory } from "./code"; // Show code editor as input
 export { default as OptionalPropertiesStory } from "./optional-properties"; // Hide optional properties
 export { default as ShowOptInPropertiesStory } from "./show-opt-in-properties"; // Show opt-in properties
 export { default as DefaultsStory } from "./defaults"; // Configure defaults
+export { default as GridStory } from "./grid"; // Grid layout story
+export { default as GridStrictStory } from "./grid-strict"; // Grid strict layout story
 
 export { default as FlexLayoutStory } from "./flex-layout"; // Flex layout story
