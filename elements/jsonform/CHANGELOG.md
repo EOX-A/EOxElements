@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.8.0...jsonform-v1.9.0) (2026-01-27)
+
+
+### Features
+
+* Support grid layout ([#2112](https://github.com/EOX-A/EOxElements/issues/2112)) ([ec20e8a](https://github.com/EOX-A/EOxElements/commit/ec20e8adc2eed67efb96b161fe69ade30dd129b3))
+
 ## [1.8.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.7.0...jsonform-v1.8.0) (2026-01-07)
 
 
