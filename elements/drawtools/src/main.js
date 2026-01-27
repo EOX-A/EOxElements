@@ -54,6 +54,7 @@ export class EOxDrawTools extends LitElement {
       featureStyles: { attribute: false },
       modify: { attribute: false, state: true },
       multipleFeatures: { attribute: "multiple-features", type: Boolean },
+      measure: { type: Boolean },
       importFeatures: { attribute: "import-features", type: Boolean },
       showEditor: { attribute: "show-editor", type: Boolean },
       showList: { attribute: "show-list", type: Boolean },
@@ -164,6 +165,14 @@ export class EOxDrawTools extends LitElement {
      * Allow adding more than one feature at a time
      */
     this.multipleFeatures = false;
+
+    /**
+     * Display area/line measurement for the drawn features.
+     * When enabled, a "measure" property is added to each drawn feature's properties,
+     * containing the calculated area (for Polygons and Circles) or length (for LineStrings).
+     * This measurement is also displayed as a text label on the map using OpenLayers flat styles.
+     */
+    this.measure = false;
 
     /**
      * Allow import features using drag-drop and upload button
@@ -351,8 +360,10 @@ export class EOxDrawTools extends LitElement {
       this.#olMap = OlMap;
     }
     if (
-      changedProperties.get("type") &&
-      changedProperties.get("type") !== this.type
+      (changedProperties.get("type") &&
+        changedProperties.get("type") !== this.type) ||
+      (changedProperties.has("measure") &&
+        changedProperties.get("measure") !== this.measure)
     ) {
       this.resetLayer(this);
       this.firstUpdated();
