@@ -665,6 +665,10 @@ without having to discard previous ones manually
 - `feature-name-key` (null): The key of the property to display in the feature list.
 - `layer-id` (string): The ID of the Vector/Vector Tile Layer that contains features to be selected
 - `multiple-features` (boolean): Allow adding more than one feature at a time
+- `measure` (boolean): Display area/line measurement for the drawn features.
+When enabled, a "measure" property is added to each drawn feature's properties,
+containing the calculated area (for Polygons and Circles) or length (for LineStrings).
+This measurement is also displayed as a text label on the map using OpenLayers flat styles.
 - `import-features` (boolean): Allow import features using drag-drop and upload button
 - `show-editor` (boolean): Show geo-json editor for draw tool
 - `show-list` (boolean): Show list of features
@@ -695,6 +699,10 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `"eox-
      * } | null): Flat styles for the drawn/selected features (Default: `null`)
 - `modify` (Modify): The current native OpenLayers `modify` interaction (Default: `null`)
 - `multipleFeatures` (boolean): Allow adding more than one feature at a time (Default: `false`)
+- `measure` (boolean): Display area/line measurement for the drawn features.
+When enabled, a "measure" property is added to each drawn feature's properties,
+containing the calculated area (for Polygons and Circles) or length (for LineStrings).
+This measurement is also displayed as a text label on the map using OpenLayers flat styles. (Default: `false`)
 - `importFeatures` (boolean): Allow import features using drag-drop and upload button (Default: `false`)
 - `showEditor` (boolean): Show geo-json editor for draw tool (Default: `false`)
 - `showList` (boolean): Show list of features (Default: `false`)
@@ -951,6 +959,46 @@ feature files in `GeoJSON`, `TopoJSON` and `KML` format.
 
 ```
 
+#### Measure
+
+By setting the `measure` attribute or property to `true`, the element displays
+area/line measurement for the drawn features.
+The measurement logic automatically calculates the area for polygons and circles,
+and the length for line segments. These values are updated in real-time as the
+geometry is modified and are displayed as text labels on the map features.
+The `measure` property is also added to the properties of the emitted feature.
+
+```html
+<eox-drawtools for="eox-map#measure" measure type="Polygon"></eox-drawtools>
+<eox-map id="measure" style="width: 400px; height: 300px"></eox-map>
+
+<script type="module">
+  import "@eox/drawtools/dist/eox-drawtools.js";
+  import "@eox/map/dist/eox-map.js";
+
+  const eoxDrawtools = document.querySelector("eox-drawtools");
+  const eoxMap = document.querySelector("eox-map");
+
+  // Assign properties
+  Object.assign(eoxDrawtools, {
+    allowModify: true,
+    multipleFeatures: true,
+  });
+
+  Object.assign(eoxMap, {
+    layers: [
+      {
+        type: "Tile",
+        source: {
+          type: "OSM",
+        },
+      },
+    ],
+  });
+</script>
+
+```
+
 #### ModifyFeatures
 
 By setting the `allow-modify` attribute or `allowModify` property,
@@ -1161,6 +1209,7 @@ MultiFeaturesSelectStory,
 FeaturesProjectionStory,
 FormatStory,
 ContinuousDrawingStory,
+MeasureStory,
 } from "./index";
 export default {
 title: "Elements/eox-drawtools",
@@ -11596,7 +11645,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-01-27T16:10:06.364Z",
+              default: "2026-01-27T17:37:44.838Z",
               options: {
                 hidden: true,
               },

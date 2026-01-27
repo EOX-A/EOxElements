@@ -16,6 +16,7 @@ import {
   FeaturesProjectionStory,
   FormatStory,
   ContinuousDrawingStory,
+  MeasureStory,
 } from "./index";
 
 export default {
@@ -118,6 +119,16 @@ export const Formats = FormatStory;
  * draw button (which uses `--primary`) and the delete/discard button (which uses `--error`).
  */
 export const CSSVariableOverride = CSSVariableOverrideStory;
+
+/**
+ * By setting the `measure` attribute or property to `true`, the element displays
+ * area/line measurement for the drawn features.
+ * The measurement logic automatically calculates the area for polygons and circles,
+ * and the length for line segments. These values are updated in real-time as the
+ * geometry is modified and are displayed as text labels on the map features.
+ * The `measure` property is also added to the properties of the emitted feature.
+ */
+export const Measure = MeasureStory;
 
 /**
  * By setting the `unstyled` attribute or property, the element has no styling applied.

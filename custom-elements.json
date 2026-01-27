@@ -643,6 +643,17 @@
             },
             {
               "kind": "field",
+              "name": "measure",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Display area/line measurement for the drawn features.\nWhen enabled, a \"measure\" property is added to each drawn feature's properties,\ncontaining the calculated area (for Polygons and Circles) or length (for LineStrings).\nThis measurement is also displayed as a text label on the map using OpenLayers flat styles.",
+              "default": "false",
+              "attribute": "measure"
+            },
+            {
+              "kind": "field",
               "name": "importFeatures",
               "privacy": "public",
               "type": {
@@ -809,6 +820,15 @@
               "description": "Allow adding more than one feature at a time",
               "default": "false",
               "fieldName": "multipleFeatures"
+            },
+            {
+              "name": "measure",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Display area/line measurement for the drawn features.\nWhen enabled, a \"measure\" property is added to each drawn feature's properties,\ncontaining the calculated area (for Polygons and Circles) or length (for LineStrings).\nThis measurement is also displayed as a text label on the map using OpenLayers flat styles.",
+              "default": "false",
+              "fieldName": "measure"
             },
             {
               "name": "import-features",
