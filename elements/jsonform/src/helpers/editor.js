@@ -82,7 +82,7 @@ export const createEditor = (element) => {
   JSONEditor.defaults.resolvers.unshift(
     (schema) => schema.options?.resolver && schema.options.resolver,
   );
-  
+
   // Custom theme modifications for EOxUI for grid layout
   JSONEditor.defaults.themes.html.prototype.setGridColumnSize = (
     el,
