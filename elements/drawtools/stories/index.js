@@ -14,3 +14,4 @@ export { default as FormatStory } from "./formats"; // Story showcasing emitting
 export { default as ContinuousDrawingStory } from "./continuous-drawing"; // Story demonstrating continuous drawing
 export { default as CSSVariableOverrideStory } from "./css-variable-override"; // Story demonstrating css override
 export { default as UnstyledStory } from "./unstyled"; // Story demonstrating unstyled variant of element.
+export { default as MeasureStory } from "./measure"; // Story demonstrating measurement functionality.
