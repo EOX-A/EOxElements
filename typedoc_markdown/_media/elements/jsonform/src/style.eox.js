@@ -7,10 +7,6 @@ export const styleEOX = `
   ${eoxStyle}
 
   /*EOxUI Overrides*/
-  .row {
-    display: inline;
-  }
-
   :host, :root {
     display: block;
     overflow: hidden;
@@ -108,13 +104,13 @@ export const styleEOX = `
     margin-left: 10px;
     margin-bottom: 4px;
   }
-  .row:not(.row .row):not(.row:last-child) {
-    margin-bottom: 8px;
+  .grid {
+    margin-block: 0 !important;
   }
   form[data-theme="html"][data-theme-custom="eox"] label.je-form-input-label:not([data-schematype="boolean"]),
   form[data-theme="html"][data-theme-custom="eox"] p.je-form-input-label:not([data-schematype="boolean"]),
-  form[data-theme="html"][data-theme-custom="eox"] .row .je-object__title,
-  form[data-theme="html"][data-theme-custom="eox"] .row .je-header {
+  form[data-theme="html"][data-theme-custom="eox"] .grid .je-object__title,
+  form[data-theme="html"][data-theme-custom="eox"] .grid .je-header {
     display: inline-flex;
     align-items: center;
     max-width: 100%;

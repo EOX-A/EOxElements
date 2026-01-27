@@ -10372,6 +10372,111 @@ Demonstrates output format customization for spatial inputs.
 
 ```
 
+#### Grid
+
+Grid layout example. Shows how to use the grid format for objects.
+In `grid` format, child editors are placed multiple per row and stretched to fill the 12-column grid.
+On small screens (below 600px), fields take up the full width (12 columns), while on medium and large screens, they respect the calculated grid width.
+
+```html
+<eox-jsonform></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      format: "grid",
+      properties: {
+        name: {
+          type: "string",
+          title: "Name",
+        },
+        email: {
+          type: "string",
+          title: "Email",
+        },
+        phone: {
+          type: "string",
+          title: "Phone",
+        },
+        address: {
+          type: "string",
+          title: "Address",
+        },
+        country: {
+          type: "string",
+          title: "Country",
+        },
+      },
+    },
+  });
+</script>
+
+```
+
+#### GridStrict
+
+Grid Strict layout example. Shows how to use the `grid-strict` format for objects.
+Unlike the standard `grid` format, `grid-strict` respects explicit column sizes defined
+in `options.grid_columns` without automatic stretching. It also supports `options.grid_break`
+to manually wrap to a new row.
+On small screens, fields take up the full width, while on medium and large screens, they respect the explicit column sizes.
+
+```html
+<eox-jsonform></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      format: "grid-strict",
+      properties: {
+        a: {
+          title: "a",
+          type: "string",
+          options: {
+            grid_columns: 4,
+          },
+        },
+        b: {
+          title: "b",
+          type: "string",
+          options: {
+            grid_columns: 4,
+            grid_break: true,
+          },
+        },
+        c: {
+          title: "c",
+          type: "string",
+          options: {
+            grid_columns: 6,
+          },
+        },
+        d: {
+          title: "d",
+          type: "string",
+          options: {
+            grid_columns: 6,
+          },
+        },
+      },
+    },
+  });
+</script>
+
+```
+
 #### Line
 
 LineString example. Allows users to draw lines as a form input.
@@ -11491,7 +11596,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-01-27T14:13:13.189Z",
+              default: "2026-01-27T16:10:06.364Z",
               options: {
                 hidden: true,
               },

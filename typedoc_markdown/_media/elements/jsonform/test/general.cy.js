@@ -21,6 +21,8 @@ import {
   validationBehaviorTest,
   defaultsTest,
   loadBinaryCheckboxTest,
+  loadGridTest,
+  loadGridStrictTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -47,4 +49,6 @@ describe("Jsonform", () => {
   it("loads spatial values correctly", () => loadSpatialValuesTest());
   it("handles validation behavior correctly", () => validationBehaviorTest());
   it("handles defaults correctly", () => defaultsTest());
+  it("loads the grid layout", () => loadGridTest());
+  it("loads the grid-strict layout", () => loadGridStrictTest());
 });
