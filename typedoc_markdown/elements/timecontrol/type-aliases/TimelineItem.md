@@ -8,7 +8,7 @@
 
 > **TimelineItem** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:293](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L293)
+Defined in: [elements/timecontrol/src/types.ts:293](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L293)
 
 Timeline item structure for vis-timeline.
 
@@ -24,7 +24,7 @@ Additional properties.
 
 > **className**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:305](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L305)
+Defined in: [elements/timecontrol/src/types.ts:305](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L305)
 
 CSS class name for styling.
 
@@ -34,7 +34,7 @@ CSS class name for styling.
 
 > **group**: `string` \| `number`
 
-Defined in: [elements/timecontrol/src/types.ts:301](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L301)
+Defined in: [elements/timecontrol/src/types.ts:301](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L301)
 
 Group identifier this item belongs to.
 
@@ -44,7 +44,7 @@ Group identifier this item belongs to.
 
 > **id**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:297](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L297)
+Defined in: [elements/timecontrol/src/types.ts:297](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L297)
 
 Unique identifier for the item.
 
@@ -54,7 +54,7 @@ Unique identifier for the item.
 
 > **originalDate**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:313](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L313)
+Defined in: [elements/timecontrol/src/types.ts:313](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L313)
 
 Original date value before formatting.
 
@@ -64,7 +64,7 @@ Original date value before formatting.
 
 > **property**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:321](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L321)
+Defined in: [elements/timecontrol/src/types.ts:321](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L321)
 
 Property name used for time control.
 
@@ -74,7 +74,7 @@ Property name used for time control.
 
 > **start**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:309](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L309)
+Defined in: [elements/timecontrol/src/types.ts:309](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L309)
 
 Start date/time string.
 
@@ -84,6 +84,6 @@ Start date/time string.
 
 > **type**: `string`
 
-Defined in: [elements/timecontrol/src/types.ts:317](https://github.com/EOX-A/EOxElements/blob/1a082389e7a3d37b4b4c96bc25c95582d46e1f6d/elements/timecontrol/src/types.ts#L317)
+Defined in: [elements/timecontrol/src/types.ts:317](https://github.com/EOX-A/EOxElements/blob/0f7a473482ac08ebedebfa0099597226411d4bcb/elements/timecontrol/src/types.ts#L317)
 
 Item type (e.g., "point").
