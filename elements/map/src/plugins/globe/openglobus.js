@@ -230,37 +230,71 @@ export const enableGlobe = (map) => {
 
   // Move OL controls to the globe container
   const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
-  olControls.forEach((control) => {
-    map.shadowRoot.querySelector("#globe").appendChild(control);
-  });
+  if (olControls) {
+    olControls.forEach((control) => {
+      map.shadowRoot.querySelector("#globe").appendChild(control);
+    });
+  }
 
   // Override OL controls for globe functionality
   if (map.controls?.Zoom) {
-    const zoomIn = (e) => {
-      e.stopImmediatePropagation();
-      const c = map.globe.planet.camera;
-      const pos = c.getLonLat();
-      pos.height /= 1.5;
-      c.flyLonLat(pos);
-    };
-    const zoomOut = (e) => {
-      e.stopImmediatePropagation();
-      const c = map.globe.planet.camera;
-      const pos = c.getLonLat();
-      if (pos.height < 21000000) {
-        pos.height *= 1.5;
-        c.flyLonLat(pos);
-      }
-    };
-    const zoomInButton = map.shadowRoot.querySelector(".ol-zoom-in");
-    const zoomOutButton = map.shadowRoot.querySelector(".ol-zoom-out");
+    const zoomButtons = map.shadowRoot?.querySelector(".ol-zoom");
+    if (zoomButtons) {
+      zoomButtons.style.display = "block"; // Ensure OL zoom buttons are visible
+    }
+    const zoomInButton = map.shadowRoot?.querySelector(".ol-zoom-in");
+    const zoomOutButton = map.shadowRoot?.querySelector(".ol-zoom-out");
 
-    zoomInButton.addEventListener("click", zoomIn);
-    zoomOutButton.addEventListener("click", zoomOut);
+    const animateZoom = (direction) => {
+      const cam = map.globe.planet.camera;
+      // Immediately stop any ongoing inertia from dragging or other movements.
+      // This is the key to making the zoom responsive after a drag.
+      cam.stopFlying();
+      const duration = 250; // ms
+      let startTime = null;
+
+      const zoomFrame = (currentTime) => {
+        if (!startTime) {
+          startTime = currentTime;
+        }
+        const progress = (currentTime - startTime) / duration;
+
+        if (progress < 1) {
+          const height = cam.getHeight();
+          if (height > 0) {
+            // The zoom factor is divided by the number of frames to smooth it out
+            const zoomFactor =
+              (height > 2000000 ? 0.5 : 0.3) / (duration / 16.67);
+            const move = height * zoomFactor * direction;
+            cam.slide(0, 0, -move); // slide takes (right, up, forward)
+            cam.update();
+          }
+          requestAnimationFrame(zoomFrame);
+        }
+      };
+
+      requestAnimationFrame(zoomFrame);
+    };
+
+    const globeZoomInHandler = (e) => {
+      e.stopImmediatePropagation();
+      // Stop any ongoing flight animation before starting the new one
+      map.globe.planet.stopFlying();
+      animateZoom(1); // Zoom In
+    };
+    const globeZoomOutHandler = (e) => {
+      e.stopImmediatePropagation();
+      // Stop any ongoing flight animation before starting the new one
+      map.globe.planet.stopFlying();
+      animateZoom(-1); // Zoom Out
+    };
+
+    zoomInButton.addEventListener("click", globeZoomInHandler);
+    zoomOutButton.addEventListener("click", globeZoomOutHandler);
 
     // Store handlers for later removal
-    map.globe.zoomInHandler = zoomIn;
-    map.globe.zoomOutHandler = zoomOut;
+    map.globe.zoomInHandler = globeZoomInHandler;
+    map.globe.zoomOutHandler = globeZoomOutHandler;
   }
 
   if (map.controls?.Rotate) {
@@ -335,16 +369,27 @@ export const disableGlobe = (map) => {
 
         // Move OL controls back to the OL container
         const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
-        olControls.forEach((control) => {
-          map.shadowRoot.querySelector(".ol-viewport").appendChild(control);
-        });
+        if (olControls) {
+          olControls.forEach((control) => {
+            map.shadowRoot.querySelector(".ol-viewport").appendChild(control);
+          });
+        }
 
         // Restore OL control functionality
-        if (map.controls?.Zoom && map.globe.zoomInHandler) {
-          const zoomInButton = map.shadowRoot.querySelector(".ol-zoom-in");
-          const zoomOutButton = map.shadowRoot.querySelector(".ol-zoom-out");
-          zoomInButton.removeEventListener("click", map.globe.zoomInHandler);
-          zoomOutButton.removeEventListener("click", map.globe.zoomOutHandler);
+        if (map.controls?.Zoom) {
+          if (map.globe.zoomInHandler) {
+            const zoomInButton = map.shadowRoot.querySelector(".ol-zoom-in");
+            const zoomOutButton = map.shadowRoot.querySelector(".ol-zoom-out");
+            zoomInButton.removeEventListener("click", map.globe.zoomInHandler);
+            zoomOutButton.removeEventListener(
+              "click",
+              map.globe.zoomOutHandler,
+            );
+          }
+          const olZoom = map.shadowRoot?.querySelector(".ol-zoom");
+          if (olZoom) {
+            olZoom.style.display = "block";
+          }
         }
         if (map.controls?.Rotate && map.globe.rotateHandler) {
           const rotateButton = map.shadowRoot.querySelector(".ol-rotate");
