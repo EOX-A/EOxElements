@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.5...drawtools-v1.2.0) (2026-01-27)
+
+
+### Features
+
+* Area and length measurements ([#2114](https://github.com/EOX-A/EOxElements/issues/2114)) ([c271009](https://github.com/EOX-A/EOxElements/commit/c27100901b18f3108799c450867de3a65fbc0406))
+
 ## [1.1.5](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.4...drawtools-v1.1.5) (2025-11-14)
 
 
