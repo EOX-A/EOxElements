@@ -6,9 +6,11 @@
 const ControlsStory = {
   args: {
     controls: {
+      GlobeSwitcher: {},
       Zoom: {},
       Attribution: {},
       FullScreen: {},
+      Rotate: {},
       OverviewMap: {
         layers: [
           {
