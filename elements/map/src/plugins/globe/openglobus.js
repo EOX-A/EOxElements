@@ -16,6 +16,7 @@ import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
 import { get as getProjection, equivalent } from "ol/proj";
+import FullScreen from "ol/control/FullScreen";
 import { getLayerById } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
@@ -279,13 +280,13 @@ export const enableGlobe = (map) => {
     const globeZoomInHandler = (e) => {
       e.stopImmediatePropagation();
       // Stop any ongoing flight animation before starting the new one
-      map.globe.planet.stopFlying();
+      map.globe.renderer.controls.mouseNavigation.stop();
       animateZoom(1); // Zoom In
     };
     const globeZoomOutHandler = (e) => {
       e.stopImmediatePropagation();
       // Stop any ongoing flight animation before starting the new one
-      map.globe.planet.stopFlying();
+      map.globe.renderer.controls.mouseNavigation.stop();
       animateZoom(-1); // Zoom Out
     };
 
@@ -316,6 +317,15 @@ export const enableGlobe = (map) => {
 
     // Store handler for later removal
     map.globe.rotateHandler = rotate;
+  }
+  if (map.controls?.FullScreen) {
+    const existingFullScreen = map.map
+      .getControls()
+      .getArray()
+      .find((c) => c instanceof FullScreen);
+    if (existingFullScreen) {
+      existingFullScreen.source_ = map.shadowRoot.querySelector("#globe");
+    }
   }
 };
 
@@ -395,6 +405,15 @@ export const disableGlobe = (map) => {
           const rotateButton = map.shadowRoot.querySelector(".ol-rotate");
           rotateButton.removeEventListener("click", map.globe.rotateHandler);
           rotateButton.classList.add("ol-hidden");
+        }
+        if (map.controls?.FullScreen) {
+          const existingFullScreen = map.map
+            .getControls()
+            .getArray()
+            .find((c) => c instanceof FullScreen);
+          if (existingFullScreen) {
+            existingFullScreen.source_ = map.shadowRoot.querySelector("#map");
+          }
         }
         map.globe = null;
 
