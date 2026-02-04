@@ -22,6 +22,29 @@ import { getLayerById } from "../../helpers/layer.js";
 
 let globus;
 
+const getOGStyle = (olStyle) => {
+  // Simple conversion for demonstration purposes.
+  // A full implementation would handle more style properties.
+  const ogStyle = {};
+  if (olStyle) {
+    // Map some common style properties
+    const commonStyleProps = {
+      fillColor: "fill-color",
+      lineColor: "stroke-color",
+      strokeColor: "stroke-color",
+      lineWidth: "stroke-width",
+      strokeWidth: "stroke-width",
+    };
+    Object.keys(commonStyleProps).forEach((key) => {
+      const value = olStyle[commonStyleProps[key]];
+      if (value) {
+        ogStyle[key] = value;
+      }
+    });
+  }
+  return ogStyle;
+};
+
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
     target,
@@ -134,7 +157,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
           (projection && equivalent(projection, getProjection("EPSG:4326"))) ||
           !crs
         ) {
-          // remmove existing layer with same id if any
+          // remove existing layer with same id if any
           const existingLayer = globus.planet.getLayerByName(id);
           if (existingLayer) {
             globus.planet.removeLayer(existingLayer);
@@ -146,6 +169,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
           });
 
           vectorLayer.addTo(globus.planet);
+          const vectorStyle = getOGStyle(olLayer.getStyle());
 
           var f = data.features;
           for (let i = 0; i < f.length; i++) {
@@ -155,6 +179,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
                 geometry: {
                   type: fi.geometry.type,
                   coordinates: fi.geometry.coordinates,
+                  style: vectorStyle,
                 },
               }),
             );
