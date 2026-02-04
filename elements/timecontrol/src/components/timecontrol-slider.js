@@ -271,8 +271,14 @@ export class EOxTimeControlSlider extends LitElement {
 
   handleChange(evt) {
     const EOxTimeControl = this.getEOxTimeControl();
-    const start = dayjs(evt.detail.value1).format();
-    const end = dayjs(evt.detail.value1).endOf("day").format();
+    const start = dayjs(evt.detail.value1).utc().format();
+    const end = dayjs(evt.detail.value1).endOf("day").utc().format();
+
+    if (
+      start === EOxTimeControl.selectedDateRange[0] &&
+      end === EOxTimeControl.selectedDateRange[1]
+    )
+      return;
     EOxTimeControl.dateChange([start, end], EOxTimeControl);
   }
 
