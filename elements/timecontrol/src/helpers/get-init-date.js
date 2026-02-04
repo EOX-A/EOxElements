@@ -26,7 +26,7 @@ export default function getInitDate(initDate) {
     [start, end] = initDate;
   }
 
-  start = dayjs(start).startOf("day").utc().format();
+  start = dayjs(start).utc().format();
   end = dayjs(end).endOf("day").utc().format();
 
   return [start, end];
