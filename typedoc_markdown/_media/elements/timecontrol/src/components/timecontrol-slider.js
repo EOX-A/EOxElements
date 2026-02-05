@@ -210,6 +210,7 @@ export class EOxTimeControlSlider extends LitElement {
    */
   setDateRange(dateRange, data) {
     this.#selectedDateRange = dateRange;
+    let exactMatch = null;
     const slider = this.getSliderInstance();
     if (data && data.length) {
       this.#items = Object.keys(groupBy(data, "utc")).sort((a, b) =>
@@ -221,6 +222,7 @@ export class EOxTimeControlSlider extends LitElement {
       const end = dayjs(this.#selectedDateRange[1]);
       const filteredItems = this.#items.filter((utc) => {
         const date = dayjs(utc);
+        if (date.isSame(start)) exactMatch = utc;
         return (
           (date.isAfter(start) || date.isSame(start, "day")) &&
           (date.isBefore(end) || date.isSame(end, "day"))
@@ -230,7 +232,7 @@ export class EOxTimeControlSlider extends LitElement {
     }
     if (slider) {
       slider.setAttribute("data", this.#items.join(","));
-      slider.setAttribute("value1", this.#filteredItems[0]);
+      slider.setAttribute("value1", exactMatch || this.#filteredItems[0]);
     }
 
     // Generate ticks after items are set
@@ -269,8 +271,14 @@ export class EOxTimeControlSlider extends LitElement {
 
   handleChange(evt) {
     const EOxTimeControl = this.getEOxTimeControl();
-    const start = dayjs(evt.detail.value1).format();
-    const end = dayjs(evt.detail.value1).endOf("day").format();
+    const start = dayjs(evt.detail.value1).utc().format();
+    const end = dayjs(evt.detail.value1).endOf("day").utc().format();
+
+    if (
+      start === EOxTimeControl.selectedDateRange[0] &&
+      end === EOxTimeControl.selectedDateRange[1]
+    )
+      return;
     EOxTimeControl.dateChange([start, end], EOxTimeControl);
   }
 
