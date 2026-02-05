@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.1.0...timecontrol-v2.1.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* Exact time based selection for slider and navigation based `timecontrol` element ([#2122](https://github.com/EOX-A/EOxElements/issues/2122)) ([4e92c1a](https://github.com/EOX-A/EOxElements/commit/4e92c1a6fb2ea3f28a99f9359e82a8dcde291346))
+
 ## [2.1.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.2...timecontrol-v2.1.0) (2026-01-23)
 
 
