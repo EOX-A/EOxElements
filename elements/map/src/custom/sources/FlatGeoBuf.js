@@ -20,7 +20,8 @@ class FlatGeoBuf extends Vector {
     });
     this.dataProjection =
       options.projection || READ_FEATURES_OPTIONS.dataProjection;
-    this.resourceURLs = typeof options.url === "string" ? [options.url]: options.url;
+    this.resourceURLs =
+      typeof options.url === "string" ? [options.url] : options.url;
     super.setLoader(this.loader);
   }
 

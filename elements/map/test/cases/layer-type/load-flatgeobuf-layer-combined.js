@@ -1,7 +1,7 @@
 import { html } from "lit";
 
 /**
- * Tests to load Flatgeobuf layer
+ * Flatgeobuf combining two urls into one layer
  */
 const loadFlatGeoBufLayer = () => {
   const featureLoadPromise = new Promise((resolve) => {
@@ -9,12 +9,15 @@ const loadFlatGeoBufLayer = () => {
       {
         type: "Vector",
         properties: {
-          id: "FlatGeoBufLayer",
+          id: "FlatGeoBufLayerCombined",
           minZoom: 12,
         },
         source: {
           type: "FlatGeoBuf",
-          url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/admin_borders/STATISTIK_AUSTRIA_GEM_20220101.fgb",
+          url: [
+            "https://workspace-ui-public.cif.gtif.eox.at/api/public/share/public-4wazei3y-02/dmi-ice-charts/flatgeobuf/202602041015_CentralWest_RIC.fgb", // 41 features
+            "https://workspace-ui-public.cif.gtif.eox.at/api/public/share/public-4wazei3y-02/dmi-ice-charts/flatgeobuf/202602040840_SouthEast_RIC.fgb", // 38 features
+          ],
         },
       },
       {
@@ -27,10 +30,7 @@ const loadFlatGeoBufLayer = () => {
 
     cy.mount(
       html`<eox-map
-        .zoomExtent=${[
-          1813753.6854159434, 6135076.792463355, 1826020.0058429672,
-          6141440.849782808,
-        ]}
+        .zoomExtent=${[-15000000, 15000000, 15000000, 34000000]}
         .layers=${layersJson}
       ></eox-map>`,
     ).as("eox-map");
@@ -46,8 +46,8 @@ const loadFlatGeoBufLayer = () => {
   cy.wrap(featureLoadPromise).then((features) => {
     expect(
       features.length,
-      "loads features from FlatGeoBuf-source",
-    ).to.be.greaterThan(20);
+      "loads features from both urls of FlatGeoBuf-source",
+    ).to.equal(79);
   });
 };
 
