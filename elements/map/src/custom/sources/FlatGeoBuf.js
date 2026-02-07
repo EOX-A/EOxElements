@@ -65,7 +65,7 @@ class FlatGeoBuf extends Vector {
           featureProjection: projection,
           dataProjection: this.dataProjection,
         });
-        for (const url in this.resourceURLs) {
+        for (const url of this.resourceURLs) {
           const iter = deserialize(url, rect);
           for await (const feature of iter) {
             const olFeature = geoJsonFormat.readFeature(feature);
