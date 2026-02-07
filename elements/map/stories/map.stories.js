@@ -29,6 +29,7 @@ import {
   AnimationsStory,
   PreventScrollStory,
   FlatGeoBufStory,
+  FlatGeoBufStoryMultipleUrls,
   CustomTooltipStory,
   GetFeatureInfoTooltipStory,
   CoordinatesCustomTooltipsStory,
@@ -163,6 +164,11 @@ export const WMTSCapabilitiesLayer = WMTSCapabilitiesLayerStory;
  * Renders `FlatGeoBuf` layer
  */
 export const FlatGeoBuf = FlatGeoBufStory;
+
+/**
+ * Renders `FlatGeoBuf` layer
+ */
+export const FlatGeoBufTwoUrls = FlatGeoBufStoryMultipleUrls;
 
 /**
  * Renders `WMTSCapabilities` layer and fetches the provided capabilities url
