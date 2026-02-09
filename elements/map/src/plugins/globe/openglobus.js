@@ -9,6 +9,7 @@ import {
   Vector,
   Entity,
 } from "@openglobus/og";
+import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
 import { distributeTileToIdealMap } from "./methods.js";
 import { transform } from "../../helpers/index.js";
 import OSM from "ol/source/OSM.js";
@@ -16,11 +17,56 @@ import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
 import { get as getProjection, equivalent } from "ol/proj";
+import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
 
 let globus;
+
+/**
+ * Translates an OpenLayers style object, which may contain expressions,
+ * into a simple style object for OpenGlobus based on feature properties.
+ *
+ * @param {import("ol/style/flat.js").FlatStyle & Record<string, any>} olStyle The OpenLayers style object.
+ * @param {Record<string, any>} properties The properties of the feature.
+ * @returns {Record<string, any>} The resolved OpenGlobus style.
+ */
+export function translateOLStyleExpressions(olStyle, properties) {
+  const ogStyle = {};
+  const parsingContext = newParsingContext();
+  const evaluationContext = newEvaluationContext();
+  evaluationContext.properties = properties || {};
+
+  const styleKeys = {
+    fillColor: "fill-color",
+    lineColor: "stroke-color",
+    strokeColor: "stroke-color",
+    lineWidth: "stroke-width",
+    strokeWidth: "stroke-width",
+  };
+
+  for (const [ogKey, olKey] of Object.entries(styleKeys)) {
+    const styleValue = olStyle[olKey];
+    if (styleValue !== undefined) {
+      if (Array.isArray(styleValue)) {
+        // It's an expression
+        try {
+          // The expected type for color is string, number for width.
+          // We can use a broad expected type and let the expression parser figure it out.
+          const expression = buildExpression(styleValue, 7, parsingContext); // 7 is AnyType
+          ogStyle[ogKey] = expression(evaluationContext);
+        } catch (e) {
+          console.error(`Error evaluating style expression for ${olKey}:`, e);
+        }
+      } else {
+        // It's a literal value.
+        ogStyle[ogKey] = styleValue;
+      }
+    }
+  }
+  return ogStyle;
+}
 
 export const createGlobe = ({ EOxMap, target, mapPool }) => {
   globus = new OgGlobe({
@@ -134,7 +180,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
           (projection && equivalent(projection, getProjection("EPSG:4326"))) ||
           !crs
         ) {
-          // remmove existing layer with same id if any
+          // remove existing layer with same id if any
           const existingLayer = globus.planet.getLayerByName(id);
           if (existingLayer) {
             globus.planet.removeLayer(existingLayer);
@@ -146,15 +192,21 @@ export const createGlobusLayer = (olLayer, mapPool) => {
           });
 
           vectorLayer.addTo(globus.planet);
+          const olStyle = olLayer.getStyle();
 
           var f = data.features;
           for (let i = 0; i < f.length; i++) {
             var fi = f[i];
+            const vectorStyle = translateOLStyleExpressions(
+              olStyle,
+              fi.properties,
+            );
             vectorLayer.add(
               new Entity({
                 geometry: {
                   type: fi.geometry.type,
                   coordinates: fi.geometry.coordinates,
+                  style: vectorStyle,
                 },
               }),
             );
