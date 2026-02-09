@@ -19,3 +19,4 @@ export { default as loadBinaryCheckboxTest } from "./load-binary-checkbox";
 export { default as loadSpatialValuesTest } from "./load-spatial-values";
 export { default as validationBehaviorTest } from "./validation-behavior";
 export { default as defaultsTest } from "./defaults";
+export { default as loadGridTest, loadGridStrictTest } from "./load-grid";

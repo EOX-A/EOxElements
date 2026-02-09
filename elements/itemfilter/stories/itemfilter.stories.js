@@ -5,6 +5,7 @@ import {
   CardDisplayStory,
   CSSVariablesStory,
   ExternalStory,
+  ExternalFetchFnStory,
   InlineModeStory,
   NestedPropertyStory,
   PreSetFilterStory,
@@ -43,6 +44,11 @@ export const NestedProperty = NestedPropertyStory();
  * Example of using an external API endpoint for filtering, with a custom `externalFilter` function. Allows integration with remote data sources and custom search logic.
  */
 export const External = ExternalStory();
+
+/**
+ * Advanced usage of `externalFilter` where the function returns an object containing both a `url` and a `fetchFn`. This allows for complex custom fetching logic, such as response transformation or additional side effects.
+ */
+export const ExternalFetchFn = ExternalFetchFnStory();
 
 /**
  * Use `autoSpreadSingle` to automatically spread single-item aggregations to the root level, simplifying the result view when only one item matches a filter.

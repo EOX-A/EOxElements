@@ -1,6 +1,6 @@
 {
   "name": "@eox/itemfilter",
-  "version": "1.13.3",
+  "version": "1.14.0",
   "type": "module",
   "repository": {
     "type": "git",
@@ -54,6 +54,6 @@
   },
   "peerDependencies": {
     "@eox/layout": "*",
-    "@eox/map": ">=2.0.0"
+    "@eox/map": ">=2.0.0 || >=2.1.0-dev.1"
   }
 }

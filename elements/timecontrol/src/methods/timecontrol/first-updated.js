@@ -154,7 +154,7 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             const dateRange =
               initDateRange ||
               /** @type {DateRange} */ ([
-                utc.startOf("day").utc().format(),
+                utc.utc().format(),
                 utc.endOf("day").utc().format(),
               ]);
 

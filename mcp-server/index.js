@@ -340,14 +340,14 @@ async function main() {
   const app = express();
   app.use(express.json()); // IMPORTANT: To parse JSON request bodies
 
-  app.get("/", (req, res) => {
+  app.get("/health", (req, res) => {
     res.json({ message: "EOxElements MCP Server is running" });
   });
 
   const transports = {};
 
   // MCP routes
-  app.post("/mcp", async (req, res) => {
+  app.post("/", async (req, res) => {
     const sessionId = req.headers["mcp-session-id"];
     let transport = transports[sessionId];
 
@@ -376,7 +376,7 @@ async function main() {
     await transport.handleRequest(req, res, req.body);
   });
 
-  app.get("/mcp", async (req, res) => {
+  app.get("/", async (req, res) => {
     const sessionId = req.headers["mcp-session-id"];
     const transport = transports[sessionId];
     if (!transport) {
@@ -392,7 +392,7 @@ async function main() {
     await transport.handleRequest(req, res);
   });
 
-  app.delete("/mcp", async (req, res) => {
+  app.delete("/", async (req, res) => {
     const sessionId = req.headers["mcp-session-id"];
     const transport = transports[sessionId];
     if (!transport) {

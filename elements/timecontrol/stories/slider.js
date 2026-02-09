@@ -32,6 +32,7 @@ const SliderStory = {
       "eox-timecontrol-slider": {
         storyImport: false,
         storySlot: true,
+        animateOnClickInterval: "0.3s",
       },
     },
   },
@@ -64,7 +65,12 @@ const SliderStory = {
             .popup}
         ></eox-timecontrol-picker>
       </div>
-      <eox-timecontrol-slider style="width: 600px;"></eox-timecontrol-slider>
+      <eox-timecontrol-slider
+        style="width: 600px;"
+        .animateOnClickInterval=${args.storyAdditionalComponents[
+          "eox-timecontrol-slider"
+        ].animateOnClickInterval}
+      ></eox-timecontrol-slider>
     </eox-timecontrol>
   `,
 };
