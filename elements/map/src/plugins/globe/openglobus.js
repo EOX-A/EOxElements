@@ -280,13 +280,13 @@ export const enableGlobe = (map) => {
     const globeZoomInHandler = (e) => {
       e.stopImmediatePropagation();
       // Stop any ongoing flight animation before starting the new one
-      map.globe.renderer.controls.mouseNavigation.stop();
+      map.globe.renderer.controls.navigation.stop();
       animateZoom(1); // Zoom In
     };
     const globeZoomOutHandler = (e) => {
       e.stopImmediatePropagation();
       // Stop any ongoing flight animation before starting the new one
-      map.globe.renderer.controls.mouseNavigation.stop();
+      map.globe.renderer.controls.navigation.stop();
       animateZoom(-1); // Zoom Out
     };
 
