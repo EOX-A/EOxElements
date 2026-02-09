@@ -17,14 +17,10 @@ const config = {
       "./About.mdx",
       "./Usage.mdx",
       "./Coding Agents.mdx",
-      "../**/*.stories.@(js|jsx|mjs|ts|tsx)",
-      // Exclude typedoc generated duplicates
-      "!../docs/typedoc_markdown/**",
-      "!../.storybook/public/typedoc_markdown/**",
-      "!../.storybook/public/typedoc_html/**",
+      // Only include stories from elements folders
+      "../elements/**/stories/*.stories.@(js|jsx|mjs|ts|tsx)",
+      "../elements/**/stories/*.stories.dev.@(js|jsx|mjs|ts|tsx)",
     ];
-    if (process.env.NODE_ENV === "development")
-      list.push("../**/*.stories.dev.@(js|jsx|mjs|ts|tsx)");
 
     return list;
   },
