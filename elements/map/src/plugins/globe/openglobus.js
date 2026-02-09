@@ -17,11 +17,8 @@ import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
 import { get as getProjection, equivalent } from "ol/proj";
-<<<<<<< map/feature/globe-controls
 import FullScreen from "ol/control/FullScreen";
-=======
 import { newParsingContext } from "ol/expr/expression.js";
->>>>>>> main
 import { getLayerById } from "../../helpers/layer.js";
 
 /** @typedef {import("./types").ExtendedOLLayer} ExtendedOLLayer */
