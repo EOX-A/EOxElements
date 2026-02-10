@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.5.0",
+    "@eox/ui": "^0.6.0",
     "@sindresorhus/slugify": "^3.0.0",
     "glightbox": "^3.3.0",
     "isomorphic-dompurify": "^2.4.0",

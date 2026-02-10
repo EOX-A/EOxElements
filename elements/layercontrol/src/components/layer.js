@@ -312,7 +312,7 @@ export class EOxLayerControlLayer extends LitElement {
                       this.tools.length > 1 ? "dots" : this.tools[0]
                     ]}
                   </i>
-                  <!--<div class="tooltip top" style="pointer-events: none">Tools</div>-->
+                  <!--<span class="tooltip top" style="pointer-events: none">Tools</span>-->
                 </button>
               `,
             )}
@@ -350,9 +350,9 @@ export class EOxLayerControlLayer extends LitElement {
                   </svg>
                 </i>
               </span>
-              <!--<div class="tooltip top" style="pointer-events: none">${visibility
+              <!--<span class="tooltip top" style="pointer-events: none">${visibility
                 ? "Hide"
-                : "Show"}</div>-->
+                : "Show"}</span>-->
             </label>
           </nav>
         `,

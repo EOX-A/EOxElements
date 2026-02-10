@@ -219,9 +219,9 @@ export class EOxDrawToolsController extends LitElement {
                   <i class="small"
                     >${this.select ? pointerIcon : shapeIcons[this.type]}</i
                   >
-                  <div class="tooltip bottom">
+                  <span class="tooltip bottom">
                     ${this.select ? "Select" : "Draw"}
-                  </div>
+                  </span>
                 `}
           </button>
 
@@ -237,7 +237,7 @@ export class EOxDrawToolsController extends LitElement {
               ? "discard"
               : html`
                   <i class="small">${discardIcon}</i>
-                  <div class="tooltip bottom">Discard</div>
+                  <span class="tooltip bottom">Discard</span>
                 `}
           </button>
         </div>
@@ -259,7 +259,7 @@ export class EOxDrawToolsController extends LitElement {
                 ? "import"
                 : html`
                     <i class="small">${editIcon}</i>
-                    <div class="tooltip bottom">Edit features</div>
+                    <span class="tooltip bottom">Edit features</span>
                   `}
             </button>
           `,
@@ -291,7 +291,7 @@ export class EOxDrawToolsController extends LitElement {
                 ? "import"
                 : html`
                     <i class="small">${importIcon}</i>
-                    <div class="tooltip bottom">Import features</div>
+                    <span class="tooltip bottom">Import features</span>
                   `}
             </button>
           `,
@@ -302,7 +302,7 @@ export class EOxDrawToolsController extends LitElement {
       ${when(
         this.showEditor,
         () => html`
-          <div id="editor" class="field textarea border extra hidden">
+          <div id="editor" class="field border extra hidden">
             <!-- Geo JSON Editor -->
             <textarea
               style="font-family: monospace; font-size: small; line-height: 1.4; padding: 0.4rem;"
@@ -322,7 +322,7 @@ export class EOxDrawToolsController extends LitElement {
                 ? "copy"
                 : html`
                     <i class="tiny">${copyIcon}</i>
-                    <div class="tooltip top">Copy</div>
+                    <span class="tooltip top">Copy</span>
                   `}
             </button>
           </div>
