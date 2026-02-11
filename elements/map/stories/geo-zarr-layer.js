@@ -5,7 +5,7 @@
  */
 const GeoZarrLayerStory = {
   args: {
-    center: [3737055, 1886786],
+    center: [1407372, 5701616],
     layers: [
       {
         type: "Tile",
@@ -44,7 +44,7 @@ const GeoZarrLayerStory = {
         },
       },
     ],
-    zoom: 8,
+    zoom: 9,
     storyCodeBefore: `import "@eox/map/src/plugins/advancedLayersAndSources"`,
   },
 };
