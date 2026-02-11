@@ -9,13 +9,13 @@
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.5.0",
-    "@openglobus/og": "^0.28.0",
-    "flatgeobuf": "^4.0.1",
+    "@openglobus/og": "^0.28.6",
+    "flatgeobuf": "^4.4.0",
     "lit": "^3.2.0",
-    "ol": "^10.7.0",
-    "ol-mapbox-style": "^13.0.1",
-    "ol-stac": "^1.0.0-beta.10",
-    "proj4": "^2.9.2",
+    "ol": "^10.8.0",
+    "ol-mapbox-style": "^13.2.1",
+    "ol-stac": "^1.1",
+    "proj4": "^2.20.2",
     "serialize-javascript": "^7.0.1"
   },
   "devDependencies": {
