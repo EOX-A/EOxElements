@@ -17,6 +17,7 @@ import XYZ_ol from "ol/source/XYZ.js";
 import WMS_ol from "ol/source/TileWMS.js";
 import Vector_ol from "ol/source/Vector.js";
 import { get as getProjection, equivalent } from "ol/proj";
+import FullScreen from "ol/control/FullScreen";
 import { newParsingContext } from "ol/expr/expression.js";
 import { getLayerById } from "../../helpers/layer.js";
 
@@ -279,6 +280,105 @@ export const enableGlobe = (map) => {
     (map.shadowRoot.querySelector("#map")).style.display = "none";
     map.globeEnabled = true;
   }
+
+  // Move OL controls to the globe container
+  const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
+  if (olControls) {
+    olControls.forEach((control) => {
+      map.shadowRoot.querySelector("#globe").appendChild(control);
+    });
+  }
+
+  // Override OL controls for globe functionality
+  if (map.controls?.Zoom) {
+    const zoomButtons = map.shadowRoot?.querySelector(".ol-zoom");
+    if (zoomButtons) {
+      zoomButtons.style.display = "block"; // Ensure OL zoom buttons are visible
+    }
+    const zoomInButton = map.shadowRoot?.querySelector(".ol-zoom-in");
+    const zoomOutButton = map.shadowRoot?.querySelector(".ol-zoom-out");
+
+    const animateZoom = (direction) => {
+      const cam = map.globe.planet.camera;
+      // Immediately stop any ongoing inertia from dragging or other movements.
+      // This is the key to making the zoom responsive after a drag.
+      cam.stopFlying();
+      const duration = 250; // ms
+      let startTime = null;
+
+      const zoomFrame = (currentTime) => {
+        if (!startTime) {
+          startTime = currentTime;
+        }
+        const progress = (currentTime - startTime) / duration;
+
+        if (progress < 1) {
+          const height = cam.getHeight();
+          if (height > 0) {
+            // The zoom factor is divided by the number of frames to smooth it out
+            const zoomFactor =
+              (height > 2000000 ? 0.5 : 0.3) / (duration / 16.67);
+            const move = height * zoomFactor * direction;
+            cam.slide(0, 0, -move); // slide takes (right, up, forward)
+            cam.update();
+          }
+          requestAnimationFrame(zoomFrame);
+        }
+      };
+
+      requestAnimationFrame(zoomFrame);
+    };
+
+    const globeZoomInHandler = (e) => {
+      e.stopImmediatePropagation();
+      // Stop any ongoing flight animation before starting the new one
+      map.globe.renderer.controls.navigation.stop();
+      animateZoom(1); // Zoom In
+    };
+    const globeZoomOutHandler = (e) => {
+      e.stopImmediatePropagation();
+      // Stop any ongoing flight animation before starting the new one
+      map.globe.renderer.controls.navigation.stop();
+      animateZoom(-1); // Zoom Out
+    };
+
+    zoomInButton.addEventListener("click", globeZoomInHandler);
+    zoomOutButton.addEventListener("click", globeZoomOutHandler);
+
+    // Store handlers for later removal
+    map.globe.zoomInHandler = globeZoomInHandler;
+    map.globe.zoomOutHandler = globeZoomOutHandler;
+  }
+
+  if (map.controls?.Rotate) {
+    const rotate = () => {
+      const c = map.globe.planet.getCartesianFromPixelTerrain(
+        map.globe.renderer.handler.getCenter(),
+      );
+      if (c) {
+        map.globe.planet.flyCartesian(
+          c.normal().scaleTo(map.globe.planet.camera.eye.length()),
+          { completeCallback: () => map.globe.planet.camera.look(c) },
+        );
+      }
+    };
+
+    const rotateButton = map.shadowRoot.querySelector(".ol-rotate");
+    rotateButton.addEventListener("click", rotate);
+    rotateButton.classList.remove("ol-hidden");
+
+    // Store handler for later removal
+    map.globe.rotateHandler = rotate;
+  }
+  if (map.controls?.FullScreen) {
+    const existingFullScreen = map.map
+      .getControls()
+      .getArray()
+      .find((c) => c instanceof FullScreen);
+    if (existingFullScreen) {
+      existingFullScreen.source_ = map.shadowRoot.querySelector("#globe");
+    }
+  }
 };
 
 export const disableGlobe = (map) => {
@@ -329,6 +429,44 @@ export const disableGlobe = (map) => {
         map.map.getView().setCenter(newCenter);
         map.map.getView().setZoom(zoomFromGlobe);
 
+        // Move OL controls back to the OL container
+        const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
+        if (olControls) {
+          olControls.forEach((control) => {
+            map.shadowRoot.querySelector(".ol-viewport").appendChild(control);
+          });
+        }
+
+        // Restore OL control functionality
+        if (map.controls?.Zoom) {
+          if (map.globe.zoomInHandler) {
+            const zoomInButton = map.shadowRoot.querySelector(".ol-zoom-in");
+            const zoomOutButton = map.shadowRoot.querySelector(".ol-zoom-out");
+            zoomInButton.removeEventListener("click", map.globe.zoomInHandler);
+            zoomOutButton.removeEventListener(
+              "click",
+              map.globe.zoomOutHandler,
+            );
+          }
+          const olZoom = map.shadowRoot?.querySelector(".ol-zoom");
+          if (olZoom) {
+            olZoom.style.display = "block";
+          }
+        }
+        if (map.controls?.Rotate && map.globe.rotateHandler) {
+          const rotateButton = map.shadowRoot.querySelector(".ol-rotate");
+          rotateButton.removeEventListener("click", map.globe.rotateHandler);
+          rotateButton.classList.add("ol-hidden");
+        }
+        if (map.controls?.FullScreen) {
+          const existingFullScreen = map.map
+            .getControls()
+            .getArray()
+            .find((c) => c instanceof FullScreen);
+          if (existingFullScreen) {
+            existingFullScreen.source_ = map.shadowRoot.querySelector("#map");
+          }
+        }
         map.globe = null;
 
         // Hide the globe and show the map immediately after initiating the fly animation

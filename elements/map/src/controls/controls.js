@@ -10,6 +10,7 @@ import MousePosition from "ol/control/MousePosition";
 import { generateLayers } from "../helpers/generate";
 import Geolocation from "./geo-location";
 import LoadingIndicator from "./loading-indicator";
+import { GlobeSwitcher } from "./GlobeSwitcher";
 import serialize from "serialize-javascript";
 
 /**
@@ -31,6 +32,7 @@ const availableControls = {
   },
   Geolocation,
   LoadingIndicator,
+  GlobeSwitcher,
 };
 
 /**
@@ -39,7 +41,6 @@ const availableControls = {
  *
  * @param {import("../main").EOxMap} EOxMap - The map instance.
  * @param {ControlDictionary} existingControls - Dictionary of existing controls.
- * @param {ControlType} type - The type of control to add or update.
  * @param {object} options - Options for the control.
  */
 export function addOrUpdateControl(EOxMap, existingControls, type, options) {
@@ -75,6 +76,10 @@ export function addControl(EOxMap, type, options) {
     controlOptions.layers = generateLayers(EOxMap, options.layers); // Parse layers (e.g., for OverviewMap)
   }
 
+  // Special handling for GlobeSwitcher to pass the eox-map instance
+  if (type === /** @type {ControlType} */ ("GlobeSwitcher")) {
+    controlOptions.eoxMap = EOxMap;
+  }
   // Create a new control instance using the type and options
   const control = new availableControls[type](controlOptions);
 
