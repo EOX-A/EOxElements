@@ -157,6 +157,7 @@ export class EOxMap extends LitElement {
       selectInteractions: { attribute: false, state: true, type: Object },
       sync: { attribute: "sync", type: String },
       zoomExtent: { attribute: false, type: Array },
+      terrain: { type: Boolean },
     };
   }
 
@@ -237,6 +238,12 @@ export class EOxMap extends LitElement {
    * @type {ProjectionLike}
    */
   #_olProjection = "EPSG:3857";
+
+  /**
+   * Internal property to  store the terrain option for the globe projection.
+   * @type {boolean}
+   */
+  #terrain = false;
 
   constructor() {
     super();
@@ -560,6 +567,23 @@ export class EOxMap extends LitElement {
    */
   get sync() {
     return this.#sync;
+  }
+
+  /**
+   * Sets the terrain for the globe.
+   *
+   * @param {boolean} terrain - The terrain.
+   */
+  set terrain(terrain) {
+    this.#terrain = terrain;
+  }
+
+  /**
+   * Gets the current terrain state of the map.
+   * @returns {boolean}
+   */
+  get terrain() {
+    return this.#terrain;
   }
 
   /**

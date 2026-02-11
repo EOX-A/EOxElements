@@ -7,7 +7,20 @@ const GlobeStory = {
   args: {
     center: [15, 48],
     projection: "globe",
+    terrain: true,
     layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "cloudless",
+          title: "Sentinel-2 Cloudless 2024",
+        },
+        source: {
+          type: "XYZ",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+          crossOrigin: "anonymous",
+        },
+      },
       {
         type: "WebGLTile",
         style: {
@@ -129,18 +142,6 @@ const GlobeStory = {
               url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/DHI/WSF_EucDist_Austria_3857_COG_fix.tif",
             },
           ],
-        },
-      },
-      {
-        type: "Tile",
-        properties: {
-          id: "cloudless",
-          title: "Sentinel-2 Cloudless 2024",
-        },
-        source: {
-          type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
-          crossOrigin: "anonymous",
         },
       },
     ],

@@ -8,6 +8,7 @@ import {
   OpenStreetMap,
   Vector,
   Entity,
+  GlobusRgbTerrain,
 } from "@openglobus/og";
 import { buildExpression, newEvaluationContext } from "ol/expr/cpu.js";
 import { distributeTileToIdealMap } from "./methods.js";
@@ -78,6 +79,7 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
     sun: { active: false },
     atmosphereEnabled: false,
     transparentBackground: true,
+    terrain: EOxMap.terrain ? new GlobusRgbTerrain() : undefined, // Use EOxMap's terrain property
     resourcesSrc: "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res",
     fontsSrc:
       "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res/fonts",
