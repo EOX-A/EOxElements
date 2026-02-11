@@ -8,4 +8,4 @@
 
 > **LoadingIndicatorType** = `"small"` \| `"fullscreen"`
 
-Defined in: [elements/map/src/types.ts:134](https://github.com/EOX-A/EOxElements/blob/de7073884d9abd4e384e3ba8df3412f7b7cd82c9/elements/map/src/types.ts#L134)
+Defined in: [elements/map/src/types.ts:134](https://github.com/EOX-A/EOxElements/blob/89a69e51709eb50f4cbd77ab46d7e6b6ac19c4b5/elements/map/src/types.ts#L134)

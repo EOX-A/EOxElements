@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.0](https://github.com/EOX-A/EOxElements/compare/map-v2.0.3...map-v2.1.0) (2026-02-11)
+
+
+### Features
+
+* 3D globe controls ([#2101](https://github.com/EOX-A/EOxElements/issues/2101)) ([de70738](https://github.com/EOX-A/EOxElements/commit/de7073884d9abd4e384e3ba8df3412f7b7cd82c9))
+* 3D support (basic) for vector styles ([#2121](https://github.com/EOX-A/EOxElements/issues/2121)) ([c52a363](https://github.com/EOX-A/EOxElements/commit/c52a363c4b6cf6ff42554fdf88eb2889b497ddff))
+* GeoZarr source ([#2040](https://github.com/EOX-A/EOxElements/issues/2040)) ([2cf0da6](https://github.com/EOX-A/EOxElements/commit/2cf0da609905f55ba8d7e154d5bd23fc2b157429))
+
 ## [2.0.3](https://github.com/EOX-A/EOxElements/compare/map-v2.0.2...map-v2.0.3) (2026-01-21)
 
 
