@@ -11645,7 +11645,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-02-11T19:16:08.777Z",
+              default: "2026-02-11T19:18:39.377Z",
               options: {
                 hidden: true,
               },
@@ -14809,9 +14809,11 @@ Renders different `Controls` for the `eox-map` using control config
   // Assign properties
   Object.assign(eoxMap, {
     controls: {
+      GlobeSwitcher: {},
       Zoom: {},
       Attribution: {},
       FullScreen: {},
+      Rotate: {},
       OverviewMap: {
         layers: [
           {
@@ -17027,9 +17029,11 @@ Renders different `Controls` for the `eox-map` using control config
   // Assign properties
   Object.assign(eoxMap, {
     controls: {
+      GlobeSwitcher: {},
       Zoom: {},
       Attribution: {},
       FullScreen: {},
+      Rotate: {},
       OverviewMap: {
         layers: [
           {

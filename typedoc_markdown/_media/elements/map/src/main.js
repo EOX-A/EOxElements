@@ -238,6 +238,12 @@ export class EOxMap extends LitElement {
    */
   #_olProjection = "EPSG:3857";
 
+  /**
+   * Stores the last 2D projection to switch back from globe view.
+   * @type {ProjectionLike}
+   */
+  last2dProjection = "EPSG:3857";
+
   constructor() {
     super();
 

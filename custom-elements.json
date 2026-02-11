@@ -2815,6 +2815,15 @@
             },
             {
               "kind": "field",
+              "name": "last2dProjection",
+              "type": {
+                "text": "ProjectionLike"
+              },
+              "default": "\"EPSG:3857\"",
+              "description": "Stores the last 2D projection to switch back from globe view."
+            },
+            {
+              "kind": "field",
               "name": "center",
               "privacy": "public",
               "type": {
