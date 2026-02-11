@@ -9,6 +9,7 @@ import {
   setDifferentFormats,
   setLayerId,
   featureListTest,
+  measureTest,
 } from "./cases";
 
 import { TEST_SELECTORS } from "../src/enums";
@@ -48,4 +49,7 @@ describe("Drawtools", () => {
 
   // Test case to render a list of features
   it("renders a list of features", () => featureListTest());
+
+  // Test case to check area and line measurement
+  it("checks area and line measurement", () => measureTest());
 });

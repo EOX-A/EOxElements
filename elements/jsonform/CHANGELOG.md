@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.9.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.8.0...jsonform-v1.9.0) (2026-01-27)
+
+
+### Features
+
+* Support grid layout ([#2112](https://github.com/EOX-A/EOxElements/issues/2112)) ([ec20e8a](https://github.com/EOX-A/EOxElements/commit/ec20e8adc2eed67efb96b161fe69ade30dd129b3))
+
+## [1.8.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.7.0...jsonform-v1.8.0) (2026-01-07)
+
+
+### Features
+
+* Custom binary checkbox editor ([#2064](https://github.com/EOX-A/EOxElements/issues/2064)) ([b992392](https://github.com/EOX-A/EOxElements/commit/b99239201911056b32c50b0ef4a685c81aff76a9))
+
+## [1.7.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.6.0...jsonform-v1.7.0) (2025-12-23)
+
+
+### Features
+
+* Support custom editor `defaults` ([#2055](https://github.com/EOX-A/EOxElements/issues/2055)) ([1c9b1e4](https://github.com/EOX-A/EOxElements/commit/1c9b1e49c9408951d7802ef9bb3dfa1676f56c57))
+
+
+### Bug Fixes
+
+* Hide initial validation errors and improve textarea validation ([#2052](https://github.com/EOX-A/EOxElements/issues/2052)) ([5762e56](https://github.com/EOX-A/EOxElements/commit/5762e5650cea278d3c33e6bcefe80570277227b7))
+* **style:** Disabled select ([#2054](https://github.com/EOX-A/EOxElements/issues/2054)) ([daa128b](https://github.com/EOX-A/EOxElements/commit/daa128bbb6257f0ce574977bce11a30fb791cd8f))
+* **style:** Upload editor layout and styling ([#2056](https://github.com/EOX-A/EOxElements/issues/2056)) ([46aa016](https://github.com/EOX-A/EOxElements/commit/46aa016cdcdc0da9844762f3573a168516c69467))
+
 ## [1.6.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.5.0...jsonform-v1.6.0) (2025-12-16)
 
 

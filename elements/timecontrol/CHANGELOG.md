@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.1.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.1.0...timecontrol-v2.1.1) (2026-02-05)
+
+
+### Bug Fixes
+
+* Exact time based selection for slider and navigation based `timecontrol` element ([#2122](https://github.com/EOX-A/EOxElements/issues/2122)) ([4e92c1a](https://github.com/EOX-A/EOxElements/commit/4e92c1a6fb2ea3f28a99f9359e82a8dcde291346))
+
+## [2.1.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.2...timecontrol-v2.1.0) (2026-01-23)
+
+
+### Features
+
+* Configurable animate on timecontrol slider ([#2104](https://github.com/EOX-A/EOxElements/issues/2104)) ([85e6272](https://github.com/EOX-A/EOxElements/commit/85e62726c6e88bf087464334bba4f1bbee826b17))
+
+## [2.0.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.1...timecontrol-v2.0.2) (2026-01-13)
+
+
+### Bug Fixes
+
+* Custom component check, removals of unwanted comments and console.log ([#2072](https://github.com/EOX-A/EOxElements/issues/2072)) ([34dd43c](https://github.com/EOX-A/EOxElements/commit/34dd43ceb3821449916d05ba036a12aa18d7218a))
+
 ## [2.0.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.0.0...timecontrol-v2.0.1) (2025-12-23)
 
 

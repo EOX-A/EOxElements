@@ -1,4 +1,6 @@
-import { onDrawEndMethod, initSelection } from "./";
+import onDrawEndMethod from "./on-draw-end";
+import initSelection from "./init-selection";
+import initMeasuring, { updateMeasure } from "./init-measuring";
 
 import { getElement } from "@eox/elements-utils";
 
@@ -35,6 +37,14 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
       "stroke-width": 2,
       "circle-radius": 5,
       "circle-fill-color": `rgba(${primaryColor}, 1)`,
+      ...(EoxDrawTool.measure && {
+        "text-value": ["coalesce", ["get", "measure"], ""],
+        "text-fill-color": `rgba(${primaryColor}, 1)`,
+        "text-stroke-color": "white",
+        "text-stroke-width": 3,
+        "text-font": "bold 14px sans-serif",
+        "text-overflow": true,
+      }),
     },
     interactions: [
       {
@@ -52,6 +62,14 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
             "stroke-line-dash": [7, 3],
             "circle-radius": 5,
             "circle-fill-color": `rgba(${primaryColor}, 1)`,
+            ...(EoxDrawTool.measure && {
+              "text-value": ["coalesce", ["get", "measure"], ""],
+              "text-fill-color": `rgba(${primaryColor}, 1)`,
+              "text-stroke-color": "white",
+              "text-stroke-width": 3,
+              "text-font": "bold 14px sans-serif",
+              "text-overflow": true,
+            }),
           },
         },
       },
@@ -94,10 +112,23 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
 
   // Initialize selection interactions
   initSelection(EoxDrawTool, EoxMap, EoxDrawTool.layerId);
+
+  if (EoxDrawTool.measure) {
+    initMeasuring(EoxDrawTool);
+  }
+
   const onModifyEnd = () => EoxDrawTool.onModifyEnd();
   const onAddFeatures = () => onDrawEndMethod(EoxDrawTool);
 
   EoxDrawTool.modify?.on("modifyend", onModifyEnd);
+
+  if (EoxDrawTool.measure) {
+    EoxDrawTool.draw?.on("drawstart", (evt) => {
+      const feature = evt.feature;
+      updateMeasure(feature);
+      feature.getGeometry().on("change", () => updateMeasure(feature));
+    });
+  }
 
   EoxMap.addEventListener("addfeatures", onAddFeatures);
 

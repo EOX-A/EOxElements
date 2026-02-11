@@ -1,6 +1,7 @@
 export { default as PrimaryStory } from "./primary"; // Basic primary json form
 export { default as ButtonsEditorStory } from "./buttons-editor"; // Story for ButtonsEditor custom input
 export { default as MinMaxEditorStory } from "./minmax-editor"; // Story for MinMaxEditor custom input
+export { default as BinaryCheckboxEditorStory } from "./binary-checkbox-editor"; // Story for BinaryCheckboxEditor custom input
 export { default as CatalogStory } from "./catalog"; // Input form based on STAC catalog config
 export { default as CollectionStory } from "./collection"; // Input form based on STAC collection config
 export { default as ExternalStory } from "./external"; // Input form based on External URL
@@ -19,5 +20,7 @@ export { default as CodeStory } from "./code"; // Show code editor as input
 export { default as OptionalPropertiesStory } from "./optional-properties"; // Hide optional properties
 export { default as ShowOptInPropertiesStory } from "./show-opt-in-properties"; // Show opt-in properties
 export { default as DefaultsStory } from "./defaults"; // Configure defaults
+export { default as GridStory } from "./grid"; // Grid layout story
+export { default as GridStrictStory } from "./grid-strict"; // Grid strict layout story
 
 export { default as FlexLayoutStory } from "./flex-layout"; // Flex layout story

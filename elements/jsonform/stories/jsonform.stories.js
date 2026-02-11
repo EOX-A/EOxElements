@@ -7,6 +7,7 @@ import {
   MarkdownStory,
   PrimaryStory,
   ButtonsEditorStory,
+  BinaryCheckboxEditorStory,
   MinMaxEditorStory,
   BoundingBoxStory,
   PolygonStory,
@@ -23,6 +24,8 @@ import {
   OptionalPropertiesStory,
   FlexLayoutStory,
   DefaultsStory,
+  GridStory,
+  GridStrictStory,
 } from "./index.js";
 
 export default {
@@ -92,6 +95,22 @@ export const Catalog = CatalogStory;
 export const Collection = CollectionStory;
 
 /**
+ * Grid layout example. Shows how to use the grid format for objects.
+ * In `grid` format, child editors are placed multiple per row and stretched to fill the 12-column grid.
+ * On small screens (below 600px), fields take up the full width (12 columns), while on medium and large screens, they respect the calculated grid width.
+ */
+export const Grid = GridStory;
+
+/**
+ * Grid Strict layout example. Shows how to use the `grid-strict` format for objects.
+ * Unlike the standard `grid` format, `grid-strict` respects explicit column sizes defined
+ * in `options.grid_columns` without automatic stretching. It also supports `options.grid_break`
+ * to manually wrap to a new row.
+ * On small screens, fields take up the full width, while on medium and large screens, they respect the explicit column sizes.
+ */
+export const GridStrict = GridStrictStory;
+
+/**
  * External URL example. Loads schema and value from external URLs.
  * Demonstrates async loading and ready event handling. Once the `eox-jsonform` has loaded,
  * it logs to the console that it is ready ("Schema loading finished, editor ready!").
@@ -115,6 +134,12 @@ export const ButtonsEditor = ButtonsEditorStory;
  * Demonstrates custom input integration for range selection.
  */
 export const MinMaxEditor = MinMaxEditorStory;
+
+/**
+ * Binary Checkbox Editor example. Renders a custom checkbox that returns 0 or 1.
+ * Demonstrates custom input integration for binary values.
+ */
+export const BinaryCheckboxEditor = BinaryCheckboxEditorStory;
 
 /**
  * Bounding Box example. Allows users to select a bounding box as a form input.

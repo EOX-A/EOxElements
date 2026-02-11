@@ -34,7 +34,7 @@ jobs:
           check-latest: true
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v5.0.1
+        uses: actions/cache@v5.0.3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -58,13 +58,13 @@ jobs:
           npm run nyc:report
 
       - name: Upload code coverage 📈
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: code-coverage
           path: coverage/lcov-report
 
       - name: Upload failed test screenshots 📷
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         if: failure()
         with:
           name: cypress-screenshots

@@ -89,34 +89,78 @@ export class EOxTimeControlDate extends LitElement {
   }
 
   /**
+   * Gets the current index and item values for the given key.
+   *
+   * @param {string} key - The key to get the current index and item values from.
+   * @returns {Object} An object containing the current index and item values.
+   */
+  #getCurrIndexAndValues(key) {
+    const EOxTimeControl = this.getEOxTimeControl();
+    const itemValues = Object.keys(
+      groupBy(EOxTimeControl.items.get(), key),
+    ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    const index = findIndex(itemValues, (date) => {
+      if (key === "utc") {
+        return dayjs(date).isSame(EOxTimeControl.selectedDateRange[0]);
+      } else {
+        return (
+          date ===
+          dayjs(EOxTimeControl.selectedDateRange[0]).format(
+            TIME_CONTROL_DATE_FORMAT,
+          )
+        );
+      }
+    });
+    return { index, itemValues };
+  }
+
+  /**
+   * Gets the new index for the given item values, step, and index.
+   *
+   * @param {Array<string>} itemValues - The item values to get the new index from.
+   * @param {number} step - The step to move the index by.
+   * @param {number} index - The current index.
+   * @returns {number} The new index.
+   */
+  #getNewIndex(itemValues, step, index) {
+    let newIndex = index + step;
+    if (newIndex > itemValues.length - 1) newIndex = 0;
+    if (newIndex < 0) newIndex = itemValues.length - 1;
+    return newIndex;
+  }
+
+  /**
    * Updates the selected date by stepping forward or backward through available dates.
    *
    * @param {number} [step=1] - Number of steps to move (positive for forward, negative for backward).
    */
   updateStep(step = 1) {
     const EOxTimeControl = this.getEOxTimeControl();
-    const itemValues = Object.keys(
-      groupBy(EOxTimeControl.items.get(), "date"),
-    ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-    const index = findIndex(itemValues, (date) => {
-      return (
-        date ===
-        dayjs(EOxTimeControl.selectedDateRange[0]).format(
-          TIME_CONTROL_DATE_FORMAT,
-        )
-      );
-    });
-    let newIndex = index + step;
-    if (newIndex > itemValues.length - 1) {
-      newIndex = 0;
-    }
-    if (newIndex < 0) {
-      newIndex = itemValues.length - 1;
+    let newIndex, index, itemValues;
+    const currIndex = this.#getCurrIndexAndValues("utc");
+    index = currIndex.index;
+    itemValues = currIndex.itemValues;
+
+    // When exact value is matched based on date and time, use the index from the utc key
+    if (index >= 0) {
+      newIndex = this.#getNewIndex(itemValues, step, index);
+    } else {
+      // When exact value is not matched based on date and time, use the index from the date key
+      const currIndex = this.#getCurrIndexAndValues("date");
+      index = currIndex.index;
+      itemValues = currIndex.itemValues;
+      newIndex = this.#getNewIndex(itemValues, step, index);
     }
 
     const nextDate = itemValues[newIndex];
+    const isSameDay = dayjs(nextDate).isSame(
+      EOxTimeControl.selectedDateRange[0],
+      "day",
+    );
     const nextDateRange = [
-      dayjs(nextDate).startOf("day").utc().format(),
+      isSameDay
+        ? dayjs(nextDate).utc().format()
+        : dayjs(nextDate).startOf("day").utc().format(),
       dayjs(nextDate).endOf("day").utc().format(),
     ];
     EOxTimeControl.dateChange(nextDateRange, EOxTimeControl);

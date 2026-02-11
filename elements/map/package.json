@@ -1,6 +1,6 @@
 {
   "name": "@eox/map",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "type": "module",
   "repository": {
     "type": "git",
@@ -9,15 +9,14 @@
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
     "@eox/ui": "^0.5.0",
-    "@openglobus/og": "^0.28.0",
-    "flatgeobuf": "^4.0.1",
+    "@openglobus/og": "^0.28.6",
+    "flatgeobuf": "^4.4.0",
     "lit": "^3.2.0",
-    "ol": "10.7.1-dev.1766181275580",
-    "ol-mapbox-style": "^13.0.1",
-    "ol-stac": "^1.0.0-beta.10",
-    "proj4": "^2.9.2",
-    "serialize-javascript": "^7.0.1",
-    "zarrita": "^0.5.4"
+    "ol": "^10.8.0",
+    "ol-mapbox-style": "^13.2.1",
+    "ol-stac": "^1.1",
+    "proj4": "^2.20.2",
+    "serialize-javascript": "^7.0.1"
   },
   "devDependencies": {
     "@types/proj4": "^2.5.4",

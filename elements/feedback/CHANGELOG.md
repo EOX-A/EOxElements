@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/feedback-v1.1.0...feedback-v1.1.1) (2025-12-23)
+
+
+### Bug Fixes
+
+* **types:** Type information for `schema` property ([#2058](https://github.com/EOX-A/EOxElements/issues/2058)) ([003197b](https://github.com/EOX-A/EOxElements/commit/003197bf9831d803bef97ba0d0032ca09be87249))
+
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/feedback-v1.0.1...feedback-v1.1.0) (2025-12-23)
+
+
+### Features
+
+* Support custom feedback forms ([#2057](https://github.com/EOX-A/EOxElements/issues/2057)) ([8b4961a](https://github.com/EOX-A/EOxElements/commit/8b4961aab7af7558e80f4eb8f14fae751994e80d))
+
 ## [1.0.1](https://github.com/EOX-A/EOxElements/compare/feedback-v1.0.0...feedback-v1.0.1) (2025-07-29)
 
 

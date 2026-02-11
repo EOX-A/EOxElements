@@ -62,11 +62,17 @@ const loadMarkdownEditorTest = () => {
       cy.get(".grid-item").eq(5).click();
       cy.get("eox-jsonform#storytelling-editor-fields").within(() => {
         cy.get("button.upload-button").click();
-        cy.get('input[type="file"]#upload-file-input').as("fileInput");
-        cy.get("input#upload-file-input").attachFile(
-          "storytelling/test/fixtures/eox.png",
-        );
       });
+    });
+
+  cy.get('input[type="file"]#upload-file-input').as("fileInput");
+  cy.get("input#upload-file-input").attachFile(
+    "storytelling/test/fixtures/eox.png",
+  );
+
+  cy.get(storyTelling)
+    .shadow()
+    .within(() => {
       cy.get(".story-telling-section-submit-wrapper button").click();
       cy.get("img#simple-image-example").should("exist");
     });

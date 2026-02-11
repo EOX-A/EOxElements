@@ -20,6 +20,9 @@ import {
   loadSpatialValuesTest,
   validationBehaviorTest,
   defaultsTest,
+  loadBinaryCheckboxTest,
+  loadGridTest,
+  loadGridStrictTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -31,6 +34,7 @@ describe("Jsonform", () => {
   it("loads schema from url", () => loadExternalSchemaTest());
   it("loads value from url", () => loadExternalValueTest());
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
+  it("loads the binary checkbox", () => loadBinaryCheckboxTest());
   it("loads the markdown editor", () => loadMarkdownTest());
   it("loads the code editor", () => loadCodeTest());
   it("triggers a change event when typing", () => triggerChangeEventTest());
@@ -45,4 +49,6 @@ describe("Jsonform", () => {
   it("loads spatial values correctly", () => loadSpatialValuesTest());
   it("handles validation behavior correctly", () => validationBehaviorTest());
   it("handles defaults correctly", () => defaultsTest());
+  it("loads the grid layout", () => loadGridTest());
+  it("loads the grid-strict layout", () => loadGridStrictTest());
 });

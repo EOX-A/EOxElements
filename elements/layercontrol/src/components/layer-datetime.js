@@ -45,6 +45,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
      *   currentStep: string|number;
      *   controlValues: (string|number)[];
      *   displayFormat?: string;
+     *   animateOnClickInterval?: string;
      * }}
      */
     this.layerDatetime = null;
@@ -72,9 +73,24 @@ export class EOxLayerControlLayerDatetime extends LitElement {
    * @param {CustomEvent<{date:string[]}>} evt
    **/
   #handleStepChange(evt) {
-    const formatDate = (d) =>
-      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-    const currentStep = formatDate(new Date(evt.detail.date[0]));
+    const dateObj = new Date(evt.detail.date[0]);
+
+    // Check if configuration implies datetime (ISO strings)
+    const isDatetimeConfig = this.layerDatetime.controlValues?.some(
+      (v) => typeof v === "string" && v.includes("T"),
+    );
+
+    let currentStep;
+    if (isDatetimeConfig) {
+      currentStep = dateObj.toISOString();
+    } else {
+      const formatDate = (d) =>
+        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+      currentStep = formatDate(dateObj);
+    }
+    if (currentStep === this.layerDatetime.currentStep) {
+      return;
+    }
 
     this.dispatchEvent(
       new CustomEvent("datetime:updated", {
@@ -126,7 +142,10 @@ export class EOxLayerControlLayerDatetime extends LitElement {
               .navigation=${this.layerDatetime.navigation ?? false}
               .format=${this.layerDatetime.displayFormat}
             ></eox-timecontrol-date>
-            <eox-timecontrol-slider></eox-timecontrol-slider>
+            <eox-timecontrol-slider
+              animate-onclick-interval="${this.layerDatetime
+                .animateOnClickInterval ?? "0.3s"}"
+            ></eox-timecontrol-slider>
           </eox-timecontrol>
         `,
       )}

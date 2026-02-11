@@ -30,9 +30,18 @@ export class MockMap extends HTMLElement {
                 this.features = [];
               },
               // Simulating getFeatures method
-              addFeatures: (features) => this.features.concat(features),
+              addFeatures: (features) => {
+                this.features = this.features.concat(features);
+              },
+              addFeature: (feature) => {
+                this.features.push(feature);
+                if (this.onAddFeature) this.onAddFeature({ feature });
+              },
               getFeatures: () => this.features,
               removeFeature: () => this.features.splice(0, 1),
+              on: (event, cb) => {
+                if (event === "addfeature") this.onAddFeature = cb;
+              },
             }),
           },
         ],

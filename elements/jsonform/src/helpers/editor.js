@@ -83,6 +83,28 @@ export const createEditor = (element) => {
     (schema) => schema.options?.resolver && schema.options.resolver,
   );
 
+  // Custom theme modifications for EOxUI for grid layout
+  JSONEditor.defaults.themes.html.prototype.setGridColumnSize = (
+    el,
+    columns,
+  ) => {
+    el.classList.forEach((c) => {
+      if (
+        c.startsWith("col-md-") ||
+        c.match(/^[sml][1-9][0-2]?$/) ||
+        c === "grid"
+      )
+        el.classList.remove(c);
+    });
+    el.classList.add("s12", `m${columns}`, `l${columns}`);
+  };
+
+  JSONEditor.defaults.themes.html.prototype.getGridRow = () => {
+    const el = document.createElement("div");
+    el.classList.add("grid");
+    return el;
+  };
+
   // Merge user-defined defaults
   if (element.defaults) {
     Object.keys(element.defaults).forEach((key) => {
@@ -521,7 +543,7 @@ export const transformLinks = (element) => {
  */
 function getOptInElementInputs(optInEle) {
   return optInEle
-    .closest(".row")
+    .closest(".grid")
     .querySelectorAll(
       ".form-control input[name^='root']:not(.json-editor-opt-in), .form-control select[name^='root']:not(.json-editor-opt-in)",
     );
@@ -537,7 +559,7 @@ function getOptInElementInputs(optInEle) {
 export const initShowOptInElement = (element) => {
   /** @type {NodeListOf<HTMLButtonElement>} */
   const buttons = element.renderRoot.querySelectorAll(
-    ".je-indented-panel .row button.json-editor-btn-add:disabled",
+    ".je-indented-panel .grid button.json-editor-btn-add:disabled",
   );
 
   // Enable all add buttons in the opt-in properties
@@ -549,14 +571,14 @@ export const initShowOptInElement = (element) => {
       // Set a timeout to ensure the DOM is updated and the opt-in checkbox is available
       setTimeout(() => {
         const isSelectOptionAvailable = button
-          .closest(".row")
+          .closest(".grid")
           .querySelectorAll(
             ".form-control select[name^='root']:not(.json-editor-opt-in)",
           );
 
         /** @type {HTMLInputElement} */
         const optInEle = button
-          .closest(".row")
+          .closest(".grid")
           .querySelector(".json-editor-opt-in");
 
         // If there are select options available and the opt-in checkbox is not checked, click the opt-in checkbox

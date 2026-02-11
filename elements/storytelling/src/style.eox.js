@@ -72,13 +72,16 @@ const styleEOX = `
     font-size: var(--code-font-size, var(--font-size));
     color: var(--code-color, #004170);
   }
-  :not(pre) > code {
+  code:not(pre > code) {
     display: inline;
     border-radius: 4px;
     background: var(--code-bg-color, #8e96aa24);
     padding: var(--code-padding, 3px 6px);
   }
-
+  pre > code {
+    padding-left: 1rem;
+    background: transparent;
+  }
   :host {
     overflow: unset !important;
     --eox-storytelling-hero-height: 76dvh;
@@ -240,7 +243,7 @@ const styleEOX = `
   }
   .story-telling p,
   .story-telling code {
-    --font-size: 1.1rem;
+    --font-size: inherit;
   }
   .story-telling p {
     display: block;
@@ -490,6 +493,7 @@ const styleEOX = `
     display: block;
     z-index: 1;
     max-width: 25%;
+    transform: translateY(-20dvh);
   }
   @media screen and (max-width: 1024px) {
     .story-telling .tour section-step {
