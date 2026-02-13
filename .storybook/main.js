@@ -17,6 +17,7 @@ const config = {
       "./About.mdx",
       "./Usage.mdx",
       "./Coding Agents.mdx",
+      "../*.stories.@(js|jsx|mjs|ts|tsx)", // root level stoires (kitchen sink)
       // Only include stories from elements folders
       "../elements/**/stories/*.stories.@(js|jsx|mjs|ts|tsx)",
     ];
