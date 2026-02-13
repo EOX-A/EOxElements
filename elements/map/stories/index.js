@@ -27,6 +27,7 @@ export { default as ProjectionStory } from "./projection";
 export { default as AnimationsStory } from "./animations";
 export { default as PreventScrollStory } from "./prevent-scroll";
 export { default as FlatGeoBufStory } from "./flatGeoBuf-layer";
+export { default as FlatGeoBufStoryMultipleUrls } from "./flatGeoBuf-layer-multiple-urls";
 export { default as CustomTooltipStory } from "./custom-tooltip";
 export { default as GetFeatureInfoTooltipStory } from "./getFeature-tooltip";
 export { default as CoordinatesCustomTooltipsStory } from "./coordinates-custom-tooltips";
