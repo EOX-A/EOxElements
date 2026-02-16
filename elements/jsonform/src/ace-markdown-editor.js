@@ -86,38 +86,58 @@ export const AceMarkdownEditor = class extends aceEditor {
       const icon = (path) =>
         `<svg style="width:6px;height:6px" viewBox="-4 -4 32 32"><path fill="#333" d="${path}" /></svg>`;
 
-      const strikethroughIcon = "M10 19h4v-3h-4v3zM5 4v3h5v3h4V7h5V4H5zM3 14h18v-2H3v2z";
-      const linkIcon = "M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z";
-      const listIcon = "M7 5h14v2H7V5m0 6h14v2H7v-2m0 6h14v2H7v-2M4 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z";
+      const strikethroughIcon =
+        "M10 19h4v-3h-4v3zM5 4v3h5v3h4V7h5V4H5zM3 14h18v-2H3v2z";
+      const linkIcon =
+        "M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z";
+      const listIcon =
+        "M7 5h14v2H7V5m0 6h14v2H7v-2m0 6h14v2H7v-2M4 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2m0 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z";
 
-      toolbar.appendChild(createButton("H", "Heading", () => insertText("# ...", "Heading")));
-      toolbar.appendChild(createButton("B", "Bold", () => insertText("**...**", "bold text")));
-      toolbar.appendChild(createButton("I", "Italic", () => insertText("*...*", "italic text")));
       toolbar.appendChild(
-        createButton(icon(strikethroughIcon), "Strikethrough", () => insertText("~~...~~", "strikethrough text"))
+        createButton("H", "Heading", () => insertText("# ...", "Heading")),
       );
-      toolbar.appendChild(createButton(icon(linkIcon), "Link", () => insertText("...", "link text")));
-      toolbar.appendChild(createButton(icon(listIcon), "List", () => insertText("\n- ...", "list item")));
+      toolbar.appendChild(
+        createButton("B", "Bold", () => insertText("**...**", "bold text")),
+      );
+      toolbar.appendChild(
+        createButton("I", "Italic", () => insertText("*...*", "italic text")),
+      );
+      toolbar.appendChild(
+        createButton(icon(strikethroughIcon), "Strikethrough", () =>
+          insertText("~~...~~", "strikethrough text"),
+        ),
+      );
+      toolbar.appendChild(
+        createButton(icon(linkIcon), "Link", () =>
+          insertText("...", "link text"),
+        ),
+      );
+      toolbar.appendChild(
+        createButton(icon(listIcon), "List", () =>
+          insertText("\n- ...", "list item"),
+        ),
+      );
 
       // Programmatically add styles to remove rounded corners from the editor
       // to match the square corners of the toolbar.
       const style = document.createElement("style");
       // get gutter element and remove top radius
-      this.jsoneditor.element.querySelector(".ace_editor").style.borderTopLeftRadius = "0";
-      this.jsoneditor.element.querySelector(".ace_editor").style.borderTopRightRadius = "0";
+      this.jsoneditor.element.querySelector(
+        ".ace_editor",
+      ).style.borderTopLeftRadius = "0";
+      this.jsoneditor.element.querySelector(
+        ".ace_editor",
+      ).style.borderTopRightRadius = "0";
 
       // we also add all around the same border as the toolbar to the ace editor
-      this.jsoneditor.element.querySelector(".ace_editor").style.border = "1px solid #ccc";
-
+      this.jsoneditor.element.querySelector(".ace_editor").style.border =
+        "1px solid #ccc";
 
       // this.jsoneditor.element is the <eox-jsonform> component
       this.jsoneditor.element.appendChild(style);
 
       // Insert the toolbar before the ace editor container
-      this.ace_container.parentNode.insertBefore(
-        toolbar,
-        this.ace_container,
-      );
+      this.ace_container.parentNode.insertBefore(toolbar, this.ace_container);
     }, 0);
   }
 };

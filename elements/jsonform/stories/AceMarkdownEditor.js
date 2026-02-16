@@ -9,10 +9,7 @@ export const AceMarkdownEditor = {
   },
   render: (args) => {
     return html`
-      <eox-jsonform
-        .schema=${args.schema}
-        .value=${args.value}
-      ></eox-jsonform>
+      <eox-jsonform .schema=${args.schema} .value=${args.value}></eox-jsonform>
     `;
   },
 };

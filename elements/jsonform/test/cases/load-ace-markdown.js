@@ -1,4 +1,3 @@
-
 import { html } from "lit";
 import { TEST_SELECTORS } from "../../src/enums";
 
@@ -7,7 +6,8 @@ const { jsonForm } = TEST_SELECTORS;
 
 const testVals = {
   key: "markdown",
-  value: "# Hello world!\nThis is a markdown field rendered with **ace editor**.",
+  value:
+    "# Hello world!\nThis is a markdown field rendered with **ace editor**.",
 };
 
 /**
@@ -22,7 +22,8 @@ const loadAceMarkdownTest = () => {
           [testVals.key]: {
             type: "string",
             format: "markdown-ace",
-            description: "This is a markdown field rendered with a custom ace editor with a toolbar.",
+            description:
+              "This is a markdown field rendered with a custom ace editor with a toolbar.",
           },
         },
       }}
