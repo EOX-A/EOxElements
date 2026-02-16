@@ -157,6 +157,7 @@ export class EOxMap extends LitElement {
       selectInteractions: { attribute: false, state: true, type: Object },
       sync: { attribute: "sync", type: String },
       zoomExtent: { attribute: false, type: Array },
+      reducedGlobeLOD: { attribute: false, type: Boolean },
     };
   }
 
@@ -243,6 +244,11 @@ export class EOxMap extends LitElement {
    * @type {ProjectionLike}
    */
   last2dProjection = "EPSG:3857";
+
+  /**
+   * Whether use less level of details or not.
+   */
+  #reducedGlobeLOD = false;
 
   constructor() {
     super();
@@ -507,6 +513,23 @@ export class EOxMap extends LitElement {
         this,
       );
     }
+  }
+
+  /**
+   * Sets if the LOD level for the globe will be reduced.
+   *
+   * @param {boolean} reducedGlobeLOD - The reducedGlobeLOD.
+   */
+  set reducedGlobeLOD(reducedGlobeLOD) {
+    this.#reducedGlobeLOD = reducedGlobeLOD;
+  }
+
+  /**
+   * Gets the current reducedGlobeLOD state of the map.
+   * @returns {boolean}
+   */
+  get reducedGlobeLOD() {
+    return this.#reducedGlobeLOD;
   }
 
   /**
