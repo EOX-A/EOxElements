@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlDateType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:26](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L26)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:26](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L26)
 
 The `eox-timecontrol-date` component displays the currently selected date(s) with optional navigation buttons.
 It formats the date according to the specified format string and can display single dates or date ranges.
@@ -1328,7 +1328,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **format**: `string`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:65](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L65)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:65](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L65)
 
 Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
@@ -1542,7 +1542,7 @@ The **`Element.namespaceURI`** read-only property returns the namespace URI of t
 
 > **navigation**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:72](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L72)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:72](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L72)
 
 Whether navigation buttons (previous/next) are shown.
 
@@ -4960,7 +4960,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:79](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L79)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:79](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L79)
 
 Whether default styling is disabled.
 
@@ -5694,7 +5694,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:183](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L183)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:183](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L183)
 
 Lifecycle method called after the component's first update.
 Checks if a popup picker is present and sets the input mode accordingly.
@@ -6197,7 +6197,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getEOxTimeControl**(): [`EOxTimeControlType`](EOxTimeControlType.md)
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:87](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L87)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:87](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L87)
 
 Gets the parent EOxTimeControl component instance.
 
@@ -7685,7 +7685,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:174](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L174)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:174](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L174)
 
 Sets the date range and triggers a re-render.
 
@@ -7835,7 +7835,7 @@ The **`togglePopover()`** method of the HTMLElement interface toggles a Popover_
 
 > **updateStep**(`step?`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:137](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L137)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:137](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L137)
 
 Updates the selected date by stepping forward or backward through available dates.
 
@@ -8086,7 +8086,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:214](https://github.com/EOX-A/EOxElements/blob/71cbb9efc4ea10327395331bbf74ad304141bc5c/elements/timecontrol/src/components/timecontrol-date.js#L214)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:214](https://github.com/EOX-A/EOxElements/blob/8c0d1e5577f40bc6293372639cd381e4970ad9ad/elements/timecontrol/src/components/timecontrol-date.js#L214)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a
