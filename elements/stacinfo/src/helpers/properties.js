@@ -2,16 +2,22 @@
  * Transforms and formats a list of STAC properties.
  *
  * @param {Array<any>} properties - The list of properties to transform.
+ * @param {import("../main.js").Filter[]} filters - The filters to apply to the properties.
  * @param {import("../main.js").EOxStacInfo} element - The component instance containing STAC properties.
  * @param {string} [type="property"] - The type of transformation to apply.
  * @returns {Array<any>} The transformed and formatted properties.
  */
-export function transformProperties(properties, element, type = "property") {
+export function transformProperties(
+  properties,
+  filters,
+  element,
+  type = "property",
+) {
   // Helper to render anchor tags with class="link"
   function renderLink(url, text) {
     return `<a class="link" target="_blank" href="${url}">${text}</a>`;
   }
-
+  const filterKeys = filters.map((filter) => filter.key);
   // Transform extent to only show temporal information.
   return properties.map(([key, property]) => {
     // Transform extent to only show temporal
@@ -67,25 +73,36 @@ export function transformProperties(properties, element, type = "property") {
     );
 
     /**
-     * Filters links based on their roles and relationships.
+     * Filters values based on their roles and relationships and so on.
      *
-     * @param {Object} links - The links to filter.
-     * @returns {Array<any>} The filtered links.
+     * @param {Object} values - The links,assets, providers..etc to filter.
+     * @returns {Array<any>} The filtered values
      */
-    const filterLinks = (links) => {
-      return Object.entries(links).filter(([_, itemValue]) => {
+    const filterValues = (values) => {
+      /**
+       * Default filter for assets, links, and providers.
+       * @param {Object} itemValue - The value to filter.
+       * @returns {boolean} True if the value should be included, false otherwise.
+       */
+      const defaultFilter = (itemValue) => {
         let pass = true;
         if (itemValue.roles && key !== "providers")
           pass = itemValue.roles.includes("metadata");
         if (itemValue.rel) pass = itemValue.rel === "example";
         return pass;
+      };
+      const filter =
+        filters.find((f) => f.key === key)?.filter ?? defaultFilter;
+      return Object.entries(values).filter(([_, itemValue]) => {
+        // console.log("ran filter for key", key, filter);
+        return filter(itemValue);
       });
     };
 
     // Format assets, links, or providers into HTML, depending on the type.
-    if (key === "assets" || key === "links" || key === "providers") {
+    if (["assets", "links", "providers", ...filterKeys].includes(key)) {
       if (type === "property") {
-        property.formatted = `<ul>${filterLinks(property.value)
+        property.formatted = `<ul>${filterValues(property.value)
           .map(
             ([itemKey, itemValue]) =>
               `<li>
@@ -96,7 +113,7 @@ export function transformProperties(properties, element, type = "property") {
           )
           .join("")}</ul>`;
       } else if (type === "featured") {
-        property.formatted = filterLinks(property.value)
+        property.formatted = filterValues(property.value)
           .map(
             ([itemKey, itemValue]) =>
               `<div class="button-container">
@@ -126,7 +143,7 @@ export function transformProperties(properties, element, type = "property") {
 
     // Add length information to properties of type "providers", "assets", or "links".
     if (["providers", "assets", "links"].includes(key)) {
-      property.length = filterLinks(property.value).length;
+      property.length = filterValues(property.value).length;
     }
 
     return [key, property];
