@@ -1,0 +1,91 @@
+{
+  "type": "Feature",
+  "stac_version": "1.0.0",
+  "id": "IT3",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [8.93364, 44.40572]
+  },
+  "bbox": [8.93364, 44.40572, 8.93364, 44.40572],
+  "properties": {
+    "datetime": "2020-04-01T00:00:00Z",
+    "start_datetime": "2020-02-01T00:00:00Z",
+    "end_datetime": "2020-05-01T00:00:00Z",
+    "city": "Genoa",
+    "country": "IT",
+    "title": "Genoa Port Air Quality Analysis",
+    "description": "Analysis of air quality and traffic in Genoa port area during early 2020.",
+    "sci:citation": "EOX et al 2024, powered by stac-fields and other libraries",
+    "eo:cloud_cover": 12.5,
+    "view:sun_elevation": 45.6,
+    "view:off_nadir": 3.2,
+    "platform": "copenrnicus",
+    "instruments": ["MSI"],
+    "constellation": "Sentinel-2",
+    "gsd": 10
+  },
+  "links": [
+    {
+      "rel": "root",
+      "href": "../../../catalog.json",
+      "type": "application/json",
+      "title": "RACE"
+    },
+    {
+      "rel": "collection",
+      "href": "../../collection.json",
+      "type": "application/json",
+      "title": "Air quality in ports"
+    },
+    {
+      "rel": "parent",
+      "href": "../../collection.json",
+      "type": "application/json",
+      "title": "Air quality in ports"
+    },
+    {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "title": "CC BY 4.0",
+      "type": "text/html"
+    },
+    {
+      "rel": "about",
+      "href": "https://eox.at",
+      "title": "EOX Website",
+      "type": "text/html"
+    }
+  ],
+  "assets": {
+    "data": {
+      "href": "https://example.com/data/genoa.csv",
+      "type": "text/csv",
+      "title": "Genoa Data",
+      "roles": ["data"]
+    },
+    "thumbnail": {
+      "href": "https://example.com/thumbnail.png",
+      "type": "image/png",
+      "title": "Thumbnail",
+      "roles": ["thumbnail"]
+    },
+    "visual": {
+      "href": "https://example.com/visual.tif",
+      "type": "image/tiff; application=geotiff",
+      "title": "True Color Image",
+      "roles": ["visual"],
+      "eo:bands": [
+        { "name": "B04", "common_name": "red" },
+        { "name": "B03", "common_name": "green" },
+        { "name": "B02", "common_name": "blue" }
+      ]
+    },
+    "metadata": {
+      "href": "https://example.com/metadata.xml",
+      "type": "application/xml",
+      "title": "Original Metadata",
+      "roles": ["metadata"]
+    }
+  },
+  "collection": "ports_cars_aq"
+}
