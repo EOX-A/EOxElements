@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/EOX-A/EOxElements/compare/map-v2.1.0...map-v2.2.0) (2026-02-19)
+
+
+### Features
+
+* Support url as array in flatgeobuf ([#2124](https://github.com/EOX-A/EOxElements/issues/2124)) ([0169da2](https://github.com/EOX-A/EOxElements/commit/0169da272e418aa8a80911b52d9a4db8350bce50))
+
 ## [2.1.0](https://github.com/EOX-A/EOxElements/compare/map-v2.0.3...map-v2.1.0) (2026-02-11)
 
 
