@@ -11,7 +11,7 @@ import { transformProperties } from "./index";
 export default function parseEntries(list, that, type) {
   // Filter, reverse, and sort the properties based on the provided list.
   // Transform the filtered, reversed, and sorted properties.
-  const listStr = list.map((item) =>
+  const listStr = list?.map((item) =>
     typeof item === "string" ? item : item.key,
   );
   return transformProperties(
@@ -21,7 +21,7 @@ export default function parseEntries(list, that, type) {
       .sort(([keyA], [keyB]) =>
         listStr?.indexOf(keyA) > listStr?.indexOf(keyB) ? 1 : -1,
       ),
-    list.filter((item) => typeof item !== "string"),
+    list?.filter((item) => typeof item !== "string") ?? [],
     that,
     type,
   );
