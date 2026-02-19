@@ -65,17 +65,26 @@ class FlatGeoBuf extends Vector {
           featureProjection: projection,
           dataProjection: this.dataProjection,
         });
-        let counter = 0;
+        const usedIds = new Set();
+        let fallbackCounter = 0;
         for (const url of this.resourceURLs) {
           const iter = deserialize(url, rect);
           for await (const feature of iter) {
             const olFeature = geoJsonFormat.readFeature(feature);
-            // this is necessary because iterator on multiple URLs does not return unique ids and we need it in the vector source
             //@ts-expect-error for GeoJSON-Format this should always be a single feature.
-            olFeature.setId(counter);
+            let id = olFeature.getId();
+            // If no ID exists, or it's already used, generate a new one
+            if (id == null || usedIds.has(id)) {
+              // Generate unique fallback ID
+              do {
+                id = `auto_${fallbackCounter++}`;
+              } while (usedIds.has(id));
+              //@ts-expect-error
+              olFeature.setId(id);
+            }
+            usedIds.add(id);
             //@ts-expect-error for GeoJSON-Format this should always be a single feature.
             features.push(olFeature);
-            counter++;
           }
         }
         super.clear();
