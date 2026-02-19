@@ -6,6 +6,8 @@ import {
   NoHtmlRenderTest,
   htmlRenderTest,
   SinglePropertyTest,
+  ItemProperties,
+  FilterPropertiesTest,
 } from "./cases/index.js";
 export const testBody =
   // @ts-expect-error TODO
@@ -46,4 +48,14 @@ describe("Stacinfo", () => {
    * Test case to check whether STACInfo render HTML if it's enabled
    */
   it("renders HTML if enabled", () => htmlRenderTest());
+
+  /**
+   * Test case to check whether top-level properties are parsed and formatted correctly
+   */
+  it("parses and formats top-level properties", () => ItemProperties());
+
+  /**
+   * Test case to check whether Filter objects in configuration arrays work correctly
+   */
+  it("applies filter objects in configuration", () => FilterPropertiesTest());
 });
