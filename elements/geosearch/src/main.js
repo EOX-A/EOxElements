@@ -107,6 +107,14 @@ class EOxGeoSearch extends LitElement {
        */
       button: { type: Boolean },
       /**
+       * Whether or not to render the map externally.
+       *
+       */
+      externalMapRendering: {
+        type: Boolean,
+        attribute: "external-map-rendering",
+      },
+      /**
        * Set a custom interval for the debounce function.
        *
        */
@@ -212,6 +220,7 @@ class EOxGeoSearch extends LitElement {
     this.for = "eox-map";
     this.queryParameter = "q";
     this.button = false;
+    this.externalMapRendering = false;
     this.label = undefined;
     this.direction = "right";
     this.resultsDirection = "down";
@@ -285,27 +294,38 @@ class EOxGeoSearch extends LitElement {
     this._isListVisible = false;
     this._query = "";
 
-    /**
-     * This for now only supports OpenCage
-     */
-    const viewProjection = this.eoxMap.map.getView().getProjection().getCode();
+    if (!this.externalMapRendering) {
+      /**
+       * This for now only supports OpenCage
+       */
+      const viewProjection = this.eoxMap.map
+        .getView()
+        .getProjection()
+        .getCode();
 
-    let sw = proj4("EPSG:4326", viewProjection, [
-      event.bounds.southwest.lng,
-      event.bounds.southwest.lat,
-    ]);
-    let ne = proj4("EPSG:4326", viewProjection, [
-      event.bounds.northeast.lng,
-      event.bounds.northeast.lat,
-    ]);
-    const zoomExtent = [sw[0], sw[1], ne[0], ne[1]];
+      let sw = proj4("EPSG:4326", viewProjection, [
+        event.bounds.southwest.lng,
+        event.bounds.southwest.lat,
+      ]);
+      let ne = proj4("EPSG:4326", viewProjection, [
+        event.bounds.northeast.lng,
+        event.bounds.northeast.lat,
+      ]);
+      const zoomExtent = [sw[0], sw[1], ne[0], ne[1]];
 
-    this.eoxMap.zoomExtent = zoomExtent;
+      this.eoxMap.zoomExtent = zoomExtent;
+    }
 
     /**
      * The select event, including the details of the selected item
      */
-    this.dispatchEvent(new CustomEvent("geosearchSelect", event));
+    this.dispatchEvent(
+      new CustomEvent("geosearchSelect", {
+        detail: event,
+        bubbles: true,
+        composed: true,
+      }),
+    );
   }
 
   updateMap() {
