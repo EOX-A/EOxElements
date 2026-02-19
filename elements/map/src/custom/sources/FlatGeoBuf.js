@@ -79,7 +79,7 @@ class FlatGeoBuf extends Vector {
               do {
                 id = `auto_${fallbackCounter++}`;
               } while (usedIds.has(id));
-              //@ts-expect-error
+              //@ts-expect-error for GeoJSON-Format this should always be a single feature.
               olFeature.setId(id);
             }
             usedIds.add(id);
