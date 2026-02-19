@@ -305,7 +305,11 @@ class EOxGeoSearch extends LitElement {
     /**
      * The select event, including the details of the selected item
      */
-    this.dispatchEvent(new CustomEvent("geosearchSelect", event));
+    this.dispatchEvent(
+      new CustomEvent("geosearchSelect", {
+        detail: event,
+      }),
+    );
   }
 
   updateMap() {
