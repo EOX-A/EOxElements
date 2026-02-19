@@ -20,7 +20,8 @@ class FlatGeoBuf extends Vector {
     });
     this.dataProjection =
       options.projection || READ_FEATURES_OPTIONS.dataProjection;
-    this.resourceURL = options.url;
+    this.resourceURLs =
+      typeof options.url === "string" ? [options.url] : options.url;
     super.setLoader(this.loader);
   }
 
@@ -60,15 +61,31 @@ class FlatGeoBuf extends Vector {
          * @type {Array<import("ol/Feature").default>}
          */
         const features = [];
-        const iter = deserialize(this.resourceURL, rect);
         const geoJsonFormat = new GeoJSON({
           featureProjection: projection,
           dataProjection: this.dataProjection,
         });
-        for await (const feature of iter) {
-          const olFeature = geoJsonFormat.readFeature(feature);
-          //@ts-expect-error for GeoJSON-Format this should always be a single feature.
-          features.push(olFeature);
+        const usedIds = new Set();
+        let fallbackCounter = 0;
+        for (const url of this.resourceURLs) {
+          const iter = deserialize(url, rect);
+          for await (const feature of iter) {
+            const olFeature = geoJsonFormat.readFeature(feature);
+            //@ts-expect-error for GeoJSON-Format this should always be a single feature.
+            let id = olFeature.getId();
+            // If no ID exists, or it's already used, generate a new one
+            if (id == null || usedIds.has(id)) {
+              // Generate unique fallback ID
+              do {
+                id = `auto_${fallbackCounter++}`;
+              } while (usedIds.has(id));
+              //@ts-expect-error for GeoJSON-Format this should always be a single feature.
+              olFeature.setId(id);
+            }
+            usedIds.add(id);
+            //@ts-expect-error for GeoJSON-Format this should always be a single feature.
+            features.push(olFeature);
+          }
         }
         super.clear();
         super.addFeatures(features);

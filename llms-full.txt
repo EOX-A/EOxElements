@@ -11645,7 +11645,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-02-18T14:27:24.198Z",
+              default: "2026-02-19T09:59:20.053Z",
               options: {
                 hidden: true,
               },
@@ -15173,6 +15173,53 @@ Renders `FlatGeoBuf` layer
 
 ```
 
+#### FlatGeoBufTwoUrls
+
+Renders `FlatGeoBuf` layer
+
+```html
+<eox-map></eox-map>
+
+<script type="module">
+  import "@eox/map/dist/eox-map.js";
+
+  import "@eox/map/src/plugins/advancedLayersAndSources";
+
+  const eoxMap = document.querySelector("eox-map");
+
+  // Assign properties
+  Object.assign(eoxMap, {
+    center: [-30, 64],
+    zoom: 3,
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
+        type: "Vector",
+        properties: {
+          id: "FlatGeoBufLayer",
+        },
+        source: {
+          type: "FlatGeoBuf",
+          url: [
+            "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/test_data_polartep/202602041015_CentralWest_RIC.fgb",
+            "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/test_data_polartep/202602040840_SouthEast_RIC.fgb",
+          ],
+        },
+      },
+    ],
+  });
+</script>
+
+```
+
 #### GeoTIFFLayer
 
 Renders `GeoTIFF` layer as `WebGLTile`
@@ -17385,6 +17432,53 @@ Renders `FlatGeoBuf` layer
         source: {
           type: "FlatGeoBuf",
           url: "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/admin_borders/STATISTIK_AUSTRIA_GEM_20220101.fgb",
+        },
+      },
+    ],
+  });
+</script>
+
+```
+
+#### FlatGeoBufTwoUrls
+
+Renders `FlatGeoBuf` layer
+
+```html
+<eox-map></eox-map>
+
+<script type="module">
+  import "@eox/map/dist/eox-map.js";
+
+  import "@eox/map/src/plugins/advancedLayersAndSources";
+
+  const eoxMap = document.querySelector("eox-map");
+
+  // Assign properties
+  Object.assign(eoxMap, {
+    center: [-30, 64],
+    zoom: 3,
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "customId",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
+        type: "Vector",
+        properties: {
+          id: "FlatGeoBufLayer",
+        },
+        source: {
+          type: "FlatGeoBuf",
+          url: [
+            "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/test_data_polartep/202602041015_CentralWest_RIC.fgb",
+            "https://eox-gtif-public.s3.eu-central-1.amazonaws.com/test_data_polartep/202602040840_SouthEast_RIC.fgb",
+          ],
         },
       },
     ],
