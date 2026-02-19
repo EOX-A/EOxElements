@@ -192,7 +192,7 @@ export type AttributionLike =
 export type ProjectionLike = import("ol/proj").ProjectionLike;
 
 export type FlatGeoBufOptions = {
-  url: string;
+  url: string | string[];
   attributions?: import("ol/source/Source").AttributionLike;
   wrapX?: boolean;
   projection?: ProjectionLike;
