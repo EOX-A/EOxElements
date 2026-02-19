@@ -1,26 +1,40 @@
+import "@eox/map";
+import "@eox/geosearch";
+import data from "../stories/public/opencage-mock-data.json";
+import { html } from "lit";
+
 describe("EOxGeoSearch", () => {
   // Setting up the environment before each test
   beforeEach(() => {
+    cy.intercept(
+      {
+        method: "GET",
+        url: new RegExp("opencagedata\.com\/api-endpoint"),
+      },
+      (req) => {
+        req.reply(data);
+      },
+    );
     // Mounting mock-map and eox-drawtools elements
     //cy.mount("<mock-map></mock-map>").as("mock-map");
-    cy.mount(
-      `
-        <eox-geosearch
-            label="Search"
-            button
-            small
-            list-direction="right"
-            results-direction="down"
-            endpoint="./opencage-mock-data.json"
-        ></eox-geosearch>
-      `,
-    ).as("eox-geosearch");
   });
 
   // TODO: Replace this very basic test with an actual test suite
   //       and find out why Cypress will not render the shadow
   //       DOM of the eox-geosearch element.
   it("should find the geosearch element", () => {
+    cy.mount(
+      `
+      <eox-geosearch
+          label="Search"
+          button
+          small
+          list-direction="right"
+          results-direction="down"
+          endpoint="https://opencagedata.com/api-endpoint"
+      ></eox-geosearch>
+      `,
+    ).as("eox-geosearch");
     cy.get("eox-geosearch").should("exist");
   });
 
@@ -34,7 +48,7 @@ describe("EOxGeoSearch", () => {
             small
             list-direction="right"
             results-direction="down"
-            endpoint="./opencage-mock-data.json"
+            endpoint="https://opencagedata.com/api-endpoint"
             extent="-125.0,24.0,-66.0,49.0"
             tooltip="Search for locations"
             tooltip-direction="bottom"
@@ -71,7 +85,7 @@ describe("EOxGeoSearch", () => {
             label="Search"
             button
             small
-            endpoint="./opencage-mock-data.json"
+            endpoint="https://opencagedata.com/api-endpoint"
         ></eox-geosearch>
       `,
     );
@@ -109,7 +123,7 @@ describe("EOxGeoSearch", () => {
             label="Search"
             button
             small
-            endpoint="./opencage-mock-data.json"
+            endpoint="https://opencagedata.com/api-endpoint"
             extent="-125.0,24.0,-66.0,49.0"
         ></eox-geosearch>
       `,
@@ -131,6 +145,36 @@ describe("EOxGeoSearch", () => {
         language: "de",
         limit: 10,
       });
+    });
+  });
+  it("should support external map rendering", () => {
+    cy.mount(html`
+      <eox-geosearch
+        label="Search"
+        endpoint="https://opencagedata.com/api-endpoint"
+        external-map-rendering="true"
+      ></eox-geosearch>
+      <eox-map
+        width="600px"
+        height="400px"
+        .layers=${[
+          { type: "Tile", properties: { id: "osm" }, source: { type: "OSM" } },
+        ]}
+        .zoom=${1}
+      ></eox-map>
+    `).as("eox-geosearch");
+
+    cy.get("eox-geosearch").click();
+    cy.get("eox-geosearch")
+      .shadow()
+      .within(() => {
+        cy.get("menu input").type("Italy");
+        cy.get('menu li[data-ui="#search"]').eq(1).click();
+      });
+
+    cy.get("eox-map").then(($el) => {
+      const zoom = $el[0].map.getView().getZoom();
+      expect(zoom).to.equal(1);
     });
   });
 });
