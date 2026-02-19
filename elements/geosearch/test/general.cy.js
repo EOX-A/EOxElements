@@ -9,7 +9,7 @@ describe("EOxGeoSearch", () => {
     cy.intercept(
       {
         method: "GET",
-        url: new RegExp("opencagedata\.com\/api-endpoint"),
+        url: new RegExp("opencagedata.com/api-endpoint"),
       },
       (req) => {
         req.reply(data);
