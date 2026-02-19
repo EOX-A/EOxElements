@@ -4,3 +4,4 @@ export { default as CustomAlignmentsStory } from "./custom-alignments";
 export { default as CustomLoaderStory } from "./custom-loader";
 export { default as ExtentLimitStory } from "./extent-limit";
 export { default as AdditionalParametersStory } from "./additional-params";
+export { default as ExternalMapRenderingStory } from "./external-map-rendering";

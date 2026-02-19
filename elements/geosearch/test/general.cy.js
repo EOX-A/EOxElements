@@ -1,6 +1,6 @@
 import "@eox/map";
 import "@eox/geosearch";
-import data from "../stories/public/opencage-mock-data.json";
+import data from "../../../.storybook/public/opencage-mock-data.json";
 import { html } from "lit";
 
 describe("EOxGeoSearch", () => {
@@ -152,7 +152,7 @@ describe("EOxGeoSearch", () => {
       <eox-geosearch
         label="Search"
         endpoint="https://opencagedata.com/api-endpoint"
-        external-map-rendering="true"
+        externalMapRendering="true"
       ></eox-geosearch>
       <eox-map
         width="600px"

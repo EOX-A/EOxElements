@@ -110,10 +110,7 @@ class EOxGeoSearch extends LitElement {
        * Whether or not to render the map externally.
        *
        */
-      externalMapRendering: {
-        type: Boolean,
-        attribute: "external-map-rendering",
-      },
+      externalMapRendering: { type: Boolean },
       /**
        * Set a custom interval for the debounce function.
        *

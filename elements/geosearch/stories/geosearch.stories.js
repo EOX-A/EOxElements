@@ -5,6 +5,7 @@ import {
   CustomLoaderStory,
   ExtentLimitStory,
   PrimaryStory,
+  ExternalMapRenderingStory,
 } from "./index.js";
 
 export default {
@@ -54,3 +55,10 @@ export const ExtentLimit = ExtentLimitStory;
  * In order to use a real geocoding service, replace the endpoint with a valid OpenCage API URL along with your API key.
  */
 export const AdditionalParameters = AdditionalParametersStory;
+
+/**
+ * Demonstrates how to use eox-geosearch with an external map rendering.
+ * Note that the endpoint used here is a mock data file for demonstration purposes (it returns a few selected locations and is not a full geocoding service).
+ * In order to use a real geocoding service, replace the endpoint with a valid OpenCage API URL along with your API key.
+ */
+export const ExternalMapRendering = ExternalMapRenderingStory;
