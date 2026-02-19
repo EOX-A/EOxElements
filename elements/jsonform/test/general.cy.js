@@ -8,6 +8,7 @@ import {
   loadExternalValueTest,
   loadReRenderFormOnChangeTest,
   loadMarkdownTest,
+  loadAceMarkdownTest,
   triggerChangeEventTest,
   loadValuesTest,
   loadMisMatchingValuesTest,
@@ -36,6 +37,7 @@ describe("Jsonform", () => {
   it("re-renders form on change", () => loadReRenderFormOnChangeTest());
   it("loads the binary checkbox", () => loadBinaryCheckboxTest());
   it("loads the markdown editor", () => loadMarkdownTest());
+  it("loads the ace markdown editor", () => loadAceMarkdownTest());
   it("loads the code editor", () => loadCodeTest());
   it("triggers a change event when typing", () => triggerChangeEventTest());
   it("loads values", () => loadValuesTest());
