@@ -53,6 +53,7 @@ export default {
       .layers=${args.layers}
       .projection=${args.projection}
       .zoom=${args.zoom}
+      .useDefaultLOD=${args.useDefaultLOD}
     ></eox-map>
   `,
 };
@@ -74,7 +75,7 @@ export const Primary = PrimaryStory;
  * Instead of passing each property individually, one can also pass a `config` property:
  * Note two things here: when using the `config` property, then `center` and `zoom` are nested inside the `view` property. Secondly, this example includes `controls`: by passing `Zoom: {}` this enables the OpenLayers `Zoom` control, without any options (which could be passed inside the object).
 * `config` supports the following properties:
-* 
+*
 * ```ts
 * export type ConfigObject = {
 *   controls: ControlDictionary;
@@ -91,7 +92,7 @@ export const Primary = PrimaryStory;
 *   animationOptions?: EOxAnimationOptions;
 * };
 * ```
-* 
+*
 * ```ts
 * export type ControlDictionary = {
 *   Zoom?: ConstructorParameters<typeof import("ol/control/Zoom").default>[0];
