@@ -1,6 +1,6 @@
 import "@eox/map";
 import "@eox/geosearch";
-import data from "../../../.storybook/public/opencage-mock-data.json";
+import data from "../stories/public/opencage-mock-data.json";
 import { html } from "lit";
 
 describe("EOxGeoSearch", () => {
