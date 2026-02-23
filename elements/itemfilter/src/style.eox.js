@@ -8,6 +8,9 @@ ${eoxStyle}
 .field {
   margin-block-end: 0;
 }
+.field>:is(input,textarea,select) {
+  width: 100%;
+}
 .field.small>:is(input,textarea,select) {
   font-size: 0.75rem;
 }
@@ -123,6 +126,9 @@ details > summary i {
 }
 details[open] > summary i {
   transform: rotate(90deg);
+}
+summary > * {
+  pointer-events: all;
 }
 ul.multiselect.list > li,
 ul.select.list > li,

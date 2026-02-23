@@ -273,7 +273,7 @@ export class EOxLayerControlAddLayers extends LitElement {
               `
             : html`
                 <!-- Textarea for JSON input -->
-                <div class="field textarea small border no-margin">
+                <div class="field small border no-margin">
                   <textarea
                     class="add-layer-input small"
                     style="overflow-wrap: break-word; font-family: monospace;"

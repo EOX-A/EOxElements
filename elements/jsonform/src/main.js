@@ -321,7 +321,7 @@ export class EOxJSONForm extends LitElement {
                 </svg>
               </i>
             </span>
-            <div class="tooltip left">Enable properties editing</div>
+            <span class="tooltip left">Enable properties editing</span>
           </label>
         `,
       )}
