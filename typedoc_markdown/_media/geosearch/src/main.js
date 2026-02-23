@@ -403,7 +403,7 @@ class EOxGeoSearch extends LitElement {
         }}
         >
         ${!this.unstyled ? html`<i class="front small">${searchIcon}</i>` : ""}
-        ${this.tooltip && this.button && !this._isListVisible ? html`<div class="tooltip ${this.tooltipDirection}">${this.tooltip}</div>` : ""}
+        ${this.tooltip && this.button && !this._isListVisible ? html`<span class="tooltip ${this.tooltipDirection}">${this.tooltip}</span>` : ""}
 
   ${this.button || this.unstyled ? "" : html`<input placeholder="Type to search" />`}
   <menu id="search" class="surface ${this.button ? `no-wrap ${this.direction} ${this.resultsDirection === "up" ? "top" : "bottom"}` : ""} min${this._isListVisible ? " active" : ""}">

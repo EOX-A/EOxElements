@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.5.0",
+    "@eox/ui": "^0.6.0",
     "@openglobus/og": "^0.28.6",
     "flatgeobuf": "^4.4.0",
     "lit": "^3.2.0",

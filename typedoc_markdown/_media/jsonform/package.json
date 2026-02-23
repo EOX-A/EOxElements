@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.5.0",
+    "@eox/ui": "^0.6.0",
     "@json-editor/json-editor": "^2.11.0",
     "@turf/bbox-polygon": "^7.2.0",
     "ace-builds": "^1.37.5",
