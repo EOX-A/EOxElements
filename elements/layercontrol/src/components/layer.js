@@ -324,7 +324,7 @@ export class EOxLayerControlLayer extends LitElement {
 
             <!-- Input element for layer visibility -->
             <label
-              class="${disableClass} ${inputType} icon square primary-text action visibility small"
+              class="${disableClass} ${inputType} icon primary-text action visibility small"
             >
               <input
                 type=${inputType}
@@ -395,8 +395,11 @@ export class EOxLayerControlLayer extends LitElement {
       transform: rotate(180deg);
     }
     eox-layercontrol-layer > nav > .action.visibility {
-      padding: .3rem;  
+      padding: .3rem;
       transform: translateX(.3rem);
+    }
+    eox-layercontrol-layer > nav > .action.visibility span::after {
+      border-radius: 0.25rem !important;
     }
     @media (pointer:fine) {
       eox-layercontrol-layer:not(:hover) > nav > .action {
