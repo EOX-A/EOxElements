@@ -40,7 +40,7 @@ function createResetMethod(filterObject, tabIndex, EOxItemFilter) {
                     />
                   </svg>
                 </i>
-                <div class="tooltip left">Reset filter</div>
+                <span class="tooltip left">Reset filter</span>
               `}
         </button>
       `,

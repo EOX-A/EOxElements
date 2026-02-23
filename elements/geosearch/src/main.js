@@ -305,7 +305,11 @@ class EOxGeoSearch extends LitElement {
     /**
      * The select event, including the details of the selected item
      */
-    this.dispatchEvent(new CustomEvent("geosearchSelect", event));
+    this.dispatchEvent(
+      new CustomEvent("geosearchSelect", {
+        detail: event,
+      }),
+    );
   }
 
   updateMap() {
@@ -399,7 +403,7 @@ class EOxGeoSearch extends LitElement {
         }}
         >
         ${!this.unstyled ? html`<i class="front small">${searchIcon}</i>` : ""}
-        ${this.tooltip && this.button && !this._isListVisible ? html`<div class="tooltip ${this.tooltipDirection}">${this.tooltip}</div>` : ""}
+        ${this.tooltip && this.button && !this._isListVisible ? html`<span class="tooltip ${this.tooltipDirection}">${this.tooltip}</span>` : ""}
 
   ${this.button || this.unstyled ? "" : html`<input placeholder="Type to search" />`}
   <menu id="search" class="surface ${this.button ? `no-wrap ${this.direction} ${this.resultsDirection === "up" ? "top" : "bottom"}` : ""} min${this._isListVisible ? " active" : ""}">

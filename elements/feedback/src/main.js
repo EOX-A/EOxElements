@@ -364,7 +364,7 @@ export class EOxFeedback extends HTMLElement {
       }
     } else {
       formContent = `
-        <div class="field textarea border">
+        <div class="field border">
           <textarea id="message" placeholder="${
             !this.endpoint
               ? "Missing endpoint attribute!"
