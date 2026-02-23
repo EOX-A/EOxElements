@@ -11,6 +11,7 @@ import {
   STACLayerStory,
   MapboxStyleLayerStory,
   GeoTIFFLayerStory,
+  GeoZarrLayerStory,
   GroupLayerStory,
   ControlsStory,
   GeolocationStory,
@@ -29,6 +30,7 @@ import {
   AnimationsStory,
   PreventScrollStory,
   FlatGeoBufStory,
+  FlatGeoBufStoryMultipleUrls,
   CustomTooltipStory,
   GetFeatureInfoTooltipStory,
   CoordinatesCustomTooltipsStory,
@@ -165,6 +167,11 @@ export const WMTSCapabilitiesLayer = WMTSCapabilitiesLayerStory;
 export const FlatGeoBuf = FlatGeoBufStory;
 
 /**
+ * Renders `FlatGeoBuf` layer
+ */
+export const FlatGeoBufTwoUrls = FlatGeoBufStoryMultipleUrls;
+
+/**
  * Renders `WMTSCapabilities` layer and fetches the provided capabilities url
  */
 export const WMTSTileGrid = WMTSTileGridStory;
@@ -192,6 +199,11 @@ export const MapboxStyleLayer = MapboxStyleLayerStory;
  * Renders `GeoTIFF` layer as `WebGLTile`
  */
 export const GeoTIFFLayer = GeoTIFFLayerStory;
+
+/**
+ * Renders `GeoZarr` layer as `WebGLTile`
+ */
+export const GeoZarrLayer = GeoZarrLayerStory;
 
 /**
  * Renders `Group` layer which contains multiple layers in a group
