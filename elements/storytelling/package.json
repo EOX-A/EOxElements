@@ -42,7 +42,7 @@
     "@eox/ui": "^0.6.0",
     "@sindresorhus/slugify": "^3.0.0",
     "glightbox": "^3.3.0",
-    "isomorphic-dompurify": "^2.4.0",
+    "isomorphic-dompurify": "^3.0.0",
     "joi": "^18.0.1",
     "js-yaml": "^4.1.0",
     "lit": "^3.2.0",
