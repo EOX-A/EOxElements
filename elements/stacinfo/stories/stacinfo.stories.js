@@ -9,6 +9,7 @@ import {
   SinglePropertyStory,
   TagsStory,
   UnstyledStory,
+  FilterStory,
 } from "./";
 
 export default {
@@ -69,6 +70,11 @@ export const Footer = FooterStory;
  * Demonstrates custom slot rendering for properties. Slots can be used to override the default rendering of any property, enabling advanced customization and integration with application-specific UI.
  */
 export const CustomSlotContent = CustomSlotContentStory;
+
+/**
+ * Shows a STAC Item properties. By setting the `for` attribute/property to an item URL, the element will display the item's properties.
+ */
+export const Filter = FilterStory;
 
 /**
  * Shows the unstyled version of the element. By setting the `unstyled` attribute/property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.
