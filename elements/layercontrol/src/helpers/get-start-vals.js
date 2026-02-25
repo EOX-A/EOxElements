@@ -55,10 +55,6 @@ export function getStartVals(layer, layerConfig) {
     // Extract query parameters from tile URL
     // @ts-expect-error TODO
     const url = new URL(layer.getSource().getTileUrlFunction()([0, 0, 0]));
-    const removeProperties =
-      layerConfig.schema?.options?.removeProperties ?? [];
-    // Remove unwanted properties from query parameters
-    removeProperties.forEach((prop) => url.searchParams.delete(prop));
 
     // Retrieve startVals based on schema and query parameters
     nestedValues = {};
