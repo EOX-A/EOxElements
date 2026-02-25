@@ -94,7 +94,6 @@ export function transformProperties(
       const filter =
         filters.find((f) => f.key === key)?.filter ?? defaultFilter;
       return Object.entries(values).filter(([_, itemValue]) => {
-        // console.log("ran filter for key", key, filter);
         return filter(itemValue);
       });
     };
