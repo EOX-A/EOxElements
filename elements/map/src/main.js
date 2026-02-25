@@ -157,7 +157,7 @@ export class EOxMap extends LitElement {
       selectInteractions: { attribute: false, state: true, type: Object },
       sync: { attribute: "sync", type: String },
       zoomExtent: { attribute: false, type: Array },
-      useHighLOD: { attribute: false, type: Boolean },
+      useHighLOD: { attribute: "use-high-lod", type: Boolean },
     };
   }
 
@@ -516,7 +516,7 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Sets if the LOD level for the globe will not be reduced.
+   * Sets if the LOD level for the globe will not be reduced. This can be used to increase the level of detail for the globe, but may have performance implications.
    *
    * @param {boolean} useHighLOD - The useHighLOD.
    */
@@ -525,7 +525,7 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Gets the current useHighLOD state of the map.
+   * Gets the current useHighLOD state of the map. This indicates whether the globe will use a higher level of detail by not reducing the LOD levels.
    * @returns {boolean}
    */
   get useHighLOD() {
