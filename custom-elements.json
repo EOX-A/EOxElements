@@ -165,227 +165,6 @@
     },
     {
       "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ],
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "kind": "field",
-              "name": "schema",
-              "return": {
-                "type": {
-                  "text": "JsonSchema|null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newSchema",
-                  "type": {
-                    "text": "JsonSchema|null"
-                  }
-                }
-              ],
-              "type": {
-                "text": "JsonSchema"
-              },
-              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
-            },
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onTextareaInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onJsonFormChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_endpoint",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_schema",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_submitted",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "name": "unstyled",
-              "kind": "field"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles."
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -926,6 +705,227 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "return": {
+                "type": {
+                  "text": "JsonSchema|null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema|null"
+                  }
+                }
+              ],
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
+            },
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onTextareaInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onJsonFormChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_endpoint",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_schema",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_submitted",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "name": "unstyled",
+              "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
           }
         }
       ]
@@ -3538,7 +3538,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "### Introduction\nWorking with STAC catalogs, collections and items often times requires\nto fetch a JSON file, parse its contents and display some of its fields\nin some formatted way. To make these steps reusable, the `eox-stacinfo`\nelement offers a set of functionalities:\n- **automatically fetch a STAC file** as soon as the element loads\n- offer a **property whitelist** functionality to choose which properties to display\n- display the properties in **configurable sections** (header, body, featured, footer)\n- allow to **override** any property display for application-specific custom needs\n\nThe use case for this element is alongside a map which displays STAC files\nor in a catalog browsing scenario where a quick look at the most important properties\nis needed.\n\n#### Technology\nUnder the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.\n\n#### Usage\nPlace `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections:\n- `header`: Array of property keys to display at the top\n- `tags`: Array of property keys to display as tags\n- `body`: Array of property keys for the main content\n- `featured`: Array of property keys for prominent display\n- `footer`: Array of property keys for the bottom section\n\n#### Customization\n- **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.\n- **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.",
+          "description": "### Introduction\nWorking with STAC catalogs, collections and items often times requires\nto fetch a JSON file, parse its contents and display some of its fields\nin some formatted way. To make these steps reusable, the `eox-stacinfo`\nelement offers a set of functionalities:\n- **automatically fetch a STAC file** as soon as the element loads\n- offer a **property whitelist** functionality to choose which properties to display\n- display the properties in **configurable sections** (header, body, featured, footer)\n- allow to **override** any property display for application-specific custom needs\n\nThe use case for this element is alongside a map which displays STAC files\nor in a catalog browsing scenario where a quick look at the most important properties\nis needed.\n\n#### Technology\nUnder the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.\n\n#### Usage\nPlace `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.\n\nEach section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects.\n\nA `Filter` object has the following structure:\n```javascript\n{\n  key: \"links\",\n  filter: (link) => {\n    // Return true/false to include/exclude items from a list (e.g. assets, links)\n    return link.rel === \"example\";\n  }\n}\n```\n\nSections:\n- `header`: Array of property keys or Filters to display at the top\n- `tags`: Array of property keys or Filters to display as tags\n- `body`: Array of property keys or Filters for the main content\n- `featured`: Array of property keys or Filters for prominent display\n- `footer`: Array of property keys or Filters for the bottom section\n\n#### Customization\n- **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.\n- **Unstyled mode**: By setting the `unstyled` property, only minimal styles are applied, allowing for full custom styling and integration into different design systems.",
           "name": "EOxStacInfo",
           "members": [
             {
@@ -3579,7 +3579,7 @@
               "name": "header",
               "privacy": "public",
               "type": {
-                "text": "Array<any>"
+                "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display in the header",
               "default": "[]"
@@ -3589,7 +3589,7 @@
               "name": "tags",
               "privacy": "public",
               "type": {
-                "text": "Array<any>"
+                "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display to display as tags",
               "default": "[]"
@@ -3599,7 +3599,7 @@
               "name": "body",
               "privacy": "public",
               "type": {
-                "text": "Array<any>"
+                "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display to display in the main body",
               "default": "[]"
@@ -3609,7 +3609,7 @@
               "name": "featured",
               "privacy": "public",
               "type": {
-                "text": "Array<any>"
+                "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display in the featured section",
               "default": "[]"
@@ -3619,7 +3619,7 @@
               "name": "footer",
               "privacy": "public",
               "type": {
-                "text": "Array<any>"
+                "text": "Array<string | Filter>"
               },
               "description": "Keys of properties to display in the footer",
               "default": "[]"

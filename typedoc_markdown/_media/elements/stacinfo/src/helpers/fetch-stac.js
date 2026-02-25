@@ -8,9 +8,16 @@ import { parseSTAC } from "./index.js";
  * @returns {Promise<void>} A promise that resolves when the STAC data is fetched and processed.
  */
 async function fetchSTAC(that) {
-  // Fetch the STAC file, appending a timestamp to the URL to prevent caching.
-  const response = await fetch(`${that.for}?ts=${Date.now()}`);
+  /** @type {Response} */
+  let response;
 
+  if (that.for?.startsWith("http")) {
+    // Fetch the STAC file, appending a timestamp to the URL to prevent caching.
+    response = await fetch(`${that.for}?ts=${Date.now()}`);
+  } else {
+    // Removed the cache buster to prevent breaking blob and data urls
+    response = await fetch(that.for);
+  }
   // Parse the fetched JSON response.
   const stac = await response.json();
   that.stacInfo = parseSTAC(stac);

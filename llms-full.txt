@@ -11645,7 +11645,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-02-23T11:23:39.724Z",
+              default: "2026-02-25T10:23:08.802Z",
               options: {
                 hidden: true,
               },
@@ -18887,12 +18887,27 @@ is needed.
 Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
 
 #### Usage
-Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections:
-- `header`: Array of property keys to display at the top
-- `tags`: Array of property keys to display as tags
-- `body`: Array of property keys for the main content
-- `featured`: Array of property keys for prominent display
-- `footer`: Array of property keys for the bottom section
+Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
+
+Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects.
+
+A `Filter` object has the following structure:
+```javascript
+{
+  key: "links",
+  filter: (link) => {
+    // Return true/false to include/exclude items from a list (e.g. assets, links)
+    return link.rel === "example";
+  }
+}
+```
+
+Sections:
+- `header`: Array of property keys or Filters to display at the top
+- `tags`: Array of property keys or Filters to display as tags
+- `body`: Array of property keys or Filters for the main content
+- `featured`: Array of property keys or Filters for prominent display
+- `footer`: Array of property keys or Filters for the bottom section
 
 #### Customization
 - **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.
@@ -18909,11 +18924,11 @@ Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` prop
 - `allowHtml` (boolean): Whether to allow HTML in the property display (Default: `false`)
 - `unstyled` (boolean): Whether to use unstyled mode (Default: `false`)
 - `for` (string): The identifier for the STAC resource to fetch (Default: `""`)
-- `header` (Array<any>): Keys of properties to display in the header (Default: `[]`)
-- `tags` (Array<any>): Keys of properties to display to display as tags (Default: `[]`)
-- `body` (Array<any>): Keys of properties to display to display in the main body (Default: `[]`)
-- `featured` (Array<any>): Keys of properties to display in the featured section (Default: `[]`)
-- `footer` (Array<any>): Keys of properties to display in the footer (Default: `[]`)
+- `header` (Array<string | Filter>): Keys of properties to display in the header (Default: `[]`)
+- `tags` (Array<string | Filter>): Keys of properties to display to display as tags (Default: `[]`)
+- `body` (Array<string | Filter>): Keys of properties to display to display in the main body (Default: `[]`)
+- `featured` (Array<string | Filter>): Keys of properties to display in the featured section (Default: `[]`)
+- `footer` (Array<string | Filter>): Keys of properties to display in the footer (Default: `[]`)
 - `stacInfo` (Array<any>): The state object containing the fetched STAC information (Default: `[]`)
 - `stacProperties` (Array<any>): The state object containing the parsed STAC properties (Default: `[]`)
 
@@ -18978,6 +18993,46 @@ Highlights important STAC properties in a prominent featured section using the `
   // Assign properties
   Object.assign(eoxStacinfo, {
     featured: ["description", "extent"],
+  });
+</script>
+
+```
+
+#### Filter
+
+Shows a STAC Item properties. By setting the `for` attribute/property to an item URL, the element will display the item's properties.
+
+```html
+<eox-stacinfo for="/ports_cars_aq/2020/Genoa.json"></eox-stacinfo>
+
+<script type="module">
+  import "@eox/stacinfo/dist/eox-stacinfo.js";
+
+  const eoxStacinfo = document.querySelector("eox-stacinfo");
+
+  // Assign properties
+  Object.assign(eoxStacinfo, {
+    header: ["id", "title"],
+    tags: ["platform", "instruments", "constellation"],
+    body: [
+      "description",
+      "sci:citation",
+      "processing:software",
+      "eopf:instrument_mode",
+      "eo:cloud_cover",
+      "view:sun_elevation",
+    ],
+    featured: [
+      {
+        key: "assets",
+        filter: (val) => val.type?.includes("image/tiff"),
+      },
+      {
+        key: "links",
+        filter: (val) => val.type?.includes("text/html"),
+      },
+    ],
+    footer: ["start_datetime", "end_datetime"],
   });
 </script>
 
