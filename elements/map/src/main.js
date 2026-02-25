@@ -246,7 +246,7 @@ export class EOxMap extends LitElement {
   last2dProjection = "EPSG:3857";
 
   /**
-   * Whether use less level of details or not.
+   * Whether use high level of details or not.
    */
   #useHighLOD = false;
 
@@ -516,7 +516,7 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Sets if the LOD level for the globe will not be reduced. This can be used to increase the level of detail for the globe, but may have performance implications.
+   * Sets if the (default) higher LOD level for the globe will not be used. This can be used to increase the level of detail for the globe, but may have performance implications.
    *
    * @param {boolean} useHighLOD - The useHighLOD.
    */
