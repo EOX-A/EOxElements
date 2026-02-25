@@ -157,7 +157,7 @@ export class EOxMap extends LitElement {
       selectInteractions: { attribute: false, state: true, type: Object },
       sync: { attribute: "sync", type: String },
       zoomExtent: { attribute: false, type: Array },
-      useDefaultLOD: { attribute: false, type: Boolean },
+      useHighLOD: { attribute: false, type: Boolean },
     };
   }
 
@@ -248,7 +248,7 @@ export class EOxMap extends LitElement {
   /**
    * Whether use less level of details or not.
    */
-  #useDefaultLOD = false;
+  #useHighLOD = false;
 
   constructor() {
     super();
@@ -518,18 +518,18 @@ export class EOxMap extends LitElement {
   /**
    * Sets if the LOD level for the globe will not be reduced.
    *
-   * @param {boolean} useDefaultLOD - The useDefaultLOD.
+   * @param {boolean} useHighLOD - The useHighLOD.
    */
-  set useDefaultLOD(useDefaultLOD) {
-    this.#useDefaultLOD = useDefaultLOD;
+  set useHighLOD(useHighLOD) {
+    this.#useHighLOD = useHighLOD;
   }
 
   /**
-   * Gets the current useDefaultLOD state of the map.
+   * Gets the current useHighLOD state of the map.
    * @returns {boolean}
    */
-  get useDefaultLOD() {
-    return this.#useDefaultLOD;
+  get useHighLOD() {
+    return this.#useHighLOD;
   }
 
   /**

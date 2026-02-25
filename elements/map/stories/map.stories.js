@@ -53,7 +53,7 @@ export default {
       .layers=${args.layers}
       .projection=${args.projection}
       .zoom=${args.zoom}
-      .useDefaultLOD=${args.useDefaultLOD}
+      .useHighLOD=${args.useHighLOD}
     ></eox-map>
   `,
 };

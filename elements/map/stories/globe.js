@@ -5,7 +5,7 @@
  */
 const GlobeStory = {
   args: {
-    useDefaultLOD: true,
+    useHighLOD: true,
     center: [15, 48],
     projection: "globe",
     layers: [
