@@ -70,7 +70,11 @@ class WMTSCapabilities extends TileImage {
     this.matrixSet_ = capabilitiesOptions.matrixSet;
     this.style_ = capabilitiesOptions.style;
     this.format_ = capabilitiesOptions.format;
-    this.dimensions_ = capabilitiesOptions.dimensions;
+    // User-provided dimensions (e.g. time) take precedence
+    this.dimensions_ = {
+      ...capabilitiesOptions.dimensions,
+      ...options.dimensions,
+    };
 
     // Set URLs for the tile source
     this.setUrls(capabilitiesOptions.urls);
