@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.0.3...stacinfo-v1.1.0) (2026-02-27)
+
+
+### Features
+
+* Parse Items top level properties & enable passing filter objects  ([#2150](https://github.com/EOX-A/EOxElements/issues/2150)) ([f8081b6](https://github.com/EOX-A/EOxElements/commit/f8081b6889171818971f4edabf3ea2a9960a0ae6))
+* **style:** Use unified ui package ([#1583](https://github.com/EOX-A/EOxElements/issues/1583)) ([239cdc1](https://github.com/EOX-A/EOxElements/commit/239cdc12d1e792ad77a52b5e8b8e51586e836141))
+
+
+### Bug Fixes
+
+* **deps:** Update elements-utils package ([#1797](https://github.com/EOX-A/EOxElements/issues/1797)) ([b0d4758](https://github.com/EOX-A/EOxElements/commit/b0d4758d1499480a77ccd4015827a76a9920553e))
+* Only render individual featured sections if value length &gt; 0 ([#1930](https://github.com/EOX-A/EOxElements/issues/1930)) ([04ac6e6](https://github.com/EOX-A/EOxElements/commit/04ac6e6d5ced147e48abf484766b73f23bd0493a))
+* Render markdown links with target blank, add link class ([#1929](https://github.com/EOX-A/EOxElements/issues/1929)) ([85e24d6](https://github.com/EOX-A/EOxElements/commit/85e24d62d2dd99839ac9080eac88b6100a16e10c))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.0.2...stacinfo-v1.1.0) (2026-02-27)
 
 
