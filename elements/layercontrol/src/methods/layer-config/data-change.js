@@ -28,9 +28,15 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     EOxLayerControlLayerConfig.layer
       .getSource()
       // @ts-expect-error TODO
-      .setTileUrlFunction((...args) =>
-        updateUrl(newTileUrlFunc(...args), data),
-      );
+      .setTileUrlFunction((...args) => {
+        const url = new URL(newTileUrlFunc(...args));
+        const removeProperties =
+          EOxLayerControlLayerConfig.layerConfig.schema?.options
+            ?.removeProperties ?? [];
+        // Remove unwanted properties from query parameters
+        removeProperties.forEach((prop) => url.searchParams.delete(prop));
+        return updateUrl(url.href, data);
+      });
 
     // TODO: It's not advisable to access protected methods directly.
     // Setting a new key for the layer source to trigger a refresh.
