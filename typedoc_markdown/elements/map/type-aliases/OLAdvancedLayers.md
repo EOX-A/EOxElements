@@ -8,7 +8,7 @@
 
 > **OLAdvancedLayers** = `object`
 
-Defined in: [elements/map/src/layers.ts:32](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L32)
+Defined in: [elements/map/src/layers.ts:32](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L32)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/layers.ts:32](https://github.com/EOX-A/EOxElements
 
 > **Graticule**: `default`
 
-Defined in: [elements/map/src/layers.ts:33](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L33)
+Defined in: [elements/map/src/layers.ts:33](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L33)
 
 ***
 
@@ -24,7 +24,7 @@ Defined in: [elements/map/src/layers.ts:33](https://github.com/EOX-A/EOxElements
 
 > **Heatmap**: `default`
 
-Defined in: [elements/map/src/layers.ts:34](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L34)
+Defined in: [elements/map/src/layers.ts:34](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L34)
 
 ***
 
@@ -32,7 +32,7 @@ Defined in: [elements/map/src/layers.ts:34](https://github.com/EOX-A/EOxElements
 
 > **Layer**: `default`
 
-Defined in: [elements/map/src/layers.ts:35](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L35)
+Defined in: [elements/map/src/layers.ts:35](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L35)
 
 ***
 
@@ -40,7 +40,7 @@ Defined in: [elements/map/src/layers.ts:35](https://github.com/EOX-A/EOxElements
 
 > **MapboxStyle**: `default`
 
-Defined in: [elements/map/src/layers.ts:41](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L41)
+Defined in: [elements/map/src/layers.ts:41](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L41)
 
 ***
 
@@ -48,7 +48,7 @@ Defined in: [elements/map/src/layers.ts:41](https://github.com/EOX-A/EOxElements
 
 > **STAC**: `default`
 
-Defined in: [elements/map/src/layers.ts:40](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L40)
+Defined in: [elements/map/src/layers.ts:40](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L40)
 
 ***
 
@@ -56,7 +56,7 @@ Defined in: [elements/map/src/layers.ts:40](https://github.com/EOX-A/EOxElements
 
 > **VectorImage**: `default`
 
-Defined in: [elements/map/src/layers.ts:36](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L36)
+Defined in: [elements/map/src/layers.ts:36](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L36)
 
 ***
 
@@ -64,7 +64,7 @@ Defined in: [elements/map/src/layers.ts:36](https://github.com/EOX-A/EOxElements
 
 > **WebGLPoints**: `default`
 
-Defined in: [elements/map/src/layers.ts:37](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L37)
+Defined in: [elements/map/src/layers.ts:37](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L37)
 
 ***
 
@@ -72,7 +72,7 @@ Defined in: [elements/map/src/layers.ts:37](https://github.com/EOX-A/EOxElements
 
 > **WebGLTile**: `default`
 
-Defined in: [elements/map/src/layers.ts:38](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L38)
+Defined in: [elements/map/src/layers.ts:38](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L38)
 
 ***
 
@@ -80,4 +80,4 @@ Defined in: [elements/map/src/layers.ts:38](https://github.com/EOX-A/EOxElements
 
 > **WebGLVector**: `default`
 
-Defined in: [elements/map/src/layers.ts:39](https://github.com/EOX-A/EOxElements/blob/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8/elements/map/src/layers.ts#L39)
+Defined in: [elements/map/src/layers.ts:39](https://github.com/EOX-A/EOxElements/blob/6cd023ec371febfad8861780137b25582ceda8c8/elements/map/src/layers.ts#L39)
