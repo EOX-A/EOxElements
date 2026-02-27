@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.0.2...stacinfo-v1.1.0) (2026-02-27)
+
+
+### Features
+
+* Parse Items top level properties & enable passing filter objects  ([#2150](https://github.com/EOX-A/EOxElements/issues/2150)) ([f8081b6](https://github.com/EOX-A/EOxElements/commit/f8081b6889171818971f4edabf3ea2a9960a0ae6))
+
 ## [1.0.2](https://github.com/EOX-A/EOxElements/compare/stacinfo-v1.0.1...stacinfo-v1.0.2) (2025-11-10)
 
 

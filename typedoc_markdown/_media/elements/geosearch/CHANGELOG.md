@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/EOX-A/EOxElements/compare/geosearch-v1.1.0...geosearch-v1.1.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* GeosearchSelect event detail ([#2152](https://github.com/EOX-A/EOxElements/issues/2152)) ([dc19e63](https://github.com/EOX-A/EOxElements/commit/dc19e638a1fb1888269c7223a1e5b8a7a0686332))
+
 ## [1.1.0](https://github.com/EOX-A/EOxElements/compare/geosearch-v1.0.1...geosearch-v1.1.0) (2025-09-17)
 
 
