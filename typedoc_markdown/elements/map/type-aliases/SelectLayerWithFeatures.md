@@ -8,4 +8,4 @@
 
 > **SelectLayerWithFeatures** = `InstanceType`\<`default`\> \| `InstanceType`\<`default`\>
 
-Defined in: [elements/map/src/types.ts:52](https://github.com/EOX-A/EOxElements/blob/36e4fbcca210d35269604fe6561d027e263115f9/elements/map/src/types.ts#L52)
+Defined in: [elements/map/src/types.ts:52](https://github.com/EOX-A/EOxElements/blob/adf257c9688583878d82f9af9de0dfede736daa0/elements/map/src/types.ts#L52)
