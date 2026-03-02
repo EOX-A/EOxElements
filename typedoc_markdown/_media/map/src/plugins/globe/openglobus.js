@@ -83,8 +83,13 @@ export const createGlobe = ({ EOxMap, target, mapPool }) => {
     fontsSrc:
       "https://cdn.jsdelivr.net/npm/@openglobus/og@0.27.21/lib/res/fonts",
   });
+  let currZoom = EOxMap.map.getView().getZoom() - 1;
+  if (!EOxMap.useHighLOD) {
+    globus.planet.quadTreeStrategy.setLodSize(512);
+    currZoom = currZoom - 1;
+  }
 
-  const height = 21050000 / Math.pow(2, EOxMap.map.getView().getZoom() - 1);
+  const height = 21050000 / Math.pow(2, currZoom);
   const center = EOxMap.map.getView().getCenter();
   const newCenter = transform(
     center,
@@ -410,8 +415,9 @@ export const disableGlobe = (map) => {
         const finalCameraPosition = globe.planet.camera.getLonLat();
 
         // Calculate the OpenLayers zoom level using the camera's final height
+        let zoomFactor = map.useHighLOD ? 1 : 2;
         const zoomFromGlobe =
-          Math.log2(21050000 / finalCameraPosition.height) + 1;
+          Math.log2(21050000 / finalCameraPosition.height) + zoomFactor;
 
         // Calculate the OpenLayers center coordinates
         const centerFromGlobe = [

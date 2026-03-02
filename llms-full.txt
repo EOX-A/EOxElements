@@ -11645,7 +11645,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-03-02T06:24:04.628Z",
+              default: "2026-03-02T12:44:27.143Z",
               options: {
                 hidden: true,
               },
@@ -14404,6 +14404,7 @@ Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
 - `prevent-scroll` (boolean): Gets the current scroll interaction state.
 - `projection` (ProjectionLike): Gets the current map projection.
 - `sync` (string): Gets the current sync state of the map.
+- `use-high-lod` (boolean): Gets the current useHighLOD state of the map. This indicates whether the globe will use a higher level of detail by not reducing the LOD levels.
 
 ### Properties
 
@@ -14418,6 +14419,7 @@ Usage: `import { buffer, transform, transformExtent } from "@eox/map";`
 - `preventScroll` (boolean): Gets the current scroll interaction state. (Default: `undefined`)
 - `animationOptions` (EOxAnimationOptions): Gets the current animation options. (Default: `undefined`)
 - `projection` (ProjectionLike): Gets the current map projection. (Default: `undefined`)
+- `useHighLOD` (boolean): Gets the current useHighLOD state of the map. This indicates whether the globe will use a higher level of detail by not reducing the LOD levels. (Default: `undefined`)
 - `sync` (string): Gets the current sync state of the map. (Default: `undefined`)
 - `map` (default): The OpenLayers map instance. (Default: `new Map({ controls: [], interactions: interactionDefaults({ altShiftDragRotate: false, pinchRotate: false, }), layers: [], view: new View({ center: [0, 0], zoom: 0, projection: this.#_olProjection, }), })`)
 - `interactions` (Object.<string, default>): Object to store various map interactions (e.g., drag, zoom). (Default: `{}`)
@@ -15454,6 +15456,7 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
 
   // Assign properties
   Object.assign(eoxMap, {
+    useHighLOD: true,
     center: [15, 48],
     layers: [
       {
@@ -15592,7 +15595,7 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
         },
       },
     ],
-    zoom: 3,
+    zoom: 4,
   });
 </script>
 
@@ -16084,6 +16087,7 @@ height: 300px;
 .layers=${args.layers}
 .projection=${args.projection}
 .zoom=${args.zoom}
+.useHighLOD=${args.useHighLOD}
 ></eox-map>
 `,
 };
@@ -17721,6 +17725,7 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
 
   // Assign properties
   Object.assign(eoxMap, {
+    useHighLOD: true,
     center: [15, 48],
     layers: [
       {
@@ -17859,7 +17864,7 @@ The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XY
         },
       },
     ],
-    zoom: 3,
+    zoom: 4,
   });
 </script>
 
@@ -18351,6 +18356,7 @@ height: 300px;
 .layers=${args.layers}
 .projection=${args.projection}
 .zoom=${args.zoom}
+.useHighLOD=${args.useHighLOD}
 ></eox-map>
 `,
 };
