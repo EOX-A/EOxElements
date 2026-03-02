@@ -5,6 +5,7 @@
  */
 const GlobeStory = {
   args: {
+    useHighLOD: true,
     center: [15, 48],
     projection: "globe",
     terrain: true,
@@ -145,7 +146,7 @@ const GlobeStory = {
         },
       },
     ],
-    zoom: 3,
+    zoom: 4,
   },
 };
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.4.0...layercontrol-v1.4.1) (2026-02-27)
+
+
+### Bug Fixes
+
+* Remove tileUrl params on date change ([#2160](https://github.com/EOX-A/EOxElements/issues/2160)) ([6cd023e](https://github.com/EOX-A/EOxElements/commit/6cd023ec371febfad8861780137b25582ceda8c8))
+
 ## [1.4.0](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.3.2...layercontrol-v1.4.0) (2026-01-23)
 
 

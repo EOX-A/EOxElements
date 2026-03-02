@@ -1,7 +1,7 @@
 import { html } from "lit";
 
 /**
- * Tests to load WMTS Layer with Capabilities
+ * Tests to load Flatgeobuf layer
  */
 const loadFlatGeoBufLayer = () => {
   const featureLoadPromise = new Promise((resolve) => {

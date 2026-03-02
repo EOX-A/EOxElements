@@ -165,6 +165,9 @@ export const createEditor = (element) => {
       ),
     );
     const hideTabsIfPropertiesHidden = (properties) => {
+      if (!properties) {
+        return;
+      }
       // Find tabs for hidden properties and set data-hidden
       // in order to hide them with CSS
       Object.entries(properties)

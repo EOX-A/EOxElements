@@ -317,6 +317,9 @@ export class EOxLayerControl extends LitElement {
     select {
       background-color: var(--background-color);
     }
+    summary > * {
+      pointer-events: all !important;
+    }
   `;
 }
 

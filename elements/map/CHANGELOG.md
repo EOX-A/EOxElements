@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.2.0](https://github.com/EOX-A/EOxElements/compare/map-v2.1.0...map-v2.2.0) (2026-02-27)
+
+
+### Features
+
+* Support url as array in flatgeobuf ([#2124](https://github.com/EOX-A/EOxElements/issues/2124)) ([0169da2](https://github.com/EOX-A/EOxElements/commit/0169da272e418aa8a80911b52d9a4db8350bce50))
+
+
+### Bug Fixes
+
+* Preserve user-provided dimensions in WMTSCapabilities source ([#2161](https://github.com/EOX-A/EOxElements/issues/2161)) ([a6f909d](https://github.com/EOX-A/EOxElements/commit/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8))
+
+## [2.1.0](https://github.com/EOX-A/EOxElements/compare/map-v2.0.3...map-v2.1.0) (2026-02-11)
+
+
+### Features
+
+* 3D globe controls ([#2101](https://github.com/EOX-A/EOxElements/issues/2101)) ([de70738](https://github.com/EOX-A/EOxElements/commit/de7073884d9abd4e384e3ba8df3412f7b7cd82c9))
+* 3D support (basic) for vector styles ([#2121](https://github.com/EOX-A/EOxElements/issues/2121)) ([c52a363](https://github.com/EOX-A/EOxElements/commit/c52a363c4b6cf6ff42554fdf88eb2889b497ddff))
+* GeoZarr source ([#2040](https://github.com/EOX-A/EOxElements/issues/2040)) ([2cf0da6](https://github.com/EOX-A/EOxElements/commit/2cf0da609905f55ba8d7e154d5bd23fc2b157429))
+
 ## [2.0.3](https://github.com/EOX-A/EOxElements/compare/map-v2.0.2...map-v2.0.3) (2026-01-21)
 
 

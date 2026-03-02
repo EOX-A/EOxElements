@@ -48,6 +48,7 @@
 }
 .ol-control {
   background: none;
+  z-index: 1;
 }
 .ol-control button,
 .ol-control button:hover,
@@ -96,4 +97,31 @@
   border-top-right-radius: 0.5rem;
   border-bottom-left-radius: var(--_round);
   border-bottom-right-radius: var(--_round);
+}
+
+.globe-switcher-container {
+  --fs-offset: 0em;
+  --rotate-offset: 0em;
+  top: calc(0.5em + var(--fs-offset) + var(--rotate-offset));
+  right: 0.5em;
+}
+.ol-rotate {
+  --fullscreen-offset: 0em;
+  top: calc(0.5em + var(--fullscreen-offset));
+}
+:has(.ol-full-screen) .ol-rotate {
+  --fullscreen-offset: 2.5em;
+}
+
+:has(.ol-full-screen) .globe-switcher-container {
+  --fs-offset: 2.5em;
+}
+
+/* 3. If Rotate exists, add 2em to the stack */
+:has(.ol-rotate) .globe-switcher-container {
+  --rotate-offset: 2.5em;
+}
+
+:has(.ol-hidden) .globe-switcher-container {
+  --rotate-offset: 0em;
 }
