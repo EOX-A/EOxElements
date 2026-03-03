@@ -90,6 +90,7 @@ export class EOxTimeControl extends LitElement {
       unstyled: { type: Boolean },
       titleKey: { type: String, attribute: "title-key" },
       layerIdKey: { type: String, attribute: "layer-id-key" },
+      showUTC: { type: Boolean, attribute: "show-utc" },
       externalMapRendering: {
         type: Boolean,
         attribute: "external-map-rendering",
@@ -161,6 +162,13 @@ export class EOxTimeControl extends LitElement {
      * @type {string}
      */
     this.layerIdKey = "id";
+
+    /**
+     * Whether to show UTC dates in the timecontrol (default: false).
+     *
+     * @type {boolean}
+     */
+    this.showUTC = true;
 
     /**
      * Whether external map rendering is enabled for timelapse export.
