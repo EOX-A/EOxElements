@@ -283,7 +283,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update style if different
   if (
-    ["Vector", "VectorTile","WebGLTile"].includes(newLayerDefinition.type) &&
+    ["Vector", "VectorTile", "WebGLTile"].includes(newLayerDefinition.type) &&
     serialize(
       /** @type {import("../layers.ts").EOxLayerType<"Vector"|"VectorTile"|"WebGLTile",any>} */ (
         newLayerDefinition
@@ -293,7 +293,7 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     // @ts-expect-error TODO
     existingLayer.setStyle(newLayerDefinition.style);
   }
-  
+
   // Update properties if different
   if (
     serialize(newLayerDefinition.properties) !==
