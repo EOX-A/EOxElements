@@ -36,6 +36,16 @@ export default defineConfig({
     // specPattern: "**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.js",
     experimentalRunAllSpecs: true,
+    setupNodeEvents(on, config) {
+      on("before:browser:launch", (browser, launchOptions) => {
+        if (browser.name === "chrome" || browser.name === "edge") {
+          launchOptions.args.push("--enable-unsafe-swiftshader");
+          launchOptions.args.push("--disable-gpu");
+        }
+        return launchOptions;
+      });
+      return config;
+    },
   },
   component: {
     supportFile: "cypress/support/component.js",
