@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/EOX-A/EOxElements/compare/map-v2.2.0...map-v2.3.0) (2026-03-05)
+
+
+### Features
+
+* 3d globe LOD option ([#2145](https://github.com/EOX-A/EOxElements/issues/2145)) ([af77a6c](https://github.com/EOX-A/EOxElements/commit/af77a6caca5cf23fc02ce61f529dbf1742c1878f))
+
+
+### Bug Fixes
+
+* Update WebGLTile styles on layer update ([#2177](https://github.com/EOX-A/EOxElements/issues/2177)) ([30fbc86](https://github.com/EOX-A/EOxElements/commit/30fbc863f91a3e74df037da845c47269d9fdae7d))
+
 ## [2.2.0](https://github.com/EOX-A/EOxElements/compare/map-v2.1.0...map-v2.2.0) (2026-02-27)
 
 
