@@ -54,6 +54,7 @@ export default {
       .layers=${args.layers}
       .projection=${args.projection}
       .zoom=${args.zoom}
+      .terrain=${args.terrain}
       .useHighLOD=${args.useHighLOD}
     ></eox-map>
   `,
