@@ -291,7 +291,12 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
     ) !== serialize(existingJsonDefinition.style)
   ) {
     // @ts-expect-error TODO
-    existingLayer.setStyle(newLayerDefinition.style);
+    existingLayer.setStyle(
+      newLayerDefinition.type === "WebGLTile"
+        ? newLayerDefinition.style
+        : // @ts-expect-error TODO
+          newLayer.getStyle(),
+    );
   }
 
   // Update properties if different
