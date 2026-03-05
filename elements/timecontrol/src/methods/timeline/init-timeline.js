@@ -2,7 +2,7 @@ import {
   DEFAULT_VIS_TIMELINE_OPTIONS,
   VIS_TIMELINE_DATE_FORMATS,
 } from "../../enums.js";
-import { Timeline } from "vis-timeline/standalone";
+import { Timeline, moment } from "vis-timeline/standalone";
 import { updateVisibility } from "../../helpers/index.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
@@ -229,6 +229,9 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
+      moment: function (date) {
+        return moment(date).utc();
+      },
     };
 
     const visTimeline =
