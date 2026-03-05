@@ -6,9 +6,11 @@ import {
   transformLinks,
   initShowOptInElement,
 } from "./helpers";
+import { AceMarkdownEditor, aceMarkdownResolver } from "./ace-markdown-editor";
 import { style } from "./style";
 import { styleEOX } from "./style.eox";
 import isEqual from "lodash.isequal";
+import { JSONEditor } from "@json-editor/json-editor/src/core.js";
 import _DOMPurify from "isomorphic-dompurify"; // required for allowing HTML in jsonform-rendered titles & descriptions
 
 /**
@@ -230,6 +232,12 @@ export class EOxJSONForm extends LitElement {
     // check if schema has been changed to prevent useless parsing
     if (changedProperties.has("schema")) {
       this._schema = await parseProperty(this.schema);
+
+      // Register custom acemarkdown editor
+      // @ts-ignore
+      JSONEditor.defaults.editors.acemarkdown = AceMarkdownEditor;
+      // @ts-ignore
+      JSONEditor.defaults.resolvers.unshift(aceMarkdownResolver);
 
       if (!this.#editor || this.#editor.destroyed) {
         this.#editor = await createEditor(this);
