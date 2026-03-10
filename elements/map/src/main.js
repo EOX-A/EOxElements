@@ -51,6 +51,7 @@ addCommonStylesheet();
  * @typedef {import("./types").ConfigObject} ConfigObject
  * @typedef {import("./types").ProjectionLike} ProjectionLike
  * @typedef {import("./types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("./types").GlobeConfig} GlobeConfig
  * */
 
 /**
@@ -248,9 +249,7 @@ export class EOxMap extends LitElement {
 
   /**
    * Internal property to store the globe configuration options when globe mode is enabled.
-   * @type {Object}
-   * globeConfig.terrain: option for whether or not there will be terrain on the globe projection.
-   * globeConfig.useHighLOD: Whether use high level of details or not.
+   * @type {GlobeConfig}
    */
   #globeConfig = {
     terrain: false,
@@ -584,7 +583,7 @@ export class EOxMap extends LitElement {
   /**
    * Sets the properties of the globe such as the terrain.
    *
-   * @param {object} globeConfig - The globe configuration which contains the terrain boolean.
+   * @param {GlobeConfig} globeConfig - The globe configuration which contains the terrain boolean.
    */
   set globeConfig(globeConfig) {
     this.#globeConfig = setTerrainMethod(globeConfig, this);
@@ -592,7 +591,7 @@ export class EOxMap extends LitElement {
 
   /**
    * Gets the current globe configuration properties.
-   * @returns {boolean}
+   * @returns {GlobeConfig}
    */
   get globeConfig() {
     return this.#globeConfig;
