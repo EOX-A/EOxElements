@@ -48,4 +48,10 @@ describe("Stories test", () => {
       });
     }
   });
+
+  afterEach(() => {
+    cy.window().then((win) => {
+      win.location.replace("about:blank");
+    });
+  });
 });
