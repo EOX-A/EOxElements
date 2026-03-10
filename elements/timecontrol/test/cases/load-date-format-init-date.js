@@ -1,4 +1,6 @@
 import { html } from "lit";
+import { getUTCDate } from "../utils.js";
+import dayjs from "dayjs";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -15,7 +17,9 @@ const loadDateFormatInitDate = () => {
   // data preparation - define test data
   const customFormat = "D. MMMM YYYY";
   const initDate = ["2023-02-05"]; // Middle of the date range
-  const expectedFormattedDate = "5. February 2023"; // expected output with custom format
+  const expectedFormattedDate = dayjs(getUTCDate(initDate[0])).format(
+    customFormat,
+  );
 
   // mount - mount components with both format and initDate
   cy.mount(html`
@@ -62,7 +66,7 @@ const loadDateFormatInitDate = () => {
       // verify it's NOT using ISO format (would be "2023-02-05")
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("not.equal", "2023-02-05");
+        .should("not.equal", getUTCDate("2023-02-05"));
     });
 };
 

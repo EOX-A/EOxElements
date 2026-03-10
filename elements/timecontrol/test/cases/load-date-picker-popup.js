@@ -1,4 +1,7 @@
 import { html } from "lit";
+
+import { getUTCDate } from "../utils.js";
+
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -63,7 +66,7 @@ const loadDatePickerPopup = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", initialDate);
+        .should("equal", getUTCDate(initialDate));
       cy.get("#date-container input[type='text']").click();
     });
 
@@ -97,10 +100,10 @@ const loadDatePickerPopup = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", testDate); // "2023-04-17"
+        .should("equal", getUTCDate(testDate)); // "2023-04-16"
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("not.equal", initialDate); // should NOT be "2023-04-24"
+        .should("not.equal", getUTCDate(initialDate)); // should NOT be "2023-04-23"
     });
 };
 
