@@ -54,7 +54,7 @@ export default {
       .layers=${args.layers}
       .projection=${args.projection}
       .zoom=${args.zoom}
-      .useHighLOD=${args.useHighLOD}
+      .globeConfig=${args.globeConfig}
     ></eox-map>
   `,
 };
@@ -366,6 +366,7 @@ export const HelperMethods = HelperMethodsStory;
 /**
  * Basic Globe rendered using `projection: "globe"`, and OpenGlobus as globe renderer.
  * When the projection of the view can is set to "globe", the map will render as a 3D globe.
+ * The `globeConfig` property allows to configure the globe, e.g. setting `terrain` to `true` to enable terrain rendering, or `useHighLOD` to `true` for higher level of detail.
  * This example renders a globe centered on Austria, with 2 layers: an XYZ tile layer as base layer, and a GeoTiff layer on top.
  * The GeoTiff layer is rendered as a CanvasTiles layer in OpenGlobus, while the XYZ layer is rendered natively in the OpenGlobus.
  */

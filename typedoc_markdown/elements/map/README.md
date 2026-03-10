@@ -30,6 +30,7 @@
 - [EoxSource](type-aliases/EoxSource.md)
 - [FlatGeoBufOptions](type-aliases/FlatGeoBufOptions.md)
 - [GeolocationOptions](type-aliases/GeolocationOptions.md)
+- [GlobeConfig](type-aliases/GlobeConfig.md)
 - [HTMLElementEvent](type-aliases/HTMLElementEvent.md)
 - [layerType](type-aliases/layerType.md)
 - [LoadingIndicatorOptions](type-aliases/LoadingIndicatorOptions.md)

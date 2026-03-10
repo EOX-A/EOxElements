@@ -24,6 +24,7 @@
 - [EoxLayers](../../../elements/map/type-aliases/EoxLayers.md)
 - [FlatGeoBufOptions](../../../elements/map/type-aliases/FlatGeoBufOptions.md)
 - [GeolocationOptions](../../../elements/map/type-aliases/GeolocationOptions.md)
+- [GlobeConfig](../../../elements/map/type-aliases/GlobeConfig.md)
 - [HTMLElementEvent](../../../elements/map/type-aliases/HTMLElementEvent.md)
 - [layerType](../../../elements/map/type-aliases/layerType.md)
 - [LoadingIndicatorOptions](../../../elements/map/type-aliases/LoadingIndicatorOptions.md)
