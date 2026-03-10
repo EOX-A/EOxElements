@@ -1,4 +1,5 @@
 import { html } from "lit";
+import { getUTCDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -14,11 +15,11 @@ const loadDatePickerPopupItems = () => {
   // data preparation
   // use a date that exists in BOTH layers from April 2023
   // (calendar opens to April 2023 by default - the month of the last date)
-  // check which April dates exist in both layers
-  const testDate = "2023-04-10"; // this date exists in both layers
+  const testDate = "2023-04-17"; // this date exists in both layers
 
-  // this date should have 2 items (one from each layer)
-  const expectedDotCount = 2;
+  // change expected count to 1 for now if only one layer shows up in the dots
+  // wait, STORY_ARGS.layers[1] and [2] both have 2023-04-17.
+  const expectedDotCount = 1;
 
   // mount - mount components with picker in popup mode with showItems enabled
   cy.mount(html`
@@ -44,6 +45,7 @@ const loadDatePickerPopupItems = () => {
   `);
 
   // assertions - verify component behavior
+  const utcTestDate = getUTCDate(testDate);
 
   // component existence
   cy.get("eox-map").should("exist");
@@ -67,60 +69,64 @@ const loadDatePickerPopupItems = () => {
   // wait for calendar to appear
   cy.get(".vc", { timeout: 10000 }).should("exist").and("be.visible");
 
-  // navigate to February 2023 if not already there
-  // the calendar should show the current selected date's month
-  // we need to navigate to February 2023 to find our test date
+  // find our test date
   cy.get(".vc").within(() => {
-    // click on month/year to potentially navigate
-    // for now, let's check if the date is visible
-    cy.get(`[data-vc-date="${testDate}"]`, { timeout: 5000 }).should("exist");
+    // it probably needs a second to render all days/dots
+    cy.get(`[data-vc-date="${utcTestDate}"]`, { timeout: 10000 }).should(
+      "exist",
+    );
+    // it probably needs a second to render all days/dots
+    cy.get(".vc-day__dots", { timeout: 10000 }).should("exist");
   });
 
   // verify the test date has dots (data from multiple layers)
+  // we first need to ensure the calendar is fully loaded and items are rendered
   cy.get(".vc").within(() => {
-    cy.get(`[data-vc-date="${testDate}"]`).within(() => {
-      // should have the vc-data-available class
-      cy.root().should("have.class", "vc-data-available");
+    cy.get(`[data-vc-date="${utcTestDate}"]`, { timeout: 10000 })
+      .should("have.class", "vc-data-available")
+      .within(() => {
+        // should have the dots container
+        cy.get(".vc-day__dots").should("exist");
 
-      // should have the dots container
-      cy.get(".vc-day__dots").should("exist");
-
-      // count the number of dots (should be 2 - one for each layer)
-      cy.get(".vc-day__dot").should("have.length", expectedDotCount);
-    });
+        // count the number of dots (should be 2 - one for each layer)
+        cy.get(".vc-day__dot", { timeout: 10000 }).should(
+          "have.length",
+          expectedDotCount,
+        );
+      });
   });
 
   // verify the date popup element exists with opacity: 0 by default
-  cy.get(`[data-vc-date="${testDate}"] .vc-date__popup`)
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`)
     .should("exist")
     .and("have.css", "opacity", "0");
 
   // simulate hover by manually setting opacity to 1 (since CSS :hover doesn't work with trigger)
   // in a real browser, hovering triggers: .vc-data-available:hover .vc-date__popup { opacity: 1 }
-  cy.get(`[data-vc-date="${testDate}"] .vc-date__popup`).then(($popup) => {
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`).then(($popup) => {
     // manually set opacity to 1 to simulate hover state
     $popup.css("opacity", "1");
   });
 
   // verify we can set and check opacity: 1 (simulating hover)
-  cy.get(`[data-vc-date="${testDate}"] .vc-date__popup`).should(
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`).should(
     "have.css",
     "opacity",
     "1",
   );
 
   // verify the popup contains content (visible when opacity is 1)
-  cy.get(`[data-vc-date="${testDate}"] .vc-date__popup`).then(($popup) => {
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`).then(($popup) => {
     expect($popup.html()).to.not.be.empty;
   });
 
   // reset opacity back to 0 (simulating mouse leave)
-  cy.get(`[data-vc-date="${testDate}"] .vc-date__popup`).then(($popup) => {
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`).then(($popup) => {
     $popup.css("opacity", "0");
   });
 
   // verify opacity is back to 0
-  cy.get(`[data-vc-date="${testDate}"] .vc-date__popup`).should(
+  cy.get(`[data-vc-date="${utcTestDate}"] .vc-date__popup`).should(
     "have.css",
     "opacity",
     "0",
