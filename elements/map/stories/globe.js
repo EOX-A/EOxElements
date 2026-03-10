@@ -5,10 +5,12 @@
  */
 const GlobeStory = {
   args: {
-    useHighLOD: true,
     center: [15, 48],
     projection: "globe",
-    terrain: true,
+    globeConfig: {
+      terrain: true,
+      useHighLOD: true,
+    },
     layers: [
       {
         type: "Tile",

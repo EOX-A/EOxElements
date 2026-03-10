@@ -36,6 +36,7 @@ import {
   removeSelectMethod,
   removeControlMethod,
   firstUpdatedMethod,
+  setTerrainMethod,
 } from "./methods/map/";
 import eoxStyle from "@eox/ui/style.css?inline";
 import { addCommonStylesheet } from "@eox/elements-utils";
@@ -157,8 +158,7 @@ export class EOxMap extends LitElement {
       selectInteractions: { attribute: false, state: true, type: Object },
       sync: { attribute: "sync", type: String },
       zoomExtent: { attribute: false, type: Array },
-      terrain: { type: Boolean },
-      useHighLOD: { attribute: "use-high-lod", type: Boolean },
+      globeConfig: { attribute: false, type: Object },
     };
   }
 
@@ -239,11 +239,6 @@ export class EOxMap extends LitElement {
    * @type {ProjectionLike}
    */
   #_olProjection = "EPSG:3857";
-  /**
-   * Internal property to  store the terrain option for the globe projection.
-   * @type {boolean}
-   */
-  #terrain = false;
 
   /**
    * Stores the last 2D projection to switch back from globe view.
@@ -252,9 +247,15 @@ export class EOxMap extends LitElement {
   last2dProjection = "EPSG:3857";
 
   /**
-   * Whether use high level of details or not.
+   * Internal property to store the globe configuration options when globe mode is enabled.
+   * @type {Object}
+   * globeConfig.terrain: option for whether or not there will be terrain on the globe projection.
+   * globeConfig.useHighLOD: Whether use high level of details or not.
    */
-  #useHighLOD = false;
+  #globeConfig = {
+    terrain: false,
+    useHighLOD: false,
+  };
 
   constructor() {
     super();
@@ -522,23 +523,6 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Sets if the (default) higher LOD level for the globe will not be used. This can be used to increase the level of detail for the globe, but may have performance implications.
-   *
-   * @param {boolean} useHighLOD - The useHighLOD.
-   */
-  set useHighLOD(useHighLOD) {
-    this.#useHighLOD = useHighLOD;
-  }
-
-  /**
-   * Gets the current useHighLOD state of the map. This indicates whether the globe will use a higher level of detail by not reducing the LOD levels.
-   * @returns {boolean}
-   */
-  get useHighLOD() {
-    return this.#useHighLOD;
-  }
-
-  /**
    * Gets the current map projection.
    *
    * @type {ProjectionLike}
@@ -598,20 +582,20 @@ export class EOxMap extends LitElement {
   }
 
   /**
-   * Sets the terrain for the globe.
+   * Sets the properties of the globe such as the terrain.
    *
-   * @param {boolean} terrain - The terrain.
+   * @param {object} globeConfig - The globe configuration which contains the terrain boolean.
    */
-  set terrain(terrain) {
-    this.#terrain = terrain;
+  set globeConfig(globeConfig) {
+    this.#globeConfig = setTerrainMethod(globeConfig, this);
   }
 
   /**
-   * Gets the current terrain state of the map.
+   * Gets the current globe configuration properties.
    * @returns {boolean}
    */
-  get terrain() {
-    return this.#terrain;
+  get globeConfig() {
+    return this.#globeConfig;
   }
 
   /**

@@ -16,6 +16,7 @@ import VectorLayer from "ol/layer/Vector";
 import View from "ol/View";
 import { getElement } from "@eox/elements-utils";
 import serialize from "serialize-javascript";
+import { GlobusRgbTerrain, EmptyTerrain } from "@openglobus/og";
 
 /**
  * @typedef {import("../../layers").EoxLayer} EoxLayer
@@ -440,4 +441,19 @@ export function setSyncMethod(sync, EOxMap) {
   }
 
   return sync;
+}
+
+export function setTerrainMethod(globeConfig, EOxMap) {
+  if (EOxMap.globe) {
+    if (globeConfig.terrain) {
+      setTimeout(() => {
+        EOxMap.globe.planet.setTerrain(new GlobusRgbTerrain());
+      });
+    } else {
+      setTimeout(() => {
+        EOxMap.globe.planet.setTerrain(new EmptyTerrain());
+      });
+    }
+  }
+  return globeConfig;
 }
