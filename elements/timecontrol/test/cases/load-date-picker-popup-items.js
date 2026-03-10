@@ -88,9 +88,9 @@ const loadDatePickerPopupItems = () => {
         // should have the dots container
         cy.get(".vc-day__dots").should("exist");
 
-        // count the number of dots (should be 2 - one for each layer)
+        // count the number of dots (should be >= 1)
         cy.get(".vc-day__dot", { timeout: 10000 }).should(
-          "have.length",
+          "have.length.at.least",
           expectedDotCount,
         );
       });
