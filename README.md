@@ -134,69 +134,13 @@ import "@eox/<element>" from "https://cdn.skypack.dev/@eox/<element>"
 
 ## Development
 
-### Branch naming convention
+For detailed development instructions, including monorepo structure, coding standards, and testing procedures, please refer to the [Contributing Guide](CONTRIBUTING.md).
 
-Inspired by [this article](https://betterprogramming.pub/enabling-monorepo-with-a-simple-single-github-repository-39bc6347abba#391d).
+AI Agents working in this repository should also consult [AGENTS.md](AGENTS.md) for specific guidelines on maintaining documentation and ensuring compatibility with the MCP server.
 
-Please name your branches `<element>/<changetype>/<name>`:
+## License
 
-```
-main
-map/feature/new-feature
-map/fix/some-fix
-chart/feature/new-feature
-chart/fix/some-fix
-[...]
-```
-
-### Initial Setup
-
-In order to use npm workspaces and all the elements properly, please use **Node.js >= 20.9.0 LTS**.
-
-Install all root and all element dependencies:
-
-```
-npm install
-```
-
-In general, it is recommended to perform all actions from the root level, not from the individual element folders. For example, if you want to build an element, use
-
-```
-npm run build -w @eox/<element-name>
-```
-
-Please refer to [the npm workspace docs](https://docs.npmjs.com/cli/v7/using-npm/workspaces#running-commands-in-the-context-of-workspaces) for more information.
-
-### Dev server
-
-To start the storybook dev server, use:
-
-```
-npm start
-```
-
-This opens the storybook server on localhost (port 6006), where multiple element states can be used for development. Edit the corresponding element `*.stories.js` files to create and work on multiple states of an element.
-
-### Types
-
-In order to generate all types output, use:
-
-```
-npm run types:generate:all
-```
-
-### Test server
-
-You can run individual tests by using the Cypress testing GUI. It offers access to a suite of configurations for each element via component tests, and E2E tests combining multiple elements.
-
-#### Component Tests
-
-```
-npm run cypress
---> select Component Testing
---> select a browser
---> select a spec
-```
+By contributing to EOxElements, you agree that your contributions will be licensed under the repository's [LICENSE](LICENSE).
 
 #### E2E Tests
 
