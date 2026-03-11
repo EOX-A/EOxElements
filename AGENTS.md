@@ -30,8 +30,10 @@ If any answer is "I don't know," stop. Ask a clarifying question. Do not guess.
     -   Use `@property` or `@state` decorators if using TypeScript.
     -   **JSDoc Mandatory**: Every property must have a JSDoc description for the Custom Elements Manifest.
 -   **Styles**:
-    -   Use `addCommonStylesheet()` from `@eox/elements-utils`.
-    -   Prefer `css` literal for component-specific styles.
+    - **EOxUI First**: This repository uses [EOxUI](https://github.com/EOX-A/EOxUI). Prefer using proper HTML structure and EOxUI classes over writing custom CSS.
+    - **Minimal Custom CSS**: Only write custom CSS if the requirement cannot be solved using EOxUI.
+    - **Common Styles**: Use `addCommonStylesheet()` from `@eox/elements-utils` in all elements.
+    - **Isolation**: Prefer `css` literal for component-specific styles if absolutely necessary.
 
 ### Documentation (The "Doc-as-Source" Rule)
 

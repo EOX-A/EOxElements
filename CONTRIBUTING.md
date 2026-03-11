@@ -28,6 +28,9 @@ EOxElements is a monorepo containing various web components (stored in the `/ele
 
 ### 4. Code Standards & Documentation
 
+- **Styling with EOxUI**: We use the [EOxUI](https://github.com/EOX-A/EOxUI) style framework.
+  - **No Custom CSS by Default**: Prefer using standard HTML structure and EOxUI classes. Custom CSS should only be added if the requirement cannot be solved using EOxUI.
+  - **Common Styles**: Always include `addCommonStylesheet()` from `@eox/elements-utils` in all elements.
 - **JSDoc**: All public properties, attributes, methods, and events must be documented using JSDoc in the main component file.
   - **Attributes**: Used for string, number, and boolean values compatible with HTML attributes.
   - **Properties**: Used for complex objects, arrays, and functions.
