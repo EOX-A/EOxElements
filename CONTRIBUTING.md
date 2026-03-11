@@ -25,6 +25,11 @@ EOxElements is a monorepo containing various web components (stored in the `/ele
   - Example: `feat(map): add support for new layer type`
   - Example: `fix(layercontrol): resolved z-index issue`
 - **PR Titles**: Since all PRs are **squashed**, the **PR title must follow the conventional commit format**. The title will be the commit message that triggers the release.
+- **PR Description**: Write clear descriptions in your own words:
+  - **What** does this PR do?
+  - **Why** is this change needed?
+  - **How** was it tested (e.g., link to Storybook story)?
+  - Link to related issues: `Fixes #123`.
 
 ### 4. Code Standards & Documentation
 
@@ -45,6 +50,33 @@ Before submitting your PR, ensure the following pass:
 2.  **Linting**: `npm run lint:fix` (from the root).
 3.  **Type Checking**: `npm run typecheck` (from the root).
 4.  **Formatting**: `npm run format` (from the root).
+
+## AI Use Policy
+
+AI tools are part of modern development workflows and contributors may use them. However, all contributions must meet EOxElements quality standards regardless of how they were created.
+
+### Guidelines
+
+AI-assisted development is acceptable when used responsibly. Contributors must:
+
+- **Test all code thoroughly**: Submit only code you have verified works correctly (Cypress tests, Storybook stories).
+- **Understand your contributions**: You must be able to explain the Lit lifecycle, OpenLayers logic, and JSDoc metadata you submit.
+- **Write clear, concise PR descriptions** in your own words. Automated AI-generated descriptions that are overly verbose or generic are not acceptable.
+- **Take responsibility** for code quality, correctness, and maintainability.
+
+### Unacceptable Submissions
+
+Pull requests may be closed without review if they contain:
+
+- Untested code or logic.
+- Verbose AI-generated descriptions.
+- Incorrect JSDoc that breaks the Custom Elements Manifest or MCP server.
+- Evidence that the contributor does not understand the submitted logic.
+
+## Getting Help
+
+- **Questions?** Open an [issue](https://github.com/EOX-A/EOxElements/issues) or start a discussion.
+- **Found a bug?** Open an [issue](https://github.com/EOX-A/EOxElements/issues) with a reproduction case.
 
 ## Licensing
 
