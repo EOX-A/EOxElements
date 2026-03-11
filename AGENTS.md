@@ -27,7 +27,7 @@ If any answer is "I don't know," stop. Ask a clarifying question. Do not guess.
 -   **Logic Isolation**: Large methods should be moved to `src/methods/` and imported in the main element class.
 -   **Properties & Attributes**:
     -   Always define in the `static get properties()` block.
-    -   Use `@property` or `@state` decorators if using TypeScript.
+    -   **No TypeScript Code**: This repository uses JavaScript + JSDoc. Do NOT use TypeScript decorators (`@property`, `@state`) or `.ts` files for logic. TypeScript is used only for type definitions (`types.ts`, `@typedef`).
     -   **JSDoc Mandatory**: Every property must have a JSDoc description for the Custom Elements Manifest.
 -   **Styles**:
     - **EOxUI First**: This repository uses [EOxUI](https://github.com/EOX-A/EOxUI). Prefer using proper HTML structure and EOxUI classes over writing custom CSS.
