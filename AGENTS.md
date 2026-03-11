@@ -10,7 +10,7 @@ Answer these questions in order. Stop if you can't answer one.
 
 1.  **Which element is changing?** Identify the folder in `/elements/` (e.g., `elements/map`).
 2.  **Is this a single-element change?** If the request touches multiple elements, state that you will split it into atomic PRs/commits.
-3.  **Attributes or Properties?**
+3.  **New/changed attributes or properties?**
     - Attributes: strings, numbers, booleans (HTML compatible).
     - Properties: Objects, Arrays, Functions (Complex types).
 4.  **What is the minimum change?** State it in one sentence.
@@ -47,7 +47,7 @@ EOxElements is integrated with an **MCP Server**. Documentation is code.
 
 - Every new feature MUST have a story in `[element].stories.js`.
 - Stories must include a **fully functional code example** in the description (rendered in Storybook Docs).
-- **JSDoc at Story Level**: Use JSDoc to explain the specific use case the story demonstrates.
+- **JSDoc at Story Level**: Use JSDoc to explain the specific use case the story demonstrates. The text must include enough information so that a coding agent can find and use the story as an example for including the EOxElement in a downstream application.
 
 ---
 
@@ -68,8 +68,8 @@ Before starting, state your plan:
 After every implementation, you **MUST** run:
 
 1.  **Component Tests**: Run tests from the root level for the specific element workspace.
-    - Run all component tests: `npm run test:component`
-    - Run tests for a specific element: `npx cypress run --component --spec "elements/[element]/test/*.cy.js"`
+    - Run all component tests (if necessary): `npm run test:component`
+    - Run tests for a specific element (preferred): `npx cypress run --component --spec "elements/[element]/test/*.cy.js"`
 2.  **Linting**: Run `npm run lint:fix` from the root to fix style issues.
 3.  **Type Checking**: Run `npm run typecheck` to ensure type safety.
 4.  **Formatting**: Run `npm run format` to ensure consistent code style.
@@ -80,9 +80,9 @@ After every implementation, you **MUST** run:
 
 We use `release-please`. Formatting errors here will break the release pipeline.
 
-- **PR Title**: Must be in Conventional Commit format (e.g., `feat(map): add tooltip property`).
+- **PR Title**: Must be in Conventional Commit format (e.g., `feat: add tooltip property`).
 - **Commit Message**: Same as PR Title. Since we squash, the PR title becomes the commit.
-- **One Element Per PR**: Never mix changes for `map` and `layercontrol` in one PR.
+- **One Element Per PR**: Never mix changes for e.g. `map` and `layercontrol` in one PR.
 
 ---
 

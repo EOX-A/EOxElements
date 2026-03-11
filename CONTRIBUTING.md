@@ -22,14 +22,14 @@ EOxElements is a monorepo containing various web components (stored in the `/ele
 ### 3. Commit & PR Guidelines
 
 - **Conventional Commits**: We use [Conventional Commits](https://www.conventionalcommits.org/).
-  - Example: `feat(map): add support for new layer type`
-  - Example: `fix(layercontrol): resolved z-index issue`
-- **PR Titles**: Since all PRs are **squashed**, the **PR title must follow the conventional commit format**. The title will be the commit message that triggers the release.
+  - Example: `feat: add support for new layer type`
+  - Example: `fix: resolved z-index issue`
+- **PR Titles**: Since all PRs are **squashed**, the **PR title must follow the conventional commit format**. The title will be the commit message that triggers the release and the according version bump. One PR equals to one entry in the changelog.
 - **PR Description**: Write clear descriptions in your own words:
   - **What** does this PR do?
   - **Why** is this change needed?
   - **How** was it tested (e.g., link to Storybook story)?
-  - Link to related issues: `Fixes #123`.
+  - Link to related issues: e.g. `fixes #123`.
 
 ### 4. Code Standards & Documentation
 
@@ -60,7 +60,7 @@ AI tools are part of modern development workflows and contributors may use them.
 AI-assisted development is acceptable when used responsibly. Contributors must:
 
 - **Test all code thoroughly**: Submit only code you have verified works correctly (Cypress tests, Storybook stories).
-- **Understand your contributions**: You must be able to explain the Lit lifecycle, OpenLayers logic, and JSDoc metadata you submit.
+- **Understand your contributions**: You must be able to explain the Lit lifecycle, JSDoc metadata, and element-specific code (e.g. Vega-, OpenLayers, JSON Editor-specific logic) you submit.
 - **Write clear, concise PR descriptions** in your own words. Automated AI-generated descriptions that are overly verbose or generic are not acceptable.
 - **Take responsibility** for code quality, correctness, and maintainability.
 
