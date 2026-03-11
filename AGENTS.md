@@ -66,7 +66,9 @@ Before starting, state your plan:
 
 After every implementation, you **MUST** run:
 
-1.  **Component Tests**: Run tests specific to the element you modified (e.g., `cd elements/[element] && npm run test`).
+1.  **Component Tests**: Run tests from the root level for the specific element workspace.
+    - Run all component tests: `npm run test:component`
+    - Run tests for a specific element: `npx cypress run --component --spec "elements/[element]/test/*.cy.js"`
 2.  **Linting**: Run `npm run lint:fix` from the root to fix style issues.
 3.  **Type Checking**: Run `npm run typecheck` to ensure type safety.
 4.  **Formatting**: Run `npm run format` to ensure consistent code style.

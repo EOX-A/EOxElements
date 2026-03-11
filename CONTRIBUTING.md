@@ -11,8 +11,8 @@ EOxElements is a monorepo containing various web components (stored in the `/ele
 ### 1. Monorepo Structure
 
 - Each package (element) is located in the `/elements` directory.
-- Run commands from the root for global tasks (linting, formatting).
-- Run commands from individual element directories for package-specific tasks (testing, building).
+- **Run all commands from the root level**: This repository uses npm workspaces, but testing is handled via a root Cypress configuration.
+- To run component tests for a specific element: `npx cypress run --component --spec "elements/[element-name]/test/*.cy.js"`.
 
 ### 2. Making Changes
 
@@ -41,7 +41,7 @@ EOxElements is a monorepo containing various web components (stored in the `/ele
 
 Before submitting your PR, ensure the following pass:
 
-1.  **Component Tests**: `npm run test` (within the specific element folder).
+1.  **Component Tests**: `npx cypress run --component --spec "elements/[element-name]/test/*.cy.js"` from the root.
 2.  **Linting**: `npm run lint:fix` (from the root).
 3.  **Type Checking**: `npm run typecheck` (from the root).
 4.  **Formatting**: `npm run format` (from the root).
