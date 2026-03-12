@@ -202,8 +202,15 @@ export class EOxTimeControlDate extends LitElement {
    * @returns {string} Formatted date or date range string.
    */
   #getFormattedDate(selectedDateRange, format) {
-    const start = dayjs(selectedDateRange[0]).utc();
-    const end = dayjs(selectedDateRange[1]).utc();
+    const EOxTimeControl = this.getEOxTimeControl();
+    const showUTC = EOxTimeControl.showUTC;
+
+    const start = showUTC
+      ? dayjs(selectedDateRange[0]).utc()
+      : dayjs(selectedDateRange[0]);
+    const end = showUTC
+      ? dayjs(selectedDateRange[1]).utc()
+      : dayjs(selectedDateRange[1]);
     const dayDifference = end.diff(start, "day");
 
     return dayDifference === 0
