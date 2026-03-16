@@ -48,21 +48,19 @@ This opens the storybook server on localhost (port 6006). Edit the corresponding
 
 #### Testing
 
-You can run individual tests using the Cypress testing GUI or CLI:
+We use [Cypress](https://github.com/cypress-io/cypress) for both component and E2E testing. No other test frameworks (Jest, Vitest) are used.
 
-**CLI (Component Tests):**
+**Component Tests:**
 
-```bash
-npx cypress run --component --spec "elements/[element-name]/test/*.cy.js"
-```
+- Run for a specific element: `npx cypress run --component --spec "elements/[element-name]/test/*.cy.js"`.
+- Use `cy.mount()` (via `cypress-lit`) for web components.
+- Test case implementations should be in `cases/` subdirectory and imported into `.cy.js` files.
 
-**GUI:**
+**E2E Tests:**
 
-```bash
-npm run cypress
-```
+- Run E2E tests: `npm run test:e2e`.
 
-**Automated tests:**
+**Automated test scripts:**
 
 ```bash
 npm run test:all       # Both component & E2E
@@ -70,11 +68,19 @@ npm run test:component # Only component tests
 npm run test:e2e       # Only E2E tests (requires build/watch)
 ```
 
-#### Useful commands
+**Cypress GUI:**
+
+```bash
+npm run cypress
+```
+
+#### Code Quality & Build
 
 - **Format**: `npm run format`
 - **Lint/Fix**: `npm run lint:fix`
 - **Type checking**: `npm run typecheck`
+- **Build All**: `npm run build:all`
+- **Build Element**: `npm run build -w @eox/<element-name>`
 - **Generate types**: `npm run types:generate:all`
 
 ### 5. Bootstrapping a new element
@@ -94,14 +100,15 @@ Some things are handled by the root "system":
 
 ### 6. Code Standards & Documentation
 
+- **File Structure & Logic Isolation**: Keep `src/main.js` focused on lifecycle and properties. Use `src/methods/` to separate big structural logic, `src/helpers/` for pure utility functions, `src/components/` for nested internal components, and `src/enums/` for centralized configuration and enumerations.
 - **Styling with EOxUI**: We use the [EOxUI](https://github.com/EOX-A/EOxUI) style framework.
-  - **No Custom CSS by Default**: Prefer using standard HTML structure and EOxUI classes. Custom CSS should only be added if the requirement cannot be solved using EOxUI.
-  - **Common Styles**: Always include `addCommonStylesheet()` from `@eox/elements-utils` in all elements.
+- **No Custom CSS by Default**: Prefer using standard HTML structure and EOxUI classes. Custom CSS should only be added if the requirement cannot be solved using EOxUI.
+- **Common Styles**: Always include `addCommonStylesheet()` from `@eox/elements-utils` in all elements.
 - **JSDoc**: All public properties, attributes, methods, and events must be documented using JSDoc in the main component file.
-  - **Attributes**: Used for string, number, and boolean values compatible with HTML attributes.
-  - **Properties**: Used for complex objects, arrays, and functions.
+- **Attributes**: Used for string, number, and boolean values compatible with HTML attributes.
+- **Properties**: Used for complex objects, arrays, and functions.
+- **Tests**: Component tests are structured with the main suite `describe` definitions inside `.cy.js` files at the test root `elements/[element]/test/`, while the actual test case logic should be extracted and imported from individual files within a `cases/` subdirectory. Fixes should include additional tests, and features should come with comprehensive test coverage and descriptive example stories.
 - **Example Stories**: Features should include a functional, well-documented story in `stories/[element].stories.js`. This is essential for both Storybook documentation and our Metadata Context Protocol (MCP) server integration.
-- **Tests**: Fixes should include additional tests, and features should come with comprehensive test coverage and descriptive example stories.
 
 ### 7. Post-Development Checklist
 
