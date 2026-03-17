@@ -1,4 +1,7 @@
 import { html } from "lit";
+
+import { getUTCDate } from "../utils.js";
+
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -69,31 +72,31 @@ const loadDateWithNavigation = () => {
       // verify initial date is displayed (last date in timeControlValues)
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", initialDate); // "2023-04-24"
+        .should("equal", getUTCDate(initialDate)); // "2023-04-23"
 
       // click PREVIOUS button and verify date changes
       cy.get('button[part="previous"]').click();
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", previousDate); // "2023-04-17"
+        .should("equal", getUTCDate(previousDate)); // "2023-04-16"
 
       // click NEXT button and verify date advances back to initial
       cy.get('button[part="next"]').click();
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", initialDate); // "2023-04-24"
+        .should("equal", getUTCDate(initialDate)); // "2023-04-23"
 
       // test wrap-around: click NEXT from last date (should wrap to first)
       cy.get('button[part="next"]').click();
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", firstDate); // "2022-12-05"
+        .should("equal", getUTCDate(firstDate)); // "2022-12-04"
 
       // click NEXT again to advance to second date
       cy.get('button[part="next"]').click();
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", secondDate); // "2022-12-06"
+        .should("equal", getUTCDate(secondDate)); // "2022-12-05"
     });
 };
 

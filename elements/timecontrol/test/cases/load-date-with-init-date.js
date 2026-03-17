@@ -1,4 +1,6 @@
 import { html } from "lit";
+
+import { getUTCDate } from "../utils.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { STORY_ARGS } from "../../src/enums.js";
@@ -10,7 +12,7 @@ dayjs.extend(utc);
  * when the initDate property is provided, rather than defaulting to the last date.
  *
  * This test uses "2023-02-05" as the init date, which exists in both time-enabled
- * layers and is different from the default last date "2023-04-24".
+ * layers and is different from the default last date "2023-04-23".
  */
 const loadDateWithInitDate = () => {
   // setup - intercept network requests
@@ -64,12 +66,12 @@ const loadDateWithInitDate = () => {
       // critical: init date value validation
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", expectedDisplayDate);
+        .should("equal", getUTCDate(expectedDisplayDate));
 
       // additional assertion: NOT the default last date
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("not.equal", "2023-04-24");
+        .should("not.equal", getUTCDate("2023-04-23"));
     });
 };
 

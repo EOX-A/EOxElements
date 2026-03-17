@@ -1,4 +1,5 @@
 import { html } from "lit";
+import { getUTCDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -57,7 +58,7 @@ const loadDatePickerStandalone = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", initialDate); // "2023-04-24"
+        .should("equal", getUTCDate(initialDate));
     });
 
   // verify standalone calendar container exists in picker's shadow DOM
@@ -106,7 +107,7 @@ const loadDatePickerStandalone = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", testDate); // "2023-04-10"
+        .should("equal", getUTCDate(testDate));
     });
 
   // verify the date changed from initial value
@@ -115,7 +116,7 @@ const loadDatePickerStandalone = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("not.equal", initialDate); // should NOT be "2023-04-24"
+        .should("not.equal", getUTCDate(initialDate));
     });
 
   // verify calendar is still visible after date selection (doesn't close)
