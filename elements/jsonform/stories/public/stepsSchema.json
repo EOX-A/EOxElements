@@ -1,0 +1,91 @@
+{
+  "type": "object",
+  "format": "steps",
+  "properties": {
+    "year": {
+      "type": "string",
+      "title": "Choose Year",
+      "enum": ["2024", "2023", "2022", "2021"],
+      "options": {
+        "grid_columns": 3
+      }
+    },
+    "product": {
+      "type": "string",
+      "title": "Choose Product",
+      "enum": ["cloudless-rgb", "cloudless-nir", "cloudless-swir"],
+      "options": {
+        "enum_titles": ["Cloudless RGB", "Cloudless NIR", "Cloudless SWIR"],
+        "enum_descriptions": [
+          "True-color RGB composite of Sentinel-2 imagery",
+          "Near-infrared composite for vegetation analysis",
+          "Short-wave infrared composite for geology"
+        ],
+        "grid_columns": 6,
+        "dependsOn": "year"
+      }
+    },
+    "projection_format": {
+      "type": "string",
+      "title": "Choose Projection & Format",
+      "enum": [
+        "EPSG:4326/GeoTIFF",
+        "EPSG:3857/GeoTIFF",
+        "EPSG:4326/COG",
+        "EPSG:3857/COG"
+      ],
+      "options": {
+        "enum_titles": [
+          "WGS 84 / GeoTIFF",
+          "Web Mercator / GeoTIFF",
+          "WGS 84 / COG",
+          "Web Mercator / COG"
+        ],
+        "grid_columns": 6,
+        "dependsOn": "product"
+      }
+    },
+    "region": {
+      "type": "string",
+      "title": "Choose Region",
+      "default": "Global",
+      "enum": ["Global"],
+      "options": {
+        "dependsOn": "projection_format",
+        "disabledLabel": "Global (only global dataset available for selection)",
+        "autoComplete": true
+      }
+    }
+  },
+  "if": {
+    "properties": {
+      "product": {
+        "enum": ["cloudless-nir", "cloudless-swir"]
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "region": {
+        "enum": [
+          "Global",
+          "Europe",
+          "North America",
+          "South America",
+          "Africa",
+          "Asia",
+          "Oceania",
+          "Antarctica",
+          "Middle East",
+          "Central America",
+          "Caribbean",
+          "Southeast Asia"
+        ],
+        "options": {
+          "autoComplete": false,
+          "disabledLabel": ""
+        }
+      }
+    }
+  }
+}
