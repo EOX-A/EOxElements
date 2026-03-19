@@ -23,6 +23,10 @@ import {
   loadBinaryCheckboxTest,
   loadGridTest,
   loadGridStrictTest,
+  loadStepsEditorTest,
+  loadStepsEditorInteractionTest,
+  loadStepsEditorCascadingResetTest,
+  loadStepsEditorConditionalTest,
 } from "./cases";
 
 // Test suite for Jsonform
@@ -51,4 +55,11 @@ describe("Jsonform", () => {
   it("handles defaults correctly", () => defaultsTest());
   it("loads the grid layout", () => loadGridTest());
   it("loads the grid-strict layout", () => loadGridStrictTest());
+  it("loads the steps editor", () => loadStepsEditorTest());
+  it("handles steps editor interaction", () =>
+    loadStepsEditorInteractionTest());
+  it("handles steps editor cascading reset", () =>
+    loadStepsEditorCascadingResetTest());
+  it("handles steps editor conditional if/then", () =>
+    loadStepsEditorConditionalTest());
 });
