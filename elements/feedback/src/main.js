@@ -4,8 +4,27 @@ import { styleEOX } from "./style.eox";
 import "./feedback-button.js";
 
 /**
- * The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.
- * The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.
+ * The `eox-feedback` element provides a modal dialog for collecting user feedback.
+ * It supports screenshot capture, customizable endpoint, and flexible styling.
+ * The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM
+ * directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),
+ * which can be positioned in any corner of the viewport.
+ *
+ * On submit, the element sends a `POST` request with `FormData` to the configured
+ * `endpoint`. The payload includes the feedback message (or custom form fields when
+ * using a `schema`), the current page URL, the browser's user agent, and optionally
+ * a screenshot file. This makes it straightforward to connect to any backend — for
+ * example a service that creates issues in a Git platform (GitLab, GitHub, …), sends
+ * notifications, or stores feedback in a database.
+ *
+ * The backend only needs to accept a `multipart/form-data` POST request, extract the
+ * fields and the optional file attachment, and then forward them to whatever system
+ * you use for tracking or processing feedback. Because all authentication and API
+ * tokens live on the server side, the browser never sees sensitive credentials.
+ * Typical backend responsibilities include input sanitization, CORS configuration to
+ * restrict which origins may submit feedback, and mapping the received fields into the
+ * format expected by the target system (e.g. composing an issue title and body, or
+ * building an email).
  *
  * @element eox-feedback
  *
