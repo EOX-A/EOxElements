@@ -1377,7 +1377,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.\n\nFeatures:\n- Supports `text`, `select`, `multiselect`, `range` (including date), and `spatial` filters\n- Aggregates results by a property key (e.g. themes)\n- Inline mode for compact UI\n- Pre-set filter state via `state` in `filterProperties`\n- Nested property filtering using dot notation\n- External search API endpoint support via `externalFilter`\n- Auto-spreading of single-item aggregations to root level\n- Card display mode for results (`result-type=\"cards\"`)\n- Secondary result action button with custom icon and event handler (`click:result-action`)\n- Customizable layout and styling via CSS variables\n\nUsage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.",
+          "description": "The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.\n\nFeatures:\n- Supports `text`, `select`, `multiselect`, `range` (including date), and `spatial` filters\n- Aggregates results by a property key (e.g. themes)\n- Inline mode for compact UI\n- Pre-set filter state via `state` in `filterProperties`\n- Nested property filtering using dot notation\n- External search API endpoint support via `externalFilter`\n- Auto-spreading of single-item aggregations to root level\n- Card display mode for results (`result-type=\"cards\"`)\n- Secondary result action button with custom icon and event handler (`click:result-action`)\n- Custom result sorting via `resultSorting` property\n- Customizable layout and styling via CSS variables\n\nUsage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.",
           "name": "EOxItemFilter",
           "members": [
             {
@@ -1426,6 +1426,14 @@
                   "description": "The items to be sorted.",
                   "type": {
                     "text": "Array<object>"
+                  }
+                },
+                {
+                  "name": "options",
+                  "description": "Optional sorting parameters.",
+                  "optional": true,
+                  "type": {
+                    "text": "@param {boolean} [options.isExternalResult] - Flag for results from external filter.\n   * "
                   }
                 }
               ],
@@ -1727,6 +1735,16 @@
               "description": "The property of the result items used for an image\nSupports passing a function which recieves the current item as parameter and is expected to return a string",
               "default": "undefined",
               "attribute": "image-property"
+            },
+            {
+              "kind": "field",
+              "name": "resultSorting",
+              "privacy": "public",
+              "type": {
+                "text": "false|string|Function|{key:string, order?:'asc'|'desc'}"
+              },
+              "description": "Sorting behavior for the results. Can be:\n- undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)\n- false: no sorting\n- string: property key to sort by (ascending)\n- function: custom comparator function (a, b) => number\n- object: { key: string, order?: 'asc' | 'desc' }",
+              "default": "undefined"
             },
             {
               "kind": "field",
