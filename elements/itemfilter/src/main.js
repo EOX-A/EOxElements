@@ -41,6 +41,7 @@ import {
  * - Auto-spreading of single-item aggregations to root level
  * - Card display mode for results (`result-type="cards"`)
  * - Secondary result action button with custom icon and event handler (`click:result-action`)
+ * - Custom result sorting via `resultSorting` property
  * - Customizable layout and styling via CSS variables
  *
  * Usage examples and visual demos are available in Storybook stories, including scenarios for inline mode, external filtering, nested properties, card display, CSS variable customization, and result actions.
@@ -73,6 +74,7 @@ export class EOxItemFilter extends LitElement {
       titleProperty: { attribute: "title-property", type: String },
       subTitleProperty: { attribute: "sub-title-property", type: String },
       imageProperty: { attribute: "image-property", type: String },
+      resultSorting: { attribute: false, type: Object },
       expandMultipleFilters: {
         attribute: "enable-multiple-filter",
         type: Boolean,
@@ -233,6 +235,18 @@ export class EOxItemFilter extends LitElement {
     this.imageProperty = undefined;
 
     /**
+     * Sorting behavior for the results. Can be:
+     * - undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)
+     * - false: no sorting
+     * - string: property key to sort by (ascending)
+     * - function: custom comparator function (a, b) => number
+     * - object: { key: string, order?: 'asc' | 'desc' }
+     *
+     * @type false|string|Function|{key:string, order?:'asc'|'desc'}
+     */
+    this.resultSorting = undefined;
+
+    /**
      * Unique id property of items
      *
      * @type String
@@ -297,6 +311,10 @@ export class EOxItemFilter extends LitElement {
    * Applies the filters to the items and updates the result aggregation.
    */
   apply() {
+    this.#config = ELEMENT_PROPERTIES.reduce((acc, property) => {
+      acc[property] = this[property];
+      return acc;
+    }, {});
     this.#resultAggregation = filterApplyMethod(
       this.#config,
       this.#items,
@@ -335,10 +353,12 @@ export class EOxItemFilter extends LitElement {
    * Sorts the given items based on the current configuration.
    *
    * @param {Array<object>} items - The items to be sorted.
+   * @param {Object} [options] - Optional sorting parameters.
+   * @param {boolean} [options.isExternalResult] - Flag for results from external filter.
    * @returns {Array<object>} - The sorted items.
    */
-  sortResults(items) {
-    return sortResultsMethod(items, this.#config);
+  sortResults(items, options) {
+    return sortResultsMethod(items, this.#config, options);
   }
 
   /**

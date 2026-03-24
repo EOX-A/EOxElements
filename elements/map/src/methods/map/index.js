@@ -8,6 +8,7 @@ export {
   setConfigMethod,
   setProjectionMethod,
   setSyncMethod,
+  setTerrainMethod,
 } from "./setters";
 export {
   getLonLatCenterMethod,

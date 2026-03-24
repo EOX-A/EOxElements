@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.1.1...timecontrol-v2.1.2) (2026-02-27)
+
+
+### Bug Fixes
+
+* Change timecontrol datetime display from local time to UTC ([#2148](https://github.com/EOX-A/EOxElements/issues/2148)) ([2cf36d8](https://github.com/EOX-A/EOxElements/commit/2cf36d8a97ceef3357c3598528e12817622db376))
+
 ## [2.1.1](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.1.0...timecontrol-v2.1.1) (2026-02-05)
 
 

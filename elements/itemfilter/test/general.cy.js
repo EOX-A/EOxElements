@@ -17,6 +17,7 @@ import {
   validationTest,
   slotRenderTest,
   resultsActionTest,
+  resultSortingTest,
   resultAggregationTest,
 } from "./cases/general/";
 
@@ -149,4 +150,9 @@ describe("Item Filter Config", () => {
    */
   it("should aggregate results correctly, handling edge cases", () =>
     resultAggregationTest());
+
+  /**
+   * Test case to verify result sorting.
+   */
+  it("should sort results based on configuration", () => resultSortingTest());
 });

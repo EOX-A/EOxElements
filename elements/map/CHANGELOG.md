@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.3.0](https://github.com/EOX-A/EOxElements/compare/map-v2.2.0...map-v2.3.0) (2026-03-10)
+
+
+### Features
+
+* 3d globe LOD option ([#2145](https://github.com/EOX-A/EOxElements/issues/2145)) ([af77a6c](https://github.com/EOX-A/EOxElements/commit/af77a6caca5cf23fc02ce61f529dbf1742c1878f))
+* 3d globe terrain option ([#2136](https://github.com/EOX-A/EOxElements/issues/2136)) ([67b36dc](https://github.com/EOX-A/EOxElements/commit/67b36dc61137f067a18ad3cb2e9302f0f683b56c))
+
+
+### Bug Fixes
+
+* Update WebGLTile styles on layer update ([#2177](https://github.com/EOX-A/EOxElements/issues/2177)) ([30fbc86](https://github.com/EOX-A/EOxElements/commit/30fbc863f91a3e74df037da845c47269d9fdae7d))
+
+## [2.2.0](https://github.com/EOX-A/EOxElements/compare/map-v2.1.0...map-v2.2.0) (2026-02-27)
+
+
+### Features
+
+* Support url as array in flatgeobuf ([#2124](https://github.com/EOX-A/EOxElements/issues/2124)) ([0169da2](https://github.com/EOX-A/EOxElements/commit/0169da272e418aa8a80911b52d9a4db8350bce50))
+
+
+### Bug Fixes
+
+* Preserve user-provided dimensions in WMTSCapabilities source ([#2161](https://github.com/EOX-A/EOxElements/issues/2161)) ([a6f909d](https://github.com/EOX-A/EOxElements/commit/a6f909d5bde6bf6f9ab58bce114ff298d1c9fcb8))
+
 ## [2.1.0](https://github.com/EOX-A/EOxElements/compare/map-v2.0.3...map-v2.1.0) (2026-02-11)
 
 

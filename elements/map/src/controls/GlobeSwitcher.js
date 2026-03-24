@@ -20,7 +20,6 @@ export class GlobeSwitcher extends Control {
     button.innerHTML = icon3D; // Initial state
 
     const element = document.createElement("div");
-    //const fas = options.map.shadowRoot.querySelector("ol-zoom");
     element.className = "ol-unselectable globe-switcher-container ol-control";
     element.appendChild(button);
 

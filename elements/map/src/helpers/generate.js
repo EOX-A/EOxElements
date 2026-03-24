@@ -283,15 +283,20 @@ export function updateLayer(EOxMap, newLayerDefinition, existingLayer) {
 
   // Update style if different
   if (
-    ["Vector", "VectorTile"].includes(newLayerDefinition.type) &&
+    ["Vector", "VectorTile", "WebGLTile"].includes(newLayerDefinition.type) &&
     serialize(
-      /** @type {import("../layers.ts").EOxLayerType<"Vector"|"VectorTile",any>} */ (
+      /** @type {import("../layers.ts").EOxLayerType<"Vector"|"VectorTile"|"WebGLTile",any>} */ (
         newLayerDefinition
       ).style,
     ) !== serialize(existingJsonDefinition.style)
   ) {
     // @ts-expect-error TODO
-    existingLayer.setStyle(newLayer.getStyle());
+    existingLayer.setStyle(
+      newLayerDefinition.type === "WebGLTile"
+        ? newLayerDefinition.style
+        : // @ts-expect-error TODO
+          newLayer.getStyle(),
+    );
   }
 
   // Update properties if different

@@ -17,7 +17,9 @@ async function searchMethod(config, items, EOxItemFilter) {
     results = await filterClient(items, EOxItemFilter.filters, config);
   }
 
-  EOxItemFilter.results = EOxItemFilter.sortResults(results);
+  EOxItemFilter.results = EOxItemFilter.sortResults(results, {
+    isExternalResult: !!EOxItemFilter.externalFilter,
+  });
 }
 
 export default searchMethod;

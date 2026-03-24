@@ -222,6 +222,23 @@ export type HTMLElementEvent<T extends HTMLElement> = Event & {
 
 export type EOxAnimationOptions = import("ol/View").AnimationOptions &
   import("ol/View").FitOptions;
+
+/**
+ * Configuration for the globe projection.
+ */
+export type GlobeConfig = {
+  /**
+   * Option for whether or not there will be terrain on the globe projection.
+   * Defaults to false.
+   */
+  terrain?: boolean;
+  /**
+   * Whether use high level of details or not.
+   * Defaults to false.
+   */
+  useHighLOD?: boolean;
+};
+
 export type ConfigObject = {
   controls: ControlDictionary;
   layers: EoxLayers;

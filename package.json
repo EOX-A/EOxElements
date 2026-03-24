@@ -61,14 +61,14 @@
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript-json-schema": "^0.67.0",
-    "vite-plugin-istanbul": "^7.0.0"
+    "vite-plugin-istanbul": "^8.0.0"
   },
   "engines": {
     "node": ">=20.19.0"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
-    "@eox/ui": "^0.6.0"
+    "@eox/ui": "^1.0.0"
   },
   "customElements": "custom-elements.json"
 }

@@ -7,7 +7,23 @@ const GlobeStory = {
   args: {
     center: [15, 48],
     projection: "globe",
+    globeConfig: {
+      terrain: true,
+      useHighLOD: true,
+    },
     layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "cloudless",
+          title: "Sentinel-2 Cloudless 2024",
+        },
+        source: {
+          type: "XYZ",
+          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
+          crossOrigin: "anonymous",
+        },
+      },
       {
         type: "WebGLTile",
         style: {
@@ -131,20 +147,8 @@ const GlobeStory = {
           ],
         },
       },
-      {
-        type: "Tile",
-        properties: {
-          id: "cloudless",
-          title: "Sentinel-2 Cloudless 2024",
-        },
-        source: {
-          type: "XYZ",
-          url: "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2024_3857/default/g/{z}/{y}/{x}.jpg",
-          crossOrigin: "anonymous",
-        },
-      },
     ],
-    zoom: 3,
+    zoom: 4,
   },
 };
 

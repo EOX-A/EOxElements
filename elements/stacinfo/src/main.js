@@ -9,6 +9,11 @@ import parseTags from "./components/tags.js";
 import parseFeatured from "./components/featured.js";
 import parseFooter from "./components/footer.js";
 import "./components/shadow";
+/**
+ * @typedef {Object} Filter
+ * @property {string} key
+ * @property {(value: any)=>boolean} filter
+ */
 
 /**
  * ### Introduction
@@ -29,12 +34,27 @@ import "./components/shadow";
  * Under the hood, this element uses [stac-fields](https://github.com/stac-utils/stac-fields) for parsing and pre-formatting properties.
  *
  * #### Usage
- * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections:
- * - `header`: Array of property keys to display at the top
- * - `tags`: Array of property keys to display as tags
- * - `body`: Array of property keys for the main content
- * - `featured`: Array of property keys for prominent display
- * - `footer`: Array of property keys for the bottom section
+ * Place `<eox-stacinfo></eox-stacinfo>` in your application and set the `for` property to a valid STAC resource URL. The element will fetch the file and display its properties in configurable sections.
+ *
+ * Each section (`header`, `tags`, `body`, `featured`, `footer`) accepts an array of strings (property keys) or `Filter` objects.
+ *
+ * A `Filter` object has the following structure:
+ * ```javascript
+ * {
+ *   key: "links",
+ *   filter: (link) => {
+ *     // Return true/false to include/exclude items from a list (e.g. assets, links)
+ *     return link.rel === "example";
+ *   }
+ * }
+ * ```
+ *
+ * Sections:
+ * - `header`: Array of property keys or Filters to display at the top
+ * - `tags`: Array of property keys or Filters to display as tags
+ * - `body`: Array of property keys or Filters for the main content
+ * - `featured`: Array of property keys or Filters for prominent display
+ * - `footer`: Array of property keys or Filters for the bottom section
  *
  * #### Customization
  * - **Slots**: You can override the default rendering of any property by providing a slot with the property name. This enables advanced customization and integration with application-specific UI.
@@ -81,31 +101,31 @@ export class EOxStacInfo extends LitElement {
 
     /**
      * Keys of properties to display in the header
-     * @type {Array<any>}
+     * @type {Array<string | Filter>}
      */
     this.header = [];
 
     /**
      * Keys of properties to display to display as tags
-     * @type {Array<any>}
+     * @type {Array<string | Filter>}
      */
     this.tags = [];
 
     /**
      * Keys of properties to display to display in the main body
-     * @type {Array<any>}
+     * @type {Array<string | Filter>}
      */
     this.body = [];
 
     /**
      * Keys of properties to display in the featured section
-     * @type {Array<any>}
+     * @type {Array<string | Filter>}
      */
     this.featured = [];
 
     /**
      * Keys of properties to display in the footer
-     * @type {Array<any>}
+     * @type {Array<string | Filter>}
      */
     this.footer = [];
 

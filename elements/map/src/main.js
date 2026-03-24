@@ -36,6 +36,7 @@ import {
   removeSelectMethod,
   removeControlMethod,
   firstUpdatedMethod,
+  setTerrainMethod,
 } from "./methods/map/";
 import eoxStyle from "@eox/ui/style.css?inline";
 import { addCommonStylesheet } from "@eox/elements-utils";
@@ -50,6 +51,7 @@ addCommonStylesheet();
  * @typedef {import("./types").ConfigObject} ConfigObject
  * @typedef {import("./types").ProjectionLike} ProjectionLike
  * @typedef {import("./types").AnyLayerWithSource} AnyLayerWithSource
+ * @typedef {import("./types").GlobeConfig} GlobeConfig
  * */
 
 /**
@@ -103,7 +105,7 @@ addCommonStylesheet();
  * - **Sync & Compare:** Synchronize multiple maps using the `sync` property, and compare maps side-by-side with `<eox-map-compare>`.
  * - **Config Object:** Pass a configuration object for advanced map setup and dynamic updates.
  * - **Scroll Prevention:** Prevent scroll/drag interactions for embedded maps using the `preventScroll` property.
- * - **Globe View:** Interactive 3D globe by using "globe" projection property.
+ * - **Globe View:** Interactive 3D globe by using "globe" projection property. Configure via the `globeConfig` object.
  *
  * ## Events
  *
@@ -157,6 +159,7 @@ export class EOxMap extends LitElement {
       selectInteractions: { attribute: false, state: true, type: Object },
       sync: { attribute: "sync", type: String },
       zoomExtent: { attribute: false, type: Array },
+      globeConfig: { attribute: false, type: Object },
     };
   }
 
@@ -243,6 +246,15 @@ export class EOxMap extends LitElement {
    * @type {ProjectionLike}
    */
   last2dProjection = "EPSG:3857";
+
+  /**
+   * Internal property to store the globe configuration options when globe mode is enabled.
+   * @type {GlobeConfig}
+   */
+  #globeConfig = {
+    terrain: false,
+    useHighLOD: false,
+  };
 
   constructor() {
     super();
@@ -566,6 +578,23 @@ export class EOxMap extends LitElement {
    */
   get sync() {
     return this.#sync;
+  }
+
+  /**
+   * Sets the properties of the globe such as the terrain.
+   *
+   * @param {GlobeConfig} globeConfig - The globe configuration which contains the terrain boolean.
+   */
+  set globeConfig(globeConfig) {
+    this.#globeConfig = setTerrainMethod(globeConfig, this);
+  }
+
+  /**
+   * Gets the current globe configuration properties.
+   * @returns {GlobeConfig}
+   */
+  get globeConfig() {
+    return this.#globeConfig;
   }
 
   /**

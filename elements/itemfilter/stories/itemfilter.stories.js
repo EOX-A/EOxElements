@@ -11,6 +11,7 @@ import {
   PreSetFilterStory,
   PrimaryStory,
   ResultActionStory,
+  ResultSortingStory,
 } from "./index.js";
 
 export default {
@@ -72,3 +73,13 @@ export const CSSVariables = CSSVariablesStory();
  * The icon can be configered with the `resultActionIcon` property. Useful for additional actions on results, such as opening details or triggering workflows.
  */
 export const ResultAction = ResultActionStory();
+
+/**
+ * The `resultSorting` property allows you to customize the sorting behavior of results. You can provide:
+ * - `undefined` (default): smart alphabetical sorting (skips if `externalFilter` or `fuseConfig.shouldSort` is set)
+ * - `false`: disable sorting completely (results follow filter engine order)
+ * - `string`: sort ascending by that property key (supports dot notation)
+ * - `function`: a custom comparator function `(a, b) => number`
+ * - `object`: `{ key: string, order?: 'asc' | 'desc' }` for property sorting with direction (this example)
+ */
+export const ResultSorting = ResultSortingStory();

@@ -1,4 +1,5 @@
 import { html } from "lit";
+import { getUTCDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -65,7 +66,7 @@ const loadDateWithTimeline = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", initialDate);
+        .should("equal", getUTCDate(initialDate));
     });
 
   // Test timeline bin click #1 - Select a date from the middle of the range
@@ -96,7 +97,7 @@ const loadDateWithTimeline = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", targetDate);
+        .should("equal", getUTCDate(targetDate));
     });
 
   // Test timeline bin click #2 - Select a different date (index 5)
@@ -126,7 +127,7 @@ const loadDateWithTimeline = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", anotherTargetDate);
+        .should("equal", getUTCDate(anotherTargetDate));
     });
 
   // Additional verification: Ensure timeline items are selectable and properly rendered
