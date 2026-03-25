@@ -5,7 +5,7 @@ import {
   CollectionStory,
   ExternalStory,
   MarkdownStory,
-  AceMarkdownEditorStory,
+  CodeMarkdownToolbarStory,
   PrimaryStory,
   ButtonsEditorStory,
   BinaryCheckboxEditorStory,
@@ -125,11 +125,11 @@ export const External = ExternalStory;
 export const Markdown = MarkdownStory;
 
 /**
- * ACE Markdown editor example. This story demonstrates a custom editor that extends the
+ * Code Markdown editor example. This story demonstrates a custom configuration option that extends the
  * built-in ACE editor to include a markdown toolbar. It is activated by using
- * `format: "markdown-ace"` in the schema.
+ * `format: "markdown"`, `options.resolver: "ace"` and `options.markdownToolbar: true` in the schema.
  */
-export const AceMarkdownEditor = AceMarkdownEditorStory;
+export const CodeMarkdownToolbar = CodeMarkdownToolbarStory;
 
 /**
  * Buttons Editor example. Renders a custom button group input based on enum values.
