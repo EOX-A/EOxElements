@@ -22,19 +22,19 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         # necessary for git diff of changed files in the PR
         with:
           fetch-depth: 2
 
       - name: Setup node env 🏗
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: ${{ matrix.node }}
           check-latest: true
 
       - name: Cache node_modules 📦
-        uses: actions/cache@v5.0.4
+        uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -58,13 +58,13 @@ jobs:
           npm run nyc:report
 
       - name: Upload code coverage 📈
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: code-coverage
           path: coverage/lcov-report
 
       - name: Upload failed test screenshots 📷
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         if: failure()
         with:
           name: cypress-screenshots
