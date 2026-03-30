@@ -39,7 +39,9 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
         if (EOxLayerControlLayerConfig.layer.getSource() instanceof XYZ_ol) {
           // @ts-expect-error TODO
           EOxLayerControlLayerConfig.layer.getSource()._updatedUrl = updateUrl(
-            /** @type {XYZ_ol} */ (EOxLayerControlLayerConfig.layer.getSource()).getUrls()[0],
+            /** @type {XYZ_ol} */ (
+              EOxLayerControlLayerConfig.layer.getSource()
+            ).getUrls()[0],
             data,
           );
         }
