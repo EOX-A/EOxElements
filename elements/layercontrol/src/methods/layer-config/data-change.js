@@ -33,6 +33,13 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
         const removeProperties =
           EOxLayerControlLayerConfig.layerConfig.schema?.options
             ?.removeProperties ?? [];
+
+        // Store the updated URL on the source for other components (like the globe) to use
+        // @ts-expect-error TODO
+        EOxLayerControlLayerConfig.layer.getSource()._updatedUrl = updateUrl(
+          EOxLayerControlLayerConfig.layer.getSource().getUrls()[0],
+          data,
+        );
         // Remove unwanted properties from query parameters
         removeProperties.forEach((prop) => url.searchParams.delete(prop));
         return updateUrl(url.href, data);
@@ -42,6 +49,18 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     // Setting a new key for the layer source to trigger a refresh.
     // @ts-expect-error TODO
     EOxLayerControlLayerConfig.layer.getSource().setKey(new Date());
+  }
+
+  const map = document.querySelector("eox-map");
+  if (map) {
+    const globe = map.globe;
+    if (globe) {
+      const globusLayer = globe.planet.layers.filter(
+        (l) => l.name == EOxLayerControlLayerConfig.layer.get("id"),
+      )[0];
+      globusLayer.setUrl(updateUrl(globusLayer.url, data));
+      window.eoxMapGlobe.refresh();
+    }
   }
 
   return newTileUrlFunc;
