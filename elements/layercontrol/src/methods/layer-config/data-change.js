@@ -1,4 +1,5 @@
 import { updateUrl } from "../../helpers";
+import XYZ_ol from "ol/source/XYZ.js";
 
 /**
  * This function 'dataChange' is designed to handle changes in data within a layer configuration.
@@ -35,11 +36,13 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
             ?.removeProperties ?? [];
 
         // Store the updated URL on the source for other components (like the globe) to use
-        // @ts-expect-error TODO
-        EOxLayerControlLayerConfig.layer.getSource()._updatedUrl = updateUrl(
-          EOxLayerControlLayerConfig.layer.getSource().getUrls()[0],
-          data,
-        );
+        if (EOxLayerControlLayerConfig.layer.getSource() instanceof XYZ_ol) {
+          // @ts-expect-error TODO
+          EOxLayerControlLayerConfig.layer.getSource()._updatedUrl = updateUrl(
+            /** @type {XYZ_ol} */ (EOxLayerControlLayerConfig.layer.getSource()).getUrls()[0],
+            data,
+          );
+        }
         // Remove unwanted properties from query parameters
         removeProperties.forEach((prop) => url.searchParams.delete(prop));
         return updateUrl(url.href, data);
@@ -51,7 +54,9 @@ const dataChangeMethod = (data, tileUrlFunc, EOxLayerControlLayerConfig) => {
     EOxLayerControlLayerConfig.layer.getSource().setKey(new Date());
   }
 
-  const map = document.querySelector("eox-map");
+  const map = /** @type {import("../../../../map/src/main").EOxMap} */ (
+    document.querySelector("eox-map")
+  );
   if (map) {
     const globe = map.globe;
     if (globe) {
