@@ -146,7 +146,7 @@ export const createGlobusLayer = (olLayer, mapPool) => {
   }
 
   if (source instanceof XYZ_ol) {
-    // @ts-expect-error
+    // @ts-expect-error TODO
     const url = source._updatedUrl || source.getUrls()[0];
     return new XYZ(id, {
       isBaseLayer: olLayer.get("base"),
