@@ -321,6 +321,8 @@ export class EOxFeedback extends HTMLElement {
 
     requestBody.append("location", window.location.href);
 
+    requestBody.append("screenResolution", `width: ${window.innerWidth}px | height: ${window.innerHeight}px`);
+
     if (!this.endpoint) {
       throw new Error("No endpoint attribute defined!");
     }
