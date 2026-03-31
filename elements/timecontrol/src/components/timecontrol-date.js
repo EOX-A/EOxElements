@@ -157,13 +157,15 @@ export class EOxTimeControlDate extends LitElement {
       EOxTimeControl.selectedDateRange[0],
       "day",
     );
-    const nextDateRange = [
-      isSameDay
-        ? dayjs(nextDate).utc().format()
-        : dayjs(nextDate).startOf("day").utc().format(),
-      dayjs(nextDate).endOf("day").utc().format(),
-    ];
-    EOxTimeControl.dateChange(nextDateRange, EOxTimeControl);
+    const startDate = isSameDay
+      ? dayjs(nextDate).utc().format()
+      : EOxTimeControl.showUTC
+        ? dayjs(nextDate).utc().startOf("day").format()
+        : dayjs(nextDate).startOf("day").utc().format();
+    const endDate = EOxTimeControl.showUTC
+      ? dayjs(nextDate).utc().endOf("day").format()
+      : dayjs(nextDate).endOf("day").utc().format();
+    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
   }
 
   /**

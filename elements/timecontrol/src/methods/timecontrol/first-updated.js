@@ -1,4 +1,4 @@
-import { updateTimelineItems } from "../../helpers";
+import { getUTCLocalDateTime, updateTimelineItems } from "../../helpers";
 import { DataSet } from "vis-data/standalone";
 import { getElement } from "@eox/elements-utils";
 import dayjs from "dayjs";
@@ -95,11 +95,11 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
           ) {
             const values = properties.timeControlValues
               .map((value) => {
-                const date = EOxTimeControl.showUTC
-                  ? value.date.includes("T")
-                    ? value.date
-                    : value.date + "T00:00:00Z"
-                  : value.date;
+                const date = getUTCLocalDateTime(
+                  value.date,
+                  EOxTimeControl.showUTC,
+                  true,
+                );
                 return {
                   ...value,
                   date: dayjs(date).format().split("T")[0],

@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { getUTCLocalDateTime } from ".";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
@@ -79,8 +80,8 @@ export default function updateTimelineItems(
         data: slider.layer + value.date,
       });
       const id = /** @type {string} */ (uuidv4(options));
-      const start = showUTC ? value.date + "T00:00:00Z" : value.date;
-      const end = showUTC ? value.date + "T23:59:59Z" : value.date;
+      const start = getUTCLocalDateTime(value.date, showUTC, true);
+      const end = getUTCLocalDateTime(value.date, showUTC, false);
       items.add({
         ...value,
         id: id,

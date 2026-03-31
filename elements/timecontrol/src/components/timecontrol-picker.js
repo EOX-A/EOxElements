@@ -8,6 +8,7 @@ import {
   cleanCalendarStyles,
   extractISOFromCalendar,
   calendarStyle,
+  getUTCLocalDateTime,
 } from "../helpers";
 import { Calendar } from "vanilla-calendar-pro";
 import groupBy from "lodash.groupby";
@@ -335,11 +336,16 @@ export class EOxTimeControlPicker extends LitElement {
             const start = self.context.selectedDates[0] || lastClickDate;
             const end = this.range && self.context.selectedDates[lengthOfDates];
             if (start) {
-              const startDate = dayjs(start).startOf("day").utc().format();
-              const endDate = dayjs(end || start)
-                .endOf("day")
-                .utc()
-                .format();
+              const startDate = getUTCLocalDateTime(
+                start,
+                EOxTimeControl.showUTC,
+                true,
+              );
+              const endDate = getUTCLocalDateTime(
+                end || start,
+                EOxTimeControl.showUTC,
+                false,
+              );
 
               if (this.range) {
                 if (lengthOfDates || lastClickDate === start) {
