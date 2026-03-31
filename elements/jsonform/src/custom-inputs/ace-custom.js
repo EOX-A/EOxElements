@@ -12,6 +12,7 @@ export class AceCustomEditor extends aceEditor {
     super.postBuild();
 
     // If the schema options specify a markdown toolbar, create it.
+    // @ts-expect-error - options is not defined in the ace-builds type
     if (this.options.markdownToolbar) {
       createMarkdownToolbar(this);
     }
@@ -22,8 +23,7 @@ const createMarkdownToolbar = (editorInstance) => {
   // Defer toolbar creation to prevent a race condition. This ensures the
   // editor's DOM elements are fully rendered before we try to manipulate them.
   setTimeout(() => {
-    // @ts-ignore The `ace_editor_instance` is the actual Ace editor instance.
-    const aceInstance = editorInstance.ace_editor_instance;
+    const aceInstance = /** @type {any} */ (editorInstance).ace_editor_instance;
     if (!aceInstance) {
       return;
     }
@@ -94,18 +94,24 @@ const createMarkdownToolbar = (editorInstance) => {
       </button>
     `;
 
-    toolbar.querySelector("#md-heading").onclick = () =>
-      insertText("# ...", "Heading");
-    toolbar.querySelector("#md-bold").onclick = () =>
-      insertText("**...**", "bold text");
-    toolbar.querySelector("#md-italic").onclick = () =>
-      insertText("*...*", "italic text");
-    toolbar.querySelector("#md-strikethrough").onclick = () =>
-      insertText("~~...~~", "strikethrough text");
-    toolbar.querySelector("#md-link").onclick = () =>
-      insertText("...", "link text");
-    toolbar.querySelector("#md-list").onclick = () =>
-      insertText("\n- ...", "list item");
+    /** @type {HTMLButtonElement} */ (
+      toolbar.querySelector("#md-heading")
+    ).onclick = () => insertText("# ...", "Heading");
+    /** @type {HTMLButtonElement} */ (
+      toolbar.querySelector("#md-bold")
+    ).onclick = () => insertText("**...**", "bold text");
+    /** @type {HTMLButtonElement} */ (
+      toolbar.querySelector("#md-italic")
+    ).onclick = () => insertText("*...*", "italic text");
+    /** @type {HTMLButtonElement} */ (
+      toolbar.querySelector("#md-strikethrough")
+    ).onclick = () => insertText("~~...~~", "strikethrough text");
+    /** @type {HTMLButtonElement} */ (
+      toolbar.querySelector("#md-link")
+    ).onclick = () => insertText("...", "link text");
+    /** @type {HTMLButtonElement} */ (
+      toolbar.querySelector("#md-list")
+    ).onclick = () => insertText("\n- ...", "list item");
 
     // Insert the toolbar before the ace editor container
     editorInstance.ace_container.parentNode.insertBefore(
