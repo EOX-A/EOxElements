@@ -24,6 +24,8 @@ export const createMarkdownToolbar = (editorInstance) => {
   const toolbar = document.createElement("nav");
   toolbar.className =
     "surface-container no-round no-margin tiny-padding no-space markdown-toolbar";
+  toolbar.style.overflowX = "auto";
+  toolbar.style.whiteSpace = "nowrap";
 
   const insertText = (text, placeholder = "") => {
     const selected = aceInstance.getSelectedText();
