@@ -21,7 +21,11 @@ const loadAceMarkdownTest = () => {
         properties: {
           [testVals.key]: {
             type: "string",
-            format: "markdown-ace",
+            format: "markdown",
+            options: {
+              resolver: "ace",
+              markdownToolbar: true,
+            },
             description:
               "This is a markdown field rendered with a custom ace editor with a toolbar.",
           },
