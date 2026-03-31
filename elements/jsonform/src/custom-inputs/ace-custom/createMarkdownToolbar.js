@@ -40,6 +40,8 @@ export const createMarkdownToolbar = (editorInstance) => {
   const boldIcon =
     "M13.5,15.5H10V12.5H13.5A1.5,1.5 0 0,1 15,14A1.5,1.5 0 0,1 13.5,15.5M10,6.5H13A1.5,1.5 0 0,1 14.5,8A1.5,1.5 0 0,1 13,9.5H10M15.6,10.79C16.57,10.11 17.25,9 17.25,8C17.25,5.74 15.5,4 13.25,4H7V18H14.04C16.14,18 17.75,16.3 17.75,14.21C17.75,12.69 16.89,11.39 15.6,10.79Z";
   const italicIcon = "M10,4V7H12.21L8.79,15H6V18H14V15H11.79L15.21,7H18V4H10Z";
+  const codeIcon =
+    "M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z";
   const strikethroughIcon =
     "M10 19h4v-3h-4v3zM5 4v3h5v3h4V7h5V4H5zM3 14h18v-2H3v2z";
   const quoteIcon = "M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z";
@@ -67,6 +69,10 @@ export const createMarkdownToolbar = (editorInstance) => {
       <button type="button" class="transparent no-round small" id="md-italic" title="Italic">
         <i class="small">${icon(italicIcon)}</i>
         <span class="tooltip">Italic</span>
+      </button>
+      <button type="button" class="transparent no-round small" id="md-code" title="Code">
+        <i class="small">${icon(codeIcon)}</i>
+        <span class="tooltip">Code</span>
       </button>
       <button type="button" class="transparent no-round small" id="md-strikethrough" title="Strikethrough">
         <i class="small">${icon(strikethroughIcon)}</i>
@@ -102,6 +108,8 @@ export const createMarkdownToolbar = (editorInstance) => {
   /** @type {HTMLButtonElement} */ (
     toolbar.querySelector("#md-italic")
   ).onclick = () => insertText("*...*", "italic text");
+  /** @type {HTMLButtonElement} */ (toolbar.querySelector("#md-code")).onclick =
+    () => insertText("`...`", "inline code");
   /** @type {HTMLButtonElement} */ (
     toolbar.querySelector("#md-strikethrough")
   ).onclick = () => insertText("~~...~~", "strikethrough text");
