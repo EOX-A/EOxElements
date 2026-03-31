@@ -31,7 +31,7 @@ const createMarkdownToolbar = (editorInstance) => {
     // Check if toolbar already exists to prevent duplicate insertion
     if (
       editorInstance.ace_container.previousElementSibling?.classList.contains(
-        "group",
+        "markdown-toolbar",
       )
     ) {
       return;
@@ -39,7 +39,7 @@ const createMarkdownToolbar = (editorInstance) => {
 
     const toolbar = document.createElement("nav");
     toolbar.className =
-      "group connected bottom-margin small-margin markdown-toolbar";
+      "surface-container-low no-round no-margin tiny-padding no-space markdown-toolbar";
 
     const insertText = (text, placeholder = "") => {
       const selected = aceInstance.getSelectedText();
@@ -68,27 +68,27 @@ const createMarkdownToolbar = (editorInstance) => {
       `<svg style="width:20px;height:20px" viewBox="0 0 24 24"><path fill="currentColor" d="${path}" /></svg>`;
 
     toolbar.innerHTML = `
-      <button type="button" class="left-round chip round small" id="md-heading" title="Heading">
+      <button type="button" class="transparent no-round small" id="md-heading" title="Heading">
         <i class="small">${icon(headerOneIcon)}</i>
         <span class="tooltip">Heading</span>
       </button>
-      <button type="button" class="no-round chip round small" id="md-bold" title="Bold">
+      <button type="button" class="transparent no-round small" id="md-bold" title="Bold">
         <i class="small">${icon(boldIcon)}</i>
         <span class="tooltip">Bold</span>
       </button>
-      <button type="button" class="no-round chip round small" id="md-italic" title="Italic">
+      <button type="button" class="transparent no-round small" id="md-italic" title="Italic">
         <i class="small">${icon(italicIcon)}</i>
         <span class="tooltip">Italic</span>
       </button>
-      <button type="button" class="no-round chip round small" id="md-strikethrough" title="Strikethrough">
+      <button type="button" class="transparent no-round small" id="md-strikethrough" title="Strikethrough">
         <i class="small">${icon(strikethroughIcon)}</i>
         <span class="tooltip">Strikethrough</span>
       </button>
-      <button type="button" class="no-round chip round small" id="md-link" title="Link">
+      <button type="button" class="transparent no-round small" id="md-link" title="Link">
         <i class="small">${icon(linkIcon)}</i>
         <span class="tooltip">Link</span>
       </button>
-      <button type="button" class="right-round chip round small" id="md-list" title="List">
+      <button type="button" class="transparent no-round small" id="md-list" title="List">
         <i class="small">${icon(listIcon)}</i>
         <span class="tooltip">List</span>
       </button>
