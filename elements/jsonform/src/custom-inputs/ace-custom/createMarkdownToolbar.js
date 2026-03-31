@@ -23,7 +23,7 @@ export const createMarkdownToolbar = (editorInstance) => {
 
   const toolbar = document.createElement("nav");
   toolbar.className =
-    "surface-container-low no-round no-margin tiny-padding no-space markdown-toolbar";
+    "surface-container no-round no-margin tiny-padding no-space markdown-toolbar";
 
   const insertText = (text, placeholder = "") => {
     const selected = aceInstance.getSelectedText();

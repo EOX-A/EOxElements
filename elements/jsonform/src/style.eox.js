@@ -295,18 +295,17 @@ export const styleEOX = `
   .ace_editor * {
     font-family: "Monaco", "Menlo", "Ubuntu Mono", "Droid Sans Mono", "Consolas", monospace !important;
   }
-  .ace-tm .ace_gutter {
-    background: var(--surface-container-low);
-  }
   .markdown-toolbar {
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
   }
-  .ace_gutter: {
+  .ace_editor {
     border-radius: 0.5rem;
   }
-  .markdown-toolbar + .ace_editor .ace_gutter {
-    border-top-right-radius: 0 !important;
+  .ace_editor * {
+    border-radius: 0;
+  }
+  .markdown-toolbar + .ace_editor {
     border-top-left-radius: 0 !important;
   }
 
