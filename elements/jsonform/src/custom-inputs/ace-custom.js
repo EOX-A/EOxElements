@@ -36,6 +36,8 @@ const createMarkdownToolbar = (editorInstance) => {
     ) {
       return;
     }
+    const aceContainer = editorInstance.ace_container;
+    const parent = aceContainer.parentNode;
 
     const toolbar = document.createElement("nav");
     toolbar.className =
@@ -114,9 +116,8 @@ const createMarkdownToolbar = (editorInstance) => {
     ).onclick = () => insertText("\n- ...", "list item");
 
     // Insert the toolbar before the ace editor container
-    editorInstance.ace_container.parentNode.insertBefore(
-      toolbar,
-      editorInstance.ace_container,
-    );
+    if (parent.contains(aceContainer)) {
+      parent.insertBefore(toolbar, aceContainer);
+    }
   }, 0);
 };
