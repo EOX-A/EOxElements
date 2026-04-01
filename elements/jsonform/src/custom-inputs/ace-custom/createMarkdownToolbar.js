@@ -37,6 +37,18 @@ export const createMarkdownToolbar = (editorInstance) => {
     aceInstance.focus();
   };
 
+  const insertList = (prefix, ordered = false) => {
+    const range = aceInstance.getSelectionRange();
+    const session = aceInstance.getSession();
+    const startLine = range.start.row;
+    const endLine = range.end.row;
+
+    for (let i = startLine; i <= endLine; i++) {
+      session.insert({ row: i, column: 0 }, ordered ? `${i - startLine + 1}. ` : prefix);
+    }
+    aceInstance.focus();
+  };
+
   const headerOneIcon =
     "M3,4H5V10H9V4H11V18H9V12H5V18H3V4M14,18V16H16V6.31L13.5,7.75V5.44L16,4H18V16H20V18H14Z";
   const boldIcon =
@@ -124,10 +136,10 @@ export const createMarkdownToolbar = (editorInstance) => {
     toolbar.querySelector("#md-image")
   ).onclick = () => insertText("![...](url)", "image alt text");
   /** @type {HTMLButtonElement} */ (toolbar.querySelector("#md-list")).onclick =
-    () => insertText("\n- ...", "list item");
+    () => insertList("- ");
   /** @type {HTMLButtonElement} */ (
     toolbar.querySelector("#md-numbered-list")
-  ).onclick = () => insertText("\n1. ...", "list item");
+  ).onclick = () => insertList("1. ", true);
 
   // Insert the toolbar before the ace editor container
   if (parent && parent.contains(aceContainer)) {
