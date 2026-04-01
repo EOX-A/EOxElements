@@ -44,7 +44,10 @@ export const createMarkdownToolbar = (editorInstance) => {
     const endLine = range.end.row;
 
     for (let i = startLine; i <= endLine; i++) {
-      session.insert({ row: i, column: 0 }, ordered ? `${i - startLine + 1}. ` : prefix);
+      session.insert(
+        { row: i, column: 0 },
+        ordered ? `${i - startLine + 1}. ` : prefix,
+      );
     }
     aceInstance.focus();
   };
