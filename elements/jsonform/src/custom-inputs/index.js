@@ -3,9 +3,15 @@ import { MinMaxEditor } from "./minmax";
 import { ButtonsEditor } from "./buttons";
 import { BinaryCheckboxEditor } from "./binarycheckbox";
 import { SpatialEditor, spatialValidatorCreator } from "./spatial";
+import { StepsEditor } from "./steps";
 
 // Define custom input types
 const inputs = [
+  {
+    type: "object",
+    format: "steps",
+    func: StepsEditor,
+  },
   {
     type: "object",
     format: "minmax",
