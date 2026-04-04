@@ -64,6 +64,7 @@ export class EOxDrawTools extends LitElement {
       format: { type: String },
       type: { type: String },
       unstyled: { type: Boolean },
+      suppressEvents: { attribute: false, state: true, type: Boolean },
     };
   }
 
@@ -111,6 +112,12 @@ export class EOxDrawTools extends LitElement {
      * Whether the user is currently in the process of drawing or not
      */
     this.currentlyDrawing = false;
+
+    /**
+     * When true, suppresses `drawupdate` event emission.
+     * Set this before programmatic feature changes to avoid feedback loops.
+     */
+    this.suppressEvents = false;
 
     /**
      * The current native OpenLayers `draw` interaction
