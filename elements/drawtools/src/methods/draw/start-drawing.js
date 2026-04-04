@@ -1,3 +1,8 @@
+import stopDrawingMethod from "./stop-drawing.js";
+
+/** @type {((e: KeyboardEvent) => void) | null} */
+let escapeHandler = null;
+
 /**
  * Initiates the drawing process by initializing the draw layer,
  * activating drawing, and updating the drawing status.
@@ -19,19 +24,25 @@ const startDrawingMethod = (EoxDrawTool) => {
     EoxDrawTool.requestUpdate();
   };
 
+  // Remove any previous Escape listener to avoid accumulation
+  if (escapeHandler) {
+    document.removeEventListener("keydown", escapeHandler);
+    escapeHandler = null;
+  }
+
   // Initialize the drawing process
   initializeDrawing();
   // Update the drawing status
   updateDrawingStatus();
 
-  // Abort drawing on Esc key
-  document.addEventListener("keydown", ({ key }) => {
+  // Abort drawing on Esc key — delegates to stopDrawingMethod for
+  // consistent state cleanup (isDrawingEnabled, selectionEvents, etc.)
+  escapeHandler = ({ key }) => {
     if (key === "Escape" && EoxDrawTool.currentlyDrawing) {
-      EoxDrawTool.draw?.setActive(false);
-      EoxDrawTool.currentlyDrawing = false;
-      EoxDrawTool.requestUpdate();
+      stopDrawingMethod(EoxDrawTool);
     }
-  });
+  };
+  document.addEventListener("keydown", escapeHandler);
 };
 
 export default startDrawingMethod;
