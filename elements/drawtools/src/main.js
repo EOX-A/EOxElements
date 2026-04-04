@@ -4,6 +4,7 @@ import "./components/controller";
 import { styleEOX } from "./style.eox";
 import {
   startDrawingMethod,
+  stopDrawingMethod,
   initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
@@ -257,6 +258,14 @@ export class EOxDrawTools extends LitElement {
    */
   startDrawing() {
     startDrawingMethod(this);
+  }
+
+  /**
+   * Stops the active drawing interaction without discarding existing features.
+   * The draw interaction is deactivated but all features remain on the layer.
+   */
+  stopDrawing() {
+    stopDrawingMethod(this);
   }
 
   /**
