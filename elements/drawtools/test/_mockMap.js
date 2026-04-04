@@ -38,7 +38,10 @@ export class MockMap extends HTMLElement {
                 if (this.onAddFeature) this.onAddFeature({ feature });
               },
               getFeatures: () => this.features,
-              removeFeature: () => this.features.splice(0, 1),
+              removeFeature: (feature) => {
+                const idx = this.features.indexOf(feature);
+                if (idx >= 0) this.features.splice(idx, 1);
+              },
               on: (event, cb) => {
                 if (event === "addfeature") this.onAddFeature = cb;
               },
