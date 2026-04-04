@@ -276,6 +276,25 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
+   * Remove a feature at the given index from the draw layer source
+   * and update drawnFeatures. Emits drawupdate unless suppressEvents is set.
+   *
+   * @param {number} index - Zero-based index of the feature to remove.
+   * @returns {boolean} True if a feature was removed, false if index was out of bounds.
+   */
+  removeFeatureByIndex(index) {
+    const source = this.drawLayer?.getSource();
+    if (!source) return false;
+
+    const features = source.getFeatures();
+    if (index < 0 || index >= features.length) return false;
+
+    source.removeFeature(features[index]);
+    this.emitDrawnFeatures();
+    return true;
+  }
+
+  /**
    * @onClick Event handler triggered to discard/stop drawing
    * on the map and delete the drawn shapes.
    */
