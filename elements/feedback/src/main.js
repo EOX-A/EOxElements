@@ -12,7 +12,7 @@ import "./feedback-button.js";
  *
  * On submit, the element sends a `POST` request with `FormData` to the configured
  * `endpoint`. The payload includes the feedback message (or custom form fields when
- * using a `schema`), the current page URL, the browser's user agent, and optionally
+ * using a `schema`), the current page URL, the browser's user agent, screen resolution and optionally
  * a screenshot file. This makes it straightforward to connect to any backend — for
  * example a service that creates issues in a Git platform (GitLab, GitHub, …), sends
  * notifications, or stores feedback in a database.
