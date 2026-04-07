@@ -58,7 +58,9 @@ const emitDrawnFeaturesMethod = (EoxDrawTool, drawUpdateEvent) => {
     EoxDrawTool.requestUpdate();
 
     // Triggering `drawupdate` event after drawFeature is updated
-    drawUpdateEvent(value);
+    if (!EoxDrawTool.suppressEvents) {
+      drawUpdateEvent(value);
+    }
   };
 
   // Emit features after a timeout (ensures update)

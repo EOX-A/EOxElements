@@ -4,6 +4,7 @@ import "./components/controller";
 import { styleEOX } from "./style.eox";
 import {
   startDrawingMethod,
+  stopDrawingMethod,
   initLayerMethod,
   discardDrawingMethod,
   emitDrawnFeaturesMethod,
@@ -63,6 +64,7 @@ export class EOxDrawTools extends LitElement {
       format: { type: String },
       type: { type: String },
       unstyled: { type: Boolean },
+      suppressEvents: { attribute: false, state: true, type: Boolean },
     };
   }
 
@@ -120,6 +122,12 @@ export class EOxDrawTools extends LitElement {
      * Whether the user is currently in the process of drawing or not
      */
     this.currentlyDrawing = false;
+
+    /**
+     * When true, suppresses `drawupdate` event emission.
+     * Set this before programmatic feature changes to avoid feedback loops.
+     */
+    this.suppressEvents = false;
 
     /**
      * The current native OpenLayers `draw` interaction
@@ -307,6 +315,33 @@ export class EOxDrawTools extends LitElement {
    */
   startDrawing() {
     startDrawingMethod(this);
+  }
+
+  /**
+   * Stops the active drawing interaction without discarding existing features.
+   * The draw interaction is deactivated but all features remain on the layer.
+   */
+  stopDrawing() {
+    stopDrawingMethod(this);
+  }
+
+  /**
+   * Remove a feature at the given index from the draw layer source
+   * and update drawnFeatures. Emits drawupdate unless suppressEvents is set.
+   *
+   * @param {number} index - Zero-based index of the feature to remove.
+   * @returns {boolean} True if a feature was removed, false if index was out of bounds.
+   */
+  removeFeatureByIndex(index) {
+    const source = this.drawLayer?.getSource();
+    if (!source) return false;
+
+    const features = source.getFeatures();
+    if (index < 0 || index >= features.length) return false;
+
+    source.removeFeature(features[index]);
+    this.emitDrawnFeatures();
+    return true;
   }
 
   /**
