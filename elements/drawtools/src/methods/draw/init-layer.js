@@ -132,10 +132,6 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
 
   EoxMap.addEventListener("addfeatures", onAddFeatures);
 
-  if (EoxDrawTool.drawnFeatures) {
-    EoxDrawTool.drawLayer.getSource().addFeatures(EoxDrawTool.drawnFeatures);
-  }
-
   /**
    * Resets the draw layer, cleaning up interactions and listeners.
    *
