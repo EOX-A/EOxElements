@@ -10,6 +10,7 @@ import {
   setLayerId,
   featureListTest,
   measureTest,
+  layerIdWithMeasure,
 } from "./cases";
 
 import { TEST_SELECTORS } from "../src/enums";
@@ -52,4 +53,7 @@ describe("Drawtools", () => {
 
   // Test case to check area and line measurement
   it("checks area and line measurement", () => measureTest());
+
+  // Test case to ensure layer-id works with measure
+  it("ensures layer-id works with measure enabled", () => layerIdWithMeasure());
 });
