@@ -277,7 +277,6 @@ const loadExpertModeExport = () => {
     const isDifferentMonth =
       dayjs(currentDate).month() !== dayjs(weekAgoDate).month();
 
-    console.log(selectedDateRange);
     // calendar navigation - select date range for testing
     cy.get(".vc", { timeout: 10000 }).should("exist").and("be.visible");
 
@@ -288,7 +287,6 @@ const loadExpertModeExport = () => {
 
     // select start date (30 days ago)
     cy.get(`[data-vc-date="${weekAgoDate}"]`).last().click();
-    console.log(weekAgoDate);
 
     // navigate back to current month if needed
     if (isDifferentMonth) {
@@ -296,7 +294,6 @@ const loadExpertModeExport = () => {
     }
 
     // select end date (current date)
-    console.log(currentDate);
     cy.get(`[data-vc-date="${currentDate}"]`).last().click();
 
     // close calendar by clicking outside
