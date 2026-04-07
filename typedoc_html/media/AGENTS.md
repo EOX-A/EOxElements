@@ -182,9 +182,10 @@ After every implementation, you **MUST** run:
 
 We use `release-please`. Formatting errors here will break the release pipeline.
 
-- **PR Title**: Must be in Conventional Commit format (e.g., `feat: add tooltip property`).
+- **PR Title**: Must be in Conventional Commit format (e.g., `feat: add tooltip property`). It is not needed to use the element name in the title scope (e.g., `fix(drawtools): ...` is **not** required) since `release-please` handles the changelog/release of the element automatically. Instead, use standard scopes or no scopes (e.g., `fix: fixed a thing` or `fix(style): ...`).
 - **Commit Message**: Same as PR Title. Since we squash, the PR title becomes the commit.
 - **One Element Per PR**: Never mix changes for e.g. `map` and `layercontrol` in one PR.
+- **One Feature/Fix Per PR**: Never mix different features or fixes into one PR (even if they concern the same element). Each PR is squashed and represents exactly one entry in the changelog.
 
 ---
 

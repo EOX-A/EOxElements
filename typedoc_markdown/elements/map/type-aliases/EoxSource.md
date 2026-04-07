@@ -8,7 +8,7 @@
 
 > **EoxSource**\<`S`\> = `S` *extends* `"WMTS"` ? `OlSourceOption`\<`S`\> : `OlSourceOption`\<`S`\> *extends* `object` ? `Omit`\<`OlSourceOption`\<`S`\>, `"format"`\> & `object` : `OlSourceOption`\<`S`\> *extends* `object` ? `Omit`\<`OlSourceOption`\<`S`\>, `"source"`\> & `object` : `OlSourceOption`\<`S`\> & `object`
 
-Defined in: [elements/map/src/layers.ts:125](https://github.com/EOX-A/EOxElements/blob/9138e51cbb5948c72b4e41fa8b942e4ccc744b21/elements/map/src/layers.ts#L125)
+Defined in: [elements/map/src/layers.ts:125](https://github.com/EOX-A/EOxElements/blob/31ba2f598e2b970e551ca8bf2dc76d09de1019b1/elements/map/src/layers.ts#L125)
 
 ## Type Declaration
 
