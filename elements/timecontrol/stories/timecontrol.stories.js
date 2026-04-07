@@ -79,7 +79,7 @@ export const DatePickerPopup = DatePickerPopupStory;
 export const DatePickerPopupItems = DatePickerPopupItemsStory;
 
 /**
- * Date is displayed in UTC format when showUTC is true
+ * Date is displayed in UTC format when the showUTC property / show-utc attribute is true
  *
  * This example demonstrates the `<eox-timecontrol-date>` component with `showUTC` enabled.
  * The date is displayed in the UTC format and not the local timezone format.
