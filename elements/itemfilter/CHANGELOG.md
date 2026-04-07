@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.14.0...itemfilter-v1.15.0) (2026-03-24)
+
+
+### Features
+
+* Result sorting ([#2210](https://github.com/EOX-A/EOxElements/issues/2210)) ([2eb3d4c](https://github.com/EOX-A/EOxElements/commit/2eb3d4ccfabe21c81b37cb8572002bd38cf56152))
+
 ## [1.14.0](https://github.com/EOX-A/EOxElements/compare/itemfilter-v1.13.3...itemfilter-v1.14.0) (2026-01-21)
 
 
