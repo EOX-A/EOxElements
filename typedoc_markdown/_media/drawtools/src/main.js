@@ -385,9 +385,11 @@ export class EOxDrawTools extends LitElement {
   /**
    * initializes the EOxMap and OlMap instances
    * And stores them in the private properties #eoxMap and #olMap, respectively.
-   * It then calls requestUpdate to trigger a re-render.
    */
-  firstUpdated() {
+  updateLayer() {
+    if (this.resetLayer) {
+      this.resetLayer(this);
+    }
     const { EoxMap, OlMap, reset } = initLayerMethod(
       this,
       this.multipleFeatures,
@@ -395,6 +397,15 @@ export class EOxDrawTools extends LitElement {
     this.resetLayer = reset;
     this.eoxMap = EoxMap;
     this.#olMap = OlMap;
+  }
+
+  /**
+   * initializes the EOxMap and OlMap instances
+   * And stores them in the private properties #eoxMap and #olMap, respectively.
+   * It then calls requestUpdate to trigger a re-render.
+   */
+  firstUpdated() {
+    this.updateLayer();
     this.selectionEvents = createSelectHandler(this);
 
     if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
@@ -408,19 +419,17 @@ export class EOxDrawTools extends LitElement {
   }
 
   updated(changedProperties) {
-    if (changedProperties.has("for")) {
-      const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-      this.eoxMap = EoxMap;
-      this.#olMap = OlMap;
-    }
+    const hasOldValue = (prop) =>
+      changedProperties.has(prop) && changedProperties.get(prop) !== undefined;
+
     if (
-      (changedProperties.get("type") &&
+      hasOldValue("for") ||
+      (changedProperties.has("type") &&
         changedProperties.get("type") !== this.type) ||
       (changedProperties.has("measure") &&
         changedProperties.get("measure") !== this.measure)
     ) {
-      this.resetLayer(this);
-      this.firstUpdated();
+      this.updateLayer();
       this.currentlyDrawing = false;
     }
   }
