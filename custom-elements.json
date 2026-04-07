@@ -4,388 +4,6 @@
   "modules": [
     {
       "kind": "javascript-module",
-      "path": "elements/chart/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
-          "name": "EOxChart",
-          "members": [
-            {
-              "kind": "method",
-              "name": "_dispatchItemPointerMoveEvent",
-              "parameters": [
-                {
-                  "name": "detail"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "_dispatchItemClickEvent",
-              "parameters": [
-                {
-                  "name": "detail"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "spec",
-              "privacy": "public",
-              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
-              "type": {
-                "text": "VisualizationSpec | string"
-              },
-              "default": "undefined"
-            },
-            {
-              "kind": "field",
-              "name": "opt",
-              "privacy": "public",
-              "type": {
-                "text": "EmbedOptions"
-              },
-              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
-              "default": "undefined"
-            },
-            {
-              "kind": "field",
-              "name": "dataValues",
-              "privacy": "public",
-              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
-              "type": {
-                "text": "{[dataSourceName: string]: InlineData} | string"
-              },
-              "default": "undefined"
-            },
-            {
-              "kind": "field",
-              "name": "noShadow",
-              "privacy": "public",
-              "type": {
-                "text": "Boolean"
-              },
-              "description": "Renders the element without a shadow root",
-              "default": "false",
-              "attribute": "no-shadow"
-            },
-            {
-              "kind": "field",
-              "name": "unstyled",
-              "privacy": "public",
-              "type": {
-                "text": "Boolean"
-              },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "attribute": "unstyled"
-            }
-          ],
-          "events": [
-            {
-              "name": "pointermove:item",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Chart item is hovered. Event detail includes `event` (pointermove event) and `item` (the hovered item on the chart)"
-            },
-            {
-              "name": "click:item",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "no-shadow",
-              "type": {
-                "text": "Boolean"
-              },
-              "description": "Renders the element without a shadow root",
-              "default": "false",
-              "fieldName": "noShadow"
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "Boolean"
-              },
-              "description": "Render the element without additional styles",
-              "default": "false",
-              "fieldName": "unstyled"
-            }
-          ],
-          "superclass": {
-            "name": "LitElement",
-            "package": "lit"
-          },
-          "tagName": "eox-chart",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxChart",
-          "declaration": {
-            "name": "EOxChart",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "base64EncodeSpec",
-          "declaration": {
-            "name": "base64EncodeSpec",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "js",
-          "name": "parseSpec",
-          "declaration": {
-            "name": "parseSpec",
-            "module": "elements/chart/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-chart",
-          "declaration": {
-            "name": "EOxChart",
-            "module": "elements/chart/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
-      "path": "elements/feedback/src/main.js",
-      "declarations": [
-        {
-          "kind": "class",
-          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
-          "name": "EOxFeedback",
-          "members": [
-            {
-              "kind": "field",
-              "name": "endpoint",
-              "return": {
-                "type": {
-                  "text": "string"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "val",
-                  "type": {
-                    "text": "string"
-                  }
-                }
-              ],
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "kind": "field",
-              "name": "schema",
-              "return": {
-                "type": {
-                  "text": "JsonSchema|null"
-                }
-              },
-              "parameters": [
-                {
-                  "name": "newSchema",
-                  "type": {
-                    "text": "JsonSchema|null"
-                  }
-                }
-              ],
-              "type": {
-                "text": "JsonSchema"
-              },
-              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
-            },
-            {
-              "kind": "method",
-              "name": "onKeyboardInput",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onTextareaInput",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onJsonFormChange",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onToggleScreenshot",
-              "parameters": [
-                {
-                  "name": "e"
-                }
-              ],
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onSubmit",
-              "privacy": "private"
-            },
-            {
-              "kind": "method",
-              "name": "onCancel",
-              "privacy": "private"
-            },
-            {
-              "kind": "field",
-              "name": "includeScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "areaSelection",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "regionScreenshot",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "screenShotFile",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_endpoint",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_schema",
-              "type": {
-                "text": "null"
-              },
-              "privacy": "private",
-              "default": "null"
-            },
-            {
-              "kind": "field",
-              "name": "_submitted",
-              "type": {
-                "text": "boolean"
-              },
-              "privacy": "private",
-              "default": "false"
-            },
-            {
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles.",
-              "name": "unstyled",
-              "kind": "field"
-            }
-          ],
-          "events": [
-            {
-              "name": "submit",
-              "type": {
-                "text": "CustomEvent"
-              },
-              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
-            },
-            {
-              "name": "close",
-              "type": {
-                "text": "Event"
-              },
-              "description": "The modal was closed."
-            }
-          ],
-          "attributes": [
-            {
-              "name": "endpoint",
-              "type": {
-                "text": "string"
-              },
-              "description": "The endpoint to send the feedback to as POST message."
-            },
-            {
-              "name": "unstyled",
-              "type": {
-                "text": "string"
-              },
-              "description": "If provided, the element will not be styled with EOX styles."
-            }
-          ],
-          "superclass": {
-            "name": "HTMLElement"
-          },
-          "tagName": "eox-feedback",
-          "customElement": true
-        }
-      ],
-      "exports": [
-        {
-          "kind": "js",
-          "name": "EOxFeedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        },
-        {
-          "kind": "custom-element-definition",
-          "name": "eox-feedback",
-          "declaration": {
-            "name": "EOxFeedback",
-            "module": "elements/feedback/src/main.js"
-          }
-        }
-      ]
-    },
-    {
-      "kind": "javascript-module",
       "path": "elements/drawtools/src/main.js",
       "declarations": [
         {
@@ -926,6 +544,388 @@
           "declaration": {
             "name": "EOxDrawTools",
             "module": "elements/drawtools/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/chart/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "Chart component based on [Vega-Lite](https://vega.github.io/vega-lite/)/[Vega-Embed](https://github.com/vega/vega-embed).\nPass a valid Vega spec as `spec` property in order to render a chart.\nOptionally for transfer of chart definitions with both single and double quote as attribute, use the `spec` as base64 encoded string.\n\nThe `eox-chart` provides some default `spec` settings (merged with the provided `spec` property) and helper functionalities on top of Vega-Lite.\n\nDefault `spec` settings (see the file `src/enums/default-spec.js`):\n- `width`: \"container\" (make the chart width responsive to the parent)\n- `height`: \"container\" (make the chart height responsive to the parent)\n- `autosize`: \"fit\" (automatically adjust the layout in an attempt to force the total visualization size to fit within the given width, height and padding values)\n- `resize`: true (autosize layout is re-calculated on every view update)\n- `padding`: 16 (the padding in pixels to add around the visualization)\n\nThese default `spec` settings can be overwritten by setting them to a differnt value in the `spec` property passed to `eox-chart`. Also, there are default\nVega-Embed options (see the file `src/enums/default-opt.js`), which can also be overwritten in the passed `opt` property.\n\nHelper functionalities:\n\nThe `eox-chart` automatically emits mouse/pointer events from the Vega-Lite chart. See below for the emitted events.\nFor working with base64 encoded `spec` or `dataValues` attributes, `eox-chart` exports two helper methods: `base64EncodeSpec` (encoding), `parseSpec` (decoding).",
+          "name": "EOxChart",
+          "members": [
+            {
+              "kind": "method",
+              "name": "_dispatchItemPointerMoveEvent",
+              "parameters": [
+                {
+                  "name": "detail"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "_dispatchItemClickEvent",
+              "parameters": [
+                {
+                  "name": "detail"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "spec",
+              "privacy": "public",
+              "description": "[Vega-Lite spec](https://vega.github.io/vega-lite/docs/spec.html) either as an object or base64 encoded string.",
+              "type": {
+                "text": "VisualizationSpec | string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "opt",
+              "privacy": "public",
+              "type": {
+                "text": "EmbedOptions"
+              },
+              "description": "[Vega-Embed options](https://github.com/vega/vega-embed?tab=readme-ov-file#options)",
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "dataValues",
+              "privacy": "public",
+              "description": "Data values passed on runtime. Requires a [named data source](https://vega.github.io/vega-lite/docs/data.html#named) in the provided `spec`. Either passed as a base64 encoded string or as an object.",
+              "type": {
+                "text": "{[dataSourceName: string]: InlineData} | string"
+              },
+              "default": "undefined"
+            },
+            {
+              "kind": "field",
+              "name": "noShadow",
+              "privacy": "public",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Renders the element without a shadow root",
+              "default": "false",
+              "attribute": "no-shadow"
+            },
+            {
+              "kind": "field",
+              "name": "unstyled",
+              "privacy": "public",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "attribute": "unstyled"
+            }
+          ],
+          "events": [
+            {
+              "name": "pointermove:item",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Chart item is hovered. Event detail includes `event` (pointermove event) and `item` (the hovered item on the chart)"
+            },
+            {
+              "name": "click:item",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "Chart item is clicked. Event detail includes `event` (click event) and `item` (the clicked item on the chart)"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "no-shadow",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Renders the element without a shadow root",
+              "default": "false",
+              "fieldName": "noShadow"
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "Boolean"
+              },
+              "description": "Render the element without additional styles",
+              "default": "false",
+              "fieldName": "unstyled"
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "tagName": "eox-chart",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxChart",
+          "declaration": {
+            "name": "EOxChart",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "base64EncodeSpec",
+          "declaration": {
+            "name": "base64EncodeSpec",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseSpec",
+          "declaration": {
+            "name": "parseSpec",
+            "module": "elements/chart/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-chart",
+          "declaration": {
+            "name": "EOxChart",
+            "module": "elements/chart/src/main.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "elements/feedback/src/main.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "The `eox-feedback` element provides a modal dialog for collecting user feedback.\nIt supports screenshot capture, customizable endpoint, and flexible styling.\nThe feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM\ndirectly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),\nwhich can be positioned in any corner of the viewport.\n\nOn submit, the element sends a `POST` request with `FormData` to the configured\n`endpoint`. The payload includes the feedback message (or custom form fields when\nusing a `schema`), the current page URL, the browser's user agent, and optionally\na screenshot file. This makes it straightforward to connect to any backend — for\nexample a service that creates issues in a Git platform (GitLab, GitHub, …), sends\nnotifications, or stores feedback in a database.\n\nThe backend only needs to accept a `multipart/form-data` POST request, extract the\nfields and the optional file attachment, and then forward them to whatever system\nyou use for tracking or processing feedback. Because all authentication and API\ntokens live on the server side, the browser never sees sensitive credentials.\nTypical backend responsibilities include input sanitization, CORS configuration to\nrestrict which origins may submit feedback, and mapping the received fields into the\nformat expected by the target system (e.g. composing an issue title and body, or\nbuilding an email).",
+          "name": "EOxFeedback",
+          "members": [
+            {
+              "kind": "field",
+              "name": "endpoint",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "val",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ],
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "kind": "field",
+              "name": "schema",
+              "return": {
+                "type": {
+                  "text": "JsonSchema|null"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "newSchema",
+                  "type": {
+                    "text": "JsonSchema|null"
+                  }
+                }
+              ],
+              "type": {
+                "text": "JsonSchema"
+              },
+              "description": "The JSON schema for the feedback form (option). Requires `eox-jsonform` to be imported."
+            },
+            {
+              "kind": "method",
+              "name": "onKeyboardInput",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onTextareaInput",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onJsonFormChange",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onToggleScreenshot",
+              "parameters": [
+                {
+                  "name": "e"
+                }
+              ],
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "onCancel",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "includeScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "areaSelection",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "regionScreenshot",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "screenShotFile",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_endpoint",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_schema",
+              "type": {
+                "text": "null"
+              },
+              "privacy": "private",
+              "default": "null"
+            },
+            {
+              "kind": "field",
+              "name": "_submitted",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles.",
+              "name": "unstyled",
+              "kind": "field"
+            }
+          ],
+          "events": [
+            {
+              "name": "submit",
+              "type": {
+                "text": "CustomEvent"
+              },
+              "description": "The feedback was submitted. The `CustomEvent.detail` contains the FormData object."
+            },
+            {
+              "name": "close",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The modal was closed."
+            }
+          ],
+          "attributes": [
+            {
+              "name": "endpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "The endpoint to send the feedback to as POST message."
+            },
+            {
+              "name": "unstyled",
+              "type": {
+                "text": "string"
+              },
+              "description": "If provided, the element will not be styled with EOX styles."
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "eox-feedback",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "EOxFeedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "eox-feedback",
+          "declaration": {
+            "name": "EOxFeedback",
+            "module": "elements/feedback/src/main.js"
           }
         }
       ]
