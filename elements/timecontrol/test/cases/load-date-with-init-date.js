@@ -1,6 +1,6 @@
 import { html } from "lit";
 
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { STORY_ARGS } from "../../src/enums.js";
@@ -66,12 +66,12 @@ const loadDateWithInitDate = () => {
       // critical: init date value validation
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(expectedDisplayDate));
+        .should("equal", getDate(expectedDisplayDate));
 
       // additional assertion: NOT the default last date
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("not.equal", getUTCDate("2023-04-23"));
+        .should("not.equal", getDate("2023-04-23"));
     });
 };
 

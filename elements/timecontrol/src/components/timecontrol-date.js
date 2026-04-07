@@ -99,16 +99,14 @@ export class EOxTimeControlDate extends LitElement {
     const itemValues = Object.keys(
       groupBy(EOxTimeControl.items.get(), key),
     ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    const curStartDate = EOxTimeControl.selectedDateRange[0];
     const index = findIndex(itemValues, (date) => {
       if (key === "utc") {
-        return dayjs(date).isSame(EOxTimeControl.selectedDateRange[0]);
+        if (EOxTimeControl.showUTC && curStartDate.includes("T00:00:00Z")) {
+          return dayjs(date).isSame(curStartDate, "day");
+        } else return dayjs(date).isSame(curStartDate);
       } else {
-        return (
-          date ===
-          dayjs(EOxTimeControl.selectedDateRange[0]).format(
-            TIME_CONTROL_DATE_FORMAT,
-          )
-        );
+        return date === dayjs(curStartDate).format(TIME_CONTROL_DATE_FORMAT);
       }
     });
     return { index, itemValues };
