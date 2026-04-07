@@ -9,3 +9,4 @@ export { default as setDifferentFormats } from "./set-different-formats"; // Tes
 export { default as featureListTest } from "./feature-list";
 export { default as measureTest } from "./measure";
 export { default as layerIdWithMeasure } from "./layer-id-with-measure";
+export { default as drawUpdateEventTest } from "./drawupdate-event";
