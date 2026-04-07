@@ -22,7 +22,7 @@ const emitDrawnFeaturesMethod = (EoxDrawTool, drawUpdateEvent) => {
     // has a default value of EPSG:4326
     const destination = EoxDrawTool.projection;
     // Update drawnFeatures with transformed features if the destination is defined
-    EoxDrawTool.drawnFeatures = destination
+    const newFeatures = destination
       ? drawnFeatures.map((feat) => {
           feat = feat.clone();
           const transformed = feat.getGeometry().transform(source, destination);
@@ -30,6 +30,12 @@ const emitDrawnFeaturesMethod = (EoxDrawTool, drawUpdateEvent) => {
           return feat;
         })
       : drawnFeatures;
+
+    if (EoxDrawTool.setDrawnFeaturesInternal) {
+      EoxDrawTool.setDrawnFeaturesInternal(newFeatures);
+    } else {
+      EoxDrawTool.drawnFeatures = newFeatures;
+    }
 
     // Emit features based on the format provided
     let value;

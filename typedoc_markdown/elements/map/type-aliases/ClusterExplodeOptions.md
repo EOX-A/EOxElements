@@ -8,7 +8,7 @@
 
 > **ClusterExplodeOptions** = `InteractionOptions` & `object`
 
-Defined in: [elements/map/src/types.ts:85](https://github.com/EOX-A/EOxElements/blob/77596d1fc6aabc468c283557e9195ce18f6f56e9/elements/map/src/types.ts#L85)
+Defined in: [elements/map/src/types.ts:85](https://github.com/EOX-A/EOxElements/blob/4635edcf09f5b7fd59339f094836197ee780ff8d/elements/map/src/types.ts#L85)
 
 ## Type Declaration
 

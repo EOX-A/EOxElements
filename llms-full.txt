@@ -539,6 +539,8 @@ This measurement is also displayed as a text label on the map using OpenLayers f
 
 - `continuous` (boolean): Enables the user to draw continuously one feature after another
 without having to discard previous ones manually (Default: `undefined`)
+- `drawnFeatures` (Array<Feature>): The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
+Pass features to be drawn on the map by setting this property. The features should be in the same projection as the map, or a projection should be specified via the `projection` property for proper transformation. (Default: `undefined`)
 - `layerId` (string): The ID of the Vector/Vector Tile Layer that contains features to be selected (Default: `""`)
 - `allowModify` (boolean): Allow modifying the drawn feature(s) (Default: `false`)
 - `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
@@ -546,7 +548,6 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `"eox-
 - `currentlyDrawing` (boolean): Whether the user is currently in the process of drawing or not (Default: `false`)
 - `draw` (Draw | EOxMap["selectInteractions"][string]): The current native OpenLayers `draw` interaction (Default: `null`)
 - `drawLayer` (default): The current native OpenLayers draw `layer` (initialized with a `zIndex` of 100) (Default: `null`)
-- `drawnFeatures` (Array<Feature>): The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled. (Default: `[]`)
 - `featureName` (string): The display name of drawn features, shown e.g. in the feature list. (Default: `"Feature"`)
 - `featureNameKey` (null): The key of the property to display in the feature list. (Default: `null`)
 - `featureStyles` ({
@@ -12187,7 +12188,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-07T13:25:45.221Z",
+              default: "2026-04-07T13:32:28.886Z",
               options: {
                 hidden: true,
               },
