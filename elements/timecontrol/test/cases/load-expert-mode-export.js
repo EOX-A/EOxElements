@@ -20,13 +20,6 @@ const loadExpertModeExport = () => {
     return true;
   });
 
-  // data preparation - calculate date range for calendar navigation
-  const currentDate = dayjs().format("YYYY-MM-DD");
-  const weekAgoDate = dayjs().subtract(30, "day").format("YYYY-MM-DD");
-  // check if date range spans different months for calendar navigation
-  const isDifferentMonth =
-    dayjs(currentDate).month() !== dayjs(weekAgoDate).month();
-
   // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
@@ -273,33 +266,48 @@ const loadExpertModeExport = () => {
       cy.get("#date-container input[type='text']", { timeout: 20000 }).click();
     });
 
-  // calendar navigation - select date range for testing
-  cy.get(".vc", { timeout: 10000 }).should("exist").and("be.visible");
+  cy.get("eox-timecontrol").then(($timecontrol) => {
+    const timecontrolElement = $timecontrol[0];
+    const selectedDateRange = timecontrolElement.selectedDateRange;
 
-  // navigate to previous month if date range spans different months
-  if (isDifferentMonth) {
-    cy.get(".vc .vc-header .vc-arrow_prev").last().click();
-  }
+    // data preparation - calculate date range for calendar navigation
+    const currentDate = dayjs(selectedDateRange[0]).format("YYYY-MM-DD");
+    const weekAgoDate = dayjs().subtract(30, "day").format("YYYY-MM-DD");
+    // check if date range spans different months for calendar navigation
+    const isDifferentMonth =
+      dayjs(currentDate).month() !== dayjs(weekAgoDate).month();
 
-  // select start date (30 days ago)
-  cy.get(`[data-vc-date="${weekAgoDate}"]`).last().click();
+    console.log(selectedDateRange);
+    // calendar navigation - select date range for testing
+    cy.get(".vc", { timeout: 10000 }).should("exist").and("be.visible");
 
-  // navigate back to current month if needed
-  if (isDifferentMonth) {
-    cy.get(".vc .vc-header .vc-arrow_next").last().click();
-  }
+    // navigate to previous month if date range spans different months
+    if (isDifferentMonth) {
+      cy.get(".vc .vc-header .vc-arrow_prev").last().click();
+    }
 
-  // select end date (current date)
-  cy.get(`[data-vc-date="${currentDate}"]`).last().click();
+    // select start date (30 days ago)
+    cy.get(`[data-vc-date="${weekAgoDate}"]`).last().click();
+    console.log(weekAgoDate);
 
-  // close calendar by clicking outside
-  cy.get("body").click(0, 0, { force: true });
+    // navigate back to current month if needed
+    if (isDifferentMonth) {
+      cy.get(".vc .vc-header .vc-arrow_next").last().click();
+    }
 
-  // trigger timelapse export functionality
-  cy.get("eox-timecontrol-timelapse").click();
+    // select end date (current date)
+    console.log(currentDate);
+    cy.get(`[data-vc-date="${currentDate}"]`).last().click();
 
-  // verify export dialog appears
-  cy.get(".timecontrol-export", { timeout: 30000 }).should("exist");
+    // close calendar by clicking outside
+    cy.get("body").click(0, 0, { force: true });
+
+    // trigger timelapse export functionality
+    cy.get("eox-timecontrol-timelapse").click();
+
+    // verify export dialog appears
+    cy.get(".timecontrol-export", { timeout: 30000 }).should("exist");
+  });
 };
 
 export default loadExpertModeExport;

@@ -168,7 +168,7 @@ export class EOxTimeControl extends LitElement {
      *
      * @type {boolean}
      */
-    this.showUTC = true;
+    this.showUTC = false;
 
     /**
      * Whether external map rendering is enabled for timelapse export.
