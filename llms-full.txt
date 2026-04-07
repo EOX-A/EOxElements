@@ -9393,6 +9393,46 @@ Demonstrates integration of external editors via schema configuration.
 
 ```
 
+#### CodeMarkdownToolbar
+
+Code Markdown editor example. This story demonstrates a custom configuration option that extends the
+built-in ACE editor to include a markdown toolbar. It is activated by using
+`format: "markdown"`, `options.resolver: "ace"` and `options.markdownToolbar: true` in the schema.
+
+```html
+<eox-jsonform></eox-jsonform>
+
+<script type="module">
+  import "@eox/jsonform/dist/eox-jsonform.js";
+
+  const eoxJsonform = document.querySelector("eox-jsonform");
+
+  // Assign properties
+  Object.assign(eoxJsonform, {
+    schema: {
+      type: "object",
+      properties: {
+        markdown: {
+          type: "string",
+          format: "markdown",
+          options: {
+            resolver: "ace",
+            markdownToolbar: true,
+          },
+          description:
+            "This is a markdown field rendered with a custom ace editor with a toolbar.",
+        },
+      },
+    },
+    value: {
+      markdown:
+        "# Hello world!\nThis is a markdown field rendered with **ace editor** plus a custom toolbar.",
+    },
+  });
+</script>
+
+```
+
 #### Collection
 
 STAC Collection example. Renders a form based on a STAC Collection schema and value.
@@ -12188,7 +12228,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-07T13:39:59.079Z",
+              default: "2026-04-07T13:44:53.834Z",
               options: {
                 hidden: true,
               },
