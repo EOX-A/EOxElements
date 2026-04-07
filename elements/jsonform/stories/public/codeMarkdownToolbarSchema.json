@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "markdown": {
+      "type": "string",
+      "format": "markdown",
+      "options": {
+        "resolver": "ace",
+        "markdownToolbar": true
+      },
+      "description": "This is a markdown field rendered with a custom ace editor with a toolbar."
+    }
+  }
+}
