@@ -107,7 +107,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   );
 
   EoxDrawTool.modify = /** @type {import("ol/interaction").Modify} */ (
-    /** @type {unknown} */ (EoxMap.interactions["drawInteractionmodify"])
+    /** @type {unknown} */ (EoxMap.interactions["drawInteraction_modify"])
   );
 
   // Initialize selection interactions
