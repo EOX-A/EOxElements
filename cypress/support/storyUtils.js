@@ -23,7 +23,9 @@ export function getFilteredStories() {
     cypressChanged
       ? Object.values(stories.entries)
       : Object.values(stories.entries).filter((obj) =>
-          uniqueElementFolders.some((folder) => obj.importPath.includes(folder))
+          uniqueElementFolders.some((folder) =>
+            obj.importPath.includes(folder),
+          ),
         )
   ).filter((s) => s.type === "story");
 }
@@ -31,7 +33,7 @@ export function getFilteredStories() {
 export function runBatch(batch) {
   Cypress.on(
     "uncaught:exception",
-    (err) => !err.message.includes("ResizeObserver loop")
+    (err) => !err.message.includes("ResizeObserver loop"),
   );
 
   batch.forEach((story) => {
