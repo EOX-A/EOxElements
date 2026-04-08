@@ -7,7 +7,7 @@
     "url": "git@github.com:EOX-A/EOxElements.git"
   },
   "devDependencies": {
-    "vite": "^7.1.12"
+    "vite": "^8.0.6"
   },
   "dependencies": {
     "@eox/elements-utils": "^1.1.0",
