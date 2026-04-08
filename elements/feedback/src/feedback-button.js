@@ -90,7 +90,7 @@ export class EOxFeedbackButton extends HTMLElement {
         ${this.getAttribute("unstyled") === null && styleEOX}
         :host {
           position: fixed !important;
-          margin: 0px 20px !important;
+          margin: 0px 20px;
           ${this.position.includes("top") ? "top: 0px;" : ""}
           ${this.position.includes("right") ? "right: 0px;" : ""}
           ${this.position.includes("bottom") ? "bottom: 0px;" : ""}
