@@ -102,7 +102,7 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
                 );
                 return {
                   ...value,
-                  date: dayjs(date).format().split("T")[0],
+                  date: dayjs(date).format(),
                   utc: dayjs(date).utc().format(),
                   local: dayjs(date).format(),
                   originalDate: value.date,
@@ -177,10 +177,10 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
                 EOxTimeControlTimeline.visTimeline.setOptions({
                   ...EOxTimeControlTimeline.visTimeline.setOptions,
                   start: dayjs(dateRange[0])
-                    .subtract(30, "day")
+                    .subtract(10, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                   end: dayjs(dateRange[0])
-                    .add(30, "day")
+                    .add(10, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                 });
               }

@@ -117,6 +117,7 @@ function handleTimelineChanged(
   EOxTimeControl,
   options,
 ) {
+  // console.log(EOxTimeControlTimeline.visTimeline.timeAxis.step)
   const container = EOxTimeControlTimeline.getContainer();
   const EOxItemFilter = EOxTimeControl.querySelector("eox-itemfilter");
 
@@ -129,9 +130,13 @@ function handleTimelineChanged(
   const milestoneElements = /** @type {NodeListOf<HTMLElement>} */ (
     container.querySelectorAll(".vis-item.milestone")
   );
-  milestoneElements.forEach((milestone) => {
-    milestone.style.width = `${cellWidth}px`;
-  });
+
+  if (EOxTimeControlTimeline.visTimeline.timeAxis.step.scale === "month") {
+    // milestoneElements.forEach((milestone) => {
+    //   console.log(milestone)
+    //   milestone.style.width = `${width}px`;
+    // });
+  }
   for (let i = 0; i < EOxTimeControl.sliderValues.length; i++) {
     updateVisibility(
       EOxTimeControlTimeline,

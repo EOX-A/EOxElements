@@ -63,7 +63,7 @@ export const styleTimeline = `
   border: none;
   width: 14px;
   height: 14px;
-  border-radius: 0px !important;
+  border-radius: 100px !important;
 }
 .vis-item.milestone.vis-point.vis-selected-item {
   background: #ffc200 !important;
