@@ -8,3 +8,5 @@ export { default as setLayerId } from "./set-layer-id"; // Test to set the layer
 export { default as setDifferentFormats } from "./set-different-formats"; // Test if the drawn features are emitted in different formats
 export { default as featureListTest } from "./feature-list";
 export { default as measureTest } from "./measure";
+export { default as layerIdWithMeasure } from "./layer-id-with-measure";
+export { default as drawUpdateEventTest } from "./drawupdate-event";
