@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -50,7 +50,7 @@ const loadDateWithSlider = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(initialDate));
+        .should("equal", getDate(initialDate));
     });
 
   // now test slider interaction
@@ -97,7 +97,7 @@ const loadDateWithSlider = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(targetDate));
+        .should("equal", getDate(targetDate));
     });
 
   // test another slider change - select a different date
@@ -135,7 +135,7 @@ const loadDateWithSlider = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(anotherTargetDate));
+        .should("equal", getDate(anotherTargetDate));
     });
 
   // verify year ticks are displayed correctly on slider

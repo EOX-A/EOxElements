@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -72,7 +72,7 @@ const loadNoMapSynchronization = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(initialDate));
+        .should("equal", getDate(initialDate));
     });
 
   // note: we verify synchronization by checking the date input value in eox-timecontrol-date
@@ -112,7 +112,7 @@ const loadNoMapSynchronization = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(timelineTestDate));
+        .should("equal", getDate(timelineTestDate));
     });
 
   // verify timeline interaction synchronized all components
@@ -158,7 +158,7 @@ const loadNoMapSynchronization = () => {
       .within(() => {
         cy.get("#date-container input[type='text']")
           .invoke("val")
-          .should("equal", getUTCDate(clickedDate));
+          .should("equal", getDate(clickedDate));
       });
   });
 
@@ -197,7 +197,7 @@ const loadNoMapSynchronization = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(sliderTestDate));
+        .should("equal", getDate(sliderTestDate));
     });
 
   // verify slider interaction synchronized all components
@@ -227,7 +227,7 @@ const loadNoMapSynchronization = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(finalTestDate));
+        .should("equal", getDate(finalTestDate));
     });
 
   // final verification that all components remain synchronized
