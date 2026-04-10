@@ -2,45 +2,48 @@ import { html } from "lit";
 import { STORY_ARGS } from "../src/enums";
 
 /**
- * Timeline visualization using vis-timeline with date picker and calendar integration
+ * Date is displayed in UTC format when showUTC is true
  *
  * @returns {Object} The story configuration with arguments for the component.
  */
-const TimelineStory = {
+const DateInUTCStory = {
   args: {
     layerIdKey: STORY_ARGS.layerIdKey,
-    for: "eox-map#timeline",
+    for: "eox-map#date-in-utc",
+    showUTC: true,
     select: (e) => {
       console.log(e.detail);
     },
     storyAdditionalComponents: {
       "eox-map": {
-        id: "timeline",
+        id: "date-in-utc",
         zoom: STORY_ARGS.zoom,
         center: STORY_ARGS.center,
         layers: STORY_ARGS.layers,
       },
-      "eox-timecontrol-timeline": {
-        storyImport: false,
-        storySlot: true,
-      },
       "eox-timecontrol-date": {
         storyImport: false,
         storySlot: true,
+        format: "YYYY-MM-DDTHH:mm:ss",
         navigation: true,
       },
       "eox-timecontrol-picker": {
         storyImport: false,
         storySlot: true,
+        format: STORY_ARGS.format,
         showDots: true,
         popup: true,
-        showItems: true,
       },
     },
   },
   render: /** @param {Object.<string, unknown>} args **/ (args) => html`
+    <style>
+      eox-map {
+        width: 100%;
+        height: 500px;
+      }
+    </style>
     <eox-map
-      style="width: 100%; height: 500px;"
       id=${args.storyAdditionalComponents["eox-map"].id}
       .zoom=${args.storyAdditionalComponents["eox-map"].zoom}
       .center=${args.storyAdditionalComponents["eox-map"].center}
@@ -48,26 +51,27 @@ const TimelineStory = {
     ></eox-map>
     <eox-timecontrol
       .for=${args.for}
+      .showUTC=${args.showUTC}
       .layerIdKey=${args.layerIdKey}
       .titleKey=${args.titleKey}
       .filters=${args.filters}
       .externalMapRendering=${args.externalMapRendering}
       @select=${args.select}
     >
-      <eox-timecontrol-timeline></eox-timecontrol-timeline>
       <eox-timecontrol-date
+        .format=${args.storyAdditionalComponents["eox-timecontrol-date"].format}
         .navigation=${args.storyAdditionalComponents["eox-timecontrol-date"]
           .navigation}
       ></eox-timecontrol-date>
       <eox-timecontrol-picker
+        .format=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .format}
         .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
           .showDots}
         .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"].popup}
-        .showItems=${args.storyAdditionalComponents["eox-timecontrol-picker"]
-          .showItems}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,
 };
 
-export default TimelineStory;
+export default DateInUTCStory;

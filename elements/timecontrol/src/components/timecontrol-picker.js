@@ -8,6 +8,7 @@ import {
   cleanCalendarStyles,
   extractISOFromCalendar,
   calendarStyle,
+  getUTCLocalDateTime,
 } from "../helpers";
 import { Calendar } from "vanilla-calendar-pro";
 import groupBy from "lodash.groupby";
@@ -142,11 +143,15 @@ export class EOxTimeControlPicker extends LitElement {
    * @param {DateRange} dateRange - The date range as [startDate, endDate] in ISO format.
    */
   setDateRange(dateRange) {
+    const EOxTimeControl = /** @type {EOxTimeControl} */ (
+      this.closest("eox-timecontrol")
+    );
     this.#selectedDateRange = dateRange;
     if (this.cal) {
       const selectedDates = getSelectedDatesMethod(
         this.#selectedDateRange,
         this.range,
+        EOxTimeControl.showUTC,
       );
       this.cal.set({
         selectedDates: selectedDates.dates,
@@ -228,12 +233,17 @@ export class EOxTimeControlPicker extends LitElement {
       if (calendarSelector) {
         defaultCalendarSelector.innerHTML = "";
         this.#selectedDateRange = options.selectedDateRange;
+        const showUTC = EOxTimeControl.showUTC;
         const selectedDates = getSelectedDatesMethod(
           this.#selectedDateRange,
           this.range,
+          showUTC,
         );
         const data = EOxTimeControl.items.get();
-        const itemGroups = groupBy(data, "date");
+        const groupKey = showUTC ? "utc" : "date";
+        const itemGroups = groupBy(data, (item) =>
+          item[groupKey] ? item[groupKey].split("T")[0] : undefined,
+        );
         let popups = {};
 
         if (this.showItems) {
@@ -249,7 +259,9 @@ export class EOxTimeControlPicker extends LitElement {
 
             topItems.forEach((item) => {
               const id = item.id || "";
-              const utcTime = item.utc ? dayjs(item.utc).format("HH:mm") : "";
+              const utcTime = showUTC
+                ? dayjs(item.utc).utc().format("HH:mm")
+                : dayjs(item.utc).format("HH:mm");
               const group = item.group || "";
               const groupsList = Object.keys(groupBy(data, "group"));
 
@@ -324,11 +336,16 @@ export class EOxTimeControlPicker extends LitElement {
             const start = self.context.selectedDates[0] || lastClickDate;
             const end = this.range && self.context.selectedDates[lengthOfDates];
             if (start) {
-              const startDate = dayjs(start).startOf("day").utc().format();
-              const endDate = dayjs(end || start)
-                .endOf("day")
-                .utc()
-                .format();
+              const startDate = getUTCLocalDateTime(
+                start,
+                EOxTimeControl.showUTC,
+                true,
+              );
+              const endDate = getUTCLocalDateTime(
+                end || start,
+                EOxTimeControl.showUTC,
+                false,
+              );
 
               if (this.range) {
                 if (lengthOfDates || lastClickDate === start) {
@@ -346,7 +363,10 @@ export class EOxTimeControlPicker extends LitElement {
           onCreateDateEls: (_self, dateEl) => {
             const date = extractISOFromCalendar(dateEl);
             const data = EOxTimeControl.items.get();
-            const itemsGroupedByDate = groupBy(data, "date");
+            const groupKey = EOxTimeControl.showUTC ? "utc" : "date";
+            const itemsGroupedByDate = groupBy(data, (item) =>
+              item[groupKey] ? item[groupKey].split("T")[0] : undefined,
+            );
             const oldDots = dateEl.querySelector(".vc-day__dots");
             if (oldDots) oldDots.remove();
             const items = itemsGroupedByDate[date];
@@ -360,11 +380,11 @@ export class EOxTimeControlPicker extends LitElement {
               );
               if (EOxItemFilter) {
                 const results = EOxItemFilter.results;
-                const dataAvaiableAfterFilter = find(
+                const dataAvailableAfterFilter = find(
                   results,
                   (result) => result.start === date,
                 );
-                if (!dataAvaiableAfterFilter) {
+                if (!dataAvailableAfterFilter) {
                   dateEl.classList.add("vc-data-unavailable");
                 }
               }
