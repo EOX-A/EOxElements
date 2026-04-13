@@ -417,6 +417,7 @@ export class EOxFeedback extends HTMLElement {
           }
           z-index: 10000;
         }
+        :host(.hidden),
         .hidden {
           display: none !important;
         }
