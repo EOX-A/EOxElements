@@ -10,8 +10,8 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "@eox/elements-utils": "*",
-    "@eox/ui": "*",
+    "@eox/elements-utils": "^1.1.0",
+    "@eox/ui": "^1.1.0",
     "driver.js": "^1.4.0",
     "lit": "^3.2.1"
   },
