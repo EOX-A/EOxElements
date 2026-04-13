@@ -224,10 +224,12 @@ export class EOxFeedback extends HTMLElement {
     const submitButton = this.shadowRoot.querySelector("button#submit");
     submitButton.classList.add("disabled");
 
+    this.classList.add("hidden");
     this.regionScreenshot = new RegionScreenshot();
 
     ["closed", "errorCreated", "screenshotDownload"].forEach((event) => {
       this.regionScreenshot.on(event, () => {
+        this.classList.remove("hidden");
         const checkbox = this.shadowRoot.querySelector("input[type=checkbox]");
         if (!(checkbox instanceof HTMLInputElement)) return;
         checkbox.checked = false;
@@ -248,6 +250,7 @@ export class EOxFeedback extends HTMLElement {
     });
 
     this.regionScreenshot.on("screenshotGenerated", (dataUrl) => {
+      this.classList.remove("hidden");
       const screenshot = document.createElement("img");
       screenshot.src = dataUrl;
       screenshot.classList.add("border");
@@ -419,6 +422,7 @@ export class EOxFeedback extends HTMLElement {
           }
           z-index: 10000;
         }
+        :host(.hidden),
         .hidden {
           display: none !important;
         }
