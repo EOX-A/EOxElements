@@ -1,8 +1,7 @@
 import { html } from "lit";
-import mainUrl from "../src/main.js?url";
 
 /**
- * The IframeHandoff story demonstrates the advanced ability of \`eox-tour\`
+ * The IframeHandoff story demonstrates the advanced ability of `eox-tour`
  * to seamlessly transition between a parent window and an iframe.
  */
 export default {};
@@ -38,34 +37,43 @@ export const IframeHandoff = {
     },
   },
   render: (args) => {
+    // Collect all script tags from the parent to inject into the iframe
+    // so that the iframe has the exact same Vite/Storybook environment.
+    const scripts = Array.from(document.querySelectorAll("script"))
+      .map((s) => s.outerHTML)
+      .join("\n");
+
     const iframeHtml = `
       <!DOCTYPE html>
       <html>
         <head>
           <style>body { font-family: sans-serif; padding: 20px; }</style>
-          <script type="module" src="${new URL(mainUrl, window.location.href).href}"></script>
+          ${scripts}
         </head>
         <body style="border: 2px dashed blue;">
           <div id="child-target-1" style="border: 1px solid blue; padding: 20px;">Child Step</div>
           <eox-tour id="handoff-tour" prevent-auto-start></eox-tour>
           <script>
-            document.getElementById('handoff-tour').config = {
-              totalSteps: 3,
-              stepOffset: 1,
-              steps: [
-                {
-                  element: '#child-target-1',
-                  popover: {
-                    title: 'Child Step',
-                    description: 'This overlay is running inside the iframe context.',
-                    returnToParent: true,
-                    parentStepIndex: 2,
-                    returnToParentBackward: true,
-                    backwardParentStepIndex: 0
+            // Storybook and Vite might take a moment to load and register the elements
+            customElements.whenDefined('eox-tour').then(() => {
+              document.getElementById('handoff-tour').config = {
+                totalSteps: 3,
+                stepOffset: 1,
+                steps: [
+                  {
+                    element: '#child-target-1',
+                    popover: {
+                      title: 'Child Step',
+                      description: 'This overlay is running inside the iframe context.',
+                      returnToParent: true,
+                      parentStepIndex: 2,
+                      returnToParentBackward: true,
+                      backwardParentStepIndex: 0
+                    }
                   }
-                }
-              ]
-            }
+                ]
+              };
+            });
           </script>
         </body>
       </html>
@@ -92,13 +100,13 @@ export const IframeHandoff = {
       </div>
 
       <eox-tour
-        id="handoff-tour"
+        id="handoff-tour-parent"
         show-every-time
         .config=${args.config}
       ></eox-tour>
 
       <button
-        @click=${() => document.getElementById("handoff-tour").start()}
+        @click=${() => document.getElementById("handoff-tour-parent").start()}
         style="margin-top: 20px;"
       >
         Start Handoff Tour
