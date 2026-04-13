@@ -85,6 +85,8 @@ const preview = {
         "storyCodeBefore",
         "storyCodeAfter",
         "storySlotContent",
+        "storyTemplateBefore",
+        "storyTemplateAfter",
         "storyStyle",
       ],
     },

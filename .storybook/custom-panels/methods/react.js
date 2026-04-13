@@ -132,7 +132,9 @@ export const render = async (data) => {
 
   const finalRootCount = wrapperElement
     ? 1
-    : siblingElements.length + (mainElement ? 1 : 0) + (data.args.storyTemplateBefore || data.args.storyTemplateAfter ? 1 : 0);
+    : siblingElements.length +
+      (mainElement ? 1 : 0) +
+      (data.args.storyTemplateBefore || data.args.storyTemplateAfter ? 1 : 0);
 
   const returnBlock =
     finalRootCount > 1
