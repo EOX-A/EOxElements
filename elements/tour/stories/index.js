@@ -1,11 +1,5 @@
-import { Primary } from "./Primary.story";
-import { IframeHandoff } from "./IframeHandoff.story";
-import { ShowEveryTime } from "./ShowEveryTime.story";
-
-export default {
-  title: "Elements/eox-tour",
-  tags: ["autodocs"],
-  component: "eox-tour",
-};
+import { Primary } from "./primary";
+import { IframeHandoff } from "./iframe-handoff";
+import { ShowEveryTime } from "./show-every-time";
 
 export { Primary, IframeHandoff, ShowEveryTime };
