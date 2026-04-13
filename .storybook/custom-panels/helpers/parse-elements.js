@@ -42,6 +42,8 @@ export const parseElements = (storyData) => {
       "storyCodeBefore",
       "storyCodeAfter",
       "storySlotContent",
+      "storyTemplateBefore",
+      "storyTemplateAfter",
       "storyStyle",
       "storyImport",
       "storySlot",
