@@ -21,7 +21,7 @@ export const ShowEveryTime = {
           popover: {
             title: "Persistent Tour",
             description:
-              "I start every time because of <code>show-every-time</code>.",
+              "I start every time because of the <code>show-every-time</code> attribute.",
             side: "bottom",
             align: "start",
           },

@@ -14,7 +14,7 @@ import { styleEOX } from "./style.eox.js";
  * - Cross-iframe handoff logic seamlessly transitioning between parent window and iframe.
  * - Persistent state tracking using `localStorage` to avoid repeatedly showing completed tours.
  * - Prevent automatic start on mount for manual control over when the tour begins.
- * 
+ *
  * The `eox-tour` element does not render any visible content itself; it operates entirely through the driver.js popovers and highlights.
  * Therefore it doesn't matter where in the DOM you place the `<eox-tour>` element, but it must be present in the document for the tour to function.
  *
