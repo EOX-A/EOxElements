@@ -12,6 +12,7 @@ import { when } from "lit/directives/when.js";
 /**
  * @typedef {import("../types").DateRange} DateRange
  * @typedef {import("../main").EOxTimeControl} EOxTimeControl
+ * @typedef {import("../types").selectRangeType} selectRangeType
  */
 
 /**
@@ -59,6 +60,20 @@ export class EOxTimeControlTimeline extends LitElement {
      * @type {boolean}
      */
     this.unstyled = false;
+
+    /**
+     * The selected range of the timeline.
+     *
+     * @type {selectRangeType}
+     */
+    this.selectRangeType = "day";
+
+    /**
+     * Whether range selection is enabled.
+     *
+     * @type {boolean}
+     */
+    this.rangeSelection = false;
   }
 
   /**
@@ -152,7 +167,11 @@ export class EOxTimeControlTimeline extends LitElement {
         ${!this.unstyled && styleEOX}
         ${styleTimeline}
       </style>
-      <div class="timeline-wrapper">
+      <div
+        class="timeline-wrapper ${this.rangeSelection
+          ? "range-selection-enabled"
+          : "range-selection-disabled"}"
+      >
         <div id="timeline"></div>
         ${when(
           this.loading,

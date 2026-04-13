@@ -204,7 +204,8 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
   if (props.byUser) {
     drag = true;
     setTimeout(() => (drag = false));
-    updateRangeElements(EOxTimeControlTimeline);
+    if (EOxTimeControlTimeline.rangeSelection)
+      updateRangeElements(EOxTimeControlTimeline);
   }
   const viewRange = EOxTimeControlTimeline.visTimeline.getWindow();
   EOxTimeControlTimeline.dispatchEvent(
@@ -303,9 +304,12 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       updateRangeElements(EOxTimeControlTimeline);
       handleTimelineChanged(EOxTimeControlTimeline, EOxTimeControl, options);
     });
-    visTimeline.on("timechange", () =>
-      updateRangeElements(EOxTimeControlTimeline),
-    );
+    visTimeline.on("timechange", () => {
+      if (EOxTimeControlTimeline.rangeSelection)
+        updateRangeElements(EOxTimeControlTimeline);
+      else
+        EOxTimeControlTimeline.setDateRange(EOxTimeControl.selectedDateRange);
+    });
 
     visTimeline.on("timechanged", (props) =>
       handleTimeChanged(props, EOxTimeControl),

@@ -149,6 +149,18 @@ export type TimeControlSliderOptions = {
 };
 
 /**
+ * Defines the possible time ranges for selection in the time control components.
+ */
+export type selectRangeType =
+  | "second"
+  | "minute"
+  | "hour"
+  | "day"
+  | "week"
+  | "month"
+  | "year";
+
+/**
  * Configuration options for the time control timeline component.
  */
 export type TimeControlTimelineOptions = {
@@ -156,6 +168,16 @@ export type TimeControlTimelineOptions = {
    * Whether to disable default styling.
    */
   unstyled?: boolean;
+
+  /**
+   *
+   */
+  rangeSelection?: boolean;
+
+  /**
+   * The selected range of the timeline.
+   */
+  selectRangeType?: selectRangeType;
 };
 
 /**
