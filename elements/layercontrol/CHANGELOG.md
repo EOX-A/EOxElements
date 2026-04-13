@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.4.1...layercontrol-v1.4.2) (2026-04-13)
+
+
+### Bug Fixes
+
+* **style:** Remove hardcoded tools background ([#2234](https://github.com/EOX-A/EOxElements/issues/2234)) ([26850ec](https://github.com/EOX-A/EOxElements/commit/26850ec357bee59eecdb6352c4e15cd98840286b))
+
 ## [1.4.1](https://github.com/EOX-A/EOxElements/compare/layercontrol-v1.4.0...layercontrol-v1.4.1) (2026-02-27)
 
 
