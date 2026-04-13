@@ -71,6 +71,14 @@ export const ELEMENT_CONFIG = Object.freeze({
   imageProperty: undefined,
 
   /**
+   * Sorting behavior for the results.
+   * Can be undefined (alphabetical auto-detect), false (no sorting),
+   * string (property to sort by), function (custom comparator),
+   * or object { key: string, order: 'asc'|'desc' }
+   */
+  resultSorting: undefined,
+
+  /**
    * Allow opening multiple filter accordions in parallel
    * @default true
    */
@@ -103,6 +111,7 @@ export const ELEMENT_PROPERTIES = [
   "subTitleProperty",
   "imageProperty",
   "idProperty",
+  "resultSorting",
   "expandMultipleFilters",
   "expandResults",
   "expandMultipleResults",

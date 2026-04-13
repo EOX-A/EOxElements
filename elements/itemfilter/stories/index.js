@@ -10,3 +10,4 @@ export { default as ExternalStory, ExternalFetchFnStory } from "./external"; // 
 export { default as CardDisplayStory } from "./card-display";
 export { default as CSSVariablesStory } from "./css-variables";
 export { default as ResultActionStory } from "./result-action";
+export { ResultSortingStory } from "./result-sorting";

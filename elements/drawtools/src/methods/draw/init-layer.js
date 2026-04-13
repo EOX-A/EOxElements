@@ -73,32 +73,36 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
           },
         },
       },
-      {
-        type: "select",
-        options: {
-          id: "SelectLayerHoverInteraction",
-          condition: "pointermove",
-          style: EoxDrawTool.featureStyles?.["hover"] || {
-            "fill-color": `rgba(${primaryColor}, 0.2)`,
-            "stroke-color": `rgba(${primaryColor}, 1)`,
-            "stroke-width": 2,
-          },
-          tooltip: false,
-        },
-      },
-      {
-        type: "select",
-        options: {
-          id: "SelectLayerClickInteraction",
-          condition: "click",
-          panIn: true,
-          style: EoxDrawTool.featureStyles?.["click"] || {
-            "fill-color": `rgba(${primaryColor}, 0.2)`,
-            "stroke-color": `rgba(${primaryColor}, 1)`,
-            "stroke-width": 2,
-          },
-        },
-      },
+      ...(!EoxDrawTool.layerId
+        ? /** @type {import("@eox/map/src/types").EOxInteraction[]} */ ([
+            {
+              type: "select",
+              options: {
+                id: "SelectLayerHoverInteraction",
+                condition: "pointermove",
+                style: EoxDrawTool.featureStyles?.["hover"] || {
+                  "fill-color": `rgba(${primaryColor}, 0.2)`,
+                  "stroke-color": `rgba(${primaryColor}, 1)`,
+                  "stroke-width": 2,
+                },
+                tooltip: false,
+              },
+            },
+            {
+              type: "select",
+              options: {
+                id: "SelectLayerClickInteraction",
+                condition: "click",
+                panIn: true,
+                style: EoxDrawTool.featureStyles?.["click"] || {
+                  "fill-color": `rgba(${primaryColor}, 0.2)`,
+                  "stroke-color": `rgba(${primaryColor}, 1)`,
+                  "stroke-width": 2,
+                },
+              },
+            },
+          ])
+        : []),
     ],
   });
 
@@ -107,7 +111,7 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   );
 
   EoxDrawTool.modify = /** @type {import("ol/interaction").Modify} */ (
-    /** @type {unknown} */ (EoxMap.interactions["drawInteractionmodify"])
+    /** @type {unknown} */ (EoxMap.interactions["drawInteraction_modify"])
   );
 
   // Initialize selection interactions
@@ -123,18 +127,16 @@ const initLayerMethod = (EoxDrawTool, multipleFeatures) => {
   EoxDrawTool.modify?.on("modifyend", onModifyEnd);
 
   if (EoxDrawTool.measure) {
-    EoxDrawTool.draw?.on("drawstart", (evt) => {
-      const feature = evt.feature;
-      updateMeasure(feature);
-      feature.getGeometry().on("change", () => updateMeasure(feature));
-    });
+    if (EoxDrawTool.draw && typeof EoxDrawTool.draw.on === "function") {
+      EoxDrawTool.draw.on("drawstart", (evt) => {
+        const feature = evt.feature;
+        updateMeasure(feature);
+        feature.getGeometry().on("change", () => updateMeasure(feature));
+      });
+    }
   }
 
   EoxMap.addEventListener("addfeatures", onAddFeatures);
-
-  if (EoxDrawTool.drawnFeatures) {
-    EoxDrawTool.drawLayer.getSource().addFeatures(EoxDrawTool.drawnFeatures);
-  }
 
   /**
    * Resets the draw layer, cleaning up interactions and listeners.
