@@ -12228,7 +12228,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-13T08:30:11.429Z",
+              default: "2026-04-13T12:27:47.837Z",
               options: {
                 hidden: true,
               },
@@ -15059,7 +15059,6 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
       },
     ],
     slot: "first",
-    storyTemplateWrap: "<eox-map-compare>{{content}}</eox-map-compare>",
   });
 
   Object.assign(eoxMap2, {
@@ -17332,7 +17331,6 @@ In the Controls panel, try changing the `enabled` attribute to `"first"` or `"se
       },
     ],
     slot: "first",
-    storyTemplateWrap: "<eox-map-compare>{{content}}</eox-map-compare>",
   });
 
   Object.assign(eoxMap2, {
