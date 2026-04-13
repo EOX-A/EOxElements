@@ -69,6 +69,9 @@ export class EOxSelectInteraction {
             id: "eox-map-tooltip",
             ...options.overlay,
           });
+          /** @type {HTMLElement} */ (
+            /** @type {HTMLElement} */ (overlay.getElement()).parentNode
+          ).style.position = "fixed";
           this.eoxMap.map.addOverlay(overlay);
         }
       }
