@@ -425,58 +425,6 @@ export class EOxTour extends LitElement {
           this.config.onDestroyStarted(element, step, options);
       },
       onPopoverRender: (popover, ctx) => {
-        if (!popover.wrapper.shadowRoot) {
-          const shadow = popover.wrapper.attachShadow({ mode: "open" });
-          const styleEl = document.createElement("style");
-
-          const shadowStyle = style.replace(
-            /\.driver-popover\b(?![-\w])/g,
-            ":host",
-          );
-
-          styleEl.innerHTML = `
-            ${shadowStyle}
-            ${!this.unstyled ? styleEOX : ""}
-          `;
-          shadow.appendChild(styleEl);
-
-          while (popover.wrapper.firstChild) {
-            shadow.appendChild(popover.wrapper.firstChild);
-          }
-        }
-
-        // Restore button functionality that shadow root encapsulation breaks
-        // Driver.js uses a document-level capture listener that swallows clicks
-        // since shadow DOM retargets event.target to the popover wrapper.
-        // We intercept at the window level (before document) to properly route them.
-        if (!popover.wrapper._shadowClickDelegated) {
-          popover.wrapper._shadowClickDelegated = true;
-          window.addEventListener(
-            "click",
-            (e) => {
-              if (!popover.wrapper.isConnected) return;
-              const path = e.composedPath();
-              const step = ctx.config.steps[ctx.state.activeIndex ?? 0];
-              const element = ctx.state.activeElement || document.body;
-
-              if (path.includes(popover.nextButton)) {
-                e.stopImmediatePropagation();
-                e.preventDefault();
-                ctx.config.onNextClick(element, step, ctx);
-              } else if (path.includes(popover.previousButton)) {
-                e.stopImmediatePropagation();
-                e.preventDefault();
-                ctx.config.onPrevClick(element, step, ctx);
-              } else if (path.includes(popover.closeButton)) {
-                e.stopImmediatePropagation();
-                e.preventDefault();
-                ctx.config.onCloseClick(element, step, ctx);
-              }
-            },
-            { capture: true },
-          );
-        }
-
         this.defaultConfig.onPopoverRender(popover, ctx);
 
         const activeIndex = ctx.state.activeIndex ?? 0;
@@ -595,6 +543,9 @@ export class EOxTour extends LitElement {
     return html`
       <style>
         ${style}
+        @scope (.driver-popover) {
+          ${!this.unstyled ? styleEOX : ""}
+        }
       </style>
     `;
   }
