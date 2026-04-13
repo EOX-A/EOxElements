@@ -6,7 +6,7 @@ export const IframeHandoff = {
   args: {
     config: {
       steps: [
-        { element: "#parent-target-1", popover: { title: "Parent 1" } },
+        { element: "#parent-target-1", popover: { title: "Parent Start" } },
         {
           element: "#demo-iframe",
           popover: {
@@ -21,7 +21,7 @@ export const IframeHandoff = {
     },
     storyTemplateBefore: `
     <div id="parent-target-1" style="padding: 20px; border: 1px solid #ccc;">
-      Parent Step 1
+      Step 1 (Parent)
     </div>
     <iframe
       id="demo-iframe"
@@ -34,7 +34,7 @@ export const IframeHandoff = {
             <script type='module' src='https://cdn.jsdelivr.net/npm/@eox/tour/dist/eox-tour.js'></script>
           </head>
           <body>
-            <div id='child-target-1' style='border: 1px solid blue; padding: 20px;'>Child Step</div>
+            <div id='child-target-1' style='border: 1px solid blue; padding: 20px;'>Step 2 (Child)</div>
             <eox-tour id='handoff-tour' prevent-auto-start></eox-tour>
             <script>
               customElements.whenDefined('eox-tour').then(() => {
@@ -66,7 +66,7 @@ export const IframeHandoff = {
       id="parent-target-2"
       style="padding: 20px; border: 1px solid #ccc; margin-top: 20px; margin-bottom: 20px;"
     >
-      Parent Step 3
+      Step 3 (Parent)
     </div>
     <button
       onclick="document.getElementById('handoff-tour').start()"
@@ -96,7 +96,7 @@ export const IframeHandoff = {
           <script type="module" src="${mainUrl}"></script>
         </head>
         <body>
-          <div id="child-target-1" style="border: 1px solid blue; padding: 20px;">Child Step</div>
+          <div id="child-target-1" style="border: 1px solid blue; padding: 20px;">Step 2 (Child)</div>
           <eox-tour id="handoff-tour" prevent-auto-start></eox-tour>
           <script>
             customElements.whenDefined('eox-tour').then(() => {
@@ -125,7 +125,7 @@ export const IframeHandoff = {
 
     return html`
       <div id="parent-target-1" style="padding: 20px; border: 1px solid #ccc;">
-        Parent Step 1
+        Step 1 (Parent)
       </div>
       <iframe
         id="demo-iframe"
@@ -136,7 +136,7 @@ export const IframeHandoff = {
         id="parent-target-2"
         style="padding: 20px; border: 1px solid #ccc; margin-top: 20px; margin-bottom: 20px;"
       >
-        Parent Step 3
+        Step 3 (Parent)
       </div>
       <eox-tour
         id="handoff-tour"
