@@ -36,6 +36,7 @@
     "types:generate": "tsc --project tsconfig.build.json || true",
     "prepack": "npm run types:generate",
     "build": "vite build",
+    "build:element-story-bundle": "npm run build",
     "watch": "vite build --watch"
   }
 }
