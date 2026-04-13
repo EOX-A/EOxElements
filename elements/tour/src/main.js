@@ -5,13 +5,18 @@ import { styleEOX } from "./style.eox.js";
 
 /**
  * The `eox-tour` element uses [driver.js](https://driverjs.com/) to create interactive product tours.
- * It supports cross-iframe handoffs, persistent "seen" state via `localStorage`, and custom EOx styling.
+ * It supports cross-iframe handoffs (start a tour in a "parent" and continue inside an iframe),
+ * persistent "seen" state via `localStorage`, and styling based on EOxUI.
  *
  * Features:
  * - Define a series of steps to guide users through an application.
  * - Highlight target elements and display customizable popovers.
  * - Cross-iframe handoff logic seamlessly transitioning between parent window and iframe.
  * - Persistent state tracking using `localStorage` to avoid repeatedly showing completed tours.
+ * - Prevent automatic start on mount for manual control over when the tour begins.
+ * 
+ * The `eox-tour` element does not render any visible content itself; it operates entirely through the driver.js popovers and highlights.
+ * Therefore it doesn't matter where in the DOM you place the `<eox-tour>` element, but it must be present in the document for the tour to function.
  *
  * **Note on the `id` attribute:**
  * An `id` attribute is required for identifying instances for `localStorage` persistence, and
@@ -27,7 +32,7 @@ export class EOxTour extends LitElement {
   static get properties() {
     return {
       /**
-       * The driver.js configuration object.
+       * The driver.js configuration object. See the [driver.js docs](https://driverjs.com/docs/configuration) for available options.
        */
       config: { attribute: false, type: Object },
       /**
