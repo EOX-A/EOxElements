@@ -1,0 +1,97 @@
+export const style = `
+/* Minimal subset of driver.js CSS */
+.driver-popover {
+  all: unset;
+  box-sizing: border-box;
+  color: #2d2d2d;
+  margin: 0;
+  padding: 15px;
+  border-radius: 5px;
+  min-width: 250px;
+  max-width: 300px;
+  box-shadow: 0 1px 10px #0006;
+  z-index: 1000000000;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #fff;
+}
+.driver-fade .driver-popover {
+  animation: animate-fade-in 0.2s;
+}
+.driver-fade .driver-overlay {
+  animation: animate-fade-in 0.2s ease-in-out;
+}
+.driver-overlay path {
+  shape-rendering: crispEdges;
+}
+.driver-active .driver-overlay,
+.driver-active * {
+  pointer-events: none;
+}
+.driver-popover-arrow-side-top.driver-popover-arrow-align-start,
+.driver-popover-arrow-side-bottom.driver-popover-arrow-align-start {
+  left: 15px;
+}
+.driver-active .driver-active-element,
+.driver-active .driver-active-element *,
+.driver-popover,
+.driver-popover * {
+  pointer-events: auto;
+}
+.driver-popover-arrow {
+  content: "";
+  position: absolute;
+  border: 5px solid #fff;
+}
+.driver-popover-arrow-side-bottom {
+  bottom: 100%;
+  border-left-color: transparent;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  transform: translateY(1px);
+}
+.driver-popover-arrow-side-top {
+  top: 100%;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  transform: translateY(-1px);
+}
+
+/* Custom */
+.driver-popover-close-btn {
+  z-index: 1;
+  outline: none !important;
+}
+.driver-popover-description {
+  margin-top: 1rem;
+  font-size: .75rem;
+  line-height: 1.5rem;
+  letter-spacing: .0313rem;
+}
+.driver-popover footer {
+  background: unset;
+  min-block-size: unset;
+  padding: unset;
+  flex-direction: row;
+}
+.driver-popover footer > .driver-popover-progress-text {
+  white-space: nowrap;
+  align-items: center;
+  margin-top: 0px !important;
+  margin-right: 0px !important;
+  font-size: small;
+  flex: 1;
+}
+.driver-popover nav {
+  margin-block-start: 0px !important;
+}
+.driver-popover footer {
+  margin-top: 16px;
+  gap: 4px;
+}
+.driver-popover footer > nav {
+  gap: 4px;
+}
+`;
