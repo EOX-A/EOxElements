@@ -1,20 +1,9 @@
 import { html } from "lit";
+import mainUrl from "../src/main.js?url";
 
 /**
- * The IframeHandoff story demonstrates the advanced ability of `eox-tour`
+ * The IframeHandoff story demonstrates the advanced ability of \`eox-tour\`
  * to seamlessly transition between a parent window and an iframe.
- *
- * This example uses:
- * - `targetIframe`: Specifies the CSS selector of the iframe to hand off to.
- * - `childStepIndex`: Indicates which step index to start within the child iframe.
- * - `returnToParent`: When a step inside the child iframe is finished, it can trigger
- *   control back to the parent window.
- * - `parentStepIndex`: Specifies which step to resume in the parent window.
- *
- * Synchronization is handled via the `postMessage` API using the `id` of the
- * `eox-tour` element as a shared identifier. It is strictly required that both the inner
- * and outer eox-tour elements share the exact same `id` for handoff messages to be successfully routed.
- *
  */
 export default {};
 export const IframeHandoff = {
@@ -47,49 +36,19 @@ export const IframeHandoff = {
         },
       ],
     },
-    storyTemplateBefore: `
-    <div id="parent-target-1" style="padding: 20px; border: 1px solid #ccc;">
-      <h3>Parent Step 1</h3>
-    </div>
-
-    <iframe
-      id="demo-iframe"
-      src="./iframe-content.html"
-      style="width: 100%; height: 200px; border: none; margin-top: 20px;"
-    ></iframe>
-
-    <div
-      id="parent-target-2"
-      style="padding: 20px; border: 1px solid #ccc; margin-top: 20px; margin-bottom: 20px;"
-    >
-      <h3>Parent Step 3 (Resumed)</h3>
-    </div>
-    `,
-    storyTemplateAfter: `
-    <button
-      onclick="document.getElementById('handoff-tour').start()"
-      style="margin-top: 20px;"
-    >
-      Start Handoff Tour
-    </button>
-    `,
   },
   render: (args) => {
-    // Generate an inner HTML for the iframe so we embed it cleanly without needing static routes in storybook.
     const iframeHtml = `
       <!DOCTYPE html>
       <html>
         <head>
           <style>body { font-family: sans-serif; padding: 20px; }</style>
-          <script type="module">
-            import "${window.location.origin}/elements/tour/src/main.js";
-          </script>
+          <script type="module" src="${new URL(mainUrl, window.location.href).href}"></script>
         </head>
         <body style="border: 2px dashed blue;">
-          <div id="child-target-1" style="border: 1px solid blue; padding: 20px;">Child Step (Inside Iframe)</div>
+          <div id="child-target-1" style="border: 1px solid blue; padding: 20px;">Child Step</div>
           <eox-tour id="handoff-tour" prevent-auto-start></eox-tour>
           <script>
-            // Child tour configuration
             document.getElementById('handoff-tour').config = {
               totalSteps: 3,
               stepOffset: 1,
@@ -121,7 +80,7 @@ export const IframeHandoff = {
 
       <iframe
         id="demo-iframe"
-        src=${iframeUrl}
+        src="${iframeUrl}"
         style="width: 100%; height: 200px; border: none; margin-top: 20px;"
       ></iframe>
 
