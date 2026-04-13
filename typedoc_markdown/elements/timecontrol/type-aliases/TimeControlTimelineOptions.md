@@ -8,7 +8,7 @@
 
 > **TimeControlTimelineOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:154](https://github.com/EOX-A/EOxElements/blob/c4d593e5e2046a128ad6c56252182388cbc97c6a/elements/timecontrol/src/types.ts#L154)
+Defined in: [elements/timecontrol/src/types.ts:154](https://github.com/EOX-A/EOxElements/blob/d41d587d2bc3ebbc3dbe5856981def965c699939/elements/timecontrol/src/types.ts#L154)
 
 Configuration options for the time control timeline component.
 
@@ -18,6 +18,6 @@ Configuration options for the time control timeline component.
 
 > `optional` **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:158](https://github.com/EOX-A/EOxElements/blob/c4d593e5e2046a128ad6c56252182388cbc97c6a/elements/timecontrol/src/types.ts#L158)
+Defined in: [elements/timecontrol/src/types.ts:158](https://github.com/EOX-A/EOxElements/blob/d41d587d2bc3ebbc3dbe5856981def965c699939/elements/timecontrol/src/types.ts#L158)
 
 Whether to disable default styling.
