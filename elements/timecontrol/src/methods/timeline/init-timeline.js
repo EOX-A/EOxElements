@@ -118,25 +118,26 @@ function handleTimelineChanged(
   options,
 ) {
   // console.log(EOxTimeControlTimeline.visTimeline.timeAxis.step)
-  const container = EOxTimeControlTimeline.getContainer();
+  // const container = EOxTimeControlTimeline.getContainer();
   const EOxItemFilter = EOxTimeControl.querySelector("eox-itemfilter");
 
-  const textElement = /** @type {HTMLElement} */ (
-    container.querySelector(".vis-text.vis-minor.vis-even")
-  );
-  const width = Number(textElement.style.width.replace("px", ""));
-  const cellWidth = width / options.timeAxis.step + 0.1;
+  // const textElement = /** @type {HTMLElement} */ (
+  //   container.querySelector(".vis-text.vis-minor.vis-even")
+  // );
+  // const width = Number(textElement.style.width.replace("px", ""));
+  // const cellWidth = width / options.timeAxis.step + 0.1;
+  console.log(options);
 
-  const milestoneElements = /** @type {NodeListOf<HTMLElement>} */ (
-    container.querySelectorAll(".vis-item.milestone")
-  );
+  // const milestoneElements = /** @type {NodeListOf<HTMLElement>} */ (
+  //   container.querySelectorAll(".vis-item.milestone")
+  // );
 
-  if (EOxTimeControlTimeline.visTimeline.timeAxis.step.scale === "month") {
-    // milestoneElements.forEach((milestone) => {
-    //   console.log(milestone)
-    //   milestone.style.width = `${width}px`;
-    // });
-  }
+  // if (EOxTimeControlTimeline.visTimeline.timeAxis.step.scale === "month") {
+  //   milestoneElements.forEach((milestone) => {
+  //     console.log(milestone)
+  //     milestone.style.width = `${width}px`;
+  //   });
+  // }
   for (let i = 0; i < EOxTimeControl.sliderValues.length; i++) {
     updateVisibility(
       EOxTimeControlTimeline,
