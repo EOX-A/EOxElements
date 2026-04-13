@@ -8,4 +8,4 @@
 
 > **VectorOrVectorTileLayer** = `Vector` \| `VectorTile`
 
-Defined in: [elements/map/src/types.ts:22](https://github.com/EOX-A/EOxElements/blob/618084acaa54213924340bd52de5ee7a39015883/elements/map/src/types.ts#L22)
+Defined in: [elements/map/src/types.ts:22](https://github.com/EOX-A/EOxElements/blob/da63704d447ff253b7d10623ebf38665417cf58d/elements/map/src/types.ts#L22)

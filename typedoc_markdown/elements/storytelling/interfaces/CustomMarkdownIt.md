@@ -6,7 +6,7 @@
 
 # Interface: CustomMarkdownIt
 
-Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxElements/blob/618084acaa54213924340bd52de5ee7a39015883/elements/storytelling/src/types.ts#L3)
+Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxElements/blob/da63704d447ff253b7d10623ebf38665417cf58d/elements/storytelling/src/types.ts#L3)
 
 ## Extends
 
@@ -18,7 +18,7 @@ Defined in: [elements/storytelling/src/types.ts:3](https://github.com/EOX-A/EOxE
 
 > **attrs**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:4](https://github.com/EOX-A/EOxElements/blob/618084acaa54213924340bd52de5ee7a39015883/elements/storytelling/src/types.ts#L4)
+Defined in: [elements/storytelling/src/types.ts:4](https://github.com/EOX-A/EOxElements/blob/da63704d447ff253b7d10623ebf38665417cf58d/elements/storytelling/src/types.ts#L4)
 
 #### keys
 
@@ -50,7 +50,7 @@ MarkdownIt.enable.
 
 > **config**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:5](https://github.com/EOX-A/EOxElements/blob/618084acaa54213924340bd52de5ee7a39015883/elements/storytelling/src/types.ts#L5)
+Defined in: [elements/storytelling/src/types.ts:5](https://github.com/EOX-A/EOxElements/blob/da63704d447ff253b7d10623ebf38665417cf58d/elements/storytelling/src/types.ts#L5)
 
 #### version?
 
@@ -126,7 +126,7 @@ rule.
 
 > **nav**: `string`[]
 
-Defined in: [elements/storytelling/src/types.ts:6](https://github.com/EOX-A/EOxElements/blob/618084acaa54213924340bd52de5ee7a39015883/elements/storytelling/src/types.ts#L6)
+Defined in: [elements/storytelling/src/types.ts:6](https://github.com/EOX-A/EOxElements/blob/da63704d447ff253b7d10623ebf38665417cf58d/elements/storytelling/src/types.ts#L6)
 
 ***
 
@@ -176,7 +176,7 @@ See Renderer docs and [source code](https://github.com/markdown-it/markdown-it/b
 
 > **sections**: `object`
 
-Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxElements/blob/618084acaa54213924340bd52de5ee7a39015883/elements/storytelling/src/types.ts#L7)
+Defined in: [elements/storytelling/src/types.ts:7](https://github.com/EOX-A/EOxElements/blob/da63704d447ff253b7d10623ebf38665417cf58d/elements/storytelling/src/types.ts#L7)
 
 ***
 
