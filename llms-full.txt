@@ -1226,7 +1226,7 @@ which can be positioned in any corner of the viewport.
 
 On submit, the element sends a `POST` request with `FormData` to the configured
 `endpoint`. The payload includes the feedback message (or custom form fields when
-using a `schema`), the current page URL, the browser's user agent, and optionally
+using a `schema`), the current page URL, the browser's user agent, screen resolution and optionally
 a screenshot file. This makes it straightforward to connect to any backend — for
 example a service that creates issues in a Git platform (GitLab, GitHub, …), sends
 notifications, or stores feedback in a database.
@@ -12228,7 +12228,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-13T08:04:10.352Z",
+              default: "2026-04-13T08:05:44.603Z",
               options: {
                 hidden: true,
               },
