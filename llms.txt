@@ -21,6 +21,7 @@ EOxElements is a collection of web components for Earth Observation data visuali
 - [eox-stacinfo](https://eox-a.github.io/EOxElements/?path=/docs/elements-stacinfo--docs): ### Introduction
 - [eox-storytelling](https://eox-a.github.io/EOxElements/?path=/docs/elements-storytelling--docs): The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, live editing with a built-in editor, and custom initialization logic via events.
 - [eox-timecontrol](https://eox-a.github.io/EOxElements/?path=/docs/elements-timecontrol--docs): The `eox-timecontrol` element provides interactive time navigation for map layers, supporting animation, a simple time slider, timeline visualization, date picker, and custom date formatting.
+- [eox-tour](https://eox-a.github.io/EOxElements/?path=/docs/elements-tour--docs): The `eox-tour` element uses [driver.js](https://driverjs.com/) to create interactive product tours.
 
 ## Resources
 - [Full Documentation (LLMs)](llms-full.txt)
