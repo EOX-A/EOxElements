@@ -10,95 +10,171 @@ export function initializeDriver(EOxTour) {
     EOxTour.driver.destroy();
   }
 
+  const getTargetIframe = (step) =>
+    step?.targetIframe || step?.popover?.targetIframe;
+
+  const handleStepChange = (targetStep, targetIndex, action, opts) => {
+    if (!targetStep) {
+      const activeIndex = opts.driver.getActiveIndex() ?? 0;
+      const currentStep = opts.config.steps[activeIndex] || {};
+      const isBackward = action === "movePrevious";
+
+      if (window.parent !== window) {
+        const wantsReturn =
+          (!isBackward && currentStep.popover?.returnToParent) ||
+          (isBackward && currentStep.popover?.returnToParentBackward);
+
+        if (wantsReturn) {
+          opts.driver.destroy();
+          let resolvedParentIndex = isBackward
+            ? currentStep.popover?.backwardParentStepIndex
+            : currentStep.popover?.parentStepIndex;
+
+          window.parent.postMessage(
+            {
+              type: "EOX_TOUR_RESUME",
+              tourId: EOxTour.id,
+              stepIndex: resolvedParentIndex,
+            },
+            "*",
+          );
+          return;
+        }
+      }
+
+      opts.driver.destroy();
+      return;
+    }
+
+    const activeIndex = opts.driver.getActiveIndex() ?? 0;
+    const currentStep = opts.config.steps[activeIndex] || {};
+
+    const currentTargetIframe = getTargetIframe(currentStep);
+    const nextTargetIframe = getTargetIframe(targetStep);
+
+    // determine if we are the "parent" of the handoff or the "child".
+    // We can't rely purely on window.parent because in Storybook, everything is in an iframe.
+    // Instead, we check if there's a targetIframe and we can actually query it in our own document.
+    let isParentOfTarget = false;
+    if (nextTargetIframe) {
+      const el = document.querySelector(nextTargetIframe);
+      if (el && el.tagName === "IFRAME") {
+        isParentOfTarget = true;
+      }
+    }
+
+    if (isParentOfTarget) {
+      if (nextTargetIframe && nextTargetIframe !== currentTargetIframe) {
+        // Parent transitioning to iframe
+        const iframe = document.querySelector(nextTargetIframe);
+        if (iframe && iframe.contentWindow) {
+          opts.driver[action]();
+          const sanitizedConfig = JSON.parse(JSON.stringify(EOxTour.config));
+
+          // Resolve step index based on action and advanced backward/forward properties
+          let resolvedChildIndex = targetIndex;
+          if (
+            action === "movePrevious" &&
+            currentStep.popover?.backwardChildStepIndex !== undefined
+          ) {
+            resolvedChildIndex = currentStep.popover.backwardChildStepIndex;
+          } else if (targetStep.popover?.childStepIndex !== undefined) {
+            resolvedChildIndex = targetStep.popover.childStepIndex;
+          } else if (targetStep.childStepIndex !== undefined) {
+            resolvedChildIndex = targetStep.childStepIndex;
+          }
+
+          iframe.contentWindow.postMessage(
+            {
+              type: "EOX_TOUR_HANDOFF",
+              tourId: EOxTour.id,
+              config: sanitizedConfig,
+              stepIndex: resolvedChildIndex,
+            },
+            "*",
+          );
+        } else {
+          console.warn(
+            `[eox-tour] Parent cannot navigate over iframe handoff: Iframe ${nextTargetIframe} not found.`,
+          );
+          opts.driver[action]();
+        }
+      } else {
+        opts.driver[action]();
+      }
+    } else {
+      // Inside iframe
+      if (nextTargetIframe === currentTargetIframe) {
+        opts.driver[action]();
+      } else {
+        // Iframe transitioning back to parent or different iframe
+        opts.driver.destroy();
+
+        let resolvedParentIndex = targetIndex;
+        if (
+          action === "movePrevious" &&
+          currentStep.popover?.backwardParentStepIndex !== undefined
+        ) {
+          resolvedParentIndex = currentStep.popover.backwardParentStepIndex;
+        } else if (currentStep.popover?.parentStepIndex !== undefined) {
+          resolvedParentIndex = currentStep.popover.parentStepIndex;
+        }
+
+        window.parent.postMessage(
+          {
+            type: "EOX_TOUR_RESUME",
+            tourId: EOxTour.id,
+            stepIndex: resolvedParentIndex,
+          },
+          "*",
+        );
+      }
+    }
+  };
+
   const finalConfig = {
     ...defaultConfig,
     ...EOxTour.config,
+    steps:
+      EOxTour.config.steps?.map((step) => {
+        const targetIframe = getTargetIframe(step);
+        if (targetIframe) {
+          return {
+            ...step,
+            get element() {
+              const el = document.querySelector(targetIframe);
+              if (el && el.tagName.toLowerCase() === "iframe") {
+                return targetIframe;
+              }
+              return step.element;
+            },
+          };
+        }
+        return step;
+      }) || [],
     onNextClick: (element, step, opts) => {
       if (EOxTour.config.onNextClick) {
         EOxTour.config.onNextClick(element, step, opts);
       }
       const activeIndex = opts.driver.getActiveIndex() ?? 0;
-      const nextStep = opts.config.steps[activeIndex + 1];
-
-      if (nextStep && nextStep.popover?.targetIframe) {
-        const iframe = document.querySelector(nextStep.popover.targetIframe);
-        if (iframe && iframe.contentWindow) {
-          opts.driver.moveNext();
-          iframe.contentWindow.postMessage(
-            {
-              type: "EOX_TOUR_HANDOFF",
-              tourId: EOxTour.id,
-              childStepIndex: nextStep.popover.childStepIndex || 0,
-            },
-            "*",
-          );
-        }
-      } else if (step.popover?.returnToParent) {
-        opts.driver.destroy();
-        window.parent.postMessage(
-          {
-            type: "EOX_TOUR_RESUME",
-            tourId: EOxTour.id,
-            parentStepIndex: step.popover.parentStepIndex || 0,
-          },
-          "*",
-        );
-      } else if (!nextStep) {
-        opts.driver.destroy();
-      } else {
-        opts.driver.moveNext();
-      }
+      handleStepChange(
+        opts.config.steps[activeIndex + 1],
+        activeIndex + 1,
+        "moveNext",
+        opts,
+      );
     },
     onPrevClick: (element, step, opts) => {
       if (EOxTour.config.onPrevClick) {
         EOxTour.config.onPrevClick(element, step, opts);
       }
       const activeIndex = opts.driver.getActiveIndex() ?? 0;
-      const prevStep = opts.config.steps[activeIndex - 1];
-
-      if (prevStep && prevStep.popover?.targetIframe) {
-        const iframe = document.querySelector(prevStep.popover.targetIframe);
-        if (iframe && iframe.contentWindow) {
-          opts.driver.movePrevious();
-          iframe.contentWindow.postMessage(
-            {
-              type: "EOX_TOUR_HANDOFF",
-              tourId: EOxTour.id,
-              childStepIndex:
-                prevStep.popover.backwardChildStepIndex !== undefined
-                  ? prevStep.popover.backwardChildStepIndex
-                  : -1,
-            },
-            "*",
-          );
-        }
-      } else if (step.popover?.returnToParentBackward) {
-        opts.driver.destroy();
-        window.parent.postMessage(
-          {
-            type: "EOX_TOUR_RESUME",
-            tourId: EOxTour.id,
-            parentStepIndex: step.popover.backwardParentStepIndex || 0,
-          },
-          "*",
-        );
-      } else if (
-        activeIndex === 0 &&
-        window.parent !== window &&
-        step.popover?.backwardParentStepIndex !== undefined
-      ) {
-        opts.driver.destroy();
-        window.parent.postMessage(
-          {
-            type: "EOX_TOUR_RESUME",
-            tourId: EOxTour.id,
-            parentStepIndex: step.popover.backwardParentStepIndex,
-          },
-          "*",
-        );
-      } else {
-        opts.driver.movePrevious();
-      }
+      handleStepChange(
+        opts.config.steps[activeIndex - 1],
+        activeIndex - 1,
+        "movePrevious",
+        opts,
+      );
     },
     onCloseClick: (element, step, opts) => {
       if (EOxTour.config.onCloseClick) {
@@ -113,7 +189,14 @@ export function initializeDriver(EOxTour) {
       }
     },
     onHighlightStarted: (element, step, options) => {
-      if (step.popover?.targetIframe) {
+      const targetIframe = getTargetIframe(step);
+      let isParentOfTarget = false;
+      if (targetIframe) {
+        const el = document.querySelector(targetIframe);
+        if (el && el.tagName === "IFRAME") isParentOfTarget = true;
+      }
+
+      if (isParentOfTarget) {
         options.driver.setConfig({
           ...options.config,
           stagePadding: 0,
@@ -170,16 +253,28 @@ export function initializeDriver(EOxTour) {
         EOxTour.config.onDestroyStarted(element, step, options);
     },
     onPopoverRender: (popover, ctx) => {
-      defaultConfig.onPopoverRender(popover, ctx);
+      if (defaultConfig.onPopoverRender)
+        defaultConfig.onPopoverRender(popover, ctx);
       const activeIndex = ctx.state.activeIndex ?? 0;
       const currentStep = ctx.config.steps[activeIndex];
-      if (currentStep?.popover?.targetIframe)
+
+      const targetIframe = getTargetIframe(currentStep);
+      let isParentOfTarget = false;
+      if (targetIframe) {
+        const el = document.querySelector(targetIframe);
+        if (el && el.tagName === "IFRAME") isParentOfTarget = true;
+      }
+
+      if (isParentOfTarget && popover.wrapper) {
         popover.wrapper.style.display = "none";
+      }
+
       if (popover.previousButton && activeIndex === 0) {
         if (
           currentStep?.popover?.returnToParentBackward ||
           (window.parent !== window &&
-            currentStep?.popover?.backwardParentStepIndex !== undefined)
+            currentStep?.popover?.backwardParentStepIndex !== undefined) ||
+          (window.parent !== window && EOxTour.config.steps.length > 0)
         ) {
           popover.previousButton.disabled = false;
           popover.previousButton.classList.remove(
@@ -190,9 +285,11 @@ export function initializeDriver(EOxTour) {
       if (
         popover.progress &&
         (EOxTour.config.stepOffset !== undefined ||
-          EOxTour.config.totalSteps !== undefined)
+          EOxTour.config.totalSteps !== undefined ||
+          currentStep?.popover?.stepOffset !== undefined)
       ) {
-        const offset = EOxTour.config.stepOffset || 0;
+        const offset =
+          currentStep?.popover?.stepOffset ?? EOxTour.config.stepOffset ?? 0;
         const total = EOxTour.config.totalSteps || ctx.config.steps.length;
         const current = activeIndex + 1 + offset;
         popover.progress.innerText = `${current} of ${total}`;

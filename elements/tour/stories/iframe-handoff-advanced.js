@@ -2,18 +2,19 @@ import { html } from "lit";
 
 export default {};
 
-export const IframeHandoff = {
+export const IframeHandoffAdvanced = {
   args: {
     config: {
+      totalSteps: 3,
       steps: [
         { element: "#parent-target-1", popover: { title: "Parent Start" } },
         {
-          targetIframe: "#demo-iframe",
-          element: "#child-target-1",
+          element: "#demo-iframe",
           popover: {
-            title: "Child Step",
-            description:
-              "Simply defined in the parent config array, rendered inside the iframe.",
+            title: "Handoff",
+            targetIframe: "#demo-iframe",
+            childStepIndex: 0,
+            backwardChildStepIndex: -1,
           },
         },
         { element: "#parent-target-2", popover: { title: "Parent Resume" } },
@@ -35,7 +36,31 @@ export const IframeHandoff = {
           </head>
           <body>
             <div id='child-target-1' style='border: 1px solid blue; padding: 20px;'>Step 2 (Child)</div>
-            <eox-tour id='handoff-tour'></eox-tour>
+            <eox-tour id='handoff-tour' prevent-auto-start></eox-tour>
+            <script>
+              customElements.whenDefined('eox-tour').then(() => {
+                document.getElementById('handoff-tour').config = {
+                  totalSteps: 3,
+                  stepOffset: 1,
+                  steps: [
+                    {
+                      element: '#child-target-1',
+                      popover: {
+                        title: 'Child Step',
+                        description: 'This overlay is running inside the iframe context with its own custom config.',
+                        returnToParent: true,
+                        parentStepIndex: 2,
+                        returnToParentBackward: true,
+                        backwardParentStepIndex: 0
+                      },
+                      onHighlightStarted: () => {
+                        console.log('Advanced callback executed in the child frame!');
+                      }
+                    }
+                  ]
+                };
+              });
+            </script>
           </body>
         </html>
       "
@@ -51,7 +76,7 @@ export const IframeHandoff = {
       onclick="document.getElementById('handoff-tour').start()"
       style="margin-top: 20px;"
     >
-      Start Handoff Tour
+      Start Advanced Handoff Tour
     </button>
     `,
   },
@@ -63,7 +88,7 @@ export const IframeHandoff = {
       : new URL("tour-dist/eox-tour.js", window.location.origin).href;
 
     const baseTag = import.meta.env.DEV
-      ? `<base href="\${window.location.origin}/">`
+      ? `<base href="${window.location.origin}/">`
       : "";
 
     const iframeHtml = `
@@ -76,7 +101,31 @@ export const IframeHandoff = {
         </head>
         <body>
           <div id="child-target-1" style="border: 1px solid blue; padding: 20px;">Step 2 (Child)</div>
-          <eox-tour id="handoff-tour"></eox-tour>
+          <eox-tour id="handoff-tour" prevent-auto-start></eox-tour>
+          <script>
+            customElements.whenDefined('eox-tour').then(() => {
+              document.getElementById('handoff-tour').config = {
+                totalSteps: 3,
+                stepOffset: 1,
+                steps: [
+                  {
+                    element: '#child-target-1',
+                    popover: {
+                      title: 'Child Step',
+                      description: 'This overlay is running inside the iframe context with its own custom config.',
+                      returnToParent: true,
+                      parentStepIndex: 2,
+                      returnToParentBackward: true,
+                      backwardParentStepIndex: 0
+                    },
+                    onHighlightStarted: () => {
+                      console.log('Advanced callback executed in the child frame!');
+                    }
+                  }
+                ]
+              };
+            });
+          </script>
         </body>
       </html>
     `;
@@ -105,7 +154,7 @@ export const IframeHandoff = {
         @click=${() => document.getElementById("handoff-tour").start()}
         style="margin-top: 20px;"
       >
-        Start Handoff Tour
+        Start Advanced Handoff Tour
       </button>
     `;
   },

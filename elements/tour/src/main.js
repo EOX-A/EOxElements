@@ -11,7 +11,7 @@ import { handleMessage, initializeDriver } from "./methods/tour/index.js";
  * Features:
  * - Define a series of steps to guide users through an application.
  * - Highlight target elements and display customizable popovers.
- * - Cross-iframe handoff logic seamlessly transitioning between parent window and iframe.
+ * - Cross-iframe handoff logic seamlessly transitioning between parent window and iframe (supports both a "simple mode" defined entirely in the parent config, and an "advanced mode" with individual configs in both frames).
  * - Persistent state tracking using `localStorage` to avoid repeatedly showing completed tours.
  * - Prevent automatic start on mount for manual control over when the tour begins.
  *
@@ -117,8 +117,39 @@ export class EOxTour extends LitElement {
    * @param {number} [stepIndex=0] The index of the step to start at.
    */
   start(stepIndex = 0) {
-    if (this.driver) {
-      this.driver.drive(stepIndex);
+    const step = this.config?.steps?.[stepIndex];
+    const targetIframe = step?.targetIframe || step?.popover?.targetIframe;
+
+    let isParentOfTarget = false;
+    if (targetIframe) {
+      const el = document.querySelector(targetIframe);
+      if (el && el.tagName.toLowerCase() === "iframe") {
+        isParentOfTarget = true;
+      }
+    }
+
+    if (isParentOfTarget) {
+      const iframe = document.querySelector(targetIframe);
+      if (iframe && iframe.contentWindow) {
+        const sanitizedConfig = JSON.parse(JSON.stringify(this.config));
+        iframe.contentWindow.postMessage(
+          {
+            type: "EOX_TOUR_HANDOFF",
+            tourId: this.id,
+            config: sanitizedConfig,
+            stepIndex,
+          },
+          "*",
+        );
+      }
+    } else {
+      if (this.driver) {
+        if (this.driver.isActive()) {
+          this.driver.moveTo(stepIndex);
+        } else {
+          this.driver.drive(stepIndex);
+        }
+      }
     }
   }
 
