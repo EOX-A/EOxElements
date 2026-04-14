@@ -1,9 +1,9 @@
 /**
- * Renders storytelling with complex markdown and a map tour.
+ * Renders storytelling showcasing a combination of markdown, maps, and tours.
  */
 import { html } from "lit";
 
-export const MarkdownTour = {
+export const MarkdownShowcase = {
   argTypes: {
     markdown: {
       table: {
@@ -148,4 +148,4 @@ More features will be added soon, so feel free to follow progress at the [EOxEle
   `,
 };
 
-export default MarkdownTour;
+export default MarkdownShowcase;

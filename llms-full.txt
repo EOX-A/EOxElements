@@ -12235,7 +12235,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-14T16:18:21.791Z",
+              default: "2026-04-14T16:50:45.012Z",
               options: {
                 hidden: true,
               },
@@ -19833,7 +19833,7 @@ as a callback function that can be used to update the file url end handle errors
 #### MarkdownAsURL
 
 Loads Markdown content from a remote URL and displays it in the storytelling component.
-Useful for dynamic or externally managed story content.
+Useful for dynamic or externally managed story content. Pass the URL to the \`markdown-url\` attribute.
 
 ```html
 <eox-storytelling id="markdown-url"></eox-storytelling>
@@ -19846,6 +19846,90 @@ Useful for dynamic or externally managed story content.
   // Assign properties
   Object.assign(eoxStorytelling, {
     markdownURL: "/sample.md",
+  });
+</script>
+
+```
+
+#### MarkdownHero
+
+Hero Section story.
+Demonstrates how to create a full-screen hero section at the start of a story.
+Use an h1 (\`#\`) followed by an HTML comment to configure the hero media:
+`# Title <!--{ as="video" mode="hero" src="..." }-->` or
+`# Title <!--{ as="img" mode="hero" src="..." }-->`.
+
+```html
+<eox-storytelling
+  markdown='# Hero Section <!--{ as="video" mode="hero" src="https://dlmultimedia.esa.int/download/public/videos/2023/06/010/2306_010_AR_EN.mp4" }-->
+#### An introduction on how to write interactive and multimedial stories using markdown. Scroll down to get started! <!--{ style="font-size:1rem;opacity:0.7;margin-top:1rem;" }-->
+
+## Introduction
+The hero is the initial section of a story. It can be either a full-screen image or a full-screen video, with some overlaying text.
+In each story, only one hero should be added at the very beginning. After the hero, you will see the nav menu, and after that, the story content.
+
+To create a Hero section, you start with an H1 (`#`), followed by an HTML comment where you define the background media:
+`<!--{ as="video" mode="hero" src="..." }-->` or `<!--{ as="img" mode="hero" src="..." }-->`
+'
+  id="markdown-hero"
+></eox-storytelling>
+
+<script type="module">
+  import "@eox/storytelling/dist/eox-storytelling.js";
+
+  const eoxStorytelling = document.querySelector("eox-storytelling");
+
+  // Assign properties
+  Object.assign(eoxStorytelling, {
+    showNav: true,
+    showHeroScrollIndicator: true,
+  });
+</script>
+
+```
+
+#### MarkdownImageTour
+
+Image Tour story.
+Demonstrates how to create a scroll-driven image tour where the image changes as you scroll.
+1. Define the base image tour section with an h2: `## Image Tour <!--{ as="img" mode="tour" }-->`
+2. Define each step in the tour with an h3 (`###`) and a configuration comment providing the new image source:
+`### <!--{ src="https://picsum.photos/800/600" }-->`.
+
+```html
+<eox-storytelling
+  markdown='## Image Tour section <!--{ as="img" mode="tour" }-->
+
+### <!--{ src="https://picsum.photos/800/600" style="background: #fff0c4;" }-->
+#### This is an image tour.
+It allows you to have different sources for each tour "step".
+
+```markdown
+## Image Tour section <!--{ as="img" mode="tour" }-->
+
+### <!--{ src="https://picsum.photos/800/600" style="background: #fff0c4;" }-->
+#### This is an image tour.
+It allows you to have different sources for each tour "step".
+```
+
+### <!--{ src="https://picsum.photos/900/700" style="background: #ffe7ef;" }-->
+#### Second tour step.
+Each tour step is described as an *h3* (*###*) heading.
+
+### <!--{ src="https://picsum.photos/900/800" style="background: #e2fffc;" }-->
+#### Third tour step.
+![](https://placehold.co/200x100)'
+  id="markdown-image-tour"
+></eox-storytelling>
+
+<script type="module">
+  import "@eox/storytelling/dist/eox-storytelling.js";
+
+  const eoxStorytelling = document.querySelector("eox-storytelling");
+
+  // Assign properties
+  Object.assign(eoxStorytelling, {
+    showNav: true,
   });
 </script>
 
@@ -19898,6 +19982,8 @@ Demonstrates the @init event, allowing custom initialization logic (e.g., map pr
 #### MarkdownInsideSlot
 
 Renders Markdown content provided via the slot, demonstrating slot-based story input.
+Just place your raw Markdown inside the `<eox-storytelling>` tags.
+NOTE:** Beware of indentation! Leading spaces will be included in the markdown string and might affect rendering.
 
 ```html
 <eox-storytelling id="markdown-slot">
@@ -19912,10 +19998,84 @@ Renders Markdown content provided via the slot, demonstrating slot-based story i
 
 ```
 
-#### MarkdownTour
+#### MarkdownMap
 
-Shows complex markdown with maps and tours.
-Demonstrates advanced features like custom sections and map tours.
+Map Section story.
+Demonstrates how to embed a map in the story using EOxMap.
+Use an h2 (`##`) followed by an HTML comment to configure the map:
+`## Map section <!--{ as="eox-map" style="width: 100%; height: 500px;" config='{ "layers": [...], "view": {"center": [15,48], "zoom": 1} }' }-->`.
+
+```html
+<eox-storytelling
+  markdown='## Map section <!--{as="eox-map" class="overlay-br" style="width: 100%; height: 500px;" config=&apos;{ "controls": { "Zoom": {}, "Attribution": {}, "FullScreen": {}, "OverviewMap": { "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "OSM" } } ] } }, "layers": [ { "type": "Tile", "properties": { "id": "overviewMap" }, "source": { "type": "TileWMS", "url": "https://ows.mundialis.de/services/service", "params": { "LAYERS": "TOPO-WMS" } } } ], "view": { "center": [15,48], "zoom": 1 } }&apos;}-->
+### Some title for map <!--{ style="color: white; font-size: 1.25rem;" }-->
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->'
+  id="markdown-map"
+></eox-storytelling>
+
+<script type="module">
+  import "@eox/storytelling/dist/eox-storytelling.js";
+
+  const eoxStorytelling = document.querySelector("eox-storytelling");
+
+  // Assign properties
+  Object.assign(eoxStorytelling, {
+    showNav: true,
+  });
+</script>
+
+```
+
+#### MarkdownMapTour
+
+Map Tour story.
+Demonstrates how to create a scroll-driven map tour (scrollytelling) where the map state changes as you scroll.
+1. Define the base map tour section with an h2: `## Map Tour <!--{ as="eox-map" mode="tour" }-->`
+2. Define each step in the tour with an h3 (`###`) and a configuration comment overriding the map's state for that step:
+`### <!--{ center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->`.
+
+```html
+<eox-storytelling
+  markdown='## Map Tour section <!--{ as="eox-map" class="overlay-br" mode="tour" }-->
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. <!--{ style="opacity: 0.75; font-size: 1rem;" }-->
+
+### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}}]&apos; center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
+#### This is a map tour.
+It allows you to have different layers, zoom and center settings for each tour "step".
+
+You achieve this by starting a new step with an *h3* (*###*) heading and passing properties inside a configuration comment:
+
+```markdown
+### <!--{ layers=&apos;[...]&apos; center=[12.46,41.89] zoom="5" animationOptions="{duration:500}" }-->
+```
+
+### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]&apos; center=[12.46,41.89] zoom="10" }-->
+#### Second tour step.
+Each tour step is described as an *h3* (*###*) heading.
+
+### <!--{ layers=&apos;[{"type":"Tile","properties":{"id":"osm"},"source":{"type":"OSM"}},{"type":"Tile","properties":{"id":"customId"},"source":{"type":"WMTSCapabilities","url":"https://tiles.maps.eox.at/wmts/1.0.0/WMTSCapabilities.xml","layer":"s2cloudless-2017"}}]&apos; center="[16.36,48.2]" zoom="10" animationOptions="{duration:500}" }-->
+#### Third tour step.
+To change individual parameters like zoom or center, or to change the map layers for a step, just set them using the HTML comment syntax. This changes the map setting for the current map'
+  id="markdown-map-tour"
+></eox-storytelling>
+
+<script type="module">
+  import "@eox/storytelling/dist/eox-storytelling.js";
+
+  const eoxStorytelling = document.querySelector("eox-storytelling");
+
+  // Assign properties
+  Object.assign(eoxStorytelling, {
+    showNav: true,
+  });
+</script>
+
+```
+
+#### MarkdownShowcase
+
+Storytelling Showcase.
+A comprehensive example combining a hero section, standard markdown with configuration, a map section, a map tour, and an image tour all in one story.
 
 ```html
 <eox-storytelling
@@ -20067,7 +20227,11 @@ import {
 PrimaryStory,
 MarkdownAsURLStory,
 MarkdownSlotStory,
-MarkdownTourStory,
+MarkdownHeroStory,
+MarkdownMapStory,
+MarkdownMapTourStory,
+MarkdownImageTourStory,
+MarkdownShowcaseStory,
 MarkdownInitEventStory,
 } from "./index";
 import { html } from "lit";
@@ -20088,6 +20252,7 @@ padding: 0;
 // Exporting each individual story for the eox-storytelling component.
 /**
 Basic usage of eox-storytelling. Renders a simple Markdown string as a story.
+Use standard markdown like `# Header`, `## Subheader`, `**bold**`, `*italic*`, `[link](url)`.
 
 ```html
 <eox-storytelling
