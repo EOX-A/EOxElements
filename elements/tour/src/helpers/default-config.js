@@ -57,11 +57,7 @@ export const defaultConfig = {
       );
     }
     if (popover.progress) {
-      popover.progress.style.display =
-        config.showButtons?.showProgress === undefined ||
-        !config.showButtons?.showProgress
-          ? "flex"
-          : "none";
+      popover.progress.style.display = config.showProgress ? "flex" : "none";
       popover.progress.style.alignItems = "center";
       popover.progress.classList.add("small-text");
     }
@@ -69,6 +65,7 @@ export const defaultConfig = {
       const nav = document.createElement("nav");
       nav.style.display = "flex";
       nav.style.alignItems = "center";
+      nav.style.marginLeft = "auto";
       while (popover.footerButtons.firstChild) {
         nav.appendChild(popover.footerButtons.firstChild);
       }

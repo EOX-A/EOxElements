@@ -5,6 +5,8 @@ export default {};
 export const IframeHandoff = {
   args: {
     config: {
+      showButtons: ["next", "previous", "close"],
+      showProgress: true,
       steps: [
         { element: "#parent-target-1", popover: { title: "Parent Start" } },
         {

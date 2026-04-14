@@ -133,6 +133,8 @@ export function initializeDriver(EOxTour) {
   };
 
   const finalConfig = {
+    showProgress: false,
+    showButtons: [],
     ...defaultConfig,
     ...EOxTour.config,
     steps:
@@ -269,17 +271,28 @@ export function initializeDriver(EOxTour) {
         popover.wrapper.style.display = "none";
       }
 
-      if (popover.previousButton && activeIndex === 0) {
+      if (popover.previousButton) {
+        if (activeIndex === 0) {
+          if (
+            currentStep?.popover?.returnToParentBackward ||
+            (window.parent !== window &&
+              currentStep?.popover?.backwardParentStepIndex !== undefined)
+          ) {
+            popover.previousButton.disabled = false;
+            popover.previousButton.classList.remove(
+              "driver-popover-btn-disabled",
+            );
+          } else {
+            popover.previousButton.style.display = "none";
+          }
+        }
         if (
-          currentStep?.popover?.returnToParentBackward ||
-          (window.parent !== window &&
-            currentStep?.popover?.backwardParentStepIndex !== undefined) ||
-          (window.parent !== window && EOxTour.config.steps.length > 0)
-        ) {
-          popover.previousButton.disabled = false;
-          popover.previousButton.classList.remove(
+          popover.previousButton.disabled ||
+          popover.previousButton.classList.contains(
             "driver-popover-btn-disabled",
-          );
+          )
+        ) {
+          popover.previousButton.style.display = "none";
         }
       }
       if (

@@ -15,6 +15,7 @@ export const ShowEveryTime = {
   args: {
     "show-every-time": true,
     config: {
+      showButtons: ["next"],
       steps: [
         {
           element: "#target-always",

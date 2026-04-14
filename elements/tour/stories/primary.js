@@ -13,6 +13,8 @@ export default {};
 export const Primary = {
   args: {
     config: {
+      showButtons: ["next", "previous", "close"],
+      showProgress: true,
       steps: [
         {
           element: "#tour-target-1",

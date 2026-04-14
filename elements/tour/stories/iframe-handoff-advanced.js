@@ -5,6 +5,8 @@ export default {};
 export const IframeHandoffAdvanced = {
   args: {
     config: {
+      showButtons: ["next", "previous", "close"],
+      showProgress: true,
       totalSteps: 3,
       steps: [
         { element: "#parent-target-1", popover: { title: "Parent Start" } },
@@ -40,6 +42,8 @@ export const IframeHandoffAdvanced = {
             <script>
               customElements.whenDefined('eox-tour').then(() => {
                 document.getElementById('handoff-tour').config = {
+                  showButtons: ["next", "previous", "close"],
+                  showProgress: true,
                   totalSteps: 3,
                   stepOffset: 1,
                   steps: [
@@ -105,6 +109,8 @@ export const IframeHandoffAdvanced = {
           <script>
             customElements.whenDefined('eox-tour').then(() => {
               document.getElementById('handoff-tour').config = {
+                showButtons: ["next", "previous", "close"],
+                showProgress: true,
                 totalSteps: 3,
                 stepOffset: 1,
                 steps: [
