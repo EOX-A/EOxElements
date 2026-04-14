@@ -23,6 +23,7 @@ import "@eox/map/src/plugins/globe";
 import "@eox/stacinfo";
 import "@eox/storytelling";
 import "@eox/timecontrol";
+import "@eox/tour";
 
 import { extractArgTypes } from "./utils.js";
 
