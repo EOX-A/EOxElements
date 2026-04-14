@@ -3793,7 +3793,7 @@
       "declarations": [
         {
           "kind": "class",
-          "description": "The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, live editing with a built-in editor, and custom initialization logic via events.\n\n## Usage\nPlace `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.\n\n## Features\n- **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.\n- **Slot Content:** Accepts Markdown via slot for flexible content injection.\n- **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.\n- **Live Editor:** Built-in editor for live editing and preview, including image upload and section creation.\n- **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.\n- **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup), and `upload:file` for handling file uploads.\n\n## Custom Markdown Extensions\nIn order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key=\"value\" }-->`. Here are some of the supported extensions:\n- **Section Configuration:** Define sections with attributes like `as`, `id`, `class`, `style`, and more.\n- **Hero Section:** Create a full-screen hero section using `#` (Header 1) with additional attributes for images or videos.\n- **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.\n- **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.\n\nRead the [Markdown with Editor story](./?path=/story/elements-eox-storytelling--markdown-with-editor) for a comprehensive guide on using the editor and Markdown extensions.",
+          "description": "The `eox-storytelling` element enables the creation of interactive, multimedia-rich stories using Markdown and custom sections. It supports advanced features such as slot-based content, remote Markdown loading, and custom initialization logic via events.\n\n## Usage\nPlace `<eox-storytelling></eox-storytelling>` in your application and pass Markdown content via the `markdown` property, slot, or a remote URL using the `markdown-url` property. The component automatically renders the story, including custom sections such as maps, images, and videos, using extended Markdown syntax and HTML comments for configuration.\n\n## Features\n- **Markdown Rendering:** Supports standard and extended Markdown syntax for rich story content.\n- **Slot Content:** Accepts Markdown via slot for flexible content injection.\n- **Remote Markdown:** Loads Markdown from external URLs for dynamic stories.\n- **Custom Sections:** Add maps, images, videos, and more using HTML comment configuration.\n- **Events:** Emits events such as `init` for custom initialization logic (e.g., map projection setup).\n\n## Custom Markdown Extensions\nIn order to add custom functionality to the Markdown rendering, include HTML comments with a specific syntax: `<!--{ key=\"value\" }-->`. Here are some of the supported extensions:\n- **Section Configuration:** Define sections with attributes like `as`, `id`, `class`, `style`, and more.\n- **Hero Section:** Create a full-screen hero section using `#` (Header 1) with additional attributes for images or videos.\n- **Navigation Control:** Use the `nav` attribute to control the visibility of the navigation menu.\n- **Custom Attributes:** Use HTML comments to define attributes for sections, such as `as`, `class`, `style`, and more.\n\nRead the [Markdown with Tour story](./?path=/story/elements-eox-storytelling--markdown-tour) for a comprehensive guide on using Markdown extensions.",
           "name": "EOxStoryTelling",
           "members": [
             {
@@ -3907,6 +3907,7 @@
                 "text": "Boolean"
               },
               "description": "Disable auto save",
+              "deprecated": "Will be removed in the next major version",
               "default": "false",
               "attribute": "disable-autosave"
             },
@@ -3918,6 +3919,7 @@
                 "text": "String | \"closed\" | undefined"
               },
               "description": "Enable or disable editor",
+              "deprecated": "Will be removed in the next major version",
               "default": "undefined",
               "attribute": "show-editor"
             },
@@ -3989,7 +3991,8 @@
               "type": {
                 "text": "CustomEvent"
               },
-              "description": "Fires when a file is uploaded via the built-in editor. The event detail contains the uploaded file as well\nas a callback function that can be used to update the file url end handle errors."
+              "description": "Fires when a file is uploaded via the built-in editor. The event detail contains the uploaded file as well\nas a callback function that can be used to update the file url end handle errors.",
+              "deprecated": "Will be removed in the next major version"
             },
             {
               "name": "changed",
@@ -4032,6 +4035,7 @@
                 "text": "String | \"closed\" | undefined"
               },
               "description": "Enable or disable editor",
+              "deprecated": "Will be removed in the next major version",
               "default": "undefined",
               "fieldName": "showEditor"
             },
@@ -4059,6 +4063,7 @@
                 "text": "Boolean"
               },
               "description": "Disable auto save",
+              "deprecated": "Will be removed in the next major version",
               "default": "false",
               "fieldName": "disableAutosave"
             },
