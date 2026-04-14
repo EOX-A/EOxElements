@@ -42,7 +42,7 @@ export const IframeHandoffAdvanced = {
             <script>
               customElements.whenDefined('eox-tour').then(() => {
                 document.getElementById('handoff-tour').config = {
-                  showButtons: ["next", "previous", "close"],
+                  showButtons: ['next', 'previous', 'close'],
                   showProgress: true,
                   totalSteps: 3,
                   stepOffset: 1,
@@ -109,7 +109,7 @@ export const IframeHandoffAdvanced = {
           <script>
             customElements.whenDefined('eox-tour').then(() => {
               document.getElementById('handoff-tour').config = {
-                showButtons: ["next", "previous", "close"],
+                showButtons: ['next', 'previous', 'close'],
                 showProgress: true,
                 totalSteps: 3,
                 stepOffset: 1,
