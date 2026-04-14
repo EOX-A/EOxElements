@@ -15,6 +15,7 @@ import {
   NoMapStory,
   DateWithInitDateStory,
   DateInUTCStory,
+  TimelineWithRangeConfigurationStory,
 } from "./index";
 
 export default {
@@ -125,6 +126,21 @@ export const Slider = SliderStory;
  * comprehensive time navigation interface.
  */
 export const Timeline = TimelineStory;
+
+/**
+ * Timeline visualization using vis-timeline with range configuration
+ *
+ * This example shows the full power of the timecontrol component with the `<eox-timecontrol-timeline>`
+ * component. The timeline displays timeline items as milestones grouped by layer, allowing users
+ * to visualize time-based data across multiple layers.
+ *
+ * Features demonstrated:
+ * - Timeline visualization with groups and items
+ * - Select range type configuration
+ * - Range selection enabled/disabled configuration
+ */
+export const TimelineWithRangeConfiguration =
+  TimelineWithRangeConfigurationStory;
 
 /**
  * External map rendering mode for timelapse export with custom map rendering logic

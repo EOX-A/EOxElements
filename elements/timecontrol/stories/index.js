@@ -15,3 +15,4 @@ export { default as DatePickerPopupItemsStory } from "./date-picker-popup-items"
 export { default as NoMapStory } from "./no-map"; // No map story
 export { default as DateWithInitDateStory } from "./date-with-init-date"; // Date with init date story
 export { default as DateInUTCStory } from "./date-in-utc"; // Date in UTC story
+export { default as TimelineWithRangeConfigurationStory } from "./timeline-with-range-configuration"; // Timeline with range configuration story

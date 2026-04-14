@@ -172,8 +172,9 @@ function handleTimeChanged(props, EOxTimeControl) {
  *
  * @param {Object} props - The event properties.
  * @param {EOxTimeControl} EOxTimeControl - The timecontrol component instance.
+ * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
-function handleClick(props, EOxTimeControl) {
+function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
   if (
     props &&
     props.time &&
@@ -182,13 +183,19 @@ function handleClick(props, EOxTimeControl) {
     !drag &&
     !props.event.shiftKey
   ) {
+    const isBackgroundClick = Boolean(props.what == "background");
+    const selectRangeType = isBackgroundClick
+      ? EOxTimeControlTimeline.selectRangeType
+      : "day";
+
     const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
+
     const startDate = EOxTimeControl.showUTC
-      ? dayjs(utcFormattedDate).utc().startOf("day").format()
-      : dayjs(props.time).startOf("day").utc().format();
+      ? dayjs(utcFormattedDate).utc().startOf(selectRangeType).format()
+      : dayjs(props.time).startOf(selectRangeType).utc().format();
     const endDate = EOxTimeControl.showUTC
-      ? dayjs(utcFormattedDate).utc().endOf("day").format()
-      : dayjs(props.time).endOf("day").utc().format();
+      ? dayjs(utcFormattedDate).utc().endOf(selectRangeType).format()
+      : dayjs(props.time).endOf(selectRangeType).utc().format();
     EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
   }
 }
@@ -315,7 +322,9 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       handleTimeChanged(props, EOxTimeControl),
     );
 
-    visTimeline.on("click", (props) => handleClick(props, EOxTimeControl));
+    visTimeline.on("click", (props) =>
+      handleClick(props, EOxTimeControl, EOxTimeControlTimeline),
+    );
 
     visTimeline.on(
       "rangechange",

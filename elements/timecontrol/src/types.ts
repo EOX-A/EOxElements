@@ -3,6 +3,7 @@ import type { Timeline } from "vis-timeline/standalone";
 import type { Calendar, DateAny } from "vanilla-calendar-pro";
 import type { EOxMap } from "@eox/map";
 import type { EOxItemFilter as EOxItemFilterType } from "@eox/itemfilter";
+import { OpUnitType } from "dayjs";
 
 export type { EOxTimeControl as EOxTimeControlType } from "./main";
 export type { EOxTimeControlDate as EOxTimeControlDateType } from "./components/timecontrol-date";
@@ -150,15 +151,9 @@ export type TimeControlSliderOptions = {
 
 /**
  * Defines the possible time ranges for selection in the time control components.
+ * Any unit type from dayjs - https://day.js.org/docs/en/manipulate/start-of#list-of-all-available-units
  */
-export type selectRangeType =
-  | "second"
-  | "minute"
-  | "hour"
-  | "day"
-  | "week"
-  | "month"
-  | "year";
+export type selectRangeType = OpUnitType;
 
 /**
  * Configuration options for the time control timeline component.

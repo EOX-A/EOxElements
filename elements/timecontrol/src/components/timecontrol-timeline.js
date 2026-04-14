@@ -31,6 +31,8 @@ export class EOxTimeControlTimeline extends LitElement {
   static get properties() {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
+      selectRangeType: { type: String, attribute: "select-range-type" },
+      rangeSelection: { type: Boolean, attribute: false },
     };
   }
 
@@ -63,6 +65,7 @@ export class EOxTimeControlTimeline extends LitElement {
 
     /**
      * The selected range of the timeline.
+     * Use any unit type from dayjs - https://day.js.org/docs/en/manipulate/start-of#list-of-all-available-units
      *
      * @type {selectRangeType}
      */
@@ -73,7 +76,7 @@ export class EOxTimeControlTimeline extends LitElement {
      *
      * @type {boolean}
      */
-    this.rangeSelection = false;
+    this.rangeSelection = true;
   }
 
   /**
@@ -157,6 +160,14 @@ export class EOxTimeControlTimeline extends LitElement {
    */
   initTimeline() {
     setTimeout(() => initTimelineMethod(this));
+  }
+
+  /**
+   * Whenever rangeSelection changes, update the CSS class on the timeline-wrapper div.
+   * @param {Map} changedProperties
+   */
+  updated(changedProperties) {
+    if (changedProperties.has("rangeSelection")) this.requestUpdate();
   }
 
   render() {
