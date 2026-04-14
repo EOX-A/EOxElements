@@ -272,7 +272,9 @@ export class EOxTimeControlSlider extends LitElement {
   handleChange(evt) {
     const EOxTimeControl = this.getEOxTimeControl();
     const start = dayjs(evt.detail.value1).utc().format();
-    const end = dayjs(evt.detail.value1).endOf("day").utc().format();
+    const end = EOxTimeControl.showUTC
+      ? dayjs(evt.detail.value1).utc().endOf("day").format()
+      : dayjs(evt.detail.value1).endOf("day").utc().format();
 
     if (
       start === EOxTimeControl.selectedDateRange[0] &&

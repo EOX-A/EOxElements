@@ -1,4 +1,4 @@
-import { updateTimelineItems } from "../../helpers";
+import { getUTCLocalDateTime, updateTimelineItems } from "../../helpers";
 import { DataSet } from "vis-data/standalone";
 import { getElement } from "@eox/elements-utils";
 import dayjs from "dayjs";
@@ -94,13 +94,20 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             Array.isArray(properties.timeControlValues)
           ) {
             const values = properties.timeControlValues
-              .map((value) => ({
-                ...value,
-                date: dayjs(value.date).format().split("T")[0],
-                utc: dayjs(value.date).utc().format(),
-                local: dayjs(value.date).format(),
-                originalDate: value.date,
-              }))
+              .map((value) => {
+                const date = getUTCLocalDateTime(
+                  value.date,
+                  EOxTimeControl.showUTC,
+                  true,
+                );
+                return {
+                  ...value,
+                  date: dayjs(date).format(),
+                  utc: dayjs(date).utc().format(),
+                  local: dayjs(date).format(),
+                  originalDate: value.date,
+                };
+              })
               // @ts-expect-error TODO: Fix typing
               .sort((a, b) => new Date(a.date) - new Date(b.date));
             sliderValues.push({
@@ -134,6 +141,7 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
             groups,
             items,
             EOxTimeControlTimeline,
+            EOxTimeControl.showUTC,
           );
 
           EOxTimeControl.groups = groups;
@@ -151,12 +159,14 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
           const itemValues = EOxTimeControl.items.get();
           if (itemValues && itemValues.length) {
             const utc = dayjs(itemValues[itemValues.length - 1].utc);
+            const startDate = EOxTimeControl.showUTC
+              ? utc.utc().format()
+              : utc.format();
+            const endDate = EOxTimeControl.showUTC
+              ? utc.utc().endOf("day").format()
+              : utc.endOf("day").format();
             const dateRange =
-              initDateRange ||
-              /** @type {DateRange} */ ([
-                utc.utc().format(),
-                utc.endOf("day").utc().format(),
-              ]);
+              initDateRange || /** @type {DateRange} */ ([startDate, endDate]);
 
             const EOxTimeControlPicker = /** @type {EOxTimeControlPicker} */ (
               EOxTimeControl.querySelector("eox-timecontrol-picker")
@@ -167,10 +177,10 @@ export default function firstUpdatedMethod(EOxTimeControl, emitUpdateEvent) {
                 EOxTimeControlTimeline.visTimeline.setOptions({
                   ...EOxTimeControlTimeline.visTimeline.setOptions,
                   start: dayjs(dateRange[0])
-                    .subtract(30, "day")
+                    .subtract(10, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                   end: dayjs(dateRange[0])
-                    .add(30, "day")
+                    .add(10, "day")
                     .format(TIME_CONTROL_DATE_FORMAT),
                 });
               }
