@@ -6,7 +6,7 @@ import {
   PrimaryStory,
   MarkdownAsURLStory,
   MarkdownSlotStory,
-  MarkdownEditorStory,
+  MarkdownTourStory,
   MarkdownInitEventStory,
 } from "./index";
 import { html } from "lit";
@@ -45,10 +45,10 @@ export const MarkdownAsURL = MarkdownAsURLStory;
 export const MarkdownInsideSlot = MarkdownSlotStory;
 
 /**
- * Shows the built-in Markdown editor, allowing live editing and preview of the story.
- * Demonstrates advanced features like image upload, section creation, and live preview.
+ * Shows complex markdown with maps and tours.
+ * Demonstrates advanced features like custom sections and map tours.
  */
-export const MarkdownWithEditor = MarkdownEditorStory;
+export const MarkdownTour = MarkdownTourStory;
 
 /**
  * Demonstrates the @init event, allowing custom initialization logic (e.g., map projection setup) when the story or embedded elements are initialized.
