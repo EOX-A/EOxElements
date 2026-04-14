@@ -1,27 +1,18 @@
 import "../src/main.js";
+import { rendersAndStartsTour, iframeHandoff } from "./cases/index.js";
 
 describe("eox-tour", () => {
-  it("renders and starts the tour", () => {
-    cy.mount(
-      `<div id="target">Target</div>
-       <eox-tour show-every-time></eox-tour>`,
-    ).as("mount");
-    cy.get("eox-tour").and(($el) => {
-      const tour = $el[0];
-      tour.config = {
-        steps: [
-          {
-            element: "#target",
-            popover: {
-              title: "Test",
-              description: "Test description",
-            },
-          },
-        ],
-      };
-      tour.start();
+  afterEach(() => {
+    cy.get("eox-tour").then(($el) => {
+      if ($el[0] && $el[0].driver) {
+        $el[0].driver.destroy();
+      }
     });
-    // Check if the driver.js popover is rendered in the body
-    cy.document().find(".driver-popover").should("exist");
+    cy.document().then((doc) => {
+      doc.body.innerHTML = '<div id="data-cy-root" data-cy-root></div>';
+    });
   });
+
+  it("renders and starts the tour", rendersAndStartsTour);
+  it("handles iframe handoff", iframeHandoff);
 });
