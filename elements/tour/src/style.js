@@ -81,8 +81,7 @@ export const style = `
   align-items: center;
   margin-top: 0px !important;
   margin-right: 0px !important;
-  font-size: small;
-  flex: 1;
+  font-size: .75rem;
 }
 .driver-popover nav {
   margin-block-start: 0px !important;
