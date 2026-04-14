@@ -32,7 +32,7 @@ export class EOxTimeControlTimeline extends LitElement {
     return {
       unstyled: { type: Boolean, attribute: "unstyled" },
       selectRangeType: { type: String, attribute: "select-range-type" },
-      rangeSelection: { type: Boolean, attribute: false },
+      rangeSelection: { type: Boolean, attribute: "range-selection" },
     };
   }
 
