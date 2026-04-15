@@ -99,16 +99,14 @@ export class EOxTimeControlDate extends LitElement {
     const itemValues = Object.keys(
       groupBy(EOxTimeControl.items.get(), key),
     ).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    const curStartDate = EOxTimeControl.selectedDateRange[0];
     const index = findIndex(itemValues, (date) => {
       if (key === "utc") {
-        return dayjs(date).isSame(EOxTimeControl.selectedDateRange[0]);
+        if (EOxTimeControl.showUTC && curStartDate.includes("T00:00:00Z")) {
+          return dayjs(date).isSame(curStartDate, "day");
+        } else return dayjs(date).isSame(curStartDate);
       } else {
-        return (
-          date ===
-          dayjs(EOxTimeControl.selectedDateRange[0]).format(
-            TIME_CONTROL_DATE_FORMAT,
-          )
-        );
+        return date === dayjs(curStartDate).format(TIME_CONTROL_DATE_FORMAT);
       }
     });
     return { index, itemValues };
@@ -157,13 +155,15 @@ export class EOxTimeControlDate extends LitElement {
       EOxTimeControl.selectedDateRange[0],
       "day",
     );
-    const nextDateRange = [
-      isSameDay
-        ? dayjs(nextDate).utc().format()
-        : dayjs(nextDate).startOf("day").utc().format(),
-      dayjs(nextDate).endOf("day").utc().format(),
-    ];
-    EOxTimeControl.dateChange(nextDateRange, EOxTimeControl);
+    const startDate = isSameDay
+      ? dayjs(nextDate).utc().format()
+      : EOxTimeControl.showUTC
+        ? dayjs(nextDate).utc().startOf("day").format()
+        : dayjs(nextDate).startOf("day").utc().format();
+    const endDate = EOxTimeControl.showUTC
+      ? dayjs(nextDate).utc().endOf("day").format()
+      : dayjs(nextDate).endOf("day").utc().format();
+    EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
   }
 
   /**
@@ -202,8 +202,15 @@ export class EOxTimeControlDate extends LitElement {
    * @returns {string} Formatted date or date range string.
    */
   #getFormattedDate(selectedDateRange, format) {
-    const start = dayjs(selectedDateRange[0]).utc();
-    const end = dayjs(selectedDateRange[1]).utc();
+    const EOxTimeControl = this.getEOxTimeControl();
+    const showUTC = EOxTimeControl.showUTC;
+
+    const start = showUTC
+      ? dayjs(selectedDateRange[0]).utc()
+      : dayjs(selectedDateRange[0]);
+    const end = showUTC
+      ? dayjs(selectedDateRange[1]).utc()
+      : dayjs(selectedDateRange[1]);
     const dayDifference = end.diff(start, "day");
 
     return dayDifference === 0

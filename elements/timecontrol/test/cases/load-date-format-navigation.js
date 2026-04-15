@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 import dayjs from "dayjs";
 import { STORY_ARGS } from "../../src/enums.js";
 
@@ -25,10 +25,10 @@ const loadDateFormatNavigation = () => {
   const secondLastDate = dates[dates.length - 2]; // "2023-04-17"
 
   // expected formatted dates
-  const expectedLastDate = dayjs(getUTCDate(dates[dates.length - 1])).format(
+  const expectedLastDate = dayjs(getDate(dates[dates.length - 1])).format(
     customFormat,
   );
-  const expectedSecondLastDate = dayjs(getUTCDate(secondLastDate)).format(
+  const expectedSecondLastDate = dayjs(getDate(secondLastDate)).format(
     customFormat,
   );
 
@@ -83,7 +83,7 @@ const loadDateFormatNavigation = () => {
       // Verify it's NOT in ISO format
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("not.equal", getUTCDate(secondLastDate));
+        .should("not.equal", getDate(secondLastDate));
 
       // Click next button to go back
       cy.get('button[part="next"]').click();

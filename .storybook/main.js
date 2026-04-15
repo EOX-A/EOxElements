@@ -40,6 +40,7 @@ const config = {
     "../elements/jsonform/stories/public/",
     "../elements/stacinfo/stories/public/",
     "../elements/storytelling/stories/public/",
+    { from: "../elements/tour/dist", to: "/tour-dist" },
   ],
 };
 export default config;
