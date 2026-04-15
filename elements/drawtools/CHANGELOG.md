@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.2.0...drawtools-v1.3.0) (2026-04-13)
+
+
+### Features
+
+* Set drawnFeatures programmatically ([#2231](https://github.com/EOX-A/EOxElements/issues/2231)) ([4635edc](https://github.com/EOX-A/EOxElements/commit/4635edcf09f5b7fd59339f094836197ee780ff8d))
+
+
+### Bug Fixes
+
+* Prevent duplicate drawupdate events ([#2237](https://github.com/EOX-A/EOxElements/issues/2237)) ([c4d593e](https://github.com/EOX-A/EOxElements/commit/c4d593e5e2046a128ad6c56252182388cbc97c6a))
+* Resolve broken feature selection when measure and layer-id are active ([#2236](https://github.com/EOX-A/EOxElements/issues/2236)) ([9138e51](https://github.com/EOX-A/EOxElements/commit/9138e51cbb5948c72b4e41fa8b942e4ccc744b21))
+* Use correct underscore in modify interaction key ([#2227](https://github.com/EOX-A/EOxElements/issues/2227)) ([134a395](https://github.com/EOX-A/EOxElements/commit/134a395efa200479ffcc6bb9e67326b759984758))
+
 ## [1.2.0](https://github.com/EOX-A/EOxElements/compare/drawtools-v1.1.5...drawtools-v1.2.0) (2026-01-27)
 
 

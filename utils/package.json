@@ -1,6 +1,6 @@
 {
   "name": "@eox/elements-utils",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "module",
   "repository": {
     "type": "git",
@@ -17,6 +17,6 @@
   },
   "author": "EOX",
   "dependencies": {
-    "@eox/ui": "^0.6.0"
+    "@eox/ui": "^1.1.0"
   }
 }

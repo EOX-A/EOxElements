@@ -117,6 +117,12 @@ export const render = async (data) => {
     `;
   }
 
+  templateOutput = `
+    ${data.args.storyTemplateBefore ? `\n${data.args.storyTemplateBefore}\n` : ""}
+    ${templateOutput}
+    ${data.args.storyTemplateAfter ? `\n${data.args.storyTemplateAfter}\n` : ""}
+  `;
+
   // Check if onMount is needed at all
   const needsOnMount =
     elementData.some((e) => e.properties.length > 0) ||

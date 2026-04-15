@@ -38,7 +38,8 @@ export const addCommonStylesheet = () => {
     eox-map,
     eox-stacinfo,
     eox-storytelling,
-    eox-timecontrol {
+    eox-timecontrol,
+    eox-tour {
       font-family: var(--font);
       font-size: .875rem;
       line-height: 1.5rem;
