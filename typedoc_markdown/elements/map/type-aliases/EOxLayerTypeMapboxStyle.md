@@ -8,4 +8,4 @@
 
 > **EOxLayerTypeMapboxStyle** = `Omit`\<[`EOxLayerType`](EOxLayerType.md)\<`"MapboxStyle"`, keyof [`OLSources`](OLSources.md)\>, `"source"` \| `"sources"`\>
 
-Defined in: [elements/map/src/layers.ts:169](https://github.com/EOX-A/EOxElements/blob/2c7cdce6979340ec406dbcbee65fe7d0287a36e5/elements/map/src/layers.ts#L169)
+Defined in: [elements/map/src/layers.ts:169](https://github.com/EOX-A/EOxElements/blob/b6645df908d3183387814edbc9b6fd09f6085b36/elements/map/src/layers.ts#L169)
