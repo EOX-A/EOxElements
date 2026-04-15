@@ -4425,6 +4425,17 @@
             },
             {
               "kind": "field",
+              "name": "showUTC",
+              "privacy": "public",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show UTC dates in the timecontrol (default: false).",
+              "default": "false",
+              "attribute": "show-utc"
+            },
+            {
+              "kind": "field",
               "name": "externalMapRendering",
               "privacy": "public",
               "type": {
@@ -4502,6 +4513,15 @@
               "description": "Property key used to identify layers (default: \"id\").",
               "default": "\"id\"",
               "fieldName": "layerIdKey"
+            },
+            {
+              "name": "show-utc",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether to show UTC dates in the timecontrol (default: false).",
+              "default": "false",
+              "fieldName": "showUTC"
             },
             {
               "name": "external-map-rendering",

@@ -2,8 +2,11 @@ import {
   DEFAULT_VIS_TIMELINE_OPTIONS,
   VIS_TIMELINE_DATE_FORMATS,
 } from "../../enums.js";
-import { Timeline } from "vis-timeline/standalone";
-import { updateVisibility } from "../../helpers/index.js";
+import * as vis from "vis-timeline/standalone";
+import {
+  updateVisibility,
+  getWrongLocalFormatToUTCFormat,
+} from "../../helpers/index.js";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
@@ -18,6 +21,8 @@ dayjs.extend(timezone);
 
 let drag = false;
 let drawInterval = null;
+
+const labelDateFormat = "DD MMM YYYY HH:mm:ss";
 
 /**
  * Updates the visual representation of the range elements (start and end custom time markers) on the timeline.
@@ -35,6 +40,8 @@ export function updateRangeElements(EOxTimeControlTimeline) {
     timeSliderContainer.querySelector(".vis-custom-time.multi-select-end")
   );
 
+  const EOxTimeControl = EOxTimeControlTimeline.getEOxTimeControl();
+
   let startTitle,
     endTitle = null;
   let startDate,
@@ -44,7 +51,9 @@ export function updateRangeElements(EOxTimeControlTimeline) {
     startDate = dayjs(
       EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-start"),
     );
-    startTitle = startDate.format("DD MMM YYYY HH:mm:ss");
+    startTitle = EOxTimeControl.showUTC
+      ? startDate.utc().format(labelDateFormat)
+      : startDate.format(labelDateFormat);
   } catch {
     /** catch */
   }
@@ -53,7 +62,9 @@ export function updateRangeElements(EOxTimeControlTimeline) {
     endDate = dayjs(
       EOxTimeControlTimeline.visTimeline.getCustomTime("multi-select-end"),
     );
-    endTitle = endDate.format("DD MMM YYYY HH:mm:ss");
+    endTitle = EOxTimeControl.showUTC
+      ? endDate.utc().format(labelDateFormat)
+      : endDate.format(labelDateFormat);
   } catch {
     /** catch */
   }
@@ -141,7 +152,9 @@ function handleTimelineChanged(
 function handleTimeChanged(props, EOxTimeControl) {
   if (props.id == "multi-select-start" || props.id == "multi-select-end") {
     const isStart = props.id.includes("start");
-    const newDate = dayjs(props.time).utc().format();
+    const newDate = EOxTimeControl.showUTC
+      ? getWrongLocalFormatToUTCFormat(props.time)
+      : dayjs.utc(props.time).format();
     const newDateRange = isStart
       ? [newDate, EOxTimeControl.selectedDateRange[1]]
       : [EOxTimeControl.selectedDateRange[0], newDate];
@@ -169,8 +182,13 @@ function handleClick(props, EOxTimeControl) {
     !drag &&
     !props.event.shiftKey
   ) {
-    const startDate = dayjs(props.time).startOf("day").utc().format();
-    const endDate = dayjs(props.time).endOf("day").utc().format();
+    const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
+    const startDate = EOxTimeControl.showUTC
+      ? dayjs(utcFormattedDate).utc().startOf("day").format()
+      : dayjs(props.time).startOf("day").utc().format();
+    const endDate = EOxTimeControl.showUTC
+      ? dayjs(utcFormattedDate).utc().endOf("day").format()
+      : dayjs(props.time).endOf("day").utc().format();
     EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
   }
 }
@@ -208,9 +226,7 @@ function handleRangeChanged(props, EOxTimeControlTimeline) {
  * @param {EOxTimeControlTimeline} EOxTimeControlTimeline - The timeline component instance.
  */
 export default function initTimelineMethod(EOxTimeControlTimeline) {
-  const EOxTimeControl = /** @type {EOxTimeControl} */ (
-    EOxTimeControlTimeline.closest("eox-timecontrol")
-  );
+  const EOxTimeControl = EOxTimeControlTimeline.getEOxTimeControl();
 
   if (EOxTimeControl) {
     const items = /** @type {Array<any>} */ (EOxTimeControl.items.get());
@@ -229,11 +245,20 @@ export default function initTimelineMethod(EOxTimeControlTimeline) {
       min: min,
       max: max,
       format: VIS_TIMELINE_DATE_FORMATS,
+      moment: function (date) {
+        if (EOxTimeControl.showUTC) {
+          // @ts-expect-error type not returned
+          return vis.moment(date).utc();
+        } else {
+          // @ts-expect-error type not returned
+          return vis.moment(date);
+        }
+      },
     };
 
     const visTimeline =
       /** @type {import("vis-timeline/standalone").Timeline} */ (
-        new Timeline(
+        new vis.Timeline(
           container,
           items,
           groups,

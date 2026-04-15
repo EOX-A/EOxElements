@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -68,7 +68,7 @@ const loadDatePickerSelectEvent = () => {
     .within(() => {
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(initialDate));
+        .should("equal", getDate(initialDate));
     });
 
   // verify calendar is visible in standalone mode
@@ -87,7 +87,7 @@ const loadDatePickerSelectEvent = () => {
       cy.get(".vc").should("exist").and("be.visible");
 
       // click on the test date
-      cy.get(`.vc [data-vc-date="${getUTCDate(testDate)}"]`)
+      cy.get(`.vc [data-vc-date="${getDate(testDate)}"]`)
         .should("exist")
         .and("have.class", "vc-data-available")
         .find(".vc-date__btn")
@@ -97,7 +97,7 @@ const loadDatePickerSelectEvent = () => {
       cy.get("eox-timecontrol-picker")
         .shadow()
         .within(() => {
-          cy.get(`#cal [data-vc-date="${getUTCDate(testDate)}"]`)
+          cy.get(`#cal [data-vc-date="${getDate(testDate)}"]`)
             .find(".vc-date__btn")
             .click();
         });

@@ -1,4 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import { getUTCLocalDateTime } from ".";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 /**
  * @typedef {import("../types").SliderValue} SliderValue
@@ -43,12 +49,14 @@ export function updateVisibility(EOxTimeControlTimeline, visibility, i) {
  * @param {import("vis-data/standalone").DataSet} groups - Timeline groups DataSet to populate.
  * @param {import("vis-data/standalone").DataSet} items - Timeline items DataSet to populate.
  * @param {EOxTimeControlTimeline | null} EOxTimeControlTimeline - The timeline component instance, or null if not present.
+ * @param {boolean} showUTC - Whether to show UTC dates in the timeline.
  */
 export default function updateTimelineItems(
   sliderValues,
   groups,
   items,
   EOxTimeControlTimeline,
+  showUTC,
 ) {
   groups.clear();
   items.clear();
@@ -72,12 +80,15 @@ export default function updateTimelineItems(
         data: slider.layer + value.date,
       });
       const id = /** @type {string} */ (uuidv4(options));
+      const start = getUTCLocalDateTime(value.date, showUTC, true);
+      const end = getUTCLocalDateTime(value.date, showUTC, false);
       items.add({
         ...value,
         id: id,
         group: slider.layer,
         className: `milestone item-${id}`,
-        start: value.date,
+        start: start,
+        end: end,
         originalDate: value.originalDate,
         type: "point",
         property: slider.property,

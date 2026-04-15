@@ -11,6 +11,7 @@ import { when } from "lit/directives/when.js";
 
 /**
  * @typedef {import("../types").DateRange} DateRange
+ * @typedef {import("../main").EOxTimeControl} EOxTimeControl
  */
 
 /**
@@ -106,6 +107,15 @@ export class EOxTimeControlTimeline extends LitElement {
     return /** @type {HTMLElement} */ (
       this.renderRoot.querySelector("#timeline")
     );
+  }
+
+  /**
+   * Gets the EOxTimeControl instance.
+   *
+   * @returns {EOxTimeControl} The EOxTimeControl instance.
+   */
+  getEOxTimeControl() {
+    return /** @type {EOxTimeControl} */ (this.closest("eox-timecontrol"));
   }
 
   /**

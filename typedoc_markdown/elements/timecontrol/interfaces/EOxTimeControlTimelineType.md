@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlTimelineType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:23](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L23)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:24](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L24)
 
 The `eox-timecontrol-timeline` component provides a timeline visualization using vis-timeline.
 It displays timeline items as milestones grouped by layer, allowing users to visualize
@@ -4940,7 +4940,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:60](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L60)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:61](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L61)
 
 Whether default styling is disabled.
 
@@ -5006,7 +5006,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10714
 
 > **get** **loading**(): `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:96](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L96)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:97](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L97)
 
 Gets the loading state of the timeline.
 
@@ -5020,7 +5020,7 @@ The loading state.
 
 > **set** **loading**(`value`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:86](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L86)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:87](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L87)
 
 Sets the loading state of the timeline.
 
@@ -5158,7 +5158,7 @@ The **`textContent`** property of the Node interface represents the text content
 
 > **get** **visTimeline**(): `Timeline`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:68](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L68)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:69](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L69)
 
 Gets the vis-timeline Timeline instance.
 
@@ -5170,7 +5170,7 @@ Gets the vis-timeline Timeline instance.
 
 > **set** **visTimeline**(`visTimeline`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:77](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L77)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:78](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L78)
 
 Sets the vis-timeline Timeline instance.
 
@@ -5968,7 +5968,7 @@ The **`getClientRects()`** method of the Element interface returns a collection 
 
 > **getContainer**(): `HTMLElement`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:105](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L105)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:106](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L106)
 
 Gets the container element for the timeline.
 
@@ -6244,6 +6244,22 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 ***
 
+### getEOxTimeControl()
+
+> **getEOxTimeControl**(): [`EOxTimeControlType`](EOxTimeControlType.md)
+
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:117](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L117)
+
+Gets the EOxTimeControl instance.
+
+#### Returns
+
+[`EOxTimeControlType`](EOxTimeControlType.md)
+
+The EOxTimeControl instance.
+
+***
+
 ### getHTML()
 
 > **getHTML**(`options?`): `string`
@@ -6300,7 +6316,7 @@ The **`getRootNode()`** method of the Node interface returns the context object'
 
 > **getViewRange**(): `any`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:116](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L116)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:126](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L126)
 
 Gets the window of the vis-timeline Timeline instance.
 
@@ -6458,7 +6474,7 @@ The **`hidePopover()`** method of the HTMLElement interface hides a popover elem
 
 > **initTimeline**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:133](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L133)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:143](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L143)
 
 Initializes the timeline with items and groups from the parent timecontrol component.
 Should be called after the timecontrol has populated its items and groups DataSets.
@@ -7751,7 +7767,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:125](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L125)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:135](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L135)
 
 Sets the date range on the timeline by updating custom time markers.
 
@@ -8130,7 +8146,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:137](https://github.com/EOX-A/EOxElements/blob/4c91fa451123784592eb322cfc8f6d531ff4a894/elements/timecontrol/src/components/timecontrol-timeline.js#L137)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:147](https://github.com/EOX-A/EOxElements/blob/5d2fe8764e11170d12830190689ee1be0d5003cc/elements/timecontrol/src/components/timecontrol-timeline.js#L147)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a

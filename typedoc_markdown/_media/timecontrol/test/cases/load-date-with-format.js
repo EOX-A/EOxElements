@@ -1,6 +1,6 @@
 import { html } from "lit";
 
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 
 import dayjs from "dayjs";
 import { STORY_ARGS } from "../../src/enums.js";
@@ -21,7 +21,7 @@ const loadDateWithFormat = () => {
   const customFormat = "D. MMMM YYYY";
 
   // Get the expected date (last date from STORY_ARGS)
-  const expectedISODate = getUTCDate(
+  const expectedISODate = getDate(
     STORY_ARGS.layers[2].properties.timeControlValues[
       STORY_ARGS.layers[2].properties.timeControlValues.length - 1
     ].date,

@@ -465,6 +465,18 @@ export const STORY_ARGS = {
             cloudCoverage: 14,
           },
           {
+            date: "2023-04-21",
+            cloudCoverage: 29,
+          },
+          {
+            date: "2023-04-22",
+            cloudCoverage: 27,
+          },
+          {
+            date: "2023-04-23",
+            cloudCoverage: 26,
+          },
+          {
             date: "2023-04-24",
             cloudCoverage: 29,
           },

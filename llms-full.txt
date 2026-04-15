@@ -12235,7 +12235,7 @@ Shows how to handle form validation and submit events.
             },
             timestamp: {
               type: "string",
-              default: "2026-04-14T16:50:45.012Z",
+              default: "2026-04-15T05:42:49.565Z",
               options: {
                 hidden: true,
               },
@@ -20326,6 +20326,7 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `unstyled` (boolean): Whether default styling is disabled.
 - `title-key` (string): Property key used to retrieve layer titles (default: "name").
 - `layer-id-key` (string): Property key used to identify layers (default: "id").
+- `show-utc` (boolean): Whether to show UTC dates in the timecontrol (default: false).
 - `external-map-rendering` (boolean): Whether external map rendering is enabled for timelapse export.
 - `selectedDateRange` (SelectedDateRange): The currently selected date range as [startDate, endDate] in ISO format.
 
@@ -20335,6 +20336,7 @@ or an `eox-map` DOM element (`HTMLElement`, passed as property)
 - `selectedDateRange` (SelectedDateRange): The currently selected date range as [startDate, endDate] in ISO format. (Default: `null`)
 - `titleKey` (string): Property key used to retrieve layer titles (default: "name"). (Default: `"name"`)
 - `layerIdKey` (string): Property key used to identify layers (default: "id"). (Default: `"id"`)
+- `showUTC` (boolean): Whether to show UTC dates in the timecontrol (default: false). (Default: `false`)
 - `externalMapRendering` (boolean): Whether external map rendering is enabled for timelapse export. (Default: `false`)
 - `for` (String|HTMLElement): Query selector of an `eox-map` (`String`, passed as an attribute or property)
 or an `eox-map` DOM element (`HTMLElement`, passed as property) (Default: `undefined`)
@@ -20413,6 +20415,501 @@ matching the current filter criteria. Filtered-out dates are displayed with redu
 
   Object.assign(eoxTimecontrolPicker, {
     range: true,
+    showDots: true,
+    popup: true,
+  });
+</script>
+
+```
+
+#### DateInUTC
+
+Date is displayed in UTC format when the showUTC property / show-utc attribute is true
+This example demonstrates the `<eox-timecontrol-date>` component with `showUTC` enabled.
+The date is displayed in the UTC format and not the local timezone format.
+
+```html
+<eox-timecontrol for="eox-map#date-in-utc">
+  <eox-timecontrol-date></eox-timecontrol-date>
+  <eox-timecontrol-picker></eox-timecontrol-picker>
+</eox-timecontrol>
+<eox-map id="date-in-utc"></eox-map>
+
+<script type="module">
+  import "@eox/timecontrol/dist/eox-timecontrol.js";
+  import "@eox/map/dist/eox-map.js";
+
+  const eoxTimecontrol = document.querySelector("eox-timecontrol");
+  const eoxMap = document.querySelector("eox-map");
+  const eoxTimecontrolDate = document.querySelector("eox-timecontrol-date");
+  const eoxTimecontrolPicker = document.querySelector("eox-timecontrol-picker");
+
+  // Assign properties
+  Object.assign(eoxTimecontrol, {
+    layerIdKey: "id",
+    showUTC: true,
+    select: (e) => {
+      console.log(e.detail);
+    },
+  });
+
+  Object.assign(eoxMap, {
+    zoom: 5,
+    center: [1000000, 6000000],
+    layers: [
+      {
+        type: "Tile",
+        properties: {
+          id: "OSM",
+        },
+        source: {
+          type: "OSM",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_VIS_WIND_V_10M",
+          name: "Wind Visualisation 10M",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 65,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2022-12-13",
+              cloudCoverage: 63,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-07",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-08",
+              cloudCoverage: 40,
+            },
+            {
+              date: "2023-02-09",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-02-10",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-04-01",
+              cloudCoverage: 52,
+            },
+            {
+              date: "2023-04-02",
+              cloudCoverage: 48,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-04-04",
+              cloudCoverage: 61,
+            },
+            {
+              date: "2023-04-05",
+              cloudCoverage: 58,
+            },
+            {
+              date: "2023-04-06",
+              cloudCoverage: 64,
+            },
+            {
+              date: "2023-04-07",
+              cloudCoverage: 59,
+            },
+            {
+              date: "2023-04-08",
+              cloudCoverage: 67,
+            },
+            {
+              date: "2023-04-09",
+              cloudCoverage: 71,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 68,
+            },
+            {
+              date: "2023-04-11",
+              cloudCoverage: 73,
+            },
+            {
+              date: "2023-04-12",
+              cloudCoverage: 69,
+            },
+            {
+              date: "2023-04-13",
+              cloudCoverage: 75,
+            },
+            {
+              date: "2023-04-14",
+              cloudCoverage: 72,
+            },
+            {
+              date: "2023-04-15",
+              cloudCoverage: 66,
+            },
+            {
+              date: "2023-04-16",
+              cloudCoverage: 70,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 74,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_VIS_WIND_V_10M",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
+        },
+      },
+      {
+        type: "Tile",
+        properties: {
+          id: "AWS_NO2-VISUALISATION",
+          name: "NO2 Visualisation",
+          timeControlValues: [
+            {
+              date: "2022-12-05",
+              cloudCoverage: 20,
+            },
+            {
+              date: "2022-12-06",
+              cloudCoverage: 18,
+            },
+            {
+              date: "2022-12-07",
+              cloudCoverage: 22,
+            },
+            {
+              date: "2022-12-08",
+              cloudCoverage: 25,
+            },
+            {
+              date: "2022-12-09",
+              cloudCoverage: 19,
+            },
+            {
+              date: "2022-12-10",
+              cloudCoverage: 16,
+            },
+            {
+              date: "2022-12-11",
+              cloudCoverage: 21,
+            },
+            {
+              date: "2022-12-12",
+              cloudCoverage: 15,
+            },
+            {
+              date: "2022-12-19",
+              cloudCoverage: 35,
+            },
+            {
+              date: "2022-12-26",
+              cloudCoverage: 8,
+            },
+            {
+              date: "2023-01-16",
+              cloudCoverage: 42,
+            },
+            {
+              date: "2023-01-17",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-01-18",
+              cloudCoverage: 45,
+            },
+            {
+              date: "2023-01-19",
+              cloudCoverage: 41,
+            },
+            {
+              date: "2023-01-20",
+              cloudCoverage: 39,
+            },
+            {
+              date: "2023-01-21",
+              cloudCoverage: 43,
+            },
+            {
+              date: "2023-01-22",
+              cloudCoverage: 37,
+            },
+            {
+              date: "2023-01-23",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-01-24",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-01-25",
+              cloudCoverage: 26,
+            },
+            {
+              date: "2023-01-26",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-01-27",
+              cloudCoverage: 24,
+            },
+            {
+              date: "2023-01-28",
+              cloudCoverage: 32,
+            },
+            {
+              date: "2023-01-29",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-01-30",
+              cloudCoverage: 12,
+            },
+            {
+              date: "2023-01-31",
+              cloudCoverage: 14,
+            },
+            {
+              date: "2023-02-01",
+              cloudCoverage: 11,
+            },
+            {
+              date: "2023-02-02",
+              cloudCoverage: 16,
+            },
+            {
+              date: "2023-02-03",
+              cloudCoverage: 13,
+            },
+            {
+              date: "2023-02-04",
+              cloudCoverage: 18,
+            },
+            {
+              date: "2023-02-05",
+              cloudCoverage: 15,
+            },
+            {
+              date: "2023-02-06",
+              cloudCoverage: 55,
+            },
+            {
+              date: "2023-02-13",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-14",
+              cloudCoverage: 36,
+            },
+            {
+              date: "2023-02-15",
+              cloudCoverage: 30,
+            },
+            {
+              date: "2023-02-16",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-02-17",
+              cloudCoverage: 34,
+            },
+            {
+              date: "2023-02-18",
+              cloudCoverage: 31,
+            },
+            {
+              date: "2023-02-19",
+              cloudCoverage: 35,
+            },
+            {
+              date: "2023-02-20",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-02-21",
+              cloudCoverage: 32,
+            },
+            {
+              date: "2023-02-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-02-23",
+              cloudCoverage: 33,
+            },
+            {
+              date: "2023-02-24",
+              cloudCoverage: 25,
+            },
+            {
+              date: "2023-02-25",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-02-26",
+              cloudCoverage: 22,
+            },
+            {
+              date: "2023-02-27",
+              cloudCoverage: 18,
+            },
+            {
+              date: "2023-03-06",
+              cloudCoverage: 47,
+            },
+            {
+              date: "2023-03-13",
+              cloudCoverage: 25,
+            },
+            {
+              date: "2023-03-14",
+              cloudCoverage: 28,
+            },
+            {
+              date: "2023-03-15",
+              cloudCoverage: 23,
+            },
+            {
+              date: "2023-03-16",
+              cloudCoverage: 26,
+            },
+            {
+              date: "2023-03-17",
+              cloudCoverage: 21,
+            },
+            {
+              date: "2023-03-18",
+              cloudCoverage: 24,
+            },
+            {
+              date: "2023-03-19",
+              cloudCoverage: 19,
+            },
+            {
+              date: "2023-03-20",
+              cloudCoverage: 9,
+            },
+            {
+              date: "2023-03-27",
+              cloudCoverage: 38,
+            },
+            {
+              date: "2023-04-03",
+              cloudCoverage: 22,
+            },
+            {
+              date: "2023-04-10",
+              cloudCoverage: 51,
+            },
+            {
+              date: "2023-04-17",
+              cloudCoverage: 14,
+            },
+            {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
+            },
+            {
+              date: "2023-04-24",
+              cloudCoverage: 29,
+            },
+          ],
+          timeControlProperty: "TIME",
+        },
+        source: {
+          type: "TileWMS",
+          url: "https://services.sentinel-hub.com/ogc/wms/0635c213-17a1-48ee-aef7-9d1731695a54",
+          params: {
+            LAYERS: "AWS_NO2-VISUALISATION",
+            TIME: "2022-12-05",
+          },
+          crossOrigin: "anonymous",
+        },
+      },
+    ],
+  });
+
+  Object.assign(eoxTimecontrolDate, {
+    format: "YYYY-MM-DDTHH:mm:ss",
+    navigation: true,
+  });
+
+  Object.assign(eoxTimecontrolPicker, {
+    format: "YYYY-MM-DD",
     showDots: true,
     popup: true,
   });
@@ -20868,6 +21365,18 @@ The calendar appears as a popup overlay when clicking on the date input field (p
             {
               date: "2023-04-17",
               cloudCoverage: 14,
+            },
+            {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
             },
             {
               date: "2023-04-24",
@@ -21355,6 +21864,18 @@ The calendar appears as a popup overlay when clicking on the date input field (p
               cloudCoverage: 14,
             },
             {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
+            },
+            {
               date: "2023-04-24",
               cloudCoverage: 29,
             },
@@ -21837,6 +22358,18 @@ interfaces.
               cloudCoverage: 14,
             },
             {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
+            },
+            {
               date: "2023-04-24",
               cloudCoverage: 29,
             },
@@ -22311,6 +22844,18 @@ which sets the initial date range. Also, it uses the date `format` of `D. MMMM Y
               cloudCoverage: 14,
             },
             {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
+            },
+            {
               date: "2023-04-24",
               cloudCoverage: 29,
             },
@@ -22780,6 +23325,18 @@ automatically update the selected date range and apply it to the map layers.
             {
               date: "2023-04-17",
               cloudCoverage: 14,
+            },
+            {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
             },
             {
               date: "2023-04-24",
@@ -23475,6 +24032,18 @@ selector string (e.g., `"eox-map#primary"`) or a direct reference to the map ele
               cloudCoverage: 14,
             },
             {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
+            },
+            {
               date: "2023-04-24",
               cloudCoverage: 29,
             },
@@ -23951,6 +24520,18 @@ the map layers.
             {
               date: "2023-04-17",
               cloudCoverage: 14,
+            },
+            {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
             },
             {
               date: "2023-04-24",
@@ -24451,6 +25032,18 @@ comprehensive time navigation interface.
               cloudCoverage: 14,
             },
             {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
+            },
+            {
               date: "2023-04-24",
               cloudCoverage: 29,
             },
@@ -24477,6 +25070,7 @@ comprehensive time navigation interface.
   Object.assign(eoxTimecontrolPicker, {
     showDots: true,
     popup: true,
+    showItems: true,
   });
 </script>
 
@@ -24950,6 +25544,18 @@ The event is dispatched with the start and end dates of the view range.
             {
               date: "2023-04-17",
               cloudCoverage: 14,
+            },
+            {
+              date: "2023-04-21",
+              cloudCoverage: 29,
+            },
+            {
+              date: "2023-04-22",
+              cloudCoverage: 27,
+            },
+            {
+              date: "2023-04-23",
+              cloudCoverage: 26,
             },
             {
               date: "2023-04-24",
