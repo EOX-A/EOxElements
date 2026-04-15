@@ -1,14 +1,12 @@
 import { html } from "lit";
 import { getDate } from "../utils.js";
-import dayjs from "dayjs";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
- * Test case to verify that custom format and init date work correctly together.
- * Ensures that when both format and initDate are specified, the date is displayed
- * in the custom format AND uses the init date rather than the default last date.
+ * Test case to verify that date is displayed in UTC format when showUTC is true.
+ * Ensures that the date is displayed in the UTC format and not the local timezone format.
  */
-const loadDateFormatInitDate = () => {
+const loadDateInUTC = () => {
   // setup - intercept network requests
   cy.intercept(/^.*openstreetmap.*$/, {
     fixture: "./map/test/fixtures/tiles/osm/0/0/0.png",
@@ -17,9 +15,7 @@ const loadDateFormatInitDate = () => {
   // data preparation - define test data
   const customFormat = "D. MMMM YYYY";
   const initDate = ["2023-02-05"]; // Middle of the date range
-  const expectedFormattedDate = dayjs(getDate(initDate[0])).format(
-    customFormat,
-  );
+  const expectedFormattedDate = getDate(initDate[0], customFormat, true);
 
   // mount - mount components with both format and initDate
   cy.mount(html`
@@ -30,7 +26,11 @@ const loadDateFormatInitDate = () => {
       .center=${STORY_ARGS.center}
       .layers=${STORY_ARGS.layers}
     ></eox-map>
-    <eox-timecontrol for="eox-map#format-init-date" .initDate=${initDate}>
+    <eox-timecontrol
+      .showUTC=${true}
+      for="eox-map#format-init-date"
+      .initDate=${initDate}
+    >
       <eox-timecontrol-date format="${customFormat}"></eox-timecontrol-date>
     </eox-timecontrol>
   `);
@@ -70,4 +70,4 @@ const loadDateFormatInitDate = () => {
     });
 };
 
-export default loadDateFormatInitDate;
+export default loadDateInUTC;

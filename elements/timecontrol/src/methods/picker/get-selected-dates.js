@@ -17,12 +17,21 @@ dayjs.extend(timezone);
  *
  * @param {DateRange | null} selectedDateRange - The selected date range as [startDate, endDate] in ISO format, or null.
  * @param {boolean} range - Whether range selection is enabled. If true, returns both start and end dates; if false, returns only the start date.
+ * @param {boolean} showUTC - Whether to show UTC dates.
  * @returns {SelectedDates | null} An object containing the formatted dates array, year, and month, or null if no date range is provided.
  */
-export default function getSelectedDatesMethod(selectedDateRange, range) {
+export default function getSelectedDatesMethod(
+  selectedDateRange,
+  range,
+  showUTC,
+) {
   if (!selectedDateRange) return null;
-  const start = dayjs(selectedDateRange[0]);
-  const end = dayjs(selectedDateRange[1]);
+  const start = showUTC
+    ? dayjs(selectedDateRange[0]).utc()
+    : dayjs(selectedDateRange[0]);
+  const end = showUTC
+    ? dayjs(selectedDateRange[1]).utc()
+    : dayjs(selectedDateRange[1]);
   const startDateFormatted = start.format(TIME_CONTROL_DATE_FORMAT);
   const endDateFormatted = end.format(TIME_CONTROL_DATE_FORMAT);
   const selectedDates = range
