@@ -183,7 +183,6 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     !drag &&
     !props.event.shiftKey
   ) {
-<<<<<<< HEAD
     const isBackgroundClick = Boolean(props.what == "background");
     const selectRangeType = isBackgroundClick
       ? EOxTimeControlTimeline.selectRangeType
@@ -197,15 +196,6 @@ function handleClick(props, EOxTimeControl, EOxTimeControlTimeline) {
     const endDate = EOxTimeControl.showUTC
       ? dayjs(utcFormattedDate).utc().endOf(selectRangeType).format()
       : dayjs(props.time).endOf(selectRangeType).utc().format();
-=======
-    const utcFormattedDate = getWrongLocalFormatToUTCFormat(props.time);
-    const startDate = EOxTimeControl.showUTC
-      ? dayjs(utcFormattedDate).utc().startOf("day").format()
-      : dayjs(props.time).startOf("day").utc().format();
-    const endDate = EOxTimeControl.showUTC
-      ? dayjs(utcFormattedDate).utc().endOf("day").format()
-      : dayjs(props.time).endOf("day").utc().format();
->>>>>>> 5d2fe8764e11170d12830190689ee1be0d5003cc
     EOxTimeControl.dateChange([startDate, endDate], EOxTimeControl);
   }
 }
