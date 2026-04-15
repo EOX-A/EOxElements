@@ -137,6 +137,7 @@ export class EOxLayerControlLayerDatetime extends LitElement {
               },
             ]}
             @select=${this.#handleStepChange}
+            .showUTC=${true}
           >
             <eox-timecontrol-date
               .navigation=${this.layerDatetime.navigation ?? false}
