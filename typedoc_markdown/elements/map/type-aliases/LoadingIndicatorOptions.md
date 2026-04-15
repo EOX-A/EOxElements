@@ -8,18 +8,18 @@
 
 > **LoadingIndicatorOptions** = `Options` & `object`
 
-Defined in: [elements/map/src/types.ts:136](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/types.ts#L136)
+Defined in: [elements/map/src/types.ts:136](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/types.ts#L136)
 
 ## Type Declaration
 
 ### opacity?
 
-> `optional` **opacity**: `number`
+> `optional` **opacity?**: `number`
 
 ### spinnerSvg?
 
-> `optional` **spinnerSvg**: `string`
+> `optional` **spinnerSvg?**: `string`
 
 ### type?
 
-> `optional` **type**: [`LoadingIndicatorType`](LoadingIndicatorType.md)
+> `optional` **type?**: [`LoadingIndicatorType`](LoadingIndicatorType.md)

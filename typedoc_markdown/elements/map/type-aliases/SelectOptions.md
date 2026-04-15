@@ -8,17 +8,17 @@
 
 > **SelectOptions** = `Omit`\<`Options`, `"condition"`\> & `object`
 
-Defined in: [elements/map/src/types.ts:56](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/types.ts#L56)
+Defined in: [elements/map/src/types.ts:56](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/types.ts#L56)
 
 ## Type Declaration
 
 ### active?
 
-> `optional` **active**: `boolean`
+> `optional` **active?**: `boolean`
 
 ### atPixelOptions?
 
-> `optional` **atPixelOptions**: `AtPixelOptions`
+> `optional` **atPixelOptions?**: `AtPixelOptions`
 
 ### condition
 
@@ -26,15 +26,15 @@ Defined in: [elements/map/src/types.ts:56](https://github.com/EOX-A/EOxElements/
 
 ### coordinates?
 
-> `optional` **coordinates**: `boolean`
+> `optional` **coordinates?**: `boolean`
 
 ### cursor?
 
-> `optional` **cursor**: `"string"`
+> `optional` **cursor?**: `"string"`
 
 ### geometryFunction?
 
-> `optional` **geometryFunction**: `GeometryFunction`
+> `optional` **geometryFunction?**: `GeometryFunction`
 
 ### id
 
@@ -42,31 +42,31 @@ Defined in: [elements/map/src/types.ts:56](https://github.com/EOX-A/EOxElements/
 
 ### idProperty?
 
-> `optional` **idProperty**: `string`
+> `optional` **idProperty?**: `string`
 
 ### layer?
 
-> `optional` **layer**: [`EoxLayer`](EoxLayer-1.md)
+> `optional` **layer?**: [`EoxLayer`](EoxLayer-1.md)
 
 ### modify?
 
-> `optional` **modify**: `boolean`
+> `optional` **modify?**: `boolean`
 
 ### overlay?
 
-> `optional` **overlay**: `Options`
+> `optional` **overlay?**: `Options`
 
 ### panIn?
 
-> `optional` **panIn**: `boolean`
+> `optional` **panIn?**: `boolean`
 
 ### precision?
 
-> `optional` **precision**: `number`
+> `optional` **precision?**: `number`
 
 ### projection?
 
-> `optional` **projection**: `object`
+> `optional` **projection?**: `object`
 
 #### projection.name
 
@@ -78,12 +78,12 @@ Defined in: [elements/map/src/types.ts:56](https://github.com/EOX-A/EOxElements/
 
 ### style?
 
-> `optional` **style**: `FlatStyleLike`
+> `optional` **style?**: `FlatStyleLike`
 
 ### tooltip?
 
-> `optional` **tooltip**: `boolean`
+> `optional` **tooltip?**: `boolean`
 
 ### type?
 
-> `optional` **type**: `string`
+> `optional` **type?**: `string`

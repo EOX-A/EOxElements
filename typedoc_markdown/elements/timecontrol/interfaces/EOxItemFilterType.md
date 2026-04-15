@@ -6,7 +6,7 @@
 
 # Interface: EOxItemFilterType
 
-Defined in: [elements/itemfilter/src/main.js:57](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L57)
+Defined in: [elements/itemfilter/src/main.js:57](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L57)
 
 The `eox-itemfilter` element provides a comprehensive item filtering system for lists of items with flexible filter types, result aggregation, and customizable display modes.
 
@@ -91,7 +91,7 @@ The **`HTMLElement.accessKeyLabel`** read-only property returns a string contain
 
 > **aggregateResults**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:150](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L150)
+Defined in: [elements/itemfilter/src/main.js:150](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L150)
 
 Aggregate results by a property key
 
@@ -917,7 +917,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16065
 
 > **autoSpreadSingle**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:158](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L158)
+Defined in: [elements/itemfilter/src/main.js:158](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L158)
 
 Automatically spread single item summaries
 removing the summary header
@@ -1312,7 +1312,7 @@ node is an element.
 
 > **enableHighlighting**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:165](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L165)
+Defined in: [elements/itemfilter/src/main.js:165](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L165)
 
 Highlighting of search result character matches
 
@@ -1322,7 +1322,7 @@ Highlighting of search result character matches
 
 > **enableResultAction**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:288](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L288)
+Defined in: [elements/itemfilter/src/main.js:288](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L288)
 
 Enable result action button (a secondary action besides the normal result selection)
 
@@ -1370,7 +1370,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:21840
 
 > **expandMultipleFilters**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:261](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L261)
+Defined in: [elements/itemfilter/src/main.js:261](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L261)
 
 Allow opening multiple filter accordions in parallel
 
@@ -1380,7 +1380,7 @@ Allow opening multiple filter accordions in parallel
 
 > **expandMultipleResults**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:274](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L274)
+Defined in: [elements/itemfilter/src/main.js:274](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L274)
 
 Allow opening multiple result accordions in parallel
 
@@ -1390,17 +1390,17 @@ Allow opening multiple result accordions in parallel
 
 > **expandResults**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:268](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L268)
+Defined in: [elements/itemfilter/src/main.js:268](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L268)
 
 Initialize result accordions expanded
 
 ***
 
-### externalFilter()
+### externalFilter
 
-> **externalFilter**: () => `string` \| () => `object`
+> **externalFilter**: () => `string` \| (() => `object`)
 
-Defined in: [elements/itemfilter/src/main.js:176](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L176)
+Defined in: [elements/itemfilter/src/main.js:176](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L176)
 
 Use an external search endpoint instead of fuse search.
 Passed properties: input string, filters object.
@@ -1410,7 +1410,7 @@ return a specific property from the fetched data.
 
 #### Returns
 
-`string` \| () => `object`
+`string` \| (() => `object`)
 
 ***
 
@@ -1418,29 +1418,29 @@ return a specific property from the fetched data.
 
 > **filterProperties**: `object`[]
 
-Defined in: [elements/itemfilter/src/main.js:182](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L182)
+Defined in: [elements/itemfilter/src/main.js:182](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L182)
 
 The filter properties.
 
 #### format?
 
-> `optional` **format**: `string`
+> `optional` **format?**: `string`
 
 #### key?
 
-> `optional` **key**: `string`
+> `optional` **key?**: `string`
 
 #### keys?
 
-> `optional` **keys**: `string`[]
+> `optional` **keys?**: `string`[]
 
 #### placeholder?
 
-> `optional` **placeholder**: `string`
+> `optional` **placeholder?**: `string`
 
 #### state?
 
-> `optional` **state**: `any`
+> `optional` **state?**: `any`
 
 #### title
 
@@ -1456,7 +1456,7 @@ The filter properties.
 
 > **filters**: `any`
 
-Defined in: [elements/itemfilter/src/main.js:123](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L123)
+Defined in: [elements/itemfilter/src/main.js:123](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L123)
 
 The state object containing the applied filters.
 
@@ -1498,7 +1498,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **fuseConfig**: `any`
 
-Defined in: [elements/itemfilter/src/main.js:189](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L189)
+Defined in: [elements/itemfilter/src/main.js:189](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L189)
 
 Native fuse.js config override
 
@@ -1540,7 +1540,7 @@ The **`id`** property of the Element interface represents the element's identifi
 
 > **idProperty**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:254](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L254)
+Defined in: [elements/itemfilter/src/main.js:254](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L254)
 
 Unique id property of items
 
@@ -1550,7 +1550,7 @@ Unique id property of items
 
 > **imageProperty**: `string` \| `Function`
 
-Defined in: [elements/itemfilter/src/main.js:235](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L235)
+Defined in: [elements/itemfilter/src/main.js:235](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L235)
 
 The property of the result items used for an image
 Supports passing a function which recieves the current item as parameter and is expected to return a string
@@ -1577,7 +1577,7 @@ The HTMLElement property **`inert`** reflects the value of the element's `inert`
 
 > **inlineMode**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:197](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L197)
+Defined in: [elements/itemfilter/src/main.js:197](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L197)
 
 Inline mode, for rendering the itemfilter in a very condensed space.
 Expects showResults to be false
@@ -1664,7 +1664,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11131
 
 > **items**: `any`[]
 
-Defined in: [elements/itemfilter/src/main.js:117](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L117)
+Defined in: [elements/itemfilter/src/main.js:117](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L117)
 
 The items to be filtered
 
@@ -1738,7 +1738,7 @@ The **`Element.localName`** read-only property returns the local part of the qua
 
 > **matchAllWhenEmpty**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:204](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L204)
+Defined in: [elements/itemfilter/src/main.js:204](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L204)
 
 Show all result items if nothing is input by the user
 
@@ -1842,7 +1842,7 @@ The **`nodeValue`** property of the Node interface returns or sets the value of 
 
 ### nonce?
 
-> `optional` **nonce**: `string`
+> `optional` **nonce?**: `string`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16069
 
@@ -1946,7 +1946,7 @@ The **`offsetWidth`** read-only property of the HTMLElement interface returns th
 
 ***
 
-### onabort()
+### onabort
 
 > **onabort**: (`this`, `ev`) => `any`
 
@@ -1974,7 +1974,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12743
 
 ***
 
-### onanimationcancel()
+### onanimationcancel
 
 > **onanimationcancel**: (`this`, `ev`) => `any`
 
@@ -2002,7 +2002,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12745
 
 ***
 
-### onanimationend()
+### onanimationend
 
 > **onanimationend**: (`this`, `ev`) => `any`
 
@@ -2030,7 +2030,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12747
 
 ***
 
-### onanimationiteration()
+### onanimationiteration
 
 > **onanimationiteration**: (`this`, `ev`) => `any`
 
@@ -2058,7 +2058,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12749
 
 ***
 
-### onanimationstart()
+### onanimationstart
 
 > **onanimationstart**: (`this`, `ev`) => `any`
 
@@ -2086,7 +2086,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12751
 
 ***
 
-### onauxclick()
+### onauxclick
 
 > **onauxclick**: (`this`, `ev`) => `any`
 
@@ -2114,7 +2114,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12753
 
 ***
 
-### onbeforeinput()
+### onbeforeinput
 
 > **onbeforeinput**: (`this`, `ev`) => `any`
 
@@ -2142,7 +2142,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12755
 
 ***
 
-### onbeforematch()
+### onbeforematch
 
 > **onbeforematch**: (`this`, `ev`) => `any`
 
@@ -2170,7 +2170,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12757
 
 ***
 
-### onbeforetoggle()
+### onbeforetoggle
 
 > **onbeforetoggle**: (`this`, `ev`) => `any`
 
@@ -2198,7 +2198,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12759
 
 ***
 
-### onblur()
+### onblur
 
 > **onblur**: (`this`, `ev`) => `any`
 
@@ -2226,7 +2226,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12761
 
 ***
 
-### oncancel()
+### oncancel
 
 > **oncancel**: (`this`, `ev`) => `any`
 
@@ -2254,7 +2254,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12763
 
 ***
 
-### oncanplay()
+### oncanplay
 
 > **oncanplay**: (`this`, `ev`) => `any`
 
@@ -2282,7 +2282,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12765
 
 ***
 
-### oncanplaythrough()
+### oncanplaythrough
 
 > **oncanplaythrough**: (`this`, `ev`) => `any`
 
@@ -2310,7 +2310,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12767
 
 ***
 
-### onchange()
+### onchange
 
 > **onchange**: (`this`, `ev`) => `any`
 
@@ -2338,7 +2338,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12769
 
 ***
 
-### onclick()
+### onclick
 
 > **onclick**: (`this`, `ev`) => `any`
 
@@ -2366,7 +2366,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12771
 
 ***
 
-### onclose()
+### onclose
 
 > **onclose**: (`this`, `ev`) => `any`
 
@@ -2394,7 +2394,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12773
 
 ***
 
-### oncontextlost()
+### oncontextlost
 
 > **oncontextlost**: (`this`, `ev`) => `any`
 
@@ -2422,7 +2422,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12775
 
 ***
 
-### oncontextmenu()
+### oncontextmenu
 
 > **oncontextmenu**: (`this`, `ev`) => `any`
 
@@ -2450,7 +2450,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12777
 
 ***
 
-### oncontextrestored()
+### oncontextrestored
 
 > **oncontextrestored**: (`this`, `ev`) => `any`
 
@@ -2478,7 +2478,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12779
 
 ***
 
-### oncopy()
+### oncopy
 
 > **oncopy**: (`this`, `ev`) => `any`
 
@@ -2506,7 +2506,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12781
 
 ***
 
-### oncuechange()
+### oncuechange
 
 > **oncuechange**: (`this`, `ev`) => `any`
 
@@ -2534,7 +2534,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12783
 
 ***
 
-### oncut()
+### oncut
 
 > **oncut**: (`this`, `ev`) => `any`
 
@@ -2562,7 +2562,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12785
 
 ***
 
-### ondblclick()
+### ondblclick
 
 > **ondblclick**: (`this`, `ev`) => `any`
 
@@ -2590,7 +2590,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12787
 
 ***
 
-### ondrag()
+### ondrag
 
 > **ondrag**: (`this`, `ev`) => `any`
 
@@ -2618,7 +2618,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12789
 
 ***
 
-### ondragend()
+### ondragend
 
 > **ondragend**: (`this`, `ev`) => `any`
 
@@ -2646,7 +2646,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12791
 
 ***
 
-### ondragenter()
+### ondragenter
 
 > **ondragenter**: (`this`, `ev`) => `any`
 
@@ -2674,7 +2674,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12793
 
 ***
 
-### ondragleave()
+### ondragleave
 
 > **ondragleave**: (`this`, `ev`) => `any`
 
@@ -2702,7 +2702,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12795
 
 ***
 
-### ondragover()
+### ondragover
 
 > **ondragover**: (`this`, `ev`) => `any`
 
@@ -2730,7 +2730,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12797
 
 ***
 
-### ondragstart()
+### ondragstart
 
 > **ondragstart**: (`this`, `ev`) => `any`
 
@@ -2758,7 +2758,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12799
 
 ***
 
-### ondrop()
+### ondrop
 
 > **ondrop**: (`this`, `ev`) => `any`
 
@@ -2786,7 +2786,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12801
 
 ***
 
-### ondurationchange()
+### ondurationchange
 
 > **ondurationchange**: (`this`, `ev`) => `any`
 
@@ -2814,7 +2814,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12803
 
 ***
 
-### onemptied()
+### onemptied
 
 > **onemptied**: (`this`, `ev`) => `any`
 
@@ -2842,7 +2842,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12805
 
 ***
 
-### onended()
+### onended
 
 > **onended**: (`this`, `ev`) => `any`
 
@@ -2884,7 +2884,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12809
 
 ***
 
-### onfocus()
+### onfocus
 
 > **onfocus**: (`this`, `ev`) => `any`
 
@@ -2912,7 +2912,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12811
 
 ***
 
-### onformdata()
+### onformdata
 
 > **onformdata**: (`this`, `ev`) => `any`
 
@@ -2940,7 +2940,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12813
 
 ***
 
-### onfullscreenchange()
+### onfullscreenchange
 
 > **onfullscreenchange**: (`this`, `ev`) => `any`
 
@@ -2968,7 +2968,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10776
 
 ***
 
-### onfullscreenerror()
+### onfullscreenerror
 
 > **onfullscreenerror**: (`this`, `ev`) => `any`
 
@@ -2996,7 +2996,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10778
 
 ***
 
-### ongotpointercapture()
+### ongotpointercapture
 
 > **ongotpointercapture**: (`this`, `ev`) => `any`
 
@@ -3024,7 +3024,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12815
 
 ***
 
-### oninput()
+### oninput
 
 > **oninput**: (`this`, `ev`) => `any`
 
@@ -3052,7 +3052,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12817
 
 ***
 
-### oninvalid()
+### oninvalid
 
 > **oninvalid**: (`this`, `ev`) => `any`
 
@@ -3080,7 +3080,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12819
 
 ***
 
-### onkeydown()
+### onkeydown
 
 > **onkeydown**: (`this`, `ev`) => `any`
 
@@ -3108,7 +3108,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12821
 
 ***
 
-### ~~onkeypress()~~
+### ~~onkeypress~~
 
 > **onkeypress**: (`this`, `ev`) => `any`
 
@@ -3138,7 +3138,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12827
 
 ***
 
-### onkeyup()
+### onkeyup
 
 > **onkeyup**: (`this`, `ev`) => `any`
 
@@ -3166,7 +3166,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12829
 
 ***
 
-### onload()
+### onload
 
 > **onload**: (`this`, `ev`) => `any`
 
@@ -3194,7 +3194,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12831
 
 ***
 
-### onloadeddata()
+### onloadeddata
 
 > **onloadeddata**: (`this`, `ev`) => `any`
 
@@ -3222,7 +3222,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12833
 
 ***
 
-### onloadedmetadata()
+### onloadedmetadata
 
 > **onloadedmetadata**: (`this`, `ev`) => `any`
 
@@ -3250,7 +3250,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12835
 
 ***
 
-### onloadstart()
+### onloadstart
 
 > **onloadstart**: (`this`, `ev`) => `any`
 
@@ -3278,7 +3278,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12837
 
 ***
 
-### onlostpointercapture()
+### onlostpointercapture
 
 > **onlostpointercapture**: (`this`, `ev`) => `any`
 
@@ -3306,7 +3306,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12839
 
 ***
 
-### onmousedown()
+### onmousedown
 
 > **onmousedown**: (`this`, `ev`) => `any`
 
@@ -3334,7 +3334,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12841
 
 ***
 
-### onmouseenter()
+### onmouseenter
 
 > **onmouseenter**: (`this`, `ev`) => `any`
 
@@ -3362,7 +3362,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12843
 
 ***
 
-### onmouseleave()
+### onmouseleave
 
 > **onmouseleave**: (`this`, `ev`) => `any`
 
@@ -3390,7 +3390,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12845
 
 ***
 
-### onmousemove()
+### onmousemove
 
 > **onmousemove**: (`this`, `ev`) => `any`
 
@@ -3418,7 +3418,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12847
 
 ***
 
-### onmouseout()
+### onmouseout
 
 > **onmouseout**: (`this`, `ev`) => `any`
 
@@ -3446,7 +3446,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12849
 
 ***
 
-### onmouseover()
+### onmouseover
 
 > **onmouseover**: (`this`, `ev`) => `any`
 
@@ -3474,7 +3474,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12851
 
 ***
 
-### onmouseup()
+### onmouseup
 
 > **onmouseup**: (`this`, `ev`) => `any`
 
@@ -3502,7 +3502,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12853
 
 ***
 
-### onpaste()
+### onpaste
 
 > **onpaste**: (`this`, `ev`) => `any`
 
@@ -3530,7 +3530,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12855
 
 ***
 
-### onpause()
+### onpause
 
 > **onpause**: (`this`, `ev`) => `any`
 
@@ -3558,7 +3558,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12857
 
 ***
 
-### onplay()
+### onplay
 
 > **onplay**: (`this`, `ev`) => `any`
 
@@ -3586,7 +3586,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12859
 
 ***
 
-### onplaying()
+### onplaying
 
 > **onplaying**: (`this`, `ev`) => `any`
 
@@ -3614,7 +3614,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12861
 
 ***
 
-### onpointercancel()
+### onpointercancel
 
 > **onpointercancel**: (`this`, `ev`) => `any`
 
@@ -3642,7 +3642,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12863
 
 ***
 
-### onpointerdown()
+### onpointerdown
 
 > **onpointerdown**: (`this`, `ev`) => `any`
 
@@ -3670,7 +3670,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12865
 
 ***
 
-### onpointerenter()
+### onpointerenter
 
 > **onpointerenter**: (`this`, `ev`) => `any`
 
@@ -3698,7 +3698,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12867
 
 ***
 
-### onpointerleave()
+### onpointerleave
 
 > **onpointerleave**: (`this`, `ev`) => `any`
 
@@ -3726,7 +3726,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12869
 
 ***
 
-### onpointermove()
+### onpointermove
 
 > **onpointermove**: (`this`, `ev`) => `any`
 
@@ -3754,7 +3754,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12871
 
 ***
 
-### onpointerout()
+### onpointerout
 
 > **onpointerout**: (`this`, `ev`) => `any`
 
@@ -3782,7 +3782,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12873
 
 ***
 
-### onpointerover()
+### onpointerover
 
 > **onpointerover**: (`this`, `ev`) => `any`
 
@@ -3810,7 +3810,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12875
 
 ***
 
-### onpointerrawupdate()
+### onpointerrawupdate
 
 > **onpointerrawupdate**: (`this`, `ev`) => `any`
 
@@ -3840,7 +3840,7 @@ Available only in secure contexts.
 
 ***
 
-### onpointerup()
+### onpointerup
 
 > **onpointerup**: (`this`, `ev`) => `any`
 
@@ -3868,7 +3868,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12883
 
 ***
 
-### onprogress()
+### onprogress
 
 > **onprogress**: (`this`, `ev`) => `any`
 
@@ -3896,7 +3896,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12885
 
 ***
 
-### onratechange()
+### onratechange
 
 > **onratechange**: (`this`, `ev`) => `any`
 
@@ -3924,7 +3924,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12887
 
 ***
 
-### onreset()
+### onreset
 
 > **onreset**: (`this`, `ev`) => `any`
 
@@ -3952,7 +3952,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12889
 
 ***
 
-### onresize()
+### onresize
 
 > **onresize**: (`this`, `ev`) => `any`
 
@@ -3980,7 +3980,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12891
 
 ***
 
-### onscroll()
+### onscroll
 
 > **onscroll**: (`this`, `ev`) => `any`
 
@@ -4008,7 +4008,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12893
 
 ***
 
-### onscrollend()
+### onscrollend
 
 > **onscrollend**: (`this`, `ev`) => `any`
 
@@ -4036,7 +4036,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12895
 
 ***
 
-### onsecuritypolicyviolation()
+### onsecuritypolicyviolation
 
 > **onsecuritypolicyviolation**: (`this`, `ev`) => `any`
 
@@ -4064,7 +4064,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12897
 
 ***
 
-### onseeked()
+### onseeked
 
 > **onseeked**: (`this`, `ev`) => `any`
 
@@ -4092,7 +4092,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12899
 
 ***
 
-### onseeking()
+### onseeking
 
 > **onseeking**: (`this`, `ev`) => `any`
 
@@ -4120,7 +4120,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12901
 
 ***
 
-### onselect()
+### onselect
 
 > **onselect**: (`this`, `ev`) => `any`
 
@@ -4148,7 +4148,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12903
 
 ***
 
-### onselectionchange()
+### onselectionchange
 
 > **onselectionchange**: (`this`, `ev`) => `any`
 
@@ -4176,7 +4176,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12905
 
 ***
 
-### onselectstart()
+### onselectstart
 
 > **onselectstart**: (`this`, `ev`) => `any`
 
@@ -4204,7 +4204,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12907
 
 ***
 
-### onslotchange()
+### onslotchange
 
 > **onslotchange**: (`this`, `ev`) => `any`
 
@@ -4232,7 +4232,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12909
 
 ***
 
-### onstalled()
+### onstalled
 
 > **onstalled**: (`this`, `ev`) => `any`
 
@@ -4260,7 +4260,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12911
 
 ***
 
-### onsubmit()
+### onsubmit
 
 > **onsubmit**: (`this`, `ev`) => `any`
 
@@ -4288,7 +4288,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12913
 
 ***
 
-### onsuspend()
+### onsuspend
 
 > **onsuspend**: (`this`, `ev`) => `any`
 
@@ -4316,7 +4316,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12915
 
 ***
 
-### ontimeupdate()
+### ontimeupdate
 
 > **ontimeupdate**: (`this`, `ev`) => `any`
 
@@ -4344,7 +4344,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12917
 
 ***
 
-### ontoggle()
+### ontoggle
 
 > **ontoggle**: (`this`, `ev`) => `any`
 
@@ -4372,9 +4372,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12919
 
 ***
 
-### ontouchcancel()?
+### ontouchcancel?
 
-> `optional` **ontouchcancel**: (`this`, `ev`) => `any`
+> `optional` **ontouchcancel?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
@@ -4400,9 +4400,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
 ***
 
-### ontouchend()?
+### ontouchend?
 
-> `optional` **ontouchend**: (`this`, `ev`) => `any`
+> `optional` **ontouchend?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
@@ -4428,9 +4428,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
 ***
 
-### ontouchmove()?
+### ontouchmove?
 
-> `optional` **ontouchmove**: (`this`, `ev`) => `any`
+> `optional` **ontouchmove?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
@@ -4456,9 +4456,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
 ***
 
-### ontouchstart()?
+### ontouchstart?
 
-> `optional` **ontouchstart**: (`this`, `ev`) => `any`
+> `optional` **ontouchstart?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
@@ -4484,7 +4484,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
 ***
 
-### ontransitioncancel()
+### ontransitioncancel
 
 > **ontransitioncancel**: (`this`, `ev`) => `any`
 
@@ -4512,7 +4512,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12929
 
 ***
 
-### ontransitionend()
+### ontransitionend
 
 > **ontransitionend**: (`this`, `ev`) => `any`
 
@@ -4540,7 +4540,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12931
 
 ***
 
-### ontransitionrun()
+### ontransitionrun
 
 > **ontransitionrun**: (`this`, `ev`) => `any`
 
@@ -4568,7 +4568,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12933
 
 ***
 
-### ontransitionstart()
+### ontransitionstart
 
 > **ontransitionstart**: (`this`, `ev`) => `any`
 
@@ -4596,7 +4596,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12935
 
 ***
 
-### onvolumechange()
+### onvolumechange
 
 > **onvolumechange**: (`this`, `ev`) => `any`
 
@@ -4624,7 +4624,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12937
 
 ***
 
-### onwaiting()
+### onwaiting
 
 > **onwaiting**: (`this`, `ev`) => `any`
 
@@ -4652,7 +4652,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12939
 
 ***
 
-### ~~onwebkitanimationend()~~
+### ~~onwebkitanimationend~~
 
 > **onwebkitanimationend**: (`this`, `ev`) => `any`
 
@@ -4684,7 +4684,7 @@ This is a legacy alias of `onanimationend`.
 
 ***
 
-### ~~onwebkitanimationiteration()~~
+### ~~onwebkitanimationiteration~~
 
 > **onwebkitanimationiteration**: (`this`, `ev`) => `any`
 
@@ -4716,7 +4716,7 @@ This is a legacy alias of `onanimationiteration`.
 
 ***
 
-### ~~onwebkitanimationstart()~~
+### ~~onwebkitanimationstart~~
 
 > **onwebkitanimationstart**: (`this`, `ev`) => `any`
 
@@ -4748,7 +4748,7 @@ This is a legacy alias of `onanimationstart`.
 
 ***
 
-### ~~onwebkittransitionend()~~
+### ~~onwebkittransitionend~~
 
 > **onwebkittransitionend**: (`this`, `ev`) => `any`
 
@@ -4780,7 +4780,7 @@ This is a legacy alias of `ontransitionend`.
 
 ***
 
-### onwheel()
+### onwheel
 
 > **onwheel**: (`this`, `ev`) => `any`
 
@@ -4970,7 +4970,7 @@ node is a ProcessingInstruction node.
 
 > **resultActionIcon**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:295](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L295)
+Defined in: [elements/itemfilter/src/main.js:295](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L295)
 
 Icon for result action. Supports html
 
@@ -4980,7 +4980,7 @@ Icon for result action. Supports html
 
 > **results**: `any`[]
 
-Defined in: [elements/itemfilter/src/main.js:129](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L129)
+Defined in: [elements/itemfilter/src/main.js:129](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L129)
 
 The state object containing the filtered results.
 
@@ -4990,7 +4990,7 @@ The state object containing the filtered results.
 
 > **resultSorting**: `string` \| `false` \| `Function` \| \{ `key`: `string`; `order?`: `"desc"` \| `"asc"`; \}
 
-Defined in: [elements/itemfilter/src/main.js:247](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L247)
+Defined in: [elements/itemfilter/src/main.js:247](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L247)
 
 Sorting behavior for the results. Can be:
 - undefined (default): smart alphabetical sorting (skips if externalFilter or fuseConfig.shouldSort is truthy)
@@ -5005,7 +5005,7 @@ Sorting behavior for the results. Can be:
 
 > **resultType**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:281](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L281)
+Defined in: [elements/itemfilter/src/main.js:281](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L281)
 
 Rendering type for results. Can be `list`or `cards` (`cards` requires also importing the `eox-layout` element)
 
@@ -5093,7 +5093,7 @@ The **`scrollWidth`** read-only property of the Element interface is a measureme
 
 > **selectedResult**: `any`
 
-Defined in: [elements/itemfilter/src/main.js:135](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L135)
+Defined in: [elements/itemfilter/src/main.js:135](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L135)
 
 The currently selected result
 
@@ -5119,7 +5119,7 @@ The `Element.shadowRoot` read-only property represents the shadow root hosted by
 
 > **showResults**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:211](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L211)
+Defined in: [elements/itemfilter/src/main.js:211](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L211)
 
 Display results list
 
@@ -5161,7 +5161,7 @@ The **`spellcheck`** property of the HTMLElement interface represents a boolean 
 
 > **styleOverride**: `string`
 
-Defined in: [elements/itemfilter/src/main.js:302](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L302)
+Defined in: [elements/itemfilter/src/main.js:302](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L302)
 
 Overrides elements current CSS.
 
@@ -5171,7 +5171,7 @@ Overrides elements current CSS.
 
 > **subTitleProperty**: `string` \| `Function`
 
-Defined in: [elements/itemfilter/src/main.js:227](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L227)
+Defined in: [elements/itemfilter/src/main.js:227](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L227)
 
 The property of the result items used for a subtitle
 Supports passing a function which recieves the current item as parameter and is expected to return a string
@@ -5242,7 +5242,7 @@ The **`HTMLElement.title`** property represents the title of the element: the te
 
 > **titleProperty**: `string` \| `Function`
 
-Defined in: [elements/itemfilter/src/main.js:219](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L219)
+Defined in: [elements/itemfilter/src/main.js:219](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L219)
 
 The property of the result items used for display
 Supports passing a function which recieves the current item as parameter and is expected to return a string
@@ -5269,7 +5269,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/itemfilter/src/main.js:307](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L307)
+Defined in: [elements/itemfilter/src/main.js:307](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L307)
 
 Render the element without additional styles
 
@@ -5469,7 +5469,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13839
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5497,7 +5497,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13840
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5549,11 +5549,11 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:2921
 
 ##### keyframes
 
-`Keyframe`[] | `PropertyIndexedKeyframes`
+`Keyframe`[] \| `PropertyIndexedKeyframes`
 
 ##### options?
 
-`number` | `KeyframeAnimationOptions`
+`number` \| `KeyframeAnimationOptions`
 
 #### Returns
 
@@ -5629,7 +5629,7 @@ The **`appendChild()`** method of the Node interface adds a node to the end of t
 
 > **apply**(): `void`
 
-Defined in: [elements/itemfilter/src/main.js:313](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L313)
+Defined in: [elements/itemfilter/src/main.js:313](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L313)
 
 Applies the filters to the items and updates the result aggregation.
 
@@ -6017,7 +6017,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **emitResultAction**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:492](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L492)
+Defined in: [elements/itemfilter/src/main.js:492](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L492)
 
 Emits "click:result-action" event.
 
@@ -6041,7 +6041,7 @@ Emits "click:result-action" event.
 
 > **firstUpdated**(`_changedProperties`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:399](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L399)
+Defined in: [elements/itemfilter/src/main.js:399](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L399)
 
 Lifecycle method called after the first update.
 Initializes the configuration and items, and applies the filters.
@@ -7028,7 +7028,7 @@ The **`matches()`** method of the Element interface tests whether the element wo
 
 > **mouseEnterResult**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:456](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L456)
+Defined in: [elements/itemfilter/src/main.js:456](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L456)
 
 Dispatches an event when result component triggers the "mouseenter:result" event.
 
@@ -7052,7 +7052,7 @@ Dispatches an event when result component triggers the "mouseenter:result" event
 
 > **mouseLeaveResult**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:474](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L474)
+Defined in: [elements/itemfilter/src/main.js:474](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L474)
 
 Dispatches an event when result component triggers the "mouseleave:result" event.
 
@@ -7586,7 +7586,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13841
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -7614,7 +7614,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -7630,7 +7630,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/itemfilter/src/main.js:508](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L508)
+Defined in: [elements/itemfilter/src/main.js:508](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L508)
 
 Renders the HTML template for the component.
 
@@ -7792,7 +7792,7 @@ The **`requestPointerLock()`** method of the Element interface lets you asynchro
 
 > **resetFilters**(): `void`
 
-Defined in: [elements/itemfilter/src/main.js:389](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L389)
+Defined in: [elements/itemfilter/src/main.js:389](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L389)
 
 Resets all applied filters.
 
@@ -7920,7 +7920,7 @@ The Element interface's **`scrollIntoView()`** method scrolls the element's ance
 
 ##### arg?
 
-`boolean` | `ScrollIntoViewOptions`
+`boolean` \| `ScrollIntoViewOptions`
 
 #### Returns
 
@@ -7988,7 +7988,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11052
 
 > **searchHandler**(): `Promise`\<`void`\>
 
-Defined in: [elements/itemfilter/src/main.js:330](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L330)
+Defined in: [elements/itemfilter/src/main.js:330](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L330)
 
 Performs a search based on the current configuration and items.
 Requests an update after the search completes.
@@ -8191,7 +8191,7 @@ The **`showPopover()`** method of the HTMLElement interface shows a Popover_API 
 
 > **sortResults**(`items`, `options?`): `any`[]
 
-Defined in: [elements/itemfilter/src/main.js:360](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L360)
+Defined in: [elements/itemfilter/src/main.js:360](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L360)
 
 Sorts the given items based on the current configuration.
 
@@ -8281,7 +8281,7 @@ The **`togglePopover()`** method of the HTMLElement interface toggles a Popover_
 
 > **updated**(`changedProperties`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:421](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L421)
+Defined in: [elements/itemfilter/src/main.js:421](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L421)
 
 Called when the element is updated.
 Re-Initialize itemfilter when `config` and `items` changes.
@@ -8308,7 +8308,7 @@ The properties that have changed.
 
 > **updateResult**(`evt`): `void`
 
-Defined in: [elements/itemfilter/src/main.js:436](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/itemfilter/src/main.js#L436)
+Defined in: [elements/itemfilter/src/main.js:436](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/itemfilter/src/main.js#L436)
 
 Updates selected result when result component triggers the "result" event.
 
@@ -8794,9 +8794,9 @@ customized to control when to update.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8822,9 +8822,9 @@ this method will *not* trigger another update.
 
 ##### changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8864,7 +8864,7 @@ render() {
 
 ##### \_changedProperties
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
 #### Returns
 

@@ -6,7 +6,7 @@
 
 # Interface: EOxMapType
 
-Defined in: [elements/map/src/main.js:142](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L142)
+Defined in: [elements/map/src/main.js:142](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L142)
 
 The `eox-map` element is a powerful wrapper around [OpenLayers](https://openlayers.org/) that provides a declarative, highly configurable map element for web applications. It supports a wide range of layer types, sources, controls, and advanced features, making it suitable for interactive mapping, data visualization, and geospatial analysis.
 
@@ -1421,7 +1421,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **globe**: `any`
 
-Defined in: [elements/map/src/main.js:306](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L306)
+Defined in: [elements/map/src/main.js:306](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L306)
 
 The globe instance when using globe projection.
 todo: define proper type
@@ -1526,7 +1526,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11129
 
 > **interactions**: `object`
 
-Defined in: [elements/map/src/main.js:286](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L286)
+Defined in: [elements/map/src/main.js:286](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L286)
 
 Object to store various map interactions (e.g., drag, zoom).
 
@@ -1582,7 +1582,7 @@ The **`lang`** property of the HTMLElement interface indicates the base language
 
 > **last2dProjection**: `ProjectionLike` = `"EPSG:3857"`
 
-Defined in: [elements/map/src/main.js:248](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L248)
+Defined in: [elements/map/src/main.js:248](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L248)
 
 Stores the last 2D projection to switch back from globe view.
 
@@ -1640,7 +1640,7 @@ The **`Element.localName`** read-only property returns the local part of the qua
 
 > **map**: `Map`
 
-Defined in: [elements/map/src/main.js:267](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L267)
+Defined in: [elements/map/src/main.js:267](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L267)
 
 The OpenLayers map instance.
 
@@ -1650,7 +1650,7 @@ The OpenLayers map instance.
 
 > **mapControls**: `object`
 
-Defined in: [elements/map/src/main.js:300](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L300)
+Defined in: [elements/map/src/main.js:300](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L300)
 
 Object to store map controls (e.g., custom buttons, geolocation).
 
@@ -1754,7 +1754,7 @@ The **`nodeValue`** property of the Node interface returns or sets the value of 
 
 ### nonce?
 
-> `optional` **nonce**: `string`
+> `optional` **nonce?**: `string`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16069
 
@@ -1858,7 +1858,7 @@ The **`offsetWidth`** read-only property of the HTMLElement interface returns th
 
 ***
 
-### onabort()
+### onabort
 
 > **onabort**: (`this`, `ev`) => `any`
 
@@ -1886,7 +1886,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12743
 
 ***
 
-### onanimationcancel()
+### onanimationcancel
 
 > **onanimationcancel**: (`this`, `ev`) => `any`
 
@@ -1914,7 +1914,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12745
 
 ***
 
-### onanimationend()
+### onanimationend
 
 > **onanimationend**: (`this`, `ev`) => `any`
 
@@ -1942,7 +1942,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12747
 
 ***
 
-### onanimationiteration()
+### onanimationiteration
 
 > **onanimationiteration**: (`this`, `ev`) => `any`
 
@@ -1970,7 +1970,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12749
 
 ***
 
-### onanimationstart()
+### onanimationstart
 
 > **onanimationstart**: (`this`, `ev`) => `any`
 
@@ -1998,7 +1998,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12751
 
 ***
 
-### onauxclick()
+### onauxclick
 
 > **onauxclick**: (`this`, `ev`) => `any`
 
@@ -2026,7 +2026,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12753
 
 ***
 
-### onbeforeinput()
+### onbeforeinput
 
 > **onbeforeinput**: (`this`, `ev`) => `any`
 
@@ -2054,7 +2054,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12755
 
 ***
 
-### onbeforematch()
+### onbeforematch
 
 > **onbeforematch**: (`this`, `ev`) => `any`
 
@@ -2082,7 +2082,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12757
 
 ***
 
-### onbeforetoggle()
+### onbeforetoggle
 
 > **onbeforetoggle**: (`this`, `ev`) => `any`
 
@@ -2110,7 +2110,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12759
 
 ***
 
-### onblur()
+### onblur
 
 > **onblur**: (`this`, `ev`) => `any`
 
@@ -2138,7 +2138,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12761
 
 ***
 
-### oncancel()
+### oncancel
 
 > **oncancel**: (`this`, `ev`) => `any`
 
@@ -2166,7 +2166,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12763
 
 ***
 
-### oncanplay()
+### oncanplay
 
 > **oncanplay**: (`this`, `ev`) => `any`
 
@@ -2194,7 +2194,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12765
 
 ***
 
-### oncanplaythrough()
+### oncanplaythrough
 
 > **oncanplaythrough**: (`this`, `ev`) => `any`
 
@@ -2222,7 +2222,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12767
 
 ***
 
-### onchange()
+### onchange
 
 > **onchange**: (`this`, `ev`) => `any`
 
@@ -2250,7 +2250,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12769
 
 ***
 
-### onclick()
+### onclick
 
 > **onclick**: (`this`, `ev`) => `any`
 
@@ -2278,7 +2278,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12771
 
 ***
 
-### onclose()
+### onclose
 
 > **onclose**: (`this`, `ev`) => `any`
 
@@ -2306,7 +2306,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12773
 
 ***
 
-### oncontextlost()
+### oncontextlost
 
 > **oncontextlost**: (`this`, `ev`) => `any`
 
@@ -2334,7 +2334,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12775
 
 ***
 
-### oncontextmenu()
+### oncontextmenu
 
 > **oncontextmenu**: (`this`, `ev`) => `any`
 
@@ -2362,7 +2362,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12777
 
 ***
 
-### oncontextrestored()
+### oncontextrestored
 
 > **oncontextrestored**: (`this`, `ev`) => `any`
 
@@ -2390,7 +2390,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12779
 
 ***
 
-### oncopy()
+### oncopy
 
 > **oncopy**: (`this`, `ev`) => `any`
 
@@ -2418,7 +2418,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12781
 
 ***
 
-### oncuechange()
+### oncuechange
 
 > **oncuechange**: (`this`, `ev`) => `any`
 
@@ -2446,7 +2446,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12783
 
 ***
 
-### oncut()
+### oncut
 
 > **oncut**: (`this`, `ev`) => `any`
 
@@ -2474,7 +2474,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12785
 
 ***
 
-### ondblclick()
+### ondblclick
 
 > **ondblclick**: (`this`, `ev`) => `any`
 
@@ -2502,7 +2502,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12787
 
 ***
 
-### ondrag()
+### ondrag
 
 > **ondrag**: (`this`, `ev`) => `any`
 
@@ -2530,7 +2530,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12789
 
 ***
 
-### ondragend()
+### ondragend
 
 > **ondragend**: (`this`, `ev`) => `any`
 
@@ -2558,7 +2558,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12791
 
 ***
 
-### ondragenter()
+### ondragenter
 
 > **ondragenter**: (`this`, `ev`) => `any`
 
@@ -2586,7 +2586,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12793
 
 ***
 
-### ondragleave()
+### ondragleave
 
 > **ondragleave**: (`this`, `ev`) => `any`
 
@@ -2614,7 +2614,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12795
 
 ***
 
-### ondragover()
+### ondragover
 
 > **ondragover**: (`this`, `ev`) => `any`
 
@@ -2642,7 +2642,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12797
 
 ***
 
-### ondragstart()
+### ondragstart
 
 > **ondragstart**: (`this`, `ev`) => `any`
 
@@ -2670,7 +2670,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12799
 
 ***
 
-### ondrop()
+### ondrop
 
 > **ondrop**: (`this`, `ev`) => `any`
 
@@ -2698,7 +2698,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12801
 
 ***
 
-### ondurationchange()
+### ondurationchange
 
 > **ondurationchange**: (`this`, `ev`) => `any`
 
@@ -2726,7 +2726,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12803
 
 ***
 
-### onemptied()
+### onemptied
 
 > **onemptied**: (`this`, `ev`) => `any`
 
@@ -2754,7 +2754,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12805
 
 ***
 
-### onended()
+### onended
 
 > **onended**: (`this`, `ev`) => `any`
 
@@ -2796,7 +2796,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12809
 
 ***
 
-### onfocus()
+### onfocus
 
 > **onfocus**: (`this`, `ev`) => `any`
 
@@ -2824,7 +2824,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12811
 
 ***
 
-### onformdata()
+### onformdata
 
 > **onformdata**: (`this`, `ev`) => `any`
 
@@ -2852,7 +2852,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12813
 
 ***
 
-### onfullscreenchange()
+### onfullscreenchange
 
 > **onfullscreenchange**: (`this`, `ev`) => `any`
 
@@ -2880,7 +2880,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10776
 
 ***
 
-### onfullscreenerror()
+### onfullscreenerror
 
 > **onfullscreenerror**: (`this`, `ev`) => `any`
 
@@ -2908,7 +2908,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10778
 
 ***
 
-### ongotpointercapture()
+### ongotpointercapture
 
 > **ongotpointercapture**: (`this`, `ev`) => `any`
 
@@ -2936,7 +2936,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12815
 
 ***
 
-### oninput()
+### oninput
 
 > **oninput**: (`this`, `ev`) => `any`
 
@@ -2964,7 +2964,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12817
 
 ***
 
-### oninvalid()
+### oninvalid
 
 > **oninvalid**: (`this`, `ev`) => `any`
 
@@ -2992,7 +2992,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12819
 
 ***
 
-### onkeydown()
+### onkeydown
 
 > **onkeydown**: (`this`, `ev`) => `any`
 
@@ -3020,7 +3020,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12821
 
 ***
 
-### ~~onkeypress()~~
+### ~~onkeypress~~
 
 > **onkeypress**: (`this`, `ev`) => `any`
 
@@ -3050,7 +3050,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12827
 
 ***
 
-### onkeyup()
+### onkeyup
 
 > **onkeyup**: (`this`, `ev`) => `any`
 
@@ -3078,7 +3078,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12829
 
 ***
 
-### onload()
+### onload
 
 > **onload**: (`this`, `ev`) => `any`
 
@@ -3106,7 +3106,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12831
 
 ***
 
-### onloadeddata()
+### onloadeddata
 
 > **onloadeddata**: (`this`, `ev`) => `any`
 
@@ -3134,7 +3134,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12833
 
 ***
 
-### onloadedmetadata()
+### onloadedmetadata
 
 > **onloadedmetadata**: (`this`, `ev`) => `any`
 
@@ -3162,7 +3162,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12835
 
 ***
 
-### onloadstart()
+### onloadstart
 
 > **onloadstart**: (`this`, `ev`) => `any`
 
@@ -3190,7 +3190,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12837
 
 ***
 
-### onlostpointercapture()
+### onlostpointercapture
 
 > **onlostpointercapture**: (`this`, `ev`) => `any`
 
@@ -3218,7 +3218,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12839
 
 ***
 
-### onmousedown()
+### onmousedown
 
 > **onmousedown**: (`this`, `ev`) => `any`
 
@@ -3246,7 +3246,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12841
 
 ***
 
-### onmouseenter()
+### onmouseenter
 
 > **onmouseenter**: (`this`, `ev`) => `any`
 
@@ -3274,7 +3274,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12843
 
 ***
 
-### onmouseleave()
+### onmouseleave
 
 > **onmouseleave**: (`this`, `ev`) => `any`
 
@@ -3302,7 +3302,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12845
 
 ***
 
-### onmousemove()
+### onmousemove
 
 > **onmousemove**: (`this`, `ev`) => `any`
 
@@ -3330,7 +3330,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12847
 
 ***
 
-### onmouseout()
+### onmouseout
 
 > **onmouseout**: (`this`, `ev`) => `any`
 
@@ -3358,7 +3358,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12849
 
 ***
 
-### onmouseover()
+### onmouseover
 
 > **onmouseover**: (`this`, `ev`) => `any`
 
@@ -3386,7 +3386,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12851
 
 ***
 
-### onmouseup()
+### onmouseup
 
 > **onmouseup**: (`this`, `ev`) => `any`
 
@@ -3414,7 +3414,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12853
 
 ***
 
-### onpaste()
+### onpaste
 
 > **onpaste**: (`this`, `ev`) => `any`
 
@@ -3442,7 +3442,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12855
 
 ***
 
-### onpause()
+### onpause
 
 > **onpause**: (`this`, `ev`) => `any`
 
@@ -3470,7 +3470,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12857
 
 ***
 
-### onplay()
+### onplay
 
 > **onplay**: (`this`, `ev`) => `any`
 
@@ -3498,7 +3498,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12859
 
 ***
 
-### onplaying()
+### onplaying
 
 > **onplaying**: (`this`, `ev`) => `any`
 
@@ -3526,7 +3526,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12861
 
 ***
 
-### onpointercancel()
+### onpointercancel
 
 > **onpointercancel**: (`this`, `ev`) => `any`
 
@@ -3554,7 +3554,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12863
 
 ***
 
-### onpointerdown()
+### onpointerdown
 
 > **onpointerdown**: (`this`, `ev`) => `any`
 
@@ -3582,7 +3582,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12865
 
 ***
 
-### onpointerenter()
+### onpointerenter
 
 > **onpointerenter**: (`this`, `ev`) => `any`
 
@@ -3610,7 +3610,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12867
 
 ***
 
-### onpointerleave()
+### onpointerleave
 
 > **onpointerleave**: (`this`, `ev`) => `any`
 
@@ -3638,7 +3638,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12869
 
 ***
 
-### onpointermove()
+### onpointermove
 
 > **onpointermove**: (`this`, `ev`) => `any`
 
@@ -3666,7 +3666,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12871
 
 ***
 
-### onpointerout()
+### onpointerout
 
 > **onpointerout**: (`this`, `ev`) => `any`
 
@@ -3694,7 +3694,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12873
 
 ***
 
-### onpointerover()
+### onpointerover
 
 > **onpointerover**: (`this`, `ev`) => `any`
 
@@ -3722,7 +3722,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12875
 
 ***
 
-### onpointerrawupdate()
+### onpointerrawupdate
 
 > **onpointerrawupdate**: (`this`, `ev`) => `any`
 
@@ -3752,7 +3752,7 @@ Available only in secure contexts.
 
 ***
 
-### onpointerup()
+### onpointerup
 
 > **onpointerup**: (`this`, `ev`) => `any`
 
@@ -3780,7 +3780,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12883
 
 ***
 
-### onprogress()
+### onprogress
 
 > **onprogress**: (`this`, `ev`) => `any`
 
@@ -3808,7 +3808,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12885
 
 ***
 
-### onratechange()
+### onratechange
 
 > **onratechange**: (`this`, `ev`) => `any`
 
@@ -3836,7 +3836,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12887
 
 ***
 
-### onreset()
+### onreset
 
 > **onreset**: (`this`, `ev`) => `any`
 
@@ -3864,7 +3864,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12889
 
 ***
 
-### onresize()
+### onresize
 
 > **onresize**: (`this`, `ev`) => `any`
 
@@ -3892,7 +3892,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12891
 
 ***
 
-### onscroll()
+### onscroll
 
 > **onscroll**: (`this`, `ev`) => `any`
 
@@ -3920,7 +3920,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12893
 
 ***
 
-### onscrollend()
+### onscrollend
 
 > **onscrollend**: (`this`, `ev`) => `any`
 
@@ -3948,7 +3948,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12895
 
 ***
 
-### onsecuritypolicyviolation()
+### onsecuritypolicyviolation
 
 > **onsecuritypolicyviolation**: (`this`, `ev`) => `any`
 
@@ -3976,7 +3976,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12897
 
 ***
 
-### onseeked()
+### onseeked
 
 > **onseeked**: (`this`, `ev`) => `any`
 
@@ -4004,7 +4004,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12899
 
 ***
 
-### onseeking()
+### onseeking
 
 > **onseeking**: (`this`, `ev`) => `any`
 
@@ -4032,7 +4032,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12901
 
 ***
 
-### onselect()
+### onselect
 
 > **onselect**: (`this`, `ev`) => `any`
 
@@ -4060,7 +4060,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12903
 
 ***
 
-### onselectionchange()
+### onselectionchange
 
 > **onselectionchange**: (`this`, `ev`) => `any`
 
@@ -4088,7 +4088,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12905
 
 ***
 
-### onselectstart()
+### onselectstart
 
 > **onselectstart**: (`this`, `ev`) => `any`
 
@@ -4116,7 +4116,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12907
 
 ***
 
-### onslotchange()
+### onslotchange
 
 > **onslotchange**: (`this`, `ev`) => `any`
 
@@ -4144,7 +4144,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12909
 
 ***
 
-### onstalled()
+### onstalled
 
 > **onstalled**: (`this`, `ev`) => `any`
 
@@ -4172,7 +4172,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12911
 
 ***
 
-### onsubmit()
+### onsubmit
 
 > **onsubmit**: (`this`, `ev`) => `any`
 
@@ -4200,7 +4200,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12913
 
 ***
 
-### onsuspend()
+### onsuspend
 
 > **onsuspend**: (`this`, `ev`) => `any`
 
@@ -4228,7 +4228,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12915
 
 ***
 
-### ontimeupdate()
+### ontimeupdate
 
 > **ontimeupdate**: (`this`, `ev`) => `any`
 
@@ -4256,7 +4256,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12917
 
 ***
 
-### ontoggle()
+### ontoggle
 
 > **ontoggle**: (`this`, `ev`) => `any`
 
@@ -4284,9 +4284,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12919
 
 ***
 
-### ontouchcancel()?
+### ontouchcancel?
 
-> `optional` **ontouchcancel**: (`this`, `ev`) => `any`
+> `optional` **ontouchcancel?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
@@ -4312,9 +4312,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
 ***
 
-### ontouchend()?
+### ontouchend?
 
-> `optional` **ontouchend**: (`this`, `ev`) => `any`
+> `optional` **ontouchend?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
@@ -4340,9 +4340,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
 ***
 
-### ontouchmove()?
+### ontouchmove?
 
-> `optional` **ontouchmove**: (`this`, `ev`) => `any`
+> `optional` **ontouchmove?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
@@ -4368,9 +4368,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
 ***
 
-### ontouchstart()?
+### ontouchstart?
 
-> `optional` **ontouchstart**: (`this`, `ev`) => `any`
+> `optional` **ontouchstart?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
@@ -4396,7 +4396,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
 ***
 
-### ontransitioncancel()
+### ontransitioncancel
 
 > **ontransitioncancel**: (`this`, `ev`) => `any`
 
@@ -4424,7 +4424,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12929
 
 ***
 
-### ontransitionend()
+### ontransitionend
 
 > **ontransitionend**: (`this`, `ev`) => `any`
 
@@ -4452,7 +4452,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12931
 
 ***
 
-### ontransitionrun()
+### ontransitionrun
 
 > **ontransitionrun**: (`this`, `ev`) => `any`
 
@@ -4480,7 +4480,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12933
 
 ***
 
-### ontransitionstart()
+### ontransitionstart
 
 > **ontransitionstart**: (`this`, `ev`) => `any`
 
@@ -4508,7 +4508,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12935
 
 ***
 
-### onvolumechange()
+### onvolumechange
 
 > **onvolumechange**: (`this`, `ev`) => `any`
 
@@ -4536,7 +4536,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12937
 
 ***
 
-### onwaiting()
+### onwaiting
 
 > **onwaiting**: (`this`, `ev`) => `any`
 
@@ -4564,7 +4564,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12939
 
 ***
 
-### ~~onwebkitanimationend()~~
+### ~~onwebkitanimationend~~
 
 > **onwebkitanimationend**: (`this`, `ev`) => `any`
 
@@ -4596,7 +4596,7 @@ This is a legacy alias of `onanimationend`.
 
 ***
 
-### ~~onwebkitanimationiteration()~~
+### ~~onwebkitanimationiteration~~
 
 > **onwebkitanimationiteration**: (`this`, `ev`) => `any`
 
@@ -4628,7 +4628,7 @@ This is a legacy alias of `onanimationiteration`.
 
 ***
 
-### ~~onwebkitanimationstart()~~
+### ~~onwebkitanimationstart~~
 
 > **onwebkitanimationstart**: (`this`, `ev`) => `any`
 
@@ -4660,7 +4660,7 @@ This is a legacy alias of `onanimationstart`.
 
 ***
 
-### ~~onwebkittransitionend()~~
+### ~~onwebkittransitionend~~
 
 > **onwebkittransitionend**: (`this`, `ev`) => `any`
 
@@ -4692,7 +4692,7 @@ This is a legacy alias of `ontransitionend`.
 
 ***
 
-### onwheel()
+### onwheel
 
 > **onwheel**: (`this`, `ev`) => `any`
 
@@ -4960,7 +4960,7 @@ The **`scrollWidth`** read-only property of the Element interface is a measureme
 
 > **selectInteractions**: `object`
 
-Defined in: [elements/map/src/main.js:293](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L293)
+Defined in: [elements/map/src/main.js:293](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L293)
 
 Object to store selection interactions for the map.
 
@@ -5112,7 +5112,7 @@ The **`writingSuggestions`** property of the HTMLElement interface is a string i
 
 > **get** **animationOptions**(): [`EOxAnimationOptions`](../../map/type-aliases/EOxAnimationOptions.md)
 
-Defined in: [elements/map/src/main.js:485](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L485)
+Defined in: [elements/map/src/main.js:485](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L485)
 
 Gets the current animation options.
 
@@ -5126,7 +5126,7 @@ The current animation options for the map.
 
 > **set** **animationOptions**(`animationOptions`): `void`
 
-Defined in: [elements/map/src/main.js:475](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L475)
+Defined in: [elements/map/src/main.js:475](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L475)
 
 Sets animation options for map view changes.
 
@@ -5150,7 +5150,7 @@ The animation options.
 
 > **get** **center**(): `number`[]
 
-Defined in: [elements/map/src/main.js:328](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L328)
+Defined in: [elements/map/src/main.js:328](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L328)
 
 Gets the current center coordinates of the map.
 
@@ -5164,7 +5164,7 @@ The current center of the map.
 
 > **set** **center**(`center`): `void`
 
-Defined in: [elements/map/src/main.js:314](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L314)
+Defined in: [elements/map/src/main.js:314](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L314)
 
 Sets the center of the map. If the new center is valid, updates the map's view.
 
@@ -5226,7 +5226,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10714
 
 > **get** **config**(): [`ConfigObject`](../../map/type-aliases/ConfigObject.md)
 
-Defined in: [elements/map/src/main.js:347](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L347)
+Defined in: [elements/map/src/main.js:347](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L347)
 
 Gets the current configuration of the map.
 
@@ -5240,7 +5240,7 @@ The map's configuration object.
 
 > **set** **config**(`config`): `void`
 
-Defined in: [elements/map/src/main.js:337](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L337)
+Defined in: [elements/map/src/main.js:337](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L337)
 
 Sets the configuration for the map.
 
@@ -5264,7 +5264,7 @@ The configuration object.
 
 > **get** **controls**(): [`ControlDictionary`](../../map/type-aliases/ControlDictionary.md)
 
-Defined in: [elements/map/src/main.js:426](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L426)
+Defined in: [elements/map/src/main.js:426](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L426)
 
 Gets the current map controls.
 
@@ -5278,7 +5278,7 @@ The current controls applied to the map.
 
 > **set** **controls**(`controls`): `void`
 
-Defined in: [elements/map/src/main.js:416](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L416)
+Defined in: [elements/map/src/main.js:416](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L416)
 
 Sets the controls for the map.
 
@@ -5302,7 +5302,7 @@ An array of control configurations.
 
 > **get** **globeConfig**(): [`GlobeConfig`](../../map/type-aliases/GlobeConfig.md)
 
-Defined in: [elements/map/src/main.js:596](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L596)
+Defined in: [elements/map/src/main.js:596](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L596)
 
 Gets the current globe configuration properties.
 
@@ -5314,7 +5314,7 @@ Gets the current globe configuration properties.
 
 > **set** **globeConfig**(`globeConfig`): `void`
 
-Defined in: [elements/map/src/main.js:588](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L588)
+Defined in: [elements/map/src/main.js:588](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L588)
 
 Sets the properties of the globe such as the terrain.
 
@@ -5338,7 +5338,7 @@ The globe configuration which contains the terrain boolean.
 
 > **get** **globeEnabled**(): `boolean`
 
-Defined in: [elements/map/src/main.js:550](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L550)
+Defined in: [elements/map/src/main.js:550](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L550)
 
 Gets the  Whether the globe is enabled.
 
@@ -5352,7 +5352,7 @@ Whether the globe is enabled.
 
 > **set** **globeEnabled**(`globeEnabled`): `void`
 
-Defined in: [elements/map/src/main.js:560](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L560)
+Defined in: [elements/map/src/main.js:560](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L560)
 
 Sets the  Whether the globe is enabled.
 
@@ -5376,7 +5376,7 @@ Whether the globe is enabled.
 
 > **get** **layers**(): [`EoxLayer`](../../map/type-aliases/EoxLayer.md)[]
 
-Defined in: [elements/map/src/main.js:447](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L447)
+Defined in: [elements/map/src/main.js:447](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L447)
 
 Gets the current layers of the map
 
@@ -5390,7 +5390,7 @@ The current layers applied to the map.
 
 > **set** **layers**(`layers`): `void`
 
-Defined in: [elements/map/src/main.js:435](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L435)
+Defined in: [elements/map/src/main.js:435](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L435)
 
 Sets the layers for the map.
 
@@ -5414,7 +5414,7 @@ An array of layer configurations.
 
 > **get** **lonLatCenter**(): `number`[]
 
-Defined in: [elements/map/src/main.js:357](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L357)
+Defined in: [elements/map/src/main.js:357](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L357)
 
 Gets the current center of the map in longitude and latitude.
 
@@ -5432,7 +5432,7 @@ The geographic center [longitude, latitude].
 
 > **get** **lonLatExtent**(): `number`[]
 
-Defined in: [elements/map/src/main.js:367](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L367)
+Defined in: [elements/map/src/main.js:367](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L367)
 
 Gets the current extent of the map in longitude and latitude.
 
@@ -5450,7 +5450,7 @@ The geographic extent [minLon, minLat, maxLon, maxLat].
 
 > **get** **OLprojection**(): `ProjectionLike`
 
-Defined in: [elements/map/src/main.js:540](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L540)
+Defined in: [elements/map/src/main.js:540](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L540)
 
 Gets the openlayer map projection.
 
@@ -5506,7 +5506,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10792
 
 > **get** **preventScroll**(): `boolean`
 
-Defined in: [elements/map/src/main.js:466](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L466)
+Defined in: [elements/map/src/main.js:466](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L466)
 
 Gets the current scroll interaction state.
 
@@ -5520,7 +5520,7 @@ Gets the current scroll interaction state.
 
 > **set** **preventScroll**(`preventScroll`): `void`
 
-Defined in: [elements/map/src/main.js:456](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L456)
+Defined in: [elements/map/src/main.js:456](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L456)
 
 Enables or disables scroll interactions on the map.
 
@@ -5544,7 +5544,7 @@ Whether to prevent scroll interactions.
 
 > **get** **projection**(): `ProjectionLike`
 
-Defined in: [elements/map/src/main.js:530](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L530)
+Defined in: [elements/map/src/main.js:530](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L530)
 
 Gets the current map projection.
 
@@ -5558,7 +5558,7 @@ The map's projection code or "globe" if globe is enabled.
 
 > **set** **projection**(`projection`): `void`
 
-Defined in: [elements/map/src/main.js:494](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L494)
+Defined in: [elements/map/src/main.js:494](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L494)
 
 Sets the map's projection.
 
@@ -5618,7 +5618,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11120
 
 > **get** **sync**(): `string`
 
-Defined in: [elements/map/src/main.js:579](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L579)
+Defined in: [elements/map/src/main.js:579](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L579)
 
 Gets the current sync state of the map.
 
@@ -5632,7 +5632,7 @@ The ID of the map that this map is synced with.
 
 > **set** **sync**(`sync`): `void`
 
-Defined in: [elements/map/src/main.js:569](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L569)
+Defined in: [elements/map/src/main.js:569](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L569)
 
 Sets the sync state for the map.
 
@@ -5696,7 +5696,7 @@ The **`textContent`** property of the Node interface represents the text content
 
 > **get** **zoom**(): `number`
 
-Defined in: [elements/map/src/main.js:388](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L388)
+Defined in: [elements/map/src/main.js:388](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L388)
 
 Gets the current zoom level of the map.
 
@@ -5710,7 +5710,7 @@ The current zoom level.
 
 > **set** **zoom**(`zoom`): `void`
 
-Defined in: [elements/map/src/main.js:376](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L376)
+Defined in: [elements/map/src/main.js:376](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L376)
 
 Sets the zoom level of the map and animates the change.
 
@@ -5734,7 +5734,7 @@ The new zoom level.
 
 > **get** **zoomExtent**(): `number`[]
 
-Defined in: [elements/map/src/main.js:407](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L407)
+Defined in: [elements/map/src/main.js:407](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L407)
 
 Gets the current extent of the map.
 
@@ -5748,7 +5748,7 @@ The extent in current map projection.
 
 > **set** **zoomExtent**(`extent`): `void`
 
-Defined in: [elements/map/src/main.js:397](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L397)
+Defined in: [elements/map/src/main.js:397](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L397)
 
 Sets the zoom extent of the map.
 
@@ -5792,7 +5792,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13839
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5820,7 +5820,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13840
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5836,7 +5836,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13840
 
 > **addOrUpdateLayer**(`json`): `any`
 
-Defined in: [elements/map/src/main.js:606](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L606)
+Defined in: [elements/map/src/main.js:606](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L606)
 
 Adds or updates a layer on the map.
 
@@ -5896,11 +5896,11 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:2921
 
 ##### keyframes
 
-`Keyframe`[] | `PropertyIndexedKeyframes`
+`Keyframe`[] \| `PropertyIndexedKeyframes`
 
 ##### options?
 
-`number` | `KeyframeAnimationOptions`
+`number` \| `KeyframeAnimationOptions`
 
 #### Returns
 
@@ -6350,7 +6350,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/map/src/main.js:651](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L651)
+Defined in: [elements/map/src/main.js:651](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L651)
 
 Lifecycle method called after the component's first update.
 Sets up initial configurations like zoom extent.
@@ -6853,7 +6853,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getFlatLayersArray**(`layers`): [`AnyLayer`](../../map/type-aliases/AnyLayer.md)[]
 
-Defined in: [elements/map/src/main.js:711](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L711)
+Defined in: [elements/map/src/main.js:711](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L711)
 
 Returns a flat array of all map layers, including nested layers within groups.
 
@@ -6906,7 +6906,7 @@ The **`getHTML()`** method of the Element interface is used to serialize an elem
 
 > **getLayerById**(`layerId`): [`AnyLayerWithSource`](../../map/type-aliases/AnyLayerWithSource.md)
 
-Defined in: [elements/map/src/main.js:643](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L643)
+Defined in: [elements/map/src/main.js:643](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L643)
 
 Retrieves a layer from the map by its ID.
 
@@ -7400,7 +7400,7 @@ The **`normalize()`** method of the Node interface puts the specified node and a
 
 > **parseFeature**(`features`): `any`
 
-Defined in: [elements/map/src/main.js:661](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L661)
+Defined in: [elements/map/src/main.js:661](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L661)
 
 Converts an array of OpenLayers features into a GeoJSON object.
 
@@ -7424,7 +7424,7 @@ An array of OpenLayers features to be converted.
 
 > **parseTextToFeature**(`text`, `vectorLayer`, `EOxMap`, `replaceFeatures`, `animate`): `void`
 
-Defined in: [elements/map/src/main.js:676](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L676)
+Defined in: [elements/map/src/main.js:676](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L676)
 
 This function reads text and attempts to parse it as GeoJSON, KML, or TopoJSON.
 If successful, it adds the parsed features to the map.
@@ -7779,7 +7779,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:22724
 
 > **registerProjection**(`name`, `projection`, `extent?`): `void`
 
-Defined in: [elements/map/src/main.js:698](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L698)
+Defined in: [elements/map/src/main.js:698](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L698)
 
 Registers a projection under a given name using a proj4 definition.
 This allows OpenLayers to recognize and work with custom or predefined projections.
@@ -7794,9 +7794,9 @@ The name of the projection (e.g., "EPSG:4326").
 
 ##### projection
 
-The proj4 projection definition string or object.
+`string` \| `ProjectionDefinition`
 
-`string` | `ProjectionDefinition`
+The proj4 projection definition string or object.
 
 ##### extent?
 
@@ -7814,7 +7814,7 @@ Optional extent for the projection. Defines the coordinate system's valid area.
 
 > **registerProjectionFromCode**(`code`): `Promise`\<`Projection`\>
 
-Defined in: [elements/map/src/main.js:686](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L686)
+Defined in: [elements/map/src/main.js:686](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L686)
 
 Fetches the projection definition for a given EPSG code from epsg.io and registers the projection using proj4.
 
@@ -7822,9 +7822,9 @@ Fetches the projection definition for a given EPSG code from epsg.io and registe
 
 ##### code
 
-The EPSG code (e.g., 4326 or 'EPSG:4326').
+`string` \| `number`
 
-`string` | `number`
+The EPSG code (e.g., 4326 or 'EPSG:4326').
 
 #### Returns
 
@@ -7998,7 +7998,7 @@ The **`removeChild()`** method of the Node interface removes a child node from t
 
 > **removeControl**(`id`): `void`
 
-Defined in: [elements/map/src/main.js:633](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L633)
+Defined in: [elements/map/src/main.js:633](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L633)
 
 Removes a control from the map by its ID.
 
@@ -8042,7 +8042,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13841
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -8070,7 +8070,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -8086,7 +8086,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 > **removeInteraction**(`id`): `void`
 
-Defined in: [elements/map/src/main.js:615](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L615)
+Defined in: [elements/map/src/main.js:615](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L615)
 
 Removes an interaction from the map by its ID.
 
@@ -8094,9 +8094,9 @@ Removes an interaction from the map by its ID.
 
 ##### id
 
-The ID of the interaction to remove.
+`string` \| `number`
 
-`string` | `number`
+The ID of the interaction to remove.
 
 #### Returns
 
@@ -8108,7 +8108,7 @@ The ID of the interaction to remove.
 
 > **removeSelect**(`id`): `void`
 
-Defined in: [elements/map/src/main.js:624](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L624)
+Defined in: [elements/map/src/main.js:624](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L624)
 
 Removes a select interaction from the map by its ID.
 
@@ -8116,9 +8116,9 @@ Removes a select interaction from the map by its ID.
 
 ##### id
 
-The ID of the select interaction to remove.
+`string` \| `number`
 
-`string` | `number`
+The ID of the select interaction to remove.
 
 #### Returns
 
@@ -8388,7 +8388,7 @@ The Element interface's **`scrollIntoView()`** method scrolls the element's ance
 
 ##### arg?
 
-`boolean` | `ScrollIntoViewOptions`
+`boolean` \| `ScrollIntoViewOptions`
 
 #### Returns
 
@@ -8929,7 +8929,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/map/src/main.js:716](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/main.js#L716)
+Defined in: [elements/map/src/main.js:716](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/main.js#L716)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a
@@ -9183,9 +9183,9 @@ customized to control when to update.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -9211,9 +9211,9 @@ this method will *not* trigger another update.
 
 ##### changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -9241,9 +9241,9 @@ again after this update cycle completes.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -9283,7 +9283,7 @@ render() {
 
 ##### \_changedProperties
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
 #### Returns
 

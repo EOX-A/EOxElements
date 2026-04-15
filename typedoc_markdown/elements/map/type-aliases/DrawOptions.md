@@ -8,17 +8,17 @@
 
 > **DrawOptions** = `Omit`\<`Options`, `"type"`\> & `object`
 
-Defined in: [elements/map/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/types.ts#L8)
+Defined in: [elements/map/src/types.ts:8](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/types.ts#L8)
 
 ## Type Declaration
 
 ### active?
 
-> `optional` **active**: `boolean`
+> `optional` **active?**: `boolean`
 
 ### geometryFunction?
 
-> `optional` **geometryFunction**: `GeometryFunction`
+> `optional` **geometryFunction?**: `GeometryFunction`
 
 ### id
 
@@ -26,7 +26,7 @@ Defined in: [elements/map/src/types.ts:8](https://github.com/EOX-A/EOxElements/b
 
 ### modify?
 
-> `optional` **modify**: `boolean`
+> `optional` **modify?**: `boolean`
 
 ### type
 

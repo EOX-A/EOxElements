@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlDateType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:26](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L26)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:26](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L26)
 
 The `eox-timecontrol-date` component displays the currently selected date(s) with optional navigation buttons.
 It formats the date according to the specified format string and can display single dates or date ranges.
@@ -1328,7 +1328,7 @@ Returns the first child that is an element, and null otherwise.
 
 > **format**: `string`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:65](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L65)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:65](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L65)
 
 Date format string using dayjs tokens (default: "YYYY-MM-DD").
 
@@ -1542,7 +1542,7 @@ The **`Element.namespaceURI`** read-only property returns the namespace URI of t
 
 > **navigation**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:72](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L72)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:72](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L72)
 
 Whether navigation buttons (previous/next) are shown.
 
@@ -1630,7 +1630,7 @@ The **`nodeValue`** property of the Node interface returns or sets the value of 
 
 ### nonce?
 
-> `optional` **nonce**: `string`
+> `optional` **nonce?**: `string`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16069
 
@@ -1734,7 +1734,7 @@ The **`offsetWidth`** read-only property of the HTMLElement interface returns th
 
 ***
 
-### onabort()
+### onabort
 
 > **onabort**: (`this`, `ev`) => `any`
 
@@ -1762,7 +1762,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12743
 
 ***
 
-### onanimationcancel()
+### onanimationcancel
 
 > **onanimationcancel**: (`this`, `ev`) => `any`
 
@@ -1790,7 +1790,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12745
 
 ***
 
-### onanimationend()
+### onanimationend
 
 > **onanimationend**: (`this`, `ev`) => `any`
 
@@ -1818,7 +1818,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12747
 
 ***
 
-### onanimationiteration()
+### onanimationiteration
 
 > **onanimationiteration**: (`this`, `ev`) => `any`
 
@@ -1846,7 +1846,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12749
 
 ***
 
-### onanimationstart()
+### onanimationstart
 
 > **onanimationstart**: (`this`, `ev`) => `any`
 
@@ -1874,7 +1874,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12751
 
 ***
 
-### onauxclick()
+### onauxclick
 
 > **onauxclick**: (`this`, `ev`) => `any`
 
@@ -1902,7 +1902,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12753
 
 ***
 
-### onbeforeinput()
+### onbeforeinput
 
 > **onbeforeinput**: (`this`, `ev`) => `any`
 
@@ -1930,7 +1930,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12755
 
 ***
 
-### onbeforematch()
+### onbeforematch
 
 > **onbeforematch**: (`this`, `ev`) => `any`
 
@@ -1958,7 +1958,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12757
 
 ***
 
-### onbeforetoggle()
+### onbeforetoggle
 
 > **onbeforetoggle**: (`this`, `ev`) => `any`
 
@@ -1986,7 +1986,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12759
 
 ***
 
-### onblur()
+### onblur
 
 > **onblur**: (`this`, `ev`) => `any`
 
@@ -2014,7 +2014,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12761
 
 ***
 
-### oncancel()
+### oncancel
 
 > **oncancel**: (`this`, `ev`) => `any`
 
@@ -2042,7 +2042,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12763
 
 ***
 
-### oncanplay()
+### oncanplay
 
 > **oncanplay**: (`this`, `ev`) => `any`
 
@@ -2070,7 +2070,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12765
 
 ***
 
-### oncanplaythrough()
+### oncanplaythrough
 
 > **oncanplaythrough**: (`this`, `ev`) => `any`
 
@@ -2098,7 +2098,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12767
 
 ***
 
-### onchange()
+### onchange
 
 > **onchange**: (`this`, `ev`) => `any`
 
@@ -2126,7 +2126,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12769
 
 ***
 
-### onclick()
+### onclick
 
 > **onclick**: (`this`, `ev`) => `any`
 
@@ -2154,7 +2154,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12771
 
 ***
 
-### onclose()
+### onclose
 
 > **onclose**: (`this`, `ev`) => `any`
 
@@ -2182,7 +2182,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12773
 
 ***
 
-### oncontextlost()
+### oncontextlost
 
 > **oncontextlost**: (`this`, `ev`) => `any`
 
@@ -2210,7 +2210,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12775
 
 ***
 
-### oncontextmenu()
+### oncontextmenu
 
 > **oncontextmenu**: (`this`, `ev`) => `any`
 
@@ -2238,7 +2238,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12777
 
 ***
 
-### oncontextrestored()
+### oncontextrestored
 
 > **oncontextrestored**: (`this`, `ev`) => `any`
 
@@ -2266,7 +2266,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12779
 
 ***
 
-### oncopy()
+### oncopy
 
 > **oncopy**: (`this`, `ev`) => `any`
 
@@ -2294,7 +2294,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12781
 
 ***
 
-### oncuechange()
+### oncuechange
 
 > **oncuechange**: (`this`, `ev`) => `any`
 
@@ -2322,7 +2322,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12783
 
 ***
 
-### oncut()
+### oncut
 
 > **oncut**: (`this`, `ev`) => `any`
 
@@ -2350,7 +2350,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12785
 
 ***
 
-### ondblclick()
+### ondblclick
 
 > **ondblclick**: (`this`, `ev`) => `any`
 
@@ -2378,7 +2378,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12787
 
 ***
 
-### ondrag()
+### ondrag
 
 > **ondrag**: (`this`, `ev`) => `any`
 
@@ -2406,7 +2406,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12789
 
 ***
 
-### ondragend()
+### ondragend
 
 > **ondragend**: (`this`, `ev`) => `any`
 
@@ -2434,7 +2434,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12791
 
 ***
 
-### ondragenter()
+### ondragenter
 
 > **ondragenter**: (`this`, `ev`) => `any`
 
@@ -2462,7 +2462,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12793
 
 ***
 
-### ondragleave()
+### ondragleave
 
 > **ondragleave**: (`this`, `ev`) => `any`
 
@@ -2490,7 +2490,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12795
 
 ***
 
-### ondragover()
+### ondragover
 
 > **ondragover**: (`this`, `ev`) => `any`
 
@@ -2518,7 +2518,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12797
 
 ***
 
-### ondragstart()
+### ondragstart
 
 > **ondragstart**: (`this`, `ev`) => `any`
 
@@ -2546,7 +2546,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12799
 
 ***
 
-### ondrop()
+### ondrop
 
 > **ondrop**: (`this`, `ev`) => `any`
 
@@ -2574,7 +2574,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12801
 
 ***
 
-### ondurationchange()
+### ondurationchange
 
 > **ondurationchange**: (`this`, `ev`) => `any`
 
@@ -2602,7 +2602,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12803
 
 ***
 
-### onemptied()
+### onemptied
 
 > **onemptied**: (`this`, `ev`) => `any`
 
@@ -2630,7 +2630,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12805
 
 ***
 
-### onended()
+### onended
 
 > **onended**: (`this`, `ev`) => `any`
 
@@ -2672,7 +2672,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12809
 
 ***
 
-### onfocus()
+### onfocus
 
 > **onfocus**: (`this`, `ev`) => `any`
 
@@ -2700,7 +2700,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12811
 
 ***
 
-### onformdata()
+### onformdata
 
 > **onformdata**: (`this`, `ev`) => `any`
 
@@ -2728,7 +2728,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12813
 
 ***
 
-### onfullscreenchange()
+### onfullscreenchange
 
 > **onfullscreenchange**: (`this`, `ev`) => `any`
 
@@ -2756,7 +2756,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10776
 
 ***
 
-### onfullscreenerror()
+### onfullscreenerror
 
 > **onfullscreenerror**: (`this`, `ev`) => `any`
 
@@ -2784,7 +2784,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10778
 
 ***
 
-### ongotpointercapture()
+### ongotpointercapture
 
 > **ongotpointercapture**: (`this`, `ev`) => `any`
 
@@ -2812,7 +2812,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12815
 
 ***
 
-### oninput()
+### oninput
 
 > **oninput**: (`this`, `ev`) => `any`
 
@@ -2840,7 +2840,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12817
 
 ***
 
-### oninvalid()
+### oninvalid
 
 > **oninvalid**: (`this`, `ev`) => `any`
 
@@ -2868,7 +2868,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12819
 
 ***
 
-### onkeydown()
+### onkeydown
 
 > **onkeydown**: (`this`, `ev`) => `any`
 
@@ -2896,7 +2896,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12821
 
 ***
 
-### ~~onkeypress()~~
+### ~~onkeypress~~
 
 > **onkeypress**: (`this`, `ev`) => `any`
 
@@ -2926,7 +2926,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12827
 
 ***
 
-### onkeyup()
+### onkeyup
 
 > **onkeyup**: (`this`, `ev`) => `any`
 
@@ -2954,7 +2954,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12829
 
 ***
 
-### onload()
+### onload
 
 > **onload**: (`this`, `ev`) => `any`
 
@@ -2982,7 +2982,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12831
 
 ***
 
-### onloadeddata()
+### onloadeddata
 
 > **onloadeddata**: (`this`, `ev`) => `any`
 
@@ -3010,7 +3010,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12833
 
 ***
 
-### onloadedmetadata()
+### onloadedmetadata
 
 > **onloadedmetadata**: (`this`, `ev`) => `any`
 
@@ -3038,7 +3038,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12835
 
 ***
 
-### onloadstart()
+### onloadstart
 
 > **onloadstart**: (`this`, `ev`) => `any`
 
@@ -3066,7 +3066,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12837
 
 ***
 
-### onlostpointercapture()
+### onlostpointercapture
 
 > **onlostpointercapture**: (`this`, `ev`) => `any`
 
@@ -3094,7 +3094,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12839
 
 ***
 
-### onmousedown()
+### onmousedown
 
 > **onmousedown**: (`this`, `ev`) => `any`
 
@@ -3122,7 +3122,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12841
 
 ***
 
-### onmouseenter()
+### onmouseenter
 
 > **onmouseenter**: (`this`, `ev`) => `any`
 
@@ -3150,7 +3150,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12843
 
 ***
 
-### onmouseleave()
+### onmouseleave
 
 > **onmouseleave**: (`this`, `ev`) => `any`
 
@@ -3178,7 +3178,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12845
 
 ***
 
-### onmousemove()
+### onmousemove
 
 > **onmousemove**: (`this`, `ev`) => `any`
 
@@ -3206,7 +3206,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12847
 
 ***
 
-### onmouseout()
+### onmouseout
 
 > **onmouseout**: (`this`, `ev`) => `any`
 
@@ -3234,7 +3234,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12849
 
 ***
 
-### onmouseover()
+### onmouseover
 
 > **onmouseover**: (`this`, `ev`) => `any`
 
@@ -3262,7 +3262,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12851
 
 ***
 
-### onmouseup()
+### onmouseup
 
 > **onmouseup**: (`this`, `ev`) => `any`
 
@@ -3290,7 +3290,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12853
 
 ***
 
-### onpaste()
+### onpaste
 
 > **onpaste**: (`this`, `ev`) => `any`
 
@@ -3318,7 +3318,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12855
 
 ***
 
-### onpause()
+### onpause
 
 > **onpause**: (`this`, `ev`) => `any`
 
@@ -3346,7 +3346,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12857
 
 ***
 
-### onplay()
+### onplay
 
 > **onplay**: (`this`, `ev`) => `any`
 
@@ -3374,7 +3374,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12859
 
 ***
 
-### onplaying()
+### onplaying
 
 > **onplaying**: (`this`, `ev`) => `any`
 
@@ -3402,7 +3402,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12861
 
 ***
 
-### onpointercancel()
+### onpointercancel
 
 > **onpointercancel**: (`this`, `ev`) => `any`
 
@@ -3430,7 +3430,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12863
 
 ***
 
-### onpointerdown()
+### onpointerdown
 
 > **onpointerdown**: (`this`, `ev`) => `any`
 
@@ -3458,7 +3458,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12865
 
 ***
 
-### onpointerenter()
+### onpointerenter
 
 > **onpointerenter**: (`this`, `ev`) => `any`
 
@@ -3486,7 +3486,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12867
 
 ***
 
-### onpointerleave()
+### onpointerleave
 
 > **onpointerleave**: (`this`, `ev`) => `any`
 
@@ -3514,7 +3514,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12869
 
 ***
 
-### onpointermove()
+### onpointermove
 
 > **onpointermove**: (`this`, `ev`) => `any`
 
@@ -3542,7 +3542,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12871
 
 ***
 
-### onpointerout()
+### onpointerout
 
 > **onpointerout**: (`this`, `ev`) => `any`
 
@@ -3570,7 +3570,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12873
 
 ***
 
-### onpointerover()
+### onpointerover
 
 > **onpointerover**: (`this`, `ev`) => `any`
 
@@ -3598,7 +3598,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12875
 
 ***
 
-### onpointerrawupdate()
+### onpointerrawupdate
 
 > **onpointerrawupdate**: (`this`, `ev`) => `any`
 
@@ -3628,7 +3628,7 @@ Available only in secure contexts.
 
 ***
 
-### onpointerup()
+### onpointerup
 
 > **onpointerup**: (`this`, `ev`) => `any`
 
@@ -3656,7 +3656,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12883
 
 ***
 
-### onprogress()
+### onprogress
 
 > **onprogress**: (`this`, `ev`) => `any`
 
@@ -3684,7 +3684,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12885
 
 ***
 
-### onratechange()
+### onratechange
 
 > **onratechange**: (`this`, `ev`) => `any`
 
@@ -3712,7 +3712,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12887
 
 ***
 
-### onreset()
+### onreset
 
 > **onreset**: (`this`, `ev`) => `any`
 
@@ -3740,7 +3740,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12889
 
 ***
 
-### onresize()
+### onresize
 
 > **onresize**: (`this`, `ev`) => `any`
 
@@ -3768,7 +3768,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12891
 
 ***
 
-### onscroll()
+### onscroll
 
 > **onscroll**: (`this`, `ev`) => `any`
 
@@ -3796,7 +3796,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12893
 
 ***
 
-### onscrollend()
+### onscrollend
 
 > **onscrollend**: (`this`, `ev`) => `any`
 
@@ -3824,7 +3824,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12895
 
 ***
 
-### onsecuritypolicyviolation()
+### onsecuritypolicyviolation
 
 > **onsecuritypolicyviolation**: (`this`, `ev`) => `any`
 
@@ -3852,7 +3852,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12897
 
 ***
 
-### onseeked()
+### onseeked
 
 > **onseeked**: (`this`, `ev`) => `any`
 
@@ -3880,7 +3880,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12899
 
 ***
 
-### onseeking()
+### onseeking
 
 > **onseeking**: (`this`, `ev`) => `any`
 
@@ -3908,7 +3908,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12901
 
 ***
 
-### onselect()
+### onselect
 
 > **onselect**: (`this`, `ev`) => `any`
 
@@ -3936,7 +3936,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12903
 
 ***
 
-### onselectionchange()
+### onselectionchange
 
 > **onselectionchange**: (`this`, `ev`) => `any`
 
@@ -3964,7 +3964,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12905
 
 ***
 
-### onselectstart()
+### onselectstart
 
 > **onselectstart**: (`this`, `ev`) => `any`
 
@@ -3992,7 +3992,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12907
 
 ***
 
-### onslotchange()
+### onslotchange
 
 > **onslotchange**: (`this`, `ev`) => `any`
 
@@ -4020,7 +4020,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12909
 
 ***
 
-### onstalled()
+### onstalled
 
 > **onstalled**: (`this`, `ev`) => `any`
 
@@ -4048,7 +4048,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12911
 
 ***
 
-### onsubmit()
+### onsubmit
 
 > **onsubmit**: (`this`, `ev`) => `any`
 
@@ -4076,7 +4076,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12913
 
 ***
 
-### onsuspend()
+### onsuspend
 
 > **onsuspend**: (`this`, `ev`) => `any`
 
@@ -4104,7 +4104,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12915
 
 ***
 
-### ontimeupdate()
+### ontimeupdate
 
 > **ontimeupdate**: (`this`, `ev`) => `any`
 
@@ -4132,7 +4132,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12917
 
 ***
 
-### ontoggle()
+### ontoggle
 
 > **ontoggle**: (`this`, `ev`) => `any`
 
@@ -4160,9 +4160,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12919
 
 ***
 
-### ontouchcancel()?
+### ontouchcancel?
 
-> `optional` **ontouchcancel**: (`this`, `ev`) => `any`
+> `optional` **ontouchcancel?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
@@ -4188,9 +4188,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
 ***
 
-### ontouchend()?
+### ontouchend?
 
-> `optional` **ontouchend**: (`this`, `ev`) => `any`
+> `optional` **ontouchend?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
@@ -4216,9 +4216,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
 ***
 
-### ontouchmove()?
+### ontouchmove?
 
-> `optional` **ontouchmove**: (`this`, `ev`) => `any`
+> `optional` **ontouchmove?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
@@ -4244,9 +4244,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
 ***
 
-### ontouchstart()?
+### ontouchstart?
 
-> `optional` **ontouchstart**: (`this`, `ev`) => `any`
+> `optional` **ontouchstart?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
@@ -4272,7 +4272,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
 ***
 
-### ontransitioncancel()
+### ontransitioncancel
 
 > **ontransitioncancel**: (`this`, `ev`) => `any`
 
@@ -4300,7 +4300,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12929
 
 ***
 
-### ontransitionend()
+### ontransitionend
 
 > **ontransitionend**: (`this`, `ev`) => `any`
 
@@ -4328,7 +4328,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12931
 
 ***
 
-### ontransitionrun()
+### ontransitionrun
 
 > **ontransitionrun**: (`this`, `ev`) => `any`
 
@@ -4356,7 +4356,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12933
 
 ***
 
-### ontransitionstart()
+### ontransitionstart
 
 > **ontransitionstart**: (`this`, `ev`) => `any`
 
@@ -4384,7 +4384,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12935
 
 ***
 
-### onvolumechange()
+### onvolumechange
 
 > **onvolumechange**: (`this`, `ev`) => `any`
 
@@ -4412,7 +4412,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12937
 
 ***
 
-### onwaiting()
+### onwaiting
 
 > **onwaiting**: (`this`, `ev`) => `any`
 
@@ -4440,7 +4440,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12939
 
 ***
 
-### ~~onwebkitanimationend()~~
+### ~~onwebkitanimationend~~
 
 > **onwebkitanimationend**: (`this`, `ev`) => `any`
 
@@ -4472,7 +4472,7 @@ This is a legacy alias of `onanimationend`.
 
 ***
 
-### ~~onwebkitanimationiteration()~~
+### ~~onwebkitanimationiteration~~
 
 > **onwebkitanimationiteration**: (`this`, `ev`) => `any`
 
@@ -4504,7 +4504,7 @@ This is a legacy alias of `onanimationiteration`.
 
 ***
 
-### ~~onwebkitanimationstart()~~
+### ~~onwebkitanimationstart~~
 
 > **onwebkitanimationstart**: (`this`, `ev`) => `any`
 
@@ -4536,7 +4536,7 @@ This is a legacy alias of `onanimationstart`.
 
 ***
 
-### ~~onwebkittransitionend()~~
+### ~~onwebkittransitionend~~
 
 > **onwebkittransitionend**: (`this`, `ev`) => `any`
 
@@ -4568,7 +4568,7 @@ This is a legacy alias of `ontransitionend`.
 
 ***
 
-### onwheel()
+### onwheel
 
 > **onwheel**: (`this`, `ev`) => `any`
 
@@ -4960,7 +4960,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:79](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L79)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:79](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L79)
 
 Whether default styling is disabled.
 
@@ -5160,7 +5160,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13839
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5188,7 +5188,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13840
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5240,11 +5240,11 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:2921
 
 ##### keyframes
 
-`Keyframe`[] | `PropertyIndexedKeyframes`
+`Keyframe`[] \| `PropertyIndexedKeyframes`
 
 ##### options?
 
-`number` | `KeyframeAnimationOptions`
+`number` \| `KeyframeAnimationOptions`
 
 #### Returns
 
@@ -5694,7 +5694,7 @@ The **`dispatchEvent()`** method of the EventTarget sends an Event to the object
 
 > **firstUpdated**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:183](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L183)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:183](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L183)
 
 Lifecycle method called after the component's first update.
 Checks if a popup picker is present and sets the input mode accordingly.
@@ -6197,7 +6197,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getEOxTimeControl**(): [`EOxTimeControlType`](EOxTimeControlType.md)
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:87](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L87)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:87](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L87)
 
 Gets the parent EOxTimeControl component instance.
 
@@ -7199,7 +7199,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13841
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -7227,7 +7227,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -7501,7 +7501,7 @@ The Element interface's **`scrollIntoView()`** method scrolls the element's ance
 
 ##### arg?
 
-`boolean` | `ScrollIntoViewOptions`
+`boolean` \| `ScrollIntoViewOptions`
 
 #### Returns
 
@@ -7685,7 +7685,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:174](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L174)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:174](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L174)
 
 Sets the date range and triggers a re-render.
 
@@ -7835,7 +7835,7 @@ The **`togglePopover()`** method of the HTMLElement interface toggles a Popover_
 
 > **updateStep**(`step?`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:135](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L135)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:135](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L135)
 
 Updates the selected date by stepping forward or backward through available dates.
 
@@ -8086,7 +8086,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-date.js:221](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-date.js#L221)
+Defined in: [elements/timecontrol/src/components/timecontrol-date.js:221](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-date.js#L221)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a
@@ -8340,9 +8340,9 @@ customized to control when to update.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8368,9 +8368,9 @@ this method will *not* trigger another update.
 
 ##### changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8398,9 +8398,9 @@ again after this update cycle completes.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8440,7 +8440,7 @@ render() {
 
 ##### \_changedProperties
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
 #### Returns
 

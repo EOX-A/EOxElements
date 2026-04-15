@@ -8,21 +8,21 @@
 
 > **EOxLayerType**\<`T`, `S`\> = `OlLayerOption`\<`T`\> *extends* `object` ? `Omit`\<`OlLayerOption`\<`T`\>, `"sources"`\> & `object` : `OlLayerOption`\<`T`\> & `object` & `S` *extends* keyof [`OLSources`](OLSources.md) ? `SourceProperties`\<`S`\> : `object`
 
-Defined in: [elements/map/src/layers.ts:143](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/map/src/layers.ts#L143)
+Defined in: [elements/map/src/layers.ts:143](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/map/src/layers.ts#L143)
 
 ## Type Declaration
 
 ### interactions?
 
-> `optional` **interactions**: `T` *extends* `"Vector"` \| `"VectorTile"` ? [`EOxInteraction`](EOxInteraction.md)[] : `never`
+> `optional` **interactions?**: `T` *extends* `"Vector"` \| `"VectorTile"` ? [`EOxInteraction`](EOxInteraction.md)[] : `never`
 
 ### opacity?
 
-> `optional` **opacity**: `number`
+> `optional` **opacity?**: `number`
 
 ### properties?
 
-> `optional` **properties**: `object`
+> `optional` **properties?**: `object`
 
 #### Index Signature
 
@@ -38,11 +38,11 @@ Defined in: [elements/map/src/layers.ts:143](https://github.com/EOX-A/EOxElement
 
 ### visible?
 
-> `optional` **visible**: `boolean`
+> `optional` **visible?**: `boolean`
 
 ### zIndex?
 
-> `optional` **zIndex**: `number`
+> `optional` **zIndex?**: `number`
 
 ## Type Parameters
 

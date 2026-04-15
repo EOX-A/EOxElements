@@ -6,7 +6,7 @@
 
 # Interface: EOxTimeControlTimelineType
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:24](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L24)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:24](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L24)
 
 The `eox-timecontrol-timeline` component provides a timeline visualization using vis-timeline.
 It displays timeline items as milestones grouped by layer, allowing users to visualize
@@ -1610,7 +1610,7 @@ The **`nodeValue`** property of the Node interface returns or sets the value of 
 
 ### nonce?
 
-> `optional` **nonce**: `string`
+> `optional` **nonce?**: `string`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:16069
 
@@ -1714,7 +1714,7 @@ The **`offsetWidth`** read-only property of the HTMLElement interface returns th
 
 ***
 
-### onabort()
+### onabort
 
 > **onabort**: (`this`, `ev`) => `any`
 
@@ -1742,7 +1742,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12743
 
 ***
 
-### onanimationcancel()
+### onanimationcancel
 
 > **onanimationcancel**: (`this`, `ev`) => `any`
 
@@ -1770,7 +1770,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12745
 
 ***
 
-### onanimationend()
+### onanimationend
 
 > **onanimationend**: (`this`, `ev`) => `any`
 
@@ -1798,7 +1798,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12747
 
 ***
 
-### onanimationiteration()
+### onanimationiteration
 
 > **onanimationiteration**: (`this`, `ev`) => `any`
 
@@ -1826,7 +1826,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12749
 
 ***
 
-### onanimationstart()
+### onanimationstart
 
 > **onanimationstart**: (`this`, `ev`) => `any`
 
@@ -1854,7 +1854,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12751
 
 ***
 
-### onauxclick()
+### onauxclick
 
 > **onauxclick**: (`this`, `ev`) => `any`
 
@@ -1882,7 +1882,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12753
 
 ***
 
-### onbeforeinput()
+### onbeforeinput
 
 > **onbeforeinput**: (`this`, `ev`) => `any`
 
@@ -1910,7 +1910,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12755
 
 ***
 
-### onbeforematch()
+### onbeforematch
 
 > **onbeforematch**: (`this`, `ev`) => `any`
 
@@ -1938,7 +1938,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12757
 
 ***
 
-### onbeforetoggle()
+### onbeforetoggle
 
 > **onbeforetoggle**: (`this`, `ev`) => `any`
 
@@ -1966,7 +1966,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12759
 
 ***
 
-### onblur()
+### onblur
 
 > **onblur**: (`this`, `ev`) => `any`
 
@@ -1994,7 +1994,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12761
 
 ***
 
-### oncancel()
+### oncancel
 
 > **oncancel**: (`this`, `ev`) => `any`
 
@@ -2022,7 +2022,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12763
 
 ***
 
-### oncanplay()
+### oncanplay
 
 > **oncanplay**: (`this`, `ev`) => `any`
 
@@ -2050,7 +2050,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12765
 
 ***
 
-### oncanplaythrough()
+### oncanplaythrough
 
 > **oncanplaythrough**: (`this`, `ev`) => `any`
 
@@ -2078,7 +2078,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12767
 
 ***
 
-### onchange()
+### onchange
 
 > **onchange**: (`this`, `ev`) => `any`
 
@@ -2106,7 +2106,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12769
 
 ***
 
-### onclick()
+### onclick
 
 > **onclick**: (`this`, `ev`) => `any`
 
@@ -2134,7 +2134,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12771
 
 ***
 
-### onclose()
+### onclose
 
 > **onclose**: (`this`, `ev`) => `any`
 
@@ -2162,7 +2162,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12773
 
 ***
 
-### oncontextlost()
+### oncontextlost
 
 > **oncontextlost**: (`this`, `ev`) => `any`
 
@@ -2190,7 +2190,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12775
 
 ***
 
-### oncontextmenu()
+### oncontextmenu
 
 > **oncontextmenu**: (`this`, `ev`) => `any`
 
@@ -2218,7 +2218,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12777
 
 ***
 
-### oncontextrestored()
+### oncontextrestored
 
 > **oncontextrestored**: (`this`, `ev`) => `any`
 
@@ -2246,7 +2246,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12779
 
 ***
 
-### oncopy()
+### oncopy
 
 > **oncopy**: (`this`, `ev`) => `any`
 
@@ -2274,7 +2274,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12781
 
 ***
 
-### oncuechange()
+### oncuechange
 
 > **oncuechange**: (`this`, `ev`) => `any`
 
@@ -2302,7 +2302,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12783
 
 ***
 
-### oncut()
+### oncut
 
 > **oncut**: (`this`, `ev`) => `any`
 
@@ -2330,7 +2330,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12785
 
 ***
 
-### ondblclick()
+### ondblclick
 
 > **ondblclick**: (`this`, `ev`) => `any`
 
@@ -2358,7 +2358,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12787
 
 ***
 
-### ondrag()
+### ondrag
 
 > **ondrag**: (`this`, `ev`) => `any`
 
@@ -2386,7 +2386,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12789
 
 ***
 
-### ondragend()
+### ondragend
 
 > **ondragend**: (`this`, `ev`) => `any`
 
@@ -2414,7 +2414,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12791
 
 ***
 
-### ondragenter()
+### ondragenter
 
 > **ondragenter**: (`this`, `ev`) => `any`
 
@@ -2442,7 +2442,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12793
 
 ***
 
-### ondragleave()
+### ondragleave
 
 > **ondragleave**: (`this`, `ev`) => `any`
 
@@ -2470,7 +2470,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12795
 
 ***
 
-### ondragover()
+### ondragover
 
 > **ondragover**: (`this`, `ev`) => `any`
 
@@ -2498,7 +2498,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12797
 
 ***
 
-### ondragstart()
+### ondragstart
 
 > **ondragstart**: (`this`, `ev`) => `any`
 
@@ -2526,7 +2526,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12799
 
 ***
 
-### ondrop()
+### ondrop
 
 > **ondrop**: (`this`, `ev`) => `any`
 
@@ -2554,7 +2554,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12801
 
 ***
 
-### ondurationchange()
+### ondurationchange
 
 > **ondurationchange**: (`this`, `ev`) => `any`
 
@@ -2582,7 +2582,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12803
 
 ***
 
-### onemptied()
+### onemptied
 
 > **onemptied**: (`this`, `ev`) => `any`
 
@@ -2610,7 +2610,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12805
 
 ***
 
-### onended()
+### onended
 
 > **onended**: (`this`, `ev`) => `any`
 
@@ -2652,7 +2652,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12809
 
 ***
 
-### onfocus()
+### onfocus
 
 > **onfocus**: (`this`, `ev`) => `any`
 
@@ -2680,7 +2680,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12811
 
 ***
 
-### onformdata()
+### onformdata
 
 > **onformdata**: (`this`, `ev`) => `any`
 
@@ -2708,7 +2708,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12813
 
 ***
 
-### onfullscreenchange()
+### onfullscreenchange
 
 > **onfullscreenchange**: (`this`, `ev`) => `any`
 
@@ -2736,7 +2736,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10776
 
 ***
 
-### onfullscreenerror()
+### onfullscreenerror
 
 > **onfullscreenerror**: (`this`, `ev`) => `any`
 
@@ -2764,7 +2764,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10778
 
 ***
 
-### ongotpointercapture()
+### ongotpointercapture
 
 > **ongotpointercapture**: (`this`, `ev`) => `any`
 
@@ -2792,7 +2792,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12815
 
 ***
 
-### oninput()
+### oninput
 
 > **oninput**: (`this`, `ev`) => `any`
 
@@ -2820,7 +2820,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12817
 
 ***
 
-### oninvalid()
+### oninvalid
 
 > **oninvalid**: (`this`, `ev`) => `any`
 
@@ -2848,7 +2848,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12819
 
 ***
 
-### onkeydown()
+### onkeydown
 
 > **onkeydown**: (`this`, `ev`) => `any`
 
@@ -2876,7 +2876,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12821
 
 ***
 
-### ~~onkeypress()~~
+### ~~onkeypress~~
 
 > **onkeypress**: (`this`, `ev`) => `any`
 
@@ -2906,7 +2906,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12827
 
 ***
 
-### onkeyup()
+### onkeyup
 
 > **onkeyup**: (`this`, `ev`) => `any`
 
@@ -2934,7 +2934,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12829
 
 ***
 
-### onload()
+### onload
 
 > **onload**: (`this`, `ev`) => `any`
 
@@ -2962,7 +2962,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12831
 
 ***
 
-### onloadeddata()
+### onloadeddata
 
 > **onloadeddata**: (`this`, `ev`) => `any`
 
@@ -2990,7 +2990,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12833
 
 ***
 
-### onloadedmetadata()
+### onloadedmetadata
 
 > **onloadedmetadata**: (`this`, `ev`) => `any`
 
@@ -3018,7 +3018,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12835
 
 ***
 
-### onloadstart()
+### onloadstart
 
 > **onloadstart**: (`this`, `ev`) => `any`
 
@@ -3046,7 +3046,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12837
 
 ***
 
-### onlostpointercapture()
+### onlostpointercapture
 
 > **onlostpointercapture**: (`this`, `ev`) => `any`
 
@@ -3074,7 +3074,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12839
 
 ***
 
-### onmousedown()
+### onmousedown
 
 > **onmousedown**: (`this`, `ev`) => `any`
 
@@ -3102,7 +3102,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12841
 
 ***
 
-### onmouseenter()
+### onmouseenter
 
 > **onmouseenter**: (`this`, `ev`) => `any`
 
@@ -3130,7 +3130,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12843
 
 ***
 
-### onmouseleave()
+### onmouseleave
 
 > **onmouseleave**: (`this`, `ev`) => `any`
 
@@ -3158,7 +3158,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12845
 
 ***
 
-### onmousemove()
+### onmousemove
 
 > **onmousemove**: (`this`, `ev`) => `any`
 
@@ -3186,7 +3186,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12847
 
 ***
 
-### onmouseout()
+### onmouseout
 
 > **onmouseout**: (`this`, `ev`) => `any`
 
@@ -3214,7 +3214,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12849
 
 ***
 
-### onmouseover()
+### onmouseover
 
 > **onmouseover**: (`this`, `ev`) => `any`
 
@@ -3242,7 +3242,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12851
 
 ***
 
-### onmouseup()
+### onmouseup
 
 > **onmouseup**: (`this`, `ev`) => `any`
 
@@ -3270,7 +3270,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12853
 
 ***
 
-### onpaste()
+### onpaste
 
 > **onpaste**: (`this`, `ev`) => `any`
 
@@ -3298,7 +3298,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12855
 
 ***
 
-### onpause()
+### onpause
 
 > **onpause**: (`this`, `ev`) => `any`
 
@@ -3326,7 +3326,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12857
 
 ***
 
-### onplay()
+### onplay
 
 > **onplay**: (`this`, `ev`) => `any`
 
@@ -3354,7 +3354,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12859
 
 ***
 
-### onplaying()
+### onplaying
 
 > **onplaying**: (`this`, `ev`) => `any`
 
@@ -3382,7 +3382,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12861
 
 ***
 
-### onpointercancel()
+### onpointercancel
 
 > **onpointercancel**: (`this`, `ev`) => `any`
 
@@ -3410,7 +3410,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12863
 
 ***
 
-### onpointerdown()
+### onpointerdown
 
 > **onpointerdown**: (`this`, `ev`) => `any`
 
@@ -3438,7 +3438,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12865
 
 ***
 
-### onpointerenter()
+### onpointerenter
 
 > **onpointerenter**: (`this`, `ev`) => `any`
 
@@ -3466,7 +3466,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12867
 
 ***
 
-### onpointerleave()
+### onpointerleave
 
 > **onpointerleave**: (`this`, `ev`) => `any`
 
@@ -3494,7 +3494,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12869
 
 ***
 
-### onpointermove()
+### onpointermove
 
 > **onpointermove**: (`this`, `ev`) => `any`
 
@@ -3522,7 +3522,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12871
 
 ***
 
-### onpointerout()
+### onpointerout
 
 > **onpointerout**: (`this`, `ev`) => `any`
 
@@ -3550,7 +3550,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12873
 
 ***
 
-### onpointerover()
+### onpointerover
 
 > **onpointerover**: (`this`, `ev`) => `any`
 
@@ -3578,7 +3578,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12875
 
 ***
 
-### onpointerrawupdate()
+### onpointerrawupdate
 
 > **onpointerrawupdate**: (`this`, `ev`) => `any`
 
@@ -3608,7 +3608,7 @@ Available only in secure contexts.
 
 ***
 
-### onpointerup()
+### onpointerup
 
 > **onpointerup**: (`this`, `ev`) => `any`
 
@@ -3636,7 +3636,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12883
 
 ***
 
-### onprogress()
+### onprogress
 
 > **onprogress**: (`this`, `ev`) => `any`
 
@@ -3664,7 +3664,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12885
 
 ***
 
-### onratechange()
+### onratechange
 
 > **onratechange**: (`this`, `ev`) => `any`
 
@@ -3692,7 +3692,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12887
 
 ***
 
-### onreset()
+### onreset
 
 > **onreset**: (`this`, `ev`) => `any`
 
@@ -3720,7 +3720,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12889
 
 ***
 
-### onresize()
+### onresize
 
 > **onresize**: (`this`, `ev`) => `any`
 
@@ -3748,7 +3748,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12891
 
 ***
 
-### onscroll()
+### onscroll
 
 > **onscroll**: (`this`, `ev`) => `any`
 
@@ -3776,7 +3776,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12893
 
 ***
 
-### onscrollend()
+### onscrollend
 
 > **onscrollend**: (`this`, `ev`) => `any`
 
@@ -3804,7 +3804,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12895
 
 ***
 
-### onsecuritypolicyviolation()
+### onsecuritypolicyviolation
 
 > **onsecuritypolicyviolation**: (`this`, `ev`) => `any`
 
@@ -3832,7 +3832,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12897
 
 ***
 
-### onseeked()
+### onseeked
 
 > **onseeked**: (`this`, `ev`) => `any`
 
@@ -3860,7 +3860,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12899
 
 ***
 
-### onseeking()
+### onseeking
 
 > **onseeking**: (`this`, `ev`) => `any`
 
@@ -3888,7 +3888,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12901
 
 ***
 
-### onselect()
+### onselect
 
 > **onselect**: (`this`, `ev`) => `any`
 
@@ -3916,7 +3916,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12903
 
 ***
 
-### onselectionchange()
+### onselectionchange
 
 > **onselectionchange**: (`this`, `ev`) => `any`
 
@@ -3944,7 +3944,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12905
 
 ***
 
-### onselectstart()
+### onselectstart
 
 > **onselectstart**: (`this`, `ev`) => `any`
 
@@ -3972,7 +3972,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12907
 
 ***
 
-### onslotchange()
+### onslotchange
 
 > **onslotchange**: (`this`, `ev`) => `any`
 
@@ -4000,7 +4000,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12909
 
 ***
 
-### onstalled()
+### onstalled
 
 > **onstalled**: (`this`, `ev`) => `any`
 
@@ -4028,7 +4028,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12911
 
 ***
 
-### onsubmit()
+### onsubmit
 
 > **onsubmit**: (`this`, `ev`) => `any`
 
@@ -4056,7 +4056,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12913
 
 ***
 
-### onsuspend()
+### onsuspend
 
 > **onsuspend**: (`this`, `ev`) => `any`
 
@@ -4084,7 +4084,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12915
 
 ***
 
-### ontimeupdate()
+### ontimeupdate
 
 > **ontimeupdate**: (`this`, `ev`) => `any`
 
@@ -4112,7 +4112,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12917
 
 ***
 
-### ontoggle()
+### ontoggle
 
 > **ontoggle**: (`this`, `ev`) => `any`
 
@@ -4140,9 +4140,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12919
 
 ***
 
-### ontouchcancel()?
+### ontouchcancel?
 
-> `optional` **ontouchcancel**: (`this`, `ev`) => `any`
+> `optional` **ontouchcancel?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
@@ -4168,9 +4168,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12921
 
 ***
 
-### ontouchend()?
+### ontouchend?
 
-> `optional` **ontouchend**: (`this`, `ev`) => `any`
+> `optional` **ontouchend?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
@@ -4196,9 +4196,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12923
 
 ***
 
-### ontouchmove()?
+### ontouchmove?
 
-> `optional` **ontouchmove**: (`this`, `ev`) => `any`
+> `optional` **ontouchmove?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
@@ -4224,9 +4224,9 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12925
 
 ***
 
-### ontouchstart()?
+### ontouchstart?
 
-> `optional` **ontouchstart**: (`this`, `ev`) => `any`
+> `optional` **ontouchstart?**: (`this`, `ev`) => `any`
 
 Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
@@ -4252,7 +4252,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12927
 
 ***
 
-### ontransitioncancel()
+### ontransitioncancel
 
 > **ontransitioncancel**: (`this`, `ev`) => `any`
 
@@ -4280,7 +4280,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12929
 
 ***
 
-### ontransitionend()
+### ontransitionend
 
 > **ontransitionend**: (`this`, `ev`) => `any`
 
@@ -4308,7 +4308,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12931
 
 ***
 
-### ontransitionrun()
+### ontransitionrun
 
 > **ontransitionrun**: (`this`, `ev`) => `any`
 
@@ -4336,7 +4336,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12933
 
 ***
 
-### ontransitionstart()
+### ontransitionstart
 
 > **ontransitionstart**: (`this`, `ev`) => `any`
 
@@ -4364,7 +4364,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12935
 
 ***
 
-### onvolumechange()
+### onvolumechange
 
 > **onvolumechange**: (`this`, `ev`) => `any`
 
@@ -4392,7 +4392,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12937
 
 ***
 
-### onwaiting()
+### onwaiting
 
 > **onwaiting**: (`this`, `ev`) => `any`
 
@@ -4420,7 +4420,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:12939
 
 ***
 
-### ~~onwebkitanimationend()~~
+### ~~onwebkitanimationend~~
 
 > **onwebkitanimationend**: (`this`, `ev`) => `any`
 
@@ -4452,7 +4452,7 @@ This is a legacy alias of `onanimationend`.
 
 ***
 
-### ~~onwebkitanimationiteration()~~
+### ~~onwebkitanimationiteration~~
 
 > **onwebkitanimationiteration**: (`this`, `ev`) => `any`
 
@@ -4484,7 +4484,7 @@ This is a legacy alias of `onanimationiteration`.
 
 ***
 
-### ~~onwebkitanimationstart()~~
+### ~~onwebkitanimationstart~~
 
 > **onwebkitanimationstart**: (`this`, `ev`) => `any`
 
@@ -4516,7 +4516,7 @@ This is a legacy alias of `onanimationstart`.
 
 ***
 
-### ~~onwebkittransitionend()~~
+### ~~onwebkittransitionend~~
 
 > **onwebkittransitionend**: (`this`, `ev`) => `any`
 
@@ -4548,7 +4548,7 @@ This is a legacy alias of `ontransitionend`.
 
 ***
 
-### onwheel()
+### onwheel
 
 > **onwheel**: (`this`, `ev`) => `any`
 
@@ -4940,7 +4940,7 @@ The **`translate`** property of the HTMLElement interface indicates whether an e
 
 > **unstyled**: `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:61](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L61)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:61](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L61)
 
 Whether default styling is disabled.
 
@@ -5006,7 +5006,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10714
 
 > **get** **loading**(): `boolean`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:97](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L97)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:97](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L97)
 
 Gets the loading state of the timeline.
 
@@ -5020,7 +5020,7 @@ The loading state.
 
 > **set** **loading**(`value`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:87](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L87)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:87](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L87)
 
 Sets the loading state of the timeline.
 
@@ -5158,7 +5158,7 @@ The **`textContent`** property of the Node interface represents the text content
 
 > **get** **visTimeline**(): `Timeline`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:69](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L69)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:69](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L69)
 
 Gets the vis-timeline Timeline instance.
 
@@ -5170,7 +5170,7 @@ Gets the vis-timeline Timeline instance.
 
 > **set** **visTimeline**(`visTimeline`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:78](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L78)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:78](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L78)
 
 Sets the vis-timeline Timeline instance.
 
@@ -5214,7 +5214,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13839
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5242,7 +5242,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13840
 
 ###### options?
 
-`boolean` | `AddEventListenerOptions`
+`boolean` \| `AddEventListenerOptions`
 
 ##### Returns
 
@@ -5294,11 +5294,11 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:2921
 
 ##### keyframes
 
-`Keyframe`[] | `PropertyIndexedKeyframes`
+`Keyframe`[] \| `PropertyIndexedKeyframes`
 
 ##### options?
 
-`number` | `KeyframeAnimationOptions`
+`number` \| `KeyframeAnimationOptions`
 
 #### Returns
 
@@ -5968,7 +5968,7 @@ The **`getClientRects()`** method of the Element interface returns a collection 
 
 > **getContainer**(): `HTMLElement`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:106](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L106)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:106](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L106)
 
 Gets the container element for the timeline.
 
@@ -6248,7 +6248,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:10935
 
 > **getEOxTimeControl**(): [`EOxTimeControlType`](EOxTimeControlType.md)
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:117](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L117)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:117](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L117)
 
 Gets the EOxTimeControl instance.
 
@@ -6316,7 +6316,7 @@ The **`getRootNode()`** method of the Node interface returns the context object'
 
 > **getViewRange**(): `any`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:126](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L126)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:126](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L126)
 
 Gets the window of the vis-timeline Timeline instance.
 
@@ -6474,7 +6474,7 @@ The **`hidePopover()`** method of the HTMLElement interface hides a popover elem
 
 > **initTimeline**(): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:143](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L143)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:143](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L143)
 
 Initializes the timeline with items and groups from the parent timecontrol component.
 Should be called after the timecontrol has populated its items and groups DataSets.
@@ -7281,7 +7281,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13841
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -7309,7 +7309,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:13842
 
 ###### options?
 
-`boolean` | `EventListenerOptions`
+`boolean` \| `EventListenerOptions`
 
 ##### Returns
 
@@ -7583,7 +7583,7 @@ The Element interface's **`scrollIntoView()`** method scrolls the element's ance
 
 ##### arg?
 
-`boolean` | `ScrollIntoViewOptions`
+`boolean` \| `ScrollIntoViewOptions`
 
 #### Returns
 
@@ -7767,7 +7767,7 @@ Defined in: node\_modules/typescript/lib/lib.dom.d.ts:11064
 
 > **setDateRange**(`dateRange`): `void`
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:135](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L135)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:135](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L135)
 
 Sets the date range on the timeline by updating custom time markers.
 
@@ -8146,7 +8146,7 @@ Defined in: node\_modules/lit-element/development/lit-element.d.ts:93
 
 > **render**(): `TemplateResult`\<`1`\>
 
-Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:147](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/components/timecontrol-timeline.js#L147)
+Defined in: [elements/timecontrol/src/components/timecontrol-timeline.js:147](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/components/timecontrol-timeline.js#L147)
 
 Invoked on each update to perform rendering tasks. This method may return
 any value renderable by lit-html's `ChildPart` - typically a
@@ -8273,9 +8273,9 @@ again after this update cycle completes.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8436,9 +8436,9 @@ customized to control when to update.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8464,9 +8464,9 @@ this method will *not* trigger another update.
 
 ##### changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8494,9 +8494,9 @@ again after this update cycle completes.
 
 ##### \_changedProperties
 
-Map of changed properties with old values
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+Map of changed properties with old values
 
 #### Returns
 
@@ -8536,7 +8536,7 @@ render() {
 
 ##### \_changedProperties
 
-`PropertyValueMap`\<`any`\> | `Map`\<`PropertyKey`, `unknown`\>
+`PropertyValueMap`\<`any`\> \| `Map`\<`PropertyKey`, `unknown`\>
 
 #### Returns
 

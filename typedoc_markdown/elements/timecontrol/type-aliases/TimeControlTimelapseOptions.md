@@ -8,7 +8,7 @@
 
 > **TimeControlTimelapseOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:164](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/types.ts#L164)
+Defined in: [elements/timecontrol/src/types.ts:164](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/types.ts#L164)
 
 Configuration options for the time control timelapse component.
 
@@ -16,9 +16,9 @@ Configuration options for the time control timelapse component.
 
 ### format?
 
-> `optional` **format**: `"gif"` \| `"mp4"`
+> `optional` **format?**: `"gif"` \| `"mp4"`
 
-Defined in: [elements/timecontrol/src/types.ts:176](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/types.ts#L176)
+Defined in: [elements/timecontrol/src/types.ts:176](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/types.ts#L176)
 
 Export format: "gif" or "mp4" (default: "gif").
 
@@ -26,9 +26,9 @@ Export format: "gif" or "mp4" (default: "gif").
 
 ### speed?
 
-> `optional` **speed**: `number`
+> `optional` **speed?**: `number`
 
-Defined in: [elements/timecontrol/src/types.ts:172](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/types.ts#L172)
+Defined in: [elements/timecontrol/src/types.ts:172](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/types.ts#L172)
 
 Animation speed in frames per second (default: 1).
 
@@ -36,8 +36,8 @@ Animation speed in frames per second (default: 1).
 
 ### unstyled?
 
-> `optional` **unstyled**: `boolean`
+> `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:168](https://github.com/EOX-A/EOxElements/blob/06f136804bc7966a21fcffb994d42c4e776aaac0/elements/timecontrol/src/types.ts#L168)
+Defined in: [elements/timecontrol/src/types.ts:168](https://github.com/EOX-A/EOxElements/blob/4335852a5614c81d4c734de382b83eb07bac64c0/elements/timecontrol/src/types.ts#L168)
 
 Whether to disable default styling.
