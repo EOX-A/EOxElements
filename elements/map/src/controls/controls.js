@@ -71,6 +71,55 @@ export function addControl(EOxMap, type, options) {
   // Create a shallow copy of the control options to avoid modifying the original object
   const controlOptions = Object.assign({}, options);
 
+  // Handle position, target, and orientation from the new controls layout API
+  if (controlOptions && controlOptions.position) {
+    const regionClass = controlOptions.position;
+
+    let targetElement;
+    if (controlOptions.target) {
+      if (typeof controlOptions.target === "string") {
+        const controlsTargets = EOxMap.getControlsTargets();
+        targetElement =
+          controlsTargets[controlOptions.target] ||
+          EOxMap.shadowRoot?.querySelector(`#${controlOptions.target}`);
+
+        if (!targetElement) {
+          targetElement = document.createElement("div");
+          targetElement.id = controlOptions.target;
+          controlsTargets[controlOptions.target] = targetElement;
+        }
+      } else {
+        targetElement = controlOptions.target;
+      }
+    } else {
+      const uniqueId = `eox-target-${type}`;
+      const controlsTargets = EOxMap.getControlsTargets();
+      targetElement = controlsTargets[uniqueId];
+      if (!targetElement) {
+        targetElement = document.createElement("div");
+        targetElement.id = uniqueId;
+        controlsTargets[uniqueId] = targetElement;
+      }
+    }
+
+    // Assign orientation class (fallback to vertical)
+    targetElement.className = `eox-map-controls-group ${
+      controlOptions.orientation === "horizontal" ? "horizontal" : "vertical"
+    }`;
+
+    controlOptions.target = targetElement;
+
+    // Wait until Lit rendered shadow DOM before mounting our groups into it
+    EOxMap.updateComplete.then(() => {
+      const regionContainer = EOxMap.shadowRoot.querySelector(
+        `.eox-map-controls-region.${regionClass}`,
+      );
+      if (regionContainer && targetElement.parentElement !== regionContainer) {
+        regionContainer.appendChild(targetElement);
+      }
+    });
+  }
+
   // If the control has layers (e.g., for OverviewMap), generate them
   if (options && options.layers) {
     controlOptions.layers = generateLayers(EOxMap, options.layers); // Parse layers (e.g., for OverviewMap)

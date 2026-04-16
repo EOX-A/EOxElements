@@ -14,6 +14,7 @@ import {
   GeoZarrLayerStory,
   GroupLayerStory,
   ControlsStory,
+  ControlsLayoutStory,
   GeolocationStory,
   StandardLoadingIndicatorStory,
   CustomFullScreenLoadingIndicatorStory,
@@ -215,6 +216,21 @@ export const GroupLayer = GroupLayerStory;
  * Renders different `Controls` for the `eox-map` using control config
  */
 export const Controls = ControlsStory;
+
+/**
+ * Renders different `Controls` for the `eox-map` using layout API with `position`, `target` and `orientation` options, and demonstrates how to slot in custom HTML elements as controls in the different regions.
+ *
+ * You can customize the position, grouping, and orientation of map controls.
+ * By combining `position`, `target` and `orientation` (`horizontal`|`vertical`), you
+ * can flexibly lay out controls to match your UI needs.
+ * Custom controls can also be passed directly to the map via `<slot>`s targeted
+ * to specific regions (e.g. `<div slot="top-right">...</div>`).
+ *
+ * **Mobile Support**: The \`eox-map\` component emits a \`resize\` event with the width and height
+ * of its container. Developers can leverage this event to modify the controls object being passed down,
+ * and adjust CSS sizing properties (like \`--map-control-size\`) on the fly to support narrow screens.
+ */
+export const ControlsLayout = ControlsLayoutStory;
 
 /**
  * Renders Geolocation Control in `eox-map`
