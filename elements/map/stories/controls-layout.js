@@ -13,7 +13,7 @@ const ControlsLayout = {
         border-radius: 16px;
         padding: 4px 8px;
         height: 32px;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: var(--map-controls-box-shadow, none);
         cursor: pointer;
         opacity: 1;
         font-family: sans-serif;

@@ -89,6 +89,7 @@
   color: var(--map-controls-color-surface, var(--on-surface));
   backdrop-filter: var(--map-controls-backdrop-filter, none);
   -webkit-backdrop-filter: var(--map-controls-backdrop-filter, none);
+  box-shadow: var(--map-controls-box-shadow, none);
   padding: 0 8px;
   display: flex;
   align-items: center;
@@ -198,6 +199,7 @@
   color: var(--map-controls-color, var(--on-primary));
   backdrop-filter: var(--map-controls-backdrop-filter, none);
   -webkit-backdrop-filter: var(--map-controls-backdrop-filter, none);
+  box-shadow: var(--map-controls-box-shadow, none);
   width: var(--map-control-size, 32px);
   height: var(--map-control-size, 32px);
   cursor: pointer;
@@ -244,6 +246,7 @@
   background: var(--map-controls-bg-surface, var(--surface-container-lowest));
   backdrop-filter: var(--map-controls-backdrop-filter, none);
   -webkit-backdrop-filter: var(--map-controls-backdrop-filter, none);
+  box-shadow: var(--map-controls-box-shadow, none);
   border-radius: 0.5rem;
   position: static;
   margin: 0;

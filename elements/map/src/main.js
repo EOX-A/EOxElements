@@ -146,6 +146,7 @@ addCommonStylesheet();
  * @cssproperty --map-controls-bg-surface - Background color for surface-level control containers.
  * @cssproperty --map-controls-color-surface - Text color for surface-level control containers.
  * @cssproperty --map-controls-backdrop-filter - Backdrop filter for supported control elements (e.g., blur).
+ * @cssproperty --map-controls-box-shadow - Box shadow for control buttons and containers.
  * @cssproperty --map-control-size - Dimensions of dynamic controls like the loading-indicator.
  */
 export class EOxMap extends LitElement {
