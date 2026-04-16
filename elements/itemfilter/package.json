@@ -33,7 +33,8 @@
     }
   },
   "scripts": {
-    "types:generate": "tsc --project tsconfig.build.json || true",
+    "pretypes:generate": "cd ../layout && npm run types:generate && cd ../map && npm run types:generate",
+    "types:generate": "npm run pretypes:generate && tsc --project tsconfig.build.json || true",
     "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
