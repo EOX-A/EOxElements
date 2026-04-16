@@ -17,23 +17,25 @@
     "node": ">=18.0.0"
   },
   "files": [
+    "types",
     "dist",
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/timecontrol/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/timecontrol/src/main.d.ts"
+        "./types/main.d.ts"
       ],
       "src/*": [
-        "./types/timecontrol/src/*"
+        "./types/*"
       ]
     }
   },
   "scripts": {
-    "types:generate": "tsc --project tsconfig.build.json || true",
+    "pretypes:generate": "cd ../itemfilter && npm run types:generate && cd ../map && npm run types:generate",
+    "types:generate": "npm run pretypes:generate && tsc --project tsconfig.build.json || true",
     "prepack": "npm run types:generate",
     "build": "vite build",
     "watch": "vite build --watch"
