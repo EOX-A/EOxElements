@@ -59,12 +59,29 @@ const STEPS_CSS = `
   .steps-editor details[open] summary .step-chevron {
     transform: rotate(180deg);
   }
+  .steps-editor details.is-closing summary .step-chevron {
+    transform: rotate(0deg);
+  }
   .steps-editor .no-pointer-events {
     pointer-events: none;
   }
   .steps-editor details summary .step-icon,
   .steps-editor details[open] summary .step-icon {
     transform: none !important;
+  }
+  .steps-editor details summary .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 3.5rem;
+  }
+  .steps-editor details summary .subtitle-el {
+    display: block;
+    flex: none;
+    transition: opacity 0.2s;
+  }
+  .steps-editor details summary .subtitle-el.hidden {
+    display: none;
   }
 `;
 
@@ -319,6 +336,29 @@ export class StepsEditor extends AbstractEditor {
     const wrapper = document.createElement("div");
     wrapper.classList.add("steps-editor");
 
+    // Add click listener for animated details (accordion logic)
+    wrapper.addEventListener("click", (e) => {
+      const summary = e.target.closest("summary");
+      if (!summary) return;
+      const details = summary.parentElement;
+      if (!details || details.tagName !== "DETAILS") return;
+
+      if (details.dataset.animating) {
+        e.preventDefault();
+        return;
+      }
+
+      e.preventDefault();
+      const isOpening = !details.hasAttribute("open");
+      if (isOpening) {
+        const stepId = details.dataset.stepId;
+        const stepNum = this._steps.findIndex((s) => s.id === stepId) + 1;
+        this._openStep(stepNum);
+      } else {
+        this._closeAllSteps();
+      }
+    });
+
     // Inject scoped CSS
     const styleEl = document.createElement("style");
     styleEl.textContent = STEPS_CSS;
@@ -335,9 +375,8 @@ export class StepsEditor extends AbstractEditor {
 
       // Toggle handler
       details.addEventListener("toggle", () => {
-        if (details.open) {
+        if (details.open && !details.dataset.animating) {
           this._currentStep = stepNum;
-          this._closeOtherSteps(step.id);
           this._refreshAllSteps();
         }
       });
@@ -360,7 +399,7 @@ export class StepsEditor extends AbstractEditor {
       titleEl.textContent = step.title;
 
       const subtitleEl = document.createElement("div");
-      subtitleEl.classList.add("small-text");
+      subtitleEl.classList.add("small-text", "subtitle-el");
 
       titleCol.appendChild(titleEl);
       titleCol.appendChild(subtitleEl);
@@ -743,22 +782,6 @@ export class StepsEditor extends AbstractEditor {
   _getStepSelectionLabel(step) {
     const effective = this._getEffectiveStep(step);
     const val = this.value[step.id];
-    const stepIndex = this._steps.findIndex((s) => s.id === step.id);
-
-    // Hide label for auto-complete steps that are disabled but dependency met
-    if (
-      effective.autoComplete &&
-      effective.dependsOn &&
-      this.value[effective.dependsOn] &&
-      effective.enumValues.length <= 1
-    ) {
-      return null;
-    }
-
-    // Hide if this step is currently open
-    if (this._currentStep === stepIndex + 1) {
-      return null;
-    }
 
     if (!val) return null;
 
@@ -810,17 +833,16 @@ export class StepsEditor extends AbstractEditor {
 
       // Update subtitle
       const label = this._getStepSelectionLabel(step);
-      if (label && this._currentStep !== stepNum) {
+      els.subtitleEl.classList.remove("hidden", "primary-text", "grey-text");
+      if (label) {
         els.subtitleEl.textContent = label;
-        els.subtitleEl.className = "small-text primary-text truncate";
-        els.subtitleEl.style.display = "";
+        els.subtitleEl.classList.add("primary-text", "truncate");
       } else if (effective.disabledLabel && disabled) {
         els.subtitleEl.textContent = effective.disabledLabel;
-        els.subtitleEl.className = "small-text grey-text";
-        els.subtitleEl.style.display = "";
+        els.subtitleEl.classList.add("grey-text");
       } else {
         els.subtitleEl.textContent = "";
-        els.subtitleEl.style.display = "none";
+        els.subtitleEl.classList.add("hidden");
       }
 
       // Update card highlights
@@ -842,28 +864,119 @@ export class StepsEditor extends AbstractEditor {
   }
 
   /**
+   * Animate a details element opening or closing.
+   *
+   * @param {HTMLDetailsElement} details
+   * @param {boolean} isOpening
+   * @returns {Promise<void>}
+   */
+  _animateDetails(details, isOpening) {
+    details.dataset.animating = "true";
+
+    // Determine animation duration based on classes
+    let duration = 300;
+    if (details.classList.contains("fast-animate")) duration = 150;
+    else if (details.classList.contains("slow-animate")) duration = 500;
+    else if (details.classList.contains("no-animate")) duration = 0;
+
+    // Measure start height
+    const startHeight = `${details.offsetHeight}px`;
+
+    // Temporarily toggle open to measure the target end height accurately
+    if (isOpening) {
+      details.setAttribute("open", "");
+    } else {
+      details.removeAttribute("open");
+    }
+
+    const endHeight = `${details.offsetHeight}px`;
+
+    // Set up the element for the animation
+    if (!isOpening) {
+      // Re-add "open" so it can animate down from the opened state
+      details.setAttribute("open", "");
+      // Add is-closing class so the icon rotates back immediately
+      details.classList.add("is-closing");
+    }
+
+    // Start animation
+    const animation = details.animate(
+      { height: [startHeight, endHeight] },
+      { duration, easing: "ease-out" },
+    );
+
+    details.style.overflow = "hidden";
+
+    return new Promise((resolve) => {
+      animation.onfinish = () => {
+        details.style.height = "";
+        details.style.overflow = "";
+        if (!isOpening) {
+          details.removeAttribute("open");
+          details.classList.remove("is-closing");
+        }
+        delete details.dataset.animating;
+        resolve();
+      };
+      animation.oncancel = () => {
+        details.style.height = "";
+        details.style.overflow = "";
+        if (!isOpening) {
+          details.classList.remove("is-closing");
+        }
+        delete details.dataset.animating;
+        resolve();
+      };
+    });
+  }
+
+  /**
    * Open a specific step by number (1-based) and close others.
    *
    * @param {number} stepNum - 1-based step number to open
    */
   _openStep(stepNum) {
-    this._currentStep = stepNum;
+    const toAnimate = [];
     this._steps.forEach((step, index) => {
       const els = this._stepElements[step.id];
-      els.details.open = index + 1 === stepNum;
+      const shouldBeOpen = index + 1 === stepNum;
+      if (els.details.hasAttribute("open") !== shouldBeOpen) {
+        toAnimate.push({
+          details: els.details,
+          isOpening: shouldBeOpen,
+        });
+      }
     });
+
+    this._currentStep = stepNum;
     this._refreshAllSteps();
+
+    toAnimate.forEach((item) => {
+      this._animateDetails(item.details, item.isOpening);
+    });
   }
 
   /**
    * Close all step details elements.
    */
   _closeAllSteps() {
-    this._currentStep = 0;
+    const toAnimate = [];
     this._steps.forEach((step) => {
-      this._stepElements[step.id].details.open = false;
+      const details = this._stepElements[step.id].details;
+      if (details.hasAttribute("open")) {
+        toAnimate.push({
+          details,
+          isOpening: false,
+        });
+      }
     });
+
+    this._currentStep = 0;
     this._refreshAllSteps();
+
+    toAnimate.forEach((item) => {
+      this._animateDetails(item.details, false);
+    });
   }
 
   /**
@@ -872,10 +985,21 @@ export class StepsEditor extends AbstractEditor {
    * @param {string} openStepId - The step id to keep open
    */
   _closeOtherSteps(openStepId) {
+    const toAnimate = [];
     this._steps.forEach((step) => {
-      if (step.id !== openStepId) {
-        this._stepElements[step.id].details.open = false;
+      const details = this._stepElements[step.id].details;
+      if (step.id !== openStepId && details.hasAttribute("open")) {
+        toAnimate.push({
+          details,
+          isOpening: false,
+        });
       }
+    });
+
+    this._refreshAllSteps();
+
+    toAnimate.forEach((item) => {
+      this._animateDetails(item.details, false);
     });
   }
 
