@@ -1,18 +1,13 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "bundler",
-    "noEmit": false,
-    "baseUrl": ".",
-    "jsx": "react",
-    "typeRoots": {
-      "@eox/*": ["../*/src"]
-    },
-    "allowJs": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
     "outDir": "./types",
     "rootDir": "src",
-    "paths": {}
+    "noEmit": false,
+    "declaration": true,
+    "declarationMap": true,
+    "paths": {},
+    "emitDeclarationOnly": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.d.ts"]
 }
