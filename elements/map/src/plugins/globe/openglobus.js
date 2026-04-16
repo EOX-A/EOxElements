@@ -357,7 +357,7 @@ export const enableGlobe = (map) => {
   if (map.controls?.Zoom) {
     const zoomButtons = map.shadowRoot?.querySelector(".ol-zoom");
     if (zoomButtons) {
-      zoomButtons.style.display = "block"; // Ensure OL zoom buttons are visible
+      zoomButtons.style.display = ""; // Let CSS handle visibility
     }
     const zoomInButton = map.shadowRoot?.querySelector(".ol-zoom-in");
     const zoomOutButton = map.shadowRoot?.querySelector(".ol-zoom-out");
@@ -535,7 +535,7 @@ export const disableGlobe = (map) => {
           }
           const olZoom = map.shadowRoot?.querySelector(".ol-zoom");
           if (olZoom) {
-            olZoom.style.display = "block";
+            olZoom.style.display = "";
           }
         }
         if (map.controls?.Rotate && map.globe.rotateHandler) {
