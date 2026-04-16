@@ -71,6 +71,25 @@ export function addControl(EOxMap, type, options) {
   // Create a shallow copy of the control options to avoid modifying the original object
   const controlOptions = Object.assign({}, options);
 
+  // Apply default positioning if not explicitly provided
+  if (!controlOptions.position) {
+    if (type === "Zoom") {
+      controlOptions.position = "top-left";
+      controlOptions.orientation = controlOptions.orientation || "vertical";
+    } else if (
+      type === "OverviewMap" ||
+      type === "ScaleLine" ||
+      type === "MousePosition"
+    ) {
+      controlOptions.position = "bottom-left";
+    } else if (type === "FullScreen" || type === "GlobeSwitcher") {
+      controlOptions.position = "top-right";
+      controlOptions.orientation = controlOptions.orientation || "vertical";
+    } else if (type === "Attribution") {
+      controlOptions.position = "bottom-right";
+    }
+  }
+
   // Handle position, target, and orientation from the new controls layout API
   if (controlOptions && controlOptions.position) {
     const regionClass = controlOptions.position;

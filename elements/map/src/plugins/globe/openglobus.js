@@ -275,7 +275,12 @@ export const enableGlobe = (map) => {
       globeDiv.style.width = "100%";
       globeDiv.style.height = "100%";
       globeDiv.style.display = "block"; // Ensure the globe div is visible
-      map.renderRoot?.appendChild(globeDiv);
+      const mapContainer = map.shadowRoot.querySelector(".eox-map-container");
+      if (mapContainer) {
+        mapContainer.insertBefore(globeDiv, mapContainer.firstChild);
+      } else {
+        map.renderRoot?.appendChild(globeDiv);
+      }
     }
 
     map.registerProjectionFromCode("EPSG:3857"); // Ensure projection is registered for OL, globe uses its own.
@@ -291,11 +296,57 @@ export const enableGlobe = (map) => {
     map.globeEnabled = true;
   }
 
-  // Move OL controls to the globe container
-  const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
-  if (olControls) {
-    olControls.forEach((control) => {
-      map.shadowRoot.querySelector("#globe").appendChild(control);
+  // Keep compatible controls visible, hide others
+  const compatibleClasses = [
+    "ol-zoom",
+    "ol-attribution",
+    "globe-switcher-container",
+    "ol-full-screen",
+    "loading-indicator",
+  ];
+  const incompatibleClasses = [
+    "ol-rotate",
+    "ol-scale-line",
+    "ol-overviewmap",
+    "ol-mouse-position",
+  ];
+  const allControls = map.shadowRoot?.querySelectorAll(".ol-control");
+
+  if (allControls) {
+    let globeControls = map.shadowRoot.querySelector(".ol-globe-controls");
+    if (!globeControls) {
+      globeControls = document.createElement("div");
+      globeControls.className = "ol-globe-controls";
+      globeControls.style.position = "absolute";
+      globeControls.style.top = "0";
+      globeControls.style.left = "0";
+      globeControls.style.width = "100%";
+      globeControls.style.height = "100%";
+      globeControls.style.pointerEvents = "none";
+      map.shadowRoot.querySelector("#globe").appendChild(globeControls);
+    }
+
+    allControls.forEach((controlNode) => {
+      /** @type {HTMLElement} */
+      const control = /** @type {any} */ (controlNode);
+      const isCompatible =
+        compatibleClasses.some((c) => control.classList.contains(c)) ||
+        (!control.className.includes("ol-") &&
+          !incompatibleClasses.some((c) => control.classList.contains(c)));
+      const isIncompatible = incompatibleClasses.some((c) =>
+        control.classList.contains(c),
+      );
+
+      if (isIncompatible) {
+        control.dataset.originalDisplay = control.style.display || "";
+        control.style.display = "none";
+      } else if (
+        isCompatible &&
+        map.shadowRoot.querySelector("#map").contains(control)
+      ) {
+        control.style.pointerEvents = "auto";
+        globeControls.appendChild(control); // move from hidden #map to globe overlay
+      }
     });
   }
 
@@ -439,15 +490,33 @@ export const disableGlobe = (map) => {
         // Apply the calculated center and zoom to the OpenLayers map view
         map.map.getView().setCenter(newCenter);
         map.map.getView().setZoom(zoomFromGlobe);
-
-        // Move OL controls back to the OL container
-        const olControls = map.shadowRoot?.querySelectorAll(".ol-control");
-        if (olControls) {
-          olControls.forEach((control) => {
-            map.shadowRoot.querySelector(".ol-viewport").appendChild(control);
+        // Restore OL controls back to the OL container
+        const globeControls =
+          map.shadowRoot.querySelector(".ol-globe-controls");
+        if (globeControls) {
+          Array.from(globeControls.childNodes).forEach((controlNode) => {
+            const control = /** @type {HTMLElement} */ (controlNode);
+            control.style.pointerEvents = "";
+            map.shadowRoot
+              .querySelector(".ol-overlaycontainer-stopevent")
+              ?.appendChild(control);
           });
+          globeControls.remove();
         }
 
+        // Restore previously hidden incompatible controls
+        const allControls = map.shadowRoot?.querySelectorAll(".ol-control");
+        if (allControls) {
+          allControls.forEach((controlNode) => {
+            const control = /** @type {HTMLElement} */ (
+              /** @type {any} */ (controlNode)
+            );
+            if (control.dataset.originalDisplay !== undefined) {
+              control.style.display = control.dataset.originalDisplay;
+              delete control.dataset.originalDisplay;
+            }
+          });
+        }
         // Restore OL control functionality
         if (map.controls?.Zoom) {
           if (map.globe.zoomInHandler) {

@@ -154,7 +154,16 @@ map.addEventListener('resize', (e) => {
         target: "bottom-tools",
         orientation: "horizontal",
       },
-      ScaleLine: { position: "bottom-left" },
+      ScaleLine: {
+        position: "bottom-left",
+        target: "scale-line",
+        orientation: "horizontal",
+      },
+      MousePosition: {
+        position: "bottom-left",
+        target: "scale-line",
+        orientation: "horizontal",
+      },
       OverviewMap: {
         position: "top-left",
         collapsed: false,
