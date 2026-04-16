@@ -15,7 +15,7 @@
     "ol": "^10.8.0",
     "ol-mapbox-style": "^13.2.1",
     "ol-stac": "^1.1",
-    "proj4": "^2.20.2",
+    "proj4": "^2.20.8",
     "serialize-javascript": "^7.0.1"
   },
   "devDependencies": {
