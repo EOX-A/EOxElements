@@ -10,6 +10,8 @@ dayjs.extend(utc);
  * @param {string} dateString - The original date string (e.g., from STORY_ARGS)
  * @returns {string} The date part of the UTC representation (YYYY-MM-DD)
  */
-export const getUTCDate = (dateString, format = "YYYY-MM-DD") => {
-  return dayjs(dateString).utc().format(format);
+export const getDate = (dateString, format = "YYYY-MM-DD", isUTC = false) => {
+  return isUTC
+    ? dayjs(dateString).utc().format(format)
+    : dayjs(dateString).format(format);
 };

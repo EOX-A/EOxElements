@@ -19,7 +19,7 @@
     "cypress:install": "cypress install",
     "test:all": "npm run styles && npm run test:component; npm run test:e2e",
     "test:component": "npm run styles && cypress run --component",
-    "test:e2e": "npm run generate-manifest && npm run generate-typedoc && npm run build:storybook && cypress run --e2e",
+    "test:e2e": "npm run generate-manifest && npm run generate-typedoc && npm run build:element-story-bundle --ws --if-present && npm run build:storybook && cypress run --e2e",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint elements",
@@ -27,7 +27,7 @@
     "typecheck": "tsc",
     "types:generate:all": "npm run types:generate --ws",
     "storybook": "storybook dev -p 6006",
-    "build:docs": "npm run styles && npm run generate-manifest && npm run generate-typedoc && npm run generate-snippets && npm run generate-llms && npm run build:storybook && cp custom-elements.json docs/custom-elements.json && cp story-snippets.json docs/story-snippets.json && cp llms.txt docs/llms.txt && cp llms-full.txt docs/llms-full.txt",
+    "build:docs": "npm run styles && npm run build:element-story-bundle --ws --if-present && npm run generate-manifest && npm run generate-typedoc && npm run generate-snippets && npm run generate-llms && npm run build:storybook && cp custom-elements.json docs/custom-elements.json && cp story-snippets.json docs/story-snippets.json && cp llms.txt docs/llms.txt && cp llms-full.txt docs/llms-full.txt",
     "build:storybook": "storybook build -o docs",
     "generate-snippets": "node --loader ./scripts/loader.mjs scripts/generate-snippets.mjs",
     "generate-llms": "node scripts/generate-llms-txt.mjs",
@@ -49,10 +49,10 @@
     "cypress-fail-on-console-error": "^5.1.1",
     "cypress-file-upload": "^5.0.8",
     "cypress-lit": "^0.0.8",
-    "cypress-network-idle": "^1.14.2",
+    "cypress-network-idle": "^2.0.1",
     "eslint-plugin-storybook": "^10.0.8",
     "nodemon": "^3.0.3",
-    "nyc": "^17.0.0",
+    "nyc": "^18.0.0",
     "prettier-plugin-svelte": "^3.4.0",
     "rimraf": "^6.0.1",
     "serialize-javascript": "^7.0.0",
@@ -61,7 +61,7 @@
     "typedoc-plugin-markdown": "^4.9.0",
     "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript-json-schema": "^0.67.0",
-    "vite-plugin-istanbul": "^7.0.0"
+    "vite-plugin-istanbul": "^8.0.0"
   },
   "engines": {
     "node": ">=20.19.0"

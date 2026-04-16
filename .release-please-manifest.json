@@ -1,16 +1,17 @@
 {
-  "elements/drawtools": "1.2.0",
-  "elements/itemfilter": "1.14.0",
-  "elements/layercontrol": "1.4.1",
+  "elements/drawtools": "1.3.0",
+  "elements/itemfilter": "1.15.0",
+  "elements/layercontrol": "1.4.2",
   "elements/map": "2.3.0",
   "elements/stacinfo": "1.1.0",
   "elements/timecontrol": "2.1.2",
-  "elements/jsonform": "1.9.1",
+  "elements/jsonform": "1.10.0",
   "elements/layout": "1.0.0",
   "elements/storytelling": "1.10.1",
   "elements/geosearch": "1.1.1",
   "elements/chart": "1.1.0",
-  "elements/feedback": "1.1.1",
-  "utils": "1.1.1",
-  "mcp-server": "1.1.0"
+  "elements/feedback": "1.2.0",
+  "utils": "1.1.2",
+  "mcp-server": "1.1.0",
+  "elements/tour": "1.0.0"
 }

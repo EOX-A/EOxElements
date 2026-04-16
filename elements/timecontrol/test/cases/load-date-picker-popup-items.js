@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -45,7 +45,7 @@ const loadDatePickerPopupItems = () => {
   `);
 
   // assertions - verify component behavior
-  const utcTestDate = getUTCDate(testDate);
+  const utcTestDate = getDate(testDate);
 
   // component existence
   cy.get("eox-map").should("exist");

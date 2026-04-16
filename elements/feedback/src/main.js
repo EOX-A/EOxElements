@@ -4,8 +4,27 @@ import { styleEOX } from "./style.eox";
 import "./feedback-button.js";
 
 /**
- * The `eox-feedback` element provides a modal dialog for collecting user feedback. It supports screenshot capture, customizable endpoint, and flexible styling.
- * The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`), which can be positioned in any corner of the viewport.
+ * The `eox-feedback` element provides a modal dialog for collecting user feedback.
+ * It supports screenshot capture, customizable endpoint, and flexible styling.
+ * The feedback modal (`<eox-feedback></eox-feedback>`) can be included in the DOM
+ * directly or via a floating button (`<eox-feedback-button></eox-feedback-button>`),
+ * which can be positioned in any corner of the viewport.
+ *
+ * On submit, the element sends a `POST` request with `FormData` to the configured
+ * `endpoint`. The payload includes the feedback message (or custom form fields when
+ * using a `schema`), the current page URL, the browser's user agent, screen resolution and optionally
+ * a screenshot file. This makes it straightforward to connect to any backend — for
+ * example a service that creates issues in a Git platform (GitLab, GitHub, …), sends
+ * notifications, or stores feedback in a database.
+ *
+ * The backend only needs to accept a `multipart/form-data` POST request, extract the
+ * fields and the optional file attachment, and then forward them to whatever system
+ * you use for tracking or processing feedback. Because all authentication and API
+ * tokens live on the server side, the browser never sees sensitive credentials.
+ * Typical backend responsibilities include input sanitization, CORS configuration to
+ * restrict which origins may submit feedback, and mapping the received fields into the
+ * format expected by the target system (e.g. composing an issue title and body, or
+ * building an email).
  *
  * @element eox-feedback
  *
@@ -205,10 +224,12 @@ export class EOxFeedback extends HTMLElement {
     const submitButton = this.shadowRoot.querySelector("button#submit");
     submitButton.classList.add("disabled");
 
+    this.classList.add("hidden");
     this.regionScreenshot = new RegionScreenshot();
 
     ["closed", "errorCreated", "screenshotDownload"].forEach((event) => {
       this.regionScreenshot.on(event, () => {
+        this.classList.remove("hidden");
         const checkbox = this.shadowRoot.querySelector("input[type=checkbox]");
         if (!(checkbox instanceof HTMLInputElement)) return;
         checkbox.checked = false;
@@ -229,6 +250,7 @@ export class EOxFeedback extends HTMLElement {
     });
 
     this.regionScreenshot.on("screenshotGenerated", (dataUrl) => {
+      this.classList.remove("hidden");
       const screenshot = document.createElement("img");
       screenshot.src = dataUrl;
       screenshot.classList.add("border");
@@ -301,6 +323,11 @@ export class EOxFeedback extends HTMLElement {
     requestBody.append("userAgent", window.navigator.userAgent);
 
     requestBody.append("location", window.location.href);
+
+    requestBody.append(
+      "screenResolution",
+      `width: ${window.innerWidth}px | height: ${window.innerHeight}px`,
+    );
 
     if (!this.endpoint) {
       throw new Error("No endpoint attribute defined!");
@@ -395,6 +422,7 @@ export class EOxFeedback extends HTMLElement {
           }
           z-index: 10000;
         }
+        :host(.hidden),
         .hidden {
           display: none !important;
         }

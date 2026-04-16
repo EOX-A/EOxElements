@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.9.1...jsonform-v1.10.0) (2026-04-13)
+
+
+### Features
+
+* Custom ace editor markdown toolbar ([#2138](https://github.com/EOX-A/EOxElements/issues/2138)) ([c203a82](https://github.com/EOX-A/EOxElements/commit/c203a82dff62933dcf3b6dacac7900792d08ef18))
+
 ## [1.9.1](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.9.0...jsonform-v1.9.1) (2026-02-27)
 
 

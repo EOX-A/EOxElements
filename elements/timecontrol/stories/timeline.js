@@ -34,6 +34,7 @@ const TimelineStory = {
         storySlot: true,
         showDots: true,
         popup: true,
+        showItems: true,
       },
     },
   },
@@ -62,6 +63,8 @@ const TimelineStory = {
         .showDots=${args.storyAdditionalComponents["eox-timecontrol-picker"]
           .showDots}
         .popup=${args.storyAdditionalComponents["eox-timecontrol-picker"].popup}
+        .showItems=${args.storyAdditionalComponents["eox-timecontrol-picker"]
+          .showItems}
       ></eox-timecontrol-picker>
     </eox-timecontrol>
   `,

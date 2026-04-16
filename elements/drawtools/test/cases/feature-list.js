@@ -3,14 +3,25 @@ import { TEST_SELECTORS } from "../../src/enums";
 // Destructure TEST_SELECTORS object
 const { drawTools, list, deleteFeatureBtn } = TEST_SELECTORS;
 
+const featureMock = {
+  get: () => null,
+  clone: function () {
+    return this;
+  },
+  getGeometry: () => ({
+    transform: () => {},
+  }),
+  setGeometry: () => {},
+};
+
 const testFeatures = [
   {
     getId: () => "0",
-    get: () => null,
+    ...featureMock,
   },
   {
     getId: () => "1",
-    get: () => null,
+    ...featureMock,
   },
 ];
 

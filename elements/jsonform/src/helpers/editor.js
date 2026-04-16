@@ -317,7 +317,7 @@ export const createEditor = (element) => {
 
     // Button elements
     element.renderRoot
-      .querySelectorAll(":not(.btn-group) > button")
+      .querySelectorAll(":not(.btn-group):not(.markdown-toolbar) > button")
       .forEach((button) => {
         if (button.classList.contains("json-editor-btn-")) {
           button.querySelector("i")?.remove();

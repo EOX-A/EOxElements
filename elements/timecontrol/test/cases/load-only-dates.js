@@ -1,6 +1,6 @@
 import { html } from "lit";
 
-import { getUTCDate } from "../utils.js";
+import { getDate } from "../utils.js";
 import { STORY_ARGS } from "../../src/enums.js";
 
 /**
@@ -63,7 +63,7 @@ const loadOnlyDates = () => {
       // verify the date matches the expected value from STORY_ARGS (2023-04-24)
       cy.get("#date-container input[type='text']")
         .invoke("val")
-        .should("equal", getUTCDate(expectedDate));
+        .should("equal", getDate(expectedDate));
     });
 };
 

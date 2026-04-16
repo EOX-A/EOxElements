@@ -28,6 +28,8 @@ npm install
 ### 3. Branching & Changes
 
 - **Focus on One Element**: Each PR should ideally address changes for a single element. This ensures that the generated changelogs (managed by `release-please`) are accurate and that version bumps are correctly applied.
+- **One Feature/Fix Per PR**: In this repository, we usually have one PR per fix or feature. Since PRs are squashed and each PR becomes a single entry in the changelog, it is bad practice to mix different features or fixes into one PR (even if they concern the same element).
+- **PR Titles (Conventional Commits)**: When giving PR titles the conventional commit format, it is **not** needed to use the element name in the scope (e.g., `fix(drawtools): a style thing`). `release-please` assigns it to the element's changelog/release automatically. Instead, use e.g. `fix: a thing` or `fix(style): a style thing`.
 - **Branch naming convention**: inspired by [this article](https://betterprogramming.pub/enabling-monorepo-with-a-simple-single-github-repository-39bc6347abba#391d). Please name your branches `<element>/<changetype>/<name>`:
   - `map/feature/new-feature`
   - `map/fix/some-fix`

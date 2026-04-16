@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "noEmit": false,
+    "baseUrl": ".",
+    "jsx": "react",
+    "typeRoots": {
+      "@eox/*": ["../*/src"]
+    },
+    "allowJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./types"
+  },
+  "include": ["src/**/*"]
+}

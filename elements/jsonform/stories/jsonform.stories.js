@@ -5,6 +5,7 @@ import {
   CollectionStory,
   ExternalStory,
   MarkdownStory,
+  CodeMarkdownToolbarStory,
   PrimaryStory,
   ButtonsEditorStory,
   BinaryCheckboxEditorStory,
@@ -123,6 +124,13 @@ export const External = ExternalStory;
  * Demonstrates integration of markdown editing in forms.
  */
 export const Markdown = MarkdownStory;
+
+/**
+ * Code Markdown editor example. This story demonstrates a custom configuration option that extends the
+ * built-in ACE editor to include a markdown toolbar. It is activated by using
+ * `format: "markdown"`, `options.resolver: "ace"` and `options.markdownToolbar: true` in the schema.
+ */
+export const CodeMarkdownToolbar = CodeMarkdownToolbarStory;
 
 /**
  * Buttons Editor example. Renders a custom button group input based on enum values.

@@ -88,7 +88,17 @@ export class EOxDrawTools extends LitElement {
   /**
    * @type boolean
    */
+  #internalUpdate = false;
+
+  /**
+   * @type boolean
+   */
   #continuous;
+
+  /**
+   * @type Array<import("ol").Feature>
+   */
+  #drawnFeatures = [];
 
   constructor() {
     super();
@@ -128,12 +138,6 @@ export class EOxDrawTools extends LitElement {
      * The ID of the Vector/Vector Tile Layer that contains features to be selected
      */
     this.layerId = "";
-
-    /**
-     * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
-     * @type Array<import("ol").Feature>
-     */
-    this.drawnFeatures = [];
 
     /**
      * The display name of drawn features, shown e.g. in the feature list.
@@ -240,6 +244,52 @@ export class EOxDrawTools extends LitElement {
   }
 
   /**
+   * Used internally to update the drawnFeatures state without overwriting the map layer source.
+   * @param {Array<import("ol").Feature>} features
+   */
+  setDrawnFeaturesInternal(features) {
+    this.#internalUpdate = true;
+    this.drawnFeatures = features;
+    this.#internalUpdate = false;
+  }
+
+  /**
+   * The array of drawn native OpenLayers features. Normally includes only one feature, until multiple feature drawing is enabled.
+   * Pass features to be drawn on the map by setting this property. The features should be in the same projection as the map, or a projection should be specified via the `projection` property for proper transformation.
+   * @type {Array<import("ol").Feature>}
+   */
+  set drawnFeatures(features) {
+    const oldValue = this.#drawnFeatures;
+    this.#drawnFeatures = features;
+    if (this.drawLayer && !this.#internalUpdate) {
+      this.drawLayer.getSource().clear();
+      if (features?.length) {
+        const source = this.eoxMap?.projection || "EPSG:3857";
+        const destination = this.projection || "EPSG:4326";
+
+        let featuresToAdd = features;
+        if (source && destination && source !== destination) {
+          featuresToAdd = features.map((feat) => {
+            feat = feat.clone();
+            const transformed = feat
+              .getGeometry()
+              .transform(destination, source);
+            feat.setGeometry(transformed);
+            return feat;
+          });
+        }
+        this.drawLayer.getSource().addFeatures(featuresToAdd);
+      }
+      this.updateGeoJSON();
+    }
+    this.requestUpdate("drawnFeatures", oldValue);
+  }
+
+  get drawnFeatures() {
+    return this.#drawnFeatures;
+  }
+
+  /**
    * Enables selection mode for the passed layer
    * @type {string}
    */
@@ -335,9 +385,11 @@ export class EOxDrawTools extends LitElement {
   /**
    * initializes the EOxMap and OlMap instances
    * And stores them in the private properties #eoxMap and #olMap, respectively.
-   * It then calls requestUpdate to trigger a re-render.
    */
-  firstUpdated() {
+  updateLayer() {
+    if (this.resetLayer) {
+      this.resetLayer(this);
+    }
     const { EoxMap, OlMap, reset } = initLayerMethod(
       this,
       this.multipleFeatures,
@@ -345,28 +397,39 @@ export class EOxDrawTools extends LitElement {
     this.resetLayer = reset;
     this.eoxMap = EoxMap;
     this.#olMap = OlMap;
+  }
+
+  /**
+   * initializes the EOxMap and OlMap instances
+   * And stores them in the private properties #eoxMap and #olMap, respectively.
+   * It then calls requestUpdate to trigger a re-render.
+   */
+  firstUpdated() {
+    this.updateLayer();
     this.selectionEvents = createSelectHandler(this);
 
     if (this.importFeatures) initMapDragDropImport(this, this.eoxMap);
 
-    this.updateGeoJSON();
+    if (this.drawnFeatures?.length > 0) {
+      this.drawnFeatures = [...this.drawnFeatures];
+    } else {
+      this.updateGeoJSON();
+    }
     this.requestUpdate();
   }
 
   updated(changedProperties) {
-    if (changedProperties.has("for")) {
-      const { EoxMap, OlMap } = initLayerMethod(this, this.multipleFeatures);
-      this.eoxMap = EoxMap;
-      this.#olMap = OlMap;
-    }
+    const hasOldValue = (prop) =>
+      changedProperties.has(prop) && changedProperties.get(prop) !== undefined;
+
     if (
-      (changedProperties.get("type") &&
+      hasOldValue("for") ||
+      (changedProperties.has("type") &&
         changedProperties.get("type") !== this.type) ||
       (changedProperties.has("measure") &&
         changedProperties.get("measure") !== this.measure)
     ) {
-      this.resetLayer(this);
-      this.firstUpdated();
+      this.updateLayer();
       this.currentlyDrawing = false;
     }
   }

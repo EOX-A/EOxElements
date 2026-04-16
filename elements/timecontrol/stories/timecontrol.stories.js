@@ -14,6 +14,7 @@ import {
   DatePickerPopupItemsStory,
   NoMapStory,
   DateWithInitDateStory,
+  DateInUTCStory,
 } from "./index";
 
 export default {
@@ -76,6 +77,14 @@ export const DatePickerPopup = DatePickerPopupStory;
  * `<eox-timecontrol-date>`). The picker shows items in the popup.
  */
 export const DatePickerPopupItems = DatePickerPopupItemsStory;
+
+/**
+ * Date is displayed in UTC format when the showUTC property / show-utc attribute is true
+ *
+ * This example demonstrates the `<eox-timecontrol-date>` component with `showUTC` enabled.
+ * The date is displayed in the UTC format and not the local timezone format.
+ */
+export const DateInUTC = DateInUTCStory;
 
 /**
  * Calendar date picker displayed inline (not in popup mode)
