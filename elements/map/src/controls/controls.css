@@ -96,6 +96,7 @@
   font-family: inherit;
   font-size: 10px;
   white-space: nowrap;
+  width: max-content;
 }
 
 .eox-map-controls-group {
@@ -247,6 +248,7 @@
   position: static;
   margin: 0;
   padding: 0.5rem;
+  width: max-content;
 }
 .ol-scale-line-inner {
   border: 1px solid var(--map-controls-color-surface, var(--on-surface));
