@@ -309,6 +309,7 @@ export const enableGlobe = (map) => {
     "ol-scale-line",
     "ol-overviewmap",
     "ol-mouse-position",
+    "geolocation",
   ];
   const allControls = map.shadowRoot?.querySelectorAll(
     ".ol-control, .ol-mouse-position",
