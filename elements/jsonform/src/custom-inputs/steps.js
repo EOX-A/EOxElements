@@ -338,7 +338,10 @@ export class StepsEditor extends AbstractEditor {
 
     // Add click listener for animated details (accordion logic)
     wrapper.addEventListener("click", (e) => {
-      const summary = e.target.closest("summary");
+      /** @type {HTMLElement} */
+      // @ts-ignore
+      const target = e.target;
+      const summary = target.closest("summary");
       if (!summary) return;
       const details = summary.parentElement;
       if (!details || details.tagName !== "DETAILS") return;
