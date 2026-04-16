@@ -347,6 +347,8 @@
 
 .ol-overviewmap {
   position: relative !important;
+  left: unset;
+  bottom: unset;
 }
 
 .ol-overviewmap-map {
