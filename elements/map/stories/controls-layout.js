@@ -246,6 +246,7 @@ map.addEventListener('resize', (e) => {
           // Clean up state
           delete controls.Zoom;
           delete controls.GlobeSwitcher;
+          delete controls.MousePosition;
         } else {
           // Ensure correct desktop state
           controls.OverviewMap.collapsed = false;
