@@ -16,14 +16,14 @@
     "src"
   ],
   "main": "./src/main.js",
-  "types": "./types/geosearch/src/main.d.ts",
+  "types": "./types/main.d.ts",
   "typesVersions": {
     "*": {
       ".": [
-        "./types/geosearch/src/main.d.ts"
+        "./types/main.d.ts"
       ],
       "src/*": [
-        "./types/geosearch/src/*"
+        "./types/*"
       ]
     }
   },
