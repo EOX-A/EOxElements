@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.10.1...storytelling-v1.11.0) (2026-04-16)
+
+
+### Miscellaneous Chores
+
+* Deprecate built-in editor ([#2263](https://github.com/EOX-A/EOxElements/issues/2263)) ([b928473](https://github.com/EOX-A/EOxElements/commit/b9284735700aa82fdb32566dfcd4807c20bf7630))
+
 ## [1.10.1](https://github.com/EOX-A/EOxElements/compare/storytelling-v1.10.0...storytelling-v1.10.1) (2026-01-21)
 
 

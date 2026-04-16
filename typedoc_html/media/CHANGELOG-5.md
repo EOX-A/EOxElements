@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.10.0...jsonform-v1.11.0) (2026-04-16)
+
+
+### Features
+
+* Steps editor ([#2199](https://github.com/EOX-A/EOxElements/issues/2199)) ([68f16c9](https://github.com/EOX-A/EOxElements/commit/68f16c9df6d1cd357cfce648aa21cf803bd6a9f9))
+
 ## [1.10.0](https://github.com/EOX-A/EOxElements/compare/jsonform-v1.9.1...jsonform-v1.10.0) (2026-04-13)
 
 

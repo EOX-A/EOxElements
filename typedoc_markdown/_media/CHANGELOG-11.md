@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.1.2...timecontrol-v2.2.0) (2026-04-16)
+
+
+### Features
+
+* Display date and time in `UTC` ([#2176](https://github.com/EOX-A/EOxElements/issues/2176)) ([5d2fe87](https://github.com/EOX-A/EOxElements/commit/5d2fe8764e11170d12830190689ee1be0d5003cc))
+
 ## [2.1.2](https://github.com/EOX-A/EOxElements/compare/timecontrol-v2.1.1...timecontrol-v2.1.2) (2026-02-27)
 
 
