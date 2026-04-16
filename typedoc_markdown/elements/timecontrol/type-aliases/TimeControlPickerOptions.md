@@ -8,7 +8,7 @@
 
 > **TimeControlPickerOptions** = `object`
 
-Defined in: [elements/timecontrol/src/types.ts:114](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/timecontrol/src/types.ts#L114)
+Defined in: [elements/timecontrol/src/types.ts:114](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/timecontrol/src/types.ts#L114)
 
 Configuration options for the time control picker component.
 
@@ -18,7 +18,7 @@ Configuration options for the time control picker component.
 
 > `optional` **popup?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:118](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/timecontrol/src/types.ts#L118)
+Defined in: [elements/timecontrol/src/types.ts:118](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/timecontrol/src/types.ts#L118)
 
 Whether to display the calendar in a popup mode.
 
@@ -28,7 +28,7 @@ Whether to display the calendar in a popup mode.
 
 > `optional` **range?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:126](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/timecontrol/src/types.ts#L126)
+Defined in: [elements/timecontrol/src/types.ts:126](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/timecontrol/src/types.ts#L126)
 
 Whether to enable date range selection.
 
@@ -38,7 +38,7 @@ Whether to enable date range selection.
 
 > `optional` **showDots?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:130](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/timecontrol/src/types.ts#L130)
+Defined in: [elements/timecontrol/src/types.ts:130](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/timecontrol/src/types.ts#L130)
 
 Whether to show dots indicating available data on calendar dates.
 
@@ -48,6 +48,6 @@ Whether to show dots indicating available data on calendar dates.
 
 > `optional` **unstyled?**: `boolean`
 
-Defined in: [elements/timecontrol/src/types.ts:122](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/timecontrol/src/types.ts#L122)
+Defined in: [elements/timecontrol/src/types.ts:122](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/timecontrol/src/types.ts#L122)
 
 Whether to disable default styling.

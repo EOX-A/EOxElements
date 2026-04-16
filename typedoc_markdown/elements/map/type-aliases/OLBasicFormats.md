@@ -8,7 +8,7 @@
 
 > **OLBasicFormats** = `object`
 
-Defined in: [elements/map/src/layers.ts:1](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/map/src/layers.ts#L1)
+Defined in: [elements/map/src/layers.ts:1](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/map/src/layers.ts#L1)
 
 ## Properties
 
@@ -16,7 +16,7 @@ Defined in: [elements/map/src/layers.ts:1](https://github.com/EOX-A/EOxElements/
 
 > **GeoJSON**: `default`
 
-Defined in: [elements/map/src/layers.ts:2](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/map/src/layers.ts#L2)
+Defined in: [elements/map/src/layers.ts:2](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/map/src/layers.ts#L2)
 
 ***
 
@@ -24,4 +24,4 @@ Defined in: [elements/map/src/layers.ts:2](https://github.com/EOX-A/EOxElements/
 
 > **MVT**: `default`
 
-Defined in: [elements/map/src/layers.ts:3](https://github.com/EOX-A/EOxElements/blob/27ad3b2168b2dac46db6d8c150d26e810c3844ca/elements/map/src/layers.ts#L3)
+Defined in: [elements/map/src/layers.ts:3](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/map/src/layers.ts#L3)
