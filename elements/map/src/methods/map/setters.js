@@ -85,12 +85,10 @@ export function setZoomExtentMethod(extent, EOxMap) {
  * @returns {ControlDictionary} - The new controls.
  */
 export function setControlsMethod(controls, oldControls, EOxMap) {
-  const newControls = /** @type {ControlDictionary} **/ (
-    JSON.parse(JSON.stringify(controls))
-  );
+  const newControls = /** @type {ControlDictionary} **/ controls;
 
   // Remove old controls not present in the new controls
-  if (oldControls && oldControls !== newControls) {
+  if (oldControls) {
     const oldControlTypes =
       /** @type {ControlType[]} **/ Object.keys(oldControls);
     const newControlTypes =
