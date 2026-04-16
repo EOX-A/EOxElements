@@ -97,6 +97,7 @@ addCommonStylesheet();
  * - **Layer Support:** Easily add and configure layers such as Tile, Vector, VectorTile, Image, Group, and advanced types like STAC, GeoTIFF, MapboxStyle, and FlatGeoBuf. Layers are passed via the `layers` property as an array of configuration objects.
  * - **Source Formats:** Supports GeoJSON, MVT, OSM, TileWMS, WMTS, XYZ, ImageWMS, and more. Advanced sources (e.g., WMTSCapabilities) are available via plugin import.
  * - **Controls:** Add built-in or custom controls (Zoom, Geolocation, LoadingIndicator, etc.) using the `controls` property. Controls can be configured with `position`, `target`, and `orientation` for flexible UI layouts. Developers can also inject custom HTML tools via Shadow DOM `<slot>`s mapped to specific regions.
+ * - **Responsive Design:** The map emits a `resize` event providing current dimensions and a mobile breakpoint flag (`isSmall`), allowing dynamic adjustment of control layouts and map properties.
  * - **Interactions:** Enable feature selection, hover, click, cluster-explode, and highlight interactions. Interactions are configured per layer and can trigger custom events.
  * - **Tooltips:** Built-in tooltip support via `<eox-map-tooltip></eox-map-tooltip>`, with options for property transformation, custom tooltips, and pixel/band value display for raster layers.
  * - **Layer Groups:** Organize layers into groups for complex compositions and hierarchical management.
@@ -139,6 +140,13 @@ addCommonStylesheet();
  * @fires {CustomEvent} resize - Fired when the map container is resized
  * @fires {CustomEvent} select - A feature is selected
  * @fires {CustomEvent} layerschanged - The layers have been changed
+ *
+ * @cssproperty --map-controls-bg - Background color for controls.
+ * @cssproperty --map-controls-color - Text/icon color for controls.
+ * @cssproperty --map-controls-bg-surface - Background color for surface-level control containers.
+ * @cssproperty --map-controls-color-surface - Text color for surface-level control containers.
+ * @cssproperty --map-controls-backdrop-filter - Backdrop filter for supported control elements (e.g., blur).
+ * @cssproperty --map-control-size - Dimensions of dynamic controls like the loading-indicator.
  */
 export class EOxMap extends LitElement {
   // Define static properties for the component
