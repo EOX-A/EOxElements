@@ -26,6 +26,7 @@ const ControlsStory = {
       },
       MousePosition: {},
       ScaleLine: {},
+      Geolocation: {},
     },
     layers: [
       {

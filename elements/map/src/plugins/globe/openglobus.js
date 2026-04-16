@@ -310,7 +310,9 @@ export const enableGlobe = (map) => {
     "ol-overviewmap",
     "ol-mouse-position",
   ];
-  const allControls = map.shadowRoot?.querySelectorAll(".ol-control");
+  const allControls = map.shadowRoot?.querySelectorAll(
+    ".ol-control, .ol-mouse-position",
+  );
 
   if (allControls) {
     let globeControls = map.shadowRoot.querySelector(".ol-globe-controls");
@@ -505,7 +507,9 @@ export const disableGlobe = (map) => {
         }
 
         // Restore previously hidden incompatible controls
-        const allControls = map.shadowRoot?.querySelectorAll(".ol-control");
+        const allControls = map.shadowRoot?.querySelectorAll(
+          ".ol-control, .ol-mouse-position",
+        );
         if (allControls) {
           allControls.forEach((controlNode) => {
             const control = /** @type {HTMLElement} */ (

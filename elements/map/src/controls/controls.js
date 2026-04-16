@@ -71,15 +71,32 @@ export function addControl(EOxMap, type, options) {
   // Create a shallow copy of the control options to avoid modifying the original object
   const controlOptions = Object.assign({}, options);
 
+  if (type === "MousePosition") {
+    controlOptions.projection = controlOptions.projection || "EPSG:4326";
+    // format as lat/lng with 4 decimals instead of default long string in meters
+    controlOptions.coordinateFormat =
+      controlOptions.coordinateFormat ||
+      function (coord) {
+        const lat = coord[1];
+        const lon = coord[0];
+        const latDir = lat >= 0 ? "N" : "S";
+        const lonDir = lon >= 0 ? "E" : "W";
+        return `${Math.abs(lat).toFixed(4)}° ${latDir}, ${Math.abs(lon).toFixed(4)}° ${lonDir}`;
+      };
+    controlOptions.placeholder =
+      controlOptions.placeholder || "No coordinates computed";
+  }
+
   // Apply default positioning if not explicitly provided
   if (!controlOptions.position) {
-    if (type === "Zoom") {
+    if (type === "Zoom" || type === "ZoomSlider" || type === "Geolocation") {
       controlOptions.position = "top-left";
       controlOptions.orientation = controlOptions.orientation || "vertical";
     } else if (
       type === "OverviewMap" ||
       type === "ScaleLine" ||
-      type === "MousePosition"
+      type === "MousePosition" ||
+      type === "LoadingIndicator"
     ) {
       controlOptions.position = "bottom-left";
     } else if (type === "FullScreen" || type === "GlobeSwitcher") {
@@ -111,7 +128,7 @@ export function addControl(EOxMap, type, options) {
         targetElement = controlOptions.target;
       }
     } else {
-      const uniqueId = `eox-target-${type}`;
+      const uniqueId = `eox-target-${regionClass}`;
       const controlsTargets = EOxMap.getControlsTargets();
       targetElement = controlsTargets[uniqueId];
       if (!targetElement) {
@@ -135,6 +152,8 @@ export function addControl(EOxMap, type, options) {
       );
       if (regionContainer && targetElement.parentElement !== regionContainer) {
         regionContainer.appendChild(targetElement);
+        // Map render is needed after mounting to trigger internal OpenLayers control size calculations (like ZoomSlider thumb size)
+        setTimeout(() => EOxMap.map.render(), 0);
       }
     });
   }
