@@ -1,3 +1,4 @@
 [submodule "examples"]
 	path = examples
 	url = git@github.com:EOX-A/EOxElements-examples.git
+	update = none
