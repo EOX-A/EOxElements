@@ -8,4 +8,4 @@
 
 > **SelectLayer** = `default` \| `default` \| `default` \| `default`
 
-Defined in: [elements/map/src/types.ts:46](https://github.com/EOX-A/EOxElements/blob/32cddbaba6830a4a42d4cf3ea5a18b9192e5f3ba/elements/map/src/types.ts#L46)
+Defined in: [elements/map/src/types.ts:46](https://github.com/EOX-A/EOxElements/blob/d79fe5b6cffef785c8aebbd39ee01e942562516f/elements/map/src/types.ts#L46)
