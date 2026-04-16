@@ -1,6 +1,7 @@
 {
   "type": "object",
   "format": "steps",
+  "title": "Select Dataset",
   "properties": {
     "year": {
       "type": "string",
