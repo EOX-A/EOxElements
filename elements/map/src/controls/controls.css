@@ -408,6 +408,12 @@
   margin: 2px;
 }
 
+/* OverviewMap box for current view */
+.ol-overviewmap .ol-overlay-container.ol-selectable,
+.ol-overviewmap .ol-overviewmap-box {
+  border-radius: 0;
+}
+
 .ol-zoomslider {
   background-color: var(--surface-container-lowest, rgba(255, 255, 255, 0.4));
   border-radius: var(--_round);
