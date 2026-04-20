@@ -4,6 +4,8 @@ import {
   setCustomFullScreenLoadingIndicator,
   setDefaultLoadingIndicator,
   setGeoLocationControl,
+  setLayoutControls,
+  setSlottedControls,
 } from "./cases/controls/index.js";
 
 /**
@@ -14,6 +16,16 @@ describe("webcomponent property parsing", () => {
    * Test case to set basic controls via webcomponent
    */
   it("set controls via webcomponent properties", () => setBasicControls());
+
+  /**
+   * Test case to configure layout controls via webcomponent properties
+   */
+  it("Layout configuration of Controls", () => setLayoutControls());
+
+  /**
+   * Test case to test custom slotted controls via webcomponent
+   */
+  it("Custom slotted controls", () => setSlottedControls());
 
   /**
    * Test case to set geo location control via webcomponent
