@@ -184,6 +184,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .toolsAutoExpand=${this.toolsAutoExpand}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
+                            @changed=${() => this.requestUpdate()}
                           >
                           </eox-layercontrol-layer-group>
                         `
@@ -203,6 +204,7 @@ export class EOxLayerControlLayerList extends LitElement {
                             .toolsAutoExpand=${this.toolsAutoExpand}
                             .customEditorInterfaces=${this
                               .customEditorInterfaces}
+                            @changed=${() => this.requestUpdate()}
                           ></eox-layercontrol-layer>
                         `
                   }

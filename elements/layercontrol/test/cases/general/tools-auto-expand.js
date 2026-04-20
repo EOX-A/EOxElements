@@ -12,7 +12,6 @@ const toolsAutoExpand = () => {
       },
     ]);
   });
-  cy.wait(200);
 
   cy.get("eox-layercontrol")
     .and(($el) => {

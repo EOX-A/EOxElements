@@ -96,6 +96,29 @@ export class EOxLayerControlLayerTools extends LitElement {
     this.toolsAutoExpand = false;
 
     /**
+     * Determine if tools are embedded in layercontrol or stand-alone
+     *
+     * @type {Boolean}
+     */
+    setTimeout(() => {
+      const parent =
+        this.parentElement ||
+        /** @type {ShadowRoot} */ (this.getRootNode())?.host;
+      this.embedded = parent?.tagName === "EOX-LAYERCONTROL-LAYER";
+      if (
+        typeof this.open === "undefined" ||
+        this.open === false ||
+        this.open === null
+      ) {
+        this.open = this.toolsAutoExpand
+          ? !!this.layer?.getVisible()
+          : this.embedded === false
+            ? true
+            : !!this.layer?.get("layerControlToolsExpand");
+      }
+    });
+
+    /**
      * List of custom editor interfaces for layer config eox-jsonform
      * Read more about the implementation of custom editor interfaces here:
      * https://github.com/json-editor/json-editor/blob/master/docs/custom-editor.html
@@ -110,25 +133,6 @@ export class EOxLayerControlLayerTools extends LitElement {
    */
   createRenderRoot() {
     return this.noShadow ? this : super.createRenderRoot();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.embedded = this.parentElement?.tagName === "EOX-LAYERCONTROL-LAYER";
-  }
-
-  firstUpdated() {
-    if (
-      typeof this.open === "undefined" ||
-      this.open === false ||
-      this.open === null
-    ) {
-      this.open = this.toolsAutoExpand
-        ? !!this.layer?.getVisible()
-        : this.embedded === false
-          ? true
-          : !!this.layer?.get("layerControlToolsExpand");
-    }
   }
 
   updated(changedProperties) {
